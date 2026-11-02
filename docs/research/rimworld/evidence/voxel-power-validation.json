@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T17:30:24.321Z",
+  "generatedAt": "2026-11-02T17:46:00.270Z",
   "kind": "web-runtime-validated",
   "scope": "Emberfield power/thermal milestone. Native mechanism evidence is separately static/XML and one definition UI observation; no native electricity/thermal curve measurement. Node campaigns execute game ticks, not hours of real-time browser play. Unit integration fixtures are explicitly synthetic. Array and renderer counters are not whole-browser/GPU or 4 GiB capacity evidence.",
   "sources": [
@@ -17,7 +17,7 @@
     },
     {
       "file": "src/voxel/power.ts",
-      "sha256": "92f4d49960a3bee2b6a9e05cc212f3ee839700ea1eb724f0c1be3ae63c837be0"
+      "sha256": "d24d824e96544a080106c4cd861cd9d7eaff9101de82ddced9bee4c5451f1585"
     },
     {
       "file": "src/voxel/render.worker.ts",
@@ -58,8 +58,8 @@
   ],
   "assets": [
     {
-      "file": "assets\\index-BV--hbLP.js",
-      "sha256": "4751aceec872eddfb006d4cfb8c81c17b3d1f050d6d3056fb8a606df2e644ace",
+      "file": "assets\\index-BPHrpZMZ.js",
+      "sha256": "aca53d214eac42f9cae9b52e00ad79788ef2c762313f9bc2ebda131430d03ebf",
       "bytes": 2356
     },
     {
@@ -73,14 +73,14 @@
       "bytes": 221699
     },
     {
-      "file": "assets\\main-fETZkKdq.js",
-      "sha256": "5addbde66002ee419fa297575570463eb9d2cb06270b4b1eb5d997881683c7de",
+      "file": "assets\\main-Cbe-Y-jl.js",
+      "sha256": "1a30699f3d53a63edc9a64f9bba864784c242d892863780831e3e1e67c010c4a",
       "bytes": 561633
     },
     {
-      "file": "assets\\sim.worker-CDsRv32Z.js",
-      "sha256": "4383e65730e8431c4a2df0d7b15b6b0b1d5ccb34958fef3c06554145fc9cb4ae",
-      "bytes": 64848
+      "file": "assets\\sim.worker-D0zg14rU.js",
+      "sha256": "3d0d63fbcfc8dd5298100dd932c659fe24e2423787eb499be53e2c213e5013d2",
+      "bytes": 64932
     },
     {
       "file": "assets\\render.worker-BsuVrjkK.js",
@@ -89,8 +89,8 @@
     }
   ],
   "unit": {
-    "passed": 189,
-    "total": 189,
+    "passed": 191,
+    "total": 191,
     "failed": 0
   },
   "campaign": {
@@ -663,7 +663,7 @@
           },
           {
             "name": "normal colonist work builds mouse-placed heater and dragged wires from finite mined resources",
-            "elapsed": 547,
+            "elapsed": 549,
             "steel": 52,
             "components": 1,
             "device": {
@@ -1137,11 +1137,11 @@
               "width": 200,
               "height": 200
             },
-            "tick": 15604
+            "tick": 15612
           },
           {
             "name": "resuming normal browser simulation consumes fuel and charges the battery while cooling",
-            "elapsed": 124,
+            "elapsed": 133,
             "before": [
               [
                 558,
@@ -1150,7 +1150,7 @@
                 true,
                 21,
                 0,
-                125.10479166666843
+                125.93479166666847
               ],
               [
                 559,
@@ -1158,7 +1158,7 @@
                 "x",
                 true,
                 21,
-                71.7604999999929,
+                71.7458333333262,
                 0
               ],
               [
@@ -1197,7 +1197,7 @@
                 true,
                 21,
                 0,
-                137.9697916666677
+                139.73354166666755
               ],
               [
                 559,
@@ -1205,7 +1205,7 @@
                 "x",
                 true,
                 21,
-                71.53316666665907,
+                71.50199999999234,
                 0
               ],
               [
@@ -1248,7 +1248,7 @@
           "worker": true,
           "metrics": {
             "backend": "Three.js · WebGL2",
-            "fps": 59.95503371399371,
+            "fps": 59.9475458937698,
             "drawCalls": 28,
             "triangles": 32262,
             "geometries": 29,
@@ -1297,7 +1297,7 @@
           },
           {
             "name": "normal colonist work builds mouse-placed heater and dragged wires from finite mined resources",
-            "elapsed": 552,
+            "elapsed": 556,
             "steel": 52,
             "components": 1,
             "device": {
@@ -1771,11 +1771,11 @@
               "width": 200,
               "height": 200
             },
-            "tick": 15605
+            "tick": 15608
           },
           {
             "name": "resuming normal browser simulation consumes fuel and charges the battery while cooling",
-            "elapsed": 131,
+            "elapsed": 132,
             "before": [
               [
                 558,
@@ -1784,7 +1784,7 @@
                 true,
                 21,
                 0,
-                125.20854166666844
+                125.51979166666845
               ],
               [
                 559,
@@ -1792,7 +1792,7 @@
                 "x",
                 true,
                 21,
-                71.75866666665956,
+                71.75316666665955,
                 0
               ],
               [
@@ -1831,7 +1831,7 @@
                 true,
                 21,
                 0,
-                138.79979166666763
+                139.2147916666676
               ],
               [
                 559,
@@ -1839,7 +1839,7 @@
                 "x",
                 true,
                 21,
-                71.51849999999237,
+                71.51116666665902,
                 0
               ],
               [
@@ -1882,7 +1882,7 @@
           "worker": false,
           "metrics": {
             "backend": "Three.js · WebGL2",
-            "fps": 59.95503373184831,
+            "fps": 59.9475458937698,
             "drawCalls": 28,
             "triangles": 32262,
             "geometries": 29,
@@ -2150,7 +2150,7 @@
               "worker": true,
               "metrics": {
                 "backend": "Three.js · WebGL2",
-                "fps": 22.34914328019446,
+                "fps": 16.25,
                 "drawCalls": 58,
                 "triangles": 29932,
                 "geometries": 27,
@@ -2222,8 +2222,8 @@
             {
               "name": "resumed browser simulation restores rest while remaining in assigned bed",
               "before": 44.195416666635026,
-              "after": 44.40494048663505,
-              "tick": 7060
+              "after": 44.48113096663506,
+              "tick": 7064
             }
           ],
           "errors": []
@@ -2236,7 +2236,7 @@
               "worker": false,
               "metrics": {
                 "backend": "Three.js · WebGL2",
-                "fps": 52.8385352697463,
+                "fps": 56.67816659118439,
                 "drawCalls": 58,
                 "triangles": 29932,
                 "geometries": 27,
@@ -2308,8 +2308,8 @@
             {
               "name": "resumed browser simulation restores rest while remaining in assigned bed",
               "before": 44.195416666635026,
-              "after": 44.63351192663507,
-              "tick": 7072
+              "after": 44.42398810663505,
+              "tick": 7061
             }
           ],
           "errors": []
@@ -2325,7 +2325,7 @@
         },
         {
           "name": "actual sowing produces seedlings and visible environmental conditions",
-          "detail": "29, 28 · Z 8\n×\n稻米\n\n有地板支撑的空间 · 地表\n\n室外连通空间\n\n30992 格体积 · 4096 格地面 · Z 6–15 · 22.2°C\n\n按实际六向空气连通判断；视图切层不改变房间。\n本轮生长\n0.7%\n\n生长中 · 肥力 100% · 光照 100% · 22.2°C\n\n下次播种：稻米 · 成熟收获 6 生食材。上方楼板会遮光。\n\n⌖ 对焦此处"
+          "detail": "29, 28 · Z 8\n×\n稻米\n\n有地板支撑的空间 · 地表\n\n室外连通空间\n\n30992 格体积 · 4096 格地面 · Z 6–15 · 22.1°C\n\n按实际六向空气连通判断；视图切层不改变房间。\n本轮生长\n0.6%\n\n生长中 · 肥力 100% · 光照 100% · 22.1°C\n\n下次播种：稻米 · 成熟收获 6 生食材。上方楼板会遮光。\n\n⌖ 对焦此处"
         },
         {
           "name": "stove body inspection and bill target / pause / resume work through DOM"
@@ -2347,14 +2347,14 @@
         },
         {
           "name": "imported normal-growth crops are actually harvested and ingredients delivered for cooking",
-          "tick": 96128,
+          "tick": 96123,
           "stats": {
             "mined": 0,
             "cut": 0,
             "built": 1,
             "hauled": 0,
             "sown": 11,
-            "harvested": 4,
+            "harvested": 3,
             "cooked": 0,
             "eaten": 48,
             "consumed": {
@@ -2372,14 +2372,14 @@
               "steel": 0,
               "components": 0,
               "food": 0,
-              "grain": 24,
+              "grain": 18,
               "meal": 0
             }
           }
         },
         {
           "name": "paused cooking scene pixels stable within GPU rounding",
-          "changed": 1,
+          "changed": 16,
           "overTwo": 0,
           "maxDelta": 1
         },
@@ -2390,7 +2390,7 @@
             "cut": 0,
             "built": 1,
             "hauled": 0,
-            "sown": 13,
+            "sown": 12,
             "harvested": 5,
             "cooked": 1,
             "eaten": 48,
@@ -2433,8 +2433,8 @@
               "x": 33,
               "y": 32,
               "z": 9,
-              "food": 73.10666666666246,
-              "rest": 83.92916666665243,
+              "food": 73.09333333332913,
+              "rest": 83.92124999998576,
               "priorities": {
                 "dig": 1,
                 "build": 1,
@@ -2618,8 +2618,8 @@
           "name": "loaded production asset bytes match frozen dist assets",
           "assets": [
             {
-              "url": "http://127.0.0.1:5183/assets/index-BV--hbLP.js",
-              "sha256": "4751aceec872eddfb006d4cfb8c81c17b3d1f050d6d3056fb8a606df2e644ace",
+              "url": "http://127.0.0.1:5183/assets/index-BPHrpZMZ.js",
+              "sha256": "aca53d214eac42f9cae9b52e00ad79788ef2c762313f9bc2ebda131430d03ebf",
               "bytes": 2356
             },
             {
@@ -2628,19 +2628,19 @@
               "bytes": 10824
             },
             {
-              "url": "http://127.0.0.1:5183/assets/main-fETZkKdq.js",
-              "sha256": "5addbde66002ee419fa297575570463eb9d2cb06270b4b1eb5d997881683c7de",
-              "bytes": 561633
-            },
-            {
               "url": "http://127.0.0.1:5183/assets/client-CrowJ5J7.js",
               "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
               "bytes": 221699
             },
             {
-              "url": "http://127.0.0.1:5183/assets/sim.worker-CDsRv32Z.js",
-              "sha256": "4383e65730e8431c4a2df0d7b15b6b0b1d5ccb34958fef3c06554145fc9cb4ae",
-              "bytes": 64848
+              "url": "http://127.0.0.1:5183/assets/main-Cbe-Y-jl.js",
+              "sha256": "1a30699f3d53a63edc9a64f9bba864784c242d892863780831e3e1e67c010c4a",
+              "bytes": 561633
+            },
+            {
+              "url": "http://127.0.0.1:5183/assets/sim.worker-D0zg14rU.js",
+              "sha256": "3d0d63fbcfc8dd5298100dd932c659fe24e2423787eb499be53e2c213e5013d2",
+              "bytes": 64932
             },
             {
               "url": "http://127.0.0.1:5183/assets/render.worker-BsuVrjkK.js",
@@ -2663,9 +2663,9 @@
     },
     {
       "file": "voxel/cooler-exhaust-room.jpg",
-      "sha256": "2542c21a8730d1cdb9624c32dfc706fe8ceac3c957444452f5689fafca6133a9",
+      "sha256": "067f8a85454782146ea6cf5b9761948e096a12c9e87e3e09c474ffb7cad8e52f",
       "source": "test-results/voxel-power-browser/worker-04-two-room-temperatures.png",
-      "sourceSha256": "8424a20caee6de767edc62270f57d8c9d9c655a04ea07af981c3767ce1adae8d",
+      "sourceSha256": "7996273a6c1cc80ac5ed8e7b015d0238059f531872227ff947783d98111787f7",
       "transform": "Full reviewed gameplay viewport, JPEG .83, no crop"
     }
   ]

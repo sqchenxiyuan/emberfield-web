@@ -183,6 +183,54 @@ describe('battery storage and network energy budgets', () => {
 });
 
 describe('switching and hard power limits', () => {
+  it('does not starve affordable standby loads when polling intervals and candidate count share factors', () => {
+    const solar = device(1, 'solar', pos(10, 10));
+    const loads = Array.from({ length: 16 }, (_, i) =>
+      device(i + 2, 'heater', pos(15 + (i % 4), 10 + Math.floor(i / 4)), { active: i % 2 === 1 }),
+    );
+    const devices = [solar, ...loads],
+      power = setup(devices);
+    let generated = 0,
+      used = 0;
+    expect(loads.every((d) => d.networkId === solar.networkId)).toBe(true);
+    for (let tick = 1; tick <= 2000; tick++) {
+      power.step(tick, devices, () => 50 / 1700);
+      const network = power.snapshot()[0];
+      const paid = loads.reduce((sum, d) => sum + (d.powered ? -d.watts : 0), 0);
+      expect(network.usedW).toBe(paid);
+      expect(network.usedW).toBeLessThanOrEqual(50);
+      expect(loads.some((d) => d.active && d.powered)).toBe(false);
+      generated += network.generatedW / DAY;
+      used += network.usedW / DAY;
+    }
+    // 50 W can fund two 17.5 W standby heaters, but none of the 175 W active ones.
+    expect(loads.filter((d) => d.powered)).toHaveLength(2);
+    expect(power.snapshot()[0].usedW).toBe(35);
+    expect(used).toBeGreaterThan(0);
+    expect(used).toBeLessThanOrEqual(generated);
+    expect(power.snapshot()[0].storedWd).toBe(0);
+  });
+
+  it('can reach every candidate position when it is the only affordable standby load', () => {
+    for (let affordable = 0; affordable < 16; affordable++) {
+      const solar = device(1, 'solar', pos(10, 10));
+      const loads = Array.from({ length: 16 }, (_, i) =>
+        device(i + 2, 'heater', pos(15 + (i % 4), 10 + Math.floor(i / 4)), {
+          active: i !== affordable,
+        }),
+      );
+      const devices = [solar, ...loads],
+        power = setup(devices);
+      for (let tick = 1; tick <= 2000; tick++) power.step(tick, devices, () => 50 / 1700);
+      expect(
+        loads[affordable].powered,
+        `affordable candidate ${affordable} must receive power`,
+      ).toBe(true);
+      expect(loads.filter((d) => d.powered)).toHaveLength(1);
+      expect(power.snapshot()[0].usedW).toBe(17.5);
+    }
+  });
+
   it.each([[4.92,true],[4.9,false],[.09,true]])('gates startup before candidate affordability at %s Wd', (energy,expected) => {
     const generator=device(1,'generator',pos(10,10)),battery=device(2,'battery',pos(12,10),{energy});
     const heater=device(3,'heater',pos(14,10)),devices=[generator,battery,heater],power=setup(devices);

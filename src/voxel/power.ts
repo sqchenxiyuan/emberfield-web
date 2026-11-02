@@ -151,8 +151,14 @@ export class VoxelPower {
       let used = consumers.reduce((s, d) => s + (d.on && d.powered ? -d.watts : 0), 0);
       const waiting = consumers.filter((d) => d.on && !d.powered);
       // Source-inspired staggered switching. Deterministic tick/id hash replaces native global RNG.
-      const random = (salt: number, n: number) =>
-        (Math.imul(tick + salt * 374761393 + id, 668265263) >>> 0) % n;
+      const random = (salt: number, n: number) => {
+        // Mix high bits into low bits before modulo: aligned polling intervals
+        // must not restrict power-of-two candidate counts to one parity class.
+        let hash = (tick + Math.imul(salt, 374761393) + id) | 0;
+        hash = Math.imul(hash ^ (hash >>> 16), 0x7feb352d);
+        hash = Math.imul(hash ^ (hash >>> 15), 0x846ca68b);
+        return ((hash ^ (hash >>> 16)) >>> 0) % n;
+      };
       if (stored + (generation - used) / DAY >= -1e-7) {
         const interval = Math.max(10, Math.floor(67 / Math.max(1, waiting.length)));
         // Native startup hysteresis gates the waiting branch before selecting a load.
