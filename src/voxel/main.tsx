@@ -10,6 +10,9 @@ import { rotRateAtTemperature, rotLimit, remainingRotDays } from './preservation
 import { stackLimit, carryLimit } from './logistics';
 import { STONE_CONSTRUCTION } from './crafting';
 import { SurvivalPanel } from './SurvivalPanel';
+import { ApparelPanel, WearApparel } from './ApparelPanel';
+import { TailorPanel } from './TailorPanel';
+import { APPAREL_NAMES } from './apparel';
 import {
   BLOCK_NAMES,
   JOB_NAMES,
@@ -20,6 +23,7 @@ import {
   deviceCells,
   stonecutterCells,
   stonecutterInteraction,
+  tailorCells,
   DEVICE_NAMES,
   type Assignment,
   type CropKind,
@@ -47,6 +51,7 @@ const tools: Tool[] = [
   'grove',
   'stove',
   'stonecutter',
+  'tailor',
   'bed',
   'door',
   'generator',
@@ -73,6 +78,7 @@ const icons = [
   '♣',
   '♨',
   '⚒',
+  '✂',
   '▰',
   '▯',
   '⚙',
@@ -108,6 +114,7 @@ const hints: Record<Tool, string> = {
   stove: '规划灶台，消耗 20 木材。每份简餐需要 10 生食材 + 1 木材；点击灶台设置库存目标。',
   stonecutter:
     '3×1 木制切石台，75 木材 + 30 钢材。R 旋转，留出标记的操作位；1 岩块加工为 20 石砖。',
+  tailor: '3×1 手工裁缝台，75 木材。R 旋转并留出操作位；种棉获得布料，再设置各类衣物的制作目标。',
   bed: '两格木床，45 木材。R 旋转朝向；点击分配主人或改作医疗床，供同伴救援和照料病人。',
   door: '点击放置木门，25 木材。R 旋转朝向；自动开关、保持敞开或锁定。门仍分隔两侧房间。',
   clearZone: '拖动擦除种植区、林地区和仓储；农作物会清理且没有收成，树木和已建成设施保留。',
@@ -119,6 +126,7 @@ const levelName = (z: number, base = 8) =>
   z === base ? '营地基准层' : z < base ? `基准层下 ${base - z}` : `基准层上 +${z - base}`;
 const STORAGE_RESOURCES = Object.keys(RESOURCE_NAMES) as Resource[];
 const FOOD_RESOURCES: Resource[] = ['food', 'grain', 'meal'];
+const BUILDING_RESOURCES: Resource[] = ['wood', 'stone', 'steel', 'components', 'chunk'];
 function connectedStorage(stockpiles: Stockpile[], start: Stockpile): Stockpile[] {
   const key = (p: Pos) => `${p.x}/${p.y}/${p.z}`;
   const byCell = new Map(stockpiles.map((p) => [key(p), p]));
@@ -142,9 +150,11 @@ function connectedStorage(stockpiles: Stockpile[], start: Stockpile): Stockpile[
   return result;
 }
 const foodName = (batch: Cargo) =>
-  batch.resource === 'grain' && batch.crop
-    ? CROPS[batch.crop].name
-    : RESOURCE_NAMES[batch.resource];
+  batch.apparel
+    ? `布制${APPAREL_NAMES[batch.apparel.kind]}`
+    : batch.resource === 'grain' && batch.crop
+      ? CROPS[batch.crop].name
+      : RESOURCE_NAMES[batch.resource];
 function FoodCondition({ batch, temperature }: { batch: Cargo; temperature: number }) {
   const days = remainingRotDays(batch),
     limit = rotLimit(batch);
@@ -275,6 +285,7 @@ function App() {
   const stonecutter = p
     ? s?.stonecutters.find((v) => stonecutterCells(v).some((q) => equal(q, p)))
     : null;
+  const tailor = p ? s?.tailors.find((v) => tailorCells(v).some((q) => equal(q, p))) : null;
   const bed = p ? s?.beds.find((v) => bedCells(v).some((q) => equal(q, p))) : null;
   const door = p ? s?.doors.find((v) => equal(v, p)) : null;
   const device = p
@@ -295,6 +306,8 @@ function App() {
           equal(v, p) ||
           ((v.kind === 'stonecutter' || v.kind === 'stonecut') &&
             stonecutterCells({ ...v, axis: v.axis ?? 'x' }).some((q) => equal(q, p))) ||
+          ((v.kind === 'tailor' || v.kind === 'tailoring') &&
+            tailorCells({ ...v, axis: v.axis ?? 'x' }).some((q) => equal(q, p))) ||
           (v.kind === 'bed' && bedCells({ ...v, axis: v.axis ?? 'x' }).some((q) => equal(q, p))) ||
           (isDeviceKind(v.kind) &&
             deviceCells({ ...v, kind: v.kind, axis: v.axis ?? 'x' }).some((q) => equal(q, p))),
@@ -327,6 +340,7 @@ function App() {
     ? (people[0]?.name ??
       (device ? DEVICE_NAMES[device.kind] : null) ??
       (stonecutter ? '木制切石台' : null) ??
+      (tailor ? '手工裁缝台' : null) ??
       (bed
         ? '木床'
         : door
@@ -415,7 +429,7 @@ function App() {
             <small>入库 {s?.stored[r] ?? 0}</small>
           </div>
         ))}
-        <p>包括散落、携带和工地材料</p>
+        <p>包括散落、携带、穿戴和工地材料</p>
       </aside>
       <div className="voxel-layer-control">
         <button onClick={() => client.view({ level: state.level + 1 })} aria-label="上移一层">
@@ -778,15 +792,11 @@ function App() {
               <button onClick={() => updateStorage(storage.priority, FOOD_RESOURCES)}>
                 仅收食物
               </button>
-              <button
-                onClick={() =>
-                  updateStorage(
-                    storage.priority,
-                    STORAGE_RESOURCES.filter((r) => !FOOD_RESOURCES.includes(r)),
-                  )
-                }
-              >
+              <button onClick={() => updateStorage(storage.priority, BUILDING_RESOURCES)}>
                 仅收建材
+              </button>
+              <button onClick={() => updateStorage(storage.priority, ['cloth', 'apparel'])}>
+                布料与衣物
               </button>
               <button onClick={() => updateStorage(storage.priority, [])}>停止收纳</button>
             </div>
@@ -811,7 +821,7 @@ function App() {
               ))}
             </div>
             <small>
-              每格一堆，同类且同品种可以补满。工人优先使用更高优先级的合格仓位；满仓时等待空位。冷库还需封闭房间与制冷供电。
+              每格一堆，同类且同品种可以补满；衣物每格一件，分别保留品质和耐久。工人优先使用更高优先级的合格仓位；满仓时等待空位。冷库还需封闭房间与制冷供电。
             </small>
           </div>
         )}
@@ -904,7 +914,8 @@ function App() {
             </p>
             <p>
               下次播种：{CROPS[farm.crop].name} · 成熟收获 {CROPS[crop?.kind ?? farm.crop].yield}{' '}
-              生食材。上方楼板会遮光。
+              {(crop?.kind ?? farm.crop) === 'cotton' ? '布料；不能食用。' : '生食材。'}
+              上方楼板会遮光。
             </p>
           </div>
         )}
@@ -1001,6 +1012,16 @@ function App() {
             </small>
           </div>
         )}
+        {tailor && s && (
+          <TailorPanel
+            key={tailor.id}
+            tailor={tailor}
+            snapshot={s}
+            update={(kind, target, paused) =>
+              void client.command({ type: 'tailorBill', tailorId: tailor.id, kind, target, paused })
+            }
+          />
+        )}
         {items.map((i) => (
           <div className="voxel-item-detail" key={i.id} data-testid="item-detail">
             <div className="voxel-info-row">
@@ -1014,6 +1035,16 @@ function App() {
               每堆上限 {stackLimit(i.resource)} · 剩余 {stackLimit(i.resource) - i.amount}
             </small>
             <FoodCondition batch={i} temperature={temperatureOf(i)} />
+            {i.apparel && s && (
+              <WearApparel
+                piece={i.apparel}
+                pawns={s.pawns}
+                preferredPawnId={selectedPawn}
+                wear={(pawnId, apparelId) =>
+                  void client.command({ type: 'wear', pawnId, apparelId })
+                }
+              />
+            )}
           </div>
         ))}
         {jobs.map((j) => (
@@ -1049,6 +1080,12 @@ function App() {
               <span>{pawn.reason}</span>
             </div>
             <SurvivalPanel pawn={pawn} temperature={temperatureOf(pawn)} />
+            <ApparelPanel
+              pawn={pawn}
+              remove={(apparelId) =>
+                void client.command({ type: 'removeApparel', pawnId: pawn.id, apparelId })
+              }
+            />
             {!pawn.dead && pawn.downed && (
               <div className="voxel-care-actions" data-testid="care-controls">
                 <label>
@@ -1253,7 +1290,8 @@ function App() {
         <div className="voxel-tool-hint">
           <span className="voxel-kicker">
             {TOOL_NAMES[state.tool]}
-            {(['bed', 'door', 'stonecutter'].includes(state.tool) || isDeviceKind(state.tool)) && (
+            {(['bed', 'door', 'stonecutter', 'tailor'].includes(state.tool) ||
+              isDeviceKind(state.tool)) && (
               <button onClick={() => client.rotatePlan()} aria-label="旋转建造朝向">
                 朝向 {state.axis.toUpperCase()} · R
               </button>
@@ -1451,7 +1489,7 @@ function App() {
               <summary>试玩规则与性能计数</summary>
               <p>
                 64×64×16；逻辑 20 TPS，1 日 10
-                分钟。两格净空，一格高差可走；梯子可携货。种植、烹饪、床位、作息、电网、冷库保鲜、有限仓储和岩块切石已接通。新世界有三种生态和四档起伏，土壤肥力与季节气温影响生产。断粮、过冷或过热会逐渐损害健康，严重时倒地甚至死亡；同伴可以救援到医疗床并喂食。天然岩石有机会留下岩块，切石台加工后才能用于石砖墙和楼板；切石科技暂默认解锁。采用简化天光和三维导热。战斗伤口、疾病、食物中毒、坍塌、天气降水和流体尚未实现。
+                分钟。两格净空，一格高差可走；梯子可携货。种植、烹饪、床位、作息、电网、冷库保鲜、有限仓储和岩块切石已接通。新世界有三种生态和四档起伏，土壤肥力与季节气温影响生产。断粮、过冷或过热会逐渐损害健康，严重时倒地甚至死亡；同伴可以救援到医疗床并喂食。种棉获得布料，手工裁缝台制作衣物，实际穿戴后改变温度耐受；每件独立保存品质与耐久。新营地配基础布衫和长裤，旧存档保留原装备。天然岩石有机会留下岩块，切石台加工后才能用于石砖墙和楼板；切石与衣物科技暂默认解锁，制衣固定普通品质。采用简化天光和三维导热。战斗伤口、疾病、食物中毒、坍塌、天气降水和流体尚未实现。
               </p>
               <p>
                 地形数组 {((s?.gridBytes ?? 0) / 1024).toFixed(0)} KiB；寻路数组{' '}

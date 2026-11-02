@@ -54,6 +54,8 @@ import {
   deviceCells,
   stonecutterCells,
   stonecutterInteraction,
+  tailorCells,
+  tailorInteraction,
   type ChunkUpdate,
   type Device,
   type DeviceKind,
@@ -112,6 +114,7 @@ type PawnVisual = {
   label: Sprite;
   sleepSymbol: Sprite;
   healthMarker: Group;
+  apparel: { hat: Group; coat: Mesh; sleeves: Mesh[]; shirt: Mesh[]; pants: Mesh[] };
   shadow: Mesh;
   from: Vector3;
   to: Vector3;
@@ -146,6 +149,8 @@ const RESOURCE_COLORS: Record<Resource, number> = {
   food: 0x99b869,
   grain: 0xd6bd71,
   meal: 0xd88d5f,
+  cloth: 0xe7dfc8,
+  apparel: 0x86aaa2,
 };
 const BLOCK_COLORS: Record<number, number> = {
   [Block.Soil]: 0x9b7959,
@@ -608,6 +613,25 @@ export class VoxelRenderer {
         visual.duration = 0;
       }
       visual.pawn = pawn;
+      const coat = pawn.worn.find((p) => p.kind === 'parka' || p.kind === 'duster');
+      visual.apparel.hat.visible = pawn.worn.some((p) => p.kind === 'tuque');
+      visual.apparel.coat.visible = !!coat;
+      visual.apparel.coat.scale.y = coat?.kind === 'duster' ? 0.88 : 0.69;
+      visual.apparel.coat.position.y = coat?.kind === 'duster' ? 0.74 : 0.84;
+      for (const mesh of [visual.apparel.coat, ...visual.apparel.sleeves]) {
+        mesh.visible = !!coat;
+        (mesh.material as MeshLambertMaterial).color.setHex(
+          coat?.kind === 'duster' ? 0xbba47c : 0x789f9b,
+        );
+      }
+      for (const mesh of visual.apparel.shirt)
+        (mesh.material as MeshLambertMaterial).color.setHex(
+          pawn.worn.some((p) => p.kind === 'shirt') ? pawn.color : 0x9c9587,
+        );
+      for (const mesh of visual.apparel.pants)
+        (mesh.material as MeshLambertMaterial).color.setHex(
+          pawn.worn.some((p) => p.kind === 'pants') ? 0x485c61 : 0x8b857a,
+        );
       visual.cargo.visible = !!pawn.cargo;
       if (pawn.cargo)
         (visual.cargo.material as MeshLambertMaterial).color.setHex(
@@ -1027,7 +1051,8 @@ export class VoxelRenderer {
     });
     this.finish(cactus);
     const loose = this.data.items.filter((item) => item.amount > 0 && item.z <= this.level);
-    const items = loose.filter((item) => item.resource !== 'chunk');
+    const items = loose.filter((item) => item.resource !== 'chunk' && item.resource !== 'apparel');
+    const garments = loose.filter((item) => item.resource === 'apparel' && item.apparel);
     const chunks = loose.filter((item) => item.resource === 'chunk');
     const rocks = this.batch(
       'rock-chunks',
@@ -1055,7 +1080,12 @@ export class VoxelRenderer {
     this.inspectBatches.set(piles, { cells: items, instancesPerCell: 3 });
     items.forEach((item, i) => {
       for (let j = 0; j < 3; j++) {
-        const size = item.resource === 'wood' ? [0.52, 0.14, 0.16] : [0.24, 0.16, 0.28];
+        const size =
+          item.resource === 'wood'
+            ? [0.52, 0.14, 0.16]
+            : item.resource === 'cloth'
+              ? [0.44, 0.09, 0.31]
+              : [0.24, 0.16, 0.28];
         this.instance(
           piles,
           i * 3 + j,
@@ -1071,6 +1101,62 @@ export class VoxelRenderer {
       }
     });
     this.finish(piles);
+    const clothes = this.batch(
+      'loose-apparel',
+      garments.length * 5,
+      this.box,
+      this.batchMaterial('loose-apparel'),
+    );
+    this.inspectBatches.set(clothes, { cells: garments, instancesPerCell: 5 });
+    garments.forEach((item, i) => {
+      const kind = item.apparel!.kind;
+      const color =
+        kind === 'duster'
+          ? 0xbba47c
+          : kind === 'parka'
+            ? 0x789f9b
+            : kind === 'pants'
+              ? 0x485c61
+              : 0xe5d7bb;
+      const parts =
+        kind === 'pants'
+          ? [
+              [0, 0, 0.48, 0.08, 0.18],
+              [-0.13, 0.2, 0.2, 0.07, 0.46],
+              [0.13, 0.2, 0.2, 0.07, 0.46],
+              [0, 0, 0, 0, 0],
+              [0, 0, 0, 0, 0],
+            ]
+          : kind === 'tuque'
+            ? [
+                [0, 0, 0.39, 0.18, 0.4],
+                [0, 0, 0.46, 0.08, 0.46],
+                [0, 0, 0.12, 0.3, 0.12],
+                [0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0],
+              ]
+            : [
+                [0, 0.04, 0.38, 0.08, kind === 'duster' ? 0.68 : 0.5],
+                [-0.26, -0.05, 0.22, 0.07, 0.23],
+                [0.26, -0.05, 0.22, 0.07, 0.23],
+                [0, -0.22, 0.2, 0.1, 0.08],
+                [0, 0.05, 0.025, 0.1, 0.4],
+              ];
+      parts.forEach(([x, y, sx, sz, sy], n) =>
+        this.instance(
+          clothes,
+          i * 5 + n,
+          item.x + 0.5 + x,
+          item.z + 0.08,
+          item.y + 0.5 + y,
+          sx,
+          sz,
+          sy,
+          n === 4 ? 0xeadfc7 : color,
+        ),
+      );
+    });
+    this.finish(clothes);
     const stock = this.data.stockpiles.filter((pos) => pos.z === this.level);
     const storage = this.batch('stock', stock.length, this.box, this.batchMaterial('stock', true));
     stock.forEach((pos, i) =>
@@ -1079,6 +1165,7 @@ export class VoxelRenderer {
     this.finish(storage);
     this.updateFarming();
     this.updateStonecutters();
+    this.updateTailors();
     this.updateHousing();
     this.updatePower();
     this.updateJobLines();
@@ -1663,6 +1750,26 @@ export class VoxelRenderer {
             blossom,
             0xece2bd,
           );
+      } else if (crop.kind === 'cotton') {
+        add(crop, 0.5, 0.1 + 0.3 * size, 0.5, 0.055, 0.6 * size, 0.055, 0x718248);
+        for (let n = 0; n < 4; n++) {
+          const angle = (n * Math.PI) / 2;
+          const x = 0.5 + Math.cos(angle) * 0.2 * size,
+            y = 0.5 + Math.sin(angle) * 0.2 * size;
+          add(
+            crop,
+            x,
+            0.12 + (0.25 + (n % 2) * 0.18) * size,
+            y,
+            0.27 * size,
+            0.1 * size,
+            0.18 * size,
+            0x6c9153,
+            angle,
+          );
+          const boll = Math.max(0.001, (growth - 0.45) / 0.55) * 0.21;
+          add(crop, x, 0.22 + (0.25 + (n % 2) * 0.18) * size, y, boll, boll * 0.85, boll, 0xf1ead9);
+        }
       } else {
         const stalkHeight = 1.05 * size;
         add(crop, 0.5, 0.09 + stalkHeight / 2, 0.5, 0.055, stalkHeight, 0.055, 0x759447);
@@ -1882,6 +1989,75 @@ export class VoxelRenderer {
     this.finish(markers);
   }
 
+  private updateTailors() {
+    if (!this.data) return;
+    const tables = this.data.tailors.filter((t) => t.z <= this.level);
+    const bodies = this.batch(
+      'tailor-body',
+      tables.length * 11,
+      this.box,
+      this.batchMaterial('tailor-body'),
+    );
+    const markers = this.batch(
+      'tailor-operating-cell',
+      tables.length,
+      this.box,
+      this.batchMaterial('tailor-operating-cell', true),
+    );
+    this.inspectBatches.set(bodies, { cells: tables, instancesPerCell: 11 });
+    tables.forEach((table, i) => {
+      const active = this.data!.jobs.some(
+        (j) =>
+          j.kind === 'tailoring' &&
+          j.x === table.x &&
+          j.y === table.y &&
+          j.z === table.z &&
+          (j.delivered.cloth ?? 0) > 0,
+      );
+      const parts = [
+        [1.5, 0.5, 0.76, 2.85, 0.88, 0.16, 0xb18a5e],
+        [0.2, 0.2, 0.35, 0.15, 0.15, 0.7, 0x765b42],
+        [2.8, 0.2, 0.35, 0.15, 0.15, 0.7, 0x765b42],
+        [0.2, 0.8, 0.35, 0.15, 0.15, 0.7, 0x765b42],
+        [2.8, 0.8, 0.35, 0.15, 0.15, 0.7, 0x765b42],
+        [1.5, 0.2, 0.4, 2.6, 0.12, 0.12, 0x765b42],
+        [1.4, 0.5, 0.86, 1.2, 0.6, 0.035, active ? 0xe8dcc0 : 0x6e9c99],
+        [0.35, 0.4, 0.96, 0.24, 0.3, 0.25, 0xe6d2b3],
+        [0.68, 0.4, 0.96, 0.18, 0.3, 0.25, 0x8baca1],
+        [2.5, 0.4, 0.88, 0.32, 0.07, 0.045, 0xd3d9cb],
+        [2.5, 0.55, 0.88, 0.32, 0.07, 0.045, 0xd3d9cb],
+      ];
+      parts.forEach(([x, y, z, sx, sy, sz, color], n) => {
+        const swap = table.axis === 'y';
+        this.instance(
+          bodies,
+          i * 11 + n,
+          table.x + (swap ? y : x),
+          table.z + z,
+          table.y + (swap ? x : y),
+          swap ? sy : sx,
+          sz,
+          swap ? sx : sy,
+          color,
+        );
+      });
+      const front = tailorInteraction(table);
+      this.instance(
+        markers,
+        i,
+        front.x + 0.5,
+        front.z + 0.02,
+        front.y + 0.5,
+        0.8,
+        0.025,
+        0.8,
+        0x91b7ae,
+      );
+    });
+    this.finish(bodies);
+    this.finish(markers);
+  }
+
   private effectMaterial(name: string, opacity: number) {
     return (
       this.batches.get(name)?.material ??
@@ -2022,7 +2198,9 @@ export class VoxelRenderer {
         ? deviceCells({ ...job, kind: deviceKind, axis: job.axis ?? 'x' })
         : job.kind === 'stonecutter' || job.kind === 'stonecut'
           ? stonecutterCells({ ...job, axis: job.axis ?? 'x' })
-          : null;
+          : job.kind === 'tailor' || job.kind === 'tailoring'
+            ? tailorCells({ ...job, axis: job.axis ?? 'x' })
+            : null;
       const height = floor
         ? 0.07
         : job.kind === 'wire'
@@ -2119,17 +2297,35 @@ export class VoxelRenderer {
       rightLeg = new Group();
     leftLeg.position.set(-0.12, 0.54, 0);
     rightLeg.position.set(0.12, 0.54, 0);
-    part(leftLeg, dark, 0, -0.24, 0.02, 0.16, 0.44, 0.2);
-    part(rightLeg, dark, 0, -0.24, 0.02, 0.16, 0.44, 0.2);
+    const trouser = this.keepMaterial(new MeshLambertMaterial({ color: 0x485c61 }));
+    const pants = [
+      part(leftLeg, trouser, 0, -0.24, 0.02, 0.16, 0.44, 0.2),
+      part(rightLeg, trouser, 0, -0.24, 0.02, 0.16, 0.44, 0.2),
+    ];
     const leftArm = new Group(),
       rightArm = new Group();
     leftArm.position.set(-0.3, 1.05, 0);
     rightArm.position.set(0.3, 1.05, 0);
-    part(leftArm, cloth, 0, -0.18, 0, 0.13, 0.38, 0.16);
-    part(rightArm, cloth, 0, -0.18, 0, 0.13, 0.38, 0.16);
+    const shirt = [
+      torso,
+      part(leftArm, cloth, 0, -0.18, 0, 0.13, 0.38, 0.16),
+      part(rightArm, cloth, 0, -0.18, 0, 0.13, 0.38, 0.16),
+    ];
     part(leftArm, skin, 0, -0.4, 0, 0.12, 0.14, 0.14);
     part(rightArm, skin, 0, -0.4, 0, 0.12, 0.14, 0.14);
     body.add(leftLeg, rightLeg, leftArm, rightArm);
+    const outer = this.keepMaterial(new MeshLambertMaterial({ color: 0x789f9b }));
+    const coat = part(body, outer, 0, 0.84, 0, 0.49, 0.69, 0.37);
+    const sleeves = [
+      part(leftArm, outer, 0, -0.18, 0, 0.17, 0.4, 0.2),
+      part(rightArm, outer, 0, -0.18, 0, 0.17, 0.4, 0.2),
+    ];
+    const hat = new Group();
+    const wool = this.keepMaterial(new MeshLambertMaterial({ color: 0xdcd1b7 }));
+    part(hat, wool, 0, 1.53, 0, 0.37, 0.18, 0.35);
+    part(hat, wool, 0, 1.43, 0, 0.41, 0.07, 0.39);
+    part(hat, wool, 0, 1.66, 0, 0.13, 0.12, 0.13);
+    body.add(hat);
     const tool = new Group();
     tool.position.set(0, -0.44, 0.1);
     rightArm.add(tool);
@@ -2200,6 +2396,7 @@ export class VoxelRenderer {
       label,
       sleepSymbol,
       healthMarker,
+      apparel: { hat, coat, sleeves, shirt, pants },
       shadow,
       from: pos.clone(),
       to: pos.clone(),
@@ -2287,8 +2484,12 @@ export class VoxelRenderer {
       const workTarget =
         job?.kind === 'stonecut'
           ? stonecutterCells({ ...job, axis: job.axis ?? 'x' })[1]
-          : pawn.workTarget;
+          : job?.kind === 'tailoring'
+            ? tailorCells({ ...job, axis: job.axis ?? 'x' })[1]
+            : pawn.workTarget;
       const cooking = working && job?.kind === 'cook';
+      const sewing = working && job?.kind === 'tailoring';
+      const dressing = pawn.phase === 'apparel' && pawn.apparelTask?.stage === 'work' && !moving;
       const feeding = pawn.phase === 'care' && pawn.carePhase === 'feed' && !moving;
       const carryingPatient = pawn.carryingPawnId !== null;
       const tending =
@@ -2298,28 +2499,33 @@ export class VoxelRenderer {
       visual.leftLeg.rotation.x = moving ? swing * 0.55 : 0;
       visual.rightLeg.rotation.x = moving ? -swing * 0.55 : 0;
       visual.leftArm.rotation.x =
-        pawn.cargo || carryingPatient
-          ? -0.9
-          : moving
-            ? -swing * 0.35
-            : tending
-              ? -0.85 + swing * 0.15
-              : working
-                ? -0.45
-                : 0;
-      visual.rightArm.rotation.x = feeding
-        ? -1 + Math.sin(time * 4 + pawn.id) * 0.2
-        : pawn.cargo || carryingPatient
-          ? -0.9
-          : cooking
-            ? -0.8 + Math.sin(time * 4 + pawn.id) * 0.14
-            : tending
-              ? -0.85 - swing * 0.15
-              : working
-                ? -1.05 + swing * 0.8
-                : moving
-                  ? swing * 0.35
+        sewing || dressing
+          ? -0.9 + Math.sin(time * 5 + pawn.id) * 0.13
+          : pawn.cargo || carryingPatient
+            ? -0.9
+            : moving
+              ? -swing * 0.35
+              : tending
+                ? -0.85 + swing * 0.15
+                : working
+                  ? -0.45
                   : 0;
+      visual.rightArm.rotation.x =
+        sewing || dressing
+          ? -1 - Math.sin(time * 5 + pawn.id) * 0.18
+          : feeding
+            ? -1 + Math.sin(time * 4 + pawn.id) * 0.2
+            : pawn.cargo || carryingPatient
+              ? -0.9
+              : cooking
+                ? -0.8 + Math.sin(time * 4 + pawn.id) * 0.14
+                : tending
+                  ? -0.85 - swing * 0.15
+                  : working
+                    ? -1.05 + swing * 0.8
+                    : moving
+                      ? swing * 0.35
+                      : 0;
       visual.torso.rotation.x = cooking
         ? 0.03
         : tending
@@ -2327,7 +2533,7 @@ export class VoxelRenderer {
           : working
             ? 0.08 + Math.max(0, swing) * 0.08
             : 0;
-      visual.tool.visible = working && !cooking && !tending;
+      visual.tool.visible = working && !cooking && !tending && !sewing;
       const patient = feeding ? this.data.pawns.find((v) => v.id === pawn.patientId) : undefined;
       if (patient) {
         visual.root.rotation.y = Math.atan2(patient.x - pawn.x, patient.y - pawn.y);
@@ -2341,7 +2547,7 @@ export class VoxelRenderer {
           dz = visual.to.z - visual.from.z;
         if (Math.abs(dx) + Math.abs(dz) > 0.001) visual.root.rotation.y = Math.atan2(dx, dz);
       }
-      if (visible && working && !cooking && workTarget) {
+      if (visible && working && !cooking && !sewing && workTarget) {
         for (let j = 0; j < 4 && moteCount < 256; j++) {
           const phase = (time * 2.5 + j * 0.25 + pawn.id * 0.13) % 1;
           const angle = (j * Math.PI) / 2 + pawn.id;

@@ -1,0 +1,14 @@
+[
+  "RimWorld.Apparel",
+  "RimWorld.ApparelUtility",
+  "RimWorld.Pawn_ApparelTracker",
+  "RimWorld.ApparelProperties",
+  "RimWorld.JobDriver_Wear",
+  "RimWorld.JobDriver_RemoveApparel",
+  "RimWorld.RecipeDefGenerator",
+  "Verse.RecipeMakerProperties",
+  "RimWorld.StatDef",
+  "RimWorld.StatPart_Stuff",
+  "RimWorld.QualityUtility",
+  "RimWorld.StatPart"
+]

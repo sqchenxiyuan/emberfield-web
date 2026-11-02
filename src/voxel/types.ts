@@ -59,10 +59,30 @@ export type Resource =
   | 'food'
   | 'grain'
   | 'meal'
-  | 'chunk';
+  | 'chunk'
+  | 'cloth'
+  | 'apparel';
 export type Work = 'dig' | 'build' | 'cut' | 'haul' | 'grow' | 'cook' | 'craft' | 'care';
 export type ConstructionMaterial = 'wood' | 'stone';
-export type CropKind = 'rice' | 'potato' | 'corn';
+export type FoodCropKind = 'rice' | 'potato' | 'corn';
+export type CropKind = FoodCropKind | 'cotton';
+export type ApparelKind = 'tuque' | 'parka' | 'duster' | 'shirt' | 'pants';
+export type ApparelQuality = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+export interface ApparelPiece {
+  id: number;
+  kind: ApparelKind;
+  material: 'cloth';
+  quality: ApparelQuality;
+  hitPoints: number;
+  /** Actual worn ticks; daily damage is scheduled by the pawn tracker. */
+  wearTicks: number;
+}
+export interface ApparelTask {
+  action: 'wear' | 'remove';
+  apparelId: number;
+  stage: 'fetch' | 'work';
+  progress: number;
+}
 export type Axis = 'x' | 'y';
 export type Assignment = 'anything' | 'work' | 'sleep';
 export type DeviceKind = 'generator' | 'solar' | 'battery' | 'heater' | 'cooler';
@@ -161,6 +181,7 @@ export type Tool =
   | 'grove'
   | 'stove'
   | 'stonecutter'
+  | 'tailor'
   | 'bed'
   | 'door'
   | 'clearZone'
@@ -213,7 +234,8 @@ export interface Cargo {
   resource: Resource;
   amount: number;
   /** Required for grain; rice/potato/corn remain one aggregate inventory resource. */
-  crop?: CropKind;
+  crop?: FoodCropKind;
+  apparel?: ApparelPiece;
   /** Equivalent unfrozen age in our simulation ticks; required for grain/meal. */
   rotProgress?: number;
 }
@@ -231,7 +253,7 @@ export interface StorageCapacity extends Pos {
   limit: number;
   reserved: number;
   available: Counts;
-  availableGrain: Record<CropKind, number>;
+  availableGrain: Record<FoodCropKind, number>;
 }
 export interface FarmPlot extends Pos {
   crop: CropKind;
@@ -264,6 +286,13 @@ export function stonecutterCells(bench: Pos & { axis: Axis }): Pos[] {
 export function stonecutterInteraction(bench: Pos & { axis: Axis }): Pos {
   return { x: bench.x + (bench.axis === 'x' ? 1 : -1), y: bench.y + 1, z: bench.z };
 }
+export interface Tailor extends Pos {
+  id: number;
+  axis: Axis;
+  bills: { kind: ApparelKind; target: number; paused: boolean }[];
+}
+export const tailorCells = stonecutterCells;
+export const tailorInteraction = stonecutterInteraction;
 export interface CropCondition {
   fertility: number;
   light: number;
@@ -288,6 +317,8 @@ export type JobKind =
   | 'stove'
   | 'stonecutter'
   | 'stonecut'
+  | 'tailor'
+  | 'tailoring'
   | 'bed'
   | 'door'
   | 'cook';
@@ -307,6 +338,7 @@ export interface Job extends Pos {
   axis?: Axis;
   material?: ConstructionMaterial;
   treeSpecies?: TreeSpecies;
+  apparelKind?: ApparelKind;
   /** Existing pre-v9 cutting jobs retain their original 60-tick work/progress. */
   legacyCut?: true;
 }
@@ -325,6 +357,9 @@ export interface Pawn extends Pos {
   food: number;
   rest: number;
   health: SurvivalHealth;
+  worn: ApparelPiece[];
+  apparelTask: ApparelTask | null;
+  apparelWearTicks: number;
   downed: boolean;
   dead: boolean;
   deathReason: string | null;
@@ -349,6 +384,7 @@ export interface Pawn extends Pos {
     | 'rest'
     | 'sleepTravel'
     | 'care'
+    | 'apparel'
     | 'downed'
     | 'dead';
   cargo: Cargo | null;
@@ -369,6 +405,8 @@ export interface Counts {
   grain: number;
   meal: number;
   chunk: number;
+  cloth: number;
+  apparel: number;
 }
 export interface VoxelStats {
   mined: number;
@@ -379,6 +417,8 @@ export interface VoxelStats {
   harvested: number;
   cooked: number;
   stonecut: number;
+  tailored: number;
+  destroyed: Counts;
   treesPlanted: number;
   treesRegrown: number;
   treesDied: number;
@@ -408,6 +448,7 @@ export interface VoxelSnapshot {
   crops: Crop[];
   stoves: Stove[];
   stonecutters: Stonecutter[];
+  tailors: Tailor[];
   beds: Bed[];
   doors: Door[];
   rooms: RoomSummary[];
@@ -458,6 +499,9 @@ export type VoxelCommand =
   | { type: 'priority'; pawnId: number; work: Work; value: number }
   | { type: 'bill'; stoveId: number; target: number; paused: boolean }
   | { type: 'stoneBill'; stonecutterId: number; target: number; paused: boolean }
+  | { type: 'tailorBill'; tailorId: number; kind: ApparelKind; target: number; paused: boolean }
+  | { type: 'wear'; pawnId: number; apparelId: number }
+  | { type: 'removeApparel'; pawnId: number; apparelId: number }
   | { type: 'bedOwner'; bedId: number; pawnId: number | null }
   | { type: 'bedMedical'; bedId: number; medical: boolean }
   | { type: 'care'; pawnId: number; patientId: number; action: 'rescue' | 'feed' }
@@ -472,7 +516,7 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 10;
+  version: 11;
   generator: 1 | 2;
   settings: WorldSettings;
   spawn: Pos;
@@ -492,6 +536,7 @@ export interface VoxelSave {
   crops: Crop[];
   stoves: Stove[];
   stonecutters: Stonecutter[];
+  tailors: Tailor[];
   beds: Bed[];
   doors: Door[];
   devices: Device[];
@@ -516,6 +561,8 @@ export const RESOURCE_NAMES: Record<Resource, string> = {
   wood: '木材',
   stone: '花岗岩砖',
   chunk: '花岗岩块',
+  cloth: '布料',
+  apparel: '衣物',
   steel: '钢材',
   components: '零件',
   food: '包装生存口粮',
@@ -543,6 +590,8 @@ export const JOB_NAMES: Record<JobKind, string> = {
   stove: '造灶台',
   stonecutter: '造切石台',
   stonecut: '切割岩块',
+  tailor: '造手工裁缝台',
+  tailoring: '缝制衣物',
   bed: '造床',
   door: '造门',
   cook: '烹饪简餐',
@@ -563,6 +612,7 @@ export const TOOL_NAMES: Record<Tool, string> = {
   grove: '林地区',
   stove: '灶台',
   stonecutter: '切石台',
+  tailor: '手工裁缝台',
   bed: '床',
   door: '门',
   clearZone: '擦除区域',
@@ -578,4 +628,6 @@ export const emptyCounts = (): Counts => ({
   grain: 0,
   meal: 0,
   chunk: 0,
+  cloth: 0,
+  apparel: 0,
 });

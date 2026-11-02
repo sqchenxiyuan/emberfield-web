@@ -1,0 +1,33 @@
+{
+  "evidence_id": "RW17-APPAREL-VALIDATION",
+  "validated_utc": "2026-11-02T22:40:36.7665059Z",
+  "status": "PASS",
+  "version_text": "1.7.4980 rev60",
+  "original_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "original_xml_files": 13,
+  "xml_record_selections": 31,
+  "original_xml_leaves": 302,
+  "original_xml_attribute_nodes": 12,
+  "original_xml_absence_checks": 285,
+  "portable_and_derived": {
+    "status": "pass",
+    "version": "1.7.4980 rev60",
+    "newTypes": 12,
+    "reusedTypes": 16,
+    "claims": 22,
+    "codeReferences": 68,
+    "xmlReferences": 63,
+    "xmlFiles": 13,
+    "xmlRecords": 31,
+    "xmlLeaves": 302,
+    "xmlAttributes": 12,
+    "xmlAbsences": 285,
+    "cases": 19,
+    "analyticAssertions": 162,
+    "localDerivedFilesVerified": 28,
+    "originalGameExecuted": false,
+    "limitation": "Frozen selected direct XML and derived locators plus independent arithmetic/branch models; no original gameplay, enabled-mod database, original RNG sampling or project implementation execution."
+  },
+  "original_game_executed_by_verifier": false,
+  "limitation": "Original source/version, selected direct XML leaves, attributes, absence and parent metadata, derived hashes and independent math/branches are checked. No enabled-mod Def database, native gameplay, complete apparel policy/body/quality RNG model or project implementation equivalence."
+}

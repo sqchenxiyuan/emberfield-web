@@ -86,6 +86,8 @@ describe('voxel generation and chunk delivery', () => {
       grain: 0,
       meal: 0,
       chunk: 0,
+      cloth: 0,
+      apparel: 6,
     });
     expect(a.generator).toBe(2);
     expect(a.worldSummary.resources.steel).toBeGreaterThan(0);
@@ -395,7 +397,7 @@ describe('voxel persistence and input validation', () => {
     const original = s.save();
     const corruptions: Array<(save: VoxelSave) => void> = [
       (d) => {
-        (d as { version: number }).version = 11;
+        (d as { version: number }).version = 12;
       },
       (d) => {
         (d as { generator: number }).generator = 3;

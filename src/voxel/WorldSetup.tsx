@@ -204,6 +204,9 @@ export function WorldSetup({
       <small>
         切换生态会填入气候预设；你可以分别调整。降雨量影响初始植被与土壤，不会生成水体。
       </small>
+      <small>
+        新营地每人有基础布衫与长裤。种棉、建裁缝台可制作保暖外衣或防热长衣；极端寒热仍需庇护与温控，建议先从温带开始。
+      </small>
       <div
         className="voxel-world-preview"
         aria-live="polite"

@@ -134,9 +134,28 @@ async function temperatureBranch(kind) {
 }
 async function untreated(kind, settings) {
   let sim = new VoxelSimulation(73129, settings);
-  const record = { kind: `untreated-${kind}`, settings: sim.settings, checks: [] };
+  const record = {
+    kind: `untreated-${kind}`,
+    settings: sim.settings,
+    checks: [],
+    removalCommands: [],
+  };
   report.branches.push(record);
   const initial = sim.counts();
+  // Keep the original naked exposure boundary after v11 adds physical starting clothes.
+  for (const pawn of sim.pawns) {
+    for (const piece of [...pawn.worn]) {
+      const c = { type: 'removeApparel', pawnId: pawn.id, apparelId: piece.id };
+      const result = sim.command(c);
+      record.removalCommands.push({ tick: sim.tick, command: c, result });
+      assert(result.ok);
+      const start = sim.tick;
+      while (pawn.worn.some((p) => p.id === piece.id) && sim.tick - start < 200) sim.step();
+      assert(!pawn.worn.some((p) => p.id === piece.id));
+      assert(sim.items.some((i) => i.apparel?.id === piece.id));
+    }
+  }
+  assert(sim.pawns.every((p) => p.worn.length === 0));
   let collapseTick = null;
   while (!sim.pawns.every((p) => p.dead) && sim.tick < 4 * 12000) {
     sim.step();

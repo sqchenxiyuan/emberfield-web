@@ -19,7 +19,22 @@ import {
   deviceCells,
   stonecutterCells,
   stonecutterInteraction,
+  tailorCells,
+  tailorInteraction,
 } from './types';
+import {
+  APPAREL_DEFS,
+  APPAREL_KINDS,
+  APPAREL_NAMES,
+  TAILOR_COST,
+  TAILOR_WORK,
+  makeApparel,
+  validApparel,
+  compatibleApparel,
+  apparelDelay,
+  apparelWearDamage,
+  APPAREL_WEAR_INTERVAL,
+} from './apparel';
 import { VoxelRooms } from './rooms';
 import { VoxelPower, DEVICE_COSTS, DEVICE_WORK, isDeviceKind } from './power';
 import { VoxelThermal } from './thermal';
@@ -120,6 +135,9 @@ import type {
   TreeSpecies,
   TreePlot,
   TreeCondition,
+  ApparelKind,
+  ApparelPiece,
+  Tailor,
 } from './types';
 
 const same = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
@@ -130,80 +148,93 @@ const horizontal = [
   [0, -1],
 ];
 const resources = Object.keys(emptyCounts()) as Resource[];
-const costOf = (kind: JobKind, material: ConstructionMaterial = 'wood'): Partial<Counts> =>
-  kind === 'stonecutter'
-    ? { ...STONECUTTER_COST }
-    : kind === 'stonecut'
-      ? { chunk: STONECUTTING.input }
-      : material === 'stone' && (kind === 'wall' || kind === 'floor')
-        ? { stone: STONE_CONSTRUCTION[kind].cost }
-        : isDeviceKind(kind)
-          ? { ...DEVICE_COSTS[kind] }
-          : kind === 'wire'
-            ? { steel: 1 }
-            : kind === 'cook'
-              ? { grain: SIMPLE_MEAL.ingredients, wood: SIMPLE_MEAL.wood }
-              : (
-                    {
-                      floor: 3,
-                      wall: 6,
-                      ladder: 2,
-                      digLadder: 2,
-                      stove: 20,
-                      bed: 45,
-                      door: 25,
-                    } as Partial<Record<JobKind, number>>
-                  )[kind]
-                ? {
-                    wood: (
-                      {
-                        floor: 3,
-                        wall: 6,
-                        ladder: 2,
-                        digLadder: 2,
-                        stove: 20,
-                        bed: 45,
-                        door: 25,
-                      } as Partial<Record<JobKind, number>>
-                    )[kind]!,
-                  }
-                : {};
+const costOf = (
+  kind: JobKind,
+  material: ConstructionMaterial = 'wood',
+  apparelKind?: ApparelKind,
+): Partial<Counts> =>
+  kind === 'tailor'
+    ? { ...TAILOR_COST }
+    : kind === 'tailoring'
+      ? { cloth: APPAREL_DEFS[apparelKind ?? 'shirt'].cloth }
+      : kind === 'stonecutter'
+        ? { ...STONECUTTER_COST }
+        : kind === 'stonecut'
+          ? { chunk: STONECUTTING.input }
+          : material === 'stone' && (kind === 'wall' || kind === 'floor')
+            ? { stone: STONE_CONSTRUCTION[kind].cost }
+            : isDeviceKind(kind)
+              ? { ...DEVICE_COSTS[kind] }
+              : kind === 'wire'
+                ? { steel: 1 }
+                : kind === 'cook'
+                  ? { grain: SIMPLE_MEAL.ingredients, wood: SIMPLE_MEAL.wood }
+                  : (
+                        {
+                          floor: 3,
+                          wall: 6,
+                          ladder: 2,
+                          digLadder: 2,
+                          stove: 20,
+                          bed: 45,
+                          door: 25,
+                        } as Partial<Record<JobKind, number>>
+                      )[kind]
+                    ? {
+                        wood: (
+                          {
+                            floor: 3,
+                            wall: 6,
+                            ladder: 2,
+                            digLadder: 2,
+                            stove: 20,
+                            bed: 45,
+                            door: 25,
+                          } as Partial<Record<JobKind, number>>
+                        )[kind]!,
+                      }
+                    : {};
 const workOf = (
   kind: JobKind,
   material: ConstructionMaterial = 'wood',
   species: TreeSpecies = 'poplar',
   legacyCut = false,
+  apparelKind?: ApparelKind,
 ) =>
-  kind === 'cut'
-    ? legacyCut
-      ? 60
-      : treeCutWork(species)
-    : kind === 'plantTree'
-      ? treeSowWork(species)
-      : material === 'stone' && (kind === 'wall' || kind === 'floor')
-        ? STONE_CONSTRUCTION[kind].work
-        : {
-            ...DEVICE_WORK,
-            wire: 12,
-            refuel: 80,
-            mine: 70,
-            cut: 60,
-            floor: 45,
-            wall: 80,
-            ladder: 40,
-            digLadder: 90,
-            remove: 40,
-            sow: 57,
-            harvest: 67,
-            stove: 120,
-            bed: 187,
-            door: 199,
-            cook: SIMPLE_MEAL.work,
-            stonecutter: STONECUTTER_WORK,
-            stonecut: STONECUTTING.work,
-          }[kind];
+  kind === 'tailor'
+    ? TAILOR_WORK
+    : kind === 'tailoring'
+      ? APPAREL_DEFS[apparelKind ?? 'shirt'].work
+      : kind === 'cut'
+        ? legacyCut
+          ? 60
+          : treeCutWork(species)
+        : kind === 'plantTree'
+          ? treeSowWork(species)
+          : material === 'stone' && (kind === 'wall' || kind === 'floor')
+            ? STONE_CONSTRUCTION[kind].work
+            : {
+                ...DEVICE_WORK,
+                wire: 12,
+                refuel: 80,
+                mine: 70,
+                cut: 60,
+                floor: 45,
+                wall: 80,
+                ladder: 40,
+                digLadder: 90,
+                remove: 40,
+                sow: 57,
+                harvest: 67,
+                stove: 120,
+                bed: 187,
+                door: 199,
+                cook: SIMPLE_MEAL.work,
+                stonecutter: STONECUTTER_WORK,
+                stonecut: STONECUTTING.work,
+              }[kind];
 const workType = (kind: JobKind): Work =>
-  kind === 'stonecut'
+  kind === 'stonecut' || kind === 'tailoring'
     ? 'craft'
     : kind === 'refuel'
       ? 'haul'
@@ -268,6 +299,7 @@ export class VoxelSimulation {
   crops: Crop[] = [];
   stoves: Stove[] = [];
   stonecutters: Stonecutter[] = [];
+  tailors: Tailor[] = [];
   beds: Bed[] = [];
   doors: Door[] = [];
   devices: Device[] = [];
@@ -294,6 +326,8 @@ export class VoxelSimulation {
     harvested: 0,
     cooked: 0,
     stonecut: 0,
+    tailored: 0,
+    destroyed: emptyCounts(),
     treesPlanted: 0,
     treesRegrown: 0,
     treesDied: 0,
@@ -360,6 +394,9 @@ export class VoxelSimulation {
         rest: 100,
         priorities: { dig: 1, build: 1, cut: 1, haul: 2, grow: 1, cook: 1, craft: 1, care: 1 },
         ...initialSurvival(this.seed, this.nextId - 1),
+        worn: [],
+        apparelTask: null,
+        apparelWearTicks: 0,
         jobId: null,
         path: [],
         destination: null,
@@ -373,6 +410,8 @@ export class VoxelSimulation {
         sleepingSince: null,
         schedule: defaultSchedule(),
       });
+    for (const p of this.pawns)
+      p.worn = [makeApparel(this.id(), 'shirt'), makeApparel(this.id(), 'pants')];
     this.rebuildTrees();
     if (
       !this.addItem('wood', 90, this.stockpiles[0]) ||
@@ -496,6 +535,12 @@ export class VoxelSimulation {
     return this.distance[at(to)] >= 0 ? this.route(at(to)) : null;
   }
   private stands(j: Job): number[] {
+    if (j.kind === 'tailoring') {
+      const bench = this.tailors.find((b) => same(b, j));
+      if (!bench) return [];
+      const point = tailorInteraction(bench);
+      return this.standable(point) ? [at(point)] : [];
+    }
     if (j.kind === 'stonecut') {
       const bench = this.stonecutters.find((b) => same(b, j));
       if (!bench) return [];
@@ -503,9 +548,9 @@ export class VoxelSimulation {
       return this.standable(point) ? [at(point)] : [];
     }
     const device = j.kind === 'refuel' || j.kind === 'remove' ? this.deviceAt(j) : undefined;
-    const bench = j.kind === 'remove' ? this.stonecutterAt(j) : undefined;
+    const bench = j.kind === 'remove' ? (this.stonecutterAt(j) ?? this.tailorAt(j)) : undefined;
     const cells =
-      j.kind === 'stonecutter'
+      j.kind === 'stonecutter' || j.kind === 'tailor'
         ? stonecutterCells({ ...j, axis: j.axis ?? 'x' })
         : bench
           ? stonecutterCells(bench)
@@ -527,7 +572,8 @@ export class VoxelSimulation {
       .filter(
         (p) =>
           this.standable(p) &&
-          (!(isDeviceKind(j.kind) || j.kind === 'stonecutter') || !cells.some((c) => same(c, p))),
+          (!(isDeviceKind(j.kind) || j.kind === 'stonecutter' || j.kind === 'tailor') ||
+            !cells.some((c) => same(c, p))),
       )
       .map(at);
   }
@@ -758,6 +804,11 @@ export class VoxelSimulation {
     return best;
   }
   private chunkReserved(item: Stack, pawnId: number): boolean {
+    if (
+      item.apparel &&
+      this.pawns.some((p) => p.id !== pawnId && p.apparelTask?.apparelId === item.apparel!.id)
+    )
+      return true;
     return (
       item.resource === 'chunk' &&
       ([...this.craftSources].some(([id, source]) => id !== pawnId && source === item.id) ||
@@ -770,7 +821,7 @@ export class VoxelSimulation {
     p.phase = phase;
   }
   private footprint(j: Pos & { kind: JobKind; axis?: Axis }): Pos[] {
-    if (j.kind === 'stonecutter')
+    if (j.kind === 'stonecutter' || j.kind === 'tailor')
       return stonecutterCells({ ...j, axis: j.axis ?? 'x' }).flatMap((p) => [
         p,
         { ...p, z: p.z + 1 },
@@ -802,6 +853,7 @@ export class VoxelSimulation {
       [
         ...this.devices.flatMap(deviceCells),
         ...this.stonecutters.flatMap(stonecutterCells),
+        ...this.tailors.flatMap(tailorCells),
       ].flatMap((p) => [at(p), at({ ...p, z: p.z + 1 })]),
     );
     this.skyCache.clear();
@@ -816,10 +868,16 @@ export class VoxelSimulation {
       ),
     );
   }
+  private tailorAt(p: Pos) {
+    return this.tailors.find((b) =>
+      tailorCells(b).some((q) => q.x === p.x && q.y === p.y && (p.z === q.z || p.z === q.z + 1)),
+    );
+  }
   private furnitureAt(p: Pos) {
     return (
       this.deviceAt(p) ||
       this.stonecutterAt(p) ||
+      this.tailorAt(p) ||
       this.beds.find((b) =>
         bedCells(b).some((q) => q.x === p.x && q.y === p.y && (p.z === q.z || p.z === q.z + 1)),
       ) ||
@@ -950,7 +1008,8 @@ export class VoxelSimulation {
           (pawn.jobId !== ownJob && pawn.workTarget && overlap(pawn.workTarget)),
       ) ||
       this.jobs.some((j) => j.id !== ownJob && this.stands(j).some((i) => overlap(position(i)))) ||
-      this.stonecutters.some((b) => overlap(stonecutterInteraction(b)))
+      this.stonecutters.some((b) => overlap(stonecutterInteraction(b))) ||
+      this.tailors.some((b) => overlap(tailorInteraction(b)))
     )
       return false;
     // A tree removes one walking vertex. It may not split any previously joined
@@ -1132,6 +1191,13 @@ export class VoxelSimulation {
       if (j.kind === 'cook' && !this.stoves.some((v) => same(v, j) && !v.paused)) this.cancel(j);
       if (j.kind === 'stonecut' && !this.stonecutters.some((b) => same(b, j) && !b.paused))
         this.cancel(j);
+      if (
+        j.kind === 'tailoring' &&
+        !this.tailors.some(
+          (b) => same(b, j) && b.bills.some((bill) => bill.kind === j.apparelKind && !bill.paused),
+        )
+      )
+        this.cancel(j);
       if (j.kind === 'refuel' && !this.devices.some((d) => d.kind === 'generator' && same(d, j)))
         this.cancel(j);
     }
@@ -1177,6 +1243,21 @@ export class VoxelSimulation {
         continue;
       this.jobs.push(this.makeJob('stonecut', bench));
       stone += STONECUTTING.output;
+    }
+    const apparelCounts = Object.fromEntries(
+      APPAREL_KINDS.map((kind) => [
+        kind,
+        this.apparelPieces().filter((p) => p.kind === kind).length +
+          this.jobs.filter((j) => j.kind === 'tailoring' && !j.cancelled && j.apparelKind === kind)
+            .length,
+      ]),
+    ) as Record<ApparelKind, number>;
+    for (const bench of this.tailors) {
+      if (this.jobs.length >= 512 || this.jobs.some((j) => same(j, bench))) continue;
+      const bill = bench.bills.find((b) => !b.paused && apparelCounts[b.kind] < b.target);
+      if (!bill) continue;
+      this.jobs.push(this.makeJob('tailoring', bench, bench.axis, 'wood', bill.kind));
+      apparelCounts[bill.kind]++;
     }
     for (const d of this.devices) {
       if (
@@ -1407,6 +1488,40 @@ export class VoxelSimulation {
           : `简餐不足 ${stove.target} 份时制作`,
       };
     }
+    if (c.type === 'wear' || c.type === 'removeApparel') {
+      const p = this.pawns.find((p) => p.id === c.pawnId);
+      const ok = !!p && this.startApparel(p, c.apparelId, c.type === 'wear' ? 'wear' : 'remove');
+      return {
+        ok,
+        message: ok ? p!.reason : '无法换装：需要可行动人物、可达且未被预定的衣物及卸货空间',
+      };
+    }
+    if (c.type === 'tailorBill') {
+      const bench = this.tailors.find((b) => b.id === c.tailorId);
+      if (
+        !bench ||
+        !Object.hasOwn(APPAREL_DEFS, c.kind) ||
+        !Number.isInteger(c.target) ||
+        c.target < 0 ||
+        c.target > 100 ||
+        typeof c.paused !== 'boolean'
+      )
+        return { ok: false, message: '衣物目标需为0～100，配方必须有效' };
+      const bill = bench.bills.find((b) => b.kind === c.kind)!;
+      bill.target = c.target;
+      bill.paused = c.paused;
+      if (c.paused)
+        for (const job of [...this.jobs])
+          if (job.kind === 'tailoring' && job.apparelKind === c.kind && same(job, bench))
+            this.cancel(job);
+      this.syncProduction();
+      return {
+        ok: true,
+        message: c.paused
+          ? '此配方已暂停，实物材料保留或安全退回'
+          : '衣物目标已更新，当前批次完成后重新计算',
+      };
+    }
     if (c.type === 'stoneBill') {
       const bench = this.stonecutters.find((b) => b.id === c.stonecutterId);
       if (
@@ -1589,7 +1704,7 @@ export class VoxelSimulation {
             this.furnitureAt(p) ||
             this.jobs.some(
               (j) =>
-                (['bed', 'door', 'stove', 'stonecutter'].includes(j.kind) ||
+                (['bed', 'door', 'stove', 'stonecutter', 'tailor'].includes(j.kind) ||
                   isDeviceKind(j.kind)) &&
                 this.footprint(j).some((q) => same(q, p)),
             ),
@@ -1616,7 +1731,7 @@ export class VoxelSimulation {
     if (c.axis !== undefined && c.axis !== 'x' && c.axis !== 'y')
       return { ok: false, message: '朝向无效' };
     if (
-      (['bed', 'door', 'stonecutter'].includes(c.tool) || isDeviceKind(c.tool)) &&
+      (['bed', 'door', 'stonecutter', 'tailor'].includes(c.tool) || isDeviceKind(c.tool)) &&
       positions.length !== 1
     )
       return { ok: false, message: '设施每次放置一件，R 切换朝向' };
@@ -1682,7 +1797,7 @@ export class VoxelSimulation {
         this.jobs.some(
           (k) =>
             this.jobCellConflict(j, k) &&
-            !(j.kind === 'remove' && ['cook', 'refuel', 'stonecut'].includes(k.kind)),
+            !(j.kind === 'remove' && ['cook', 'refuel', 'stonecut', 'tailoring'].includes(k.kind)),
         ),
       )
     )
@@ -1701,13 +1816,15 @@ export class VoxelSimulation {
       this.doors.length + [...this.jobs, ...plans].filter((j) => j.kind === 'door').length > 512 ||
       this.stonecutters.length +
         [...this.jobs, ...plans].filter((j) => j.kind === 'stonecutter').length >
-        128
+        128 ||
+      this.tailors.length + [...this.jobs, ...plans].filter((j) => j.kind === 'tailor').length > 128
     )
       return { ok: false, message: '设施数量已达到上限' };
     for (const j of plans)
       if (j.kind === 'remove')
         for (const k of [...this.jobs])
-          if (['cook', 'refuel', 'stonecut'].includes(k.kind) && same(k, j)) this.cancel(k);
+          if (['cook', 'refuel', 'stonecut', 'tailoring'].includes(k.kind) && same(k, j))
+            this.cancel(k);
     this.jobs.push(...plans);
     this.notice = `安排 ${plans.length} 项工作，需求木材 ${plans.reduce((n, j) => n + (j.cost.wood ?? 0), 0)}；缺料和不可达任务会等待`;
     return { ok: true, message: this.notice, count: plans.length };
@@ -1717,6 +1834,7 @@ export class VoxelSimulation {
     p: Pos,
     axis: Axis = 'x',
     material: ConstructionMaterial = 'wood',
+    apparelKind?: ApparelKind,
   ): Job {
     const species =
       kind === 'cut'
@@ -1730,17 +1848,20 @@ export class VoxelSimulation {
       x: p.x,
       y: p.y,
       z: p.z,
-      work: workOf(kind, material, species),
+      work: workOf(kind, material, species, false, apparelKind),
       progress: 0,
       owner: null,
       delivered: {},
       deliveredFood: [],
       cancelled: false,
-      cost: costOf(kind, material),
+      cost: costOf(kind, material, apparelKind),
       reason: '等待可达工人',
-      ...(['bed', 'door', 'stonecutter'].includes(kind) || isDeviceKind(kind) ? { axis } : {}),
+      ...(['bed', 'door', 'stonecutter', 'tailor'].includes(kind) || isDeviceKind(kind)
+        ? { axis }
+        : {}),
       ...(['wall', 'floor'].includes(kind) ? { material } : {}),
       ...(species ? { treeSpecies: species } : {}),
+      ...(apparelKind ? { apparelKind } : {}),
     };
   }
   private placementReason(kind: JobKind, p: Pos, axis: Axis = 'x') {
@@ -1757,12 +1878,15 @@ export class VoxelSimulation {
           : '';
     if (kind !== 'remove' && this.footprint({ ...p, kind, axis }).some((q) => this.furnitureAt(q)))
       return '这里已有床或门，请先拆除';
-    if (isDeviceKind(kind) || kind === 'stonecutter') {
+    if (isDeviceKind(kind) || kind === 'stonecutter' || kind === 'tailor') {
       const cells =
-        kind === 'stonecutter'
+        kind === 'stonecutter' || kind === 'tailor'
           ? stonecutterCells({ ...p, axis })
           : deviceCells({ ...p, kind, axis });
-      if (kind === 'stonecutter' && !this.standable(stonecutterInteraction({ ...p, axis })))
+      if (
+        (kind === 'stonecutter' || kind === 'tailor') &&
+        !this.standable(stonecutterInteraction({ ...p, axis }))
+      )
         return '切石台正面需要有支撑、两格净空的工作位置';
       return cells.some(
         (q) =>
@@ -2084,7 +2208,7 @@ export class VoxelSimulation {
       if (p.dead) continue;
       const factor = p.food <= 0 ? 0 : p.food < 12 ? 0.25 : p.food < 24 ? 0.5 : 1;
       p.food = Math.max(0, p.food - FOOD_FALL_PER_TICK * factor * hungerMultiplier(p.health));
-      updateHealth(p.health, p.food, this.temperature(p), this.tick);
+      updateHealth(p.health, p.food, this.temperature(p), this.tick, p.worn);
       const death = healthDeathReason(p.health),
         summary = healthSummary(p);
       const downed = !death && (summary.consciousness < 0.3 || summary.moving <= 0.15);
@@ -2101,8 +2225,127 @@ export class VoxelSimulation {
       }
     }
   }
+  private apparelPieces(): ApparelPiece[] {
+    return [
+      ...this.items.flatMap((i) => (i.apparel ? [i.apparel] : [])),
+      ...this.pawns.flatMap((p) => [...p.worn, ...(p.cargo?.apparel ? [p.cargo.apparel] : [])]),
+    ];
+  }
+  private updateApparelWear() {
+    for (const p of this.pawns) {
+      if (p.dead) continue;
+      p.apparelWearTicks++;
+      for (const piece of p.worn) {
+        piece.wearTicks++;
+        if (p.apparelWearTicks % APPAREL_WEAR_INTERVAL === 0)
+          piece.hitPoints -= apparelWearDamage(
+            this.seed,
+            piece.id,
+            p.apparelWearTicks / APPAREL_WEAR_INTERVAL,
+          );
+      }
+      const lost = p.worn.filter((piece) => piece.hitPoints <= 0);
+      if (lost.length) {
+        p.worn = p.worn.filter((piece) => piece.hitPoints > 0);
+        this.stats.destroyed.apparel += lost.length;
+        if (p.apparelTask && lost.some((piece) => piece.id === p.apparelTask!.apparelId))
+          this.release(p);
+        p.reason = '衣物磨损耗尽，已失去对应保温';
+        this.revision++;
+      }
+    }
+  }
+  private startApparel(p: Pawn, apparelId: number, action: 'wear' | 'remove'): boolean {
+    if (p.dead || p.downed || p.carriedBy !== null || !Number.isSafeInteger(apparelId))
+      return false;
+    if (this.pawns.some((q) => q.id !== p.id && q.apparelTask?.apparelId === apparelId))
+      return false;
+    if (action === 'remove') {
+      if (!p.worn.some((piece) => piece.id === apparelId)) return false;
+      this.release(p);
+      p.apparelTask = { action, apparelId, stage: 'work', progress: 0 };
+      p.phase = 'apparel';
+      p.reason = '脱下衣物';
+      return true;
+    }
+    const own = p.cargo?.apparel?.id === apparelId;
+    const item = this.items.find((i) => i.apparel?.id === apparelId);
+    if (!own && !item) return false;
+    if (item && !this.path(p, item)) return false;
+    if (!own && !this.dropCargo(p)) return false;
+    this.release(p);
+    p.apparelTask = { action, apparelId, stage: own ? 'work' : 'fetch', progress: 0 };
+    if (own) {
+      p.phase = 'apparel';
+      p.reason = '穿上' + APPAREL_NAMES[p.cargo!.apparel!.kind];
+    } else {
+      this.search(p);
+      this.go(p, at(item!), 'apparel');
+      p.reason = '前往取用' + APPAREL_NAMES[item!.apparel!.kind];
+    }
+    return true;
+  }
+  private arriveApparel(p: Pawn) {
+    const task = p.apparelTask;
+    if (!task) {
+      this.release(p);
+      return;
+    }
+    if (task.stage === 'fetch') {
+      const item = this.items.find((i) => i.apparel?.id === task.apparelId);
+      if (!item || !same(item, p) || !this.take(p, 'apparel', 1, item.id)) {
+        this.release(p);
+        p.reason = '衣物已移动，重新安排';
+        return;
+      }
+      task.stage = 'work';
+      p.destination = null;
+      p.path = [];
+      p.reason = '穿上' + APPAREL_NAMES[p.cargo!.apparel!.kind];
+      return;
+    }
+    const piece =
+      task.action === 'wear'
+        ? p.cargo?.apparel
+        : p.worn.find((piece) => piece.id === task.apparelId);
+    if (!piece || piece.id !== task.apparelId) {
+      this.release(p);
+      return;
+    }
+    const removed =
+      task.action === 'remove' ? [piece] : p.worn.filter((old) => !compatibleApparel(old, piece));
+    const work =
+      apparelDelay(piece) +
+      (task.action === 'wear' ? removed.reduce((n, old) => n + apparelDelay(old), 0) : 0);
+    task.progress = Math.min(work, task.progress + 1);
+    if (task.progress < work) return;
+    const plan = this.planPlacement(
+      removed.map((old) => ({
+        batch: { resource: 'apparel' as const, amount: 1, apparel: { ...old } },
+        origin: p,
+      })),
+      this.items,
+      DROP_DISTANCE,
+      new Set(),
+      p.id,
+    );
+    if (!plan) {
+      p.reason = '附近无衣物落地空间，保留当前穿戴和携带衣物';
+      return;
+    }
+    this.commitPlacement(plan);
+    p.worn = p.worn.filter((old) => !removed.some((piece) => piece.id === old.id));
+    if (task.action === 'wear') {
+      p.worn.push(piece);
+      p.cargo = null;
+    }
+    const message = task.action === 'wear' ? '已穿上' : '已脱下';
+    this.release(p);
+    p.reason = message + APPAREL_NAMES[piece.kind];
+  }
   private release(p: Pawn) {
     this.releaseCare(p);
+    p.apparelTask = null;
     this.craftSources.delete(p.id);
     this.storageReservations.delete(p.id);
     const j = this.jobs.find((j) => j.id === p.jobId);
@@ -2154,8 +2397,12 @@ export class VoxelSimulation {
         !this.treeSiteReason(j, j.treeSpecies!, j.id)
       );
     if (j.kind === 'cut') return this.trees.some((t) => same(t, j) && t.species === j.treeSpecies);
-    if (isDeviceKind(j.kind) || j.kind === 'stonecutter')
+    if (isDeviceKind(j.kind) || j.kind === 'stonecutter' || j.kind === 'tailor')
       return !this.placementReason(j.kind, j, j.axis);
+    if (j.kind === 'tailoring')
+      return this.tailors.some(
+        (b) => same(b, j) && b.bills.some((bill) => bill.kind === j.apparelKind && !bill.paused),
+      );
     if (j.kind === 'stonecut') return this.stonecutters.some((b) => same(b, j) && !b.paused);
     if (j.kind === 'refuel')
       return this.devices.some(
@@ -2477,6 +2724,10 @@ export class VoxelSimulation {
     return true;
   }
   private arrive(p: Pawn) {
+    if (p.phase === 'apparel') {
+      this.arriveApparel(p);
+      return;
+    }
     const j = this.jobs.find((j) => j.id === p.jobId);
     if (p.phase === 'care') {
       this.arriveCare(p);
@@ -2598,7 +2849,7 @@ export class VoxelSimulation {
       return;
     }
     const devicePlan =
-      j.kind === 'stonecutter'
+      j.kind === 'stonecutter' || j.kind === 'tailor'
         ? stonecutterCells({ ...j, axis: j.axis ?? 'x' })
         : isDeviceKind(j.kind)
           ? deviceCells({ ...j, kind: j.kind, axis: j.axis ?? 'x' })
@@ -2653,6 +2904,8 @@ export class VoxelSimulation {
         for (const [r, n] of Object.entries(DEVICE_COSTS[device.kind]))
           yields[r as Resource] = Math.floor(n / 2);
         if (device.kind === 'generator') yields.wood = Math.floor(device.fuel);
+      } else if (this.tailorAt(j)) {
+        yields.wood = Math.floor(TAILOR_COST.wood! / 2);
       } else if (this.stonecutterAt(j)) {
         for (const [resource, n] of Object.entries(STONECUTTER_COST))
           yields[resource as Resource] = Math.floor(n / 2);
@@ -2694,10 +2947,11 @@ export class VoxelSimulation {
     }
     if (j.kind === 'harvest') {
       harvestedCrop = this.crops.find((c) => same(c, j))!.kind;
-      yields.grain = CROPS[harvestedCrop].yield;
+      yields[harvestedCrop === 'cotton' ? 'cloth' : 'grain'] = CROPS[harvestedCrop].yield;
     }
     if (j.kind === 'cook') yields.meal = SIMPLE_MEAL.output;
     if (j.kind === 'stonecut') yields.stone = STONECUTTING.output;
+    if (j.kind === 'tailoring') yields.apparel = 1;
     const previous = changes.map((c) => ({
       i: at(c.pos),
       block: this.blocks[at(c.pos)],
@@ -2746,6 +3000,7 @@ export class VoxelSimulation {
         ...this.doors,
         ...this.devices.flatMap(deviceCells),
         ...this.stonecutters.flatMap(stonecutterCells),
+        ...this.tailors.flatMap(tailorCells),
       ].some(
         (s) =>
           !this.blocks[at(s) - WIDTH * DEPTH] ||
@@ -2782,11 +3037,18 @@ export class VoxelSimulation {
     const output = Object.entries(yields)
       .filter(([, n]) => n > 0)
       .map(([resource, n]) => ({
-        batch: freshBatch(
-          resource as Resource,
-          n,
-          resource === 'grain' ? harvestedCrop : undefined,
-        ),
+        batch:
+          resource === 'apparel'
+            ? {
+                resource: 'apparel' as const,
+                amount: 1,
+                apparel: makeApparel(j.id, j.apparelKind!),
+              }
+            : freshBatch(
+                resource as Resource,
+                n,
+                resource === 'grain' && harvestedCrop !== 'cotton' ? harvestedCrop : undefined,
+              ),
         origin: p,
       }));
     const placement = this.planPlacement(
@@ -2815,7 +3077,25 @@ export class VoxelSimulation {
       }
     }
     if (j.kind === 'plantTree') this.createTree(j, j.treeSpecies!, true);
-    if (j.kind === 'stonecutter') {
+    if (j.kind === 'tailor') {
+      this.tailors.push({
+        id: this.id(),
+        x: j.x,
+        y: j.y,
+        z: j.z,
+        axis: j.axis ?? 'x',
+        bills: APPAREL_KINDS.map((kind) => ({ kind, target: 0, paused: false })),
+      });
+      this.rebuildDevices();
+      this.revision++;
+    } else if (j.kind === 'tailoring') {
+      this.stats.tailored++;
+    } else if (j.kind === 'remove' && this.tailorAt(j)) {
+      const bench = this.tailorAt(j)!;
+      this.tailors = this.tailors.filter((b) => b.id !== bench.id);
+      this.rebuildDevices();
+      this.revision++;
+    } else if (j.kind === 'stonecutter') {
       this.stonecutters.push({
         id: this.id(),
         x: j.x,
@@ -2890,7 +3170,7 @@ export class VoxelSimulation {
     } else if (j.kind === 'harvest') {
       const crop = this.crops.find((c) => same(c, j))!;
       harvestedCrop = crop.kind;
-      yields.grain = CROPS[crop.kind].yield;
+      yields[crop.kind === 'cotton' ? 'cloth' : 'grain'] = CROPS[crop.kind].yield;
       this.crops = this.crops.filter((c) => c.id !== crop.id);
       this.stats.harvested++;
       this.revision++;
@@ -2964,6 +3244,7 @@ export class VoxelSimulation {
       this.updatePreservation();
       this.updateTrees();
       this.refreshReservations();
+      this.updateApparelWear();
       this.updateSurvival();
       // Only temperature/daylight change each tick; occlusion is cached until terrain changes.
       for (const c of this.crops)
@@ -3228,7 +3509,10 @@ export class VoxelSimulation {
   counts(): Counts {
     const out = emptyCounts();
     for (const i of this.items) out[i.resource] += i.amount;
-    for (const p of this.pawns) if (p.cargo) out[p.cargo.resource] += p.cargo.amount;
+    for (const p of this.pawns) {
+      if (p.cargo) out[p.cargo.resource] += p.cargo.amount;
+      out.apparel += p.worn.length;
+    }
     for (const j of this.jobs) for (const r of resources) out[r] += j.delivered[r] ?? 0;
     return out;
   }
@@ -3265,6 +3549,7 @@ export class VoxelSimulation {
       crops: this.crops,
       stoves: this.stoves,
       stonecutters: this.stonecutters,
+      tailors: this.tailors,
       beds: this.beds,
       doors: this.doors,
       rooms: this.rooms.snapshot(),
@@ -3300,7 +3585,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 10,
+      version: 11,
       generator: this.generator,
       settings: this.settings,
       spawn: this.spawn,
@@ -3319,6 +3604,7 @@ export class VoxelSimulation {
       crops: this.crops,
       stoves: this.stoves,
       stonecutters: this.stonecutters,
+      tailors: this.tailors,
       beds: this.beds,
       doors: this.doors,
       devices: this.devices,
@@ -3332,7 +3618,7 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
@@ -3408,7 +3694,7 @@ export class VoxelSimulation {
       old.stockpiles = old.stockpiles.map((s: Pos) => ({
         ...s,
         priority: 1,
-        accepts: resources.filter((r) => r !== 'chunk'),
+        accepts: resources.filter((r) => !['chunk', 'cloth', 'apparel'].includes(r)),
       }));
       old.stats.spoiled = emptyCounts();
       old.version = 5;
@@ -3495,6 +3781,22 @@ export class VoxelSimulation {
       }
       old.version = 10;
     }
+    if (old.version === 10) {
+      if (!Array.isArray(old.pawns) || !old.stats) throw new Error('旧存档衣物数据无效');
+      old.tailors = [];
+      for (const p of old.pawns) {
+        p.worn = [];
+        p.apparelTask = null;
+        p.apparelWearTicks = 0;
+      }
+      for (const key of ['produced', 'consumed', 'spoiled']) {
+        old.stats[key].cloth = 0;
+        old.stats[key].apparel = 0;
+      }
+      old.stats.tailored = 0;
+      old.stats.destroyed = emptyCounts();
+      old.version = 11;
+    }
     const d = old as VoxelSave;
     if (
       !validWorldSettings(d.settings) ||
@@ -3522,6 +3824,7 @@ export class VoxelSimulation {
       [d.crops, 512],
       [d.stoves, 512],
       [d.stonecutters, 128],
+      [d.tailors, 128],
       [d.beds, 128],
       [d.doors, 512],
       [d.devices, 256],
@@ -3542,6 +3845,7 @@ export class VoxelSimulation {
       ...d.crops,
       ...d.stoves,
       ...d.stonecutters,
+      ...d.tailors,
       ...d.beds,
       ...d.doors,
       ...d.devices,
@@ -3558,7 +3862,17 @@ export class VoxelSimulation {
           i.amount > stackLimit(i.resource) ||
           Object.keys(i).some(
             (key) =>
-              !['id', 'resource', 'amount', 'crop', 'rotProgress', 'x', 'y', 'z'].includes(key),
+              ![
+                'id',
+                'resource',
+                'amount',
+                'crop',
+                'rotProgress',
+                'apparel',
+                'x',
+                'y',
+                'z',
+              ].includes(key),
           ),
       ) ||
         new Set(d.items.map(at)).size !== d.items.length)
@@ -3593,6 +3907,7 @@ export class VoxelSimulation {
         d.crops,
         d.stoves,
         d.stonecutters,
+        d.tailors,
         d.stockpiles,
         d.doors,
         d.wires,
@@ -3665,6 +3980,25 @@ export class VoxelSimulation {
         (b.owner !== null && !d.pawns.some((p) => p.id === b.owner))
       )
         throw new Error('床位数据无效');
+    for (const b of d.tailors) {
+      if (
+        !['x', 'y'].includes(b.axis) ||
+        tailorCells(b).some((p) => !inside(p) || p.z < 1 || p.z >= HEIGHT - 1) ||
+        !inside(tailorInteraction(b)) ||
+        !Array.isArray(b.bills) ||
+        b.bills.length !== APPAREL_KINDS.length ||
+        new Set(b.bills.map((bill) => bill.kind)).size !== APPAREL_KINDS.length ||
+        b.bills.some(
+          (bill) =>
+            !Object.hasOwn(APPAREL_DEFS, bill.kind) ||
+            !Number.isInteger(bill.target) ||
+            bill.target < 0 ||
+            bill.target > 100 ||
+            typeof bill.paused !== 'boolean',
+        )
+      )
+        throw new Error('裁缝台或衣物配方无效');
+    }
     for (const bench of d.stonecutters)
       if (
         !['x', 'y'].includes(bench.axis) ||
@@ -3706,6 +4040,7 @@ export class VoxelSimulation {
       ...d.doors,
       ...d.stoves,
       ...d.stonecutters.flatMap(stonecutterCells),
+      ...d.tailors.flatMap(tailorCells),
       ...d.devices.flatMap(deviceCells),
     ];
     if (
@@ -3739,7 +4074,7 @@ export class VoxelSimulation {
     const plainCargo = (batch: Cargo) =>
       validBatch(batch) &&
       Object.keys(batch).every((key) =>
-        ['resource', 'amount', 'crop', 'rotProgress'].includes(key),
+        ['resource', 'amount', 'crop', 'rotProgress', 'apparel'].includes(key),
       );
     for (const j of d.jobs) {
       if (
@@ -3749,7 +4084,10 @@ export class VoxelSimulation {
         !zero(j.progress) ||
         !positive(j.work) ||
         typeof j.cancelled !== 'boolean' ||
-        j.work !== workOf(j.kind, j.material, j.treeSpecies, j.legacyCut) ||
+        (j.kind === 'tailoring'
+          ? !Object.hasOwn(APPAREL_DEFS, j.apparelKind ?? '')
+          : j.apparelKind !== undefined) ||
+        j.work !== workOf(j.kind, j.material, j.treeSpecies, j.legacyCut, j.apparelKind) ||
         (['cut', 'plantTree'].includes(j.kind)
           ? !Object.hasOwn(TREE_DATA, j.treeSpecies ?? '')
           : j.treeSpecies !== undefined) ||
@@ -3763,10 +4101,10 @@ export class VoxelSimulation {
         (['wall', 'floor'].includes(j.kind)
           ? !['wood', 'stone'].includes(j.material ?? '')
           : j.material !== undefined) ||
-        ((['bed', 'door', 'stonecutter'].includes(j.kind) || isDeviceKind(j.kind)) &&
+        ((['bed', 'door', 'stonecutter', 'tailor'].includes(j.kind) || isDeviceKind(j.kind)) &&
           (!['x', 'y'].includes(j.axis ?? '') ||
             (j.kind === 'bed' && bedCells({ ...j, axis: j.axis! }).some((p) => !inside(p))) ||
-            (j.kind === 'stonecutter' &&
+            ((j.kind === 'stonecutter' || j.kind === 'tailor') &&
               (stonecutterCells({ ...j, axis: j.axis! }).some((p) => !inside(p)) ||
                 !inside(stonecutterInteraction({ ...j, axis: j.axis! })))) ||
             (isDeviceKind(j.kind) &&
@@ -3780,10 +4118,12 @@ export class VoxelSimulation {
                 ? r === 'wood'
                   ? j.cost.wood
                   : 0
-                : (costOf(j.kind, j.material)[r] ?? 0)) || (j.delivered[r] ?? 0) > (j.cost[r] ?? 0),
+                : (costOf(j.kind, j.material, j.apparelKind)[r] ?? 0)) ||
+            (j.delivered[r] ?? 0) > (j.cost[r] ?? 0),
         ) ||
         (!j.cancelled && j.kind === 'cook' && !d.stoves.some((s) => same(s, j))) ||
         (!j.cancelled && j.kind === 'stonecut' && !d.stonecutters.some((b) => same(b, j))) ||
+        (!j.cancelled && j.kind === 'tailoring' && !d.tailors.some((b) => same(b, j))) ||
         (j.kind === 'refuel' &&
           (!positive(j.cost.wood!) ||
             j.cost.wood! > 75 ||
@@ -3811,6 +4151,57 @@ export class VoxelSimulation {
     }
     for (const p of d.pawns) {
       if (
+        !Array.isArray(p.worn) ||
+        p.worn.length > 5 ||
+        p.worn.some((piece) => !validApparel(piece)) ||
+        p.worn.some((piece, i) =>
+          p.worn.slice(i + 1).some((other) => !compatibleApparel(piece, other)),
+        ) ||
+        !Number.isSafeInteger(p.apparelWearTicks) ||
+        p.apparelWearTicks < 0 ||
+        p.apparelWearTicks > d.tick ||
+        (p.apparelTask === null) !== (p.phase !== 'apparel')
+      )
+        throw new Error('人物衣物或穿戴任务无效');
+      if (p.apparelTask !== null) {
+        const task = p.apparelTask;
+        if (
+          !task ||
+          !['wear', 'remove'].includes(task.action) ||
+          !['fetch', 'work'].includes(task.stage) ||
+          !Number.isSafeInteger(task.apparelId) ||
+          task.apparelId <= 0 ||
+          !Number.isFinite(task.progress) ||
+          task.progress < 0 ||
+          (task.stage === 'fetch' && task.progress !== 0) ||
+          p.dead ||
+          p.downed ||
+          p.carriedBy !== null ||
+          d.pawns.some((q) => q.id !== p.id && q.apparelTask?.apparelId === task.apparelId)
+        )
+          throw new Error('穿脱衣物预定无效');
+        const piece =
+          task.action === 'remove'
+            ? p.worn.find((piece) => piece.id === task.apparelId)
+            : task.stage === 'fetch'
+              ? d.items.find((i) => i.apparel?.id === task.apparelId)?.apparel
+              : p.cargo?.apparel;
+        if (
+          !piece ||
+          piece.id !== task.apparelId ||
+          (task.action === 'remove' && task.stage !== 'work') ||
+          (task.stage === 'fetch' && p.cargo !== null) ||
+          task.progress >
+            apparelDelay(piece) +
+              (task.action === 'wear'
+                ? p.worn
+                    .filter((old) => !compatibleApparel(old, piece))
+                    .reduce((n, old) => n + apparelDelay(old), 0)
+                : 0)
+        )
+          throw new Error('穿戴衣物实例不存在或进度无效');
+      }
+      if (
         !p.health ||
         Object.keys(p.health).length !== 4 ||
         !['malnutrition', 'hypothermia', 'heatstroke'].every(
@@ -3837,6 +4228,7 @@ export class VoxelSimulation {
           'rest',
           'sleepTravel',
           'care',
+          'apparel',
           'downed',
           'dead',
         ].includes(p.phase) ||
@@ -3982,6 +4374,22 @@ export class VoxelSimulation {
       )
         throw new Error('人物数据无效');
     }
+    const apparelInstances = [
+      ...d.items.flatMap((i) => (i.apparel ? [i.apparel] : [])),
+      ...d.pawns.flatMap((p) => [...p.worn, ...(p.cargo?.apparel ? [p.cargo.apparel] : [])]),
+    ];
+    const apparelIds = new Set<number>();
+    for (const piece of apparelInstances) {
+      if (
+        !validApparel(piece) ||
+        piece.wearTicks > d.tick ||
+        piece.id >= d.nextId ||
+        ids.has(piece.id) ||
+        apparelIds.has(piece.id)
+      )
+        throw new Error('衣物实例身份重复或无效');
+      apparelIds.add(piece.id);
+    }
     if (
       !d.stats ||
       ![
@@ -3993,15 +4401,21 @@ export class VoxelSimulation {
         'harvested',
         'cooked',
         'stonecut',
+        'tailored',
         'treesPlanted',
         'treesRegrown',
         'treesDied',
         'eaten',
       ].every((k) => zero(d.stats[k as 'mined'])) ||
-      !['produced', 'consumed', 'spoiled'].every((k) =>
+      !['produced', 'consumed', 'spoiled', 'destroyed'].every((k) =>
         resources.every((r) => zero(d.stats[k as 'produced']?.[r as Resource])),
       ) ||
-      !['stonecut', 'treesPlanted', 'treesRegrown', 'treesDied'].every((key) =>
+      !resources.every(
+        (r) =>
+          Number.isSafeInteger(d.stats.destroyed[r]) &&
+          (r === 'apparel' || d.stats.destroyed[r] === 0),
+      ) ||
+      !['stonecut', 'tailored', 'treesPlanted', 'treesRegrown', 'treesDied'].every((key) =>
         Number.isSafeInteger(d.stats[key as 'stonecut']),
       ) ||
       !resources.every(
@@ -4031,6 +4445,7 @@ export class VoxelSimulation {
         crops: d.crops,
         stoves: d.stoves,
         stonecutters: d.stonecutters,
+        tailors: d.tailors,
         beds: d.beds,
         doors: d.doors,
         devices: d.devices,
@@ -4047,6 +4462,7 @@ export class VoxelSimulation {
         ...s.doors,
         ...s.devices.flatMap(deviceCells),
         ...s.stonecutters.flatMap(stonecutterCells),
+        ...s.tailors.flatMap(tailorCells),
       ].some(
         (p) =>
           !s.blocks[at(p) - WIDTH * DEPTH] ||
@@ -4112,6 +4528,27 @@ export class VoxelSimulation {
       j.reason = j.cancelled ? '已取消，保留原任务材料等待退回' : '回读后等待重新安排';
     }
     for (const p of s.pawns) {
+      if (p.apparelTask !== null) {
+        p.jobId = null;
+        p.path = [];
+        p.destination = null;
+        p.workTarget = null;
+        p.eating = null;
+        p.moveTick = s.tick;
+        if (p.apparelTask.stage === 'fetch') {
+          const item = s.items.find((i) => i.apparel?.id === p.apparelTask!.apparelId)!;
+          const route = s.path(p, item);
+          if (route === null) {
+            s.release(p);
+            p.reason = '回读后衣物通路中断';
+          } else {
+            p.path = route;
+            p.destination = at(item);
+            p.phase = 'apparel';
+          }
+        } else p.phase = 'apparel';
+        continue;
+      }
       if (p.dead || p.downed || p.carePhase !== null) {
         p.jobId = null;
         p.path = [];

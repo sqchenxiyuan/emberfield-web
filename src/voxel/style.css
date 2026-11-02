@@ -1027,3 +1027,63 @@ a {
     display: none;
   }
 }
+.voxel-apparel-panel {
+  margin: 12px 0;
+  padding: 10px;
+  border: 1px solid #a6b6a22e;
+  background: #14252352;
+}
+.voxel-apparel-panel summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.voxel-apparel-panel > small,
+.voxel-wear-actions > small {
+  display: block;
+  margin-top: 8px;
+  line-height: 1.6;
+}
+.voxel-worn-piece {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 0;
+  border-bottom: 1px solid #a6b6a218;
+}
+.voxel-apparel-detail {
+  display: grid;
+  gap: 4px;
+  font-size: 12px;
+}
+.voxel-apparel-detail span {
+  color: #c4cdc2;
+  font-size: 11px;
+}
+.voxel-worn-piece button {
+  flex-shrink: 0;
+  padding: 5px 8px;
+}
+.voxel-wear-actions {
+  margin-top: 9px;
+  display: grid;
+  gap: 8px;
+}
+.voxel-wear-actions label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.voxel-tailor-queue {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+.voxel-tailor-queue span {
+  padding: 4px 6px;
+  font-size: 11px;
+  background: #a6b6a219;
+  border-radius: 3px;
+}

@@ -1,4 +1,5 @@
-import { DAY, type Cargo, type CropKind, type Resource } from './types';
+import { DAY, type Cargo, type FoodCropKind, type Resource } from './types';
+import { validApparel } from './apparel';
 
 // RimWorld 1.7 source/Defs: 60000 original ticks/day, rate * elapsed ticks.
 // We preserve days, using this simulation's DAY=12000 instead. Unlike the native
@@ -20,7 +21,8 @@ export function remainingRotDays(batch: Cargo): number | null {
   const limit = rotLimit(batch);
   return limit === null ? null : Math.max(0, (limit - (batch.rotProgress ?? 0)) / DAY);
 }
-export function freshBatch(resource: Resource, amount: number, crop?: CropKind): Cargo {
+export function freshBatch(resource: Resource, amount: number, crop?: FoodCropKind): Cargo {
+  if (resource === 'apparel') throw new Error('衣物需要独立实例信息');
   return {
     resource,
     amount,
@@ -37,14 +39,21 @@ export function portion(batch: Cargo, amount: number): Cargo {
     resource: batch.resource,
     amount,
     ...(batch.crop !== undefined ? { crop: batch.crop } : {}),
+    ...(batch.apparel !== undefined ? { apparel: { ...batch.apparel } } : {}),
     ...(batch.rotProgress !== undefined ? { rotProgress: batch.rotProgress } : {}),
   };
 }
 export function compatibleBatches(a: Cargo, b: Cargo): boolean {
-  return a.resource === b.resource && a.crop === b.crop;
+  return (
+    a.resource === b.resource &&
+    a.crop === b.crop &&
+    (a.resource !== 'apparel' || (!!a.apparel && !!b.apparel && a.apparel.id === b.apparel.id))
+  );
 }
 /** Merge only the transferred amount, weighted by actual quantities. */
 export function mergeBatch(target: Cargo, incoming: Cargo): void {
+  if (target.resource === 'apparel' || incoming.resource === 'apparel')
+    throw new Error('衣物实例不能合并');
   if (!compatibleBatches(target, incoming) || incoming.amount <= 0 || target.amount <= 0)
     throw new Error('Only positive compatible batches can merge');
   if (isPerishable(target.resource)) {
@@ -68,9 +77,18 @@ export function validBatch(batch: unknown): batch is Cargo {
   if (!batch || typeof batch !== 'object' || Array.isArray(batch)) return false;
   const b = batch as Cargo;
   if (
-    !['wood', 'stone', 'chunk', 'steel', 'components', 'food', 'grain', 'meal'].includes(
-      b.resource,
-    ) ||
+    ![
+      'wood',
+      'stone',
+      'chunk',
+      'steel',
+      'components',
+      'food',
+      'grain',
+      'meal',
+      'cloth',
+      'apparel',
+    ].includes(b.resource) ||
     !Number.isSafeInteger(b.amount) ||
     b.amount <= 0 ||
     b.amount > 10_000_000
@@ -80,6 +98,10 @@ export function validBatch(batch: unknown): batch is Cargo {
     b.resource === 'grain'
       ? !['rice', 'potato', 'corn'].includes(b.crop ?? '')
       : b.crop !== undefined
+  )
+    return false;
+  if (
+    b.resource === 'apparel' ? b.amount !== 1 || !validApparel(b.apparel) : b.apparel !== undefined
   )
     return false;
   const limit = rotLimit(b);

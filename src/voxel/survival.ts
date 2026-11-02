@@ -1,4 +1,5 @@
-import { DAY, type Pawn, type SurvivalHealth } from './types';
+import { DAY, type Pawn, type SurvivalHealth, type ApparelPiece } from './types';
+import { insulation } from './apparel';
 
 // Source contract: chapter 33. Whole healthy adult body, no apparel, genes or traits.
 // Source 60000 ticks/day is mapped to our DAY, independently of render/real-time TPS.
@@ -75,19 +76,30 @@ const stage = (severity: number, thresholds: number[]) =>
 export function hungerMultiplier(health: SurvivalHealth): number {
   return health.malnutrition <= 0 ? 1 : health.malnutrition < 0.2 ? 1.5 : 1.6;
 }
-export function updateHealth(h: SurvivalHealth, food: number, temperature: number, tick: number) {
+export function updateHealth(
+  h: SurvivalHealth,
+  food: number,
+  temperature: number,
+  tick: number,
+  worn: readonly ApparelPiece[] = [],
+) {
+  const protection = insulation(worn),
+    comfortableMin = COMFORTABLE_MIN - protection.cold,
+    comfortableMax = COMFORTABLE_MAX + protection.heat,
+    safeMin = comfortableMin - 10,
+    safeMax = comfortableMax + 10;
   if (tick % MALNUTRITION_INTERVAL === 0)
     h.malnutrition = clamp(h.malnutrition + (food <= 0 ? 1 : -1) * 0.0011325 * h.starvationFactor);
   if (tick % TEMPERATURE_INTERVAL !== 0) return;
-  if (temperature < SAFE_MIN)
-    h.hypothermia = clamp(h.hypothermia + Math.max((SAFE_MIN - temperature) * 0.0000645, 0.00075));
-  else if (temperature > COMFORTABLE_MIN)
+  if (temperature < safeMin)
+    h.hypothermia = clamp(h.hypothermia + Math.max((safeMin - temperature) * 0.0000645, 0.00075));
+  else if (temperature > comfortableMin)
     h.hypothermia = clamp(h.hypothermia - clamp(h.hypothermia * 0.027, 0.0015, 0.015));
-  if (temperature > SAFE_MAX)
+  if (temperature > safeMax)
     h.heatstroke = clamp(
-      h.heatstroke + Math.max(heatOverage(temperature - SAFE_MAX) * 0.0000645, 0.000375),
+      h.heatstroke + Math.max(heatOverage(temperature - safeMax) * 0.0000645, 0.000375),
     );
-  else if (temperature < COMFORTABLE_MAX)
+  else if (temperature < comfortableMax)
     h.heatstroke = clamp(h.heatstroke - clamp(h.heatstroke * 0.027, 0.0015, 0.015));
 }
 export function healthDeathReason(h: SurvivalHealth): string | null {
@@ -99,7 +111,9 @@ export function healthDeathReason(h: SurvivalHealth): string | null {
         ? '中暑致死'
         : null;
 }
-export function healthSummary(p: Pick<Pawn, 'health' | 'dead' | 'deathReason'>) {
+export function healthSummary(
+  p: Pick<Pawn, 'health' | 'dead' | 'deathReason'> & Partial<Pick<Pawn, 'worn'>>,
+) {
   const h = p.health,
     mal = stage(h.malnutrition, [0, 0.2, 0.4, 0.6, 0.8]),
     cold = stage(h.hypothermia, [0, 0.04, 0.2, 0.35, 0.62]),
@@ -148,9 +162,9 @@ export function healthSummary(p: Pick<Pawn, 'health' | 'dead' | 'deathReason'>) 
     pain,
     reason,
     stages,
-    comfortableMin: COMFORTABLE_MIN,
-    comfortableMax: COMFORTABLE_MAX,
-    safeMin: SAFE_MIN,
-    safeMax: SAFE_MAX,
+    comfortableMin: COMFORTABLE_MIN - insulation(p.worn ?? []).cold,
+    comfortableMax: COMFORTABLE_MAX + insulation(p.worn ?? []).heat,
+    safeMin: SAFE_MIN - insulation(p.worn ?? []).cold,
+    safeMax: SAFE_MAX + insulation(p.worn ?? []).heat,
   };
 }

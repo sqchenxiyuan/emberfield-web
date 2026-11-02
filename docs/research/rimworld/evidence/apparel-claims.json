@@ -1,0 +1,816 @@
+[
+  {
+    "id": "AP01",
+    "kind": "xml-and-static-derived",
+    "statement": "Insulation executes higher-priority Stuff first, adding material power times garment multiplier; inherited Quality then multiplies. Normal cloth powers18/18. Quality factors .8/.9/1/1.1/1.2/1.5/1.8; not quality applied to zero before material.",
+    "sources": [
+      {
+        "group": "apparel",
+        "type": "RimWorld.StatPart",
+        "line_start": 7,
+        "line_end": 14
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.StatDef",
+        "line_start": 237,
+        "line_end": 244
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.StatPart_Stuff",
+        "line_start": 28,
+        "line_end": 42
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatPart_Quality",
+        "line_start": 39,
+        "line_end": 47
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 798,
+        "line_end": 834
+      },
+      {
+        "group": "apparel",
+        "xml_record": "StatDef_InsulationBase"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "StatDef_Insulation_Cold"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "StatDef_Insulation_Heat"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "StatDef_StuffEffectMultiplierInsulation_Cold"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "StatDef_StuffEffectMultiplierInsulation_Heat"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Cloth"
+      }
+    ]
+  },
+  {
+    "id": "AP02",
+    "kind": "xml-and-static-derived",
+    "statement": "Selected cloth garments have no HP-ratio insulation factor. MaxHitPoints has no quality part; Cloth has no HP/work factors, offsets or quality overrides. Surviving damaged apparel retains insulation; destruction and generic scenario/mod effects are separate.",
+    "sources": [
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 100,
+        "line_end": 107
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 299,
+        "line_end": 314
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 798,
+        "line_end": 834
+      },
+      {
+        "group": "apparel",
+        "xml_record": "StatDef_MaxHitPoints"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Cloth"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "StatDef_InsulationBase"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "StatDef_Insulation_Cold"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "StatDef_Insulation_Heat"
+      }
+    ]
+  },
+  {
+    "id": "AP03",
+    "kind": "static-derived",
+    "statement": "Comfortable temperature uses final apparel cold/heat insulation plus gear offsets per worn item, subtracting cold/adding heat; SafeTemperatureRange expands10C each side. Human16..26 baseline is reused from chapter33, not a clothing policy.",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "RimWorld.StatPart_GearStatOffset",
+        "line_start": 9,
+        "line_end": 49
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 1165,
+        "line_end": 1184
+      },
+      {
+        "group": "environment",
+        "type": "Verse.GenTemperature",
+        "line_start": 59,
+        "line_end": 118
+      }
+    ]
+  },
+  {
+    "id": "AP04",
+    "kind": "xml-and-static-derived",
+    "statement": "CanWearTogether first finds a shared layer, then body-group interference expanded through actual BodyDef part memberships, checking both directions. Direct group-name intersection alone misses UpperHead versus FullHead. Selected shirt/pants same-layer groups do not interfere.",
+    "sources": [
+      {
+        "group": "apparel",
+        "type": "RimWorld.ApparelUtility",
+        "line_start": 78,
+        "line_end": 135
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.ApparelProperties",
+        "line_start": 174,
+        "line_end": 178
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.ApparelProperties",
+        "line_start": 231,
+        "line_end": 245
+      },
+      {
+        "group": "apparel",
+        "xml_record": "BodyDef_Human"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_Tuque"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_Parka"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_Duster"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_BasicShirt"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_CollarShirt"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_Pants"
+      }
+    ]
+  },
+  {
+    "id": "AP05",
+    "kind": "static-derived",
+    "statement": "HasPartsToWear requires at least one nonmissing part in a covered group; wearable checks add developmental-stage and gender rules. Wear transfers real apparel into the tracker and drops conflicting items when requested, with physical failure checks.",
+    "sources": [
+      {
+        "group": "apparel",
+        "type": "RimWorld.ApparelUtility",
+        "line_start": 142,
+        "line_end": 155
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.Apparel",
+        "line_start": 160,
+        "line_end": 170
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.ApparelProperties",
+        "line_start": 119,
+        "line_end": 172
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.Pawn_ApparelTracker",
+        "line_start": 432,
+        "line_end": 483
+      }
+    ]
+  },
+  {
+    "id": "AP06",
+    "kind": "xml-and-static-derived",
+    "statement": "Wear duration sums integer-truncated EquipDelay*60 for new apparel and each conflicting old piece, excluding travel. Delayed removal physically drops old pieces; final Wear happens after delay. No pawn manipulation speed factor is read by these jobs.",
+    "sources": [
+      {
+        "group": "apparel",
+        "type": "RimWorld.JobDriver_Wear",
+        "line_start": 50,
+        "line_end": 108
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.JobDriver_Wear",
+        "line_start": 127,
+        "line_end": 150
+      },
+      {
+        "group": "apparel",
+        "xml_record": "StatDef_EquipDelay"
+      }
+    ]
+  },
+  {
+    "id": "AP07",
+    "kind": "static-derived",
+    "statement": "RemoveApparel waits integer-truncated EquipDelay*60 then verifies ownership and TryDrop; optional hauling to storage is a separate route. The original wear buffer accumulates delta without subtraction when dropping a conflict, so total delay does not prove perfectly sequential intermediate removal.",
+    "sources": [
+      {
+        "group": "apparel",
+        "type": "RimWorld.JobDriver_RemoveApparel",
+        "line_start": 25,
+        "line_end": 79
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.JobDriver_Wear",
+        "line_start": 78,
+        "line_end": 93
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.JobDriver_Wear",
+        "line_start": 127,
+        "line_end": 150
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.Pawn_ApparelTracker",
+        "line_start": 491,
+        "line_end": 516
+      }
+    ]
+  },
+  {
+    "id": "AP08",
+    "kind": "static-derived",
+    "statement": "Pawn apparel tracker checks elapsed>=60000 at rare tick, applies one RoundRandom(wearPerDay) damage to each currently worn item if not world pawn, then resets timestamp to now. Default wearPerDay=.4. No per-item elapsed wear or multiple-day catchup loop; outdoor deterioration is a different path.",
+    "sources": [
+      {
+        "group": "apparel",
+        "type": "RimWorld.Pawn_ApparelTracker",
+        "line_start": 319,
+        "line_end": 338
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.Pawn_ApparelTracker",
+        "line_start": 407,
+        "line_end": 417
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.ApparelProperties",
+        "line_start": 55,
+        "line_end": 59
+      },
+      {
+        "group": "generation",
+        "type": "Verse.GenMath",
+        "line_start": 62,
+        "line_end": 65
+      }
+    ]
+  },
+  {
+    "id": "AP09",
+    "kind": "xml-and-static-derived",
+    "statement": "Cotton directly yields Cloth10, growDays8, HP85; ancestors provide fertilityMin.7/sensitivity1/sow170/harvest200. Class defaults sowMinSkill0, harvestMinGrowth.65, harvestFailabletrue and harvestAfterGrowth0 mean no skill floor, strict harvest threshold and destructive harvest.",
+    "sources": [
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Plant_Cotton"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_PlantBase"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_PlantBaseNonEdible"
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantProperties",
+        "line_start": 34,
+        "line_end": 73
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantProperties",
+        "line_start": 205,
+        "line_end": 219
+      }
+    ]
+  },
+  {
+    "id": "AP10",
+    "kind": "static-derived",
+    "statement": "Cotton follows shared environmental growth:1/(60000*growDays), resting outside .25..8 day fraction, fertility sensitivity, light and temperature factors, long-tick2000. GrowDays is active full-rate growth time, not guaranteed calendar maturity; sow completion starts.0001.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 277,
+        "line_end": 364
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 831,
+        "line_end": 855
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantUtility",
+        "line_start": 352,
+        "line_end": 381
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.JobDriver_PlantSow",
+        "line_start": 29,
+        "line_end": 92
+      }
+    ]
+  },
+  {
+    "id": "AP11",
+    "kind": "static-derived",
+    "statement": "HarvestableNow uses growth>.65; YieldNow applies .5+.5*inverseLerp(.65,1,growth), .5+.5*health and difficulty then RoundRandom. Human harvest can fail when random>PlantHarvestYield; values>1 multiply already-rounded quantity and round again; physical Cloth is spawned then plant collection destroys the crop.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 109,
+        "line_end": 119
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 621,
+        "line_end": 670
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 927,
+        "line_end": 959
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.JobDriver_PlantWork",
+        "line_start": 23,
+        "line_end": 26
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.JobDriver_PlantWork",
+        "line_start": 54,
+        "line_end": 113
+      },
+      {
+        "group": "generation",
+        "type": "Verse.GenMath",
+        "line_start": 62,
+        "line_end": 65
+      }
+    ]
+  },
+  {
+    "id": "AP12",
+    "kind": "xml-declared",
+    "statement": "Cloth inherits stackLimit75; own MaxHP80/MarketValue1.5/Mass.026 and cold/heat material powers18/18. Its own HP does not become garment HP. No intermediate cotton-fiber textile recipe lies in the selected harvest chain.",
+    "sources": [
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Cloth"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_ResourceBase"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Plant_Cotton"
+      }
+    ]
+  },
+  {
+    "id": "AP13",
+    "kind": "xml-and-static-derived",
+    "statement": "HandTailoringBench is3x1, stuff75 of Woody/Metallic, WorkToBuild2000, HP180, speed.5, interaction offset(0,0,-1), ComplexClothing research. Wood factors WorkToBuild.7/HP.65 produce1400work/117HP. Research baseCost600 Medieval, ClassicStart tag not universal unlock proof.",
+    "sources": [
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_HandTailoringBench"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_BenchBase"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_WoodLog"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ResearchProjectDef_ComplexClothing"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "StatDef_WorkToBuild"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "StatDef_MaxHitPoints"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 299,
+        "line_end": 314
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 798,
+        "line_end": 834
+      }
+    ]
+  },
+  {
+    "id": "AP14",
+    "kind": "xml-and-static-derived",
+    "statement": "Tailoring work advances GeneralLaborSpeed times WorkTableWorkSpeedFactor. Hand bench.5 additionally has indoor non-Workshop.8 or outdoors.8, and temperature outside9..35C .7; role and outdoor tests are mutually exclusive under usual room classification. No DLC gate appears in room-role checker.",
+    "sources": [
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 103,
+        "line_end": 134
+      },
+      {
+        "group": "food",
+        "type": "Verse.RecipeDef",
+        "line_start": 480,
+        "line_end": 493
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.StatPart_WorkTableRoomRole",
+        "line_start": 8,
+        "line_end": 36
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.StatPart_WorkTableOutdoors",
+        "line_start": 7,
+        "line_end": 44
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.StatPart_WorkTableTemperature",
+        "line_start": 7,
+        "line_end": 55
+      },
+      {
+        "group": "apparel",
+        "xml_record": "StatDef_GeneralLaborSpeed"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "StatDef_WorkTableWorkSpeedFactor"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_HandTailoringBench"
+      }
+    ]
+  },
+  {
+    "id": "AP15",
+    "kind": "xml-and-static-derived",
+    "statement": "Apparel implied recipes copy recipeMaker fields and use costStuffCount as allowed-stuff ingredient count; productCount default1/workAmount default-1 falls back to product WorkToMake with material. Selected chains have no skillRequirements; all six use Crafting and GeneralLaborSpeed. Tuque is Fabric only, others Fabric or Leathery.",
+    "sources": [
+      {
+        "group": "apparel",
+        "type": "RimWorld.RecipeDefGenerator",
+        "line_start": 28,
+        "line_end": 115
+      },
+      {
+        "group": "apparel",
+        "type": "Verse.RecipeMakerProperties",
+        "line_start": 11,
+        "line_end": 31
+      },
+      {
+        "group": "food",
+        "type": "Verse.RecipeDef",
+        "line_start": 403,
+        "line_end": 424
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_ApparelNoQualityBase"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_ApparelBase"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_ApparelMakeableBase"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_HatMakeableBase"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_Tuque"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_Parka"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_Duster"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_BasicShirt"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_CollarShirt"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_Pants"
+      }
+    ]
+  },
+  {
+    "id": "AP16",
+    "kind": "xml-and-static-derived",
+    "statement": "Tuque/Duster/Tshirt/CollarShirt/Pants require ComplexClothing in their recipeMaker. Parka does not; both standard tailoring benches still constrain availability. Crafting is quality skill, not a direct GeneralLaborSpeed skill multiplier.",
+    "sources": [
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_ApparelMakeableBase"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_Parka"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_Tuque"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_Duster"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_BasicShirt"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_CollarShirt"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_Pants"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "StatDef_GeneralLaborSpeed"
+      },
+      {
+        "group": "food",
+        "type": "Verse.GenRecipe",
+        "line_start": 79,
+        "line_end": 90
+      }
+    ]
+  },
+  {
+    "id": "AP17",
+    "kind": "static-derived",
+    "statement": "Created quality uses crafting skill-dependent GaussianAsymmetric center; cast-to-int/clamp0..5, optional masterwork reroll, inspiration+2 capped6 and Ideology role adjustment. A fixed Normal result or deterministic skill bucket is a project adaptation, not native output distribution.",
+    "sources": [
+      {
+        "group": "apparel",
+        "type": "RimWorld.QualityUtility",
+        "line_start": 160,
+        "line_end": 285
+      },
+      {
+        "group": "food",
+        "type": "Verse.GenRecipe",
+        "line_start": 79,
+        "line_end": 90
+      }
+    ]
+  },
+  {
+    "id": "AP18",
+    "kind": "static-derived",
+    "statement": "Crafted apparel is instantiated with dominant ingredient stuff and assigned generated quality. Toils_Recipe generates products then consumes physical ingredients; unfinished work stores ingredients/progress. Safe project cancellation and save migration require own tests, not abstract resource subtraction alone.",
+    "sources": [
+      {
+        "group": "food",
+        "type": "Verse.GenRecipe",
+        "line_start": 10,
+        "line_end": 38
+      },
+      {
+        "group": "food",
+        "type": "Verse.GenRecipe",
+        "line_start": 79,
+        "line_end": 90
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 43,
+        "line_end": 73
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 170,
+        "line_end": 199
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 301,
+        "line_end": 315
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 346,
+        "line_end": 376
+      }
+    ]
+  },
+  {
+    "id": "AP19",
+    "kind": "xml-declared",
+    "statement": "Six reviewed apparel definitions explicitly provide materials/work/HP/equip/layers/groups and insulation multipliers. Normal cloth insulation is9/0,36/0,10.8/15.3,3.96/1.8,4.68/1.8,3.6/1.44 for tuque/parka/duster/tshirt/collar/pants.",
+    "sources": [
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_Tuque"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_Parka"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_Duster"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_BasicShirt"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_CollarShirt"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Apparel_Pants"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Cloth"
+      }
+    ]
+  },
+  {
+    "id": "AP20",
+    "kind": "static-derived",
+    "statement": "Tracker worn entities/lastApparelWearoutTick and wear-job duration/unequipBuffer are saved independently. A dropped old garment can already be on ground when a wear job is interrupted; replacement is not an atomic equipment-stat swap.",
+    "sources": [
+      {
+        "group": "apparel",
+        "type": "RimWorld.Pawn_ApparelTracker",
+        "line_start": 287,
+        "line_end": 316
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.JobDriver_Wear",
+        "line_start": 33,
+        "line_end": 38
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.JobDriver_Wear",
+        "line_start": 127,
+        "line_end": 150
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.JobDriver_RemoveApparel",
+        "line_start": 15,
+        "line_end": 19
+      }
+    ]
+  },
+  {
+    "id": "AP21",
+    "kind": "xml-and-static-derived",
+    "statement": "Generic stuff stat factors/offsets and quality-specific material fields apply before stat parts; selected Cloth has no HP/work modifiers. WorkToMake rounds to5 only above300, MaxHP rounds to5 only above200 then integer/min1. Special materials or mods require their own resolved chain.",
+    "sources": [
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 299,
+        "line_end": 314
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 798,
+        "line_end": 834
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_Cloth"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "ThingDef_WoodLog"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "StatDef_WorkToMake"
+      },
+      {
+        "group": "apparel",
+        "xml_record": "StatDef_MaxHitPoints"
+      }
+    ]
+  },
+  {
+    "id": "AP22",
+    "kind": "static-derived-and-project-adaptation",
+    "statement": "Project proposed20TPS equip/craft wall-time conversion and12000tick wear-day calendar are distinct scales; deterministic wear draws, initial clothes, clothes-only selection and limited body graph are explicit adaptations. Static verification never runs original or project gameplay.",
+    "sources": [
+      {
+        "group": "apparel",
+        "type": "RimWorld.JobDriver_Wear",
+        "line_start": 50,
+        "line_end": 65
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.Pawn_ApparelTracker",
+        "line_start": 319,
+        "line_end": 338
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 103,
+        "line_end": 117
+      }
+    ]
+  }
+]

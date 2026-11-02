@@ -22,6 +22,7 @@ export const CROPS: Record<
   rice: { name: '稻米', days: 3, yield: 6, fertilitySensitivity: 1, sowWork: 57 },
   potato: { name: '土豆', days: 5.8, yield: 11, fertilitySensitivity: 0.4, sowWork: 57 },
   corn: { name: '玉米', days: 11.3, yield: 22, fertilitySensitivity: 1, sowWork: 57 },
+  cotton: { name: '棉花', days: 8, yield: 10, fertilitySensitivity: 1, sowWork: 57 },
 };
 export const SIMPLE_MEAL = { ingredients: 10, wood: 1, output: 1, work: 100 };
 export const NUTRITION: Partial<Record<Resource, number>> = { meal: 0.9, food: 0.9, grain: 0.05 };

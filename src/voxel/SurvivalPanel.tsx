@@ -55,7 +55,11 @@ export function SurvivalPanel({ pawn, temperature }: { pawn: Pawn; temperature: 
             <small>
               安全范围 {summary.safeMin.toFixed(1)}～{summary.safeMax.toFixed(1)}°C
             </small>
-            <small>当前按裸身耐受计算，衣物保温尚未接入。</small>
+            <small>
+              {pawn.worn.length
+                ? `按当前穿着的 ${pawn.worn.length} 件衣物计算耐受；脱换后重新计算。`
+                : '当前未穿衣物，按裸身耐受计算。'}
+            </small>
           </details>
         </>
       )}

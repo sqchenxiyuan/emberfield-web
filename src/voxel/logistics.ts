@@ -11,6 +11,8 @@ export const STACK_LIMITS: Readonly<Record<Resource, number>> = Object.freeze({
   grain: 75,
   meal: 10,
   chunk: 1,
+  cloth: 75,
+  apparel: 1,
 });
 export const stackLimit = (resource: Resource) => STACK_LIMITS[resource];
 /** Healthy adult ordinary hauling: one stack, at most 75 units. */

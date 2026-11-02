@@ -1,0 +1,983 @@
+[
+  {
+    "label": "A01 Normal cloth apparel",
+    "claims": [
+      "AP01",
+      "AP19"
+    ],
+    "inputs": {
+      "power": [
+        18,
+        18
+      ],
+      "multipliers": [
+        [
+          0.5,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          0.6,
+          0.85
+        ],
+        [
+          0.22,
+          0.1
+        ],
+        [
+          0.26,
+          0.1
+        ],
+        [
+          0.2,
+          0.08
+        ]
+      ]
+    },
+    "expected": {
+      "cold": [
+        9,
+        36,
+        10.8,
+        3.96,
+        4.68,
+        3.6
+      ],
+      "heat": [
+        0,
+        0,
+        15.3,
+        1.8,
+        1.8,
+        1.44
+      ]
+    },
+    "limitation": "No scenario/stat offsets, cloth and normal quality only; declared order matches the six reviewed garments."
+  },
+  {
+    "label": "A02 Quality and surviving HP",
+    "claims": [
+      "AP01",
+      "AP02"
+    ],
+    "inputs": {
+      "qualities": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "power": 18,
+      "multiplier": 2,
+      "baseHp": 180,
+      "hitPoints": [
+        180,
+        90,
+        1
+      ]
+    },
+    "expected": {
+      "cold": [
+        28.8,
+        32.4,
+        36,
+        39.6,
+        43.2,
+        54,
+        64.8
+      ],
+      "maxHp": [
+        180,
+        180,
+        180,
+        180,
+        180,
+        180,
+        180
+      ],
+      "damagedCold": [
+        36,
+        36,
+        36
+      ]
+    },
+    "limitation": "Cloth parka with all HP inputs above destruction; no HP insulation penalty and no quality HP part in selected Core paths."
+  },
+  {
+    "label": "A03 Stat part ordering",
+    "claims": [
+      "AP01",
+      "AP21"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "base": 2,
+          "offset": 0,
+          "material": 18,
+          "multiplier": 0.5,
+          "quality": 5
+        },
+        {
+          "base": 0,
+          "offset": 0,
+          "material": 18,
+          "multiplier": 0.5,
+          "quality": 3
+        },
+        {
+          "base": 2,
+          "offset": 1,
+          "material": 18,
+          "multiplier": 0.5,
+          "quality": 2
+        }
+      ]
+    },
+    "expected": {
+      "insulation": [
+        16.5,
+        9.9,
+        12
+      ]
+    },
+    "limitation": "Synthetic positive base/offset inputs isolate stuff-before-quality order, not a claim that selected cloth garments have those extra offsets."
+  },
+  {
+    "label": "A04 Outfit temperature sums",
+    "claims": [
+      "AP03",
+      "AP19"
+    ],
+    "inputs": {
+      "base": [
+        16,
+        26
+      ],
+      "outfits": [
+        [],
+        [
+          [
+            3.96,
+            1.8
+          ],
+          [
+            3.6,
+            1.44
+          ]
+        ],
+        [
+          [
+            3.96,
+            1.8
+          ],
+          [
+            3.6,
+            1.44
+          ],
+          [
+            9,
+            0
+          ]
+        ],
+        [
+          [
+            3.96,
+            1.8
+          ],
+          [
+            3.6,
+            1.44
+          ],
+          [
+            9,
+            0
+          ],
+          [
+            36,
+            0
+          ]
+        ],
+        [
+          [
+            3.96,
+            1.8
+          ],
+          [
+            3.6,
+            1.44
+          ],
+          [
+            9,
+            0
+          ],
+          [
+            10.8,
+            15.3
+          ]
+        ]
+      ]
+    },
+    "expected": {
+      "comfortable": [
+        [
+          16,
+          26
+        ],
+        [
+          8.44,
+          29.24
+        ],
+        [
+          -0.56,
+          29.24
+        ],
+        [
+          -36.56,
+          29.24
+        ],
+        [
+          -11.36,
+          44.54
+        ]
+      ],
+      "safe": [
+        [
+          6,
+          36
+        ],
+        [
+          -1.56,
+          39.24
+        ],
+        [
+          -10.56,
+          39.24
+        ],
+        [
+          -46.56,
+          39.24
+        ],
+        [
+          -21.36,
+          54.54
+        ]
+      ]
+    },
+    "limitation": "Intact ordinary Human16..26 base, already-final insulation; valid listed outfits, no genes/traits/gear offsets or weather calculation."
+  },
+  {
+    "label": "A05 Layer and body interference",
+    "claims": [
+      "AP04"
+    ],
+    "inputs": {
+      "bodyGroups": [
+        [
+          "Torso"
+        ],
+        [
+          "Shoulders"
+        ],
+        [
+          "Arms"
+        ],
+        [
+          "Legs"
+        ],
+        [
+          "UpperHead",
+          "FullHead"
+        ],
+        [
+          "UpperHead",
+          "Eyes",
+          "FullHead"
+        ]
+      ],
+      "pairs": [
+        [
+          [
+            "Shell"
+          ],
+          [
+            "Torso",
+            "Arms"
+          ],
+          [
+            "Shell"
+          ],
+          [
+            "Torso",
+            "Legs"
+          ]
+        ],
+        [
+          [
+            "OnSkin"
+          ],
+          [
+            "Torso",
+            "Shoulders"
+          ],
+          [
+            "OnSkin"
+          ],
+          [
+            "Legs"
+          ]
+        ],
+        [
+          [
+            "OnSkin"
+          ],
+          [
+            "Torso"
+          ],
+          [
+            "Shell"
+          ],
+          [
+            "Torso"
+          ]
+        ],
+        [
+          [
+            "Overhead"
+          ],
+          [
+            "UpperHead"
+          ],
+          [
+            "Overhead"
+          ],
+          [
+            "FullHead"
+          ]
+        ],
+        [
+          [
+            "Overhead"
+          ],
+          [
+            "UpperHead"
+          ],
+          [
+            "OnSkin"
+          ],
+          [
+            "Legs"
+          ]
+        ]
+      ]
+    },
+    "expected": {
+      "compatible": [
+        false,
+        true,
+        true,
+        false,
+        true
+      ]
+    },
+    "limitation": "Small human body-group witness includes co-membership; not all races, missing body parts or clothing policies."
+  },
+  {
+    "label": "A06 Wear and remove timing",
+    "claims": [
+      "AP06",
+      "AP07"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "new": 0.8,
+          "old": []
+        },
+        {
+          "new": 3,
+          "old": [
+            3
+          ]
+        },
+        {
+          "new": 1.5,
+          "old": [
+            1.5
+          ]
+        },
+        {
+          "new": 2,
+          "old": []
+        },
+        {
+          "new": 0.801,
+          "old": [
+            0.999
+          ]
+        }
+      ]
+    },
+    "expected": {
+      "totalTicks": [
+        48,
+        360,
+        180,
+        120,
+        107
+      ],
+      "removeTicks": [
+        [],
+        [
+          180
+        ],
+        [
+          90
+        ],
+        [],
+        [
+          59
+        ]
+      ]
+    },
+    "limitation": "Truncate each EquipDelay*60 separately; excludes walking, eligibility failures and intermediate buffer sequencing."
+  },
+  {
+    "label": "A07 Wearout random endpoints",
+    "claims": [
+      "AP08"
+    ],
+    "inputs": {
+      "rate": 0.4,
+      "uniform": [
+        0,
+        0.399999,
+        0.4,
+        0.999999
+      ]
+    },
+    "expected": {
+      "damage": [
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    "limitation": "One daily wearout attempt at exact supplied random samples; original RNG stream not reproduced."
+  },
+  {
+    "label": "A08 Pawn tracker daily gate",
+    "claims": [
+      "AP08"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "now": 59999,
+          "last": 0,
+          "world": false
+        },
+        {
+          "now": 60000,
+          "last": 0,
+          "world": false
+        },
+        {
+          "now": 180000,
+          "last": 0,
+          "world": false
+        },
+        {
+          "now": 60000,
+          "last": 0,
+          "world": true
+        },
+        {
+          "now": 60000,
+          "last": -1,
+          "world": false
+        }
+      ]
+    },
+    "expected": {
+      "events": [
+        0,
+        1,
+        1,
+        0,
+        0
+      ],
+      "last": [
+        0,
+        60000,
+        180000,
+        60000,
+        60000
+      ]
+    },
+    "limitation": "Models one rare-tick call, no catchup loop and no per-item wear clock; actual Pawn dispatch and corpse path are not executed."
+  },
+  {
+    "label": "A09 Cotton growth normalization",
+    "claims": [
+      "AP09",
+      "AP10"
+    ],
+    "inputs": {
+      "growDays": 8,
+      "interval": 2000,
+      "rows": [
+        {
+          "fertility": 1,
+          "temp": 1,
+          "light": 1,
+          "awake": true
+        },
+        {
+          "fertility": 1.4,
+          "temp": 1,
+          "light": 1,
+          "awake": true
+        },
+        {
+          "fertility": 0.7,
+          "temp": 0.5,
+          "light": 0.5,
+          "awake": true
+        },
+        {
+          "fertility": 1,
+          "temp": 1,
+          "light": 1,
+          "awake": false
+        }
+      ]
+    },
+    "expected": {
+      "increments": [
+        0.004166666666666667,
+        0.005833333333333333,
+        0.0007291666666666666,
+        0
+      ],
+      "continuousDays": 8,
+      "idealAwakeDays": 14.545454545454545
+    },
+    "limitation": "Active2000tick increments and ideal55% awake fraction; actual solar light, seasons, mature>.999 and long-tick alignment are additional gates."
+  },
+  {
+    "label": "A10 Cotton harvest growth and HP",
+    "claims": [
+      "AP11"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "growth": 0.65,
+          "health": 1,
+          "difficulty": 1
+        },
+        {
+          "growth": 0.65001,
+          "health": 1,
+          "difficulty": 1
+        },
+        {
+          "growth": 0.825,
+          "health": 1,
+          "difficulty": 1
+        },
+        {
+          "growth": 1,
+          "health": 0.5,
+          "difficulty": 1
+        },
+        {
+          "growth": 1,
+          "health": 1,
+          "difficulty": 1.2
+        }
+      ]
+    },
+    "expected": {
+      "expectation": [
+        0,
+        5.000142857142857,
+        7.5,
+        7.5,
+        12
+      ]
+    },
+    "limitation": "Pre-random Plant.YieldNow expectation only; strict minimum, health factor and difficulty, no blight or worker harvest failure."
+  },
+  {
+    "label": "A11 Harvest failure and bonus",
+    "claims": [
+      "AP11"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "yield": 10,
+          "stat": 0.8,
+          "u": 0.81,
+          "round": 0.2
+        },
+        {
+          "yield": 10,
+          "stat": 0.8,
+          "u": 0.8,
+          "round": 0.2
+        },
+        {
+          "yield": 10,
+          "stat": 1.25,
+          "u": 0.9,
+          "round": 0.4
+        },
+        {
+          "yield": 10,
+          "stat": 1.25,
+          "u": 0.9,
+          "round": 0.5
+        }
+      ]
+    },
+    "expected": {
+      "cloth": [
+        0,
+        10,
+        13,
+        12
+      ]
+    },
+    "limitation": "Healthy human cotton harvest with failable=true; yield input already rounded once by Plant; equality to stat does not fail."
+  },
+  {
+    "label": "A12 Cloth capacity and batch counts",
+    "claims": [
+      "AP12",
+      "AP15",
+      "AP19"
+    ],
+    "inputs": {
+      "cloth": 165,
+      "stackLimit": 75,
+      "costs": [
+        20,
+        80,
+        80,
+        40,
+        45,
+        40
+      ]
+    },
+    "expected": {
+      "stacks": [
+        75,
+        75,
+        15
+      ],
+      "counts": [
+        8,
+        2,
+        2,
+        4,
+        3,
+        4
+      ],
+      "remainders": [
+        5,
+        5,
+        5,
+        5,
+        30,
+        5
+      ]
+    },
+    "limitation": "Each cost is a separate hypothetical budget, not six simultaneous purchases; physical reservations/unfinished objects excluded."
+  },
+  {
+    "label": "A13 Wood hand bench material",
+    "claims": [
+      "AP13",
+      "AP21"
+    ],
+    "inputs": {
+      "baseHp": 180,
+      "baseWork": 2000,
+      "woodHp": 0.65,
+      "woodWork": 0.7
+    },
+    "expected": {
+      "hp": 117,
+      "work": 1400
+    },
+    "limitation": "Reviewed wood stat factors, no scenario or other building modifiers; base75material count is separate."
+  },
+  {
+    "label": "A14 Tailoring table environment",
+    "claims": [
+      "AP14"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "outside": false,
+          "workshop": true,
+          "temp": 21,
+          "worker": 1
+        },
+        {
+          "outside": false,
+          "workshop": false,
+          "temp": 21,
+          "worker": 1
+        },
+        {
+          "outside": true,
+          "workshop": false,
+          "temp": 21,
+          "worker": 1
+        },
+        {
+          "outside": true,
+          "workshop": false,
+          "temp": 8,
+          "worker": 1
+        },
+        {
+          "outside": false,
+          "workshop": true,
+          "temp": 9,
+          "worker": 1
+        },
+        {
+          "outside": false,
+          "workshop": true,
+          "temp": 35,
+          "worker": 0.5
+        },
+        {
+          "outside": false,
+          "workshop": true,
+          "temp": 35.01,
+          "worker": 1
+        }
+      ]
+    },
+    "expected": {
+      "speed": [
+        0.5,
+        0.4,
+        0.4,
+        0.28,
+        0.5,
+        0.25,
+        0.35
+      ]
+    },
+    "limitation": "Physical active hand bench without facilities, power or scenario modifiers; temperature penalty strict outside9..35, usual room classification."
+  },
+  {
+    "label": "A15 Native recipe duration",
+    "claims": [
+      "AP14",
+      "AP15",
+      "AP19"
+    ],
+    "inputs": {
+      "work": [
+        1200,
+        8000,
+        10000,
+        1600,
+        2700,
+        1600
+      ],
+      "worker": 1,
+      "bench": 0.5
+    },
+    "expected": {
+      "ticks": [
+        2400,
+        16000,
+        20000,
+        3200,
+        5400,
+        3200
+      ],
+      "seconds": [
+        40,
+        266.6666666666667,
+        333.3333333333333,
+        53.333333333333336,
+        90,
+        53.333333333333336
+      ]
+    },
+    "limitation": "Normal cloth under final worker1/table.5; total native60TPS work time excludes ingredient delivery and interruptions."
+  },
+  {
+    "label": "A16 Recipe research distinction",
+    "claims": [
+      "AP15",
+      "AP16"
+    ],
+    "inputs": {
+      "needs": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        true
+      ],
+      "researched": [
+        false,
+        true
+      ]
+    },
+    "expected": {
+      "withExistingBench": [
+        [
+          false,
+          true,
+          false,
+          false,
+          false,
+          false
+        ],
+        [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      ],
+      "buildBench": [
+        false,
+        true
+      ]
+    },
+    "limitation": "Six recipes in tuque/parka/duster/tshirt/collar/pants order with already-valid existing bench; absent numerical skill gate does not bypass disabled work or access."
+  },
+  {
+    "label": "A17 Native quality postprocessing",
+    "claims": [
+      "AP17"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "first": -0.2,
+          "reroll": false,
+          "second": 0,
+          "inspired": false
+        },
+        {
+          "first": 4.99,
+          "reroll": false,
+          "second": 0,
+          "inspired": false
+        },
+        {
+          "first": 5.1,
+          "reroll": true,
+          "second": 3.9,
+          "inspired": false
+        },
+        {
+          "first": 6.8,
+          "reroll": false,
+          "second": 0,
+          "inspired": true
+        },
+        {
+          "first": 4.2,
+          "reroll": false,
+          "second": 0,
+          "inspired": true
+        }
+      ]
+    },
+    "expected": {
+      "qualities": [
+        0,
+        4,
+        3,
+        6,
+        6
+      ]
+    },
+    "limitation": "Supplied Gaussian outputs exercise truncation, max5, optional masterwork reroll and inspired+2; no RNG sampling or Ideology roles."
+  },
+  {
+    "label": "A18 Generic stat rounding",
+    "claims": [
+      "AP21"
+    ],
+    "inputs": {
+      "hp": [
+        199.9,
+        200,
+        201,
+        203,
+        0
+      ],
+      "work": [
+        299,
+        300,
+        301,
+        304
+      ]
+    },
+    "expected": {
+      "hp": [
+        200,
+        200,
+        200,
+        205,
+        1
+      ],
+      "work": [
+        299,
+        300,
+        300,
+        305
+      ]
+    },
+    "limitation": "Positive reviewed inputs isolate strict roundToFiveOver and maxHP integer/min1; no float tie ambiguity."
+  },
+  {
+    "label": "A19 Project time conventions",
+    "claims": [
+      "AP22"
+    ],
+    "inputs": {
+      "sourceTps": 60,
+      "projectTps": 20,
+      "sourceDay": 60000,
+      "projectDay": 12000,
+      "work": 1200,
+      "bench": 0.5,
+      "equipSeconds": 0.8
+    },
+    "expected": {
+      "projectCraftTicks": 800,
+      "projectEquipTicks": 16,
+      "projectWearDay": 12000,
+      "sourceCalendarCraftTicks": 480
+    },
+    "limitation": "Proposed project wall-time conversion for work/equip differs from day-ratio conversion; sourceCalendarCraftTicks shows the intentionally different alternative."
+  }
+]

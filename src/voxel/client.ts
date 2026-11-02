@@ -312,8 +312,9 @@ export class VoxelClient {
           else to.x = from.x;
         }
         const single =
-          ['shaft', 'up', 'ladder', 'bed', 'door', 'stonecutter'].includes(this.state.tool) ||
-          isDeviceKind(this.state.tool);
+          ['shaft', 'up', 'ladder', 'bed', 'door', 'stonecutter', 'tailor'].includes(
+            this.state.tool,
+          ) || isDeviceKind(this.state.tool);
         await this.command({
           type: 'designate',
           tool: this.state.tool,

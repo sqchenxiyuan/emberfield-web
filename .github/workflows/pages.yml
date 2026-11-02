@@ -54,6 +54,8 @@ jobs:
         run: npm run test:voxel:logistics
       - name: Verify natural chunks, stonecutting bills and upper masonry construction
         run: npm run test:voxel:stonecutting
+      - name: Verify cotton growth, cross-level tailoring, physical outfits and temperature effects
+        run: npm run test:voxel:apparel
       - name: Build site with relative asset and Worker URLs
         run: npm run build
       - name: Configure GitHub Pages

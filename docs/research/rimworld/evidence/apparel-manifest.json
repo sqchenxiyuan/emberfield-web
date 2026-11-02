@@ -1,0 +1,91 @@
+{
+  "evidence_id": "RW17-APPAREL",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.Apparel",
+      "local_file": ".local-research/apparel/RimWorld.Apparel.cs",
+      "sha256": "e86e80be2095c32f775bb08e65f4ea8464d718898de030b9839084eee0235ffc",
+      "lines": 355
+    },
+    {
+      "type": "RimWorld.ApparelUtility",
+      "local_file": ".local-research/apparel/RimWorld.ApparelUtility.cs",
+      "sha256": "63d83fea4461c8adf88b623cb65553e3adc4ce783f5d38a6dfee231d3093234b",
+      "lines": 157
+    },
+    {
+      "type": "RimWorld.Pawn_ApparelTracker",
+      "local_file": ".local-research/apparel/RimWorld.Pawn_ApparelTracker.cs",
+      "sha256": "01ca5bbe6b91b6394da455d4a1ad37f6555457c570e2af67df24e3719b3c3ff2",
+      "lines": 820
+    },
+    {
+      "type": "RimWorld.ApparelProperties",
+      "local_file": ".local-research/apparel/RimWorld.ApparelProperties.cs",
+      "sha256": "2ed8dd06200830f49a17eac1fa1e3c0310bae7bfae10cd107cb3ff497002d089",
+      "lines": 259
+    },
+    {
+      "type": "RimWorld.JobDriver_Wear",
+      "local_file": ".local-research/apparel/RimWorld.JobDriver_Wear.cs",
+      "sha256": "2e189395f272ec05e97df29c0d6cadbdfed052cc847bb6cf68190c0c6af2413e",
+      "lines": 151
+    },
+    {
+      "type": "RimWorld.JobDriver_RemoveApparel",
+      "local_file": ".local-research/apparel/RimWorld.JobDriver_RemoveApparel.cs",
+      "sha256": "8a52768d8ea6e67d381c2beac4b728b39c9013193383c4b802161bab065c9a6c",
+      "lines": 81
+    },
+    {
+      "type": "RimWorld.RecipeDefGenerator",
+      "local_file": ".local-research/apparel/RimWorld.RecipeDefGenerator.cs",
+      "sha256": "bf8ff9929fbbd1beb92721f21ff3c10e91b4f5531764b7bc56f8c86befe1c3ef",
+      "lines": 156
+    },
+    {
+      "type": "Verse.RecipeMakerProperties",
+      "local_file": ".local-research/apparel/Verse.RecipeMakerProperties.cs",
+      "sha256": "0643b5b9d91ca8494111c0109fae3e73512fd043c89e1643e52472e453e2037b",
+      "lines": 58
+    },
+    {
+      "type": "RimWorld.StatDef",
+      "local_file": ".local-research/apparel/RimWorld.StatDef.cs",
+      "sha256": "edbe8b7b96b6fbcbc2828c538f55959e19be84d3dd3ce16e3491cc046d61fe4e",
+      "lines": 453
+    },
+    {
+      "type": "RimWorld.StatPart_Stuff",
+      "local_file": ".local-research/apparel/RimWorld.StatPart_Stuff.cs",
+      "sha256": "e5f3e99d67b19d386c0e48080cc2d6cb2e06034f79608590aee91209641d7633",
+      "lines": 51
+    },
+    {
+      "type": "RimWorld.QualityUtility",
+      "local_file": ".local-research/apparel/RimWorld.QualityUtility.cs",
+      "sha256": "5405ad9826ffab0e283ce40bb11529a1f2f9a17dc7766aa8a24efd6c977e8821",
+      "lines": 373
+    },
+    {
+      "type": "RimWorld.StatPart",
+      "local_file": ".local-research/apparel/RimWorld.StatPart.cs",
+      "sha256": "0c461a78d1d3ae0dd9132e7f9809e0d6af0b53d8704854a800fd44bef7e43de5",
+      "lines": 33
+    }
+  ]
+}

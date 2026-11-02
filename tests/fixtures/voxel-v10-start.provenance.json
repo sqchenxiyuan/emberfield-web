@@ -1,0 +1,30 @@
+{
+  "format": "emberfield-fixture-provenance",
+  "fixture": "voxel-v10-start.json",
+  "sourceCommit": "52a7ad7d932c7c538d17ff947c4198cf632ff61b",
+  "publishedSubtree": "de93100a72cbcdbd5a46243e718f92a7ab041f40",
+  "capturedAt": "2026-11-02T22:26:51.138Z",
+  "creation": "Public new VoxelSimulation(73129) followed by save(), before apparel changes",
+  "encoding": "UTF-8 without BOM; compact JSON with one trailing LF",
+  "sha256": "ab270a77c6354c5690a1afc76458d8aaff5f4264f9b099f59710447fb1a180f5",
+  "bytes": 59817,
+  "seed": 73129,
+  "version": 10,
+  "generator": 2,
+  "settings": {
+    "biome": "temperate",
+    "hilliness": "small",
+    "meanTemperature": 17,
+    "rainfall": 1100,
+    "latitude": 35
+  },
+  "sourceHashes": {
+    "src/voxel/world.ts": "22c5f4abf5ef38e621ce0ef7f2c9a80936147dea2e90a155c51b63689fd7f84a",
+    "src/voxel/types.ts": "7964869089e759984da9b729021f03c194e0b1b2a1cf39d0a27a598944246742",
+    "src/voxel/survival.ts": "0ea01b555d6f71d99ba40122f8553b81f84706a32e24ebb17fd8b65649ca5b34",
+    "src/voxel/farming.ts": "63d20108d3bb1d961461657392f438e7cc666593af2d43ca238f7ec5eadf80ae",
+    "src/voxel/logistics.ts": "94e65a8e72ddaad3bc834c6d32f73b35b13c4f74756edc435648036006af9fcd",
+    "src/voxel/preservation.ts": "44b9252748b6fa62197d7acfaf967154f04d1a809e3716d161a0170a16c87b13",
+    "src/voxel/crafting.ts": "b782d30555b5915f647e9d986849da9d6ff0c2ce29f83ab3caf7dd205f174997"
+  }
+}

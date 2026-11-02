@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { carryLimit, STACK_LIMITS, stackLimit } from '../src/voxel/logistics';
 import { freshBatch, rotLimit } from '../src/voxel/preservation';
+import { makeApparel, validApparel } from '../src/voxel/apparel';
 import {
   Block,
   DAY,
@@ -31,7 +32,9 @@ function add(
   extra: Partial<Cargo> = {},
 ) {
   const item = {
-    ...freshBatch(resource, amount),
+    ...(resource === 'apparel'
+      ? { resource, amount, apparel: makeApparel(s.nextId++, 'tuque') }
+      : freshBatch(resource, amount)),
     ...extra,
     x: p.x,
     y: p.y,
@@ -86,7 +89,7 @@ function fixture(setup: (s: VoxelSimulation) => void = () => {}) {
 function ledger(s: VoxelSimulation): Counts {
   const out = s.counts();
   for (const r of resources)
-    out[r] += s.stats.consumed[r] + s.stats.spoiled[r] - s.stats.produced[r];
+    out[r] += s.stats.consumed[r] + s.stats.spoiled[r] + s.stats.destroyed[r] - s.stats.produced[r];
   return out;
 }
 function invariants(s: VoxelSimulation) {
@@ -96,9 +99,10 @@ function invariants(s: VoxelSimulation) {
     expect(i.amount).toBeLessThanOrEqual(stackLimit(i.resource));
     expect(
       Object.keys(i).every((k) =>
-        ['id', 'x', 'y', 'z', 'resource', 'amount', 'crop', 'rotProgress'].includes(k),
+        ['id', 'x', 'y', 'z', 'resource', 'amount', 'crop', 'rotProgress', 'apparel'].includes(k),
       ),
     ).toBe(true);
+    expect(i.resource === 'apparel' ? validApparel(i.apparel) : i.apparel === undefined).toBe(true);
   }
   for (const p of s.pawns)
     if (p.cargo) expect(p.cargo.amount).toBeLessThanOrEqual(carryLimit(p.cargo.resource));
@@ -142,7 +146,7 @@ describe('bounded physical stacks and hauling reservations', () => {
     expect(s.items.filter((i) => i.resource === 'food').map((i) => i.amount)).toEqual([
       10, 10, 10, 10, 10, 10,
     ]);
-    expect(s.save().version).toBe(10);
+    expect(s.save().version).toBe(11);
     expect(VoxelSimulation.load(s.save()).counts()).toEqual(s.counts());
   });
   it.each(resources)('carries and stores %s only within its native one-stack limit', (resource) => {
