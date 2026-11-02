@@ -240,7 +240,7 @@ describe('v1 voxel food migration', () => {
     for (const name of ['sown', 'harvested', 'cooked', 'eaten']) delete legacy.stats[name];
     for (const name of ['produced', 'consumed']) { delete legacy.stats[name].grain; delete legacy.stats[name].meal; }
     const untouched = structuredClone(legacy), loaded = VoxelSimulation.load(legacy), before = s.counts();
-    expect(legacy).toEqual(untouched); expect(loaded.save().version).toBe(3);
+    expect(legacy).toEqual(untouched); expect(loaded.save().version).toBe(4);
     expect(loaded.farms).toEqual([]); expect(loaded.crops).toEqual([]); expect(loaded.stoves).toEqual([]);
     expect(loaded.jobs[0].delivered).toEqual({ wood: 6 }); expect(loaded.counts()).toEqual(before);
     expect(loaded.pawns.every(p => p.priorities.grow === 1 && p.priorities.cook === 1 && p.eating === null)).toBe(true);

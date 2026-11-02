@@ -1,0 +1,2672 @@
+{
+  "generatedAt": "2026-11-02T17:30:24.321Z",
+  "kind": "web-runtime-validated",
+  "scope": "Emberfield power/thermal milestone. Native mechanism evidence is separately static/XML and one definition UI observation; no native electricity/thermal curve measurement. Node campaigns execute game ticks, not hours of real-time browser play. Unit integration fixtures are explicitly synthetic. Array and renderer counters are not whole-browser/GPU or 4 GiB capacity evidence.",
+  "sources": [
+    {
+      "file": "src/voxel/client.ts",
+      "sha256": "dc078d4361736ebe393623e2dd4a232e194b2476b409ea630f3e9e5a3aed1db2"
+    },
+    {
+      "file": "src/voxel/farming.ts",
+      "sha256": "c4820b307bc40cbc26feb1afa6dd79808f3af807db6d3ad37e883d54693b32bc"
+    },
+    {
+      "file": "src/voxel/main.tsx",
+      "sha256": "0fb223227767b360dd291fbc4ad69def61e97b84bae22890e84a627e5f91ec07"
+    },
+    {
+      "file": "src/voxel/power.ts",
+      "sha256": "92f4d49960a3bee2b6a9e05cc212f3ee839700ea1eb724f0c1be3ae63c837be0"
+    },
+    {
+      "file": "src/voxel/render.worker.ts",
+      "sha256": "191ced6c3d17b480fa11f2d3a6845b8e9df111f5f69ded8b7b2bbaf75caf22c0"
+    },
+    {
+      "file": "src/voxel/renderer.ts",
+      "sha256": "61a46b938906f933b92119693256865b03a74b3add7228923ba02eb57d4edd4a"
+    },
+    {
+      "file": "src/voxel/rest.ts",
+      "sha256": "843c08f8188d7a3b3a9cbef507a0568705bb3d5aa5ad2d89395443199aa12099"
+    },
+    {
+      "file": "src/voxel/rooms.ts",
+      "sha256": "67457f7cd217f5746b9562ea2e3ca059af1f424165368d28d511e8a374090b9d"
+    },
+    {
+      "file": "src/voxel/sim.worker.ts",
+      "sha256": "809a28fe11e9b28f5b04502d94d33261ea0deb66efa45c2c33784891b82b4162"
+    },
+    {
+      "file": "src/voxel/style.css",
+      "sha256": "7f28a69f96c7363c7a83a3b63fee5fbef9c2284369ae2125811e1f08ad1d5f40"
+    },
+    {
+      "file": "src/voxel/thermal.ts",
+      "sha256": "40c614996ba9c8843bc52fbd343a2a625c0fd77c788b1133ae2ba50b6494b127"
+    },
+    {
+      "file": "src/voxel/types.ts",
+      "sha256": "d313f0c293c2dbebbb674b40dd833feb77848b9070fb7783b27d39612199c1af"
+    },
+    {
+      "file": "src/voxel/world.ts",
+      "sha256": "fbb075bb039e91b146b94bdb271d71131c2a7138651c2243d1d850a446f6a590"
+    }
+  ],
+  "assets": [
+    {
+      "file": "assets\\index-BV--hbLP.js",
+      "sha256": "4751aceec872eddfb006d4cfb8c81c17b3d1f050d6d3056fb8a606df2e644ace",
+      "bytes": 2356
+    },
+    {
+      "file": "assets\\main-B8HDAEEb.css",
+      "sha256": "03d9ef9df223e414ac9ce93b28d83c8caf69c532931ed37e152cc95beabaaf66",
+      "bytes": 10824
+    },
+    {
+      "file": "assets\\client-CrowJ5J7.js",
+      "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+      "bytes": 221699
+    },
+    {
+      "file": "assets\\main-fETZkKdq.js",
+      "sha256": "5addbde66002ee419fa297575570463eb9d2cb06270b4b1eb5d997881683c7de",
+      "bytes": 561633
+    },
+    {
+      "file": "assets\\sim.worker-CDsRv32Z.js",
+      "sha256": "4383e65730e8431c4a2df0d7b15b6b0b1d5ccb34958fef3c06554145fc9cb4ae",
+      "bytes": 64848
+    },
+    {
+      "file": "assets\\render.worker-BsuVrjkK.js",
+      "sha256": "4afd2eee1556d2b573af7534318af4b0ff50a4c57f405f2081dce18284875d41",
+      "bytes": 529307
+    }
+  ],
+  "unit": {
+    "passed": 189,
+    "total": 189,
+    "failed": 0
+  },
+  "campaign": {
+    "scope": "Normal command/step/save/load only. No injected terrain, resources, devices, fuel, energy, needs or time. Seed terrain inspected to plan finite ore excavation; headless calendar simulation, not native real-time measurement.",
+    "checks": [
+      {
+        "name": "six mature trees harvested and hauled",
+        "tick": 237,
+        "elapsed": 237
+      },
+      {
+        "name": "surface shaft reaches z5",
+        "tick": 701,
+        "elapsed": 464
+      },
+      {
+        "name": "starting finite steel vein excavated",
+        "tick": 1032,
+        "elapsed": 331
+      },
+      {
+        "name": "horizontal mining corridor",
+        "tick": 1291,
+        "elapsed": 259
+      },
+      {
+        "name": "component seam mined",
+        "tick": 2171,
+        "elapsed": 880
+      },
+      {
+        "name": "horizontal mining corridor",
+        "tick": 2171,
+        "elapsed": 0
+      },
+      {
+        "name": "component seam mined",
+        "tick": 2251,
+        "elapsed": 80
+      },
+      {
+        "name": "horizontal mining corridor",
+        "tick": 2371,
+        "elapsed": 120
+      },
+      {
+        "name": "component seam mined",
+        "tick": 2765,
+        "elapsed": 394
+      },
+      {
+        "name": "horizontal mining corridor",
+        "tick": 2765,
+        "elapsed": 0
+      },
+      {
+        "name": "component seam mined",
+        "tick": 2893,
+        "elapsed": 128
+      },
+      {
+        "name": "horizontal mining corridor",
+        "tick": 3791,
+        "elapsed": 898
+      },
+      {
+        "name": "component seam mined",
+        "tick": 4351,
+        "elapsed": 560
+      },
+      {
+        "name": "horizontal mining corridor",
+        "tick": 4451,
+        "elapsed": 100
+      },
+      {
+        "name": "component seam mined",
+        "tick": 4804,
+        "elapsed": 353
+      },
+      {
+        "name": "steel access corridor",
+        "tick": 4804,
+        "elapsed": 0
+      },
+      {
+        "name": "finite steel mined",
+        "tick": 5349,
+        "elapsed": 545
+      },
+      {
+        "name": "steel access corridor",
+        "tick": 5349,
+        "elapsed": 0
+      },
+      {
+        "name": "finite steel mined",
+        "tick": 5431,
+        "elapsed": 82
+      },
+      {
+        "name": "steel access corridor",
+        "tick": 5431,
+        "elapsed": 0
+      },
+      {
+        "name": "finite steel mined",
+        "tick": 5660,
+        "elapsed": 229
+      },
+      {
+        "name": "steel access corridor",
+        "tick": 5660,
+        "elapsed": 0
+      },
+      {
+        "name": "finite steel mined",
+        "tick": 5748,
+        "elapsed": 88
+      },
+      {
+        "name": "steel access corridor",
+        "tick": 5748,
+        "elapsed": 0
+      },
+      {
+        "name": "finite steel mined",
+        "tick": 6112,
+        "elapsed": 364
+      },
+      {
+        "name": "steel access corridor",
+        "tick": 6112,
+        "elapsed": 0
+      },
+      {
+        "name": "finite steel mined",
+        "tick": 6931,
+        "elapsed": 819
+      },
+      {
+        "name": "steel access corridor",
+        "tick": 6931,
+        "elapsed": 0
+      },
+      {
+        "name": "finite steel mined",
+        "tick": 10805,
+        "elapsed": 3874
+      },
+      {
+        "name": "steel access corridor",
+        "tick": 10957,
+        "elapsed": 152
+      },
+      {
+        "name": "finite steel mined",
+        "tick": 11339,
+        "elapsed": 382
+      },
+      {
+        "name": "finite ores supplied all device ingredients",
+        "tick": 11339,
+        "inventory": {
+          "wood": 244,
+          "stone": 485,
+          "steel": 480,
+          "components": 12,
+          "food": 54,
+          "grain": 0,
+          "meal": 0
+        },
+        "mined": 195
+      },
+      {
+        "name": "room access",
+        "tick": 11471,
+        "elapsed": 132
+      },
+      {
+        "name": "cold and exhaust rooms excavated",
+        "tick": 11944,
+        "elapsed": 473
+      },
+      {
+        "name": "old mining tunnels sealed around both rooms",
+        "tick": 12397,
+        "elapsed": 453
+      },
+      {
+        "name": "two room entrances sealed with doors",
+        "tick": 12702,
+        "elapsed": 305
+      },
+      {
+        "name": "five devices built and generator physically refuelled",
+        "tick": 14593,
+        "elapsed": 1891
+      },
+      {
+        "name": "vertical shaft and surface wiring built",
+        "tick": 14813,
+        "elapsed": 220
+      },
+      {
+        "name": "underground heater receives surface power and heats enclosed air",
+        "tick": 14944,
+        "elapsed": 131
+      },
+      {
+        "name": "heater temperature and battery charge",
+        "tick": 14944,
+        "cold": 30.055372417082893,
+        "battery": 55.62979166666653,
+        "networks": [
+          {
+            "id": 0,
+            "generatedW": 2700,
+            "demandW": 175,
+            "usedW": 175,
+            "storedWd": 55.62979166666653,
+            "capacityWd": 600,
+            "surplusW": 2525,
+            "devices": [
+              558,
+              559,
+              561,
+              562,
+              564
+            ]
+          }
+        ]
+      },
+      {
+        "name": "one vertical wire removed",
+        "tick": 15031,
+        "elapsed": 87
+      },
+      {
+        "name": "cut vertical wire interrupts basement power",
+        "tick": 15032
+      },
+      {
+        "name": "wire repaired",
+        "tick": 15067,
+        "elapsed": 35
+      },
+      {
+        "name": "heater restarts after reconnection",
+        "tick": 15075,
+        "elapsed": 8
+      },
+      {
+        "name": "cooler lowers cold room below ten degrees",
+        "tick": 15599,
+        "elapsed": 524
+      },
+      {
+        "name": "cooler directional heat transfer",
+        "tick": 15599,
+        "cold": 9.993348701706449,
+        "hot": 63.529414644158194,
+        "hotBefore": 26.06901230689249
+      },
+      {
+        "name": "v4 restores fractional fuel stored energy and room temperatures",
+        "tick": 15599
+      },
+      {
+        "name": "battery alone powers cooler",
+        "tick": 15719,
+        "beforeWd": 124.58604166666841,
+        "afterWd": 122.53604166666857
+      },
+      {
+        "name": "all supplies off means no active cooling",
+        "tick": 15720
+      },
+      {
+        "name": "ladder for solar roof test",
+        "tick": 16291,
+        "elapsed": 571
+      },
+      {
+        "name": "upper floor shades every solar panel cell",
+        "tick": 17295,
+        "elapsed": 1004
+      },
+      {
+        "name": "daylight sampling time",
+        "tick": 24500,
+        "elapsed": 7205
+      },
+      {
+        "name": "full physical roof blocks solar production in daylight",
+        "tick": 24500
+      },
+      {
+        "name": "workers return before next roof section",
+        "tick": 24500,
+        "elapsed": 0
+      },
+      {
+        "name": "solar roof section removed from far edge",
+        "tick": 24621,
+        "elapsed": 121
+      },
+      {
+        "name": "workers return before next roof section",
+        "tick": 24642,
+        "elapsed": 21
+      },
+      {
+        "name": "solar roof section removed from far edge",
+        "tick": 24805,
+        "elapsed": 163
+      },
+      {
+        "name": "workers return before next roof section",
+        "tick": 24830,
+        "elapsed": 25
+      },
+      {
+        "name": "solar roof section removed from far edge",
+        "tick": 24981,
+        "elapsed": 151
+      },
+      {
+        "name": "workers return before next roof section",
+        "tick": 25006,
+        "elapsed": 25
+      },
+      {
+        "name": "solar roof section removed from far edge",
+        "tick": 25157,
+        "elapsed": 151
+      },
+      {
+        "name": "workers return before next roof section",
+        "tick": 25178,
+        "elapsed": 21
+      },
+      {
+        "name": "solar roof section removed from far edge",
+        "tick": 25278,
+        "elapsed": 100
+      },
+      {
+        "name": "workers return before next roof section",
+        "tick": 25305,
+        "elapsed": 27
+      },
+      {
+        "name": "solar roof section removed from far edge",
+        "tick": 25442,
+        "elapsed": 137
+      },
+      {
+        "name": "workers return before next roof section",
+        "tick": 25463,
+        "elapsed": 21
+      },
+      {
+        "name": "solar roof section removed from far edge",
+        "tick": 25618,
+        "elapsed": 155
+      },
+      {
+        "name": "workers return before next roof section",
+        "tick": 25639,
+        "elapsed": 21
+      },
+      {
+        "name": "solar roof section removed from far edge",
+        "tick": 25733,
+        "elapsed": 94
+      },
+      {
+        "name": "workers return before next roof section",
+        "tick": 25746,
+        "elapsed": 13
+      },
+      {
+        "name": "solar roof section removed from far edge",
+        "tick": 25893,
+        "elapsed": 147
+      },
+      {
+        "name": "workers return before next roof section",
+        "tick": 25906,
+        "elapsed": 13
+      },
+      {
+        "name": "solar roof section removed from far edge",
+        "tick": 26057,
+        "elapsed": 151
+      },
+      {
+        "name": "workers return before next roof section",
+        "tick": 26074,
+        "elapsed": 17
+      },
+      {
+        "name": "solar roof section removed from far edge",
+        "tick": 26213,
+        "elapsed": 139
+      },
+      {
+        "name": "workers return before next roof section",
+        "tick": 26230,
+        "elapsed": 17
+      },
+      {
+        "name": "solar roof section removed from far edge",
+        "tick": 26369,
+        "elapsed": 139
+      },
+      {
+        "name": "workers return before next roof section",
+        "tick": 26382,
+        "elapsed": 13
+      },
+      {
+        "name": "solar roof section removed from far edge",
+        "tick": 26510,
+        "elapsed": 128
+      },
+      {
+        "name": "workers return before next roof section",
+        "tick": 26519,
+        "elapsed": 9
+      },
+      {
+        "name": "solar roof section removed from far edge",
+        "tick": 26655,
+        "elapsed": 136
+      },
+      {
+        "name": "workers return before next roof section",
+        "tick": 26668,
+        "elapsed": 13
+      },
+      {
+        "name": "solar roof section removed from far edge",
+        "tick": 26824,
+        "elapsed": 156
+      },
+      {
+        "name": "workers return before next roof section",
+        "tick": 26835,
+        "elapsed": 11
+      },
+      {
+        "name": "solar roof section removed from far edge",
+        "tick": 27044,
+        "elapsed": 209
+      },
+      {
+        "name": "solar produces again with sky exposure",
+        "tick": 27044,
+        "elapsed": 0
+      },
+      {
+        "name": "solar daylight restored",
+        "tick": 27044,
+        "watts": 1593.75
+      }
+    ],
+    "minimumFood": 12.446666666656064,
+    "final": {
+      "tick": 27044,
+      "inventory": {
+        "wood": 55,
+        "stone": 565,
+        "steel": 62,
+        "components": 1,
+        "food": 48,
+        "grain": 0,
+        "meal": 0
+      },
+      "stats": {
+        "mined": 227,
+        "cut": 6,
+        "built": 44,
+        "hauled": 1222,
+        "sown": 0,
+        "harvested": 0,
+        "cooked": 0,
+        "eaten": 12,
+        "consumed": {
+          "wood": 213,
+          "stone": 0,
+          "steel": 419,
+          "components": 11,
+          "food": 12,
+          "grain": 0,
+          "meal": 0
+        },
+        "produced": {
+          "wood": 178,
+          "stone": 565,
+          "steel": 481,
+          "components": 12,
+          "food": 0,
+          "grain": 0,
+          "meal": 0
+        }
+      }
+    },
+    "errors": []
+  },
+  "browser": {
+    "base": "http://127.0.0.1:5183/?world=voxel",
+    "scope": "Real Chrome DOM, mouse, keyboard and file chooser input. window.voxel is read only (project, snapshot, exportSave). Campaign fixtures come from normal designate/step/save work with mined finite resources. Browser construction starts from mined-resources, with no injected devices, resources, fuel, temperature or time. Worker and main fallback, full device footprints, 900x700 scrolling, save/load, live energy consumption and paused pixels.",
+    "fixtures": {
+      "mined-resources": {
+        "file": "test-results\\voxel-power-campaign\\mined-resources.json",
+        "importFile": "test-results\\voxel-power-browser\\fixtures\\mined-resources.json",
+        "sha256": "7c2a3b986f6149f4e555b22e3da8b2628536fd455e46eb8317cb278cc988ce9b",
+        "tick": 11339
+      },
+      "powered-room": {
+        "file": "test-results\\voxel-power-campaign\\powered-room.json",
+        "importFile": "test-results\\voxel-power-browser\\fixtures\\powered-room.json",
+        "sha256": "26f36e831acce156787995fe2f00c3f49badc0accdd1a9b1a753da32d800afd4",
+        "tick": 14944
+      },
+      "cooled-room": {
+        "file": "test-results\\voxel-power-campaign\\cooled-room.json",
+        "importFile": "test-results\\voxel-power-browser\\fixtures\\cooled-room.json",
+        "sha256": "ac06743bbc124d719df0036bc4924d0deb9618029cadb10e182613eb64ae06ef",
+        "tick": 15599
+      },
+      "final": {
+        "file": "test-results\\voxel-power-campaign\\final.json",
+        "importFile": "test-results\\voxel-power-browser\\fixtures\\final.json",
+        "sha256": "bdebdf54ad9fe29e3d6f7b12a4bbde083fa8cab4e797fcc17db80eba1fb8f02b",
+        "tick": 27044
+      }
+    },
+    "modes": [
+      {
+        "mode": "worker",
+        "checks": [
+          {
+            "name": "expected renderer backend",
+            "worker": true
+          },
+          {
+            "name": "R rotates a real battery blueprint and mouse cancellation removes it",
+            "originalAxis": "x",
+            "rotated": "y",
+            "blueprint": {
+              "id": 513,
+              "kind": "battery",
+              "x": 36,
+              "y": 28,
+              "z": 8,
+              "work": 267,
+              "progress": 0,
+              "owner": null,
+              "delivered": {},
+              "cost": {
+                "steel": 70,
+                "components": 2
+              },
+              "reason": "等待可达工人",
+              "axis": "y"
+            }
+          },
+          {
+            "name": "normal colonist work builds mouse-placed heater and dragged wires from finite mined resources",
+            "elapsed": 547,
+            "steel": 52,
+            "components": 1,
+            "device": {
+              "id": 517,
+              "x": 31,
+              "y": 28,
+              "z": 8,
+              "kind": "heater",
+              "axis": "y",
+              "on": true,
+              "fuel": 0,
+              "energy": 0,
+              "target": 21,
+              "powered": false,
+              "active": false,
+              "networkId": 0,
+              "watts": -175,
+              "reason": "电力不足，等待启动"
+            },
+            "wires": [
+              {
+                "x": 33,
+                "y": 29,
+                "z": 8
+              },
+              {
+                "x": 32,
+                "y": 29,
+                "z": 8
+              }
+            ]
+          },
+          {
+            "name": "all 24 occupied device cells inspect their anchors and every device toggles through DOM",
+            "inspected": [
+              {
+                "kind": "battery",
+                "cell": {
+                  "x": 36,
+                  "y": 28,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "battery",
+                "cell": {
+                  "x": 37,
+                  "y": 28,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "generator",
+                "cell": {
+                  "x": 34,
+                  "y": 28,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "generator",
+                "cell": {
+                  "x": 35,
+                  "y": 28,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "generator",
+                "cell": {
+                  "x": 34,
+                  "y": 29,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "generator",
+                "cell": {
+                  "x": 35,
+                  "y": 29,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 28,
+                  "y": 27,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 29,
+                  "y": 27,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 30,
+                  "y": 27,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 31,
+                  "y": 27,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 28,
+                  "y": 28,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 29,
+                  "y": 28,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 30,
+                  "y": 28,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 31,
+                  "y": 28,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 28,
+                  "y": 29,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 29,
+                  "y": 29,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 30,
+                  "y": 29,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 31,
+                  "y": 29,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 28,
+                  "y": 30,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 29,
+                  "y": 30,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 30,
+                  "y": 30,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 31,
+                  "y": 30,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "heater",
+                "cell": {
+                  "x": 35,
+                  "y": 28,
+                  "z": 5
+                }
+              },
+              {
+                "kind": "cooler",
+                "cell": {
+                  "x": 38,
+                  "y": 29,
+                  "z": 5
+                }
+              }
+            ]
+          },
+          {
+            "name": "heater and cooler DOM target controls update simulation, cooler displays both directional faces",
+            "heater": 28,
+            "cooler": -8
+          },
+          {
+            "name": "fuel, battery storage and network budgets are visible",
+            "fuelText": "运行状态\n存档恢复，等待电网更新\n\n未供电 · 电网 1\n\n木燃料 73.0 / 75 · 每日消耗 22\n低于 22.5 自动补料；内部燃料不计入营地木材。\n\n关闭设备\n\n电网发电 0 W · 使用 0.0 / 需求 0.0 W\n储能 55.6 / 600 Wd",
+            "batteryText": "运行状态\n存档恢复，等待电网更新\n\n未供电 · 电网 1\n\n55.63 / 600 Wd · 充电效率 50% · 自耗 5 W\n\n关闭设备\n\n电网发电 0 W · 使用 0.0 / 需求 0.0 W\n储能 55.6 / 600 Wd"
+          },
+          {
+            "name": "two enclosed rooms display distinct cold-side and exhaust temperatures",
+            "coldText": "封闭房间\n\n24 格体积 · 12 格地面 · Z 5–6 · 10.0°C\n\n按实际六向空气连通判断；视图切层不改变房间。",
+            "hotText": "封闭房间\n\n12 格体积 · 6 格地面 · Z 5–6 · 63.5°C\n\n按实际六向空气连通判断；视图切层不改变房间。"
+          },
+          {
+            "name": "DOM manual save/load exactly restores fuel, energy, switches, targets, wires and room temperatures",
+            "tick": 15599,
+            "sha256": "1ed7d3519a8020ca2e14da620f35adf8e77f2fb54229d332015239e96fc6b6e0",
+            "thermal": [
+              {
+                "cell": 22118,
+                "temperature": 19.267731931508894
+              },
+              {
+                "cell": 22243,
+                "temperature": 9.993348701706449
+              },
+              {
+                "cell": 22311,
+                "temperature": 63.529414644158194
+              }
+            ]
+          },
+          {
+            "name": "900x700 new toolbar tools and inspector controls are reachable by actual scrolling",
+            "controls": [
+              {
+                "name": "木燃发电机",
+                "x": 384.5,
+                "y": 660,
+                "width": 61,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "太阳能板",
+                "x": 446.5,
+                "y": 660,
+                "width": 53,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "蓄电池",
+                "x": 504.5,
+                "y": 660,
+                "width": 53,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "加热器",
+                "x": 620.5,
+                "y": 660,
+                "width": 53,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "冷气机",
+                "x": 678.5,
+                "y": 660,
+                "width": 53,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "电线",
+                "x": 562.5,
+                "y": 660,
+                "width": 53,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "暂停",
+                "x": 781.09375,
+                "y": 670.5,
+                "width": 25,
+                "height": 29,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "3倍速",
+                "x": 874.265625,
+                "y": 670.5,
+                "width": 27.46875,
+                "height": 29,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "菜单与存档",
+                "x": 847.5,
+                "y": 37.5,
+                "width": 81,
+                "height": 33,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "旋转建造朝向",
+                "x": 47,
+                "y": 596,
+                "width": 70,
+                "height": 50,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "heater目标温度",
+                "x": 196,
+                "y": 423.5625,
+                "width": 64,
+                "height": 33,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "heater开关",
+                "x": 129.5,
+                "y": 467.5625,
+                "width": 197,
+                "height": 35,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "cooler目标温度",
+                "x": 196,
+                "y": 422.875,
+                "width": 64,
+                "height": 33,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "cooler开关",
+                "x": 129.5,
+                "y": 511.25,
+                "width": 197,
+                "height": 35,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "电池储能",
+                "x": 96,
+                "y": 413.84375,
+                "width": 130,
+                "height": 13,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "发电机开关",
+                "x": 129.5,
+                "y": 484.3125,
+                "width": 197,
+                "height": 35,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              }
+            ]
+          },
+          {
+            "name": "paused cooler body and active air effects do not drift",
+            "diff": {
+              "changed": 0,
+              "overTwo": 0,
+              "maxDelta": 0
+            },
+            "clip": {
+              "x": 539,
+              "y": 266,
+              "width": 200,
+              "height": 200
+            },
+            "tick": 15604
+          },
+          {
+            "name": "resuming normal browser simulation consumes fuel and charges the battery while cooling",
+            "elapsed": 124,
+            "before": [
+              [
+                558,
+                "battery",
+                "y",
+                true,
+                21,
+                0,
+                125.10479166666843
+              ],
+              [
+                559,
+                "generator",
+                "x",
+                true,
+                21,
+                71.7604999999929,
+                0
+              ],
+              [
+                561,
+                "solar",
+                "x",
+                true,
+                21,
+                0,
+                0
+              ],
+              [
+                562,
+                "heater",
+                "x",
+                false,
+                32,
+                0,
+                0
+              ],
+              [
+                564,
+                "cooler",
+                "x",
+                true,
+                -7,
+                0,
+                0
+              ]
+            ],
+            "after": [
+              [
+                558,
+                "battery",
+                "y",
+                true,
+                21,
+                0,
+                137.9697916666677
+              ],
+              [
+                559,
+                "generator",
+                "x",
+                true,
+                21,
+                71.53316666665907,
+                0
+              ],
+              [
+                561,
+                "solar",
+                "x",
+                true,
+                21,
+                0,
+                0
+              ],
+              [
+                562,
+                "heater",
+                "x",
+                false,
+                32,
+                0,
+                0
+              ],
+              [
+                564,
+                "cooler",
+                "x",
+                true,
+                -7,
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "name": "final normal campaign imports through the file chooser without changing physical energy state",
+            "tick": 27044,
+            "sha256": "bdebdf54ad9fe29e3d6f7b12a4bbde083fa8cab4e797fcc17db80eba1fb8f02b"
+          }
+        ],
+        "errors": [],
+        "final": {
+          "worker": true,
+          "metrics": {
+            "backend": "Three.js · WebGL2",
+            "fps": 59.95503371399371,
+            "drawCalls": 28,
+            "triangles": 32262,
+            "geometries": 29,
+            "textures": 4,
+            "chunkCount": 16,
+            "pendingChunks": 0,
+            "terrainVertices": 46000,
+            "terrainGeometryBytes": 2162000,
+            "gridBytes": 131072,
+            "dpr": 1,
+            "level": 8,
+            "rotation": 0.7853981633974483,
+            "zoom": 1.25
+          },
+          "tick": 27044
+        }
+      },
+      {
+        "mode": "main",
+        "checks": [
+          {
+            "name": "expected renderer backend",
+            "worker": false
+          },
+          {
+            "name": "R rotates a real battery blueprint and mouse cancellation removes it",
+            "originalAxis": "x",
+            "rotated": "y",
+            "blueprint": {
+              "id": 513,
+              "kind": "battery",
+              "x": 36,
+              "y": 28,
+              "z": 8,
+              "work": 267,
+              "progress": 0,
+              "owner": null,
+              "delivered": {},
+              "cost": {
+                "steel": 70,
+                "components": 2
+              },
+              "reason": "等待可达工人",
+              "axis": "y"
+            }
+          },
+          {
+            "name": "normal colonist work builds mouse-placed heater and dragged wires from finite mined resources",
+            "elapsed": 552,
+            "steel": 52,
+            "components": 1,
+            "device": {
+              "id": 517,
+              "x": 31,
+              "y": 28,
+              "z": 8,
+              "kind": "heater",
+              "axis": "y",
+              "on": true,
+              "fuel": 0,
+              "energy": 0,
+              "target": 21,
+              "powered": false,
+              "active": false,
+              "networkId": 0,
+              "watts": -175,
+              "reason": "电力不足，等待启动"
+            },
+            "wires": [
+              {
+                "x": 33,
+                "y": 29,
+                "z": 8
+              },
+              {
+                "x": 32,
+                "y": 29,
+                "z": 8
+              }
+            ]
+          },
+          {
+            "name": "all 24 occupied device cells inspect their anchors and every device toggles through DOM",
+            "inspected": [
+              {
+                "kind": "battery",
+                "cell": {
+                  "x": 36,
+                  "y": 28,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "battery",
+                "cell": {
+                  "x": 37,
+                  "y": 28,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "generator",
+                "cell": {
+                  "x": 34,
+                  "y": 28,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "generator",
+                "cell": {
+                  "x": 35,
+                  "y": 28,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "generator",
+                "cell": {
+                  "x": 34,
+                  "y": 29,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "generator",
+                "cell": {
+                  "x": 35,
+                  "y": 29,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 28,
+                  "y": 27,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 29,
+                  "y": 27,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 30,
+                  "y": 27,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 31,
+                  "y": 27,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 28,
+                  "y": 28,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 29,
+                  "y": 28,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 30,
+                  "y": 28,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 31,
+                  "y": 28,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 28,
+                  "y": 29,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 29,
+                  "y": 29,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 30,
+                  "y": 29,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 31,
+                  "y": 29,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 28,
+                  "y": 30,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 29,
+                  "y": 30,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 30,
+                  "y": 30,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "solar",
+                "cell": {
+                  "x": 31,
+                  "y": 30,
+                  "z": 8
+                }
+              },
+              {
+                "kind": "heater",
+                "cell": {
+                  "x": 35,
+                  "y": 28,
+                  "z": 5
+                }
+              },
+              {
+                "kind": "cooler",
+                "cell": {
+                  "x": 38,
+                  "y": 29,
+                  "z": 5
+                }
+              }
+            ]
+          },
+          {
+            "name": "heater and cooler DOM target controls update simulation, cooler displays both directional faces",
+            "heater": 28,
+            "cooler": -8
+          },
+          {
+            "name": "fuel, battery storage and network budgets are visible",
+            "fuelText": "运行状态\n存档恢复，等待电网更新\n\n未供电 · 电网 1\n\n木燃料 73.0 / 75 · 每日消耗 22\n低于 22.5 自动补料；内部燃料不计入营地木材。\n\n关闭设备\n\n电网发电 0 W · 使用 0.0 / 需求 0.0 W\n储能 55.6 / 600 Wd",
+            "batteryText": "运行状态\n存档恢复，等待电网更新\n\n未供电 · 电网 1\n\n55.63 / 600 Wd · 充电效率 50% · 自耗 5 W\n\n关闭设备\n\n电网发电 0 W · 使用 0.0 / 需求 0.0 W\n储能 55.6 / 600 Wd"
+          },
+          {
+            "name": "two enclosed rooms display distinct cold-side and exhaust temperatures",
+            "coldText": "封闭房间\n\n24 格体积 · 12 格地面 · Z 5–6 · 10.0°C\n\n按实际六向空气连通判断；视图切层不改变房间。",
+            "hotText": "封闭房间\n\n12 格体积 · 6 格地面 · Z 5–6 · 63.5°C\n\n按实际六向空气连通判断；视图切层不改变房间。"
+          },
+          {
+            "name": "DOM manual save/load exactly restores fuel, energy, switches, targets, wires and room temperatures",
+            "tick": 15599,
+            "sha256": "1ed7d3519a8020ca2e14da620f35adf8e77f2fb54229d332015239e96fc6b6e0",
+            "thermal": [
+              {
+                "cell": 22118,
+                "temperature": 19.267731931508894
+              },
+              {
+                "cell": 22243,
+                "temperature": 9.993348701706449
+              },
+              {
+                "cell": 22311,
+                "temperature": 63.529414644158194
+              }
+            ]
+          },
+          {
+            "name": "900x700 new toolbar tools and inspector controls are reachable by actual scrolling",
+            "controls": [
+              {
+                "name": "木燃发电机",
+                "x": 384.5,
+                "y": 660,
+                "width": 61,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "太阳能板",
+                "x": 446.5,
+                "y": 660,
+                "width": 53,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "蓄电池",
+                "x": 504.5,
+                "y": 660,
+                "width": 53,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "加热器",
+                "x": 620.5,
+                "y": 660,
+                "width": 53,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "冷气机",
+                "x": 678.5,
+                "y": 660,
+                "width": 53,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "电线",
+                "x": 562.5,
+                "y": 660,
+                "width": 53,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "暂停",
+                "x": 781.09375,
+                "y": 670.5,
+                "width": 25,
+                "height": 29,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "3倍速",
+                "x": 874.265625,
+                "y": 670.5,
+                "width": 27.46875,
+                "height": 29,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "菜单与存档",
+                "x": 847.5,
+                "y": 37.5,
+                "width": 81,
+                "height": 33,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "旋转建造朝向",
+                "x": 47,
+                "y": 596,
+                "width": 70,
+                "height": 50,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "heater目标温度",
+                "x": 196,
+                "y": 423.5625,
+                "width": 64,
+                "height": 33,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "heater开关",
+                "x": 129.5,
+                "y": 467.5625,
+                "width": 197,
+                "height": 35,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "cooler目标温度",
+                "x": 196,
+                "y": 422.875,
+                "width": 64,
+                "height": 33,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "cooler开关",
+                "x": 129.5,
+                "y": 511.25,
+                "width": 197,
+                "height": 35,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "电池储能",
+                "x": 96,
+                "y": 413.84375,
+                "width": 130,
+                "height": 13,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "发电机开关",
+                "x": 129.5,
+                "y": 484.3125,
+                "width": 197,
+                "height": 35,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              }
+            ]
+          },
+          {
+            "name": "paused cooler body and active air effects do not drift",
+            "diff": {
+              "changed": 0,
+              "overTwo": 0,
+              "maxDelta": 0
+            },
+            "clip": {
+              "x": 539,
+              "y": 266,
+              "width": 200,
+              "height": 200
+            },
+            "tick": 15605
+          },
+          {
+            "name": "resuming normal browser simulation consumes fuel and charges the battery while cooling",
+            "elapsed": 131,
+            "before": [
+              [
+                558,
+                "battery",
+                "y",
+                true,
+                21,
+                0,
+                125.20854166666844
+              ],
+              [
+                559,
+                "generator",
+                "x",
+                true,
+                21,
+                71.75866666665956,
+                0
+              ],
+              [
+                561,
+                "solar",
+                "x",
+                true,
+                21,
+                0,
+                0
+              ],
+              [
+                562,
+                "heater",
+                "x",
+                false,
+                32,
+                0,
+                0
+              ],
+              [
+                564,
+                "cooler",
+                "x",
+                true,
+                -7,
+                0,
+                0
+              ]
+            ],
+            "after": [
+              [
+                558,
+                "battery",
+                "y",
+                true,
+                21,
+                0,
+                138.79979166666763
+              ],
+              [
+                559,
+                "generator",
+                "x",
+                true,
+                21,
+                71.51849999999237,
+                0
+              ],
+              [
+                561,
+                "solar",
+                "x",
+                true,
+                21,
+                0,
+                0
+              ],
+              [
+                562,
+                "heater",
+                "x",
+                false,
+                32,
+                0,
+                0
+              ],
+              [
+                564,
+                "cooler",
+                "x",
+                true,
+                -7,
+                0,
+                0
+              ]
+            ]
+          },
+          {
+            "name": "final normal campaign imports through the file chooser without changing physical energy state",
+            "tick": 27044,
+            "sha256": "bdebdf54ad9fe29e3d6f7b12a4bbde083fa8cab4e797fcc17db80eba1fb8f02b"
+          }
+        ],
+        "errors": [],
+        "final": {
+          "worker": false,
+          "metrics": {
+            "backend": "Three.js · WebGL2",
+            "fps": 59.95503373184831,
+            "drawCalls": 28,
+            "triangles": 32262,
+            "geometries": 29,
+            "textures": 4,
+            "chunkCount": 16,
+            "pendingChunks": 0,
+            "terrainVertices": 46000,
+            "terrainGeometryBytes": 2162000,
+            "gridBytes": 131072,
+            "dpr": 1,
+            "level": 8,
+            "rotation": 0.7853981633974483,
+            "zoom": 1.25
+          },
+          "tick": 27044
+        }
+      }
+    ]
+  },
+  "regressions": {
+    "housing": {
+      "scope": "Normal command/step/save/load only; no world, resource, need or time injection. Headless elapsed calendar simulation, not real-time native play.",
+      "checkpoints": [
+        {
+          "label": "six trees supply physical construction wood",
+          "tick": 237,
+          "elapsed": 237
+        },
+        {
+          "label": "excavated shaft connects surface and underground",
+          "tick": 701,
+          "elapsed": 464
+        },
+        {
+          "label": "underground entrance excavated",
+          "tick": 789,
+          "elapsed": 88
+        },
+        {
+          "label": "six-cell underground bedroom excavated",
+          "tick": 1072,
+          "elapsed": 283
+        },
+        {
+          "label": "underground bed and doorway built from delivered wood",
+          "tick": 1337,
+          "elapsed": 265
+        },
+        {
+          "label": "upper ladder completed",
+          "tick": 1591,
+          "elapsed": 254
+        },
+        {
+          "label": "upper platform completed",
+          "tick": 2136,
+          "elapsed": 545
+        },
+        {
+          "label": "three beds exist on underground surface and upstairs",
+          "tick": 2413,
+          "elapsed": 277
+        },
+        {
+          "label": "natural default bedtime sends all three pawns into their owned beds",
+          "tick": 7049,
+          "elapsed": 4636
+        },
+        {
+          "label": "all colonists naturally wake from restored rest",
+          "tick": 9979,
+          "elapsed": 2910
+        },
+        {
+          "label": "underground sleeper exits via door and shaft",
+          "tick": 10013,
+          "elapsed": 34
+        },
+        {
+          "label": "doorway is clear",
+          "tick": 10013,
+          "elapsed": 0
+        }
+      ],
+      "final": {
+        "tick": 10013,
+        "beds": [
+          {
+            "id": 339,
+            "x": 35,
+            "y": 31,
+            "z": 5,
+            "axis": "x",
+            "owner": 298
+          },
+          {
+            "id": 358,
+            "x": 33,
+            "y": 30,
+            "z": 11,
+            "axis": "y",
+            "owner": 299
+          },
+          {
+            "id": 359,
+            "x": 29,
+            "y": 29,
+            "z": 8,
+            "axis": "y",
+            "owner": 300
+          }
+        ],
+        "doors": [
+          {
+            "id": 338,
+            "x": 34,
+            "y": 32,
+            "z": 5,
+            "axis": "y",
+            "mode": "auto",
+            "openUntil": 0
+          }
+        ],
+        "counts": {
+          "wood": 40,
+          "stone": 20,
+          "steel": 160,
+          "components": 0,
+          "food": 57,
+          "grain": 0,
+          "meal": 0
+        },
+        "stats": {
+          "mined": 17,
+          "cut": 6,
+          "built": 24,
+          "hauled": 340,
+          "sown": 0,
+          "harvested": 0,
+          "cooked": 0,
+          "eaten": 3,
+          "consumed": {
+            "wood": 212,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 3,
+            "grain": 0,
+            "meal": 0
+          },
+          "produced": {
+            "wood": 162,
+            "stone": 20,
+            "steel": 160,
+            "components": 0,
+            "food": 0,
+            "grain": 0,
+            "meal": 0
+          }
+        },
+        "pawns": [
+          {
+            "id": 298,
+            "rest": 99.7308333333331,
+            "food": 37.05333333332349
+          },
+          {
+            "id": 299,
+            "rest": 99.48541666666621,
+            "food": 36.82666666665679
+          },
+          {
+            "id": 300,
+            "rest": 99.38249999999945,
+            "food": 36.91999999999014
+          }
+        ]
+      }
+    },
+    "food": {
+      "scope": "Public command/step/save/load only, with normal day/night time progression. No resource injection, mature-crop injection, terrain editing, pawn teleportation or direct tick changes. Nominal edible nutrition explicitly includes the recipe gain: 10 grain at 0.05 becomes one 0.9 meal, adding 0.4 nutrition per cooked meal. This does not claim physical calorie conservation or unlimited colony sustainability.",
+      "final": {
+        "tick": 206726,
+        "calendarDays": 17.227166666666665,
+        "ricePlots": 120,
+        "counts": {
+          "wood": 97,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 6,
+          "grain": 911,
+          "meal": 6
+        },
+        "stored": {
+          "wood": 97,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 6,
+          "grain": 911,
+          "meal": 6
+        },
+        "stats": {
+          "mined": 0,
+          "cut": 3,
+          "built": 1,
+          "hauled": 1549,
+          "sown": 363,
+          "harvested": 241,
+          "cooked": 54,
+          "eaten": 102,
+          "consumed": {
+            "wood": 74,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 54,
+            "grain": 540,
+            "meal": 48
+          },
+          "produced": {
+            "wood": 81,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 1451,
+            "meal": 54
+          }
+        },
+        "nutrition": {
+          "availableNutrition": 56.35,
+          "eatenNominalNutrition": 91.80000000000001,
+          "initialNutrition": 54,
+          "harvestNutrition": 72.55,
+          "cookingNutritionGain": 21.6,
+          "grainEaten": 0
+        },
+        "minimumFood": 12.27333333332275,
+        "firstRiceHarvest": {
+          "tick": 96129,
+          "day": 8.01075,
+          "crop": {
+            "id": 432,
+            "x": 31,
+            "y": 32,
+            "z": 8,
+            "kind": "rice",
+            "growth": 1,
+            "sownAt": 180
+          },
+          "growthDays": 7.99575
+        },
+        "replantCount": 120
+      }
+    },
+    "housingBrowser": {
+      "modes": [
+        {
+          "mode": "worker",
+          "checks": [
+            {
+              "name": "expected renderer backend active",
+              "worker": true,
+              "metrics": {
+                "backend": "Three.js · WebGL2",
+                "fps": 22.34914328019446,
+                "drawCalls": 58,
+                "triangles": 29932,
+                "geometries": 27,
+                "textures": 4,
+                "chunkCount": 16,
+                "pendingChunks": 0,
+                "terrainVertices": 43984,
+                "terrainGeometryBytes": 2067248,
+                "gridBytes": 131072,
+                "dpr": 1,
+                "level": 8,
+                "rotation": 0.7853981633974483,
+                "zoom": 1.25
+              }
+            },
+            {
+              "name": "campaign room topology survives view slicing and door opening",
+              "fixture": "test-results/voxel-housing-campaign/housing-built.json",
+              "sha256": "9892b16477d5089d5ae06b2e30866e55680dca82f0e6ad202e355b7213c9c044",
+              "tick": 2413,
+              "roomText": "封闭房间\n\n12 格体积 · 6 格地面 · Z 5–6 · 21.9°C\n\n按实际六向空气连通判断；视图切层不改变房间。",
+              "roomRevision": 1
+            },
+            {
+              "name": "all three campaign sleepers reload across underground, surface and upper layers",
+              "pawns": [
+                {
+                  "id": 298,
+                  "z": 5,
+                  "bed": 339,
+                  "rest": 44.195416666635026
+                },
+                {
+                  "id": 299,
+                  "z": 11,
+                  "bed": 358,
+                  "rest": 44.788630973301736
+                },
+                {
+                  "id": 300,
+                  "z": 8,
+                  "bed": 359,
+                  "rest": 45.03130955330175
+                }
+              ]
+            },
+            {
+              "name": "normal-campaign sleeping save reloads and paused pixels are stable",
+              "fixture": {
+                "file": "test-results/voxel-housing-campaign/sleeping-save.json",
+                "sha256": "2dfabf356881102cea76ff275192c4dcf65942beafd47395eb1e881035369b52",
+                "tick": 7049,
+                "pawnId": 298,
+                "bed": {
+                  "id": 339,
+                  "x": 35,
+                  "y": 31,
+                  "z": 5,
+                  "axis": "x",
+                  "owner": 298
+                }
+              },
+              "diff": {
+                "changed": 0,
+                "overTwo": 0,
+                "maxDelta": 0
+              }
+            },
+            {
+              "name": "resumed browser simulation restores rest while remaining in assigned bed",
+              "before": 44.195416666635026,
+              "after": 44.40494048663505,
+              "tick": 7060
+            }
+          ],
+          "errors": []
+        },
+        {
+          "mode": "main",
+          "checks": [
+            {
+              "name": "expected renderer backend active",
+              "worker": false,
+              "metrics": {
+                "backend": "Three.js · WebGL2",
+                "fps": 52.8385352697463,
+                "drawCalls": 58,
+                "triangles": 29932,
+                "geometries": 27,
+                "textures": 4,
+                "chunkCount": 16,
+                "pendingChunks": 0,
+                "terrainVertices": 43984,
+                "terrainGeometryBytes": 2067248,
+                "gridBytes": 131072,
+                "dpr": 1,
+                "level": 8,
+                "rotation": 0.7853981633974483,
+                "zoom": 1.25
+              }
+            },
+            {
+              "name": "campaign room topology survives view slicing and door opening",
+              "fixture": "test-results/voxel-housing-campaign/housing-built.json",
+              "sha256": "9892b16477d5089d5ae06b2e30866e55680dca82f0e6ad202e355b7213c9c044",
+              "tick": 2413,
+              "roomText": "封闭房间\n\n12 格体积 · 6 格地面 · Z 5–6 · 21.9°C\n\n按实际六向空气连通判断；视图切层不改变房间。",
+              "roomRevision": 1
+            },
+            {
+              "name": "all three campaign sleepers reload across underground, surface and upper layers",
+              "pawns": [
+                {
+                  "id": 298,
+                  "z": 5,
+                  "bed": 339,
+                  "rest": 44.195416666635026
+                },
+                {
+                  "id": 299,
+                  "z": 11,
+                  "bed": 358,
+                  "rest": 44.788630973301736
+                },
+                {
+                  "id": 300,
+                  "z": 8,
+                  "bed": 359,
+                  "rest": 45.03130955330175
+                }
+              ]
+            },
+            {
+              "name": "normal-campaign sleeping save reloads and paused pixels are stable",
+              "fixture": {
+                "file": "test-results/voxel-housing-campaign/sleeping-save.json",
+                "sha256": "2dfabf356881102cea76ff275192c4dcf65942beafd47395eb1e881035369b52",
+                "tick": 7049,
+                "pawnId": 298,
+                "bed": {
+                  "id": 339,
+                  "x": 35,
+                  "y": 31,
+                  "z": 5,
+                  "axis": "x",
+                  "owner": 298
+                }
+              },
+              "diff": {
+                "changed": 0,
+                "overTwo": 0,
+                "maxDelta": 0
+              }
+            },
+            {
+              "name": "resumed browser simulation restores rest while remaining in assigned bed",
+              "before": 44.195416666635026,
+              "after": 44.63351192663507,
+              "tick": 7072
+            }
+          ],
+          "errors": []
+        }
+      ],
+      "scope": "Fixtures-only regression using freshly generated normal housing campaign saves; no fresh UI housing construction in this milestone regression."
+    },
+    "foodBrowser": {
+      "checks": [
+        {
+          "name": "DOM crop selector and real mouse drag create three crop types",
+          "plots": 11
+        },
+        {
+          "name": "actual sowing produces seedlings and visible environmental conditions",
+          "detail": "29, 28 · Z 8\n×\n稻米\n\n有地板支撑的空间 · 地表\n\n室外连通空间\n\n30992 格体积 · 4096 格地面 · Z 6–15 · 22.2°C\n\n按实际六向空气连通判断；视图切层不改变房间。\n本轮生长\n0.7%\n\n生长中 · 肥力 100% · 光照 100% · 22.2°C\n\n下次播种：稻米 · 成熟收获 6 生食材。上方楼板会遮光。\n\n⌖ 对焦此处"
+        },
+        {
+          "name": "stove body inspection and bill target / pause / resume work through DOM"
+        },
+        {
+          "name": "calendar fixtures generated from UI save using normal commands and step only",
+          "fixtures": [
+            {
+              "file": "test-results/voxel-food-browser/normal-near-harvest.json",
+              "tick": 95854,
+              "sha256": "6da6b0a59ba7cb8e275f42a44214f34c0c8bb9f0c0fc757c4f99c76debcb4a7a"
+            },
+            {
+              "file": "test-results/voxel-food-browser/normal-upper-kitchen.json",
+              "tick": 97031,
+              "sha256": "ca4ef22f1713f17b3b23f73f98b70e22a72c8a1ac1ac17109151b7a782df8cfb"
+            }
+          ]
+        },
+        {
+          "name": "imported normal-growth crops are actually harvested and ingredients delivered for cooking",
+          "tick": 96128,
+          "stats": {
+            "mined": 0,
+            "cut": 0,
+            "built": 1,
+            "hauled": 0,
+            "sown": 11,
+            "harvested": 4,
+            "cooked": 0,
+            "eaten": 48,
+            "consumed": {
+              "wood": 20,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 48,
+              "grain": 0,
+              "meal": 0
+            },
+            "produced": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 24,
+              "meal": 0
+            }
+          }
+        },
+        {
+          "name": "paused cooking scene pixels stable within GPU rounding",
+          "changed": 1,
+          "overTwo": 0,
+          "maxDelta": 1
+        },
+        {
+          "name": "real cooking completes a meal",
+          "stats": {
+            "mined": 0,
+            "cut": 0,
+            "built": 1,
+            "hauled": 0,
+            "sown": 13,
+            "harvested": 5,
+            "cooked": 1,
+            "eaten": 48,
+            "consumed": {
+              "wood": 21,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 48,
+              "grain": 10,
+              "meal": 0
+            },
+            "produced": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 30,
+              "meal": 1
+            }
+          },
+          "inventory": {
+            "wood": 69,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 12,
+            "grain": 20,
+            "meal": 1
+          }
+        },
+        {
+          "name": "real colonist carries harvested grain through an intermediate ladder level",
+          "carriers": [
+            {
+              "id": 300,
+              "name": "阿砾",
+              "color": 10464968,
+              "x": 33,
+              "y": 32,
+              "z": 9,
+              "food": 73.10666666666246,
+              "rest": 83.92916666665243,
+              "priorities": {
+                "dig": 1,
+                "build": 1,
+                "cut": 1,
+                "haul": 2,
+                "grow": 1,
+                "cook": 1
+              },
+              "jobId": 376,
+              "path": [
+                43041,
+                47138,
+                47074
+              ],
+              "destination": 47074,
+              "phase": "work",
+              "cargo": {
+                "resource": "grain",
+                "amount": 10
+              },
+              "reason": "把材料送往工作面",
+              "moveTick": 97143,
+              "workTarget": {
+                "x": 35,
+                "y": 31,
+                "z": 11
+              },
+              "eating": null,
+              "sleepBedId": null,
+              "sleepingSince": null,
+              "schedule": [
+                "sleep",
+                "sleep",
+                "sleep",
+                "sleep",
+                "sleep",
+                "sleep",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "sleep",
+                "sleep"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "upper kitchen cooks using physically delivered cross-level ingredients",
+          "stats": {
+            "mined": 0,
+            "cut": 0,
+            "built": 10,
+            "hauled": 55,
+            "sown": 20,
+            "harvested": 9,
+            "cooked": 1,
+            "eaten": 48,
+            "consumed": {
+              "wood": 61,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 48,
+              "grain": 10,
+              "meal": 0
+            },
+            "produced": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 54,
+              "meal": 1
+            }
+          }
+        },
+        {
+          "name": "900x700 critical controls are reachable through actual toolbar/panel scrolling",
+          "reachability": [
+            {
+              "name": "种植区",
+              "x": 560.5,
+              "y": 660,
+              "width": 53,
+              "height": 56,
+              "viewport": [
+                900,
+                700
+              ],
+              "hit": true
+            },
+            {
+              "name": "灶台",
+              "x": 618.5,
+              "y": 660,
+              "width": 53,
+              "height": 56,
+              "viewport": [
+                900,
+                700
+              ],
+              "hit": true
+            },
+            {
+              "name": "擦除区域",
+              "x": 615.5,
+              "y": 660,
+              "width": 53,
+              "height": 56,
+              "viewport": [
+                900,
+                700
+              ],
+              "hit": true
+            },
+            {
+              "name": "取消规划",
+              "x": 731.5,
+              "y": 660,
+              "width": 53,
+              "height": 56,
+              "viewport": [
+                900,
+                700
+              ],
+              "hit": true
+            },
+            {
+              "name": "暂停",
+              "x": 781.09375,
+              "y": 670.5,
+              "width": 25,
+              "height": 29,
+              "viewport": [
+                900,
+                700
+              ],
+              "hit": true
+            },
+            {
+              "name": "3倍速",
+              "x": 874.265625,
+              "y": 670.5,
+              "width": 27.46875,
+              "height": 29,
+              "viewport": [
+                900,
+                700
+              ],
+              "hit": true
+            },
+            {
+              "name": "菜单与存档",
+              "x": 847.5,
+              "y": 37.5,
+              "width": 81,
+              "height": 33,
+              "viewport": [
+                900,
+                700
+              ],
+              "hit": true
+            }
+          ]
+        },
+        {
+          "name": "loaded production asset bytes match frozen dist assets",
+          "assets": [
+            {
+              "url": "http://127.0.0.1:5183/assets/index-BV--hbLP.js",
+              "sha256": "4751aceec872eddfb006d4cfb8c81c17b3d1f050d6d3056fb8a606df2e644ace",
+              "bytes": 2356
+            },
+            {
+              "url": "http://127.0.0.1:5183/assets/main-B8HDAEEb.css",
+              "sha256": "03d9ef9df223e414ac9ce93b28d83c8caf69c532931ed37e152cc95beabaaf66",
+              "bytes": 10824
+            },
+            {
+              "url": "http://127.0.0.1:5183/assets/main-fETZkKdq.js",
+              "sha256": "5addbde66002ee419fa297575570463eb9d2cb06270b4b1eb5d997881683c7de",
+              "bytes": 561633
+            },
+            {
+              "url": "http://127.0.0.1:5183/assets/client-CrowJ5J7.js",
+              "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+              "bytes": 221699
+            },
+            {
+              "url": "http://127.0.0.1:5183/assets/sim.worker-CDsRv32Z.js",
+              "sha256": "4383e65730e8431c4a2df0d7b15b6b0b1d5ccb34958fef3c06554145fc9cb4ae",
+              "bytes": 64848
+            },
+            {
+              "url": "http://127.0.0.1:5183/assets/render.worker-BsuVrjkK.js",
+              "sha256": "4afd2eee1556d2b573af7534318af4b0ff50a4c57f405f2081dce18284875d41",
+              "bytes": 529307
+            }
+          ]
+        }
+      ],
+      "errors": []
+    }
+  },
+  "screenshots": [
+    {
+      "file": "voxel/power-network.jpg",
+      "sha256": "bcbc8645761289c1701847dadf7fa0802e167c7541a36923c0509e0022cca4fa",
+      "source": "test-results/voxel-power-browser/worker-03-battery-network.png",
+      "sourceSha256": "18b294f895ded322378b17caea61c1469f7ee5ecf3e27fb638b2f36af91195fc",
+      "transform": "Full reviewed gameplay viewport, JPEG .83, no crop"
+    },
+    {
+      "file": "voxel/cooler-exhaust-room.jpg",
+      "sha256": "2542c21a8730d1cdb9624c32dfc706fe8ceac3c957444452f5689fafca6133a9",
+      "source": "test-results/voxel-power-browser/worker-04-two-room-temperatures.png",
+      "sourceSha256": "8424a20caee6de767edc62270f57d8c9d9c655a04ea07af981c3767ce1adae8d",
+      "transform": "Full reviewed gameplay viewport, JPEG .83, no crop"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "evidence_id": "RW17-ENERGY-RUNTIME",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "profile": ".local-research/runtime/profile-20261102",
+  "process_id": 29920,
+  "active_mods": [
+    "ludeon.rimworld",
+    "ludeon.rimworld.odyssey"
+  ],
+  "method": "Foreground-targeted native screenshot and mouse/keyboard UI actions; no game API read or assembly execution by research script",
+  "developer_actions_performed": false,
+  "normal_construction_demonstrated": false,
+  "observations": [
+    {
+      "id": "ER01",
+      "observed_utc": "2026-11-02T16:46:48.7195908Z",
+      "image": "runtime/energy-generator-info.png",
+      "sha256": "eb0b3667526b44d9fb5d57f299117a16fd9b9574b799b309bb959905918a346f",
+      "width": 2560,
+      "height": 1440,
+      "screen": "Architect Power / Wood-fired generator information",
+      "values": {
+        "max_power_output_w": 1000,
+        "steel": 100,
+        "industrial_components": 2,
+        "construction_skill_required": 4,
+        "work_to_build_display": "42"
+      },
+      "action_sequence": [
+        "capture current isolated colony",
+        "open Architect",
+        "open Power",
+        "select wood-fired generator designator",
+        "open information",
+        "close information",
+        "cancel designator"
+      ],
+      "limitations": [
+        "UI definition display only. No placement, fuel input, generated power, grid behavior or elapsed construction time measured.",
+        "Core plus Odyssey profile; not pure Core runtime evidence.",
+        "Display work42 is not raw XML WorkToBuild2500; display conversion is not a measured build duration.",
+        "No developer mode action was used; earlier profile state is outside this observation."
+      ]
+    }
+  ]
+}

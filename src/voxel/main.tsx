@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { VoxelClient } from './client';
 import { CROPS, NUTRITION } from './farming';
 import { ASSIGNMENT_NAMES } from './rest';
+import { isDeviceKind } from './power';
 import {
   BLOCK_NAMES,
   JOB_NAMES,
@@ -10,6 +11,8 @@ import {
   TOOL_NAMES,
   DAY,
   bedCells,
+  deviceCells,
+  DEVICE_NAMES,
   type Assignment,
   type CropKind,
   type Pos,
@@ -33,12 +36,47 @@ const tools: Tool[] = [
   'stove',
   'bed',
   'door',
+  'generator',
+  'solar',
+  'battery',
+  'wire',
+  'heater',
+  'cooler',
   'clearZone',
   'remove',
   'cancel',
 ];
-const icons = ['↖', '♠', '⛏', '↧', '↥', '▱', '▥', '☷', '▧', '♧', '♨', '▰', '▯', '▨', '⌫', '×'];
+const icons = [
+  '↖',
+  '♠',
+  '⛏',
+  '↧',
+  '↥',
+  '▱',
+  '▥',
+  '☷',
+  '▧',
+  '♧',
+  '♨',
+  '▰',
+  '▯',
+  '⚙',
+  '☀',
+  '▣',
+  'ϟ',
+  '♨',
+  '❄',
+  '▨',
+  '⌫',
+  '×',
+];
 const hints: Record<Tool, string> = {
+  generator: '2×2，占地需两格净空；100 钢材 + 2 零件。补充木材后发电 1000 W，每日耗木 22。',
+  solar: '4×4，100 钢材 + 3 零件；峰值 1700 W，夜间停机，上方楼板按遮挡比例减产。',
+  battery: '1×2，70 钢材 + 2 零件；容量 600 Wd，充电效率 50%。R 切换朝向。',
+  wire: '每格 1 钢材。拖动布线；六向相邻线路可跨层连通。在梯井中逐层铺设竖直线路。',
+  heater: '50 钢材 + 1 零件；工作 175 W，待机 17.5 W。同层 6 格方形范围内自动接线，需封闭房间。',
+  cooler: '90 钢材 + 3 零件；工作 200 W。负 X/Y 蓝侧制冷，正 X/Y 橙侧排热，R 换轴。留出两侧风口。',
   inspect: '点击人物、物资或地形查看详情。选中人物后，可在面板中选择目标位置并下达移动。',
   cut: '点击或框选成熟树木。工人伐木产生 27 木材，搬运到仓储。',
   mine: '点击或框选岩土。工人从相邻工作面挖开两格高通道；先建通路再深入。',
@@ -148,19 +186,32 @@ function App() {
   const stove = p ? s?.stoves.find((v) => equal(v, p)) : null;
   const bed = p ? s?.beds.find((v) => bedCells(v).some((q) => equal(q, p))) : null;
   const door = p ? s?.doors.find((v) => equal(v, p)) : null;
+  const device = p
+    ? s?.devices.find((d) =>
+        deviceCells(d).some((q) => q.x === p.x && q.y === p.y && (q.z === p.z || q.z + 1 === p.z)),
+      )
+    : null;
+  const wire = p ? s?.wires.find((w) => equal(w, p)) : null;
+  const network = device ? s?.networks.find((n) => n.id === device.networkId) : null;
   const room = p ? client.roomAt(p) : null;
+  const roomTemperature = room
+    ? s?.roomTemperatures.find((t) => t.roomId === room.id)?.temperature
+    : undefined;
   const condition = p ? s?.cropConditions.find((v) => equal(v, p)) : null;
   const jobs = p
     ? (s?.jobs.filter(
         (v) =>
           equal(v, p) ||
-          (v.kind === 'bed' && bedCells({ ...v, axis: v.axis ?? 'x' }).some((q) => equal(q, p))),
+          (v.kind === 'bed' && bedCells({ ...v, axis: v.axis ?? 'x' }).some((q) => equal(q, p))) ||
+          (isDeviceKind(v.kind) &&
+            deviceCells({ ...v, kind: v.kind, axis: v.axis ?? 'x' }).some((q) => equal(q, p))),
       ) ?? [])
     : [];
   const pawn = s?.pawns.find((v) => v.id === selectedPawn) ?? people[0];
   const block = p ? client.blockAt(p) : 0;
   const title = p
     ? (people[0]?.name ??
+      (device ? DEVICE_NAMES[device.kind] : null) ??
       (bed
         ? '木床'
         : door
@@ -176,9 +227,11 @@ function App() {
         ? '成熟林木'
         : items[0]
           ? RESOURCE_NAMES[items[0].resource]
-          : client.ladderAt(p)
-            ? '梯井通路'
-            : (BLOCK_NAMES[block] ?? '地形')))
+          : wire
+            ? '电力线路'
+            : client.ladderAt(p)
+              ? '梯井通路'
+              : (BLOCK_NAMES[block] ?? '地形')))
     : '营地概览';
   const focus = (target: Pos) => {
     client.focusOn(target);
@@ -333,7 +386,7 @@ function App() {
           </ol>
           <p className="voxel-guide-note">
             也可在土壤上划种植区、建灶台。稻米约 8
-            日首收，初始口粮需节约使用。战斗、房间温度和电网尚未迁入。
+            日首收，初始口粮需节约使用。采钢矿与机械矿后可建发电机、电池和冷暖设备；跨层供电需要连续电线。
           </p>
           <div className="voxel-progress">
             <span>
@@ -389,10 +442,87 @@ function App() {
           <div className="voxel-room-detail">
             <b>{room.outdoor ? '室外连通空间' : '封闭房间'}</b>
             <p>
-              {room.volume} 格体积 · {room.floorCells} 格地面 · Z {room.minZ}–{room.maxZ}
+              {room.volume} 格体积 · {room.floorCells} 格地面 · Z {room.minZ}–{room.maxZ} ·{' '}
+              {(roomTemperature ?? s?.temperature ?? 21).toFixed(1)}°C
             </p>
             <small>按实际六向空气连通判断；视图切层不改变房间。</small>
           </div>
+        )}
+        {device && (
+          <div className="voxel-bill" data-testid="device-detail">
+            <div className="voxel-info-row">
+              <span>运行状态</span>
+              <b>{device.reason}</b>
+            </div>
+            <p>
+              {device.powered ? `${Math.abs(device.watts).toFixed(1)} W` : '未供电'} ·{' '}
+              {device.networkId === null ? '未接线' : `电网 ${device.networkId + 1}`}
+            </p>
+            {device.kind === 'generator' && (
+              <p>
+                木燃料 {device.fuel.toFixed(1)} / 75 · 每日消耗 22
+                <br />
+                低于 22.5 自动补料；内部燃料不计入营地木材。
+              </p>
+            )}
+            {device.kind === 'battery' && (
+              <>
+                <progress aria-label="电池储能" value={device.energy} max={600} />
+                <p>{device.energy.toFixed(2)} / 600 Wd · 充电效率 50% · 自耗 5 W</p>
+              </>
+            )}
+            {(device.kind === 'heater' || device.kind === 'cooler') && (
+              <label>
+                目标温度
+                <select
+                  aria-label="目标温度"
+                  value={device.target}
+                  onChange={(e) =>
+                    void client.command({
+                      type: 'device',
+                      deviceId: device.id,
+                      on: device.on,
+                      target: Number(e.target.value),
+                    })
+                  }
+                >
+                  {Array.from({ length: 101 }, (_, i) => i - 50).map((t) => (
+                    <option key={t} value={t}>
+                      {t}°C
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
+            {device.kind === 'cooler' && (
+              <p>
+                蓝侧：{device.axis.toUpperCase()}− 制冷 · 橙侧：{device.axis.toUpperCase()}+
+                排热。封堵任一风口会进入待机。
+              </p>
+            )}
+            <button
+              onClick={() =>
+                void client.command({
+                  type: 'device',
+                  deviceId: device.id,
+                  on: !device.on,
+                  target: device.target,
+                })
+              }
+            >
+              {device.on ? '关闭设备' : '开启设备'}
+            </button>
+            {network && (
+              <p>
+                电网发电 {network.generatedW.toFixed(0)} W · 使用 {network.usedW.toFixed(1)} / 需求{' '}
+                {network.demandW.toFixed(1)} W<br />
+                储能 {network.storedWd.toFixed(1)} / {network.capacityWd} Wd
+              </p>
+            )}
+          </div>
+        )}
+        {wire && !device && (
+          <p>电线沿 X/Y/Z 六个方向接通相邻线路和电源设施；断开一格会重新划分电网。</p>
         )}
         {bed && (
           <div className="voxel-bill">
@@ -649,7 +779,7 @@ function App() {
         <div className="voxel-tool-hint">
           <span className="voxel-kicker">
             {TOOL_NAMES[state.tool]}
-            {['bed', 'door'].includes(state.tool) && (
+            {(['bed', 'door'].includes(state.tool) || isDeviceKind(state.tool)) && (
               <button onClick={() => client.rotatePlan()} aria-label="旋转建造朝向">
                 朝向 {state.axis.toUpperCase()} · R
               </button>
@@ -833,7 +963,7 @@ function App() {
               <summary>试玩规则与性能计数</summary>
               <p>
                 64×64×16；逻辑 20 TPS，1 日 10
-                分钟。两格净空，一格高差可走；梯子可携货。种植、烹饪、床位、作息和三维房间已接通；简化天光与温度，无季节、腐坏、食物中毒和饥荒伤害。房间温度、电网、战斗、坍塌和流体尚未实现。
+                分钟。两格净空，一格高差可走；梯子可携货。种植、烹饪、床位、作息、电网与房间温度已接通；采用简化天光和三维导热。战斗、季节、腐坏、食物中毒、饥荒伤害、坍塌和流体尚未实现。
               </p>
               <p>
                 地形数组 {((s?.gridBytes ?? 0) / 1024).toFixed(0)} KiB；寻路数组{' '}
@@ -842,7 +972,9 @@ function App() {
               </p>
               <p>
                 房间工作数组 {((s?.roomBytes ?? 0) / 1024).toFixed(0)}{' '}
-                KiB；房间编号仅在地形或门位置变化时重新计算。
+                KiB；房间编号仅在地形或门位置变化时重新计算。 电网数组{' '}
+                {((s?.powerBytes ?? 0) / 1024).toFixed(0)} KiB；热模型数组{' '}
+                {((s?.thermalBytes ?? 0) / 1024).toFixed(0)} KiB。
               </p>
               <pre>{JSON.stringify(state.metrics, null, 2)}</pre>
             </details>

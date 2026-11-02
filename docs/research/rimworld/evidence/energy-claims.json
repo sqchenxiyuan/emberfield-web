@@ -1,0 +1,793 @@
+[
+  {
+    "id": "EN01",
+    "kind": "xml-and-static-derived",
+    "statement": "Selected Core building costs/work/footprints: conduit steel1/work35/default1x1; wood generator steel100/component2/work2500/2x2; solar steel100/component3/work2500/4x4; battery steel70/component2/work800/1x2; heater steel50/component1/work1000/default1x1; cooler steel90/component3/work1600/default1x1; vent steel30/work400/default1x1. ThingDef.size defaults One and BuildingBase has no direct size override.",
+    "sources": [
+      {
+        "group": "energy",
+        "type": "Verse.ThingDef",
+        "line_start": 15,
+        "line_end": 23
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_BuildingBase"
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_PowerConduit"
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_WoodFiredGenerator"
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_SolarGenerator"
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_Battery"
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_Heater"
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_Cooler"
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_Vent"
+      }
+    ]
+  },
+  {
+    "id": "EN02",
+    "kind": "xml-and-static-derived",
+    "statement": "Conduit,wood generator,solar and battery declare transmitsPower. Ordinary Building.TransmitsPowerNow returns the component property; ThingDef.ConnectToPower excludes transmitters before checking trader/battery connectors. Generator output0 does not itself remove this ordinary transmitter from topology.",
+    "sources": [
+      {
+        "group": "energy",
+        "type": "Verse.Building",
+        "line_start": 40,
+        "line_end": 47
+      },
+      {
+        "group": "energy",
+        "type": "Verse.ThingDef",
+        "line_start": 572,
+        "line_end": 594
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_PowerConduit"
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_WoodFiredGenerator"
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_SolarGenerator"
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_Battery"
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_Heater"
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_Cooler"
+      }
+    ]
+  },
+  {
+    "id": "EN03",
+    "kind": "static-derived",
+    "statement": "PowerNetMaker floods cardinally adjacent transmitting building footprints. Manager queues topology changes, removes affected nets, recreates components and reconnects connectors in ordered phases; PowerNetGrid marks every transmitter footprint cell.",
+    "sources": [
+      {
+        "group": "energy",
+        "type": "RimWorld.PowerNetMaker",
+        "line_start": 15,
+        "line_end": 61
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.PowerNetManager",
+        "line_start": 39,
+        "line_end": 172
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.PowerNetManager",
+        "line_start": 194,
+        "line_end": 224
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.PowerNetGrid",
+        "line_start": 20,
+        "line_end": 73
+      }
+    ]
+  },
+  {
+    "id": "EN04",
+    "kind": "static-derived",
+    "statement": "Connector-initiated search scans13x13 square expanded6 around anchor, selects nearest horizontal squared distance valid transmitter, with no circle-radius or wall-line-of-sight check. Transmitter-initiated reconnect enumerates its footprint expanded6 and attaches unconnected eligible devices; not all paths reselect globally nearest. Coordinates are same-map x/z with y=0.",
+    "sources": [
+      {
+        "group": "energy",
+        "type": "RimWorld.PowerConnectionMaker",
+        "line_start": 9,
+        "line_end": 19
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.PowerConnectionMaker",
+        "line_start": 40,
+        "line_end": 129
+      }
+    ]
+  },
+  {
+    "id": "EN05",
+    "kind": "static-derived",
+    "statement": "Power component resolves own transmitter net or connection parent's net; connector parent is serialized and reconnected after load. Disconnecting a transmitter unsets children and requests reconnection, forcing power traders off first.",
+    "sources": [
+      {
+        "group": "environment",
+        "type": "RimWorld.CompPower",
+        "line_start": 24,
+        "line_end": 85
+      },
+      {
+        "group": "environment",
+        "type": "RimWorld.CompPower",
+        "line_start": 223,
+        "line_end": 239
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.PowerConnectionMaker",
+        "line_start": 21,
+        "line_end": 38
+      }
+    ]
+  },
+  {
+    "id": "EN06",
+    "kind": "xml-and-static-derived",
+    "statement": "Wood generator declared basePowerConsumption-1000 becomes+1000 desired output. Breakdown,no fuel,off switch,auto-power/toxifier gate or !PowerOn sets actual output0. Selected wood declaration has no power upgrade list; generic PowerConsumption can multiply researched upgrade factors.",
+    "sources": [
+      {
+        "group": "energy",
+        "type": "RimWorld.CompPowerPlant",
+        "line_start": 19,
+        "line_end": 76
+      },
+      {
+        "group": "environment",
+        "type": "RimWorld.CompProperties_Power",
+        "line_start": 35,
+        "line_end": 55
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_WoodFiredGenerator"
+      }
+    ]
+  },
+  {
+    "id": "EN07",
+    "kind": "xml-and-static-derived",
+    "statement": "Wood fuel capacity75, consumption22/day, WoodLog filter; refuelable defaults initialFuelPercent0,autoRefuelPercent.3,fuelMultiplier1 and no load/power-only consumption flag. CompTick consumes rate/60000 while switch on under declared defaults, independent of output load and without a breakdown check. HasFuel requires fuel>0 and minimum threshold; consumption clamps at0.",
+    "sources": [
+      {
+        "group": "energy",
+        "type": "RimWorld.CompProperties_Refuelable",
+        "line_start": 9,
+        "line_end": 53
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.CompRefuelable",
+        "line_start": 33,
+        "line_end": 105
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.CompRefuelable",
+        "line_start": 113,
+        "line_end": 119
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.CompRefuelable",
+        "line_start": 223,
+        "line_end": 247
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_WoodFiredGenerator"
+      }
+    ]
+  },
+  {
+    "id": "EN08",
+    "kind": "static-derived",
+    "statement": "Automatic refuel starts at fuel/target<=.3 and !IsFull with target>0 plus nonburning,switched-on,no pending flick/deconstruct rules. CanRefuel additionally checks autofuel toggle, faction,reservation and reachable allowed fuel. Forced jobs can bypass automatic-start gates but do not create fuel.",
+    "sources": [
+      {
+        "group": "energy",
+        "type": "RimWorld.CompRefuelable",
+        "line_start": 57,
+        "line_end": 105
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.RefuelWorkGiverUtility",
+        "line_start": 11,
+        "line_end": 51
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.RefuelWorkGiverUtility",
+        "line_start": 67,
+        "line_end": 86
+      }
+    ]
+  },
+  {
+    "id": "EN09",
+    "kind": "xml-and-static-derived",
+    "statement": "Refuel work requests a real fuel stack, reserves machine and fuel, carries fuel to machine, waits240ticks and finalizes consumption. Remaining count is max(ceil((target-fuel)/multiplier),1). Ordinary wood fueling is non-atomic: a partial reachable stack is enough to select a job; StartCarryThing does not fail on insufficient count by default, takes min(request,carry space,stack), and opportunity pickup only loops if another eligible nearby stack exists. Finalize consumes delivered portions even if total is below the full target. Refuel clamps storage to capacity and destroys consumed stack portions. Job continuation checks ignore the initial fuel-percent threshold.",
+    "sources": [
+      {
+        "group": "energy",
+        "type": "RimWorld.JobDriver_Refuel",
+        "line_start": 13,
+        "line_end": 50
+      },
+      {
+        "group": "work",
+        "type": "Verse.AI.Toils_Haul",
+        "line_start": 34,
+        "line_end": 110
+      },
+      {
+        "group": "work",
+        "type": "Verse.AI.Toils_Haul",
+        "line_start": 185,
+        "line_end": 201
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.CompProperties_Refuelable",
+        "line_start": 43,
+        "line_end": 49
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.RefuelWorkGiverUtility",
+        "line_start": 39,
+        "line_end": 64
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.Toils_Refuel",
+        "line_start": 10,
+        "line_end": 28
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.CompRefuelable",
+        "line_start": 259,
+        "line_end": 286
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.CompRefuelable",
+        "line_start": 326,
+        "line_end": 333
+      },
+      {
+        "group": "energy",
+        "xml_record": "WorkGiverDef_Refuel"
+      },
+      {
+        "group": "energy",
+        "xml_record": "JobDef_Refuel"
+      }
+    ]
+  },
+  {
+    "id": "EN10",
+    "kind": "xml-and-static-derived",
+    "statement": "Solar desired output=Lerp(0,1700,CurSkyGlow)*unroofedOccupiedCells/occupiedCells, using4x4 footprint and roofGrid. It does not read artificial GlowGrid lighting or raycast nearby buildings/trees in this formula; ordinary generator gating still applies.",
+    "sources": [
+      {
+        "group": "energy",
+        "type": "RimWorld.CompPowerPlantSolar",
+        "line_start": 17,
+        "line_end": 35
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.CompPowerPlant",
+        "line_start": 64,
+        "line_end": 75
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_SolarGenerator"
+      }
+    ]
+  },
+  {
+    "id": "EN11",
+    "kind": "xml-and-static-derived",
+    "statement": "Weather sky glow is min(celestialGlow,WeatherDef.maxGlow); SkyManager blends previous/current weather and game conditions/events/sky-affecting things. WeatherDef.maxGlow defaults1; selected Core Clear,Rain,Fog,SnowHard declare no override. Rain cannot be assumed to reduce solar output solely from its visual darkness.",
+    "sources": [
+      {
+        "group": "food",
+        "type": "Verse.WeatherWorker",
+        "line_start": 96,
+        "line_end": 122
+      },
+      {
+        "group": "food",
+        "type": "Verse.SkyTarget",
+        "line_start": 15,
+        "line_end": 35
+      },
+      {
+        "group": "energy",
+        "type": "Verse.WeatherDef",
+        "line_start": 55,
+        "line_end": 63
+      },
+      {
+        "group": "energy",
+        "type": "Verse.SkyManager",
+        "line_start": 29,
+        "line_end": 42
+      },
+      {
+        "group": "energy",
+        "type": "Verse.SkyManager",
+        "line_start": 143,
+        "line_end": 182
+      },
+      {
+        "group": "energy",
+        "xml_record": "WeatherDef_Clear"
+      },
+      {
+        "group": "energy",
+        "xml_record": "WeatherDef_Rain"
+      },
+      {
+        "group": "energy",
+        "xml_record": "WeatherDef_Fog"
+      },
+      {
+        "group": "energy",
+        "xml_record": "WeatherDef_SnowHard"
+      }
+    ]
+  },
+  {
+    "id": "EN12",
+    "kind": "static-derived",
+    "statement": "Celestial glow depends on latitude,dayOfYear,dayPercent and modified sun vector; final glow=clamp01(dot(surfaceNormal,sunDirection)/.7). The sun vector includes seasonal offset and latitude-dependent angular corrections; it is not just a fixed6..18 sine curve.",
+    "sources": [
+      {
+        "group": "food",
+        "type": "RimWorld.GenCelestial",
+        "line_start": 33,
+        "line_end": 43
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.GenCelestial",
+        "line_start": 59,
+        "line_end": 72
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.GenCelestial",
+        "line_start": 140,
+        "line_end": 183
+      }
+    ]
+  },
+  {
+    "id": "EN13",
+    "kind": "xml-and-static-derived",
+    "statement": "Wood generator also declares6 heat units/second via CompHeatPusherPowered. Normal ticking pushes heat on60-tick hash interval; power,fuel,flick,breakdown and temperature gates apply. This heat is separate from electrical watt output.",
+    "sources": [
+      {
+        "group": "energy",
+        "type": "Verse.CompHeatPusher",
+        "line_start": 13,
+        "line_end": 43
+      },
+      {
+        "group": "energy",
+        "type": "Verse.CompHeatPusherPowered",
+        "line_start": 13,
+        "line_end": 30
+      },
+      {
+        "group": "energy",
+        "type": "Verse.CompProperties_HeatPusher",
+        "line_start": 5,
+        "line_end": 15
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_WoodFiredGenerator"
+      }
+    ]
+  },
+  {
+    "id": "EN14",
+    "kind": "static-derived",
+    "statement": "Normal DoSingleTick runs MapPreTick before incrementing tick count, then normal/rare/long thing lists, and MapPostTick later. MapPreTick calls temperature; MapPostTick calls power net balance. MapUpdate handles sky and pending topology/region rebuild. MapTemperature equalizes all rooms when TicksGame%120==7, or each call under debug fastEcology.",
+    "sources": [
+      {
+        "group": "energy",
+        "type": "Verse.TickManager",
+        "line_start": 361,
+        "line_end": 379
+      },
+      {
+        "group": "energy",
+        "type": "Verse.TickManager",
+        "line_start": 452,
+        "line_end": 455
+      },
+      {
+        "group": "energy",
+        "type": "Verse.Map",
+        "line_start": 933,
+        "line_end": 953
+      },
+      {
+        "group": "energy",
+        "type": "Verse.Map",
+        "line_start": 984,
+        "line_end": 990
+      },
+      {
+        "group": "energy",
+        "type": "Verse.Map",
+        "line_start": 1148,
+        "line_end": 1159
+      },
+      {
+        "group": "energy",
+        "type": "Verse.MapTemperature",
+        "line_start": 68,
+        "line_end": 83
+      }
+    ]
+  },
+  {
+    "id": "EN15",
+    "kind": "xml-and-static-derived",
+    "statement": "Rare tick interval is250; lists distribute things across tick buckets and DoTick dispatches Rare to TickRare. Selected heater,cooler,vent are Rare. Heater/cooler multiply energyPerSecond by4.1666665=250/60 each call.",
+    "sources": [
+      {
+        "group": "energy",
+        "type": "Verse.TickList",
+        "line_start": 16,
+        "line_end": 31
+      },
+      {
+        "group": "energy",
+        "type": "Verse.TickList",
+        "line_start": 90,
+        "line_end": 101
+      },
+      {
+        "group": "energy",
+        "type": "Verse.Thing",
+        "line_start": 700,
+        "line_end": 744
+      },
+      {
+        "group": "environment",
+        "type": "RimWorld.Building_Heater",
+        "line_start": 10,
+        "line_end": 37
+      },
+      {
+        "group": "environment",
+        "type": "RimWorld.Building_Cooler",
+        "line_start": 12,
+        "line_end": 53
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_Heater"
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_Cooler"
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_Vent"
+      }
+    ]
+  },
+  {
+    "id": "EN16",
+    "kind": "static-derived",
+    "statement": "Region invalidation caches old roomID,full old CellCount,temperature/vacuum at affected cells. New room initialization deduplicates encountered old room IDs and averages by full old room cell counts, not overlap voxel counts. Reused old rooms retain their tracker while shape data regenerates; absent cached source leaves constructor outdoor temperature.",
+    "sources": [
+      {
+        "group": "energy",
+        "type": "Verse.RegionDirtyer",
+        "line_start": 23,
+        "line_end": 84
+      },
+      {
+        "group": "energy",
+        "type": "Verse.TemperatureVacuumCache",
+        "line_start": 48,
+        "line_end": 84
+      },
+      {
+        "group": "housing",
+        "type": "Verse.RegionAndRoomUpdater",
+        "line_start": 305,
+        "line_end": 332
+      },
+      {
+        "group": "environment",
+        "type": "Verse.RoomTempTracker",
+        "line_start": 60,
+        "line_end": 94
+      }
+    ]
+  },
+  {
+    "id": "EN17",
+    "kind": "static-derived",
+    "statement": "Temperature save/load stores a per-cell ushort grid from room temperatures. Encoding clamps-273.15..1000 then truncates T*16 toward zero plus32768; decode divides by16. Loading applies a representative first cell per region, not a new floating-point energy solve.",
+    "sources": [
+      {
+        "group": "energy",
+        "type": "Verse.TemperatureVacuumSaveLoad",
+        "line_start": 20,
+        "line_end": 65
+      },
+      {
+        "group": "energy",
+        "type": "Verse.TemperatureVacuumSaveLoad",
+        "line_start": 94,
+        "line_end": 130
+      }
+    ]
+  },
+  {
+    "id": "EN18",
+    "kind": "static-derived",
+    "statement": "Door tick calls exchange with twoWay=false; closed uses hash interval375 and open34 from BuildingProperties defaults, rate1. Opening changes scheduling while portal room identity remains separate.",
+    "sources": [
+      {
+        "group": "housing",
+        "type": "RimWorld.Building_Door",
+        "line_start": 73,
+        "line_end": 73
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.Building_Door",
+        "line_start": 331,
+        "line_end": 395
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.BuildingProperties",
+        "line_start": 248,
+        "line_end": 260
+      },
+      {
+        "group": "housing",
+        "type": "Verse.RegionTypeUtility",
+        "line_start": 17,
+        "line_end": 26
+      }
+    ]
+  },
+  {
+    "id": "EN19",
+    "kind": "xml-and-static-derived",
+    "statement": "Vent TickRare calls exchange rate14 with twoWay=true only while FlickUtility.WantsToBeOn, plus gas equalization. No power comp is declared for the selected vent; it's a switchable thermal connection, not an electric heater.",
+    "sources": [
+      {
+        "group": "energy",
+        "type": "RimWorld.Building_Vent",
+        "line_start": 28,
+        "line_end": 41
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.FlickUtility",
+        "line_start": 33,
+        "line_end": 55
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_Vent"
+      }
+    ]
+  },
+  {
+    "id": "EN20",
+    "kind": "static-derived",
+    "statement": "Through-building exchange deduplicates neighboring rooms: vent checks rotation facing/opposite sides; door checks cardinal neighbors. Target is unweighted arithmetic mean of room temperatures; changes scale by rate/area and a common overshoot limiter. Outdoor rooms are fixed reservoirs and vacuum cooling has.1 multiplier.",
+    "sources": [
+      {
+        "group": "environment",
+        "type": "Verse.GenTemperature",
+        "line_start": 368,
+        "line_end": 456
+      }
+    ]
+  },
+  {
+    "id": "EN21",
+    "kind": "static-derived",
+    "statement": "Indoor Room.PushHeat adds E/CellCount; outdoor-temperature rooms reject heat. Temperature is clamped-273.15..1000. Controlled temperature change divides heat by room count and clips toward target without reversing heating/cooling. This is2D game heat capacity, not joules or3D air physics.",
+    "sources": [
+      {
+        "group": "environment",
+        "type": "Verse.Room",
+        "line_start": 99,
+        "line_end": 108
+      },
+      {
+        "group": "environment",
+        "type": "Verse.Room",
+        "line_start": 635,
+        "line_end": 642
+      },
+      {
+        "group": "environment",
+        "type": "Verse.RoomTempTracker",
+        "line_start": 48,
+        "line_end": 57
+      },
+      {
+        "group": "environment",
+        "type": "Verse.GenTemperature",
+        "line_start": 349,
+        "line_end": 365
+      }
+    ]
+  },
+  {
+    "id": "EN22",
+    "kind": "xml-and-static-derived",
+    "statement": "Heater175W,+21heat/s; at T<=20 efficiency1,20..120 linearly drops to0,above120 zero. Nonzero clipped temperature change selects full power else standby factor.1=17.5W. Temp control default target21,range-50..50.",
+    "sources": [
+      {
+        "group": "environment",
+        "type": "RimWorld.Building_Heater",
+        "line_start": 10,
+        "line_end": 37
+      },
+      {
+        "group": "environment",
+        "type": "RimWorld.CompProperties_TempControl",
+        "line_start": 5,
+        "line_end": 19
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_Heater"
+      }
+    ]
+  },
+  {
+    "id": "EN23",
+    "kind": "xml-and-static-derived",
+    "statement": "Cooler200W,-21heat/s; cold side=rotated South,hot=rotated North. Both output cells must not be Impassable. Efficiency=max(0,1-(H-min(C,40))/130),not capped1. When clipped cooling change is nonzero, exhaust heat uses unclipped available cold energy times1.25. Standby20W.",
+    "sources": [
+      {
+        "group": "environment",
+        "type": "RimWorld.Building_Cooler",
+        "line_start": 12,
+        "line_end": 53
+      },
+      {
+        "group": "environment",
+        "type": "RimWorld.CompProperties_TempControl",
+        "line_start": 5,
+        "line_end": 19
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_Cooler"
+      }
+    ]
+  },
+  {
+    "id": "EN24",
+    "kind": "xml-and-static-derived",
+    "statement": "Power energy uses PowerOutput/60000 per original tick in Wd. Selected battery600Wd,charge efficiency.5,self-discharge5W; charging applies efficiency, discharge directly subtracts stored energy. Breakdown clears energy. EMP limits differ between acceptance/current-total/discharge-list paths and remain a runtime caveat.",
+    "sources": [
+      {
+        "group": "environment",
+        "type": "RimWorld.CompPower",
+        "line_start": 20,
+        "line_end": 20
+      },
+      {
+        "group": "environment",
+        "type": "RimWorld.CompPowerTrader",
+        "line_start": 72,
+        "line_end": 72
+      },
+      {
+        "group": "environment",
+        "type": "RimWorld.CompPowerBattery",
+        "line_start": 15,
+        "line_end": 25
+      },
+      {
+        "group": "environment",
+        "type": "RimWorld.CompPowerBattery",
+        "line_start": 67,
+        "line_end": 121
+      },
+      {
+        "group": "environment",
+        "type": "RimWorld.PowerNet",
+        "line_start": 198,
+        "line_end": 205
+      },
+      {
+        "group": "environment",
+        "type": "RimWorld.PowerNet",
+        "line_start": 288,
+        "line_end": 305
+      },
+      {
+        "group": "energy",
+        "xml_record": "ThingDef_Battery"
+      }
+    ]
+  },
+  {
+    "id": "EN25",
+    "kind": "static-derived",
+    "statement": "Power balance evaluates enabled traders and available battery energy; shortages shed random attempts of about5% negative-power devices at20ticks,minimum1. Startup first requires buffered+gain>=0: buffered=stored-5 whenever batteries exist and stored>=.1, otherwise stored, even when real-time generation exceeds pending load. This is a comparison reserve, not5Wd actually consumed. Candidate affordability uses unbuffered stored+gain; CanPowerNow checks that affordability without the startup reserve. Startup uses max(30,floor(200/n)) interval and approximately5% attempts; battery charging distributes across remaining capacities. No hospital-first policy is present in this chain.",
+    "sources": [
+      {
+        "group": "environment",
+        "type": "RimWorld.PowerNet",
+        "line_start": 181,
+        "line_end": 278
+      },
+      {
+        "group": "environment",
+        "type": "RimWorld.PowerNet",
+        "line_start": 323,
+        "line_end": 373
+      }
+    ]
+  }
+]

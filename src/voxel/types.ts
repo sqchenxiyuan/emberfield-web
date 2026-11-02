@@ -21,6 +21,62 @@ export type Work = 'dig' | 'build' | 'cut' | 'haul' | 'grow' | 'cook';
 export type CropKind = 'rice' | 'potato' | 'corn';
 export type Axis = 'x' | 'y';
 export type Assignment = 'anything' | 'work' | 'sleep';
+export type DeviceKind = 'generator' | 'solar' | 'battery' | 'heater' | 'cooler';
+export interface Device extends Pos {
+  id: number;
+  kind: DeviceKind;
+  axis: Axis;
+  on: boolean;
+  fuel: number;
+  energy: number;
+  target: number;
+  powered: boolean;
+  active: boolean;
+  networkId: number | null;
+  watts: number;
+  reason: string;
+}
+export interface PowerNetwork {
+  id: number;
+  generatedW: number;
+  demandW: number;
+  usedW: number;
+  storedWd: number;
+  capacityWd: number;
+  surplusW: number;
+  devices: number[];
+}
+export interface RoomTemperature {
+  roomId: number;
+  temperature: number;
+  capacity: number;
+}
+export interface SavedTemperature {
+  cell: number;
+  temperature: number;
+}
+export const DEVICE_NAMES: Record<DeviceKind, string> = {
+  generator: '木燃发电机',
+  solar: '太阳能板',
+  battery: '蓄电池',
+  heater: '加热器',
+  cooler: '冷气机',
+};
+export const DEVICE_SIZES: Record<DeviceKind, [number, number]> = {
+  generator: [2, 2],
+  solar: [4, 4],
+  battery: [1, 2],
+  heater: [1, 1],
+  cooler: [1, 1],
+};
+export function deviceCells(d: Pos & { kind: DeviceKind; axis: Axis }): Pos[] {
+  const [w, h] = DEVICE_SIZES[d.kind],
+    out: Pos[] = [];
+  for (let y = 0; y < h; y++)
+    for (let x = 0; x < w; x++)
+      out.push({ x: d.x + (d.axis === 'x' ? x : y), y: d.y + (d.axis === 'x' ? y : x), z: d.z });
+  return out;
+}
 export interface Bed extends Pos {
   id: number;
   axis: Axis;
@@ -45,6 +101,8 @@ export interface RoomSummary {
   maxZ: number;
 }
 export type Tool =
+  | DeviceKind
+  | 'wire'
   | 'inspect'
   | 'mine'
   | 'cut'
@@ -117,6 +175,9 @@ export interface CropCondition {
   reason: string;
 }
 export type JobKind =
+  | DeviceKind
+  | 'wire'
+  | 'refuel'
   | 'mine'
   | 'cut'
   | 'floor'
@@ -200,6 +261,12 @@ export interface VoxelSnapshot {
   rooms: RoomSummary[];
   roomRevision: number;
   roomBytes: number;
+  devices: Device[];
+  wires: Pos[];
+  networks: PowerNetwork[];
+  roomTemperatures: RoomTemperature[];
+  thermalBytes: number;
+  powerBytes: number;
   cropConditions: (CropCondition & Pos)[];
   hour: number;
   temperature: number;
@@ -217,6 +284,7 @@ export interface ChunkUpdate {
   ladders: Uint8Array;
 }
 export type VoxelCommand =
+  | { type: 'device'; deviceId: number; on: boolean; target: number }
   | { type: 'designate'; tool: Tool; from: Pos; to?: Pos; crop?: CropKind; axis?: Axis }
   | { type: 'priority'; pawnId: number; work: Work; value: number }
   | { type: 'bill'; stoveId: number; target: number; paused: boolean }
@@ -232,7 +300,7 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 3;
+  version: 4;
   generator: 1;
   seed: number;
   tick: number;
@@ -250,6 +318,9 @@ export interface VoxelSave {
   stoves: Stove[];
   beds: Bed[];
   doors: Door[];
+  devices: Device[];
+  wires: Pos[];
+  thermal: SavedTemperature[];
   stats: VoxelStats;
 }
 export const BLOCK_NAMES = ['空气', '土层', '花岗岩', '钢矿', '木结构', '基岩', '机械矿'];
@@ -263,6 +334,13 @@ export const RESOURCE_NAMES: Record<Resource, string> = {
   meal: '简餐',
 };
 export const JOB_NAMES: Record<JobKind, string> = {
+  generator: '造发电机',
+  solar: '造太阳能板',
+  battery: '造蓄电池',
+  heater: '造加热器',
+  cooler: '造冷气机',
+  wire: '铺电线',
+  refuel: '补充燃料',
   mine: '挖掘',
   cut: '伐木',
   floor: '铺楼板',
@@ -278,6 +356,8 @@ export const JOB_NAMES: Record<JobKind, string> = {
   cook: '烹饪简餐',
 };
 export const TOOL_NAMES: Record<Tool, string> = {
+  ...DEVICE_NAMES,
+  wire: '电线',
   inspect: '查看',
   mine: '挖掘',
   cut: '伐木',

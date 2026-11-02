@@ -40,6 +40,8 @@ jobs:
         run: npm run test:voxel:food
       - name: Verify multilevel housing and sleep persistence
         run: npm run test:voxel:housing
+      - name: Verify physical power construction and room temperatures
+        run: npm run test:voxel:power
       - name: Build site with relative asset and Worker URLs
         run: npm run build
       - name: Configure GitHub Pages

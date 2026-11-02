@@ -1,0 +1,205 @@
+{
+  "evidence_id": "RW17-ENERGY",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "Verse.TickList",
+      "local_file": ".local-research/energy/Verse.TickList.cs",
+      "sha256": "86be251870dce502c448c4a5d871fe49914512104ccaf763c7e6fca7130b40bf",
+      "lines": 128
+    },
+    {
+      "type": "Verse.TickManager",
+      "local_file": ".local-research/energy/Verse.TickManager.cs",
+      "sha256": "fdd400ea4d311a82b6c10aba02b56085a7598ec486c4e06f6c3144d6407fbb51",
+      "lines": 528
+    },
+    {
+      "type": "Verse.Map",
+      "local_file": ".local-research/energy/Verse.Map.cs",
+      "sha256": "b198e3b30c2c8ad7417404c54553a92e981bfe4c8807565163c86e0d3b45e099",
+      "lines": 1405
+    },
+    {
+      "type": "Verse.RegionDirtyer",
+      "local_file": ".local-research/energy/Verse.RegionDirtyer.cs",
+      "sha256": "84e736923a96e0d975fa0d0dbda5820ef51c14969554cf21eb429a2ac57869f8",
+      "lines": 129
+    },
+    {
+      "type": "Verse.MapTemperature",
+      "local_file": ".local-research/energy/Verse.MapTemperature.cs",
+      "sha256": "c7fcb51dd52491eef3ba1aaf407f7483e866a6bf966b6ae29e2dc2a612cf15b6",
+      "lines": 255
+    },
+    {
+      "type": "Verse.SkyManager",
+      "local_file": ".local-research/energy/Verse.SkyManager.cs",
+      "sha256": "1d84abc06b1baec6427efe4336944822af77bd730d987ddac00a6ac9a53d1913",
+      "lines": 208
+    },
+    {
+      "type": "RimWorld.JobDriver_Refuel",
+      "local_file": ".local-research/energy/RimWorld.JobDriver_Refuel.cs",
+      "sha256": "047764b135cf8b59d8c2bac290a3c43616b581c62c5356ce8c055c0d78037c3e",
+      "lines": 52
+    },
+    {
+      "type": "RimWorld.WorkGiver_Refuel",
+      "local_file": ".local-research/energy/RimWorld.WorkGiver_Refuel.cs",
+      "sha256": "271d3b0a483aeb473ba9be367b3df391e31efacbab3b59bfdd6420460f8c3619",
+      "lines": 35
+    },
+    {
+      "type": "RimWorld.RefuelWorkGiverUtility",
+      "local_file": ".local-research/energy/RimWorld.RefuelWorkGiverUtility.cs",
+      "sha256": "85f120429cc46f3b10afe38bbc084a134320c647c805474a13f8b8437fe9c707",
+      "lines": 148
+    },
+    {
+      "type": "RimWorld.CompPowerPlant",
+      "local_file": ".local-research/energy/RimWorld.CompPowerPlant.cs",
+      "sha256": "b3368ffed1cf3c5834136a807c351dc5cb7cfc1260cbe7b80f301d8a5398041e",
+      "lines": 77
+    },
+    {
+      "type": "RimWorld.CompPowerPlantSolar",
+      "local_file": ".local-research/energy/RimWorld.CompPowerPlantSolar.cs",
+      "sha256": "889ff8c9aefe0f3e00aa89462c1fbd19e160bc1db4efe632baef3a48d679453c",
+      "lines": 55
+    },
+    {
+      "type": "RimWorld.PowerConnectionMaker",
+      "local_file": ".local-research/energy/RimWorld.PowerConnectionMaker.cs",
+      "sha256": "fe0bda7aa97e5bfc0c2adfd248d3352db35e71d64426071c6488d19281ca1edc",
+      "lines": 131
+    },
+    {
+      "type": "RimWorld.PowerNetGrid",
+      "local_file": ".local-research/energy/RimWorld.PowerNetGrid.cs",
+      "sha256": "98c9941848c6e5cec99f3d8bb6109182bc20e32cfa231b5f74b5d1a2ae1c3bde",
+      "lines": 94
+    },
+    {
+      "type": "RimWorld.PowerNetMaker",
+      "local_file": ".local-research/energy/RimWorld.PowerNetMaker.cs",
+      "sha256": "04d8a90c400dc98a41a5b2e438e8c1454c02231ab1dea9b60edd5c043cd77272",
+      "lines": 68
+    },
+    {
+      "type": "RimWorld.PowerNetManager",
+      "local_file": ".local-research/energy/RimWorld.PowerNetManager.cs",
+      "sha256": "3208c4f464363d33705c1c22c0f30a9d07fa8e9faa08a04cf7ee280d9bfb9207",
+      "lines": 246
+    },
+    {
+      "type": "RimWorld.CompProperties_Refuelable",
+      "local_file": ".local-research/energy/RimWorld.CompProperties_Refuelable.cs",
+      "sha256": "6656d53bde20ff78efae22f00174b57076e9b8abf03b3459c985f6a7a01bad39",
+      "lines": 170
+    },
+    {
+      "type": "RimWorld.CompRefuelable",
+      "local_file": ".local-research/energy/RimWorld.CompRefuelable.cs",
+      "sha256": "9574f04d42285b703579cf0d3d32a90463dd4777a588fbf2ac41845217d32469",
+      "lines": 412
+    },
+    {
+      "type": "RimWorld.Building_Vent",
+      "local_file": ".local-research/energy/RimWorld.Building_Vent.cs",
+      "sha256": "3c260c01467044ed461634f28478f6a78e88712bbb3cfd8ad57bc9c1a7e43a97",
+      "lines": 66
+    },
+    {
+      "type": "Verse.TemperatureVacuumCache",
+      "local_file": ".local-research/energy/Verse.TemperatureVacuumCache.cs",
+      "sha256": "7756cad5c119e6f6783ac54bf9f8932503204a292a79dfff2fd68bb0ca07fa94",
+      "lines": 86
+    },
+    {
+      "type": "Verse.TemperatureVacuumSaveLoad",
+      "local_file": ".local-research/energy/Verse.TemperatureVacuumSaveLoad.cs",
+      "sha256": "0ea81567d71d7aa116bab2b821fcd0cd488a737108a4effa116b7e783b9e83a0",
+      "lines": 142
+    },
+    {
+      "type": "RimWorld.CompPowerTransmitter",
+      "local_file": ".local-research/energy/RimWorld.CompPowerTransmitter.cs",
+      "sha256": "927aff90b88377c04b915c99bf5963eb36d404e871b56915a5fefde2a36b2733",
+      "lines": 6
+    },
+    {
+      "type": "RimWorld.Building_TempControl",
+      "local_file": ".local-research/energy/RimWorld.Building_TempControl.cs",
+      "sha256": "c8d687571bed3ebdbe849c6180fde04c35836a1b94280748f2b08f6f53824f6e",
+      "lines": 18
+    },
+    {
+      "type": "Verse.CompHeatPusher",
+      "local_file": ".local-research/energy/Verse.CompHeatPusher.cs",
+      "sha256": "8143dbc4df4b286e14952dd8b8110789287564185d6abfb44a07f12569589c75",
+      "lines": 53
+    },
+    {
+      "type": "Verse.CompHeatPusherPowered",
+      "local_file": ".local-research/energy/Verse.CompHeatPusherPowered.cs",
+      "sha256": "beb169e80fc096e28585646f7a2f8b30518edf1c6dee897035153d29a2ae5795",
+      "lines": 33
+    },
+    {
+      "type": "Verse.CompProperties_HeatPusher",
+      "local_file": ".local-research/energy/Verse.CompProperties_HeatPusher.cs",
+      "sha256": "7c085e27e74e703c9ed5bd5e3eb273603004e4273409c5de4b0124bf0dffabdb",
+      "lines": 16
+    },
+    {
+      "type": "RimWorld.FlickUtility",
+      "local_file": ".local-research/energy/RimWorld.FlickUtility.cs",
+      "sha256": "e4effd03c4b8a77511676ce85dd011c1885091f48f16ddc11af9f199482f9629",
+      "lines": 57
+    },
+    {
+      "type": "Verse.ThingDef",
+      "local_file": ".local-research/energy/Verse.ThingDef.cs",
+      "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+      "lines": 2447
+    },
+    {
+      "type": "Verse.Building",
+      "local_file": ".local-research/energy/Verse.Building.cs",
+      "sha256": "b9809c33c917ba20ffd1f8810deb91f306d31ffa3107938caea87b524f466f59",
+      "lines": 688
+    },
+    {
+      "type": "Verse.Thing",
+      "local_file": ".local-research/energy/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "lines": 2235
+    },
+    {
+      "type": "RimWorld.Toils_Refuel",
+      "local_file": ".local-research/energy/RimWorld.Toils_Refuel.cs",
+      "sha256": "b663a9c4d0925eb50363f5c7a2b92ffd55b79242b94205448bf9af7216faa919",
+      "lines": 30
+    },
+    {
+      "type": "Verse.WeatherDef",
+      "local_file": ".local-research/energy/Verse.WeatherDef.cs",
+      "sha256": "cf098eaec62babe0d955ee20992039e4f14d9b59dece59a369847e1acd8ee31e",
+      "lines": 109
+    }
+  ]
+}

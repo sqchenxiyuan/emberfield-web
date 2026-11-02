@@ -1,4 +1,5 @@
 import { VoxelRenderer } from './renderer';
+import { isDeviceKind } from './power';
 import {
   HEIGHT,
   SURFACE,
@@ -286,7 +287,9 @@ export class VoxelClient {
           if (Math.abs(to.x - from.x) >= Math.abs(to.y - from.y)) to.y = from.y;
           else to.x = from.x;
         }
-        const single = ['shaft', 'up', 'ladder', 'bed', 'door'].includes(this.state.tool);
+        const single =
+          ['shaft', 'up', 'ladder', 'bed', 'door'].includes(this.state.tool) ||
+          isDeviceKind(this.state.tool);
         await this.command({
           type: 'designate',
           tool: this.state.tool,

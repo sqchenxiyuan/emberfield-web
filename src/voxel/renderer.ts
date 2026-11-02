@@ -11,6 +11,7 @@ import {
   DirectionalLight,
   DynamicDrawUsage,
   EdgesGeometry,
+  Euler,
   Float32BufferAttribute,
   Fog,
   Group,
@@ -44,18 +45,23 @@ import {
   Block,
   CHUNK,
   DEPTH,
+  DEVICE_SIZES,
   HEIGHT,
   SURFACE,
   TPS,
   WIDTH,
   index,
+  deviceCells,
   type ChunkUpdate,
+  type Device,
+  type DeviceKind,
   type Pawn,
   type Pos,
   type Resource,
   type Stove,
   type VoxelSnapshot,
 } from './types';
+import { BATTERY_CAPACITY } from './power';
 
 /** x/y are horizontal simulation coordinates; Three uses x/z horizontally. */
 export interface VoxelView {
@@ -109,6 +115,13 @@ type PawnVisual = {
   start: number;
   duration: number;
   pawn: Pawn;
+};
+type DevicePart = {
+  cell: Pos;
+  x: number; y: number; z: number;
+  sx: number; sy: number; sz: number;
+  color: number;
+  yaw?: number; pitch?: number; roll?: number;
 };
 
 const CHUNKS_X = Math.ceil(WIDTH / CHUNK);
@@ -334,6 +347,8 @@ export class VoxelRenderer {
   private hit = new Vector3();
   private matrix = new Matrix4();
   private quaternion = new Quaternion();
+  private euler = new Euler();
+  private beamDirection = new Vector3();
   private scale = new Vector3();
   private translation = new Vector3();
   private color = new Color();
@@ -840,10 +855,12 @@ export class VoxelRenderer {
     sy: number,
     color: number,
     yaw = 0,
+    pitch = 0,
+    roll = 0,
   ) {
     this.translation.set(x, z, y);
     this.scale.set(sx, sz, sy);
-    this.quaternion.setFromAxisAngle(UP, yaw);
+    this.quaternion.setFromEuler(this.euler.set(pitch, yaw, roll));
     this.matrix.compose(this.translation, this.quaternion, this.scale);
     mesh.setMatrixAt(i, this.matrix);
     this.color.setHex(color);
@@ -934,7 +951,174 @@ export class VoxelRenderer {
     this.finish(storage);
     this.updateFarming();
     this.updateHousing();
+    this.updatePower();
     this.updateJobLines();
+  }
+
+  /** Local device x/y follow the footprint contract; axis y exchanges those axes. */
+  private devicePart(
+    device: Device, x: number, y: number, z: number,
+    sx: number, sy: number, sz: number, color: number, tilt = 0,
+  ): DevicePart {
+    const alongX = device.axis === 'x';
+    return {
+      cell: device,
+      x: device.x + (alongX ? x : y), y: device.y + (alongX ? y : x), z: device.z + z,
+      sx: alongX ? sx : sy, sy: alongX ? sy : sx, sz, color,
+      pitch: alongX ? tilt : 0, roll: alongX ? 0 : -tilt,
+    };
+  }
+
+  private deviceBatch(
+    name: string, parts: DevicePart[], geometry: BufferGeometry = this.box,
+    effect = false, opacity = 1, inspectable = true,
+  ) {
+    const mesh = this.batch(name, parts.length, geometry,
+      effect ? this.effectMaterial(name, opacity) : this.batchMaterial(name));
+    parts.forEach((p, i) => this.instance(
+      mesh, i, p.x, p.z, p.y, p.sx, p.sz, p.sy, p.color,
+      p.yaw ?? 0, p.pitch ?? 0, p.roll ?? 0,
+    ));
+    this.finish(mesh);
+    if (inspectable) this.inspectBatches.set(mesh, { cells: parts.map(p => p.cell), instancesPerCell: 1 });
+    return mesh;
+  }
+
+  private updatePower() {
+    if (!this.data) return;
+    const bodies: DevicePart[] = [], cylinders: DevicePart[] = [], lights: DevicePart[] = [];
+    for (const d of this.data.devices ?? []) {
+      if (d.z > this.level) continue;
+      const add = (x: number, y: number, z: number, sx: number, sy: number, sz: number, color: number, tilt = 0) =>
+        bodies.push(this.devicePart(d, x, y, z, sx, sy, sz, color, tilt));
+      const light = (x: number, y: number, z: number, sx: number, sy: number, sz: number, color: number) =>
+        lights.push(this.devicePart(d, x, y, z, sx, sy, sz, color));
+      const status = !d.on ? 0x71817c : d.active ? 0xa4e4a4 : d.powered ? 0xdcca7c : 0xd47562;
+      if (d.kind === 'generator') {
+        add(1, 1, 0.13, 1.9, 1.9, 0.24, 0x556464);
+        add(1, 0.95, 0.61, 1.6, 1.45, 0.76, 0x697d70);
+        add(1.32, 0.84, 1.03, 0.76, 0.8, 0.14, 0x303e42);
+        add(0.45, 0.25, 0.62, 0.53, 0.07, 0.43, 0x374447);
+        add(0.45, 0.2, 0.62, 0.32, 0.05, 0.26, 0x9a724e);
+        for (let rib = 0; rib < 4; rib++) add(0.71 + rib * 0.24, 1.69, 0.64, 0.12, 0.08, 0.49, 0x465854);
+        cylinders.push(this.devicePart(d, 0.42, 1.48, 1.25, 0.26, 0.26, 1.1, 0x445052));
+        cylinders.push(this.devicePart(d, 0.42, 1.48, 1.82, 0.36, 0.36, 0.08, 0x2d3c3e));
+        light(1.6, 0.19, 0.78, 0.17, 0.06, 0.13, status);
+      } else if (d.kind === 'solar') {
+        const tilt = 0.22;
+        for (const x of [0.4, 3.6]) for (const y of [0.4, 3.6]) {
+          const height = 1.05 - (y - 2) * Math.sin(tilt);
+          add(x, y, height / 2, 0.12, 0.12, height, 0x6d7c80);
+        }
+        add(2, 2, 1.06, 3.84, 3.84, 0.14, 0xa0aaa3, tilt);
+        for (let row = 0; row < 4; row++) for (let col = 0; col < 4; col++) {
+          const x = 0.63 + col * 0.91, y = 0.63 + row * 0.91;
+          const height = 1.145 - (y - 2) * Math.sin(tilt);
+          add(x, y, height, 0.84, 0.84, 0.028, (row + col) % 2 ? 0x315a77 : 0x3b6c88, tilt);
+          add(x, y, height + 0.025, 0.022, 0.83, 0.012, 0x7498a4, tilt);
+        }
+        light(3.74, 3.74, 0.82, 0.11, 0.11, 0.09, status);
+      } else if (d.kind === 'battery') {
+        const ratio = MathUtils.clamp(d.energy / BATTERY_CAPACITY, 0, 1);
+        add(0.5, 1, 0.12, 0.94, 1.9, 0.2, 0x576667);
+        add(0.5, 1, 0.62, 0.8, 1.76, 0.86, 0x637e7a);
+        add(0.5, 1, 1.07, 0.86, 1.8, 0.1, 0x93a59b);
+        add(0.5, 1, 1.13, 0.58, 1.42, 0.035, 0x283d42);
+        // The bar measures stored Wd against the same capacity used by the simulation.
+        if (ratio > 0) light(0.5, 0.32 + ratio * 0.68, 1.155, 0.48, 1.36 * ratio, 0.025,
+          ratio < 0.2 ? 0xe4b56d : 0x7fc9b5);
+        add(0.22, 0.17, 1.18, 0.14, 0.14, 0.12, 0xae6450);
+        add(0.78, 0.17, 1.18, 0.14, 0.14, 0.12, 0x3b4547);
+        light(0.5, 1.83, 1.14, 0.16, 0.1, 0.07, status);
+      } else if (d.kind === 'heater') {
+        add(0.5, 0.5, 0.12, 0.9, 0.86, 0.2, 0x6e7973);
+        add(0.5, 0.48, 0.48, 0.78, 0.7, 0.58, 0xb7aa8a);
+        add(0.5, 0.845, 0.47, 0.65, 0.05, 0.42, 0x493c34);
+        for (let rib = 0; rib < 4; rib++) add(0.5, 0.884, 0.29 + rib * 0.12, 0.67, 0.035, 0.035, 0x9c9277);
+        light(0.72, 0.78, 0.77, 0.11, 0.1, 0.06, status);
+      } else {
+        add(0.5, 0.5, 1, 0.94, 0.86, 1.96, 0x9baaa6);
+        add(0.5, 0.5, 1.94, 0.98, 0.92, 0.12, 0x6a807e);
+        // Local negative x is the cold side; axis y exchanges x/y exactly once.
+        add(0.015, 0.5, 1.1, 0.06, 0.68, 1.18, 0x679eb3);
+        add(0.985, 0.5, 1.1, 0.06, 0.68, 1.18, 0xb88762);
+        for (let rib = 0; rib < 5; rib++) {
+          add(-0.025, 0.5, 0.65 + rib * 0.22, 0.025, 0.57, 0.065, 0xc7dedb);
+          add(1.025, 0.5, 0.65 + rib * 0.22, 0.025, 0.57, 0.065, 0x6e5c4b);
+        }
+        // Top strips keep cold/hot orientation readable when the far face is occluded.
+        light(0.18, 0.5, 2.01, 0.18, 0.65, 0.025, 0x83c1d4);
+        light(0.82, 0.5, 2.01, 0.18, 0.65, 0.025, 0xe2a773);
+        light(0.5, 0.5, 2.015, 0.16, 0.17, 0.045, status);
+      }
+    }
+    this.deviceBatch('device-body', bodies);
+    this.deviceBatch('device-cylinders', cylinders, this.potGeometry);
+    this.deviceBatch('device-lights', lights, this.box, true);
+    this.updateWires();
+  }
+
+  private updateWires() {
+    const all = this.data?.wires ?? [], nodes = new Set(all.map(p => index(p.x, p.y, p.z)));
+    for (const d of this.data?.devices ?? []) if (['generator', 'solar', 'battery'].includes(d.kind))
+      for (const p of deviceCells(d)) nodes.add(index(p.x, p.y, p.z));
+    const height = (p: Pos) => p.z + (this.block(p.x, p.y, p.z) ? p.z === this.level ? 0.585 : 1.025 : 0.055);
+    const pieces: { cell: Pos; x: number; y: number; z: number; dx: number; dy: number; dz: number }[] = [];
+    for (const p of all) {
+      if (p.z > this.level) continue;
+      const z = height(p);
+      pieces.push({ cell: p, x: p.x + 0.5, y: p.y + 0.5, z, dx: 0, dy: 0, dz: 0 });
+      for (const [dx, dy, dz] of [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]]) {
+        const q = { x: p.x + dx, y: p.y + dy, z: p.z + dz };
+        if (q.x < 0 || q.x >= WIDTH || q.y < 0 || q.y >= DEPTH || q.z < 0 || q.z >= HEIGHT || !nodes.has(index(q.x,q.y,q.z))) continue;
+        const rise = (height(q) - z) / 2;
+        pieces.push({ cell: p, x: p.x + 0.5 + dx / 4, y: p.y + 0.5 + dy / 4, z: z + rise / 2, dx: dx / 2, dy: dy / 2, dz: rise });
+      }
+    }
+    const mesh = this.batch('power-wires', pieces.length, this.box, this.batchMaterial('power-wires'));
+    this.inspectBatches.set(mesh, { cells: pieces.map(p => p.cell), instancesPerCell: 1 });
+    pieces.forEach((p, i) => {
+      const length = Math.hypot(p.dx, p.dy, p.dz);
+      this.translation.set(p.x, p.z, p.y);
+      this.scale.set(length ? 0.055 : 0.13, length || 0.065, length ? 0.055 : 0.13);
+      this.quaternion.identity();
+      if (length) this.quaternion.setFromUnitVectors(UP, this.beamDirection.set(p.dx, p.dz, p.dy).normalize());
+      this.matrix.compose(this.translation, this.quaternion, this.scale);
+      mesh.setMatrixAt(i, this.matrix); this.color.setHex(length ? 0xc69b5c : 0xe4c788); mesh.setColorAt(i, this.color);
+    });
+    this.finish(mesh);
+  }
+
+  private animateDevices() {
+    const time = (this.data?.tick ?? 0) / TPS;
+    const rotors: DevicePart[] = [], smoke: DevicePart[] = [], heat: DevicePart[] = [], air: DevicePart[] = [];
+    for (const d of this.data?.devices ?? []) {
+      if (d.z > this.level || !d.on || !d.active) continue;
+      if (d.kind === 'generator') {
+        for (let blade = 0; blade < 2; blade++) {
+          const rotor = this.devicePart(d, 1.32, 0.84, 1.12, 0.63, 0.09, 0.045, 0xaebbaa);
+          rotor.yaw = time * 5 + blade * Math.PI / 2; rotors.push(rotor);
+        }
+        for (let puff = 0; puff < 4; puff++) {
+          const phase = (time * 0.35 + puff * 0.25 + d.id * 0.13) % 1, size = 0.08 + phase * 0.16;
+          smoke.push(this.devicePart(d, 0.42 + phase * 0.19, 1.48, 1.88 + phase * 0.9, size, size, size * 0.8, 0xabb2a8));
+        }
+      } else if (d.kind === 'heater') {
+        const pulse = 0.8 + Math.sin(time * 3 + d.id) * 0.2;
+        for (let rib = 0; rib < 3; rib++) heat.push(this.devicePart(d, 0.5, 0.875, 0.35 + rib * 0.12, 0.56 * pulse, 0.025, 0.07, 0xef9a50));
+      } else if (d.kind === 'cooler') {
+        for (let side = 0; side < 2; side++) for (let i = 0; i < 3; i++) {
+          const phase = (time * 0.65 + i / 3 + d.id * 0.19) % 1, size = 0.045 + (1 - phase) * 0.035;
+          air.push(this.devicePart(d, side ? 1.08 + phase * 0.6 : -0.08 - phase * 0.6,
+            0.5 + Math.sin(i * 2) * 0.17, 1.15 + (side ? phase * 0.25 : -phase * 0.08),
+            size * 1.7, size, size, side ? 0xe8b77f : 0xa3d8e5));
+        }
+      }
+    }
+    this.deviceBatch('generator-rotors', rotors);
+    this.deviceBatch('generator-smoke', smoke, this.smokeGeometry, true, 0.25, false);
+    this.deviceBatch('heater-glow', heat, this.box, true, 1, false);
+    this.deviceBatch('cooler-air', air, this.smokeGeometry, true, 0.5, false);
   }
 
   private updateHousing() {
@@ -1385,19 +1569,33 @@ export class VoxelRenderer {
       const bottom = floor ? job.z - 0.06 : job.z + 0.025;
       if (job.z > this.level + 1 || job.z < this.level - 2) continue;
       const planting = job.kind === 'sow' || job.kind === 'harvest';
+      const deviceKind = Object.hasOwn(DEVICE_SIZES, job.kind)
+        ? job.kind as DeviceKind
+        : job.kind === 'refuel' ? 'generator' : null;
+      const footprint = deviceKind
+        ? deviceCells({ ...job, kind: deviceKind, axis: job.axis ?? 'x' })
+        : null;
       const height = floor
         ? 0.07
-        : planting
-          ? 0.14
-          : job.kind === 'bed'
-            ? 0.5
-            : job.kind === 'door'
-              ? 2
-              : job.kind === 'wall'
-                ? 0.57
-                : 0.9;
-      const right = job.x + (job.kind === 'bed' && job.axis === 'x' ? 1.96 : 0.96);
-      const back = job.y + (job.kind === 'bed' && job.axis === 'y' ? 1.96 : 0.96);
+        : job.kind === 'wire'
+          ? 0.06
+          : deviceKind
+            ? ({ generator: 1.85, solar: 1.6, battery: 1.2, heater: 0.8, cooler: 2 })[deviceKind]
+            : planting
+              ? 0.14
+              : job.kind === 'bed'
+                ? 0.5
+                : job.kind === 'door'
+                  ? 2
+                  : job.kind === 'wall'
+                    ? 0.57
+                    : 0.9;
+      const right = footprint
+        ? Math.max(...footprint.map(p => p.x)) + 0.96
+        : job.x + (job.kind === 'bed' && job.axis === 'x' ? 1.96 : 0.96);
+      const back = footprint
+        ? Math.max(...footprint.map(p => p.y)) + 0.96
+        : job.y + (job.kind === 'bed' && job.axis === 'y' ? 1.96 : 0.96);
       const corners = [
         [job.x + 0.04, bottom, job.y + 0.04],
         [right, bottom, job.y + 0.04],
@@ -1684,6 +1882,7 @@ export class VoxelRenderer {
     this.workMotes.count = moteCount;
     this.workMotes.instanceMatrix.needsUpdate = true;
     this.animateStoves(time, cookingCells);
+    this.animateDevices();
   }
 
   render() {

@@ -1,0 +1,1066 @@
+{
+  "evidence_id": "RW17-ENERGY-XML",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Selected direct declarations with component class attributes and explicit selected-root absence",
+  "limitations": [
+    "No enabled DLC/mod patch database evaluation. ParentName preserved; missing direct field is not zero.",
+    "Weather maxGlow absence is paired with WeatherDef class default; not a runtime weather/solar measurement."
+  ],
+  "records": [
+    {
+      "group": "base",
+      "id": "ThingDef_BuildingBase",
+      "def_name": "BuildingBase",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Base.xml",
+        "xpath": "/Defs/ThingDef[@Name='BuildingBase']",
+        "sha256": "b16e3a7934febd9ffb7883f18392d524ba376c9657da4c788d1951552f86d142"
+      },
+      "selected_roots": [
+        "size",
+        "tickerType",
+        "rotatable",
+        "passability",
+        "comps"
+      ],
+      "absent_roots": [
+        "size",
+        "tickerType",
+        "rotatable",
+        "passability",
+        "comps"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "power",
+      "id": "ThingDef_PowerConduit",
+      "def_name": "PowerConduit",
+      "parent_name": "BuildingBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Power.xml",
+        "xpath": "/Defs/ThingDef[defName='PowerConduit']",
+        "sha256": "f9213d01681e0d9082447c75a3d31113ba8e6b52f7595ef951d29ca624d0aaba"
+      },
+      "selected_roots": [
+        "thingClass",
+        "size",
+        "tickerType",
+        "rotatable",
+        "passability",
+        "statBases",
+        "costList",
+        "comps",
+        "building",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_roots": [
+        "size",
+        "tickerType",
+        "constructionSkillPrerequisite"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='PowerConduit']/thingClass",
+          "value": "Building"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='PowerConduit']/building/isPowerConduit",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='PowerConduit']/building/ai_chillDestination",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='PowerConduit']/building/isInert",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='PowerConduit']/building/isEdifice",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='PowerConduit']/building/canLandGravshipOn",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='PowerConduit']/building/canConstructInCorner",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='PowerConduit']/passability",
+          "value": "Standable"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='PowerConduit']/statBases/MaxHitPoints",
+          "value": "80"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='PowerConduit']/statBases/WorkToBuild",
+          "value": "35"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='PowerConduit']/statBases/Flammability",
+          "value": "0.7"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='PowerConduit']/statBases/Beauty",
+          "value": "-2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='PowerConduit']/costList/Steel",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='PowerConduit']/comps/li/compClass",
+          "value": "CompPowerTransmitter"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='PowerConduit']/comps/li/transmitsPower",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='PowerConduit']/rotatable",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='PowerConduit']/researchPrerequisites/li",
+          "value": "Electricity"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[defName='PowerConduit']/comps/li",
+          "attributes": {
+            "Class": "CompProperties_Power"
+          }
+        }
+      ]
+    },
+    {
+      "group": "power",
+      "id": "ThingDef_WoodFiredGenerator",
+      "def_name": "WoodFiredGenerator",
+      "parent_name": "BuildingBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Power.xml",
+        "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']",
+        "sha256": "f9213d01681e0d9082447c75a3d31113ba8e6b52f7595ef951d29ca624d0aaba"
+      },
+      "selected_roots": [
+        "thingClass",
+        "size",
+        "tickerType",
+        "rotatable",
+        "passability",
+        "statBases",
+        "costList",
+        "comps",
+        "building",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_roots": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/thingClass",
+          "value": "Building"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/passability",
+          "value": "PassThroughOnly"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/rotatable",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/statBases/MaxHitPoints",
+          "value": "300"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/statBases/WorkToBuild",
+          "value": "2500"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/statBases/Flammability",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/statBases/Beauty",
+          "value": "-20"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/tickerType",
+          "value": "Normal"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/size",
+          "value": "(2,2)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/costList/Steel",
+          "value": "100"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/costList/ComponentIndustrial",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[1]/compClass",
+          "value": "CompPowerPlant"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[1]/basePowerConsumption",
+          "value": "-1000"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[1]/transmitsPower",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[2]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[3]/fuelConsumptionRate",
+          "value": "22.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[3]/fuelCapacity",
+          "value": "75.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[3]/fuelFilter/thingDefs/li",
+          "value": "WoodLog"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[3]/showAllowAutoRefuelToggle",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[3]/canEjectFuel",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[4]/glowRadius",
+          "value": "6"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[5]/compClass",
+          "value": "CompHeatPusherPowered"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[5]/heatPerSecond",
+          "value": "6"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[6]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[7]/useLargeEMPEffecter",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[7]/affectedDamageDefs/li",
+          "value": "EMP"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/researchPrerequisites/li",
+          "value": "Electricity"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/constructionSkillPrerequisite",
+          "value": "4"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[1]",
+          "attributes": {
+            "Class": "CompProperties_Power"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[2]",
+          "attributes": {
+            "Class": "CompProperties_Flickable"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[3]",
+          "attributes": {
+            "Class": "CompProperties_Refuelable"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[4]",
+          "attributes": {
+            "Class": "CompProperties_Glower"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[5]",
+          "attributes": {
+            "Class": "CompProperties_HeatPusher"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[6]",
+          "attributes": {
+            "Class": "CompProperties_Breakdownable"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/comps/li[7]",
+          "attributes": {
+            "Class": "CompProperties_Stunnable"
+          }
+        }
+      ]
+    },
+    {
+      "group": "power",
+      "id": "ThingDef_Battery",
+      "def_name": "Battery",
+      "parent_name": "BuildingBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Power.xml",
+        "xpath": "/Defs/ThingDef[defName='Battery']",
+        "sha256": "f9213d01681e0d9082447c75a3d31113ba8e6b52f7595ef951d29ca624d0aaba"
+      },
+      "selected_roots": [
+        "thingClass",
+        "size",
+        "tickerType",
+        "rotatable",
+        "passability",
+        "statBases",
+        "costList",
+        "comps",
+        "building",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_roots": [
+        "rotatable",
+        "constructionSkillPrerequisite"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/thingClass",
+          "value": "Building_Battery"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/passability",
+          "value": "PassThroughOnly"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/tickerType",
+          "value": "Normal"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/statBases/MaxHitPoints",
+          "value": "100"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/statBases/WorkToBuild",
+          "value": "800"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/statBases/Mass",
+          "value": "20"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/statBases/Flammability",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/statBases/Beauty",
+          "value": "-15"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/size",
+          "value": "(1,2)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/costList/Steel",
+          "value": "70"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/costList/ComponentIndustrial",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/comps/li[1]/storedEnergyMax",
+          "value": "600"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/comps/li[1]/efficiency",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/comps/li[1]/shortCircuitInRain",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/comps/li[1]/transmitsPower",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/comps/li[2]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/comps/li[3]/useLargeEMPEffecter",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/comps/li[3]/affectedDamageDefs/li",
+          "value": "EMP"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/researchPrerequisites/li",
+          "value": "Batteries"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/comps/li[1]",
+          "attributes": {
+            "Class": "CompProperties_Battery"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/comps/li[2]",
+          "attributes": {
+            "Class": "CompProperties_Breakdownable"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/comps/li[3]",
+          "attributes": {
+            "Class": "CompProperties_Stunnable"
+          }
+        }
+      ]
+    },
+    {
+      "group": "power",
+      "id": "ThingDef_SolarGenerator",
+      "def_name": "SolarGenerator",
+      "parent_name": "BuildingBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Power.xml",
+        "xpath": "/Defs/ThingDef[defName='SolarGenerator']",
+        "sha256": "f9213d01681e0d9082447c75a3d31113ba8e6b52f7595ef951d29ca624d0aaba"
+      },
+      "selected_roots": [
+        "thingClass",
+        "size",
+        "tickerType",
+        "rotatable",
+        "passability",
+        "statBases",
+        "costList",
+        "comps",
+        "building",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_roots": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/thingClass",
+          "value": "Building"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/rotatable",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/passability",
+          "value": "PassThroughOnly"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/statBases/MaxHitPoints",
+          "value": "300"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/statBases/WorkToBuild",
+          "value": "2500"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/statBases/Flammability",
+          "value": "0.7"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/tickerType",
+          "value": "Normal"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/size",
+          "value": "(4,4)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/costList/Steel",
+          "value": "100"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/costList/ComponentIndustrial",
+          "value": "3"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/comps/li[1]/compClass",
+          "value": "CompPowerPlantSolar"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/comps/li[1]/basePowerConsumption",
+          "value": "-1700"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/comps/li[1]/transmitsPower",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/comps/li[2]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/comps/li[3]/useLargeEMPEffecter",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/comps/li[3]/empChancePerTick",
+          "value": "0.03"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/comps/li[3]/affectedDamageDefs/li",
+          "value": "EMP"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/researchPrerequisites/li",
+          "value": "SolarPanels"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/constructionSkillPrerequisite",
+          "value": "6"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/comps/li[1]",
+          "attributes": {
+            "Class": "CompProperties_Power"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/comps/li[2]",
+          "attributes": {
+            "Class": "CompProperties_Breakdownable"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/comps/li[3]",
+          "attributes": {
+            "Class": "CompProperties_Stunnable"
+          }
+        }
+      ]
+    },
+    {
+      "group": "thermal",
+      "id": "ThingDef_Heater",
+      "def_name": "Heater",
+      "parent_name": "BuildingBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Temperature.xml",
+        "xpath": "/Defs/ThingDef[defName='Heater']",
+        "sha256": "5a52378b24103968881042728e9a40639f010664ef46a37df20596c01bd4b1ec"
+      },
+      "selected_roots": [
+        "thingClass",
+        "size",
+        "tickerType",
+        "rotatable",
+        "passability",
+        "statBases",
+        "costList",
+        "comps",
+        "building",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_roots": [
+        "size"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/thingClass",
+          "value": "Building_Heater"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/passability",
+          "value": "PassThroughOnly"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/rotatable",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/statBases/WorkToBuild",
+          "value": "1000"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/statBases/MaxHitPoints",
+          "value": "100"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/statBases/Mass",
+          "value": "6"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/statBases/Flammability",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/tickerType",
+          "value": "Rare"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/costList/Steel",
+          "value": "50"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/costList/ComponentIndustrial",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/comps/li[1]/compClass",
+          "value": "CompPowerTrader"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/comps/li[1]/basePowerConsumption",
+          "value": "175"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/comps/li[1]/shortCircuitInRain",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/comps/li[2]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/comps/li[3]/energyPerSecond",
+          "value": "21"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/comps/li[4]/glowRadius",
+          "value": "3"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/comps/li[5]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/researchPrerequisites/li",
+          "value": "Electricity"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/constructionSkillPrerequisite",
+          "value": "5"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/comps/li[1]",
+          "attributes": {
+            "Class": "CompProperties_Power"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/comps/li[2]",
+          "attributes": {
+            "Class": "CompProperties_Flickable"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/comps/li[3]",
+          "attributes": {
+            "Class": "CompProperties_TempControl"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/comps/li[4]",
+          "attributes": {
+            "Class": "CompProperties_Glower"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/comps/li[5]",
+          "attributes": {
+            "Class": "CompProperties_Breakdownable"
+          }
+        }
+      ]
+    },
+    {
+      "group": "thermal",
+      "id": "ThingDef_Cooler",
+      "def_name": "Cooler",
+      "parent_name": "BuildingBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Temperature.xml",
+        "xpath": "/Defs/ThingDef[defName='Cooler']",
+        "sha256": "5a52378b24103968881042728e9a40639f010664ef46a37df20596c01bd4b1ec"
+      },
+      "selected_roots": [
+        "thingClass",
+        "size",
+        "tickerType",
+        "rotatable",
+        "passability",
+        "statBases",
+        "costList",
+        "comps",
+        "building",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_roots": [
+        "size",
+        "rotatable"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/thingClass",
+          "value": "Building_Cooler"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/passability",
+          "value": "Impassable"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/statBases/WorkToBuild",
+          "value": "1600"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/statBases/MaxHitPoints",
+          "value": "100"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/statBases/Flammability",
+          "value": "0.7"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/tickerType",
+          "value": "Rare"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/costList/Steel",
+          "value": "90"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/costList/ComponentIndustrial",
+          "value": "3"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/building/canPlaceOverWall",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/building/isAirtight",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/comps/li[1]/compClass",
+          "value": "CompPowerTrader"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/comps/li[1]/basePowerConsumption",
+          "value": "200"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/comps/li[2]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/comps/li[3]/energyPerSecond",
+          "value": "-21"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/comps/li[4]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/researchPrerequisites/li",
+          "value": "AirConditioning"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/constructionSkillPrerequisite",
+          "value": "5"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/comps/li[1]",
+          "attributes": {
+            "Class": "CompProperties_Power"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/comps/li[2]",
+          "attributes": {
+            "Class": "CompProperties_Flickable"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/comps/li[3]",
+          "attributes": {
+            "Class": "CompProperties_TempControl"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/comps/li[4]",
+          "attributes": {
+            "Class": "CompProperties_Breakdownable"
+          }
+        }
+      ]
+    },
+    {
+      "group": "thermal",
+      "id": "ThingDef_Vent",
+      "def_name": "Vent",
+      "parent_name": "BuildingBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Temperature.xml",
+        "xpath": "/Defs/ThingDef[defName='Vent']",
+        "sha256": "5a52378b24103968881042728e9a40639f010664ef46a37df20596c01bd4b1ec"
+      },
+      "selected_roots": [
+        "thingClass",
+        "size",
+        "tickerType",
+        "rotatable",
+        "passability",
+        "statBases",
+        "costList",
+        "comps",
+        "building",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_roots": [
+        "size",
+        "rotatable",
+        "constructionSkillPrerequisite"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Vent']/thingClass",
+          "value": "Building_Vent"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Vent']/passability",
+          "value": "Impassable"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Vent']/statBases/WorkToBuild",
+          "value": "400"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Vent']/statBases/MaxHitPoints",
+          "value": "100"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Vent']/statBases/Flammability",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Vent']/tickerType",
+          "value": "Rare"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Vent']/costList/Steel",
+          "value": "30"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Vent']/building/canPlaceOverWall",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Vent']/building/canExchangeVacuum",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Vent']/building/isAirtight",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Vent']/researchPrerequisites/li",
+          "value": "ComplexFurniture"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Vent']/comps/li",
+          "attributes": {
+            "Class": "CompProperties_Flickable"
+          }
+        }
+      ]
+    },
+    {
+      "group": "weather",
+      "id": "WeatherDef_Clear",
+      "def_name": "Clear",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/WeatherDefs/Weathers.xml",
+        "xpath": "/Defs/WeatherDef[defName='Clear']",
+        "sha256": "066d81870ad4a4450dbd35b34cf6bcaaddcbb791eecd419264d512695826d80b"
+      },
+      "selected_roots": [
+        "maxGlow"
+      ],
+      "absent_roots": [
+        "maxGlow"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "weather",
+      "id": "WeatherDef_Fog",
+      "def_name": "Fog",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/WeatherDefs/Weathers.xml",
+        "xpath": "/Defs/WeatherDef[defName='Fog']",
+        "sha256": "066d81870ad4a4450dbd35b34cf6bcaaddcbb791eecd419264d512695826d80b"
+      },
+      "selected_roots": [
+        "maxGlow"
+      ],
+      "absent_roots": [
+        "maxGlow"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "weather",
+      "id": "WeatherDef_Rain",
+      "def_name": "Rain",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/WeatherDefs/Weathers.xml",
+        "xpath": "/Defs/WeatherDef[defName='Rain']",
+        "sha256": "066d81870ad4a4450dbd35b34cf6bcaaddcbb791eecd419264d512695826d80b"
+      },
+      "selected_roots": [
+        "maxGlow"
+      ],
+      "absent_roots": [
+        "maxGlow"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "weather",
+      "id": "WeatherDef_SnowHard",
+      "def_name": "SnowHard",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/WeatherDefs/Weathers.xml",
+        "xpath": "/Defs/WeatherDef[defName='SnowHard']",
+        "sha256": "066d81870ad4a4450dbd35b34cf6bcaaddcbb791eecd419264d512695826d80b"
+      },
+      "selected_roots": [
+        "maxGlow"
+      ],
+      "absent_roots": [
+        "maxGlow"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "work",
+      "id": "WorkGiverDef_Refuel",
+      "def_name": "Refuel",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+        "xpath": "/Defs/WorkGiverDef[defName='Refuel']",
+        "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c"
+      },
+      "selected_roots": [
+        "giverClass",
+        "workType",
+        "priorityInType",
+        "requiredCapacities"
+      ],
+      "absent_roots": [],
+      "fields": [
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='Refuel']/giverClass",
+          "value": "WorkGiver_Refuel"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='Refuel']/workType",
+          "value": "Hauling"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='Refuel']/priorityInType",
+          "value": "140"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='Refuel']/requiredCapacities/li",
+          "value": "Manipulation"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "job",
+      "id": "JobDef_Refuel",
+      "def_name": "Refuel",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/JobDefs/Jobs_Misc.xml",
+        "xpath": "/Defs/JobDef[defName='Refuel']",
+        "sha256": "537728d9066def61890253439953631e86afb7f2d5f08501a2a70172bcf5d714"
+      },
+      "selected_roots": [
+        "driverClass",
+        "checkOverrideOnExpire",
+        "casualInterruptible",
+        "playerInterruptible",
+        "alwaysShowWeapon"
+      ],
+      "absent_roots": [
+        "checkOverrideOnExpire",
+        "casualInterruptible",
+        "playerInterruptible",
+        "alwaysShowWeapon"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/JobDef[defName='Refuel']/driverClass",
+          "value": "JobDriver_Refuel"
+        }
+      ],
+      "node_attributes": []
+    }
+  ]
+}

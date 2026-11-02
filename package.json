@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "research:check": "node scripts/research/verify-research.mjs && node scripts/research/verify-food-evidence.mjs && node scripts/research/verify-housing-evidence.mjs",
+    "research:check": "node scripts/research/verify-research.mjs && node scripts/research/verify-food-evidence.mjs && node scripts/research/verify-housing-evidence.mjs && node scripts/research/verify-energy-evidence.mjs",
     "dev": "vite --host 127.0.0.1 --port 5178 --strictPort",
     "check": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
@@ -21,6 +21,8 @@
     "test:voxel:food:browser": "node scripts/voxel-food-browser-verify.mjs",
     "test:voxel:housing": "node scripts/voxel-housing-campaign-verify.mjs",
     "test:voxel:housing:browser": "node scripts/voxel-housing-browser-verify.mjs",
+    "test:voxel:power": "node scripts/voxel-power-campaign-verify.mjs",
+    "test:voxel:power:browser": "node scripts/voxel-power-browser-verify.mjs",
     "test:seeds": "node scripts/seeds-verify.mjs",
     "test:memory": "node scripts/memory-verify.mjs",
     "test:performance": "node scripts/simulation-benchmark.mjs"
