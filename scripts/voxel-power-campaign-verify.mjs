@@ -73,6 +73,20 @@ try {
   // longer fit in the original two starter cells without limit.
   place('stock', p(28, 32), p(31, 36));
   place('stock', p(34, 33), p(36, 36));
+  // Raw chunks occupy one slot each. Keep the farming area available and plan
+  // enough real outer storage before excavation, rather than injecting disposal.
+  const bulkStorage = [];
+  for (let y = 18; y <= 47; y++)
+    for (let x = 18; x <= 47; x++) {
+      const q = p(x, y);
+      if ((x < 24 || x > 41 || y < 24 || y > 41) && sim.standable(q)) bulkStorage.push(q);
+    }
+  bulkStorage.sort((a, b) => Math.hypot(a.x - 32, a.y - 32) - Math.hypot(b.x - 32, b.y - 32));
+  for (const q of bulkStorage) {
+    if (sim.stockpiles.length >= 90) break;
+    if (sim.path(sim.pawns[0], q)) place('stock', q);
+  }
+  assert.ok(sim.stockpiles.length >= 90, 'real finite warehouse capacity for raw chunks');
   const components = [];
   for (let z = 2; z <= 5; z++)
     for (let y = 1; y < 63; y++)
@@ -189,6 +203,9 @@ try {
     boundary.push(p(x, 27, 5));
     if (x !== 39) boundary.push(p(x, 31, 5));
   }
+  until('loose excavation debris hauled clear before sealing room boundaries', () =>
+    sim.items.every((item) => !boundary.some((q) => same(item, q))),
+  );
   for (const q of boundary) if (!sim.blocks[at(q)]) place('wall', q);
   done('old mining tunnels sealed around both rooms');
   place('door', p(36, 31, 5), undefined, 'x');

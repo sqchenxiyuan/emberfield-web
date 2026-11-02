@@ -1,0 +1,121 @@
+{
+  "evidence_id": "RW17-STONECUTTING",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.Bill_Production",
+      "local_file": ".local-research/stonecutting/RimWorld.Bill_Production.cs",
+      "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+      "lines": 469
+    },
+    {
+      "type": "Verse.RecipeWorkerCounter",
+      "local_file": ".local-research/stonecutting/Verse.RecipeWorkerCounter.cs",
+      "sha256": "dc0d44c166c2797cb39df826fa69f881519b6bc5b4d0cc300dcbafaca3bf9b39",
+      "lines": 184
+    },
+    {
+      "type": "Verse.RecipeWorkerCounter_MakeStoneBlocks",
+      "local_file": ".local-research/stonecutting/Verse.RecipeWorkerCounter_MakeStoneBlocks.cs",
+      "sha256": "87cf3817f02f69ea1635b82c869fa7983b6626aa10432eb041aba032af45dd52",
+      "lines": 45
+    },
+    {
+      "type": "RimWorld.Building_WorkTable",
+      "local_file": ".local-research/stonecutting/RimWorld.Building_WorkTable.cs",
+      "sha256": "93950a425067412ffbd0caaa8b3471ef584d02096beec027cf21f630bc5fba19",
+      "lines": 120
+    },
+    {
+      "type": "RimWorld.Building_WorkTable_HeatPush",
+      "local_file": ".local-research/stonecutting/RimWorld.Building_WorkTable_HeatPush.cs",
+      "sha256": "eed3583c63e07919d6703c7264c4842ad007f7c0315162b473a5425a7f03cece",
+      "lines": 18
+    },
+    {
+      "type": "RimWorld.StatPart_WorkTableRoomRole",
+      "local_file": ".local-research/stonecutting/RimWorld.StatPart_WorkTableRoomRole.cs",
+      "sha256": "663a3b08c1ec067c04c856420c8bc65ef18ea9319c5ca14e11017ac59279002d",
+      "lines": 57
+    },
+    {
+      "type": "RimWorld.StatPart_WorkTableOutdoors",
+      "local_file": ".local-research/stonecutting/RimWorld.StatPart_WorkTableOutdoors.cs",
+      "sha256": "f68d1f7652d97b3f82725910862b4ee31b624afdc29f61e0e7a5fa6bc2a7d5e0",
+      "lines": 44
+    },
+    {
+      "type": "RimWorld.StatPart_WorkTableTemperature",
+      "local_file": ".local-research/stonecutting/RimWorld.StatPart_WorkTableTemperature.cs",
+      "sha256": "cd8fa88c96d6e8660e6cd2e44717be1254d1b58fd40b75de1b906164baf6b5a9",
+      "lines": 57
+    },
+    {
+      "type": "RimWorld.StatPart_WorkTableUnpowered",
+      "local_file": ".local-research/stonecutting/RimWorld.StatPart_WorkTableUnpowered.cs",
+      "sha256": "7c7ade8e2b041ef505b740419bbed1cee0413970e80488346ff6ab70dc2ab86b",
+      "lines": 39
+    },
+    {
+      "type": "Verse.AI.Toils_JobTransforms",
+      "local_file": ".local-research/stonecutting/Verse.AI.Toils_JobTransforms.cs",
+      "sha256": "4bd7a3dfc320018c8b88c1dcdad6cc11127318ba18f1041c9669f089bd68f6f3",
+      "lines": 170
+    },
+    {
+      "type": "RimWorld.GenLeaving",
+      "local_file": ".local-research/stonecutting/RimWorld.GenLeaving.cs",
+      "sha256": "177b177252c667af8f8d61e3c6fd9447e8503cad5115b89fa343c415ad7c11cd",
+      "lines": 356
+    },
+    {
+      "type": "RimWorld.JobDriver_Deconstruct",
+      "local_file": ".local-research/stonecutting/RimWorld.JobDriver_Deconstruct.cs",
+      "sha256": "bd454b4bcd3441fbf60ab238fe095dc4140af6848ce3de5a20dd47cd4c45bb35",
+      "lines": 43
+    },
+    {
+      "type": "RimWorld.JobDriver_RemoveFloor",
+      "local_file": ".local-research/stonecutting/RimWorld.JobDriver_RemoveFloor.cs",
+      "sha256": "23eef49e5b986eec66abcee8b973acc0a3c7710081c746b20b8610e4b86d3c02",
+      "lines": 35
+    },
+    {
+      "type": "Verse.GenAdj",
+      "local_file": ".local-research/stonecutting/Verse.GenAdj.cs",
+      "sha256": "8ba2920504a8fafa1b6f0de07b1f1ab80e028dab95353dcd46e8c20052563b89",
+      "lines": 745
+    },
+    {
+      "type": "Verse.BuildableDef",
+      "local_file": ".local-research/stonecutting/Verse.BuildableDef.cs",
+      "sha256": "4ab5cdce8c360a9401aff680543e70858de0d653702abcef524306ff83619c53",
+      "lines": 389
+    },
+    {
+      "type": "RimWorld.ResourceCounter",
+      "local_file": ".local-research/stonecutting/RimWorld.ResourceCounter.cs",
+      "sha256": "132e2e9c8214a435f8c73222454dbb87a9501ca30712233538f512619b6e4db9",
+      "lines": 170
+    },
+    {
+      "type": "Verse.TerrainGrid",
+      "local_file": ".local-research/stonecutting/Verse.TerrainGrid.cs",
+      "sha256": "9ec3c69688508195ac716dc84e3ce7bad9aff5a0b0afb4eac7f2b288440fccfc",
+      "lines": 801
+    }
+  ]
+}

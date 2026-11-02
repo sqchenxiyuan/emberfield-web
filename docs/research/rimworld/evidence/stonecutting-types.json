@@ -1,0 +1,19 @@
+[
+  "RimWorld.Bill_Production",
+  "Verse.RecipeWorkerCounter",
+  "Verse.RecipeWorkerCounter_MakeStoneBlocks",
+  "RimWorld.Building_WorkTable",
+  "RimWorld.Building_WorkTable_HeatPush",
+  "RimWorld.StatPart_WorkTableRoomRole",
+  "RimWorld.StatPart_WorkTableOutdoors",
+  "RimWorld.StatPart_WorkTableTemperature",
+  "RimWorld.StatPart_WorkTableUnpowered",
+  "Verse.AI.Toils_JobTransforms",
+  "RimWorld.GenLeaving",
+  "RimWorld.JobDriver_Deconstruct",
+  "RimWorld.JobDriver_RemoveFloor",
+  "Verse.GenAdj",
+  "Verse.BuildableDef",
+  "RimWorld.ResourceCounter",
+  "Verse.TerrainGrid"
+]

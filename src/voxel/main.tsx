@@ -6,6 +6,7 @@ import { ASSIGNMENT_NAMES } from './rest';
 import { isDeviceKind } from './power';
 import { rotRateAtTemperature, rotLimit, remainingRotDays } from './preservation';
 import { stackLimit, carryLimit } from './logistics';
+import { STONE_CONSTRUCTION } from './crafting';
 import {
   BLOCK_NAMES,
   JOB_NAMES,
@@ -14,6 +15,8 @@ import {
   DAY,
   bedCells,
   deviceCells,
+  stonecutterCells,
+  stonecutterInteraction,
   DEVICE_NAMES,
   type Assignment,
   type CropKind,
@@ -38,6 +41,7 @@ const tools: Tool[] = [
   'stock',
   'farm',
   'stove',
+  'stonecutter',
   'bed',
   'door',
   'generator',
@@ -62,6 +66,7 @@ const icons = [
   '▧',
   '♧',
   '♨',
+  '⚒',
   '▰',
   '▯',
   '⚙',
@@ -86,17 +91,19 @@ const hints: Record<Tool, string> = {
   mine: '点击或框选岩土。工人从相邻工作面挖开两格高通道；先建通路再深入。',
   shaft: '在可站立地面点击一次，向下逐格开凿三格梯井。完整入口消耗 8 木材。',
   up: '在可站立地面点击一次，向上搭建三格梯子。完整通路消耗 8 木材。',
-  floor: '切到目标楼层，拖动规划楼板。每格 3 木材；从梯子旁向外延伸，等待支撑完成。',
-  wall: '拖动连续造两格高的墙。每格 6 木材；需地板支撑，记得留出出入口。',
+  floor: '选择木材或石砖，拖动规划楼板。从梯子旁向外延伸，等待支撑完成。',
+  wall: '选择木材或石砖，拖动连续造两格高的墙。需地板支撑，记得留出出入口。',
   ladder: '每格 2 木材。与地面或已有梯子相连后施工；角色可携带物资爬梯。',
   stock:
     '拖动划仓储，点击设置收纳物品与优先级。工人把食物搬往更高优先级的冷库；需要地板、净空与可达通路。',
   farm: '拖动划定土壤种植区，自动播种、收获并补种。稻米约 8 日首收，三人长期供给建议 110–128 格。',
   stove: '规划灶台，消耗 20 木材。每份简餐需要 10 生食材 + 1 木材；点击灶台设置库存目标。',
+  stonecutter:
+    '3×1 木制切石台，75 木材 + 30 钢材。R 旋转，留出标记的操作位；1 岩块加工为 20 石砖。',
   bed: '点击放置两格木床，45 木材。R 旋转朝向；点击床分配主人，未分配的床会自动认领。',
   door: '点击放置木门，25 木材。R 旋转朝向；自动开关、保持敞开或锁定。门仍分隔两侧房间。',
   clearZone: '拖动擦除种植区和仓储；会清理该区作物且没有收成，已建成设施保留。',
-  remove: '拆除木墙、楼板或梯子，回收部分木材。正在支撑人物的结构会等待人物移开。',
+  remove: '拆除墙、楼板、设施或梯子，回收部分材料。正在支撑人物的结构会等待人物移开。',
   cancel: '拖动取消未完成任务；已经送到工地的材料退回现场。',
 };
 const equal = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
@@ -253,6 +260,9 @@ function App() {
   const canReceive = capacity.some((v) => Object.values(v.available).some((n) => n > 0));
   const crop = p ? s?.crops.find((v) => equal(v, p)) : null;
   const stove = p ? s?.stoves.find((v) => equal(v, p)) : null;
+  const stonecutter = p
+    ? s?.stonecutters.find((v) => stonecutterCells(v).some((q) => equal(q, p)))
+    : null;
   const bed = p ? s?.beds.find((v) => bedCells(v).some((q) => equal(q, p))) : null;
   const door = p ? s?.doors.find((v) => equal(v, p)) : null;
   const device = p
@@ -271,6 +281,8 @@ function App() {
     ? (s?.jobs.filter(
         (v) =>
           equal(v, p) ||
+          ((v.kind === 'stonecutter' || v.kind === 'stonecut') &&
+            stonecutterCells({ ...v, axis: v.axis ?? 'x' }).some((q) => equal(q, p))) ||
           (v.kind === 'bed' && bedCells({ ...v, axis: v.axis ?? 'x' }).some((q) => equal(q, p))) ||
           (isDeviceKind(v.kind) &&
             deviceCells({ ...v, kind: v.kind, axis: v.axis ?? 'x' }).some((q) => equal(q, p))),
@@ -299,6 +311,7 @@ function App() {
   const title = p
     ? (people[0]?.name ??
       (device ? DEVICE_NAMES[device.kind] : null) ??
+      (stonecutter ? '木制切石台' : null) ??
       (bed
         ? '木床'
         : door
@@ -820,6 +833,55 @@ function App() {
             </button>
           </div>
         )}
+        {stonecutter && (
+          <div className="voxel-bill" data-testid="stonecutting-bill">
+            <p>
+              1 花岗岩块 → 20 花岗岩砖
+              <br />
+              全营地石砖低于目标时加工，计入正在加工的批次；每批可能超过目标。修改目标后当前批次继续完成，下一批按新目标判断。
+            </p>
+            <label>
+              石砖库存目标
+              <select
+                aria-label="石砖库存目标"
+                value={stonecutter.target}
+                onChange={(e) =>
+                  void client.command({
+                    type: 'stoneBill',
+                    stonecutterId: stonecutter.id,
+                    target: Number(e.target.value),
+                    paused: stonecutter.paused,
+                  })
+                }
+              >
+                {[...new Set([0, 20, 40, 75, 100, 200, 500, stonecutter.target])]
+                  .sort((a, b) => a - b)
+                  .map((n) => (
+                    <option key={n} value={n}>
+                      {n} 块
+                    </option>
+                  ))}
+              </select>
+            </label>
+            <button
+              onClick={() =>
+                void client.command({
+                  type: 'stoneBill',
+                  stonecutterId: stonecutter.id,
+                  target: stonecutter.target,
+                  paused: !stonecutter.paused,
+                })
+              }
+            >
+              {stonecutter.paused ? '恢复切石' : '暂停切石'}
+            </button>
+            <small>
+              需要「加工」工作与可达操作位：{stonecutterInteraction(stonecutter).x},{' '}
+              {stonecutterInteraction(stonecutter).y} · Z {stonecutter.z}。每次只搬 1
+              岩块，完成后石砖落在附近。
+            </small>
+          </div>
+        )}
         {items.map((i) => (
           <div className="voxel-item-detail" key={i.id} data-testid="item-detail">
             <div className="voxel-info-row">
@@ -838,7 +900,10 @@ function App() {
         {jobs.map((j) => (
           <div className="voxel-job" key={j.id}>
             <div>
-              <b>{JOB_NAMES[j.kind]}</b>
+              <b>
+                {JOB_NAMES[j.kind]}
+                {j.material === 'stone' ? ' · 石砖' : ''}
+              </b>
               <span>{Math.min(100, Math.floor((j.progress / j.work) * 100))}%</span>
             </div>
             <progress value={j.progress} max={j.work} />
@@ -891,9 +956,9 @@ function App() {
               </div>
             )}
             <div className="voxel-priorities">
-              {(['dig', 'cut', 'build', 'haul', 'grow', 'cook'] as Work[]).map((w, i) => (
+              {(['dig', 'cut', 'build', 'haul', 'grow', 'cook', 'craft'] as Work[]).map((w, i) => (
                 <label key={w}>
-                  {['挖掘', '伐木', '施工', '搬运', '种植', '烹饪'][i]}
+                  {['挖掘', '伐木', '施工', '搬运', '种植', '烹饪', '加工'][i]}
                   <select
                     aria-label={`${pawn.name} ${w}优先级`}
                     value={pawn.priorities[w]}
@@ -979,7 +1044,7 @@ function App() {
         <div className="voxel-tool-hint">
           <span className="voxel-kicker">
             {TOOL_NAMES[state.tool]}
-            {(['bed', 'door'].includes(state.tool) || isDeviceKind(state.tool)) && (
+            {(['bed', 'door', 'stonecutter'].includes(state.tool) || isDeviceKind(state.tool)) && (
               <button onClick={() => client.rotatePlan()} aria-label="旋转建造朝向">
                 朝向 {state.axis.toUpperCase()} · R
               </button>
@@ -997,8 +1062,22 @@ function App() {
                 ))}
               </select>
             )}
+            {['wall', 'floor'].includes(state.tool) && (
+              <select
+                aria-label="建造材料"
+                value={state.material}
+                onChange={(e) => client.chooseMaterial(e.target.value as 'wood' | 'stone')}
+              >
+                <option value="wood">木材</option>
+                <option value="stone">花岗岩砖</option>
+              </select>
+            )}
           </span>
-          <p>{hints[state.tool]}</p>
+          <p>
+            {hints[state.tool]}
+            {(state.tool === 'floor' || state.tool === 'wall') &&
+              ` 每格 ${state.material === 'stone' ? STONE_CONSTRUCTION[state.tool].cost : state.tool === 'wall' ? 6 : 3} ${state.material === 'stone' ? '花岗岩砖' : '木材'}。`}
+          </p>
           <small>Q / E 旋转 · [ / ] 切层 · 中键拖转 · 滚轮缩放 · WASD 平移 · 右键退出工具</small>
         </div>
         <div className="voxel-bottom-row">
@@ -1163,7 +1242,7 @@ function App() {
               <summary>试玩规则与性能计数</summary>
               <p>
                 64×64×16；逻辑 20 TPS，1 日 10
-                分钟。两格净空，一格高差可走；梯子可携货。种植、烹饪、床位、作息、电网、冷库保鲜和有限仓储已接通；采用简化天光和三维导热。战斗、季节、食物中毒、饥荒伤害、坍塌和流体尚未实现。
+                分钟。两格净空，一格高差可走；梯子可携货。种植、烹饪、床位、作息、电网、冷库保鲜、有限仓储和岩块切石已接通。天然岩石有机会留下岩块，切石台加工后才能用于石砖墙和楼板；切石科技暂默认解锁。采用简化天光和三维导热。战斗、季节、食物中毒、饥荒伤害、坍塌和流体尚未实现。
               </p>
               <p>
                 地形数组 {((s?.gridBytes ?? 0) / 1024).toFixed(0)} KiB；寻路数组{' '}

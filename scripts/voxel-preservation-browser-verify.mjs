@@ -239,7 +239,16 @@ async function modeRun(mode) {
     );
     for (const name of ['收纳全部', '仅收食物', '仅收建材', '停止收纳'])
       reachableControls.push(await reachable(button(name), name));
-    for (const name of ['木材', '石料', '钢材', '零件', '包装生存口粮', '生食材', '简餐'])
+    for (const name of [
+      '木材',
+      '花岗岩砖',
+      '花岗岩块',
+      '钢材',
+      '零件',
+      '包装生存口粮',
+      '生食材',
+      '简餐',
+    ])
       reachableControls.push(
         await reachable(page.getByLabel(`收纳${name}`, { exact: true }), `收纳${name}`),
       );
@@ -275,7 +284,7 @@ async function modeRun(mode) {
     });
     await shot('04-frozen-food');
     const saveBefore = await page.evaluate(() => window.voxel.exportSave());
-    assert.equal(saveBefore.version, 6);
+    assert.equal(saveBefore.version, 7);
     await control('菜单与存档');
     await control('保存营地');
     await page.getByText('手动保存成功', { exact: true }).waitFor();
@@ -297,7 +306,7 @@ async function modeRun(mode) {
       saveAfter.jobs.map((j) => [j.id, j.delivered, j.deliveredFood]),
       saveBefore.jobs.map((j) => [j.id, j.delivered, j.deliveredFood]),
     );
-    record('DOM v6 save/load preserves food ages species storage filters and all food containers');
+    record('DOM v7 save/load preserves food ages species storage filters and all food containers');
     const frozen = (await state()).snapshot,
       ages = new Map(
         frozen.items.filter((i) => i.resource === 'meal').map((i) => [i.id, i.rotProgress]),

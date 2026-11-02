@@ -11,3 +11,11 @@ stacks and overlapping ground containers. The finite-logistics campaign imports
 them through the public save loader, checks quantities and quantity-weighted
 food age, and then advances the migrated game. Do not regenerate this fixture
 from the current simulation or weaken it into a hand-edited v6 save.
+
+`voxel-v6-logistics.json` is the unchanged `final` checkpoint at tick 1826 from
+the normal finite-logistics campaign published in commit
+`0b7c10912f3c9e5ee8a60516470851d337825a01`. Provenance is in
+`docs/research/rimworld/evidence/voxel-logistics-validation.json`.
+SHA256: `8063226ef027897139f295a02e8b53963c94f1c48853c2c83e36edf1d628d36d`.
+The v7 stonecutting campaign verifies that its existing 15 stone remain processed
+blocks, warehouse filters remain unchanged, and no raw chunks are invented.

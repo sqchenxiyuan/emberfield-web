@@ -15,7 +15,16 @@ const bundle = await build({
 const { VoxelSimulation } = await import(
   `data:text/javascript;base64,${Buffer.from(bundle.outputFiles[0].text).toString('base64')}`
 );
-const limits = { wood: 75, stone: 75, steel: 75, components: 50, food: 10, grain: 75, meal: 10 };
+const limits = {
+  wood: 75,
+  stone: 75,
+  chunk: 1,
+  steel: 75,
+  components: 50,
+  food: 10,
+  grain: 75,
+  meal: 10,
+};
 const p = (x, y, z = 8) => ({ x, y, z });
 const key = (p) => `${p.x}/${p.y}/${p.z}`;
 const same = (a, b) => key(a) === key(b);
@@ -177,7 +186,7 @@ try {
   // These cells are ordinary supported ground next to the starter clearing.
   // Mineral stock is deliberately separate from the food and wood filters.
   place('stock', p(28, 34), p(30, 36));
-  storage(p(28, 34), ['stone', 'steel', 'components'], 1, p(30, 36));
+  storage(p(28, 34), ['stone', 'chunk', 'steel', 'components'], 1, p(30, 36));
   place('shaft', p(33, 32));
   until('workers excavate a real three-level shaft', () => sim.jobs.length === 0);
   place('mine', p(34, 32, 5), p(36, 33, 5));
@@ -240,7 +249,7 @@ try {
   }
   const migrated = VoxelSimulation.load(legacy),
     newSave = migrated.save();
-  assert.equal(newSave.version, 6);
+  assert.equal(newSave.version, 7);
   const oldAges = foodAges(legacy),
     newAges = foodAges(newSave);
   assert.deepEqual(Object.keys(newAges).sort(), Object.keys(oldAges).sort());
@@ -264,9 +273,9 @@ try {
     Object.keys(initial).map((r) => [
       r,
       legacyCounts[r] +
-        legacy.stats.consumed[r] +
-        legacy.stats.spoiled[r] -
-        legacy.stats.produced[r],
+        (legacy.stats.consumed[r] ?? 0) +
+        (legacy.stats.spoiled[r] ?? 0) -
+        (legacy.stats.produced[r] ?? 0),
     ]),
   );
   audit(migrated, legacyInitial);

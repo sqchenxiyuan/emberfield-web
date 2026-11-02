@@ -160,6 +160,9 @@ a {
   top: 100px;
   width: 180px;
   padding: 16px 18px;
+  max-height: calc(62vh - 280px);
+  overflow-y: auto;
+  scrollbar-width: thin;
   background: #1d292ad9;
   border: 1px solid #d7dfcb24;
   border-radius: 5px;
@@ -763,6 +766,7 @@ a {
   .voxel-resources {
     width: 155px;
     padding: 12px 14px;
+    max-height: calc(69vh - 280px);
   }
   .voxel-resources > div {
     margin-top: 6px;

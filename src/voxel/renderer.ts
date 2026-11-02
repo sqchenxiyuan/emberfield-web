@@ -52,6 +52,8 @@ import {
   WIDTH,
   index,
   deviceCells,
+  stonecutterCells,
+  stonecutterInteraction,
   type ChunkUpdate,
   type Device,
   type DeviceKind,
@@ -118,10 +120,16 @@ type PawnVisual = {
 };
 type DevicePart = {
   cell: Pos;
-  x: number; y: number; z: number;
-  sx: number; sy: number; sz: number;
+  x: number;
+  y: number;
+  z: number;
+  sx: number;
+  sy: number;
+  sz: number;
   color: number;
-  yaw?: number; pitch?: number; roll?: number;
+  yaw?: number;
+  pitch?: number;
+  roll?: number;
 };
 
 const CHUNKS_X = Math.ceil(WIDTH / CHUNK);
@@ -131,6 +139,7 @@ const UP = new Vector3(0, 1, 0);
 const RESOURCE_COLORS: Record<Resource, number> = {
   wood: 0xbc874d,
   stone: 0x949fa5,
+  chunk: 0x77878b,
   steel: 0x81b8c5,
   components: 0xe8b55c,
   food: 0x99b869,
@@ -144,6 +153,7 @@ const BLOCK_COLORS: Record<number, number> = {
   [Block.Wood]: 0xbf925d,
   [Block.Bedrock]: 0x59646a,
   [Block.Components]: 0xc4a26c,
+  [Block.Masonry]: 0xa5b8bf,
 };
 const FACES = [
   {
@@ -922,7 +932,31 @@ export class VoxelRenderer {
     });
     this.finish(trunks);
     this.finish(crowns);
-    const items = this.data.items.filter((item) => item.amount > 0 && item.z <= this.level);
+    const loose = this.data.items.filter((item) => item.amount > 0 && item.z <= this.level);
+    const items = loose.filter((item) => item.resource !== 'chunk');
+    const chunks = loose.filter((item) => item.resource === 'chunk');
+    const rocks = this.batch(
+      'rock-chunks',
+      chunks.length,
+      this.smokeGeometry,
+      this.batchMaterial('rock-chunks'),
+    );
+    this.inspectBatches.set(rocks, { cells: chunks, instancesPerCell: 1 });
+    chunks.forEach((item, i) =>
+      this.instance(
+        rocks,
+        i,
+        item.x + 0.5,
+        item.z + 0.33,
+        item.y + 0.5,
+        0.42,
+        0.33,
+        0.4,
+        RESOURCE_COLORS.chunk,
+        hash(item.x, item.y) * Math.PI,
+      ),
+    );
+    this.finish(rocks);
     const piles = this.batch('items', items.length * 3, this.box, this.batchMaterial('items'));
     this.inspectBatches.set(piles, { cells: items, instancesPerCell: 3 });
     items.forEach((item, i) => {
@@ -950,6 +984,7 @@ export class VoxelRenderer {
     );
     this.finish(storage);
     this.updateFarming();
+    this.updateStonecutters();
     this.updateHousing();
     this.updatePower();
     this.updateJobLines();
@@ -957,42 +992,93 @@ export class VoxelRenderer {
 
   /** Local device x/y follow the footprint contract; axis y exchanges those axes. */
   private devicePart(
-    device: Device, x: number, y: number, z: number,
-    sx: number, sy: number, sz: number, color: number, tilt = 0,
+    device: Device,
+    x: number,
+    y: number,
+    z: number,
+    sx: number,
+    sy: number,
+    sz: number,
+    color: number,
+    tilt = 0,
   ): DevicePart {
     const alongX = device.axis === 'x';
     return {
       cell: device,
-      x: device.x + (alongX ? x : y), y: device.y + (alongX ? y : x), z: device.z + z,
-      sx: alongX ? sx : sy, sy: alongX ? sy : sx, sz, color,
-      pitch: alongX ? tilt : 0, roll: alongX ? 0 : -tilt,
+      x: device.x + (alongX ? x : y),
+      y: device.y + (alongX ? y : x),
+      z: device.z + z,
+      sx: alongX ? sx : sy,
+      sy: alongX ? sy : sx,
+      sz,
+      color,
+      pitch: alongX ? tilt : 0,
+      roll: alongX ? 0 : -tilt,
     };
   }
 
   private deviceBatch(
-    name: string, parts: DevicePart[], geometry: BufferGeometry = this.box,
-    effect = false, opacity = 1, inspectable = true,
+    name: string,
+    parts: DevicePart[],
+    geometry: BufferGeometry = this.box,
+    effect = false,
+    opacity = 1,
+    inspectable = true,
   ) {
-    const mesh = this.batch(name, parts.length, geometry,
-      effect ? this.effectMaterial(name, opacity) : this.batchMaterial(name));
-    parts.forEach((p, i) => this.instance(
-      mesh, i, p.x, p.z, p.y, p.sx, p.sz, p.sy, p.color,
-      p.yaw ?? 0, p.pitch ?? 0, p.roll ?? 0,
-    ));
+    const mesh = this.batch(
+      name,
+      parts.length,
+      geometry,
+      effect ? this.effectMaterial(name, opacity) : this.batchMaterial(name),
+    );
+    parts.forEach((p, i) =>
+      this.instance(
+        mesh,
+        i,
+        p.x,
+        p.z,
+        p.y,
+        p.sx,
+        p.sz,
+        p.sy,
+        p.color,
+        p.yaw ?? 0,
+        p.pitch ?? 0,
+        p.roll ?? 0,
+      ),
+    );
     this.finish(mesh);
-    if (inspectable) this.inspectBatches.set(mesh, { cells: parts.map(p => p.cell), instancesPerCell: 1 });
+    if (inspectable)
+      this.inspectBatches.set(mesh, { cells: parts.map((p) => p.cell), instancesPerCell: 1 });
     return mesh;
   }
 
   private updatePower() {
     if (!this.data) return;
-    const bodies: DevicePart[] = [], cylinders: DevicePart[] = [], lights: DevicePart[] = [];
+    const bodies: DevicePart[] = [],
+      cylinders: DevicePart[] = [],
+      lights: DevicePart[] = [];
     for (const d of this.data.devices ?? []) {
       if (d.z > this.level) continue;
-      const add = (x: number, y: number, z: number, sx: number, sy: number, sz: number, color: number, tilt = 0) =>
-        bodies.push(this.devicePart(d, x, y, z, sx, sy, sz, color, tilt));
-      const light = (x: number, y: number, z: number, sx: number, sy: number, sz: number, color: number) =>
-        lights.push(this.devicePart(d, x, y, z, sx, sy, sz, color));
+      const add = (
+        x: number,
+        y: number,
+        z: number,
+        sx: number,
+        sy: number,
+        sz: number,
+        color: number,
+        tilt = 0,
+      ) => bodies.push(this.devicePart(d, x, y, z, sx, sy, sz, color, tilt));
+      const light = (
+        x: number,
+        y: number,
+        z: number,
+        sx: number,
+        sy: number,
+        sz: number,
+        color: number,
+      ) => lights.push(this.devicePart(d, x, y, z, sx, sy, sz, color));
       const status = !d.on ? 0x71817c : d.active ? 0xa4e4a4 : d.powered ? 0xdcca7c : 0xd47562;
       if (d.kind === 'generator') {
         add(1, 1, 0.13, 1.9, 1.9, 0.24, 0x556464);
@@ -1000,23 +1086,27 @@ export class VoxelRenderer {
         add(1.32, 0.84, 1.03, 0.76, 0.8, 0.14, 0x303e42);
         add(0.45, 0.25, 0.62, 0.53, 0.07, 0.43, 0x374447);
         add(0.45, 0.2, 0.62, 0.32, 0.05, 0.26, 0x9a724e);
-        for (let rib = 0; rib < 4; rib++) add(0.71 + rib * 0.24, 1.69, 0.64, 0.12, 0.08, 0.49, 0x465854);
+        for (let rib = 0; rib < 4; rib++)
+          add(0.71 + rib * 0.24, 1.69, 0.64, 0.12, 0.08, 0.49, 0x465854);
         cylinders.push(this.devicePart(d, 0.42, 1.48, 1.25, 0.26, 0.26, 1.1, 0x445052));
         cylinders.push(this.devicePart(d, 0.42, 1.48, 1.82, 0.36, 0.36, 0.08, 0x2d3c3e));
         light(1.6, 0.19, 0.78, 0.17, 0.06, 0.13, status);
       } else if (d.kind === 'solar') {
         const tilt = 0.22;
-        for (const x of [0.4, 3.6]) for (const y of [0.4, 3.6]) {
-          const height = 1.05 - (y - 2) * Math.sin(tilt);
-          add(x, y, height / 2, 0.12, 0.12, height, 0x6d7c80);
-        }
+        for (const x of [0.4, 3.6])
+          for (const y of [0.4, 3.6]) {
+            const height = 1.05 - (y - 2) * Math.sin(tilt);
+            add(x, y, height / 2, 0.12, 0.12, height, 0x6d7c80);
+          }
         add(2, 2, 1.06, 3.84, 3.84, 0.14, 0xa0aaa3, tilt);
-        for (let row = 0; row < 4; row++) for (let col = 0; col < 4; col++) {
-          const x = 0.63 + col * 0.91, y = 0.63 + row * 0.91;
-          const height = 1.145 - (y - 2) * Math.sin(tilt);
-          add(x, y, height, 0.84, 0.84, 0.028, (row + col) % 2 ? 0x315a77 : 0x3b6c88, tilt);
-          add(x, y, height + 0.025, 0.022, 0.83, 0.012, 0x7498a4, tilt);
-        }
+        for (let row = 0; row < 4; row++)
+          for (let col = 0; col < 4; col++) {
+            const x = 0.63 + col * 0.91,
+              y = 0.63 + row * 0.91;
+            const height = 1.145 - (y - 2) * Math.sin(tilt);
+            add(x, y, height, 0.84, 0.84, 0.028, (row + col) % 2 ? 0x315a77 : 0x3b6c88, tilt);
+            add(x, y, height + 0.025, 0.022, 0.83, 0.012, 0x7498a4, tilt);
+          }
         light(3.74, 3.74, 0.82, 0.11, 0.11, 0.09, status);
       } else if (d.kind === 'battery') {
         const ratio = MathUtils.clamp(d.energy / BATTERY_CAPACITY, 0, 1);
@@ -1025,8 +1115,16 @@ export class VoxelRenderer {
         add(0.5, 1, 1.07, 0.86, 1.8, 0.1, 0x93a59b);
         add(0.5, 1, 1.13, 0.58, 1.42, 0.035, 0x283d42);
         // The bar measures stored Wd against the same capacity used by the simulation.
-        if (ratio > 0) light(0.5, 0.32 + ratio * 0.68, 1.155, 0.48, 1.36 * ratio, 0.025,
-          ratio < 0.2 ? 0xe4b56d : 0x7fc9b5);
+        if (ratio > 0)
+          light(
+            0.5,
+            0.32 + ratio * 0.68,
+            1.155,
+            0.48,
+            1.36 * ratio,
+            0.025,
+            ratio < 0.2 ? 0xe4b56d : 0x7fc9b5,
+          );
         add(0.22, 0.17, 1.18, 0.14, 0.14, 0.12, 0xae6450);
         add(0.78, 0.17, 1.18, 0.14, 0.14, 0.12, 0x3b4547);
         light(0.5, 1.83, 1.14, 0.16, 0.1, 0.07, status);
@@ -1034,7 +1132,8 @@ export class VoxelRenderer {
         add(0.5, 0.5, 0.12, 0.9, 0.86, 0.2, 0x6e7973);
         add(0.5, 0.48, 0.48, 0.78, 0.7, 0.58, 0xb7aa8a);
         add(0.5, 0.845, 0.47, 0.65, 0.05, 0.42, 0x493c34);
-        for (let rib = 0; rib < 4; rib++) add(0.5, 0.884, 0.29 + rib * 0.12, 0.67, 0.035, 0.035, 0x9c9277);
+        for (let rib = 0; rib < 4; rib++)
+          add(0.5, 0.884, 0.29 + rib * 0.12, 0.67, 0.035, 0.035, 0x9c9277);
         light(0.72, 0.78, 0.77, 0.11, 0.1, 0.06, status);
       } else {
         add(0.5, 0.5, 1, 0.94, 0.86, 1.96, 0x9baaa6);
@@ -1059,60 +1158,136 @@ export class VoxelRenderer {
   }
 
   private updateWires() {
-    const all = this.data?.wires ?? [], nodes = new Set(all.map(p => index(p.x, p.y, p.z)));
-    for (const d of this.data?.devices ?? []) if (['generator', 'solar', 'battery'].includes(d.kind))
-      for (const p of deviceCells(d)) nodes.add(index(p.x, p.y, p.z));
-    const height = (p: Pos) => p.z + (this.block(p.x, p.y, p.z) ? p.z === this.level ? 0.585 : 1.025 : 0.055);
-    const pieces: { cell: Pos; x: number; y: number; z: number; dx: number; dy: number; dz: number }[] = [];
+    const all = this.data?.wires ?? [],
+      nodes = new Set(all.map((p) => index(p.x, p.y, p.z)));
+    for (const d of this.data?.devices ?? [])
+      if (['generator', 'solar', 'battery'].includes(d.kind))
+        for (const p of deviceCells(d)) nodes.add(index(p.x, p.y, p.z));
+    const height = (p: Pos) =>
+      p.z + (this.block(p.x, p.y, p.z) ? (p.z === this.level ? 0.585 : 1.025) : 0.055);
+    const pieces: {
+      cell: Pos;
+      x: number;
+      y: number;
+      z: number;
+      dx: number;
+      dy: number;
+      dz: number;
+    }[] = [];
     for (const p of all) {
       if (p.z > this.level) continue;
       const z = height(p);
       pieces.push({ cell: p, x: p.x + 0.5, y: p.y + 0.5, z, dx: 0, dy: 0, dz: 0 });
-      for (const [dx, dy, dz] of [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]]) {
+      for (const [dx, dy, dz] of [
+        [1, 0, 0],
+        [-1, 0, 0],
+        [0, 1, 0],
+        [0, -1, 0],
+        [0, 0, 1],
+        [0, 0, -1],
+      ]) {
         const q = { x: p.x + dx, y: p.y + dy, z: p.z + dz };
-        if (q.x < 0 || q.x >= WIDTH || q.y < 0 || q.y >= DEPTH || q.z < 0 || q.z >= HEIGHT || !nodes.has(index(q.x,q.y,q.z))) continue;
+        if (
+          q.x < 0 ||
+          q.x >= WIDTH ||
+          q.y < 0 ||
+          q.y >= DEPTH ||
+          q.z < 0 ||
+          q.z >= HEIGHT ||
+          !nodes.has(index(q.x, q.y, q.z))
+        )
+          continue;
         const rise = (height(q) - z) / 2;
-        pieces.push({ cell: p, x: p.x + 0.5 + dx / 4, y: p.y + 0.5 + dy / 4, z: z + rise / 2, dx: dx / 2, dy: dy / 2, dz: rise });
+        pieces.push({
+          cell: p,
+          x: p.x + 0.5 + dx / 4,
+          y: p.y + 0.5 + dy / 4,
+          z: z + rise / 2,
+          dx: dx / 2,
+          dy: dy / 2,
+          dz: rise,
+        });
       }
     }
-    const mesh = this.batch('power-wires', pieces.length, this.box, this.batchMaterial('power-wires'));
-    this.inspectBatches.set(mesh, { cells: pieces.map(p => p.cell), instancesPerCell: 1 });
+    const mesh = this.batch(
+      'power-wires',
+      pieces.length,
+      this.box,
+      this.batchMaterial('power-wires'),
+    );
+    this.inspectBatches.set(mesh, { cells: pieces.map((p) => p.cell), instancesPerCell: 1 });
     pieces.forEach((p, i) => {
       const length = Math.hypot(p.dx, p.dy, p.dz);
       this.translation.set(p.x, p.z, p.y);
       this.scale.set(length ? 0.055 : 0.13, length || 0.065, length ? 0.055 : 0.13);
       this.quaternion.identity();
-      if (length) this.quaternion.setFromUnitVectors(UP, this.beamDirection.set(p.dx, p.dz, p.dy).normalize());
+      if (length)
+        this.quaternion.setFromUnitVectors(
+          UP,
+          this.beamDirection.set(p.dx, p.dz, p.dy).normalize(),
+        );
       this.matrix.compose(this.translation, this.quaternion, this.scale);
-      mesh.setMatrixAt(i, this.matrix); this.color.setHex(length ? 0xc69b5c : 0xe4c788); mesh.setColorAt(i, this.color);
+      mesh.setMatrixAt(i, this.matrix);
+      this.color.setHex(length ? 0xc69b5c : 0xe4c788);
+      mesh.setColorAt(i, this.color);
     });
     this.finish(mesh);
   }
 
   private animateDevices() {
     const time = (this.data?.tick ?? 0) / TPS;
-    const rotors: DevicePart[] = [], smoke: DevicePart[] = [], heat: DevicePart[] = [], air: DevicePart[] = [];
+    const rotors: DevicePart[] = [],
+      smoke: DevicePart[] = [],
+      heat: DevicePart[] = [],
+      air: DevicePart[] = [];
     for (const d of this.data?.devices ?? []) {
       if (d.z > this.level || !d.on || !d.active) continue;
       if (d.kind === 'generator') {
         for (let blade = 0; blade < 2; blade++) {
           const rotor = this.devicePart(d, 1.32, 0.84, 1.12, 0.63, 0.09, 0.045, 0xaebbaa);
-          rotor.yaw = time * 5 + blade * Math.PI / 2; rotors.push(rotor);
+          rotor.yaw = time * 5 + (blade * Math.PI) / 2;
+          rotors.push(rotor);
         }
         for (let puff = 0; puff < 4; puff++) {
-          const phase = (time * 0.35 + puff * 0.25 + d.id * 0.13) % 1, size = 0.08 + phase * 0.16;
-          smoke.push(this.devicePart(d, 0.42 + phase * 0.19, 1.48, 1.88 + phase * 0.9, size, size, size * 0.8, 0xabb2a8));
+          const phase = (time * 0.35 + puff * 0.25 + d.id * 0.13) % 1,
+            size = 0.08 + phase * 0.16;
+          smoke.push(
+            this.devicePart(
+              d,
+              0.42 + phase * 0.19,
+              1.48,
+              1.88 + phase * 0.9,
+              size,
+              size,
+              size * 0.8,
+              0xabb2a8,
+            ),
+          );
         }
       } else if (d.kind === 'heater') {
         const pulse = 0.8 + Math.sin(time * 3 + d.id) * 0.2;
-        for (let rib = 0; rib < 3; rib++) heat.push(this.devicePart(d, 0.5, 0.875, 0.35 + rib * 0.12, 0.56 * pulse, 0.025, 0.07, 0xef9a50));
+        for (let rib = 0; rib < 3; rib++)
+          heat.push(
+            this.devicePart(d, 0.5, 0.875, 0.35 + rib * 0.12, 0.56 * pulse, 0.025, 0.07, 0xef9a50),
+          );
       } else if (d.kind === 'cooler') {
-        for (let side = 0; side < 2; side++) for (let i = 0; i < 3; i++) {
-          const phase = (time * 0.65 + i / 3 + d.id * 0.19) % 1, size = 0.045 + (1 - phase) * 0.035;
-          air.push(this.devicePart(d, side ? 1.08 + phase * 0.6 : -0.08 - phase * 0.6,
-            0.5 + Math.sin(i * 2) * 0.17, 1.15 + (side ? phase * 0.25 : -phase * 0.08),
-            size * 1.7, size, size, side ? 0xe8b77f : 0xa3d8e5));
-        }
+        for (let side = 0; side < 2; side++)
+          for (let i = 0; i < 3; i++) {
+            const phase = (time * 0.65 + i / 3 + d.id * 0.19) % 1,
+              size = 0.045 + (1 - phase) * 0.035;
+            air.push(
+              this.devicePart(
+                d,
+                side ? 1.08 + phase * 0.6 : -0.08 - phase * 0.6,
+                0.5 + Math.sin(i * 2) * 0.17,
+                1.15 + (side ? phase * 0.25 : -phase * 0.08),
+                size * 1.7,
+                size,
+                size,
+                side ? 0xe8b77f : 0xa3d8e5,
+              ),
+            );
+          }
       }
     }
     this.deviceBatch('generator-rotors', rotors);
@@ -1125,7 +1300,10 @@ export class VoxelRenderer {
     if (!this.data) return;
     const beds = (this.data.beds ?? []).filter((bed) => bed.z <= this.level);
     const bedParts = this.batch(
-      'bed-body', beds.length * 12, this.box, this.batchMaterial('bed-body'),
+      'bed-body',
+      beds.length * 12,
+      this.box,
+      this.batchMaterial('bed-body'),
     );
     // Every visible part, including the foot tile, resolves to the bed's anchor.
     this.inspectBatches.set(bedParts, { cells: beds, instancesPerCell: 12 });
@@ -1133,14 +1311,26 @@ export class VoxelRenderer {
       const owner = this.data!.pawns.find((pawn) => pawn.id === bed.owner);
       const accent = owner?.color ?? 0x84958a;
       const part = (
-        n: number, width: number, along: number, z: number,
-        sw: number, sl: number, sz: number, color: number,
+        n: number,
+        width: number,
+        along: number,
+        z: number,
+        sw: number,
+        sl: number,
+        sz: number,
+        color: number,
       ) => {
         const alongX = bed.axis === 'x';
         this.instance(
-          bedParts, i * 12 + n,
-          bed.x + (alongX ? along : width), bed.z + z, bed.y + (alongX ? width : along),
-          alongX ? sl : sw, sz, alongX ? sw : sl, color,
+          bedParts,
+          i * 12 + n,
+          bed.x + (alongX ? along : width),
+          bed.z + z,
+          bed.y + (alongX ? width : along),
+          alongX ? sl : sw,
+          sz,
+          alongX ? sw : sl,
+          color,
         );
       };
       part(0, 0.5, 1, 0.26, 0.86, 1.88, 0.16, 0x936c46);
@@ -1153,15 +1343,24 @@ export class VoxelRenderer {
       part(7, 0.1, 1, 0.3, 0.07, 1.78, 0.18, 0x765b40);
       for (let leg = 0; leg < 4; leg++)
         part(
-          8 + leg, 0.15 + (leg % 2) * 0.7, 0.18 + Math.floor(leg / 2) * 1.64,
-          0.12, 0.13, 0.13, 0.24, 0x765b40,
+          8 + leg,
+          0.15 + (leg % 2) * 0.7,
+          0.18 + Math.floor(leg / 2) * 1.64,
+          0.12,
+          0.13,
+          0.13,
+          0.24,
+          0x765b40,
         );
     });
     this.finish(bedParts);
 
     const doors = (this.data.doors ?? []).filter((door) => door.z <= this.level);
     const doorParts = this.batch(
-      'door-body', doors.length * 7, this.box, this.batchMaterial('door-body'),
+      'door-body',
+      doors.length * 7,
+      this.box,
+      this.batchMaterial('door-body'),
     );
     this.inspectBatches.set(doorParts, { cells: doors, instancesPerCell: 7 });
     doors.forEach((door, i) => {
@@ -1170,30 +1369,60 @@ export class VoxelRenderer {
         door.mode === 'open' || (door.mode === 'auto' && this.data!.tick <= door.openUntil);
       const locked = door.mode === 'locked';
       const part = (
-        n: number, along: number, across: number, z: number,
-        sl: number, sw: number, sz: number, color: number,
+        n: number,
+        along: number,
+        across: number,
+        z: number,
+        sl: number,
+        sw: number,
+        sz: number,
+        color: number,
       ) => {
         const alongX = door.axis === 'x';
         this.instance(
-          doorParts, i * 7 + n,
-          door.x + (alongX ? along : across), door.z + z, door.y + (alongX ? across : along),
-          alongX ? sl : sw, sz, alongX ? sw : sl, color,
+          doorParts,
+          i * 7 + n,
+          door.x + (alongX ? along : across),
+          door.z + z,
+          door.y + (alongX ? across : along),
+          alongX ? sl : sw,
+          sz,
+          alongX ? sw : sl,
+          color,
         );
       };
       part(0, 0.09, 0.5, 0.96, 0.14, 0.22, 1.92, 0x7d664b);
       part(1, 0.91, 0.5, 0.96, 0.14, 0.22, 1.92, 0x7d664b);
       part(2, 0.5, 0.5, 1.93, 0.96, 0.26, 0.14, 0xa48b62);
       part(
-        3, open ? 0.19 : 0.5, open ? 0.81 : 0.5, 0.91,
-        open ? 0.13 : 0.66, open ? 0.66 : 0.13, 1.78, locked ? 0x8c5546 : 0xb48a59,
+        3,
+        open ? 0.19 : 0.5,
+        open ? 0.81 : 0.5,
+        0.91,
+        open ? 0.13 : 0.66,
+        open ? 0.66 : 0.13,
+        1.78,
+        locked ? 0x8c5546 : 0xb48a59,
       );
       part(
-        4, open ? 0.19 : 0.5, open ? 0.81 : 0.5, 1.34,
-        open ? 0.145 : 0.5, open ? 0.5 : 0.145, 0.08, locked ? 0x693f39 : 0x8b6e4e,
+        4,
+        open ? 0.19 : 0.5,
+        open ? 0.81 : 0.5,
+        1.34,
+        open ? 0.145 : 0.5,
+        open ? 0.5 : 0.145,
+        0.08,
+        locked ? 0x693f39 : 0x8b6e4e,
       );
       part(
-        5, open ? 0.28 : 0.72, open ? 1.02 : 0.6, 0.91,
-        locked ? 0.14 : 0.08, 0.09, locked ? 0.18 : 0.08, locked ? 0xd9a163 : 0xe4c57e,
+        5,
+        open ? 0.28 : 0.72,
+        open ? 1.02 : 0.6,
+        0.91,
+        locked ? 0.14 : 0.08,
+        0.09,
+        locked ? 0.18 : 0.08,
+        locked ? 0xd9a163 : 0xe4c57e,
       );
       part(6, 0.5, 0.65, 1.94, 0.2, 0.045, 0.07, locked ? 0xe48470 : open ? 0x90d1a0 : 0xdfbf7b);
     });
@@ -1438,6 +1667,101 @@ export class VoxelRenderer {
     this.finish(pots);
   }
 
+  private updateStonecutters() {
+    if (!this.data) return;
+    const tables = (this.data.stonecutters ?? []).filter((s) => s.z <= this.level);
+    const bodies = this.batch(
+      'stonecutter-body',
+      tables.length * 9,
+      this.box,
+      this.batchMaterial('stonecutter-body'),
+    );
+    const chunks = this.batch(
+      'stonecutter-rock',
+      tables.length,
+      this.smokeGeometry,
+      this.batchMaterial('stonecutter-rock'),
+    );
+    const markers = this.batch(
+      'stonecutter-operating-cell',
+      tables.length,
+      this.box,
+      this.batchMaterial('stonecutter-operating-cell', true),
+    );
+    this.inspectBatches.set(bodies, { cells: tables, instancesPerCell: 9 });
+    this.inspectBatches.set(chunks, { cells: tables, instancesPerCell: 1 });
+    tables.forEach((table, i) => {
+      const part = (
+        n: number,
+        x: number,
+        y: number,
+        z: number,
+        sx: number,
+        sy: number,
+        sz: number,
+        color: number,
+      ) => {
+        const swapped = table.axis === 'y';
+        this.instance(
+          bodies,
+          i * 9 + n,
+          table.x + (swapped ? y : x),
+          table.z + z,
+          table.y + (swapped ? x : y),
+          swapped ? sy : sx,
+          sz,
+          swapped ? sx : sy,
+          color,
+        );
+      };
+      part(0, 1.5, 0.5, 0.76, 2.85, 0.86, 0.18, 0xaf8657);
+      part(1, 0.2, 0.2, 0.35, 0.16, 0.16, 0.7, 0x6f563d);
+      part(2, 2.8, 0.2, 0.35, 0.16, 0.16, 0.7, 0x6f563d);
+      part(3, 0.2, 0.8, 0.35, 0.16, 0.16, 0.7, 0x6f563d);
+      part(4, 2.8, 0.8, 0.35, 0.16, 0.16, 0.7, 0x6f563d);
+      part(5, 1.5, 0.2, 0.35, 2.6, 0.12, 0.12, 0x6f563d);
+      part(6, 1.5, 0.8, 0.35, 2.6, 0.12, 0.12, 0x6f563d);
+      part(7, 1.5, 0.5, 0.87, 1.05, 0.7, 0.05, 0x5c7078);
+      part(8, 2.55, 0.55, 0.92, 0.12, 0.5, 0.1, 0xc6d1d4);
+      const hasInput = this.data!.jobs.some(
+        (j) =>
+          j.kind === 'stonecut' &&
+          j.x === table.x &&
+          j.y === table.y &&
+          j.z === table.z &&
+          (j.delivered.chunk ?? 0) > 0,
+      );
+      const center = stonecutterCells(table)[1];
+      this.instance(
+        chunks,
+        i,
+        center.x + 0.5,
+        table.z + 1.05,
+        center.y + 0.5,
+        hasInput ? 0.3 : 0,
+        hasInput ? 0.2 : 0,
+        hasInput ? 0.3 : 0,
+        RESOURCE_COLORS.chunk,
+        0.25,
+      );
+      const front = stonecutterInteraction(table);
+      this.instance(
+        markers,
+        i,
+        front.x + 0.5,
+        front.z + 0.02,
+        front.y + 0.5,
+        0.8,
+        0.025,
+        0.8,
+        0xd4b876,
+      );
+    });
+    this.finish(bodies);
+    this.finish(chunks);
+    this.finish(markers);
+  }
+
   private effectMaterial(name: string, opacity: number) {
     return (
       this.batches.get(name)?.material ??
@@ -1570,17 +1894,21 @@ export class VoxelRenderer {
       if (job.z > this.level + 1 || job.z < this.level - 2) continue;
       const planting = job.kind === 'sow' || job.kind === 'harvest';
       const deviceKind = Object.hasOwn(DEVICE_SIZES, job.kind)
-        ? job.kind as DeviceKind
-        : job.kind === 'refuel' ? 'generator' : null;
+        ? (job.kind as DeviceKind)
+        : job.kind === 'refuel'
+          ? 'generator'
+          : null;
       const footprint = deviceKind
         ? deviceCells({ ...job, kind: deviceKind, axis: job.axis ?? 'x' })
-        : null;
+        : job.kind === 'stonecutter' || job.kind === 'stonecut'
+          ? stonecutterCells({ ...job, axis: job.axis ?? 'x' })
+          : null;
       const height = floor
         ? 0.07
         : job.kind === 'wire'
           ? 0.06
           : deviceKind
-            ? ({ generator: 1.85, solar: 1.6, battery: 1.2, heater: 0.8, cooler: 2 })[deviceKind]
+            ? { generator: 1.85, solar: 1.6, battery: 1.2, heater: 0.8, cooler: 2 }[deviceKind]
             : planting
               ? 0.14
               : job.kind === 'bed'
@@ -1591,10 +1919,10 @@ export class VoxelRenderer {
                     ? 0.57
                     : 0.9;
       const right = footprint
-        ? Math.max(...footprint.map(p => p.x)) + 0.96
+        ? Math.max(...footprint.map((p) => p.x)) + 0.96
         : job.x + (job.kind === 'bed' && job.axis === 'x' ? 1.96 : 0.96);
       const back = footprint
-        ? Math.max(...footprint.map(p => p.y)) + 0.96
+        ? Math.max(...footprint.map((p) => p.y)) + 0.96
         : job.y + (job.kind === 'bed' && job.axis === 'y' ? 1.96 : 0.96);
       const corners = [
         [job.x + 0.04, bottom, job.y + 0.04],
@@ -1718,9 +2046,13 @@ export class VoxelRenderer {
     label.renderOrder = 12;
     root.add(label);
     const sleepSymbol = new Sprite(
-      this.keepMaterial(new SpriteMaterial({
-        map: sleepTexture(), depthTest: false, depthWrite: false,
-      })),
+      this.keepMaterial(
+        new SpriteMaterial({
+          map: sleepTexture(),
+          depthTest: false,
+          depthWrite: false,
+        }),
+      ),
     );
     sleepSymbol.scale.set(0.38, 0.38, 1);
     sleepSymbol.visible = false;
@@ -1818,6 +2150,10 @@ export class VoxelRenderer {
       const working =
         pawn.phase === 'work' && pawn.path.length === 0 && !pawn.cargo && fraction >= 1;
       const job = this.data.jobs.find((candidate) => candidate.id === pawn.jobId);
+      const workTarget =
+        job?.kind === 'stonecut'
+          ? stonecutterCells({ ...job, axis: job.axis ?? 'x' })[1]
+          : pawn.workTarget;
       const cooking = working && job?.kind === 'cook';
       const tending = working && (job?.kind === 'sow' || job?.kind === 'harvest');
       if (cooking && job) cookingCells.add(index(job.x, job.y, job.z));
@@ -1852,25 +2188,26 @@ export class VoxelRenderer {
             ? 0.08 + Math.max(0, swing) * 0.08
             : 0;
       visual.tool.visible = working && !cooking && !tending;
-      if (working && pawn.workTarget) {
+      if (working && workTarget) {
         visual.root.rotation.y = Math.atan2(
-          pawn.workTarget.x + 0.5 - visual.root.position.x,
-          pawn.workTarget.y + 0.5 - visual.root.position.z,
+          workTarget.x + 0.5 - visual.root.position.x,
+          workTarget.y + 0.5 - visual.root.position.z,
         );
       } else {
         const dx = visual.to.x - visual.from.x,
           dz = visual.to.z - visual.from.z;
         if (Math.abs(dx) + Math.abs(dz) > 0.001) visual.root.rotation.y = Math.atan2(dx, dz);
       }
-      if (visible && working && !cooking && pawn.workTarget) {
+      if (visible && working && !cooking && workTarget) {
         for (let j = 0; j < 4 && moteCount < 256; j++) {
           const phase = (time * 2.5 + j * 0.25 + pawn.id * 0.13) % 1;
           const angle = (j * Math.PI) / 2 + pawn.id;
           const size = (1 - phase) * 0.055;
           this.translation.set(
-            pawn.workTarget.x + 0.5 + Math.cos(angle) * phase * 0.5,
-            Math.min(pawn.workTarget.z + 0.35, this.level + 0.65) + Math.sin(phase * Math.PI) * 0.5,
-            pawn.workTarget.y + 0.5 + Math.sin(angle) * phase * 0.5,
+            workTarget.x + 0.5 + Math.cos(angle) * phase * 0.5,
+            Math.min(workTarget.z + (job?.kind === 'stonecut' ? 0.95 : 0.35), this.level + 1.2) +
+              Math.sin(phase * Math.PI) * 0.5,
+            workTarget.y + 0.5 + Math.sin(angle) * phase * 0.5,
           );
           this.scale.setScalar(size);
           this.quaternion.identity();

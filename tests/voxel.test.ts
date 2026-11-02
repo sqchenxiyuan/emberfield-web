@@ -12,8 +12,17 @@ import type {
 } from '../src/voxel/types';
 
 const pos = (x: number, y: number, z: number): Pos => ({ x, y, z });
-const resources: Resource[] = ['wood', 'stone', 'steel', 'components', 'food', 'grain', 'meal'];
-const works: Work[] = ['dig', 'build', 'cut', 'haul', 'grow', 'cook'];
+const resources: Resource[] = [
+  'wood',
+  'stone',
+  'steel',
+  'components',
+  'food',
+  'grain',
+  'meal',
+  'chunk',
+];
+const works: Work[] = ['dig', 'build', 'cut', 'haul', 'grow', 'cook', 'craft'];
 const place = (s: VoxelSimulation, tool: Tool, from: Pos, to?: Pos) => {
   const result = s.command({ type: 'designate', tool, from, to });
   expect(result.ok, result.message).toBe(true);
@@ -75,6 +84,7 @@ describe('voxel generation and chunk delivery', () => {
       food: 60,
       grain: 0,
       meal: 0,
+      chunk: 0,
     });
     expect(a.blocks[index(34, 32, 5)]).toBe(Block.Steel);
     expect(a.trees.find((t) => t.x === 27 && t.y === 29 && t.z === 8)?.wood).toBe(27);
@@ -197,8 +207,8 @@ describe('material ownership, cancellation and recovery', () => {
   );
   it('makes three workers compete for eight pieces of wood without negative or duplicated stock', () => {
     const s = new VoxelSimulation();
-    const wood = s.items.find(i => i.resource === 'wood')!;
-    s.items = s.items.filter(i => i.resource !== 'wood' || i.id === wood.id);
+    const wood = s.items.find((i) => i.resource === 'wood')!;
+    s.items = s.items.filter((i) => i.resource !== 'wood' || i.id === wood.id);
     wood.amount = 8;
     const initial = s.counts();
     for (const y of [33, 34, 35]) place(s, 'wall', pos(36, y, 8));
@@ -383,7 +393,7 @@ describe('voxel persistence and input validation', () => {
     const original = s.save();
     const corruptions: Array<(save: VoxelSave) => void> = [
       (d) => {
-        (d as { version: number }).version = 7;
+        (d as { version: number }).version = 8;
       },
       (d) => {
         (d as { generator: number }).generator = 2;

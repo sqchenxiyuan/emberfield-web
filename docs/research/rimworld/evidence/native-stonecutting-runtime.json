@@ -1,0 +1,514 @@
+{
+  "schema_version": 1,
+  "evidence_id": "RW17-NATIVE-STONECUTTING-RUNTIME",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "process_id": 29920,
+  "executable": "F:/SteamLibrary/steamapps/common/RimWorld/RimWorld.exe",
+  "profile": ".local-research/runtime/profile-20261102",
+  "active_mods": [
+    "ludeon.rimworld",
+    "ludeon.rimworld.odyssey"
+  ],
+  "method": "Existing isolated native process, foreground UI, developer needs/table/material preparation, ordinary pawn DoBill job, game-clock pause/save/resume, read-only original-save extraction.",
+  "backup": {
+    "source": "logistics-final.rws",
+    "path": ".local-research/runtime/stonecutting-before-20261102.rws",
+    "sha256": "a3ef544f9c1641b30624eb8894b07f6fdc45ecce3bd668edf6a9b716ed5359ae"
+  },
+  "snapshots": [
+    {
+      "stage": "start",
+      "path": ".local-research/runtime/profile-20261102/Saves/stonecutting-start.rws",
+      "save": {
+        "file": "stonecutting-start.rws",
+        "sha256": "3b22923b5bc58ae4a18535c2a0fc2700fe2c87a050f7a5b04b25be5da08aed3d",
+        "bytes": 6282775,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 46372,
+        "tables": [],
+        "explicit_granite_things": [],
+        "compressed_simple_things_present": true,
+        "inventory_scope": "Explicit XML thing nodes only; compressed simple things not decoded, so empty arrays do not establish absence.",
+        "pawn": {
+          "id": "Human961",
+          "nick": "Squint",
+          "pos": "(105, 0, 129)",
+          "job": "LayDown",
+          "job_id": "32618",
+          "job_started": 43638,
+          "target_a": "(105, 0, 129)",
+          "target_b": "",
+          "job_count": null,
+          "player_forced": false,
+          "work_giver": "",
+          "placed_things": [],
+          "driver": "JobDriver_LayDown",
+          "work_left": null,
+          "bill_start_tick": null,
+          "ticks_spent_recipe_work": null,
+          "food": null,
+          "rest": 0.517301261,
+          "hediffs": [
+            {
+              "def": "WakeUpAddiction",
+              "severity": 0.645460665
+            },
+            {
+              "def": "Malnutrition",
+              "severity": 0.0343280919
+            }
+          ],
+          "carry": []
+        }
+      }
+    },
+    {
+      "stage": "ready",
+      "path": ".local-research/runtime/profile-20261102/Saves/stonecutting-ready.rws",
+      "save": {
+        "file": "stonecutting-ready.rws",
+        "sha256": "5a327f87d71fa0fe8661425e224127119fda98966cc759f2d077e18eef9d0eac",
+        "bytes": 6284434,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 46372,
+        "tables": [
+          {
+            "id": "TableStonecutter42144",
+            "pos": "(113, 0, 138)",
+            "stuff": "WoodLog",
+            "health": 117,
+            "spawned_tick": 46372,
+            "bills": [
+              {
+                "recipe": "Make_StoneBlocksGranite",
+                "repeat_mode": "RepeatCount",
+                "repeat_count": 1,
+                "repeat_count_explicit": true,
+                "suspended": false,
+                "allowed_skill_range": "0~20",
+                "ingredients": [
+                  "ChunkGranite"
+                ],
+                "store_mode": "BestStockpile"
+              }
+            ]
+          }
+        ],
+        "explicit_granite_things": [],
+        "compressed_simple_things_present": true,
+        "inventory_scope": "Explicit XML thing nodes only; compressed simple things not decoded, so empty arrays do not establish absence.",
+        "pawn": {
+          "id": "Human961",
+          "nick": "Squint",
+          "pos": "(105, 0, 129)",
+          "job": "LayDown",
+          "job_id": "32618",
+          "job_started": 43638,
+          "target_a": "(105, 0, 129)",
+          "target_b": "",
+          "job_count": null,
+          "player_forced": false,
+          "work_giver": "",
+          "placed_things": [],
+          "driver": "JobDriver_LayDown",
+          "work_left": null,
+          "bill_start_tick": null,
+          "ticks_spent_recipe_work": null,
+          "food": 1.0,
+          "rest": 1.0,
+          "hediffs": [
+            {
+              "def": "WakeUpAddiction",
+              "severity": 0.645460665
+            },
+            {
+              "def": "Malnutrition",
+              "severity": 0.0343280919
+            }
+          ],
+          "carry": []
+        }
+      }
+    },
+    {
+      "stage": "working",
+      "path": ".local-research/runtime/profile-20261102/Saves/stonecutting-working.rws",
+      "save": {
+        "file": "stonecutting-working.rws",
+        "sha256": "41c9cbbac0909b8804450eaca7a2c8d32cd023f6348676a4af02d027edc17233",
+        "bytes": 6283716,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 47518,
+        "tables": [
+          {
+            "id": "TableStonecutter42144",
+            "pos": "(113, 0, 138)",
+            "stuff": "WoodLog",
+            "health": 117,
+            "spawned_tick": 46372,
+            "bills": [
+              {
+                "recipe": "Make_StoneBlocksGranite",
+                "repeat_mode": "RepeatCount",
+                "repeat_count": 1,
+                "repeat_count_explicit": true,
+                "suspended": false,
+                "allowed_skill_range": "0~20",
+                "ingredients": [
+                  "ChunkGranite"
+                ],
+                "store_mode": "BestStockpile"
+              }
+            ]
+          }
+        ],
+        "explicit_granite_things": [
+          {
+            "id": "ChunkGranite42145",
+            "def": "ChunkGranite",
+            "pos": "(113, 0, 138)",
+            "count": 1,
+            "stack_count_explicit": false,
+            "spawned_tick": 46854
+          }
+        ],
+        "compressed_simple_things_present": true,
+        "inventory_scope": "Explicit XML thing nodes only; compressed simple things not decoded, so empty arrays do not establish absence.",
+        "pawn": {
+          "id": "Human961",
+          "nick": "Squint",
+          "pos": "(113, 0, 137)",
+          "job": "DoBill",
+          "job_id": "36124",
+          "job_started": 46372,
+          "target_a": "Thing_TableStonecutter42144",
+          "target_b": "Thing_ChunkGranite42145",
+          "job_count": 1.0,
+          "player_forced": true,
+          "work_giver": "DoBillsStonecut",
+          "placed_things": [
+            "Thing_ChunkGranite42145"
+          ],
+          "driver": "JobDriver_DoBill",
+          "work_left": 1195.07764,
+          "bill_start_tick": 46854.0,
+          "ticks_spent_recipe_work": 666.0,
+          "food": 0.958000124,
+          "rest": 0.983374953,
+          "hediffs": [
+            {
+              "def": "WakeUpAddiction",
+              "severity": 0.644560516
+            },
+            {
+              "def": "Malnutrition",
+              "severity": 0.0263182018
+            }
+          ],
+          "carry": []
+        }
+      }
+    },
+    {
+      "stage": "final",
+      "path": ".local-research/runtime/profile-20261102/Saves/stonecutting-final.rws",
+      "save": {
+        "file": "stonecutting-final.rws",
+        "sha256": "2af1ff41a338adbb9fdc458b01433acceae8f90ef323f5f71e5ee0929494dc6a",
+        "bytes": 6285372,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 50881,
+        "tables": [
+          {
+            "id": "TableStonecutter42144",
+            "pos": "(113, 0, 138)",
+            "stuff": "WoodLog",
+            "health": 117,
+            "spawned_tick": 46372,
+            "bills": [
+              {
+                "recipe": "Make_StoneBlocksGranite",
+                "repeat_mode": "RepeatCount",
+                "repeat_count": 0,
+                "repeat_count_explicit": false,
+                "suspended": false,
+                "allowed_skill_range": "0~20",
+                "ingredients": [
+                  "ChunkGranite"
+                ],
+                "store_mode": "BestStockpile"
+              }
+            ]
+          }
+        ],
+        "explicit_granite_things": [
+          {
+            "id": "BlocksGranite42147",
+            "def": "BlocksGranite",
+            "pos": "(113, 0, 137)",
+            "count": 20,
+            "stack_count_explicit": true,
+            "spawned_tick": 49485
+          }
+        ],
+        "compressed_simple_things_present": true,
+        "inventory_scope": "Explicit XML thing nodes only; compressed simple things not decoded, so empty arrays do not establish absence.",
+        "pawn": {
+          "id": "Human961",
+          "nick": "Squint",
+          "pos": "(101, 0, 141)",
+          "job": "GoForWalk",
+          "job_id": "38369",
+          "job_started": 50763,
+          "target_a": "(99, 0, 133)",
+          "target_b": "",
+          "job_count": null,
+          "player_forced": false,
+          "work_giver": "",
+          "placed_things": [],
+          "driver": "JobDriver_GoForWalk",
+          "work_left": null,
+          "bill_start_tick": null,
+          "ticks_spent_recipe_work": null,
+          "food": 0.820000529,
+          "rest": 0.9287498,
+          "hediffs": [
+            {
+              "def": "WakeUpAddiction",
+              "severity": 0.642010093
+            },
+            {
+              "def": "Malnutrition",
+              "severity": 6.98491931E-10
+            },
+            {
+              "def": "Hypothermia",
+              "severity": 0.00300000003
+            }
+          ],
+          "carry": []
+        }
+      }
+    }
+  ],
+  "experiment_input_id": "ChunkGranite42145",
+  "experiment_output_id": "BlocksGranite42147",
+  "observed_input_count": 1,
+  "observed_output_count": 20,
+  "observed_table_outdoor_speed_factor": 0.8,
+  "outcomes": {
+    "reload_continuation_tested": false,
+    "normal_table_construction_tested": false,
+    "automatic_work_selection_tested": false,
+    "normal_pawn_cutting_observed": true,
+    "input_one_output_twenty_observed": true,
+    "mining_chunk_drop_tested": false,
+    "bill_suspension_tested": false,
+    "clock_pause_save_resume_completed": true,
+    "stockpile_delivery_demonstrated": false
+  },
+  "screenshots": [
+    {
+      "id": "needs-prepared",
+      "image": "runtime/stonecutting-needs-prepared.png",
+      "sha256": "853e300f59d367d9a2ccc35d5f7d8c352cdfe26cae058d7d41483de8f4b76cbc",
+      "source_file": ".local-research/runtime/stonecutting-010-rest-plus-3.png",
+      "source_sha256": "d213a4f3f1227f75c2a86eecec9d3df895e1c14049fb73c6785c6c2773c7318a",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        520,
+        620,
+        650
+      ],
+      "observed_utc": "2026-11-02T19:34:18.2839231Z",
+      "observation": "Developer Need + controls prepared Squint Food and Rest; ready save confirms both 1."
+    },
+    {
+      "id": "outdoor-table",
+      "image": "runtime/stonecutting-outdoor-table.png",
+      "sha256": "9b05afa5998fc830d2cdd4fd50320d79534e38ddd3251339a13063aad19c924f",
+      "source_file": ".local-research/runtime/stonecutting-017-select-table.png",
+      "source_sha256": "0d06dd37536698bc876387388b2db5592551c8c119b550c9f63965ef404b4ad3",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1100,
+        700,
+        310
+      ],
+      "observed_utc": "2026-11-02T19:37:57.2080825Z",
+      "observation": "Wooden stonecutter table; Work speed factor 80% (outdoors)."
+    },
+    {
+      "id": "bill-one",
+      "image": "runtime/stonecutting-bill-one.png",
+      "sha256": "7cf7df87b0ee9e44a8a5fee97e46a30d99e120d17b7d0658ce09d3c119f57901",
+      "source_file": ".local-research/runtime/stonecutting-020-granite-bill.png",
+      "source_sha256": "8819e6bd6546c5a3cb5a460371b45bdcfb8cfe2b4b0c7e2c3495d1962e64dc06",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        530,
+        900,
+        880
+      ],
+      "observed_utc": "2026-11-02T19:40:19.2961116Z",
+      "observation": "Make granite blocks bill, Do 1 time."
+    },
+    {
+      "id": "craft-disabled",
+      "image": "runtime/stonecutting-craft-disabled.png",
+      "sha256": "2dd0ecc8d14ab1d66d9a524ae15322c446bd6bc2d4442043d8547a12f4c74543",
+      "source_file": ".local-research/runtime/stonecutting-031-work-menu.png",
+      "source_sha256": "7ce63c7d60155b9dd20347a6139ba5233de68c54d0658c8ba3751bf4d88af604",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        1580,
+        1130,
+        720,
+        200
+      ],
+      "observed_utc": "2026-11-02T19:44:02.5978092Z",
+      "observation": "Cannot cut stone blocks: Not assigned to crafting."
+    },
+    {
+      "id": "prioritize",
+      "image": "runtime/stonecutting-prioritize.png",
+      "sha256": "1d9f954126d26953530e8ddfce85102dbbd40dcc947805e960d0a43e34f084d1",
+      "source_file": ".local-research/runtime/stonecutting-036-prioritize-menu.png",
+      "source_sha256": "24bddfc2305c605d484f08ccad493f6ca83d5d4d274992cb214820275892f5d3",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        1580,
+        1130,
+        720,
+        200
+      ],
+      "observed_utc": "2026-11-02T19:50:02.2828244Z",
+      "observation": "After enabling Craft, Prioritize cutting stone blocks is available."
+    },
+    {
+      "id": "working-paused",
+      "image": "runtime/stonecutting-working-paused.png",
+      "sha256": "2b98fbb8649a40fdd54dacf1859e78c6a4da52202139d1f64a79c8df9641e682",
+      "source_file": ".local-research/runtime/stonecutting-039-pause-working.png",
+      "source_sha256": "4a79264ba2b207930819c8d349fdee98304d036d04c446b1fb87189e2224d7ac",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1100,
+        2560,
+        340
+      ],
+      "observed_utc": "2026-11-02T19:50:33.1489321Z",
+      "observation": "Squint: Cutting stone blocks from chunk; game paused before saving working."
+    },
+    {
+      "id": "bill-complete",
+      "image": "runtime/stonecutting-bill-complete.png",
+      "sha256": "5c8f5d06ad6733d1bd37f70bc8e2470ac66f1f9c7afbe9f9c58bc4426daf531d",
+      "source_file": ".local-research/runtime/stonecutting-041-pause-final.png",
+      "source_sha256": "4c7252ece239281f403bc82261a748a4fdb174def267bde212f32943c264f85e",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        0,
+        650,
+        100
+      ],
+      "observed_utc": "2026-11-02T19:51:17.2129605Z",
+      "observation": "Native message: Bill complete: Make granite blocks."
+    },
+    {
+      "id": "output20-paused",
+      "image": "runtime/stonecutting-output20-paused.png",
+      "sha256": "a32b545fad0ba72afb8fb6bf53a49db1ef52afed34af50d41323aba017c700ca",
+      "source_file": ".local-research/runtime/stonecutting-042-final-blocks.png",
+      "source_sha256": "2c805c1cfdeed47e3a3f6a7ad4d7131f4470b3798edeeeb1d07b6b2558aeea7b",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1100,
+        2560,
+        340
+      ],
+      "observed_utc": "2026-11-02T19:52:11.4276509Z",
+      "observation": "Granite blocks x20 selected; original game remains paused."
+    }
+  ],
+  "actions": {
+    "file": "native-stonecutting-actions.jsonl",
+    "sha256": "0c3afd16c694d98fc52e38b63d99fec389789abc42efa242df7101d557d801f3",
+    "count": 72
+  },
+  "chronology": [
+    "19:30:10 UTC begin from paused logistics-final state, tick46372; make backup and save stonecutting-start",
+    "Developer Needs + sets Squint Food/Rest to1; God-build wooden stonecutter table; add Make granite blocks repeat1; developer-spawn ChunkGranite",
+    "Save stonecutting-ready at tick46372; right-click rejects because Craft is disabled",
+    "Enable Craft; ordinary Prioritize cutting stone blocks command accepted",
+    "Run at speed3 briefly, explicitly pause; stonecutting-working tick47518 records DoBill workLeft1195.07764, ingredient ChunkGranite42145 count1",
+    "Resume same game clock for bounded run, explicitly pause; native Bill complete notification",
+    "stonecutting-final tick50881 records BlocksGranite42147 count20, spawnedTick49485; no bill repeat remaining",
+    "19:52:11 UTC select Granite blocks x20 for final paused screenshot; end UI experiment"
+  ],
+  "limitations": [
+    "Core + Odyssey, developer mode and God mode active. Food/Rest were raised with developer controls; table was God-built and input chunk was developer-spawned.",
+    "Actual processing used ordinary pawn DoBill, player-forced via right-click, not autonomous work selection. No developer finish-work or time-increment command was used.",
+    "The ready save has compressedThingMapDeflate; its explicit granite list is empty. This extractor does not decode that structure and does not claim the input was absent. The working save explicitly names the ingredient and count.",
+    "Squint retains WakeUpAddiction and Malnutrition. Outdoors reduces table speed to80%; exact work duration is not a universal recipe constant.",
+    "Only the game clock was paused and saved before continuing. No load-from-save, bill suspension, bill cancellation, or restarted-job progress retention test was performed.",
+    "Four snapshot tick values bracket preparation and operation; intermediate completion tick is the output spawnedTick, not a precisely sampled animation frame.",
+    "The completed blocks remain at the work position. No granite stockpile delivery or ordinary mining/table construction was demonstrated.",
+    "Portable checks validate recorded summaries, action integrity and crops; local mode rereads originals. Neither mode reruns gameplay."
+  ],
+  "final_state": {
+    "normal_profile_touched": false,
+    "game_files_modified": false,
+    "paused": true,
+    "developer_mode": true,
+    "god_mode": true,
+    "mods_installed": false
+  }
+}

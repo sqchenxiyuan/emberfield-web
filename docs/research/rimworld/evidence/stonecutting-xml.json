@@ -1,0 +1,1496 @@
+{
+  "evidence_id": "RW17-STONECUTTING-XML",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Selected direct declarations plus references to existing logistics XML records",
+  "limitations": [
+    "No enabled DLC/mod patch database evaluation.",
+    "Overlapping ThingDef records select different roots and must agree on source identity and ParentName.",
+    "Absence is established only for selected roots. Time and 3D adaptations are distinct from original declarations."
+  ],
+  "reused_records": [
+    {
+      "group": "logistics",
+      "id": "ThingDef_ResourceBase"
+    },
+    {
+      "group": "logistics",
+      "id": "ThingDef_ResourceVerbBase"
+    },
+    {
+      "group": "logistics",
+      "id": "ThingDef_ChunkBase"
+    },
+    {
+      "group": "logistics",
+      "id": "ThingDef_ChunkRockBase"
+    },
+    {
+      "group": "logistics",
+      "id": "ThingDef_StoneBlocksBase"
+    },
+    {
+      "group": "logistics",
+      "id": "ThingDef_ChunkGranite"
+    },
+    {
+      "group": "logistics",
+      "id": "ThingDef_BlocksGranite"
+    },
+    {
+      "group": "logistics",
+      "id": "ThingDef_WoodLog"
+    }
+  ],
+  "records": [
+    {
+      "group": "material",
+      "id": "ThingDef_ResourceBase",
+      "def_name": "ResourceBase",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Base.xml",
+        "xpath": "/Defs/ThingDef[@Name='ResourceBase']",
+        "sha256": "20595ae43a7e758f54c71dc98579cc95ac8638f21213896c7f1d6a2d61fd744a"
+      },
+      "selected_roots": [
+        "stuffProps",
+        "resourceReadoutPriority"
+      ],
+      "absent_roots": [
+        "stuffProps"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='ResourceBase']/resourceReadoutPriority",
+          "value": "Middle"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "material",
+      "id": "ThingDef_ResourceVerbBase",
+      "def_name": "ResourceVerbBase",
+      "parent_name": "ResourceBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Exotic.xml",
+        "xpath": "/Defs/ThingDef[@Name='ResourceVerbBase']",
+        "sha256": "1e3e943dd91916b1215c91a8f4a39cc59651ebd44c1b36682cd50e795c789c53"
+      },
+      "selected_roots": [
+        "stuffProps",
+        "resourceReadoutPriority"
+      ],
+      "absent_roots": [
+        "stuffProps",
+        "resourceReadoutPriority"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "natural",
+      "id": "ThingDef_BuildingNaturalBase",
+      "def_name": "BuildingNaturalBase",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml",
+        "xpath": "/Defs/ThingDef[@Name='BuildingNaturalBase']",
+        "sha256": "d0c032a63781ca1a2ee12ea667b54237fe65d38738bcc81a76771653a0b6b9d6"
+      },
+      "selected_roots": [
+        "thingClass",
+        "statBases",
+        "building"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "statBases"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BuildingNaturalBase']/building/artificialForMeditationPurposes",
+          "value": "false"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "natural",
+      "id": "ThingDef_RockBase",
+      "def_name": "RockBase",
+      "parent_name": "BuildingNaturalBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml",
+        "xpath": "/Defs/ThingDef[@Name='RockBase']",
+        "sha256": "d0c032a63781ca1a2ee12ea667b54237fe65d38738bcc81a76771653a0b6b9d6"
+      },
+      "selected_roots": [
+        "thingClass",
+        "statBases",
+        "building"
+      ],
+      "absent_roots": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='RockBase']/thingClass",
+          "value": "Mineable"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='RockBase']/statBases/Flammability",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='RockBase']/building/isInert",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='RockBase']/building/isNaturalRock",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='RockBase']/building/isAirtight",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='RockBase']/building/canBuildNonEdificesUnder",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='RockBase']/building/deconstructible",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='RockBase']/building/destroyShakeAmount",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='RockBase']/building/supportsWallAttachments",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "natural",
+      "id": "ThingDef_UglyRockBase",
+      "def_name": "UglyRockBase",
+      "parent_name": "RockBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[@Name='UglyRockBase']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      "selected_roots": [
+        "thingClass",
+        "statBases",
+        "building"
+      ],
+      "absent_roots": [
+        "thingClass"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='UglyRockBase']/statBases/Flammability",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='UglyRockBase']/statBases/Beauty",
+          "value": "-2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='UglyRockBase']/building/mineableYieldWasteable",
+          "value": "false"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "natural",
+      "id": "ThingDef_Granite",
+      "def_name": "Granite",
+      "parent_name": "UglyRockBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[defName='Granite']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      "selected_roots": [
+        "thingClass",
+        "statBases",
+        "building"
+      ],
+      "absent_roots": [
+        "thingClass"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Granite']/statBases/MaxHitPoints",
+          "value": "900"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Granite']/building/mineableThing",
+          "value": "ChunkGranite"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Granite']/building/mineableDropChance",
+          "value": "0.25"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Granite']/building/smoothedThing",
+          "value": "SmoothedGranite"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "material",
+      "id": "ThingDef_StoneBlocksBase",
+      "def_name": "StoneBlocksBase",
+      "parent_name": "ResourceBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      "selected_roots": [
+        "stuffProps",
+        "resourceReadoutPriority"
+      ],
+      "absent_roots": [
+        "resourceReadoutPriority"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']/stuffProps/categories/li",
+          "value": "Stony"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']/stuffProps/commonality",
+          "value": "0.20"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']/stuffProps/appearance",
+          "value": "Bricks"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']/stuffProps/statOffsets/WorkToBuild",
+          "value": "140"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']/stuffProps/statFactors/MarketValue",
+          "value": "0.4"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']/stuffProps/statFactors/MaxHitPoints",
+          "value": "1.8"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']/stuffProps/statFactors/Flammability",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']/stuffProps/statFactors/WorkToBuild",
+          "value": "6.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']/stuffProps/statFactors/WorkToMake",
+          "value": "1.3"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']/stuffProps/statFactors/DoorOpenSpeed",
+          "value": "0.45"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']/stuffProps/statFactors/MeleeWeapon_CooldownMultiplier",
+          "value": "1.30"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']/stuffProps/canSuggestUseDefaultStuff",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "material",
+      "id": "ThingDef_BlocksGranite",
+      "def_name": "BlocksGranite",
+      "parent_name": "StoneBlocksBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[defName='BlocksGranite']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      "selected_roots": [
+        "stuffProps",
+        "resourceReadoutPriority"
+      ],
+      "absent_roots": [
+        "resourceReadoutPriority"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='BlocksGranite']/stuffProps/color",
+          "value": "(105,95,97)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='BlocksGranite']/stuffProps/stuffAdjective",
+          "value": "granite"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='BlocksGranite']/stuffProps/statFactors/MaxHitPoints",
+          "value": "1.7"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='BlocksGranite']/stuffProps/canSuggestUseDefaultStuff",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "material",
+      "id": "ThingDef_WoodLog",
+      "def_name": "WoodLog",
+      "parent_name": "ResourceVerbBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Stuff.xml",
+        "xpath": "/Defs/ThingDef[defName='WoodLog']",
+        "sha256": "8cdc15befea94055a946a1131c7724acc0cf999b866a5fad474a0816731c9088"
+      },
+      "selected_roots": [
+        "stuffProps"
+      ],
+      "absent_roots": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/stuffProps/stuffAdjective",
+          "value": "wooden"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/stuffProps/categories/li",
+          "value": "Woody"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/stuffProps/commonality",
+          "value": "1.00"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/stuffProps/color",
+          "value": "(133,97,67)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/stuffProps/appearance",
+          "value": "Planks"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/stuffProps/statFactors/MaxHitPoints",
+          "value": "0.65"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/stuffProps/statFactors/Beauty",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/stuffProps/statFactors/Flammability",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/stuffProps/statFactors/WorkToMake",
+          "value": "0.7"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/stuffProps/statFactors/WorkToBuild",
+          "value": "0.7"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/stuffProps/statFactors/DoorOpenSpeed",
+          "value": "1.2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/stuffProps/canSuggestUseDefaultStuff",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "bench",
+      "id": "ThingDef_BuildingBase",
+      "def_name": "BuildingBase",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Base.xml",
+        "xpath": "/Defs/ThingDef[@Name='BuildingBase']",
+        "sha256": "b16e3a7934febd9ffb7883f18392d524ba376c9657da4c788d1951552f86d142"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "size",
+        "costStuffCount",
+        "costList",
+        "stuffCategories",
+        "statBases",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "surfaceType",
+        "building",
+        "comps",
+        "researchPrerequisites",
+        "resourcesFractionWhenDeconstructed",
+        "leaveResourcesWhenKilled"
+      ],
+      "absent_roots": [
+        "size",
+        "costStuffCount",
+        "costList",
+        "stuffCategories",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "surfaceType",
+        "building",
+        "comps",
+        "researchPrerequisites",
+        "resourcesFractionWhenDeconstructed"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BuildingBase']/category",
+          "value": "Building"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BuildingBase']/thingClass",
+          "value": "Building"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BuildingBase']/leaveResourcesWhenKilled",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BuildingBase']/statBases/SellPriceFactor",
+          "value": "0.70"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "bench",
+      "id": "ThingDef_BenchBase",
+      "def_name": "BenchBase",
+      "parent_name": "BuildingBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Production.xml",
+        "xpath": "/Defs/ThingDef[@Name='BenchBase']",
+        "sha256": "3221c30adc223498636ac7b6ca86ef9c50fce681b138be8f0919c6e652045a31"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "size",
+        "costStuffCount",
+        "costList",
+        "stuffCategories",
+        "statBases",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "surfaceType",
+        "building",
+        "comps",
+        "researchPrerequisites",
+        "resourcesFractionWhenDeconstructed",
+        "leaveResourcesWhenKilled"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "category",
+        "size",
+        "costStuffCount",
+        "costList",
+        "stuffCategories",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "surfaceType",
+        "researchPrerequisites",
+        "resourcesFractionWhenDeconstructed",
+        "leaveResourcesWhenKilled"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BenchBase']/statBases/Mass",
+          "value": "20"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BenchBase']/comps/li/workSpeedStat",
+          "value": "WorkTableWorkSpeedFactor"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BenchBase']/building/buildingTags/li",
+          "value": "Production"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BenchBase']/building/workTableRoomRole",
+          "value": "Workshop"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BenchBase']/comps/li",
+          "attributes": {
+            "Class": "CompProperties_ReportWorkSpeed"
+          }
+        }
+      ]
+    },
+    {
+      "group": "bench",
+      "id": "ThingDef_TableStonecutter",
+      "def_name": "TableStonecutter",
+      "parent_name": "BenchBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Production.xml",
+        "xpath": "/Defs/ThingDef[defName='TableStonecutter']",
+        "sha256": "3221c30adc223498636ac7b6ca86ef9c50fce681b138be8f0919c6e652045a31"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "size",
+        "costStuffCount",
+        "costList",
+        "stuffCategories",
+        "statBases",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "surfaceType",
+        "building",
+        "comps",
+        "researchPrerequisites",
+        "resourcesFractionWhenDeconstructed",
+        "leaveResourcesWhenKilled"
+      ],
+      "absent_roots": [
+        "category",
+        "resourcesFractionWhenDeconstructed",
+        "leaveResourcesWhenKilled"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/thingClass",
+          "value": "Building_WorkTable_HeatPush"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/costStuffCount",
+          "value": "75"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/costList/Steel",
+          "value": "30"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/stuffCategories/li[1]",
+          "value": "Metallic"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/stuffCategories/li[2]",
+          "value": "Woody"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/statBases/WorkToBuild",
+          "value": "2000"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/statBases/MaxHitPoints",
+          "value": "180"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/statBases/Flammability",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/statBases/Cleanliness",
+          "value": "-5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/size",
+          "value": "(3,1)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/hasInteractionCell",
+          "value": "True"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/interactionCellOffset",
+          "value": "(0,0,-1)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/surfaceType",
+          "value": "Item"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/building/spawnedConceptLearnOpportunity",
+          "value": "BillsTab"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/building/paintable",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/building/workTableRoomRole",
+          "value": "Workshop"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/building/workTableNotInRoomRoleFactor",
+          "value": "0.8"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/comps/li/linkableFacilities/li",
+          "value": "ToolCabinet"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/researchPrerequisites/li",
+          "value": "Stonecutting"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/comps/li",
+          "attributes": {
+            "Class": "CompProperties_AffectedByFacilities"
+          }
+        }
+      ]
+    },
+    {
+      "group": "wall",
+      "id": "ThingDef_Wall",
+      "def_name": "Wall",
+      "parent_name": "BuildingBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Structure.xml",
+        "xpath": "/Defs/ThingDef[defName='Wall']",
+        "sha256": "5e4f3958b557e14513eb1dc06fc58bb14aabf10148b96b3d69db5aa9d9d3d523"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "size",
+        "costStuffCount",
+        "costList",
+        "stuffCategories",
+        "statBases",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "surfaceType",
+        "building",
+        "comps",
+        "researchPrerequisites",
+        "resourcesFractionWhenDeconstructed",
+        "leaveResourcesWhenKilled"
+      ],
+      "absent_roots": [
+        "size",
+        "costList",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "surfaceType",
+        "researchPrerequisites",
+        "resourcesFractionWhenDeconstructed"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/thingClass",
+          "value": "Building"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/category",
+          "value": "Building"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/statBases/MaxHitPoints",
+          "value": "300"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/statBases/WorkToBuild",
+          "value": "135"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/statBases/Flammability",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/statBases/MeditationFocusStrength",
+          "value": "0.22"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/costStuffCount",
+          "value": "5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/leaveResourcesWhenKilled",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/stuffCategories/li[1]",
+          "value": "Metallic"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/stuffCategories/li[2]",
+          "value": "Woody"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/stuffCategories/li[3]",
+          "value": "Stony"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/paintable",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/isInert",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/isWall",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/isPlaceOverableWall",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/ai_chillDestination",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/supportsWallAttachments",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/isStuffableAirtight",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/relatedBuildCommands/li[1]",
+          "value": "Door"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/relatedBuildCommands/li[2]",
+          "value": "Autodoor"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/relatedBuildCommands/li[3]",
+          "value": "OrnateDoor"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/relatedBuildCommands/li[4]",
+          "value": "SecurityDoor"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/relatedBuildCommands/li[5]",
+          "value": "VacBarrier"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/relatedBuildCommands/li[6]",
+          "value": "Cooler"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/relatedBuildCommands/li[7]",
+          "value": "Vent"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/comps/li/statDef",
+          "value": "MeditationFocusStrength"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/comps/li/focusTypes/li",
+          "value": "Minimal"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/relatedBuildCommands/li[4]",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Anomaly"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/relatedBuildCommands/li[5]",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/comps/li",
+          "attributes": {
+            "Class": "CompProperties_MeditationFocus"
+          }
+        }
+      ]
+    },
+    {
+      "group": "recipe",
+      "id": "RecipeDef_MakeStoneBlocksBase",
+      "def_name": "MakeStoneBlocksBase",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/RecipeDefs/Recipes_Production.xml",
+        "xpath": "/Defs/RecipeDef[@Name='MakeStoneBlocksBase']",
+        "sha256": "fc7697575fb2f716cb5be6045b02d6471aeeea9e768d08607099d54e3e114829"
+      },
+      "selected_roots": [
+        "workAmount",
+        "workSpeedStat",
+        "workTableSpeedStat",
+        "efficiencyStat",
+        "workTableEfficiencyStat",
+        "workSkill",
+        "workSkillLearnFactor",
+        "targetCountAdjustment",
+        "ingredients",
+        "fixedIngredientFilter",
+        "defaultIngredientFilter",
+        "products",
+        "specialProducts",
+        "recipeUsers",
+        "workerClass",
+        "workerCounterClass",
+        "unfinishedThingDef",
+        "skillRequirements"
+      ],
+      "absent_roots": [
+        "workTableSpeedStat",
+        "efficiencyStat",
+        "workTableEfficiencyStat",
+        "ingredients",
+        "fixedIngredientFilter",
+        "defaultIngredientFilter",
+        "products",
+        "specialProducts",
+        "workerClass",
+        "workerCounterClass",
+        "unfinishedThingDef",
+        "skillRequirements"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/RecipeDef[@Name='MakeStoneBlocksBase']/workAmount",
+          "value": "1600"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[@Name='MakeStoneBlocksBase']/workSpeedStat",
+          "value": "GeneralLaborSpeed"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[@Name='MakeStoneBlocksBase']/targetCountAdjustment",
+          "value": "20"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[@Name='MakeStoneBlocksBase']/workSkill",
+          "value": "Crafting"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[@Name='MakeStoneBlocksBase']/workSkillLearnFactor",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[@Name='MakeStoneBlocksBase']/recipeUsers/li",
+          "value": "TableStonecutter"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "recipe",
+      "id": "RecipeDef_Make_StoneBlocksAny",
+      "def_name": "Make_StoneBlocksAny",
+      "parent_name": "MakeStoneBlocksBase",
+      "source": {
+        "path": "Data/Core/Defs/RecipeDefs/Recipes_Production.xml",
+        "xpath": "/Defs/RecipeDef[defName='Make_StoneBlocksAny']",
+        "sha256": "fc7697575fb2f716cb5be6045b02d6471aeeea9e768d08607099d54e3e114829"
+      },
+      "selected_roots": [
+        "workAmount",
+        "workSpeedStat",
+        "workTableSpeedStat",
+        "efficiencyStat",
+        "workTableEfficiencyStat",
+        "workSkill",
+        "workSkillLearnFactor",
+        "targetCountAdjustment",
+        "ingredients",
+        "fixedIngredientFilter",
+        "defaultIngredientFilter",
+        "products",
+        "specialProducts",
+        "recipeUsers",
+        "workerClass",
+        "workerCounterClass",
+        "unfinishedThingDef",
+        "skillRequirements"
+      ],
+      "absent_roots": [
+        "workAmount",
+        "workSpeedStat",
+        "workTableSpeedStat",
+        "efficiencyStat",
+        "workTableEfficiencyStat",
+        "workSkill",
+        "workSkillLearnFactor",
+        "targetCountAdjustment",
+        "defaultIngredientFilter",
+        "products",
+        "recipeUsers",
+        "workerClass",
+        "unfinishedThingDef",
+        "skillRequirements"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/RecipeDef[defName='Make_StoneBlocksAny']/workerCounterClass",
+          "value": "RecipeWorkerCounter_MakeStoneBlocks"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[defName='Make_StoneBlocksAny']/ingredients/li/filter/categories/li",
+          "value": "StoneChunks"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[defName='Make_StoneBlocksAny']/ingredients/li/count",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[defName='Make_StoneBlocksAny']/fixedIngredientFilter/categories/li",
+          "value": "StoneChunks"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[defName='Make_StoneBlocksAny']/specialProducts/li",
+          "value": "StoneBlocks"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "recipe",
+      "id": "RecipeDef_Make_StoneBlocksGranite",
+      "def_name": "Make_StoneBlocksGranite",
+      "parent_name": "MakeStoneBlocksBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/RecipeDef[defName='Make_StoneBlocksGranite']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      "selected_roots": [
+        "workAmount",
+        "workSpeedStat",
+        "workTableSpeedStat",
+        "efficiencyStat",
+        "workTableEfficiencyStat",
+        "workSkill",
+        "workSkillLearnFactor",
+        "targetCountAdjustment",
+        "ingredients",
+        "fixedIngredientFilter",
+        "defaultIngredientFilter",
+        "products",
+        "specialProducts",
+        "recipeUsers",
+        "workerClass",
+        "workerCounterClass",
+        "unfinishedThingDef",
+        "skillRequirements"
+      ],
+      "absent_roots": [
+        "workAmount",
+        "workSpeedStat",
+        "workTableSpeedStat",
+        "efficiencyStat",
+        "workTableEfficiencyStat",
+        "workSkill",
+        "workSkillLearnFactor",
+        "targetCountAdjustment",
+        "defaultIngredientFilter",
+        "specialProducts",
+        "recipeUsers",
+        "workerClass",
+        "workerCounterClass",
+        "unfinishedThingDef",
+        "skillRequirements"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/RecipeDef[defName='Make_StoneBlocksGranite']/ingredients/li/filter/thingDefs/li",
+          "value": "ChunkGranite"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[defName='Make_StoneBlocksGranite']/ingredients/li/count",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[defName='Make_StoneBlocksGranite']/fixedIngredientFilter/thingDefs/li",
+          "value": "ChunkGranite"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[defName='Make_StoneBlocksGranite']/products/BlocksGranite",
+          "value": "20"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_GeneralLaborSpeed",
+      "def_name": "GeneralLaborSpeed",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_WorkRecipes.xml",
+        "xpath": "/Defs/StatDef[defName='GeneralLaborSpeed']",
+        "sha256": "1304fce1d4a7a1729aacb5ef25cf493beee4474494c8b4a6cb5a720bca92f9e3"
+      },
+      "selected_roots": [
+        "defaultBaseValue",
+        "minValue",
+        "statFactors",
+        "capacityFactors",
+        "skillNeedFactors",
+        "parts"
+      ],
+      "absent_roots": [
+        "skillNeedFactors",
+        "parts"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='GeneralLaborSpeed']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='GeneralLaborSpeed']/minValue",
+          "value": "0.1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='GeneralLaborSpeed']/statFactors/li",
+          "value": "WorkSpeedGlobal"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='GeneralLaborSpeed']/capacityFactors/li[1]/capacity",
+          "value": "Manipulation"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='GeneralLaborSpeed']/capacityFactors/li[1]/weight",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='GeneralLaborSpeed']/capacityFactors/li[2]/capacity",
+          "value": "Sight"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='GeneralLaborSpeed']/capacityFactors/li[2]/weight",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='GeneralLaborSpeed']/capacityFactors/li[2]/max",
+          "value": "1"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_WorkToBuild",
+      "def_name": "WorkToBuild",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Building_Special.xml",
+        "xpath": "/Defs/StatDef[defName='WorkToBuild']",
+        "sha256": "e57298ad955777e288239b2e7804def1b1f0d3cf7290bba5b723fff684c7d1ce"
+      },
+      "selected_roots": [
+        "defaultBaseValue",
+        "minValue",
+        "roundToFiveOver",
+        "parts"
+      ],
+      "absent_roots": [
+        "parts"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='WorkToBuild']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkToBuild']/minValue",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkToBuild']/roundToFiveOver",
+          "value": "300"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_WorkTableWorkSpeedFactor",
+      "def_name": "WorkTableWorkSpeedFactor",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Building_Special.xml",
+        "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']",
+        "sha256": "e57298ad955777e288239b2e7804def1b1f0d3cf7290bba5b723fff684c7d1ce"
+      },
+      "selected_roots": [
+        "defaultBaseValue",
+        "minValue",
+        "roundToFiveOver",
+        "parts"
+      ],
+      "absent_roots": [
+        "roundToFiveOver"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/minValue",
+          "value": "0.1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/parts/li[1]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/parts/li[2]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/parts/li[3]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/parts/li[4]",
+          "value": ""
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/parts/li[1]",
+          "attributes": {
+            "Class": "StatPart_WorkTableUnpowered"
+          }
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/parts/li[2]",
+          "attributes": {
+            "Class": "StatPart_WorkTableRoomRole"
+          }
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/parts/li[3]",
+          "attributes": {
+            "Class": "StatPart_WorkTableTemperature"
+          }
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/parts/li[4]",
+          "attributes": {
+            "Class": "StatPart_WorkTableOutdoors"
+          }
+        }
+      ]
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_WorkTableEfficiencyFactor",
+      "def_name": "WorkTableEfficiencyFactor",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Building_Special.xml",
+        "xpath": "/Defs/StatDef[defName='WorkTableEfficiencyFactor']",
+        "sha256": "e57298ad955777e288239b2e7804def1b1f0d3cf7290bba5b723fff684c7d1ce"
+      },
+      "selected_roots": [
+        "defaultBaseValue",
+        "minValue",
+        "roundToFiveOver",
+        "parts"
+      ],
+      "absent_roots": [
+        "roundToFiveOver",
+        "parts"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableEfficiencyFactor']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableEfficiencyFactor']/minValue",
+          "value": "0.1"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "work",
+      "id": "WorkGiverDef_DoBillsStonecut",
+      "def_name": "DoBillsStonecut",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+        "xpath": "/Defs/WorkGiverDef[defName='DoBillsStonecut']",
+        "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c"
+      },
+      "selected_roots": [
+        "giverClass",
+        "workType",
+        "priorityInType",
+        "fixedBillGiverDefs",
+        "requiredCapacities"
+      ],
+      "absent_roots": [],
+      "fields": [
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='DoBillsStonecut']/giverClass",
+          "value": "WorkGiver_DoBill"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='DoBillsStonecut']/workType",
+          "value": "Crafting"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='DoBillsStonecut']/priorityInType",
+          "value": "90"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='DoBillsStonecut']/fixedBillGiverDefs/li",
+          "value": "TableStonecutter"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='DoBillsStonecut']/requiredCapacities/li",
+          "value": "Manipulation"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "floor",
+      "id": "TerrainDef_FloorBase",
+      "def_name": "FloorBase",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Floors.xml",
+        "xpath": "/Defs/TerrainDef[@Name='FloorBase']",
+        "sha256": "c7a3038831fb311caa542b62c41caab6335eca87d36ae728b32e03120faa053d"
+      },
+      "selected_roots": [
+        "statBases",
+        "costList",
+        "resourcesFractionWhenDeconstructed",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_roots": [
+        "statBases",
+        "costList",
+        "resourcesFractionWhenDeconstructed",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "floor",
+      "id": "TerrainDef_WoodPlankFloor",
+      "def_name": "WoodPlankFloor",
+      "parent_name": "FloorBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Floors.xml",
+        "xpath": "/Defs/TerrainDef[defName='WoodPlankFloor']",
+        "sha256": "c7a3038831fb311caa542b62c41caab6335eca87d36ae728b32e03120faa053d"
+      },
+      "selected_roots": [
+        "statBases",
+        "costList",
+        "resourcesFractionWhenDeconstructed",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_roots": [
+        "resourcesFractionWhenDeconstructed",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[defName='WoodPlankFloor']/statBases/WorkToBuild",
+          "value": "85"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='WoodPlankFloor']/statBases/Flammability",
+          "value": "0.22"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='WoodPlankFloor']/costList/WoodLog",
+          "value": "3"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "floor",
+      "id": "TerrainDef_TileStoneBase",
+      "def_name": "TileStoneBase",
+      "parent_name": "FloorBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Floors_StoneTile.xml",
+        "xpath": "/Defs/TerrainDef[@Name='TileStoneBase']",
+        "sha256": "426ee325bab40eda6fcfe4801162ba3b83da15d7e71abf57a50ada52a4527746"
+      },
+      "selected_roots": [
+        "statBases",
+        "costList",
+        "resourcesFractionWhenDeconstructed",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_roots": [
+        "costList",
+        "resourcesFractionWhenDeconstructed"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[@Name='TileStoneBase']/statBases/WorkToBuild",
+          "value": "1100"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[@Name='TileStoneBase']/statBases/Beauty",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[@Name='TileStoneBase']/statBases/CleaningTimeFactor",
+          "value": "0.8"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[@Name='TileStoneBase']/researchPrerequisites/li",
+          "value": "Stonecutting"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[@Name='TileStoneBase']/constructionSkillPrerequisite",
+          "value": "3"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "floor",
+      "id": "TerrainDef_TileGranite",
+      "def_name": "TileGranite",
+      "parent_name": "TileStoneBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Floors_StoneTile.xml",
+        "xpath": "/Defs/TerrainDef[defName='TileGranite']",
+        "sha256": "426ee325bab40eda6fcfe4801162ba3b83da15d7e71abf57a50ada52a4527746"
+      },
+      "selected_roots": [
+        "statBases",
+        "costList",
+        "resourcesFractionWhenDeconstructed",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_roots": [
+        "statBases",
+        "resourcesFractionWhenDeconstructed",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[defName='TileGranite']/costList/BlocksGranite",
+          "value": "4"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "floor",
+      "id": "TerrainDef_FlagstoneBase",
+      "def_name": "FlagstoneBase",
+      "parent_name": "FloorBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Floors_StoneTile.xml",
+        "xpath": "/Defs/TerrainDef[@Name='FlagstoneBase']",
+        "sha256": "426ee325bab40eda6fcfe4801162ba3b83da15d7e71abf57a50ada52a4527746"
+      },
+      "selected_roots": [
+        "statBases",
+        "costList",
+        "resourcesFractionWhenDeconstructed",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_roots": [
+        "costList",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[@Name='FlagstoneBase']/resourcesFractionWhenDeconstructed",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[@Name='FlagstoneBase']/statBases/WorkToBuild",
+          "value": "500"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[@Name='FlagstoneBase']/statBases/Beauty",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[@Name='FlagstoneBase']/statBases/CleaningTimeFactor",
+          "value": "0.8"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "floor",
+      "id": "TerrainDef_FlagstoneGranite",
+      "def_name": "FlagstoneGranite",
+      "parent_name": "FlagstoneBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Floors_StoneTile.xml",
+        "xpath": "/Defs/TerrainDef[defName='FlagstoneGranite']",
+        "sha256": "426ee325bab40eda6fcfe4801162ba3b83da15d7e71abf57a50ada52a4527746"
+      },
+      "selected_roots": [
+        "statBases",
+        "costList",
+        "resourcesFractionWhenDeconstructed",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_roots": [
+        "statBases",
+        "resourcesFractionWhenDeconstructed",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[defName='FlagstoneGranite']/costList/BlocksGranite",
+          "value": "4"
+        }
+      ],
+      "node_attributes": []
+    }
+  ]
+}

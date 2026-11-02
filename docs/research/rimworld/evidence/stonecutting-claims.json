@@ -1,0 +1,716 @@
+[
+  {
+    "id": "SC01",
+    "kind": "xml-and-static-derived",
+    "statement": "Natural Granite declares HP900 and ChunkGranite drop chance0.25; UglyRockBase disables wasteable yield. Mineable draws once at final destruction; successful yield=max(1,RoundToInt(base yield1*difficulty factor)). MiningYield does not scale non-wasteable granite chunks; MiningSpeed changes pick interval. Local 3D per-voxel deterministic draws are an adaptation.",
+    "sources": [
+      {
+        "group": "stonecutting",
+        "xml_record": "ThingDef_Granite"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "ThingDef_UglyRockBase"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "ThingDef_RockBase"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "ThingDef_BuildingNaturalBase"
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Mineable",
+        "line_start": 39,
+        "line_end": 97
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.BuildingProperties",
+        "line_start": 269,
+        "line_end": 277
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.BuildingProperties",
+        "line_start": 432,
+        "line_end": 432
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.JobDriver_Mine",
+        "line_start": 103,
+        "line_end": 133
+      }
+    ]
+  },
+  {
+    "id": "SC02",
+    "kind": "xml-declared",
+    "statement": "ChunkGranite stack limit1 and BlocksGranite75 are distinct items. The specific recipe consumes one ChunkGranite and declares20 BlocksGranite; the chunk butcherProducts also declares20.",
+    "sources": [
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_ChunkBase"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_ChunkRockBase"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_ChunkGranite"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_StoneBlocksBase"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_BlocksGranite"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_ResourceBase"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "RecipeDef_Make_StoneBlocksGranite"
+      }
+    ]
+  },
+  {
+    "id": "SC03",
+    "kind": "xml-and-static-derived",
+    "statement": "TableStonecutter costs75 stuff (Metallic or Woody) plus30Steel, has base work2000 and base HP180, requires Stonecutting research, and has no selected power/fuel component. Its worktable usability permits absent power/fuel components. Wood material multiplies build work by0.7, yielding1400 rather than2000.",
+    "sources": [
+      {
+        "group": "stonecutting",
+        "xml_record": "ThingDef_TableStonecutter"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "ThingDef_BenchBase"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "ThingDef_BuildingBase"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "ThingDef_WoodLog"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 299,
+        "line_end": 314
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.Building_WorkTable",
+        "line_start": 18,
+        "line_end": 35
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.Building_WorkTable",
+        "line_start": 85,
+        "line_end": 115
+      }
+    ]
+  },
+  {
+    "id": "SC04",
+    "kind": "xml-and-static-derived",
+    "statement": "The worktable footprint is3x1 with hasInteractionCell=true and offset(0,0,-1); ThingUtility rotates this offset about its center. DoBill reserves the worktable and sittable/interaction spot before collecting ingredients.",
+    "sources": [
+      {
+        "group": "stonecutting",
+        "xml_record": "ThingDef_TableStonecutter"
+      },
+      {
+        "group": "preservation",
+        "type": "Verse.ThingUtility",
+        "line_start": 55,
+        "line_end": 60
+      },
+      {
+        "group": "preservation",
+        "type": "Verse.ThingUtility",
+        "line_start": 83,
+        "line_end": 90
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.JobDriver_DoBill",
+        "line_start": 54,
+        "line_end": 67
+      }
+    ]
+  },
+  {
+    "id": "SC05",
+    "kind": "xml-and-static-derived",
+    "statement": "Stonecutting workAmount1600 is work, not unconditional elapsed ticks. Progress uses pawn GeneralLaborSpeed times resolved WorkTableWorkSpeedFactor. Outdoor penalty0.8 and wrong indoor room-role penalty0.8 have different predicates; temperature outside inclusive9..35 gives0.7. These are stat factors, not input/output counts.",
+    "sources": [
+      {
+        "group": "stonecutting",
+        "xml_record": "RecipeDef_MakeStoneBlocksBase"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "StatDef_GeneralLaborSpeed"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "StatDef_WorkTableWorkSpeedFactor"
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 90,
+        "line_end": 137
+      },
+      {
+        "group": "food",
+        "type": "Verse.RecipeDef",
+        "line_start": 480,
+        "line_end": 498
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.StatPart_WorkTableRoomRole",
+        "line_start": 7,
+        "line_end": 36
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.StatPart_WorkTableOutdoors",
+        "line_start": 7,
+        "line_end": 43
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.StatPart_WorkTableTemperature",
+        "line_start": 7,
+        "line_end": 56
+      }
+    ]
+  },
+  {
+    "id": "SC06",
+    "kind": "xml-and-static-derived",
+    "statement": "DoBillsStonecut belongs to Crafting work and requires Manipulation. Recipe workSkill=Crafting but workSkillLearnFactor=0, so its completion-XP formula gives zero; no selected skillRequirements are declared. GeneralLaborSpeed does not have a selected skillNeedFactors declaration.",
+    "sources": [
+      {
+        "group": "stonecutting",
+        "xml_record": "WorkGiverDef_DoBillsStonecut"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "RecipeDef_MakeStoneBlocksBase"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "RecipeDef_Make_StoneBlocksGranite"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "StatDef_GeneralLaborSpeed"
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 183,
+        "line_end": 188
+      }
+    ]
+  },
+  {
+    "id": "SC07",
+    "kind": "xml-and-static-derived",
+    "statement": "Specific/any stonecutting recipes do not declare unfinishedThingDef; default is null and UsesUnfinishedThing checks non-null. No unfinished item stores progress. Starting a new DoRecipeWork initializes full work; manual suspension fails the work toil. In contrast the current JobDriver saves workLeft, so saving/loading the same active job is distinct from starting a replacement job.",
+    "sources": [
+      {
+        "group": "stonecutting",
+        "xml_record": "RecipeDef_MakeStoneBlocksBase"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "RecipeDef_Make_StoneBlocksGranite"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "RecipeDef_Make_StoneBlocksAny"
+      },
+      {
+        "group": "food",
+        "type": "Verse.RecipeDef",
+        "line_start": 59,
+        "line_end": 65
+      },
+      {
+        "group": "food",
+        "type": "Verse.RecipeDef",
+        "line_start": 360,
+        "line_end": 360
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 11,
+        "line_end": 40
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 44,
+        "line_end": 76
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 153,
+        "line_end": 165
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.JobDriver_DoBill",
+        "line_start": 46,
+        "line_end": 52
+      }
+    ]
+  },
+  {
+    "id": "SC08",
+    "kind": "xml-and-static-derived",
+    "statement": "Bill modes are repeat count, forever and target count. suspended blocks work; pauseWhenSatisfied latches paused at count>=target and unpauses at count<=unpause threshold. Target checks gate a whole iteration; targetCountAdjustment20 is UI adjustment, not partial-batch output. Completion decreases repeatCount once. Changing targetCount alone has no cancellation in the reviewed running-job predicates; the ongoing iteration may finish before a new ShouldDoNow check.",
+    "sources": [
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.Bill_Production",
+        "line_start": 12,
+        "line_end": 40
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.Bill_Production",
+        "line_start": 208,
+        "line_end": 260
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.Bill_Production",
+        "line_start": 281,
+        "line_end": 296
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 153,
+        "line_end": 165
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.JobDriver_DoBill",
+        "line_start": 76,
+        "line_end": 89
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "RecipeDef_MakeStoneBlocksBase"
+      }
+    ]
+  },
+  {
+    "id": "SC09",
+    "kind": "xml-and-static-derived",
+    "statement": "Default specific-granite target counting uses ResourceCounter plus player pawn hand-carried product. BlocksGranite inherits resourceReadoutPriority Middle, so CountAsResource is true. ResourceCounter enumerates storage SlotGroup.HeldThings, excluding nonfresh/fogged items, with periodic204-tick refresh. The default path is not all unstockpiled ground items. Bill include-group/filter settings can switch counting paths.",
+    "sources": [
+      {
+        "group": "stonecutting",
+        "type": "Verse.RecipeWorkerCounter",
+        "line_start": 19,
+        "line_end": 85
+      },
+      {
+        "group": "stonecutting",
+        "type": "Verse.RecipeWorkerCounter",
+        "line_start": 165,
+        "line_end": 183
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.ResourceCounter",
+        "line_start": 121,
+        "line_end": 169
+      },
+      {
+        "group": "energy",
+        "type": "Verse.ThingDef",
+        "line_start": 657,
+        "line_end": 657
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "ThingDef_ResourceBase"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "ThingDef_StoneBlocksBase"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "ThingDef_BlocksGranite"
+      }
+    ]
+  },
+  {
+    "id": "SC10",
+    "kind": "static-derived",
+    "statement": "Ingredient selection checks bill eligibility, pawn/recipe requirements, allowed ingredient filters, radius, forbidden status, reservability and traversable regions. Ground-ingredient radius comparison is strict squared distance<radiusSquared from billgiver; default bill ingredient radius999. Failed searches can be delayed for500..600 ticks.",
+    "sources": [
+      {
+        "group": "food",
+        "type": "RimWorld.Bill",
+        "line_start": 29,
+        "line_end": 35
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.WorkGiver_DoBill",
+        "line_start": 95,
+        "line_end": 95
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.WorkGiver_DoBill",
+        "line_start": 139,
+        "line_end": 158
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.WorkGiver_DoBill",
+        "line_start": 189,
+        "line_end": 281
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.WorkGiver_DoBill",
+        "line_start": 438,
+        "line_end": 535
+      }
+    ]
+  },
+  {
+    "id": "SC11",
+    "kind": "static-derived",
+    "statement": "DoBill collects required physical ingredients, moves them to worktable interaction reach and places them on table footprint or nearby candidate cells, then physically reserves them. Building_WorkTable exposes its occupied cells as IngredientStackCells. Pickup/delivery is distinct from consuming the input.",
+    "sources": [
+      {
+        "group": "food",
+        "type": "Verse.AI.JobDriver_DoBill",
+        "line_start": 102,
+        "line_end": 137
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.Building_WorkTable",
+        "line_start": 36,
+        "line_end": 41
+      },
+      {
+        "group": "stonecutting",
+        "type": "Verse.AI.Toils_JobTransforms",
+        "line_start": 66,
+        "line_end": 140
+      }
+    ]
+  },
+  {
+    "id": "SC12",
+    "kind": "static-derived",
+    "statement": "On normal completion, Toils_Recipe calculates ingredients, generates products, consumes ingredients, and notifies iteration completion before starting product storage. Plain RecipeWorker.ConsumeIngredient destroys consumed input. No extra stonecutting failure or quality roll is introduced by these selected recipe declarations.",
+    "sources": [
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 183,
+        "line_end": 209
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 301,
+        "line_end": 342
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 370,
+        "line_end": 375
+      },
+      {
+        "group": "food",
+        "type": "Verse.RecipeWorker",
+        "line_start": 44,
+        "line_end": 51
+      },
+      {
+        "group": "food",
+        "type": "Verse.RecipeDef",
+        "line_start": 12,
+        "line_end": 14
+      }
+    ]
+  },
+  {
+    "id": "SC13",
+    "kind": "static-derived",
+    "statement": "Product storage supports DropOnFloor, BestStockpile and SpecificStockpile. Missing destination falls back to Near placement; valid destination can start a new hauling job, with excess over hand capacity placed nearby. Input consumption and bill iteration completion are not rolled back when later placement fails; failure logs exist. Local durable pending output or full-capacity prechecks are explicit loss-avoidance adaptations.",
+    "sources": [
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 226,
+        "line_end": 296
+      },
+      {
+        "group": "logistics",
+        "type": "Verse.GenPlace",
+        "line_start": 323,
+        "line_end": 379
+      }
+    ]
+  },
+  {
+    "id": "SC14",
+    "kind": "xml-and-static-derived",
+    "statement": "The specific recipe generates ceil(declared20*efficiency) through GenRecipe; resolved default worktable efficiency stat is WorkTableEfficiencyFactor, base1. Thus20 is the default amount, not a guarantee under arbitrary stat modifications. The selected granite blocks chain has no quality-producing recipe worker override.",
+    "sources": [
+      {
+        "group": "stonecutting",
+        "xml_record": "RecipeDef_Make_StoneBlocksGranite"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "RecipeDef_MakeStoneBlocksBase"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "StatDef_WorkTableEfficiencyFactor"
+      },
+      {
+        "group": "food",
+        "type": "Verse.GenRecipe",
+        "line_start": 10,
+        "line_end": 44
+      },
+      {
+        "group": "food",
+        "type": "Verse.RecipeDef",
+        "line_start": 480,
+        "line_end": 498
+      }
+    ]
+  },
+  {
+    "id": "SC15",
+    "kind": "xml-and-static-derived",
+    "statement": "Wall consumes5 stuff with base work135. StatWorker multiplies stuff work factor then adds offset: wood135*0.7=94.5, granite135*6+140=950. Two-high 3D stone column10 bricks/1900 source work is a project geometric adaptation, not an original two-level wall entity.",
+    "sources": [
+      {
+        "group": "stonecutting",
+        "xml_record": "ThingDef_Wall"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "ThingDef_WoodLog"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "ThingDef_StoneBlocksBase"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "ThingDef_BlocksGranite"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 299,
+        "line_end": 314
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 818,
+        "line_end": 832
+      }
+    ]
+  },
+  {
+    "id": "SC16",
+    "kind": "xml-declared",
+    "statement": "WoodPlankFloor costs3WoodLog and work85; TileGranite costs4BlocksGranite with inherited work1100 and Construction requirement3; FlagstoneGranite costs4BlocksGranite with work500 and zero deconstruction refund. Terrain fixed WorkToBuild is not multiplied again by stone stuff work factors.",
+    "sources": [
+      {
+        "group": "stonecutting",
+        "xml_record": "TerrainDef_FloorBase"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "TerrainDef_WoodPlankFloor"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "TerrainDef_TileStoneBase"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "TerrainDef_TileGranite"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "TerrainDef_FlagstoneBase"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "TerrainDef_FlagstoneGranite"
+      }
+    ]
+  },
+  {
+    "id": "SC17",
+    "kind": "xml-and-static-derived",
+    "statement": "Default deconstruction resource fraction is0.5. Building and normal terrain leavings use stochastic GenMath.RoundRandom(cost*fraction); building refund is capped at original count. Five-brick wall returns2 or3, four-brick granite tile returns2, flagstone0. Local floor-per-voxel return2 for each half of a ten-brick column is an explicit deterministic reduction.",
+    "sources": [
+      {
+        "group": "stonecutting",
+        "type": "Verse.BuildableDef",
+        "line_start": 38,
+        "line_end": 38
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.GenLeaving",
+        "line_start": 250,
+        "line_end": 277
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.GenLeaving",
+        "line_start": 280,
+        "line_end": 326
+      },
+      {
+        "group": "generation",
+        "type": "Verse.GenMath",
+        "line_start": 62,
+        "line_end": 65
+      },
+      {
+        "group": "stonecutting",
+        "type": "Verse.TerrainGrid",
+        "line_start": 280,
+        "line_end": 307
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "ThingDef_Wall"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "TerrainDef_TileStoneBase"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "TerrainDef_TileGranite"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "TerrainDef_FlagstoneBase"
+      },
+      {
+        "group": "stonecutting",
+        "xml_record": "TerrainDef_FloorBase"
+      }
+    ]
+  },
+  {
+    "id": "SC18",
+    "kind": "static-derived",
+    "statement": "Building deconstruction work clamps evaluated WorkToBuild to20..3000; removal finishes with DestroyMode.Deconstruct. Floor removal uses base work200 and ConstructionSpeed, removes the top terrain layer and can generate normal terrain leavings. These are separate from construction work.",
+    "sources": [
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.JobDriver_Deconstruct",
+        "line_start": 10,
+        "line_end": 33
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.JobDriver_RemoveFloor",
+        "line_start": 7,
+        "line_end": 32
+      },
+      {
+        "group": "stonecutting",
+        "type": "Verse.TerrainGrid",
+        "line_start": 280,
+        "line_end": 307
+      }
+    ]
+  },
+  {
+    "id": "SC19",
+    "kind": "xml-and-static-derived",
+    "statement": "Any-stone recipe uses StoneChunks category and StoneBlocks special products, generated from input butcherProducts with stochastic rounding. Its custom counter sums stocked StoneBlocks category counts and does not add carried count like the default specific-granite counter. Do not conflate these two recipe paths.",
+    "sources": [
+      {
+        "group": "stonecutting",
+        "xml_record": "RecipeDef_Make_StoneBlocksAny"
+      },
+      {
+        "group": "stonecutting",
+        "type": "Verse.RecipeWorkerCounter_MakeStoneBlocks",
+        "line_start": 7,
+        "line_end": 21
+      },
+      {
+        "group": "food",
+        "type": "Verse.GenRecipe",
+        "line_start": 45,
+        "line_end": 80
+      },
+      {
+        "group": "energy",
+        "type": "Verse.Thing",
+        "line_start": 1958,
+        "line_end": 1976
+      }
+    ]
+  },
+  {
+    "id": "SC20",
+    "kind": "static-derived-and-project-adaptation",
+    "statement": "TickManager normal real-time tick period is1/60s. At project20TPS with rate factors1, selected source work maps using ceil(work/3): wood bench467, stonecut534, two-high stone column634, granite floor367. Daily-scale ratio0.2 would be a different adaptation. Seed/coordinate mining draws and project physical z voxels are not the original global Rand stream.",
+    "sources": [
+      {
+        "group": "energy",
+        "type": "Verse.TickManager",
+        "line_start": 124,
+        "line_end": 132
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 108,
+        "line_end": 117
+      }
+    ]
+  }
+]

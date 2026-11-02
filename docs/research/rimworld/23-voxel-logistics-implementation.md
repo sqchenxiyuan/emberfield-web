@@ -2,6 +2,8 @@
 
 更新：2026-11-03。[体素试玩](https://sqchenxiyuan.github.io/emberfield-web/?world=voxel)。本章记录 Emberfield 实现；原版规则、来源与独立算例见[21章](21-storage-logistics-mechanisms.md)，有干扰的原版搬运实测见[22章](22-native-storage-runtime.md)。20章和其证据保留为先前 v5 阶段的历史记录。
 
+本章现在保留为 v6 阶段记录。当前 v7 已把天然石开凿改为概率产岩块，再经切石台加工石砖，新增岩块上限1和v6迁移；见[26章](26-voxel-stonecutting-implementation.md)。以下“缺少切石流程”等表述描述历史版本，不覆盖当前实现。
+
 ## 玩家能看到的变化
 
 地面每格只放一堆。木材、石材、钢材和谷物每堆最多75，零件50，简餐和包装生存口粮10；搬运者一次也不能超过对应上限。谷物按稻米、土豆、玉米分别合堆，实际转移数量决定食品年龄的加权值。

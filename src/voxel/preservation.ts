@@ -11,7 +11,8 @@ export function rotRateAtTemperature(temperature: number): number {
 }
 export function rotLimit(batch: Pick<Cargo, 'resource' | 'crop'>): number | null {
   if (batch.resource === 'meal') return ROT_DAYS.meal * DAY;
-  if (batch.resource === 'grain' && batch.crop && Object.hasOwn(ROT_DAYS, batch.crop)) return ROT_DAYS[batch.crop] * DAY;
+  if (batch.resource === 'grain' && batch.crop && Object.hasOwn(ROT_DAYS, batch.crop))
+    return ROT_DAYS[batch.crop] * DAY;
   return null;
 }
 /** Remaining days at full rot rate, not a forecast of future room temperature. */
@@ -21,14 +22,23 @@ export function remainingRotDays(batch: Cargo): number | null {
 }
 export function freshBatch(resource: Resource, amount: number, crop?: CropKind): Cargo {
   return {
-    resource, amount,
-    ...(resource === 'grain' ? { crop: crop ?? 'rice', rotProgress: 0 } : resource === 'meal' ? { rotProgress: 0 } : {}),
+    resource,
+    amount,
+    ...(resource === 'grain'
+      ? { crop: crop ?? 'rice', rotProgress: 0 }
+      : resource === 'meal'
+        ? { rotProgress: 0 }
+        : {}),
   };
 }
 /** A physical split inherits the current age exactly. */
 export function portion(batch: Cargo, amount: number): Cargo {
-  return { resource: batch.resource, amount, ...(batch.crop !== undefined ? { crop: batch.crop } : {}),
-    ...(batch.rotProgress !== undefined ? { rotProgress: batch.rotProgress } : {}) };
+  return {
+    resource: batch.resource,
+    amount,
+    ...(batch.crop !== undefined ? { crop: batch.crop } : {}),
+    ...(batch.rotProgress !== undefined ? { rotProgress: batch.rotProgress } : {}),
+  };
 }
 export function compatibleBatches(a: Cargo, b: Cargo): boolean {
   return a.resource === b.resource && a.crop === b.crop;
@@ -39,7 +49,9 @@ export function mergeBatch(target: Cargo, incoming: Cargo): void {
     throw new Error('Only positive compatible batches can merge');
   if (isPerishable(target.resource)) {
     const total = target.amount + incoming.amount;
-    target.rotProgress = ((target.rotProgress ?? 0) * target.amount + (incoming.rotProgress ?? 0) * incoming.amount) / total;
+    target.rotProgress =
+      ((target.rotProgress ?? 0) * target.amount + (incoming.rotProgress ?? 0) * incoming.amount) /
+      total;
   }
   target.amount += incoming.amount;
 }
@@ -55,10 +67,23 @@ export function advanceRot(batch: Cargo, temperature: number, ticks = 1): boolea
 export function validBatch(batch: unknown): batch is Cargo {
   if (!batch || typeof batch !== 'object' || Array.isArray(batch)) return false;
   const b = batch as Cargo;
-  if (!['wood', 'stone', 'steel', 'components', 'food', 'grain', 'meal'].includes(b.resource) ||
-      !Number.isSafeInteger(b.amount) || b.amount <= 0 || b.amount > 10_000_000) return false;
-  if (b.resource === 'grain' ? !['rice', 'potato', 'corn'].includes(b.crop ?? '') : b.crop !== undefined) return false;
+  if (
+    !['wood', 'stone', 'chunk', 'steel', 'components', 'food', 'grain', 'meal'].includes(
+      b.resource,
+    ) ||
+    !Number.isSafeInteger(b.amount) ||
+    b.amount <= 0 ||
+    b.amount > 10_000_000
+  )
+    return false;
+  if (
+    b.resource === 'grain'
+      ? !['rice', 'potato', 'corn'].includes(b.crop ?? '')
+      : b.crop !== undefined
+  )
+    return false;
   const limit = rotLimit(b);
-  return limit === null ? b.rotProgress === undefined :
-    Number.isFinite(b.rotProgress) && b.rotProgress! >= 0 && b.rotProgress! < limit;
+  return limit === null
+    ? b.rotProgress === undefined
+    : Number.isFinite(b.rotProgress) && b.rotProgress! >= 0 && b.rotProgress! < limit;
 }

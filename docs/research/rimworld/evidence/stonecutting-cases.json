@@ -1,0 +1,650 @@
+[
+  {
+    "label": "S01 Mining probability and granularity",
+    "claims": [
+      "SC01"
+    ],
+    "inputs": {
+      "chance": 0.25,
+      "rolls": [
+        0,
+        0.2499,
+        0.25,
+        0.2501,
+        0.99
+      ],
+      "baseYield": 1,
+      "difficulty": 1,
+      "blocksPerChunk": 20
+    },
+    "expected": {
+      "drops": [
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "expectedChunksPerRock": 0.25,
+      "expectedBlocksPerRock": 5,
+      "twoRockProbabilities": [
+        0.5625,
+        0.375,
+        0.0625
+      ]
+    },
+    "limitation": "Independent continuous-uniform probability model and explicit input rolls; does not replay original Rand state or prove project seed independence."
+  },
+  {
+    "label": "S02 Nonwasteable yield",
+    "claims": [
+      "SC01"
+    ],
+    "inputs": {
+      "base": 1,
+      "difficulties": [
+        0,
+        0.1,
+        1,
+        2,
+        3
+      ],
+      "miningYields": [
+        0.5,
+        1,
+        2
+      ]
+    },
+    "expected": {
+      "successfulCounts": [
+        1,
+        1,
+        1,
+        2,
+        3
+      ],
+      "normalDifficultyAcrossSkills": [
+        1,
+        1,
+        1
+      ]
+    },
+    "limitation": "Successful drops only; avoids rounding ties and models selected non-wasteable branch, not ore damage accumulation."
+  },
+  {
+    "label": "S03 Stone identity and batch",
+    "claims": [
+      "SC02",
+      "SC08"
+    ],
+    "inputs": {
+      "chunks": 4,
+      "inputPerBatch": 1,
+      "outputPerBatch": 20,
+      "chunkLimit": 1,
+      "blockLimit": 75,
+      "startBlocks": 19,
+      "target": 20
+    },
+    "expected": {
+      "chunkStacks": 4,
+      "output": 80,
+      "outputStacks": 2,
+      "runAt19": true,
+      "afterOneBatch": 39
+    },
+    "limitation": "Default efficiency1 and sufficient work/input; target count gates full batches rather than clipping output."
+  },
+  {
+    "label": "S04 Material work and conversion",
+    "claims": [
+      "SC03",
+      "SC15",
+      "SC16",
+      "SC20"
+    ],
+    "inputs": {
+      "sourceTps": 60,
+      "projectTps": 20,
+      "rows": [
+        {
+          "base": 2000,
+          "factor": 0.7,
+          "offset": 0,
+          "copies": 1
+        },
+        {
+          "base": 1600,
+          "factor": 1,
+          "offset": 0,
+          "copies": 1
+        },
+        {
+          "base": 135,
+          "factor": 6,
+          "offset": 140,
+          "copies": 1
+        },
+        {
+          "base": 135,
+          "factor": 6,
+          "offset": 140,
+          "copies": 2
+        },
+        {
+          "base": 1100,
+          "factor": 1,
+          "offset": 0,
+          "copies": 1
+        },
+        {
+          "base": 135,
+          "factor": 0.7,
+          "offset": 0,
+          "copies": 1
+        },
+        {
+          "base": 85,
+          "factor": 1,
+          "offset": 0,
+          "copies": 1
+        }
+      ]
+    },
+    "expected": {
+      "work": [
+        1400,
+        1600,
+        950,
+        1900,
+        1100,
+        94.5,
+        85
+      ],
+      "projectTicks": [
+        467,
+        534,
+        317,
+        634,
+        367,
+        32,
+        29
+      ]
+    },
+    "limitation": "Work-rate factors fixed1; preserves real seconds only at normal speed. Existing project wood construction timing may intentionally remain legacy values."
+  },
+  {
+    "label": "S05 Environment work rate",
+    "claims": [
+      "SC05"
+    ],
+    "inputs": {
+      "work": 1600,
+      "pawnSpeed": 1,
+      "rows": [
+        {
+          "outdoors": false,
+          "workshop": true,
+          "temp": 20
+        },
+        {
+          "outdoors": true,
+          "workshop": false,
+          "temp": 20
+        },
+        {
+          "outdoors": false,
+          "workshop": false,
+          "temp": 20
+        },
+        {
+          "outdoors": false,
+          "workshop": false,
+          "temp": 8
+        },
+        {
+          "outdoors": false,
+          "workshop": true,
+          "temp": 9
+        },
+        {
+          "outdoors": false,
+          "workshop": true,
+          "temp": 35
+        },
+        {
+          "outdoors": false,
+          "workshop": true,
+          "temp": 36
+        }
+      ]
+    },
+    "expected": {
+      "factor": [
+        1,
+        0.8,
+        0.8,
+        0.56,
+        1,
+        1,
+        0.7
+      ],
+      "ticks": [
+        1600,
+        2000,
+        2000,
+        2858,
+        1600,
+        1600,
+        2286
+      ]
+    },
+    "limitation": "Isolated room/outdoors/temperature stat parts. Other pawn modifiers, facilities, DLC and debug fast crafting are excluded."
+  },
+  {
+    "label": "S06 Progress interruption and XP",
+    "claims": [
+      "SC06",
+      "SC07"
+    ],
+    "inputs": {
+      "work": 1600,
+      "elapsed": 400,
+      "speed": 1,
+      "learnFactor": 0
+    },
+    "expected": {
+      "remaining": 1200,
+      "sameJobLoadedRemaining": 1200,
+      "newJobRemaining": 1600,
+      "craftingXp": 0,
+      "inputConsumedBeforeFinish": 0
+    },
+    "limitation": "Explains saved same-job state versus restarting the no-UFT recipe; does not drive save-load or job cleanup in the original game."
+  },
+  {
+    "label": "S07 Bill pause hysteresis",
+    "claims": [
+      "SC08"
+    ],
+    "inputs": {
+      "target": 100,
+      "unpause": 60,
+      "pauseWhenSatisfied": true,
+      "initialPaused": false,
+      "counts": [
+        99,
+        100,
+        80,
+        60,
+        59
+      ]
+    },
+    "expected": {
+      "paused": [
+        false,
+        true,
+        true,
+        false,
+        false
+      ],
+      "shouldRun": [
+        true,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    "limitation": "Target-count scheduler predicate only; not cancellation of another already running bill iteration."
+  },
+  {
+    "label": "S08 Explicit bill modes",
+    "claims": [
+      "SC08"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "mode": "repeat",
+          "remaining": 1,
+          "suspended": false
+        },
+        {
+          "mode": "repeat",
+          "remaining": 0,
+          "suspended": false
+        },
+        {
+          "mode": "forever",
+          "remaining": 0,
+          "suspended": false
+        },
+        {
+          "mode": "forever",
+          "remaining": 2,
+          "suspended": true
+        }
+      ]
+    },
+    "expected": {
+      "shouldRun": [
+        true,
+        false,
+        true,
+        false
+      ],
+      "remainingAfterOneCompletion": [
+        0,
+        0,
+        0,
+        2
+      ]
+    },
+    "limitation": "Completion decrement applies only to repeat mode; suspended cases use no completion. The final expected remainder models untouched forever metadata."
+  },
+  {
+    "label": "S09 Counted inventory scope",
+    "claims": [
+      "SC09",
+      "SC19"
+    ],
+    "inputs": {
+      "stockedGranite": 40,
+      "stockedOtherStone": 20,
+      "carriedGranite": 10,
+      "unstockpiledGranite": 60
+    },
+    "expected": {
+      "specificGraniteDefault": 50,
+      "anyStoneDefault": 60,
+      "projectAllGraniteCandidate": 110
+    },
+    "limitation": "Ideal refreshed default counters; include-group/custom filters and caching timing can change results. Project all-ground counting is optional adaptation."
+  },
+  {
+    "label": "S10 Ingredient eligibility",
+    "claims": [
+      "SC10"
+    ],
+    "inputs": {
+      "radius": 10,
+      "rows": [
+        {
+          "distanceSquared": 99,
+          "allowed": true,
+          "reservable": true,
+          "reachable": true,
+          "forbidden": false
+        },
+        {
+          "distanceSquared": 100,
+          "allowed": true,
+          "reservable": true,
+          "reachable": true,
+          "forbidden": false
+        },
+        {
+          "distanceSquared": 4,
+          "allowed": false,
+          "reservable": true,
+          "reachable": true,
+          "forbidden": false
+        },
+        {
+          "distanceSquared": 4,
+          "allowed": true,
+          "reservable": false,
+          "reachable": true,
+          "forbidden": false
+        },
+        {
+          "distanceSquared": 4,
+          "allowed": true,
+          "reservable": true,
+          "reachable": false,
+          "forbidden": false
+        },
+        {
+          "distanceSquared": 4,
+          "allowed": true,
+          "reservable": true,
+          "reachable": true,
+          "forbidden": true
+        }
+      ]
+    },
+    "expected": {
+      "eligible": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "limitation": "Selected ground-ingredient predicate model, not the complete region search or nested haul-source logic."
+  },
+  {
+    "label": "S11 Product output rounding",
+    "claims": [
+      "SC14",
+      "SC19"
+    ],
+    "inputs": {
+      "declared": 20,
+      "efficiencies": [
+        1,
+        0.8,
+        1.01,
+        0.1
+      ]
+    },
+    "expected": {
+      "specificRecipe": [
+        20,
+        16,
+        21,
+        2
+      ]
+    },
+    "limitation": "Specific recipe ceil branch; any-stone special product uses a separate stochastic rounding branch."
+  },
+  {
+    "label": "S12 Deconstruction refunds",
+    "claims": [
+      "SC17"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "cost": 5,
+          "fraction": 0.5,
+          "roll": 0.49
+        },
+        {
+          "cost": 5,
+          "fraction": 0.5,
+          "roll": 0.5
+        },
+        {
+          "cost": 4,
+          "fraction": 0.5,
+          "roll": 0.1
+        },
+        {
+          "cost": 4,
+          "fraction": 0,
+          "roll": 0.1
+        }
+      ],
+      "projectColumnVoxelCosts": [
+        5,
+        5
+      ]
+    },
+    "expected": {
+      "nativeRefund": [
+        3,
+        2,
+        2,
+        0
+      ],
+      "projectFloorPerVoxel": [
+        2,
+        2
+      ],
+      "projectColumnTotal": 4,
+      "originalTwoWallExpected": 5
+    },
+    "limitation": "Nonnegative GenMath.RoundRandom arithmetic with explicit rolls; fixed local per-voxel floor is a disclosed reduction."
+  },
+  {
+    "label": "S13 Deconstruction work bounds",
+    "claims": [
+      "SC18"
+    ],
+    "inputs": {
+      "work": [
+        0,
+        94.5,
+        950,
+        1400,
+        5000
+      ],
+      "min": 20,
+      "max": 3000,
+      "floorRemoval": 200
+    },
+    "expected": {
+      "buildingWork": [
+        20,
+        94.5,
+        950,
+        1400,
+        3000
+      ],
+      "floorWork": 200
+    },
+    "limitation": "Work amounts only, before pawn ConstructionSpeed and walking; not elapsed ticks."
+  },
+  {
+    "label": "S14 Physical item conservation",
+    "claims": [
+      "SC11",
+      "SC12",
+      "SC13"
+    ],
+    "inputs": {
+      "sourceChunks": 2,
+      "deliveredChunks": 1,
+      "producedBlocks": 20,
+      "existingBlocks": 70,
+      "stackLimit": 75
+    },
+    "expected": {
+      "beforeFinish": {
+        "source": 1,
+        "atBench": 1,
+        "consumed": 0,
+        "blocks": 70
+      },
+      "afterFinish": {
+        "source": 1,
+        "atBench": 0,
+        "consumed": 1,
+        "mergedBlocks": 75,
+        "pendingBlocks": 15,
+        "totalBlocks": 90
+      }
+    },
+    "limitation": "Local loss-avoiding pending-output contract; source consumes input before storage and does not guarantee this durable pending buffer."
+  },
+  {
+    "label": "S15 Interaction offset rotation",
+    "claims": [
+      "SC04"
+    ],
+    "inputs": {
+      "center": [
+        10,
+        20
+      ],
+      "offset": [
+        0,
+        -1
+      ],
+      "quarterTurns": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    "expected": {
+      "cells": [
+        [
+          10,
+          19
+        ],
+        [
+          9,
+          20
+        ],
+        [
+          10,
+          21
+        ],
+        [
+          11,
+          20
+        ]
+      ]
+    },
+    "limitation": "Abstract planar quarter-turn convention; map coordinates here are x,z and this does not prescribe project 3D axis names."
+  },
+  {
+    "label": "S16 Target update versus suspension",
+    "claims": [
+      "SC07",
+      "SC08"
+    ],
+    "inputs": {
+      "workLeft": 1200,
+      "currentProductCount": 40,
+      "rows": [
+        {
+          "target": 100,
+          "suspended": false
+        },
+        {
+          "target": 20,
+          "suspended": false
+        },
+        {
+          "target": 100,
+          "suspended": true
+        }
+      ]
+    },
+    "expected": {
+      "runningJobFails": [
+        false,
+        false,
+        true
+      ],
+      "workLeftBeforeAnyNewJob": [
+        1200,
+        1200,
+        1200
+      ],
+      "newIterationEligible": [
+        true,
+        false,
+        false
+      ]
+    },
+    "limitation": "Only the reviewed suspension and target-count predicates. Natural scheduling overrides or table destruction can separately interrupt work."
+  }
+]

@@ -24,6 +24,7 @@ export interface ClientState {
   tool: Tool;
   crop: CropKind;
   axis: Axis;
+  material: 'wood' | 'stone';
   metrics: Record<string, unknown>;
   worker: boolean;
 }
@@ -51,6 +52,7 @@ export class VoxelClient {
     tool: 'inspect',
     crop: 'rice',
     axis: 'x',
+    material: 'wood',
     metrics: {},
     worker: false,
   };
@@ -63,6 +65,7 @@ export class VoxelClient {
   };
   snapshot = () => this.state;
   chooseCrop = (crop: CropKind) => this.emit({ crop });
+  chooseMaterial = (material: 'wood' | 'stone') => this.emit({ material });
   rotatePlan = () => this.emit({ axis: this.state.axis === 'x' ? 'y' : 'x' });
   roomAt = (p: Pos) =>
     inside(p)
@@ -114,7 +117,9 @@ export class VoxelClient {
     this.notice(
       legacy
         ? '旧存档物品已按容量拆分到附近空地，请检查冷库；时间暂停'
-        : '体素存档已恢复，时间暂停',
+        : save && typeof save === 'object' && 'version' in save && Number(save.version) < 7
+          ? '原有石材保留为石砖；收纳岩块请在仓储勾选，时间暂停'
+          : '体素存档已恢复，时间暂停',
     );
   };
   newGame = async (seed: number) => {
@@ -294,7 +299,7 @@ export class VoxelClient {
           else to.x = from.x;
         }
         const single =
-          ['shaft', 'up', 'ladder', 'bed', 'door'].includes(this.state.tool) ||
+          ['shaft', 'up', 'ladder', 'bed', 'door', 'stonecutter'].includes(this.state.tool) ||
           isDeviceKind(this.state.tool);
         await this.command({
           type: 'designate',
@@ -303,6 +308,7 @@ export class VoxelClient {
           to: single ? from : { ...to, z: from.z },
           crop: this.state.crop,
           axis: this.state.axis,
+          ...(['wall', 'floor'].includes(this.state.tool) ? { material: this.state.material } : {}),
         });
       };
       c.onwheel = (e) => {

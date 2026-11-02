@@ -131,6 +131,28 @@ for (const shot of preservationImplementation.screenshots) {
   assert(/^voxel\/[a-z-]+\.jpg$/.test(shot.file));
   assert.equal(sha(readFileSync(path.join(evidence, shot.file))), shot.sha256, `changed preservation image: ${shot.file}`);
 }
+const stonecuttingImplementation = read('voxel-stonecutting-validation.json');
+assert.equal(stonecuttingImplementation.kind, 'web-runtime-validated');
+assert.equal(stonecuttingImplementation.unit.failed, 0);
+assert.equal(stonecuttingImplementation.unit.passed, stonecuttingImplementation.unit.total);
+assert.equal(stonecuttingImplementation.campaign.status, 'passed');
+assert.deepEqual(stonecuttingImplementation.campaign.errors, []);
+assert(stonecuttingImplementation.campaign.checks.length >= 20);
+assert.equal(stonecuttingImplementation.campaign.final.stats.consumed.chunk, 4);
+assert.equal(stonecuttingImplementation.campaign.final.stats.stonecut, 4);
+assert.deepEqual(stonecuttingImplementation.browser.modes.map(m => m.mode).sort(), ['main', 'worker']);
+for (const mode of stonecuttingImplementation.browser.modes) {
+  assert.equal(mode.status, 'passed');
+  assert.deepEqual(mode.errors, []);
+  assert(mode.checks.length >= 11);
+}
+for (const record of [...stonecuttingImplementation.sources, ...stonecuttingImplementation.scripts, ...stonecuttingImplementation.assets])
+  assert(validHash(record.sha256));
+assert.equal(stonecuttingImplementation.screenshots.length, 3);
+for (const shot of stonecuttingImplementation.screenshots) {
+  assert(/^voxel\/[a-z0-9-]+\.jpg$/.test(shot.file));
+  assert.equal(sha(readFileSync(path.join(evidence, shot.file))), shot.sha256, `changed stonecutting image: ${shot.file}`);
+}
 for(const file of readdirSync(research).filter(f=>f.endsWith('.md'))){
   const body=readFileSync(path.join(research,file),'utf8');
   for(const match of body.matchAll(/\[[^\]\n]*\]\(([^)\s]+)\)/g)){

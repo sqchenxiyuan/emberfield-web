@@ -15,9 +15,19 @@ export const Block = {
   Wood: 4,
   Bedrock: 5,
   Components: 6,
+  Masonry: 7,
 } as const;
-export type Resource = 'wood' | 'stone' | 'steel' | 'components' | 'food' | 'grain' | 'meal';
-export type Work = 'dig' | 'build' | 'cut' | 'haul' | 'grow' | 'cook';
+export type Resource =
+  | 'wood'
+  | 'stone'
+  | 'steel'
+  | 'components'
+  | 'food'
+  | 'grain'
+  | 'meal'
+  | 'chunk';
+export type Work = 'dig' | 'build' | 'cut' | 'haul' | 'grow' | 'cook' | 'craft';
+export type ConstructionMaterial = 'wood' | 'stone';
 export type CropKind = 'rice' | 'potato' | 'corn';
 export type Axis = 'x' | 'y';
 export type Assignment = 'anything' | 'work' | 'sleep';
@@ -114,6 +124,7 @@ export type Tool =
   | 'stock'
   | 'farm'
   | 'stove'
+  | 'stonecutter'
   | 'bed'
   | 'door'
   | 'clearZone'
@@ -185,6 +196,23 @@ export interface Stove extends Pos {
   target: number;
   paused: boolean;
 }
+export interface Stonecutter extends Pos {
+  id: number;
+  axis: Axis;
+  target: number;
+  paused: boolean;
+}
+export function stonecutterCells(bench: Pos & { axis: Axis }): Pos[] {
+  return [0, 1, 2].map((n) => ({
+    x: bench.x + (bench.axis === 'x' ? n : 0),
+    y: bench.y + (bench.axis === 'y' ? n : 0),
+    z: bench.z,
+  }));
+}
+/** Anchor is the first footprint cell; two orthogonal orientations in this voxel build. */
+export function stonecutterInteraction(bench: Pos & { axis: Axis }): Pos {
+  return { x: bench.x + (bench.axis === 'x' ? 1 : -1), y: bench.y + 1, z: bench.z };
+}
 export interface CropCondition {
   fertility: number;
   light: number;
@@ -206,6 +234,8 @@ export type JobKind =
   | 'sow'
   | 'harvest'
   | 'stove'
+  | 'stonecutter'
+  | 'stonecut'
   | 'bed'
   | 'door'
   | 'cook';
@@ -223,6 +253,7 @@ export interface Job extends Pos {
   /** Cancelled inputs remain in this finite job container until safely refunded. */
   cancelled: boolean;
   axis?: Axis;
+  material?: ConstructionMaterial;
 }
 export interface Pawn extends Pos {
   id: number;
@@ -252,6 +283,7 @@ export interface Counts {
   food: number;
   grain: number;
   meal: number;
+  chunk: number;
 }
 export interface VoxelStats {
   mined: number;
@@ -261,6 +293,7 @@ export interface VoxelStats {
   sown: number;
   harvested: number;
   cooked: number;
+  stonecut: number;
   eaten: number;
   consumed: Counts;
   produced: Counts;
@@ -280,6 +313,7 @@ export interface VoxelSnapshot {
   farms: FarmPlot[];
   crops: Crop[];
   stoves: Stove[];
+  stonecutters: Stonecutter[];
   beds: Bed[];
   doors: Door[];
   rooms: RoomSummary[];
@@ -308,11 +342,27 @@ export interface ChunkUpdate {
   ladders: Uint8Array;
 }
 export type VoxelCommand =
-  | { type: 'storage'; from: Pos; to?: Pos; connected?: boolean; priority: number; accepts: Resource[] }
+  | {
+      type: 'storage';
+      from: Pos;
+      to?: Pos;
+      connected?: boolean;
+      priority: number;
+      accepts: Resource[];
+    }
   | { type: 'device'; deviceId: number; on: boolean; target: number }
-  | { type: 'designate'; tool: Tool; from: Pos; to?: Pos; crop?: CropKind; axis?: Axis }
+  | {
+      type: 'designate';
+      tool: Tool;
+      from: Pos;
+      to?: Pos;
+      crop?: CropKind;
+      axis?: Axis;
+      material?: ConstructionMaterial;
+    }
   | { type: 'priority'; pawnId: number; work: Work; value: number }
   | { type: 'bill'; stoveId: number; target: number; paused: boolean }
+  | { type: 'stoneBill'; stonecutterId: number; target: number; paused: boolean }
   | { type: 'bedOwner'; bedId: number; pawnId: number | null }
   | { type: 'door'; doorId: number; mode: Door['mode'] }
   | { type: 'schedule'; pawnId: number; hour: number; assignment: Assignment }
@@ -325,7 +375,7 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 6;
+  version: 7;
   generator: 1;
   seed: number;
   tick: number;
@@ -341,6 +391,7 @@ export interface VoxelSave {
   farms: FarmPlot[];
   crops: Crop[];
   stoves: Stove[];
+  stonecutters: Stonecutter[];
   beds: Bed[];
   doors: Door[];
   devices: Device[];
@@ -348,10 +399,20 @@ export interface VoxelSave {
   thermal: SavedTemperature[];
   stats: VoxelStats;
 }
-export const BLOCK_NAMES = ['空气', '土层', '花岗岩', '钢矿', '木结构', '基岩', '机械矿'];
+export const BLOCK_NAMES = [
+  '空气',
+  '土层',
+  '花岗岩',
+  '钢矿',
+  '木结构',
+  '基岩',
+  '机械矿',
+  '石砌结构',
+];
 export const RESOURCE_NAMES: Record<Resource, string> = {
   wood: '木材',
-  stone: '石料',
+  stone: '花岗岩砖',
+  chunk: '花岗岩块',
   steel: '钢材',
   components: '零件',
   food: '包装生存口粮',
@@ -376,6 +437,8 @@ export const JOB_NAMES: Record<JobKind, string> = {
   sow: '播种',
   harvest: '收获',
   stove: '造灶台',
+  stonecutter: '造切石台',
+  stonecut: '切割岩块',
   bed: '造床',
   door: '造门',
   cook: '烹饪简餐',
@@ -394,6 +457,7 @@ export const TOOL_NAMES: Record<Tool, string> = {
   stock: '仓储',
   farm: '种植区',
   stove: '灶台',
+  stonecutter: '切石台',
   bed: '床',
   door: '门',
   clearZone: '擦除区域',
@@ -408,4 +472,5 @@ export const emptyCounts = (): Counts => ({
   food: 0,
   grain: 0,
   meal: 0,
+  chunk: 0,
 });
