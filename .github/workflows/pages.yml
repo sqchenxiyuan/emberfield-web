@@ -46,6 +46,8 @@ jobs:
         run: npm run test:voxel:housing
       - name: Verify physical power construction and room temperatures
         run: npm run test:voxel:power
+      - name: Verify natural health consequences, cross-level rescue, feeding and survival saves
+        run: npm run test:voxel:survival
       - name: Verify farming, cold storage and natural food spoilage
         run: npm run test:voxel:preservation
       - name: Verify finite storage, cross-level hauling and published save migration

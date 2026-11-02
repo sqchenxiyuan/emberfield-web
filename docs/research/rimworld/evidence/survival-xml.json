@@ -1,0 +1,1233 @@
+{
+  "evidence_id": "RW17-SURVIVAL-XML",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Selected direct health, capacity, stats and work-chain declarations; not an effective Def database",
+  "limitations": [
+    "Only explicitly selected paths and absences are covered; ParentName is retained, not globally resolved.",
+    "Core-only source identity; enabled mods/DLC patches may change effective definitions.",
+    "Derived source and independent math do not execute original or project gameplay."
+  ],
+  "records": [
+    {
+      "group": "hediff",
+      "id": "HediffDef_Malnutrition",
+      "def_name": "Malnutrition",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Global_Needs.xml",
+        "xpath": "/Defs/HediffDef[defName='Malnutrition']",
+        "sha256": "6dfa56f30ab51b2e107675d82be2dd17819f41df47afa1d9a1c6e5c91710b5a6"
+      },
+      "selected_paths": [
+        "lethalSeverity",
+        "canApplyDodChanceForCapacityChanges",
+        "stages",
+        "tendable",
+        "initialSeverity",
+        "minSeverity",
+        "maxSeverity",
+        "comps"
+      ],
+      "absent_paths": [
+        "canApplyDodChanceForCapacityChanges",
+        "tendable",
+        "initialSeverity",
+        "minSeverity",
+        "maxSeverity",
+        "comps"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/lethalSeverity",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[1]/socialFightChanceFactor",
+          "value": "1.5"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[1]/hungerRateFactorOffset",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[1]/capMods/li/capacity",
+          "value": "Consciousness"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[1]/capMods/li/offset",
+          "value": "-0.05"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[2]/minSeverity",
+          "value": "0.2"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[2]/socialFightChanceFactor",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[2]/hungerRateFactorOffset",
+          "value": "0.6"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[2]/capMods/li/capacity",
+          "value": "Consciousness"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[2]/capMods/li/offset",
+          "value": "-0.10"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[3]/minSeverity",
+          "value": "0.4"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[3]/socialFightChanceFactor",
+          "value": "2.5"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[3]/hungerRateFactorOffset",
+          "value": "0.6"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[3]/capMods/li/capacity",
+          "value": "Consciousness"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[3]/capMods/li/offset",
+          "value": "-0.20"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[4]/minSeverity",
+          "value": "0.6"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[4]/socialFightChanceFactor",
+          "value": "3"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[4]/hungerRateFactorOffset",
+          "value": "0.6"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[4]/capMods/li/capacity",
+          "value": "Consciousness"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[4]/capMods/li/offset",
+          "value": "-0.30"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[5]/minSeverity",
+          "value": "0.8"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[5]/lifeThreatening",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[5]/hungerRateFactorOffset",
+          "value": "0.6"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[5]/capMods/li/capacity",
+          "value": "Consciousness"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Malnutrition']/stages/li[5]/capMods/li/setMax",
+          "value": "0.1"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "hediff",
+      "id": "HediffDef_Heatstroke",
+      "def_name": "Heatstroke",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Global_Temperature.xml",
+        "xpath": "/Defs/HediffDef[defName='Heatstroke']",
+        "sha256": "21210a4f8526e6547a9de6dba69a1588da2b0f3a88c682bab175372698c28e36"
+      },
+      "selected_paths": [
+        "lethalSeverity",
+        "canApplyDodChanceForCapacityChanges",
+        "stages",
+        "tendable",
+        "initialSeverity",
+        "minSeverity",
+        "maxSeverity",
+        "comps"
+      ],
+      "absent_paths": [
+        "tendable",
+        "initialSeverity",
+        "minSeverity",
+        "maxSeverity",
+        "comps"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/lethalSeverity",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/canApplyDodChanceForCapacityChanges",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[1]/becomeVisible",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[2]/minSeverity",
+          "value": "0.04"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[2]/capMods/li/capacity",
+          "value": "Consciousness"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[2]/capMods/li/offset",
+          "value": "-0.05"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[3]/minSeverity",
+          "value": "0.2"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[3]/capMods/li[1]/capacity",
+          "value": "Moving"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[3]/capMods/li[1]/offset",
+          "value": "-0.1"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[3]/capMods/li[2]/capacity",
+          "value": "Consciousness"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[3]/capMods/li[2]/offset",
+          "value": "-0.10"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[4]/minSeverity",
+          "value": "0.35"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[4]/painOffset",
+          "value": "0.15"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[4]/capMods/li[1]/capacity",
+          "value": "Moving"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[4]/capMods/li[1]/offset",
+          "value": "-0.3"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[4]/capMods/li[2]/capacity",
+          "value": "Consciousness"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[4]/capMods/li[2]/offset",
+          "value": "-0.20"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[5]/minSeverity",
+          "value": "0.62"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[5]/lifeThreatening",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[5]/painOffset",
+          "value": "0.30"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[5]/capMods/li/capacity",
+          "value": "Consciousness"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Heatstroke']/stages/li[5]/capMods/li/setMax",
+          "value": "0.1"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "hediff",
+      "id": "HediffDef_Hypothermia",
+      "def_name": "Hypothermia",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Global_Temperature.xml",
+        "xpath": "/Defs/HediffDef[defName='Hypothermia']",
+        "sha256": "21210a4f8526e6547a9de6dba69a1588da2b0f3a88c682bab175372698c28e36"
+      },
+      "selected_paths": [
+        "lethalSeverity",
+        "canApplyDodChanceForCapacityChanges",
+        "stages",
+        "tendable",
+        "initialSeverity",
+        "minSeverity",
+        "maxSeverity",
+        "comps"
+      ],
+      "absent_paths": [
+        "tendable",
+        "initialSeverity",
+        "minSeverity",
+        "maxSeverity",
+        "comps"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/lethalSeverity",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/canApplyDodChanceForCapacityChanges",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[1]/becomeVisible",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[2]/minSeverity",
+          "value": "0.04"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[2]/capMods/li[1]/capacity",
+          "value": "Manipulation"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[2]/capMods/li[1]/offset",
+          "value": "-0.08"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[2]/capMods/li[2]/capacity",
+          "value": "Consciousness"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[2]/capMods/li[2]/offset",
+          "value": "-0.05"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[3]/minSeverity",
+          "value": "0.2"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[3]/capMods/li[1]/capacity",
+          "value": "Moving"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[3]/capMods/li[1]/offset",
+          "value": "-0.1"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[3]/capMods/li[2]/capacity",
+          "value": "Manipulation"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[3]/capMods/li[2]/offset",
+          "value": "-0.2"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[3]/capMods/li[3]/capacity",
+          "value": "Consciousness"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[3]/capMods/li[3]/offset",
+          "value": "-0.10"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[4]/minSeverity",
+          "value": "0.35"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[4]/painOffset",
+          "value": "0.15"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[4]/capMods/li[1]/capacity",
+          "value": "Moving"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[4]/capMods/li[1]/offset",
+          "value": "-0.3"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[4]/capMods/li[2]/capacity",
+          "value": "Manipulation"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[4]/capMods/li[2]/offset",
+          "value": "-0.5"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[4]/capMods/li[3]/capacity",
+          "value": "Consciousness"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[4]/capMods/li[3]/offset",
+          "value": "-0.20"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[5]/minSeverity",
+          "value": "0.62"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[5]/lifeThreatening",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[5]/painOffset",
+          "value": "0.30"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[5]/capMods/li/capacity",
+          "value": "Consciousness"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Hypothermia']/stages/li[5]/capMods/li/setMax",
+          "value": "0.1"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "giver",
+      "id": "HediffGiverSetDef_OrganicStandard",
+      "def_name": "OrganicStandard",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/HediffGiverSetDefs/HediffGiverSets.xml",
+        "xpath": "/Defs/HediffGiverSetDef[defName='OrganicStandard']",
+        "sha256": "d4b0e53dc7bc5d54f15a3e870c6a3a9f36a2f434cb5b4023e5c995625cb55f44"
+      },
+      "selected_paths": [
+        "hediffGivers/li[@Class='HediffGiver_Hypothermia']",
+        "hediffGivers/li[@Class='HediffGiver_Heat']"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/HediffGiverSetDef[defName='OrganicStandard']/hediffGivers/li[2]/hediff",
+          "value": "Hypothermia"
+        },
+        {
+          "xpath": "/Defs/HediffGiverSetDef[defName='OrganicStandard']/hediffGivers/li[2]/hediffInsectoid",
+          "value": "HypothermicSlowdown"
+        },
+        {
+          "xpath": "/Defs/HediffGiverSetDef[defName='OrganicStandard']/hediffGivers/li[4]/hediff",
+          "value": "Heatstroke"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/HediffGiverSetDef[defName='OrganicStandard']/hediffGivers/li[2]",
+          "attributes": {
+            "Class": "HediffGiver_Hypothermia"
+          }
+        },
+        {
+          "xpath": "/Defs/HediffGiverSetDef[defName='OrganicStandard']/hediffGivers/li[4]",
+          "attributes": {
+            "Class": "HediffGiver_Heat"
+          }
+        }
+      ]
+    },
+    {
+      "group": "human",
+      "id": "ThingDef_Human",
+      "def_name": "Human",
+      "parent_name": "BasePawn",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Races/Races_Humanlike.xml",
+        "xpath": "/Defs/ThingDef[defName='Human']",
+        "sha256": "d95bb2236294115b32eeea1cb0f2edad0d255e7530b9a8c209a7e6c365a80bbf"
+      },
+      "selected_paths": [
+        "statBases/ComfyTemperatureMin",
+        "statBases/ComfyTemperatureMax",
+        "race/hediffGiverSets",
+        "race/baseHungerRate"
+      ],
+      "absent_paths": [
+        "race/baseHungerRate"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/statBases/ComfyTemperatureMin",
+          "value": "16"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/statBases/ComfyTemperatureMax",
+          "value": "26"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/race/hediffGiverSets/li[1]",
+          "value": "OrganicStandard"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/race/hediffGiverSets/li[2]",
+          "value": "Human"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "capacity",
+      "id": "PawnCapacityDef_Consciousness",
+      "def_name": "Consciousness",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/PawnCapacityDefs/PawnCapacity.xml",
+        "xpath": "/Defs/PawnCapacityDef[defName='Consciousness']",
+        "sha256": "327744af11a5fb775139c5460e408a9f86eab0d7e0bce838244b73d3c92f94f7"
+      },
+      "selected_paths": [
+        "workerClass",
+        "minForCapable",
+        "minValue",
+        "lethalFlesh",
+        "zeroIfCannotBeAwake"
+      ],
+      "absent_paths": [
+        "minForCapable",
+        "minValue",
+        "zeroIfCannotBeAwake"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Consciousness']/workerClass",
+          "value": "PawnCapacityWorker_Consciousness"
+        },
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Consciousness']/lethalFlesh",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "capacity",
+      "id": "PawnCapacityDef_Moving",
+      "def_name": "Moving",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/PawnCapacityDefs/PawnCapacity.xml",
+        "xpath": "/Defs/PawnCapacityDef[defName='Moving']",
+        "sha256": "327744af11a5fb775139c5460e408a9f86eab0d7e0bce838244b73d3c92f94f7"
+      },
+      "selected_paths": [
+        "workerClass",
+        "minForCapable",
+        "minValue",
+        "lethalFlesh",
+        "zeroIfCannotBeAwake"
+      ],
+      "absent_paths": [
+        "minValue",
+        "lethalFlesh"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Moving']/workerClass",
+          "value": "PawnCapacityWorker_Moving"
+        },
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Moving']/minForCapable",
+          "value": "0.15"
+        },
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Moving']/zeroIfCannotBeAwake",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "capacity",
+      "id": "PawnCapacityDef_Manipulation",
+      "def_name": "Manipulation",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/PawnCapacityDefs/PawnCapacity.xml",
+        "xpath": "/Defs/PawnCapacityDef[defName='Manipulation']",
+        "sha256": "327744af11a5fb775139c5460e408a9f86eab0d7e0bce838244b73d3c92f94f7"
+      },
+      "selected_paths": [
+        "workerClass",
+        "minForCapable",
+        "minValue",
+        "lethalFlesh",
+        "zeroIfCannotBeAwake"
+      ],
+      "absent_paths": [
+        "minForCapable",
+        "minValue",
+        "lethalFlesh"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Manipulation']/workerClass",
+          "value": "PawnCapacityWorker_Manipulation"
+        },
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Manipulation']/zeroIfCannotBeAwake",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_BedHungerRateFactor",
+      "def_name": "BedHungerRateFactor",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_General.xml",
+        "xpath": "/Defs/StatDef[defName='BedHungerRateFactor']",
+        "sha256": "ec1df1afb1f24c3d812b3224f803354b613a226e3934ea1e235c9b195181f507"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "parts"
+      ],
+      "absent_paths": [
+        "maxValue",
+        "parts"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='BedHungerRateFactor']/defaultBaseValue",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='BedHungerRateFactor']/minValue",
+          "value": "0"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_ComfyTemperatureMin",
+      "def_name": "ComfyTemperatureMin",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_General.xml",
+        "xpath": "/Defs/StatDef[defName='ComfyTemperatureMin']",
+        "sha256": "ec1df1afb1f24c3d812b3224f803354b613a226e3934ea1e235c9b195181f507"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "parts"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='ComfyTemperatureMin']/defaultBaseValue",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ComfyTemperatureMin']/minValue",
+          "value": "-2000"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ComfyTemperatureMin']/maxValue",
+          "value": "2000"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ComfyTemperatureMin']/parts/li/apparelStat",
+          "value": "Insulation_Cold"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ComfyTemperatureMin']/parts/li/subtract",
+          "value": "true"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/StatDef[defName='ComfyTemperatureMin']/parts/li",
+          "attributes": {
+            "Class": "StatPart_GearStatOffset"
+          }
+        }
+      ]
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_ComfyTemperatureMax",
+      "def_name": "ComfyTemperatureMax",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_General.xml",
+        "xpath": "/Defs/StatDef[defName='ComfyTemperatureMax']",
+        "sha256": "ec1df1afb1f24c3d812b3224f803354b613a226e3934ea1e235c9b195181f507"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "parts"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='ComfyTemperatureMax']/defaultBaseValue",
+          "value": "40"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ComfyTemperatureMax']/minValue",
+          "value": "-2000"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ComfyTemperatureMax']/maxValue",
+          "value": "2000"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ComfyTemperatureMax']/parts/li/apparelStat",
+          "value": "Insulation_Heat"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/StatDef[defName='ComfyTemperatureMax']/parts/li",
+          "attributes": {
+            "Class": "StatPart_GearStatOffset"
+          }
+        }
+      ]
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_PainShockThreshold",
+      "def_name": "PainShockThreshold",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_General.xml",
+        "xpath": "/Defs/StatDef[defName='PainShockThreshold']",
+        "sha256": "ec1df1afb1f24c3d812b3224f803354b613a226e3934ea1e235c9b195181f507"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "parts"
+      ],
+      "absent_paths": [
+        "parts"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='PainShockThreshold']/defaultBaseValue",
+          "value": "0.8"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='PainShockThreshold']/minValue",
+          "value": "0.01"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='PainShockThreshold']/maxValue",
+          "value": "0.99"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "insulation",
+      "id": "StatDef_InsulationBase",
+      "def_name": "InsulationBase",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Apparel.xml",
+        "xpath": "/Defs/StatDef[@Name='InsulationBase']",
+        "sha256": "134a3d02447dd7ec0adc6ee2609989b08fc26065f96d080885f81965507810a6"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "parts"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[@Name='InsulationBase']/defaultBaseValue",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='InsulationBase']/minValue",
+          "value": "-9999"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='InsulationBase']/maxValue",
+          "value": "9999"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='InsulationBase']/parts/li/factorAwful",
+          "value": "0.8"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='InsulationBase']/parts/li/factorPoor",
+          "value": "0.9"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='InsulationBase']/parts/li/factorNormal",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='InsulationBase']/parts/li/factorGood",
+          "value": "1.1"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='InsulationBase']/parts/li/factorExcellent",
+          "value": "1.2"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='InsulationBase']/parts/li/factorMasterwork",
+          "value": "1.5"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='InsulationBase']/parts/li/factorLegendary",
+          "value": "1.8"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='InsulationBase']/parts/li/applyToNegativeValues",
+          "value": "true"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/StatDef[@Name='InsulationBase']/parts/li",
+          "attributes": {
+            "Class": "StatPart_Quality"
+          }
+        }
+      ]
+    },
+    {
+      "group": "insulation",
+      "id": "StatDef_Insulation_Cold",
+      "def_name": "Insulation_Cold",
+      "parent_name": "InsulationBase",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Apparel.xml",
+        "xpath": "/Defs/StatDef[defName='Insulation_Cold']",
+        "sha256": "134a3d02447dd7ec0adc6ee2609989b08fc26065f96d080885f81965507810a6"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "parts"
+      ],
+      "absent_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='Insulation_Cold']/parts/li/priority",
+          "value": "100"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='Insulation_Cold']/parts/li/stuffPowerStat",
+          "value": "StuffPower_Insulation_Cold"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='Insulation_Cold']/parts/li/multiplierStat",
+          "value": "StuffEffectMultiplierInsulation_Cold"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/StatDef[defName='Insulation_Cold']/parts/li",
+          "attributes": {
+            "Class": "StatPart_Stuff"
+          }
+        }
+      ]
+    },
+    {
+      "group": "insulation",
+      "id": "StatDef_Insulation_Heat",
+      "def_name": "Insulation_Heat",
+      "parent_name": "InsulationBase",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Apparel.xml",
+        "xpath": "/Defs/StatDef[defName='Insulation_Heat']",
+        "sha256": "134a3d02447dd7ec0adc6ee2609989b08fc26065f96d080885f81965507810a6"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "parts"
+      ],
+      "absent_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='Insulation_Heat']/parts/li/priority",
+          "value": "100"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='Insulation_Heat']/parts/li/stuffPowerStat",
+          "value": "StuffPower_Insulation_Heat"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='Insulation_Heat']/parts/li/multiplierStat",
+          "value": "StuffEffectMultiplierInsulation_Heat"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/StatDef[defName='Insulation_Heat']/parts/li",
+          "attributes": {
+            "Class": "StatPart_Stuff"
+          }
+        }
+      ]
+    },
+    {
+      "group": "bed",
+      "id": "ThingDef_BedBase",
+      "def_name": "BedBase",
+      "parent_name": "FurnitureBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+        "xpath": "/Defs/ThingDef[@Name='BedBase']",
+        "sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55"
+      },
+      "selected_paths": [
+        "statBases/BedRestEffectiveness",
+        "statBases/ImmunityGainSpeedFactor",
+        "statBases/MedicalTendQualityOffset",
+        "building/bed_healPerDay",
+        "building/bed_defaultMedical",
+        "building/bed_canBeMedical"
+      ],
+      "absent_paths": [
+        "statBases/BedRestEffectiveness",
+        "statBases/ImmunityGainSpeedFactor",
+        "statBases/MedicalTendQualityOffset",
+        "building/bed_healPerDay",
+        "building/bed_defaultMedical",
+        "building/bed_canBeMedical"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "bed",
+      "id": "ThingDef_SansComfortBedBase",
+      "def_name": "SansComfortBedBase",
+      "parent_name": "ArtableBedBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+        "xpath": "/Defs/ThingDef[@Name='SansComfortBedBase']",
+        "sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55"
+      },
+      "selected_paths": [
+        "statBases/BedRestEffectiveness",
+        "statBases/ImmunityGainSpeedFactor",
+        "statBases/MedicalTendQualityOffset",
+        "building/bed_healPerDay",
+        "building/bed_defaultMedical",
+        "building/bed_canBeMedical"
+      ],
+      "absent_paths": [
+        "statBases/BedRestEffectiveness",
+        "statBases/MedicalTendQualityOffset",
+        "building/bed_defaultMedical",
+        "building/bed_canBeMedical"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='SansComfortBedBase']/statBases/ImmunityGainSpeedFactor",
+          "value": "1.07"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='SansComfortBedBase']/building/bed_healPerDay",
+          "value": "4"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "bed",
+      "id": "ThingDef_Bed",
+      "def_name": "Bed",
+      "parent_name": "BasicBedBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+        "xpath": "/Defs/ThingDef[defName='Bed']",
+        "sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55"
+      },
+      "selected_paths": [
+        "statBases/BedRestEffectiveness",
+        "statBases/ImmunityGainSpeedFactor",
+        "statBases/MedicalTendQualityOffset",
+        "building/bed_healPerDay",
+        "building/bed_defaultMedical",
+        "building/bed_canBeMedical"
+      ],
+      "absent_paths": [
+        "statBases/ImmunityGainSpeedFactor",
+        "statBases/MedicalTendQualityOffset",
+        "building/bed_healPerDay",
+        "building/bed_defaultMedical",
+        "building/bed_canBeMedical"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Bed']/statBases/BedRestEffectiveness",
+          "value": "1"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "bed",
+      "id": "ThingDef_HospitalBed",
+      "def_name": "HospitalBed",
+      "parent_name": "BedWithQualityBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+        "xpath": "/Defs/ThingDef[defName='HospitalBed']",
+        "sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55"
+      },
+      "selected_paths": [
+        "statBases/BedRestEffectiveness",
+        "statBases/ImmunityGainSpeedFactor",
+        "statBases/MedicalTendQualityOffset",
+        "building/bed_healPerDay",
+        "building/bed_defaultMedical",
+        "building/bed_canBeMedical"
+      ],
+      "absent_paths": [
+        "building/bed_canBeMedical"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='HospitalBed']/statBases/BedRestEffectiveness",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HospitalBed']/statBases/ImmunityGainSpeedFactor",
+          "value": "1.11"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HospitalBed']/statBases/MedicalTendQualityOffset",
+          "value": "0.10"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HospitalBed']/building/bed_healPerDay",
+          "value": "10"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HospitalBed']/building/bed_defaultMedical",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "job",
+      "id": "JobDef_Rescue",
+      "def_name": "Rescue",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/JobDefs/Jobs_Work.xml",
+        "xpath": "/Defs/JobDef[defName='Rescue']",
+        "sha256": "0c2cc583de4ad306681c1dcd65763539461adedf33a5360fe716a36deddef2a1"
+      },
+      "selected_paths": [
+        "driverClass",
+        "casualInterruptible",
+        "alwaysShowWeapon",
+        "playerInterruptible",
+        "checkOverrideOnExpire"
+      ],
+      "absent_paths": [
+        "alwaysShowWeapon",
+        "playerInterruptible",
+        "checkOverrideOnExpire"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/JobDef[defName='Rescue']/driverClass",
+          "value": "JobDriver_TakeToBed"
+        },
+        {
+          "xpath": "/Defs/JobDef[defName='Rescue']/casualInterruptible",
+          "value": "false"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "job",
+      "id": "JobDef_FeedPatient",
+      "def_name": "FeedPatient",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/JobDefs/Jobs_Work.xml",
+        "xpath": "/Defs/JobDef[defName='FeedPatient']",
+        "sha256": "0c2cc583de4ad306681c1dcd65763539461adedf33a5360fe716a36deddef2a1"
+      },
+      "selected_paths": [
+        "driverClass",
+        "casualInterruptible",
+        "alwaysShowWeapon",
+        "playerInterruptible",
+        "checkOverrideOnExpire"
+      ],
+      "absent_paths": [
+        "casualInterruptible",
+        "alwaysShowWeapon",
+        "playerInterruptible",
+        "checkOverrideOnExpire"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/JobDef[defName='FeedPatient']/driverClass",
+          "value": "JobDriver_FoodFeedPatient"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "meal",
+      "id": "ThingDef_MealBaseIngredientless",
+      "def_name": "MealBaseIngredientless",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+        "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']",
+        "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4"
+      },
+      "selected_paths": [
+        "statBases/Nutrition",
+        "ingestible/baseIngestTicks",
+        "ingestible/maxNumToIngestAtOnce",
+        "ingestible/defaultNumToIngestAtOnce"
+      ],
+      "absent_paths": [
+        "statBases/Nutrition",
+        "ingestible/baseIngestTicks"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/ingestible/maxNumToIngestAtOnce",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/ingestible/defaultNumToIngestAtOnce",
+          "value": "1"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "meal",
+      "id": "ThingDef_MealCookedIngredientless",
+      "def_name": "MealCookedIngredientless",
+      "parent_name": "MealBaseIngredientless",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+        "xpath": "/Defs/ThingDef[@Name='MealCookedIngredientless']",
+        "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4"
+      },
+      "selected_paths": [
+        "statBases/Nutrition",
+        "ingestible/baseIngestTicks",
+        "ingestible/maxNumToIngestAtOnce",
+        "ingestible/defaultNumToIngestAtOnce"
+      ],
+      "absent_paths": [
+        "statBases/Nutrition",
+        "ingestible/baseIngestTicks",
+        "ingestible/maxNumToIngestAtOnce",
+        "ingestible/defaultNumToIngestAtOnce"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "meal",
+      "id": "ThingDef_MealCooked",
+      "def_name": "MealCooked",
+      "parent_name": "MealCookedIngredientless",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+        "xpath": "/Defs/ThingDef[@Name='MealCooked']",
+        "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4"
+      },
+      "selected_paths": [
+        "statBases/Nutrition",
+        "ingestible/baseIngestTicks",
+        "ingestible/maxNumToIngestAtOnce",
+        "ingestible/defaultNumToIngestAtOnce"
+      ],
+      "absent_paths": [
+        "statBases/Nutrition",
+        "ingestible/baseIngestTicks",
+        "ingestible/maxNumToIngestAtOnce",
+        "ingestible/defaultNumToIngestAtOnce"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "meal",
+      "id": "ThingDef_MealSimple",
+      "def_name": "MealSimple",
+      "parent_name": "MealCooked",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+        "xpath": "/Defs/ThingDef[defName='MealSimple']",
+        "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4"
+      },
+      "selected_paths": [
+        "statBases/Nutrition",
+        "ingestible/baseIngestTicks",
+        "ingestible/maxNumToIngestAtOnce",
+        "ingestible/defaultNumToIngestAtOnce"
+      ],
+      "absent_paths": [
+        "ingestible/baseIngestTicks",
+        "ingestible/maxNumToIngestAtOnce",
+        "ingestible/defaultNumToIngestAtOnce"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='MealSimple']/statBases/Nutrition",
+          "value": "0.9"
+        }
+      ],
+      "node_attributes": []
+    }
+  ]
+}

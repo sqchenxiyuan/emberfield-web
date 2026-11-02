@@ -10,7 +10,7 @@
 
 2026-11-02更新：修复动物长时间等待，增加物品/动物/资源检查、劳动动画与墙/导线连续拖建。[原版运行对照与修复验证](docs/research/rimworld/07-runtime-interaction-comparison.md) 记录实际操作和边界。
 
-新增 **[多层体素试玩](https://sqchenxiyuan.github.io/emberfield-web/?world=voxel)**：64×64×16，真实地下开凿、逐格搭梯、跨层搬运、二层楼板与墙体、旋转剖切和独立存档。现已加入三种作物、遮光生长、自动收获补种、烧木灶台订单和实体进食。[施工验收](docs/research/rimworld/11-voxel-implementation.md)、[食物规则研究](docs/research/rimworld/12-farming-cooking-food.md)和[食物实现验收](docs/research/rimworld/13-voxel-food-implementation.md)分别记录来源与实现边界。住房、电网与房间温度也已接入，战斗与健康尚未迁入；首页仍是原二维营地，两个入口分别保存进度。
+新增 **[多层体素试玩](https://sqchenxiyuan.github.io/emberfield-web/?world=voxel)**：64×64×16，真实地下开凿、逐格搭梯、跨层搬运、二层楼板与墙体、旋转剖切和独立存档。现已加入三种作物、遮光生长、自动收获补种、烧木灶台订单和实体进食。[施工验收](docs/research/rimworld/11-voxel-implementation.md)、[食物规则研究](docs/research/rimworld/12-farming-cooking-food.md)和[食物实现验收](docs/research/rimworld/13-voxel-food-implementation.md)分别记录来源与实现边界。住房、电网、房间温度以及营养/温度损伤、医疗床和跨层救援均已接入；战斗伤口与完整疾病医疗仍待实现。首页仍是原二维营地，两个入口分别保存进度。
 
 体素操作：伐木 → 下挖梯井 → 切「地下」挖矿 → 回地面向上搭梯 → 切「二层」从梯旁铺楼板。Q/E旋转、[ / ]逐格切层、滚轮缩放、中键拖转、WASD平移、Space暂停。体素入口使用Three.js WebGL2 Worker，`?world=voxel&render=main`为兼容路径；二维入口继续使用PixiJS 8。
 
@@ -28,7 +28,9 @@
 
 2026-11-03林业更新：树木有成长、树龄、健康及当前木材收益，受光照、温度和肥力影响，画面大小随成长变化。「林地区」可选择白杨、松树或巨柱仙人掌，自动留一格间距、实际播种，手动采伐后补植；取消林地保留树，清除幼苗不产木材。自然新苗避开农田、仓储、工位和唯一通路，老化或长期遮光会损伤树木。v9兼容旧成熟树及在途采伐工作。[30原版规则](docs/research/rimworld/30-plants-lifecycle-forestry-regrowth.md)与[32实现验收](docs/research/rimworld/32-voxel-plants-implementation.md)记录14.21游戏日经营闭环、旧存档与两条渲染路径；科技技能预解锁，树桩、病害和完整生态尚未实现。
 
-体素供粮：尽早在土壤上规划约110–128格稻米（每次框选最多128格），保留阳光，建一座20木材灶台。点击灶台设置简餐目标；每餐消耗10生食材和1木材。稻米约8游戏日首收，1日常速10分钟，可开3倍速。简餐宜少量制作，囤餐需实际降温的冷库；树木需继续砍伐补燃料。新世界需考虑季节和土壤：寒带低温会停长，沙地不能种普通作物；8日首收是适温普通土壤的参考。尚无饥荒伤害或食物中毒。
+2026-11-03生存救援更新：断粮、过冷和过热会逐渐损害健康，严重时倒地或死亡。普通木床可切换为医疗床；启用同伴「医护」后，会实际抱起患者跨层送床、取食物并喂食。人物面板显示病情与能力，亦可手动安排帮助者。v10保存病情、死亡与在途救援，兼容旧营地。[33原版规则](docs/research/rimworld/33-survival-health-mechanisms.md)、[34实机救援/喂食](docs/research/rimworld/34-native-survival-runtime.md)、[35实现与验收](docs/research/rimworld/35-voxel-survival-implementation.md)区分证据、数值与适配。当前按裸身耐受计算，衣物保温、伤口疾病和搬尸尚未实现，建议先体验温带营地。
+
+体素供粮：尽早在土壤上规划约110–128格稻米（每次框选最多128格），保留阳光，建一座20木材灶台。点击灶台设置简餐目标；每餐消耗10生食材和1木材。稻米约8游戏日首收，1日常速10分钟，可开3倍速。简餐宜少量制作，囤餐需实际降温的冷库；树木需继续砍伐补燃料。新世界需考虑季节和土壤：寒带低温会停长，沙地不能种普通作物；8日首收是适温普通土壤的参考。断粮现在会产生健康后果，食物中毒尚未实现。
 
 ## 启动
 

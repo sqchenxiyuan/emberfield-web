@@ -66,7 +66,16 @@ function fixture(configure: (sim: VoxelSimulation) => void = () => {}) {
   carve(source, pos(45, 45), pos(49, 47, 9));
   for (let i = 0; i < source.pawns.length; i++) {
     Object.assign(source.pawns[i], pos(45 + i, 46));
-    source.pawns[i].priorities = { dig: 0, build: 0, cut: 0, haul: 0, grow: 0, cook: 0, craft: 0 };
+    source.pawns[i].priorities = {
+      dig: 0,
+      build: 0,
+      cut: 0,
+      haul: 0,
+      grow: 0,
+      cook: 0,
+      craft: 0,
+      care: 0,
+    };
   }
   configure(source);
   return VoxelSimulation.load(source.save());
@@ -587,7 +596,7 @@ describe('v4 energy persistence and malformed-input rejection', () => {
     const original = savedWorld(),
       saved = original.save(),
       restored = VoxelSimulation.load(saved);
-    expect(saved.version).toBe(9);
+    expect(saved.version).toBe(10);
     expect(restored.devices.map((d) => [d.fuel, d.energy, d.target])).toEqual(
       original.devices.map((d) => [d.fuel, d.energy, d.target]),
     );
@@ -684,7 +693,7 @@ describe('v4 energy persistence and malformed-input rejection', () => {
     delete old.wires;
     delete old.thermal;
     const restored = VoxelSimulation.load(old);
-    expect(restored.save().version).toBe(9);
+    expect(restored.save().version).toBe(10);
     expect(restored.devices).toEqual([]);
     expect(restored.wires).toEqual([]);
     expect(restored.blocks).toEqual(sim.blocks);

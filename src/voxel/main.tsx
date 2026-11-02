@@ -9,6 +9,7 @@ import { isDeviceKind } from './power';
 import { rotRateAtTemperature, rotLimit, remainingRotDays } from './preservation';
 import { stackLimit, carryLimit } from './logistics';
 import { STONE_CONSTRUCTION } from './crafting';
+import { SurvivalPanel } from './SurvivalPanel';
 import {
   BLOCK_NAMES,
   JOB_NAMES,
@@ -107,7 +108,7 @@ const hints: Record<Tool, string> = {
   stove: '规划灶台，消耗 20 木材。每份简餐需要 10 生食材 + 1 木材；点击灶台设置库存目标。',
   stonecutter:
     '3×1 木制切石台，75 木材 + 30 钢材。R 旋转，留出标记的操作位；1 岩块加工为 20 石砖。',
-  bed: '点击放置两格木床，45 木材。R 旋转朝向；点击床分配主人，未分配的床会自动认领。',
+  bed: '两格木床，45 木材。R 旋转朝向；点击分配主人或改作医疗床，供同伴救援和照料病人。',
   door: '点击放置木门，25 木材。R 旋转朝向；自动开关、保持敞开或锁定。门仍分隔两侧房间。',
   clearZone: '拖动擦除种植区、林地区和仓储；农作物会清理且没有收成，树木和已建成设施保留。',
   remove: '拆除墙、楼板、设施或梯子，回收部分材料。正在支撑人物的结构会等待人物移开。',
@@ -214,6 +215,7 @@ function App() {
     [help, setHelp] = useState(true),
     [busy, setBusy] = useState(false),
     [selectedPawn, setSelectedPawn] = useState<number | null>(null),
+    [selectedCarer, setSelectedCarer] = useState<number | null>(null),
     [storageConnected, setStorageConnected] = useState(true),
     [saveStatus, setSaveStatus] = useState('尚未保存');
   useEffect(() => {
@@ -299,6 +301,9 @@ function App() {
       ) ?? [])
     : [];
   const pawn = s?.pawns.find((v) => v.id === selectedPawn) ?? people[0];
+  const carers = s?.pawns.filter((v) => !v.dead && !v.downed && v.id !== pawn?.id) ?? [];
+  const carer = carers.find((v) => v.id === selectedCarer) ?? carers[0];
+  const casualties = s?.pawns.filter((v) => v.dead || v.downed) ?? [];
   const temperatureOf = (target: Pos) => {
     const targetRoom = client.roomAt(target);
     return (
@@ -366,7 +371,10 @@ function App() {
           {s?.pawns.map((v) => (
             <button
               key={v.id}
-              className={selectedPawn === v.id ? 'selected' : ''}
+              className={[
+                selectedPawn === v.id ? 'selected' : '',
+                v.dead ? 'is-dead' : v.downed ? 'is-downed' : '',
+              ].join(' ')}
               onClick={() => {
                 setSelectedPawn(v.id);
                 focus(v);
@@ -375,6 +383,7 @@ function App() {
               <i style={{ background: '#' + v.color.toString(16) }} />
               <span>
                 {v.name}
+                {v.dead ? ' · 已死亡' : v.downed ? ' · 倒地' : ''}
                 <small>
                   {levelName(v.z, spawn.z)} · {v.reason}
                 </small>
@@ -809,9 +818,27 @@ function App() {
         {bed && (
           <div className="voxel-bill">
             <label>
+              床位用途
+              <select
+                aria-label="床位用途"
+                value={bed.medical ? 'medical' : 'sleep'}
+                onChange={(e) =>
+                  void client.command({
+                    type: 'bedMedical',
+                    bedId: bed.id,
+                    medical: e.target.value === 'medical',
+                  })
+                }
+              >
+                <option value="sleep">日常睡眠</option>
+                <option value="medical">医疗床</option>
+              </select>
+            </label>
+            <label>
               床位主人
               <select
                 aria-label="床位主人"
+                disabled={bed.medical}
                 value={bed.owner ?? ''}
                 onChange={(e) =>
                   void client.command({
@@ -822,11 +849,13 @@ function App() {
                 }
               >
                 <option value="">未分配（可自动认领）</option>
-                {s?.pawns.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
+                {s?.pawns
+                  .filter((p) => !p.dead)
+                  .map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.name}
+                    </option>
+                  ))}
               </select>
             </label>
             <p>
@@ -834,6 +863,9 @@ function App() {
               <br />
               {s?.pawns.find((p) => p.sleepBedId === bed.id)?.reason ?? '当前无人使用'}
             </p>
+            {bed.medical && (
+              <small>医疗床供救援与休养使用，不分配固定主人。请留出入口和适宜温度。</small>
+            )}
           </div>
         )}
         {door && (
@@ -1016,6 +1048,63 @@ function App() {
               <b>{pawn.name}</b>
               <span>{pawn.reason}</span>
             </div>
+            <SurvivalPanel pawn={pawn} temperature={temperatureOf(pawn)} />
+            {!pawn.dead && pawn.downed && (
+              <div className="voxel-care-actions" data-testid="care-controls">
+                <label>
+                  安排同伴
+                  <select
+                    aria-label="医护人员"
+                    value={carer?.id ?? ''}
+                    disabled={!carers.length}
+                    onChange={(e) => setSelectedCarer(Number(e.target.value))}
+                  >
+                    {!carers.length && <option value="">暂无可行动的同伴</option>}
+                    {carers.map((v) => (
+                      <option key={v.id} value={v.id}>
+                        {v.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <div>
+                  <button
+                    disabled={!carer || pawn.carriedBy !== null}
+                    onClick={() =>
+                      carer &&
+                      void client.command({
+                        type: 'care',
+                        pawnId: carer.id,
+                        patientId: pawn.id,
+                        action: 'rescue',
+                      })
+                    }
+                  >
+                    优先救援
+                  </button>
+                  <button
+                    disabled={
+                      !carer ||
+                      pawn.food > 26 ||
+                      pawn.carriedBy !== null ||
+                      pawn.sleepBedId === null
+                    }
+                    onClick={() =>
+                      carer &&
+                      void client.command({
+                        type: 'care',
+                        pawnId: carer.id,
+                        patientId: pawn.id,
+                        action: 'feed',
+                      })
+                    }
+                  >
+                    优先喂食
+                  </button>
+                </div>
+                <small>同伴会实际前往；无通路、床位或食物时会说明原因。</small>
+              </div>
+            )}
             <div className="voxel-needs">
               <label>
                 饱食 {Math.round(pawn.food)}%
@@ -1043,31 +1132,36 @@ function App() {
               </div>
             )}
             <div className="voxel-priorities">
-              {(['dig', 'cut', 'build', 'haul', 'grow', 'cook', 'craft'] as Work[]).map((w, i) => (
-                <label key={w}>
-                  {['挖掘', '伐木', '施工', '搬运', '种植', '烹饪', '加工'][i]}
-                  <select
-                    aria-label={`${pawn.name} ${w}优先级`}
-                    value={pawn.priorities[w]}
-                    onChange={(e) =>
-                      void client.command({
-                        type: 'priority',
-                        pawnId: pawn.id,
-                        work: w,
-                        value: Number(e.target.value),
-                      })
-                    }
-                  >
-                    {[0, 1, 2, 3, 4].map((n) => (
-                      <option key={n} value={n}>
-                        {n === 0 ? '停用' : n}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              ))}
+              {(['care', 'dig', 'cut', 'build', 'haul', 'grow', 'cook', 'craft'] as Work[]).map(
+                (w, i) => (
+                  <label key={w}>
+                    {['医护', '挖掘', '伐木', '施工', '搬运', '种植', '烹饪', '加工'][i]}
+                    <select
+                      aria-label={`${pawn.name} ${w}优先级`}
+                      disabled={pawn.dead}
+                      value={pawn.priorities[w]}
+                      onChange={(e) =>
+                        void client.command({
+                          type: 'priority',
+                          pawnId: pawn.id,
+                          work: w,
+                          value: Number(e.target.value),
+                        })
+                      }
+                    >
+                      {[0, 1, 2, 3, 4].map((n) => (
+                        <option key={n} value={n}>
+                          {n === 0 ? '停用' : n}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                ),
+              )}
             </div>
-            <small>1 优先，4 最后；0 停用</small>
+            <small>
+              普通工作按 1～4 排序；医护开启后优先处理急救。0 停用自动工作，仍可手动安排救援。
+            </small>
             <details className="voxel-schedule">
               <summary>24 小时作息 · 点击调整</summary>
               <div>
@@ -1076,6 +1170,7 @@ function App() {
                     {String(h).padStart(2, '0')}
                     <select
                       aria-label={`${pawn.name} ${h}点作息`}
+                      disabled={pawn.dead}
                       value={a}
                       onChange={(e) =>
                         void client.command({
@@ -1098,7 +1193,13 @@ function App() {
               <small>自由时困倦才睡；睡眠时段提前休息，睡满再醒；工作时段精力 ≥20% 会醒来。</small>
             </details>
             <button
-              disabled={pawn.rest >= 75 || pawn.phase === 'rest' || pawn.phase === 'sleepTravel'}
+              disabled={
+                pawn.dead ||
+                pawn.downed ||
+                pawn.rest >= 75 ||
+                pawn.phase === 'rest' ||
+                pawn.phase === 'sleepTravel'
+              }
               onClick={() => void client.command({ type: 'rest', pawnId: pawn.id })}
             >
               现在去睡觉
@@ -1106,6 +1207,7 @@ function App() {
             {p && !equal(p, pawn) && (
               <button
                 className="voxel-primary"
+                disabled={pawn.dead || pawn.downed}
                 onClick={() => void client.command({ type: 'move', pawnId: pawn.id, target: p })}
               >
                 让 {pawn.name} 前往选中位置
@@ -1119,6 +1221,26 @@ function App() {
           </button>
         )}
       </section>
+      {casualties.length > 0 && (
+        <aside className="voxel-survival-alert" aria-label="健康警报">
+          <strong>
+            {casualties.every((v) => v.dead) && casualties.length === s?.pawns.length
+              ? '营地已无人存活'
+              : '同伴需要关注'}
+          </strong>
+          {casualties.map((v) => (
+            <button
+              key={v.id}
+              onClick={() => {
+                setSelectedPawn(v.id);
+                focus(v);
+              }}
+            >
+              {v.name} · {v.dead ? '已死亡' : v.carriedBy !== null ? '救援中' : '倒地'}
+            </button>
+          ))}
+        </aside>
+      )}
       <div className="voxel-coordinates">
         <span>
           {state.worker ? '独立渲染线程' : '兼容渲染'} · {String(state.metrics.backend ?? 'WebGL2')}
@@ -1329,7 +1451,7 @@ function App() {
               <summary>试玩规则与性能计数</summary>
               <p>
                 64×64×16；逻辑 20 TPS，1 日 10
-                分钟。两格净空，一格高差可走；梯子可携货。种植、烹饪、床位、作息、电网、冷库保鲜、有限仓储和岩块切石已接通。新世界有三种生态和四档起伏，土壤肥力与季节气温影响生产。天然岩石有机会留下岩块，切石台加工后才能用于石砖墙和楼板；切石科技暂默认解锁。采用简化天光和三维导热。战斗、食物中毒、饥荒伤害、坍塌、天气降水和流体尚未实现。
+                分钟。两格净空，一格高差可走；梯子可携货。种植、烹饪、床位、作息、电网、冷库保鲜、有限仓储和岩块切石已接通。新世界有三种生态和四档起伏，土壤肥力与季节气温影响生产。断粮、过冷或过热会逐渐损害健康，严重时倒地甚至死亡；同伴可以救援到医疗床并喂食。天然岩石有机会留下岩块，切石台加工后才能用于石砖墙和楼板；切石科技暂默认解锁。采用简化天光和三维导热。战斗伤口、疾病、食物中毒、坍塌、天气降水和流体尚未实现。
               </p>
               <p>
                 地形数组 {((s?.gridBytes ?? 0) / 1024).toFixed(0)} KiB；寻路数组{' '}

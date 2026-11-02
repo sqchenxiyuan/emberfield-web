@@ -66,6 +66,14 @@ import {
   STONE_CONSTRUCTION,
   naturalChunkDrop,
 } from './crafting';
+import {
+  initialSurvival,
+  healthSummary,
+  updateHealth,
+  healthDeathReason,
+  FEED_WORK,
+  hungerMultiplier,
+} from './survival';
 import { defaultSchedule, assignmentAt, restLoss, restGain, wantsSleep } from './rest';
 import {
   CROPS,
@@ -350,7 +358,8 @@ export class VoxelSimulation {
         z: this.spawn.z,
         food: 100,
         rest: 100,
-        priorities: { dig: 1, build: 1, cut: 1, haul: 2, grow: 1, cook: 1, craft: 1 },
+        priorities: { dig: 1, build: 1, cut: 1, haul: 2, grow: 1, cook: 1, craft: 1, care: 1 },
+        ...initialSurvival(this.seed, this.nextId - 1),
         jobId: null,
         path: [],
         destination: null,
@@ -737,7 +746,7 @@ export class VoxelSimulation {
     let best: Stack | undefined;
     for (const item of this.items) {
       if (
-        item.amount < 1 ||
+        this.availableStack(item, p.id) < 1 ||
         (resource && item.resource !== resource) ||
         this.chunkReserved(item, p.id)
       )
@@ -1268,9 +1277,47 @@ export class VoxelSimulation {
       }
       return { ok: true, message: d.on ? '设备已启用' : '设备已关闭' };
     }
+    if (c.type === 'bedMedical') {
+      const bed = this.beds.find((b) => b.id === c.bedId);
+      if (!bed || typeof c.medical !== 'boolean') return { ok: false, message: '医疗床设置无效' };
+      if (bed.medical !== c.medical) {
+        for (const p of this.pawns)
+          if (p.sleepBedId === bed.id || p.careBedId === bed.id) this.release(p);
+        bed.medical = c.medical;
+        bed.owner = null;
+      }
+      return {
+        ok: true,
+        message: bed.medical ? '已设为医疗床，医护会优先救援倒地者' : '已恢复普通床位',
+      };
+    }
+    if (c.type === 'care') {
+      const p = this.pawns.find((p) => p.id === c.pawnId),
+        patient = this.pawns.find((p) => p.id === c.patientId);
+      if (
+        !p ||
+        !patient ||
+        !['rescue', 'feed'].includes(c.action) ||
+        p.dead ||
+        p.downed ||
+        p.carriedBy !== null
+      )
+        return { ok: false, message: '医护或病人无效' };
+      const ok = this.startCare(p, patient, c.action);
+      return {
+        ok,
+        message: ok
+          ? p.reason
+          : '无法护理：需要未被预定的倒地病人、可达医疗床或实物食物，并有卸货空间',
+      };
+    }
     if (c.type === 'bedOwner') {
       const b = this.beds.find((b) => b.id === c.bedId);
-      if (!b || (c.pawnId !== null && !this.pawns.some((p) => p.id === c.pawnId)))
+      if (
+        !b ||
+        b.medical ||
+        (c.pawnId !== null && !this.pawns.some((p) => p.id === c.pawnId && !p.dead))
+      )
         return { ok: false, message: '床位或人物无效' };
       const affected = this.beds.filter(
         (v) => v.id === b.id || (c.pawnId !== null && v.owner === c.pawnId),
@@ -1319,7 +1366,8 @@ export class VoxelSimulation {
     }
     if (c.type === 'rest') {
       const p = this.pawns.find((p) => p.id === c.pawnId);
-      if (!p || p.rest >= 75) return { ok: false, message: '精力低于 75% 时可安排入睡' };
+      if (!p || p.dead || p.downed || p.carriedBy !== null || p.rest >= 75)
+        return { ok: false, message: '精力低于 75% 时可安排入睡' };
       this.startSleep(p);
       return { ok: true, message: p.reason };
     }
@@ -1327,7 +1375,8 @@ export class VoxelSimulation {
       const p = this.pawns.find((p) => p.id === c.pawnId);
       if (
         !p ||
-        !['dig', 'build', 'cut', 'haul', 'grow', 'cook', 'craft'].includes(c.work) ||
+        p.dead ||
+        !['dig', 'build', 'cut', 'haul', 'grow', 'cook', 'craft', 'care'].includes(c.work) ||
         !Number.isInteger(c.value) ||
         c.value < 0 ||
         c.value > 4
@@ -1384,7 +1433,14 @@ export class VoxelSimulation {
     }
     if (c.type === 'move') {
       const p = this.pawns.find((p) => p.id === c.pawnId);
-      if (!p || !inside(c.target) || !this.standable(c.target))
+      if (
+        !p ||
+        p.dead ||
+        p.downed ||
+        p.carriedBy !== null ||
+        !inside(c.target) ||
+        !this.standable(c.target)
+      )
         return { ok: false, message: '目标没有支撑或两格净空' };
       const path = this.path(p, c.target);
       if (!path) return { ok: false, message: '没有可达通路；检查梯子和楼板' };
@@ -1788,7 +1844,265 @@ export class VoxelSimulation {
         : '只能拆除建造的墙、楼板、梯子或设施';
     return '未知的规划类型';
   }
+  /** Reservations reference physical stacks; no shadow food inventory exists. */
+  private availableStack(item: Stack, ignorePawnId?: number): number {
+    return Math.max(
+      0,
+      item.amount -
+        this.pawns.reduce(
+          (n, p) => n + (p.id !== ignorePawnId && p.careFoodId === item.id ? p.careAmount : 0),
+          0,
+        ),
+    );
+  }
+  private releaseCare(p: Pawn) {
+    if (p.carryingPawnId !== null) {
+      const patient = this.pawns.find((q) => q.id === p.carryingPawnId);
+      if (patient) {
+        Object.assign(patient, { x: p.x, y: p.y, z: p.z });
+        patient.carriedBy = null;
+        patient.phase = patient.dead ? 'dead' : patient.downed ? 'downed' : 'idle';
+        patient.reason = patient.dead
+          ? patient.deathReason!
+          : patient.downed
+            ? '救援中断，原地等待医护'
+            : '已恢复行动';
+      }
+    }
+    p.carryingPawnId = null;
+    p.patientId = null;
+    p.careBedId = null;
+    p.careFoodId = null;
+    p.careAmount = 0;
+    p.carePhase = null;
+    p.careProgress = 0;
+  }
+  private patientBed(p: Pawn): Bed | undefined {
+    return this.beds.find((b) => same(b, p) && (b.medical || b.owner === p.id));
+  }
+  /** search(origin) must precede this call; helpers share the navigation workspace. */
+  private careStand(patient: Pawn): number {
+    const candidates = horizontal.map(([dx, dy]) => ({
+      x: patient.x + dx,
+      y: patient.y + dy,
+      z: patient.z,
+    }));
+    return (
+      candidates
+        .filter((q) => this.standable(q) && this.distance[at(q)] >= 0)
+        .sort((a, b) => this.distance[at(a)] - this.distance[at(b)])
+        .map(at)[0] ?? -1
+    );
+  }
+  private freeMedicalBed(p: Pawn, patient: Pawn): Bed | undefined {
+    return this.beds
+      .filter(
+        (b) =>
+          b.medical &&
+          this.distance[at(b)] >= 0 &&
+          !this.pawns.some(
+            (q) =>
+              q.id !== patient.id &&
+              q.id !== p.id &&
+              (bedCells(b).some((cell) => same(cell, q)) ||
+                q.sleepBedId === b.id ||
+                q.careBedId === b.id),
+          ),
+      )
+      .sort((a, b) => this.distance[at(a)] - this.distance[at(b)])[0];
+  }
+  private startCare(p: Pawn, patient: Pawn, action: 'rescue' | 'feed'): boolean {
+    if (
+      p === patient ||
+      p.dead ||
+      p.downed ||
+      p.carriedBy !== null ||
+      patient.dead ||
+      !patient.downed ||
+      patient.carriedBy !== null ||
+      this.pawns.some((q) => q.id !== p.id && q.patientId === patient.id)
+    )
+      return false;
+    const patientBed = this.patientBed(patient);
+    if (action === 'rescue' ? !!patientBed : !patientBed || patient.food > 26) return false;
+    this.search(p);
+    const stand = this.careStand(patient);
+    if (stand < 0) return false;
+    const bed = action === 'rescue' ? this.freeMedicalBed(p, patient) : undefined;
+    if (action === 'rescue' && !bed) return false;
+    const carriedFood = action === 'feed' && p.cargo && NUTRITION[p.cargo.resource];
+    const food =
+      action === 'feed' && !carriedFood
+        ? (['meal', 'food', 'grain'] as Resource[]).map((r) => this.pileFor(p, r)).find(Boolean)
+        : undefined;
+    if (action === 'feed' && !carriedFood && !food) return false;
+    // A full ground never destroys existing cargo to make room for a rescue.
+    if (!carriedFood && !this.dropCargo(p)) return false;
+    this.release(p);
+    this.search(p);
+    p.patientId = patient.id;
+    p.careBedId = bed?.id ?? null;
+    p.careProgress = 0;
+    if (action === 'rescue') {
+      p.carePhase = 'rescueApproach';
+      this.go(p, this.careStand(patient), 'care');
+      p.reason = '前往救援' + patient.name;
+    } else if (carriedFood) {
+      p.carePhase = 'feedApproach';
+      this.go(p, this.careStand(patient), 'care');
+      p.reason = '携带食物前往' + patient.name;
+    } else {
+      p.careFoodId = food!.id;
+      p.careAmount = Math.min(
+        this.availableStack(food!, p.id),
+        food!.resource === 'grain' ? Math.ceil((100 - patient.food) / (100 * NUTRITION.grain!)) : 1,
+      );
+      p.carePhase = 'feedFetch';
+      this.go(p, at(food!), 'care');
+      p.reason = '为' + patient.name + '取食物';
+    }
+    return true;
+  }
+  private tryCare(p: Pawn): boolean {
+    const patients = this.pawns
+      .filter(
+        (q) =>
+          q.downed &&
+          !q.dead &&
+          q.carriedBy === null &&
+          q.id !== p.id &&
+          !this.pawns.some((r) => r.id !== p.id && r.patientId === q.id),
+      )
+      .sort(
+        (a, b) =>
+          Math.max(b.health.malnutrition, b.health.hypothermia, b.health.heatstroke) -
+          Math.max(a.health.malnutrition, a.health.hypothermia, a.health.heatstroke),
+      );
+    for (const patient of patients)
+      if (this.startCare(p, patient, this.patientBed(patient) ? 'feed' : 'rescue')) return true;
+    return false;
+  }
+  private validCare(p: Pawn): boolean {
+    const patient = this.pawns.find((q) => q.id === p.patientId);
+    if (!patient || patient.dead || !patient.downed || !p.carePhase) return false;
+    if (p.carePhase === 'rescueApproach' || p.carePhase === 'rescueCarry')
+      return (
+        this.beds.some((b) => b.id === p.careBedId && b.medical) &&
+        (p.carePhase === 'rescueCarry' ? patient.carriedBy === p.id : patient.carriedBy === null)
+      );
+    return (
+      patient.carriedBy === null &&
+      !!this.patientBed(patient) &&
+      patient.food <= 26 &&
+      (p.carePhase === 'feedFetch'
+        ? this.items.some(
+            (i) => i.id === p.careFoodId && this.availableStack(i, p.id) >= p.careAmount,
+          )
+        : !!p.cargo && !!NUTRITION[p.cargo.resource])
+    );
+  }
+  private arriveCare(p: Pawn) {
+    if (!this.validCare(p)) {
+      this.release(p);
+      p.reason = '护理条件改变，重新安排';
+      return;
+    }
+    const patient = this.pawns.find((q) => q.id === p.patientId)!;
+    if (p.carePhase === 'feedFetch') {
+      const food = this.items.find((i) => i.id === p.careFoodId);
+      if (!food || !same(food, p) || !this.take(p, food.resource, p.careAmount, food.id)) {
+        this.release(p);
+        return;
+      }
+      p.careFoodId = null;
+      p.careAmount = 0;
+      this.search(p);
+      const stand = this.careStand(patient);
+      if (stand < 0) {
+        this.release(p);
+        p.reason = '病人通路中断，保留携带食物';
+        return;
+      }
+      p.carePhase = 'feedApproach';
+      this.go(p, stand, 'care');
+      p.reason = '把食物送到' + patient.name;
+      return;
+    }
+    if (p.carePhase === 'rescueCarry') {
+      const bed = this.beds.find((b) => b.id === p.careBedId && b.medical)!;
+      if (!same(p, bed)) {
+        this.release(p);
+        return;
+      }
+      Object.assign(patient, { x: bed.x, y: bed.y, z: bed.z });
+      patient.carriedBy = null;
+      patient.sleepBedId = bed.id;
+      patient.phase = 'downed';
+      patient.reason = '卧床等待喂食或适宜温度恢复';
+      p.carryingPawnId = null;
+      this.release(p);
+      p.reason = '已把' + patient.name + '送到医疗床';
+      return;
+    }
+    if (p.z !== patient.z || Math.abs(p.x - patient.x) + Math.abs(p.y - patient.y) !== 1) {
+      this.release(p);
+      p.reason = '病人位置改变，重新安排';
+      return;
+    }
+    if (p.carePhase === 'rescueApproach') {
+      this.search(p);
+      const bed = this.beds.find((b) => b.id === p.careBedId && b.medical)!;
+      if (this.distance[at(bed)] < 0) {
+        this.release(p);
+        p.reason = '医疗床通路中断';
+        return;
+      }
+      patient.carriedBy = p.id;
+      patient.sleepBedId = null;
+      Object.assign(patient, { x: p.x, y: p.y, z: p.z });
+      p.carryingPawnId = patient.id;
+      p.carePhase = 'rescueCarry';
+      this.go(p, at(bed), 'care');
+      p.reason = '抱起' + patient.name + '前往医疗床';
+      patient.reason = '由' + p.name + '抱往医疗床';
+      return;
+    }
+    p.carePhase = 'feed';
+    p.destination = null;
+    p.careProgress += healthSummary(p).manipulation;
+    p.reason = '喂食' + patient.name;
+    if (p.careProgress < FEED_WORK) return;
+    const amount = this.consume(patient, p.cargo!.resource, p.cargo!.amount);
+    p.cargo!.amount -= amount;
+    if (p.cargo!.amount === 0) p.cargo = null;
+    this.release(p);
+    p.reason = '已喂食' + patient.name;
+    patient.reason = '已进食，营养不良逐步恢复';
+  }
+  private updateSurvival() {
+    for (const p of this.pawns) {
+      if (p.dead) continue;
+      const factor = p.food <= 0 ? 0 : p.food < 12 ? 0.25 : p.food < 24 ? 0.5 : 1;
+      p.food = Math.max(0, p.food - FOOD_FALL_PER_TICK * factor * hungerMultiplier(p.health));
+      updateHealth(p.health, p.food, this.temperature(p), this.tick);
+      const death = healthDeathReason(p.health),
+        summary = healthSummary(p);
+      const downed = !death && (summary.consciousness < 0.3 || summary.moving <= 0.15);
+      if (death || p.downed !== downed) {
+        const bed = this.patientBed(p);
+        for (const q of this.pawns) if (q.patientId === p.id) this.release(q);
+        p.dead = !!death;
+        p.downed = downed;
+        p.deathReason = death;
+        this.release(p);
+        if (p.downed && bed) p.sleepBedId = bed.id;
+        p.reason = death ?? (p.downed ? summary.reason + '，倒地等待救援' : '恢复行动');
+        if (p.dead) for (const b of this.beds) if (b.owner === p.id) b.owner = null;
+      }
+    }
+  }
   private release(p: Pawn) {
+    this.releaseCare(p);
     this.craftSources.delete(p.id);
     this.storageReservations.delete(p.id);
     const j = this.jobs.find((j) => j.id === p.jobId);
@@ -1796,7 +2110,7 @@ export class VoxelSimulation {
     p.jobId = null;
     p.path = [];
     p.destination = null;
-    p.phase = 'idle';
+    p.phase = p.dead ? 'dead' : p.downed ? 'downed' : 'idle';
     p.workTarget = null;
     p.eating = null;
     p.sleepBedId = null;
@@ -1873,6 +2187,7 @@ export class VoxelSimulation {
   }
   private assign(p: Pawn) {
     if (p.food < 30 && this.tryFood(p)) return;
+    if (p.priorities.care > 0 && this.tryCare(p)) return;
     if (wantsSleep(p.rest, assignmentAt(p.schedule, this.tick))) {
       this.startSleep(p);
       return;
@@ -1989,9 +2304,15 @@ export class VoxelSimulation {
     const available = this.beds
       .filter(
         (b) =>
+          !b.medical &&
           (b.owner === null || b.owner === p.id) &&
           this.distance[at(b)] >= 0 &&
-          !this.pawns.some((other) => other.id !== p.id && other.sleepBedId === b.id),
+          !this.pawns.some(
+            (other) =>
+              other.id !== p.id &&
+              (other.sleepBedId === b.id ||
+                ((other.dead || other.downed) && bedCells(b).some((cell) => same(cell, other)))),
+          ),
       )
       .sort(
         (a, b) =>
@@ -2111,7 +2432,8 @@ export class VoxelSimulation {
         (stackId === undefined || i.id === stackId),
     );
     if (!item || amount <= 0 || p.cargo || this.chunkReserved(item, p.id)) return false;
-    const n = Math.min(amount, item.amount, carryLimit(item.resource));
+    const n = Math.min(amount, this.availableStack(item, p.id), carryLimit(item.resource));
+    if (n <= 0) return false;
     p.cargo = portion(item, n);
     this.craftSources.delete(p.id);
     item.amount -= n;
@@ -2131,6 +2453,7 @@ export class VoxelSimulation {
     return amount;
   }
   private tryFood(p: Pawn) {
+    if (p.dead || p.downed || p.carriedBy !== null) return false;
     if (p.cargo && NUTRITION[p.cargo.resource]) {
       p.cargo.amount -= this.consume(p, p.cargo.resource, p.cargo.amount);
       if (!p.cargo.amount) p.cargo = null;
@@ -2155,6 +2478,10 @@ export class VoxelSimulation {
   }
   private arrive(p: Pawn) {
     const j = this.jobs.find((j) => j.id === p.jobId);
+    if (p.phase === 'care') {
+      this.arriveCare(p);
+      return;
+    }
     if (p.phase === 'sleepTravel') {
       const b = this.beds.find((b) => b.id === p.sleepBedId && b.owner === p.id && same(b, p));
       if (!b) {
@@ -2169,7 +2496,7 @@ export class VoxelSimulation {
     if (p.phase === 'fetch') {
       if (!j) {
         const food = this.items.find((i) => same(i, p) && i.resource === p.eating);
-        if (food) food.amount -= this.consume(p, food.resource, food.amount);
+        if (food) food.amount -= this.consume(p, food.resource, this.availableStack(food, p.id));
         this.items = this.items.filter((i) => i.amount > 0);
         this.release(p);
         return;
@@ -2253,7 +2580,10 @@ export class VoxelSimulation {
       p.reason = '正在' + JOB_NAMES[j.kind];
       const cutting =
         j.kind === 'cut' && !j.legacyCut ? this.trees.find((t) => same(t, j)) : undefined;
-      j.progress = Math.min(j.work, j.progress + (cutting ? treeWorkSpeed(cutting.growth) : 1));
+      j.progress = Math.min(
+        j.work,
+        j.progress + (cutting ? treeWorkSpeed(cutting.growth) : 1) * healthSummary(p).manipulation,
+      );
       if (j.progress >= j.work) this.finish(p, j);
     }
   }
@@ -2569,7 +2899,15 @@ export class VoxelSimulation {
       this.skyCache.clear();
       this.revision++;
     } else if (j.kind === 'bed') {
-      this.beds.push({ id: this.id(), x: j.x, y: j.y, z: j.z, axis: j.axis ?? 'x', owner: null });
+      this.beds.push({
+        id: this.id(),
+        x: j.x,
+        y: j.y,
+        z: j.z,
+        axis: j.axis ?? 'x',
+        owner: null,
+        medical: false,
+      });
       this.revision++;
     } else if (j.kind === 'door') {
       this.doors.push({
@@ -2585,7 +2923,8 @@ export class VoxelSimulation {
       this.revision++;
     } else if (j.kind === 'remove' && this.bedAt(j)) {
       const bed = this.bedAt(j)!;
-      for (const p of this.pawns) if (p.sleepBedId === bed.id) this.release(p);
+      for (const p of this.pawns)
+        if (p.sleepBedId === bed.id || p.careBedId === bed.id) this.release(p);
       this.beds = this.beds.filter((b) => b.id !== bed.id);
       this.revision++;
     } else if (j.kind === 'remove' && this.doors.some((d) => same(d, j))) {
@@ -2625,14 +2964,29 @@ export class VoxelSimulation {
       this.updatePreservation();
       this.updateTrees();
       this.refreshReservations();
+      this.updateSurvival();
       // Only temperature/daylight change each tick; occlusion is cached until terrain changes.
       for (const c of this.crops)
         if (c.growth < 1)
           c.growth = Math.min(1, c.growth + this.cropCondition(c, c.kind).growthRate);
       if (this.tick % 20 === 0) this.syncProduction();
       for (const p of this.pawns) {
-        const hungerFactor = p.food <= 0 ? 0 : p.food < 12 ? 0.25 : p.food < 24 ? 0.5 : 1;
-        p.food = Math.max(0, p.food - FOOD_FALL_PER_TICK * hungerFactor);
+        if (p.dead || p.downed || p.carriedBy !== null) continue;
+        if (p.phase === 'care' && !this.validCare(p)) {
+          this.release(p);
+          p.reason = '护理条件改变，重新安排';
+        }
+        if (
+          p.phase !== 'care' &&
+          p.phase !== 'travel' &&
+          !p.eating &&
+          p.food >= 30 &&
+          p.rest > 14 &&
+          p.priorities.care > 0 &&
+          (this.tick + p.id) % 20 === 0 &&
+          this.tryCare(p)
+        )
+          continue;
         if (
           p.food < 30 &&
           p.phase !== 'idle' &&
@@ -2653,7 +3007,7 @@ export class VoxelSimulation {
         }
         p.rest = Math.max(0, p.rest - restLoss(p.rest));
         if (
-          !['rest', 'sleepTravel', 'travel'].includes(p.phase) &&
+          !['rest', 'sleepTravel', 'travel', 'care'].includes(p.phase) &&
           !p.eating &&
           (this.tick + p.id) % 20 === 0 &&
           wantsSleep(p.rest, assignmentAt(p.schedule, this.tick))
@@ -2681,7 +3035,16 @@ export class VoxelSimulation {
           }
           Object.assign(p, position(next));
           p.path.shift();
-          p.moveTick = this.tick + (p.cargo ? 6 : 4);
+          p.moveTick =
+            this.tick +
+            Math.ceil(
+              (p.cargo || p.carryingPawnId !== null ? 6 : 4) /
+                Math.max(0.01, healthSummary(p).moving),
+            );
+          if (p.carryingPawnId !== null) {
+            const patient = this.pawns.find((q) => q.id === p.carryingPawnId)!;
+            Object.assign(patient, { x: p.x, y: p.y, z: p.z });
+          }
           continue;
         }
         if (p.phase === 'idle') {
@@ -2937,7 +3300,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 9,
+      version: 10,
       generator: this.generator,
       settings: this.settings,
       spawn: this.spawn,
@@ -2969,7 +3332,7 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
@@ -3117,6 +3480,20 @@ export class VoxelSimulation {
       old.stats.treesRegrown = 0;
       old.stats.treesDied = 0;
       old.version = 9;
+    }
+    if (old.version === 9) {
+      if (!Array.isArray(old.pawns) || !Array.isArray(old.beds))
+        throw new Error('旧存档生存数据无效');
+      for (const p of old.pawns) {
+        if (!p?.priorities) throw new Error('旧存档工作优先级无效');
+        Object.assign(p, initialSurvival(old.seed, p.id));
+        p.priorities.care = 1;
+      }
+      for (const bed of old.beds) {
+        if (!bed) throw new Error('旧存档床位数据无效');
+        bed.medical = false;
+      }
+      old.version = 10;
     }
     const d = old as VoxelSave;
     if (
@@ -3281,6 +3658,8 @@ export class VoxelSimulation {
         throw new Error('灶台数据无效');
     for (const b of d.beds)
       if (
+        typeof b.medical !== 'boolean' ||
+        (b.medical && b.owner !== null) ||
         !['x', 'y'].includes(b.axis) ||
         bedCells(b).some((p) => !inside(p) || p.z < 1 || p.z >= HEIGHT - 1) ||
         (b.owner !== null && !d.pawns.some((p) => p.id === b.owner))
@@ -3432,6 +3811,146 @@ export class VoxelSimulation {
     }
     for (const p of d.pawns) {
       if (
+        !p.health ||
+        Object.keys(p.health).length !== 4 ||
+        !['malnutrition', 'hypothermia', 'heatstroke'].every(
+          (key) =>
+            Number.isFinite(p.health[key as 'malnutrition']) &&
+            p.health[key as 'malnutrition'] >= 0 &&
+            p.health[key as 'malnutrition'] <= 1,
+        ) ||
+        !Number.isFinite(p.health.starvationFactor) ||
+        p.health.starvationFactor < 0.8 ||
+        p.health.starvationFactor > 1.2 ||
+        typeof p.dead !== 'boolean' ||
+        typeof p.downed !== 'boolean' ||
+        p.dead !== (healthDeathReason(p.health) !== null) ||
+        p.deathReason !== (p.dead ? healthDeathReason(p.health) : null) ||
+        p.downed !==
+          (!p.dead && (healthSummary(p).consciousness < 0.3 || healthSummary(p).moving <= 0.15)) ||
+        ![
+          'idle',
+          'travel',
+          'work',
+          'fetch',
+          'haul',
+          'rest',
+          'sleepTravel',
+          'care',
+          'downed',
+          'dead',
+        ].includes(p.phase) ||
+        (p.dead
+          ? p.phase !== 'dead'
+          : p.downed
+            ? p.phase !== 'downed'
+            : ['dead', 'downed'].includes(p.phase)) ||
+        !Array.isArray(p.path) ||
+        p.path.length > CELLS ||
+        p.path.some((v) => !Number.isInteger(v) || v < 0 || v >= CELLS) ||
+        (p.destination !== null &&
+          (!Number.isInteger(p.destination) || p.destination < 0 || p.destination >= CELLS)) ||
+        !Number.isFinite(p.careProgress) ||
+        p.careProgress < 0 ||
+        p.careProgress >= FEED_WORK ||
+        !Number.isSafeInteger(p.careAmount) ||
+        p.careAmount < 0 ||
+        p.careAmount > 75 ||
+        ![null, 'rescueApproach', 'rescueCarry', 'feedFetch', 'feedApproach', 'feed'].includes(
+          p.carePhase,
+        ) ||
+        (p.carePhase === null) !== (p.patientId === null) ||
+        (p.carePhase === null) !== (p.phase !== 'care') ||
+        (p.carePhase === null &&
+          (p.careBedId !== null ||
+            p.careFoodId !== null ||
+            p.careAmount !== 0 ||
+            p.careProgress !== 0 ||
+            p.carryingPawnId !== null)) ||
+        (p.carePhase !== 'feed' && p.careProgress !== 0) ||
+        (p.carePhase !== 'feedFetch' && (p.careFoodId !== null || p.careAmount !== 0)) ||
+        (p.downed &&
+          p.sleepBedId !== null &&
+          !d.beds.some((b) => b.id === p.sleepBedId && same(b, p))) ||
+        ((p.dead || p.downed) &&
+          (p.jobId !== null ||
+            p.path.length !== 0 ||
+            p.destination !== null ||
+            p.eating !== null ||
+            p.carePhase !== null))
+      )
+        throw new Error('人物生存状态无效');
+      const patient = d.pawns.find((q) => q.id === p.patientId);
+      if (
+        p.carePhase !== null &&
+        (!patient ||
+          patient === p ||
+          patient.dead ||
+          !patient.downed ||
+          d.pawns.some((q) => q.id !== p.id && q.patientId === patient.id))
+      )
+        throw new Error('病人护理预定无效');
+      if (p.carriedBy !== null) {
+        const carrier = d.pawns.find((q) => q.id === p.carriedBy);
+        if (
+          !carrier ||
+          carrier === p ||
+          carrier.dead ||
+          carrier.downed ||
+          !p.downed ||
+          carrier.carryingPawnId !== p.id ||
+          carrier.patientId !== p.id ||
+          carrier.carePhase !== 'rescueCarry' ||
+          !same(p, carrier) ||
+          p.sleepBedId !== null
+        )
+          throw new Error('被救援人物状态无效');
+      }
+      if (
+        p.carryingPawnId !== null &&
+        (p.carePhase !== 'rescueCarry' ||
+          patient?.id !== p.carryingPawnId ||
+          patient.carriedBy !== p.id)
+      )
+        throw new Error('救援携带关系无效');
+      if (p.carePhase === 'rescueCarry' && p.carryingPawnId === null)
+        throw new Error('救援缺少被搬运者');
+      if (p.carePhase === 'rescueApproach' || p.carePhase === 'rescueCarry') {
+        if (
+          !d.beds.some((b) => b.id === p.careBedId && b.medical) ||
+          d.pawns.some((q) => q.id !== p.id && q.careBedId === p.careBedId) ||
+          (p.carePhase === 'rescueApproach' &&
+            (patient?.carriedBy !== null ||
+              d.beds.some((b) => same(b, patient!) && (b.medical || b.owner === patient!.id)))) ||
+          p.cargo !== null
+        )
+          throw new Error('救援医疗床预定无效');
+      } else if (p.careBedId !== null) throw new Error('护理床位引用无效');
+      if (p.carePhase?.startsWith('feed')) {
+        if (
+          !patient ||
+          patient.food > 26 ||
+          patient.carriedBy !== null ||
+          !d.beds.some((b) => same(b, patient) && (b.medical || b.owner === patient.id))
+        )
+          throw new Error('喂食病人不在床上');
+        if (p.carePhase === 'feedFetch') {
+          const source = d.items.find((i) => i.id === p.careFoodId);
+          const reserved = d.pawns.reduce(
+            (n, q) => n + (q.careFoodId === p.careFoodId ? q.careAmount : 0),
+            0,
+          );
+          if (
+            !source ||
+            !NUTRITION[source.resource] ||
+            p.careAmount < 1 ||
+            reserved > source.amount ||
+            p.cargo !== null
+          )
+            throw new Error('喂食食物预留无效');
+        } else if (!p.cargo || !NUTRITION[p.cargo.resource]) throw new Error('喂食缺少携带食物');
+      }
+      if (
         typeof p.name !== 'string' ||
         p.name.length > 40 ||
         !Number.isFinite(p.color) ||
@@ -3442,14 +3961,19 @@ export class VoxelSimulation {
         !Array.isArray(p.schedule) ||
         p.schedule.length !== 24 ||
         p.schedule.some((a) => !['anything', 'work', 'sleep'].includes(a)) ||
-        (p.sleepBedId !== null && !d.beds.some((b) => b.id === p.sleepBedId && b.owner === p.id)) ||
+        (p.sleepBedId !== null &&
+          !d.beds.some(
+            (b) =>
+              b.id === p.sleepBedId &&
+              (b.owner === p.id || (b.medical && (p.downed || p.dead) && same(b, p))),
+          )) ||
         (p.sleepingSince !== null &&
           (!Number.isSafeInteger(p.sleepingSince) ||
             p.sleepingSince < 0 ||
             p.sleepingSince > d.tick)) ||
         !p.priorities ||
-        Object.values(p.priorities).length !== 7 ||
-        (['dig', 'cut', 'build', 'haul', 'grow', 'cook', 'craft'] as Work[]).some(
+        Object.values(p.priorities).length !== 8 ||
+        (['dig', 'cut', 'build', 'haul', 'grow', 'cook', 'craft', 'care'] as Work[]).some(
           (k) => !Number.isInteger(p.priorities[k]) || p.priorities[k] < 0 || p.priorities[k] > 4,
         ) ||
         (p.cargo !== null && !(migrateLogistics ? validBatch(p.cargo) : plainCargo(p.cargo))) ||
@@ -3588,6 +4112,44 @@ export class VoxelSimulation {
       j.reason = j.cancelled ? '已取消，保留原任务材料等待退回' : '回读后等待重新安排';
     }
     for (const p of s.pawns) {
+      if (p.dead || p.downed || p.carePhase !== null) {
+        p.jobId = null;
+        p.path = [];
+        p.destination = null;
+        p.workTarget = null;
+        p.eating = null;
+        p.moveTick = s.tick;
+        if (p.dead || p.downed) {
+          p.phase = p.dead ? 'dead' : 'downed';
+          p.sleepingSince = null;
+          continue;
+        }
+        const patient = s.pawns.find((q) => q.id === p.patientId)!;
+        s.search(p);
+        const target =
+          p.carePhase === 'rescueCarry'
+            ? at(s.beds.find((b) => b.id === p.careBedId)!)
+            : p.carePhase === 'feedFetch'
+              ? at(s.items.find((i) => i.id === p.careFoodId)!)
+              : s.careStand(patient);
+        if (target < 0 || s.distance[target] < 0) {
+          s.release(p);
+          p.reason = '回读后护理通路中断，保留所有携带物';
+        } else if (
+          p.carePhase === 'feed' &&
+          p.z === patient.z &&
+          Math.abs(p.x - patient.x) + Math.abs(p.y - patient.y) === 1
+        ) {
+          p.phase = 'care';
+        } else {
+          if (p.carePhase === 'feed') {
+            p.carePhase = 'feedApproach';
+            p.careProgress = 0;
+          }
+          s.go(p, target, 'care');
+        }
+        continue;
+      }
       const sleepTarget =
         p.phase === 'sleepTravel'
           ? s.beds.find((b) => b.id === p.sleepBedId && b.owner === p.id)

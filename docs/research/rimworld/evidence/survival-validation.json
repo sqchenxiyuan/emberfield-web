@@ -1,0 +1,33 @@
+{
+  "evidence_id": "RW17-SURVIVAL-VALIDATION",
+  "validated_utc": "2026-11-02T22:08:09.2949588Z",
+  "status": "PASS",
+  "version_text": "1.7.4980 rev60",
+  "original_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "original_xml_files": 10,
+  "xml_record_selections": 25,
+  "original_xml_leaves": 134,
+  "original_xml_attribute_nodes": 7,
+  "original_xml_absence_checks": 70,
+  "portable_and_derived": {
+    "status": "pass",
+    "version": "1.7.4980 rev60",
+    "newTypes": 26,
+    "reusedTypes": 15,
+    "claims": 24,
+    "codeReferences": 80,
+    "xmlReferences": 33,
+    "xmlFiles": 10,
+    "xmlRecords": 25,
+    "xmlLeaves": 134,
+    "xmlAttributes": 7,
+    "xmlAbsences": 70,
+    "cases": 20,
+    "analyticAssertions": 353,
+    "localDerivedFilesVerified": 41,
+    "originalGameExecuted": false,
+    "limitation": "Static derived and selected direct XML evidence plus independent arithmetic/branch models; no effective mod database, native gameplay, full organs/medicine/apparel resolution or project-equivalence execution."
+  },
+  "original_game_executed_by_verifier": false,
+  "limitation": "Original source/version, selected direct XML leaves, attributes, absence and parent metadata, derived hashes and independent math/branches are checked. No enabled-mod Def database, native gameplay, complete medicine/body/apparel model or project implementation equivalence."
+}

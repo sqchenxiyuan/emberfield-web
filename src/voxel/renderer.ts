@@ -111,6 +111,7 @@ type PawnVisual = {
   torso: Mesh;
   label: Sprite;
   sleepSymbol: Sprite;
+  healthMarker: Group;
   shadow: Mesh;
   from: Vector3;
   to: Vector3;
@@ -1402,7 +1403,7 @@ export class VoxelRenderer {
     this.inspectBatches.set(bedParts, { cells: beds, instancesPerCell: 12 });
     beds.forEach((bed, i) => {
       const owner = this.data!.pawns.find((pawn) => pawn.id === bed.owner);
-      const accent = owner?.color ?? 0x84958a;
+      const accent = bed.medical ? 0x81bdc4 : (owner?.color ?? 0x84958a);
       const part = (
         n: number,
         width: number,
@@ -2177,6 +2178,13 @@ export class VoxelRenderer {
     sleepSymbol.visible = false;
     sleepSymbol.renderOrder = 12;
     root.add(sleepSymbol);
+    const healthMarker = new Group();
+    const warning = this.keepMaterial(new MeshLambertMaterial({ color: 0xf2a16f }));
+    part(healthMarker, warning, 0, 0.1, 0, 0.075, 0.2, 0.075);
+    part(healthMarker, warning, 0, -0.08, 0, 0.075, 0.065, 0.075);
+    healthMarker.position.set(-0.38, 1.4, 0);
+    healthMarker.visible = false;
+    root.add(healthMarker);
     const pos = new Vector3(pawn.x + 0.5, pawn.z, pawn.y + 0.5);
     root.position.copy(pos);
     return {
@@ -2191,6 +2199,7 @@ export class VoxelRenderer {
       cargo,
       label,
       sleepSymbol,
+      healthMarker,
       shadow,
       from: pos.clone(),
       to: pos.clone(),
@@ -2241,19 +2250,25 @@ export class VoxelRenderer {
         visual.duration === 0 ? 1 : MathUtils.clamp((now - visual.start) / visual.duration, 0, 1);
       visual.root.position.lerpVectors(visual.from, visual.to, fraction);
       const bed =
-        pawn.phase === 'rest' && pawn.sleepBedId !== null
+        (pawn.phase === 'rest' || pawn.downed || pawn.dead) && pawn.sleepBedId !== null
           ? (this.data.beds ?? []).find((candidate) => candidate.id === pawn.sleepBedId)
           : undefined;
-      const sleeping = !!bed;
-      visual.body.rotation.x = sleeping ? -Math.PI / 2 : 0;
-      visual.body.position.set(0, sleeping ? 0.61 : 0, sleeping ? 1.1 : 0);
-      visual.shadow.visible = !sleeping;
+      const sleeping = !!bed && !pawn.downed && !pawn.dead;
+      const lying = !!bed || pawn.downed || pawn.dead;
+      visual.body.rotation.x = lying ? -Math.PI / 2 : 0;
+      visual.body.position.set(0, bed ? 0.61 : lying ? 0.2 : 0, lying ? 1.1 : 0);
+      visual.shadow.visible = !bed && pawn.carriedBy === null;
       visual.sleepSymbol.visible = sleeping;
-      visual.label.position.set(0, sleeping ? 1.2 : 1.91, sleeping ? 0.5 : 0);
-      if (bed) {
+      visual.healthMarker.visible = pawn.downed && !pawn.dead;
+      visual.healthMarker.position.set(-0.38, bed ? 1.2 : 0.9, 0.5);
+      visual.label.material.color.setHex(pawn.dead ? 0xaaaaaa : 0xffffff);
+      visual.label.position.set(0, lying ? 1.2 : 1.91, lying ? 0.5 : 0);
+      if (lying) {
         // The anchor is the head tile. Do not interpolate a lying pawn in from the doorway.
-        visual.root.position.set(bed.x + 0.5, bed.z, bed.y + 0.5);
-        visual.root.rotation.y = bed.axis === 'x' ? Math.PI / 2 : 0;
+        if (bed) {
+          visual.root.position.set(bed.x + 0.5, bed.z, bed.y + 0.5);
+          visual.root.rotation.y = bed.axis === 'x' ? Math.PI / 2 : 0;
+        }
         const sleepPhase = ((this.data.tick / TPS) * 0.5 + pawn.id * 0.23) % 1;
         visual.sleepSymbol.position.set(-0.38 + sleepPhase * 0.12, 1 + sleepPhase * 0.65, -0.12);
         visual.sleepSymbol.material.opacity = 0.5 + Math.sin(sleepPhase * Math.PI) * 0.5;
@@ -2274,32 +2289,37 @@ export class VoxelRenderer {
           ? stonecutterCells({ ...job, axis: job.axis ?? 'x' })[1]
           : pawn.workTarget;
       const cooking = working && job?.kind === 'cook';
+      const feeding = pawn.phase === 'care' && pawn.carePhase === 'feed' && !moving;
+      const carryingPatient = pawn.carryingPawnId !== null;
       const tending =
         working && (job?.kind === 'sow' || job?.kind === 'plantTree' || job?.kind === 'harvest');
       if (cooking && job) cookingCells.add(index(job.x, job.y, job.z));
       const swing = Math.sin(time * 12 + pawn.id * 1.7);
       visual.leftLeg.rotation.x = moving ? swing * 0.55 : 0;
       visual.rightLeg.rotation.x = moving ? -swing * 0.55 : 0;
-      visual.leftArm.rotation.x = pawn.cargo
-        ? -0.9
-        : moving
-          ? -swing * 0.35
-          : tending
-            ? -0.85 + swing * 0.15
-            : working
-              ? -0.45
-              : 0;
-      visual.rightArm.rotation.x = pawn.cargo
-        ? -0.9
-        : cooking
-          ? -0.8 + Math.sin(time * 4 + pawn.id) * 0.14
-          : tending
-            ? -0.85 - swing * 0.15
-            : working
-              ? -1.05 + swing * 0.8
-              : moving
-                ? swing * 0.35
+      visual.leftArm.rotation.x =
+        pawn.cargo || carryingPatient
+          ? -0.9
+          : moving
+            ? -swing * 0.35
+            : tending
+              ? -0.85 + swing * 0.15
+              : working
+                ? -0.45
                 : 0;
+      visual.rightArm.rotation.x = feeding
+        ? -1 + Math.sin(time * 4 + pawn.id) * 0.2
+        : pawn.cargo || carryingPatient
+          ? -0.9
+          : cooking
+            ? -0.8 + Math.sin(time * 4 + pawn.id) * 0.14
+            : tending
+              ? -0.85 - swing * 0.15
+              : working
+                ? -1.05 + swing * 0.8
+                : moving
+                  ? swing * 0.35
+                  : 0;
       visual.torso.rotation.x = cooking
         ? 0.03
         : tending
@@ -2308,7 +2328,10 @@ export class VoxelRenderer {
             ? 0.08 + Math.max(0, swing) * 0.08
             : 0;
       visual.tool.visible = working && !cooking && !tending;
-      if (working && workTarget) {
+      const patient = feeding ? this.data.pawns.find((v) => v.id === pawn.patientId) : undefined;
+      if (patient) {
+        visual.root.rotation.y = Math.atan2(patient.x - pawn.x, patient.y - pawn.y);
+      } else if (working && workTarget) {
         visual.root.rotation.y = Math.atan2(
           workTarget.x + 0.5 - visual.root.position.x,
           workTarget.y + 0.5 - visual.root.position.z,
@@ -2335,6 +2358,21 @@ export class VoxelRenderer {
           this.workMotes.setMatrixAt(moteCount++, this.matrix);
         }
       }
+    }
+    // A second pass makes the patient's pose follow the carrier's interpolated
+    // position regardless of snapshot array order. Simulation owns both positions.
+    for (const visual of this.pawnVisuals.values()) {
+      const carrierId = visual.pawn.carriedBy;
+      if (carrierId === null) continue;
+      const carrier = this.pawnVisuals.get(carrierId);
+      if (!carrier) continue;
+      visual.root.position.copy(carrier.root.position);
+      visual.root.rotation.y = carrier.root.rotation.y + Math.PI / 2;
+      visual.body.rotation.x = -Math.PI / 2;
+      visual.body.position.set(0, 1.1, 0.65);
+      visual.label.position.set(0, 2.55, 0);
+      visual.healthMarker.position.set(-0.4, 2.2, 0);
+      visual.shadow.visible = false;
     }
     this.workMotes.count = moteCount;
     this.workMotes.instanceMatrix.needsUpdate = true;

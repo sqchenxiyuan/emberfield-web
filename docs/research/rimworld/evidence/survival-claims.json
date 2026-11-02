@@ -1,0 +1,782 @@
+[
+  {
+    "id": "SV01",
+    "kind": "static-derived",
+    "statement": "Ordinary omnivore wantEat=.3; Hungry threshold=.24/UrgentlyHungry=.12/Starving food<=0. Hunger multipliers1/.5/.25/0 multiply base1.6nutrition/day, health/trait/bed factors. No direct downed/asleep factor appears in Need_Food; bed factor defaults1.",
+    "sources": [
+      {
+        "group": "food",
+        "type": "RimWorld.Need_Food",
+        "line_start": 11,
+        "line_end": 46
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.Need_Food",
+        "line_start": 116,
+        "line_end": 152
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.Need_Food",
+        "line_start": 215,
+        "line_end": 219
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.HungerLevelUtility",
+        "line_start": 24,
+        "line_end": 35
+      },
+      {
+        "group": "food",
+        "type": "Verse.RaceProperties",
+        "line_start": 192,
+        "line_end": 192
+      },
+      {
+        "group": "food",
+        "type": "Verse.RaceProperties",
+        "line_start": 295,
+        "line_end": 303
+      },
+      {
+        "group": "survival",
+        "xml_record": "StatDef_BedHungerRateFactor"
+      }
+    ]
+  },
+  {
+    "id": "SV02",
+    "kind": "static-derived",
+    "statement": "Every150source ticks the need first drains food, then checks Starving and adjusts Malnutrition by +/- .0011325*Lerp(.8,1.2,seededValue). The personal seeded factor is stable, giving base.453/day. Eating changes nutrition immediately but recovery begins on the next need interval; no direct cure call.",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "RimWorld.Pawn_NeedsTracker",
+        "line_start": 110,
+        "line_end": 121
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.Need_Food",
+        "line_start": 88,
+        "line_end": 99
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.Need_Food",
+        "line_start": 154,
+        "line_end": 176
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.Toils_Ingest",
+        "line_start": 420,
+        "line_end": 435
+      }
+    ]
+  },
+  {
+    "id": "SV03",
+    "kind": "xml-and-static-derived",
+    "statement": "Malnutrition stages start0/.2/.4/.6/.8. Consciousness offsets-.05/-.1/-.2/-.3 then setMax.1; hunger rate offsets+.5/.6/.6/.6/.6. Health hunger factors multiply before offsets are summed; ordinary sole-malnutrition multipliers1.5/1.6. Lethal severity1.",
+    "sources": [
+      {
+        "group": "survival",
+        "xml_record": "HediffDef_Malnutrition"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffSet",
+        "line_start": 425,
+        "line_end": 451
+      },
+      {
+        "group": "survival",
+        "type": "Verse.HediffStage",
+        "line_start": 7,
+        "line_end": 93
+      }
+    ]
+  },
+  {
+    "id": "SV04",
+    "kind": "static-derived",
+    "statement": "AdjustSeverity creates only for positive offsets and sets severity to the offset rather than retaining HediffDef initial.5. Severity clamps to min/max and lethal limit, stage uses inclusive >= thresholds, removal is severity<=0, lethal check>=lethalSeverity. Stage/capacity changes notify the health tracker.",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "Verse.HealthUtility",
+        "line_start": 545,
+        "line_end": 560
+      },
+      {
+        "group": "survival",
+        "type": "Verse.Hediff",
+        "line_start": 177,
+        "line_end": 177
+      },
+      {
+        "group": "survival",
+        "type": "Verse.Hediff",
+        "line_start": 239,
+        "line_end": 266
+      },
+      {
+        "group": "survival",
+        "type": "Verse.Hediff",
+        "line_start": 665,
+        "line_end": 676
+      },
+      {
+        "group": "survival",
+        "type": "Verse.HediffDef",
+        "line_start": 28,
+        "line_end": 52
+      },
+      {
+        "group": "survival",
+        "type": "Verse.HediffDef",
+        "line_start": 347,
+        "line_end": 361
+      }
+    ]
+  },
+  {
+    "id": "SV05",
+    "kind": "xml-and-static-derived",
+    "statement": "Human directly declares comfortable16..26C; Stat defaults0..40 are not naked-human values. Safe temperature expands final comfortable range by10 each side. Final Comfy min/max stats clamp to[-2000,2000] under postprocessing.",
+    "sources": [
+      {
+        "group": "survival",
+        "xml_record": "ThingDef_Human"
+      },
+      {
+        "group": "survival",
+        "xml_record": "StatDef_ComfyTemperatureMin"
+      },
+      {
+        "group": "survival",
+        "xml_record": "StatDef_ComfyTemperatureMax"
+      },
+      {
+        "group": "environment",
+        "type": "Verse.GenTemperature",
+        "line_start": 59,
+        "line_end": 118
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 810,
+        "line_end": 834
+      }
+    ]
+  },
+  {
+    "id": "SV06",
+    "kind": "xml-and-static-derived",
+    "statement": "Gear-stat part subtracts each worn apparel final cold insulation plus gear offset from minimum, adds heat insulation plus offset to maximum. Insulation XML declares material StatPart and inherited quality factors. Actual garment material/quality resolution is not flattened to one universal clothing bonus.",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "RimWorld.StatPart_GearStatOffset",
+        "line_start": 9,
+        "line_end": 49
+      },
+      {
+        "group": "survival",
+        "xml_record": "StatDef_InsulationBase"
+      },
+      {
+        "group": "survival",
+        "xml_record": "StatDef_Insulation_Cold"
+      },
+      {
+        "group": "survival",
+        "xml_record": "StatDef_Insulation_Heat"
+      }
+    ]
+  },
+  {
+    "id": "SV07",
+    "kind": "xml-and-static-derived",
+    "statement": "OrganicStandard wires hypothermia and heat givers; HealthTickInterval invokes them at hash interval60. Values in the giver are increments per call, not per project tick or per second at arbitrary simulation rates.",
+    "sources": [
+      {
+        "group": "survival",
+        "xml_record": "ThingDef_Human"
+      },
+      {
+        "group": "survival",
+        "xml_record": "HediffGiverSetDef_OrganicStandard"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 1258,
+        "line_end": 1276
+      }
+    ]
+  },
+  {
+    "id": "SV08",
+    "kind": "static-derived",
+    "statement": "Hypothermia increases only T<safeMin by max((safeMin-T)*.0000645,.00075). Existing condition recovers when T>comfyMin OR unspawned OR terrain heatPerTick>0 by clamp(currentSeverity*.027,.0015,.015). Existing cold on heated terrain can both increase and recover in one call; a newly created condition is not the earlier cached reference. Frostbite is a separate below0/severity>.37 risk branch.",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "Verse.HediffGiver_Hypothermia",
+        "line_start": 11,
+        "line_end": 49
+      }
+    ]
+  },
+  {
+    "id": "SV09",
+    "kind": "static-derived",
+    "statement": "Heatstroke grows only T>safeMax by max(adjustedOverage*.0000645,.000375); curve points(0,0),(25,25),(50,40),(100,60),(200,80),(400,100),(4000,1000). Existing heatstroke recovers only T<comfyMax using the same clamped severity-dependent decrement. Above comfyMax+150C separate420tick air-burn checks apply.",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "Verse.HediffGiver_Heat",
+        "line_start": 9,
+        "line_end": 68
+      }
+    ]
+  },
+  {
+    "id": "SV10",
+    "kind": "xml-declared",
+    "statement": "Temperature stages0/.04/.2/.35/.62: visible consciousness offsets-.05/-.1/-.2 then cap.1. Moving offsets-.1 at.2 and-.3 at.35; pain+.15 at.35/+.3 at.62. Hypothermia additionally manipulation-.08/-.2/-.5. Early stage invisible; both lethal1 and allow capacity-change death-on-downed checks.",
+    "sources": [
+      {
+        "group": "survival",
+        "xml_record": "HediffDef_Hypothermia"
+      },
+      {
+        "group": "survival",
+        "xml_record": "HediffDef_Heatstroke"
+      }
+    ]
+  },
+  {
+    "id": "SV11",
+    "kind": "xml-and-static-derived",
+    "statement": "Capacity first checks zeroIfCannotBeAwake, then worker base; when base>0 it adds all matching offsets, multiplies postFactors, takes smallest setMax, applies minValue and rounds to hundredths. Modifier defaults offset0/postFactor1/setMax999; this is not a direct severity-to-final-capacity lookup.",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "Verse.PawnCapacityUtility",
+        "line_start": 73,
+        "line_end": 165
+      },
+      {
+        "group": "survival",
+        "type": "Verse.PawnCapacityModifier",
+        "line_start": 7,
+        "line_end": 45
+      },
+      {
+        "group": "survival",
+        "type": "Verse.PawnCapacityDef",
+        "line_start": 33,
+        "line_end": 41
+      },
+      {
+        "group": "generation",
+        "type": "Verse.GenMath",
+        "line_start": 36,
+        "line_end": 39
+      },
+      {
+        "group": "survival",
+        "xml_record": "PawnCapacityDef_Consciousness"
+      },
+      {
+        "group": "survival",
+        "xml_record": "PawnCapacityDef_Moving"
+      },
+      {
+        "group": "survival",
+        "xml_record": "PawnCapacityDef_Manipulation"
+      }
+    ]
+  },
+  {
+    "id": "SV12",
+    "kind": "static-derived",
+    "statement": "For otherwise intact healthy human, consciousness worker subtracts pain contribution clamp((pain-.1)/.9*.4,0,.4) only if >=.01, then normal blood/breathing factors1. Moving worker multiplies by min(consciousness,1); manipulation by consciousness. Pain sums offsets then multiplies factors and clamps0..1. Simplifying this to stage offsets alone loses indirect penalties.",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "RimWorld.PawnCapacityWorker_Consciousness",
+        "line_start": 9,
+        "line_end": 25
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.PawnCapacityWorker_Moving",
+        "line_start": 9,
+        "line_end": 36
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.PawnCapacityWorker_Manipulation",
+        "line_start": 9,
+        "line_end": 16
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffSet",
+        "line_start": 1328,
+        "line_end": 1370
+      }
+    ]
+  },
+  {
+    "id": "SV13",
+    "kind": "xml-and-static-derived",
+    "statement": "Ordinary CanBeAwake requires consciousness>=.3; capable moving is strictly>.15, pain shock uses>=final threshold(default.8). Downed if unable to stay awake/move or in pain shock. Death checks lethal hediffs, vital capacities and body integrity; colonist recovery rechecks downed predicates. Nonplayer temperature-induced downing has additional death-on-downed rules; some downed adults can crawl.",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "Verse.PawnCapacitiesHandler",
+        "line_start": 25,
+        "line_end": 34
+      },
+      {
+        "group": "survival",
+        "type": "Verse.PawnCapacitiesHandler",
+        "line_start": 78,
+        "line_end": 81
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 95,
+        "line_end": 146
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 518,
+        "line_end": 577
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 616,
+        "line_end": 626
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 642,
+        "line_end": 703
+      },
+      {
+        "group": "survival",
+        "xml_record": "PawnCapacityDef_Moving"
+      },
+      {
+        "group": "survival",
+        "xml_record": "PawnCapacityDef_Consciousness"
+      },
+      {
+        "group": "survival",
+        "xml_record": "StatDef_PainShockThreshold"
+      }
+    ]
+  },
+  {
+    "id": "SV14",
+    "kind": "static-derived",
+    "statement": "Normal automatic rescue requires wanted rescue, same faction, not forbidden, no enemy within checked25 range, reservable/reachable patient and a usable bed. The WorkGiver class has an unused40 constant; executing CanRescueNow uses25. Forced rescue relaxes selected social/danger checks, not all physical checks.",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "RimWorld.HealthAIUtility",
+        "line_start": 81,
+        "line_end": 145
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.WorkGiver_RescueDowned",
+        "line_start": 20,
+        "line_end": 74
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.WorkGiver_TakeToBed",
+        "line_start": 7,
+        "line_end": 10
+      }
+    ]
+  },
+  {
+    "id": "SV15",
+    "kind": "static-derived",
+    "statement": "FindBedFor medical rest prefers existing valid medical bed then medical bed definitions with danger passes; falls back to owned/partner/other normal beds. Validity checks spawn/map/fire/slot/social faction/medical-care and reservation/reach conditions; a medical flag is not proof of safe thermal recovery.",
+    "sources": [
+      {
+        "group": "housing",
+        "type": "RimWorld.RestUtility",
+        "line_start": 72,
+        "line_end": 164
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.RestUtility",
+        "line_start": 235,
+        "line_end": 325
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.JobGiver_PatientGoToBed",
+        "line_start": 14,
+        "line_end": 47
+      }
+    ]
+  },
+  {
+    "id": "SV16",
+    "kind": "xml-and-static-derived",
+    "statement": "Medical is a mutable saved bed flag that clears ownership on change; bed_canBeMedical defaulttrue. HospitalBed directly gives rest1/immunity1.11/tendOffset.10/heal10/defaultMedicaltrue, while SansComfortBedBase declares immunity1.07/heal4. Injury healing and immune stats do not directly cure these untendable states.",
+    "sources": [
+      {
+        "group": "housing",
+        "type": "RimWorld.Building_Bed",
+        "line_start": 110,
+        "line_end": 130
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.Building_Bed",
+        "line_start": 265,
+        "line_end": 269
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.Building_Bed",
+        "line_start": 314,
+        "line_end": 320
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.BuildingProperties",
+        "line_start": 170,
+        "line_end": 188
+      },
+      {
+        "group": "survival",
+        "xml_record": "ThingDef_BedBase"
+      },
+      {
+        "group": "survival",
+        "xml_record": "ThingDef_SansComfortBedBase"
+      },
+      {
+        "group": "survival",
+        "xml_record": "ThingDef_Bed"
+      },
+      {
+        "group": "survival",
+        "xml_record": "ThingDef_HospitalBed"
+      }
+    ]
+  },
+  {
+    "id": "SV17",
+    "kind": "xml-and-static-derived",
+    "statement": "Rescue maps to TakeToBed: reserve patient/bed, travel to patient, carry physical pawn, travel to usable bed, release bed reservation and tuck into bed. Nonongoing cleanup drops a carried thing; final tuck drops at bed and notifies patient job if still usable. This is not teleporting or automatic healing.",
+    "sources": [
+      {
+        "group": "survival",
+        "xml_record": "JobDef_Rescue"
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.JobDriver_TakeToBed",
+        "line_start": 43,
+        "line_end": 89
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.JobDriver_TakeToBed",
+        "line_start": 117,
+        "line_end": 147
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.Toils_Bed",
+        "line_start": 100,
+        "line_end": 109
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.RestUtility",
+        "line_start": 196,
+        "line_end": 215
+      }
+    ]
+  },
+  {
+    "id": "SV18",
+    "kind": "xml-and-static-derived",
+    "statement": "Medical-rest urgency includes downed(not always-downed life stage), tend needs, surgery and labor. Other rest includes healing tended injury or nonimmune immunizable disease. All three reviewed conditions have no tendable override and defaultfalse; conventional tend job does not remove them merely because medicine or a hospital bed exists.",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "RimWorld.HealthAIUtility",
+        "line_start": 14,
+        "line_end": 76
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.WorkGiver_Tend",
+        "line_start": 23,
+        "line_end": 57
+      },
+      {
+        "group": "survival",
+        "type": "Verse.HediffDef",
+        "line_start": 34,
+        "line_end": 34
+      },
+      {
+        "group": "survival",
+        "type": "Verse.Hediff",
+        "line_start": 322,
+        "line_end": 337
+      },
+      {
+        "group": "survival",
+        "xml_record": "HediffDef_Malnutrition"
+      },
+      {
+        "group": "survival",
+        "xml_record": "HediffDef_Hypothermia"
+      },
+      {
+        "group": "survival",
+        "xml_record": "HediffDef_Heatstroke"
+      }
+    ]
+  },
+  {
+    "id": "SV19",
+    "kind": "static-derived",
+    "statement": "Ordinary patient feeding requires nonstanding/in bed, player faction or host, food need/eating ability and medical-rest need; guests/animal/baby restrictions differ. IsHungry is foodPercentage<=hungryThreshold+.02, hence ordinary omnivore<=.26, not.32.",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "RimWorld.FeedPatientUtility",
+        "line_start": 7,
+        "line_end": 65
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.WorkGiver_FeedPatient",
+        "line_start": 29,
+        "line_end": 78
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.Need_Food",
+        "line_start": 21,
+        "line_end": 23
+      },
+      {
+        "group": "food",
+        "type": "Verse.RaceProperties",
+        "line_start": 295,
+        "line_end": 303
+      }
+    ]
+  },
+  {
+    "id": "SV20",
+    "kind": "static-derived",
+    "statement": "Feed work locates a real permitted food source with patient nutrition/preferences; no harvesting, reservations respected, inventory sources allowed. Planned pickup count uses nearest-int wanted/singleNutrition with min1 and maxIngest cap. This differs from actual ingestion ceil-count bounded by physical stack.",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "RimWorld.WorkGiver_FeedPatient",
+        "line_start": 23,
+        "line_end": 26
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.WorkGiver_FeedPatient",
+        "line_start": 81,
+        "line_end": 94
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.FoodUtility",
+        "line_start": 1279,
+        "line_end": 1294
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.FoodUtility",
+        "line_start": 1314,
+        "line_end": 1320
+      },
+      {
+        "group": "food",
+        "type": "Verse.Thing",
+        "line_start": 2192,
+        "line_end": 2202
+      }
+    ]
+  },
+  {
+    "id": "SV21",
+    "kind": "xml-and-static-derived",
+    "statement": "FeedPatient maps to FoodFeedPatient driver, reserving patient and food then picking up from ground/inventory/dispenser and carrying to patient. Chew duration multiplier1.5, ingestible default500ticks; selected SimpleMeal parent chain has no override, so750ticks before finalization, excluding travel. Ongoing patient eligibility and touching are rechecked.",
+    "sources": [
+      {
+        "group": "survival",
+        "xml_record": "JobDef_FeedPatient"
+      },
+      {
+        "group": "survival",
+        "xml_record": "ThingDef_MealBaseIngredientless"
+      },
+      {
+        "group": "survival",
+        "xml_record": "ThingDef_MealCookedIngredientless"
+      },
+      {
+        "group": "survival",
+        "xml_record": "ThingDef_MealCooked"
+      },
+      {
+        "group": "survival",
+        "xml_record": "ThingDef_MealSimple"
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.JobDriver_FoodFeedPatient",
+        "line_start": 37,
+        "line_end": 89
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.IngestibleProperties",
+        "line_start": 16,
+        "line_end": 18
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.Toils_Ingest",
+        "line_start": 294,
+        "line_end": 345
+      }
+    ]
+  },
+  {
+    "id": "SV22",
+    "kind": "xml-and-static-derived",
+    "statement": "FinalizeIngest calls Thing.Ingested on the physical source, which computes/counts consumption, splits/destroys it and returns actual nutrition; recipient food increases only if alive and still has food need, clamped to MaxLevel. SimpleMeal nutrition.9 and max/default one inherited. Feeding is not global resource subtraction plus health reset.",
+    "sources": [
+      {
+        "group": "survival",
+        "xml_record": "ThingDef_MealBaseIngredientless"
+      },
+      {
+        "group": "survival",
+        "xml_record": "ThingDef_MealSimple"
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.Toils_Ingest",
+        "line_start": 395,
+        "line_end": 438
+      },
+      {
+        "group": "food",
+        "type": "Verse.Thing",
+        "line_start": 2132,
+        "line_end": 2179
+      },
+      {
+        "group": "food",
+        "type": "Verse.Thing",
+        "line_start": 2192,
+        "line_end": 2202
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.Need",
+        "line_start": 39,
+        "line_end": 60
+      }
+    ]
+  },
+  {
+    "id": "SV23",
+    "kind": "static-derived",
+    "statement": "Hediff severity, pawn health state, food state/lastNonStarvingTick and bed medical flag are separately serialized. This evidence does not prove that a project save can resume a partly completed physical rescue/feed job without migration and transactional work-state handling.",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "Verse.Hediff",
+        "line_start": 390,
+        "line_end": 426
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 196,
+        "line_end": 220
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.Need_Food",
+        "line_start": 221,
+        "line_end": 225
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.Building_Bed",
+        "line_start": 314,
+        "line_end": 320
+      }
+    ]
+  },
+  {
+    "id": "SV24",
+    "kind": "static-derived-and-project-adaptation",
+    "statement": "Project day mapping, naked-human baseline without apparel, deterministic personal factor, aggregate healthy-body capacities, rescue/feed priority, simplified casualty state and resource-safe cancellation are explicit adaptation choices requiring independent project tests; static evidence never executes original gameplay.",
+    "sources": [
+      {
+        "group": "food",
+        "type": "RimWorld.Need_Food",
+        "line_start": 154,
+        "line_end": 176
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 1258,
+        "line_end": 1276
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.JobDriver_TakeToBed",
+        "line_start": 43,
+        "line_end": 89
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.JobDriver_FoodFeedPatient",
+        "line_start": 37,
+        "line_end": 89
+      }
+    ]
+  }
+]

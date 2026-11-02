@@ -69,7 +69,16 @@ function fixture(setup: (s: VoxelSimulation) => void = () => {}) {
   carve(s, pos(10, 10), pos(22, 18, 9));
   for (let i = 0; i < s.pawns.length; i++) {
     Object.assign(s.pawns[i], pos(10 + i, 18));
-    s.pawns[i].priorities = { dig: 0, build: 0, cut: 0, haul: 0, grow: 0, cook: 0, craft: 0 };
+    s.pawns[i].priorities = {
+      dig: 0,
+      build: 0,
+      cut: 0,
+      haul: 0,
+      grow: 0,
+      cook: 0,
+      craft: 0,
+      care: 0,
+    };
   }
   setup(s);
   return VoxelSimulation.load(s.save());
@@ -133,7 +142,7 @@ describe('bounded physical stacks and hauling reservations', () => {
     expect(s.items.filter((i) => i.resource === 'food').map((i) => i.amount)).toEqual([
       10, 10, 10, 10, 10, 10,
     ]);
-    expect(s.save().version).toBe(9);
+    expect(s.save().version).toBe(10);
     expect(VoxelSimulation.load(s.save()).counts()).toEqual(s.counts());
   });
   it.each(resources)('carries and stores %s only within its native one-stack limit', (resource) => {

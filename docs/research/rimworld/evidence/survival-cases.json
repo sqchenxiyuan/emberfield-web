@@ -1,0 +1,1214 @@
+[
+  {
+    "label": "S01 Food category and feeding endpoints",
+    "claims": [
+      "SV01",
+      "SV19"
+    ],
+    "inputs": {
+      "wantEat": 0.3,
+      "food": [
+        0,
+        0.00001,
+        0.11999,
+        0.12,
+        0.23999,
+        0.24,
+        0.26,
+        0.26001,
+        1
+      ]
+    },
+    "expected": {
+      "category": [
+        "Starving",
+        "UrgentlyHungry",
+        "UrgentlyHungry",
+        "Hungry",
+        "Hungry",
+        "Fed",
+        "Fed",
+        "Fed",
+        "Fed"
+      ],
+      "hungerMultiplier": [
+        0,
+        0.25,
+        0.25,
+        0.5,
+        0.5,
+        1,
+        1,
+        1,
+        1
+      ],
+      "feedingHungry": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ]
+    },
+    "limitation": "Ordinary omnivore; feeding still requires bed/medical-rest/food-access eligibility, and job-giver priority uses separate thresholds."
+  },
+  {
+    "label": "S02 Food-first malnutrition update",
+    "claims": [
+      "SV02"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "food": 0,
+          "severity": 0.2,
+          "r": 1
+        },
+        {
+          "food": 0.1,
+          "severity": 0.2,
+          "r": 1
+        },
+        {
+          "food": 0.00001,
+          "severity": 0.2,
+          "r": 1
+        },
+        {
+          "food": 0.9,
+          "severity": 0.2,
+          "r": 0.8
+        },
+        {
+          "food": 0.9,
+          "severity": 0.0001,
+          "r": 1
+        }
+      ],
+      "delta": 150
+    },
+    "expected": {
+      "food": [
+        0,
+        0.0984,
+        0,
+        0.8936,
+        0.894
+      ],
+      "severity": [
+        0.2011325,
+        0.1988675,
+        0.2011325,
+        0.199094,
+        0
+      ]
+    },
+    "limitation": "Uses sole-malnutrition hunger factors, adult base1.6/day and fixed personal factor; no bed/traits/genes/frozen need. Recovery is after drain, not immediate on meal consumption."
+  },
+  {
+    "label": "S03 Malnutrition stage declarations",
+    "claims": [
+      "SV03",
+      "SV04"
+    ],
+    "inputs": {
+      "severity": [
+        0,
+        0.19999,
+        0.2,
+        0.39999,
+        0.4,
+        0.6,
+        0.79999,
+        0.8,
+        0.999,
+        1
+      ]
+    },
+    "expected": {
+      "stage": [
+        0,
+        0,
+        1,
+        1,
+        2,
+        3,
+        3,
+        4,
+        4,
+        4
+      ],
+      "consciousOffset": [
+        -0.05,
+        -0.05,
+        -0.1,
+        -0.1,
+        -0.2,
+        -0.3,
+        -0.3,
+        0,
+        0,
+        0
+      ],
+      "setMax": [
+        999,
+        999,
+        999,
+        999,
+        999,
+        999,
+        999,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "hungerFactor": [
+        1.5,
+        1.5,
+        1.6,
+        1.6,
+        1.6,
+        1.6,
+        1.6,
+        1.6,
+        1.6,
+        1.6
+      ],
+      "lethal": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ]
+    },
+    "limitation": "Stage lookup for an existing hediff; zero severity is eligible for removal, not a persistent disease claim."
+  },
+  {
+    "label": "S04 Malnutrition time normalization",
+    "claims": [
+      "SV02"
+    ],
+    "inputs": {
+      "factors": [
+        0.8,
+        1,
+        1.2
+      ],
+      "sourceDay": 60000,
+      "interval": 150,
+      "increment": 0.0011325
+    },
+    "expected": {
+      "perDay": [
+        0.3624,
+        0.453,
+        0.5436
+      ],
+      "daysToExtreme": [
+        2.207505518763797,
+        1.7660044150110374,
+        1.471670345842531
+      ],
+      "daysToLethal": [
+        2.759381898454746,
+        2.207505518763797,
+        1.839587932303164
+      ]
+    },
+    "limitation": "Constant starving status from severity0 and fixed individual rate; continuous time estimate excludes first-call scheduling and other lethal causes."
+  },
+  {
+    "label": "S05 Clothing comfortable and safe ranges",
+    "claims": [
+      "SV05",
+      "SV06"
+    ],
+    "inputs": {
+      "base": [
+        16,
+        26
+      ],
+      "rows": [
+        {
+          "cold": [],
+          "heat": []
+        },
+        {
+          "cold": [
+            10,
+            5
+          ],
+          "heat": [
+            2,
+            3
+          ]
+        },
+        {
+          "cold": [
+            3000
+          ],
+          "heat": [
+            3000
+          ]
+        },
+        {
+          "cold": [
+            -5
+          ],
+          "heat": [
+            -2
+          ]
+        }
+      ]
+    },
+    "expected": {
+      "comfortable": [
+        [
+          16,
+          26
+        ],
+        [
+          1,
+          31
+        ],
+        [
+          -2000,
+          2000
+        ],
+        [
+          21,
+          24
+        ]
+      ],
+      "safe": [
+        [
+          6,
+          36
+        ],
+        [
+          -9,
+          41
+        ],
+        [
+          -2010,
+          2010
+        ],
+        [
+          11,
+          34
+        ]
+      ]
+    },
+    "limitation": "Inputs are already-final apparel insulation plus gear offsets; does not resolve garment material/quality/traits/genes or constrain all actual climate systems."
+  },
+  {
+    "label": "S06 Hypothermia exact gates",
+    "claims": [
+      "SV08"
+    ],
+    "inputs": {
+      "comfyMin": 16,
+      "safeMin": 6,
+      "rows": [
+        {
+          "t": 5.99,
+          "s": 0.5
+        },
+        {
+          "t": 6,
+          "s": 0.5
+        },
+        {
+          "t": 16,
+          "s": 0.5
+        },
+        {
+          "t": 16.01,
+          "s": 0.5
+        },
+        {
+          "t": -30,
+          "s": 0.5
+        },
+        {
+          "t": 0,
+          "s": 0.5,
+          "heated": true
+        },
+        {
+          "t": 0,
+          "s": null,
+          "heated": true
+        }
+      ]
+    },
+    "expected": {
+      "severity": [
+        0.50075,
+        0.5,
+        0.5,
+        0.4865,
+        0.502322,
+        0.48722975,
+        0.00075
+      ]
+    },
+    "limitation": "Ordinary human, no death/frostbite branch; the final case checks cached-null behavior for a newly created condition on heated terrain."
+  },
+  {
+    "label": "S07 Heat overage curve",
+    "claims": [
+      "SV09"
+    ],
+    "inputs": {
+      "overage": [
+        0,
+        1,
+        25,
+        37.5,
+        50,
+        100,
+        200,
+        400,
+        1000,
+        4000
+      ]
+    },
+    "expected": {
+      "adjusted": [
+        0,
+        1,
+        25,
+        32.5,
+        40,
+        60,
+        80,
+        100,
+        250,
+        1000
+      ]
+    },
+    "limitation": "Independent piecewise linear interpolation on reviewed knots, without extrapolation or air-burn damage simulation."
+  },
+  {
+    "label": "S08 Heatstroke exact gates",
+    "claims": [
+      "SV09"
+    ],
+    "inputs": {
+      "comfyMax": 26,
+      "safeMax": 36,
+      "rows": [
+        {
+          "t": 25.99,
+          "s": 0.5
+        },
+        {
+          "t": 26,
+          "s": 0.5
+        },
+        {
+          "t": 26.01,
+          "s": 0.5
+        },
+        {
+          "t": 36,
+          "s": 0.5
+        },
+        {
+          "t": 36.01,
+          "s": 0.5
+        },
+        {
+          "t": 61,
+          "s": 0.5
+        },
+        {
+          "t": 25,
+          "s": null
+        }
+      ]
+    },
+    "expected": {
+      "severity": [
+        0.4865,
+        0.5,
+        0.5,
+        0.5,
+        0.500375,
+        0.5016125,
+        null
+      ]
+    },
+    "limitation": "No existing condition is created by recovery, and neutral zone is not recovery; excludes separate420tick air burns."
+  },
+  {
+    "label": "S09 Recovery clamp",
+    "claims": [
+      "SV08",
+      "SV09"
+    ],
+    "inputs": {
+      "severity": [
+        0.001,
+        0.02,
+        0.1,
+        0.5,
+        0.8,
+        0.99
+      ]
+    },
+    "expected": {
+      "decrement": [
+        0.0015,
+        0.0015,
+        0.0027,
+        0.0135,
+        0.015,
+        0.015
+      ],
+      "after": [
+        0,
+        0.0185,
+        0.0973,
+        0.4865,
+        0.785,
+        0.975
+      ]
+    },
+    "limitation": "One qualifying60source-tick call with normal lower severity clamp0. Removal is then processed by the health system."
+  },
+  {
+    "label": "S10 Thermal stage declarations",
+    "claims": [
+      "SV10"
+    ],
+    "inputs": {
+      "severity": [
+        0,
+        0.03999,
+        0.04,
+        0.19999,
+        0.2,
+        0.34999,
+        0.35,
+        0.61999,
+        0.62,
+        1
+      ]
+    },
+    "expected": {
+      "stage": [
+        0,
+        0,
+        1,
+        1,
+        2,
+        2,
+        3,
+        3,
+        4,
+        4
+      ],
+      "visible": [
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "consciousOffset": [
+        0,
+        0,
+        -0.05,
+        -0.05,
+        -0.1,
+        -0.1,
+        -0.2,
+        -0.2,
+        0,
+        0
+      ],
+      "movingOffset": [
+        0,
+        0,
+        0,
+        0,
+        -0.1,
+        -0.1,
+        -0.3,
+        -0.3,
+        0,
+        0
+      ],
+      "coldManipOffset": [
+        0,
+        0,
+        -0.08,
+        -0.08,
+        -0.2,
+        -0.2,
+        -0.5,
+        -0.5,
+        0,
+        0
+      ],
+      "pain": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.15,
+        0.15,
+        0.3,
+        0.3
+      ],
+      "setMax": [
+        999,
+        999,
+        999,
+        999,
+        999,
+        999,
+        999,
+        999,
+        0.1,
+        0.1
+      ]
+    },
+    "limitation": "Direct stage modifiers, not final body capacities; heat has no direct manipulation offset."
+  },
+  {
+    "label": "S11 Healthy-human capacity reduction",
+    "claims": [
+      "SV11",
+      "SV12"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "mal": null,
+          "cold": null,
+          "heat": null
+        },
+        {
+          "mal": 0.6,
+          "cold": null,
+          "heat": null
+        },
+        {
+          "mal": null,
+          "cold": 0.04,
+          "heat": null
+        },
+        {
+          "mal": null,
+          "cold": 0.2,
+          "heat": null
+        },
+        {
+          "mal": null,
+          "cold": 0.35,
+          "heat": null
+        },
+        {
+          "mal": null,
+          "cold": null,
+          "heat": 0.35
+        },
+        {
+          "mal": null,
+          "cold": 0.62,
+          "heat": null
+        },
+        {
+          "mal": 0.6,
+          "cold": 0.35,
+          "heat": 0.35
+        }
+      ]
+    },
+    "expected": {
+      "consciousness": [
+        1,
+        0.7,
+        0.95,
+        0.9,
+        0.78,
+        0.78,
+        0.1,
+        0.21
+      ],
+      "moving": [
+        1,
+        0.7,
+        0.95,
+        0.8,
+        0.48,
+        0.48,
+        0,
+        0
+      ],
+      "manipulation": [
+        1,
+        0.7,
+        0.87,
+        0.7,
+        0.28,
+        0.78,
+        0,
+        0
+      ],
+      "pain": [
+        0,
+        0,
+        0,
+        0,
+        0.15,
+        0.15,
+        0.3,
+        0.3
+      ]
+    },
+    "limitation": "Intact adult human with normal blood/respiration/organs, no other effects; original worker graphs and hundredth rounding still matter. Last case demonstrates additive residual diseases can down earlier."
+  },
+  {
+    "label": "S12 Downed and lethal endpoints",
+    "claims": [
+      "SV13"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "c": 0.29,
+          "m": 1,
+          "p": 0,
+          "s": 0.5
+        },
+        {
+          "c": 0.3,
+          "m": 0.16,
+          "p": 0,
+          "s": 0.5
+        },
+        {
+          "c": 1,
+          "m": 0.15,
+          "p": 0,
+          "s": 0.5
+        },
+        {
+          "c": 1,
+          "m": 0.1501,
+          "p": 0,
+          "s": 0.5
+        },
+        {
+          "c": 1,
+          "m": 1,
+          "p": 0.8,
+          "s": 0.5
+        },
+        {
+          "c": 0,
+          "m": 0,
+          "p": 0,
+          "s": 0.5
+        },
+        {
+          "c": 0.1,
+          "m": 0,
+          "p": 0,
+          "s": 1
+        }
+      ]
+    },
+    "expected": {
+      "canBeAwake": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "downed": [
+        true,
+        false,
+        true,
+        false,
+        true,
+        true,
+        true
+      ],
+      "dead": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    "limitation": "Healthy colonist assumptions, finalized capacities as input, no death-prevention/forced state/nonplayer death-on-downed/body damage. Consciousness itself is a vital capacity."
+  },
+  {
+    "label": "S13 Severity creation and removal",
+    "claims": [
+      "SV04"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "s": null,
+          "offset": -0.01
+        },
+        {
+          "s": null,
+          "offset": 0.0011325
+        },
+        {
+          "s": 0.01,
+          "offset": -0.02
+        },
+        {
+          "s": 0.999,
+          "offset": 0.01
+        },
+        {
+          "s": 0.2,
+          "offset": 0
+        }
+      ]
+    },
+    "expected": {
+      "severity": [
+        null,
+        0.0011325,
+        0,
+        1,
+        0.2
+      ],
+      "remove": [
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "lethal": [
+        false,
+        false,
+        false,
+        true,
+        false
+      ]
+    },
+    "limitation": "Selected default minimum0/lethal1. Does not execute HediffMaker or all health notifications; absence is not initial severity.5."
+  },
+  {
+    "label": "S14 Rescue eligibility subset",
+    "claims": [
+      "SV14"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "down": true,
+          "inBed": false,
+          "same": true,
+          "forbidden": false,
+          "enemy": false,
+          "reachable": true,
+          "bed": true
+        },
+        {
+          "down": true,
+          "inBed": true,
+          "same": true,
+          "reachable": true,
+          "bed": true
+        },
+        {
+          "down": true,
+          "inBed": false,
+          "same": false,
+          "reachable": true,
+          "bed": true
+        },
+        {
+          "down": true,
+          "inBed": false,
+          "same": false,
+          "forced": true,
+          "forbidden": true,
+          "enemy": true,
+          "reachable": true,
+          "bed": true
+        },
+        {
+          "down": true,
+          "inBed": false,
+          "same": true,
+          "reachable": false,
+          "bed": true
+        },
+        {
+          "down": true,
+          "inBed": false,
+          "same": true,
+          "reachable": true,
+          "bed": false
+        }
+      ]
+    },
+    "expected": {
+      "job": [
+        true,
+        false,
+        false,
+        true,
+        false,
+        false
+      ]
+    },
+    "limitation": "Selected adult nonmental ordinary rescue gates, assuming reservation and remaining predicates; enemy boolean comes from original25-range checker, whose exact geometry is not reproduced."
+  },
+  {
+    "label": "S15 Medical-rest eligibility subset",
+    "claims": [
+      "SV18"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "down": true
+        },
+        {
+          "down": true,
+          "alwaysDown": true
+        },
+        {
+          "tend": true
+        },
+        {
+          "surgery": true
+        },
+        {
+          "labor": true
+        },
+        {
+          "healing": true
+        },
+        {
+          "immunizable": true
+        },
+        {
+          "mal": 0.6
+        },
+        {
+          "heat": 0.35
+        }
+      ]
+    },
+    "expected": {
+      "urgent": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "medicalRest": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ]
+    },
+    "limitation": "Selected medical-rest flags only; malnutrition/temperature alone are untendable, but their resulting downed state qualifies."
+  },
+  {
+    "label": "S16 Patient feeding eligibility subset",
+    "claims": [
+      "SV19"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "food": 0.26,
+          "bed": true,
+          "standing": false,
+          "player": true,
+          "medical": true
+        },
+        {
+          "food": 0.26001,
+          "bed": true,
+          "standing": false,
+          "player": true,
+          "medical": true
+        },
+        {
+          "food": 0,
+          "bed": false,
+          "standing": false,
+          "player": true,
+          "medical": true
+        },
+        {
+          "food": 0,
+          "bed": true,
+          "standing": true,
+          "player": true,
+          "medical": true
+        },
+        {
+          "food": 0,
+          "bed": true,
+          "standing": false,
+          "player": true,
+          "medical": false
+        },
+        {
+          "food": 0,
+          "bed": true,
+          "standing": false,
+          "player": false,
+          "host": true,
+          "medical": true
+        }
+      ]
+    },
+    "expected": {
+      "feed": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        true
+      ]
+    },
+    "limitation": "Ordinary adult human with food need, no guest prohibition/slaughter/reservation/food restriction conflict; a valid predicate does not guarantee a food source."
+  },
+  {
+    "label": "S17 Medical flag and bed preference",
+    "claims": [
+      "SV15",
+      "SV16"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "need": true,
+          "medical": true,
+          "normal": true
+        },
+        {
+          "need": true,
+          "medical": false,
+          "normal": true
+        },
+        {
+          "need": false,
+          "medical": true,
+          "normal": true
+        },
+        {
+          "need": true,
+          "medical": false,
+          "normal": false
+        }
+      ]
+    },
+    "expected": {
+      "selected": [
+        "medical",
+        "normal",
+        "normal",
+        null
+      ],
+      "hospital": {
+        "rest": 1,
+        "immunity": 1.11,
+        "tendOffset": 0.1,
+        "injuryHealPerDay": 10
+      }
+    },
+    "limitation": "Inputs mean candidates already passed original reachability/reservation/danger/ownership checks; no claim medical beds automatically cure starvation/temperature."
+  },
+  {
+    "label": "S18 Feed duration and quantity",
+    "claims": [
+      "SV20",
+      "SV21"
+    ],
+    "inputs": {
+      "baseTicks": 500,
+      "multiplier": 1.5,
+      "rows": [
+        {
+          "wanted": 0.1,
+          "nutrition": 0.9,
+          "max": 1,
+          "stack": 1
+        },
+        {
+          "wanted": 1,
+          "nutrition": 0.9,
+          "max": 1,
+          "stack": 1
+        },
+        {
+          "wanted": 0.12,
+          "nutrition": 0.05,
+          "max": 20,
+          "stack": 20
+        },
+        {
+          "wanted": 0.12,
+          "nutrition": 0.05,
+          "max": 20,
+          "stack": 2
+        }
+      ]
+    },
+    "expected": {
+      "chewTicks": 750,
+      "sourceSeconds": 12.5,
+      "planned": [
+        1,
+        1,
+        2,
+        2
+      ],
+      "consumed": [
+        1,
+        1,
+        3,
+        2
+      ],
+      "nutrition": [
+        0.9,
+        0.9,
+        0.15,
+        0.1
+      ]
+    },
+    "limitation": "Planned pickup nearest-int differs from actual ingestion ceil bounded by physical source stack. The last row represents carried quantity limited to planned pickup; travel/reservations excluded."
+  },
+  {
+    "label": "S19 Physical consumption and food cap",
+    "claims": [
+      "SV22"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "food": 0.24,
+          "maxFood": 1,
+          "stack": 1,
+          "taken": 1,
+          "nutrition": 0.9,
+          "alive": true
+        },
+        {
+          "food": 0,
+          "maxFood": 1,
+          "stack": 3,
+          "taken": 1,
+          "nutrition": 0.9,
+          "alive": true
+        },
+        {
+          "food": 0,
+          "maxFood": 1,
+          "stack": 1,
+          "taken": 1,
+          "nutrition": 0.9,
+          "alive": false
+        }
+      ]
+    },
+    "expected": {
+      "remaining": [
+        0,
+        2,
+        0
+      ],
+      "newFood": [
+        1,
+        0.9,
+        0
+      ],
+      "wastedCapacity": [
+        0.14,
+        0,
+        0
+      ]
+    },
+    "limitation": "Arithmetic finalization after successful consumption only; dead-patient case checks food assignment guard, not that a job normally completes on a dead patient."
+  },
+  {
+    "label": "S20 Original-project day mapping",
+    "claims": [
+      "SV24"
+    ],
+    "inputs": {
+      "sourceDay": 60000,
+      "projectDay": 12000,
+      "sourceIntervals": [
+        150,
+        60,
+        750
+      ],
+      "malPerDay": 0.453,
+      "temperaturePerCall": [
+        0.00075,
+        0.000375
+      ]
+    },
+    "expected": {
+      "projectIntervals": [
+        30,
+        12,
+        150
+      ],
+      "malPerProjectTick": 0.00003775,
+      "thermalPerProjectTick": [
+        0.0000625,
+        0.00003125
+      ]
+    },
+    "limitation": "Explicit project12000ticks/day mapping, not an inference from20TPS; interval phasing, hash scheduling and leap-delta handling remain implementation choices."
+  }
+]

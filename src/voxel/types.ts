@@ -60,7 +60,7 @@ export type Resource =
   | 'grain'
   | 'meal'
   | 'chunk';
-export type Work = 'dig' | 'build' | 'cut' | 'haul' | 'grow' | 'cook' | 'craft';
+export type Work = 'dig' | 'build' | 'cut' | 'haul' | 'grow' | 'cook' | 'craft' | 'care';
 export type ConstructionMaterial = 'wood' | 'stone';
 export type CropKind = 'rice' | 'potato' | 'corn';
 export type Axis = 'x' | 'y';
@@ -125,6 +125,7 @@ export interface Bed extends Pos {
   id: number;
   axis: Axis;
   owner: number | null;
+  medical: boolean;
 }
 export interface Door extends Pos {
   id: number;
@@ -309,17 +310,47 @@ export interface Job extends Pos {
   /** Existing pre-v9 cutting jobs retain their original 60-tick work/progress. */
   legacyCut?: true;
 }
+export interface SurvivalHealth {
+  malnutrition: number;
+  hypothermia: number;
+  heatstroke: number;
+  /** Fixed individual severity rate, sampled once; not rerolled on load. */
+  starvationFactor: number;
+}
+export type CarePhase = 'rescueApproach' | 'rescueCarry' | 'feedFetch' | 'feedApproach' | 'feed';
 export interface Pawn extends Pos {
   id: number;
   name: string;
   color: number;
   food: number;
   rest: number;
+  health: SurvivalHealth;
+  downed: boolean;
+  dead: boolean;
+  deathReason: string | null;
+  carriedBy: number | null;
+  carryingPawnId: number | null;
+  patientId: number | null;
+  careBedId: number | null;
+  carePhase: CarePhase | null;
+  careProgress: number;
+  careFoodId: number | null;
+  careAmount: number;
   priorities: Record<Work, number>;
   jobId: number | null;
   path: number[];
   destination: number | null;
-  phase: 'idle' | 'travel' | 'work' | 'fetch' | 'haul' | 'rest' | 'sleepTravel';
+  phase:
+    | 'idle'
+    | 'travel'
+    | 'work'
+    | 'fetch'
+    | 'haul'
+    | 'rest'
+    | 'sleepTravel'
+    | 'care'
+    | 'downed'
+    | 'dead';
   cargo: Cargo | null;
   reason: string;
   moveTick: number;
@@ -428,6 +459,8 @@ export type VoxelCommand =
   | { type: 'bill'; stoveId: number; target: number; paused: boolean }
   | { type: 'stoneBill'; stonecutterId: number; target: number; paused: boolean }
   | { type: 'bedOwner'; bedId: number; pawnId: number | null }
+  | { type: 'bedMedical'; bedId: number; medical: boolean }
+  | { type: 'care'; pawnId: number; patientId: number; action: 'rescue' | 'feed' }
   | { type: 'door'; doorId: number; mode: Door['mode'] }
   | { type: 'schedule'; pawnId: number; hour: number; assignment: Assignment }
   | { type: 'rest'; pawnId: number }
@@ -439,7 +472,7 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 9;
+  version: 10;
   generator: 1 | 2;
   settings: WorldSettings;
   spawn: Pos;
