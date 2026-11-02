@@ -609,7 +609,7 @@ a {
 }
 .voxel-modal {
   position: relative;
-  width: 620px;
+  width: 760px;
   max-width: 95vw;
   max-height: 88vh;
   overflow: auto;
@@ -643,24 +643,103 @@ a {
   gap: 9px;
   margin: 20px 0;
 }
-.voxel-new-world {
+.voxel-world-setup {
   padding: 18px 0;
   border-top: 1px solid #ffffff15;
-  display: flex;
-  align-items: end;
-  gap: 12px;
 }
-.voxel-new-world label {
+.voxel-world-setup h3 {
+  margin: 0 0 8px;
+  color: #e5cfa3;
+  font-size: 18px;
+  font-weight: 500;
+}
+.voxel-world-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.voxel-world-fields label {
   font-size: 11px;
   color: #9cb2a3;
 }
-.voxel-new-world input {
+.voxel-world-fields input,
+.voxel-world-fields select {
   display: block;
-  width: 120px;
+  width: 100%;
   margin-top: 7px;
 }
-.voxel-new-world button {
+.voxel-world-setup button {
   font-size: 11px;
+}
+.voxel-world-setup small {
+  font-size: 10px;
+  color: #9cb2a3;
+  line-height: 1.7;
+}
+.voxel-world-preview {
+  display: flex;
+  gap: 20px;
+  padding: 16px;
+  margin: 14px 0;
+  background: #172323;
+  border: 1px solid #8b9b702b;
+  border-radius: 6px;
+  min-height: 180px;
+}
+.voxel-terrain-preview {
+  margin: 0;
+  flex: 0 0 192px;
+}
+.voxel-terrain-preview canvas {
+  width: 192px;
+  height: 192px;
+  image-rendering: pixelated;
+  border: 1px solid #b9c5a638;
+}
+.voxel-terrain-preview figcaption {
+  font-size: 10px;
+  color: #a8b9ae;
+  line-height: 1.7;
+  margin-top: 6px;
+}
+.voxel-world-summary {
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+}
+.voxel-world-summary > b {
+  color: #e5cfa3;
+  font-size: 14px;
+}
+.voxel-world-summary dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+.voxel-world-summary dt {
+  color: #a8b9ae;
+}
+.voxel-world-summary dd {
+  margin: 0;
+  text-align: right;
+  color: #e2e5d6;
+}
+.voxel-world-summary .voxel-world-warning {
+  color: #e5be7c;
+  font-size: 11px;
+  margin-bottom: 0;
+}
+@media (max-width: 640px) {
+  .voxel-world-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .voxel-world-preview {
+    flex-direction: column;
+  }
+  .voxel-terrain-preview {
+    flex-basis: auto;
+  }
 }
 .voxel-modal details {
   font-size: 11px;

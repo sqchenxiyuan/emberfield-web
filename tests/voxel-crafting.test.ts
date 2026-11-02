@@ -1,3 +1,4 @@
+import { legacySimulation } from './fixtures/legacy-start';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
@@ -51,7 +52,7 @@ function bench(s: VoxelSimulation, p = pos(14, 13), axis: Axis = 'x', target = 2
 /** Explicit isolated geometry/resource fixtures, never presented as normal
  * gathering evidence. Operations after load use real commands and simulation. */
 function fixture(setup: (s: VoxelSimulation) => void = () => {}) {
-  const s = new VoxelSimulation();
+  const s = legacySimulation();
   s.blocks.fill(Block.Stone);
   s.ladders.fill(0);
   s.items = [];
@@ -491,7 +492,7 @@ describe('masonry recovery and v7 validation', () => {
       s = VoxelSimulation.load(raw);
     expect(raw.version).toBe(6);
     expect(raw).toEqual(before);
-    expect(s.save().version).toBe(7);
+    expect(s.save().version).toBe(8);
     expect(s.counts().stone).toBe(15);
     expect(s.counts().chunk).toBe(0);
     expect(s.stats.stonecut).toBe(0);

@@ -1,3 +1,4 @@
+import { loadLegacyStart, LEGACY_START } from './voxel-legacy-start.mjs';
 import { build } from 'esbuild';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -16,9 +17,10 @@ const bundle = await build({
 const { VoxelSimulation } = await import(
   `data:text/javascript;base64,${Buffer.from(bundle.outputFiles[0].text).toString('base64')}`
 );
-let sim = new VoxelSimulation(SEED);
+let sim = await loadLegacyStart(VoxelSimulation, SEED);
 const initial = sim.counts();
 const report = {
+  baseline: LEGACY_START,
   seed: SEED,
   scope:
     'Public command/step/save/load only, with normal day/night time progression. No resource injection, mature-crop injection, terrain editing, pawn teleportation or direct tick changes. Nominal edible nutrition explicitly includes the recipe gain: 10 grain at 0.05 becomes one 0.9 meal, adding 0.4 nutrition per cooked meal. This does not claim physical calorie conservation or unlimited colony sustainability.',

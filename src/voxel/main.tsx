@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { createRoot } from 'react-dom/client';
 import { VoxelClient } from './client';
-import { CROPS, NUTRITION } from './farming';
+import { WorldSetup, BIOME_NAMES, HILL_NAMES, TREE_NAMES } from './WorldSetup';
+import { CROPS, NUTRITION, fertilityOf } from './farming';
 import { ASSIGNMENT_NAMES } from './rest';
 import { isDeviceKind } from './power';
 import { rotRateAtTemperature, rotLimit, remainingRotDays } from './preservation';
@@ -87,7 +88,7 @@ const hints: Record<Tool, string> = {
   heater: '50 钢材 + 1 零件；工作 175 W，待机 17.5 W。同层 6 格方形范围内自动接线，需封闭房间。',
   cooler: '90 钢材 + 3 零件；工作 200 W。负 X/Y 蓝侧制冷，正 X/Y 橙侧排热，R 换轴。留出两侧风口。',
   inspect: '点击人物、物资或地形查看详情。选中人物后，可在面板中选择目标位置并下达移动。',
-  cut: '点击或框选成熟树木。工人伐木产生 27 木材，搬运到仓储。',
+  cut: '点击或框选成熟木本植物。白杨、松树产出 27 木材，巨柱仙人掌产出 15 木材，再搬运到仓储。',
   mine: '点击或框选岩土。工人从相邻工作面挖开两格高通道；先建通路再深入。',
   shaft: '在可站立地面点击一次，向下逐格开凿三格梯井。完整入口消耗 8 木材。',
   up: '在可站立地面点击一次，向上搭建三格梯子。完整通路消耗 8 木材。',
@@ -107,7 +108,8 @@ const hints: Record<Tool, string> = {
   cancel: '拖动取消未完成任务；已经送到工地的材料退回现场。',
 };
 const equal = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
-const levelName = (z: number) => (z === 8 ? '地表' : z < 8 ? `地下 ${8 - z}` : `地上 +${z - 8}`);
+const levelName = (z: number, base = 8) =>
+  z === base ? '营地基准层' : z < base ? `基准层下 ${base - z}` : `基准层上 +${z - base}`;
 const STORAGE_RESOURCES = Object.keys(RESOURCE_NAMES) as Resource[];
 const FOOD_RESOURCES: Resource[] = ['food', 'grain', 'meal'];
 function connectedStorage(stockpiles: Stockpile[], start: Stockpile): Stockpile[] {
@@ -205,7 +207,6 @@ function App() {
     [menu, setMenu] = useState(false),
     [help, setHelp] = useState(true),
     [busy, setBusy] = useState(false),
-    [seed, setSeed] = useState('73129'),
     [selectedPawn, setSelectedPawn] = useState<number | null>(null),
     [storageConnected, setStorageConnected] = useState(true),
     [saveStatus, setSaveStatus] = useState('尚未保存');
@@ -246,6 +247,7 @@ function App() {
     }
   };
   const p = state.selected;
+  const spawn = s?.spawn ?? { x: 32, y: 32, z: 8 };
   const people = p ? (s?.pawns.filter((v) => equal(v, p)) ?? []) : [];
   const items = p ? (s?.items.filter((v) => equal(v, p)) ?? []) : [];
   const tree = p ? s?.trees.find((v) => equal(v, p)) : null;
@@ -324,7 +326,7 @@ function App() {
                 ? `${CROPS[farm.crop].name}种植区`
                 : null) ??
       (tree
-        ? '成熟林木'
+        ? TREE_NAMES[tree.species ?? 'poplar']
         : items[0]
           ? foodName(items[0])
           : storage
@@ -364,7 +366,7 @@ function App() {
               <span>
                 {v.name}
                 <small>
-                  {levelName(v.z)} · {v.reason}
+                  {levelName(v.z, spawn.z)} · {v.reason}
                 </small>
               </span>
               <em style={{ width: `${v.rest}%` }} />
@@ -401,7 +403,7 @@ function App() {
           ＋
         </button>
         <div>
-          <b>{levelName(state.level)}</b>
+          <b>{levelName(state.level, spawn.z)}</b>
           <small>工作高度 Z {state.level} / 14</small>
         </div>
         <button onClick={() => client.view({ level: state.level - 1 })} aria-label="下移一层">
@@ -409,12 +411,13 @@ function App() {
         </button>
         <span />
         {[
-          ['地下', 5],
-          ['地表', 8],
-          ['二层', 11],
+          ['地下', Math.max(1, spawn.z - 3)],
+          ['地表', spawn.z],
+          ['二层', Math.min(14, spawn.z + 3)],
+          ['总览', 14],
         ].map(([label, z]) => (
           <button
-            key={z}
+            key={label}
             className={state.level === z ? 'active' : ''}
             onClick={() => client.view({ level: Number(z) })}
           >
@@ -455,7 +458,13 @@ function App() {
               <button
                 onClick={() => {
                   client.choose('cut');
-                  focus({ x: 27, y: 29, z: 8 });
+                  const nearest = [...(s?.trees ?? [])].sort(
+                    (a, b) =>
+                      Math.hypot(a.x - spawn.x, a.y - spawn.y) -
+                      Math.hypot(b.x - spawn.x, b.y - spawn.y),
+                  )[0];
+                  if (nearest) focus(nearest);
+                  else setNotice('地图上已没有成熟木本植物');
                 }}
               >
                 定位树木
@@ -467,7 +476,7 @@ function App() {
               <button
                 onClick={() => {
                   client.choose('shaft');
-                  focus({ x: 33, y: 32, z: 8 });
+                  focus(s?.generator === 1 ? { x: 33, y: 32, z: 8 } : spawn);
                 }}
               >
                 定位建议入口
@@ -479,7 +488,7 @@ function App() {
               <button
                 onClick={() => {
                   client.choose('up');
-                  focus({ x: 31, y: 30, z: 8 });
+                  focus(s?.generator === 1 ? { x: 31, y: 30, z: 8 } : { ...spawn, x: spawn.x + 1 });
                 }}
               >
                 定位上行位置
@@ -528,6 +537,20 @@ function App() {
             。食品需搬入有供电、温度达标的封闭冷库。
           </p>
         )}
+        {!p && s?.settings && (
+          <p data-testid="current-world-settings">
+            {s.generator === 1
+              ? '旧版地形'
+              : `${BIOME_NAMES[s.settings.biome]} · ${HILL_NAMES[s.settings.hilliness]}`}{' '}
+            · 种子 {s.seed}
+            {s.generator === 2 && (
+              <>
+                {' '}
+                · 年均 {s.settings.meanTemperature}°C · 降雨 {s.settings.rainfall} mm
+              </>
+            )}
+          </p>
+        )}
         {p && (
           <p>
             {block
@@ -537,7 +560,7 @@ function App() {
                 : client.blockAt({ ...p, z: p.z - 1 })
                   ? '有地板支撑的空间'
                   : '空中或开口'}{' '}
-            · {levelName(p.z)}
+            · {levelName(p.z, spawn.z)}
           </p>
         )}
         {tree && (
@@ -546,6 +569,17 @@ function App() {
             <b>木材 × {tree.wood}</b>
           </div>
         )}
+        {p &&
+          (() => {
+            const ground = block || client.blockAt({ ...p, z: p.z - 1 });
+            const fertility = fertilityOf(ground);
+            return fertility > 0 ? (
+              <p data-testid="ground-fertility">
+                {BLOCK_NAMES[ground]} · 肥力 {Math.round(fertility * 100)}%
+                {fertility < 0.7 ? ' · 不适合普通农作物' : ''}
+              </p>
+            ) : null;
+          })()}
         {room && (
           <div className="voxel-room-detail">
             <b>{room.outdoor ? '室外连通空间' : '封闭房间'}</b>
@@ -1215,34 +1249,21 @@ function App() {
               />
             </div>
             <p className="voxel-kicker">{saveStatus}</p>
-            <div className="voxel-new-world">
-              <label>
-                世界种子
-                <input
-                  aria-label="体素世界种子"
-                  value={seed}
-                  onChange={(e) => setSeed(e.target.value)}
-                />
-              </label>
-              <button
-                disabled={busy}
-                onClick={() =>
-                  void action(async () => {
-                    const n = Number(seed);
-                    if (!Number.isSafeInteger(n)) throw new Error('请输入整数种子');
-                    await client.newGame(n);
-                    setMenu(false);
-                  }, '新世界已生成，时间暂停')
-                }
-              >
-                新开世界（替换当前进度）
-              </button>
-            </div>
+            <WorldSetup
+              client={client}
+              busy={busy}
+              create={async (seed, settings) => {
+                await action(async () => {
+                  await client.newGame(seed, settings);
+                  setMenu(false);
+                }, '新世界已生成，时间暂停');
+              }}
+            />
             <details>
               <summary>试玩规则与性能计数</summary>
               <p>
                 64×64×16；逻辑 20 TPS，1 日 10
-                分钟。两格净空，一格高差可走；梯子可携货。种植、烹饪、床位、作息、电网、冷库保鲜、有限仓储和岩块切石已接通。天然岩石有机会留下岩块，切石台加工后才能用于石砖墙和楼板；切石科技暂默认解锁。采用简化天光和三维导热。战斗、季节、食物中毒、饥荒伤害、坍塌和流体尚未实现。
+                分钟。两格净空，一格高差可走；梯子可携货。种植、烹饪、床位、作息、电网、冷库保鲜、有限仓储和岩块切石已接通。新世界有三种生态和四档起伏，土壤肥力与季节气温影响生产。天然岩石有机会留下岩块，切石台加工后才能用于石砖墙和楼板；切石科技暂默认解锁。采用简化天光和三维导热。战斗、食物中毒、饥荒伤害、坍塌、天气降水和流体尚未实现。
               </p>
               <p>
                 地形数组 {((s?.gridBytes ?? 0) / 1024).toFixed(0)} KiB；寻路数组{' '}

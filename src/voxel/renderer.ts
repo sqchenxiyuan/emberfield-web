@@ -148,6 +148,9 @@ const RESOURCE_COLORS: Record<Resource, number> = {
 };
 const BLOCK_COLORS: Record<number, number> = {
   [Block.Soil]: 0x9b7959,
+  [Block.RichSoil]: 0x765b43,
+  [Block.Sand]: 0xd2b47a,
+  [Block.Gravel]: 0x9a9b8e,
   [Block.Stone]: 0x9ba3a2,
   [Block.Steel]: 0x7398a6,
   [Block.Wood]: 0xbf925d,
@@ -568,7 +571,12 @@ export class VoxelRenderer {
 
   snapshot(snapshot: VoxelSnapshot) {
     if (this.disposed) return;
-    const reset = !this.data || snapshot.seed !== this.data.seed || snapshot.tick < this.data.tick;
+    const reset =
+      !this.data ||
+      snapshot.seed !== this.data.seed ||
+      snapshot.tick < this.data.tick ||
+      snapshot.generator !== this.data.generator ||
+      JSON.stringify(snapshot.settings) !== JSON.stringify(this.data.settings);
     this.data = snapshot;
     this.snapshotAt = performance.now();
     const ids = new Set(snapshot.pawns.map((pawn) => pawn.id));
@@ -793,8 +801,10 @@ export class VoxelRenderer {
             const neighborZ = z + d[2];
             if (neighborZ <= this.level && this.block(x + d[0], y + d[1], neighborZ)) continue;
             let hex = BLOCK_COLORS[block] ?? 0xa8a195;
-            if (block === Block.Soil && z === SURFACE - 1 && face === 2) hex = 0x91ad65;
-            if (block === Block.Soil && z === SURFACE - 1 && face !== 2) hex = 0x8e8d58;
+            // Only natural exposed top faces are grassy; a slice through soil is soil.
+            const exposed = this.block(x, y, z + 1) === Block.Air;
+            if (block === Block.Soil && exposed && face === 2) hex = 0x91ad65;
+            if (block === Block.RichSoil && exposed && face === 2) hex = 0x5f854b;
             color.setHex(hex).multiplyScalar(variation * shade);
             const offset = positions.length / 3;
             for (let v = 0; v < 4; v++) {
@@ -900,7 +910,8 @@ export class VoxelRenderer {
   private updateEntities() {
     if (!this.data) return;
     this.inspectBatches.clear();
-    const trees = this.data.trees.filter((tree) => tree.wood > 0 && tree.z === this.level);
+    const visibleTrees = this.data.trees.filter((tree) => tree.wood > 0 && tree.z <= this.level);
+    const trees = visibleTrees.filter((tree) => tree.species === 'pine');
     const trunks = this.batch('trunks', trees.length, this.treeTrunk, this.batchMaterial('trunks'));
     const crowns = this.batch(
       'crowns',
@@ -932,6 +943,65 @@ export class VoxelRenderer {
     });
     this.finish(trunks);
     this.finish(crowns);
+    const poplars = visibleTrees.filter((tree) => !tree.species || tree.species === 'poplar');
+    const poplarTrunks = this.batch(
+      'poplar-trunks',
+      poplars.length,
+      this.treeTrunk,
+      this.batchMaterial('poplar-trunks'),
+    );
+    const leaves = this.batch(
+      'poplar-leaves',
+      poplars.length * 3,
+      this.smokeGeometry,
+      this.batchMaterial('poplar-leaves'),
+    );
+    this.inspectBatches.set(poplarTrunks, { cells: poplars, instancesPerCell: 1 });
+    this.inspectBatches.set(leaves, { cells: poplars, instancesPerCell: 3 });
+    poplars.forEach((tree, i) => {
+      this.instance(poplarTrunks, i, tree.x + 0.5, tree.z + 0.77, tree.y + 0.5, 1, 1, 1, 0x927554);
+      for (let part = 0; part < 3; part++)
+        this.instance(
+          leaves,
+          i * 3 + part,
+          tree.x + 0.5 + (part - 1) * 0.34,
+          tree.z + 1.75 + (part === 1 ? 0.45 : 0),
+          tree.y + 0.5,
+          0.67,
+          0.8,
+          0.6,
+          [0x6e974e, 0x86a95a, 0x5e8949][part],
+          hash(tree.x, tree.y),
+        );
+    });
+    this.finish(poplarTrunks);
+    this.finish(leaves);
+    const cacti = visibleTrees.filter((tree) => tree.species === 'saguaro');
+    const cactus = this.batch('cacti', cacti.length * 5, this.box, this.batchMaterial('cacti'));
+    this.inspectBatches.set(cactus, { cells: cacti, instancesPerCell: 5 });
+    cacti.forEach((tree, i) => {
+      const parts = [
+        [0, 1, 0, 0.32, 2, 0.32],
+        [-0.28, 1.05, 0, 0.55, 0.22, 0.25],
+        [-0.5, 1.4, 0, 0.23, 0.9, 0.23],
+        [0.28, 0.7, 0, 0.55, 0.22, 0.25],
+        [0.5, 1, 0, 0.23, 0.8, 0.23],
+      ];
+      parts.forEach(([x, y, z, sx, sy, sz], k) =>
+        this.instance(
+          cactus,
+          i * 5 + k,
+          tree.x + 0.5 + x,
+          tree.z + y,
+          tree.y + 0.5 + z,
+          sx,
+          sy,
+          sz,
+          k ? 0x6e925b : 0x5e8250,
+        ),
+      );
+    });
+    this.finish(cactus);
     const loose = this.data.items.filter((item) => item.amount > 0 && item.z <= this.level);
     const items = loose.filter((item) => item.resource !== 'chunk');
     const chunks = loose.filter((item) => item.resource === 'chunk');

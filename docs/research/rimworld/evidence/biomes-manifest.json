@@ -1,0 +1,121 @@
+{
+  "evidence_id": "RW17-BIOMES",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.BiomeWorker_TemperateForest",
+      "local_file": ".local-research/biomes/RimWorld.BiomeWorker_TemperateForest.cs",
+      "sha256": "b743c7b3dd96c429708726fa1065f275704c6b33b9dbf128570c5d1099092348",
+      "lines": 34
+    },
+    {
+      "type": "RimWorld.BiomeWorker_BorealForest",
+      "local_file": ".local-research/biomes/RimWorld.BiomeWorker_BorealForest.cs",
+      "sha256": "4f1f42f4d27654bc77a839085b58c42e1ea7d9866686f2bcd11ec3d8f8941fb7",
+      "lines": 24
+    },
+    {
+      "type": "RimWorld.BiomeWorker_Desert",
+      "local_file": ".local-research/biomes/RimWorld.BiomeWorker_Desert.cs",
+      "sha256": "6a922bdbd268b0f63e7ad6eb8299f7ed0b075f67f48ee2b751e5c66b68a79369",
+      "lines": 34
+    },
+    {
+      "type": "RimWorld.BiomeWorker_Tundra",
+      "local_file": ".local-research/biomes/RimWorld.BiomeWorker_Tundra.cs",
+      "sha256": "0347523f9821d30f40ee861f45c8291ec6162397a490e2c3d937d4f0c3ec0a22",
+      "lines": 16
+    },
+    {
+      "type": "RimWorld.BiomeDef",
+      "local_file": ".local-research/biomes/RimWorld.BiomeDef.cs",
+      "sha256": "f8acd15e3e6f7b055ecf71d573deb42b4b83842573a79f054f992f216950af78",
+      "lines": 547
+    },
+    {
+      "type": "RimWorld.FertilityGrid",
+      "local_file": ".local-research/biomes/RimWorld.FertilityGrid.cs",
+      "sha256": "ddb7c436e3f13fa695e926567a067150260ade7402fd0afe9826f45610ffec58",
+      "lines": 110
+    },
+    {
+      "type": "Verse.TerrainDef",
+      "local_file": ".local-research/biomes/Verse.TerrainDef.cs",
+      "sha256": "14c8c05d3b22fbe88f5fcceea9a58f3aee90b8b265582577e2ab9037a41cb68b",
+      "lines": 589
+    },
+    {
+      "type": "RimWorld.TileMutatorWorker_Mountain",
+      "local_file": ".local-research/biomes/RimWorld.TileMutatorWorker_Mountain.cs",
+      "sha256": "b1c1c99ff3e05beafc9fbf0537c2c47d18e41f6f127504972a77edfc4aadade0",
+      "lines": 41
+    },
+    {
+      "type": "RimWorld.SeasonUtility",
+      "local_file": ".local-research/biomes/RimWorld.SeasonUtility.cs",
+      "sha256": "3d9d977154480cf79bb541d1ea578a420be7e2b72353a1f702d161571770c674",
+      "lines": 278
+    },
+    {
+      "type": "RimWorld.GenDate",
+      "local_file": ".local-research/biomes/RimWorld.GenDate.cs",
+      "sha256": "ac1ca575db0759de73512933216f92e9706bbd9b4a5d3e63d49cdea47680be80",
+      "lines": 474
+    },
+    {
+      "type": "RimWorld.Planet.TileTemperaturesComp",
+      "local_file": ".local-research/biomes/RimWorld.Planet.TileTemperaturesComp.cs",
+      "sha256": "ffb14aaab6ce9a0c7fb7174d8bb2d3383ac86da138efe31bd53c14e1da6c59c1",
+      "lines": 220
+    },
+    {
+      "type": "RimWorld.TwelfthUtility",
+      "local_file": ".local-research/biomes/RimWorld.TwelfthUtility.cs",
+      "sha256": "e60dea6b378344ff8f03733f634a62a7e1a275db0553a3f3836b71c115441a36",
+      "lines": 122
+    },
+    {
+      "type": "RimWorld.Twelfth",
+      "local_file": ".local-research/biomes/RimWorld.Twelfth.cs",
+      "sha256": "2a10bb0a0ebde2ebe5b4b2b84242a44fd8b5bff2e6d1ae85f39f21e628958aa7",
+      "lines": 19
+    },
+    {
+      "type": "RimWorld.Planet.WorldGrid",
+      "local_file": ".local-research/biomes/RimWorld.Planet.WorldGrid.cs",
+      "sha256": "1f63869d2e8fd00b834821b86b33d07e0a0f1d5132db72ac1d3a7514e34eb709",
+      "lines": 817
+    },
+    {
+      "type": "RimWorld.Planet.PlanetLayer",
+      "local_file": ".local-research/biomes/RimWorld.Planet.PlanetLayer.cs",
+      "sha256": "994ce035300d7c9e3ba12d4ccce03e54527b83b42b83fbf20a9d8a66ab7ea830",
+      "lines": 1202
+    },
+    {
+      "type": "RimWorld.Planet.WITab_Terrain",
+      "local_file": ".local-research/biomes/RimWorld.Planet.WITab_Terrain.cs",
+      "sha256": "388ba753188e92bf46b55255e5a94ee653a7861ddfca7246fceb99f0c177ccc2",
+      "lines": 202
+    },
+    {
+      "type": "RimWorld.Zone_Growing",
+      "local_file": ".local-research/biomes/RimWorld.Zone_Growing.cs",
+      "sha256": "f11c175ad275a14a9840da692aae0d40337c473128b598c01c1ee681a335e0f5",
+      "lines": 223
+    }
+  ]
+}

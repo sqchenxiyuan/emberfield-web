@@ -1,0 +1,19 @@
+[
+  "RimWorld.BiomeWorker_TemperateForest",
+  "RimWorld.BiomeWorker_BorealForest",
+  "RimWorld.BiomeWorker_Desert",
+  "RimWorld.BiomeWorker_Tundra",
+  "RimWorld.BiomeDef",
+  "RimWorld.FertilityGrid",
+  "Verse.TerrainDef",
+  "RimWorld.TileMutatorWorker_Mountain",
+  "RimWorld.SeasonUtility",
+  "RimWorld.GenDate",
+  "RimWorld.Planet.TileTemperaturesComp",
+  "RimWorld.TwelfthUtility",
+  "RimWorld.Twelfth",
+  "RimWorld.Planet.WorldGrid",
+  "RimWorld.Planet.PlanetLayer",
+  "RimWorld.Planet.WITab_Terrain",
+  "RimWorld.Zone_Growing"
+]

@@ -1,6 +1,7 @@
 /// <reference lib="webworker" />
 import { VoxelSimulation } from './world';
 import type { VoxelCommand } from './types';
+import { previewWorld } from './worldgen';
 const ctx = self as unknown as DedicatedWorkerGlobalScope;
 let sim = new VoxelSimulation(),
   speed = 0,
@@ -22,7 +23,17 @@ function publish() {
 ctx.onmessage = ({ data: d }) => {
   try {
     let result: unknown;
+    if (d.type === 'preview') {
+      ctx.postMessage({ type: 'reply', id: d.id, result: previewWorld(d.seed, d.settings) });
+      return;
+    }
     if (d.type === 'init') {
+      if (d.seed !== undefined || d.settings !== undefined) {
+        sim = new VoxelSimulation(d.seed, d.settings);
+        publishedRooms = -1;
+        speed = 0;
+        elapsed = 0;
+      }
       publish();
       return;
     }
@@ -43,7 +54,7 @@ ctx.onmessage = ({ data: d }) => {
       result = true;
     } else if (d.type === 'new') {
       if (!Number.isSafeInteger(d.seed)) throw new Error('种子必须是整数');
-      sim = new VoxelSimulation(d.seed);
+      sim = new VoxelSimulation(d.seed, d.settings);
       publishedRooms = -1;
       speed = 0;
       elapsed = 0;

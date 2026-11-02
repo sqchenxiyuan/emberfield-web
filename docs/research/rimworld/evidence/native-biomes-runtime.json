@@ -1,0 +1,673 @@
+{
+  "schema_version": 1,
+  "evidence_id": "RW17-NATIVE-BIOMES-RUNTIME",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "process_id": 29920,
+  "executable": "F:/SteamLibrary/steamapps/common/RimWorld/RimWorld.exe",
+  "assembly_path": "F:/SteamLibrary/steamapps/common/RimWorld/Assembly-CSharp.dll",
+  "profile": ".local-research/runtime/profile-20261102",
+  "active_mods": [
+    "ludeon.rimworld",
+    "ludeon.rimworld.odyssey"
+  ],
+  "method": "Foreground original-world UI tile selection and visual transcription; readonly existing-save world metadata cross-check. No new world generation or game assembly execution.",
+  "ui_planet": {
+    "coverage_percent": 50,
+    "seed": "whip",
+    "screenshot": "planet",
+    "name": "GK-348 Media"
+  },
+  "tile_observation_source": "Manual visual transcription of original Terrain UI; tile IDs visible because developer mode was already enabled.",
+  "tiles": [
+    {
+      "layer": 0,
+      "features": "Mountain, caves, increased plant life",
+      "biome": "Desert",
+      "elevation_m": 68,
+      "movement_difficulty_displayed": true,
+      "disease_per_year": 0.7,
+      "graze_now": true,
+      "growing_period": "11th of Decembary - 1st of Decembary",
+      "temperature_range_c": [
+        5,
+        27
+      ],
+      "stones": [
+        "Marble",
+        "granite",
+        "limestone"
+      ],
+      "time_zone": 2,
+      "terrain": "Mountainous",
+      "movement_difficulty": 4,
+      "forage_percent": 25,
+      "shot": "desert-mountain",
+      "id": 282619,
+      "forage_food": "agave fruit",
+      "growing_days": 50,
+      "rainfall_mm": 568,
+      "coordinates": "21.40 N, 25.07 E",
+      "river_displayed": false,
+      "river": null,
+      "temperature_c": 15.9
+    },
+    {
+      "layer": 0,
+      "features": null,
+      "biome": "Temperate forest",
+      "elevation_m": 202,
+      "movement_difficulty_displayed": true,
+      "disease_per_year": 1.2,
+      "graze_now": true,
+      "growing_period": "11th of Decembary - 1st of Decembary",
+      "temperature_range_c": [
+        4,
+        28
+      ],
+      "stones": [
+        "Marble",
+        "slate",
+        "limestone"
+      ],
+      "time_zone": 2,
+      "terrain": "Flat",
+      "movement_difficulty": 1,
+      "forage_percent": 100,
+      "shot": "temperate-flat",
+      "id": 99363,
+      "forage_food": "berries",
+      "growing_days": 50,
+      "rainfall_mm": 801,
+      "coordinates": "24.08 N, 35.49 E",
+      "river_displayed": false,
+      "river": null,
+      "temperature_c": 15.9
+    },
+    {
+      "layer": 0,
+      "features": null,
+      "biome": "Boreal forest",
+      "elevation_m": 1084,
+      "movement_difficulty_displayed": true,
+      "disease_per_year": 1.0,
+      "graze_now": false,
+      "growing_period": "6th of Aprimay - 6th of Septober",
+      "temperature_range_c": [
+        -16,
+        20
+      ],
+      "stones": [
+        "Marble",
+        "limestone"
+      ],
+      "time_zone": 0,
+      "terrain": "Flat",
+      "movement_difficulty": 1.2,
+      "forage_percent": 75,
+      "shot": "boreal-flat",
+      "id": 111646,
+      "forage_food": "berries",
+      "growing_days": 30,
+      "rainfall_mm": 801,
+      "coordinates": "38.51 N, 6.44 E",
+      "river_displayed": false,
+      "river": null,
+      "temperature_c": 2.4
+    },
+    {
+      "layer": 0,
+      "features": "Mountain",
+      "biome": "Desert",
+      "elevation_m": 274,
+      "movement_difficulty_displayed": false,
+      "disease_per_year": 0.7,
+      "graze_now": true,
+      "growing_period": "1st of Aprimay - 6th of Septober",
+      "temperature_range_c": [
+        -7,
+        28
+      ],
+      "stones": [
+        "Marble",
+        "slate",
+        "limestone"
+      ],
+      "time_zone": 1,
+      "terrain": "Impassable",
+      "movement_difficulty": null,
+      "forage_percent": 25,
+      "shot": "desert-impassable",
+      "id": 118124,
+      "forage_food": "agave fruit",
+      "growing_days": 35,
+      "rainfall_mm": 333,
+      "coordinates": "37.71 N, 17.76 E",
+      "river_displayed": false,
+      "river": null,
+      "temperature_c": 10.2
+    },
+    {
+      "layer": 0,
+      "features": "Mountain, caves, creek",
+      "biome": "Desert",
+      "elevation_m": 307,
+      "movement_difficulty_displayed": true,
+      "disease_per_year": 0.7,
+      "graze_now": true,
+      "growing_period": "6th of Aprimay - 6th of Septober",
+      "temperature_range_c": [
+        -11,
+        27
+      ],
+      "stones": [
+        "Sandstone",
+        "limestone",
+        "slate"
+      ],
+      "time_zone": 1,
+      "terrain": "Mountainous",
+      "movement_difficulty": 4.1,
+      "forage_percent": 25,
+      "shot": "desert-creek",
+      "id": 176455,
+      "forage_food": "agave fruit",
+      "growing_days": 30,
+      "rainfall_mm": 506,
+      "coordinates": "41.61 N, 11.76 E",
+      "river_displayed": true,
+      "river": "Creek",
+      "temperature_c": 7.9
+    }
+  ],
+  "snapshots": [
+    {
+      "name": "stonecutting-final",
+      "path": ".local-research/runtime/profile-20261102/Saves/stonecutting-final.rws",
+      "save": {
+        "file": "stonecutting-final.rws",
+        "sha256": "2af1ff41a338adbb9fdc458b01433acceae8f90ef323f5f71e5ee0929494dc6a",
+        "bytes": 6285372,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 50881,
+        "world_info": {
+          "name": "GK-348 Media",
+          "seed": "whip",
+          "coverage": 0.5,
+          "persistent_random_value": 727633192,
+          "rainfall": "Normal",
+          "temperature": "Normal",
+          "initial_map_size": "(250, 1, 250)",
+          "factions": [
+            "OutlanderCivil",
+            "OutlanderRough",
+            "TribeCivil",
+            "TribeRough",
+            "TribeSavage",
+            "Pirate",
+            "TradersGuild",
+            "Mechanoid",
+            "Insect",
+            "Salvagers",
+            "Ancients",
+            "AncientsHostile"
+          ],
+          "present_fields": [
+            "name",
+            "planetCoverage",
+            "seedString",
+            "persistentRandomValue",
+            "overallRainfall",
+            "overallTemperature",
+            "initialMapSize",
+            "factions"
+          ]
+        },
+        "world_info_xml_sha256": "91c938b904dd2286b398821e964ea0799aeb339cf3f18dd0eca514632987dd38",
+        "world_grid_xml_sha256": "58a75354bfad3783b6878dd84cf6b58c309985392c4122af091197a9df2f1d9c",
+        "grid_present_fields": [
+          "nextLayerId",
+          "layers"
+        ],
+        "tile_arrays_decoded": false,
+        "scope": "World metadata only. Individual tile values are UI observations, not inferred from missing XPath matches."
+      }
+    },
+    {
+      "name": "biomes-final",
+      "path": ".local-research/runtime/profile-20261102/Saves/biomes-final.rws",
+      "save": {
+        "file": "biomes-final.rws",
+        "sha256": "49e9371b993067a644e3b91e6d6b31dccc2fb75f35c058595b7a52b8f9db4832",
+        "bytes": 6283985,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 51440,
+        "world_info": {
+          "name": "GK-348 Media",
+          "seed": "whip",
+          "coverage": 0.5,
+          "persistent_random_value": 727633192,
+          "rainfall": "Normal",
+          "temperature": "Normal",
+          "initial_map_size": "(250, 1, 250)",
+          "factions": [
+            "OutlanderCivil",
+            "OutlanderRough",
+            "TribeCivil",
+            "TribeRough",
+            "TribeSavage",
+            "Pirate",
+            "TradersGuild",
+            "Mechanoid",
+            "Insect",
+            "Salvagers",
+            "Ancients",
+            "AncientsHostile"
+          ],
+          "present_fields": [
+            "name",
+            "planetCoverage",
+            "seedString",
+            "persistentRandomValue",
+            "overallRainfall",
+            "overallTemperature",
+            "initialMapSize",
+            "factions"
+          ]
+        },
+        "world_info_xml_sha256": "91c938b904dd2286b398821e964ea0799aeb339cf3f18dd0eca514632987dd38",
+        "world_grid_xml_sha256": "58a75354bfad3783b6878dd84cf6b58c309985392c4122af091197a9df2f1d9c",
+        "grid_present_fields": [
+          "nextLayerId",
+          "layers"
+        ],
+        "tile_arrays_decoded": false,
+        "scope": "World metadata only. Individual tile values are UI observations, not inferred from missing XPath matches."
+      }
+    },
+    {
+      "name": "biomes-confirm-paused",
+      "path": ".local-research/runtime/profile-20261102/Saves/biomes-confirm-paused.rws",
+      "save": {
+        "file": "biomes-confirm-paused.rws",
+        "sha256": "3cdfc48292ff6fd4c22f3967fa6b4b159a23fdfe195523615b5373554de2df6a",
+        "bytes": 6233342,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 115245,
+        "world_info": {
+          "name": "GK-348 Media",
+          "seed": "whip",
+          "coverage": 0.5,
+          "persistent_random_value": 727633192,
+          "rainfall": "Normal",
+          "temperature": "Normal",
+          "initial_map_size": "(250, 1, 250)",
+          "factions": [
+            "OutlanderCivil",
+            "OutlanderRough",
+            "TribeCivil",
+            "TribeRough",
+            "TribeSavage",
+            "Pirate",
+            "TradersGuild",
+            "Mechanoid",
+            "Insect",
+            "Salvagers",
+            "Ancients",
+            "AncientsHostile"
+          ],
+          "present_fields": [
+            "name",
+            "planetCoverage",
+            "seedString",
+            "persistentRandomValue",
+            "overallRainfall",
+            "overallTemperature",
+            "initialMapSize",
+            "factions"
+          ]
+        },
+        "world_info_xml_sha256": "91c938b904dd2286b398821e964ea0799aeb339cf3f18dd0eca514632987dd38",
+        "world_grid_xml_sha256": "58a75354bfad3783b6878dd84cf6b58c309985392c4122af091197a9df2f1d9c",
+        "grid_present_fields": [
+          "nextLayerId",
+          "layers"
+        ],
+        "tile_arrays_decoded": false,
+        "scope": "World metadata only. Individual tile values are UI observations, not inferred from missing XPath matches."
+      }
+    },
+    {
+      "name": "biomes-stopped-a",
+      "path": ".local-research/runtime/profile-20261102/Saves/biomes-stopped-a.rws",
+      "save": {
+        "file": "biomes-stopped-a.rws",
+        "sha256": "e995db3d7f53697c3e514644ab3622acd150be64bf6bd7b64285c5b49a19f719",
+        "bytes": 6129393,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 134003,
+        "world_info": {
+          "name": "GK-348 Media",
+          "seed": "whip",
+          "coverage": 0.5,
+          "persistent_random_value": 727633192,
+          "rainfall": "Normal",
+          "temperature": "Normal",
+          "initial_map_size": "(250, 1, 250)",
+          "factions": [
+            "OutlanderCivil",
+            "OutlanderRough",
+            "TribeCivil",
+            "TribeRough",
+            "TribeSavage",
+            "Pirate",
+            "TradersGuild",
+            "Mechanoid",
+            "Insect",
+            "Salvagers",
+            "Ancients",
+            "AncientsHostile"
+          ],
+          "present_fields": [
+            "name",
+            "planetCoverage",
+            "seedString",
+            "persistentRandomValue",
+            "overallRainfall",
+            "overallTemperature",
+            "initialMapSize",
+            "factions"
+          ]
+        },
+        "world_info_xml_sha256": "91c938b904dd2286b398821e964ea0799aeb339cf3f18dd0eca514632987dd38",
+        "world_grid_xml_sha256": "58a75354bfad3783b6878dd84cf6b58c309985392c4122af091197a9df2f1d9c",
+        "grid_present_fields": [
+          "nextLayerId",
+          "layers"
+        ],
+        "tile_arrays_decoded": false,
+        "scope": "World metadata only. Individual tile values are UI observations, not inferred from missing XPath matches."
+      }
+    },
+    {
+      "name": "biomes-stopped-b",
+      "path": ".local-research/runtime/profile-20261102/Saves/biomes-stopped-b.rws",
+      "save": {
+        "file": "biomes-stopped-b.rws",
+        "sha256": "2af78cf91cc1d1c32ca2fe32aec64e2274691916ad1cb1c9a9ed23d1e5a04632",
+        "bytes": 6129393,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 134003,
+        "world_info": {
+          "name": "GK-348 Media",
+          "seed": "whip",
+          "coverage": 0.5,
+          "persistent_random_value": 727633192,
+          "rainfall": "Normal",
+          "temperature": "Normal",
+          "initial_map_size": "(250, 1, 250)",
+          "factions": [
+            "OutlanderCivil",
+            "OutlanderRough",
+            "TribeCivil",
+            "TribeRough",
+            "TribeSavage",
+            "Pirate",
+            "TradersGuild",
+            "Mechanoid",
+            "Insect",
+            "Salvagers",
+            "Ancients",
+            "AncientsHostile"
+          ],
+          "present_fields": [
+            "name",
+            "planetCoverage",
+            "seedString",
+            "persistentRandomValue",
+            "overallRainfall",
+            "overallTemperature",
+            "initialMapSize",
+            "factions"
+          ]
+        },
+        "world_info_xml_sha256": "91c938b904dd2286b398821e964ea0799aeb339cf3f18dd0eca514632987dd38",
+        "world_grid_xml_sha256": "58a75354bfad3783b6878dd84cf6b58c309985392c4122af091197a9df2f1d9c",
+        "grid_present_fields": [
+          "nextLayerId",
+          "layers"
+        ],
+        "tile_arrays_decoded": false,
+        "scope": "World metadata only. Individual tile values are UI observations, not inferred from missing XPath matches."
+      }
+    }
+  ],
+  "clock": {
+    "cause": "Redundant pause-button click after returning to an already-paused colony toggled time on; initial final/confirm filenames were not proof of pause. Space was then used and two successive saves had equal ticks.",
+    "total_advanced_ticks": 83122,
+    "first_end_tick": 51440,
+    "stopped_a_tick": 134003,
+    "failed_confirmation_tick": 115245,
+    "before_tick": 50881,
+    "entire_session_paused": false,
+    "final_pause_verified_by_equal_saves": true,
+    "stopped_b_tick": 134003
+  },
+  "outcomes": {
+    "noise_function_equivalence_demonstrated": false,
+    "mountainous_observed": true,
+    "small_or_large_hills_observed": false,
+    "seed_per_tile_equivalence_demonstrated": false,
+    "desert_observed": true,
+    "temperate_forest_observed": true,
+    "new_world_parameters_ui_opened": false,
+    "flat_observed": true,
+    "world_info_and_grid_unchanged": true,
+    "new_world_generated": false,
+    "local_map_generation_demonstrated": false,
+    "boreal_forest_observed": true,
+    "impassable_observed": true
+  },
+  "screenshots": [
+    {
+      "id": "desert-mountain",
+      "image": "runtime/biomes-desert-mountain.png",
+      "sha256": "2665a0a2042e9a856e66337485371c447cd31d7b86ea9b05dc0a1d9dae4d516b",
+      "source_file": ".local-research/runtime/biomes-005-terrain-desert.png",
+      "source_sha256": "63ba57d2b11674864915fd855cccee6cccdd7ac3d2a8dd28237e0c125ad348f0",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        660,
+        450,
+        750
+      ],
+      "observed_utc": "2026-11-02T20:15:53.912575Z",
+      "observation": "Desert, Mountainous, tile282619 layer0; full terrain and climate panel."
+    },
+    {
+      "id": "temperate-flat",
+      "image": "runtime/biomes-temperate-flat.png",
+      "sha256": "577aa6a86ef4327986b45269808a1d023d7a66cb9b91c8e4130e21621b9b71b9",
+      "source_file": ".local-research/runtime/biomes-006-green-flat.png",
+      "source_sha256": "1f97e8973fb6dd0acc5fc5cbd84e480bdbe4366f994e56e4682d0ef5ae741e9b",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        660,
+        450,
+        750
+      ],
+      "observed_utc": "2026-11-02T20:16:33.3485377Z",
+      "observation": "Temperate forest, Flat, tile99363 layer0; full terrain and climate panel."
+    },
+    {
+      "id": "boreal-flat",
+      "image": "runtime/biomes-boreal-flat.png",
+      "sha256": "f671f7589a8eb63da82d0b6e08f902e110d86eb363a17c33f14b293dde47f366",
+      "source_file": ".local-research/runtime/biomes-010-taiga.png",
+      "source_sha256": "c98d2ea9c4774171f6081b4e9cf1c4006f7ad12b802adb7ce42883ecf8a1e796",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        660,
+        450,
+        750
+      ],
+      "observed_utc": "2026-11-02T20:17:53.4520454Z",
+      "observation": "Boreal forest, Flat, tile111646 layer0; full terrain and climate panel."
+    },
+    {
+      "id": "desert-impassable",
+      "image": "runtime/biomes-desert-impassable.png",
+      "sha256": "4b37560a281bc7f7fc4b7dc625e7ac64e4ab3cd8434059b2e4db2a48e91d1594",
+      "source_file": ".local-research/runtime/biomes-011-hill-sample.png",
+      "source_sha256": "489d331b1460acb175cf692e13160bd9ed4e91515936a99f05497a32ca1858f6",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        660,
+        450,
+        750
+      ],
+      "observed_utc": "2026-11-02T20:18:37.5620031Z",
+      "observation": "Desert, Impassable, tile118124 layer0; movement difficulty row not displayed."
+    },
+    {
+      "id": "desert-creek",
+      "image": "runtime/biomes-desert-creek.png",
+      "sha256": "ceb7591ae991ddaa9d9789b6d324c25d3b6a9ed0cdf8a61aa545bb72bbc6fea9",
+      "source_file": ".local-research/runtime/biomes-014-hills-terrain.png",
+      "source_sha256": "09384337b6d464e3eaa96383822b191ba8181eeec193a68061f10dab8f57bbef",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        660,
+        450,
+        750
+      ],
+      "observed_utc": "2026-11-02T20:19:26.3247987Z",
+      "observation": "Desert, Mountainous with Creek, tile176455 layer0."
+    },
+    {
+      "id": "planet",
+      "image": "runtime/biomes-planet.png",
+      "sha256": "e79867d1759999d9ea9b6e0e518b6510342a40cc3872224d9d16b3d1a3d67846",
+      "source_file": ".local-research/runtime/biomes-012-planet.png",
+      "source_sha256": "456244b82120861396a892b43112bf16748399a5edb4f87b11e8c54424212e4e",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1050,
+        450,
+        360
+      ],
+      "observed_utc": "2026-11-02T20:18:38.7373384Z",
+      "observation": "Planet GK-348 Media; Seed whip; Coverage50%."
+    },
+    {
+      "id": "overview",
+      "image": "runtime/biomes-overview.png",
+      "sha256": "80ec9c7619d156a1c9e66de57ce43c566e662f8d238de47a151ca9258feec560",
+      "source_file": ".local-research/runtime/biomes-009-north.png",
+      "source_sha256": "2616edc5d0ab3501434ac61333e9b7942bfda089b9d034ca0832907ab27f82ee",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        440,
+        0,
+        1850,
+        1200
+      ],
+      "observed_utc": "2026-11-02T20:17:10.6042936Z",
+      "observation": "Observed original world-map geography after zooming and panning north."
+    },
+    {
+      "id": "final-paused",
+      "image": "runtime/biomes-final-paused.png",
+      "sha256": "395604aaf6d66402b14151de4025272796aacffd18a500e7d8e8008ac70527c7",
+      "source_file": ".local-research/runtime/biomes-stopped-b-return.png",
+      "source_sha256": "507882c9ae971a2a3e0be8e5d9e725d49389540f13db8bbba3943ec746d62b0f",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        1800,
+        920,
+        760,
+        520
+      ],
+      "observed_utc": "2026-11-02T20:24:51.0941507Z",
+      "observation": "Final colony view after Space pause and two equal-tick confirmation saves; medical alerts reflect unintended earlier clock advance."
+    }
+  ],
+  "actions": {
+    "sha256": "f2166ffa5c48b3131b21071c9dae1a93224287d0de5ee530562342a7bcb62730",
+    "count": 41,
+    "file": "native-biomes-actions.jsonl"
+  },
+  "limitations": [
+    "This is a single existing world and five selected land tiles, not a statistical biome survey or regeneration comparison.",
+    "Screenshots establish UI fields and observations only. They do not prove noise implementation, same-seed regeneration, or matching native local-map tiles.",
+    "The installed world is Core + Odyssey. Developer mode and God mode were already enabled; no developer generation button was used.",
+    "The first click selected an ocean tile; it is retained in the ledger but not presented as a land-biome sample.",
+    "Small hills and Large hills were not observed; the extra candidates were Mountainous and Impassable.",
+    "Absent UI rows are recorded as not displayed rather than proofs that the underlying value or feature cannot exist. Tile arrays in saves were not decoded.",
+    "The end-of-session pause was initially mishandled; the isolated colony advanced83122 ticks, developed medical alerts, and was finally paused at134003. Original stonecutting-final was not overwritten and remains recoverable.",
+    "World metadata and serialized world grid hashes stayed identical across all five saves; pawn/colony simulation state did change during the accidental advance.",
+    "Portable verification checks record integrity, UI transcription consistency and evidence hashes; local mode re-reads original saves/captures. Neither performs OCR or reruns the game."
+  ],
+  "final_state": {
+    "god_mode": true,
+    "normal_profile_touched": false,
+    "developer_mode": true,
+    "game_files_modified": false,
+    "pause_confirmed_by_two_equal_saves": true,
+    "research_colony_simulation_changed": true,
+    "original_stonecutting_save_untouched": true,
+    "mods_installed": false,
+    "canonical_save": "biomes-stopped-b.rws",
+    "paused": true
+  }
+}

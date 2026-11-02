@@ -1,3 +1,4 @@
+import { loadLegacyStart, LEGACY_START } from './voxel-legacy-start.mjs';
 import assert from 'node:assert/strict';
 import { build } from 'esbuild';
 import { createHash } from 'node:crypto';
@@ -29,9 +30,10 @@ const limits = {
   grain: 75,
   meal: 10,
 };
-let sim = new VoxelSimulation(73129);
+let sim = await loadLegacyStart(VoxelSimulation);
 const initial = sim.counts();
 const report = {
+  baseline: LEGACY_START,
   scope:
     'Normal commands, step, save and load. No injected resources, blocks, needs, pawn positions, task progress or time. Excavate native-inspired probabilistic chunks, carry them up actual ladders, build and operate a stonecutter, then deliver its bricks into upper-floor construction. Separately migrate unchanged published v6 gameplay bytes.',
   commands: [],
@@ -230,7 +232,7 @@ try {
   assert.equal(sha(bytes), '8063226ef027897139f295a02e8b53963c94f1c48853c2c83e36edf1d628d36d');
   const migrated = VoxelSimulation.load(old);
   const after = migrated.save();
-  assert.equal(after.version, 7);
+  assert.equal(after.version, 8);
   assert.equal(migrated.counts().stone, 15);
   assert.equal(migrated.counts().chunk, 0);
   assert.deepEqual(after.stockpiles, old.stockpiles);

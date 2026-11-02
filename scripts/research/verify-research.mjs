@@ -153,6 +153,32 @@ for (const shot of stonecuttingImplementation.screenshots) {
   assert(/^voxel\/[a-z0-9-]+\.jpg$/.test(shot.file));
   assert.equal(sha(readFileSync(path.join(evidence, shot.file))), shot.sha256, `changed stonecutting image: ${shot.file}`);
 }
+const worldgenImplementation = read('voxel-worldgen-validation.json');
+assert.equal(worldgenImplementation.kind, 'web-runtime-validated');
+assert.equal(worldgenImplementation.unit.failed, 0);
+assert.equal(worldgenImplementation.unit.passed, worldgenImplementation.unit.total);
+assert.equal(worldgenImplementation.campaign.status, 'passed');
+assert.deepEqual(worldgenImplementation.campaign.errors, []);
+assert.deepEqual(worldgenImplementation.campaign.worlds.map(w => w.biome), ['temperate', 'boreal', 'desert']);
+for (const world of worldgenImplementation.campaign.worlds) {
+  assert(world.checks.length >= 7);
+  assert(world.finalStats.produced.steel > 0);
+  assert.equal(world.finalStats.produced.wood, world.biome === 'desert' ? 45 : 81);
+  assert.equal(world.finalStats.sown, 4);
+}
+assert.deepEqual(worldgenImplementation.browser.modes.map(m => m.mode), ['worker', 'main']);
+for (const mode of worldgenImplementation.browser.modes) {
+  assert.equal(mode.status, 'passed'); assert.deepEqual(mode.errors, []); assert(mode.checks.length >= 11);
+}
+assert.equal(worldgenImplementation.regressions.lifecycle.status, 'passed');
+assert.equal(worldgenImplementation.regressions.lifecycle.cycles.length, 6);
+for (const record of [...worldgenImplementation.sources, ...worldgenImplementation.scripts, ...worldgenImplementation.assets])
+  assert(validHash(record.sha256));
+assert.equal(worldgenImplementation.screenshots.length, 4);
+for (const shot of worldgenImplementation.screenshots) {
+  assert(/^voxel\/worldgen-[a-z0-9-]+\.jpg$/.test(shot.file));
+  assert.equal(sha(readFileSync(path.join(evidence, shot.file))), shot.sha256);
+}
 for(const file of readdirSync(research).filter(f=>f.endsWith('.md'))){
   const body=readFileSync(path.join(research,file),'utf8');
   for(const match of body.matchAll(/\[[^\]\n]*\]\(([^)\s]+)\)/g)){

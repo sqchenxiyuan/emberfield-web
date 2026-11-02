@@ -1,3 +1,4 @@
+import { importLegacyStart, LEGACY_START } from './voxel-legacy-start.mjs';
 import { chromium } from '@playwright/test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -6,6 +7,7 @@ const BASE = process.env.VOXEL_TEST_URL ?? 'http://127.0.0.1:5182/?world=voxel';
 const OUT = 'test-results/voxel-browser';
 await mkdir(OUT, { recursive: true });
 const report = {
+  baseline: LEGACY_START,
   base: BASE,
   checks: [],
   screenshots: [],
@@ -103,6 +105,7 @@ try {
   await wait(
     () => window.voxel?.snapshot().ready && window.voxel.snapshot().metrics.pendingChunks === 0,
   );
+  await importLegacyStart(page);
   await page.waitForTimeout(300);
   await screenshot('01-surface');
   record('worker-rendered 64x64x16 world', {

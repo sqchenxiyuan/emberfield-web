@@ -1,3 +1,4 @@
+import { legacySimulation } from './fixtures/legacy-start';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { carryLimit, STACK_LIMITS, stackLimit } from '../src/voxel/logistics';
@@ -51,7 +52,7 @@ function command(s: VoxelSimulation, c: VoxelCommand) {
 /** Geometry/resources are explicit isolated fixtures. All transfers after load
  * use real jobs, reservations, movement, eating, spoiling and save/load. */
 function fixture(setup: (s: VoxelSimulation) => void = () => {}) {
-  const s = new VoxelSimulation();
+  const s = legacySimulation();
   s.blocks.fill(Block.Stone);
   s.ladders.fill(0);
   s.items = [];
@@ -126,13 +127,13 @@ function fillTiny(s: VoxelSimulation, exceptions: Pos[] = []) {
 
 describe('bounded physical stacks and hauling reservations', () => {
   it('keeps all initial 90 wood and 60 packaged meals as two and six legal stacks', () => {
-    const s = new VoxelSimulation();
+    const s = legacySimulation();
     invariants(s);
     expect(s.items.filter((i) => i.resource === 'wood').map((i) => i.amount)).toEqual([75, 15]);
     expect(s.items.filter((i) => i.resource === 'food').map((i) => i.amount)).toEqual([
       10, 10, 10, 10, 10, 10,
     ]);
-    expect(s.save().version).toBe(7);
+    expect(s.save().version).toBe(8);
     expect(VoxelSimulation.load(s.save()).counts()).toEqual(s.counts());
   });
   it.each(resources)('carries and stores %s only within its native one-stack limit', (resource) => {
@@ -395,7 +396,7 @@ describe('bounded outputs and interrupted physical containers', () => {
         add(s, pos(12, 12), 'meal', 10, { rotProgress: 4 * DAY - 300 });
         if (kind === 'cut') {
           carve(s, pos(13, 11));
-          s.trees.push({ ...pos(13, 11), id: s.nextId++, wood: 27 });
+          s.trees.push({ ...pos(13, 11), id: s.nextId++, wood: 27, species: 'poplar' });
           s.pawns[0].priorities.cut = 1;
         } else {
           s.blocks[index(11, 11, 7)] = Block.Soil;

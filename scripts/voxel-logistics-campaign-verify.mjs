@@ -1,3 +1,4 @@
+import { loadLegacyStart, LEGACY_START } from './voxel-legacy-start.mjs';
 import assert from 'node:assert/strict';
 import { build } from 'esbuild';
 import { createHash } from 'node:crypto';
@@ -29,9 +30,10 @@ const p = (x, y, z = 8) => ({ x, y, z });
 const key = (p) => `${p.x}/${p.y}/${p.z}`;
 const same = (a, b) => key(a) === key(b);
 const sha = (bytes) => createHash('sha256').update(bytes).digest('hex');
-let sim = new VoxelSimulation(73129);
+let sim = await loadLegacyStart(VoxelSimulation);
 const initial = sim.counts();
 const report = {
+  baseline: LEGACY_START,
   scope:
     'Normal command/step/save/load only, no injected resources, terrain, needs, items or time. Finite ground stacks, physical hauling, full storage, changed filters, expansion and cross-level transfer. Separately imports an unchanged save from the previously published v5 normal preservation campaign.',
   checks: [],
@@ -249,7 +251,7 @@ try {
   }
   const migrated = VoxelSimulation.load(legacy),
     newSave = migrated.save();
-  assert.equal(newSave.version, 7);
+  assert.equal(newSave.version, 8);
   const oldAges = foodAges(legacy),
     newAges = foodAges(newSave);
   assert.deepEqual(Object.keys(newAges).sort(), Object.keys(oldAges).sort());

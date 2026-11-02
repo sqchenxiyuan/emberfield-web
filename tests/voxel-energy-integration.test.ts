@@ -1,3 +1,4 @@
+import { legacySimulation } from './fixtures/legacy-start';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { VoxelThermal } from '../src/voxel/thermal';
@@ -50,7 +51,7 @@ function addDevice(sim: VoxelSimulation, kind: DeviceKind, p: Pos, extra: Partia
  * Loading the serialized fixture exercises the actual production cache rebuilds.
  */
 function fixture(configure: (sim: VoxelSimulation) => void = () => {}) {
-  const source = new VoxelSimulation();
+  const source = legacySimulation();
   source.blocks.fill(Block.Stone);
   source.ladders.fill(0);
   source.items = [];
@@ -586,7 +587,7 @@ describe('v4 energy persistence and malformed-input rejection', () => {
     const original = savedWorld(),
       saved = original.save(),
       restored = VoxelSimulation.load(saved);
-    expect(saved.version).toBe(7);
+    expect(saved.version).toBe(8);
     expect(restored.devices.map((d) => [d.fuel, d.energy, d.target])).toEqual(
       original.devices.map((d) => [d.fuel, d.energy, d.target]),
     );
@@ -683,7 +684,7 @@ describe('v4 energy persistence and malformed-input rejection', () => {
     delete old.wires;
     delete old.thermal;
     const restored = VoxelSimulation.load(old);
-    expect(restored.save().version).toBe(7);
+    expect(restored.save().version).toBe(8);
     expect(restored.devices).toEqual([]);
     expect(restored.wires).toEqual([]);
     expect(restored.blocks).toEqual(sim.blocks);

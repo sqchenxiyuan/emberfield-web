@@ -1,3 +1,4 @@
+import { legacySimulation } from './fixtures/legacy-start';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import {
@@ -108,7 +109,7 @@ describe('food reference curves and physical farmland', () => {
     expect(CROPS.corn.yield).toBe(22);
   });
   it('rejects invalid farm strokes atomically and prevents storage/construction overlap', () => {
-    const s = new VoxelSimulation(),
+    const s = legacySimulation(),
       initial = s.save();
     for (const c of [
       { type: 'designate', tool: 'farm', from: pos(30, 31), to: pos(30, 32), crop: 'rice' },
@@ -127,7 +128,7 @@ describe('food reference curves and physical farmland', () => {
     }
   });
   it('pauses growth below a real upstairs floor and resumes after normal demolition', () => {
-    const s = new VoxelSimulation(),
+    const s = legacySimulation(),
       plant = pos(32, 30);
     place(s, 'farm', plant, undefined, 'rice');
     until(s, () => s.crops.length === 1);
@@ -146,7 +147,7 @@ describe('food reference curves and physical farmland', () => {
     expect(s.cropCondition(plant, 'rice').growthRate).toBeGreaterThan(0);
   });
   it('reassigns only the next crop and clears a growing plot without producing a free harvest', () => {
-    const s = new VoxelSimulation(),
+    const s = legacySimulation(),
       target = pos(32, 32);
     place(s, 'farm', target, undefined, 'rice');
     until(s, () => s.crops.length === 1);
@@ -164,7 +165,7 @@ describe('food reference curves and physical farmland', () => {
     expect(s.stats.produced.grain).toBe(0);
   });
   it('preserves actual crop growth through save/load and stops at night without skipping time', () => {
-    let s = new VoxelSimulation();
+    let s = legacySimulation();
     place(s, 'farm', pos(32, 32), undefined, 'potato');
     until(s, () => s.crops.length === 1);
     s.step(1000);
@@ -180,7 +181,7 @@ describe('food reference curves and physical farmland', () => {
     until(s, () => s.crops[0].growth > nightGrowth, DAY);
   });
   it('never seals a physical resource stack inside a completed stove', () => {
-    const s = new VoxelSimulation(),
+    const s = legacySimulation(),
       audit = ledger(s);
     for (const p of s.pawns)
       for (const work of ['dig', 'build', 'cut', 'haul', 'grow', 'cook', 'craft'] as const)
@@ -235,7 +236,7 @@ describe('food reference curves and physical farmland', () => {
     audit();
   });
   it('rolls back a wall when an upper stack has no same-layer neighboring drop cell', () => {
-    const s = new VoxelSimulation(),
+    const s = legacySimulation(),
       shaft = pos(33, 32);
     place(s, 'up', shaft);
     until(s, () => !s.jobs.length, 3000);
@@ -286,7 +287,7 @@ describe('real harvested inputs, cooking and food persistence', () => {
   let harvestedSave: VoxelSave;
   beforeAll(() => {
     // Shared setup is a genuine eight-plus-day harvest, not a mature crop or item fixture.
-    const s = new VoxelSimulation();
+    const s = legacySimulation();
     place(s, 'farm', pos(29, 28), pos(35, 30), 'rice');
     place(s, 'stock', pos(29, 35), pos(35, 36));
     const audit = ledger(s);
@@ -490,7 +491,7 @@ describe('real harvested inputs, cooking and food persistence', () => {
 
 describe('v1 voxel food migration', () => {
   it('upgrades old numeric material jobs and keeps their delivered wood without altering the input save', () => {
-    const s = new VoxelSimulation();
+    const s = legacySimulation();
     place(s, 'wall', pos(36, 34));
     until(s, () => (s.jobs[0]?.delivered.wood ?? 0) === 6);
     const legacy = s.save() as unknown as Record<string, any>;
@@ -516,7 +517,7 @@ describe('v1 voxel food migration', () => {
       loaded = VoxelSimulation.load(legacy),
       before = s.counts();
     expect(legacy).toEqual(untouched);
-    expect(loaded.save().version).toBe(7);
+    expect(loaded.save().version).toBe(8);
     expect(loaded.farms).toEqual([]);
     expect(loaded.crops).toEqual([]);
     expect(loaded.stoves).toEqual([]);

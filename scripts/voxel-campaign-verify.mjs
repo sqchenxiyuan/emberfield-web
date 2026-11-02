@@ -1,3 +1,4 @@
+import { loadLegacyStart, LEGACY_START } from './voxel-legacy-start.mjs';
 import { build } from 'esbuild';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -6,9 +7,10 @@ const OUT = process.env.VOXEL_CAMPAIGN_OUT ?? 'test-results/voxel-campaign';
 await mkdir(OUT, { recursive: true });
 const bundle = await build({ entryPoints: ['src/voxel/world.ts'], bundle: true, platform: 'node', format: 'esm', write: false });
 const { VoxelSimulation } = await import(`data:text/javascript;base64,${Buffer.from(bundle.outputFiles[0].text).toString('base64')}`);
-let sim = new VoxelSimulation(Number(process.env.VOXEL_CAMPAIGN_SEED ?? 73129));
+let sim = await loadLegacyStart(VoxelSimulation, Number(process.env.VOXEL_CAMPAIGN_SEED ?? 73129));
 const initial = sim.counts();
 const report = {
+  baseline: LEGACY_START,
   seed: sim.seed,
   scope: 'Headless rules campaign through public command/step/save/load APIs. No terrain editing, inventory injection, pawn teleportation, or renderer used as gameplay proof.',
   commands: [], checkpoints: [], transitions: [], cargoLayers: {}, visitedLayers: [], errors: [],

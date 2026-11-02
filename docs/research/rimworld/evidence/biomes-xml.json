@@ -1,0 +1,1608 @@
+{
+  "evidence_id": "RW17-BIOMES-XML",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Selected direct declarations with complete selected parent chains; supplements unchanged generation records",
+  "limitations": [
+    "No enabled DLC/mod patch database evaluation.",
+    "MayRequire retained; Core-only weights exclude gated entries.",
+    "Selected fields are checked against prior generation XML when their source paths overlap; original files remain authoritative.",
+    "Absence applies only to selected roots; visual and audio children are omitted."
+  ],
+  "prior_generation_records": [
+    "TemperateForest",
+    "Soil",
+    "SoilRich",
+    "Gravel",
+    "Sand",
+    "SoftSand",
+    "PlantBaseNonEdible",
+    "PlantBase",
+    "TreeBase",
+    "DeciduousTreeBase",
+    "Plant_TreeOak",
+    "Plant_TreePoplar"
+  ],
+  "records": [
+    {
+      "group": "biome",
+      "id": "BiomeDef_TemperateForest",
+      "def_name": "TemperateForest",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/BiomeDefs/Biomes_Temperate.xml",
+        "xpath": "/Defs/BiomeDef[defName='TemperateForest']",
+        "sha256": "4d6a48e5f6f0b5eed5f239077a1af78cadd8924785d76bdde2329da137dbc7ae"
+      },
+      "selected_roots": [
+        "workerClass",
+        "plantDensity",
+        "animalDensity",
+        "wildPlantRegrowDays",
+        "wildPlantsCareAboutLocalFertility",
+        "terrainsByFertility",
+        "terrainPatchMakers",
+        "wildPlants",
+        "noGravel",
+        "gravelTerrain"
+      ],
+      "absent_roots": [
+        "wildPlantsCareAboutLocalFertility",
+        "noGravel",
+        "gravelTerrain"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/workerClass",
+          "value": "BiomeWorker_TemperateForest"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/animalDensity",
+          "value": "3.7"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/plantDensity",
+          "value": "0.65"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlantRegrowDays",
+          "value": "20"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainsByFertility/li[1]/terrain",
+          "value": "Soil"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainsByFertility/li[1]/min",
+          "value": "-999"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainsByFertility/li[1]/max",
+          "value": "0.87"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainsByFertility/li[2]/terrain",
+          "value": "SoilRich"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainsByFertility/li[2]/min",
+          "value": "0.87"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainsByFertility/li[2]/max",
+          "value": "999"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/perlinFrequency",
+          "value": "0.015"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/isPond",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/thresholds/li[1]/terrain",
+          "value": "SoilRich"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/thresholds/li[1]/min",
+          "value": "0.73"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/thresholds/li[1]/max",
+          "value": "0.80"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/thresholds/li[2]/terrain",
+          "value": "Mud"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/thresholds/li[2]/min",
+          "value": "0.80"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/thresholds/li[2]/max",
+          "value": "0.93"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/thresholds/li[3]/terrain",
+          "value": "WaterShallow"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/thresholds/li[3]/min",
+          "value": "0.93"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/thresholds/li[3]/max",
+          "value": "999"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Grass",
+          "value": "5.0"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_GrayGrass",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_TallGrass",
+          "value": "2.0"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Brambles",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Ripthorn",
+          "value": "0.8"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Dandelion",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Bush",
+          "value": "0.6"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_TreeOak",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_TreePoplar",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Berry",
+          "value": "0.05"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_HealrootWild",
+          "value": "0.05"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Witchwood",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Reeds",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_LilyPad",
+          "value": "0.2"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Bulrush",
+          "value": "0.2"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_GrayGrass",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Ripthorn",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Witchwood",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Reeds",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_LilyPad",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Bulrush",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        }
+      ]
+    },
+    {
+      "group": "biome",
+      "id": "BiomeDef_BorealForest",
+      "def_name": "BorealForest",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/BiomeDefs/Biomes_Cold.xml",
+        "xpath": "/Defs/BiomeDef[defName='BorealForest']",
+        "sha256": "2045aaa108fa37ec0b60c7ffb1f39aede75ae0345fa2d1bed158e70914c29b3b"
+      },
+      "selected_roots": [
+        "workerClass",
+        "plantDensity",
+        "animalDensity",
+        "wildPlantRegrowDays",
+        "wildPlantsCareAboutLocalFertility",
+        "terrainsByFertility",
+        "terrainPatchMakers",
+        "wildPlants",
+        "noGravel",
+        "gravelTerrain"
+      ],
+      "absent_roots": [
+        "wildPlantsCareAboutLocalFertility",
+        "noGravel",
+        "gravelTerrain"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/workerClass",
+          "value": "BiomeWorker_BorealForest"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/animalDensity",
+          "value": "2.8"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/plantDensity",
+          "value": "0.40"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlantRegrowDays",
+          "value": "25"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/terrainsByFertility/li[1]/terrain",
+          "value": "Soil"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/terrainsByFertility/li[1]/min",
+          "value": "-999"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/terrainsByFertility/li[1]/max",
+          "value": "0.87"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/terrainsByFertility/li[2]/terrain",
+          "value": "SoilRich"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/terrainsByFertility/li[2]/min",
+          "value": "0.87"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/terrainsByFertility/li[2]/max",
+          "value": "999"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/terrainPatchMakers/li/perlinFrequency",
+          "value": "0.015"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/terrainPatchMakers/li/isPond",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/terrainPatchMakers/li/thresholds/li[1]/terrain",
+          "value": "MossyTerrain"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/terrainPatchMakers/li/thresholds/li[1]/min",
+          "value": "0.0"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/terrainPatchMakers/li/thresholds/li[1]/max",
+          "value": "0.32"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/terrainPatchMakers/li/thresholds/li[2]/terrain",
+          "value": "Marsh"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/terrainPatchMakers/li/thresholds/li[2]/min",
+          "value": "0.32"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/terrainPatchMakers/li/thresholds/li[2]/max",
+          "value": "0.76"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/terrainPatchMakers/li/thresholds/li[3]/terrain",
+          "value": "WaterShallow"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/terrainPatchMakers/li/thresholds/li[3]/min",
+          "value": "0.76"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/terrainPatchMakers/li/thresholds/li[3]/max",
+          "value": "999"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlants/Plant_Grass",
+          "value": "9.0"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlants/Plant_TreePine",
+          "value": "5.0"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlants/Plant_Moss",
+          "value": "4.0"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlants/Plant_Bush",
+          "value": "3.0"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlants/Plant_Brambles",
+          "value": "2.0"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlants/Plant_Ripthorn",
+          "value": "4"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlants/Plant_TreeBirch",
+          "value": "1.5"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlants/Plant_TreePoplar",
+          "value": "1.2"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlants/Plant_Berry",
+          "value": "0.16"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlants/Plant_HealrootWild",
+          "value": "0.16"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlants/Plant_TreeGrayPine",
+          "value": "4"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlants/Plant_GrayGrass",
+          "value": "9.0"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlants/Plant_Reeds",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlants/Plant_Bulrush",
+          "value": "0.2"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlants/Plant_Ripthorn",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlants/Plant_TreeGrayPine",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlants/Plant_GrayGrass",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlants/Plant_Reeds",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='BorealForest']/wildPlants/Plant_Bulrush",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        }
+      ]
+    },
+    {
+      "group": "biome",
+      "id": "BiomeDef_Tundra",
+      "def_name": "Tundra",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/BiomeDefs/Biomes_Cold.xml",
+        "xpath": "/Defs/BiomeDef[defName='Tundra']",
+        "sha256": "2045aaa108fa37ec0b60c7ffb1f39aede75ae0345fa2d1bed158e70914c29b3b"
+      },
+      "selected_roots": [
+        "workerClass",
+        "plantDensity",
+        "animalDensity",
+        "wildPlantRegrowDays",
+        "wildPlantsCareAboutLocalFertility",
+        "terrainsByFertility",
+        "terrainPatchMakers",
+        "wildPlants",
+        "noGravel",
+        "gravelTerrain"
+      ],
+      "absent_roots": [
+        "wildPlantsCareAboutLocalFertility",
+        "noGravel",
+        "gravelTerrain"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/workerClass",
+          "value": "BiomeWorker_Tundra"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/animalDensity",
+          "value": "1.1"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/plantDensity",
+          "value": "0.19"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlantRegrowDays",
+          "value": "28"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/terrainsByFertility/li[1]/terrain",
+          "value": "Soil"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/terrainsByFertility/li[1]/min",
+          "value": "-999"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/terrainsByFertility/li[1]/max",
+          "value": "0.87"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/terrainsByFertility/li[2]/terrain",
+          "value": "SoilRich"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/terrainsByFertility/li[2]/min",
+          "value": "0.87"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/terrainsByFertility/li[2]/max",
+          "value": "999"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/terrainPatchMakers/li/perlinFrequency",
+          "value": "0.015"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/terrainPatchMakers/li/isPond",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/terrainPatchMakers/li/thresholds/li[1]/terrain",
+          "value": "MossyTerrain"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/terrainPatchMakers/li/thresholds/li[1]/min",
+          "value": "0.64"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/terrainPatchMakers/li/thresholds/li[1]/max",
+          "value": "0.83"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/terrainPatchMakers/li/thresholds/li[2]/terrain",
+          "value": "Marsh"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/terrainPatchMakers/li/thresholds/li[2]/min",
+          "value": "0.83"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/terrainPatchMakers/li/thresholds/li[2]/max",
+          "value": "999"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlants/Plant_Grass",
+          "value": "3.6"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlants/Plant_GrayGrass",
+          "value": "3"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlants/Plant_Fireweed",
+          "value": "0.1"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlants/Plant_Moss",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlants/Plant_Bush",
+          "value": "0.3"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlants/Plant_Astragalus",
+          "value": "0.1"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlants/Plant_Dandelion",
+          "value": "0.1"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlants/Plant_TreePine",
+          "value": "0.08"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlants/Plant_TreeBirch",
+          "value": "0.08"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlants/Plant_TreeGrayPine",
+          "value": "0.08"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlants/Plant_Berry",
+          "value": "0.07"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlants/Plant_HealrootWild",
+          "value": "0.05"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlants/Plant_Reeds",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlants/Plant_Bulrush",
+          "value": "0.2"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlants/Plant_GrayGrass",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlants/Plant_Fireweed",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlants/Plant_TreeGrayPine",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlants/Plant_Reeds",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Tundra']/wildPlants/Plant_Bulrush",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        }
+      ]
+    },
+    {
+      "group": "biome",
+      "id": "BiomeDef_Desert",
+      "def_name": "Desert",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/BiomeDefs/Biomes_WarmArid.xml",
+        "xpath": "/Defs/BiomeDef[defName='Desert']",
+        "sha256": "12de99466330bdd17686c5c80205aa979b18864f4e96bfd16495644c4a5a1985"
+      },
+      "selected_roots": [
+        "workerClass",
+        "plantDensity",
+        "animalDensity",
+        "wildPlantRegrowDays",
+        "wildPlantsCareAboutLocalFertility",
+        "terrainsByFertility",
+        "terrainPatchMakers",
+        "wildPlants",
+        "noGravel",
+        "gravelTerrain"
+      ],
+      "absent_roots": [
+        "noGravel",
+        "gravelTerrain"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/workerClass",
+          "value": "BiomeWorker_Desert"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/animalDensity",
+          "value": "0.4"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/plantDensity",
+          "value": "0.05"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/wildPlantsCareAboutLocalFertility",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/wildPlantRegrowDays",
+          "value": "35"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/terrainsByFertility/li[1]/terrain",
+          "value": "Sand"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/terrainsByFertility/li[1]/min",
+          "value": "-999"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/terrainsByFertility/li[1]/max",
+          "value": "0.80"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/terrainsByFertility/li[2]/terrain",
+          "value": "Soil"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/terrainsByFertility/li[2]/min",
+          "value": "0.80"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/terrainsByFertility/li[2]/max",
+          "value": "999"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/terrainPatchMakers/li/perlinFrequency",
+          "value": "0.05"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/terrainPatchMakers/li/maxFertility",
+          "value": "0.8"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/terrainPatchMakers/li/minSize",
+          "value": "13"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/terrainPatchMakers/li/thresholds/li/terrain",
+          "value": "SoftSand"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/terrainPatchMakers/li/thresholds/li/min",
+          "value": "0.65"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/terrainPatchMakers/li/thresholds/li/max",
+          "value": "999"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/wildPlants/Plant_Grass",
+          "value": "6"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/wildPlants/Plant_GrayGrass",
+          "value": "5"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/wildPlants/Plant_PincushionCactus",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/wildPlants/Plant_SaguaroCactus",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/wildPlants/Plant_Dandelion",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/wildPlants/Plant_TreeDrago",
+          "value": "0.45"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/wildPlants/Plant_Agave",
+          "value": "0.25"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/wildPlants/Plant_Bush",
+          "value": "0.25"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/wildPlants/Plant_PebbleCactus",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/wildPlants/Plant_Reeds",
+          "value": "1"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/wildPlants/Plant_GrayGrass",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/wildPlants/Plant_PebbleCactus",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='Desert']/wildPlants/Plant_Reeds",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        }
+      ]
+    },
+    {
+      "group": "terrain",
+      "id": "TerrainDef_NaturalTerrainBase",
+      "def_name": "NaturalTerrainBase",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[@Name='NaturalTerrainBase']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      "selected_roots": [
+        "fertility",
+        "pathCost",
+        "affordances",
+        "supportsRock",
+        "tags",
+        "natural"
+      ],
+      "absent_roots": [
+        "fertility",
+        "pathCost",
+        "supportsRock",
+        "tags"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[@Name='NaturalTerrainBase']/affordances/li",
+          "value": "Walkable"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[@Name='NaturalTerrainBase']/natural",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "terrain",
+      "id": "TerrainDef_Soil",
+      "def_name": "Soil",
+      "parent_name": "NaturalTerrainBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='Soil']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      "selected_roots": [
+        "fertility",
+        "pathCost",
+        "affordances",
+        "supportsRock",
+        "tags",
+        "natural"
+      ],
+      "absent_roots": [
+        "supportsRock",
+        "natural"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[defName='Soil']/pathCost",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Soil']/affordances/li[1]",
+          "value": "Light"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Soil']/affordances/li[2]",
+          "value": "Medium"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Soil']/affordances/li[3]",
+          "value": "Heavy"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Soil']/affordances/li[4]",
+          "value": "GrowSoil"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Soil']/affordances/li[5]",
+          "value": "Diggable"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Soil']/fertility",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Soil']/tags/li",
+          "value": "Soil"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "terrain",
+      "id": "TerrainDef_SoilRich",
+      "def_name": "SoilRich",
+      "parent_name": "NaturalTerrainBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='SoilRich']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      "selected_roots": [
+        "fertility",
+        "pathCost",
+        "affordances",
+        "supportsRock",
+        "tags",
+        "natural"
+      ],
+      "absent_roots": [
+        "supportsRock",
+        "natural"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoilRich']/pathCost",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoilRich']/affordances/li[1]",
+          "value": "Light"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoilRich']/affordances/li[2]",
+          "value": "Medium"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoilRich']/affordances/li[3]",
+          "value": "Heavy"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoilRich']/affordances/li[4]",
+          "value": "GrowSoil"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoilRich']/affordances/li[5]",
+          "value": "Diggable"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoilRich']/fertility",
+          "value": "1.4"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoilRich']/tags/li",
+          "value": "Soil"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "terrain",
+      "id": "TerrainDef_Gravel",
+      "def_name": "Gravel",
+      "parent_name": "NaturalTerrainBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='Gravel']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      "selected_roots": [
+        "fertility",
+        "pathCost",
+        "affordances",
+        "supportsRock",
+        "tags",
+        "natural"
+      ],
+      "absent_roots": [
+        "supportsRock",
+        "natural"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[defName='Gravel']/pathCost",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Gravel']/affordances/li[1]",
+          "value": "Light"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Gravel']/affordances/li[2]",
+          "value": "Medium"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Gravel']/affordances/li[3]",
+          "value": "Heavy"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Gravel']/affordances/li[4]",
+          "value": "GrowSoil"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Gravel']/affordances/li[5]",
+          "value": "Diggable"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Gravel']/fertility",
+          "value": "0.7"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Gravel']/tags/li",
+          "value": "Soil"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "terrain",
+      "id": "TerrainDef_Sand",
+      "def_name": "Sand",
+      "parent_name": "NaturalTerrainBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='Sand']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      "selected_roots": [
+        "fertility",
+        "pathCost",
+        "affordances",
+        "supportsRock",
+        "tags",
+        "natural"
+      ],
+      "absent_roots": [
+        "supportsRock",
+        "tags",
+        "natural"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[defName='Sand']/pathCost",
+          "value": "4"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Sand']/affordances/li[1]",
+          "value": "Light"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Sand']/affordances/li[2]",
+          "value": "Medium"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Sand']/affordances/li[3]",
+          "value": "Heavy"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Sand']/affordances/li[4]",
+          "value": "Diggable"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Sand']/fertility",
+          "value": "0.10"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "terrain",
+      "id": "TerrainDef_SoftSand",
+      "def_name": "SoftSand",
+      "parent_name": "NaturalTerrainBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='SoftSand']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      "selected_roots": [
+        "fertility",
+        "pathCost",
+        "affordances",
+        "supportsRock",
+        "tags",
+        "natural"
+      ],
+      "absent_roots": [
+        "supportsRock",
+        "tags",
+        "natural"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoftSand']/pathCost",
+          "value": "14"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoftSand']/affordances/li[1]",
+          "value": "Light"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoftSand']/affordances/li[2]",
+          "value": "Diggable"
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoftSand']/fertility",
+          "value": "0"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_PlantBaseNonEdible",
+      "def_name": "PlantBaseNonEdible",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      },
+      "selected_roots": [
+        "plant",
+        "statBases",
+        "category",
+        "thingClass"
+      ],
+      "absent_roots": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']/category",
+          "value": "Plant"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']/thingClass",
+          "value": "Plant"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']/statBases/Flammability",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']/statBases/BeautyOutdoors",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']/plant/fertilityMin",
+          "value": "0.7"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']/plant/fertilitySensitivity",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']/plant/sowWork",
+          "value": "170"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']/plant/harvestWork",
+          "value": "200"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_PlantBase",
+      "def_name": "PlantBase",
+      "parent_name": "PlantBaseNonEdible",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='PlantBase']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      },
+      "selected_roots": [
+        "plant",
+        "statBases",
+        "category",
+        "thingClass"
+      ],
+      "absent_roots": [
+        "plant",
+        "statBases",
+        "category",
+        "thingClass"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_TreeBase",
+      "def_name": "TreeBase",
+      "parent_name": "PlantBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='TreeBase']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      },
+      "selected_roots": [
+        "plant",
+        "statBases",
+        "category",
+        "thingClass"
+      ],
+      "absent_roots": [
+        "category",
+        "thingClass"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/statBases/MaxHitPoints",
+          "value": "200"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/statBases/Flammability",
+          "value": "0.8"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/statBases/Nutrition",
+          "value": "2.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/statBases/Mass",
+          "value": "150"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/lifespanDaysPerGrowDays",
+          "value": "9"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/fertilitySensitivity",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/sowWork",
+          "value": "4000"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/sowMinSkill",
+          "value": "6"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/sowResearchPrerequisites/li",
+          "value": "TreeSowing"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/mustBeWildToSow",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/harvestWork",
+          "value": "800"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/harvestedThingDef",
+          "value": "WoodLog"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/harvestYield",
+          "value": "25"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/harvestTag",
+          "value": "Wood"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/harvestMinGrowth",
+          "value": "0.40"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/harvestFailable",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/blockAdjacentSow",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/treeLoversCareIfChopped",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/burnedThingDef",
+          "value": "BurnedTree"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/choppedThingDef",
+          "value": "ChoppedStump"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/smashedThingDef",
+          "value": "SmashedStump"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/treeCategory",
+          "value": "Full"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/sowTags/li",
+          "value": "Ground"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/wildClusterRadius",
+          "value": "8"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/wildClusterWeight",
+          "value": "24"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/wildOrder",
+          "value": "3"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/interferesWithRoof",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/destroyedByFlooding",
+          "value": "false"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_DeciduousTreeBase",
+      "def_name": "DeciduousTreeBase",
+      "parent_name": "TreeBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='DeciduousTreeBase']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      },
+      "selected_roots": [
+        "plant",
+        "statBases",
+        "category",
+        "thingClass"
+      ],
+      "absent_roots": [
+        "plant",
+        "statBases",
+        "category",
+        "thingClass"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_Plant_TreeOak",
+      "def_name": "Plant_TreeOak",
+      "parent_name": "DeciduousTreeBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_Temperate.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_TreeOak']",
+        "sha256": "648f1b176bf950762413c631e2e800580ddd270b752a1ed9e73ae9ff99653665"
+      },
+      "selected_roots": [
+        "plant",
+        "statBases",
+        "category",
+        "thingClass"
+      ],
+      "absent_roots": [
+        "category",
+        "thingClass"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeOak']/statBases/Beauty",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeOak']/statBases/BeautyOutdoors",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeOak']/plant/growDays",
+          "value": "30"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeOak']/plant/harvestWork",
+          "value": "1400"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeOak']/plant/harvestYield",
+          "value": "46"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeOak']/plant/wildClusterWeight",
+          "value": "35"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_Plant_TreePoplar",
+      "def_name": "Plant_TreePoplar",
+      "parent_name": "DeciduousTreeBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_Temperate.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_TreePoplar']",
+        "sha256": "648f1b176bf950762413c631e2e800580ddd270b752a1ed9e73ae9ff99653665"
+      },
+      "selected_roots": [
+        "plant",
+        "statBases",
+        "category",
+        "thingClass"
+      ],
+      "absent_roots": [
+        "category",
+        "thingClass"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreePoplar']/statBases/Beauty",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreePoplar']/statBases/Nutrition",
+          "value": "1.5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreePoplar']/plant/growDays",
+          "value": "15.05"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreePoplar']/plant/harvestWork",
+          "value": "800"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreePoplar']/plant/harvestYield",
+          "value": "27"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreePoplar']/plant/wildClusterWeight",
+          "value": "35"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_Plant_TreePine",
+      "def_name": "Plant_TreePine",
+      "parent_name": "TreeBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_Temperate.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_TreePine']",
+        "sha256": "648f1b176bf950762413c631e2e800580ddd270b752a1ed9e73ae9ff99653665"
+      },
+      "selected_roots": [
+        "plant",
+        "statBases",
+        "category",
+        "thingClass"
+      ],
+      "absent_roots": [
+        "category",
+        "thingClass"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreePine']/statBases/Beauty",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreePine']/statBases/BeautyOutdoors",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreePine']/plant/growDays",
+          "value": "20"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreePine']/plant/harvestWork",
+          "value": "710"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreePine']/plant/harvestYield",
+          "value": "27"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_Plant_PincushionCactus",
+      "def_name": "Plant_PincushionCactus",
+      "parent_name": "PlantBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_Arid.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_PincushionCactus']",
+        "sha256": "dd0c9c0a714eefc3204f51c50bde513181be3b246b382cec09b9acdab2ed7ea7"
+      },
+      "selected_roots": [
+        "plant",
+        "statBases",
+        "category",
+        "thingClass"
+      ],
+      "absent_roots": [
+        "category",
+        "thingClass"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_PincushionCactus']/statBases/MaxHitPoints",
+          "value": "150"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_PincushionCactus']/statBases/Nutrition",
+          "value": "0.25"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_PincushionCactus']/plant/fertilityMin",
+          "value": "0.05"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_PincushionCactus']/plant/fertilitySensitivity",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_PincushionCactus']/plant/growDays",
+          "value": "2.5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_PincushionCactus']/plant/wildClusterRadius",
+          "value": "4"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_PincushionCactus']/plant/wildClusterWeight",
+          "value": "4"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_PincushionCactus']/plant/wildOrder",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_PincushionCactus']/plant/maxGrowthTemperature",
+          "value": "75"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_Plant_SaguaroCactus",
+      "def_name": "Plant_SaguaroCactus",
+      "parent_name": "TreeBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_Arid.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_SaguaroCactus']",
+        "sha256": "dd0c9c0a714eefc3204f51c50bde513181be3b246b382cec09b9acdab2ed7ea7"
+      },
+      "selected_roots": [
+        "plant",
+        "statBases",
+        "category",
+        "thingClass"
+      ],
+      "absent_roots": [
+        "category",
+        "thingClass"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_SaguaroCactus']/statBases/MaxHitPoints",
+          "value": "130"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_SaguaroCactus']/statBases/Nutrition",
+          "value": "2.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_SaguaroCactus']/statBases/Mass",
+          "value": "100"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_SaguaroCactus']/plant/lifespanDaysPerGrowDays",
+          "value": "40"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_SaguaroCactus']/plant/fertilityMin",
+          "value": "0.05"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_SaguaroCactus']/plant/fertilitySensitivity",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_SaguaroCactus']/plant/growDays",
+          "value": "5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_SaguaroCactus']/plant/harvestWork",
+          "value": "210"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_SaguaroCactus']/plant/harvestYield",
+          "value": "15"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_SaguaroCactus']/plant/harvestMinGrowth",
+          "value": "0.2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_SaguaroCactus']/plant/wildClusterRadius",
+          "value": "-1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_SaguaroCactus']/plant/treeLoversCareIfChopped",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_SaguaroCactus']/plant/maxGrowthTemperature",
+          "value": "75"
+        }
+      ],
+      "node_attributes": []
+    }
+  ]
+}

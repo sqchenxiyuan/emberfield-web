@@ -1,3 +1,4 @@
+import { legacySimulation } from './fixtures/legacy-start';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { VoxelThermal } from '../src/voxel/thermal';
@@ -46,7 +47,7 @@ function addBatch(sim: VoxelSimulation, batch: Cargo, p: Pos) {
  * transfer, harvesting, cooking, hauling, cancellation and save/load use world APIs.
  */
 function fixture(configure: (sim: VoxelSimulation) => void = () => {}) {
-  const source = new VoxelSimulation();
+  const source = legacySimulation();
   source.blocks.fill(Block.Stone);
   source.ladders.fill(0);
   source.items = [];
@@ -488,7 +489,7 @@ describe('cooking input containers and v5 food persistence', () => {
     const before = structuredClone(old),
       migrated = VoxelSimulation.load(old);
     expect(old).toEqual(before);
-    expect(migrated.save().version).toBe(7);
+    expect(migrated.save().version).toBe(8);
     expect(migrated.counts()).toEqual(sim.counts());
     expect(migrated.items[0]).toMatchObject({ crop: 'rice', rotProgress: 0 });
     expect(migrated.pawns[0].cargo).toMatchObject({ rotProgress: 0 });

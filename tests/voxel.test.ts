@@ -1,3 +1,4 @@
+import { legacySimulation } from './fixtures/legacy-start';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { Block, CELLS, CHUNK, DEPTH, HEIGHT, WIDTH, at, index, position } from '../src/voxel/types';
@@ -56,7 +57,7 @@ function solo(s: VoxelSimulation) {
       ).toBe(true);
 }
 function enclosedFixture() {
-  const s = new VoxelSimulation();
+  const s = legacySimulation();
   // Isolated geometry fixture. Campaign scripts never alter physical state directly.
   s.blocks.fill(Block.Stone);
   s.ladders.fill(0);
@@ -75,7 +76,7 @@ describe('voxel generation and chunk delivery', () => {
     expect(a.save()).toEqual(b.save());
     expect(a.blocks).not.toEqual(c.blocks);
     expect(a.blocks).toHaveLength(CELLS);
-    expect(a.pawns.every((p) => p.z === 8 && a.standable(p))).toBe(true);
+    expect(a.pawns.every((p) => p.z === a.spawn.z && a.standable(p))).toBe(true);
     expect(a.counts()).toEqual({
       wood: 90,
       stone: 0,
@@ -86,13 +87,14 @@ describe('voxel generation and chunk delivery', () => {
       meal: 0,
       chunk: 0,
     });
-    expect(a.blocks[index(34, 32, 5)]).toBe(Block.Steel);
-    expect(a.trees.find((t) => t.x === 27 && t.y === 29 && t.z === 8)?.wood).toBe(27);
+    expect(a.generator).toBe(2);
+    expect(a.worldSummary.resources.steel).toBeGreaterThan(0);
+    expect(a.trees.every((t) => t.species === 'poplar' && t.wood === 27)).toBe(true);
     expect(new Set(a.trees.map((t) => at(t))).size).toBe(a.trees.length);
     expect(position(CELLS - 1)).toEqual(pos(WIDTH - 1, DEPTH - 1, HEIGHT - 1));
   });
   it('delivers independent full-height chunks once and invalidates neighboring mesh seams', () => {
-    const s = new VoxelSimulation(),
+    const s = legacySimulation(),
       chunks = s.chunks();
     expect(chunks).toHaveLength(16);
     expect(s.chunks()).toEqual([]);
@@ -176,7 +178,7 @@ describe('material ownership, cancellation and recovery', () => {
   it.each(['carried', 'delivered'] as const)(
     'refunds a cancelled wall with %s materials without duplication',
     (phase) => {
-      const s = new VoxelSimulation(),
+      const s = legacySimulation(),
         initial = s.counts(),
         target = pos(36, 34, 8);
       solo(s);
@@ -206,7 +208,7 @@ describe('material ownership, cancellation and recovery', () => {
     },
   );
   it('makes three workers compete for eight pieces of wood without negative or duplicated stock', () => {
-    const s = new VoxelSimulation();
+    const s = legacySimulation();
     const wood = s.items.find((i) => i.resource === 'wood')!;
     s.items = s.items.filter((i) => i.resource !== 'wood' || i.id === wood.id);
     wood.amount = 8;
@@ -230,7 +232,7 @@ describe('material ownership, cancellation and recovery', () => {
     expect(s.jobs.some((j) => /木材/.test(j.reason))).toBe(true);
   });
   it('retains cargo when a ladder breaks, waits for a route, and resumes after repair', () => {
-    const s = new VoxelSimulation(),
+    const s = legacySimulation(),
       initial = s.counts();
     solo(s);
     place(s, 'up', pos(33, 32, 8));
@@ -279,7 +281,7 @@ describe('material ownership, cancellation and recovery', () => {
     expect(s.stats.consumed.wood).toBe(11);
   });
   it('postpones removal of an occupied support and finishes after the occupant moves', () => {
-    const s = new VoxelSimulation(),
+    const s = legacySimulation(),
       initial = s.counts(),
       occupant = s.pawns[1];
     solo(s);
@@ -310,7 +312,7 @@ describe('voxel persistence and input validation', () => {
   it.each(['carried', 'delivered'] as const)(
     'loads %s materials and completes exactly once with rebuilt assignments',
     (phase) => {
-      let s = new VoxelSimulation();
+      let s = legacySimulation();
       const initial = s.counts(),
         target = pos(36, 34, 8);
       solo(s);
@@ -349,7 +351,7 @@ describe('voxel persistence and input validation', () => {
     },
   );
   it('rejects invalid typed commands without changing simulation state', () => {
-    const s = new VoxelSimulation(),
+    const s = legacySimulation(),
       pawnId = s.pawns[0].id;
     const commands: VoxelCommand[] = [
       { type: 'designate', tool: 'wall', from: pos(-1, 32, 8) },
@@ -369,7 +371,7 @@ describe('voxel persistence and input validation', () => {
     }
   });
   it('rejects malformed commands as results and leaves rejected overlapping plans atomic', () => {
-    const s = new VoxelSimulation();
+    const s = legacySimulation();
     const malformed: unknown[] = [
       null,
       {},
@@ -388,15 +390,15 @@ describe('voxel persistence and input validation', () => {
     expect(s.save()).toEqual(before);
   });
   it('rejects corrupt saves without touching the running world', () => {
-    const s = new VoxelSimulation();
+    const s = legacySimulation();
     place(s, 'wall', pos(36, 34, 8));
     const original = s.save();
     const corruptions: Array<(save: VoxelSave) => void> = [
       (d) => {
-        (d as { version: number }).version = 8;
+        (d as { version: number }).version = 9;
       },
       (d) => {
-        (d as { generator: number }).generator = 2;
+        (d as { generator: number }).generator = 3;
       },
       (d) => {
         d.seed = Infinity;

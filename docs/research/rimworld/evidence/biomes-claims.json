@@ -1,0 +1,642 @@
+[
+  {
+    "id": "BM01",
+    "kind": "static-derived",
+    "statement": "Water-covered tiles score -100 in the four reviewed workers. Temperate and Boreal require T>=-10 and rain>=600; temperate score15+(T-7)+(rain-600)/180, boreal15. Desert requires rain<600 and scoresT+0.0001. Tundra scores-T. Disallowed nonwater branches return0, not negative infinity.",
+    "sources": [
+      {
+        "group": "biomes",
+        "type": "RimWorld.BiomeWorker_TemperateForest",
+        "line_start": 7,
+        "line_end": 32
+      },
+      {
+        "group": "biomes",
+        "type": "RimWorld.BiomeWorker_BorealForest",
+        "line_start": 7,
+        "line_end": 22
+      },
+      {
+        "group": "biomes",
+        "type": "RimWorld.BiomeWorker_Desert",
+        "line_start": 7,
+        "line_end": 32
+      },
+      {
+        "group": "biomes",
+        "type": "RimWorld.BiomeWorker_Tundra",
+        "line_start": 7,
+        "line_end": 14
+      }
+    ]
+  },
+  {
+    "id": "BM02",
+    "kind": "static-derived",
+    "statement": "World selection considers implemented/naturally-generating/layer-valid biome definitions and retains the first candidate on a tied score. These four workers are not a complete climate classifier; other biome workers compete.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.Planet.WorldGenStep_Terrain",
+        "line_start": 288,
+        "line_end": 306
+      }
+    ]
+  },
+  {
+    "id": "BM03",
+    "kind": "xml-and-static-derived",
+    "statement": "Temperate/Boreal/Desert/Tundra declare plantDensity0.65/0.4/0.05/0.19 and regrowDays20/25/35/28. Core-only declared wild-plant weights sum10.2/26.02/9.45/4.88 after excluding MayRequire entries. Tree commonality is neither tree coverage nor a spawn guarantee; BiomeDef.TreeDensity is a commonality ratio times total plantDensity.",
+    "sources": [
+      {
+        "group": "biomes",
+        "xml_record": "BiomeDef_TemperateForest"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "BiomeDef_BorealForest"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "BiomeDef_Desert"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "BiomeDef_Tundra"
+      },
+      {
+        "group": "biomes",
+        "type": "RimWorld.BiomeDef",
+        "line_start": 303,
+        "line_end": 327
+      }
+    ]
+  },
+  {
+    "id": "BM04",
+    "kind": "xml-and-static-derived",
+    "statement": "Temperate/Boreal/Tundra terrain thresholds choose Soil through inclusive0.87 then SoilRich; Desert chooses Sand through inclusive0.80 then Soil. TerrainThreshold returns first inclusive match. Generation fertility is a terrain selector, not final farming fertility.",
+    "sources": [
+      {
+        "group": "biomes",
+        "xml_record": "BiomeDef_TemperateForest"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "BiomeDef_BorealForest"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "BiomeDef_Tundra"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "BiomeDef_Desert"
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.TerrainThreshold",
+        "line_start": 14,
+        "line_end": 25
+      }
+    ]
+  },
+  {
+    "id": "BM05",
+    "kind": "xml-and-static-derived",
+    "statement": "TerrainFrom tries biome patches first; without a patch, .55<e<.61 selects Gravel unless noGravel, and e>=.61 selects natural rock floor. Then it tries fertility thresholds and falls back to Sand. preferRock replaces a supporting result. TerrainDef supportsRock defaults true; Desert patch includes SoftSand at patch noise>=.65 with maxFertility.8/minSize13/frequency.05.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.MapGenUtility",
+        "line_start": 616,
+        "line_end": 677
+      },
+      {
+        "group": "biomes",
+        "type": "Verse.TerrainDef",
+        "line_start": 216,
+        "line_end": 216
+      },
+      {
+        "group": "biomes",
+        "xml_record": "BiomeDef_Desert"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "TerrainDef_SoftSand"
+      }
+    ]
+  },
+  {
+    "id": "BM06",
+    "kind": "xml-and-static-derived",
+    "statement": "Soil/SoilRich/Gravel/Sand declare fertility1/1.4/.7/.1 and pathCost2/2/2/4, all derive from NaturalTerrainBase. Soil/Rich/Gravel have GrowSoil affordance; Sand does not. FertilityGrid normally uses final terrain fertility, with edifice override and optional Biotech pollution cap. Plant eligibility separately checks species fertility minimum, climatic extrema, terrain tags, pollution and blockers; equality with fertilityMin is allowed.",
+    "sources": [
+      {
+        "group": "biomes",
+        "xml_record": "TerrainDef_NaturalTerrainBase"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "TerrainDef_Soil"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "TerrainDef_SoilRich"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "TerrainDef_Gravel"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "TerrainDef_Sand"
+      },
+      {
+        "group": "biomes",
+        "type": "RimWorld.FertilityGrid",
+        "line_start": 38,
+        "line_end": 55
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantUtility",
+        "line_start": 69,
+        "line_end": 213
+      }
+    ]
+  },
+  {
+    "id": "BM07",
+    "kind": "xml-and-static-derived",
+    "statement": "For positive-fertility noncave ordinary cells, desired plant capacity=min(plantDensity*factor*fertility^2,1). Desert wildPlantsCareAboutLocalFertility=false switches nonmixed-biome saturation to whole-map count; it does not remove fertility from desired capacity or species eligibility. Cave and fertility-ignoring water branches differ.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.WildPlantSpawner",
+        "line_start": 613,
+        "line_end": 630
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.WildPlantSpawner",
+        "line_start": 704,
+        "line_end": 737
+      },
+      {
+        "group": "biomes",
+        "type": "RimWorld.BiomeDef",
+        "line_start": 47,
+        "line_end": 51
+      },
+      {
+        "group": "biomes",
+        "xml_record": "BiomeDef_Desert"
+      }
+    ]
+  },
+  {
+    "id": "BM08",
+    "kind": "xml-and-static-derived",
+    "statement": "Initial vegetation visits shuffled cells, skipping with chance.001; eligible species are weighted by current global proportions, cluster distances and local distribution, and later wildOrder plants require sufficient lower-order neighbors. Initial growth clamps U(.15,1.5), so mature fraction is10/27 in the ideal continuous model. TreeBase cluster radius8/weight24/order3; Poplar weight35; Saguaro radius-1 disables clustering.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.GenStep_Plants",
+        "line_start": 7,
+        "line_end": 22
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.WildPlantSpawner",
+        "line_start": 411,
+        "line_end": 504
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.WildPlantSpawner",
+        "line_start": 542,
+        "line_end": 610
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantProperties",
+        "line_start": 237,
+        "line_end": 237
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_TreeBase"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_TreePoplar"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_SaguaroCactus"
+      }
+    ]
+  },
+  {
+    "id": "BM09",
+    "kind": "xml-declared",
+    "statement": "Poplar derives DeciduousTreeBase->TreeBase->PlantBase->PlantBaseNonEdible; Pine and Saguaro directly derive TreeBase. They inherit WoodLog and harvestFailable=false. Full base yields/work/growDays are27/800/15.05,27/710/20,15/210/5. Poplar/Pine fertilityMin.7/sensitivity.5; Saguaro.05/0. PincushionCactus derives PlantBase, not TreeBase, and has no selected inherited harvestedThingDef. Oak remains46wood/1400work/30growDays.",
+    "sources": [
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_PlantBaseNonEdible"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_PlantBase"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_TreeBase"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_DeciduousTreeBase"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_TreePoplar"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_TreePine"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_SaguaroCactus"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_PincushionCactus"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_TreeOak"
+      }
+    ]
+  },
+  {
+    "id": "BM10",
+    "kind": "xml-and-static-derived",
+    "statement": "Tree yields are full-growth full-health difficulty1 bases, not unconditional fixed drops. Harvest requires growth strictly greater than harvestMinGrowth (.4 for Poplar/Pine, .2 for Saguaro); yield scales by .5+.5*InverseLerp(min,1,growth), .5+.5*healthFraction and optional difficulty, then stochastic rounding. Work per tick uses PlantWorkSpeed*Lerp(3.3,1,growth); human failure check is disabled by harvestFailable=false, but harvest stat>1 can increase output.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 99,
+        "line_end": 118
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 925,
+        "line_end": 960
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantProperties",
+        "line_start": 50,
+        "line_end": 61
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.JobDriver_PlantWork",
+        "line_start": 24,
+        "line_end": 27
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.JobDriver_PlantWork",
+        "line_start": 66,
+        "line_end": 99
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_TreeBase"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_SaguaroCactus"
+      }
+    ]
+  },
+  {
+    "id": "BM11",
+    "kind": "static-derived",
+    "statement": "Hilliness multiplies local elevation by.8/.9/1/1.1/1.2 and controls ore-attempt rates4/8/11/15/16 per10000. Fertility noise has separate frequency.021/octaves6. Stone spawn requires elevation>.7 and no cave; roof thresholds are.7*1.04 and.7*1.14. Mine counts use x-side squared and nested RoundToInt, not 3D volume or guaranteed final ore.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.MapGenTuning",
+        "line_start": 5,
+        "line_end": 15
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.GenStep_ElevationFertility",
+        "line_start": 54,
+        "line_end": 97
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.GenStep_RocksFromGrid",
+        "line_start": 48,
+        "line_end": 85
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.GenStep_RocksFromGrid",
+        "line_start": 109,
+        "line_end": 146
+      },
+      {
+        "group": "generation",
+        "type": "Verse.GenStep_Scatterer",
+        "line_start": 244,
+        "line_end": 274
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.GenStep_ScatterLumpsMineable",
+        "line_start": 22,
+        "line_end": 45
+      }
+    ]
+  },
+  {
+    "id": "BM12",
+    "kind": "static-derived",
+    "statement": "The Mountain mutator further adds a directional edge field to elevation with span.15*mapWidth, offset.2*mapWidth, displacement frequency.003 and strength20; water-covered tiles clamp elevation at0. This is a 2D scalar field modification, not an original walkable z-height system.",
+    "sources": [
+      {
+        "group": "biomes",
+        "type": "RimWorld.TileMutatorWorker_Mountain",
+        "line_start": 9,
+        "line_end": 39
+      }
+    ]
+  },
+  {
+    "id": "BM13",
+    "kind": "static-derived",
+    "statement": "World mean temperature derives from abs(latitude)/90 curve(0,30),(.1,29),(.5,7),(1,-37), elevation cooling0..40 over250..5000, temperature noise and overall-setting curve. Rainfall has a separate noise/latitude/elevation pipeline and is assigned before biome scoring. A biome name does not uniquely determine mean temperature, rainfall or growing season.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.Planet.WorldGenStep_Terrain",
+        "line_start": 50,
+        "line_end": 75
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Planet.WorldGenStep_Terrain",
+        "line_start": 137,
+        "line_end": 182
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Planet.WorldGenStep_Terrain",
+        "line_start": 265,
+        "line_end": 284
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Planet.WorldGenStep_Terrain",
+        "line_start": 309,
+        "line_end": 322
+      }
+    ]
+  },
+  {
+    "id": "BM14",
+    "kind": "static-derived",
+    "statement": "Calendar uses60000ticks/day,60days/year,15days/season and5days/twelfth. Seasonal offset is -signedAmplitude*cos(2pi*(yearFraction-10/12)); northern winter uses beginning of eleventh twelfth (zero-based10), with southern amplitude sign reversal.",
+    "sources": [
+      {
+        "group": "biomes",
+        "type": "RimWorld.GenDate",
+        "line_start": 10,
+        "line_end": 34
+      },
+      {
+        "group": "biomes",
+        "type": "RimWorld.SeasonUtility",
+        "line_start": 151,
+        "line_end": 189
+      },
+      {
+        "group": "biomes",
+        "type": "RimWorld.Twelfth",
+        "line_start": 3,
+        "line_end": 18
+      },
+      {
+        "group": "biomes",
+        "type": "RimWorld.TwelfthUtility",
+        "line_start": 52,
+        "line_end": 60
+      },
+      {
+        "group": "environment",
+        "type": "Verse.GenTemperature",
+        "line_start": 202,
+        "line_end": 240
+      }
+    ]
+  },
+  {
+    "id": "BM15",
+    "kind": "static-derived",
+    "statement": "Seasonal amplitude uses curve(0,3),(.1,4),(1,28) at normalized equator distance abs(center.y/Radius), equivalent to abs(sin(latitude)); it is not abs(latitude)/90. WorldGrid delegates to PlanetLayer. At45degrees unsigned amplitude is about20.1895; southern sign is negative.",
+    "sources": [
+      {
+        "group": "environment",
+        "type": "Verse.TemperatureTuning",
+        "line_start": 13,
+        "line_end": 18
+      },
+      {
+        "group": "environment",
+        "type": "Verse.GenTemperature",
+        "line_start": 229,
+        "line_end": 240
+      },
+      {
+        "group": "biomes",
+        "type": "RimWorld.Planet.WorldGrid",
+        "line_start": 370,
+        "line_end": 373
+      },
+      {
+        "group": "biomes",
+        "type": "RimWorld.Planet.PlanetLayer",
+        "line_start": 647,
+        "line_end": 653
+      },
+      {
+        "group": "biomes",
+        "type": "RimWorld.Planet.PlanetLayer",
+        "line_start": 855,
+        "line_end": 863
+      }
+    ]
+  },
+  {
+    "id": "BM16",
+    "kind": "static-derived",
+    "statement": "Seasonal temperature is world mean plus seasonal offset. Actual cached outdoor temperature additionally adds coherent daily Perlin variation*7 and sun-cycle cos(2pi*(localDayFraction+.32))*7; map game-condition offset is added to cached outdoor value. Cache refresh interval60ticks. These are distinct from room temperatures.",
+    "sources": [
+      {
+        "group": "biomes",
+        "type": "RimWorld.Planet.TileTemperaturesComp",
+        "line_start": 23,
+        "line_end": 93
+      },
+      {
+        "group": "environment",
+        "type": "Verse.GenTemperature",
+        "line_start": 143,
+        "line_end": 170
+      },
+      {
+        "group": "environment",
+        "type": "Verse.GenTemperature",
+        "line_start": 193,
+        "line_end": 210
+      }
+    ]
+  },
+  {
+    "id": "BM17",
+    "kind": "static-derived",
+    "statement": "World OutdoorGrowingPeriod label uses12 twelfth means, each120 samples starting at twelfthStart+30000ticks and stepping2500ticks, from seasonal temperature only. It counts means within inclusive[6,42] by default and reports count*5/60 or whole year. This label differs from instant biological growth limits; default optimal bounds also remain6..42 for Saguaro.",
+    "sources": [
+      {
+        "group": "biomes",
+        "type": "RimWorld.Planet.WITab_Terrain",
+        "line_start": 129,
+        "line_end": 139
+      },
+      {
+        "group": "biomes",
+        "type": "RimWorld.Zone_Growing",
+        "line_start": 118,
+        "line_end": 155
+      },
+      {
+        "group": "environment",
+        "type": "Verse.GenTemperature",
+        "line_start": 24,
+        "line_end": 35
+      },
+      {
+        "group": "environment",
+        "type": "Verse.GenTemperature",
+        "line_start": 242,
+        "line_end": 254
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantProperties",
+        "line_start": 87,
+        "line_end": 93
+      }
+    ]
+  },
+  {
+    "id": "BM18",
+    "kind": "xml-and-static-derived",
+    "statement": "Actual local GrowthSeasonNow requires strictly minTemperature<T<maxTemperature, based on cell/room temperature; ordinary defaults0..58 with optimal6..42, Saguaro/Pincushion maximum75. Growth temperature factor ramps linearly outside optimal range; fertility factor is1+sensitivity*(fertility-1). Dormancy/light/growth stage still gate progress; growDays is work-equivalent days, not guaranteed calendar maturation.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantUtility",
+        "line_start": 11,
+        "line_end": 32
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantUtility",
+        "line_start": 352,
+        "line_end": 381
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 289,
+        "line_end": 301
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 334,
+        "line_end": 369
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantProperties",
+        "line_start": 87,
+        "line_end": 93
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_SaguaroCactus"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_PincushionCactus"
+      }
+    ]
+  },
+  {
+    "id": "BM19",
+    "kind": "static-derived",
+    "statement": "Wild regrowth scans ceil(area*.0001) cells per internal tick, checks density and an MTB event with biome regrowDays (cave130), and respects roofs and planting conditions. It is neither guaranteed respawn at the chopped location nor a simple fixed timer.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.WildPlantSpawner",
+        "line_start": 282,
+        "line_end": 317
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.WildPlantSpawner",
+        "line_start": 674,
+        "line_end": 688
+      }
+    ]
+  },
+  {
+    "id": "BM20",
+    "kind": "static-derived-and-project-adaptation",
+    "statement": "A local 3D generator may independently select biome/hilliness/climate, map scalar elevation to physical z, use seeded 3D ore/terrain and preview terrain/trees/resources. Such choices, any resource guarantee, tree-only sampling, smaller-map density correction and reduced calendar are explicit adaptations, not a reconstruction of the original spherical world or RNG stream.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.GenStep_ElevationFertility",
+        "line_start": 78,
+        "line_end": 97
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.MapGenUtility",
+        "line_start": 630,
+        "line_end": 677
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.GenStep_Plants",
+        "line_start": 11,
+        "line_end": 22
+      }
+    ]
+  }
+]

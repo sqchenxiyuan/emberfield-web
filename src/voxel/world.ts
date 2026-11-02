@@ -23,6 +23,15 @@ import { VoxelRooms } from './rooms';
 import { VoxelPower, DEVICE_COSTS, DEVICE_WORK, isDeviceKind } from './power';
 import { VoxelThermal } from './thermal';
 import {
+  DEFAULT_WORLD_SETTINGS,
+  TREE_DATA,
+  generateWorld,
+  sanitizeWorldSettings,
+  summarizeWorld,
+  validWorldSettings,
+} from './worldgen';
+import { outdoorTemperature } from './climate';
+import {
   advanceRot,
   compatibleBatches,
   freshBatch,
@@ -46,7 +55,8 @@ import {
   NUTRITION,
   FOOD_FALL_PER_TICK,
   hourAt,
-  temperatureAt,
+  fertilityOf,
+  MIN_CROP_FERTILITY,
   daylight,
   cropGrowth,
 } from './farming';
@@ -65,6 +75,8 @@ import type {
   VoxelSave,
   VoxelSnapshot,
   VoxelStats,
+  WorldSettings,
+  WorldSummary,
   Work,
   Crop,
   CropKind,
@@ -165,26 +177,6 @@ const workType = (kind: JobKind): Work =>
               ? 'cut'
               : 'build';
 const missing = (j: Job) => resources.find((r) => (j.cost[r] ?? 0) > (j.delivered[r] ?? 0));
-function hash(seed: number, x: number, y: number, z = 0) {
-  let a =
-    Math.imul(x + 374761393, 668265263) ^
-    Math.imul(y + seed, 1274126177) ^
-    Math.imul(z + 1447, 1597334677);
-  a = Math.imul(a ^ (a >>> 13), 1274126177);
-  return ((a ^ (a >>> 16)) >>> 0) / 4294967296;
-}
-function noise(seed: number, x: number, y: number) {
-  const ix = Math.floor(x),
-    iy = Math.floor(y),
-    tx = x - ix,
-    ty = y - iy;
-  const u = tx * tx * (3 - 2 * tx),
-    v = ty * ty * (3 - 2 * ty);
-  return (
-    (hash(seed, ix, iy) * (1 - u) + hash(seed, ix + 1, iy) * u) * (1 - v) +
-    (hash(seed, ix, iy + 1) * (1 - u) + hash(seed, ix + 1, iy + 1) * u) * v
-  );
-}
 function encode(a: Uint8Array) {
   const out: number[] = [];
   let last = a[0],
@@ -246,10 +238,12 @@ export class VoxelSimulation {
   rooms = new VoxelRooms();
   roomRevision = 0;
   private roomsDirty = true;
-  stockpiles: Stockpile[] = [
-    { x: 30, y: 32, z: SURFACE, priority: 1, accepts: [...resources] },
-    { x: 30, y: 33, z: SURFACE, priority: 1, accepts: [...resources] },
-  ];
+  stockpiles: Stockpile[] = [];
+  generator: 1 | 2 = 2;
+  settings: WorldSettings;
+  spawn: Pos = { x: 32, y: 34, z: SURFACE };
+  private summaryCache?: WorldSummary;
+  private summaryRevision = -1;
   stats: VoxelStats = {
     mined: 0,
     cut: 0,
@@ -280,74 +274,40 @@ export class VoxelSimulation {
     { cell: number; batch: Cargo; sourceId: number | null }
   >();
   private craftSources = new Map<number, number>();
-  constructor(public seed = 73129) {
-    this.generate();
+  constructor(
+    public seed = 73129,
+    settings?: Partial<WorldSettings>,
+    restoreOnly = false,
+  ) {
+    if (!Number.isSafeInteger(seed)) throw new Error('种子必须是安全整数');
+    this.settings = sanitizeWorldSettings(settings);
+    if (!restoreOnly) this.generate();
   }
   private id() {
     return this.nextId++;
   }
   private generate() {
-    for (let y = 0; y < DEPTH; y++)
-      for (let x = 0; x < WIDTH; x++) {
-        const d = Math.hypot(x - 32, y - 32);
-        const surface =
-          d < 13
-            ? SURFACE
-            : Math.max(6, Math.min(11, 6 + Math.round(noise(this.seed, x / 12, y / 12) * 5)));
-        for (let z = 0; z < surface; z++)
-          this.blocks[index(x, y, z)] =
-            z === 0 ? Block.Bedrock : z >= surface - 2 ? Block.Soil : Block.Stone;
-        // Fertility-squared density is source-inspired; noise and scale are our design.
-        const fertility = 0.3 + noise(this.seed + 1, x / 8, y / 8) * 0.7;
-        if (
-          d > 6 &&
-          hash(this.seed + 2, x, y) < fertility * fertility * 0.16 &&
-          surface + 2 < HEIGHT
-        )
-          this.trees.push({ id: this.id(), x, y, z: surface, wood: 27 });
-      }
-    // Finite 3D veins, not RimWorld's 2D attempts repeated for every depth layer.
-    for (let v = 0; v < 44; v++) {
-      let x = 4 + Math.floor(hash(this.seed, v, 1) * 56),
-        y = 4 + Math.floor(hash(this.seed, v, 2) * 56),
-        z = 2 + Math.floor(hash(this.seed, v, 3) * 4);
-      for (let n = 0; n < 8; n++) {
-        if (this.blocks[index(x, y, z)] === Block.Stone)
-          this.blocks[index(x, y, z)] = v % 9 === 0 ? Block.Components : Block.Steel;
-        const dir = Math.floor(hash(this.seed, v, n + 5) * 6);
-        x = Math.max(2, Math.min(61, x + (dir === 0 ? 1 : dir === 1 ? -1 : 0)));
-        y = Math.max(2, Math.min(61, y + (dir === 2 ? 1 : dir === 3 ? -1 : 0)));
-        z = Math.max(2, Math.min(5, z + (dir === 4 ? 1 : dir === 5 ? -1 : 0)));
-      }
-    }
-    // Guaranteed start resources are visible, finite, and saved like all other objects.
-    for (const [x, y] of [
-      [27, 29],
-      [28, 27],
-      [36, 28],
-      [38, 31],
-      [36, 37],
-      [27, 36],
-    ])
-      if (!this.trees.some((t) => t.x === x && t.y === y))
-        this.trees.push({ id: this.id(), x, y, z: 8, wood: 27 });
-    for (const [x, y, z] of [
-      [34, 32, 5],
-      [35, 32, 5],
-      [35, 33, 5],
-      [34, 33, 4],
-      [36, 32, 5],
-      [35, 33, 4],
-    ])
-      this.blocks[index(x, y, z)] = Block.Steel;
+    const generated = generateWorld(this.seed, this.settings);
+    this.blocks = generated.blocks;
+    this.spawn = generated.spawn;
+    this.trees = generated.trees.map((tree) => ({ ...tree, id: this.id() }));
+    this.summaryCache = generated.summary;
+    this.summaryRevision = this.revision;
+    this.stockpiles = [-1, 0].map((dx) => ({
+      x: this.spawn.x + dx,
+      y: this.spawn.y - 1,
+      z: this.spawn.z,
+      priority: 1,
+      accepts: [...resources],
+    }));
     for (let i = 0; i < 3; i++)
       this.pawns.push({
         id: this.id(),
         name: ['林澈', '温岚', '阿砾'][i],
         color: [0xe7b66b, 0x91b7a1, 0x9faec8][i],
-        x: 31 + i,
-        y: 34,
-        z: 8,
+        x: this.spawn.x - 1 + i,
+        y: this.spawn.y + 1,
+        z: this.spawn.z,
         food: 100,
         rest: 100,
         priorities: { dig: 1, build: 1, cut: 1, haul: 2, grow: 1, cook: 1, craft: 1 },
@@ -366,8 +326,8 @@ export class VoxelSimulation {
       });
     this.rebuildTrees();
     if (
-      !this.addItem('wood', 90, { x: 30, y: 32, z: 8 }) ||
-      !this.addItem('food', 60, { x: 30, y: 33, z: 8 })
+      !this.addItem('wood', 90, this.stockpiles[0]) ||
+      !this.addItem('food', 60, this.stockpiles[1])
     )
       throw new Error('开局物资缺少合法放置空间');
     this.markAll();
@@ -820,7 +780,7 @@ export class VoxelSimulation {
   private farmable(p: Pos) {
     return (
       this.standable(p) &&
-      this.blocks[at(p) - WIDTH * DEPTH] === Block.Soil &&
+      fertilityOf(this.blocks[at(p) - WIDTH * DEPTH]) >= MIN_CROP_FERTILITY &&
       !this.ladders[at(p)] &&
       !this.furnitureAt(p)
     );
@@ -843,22 +803,24 @@ export class VoxelSimulation {
       }
       this.skyCache.set(i, sky);
     }
-    const fertility = this.blocks[i - WIDTH * DEPTH] === Block.Soil ? 1 : 0;
+    const fertility = fertilityOf(this.blocks[i - WIDTH * DEPTH]);
     const hour = hourAt(this.tick),
       light = sky ? daylight(hour) : 0,
       temperature = this.temperature(p);
-    const growthRate = fertility ? cropGrowth(kind, fertility, light, temperature, hour) : 0;
-    const reason = !fertility
-      ? '需要土壤'
-      : !sky
-        ? '上方遮挡，无阳光'
-        : hour < 6 || hour >= 19.2
-          ? '夜间休眠'
-          : light <= 0.51
-            ? '光照不足'
-            : growthRate > 0
-              ? '生长中'
-              : '温度不适';
+    const growthRate =
+      fertility >= MIN_CROP_FERTILITY ? cropGrowth(kind, fertility, light, temperature, hour) : 0;
+    const reason =
+      fertility < MIN_CROP_FERTILITY
+        ? '需要肥力至少 0.7 的土壤'
+        : !sky
+          ? '上方遮挡，无阳光'
+          : hour < 6 || hour >= 19.2
+            ? '夜间休眠'
+            : light <= 0.51
+              ? '光照不足'
+              : growthRate > 0
+                ? '生长中'
+                : '温度不适';
     return { fertility, light, temperature, growthRate, reason };
   }
   private syncProduction() {
@@ -1189,7 +1151,7 @@ export class VoxelSimulation {
             ),
         )
       )
-        return { ok: false, message: '种植区需要空闲土壤和两格净空，不能与仓储或施工重叠' };
+        return { ok: false, message: '种植区需要肥力至少 0.7、两格净空，不能与仓储或施工重叠' };
       if (
         this.farms.length + positions.filter((p) => !this.farms.some((f) => same(f, p))).length >
         512
@@ -1278,7 +1240,17 @@ export class VoxelSimulation {
           const b = this.blocks[at(q)];
           if (
             dir < 0 &&
-            (b === Block.Stone || b === Block.Soil || b === Block.Steel || b === Block.Components)
+            (
+              [
+                Block.Stone,
+                Block.Soil,
+                Block.Steel,
+                Block.Components,
+                Block.RichSoil,
+                Block.Sand,
+                Block.Gravel,
+              ] as number[]
+            ).includes(b)
           )
             plans.push(this.makeJob('digLadder', q));
           else if (!b) plans.push(this.makeJob('ladder', q));
@@ -1421,7 +1393,17 @@ export class VoxelSimulation {
       above = this.blocks[index(p.x, p.y, p.z + 1)];
     if (kind === 'mine')
       return [b, above].some((b) =>
-        [Block.Soil, Block.Stone, Block.Steel, Block.Components].includes(b as 1 | 2 | 3 | 6),
+        (
+          [
+            Block.Soil,
+            Block.Stone,
+            Block.Steel,
+            Block.Components,
+            Block.RichSoil,
+            Block.Sand,
+            Block.Gravel,
+          ] as number[]
+        ).includes(b),
       )
         ? ''
         : '此处没有可开挖的自然方块';
@@ -2026,7 +2008,7 @@ export class VoxelSimulation {
     const supportedItems = this.items.filter((i) => this.standable(i));
     // Demolition must not strand an otherwise supported upper platform. Preserve
     // existing access to the camp for people and loose goods, not just foot support.
-    const exit = this.stockpiles.find((q) => this.standable(q)) ?? { x: 32, y: 34, z: SURFACE };
+    const exit = this.stockpiles.find((q) => this.standable(q)) ?? this.spawn;
     let mustKeepExit: Pos[] = [];
     if (j.kind === 'remove' && changes.length && this.standable(exit)) {
       this.search(exit);
@@ -2357,7 +2339,7 @@ export class VoxelSimulation {
           ...this.doors.map((d) => ({ ...d, kind: 'door' as const })),
           ...coolers.map((d) => ({ ...d, kind: 'cooler' as const })),
         ],
-        temperatureAt(this.tick),
+        this.outdoorTemperature(),
       );
       this.roomsDirty = false;
       this.roomRevision++;
@@ -2365,7 +2347,17 @@ export class VoxelSimulation {
   }
   temperature(p: Pos) {
     this.updateRooms();
-    return this.thermal.temperatureAt(p, temperatureAt(this.tick));
+    return this.thermal.temperatureAt(p, this.outdoorTemperature());
+  }
+  outdoorTemperature() {
+    return outdoorTemperature(this.tick, this.settings, this.generator);
+  }
+  get worldSummary(): WorldSummary {
+    if (!this.summaryCache || this.summaryRevision !== this.revision) {
+      this.summaryCache = summarizeWorld(this.blocks, this.trees, this.spawn, this.settings);
+      this.summaryRevision = this.revision;
+    }
+    return this.summaryCache;
   }
   private updatePower() {
     if (this.powerDirty) {
@@ -2459,7 +2451,7 @@ export class VoxelSimulation {
         this.thermal.pushHeat(intent.hot, intent.heat * 1.25);
       }
     }
-    this.thermal.step(1 / TPS, temperatureAt(this.tick), this.doors, this.tick);
+    this.thermal.step(1 / TPS, this.outdoorTemperature(), this.doors, this.tick);
   }
   private updatePreservation() {
     // Ground stacks, carried food, and delivered recipe inputs are all physical
@@ -2517,6 +2509,10 @@ export class VoxelSimulation {
         stored[i.resource] += i.amount;
     return structuredClone({
       seed: this.seed,
+      generator: this.generator,
+      settings: this.settings,
+      spawn: this.spawn,
+      worldSummary: this.worldSummary,
       tick: this.tick,
       revision: this.revision,
       speed,
@@ -2546,7 +2542,7 @@ export class VoxelSimulation {
         ...this.cropCondition(f, this.crops.find((c) => same(c, f))?.kind ?? f.crop),
       })),
       hour: hourAt(this.tick),
-      temperature: temperatureAt(this.tick),
+      temperature: this.outdoorTemperature(),
       inventory: this.counts(),
       stored,
       stats: this.stats,
@@ -2560,8 +2556,10 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 7,
-      generator: 1,
+      version: 8,
+      generator: this.generator,
+      settings: this.settings,
+      spawn: this.spawn,
       seed: this.seed,
       tick: this.tick,
       nextId: this.nextId,
@@ -2589,10 +2587,11 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7].includes(old.version) ||
-      old.generator !== 1
+      ![1, 2, 3, 4, 5, 6, 7, 8].includes(old.version) ||
+      (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
+    const sourceVersion = old.version;
     if (old.version === 1) {
       if (!Array.isArray(old.jobs) || !Array.isArray(old.pawns) || !old.stats)
         throw new Error('旧存档数据无效');
@@ -2702,7 +2701,29 @@ export class VoxelSimulation {
       // quantity; old storage filters remain explicit and do not gain chunk.
       old.version = 7;
     }
+    if (old.version === 7) {
+      if (!Array.isArray(old.trees)) throw new Error('旧存档树木数据无效');
+      old.settings = {
+        ...DEFAULT_WORLD_SETTINGS,
+        hilliness: 'flat',
+        meanTemperature: 21,
+        latitude: 0,
+      };
+      old.spawn = { x: 32, y: 34, z: SURFACE };
+      for (const tree of old.trees) {
+        if (!tree) throw new Error('旧存档树木数据无效');
+        tree.species = 'poplar';
+      }
+      old.version = 8;
+    }
     const d = old as VoxelSave;
+    if (
+      !validWorldSettings(d.settings) ||
+      !inside(d.spawn) ||
+      d.spawn.z < 1 ||
+      d.spawn.z >= HEIGHT - 1
+    )
+      throw new Error('世界配置或出生点无效');
     if (
       !Number.isSafeInteger(d.seed) ||
       !Number.isSafeInteger(d.tick) ||
@@ -2764,7 +2785,8 @@ export class VoxelSimulation {
     )
       throw new Error('地面每格仅允许一堆且不能超过堆叠上限');
     for (const t of d.trees)
-      if (!positive(t.wood) || t.z + 1 >= HEIGHT) throw new Error('树木数据无效');
+      if (!positive(t.wood) || t.z + 1 >= HEIGHT || !Object.hasOwn(TREE_DATA, t.species))
+        throw new Error('树木数据无效');
     const uniqueCells = (a: Pos[]) => new Set(a.map(at)).size === a.length;
     if (
       ![d.farms, d.crops, d.stoves, d.stonecutters, d.stockpiles, d.doors, d.wires].every(
@@ -3000,8 +3022,11 @@ export class VoxelSimulation {
       )
     )
       throw new Error('统计数据无效');
-    const s = new VoxelSimulation(d.seed);
-    s.blocks = decode(d.blocks, migrateCrafting ? 6 : 7);
+    // Restore into empty state. Never rerun generation over an existing colony.
+    const s = new VoxelSimulation(d.seed, d.settings, true);
+    s.generator = d.generator;
+    s.spawn = structuredClone(d.spawn);
+    s.blocks = decode(d.blocks, sourceVersion <= 6 ? 6 : sourceVersion === 7 ? 7 : 10);
     s.ladders = decode(d.ladders, 1);
     Object.assign(
       s,
@@ -3090,7 +3115,7 @@ export class VoxelSimulation {
       throw new Error('仓储没有合法支撑或净空');
     if (s.wires.some((w) => w.z < 1 || w.z >= HEIGHT - 1)) throw new Error('线路高度无效');
     s.updateRooms();
-    s.thermal.restore(d.thermal, s.rooms, temperatureAt(s.tick));
+    s.thermal.restore(d.thermal, s.rooms, s.outdoorTemperature());
     s.updatePower();
     // Persist work progress, delivered and carried resources; rebuild transient paths and ownership.
     for (const j of s.jobs) {

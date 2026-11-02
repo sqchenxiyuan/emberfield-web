@@ -16,7 +16,41 @@ export const Block = {
   Bedrock: 5,
   Components: 6,
   Masonry: 7,
+  RichSoil: 8,
+  Sand: 9,
+  Gravel: 10,
 } as const;
+export type Biome = 'temperate' | 'boreal' | 'desert';
+export type Hilliness = 'flat' | 'small' | 'large' | 'mountainous';
+export interface WorldSettings {
+  biome: Biome;
+  hilliness: Hilliness;
+  meanTemperature: number;
+  rainfall: number;
+  latitude: number;
+}
+export type TreeSpecies = 'poplar' | 'pine' | 'saguaro';
+export interface WorldSummary {
+  elevation: { min: number; max: number };
+  surfaceCounts: { soil: number; richSoil: number; sand: number; gravel: number; stone: number };
+  resources: { stone: number; steel: number; components: number };
+  trees: { poplar: number; pine: number; saguaro: number; total: number; wood: number };
+  /** Terrain potential with crop fertility >= 0.7 and no tree; not reserved building space. */
+  fertileCells: number;
+  /** Surface heightfield component at spawn, excluding trees; not underground/facility navigation. */
+  reachableSurfaceCells: number;
+  growingDays: number;
+}
+export interface WorldPreview {
+  generator: 2;
+  seed: number;
+  settings: WorldSettings;
+  spawn: Pos;
+  heightMap: Uint8Array;
+  surfaceMap: Uint8Array;
+  trees: Omit<Tree, 'id'>[];
+  summary: WorldSummary;
+}
 export type Resource =
   | 'wood'
   | 'stone'
@@ -157,6 +191,7 @@ export interface Stack extends Pos, Cargo {
 export interface Tree extends Pos {
   id: number;
   wood: number;
+  species: TreeSpecies;
 }
 export interface Cargo {
   resource: Resource;
@@ -301,6 +336,10 @@ export interface VoxelStats {
 }
 export interface VoxelSnapshot {
   seed: number;
+  generator: 1 | 2;
+  settings: WorldSettings;
+  spawn: Pos;
+  worldSummary: WorldSummary;
   tick: number;
   revision: number;
   speed: number;
@@ -375,8 +414,10 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 7;
-  generator: 1;
+  version: 8;
+  generator: 1 | 2;
+  settings: WorldSettings;
+  spawn: Pos;
   seed: number;
   tick: number;
   nextId: number;
@@ -408,6 +449,9 @@ export const BLOCK_NAMES = [
   '基岩',
   '机械矿',
   '石砌结构',
+  '沃土',
+  '沙地',
+  '砾石地',
 ];
 export const RESOURCE_NAMES: Record<Resource, string> = {
   wood: '木材',

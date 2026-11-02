@@ -1,3 +1,4 @@
+import { legacySimulation } from './fixtures/legacy-start';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { assignmentAt, defaultSchedule, restGain, restLoss, wantsSleep } from '../src/voxel/rest';
@@ -61,7 +62,7 @@ function until(sim: VoxelSimulation, condition: () => boolean, limit = 12000) {
   conserved(sim, origin);
 }
 function bedWorld() {
-  const sim = new VoxelSimulation();
+  const sim = legacySimulation();
   command(sim, { type: 'designate', tool: 'bed', from: pos(31, 30), axis: 'x' });
   until(sim, () => sim.beds.length === 1);
   return sim;
@@ -77,7 +78,7 @@ function schedule(sim: VoxelSimulation, pawnId: number, value: Assignment) {
 
 describe('normal-command voxel housing', () => {
   it('builds a two-cell bed and two-high doorway from physically delivered wood, then refunds demolition', () => {
-    const sim = new VoxelSimulation(),
+    const sim = legacySimulation(),
       initial = sim.counts();
     command(sim, { type: 'designate', tool: 'bed', from: pos(31, 30), axis: 'x' });
     command(sim, { type: 'designate', tool: 'door', from: pos(34, 31), axis: 'y' });
@@ -100,7 +101,7 @@ describe('normal-command voxel housing', () => {
   });
 
   it('rejects overlapping second bed cells and invalid housing commands atomically', () => {
-    const sim = new VoxelSimulation();
+    const sim = legacySimulation();
     command(sim, { type: 'designate', tool: 'bed', from: pos(31, 30), axis: 'x' });
     const invalid: unknown[] = [
       { type: 'designate', tool: 'bed', from: pos(32, 30), axis: 'y' },
@@ -121,7 +122,7 @@ describe('normal-command voxel housing', () => {
   });
 
   it('releases a construction reservation and drops carried material without loss when sleep interrupts work', () => {
-    const sim = new VoxelSimulation(),
+    const sim = legacySimulation(),
       initial = sim.counts(),
       pawn = makeSleepy(sim);
     for (const other of sim.pawns)
@@ -156,7 +157,7 @@ describe('normal-command voxel housing', () => {
     const save = sim.save(),
       restored = VoxelSimulation.load(save),
       copy = restored.pawns.find((p) => p.id === pawn.id)!;
-    expect(save.version).toBe(7);
+    expect(save.version).toBe(8);
     expect(restored.counts()).toEqual(sim.counts());
     expect(copy).toMatchObject({
       phase: 'rest',
@@ -218,7 +219,7 @@ describe('normal-command voxel housing', () => {
   });
 
   it('uses slower ground sleeping when no bed exists and wakes at full rest under a sleep schedule', () => {
-    const sim = new VoxelSimulation(),
+    const sim = legacySimulation(),
       pawn = makeSleepy(sim);
     schedule(sim, pawn.id, 'sleep');
     command(sim, { type: 'rest', pawnId: pawn.id });
@@ -317,7 +318,7 @@ describe('normal-command voxel housing', () => {
   });
 
   it('opening delay and closing grace are based on simulation ticks, and occupied doors cannot lock', () => {
-    const sim = new VoxelSimulation(),
+    const sim = legacySimulation(),
       pawn = sim.pawns[0];
     command(sim, { type: 'designate', tool: 'door', from: pos(33, 32), axis: 'x' });
     until(sim, () => sim.doors.length === 1);
@@ -348,7 +349,7 @@ describe('normal-command voxel housing', () => {
   });
 
   it('refreshes room topology only for structural edits, not sleep, furniture ownership or door mode', () => {
-    const sim = new VoxelSimulation();
+    const sim = legacySimulation();
     const initial = sim.snapshot().roomRevision;
     sim.step(25);
     expect(sim.snapshot().roomRevision).toBe(initial);
@@ -371,7 +372,7 @@ describe('normal-command voxel housing', () => {
   });
 
   it('migrates v2 and v1 data formats without adding furniture or altering material totals', () => {
-    const sim = new VoxelSimulation();
+    const sim = legacySimulation();
     command(sim, { type: 'designate', tool: 'wall', from: pos(32, 31) });
     until(sim, () =>
       sim.jobs.some((job) => (job.delivered.wood ?? 0) > 0 && job.progress < job.work),
@@ -406,7 +407,7 @@ describe('normal-command voxel housing', () => {
       expect(restored.counts()).toEqual(before);
       expect(restored.beds).toEqual([]);
       expect(restored.doors).toEqual([]);
-      expect(restored.save().version).toBe(7);
+      expect(restored.save().version).toBe(8);
       expect(
         restored.pawns.every(
           (pawn) =>

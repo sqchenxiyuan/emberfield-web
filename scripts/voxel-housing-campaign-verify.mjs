@@ -1,3 +1,4 @@
+import { loadLegacyStart, LEGACY_START } from './voxel-legacy-start.mjs';
 import { build } from 'esbuild';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -13,9 +14,10 @@ const bundle = await build({
 const { VoxelSimulation } = await import(
   `data:text/javascript;base64,${Buffer.from(bundle.outputFiles[0].text).toString('base64')}`
 );
-let sim = new VoxelSimulation(73129);
+let sim = await loadLegacyStart(VoxelSimulation);
 const initial = sim.counts(),
   report = {
+  baseline: LEGACY_START,
     scope:
       'Normal command/step/save/load only; no world, resource, need or time injection. Headless elapsed calendar simulation, not real-time native play.',
     commands: [],

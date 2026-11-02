@@ -1,3 +1,4 @@
+import { importLegacyStart, LEGACY_START } from './voxel-legacy-start.mjs';
 import { chromium } from '@playwright/test';
 import { build } from 'esbuild';
 import assert from 'node:assert/strict';
@@ -10,8 +11,9 @@ const OUT = process.env.VOXEL_FOOD_BROWSER_OUT ?? 'test-results/voxel-food-brows
 await mkdir(OUT, { recursive: true });
 const digest = value => createHash('sha256').update(typeof value === 'string' || Buffer.isBuffer(value) ? value : JSON.stringify(value)).digest('hex');
 const report = {
+  baseline: LEGACY_START,
   base: BASE, startedAt: new Date().toISOString(), checks: [], screenshots: [], errors: [], fixtures: [], assets: [],
-  scope: 'Chrome at 1280x720 and 900x700; actual DOM controls, map mouse drags and file chooser imports. window.voxel is used only for read-only projection, snapshots and save export. Calendar fixtures start from the UI-created save and use only VoxelSimulation.load/command/step/save. No mature crops, resources, terrain, pawn positions or tick values are injected. Fixture rendering is followed by real browser harvest/cooking and cross-level ingredient transport.',
+  scope: 'Chrome at 1280x720 and 900x700; actual DOM controls, map mouse drags and file chooser imports. window.voxel is used only for read-only projection, snapshots and save export. Calendar fixtures start from the genuinely published generator-1 save imported through the UI and use only VoxelSimulation.load/command/step/save. No mature crops, resources, terrain, pawn positions or tick values are injected. Fixture rendering is followed by real browser harvest/cooking and cross-level ingredient transport.',
 };
 const pos = (x, y, z = 8) => ({ x, y, z });
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
@@ -122,7 +124,8 @@ async function generateCalendarFixtures(uiSave) {
 try {
   await page.goto(BASE);
   await wait(() => window.voxel?.snapshot().ready && window.voxel.snapshot().metrics.pendingChunks === 0);
-  await pause(); await control('收起指引');
+  await importLegacyStart(page);
+    await pause(); await control('收起指引');
   for (const name of ['种植区', '灶台', '暂停', '3倍速', '菜单与存档'])
     await reachable(page.getByRole('button', { name, exact: true }), name);
   await control('种植区'); await page.getByLabel('种植作物', { exact: true }).selectOption('rice');

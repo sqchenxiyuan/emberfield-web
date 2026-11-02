@@ -1,3 +1,4 @@
+import { importLegacyStart, LEGACY_START } from './voxel-legacy-start.mjs';
 import { chromium } from '@playwright/test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -15,6 +16,7 @@ const digest = value => createHash('sha256').update(typeof value === 'string' ||
 const pos = (x, y, z = 8) => ({ x, y, z });
 await mkdir(OUT, { recursive: true });
 const report = {
+  baseline: LEGACY_START,
   base: BASE, startedAt: new Date().toISOString(), modes: [],
   scope: 'Real DOM controls, canvas mouse clicks, keyboard rotation and file chooser imports in Chrome. window.voxel is used only for projection, snapshots and save export. Beds and doors in the UI checks are built by normal colonist work from a fresh world. Sleeping fixtures come from the separate normal-command housing campaign; no pawn/terrain/need/tick injection. Both render Worker and main-thread fallback are checked at 1280x800 and 900x700.',
 };
@@ -101,6 +103,7 @@ async function verifyMode(mode) {
   }
   try {
     await page.goto(String(url)); await wait(() => window.voxel?.snapshot().ready && window.voxel.snapshot().metrics.pendingChunks === 0);
+    await importLegacyStart(page);
     await pause(); await control('收起指引');
     assert.equal((await state()).worker, mode === 'worker');
     record('expected renderer backend active', { worker: (await state()).worker, metrics: (await state()).metrics });

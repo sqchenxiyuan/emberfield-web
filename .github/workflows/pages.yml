@@ -36,6 +36,8 @@ jobs:
         run: npm run test:campaign
       - name: Verify cross-level excavation and construction
         run: npm run test:voxel
+      - name: Verify biome generation and real opening campaigns on varied terrain
+        run: npm run test:voxel:worldgen
       - name: Verify two food production cycles and material conservation
         run: npm run test:voxel:food
       - name: Verify multilevel housing and sleep persistence

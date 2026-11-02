@@ -1,3 +1,4 @@
+import { loadLegacyStart, LEGACY_START } from './voxel-legacy-start.mjs';
 import { build } from 'esbuild';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -13,12 +14,13 @@ const bundle = await build({
 const { VoxelSimulation } = await import(
   `data:text/javascript;base64,${Buffer.from(bundle.outputFiles[0].text).toString('base64')}`
 );
-let sim = new VoxelSimulation(73129);
+let sim = await loadLegacyStart(VoxelSimulation);
 const p = (x, y, z = 8) => ({ x, y, z }),
   at = (q) => (q.z * 64 + q.y) * 64 + q.x,
   same = (a, b) => a.x === b.x && a.y === b.y && a.z === b.z;
 const initial = sim.counts();
 const report = {
+  baseline: LEGACY_START,
   scope:
     'Normal command/step/save/load only. No injected terrain, resources, devices, fuel, energy, needs or time. Seed terrain inspected to plan finite ore excavation; headless calendar simulation, not native real-time measurement.',
   commands: [],

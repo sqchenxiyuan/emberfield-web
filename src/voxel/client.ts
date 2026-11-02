@@ -14,6 +14,8 @@ import {
   type VoxelSave,
   type VoxelSnapshot,
   type CropKind,
+  type WorldSettings,
+  type WorldPreview,
 } from './types';
 export interface ClientState {
   snapshot: VoxelSnapshot | null;
@@ -85,11 +87,13 @@ export class VoxelClient {
         return;
       }
       if (d.type === 'state') {
+        const first = !this.state.snapshot;
         if (d.roomIds) this.roomIds = d.roomIds;
         for (const c of d.chunks as ChunkUpdate[]) this.chunksCache.set(c.id, c);
         this.sendRender({ type: 'chunks', chunks: d.chunks });
         this.sendRender({ type: 'snapshot', snapshot: d.snapshot });
         this.emit({ snapshot: d.snapshot });
+        if (first) this.home();
       }
     };
     this.sim.onerror = (e) => this.notice('模拟线程异常：' + e.message);
@@ -111,6 +115,7 @@ export class VoxelClient {
   export = (): Promise<VoxelSave> => this.request('save');
   import = async (save: unknown) => {
     await this.request('load', { save });
+    this.home();
     this.select(null);
     const legacy =
       save && typeof save === 'object' && 'version' in save && Number(save.version) < 6;
@@ -122,8 +127,10 @@ export class VoxelClient {
           : '体素存档已恢复，时间暂停',
     );
   };
-  newGame = async (seed: number) => {
-    await this.request('new', { seed });
+  previewWorld = (seed: number, settings: WorldSettings): Promise<WorldPreview> =>
+    this.request('preview', { seed, settings });
+  newGame = async (seed: number, settings?: WorldSettings) => {
+    await this.request('new', { seed, settings });
     this.home();
     this.select(null);
   };
@@ -155,13 +162,15 @@ export class VoxelClient {
       rotation: view.rotation ?? this.state.rotation,
     });
   };
-  home = () =>
+  home = () => {
+    const spawn = this.state.snapshot?.spawn ?? { x: 32, y: 32, z: SURFACE };
     this.view({
-      level: SURFACE,
+      level: spawn.z,
       rotation: Math.PI / 4,
       zoom: 1.25,
-      focus: { x: 32, y: 32, z: SURFACE },
+      focus: spawn,
     });
+  };
   focusOn = (p: Pos) => this.view({ level: p.z, focus: p });
   private sendRender(d: any) {
     if (this.renderWorker) {

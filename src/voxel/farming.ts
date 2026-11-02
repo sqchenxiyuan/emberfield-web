@@ -1,4 +1,18 @@
-import { DAY, type CropKind, type Resource } from './types';
+import { Block, DAY, type CropKind, type Resource } from './types';
+
+export function fertilityOf(block: number): number {
+  return block === Block.Soil
+    ? 1
+    : block === Block.RichSoil
+      ? 1.4
+      : block === Block.Gravel
+        ? 0.7
+        : block === Block.Sand
+          ? 0.1
+          : 0;
+}
+// Rice/potato inherit 0.7; corn explicitly sets 0.70 in the inspected Core defs.
+export const MIN_CROP_FERTILITY = 0.7;
 
 // Reference fields are documented separately from the 3D and time-scale design in chapter 12.
 export const CROPS: Record<

@@ -284,7 +284,7 @@ async function modeRun(mode) {
     });
     await shot('04-frozen-food');
     const saveBefore = await page.evaluate(() => window.voxel.exportSave());
-    assert.equal(saveBefore.version, 7);
+    assert.equal(saveBefore.version, 8);
     await control('菜单与存档');
     await control('保存营地');
     await page.getByText('手动保存成功', { exact: true }).waitFor();
@@ -306,7 +306,7 @@ async function modeRun(mode) {
       saveAfter.jobs.map((j) => [j.id, j.delivered, j.deliveredFood]),
       saveBefore.jobs.map((j) => [j.id, j.delivered, j.deliveredFood]),
     );
-    record('DOM v7 save/load preserves food ages species storage filters and all food containers');
+    record('DOM save/load preserves food ages species storage filters and all food containers');
     const frozen = (await state()).snapshot,
       ages = new Map(
         frozen.items.filter((i) => i.resource === 'meal').map((i) => [i.id, i.rotProgress]),

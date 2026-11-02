@@ -16,15 +16,17 @@
 
 2026-11-03体素住房更新：双格木床、床位分配、24小时作息、真实步行上床睡眠、自动门/敞开/锁定，以及地下与楼上的六向房间检查。床45木材、门25木材，R切换建造朝向；先砍树补料。[住房规则和验证](docs/research/rimworld/15-voxel-housing-implementation.md)说明具体边界。
 
-2026-11-03电力温控更新：木燃发电机1000 W、4×4太阳能板1700 W、电池600 Wd、实体补燃料、跨层电线，以及双侧冷气机、加热器与真实房间温度。采钢矿和机械矿取得设备材料，在竖井逐层铺线；点击设备调开关与目标温度。[16原版规则](docs/research/rimworld/16-power-thermal-mechanisms.md)与[17实现验收](docs/research/rimworld/17-voxel-power-thermal-implementation.md)区分来源、三维扩展和验证边界。没有温度伤害、短路或季节。
+2026-11-03电力温控更新：木燃发电机1000 W、4×4太阳能板1700 W、电池600 Wd、实体补燃料、跨层电线，以及双侧冷气机、加热器与真实房间温度。采钢矿和机械矿取得设备材料，在竖井逐层铺线；点击设备调开关与目标温度。[16原版规则](docs/research/rimworld/16-power-thermal-mechanisms.md)与[17实现验收](docs/research/rimworld/17-voxel-power-thermal-implementation.md)区分来源、三维扩展和验证边界。该阶段尚无温度伤害、短路或季节；季节已在后续世界生成更新接入。
 
 2026-11-03保鲜更新：食品按所在房间温度腐坏，0°C及以下暂停、0～10°C减慢；搬运、合堆、配送和回读保留进度。稻米/土豆/玉米与简餐的常温保存期为40/30/60/4日，初始包装生存口粮不腐坏。点击仓储设置“仅收食物”和较高优先级，工人会实际搬入冷库；新存档v5兼容v1～v4。[19机制研究](docs/research/rimworld/19-preservation-mechanisms.md)与[20实现验收](docs/research/rimworld/20-voxel-preservation-implementation.md)记录温度、容器和腐坏账本。
 
 2026-11-03有限物流更新：地面一格一堆，木材/石砖/钢材/谷物75、零件50、餐食10；满仓等待，扩容后恢复搬运，检查面板显示占用、预留和单堆余量。开局请扩大仓储，食品冷库也需按实际堆数留位置。满地生产/退料不会丢物，运输中回读继续工作。该阶段v6引入有限堆迁移；旧大堆拆到附近合法空地后暂停，请检查冷库，空间不足则拒绝加载。[21原版规则](docs/research/rimworld/21-storage-logistics-mechanisms.md)、[22原版实测](docs/research/rimworld/22-native-storage-runtime.md)、[23历史验收](docs/research/rimworld/23-voxel-logistics-implementation.md)分别记录证据与适配，原版71木材实测没有被当作满75验证。
 
-2026-11-03切石更新：天然花岗岩每个被移除的体素有25%机会留下1岩块（每格/每次搬运1块），不再直接产砖。建3×1木切石台需75木材+30钢材，1岩块加工为20石砖；点击设库存目标、暂停，R旋转并留出操作位。墙/楼板可选石砖，分别用10/4砖，工人沿梯子实际配送施工。修改目标保留当前批次，暂停账单才退料。当前v7保留旧石材为石砖，旧仓储需手动勾选岩块；切石科技暂默认解锁。[24原版规则](docs/research/rimworld/24-stonecutting-mechanisms.md)、[25原版操作](docs/research/rimworld/25-native-stonecutting-runtime.md)、[26实现验收](docs/research/rimworld/26-voxel-stonecutting-implementation.md)区分原版证据与三维适配。
+2026-11-03切石更新：天然花岗岩每个被移除的体素有25%机会留下1岩块（每格/每次搬运1块），不再直接产砖。建3×1木切石台需75木材+30钢材，1岩块加工为20石砖；点击设库存目标、暂停，R旋转并留出操作位。墙/楼板可选石砖，分别用10/4砖，工人沿梯子实际配送施工。修改目标保留当前批次，暂停账单才退料。该阶段v7保留旧石材为石砖，旧仓储需手动勾选岩块；切石科技暂默认解锁。[24原版规则](docs/research/rimworld/24-stonecutting-mechanisms.md)、[25原版操作](docs/research/rimworld/25-native-stonecutting-runtime.md)、[26实现验收](docs/research/rimworld/26-voxel-stonecutting-implementation.md)区分原版证据与三维适配。
 
-体素供粮：尽早在土壤上规划约110–128格稻米（每次框选最多128格），保留阳光，建一座20木材灶台。点击灶台设置简餐目标；每餐消耗10生食材和1木材。稻米约8游戏日首收，1日常速10分钟，可开3倍速。简餐宜少量制作，囤餐需实际降温的冷库；树木需继续砍伐补燃料。尚无饥荒伤害、食物中毒或季节。
+2026-11-03世界生成更新：菜单中可预览并创建温带森林、寒带森林和沙漠，选择四档起伏，分别调整均温、雨量、纬度。实际土壤肥力、树种产量、有限三维矿脉与季节温度进入模拟；按真实出生点定位，新增总览视角。v8保留旧营地地形和旧温度规则。[27原版规则](docs/research/rimworld/27-biomes-terrain-generation.md)、[28原版选址](docs/research/rimworld/28-native-world-generation-runtime.md)、[29实现验收](docs/research/rimworld/29-voxel-world-generation-implementation.md)区分来源与适配；没有河海、洞穴、植被再生或完整行星世界图。
+
+体素供粮：尽早在土壤上规划约110–128格稻米（每次框选最多128格），保留阳光，建一座20木材灶台。点击灶台设置简餐目标；每餐消耗10生食材和1木材。稻米约8游戏日首收，1日常速10分钟，可开3倍速。简餐宜少量制作，囤餐需实际降温的冷库；树木需继续砍伐补燃料。新世界需考虑季节和土壤：寒带低温会停长，沙地不能种普通作物；8日首收是适温普通土壤的参考。尚无饥荒伤害或食物中毒。
 
 ## 启动
 
