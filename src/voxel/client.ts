@@ -9,6 +9,7 @@ import {
   type VoxelCommand,
   type VoxelSave,
   type VoxelSnapshot,
+  type CropKind,
 } from './types';
 export interface ClientState {
   snapshot: VoxelSnapshot | null;
@@ -17,6 +18,7 @@ export interface ClientState {
   level: number;
   rotation: number;
   tool: Tool;
+  crop: CropKind;
   metrics: Record<string, unknown>;
   worker: boolean;
 }
@@ -41,6 +43,7 @@ export class VoxelClient {
     level: SURFACE,
     rotation: Math.PI / 4,
     tool: 'inspect',
+    crop: 'rice',
     metrics: {},
     worker: false,
   };
@@ -52,6 +55,7 @@ export class VoxelClient {
     };
   };
   snapshot = () => this.state;
+  chooseCrop = (crop: CropKind) => this.emit({ crop });
   private emit(next: Partial<ClientState> = {}) {
     this.state = { ...this.state, ...next };
     for (const l of this.listeners) l();
@@ -276,6 +280,7 @@ export class VoxelClient {
           tool: this.state.tool,
           from,
           to: single ? from : { ...to, z: from.z },
+          crop: this.state.crop,
         });
       };
       c.onwheel = (e) => {

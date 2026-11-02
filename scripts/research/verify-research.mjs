@@ -97,6 +97,18 @@ for (const shot of voxel.screenshots) {
   assert(/^voxel\/[a-z-]+\.jpg$/.test(shot.file));
   assert.equal(sha(readFileSync(path.join(evidence, shot.file))), shot.sha256, `changed voxel image: ${shot.file}`);
 }
+const foodImplementation = read('voxel-food-validation.json');
+assert.equal(foodImplementation.kind,'web-runtime-validated');
+assert.equal(foodImplementation.unit.failed,0);
+assert.equal(foodImplementation.unit.passed,foodImplementation.unit.total);
+assert.deepEqual(foodImplementation.browser.errors,[]);
+assert.deepEqual(foodImplementation.regressions.construction.errors,[]);
+assert.deepEqual(foodImplementation.regressions.emptyWorldLifecycle.errors,[]);
+for (const asset of foodImplementation.assets) assert(validHash(asset.sha256));
+for (const shot of foodImplementation.screenshots) {
+  assert(/^voxel\/[a-z-]+\.jpg$/.test(shot.file));
+  assert.equal(sha(readFileSync(path.join(evidence,shot.file))),shot.sha256,`changed food milestone image: ${shot.file}`);
+}
 for(const file of readdirSync(research).filter(f=>f.endsWith('.md'))){
   const body=readFileSync(path.join(research,file),'utf8');
   for(const match of body.matchAll(/\[[^\]\n]*\]\(([^)\s]+)\)/g)){

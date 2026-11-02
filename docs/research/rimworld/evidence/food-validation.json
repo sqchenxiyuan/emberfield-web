@@ -1,0 +1,17 @@
+{
+  "evidence_id": "RW17-FOOD-VALIDATION",
+  "validated_utc": "2026-11-02T15:27:37.9308008Z",
+  "original_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "food_types": 31,
+  "reused_generation_types": 4,
+  "claims": 19,
+  "code_references": 53,
+  "xml_references": 21,
+  "xml_files": 9,
+  "xml_records": 20,
+  "xml_leaves": 193,
+  "analytic_cases_checked": 9,
+  "analytic_assertions": 85,
+  "status": "PASS",
+  "limitation": "Checks provenance, source ranges, selected XML declarations and independent analytic examples. No game execution or active Def database; not implementation equivalence."
+}

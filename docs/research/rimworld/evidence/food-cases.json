@@ -1,0 +1,292 @@
+[
+  {
+    "label": "F01 Fertility and environment",
+    "claims": [
+      "FD01",
+      "FD02",
+      "FD03"
+    ],
+    "inputs": {
+      "fertility": [
+        0.7,
+        1,
+        1.4
+      ],
+      "sensitivities": [
+        1,
+        0.4
+      ],
+      "light": [
+        0,
+        0.51,
+        0.755,
+        1
+      ],
+      "temperature": [
+        0,
+        3,
+        6,
+        42,
+        50,
+        58
+      ]
+    },
+    "expected": {
+      "fertilityFactors": [
+        [
+          0.7,
+          1,
+          1.4
+        ],
+        [
+          0.88,
+          1,
+          1.16
+        ]
+      ],
+      "lightFactors": [
+        0,
+        0,
+        0.5,
+        1
+      ],
+      "temperatureFactors": [
+        0,
+        0.5,
+        1,
+        1,
+        0.5,
+        0
+      ]
+    }
+  },
+  {
+    "label": "F02 Ideal crop calendar duration",
+    "claims": [
+      "FD01",
+      "FD02",
+      "FD04"
+    ],
+    "inputs": {
+      "growDays": [
+        3,
+        5.8,
+        11.3
+      ],
+      "activeDayFraction": 0.55,
+      "factor": 1,
+      "referenceGrowth": 1
+    },
+    "expected": {
+      "calendarDays": [
+        5.454545454545454,
+        10.545454545454545,
+        20.545454545454547
+      ],
+      "currentMinutes": [
+        54.54545454545454,
+        105.45454545454545,
+        205.45454545454547
+      ]
+    },
+    "limitation": "Continuous idealization from growth0 to1, not exact sow .0001 to Mature>.999 or discrete long-tick runtime; daytime light assumed1."
+  },
+  {
+    "label": "F03 Meal ingredient quantity",
+    "claims": [
+      "FD07",
+      "FD08",
+      "FD09"
+    ],
+    "inputs": {
+      "rawNutrition": 0.05,
+      "requiredNutrition": 0.5,
+      "availableStacks": [
+        6,
+        4
+      ],
+      "mealNutrition": 0.9
+    },
+    "expected": {
+      "selected": [
+        6,
+        4
+      ],
+      "rawCount": 10,
+      "inputNutrition": 0.5,
+      "outputNutrition": 0.9,
+      "ratio": 1.8
+    }
+  },
+  {
+    "label": "F04 Cooking timing policies",
+    "claims": [
+      "FD07",
+      "FD10"
+    ],
+    "inputs": {
+      "work": 300,
+      "workerRate": 1,
+      "tableRate": 1,
+      "originalTPS": 60,
+      "currentTPS": 20,
+      "originalDay": 60000,
+      "currentDay": 12000
+    },
+    "expected": {
+      "originalTicks": 300,
+      "originalSeconds": 5,
+      "currentTicksPreserveSeconds": 100,
+      "currentTicksPreserveDay": 60,
+      "currentSecondsKeepWork": 15
+    }
+  },
+  {
+    "label": "F05 Hunger thresholds",
+    "claims": [
+      "FD12",
+      "FD13",
+      "FD14",
+      "FD15"
+    ],
+    "inputs": {
+      "foodLevels": [
+        0.3,
+        0.299,
+        0.24,
+        0.239,
+        0.12,
+        0.119,
+        0
+      ],
+      "wantEat": 0.3,
+      "basePerDay": 1.6
+    },
+    "expected": {
+      "wantEat": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "categories": [
+        "Fed",
+        "Fed",
+        "Fed",
+        "Hungry",
+        "Hungry",
+        "UrgentlyHungry",
+        "Starving"
+      ],
+      "multipliers": [
+        1,
+        1,
+        1,
+        0.5,
+        0.5,
+        0.25,
+        0
+      ],
+      "perDay": [
+        1.6,
+        1.6,
+        1.6,
+        0.8,
+        0.8,
+        0.4,
+        0
+      ]
+    }
+  },
+  {
+    "label": "F06 Whole meal and overflow",
+    "claims": [
+      "FD07",
+      "FD16"
+    ],
+    "inputs": {
+      "levels": [
+        0.29,
+        0.05
+      ],
+      "maxNutrition": 1,
+      "mealNutrition": 0.9,
+      "maxNumToIngest": 1
+    },
+    "expected": {
+      "itemsTaken": [
+        1,
+        1
+      ],
+      "after": [
+        1,
+        0.95
+      ],
+      "overflow": [
+        0.19,
+        0
+      ]
+    }
+  },
+  {
+    "label": "F07 Tick conversion",
+    "claims": [
+      "FD02",
+      "FD13"
+    ],
+    "inputs": {
+      "originalTPS": 60,
+      "currentTPS": 20,
+      "originalDay": 60000,
+      "currentDay": 12000,
+      "hungerPerDay": 1.6,
+      "growDays": 3
+    },
+    "expected": {
+      "originalSecondsPerDay": 1000,
+      "currentSecondsPerDay": 600,
+      "dayRateMultiplier": 5,
+      "originalHungerPerTick": 0.000026666666666666667,
+      "currentHungerPerTick": 0.00013333333333333334,
+      "originalGrowthPerActiveTick": 0.000005555555555555556,
+      "currentGrowthPerActiveTick": 0.00002777777777777778
+    }
+  },
+  {
+    "label": "F08 Sustained meal planning",
+    "claims": [
+      "FD13",
+      "FD14",
+      "FD16"
+    ],
+    "inputs": {
+      "colonists": 3,
+      "hungerPerDay": 1.6,
+      "maxNutrition": 1,
+      "nearEatThreshold": 0.3,
+      "mealNutrition": 0.9,
+      "startMeals": 60,
+      "rawPerMeal": 10
+    },
+    "expected": {
+      "idealMealsPerPersonDay": 1.777777777777778,
+      "nearThresholdMealsPerPersonDay": 2.285714285714286,
+      "colonyMealsPerDay": 6.857142857142858,
+      "stockDaysAtSteadyRate": 8.75,
+      "colonyRawPerDay": 68.57142857142858
+    },
+    "limitation": "Steady idealized near-.3 ingestion with immediate meals; not an exact simulation or guaranteed stock survival. Initial .8, travel, illness, spoilage and hunger intervals excluded."
+  },
+  {
+    "label": "F09 Custom voxel daylight integration",
+    "kind": "custom-design-analysis",
+    "claims": ["FD01", "FD03", "FD13", "FD14", "FD16", "FD18", "FD19"],
+    "inputs": {"amplitudes":[1,2],"sunriseHour":6,"sunsetHour":18,"samples":24000,"growDays":3,"harvestYield":6,"colonyRawPerDay":68.57142857142858},
+    "expected": {"dailyAverageGrowthFactors":[0.21567931955358358,0.37640147394961043],"idealRiceDays":[13.909539432011593,7.970213210168288],"minimumRiceTiles":[159,92]},
+    "formula": "For h in6..18, L=min(1,amplitude*sin(pi*(h-6)/12)); other hours L=0. Integrate clamp01((L-.51)/.49) over24h. Resting6..19.2 does not cut this daylight interval. Fertility and temperature factors=1. This is a custom approximation, not original celestial implementation.",
+    "limitation": "Continuous midpoint numerical quadrature; no season, weather, shade, sow/harvest/travel time, failure or spoilage. Not an implementation campaign."
+  }
+]

@@ -6,6 +6,7 @@ export const WIDTH = 64,
   SURFACE = 8,
   TPS = 20;
 export const CELLS = WIDTH * DEPTH * HEIGHT;
+export const DAY = 12000;
 export const Block = {
   Air: 0,
   Soil: 1,
@@ -15,8 +16,9 @@ export const Block = {
   Bedrock: 5,
   Components: 6,
 } as const;
-export type Resource = 'wood' | 'stone' | 'steel' | 'components' | 'food';
-export type Work = 'dig' | 'build' | 'cut' | 'haul';
+export type Resource = 'wood' | 'stone' | 'steel' | 'components' | 'food' | 'grain' | 'meal';
+export type Work = 'dig' | 'build' | 'cut' | 'haul' | 'grow' | 'cook';
+export type CropKind = 'rice' | 'potato' | 'corn';
 export type Tool =
   | 'inspect'
   | 'mine'
@@ -27,6 +29,9 @@ export type Tool =
   | 'shaft'
   | 'up'
   | 'stock'
+  | 'farm'
+  | 'stove'
+  | 'clearZone'
   | 'remove'
   | 'cancel';
 export interface Pos {
@@ -63,15 +68,47 @@ export interface Cargo {
   resource: Resource;
   amount: number;
 }
-export type JobKind = 'mine' | 'cut' | 'floor' | 'wall' | 'ladder' | 'digLadder' | 'remove';
+export interface FarmPlot extends Pos {
+  crop: CropKind;
+}
+export interface Crop extends Pos {
+  id: number;
+  kind: CropKind;
+  growth: number;
+  sownAt: number;
+}
+export interface Stove extends Pos {
+  id: number;
+  target: number;
+  paused: boolean;
+}
+export interface CropCondition {
+  fertility: number;
+  light: number;
+  temperature: number;
+  growthRate: number;
+  reason: string;
+}
+export type JobKind =
+  | 'mine'
+  | 'cut'
+  | 'floor'
+  | 'wall'
+  | 'ladder'
+  | 'digLadder'
+  | 'remove'
+  | 'sow'
+  | 'harvest'
+  | 'stove'
+  | 'cook';
 export interface Job extends Pos {
   id: number;
   kind: JobKind;
   progress: number;
   work: number;
   owner: number | null;
-  delivered: number;
-  cost: number;
+  delivered: Partial<Counts>;
+  cost: Partial<Counts>;
   reason: string;
 }
 export interface Pawn extends Pos {
@@ -89,6 +126,7 @@ export interface Pawn extends Pos {
   reason: string;
   moveTick: number;
   workTarget: Pos | null;
+  eating: Resource | null;
 }
 export interface Counts {
   wood: number;
@@ -96,12 +134,18 @@ export interface Counts {
   steel: number;
   components: number;
   food: number;
+  grain: number;
+  meal: number;
 }
 export interface VoxelStats {
   mined: number;
   cut: number;
   built: number;
   hauled: number;
+  sown: number;
+  harvested: number;
+  cooked: number;
+  eaten: number;
   consumed: Counts;
   produced: Counts;
 }
@@ -115,6 +159,12 @@ export interface VoxelSnapshot {
   trees: Tree[];
   jobs: Job[];
   stockpiles: Pos[];
+  farms: FarmPlot[];
+  crops: Crop[];
+  stoves: Stove[];
+  cropConditions: (CropCondition & Pos)[];
+  hour: number;
+  temperature: number;
   inventory: Counts;
   stored: Counts;
   stats: VoxelStats;
@@ -129,8 +179,9 @@ export interface ChunkUpdate {
   ladders: Uint8Array;
 }
 export type VoxelCommand =
-  | { type: 'designate'; tool: Tool; from: Pos; to?: Pos }
+  | { type: 'designate'; tool: Tool; from: Pos; to?: Pos; crop?: CropKind }
   | { type: 'priority'; pawnId: number; work: Work; value: number }
+  | { type: 'bill'; stoveId: number; target: number; paused: boolean }
   | { type: 'move'; pawnId: number; target: Pos };
 export interface CommandResult {
   ok: boolean;
@@ -139,7 +190,7 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 1;
+  version: 2;
   generator: 1;
   seed: number;
   tick: number;
@@ -152,6 +203,9 @@ export interface VoxelSave {
   trees: Tree[];
   jobs: Job[];
   stockpiles: Pos[];
+  farms: FarmPlot[];
+  crops: Crop[];
+  stoves: Stove[];
   stats: VoxelStats;
 }
 export const BLOCK_NAMES = ['空气', '土层', '花岗岩', '钢矿', '木结构', '基岩', '机械矿'];
@@ -161,6 +215,8 @@ export const RESOURCE_NAMES: Record<Resource, string> = {
   steel: '钢材',
   components: '零件',
   food: '口粮',
+  grain: '生食材',
+  meal: '简餐',
 };
 export const JOB_NAMES: Record<JobKind, string> = {
   mine: '挖掘',
@@ -170,6 +226,10 @@ export const JOB_NAMES: Record<JobKind, string> = {
   ladder: '造梯子',
   digLadder: '开凿梯井',
   remove: '拆除',
+  sow: '播种',
+  harvest: '收获',
+  stove: '造灶台',
+  cook: '烹饪简餐',
 };
 export const TOOL_NAMES: Record<Tool, string> = {
   inspect: '查看',
@@ -181,7 +241,18 @@ export const TOOL_NAMES: Record<Tool, string> = {
   shaft: '下挖梯井',
   up: '向上搭梯',
   stock: '仓储',
+  farm: '种植区',
+  stove: '灶台',
+  clearZone: '擦除区域',
   remove: '拆除',
   cancel: '取消规划',
 };
-export const emptyCounts = (): Counts => ({ wood: 0, stone: 0, steel: 0, components: 0, food: 0 });
+export const emptyCounts = (): Counts => ({
+  wood: 0,
+  stone: 0,
+  steel: 0,
+  components: 0,
+  food: 0,
+  grain: 0,
+  meal: 0,
+});

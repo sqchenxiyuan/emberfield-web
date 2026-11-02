@@ -10,9 +10,11 @@
 
 2026-11-02更新：修复动物长时间等待，增加物品/动物/资源检查、劳动动画与墙/导线连续拖建。[原版运行对照与修复验证](docs/research/rimworld/07-runtime-interaction-comparison.md) 记录实际操作和边界。
 
-新增 **[多层体素试玩](https://sqchenxiyuan.github.io/emberfield-web/?world=voxel)**：64×64×16，真实地下开凿、逐格搭梯、跨层搬运、二层楼板与墙体、旋转剖切和独立存档。[实现与验收](docs/research/rimworld/11-voxel-implementation.md) 说明规则、来源与验证。该入口是施工/物流切片，农业、战斗、房间与电网等系统尚未迁入；首页仍是原二维营地，两个入口分别保存进度。
+新增 **[多层体素试玩](https://sqchenxiyuan.github.io/emberfield-web/?world=voxel)**：64×64×16，真实地下开凿、逐格搭梯、跨层搬运、二层楼板与墙体、旋转剖切和独立存档。现已加入三种作物、遮光生长、自动收获补种、烧木灶台订单和实体进食。[施工验收](docs/research/rimworld/11-voxel-implementation.md)、[食物规则研究](docs/research/rimworld/12-farming-cooking-food.md)和[食物实现验收](docs/research/rimworld/13-voxel-food-implementation.md)分别记录来源与实现边界。战斗、房间热交换与电网尚未迁入；首页仍是原二维营地，两个入口分别保存进度。
 
 体素操作：伐木 → 下挖梯井 → 切「地下」挖矿 → 回地面向上搭梯 → 切「二层」从梯旁铺楼板。Q/E旋转、[ / ]逐格切层、滚轮缩放、中键拖转、WASD平移、Space暂停。体素入口使用Three.js WebGL2 Worker，`?world=voxel&render=main`为兼容路径；二维入口继续使用PixiJS 8。
+
+体素供粮：尽早在土壤上规划约110–128格稻米（每次框选最多128格），保留阳光，建一座20木材灶台。点击灶台设置简餐目标；每餐消耗10生食材和1木材。稻米约8游戏日首收，1日常速10分钟，可开3倍速。树木需继续砍伐补燃料。旧体素v1存档可导入并迁移为v2；尚无腐坏、饥荒伤害、食物中毒或季节。
 
 ## 启动
 

@@ -1,0 +1,507 @@
+[
+  {
+    "id": "FD01",
+    "kind": "xml-declared",
+    "statement": "稻米/土豆/玉米 growDays 为3/5.8/11.3，成熟基础产量6/11/22；肥力敏感1/.4/1、最低肥力.7；播种170、采收200来自父定义。",
+    "sources": [
+      {
+        "group": "generation",
+        "xml_record": "Plant_Rice"
+      },
+      {
+        "group": "generation",
+        "xml_record": "Plant_Potato"
+      },
+      {
+        "group": "generation",
+        "xml_record": "Plant_Corn"
+      },
+      {
+        "group": "generation",
+        "xml_record": "PlantBaseNonEdible"
+      },
+      {
+        "group": "generation",
+        "xml_record": "PlantBase"
+      }
+    ]
+  },
+  {
+    "id": "FD02",
+    "kind": "static-derived",
+    "statement": "生长率为肥力、温度、光照及适用环境因子的乘积；休眠时每日0.25之前和0.8之后不增长；增长分母为60000*growDays。",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 277,
+        "line_end": 302
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 334,
+        "line_end": 369
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 818,
+        "line_end": 827
+      }
+    ]
+  },
+  {
+    "id": "FD03",
+    "kind": "static-derived",
+    "statement": "肥力倍率=f*s+1-s；默认光照.51到1线性；温度0/6/42/58分段；生长季严格位于最低和最高温度之间。",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantUtility",
+        "line_start": 21,
+        "line_end": 31
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantUtility",
+        "line_start": 352,
+        "line_end": 380
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantProperties",
+        "line_start": 55,
+        "line_end": 93
+      }
+    ]
+  },
+  {
+    "id": "FD04",
+    "kind": "static-derived",
+    "statement": "播种创建growth0植株，按PlantWorkSpeed累积，完成设.0001，提前中断销毁未完成植株；生长期growth<.0001是Sowing，>.999是Mature。",
+    "sources": [
+      {
+        "group": "food",
+        "type": "RimWorld.JobDriver_PlantSow",
+        "line_start": 39,
+        "line_end": 87
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 454,
+        "line_end": 467
+      }
+    ]
+  },
+  {
+    "id": "FD05",
+    "kind": "static-derived",
+    "statement": "普通自动农田收获需HarvestableNow且Mature、可产出、允许采收和可预留；最低可收获默认growth>.65不是自动收获阈值。",
+    "sources": [
+      {
+        "group": "food",
+        "type": "RimWorld.WorkGiver_GrowerHarvest",
+        "line_start": 11,
+        "line_end": 48
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 109,
+        "line_end": 119
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantProperties",
+        "line_start": 55,
+        "line_end": 61
+      }
+    ]
+  },
+  {
+    "id": "FD06",
+    "kind": "static-derived",
+    "statement": "采收工作按速度及成熟度累加；成功产量由成熟度、HP、难度、随机取整决定，低收获率可能整次失败；成功物品放在人物附近，再销毁或重置植株。",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.JobDriver_PlantWork",
+        "line_start": 24,
+        "line_end": 108
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 621,
+        "line_end": 663
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 927,
+        "line_end": 959
+      }
+    ]
+  },
+  {
+    "id": "FD07",
+    "kind": "xml-declared",
+    "statement": "选定三种收获原料继承Nutrition .05；简单餐Nutrition .9、WorkToMake300，一次最多吃1份，常温腐坏起始声明4日。",
+    "sources": [
+      {
+        "group": "food",
+        "xml_record": "PlantFoodRawBase"
+      },
+      {
+        "group": "food",
+        "xml_record": "RawRice"
+      },
+      {
+        "group": "food",
+        "xml_record": "RawPotatoes"
+      },
+      {
+        "group": "food",
+        "xml_record": "RawCorn"
+      },
+      {
+        "group": "food",
+        "xml_record": "MealSimple"
+      },
+      {
+        "group": "food",
+        "xml_record": "MealBaseIngredientless"
+      },
+      {
+        "group": "food",
+        "xml_record": "MealCookedIngredientless"
+      },
+      {
+        "group": "food",
+        "xml_record": "MealCooked"
+      }
+    ]
+  },
+  {
+    "id": "FD08",
+    "kind": "xml-declared",
+    "statement": "简单餐原料需求.5按营养计算且允许混合，产物1；批量配方2营养产4餐work1200；配方和账单过滤仍约束原料。",
+    "sources": [
+      {
+        "group": "food",
+        "xml_record": "CookMealBase"
+      },
+      {
+        "group": "food",
+        "xml_record": "CookMealSimple"
+      },
+      {
+        "group": "food",
+        "xml_record": "CookMealSimpleBulk"
+      }
+    ]
+  },
+  {
+    "id": "FD09",
+    "kind": "static-derived",
+    "statement": "Nutrition getter取ThingDef抽象Nutrition；允许混料选择按ceil(剩余营养/单件营养)截到堆数量，剩余<=.0001满足；非混料CountRequired也向上取整。",
+    "sources": [
+      {
+        "group": "food",
+        "type": "RimWorld.IngredientValueGetter_Nutrition",
+        "line_start": 7,
+        "line_end": 14
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.WorkGiver_DoBill",
+        "line_start": 690,
+        "line_end": 727
+      },
+      {
+        "group": "food",
+        "type": "Verse.IngredientCount",
+        "line_start": 54,
+        "line_end": 58
+      }
+    ]
+  },
+  {
+    "id": "FD10",
+    "kind": "static-derived",
+    "statement": "未显式指定workAmount时用首产物WorkToMake；账单工作量转交配方，每tick按CookSpeed及台面工作倍率减工作量；ResolveReferences给台面速度/效率补默认stat。",
+    "sources": [
+      {
+        "group": "food",
+        "type": "Verse.RecipeDef",
+        "line_start": 403,
+        "line_end": 423
+      },
+      {
+        "group": "food",
+        "type": "Verse.RecipeDef",
+        "line_start": 482,
+        "line_end": 495
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.Bill",
+        "line_start": 457,
+        "line_end": 460
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 43,
+        "line_end": 134
+      }
+    ]
+  },
+  {
+    "id": "FD11",
+    "kind": "static-derived",
+    "statement": "烹饪账单预留工位/原料，逐堆取料搬到工位才工作；完成按具体投料堆拆分消费并生成物品，原料不能仅作全局数字扣除。",
+    "sources": [
+      {
+        "group": "food",
+        "type": "Verse.AI.JobDriver_DoBill",
+        "line_start": 54,
+        "line_end": 151
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 180,
+        "line_end": 205
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 301,
+        "line_end": 343
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 370,
+        "line_end": 375
+      },
+      {
+        "group": "food",
+        "type": "Verse.RecipeWorker",
+        "line_start": 44,
+        "line_end": 47
+      },
+      {
+        "group": "food",
+        "type": "Verse.GenRecipe",
+        "line_start": 9,
+        "line_end": 34
+      }
+    ]
+  },
+  {
+    "id": "FD12",
+    "kind": "xml-and-static-derived",
+    "statement": "普通成人Human种族基础体型1、杂食；未覆盖的baseHungerRate/hungerRateFactor/foodMaxFactor均1；MaxNutrition默认1再乘体型与lifeStage因子。仅指无其他修饰的基线。",
+    "sources": [
+      {
+        "group": "food",
+        "xml_record": "Human"
+      },
+      {
+        "group": "food",
+        "xml_record": "BasePawn"
+      },
+      {
+        "group": "food",
+        "xml_record": "HumanlikeAdult"
+      },
+      {
+        "group": "food",
+        "xml_record": "MaxNutrition"
+      },
+      {
+        "group": "food",
+        "type": "Verse.RaceProperties",
+        "line_start": 190,
+        "line_end": 194
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.LifeStageDef",
+        "line_start": 70,
+        "line_end": 78
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.StatPart_BodySize",
+        "line_start": 7,
+        "line_end": 13
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.StatPart_LifeStageMaxFood",
+        "line_start": 7,
+        "line_end": 12
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.FoodTypeFlags",
+        "line_start": 8,
+        "line_end": 30
+      }
+    ]
+  },
+  {
+    "id": "FD13",
+    "kind": "static-derived",
+    "statement": "普通成人基础饱食下降2.6666667e-5/原tick，约1.6/日；每150tick更新，仍乘健康、特性、床及适用DLC因子，初始人类food为80%。",
+    "sources": [
+      {
+        "group": "food",
+        "type": "RimWorld.Need_Food",
+        "line_start": 11,
+        "line_end": 14
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.Need_Food",
+        "line_start": 121,
+        "line_end": 191
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.Need_Food",
+        "line_start": 216,
+        "line_end": 219
+      }
+    ]
+  },
+  {
+    "id": "FD14",
+    "kind": "static-derived",
+    "statement": "杂食想吃阈值.3；通用JobGiver_GetFood优先级只在food百分比严格低于阈值时9.5，同时还受minCategory/maxLevel等配置和可进食条件影响。",
+    "sources": [
+      {
+        "group": "food",
+        "type": "Verse.RaceProperties",
+        "line_start": 295,
+        "line_end": 331
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.JobGiver_GetFood",
+        "line_start": 26,
+        "line_end": 49
+      }
+    ]
+  },
+  {
+    "id": "FD15",
+    "kind": "static-derived",
+    "statement": "人类状态：0饥荒、0到.12急饿、.12到.24饥饿、.24以上已饱；各状态耗粮倍率0/.25/.5/1；饥荒时营养条不再下降但NeedInterval增加营养不良。",
+    "sources": [
+      {
+        "group": "food",
+        "type": "RimWorld.Need_Food",
+        "line_start": 20,
+        "line_end": 46
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.HungerLevelUtility",
+        "line_start": 24,
+        "line_end": 34
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.Need_Food",
+        "line_start": 164,
+        "line_end": 184
+      }
+    ]
+  },
+  {
+    "id": "FD16",
+    "kind": "static-derived",
+    "statement": "寻找食物时估计件数用RoundToInt，真实摄取用CeilToInt并受堆数量和单次上限约束；取得营养后CurLevel钳制到0..MaxLevel。简单餐整份消费，溢出不保留。",
+    "sources": [
+      {
+        "group": "food",
+        "type": "RimWorld.FoodUtility",
+        "line_start": 1279,
+        "line_end": 1294
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.FoodUtility",
+        "line_start": 1314,
+        "line_end": 1320
+      },
+      {
+        "group": "food",
+        "type": "Verse.Thing",
+        "line_start": 2192,
+        "line_end": 2202
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.Toils_Ingest",
+        "line_start": 419,
+        "line_end": 432
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.Need",
+        "line_start": 39,
+        "line_end": 59
+      },
+      {
+        "group": "food",
+        "xml_record": "MealBaseIngredientless"
+      }
+    ]
+  },
+  {
+    "id": "FD17",
+    "kind": "static-derived",
+    "statement": "生食对食用者的有效营养可能乘Biotech RawNutritionFactor；配方原料营养getter不同于人物摄取营养，不应混用。",
+    "sources": [
+      {
+        "group": "food",
+        "type": "RimWorld.FoodUtility",
+        "line_start": 1642,
+        "line_end": 1649
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.IngredientValueGetter_Nutrition",
+        "line_start": 7,
+        "line_end": 14
+      }
+    ]
+  },
+  {
+    "id": "FD18",
+    "kind": "static-derived",
+    "statement": "植物光照来自GroundGlowAt：无顶才取CurSkyGlow；与普通人工光最大值比较，后者被钳至0.5，特殊overlight标志返回1。51%植物门槛不是心理明亮的30%门槛。",
+    "sources": [
+      {"group":"generation","type":"RimWorld.Plant","line_start":352,"line_end":358},
+      {"group":"food","type":"Verse.GlowGrid","line_start":248,"line_end":286}
+    ]
+  },
+  {
+    "id": "FD19",
+    "kind": "static-derived",
+    "statement": "原版天光按纬度、季节、太阳方向算dot，经0..0.7归一化并饱和；WeatherWorker取min(天光,weather.maxGlow)，SkyManager再混合天气及环境覆盖。不是峰值只在正午的未饱和正弦。",
+    "sources": [
+      {"group":"food","type":"RimWorld.GenCelestial","line_start":140,"line_end":168},
+      {"group":"food","type":"Verse.WeatherWorker","line_start":96,"line_end":134},
+      {"group":"food","type":"Verse.SkyManager","line_start":141,"line_end":170},
+      {"group":"food","type":"Verse.SkyTarget","line_start":15,"line_end":35}
+    ]
+  }
+]

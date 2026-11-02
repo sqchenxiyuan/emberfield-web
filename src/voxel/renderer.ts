@@ -15,6 +15,7 @@ import {
   Fog,
   Group,
   HemisphereLight,
+  IcosahedronGeometry,
   InstancedMesh,
   LineBasicMaterial,
   LineSegments,
@@ -52,6 +53,7 @@ import {
   type Pawn,
   type Pos,
   type Resource,
+  type Stove,
   type VoxelSnapshot,
 } from './types';
 
@@ -116,6 +118,8 @@ const RESOURCE_COLORS: Record<Resource, number> = {
   steel: 0x81b8c5,
   components: 0xe8b55c,
   food: 0x99b869,
+  grain: 0xd6bd71,
+  meal: 0xd88d5f,
 };
 const BLOCK_COLORS: Record<number, number> = {
   [Block.Soil]: 0x9b7959,
@@ -284,6 +288,8 @@ export class VoxelRenderer {
   private box: BoxGeometry;
   private treeTrunk: CylinderGeometry;
   private treeCrown: ConeGeometry;
+  private potGeometry: CylinderGeometry;
+  private smokeGeometry: IcosahedronGeometry;
   private pawnVisuals = new Map<number, PawnVisual>();
   private data: VoxelSnapshot | null = null;
   private snapshotAt = 0;
@@ -346,6 +352,8 @@ export class VoxelRenderer {
     this.box = this.keepGeometry(new BoxGeometry(1, 1, 1));
     this.treeTrunk = this.keepGeometry(new CylinderGeometry(0.12, 0.18, 1.55, 6));
     this.treeCrown = this.keepGeometry(new ConeGeometry(1, 1.5, 6));
+    this.potGeometry = this.keepGeometry(new CylinderGeometry(0.5, 0.44, 1, 10));
+    this.smokeGeometry = this.keepGeometry(new IcosahedronGeometry(1, 0));
 
     const base = new Mesh(
       this.keepGeometry(new PlaneGeometry(WIDTH + 0.08, DEPTH + 0.08)),
@@ -896,7 +904,312 @@ export class VoxelRenderer {
       this.instance(storage, i, pos.x + 0.5, pos.z + 0.026, pos.y + 0.5, 0.9, 0.04, 0.9, 0x70bbac),
     );
     this.finish(storage);
+    this.updateFarming();
     this.updateJobLines();
+  }
+
+  private updateFarming() {
+    if (!this.data) return;
+    const farms = (this.data.farms ?? []).filter((plot) => plot.z === this.level);
+    const furrows = this.batch(
+      'farm-soil',
+      farms.length * 4,
+      this.box,
+      this.batchMaterial('farm-soil'),
+    );
+    this.inspectBatches.set(furrows, { cells: farms, instancesPerCell: 4 });
+    farms.forEach((plot, i) => {
+      this.instance(
+        furrows,
+        i * 4,
+        plot.x + 0.5,
+        plot.z + 0.026,
+        plot.y + 0.5,
+        0.96,
+        0.045,
+        0.96,
+        0x77543a,
+      );
+      for (let row = 0; row < 3; row++)
+        this.instance(
+          furrows,
+          i * 4 + row + 1,
+          plot.x + 0.23 + row * 0.27,
+          plot.z + 0.068,
+          plot.y + 0.5,
+          0.14,
+          0.055,
+          0.86,
+          0x92704c,
+        );
+    });
+    this.finish(furrows);
+
+    // These dimensions and colors are visual interpolation, not crop growth rules.
+    const parts: {
+      cell: Pos;
+      x: number;
+      z: number;
+      y: number;
+      sx: number;
+      sz: number;
+      sy: number;
+      color: number;
+      yaw: number;
+    }[] = [];
+    const add = (
+      cell: Pos,
+      x: number,
+      z: number,
+      y: number,
+      sx: number,
+      sz: number,
+      sy: number,
+      color: number,
+      yaw = 0,
+    ) => parts.push({ cell, x: cell.x + x, z: cell.z + z, y: cell.y + y, sx, sz, sy, color, yaw });
+    for (const crop of this.data.crops ?? []) {
+      if (crop.z !== this.level) continue;
+      const growth = MathUtils.clamp(crop.growth, 0, 1),
+        size = 0.16 + growth * 0.84;
+      if (crop.kind === 'rice') {
+        const stemHeight = 0.57 * size;
+        const grainColor = this.color
+          .setHex(0x8da357)
+          .lerp(new Color(0xe0c776), growth * growth)
+          .getHex();
+        for (let sprig = 0; sprig < 5; sprig++) {
+          const angle = (sprig * Math.PI * 2) / 5,
+            x = 0.5 + Math.cos(angle) * 0.22,
+            y = 0.5 + Math.sin(angle) * 0.22;
+          add(crop, x, 0.09 + stemHeight / 2, y, 0.035, stemHeight, 0.035, 0x6e9149);
+          add(
+            crop,
+            x + 0.015,
+            0.08 + stemHeight,
+            y,
+            0.065 * size,
+            0.18 * size,
+            0.065 * size,
+            grainColor,
+            angle,
+          );
+        }
+      } else if (crop.kind === 'potato') {
+        for (let leaf = 0; leaf < 5; leaf++) {
+          const angle = (leaf * Math.PI * 2) / 5;
+          add(
+            crop,
+            0.5 + Math.cos(angle) * 0.19 * size,
+            0.09 + (0.11 + (leaf % 2) * 0.07) * size,
+            0.5 + Math.sin(angle) * 0.19 * size,
+            0.34 * size,
+            0.13 * size,
+            0.23 * size,
+            leaf % 2 ? 0x568344 : 0x6d984b,
+            angle,
+          );
+        }
+        const blossom = Math.max(0.001, (growth - 0.55) / 0.45) * 0.075;
+        for (let flower = 0; flower < 3; flower++)
+          add(
+            crop,
+            0.34 + flower * 0.16,
+            0.13 + 0.25 * size,
+            0.45 + (flower % 2) * 0.12,
+            blossom,
+            blossom * 0.5,
+            blossom,
+            0xece2bd,
+          );
+      } else {
+        const stalkHeight = 1.05 * size;
+        add(crop, 0.5, 0.09 + stalkHeight / 2, 0.5, 0.055, stalkHeight, 0.055, 0x759447);
+        for (let leaf = 0; leaf < 4; leaf++) {
+          const angle = (leaf * Math.PI) / 2;
+          add(
+            crop,
+            0.5 + Math.cos(angle) * 0.17 * size,
+            0.09 + stalkHeight * (0.35 + leaf * 0.12),
+            0.5 + Math.sin(angle) * 0.17 * size,
+            0.42 * size,
+            0.045 * size,
+            0.1 * size,
+            leaf % 2 ? 0x779a45 : 0x60883e,
+            -angle,
+          );
+        }
+        const ear = Math.max(0.001, (growth - 0.4) / 0.6);
+        for (let side = 0; side < 2; side++)
+          add(
+            crop,
+            0.5 + (side ? -0.09 : 0.09),
+            0.09 + stalkHeight * (0.68 + side * 0.13),
+            0.5,
+            0.12 * ear,
+            0.23 * ear,
+            0.12 * ear,
+            growth === 1 ? 0xf0c954 : 0xb9bc5b,
+          );
+      }
+    }
+    const plants = this.batch(
+      'crop-parts',
+      parts.length,
+      this.box,
+      this.batchMaterial('crop-parts'),
+    );
+    this.inspectBatches.set(plants, { cells: parts.map((part) => part.cell), instancesPerCell: 1 });
+    parts.forEach((part, i) =>
+      this.instance(
+        plants,
+        i,
+        part.x,
+        part.z,
+        part.y,
+        part.sx,
+        part.sz,
+        part.sy,
+        part.color,
+        part.yaw,
+      ),
+    );
+    this.finish(plants);
+
+    const stoves = (this.data.stoves ?? []).filter((stove) => stove.z <= this.level);
+    const masonry = this.batch(
+      'stove-body',
+      stoves.length * 6,
+      this.box,
+      this.batchMaterial('stove-body'),
+    );
+    const pots = this.batch(
+      'stove-pots',
+      stoves.length * 2,
+      this.potGeometry,
+      this.batchMaterial('stove-pots'),
+    );
+    this.inspectBatches.set(masonry, { cells: stoves, instancesPerCell: 6 });
+    this.inspectBatches.set(pots, { cells: stoves, instancesPerCell: 2 });
+    stoves.forEach((stove, i) => {
+      const body = (
+        part: number,
+        x: number,
+        z: number,
+        y: number,
+        sx: number,
+        sz: number,
+        sy: number,
+        color: number,
+      ) =>
+        this.instance(
+          masonry,
+          i * 6 + part,
+          stove.x + x,
+          stove.z + z,
+          stove.y + y,
+          sx,
+          sz,
+          sy,
+          color,
+        );
+      body(0, 0.5, 0.34, 0.5, 0.76, 0.64, 0.68, 0x8f8171);
+      body(1, 0.5, 0.69, 0.5, 0.84, 0.08, 0.76, 0x48565b);
+      body(2, 0.5, 0.33, 0.849, 0.34, 0.25, 0.025, 0x273136);
+      body(3, 0.27, 0.32, 0.855, 0.1, 0.38, 0.07, 0xb88b69);
+      body(4, 0.73, 0.32, 0.855, 0.1, 0.38, 0.07, 0xb88b69);
+      body(5, 0.5, 0.93, 0.5, 0.12, 0.06, 0.08, 0x313d43);
+      this.instance(
+        pots,
+        i * 2,
+        stove.x + 0.5,
+        stove.z + 0.8,
+        stove.y + 0.5,
+        0.44,
+        0.18,
+        0.44,
+        0x45545b,
+      );
+      this.instance(
+        pots,
+        i * 2 + 1,
+        stove.x + 0.5,
+        stove.z + 0.9,
+        stove.y + 0.5,
+        0.48,
+        0.035,
+        0.48,
+        0x819293,
+      );
+    });
+    this.finish(masonry);
+    this.finish(pots);
+  }
+
+  private effectMaterial(name: string, opacity: number) {
+    return (
+      this.batches.get(name)?.material ??
+      this.keepMaterial(
+        new MeshBasicMaterial({
+          color: 0xffffff,
+          transparent: opacity < 1,
+          opacity,
+          depthWrite: opacity === 1,
+        }),
+      )
+    );
+  }
+
+  private animateStoves(time: number, working: Set<number>) {
+    const active: Stove[] = (this.data?.stoves ?? []).filter(
+      (stove) =>
+        stove.z <= this.level && !stove.paused && working.has(index(stove.x, stove.y, stove.z)),
+    );
+    const fire = this.batch(
+      'stove-fire',
+      active.length * 3,
+      this.treeCrown,
+      this.effectMaterial('stove-fire', 1),
+    );
+    const smoke = this.batch(
+      'stove-smoke',
+      active.length * 4,
+      this.smokeGeometry,
+      this.effectMaterial('stove-smoke', 0.2),
+    );
+    active.forEach((stove, i) => {
+      for (let flame = 0; flame < 3; flame++) {
+        const pulse = 0.8 + Math.sin(time * 7 + stove.id + flame * 2) * 0.2;
+        this.instance(
+          fire,
+          i * 3 + flame,
+          stove.x + 0.4 + flame * 0.1,
+          stove.z + 0.3,
+          stove.y + 0.87,
+          0.055,
+          0.1 * pulse,
+          0.035,
+          flame % 2 ? 0xffe7a0 : 0xf5ab55,
+        );
+      }
+      for (let puff = 0; puff < 4; puff++) {
+        const phase = (time * 0.45 + puff * 0.25 + stove.id * 0.17) % 1;
+        const size = 0.045 + Math.sin(phase * Math.PI) * 0.095;
+        this.instance(
+          smoke,
+          i * 4 + puff,
+          stove.x + 0.5 + Math.sin(time * 0.5 + puff) * phase * 0.12,
+          stove.z + 0.96 + phase * 0.85,
+          stove.y + 0.5 - phase * 0.1,
+          size,
+          size * 0.75,
+          size,
+          0xd6d9c9,
+        );
+      }
+    });
+    this.finish(fire);
+    this.finish(smoke);
   }
 
   private updateLadders() {
@@ -963,7 +1276,8 @@ export class VoxelRenderer {
       const floor = job.kind === 'floor';
       const bottom = floor ? job.z - 0.06 : job.z + 0.025;
       if (job.z > this.level + 1 || job.z < this.level - 2) continue;
-      const height = floor ? 0.07 : job.kind === 'wall' ? 0.57 : 0.9;
+      const planting = job.kind === 'sow' || job.kind === 'harvest';
+      const height = floor ? 0.07 : planting ? 0.14 : job.kind === 'wall' ? 0.57 : 0.9;
       const corners = [
         [job.x + 0.04, bottom, job.y + 0.04],
         [job.x + 0.96, bottom, job.y + 0.04],
@@ -979,7 +1293,7 @@ export class VoxelRenderer {
           ? 0xdf896c
           : ['mine', 'digLadder', 'remove'].includes(job.kind)
             ? 0xe6bf6d
-            : job.kind === 'cut'
+            : job.kind === 'cut' || planting
               ? 0xa4cc83
               : 0x82c4cb,
       );
@@ -1135,6 +1449,7 @@ export class VoxelRenderer {
         : 0;
     const time = (this.data.tick + extraTicks) / TPS;
     let moteCount = 0;
+    const cookingCells = new Set<number>();
     for (const visual of this.pawnVisuals.values()) {
       const pawn = visual.pawn;
       const visible = pawn.z <= this.level;
@@ -1145,19 +1460,41 @@ export class VoxelRenderer {
       const moving = pawn.path.length > 0 || fraction < 1;
       const working =
         pawn.phase === 'work' && pawn.path.length === 0 && !pawn.cargo && fraction >= 1;
+      const job = this.data.jobs.find((candidate) => candidate.id === pawn.jobId);
+      const cooking = working && job?.kind === 'cook';
+      const tending = working && (job?.kind === 'sow' || job?.kind === 'harvest');
+      if (cooking && job) cookingCells.add(index(job.x, job.y, job.z));
       const swing = Math.sin(time * 12 + pawn.id * 1.7);
       visual.leftLeg.rotation.x = moving ? swing * 0.55 : 0;
       visual.rightLeg.rotation.x = moving ? -swing * 0.55 : 0;
-      visual.leftArm.rotation.x = pawn.cargo ? -0.9 : moving ? -swing * 0.35 : working ? -0.45 : 0;
+      visual.leftArm.rotation.x = pawn.cargo
+        ? -0.9
+        : moving
+          ? -swing * 0.35
+          : tending
+            ? -0.85 + swing * 0.15
+            : working
+              ? -0.45
+              : 0;
       visual.rightArm.rotation.x = pawn.cargo
         ? -0.9
-        : working
-          ? -1.05 + swing * 0.8
-          : moving
-            ? swing * 0.35
+        : cooking
+          ? -0.8 + Math.sin(time * 4 + pawn.id) * 0.14
+          : tending
+            ? -0.85 - swing * 0.15
+            : working
+              ? -1.05 + swing * 0.8
+              : moving
+                ? swing * 0.35
+                : 0;
+      visual.torso.rotation.x = cooking
+        ? 0.03
+        : tending
+          ? 0.2
+          : working
+            ? 0.08 + Math.max(0, swing) * 0.08
             : 0;
-      visual.torso.rotation.x = working ? 0.08 + Math.max(0, swing) * 0.08 : 0;
-      visual.tool.visible = working;
+      visual.tool.visible = working && !cooking && !tending;
       if (working && pawn.workTarget) {
         visual.root.rotation.y = Math.atan2(
           pawn.workTarget.x + 0.5 - visual.root.position.x,
@@ -1168,7 +1505,7 @@ export class VoxelRenderer {
           dz = visual.to.z - visual.from.z;
         if (Math.abs(dx) + Math.abs(dz) > 0.001) visual.root.rotation.y = Math.atan2(dx, dz);
       }
-      if (visible && working && pawn.workTarget) {
+      if (visible && working && !cooking && pawn.workTarget) {
         for (let j = 0; j < 4 && moteCount < 256; j++) {
           const phase = (time * 2.5 + j * 0.25 + pawn.id * 0.13) % 1;
           const angle = (j * Math.PI) / 2 + pawn.id;
@@ -1187,6 +1524,7 @@ export class VoxelRenderer {
     }
     this.workMotes.count = moteCount;
     this.workMotes.instanceMatrix.needsUpdate = true;
+    this.animateStoves(time, cookingCells);
   }
 
   render() {

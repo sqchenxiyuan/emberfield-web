@@ -62,7 +62,7 @@ try {
   designate('up',33,32,8);
   until('upper ladder connects surface to feet level 11',()=>[8,9,10,11].every(z=>sim.ladders[at(33,32,z)]===1)&&!sim.jobs.length);
   designate('floor',34,32,11,36,32);
-  until('save during actual upper-floor material delivery or work',()=>sim.jobs.some(j=>j.kind==='floor'&&(j.delivered>0||j.progress>0))||sim.pawns.some(p=>p.cargo?.resource==='wood'&&p.jobId!==null&&p.z>8));
+  until('save during actual upper-floor material delivery or work',()=>sim.jobs.some(j=>j.kind==='floor'&&(Object.values(j.delivered).some(n=>n>0)||j.progress>0))||sim.pawns.some(p=>p.cargo?.resource==='wood'&&p.jobId!==null&&p.z>8));
   const saved=sim.save(), countsBefore=sim.counts();
   await writeFile(`${OUT}/mid-work.json`,JSON.stringify(saved));
   sim=VoxelSimulation.load(saved);

@@ -1,0 +1,1304 @@
+{
+  "generatedAt": "2026-11-02T15:50:59.641Z",
+  "kind": "web-runtime-validated",
+  "scope": "Emberfield voxel food milestone; not original RimWorld runtime evidence, full mechanics equivalence, indefinite colony survival or a large-population memory capacity claim.",
+  "sources": [
+    {
+      "file": "src/voxel/client.ts",
+      "sha256": "71338d04788f3f7dbb9eba73bfb2e92d2cd2ab759e5ad5e63547b9f1ae6f0db2"
+    },
+    {
+      "file": "src/voxel/farming.ts",
+      "sha256": "c4820b307bc40cbc26feb1afa6dd79808f3af807db6d3ad37e883d54693b32bc"
+    },
+    {
+      "file": "src/voxel/main.tsx",
+      "sha256": "716071b63df8f37f7c78a3ee8a4f03331595ac5d110d9cce143efc7276d6f2ea"
+    },
+    {
+      "file": "src/voxel/render.worker.ts",
+      "sha256": "191ced6c3d17b480fa11f2d3a6845b8e9df111f5f69ded8b7b2bbaf75caf22c0"
+    },
+    {
+      "file": "src/voxel/renderer.ts",
+      "sha256": "a992fb5d7133e2fa2507278a074a287d1b794d94264f580d9f5e27535a13ecca"
+    },
+    {
+      "file": "src/voxel/sim.worker.ts",
+      "sha256": "97640ccee88b20cee953a2bec0b2c81cb5a62de463b578d82d4a439384a91035"
+    },
+    {
+      "file": "src/voxel/style.css",
+      "sha256": "c74a09e758fe594437b079da6ff705bf1aa2af677fcbdd67c757fe8bf53c3e8e"
+    },
+    {
+      "file": "src/voxel/types.ts",
+      "sha256": "ec2f3eb9a72b3da5acf4ef4974e377a84231c6daf95848537baa607ee72032c9"
+    },
+    {
+      "file": "src/voxel/world.ts",
+      "sha256": "1652d80c68c2476b12093d6a4a909a2551ca9e956bbaa7890d0f409e9a458c60"
+    }
+  ],
+  "assets": [
+    {
+      "file": "assets/index-B9fg7xeY.js",
+      "bytes": 2356,
+      "sha256": "c2eae771ca6d59d0a60c3c00b0a645e7aeed7590f9549ac5346babcd7461323a"
+    },
+    {
+      "file": "assets/main-DMJXrpTK.css",
+      "bytes": 10389,
+      "sha256": "8285d8292feff862752a392542c7532851357d1b13fe356fe998b3e2b8b7c11f"
+    },
+    {
+      "file": "assets/client-CrowJ5J7.js",
+      "bytes": 221699,
+      "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e"
+    },
+    {
+      "file": "assets/main-1vf4iIMO.js",
+      "bytes": 545610,
+      "sha256": "b9d3953eacb395fad024c267790d7fe52896556db46eb2e083909a8d5be11411"
+    },
+    {
+      "file": "assets/render.worker-CP3JZ3ZY.js",
+      "bytes": 520678,
+      "sha256": "94d70c6e1079ab736e3e737b5fab12c9b727a0f708f3053b0b3433ea6581e755"
+    },
+    {
+      "file": "assets/sim.worker-DzMIohEX.js",
+      "bytes": 32849,
+      "sha256": "9d8eb3093bad7ebde755b56c8d7f7b9031b5a5d6a3d48fa6d28bdc54df91e5ab"
+    }
+  ],
+  "unit": {
+    "passed": 68,
+    "total": 68,
+    "failed": 0
+  },
+  "campaign": {
+    "seed": 73129,
+    "scope": "Public command/step/save/load only, with normal day/night time progression. No resource injection, mature-crop injection, terrain editing, pawn teleportation or direct tick changes. Nominal edible nutrition explicitly includes the recipe gain: 10 grain at 0.05 becomes one 0.9 meal, adding 0.4 nutrition per cooked meal. This does not claim physical calorie conservation or unlimited colony sustainability.",
+    "checkpoints": [
+      {
+        "label": "workers sow rice, potato and corn in real soil",
+        "tick": 3879,
+        "day": 0.32325,
+        "elapsed": 3879,
+        "counts": {
+          "wood": 171,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 60,
+          "grain": 0,
+          "meal": 0
+        },
+        "stats": {
+          "mined": 0,
+          "cut": 3,
+          "built": 0,
+          "hauled": 0,
+          "sown": 122,
+          "harvested": 0,
+          "cooked": 0,
+          "eaten": 0,
+          "consumed": {
+            "wood": 0,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 0,
+            "meal": 0
+          },
+          "produced": {
+            "wood": 81,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 0,
+            "meal": 0
+          }
+        },
+        "nutrition": {
+          "availableNutrition": 54,
+          "eatenNominalNutrition": 0,
+          "initialNutrition": 54,
+          "harvestNutrition": 0,
+          "cookingNutritionGain": 0,
+          "grainEaten": 0
+        }
+      },
+      {
+        "label": "unaccelerated calendar growth yields harvested raw ingredients",
+        "tick": 103682,
+        "day": 8.640166666666667,
+        "elapsed": 99803,
+        "counts": {
+          "wood": 171,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 3,
+          "grain": 720,
+          "meal": 0
+        },
+        "stats": {
+          "mined": 0,
+          "cut": 3,
+          "built": 0,
+          "hauled": 81,
+          "sown": 240,
+          "harvested": 120,
+          "cooked": 0,
+          "eaten": 57,
+          "consumed": {
+            "wood": 0,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 57,
+            "grain": 0,
+            "meal": 0
+          },
+          "produced": {
+            "wood": 81,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 720,
+            "meal": 0
+          }
+        },
+        "nutrition": {
+          "availableNutrition": 38.7,
+          "eatenNominalNutrition": 51.300000000000004,
+          "initialNutrition": 54,
+          "harvestNutrition": 36,
+          "cookingNutritionGain": 0,
+          "grainEaten": 0
+        }
+      },
+      {
+        "label": "a colonist builds the wood-fired stove with delivered wood",
+        "tick": 103865,
+        "day": 8.655416666666667,
+        "elapsed": 183,
+        "counts": {
+          "wood": 151,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 3,
+          "grain": 720,
+          "meal": 0
+        },
+        "stats": {
+          "mined": 0,
+          "cut": 3,
+          "built": 1,
+          "hauled": 153,
+          "sown": 242,
+          "harvested": 120,
+          "cooked": 0,
+          "eaten": 57,
+          "consumed": {
+            "wood": 20,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 57,
+            "grain": 0,
+            "meal": 0
+          },
+          "produced": {
+            "wood": 81,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 720,
+            "meal": 0
+          }
+        },
+        "nutrition": {
+          "availableNutrition": 38.7,
+          "eatenNominalNutrition": 51.300000000000004,
+          "initialNutrition": 54,
+          "harvestNutrition": 36,
+          "cookingNutritionGain": 0,
+          "grainEaten": 0
+        }
+      },
+      {
+        "label": "cooking has real delivered ingredients or carried grain",
+        "tick": 103899,
+        "day": 8.65825,
+        "elapsed": 34,
+        "counts": {
+          "wood": 151,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 3,
+          "grain": 720,
+          "meal": 0
+        },
+        "stats": {
+          "mined": 0,
+          "cut": 3,
+          "built": 1,
+          "hauled": 165,
+          "sown": 242,
+          "harvested": 120,
+          "cooked": 0,
+          "eaten": 57,
+          "consumed": {
+            "wood": 20,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 57,
+            "grain": 0,
+            "meal": 0
+          },
+          "produced": {
+            "wood": 81,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 720,
+            "meal": 0
+          }
+        },
+        "nutrition": {
+          "availableNutrition": 38.7,
+          "eatenNominalNutrition": 51.300000000000004,
+          "initialNutrition": 54,
+          "harvestNutrition": 36,
+          "cookingNutritionGain": 0,
+          "grainEaten": 0
+        }
+      },
+      {
+        "label": "grain and fuel become simple meals which colonists actually eat",
+        "tick": 105238,
+        "day": 8.769833333333333,
+        "elapsed": 1339,
+        "counts": {
+          "wood": 145,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 3,
+          "grain": 654,
+          "meal": 5
+        },
+        "stats": {
+          "mined": 0,
+          "cut": 3,
+          "built": 1,
+          "hauled": 607,
+          "sown": 242,
+          "harvested": 120,
+          "cooked": 6,
+          "eaten": 64,
+          "consumed": {
+            "wood": 26,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 57,
+            "grain": 66,
+            "meal": 1
+          },
+          "produced": {
+            "wood": 81,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 720,
+            "meal": 6
+          }
+        },
+        "nutrition": {
+          "availableNutrition": 39.900000000000006,
+          "eatenNominalNutrition": 52.5,
+          "initialNutrition": 54,
+          "harvestNutrition": 36,
+          "cookingNutritionGain": 2.4000000000000004,
+          "grainEaten": 6
+        }
+      },
+      {
+        "label": "harvested plots are automatically sown again and resume growth",
+        "tick": 105238,
+        "day": 8.769833333333333,
+        "elapsed": 0,
+        "counts": {
+          "wood": 145,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 3,
+          "grain": 654,
+          "meal": 5
+        },
+        "stats": {
+          "mined": 0,
+          "cut": 3,
+          "built": 1,
+          "hauled": 607,
+          "sown": 242,
+          "harvested": 120,
+          "cooked": 6,
+          "eaten": 64,
+          "consumed": {
+            "wood": 26,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 57,
+            "grain": 66,
+            "meal": 1
+          },
+          "produced": {
+            "wood": 81,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 720,
+            "meal": 6
+          }
+        },
+        "nutrition": {
+          "availableNutrition": 39.900000000000006,
+          "eatenNominalNutrition": 52.5,
+          "initialNutrition": 54,
+          "harvestNutrition": 36,
+          "cookingNutritionGain": 2.4000000000000004,
+          "grainEaten": 6
+        }
+      },
+      {
+        "label": "120 rice plots complete two real calendar growth and harvest cycles",
+        "tick": 198672,
+        "day": 16.556,
+        "elapsed": 93434,
+        "counts": {
+          "wood": 92,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 3,
+          "grain": 855,
+          "meal": 5
+        },
+        "stats": {
+          "mined": 0,
+          "cut": 3,
+          "built": 1,
+          "hauled": 1145,
+          "sown": 295,
+          "harvested": 241,
+          "cooked": 59,
+          "eaten": 117,
+          "consumed": {
+            "wood": 79,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 57,
+            "grain": 596,
+            "meal": 54
+          },
+          "produced": {
+            "wood": 81,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 1451,
+            "meal": 59
+          }
+        },
+        "nutrition": {
+          "availableNutrition": 49.95,
+          "eatenNominalNutrition": 100.2,
+          "initialNutrition": 54,
+          "harvestNutrition": 72.55,
+          "cookingNutritionGain": 23.6,
+          "grainEaten": 6
+        }
+      },
+      {
+        "label": "second harvest reaches stock and the meal target recovers",
+        "tick": 202445,
+        "day": 16.870416666666667,
+        "elapsed": 3773,
+        "counts": {
+          "wood": 89,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 3,
+          "grain": 819,
+          "meal": 6
+        },
+        "stats": {
+          "mined": 0,
+          "cut": 3,
+          "built": 1,
+          "hauled": 1556,
+          "sown": 363,
+          "harvested": 241,
+          "cooked": 62,
+          "eaten": 125,
+          "consumed": {
+            "wood": 82,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 57,
+            "grain": 632,
+            "meal": 56
+          },
+          "produced": {
+            "wood": 81,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 1451,
+            "meal": 62
+          }
+        },
+        "nutrition": {
+          "availableNutrition": 49.050000000000004,
+          "eatenNominalNutrition": 102.30000000000001,
+          "initialNutrition": 54,
+          "harvestNutrition": 72.55,
+          "cookingNutritionGain": 24.8,
+          "grainEaten": 12
+        }
+      }
+    ],
+    "final": {
+      "tick": 202445,
+      "calendarDays": 16.870416666666667,
+      "ricePlots": 120,
+      "counts": {
+        "wood": 89,
+        "stone": 0,
+        "steel": 0,
+        "components": 0,
+        "food": 3,
+        "grain": 819,
+        "meal": 6
+      },
+      "stored": {
+        "wood": 89,
+        "stone": 0,
+        "steel": 0,
+        "components": 0,
+        "food": 3,
+        "grain": 819,
+        "meal": 6
+      },
+      "stats": {
+        "mined": 0,
+        "cut": 3,
+        "built": 1,
+        "hauled": 1556,
+        "sown": 363,
+        "harvested": 241,
+        "cooked": 62,
+        "eaten": 125,
+        "consumed": {
+          "wood": 82,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 57,
+          "grain": 632,
+          "meal": 56
+        },
+        "produced": {
+          "wood": 81,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 1451,
+          "meal": 62
+        }
+      },
+      "nutrition": {
+        "availableNutrition": 49.050000000000004,
+        "eatenNominalNutrition": 102.30000000000001,
+        "initialNutrition": 54,
+        "harvestNutrition": 72.55,
+        "cookingNutritionGain": 24.8,
+        "grainEaten": 12
+      },
+      "minimumFood": 29.37333333331886,
+      "firstRiceHarvest": {
+        "tick": 96129,
+        "day": 8.01075,
+        "crop": {
+          "id": 432,
+          "x": 31,
+          "y": 32,
+          "z": 8,
+          "kind": "rice",
+          "growth": 1,
+          "sownAt": 180
+        },
+        "growthDays": 7.99575
+      },
+      "replantCount": 120
+    }
+  },
+  "browser": {
+    "base": "http://127.0.0.1:5183/?world=voxel",
+    "scope": "Chrome at 1280x720 and 900x700; actual DOM controls, map mouse drags and file chooser imports. window.voxel is used only for read-only projection, snapshots and save export. Calendar fixtures start from the UI-created save and use only VoxelSimulation.load/command/step/save. No mature crops, resources, terrain, pawn positions or tick values are injected. Fixture rendering is followed by real browser harvest/cooking and cross-level ingredient transport.",
+    "checks": [
+      {
+        "name": "DOM crop selector and real mouse drag create three crop types",
+        "plots": 11
+      },
+      {
+        "name": "actual sowing produces seedlings and visible environmental conditions",
+        "detail": "29, 28 · Z 8\n×\n稻米\n\n有地板支撑的空间 · 地表\n\n本轮生长\n0.6%\n\n生长中 · 肥力 100% · 光照 100% · 22.1°C\n\n下次播种：稻米 · 成熟收获 6 生食材。上方楼板会遮光。\n\n⌖ 对焦此处"
+      },
+      {
+        "name": "stove body inspection and bill target / pause / resume work through DOM"
+      },
+      {
+        "name": "calendar fixtures generated from UI save using normal commands and step only",
+        "fixtures": [
+          {
+            "file": "test-results/voxel-food-browser/normal-near-harvest.json",
+            "tick": 95854,
+            "sha256": "fb6b243288369389902549f02a85c4f62f6c80ed47ed45328bcf2a05f00ab270"
+          },
+          {
+            "file": "test-results/voxel-food-browser/normal-upper-kitchen.json",
+            "tick": 97031,
+            "sha256": "e4be1442d835ee21ee5d940a0d6c565b85a2da10379bc293f16a6d454f15476f"
+          }
+        ]
+      },
+      {
+        "name": "imported normal-growth crops are actually harvested and ingredients delivered for cooking",
+        "tick": 96131,
+        "stats": {
+          "mined": 0,
+          "cut": 0,
+          "built": 1,
+          "hauled": 1,
+          "sown": 11,
+          "harvested": 4,
+          "cooked": 0,
+          "eaten": 54,
+          "consumed": {
+            "wood": 20,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 54,
+            "grain": 0,
+            "meal": 0
+          },
+          "produced": {
+            "wood": 0,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 24,
+            "meal": 0
+          }
+        }
+      },
+      {
+        "name": "paused cooking scene pixels stable within GPU rounding",
+        "changed": 0,
+        "overTwo": 0,
+        "maxDelta": 0
+      },
+      {
+        "name": "real cooking completes a meal",
+        "stats": {
+          "mined": 0,
+          "cut": 0,
+          "built": 1,
+          "hauled": 1,
+          "sown": 12,
+          "harvested": 5,
+          "cooked": 1,
+          "eaten": 54,
+          "consumed": {
+            "wood": 21,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 54,
+            "grain": 10,
+            "meal": 0
+          },
+          "produced": {
+            "wood": 0,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 30,
+            "meal": 1
+          }
+        },
+        "inventory": {
+          "wood": 69,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 6,
+          "grain": 20,
+          "meal": 1
+        }
+      },
+      {
+        "name": "real colonist carries harvested grain through an intermediate ladder level",
+        "carriers": [
+          {
+            "id": 300,
+            "name": "阿砾",
+            "color": 10464968,
+            "x": 33,
+            "y": 32,
+            "z": 9,
+            "food": 67.23999999999488,
+            "rest": 99.38299999999866,
+            "priorities": {
+              "dig": 1,
+              "build": 1,
+              "cut": 1,
+              "haul": 2,
+              "grow": 1,
+              "cook": 1
+            },
+            "jobId": 376,
+            "path": [
+              43041,
+              47138,
+              47074
+            ],
+            "destination": 47074,
+            "phase": "work",
+            "cargo": {
+              "resource": "grain",
+              "amount": 10
+            },
+            "reason": "把材料送往工作面",
+            "moveTick": 97143,
+            "workTarget": {
+              "x": 35,
+              "y": 31,
+              "z": 11
+            },
+            "eating": null
+          }
+        ]
+      },
+      {
+        "name": "upper kitchen cooks using physically delivered cross-level ingredients",
+        "stats": {
+          "mined": 0,
+          "cut": 0,
+          "built": 10,
+          "hauled": 57,
+          "sown": 20,
+          "harvested": 9,
+          "cooked": 1,
+          "eaten": 54,
+          "consumed": {
+            "wood": 61,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 54,
+            "grain": 10,
+            "meal": 0
+          },
+          "produced": {
+            "wood": 0,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 54,
+            "meal": 1
+          }
+        }
+      },
+      {
+        "name": "900x700 critical controls are reachable through actual toolbar/panel scrolling",
+        "reachability": [
+          {
+            "name": "种植区",
+            "x": 560.5,
+            "y": 660,
+            "width": 53,
+            "height": 56,
+            "viewport": [
+              900,
+              700
+            ],
+            "hit": true
+          },
+          {
+            "name": "灶台",
+            "x": 618.5,
+            "y": 660,
+            "width": 53,
+            "height": 56,
+            "viewport": [
+              900,
+              700
+            ],
+            "hit": true
+          },
+          {
+            "name": "擦除区域",
+            "x": 676.5,
+            "y": 660,
+            "width": 53,
+            "height": 56,
+            "viewport": [
+              900,
+              700
+            ],
+            "hit": true
+          },
+          {
+            "name": "取消规划",
+            "x": 731.5,
+            "y": 660,
+            "width": 53,
+            "height": 56,
+            "viewport": [
+              900,
+              700
+            ],
+            "hit": true
+          },
+          {
+            "name": "暂停",
+            "x": 781.09375,
+            "y": 670.5,
+            "width": 25,
+            "height": 29,
+            "viewport": [
+              900,
+              700
+            ],
+            "hit": true
+          },
+          {
+            "name": "3倍速",
+            "x": 874.265625,
+            "y": 670.5,
+            "width": 27.46875,
+            "height": 29,
+            "viewport": [
+              900,
+              700
+            ],
+            "hit": true
+          },
+          {
+            "name": "菜单与存档",
+            "x": 847.5,
+            "y": 37.5,
+            "width": 81,
+            "height": 33,
+            "viewport": [
+              900,
+              700
+            ],
+            "hit": true
+          }
+        ]
+      },
+      {
+        "name": "loaded production asset bytes match frozen dist assets",
+        "assets": [
+          {
+            "url": "http://127.0.0.1:5183/assets/index-B9fg7xeY.js",
+            "sha256": "c2eae771ca6d59d0a60c3c00b0a645e7aeed7590f9549ac5346babcd7461323a",
+            "bytes": 2356
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-DMJXrpTK.css",
+            "sha256": "8285d8292feff862752a392542c7532851357d1b13fe356fe998b3e2b8b7c11f",
+            "bytes": 10389
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/client-CrowJ5J7.js",
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "bytes": 221699
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-1vf4iIMO.js",
+            "sha256": "b9d3953eacb395fad024c267790d7fe52896556db46eb2e083909a8d5be11411",
+            "bytes": 545610
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/render.worker-CP3JZ3ZY.js",
+            "sha256": "94d70c6e1079ab736e3e737b5fab12c9b727a0f708f3053b0b3433ea6581e755",
+            "bytes": 520678
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/sim.worker-DzMIohEX.js",
+            "sha256": "9d8eb3093bad7ebde755b56c8d7f7b9031b5a5d6a3d48fa6d28bdc54df91e5ab",
+            "bytes": 32849
+          }
+        ]
+      }
+    ],
+    "fixtures": [
+      {
+        "source": "test-results/voxel-food-browser/ui-grown-seedlings.json",
+        "sha256": "fb6b243288369389902549f02a85c4f62f6c80ed47ed45328bcf2a05f00ab270",
+        "tick": 95854,
+        "worldSourceSha256": "1652d80c68c2476b12093d6a4a909a2551ca9e956bbaa7890d0f409e9a458c60",
+        "commands": [],
+        "file": "test-results/voxel-food-browser/normal-near-harvest.json",
+        "stats": {
+          "mined": 0,
+          "cut": 0,
+          "built": 1,
+          "hauled": 1,
+          "sown": 11,
+          "harvested": 0,
+          "cooked": 0,
+          "eaten": 54,
+          "consumed": {
+            "wood": 20,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 54,
+            "grain": 0,
+            "meal": 0
+          },
+          "produced": {
+            "wood": 0,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 0,
+            "meal": 0
+          }
+        },
+        "growth": [
+          {
+            "kind": "rice",
+            "growth": 0.9980114963137826,
+            "sownAt": 80
+          },
+          {
+            "kind": "rice",
+            "growth": 0.9978170518693384,
+            "sownAt": 87
+          },
+          {
+            "kind": "rice",
+            "growth": 0.9974003852026724,
+            "sownAt": 102
+          },
+          {
+            "kind": "rice",
+            "growth": 0.9962337185360074,
+            "sownAt": 144
+          },
+          {
+            "kind": "rice",
+            "growth": 0.9958448296471191,
+            "sownAt": 158
+          },
+          {
+            "kind": "rice",
+            "growth": 0.9952892740915643,
+            "sownAt": 178
+          },
+          {
+            "kind": "rice",
+            "growth": 0.9941503852026771,
+            "sownAt": 219
+          },
+          {
+            "kind": "rice",
+            "growth": 0.9940392740915661,
+            "sownAt": 223
+          },
+          {
+            "kind": "rice",
+            "growth": 0.9936226074249,
+            "sownAt": 238
+          },
+          {
+            "kind": "potato",
+            "growth": 0.5132243371738132,
+            "sownAt": 288
+          },
+          {
+            "kind": "corn",
+            "growth": 0.26326263913937087,
+            "sownAt": 310
+          }
+        ]
+      },
+      {
+        "source": "test-results/voxel-food-browser/ui-grown-seedlings.json",
+        "sha256": "e4be1442d835ee21ee5d940a0d6c565b85a2da10379bc293f16a6d454f15476f",
+        "tick": 97031,
+        "worldSourceSha256": "1652d80c68c2476b12093d6a4a909a2551ca9e956bbaa7890d0f409e9a458c60",
+        "commands": [
+          {
+            "tick": 95854,
+            "command": {
+              "type": "bill",
+              "stoveId": 326,
+              "target": 5,
+              "paused": true
+            },
+            "result": {
+              "ok": true,
+              "message": "烹饪已暂停，材料退回现场"
+            }
+          },
+          {
+            "tick": 96129,
+            "command": {
+              "type": "designate",
+              "tool": "up",
+              "from": {
+                "x": 33,
+                "y": 32,
+                "z": 8
+              }
+            },
+            "result": {
+              "ok": true,
+              "message": "安排 4 项工作，需求木材 8；缺料和不可达任务会等待",
+              "count": 4
+            }
+          },
+          {
+            "tick": 96571,
+            "command": {
+              "type": "designate",
+              "tool": "floor",
+              "from": {
+                "x": 34,
+                "y": 31,
+                "z": 11
+              },
+              "to": {
+                "x": 35,
+                "y": 32,
+                "z": 11
+              }
+            },
+            "result": {
+              "ok": true,
+              "message": "安排 4 项工作，需求木材 12；缺料和不可达任务会等待",
+              "count": 4
+            }
+          },
+          {
+            "tick": 96857,
+            "command": {
+              "type": "designate",
+              "tool": "stove",
+              "from": {
+                "x": 35,
+                "y": 31,
+                "z": 11
+              }
+            },
+            "result": {
+              "ok": true,
+              "message": "安排 1 项工作，需求木材 20；缺料和不可达任务会等待",
+              "count": 1
+            }
+          },
+          {
+            "tick": 97031,
+            "command": {
+              "type": "bill",
+              "stoveId": 375,
+              "target": 5,
+              "paused": false
+            },
+            "result": {
+              "ok": true,
+              "message": "简餐不足 5 份时制作"
+            }
+          }
+        ],
+        "file": "test-results/voxel-food-browser/normal-upper-kitchen.json",
+        "stats": {
+          "mined": 0,
+          "cut": 0,
+          "built": 10,
+          "hauled": 56,
+          "sown": 20,
+          "harvested": 9,
+          "cooked": 0,
+          "eaten": 54,
+          "consumed": {
+            "wood": 60,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 54,
+            "grain": 0,
+            "meal": 0
+          },
+          "produced": {
+            "wood": 0,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 54,
+            "meal": 0
+          }
+        },
+        "counts": {
+          "wood": 30,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 6,
+          "grain": 54,
+          "meal": 0
+        }
+      }
+    ],
+    "errors": [],
+    "final": {
+      "viewport": {
+        "width": 900,
+        "height": 700
+      },
+      "tick": 97295,
+      "stats": {
+        "mined": 0,
+        "cut": 0,
+        "built": 10,
+        "hauled": 57,
+        "sown": 20,
+        "harvested": 9,
+        "cooked": 1,
+        "eaten": 54,
+        "consumed": {
+          "wood": 61,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 54,
+          "grain": 10,
+          "meal": 0
+        },
+        "produced": {
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 54,
+          "meal": 1
+        }
+      },
+      "worker": true,
+      "metrics": {
+        "backend": "Three.js · WebGL2",
+        "fps": 59.94005994362908,
+        "drawCalls": 62,
+        "triangles": 21056,
+        "geometries": 30,
+        "textures": 4,
+        "chunkCount": 16,
+        "pendingChunks": 0,
+        "terrainVertices": 45560,
+        "terrainGeometryBytes": 2141320,
+        "gridBytes": 131072,
+        "dpr": 1,
+        "level": 11,
+        "rotation": 0.7853981633974483,
+        "zoom": 1.25
+      }
+    }
+  },
+  "regressions": {
+    "construction": {
+      "base": "http://127.0.0.1:5183/?world=voxel",
+      "checks": [
+        {
+          "name": "worker-rendered 64x64x16 world",
+          "worker": true,
+          "metrics": {
+            "backend": "Three.js · WebGL2",
+            "fps": 18.398135656662937,
+            "drawCalls": 58,
+            "triangles": 29932,
+            "geometries": 27,
+            "textures": 4,
+            "chunkCount": 16,
+            "pendingChunks": 0,
+            "terrainVertices": 43984,
+            "terrainGeometryBytes": 2067248,
+            "gridBytes": 131072,
+            "dpr": 1,
+            "level": 8,
+            "rotation": 0.7853981633974483,
+            "zoom": 1.25
+          }
+        },
+        {
+          "name": "physical item inspection"
+        },
+        {
+          "name": "clicking a colonist body selects the foot-space object"
+        },
+        {
+          "name": "tree cut and wood hauled through actual UI"
+        },
+        {
+          "name": "three-level shaft built by colonists"
+        },
+        {
+          "name": "underground mining and cross-level steel hauling",
+          "steel": 40
+        },
+        {
+          "name": "upper floors receive physical materials; mid-construction save survives page reload"
+        },
+        {
+          "name": "upper storage and two-voxel-high wall"
+        },
+        {
+          "name": "four camera rotations pick the same cell; slices do not change simulation"
+        },
+        {
+          "name": "paused world pixels stable within GPU rounding (HUD FPS excluded)",
+          "changed": 1,
+          "overTwo": 0,
+          "maxDelta": 1
+        },
+        {
+          "name": "invalid construction is explained without material consumption"
+        },
+        {
+          "name": "removed ladder blocks cross-level movement; rebuilt ladder restores actual walking"
+        },
+        {
+          "name": "main-thread WebGL2 fallback loads the same voxel save"
+        }
+      ],
+      "errors": []
+    },
+    "emptyWorldLifecycle": {
+      "base": "http://127.0.0.1:5183/?world=voxel",
+      "scope": "Chrome headless, DPR 1; one document without reload, six normal UI save/new-world/load cycles. Only read-only window.voxel.snapshot/exportSave/project observation. Renderer must remain Worker WebGL2. Render geometry/texture counts are live Three.js resources; terrainGeometryBytes counts tracked terrain buffers, not total GPU memory. CDP Performance JSHeapUsedSize/JSHeapTotalSize covers the main page isolate only, excluding simulation/render workers, native browser allocations and VRAM. This bounded lifecycle run is not a long-duration leak proof or universal capacity estimate.",
+      "cycles": 6,
+      "convergence": {
+        "geometries": {
+          "values": [
+            27,
+            27,
+            27,
+            27,
+            27,
+            27,
+            27
+          ],
+          "min": 27,
+          "max": 27,
+          "delta": 0
+        },
+        "textures": {
+          "values": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "min": 4,
+          "max": 4,
+          "delta": 0
+        },
+        "chunkCount": {
+          "values": [
+            16,
+            16,
+            16,
+            16,
+            16,
+            16,
+            16
+          ],
+          "min": 16,
+          "max": 16,
+          "delta": 0
+        },
+        "terrainGeometryBytes": {
+          "values": [
+            2067248,
+            2067248,
+            2067248,
+            2067248,
+            2067248,
+            2067248,
+            2067248
+          ],
+          "min": 2067248,
+          "max": 2067248,
+          "delta": 0
+        }
+      },
+      "uiControlsChecked": 75,
+      "errors": []
+    }
+  },
+  "screenshots": [
+    {
+      "file": "voxel/farm-harvest.jpg",
+      "sha256": "8bbcbfd64c3d02babc3752837e1ac5abfa89fba65eba222c249e8fc944407579",
+      "source": "test-results/voxel-food-browser/02-near-harvest-import.png",
+      "sourceSha256": "bb9cafbf1dfb7f43b52e959237d203b2e1e65dcc811368bd2deab1273458eadd",
+      "transform": "Full reviewed gameplay viewport; JPEG quality .83, no crop"
+    },
+    {
+      "file": "voxel/upper-kitchen.jpg",
+      "sha256": "223fe28e051b73aa93a404c985cbb1973176f5ba4cfd31c39cd43cf636b96166",
+      "source": "test-results/voxel-food-browser/05-upper-kitchen-1280.png",
+      "sourceSha256": "8461f215562795f0fd11b5e00cb1e19a9745552a5ae7317a419c81c0e2c32435",
+      "transform": "Full reviewed gameplay viewport; JPEG quality .83, no crop"
+    }
+  ]
+}

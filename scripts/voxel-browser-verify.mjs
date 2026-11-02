@@ -169,7 +169,7 @@ try {
   await run();
   await wait(
     () =>
-      window.voxel.snapshot().snapshot.jobs.some((j) => j.delivered > 0 || j.progress > 0) ||
+      window.voxel.snapshot().snapshot.jobs.some((j) => Object.values(j.delivered).some(n=>n>0) || j.progress > 0) ||
       window.voxel.snapshot().snapshot.pawns.some((p) => p.cargo?.resource === 'wood' && p.z > 8),
   );
   await pause();

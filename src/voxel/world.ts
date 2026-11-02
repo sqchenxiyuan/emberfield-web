@@ -11,7 +11,19 @@ import {
   index,
   inside,
   position,
+  JOB_NAMES,
+  RESOURCE_NAMES,
 } from './types';
+import {
+  CROPS,
+  SIMPLE_MEAL,
+  NUTRITION,
+  FOOD_FALL_PER_TICK,
+  hourAt,
+  temperatureAt,
+  daylight,
+  cropGrowth,
+} from './farming';
 import type {
   ChunkUpdate,
   CommandResult,
@@ -28,6 +40,10 @@ import type {
   VoxelSnapshot,
   VoxelStats,
   Work,
+  Crop,
+  CropKind,
+  FarmPlot,
+  Stove,
 } from './types';
 
 const same = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
@@ -37,12 +53,48 @@ const horizontal = [
   [0, 1],
   [0, -1],
 ];
-const costOf = (kind: JobKind) =>
-  ({ mine: 0, cut: 0, floor: 3, wall: 6, ladder: 2, digLadder: 2, remove: 0 })[kind];
+const resources = Object.keys(emptyCounts()) as Resource[];
+const costOf = (kind: JobKind): Partial<Counts> =>
+  kind === 'cook'
+    ? { grain: SIMPLE_MEAL.ingredients, wood: SIMPLE_MEAL.wood }
+    : (
+          { floor: 3, wall: 6, ladder: 2, digLadder: 2, stove: 20 } as Partial<
+            Record<JobKind, number>
+          >
+        )[kind]
+      ? {
+          wood: (
+            { floor: 3, wall: 6, ladder: 2, digLadder: 2, stove: 20 } as Partial<
+              Record<JobKind, number>
+            >
+          )[kind]!,
+        }
+      : {};
 const workOf = (kind: JobKind) =>
-  ({ mine: 70, cut: 60, floor: 45, wall: 80, ladder: 40, digLadder: 90, remove: 40 })[kind];
+  ({
+    mine: 70,
+    cut: 60,
+    floor: 45,
+    wall: 80,
+    ladder: 40,
+    digLadder: 90,
+    remove: 40,
+    sow: 57,
+    harvest: 67,
+    stove: 120,
+    cook: SIMPLE_MEAL.work,
+  })[kind];
 const workType = (kind: JobKind): Work =>
-  kind === 'mine' || kind === 'digLadder' ? 'dig' : kind === 'cut' ? 'cut' : 'build';
+  kind === 'sow' || kind === 'harvest'
+    ? 'grow'
+    : kind === 'cook'
+      ? 'cook'
+      : kind === 'mine' || kind === 'digLadder'
+        ? 'dig'
+        : kind === 'cut'
+          ? 'cut'
+          : 'build';
+const missing = (j: Job) => resources.find((r) => (j.cost[r] ?? 0) > (j.delivered[r] ?? 0));
 function hash(seed: number, x: number, y: number, z = 0) {
   let a =
     Math.imul(x + 374761393, 668265263) ^
@@ -109,6 +161,9 @@ export class VoxelSimulation {
   items: Stack[] = [];
   trees: Tree[] = [];
   jobs: Job[] = [];
+  farms: FarmPlot[] = [];
+  crops: Crop[] = [];
+  stoves: Stove[] = [];
   stockpiles: Pos[] = [
     { x: 30, y: 32, z: SURFACE },
     { x: 30, y: 33, z: SURFACE },
@@ -118,6 +173,10 @@ export class VoxelSimulation {
     cut: 0,
     built: 0,
     hauled: 0,
+    sown: 0,
+    harvested: 0,
+    cooked: 0,
+    eaten: 0,
     consumed: emptyCounts(),
     produced: emptyCounts(),
   };
@@ -130,6 +189,8 @@ export class VoxelSimulation {
   private parents = new Int32Array(CELLS);
   private queue = new Int32Array(CELLS);
   private treeCells = new Set<number>();
+  private stoveCells = new Set<number>();
+  private skyCache = new Map<number, boolean>();
   constructor(public seed = 73129) {
     this.generate();
   }
@@ -200,7 +261,7 @@ export class VoxelSimulation {
         z: 8,
         food: 100,
         rest: 100,
-        priorities: { dig: 1, build: 1, cut: 1, haul: 2 },
+        priorities: { dig: 1, build: 1, cut: 1, haul: 2, grow: 1, cook: 1 },
         jobId: null,
         path: [],
         destination: null,
@@ -209,6 +270,7 @@ export class VoxelSimulation {
         reason: '等待安排',
         moveTick: 0,
         workTarget: null,
+        eating: null,
       });
     this.addItem('wood', 90, { x: 30, y: 32, z: 8 });
     this.addItem('food', 60, { x: 30, y: 33, z: 8 });
@@ -222,6 +284,7 @@ export class VoxelSimulation {
     for (let i = 0; i < 16; i++) this.dirty.add(i);
   }
   private changed(p: Pos) {
+    this.skyCache.clear();
     this.revision++;
     const cx = Math.floor(p.x / CHUNK),
       cy = Math.floor(p.y / CHUNK);
@@ -263,6 +326,7 @@ export class VoxelSimulation {
       this.blocks[i + WIDTH * DEPTH] === 0 &&
       !this.treeCells.has(i) &&
       !this.treeCells.has(i + WIDTH * DEPTH) &&
+      !this.stoveCells.has(i) &&
       (this.blocks[i - WIDTH * DEPTH] !== 0 || this.ladders[i] === 1)
     );
   }
@@ -319,7 +383,7 @@ export class VoxelSimulation {
   }
   private stands(j: Job): number[] {
     const candidates: Pos[] = horizontal.map(([dx, dy]) => ({ x: j.x + dx, y: j.y + dy, z: j.z }));
-    if (j.kind === 'floor') candidates.push({ ...j });
+    if (j.kind === 'floor' || j.kind === 'sow' || j.kind === 'harvest') candidates.push({ ...j });
     if (j.kind === 'ladder' || j.kind === 'digLadder')
       candidates.push({ ...j, z: j.z + 1 }, { ...j, z: j.z - 1 });
     if (j.kind === 'remove' && this.ladders[at(j)])
@@ -366,6 +430,80 @@ export class VoxelSimulation {
           : [v.z];
     return cells(j).some((z) => cells(k).includes(z));
   }
+  private farmable(p: Pos) {
+    return (
+      this.standable(p) && this.blocks[at(p) - WIDTH * DEPTH] === Block.Soil && !this.ladders[at(p)]
+    );
+  }
+  cropCondition(p: Pos, kind: CropKind) {
+    const i = at(p);
+    let sky = this.skyCache.get(i);
+    if (sky === undefined) {
+      sky = true;
+      for (let z = p.z; z < HEIGHT; z++) {
+        if (
+          this.blocks[index(p.x, p.y, z)] ||
+          this.treeCells.has(index(p.x, p.y, z)) ||
+          this.stoveCells.has(index(p.x, p.y, z))
+        ) {
+          sky = false;
+          break;
+        }
+      }
+      this.skyCache.set(i, sky);
+    }
+    const fertility = this.blocks[i - WIDTH * DEPTH] === Block.Soil ? 1 : 0;
+    const hour = hourAt(this.tick),
+      light = sky ? daylight(hour) : 0,
+      temperature = temperatureAt(this.tick);
+    const growthRate = fertility ? cropGrowth(kind, fertility, light, temperature, hour) : 0;
+    const reason = !fertility
+      ? '需要土壤'
+      : !sky
+        ? '上方遮挡，无阳光'
+        : hour < 6 || hour >= 19.2
+          ? '夜间休眠'
+          : light <= 0.51
+            ? '光照不足'
+            : growthRate > 0
+              ? '生长中'
+              : '温度不适';
+    return { fertility, light, temperature, growthRate, reason };
+  }
+  private syncProduction() {
+    for (const j of [...this.jobs]) {
+      if (
+        j.kind === 'sow' &&
+        (!this.farms.some((f) => same(f, j)) ||
+          !this.farmable(j) ||
+          this.crops.some((v) => same(v, j)))
+      )
+        this.cancel(j);
+      if (j.kind === 'harvest' && !this.crops.some((v) => same(v, j) && v.growth >= 1))
+        this.cancel(j);
+      if (j.kind === 'cook' && !this.stoves.some((v) => same(v, j) && !v.paused)) this.cancel(j);
+    }
+    for (const f of this.farms) {
+      if (this.jobs.length >= 512 || this.jobs.some((j) => same(j, f)) || !this.farmable(f))
+        continue;
+      const c = this.crops.find((c) => same(c, f));
+      if (!c) this.jobs.push(this.makeJob('sow', f));
+      else if (c.growth >= 1) this.jobs.push(this.makeJob('harvest', f));
+    }
+    let meals =
+      this.counts().meal + this.jobs.filter((j) => j.kind === 'cook').length * SIMPLE_MEAL.output;
+    for (const stove of this.stoves) {
+      if (
+        this.jobs.length >= 512 ||
+        stove.paused ||
+        meals >= stove.target ||
+        this.jobs.some((j) => same(j, stove))
+      )
+        continue;
+      this.jobs.push(this.makeJob('cook', stove));
+      meals += SIMPLE_MEAL.output;
+    }
+  }
   command(c: VoxelCommand): CommandResult {
     if (!c || typeof c !== 'object') return { ok: false, message: '命令格式无效' };
     const nextId = this.nextId;
@@ -378,7 +516,7 @@ export class VoxelSimulation {
       const p = this.pawns.find((p) => p.id === c.pawnId);
       if (
         !p ||
-        !['dig', 'build', 'cut', 'haul'].includes(c.work) ||
+        !['dig', 'build', 'cut', 'haul', 'grow', 'cook'].includes(c.work) ||
         !Number.isInteger(c.value) ||
         c.value < 0 ||
         c.value > 4
@@ -387,6 +525,25 @@ export class VoxelSimulation {
       p.priorities[c.work] = c.value;
       this.release(p);
       return { ok: true, message: '工作优先级已更新；0 为禁用' };
+    }
+    if (c.type === 'bill') {
+      const stove = this.stoves.find((v) => v.id === c.stoveId);
+      if (
+        !stove ||
+        !Number.isInteger(c.target) ||
+        c.target < 0 ||
+        c.target > 100 ||
+        typeof c.paused !== 'boolean'
+      )
+        return { ok: false, message: '简餐目标需为 0–100 的整数' };
+      Object.assign(stove, { target: c.target, paused: c.paused });
+      // Restart this stove's reservation when the target changes, refunding all delivered inputs.
+      for (const j of [...this.jobs]) if (j.kind === 'cook' && same(j, stove)) this.cancel(j);
+      this.syncProduction();
+      return {
+        ok: true,
+        message: stove.paused ? '烹饪已暂停，材料退回现场' : `简餐不足 ${stove.target} 份时制作`,
+      };
     }
     if (c.type === 'move') {
       const p = this.pawns.find((p) => p.id === c.pawnId);
@@ -416,6 +573,47 @@ export class VoxelSimulation {
     for (let y = y0; y <= y1; y++)
       for (let x = x0; x <= x1; x++) positions.push({ x, y, z: c.from.z });
     if (c.tool === 'inspect') return { ok: true, message: '选择查看' };
+    if (c.tool === 'clearZone') {
+      for (const pos of positions) {
+        this.farms = this.farms.filter((f) => !same(f, pos));
+        this.stockpiles = this.stockpiles.filter((f) => !same(f, pos));
+        this.crops = this.crops.filter((f) => !same(f, pos));
+        for (const j of [...this.jobs])
+          if ((j.kind === 'sow' || j.kind === 'harvest') && same(j, pos)) this.cancel(j);
+      }
+      this.revision++;
+      return { ok: true, message: '区域已擦除；作物清理，不返还收成', count: positions.length };
+    }
+    if (c.tool === 'farm') {
+      const kind = c.crop ?? 'rice';
+      if (!Object.hasOwn(CROPS, kind)) return { ok: false, message: '未知作物' };
+      if (
+        positions.some(
+          (p) =>
+            !this.farmable(p) ||
+            this.stockpiles.some((s) => same(s, p)) ||
+            this.jobs.some((j) => same(j, p) && j.kind !== 'sow' && j.kind !== 'harvest'),
+        )
+      )
+        return { ok: false, message: '种植区需要空闲土壤和两格净空，不能与仓储或施工重叠' };
+      if (
+        this.farms.length + positions.filter((p) => !this.farms.some((f) => same(f, p))).length >
+        512
+      )
+        return { ok: false, message: '种植区最多 512 格' };
+      for (const p of positions) {
+        const old = this.farms.find((f) => same(f, p));
+        if (old) old.crop = kind;
+        else this.farms.push({ ...p, crop: kind });
+      }
+      this.syncProduction();
+      this.revision++;
+      return {
+        ok: true,
+        message: `安排 ${positions.length} 格${CROPS[kind].name}；更换作物在下一次播种生效`,
+        count: positions.length,
+      };
+    }
     if (c.tool === 'cancel') {
       let n = 0;
       for (const p of positions)
@@ -431,7 +629,11 @@ export class VoxelSimulation {
       };
     }
     if (c.tool === 'stock') {
-      if (positions.some((p) => !this.standable(p) || this.ladders[at(p)]))
+      if (
+        positions.some(
+          (p) => !this.standable(p) || this.ladders[at(p)] || this.farms.some((f) => same(f, p)),
+        )
+      )
         return { ok: false, message: '仓储需要有支撑、两格净空的地板，不能设在梯井内' };
       if (
         this.stockpiles.length +
@@ -481,31 +683,55 @@ export class VoxelSimulation {
       }
     }
     // Natural-resource drags skip empty cells; construction rejects the whole invalid stroke.
+    if (
+      plans.some(
+        (j) =>
+          (j.kind === 'ladder' || j.kind === 'digLadder') && this.farms.some((f) => same(f, j)),
+      )
+    )
+      return { ok: false, message: '梯井与种植区重叠，请先擦除区域' };
     if (errors.length && c.tool !== 'mine' && c.tool !== 'cut')
       return { ok: false, message: errors[0] };
-    if (plans.some((j) => this.jobs.some((k) => this.jobCellConflict(j, k))))
+    if (
+      plans.some((j) =>
+        this.jobs.some(
+          (k) => this.jobCellConflict(j, k) && !(j.kind === 'remove' && k.kind === 'cook'),
+        ),
+      )
+    )
       return { ok: false, message: '规划与已有任务重叠，请先取消原规划' };
     if (!plans.length) return { ok: false, message: errors[0] ?? '没有可安排的目标' };
     if (this.jobs.length + plans.length > 512)
       return { ok: false, message: '规划上限为 512 项，请等部分任务完成' };
+    for (const j of plans)
+      if (j.kind === 'remove')
+        for (const k of [...this.jobs]) if (k.kind === 'cook' && same(k, j)) this.cancel(k);
     this.jobs.push(...plans);
-    this.notice = `安排 ${plans.length} 项工作，需求木材 ${plans.reduce((n, j) => n + j.cost, 0)}；缺料和不可达任务会等待`;
+    this.notice = `安排 ${plans.length} 项工作，需求木材 ${plans.reduce((n, j) => n + (j.cost.wood ?? 0), 0)}；缺料和不可达任务会等待`;
     return { ok: true, message: this.notice, count: plans.length };
   }
   private makeJob(kind: JobKind, p: Pos): Job {
     return {
       id: this.id(),
       kind,
-      ...p,
+      x: p.x,
+      y: p.y,
+      z: p.z,
       work: workOf(kind),
       progress: 0,
       owner: null,
-      delivered: 0,
+      delivered: {},
       cost: costOf(kind),
       reason: '等待可达工人',
     };
   }
   private placementReason(kind: JobKind, p: Pos) {
+    if (kind !== 'remove' && this.stoves.some((s) => same(s, p))) return '这里已有灶台';
+    if (
+      this.farms.some((f) => f.x === p.x && f.y === p.y && Math.abs(f.z - p.z) <= 1) &&
+      ['wall', 'floor', 'ladder', 'stove'].includes(kind)
+    )
+      return '先用擦除区域工具清理种植区';
     const b = this.blocks[at(p)],
       above = this.blocks[index(p.x, p.y, p.z + 1)];
     if (kind === 'mine')
@@ -513,6 +739,10 @@ export class VoxelSimulation {
         ? ''
         : '此处没有可开挖的自然方块';
     if (kind === 'cut') return this.trees.some((t) => same(t, p)) ? '' : '此处没有成熟树木';
+    if (kind === 'stove')
+      return !this.standable(p) || this.ladders[at(p)] || this.stockpiles.some((s) => same(s, p))
+        ? '灶台需要有支撑的空置地板，不能与仓储重叠'
+        : '';
     if (kind === 'floor')
       return this.blocks[index(p.x, p.y, p.z - 1)] || b || above || this.treeCells.has(at(p))
         ? '楼板位置需为空，楼面上方保留两格净空'
@@ -526,7 +756,8 @@ export class VoxelSimulation {
         ? '梯子需要空置的两格空间'
         : '';
     if (kind === 'remove')
-      return b === Block.Wood ||
+      return this.stoves.some((s) => same(s, p)) ||
+        b === Block.Wood ||
         this.ladders[at(p)] ||
         this.blocks[index(p.x, p.y, p.z - 1)] === Block.Wood
         ? ''
@@ -541,10 +772,12 @@ export class VoxelSimulation {
     p.destination = null;
     p.phase = 'idle';
     p.workTarget = null;
+    p.eating = null;
   }
   private cancel(j: Job) {
     for (const p of this.pawns) if (p.jobId === j.id) this.release(p);
-    if (j.delivered) this.addItem('wood', j.delivered, this.dropPoint(j));
+    for (const r of resources)
+      if (j.delivered[r]) this.addItem(r, j.delivered[r]!, this.dropPoint(j));
     this.jobs = this.jobs.filter((k) => k.id !== j.id);
   }
   private dropPoint(p: Pos): Pos {
@@ -556,7 +789,15 @@ export class VoxelSimulation {
     return this.pawns[0];
   }
   private supported(j: Job) {
-    if (j.kind === 'wall') return this.blocks[index(j.x, j.y, j.z - 1)] !== 0;
+    if (j.kind === 'wall' || j.kind === 'stove') return this.blocks[index(j.x, j.y, j.z - 1)] !== 0;
+    if (j.kind === 'cook') return this.stoves.some((s) => same(s, j) && !s.paused);
+    if (j.kind === 'sow')
+      return (
+        this.farms.some((f) => same(f, j)) &&
+        this.farmable(j) &&
+        !this.crops.some((c) => same(c, j))
+      );
+    if (j.kind === 'harvest') return this.crops.some((c) => same(c, j) && c.growth >= 1);
     if (j.kind === 'floor')
       return horizontal.some(([dx, dy]) => {
         const q = { x: j.x + dx, y: j.y + dy, z: j.z - 1 };
@@ -572,6 +813,7 @@ export class VoxelSimulation {
     return true;
   }
   private assign(p: Pawn) {
+    if (p.food < 30 && this.tryFood(p)) return;
     if (p.cargo) {
       this.deliverCargo(p);
       return;
@@ -581,21 +823,36 @@ export class VoxelSimulation {
       p.reason = '原地休息';
       return;
     }
-    this.search(p);
-    if (p.food < 40) {
-      const food = this.pileFor(p, 'food');
-      if (food) {
-        this.go(p, at(food), 'fetch');
-        p.reason = '取用口粮';
-        p.workTarget = null;
-        return;
-      }
-    }
     const jobs = this.jobs
       .filter((j) => j.owner === null && p.priorities[workType(j.kind)] > 0)
       .sort(
         (a, b) => p.priorities[workType(a.kind)] - p.priorities[workType(b.kind)] || a.id - b.id,
       );
+    const loose =
+      p.priorities.haul > 0 &&
+      this.stockpiles.length > 0 &&
+      this.items.some((i) => !this.stockpiles.some((s) => same(s, i)));
+    // Most growing ticks have no work. Avoid traversing the full 3D map for idle people.
+    if (
+      !loose &&
+      !jobs.some(
+        (j) =>
+          this.supported(j) && (!missing(j) || this.items.some((i) => i.resource === missing(j))),
+      )
+    ) {
+      for (const j of jobs) {
+        const needed = missing(j);
+        j.reason = !this.supported(j)
+          ? '等待支撑或相邻梯子施工'
+          : needed
+            ? `缺少${RESOURCE_NAMES[needed]}`
+            : '等待工作面';
+      }
+      p.reason =
+        p.food < 30 ? '饥饿，暂无可用食物' : jobs.length ? '等待材料或支撑' : '暂无工作，休息恢复';
+      return;
+    }
+    this.search(p);
     for (const j of jobs) {
       if (!this.supported(j)) {
         j.reason = '等待支撑或相邻梯子施工';
@@ -606,8 +863,9 @@ export class VoxelSimulation {
         j.reason = '无可达工作面；需要两格净空与层间通路';
         continue;
       }
-      if (j.cost > j.delivered && !this.pileFor(p, 'wood')) {
-        j.reason = '缺少可达木材；先伐木或接通通路';
+      const needed = missing(j);
+      if (needed && !this.pileFor(p, needed)) {
+        j.reason = `缺少可达${RESOURCE_NAMES[needed]}`;
         continue;
       }
       j.owner = p.id;
@@ -636,15 +894,16 @@ export class VoxelSimulation {
   }
   private continueJob(p: Pawn, j: Job) {
     this.search(p);
-    if (j.delivered < j.cost) {
-      const stack = this.pileFor(p, 'wood');
+    const needed = missing(j);
+    if (needed) {
+      const stack = this.pileFor(p, needed);
       if (!stack) {
-        j.reason = '等待可达木材';
+        j.reason = `等待可达${RESOURCE_NAMES[needed]}`;
         this.release(p);
         return;
       }
       this.go(p, at(stack), 'fetch');
-      p.reason = '搬运建材';
+      p.reason = `搬运${RESOURCE_NAMES[needed]}`;
       return;
     }
     const stand = this.reachableStand(j);
@@ -655,17 +914,17 @@ export class VoxelSimulation {
     }
     this.go(p, stand, 'work');
     p.reason = '前往工作面';
-    j.reason = '施工中';
+    j.reason = JOB_NAMES[j.kind] + '中';
   }
   private deliverCargo(p: Pawn) {
     if (!p.cargo) return;
     this.search(p);
     const j = this.jobs.find((j) => j.id === p.jobId);
-    if (j && p.cargo.resource === 'wood' && j.delivered < j.cost) {
+    if (j && (j.delivered[p.cargo.resource] ?? 0) < (j.cost[p.cargo.resource] ?? 0)) {
       const stand = this.reachableStand(j);
       if (stand >= 0) {
         this.go(p, stand, 'work');
-        p.reason = '把建材送往工作面';
+        p.reason = '把材料送往工作面';
         return;
       }
     }
@@ -689,26 +948,62 @@ export class VoxelSimulation {
   }
   private take(p: Pawn, resource: Resource | undefined, amount: number) {
     const item = this.items.find((i) => same(i, p) && (!resource || i.resource === resource));
-    if (!item) return false;
+    if (!item || amount <= 0 || p.cargo) return false;
     const n = Math.min(amount, item.amount);
     p.cargo = { resource: item.resource, amount: n };
     item.amount -= n;
     this.items = this.items.filter((i) => i.amount > 0);
     return true;
   }
+  private consume(p: Pawn, resource: Resource, available: number) {
+    const nutrition = NUTRITION[resource];
+    if (!nutrition) return 0;
+    const amount =
+      resource === 'grain'
+        ? Math.min(available, Math.ceil((100 - p.food) / (nutrition * 100)))
+        : Math.min(1, available);
+    p.food = Math.min(100, p.food + amount * nutrition * 100);
+    this.stats.consumed[resource] += amount;
+    this.stats.eaten += amount;
+    return amount;
+  }
+  private tryFood(p: Pawn) {
+    if (p.cargo && NUTRITION[p.cargo.resource]) {
+      p.cargo.amount -= this.consume(p, p.cargo.resource, p.cargo.amount);
+      if (!p.cargo.amount) p.cargo = null;
+      this.release(p);
+      p.reason = '吃过随身食物';
+      return true;
+    }
+    if (!this.items.some((i) => NUTRITION[i.resource])) return false;
+    this.search(p);
+    const food = (['meal', 'food', 'grain'] as Resource[])
+      .map((r) => this.pileFor(p, r))
+      .find(Boolean);
+    if (!food) return false;
+    this.release(p);
+    if (p.cargo) {
+      this.addItem(p.cargo.resource, p.cargo.amount, p);
+      p.cargo = null;
+    }
+    p.eating = food.resource;
+    this.go(p, at(food), 'fetch');
+    p.reason = `寻找${RESOURCE_NAMES[food.resource]}`;
+    return true;
+  }
   private arrive(p: Pawn) {
     const j = this.jobs.find((j) => j.id === p.jobId);
     if (p.phase === 'fetch') {
       if (!j) {
-        if (this.take(p, 'food', 1)) {
-          p.food = Math.min(100, p.food + 65);
-          this.stats.consumed.food++;
-          p.cargo = null;
-        }
+        const food = this.items.find((i) => same(i, p) && i.resource === p.eating);
+        if (food) food.amount -= this.consume(p, food.resource, food.amount);
+        this.items = this.items.filter((i) => i.amount > 0);
         this.release(p);
         return;
       }
-      if (this.take(p, 'wood', j.cost - j.delivered)) this.deliverCargo(p);
+      const needed = missing(j);
+      if (needed && this.take(p, needed, (j.cost[needed] ?? 0) - (j.delivered[needed] ?? 0)))
+        this.deliverCargo(p);
       else this.continueJob(p, j);
       return;
     }
@@ -737,30 +1032,22 @@ export class VoxelSimulation {
         return;
       }
       if (p.cargo) {
-        if (p.cargo.resource !== 'wood') {
+        const resource = p.cargo.resource,
+          needed = (j.cost[resource] ?? 0) - (j.delivered[resource] ?? 0);
+        if (needed <= 0) {
           this.deliverCargo(p);
           return;
         }
-        const n = Math.min(p.cargo.amount, j.cost - j.delivered);
-        j.delivered += n;
+        const n = Math.min(p.cargo.amount, needed);
+        j.delivered[resource] = (j.delivered[resource] ?? 0) + n;
         p.cargo.amount -= n;
         if (p.cargo.amount === 0) p.cargo = null;
       }
-      if (j.delivered < j.cost) {
+      if (missing(j)) {
         this.continueJob(p, j);
         return;
       }
-      p.reason =
-        '正在' +
-        {
-          mine: '挖掘',
-          cut: '伐木',
-          floor: '铺设楼板',
-          wall: '建造墙壁',
-          ladder: '搭建梯子',
-          digLadder: '开凿梯井',
-          remove: '拆除',
-        }[j.kind];
+      p.reason = '正在' + JOB_NAMES[j.kind];
       j.progress++;
       if (j.progress >= j.work) this.finish(p, j);
     }
@@ -797,7 +1084,9 @@ export class VoxelSimulation {
       for (const z of [j.z, j.z + 1]) changes.push({ pos: { ...j, z }, block: Block.Wood });
     else if (j.kind === 'ladder') changes.push({ pos: j, ladder: 1 });
     else if (j.kind === 'remove') {
-      if (this.ladders[at(j)]) {
+      if (this.stoves.some((s) => same(s, j))) {
+        yields.wood = 10;
+      } else if (this.ladders[at(j)]) {
         changes.push({ pos: j, ladder: 0 });
         yields.wood = 1;
       } else {
@@ -818,19 +1107,52 @@ export class VoxelSimulation {
       block: this.blocks[at(c.pos)],
       ladder: this.ladders[at(c.pos)],
     }));
-    for (const c of changes) {
-      if (c.block !== undefined) this.blocks[at(c.pos)] = c.block;
-      if (c.ladder !== undefined) this.ladders[at(c.pos)] = c.ladder;
-    }
-    if (this.pawns.some((p) => !this.standable(p))) {
+    const supportedItems =
+      changes.length || j.kind === 'stove' ? this.items.filter((i) => this.standable(i)) : [];
+    const rollback = (reason: string) => {
+      if (j.kind === 'stove') this.stoveCells.delete(at(j));
       for (let i = previous.length - 1; i >= 0; i--) {
         const c = previous[i];
         this.blocks[c.i] = c.block;
         this.ladders[c.i] = c.ladder;
       }
-      j.reason = '有人占用或依赖这处支撑，请先移开人物';
+      j.reason = reason;
       this.release(p);
+    };
+    for (const c of changes) {
+      if (c.block !== undefined) this.blocks[at(c.pos)] = c.block;
+      if (c.ladder !== undefined) this.ladders[at(c.pos)] = c.ladder;
+    }
+    if (j.kind === 'stove') this.stoveCells.add(at(j));
+    if (
+      this.pawns.some((p) => !this.standable(p)) ||
+      this.stoves.some(
+        (s) =>
+          !this.blocks[at(s) - WIDTH * DEPTH] ||
+          this.blocks[at(s)] ||
+          this.blocks[at(s) + WIDTH * DEPTH],
+      )
+    ) {
+      rollback('有人占用或依赖这处支撑，请先移开人物');
       return;
+    }
+    // Construction nudges loose stacks one horizontal cell, never buries them or
+    // silently teleports them to distant storage. Validate every displacement before committing.
+    const displaced: { item: Stack; target: Pos }[] = [];
+    for (const item of supportedItems)
+      if (!this.standable(item)) {
+        const target = horizontal
+          .map(([dx, dy]) => ({ x: item.x + dx, y: item.y + dy, z: item.z }))
+          .find((q) => this.standable(q));
+        if (!target) {
+          rollback('散落物资无相邻空位，请先搬走再施工');
+          return;
+        }
+        displaced.push({ item, target });
+      }
+    for (const { item, target } of displaced) {
+      this.items = this.items.filter((i) => i.id !== item.id);
+      this.addItem(item.resource, item.amount, target);
     }
     if (j.kind === 'cut') {
       const tree = this.trees.find((t) => same(t, j));
@@ -838,19 +1160,50 @@ export class VoxelSimulation {
         yields.wood = tree.wood;
         this.trees = this.trees.filter((t) => t.id !== tree.id);
         this.rebuildTrees();
+        this.skyCache.clear();
         this.revision++;
         this.stats.cut++;
       }
+    }
+    if (j.kind === 'sow') {
+      const plot = this.farms.find((f) => same(f, j))!;
+      this.crops.push({
+        id: this.id(),
+        x: j.x,
+        y: j.y,
+        z: j.z,
+        kind: plot.crop,
+        growth: 0,
+        sownAt: this.tick,
+      });
+      this.stats.sown++;
+      this.revision++;
+    } else if (j.kind === 'harvest') {
+      const crop = this.crops.find((c) => same(c, j))!;
+      yields.grain = CROPS[crop.kind].yield;
+      this.crops = this.crops.filter((c) => c.id !== crop.id);
+      this.stats.harvested++;
+      this.revision++;
+    } else if (j.kind === 'stove') {
+      this.stoves.push({ id: this.id(), x: j.x, y: j.y, z: j.z, target: 10, paused: false });
+      this.skyCache.clear();
+      this.revision++;
+    } else if (j.kind === 'cook') {
+      yields.meal = SIMPLE_MEAL.output;
+      this.stats.cooked++;
+    } else if (j.kind === 'remove' && this.stoves.some((s) => same(s, j))) {
+      this.stoves = this.stoves.filter((s) => !same(s, j));
+      this.stoveCells.delete(at(j));
+      this.skyCache.clear();
+      this.revision++;
     }
     for (const c of changes) this.changed(c.pos);
     for (const [resource, n] of Object.entries(yields)) {
       this.addItem(resource as Resource, n, p);
       this.stats.produced[resource as Resource] += n;
     }
-    if (j.cost) {
-      this.stats.consumed.wood += j.delivered;
-      this.stats.built++;
-    }
+    for (const r of resources) this.stats.consumed[r] += j.delivered[r] ?? 0;
+    if (j.cost.wood && j.kind !== 'cook') this.stats.built++;
     if (j.kind === 'mine' || j.kind === 'digLadder')
       this.stats.mined += changes.filter((c) => c.block === 0).length;
     this.jobs = this.jobs.filter((k) => k.id !== j.id);
@@ -859,8 +1212,23 @@ export class VoxelSimulation {
   step(count = 1) {
     for (let n = 0; n < count; n++) {
       this.tick++;
+      // Only temperature/daylight change each tick; occlusion is cached until terrain changes.
+      for (const c of this.crops)
+        if (c.growth < 1)
+          c.growth = Math.min(1, c.growth + this.cropCondition(c, c.kind).growthRate);
+      if (this.tick % 20 === 0) this.syncProduction();
       for (const p of this.pawns) {
-        p.food = Math.max(0, p.food - 0.002);
+        const hungerFactor = p.food <= 0 ? 0 : p.food < 12 ? 0.25 : p.food < 24 ? 0.5 : 1;
+        p.food = Math.max(0, p.food - FOOD_FALL_PER_TICK * hungerFactor);
+        if (
+          p.food < 30 &&
+          p.phase !== 'idle' &&
+          p.phase !== 'travel' &&
+          !p.eating &&
+          (this.tick + p.id) % 20 === 0 &&
+          this.tryFood(p)
+        )
+          continue;
         p.rest = Math.max(0, p.rest - (p.phase === 'work' ? 0.004 : 0.001));
         if (p.phase === 'idle' || p.phase === 'rest') p.rest = Math.min(100, p.rest + 0.03);
         if (p.phase === 'rest') {
@@ -890,7 +1258,7 @@ export class VoxelSimulation {
     const out = emptyCounts();
     for (const i of this.items) out[i.resource] += i.amount;
     for (const p of this.pawns) if (p.cargo) out[p.cargo.resource] += p.cargo.amount;
-    for (const j of this.jobs) out.wood += j.delivered;
+    for (const j of this.jobs) for (const r of resources) out[r] += j.delivered[r] ?? 0;
     return out;
   }
   snapshot(speed = 0, tickMs = 0): VoxelSnapshot {
@@ -907,6 +1275,15 @@ export class VoxelSimulation {
       trees: this.trees,
       jobs: this.jobs,
       stockpiles: this.stockpiles,
+      farms: this.farms,
+      crops: this.crops,
+      stoves: this.stoves,
+      cropConditions: this.farms.map((f) => ({
+        ...f,
+        ...this.cropCondition(f, this.crops.find((c) => same(c, f))?.kind ?? f.crop),
+      })),
+      hour: hourAt(this.tick),
+      temperature: temperatureAt(this.tick),
       inventory: this.counts(),
       stored,
       stats: this.stats,
@@ -919,7 +1296,7 @@ export class VoxelSimulation {
   save(): VoxelSave {
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 1,
+      version: 2,
       generator: 1,
       seed: this.seed,
       tick: this.tick,
@@ -931,14 +1308,46 @@ export class VoxelSimulation {
       trees: this.trees,
       jobs: this.jobs,
       stockpiles: this.stockpiles,
+      farms: this.farms,
+      crops: this.crops,
+      stoves: this.stoves,
       stats: this.stats,
     });
   }
   static load(raw: unknown) {
     if (!raw || typeof raw !== 'object') throw new Error('存档无效');
-    const d = raw as VoxelSave;
-    if (d.format !== 'emberfield-voxel' || d.version !== 1 || d.generator !== 1)
+    const old = structuredClone(raw) as Record<string, any>;
+    if (old.format !== 'emberfield-voxel' || ![1, 2].includes(old.version) || old.generator !== 1)
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
+    if (old.version === 1) {
+      if (!Array.isArray(old.jobs) || !Array.isArray(old.pawns) || !old.stats)
+        throw new Error('旧存档数据无效');
+      for (const j of old.jobs) {
+        if (!j || typeof j.cost !== 'number' || typeof j.delivered !== 'number')
+          throw new Error('旧存档任务数据无效');
+        j.cost = j.cost === 0 ? {} : { wood: j.cost };
+        j.delivered = j.delivered === 0 ? {} : { wood: j.delivered };
+      }
+      for (const p of old.pawns) {
+        if (!p) throw new Error('人物数据无效');
+        p.priorities = { ...p.priorities, grow: 1, cook: 1 };
+        p.eating = null;
+      }
+      old.farms = [];
+      old.crops = [];
+      old.stoves = [];
+      old.stats = {
+        ...old.stats,
+        sown: 0,
+        harvested: 0,
+        cooked: 0,
+        eaten: 0,
+        produced: { ...old.stats.produced, grain: 0, meal: 0 },
+        consumed: { ...old.stats.consumed, grain: 0, meal: 0 },
+      };
+      old.version = 2;
+    }
+    const d = old as VoxelSave;
     if (
       !Number.isSafeInteger(d.seed) ||
       !Number.isSafeInteger(d.tick) ||
@@ -953,16 +1362,18 @@ export class VoxelSimulation {
       [d.trees, 4096],
       [d.jobs, 512],
       [d.stockpiles, 4096],
+      [d.farms, 512],
+      [d.crops, 512],
+      [d.stoves, 512],
     ];
     for (const [a, max] of arrays)
       if (!Array.isArray(a) || a.length > max || (a as Pos[]).some((p) => !p || !inside(p)))
         throw new Error('存档对象数量或坐标无效');
     if (d.pawns.length !== 3) throw new Error('试玩存档需要三名殖民者');
-    const resources = ['wood', 'stone', 'steel', 'components', 'food'];
     const positive = (n: number) => Number.isSafeInteger(n) && n > 0 && n <= 10000000;
     const zero = (n: number) => Number.isFinite(n) && n >= 0 && n <= 10000000;
     const ids = new Set<number>();
-    for (const e of [...d.pawns, ...d.items, ...d.trees, ...d.jobs]) {
+    for (const e of [...d.pawns, ...d.items, ...d.trees, ...d.jobs, ...d.crops, ...d.stoves]) {
       if (!positive(e.id) || ids.has(e.id) || e.id >= d.nextId)
         throw new Error('重复或无效的对象编号');
       ids.add(e.id);
@@ -971,18 +1382,63 @@ export class VoxelSimulation {
       if (!resources.includes(i.resource) || !positive(i.amount)) throw new Error('物资数据无效');
     for (const t of d.trees)
       if (!positive(t.wood) || t.z + 1 >= HEIGHT) throw new Error('树木数据无效');
+    const uniqueCells = (a: Pos[]) => new Set(a.map(at)).size === a.length;
+    if (![d.farms, d.crops, d.stoves, d.stockpiles].every(uniqueCells))
+      throw new Error('区域或设施位置重复');
+    for (const f of d.farms)
+      if (
+        !Object.hasOwn(CROPS, f.crop) ||
+        f.z < 1 ||
+        f.z >= HEIGHT - 1 ||
+        d.stockpiles.some((s) => same(s, f))
+      )
+        throw new Error('种植区数据无效');
+    for (const c of d.crops)
+      if (
+        !Object.hasOwn(CROPS, c.kind) ||
+        !zero(c.growth) ||
+        c.growth > 1 ||
+        !Number.isSafeInteger(c.sownAt) ||
+        c.sownAt < 0 ||
+        c.sownAt > d.tick ||
+        !d.farms.some((f) => same(c, f))
+      )
+        throw new Error('作物数据无效');
+    for (const s of d.stoves)
+      if (
+        !Number.isInteger(s.target) ||
+        s.target < 0 ||
+        s.target > 100 ||
+        typeof s.paused !== 'boolean' ||
+        s.z < 1 ||
+        s.z >= HEIGHT - 1 ||
+        d.farms.some((f) => same(f, s))
+      )
+        throw new Error('灶台数据无效');
+    const materialMap = (m: Partial<Counts>) =>
+      m &&
+      typeof m === 'object' &&
+      !Array.isArray(m) &&
+      Object.entries(m).every(
+        ([r, n]) =>
+          resources.includes(r as Resource) && Number.isSafeInteger(n) && n >= 0 && n <= 10000000,
+      );
     for (const j of d.jobs)
       if (
-        !['mine', 'cut', 'floor', 'wall', 'ladder', 'digLadder', 'remove'].includes(j.kind) ||
+        !Object.hasOwn(JOB_NAMES, j.kind) ||
         j.z < 1 ||
         j.z >= HEIGHT - 1 ||
         !zero(j.progress) ||
         !positive(j.work) ||
         j.work !== workOf(j.kind) ||
-        j.cost !== costOf(j.kind) ||
-        !Number.isSafeInteger(j.delivered) ||
-        j.delivered < 0 ||
-        j.delivered > j.cost
+        !materialMap(j.cost) ||
+        !materialMap(j.delivered) ||
+        resources.some(
+          (r) =>
+            (j.cost[r] ?? 0) !== (costOf(j.kind)[r] ?? 0) ||
+            (j.delivered[r] ?? 0) > (j.cost[r] ?? 0),
+        ) ||
+        (j.kind === 'cook' && !d.stoves.some((s) => same(s, j)))
       )
         throw new Error('任务数据无效');
     for (const p of d.pawns) {
@@ -995,17 +1451,20 @@ export class VoxelSimulation {
         !zero(p.rest) ||
         p.rest > 100 ||
         !p.priorities ||
-        Object.values(p.priorities).length !== 4 ||
-        (['dig', 'cut', 'build', 'haul'] as Work[]).some(
+        Object.values(p.priorities).length !== 6 ||
+        (['dig', 'cut', 'build', 'haul', 'grow', 'cook'] as Work[]).some(
           (k) => !Number.isInteger(p.priorities[k]) || p.priorities[k] < 0 || p.priorities[k] > 4,
         ) ||
-        (p.cargo && (!resources.includes(p.cargo.resource) || !positive(p.cargo.amount)))
+        (p.cargo && (!resources.includes(p.cargo.resource) || !positive(p.cargo.amount))) ||
+        (p.eating !== null && !NUTRITION[p.eating])
       )
         throw new Error('人物数据无效');
     }
     if (
       !d.stats ||
-      !['mined', 'cut', 'built', 'hauled'].every((k) => zero(d.stats[k as 'mined'])) ||
+      !['mined', 'cut', 'built', 'hauled', 'sown', 'harvested', 'cooked', 'eaten'].every((k) =>
+        zero(d.stats[k as 'mined']),
+      ) ||
       !['produced', 'consumed'].every((k) =>
         resources.every((r) => zero(d.stats[k as 'produced']?.[r as Resource])),
       )
@@ -1024,10 +1483,24 @@ export class VoxelSimulation {
         trees: d.trees,
         jobs: d.jobs,
         stockpiles: d.stockpiles,
+        farms: d.farms,
+        crops: d.crops,
+        stoves: d.stoves,
         stats: d.stats,
       }),
     );
     s.rebuildTrees();
+    s.stoveCells = new Set(s.stoves.map(at));
+    if (
+      s.stoves.some(
+        (p) =>
+          s.blocks[at(p)] ||
+          s.blocks[at(p) + WIDTH * DEPTH] ||
+          !s.blocks[at(p) - WIDTH * DEPTH] ||
+          s.treeCells.has(at(p)),
+      )
+    )
+      throw new Error('灶台没有合法支撑或净空');
     if (s.pawns.some((p) => !s.standable(p))) throw new Error('人物没有合法支撑或净空');
     // Persist work progress, delivered and carried resources; rebuild transient paths and ownership.
     for (const j of s.jobs) {
@@ -1041,6 +1514,7 @@ export class VoxelSimulation {
       p.phase = 'idle';
       p.workTarget = null;
       p.moveTick = s.tick;
+      p.eating = null;
       p.reason = '存档已恢复，正在重新安排工作';
     }
     s.markAll();

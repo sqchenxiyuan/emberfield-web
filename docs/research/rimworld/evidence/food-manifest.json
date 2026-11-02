@@ -1,0 +1,205 @@
+{
+  "evidence_id": "RW17-FOOD",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.Need_Food",
+      "local_file": ".local-research/food/RimWorld.Need_Food.cs",
+      "sha256": "f17cbaf82d8792108557f869db585fdd6ac26c0ebb537e8acf04173179e7c4cd",
+      "lines": 227
+    },
+    {
+      "type": "RimWorld.Need",
+      "local_file": ".local-research/food/RimWorld.Need.cs",
+      "sha256": "4f902dd9f45ecc0b966096a5cf035e3bd404347c335e3c41828b1f2a34f45ff1",
+      "lines": 334
+    },
+    {
+      "type": "RimWorld.JobGiver_GetFood",
+      "local_file": ".local-research/food/RimWorld.JobGiver_GetFood.cs",
+      "sha256": "c648efbdd091620603979d79de4c064f5a8174e7f6cf51950b6c19619a398a04",
+      "lines": 186
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "local_file": ".local-research/food/RimWorld.FoodUtility.cs",
+      "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+      "lines": 1686
+    },
+    {
+      "type": "RimWorld.JobDriver_Ingest",
+      "local_file": ".local-research/food/RimWorld.JobDriver_Ingest.cs",
+      "sha256": "278d66fed21ad28e41fb21c8af49f224a73c4163a26067431fe6eee0768ec3c6",
+      "lines": 264
+    },
+    {
+      "type": "RimWorld.Toils_Ingest",
+      "local_file": ".local-research/food/RimWorld.Toils_Ingest.cs",
+      "sha256": "2e10eef89dc2f5d216681188952eb0227d1dd04d459463256a162310c30d9bb7",
+      "lines": 439
+    },
+    {
+      "type": "Verse.RecipeDef",
+      "local_file": ".local-research/food/Verse.RecipeDef.cs",
+      "sha256": "9a12df678ba67743d3574e9ebfb866d07c2f918cfdd1f42c75d15ae8b5727132",
+      "lines": 691
+    },
+    {
+      "type": "Verse.IngredientCount",
+      "local_file": ".local-research/food/Verse.IngredientCount.cs",
+      "sha256": "7f69cb2658afcf94cc77ba0a344fdd9c51b457b74d02085fc73355dd37e172e8",
+      "lines": 84
+    },
+    {
+      "type": "RimWorld.IngredientValueGetter_Nutrition",
+      "local_file": ".local-research/food/RimWorld.IngredientValueGetter_Nutrition.cs",
+      "sha256": "16ced2bb4d32bf629fd34a609f26beebb108373829e69b6adf3164dcbc90da90",
+      "lines": 21
+    },
+    {
+      "type": "Verse.AI.Toils_Recipe",
+      "local_file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+      "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+      "lines": 391
+    },
+    {
+      "type": "Verse.GenRecipe",
+      "local_file": ".local-research/food/Verse.GenRecipe.cs",
+      "sha256": "41cb19d602f388137484b15bc4126fbcdebad63013c34f8432cabff5b28337e3",
+      "lines": 128
+    },
+    {
+      "type": "RimWorld.WorkGiver_DoBill",
+      "local_file": ".local-research/food/RimWorld.WorkGiver_DoBill.cs",
+      "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+      "lines": 730
+    },
+    {
+      "type": "Verse.RaceProperties",
+      "local_file": ".local-research/food/Verse.RaceProperties.cs",
+      "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+      "lines": 788
+    },
+    {
+      "type": "RimWorld.JobDriver_PlantSow",
+      "local_file": ".local-research/food/RimWorld.JobDriver_PlantSow.cs",
+      "sha256": "9d2e8e83b171740108c7f49d5eebf90b92469235ecb277a567cbf79b8b91fb8a",
+      "lines": 92
+    },
+    {
+      "type": "RimWorld.JobDriver_PlantHarvest",
+      "local_file": ".local-research/food/RimWorld.JobDriver_PlantHarvest.cs",
+      "sha256": "3d743a2792f5f6b58c5633ca0401eaf05affe745c94dec7fb53d91d12aa637fb",
+      "lines": 19
+    },
+    {
+      "type": "RimWorld.WorkGiver_GrowerHarvest",
+      "local_file": ".local-research/food/RimWorld.WorkGiver_GrowerHarvest.cs",
+      "sha256": "06fde7b9f9f23810b29fa2143afbb7fc971ecc3957163c20979942e2a460aa8f",
+      "lines": 93
+    },
+    {
+      "type": "Verse.AI.JobDriver_DoBill",
+      "local_file": ".local-research/food/Verse.AI.JobDriver_DoBill.cs",
+      "sha256": "d3641323932ebd795266548bc23f996d74868b2ac7ade766d41604123aa3e9c9",
+      "lines": 213
+    },
+    {
+      "type": "Verse.Thing",
+      "local_file": ".local-research/food/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "lines": 2235
+    },
+    {
+      "type": "RimWorld.HungerLevelUtility",
+      "local_file": ".local-research/food/RimWorld.HungerLevelUtility.cs",
+      "sha256": "be023007bc1de7d662c5e526f48e50ddd516b9a68d9347c3b1c69c30c8726bef",
+      "lines": 36
+    },
+    {
+      "type": "RimWorld.HungerCategory",
+      "local_file": ".local-research/food/RimWorld.HungerCategory.cs",
+      "sha256": "268510e02576b007ed387461061ba5563946cf9569c9f04fd69d8825e19b2df1",
+      "lines": 10
+    },
+    {
+      "type": "RimWorld.LifeStageDef",
+      "local_file": ".local-research/food/RimWorld.LifeStageDef.cs",
+      "sha256": "93a5a86d46d9b6d954630d71044634ec69faddd67c473d1fed730e474c0034bd",
+      "lines": 132
+    },
+    {
+      "type": "RimWorld.StatPart_BodySize",
+      "local_file": ".local-research/food/RimWorld.StatPart_BodySize.cs",
+      "sha256": "260c7a242db52e042aae7e23e567765f123050f4ab8d21c8583fe1ede5bb6b01",
+      "lines": 29
+    },
+    {
+      "type": "RimWorld.StatPart_LifeStageMaxFood",
+      "local_file": ".local-research/food/RimWorld.StatPart_LifeStageMaxFood.cs",
+      "sha256": "e8170caab5719186380cb1e7b2360f4204795601e5abf4a98e4e694aeffe3233",
+      "lines": 24
+    },
+    {
+      "type": "Verse.RecipeWorker",
+      "local_file": ".local-research/food/Verse.RecipeWorker.cs",
+      "sha256": "02bf3a5747e4f099fb524a8cd93bfd88ecd43451ba61e24bdee3d8734d6ec993",
+      "lines": 81
+    },
+    {
+      "type": "RimWorld.Bill",
+      "local_file": ".local-research/food/RimWorld.Bill.cs",
+      "sha256": "11d4a59e1feadd84d17e182e845d5feb7aae7b9da9cb86b6750409fc12a46c2c",
+      "lines": 504
+    },
+    {
+      "type": "RimWorld.FoodTypeFlags",
+      "local_file": ".local-research/food/RimWorld.FoodTypeFlags.cs",
+      "sha256": "ec648f096a7d3baf47113cbe8cd25a0ce7595bc8e3eda5e6a070fba4a8c55229",
+      "lines": 32
+    },
+    {
+      "type": "Verse.GlowGrid",
+      "local_file": ".local-research/food/Verse.GlowGrid.cs",
+      "sha256": "babdd947c9593f8740dc6dea01fa2ca2595f9854003851754c37fdda175b46bd",
+      "lines": 551
+    },
+    {
+      "type": "Verse.SkyManager",
+      "local_file": ".local-research/food/Verse.SkyManager.cs",
+      "sha256": "1d84abc06b1baec6427efe4336944822af77bd730d987ddac00a6ac9a53d1913",
+      "lines": 208
+    },
+    {
+      "type": "RimWorld.GenCelestial",
+      "local_file": ".local-research/food/RimWorld.GenCelestial.cs",
+      "sha256": "9fd783b0e1aea07cd121d331db3c5149e084878c8a8e3e6fd47ea82a77c5c94f",
+      "lines": 239
+    },
+    {
+      "type": "Verse.WeatherWorker",
+      "local_file": ".local-research/food/Verse.WeatherWorker.cs",
+      "sha256": "edfa00053a8540eee87fd79b322c679b03624a565b5c5c49114981fb7e00442c",
+      "lines": 157
+    },
+    {
+      "type": "Verse.SkyTarget",
+      "local_file": ".local-research/food/Verse.SkyTarget.cs",
+      "sha256": "c5fa0069e5da379fd372c84820076347b9e31f50e77ebbcb1e48c5408eac0e15",
+      "lines": 42
+    }
+  ]
+}

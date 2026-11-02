@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { createRoot } from 'react-dom/client';
 import { VoxelClient } from './client';
+import { CROPS, NUTRITION } from './farming';
 import {
   BLOCK_NAMES,
   JOB_NAMES,
   RESOURCE_NAMES,
   TOOL_NAMES,
+  DAY,
+  type CropKind,
   type Pos,
   type Resource,
   type Tool,
@@ -23,10 +26,13 @@ const tools: Tool[] = [
   'wall',
   'ladder',
   'stock',
+  'farm',
+  'stove',
+  'clearZone',
   'remove',
   'cancel',
 ];
-const icons = ['↖', '♠', '⛏', '↧', '↥', '▱', '▥', '☷', '▧', '⌫', '×'];
+const icons = ['↖', '♠', '⛏', '↧', '↥', '▱', '▥', '☷', '▧', '♧', '♨', '▨', '⌫', '×'];
 const hints: Record<Tool, string> = {
   inspect: '点击人物、物资或地形查看详情。选中人物后，可在面板中选择目标位置并下达移动。',
   cut: '点击或框选成熟树木。工人伐木产生 27 木材，搬运到仓储。',
@@ -37,6 +43,9 @@ const hints: Record<Tool, string> = {
   wall: '拖动连续造两格高的墙。每格 6 木材；需地板支撑，记得留出出入口。',
   ladder: '每格 2 木材。与地面或已有梯子相连后施工；角色可携带物资爬梯。',
   stock: '拖动划仓储。必须有地板和两格净空；散落物资自动送往最近的可达仓储。',
+  farm: '拖动划定土壤种植区，自动播种、收获并补种。稻米约 8 日首收，三人长期供给建议 110–128 格。',
+  stove: '规划灶台，消耗 20 木材。每份简餐需要 10 生食材 + 1 木材；点击灶台设置库存目标。',
+  clearZone: '拖动擦除种植区和仓储；会清理该区作物且没有收成，已建成设施保留。',
   remove: '拆除木墙、楼板或梯子，回收部分木材。正在支撑人物的结构会等待人物移开。',
   cancel: '拖动取消未完成任务；已经送到工地的材料退回现场。',
 };
@@ -127,11 +136,22 @@ function App() {
   const people = p ? (s?.pawns.filter((v) => equal(v, p)) ?? []) : [];
   const items = p ? (s?.items.filter((v) => equal(v, p)) ?? []) : [];
   const tree = p ? s?.trees.find((v) => equal(v, p)) : null;
+  const farm = p ? s?.farms.find((v) => equal(v, p)) : null;
+  const crop = p ? s?.crops.find((v) => equal(v, p)) : null;
+  const stove = p ? s?.stoves.find((v) => equal(v, p)) : null;
+  const condition = p ? s?.cropConditions.find((v) => equal(v, p)) : null;
   const jobs = p ? (s?.jobs.filter((v) => equal(v, p)) ?? []) : [];
   const pawn = s?.pawns.find((v) => v.id === selectedPawn) ?? people[0];
   const block = p ? client.blockAt(p) : 0;
   const title = p
     ? (people[0]?.name ??
+      (stove
+        ? '烧木灶台'
+        : crop
+          ? CROPS[crop.kind].name
+          : farm
+            ? `${CROPS[farm.crop].name}种植区`
+            : null) ??
       (tree
         ? '成熟林木'
         : items[0]
@@ -292,7 +312,8 @@ function App() {
             </li>
           </ol>
           <p className="voxel-guide-note">
-            当前是多层施工切片。人物会进食和休息；战斗、房间温度、电网及农业尚未迁入。
+            也可在土壤上划种植区、建灶台。稻米约 8
+            日首收，初始口粮需节约使用。战斗、房间温度和电网尚未迁入。
           </p>
           <div className="voxel-progress">
             <span>
@@ -344,9 +365,73 @@ function App() {
             <b>木材 × {tree.wood}</b>
           </div>
         )}
+        {farm && condition && (
+          <div className="voxel-farm-detail">
+            <div className="voxel-info-row">
+              <span>本轮生长</span>
+              <b>{crop ? `${(crop.growth * 100).toFixed(1)}%` : '等待播种'}</b>
+            </div>
+            <progress value={crop?.growth ?? 0} max={1} aria-label="作物生长" />
+            <p>
+              {condition.reason} · 肥力 {Math.round(condition.fertility * 100)}% · 光照{' '}
+              {Math.round(condition.light * 100)}% · {condition.temperature.toFixed(1)}°C
+            </p>
+            <p>
+              下次播种：{CROPS[farm.crop].name} · 成熟收获 {CROPS[crop?.kind ?? farm.crop].yield}{' '}
+              生食材。上方楼板会遮光。
+            </p>
+          </div>
+        )}
+        {stove && (
+          <div className="voxel-bill">
+            <p>
+              10 生食材 + 1 木材 → 1 简餐
+              <br />
+              全营地简餐低于目标时制作，含在制数量。
+            </p>
+            <label>
+              库存目标
+              <select
+                aria-label="简餐库存目标"
+                value={stove.target}
+                onChange={(e) =>
+                  void client.command({
+                    type: 'bill',
+                    stoveId: stove.id,
+                    target: Number(e.target.value),
+                    paused: stove.paused,
+                  })
+                }
+              >
+                {[...new Set([0, 1, 5, 10, 20, 40, stove.target])]
+                  .sort((a, b) => a - b)
+                  .map((n) => (
+                    <option key={n} value={n}>
+                      {n} 份
+                    </option>
+                  ))}
+              </select>
+            </label>
+            <button
+              onClick={() =>
+                void client.command({
+                  type: 'bill',
+                  stoveId: stove.id,
+                  target: stove.target,
+                  paused: !stove.paused,
+                })
+              }
+            >
+              {stove.paused ? '恢复烹饪' : '暂停烹饪'}
+            </button>
+          </div>
+        )}
         {items.map((i) => (
           <div className="voxel-info-row" key={i.id}>
-            <span>{RESOURCE_NAMES[i.resource]}</span>
+            <span>
+              {RESOURCE_NAMES[i.resource]}
+              {NUTRITION[i.resource] ? ` · 营养 ${NUTRITION[i.resource]}/份` : ''}
+            </span>
             <b>× {i.amount}</b>
           </div>
         ))}
@@ -359,7 +444,9 @@ function App() {
             <progress value={j.progress} max={j.work} />
             <small>
               {j.reason}
-              {j.cost > 0 ? ` · 木材 ${j.delivered}/${j.cost}` : ''}
+              {(Object.keys(j.cost) as Resource[])
+                .map((r) => ` · ${RESOURCE_NAMES[r]} ${j.delivered[r] ?? 0}/${j.cost[r]}`)
+                .join('')}
             </small>
           </div>
         ))}
@@ -371,7 +458,14 @@ function App() {
             </div>
             <div className="voxel-needs">
               <label>
-                饱食
+                饱食 {Math.round(pawn.food)}%
+                {pawn.food <= 0
+                  ? ' · 饥荒'
+                  : pawn.food < 12
+                    ? ' · 急饿'
+                    : pawn.food < 24
+                      ? ' · 饥饿'
+                      : ''}
                 <progress value={pawn.food} max={100} />
               </label>
               <label>
@@ -385,9 +479,9 @@ function App() {
               </p>
             )}
             <div className="voxel-priorities">
-              {(['dig', 'cut', 'build', 'haul'] as Work[]).map((w, i) => (
+              {(['dig', 'cut', 'build', 'haul', 'grow', 'cook'] as Work[]).map((w, i) => (
                 <label key={w}>
-                  {['挖掘', '伐木', '施工', '搬运'][i]}
+                  {['挖掘', '伐木', '施工', '搬运', '种植', '烹饪'][i]}
                   <select
                     aria-label={`${pawn.name} ${w}优先级`}
                     value={pawn.priorities[w]}
@@ -436,7 +530,22 @@ function App() {
       </div>
       <footer className="voxel-footer">
         <div className="voxel-tool-hint">
-          <span className="voxel-kicker">{TOOL_NAMES[state.tool]}</span>
+          <span className="voxel-kicker">
+            {TOOL_NAMES[state.tool]}
+            {state.tool === 'farm' && (
+              <select
+                aria-label="种植作物"
+                value={state.crop}
+                onChange={(e) => client.chooseCrop(e.target.value as CropKind)}
+              >
+                {(Object.keys(CROPS) as CropKind[]).map((k) => (
+                  <option key={k} value={k}>
+                    {CROPS[k].name}
+                  </option>
+                ))}
+              </select>
+            )}
+          </span>
           <p>{hints[state.tool]}</p>
           <small>Q / E 旋转 · [ / ] 切层 · 中键拖转 · 滚轮缩放 · WASD 平移 · 右键退出工具</small>
         </div>
@@ -457,8 +566,10 @@ function App() {
           </nav>
           <div className="voxel-time">
             <small>
-              第 {Math.floor((s?.tick ?? 0) / 12000) + 1} 日 ·{' '}
-              {(s?.tick ?? 0) / 20 < 60 ? '清晨' : '探索中'}
+              第 {Math.floor((s?.tick ?? 0) / DAY) + 1} 日 ·{' '}
+              {String(Math.floor(s?.hour ?? 8)).padStart(2, '0')}:
+              {String(Math.floor(((s?.hour ?? 8) % 1) * 60)).padStart(2, '0')} ·{' '}
+              {Math.round(s?.temperature ?? 21)}°C
             </small>
             <div>
               {[0, 1, 2, 3].map((v) => (
@@ -599,8 +710,8 @@ function App() {
             <details>
               <summary>试玩规则与性能计数</summary>
               <p>
-                64×64×16；逻辑 20
-                TPS。两格净空，一格高差可走；梯子可携货，暂无坍塌、流体和摔伤。未迁入完整农业、温度、战斗。地下与二层通过真实方块和路径连接。
+                64×64×16；逻辑 20 TPS，1 日 10
+                分钟。两格净空，一格高差可走；梯子可携货。种植、收获、烹饪和进食已接通；简化天光与温度，无季节、腐坏、食物中毒和饥荒伤害。房间温度、电网、战斗、坍塌和流体尚未实现。
               </p>
               <p>
                 地形数组 {((s?.gridBytes ?? 0) / 1024).toFixed(0)} KiB；寻路数组{' '}
