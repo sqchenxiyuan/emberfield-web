@@ -2,12 +2,15 @@ import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { createRoot } from 'react-dom/client';
 import { VoxelClient } from './client';
 import { CROPS, NUTRITION } from './farming';
+import { ASSIGNMENT_NAMES } from './rest';
 import {
   BLOCK_NAMES,
   JOB_NAMES,
   RESOURCE_NAMES,
   TOOL_NAMES,
   DAY,
+  bedCells,
+  type Assignment,
   type CropKind,
   type Pos,
   type Resource,
@@ -28,11 +31,13 @@ const tools: Tool[] = [
   'stock',
   'farm',
   'stove',
+  'bed',
+  'door',
   'clearZone',
   'remove',
   'cancel',
 ];
-const icons = ['↖', '♠', '⛏', '↧', '↥', '▱', '▥', '☷', '▧', '♧', '♨', '▨', '⌫', '×'];
+const icons = ['↖', '♠', '⛏', '↧', '↥', '▱', '▥', '☷', '▧', '♧', '♨', '▰', '▯', '▨', '⌫', '×'];
 const hints: Record<Tool, string> = {
   inspect: '点击人物、物资或地形查看详情。选中人物后，可在面板中选择目标位置并下达移动。',
   cut: '点击或框选成熟树木。工人伐木产生 27 木材，搬运到仓储。',
@@ -45,6 +50,8 @@ const hints: Record<Tool, string> = {
   stock: '拖动划仓储。必须有地板和两格净空；散落物资自动送往最近的可达仓储。',
   farm: '拖动划定土壤种植区，自动播种、收获并补种。稻米约 8 日首收，三人长期供给建议 110–128 格。',
   stove: '规划灶台，消耗 20 木材。每份简餐需要 10 生食材 + 1 木材；点击灶台设置库存目标。',
+  bed: '点击放置两格木床，45 木材。R 旋转朝向；点击床分配主人，未分配的床会自动认领。',
+  door: '点击放置木门，25 木材。R 旋转朝向；自动开关、保持敞开或锁定。门仍分隔两侧房间。',
   clearZone: '拖动擦除种植区和仓储；会清理该区作物且没有收成，已建成设施保留。',
   remove: '拆除木墙、楼板或梯子，回收部分木材。正在支撑人物的结构会等待人物移开。',
   cancel: '拖动取消未完成任务；已经送到工地的材料退回现场。',
@@ -139,19 +146,32 @@ function App() {
   const farm = p ? s?.farms.find((v) => equal(v, p)) : null;
   const crop = p ? s?.crops.find((v) => equal(v, p)) : null;
   const stove = p ? s?.stoves.find((v) => equal(v, p)) : null;
+  const bed = p ? s?.beds.find((v) => bedCells(v).some((q) => equal(q, p))) : null;
+  const door = p ? s?.doors.find((v) => equal(v, p)) : null;
+  const room = p ? client.roomAt(p) : null;
   const condition = p ? s?.cropConditions.find((v) => equal(v, p)) : null;
-  const jobs = p ? (s?.jobs.filter((v) => equal(v, p)) ?? []) : [];
+  const jobs = p
+    ? (s?.jobs.filter(
+        (v) =>
+          equal(v, p) ||
+          (v.kind === 'bed' && bedCells({ ...v, axis: v.axis ?? 'x' }).some((q) => equal(q, p))),
+      ) ?? [])
+    : [];
   const pawn = s?.pawns.find((v) => v.id === selectedPawn) ?? people[0];
   const block = p ? client.blockAt(p) : 0;
   const title = p
     ? (people[0]?.name ??
-      (stove
-        ? '烧木灶台'
-        : crop
-          ? CROPS[crop.kind].name
-          : farm
-            ? `${CROPS[farm.crop].name}种植区`
-            : null) ??
+      (bed
+        ? '木床'
+        : door
+          ? '木门'
+          : stove
+            ? '烧木灶台'
+            : crop
+              ? CROPS[crop.kind].name
+              : farm
+                ? `${CROPS[farm.crop].name}种植区`
+                : null) ??
       (tree
         ? '成熟林木'
         : items[0]
@@ -365,6 +385,68 @@ function App() {
             <b>木材 × {tree.wood}</b>
           </div>
         )}
+        {room && (
+          <div className="voxel-room-detail">
+            <b>{room.outdoor ? '室外连通空间' : '封闭房间'}</b>
+            <p>
+              {room.volume} 格体积 · {room.floorCells} 格地面 · Z {room.minZ}–{room.maxZ}
+            </p>
+            <small>按实际六向空气连通判断；视图切层不改变房间。</small>
+          </div>
+        )}
+        {bed && (
+          <div className="voxel-bill">
+            <label>
+              床位主人
+              <select
+                aria-label="床位主人"
+                value={bed.owner ?? ''}
+                onChange={(e) =>
+                  void client.command({
+                    type: 'bedOwner',
+                    bedId: bed.id,
+                    pawnId: e.target.value === '' ? null : Number(e.target.value),
+                  })
+                }
+              >
+                <option value="">未分配（可自动认领）</option>
+                {s?.pawns.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <p>
+              占地两格 · 睡眠恢复 100%
+              <br />
+              {s?.pawns.find((p) => p.sleepBedId === bed.id)?.reason ?? '当前无人使用'}
+            </p>
+          </div>
+        )}
+        {door && (
+          <div className="voxel-bill">
+            <label>
+              门状态
+              <select
+                aria-label="门状态"
+                value={door.mode}
+                onChange={(e) =>
+                  void client.command({
+                    type: 'door',
+                    doorId: door.id,
+                    mode: e.target.value as typeof door.mode,
+                  })
+                }
+              >
+                <option value="auto">自动开关</option>
+                <option value="open">保持敞开</option>
+                <option value="locked">锁定禁止通行</option>
+              </select>
+            </label>
+            <p>两格高 · 门口有人或物资时不能关门。打开仍保留房间边界。</p>
+          </div>
+        )}
         {farm && condition && (
           <div className="voxel-farm-detail">
             <div className="voxel-info-row">
@@ -469,7 +551,7 @@ function App() {
                 <progress value={pawn.food} max={100} />
               </label>
               <label>
-                精力
+                精力 {Math.round(pawn.rest)}%
                 <progress value={pawn.rest} max={100} />
               </label>
             </div>
@@ -504,6 +586,41 @@ function App() {
               ))}
             </div>
             <small>1 优先，4 最后；0 停用</small>
+            <details className="voxel-schedule">
+              <summary>24 小时作息 · 点击调整</summary>
+              <div>
+                {pawn.schedule.map((a, h) => (
+                  <label key={h}>
+                    {String(h).padStart(2, '0')}
+                    <select
+                      aria-label={`${pawn.name} ${h}点作息`}
+                      value={a}
+                      onChange={(e) =>
+                        void client.command({
+                          type: 'schedule',
+                          pawnId: pawn.id,
+                          hour: h,
+                          assignment: e.target.value as Assignment,
+                        })
+                      }
+                    >
+                      {(Object.keys(ASSIGNMENT_NAMES) as Assignment[]).map((k) => (
+                        <option key={k} value={k}>
+                          {ASSIGNMENT_NAMES[k]}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                ))}
+              </div>
+              <small>自由时困倦才睡；睡眠时段提前休息，睡满再醒；工作时段精力 ≥20% 会醒来。</small>
+            </details>
+            <button
+              disabled={pawn.rest >= 75 || pawn.phase === 'rest' || pawn.phase === 'sleepTravel'}
+              onClick={() => void client.command({ type: 'rest', pawnId: pawn.id })}
+            >
+              现在去睡觉
+            </button>
             {p && !equal(p, pawn) && (
               <button
                 className="voxel-primary"
@@ -532,6 +649,11 @@ function App() {
         <div className="voxel-tool-hint">
           <span className="voxel-kicker">
             {TOOL_NAMES[state.tool]}
+            {['bed', 'door'].includes(state.tool) && (
+              <button onClick={() => client.rotatePlan()} aria-label="旋转建造朝向">
+                朝向 {state.axis.toUpperCase()} · R
+              </button>
+            )}
             {state.tool === 'farm' && (
               <select
                 aria-label="种植作物"
@@ -711,12 +833,16 @@ function App() {
               <summary>试玩规则与性能计数</summary>
               <p>
                 64×64×16；逻辑 20 TPS，1 日 10
-                分钟。两格净空，一格高差可走；梯子可携货。种植、收获、烹饪和进食已接通；简化天光与温度，无季节、腐坏、食物中毒和饥荒伤害。房间温度、电网、战斗、坍塌和流体尚未实现。
+                分钟。两格净空，一格高差可走；梯子可携货。种植、烹饪、床位、作息和三维房间已接通；简化天光与温度，无季节、腐坏、食物中毒和饥荒伤害。房间温度、电网、战斗、坍塌和流体尚未实现。
               </p>
               <p>
                 地形数组 {((s?.gridBytes ?? 0) / 1024).toFixed(0)} KiB；寻路数组{' '}
                 {((s?.navigationBytes ?? 0) / 1024).toFixed(0)} KiB；最近平均 tick{' '}
                 {(s?.tickMs ?? 0).toFixed(2)} ms。以下为渲染计数，并非整页或 GPU 驱动内存。
+              </p>
+              <p>
+                房间工作数组 {((s?.roomBytes ?? 0) / 1024).toFixed(0)}{' '}
+                KiB；房间编号仅在地形或门位置变化时重新计算。
               </p>
               <pre>{JSON.stringify(state.metrics, null, 2)}</pre>
             </details>

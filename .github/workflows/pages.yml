@@ -38,6 +38,8 @@ jobs:
         run: npm run test:voxel
       - name: Verify two food production cycles and material conservation
         run: npm run test:voxel:food
+      - name: Verify multilevel housing and sleep persistence
+        run: npm run test:voxel:housing
       - name: Build site with relative asset and Worker URLs
         run: npm run build
       - name: Configure GitHub Pages

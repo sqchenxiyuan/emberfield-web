@@ -93,6 +93,7 @@ type Batch = {
 };
 type PawnVisual = {
   root: Group;
+  body: Group;
   leftLeg: Group;
   rightLeg: Group;
   leftArm: Group;
@@ -101,6 +102,8 @@ type PawnVisual = {
   cargo: Mesh;
   torso: Mesh;
   label: Sprite;
+  sleepSymbol: Sprite;
+  shadow: Mesh;
   from: Vector3;
   to: Vector3;
   start: number;
@@ -251,6 +254,31 @@ function nameTexture(name: string, accent: number) {
     context.textAlign = 'center';
     context.textBaseline = 'middle';
     context.fillText(name, 137, 37, 201);
+  }
+  const texture = new CanvasTexture(canvas);
+  texture.colorSpace = SRGBColorSpace;
+  return texture;
+}
+
+function sleepTexture() {
+  const canvas =
+    typeof OffscreenCanvas !== 'undefined'
+      ? new OffscreenCanvas(96, 96)
+      : Object.assign(document.createElement('canvas'), { width: 96, height: 96 });
+  const context = canvas.getContext('2d') as
+    | CanvasRenderingContext2D
+    | OffscreenCanvasRenderingContext2D
+    | null;
+  if (context) {
+    context.clearRect(0, 0, 96, 96);
+    context.font = 'bold 62px "Segoe UI", sans-serif';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.lineWidth = 6;
+    context.strokeStyle = '#344c50';
+    context.strokeText('z', 48, 49);
+    context.fillStyle = '#e4f2d9';
+    context.fillText('z', 48, 49);
   }
   const texture = new CanvasTexture(canvas);
   texture.colorSpace = SRGBColorSpace;
@@ -905,7 +933,87 @@ export class VoxelRenderer {
     );
     this.finish(storage);
     this.updateFarming();
+    this.updateHousing();
     this.updateJobLines();
+  }
+
+  private updateHousing() {
+    if (!this.data) return;
+    const beds = (this.data.beds ?? []).filter((bed) => bed.z <= this.level);
+    const bedParts = this.batch(
+      'bed-body', beds.length * 12, this.box, this.batchMaterial('bed-body'),
+    );
+    // Every visible part, including the foot tile, resolves to the bed's anchor.
+    this.inspectBatches.set(bedParts, { cells: beds, instancesPerCell: 12 });
+    beds.forEach((bed, i) => {
+      const owner = this.data!.pawns.find((pawn) => pawn.id === bed.owner);
+      const accent = owner?.color ?? 0x84958a;
+      const part = (
+        n: number, width: number, along: number, z: number,
+        sw: number, sl: number, sz: number, color: number,
+      ) => {
+        const alongX = bed.axis === 'x';
+        this.instance(
+          bedParts, i * 12 + n,
+          bed.x + (alongX ? along : width), bed.z + z, bed.y + (alongX ? width : along),
+          alongX ? sl : sw, sz, alongX ? sw : sl, color,
+        );
+      };
+      part(0, 0.5, 1, 0.26, 0.86, 1.88, 0.16, 0x936c46);
+      part(1, 0.5, 1, 0.39, 0.76, 1.74, 0.16, 0xe3d6b3);
+      part(2, 0.5, 0.35, 0.5, 0.57, 0.36, 0.08, 0xf1e6cc);
+      part(3, 0.5, 1.22, 0.49, 0.77, 1.2, 0.05, accent);
+      part(4, 0.5, 0.08, 0.43, 0.9, 0.12, 0.68, 0x9e774e);
+      part(5, 0.5, 1.92, 0.31, 0.9, 0.12, 0.44, 0xa17b53);
+      part(6, 0.5, 0.075, 0.68, 0.64, 0.13, 0.07, accent);
+      part(7, 0.1, 1, 0.3, 0.07, 1.78, 0.18, 0x765b40);
+      for (let leg = 0; leg < 4; leg++)
+        part(
+          8 + leg, 0.15 + (leg % 2) * 0.7, 0.18 + Math.floor(leg / 2) * 1.64,
+          0.12, 0.13, 0.13, 0.24, 0x765b40,
+        );
+    });
+    this.finish(bedParts);
+
+    const doors = (this.data.doors ?? []).filter((door) => door.z <= this.level);
+    const doorParts = this.batch(
+      'door-body', doors.length * 7, this.box, this.batchMaterial('door-body'),
+    );
+    this.inspectBatches.set(doorParts, { cells: doors, instancesPerCell: 7 });
+    doors.forEach((door, i) => {
+      // Door state is authoritative simulation state, never extrapolated wall time.
+      const open =
+        door.mode === 'open' || (door.mode === 'auto' && this.data!.tick <= door.openUntil);
+      const locked = door.mode === 'locked';
+      const part = (
+        n: number, along: number, across: number, z: number,
+        sl: number, sw: number, sz: number, color: number,
+      ) => {
+        const alongX = door.axis === 'x';
+        this.instance(
+          doorParts, i * 7 + n,
+          door.x + (alongX ? along : across), door.z + z, door.y + (alongX ? across : along),
+          alongX ? sl : sw, sz, alongX ? sw : sl, color,
+        );
+      };
+      part(0, 0.09, 0.5, 0.96, 0.14, 0.22, 1.92, 0x7d664b);
+      part(1, 0.91, 0.5, 0.96, 0.14, 0.22, 1.92, 0x7d664b);
+      part(2, 0.5, 0.5, 1.93, 0.96, 0.26, 0.14, 0xa48b62);
+      part(
+        3, open ? 0.19 : 0.5, open ? 0.81 : 0.5, 0.91,
+        open ? 0.13 : 0.66, open ? 0.66 : 0.13, 1.78, locked ? 0x8c5546 : 0xb48a59,
+      );
+      part(
+        4, open ? 0.19 : 0.5, open ? 0.81 : 0.5, 1.34,
+        open ? 0.145 : 0.5, open ? 0.5 : 0.145, 0.08, locked ? 0x693f39 : 0x8b6e4e,
+      );
+      part(
+        5, open ? 0.28 : 0.72, open ? 1.02 : 0.6, 0.91,
+        locked ? 0.14 : 0.08, 0.09, locked ? 0.18 : 0.08, locked ? 0xd9a163 : 0xe4c57e,
+      );
+      part(6, 0.5, 0.65, 1.94, 0.2, 0.045, 0.07, locked ? 0xe48470 : open ? 0x90d1a0 : 0xdfbf7b);
+    });
+    this.finish(doorParts);
   }
 
   private updateFarming() {
@@ -1277,16 +1385,28 @@ export class VoxelRenderer {
       const bottom = floor ? job.z - 0.06 : job.z + 0.025;
       if (job.z > this.level + 1 || job.z < this.level - 2) continue;
       const planting = job.kind === 'sow' || job.kind === 'harvest';
-      const height = floor ? 0.07 : planting ? 0.14 : job.kind === 'wall' ? 0.57 : 0.9;
+      const height = floor
+        ? 0.07
+        : planting
+          ? 0.14
+          : job.kind === 'bed'
+            ? 0.5
+            : job.kind === 'door'
+              ? 2
+              : job.kind === 'wall'
+                ? 0.57
+                : 0.9;
+      const right = job.x + (job.kind === 'bed' && job.axis === 'x' ? 1.96 : 0.96);
+      const back = job.y + (job.kind === 'bed' && job.axis === 'y' ? 1.96 : 0.96);
       const corners = [
         [job.x + 0.04, bottom, job.y + 0.04],
-        [job.x + 0.96, bottom, job.y + 0.04],
-        [job.x + 0.96, bottom, job.y + 0.96],
-        [job.x + 0.04, bottom, job.y + 0.96],
+        [right, bottom, job.y + 0.04],
+        [right, bottom, back],
+        [job.x + 0.04, bottom, back],
         [job.x + 0.04, bottom + height, job.y + 0.04],
-        [job.x + 0.96, bottom + height, job.y + 0.04],
-        [job.x + 0.96, bottom + height, job.y + 0.96],
-        [job.x + 0.04, bottom + height, job.y + 0.96],
+        [right, bottom + height, job.y + 0.04],
+        [right, bottom + height, back],
+        [job.x + 0.04, bottom + height, back],
       ];
       this.color.setHex(
         job.reason
@@ -1319,6 +1439,8 @@ export class VoxelRenderer {
 
   private makePawn(pawn: Pawn): PawnVisual {
     const root = new Group();
+    const body = new Group();
+    root.add(body);
     const cloth = this.keepMaterial(new MeshLambertMaterial({ color: pawn.color }));
     const skin = this.keepMaterial(
       new MeshLambertMaterial({ color: [0xd9b38b, 0xe7c4a2, 0xb68a67][pawn.id % 3] }),
@@ -1343,10 +1465,10 @@ export class VoxelRenderer {
       parent.add(mesh);
       return mesh;
     };
-    const torso = part(root, cloth, 0, 0.83, 0, 0.43, 0.56, 0.3);
-    part(root, skin, 0, 1.3, 0, 0.3, 0.31, 0.29);
-    part(root, hair, 0, 1.47, -0.015, 0.33, 0.12, 0.31);
-    part(root, skin, 0, 1.29, 0.17, 0.11, 0.12, 0.09);
+    const torso = part(body, cloth, 0, 0.83, 0, 0.43, 0.56, 0.3);
+    part(body, skin, 0, 1.3, 0, 0.3, 0.31, 0.29);
+    part(body, hair, 0, 1.47, -0.015, 0.33, 0.12, 0.31);
+    part(body, skin, 0, 1.29, 0.17, 0.11, 0.12, 0.09);
     const leftLeg = new Group(),
       rightLeg = new Group();
     leftLeg.position.set(-0.12, 0.54, 0);
@@ -1361,14 +1483,14 @@ export class VoxelRenderer {
     part(rightArm, cloth, 0, -0.18, 0, 0.13, 0.38, 0.16);
     part(leftArm, skin, 0, -0.4, 0, 0.12, 0.14, 0.14);
     part(rightArm, skin, 0, -0.4, 0, 0.12, 0.14, 0.14);
-    root.add(leftLeg, rightLeg, leftArm, rightArm);
+    body.add(leftLeg, rightLeg, leftArm, rightArm);
     const tool = new Group();
     tool.position.set(0, -0.44, 0.1);
     rightArm.add(tool);
     part(tool, hair, 0, 0, 0.15, 0.055, 0.055, 0.6);
     part(tool, dark, 0, 0, 0.43, 0.38, 0.1, 0.11);
     const cargoMaterial = this.keepMaterial(new MeshLambertMaterial({ color: 0xc69b60 }));
-    const cargo = part(root, cargoMaterial, 0, 0.72, 0.39, 0.43, 0.31, 0.33);
+    const cargo = part(body, cargoMaterial, 0, 0.72, 0.39, 0.43, 0.31, 0.33);
     cargo.visible = false;
     const shadow = new Mesh(
       this.keepGeometry(new CircleGeometry(0.34, 12)),
@@ -1397,10 +1519,20 @@ export class VoxelRenderer {
     label.position.set(0, 1.91, 0);
     label.renderOrder = 12;
     root.add(label);
+    const sleepSymbol = new Sprite(
+      this.keepMaterial(new SpriteMaterial({
+        map: sleepTexture(), depthTest: false, depthWrite: false,
+      })),
+    );
+    sleepSymbol.scale.set(0.38, 0.38, 1);
+    sleepSymbol.visible = false;
+    sleepSymbol.renderOrder = 12;
+    root.add(sleepSymbol);
     const pos = new Vector3(pawn.x + 0.5, pawn.z, pawn.y + 0.5);
     root.position.copy(pos);
     return {
       root,
+      body,
       torso,
       leftLeg,
       rightLeg,
@@ -1409,6 +1541,8 @@ export class VoxelRenderer {
       tool,
       cargo,
       label,
+      sleepSymbol,
+      shadow,
       from: pos.clone(),
       to: pos.clone(),
       start: performance.now(),
@@ -1457,6 +1591,31 @@ export class VoxelRenderer {
       const fraction =
         visual.duration === 0 ? 1 : MathUtils.clamp((now - visual.start) / visual.duration, 0, 1);
       visual.root.position.lerpVectors(visual.from, visual.to, fraction);
+      const bed =
+        pawn.phase === 'rest' && pawn.sleepBedId !== null
+          ? (this.data.beds ?? []).find((candidate) => candidate.id === pawn.sleepBedId)
+          : undefined;
+      const sleeping = !!bed;
+      visual.body.rotation.x = sleeping ? -Math.PI / 2 : 0;
+      visual.body.position.set(0, sleeping ? 0.61 : 0, sleeping ? 1.1 : 0);
+      visual.shadow.visible = !sleeping;
+      visual.sleepSymbol.visible = sleeping;
+      visual.label.position.set(0, sleeping ? 1.2 : 1.91, sleeping ? 0.5 : 0);
+      if (bed) {
+        // The anchor is the head tile. Do not interpolate a lying pawn in from the doorway.
+        visual.root.position.set(bed.x + 0.5, bed.z, bed.y + 0.5);
+        visual.root.rotation.y = bed.axis === 'x' ? Math.PI / 2 : 0;
+        const sleepPhase = ((this.data.tick / TPS) * 0.5 + pawn.id * 0.23) % 1;
+        visual.sleepSymbol.position.set(-0.38 + sleepPhase * 0.12, 1 + sleepPhase * 0.65, -0.12);
+        visual.sleepSymbol.material.opacity = 0.5 + Math.sin(sleepPhase * Math.PI) * 0.5;
+        visual.leftLeg.rotation.x = visual.rightLeg.rotation.x = 0;
+        visual.leftArm.rotation.x = visual.rightArm.rotation.x = 0;
+        visual.torso.rotation.x = 0;
+        visual.tool.visible = false;
+        visual.cargo.visible = false;
+        continue;
+      }
+      visual.cargo.visible = !!pawn.cargo;
       const moving = pawn.path.length > 0 || fraction < 1;
       const working =
         pawn.phase === 'work' && pawn.path.length === 0 && !pawn.cargo && fraction >= 1;

@@ -19,6 +19,31 @@ export const Block = {
 export type Resource = 'wood' | 'stone' | 'steel' | 'components' | 'food' | 'grain' | 'meal';
 export type Work = 'dig' | 'build' | 'cut' | 'haul' | 'grow' | 'cook';
 export type CropKind = 'rice' | 'potato' | 'corn';
+export type Axis = 'x' | 'y';
+export type Assignment = 'anything' | 'work' | 'sleep';
+export interface Bed extends Pos {
+  id: number;
+  axis: Axis;
+  owner: number | null;
+}
+export interface Door extends Pos {
+  id: number;
+  axis: Axis;
+  mode: 'auto' | 'open' | 'locked';
+  openUntil: number;
+}
+export const bedCells = (bed: Pos & { axis: Axis }): Pos[] => [
+  { x: bed.x, y: bed.y, z: bed.z },
+  { x: bed.x + (bed.axis === 'x' ? 1 : 0), y: bed.y + (bed.axis === 'y' ? 1 : 0), z: bed.z },
+];
+export interface RoomSummary {
+  id: number;
+  outdoor: boolean;
+  volume: number;
+  floorCells: number;
+  minZ: number;
+  maxZ: number;
+}
 export type Tool =
   | 'inspect'
   | 'mine'
@@ -31,6 +56,8 @@ export type Tool =
   | 'stock'
   | 'farm'
   | 'stove'
+  | 'bed'
+  | 'door'
   | 'clearZone'
   | 'remove'
   | 'cancel';
@@ -100,6 +127,8 @@ export type JobKind =
   | 'sow'
   | 'harvest'
   | 'stove'
+  | 'bed'
+  | 'door'
   | 'cook';
 export interface Job extends Pos {
   id: number;
@@ -110,6 +139,7 @@ export interface Job extends Pos {
   delivered: Partial<Counts>;
   cost: Partial<Counts>;
   reason: string;
+  axis?: Axis;
 }
 export interface Pawn extends Pos {
   id: number;
@@ -121,12 +151,15 @@ export interface Pawn extends Pos {
   jobId: number | null;
   path: number[];
   destination: number | null;
-  phase: 'idle' | 'travel' | 'work' | 'fetch' | 'haul' | 'rest';
+  phase: 'idle' | 'travel' | 'work' | 'fetch' | 'haul' | 'rest' | 'sleepTravel';
   cargo: Cargo | null;
   reason: string;
   moveTick: number;
   workTarget: Pos | null;
   eating: Resource | null;
+  sleepBedId: number | null;
+  schedule: Assignment[];
+  sleepingSince: number | null;
 }
 export interface Counts {
   wood: number;
@@ -162,6 +195,11 @@ export interface VoxelSnapshot {
   farms: FarmPlot[];
   crops: Crop[];
   stoves: Stove[];
+  beds: Bed[];
+  doors: Door[];
+  rooms: RoomSummary[];
+  roomRevision: number;
+  roomBytes: number;
   cropConditions: (CropCondition & Pos)[];
   hour: number;
   temperature: number;
@@ -179,9 +217,13 @@ export interface ChunkUpdate {
   ladders: Uint8Array;
 }
 export type VoxelCommand =
-  | { type: 'designate'; tool: Tool; from: Pos; to?: Pos; crop?: CropKind }
+  | { type: 'designate'; tool: Tool; from: Pos; to?: Pos; crop?: CropKind; axis?: Axis }
   | { type: 'priority'; pawnId: number; work: Work; value: number }
   | { type: 'bill'; stoveId: number; target: number; paused: boolean }
+  | { type: 'bedOwner'; bedId: number; pawnId: number | null }
+  | { type: 'door'; doorId: number; mode: Door['mode'] }
+  | { type: 'schedule'; pawnId: number; hour: number; assignment: Assignment }
+  | { type: 'rest'; pawnId: number }
   | { type: 'move'; pawnId: number; target: Pos };
 export interface CommandResult {
   ok: boolean;
@@ -190,7 +232,7 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 2;
+  version: 3;
   generator: 1;
   seed: number;
   tick: number;
@@ -206,6 +248,8 @@ export interface VoxelSave {
   farms: FarmPlot[];
   crops: Crop[];
   stoves: Stove[];
+  beds: Bed[];
+  doors: Door[];
   stats: VoxelStats;
 }
 export const BLOCK_NAMES = ['空气', '土层', '花岗岩', '钢矿', '木结构', '基岩', '机械矿'];
@@ -229,6 +273,8 @@ export const JOB_NAMES: Record<JobKind, string> = {
   sow: '播种',
   harvest: '收获',
   stove: '造灶台',
+  bed: '造床',
+  door: '造门',
   cook: '烹饪简餐',
 };
 export const TOOL_NAMES: Record<Tool, string> = {
@@ -243,6 +289,8 @@ export const TOOL_NAMES: Record<Tool, string> = {
   stock: '仓储',
   farm: '种植区',
   stove: '灶台',
+  bed: '床',
+  door: '门',
   clearZone: '擦除区域',
   remove: '拆除',
   cancel: '取消规划',

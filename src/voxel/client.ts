@@ -2,6 +2,9 @@ import { VoxelRenderer } from './renderer';
 import {
   HEIGHT,
   SURFACE,
+  at,
+  inside,
+  type Axis,
   type ChunkUpdate,
   type CommandResult,
   type Pos,
@@ -19,6 +22,7 @@ export interface ClientState {
   rotation: number;
   tool: Tool;
   crop: CropKind;
+  axis: Axis;
   metrics: Record<string, unknown>;
   worker: boolean;
 }
@@ -29,6 +33,7 @@ export class VoxelClient {
   private renderer: VoxelRenderer | null = null;
   private canvas: HTMLCanvasElement | null = null;
   private chunksCache = new Map<number, ChunkUpdate>();
+  private roomIds = new Int32Array(0);
   private listeners = new Set<() => void>();
   private simPending = new Map<number, Pending>();
   private renderPending = new Map<number, Pending>();
@@ -44,6 +49,7 @@ export class VoxelClient {
     rotation: Math.PI / 4,
     tool: 'inspect',
     crop: 'rice',
+    axis: 'x',
     metrics: {},
     worker: false,
   };
@@ -56,6 +62,11 @@ export class VoxelClient {
   };
   snapshot = () => this.state;
   chooseCrop = (crop: CropKind) => this.emit({ crop });
+  rotatePlan = () => this.emit({ axis: this.state.axis === 'x' ? 'y' : 'x' });
+  roomAt = (p: Pos) =>
+    inside(p)
+      ? (this.state.snapshot?.rooms.find((r) => r.id === this.roomIds[at(p)]) ?? null)
+      : null;
   private emit(next: Partial<ClientState> = {}) {
     this.state = { ...this.state, ...next };
     for (const l of this.listeners) l();
@@ -70,6 +81,7 @@ export class VoxelClient {
         return;
       }
       if (d.type === 'state') {
+        if (d.roomIds) this.roomIds = d.roomIds;
         for (const c of d.chunks as ChunkUpdate[]) this.chunksCache.set(c.id, c);
         this.sendRender({ type: 'chunks', chunks: d.chunks });
         this.sendRender({ type: 'snapshot', snapshot: d.snapshot });
@@ -274,13 +286,14 @@ export class VoxelClient {
           if (Math.abs(to.x - from.x) >= Math.abs(to.y - from.y)) to.y = from.y;
           else to.x = from.x;
         }
-        const single = ['shaft', 'up', 'ladder'].includes(this.state.tool);
+        const single = ['shaft', 'up', 'ladder', 'bed', 'door'].includes(this.state.tool);
         await this.command({
           type: 'designate',
           tool: this.state.tool,
           from,
           to: single ? from : { ...to, z: from.z },
           crop: this.state.crop,
+          axis: this.state.axis,
         });
       };
       c.onwheel = (e) => {
@@ -341,6 +354,7 @@ export class VoxelClient {
       }
       if (e.code === 'KeyQ' || e.code === 'KeyE')
         this.view({ rotation: this.state.rotation + ((e.code === 'KeyQ' ? -1 : 1) * Math.PI) / 2 });
+      if (e.code === 'KeyR') this.rotatePlan();
       if (e.code === 'BracketLeft') this.view({ level: this.state.level - 1 });
       if (e.code === 'BracketRight') this.view({ level: this.state.level + 1 });
       if (e.code === 'Escape') {

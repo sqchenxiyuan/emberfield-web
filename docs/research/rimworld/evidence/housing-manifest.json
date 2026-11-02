@@ -1,0 +1,187 @@
+{
+  "evidence_id": "RW17-HOUSING",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.Need_Rest",
+      "local_file": ".local-research/housing/RimWorld.Need_Rest.cs",
+      "sha256": "279beb73f0d2340f01e49e0da4d8589d51b4c9567207542d5f10dc7a69b1864f",
+      "lines": 232
+    },
+    {
+      "type": "RimWorld.JobGiver_GetRest",
+      "local_file": ".local-research/housing/RimWorld.JobGiver_GetRest.cs",
+      "sha256": "bc323e06492bcdf067e9dec5f9f8da9bd0645d320a85ec9aeebe1531c3b08957",
+      "lines": 174
+    },
+    {
+      "type": "RimWorld.JobDriver_LayDown",
+      "local_file": ".local-research/housing/RimWorld.JobDriver_LayDown.cs",
+      "sha256": "df0bd418c61b5a2cb062981ea5b778f2bf01cfe1dcc1cf16062fb894d5d3948a",
+      "lines": 121
+    },
+    {
+      "type": "RimWorld.JobDriver_LayDownResting",
+      "local_file": ".local-research/housing/RimWorld.JobDriver_LayDownResting.cs",
+      "sha256": "50245af4c1b0b1313b3b6b26da335356ac447ba5de3c65ff59a4b7f80bedba8c",
+      "lines": 15
+    },
+    {
+      "type": "RimWorld.Toils_LayDown",
+      "local_file": ".local-research/housing/RimWorld.Toils_LayDown.cs",
+      "sha256": "01a144ac1ec5d725a61409658864554c143741aecaa9de5d9c7fe9931cbc428b",
+      "lines": 314
+    },
+    {
+      "type": "RimWorld.RestUtility",
+      "local_file": ".local-research/housing/RimWorld.RestUtility.cs",
+      "sha256": "e0f84f3a9d891e7c6130159b9dfd6751063147eb3e090effe854661171e3f73e",
+      "lines": 612
+    },
+    {
+      "type": "RimWorld.RestCategory",
+      "local_file": ".local-research/housing/RimWorld.RestCategory.cs",
+      "sha256": "b2a3b464988e0b6f9ded9406db6a63baf8451cfd474bd6d552c6b290545d893d",
+      "lines": 10
+    },
+    {
+      "type": "RimWorld.RestCategoryUtility",
+      "local_file": ".local-research/housing/RimWorld.RestCategoryUtility.cs",
+      "sha256": "8f290dfb933dec4515b16905239fed1f8b9ed2da7275ed528947ddf56a99eee9",
+      "lines": 20
+    },
+    {
+      "type": "RimWorld.Building_Bed",
+      "local_file": ".local-research/housing/RimWorld.Building_Bed.cs",
+      "sha256": "2ee2bf86f55b05d4106ea896a26c8aa0c3442e4fa3aea917f9afb39071aada6c",
+      "lines": 847
+    },
+    {
+      "type": "RimWorld.Pawn_Ownership",
+      "local_file": ".local-research/housing/RimWorld.Pawn_Ownership.cs",
+      "sha256": "89e96b3ef430c3e395e7142bab4ec7b98602d6e80bfea55cb31fa850a0aacccc",
+      "lines": 306
+    },
+    {
+      "type": "RimWorld.Pawn_TimetableTracker",
+      "local_file": ".local-research/housing/RimWorld.Pawn_TimetableTracker.cs",
+      "sha256": "906cc6949443ca3ea614bf2665da8a95a5b02db01862ccf340b41fc487dd7010",
+      "lines": 61
+    },
+    {
+      "type": "RimWorld.TimeAssignmentDef",
+      "local_file": ".local-research/housing/RimWorld.TimeAssignmentDef.cs",
+      "sha256": "3b53f449b566bb48e77e4d7356f9d8140ea1f85a93960a9ca49c6463cb1340f2",
+      "lines": 37
+    },
+    {
+      "type": "RimWorld.Building_Door",
+      "local_file": ".local-research/housing/RimWorld.Building_Door.cs",
+      "sha256": "f6c2dd451cf71a9db48cf09b05e4bfeaef3029b642fe29acca573e57eccdae27",
+      "lines": 633
+    },
+    {
+      "type": "RimWorld.JobInBedUtility",
+      "local_file": ".local-research/housing/RimWorld.JobInBedUtility.cs",
+      "sha256": "555ea6accd73e6dea3730bf6c15ff2e5140bd26fc78b6697d2f618121cbca9f4",
+      "lines": 37
+    },
+    {
+      "type": "RimWorld.Toils_Bed",
+      "local_file": ".local-research/housing/RimWorld.Toils_Bed.cs",
+      "sha256": "afe91fc545ea1cbdb3fdcdc8451f2fcc747fc0975adf817ccf336d78f5cd211f",
+      "lines": 132
+    },
+    {
+      "type": "RimWorld.Need_Comfort",
+      "local_file": ".local-research/housing/RimWorld.Need_Comfort.cs",
+      "sha256": "94539efb01eda893d840c69635e3c7e03256de7d13b99b58f4b2df21397990bd",
+      "lines": 82
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "local_file": ".local-research/housing/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "lines": 1655
+    },
+    {
+      "type": "RimWorld.BedUtility",
+      "local_file": ".local-research/housing/RimWorld.BedUtility.cs",
+      "sha256": "7d3858ac237157e61e5c64447be8546edcca1f1537926438cb03d768d6ce4a9c",
+      "lines": 90
+    },
+    {
+      "type": "RimWorld.StatPart_Quality",
+      "local_file": ".local-research/housing/RimWorld.StatPart_Quality.cs",
+      "sha256": "3b80ea8e8f92ffce05a05631972d7f948e0acaa03c3ceeb4d484ecfab72339e0",
+      "lines": 98
+    },
+    {
+      "type": "Verse.RegionAndRoomUpdater",
+      "local_file": ".local-research/housing/Verse.RegionAndRoomUpdater.cs",
+      "sha256": "29d85be83cbbe84cdc40c7f0ac29a1f5a38889870d082de35ce761025215bd1d",
+      "lines": 408
+    },
+    {
+      "type": "Verse.RegionMaker",
+      "local_file": ".local-research/housing/Verse.RegionMaker.cs",
+      "sha256": "a4781488fb1ee2d1c7579e6a67f5099043d1ad6872a835e93f8a3cee85496554",
+      "lines": 231
+    },
+    {
+      "type": "Verse.RegionTypeUtility",
+      "local_file": ".local-research/housing/Verse.RegionTypeUtility.cs",
+      "sha256": "b97f4e1c226d1ef96b0d4c57260dda7501e176d9d9a836cbb7283103b3fd15a8",
+      "lines": 51
+    },
+    {
+      "type": "RimWorld.ThinkNode_ConditionalMustKeepLyingDown",
+      "local_file": ".local-research/housing/RimWorld.ThinkNode_ConditionalMustKeepLyingDown.cs",
+      "sha256": "59afa7a7dd6b6f6b38270611f60dc67ef9c807b5d31cbfca66265d58eb3e9f7d",
+      "lines": 50
+    },
+    {
+      "type": "RimWorld.JobGiver_KeepLyingDown",
+      "local_file": ".local-research/housing/RimWorld.JobGiver_KeepLyingDown.cs",
+      "sha256": "7cc216d1dbd20b2744ae7d5e8b46809687d93e68930a7227f79a6adc4ef55e9e",
+      "lines": 26
+    },
+    {
+      "type": "RimWorld.Need_Seeker",
+      "local_file": ".local-research/housing/RimWorld.Need_Seeker.cs",
+      "sha256": "ba9490ff38079453846eb04d11b6cafa57e70b3a12b17e029d836e4930301339",
+      "lines": 54
+    },
+    {
+      "type": "RimWorld.ThinkNode_ConditionalCanDoConstantThinkTreeJobNow",
+      "local_file": ".local-research/housing/RimWorld.ThinkNode_ConditionalCanDoConstantThinkTreeJobNow.cs",
+      "sha256": "f59114078f3c5e1101341655d692b26e2a5f73665b7f5242eaff6dad8f5d7749",
+      "lines": 17
+    },
+    {
+      "type": "RimWorld.NeedDef",
+      "local_file": ".local-research/housing/RimWorld.NeedDef.cs",
+      "sha256": "ea00bb5a1f0b5e8edaef8e14b91eaaca357bf036a050d0c4c133aa5ecc6bd8b1",
+      "lines": 90
+    },
+    {
+      "type": "RimWorld.StatWorker",
+      "local_file": ".local-research/housing/RimWorld.StatWorker.cs",
+      "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+      "lines": 1392
+    }
+  ]
+}

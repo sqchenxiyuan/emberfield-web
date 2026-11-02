@@ -1,0 +1,2129 @@
+{
+  "generatedAt": "2026-11-02T16:31:45.663Z",
+  "kind": "web-runtime-validated",
+  "scope": "Emberfield voxel housing milestone. Original housing evidence is static/XML, not independently measured native behavior. Normal-command campaigns advance game ticks headlessly, not hours of real-time browser play. Room array and renderer counters are not total browser/GPU capacity claims.",
+  "sources": [
+    {
+      "file": "src/voxel/client.ts",
+      "sha256": "7065ecbd054e3174c91dd3f0800421e70859b29ef6979f0ed3b837860d917483"
+    },
+    {
+      "file": "src/voxel/farming.ts",
+      "sha256": "c4820b307bc40cbc26feb1afa6dd79808f3af807db6d3ad37e883d54693b32bc"
+    },
+    {
+      "file": "src/voxel/main.tsx",
+      "sha256": "e4bbd92014dcb208c8b261fbf51f086055cf456af5342585931891fb00d5fbe0"
+    },
+    {
+      "file": "src/voxel/render.worker.ts",
+      "sha256": "191ced6c3d17b480fa11f2d3a6845b8e9df111f5f69ded8b7b2bbaf75caf22c0"
+    },
+    {
+      "file": "src/voxel/renderer.ts",
+      "sha256": "0dc3fa841cc505ce134299ea727dfe6fb776732fa5675d88476d93b795e1b05d"
+    },
+    {
+      "file": "src/voxel/rest.ts",
+      "sha256": "843c08f8188d7a3b3a9cbef507a0568705bb3d5aa5ad2d89395443199aa12099"
+    },
+    {
+      "file": "src/voxel/rooms.ts",
+      "sha256": "67457f7cd217f5746b9562ea2e3ca059af1f424165368d28d511e8a374090b9d"
+    },
+    {
+      "file": "src/voxel/sim.worker.ts",
+      "sha256": "809a28fe11e9b28f5b04502d94d33261ea0deb66efa45c2c33784891b82b4162"
+    },
+    {
+      "file": "src/voxel/style.css",
+      "sha256": "7f28a69f96c7363c7a83a3b63fee5fbef9c2284369ae2125811e1f08ad1d5f40"
+    },
+    {
+      "file": "src/voxel/types.ts",
+      "sha256": "a6e158a8e2f2635b24cc5a3ea2a36c7ab1aa9c78038951ef401270e18ceaed5e"
+    },
+    {
+      "file": "src/voxel/world.ts",
+      "sha256": "224bb3a6826455f08e6fb154f215733ad2550d9f23591c7dcfc5bdee689013a0"
+    }
+  ],
+  "assets": [
+    {
+      "file": "assets/index-DkcY-Bcp.js",
+      "sha256": "2880fe8ba29d30e019c50d23978e136b0835dee088dcc12dbbb72607891ebd99",
+      "bytes": 2356
+    },
+    {
+      "file": "assets/main-B8HDAEEb.css",
+      "sha256": "03d9ef9df223e414ac9ce93b28d83c8caf69c532931ed37e152cc95beabaaf66",
+      "bytes": 10824
+    },
+    {
+      "file": "assets/client-CrowJ5J7.js",
+      "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+      "bytes": 221699
+    },
+    {
+      "file": "assets/main-GMurscM2.js",
+      "sha256": "003972cc2939ca218fdbfdfc30c302fe96849ae8fad637a7172a616f3183d610",
+      "bytes": 552304
+    },
+    {
+      "file": "assets/sim.worker-ChZk0lkO.js",
+      "sha256": "4ad5acdafc2bef980bb1b003127122c283b0ed681bd681d319cfb07e60594933",
+      "bytes": 43435
+    },
+    {
+      "file": "assets/render.worker-BS1G_Ml7.js",
+      "sha256": "a8737d5b40409457f92ff5e9934284e3c6afbc0fe9c3879869df928b9fe2d723",
+      "bytes": 523711
+    }
+  ],
+  "unit": {
+    "passed": 110,
+    "total": 110,
+    "failed": 0
+  },
+  "housing": {
+    "scope": "Normal command/step/save/load only; no world, resource, need or time injection. Headless elapsed calendar simulation, not real-time native play.",
+    "checkpoints": [
+      {
+        "label": "six trees supply physical construction wood",
+        "tick": 237,
+        "elapsed": 237
+      },
+      {
+        "label": "excavated shaft connects surface and underground",
+        "tick": 701,
+        "elapsed": 464
+      },
+      {
+        "label": "underground entrance excavated",
+        "tick": 789,
+        "elapsed": 88
+      },
+      {
+        "label": "six-cell underground bedroom excavated",
+        "tick": 1072,
+        "elapsed": 283
+      },
+      {
+        "label": "underground bed and doorway built from delivered wood",
+        "tick": 1337,
+        "elapsed": 265
+      },
+      {
+        "label": "upper ladder completed",
+        "tick": 1591,
+        "elapsed": 254
+      },
+      {
+        "label": "upper platform completed",
+        "tick": 2136,
+        "elapsed": 545
+      },
+      {
+        "label": "three beds exist on underground surface and upstairs",
+        "tick": 2413,
+        "elapsed": 277
+      },
+      {
+        "label": "natural default bedtime sends all three pawns into their owned beds",
+        "tick": 7049,
+        "elapsed": 4636
+      },
+      {
+        "label": "all colonists naturally wake from restored rest",
+        "tick": 9979,
+        "elapsed": 2910
+      },
+      {
+        "label": "underground sleeper exits via door and shaft",
+        "tick": 10013,
+        "elapsed": 34
+      },
+      {
+        "label": "doorway is clear",
+        "tick": 10013,
+        "elapsed": 0
+      }
+    ],
+    "sleepEvents": [
+      {
+        "tick": 7018,
+        "pawnId": 300,
+        "bedId": 359,
+        "rest": 44.44083333330169,
+        "position": {
+          "x": 29,
+          "y": 29,
+          "z": 8
+        }
+      },
+      {
+        "tick": 7027,
+        "pawnId": 299,
+        "bedId": 358,
+        "rest": 44.36958333330169,
+        "position": {
+          "x": 33,
+          "y": 30,
+          "z": 11
+        }
+      },
+      {
+        "tick": 7049,
+        "pawnId": 298,
+        "bedId": 339,
+        "rest": 44.195416666635026,
+        "position": {
+          "x": 35,
+          "y": 31,
+          "z": 5
+        }
+      }
+    ],
+    "doorEvents": [
+      {
+        "tick": 1343,
+        "door": 338
+      },
+      {
+        "tick": 7027,
+        "door": 338
+      },
+      {
+        "tick": 9984,
+        "door": 338
+      }
+    ],
+    "rooms": {
+      "underground": {
+        "id": 0,
+        "outdoor": false,
+        "volume": 12,
+        "floorCells": 6,
+        "minZ": 5,
+        "maxZ": 6
+      },
+      "upstairs": {
+        "id": 1,
+        "outdoor": true,
+        "volume": 30983,
+        "floorCells": 4108,
+        "minZ": 5,
+        "maxZ": 15
+      },
+      "bytes": 589824
+    },
+    "final": {
+      "tick": 10013,
+      "beds": [
+        {
+          "id": 339,
+          "x": 35,
+          "y": 31,
+          "z": 5,
+          "axis": "x",
+          "owner": 298
+        },
+        {
+          "id": 358,
+          "x": 33,
+          "y": 30,
+          "z": 11,
+          "axis": "y",
+          "owner": 299
+        },
+        {
+          "id": 359,
+          "x": 29,
+          "y": 29,
+          "z": 8,
+          "axis": "y",
+          "owner": 300
+        }
+      ],
+      "doors": [
+        {
+          "id": 338,
+          "x": 34,
+          "y": 32,
+          "z": 5,
+          "axis": "y",
+          "mode": "auto",
+          "openUntil": 0
+        }
+      ],
+      "counts": {
+        "wood": 40,
+        "stone": 20,
+        "steel": 160,
+        "components": 0,
+        "food": 57,
+        "grain": 0,
+        "meal": 0
+      },
+      "stats": {
+        "mined": 17,
+        "cut": 6,
+        "built": 24,
+        "hauled": 340,
+        "sown": 0,
+        "harvested": 0,
+        "cooked": 0,
+        "eaten": 3,
+        "consumed": {
+          "wood": 212,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 3,
+          "grain": 0,
+          "meal": 0
+        },
+        "produced": {
+          "wood": 162,
+          "stone": 20,
+          "steel": 160,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meal": 0
+        }
+      },
+      "pawns": [
+        {
+          "id": 298,
+          "rest": 99.7308333333331,
+          "food": 37.05333333332349
+        },
+        {
+          "id": 299,
+          "rest": 99.48541666666621,
+          "food": 36.82666666665679
+        },
+        {
+          "id": 300,
+          "rest": 99.38249999999945,
+          "food": 36.91999999999014
+        }
+      ]
+    }
+  },
+  "browser": {
+    "base": "http://127.0.0.1:5183/?world=voxel",
+    "scope": "Real DOM controls, canvas mouse clicks, keyboard rotation and file chooser imports in Chrome. window.voxel is used only for projection, snapshots and save export. Beds and doors in the UI checks are built by normal colonist work from a fresh world. Sleeping fixtures come from the separate normal-command housing campaign; no pawn/terrain/need/tick injection. Both render Worker and main-thread fallback are checked at 1280x800 and 900x700.",
+    "modes": [
+      {
+        "mode": "worker",
+        "checks": [
+          {
+            "name": "expected renderer backend active",
+            "worker": true,
+            "metrics": {
+              "backend": "Three.js · WebGL2",
+              "fps": 27.27836329820211,
+              "drawCalls": 58,
+              "triangles": 29932,
+              "geometries": 27,
+              "textures": 4,
+              "chunkCount": 16,
+              "pendingChunks": 0,
+              "terrainVertices": 43984,
+              "terrainGeometryBytes": 2067248,
+              "gridBytes": 131072,
+              "dpr": 1,
+              "level": 8,
+              "rotation": 0.7853981633974483,
+              "zoom": 1.25
+            }
+          },
+          {
+            "name": "mouse placement builds both bed axes and door, both bed tiles inspect",
+            "beds": [
+              {
+                "id": 308,
+                "x": 33,
+                "y": 28,
+                "z": 8,
+                "axis": "y",
+                "owner": null
+              },
+              {
+                "id": 309,
+                "x": 29,
+                "y": 28,
+                "z": 8,
+                "axis": "x",
+                "owner": null
+              }
+            ],
+            "doors": [
+              {
+                "id": 310,
+                "x": 32,
+                "y": 31,
+                "z": 8,
+                "axis": "x",
+                "mode": "auto",
+                "openUntil": 0
+              }
+            ],
+            "consumedWood": 115
+          },
+          {
+            "name": "DOM owner assignment transfers exclusive ownership and restores distinct owners"
+          },
+          {
+            "name": "door upper-body inspection and all three DOM modes"
+          },
+          {
+            "name": "24 hourly DOM schedule cells round-trip into simulation",
+            "pawn": "林澈",
+            "schedule": [
+              "sleep",
+              "sleep",
+              "sleep",
+              "sleep",
+              "sleep",
+              "sleep",
+              "anything",
+              "anything",
+              "work",
+              "work",
+              "work",
+              "work",
+              "work",
+              "work",
+              "work",
+              "work",
+              "work",
+              "anything",
+              "anything",
+              "anything",
+              "anything",
+              "anything",
+              "sleep",
+              "sleep"
+            ]
+          },
+          {
+            "name": "manual DOM save/load restores bed owners and all schedule entries",
+            "tick": 397,
+            "file": "test-results/voxel-housing-browser/worker-ui-housing-save.json",
+            "sha256": "935c5d61293844d9d8f32c86266c76bc4eb8768e81f15c7bbf8b0759aaae57fb"
+          },
+          {
+            "name": "900x700 controls remain reachable through actual panel and toolbar scrolling",
+            "reachability": [
+              {
+                "name": "床",
+                "x": 676.5,
+                "y": 660,
+                "width": 53,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "门",
+                "x": 731.5,
+                "y": 660,
+                "width": 53,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "擦除区域",
+                "x": 615.5,
+                "y": 660,
+                "width": 53,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "取消规划",
+                "x": 731.5,
+                "y": 660,
+                "width": 53,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "暂停",
+                "x": 781.09375,
+                "y": 670.5,
+                "width": 25,
+                "height": 29,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "3倍速",
+                "x": 874.265625,
+                "y": 670.5,
+                "width": 27.46875,
+                "height": 29,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "菜单与存档",
+                "x": 847.5,
+                "y": 37.5,
+                "width": 81,
+                "height": 33,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "旋转建造朝向",
+                "x": 47,
+                "y": 596,
+                "width": 70,
+                "height": 50,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "床位主人",
+                "x": 155,
+                "y": 423.875,
+                "width": 146,
+                "height": 33,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "门状态",
+                "x": 177,
+                "y": 424.1875,
+                "width": 102,
+                "height": 33,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-0",
+                "x": 53.375,
+                "y": 423.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-1",
+                "x": 104.125,
+                "y": 423.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-2",
+                "x": 154.875,
+                "y": 423.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-3",
+                "x": 205.625,
+                "y": 423.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-4",
+                "x": 53.375,
+                "y": 474.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-5",
+                "x": 104.125,
+                "y": 474.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-6",
+                "x": 154.875,
+                "y": 474.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-7",
+                "x": 205.625,
+                "y": 474.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-8",
+                "x": 53.375,
+                "y": 517.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-9",
+                "x": 104.125,
+                "y": 517.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-10",
+                "x": 154.875,
+                "y": 517.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-11",
+                "x": 205.625,
+                "y": 517.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-12",
+                "x": 53.375,
+                "y": 423.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-13",
+                "x": 104.125,
+                "y": 423.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-14",
+                "x": 154.875,
+                "y": 423.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-15",
+                "x": 205.625,
+                "y": 423.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-16",
+                "x": 53.375,
+                "y": 474.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-17",
+                "x": 104.125,
+                "y": 474.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-18",
+                "x": 154.875,
+                "y": 474.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-19",
+                "x": 205.625,
+                "y": 474.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-20",
+                "x": 53.375,
+                "y": 517.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-21",
+                "x": 104.125,
+                "y": 517.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-22",
+                "x": 154.875,
+                "y": 517.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-23",
+                "x": 205.625,
+                "y": 517.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "保存营地",
+                "x": 309.25,
+                "y": 260.09375,
+                "width": 272.5,
+                "height": 35,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "导出体素存档",
+                "x": 590.75,
+                "y": 304.09375,
+                "width": 272.5,
+                "height": 35,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "导入体素存档",
+                "x": 309.25,
+                "y": 348.09375,
+                "width": 272.5,
+                "height": 35,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "关闭菜单",
+                "x": 728.7890625,
+                "y": 127,
+                "width": 36.421875,
+                "height": 48,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              }
+            ]
+          },
+          {
+            "name": "campaign room topology survives view slicing and door opening",
+            "fixture": "test-results/voxel-housing-campaign/housing-built.json",
+            "sha256": "11de757c5bf4c539e4e8185627b4558be0a75d6b081313a62d2087de1b288bd1",
+            "tick": 2413,
+            "roomText": "封闭房间\n\n12 格体积 · 6 格地面 · Z 5–6\n\n按实际六向空气连通判断；视图切层不改变房间。",
+            "roomRevision": 1
+          },
+          {
+            "name": "all three campaign sleepers reload across underground, surface and upper layers",
+            "pawns": [
+              {
+                "id": 298,
+                "z": 5,
+                "bed": 339,
+                "rest": 44.195416666635026
+              },
+              {
+                "id": 299,
+                "z": 11,
+                "bed": 358,
+                "rest": 44.788630973301736
+              },
+              {
+                "id": 300,
+                "z": 8,
+                "bed": 359,
+                "rest": 45.03130955330175
+              }
+            ]
+          },
+          {
+            "name": "normal-campaign sleeping save reloads and paused pixels are stable",
+            "fixture": {
+              "file": "test-results/voxel-housing-campaign/sleeping-save.json",
+              "sha256": "78b916c02e18509c367df44a6761b5facb0080c119ed46e550ab4d314cf5df37",
+              "tick": 7049,
+              "pawnId": 298,
+              "bed": {
+                "id": 339,
+                "x": 35,
+                "y": 31,
+                "z": 5,
+                "axis": "x",
+                "owner": 298
+              }
+            },
+            "diff": {
+              "changed": 0,
+              "overTwo": 0,
+              "maxDelta": 0
+            }
+          },
+          {
+            "name": "resumed browser simulation restores rest while remaining in assigned bed",
+            "before": 44.195416666635026,
+            "after": 44.50017858663506,
+            "tick": 7065
+          }
+        ],
+        "fixture": {
+          "file": "test-results/voxel-housing-campaign/sleeping-save.json",
+          "sha256": "78b916c02e18509c367df44a6761b5facb0080c119ed46e550ab4d314cf5df37",
+          "tick": 7049,
+          "pawnId": 298,
+          "bed": {
+            "id": 339,
+            "x": 35,
+            "y": 31,
+            "z": 5,
+            "axis": "x",
+            "owner": 298
+          }
+        },
+        "errors": [],
+        "final": {
+          "worker": true,
+          "metrics": {
+            "backend": "Three.js · WebGL2",
+            "fps": 59.9475458937698,
+            "drawCalls": 29,
+            "triangles": 11920,
+            "geometries": 23,
+            "textures": 7,
+            "chunkCount": 16,
+            "pendingChunks": 0,
+            "terrainVertices": 38968,
+            "terrainGeometryBytes": 1831496,
+            "gridBytes": 131072,
+            "dpr": 1,
+            "level": 5,
+            "rotation": 0.7853981633974483,
+            "zoom": 2.7819261606155847
+          },
+          "tick": 7065
+        }
+      },
+      {
+        "mode": "main",
+        "checks": [
+          {
+            "name": "expected renderer backend active",
+            "worker": false,
+            "metrics": {
+              "backend": "Three.js · WebGL2",
+              "fps": 54.47567165705385,
+              "drawCalls": 58,
+              "triangles": 29932,
+              "geometries": 27,
+              "textures": 4,
+              "chunkCount": 16,
+              "pendingChunks": 0,
+              "terrainVertices": 43984,
+              "terrainGeometryBytes": 2067248,
+              "gridBytes": 131072,
+              "dpr": 1,
+              "level": 8,
+              "rotation": 0.7853981633974483,
+              "zoom": 1.25
+            }
+          },
+          {
+            "name": "mouse placement builds both bed axes and door, both bed tiles inspect",
+            "beds": [
+              {
+                "id": 308,
+                "x": 29,
+                "y": 28,
+                "z": 8,
+                "axis": "x",
+                "owner": null
+              },
+              {
+                "id": 309,
+                "x": 33,
+                "y": 28,
+                "z": 8,
+                "axis": "y",
+                "owner": null
+              }
+            ],
+            "doors": [
+              {
+                "id": 310,
+                "x": 32,
+                "y": 31,
+                "z": 8,
+                "axis": "x",
+                "mode": "auto",
+                "openUntil": 0
+              }
+            ],
+            "consumedWood": 115
+          },
+          {
+            "name": "DOM owner assignment transfers exclusive ownership and restores distinct owners"
+          },
+          {
+            "name": "door upper-body inspection and all three DOM modes"
+          },
+          {
+            "name": "24 hourly DOM schedule cells round-trip into simulation",
+            "pawn": "林澈",
+            "schedule": [
+              "sleep",
+              "sleep",
+              "sleep",
+              "sleep",
+              "sleep",
+              "sleep",
+              "anything",
+              "anything",
+              "work",
+              "work",
+              "work",
+              "work",
+              "work",
+              "work",
+              "work",
+              "work",
+              "work",
+              "anything",
+              "anything",
+              "anything",
+              "anything",
+              "anything",
+              "sleep",
+              "sleep"
+            ]
+          },
+          {
+            "name": "manual DOM save/load restores bed owners and all schedule entries",
+            "tick": 396,
+            "file": "test-results/voxel-housing-browser/main-ui-housing-save.json",
+            "sha256": "8dbcef626808bb62d8cc1ea59ae8872be77261fc015d7e23941f79d372bf622d"
+          },
+          {
+            "name": "900x700 controls remain reachable through actual panel and toolbar scrolling",
+            "reachability": [
+              {
+                "name": "床",
+                "x": 676.5,
+                "y": 660,
+                "width": 53,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "门",
+                "x": 731.5,
+                "y": 660,
+                "width": 53,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "擦除区域",
+                "x": 615.5,
+                "y": 660,
+                "width": 53,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "取消规划",
+                "x": 731.5,
+                "y": 660,
+                "width": 53,
+                "height": 56,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "暂停",
+                "x": 781.09375,
+                "y": 670.5,
+                "width": 25,
+                "height": 29,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "3倍速",
+                "x": 874.265625,
+                "y": 670.5,
+                "width": 27.46875,
+                "height": 29,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "菜单与存档",
+                "x": 847.5,
+                "y": 37.5,
+                "width": 81,
+                "height": 33,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "旋转建造朝向",
+                "x": 47,
+                "y": 596,
+                "width": 70,
+                "height": 50,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "床位主人",
+                "x": 155,
+                "y": 423.875,
+                "width": 146,
+                "height": 33,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "门状态",
+                "x": 177,
+                "y": 424.1875,
+                "width": 102,
+                "height": 33,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-0",
+                "x": 53.375,
+                "y": 423.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-1",
+                "x": 104.125,
+                "y": 423.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-2",
+                "x": 154.875,
+                "y": 423.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-3",
+                "x": 205.625,
+                "y": 423.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-4",
+                "x": 53.375,
+                "y": 474.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-5",
+                "x": 104.125,
+                "y": 474.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-6",
+                "x": 154.875,
+                "y": 474.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-7",
+                "x": 205.625,
+                "y": 474.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-8",
+                "x": 53.375,
+                "y": 517.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-9",
+                "x": 104.125,
+                "y": 517.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-10",
+                "x": 154.875,
+                "y": 517.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-11",
+                "x": 205.625,
+                "y": 517.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-12",
+                "x": 53.375,
+                "y": 423.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-13",
+                "x": 104.125,
+                "y": 423.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-14",
+                "x": 154.875,
+                "y": 423.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-15",
+                "x": 205.625,
+                "y": 423.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-16",
+                "x": 53.375,
+                "y": 474.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-17",
+                "x": 104.125,
+                "y": 474.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-18",
+                "x": 154.875,
+                "y": 474.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-19",
+                "x": 205.625,
+                "y": 474.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-20",
+                "x": 53.375,
+                "y": 517.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-21",
+                "x": 104.125,
+                "y": 517.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-22",
+                "x": 154.875,
+                "y": 517.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "schedule-23",
+                "x": 205.625,
+                "y": 517.875,
+                "width": 44.75,
+                "height": 27,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "保存营地",
+                "x": 309.25,
+                "y": 260.09375,
+                "width": 272.5,
+                "height": 35,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "导出体素存档",
+                "x": 590.75,
+                "y": 304.09375,
+                "width": 272.5,
+                "height": 35,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "导入体素存档",
+                "x": 309.25,
+                "y": 348.09375,
+                "width": 272.5,
+                "height": 35,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              },
+              {
+                "name": "关闭菜单",
+                "x": 728.7890625,
+                "y": 127,
+                "width": 36.421875,
+                "height": 48,
+                "viewport": [
+                  900,
+                  700
+                ],
+                "hit": true
+              }
+            ]
+          },
+          {
+            "name": "campaign room topology survives view slicing and door opening",
+            "fixture": "test-results/voxel-housing-campaign/housing-built.json",
+            "sha256": "11de757c5bf4c539e4e8185627b4558be0a75d6b081313a62d2087de1b288bd1",
+            "tick": 2413,
+            "roomText": "封闭房间\n\n12 格体积 · 6 格地面 · Z 5–6\n\n按实际六向空气连通判断；视图切层不改变房间。",
+            "roomRevision": 1
+          },
+          {
+            "name": "all three campaign sleepers reload across underground, surface and upper layers",
+            "pawns": [
+              {
+                "id": 298,
+                "z": 5,
+                "bed": 339,
+                "rest": 44.195416666635026
+              },
+              {
+                "id": 299,
+                "z": 11,
+                "bed": 358,
+                "rest": 44.788630973301736
+              },
+              {
+                "id": 300,
+                "z": 8,
+                "bed": 359,
+                "rest": 45.03130955330175
+              }
+            ]
+          },
+          {
+            "name": "normal-campaign sleeping save reloads and paused pixels are stable",
+            "fixture": {
+              "file": "test-results/voxel-housing-campaign/sleeping-save.json",
+              "sha256": "78b916c02e18509c367df44a6761b5facb0080c119ed46e550ab4d314cf5df37",
+              "tick": 7049,
+              "pawnId": 298,
+              "bed": {
+                "id": 339,
+                "x": 35,
+                "y": 31,
+                "z": 5,
+                "axis": "x",
+                "owner": 298
+              }
+            },
+            "diff": {
+              "changed": 0,
+              "overTwo": 0,
+              "maxDelta": 0
+            }
+          },
+          {
+            "name": "resumed browser simulation restores rest while remaining in assigned bed",
+            "before": 44.195416666635026,
+            "after": 44.57636906663507,
+            "tick": 7069
+          }
+        ],
+        "fixture": {
+          "file": "test-results/voxel-housing-campaign/sleeping-save.json",
+          "sha256": "78b916c02e18509c367df44a6761b5facb0080c119ed46e550ab4d314cf5df37",
+          "tick": 7049,
+          "pawnId": 298,
+          "bed": {
+            "id": 339,
+            "x": 35,
+            "y": 31,
+            "z": 5,
+            "axis": "x",
+            "owner": 298
+          }
+        },
+        "errors": [],
+        "final": {
+          "worker": false,
+          "metrics": {
+            "backend": "Three.js · WebGL2",
+            "fps": 59.95503373184831,
+            "drawCalls": 29,
+            "triangles": 11920,
+            "geometries": 23,
+            "textures": 7,
+            "chunkCount": 16,
+            "pendingChunks": 0,
+            "terrainVertices": 38968,
+            "terrainGeometryBytes": 1831496,
+            "gridBytes": 131072,
+            "dpr": 1,
+            "level": 5,
+            "rotation": 0.7853981633974483,
+            "zoom": 2.7819261606155847
+          },
+          "tick": 7069
+        }
+      }
+    ]
+  },
+  "regressions": {
+    "food": {
+      "scope": "Public command/step/save/load only, with normal day/night time progression. No resource injection, mature-crop injection, terrain editing, pawn teleportation or direct tick changes. Nominal edible nutrition explicitly includes the recipe gain: 10 grain at 0.05 becomes one 0.9 meal, adding 0.4 nutrition per cooked meal. This does not claim physical calorie conservation or unlimited colony sustainability.",
+      "final": {
+        "tick": 206726,
+        "calendarDays": 17.227166666666665,
+        "ricePlots": 120,
+        "counts": {
+          "wood": 97,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 6,
+          "grain": 911,
+          "meal": 6
+        },
+        "stored": {
+          "wood": 97,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 6,
+          "grain": 911,
+          "meal": 6
+        },
+        "stats": {
+          "mined": 0,
+          "cut": 3,
+          "built": 1,
+          "hauled": 1559,
+          "sown": 363,
+          "harvested": 241,
+          "cooked": 54,
+          "eaten": 102,
+          "consumed": {
+            "wood": 74,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 54,
+            "grain": 540,
+            "meal": 48
+          },
+          "produced": {
+            "wood": 81,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 1451,
+            "meal": 54
+          }
+        },
+        "nutrition": {
+          "availableNutrition": 56.35,
+          "eatenNominalNutrition": 91.80000000000001,
+          "initialNutrition": 54,
+          "harvestNutrition": 72.55,
+          "cookingNutritionGain": 21.6,
+          "grainEaten": 0
+        },
+        "minimumFood": 12.27333333332275,
+        "firstRiceHarvest": {
+          "tick": 96129,
+          "day": 8.01075,
+          "crop": {
+            "id": 432,
+            "x": 31,
+            "y": 32,
+            "z": 8,
+            "kind": "rice",
+            "growth": 1,
+            "sownAt": 180
+          },
+          "growthDays": 7.99575
+        },
+        "replantCount": 120
+      }
+    },
+    "foodBrowser": {
+      "checks": [
+        {
+          "name": "DOM crop selector and real mouse drag create three crop types",
+          "plots": 11
+        },
+        {
+          "name": "actual sowing produces seedlings and visible environmental conditions",
+          "detail": "29, 28 · Z 8\n×\n稻米\n\n有地板支撑的空间 · 地表\n\n室外连通空间\n\n30992 格体积 · 4096 格地面 · Z 6–15\n\n按实际六向空气连通判断；视图切层不改变房间。\n本轮生长\n0.6%\n\n生长中 · 肥力 100% · 光照 100% · 22.2°C\n\n下次播种：稻米 · 成熟收获 6 生食材。上方楼板会遮光。\n\n⌖ 对焦此处"
+        },
+        {
+          "name": "stove body inspection and bill target / pause / resume work through DOM"
+        },
+        {
+          "name": "calendar fixtures generated from UI save using normal commands and step only",
+          "fixtures": [
+            {
+              "file": "test-results/voxel-food-browser/normal-near-harvest.json",
+              "tick": 95854,
+              "sha256": "ed564565f54b0909c33f200d052828b5b6d883c9369e829ca6b7d0331f1f5498"
+            },
+            {
+              "file": "test-results/voxel-food-browser/normal-upper-kitchen.json",
+              "tick": 97031,
+              "sha256": "3a8978b8264e016c28278275a4ca267b937ace9b98fd7c48e8874e09bde0b2eb"
+            }
+          ]
+        },
+        {
+          "name": "imported normal-growth crops are actually harvested and ingredients delivered for cooking",
+          "tick": 96131,
+          "stats": {
+            "mined": 0,
+            "cut": 0,
+            "built": 1,
+            "hauled": 0,
+            "sown": 11,
+            "harvested": 4,
+            "cooked": 0,
+            "eaten": 48,
+            "consumed": {
+              "wood": 20,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 48,
+              "grain": 0,
+              "meal": 0
+            },
+            "produced": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 24,
+              "meal": 0
+            }
+          }
+        },
+        {
+          "name": "paused cooking scene pixels stable within GPU rounding",
+          "changed": 4,
+          "overTwo": 0,
+          "maxDelta": 1
+        },
+        {
+          "name": "real cooking completes a meal",
+          "stats": {
+            "mined": 0,
+            "cut": 0,
+            "built": 1,
+            "hauled": 0,
+            "sown": 13,
+            "harvested": 5,
+            "cooked": 1,
+            "eaten": 48,
+            "consumed": {
+              "wood": 21,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 48,
+              "grain": 10,
+              "meal": 0
+            },
+            "produced": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 30,
+              "meal": 1
+            }
+          },
+          "inventory": {
+            "wood": 69,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 12,
+            "grain": 20,
+            "meal": 1
+          }
+        },
+        {
+          "name": "real colonist carries harvested grain through an intermediate ladder level",
+          "carriers": [
+            {
+              "id": 300,
+              "name": "阿砾",
+              "color": 10464968,
+              "x": 33,
+              "y": 32,
+              "z": 9,
+              "food": 73.09333333332913,
+              "rest": 83.92124999998576,
+              "priorities": {
+                "dig": 1,
+                "build": 1,
+                "cut": 1,
+                "haul": 2,
+                "grow": 1,
+                "cook": 1
+              },
+              "jobId": 376,
+              "path": [
+                43041,
+                47138,
+                47074
+              ],
+              "destination": 47074,
+              "phase": "work",
+              "cargo": {
+                "resource": "grain",
+                "amount": 10
+              },
+              "reason": "把材料送往工作面",
+              "moveTick": 97143,
+              "workTarget": {
+                "x": 35,
+                "y": 31,
+                "z": 11
+              },
+              "eating": null,
+              "sleepBedId": null,
+              "sleepingSince": null,
+              "schedule": [
+                "sleep",
+                "sleep",
+                "sleep",
+                "sleep",
+                "sleep",
+                "sleep",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "anything",
+                "sleep",
+                "sleep"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "upper kitchen cooks using physically delivered cross-level ingredients",
+          "stats": {
+            "mined": 0,
+            "cut": 0,
+            "built": 10,
+            "hauled": 55,
+            "sown": 20,
+            "harvested": 9,
+            "cooked": 1,
+            "eaten": 48,
+            "consumed": {
+              "wood": 61,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 48,
+              "grain": 10,
+              "meal": 0
+            },
+            "produced": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 54,
+              "meal": 1
+            }
+          }
+        },
+        {
+          "name": "900x700 critical controls are reachable through actual toolbar/panel scrolling",
+          "reachability": [
+            {
+              "name": "种植区",
+              "x": 560.5,
+              "y": 660,
+              "width": 53,
+              "height": 56,
+              "viewport": [
+                900,
+                700
+              ],
+              "hit": true
+            },
+            {
+              "name": "灶台",
+              "x": 618.5,
+              "y": 660,
+              "width": 53,
+              "height": 56,
+              "viewport": [
+                900,
+                700
+              ],
+              "hit": true
+            },
+            {
+              "name": "擦除区域",
+              "x": 615.5,
+              "y": 660,
+              "width": 53,
+              "height": 56,
+              "viewport": [
+                900,
+                700
+              ],
+              "hit": true
+            },
+            {
+              "name": "取消规划",
+              "x": 731.5,
+              "y": 660,
+              "width": 53,
+              "height": 56,
+              "viewport": [
+                900,
+                700
+              ],
+              "hit": true
+            },
+            {
+              "name": "暂停",
+              "x": 781.09375,
+              "y": 670.5,
+              "width": 25,
+              "height": 29,
+              "viewport": [
+                900,
+                700
+              ],
+              "hit": true
+            },
+            {
+              "name": "3倍速",
+              "x": 874.265625,
+              "y": 670.5,
+              "width": 27.46875,
+              "height": 29,
+              "viewport": [
+                900,
+                700
+              ],
+              "hit": true
+            },
+            {
+              "name": "菜单与存档",
+              "x": 847.5,
+              "y": 37.5,
+              "width": 81,
+              "height": 33,
+              "viewport": [
+                900,
+                700
+              ],
+              "hit": true
+            }
+          ]
+        },
+        {
+          "name": "loaded production asset bytes match frozen dist assets",
+          "assets": [
+            {
+              "url": "http://127.0.0.1:5183/assets/index-DkcY-Bcp.js",
+              "sha256": "2880fe8ba29d30e019c50d23978e136b0835dee088dcc12dbbb72607891ebd99",
+              "bytes": 2356
+            },
+            {
+              "url": "http://127.0.0.1:5183/assets/main-B8HDAEEb.css",
+              "sha256": "03d9ef9df223e414ac9ce93b28d83c8caf69c532931ed37e152cc95beabaaf66",
+              "bytes": 10824
+            },
+            {
+              "url": "http://127.0.0.1:5183/assets/client-CrowJ5J7.js",
+              "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+              "bytes": 221699
+            },
+            {
+              "url": "http://127.0.0.1:5183/assets/main-GMurscM2.js",
+              "sha256": "003972cc2939ca218fdbfdfc30c302fe96849ae8fad637a7172a616f3183d610",
+              "bytes": 552304
+            },
+            {
+              "url": "http://127.0.0.1:5183/assets/sim.worker-ChZk0lkO.js",
+              "sha256": "4ad5acdafc2bef980bb1b003127122c283b0ed681bd681d319cfb07e60594933",
+              "bytes": 43435
+            },
+            {
+              "url": "http://127.0.0.1:5183/assets/render.worker-BS1G_Ml7.js",
+              "sha256": "a8737d5b40409457f92ff5e9934284e3c6afbc0fe9c3879869df928b9fe2d723",
+              "bytes": 523711
+            }
+          ]
+        }
+      ],
+      "errors": []
+    },
+    "emptyWorldLifecycle": {
+      "scope": "Chrome headless, DPR 1; one document without reload, six normal UI save/new-world/load cycles. Only read-only window.voxel.snapshot/exportSave/project observation. Renderer must remain Worker WebGL2. Render geometry/texture counts are live Three.js resources; terrainGeometryBytes counts tracked terrain buffers, not total GPU memory. CDP Performance JSHeapUsedSize/JSHeapTotalSize covers the main page isolate only, excluding simulation/render workers, native browser allocations and VRAM. This bounded lifecycle run is not a long-duration leak proof or universal capacity estimate.",
+      "cycles": 6,
+      "convergence": {
+        "geometries": {
+          "values": [
+            27,
+            27,
+            27,
+            27,
+            27,
+            27,
+            27
+          ],
+          "min": 27,
+          "max": 27,
+          "delta": 0
+        },
+        "textures": {
+          "values": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "min": 4,
+          "max": 4,
+          "delta": 0
+        },
+        "chunkCount": {
+          "values": [
+            16,
+            16,
+            16,
+            16,
+            16,
+            16,
+            16
+          ],
+          "min": 16,
+          "max": 16,
+          "delta": 0
+        },
+        "terrainGeometryBytes": {
+          "values": [
+            2067248,
+            2067248,
+            2067248,
+            2067248,
+            2067248,
+            2067248,
+            2067248
+          ],
+          "min": 2067248,
+          "max": 2067248,
+          "delta": 0
+        }
+      },
+      "errors": []
+    }
+  },
+  "screenshots": [
+    {
+      "file": "voxel/underground-bedroom.jpg",
+      "sha256": "10f904d6bc32c2d807b8bb06e2cb599b83b63cf80cac3cf9f0c8d8daff07771c",
+      "source": "test-results/voxel-housing-browser/worker-05-underground-room.png",
+      "sourceSha256": "a905b31a871cfe81a3b93352f1fb14f4c1f55390ae4a07ec8cd7ecf06945bc49",
+      "transform": "Full reviewed gameplay viewport, JPEG .83, no crop"
+    },
+    {
+      "file": "voxel/upstairs-sleep.jpg",
+      "sha256": "22a8a813131a50e252368cfb9448f105669cbb446b745425243a7d2acb02581e",
+      "source": "test-results/voxel-housing-browser/worker-07-sleeping-z11.png",
+      "sourceSha256": "bb8f32d2b208ba91412392999af3908c21d4ebff7057d588d4a0a90e8f4400c0",
+      "transform": "Full reviewed gameplay viewport, JPEG .83, no crop"
+    }
+  ]
+}

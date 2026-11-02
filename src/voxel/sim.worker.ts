@@ -8,12 +8,16 @@ let sim = new VoxelSimulation(),
   previous = performance.now(),
   lastPublish = 0,
   tickMs = 0;
+let publishedRooms = -1;
 function publish() {
   const chunks = sim.chunks();
-  ctx.postMessage(
-    { type: 'state', snapshot: sim.snapshot(speed, tickMs), chunks },
-    chunks.flatMap((c) => [c.blocks.buffer, c.ladders.buffer]),
-  );
+  const snapshot = sim.snapshot(speed, tickMs);
+  const roomIds = publishedRooms !== snapshot.roomRevision ? sim.rooms.roomIds.slice() : undefined;
+  publishedRooms = snapshot.roomRevision;
+  ctx.postMessage({ type: 'state', snapshot, chunks, roomIds }, [
+    ...chunks.flatMap((c) => [c.blocks.buffer, c.ladders.buffer]),
+    ...(roomIds ? [roomIds.buffer] : []),
+  ]);
 }
 ctx.onmessage = ({ data: d }) => {
   try {
@@ -33,12 +37,14 @@ ctx.onmessage = ({ data: d }) => {
     else if (d.type === 'load') {
       const next = VoxelSimulation.load(d.save);
       sim = next;
+      publishedRooms = -1;
       speed = 0;
       elapsed = 0;
       result = true;
     } else if (d.type === 'new') {
       if (!Number.isSafeInteger(d.seed)) throw new Error('种子必须是整数');
       sim = new VoxelSimulation(d.seed);
+      publishedRooms = -1;
       speed = 0;
       elapsed = 0;
       result = true;

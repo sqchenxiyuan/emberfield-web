@@ -1,5 +1,7 @@
 # 13 体素营地的食物循环：实现与验收
 
+本章保留食物里程碑发布时的结果。2026-11-03后加入真实睡眠与作息，工作时机及长期食物回归结果见[15章](15-voxel-housing-implementation.md)，本章历史快照不冒充新构建的复验。
+
 入口：[多层体素试玩](https://sqchenxiyuan.github.io/emberfield-web/?world=voxel)。本轮在11章施工与物流基础上补齐种植、收获、搬运、烹饪和进食；原版字段与推导见[12食物规则](12-farming-cooking-food.md)。本章的模拟/浏览器结果属于 Emberfield，不能当成 RimWorld 实机数值结果。
 
 ## 怎么操作

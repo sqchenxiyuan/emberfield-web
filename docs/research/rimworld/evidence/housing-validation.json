@@ -1,0 +1,33 @@
+{
+  "evidence_id": "RW17-HOUSING-VALIDATION",
+  "validated_utc": "2026-11-02T16:23:11.8684485Z",
+  "status": "PASS",
+  "original_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "version_text": "1.7.4980 rev60",
+  "original_xml_files": 10,
+  "original_xml_records": 25,
+  "original_xml_leaves": 128,
+  "portable_and_derived": {
+    "status": "pass",
+    "evidenceId": "RW17-HOUSING-PORTABLE-VALIDATION",
+    "version": "1.7.4980 rev60",
+    "recordedAssemblySha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+    "housingTypes": 28,
+    "reusedTypes": 6,
+    "claims": 22,
+    "codeReferences": 48,
+    "xmlReferences": 25,
+    "xmlFiles": 10,
+    "xmlRecords": 25,
+    "xmlLeaves": 128,
+    "analyticCases": 10,
+    "analyticAssertions": 141,
+    "localDerivedFilesVerified": 34,
+    "originalGameExecuted": false,
+    "originalGameFilesRead": false,
+    "scope": "recorded identities, metadata, derived hashes, source locations, independent analytic models",
+    "xmlValidation": "Metadata only. Run verify-housing-evidence.ps1 against the matching installation for original XML hashes and selected field values."
+  },
+  "original_game_executed": false,
+  "limitation": "Original assembly/XML identity, selected original XML values, derived hashes, source ranges and independent arithmetic only. No active Def loading, game execution, implementation equivalence or3D geometry validation."
+}
