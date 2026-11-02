@@ -677,6 +677,48 @@ a {
   font-size: 12px;
   margin-top: 8px;
 }
+.voxel-item-detail {
+  padding: 8px 0;
+  border-bottom: 1px solid #425249;
+}
+.voxel-food-condition {
+  display: grid;
+  gap: 6px;
+  margin-top: 7px;
+  color: #adc8be;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.voxel-food-condition progress {
+  width: 100%;
+  height: 5px;
+  accent-color: #c99c65;
+}
+.voxel-storage .voxel-check {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  font-size: 11px;
+}
+.voxel-storage input[type='checkbox'] {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: #dbbe7d;
+}
+.voxel-storage-presets,
+.voxel-storage-filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  margin: 10px 0;
+}
+.voxel-storage-presets button {
+  margin: 0;
+  font-size: 11px;
+  padding: 7px 4px;
+}
 @media (max-width: 1180px) {
   .voxel-guide {
     width: 225px;

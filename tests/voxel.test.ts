@@ -22,7 +22,7 @@ const place = (s: VoxelSimulation, tool: Tool, from: Pos, to?: Pos) => {
 function conserved(s: VoxelSimulation, initial: Counts) {
   const counts = s.counts();
   for (const r of resources) {
-    if (counts[r] + s.stats.consumed[r] !== initial[r] + s.stats.produced[r])
+    if (counts[r] + s.stats.consumed[r] + s.stats.spoiled[r] !== initial[r] + s.stats.produced[r])
       throw new Error(`${r} conservation failed at tick ${s.tick}`);
   }
   if (s.items.some((i) => i.amount <= 0) || s.pawns.some((p) => p.cargo && p.cargo.amount <= 0))
@@ -380,7 +380,7 @@ describe('voxel persistence and input validation', () => {
     const original = s.save();
     const corruptions: Array<(save: VoxelSave) => void> = [
       (d) => {
-        (d as { version: number }).version = 5;
+        (d as { version: number }).version = 6;
       },
       (d) => {
         (d as { generator: number }).generator = 2;

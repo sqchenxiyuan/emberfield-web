@@ -15,10 +15,10 @@ function until(s: VoxelSimulation, predicate: () => boolean, limit = 2400, audit
   expect(predicate(), JSON.stringify({ tick: s.tick, jobs: s.jobs, pawns: s.pawns, crops: s.crops, stoves: s.stoves })).toBe(true);
 }
 function ledger(s: VoxelSimulation) {
-  const before = { counts: s.counts(), produced: { ...s.stats.produced }, consumed: { ...s.stats.consumed } };
+  const before = { counts: s.counts(), produced: { ...s.stats.produced }, consumed: { ...s.stats.consumed }, spoiled: { ...s.stats.spoiled } };
   return () => {
     const counts = s.counts();
-    for (const r of resources) if (counts[r] + s.stats.consumed[r] - before.consumed[r] !== before.counts[r] + s.stats.produced[r] - before.produced[r])
+    for (const r of resources) if (counts[r] + s.stats.consumed[r] - before.consumed[r] + s.stats.spoiled[r] - before.spoiled[r] !== before.counts[r] + s.stats.produced[r] - before.produced[r])
       throw new Error(`${r} material conservation failed at tick ${s.tick}`);
     if (s.items.some(i => i.amount <= 0) || s.pawns.some(p => p.cargo && p.cargo.amount <= 0)) throw new Error('Invalid physical stack');
     const owners = s.jobs.flatMap(j => j.owner === null ? [] : [j.owner]);
@@ -209,7 +209,7 @@ describe('real harvested inputs, cooking and food persistence', () => {
     until(s, () => s.stats.consumed.meal > consumed, DAY, audit);
     expect(s.pawns.some(p => p.food > 85)).toBe(true);
     expect(s.stats.produced.meal + harvestedSave.items.filter(i => i.resource === 'meal').reduce((n, i) => n + i.amount, 0))
-      .toBe(s.counts().meal + s.stats.consumed.meal);
+      .toBe(s.counts().meal + s.stats.consumed.meal + s.stats.spoiled.meal);
   });
   it('rejects malformed food saves and bills without mutating the source world', () => {
     const s = prepared(), oven = stove(s); bill(s, oven.id, 2); const original = s.save();
@@ -240,7 +240,7 @@ describe('v1 voxel food migration', () => {
     for (const name of ['sown', 'harvested', 'cooked', 'eaten']) delete legacy.stats[name];
     for (const name of ['produced', 'consumed']) { delete legacy.stats[name].grain; delete legacy.stats[name].meal; }
     const untouched = structuredClone(legacy), loaded = VoxelSimulation.load(legacy), before = s.counts();
-    expect(legacy).toEqual(untouched); expect(loaded.save().version).toBe(4);
+    expect(legacy).toEqual(untouched); expect(loaded.save().version).toBe(5);
     expect(loaded.farms).toEqual([]); expect(loaded.crops).toEqual([]); expect(loaded.stoves).toEqual([]);
     expect(loaded.jobs[0].delivered).toEqual({ wood: 6 }); expect(loaded.counts()).toEqual(before);
     expect(loaded.pawns.every(p => p.priorities.grow === 1 && p.priorities.cook === 1 && p.eating === null)).toBe(true);

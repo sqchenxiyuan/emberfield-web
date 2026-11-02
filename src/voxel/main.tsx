@@ -4,6 +4,7 @@ import { VoxelClient } from './client';
 import { CROPS, NUTRITION } from './farming';
 import { ASSIGNMENT_NAMES } from './rest';
 import { isDeviceKind } from './power';
+import { rotRateAtTemperature, rotLimit, remainingRotDays } from './preservation';
 import {
   BLOCK_NAMES,
   JOB_NAMES,
@@ -19,6 +20,7 @@ import {
   type Resource,
   type Tool,
   type Work,
+  type Cargo,
 } from './types';
 import './style.css';
 const client = new VoxelClient();
@@ -85,7 +87,8 @@ const hints: Record<Tool, string> = {
   floor: '切到目标楼层，拖动规划楼板。每格 3 木材；从梯子旁向外延伸，等待支撑完成。',
   wall: '拖动连续造两格高的墙。每格 6 木材；需地板支撑，记得留出出入口。',
   ladder: '每格 2 木材。与地面或已有梯子相连后施工；角色可携带物资爬梯。',
-  stock: '拖动划仓储。必须有地板和两格净空；散落物资自动送往最近的可达仓储。',
+  stock:
+    '拖动划仓储，点击设置收纳物品与优先级。工人把食物搬往更高优先级的冷库；需要地板、净空与可达通路。',
   farm: '拖动划定土壤种植区，自动播种、收获并补种。稻米约 8 日首收，三人长期供给建议 110–128 格。',
   stove: '规划灶台，消耗 20 木材。每份简餐需要 10 生食材 + 1 木材；点击灶台设置库存目标。',
   bed: '点击放置两格木床，45 木材。R 旋转朝向；点击床分配主人，未分配的床会自动认领。',
@@ -96,6 +99,39 @@ const hints: Record<Tool, string> = {
 };
 const equal = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
 const levelName = (z: number) => (z === 8 ? '地表' : z < 8 ? `地下 ${8 - z}` : `地上 +${z - 8}`);
+const STORAGE_RESOURCES = Object.keys(RESOURCE_NAMES) as Resource[];
+const FOOD_RESOURCES: Resource[] = ['food', 'grain', 'meal'];
+const foodName = (batch: Cargo) =>
+  batch.resource === 'grain' && batch.crop
+    ? CROPS[batch.crop].name
+    : RESOURCE_NAMES[batch.resource];
+function FoodCondition({ batch, temperature }: { batch: Cargo; temperature: number }) {
+  const days = remainingRotDays(batch),
+    limit = rotLimit(batch);
+  if (days === null || limit === null)
+    return batch.resource === 'food' ? (
+      <small className="voxel-food-condition">包装生存口粮 · 不腐坏</small>
+    ) : null;
+  const rate = rotRateAtTemperature(temperature);
+  return (
+    <div className="voxel-food-condition" data-testid="food-condition">
+      <span>
+        {temperature.toFixed(1)}°C ·{' '}
+        {rate === 0 ? '冻结 · 腐坏暂停' : rate < 1 ? '冷藏 · 腐坏减缓' : '未冷藏'}
+      </span>
+      <progress
+        aria-label={`${foodName(batch)}腐坏进度`}
+        value={batch.rotProgress ?? 0}
+        max={limit}
+      />
+      <small>
+        {rate === 0
+          ? `回到常温后约剩 ${days.toFixed(2)} 日`
+          : `按当前温度预计 ${Math.max(0, days / rate).toFixed(2)} 日后腐坏`}
+      </small>
+    </div>
+  );
+}
 async function db() {
   return new Promise<IDBDatabase>((resolve, reject) => {
     const r = indexedDB.open('emberfield-voxel', 1);
@@ -140,6 +176,7 @@ function App() {
     [busy, setBusy] = useState(false),
     [seed, setSeed] = useState('73129'),
     [selectedPawn, setSelectedPawn] = useState<number | null>(null),
+    [storageConnected, setStorageConnected] = useState(true),
     [saveStatus, setSaveStatus] = useState('尚未保存');
   useEffect(() => {
     client.notice = setNotice;
@@ -182,6 +219,7 @@ function App() {
   const items = p ? (s?.items.filter((v) => equal(v, p)) ?? []) : [];
   const tree = p ? s?.trees.find((v) => equal(v, p)) : null;
   const farm = p ? s?.farms.find((v) => equal(v, p)) : null;
+  const storage = p ? s?.stockpiles.find((v) => equal(v, p)) : null;
   const crop = p ? s?.crops.find((v) => equal(v, p)) : null;
   const stove = p ? s?.stoves.find((v) => equal(v, p)) : null;
   const bed = p ? s?.beds.find((v) => bedCells(v).some((q) => equal(q, p))) : null;
@@ -208,6 +246,24 @@ function App() {
       ) ?? [])
     : [];
   const pawn = s?.pawns.find((v) => v.id === selectedPawn) ?? people[0];
+  const temperatureOf = (target: Pos) => {
+    const targetRoom = client.roomAt(target);
+    return (
+      s?.roomTemperatures.find((t) => t.roomId === targetRoom?.id)?.temperature ??
+      s?.temperature ??
+      21
+    );
+  };
+  const updateStorage = (priority: number, accepts: Resource[]) => {
+    if (storage)
+      void client.command({
+        type: 'storage',
+        from: storage,
+        connected: storageConnected,
+        priority,
+        accepts,
+      });
+  };
   const block = p ? client.blockAt(p) : 0;
   const title = p
     ? (people[0]?.name ??
@@ -226,12 +282,14 @@ function App() {
       (tree
         ? '成熟林木'
         : items[0]
-          ? RESOURCE_NAMES[items[0].resource]
-          : wire
-            ? '电力线路'
-            : client.ladderAt(p)
-              ? '梯井通路'
-              : (BLOCK_NAMES[block] ?? '地形')))
+          ? foodName(items[0])
+          : storage
+            ? '仓储区'
+            : wire
+              ? '电力线路'
+              : client.ladderAt(p)
+                ? '梯井通路'
+                : (BLOCK_NAMES[block] ?? '地形')))
     : '营地概览';
   const focus = (target: Pos) => {
     client.focusOn(target);
@@ -420,6 +478,12 @@ function App() {
         </div>
         <h2>{title}</h2>
         {!p && <p>点击地图查看物资、人物与施工进度。先规划，再让殖民者工作。</p>}
+        {!p && s && (
+          <p>
+            累计腐坏：生食材 {s.stats.spoiled.grain} · 简餐 {s.stats.spoiled.meal}
+            。食品需搬入有供电、温度达标的封闭冷库。
+          </p>
+        )}
         {p && (
           <p>
             {block
@@ -523,6 +587,75 @@ function App() {
         )}
         {wire && !device && (
           <p>电线沿 X/Y/Z 六个方向接通相邻线路和电源设施；断开一格会重新划分电网。</p>
+        )}
+        {storage && (
+          <div className="voxel-bill voxel-storage" data-testid="storage-settings">
+            <b>仓储设置</b>
+            <label>
+              优先级
+              <select
+                aria-label="仓储优先级"
+                value={storage.priority}
+                onChange={(e) => updateStorage(Number(e.target.value), storage.accepts)}
+              >
+                {['低', '普通', '优先', '最高'].map((name, priority) => (
+                  <option key={priority} value={priority}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="voxel-check">
+              <input
+                type="checkbox"
+                checked={storageConnected}
+                onChange={(e) => setStorageConnected(e.target.checked)}
+              />
+              应用到同层相连仓储
+            </label>
+            <div className="voxel-storage-presets">
+              <button onClick={() => updateStorage(storage.priority, STORAGE_RESOURCES)}>
+                收纳全部
+              </button>
+              <button onClick={() => updateStorage(storage.priority, FOOD_RESOURCES)}>
+                仅收食物
+              </button>
+              <button
+                onClick={() =>
+                  updateStorage(
+                    storage.priority,
+                    STORAGE_RESOURCES.filter((r) => !FOOD_RESOURCES.includes(r)),
+                  )
+                }
+              >
+                仅收建材
+              </button>
+              <button onClick={() => updateStorage(storage.priority, [])}>停止收纳</button>
+            </div>
+            <div className="voxel-storage-filters">
+              {STORAGE_RESOURCES.map((resource) => (
+                <label className="voxel-check" key={resource}>
+                  <input
+                    type="checkbox"
+                    aria-label={`收纳${RESOURCE_NAMES[resource]}`}
+                    checked={storage.accepts.includes(resource)}
+                    onChange={(e) =>
+                      updateStorage(
+                        storage.priority,
+                        e.target.checked
+                          ? [...storage.accepts, resource]
+                          : storage.accepts.filter((r) => r !== resource),
+                      )
+                    }
+                  />
+                  {RESOURCE_NAMES[resource]}
+                </label>
+              ))}
+            </div>
+            <small>
+              工人优先搬往更高优先级、允许该物品的可达仓储。冷库还需封闭房间与制冷供电。
+            </small>
+          </div>
         )}
         {bed && (
           <div className="voxel-bill">
@@ -639,12 +772,15 @@ function App() {
           </div>
         )}
         {items.map((i) => (
-          <div className="voxel-info-row" key={i.id}>
-            <span>
-              {RESOURCE_NAMES[i.resource]}
-              {NUTRITION[i.resource] ? ` · 营养 ${NUTRITION[i.resource]}/份` : ''}
-            </span>
-            <b>× {i.amount}</b>
+          <div className="voxel-item-detail" key={i.id} data-testid="item-detail">
+            <div className="voxel-info-row">
+              <span>
+                {foodName(i)}
+                {NUTRITION[i.resource] ? ` · 营养 ${NUTRITION[i.resource]}/份` : ''}
+              </span>
+              <b>× {i.amount}</b>
+            </div>
+            <FoodCondition batch={i} temperature={temperatureOf(i)} />
           </div>
         ))}
         {jobs.map((j) => (
@@ -660,6 +796,14 @@ function App() {
                 .map((r) => ` · ${RESOURCE_NAMES[r]} ${j.delivered[r] ?? 0}/${j.cost[r]}`)
                 .join('')}
             </small>
+            {j.deliveredFood?.map((batch, i) => (
+              <div key={i} data-testid="delivered-food">
+                <small>
+                  已配送 {foodName(batch)} × {batch.amount}
+                </small>
+                <FoodCondition batch={batch} temperature={temperatureOf(j)} />
+              </div>
+            ))}
           </div>
         ))}
         {pawn && (
@@ -686,9 +830,12 @@ function App() {
               </label>
             </div>
             {pawn.cargo && (
-              <p>
-                携带 {RESOURCE_NAMES[pawn.cargo.resource]} × {pawn.cargo.amount}
-              </p>
+              <div data-testid="carried-food">
+                <p>
+                  携带 {foodName(pawn.cargo)} × {pawn.cargo.amount}
+                </p>
+                <FoodCondition batch={pawn.cargo} temperature={temperatureOf(pawn)} />
+              </div>
             )}
             <div className="voxel-priorities">
               {(['dig', 'cut', 'build', 'haul', 'grow', 'cook'] as Work[]).map((w, i) => (

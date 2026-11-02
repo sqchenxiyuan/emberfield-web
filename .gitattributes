@@ -1,0 +1,2 @@
+# Recorded action streams are hashed byte-for-byte by the research verifier.
+docs/research/rimworld/evidence/*.jsonl text eol=lf

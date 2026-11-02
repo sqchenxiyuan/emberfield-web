@@ -1,0 +1,139 @@
+{
+  "evidence_id": "RW17-PRESERVATION",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.CompRottable",
+      "local_file": ".local-research/preservation/RimWorld.CompRottable.cs",
+      "sha256": "0cd95cf8477c6c009d0187ce1d606f872ab9e36f0f977e5f09ced39fb4c50578",
+      "lines": 247
+    },
+    {
+      "type": "RimWorld.CompProperties_Rottable",
+      "local_file": ".local-research/preservation/RimWorld.CompProperties_Rottable.cs",
+      "sha256": "257e33df5bf76380a3e6042a752db9ad82ebf84a895c9d3a6619beac32835805",
+      "lines": 47
+    },
+    {
+      "type": "Verse.ThingWithComps",
+      "local_file": ".local-research/preservation/Verse.ThingWithComps.cs",
+      "sha256": "9ae0bf1c6884b0fd48213cf5bb2cfda7d0ee63eb43cbe97689f90e4287c2ed6b",
+      "lines": 1040
+    },
+    {
+      "type": "Verse.ThingOwner",
+      "local_file": ".local-research/preservation/Verse.ThingOwner.cs",
+      "sha256": "2399af99d650359b9f5a272ccf118cad781b7bcbc9393c0478002efc8f815331",
+      "lines": 673
+    },
+    {
+      "type": "Verse.ThingOwner`1",
+      "local_file": ".local-research/preservation/Verse.ThingOwner`1.cs",
+      "sha256": "3383d840c8df5c45446796087e4ae60e0b8f5d3cada53389862936b9d43e6e61",
+      "lines": 408
+    },
+    {
+      "type": "Verse.Pawn_CarryTracker",
+      "local_file": ".local-research/preservation/Verse.Pawn_CarryTracker.cs",
+      "sha256": "b53d3466fbaf47c9b4bfd8c044b7632943a00c93749c1873b9267c69a6ce1df6",
+      "lines": 222
+    },
+    {
+      "type": "Verse.Pawn_InventoryTracker",
+      "local_file": ".local-research/preservation/Verse.Pawn_InventoryTracker.cs",
+      "sha256": "51147ea67791b7447510f09fe085ac1a0d69206db16496379b7276fcce67be45",
+      "lines": 477
+    },
+    {
+      "type": "Verse.ThingOwnerUtility",
+      "local_file": ".local-research/preservation/Verse.ThingOwnerUtility.cs",
+      "sha256": "e2136e956dbeb27afd6f30b4bbdf83c3d88971bdc7b505cbccc7d0266ea539c9",
+      "lines": 412
+    },
+    {
+      "type": "Verse.ISuspendableThingHolder",
+      "local_file": ".local-research/preservation/Verse.ISuspendableThingHolder.cs",
+      "sha256": "c76e7591925ef96ddaed62253f8d4dc8d61f566ed181da932ef1e87b4603c0ec",
+      "lines": 7
+    },
+    {
+      "type": "RimWorld.StorageSettings",
+      "local_file": ".local-research/preservation/RimWorld.StorageSettings.cs",
+      "sha256": "d247fb668bb32252034050106849f91a129cab040ff4119f3ae59c16fba5a97d",
+      "lines": 153
+    },
+    {
+      "type": "RimWorld.StoragePriority",
+      "local_file": ".local-research/preservation/RimWorld.StoragePriority.cs",
+      "sha256": "12d2d5f96fab3e6961a66729903bf1ec34caa6b3adb551ac1629afe5a35b3c4b",
+      "lines": 12
+    },
+    {
+      "type": "RimWorld.StoreUtility",
+      "local_file": ".local-research/preservation/RimWorld.StoreUtility.cs",
+      "sha256": "b8241150a63e38993de851bdb82d06a8c6fbbb3359f1fdfb92b70bec3b5b960d",
+      "lines": 404
+    },
+    {
+      "type": "Verse.ThingFilter",
+      "local_file": ".local-research/preservation/Verse.ThingFilter.cs",
+      "sha256": "daf718ce140fd0c6a201fb7eada45f2069d642f1596c6bcde8a2d35fc3939ffa",
+      "lines": 943
+    },
+    {
+      "type": "RimWorld.SpecialThingFilterWorker_Rotten",
+      "local_file": ".local-research/preservation/RimWorld.SpecialThingFilterWorker_Rotten.cs",
+      "sha256": "641201e7dd73f67e76285fe8753931bb7400520deab30ec39a305b98d926148a",
+      "lines": 27
+    },
+    {
+      "type": "RimWorld.SpecialThingFilterWorker_Fresh",
+      "local_file": ".local-research/preservation/RimWorld.SpecialThingFilterWorker_Fresh.cs",
+      "sha256": "006bbfb50c15c5154d174ccddd49d479e3b1da031e6051d5a7862cb21f241878",
+      "lines": 48
+    },
+    {
+      "type": "Verse.Pawn",
+      "local_file": ".local-research/preservation/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "lines": 4791
+    },
+    {
+      "type": "Verse.ThingComp",
+      "local_file": ".local-research/preservation/Verse.ThingComp.cs",
+      "sha256": "f9461fac8b7a40cafa9a13edc21ae0e0070e639587c98d3e9f2f6fd1d440a54f",
+      "lines": 364
+    },
+    {
+      "type": "Verse.ThingMaker",
+      "local_file": ".local-research/preservation/Verse.ThingMaker.cs",
+      "sha256": "8a12abe8fd8ffd9b5f2b0a0acf036d8cba756e03738d00afc8a937d67af307dd",
+      "lines": 33
+    },
+    {
+      "type": "Verse.ThingUtility",
+      "local_file": ".local-research/preservation/Verse.ThingUtility.cs",
+      "sha256": "4502e6db44ab7430a9d258da8833b7612b7b13a65e989537c42a19ceb2fb8a69",
+      "lines": 256
+    },
+    {
+      "type": "Verse.IThingHolderTickable",
+      "local_file": ".local-research/preservation/Verse.IThingHolderTickable.cs",
+      "sha256": "dbd6c7fa9326fa927d1072050fb5ffb262bdd1f424d09634918e54b9891da398",
+      "lines": 7
+    }
+  ]
+}

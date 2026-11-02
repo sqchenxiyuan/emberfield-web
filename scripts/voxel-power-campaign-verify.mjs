@@ -34,7 +34,7 @@ function audit() {
   const counts = sim.counts();
   for (const r of Object.keys(initial))
     assert.equal(
-      counts[r] + sim.stats.consumed[r],
+      counts[r] + sim.stats.consumed[r] + sim.stats.spoiled[r],
       initial[r] + sim.stats.produced[r],
       `${r} ledger at ${sim.tick}`,
     );
@@ -87,6 +87,23 @@ try {
     [27, 36],
   ])
     place('cut', p(x, y));
+  if (process.argv.includes('--prepare-food')) {
+    // The preservation campaign starts farming before industrial construction,
+    // so the first natural harvest arrives within the initial ration runway.
+    const reserved = new Set(sim.stockpiles.map((q) => at(q)));
+    for (const q of [p(32,31),p(33,32),p(40,30),p(27,28)]) reserved.add(at(q));
+    for(let y=27;y<=30;y++)for(let x=28;x<=31;x++)reserved.add(at(p(x,y)));
+    for(let y=28;y<=29;y++)for(let x=34;x<=37;x++)reserved.add(at(p(x,y)));
+    for(let y=29;y<=32;y++)for(let x=32;x<=33;x++)reserved.add(at(p(x,y)));
+    const fields=[];
+    for(let y=24;y<=41;y++)for(let x=24;x<=41;x++){
+      const q=p(x,y);if(!reserved.has(at(q))&&sim.standable(q)&&sim.cropCondition(q,'rice').fertility===1)fields.push(q);
+    }
+    fields.sort((a,b)=>Math.hypot(a.x-32,a.y-32)-Math.hypot(b.x-32,b.y-32));
+    assert.ok(fields.length>=120);
+    for(const q of fields.slice(0,120))command({type:'designate',tool:'farm',from:q,crop:'rice'});
+    check('preservation branch starts 120 real rice plots before power construction');
+  }
   done('six mature trees harvested and hauled');
   place('shaft', p(33, 32));
   done('surface shaft reaches z5');
@@ -234,7 +251,7 @@ try {
     Math.abs(sim.temperature(p(36, 28, 5)) - cold) < 1e-9 &&
       Math.abs(sim.temperature(p(39, 29, 5)) - hot) < 1e-9,
   );
-  check('v4 restores fractional fuel stored energy and room temperatures');
+  check('save restores fractional fuel stored energy and room temperatures');
   toggle('generator', false);
   toggle('solar', false);
   const energy = get('battery').energy;
@@ -255,6 +272,10 @@ try {
   done('ladder for solar roof test');
   place('floor', p(28, 27, 11), p(31, 30, 11));
   done('upper floor shades every solar panel cell');
+  // Construction finishes after this tick's power calculation. Sample output
+  // after the next real simulation tick, including daytime construction runs.
+  sim.step();
+  audit();
   until('daylight sampling time', () => sim.snapshot().hour >= 9 && sim.snapshot().hour < 16);
   assert.equal(get('solar').watts, 0);
   check('full physical roof blocks solar production in daylight');

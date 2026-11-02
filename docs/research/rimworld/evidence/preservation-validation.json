@@ -1,0 +1,91 @@
+{
+  "evidence_id": "RW17-PRESERVATION-VALIDATION",
+  "validated_utc": "2026-11-02T18:25:24.4995395Z",
+  "status": "PASS",
+  "version_text": "1.7.4980 rev60",
+  "original_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "original_xml_files": 4,
+  "original_xml_records": 14,
+  "original_xml_leaves": 70,
+  "original_xml_attribute_nodes": 11,
+  "original_xml_absent_roots": 58,
+  "portable_and_derived": {
+    "status": "pass",
+    "evidenceId": "RW17-PRESERVATION-PORTABLE-VALIDATION",
+    "version": "1.7.4980 rev60",
+    "recordedAssemblySha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+    "preservationTypes": 20,
+    "reusedTypes": 5,
+    "claims": 20,
+    "codeReferences": 56,
+    "xmlReferences": 19,
+    "xmlFiles": 4,
+    "xmlRecords": 14,
+    "xmlLeaves": 70,
+    "xmlAttributeNodes": 11,
+    "xmlAbsentRoots": 58,
+    "analyticCases": 12,
+    "analyticAssertions": 120,
+    "localDerivedFilesVerified": 25,
+    "resolvedFoods": [
+      {
+        "name": "RawRice",
+        "declaredAt": "RawRice",
+        "days": 40,
+        "destroys": true,
+        "stackLimit": 75,
+        "chain": [
+          "RawRice",
+          "PlantFoodRawBase",
+          "OrganicProductBase",
+          "ResourceBase"
+        ]
+      },
+      {
+        "name": "RawPotatoes",
+        "declaredAt": "RawPotatoes",
+        "days": 30,
+        "destroys": true,
+        "stackLimit": 75,
+        "chain": [
+          "RawPotatoes",
+          "PlantFoodRawBase",
+          "OrganicProductBase",
+          "ResourceBase"
+        ]
+      },
+      {
+        "name": "RawCorn",
+        "declaredAt": "RawCorn",
+        "days": 60,
+        "destroys": true,
+        "stackLimit": 75,
+        "chain": [
+          "RawCorn",
+          "PlantFoodRawBase",
+          "OrganicProductBase",
+          "ResourceBase"
+        ]
+      },
+      {
+        "name": "MealSimple",
+        "declaredAt": "MealCookedIngredientless",
+        "days": 4,
+        "destroys": true,
+        "stackLimit": 10,
+        "chain": [
+          "MealSimple",
+          "MealCooked",
+          "MealCookedIngredientless",
+          "MealBaseIngredientless"
+        ]
+      }
+    ],
+    "originalGameExecutedByVerifier": false,
+    "originalGameFilesRead": false,
+    "scope": "metadata,source bindings,selected parent chains,derived hashes,independent analytic models",
+    "limitations": "No native game execution,active mod/DLC patch evaluation,runtime rot measurement or project implementation-equivalence test. Original XML identity/values require verify-preservation-evidence.ps1. Generic containers and special recipes are not all enumerated."
+  },
+  "original_game_executed_by_verifier": false,
+  "limitation": "Checks original DLL/version and selected XML declarations, parent chains, derived hashes, source references and independent arithmetic. Does not execute game classes, control the native UI, measure runtime spoilage or establish project implementation equivalence."
+}

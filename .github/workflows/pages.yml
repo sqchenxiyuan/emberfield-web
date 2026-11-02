@@ -42,6 +42,8 @@ jobs:
         run: npm run test:voxel:housing
       - name: Verify physical power construction and room temperatures
         run: npm run test:voxel:power
+      - name: Verify farming, cold storage and natural food spoilage
+        run: npm run test:voxel:preservation
       - name: Build site with relative asset and Worker URLs
         run: npm run build
       - name: Configure GitHub Pages

@@ -1,0 +1,22 @@
+[
+  "RimWorld.CompRottable",
+  "RimWorld.CompProperties_Rottable",
+  "Verse.ThingWithComps",
+  "Verse.ThingOwner",
+  "Verse.ThingOwner`1",
+  "Verse.Pawn_CarryTracker",
+  "Verse.Pawn_InventoryTracker",
+  "Verse.ThingOwnerUtility",
+  "Verse.ISuspendableThingHolder",
+  "RimWorld.StorageSettings",
+  "RimWorld.StoragePriority",
+  "RimWorld.StoreUtility",
+  "Verse.ThingFilter",
+  "RimWorld.SpecialThingFilterWorker_Rotten",
+  "RimWorld.SpecialThingFilterWorker_Fresh",
+  "Verse.Pawn",
+  "Verse.ThingComp",
+  "Verse.ThingMaker",
+  "Verse.ThingUtility",
+  "Verse.IThingHolderTickable"
+]

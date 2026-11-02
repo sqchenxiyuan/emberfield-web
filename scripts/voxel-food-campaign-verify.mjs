@@ -24,16 +24,17 @@ const totals = () => {
   assert.ok(grainEaten >= 0, 'cooking cannot consume more grain than all recorded grain consumption');
   const availableNutrition = counts.food * .9 + counts.grain * .05 + counts.meal * .9;
   const eatenNominalNutrition = sim.stats.consumed.food * .9 + grainEaten * .05 + sim.stats.consumed.meal * .9;
+  const spoiledNutrition = sim.stats.spoiled.food * .9 + sim.stats.spoiled.grain * .05 + sim.stats.spoiled.meal * .9;
   const initialNutrition = initial.food * .9 + initial.grain * .05 + initial.meal * .9;
   const harvestNutrition = sim.stats.produced.grain * .05;
   const cookingNutritionGain = cooked * .4;
-  assert.ok(Math.abs(availableNutrition + eatenNominalNutrition - initialNutrition - harvestNutrition - cookingNutritionGain) < 1e-8,
+  assert.ok(Math.abs(availableNutrition + eatenNominalNutrition + spoiledNutrition - initialNutrition - harvestNutrition - cookingNutritionGain) < 1e-8,
     `nominal edible nutrition accounting failed at tick ${sim.tick}`);
-  return { availableNutrition, eatenNominalNutrition, initialNutrition, harvestNutrition, cookingNutritionGain, grainEaten };
+  return { availableNutrition, eatenNominalNutrition, spoiledNutrition, initialNutrition, harvestNutrition, cookingNutritionGain, grainEaten };
 };
 function audit() {
   const counts = sim.counts();
-  for (const r of resources) assert.equal(counts[r] + sim.stats.consumed[r], initial[r] + sim.stats.produced[r], `${r} ledger at ${sim.tick}`);
+  for (const r of resources) assert.equal(counts[r] + sim.stats.consumed[r] + sim.stats.spoiled[r], initial[r] + sim.stats.produced[r], `${r} ledger at ${sim.tick}`);
   assert.equal(sim.stats.produced.meal, sim.stats.cooked, 'each completed cooking job makes exactly one meal');
   for (const p of sim.pawns) {
     assert.ok(sim.standable(p), `unsupported pawn ${p.id} at ${sim.tick}`);

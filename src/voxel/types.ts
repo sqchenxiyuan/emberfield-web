@@ -140,10 +140,8 @@ export const inside = (p: Pos | null | undefined): p is Pos =>
   p.z >= 0 &&
   p.z < HEIGHT;
 export const at = (p: Pos) => index(p.x, p.y, p.z);
-export interface Stack extends Pos {
+export interface Stack extends Pos, Cargo {
   id: number;
-  resource: Resource;
-  amount: number;
 }
 export interface Tree extends Pos {
   id: number;
@@ -152,6 +150,15 @@ export interface Tree extends Pos {
 export interface Cargo {
   resource: Resource;
   amount: number;
+  /** Required for grain; rice/potato/corn remain one aggregate inventory resource. */
+  crop?: CropKind;
+  /** Equivalent unfrozen age in our simulation ticks; required for grain/meal. */
+  rotProgress?: number;
+}
+export interface Stockpile extends Pos {
+  /** 0 low, 1 normal, 2 preferred, 3 critical. Empty accepts disables storage. */
+  priority: number;
+  accepts: Resource[];
 }
 export interface FarmPlot extends Pos {
   crop: CropKind;
@@ -198,6 +205,8 @@ export interface Job extends Pos {
   work: number;
   owner: number | null;
   delivered: Partial<Counts>;
+  /** Perishable physical inputs; quantities must match delivered grain/meal. */
+  deliveredFood: Cargo[];
   cost: Partial<Counts>;
   reason: string;
   axis?: Axis;
@@ -242,6 +251,7 @@ export interface VoxelStats {
   eaten: number;
   consumed: Counts;
   produced: Counts;
+  spoiled: Counts;
 }
 export interface VoxelSnapshot {
   seed: number;
@@ -252,7 +262,7 @@ export interface VoxelSnapshot {
   items: Stack[];
   trees: Tree[];
   jobs: Job[];
-  stockpiles: Pos[];
+  stockpiles: Stockpile[];
   farms: FarmPlot[];
   crops: Crop[];
   stoves: Stove[];
@@ -284,6 +294,7 @@ export interface ChunkUpdate {
   ladders: Uint8Array;
 }
 export type VoxelCommand =
+  | { type: 'storage'; from: Pos; to?: Pos; connected?: boolean; priority: number; accepts: Resource[] }
   | { type: 'device'; deviceId: number; on: boolean; target: number }
   | { type: 'designate'; tool: Tool; from: Pos; to?: Pos; crop?: CropKind; axis?: Axis }
   | { type: 'priority'; pawnId: number; work: Work; value: number }
@@ -300,7 +311,7 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 4;
+  version: 5;
   generator: 1;
   seed: number;
   tick: number;
@@ -312,7 +323,7 @@ export interface VoxelSave {
   items: Stack[];
   trees: Tree[];
   jobs: Job[];
-  stockpiles: Pos[];
+  stockpiles: Stockpile[];
   farms: FarmPlot[];
   crops: Crop[];
   stoves: Stove[];
@@ -329,7 +340,7 @@ export const RESOURCE_NAMES: Record<Resource, string> = {
   stone: '石料',
   steel: '钢材',
   components: '零件',
-  food: '口粮',
+  food: '包装生存口粮',
   grain: '生食材',
   meal: '简餐',
 };

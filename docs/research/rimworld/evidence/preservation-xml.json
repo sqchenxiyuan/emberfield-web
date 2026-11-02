@@ -1,0 +1,773 @@
+{
+  "evidence_id": "RW17-PRESERVATION-XML",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Selected direct declarations with component class attributes and explicit selected-root absence",
+  "limitations": [
+    "No enabled DLC/mod patch database evaluation. ParentName retained; direct absence is not an effective database guarantee.",
+    "The verifier resolves only the selected plain parent chains for food preservation, not general RimWorld XML inheritance.",
+    "Outdoor deterioration declarations are separate from temperature-dependent rot."
+  ],
+  "records": [
+    {
+      "group": "resource_base",
+      "id": "ThingDef_ResourceBase",
+      "def_name": "ResourceBase",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Base.xml",
+        "xpath": "/Defs/ThingDef[@Name='ResourceBase']",
+        "sha256": "20595ae43a7e758f54c71dc98579cc95ac8638f21213896c7f1d6a2d61fd744a"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit",
+        "statBases",
+        "comps"
+      ],
+      "absent_roots": [
+        "tickerType"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='ResourceBase']/thingClass",
+          "value": "ThingWithComps"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='ResourceBase']/category",
+          "value": "Item"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='ResourceBase']/stackLimit",
+          "value": "75"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='ResourceBase']/statBases/Beauty",
+          "value": "-4"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='ResourceBase']/comps/li",
+          "value": ""
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='ResourceBase']/comps/li",
+          "attributes": {
+            "Class": "CompProperties_Forbiddable"
+          }
+        }
+      ]
+    },
+    {
+      "group": "raw_food",
+      "id": "ThingDef_OrganicProductBase",
+      "def_name": "OrganicProductBase",
+      "parent_name": "ResourceBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+        "xpath": "/Defs/ThingDef[@Name='OrganicProductBase']",
+        "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit",
+        "statBases",
+        "comps",
+        "ingestible"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "category",
+        "stackLimit",
+        "comps",
+        "ingestible"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='OrganicProductBase']/statBases/MaxHitPoints",
+          "value": "60"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='OrganicProductBase']/statBases/Flammability",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='OrganicProductBase']/statBases/DeteriorationRate",
+          "value": "6"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='OrganicProductBase']/statBases/Mass",
+          "value": "0.03"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='OrganicProductBase']/tickerType",
+          "value": "Rare"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "raw_food",
+      "id": "ThingDef_PlantFoodRawBase",
+      "def_name": "PlantFoodRawBase",
+      "parent_name": "OrganicProductBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+        "xpath": "/Defs/ThingDef[@Name='PlantFoodRawBase']",
+        "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit",
+        "statBases",
+        "comps",
+        "ingestible"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit",
+        "comps"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='PlantFoodRawBase']/ingestible/preferability",
+          "value": "RawBad"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='PlantFoodRawBase']/statBases/Nutrition",
+          "value": "0.05"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='PlantFoodRawBase']/statBases/FoodPoisonChanceFixedHuman",
+          "value": "0.02"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "raw_food",
+      "id": "ThingDef_RawPotatoes",
+      "def_name": "RawPotatoes",
+      "parent_name": "PlantFoodRawBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+        "xpath": "/Defs/ThingDef[defName='RawPotatoes']",
+        "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit",
+        "statBases",
+        "comps",
+        "ingestible"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='RawPotatoes']/statBases/MarketValue",
+          "value": "1.1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='RawPotatoes']/ingestible/foodType",
+          "value": "VegetableOrFruit"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='RawPotatoes']/comps/li/daysToRotStart",
+          "value": "30"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='RawPotatoes']/comps/li/rotDestroys",
+          "value": "true"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[defName='RawPotatoes']/comps/li",
+          "attributes": {
+            "Class": "CompProperties_Rottable"
+          }
+        }
+      ]
+    },
+    {
+      "group": "raw_food",
+      "id": "ThingDef_RawRice",
+      "def_name": "RawRice",
+      "parent_name": "PlantFoodRawBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+        "xpath": "/Defs/ThingDef[defName='RawRice']",
+        "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit",
+        "statBases",
+        "comps",
+        "ingestible"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='RawRice']/statBases/MarketValue",
+          "value": "1.1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='RawRice']/ingestible/foodType",
+          "value": "Seed"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='RawRice']/comps/li/daysToRotStart",
+          "value": "40"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='RawRice']/comps/li/rotDestroys",
+          "value": "true"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[defName='RawRice']/comps/li",
+          "attributes": {
+            "Class": "CompProperties_Rottable"
+          }
+        }
+      ]
+    },
+    {
+      "group": "raw_food",
+      "id": "ThingDef_RawCorn",
+      "def_name": "RawCorn",
+      "parent_name": "PlantFoodRawBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+        "xpath": "/Defs/ThingDef[defName='RawCorn']",
+        "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit",
+        "statBases",
+        "comps",
+        "ingestible"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='RawCorn']/statBases/MarketValue",
+          "value": "1.1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='RawCorn']/ingestible/foodType",
+          "value": "VegetableOrFruit"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='RawCorn']/comps/li/daysToRotStart",
+          "value": "60"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='RawCorn']/comps/li/rotDestroys",
+          "value": "true"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[defName='RawCorn']/comps/li",
+          "attributes": {
+            "Class": "CompProperties_Rottable"
+          }
+        }
+      ]
+    },
+    {
+      "group": "meals",
+      "id": "ThingDef_MealBaseIngredientless",
+      "def_name": "MealBaseIngredientless",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+        "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']",
+        "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit",
+        "statBases",
+        "comps",
+        "ingestible"
+      ],
+      "absent_roots": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/thingClass",
+          "value": "ThingWithComps"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/category",
+          "value": "Item"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/statBases/MaxHitPoints",
+          "value": "50"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/statBases/Flammability",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/statBases/Beauty",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/statBases/Mass",
+          "value": "0.44"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/statBases/DeteriorationRate",
+          "value": "10"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/stackLimit",
+          "value": "10"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/tickerType",
+          "value": "Rare"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/comps/li[1]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/comps/li[2]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/comps/li[3]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/ingestible/foodType",
+          "value": "Meal"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/ingestible/maxNumToIngestAtOnce",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/ingestible/defaultNumToIngestAtOnce",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/ingestible/optimalityOffsetHumanlikes",
+          "value": "16"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/comps/li[1]",
+          "attributes": {
+            "Class": "CompProperties_Forbiddable"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/comps/li[2]",
+          "attributes": {
+            "Class": "CompProperties_FoodPoisonable"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/comps/li[3]",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Anomaly",
+            "Class": "CompProperties_MetalhorrorInfectible"
+          }
+        }
+      ]
+    },
+    {
+      "group": "meals",
+      "id": "ThingDef_MealBase",
+      "def_name": "MealBase",
+      "parent_name": "MealBaseIngredientless",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+        "xpath": "/Defs/ThingDef[@Name='MealBase']",
+        "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit",
+        "statBases",
+        "comps",
+        "ingestible"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit",
+        "statBases"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBase']/comps/li/splitTransferableFoodKind",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBase']/ingestible/optimalityOffsetFeedingAnimals",
+          "value": "-25"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBase']/comps/li",
+          "attributes": {
+            "Class": "CompProperties_Ingredients"
+          }
+        }
+      ]
+    },
+    {
+      "group": "meals",
+      "id": "ThingDef_MealSurvivalPack",
+      "def_name": "MealSurvivalPack",
+      "parent_name": "MealBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+        "xpath": "/Defs/ThingDef[defName='MealSurvivalPack']",
+        "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit",
+        "statBases",
+        "comps",
+        "ingestible"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit",
+        "comps"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='MealSurvivalPack']/statBases/DeteriorationRate",
+          "value": "0.25"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MealSurvivalPack']/statBases/MarketValue",
+          "value": "24"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MealSurvivalPack']/statBases/Mass",
+          "value": "0.3"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MealSurvivalPack']/statBases/WorkToMake",
+          "value": "450"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MealSurvivalPack']/statBases/Nutrition",
+          "value": "0.9"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MealSurvivalPack']/ingestible/preferability",
+          "value": "MealSimple"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MealSurvivalPack']/ingestible/optimalityOffsetHumanlikes",
+          "value": "-5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MealSurvivalPack']/ingestible/optimalityOffsetFeedingAnimals",
+          "value": "-100"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "meals",
+      "id": "ThingDef_MealCookedIngredientless",
+      "def_name": "MealCookedIngredientless",
+      "parent_name": "MealBaseIngredientless",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+        "xpath": "/Defs/ThingDef[@Name='MealCookedIngredientless']",
+        "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit",
+        "statBases",
+        "comps",
+        "ingestible"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit",
+        "statBases",
+        "ingestible"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealCookedIngredientless']/comps/li/daysToRotStart",
+          "value": "4"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealCookedIngredientless']/comps/li/rotDestroys",
+          "value": "true"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealCookedIngredientless']/comps/li",
+          "attributes": {
+            "Class": "CompProperties_Rottable"
+          }
+        }
+      ]
+    },
+    {
+      "group": "meals",
+      "id": "ThingDef_MealCooked",
+      "def_name": "MealCooked",
+      "parent_name": "MealCookedIngredientless",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+        "xpath": "/Defs/ThingDef[@Name='MealCooked']",
+        "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit",
+        "statBases",
+        "comps",
+        "ingestible"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit",
+        "statBases",
+        "ingestible"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealCooked']/comps/li/splitTransferableFoodKind",
+          "value": "true"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealCooked']/comps/li",
+          "attributes": {
+            "Class": "CompProperties_Ingredients"
+          }
+        }
+      ]
+    },
+    {
+      "group": "meals",
+      "id": "ThingDef_MealSimple",
+      "def_name": "MealSimple",
+      "parent_name": "MealCooked",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+        "xpath": "/Defs/ThingDef[defName='MealSimple']",
+        "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit",
+        "statBases",
+        "comps",
+        "ingestible"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "stackLimit",
+        "comps"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='MealSimple']/statBases/MarketValue",
+          "value": "15"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MealSimple']/statBases/WorkToMake",
+          "value": "300"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MealSimple']/statBases/Nutrition",
+          "value": "0.9"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MealSimple']/ingestible/preferability",
+          "value": "MealSimple"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MealSimple']/ingestible/optimalityOffsetFeedingAnimals",
+          "value": "-25"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "recipes",
+      "id": "RecipeDef_CookMealBase",
+      "def_name": "CookMealBase",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/RecipeDefs/Recipes_Meals.xml",
+        "xpath": "/Defs/RecipeDef[@Name='CookMealBase']",
+        "sha256": "ecb025e0b521b2e174f3d8cecb7d0263a1c7310b957cf6d849d414361b566789"
+      },
+      "selected_roots": [
+        "products",
+        "ingredients",
+        "fixedIngredientFilter",
+        "defaultIngredientFilter",
+        "unfinishedThingDef",
+        "interruptIfIngredientIsRotting"
+      ],
+      "absent_roots": [
+        "products",
+        "ingredients",
+        "unfinishedThingDef",
+        "interruptIfIngredientIsRotting"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/RecipeDef[@Name='CookMealBase']/fixedIngredientFilter/categories/li",
+          "value": "FoodRaw"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[@Name='CookMealBase']/fixedIngredientFilter/specialFiltersToDisallow/li",
+          "value": "AllowPlantFood"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[@Name='CookMealBase']/defaultIngredientFilter/categories/li",
+          "value": "FoodRaw"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[@Name='CookMealBase']/defaultIngredientFilter/disallowedCategories/li",
+          "value": "EggsFertilized"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[@Name='CookMealBase']/defaultIngredientFilter/disallowedThingDefs/li[1]",
+          "value": "Meat_Human"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[@Name='CookMealBase']/defaultIngredientFilter/disallowedThingDefs/li[2]",
+          "value": "Meat_Megaspider"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[@Name='CookMealBase']/defaultIngredientFilter/disallowedThingDefs/li[3]",
+          "value": "InsectJelly"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[@Name='CookMealBase']/defaultIngredientFilter/disallowedThingDefs/li[4]",
+          "value": "Meat_Twisted"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/RecipeDef[@Name='CookMealBase']/defaultIngredientFilter/disallowedThingDefs/li[4]",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Anomaly"
+          }
+        }
+      ]
+    },
+    {
+      "group": "recipes",
+      "id": "RecipeDef_CookMealSimple",
+      "def_name": "CookMealSimple",
+      "parent_name": "CookMealBase",
+      "source": {
+        "path": "Data/Core/Defs/RecipeDefs/Recipes_Meals.xml",
+        "xpath": "/Defs/RecipeDef[defName='CookMealSimple']",
+        "sha256": "ecb025e0b521b2e174f3d8cecb7d0263a1c7310b957cf6d849d414361b566789"
+      },
+      "selected_roots": [
+        "products",
+        "ingredients",
+        "fixedIngredientFilter",
+        "defaultIngredientFilter",
+        "unfinishedThingDef",
+        "interruptIfIngredientIsRotting"
+      ],
+      "absent_roots": [
+        "fixedIngredientFilter",
+        "defaultIngredientFilter",
+        "unfinishedThingDef",
+        "interruptIfIngredientIsRotting"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/RecipeDef[defName='CookMealSimple']/ingredients/li/filter/categories/li",
+          "value": "FoodRaw"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[defName='CookMealSimple']/ingredients/li/count",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/RecipeDef[defName='CookMealSimple']/products/MealSimple",
+          "value": "1"
+        }
+      ],
+      "node_attributes": []
+    }
+  ]
+}

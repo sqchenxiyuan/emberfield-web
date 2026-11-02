@@ -20,6 +20,7 @@ import {
 import { VoxelRooms } from './rooms';
 import { VoxelPower, DEVICE_COSTS, DEVICE_WORK, isDeviceKind } from './power';
 import { VoxelThermal } from './thermal';
+import { advanceRot, compatibleBatches, freshBatch, isPerishable, mergeBatch, portion, validBatch } from './preservation';
 import { defaultSchedule, assignmentAt, restLoss, restGain, wantsSleep } from './rest';
 import {
   CROPS,
@@ -55,6 +56,8 @@ import type {
   Door,
   Axis,
   Device,
+  Cargo,
+  Stockpile,
 } from './types';
 
 const same = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
@@ -209,9 +212,9 @@ export class VoxelSimulation {
   rooms = new VoxelRooms();
   roomRevision = 0;
   private roomsDirty = true;
-  stockpiles: Pos[] = [
-    { x: 30, y: 32, z: SURFACE },
-    { x: 30, y: 33, z: SURFACE },
+  stockpiles: Stockpile[] = [
+    { x: 30, y: 32, z: SURFACE, priority: 1, accepts: [...resources] },
+    { x: 30, y: 33, z: SURFACE, priority: 1, accepts: [...resources] },
   ];
   stats: VoxelStats = {
     mined: 0,
@@ -224,6 +227,7 @@ export class VoxelSimulation {
     eaten: 0,
     consumed: emptyCounts(),
     produced: emptyCounts(),
+    spoiled: emptyCounts(),
   };
   tick = 0;
   nextId = 1;
@@ -465,11 +469,34 @@ export class VoxelSimulation {
       if (this.distance[n] >= 0 && (best < 0 || this.distance[n] < this.distance[best])) best = n;
     return best;
   }
-  private addItem(resource: Resource, amount: number, p: Pos) {
+  private addItem(resource: Resource, amount: number, p: Pos, source?: Cargo) {
     if (amount <= 0) return;
-    const old = this.items.find((i) => same(i, p) && i.resource === resource);
-    if (old) old.amount += amount;
-    else this.items.push({ id: this.id(), resource, amount, x: p.x, y: p.y, z: p.z });
+    const incoming = source ? portion(source, amount) : freshBatch(resource, amount);
+    const old = this.items.find((i) => same(i, p) && compatibleBatches(i, incoming));
+    if (old) mergeBatch(old, incoming);
+    else this.items.push({ id: this.id(), ...incoming, x: p.x, y: p.y, z: p.z });
+  }
+  private deliverFood(job: Job, source: Cargo, amount: number) {
+    if (!isPerishable(source.resource)) return;
+    const incoming = portion(source, amount), old = job.deliveredFood.find(batch => compatibleBatches(batch, incoming));
+    if (old) mergeBatch(old, incoming); else job.deliveredFood.push(incoming);
+  }
+  private storagePriority(item: Cargo & Pos): number {
+    return this.stockpiles.find(s => same(s, item) && s.accepts.includes(item.resource))?.priority ?? -1;
+  }
+  /** Requires search(origin) first; prefer strictly higher priority, then distance. */
+  private storageDestination(resource: Resource, minimumPriority = -1): Stockpile | undefined {
+    let best: Stockpile | undefined;
+    for (const s of this.stockpiles) {
+      if (s.priority <= minimumPriority || !s.accepts.includes(resource) || !this.standable(s) || this.distance[at(s)] < 0) continue;
+      if (!best || s.priority > best.priority ||
+          (s.priority === best.priority && this.distance[at(s)] < this.distance[at(best)])) best = s;
+    }
+    return best;
+  }
+  private canImproveStorage(item: Stack): boolean {
+    const priority = this.storagePriority(item);
+    return this.stockpiles.some(s => s.priority > priority && s.accepts.includes(item.resource));
   }
   private pileFor(p: Pawn, resource?: Resource) {
     let best: Stack | undefined;
@@ -627,6 +654,37 @@ export class VoxelSimulation {
     return result;
   }
   private applyCommand(c: VoxelCommand): CommandResult {
+    if (c.type === 'storage') {
+      if (!inside(c.from) || (c.to !== undefined && !inside(c.to)) ||
+          (c.connected !== undefined && typeof c.connected !== 'boolean') || (c.connected && c.to !== undefined) ||
+          !Number.isInteger(c.priority) || c.priority < 0 || c.priority > 3 || !Array.isArray(c.accepts) ||
+          c.accepts.length > resources.length || new Set(c.accepts).size !== c.accepts.length ||
+          c.accepts.some(resource => !resources.includes(resource)))
+        return { ok: false, message: '仓储设置无效：优先级 0～3，物资种类不能重复' };
+      let selected: Stockpile[];
+      if (c.connected) {
+        const seed = this.stockpiles.find(s => same(s, c.from));
+        if (!seed) return { ok: false, message: '这里没有仓储区' };
+        const byCell = new Map(this.stockpiles.filter(s => s.z === seed.z).map(s => [at(s), s]));
+        selected = [seed]; const seen = new Set([at(seed)]);
+        for (let n = 0; n < selected.length; n++) for (const [dx, dy] of horizontal) {
+          const p = { x: selected[n].x + dx, y: selected[n].y + dy, z: seed.z };
+          if (!inside(p)) continue;
+          const adjacent = byCell.get(at(p));
+          if (adjacent && !seen.has(at(adjacent))) { seen.add(at(adjacent)); selected.push(adjacent); }
+        }
+      } else {
+        const to = c.to ?? c.from;
+        selected = this.stockpiles.filter(s => s.x >= Math.min(c.from.x, to.x) && s.x <= Math.max(c.from.x, to.x) &&
+          s.y >= Math.min(c.from.y, to.y) && s.y <= Math.max(c.from.y, to.y) &&
+          s.z >= Math.min(c.from.z, to.z) && s.z <= Math.max(c.from.z, to.z));
+      }
+      if (!selected.length || selected.some(s => !this.standable(s) || this.ladders[at(s)]))
+        return { ok: false, message: '请选择有支撑、两格净空的现有仓储区' };
+      for (const s of selected) { s.priority = c.priority; s.accepts = resources.filter(resource => c.accepts.includes(resource)); }
+      this.revision++;
+      return { ok: true, count: selected.length, message: `已更新 ${selected.length} 格仓储；搬运会优先选择更高优先级区域` };
+    }
     if (c.type === 'device') {
       const d = this.devices.find((d) => d.id === c.deviceId);
       if (
@@ -844,7 +902,7 @@ export class VoxelSimulation {
       )
         return { ok: false, message: '仓储最多 4096 格，请缩小范围' };
       for (const p of positions)
-        if (!this.stockpiles.some((s) => same(s, p))) this.stockpiles.push(p);
+        if (!this.stockpiles.some((s) => same(s, p))) this.stockpiles.push({ ...p, priority: 1, accepts: [...resources] });
       return {
         ok: true,
         message: `划定 ${positions.length} 格仓储；可搬运的物资将送往最近仓储`,
@@ -945,6 +1003,7 @@ export class VoxelSimulation {
       progress: 0,
       owner: null,
       delivered: {},
+      deliveredFood: [],
       cost: costOf(kind),
       reason: '等待可达工人',
       ...(['bed', 'door'].includes(kind) || isDeviceKind(kind) ? { axis } : {}),
@@ -1042,7 +1101,8 @@ export class VoxelSimulation {
   private cancel(j: Job) {
     for (const p of this.pawns) if (p.jobId === j.id) this.release(p);
     for (const r of resources)
-      if (j.delivered[r]) this.addItem(r, j.delivered[r]!, this.dropPoint(j));
+      if (j.delivered[r] && !isPerishable(r)) this.addItem(r, j.delivered[r]!, this.dropPoint(j));
+    for (const batch of j.deliveredFood) this.addItem(batch.resource, batch.amount, this.dropPoint(j), batch);
     this.jobs = this.jobs.filter((k) => k.id !== j.id);
   }
   private dropPoint(p: Pos): Pos {
@@ -1101,7 +1161,7 @@ export class VoxelSimulation {
     const loose =
       p.priorities.haul > 0 &&
       this.stockpiles.length > 0 &&
-      this.items.some((i) => !this.stockpiles.some((s) => same(s, i)));
+      this.items.some((i) => this.canImproveStorage(i));
     // Most growing ticks have no work. Avoid traversing the full 3D map for idle people.
     if (
       !loose &&
@@ -1149,14 +1209,16 @@ export class VoxelSimulation {
     }
     if (p.priorities.haul > 0) {
       let best: Stack | undefined;
+      let priority = -1;
       for (const i of this.items)
-        if (
-          this.distance[at(i)] >= 0 &&
-          !this.stockpiles.some((s) => same(s, i)) &&
-          (!best || this.distance[at(i)] < this.distance[at(best)])
-        )
-          best = i;
-      if (best && this.stockpiles.some((s) => this.distance[at(s)] >= 0)) {
+        if (this.distance[at(i)] >= 0) {
+          const destination = this.storageDestination(i.resource, this.storagePriority(i));
+          if (destination && (!best || destination.priority > priority ||
+              (destination.priority === priority && this.distance[at(i)] < this.distance[at(best)]))) {
+            best = i; priority = destination.priority;
+          }
+        }
+      if (best) {
         this.go(p, at(best), 'haul');
         p.reason = '收集散落物资';
         return;
@@ -1168,7 +1230,7 @@ export class VoxelSimulation {
   private startSleep(p: Pawn) {
     this.release(p);
     if (p.cargo) {
-      this.addItem(p.cargo.resource, p.cargo.amount, p);
+      this.addItem(p.cargo.resource, p.cargo.amount, p, p.cargo);
       p.cargo = null;
     }
     this.search(p);
@@ -1265,29 +1327,20 @@ export class VoxelSimulation {
         return;
       }
     }
-    let best = -1;
-    for (const s of this.stockpiles) {
-      const i = at(s);
-      if (
-        this.standable(s) &&
-        this.distance[i] >= 0 &&
-        (best < 0 || this.distance[i] < this.distance[best])
-      )
-        best = i;
-    }
-    if (best < 0) {
+    const best = this.storageDestination(p.cargo.resource);
+    if (!best) {
       p.reason = '携带物资，等待可达仓储';
       p.phase = 'idle';
       return;
     }
-    this.go(p, best, 'haul');
+    this.go(p, at(best), 'haul');
     p.reason = '运往仓储';
   }
-  private take(p: Pawn, resource: Resource | undefined, amount: number) {
-    const item = this.items.find((i) => same(i, p) && (!resource || i.resource === resource));
+  private take(p: Pawn, resource: Resource | undefined, amount: number, stackId?: number) {
+    const item = this.items.find((i) => same(i, p) && (!resource || i.resource === resource) && (stackId === undefined || i.id === stackId));
     if (!item || amount <= 0 || p.cargo) return false;
     const n = Math.min(amount, item.amount);
-    p.cargo = { resource: item.resource, amount: n };
+    p.cargo = portion(item, n);
     item.amount -= n;
     this.items = this.items.filter((i) => i.amount > 0);
     return true;
@@ -1320,7 +1373,7 @@ export class VoxelSimulation {
     if (!food) return false;
     this.release(p);
     if (p.cargo) {
-      this.addItem(p.cargo.resource, p.cargo.amount, p);
+      this.addItem(p.cargo.resource, p.cargo.amount, p, p.cargo);
       p.cargo = null;
     }
     p.eating = food.resource;
@@ -1357,16 +1410,22 @@ export class VoxelSimulation {
     }
     if (p.phase === 'haul') {
       if (p.cargo) {
-        if (!this.stockpiles.some((s) => same(s, p))) {
+        this.search(p);
+        const current = this.stockpiles.find(s => same(s, p) && s.accepts.includes(p.cargo!.resource));
+        if (!current || this.storageDestination(p.cargo.resource, current.priority)) {
           this.deliverCargo(p);
           return;
         }
-        this.addItem(p.cargo.resource, p.cargo.amount, p);
+        this.addItem(p.cargo.resource, p.cargo.amount, p, p.cargo);
         this.stats.hauled += p.cargo.amount;
         p.cargo = null;
         this.release(p);
-      } else if (this.take(p, undefined, 30)) this.deliverCargo(p);
-      else this.release(p);
+      } else {
+        this.search(p);
+        const item = this.items.find(i => same(i, p) && this.storageDestination(i.resource, this.storagePriority(i)));
+        if (item && this.take(p, item.resource, 30, item.id)) this.deliverCargo(p);
+        else this.release(p);
+      }
       return;
     }
     if (p.phase === 'travel') {
@@ -1387,6 +1446,7 @@ export class VoxelSimulation {
           return;
         }
         const n = Math.min(p.cargo.amount, needed);
+        this.deliverFood(j, p.cargo, n);
         j.delivered[resource] = (j.delivered[resource] ?? 0) + n;
         p.cargo.amount -= n;
         if (p.cargo.amount === 0) p.cargo = null;
@@ -1406,6 +1466,7 @@ export class VoxelSimulation {
       : [];
     const changes: { pos: Pos; block?: number; ladder?: number }[] = [];
     const yields: Partial<Counts> = {};
+    let harvestedCrop: CropKind | undefined;
     const reward = (b: number) => {
       const resource =
         b === Block.Steel
@@ -1503,6 +1564,7 @@ export class VoxelSimulation {
     }
     if (
       this.pawns.some((p) => !this.standable(p)) ||
+      this.stockpiles.some(s => !this.standable(s) || this.ladders[at(s)]) ||
       this.stoves.some(
         (s) =>
           !this.blocks[at(s) - WIDTH * DEPTH] ||
@@ -1542,7 +1604,7 @@ export class VoxelSimulation {
       }
     for (const { item, target } of displaced) {
       this.items = this.items.filter((i) => i.id !== item.id);
-      this.addItem(item.resource, item.amount, target);
+      this.addItem(item.resource, item.amount, target, item);
     }
     if (j.kind === 'cut') {
       const tree = this.trees.find((t) => same(t, j));
@@ -1610,6 +1672,7 @@ export class VoxelSimulation {
       this.revision++;
     } else if (j.kind === 'harvest') {
       const crop = this.crops.find((c) => same(c, j))!;
+      harvestedCrop = crop.kind;
       yields.grain = CROPS[crop.kind].yield;
       this.crops = this.crops.filter((c) => c.id !== crop.id);
       this.stats.harvested++;
@@ -1653,7 +1716,7 @@ export class VoxelSimulation {
     }
     for (const c of changes) this.changed(c.pos);
     for (const [resource, n] of Object.entries(yields)) {
-      this.addItem(resource as Resource, n, p);
+      this.addItem(resource as Resource, n, p, resource === 'grain' ? freshBatch('grain', n, harvestedCrop) : undefined);
       this.stats.produced[resource as Resource] += n;
     }
     for (const r of resources) this.stats.consumed[r] += j.delivered[r] ?? 0;
@@ -1672,6 +1735,7 @@ export class VoxelSimulation {
     for (let n = 0; n < count; n++) {
       this.tick++;
       this.updateEnvironment();
+      this.updatePreservation();
       // Only temperature/daylight change each tick; occlusion is cached until terrain changes.
       for (const c of this.crops)
         if (c.growth < 1)
@@ -1859,6 +1923,32 @@ export class VoxelSimulation {
     }
     this.thermal.step(1 / TPS, temperatureAt(this.tick), this.doors, this.tick);
   }
+  private updatePreservation() {
+    // Ground stacks, carried food, and delivered recipe inputs are all physical
+    // containers. Their current cell determines temperature; moving is not a
+    // freshness reset. Food expires before the tick's eating/cooking actions.
+    let removed = false;
+    this.items = this.items.filter(item => {
+      if (!isPerishable(item.resource) || !advanceRot(item, this.temperature(item))) return true;
+      this.stats.spoiled[item.resource] += item.amount; removed = true; return false;
+    });
+    for (const pawn of this.pawns) if (pawn.cargo && isPerishable(pawn.cargo.resource) &&
+        advanceRot(pawn.cargo, this.temperature(pawn))) {
+      this.stats.spoiled[pawn.cargo.resource] += pawn.cargo.amount;
+      pawn.cargo = null; this.release(pawn); pawn.reason = '携带的食物已腐坏'; removed = true;
+    }
+    for (const job of this.jobs) if (job.deliveredFood.length) {
+      const temperature = this.temperature(job);
+      job.deliveredFood = job.deliveredFood.filter(batch => {
+        if (!advanceRot(batch, temperature)) return true;
+        this.stats.spoiled[batch.resource] += batch.amount;
+        const remaining = (job.delivered[batch.resource] ?? 0) - batch.amount;
+        if (remaining) job.delivered[batch.resource] = remaining; else delete job.delivered[batch.resource];
+        job.progress = 0; job.reason = '已配送食材腐坏，等待新原料'; removed = true; return false;
+      });
+    }
+    if (removed) this.revision++;
+  }
   counts(): Counts {
     const out = emptyCounts();
     for (const i of this.items) out[i.resource] += i.amount;
@@ -1871,7 +1961,7 @@ export class VoxelSimulation {
     this.updatePower();
     const stored = emptyCounts();
     for (const i of this.items)
-      if (this.stockpiles.some((s) => same(s, i))) stored[i.resource] += i.amount;
+      if (this.stockpiles.some((s) => same(s, i) && s.accepts.includes(i.resource))) stored[i.resource] += i.amount;
     return structuredClone({
       seed: this.seed,
       tick: this.tick,
@@ -1915,7 +2005,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 4,
+      version: 5,
       generator: 1,
       seed: this.seed,
       tick: this.tick,
@@ -1943,7 +2033,7 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4].includes(old.version) ||
+      ![1, 2, 3, 4, 5].includes(old.version) ||
       old.generator !== 1
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
@@ -1994,6 +2084,26 @@ export class VoxelSimulation {
       old.thermal = [];
       old.version = 4;
     }
+    if (old.version === 4) {
+      if (![old.items, old.pawns, old.jobs, old.stockpiles].every(Array.isArray) || !old.stats)
+        throw new Error('旧存档食物或库存数据无效');
+      // Earlier saves did not retain species or age. Fresh rice is an explicit
+      // compatibility boundary, not recovered historical freshness information.
+      for (const item of old.items) {
+        if (!item) throw new Error('旧存档物资无效');
+        delete item.crop; delete item.rotProgress;
+        Object.assign(item, freshBatch(item.resource, item.amount));
+      }
+      for (const pawn of old.pawns) if (pawn?.cargo) pawn.cargo = freshBatch(pawn.cargo.resource, pawn.cargo.amount);
+      for (const job of old.jobs) {
+        if (!job || !job.delivered) throw new Error('旧存档配送物资无效');
+        job.deliveredFood = ['grain', 'meal'].flatMap(resource => job.delivered[resource] > 0
+          ? [freshBatch(resource as Resource, job.delivered[resource])] : []);
+      }
+      old.stockpiles = old.stockpiles.map((s: Pos) => ({ ...s, priority: 1, accepts: [...resources] }));
+      old.stats.spoiled = emptyCounts();
+      old.version = 5;
+    }
     const d = old as VoxelSave;
     if (
       !Number.isSafeInteger(d.seed) ||
@@ -2039,13 +2149,16 @@ export class VoxelSimulation {
         throw new Error('重复或无效的对象编号');
       ids.add(e.id);
     }
-    for (const i of d.items)
-      if (!resources.includes(i.resource) || !positive(i.amount)) throw new Error('物资数据无效');
+    for (const i of d.items) if (!validBatch(i)) throw new Error('物资种类、数量或腐坏进度无效');
     for (const t of d.trees)
       if (!positive(t.wood) || t.z + 1 >= HEIGHT) throw new Error('树木数据无效');
     const uniqueCells = (a: Pos[]) => new Set(a.map(at)).size === a.length;
     if (![d.farms, d.crops, d.stoves, d.stockpiles, d.doors, d.wires].every(uniqueCells))
       throw new Error('区域或设施位置重复');
+    for (const stock of d.stockpiles) if (!Number.isInteger(stock.priority) || stock.priority < 0 || stock.priority > 3 ||
+        !Array.isArray(stock.accepts) || stock.accepts.length > resources.length ||
+        new Set(stock.accepts).size !== stock.accepts.length || stock.accepts.some(resource => !resources.includes(resource)))
+      throw new Error('仓储优先级或接收规则无效');
     for (const f of d.farms)
       if (
         !Object.hasOwn(CROPS, f.crop) ||
@@ -2137,7 +2250,7 @@ export class VoxelSimulation {
         ([r, n]) =>
           resources.includes(r as Resource) && Number.isSafeInteger(n) && n >= 0 && n <= 10000000,
       );
-    for (const j of d.jobs)
+    for (const j of d.jobs) {
       if (
         !Object.hasOwn(JOB_NAMES, j.kind) ||
         j.z < 1 ||
@@ -2164,6 +2277,13 @@ export class VoxelSimulation {
             !d.devices.some((v) => v.kind === 'generator' && same(v, j) && j.cost.wood! <= 75)))
       )
         throw new Error('任务数据无效');
+      if (!Array.isArray(j.deliveredFood) || j.deliveredFood.length > 4 ||
+          j.deliveredFood.some(batch => !validBatch(batch) || !isPerishable(batch.resource)) ||
+          new Set(j.deliveredFood.map(batch => `${batch.resource}/${batch.crop ?? ''}`)).size !== j.deliveredFood.length ||
+          (['grain', 'meal'] as const).some(resource => j.deliveredFood.filter(batch => batch.resource === resource)
+            .reduce((sum, batch) => sum + batch.amount, 0) !== (j.delivered[resource] ?? 0)))
+        throw new Error('配送食材容器与任务数量不一致');
+    }
     for (const p of d.pawns) {
       if (
         typeof p.name !== 'string' ||
@@ -2186,7 +2306,7 @@ export class VoxelSimulation {
         (['dig', 'cut', 'build', 'haul', 'grow', 'cook'] as Work[]).some(
           (k) => !Number.isInteger(p.priorities[k]) || p.priorities[k] < 0 || p.priorities[k] > 4,
         ) ||
-        (p.cargo && (!resources.includes(p.cargo.resource) || !positive(p.cargo.amount))) ||
+        (p.cargo !== null && !validBatch(p.cargo)) ||
         (p.eating !== null && !NUTRITION[p.eating])
       )
         throw new Error('人物数据无效');
@@ -2196,9 +2316,9 @@ export class VoxelSimulation {
       !['mined', 'cut', 'built', 'hauled', 'sown', 'harvested', 'cooked', 'eaten'].every((k) =>
         zero(d.stats[k as 'mined']),
       ) ||
-      !['produced', 'consumed'].every((k) =>
+      !['produced', 'consumed', 'spoiled'].every((k) =>
         resources.every((r) => zero(d.stats[k as 'produced']?.[r as Resource])),
-      )
+      ) || !resources.every(r => Number.isSafeInteger(d.stats.spoiled[r]) && (isPerishable(r) || d.stats.spoiled[r] === 0))
     )
       throw new Error('统计数据无效');
     const s = new VoxelSimulation(d.seed);
@@ -2250,6 +2370,7 @@ export class VoxelSimulation {
     )
       throw new Error('灶台没有合法支撑或净空');
     if (s.pawns.some((p) => !s.standable(p))) throw new Error('人物没有合法支撑或净空');
+    if (s.stockpiles.some(p => !s.standable(p) || s.ladders[at(p)])) throw new Error('仓储没有合法支撑或净空');
     if (s.wires.some((w) => w.z < 1 || w.z >= HEIGHT - 1)) throw new Error('线路高度无效');
     s.updateRooms();
     s.thermal.restore(d.thermal, s.rooms, temperatureAt(s.tick));

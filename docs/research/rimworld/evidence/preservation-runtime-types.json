@@ -1,0 +1,8 @@
+[
+  "Verse.MapSerializeUtility",
+  "Verse.CellIndices",
+  "Verse.CellIndicesUtility",
+  "Verse.DataExposeUtility",
+  "Verse.DataSerializeUtility",
+  "Verse.CompressUtility"
+]

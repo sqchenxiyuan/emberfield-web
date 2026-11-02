@@ -18,7 +18,7 @@ const at = (x,y,z) => (z * 64 + y) * 64 + x;
 const pos = (x,y,z) => ({x,y,z});
 function audit() {
   const count = sim.counts();
-  for (const r of Object.keys(initial)) assert.equal(count[r]+sim.stats.consumed[r],initial[r]+sim.stats.produced[r],`resource conservation: ${r} at ${sim.tick}`);
+  for (const r of Object.keys(initial)) assert.equal(count[r]+sim.stats.consumed[r]+sim.stats.spoiled[r],initial[r]+sim.stats.produced[r],`resource conservation: ${r} at ${sim.tick}`);
   for (const p of sim.pawns) {
     assert.ok(sim.standable(p),`pawn ${p.id} unsupported at ${sim.tick}`);
     visited.add(p.z);

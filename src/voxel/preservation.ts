@@ -1,0 +1,64 @@
+import { DAY, type Cargo, type CropKind, type Resource } from './types';
+
+// RimWorld 1.7 source/Defs: 60000 original ticks/day, rate * elapsed ticks.
+// We preserve days, using this simulation's DAY=12000 instead. Unlike the native
+// rare-tick scheduler, world containers advance once per simulation tick.
+export const ROT_DAYS = Object.freeze({ rice: 40, potato: 30, corn: 60, meal: 4 });
+export const isPerishable = (resource: Resource) => resource === 'grain' || resource === 'meal';
+export function rotRateAtTemperature(temperature: number): number {
+  if (!Number.isFinite(temperature)) throw new RangeError('Temperature must be finite');
+  return temperature <= 0 ? 0 : temperature >= 10 ? 1 : temperature / 10;
+}
+export function rotLimit(batch: Pick<Cargo, 'resource' | 'crop'>): number | null {
+  if (batch.resource === 'meal') return ROT_DAYS.meal * DAY;
+  if (batch.resource === 'grain' && batch.crop && Object.hasOwn(ROT_DAYS, batch.crop)) return ROT_DAYS[batch.crop] * DAY;
+  return null;
+}
+/** Remaining days at full rot rate, not a forecast of future room temperature. */
+export function remainingRotDays(batch: Cargo): number | null {
+  const limit = rotLimit(batch);
+  return limit === null ? null : Math.max(0, (limit - (batch.rotProgress ?? 0)) / DAY);
+}
+export function freshBatch(resource: Resource, amount: number, crop?: CropKind): Cargo {
+  return {
+    resource, amount,
+    ...(resource === 'grain' ? { crop: crop ?? 'rice', rotProgress: 0 } : resource === 'meal' ? { rotProgress: 0 } : {}),
+  };
+}
+/** A physical split inherits the current age exactly. */
+export function portion(batch: Cargo, amount: number): Cargo {
+  return { resource: batch.resource, amount, ...(batch.crop !== undefined ? { crop: batch.crop } : {}),
+    ...(batch.rotProgress !== undefined ? { rotProgress: batch.rotProgress } : {}) };
+}
+export function compatibleBatches(a: Cargo, b: Cargo): boolean {
+  return a.resource === b.resource && a.crop === b.crop;
+}
+/** Merge only the transferred amount, weighted by actual quantities. */
+export function mergeBatch(target: Cargo, incoming: Cargo): void {
+  if (!compatibleBatches(target, incoming) || incoming.amount <= 0 || target.amount <= 0)
+    throw new Error('Only positive compatible batches can merge');
+  if (isPerishable(target.resource)) {
+    const total = target.amount + incoming.amount;
+    target.rotProgress = ((target.rotProgress ?? 0) * target.amount + (incoming.rotProgress ?? 0) * incoming.amount) / total;
+  }
+  target.amount += incoming.amount;
+}
+/** True means the entire stack expires now. The owner removes/counts it once. */
+export function advanceRot(batch: Cargo, temperature: number, ticks = 1): boolean {
+  const limit = rotLimit(batch);
+  if (limit === null) return false;
+  if (!Number.isFinite(ticks) || ticks < 0) throw new RangeError('Invalid rot duration');
+  batch.rotProgress = (batch.rotProgress ?? 0) + rotRateAtTemperature(temperature) * ticks;
+  return batch.rotProgress >= limit;
+}
+/** v5 must not silently repair missing/mismatched food metadata. */
+export function validBatch(batch: unknown): batch is Cargo {
+  if (!batch || typeof batch !== 'object' || Array.isArray(batch)) return false;
+  const b = batch as Cargo;
+  if (!['wood', 'stone', 'steel', 'components', 'food', 'grain', 'meal'].includes(b.resource) ||
+      !Number.isSafeInteger(b.amount) || b.amount <= 0 || b.amount > 10_000_000) return false;
+  if (b.resource === 'grain' ? !['rice', 'potato', 'corn'].includes(b.crop ?? '') : b.crop !== undefined) return false;
+  const limit = rotLimit(b);
+  return limit === null ? b.rotProgress === undefined :
+    Number.isFinite(b.rotProgress) && b.rotProgress! >= 0 && b.rotProgress! < limit;
+}

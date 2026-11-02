@@ -1,0 +1,571 @@
+{
+  "schema_version": 1,
+  "evidence_id": "RW17-NATIVE-PRESERVATION-RUNTIME",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "process_id": 29920,
+  "profile": ".local-research/runtime/profile-20261102",
+  "active_mods": [
+    "ludeon.rimworld",
+    "ludeon.rimworld.odyssey"
+  ],
+  "method": "Foreground-targeted original UI; developer room/spawn/God build/DEV power; bounded ordinary time advancement; read-only original-game save parsing; no injection or save editing",
+  "developer_actions_performed": true,
+  "normal_power_network_demonstrated": false,
+  "constant_freezing_interval_demonstrated": false,
+  "pure_core_runtime": false,
+  "initial_backup": {
+    "file": ".local-research/runtime/preservation-before-20261102-175453.rws",
+    "sha256": "855a173e4b12e1a1f485a302e2bd00337388b58b53a20d31bb2e91e22cac1b11"
+  },
+  "setup": {
+    "power": "DEV: Toggle power on; no connected power network",
+    "cooler": "God-mode original Cooler in north wall; cold port south, hot port north",
+    "room": "Developer Make empty room (rect), wooden roofed chamber",
+    "targets_c": [
+      21,
+      5,
+      -15
+    ],
+    "excluded_setup_reason": "Menu navigation failed once; unintended shortcuts advanced simulation during setup. Formal sampling starts at warm-0.",
+    "food": "Developer-spawned MealSimple stacks of 1, forbidden using UI",
+    "excluded_setup_ticks": [
+      10459,
+      21141
+    ]
+  },
+  "samples": [
+    {
+      "id": "warm-0",
+      "file": "preservation-warm-0.rws",
+      "sha256": "a36aeccc02df3f18a9a0c2e23f528c5bc9cd260c8522be29536a4c57966a6ba9",
+      "bytes": 6193506,
+      "version": "1.7.4980 rev60",
+      "active_mods": [
+        "ludeon.rimworld",
+        "ludeon.rimworld.odyssey"
+      ],
+      "tick": 21141,
+      "map_size": [
+        250,
+        1,
+        250
+      ],
+      "temperature_grid_bytes": 125000,
+      "meals": [
+        {
+          "id": "MealSimple42000",
+          "present": true,
+          "def": "MealSimple",
+          "pos": [
+            104,
+            0,
+            142
+          ],
+          "stack_count": 1,
+          "health": 50,
+          "forbidden": true,
+          "spawned_tick": 10459,
+          "rot_progress": 10750.0,
+          "temperature_cache_c": 21.75
+        },
+        {
+          "id": "MealSimple42001",
+          "present": true,
+          "def": "MealSimple",
+          "pos": [
+            114,
+            0,
+            137
+          ],
+          "stack_count": 1,
+          "health": 49,
+          "forbidden": true,
+          "spawned_tick": 10459,
+          "rot_progress": 10750.0,
+          "temperature_cache_c": 23.875
+        }
+      ],
+      "outdoor_control_cell_temperature_c": 23.875,
+      "cooler": {
+        "id": "Cooler42061",
+        "pos": [
+          104,
+          0,
+          144
+        ],
+        "target_c": 21.0,
+        "power_on_serialized": "False"
+      }
+    },
+    {
+      "id": "warm-1",
+      "file": "preservation-warm-1.rws",
+      "sha256": "d0a3b694fcd77b3390c7cb38a78eef12a5a1b6f4458af4f1d6dd3c1ae5083887",
+      "bytes": 6192896,
+      "version": "1.7.4980 rev60",
+      "active_mods": [
+        "ludeon.rimworld",
+        "ludeon.rimworld.odyssey"
+      ],
+      "tick": 24136,
+      "map_size": [
+        250,
+        1,
+        250
+      ],
+      "temperature_grid_bytes": 125000,
+      "meals": [
+        {
+          "id": "MealSimple42000",
+          "present": true,
+          "def": "MealSimple",
+          "pos": [
+            104,
+            0,
+            142
+          ],
+          "stack_count": 1,
+          "health": 50,
+          "forbidden": true,
+          "spawned_tick": 10459,
+          "rot_progress": 13750.0,
+          "temperature_cache_c": 22.8125
+        },
+        {
+          "id": "MealSimple42001",
+          "present": true,
+          "def": "MealSimple",
+          "pos": [
+            114,
+            0,
+            137
+          ],
+          "stack_count": 1,
+          "health": 49,
+          "forbidden": true,
+          "spawned_tick": 10459,
+          "rot_progress": 13750.0,
+          "temperature_cache_c": 24.75
+        }
+      ],
+      "outdoor_control_cell_temperature_c": 24.75,
+      "cooler": {
+        "id": "Cooler42061",
+        "pos": [
+          104,
+          0,
+          144
+        ],
+        "target_c": 21.0,
+        "power_on_serialized": "False"
+      }
+    },
+    {
+      "id": "chilled-0",
+      "file": "preservation-chilled-0.rws",
+      "sha256": "a903cefa0003b8d72c0629622b5fae5ff200c810f1f8ff8ca76198b8afb9d8b4",
+      "bytes": 6188782,
+      "version": "1.7.4980 rev60",
+      "active_mods": [
+        "ludeon.rimworld",
+        "ludeon.rimworld.odyssey"
+      ],
+      "tick": 29977,
+      "map_size": [
+        250,
+        1,
+        250
+      ],
+      "temperature_grid_bytes": 125000,
+      "meals": [
+        {
+          "id": "MealSimple42000",
+          "present": true,
+          "def": "MealSimple",
+          "pos": [
+            104,
+            0,
+            142
+          ],
+          "stack_count": 1,
+          "health": 50,
+          "forbidden": true,
+          "spawned_tick": 10459,
+          "rot_progress": 19081.332,
+          "temperature_cache_c": 5.8125
+        },
+        {
+          "id": "MealSimple42001",
+          "present": false
+        }
+      ],
+      "outdoor_control_cell_temperature_c": 24.1875,
+      "cooler": {
+        "id": "Cooler42061",
+        "pos": [
+          104,
+          0,
+          144
+        ],
+        "target_c": 5.0,
+        "power_on_serialized": null
+      }
+    },
+    {
+      "id": "frozen-0",
+      "file": "preservation-frozen-0.rws",
+      "sha256": "51fe098d2939a702c307544d7ab74fb42e011243815a8eeb2109521953b32937",
+      "bytes": 6272852,
+      "version": "1.7.4980 rev60",
+      "active_mods": [
+        "ludeon.rimworld",
+        "ludeon.rimworld.odyssey"
+      ],
+      "tick": 35825,
+      "map_size": [
+        250,
+        1,
+        250
+      ],
+      "temperature_grid_bytes": 125000,
+      "meals": [
+        {
+          "id": "MealSimple42000",
+          "present": true,
+          "def": "MealSimple",
+          "pos": [
+            104,
+            0,
+            142
+          ],
+          "stack_count": 1,
+          "health": 50,
+          "forbidden": true,
+          "spawned_tick": 10459,
+          "rot_progress": 21392.3535,
+          "temperature_cache_c": -0.125
+        },
+        {
+          "id": "MealSimple42001",
+          "present": false
+        }
+      ],
+      "outdoor_control_cell_temperature_c": 21.1875,
+      "cooler": {
+        "id": "Cooler42061",
+        "pos": [
+          104,
+          0,
+          144
+        ],
+        "target_c": -15.0,
+        "power_on_serialized": null
+      }
+    },
+    {
+      "id": "frozen-1",
+      "file": "preservation-frozen-1.rws",
+      "sha256": "d842a7fece16db3fa82aaf4c50cf5f96c030a3acc20681af950125633a48466c",
+      "bytes": 6275980,
+      "version": "1.7.4980 rev60",
+      "active_mods": [
+        "ludeon.rimworld",
+        "ludeon.rimworld.odyssey"
+      ],
+      "tick": 39868,
+      "map_size": [
+        250,
+        1,
+        250
+      ],
+      "temperature_grid_bytes": 125000,
+      "meals": [
+        {
+          "id": "MealSimple42000",
+          "present": true,
+          "def": "MealSimple",
+          "pos": [
+            104,
+            0,
+            142
+          ],
+          "stack_count": 1,
+          "health": 50,
+          "forbidden": true,
+          "spawned_tick": 10459,
+          "rot_progress": 21590.1348,
+          "temperature_cache_c": -4.25
+        },
+        {
+          "id": "MealSimple42001",
+          "present": false
+        }
+      ],
+      "outdoor_control_cell_temperature_c": 18.25,
+      "cooler": {
+        "id": "Cooler42061",
+        "pos": [
+          104,
+          0,
+          144
+        ],
+        "target_c": -15.0,
+        "power_on_serialized": null
+      }
+    }
+  ],
+  "intervals": [
+    {
+      "from": "warm-0",
+      "to": "warm-1",
+      "delta_ticks": 2995,
+      "indoor_delta_rot": 3000.0,
+      "indoor_average_progress_per_tick": 1.001669449081803,
+      "outdoor_delta_rot": 3000.0,
+      "constant_temperature_demonstrated": false
+    },
+    {
+      "from": "warm-1",
+      "to": "chilled-0",
+      "delta_ticks": 5841,
+      "indoor_delta_rot": 5331.3319999999985,
+      "indoor_average_progress_per_tick": 0.9127430234548876,
+      "outdoor_delta_rot": null,
+      "constant_temperature_demonstrated": false
+    },
+    {
+      "from": "chilled-0",
+      "to": "frozen-0",
+      "delta_ticks": 5848,
+      "indoor_delta_rot": 2311.0215000000026,
+      "indoor_average_progress_per_tick": 0.39518151504788007,
+      "outdoor_delta_rot": null,
+      "constant_temperature_demonstrated": false
+    },
+    {
+      "from": "frozen-0",
+      "to": "frozen-1",
+      "delta_ticks": 4043,
+      "indoor_delta_rot": 197.78129999999874,
+      "indoor_average_progress_per_tick": 0.048919441009151306,
+      "outdoor_delta_rot": null,
+      "constant_temperature_demonstrated": false
+    }
+  ],
+  "screenshots": [
+    {
+      "id": "warm-0",
+      "image": "runtime/preservation-warm-0.png",
+      "sha256": "6f6f065803dba8ccef59f6444b28348fb11e52cb90f953bddbe3f057ff0f6b63",
+      "source_file": ".local-research/runtime/preservation-065-close-save-menu.png",
+      "source_sha256": "da3063ce3d51a6fa6bb8001ec6d5eb5adda42555bdf898a0ec2c3ed93b1288ad",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1100,
+        2560,
+        340
+      ],
+      "observed_utc": "2026-11-02T18:16:01.3446545Z",
+      "ui_temperature_c": 22,
+      "ui_text": "Cooler selected; temperature only"
+    },
+    {
+      "id": "warm-1",
+      "image": "runtime/preservation-warm-1.png",
+      "sha256": "29dd55b39a3c38b1fce79e9cf89316dfc978121b2ba5fec29aeafc65056cd3d2",
+      "source_file": ".local-research/runtime/preservation-068-warm-meal.png",
+      "source_sha256": "5f35f80a906032469146682b469fef875c93554802c876dfa27b5ce235560454",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1100,
+        2560,
+        340
+      ],
+      "observed_utc": "2026-11-02T18:19:13.5009553Z",
+      "ui_temperature_c": 23,
+      "ui_text": "Fresh (Unrefrigerated, spoils in 3.8 days)"
+    },
+    {
+      "id": "chilled-0",
+      "image": "runtime/preservation-chilled-0.png",
+      "sha256": "39491bd58089b54615f0875fae0c6b2f4bb280d9bee48ac92fe0dd00b90820b0",
+      "source_file": ".local-research/runtime/preservation-081-chill-paused.png",
+      "source_sha256": "7f49ea4a0eb313926417184cb82ffe6f121751e4c2bc1141a2a4e3e3a548f2b4",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1100,
+        2560,
+        340
+      ],
+      "observed_utc": "2026-11-02T18:28:30.0254872Z",
+      "ui_temperature_c": 6,
+      "ui_text": "Fresh (Refrigerated, spoils in 6.1 days)"
+    },
+    {
+      "id": "frozen-0",
+      "image": "runtime/preservation-frozen-0.png",
+      "sha256": "d9c3801a7f19c8bf5a255eb5674125942ee0bc54ec3a5d792ae8fdf37cf6feb5",
+      "source_file": ".local-research/runtime/preservation-089-freeze-paused.png",
+      "source_sha256": "09b4f44cca62c793ed19e053f3f834c1c60be47dfad3208050147c78da68b15b",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1100,
+        2560,
+        340
+      ],
+      "observed_utc": "2026-11-02T18:30:35.8171021Z",
+      "ui_temperature_c": "-0",
+      "ui_text": "Fresh (Frozen)"
+    },
+    {
+      "id": "frozen-1",
+      "image": "runtime/preservation-frozen-1.png",
+      "sha256": "6856e43e91d7e265222efd4e922370860cf3bdaf4c04fabb86425a2c41256b56",
+      "source_file": ".local-research/runtime/preservation-091-frozen-paused.png",
+      "source_sha256": "1150c906777e41d75fefe3e32b63ff9c49008d9ed9ff24ba1299822ec50b1e27",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1100,
+        2560,
+        340
+      ],
+      "observed_utc": "2026-11-02T18:32:19.6323703Z",
+      "ui_temperature_c": -4,
+      "ui_text": "Fresh (Frozen)"
+    },
+    {
+      "id": "cooler-dev",
+      "image": "runtime/preservation-cooler-dev.png",
+      "sha256": "8650eb2a6478382ad35e8ad485b57eaf5ddd757a9c30a1b7b6d9a6dc39bb843c",
+      "source_file": ".local-research/runtime/preservation-084-target-minus15.png",
+      "source_sha256": "1398ed5f779779437accd49257259b7ff3cc2eb13d81960658bce543e9e15a6c",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1100,
+        2560,
+        340
+      ],
+      "observed_utc": "2026-11-02T18:29:47.0013082Z",
+      "ui_temperature_c": 6,
+      "ui_text": "Not connected to power; target -15C; Current power use: High"
+    },
+    {
+      "id": "chamber",
+      "image": "runtime/preservation-chamber.png",
+      "sha256": "69eb64c5a87990f2d9472d3c14eca8720dacfd8b7172bd764c9baca8cc3b5556",
+      "source_file": ".local-research/runtime/preservation-084-target-minus15.png",
+      "source_sha256": "1398ed5f779779437accd49257259b7ff3cc2eb13d81960658bce543e9e15a6c",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        1220,
+        660,
+        400,
+        360
+      ],
+      "observed_utc": "2026-11-02T18:29:47.0013082Z",
+      "ui_temperature_c": null,
+      "ui_text": "Roofed developer chamber; cooler north wall"
+    }
+  ],
+  "actions": {
+    "count": 114,
+    "file": "native-preservation-actions.jsonl",
+    "sha256": "dff909024c35f8228cf9541378c94d610c1ca82be409ad08ed8010388995a130"
+  },
+  "temperature_decode": {
+    "decode_c": "(ushort - 32768) / 16",
+    "existing_temperature_type": "energy:Verse.TemperatureVacuumSaveLoad",
+    "cell_index": "z * map_size_x + x",
+    "new_type_manifest": "preservation-runtime-manifest.json",
+    "byte_order": "unsigned 16-bit little-endian",
+    "compression": "Base64 raw DEFLATE",
+    "source_refs": [
+      {
+        "group": "preservation-runtime",
+        "type": "Verse.CellIndicesUtility",
+        "end": 23,
+        "start": 8
+      },
+      {
+        "group": "preservation-runtime",
+        "type": "Verse.MapSerializeUtility",
+        "end": 32,
+        "start": 21
+      },
+      {
+        "group": "preservation-runtime",
+        "type": "Verse.DataSerializeUtility",
+        "end": 77,
+        "start": 41
+      },
+      {
+        "group": "preservation-runtime",
+        "type": "Verse.DataExposeUtility",
+        "end": 46,
+        "start": 11
+      },
+      {
+        "group": "preservation-runtime",
+        "type": "Verse.CompressUtility",
+        "end": 64,
+        "start": 10
+      },
+      {
+        "group": "energy",
+        "type": "Verse.TemperatureVacuumSaveLoad",
+        "end": 133,
+        "start": 21
+      }
+    ],
+    "is_continuous_trace": false,
+    "quantization_c": 0.0625
+  },
+  "limitations": [
+    "Core + Odyssey, not pure Core.",
+    "Developer setup and DEV power do not establish normal construction or electricity supply.",
+    "Screenshots/save endpoints are sparse; neither constant refrigeration nor continuously subzero temperature was measured.",
+    "The frozen endpoint interval gained 197.7813 rot progress; frozen zero-growth is not independently demonstrated.",
+    "Door traffic, room heat exchange, and UI rounding are possible explanations, not measured causes.",
+    "Outdoor MealSimple42001 is absent from chilled-0 onward; disappearance cause was not observed, so subsequent control comparisons are invalid.",
+    "Health deterioration and rot progress are separate. Warm control health changes do not measure rot.",
+    "Existing age from setup was retained; no claim of fresh-spawn zero age at warm-0.",
+    "The original saves and uncropped screenshots stay in ignored local research storage; portable verification checks recorded summaries, crop hashes and arithmetic, not the authenticity of an unavailable native run."
+  ],
+  "final_state": {
+    "normal_profile_touched": false,
+    "developer_mode": true,
+    "last_save": "preservation-frozen-1.rws",
+    "paused": true,
+    "profile_only": true,
+    "cooler_target_c": -15,
+    "god_mode": true
+  }
+}

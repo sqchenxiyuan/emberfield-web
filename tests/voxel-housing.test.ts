@@ -12,12 +12,12 @@ function command(sim: VoxelSimulation, c: VoxelCommand) {
 function conserved(sim: VoxelSimulation, initial: Counts) {
   const current = sim.counts();
   for (const resource of Object.keys(initial) as Resource[])
-    expect(current[resource] + sim.stats.consumed[resource], `${resource} at tick ${sim.tick}`).toBe(initial[resource] + sim.stats.produced[resource]);
+    expect(current[resource] + sim.stats.consumed[resource] + sim.stats.spoiled[resource], `${resource} at tick ${sim.tick}`).toBe(initial[resource] + sim.stats.produced[resource]);
   expect(sim.pawns.every(p => sim.standable(p))).toBe(true);
 }
 function until(sim: VoxelSimulation, condition: () => boolean, limit = 12000) {
-  const initial = sim.counts(), consumed = { ...sim.stats.consumed }, produced = { ...sim.stats.produced };
-  const origin = Object.fromEntries(Object.keys(initial).map(r => [r, initial[r as Resource] + consumed[r as Resource] - produced[r as Resource]])) as unknown as Counts;
+  const initial = sim.counts(), consumed = { ...sim.stats.consumed }, produced = { ...sim.stats.produced }, spoiled = { ...sim.stats.spoiled };
+  const origin = Object.fromEntries(Object.keys(initial).map(r => [r, initial[r as Resource] + consumed[r as Resource] + spoiled[r as Resource] - produced[r as Resource]])) as unknown as Counts;
   for (let i = 0; i < limit && !condition(); i++) {
     sim.step();
     if (i % 40 === 0) conserved(sim, origin);
@@ -97,7 +97,7 @@ describe('normal-command voxel housing', () => {
     expect(at(pawn)).toBe(at(bed)); expect(pawn.sleepBedId).toBe(bed.id); expect(pawn.sleepingSince).not.toBeNull();
     const rest = pawn.rest; sim.step(100); expect(pawn.rest - rest).toBeCloseTo(restGain(true) * 100, 7);
     const save = sim.save(), restored = VoxelSimulation.load(save), copy = restored.pawns.find(p => p.id === pawn.id)!;
-    expect(save.version).toBe(4); expect(restored.counts()).toEqual(sim.counts());
+    expect(save.version).toBe(5); expect(restored.counts()).toEqual(sim.counts());
     expect(copy).toMatchObject({ phase: 'rest', sleepBedId: bed.id, sleepingSince: pawn.sleepingSince, rest: pawn.rest });
     sim.step(20); restored.step(20); expect(copy.rest).toBeCloseTo(pawn.rest, 9);
     command(restored, { type: 'schedule', pawnId: copy.id, hour: Math.floor(hourAt(restored.tick)), assignment: 'work' });
@@ -267,7 +267,7 @@ describe('normal-command voxel housing', () => {
       }
       const restored = VoxelSimulation.load(old);
       expect(restored.counts()).toEqual(before); expect(restored.beds).toEqual([]); expect(restored.doors).toEqual([]);
-      expect(restored.save().version).toBe(4);
+      expect(restored.save().version).toBe(5);
       expect(restored.pawns.every(pawn => pawn.schedule.join() === defaultSchedule().join() && pawn.sleepBedId === null && pawn.sleepingSince === null)).toBe(true);
       until(restored, () => restored.jobs.length === 0);
       expect(restored.stats.consumed.wood).toBe(6);

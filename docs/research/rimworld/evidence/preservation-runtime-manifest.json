@@ -1,0 +1,55 @@
+{
+  "evidence_id": "RW17-PRESERVATION-RUNTIME",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "Verse.MapSerializeUtility",
+      "local_file": ".local-research/preservation-runtime/Verse.MapSerializeUtility.cs",
+      "sha256": "de308766d2c5a849aed661a1dd9ec3ae247b2d61a61db2c68f52715c6aa2fa17",
+      "lines": 59
+    },
+    {
+      "type": "Verse.CellIndices",
+      "local_file": ".local-research/preservation-runtime/Verse.CellIndices.cs",
+      "sha256": "c1dc5ed996e3d5ebdea70c245b24e9d2420a6fafb62e96f320b03428e71e6b04",
+      "lines": 64
+    },
+    {
+      "type": "Verse.CellIndicesUtility",
+      "local_file": ".local-research/preservation-runtime/Verse.CellIndicesUtility.cs",
+      "sha256": "487c544821e7b9e887f786904cd48bc69f16d25411f1a77318783515d27eae1e",
+      "lines": 25
+    },
+    {
+      "type": "Verse.DataExposeUtility",
+      "local_file": ".local-research/preservation-runtime/Verse.DataExposeUtility.cs",
+      "sha256": "2195e34fa81383c68f1c462b2c50c63b144866821d88079d236c82e0ef06d7a1",
+      "lines": 206
+    },
+    {
+      "type": "Verse.DataSerializeUtility",
+      "local_file": ".local-research/preservation-runtime/Verse.DataSerializeUtility.cs",
+      "sha256": "3f0525894392f7be9cb2b9518199eec7d96623fb9c32bc8999939fc63e0563c4",
+      "lines": 141
+    },
+    {
+      "type": "Verse.CompressUtility",
+      "local_file": ".local-research/preservation-runtime/Verse.CompressUtility.cs",
+      "sha256": "d9c25877533dfc74bb5be69ddeca6678c52fd3bc37a565986b296acf20fee666",
+      "lines": 66
+    }
+  ]
+}

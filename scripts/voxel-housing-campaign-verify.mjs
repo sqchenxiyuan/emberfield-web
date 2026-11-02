@@ -33,7 +33,7 @@ function audit() {
   const counts = sim.counts();
   for (const r of Object.keys(initial))
     assert.equal(
-      counts[r] + sim.stats.consumed[r],
+      counts[r] + sim.stats.consumed[r] + sim.stats.spoiled[r],
       initial[r] + sim.stats.produced[r],
       `${r} ledger at ${sim.tick}`,
     );

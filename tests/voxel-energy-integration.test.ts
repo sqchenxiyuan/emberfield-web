@@ -56,7 +56,7 @@ function until(sim: VoxelSimulation, condition: () => boolean, limit = 1000) {
 function materialLedger(sim: VoxelSimulation): Counts {
   const inventory = sim.counts();
   return Object.fromEntries((Object.keys(inventory) as Resource[]).map(resource => [resource,
-    inventory[resource] + sim.stats.consumed[resource] - sim.stats.produced[resource],
+    inventory[resource] + sim.stats.consumed[resource] + sim.stats.spoiled[resource] - sim.stats.produced[resource],
   ])) as unknown as Counts;
 }
 function expectMaterialLedger(sim: VoxelSimulation, initial: Counts) {
@@ -394,7 +394,7 @@ describe('v4 energy persistence and malformed-input rejection', () => {
   }
   it('round-trips fuel, stored energy, temperature and resumes production with the real passive model', () => {
     const original = savedWorld(), saved = original.save(), restored = VoxelSimulation.load(saved);
-    expect(saved.version).toBe(4);
+    expect(saved.version).toBe(5);
     expect(restored.devices.map(d => [d.fuel, d.energy, d.target])).toEqual(original.devices.map(d => [d.fuel, d.energy, d.target]));
     expect(restored.thermal.save()).toEqual(original.thermal.save());
     original.step(20); restored.step(20);
@@ -428,7 +428,7 @@ describe('v4 energy persistence and malformed-input rejection', () => {
     const sim = fixture(), old = sim.save() as unknown as Record<string, unknown>;
     old.version = 3; delete old.devices; delete old.wires; delete old.thermal;
     const restored = VoxelSimulation.load(old);
-    expect(restored.save().version).toBe(4); expect(restored.devices).toEqual([]); expect(restored.wires).toEqual([]);
+    expect(restored.save().version).toBe(5); expect(restored.devices).toEqual([]); expect(restored.wires).toEqual([]);
     expect(restored.blocks).toEqual(sim.blocks); expect(restored.pawns.map(p => p.id)).toEqual(sim.pawns.map(p => p.id));
   });
 });

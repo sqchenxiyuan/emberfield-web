@@ -109,6 +109,28 @@ for (const shot of foodImplementation.screenshots) {
   assert(/^voxel\/[a-z-]+\.jpg$/.test(shot.file));
   assert.equal(sha(readFileSync(path.join(evidence,shot.file))),shot.sha256,`changed food milestone image: ${shot.file}`);
 }
+const preservationImplementation = read('voxel-preservation-validation.json');
+assert.equal(preservationImplementation.kind, 'web-runtime-validated');
+assert.equal(preservationImplementation.unit.failed, 0);
+assert.equal(preservationImplementation.unit.passed, preservationImplementation.unit.total);
+assert.deepEqual(preservationImplementation.campaign.errors, []);
+assert.deepEqual(preservationImplementation.browser.modes.map(m => m.mode).sort(), ['main', 'worker']);
+for (const mode of preservationImplementation.browser.modes) {
+  assert.equal(mode.status, 'passed');
+  assert.deepEqual(mode.errors, []);
+  assert(mode.checks.length >= 9, `incomplete preservation browser record: ${mode.mode}`);
+}
+const preservationFinal = preservationImplementation.campaign.final;
+assert(preservationFinal.counts.meal > 0 && preservationFinal.spoiled.meal === 0);
+assert(preservationFinal.warmCounts.meal === 0 && preservationFinal.warmSpoiled.meal > 0);
+assert(preservationFinal.minimumFood > 0);
+for (const record of [...preservationImplementation.sources, ...preservationImplementation.scripts, ...preservationImplementation.assets])
+  assert(validHash(record.sha256));
+assert.equal(preservationImplementation.screenshots.length, 2);
+for (const shot of preservationImplementation.screenshots) {
+  assert(/^voxel\/[a-z-]+\.jpg$/.test(shot.file));
+  assert.equal(sha(readFileSync(path.join(evidence, shot.file))), shot.sha256, `changed preservation image: ${shot.file}`);
+}
 for(const file of readdirSync(research).filter(f=>f.endsWith('.md'))){
   const body=readFileSync(path.join(research,file),'utf8');
   for(const match of body.matchAll(/\[[^\]\n]*\]\(([^)\s]+)\)/g)){
