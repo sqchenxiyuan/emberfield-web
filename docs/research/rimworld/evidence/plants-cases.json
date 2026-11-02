@@ -1,0 +1,1066 @@
+[
+  {
+    "label": "P01 Stage and initial growth",
+    "claims": [
+      "PL01"
+    ],
+    "inputs": {
+      "growth": [
+        0,
+        0.000099,
+        0.0001,
+        0.15,
+        0.999,
+        0.99901,
+        1
+      ],
+      "draws": [
+        0.15,
+        0.4,
+        1,
+        1.2,
+        1.5
+      ],
+      "range": [
+        0.15,
+        1.5
+      ]
+    },
+    "expected": {
+      "stages": [
+        "Sowing",
+        "Sowing",
+        "Growing",
+        "Growing",
+        "Growing",
+        "Mature",
+        "Mature"
+      ],
+      "initial": [
+        0.15,
+        0.4,
+        1,
+        1,
+        1
+      ],
+      "fullGrowthFraction": 0.37037037037037035
+    },
+    "limitation": "Independent continuous uniform arithmetic; exact1 fraction differs slightly from Mature>.999, and native RNG is not replayed."
+  },
+  {
+    "label": "P02 Long-tick growth and rest",
+    "claims": [
+      "PL02"
+    ],
+    "inputs": {
+      "growDays": 20,
+      "delta": 2000,
+      "rows": [
+        {
+          "g": 0.15,
+          "time": 0.249
+        },
+        {
+          "g": 0.15,
+          "time": 0.25
+        },
+        {
+          "g": 0.15,
+          "time": 0.8
+        },
+        {
+          "g": 0.15,
+          "time": 0.801
+        },
+        {
+          "g": 0,
+          "time": 0.5
+        },
+        {
+          "g": 0.99901,
+          "time": 0.5
+        },
+        {
+          "g": 0.999,
+          "time": 0.5
+        },
+        {
+          "g": 0.15,
+          "time": 0.5,
+          "blight": true
+        },
+        {
+          "g": 0.15,
+          "time": 0.5,
+          "vacuum": 0.5
+        },
+        {
+          "g": 0.15,
+          "time": 0.5,
+          "f": 0.85,
+          "t": 0.5,
+          "l": 0.5
+        }
+      ]
+    },
+    "expected": {
+      "increments": [
+        0,
+        0.0016666666666666668,
+        0.0016666666666666668,
+        0,
+        0,
+        0,
+        0.0016666666666666668,
+        0,
+        0,
+        0.0003541666666666667
+      ],
+      "growth": [
+        0.15,
+        0.15166666666666667,
+        0.15166666666666667,
+        0.15,
+        0,
+        0.99901,
+        1,
+        0.15,
+        0.15,
+        0.15035416666666665
+      ]
+    },
+    "limitation": "Ordinary Plant, growth season true, default optional factors1; this is not native tick phasing or a sunlight engine."
+  },
+  {
+    "label": "P03 Light temperature fertility",
+    "claims": [
+      "PL03"
+    ],
+    "inputs": {
+      "glow": [
+        0,
+        0.51,
+        0.51049,
+        0.755,
+        1,
+        1.2
+      ],
+      "temps": [
+        0,
+        3,
+        6,
+        42,
+        50,
+        58,
+        60,
+        75
+      ],
+      "fertility": [
+        0.1,
+        0.7,
+        1,
+        1.4
+      ],
+      "minGlow": 0.51,
+      "optGlow": 1
+    },
+    "expected": {
+      "light": [
+        0,
+        0,
+        0.001,
+        0.5,
+        1,
+        1
+      ],
+      "treeTemp": [
+        0,
+        0.5,
+        1,
+        1,
+        0.5,
+        0,
+        0,
+        0
+      ],
+      "cactusTemp": [
+        0,
+        0.5,
+        1,
+        1,
+        0.7575757575757576,
+        0.5151515151515151,
+        0.45454545454545453,
+        0
+      ],
+      "treeFertility": [
+        0.55,
+        0.85,
+        1,
+        1.2
+      ],
+      "cactusFertility": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "treeCanPlantFertility": [
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    "limitation": "Double arithmetic near .001 is not native float bit-exact; enough-light boundary is tested separately with exact factor inputs."
+  },
+  {
+    "label": "P04 Tree calibrated bases",
+    "claims": [
+      "PL04",
+      "PL05"
+    ],
+    "inputs": {
+      "growDays": [
+        15.05,
+        20,
+        5,
+        30
+      ],
+      "multipliers": [
+        9,
+        9,
+        40,
+        9
+      ],
+      "hp": [
+        200,
+        200,
+        130,
+        200
+      ],
+      "work": [
+        800,
+        710,
+        210,
+        1400
+      ],
+      "sowWork": 4000
+    },
+    "expected": {
+      "lifespanDays": [
+        135.45,
+        180,
+        200,
+        270
+      ],
+      "lifespanTicks": [
+        8127000,
+        10800000,
+        12000000,
+        16200000
+      ],
+      "matureWorkSeconds": [
+        13.333333333333334,
+        11.833333333333334,
+        3.5,
+        23.333333333333332
+      ],
+      "sowSeconds": 66.66666666666667,
+      "damageFractionPerLongTick": [
+        0.05,
+        0.05,
+        0.07692307692307693,
+        0.05
+      ]
+    },
+    "limitation": "Original normal60 ticks/second and PlantWorkSpeed1; growDays is not calendar maturation time, and lifespan ticks use independent doubles."
+  },
+  {
+    "label": "P05 Menu availability",
+    "claims": [
+      "PL05"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "research": null,
+          "wild": false,
+          "mustWild": true
+        },
+        {
+          "research": [
+            false
+          ],
+          "wild": true,
+          "mustWild": true
+        },
+        {
+          "research": [
+            true
+          ],
+          "wild": false,
+          "mustWild": true
+        },
+        {
+          "research": [
+            true
+          ],
+          "wild": true,
+          "mustWild": true
+        },
+        {
+          "research": [],
+          "wild": false,
+          "mustWild": false
+        },
+        {
+          "research": [],
+          "wild": true,
+          "mustWild": true,
+          "mustDark": true,
+          "dark": false
+        }
+      ]
+    },
+    "expected": {
+      "available": [
+        true,
+        false,
+        false,
+        true,
+        true,
+        false
+      ]
+    },
+    "limitation": "Models IsPlantAvailable only; grower tags, effective research progress, skills and actual sow jobs remain separate."
+  },
+  {
+    "label": "P06 Eight-neighbor predicate",
+    "claims": [
+      "PL07"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "target": true,
+          "neighbor": false,
+          "sown": false
+        },
+        {
+          "target": true,
+          "neighbor": false,
+          "sown": true
+        },
+        {
+          "target": true,
+          "neighbor": true,
+          "sown": false
+        },
+        {
+          "target": false,
+          "neighbor": true,
+          "sown": false
+        },
+        {
+          "target": false,
+          "neighbor": false,
+          "sown": true
+        },
+        {
+          "target": false,
+          "neighbor": false,
+          "sown": false
+        }
+      ]
+    },
+    "expected": {
+      "blocked": [
+        false,
+        true,
+        true,
+        true,
+        false,
+        false
+      ]
+    },
+    "limitation": "One existing in-bounds neighbor; the original checks all8 cells. This is not a global density or cluster-radius constraint."
+  },
+  {
+    "label": "P07 Sow completion and interruption",
+    "claims": [
+      "PL08"
+    ],
+    "inputs": {
+      "work": 4000,
+      "rows": [
+        {
+          "done": 3999,
+          "speed": 1,
+          "delta": 1,
+          "cancel": false
+        },
+        {
+          "done": 3998,
+          "speed": 1,
+          "delta": 1,
+          "cancel": false
+        },
+        {
+          "done": 3998,
+          "speed": 1,
+          "delta": 1,
+          "cancel": true
+        },
+        {
+          "done": 0,
+          "speed": 2,
+          "delta": 2000,
+          "cancel": false
+        }
+      ]
+    },
+    "expected": {
+      "done": [
+        4000,
+        3999,
+        3999,
+        4000
+      ],
+      "growth": [
+        0.0001,
+        0,
+        0,
+        0.0001
+      ],
+      "destroyOnFinish": [
+        false,
+        false,
+        true,
+        false
+      ]
+    },
+    "limitation": "Progress toy model assumes successful reservation/access; cancel triggers finish cleanup, save of active driver is a separate static claim."
+  },
+  {
+    "label": "P08 Harvest strict boundary and yield",
+    "claims": [
+      "PL09",
+      "PL10",
+      "PL11"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "base": 27,
+          "min": 0.4,
+          "g": 0.4,
+          "hp": 1
+        },
+        {
+          "base": 27,
+          "min": 0.4,
+          "g": 0.4001,
+          "hp": 1
+        },
+        {
+          "base": 27,
+          "min": 0.4,
+          "g": 0.7,
+          "hp": 1
+        },
+        {
+          "base": 27,
+          "min": 0.4,
+          "g": 1,
+          "hp": 0.5
+        },
+        {
+          "base": 15,
+          "min": 0.2,
+          "g": 0.2,
+          "hp": 1
+        },
+        {
+          "base": 15,
+          "min": 0.2,
+          "g": 0.6,
+          "hp": 1
+        },
+        {
+          "base": 27,
+          "min": 0.4,
+          "g": 1,
+          "hp": 1,
+          "blight": true
+        },
+        {
+          "base": 27,
+          "min": 0.4,
+          "g": 0.999,
+          "hp": 1
+        },
+        {
+          "base": 27,
+          "min": 0.4,
+          "g": 0.99901,
+          "hp": 1
+        },
+        {
+          "base": 27,
+          "min": 0.4,
+          "g": 1,
+          "hp": 1,
+          "difficulty": 1.2
+        }
+      ]
+    },
+    "expected": {
+      "harvestable": [
+        false,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "canYield": [
+        false,
+        true,
+        true,
+        true,
+        false,
+        true,
+        false,
+        true,
+        true,
+        true
+      ],
+      "automaticMaturityGate": [
+        false,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ],
+      "expectation": [
+        0,
+        13.50225,
+        20.25,
+        20.25,
+        0,
+        11.25,
+        0,
+        26.9775,
+        26.977725,
+        32.4
+      ]
+    },
+    "limitation": "Positive base yields and no other work restrictions. Expectation is before stochastic rounding and harvest-stat bonus; Cut shares this yield function."
+  },
+  {
+    "label": "P09 Stochastic rounding boundaries",
+    "claims": [
+      "PL09",
+      "PL11"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "v": 20.25,
+          "u": 0
+        },
+        {
+          "v": 20.25,
+          "u": 0.24999
+        },
+        {
+          "v": 20.25,
+          "u": 0.25
+        },
+        {
+          "v": 20.25,
+          "u": 0.9
+        },
+        {
+          "v": 27,
+          "u": 0
+        },
+        {
+          "v": 0,
+          "u": 0.1
+        }
+      ],
+      "second": {
+        "first": 21,
+        "stat": 1.1,
+        "u": 0.2
+      }
+    },
+    "expected": {
+      "rounded": [
+        21,
+        21,
+        20,
+        20,
+        27,
+        0
+      ],
+      "secondRounded": 23
+    },
+    "limitation": "Controlled unit-uniform draws explain nonnegative integer rounding; this does not replay original RNG state or harvest failure."
+  },
+  {
+    "label": "P10 Work scale",
+    "claims": [
+      "PL11"
+    ],
+    "inputs": {
+      "g": [
+        0,
+        0.4,
+        0.7,
+        1
+      ],
+      "speed": 1,
+      "baseWork": 800
+    },
+    "expected": {
+      "rate": [
+        3.3,
+        2.38,
+        1.69,
+        1
+      ],
+      "ticks": [
+        242.42424242424244,
+        336.1344537815126,
+        473.37278106508876,
+        800
+      ]
+    },
+    "limitation": "Frozen growth continuous work estimate before native interval granularity, movement, interruption and skills."
+  },
+  {
+    "label": "P11 Stump gate and partial yield",
+    "claims": [
+      "PL13",
+      "PL14"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "spawned": true,
+          "g": 1,
+          "min": 0.4,
+          "mode": "Chop",
+          "player": true
+        },
+        {
+          "spawned": true,
+          "g": 1,
+          "min": 0.4,
+          "mode": "Cut",
+          "player": true
+        },
+        {
+          "spawned": true,
+          "g": 0.4,
+          "min": 0.4,
+          "mode": "Cut",
+          "player": true
+        },
+        {
+          "spawned": false,
+          "g": 1,
+          "min": 0.4,
+          "mode": "Cut",
+          "player": true
+        },
+        {
+          "spawned": true,
+          "g": 1,
+          "min": 0.4,
+          "mode": "Cut",
+          "player": false
+        }
+      ],
+      "stump": {
+        "base": 4,
+        "g": 0.7,
+        "hpFraction": 0.5
+      }
+    },
+    "expected": {
+      "spawnStump": [
+        true,
+        true,
+        false,
+        false,
+        true
+      ],
+      "queueClear": [
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "partialStumpExpectation": 2.55
+    },
+    "limitation": "Assumes choppedThingDef exists and no creation failure. Stump HP initialization and deterioration are not executed."
+  },
+  {
+    "label": "P12 Aging darkness update order",
+    "claims": [
+      "PL15"
+    ],
+    "inputs": {
+      "lifespan": 10800000,
+      "delta": 2000,
+      "rows": [
+        {
+          "age": 0,
+          "unlit": 448000,
+          "lightFactor": 0
+        },
+        {
+          "age": 0,
+          "unlit": 450000,
+          "lightFactor": 0
+        },
+        {
+          "age": 0,
+          "unlit": 450000,
+          "lightFactor": 0.001
+        },
+        {
+          "age": 0,
+          "unlit": 450000,
+          "lightFactor": 0.00101
+        },
+        {
+          "age": 10798000,
+          "unlit": 0,
+          "lightFactor": 1
+        },
+        {
+          "age": 10800000,
+          "unlit": 450000,
+          "lightFactor": 0
+        }
+      ]
+    },
+    "expected": {
+      "age": [
+        2000,
+        2000,
+        2000,
+        2000,
+        10800000,
+        10802000
+      ],
+      "unlit": [
+        450000,
+        452000,
+        452000,
+        0,
+        0,
+        452000
+      ],
+      "damage": [
+        0,
+        10,
+        10,
+        0,
+        0,
+        10
+      ]
+    },
+    "limitation": "Only aging and ordinary darkness, no pollution/vacuum/damage armor effects. Both causes use max; rates are absolute HP."
+  },
+  {
+    "label": "P13 Absolute HP normalization",
+    "claims": [
+      "PL15",
+      "PL20"
+    ],
+    "inputs": {
+      "hp": [
+        200,
+        130
+      ],
+      "sourceTicksPerDay": 60000,
+      "projectTicksPerDay": 1200,
+      "rate": 0.005
+    },
+    "expected": {
+      "hpPerSourceDay": 300,
+      "hpPerProjectTick": 0.25,
+      "fractionPerProjectTick": [
+        0.00125,
+        0.0019230769230769232
+      ],
+      "graceDays": 7.5
+    },
+    "limitation": "Time normalization recommendation only; project1200ticks/day is an explicit test parameter, not a claimed current implementation or original20TPS rule."
+  },
+  {
+    "label": "P14 Leafless cold boundary",
+    "claims": [
+      "PL16"
+    ],
+    "inputs": {
+      "offset": -14,
+      "minTemp": 0,
+      "rows": [
+        {
+          "t": -14,
+          "outdoor": true,
+          "die": false
+        },
+        {
+          "t": -14.001,
+          "outdoor": true,
+          "die": false
+        },
+        {
+          "t": -20,
+          "outdoor": false,
+          "die": false
+        },
+        {
+          "t": -20,
+          "outdoor": true,
+          "die": true
+        }
+      ],
+      "elapsed": [
+        59999,
+        60000,
+        60001
+      ]
+    },
+    "expected": {
+      "madeLeafless": [
+        false,
+        true,
+        false,
+        true
+      ],
+      "instantKill": [
+        false,
+        false,
+        false,
+        true
+      ],
+      "leaflessNow": [
+        true,
+        false,
+        false
+      ]
+    },
+    "limitation": "Fixed per-plant cold offset, existing room and no poison/pollution; cold threshold RNG and graphics are not simulated."
+  },
+  {
+    "label": "P15 Regrowth scan and MTB",
+    "claims": [
+      "PL17"
+    ],
+    "inputs": {
+      "areas": [
+        2400,
+        62500,
+        90000
+      ],
+      "days": [
+        20,
+        25,
+        35,
+        130
+      ],
+      "duration": 10000,
+      "unit": 60000,
+      "edge": [
+        {
+          "mtb": 0,
+          "unit": 0,
+          "duration": 0
+        },
+        {
+          "mtb": -1,
+          "unit": 60000,
+          "duration": 10000
+        },
+        {
+          "mtb": 20,
+          "unit": 0,
+          "duration": 10000
+        },
+        {
+          "mtb": 20,
+          "unit": 60000,
+          "duration": 0
+        },
+        {
+          "mtb": 0.1,
+          "unit": 1,
+          "duration": 1
+        }
+      ]
+    },
+    "expected": {
+      "cellsPerTick": [
+        1,
+        7,
+        9
+      ],
+      "eventProbability": [
+        0.008333333333333333,
+        0.006666666666666667,
+        0.004761904761904762,
+        0.001282051282051282
+      ],
+      "edgeProbability": [
+        1,
+        1,
+        0,
+        0,
+        1
+      ]
+    },
+    "limitation": "Ordinary probability arithmetic, not Poisson exponential, full spawn probability, tiny-probability RNG trace or guaranteed event timing."
+  },
+  {
+    "label": "P16 Regrowth gates and capacity",
+    "claims": [
+      "PL18"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "roof": "none",
+          "snow": 0,
+          "sand": 0,
+          "f": 1
+        },
+        {
+          "roof": "artificial",
+          "snow": 0,
+          "sand": 0,
+          "f": 1
+        },
+        {
+          "roof": "natural",
+          "snow": 0,
+          "sand": 0,
+          "f": 1
+        },
+        {
+          "roof": "none",
+          "snow": 0.2,
+          "sand": 0,
+          "f": 1
+        },
+        {
+          "roof": "none",
+          "snow": 0,
+          "sand": 0.2,
+          "f": 1
+        },
+        {
+          "roof": "none",
+          "snow": 0,
+          "sand": 0,
+          "f": 0
+        },
+        {
+          "roof": "none",
+          "snow": 0,
+          "sand": 0,
+          "f": 1,
+          "plant": true
+        },
+        {
+          "roof": "none",
+          "snow": 0,
+          "sand": 0,
+          "f": 1,
+          "cover": true
+        },
+        {
+          "roof": "none",
+          "snow": 0,
+          "sand": 0,
+          "f": 1,
+          "edifice": true
+        }
+      ],
+      "density": [
+        0.65,
+        0.4,
+        0.05
+      ],
+      "f": [
+        1,
+        1.4,
+        0.7,
+        0.1
+      ]
+    },
+    "expected": {
+      "preflight": [
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "caveRouting": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "desired": [
+        [
+          0.65,
+          1,
+          0.3185,
+          0.0065
+        ],
+        [
+          0.4,
+          0.784,
+          0.196,
+          0.004
+        ],
+        [
+          0.05,
+          0.098,
+          0.0245,
+          0.0005
+        ]
+      ]
+    },
+    "limitation": "Necessary gates only, densityfactor1/no fertility-ignoring species. Natural-roof true routes to cave selection, not proof a normal tree can spawn."
+  }
+]

@@ -1,0 +1,103 @@
+{
+  "evidence_id": "RW17-PLANTS",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.WorkGiver_Grower",
+      "local_file": ".local-research/plants/RimWorld.WorkGiver_Grower.cs",
+      "sha256": "631afb9a56cc0847321f9ed4b78f008e87bd53eba8442d5a9b3efc07785e5ce0",
+      "lines": 63
+    },
+    {
+      "type": "RimWorld.WorkGiver_GrowerSow",
+      "local_file": ".local-research/plants/RimWorld.WorkGiver_GrowerSow.cs",
+      "sha256": "d2deb7f107f31a60a4b5bd47dc08fa4793f5c729979c683d97234a77a6b8b9e1",
+      "lines": 214
+    },
+    {
+      "type": "RimWorld.PlantToGrowSettableUtility",
+      "local_file": ".local-research/plants/RimWorld.PlantToGrowSettableUtility.cs",
+      "sha256": "a832521ce9dd00ff3c9059d0a8575a5fb0821b5dd2b95cc87c8c5a9353ca9e0b",
+      "lines": 17
+    },
+    {
+      "type": "RimWorld.JobDriver_PlantCut",
+      "local_file": ".local-research/plants/RimWorld.JobDriver_PlantCut.cs",
+      "sha256": "1b3fcd162793a6ec704e0f2b7f3bf17ea098c25080c84dda95b93038e1915bd0",
+      "lines": 26
+    },
+    {
+      "type": "RimWorld.Designator_Plants",
+      "local_file": ".local-research/plants/RimWorld.Designator_Plants.cs",
+      "sha256": "5a9575c469086f9e6d3e684de8ea1a2ec1fb0c77694a97f97b10e358395985d0",
+      "lines": 61
+    },
+    {
+      "type": "RimWorld.Designator_PlantsCut",
+      "local_file": ".local-research/plants/RimWorld.Designator_PlantsCut.cs",
+      "sha256": "1bceaddae8b254c71dda4978dbd188216a9bed377ffc96c83cba4efcca0315bd",
+      "lines": 66
+    },
+    {
+      "type": "RimWorld.Designator_PlantsHarvest",
+      "local_file": ".local-research/plants/RimWorld.Designator_PlantsHarvest.cs",
+      "sha256": "51d50de0d9268736b0a67e38bfaed5ff805dab846018a046a3f7d437702c25b7",
+      "lines": 41
+    },
+    {
+      "type": "RimWorld.Designator_PlantsHarvestWood",
+      "local_file": ".local-research/plants/RimWorld.Designator_PlantsHarvestWood.cs",
+      "sha256": "d688ea17bf88a1a86c19e54ea821388a7a2863c1be50c7b46bf0798e062fb630",
+      "lines": 108
+    },
+    {
+      "type": "RimWorld.WorkGiver_PlantsCut",
+      "local_file": ".local-research/plants/RimWorld.WorkGiver_PlantsCut.cs",
+      "sha256": "653c63494513a73c14737abb0e0b4fff825ea1f2b99524e04d7995cf4b88f8c9",
+      "lines": 90
+    },
+    {
+      "type": "RimWorld.JobDriver_PlantHarvest_Designated",
+      "local_file": ".local-research/plants/RimWorld.JobDriver_PlantHarvest_Designated.cs",
+      "sha256": "ae6138292d068082ba0e3ad4afc5f90befb784de427f5906c93d1f42c63322a9",
+      "lines": 9
+    },
+    {
+      "type": "RimWorld.JobDriver_PlantCut_Designated",
+      "local_file": ".local-research/plants/RimWorld.JobDriver_PlantCut_Designated.cs",
+      "sha256": "0c225719aedff9d5fd396cbd4d1c8b3de635e0b9d543320c7f183ed4f0c2c6ec",
+      "lines": 9
+    },
+    {
+      "type": "Verse.Rand",
+      "local_file": ".local-research/plants/Verse.Rand.cs",
+      "sha256": "f5edc56975095070d8feb0dc52a2d03f85992b8a6a27aa0cab787664ec466070",
+      "lines": 906
+    },
+    {
+      "type": "RimWorld.DeadPlant",
+      "local_file": ".local-research/plants/RimWorld.DeadPlant.cs",
+      "sha256": "2edf114794a5f66056fe028d6dd90c372485c4bddd1eec4823798fb1a035394a",
+      "lines": 38
+    },
+    {
+      "type": "Verse.Command_SetPlantToGrow",
+      "local_file": ".local-research/plants/Verse.Command_SetPlantToGrow.cs",
+      "sha256": "ea0b0795ce23d3df67a12c6c4e3ee069e7629480be87dd035aaf32da9b714f55",
+      "lines": 207
+    }
+  ]
+}

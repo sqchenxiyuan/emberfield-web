@@ -2,6 +2,7 @@ import {
   Block,
   CELLS,
   DEPTH,
+  DAY,
   HEIGHT,
   WIDTH,
   at,
@@ -16,6 +17,8 @@ import {
 } from './types';
 import { growingSeasonDays } from './climate';
 import { fertilityOf, MIN_CROP_FERTILITY } from './farming';
+import { TREE_DATA, treeCover } from './plants';
+export { TREE_DATA } from './plants';
 
 export const WORLD_PRESETS: Record<Biome, WorldSettings> = {
   temperate: {
@@ -58,11 +61,6 @@ export function validWorldSettings(value: unknown): value is WorldSettings {
     ) && Object.keys(v).length === 5
   );
 }
-export const TREE_DATA: Record<TreeSpecies, { wood: number; minFertility: number }> = {
-  poplar: { wood: 27, minFertility: 0.7 },
-  pine: { wood: 27, minFertility: 0.7 },
-  saguaro: { wood: 15, minFertility: 0.05 },
-};
 function hash(seed: number, x: number, y: number, salt = 0): number {
   // Fold both halves of any safe integer seed so seeds differing by 2^32 remain distinct.
   let a =
@@ -277,20 +275,24 @@ export function generateWorld(seed: number, input?: Partial<WorldSettings>) {
         settings.biome === 'desert' ? 'saguaro' : settings.biome === 'boreal' ? 'pine' : 'poplar';
       if (fertility < TREE_DATA[species].minFertility) continue;
       // Tree cover is a separately calibrated subset, not RimWorld's total wild-plant density.
-      const baseTreeCover =
-        settings.biome === 'desert' ? 0.014 : settings.biome === 'boreal' ? 0.085 : 0.065;
-      const moisture =
-        settings.biome === 'desert'
-          ? 0.6 + Math.min(0.9, settings.rainfall / 500)
-          : Math.min(1.4, 0.15 + rain);
       const local = 0.5 + noise(seed, x / 10, y / 10, 40);
       const density =
-        baseTreeCover *
-        moisture *
+        treeCover(settings) *
         local *
         (species === 'saguaro' ? 1 : Math.min(1.5, fertility * fertility));
       if (hash(seed, x, y, 41) < density)
-        trees.push({ x, y, z, species, wood: TREE_DATA[species].wood });
+        trees.push({
+          x,
+          y,
+          z,
+          species,
+          wood: TREE_DATA[species].wood,
+          growth: Math.min(1, 0.15 + hash(seed, x, y, 42) * 1.35),
+          age: Math.floor(hash(seed, x, y, 43) * (TREE_DATA[species].lifespanDays * DAY - 10)),
+          health: 1,
+          unlitTicks: 0,
+          planted: false,
+        });
     }
   return {
     generator: 2 as const,

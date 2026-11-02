@@ -112,7 +112,7 @@ async function campaign(biome, hilliness, seed) {
     result.fixtures[name] = { file, sha256: hash(bytes), tick: sim.tick };
   }
   assert.equal(sim.generator, 2);
-  assert.equal(sim.save().version, 8);
+  assert.equal(sim.save().version, 9);
   audit();
   await save('start');
   for (const p of surface
@@ -120,6 +120,7 @@ async function campaign(biome, hilliness, seed) {
     .slice(0, 20))
     place('stock', p);
   const availableTrees = [...sim.trees]
+    .filter((t) => t.growth === 1)
     .sort((a, b) => dist(a, start) - dist(b, start))
     .filter((t) => dirs.some(([dx, dy]) => reachable({ x: t.x + dx, y: t.y + dy, z: t.z })));
   assert(availableTrees.length >= 3);

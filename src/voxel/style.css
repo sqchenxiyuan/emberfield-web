@@ -496,10 +496,26 @@ a {
   padding: 2px;
   margin-top: 3px;
 }
-.voxel-farm-detail > progress {
+.voxel-farm-detail > progress,
+.voxel-tree-detail > progress {
   width: 100%;
   height: 5px;
   accent-color: #a8bd6c;
+}
+.voxel-tree-detail {
+  margin: 9px 0;
+  padding: 9px;
+  border: 1px solid #738a5d66;
+  background: #253328b3;
+}
+.voxel-tree-detail small {
+  color: #afc0a4;
+  line-height: 1.6;
+}
+.voxel-tree-detail button {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
 }
 .voxel-schedule {
   margin: 12px 0;

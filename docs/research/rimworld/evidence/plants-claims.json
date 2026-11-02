@@ -1,0 +1,674 @@
+[
+  {
+    "id": "PL01",
+    "kind": "static-derived",
+    "statement": "Plain Plant starts growth.15/age0/unlit0/sownfalse; Sowing is growth<.0001, Mature is growth>.999. Initial generation uses clamp(U(.15,1.5)) plus independent random age below LifespanTicks-50; later natural spawn defaults to .15/age0.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 22,
+        "line_end": 48
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 83,
+        "line_end": 118
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 454,
+        "line_end": 467
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.WildPlantSpawner",
+        "line_start": 58,
+        "line_end": 58
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.WildPlantSpawner",
+        "line_start": 411,
+        "line_end": 411
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.WildPlantSpawner",
+        "line_start": 454,
+        "line_end": 466
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.GenStep_Plants",
+        "line_start": 11,
+        "line_end": 22
+      }
+    ]
+  },
+  {
+    "id": "PL02",
+    "kind": "static-derived",
+    "statement": "Growth per source tick is fertility*temperature*light*optional-condition-factors/(60000*growDays), gated by Growing stage, local rest time (<.25 or >.8), blight, growth season and vacuum. TickLong adds2000 ticks and caps growth1. Plain plants still rest with artificial illumination.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 277,
+        "line_end": 301
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 334,
+        "line_end": 346
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 810,
+        "line_end": 831
+      }
+    ]
+  },
+  {
+    "id": "PL03",
+    "kind": "xml-and-static-derived",
+    "statement": "Default light interval is.51..1, enough light is factor>.001. Fertility factor is1+sensitivity*(f-1); planting minimum is separate. Actual cell temperature requires strict0<T<58, optimum6..42; Saguaro maximum75. These input factors do not themselves prove sunlight/room rendering.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 350,
+        "line_end": 369
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 452,
+        "line_end": 452
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantUtility",
+        "line_start": 21,
+        "line_end": 32
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantUtility",
+        "line_start": 352,
+        "line_end": 381
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantProperties",
+        "line_start": 75,
+        "line_end": 109
+      },
+      {
+        "group": "generation",
+        "type": "Verse.GenMath",
+        "line_start": 418,
+        "line_end": 428
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_SaguaroCactus"
+      }
+    ]
+  },
+  {
+    "id": "PL04",
+    "kind": "xml-and-static-derived",
+    "statement": "Poplar/Pine/Saguaro/Oak growDays15.05/20/5/30, base wood27/27/15/46, harvest work800/710/210/1400, HP200/200/130/200, lifespan multipliers9/9/40/9. LifespanDays=growDays*multiplier; lifespan is age, independent of accumulated growth.",
+    "sources": [
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_PlantBaseNonEdible"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_PlantBase"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_TreeBase"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_DeciduousTreeBase"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_TreePoplar"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_TreePine"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_SaguaroCactus"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_TreeOak"
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantProperties",
+        "line_start": 217,
+        "line_end": 223
+      }
+    ]
+  },
+  {
+    "id": "PL05",
+    "kind": "xml-and-static-derived",
+    "statement": "Trees inherit Ground sowing, work4000/Plants6/TreeSowing/mustBeWildToSow. Menu availability checks finished research then map AllWildPlants membership, not living same-species presence. Null research list returns true before further flags. TreeSowing declares1000/Neolithic/TribalStart; starting-unlocked depends on scenario.",
+    "sources": [
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_TreeBase"
+      },
+      {
+        "group": "plants",
+        "xml_record": "ResearchProjectDef_TreeSowing"
+      },
+      {
+        "group": "plants",
+        "type": "Verse.Command_SetPlantToGrow",
+        "line_start": 166,
+        "line_end": 189
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantUtility",
+        "line_start": 284,
+        "line_end": 298
+      }
+    ]
+  },
+  {
+    "id": "PL06",
+    "kind": "static-derived",
+    "statement": "Sow work-giver checks zone permission, local season, roof interference, skills, blockers and reservations. It can request cutting/hauling aside. Menu research eligibility is not repeated here; a forced invalid saved selection is not covered by the menu proof.",
+    "sources": [
+      {
+        "group": "plants",
+        "type": "RimWorld.WorkGiver_Grower",
+        "line_start": 10,
+        "line_end": 61
+      },
+      {
+        "group": "plants",
+        "type": "RimWorld.WorkGiver_GrowerSow",
+        "line_start": 21,
+        "line_end": 45
+      },
+      {
+        "group": "plants",
+        "type": "RimWorld.WorkGiver_GrowerSow",
+        "line_start": 48,
+        "line_end": 211
+      },
+      {
+        "group": "plants",
+        "type": "RimWorld.PlantToGrowSettableUtility",
+        "line_start": 7,
+        "line_end": 15
+      }
+    ]
+  },
+  {
+    "id": "PL07",
+    "kind": "xml-and-static-derived",
+    "statement": "AdjacentSowBlocker inspects8 neighbors: neighbor.blockAdjacentSow OR(target.blockAdjacentSow AND neighbor.sown). TreeBase blocks neighbors; ordinary unsown nonblocking grass does not trigger this rule. Wild cluster radius8 is unrelated to sow spacing. Reviewed player sow path has no global forest density cap.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantUtility",
+        "line_start": 301,
+        "line_end": 315
+      },
+      {
+        "group": "plants",
+        "type": "RimWorld.WorkGiver_GrowerSow",
+        "line_start": 107,
+        "line_end": 158
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_TreeBase"
+      }
+    ]
+  },
+  {
+    "id": "PL08",
+    "kind": "static-derived",
+    "statement": "Sow creates a physical growth0/sowntrue plant; completed sow becomes.0001. Progress accumulates PlantWorkSpeed*delta and is saved; interrupted unfinished sow destroys the plant in finish action. Final path checks revalidate neighbors and cell plantability.",
+    "sources": [
+      {
+        "group": "food",
+        "type": "RimWorld.JobDriver_PlantSow",
+        "line_start": 13,
+        "line_end": 89
+      }
+    ]
+  },
+  {
+    "id": "PL09",
+    "kind": "xml-and-static-derived",
+    "statement": "HarvestableNow is strictly growth>min (.4 trees/.2 Saguaro). CanYieldNow also requires positive yield and no blight. Yield expectation is base*(.5+.5*InverseLerp(min,1,growth))*(.5+.5*HP/maxHP)*difficulty; nonnegative result is stochastically rounded.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 109,
+        "line_end": 118
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 927,
+        "line_end": 959
+      },
+      {
+        "group": "generation",
+        "type": "Verse.GenMath",
+        "line_start": 62,
+        "line_end": 65
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantProperties",
+        "line_start": 50,
+        "line_end": 61
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_TreeBase"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_SaguaroCactus"
+      }
+    ]
+  },
+  {
+    "id": "PL10",
+    "kind": "static-derived",
+    "statement": "Manual wood harvest requires harvestable tree; automatic grower harvest additionally requires Mature stage, CanYieldNow and other work checks. The cut designator has an isOrder-dependent tree filter, so its UI label is not sufficient to conclude universal target legality.",
+    "sources": [
+      {
+        "group": "plants",
+        "type": "RimWorld.Designator_PlantsHarvestWood",
+        "line_start": 11,
+        "line_end": 65
+      },
+      {
+        "group": "plants",
+        "type": "RimWorld.Designator_PlantsHarvest",
+        "line_start": 19,
+        "line_end": 38
+      },
+      {
+        "group": "plants",
+        "type": "RimWorld.Designator_PlantsCut",
+        "line_start": 43,
+        "line_end": 53
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.WorkGiver_GrowerHarvest",
+        "line_start": 11,
+        "line_end": 51
+      },
+      {
+        "group": "plants",
+        "type": "RimWorld.Designator_Plants",
+        "line_start": 18,
+        "line_end": 59
+      }
+    ]
+  },
+  {
+    "id": "PL11",
+    "kind": "xml-and-static-derived",
+    "statement": "Cut and Chop both use shared PlantWork yield; Cut is not universally no-drop. Work rate=PlantWorkSpeed*Lerp(3.3,1,growth); tree harvestFailablefalse prevents ordinary failure, but harvest stat>1 scales integer yield and rounds again. Placement is Near actor and not proven lossless.",
+    "sources": [
+      {
+        "group": "plants",
+        "type": "RimWorld.JobDriver_PlantCut",
+        "line_start": 7,
+        "line_end": 24
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.JobDriver_PlantHarvest",
+        "line_start": 7,
+        "line_end": 17
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.JobDriver_PlantWork",
+        "line_start": 24,
+        "line_end": 27
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.JobDriver_PlantWork",
+        "line_start": 66,
+        "line_end": 112
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_TreeBase"
+      }
+    ]
+  },
+  {
+    "id": "PL12",
+    "kind": "static-derived",
+    "statement": "Designated harvest/cut drivers require their corresponding designation; work checks reservation, target existence, access and missing designation, and persists active workDone. Cancellation is not proof of durable per-tree progress outside that driver.",
+    "sources": [
+      {
+        "group": "plants",
+        "type": "RimWorld.JobDriver_PlantHarvest_Designated",
+        "line_start": 5,
+        "line_end": 8
+      },
+      {
+        "group": "plants",
+        "type": "RimWorld.JobDriver_PlantCut_Designated",
+        "line_start": 5,
+        "line_end": 8
+      },
+      {
+        "group": "plants",
+        "type": "RimWorld.WorkGiver_PlantsCut",
+        "line_start": 26,
+        "line_end": 88
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.JobDriver_PlantWork",
+        "line_start": 29,
+        "line_end": 53
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.JobDriver_PlantWork",
+        "line_start": 113,
+        "line_end": 137
+      }
+    ]
+  },
+  {
+    "id": "PL13",
+    "kind": "xml-and-static-derived",
+    "statement": "HarvestDestroys defaults true for selected trees. A spawned non-Sowing harvestable tree can spawn ChoppedStump for Cut/Chop and inherit growth; player Cut queues stump clearing, Chop does not. DeadPlant has GrowthRate0/dyingRate0/Mature; separate deterioration is not fully traced.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantProperties",
+        "line_start": 201,
+        "line_end": 205
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 621,
+        "line_end": 703
+      },
+      {
+        "group": "plants",
+        "type": "RimWorld.DeadPlant",
+        "line_start": 6,
+        "line_end": 31
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_TreeBase"
+      },
+      {
+        "group": "plants",
+        "xml_record": "ThingDef_StumpBase"
+      },
+      {
+        "group": "plants",
+        "xml_record": "ThingDef_ChoppedStump"
+      }
+    ]
+  },
+  {
+    "id": "PL14",
+    "kind": "xml-declared",
+    "statement": "StumpBase HP100/startHPfraction.5..1/yield4Wood/minGrowth0; ChoppedStump harvestWork90/DeteriorationRate20. Inherited tree growth and actual HP feed ordinary yield, so a stump does not guarantee4 logs. This records startingHpRange, not the untraced initialization RNG implementation.",
+    "sources": [
+      {
+        "group": "plants",
+        "xml_record": "ThingDef_StumpBase"
+      },
+      {
+        "group": "plants",
+        "xml_record": "ThingDef_ChoppedStump"
+      }
+    ]
+  },
+  {
+    "id": "PL15",
+    "kind": "static-derived",
+    "statement": "Every long tick updates unlitTicks by2000 when light factor<=.001 (otherwise reset0), then age by2000 even at night/cold/maturity. After update, age>LifespanTicks or unlitTicks>450000 causes.005HP/tick, combined by max and rounded up over2000ticks (10HP). 7.5days marks a grace threshold, not a guaranteed death date.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 201,
+        "line_end": 235
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 832,
+        "line_end": 849
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantProperties",
+        "line_start": 217,
+        "line_end": 223
+      }
+    ]
+  },
+  {
+    "id": "PL16",
+    "kind": "xml-and-static-derived",
+    "statement": "Cold leafless threshold=minGrowthTemperature+seeded[-18,-10]. It applies in rooms using outdoor temperature. Leafless state lasts at least60000 ticks since last application; selected tree dieIfLeafless is absent through the parent chain, defaultfalse. Zero degrees stops growth but does not automatically kill these trees.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 514,
+        "line_end": 526
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 726,
+        "line_end": 798
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantProperties",
+        "line_start": 101,
+        "line_end": 109
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_TreeBase"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_TreePoplar"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_TreePine"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_SaguaroCactus"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "ThingDef_Plant_TreeOak"
+      }
+    ]
+  },
+  {
+    "id": "PL17",
+    "kind": "xml-and-static-derived",
+    "statement": "Natural regrowth scans ceil(area*.0001) shuffled-cycle cells per internal tick; density chance precedes MTBEventOccurs(days,60000,10000). Temperate/Boreal/Desert use20/25/35days; cave130. Ordinary per-check MTB probability=10000/(days*60000), not exponential waiting probability. Tiny probabilities use multistage8x handling.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.WildPlantSpawner",
+        "line_start": 98,
+        "line_end": 98
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.WildPlantSpawner",
+        "line_start": 132,
+        "line_end": 142
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.WildPlantSpawner",
+        "line_start": 286,
+        "line_end": 317
+      },
+      {
+        "group": "plants",
+        "type": "Verse.Rand",
+        "line_start": 523,
+        "line_end": 568
+      },
+      {
+        "group": "biomes",
+        "xml_record": "BiomeDef_TemperateForest"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "BiomeDef_BorealForest"
+      },
+      {
+        "group": "biomes",
+        "xml_record": "BiomeDef_Desert"
+      }
+    ]
+  },
+  {
+    "id": "PL18",
+    "kind": "static-derived",
+    "statement": "Spawn requires density>0, no plant/cover/edifice, suitable fertility, snow<.2 and sand<.2. Artificial roofs prevent regrow; natural roofs route to cave plants. Additional saturation, species/climate eligibility, succession and weights apply. Regrowth is not a fixed timer at each stump.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.WildPlantSpawner",
+        "line_start": 411,
+        "line_end": 450
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.WildPlantSpawner",
+        "line_start": 542,
+        "line_end": 610
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.WildPlantSpawner",
+        "line_start": 613,
+        "line_end": 630
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.WildPlantSpawner",
+        "line_start": 671,
+        "line_end": 683
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.WildPlantSpawner",
+        "line_start": 704,
+        "line_end": 737
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantUtility",
+        "line_start": 35,
+        "line_end": 43
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantUtility",
+        "line_start": 69,
+        "line_end": 213
+      }
+    ]
+  },
+  {
+    "id": "PL19",
+    "kind": "static-derived",
+    "statement": "Saved plain-plant biological state includes growth/age/unlitTicks/madeLeaflessTick/sown; active sow/plant work have independent saved progress. Visual size and selected label are not authoritative biological state.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 588,
+        "line_end": 595
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.JobDriver_PlantSow",
+        "line_start": 13,
+        "line_end": 17
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.JobDriver_PlantWork",
+        "line_start": 132,
+        "line_end": 137
+      }
+    ]
+  },
+  {
+    "id": "PL20",
+    "kind": "static-derived-and-project-adaptation",
+    "statement": "A 3D project may normalize original60000ticks/day to its own calendar, retain original HP to convert absolute damage, and simplify tree-only ecology/stumps/light/skills/research. Each such choice needs a declared adaptation; arithmetic and static source validation do not execute either original gameplay or project implementation.",
+    "sources": [
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 334,
+        "line_end": 346
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 832,
+        "line_end": 849
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.WildPlantSpawner",
+        "line_start": 286,
+        "line_end": 317
+      }
+    ]
+  }
+]

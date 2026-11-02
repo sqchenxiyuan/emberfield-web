@@ -922,19 +922,30 @@ export class VoxelRenderer {
     this.inspectBatches.set(trunks, { cells: trees, instancesPerCell: 1 });
     this.inspectBatches.set(crowns, { cells: trees, instancesPerCell: 3 });
     trees.forEach((tree, i) => {
-      const size = 0.8 + hash(tree.x, tree.y) * 0.3,
+      const scale = 0.22 + 0.78 * MathUtils.clamp(tree.growth, 0, 1),
+        size = (0.8 + hash(tree.x, tree.y) * 0.3) * scale,
         turn = hash(tree.y, tree.x) * Math.PI;
-      this.instance(trunks, i, tree.x + 0.5, tree.z + 0.77, tree.y + 0.5, 1, 1, 1, 0x80633f);
+      this.instance(
+        trunks,
+        i,
+        tree.x + 0.5,
+        tree.z + 0.77 * scale,
+        tree.y + 0.5,
+        scale,
+        scale,
+        scale,
+        0x80633f,
+      );
       for (let layer = 0; layer < 3; layer++) {
         const radius = size * (1 - layer * 0.22);
         this.instance(
           crowns,
           i * 3 + layer,
           tree.x + 0.5,
-          tree.z + 1.55 + layer * 0.57,
+          tree.z + (1.55 + layer * 0.57) * scale,
           tree.y + 0.5,
           radius,
-          0.95,
+          0.95 * scale,
           radius,
           [0x426e52, 0x567e59, 0x6b9361][layer],
           turn,
@@ -959,17 +970,28 @@ export class VoxelRenderer {
     this.inspectBatches.set(poplarTrunks, { cells: poplars, instancesPerCell: 1 });
     this.inspectBatches.set(leaves, { cells: poplars, instancesPerCell: 3 });
     poplars.forEach((tree, i) => {
-      this.instance(poplarTrunks, i, tree.x + 0.5, tree.z + 0.77, tree.y + 0.5, 1, 1, 1, 0x927554);
+      const scale = 0.22 + 0.78 * MathUtils.clamp(tree.growth, 0, 1);
+      this.instance(
+        poplarTrunks,
+        i,
+        tree.x + 0.5,
+        tree.z + 0.77 * scale,
+        tree.y + 0.5,
+        scale,
+        scale,
+        scale,
+        0x927554,
+      );
       for (let part = 0; part < 3; part++)
         this.instance(
           leaves,
           i * 3 + part,
-          tree.x + 0.5 + (part - 1) * 0.34,
-          tree.z + 1.75 + (part === 1 ? 0.45 : 0),
+          tree.x + 0.5 + (part - 1) * 0.34 * scale,
+          tree.z + (1.75 + (part === 1 ? 0.45 : 0)) * scale,
           tree.y + 0.5,
-          0.67,
-          0.8,
-          0.6,
+          0.67 * scale,
+          0.8 * scale,
+          0.6 * scale,
           [0x6e974e, 0x86a95a, 0x5e8949][part],
           hash(tree.x, tree.y),
         );
@@ -980,6 +1002,7 @@ export class VoxelRenderer {
     const cactus = this.batch('cacti', cacti.length * 5, this.box, this.batchMaterial('cacti'));
     this.inspectBatches.set(cactus, { cells: cacti, instancesPerCell: 5 });
     cacti.forEach((tree, i) => {
+      const scale = 0.22 + 0.78 * MathUtils.clamp(tree.growth, 0, 1);
       const parts = [
         [0, 1, 0, 0.32, 2, 0.32],
         [-0.28, 1.05, 0, 0.55, 0.22, 0.25],
@@ -991,12 +1014,12 @@ export class VoxelRenderer {
         this.instance(
           cactus,
           i * 5 + k,
-          tree.x + 0.5 + x,
-          tree.z + y,
-          tree.y + 0.5 + z,
-          sx,
-          sy,
-          sz,
+          tree.x + 0.5 + x * scale,
+          tree.z + y * scale,
+          tree.y + 0.5 + z * scale,
+          sx * scale,
+          sy * scale,
+          sz * scale,
           k ? 0x6e925b : 0x5e8250,
         ),
       );
@@ -1501,6 +1524,32 @@ export class VoxelRenderer {
 
   private updateFarming() {
     if (!this.data) return;
+    const groves = this.data.treePlots.filter((plot) => plot.z === this.level);
+    const markers = this.batch(
+      'grove-markers',
+      groves.length * 4,
+      this.box,
+      this.batchMaterial('grove-markers'),
+    );
+    this.inspectBatches.set(markers, { cells: groves, instancesPerCell: 4 });
+    groves.forEach((plot, i) => {
+      for (let edge = 0; edge < 4; edge++) {
+        const horizontal = edge < 2;
+        const offset = edge % 2 === 0 ? 0.07 : 0.93;
+        this.instance(
+          markers,
+          i * 4 + edge,
+          plot.x + (horizontal ? 0.5 : offset),
+          plot.z + 0.035,
+          plot.y + (horizontal ? offset : 0.5),
+          horizontal ? 0.9 : 0.055,
+          0.035,
+          horizontal ? 0.055 : 0.9,
+          plot.species === 'pine' ? 0x74aca4 : plot.species === 'saguaro' ? 0xb6b178 : 0x9bbb71,
+        );
+      }
+    });
+    this.finish(markers);
     const farms = (this.data.farms ?? []).filter((plot) => plot.z === this.level);
     const furrows = this.batch(
       'farm-soil',
@@ -2225,7 +2274,8 @@ export class VoxelRenderer {
           ? stonecutterCells({ ...job, axis: job.axis ?? 'x' })[1]
           : pawn.workTarget;
       const cooking = working && job?.kind === 'cook';
-      const tending = working && (job?.kind === 'sow' || job?.kind === 'harvest');
+      const tending =
+        working && (job?.kind === 'sow' || job?.kind === 'plantTree' || job?.kind === 'harvest');
       if (cooking && job) cookingCells.add(index(job.x, job.y, job.z));
       const swing = Math.sin(time * 12 + pawn.id * 1.7);
       visual.leftLeg.rotation.x = moving ? swing * 0.55 : 0;

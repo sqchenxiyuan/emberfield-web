@@ -24,7 +24,9 @@
 
 2026-11-03切石更新：天然花岗岩每个被移除的体素有25%机会留下1岩块（每格/每次搬运1块），不再直接产砖。建3×1木切石台需75木材+30钢材，1岩块加工为20石砖；点击设库存目标、暂停，R旋转并留出操作位。墙/楼板可选石砖，分别用10/4砖，工人沿梯子实际配送施工。修改目标保留当前批次，暂停账单才退料。该阶段v7保留旧石材为石砖，旧仓储需手动勾选岩块；切石科技暂默认解锁。[24原版规则](docs/research/rimworld/24-stonecutting-mechanisms.md)、[25原版操作](docs/research/rimworld/25-native-stonecutting-runtime.md)、[26实现验收](docs/research/rimworld/26-voxel-stonecutting-implementation.md)区分原版证据与三维适配。
 
-2026-11-03世界生成更新：菜单中可预览并创建温带森林、寒带森林和沙漠，选择四档起伏，分别调整均温、雨量、纬度。实际土壤肥力、树种产量、有限三维矿脉与季节温度进入模拟；按真实出生点定位，新增总览视角。v8保留旧营地地形和旧温度规则。[27原版规则](docs/research/rimworld/27-biomes-terrain-generation.md)、[28原版选址](docs/research/rimworld/28-native-world-generation-runtime.md)、[29实现验收](docs/research/rimworld/29-voxel-world-generation-implementation.md)区分来源与适配；没有河海、洞穴、植被再生或完整行星世界图。
+2026-11-03世界生成更新：菜单中可预览并创建温带森林、寒带森林和沙漠，选择四档起伏，分别调整均温、雨量、纬度。实际土壤肥力、树种产量、有限三维矿脉与季节温度进入模拟；按真实出生点定位，新增总览视角。v8保留旧营地地形和旧温度规则。[27原版规则](docs/research/rimworld/27-biomes-terrain-generation.md)、[28原版选址](docs/research/rimworld/28-native-world-generation-runtime.md)、[29历史验收](docs/research/rimworld/29-voxel-world-generation-implementation.md)区分来源与适配；河海、洞穴和完整行星世界图仍未实现，植被更新见下。
+
+2026-11-03林业更新：树木有成长、树龄、健康及当前木材收益，受光照、温度和肥力影响，画面大小随成长变化。「林地区」可选择白杨、松树或巨柱仙人掌，自动留一格间距、实际播种，手动采伐后补植；取消林地保留树，清除幼苗不产木材。自然新苗避开农田、仓储、工位和唯一通路，老化或长期遮光会损伤树木。v9兼容旧成熟树及在途采伐工作。[30原版规则](docs/research/rimworld/30-plants-lifecycle-forestry-regrowth.md)与[32实现验收](docs/research/rimworld/32-voxel-plants-implementation.md)记录14.21游戏日经营闭环、旧存档与两条渲染路径；科技技能预解锁，树桩、病害和完整生态尚未实现。
 
 体素供粮：尽早在土壤上规划约110–128格稻米（每次框选最多128格），保留阳光，建一座20木材灶台。点击灶台设置简餐目标；每餐消耗10生食材和1木材。稻米约8游戏日首收，1日常速10分钟，可开3倍速。简餐宜少量制作，囤餐需实际降温的冷库；树木需继续砍伐补燃料。新世界需考虑季节和土壤：寒带低温会停长，沙地不能种普通作物；8日首收是适温普通土壤的参考。尚无饥荒伤害或食物中毒。
 

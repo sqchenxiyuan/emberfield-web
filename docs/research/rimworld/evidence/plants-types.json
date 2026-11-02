@@ -1,0 +1,16 @@
+[
+  "RimWorld.WorkGiver_Grower",
+  "RimWorld.WorkGiver_GrowerSow",
+  "RimWorld.PlantToGrowSettableUtility",
+  "RimWorld.JobDriver_PlantCut",
+  "RimWorld.Designator_Plants",
+  "RimWorld.Designator_PlantsCut",
+  "RimWorld.Designator_PlantsHarvest",
+  "RimWorld.Designator_PlantsHarvestWood",
+  "RimWorld.WorkGiver_PlantsCut",
+  "RimWorld.JobDriver_PlantHarvest_Designated",
+  "RimWorld.JobDriver_PlantCut_Designated",
+  "Verse.Rand",
+  "RimWorld.DeadPlant",
+  "Verse.Command_SetPlantToGrow"
+]

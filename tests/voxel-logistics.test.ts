@@ -133,7 +133,7 @@ describe('bounded physical stacks and hauling reservations', () => {
     expect(s.items.filter((i) => i.resource === 'food').map((i) => i.amount)).toEqual([
       10, 10, 10, 10, 10, 10,
     ]);
-    expect(s.save().version).toBe(8);
+    expect(s.save().version).toBe(9);
     expect(VoxelSimulation.load(s.save()).counts()).toEqual(s.counts());
   });
   it.each(resources)('carries and stores %s only within its native one-stack limit', (resource) => {
@@ -396,7 +396,17 @@ describe('bounded outputs and interrupted physical containers', () => {
         add(s, pos(12, 12), 'meal', 10, { rotProgress: 4 * DAY - 300 });
         if (kind === 'cut') {
           carve(s, pos(13, 11));
-          s.trees.push({ ...pos(13, 11), id: s.nextId++, wood: 27, species: 'poplar' });
+          s.trees.push({
+            ...pos(13, 11),
+            id: s.nextId++,
+            wood: 27,
+            species: 'poplar',
+            growth: 1,
+            age: 0,
+            planted: false,
+            health: 1,
+            unlitTicks: 0,
+          });
           s.pawns[0].priorities.cut = 1;
         } else {
           s.blocks[index(11, 11, 7)] = Block.Soil;

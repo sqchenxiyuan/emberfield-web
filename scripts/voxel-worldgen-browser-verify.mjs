@@ -167,23 +167,34 @@ async function verify(mode) {
     await click('收起指引');
     await click('查看');
     await settle();
-    const center = await page.evaluate((p) => window.voxel.project({ ...p, z: p.z + 1 }), tree);
+    const selectedTree = (await state()).snapshot.trees.find(
+      (t) => t.x === tree.x && t.y === tree.y && t.z === tree.z,
+    );
+    assert(selectedTree);
+    const expectedWood = (await state()).snapshot.treeConditions.find(
+      (c) => c.id === selectedTree.id,
+    ).yield;
+    const center = await page.evaluate(
+      ({ p, growth }) => window.voxel.project({ ...p, z: p.z + 0.15 + 0.25 * growth }),
+      { p: tree, growth: selectedTree.growth },
+    );
     await page.mouse.click(center.x, center.y);
     await wait((p) => {
       const q = window.voxel.snapshot().selected;
       return q?.x === p.x && q?.y === p.y && q?.z === p.z;
     }, tree);
-    assert.match(
-      await page.getByTestId('voxel-inspector').innerText(),
-      /巨柱仙人掌[\s\S]*木材 × 15/,
-    );
+    assert.match(await page.getByTestId('voxel-inspector').innerText(), /巨柱仙人掌/);
+    assert((await page.getByTestId('tree-detail').innerText()).includes(`木材 × ${expectedWood}`));
     await click('伐木');
     await page.mouse.click(center.x, center.y);
     await click('3倍速');
     await wait(() => window.voxel.snapshot().snapshot.stats.cut >= 1);
     await click('暂停');
-    assert.equal((await state()).snapshot.stats.produced.wood, 15);
-    check('a visible cactus is selectable and actual work produces fifteen wood');
+    assert.equal((await state()).snapshot.stats.produced.wood, expectedWood);
+    check(
+      'a visible cactus is selectable and actual work produces its current growth-dependent yield',
+      { expectedWood },
+    );
     await click('菜单与存档');
     await click('保存营地');
     await page.getByText('手动保存成功', { exact: true }).waitFor();
@@ -213,7 +224,7 @@ async function verify(mode) {
     check('world setup remains reachable at 900 by 700');
     await importLegacyStart(page);
     assert.equal((await save()).generator, 1);
-    assert.equal((await save()).version, 8);
+    assert.equal((await save()).version, 9);
     assert.equal((await state()).snapshot.temperature, 21);
     check('unchanged published v7 colony loads as generator 1 with its original climate');
     await Promise.all(reads);

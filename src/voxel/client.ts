@@ -16,6 +16,7 @@ import {
   type CropKind,
   type WorldSettings,
   type WorldPreview,
+  type TreeSpecies,
 } from './types';
 export interface ClientState {
   snapshot: VoxelSnapshot | null;
@@ -25,6 +26,7 @@ export interface ClientState {
   rotation: number;
   tool: Tool;
   crop: CropKind;
+  treeSpecies: TreeSpecies;
   axis: Axis;
   material: 'wood' | 'stone';
   metrics: Record<string, unknown>;
@@ -53,6 +55,7 @@ export class VoxelClient {
     rotation: Math.PI / 4,
     tool: 'inspect',
     crop: 'rice',
+    treeSpecies: 'poplar',
     axis: 'x',
     material: 'wood',
     metrics: {},
@@ -67,6 +70,7 @@ export class VoxelClient {
   };
   snapshot = () => this.state;
   chooseCrop = (crop: CropKind) => this.emit({ crop });
+  chooseTree = (treeSpecies: TreeSpecies) => this.emit({ treeSpecies });
   chooseMaterial = (material: 'wood' | 'stone') => this.emit({ material });
   rotatePlan = () => this.emit({ axis: this.state.axis === 'x' ? 'y' : 'x' });
   roomAt = (p: Pos) =>
@@ -316,6 +320,7 @@ export class VoxelClient {
           from,
           to: single ? from : { ...to, z: from.z },
           crop: this.state.crop,
+          ...(this.state.tool === 'grove' ? { treeSpecies: this.state.treeSpecies } : {}),
           axis: this.state.axis,
           ...(['wall', 'floor'].includes(this.state.tool) ? { material: this.state.material } : {}),
         });

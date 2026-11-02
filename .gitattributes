@@ -1,2 +1,4 @@
 # Recorded action streams are hashed byte-for-byte by the research verifier.
 docs/research/rimworld/evidence/*.jsonl text eol=lf
+# Published save fixtures retain their captured bytes on Windows checkouts too.
+tests/fixtures/voxel-v*.json text eol=lf

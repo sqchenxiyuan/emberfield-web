@@ -1,0 +1,27 @@
+{
+  "format": "emberfield-fixture-provenance",
+  "fixture": "voxel-v8-start.json",
+  "sourceCommit": "ab51596c983082b7b2db2aef8da965018833f25b",
+  "capturedAt": "2026-11-02T20:57:34.585Z",
+  "creation": "Public new VoxelSimulation(73129) followed by save(), before lifecycle changes",
+  "encoding": "UTF-8 without BOM; compact JSON with one trailing LF",
+  "sha256": "e44adc4c30a85f9c58d38d78087c079a1694b0c58e14c62c28b2253820be0512",
+  "bytes": 31039,
+  "seed": 73129,
+  "version": 8,
+  "generator": 2,
+  "settings": {
+    "biome": "temperate",
+    "hilliness": "small",
+    "meanTemperature": 17,
+    "rainfall": 1100,
+    "latitude": 35
+  },
+  "sourceHashes": {
+    "src/voxel/world.ts": "7b8702a3508c5dbbbad5b3796c45c218a7d16101ad82649eb2838be80b968983",
+    "src/voxel/worldgen.ts": "b954f03b031615fcc98406015d1f10f87c491b1e64f46a58fc8921c60dc1278c",
+    "src/voxel/types.ts": "c42f74d21a86836e3588c730b8febe64549afcc72678fb25dc212e9f6856987e",
+    "src/voxel/climate.ts": "2386d38fc2b258034516de80caee53627d62c184bd18cadb741c213cc781bf29",
+    "src/voxel/farming.ts": "63d20108d3bb1d961461657392f438e7cc666593af2d43ca238f7ec5eadf80ae"
+  }
+}

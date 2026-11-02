@@ -1,0 +1,1160 @@
+{
+  "schema_version": 1,
+  "evidence_id": "RW17-NATIVE-PLANTS-RUNTIME",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "process_id": 29920,
+  "profile": ".local-research/runtime/profile-20261102",
+  "active_mods": [
+    "ludeon.rimworld",
+    "ludeon.rimworld.odyssey"
+  ],
+  "rea": {
+    "server_version": "6.7.0",
+    "session_open": false,
+    "runtime_method": "Existing guarded Windows foreground mouse/keyboard screenshot helper; not REA native UI execution.",
+    "native_ui_provider": "unsupported_host: native macOS utilities require macOS",
+    "skill_version": 42
+  },
+  "snapshots": [
+    {
+      "name": "stonecutting-final",
+      "path": ".local-research/runtime/profile-20261102/Saves/stonecutting-final.rws",
+      "save": {
+        "file": "stonecutting-final.rws",
+        "sha256": "2af1ff41a338adbb9fdc458b01433acceae8f90ef323f5f71e5ee0929494dc6a",
+        "bytes": 6285372,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 50881,
+        "tree_sowing_research_progress": 0.0,
+        "growing_zones": [],
+        "recorded_cacti": [
+          {
+            "id": "Plant_SaguaroCactus38625",
+            "def": "Plant_SaguaroCactus",
+            "pos": "(75, 0, 158)",
+            "health": 130,
+            "growth": 0.388348192,
+            "age": 595223
+          },
+          {
+            "id": "Plant_SaguaroCactus39903",
+            "def": "Plant_SaguaroCactus",
+            "pos": "(123, 0, 133)",
+            "health": 130,
+            "growth": 0.703730941,
+            "age": 11992097
+          }
+        ],
+        "explicit_wood": [
+          {
+            "id": "WoodLog38593",
+            "pos": "(107, 0, 109)",
+            "count": 45
+          },
+          {
+            "id": "WoodLog38594",
+            "pos": "(112, 0, 111)",
+            "count": 53
+          },
+          {
+            "id": "WoodLog38595",
+            "pos": "(111, 0, 107)",
+            "count": 47
+          },
+          {
+            "id": "WoodLog38596",
+            "pos": "(108, 0, 110)",
+            "count": 61
+          },
+          {
+            "id": "WoodLog38597",
+            "pos": "(121, 0, 126)",
+            "count": 45
+          },
+          {
+            "id": "WoodLog38598",
+            "pos": "(118, 0, 126)",
+            "count": 49
+          },
+          {
+            "id": "WoodLog41897",
+            "pos": "(105, 0, 125)",
+            "count": 2
+          },
+          {
+            "id": "WoodLog42138",
+            "pos": "(105, 0, 133)",
+            "count": 4
+          },
+          {
+            "id": "WoodLog42139",
+            "pos": "(108, 0, 133)",
+            "count": 32
+          },
+          {
+            "id": "WoodLog42142",
+            "pos": "(105, 0, 129)",
+            "count": 75
+          }
+        ],
+        "pawns": [
+          {
+            "id": "Human958",
+            "nick": "Prophet",
+            "job": "LayDown",
+            "plants_skill": 10
+          },
+          {
+            "id": "Human961",
+            "nick": "Squint",
+            "job": "GoForWalk",
+            "plants_skill": 3
+          },
+          {
+            "id": "Human965",
+            "nick": "Grump",
+            "job": "LayDown",
+            "plants_skill": 0
+          }
+        ],
+        "designations": [],
+        "scope": "Explicit save XML only. Research progress is a stored value, not a runtime disabled-reason test; no harvest was executed."
+      }
+    },
+    {
+      "name": "plants-entry-a",
+      "path": ".local-research/runtime/profile-20261102/Saves/plants-entry-a.rws",
+      "save": {
+        "file": "plants-entry-a.rws",
+        "sha256": "5028e2652645f0d9cbb3e32382411f2b12275500dc4aeb721349a6d5135d7434",
+        "bytes": 6129393,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 134003,
+        "tree_sowing_research_progress": 0.0,
+        "growing_zones": [],
+        "recorded_cacti": [
+          {
+            "id": "Plant_SaguaroCactus38625",
+            "def": "Plant_SaguaroCactus",
+            "pos": "(75, 0, 158)",
+            "health": 130,
+            "growth": 0.522592127,
+            "age": 677223
+          }
+        ],
+        "explicit_wood": [
+          {
+            "id": "WoodLog38593",
+            "pos": "(107, 0, 109)",
+            "count": 45
+          },
+          {
+            "id": "WoodLog38594",
+            "pos": "(112, 0, 111)",
+            "count": 53
+          },
+          {
+            "id": "WoodLog38595",
+            "pos": "(111, 0, 107)",
+            "count": 47
+          },
+          {
+            "id": "WoodLog38596",
+            "pos": "(108, 0, 110)",
+            "count": 61
+          },
+          {
+            "id": "WoodLog38597",
+            "pos": "(121, 0, 126)",
+            "count": 45
+          },
+          {
+            "id": "WoodLog38598",
+            "pos": "(118, 0, 126)",
+            "count": 49
+          },
+          {
+            "id": "WoodLog42138",
+            "pos": "(105, 0, 133)",
+            "count": 4
+          },
+          {
+            "id": "WoodLog42139",
+            "pos": "(108, 0, 133)",
+            "count": 29
+          },
+          {
+            "id": "WoodLog42142",
+            "pos": "(105, 0, 129)",
+            "count": 75
+          }
+        ],
+        "pawns": [
+          {
+            "id": "Human958",
+            "nick": "Prophet",
+            "job": "GotoWander",
+            "plants_skill": 10
+          },
+          {
+            "id": "Human961",
+            "nick": "Squint",
+            "job": "GotoWander",
+            "plants_skill": 3
+          },
+          {
+            "id": "Human965",
+            "nick": "Grump",
+            "job": "Wait_Downed",
+            "plants_skill": 0
+          }
+        ],
+        "designations": [],
+        "scope": "Explicit save XML only. Research progress is a stored value, not a runtime disabled-reason test; no harvest was executed."
+      }
+    },
+    {
+      "name": "plants-entry-b",
+      "path": ".local-research/runtime/profile-20261102/Saves/plants-entry-b.rws",
+      "save": {
+        "file": "plants-entry-b.rws",
+        "sha256": "ff2a9871fc5fe3fff674063413ed36067e85e3f6640386b526661e11b826e11f",
+        "bytes": 6129393,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 134003,
+        "tree_sowing_research_progress": 0.0,
+        "growing_zones": [],
+        "recorded_cacti": [
+          {
+            "id": "Plant_SaguaroCactus38625",
+            "def": "Plant_SaguaroCactus",
+            "pos": "(75, 0, 158)",
+            "health": 130,
+            "growth": 0.522592127,
+            "age": 677223
+          }
+        ],
+        "explicit_wood": [
+          {
+            "id": "WoodLog38593",
+            "pos": "(107, 0, 109)",
+            "count": 45
+          },
+          {
+            "id": "WoodLog38594",
+            "pos": "(112, 0, 111)",
+            "count": 53
+          },
+          {
+            "id": "WoodLog38595",
+            "pos": "(111, 0, 107)",
+            "count": 47
+          },
+          {
+            "id": "WoodLog38596",
+            "pos": "(108, 0, 110)",
+            "count": 61
+          },
+          {
+            "id": "WoodLog38597",
+            "pos": "(121, 0, 126)",
+            "count": 45
+          },
+          {
+            "id": "WoodLog38598",
+            "pos": "(118, 0, 126)",
+            "count": 49
+          },
+          {
+            "id": "WoodLog42138",
+            "pos": "(105, 0, 133)",
+            "count": 4
+          },
+          {
+            "id": "WoodLog42139",
+            "pos": "(108, 0, 133)",
+            "count": 29
+          },
+          {
+            "id": "WoodLog42142",
+            "pos": "(105, 0, 129)",
+            "count": 75
+          }
+        ],
+        "pawns": [
+          {
+            "id": "Human958",
+            "nick": "Prophet",
+            "job": "GotoWander",
+            "plants_skill": 10
+          },
+          {
+            "id": "Human961",
+            "nick": "Squint",
+            "job": "GotoWander",
+            "plants_skill": 3
+          },
+          {
+            "id": "Human965",
+            "nick": "Grump",
+            "job": "Wait_Downed",
+            "plants_skill": 0
+          }
+        ],
+        "designations": [],
+        "scope": "Explicit save XML only. Research progress is a stored value, not a runtime disabled-reason test; no harvest was executed."
+      }
+    },
+    {
+      "name": "plants-start",
+      "path": ".local-research/runtime/profile-20261102/Saves/plants-start.rws",
+      "save": {
+        "file": "plants-start.rws",
+        "sha256": "8043601055d35ba1df91edda83aaa519d70695ecdca068085ecbdbfb4f377d77",
+        "bytes": 6230102,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 55840,
+        "tree_sowing_research_progress": 0.0,
+        "growing_zones": [],
+        "recorded_cacti": [
+          {
+            "id": "Plant_SaguaroCactus38625",
+            "def": "Plant_SaguaroCactus",
+            "pos": "(75, 0, 158)",
+            "health": 130,
+            "growth": 0.388348192,
+            "age": 599223
+          },
+          {
+            "id": "Plant_SaguaroCactus39903",
+            "def": "Plant_SaguaroCactus",
+            "pos": "(123, 0, 133)",
+            "health": 130,
+            "growth": 0.703730941,
+            "age": 11996097
+          }
+        ],
+        "explicit_wood": [
+          {
+            "id": "WoodLog38593",
+            "pos": "(107, 0, 109)",
+            "count": 45
+          },
+          {
+            "id": "WoodLog38594",
+            "pos": "(112, 0, 111)",
+            "count": 53
+          },
+          {
+            "id": "WoodLog38595",
+            "pos": "(111, 0, 107)",
+            "count": 47
+          },
+          {
+            "id": "WoodLog38596",
+            "pos": "(108, 0, 110)",
+            "count": 61
+          },
+          {
+            "id": "WoodLog38597",
+            "pos": "(121, 0, 126)",
+            "count": 45
+          },
+          {
+            "id": "WoodLog38598",
+            "pos": "(118, 0, 126)",
+            "count": 49
+          },
+          {
+            "id": "WoodLog41897",
+            "pos": "(105, 0, 125)",
+            "count": 2
+          },
+          {
+            "id": "WoodLog42138",
+            "pos": "(105, 0, 133)",
+            "count": 4
+          },
+          {
+            "id": "WoodLog42139",
+            "pos": "(108, 0, 133)",
+            "count": 32
+          },
+          {
+            "id": "WoodLog42142",
+            "pos": "(105, 0, 129)",
+            "count": 75
+          }
+        ],
+        "pawns": [
+          {
+            "id": "Human958",
+            "nick": "Prophet",
+            "job": "LayDown",
+            "plants_skill": 10
+          },
+          {
+            "id": "Human961",
+            "nick": "Squint",
+            "job": "GotoWander",
+            "plants_skill": 3
+          },
+          {
+            "id": "Human965",
+            "nick": "Grump",
+            "job": "LayDown",
+            "plants_skill": 0
+          }
+        ],
+        "designations": [],
+        "scope": "Explicit save XML only. Research progress is a stored value, not a runtime disabled-reason test; no harvest was executed."
+      }
+    },
+    {
+      "name": "plants-ready-a",
+      "path": ".local-research/runtime/profile-20261102/Saves/plants-ready-a.rws",
+      "save": {
+        "file": "plants-ready-a.rws",
+        "sha256": "09bde943adb049504e805860b5339848fd72c5466ee2fa2c4d8e640f07d1865f",
+        "bytes": 6124006,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 64249,
+        "tree_sowing_research_progress": 0.0,
+        "growing_zones": [],
+        "recorded_cacti": [
+          {
+            "id": "Plant_SaguaroCactus38625",
+            "def": "Plant_SaguaroCactus",
+            "pos": "(75, 0, 158)",
+            "health": 130,
+            "growth": 0.396612734,
+            "age": 607223
+          },
+          {
+            "id": "Plant_SaguaroCactus39903",
+            "def": "Plant_SaguaroCactus",
+            "pos": "(123, 0, 133)",
+            "health": 90,
+            "growth": 0.715002835,
+            "age": 12006097
+          }
+        ],
+        "explicit_wood": [
+          {
+            "id": "WoodLog38593",
+            "pos": "(107, 0, 109)",
+            "count": 45
+          },
+          {
+            "id": "WoodLog38594",
+            "pos": "(112, 0, 111)",
+            "count": 53
+          },
+          {
+            "id": "WoodLog38595",
+            "pos": "(111, 0, 107)",
+            "count": 47
+          },
+          {
+            "id": "WoodLog38596",
+            "pos": "(108, 0, 110)",
+            "count": 61
+          },
+          {
+            "id": "WoodLog38597",
+            "pos": "(121, 0, 126)",
+            "count": 45
+          },
+          {
+            "id": "WoodLog38598",
+            "pos": "(118, 0, 126)",
+            "count": 49
+          },
+          {
+            "id": "WoodLog41897",
+            "pos": "(105, 0, 125)",
+            "count": 2
+          },
+          {
+            "id": "WoodLog42138",
+            "pos": "(105, 0, 133)",
+            "count": 4
+          },
+          {
+            "id": "WoodLog42139",
+            "pos": "(108, 0, 133)",
+            "count": 32
+          },
+          {
+            "id": "WoodLog42142",
+            "pos": "(105, 0, 129)",
+            "count": 75
+          }
+        ],
+        "pawns": [
+          {
+            "id": "Human958",
+            "nick": "Prophet",
+            "job": "FinishFrame",
+            "plants_skill": 10
+          },
+          {
+            "id": "Human961",
+            "nick": "Squint",
+            "job": "GotoWander",
+            "plants_skill": 3
+          },
+          {
+            "id": "Human965",
+            "nick": "Grump",
+            "job": "LayDown",
+            "plants_skill": 0
+          }
+        ],
+        "designations": [],
+        "scope": "Explicit save XML only. Research progress is a stored value, not a runtime disabled-reason test; no harvest was executed."
+      }
+    },
+    {
+      "name": "plants-ready-b",
+      "path": ".local-research/runtime/profile-20261102/Saves/plants-ready-b.rws",
+      "save": {
+        "file": "plants-ready-b.rws",
+        "sha256": "5c6c2f585873449129ebeb38cfb6ff415de90780a0508f4dd6db3d0d51def7a5",
+        "bytes": 6124006,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 64249,
+        "tree_sowing_research_progress": 0.0,
+        "growing_zones": [],
+        "recorded_cacti": [
+          {
+            "id": "Plant_SaguaroCactus38625",
+            "def": "Plant_SaguaroCactus",
+            "pos": "(75, 0, 158)",
+            "health": 130,
+            "growth": 0.396612734,
+            "age": 607223
+          },
+          {
+            "id": "Plant_SaguaroCactus39903",
+            "def": "Plant_SaguaroCactus",
+            "pos": "(123, 0, 133)",
+            "health": 90,
+            "growth": 0.715002835,
+            "age": 12006097
+          }
+        ],
+        "explicit_wood": [
+          {
+            "id": "WoodLog38593",
+            "pos": "(107, 0, 109)",
+            "count": 45
+          },
+          {
+            "id": "WoodLog38594",
+            "pos": "(112, 0, 111)",
+            "count": 53
+          },
+          {
+            "id": "WoodLog38595",
+            "pos": "(111, 0, 107)",
+            "count": 47
+          },
+          {
+            "id": "WoodLog38596",
+            "pos": "(108, 0, 110)",
+            "count": 61
+          },
+          {
+            "id": "WoodLog38597",
+            "pos": "(121, 0, 126)",
+            "count": 45
+          },
+          {
+            "id": "WoodLog38598",
+            "pos": "(118, 0, 126)",
+            "count": 49
+          },
+          {
+            "id": "WoodLog41897",
+            "pos": "(105, 0, 125)",
+            "count": 2
+          },
+          {
+            "id": "WoodLog42138",
+            "pos": "(105, 0, 133)",
+            "count": 4
+          },
+          {
+            "id": "WoodLog42139",
+            "pos": "(108, 0, 133)",
+            "count": 32
+          },
+          {
+            "id": "WoodLog42142",
+            "pos": "(105, 0, 129)",
+            "count": 75
+          }
+        ],
+        "pawns": [
+          {
+            "id": "Human958",
+            "nick": "Prophet",
+            "job": "FinishFrame",
+            "plants_skill": 10
+          },
+          {
+            "id": "Human961",
+            "nick": "Squint",
+            "job": "GotoWander",
+            "plants_skill": 3
+          },
+          {
+            "id": "Human965",
+            "nick": "Grump",
+            "job": "LayDown",
+            "plants_skill": 0
+          }
+        ],
+        "designations": [],
+        "scope": "Explicit save XML only. Research progress is a stored value, not a runtime disabled-reason test; no harvest was executed."
+      }
+    },
+    {
+      "name": "plants-stopped-a",
+      "path": ".local-research/runtime/profile-20261102/Saves/plants-stopped-a.rws",
+      "save": {
+        "file": "plants-stopped-a.rws",
+        "sha256": "aa09f09dd55501a523efe9cab4539c901e9d82584daad19c8153407007291884",
+        "bytes": 6124743,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 64249,
+        "tree_sowing_research_progress": 0.0,
+        "growing_zones": [
+          {
+            "id": 1,
+            "label": "Growing zone 1",
+            "cells": [
+              "(89, 0, 138)"
+            ],
+            "plant": "Plant_Potato",
+            "hidden": false
+          },
+          {
+            "id": 2,
+            "label": "Growing zone 2",
+            "cells": [
+              "(123, 0, 133)"
+            ],
+            "plant": "Plant_Potato",
+            "hidden": true
+          }
+        ],
+        "recorded_cacti": [
+          {
+            "id": "Plant_SaguaroCactus38625",
+            "def": "Plant_SaguaroCactus",
+            "pos": "(75, 0, 158)",
+            "health": 130,
+            "growth": 0.396612734,
+            "age": 607223
+          },
+          {
+            "id": "Plant_SaguaroCactus39903",
+            "def": "Plant_SaguaroCactus",
+            "pos": "(123, 0, 133)",
+            "health": 90,
+            "growth": 0.715002835,
+            "age": 12006097
+          }
+        ],
+        "explicit_wood": [
+          {
+            "id": "WoodLog38593",
+            "pos": "(107, 0, 109)",
+            "count": 45
+          },
+          {
+            "id": "WoodLog38594",
+            "pos": "(112, 0, 111)",
+            "count": 53
+          },
+          {
+            "id": "WoodLog38595",
+            "pos": "(111, 0, 107)",
+            "count": 47
+          },
+          {
+            "id": "WoodLog38596",
+            "pos": "(108, 0, 110)",
+            "count": 61
+          },
+          {
+            "id": "WoodLog38597",
+            "pos": "(121, 0, 126)",
+            "count": 45
+          },
+          {
+            "id": "WoodLog38598",
+            "pos": "(118, 0, 126)",
+            "count": 49
+          },
+          {
+            "id": "WoodLog41897",
+            "pos": "(105, 0, 125)",
+            "count": 2
+          },
+          {
+            "id": "WoodLog42138",
+            "pos": "(105, 0, 133)",
+            "count": 4
+          },
+          {
+            "id": "WoodLog42139",
+            "pos": "(108, 0, 133)",
+            "count": 32
+          },
+          {
+            "id": "WoodLog42142",
+            "pos": "(105, 0, 129)",
+            "count": 75
+          }
+        ],
+        "pawns": [
+          {
+            "id": "Human958",
+            "nick": "Prophet",
+            "job": "FinishFrame",
+            "plants_skill": 10
+          },
+          {
+            "id": "Human961",
+            "nick": "Squint",
+            "job": "GotoWander",
+            "plants_skill": 3
+          },
+          {
+            "id": "Human965",
+            "nick": "Grump",
+            "job": "LayDown",
+            "plants_skill": 0
+          }
+        ],
+        "designations": [],
+        "scope": "Explicit save XML only. Research progress is a stored value, not a runtime disabled-reason test; no harvest was executed."
+      }
+    },
+    {
+      "name": "plants-stopped-b",
+      "path": ".local-research/runtime/profile-20261102/Saves/plants-stopped-b.rws",
+      "save": {
+        "file": "plants-stopped-b.rws",
+        "sha256": "bfe8a18d28aebe8b1bf3b7fbebae2d7ded44068bddcc12320cad2a5b7bbabf03",
+        "bytes": 6124743,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 64249,
+        "tree_sowing_research_progress": 0.0,
+        "growing_zones": [
+          {
+            "id": 1,
+            "label": "Growing zone 1",
+            "cells": [
+              "(89, 0, 138)"
+            ],
+            "plant": "Plant_Potato",
+            "hidden": false
+          },
+          {
+            "id": 2,
+            "label": "Growing zone 2",
+            "cells": [
+              "(123, 0, 133)"
+            ],
+            "plant": "Plant_Potato",
+            "hidden": true
+          }
+        ],
+        "recorded_cacti": [
+          {
+            "id": "Plant_SaguaroCactus38625",
+            "def": "Plant_SaguaroCactus",
+            "pos": "(75, 0, 158)",
+            "health": 130,
+            "growth": 0.396612734,
+            "age": 607223
+          },
+          {
+            "id": "Plant_SaguaroCactus39903",
+            "def": "Plant_SaguaroCactus",
+            "pos": "(123, 0, 133)",
+            "health": 90,
+            "growth": 0.715002835,
+            "age": 12006097
+          }
+        ],
+        "explicit_wood": [
+          {
+            "id": "WoodLog38593",
+            "pos": "(107, 0, 109)",
+            "count": 45
+          },
+          {
+            "id": "WoodLog38594",
+            "pos": "(112, 0, 111)",
+            "count": 53
+          },
+          {
+            "id": "WoodLog38595",
+            "pos": "(111, 0, 107)",
+            "count": 47
+          },
+          {
+            "id": "WoodLog38596",
+            "pos": "(108, 0, 110)",
+            "count": 61
+          },
+          {
+            "id": "WoodLog38597",
+            "pos": "(121, 0, 126)",
+            "count": 45
+          },
+          {
+            "id": "WoodLog38598",
+            "pos": "(118, 0, 126)",
+            "count": 49
+          },
+          {
+            "id": "WoodLog41897",
+            "pos": "(105, 0, 125)",
+            "count": 2
+          },
+          {
+            "id": "WoodLog42138",
+            "pos": "(105, 0, 133)",
+            "count": 4
+          },
+          {
+            "id": "WoodLog42139",
+            "pos": "(108, 0, 133)",
+            "count": 32
+          },
+          {
+            "id": "WoodLog42142",
+            "pos": "(105, 0, 129)",
+            "count": 75
+          }
+        ],
+        "pawns": [
+          {
+            "id": "Human958",
+            "nick": "Prophet",
+            "job": "FinishFrame",
+            "plants_skill": 10
+          },
+          {
+            "id": "Human961",
+            "nick": "Squint",
+            "job": "GotoWander",
+            "plants_skill": 3
+          },
+          {
+            "id": "Human965",
+            "nick": "Grump",
+            "job": "LayDown",
+            "plants_skill": 0
+          }
+        ],
+        "designations": [],
+        "scope": "Explicit save XML only. Research progress is a stored value, not a runtime disabled-reason test; no harvest was executed."
+      }
+    }
+  ],
+  "ui_samples": [
+    {
+      "shot": "cactus38",
+      "health": 130,
+      "growth_percent": 38,
+      "growth_rate_percent": 0,
+      "growth_reason": "resting, needs light level 51%",
+      "plant": "Saguaro cactus",
+      "chop_wood_button_visible": true,
+      "max_health": 130
+    },
+    {
+      "shot": "cactus71",
+      "health": 90,
+      "health_percent_displayed": 69,
+      "growth_percent": 71,
+      "growth_rate_percent": 100,
+      "plant": "Saguaro cactus",
+      "chop_wood_button_visible": true,
+      "max_health": 130
+    }
+  ],
+  "visible_sow_menu": [
+    "Corn plant",
+    "Haygrass",
+    "Potato plant",
+    "Rice plant",
+    "Strawberry plant (min skill: 5)",
+    "Healroot (min skill: 8)",
+    "Dandelions",
+    "Daylily",
+    "Rose",
+    "Cotton plant",
+    "Hop plant (min skill: 3)",
+    "Psychoid plant (min skill: 6)",
+    "Smokeleaf plant (min skill: 4)",
+    "Tinctoria"
+  ],
+  "clock": {
+    "entry_ticks": [
+      134003,
+      134003
+    ],
+    "start_after_load_tick": 55840,
+    "deliberate_run_windows": 0,
+    "baseline_tick": 50881,
+    "ready_ticks": [
+      64249,
+      64249
+    ],
+    "controlled_paused_phase_delta": 0,
+    "final_pause_verified": true,
+    "unplanned_post_load_advance": 13368,
+    "final_ticks": [
+      64249,
+      64249
+    ]
+  },
+  "outcomes": {
+    "normal_tree_chop_finished": false,
+    "controlled_growth_experiment": false,
+    "harvest_work_time_observed": false,
+    "sowing_eligibility_exercised": false,
+    "health_growth_distinction_observed": true,
+    "chop_button_observed": true,
+    "tree_option_selected": false,
+    "different_growth_percentages_observed": true,
+    "harvest_yield_observed": false,
+    "multi_season_growth_observed": false,
+    "tree_disabled_reason_popup_observed": false,
+    "growing_zone_created": true,
+    "crop_min_skill_labels_observed": true,
+    "normal_tree_chop_started": false
+  },
+  "screenshots": [
+    {
+      "id": "baseline-load",
+      "image": "runtime/plants-baseline-load.png",
+      "sha256": "9a37183a1b34406aef999a0b243d6a4ede881c0dd86f93f5ae2434a6eb1ce082",
+      "source_file": ".local-research/runtime/plants-003-load-dialog.png",
+      "source_sha256": "cb03f7ee0ef5b19b5870d1c08b3d84ad9b59ab0405774ce340adacdaf229e088",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        960,
+        360,
+        640,
+        710
+      ],
+      "observed_utc": "2026-11-02T21:01:11.9596261Z",
+      "observation": "Original isolated load dialog includes stonecutting-final; subsequent action clicks its Load button."
+    },
+    {
+      "id": "loaded",
+      "image": "runtime/plants-loaded.png",
+      "sha256": "67798215bf2b71d8034771101c2c1a37a2f086bbe3b35d464888a3dba45d4b8a",
+      "source_file": ".local-research/runtime/plants-005-loaded.png",
+      "source_sha256": "4f3d80db29bbafc3fe69285cffea3c37bbc9c5a9e86cdb87d50318964f73edd7",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1100,
+        2560,
+        340
+      ],
+      "observed_utc": "2026-11-02T21:03:09.9881849Z",
+      "observation": "Loaded original colony before plant observations; time later shown to have resumed automatically."
+    },
+    {
+      "id": "cactus38",
+      "image": "runtime/plants-cactus38.png",
+      "sha256": "4546289a840461f5857633542d000505f8359e918c4690fc284a2e4c0de106c6",
+      "source_file": ".local-research/runtime/plants-006-cactus-a.png",
+      "source_sha256": "1775f8cf6aa3d43c761272fefe80e884fa5e79b0a7d9f0d7ce6a00f6748ff151",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1230,
+        620,
+        180
+      ],
+      "observed_utc": "2026-11-02T21:04:31.7238603Z",
+      "observation": "Saguaro cactus:130/130 health,38% grown; growth0% resting/needs light level51%; Chop wood button."
+    },
+    {
+      "id": "cactus71",
+      "image": "runtime/plants-cactus71.png",
+      "sha256": "4dbe942f2b1c4886dda852af8261b4d3414ab65703eff5c5bec7fa1e4367ce5b",
+      "source_file": ".local-research/runtime/plants-009-cactus-second.png",
+      "source_sha256": "c56f64b3620f4bc2b242a93d8456402f1fe9cad319f0006c8ae819f15f712dc3",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1230,
+        620,
+        180
+      ],
+      "observed_utc": "2026-11-02T21:07:09.4820015Z",
+      "observation": "Saguaro cactus:90/130 health (69%),71% grown; growth100%; Chop wood button."
+    },
+    {
+      "id": "growing-zone",
+      "image": "runtime/plants-growing-zone.png",
+      "sha256": "6ec56f0ac7812bfd69b98bb510c2ab9a2c4fb6524b9730721d53757839b50f08",
+      "source_file": ".local-research/runtime/plants-015-select-growing.png",
+      "source_sha256": "5f2e9c711613ca326e0dcec965b9d505da45f0d6cf88751644d8251227e3ce55",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1230,
+        1000,
+        180
+      ],
+      "observed_utc": "2026-11-02T21:10:26.4645294Z",
+      "observation": "Growing zone1,Size1,growing period50/60days; default Potato; Allow sowing/cutting controls."
+    },
+    {
+      "id": "sow-menu",
+      "image": "runtime/plants-sow-menu.png",
+      "sha256": "03eaa7c356055d1da1060bfb40860aad5080f7eb3b924ce5ad6b3f2e79191204",
+      "source_file": ".local-research/runtime/plants-016-sow-menu.png",
+      "source_sha256": "f8e43bcdb2e18c0e987eeee880848494bdf262342a09992fef6fdec66a5f0558",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        800,
+        1020,
+        280,
+        420
+      ],
+      "observed_utc": "2026-11-02T21:11:45.4807264Z",
+      "observation": "Fourteen visible non-tree crop choices, including explicit minimum-skill labels; no tree disabled-reason popup."
+    },
+    {
+      "id": "failed-chop-attempt",
+      "image": "runtime/plants-failed-chop-attempt.png",
+      "sha256": "2e8de337a3bcc1c29e6cac88d3167e9da1a07b408f7cbfc6cc4ff4020f75e2d7",
+      "source_file": ".local-research/runtime/plants-022-chop-menu.png",
+      "source_sha256": "c47fccf4e074568c0cb7c194efd8c300802b4fa8ec2068f4b5554b4e732904be",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1230,
+        2560,
+        180
+      ],
+      "observed_utc": "2026-11-02T21:14:18.6781858Z",
+      "observation": "Actual result of attempted chop navigation: Growing zone2 selected and hidden, not a pawn chop context menu."
+    },
+    {
+      "id": "final-paused",
+      "image": "runtime/plants-final-paused.png",
+      "sha256": "431f361168e1425d1f16e6b1b4476e5784669a5075b04b78212629bee7a163ba",
+      "source_file": ".local-research/runtime/plants-stopped-b-return.png",
+      "source_sha256": "4b9c52206d63c7757e248eef72843b0430e52c16e314380ad15292041e591846",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        1800,
+        920,
+        760,
+        520
+      ],
+      "observed_utc": "2026-11-02T21:15:21.1843148Z",
+      "observation": "Final stopped-b colony view; two end saves confirm tick64249 unchanged."
+    }
+  ],
+  "actions": {
+    "sha256": "099c906c4ddb9b142aafd7061f793382967ef50a0238fb8d18d9b6bcbc929036",
+    "count": 65,
+    "file": "native-plants-actions.jsonl"
+  },
+  "limitations": [
+    "Actual UI window20:57:32-21:15:21UTC, approximately18minutes including pause/load/save verification; no further UI input afterward.",
+    "Loading stonecutting-final resumed the original game clock automatically. plants-start55840 and ready64249 are not a controlled growth experiment. No speed3 or developer time-increment command was sent.",
+    "The damaged134003 branch was saved under entry-a/b for pause verification only; plant observations followed explicit loading of intact stonecutting-final.",
+    "No plant, skill or research developer preparation was performed this round. Developer mode/God mode were already enabled; the inherited baseline includes earlier unrelated developer preparation.",
+    "The38% and71% screenshots are two different natural saguaro cacti at different observation times, not a single plant growth timelapse or complete tree-species survey.",
+    "Visible crop menu contains14 non-tree entries; no tree rejection tooltip was observed. TreeSowing progress0 and pawn Plants levels are save context only, not an isolated causal test.",
+    "A later attempted chop navigation failed because the growing-zone designator remained active. It created/selected another one-cell Potato zone and toggled its visibility. Screenshot filenames mentioning chop describe intent, not successful chopping.",
+    "Final XML contains two one-cell Potato growing zones, second hidden, and no designations. No harvesting or sowing job was executed; resource yield, work duration and worker eligibility remain unverified.",
+    "Portable checks validate recorded summaries/crop/ledger integrity. Local mode re-reads originals. Neither performs OCR, reruns gameplay, or turns incomplete UI coverage into a mechanics proof."
+  ],
+  "final_state": {
+    "normal_profile_touched": false,
+    "baseline_untouched": true,
+    "developer_mode": true,
+    "canonical_save": "plants-stopped-b.rws",
+    "mods_installed": false,
+    "pause_confirmed_by_two_equal_saves": true,
+    "game_files_modified": false,
+    "god_mode": true,
+    "paused": true
+  }
+}

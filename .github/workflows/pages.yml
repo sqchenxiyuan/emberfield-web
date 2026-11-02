@@ -27,7 +27,7 @@ jobs:
       - name: Install locked dependencies
         run: npm ci
       - name: Test simulation rules
-        run: npm test -- --silent
+        run: npm test -- --silent --maxWorkers=2
       - name: Verify wildlife continues moving
         run: npm run test:animals
       - name: Check research evidence and arithmetic
@@ -38,6 +38,8 @@ jobs:
         run: npm run test:voxel
       - name: Verify biome generation and real opening campaigns on varied terrain
         run: npm run test:voxel:worldgen
+      - name: Verify normal calendar tree growth, forestry and natural reseeding
+        run: npm run test:voxel:plants
       - name: Verify two food production cycles and material conservation
         run: npm run test:voxel:food
       - name: Verify multilevel housing and sleep persistence

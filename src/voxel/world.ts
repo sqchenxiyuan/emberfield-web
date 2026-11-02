@@ -5,6 +5,7 @@ import {
   DEPTH,
   HEIGHT,
   TPS,
+  DAY,
   SURFACE,
   WIDTH,
   at,
@@ -31,6 +32,23 @@ import {
   validWorldSettings,
 } from './worldgen';
 import { outdoorTemperature } from './climate';
+import {
+  TREE_NAMES,
+  treeYield,
+  treeGrowth,
+  treeWorkSpeed,
+  treeCutWork,
+  treeSowWork,
+  treeDamage,
+  treeCover,
+  naturalSpecies,
+  plantRandom,
+  PLANTED_GROWTH,
+  NATURAL_GROWTH,
+  ECOLOGY_INTERVAL,
+  ECOLOGY_SAMPLES,
+  NATURAL_TREE_CAP,
+} from './plants';
 import {
   advanceRot,
   compatibleBatches,
@@ -91,6 +109,9 @@ import type {
   StorageCapacity,
   Stonecutter,
   ConstructionMaterial,
+  TreeSpecies,
+  TreePlot,
+  TreeCondition,
 } from './types';
 
 const same = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
@@ -139,35 +160,46 @@ const costOf = (kind: JobKind, material: ConstructionMaterial = 'wood'): Partial
                     )[kind]!,
                   }
                 : {};
-const workOf = (kind: JobKind, material: ConstructionMaterial = 'wood') =>
-  material === 'stone' && (kind === 'wall' || kind === 'floor')
-    ? STONE_CONSTRUCTION[kind].work
-    : {
-        ...DEVICE_WORK,
-        wire: 12,
-        refuel: 80,
-        mine: 70,
-        cut: 60,
-        floor: 45,
-        wall: 80,
-        ladder: 40,
-        digLadder: 90,
-        remove: 40,
-        sow: 57,
-        harvest: 67,
-        stove: 120,
-        bed: 187,
-        door: 199,
-        cook: SIMPLE_MEAL.work,
-        stonecutter: STONECUTTER_WORK,
-        stonecut: STONECUTTING.work,
-      }[kind];
+const workOf = (
+  kind: JobKind,
+  material: ConstructionMaterial = 'wood',
+  species: TreeSpecies = 'poplar',
+  legacyCut = false,
+) =>
+  kind === 'cut'
+    ? legacyCut
+      ? 60
+      : treeCutWork(species)
+    : kind === 'plantTree'
+      ? treeSowWork(species)
+      : material === 'stone' && (kind === 'wall' || kind === 'floor')
+        ? STONE_CONSTRUCTION[kind].work
+        : {
+            ...DEVICE_WORK,
+            wire: 12,
+            refuel: 80,
+            mine: 70,
+            cut: 60,
+            floor: 45,
+            wall: 80,
+            ladder: 40,
+            digLadder: 90,
+            remove: 40,
+            sow: 57,
+            harvest: 67,
+            stove: 120,
+            bed: 187,
+            door: 199,
+            cook: SIMPLE_MEAL.work,
+            stonecutter: STONECUTTER_WORK,
+            stonecut: STONECUTTING.work,
+          }[kind];
 const workType = (kind: JobKind): Work =>
   kind === 'stonecut'
     ? 'craft'
     : kind === 'refuel'
       ? 'haul'
-      : kind === 'sow' || kind === 'harvest'
+      : kind === 'sow' || kind === 'harvest' || kind === 'plantTree'
         ? 'grow'
         : kind === 'cook'
           ? 'cook'
@@ -222,6 +254,7 @@ export class VoxelSimulation {
   pawns: Pawn[] = [];
   items: Stack[] = [];
   trees: Tree[] = [];
+  treePlots: TreePlot[] = [];
   jobs: Job[] = [];
   farms: FarmPlot[] = [];
   crops: Crop[] = [];
@@ -253,6 +286,9 @@ export class VoxelSimulation {
     harvested: 0,
     cooked: 0,
     stonecut: 0,
+    treesPlanted: 0,
+    treesRegrown: 0,
+    treesDied: 0,
     eaten: 0,
     consumed: emptyCounts(),
     produced: emptyCounts(),
@@ -274,6 +310,10 @@ export class VoxelSimulation {
     { cell: number; batch: Cargo; sourceId: number | null }
   >();
   private craftSources = new Map<number, number>();
+  private ecologySurface: Pos[] = [];
+  private ecologyRevision = -1;
+  private treeRouteSeen = new Uint8Array(CELLS);
+  private treeRouteQueue = new Int32Array(CELLS);
   constructor(
     public seed = 73129,
     settings?: Partial<WorldSettings>,
@@ -785,6 +825,241 @@ export class VoxelSimulation {
       !this.furnitureAt(p)
     );
   }
+  private skyAt(p: Pos, tree = false) {
+    const key = at(p) + (tree ? CELLS : 0);
+    let sky = this.skyCache.get(key);
+    if (sky === undefined) {
+      sky = true;
+      for (let z = p.z + (tree ? 2 : 0); z < HEIGHT; z++) {
+        const i = index(p.x, p.y, z);
+        if (
+          this.blocks[i] ||
+          this.treeCells.has(i) ||
+          this.stoveCells.has(i) ||
+          this.deviceBlocks.has(i)
+        ) {
+          sky = false;
+          break;
+        }
+      }
+      this.skyCache.set(key, sky);
+    }
+    return sky;
+  }
+  private treeEnvironment(tree: Tree) {
+    const fertility = fertilityOf(this.blocks[at(tree) - WIDTH * DEPTH]);
+    const hour = hourAt(this.tick),
+      sky = this.skyAt(tree, true),
+      light = sky ? daylight(hour) : 0;
+    const temperature = this.temperature(tree);
+    return {
+      fertility,
+      hour,
+      sky,
+      light,
+      temperature,
+      growthRate:
+        tree.growth >= 1 ? 0 : treeGrowth(tree.species, fertility, light, temperature, hour),
+    };
+  }
+  treeCondition(tree: Tree): TreeCondition {
+    const e = this.treeEnvironment(tree);
+    return {
+      id: tree.id,
+      fertility: e.fertility,
+      light: e.light,
+      temperature: e.temperature,
+      growthRate: e.growthRate,
+      yield: treeYield(tree, this.seed),
+      mature: tree.growth > 0.999,
+      ageDays: tree.age / DAY,
+      reason:
+        tree.health < 1
+          ? '衰老或长期缺光损伤'
+          : tree.growth > 0.999
+            ? '成熟，可手动采伐'
+            : e.fertility < TREE_DATA[tree.species].minFertility
+              ? '土壤肥力不足'
+              : !e.sky
+                ? '上方遮挡，无阳光'
+                : e.hour < 6 || e.hour > 19.2
+                  ? '夜间休眠'
+                  : e.light <= 0.51
+                    ? '光照不足'
+                    : e.growthRate > 0
+                      ? '生长中'
+                      : '温度不适',
+    };
+  }
+  private treeSiteReason(p: Pos, species: TreeSpecies, ownJob?: number, natural = false) {
+    if (
+      !this.standable(p) ||
+      fertilityOf(this.blocks[at(p) - WIDTH * DEPTH]) < TREE_DATA[species].minFertility
+    )
+      return '需要适生土壤、支撑和两格净空';
+    if (!this.skyAt(p)) return '树苗需要露天位置';
+    if (
+      this.ladders[at(p)] ||
+      this.ladders[at(p) + WIDTH * DEPTH] ||
+      this.furnitureAt(p) ||
+      this.stoves.some((s) => same(s, p)) ||
+      this.farms.some((f) => same(f, p)) ||
+      this.stockpiles.some((s) => same(s, p)) ||
+      this.items.some((i) => same(i, p)) ||
+      this.wires.some((w) => same(w, p)) ||
+      (natural && this.treePlots.some((f) => same(f, p)))
+    )
+      return '与物资、区域或设施重叠';
+    if (
+      this.jobs.some(
+        (j) =>
+          j.id !== ownJob &&
+          this.footprint(j).some((q) => q.x === p.x && q.y === p.y && Math.abs(q.z - p.z) < 2),
+      )
+    )
+      return '与现有工作规划重叠';
+    const adjacent = (q: Pos) =>
+      Math.abs(q.x - p.x) <= 1 && Math.abs(q.y - p.y) <= 1 && Math.abs(q.z - p.z) <= 1;
+    if (
+      this.trees.some(adjacent) ||
+      this.treePlots.some((q) => !same(q, p) && adjacent(q)) ||
+      this.crops.some(adjacent) ||
+      this.farms.some(adjacent)
+    )
+      return '与相邻树木或作物至少间隔一格';
+    return '';
+  }
+  private treeCanAppear(p: Pos, species: TreeSpecies, ownJob?: number, natural = false) {
+    if (this.trees.length >= 4096 || this.treeSiteReason(p, species, ownJob, natural)) return false;
+    const overlap = (q: Pos) => p.x === q.x && p.y === q.y && Math.abs(p.z - q.z) < 2;
+    if (
+      this.pawns.some(
+        (pawn) =>
+          overlap(pawn) ||
+          (pawn.destination !== null && overlap(position(pawn.destination))) ||
+          pawn.path.some((i) => overlap(position(i))) ||
+          (pawn.jobId !== ownJob && pawn.workTarget && overlap(pawn.workTarget)),
+      ) ||
+      this.jobs.some((j) => j.id !== ownJob && this.stands(j).some((i) => overlap(position(i)))) ||
+      this.stonecutters.some((b) => overlap(stonecutterInteraction(b)))
+    )
+      return false;
+    // A tree removes one walking vertex. It may not split any previously joined
+    // neighbors, even if no pawn is currently using that narrow route.
+    const neighbors = this.neighbors(p),
+      lower = at(p),
+      upper = lower + WIDTH * DEPTH;
+    this.treeCells.add(lower);
+    this.treeCells.add(upper);
+    try {
+      if (neighbors.length <= 1) return true;
+      const seen = this.treeRouteSeen,
+        queue = this.treeRouteQueue,
+        remaining = new Set(neighbors.slice(1));
+      seen.fill(0);
+      queue[0] = neighbors[0];
+      seen[neighbors[0]] = 1;
+      let head = 0,
+        tail = 1;
+      while (head < tail && remaining.size) {
+        for (const next of this.neighbors(position(queue[head++])))
+          if (!seen[next]) {
+            seen[next] = 1;
+            queue[tail++] = next;
+            remaining.delete(next);
+          }
+      }
+      return remaining.size === 0;
+    } finally {
+      this.treeCells.delete(lower);
+      this.treeCells.delete(upper);
+    }
+  }
+  private createTree(p: Pos, species: TreeSpecies, planted: boolean) {
+    this.trees.push({
+      id: this.id(),
+      x: p.x,
+      y: p.y,
+      z: p.z,
+      species,
+      wood: TREE_DATA[species].wood,
+      growth: planted ? PLANTED_GROWTH : NATURAL_GROWTH,
+      age: 0,
+      health: 1,
+      unlitTicks: 0,
+      planted,
+    });
+    this.rebuildTrees();
+    this.skyCache.clear();
+    this.revision++;
+    if (planted) this.stats.treesPlanted++;
+    else this.stats.treesRegrown++;
+  }
+  private updateTrees() {
+    const dead = new Set<number>();
+    for (const tree of this.trees) {
+      const e = this.treeEnvironment(tree);
+      tree.age++;
+      tree.unlitTicks = e.light <= 0.001 ? tree.unlitTicks + 1 : 0;
+      tree.growth = Math.min(1, tree.growth + e.growthRate);
+      tree.health = Math.max(0, tree.health - treeDamage(tree));
+      if (tree.health <= 0) dead.add(tree.id);
+    }
+    if (dead.size) {
+      for (const job of [...this.jobs])
+        if (job.kind === 'cut' && this.trees.some((t) => dead.has(t.id) && same(t, job)))
+          this.cancel(job);
+      this.trees = this.trees.filter((t) => !dead.has(t.id));
+      this.stats.treesDied += dead.size;
+      this.rebuildTrees();
+      this.skyCache.clear();
+      this.revision++;
+    }
+    if (this.tick % ECOLOGY_INTERVAL !== 0 || this.trees.length >= NATURAL_TREE_CAP) return;
+    const species = naturalSpecies(this.settings),
+      data = TREE_DATA[species];
+    if (this.ecologyRevision !== this.revision) {
+      this.ecologySurface = [];
+      for (let y = 0; y < DEPTH; y++)
+        for (let x = 0; x < WIDTH; x++) {
+          let z = HEIGHT - 1;
+          while (z > 0 && !this.blocks[index(x, y, z)]) z--;
+          if (z < HEIGHT - 2 && fertilityOf(this.blocks[index(x, y, z)]) >= data.minFertility)
+            this.ecologySurface.push({ x, y, z: z + 1 });
+        }
+      this.ecologyRevision = this.revision;
+    }
+    const area = this.ecologySurface.length,
+      cover = treeCover(this.settings);
+    const capacity = Math.min(NATURAL_TREE_CAP, Math.ceil(area * cover * 1.25));
+    if (!area || this.trees.length >= capacity) return;
+    // Explicit 3D cadence/density adaptation: 16 sampled surface cells per 200
+    // local ticks; scan-interval-normalized MTB of 20/25/35 days, bounded capacity.
+    const mtbDays =
+      this.settings.biome === 'desert' ? 35 : this.settings.biome === 'boreal' ? 25 : 20;
+    const mtb = Math.min(1, (ECOLOGY_INTERVAL * area) / (ECOLOGY_SAMPLES * mtbDays * DAY));
+    const epoch = this.tick / ECOLOGY_INTERVAL;
+    for (let sample = 0; sample < ECOLOGY_SAMPLES && this.trees.length < capacity; sample++) {
+      const p = this.ecologySurface[Math.floor(plantRandom(this.seed, epoch, sample, 8100) * area)];
+      const fertility = fertilityOf(this.blocks[at(p) - WIDTH * DEPTH]);
+      const chance =
+        mtb * cover * (species === 'saguaro' ? 1 : Math.min(1.5, fertility * fertility));
+      if (
+        plantRandom(this.seed, epoch, sample, 8101) >= chance ||
+        !this.skyAt(p) ||
+        treeGrowth(
+          species,
+          fertility,
+          daylight(hourAt(this.tick)),
+          this.temperature(p),
+          hourAt(this.tick),
+        ) <= 0 ||
+        !this.treeCanAppear(p, species, undefined, true)
+      )
+        continue;
+      this.createTree(p, species, false);
+    }
+  }
   cropCondition(p: Pos, kind: CropKind) {
     const i = at(p);
     let sky = this.skyCache.get(i);
@@ -838,6 +1113,13 @@ export class VoxelSimulation {
         this.cancel(j);
       if (j.kind === 'harvest' && !this.crops.some((v) => same(v, j) && v.growth >= 1))
         this.cancel(j);
+      if (
+        j.kind === 'plantTree' &&
+        (!this.treePlots.some((f) => same(f, j) && f.species === j.treeSpecies) ||
+          this.trees.some((t) => same(t, j)))
+      )
+        this.cancel(j);
+      if (j.kind === 'cut' && !this.trees.some((t) => same(t, j))) this.cancel(j);
       if (j.kind === 'cook' && !this.stoves.some((v) => same(v, j) && !v.paused)) this.cancel(j);
       if (j.kind === 'stonecut' && !this.stonecutters.some((b) => same(b, j) && !b.paused))
         this.cancel(j);
@@ -850,6 +1132,15 @@ export class VoxelSimulation {
       const c = this.crops.find((c) => same(c, f));
       if (!c) this.jobs.push(this.makeJob('sow', f));
       else if (c.growth >= 1) this.jobs.push(this.makeJob('harvest', f));
+    }
+    for (const plot of this.treePlots) {
+      if (
+        this.jobs.length >= 512 ||
+        this.jobs.some((j) => same(j, plot)) ||
+        this.trees.some((t) => same(t, plot))
+      )
+        continue;
+      if (!this.treeSiteReason(plot, plot.species)) this.jobs.push(this.makeJob('plantTree', plot));
     }
     let meals =
       this.counts().meal + this.jobs.filter((j) => j.kind === 'cook').length * SIMPLE_MEAL.output;
@@ -1107,6 +1398,11 @@ export class VoxelSimulation {
     if (c.type !== 'designate' || !inside(c.from) || c.from.z < 1 || c.from.z > HEIGHT - 2)
       return { ok: false, message: '请选择世界内的有效工作层' };
     if (
+      c.treeSpecies !== undefined &&
+      (c.tool !== 'grove' || !Object.hasOwn(TREE_DATA, c.treeSpecies))
+    )
+      return { ok: false, message: '林地区需要有效树种' };
+    if (
       c.material !== undefined &&
       (!['wood', 'stone'].includes(c.material) || !['wall', 'floor'].includes(c.tool))
     )
@@ -1127,13 +1423,54 @@ export class VoxelSimulation {
     if (c.tool === 'clearZone') {
       for (const pos of positions) {
         this.farms = this.farms.filter((f) => !same(f, pos));
+        this.treePlots = this.treePlots.filter((f) => !same(f, pos));
         this.stockpiles = this.stockpiles.filter((f) => !same(f, pos));
         this.crops = this.crops.filter((f) => !same(f, pos));
         for (const j of [...this.jobs])
-          if ((j.kind === 'sow' || j.kind === 'harvest') && same(j, pos)) this.cancel(j);
+          if ((j.kind === 'sow' || j.kind === 'harvest' || j.kind === 'plantTree') && same(j, pos))
+            this.cancel(j);
       }
       this.revision++;
-      return { ok: true, message: '区域已擦除；作物清理，不返还收成', count: positions.length };
+      return {
+        ok: true,
+        message: '区域已擦除；粮食作物清理，现有树木保留',
+        count: positions.length,
+      };
+    }
+    if (c.tool === 'grove') {
+      const species = c.treeSpecies ?? naturalSpecies(this.settings);
+      let count = 0,
+        reason = '';
+      // Greedy row order leaves one empty cell between planned tree centers.
+      for (const p of positions) {
+        const old = this.treePlots.find((f) => same(f, p));
+        if (old) {
+          if (fertilityOf(this.blocks[at(p) - WIDTH * DEPTH]) < TREE_DATA[species].minFertility) {
+            reason = `${TREE_NAMES[species]}所需土壤肥力至少${TREE_DATA[species].minFertility}`;
+            continue;
+          }
+          old.species = species;
+          for (const j of [...this.jobs])
+            if (j.kind === 'plantTree' && same(j, p) && j.treeSpecies !== species) this.cancel(j);
+          count++;
+          continue;
+        }
+        const invalid = this.treeSiteReason(p, species);
+        if (invalid || this.treePlots.length >= 512) {
+          reason = invalid || '林地上限512个种植点';
+          continue;
+        }
+        this.treePlots.push({ ...p, species });
+        count++;
+      }
+      if (!count) return { ok: false, message: reason || '没有适合栽树的位置' };
+      this.syncProduction();
+      this.revision++;
+      return {
+        ok: true,
+        count,
+        message: `安排${count}个${TREE_NAMES[species]}种植点，间隔一格；成熟后手动伐木，采后自动补植${positions.length > count ? `；跳过${positions.length - count}格：${reason}` : ''}`,
+      };
     }
     if (c.tool === 'farm') {
       const kind = c.crop ?? 'rice';
@@ -1142,6 +1479,7 @@ export class VoxelSimulation {
         positions.some(
           (p) =>
             !this.farmable(p) ||
+            this.treePlots.some((f) => same(f, p)) ||
             this.stockpiles.some((s) => same(s, p)) ||
             this.jobs.some(
               (j) =>
@@ -1191,6 +1529,7 @@ export class VoxelSimulation {
             !this.standable(p) ||
             this.ladders[at(p)] ||
             this.farms.some((f) => same(f, p)) ||
+            this.treePlots.some((f) => same(f, p)) ||
             this.furnitureAt(p) ||
             this.jobs.some(
               (j) =>
@@ -1274,6 +1613,7 @@ export class VoxelSimulation {
         (j) =>
           (j.kind === 'ladder' || j.kind === 'digLadder') &&
           (this.farms.some((f) => same(f, j)) ||
+            this.treePlots.some((f) => same(f, j)) ||
             this.furnitureAt(j) ||
             this.stoves.some((s) => same(s, j))),
       )
@@ -1322,13 +1662,19 @@ export class VoxelSimulation {
     axis: Axis = 'x',
     material: ConstructionMaterial = 'wood',
   ): Job {
+    const species =
+      kind === 'cut'
+        ? this.trees.find((t) => same(t, p))?.species
+        : kind === 'plantTree'
+          ? this.treePlots.find((f) => same(f, p))?.species
+          : undefined;
     return {
       id: this.id(),
       kind,
       x: p.x,
       y: p.y,
       z: p.z,
-      work: workOf(kind, material),
+      work: workOf(kind, material, species),
       progress: 0,
       owner: null,
       delivered: {},
@@ -1338,9 +1684,15 @@ export class VoxelSimulation {
       reason: '等待可达工人',
       ...(['bed', 'door', 'stonecutter'].includes(kind) || isDeviceKind(kind) ? { axis } : {}),
       ...(['wall', 'floor'].includes(kind) ? { material } : {}),
+      ...(species ? { treeSpecies: species } : {}),
     };
   }
   private placementReason(kind: JobKind, p: Pos, axis: Axis = 'x') {
+    if (
+      !['cut', 'remove', 'plantTree'].includes(kind) &&
+      this.treePlots.some((f) => this.footprint({ ...p, kind, axis }).some((q) => same(q, f)))
+    )
+      return '请先擦除林地区';
     if (kind === 'wire')
       return this.wires.some((q) => same(q, p))
         ? '这里已有电线'
@@ -1407,7 +1759,7 @@ export class VoxelSimulation {
       )
         ? ''
         : '此处没有可开挖的自然方块';
-    if (kind === 'cut') return this.trees.some((t) => same(t, p)) ? '' : '此处没有成熟树木';
+    if (kind === 'cut') return this.trees.some((t) => same(t, p)) ? '' : '此处没有树木';
     if (kind === 'stove')
       return !this.standable(p) || this.ladders[at(p)] || this.stockpiles.some((s) => same(s, p))
         ? '灶台需要有支撑的空置地板，不能与仓储重叠'
@@ -1482,6 +1834,12 @@ export class VoxelSimulation {
     return undefined;
   }
   private supported(j: Job) {
+    if (j.kind === 'plantTree')
+      return (
+        this.treePlots.some((f) => same(f, j) && f.species === j.treeSpecies) &&
+        !this.treeSiteReason(j, j.treeSpecies!, j.id)
+      );
+    if (j.kind === 'cut') return this.trees.some((t) => same(t, j) && t.species === j.treeSpecies);
     if (isDeviceKind(j.kind) || j.kind === 'stonecutter')
       return !this.placementReason(j.kind, j, j.axis);
     if (j.kind === 'stonecut') return this.stonecutters.some((b) => same(b, j) && !b.paused);
@@ -1893,12 +2251,19 @@ export class VoxelSimulation {
         return;
       }
       p.reason = '正在' + JOB_NAMES[j.kind];
-      j.progress = Math.min(j.work, j.progress + 1);
+      const cutting =
+        j.kind === 'cut' && !j.legacyCut ? this.trees.find((t) => same(t, j)) : undefined;
+      j.progress = Math.min(j.work, j.progress + (cutting ? treeWorkSpeed(cutting.growth) : 1));
       if (j.progress >= j.work) this.finish(p, j);
     }
   }
   private finish(p: Pawn, j: Job) {
     if (j.cancelled) {
+      this.release(p);
+      return;
+    }
+    if (j.kind === 'plantTree' && !this.treeCanAppear(j, j.treeSpecies!, j.id)) {
+      j.reason = '树苗会阻挡人物、工作位置或唯一通路，等待位置腾空';
       this.release(p);
       return;
     }
@@ -1993,7 +2358,10 @@ export class VoxelSimulation {
     }
     // Determine every output before mutating its physical source. A full local
     // floor keeps the tree, ore, crop or delivered recipe intact for a retry.
-    if (j.kind === 'cut') yields.wood = this.trees.find((t) => same(t, j))?.wood ?? 0;
+    if (j.kind === 'cut') {
+      const tree = this.trees.find((t) => same(t, j));
+      yields.wood = tree ? treeYield(tree, this.seed) : 0;
+    }
     if (j.kind === 'harvest') {
       harvestedCrop = this.crops.find((c) => same(c, j))!.kind;
       yields.grain = CROPS[harvestedCrop].yield;
@@ -2109,7 +2477,6 @@ export class VoxelSimulation {
     if (j.kind === 'cut') {
       const tree = this.trees.find((t) => same(t, j));
       if (tree) {
-        yields.wood = tree.wood;
         this.trees = this.trees.filter((t) => t.id !== tree.id);
         this.rebuildTrees();
         this.skyCache.clear();
@@ -2117,6 +2484,7 @@ export class VoxelSimulation {
         this.stats.cut++;
       }
     }
+    if (j.kind === 'plantTree') this.createTree(j, j.treeSpecies!, true);
     if (j.kind === 'stonecutter') {
       this.stonecutters.push({
         id: this.id(),
@@ -2255,6 +2623,7 @@ export class VoxelSimulation {
       this.tick++;
       this.updateEnvironment();
       this.updatePreservation();
+      this.updateTrees();
       this.refreshReservations();
       // Only temperature/daylight change each tick; occlusion is cached until terrain changes.
       for (const c of this.crops)
@@ -2519,6 +2888,13 @@ export class VoxelSimulation {
       pawns: this.pawns,
       items: this.items,
       trees: this.trees,
+      treePlots: this.treePlots,
+      treeConditions: this.trees.map((tree) => ({
+        x: tree.x,
+        y: tree.y,
+        z: tree.z,
+        ...this.treeCondition(tree),
+      })),
       jobs: this.jobs,
       stockpiles: this.stockpiles,
       storageCapacity: this.storageCapacity(),
@@ -2548,7 +2924,12 @@ export class VoxelSimulation {
       stats: this.stats,
       notice: this.notice,
       gridBytes: this.blocks.byteLength + this.ladders.byteLength,
-      navigationBytes: this.distance.byteLength + this.parents.byteLength + this.queue.byteLength,
+      navigationBytes:
+        this.distance.byteLength +
+        this.parents.byteLength +
+        this.queue.byteLength +
+        this.treeRouteSeen.byteLength +
+        this.treeRouteQueue.byteLength,
       tickMs,
     });
   }
@@ -2556,7 +2937,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 8,
+      version: 9,
       generator: this.generator,
       settings: this.settings,
       spawn: this.spawn,
@@ -2568,6 +2949,7 @@ export class VoxelSimulation {
       pawns: this.pawns,
       items: this.items,
       trees: this.trees,
+      treePlots: this.treePlots,
       jobs: this.jobs,
       stockpiles: this.stockpiles,
       farms: this.farms,
@@ -2587,7 +2969,7 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
@@ -2716,6 +3098,26 @@ export class VoxelSimulation {
       }
       old.version = 8;
     }
+    if (old.version === 8) {
+      if (!Array.isArray(old.trees) || !Array.isArray(old.jobs) || !old.stats)
+        throw new Error('旧存档植被数据无效');
+      old.treePlots = [];
+      for (const tree of old.trees) {
+        if (!tree) throw new Error('旧存档树木数据无效');
+        Object.assign(tree, { growth: 1, age: 0, health: 1, unlitTicks: 0, planted: false });
+      }
+      for (const job of old.jobs)
+        if (job?.kind === 'cut') {
+          const tree = old.trees.find((t: Tree) => same(t, job));
+          if (!tree && !job.cancelled) throw new Error('旧存档采伐对象不存在');
+          job.treeSpecies = tree?.species ?? 'poplar';
+          job.legacyCut = true;
+        }
+      old.stats.treesPlanted = 0;
+      old.stats.treesRegrown = 0;
+      old.stats.treesDied = 0;
+      old.version = 9;
+    }
     const d = old as VoxelSave;
     if (
       !validWorldSettings(d.settings) ||
@@ -2736,6 +3138,7 @@ export class VoxelSimulation {
       [d.pawns, 12],
       [d.items, 10000],
       [d.trees, 4096],
+      [d.treePlots, 512],
       [d.jobs, 512],
       [d.stockpiles, 4096],
       [d.farms, 512],
@@ -2785,15 +3188,56 @@ export class VoxelSimulation {
     )
       throw new Error('地面每格仅允许一堆且不能超过堆叠上限');
     for (const t of d.trees)
-      if (!positive(t.wood) || t.z + 1 >= HEIGHT || !Object.hasOwn(TREE_DATA, t.species))
+      if (
+        !positive(t.wood) ||
+        t.z < 1 ||
+        t.z + 1 >= HEIGHT ||
+        !Object.hasOwn(TREE_DATA, t.species) ||
+        !Number.isFinite(t.growth) ||
+        t.growth < 0 ||
+        t.growth > 1 ||
+        !Number.isSafeInteger(t.age) ||
+        t.age < 0 ||
+        !Number.isSafeInteger(t.unlitTicks) ||
+        t.unlitTicks < 0 ||
+        t.unlitTicks > t.age ||
+        !Number.isFinite(t.health) ||
+        t.health <= 0 ||
+        t.health > 1 ||
+        typeof t.planted !== 'boolean'
+      )
         throw new Error('树木数据无效');
     const uniqueCells = (a: Pos[]) => new Set(a.map(at)).size === a.length;
     if (
-      ![d.farms, d.crops, d.stoves, d.stonecutters, d.stockpiles, d.doors, d.wires].every(
-        uniqueCells,
-      )
+      ![
+        d.trees,
+        d.treePlots,
+        d.farms,
+        d.crops,
+        d.stoves,
+        d.stonecutters,
+        d.stockpiles,
+        d.doors,
+        d.wires,
+      ].every(uniqueCells)
     )
       throw new Error('区域或设施位置重复');
+    for (const plot of d.treePlots)
+      if (
+        !Object.hasOwn(TREE_DATA, plot.species) ||
+        plot.z < 1 ||
+        plot.z >= HEIGHT - 1 ||
+        d.farms.some((f) => same(f, plot)) ||
+        d.stockpiles.some((s) => same(s, plot)) ||
+        d.treePlots.some(
+          (other) =>
+            other !== plot &&
+            Math.abs(other.x - plot.x) <= 1 &&
+            Math.abs(other.y - plot.y) <= 1 &&
+            Math.abs(other.z - plot.z) <= 1,
+        )
+      )
+        throw new Error('林地区树种、间距或位置无效');
     for (const stock of d.stockpiles)
       if (
         !Number.isInteger(stock.priority) ||
@@ -2887,7 +3331,12 @@ export class VoxelSimulation {
     ];
     if (
       !uniqueCells(furniture.flatMap((p) => [p, { ...p, z: p.z + 1 }])) ||
-      furniture.some((v) => d.farms.some((f) => same(f, v)) || d.stockpiles.some((s) => same(s, v)))
+      furniture.some(
+        (v) =>
+          d.farms.some((f) => same(f, v)) ||
+          d.stockpiles.some((s) => same(s, v)) ||
+          d.treePlots.some((f) => same(f, v)),
+      )
     )
       throw new Error('设施位置重叠');
     for (const door of d.doors)
@@ -2921,7 +3370,17 @@ export class VoxelSimulation {
         !zero(j.progress) ||
         !positive(j.work) ||
         typeof j.cancelled !== 'boolean' ||
-        j.work !== workOf(j.kind, j.material) ||
+        j.work !== workOf(j.kind, j.material, j.treeSpecies, j.legacyCut) ||
+        (['cut', 'plantTree'].includes(j.kind)
+          ? !Object.hasOwn(TREE_DATA, j.treeSpecies ?? '')
+          : j.treeSpecies !== undefined) ||
+        (j.legacyCut !== undefined && (j.legacyCut !== true || j.kind !== 'cut')) ||
+        (!j.cancelled &&
+          j.kind === 'cut' &&
+          !d.trees.some((t) => same(t, j) && t.species === j.treeSpecies)) ||
+        (!j.cancelled &&
+          j.kind === 'plantTree' &&
+          !d.treePlots.some((f) => same(f, j) && f.species === j.treeSpecies)) ||
         (['wall', 'floor'].includes(j.kind)
           ? !['wood', 'stone'].includes(j.material ?? '')
           : j.material !== undefined) ||
@@ -3010,12 +3469,17 @@ export class VoxelSimulation {
         'harvested',
         'cooked',
         'stonecut',
+        'treesPlanted',
+        'treesRegrown',
+        'treesDied',
         'eaten',
       ].every((k) => zero(d.stats[k as 'mined'])) ||
       !['produced', 'consumed', 'spoiled'].every((k) =>
         resources.every((r) => zero(d.stats[k as 'produced']?.[r as Resource])),
       ) ||
-      !Number.isSafeInteger(d.stats.stonecut) ||
+      !['stonecut', 'treesPlanted', 'treesRegrown', 'treesDied'].every((key) =>
+        Number.isSafeInteger(d.stats[key as 'stonecut']),
+      ) ||
       !resources.every(
         (r) =>
           Number.isSafeInteger(d.stats.spoiled[r]) && (isPerishable(r) || d.stats.spoiled[r] === 0),
@@ -3036,6 +3500,7 @@ export class VoxelSimulation {
         pawns: d.pawns,
         items: d.items,
         trees: d.trees,
+        treePlots: d.treePlots,
         jobs: d.jobs,
         stockpiles: d.stockpiles,
         farms: d.farms,

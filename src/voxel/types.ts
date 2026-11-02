@@ -157,6 +157,7 @@ export type Tool =
   | 'up'
   | 'stock'
   | 'farm'
+  | 'grove'
   | 'stove'
   | 'stonecutter'
   | 'bed'
@@ -192,6 +193,20 @@ export interface Tree extends Pos {
   id: number;
   wood: number;
   species: TreeSpecies;
+  growth: number;
+  age: number;
+  planted: boolean;
+  health: number;
+  unlitTicks: number;
+}
+export interface TreePlot extends Pos {
+  species: TreeSpecies;
+}
+export interface TreeCondition extends CropCondition {
+  id: number;
+  yield: number;
+  mature: boolean;
+  ageDays: number;
 }
 export interface Cargo {
   resource: Resource;
@@ -267,6 +282,7 @@ export type JobKind =
   | 'digLadder'
   | 'remove'
   | 'sow'
+  | 'plantTree'
   | 'harvest'
   | 'stove'
   | 'stonecutter'
@@ -289,6 +305,9 @@ export interface Job extends Pos {
   cancelled: boolean;
   axis?: Axis;
   material?: ConstructionMaterial;
+  treeSpecies?: TreeSpecies;
+  /** Existing pre-v9 cutting jobs retain their original 60-tick work/progress. */
+  legacyCut?: true;
 }
 export interface Pawn extends Pos {
   id: number;
@@ -329,6 +348,9 @@ export interface VoxelStats {
   harvested: number;
   cooked: number;
   stonecut: number;
+  treesPlanted: number;
+  treesRegrown: number;
+  treesDied: number;
   eaten: number;
   consumed: Counts;
   produced: Counts;
@@ -346,6 +368,8 @@ export interface VoxelSnapshot {
   pawns: Pawn[];
   items: Stack[];
   trees: Tree[];
+  treePlots: TreePlot[];
+  treeConditions: (TreeCondition & Pos)[];
   jobs: Job[];
   stockpiles: Stockpile[];
   storageCapacity: StorageCapacity[];
@@ -398,6 +422,7 @@ export type VoxelCommand =
       crop?: CropKind;
       axis?: Axis;
       material?: ConstructionMaterial;
+      treeSpecies?: TreeSpecies;
     }
   | { type: 'priority'; pawnId: number; work: Work; value: number }
   | { type: 'bill'; stoveId: number; target: number; paused: boolean }
@@ -414,7 +439,7 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 8;
+  version: 9;
   generator: 1 | 2;
   settings: WorldSettings;
   spawn: Pos;
@@ -427,6 +452,7 @@ export interface VoxelSave {
   pawns: Pawn[];
   items: Stack[];
   trees: Tree[];
+  treePlots: TreePlot[];
   jobs: Job[];
   stockpiles: Stockpile[];
   farms: FarmPlot[];
@@ -479,6 +505,7 @@ export const JOB_NAMES: Record<JobKind, string> = {
   digLadder: '开凿梯井',
   remove: '拆除',
   sow: '播种',
+  plantTree: '栽种树苗',
   harvest: '收获',
   stove: '造灶台',
   stonecutter: '造切石台',
@@ -500,6 +527,7 @@ export const TOOL_NAMES: Record<Tool, string> = {
   up: '向上搭梯',
   stock: '仓储',
   farm: '种植区',
+  grove: '林地区',
   stove: '灶台',
   stonecutter: '切石台',
   bed: '床',

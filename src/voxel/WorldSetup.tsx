@@ -10,6 +10,7 @@ import {
   type WorldSettings,
 } from './types';
 import { DEFAULT_WORLD_SETTINGS, WORLD_PRESETS, validWorldSettings } from './worldgen';
+import { TREE_NAMES } from './plants';
 
 export const BIOME_NAMES: Record<Biome, string> = {
   temperate: '温带森林',
@@ -22,7 +23,6 @@ export const HILL_NAMES: Record<Hilliness, string> = {
   large: '大丘陵',
   mountainous: '山地',
 };
-export const TREE_NAMES = { poplar: '白杨', pine: '松树', saguaro: '巨柱仙人掌' };
 const COLORS: Record<number, [number, number, number]> = {
   [Block.Soil]: [119, 148, 83],
   [Block.RichSoil]: [72, 108, 64],
@@ -232,7 +232,8 @@ export function WorldSetup({
                 <dd>{current.summary.growingDays} / 60 日</dd>
                 <dt>成熟木本植物</dt>
                 <dd>
-                  {current.summary.trees.total} 株 · {current.summary.trees.wood} 木材
+                  {current.summary.trees.total} 株 · 健康成熟后最多 {current.summary.trees.wood}{' '}
+                  木材
                 </dd>
                 <dt>地下钢矿 / 零件矿</dt>
                 <dd>

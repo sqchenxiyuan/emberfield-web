@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "research:check": "node scripts/research/verify-research.mjs && node scripts/research/verify-food-evidence.mjs && node scripts/research/verify-housing-evidence.mjs && node scripts/research/verify-energy-evidence.mjs && node scripts/research/verify-preservation-evidence.mjs && node scripts/research/verify-native-preservation-runtime.mjs && node scripts/research/verify-logistics-evidence.mjs && node scripts/research/verify-logistics-runtime.mjs && node scripts/research/verify-stonecutting-evidence.mjs && node scripts/research/verify-stonecutting-runtime.mjs && node scripts/research/verify-biomes-evidence.mjs && node scripts/research/verify-biomes-runtime.mjs",
+    "research:check": "node scripts/research/verify-research.mjs && node scripts/research/verify-food-evidence.mjs && node scripts/research/verify-housing-evidence.mjs && node scripts/research/verify-energy-evidence.mjs && node scripts/research/verify-preservation-evidence.mjs && node scripts/research/verify-native-preservation-runtime.mjs && node scripts/research/verify-logistics-evidence.mjs && node scripts/research/verify-logistics-runtime.mjs && node scripts/research/verify-stonecutting-evidence.mjs && node scripts/research/verify-stonecutting-runtime.mjs && node scripts/research/verify-biomes-evidence.mjs && node scripts/research/verify-biomes-runtime.mjs && node scripts/research/verify-plants-evidence.mjs && node scripts/research/verify-voxel-plants-validation.mjs && node scripts/research/verify-plants-runtime.mjs",
     "dev": "vite --host 127.0.0.1 --port 5178 --strictPort",
     "check": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
@@ -33,7 +33,9 @@
     "test:memory": "node scripts/memory-verify.mjs",
     "test:performance": "node scripts/simulation-benchmark.mjs",
     "test:voxel:worldgen": "node scripts/voxel-worldgen-campaign-verify.mjs",
-    "test:voxel:worldgen:browser": "node scripts/voxel-worldgen-browser-verify.mjs"
+    "test:voxel:worldgen:browser": "node scripts/voxel-worldgen-browser-verify.mjs",
+    "test:voxel:plants": "node scripts/voxel-plants-campaign-verify.mjs",
+    "test:voxel:plants:browser": "node scripts/voxel-plants-browser-verify.mjs"
   },
   "dependencies": {
     "pixi.js": "8.22.0",

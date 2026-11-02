@@ -395,7 +395,7 @@ describe('voxel persistence and input validation', () => {
     const original = s.save();
     const corruptions: Array<(save: VoxelSave) => void> = [
       (d) => {
-        (d as { version: number }).version = 9;
+        (d as { version: number }).version = 10;
       },
       (d) => {
         (d as { generator: number }).generator = 3;

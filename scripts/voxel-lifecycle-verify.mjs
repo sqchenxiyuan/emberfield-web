@@ -39,7 +39,7 @@ const digest = value => createHash('sha256').update(JSON.stringify(value)).diges
 const physical = save => ({
   format: save.format, version: save.version, generator: save.generator, seed: save.seed,
   tick: save.tick, nextId: save.nextId, blocks: save.blocks, ladders: save.ladders,
-  items: save.items, trees: save.trees, stockpiles: save.stockpiles, stats: save.stats,
+  items: save.items, trees: save.trees, treePlots: save.treePlots, stockpiles: save.stockpiles, stats: save.stats,
   jobs: save.jobs.map(({ owner, reason, ...job }) => job),
   pawns: save.pawns.map(p => ({ id: p.id, name: p.name, color: p.color, x: p.x, y: p.y, z: p.z,
     food: p.food, rest: p.rest, priorities: p.priorities, cargo: p.cargo })),
@@ -117,7 +117,7 @@ async function auditViewport(width, height) {
   await page.getByRole('status').waitFor({ state: 'hidden', timeout: 8000 }).catch(() => {});
   const viewport = `${width}x${height}`;
   const names = ['菜单与存档', '玩法指引', '上移一层', '下移一层', '地下', '地表', '二层',
-    '查看', '伐木', '挖掘', '下挖梯井', '向上搭梯', '楼板', '墙壁', '梯子', '仓储', '拆除', '取消规划',
+    '查看', '伐木', '挖掘', '下挖梯井', '向上搭梯', '楼板', '墙壁', '梯子', '仓储', '林地区', '拆除', '取消规划',
     '暂停', '1倍速', '2倍速', '3倍速'];
   for (const name of names) await auditControl(viewport, name, button(name));
   for (const title of ['向左旋转 Q', '返回营地', '向右旋转 E'])

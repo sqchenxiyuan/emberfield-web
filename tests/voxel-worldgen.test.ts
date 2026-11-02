@@ -20,6 +20,7 @@ import {
   temperatureAt,
 } from '../src/voxel/farming';
 import { freshBatch } from '../src/voxel/preservation';
+import { treeYield } from '../src/voxel/plants';
 import {
   Block,
   DAY,
@@ -178,7 +179,7 @@ describe('generator 2 terrain, ecology and preview isolation', () => {
       expect(tree).toBeDefined();
       expect(s.command({ type: 'designate', tool: 'cut', from: tree! }).ok).toBe(true);
       until(s, () => s.stats.cut === 1);
-      expect(s.stats.produced.wood).toBe(biome === 'desert' ? 15 : 27);
+      expect(s.stats.produced.wood).toBe(treeYield(tree!, s.seed));
       expect(s.counts().wood).toBe(90 + s.stats.produced.wood);
       const restored = VoxelSimulation.load(s.save());
       expect(restored.blocks).toEqual(s.blocks);
@@ -282,7 +283,7 @@ describe('v8 world persistence and validation', () => {
       s = VoxelSimulation.load(raw),
       saved = s.save();
     expect(raw).toEqual(original);
-    expect(saved.version).toBe(8);
+    expect(saved.version).toBe(9);
     expect(saved.generator).toBe(1);
     expect(saved.blocks).toEqual(raw.blocks);
     expect(saved.ladders).toEqual(raw.ladders);

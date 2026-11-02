@@ -179,7 +179,9 @@ describe('food reference curves and physical farmland', () => {
     s.step(1000);
     expect(s.crops[0].growth).toBe(nightGrowth);
     until(s, () => s.crops[0].growth > nightGrowth, DAY);
-  });
+    // A full day now advances wild-tree ecology too. Keep the bounded calendar
+    // assertion independent of CPU contention in concurrent test workers.
+  }, 30000);
   it('never seals a physical resource stack inside a completed stove', () => {
     const s = legacySimulation(),
       audit = ledger(s);
@@ -517,7 +519,7 @@ describe('v1 voxel food migration', () => {
       loaded = VoxelSimulation.load(legacy),
       before = s.counts();
     expect(legacy).toEqual(untouched);
-    expect(loaded.save().version).toBe(8);
+    expect(loaded.save().version).toBe(9);
     expect(loaded.farms).toEqual([]);
     expect(loaded.crops).toEqual([]);
     expect(loaded.stoves).toEqual([]);

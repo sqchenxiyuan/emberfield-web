@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { createRoot } from 'react-dom/client';
 import { VoxelClient } from './client';
-import { WorldSetup, BIOME_NAMES, HILL_NAMES, TREE_NAMES } from './WorldSetup';
+import { WorldSetup, BIOME_NAMES, HILL_NAMES } from './WorldSetup';
+import { TREE_NAMES } from './plants';
 import { CROPS, NUTRITION, fertilityOf } from './farming';
 import { ASSIGNMENT_NAMES } from './rest';
 import { isDeviceKind } from './power';
@@ -27,6 +28,7 @@ import {
   type Work,
   type Cargo,
   type Stockpile,
+  type TreeSpecies,
 } from './types';
 import './style.css';
 const client = new VoxelClient();
@@ -41,6 +43,7 @@ const tools: Tool[] = [
   'ladder',
   'stock',
   'farm',
+  'grove',
   'stove',
   'stonecutter',
   'bed',
@@ -66,6 +69,7 @@ const icons = [
   '☷',
   '▧',
   '♧',
+  '♣',
   '♨',
   '⚒',
   '▰',
@@ -88,7 +92,7 @@ const hints: Record<Tool, string> = {
   heater: '50 钢材 + 1 零件；工作 175 W，待机 17.5 W。同层 6 格方形范围内自动接线，需封闭房间。',
   cooler: '90 钢材 + 3 零件；工作 200 W。负 X/Y 蓝侧制冷，正 X/Y 橙侧排热，R 换轴。留出两侧风口。',
   inspect: '点击人物、物资或地形查看详情。选中人物后，可在面板中选择目标位置并下达移动。',
-  cut: '点击或框选成熟木本植物。白杨、松树产出 27 木材，巨柱仙人掌产出 15 木材，再搬运到仓储。',
+  cut: '点击或框选树木。幼苗没有木材，长大后产量逐渐提高；查看详情可了解当前收益，再决定何时砍伐。',
   mine: '点击或框选岩土。工人从相邻工作面挖开两格高通道；先建通路再深入。',
   shaft: '在可站立地面点击一次，向下逐格开凿三格梯井。完整入口消耗 8 木材。',
   up: '在可站立地面点击一次，向上搭建三格梯子。完整通路消耗 8 木材。',
@@ -98,12 +102,14 @@ const hints: Record<Tool, string> = {
   stock:
     '拖动划仓储，点击设置收纳物品与优先级。工人把食物搬往更高优先级的冷库；需要地板、净空与可达通路。',
   farm: '拖动划定土壤种植区，自动播种、收获并补种。稻米约 8 日首收，三人长期供给建议 110–128 格。',
+  grove:
+    '划定林地区并选择树种，工人自动种植，手动伐木后会补种。需合适土壤、露天空地和通路；请为树木留出空间。',
   stove: '规划灶台，消耗 20 木材。每份简餐需要 10 生食材 + 1 木材；点击灶台设置库存目标。',
   stonecutter:
     '3×1 木制切石台，75 木材 + 30 钢材。R 旋转，留出标记的操作位；1 岩块加工为 20 石砖。',
   bed: '点击放置两格木床，45 木材。R 旋转朝向；点击床分配主人，未分配的床会自动认领。',
   door: '点击放置木门，25 木材。R 旋转朝向；自动开关、保持敞开或锁定。门仍分隔两侧房间。',
-  clearZone: '拖动擦除种植区和仓储；会清理该区作物且没有收成，已建成设施保留。',
+  clearZone: '拖动擦除种植区、林地区和仓储；农作物会清理且没有收成，树木和已建成设施保留。',
   remove: '拆除墙、楼板、设施或梯子，回收部分材料。正在支撑人物的结构会等待人物移开。',
   cancel: '拖动取消未完成任务；已经送到工地的材料退回现场。',
 };
@@ -251,6 +257,8 @@ function App() {
   const people = p ? (s?.pawns.filter((v) => equal(v, p)) ?? []) : [];
   const items = p ? (s?.items.filter((v) => equal(v, p)) ?? []) : [];
   const tree = p ? s?.trees.find((v) => equal(v, p)) : null;
+  const treePlot = p ? s?.treePlots.find((v) => equal(v, p)) : null;
+  const treeCondition = tree ? s?.treeConditions.find((v) => v.id === tree.id) : null;
   const farm = p ? s?.farms.find((v) => equal(v, p)) : null;
   const storage = p ? s?.stockpiles.find((v) => equal(v, p)) : null;
   const storageRegion =
@@ -327,15 +335,17 @@ function App() {
                 : null) ??
       (tree
         ? TREE_NAMES[tree.species ?? 'poplar']
-        : items[0]
-          ? foodName(items[0])
-          : storage
-            ? '仓储区'
-            : wire
-              ? '电力线路'
-              : client.ladderAt(p)
-                ? '梯井通路'
-                : (BLOCK_NAMES[block] ?? '地形')))
+        : treePlot
+          ? `${TREE_NAMES[treePlot.species]}林地区`
+          : items[0]
+            ? foodName(items[0])
+            : storage
+              ? '仓储区'
+              : wire
+                ? '电力线路'
+                : client.ladderAt(p)
+                  ? '梯井通路'
+                  : (BLOCK_NAMES[block] ?? '地形')))
     : '营地概览';
   const focus = (target: Pos) => {
     client.focusOn(target);
@@ -454,17 +464,22 @@ function App() {
           <ol>
             <li>
               <b>采木</b>
-              <span>选「伐木」，点击营地旁的树。</span>
+              <span>选「伐木」，点击长成的树；幼苗没有木材。</span>
               <button
                 onClick={() => {
                   client.choose('cut');
-                  const nearest = [...(s?.trees ?? [])].sort(
-                    (a, b) =>
-                      Math.hypot(a.x - spawn.x, a.y - spawn.y) -
-                      Math.hypot(b.x - spawn.x, b.y - spawn.y),
-                  )[0];
+                  const harvestable = new Set(
+                    s?.treeConditions.filter((t) => t.yield > 0).map((t) => t.id),
+                  );
+                  const nearest = [...(s?.trees ?? [])]
+                    .filter((t) => harvestable.has(t.id))
+                    .sort(
+                      (a, b) =>
+                        Math.hypot(a.x - spawn.x, a.y - spawn.y) -
+                        Math.hypot(b.x - spawn.x, b.y - spawn.y),
+                    )[0];
                   if (nearest) focus(nearest);
-                  else setNotice('地图上已没有成熟木本植物');
+                  else setNotice('目前没有能产木材的树，请等待生长或规划林地区');
                 }}
               >
                 定位树木
@@ -563,10 +578,48 @@ function App() {
             · {levelName(p.z, spawn.z)}
           </p>
         )}
-        {tree && (
-          <div className="voxel-info-row">
-            <span>砍伐产出</span>
-            <b>木材 × {tree.wood}</b>
+        {tree && treeCondition && (
+          <div className="voxel-tree-detail" data-testid="tree-detail">
+            <div className="voxel-info-row">
+              <span>
+                {tree.planted ? '人工种植' : '野生'} · {treeCondition.mature ? '成熟' : '成长中'}
+              </span>
+              <b>{(tree.growth * 100).toFixed(1)}%</b>
+            </div>
+            <progress aria-label="树木生长" value={tree.growth} max={1} />
+            <div className="voxel-info-row">
+              <span>当前砍伐产出</span>
+              <b>木材 × {treeCondition.yield}</b>
+            </div>
+            <p>
+              {treeCondition.reason} · 树龄 {treeCondition.ageDays.toFixed(1)} 日
+            </p>
+            <small>
+              肥力 {Math.round(treeCondition.fertility * 100)}% · 光照{' '}
+              {Math.round(treeCondition.light * 100)}% · {treeCondition.temperature.toFixed(1)}°C
+              <br />
+              健康 {Math.round(tree.health * 100)}% · 健康成熟时 {tree.wood} 木材
+            </small>
+            {treeCondition.yield === 0 && <p>现在砍伐只会清除树苗，不产木材。</p>}
+            <button
+              onClick={() => void client.command({ type: 'designate', tool: 'cut', from: tree })}
+            >
+              {treeCondition.yield ? '标记砍伐' : '清除树苗'}
+            </button>
+          </div>
+        )}
+        {treePlot && (
+          <div className="voxel-tree-detail" data-testid="grove-detail">
+            <b>{TREE_NAMES[treePlot.species]}林地区</b>
+            <p>{tree ? '保留生长，砍伐后自动补种。' : '等待工人种植。'} 相邻树位需要间隔一格。</p>
+            <small>取消林地会停止补植，保留已长出的树木。</small>
+            <button
+              onClick={() =>
+                void client.command({ type: 'designate', tool: 'clearZone', from: treePlot })
+              }
+            >
+              取消这格林地
+            </button>
           </div>
         )}
         {p &&
@@ -1092,6 +1145,19 @@ function App() {
                 {(Object.keys(CROPS) as CropKind[]).map((k) => (
                   <option key={k} value={k}>
                     {CROPS[k].name}
+                  </option>
+                ))}
+              </select>
+            )}
+            {state.tool === 'grove' && (
+              <select
+                aria-label="种植树种"
+                value={state.treeSpecies}
+                onChange={(e) => client.chooseTree(e.target.value as TreeSpecies)}
+              >
+                {(Object.keys(TREE_NAMES) as TreeSpecies[]).map((k) => (
+                  <option key={k} value={k}>
+                    {TREE_NAMES[k]}
                   </option>
                 ))}
               </select>

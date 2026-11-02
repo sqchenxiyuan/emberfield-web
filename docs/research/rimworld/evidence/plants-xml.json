@@ -1,0 +1,331 @@
+{
+  "evidence_id": "RW17-PLANTS-XML",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Minimal new research/stump declarations and explicit class-default absence checks; tree/biome declarations reused unchanged",
+  "limitations": [
+    "No effective enabled-mod/DLC Def database evaluation.",
+    "Selected values and absence are verified against original XML; no original game executed.",
+    "Stump deterioration engine and item-placement success are not simulated."
+  ],
+  "reused_biomes_records": [
+    "ThingDef_PlantBaseNonEdible",
+    "ThingDef_PlantBase",
+    "ThingDef_TreeBase",
+    "ThingDef_DeciduousTreeBase",
+    "ThingDef_Plant_TreePoplar",
+    "ThingDef_Plant_TreePine",
+    "ThingDef_Plant_SaguaroCactus",
+    "ThingDef_Plant_TreeOak",
+    "BiomeDef_TemperateForest",
+    "BiomeDef_BorealForest",
+    "BiomeDef_Desert"
+  ],
+  "default_absence": [
+    {
+      "group": "biomes",
+      "xml_record": "ThingDef_PlantBaseNonEdible",
+      "paths": [
+        "plant/dieIfLeafless",
+        "plant/dieIfNoSunlight",
+        "plant/harvestAfterGrowth",
+        "plant/growMinGlow",
+        "plant/growOptimalGlow",
+        "plant/minGrowthTemperature",
+        "plant/minOptimalGrowthTemperature",
+        "plant/maxOptimalGrowthTemperature",
+        "plant/harvestYieldAffectedByDifficulty"
+      ]
+    },
+    {
+      "group": "biomes",
+      "xml_record": "ThingDef_PlantBase",
+      "paths": [
+        "plant/dieIfLeafless",
+        "plant/dieIfNoSunlight",
+        "plant/harvestAfterGrowth",
+        "plant/growMinGlow",
+        "plant/growOptimalGlow",
+        "plant/minGrowthTemperature",
+        "plant/minOptimalGrowthTemperature",
+        "plant/maxOptimalGrowthTemperature",
+        "plant/harvestYieldAffectedByDifficulty"
+      ]
+    },
+    {
+      "group": "biomes",
+      "xml_record": "ThingDef_TreeBase",
+      "paths": [
+        "plant/dieIfLeafless",
+        "plant/dieIfNoSunlight",
+        "plant/harvestAfterGrowth",
+        "plant/growMinGlow",
+        "plant/growOptimalGlow",
+        "plant/minGrowthTemperature",
+        "plant/minOptimalGrowthTemperature",
+        "plant/maxOptimalGrowthTemperature",
+        "plant/harvestYieldAffectedByDifficulty"
+      ]
+    },
+    {
+      "group": "biomes",
+      "xml_record": "ThingDef_DeciduousTreeBase",
+      "paths": [
+        "plant/dieIfLeafless",
+        "plant/dieIfNoSunlight",
+        "plant/harvestAfterGrowth",
+        "plant/growMinGlow",
+        "plant/growOptimalGlow",
+        "plant/minGrowthTemperature",
+        "plant/minOptimalGrowthTemperature",
+        "plant/maxOptimalGrowthTemperature",
+        "plant/harvestYieldAffectedByDifficulty"
+      ]
+    },
+    {
+      "group": "biomes",
+      "xml_record": "ThingDef_Plant_TreePoplar",
+      "paths": [
+        "plant/dieIfLeafless",
+        "plant/dieIfNoSunlight",
+        "plant/harvestAfterGrowth",
+        "plant/growMinGlow",
+        "plant/growOptimalGlow",
+        "plant/minGrowthTemperature",
+        "plant/minOptimalGrowthTemperature",
+        "plant/maxOptimalGrowthTemperature",
+        "plant/harvestYieldAffectedByDifficulty"
+      ]
+    },
+    {
+      "group": "biomes",
+      "xml_record": "ThingDef_Plant_TreePine",
+      "paths": [
+        "plant/dieIfLeafless",
+        "plant/dieIfNoSunlight",
+        "plant/harvestAfterGrowth",
+        "plant/growMinGlow",
+        "plant/growOptimalGlow",
+        "plant/minGrowthTemperature",
+        "plant/minOptimalGrowthTemperature",
+        "plant/maxOptimalGrowthTemperature",
+        "plant/harvestYieldAffectedByDifficulty"
+      ]
+    },
+    {
+      "group": "biomes",
+      "xml_record": "ThingDef_Plant_SaguaroCactus",
+      "paths": [
+        "plant/dieIfLeafless",
+        "plant/dieIfNoSunlight",
+        "plant/harvestAfterGrowth",
+        "plant/growMinGlow",
+        "plant/growOptimalGlow",
+        "plant/minGrowthTemperature",
+        "plant/minOptimalGrowthTemperature",
+        "plant/maxOptimalGrowthTemperature",
+        "plant/harvestYieldAffectedByDifficulty"
+      ]
+    },
+    {
+      "group": "biomes",
+      "xml_record": "ThingDef_Plant_TreeOak",
+      "paths": [
+        "plant/dieIfLeafless",
+        "plant/dieIfNoSunlight",
+        "plant/harvestAfterGrowth",
+        "plant/growMinGlow",
+        "plant/growOptimalGlow",
+        "plant/minGrowthTemperature",
+        "plant/minOptimalGrowthTemperature",
+        "plant/maxOptimalGrowthTemperature",
+        "plant/harvestYieldAffectedByDifficulty"
+      ]
+    }
+  ],
+  "records": [
+    {
+      "group": "research",
+      "id": "ResearchProjectDef_TreeSowing",
+      "def_name": "TreeSowing",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_1.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='TreeSowing']",
+        "sha256": "8fc372f2c4e4bb2eddbe2c1c807eb851d8f6d3f69bcc15e8713b1cc6a64bd3f7"
+      },
+      "selected_roots": [
+        "baseCost",
+        "techLevel",
+        "tags",
+        "prerequisites"
+      ],
+      "absent_roots": [
+        "prerequisites"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='TreeSowing']/baseCost",
+          "value": "1000"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='TreeSowing']/techLevel",
+          "value": "Neolithic"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='TreeSowing']/tags/li",
+          "value": "TribalStart"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stump",
+      "id": "ThingDef_StumpBase",
+      "def_name": "StumpBase",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Special.xml",
+        "xpath": "/Defs/ThingDef[@Name='StumpBase']",
+        "sha256": "4c2ba9afa356ddf6d12589ce2d19cc18a6c41c1c19c18d2eb39d22839d854541"
+      },
+      "selected_roots": [
+        "category",
+        "thingClass",
+        "statBases",
+        "startingHpRange",
+        "plant"
+      ],
+      "absent_roots": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/category",
+          "value": "Plant"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/thingClass",
+          "value": "DeadPlant"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/statBases/MaxHitPoints",
+          "value": "100"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/statBases/DeteriorationRate",
+          "value": "4"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/startingHpRange/min",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/startingHpRange/max",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/plant/harvestWork",
+          "value": "180"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/plant/harvestMinGrowth",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/plant/harvestYield",
+          "value": "4"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/plant/fertilityMin",
+          "value": "0.01"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/plant/fertilitySensitivity",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/plant/blockAdjacentSow",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/plant/harvestedThingDef",
+          "value": "WoodLog"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/plant/harvestFailable",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/plant/harvestTag",
+          "value": "Wood"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/plant/growDays",
+          "value": "30"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/plant/growMinGlow",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/plant/lifespanDaysPerGrowDays",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/plant/treeLoversCareIfChopped",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/plant/canDeteriorate",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/plant/isStump",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StumpBase']/plant/neverBlightable",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stump",
+      "id": "ThingDef_ChoppedStump",
+      "def_name": "ChoppedStump",
+      "parent_name": "StumpBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Special.xml",
+        "xpath": "/Defs/ThingDef[defName='ChoppedStump']",
+        "sha256": "4c2ba9afa356ddf6d12589ce2d19cc18a6c41c1c19c18d2eb39d22839d854541"
+      },
+      "selected_roots": [
+        "category",
+        "thingClass",
+        "statBases",
+        "startingHpRange",
+        "plant"
+      ],
+      "absent_roots": [
+        "category",
+        "thingClass",
+        "startingHpRange"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='ChoppedStump']/statBases/Beauty",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ChoppedStump']/statBases/DeteriorationRate",
+          "value": "20"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ChoppedStump']/plant/harvestWork",
+          "value": "90"
+        }
+      ],
+      "node_attributes": []
+    }
+  ]
+}

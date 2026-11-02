@@ -35,6 +35,9 @@
 | [27 生态、土壤与季节规则](27-biomes-terrain-generation.md) | 生态选择、真实肥力、木本产量与纬度季节振幅如何连接？ |
 | [28 原版世界选址观察](28-native-world-generation-runtime.md) | 三生态五格点的实际界面与存档能证明什么？ |
 | [29 体素世界生成与气候](29-voxel-world-generation-implementation.md) | 真正起伏地形、可预览配置、有限矿脉、季节与v8兼容怎样验证？ |
+| [30 植物生命周期与林业规则](30-plants-lifecycle-forestry-regrowth.md) | 初始成长与树龄、种树资格、采伐收益、缺光衰老及自然补生怎样连接？ |
+| [31 原版植物检查与种植菜单](31-native-plants-runtime.md) | 真实成长/健康面板与菜单能证明什么？哪些采伐和播种操作尚未证实？ |
+| [32 体素树木与林地经营](32-voxel-plants-implementation.md) | 实体播种、生长与采木、自动补植、通路保护和v9迁移怎样验证？ |
 
 每篇均含具体来源与未决问题。先读感兴趣的系统，再查其 `evidence/*-claims.json` 和 `*-manifest.json`，不要把“已抽取一个类型”当成“这个类型涉及的全部机制已经理解”。
 

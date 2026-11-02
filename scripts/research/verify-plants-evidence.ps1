@@ -1,0 +1,28 @@
+param([Parameter(Mandatory=$true)][string]$GameRoot)
+$ErrorActionPreference='Stop'
+$project=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
+$evidence=Join-Path $project 'docs/research/rimworld/evidence'
+function Require($ok,$message){if(!$ok){throw $message}}
+# Validate metadata paths before accessing original files. Does not load the game's assembly.
+$nodeOutput=& node (Join-Path $PSScriptRoot 'verify-plants-evidence.mjs') --local
+if($LASTEXITCODE -ne 0){throw 'Plants portable/local verification failed.'}
+$analytic=($nodeOutput -join "`n")|ConvertFrom-Json
+Require ($analytic.status -eq 'pass') 'Plants verifier did not pass'
+$snapshot=Get-Content -Raw -LiteralPath (Join-Path $evidence 'plants-xml.json')|ConvertFrom-Json
+$prior=Get-Content -Raw -LiteralPath (Join-Path $evidence 'biomes-xml.json')|ConvertFrom-Json
+$sourceHash=(Get-FileHash -LiteralPath (Join-Path $GameRoot 'Assembly-CSharp.dll') -Algorithm SHA256).Hash.ToLowerInvariant()
+Require ($sourceHash -eq 'eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3' -and $sourceHash -eq $snapshot.assembly_sha256) 'Original assembly mismatch'
+Require ((Get-Content -Raw -LiteralPath (Join-Path $GameRoot 'Version.txt')).Trim() -eq $snapshot.version_text) 'Original version mismatch'
+$records=@($snapshot.records)+@($prior.records|Where-Object {$_.id -in $snapshot.reused_biomes_records})
+$docs=@{};$hashes=@{};$leaves=0;$attributeNodes=0;$absentRoots=0;$absence=0
+foreach($r in $records){$s=$r.source
+ if(!$docs.ContainsKey($s.path)){$file=Join-Path $GameRoot $s.path;$docs[$s.path]=[xml](Get-Content -Raw -LiteralPath $file);$hashes[$s.path]=(Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash.ToLowerInvariant()}
+ Require ($hashes[$s.path] -eq $s.sha256) "Original XML hash mismatch: $($s.path)"
+ $doc=$docs[$s.path];$root=$doc.SelectSingleNode($s.xpath);Require ($null -ne $root) "Missing original node: $($r.id)";Require ($root.GetAttribute('ParentName') -eq $r.parent_name) "Changed XML parent: $($r.id)"
+ foreach($tag in $r.selected_roots){$missing=$null -eq $root.SelectSingleNode($tag);Require ($missing -eq ($tag -in $r.absent_roots)) "Changed selected root: $($r.id)/$tag";if($missing){$absentRoots++}}
+ foreach($f in $r.fields){$node=$doc.SelectSingleNode($f.xpath);Require ($null -ne $node -and $node.InnerText -eq $f.value) "Changed XML value: $($f.xpath)";$leaves++}
+ foreach($a in $r.node_attributes){$node=$doc.SelectSingleNode($a.xpath);Require ($null -ne $node -and $node.Attributes.Count -eq @($a.attributes.PSObject.Properties).Count) "Changed attributes: $($a.xpath)";foreach($attr in $a.attributes.PSObject.Properties){Require ($node.GetAttribute($attr.Name) -eq $attr.Value) "Changed attribute: $($a.xpath)/@$($attr.Name)"};$attributeNodes++}
+}
+foreach($q in $snapshot.default_absence){$r=$records|Where-Object id -eq $q.xml_record;$root=$docs[$r.source.path].SelectSingleNode($r.source.xpath);foreach($p in $q.paths){Require ($null -eq $root.SelectSingleNode($p)) "Unexpected original default override: $($q.xml_record)/$p";$absence++}}
+$result=[ordered]@{evidence_id='RW17-PLANTS-VALIDATION';validated_utc=[DateTime]::UtcNow.ToString('o');status='PASS';version_text=$snapshot.version_text;original_sha256=$sourceHash;original_xml_files=$docs.Count;new_xml_record_selections=$snapshot.records.Count;reused_xml_record_selections=$snapshot.reused_biomes_records.Count;original_xml_leaves=$leaves;original_xml_attribute_nodes=$attributeNodes;original_xml_absent_roots=$absentRoots;original_default_absence_checks=$absence;portable_and_derived=$analytic;original_game_executed_by_verifier=$false;limitation='Original DLL/version, selected XML leaves/attributes/absence and parents, derived hashes and independent arithmetic are checked. No active-mod Def database, native gameplay, original RNG replay, full sunlight/stump deterioration or project implementation equivalence.'}
+$json=($result|ConvertTo-Json -Depth 8) -replace "`r`n","`n";[IO.File]::WriteAllText((Join-Path $evidence 'plants-validation.json'),$json+"`n",[Text.UTF8Encoding]::new($false));Write-Output $json
