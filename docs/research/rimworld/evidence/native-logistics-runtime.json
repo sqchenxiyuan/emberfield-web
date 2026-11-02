@@ -1,0 +1,492 @@
+{
+  "schema_version": 1,
+  "evidence_id": "RW17-NATIVE-LOGISTICS-RUNTIME",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "process_id": 29920,
+  "profile": ".local-research/runtime/profile-20261102",
+  "active_mods": [
+    "ludeon.rimworld",
+    "ludeon.rimworld.odyssey"
+  ],
+  "method": "Existing isolated native process, foreground mouse/keyboard UI, developer material preparation, explicit ordinary pawn prioritize-hauling order, read-only original save extraction",
+  "before_path": ".local-research/runtime/logistics-before-20261102-185110.rws",
+  "after_path": ".local-research/runtime/profile-20261102/Saves/logistics-final.rws",
+  "before": {
+    "file": "logistics-before-20261102-185110.rws",
+    "sha256": "d842a7fece16db3fa82aaf4c50cf5f96c030a3acc20681af950125633a48466c",
+    "bytes": 6275980,
+    "version": "1.7.4980 rev60",
+    "mods": [
+      "ludeon.rimworld",
+      "ludeon.rimworld.odyssey"
+    ],
+    "tick": 39868,
+    "zones": [],
+    "wood": [
+      {
+        "id": "WoodLog38593",
+        "pos": "(107, 0, 109)",
+        "count": 45,
+        "health": 149,
+        "spawned_tick": 0,
+        "forbidden": true
+      },
+      {
+        "id": "WoodLog38594",
+        "pos": "(112, 0, 111)",
+        "count": 53,
+        "health": 149,
+        "spawned_tick": 0,
+        "forbidden": true
+      },
+      {
+        "id": "WoodLog38595",
+        "pos": "(111, 0, 107)",
+        "count": 47,
+        "health": 148,
+        "spawned_tick": 0,
+        "forbidden": true
+      },
+      {
+        "id": "WoodLog38596",
+        "pos": "(108, 0, 110)",
+        "count": 61,
+        "health": 150,
+        "spawned_tick": 0,
+        "forbidden": true
+      },
+      {
+        "id": "WoodLog38597",
+        "pos": "(121, 0, 126)",
+        "count": 45,
+        "health": 150,
+        "spawned_tick": 0,
+        "forbidden": true
+      },
+      {
+        "id": "WoodLog38598",
+        "pos": "(118, 0, 126)",
+        "count": 49,
+        "health": 150,
+        "spawned_tick": 0,
+        "forbidden": true
+      },
+      {
+        "id": "WoodLog41897",
+        "pos": "(105, 0, 125)",
+        "count": 2,
+        "health": 149,
+        "spawned_tick": 2166,
+        "forbidden": false
+      }
+    ],
+    "pawns": [
+      {
+        "id": "Human961",
+        "nick": "Squint",
+        "pos": "(102, 0, 141)",
+        "job": "LayDown",
+        "job_id": "27290",
+        "job_target": "(102, 0, 141)",
+        "job_started": 38520,
+        "asleep": true,
+        "carry": []
+      },
+      {
+        "id": "Human958",
+        "nick": "Prophet",
+        "pos": "(104, 0, 148)",
+        "job": "LayDown",
+        "job_id": "27475",
+        "job_target": "(104, 0, 148)",
+        "job_started": 39697,
+        "asleep": true,
+        "carry": []
+      },
+      {
+        "id": "Human965",
+        "nick": "Grump",
+        "pos": "(106, 0, 145)",
+        "job": "GotoWander",
+        "job_id": "27469",
+        "job_target": "(107, 0, 124)",
+        "job_started": 39678,
+        "asleep": false,
+        "carry": []
+      }
+    ],
+    "human_reservations": [
+      {
+        "claimant": "Thing_Human961",
+        "job": "Job_27290",
+        "target": "(102, 0, 141)",
+        "max_pawns": 1,
+        "stack_count": -1
+      },
+      {
+        "claimant": "Thing_Human958",
+        "job": "Job_27475",
+        "target": "(104, 0, 148)",
+        "max_pawns": 1,
+        "stack_count": -1
+      }
+    ]
+  },
+  "after": {
+    "file": "logistics-final.rws",
+    "sha256": "a3ef544f9c1641b30624eb8894b07f6fdc45ecce3bd668edf6a9b716ed5359ae",
+    "bytes": 6282775,
+    "version": "1.7.4980 rev60",
+    "mods": [
+      "ludeon.rimworld",
+      "ludeon.rimworld.odyssey"
+    ],
+    "tick": 46372,
+    "zones": [
+      {
+        "id": 0,
+        "class": "Zone_Stockpile",
+        "label": "Stockpile zone 1",
+        "cells": [
+          "(105, 0, 129)"
+        ],
+        "priority": "Normal",
+        "allowed_defs": [
+          "WoodLog"
+        ]
+      }
+    ],
+    "wood": [
+      {
+        "id": "WoodLog38593",
+        "pos": "(107, 0, 109)",
+        "count": 45,
+        "health": 149,
+        "spawned_tick": 0,
+        "forbidden": true
+      },
+      {
+        "id": "WoodLog38594",
+        "pos": "(112, 0, 111)",
+        "count": 53,
+        "health": 149,
+        "spawned_tick": 0,
+        "forbidden": true
+      },
+      {
+        "id": "WoodLog38595",
+        "pos": "(111, 0, 107)",
+        "count": 47,
+        "health": 148,
+        "spawned_tick": 0,
+        "forbidden": true
+      },
+      {
+        "id": "WoodLog38596",
+        "pos": "(108, 0, 110)",
+        "count": 61,
+        "health": 150,
+        "spawned_tick": 0,
+        "forbidden": true
+      },
+      {
+        "id": "WoodLog38597",
+        "pos": "(121, 0, 126)",
+        "count": 45,
+        "health": 150,
+        "spawned_tick": 0,
+        "forbidden": true
+      },
+      {
+        "id": "WoodLog38598",
+        "pos": "(118, 0, 126)",
+        "count": 49,
+        "health": 149,
+        "spawned_tick": 0,
+        "forbidden": true
+      },
+      {
+        "id": "WoodLog41897",
+        "pos": "(105, 0, 125)",
+        "count": 2,
+        "health": 149,
+        "spawned_tick": 2166,
+        "forbidden": false
+      },
+      {
+        "id": "WoodLog42138",
+        "pos": "(105, 0, 133)",
+        "count": 4,
+        "health": 150,
+        "spawned_tick": 43177,
+        "forbidden": false
+      },
+      {
+        "id": "WoodLog42139",
+        "pos": "(108, 0, 133)",
+        "count": 75,
+        "health": 150,
+        "spawned_tick": 43177,
+        "forbidden": false
+      },
+      {
+        "id": "WoodLog42142",
+        "pos": "(105, 0, 129)",
+        "count": 71,
+        "health": 150,
+        "spawned_tick": 43635,
+        "forbidden": false
+      }
+    ],
+    "pawns": [
+      {
+        "id": "Human961",
+        "nick": "Squint",
+        "pos": "(105, 0, 129)",
+        "job": "LayDown",
+        "job_id": "32618",
+        "job_target": "(105, 0, 129)",
+        "job_started": 43638,
+        "asleep": true,
+        "carry": []
+      },
+      {
+        "id": "Human958",
+        "nick": "Prophet",
+        "pos": "(104, 0, 148)",
+        "job": "LayDown",
+        "job_id": "27475",
+        "job_target": "(104, 0, 148)",
+        "job_started": 39697,
+        "asleep": true,
+        "carry": []
+      },
+      {
+        "id": "Human965",
+        "nick": "Grump",
+        "pos": "(107, 0, 124)",
+        "job": "LayDown",
+        "job_id": "27584",
+        "job_target": "(107, 0, 124)",
+        "job_started": 41046,
+        "asleep": true,
+        "carry": []
+      }
+    ],
+    "human_reservations": [
+      {
+        "claimant": "Thing_Human958",
+        "job": "Job_27475",
+        "target": "(104, 0, 148)",
+        "max_pawns": 1,
+        "stack_count": -1
+      },
+      {
+        "claimant": "Thing_Human965",
+        "job": "Job_27584",
+        "target": "(107, 0, 124)",
+        "max_pawns": 1,
+        "stack_count": -1
+      },
+      {
+        "claimant": "Thing_Human961",
+        "job": "Job_32618",
+        "target": "(105, 0, 129)",
+        "max_pawns": 1,
+        "stack_count": -1
+      }
+    ]
+  },
+  "delta_ticks": 6504,
+  "experiment_wood_ids": [
+    "WoodLog42138",
+    "WoodLog42139",
+    "WoodLog42142"
+  ],
+  "spawned_total": 150,
+  "final_experiment_total": 150.0,
+  "outcomes": {
+    "generic_no_storage_rejection_observed": true,
+    "expansion_succeeded": false,
+    "rejection_cause_isolated": false,
+    "full75_rejection_demonstrated": false,
+    "source_remainder": 4,
+    "hauling_after_expansion_demonstrated": false,
+    "stored_count": 71,
+    "other_stack_count": 75,
+    "normal_pawn_haul_observed": true,
+    "developer_full_stack75_observed": true,
+    "partial_stack_merge_demonstrated": false
+  },
+  "screenshots": [
+    {
+      "id": "one-cell",
+      "image": "runtime/logistics-one-cell.png",
+      "sha256": "f7249a5ee77cb592a199f7cc7dbebe746b1b9bc957ef1acab240d1bdd8669e7e",
+      "source_file": ".local-research/runtime/logistics-008-select-zone.png",
+      "source_sha256": "702496f41039fc28f107981b96c0e25963cd3afd68ec8c54f046d278b2972b3e",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1100,
+        2560,
+        340
+      ],
+      "observed_utc": "2026-11-02T18:53:05.664597Z",
+      "observation": "Stockpile zone 1; Size: 1"
+    },
+    {
+      "id": "filter",
+      "image": "runtime/logistics-filter.png",
+      "sha256": "15358463a7165a697565d6c89138742c05a8f11141ebc055b26f89b4dc31b5fd",
+      "source_file": ".local-research/runtime/logistics-013-allow-wood.png",
+      "source_sha256": "6f057f2d295c8034d442e1cd9e058789d8d297c4b7d5222f49327b0f58c2b68b",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        720,
+        450,
+        700
+      ],
+      "observed_utc": "2026-11-02T18:54:42.3005261Z",
+      "observation": "Clear all, then enable Wood only"
+    },
+    {
+      "id": "spawn75",
+      "image": "runtime/logistics-spawn75.png",
+      "sha256": "ec02469c9c9e022776e34d6c7d6b6bfc37485d785d65587531b112ef9e1ecfe1",
+      "source_file": ".local-research/runtime/logistics-027-full-stack.png",
+      "source_sha256": "54a079b4306f3584423c5255e631f25a5105efb101b3b3fb3f9cea607d00a4d4",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1100,
+        2560,
+        340
+      ],
+      "observed_utc": "2026-11-02T18:57:54.1312276Z",
+      "observation": "Developer-spawned full wood stack x75; outside storage"
+    },
+    {
+      "id": "haul-menu",
+      "image": "runtime/logistics-haul-menu.png",
+      "sha256": "6ae77e9b8549d6a60a549c93a3413cf1b366b8dfb34250fff29db4fd6705a91f",
+      "source_file": ".local-research/runtime/logistics-029-wood-haul-menu.png",
+      "source_sha256": "c26c4c1f153e19e9f4eda3d90413924b5c6f399adfc44b81aa1d5ddf287cb7a1",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        1370,
+        1110,
+        340,
+        140
+      ],
+      "observed_utc": "2026-11-02T18:58:39.8245863Z",
+      "observation": "Squint: Prioritize hauling wood x75"
+    },
+    {
+      "id": "stored71",
+      "image": "runtime/logistics-stored71.png",
+      "sha256": "5623e04082764d766244480a4b13b58229641df48cf1f91e16c5fa350042529f",
+      "source_file": ".local-research/runtime/logistics-033-zone-full.png",
+      "source_sha256": "7bc8464fde0e69346cae343d43bb6c6f3e53c27f49ff06d586569fe366ac03a9",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1100,
+        2560,
+        340
+      ],
+      "observed_utc": "2026-11-02T18:59:31.6249294Z",
+      "observation": "Wood x71 at the designated storage cell after ordinary pawn hauling"
+    },
+    {
+      "id": "reject",
+      "image": "runtime/logistics-reject.png",
+      "sha256": "1b4d1c81e214cbb38f4263ab29f71723b50fdf5d0da3c835e22324c24f1a8cd6",
+      "source_file": ".local-research/runtime/logistics-035-full-reject-menu.png",
+      "source_sha256": "e73c7627567509f5dcbb7a50a31250642d91fde46256ffe51f1908b10c15599a",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        1490,
+        1110,
+        350,
+        160
+      ],
+      "observed_utc": "2026-11-02T19:00:08.6127832Z",
+      "observation": "Cannot haul wood x75: No empty, accessible spot configured to store it"
+    },
+    {
+      "id": "after-attempt",
+      "image": "runtime/logistics-after-attempt.png",
+      "sha256": "1b4d1c81e214cbb38f4263ab29f71723b50fdf5d0da3c835e22324c24f1a8cd6",
+      "source_file": ".local-research/runtime/logistics-045-expanded-menu.png",
+      "source_sha256": "e73c7627567509f5dcbb7a50a31250642d91fde46256ffe51f1908b10c15599a",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        1490,
+        1110,
+        350,
+        160
+      ],
+      "observed_utc": "2026-11-02T19:03:24.3621358Z",
+      "observation": "Same rejection after unsuccessful zone expansion attempt"
+    }
+  ],
+  "actions": {
+    "sha256": "e200a4f8543f8707086f27c0ddcab845bcfeb0416d1c244109cbe28457547da2",
+    "file": "native-logistics-actions.jsonl",
+    "count": 52
+  },
+  "chronology": [
+    "18:51:15 UTC initial paused screenshot; backup prior preservation-frozen-1 save",
+    "Create one normal outdoor stockpile cell; allow Wood only",
+    "Initial order on existing wood did not establish a successful haul; one bounded time run",
+    "Developer Spawn full thing stack used twice, each WoodLog75, placed outside the stockpile after camera shifted",
+    "Squint context menu Prioritize hauling wood x75 selected; ordinary simulation advances",
+    "71 wood appears in storage, 4 remains at source, second75 remains outside",
+    "Other75 context menu rejects hauling; sleeping Squint occupies/reserves storage cell",
+    "One expansion drag attempted; final XML still has one cell, so expansion failed",
+    "19:04:11 UTC final save returns to paused map; no further UI experiment"
+  ],
+  "limitations": [
+    "Core + Odyssey, developer mode and God mode were already enabled from prior isolated research.",
+    "The materials were developer-spawned; their production/acquisition was not demonstrated. Storage hauling itself used an ordinary pawn job.",
+    "Observed71 is not a full75 stack. The rejection does not prove the stack-limit boundary.",
+    "Squint is sleeping on the storage cell and reserves it; this is recorded state, not an isolated causal explanation.",
+    "Partial-stack merging, filling the last4, successful expansion and resumed hauling were not demonstrated.",
+    "The expansion attempt failed: final XML still contains exactly one stockpile cell.",
+    "No intermediate save was captured before hauling; before backup lacks the newly spawned materials. UI action trail and final three-stack150 conservation are complementary evidence.",
+    "Initial auto-closing context menus and a camera shift complicated UI navigation. The single bounded experiment ended rather than repeatedly repairing setup.",
+    "Portable verification checks committed summaries/crop hashes/arithmetic; local mode rereads original saves/captures. Neither reruns gameplay."
+  ],
+  "final_state": {
+    "paused": true,
+    "mods_installed": false,
+    "game_files_modified": false,
+    "god_mode": true,
+    "normal_profile_touched": false,
+    "developer_mode": true
+  }
+}

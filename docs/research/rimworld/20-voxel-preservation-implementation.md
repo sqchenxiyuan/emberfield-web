@@ -2,6 +2,8 @@
 
 更新：2026-11-03。[在线体素试玩](https://sqchenxiyuan.github.io/emberfield-web/?world=voxel)。原版规则见[19章](19-preservation-mechanisms.md)，原版独立实机实验见[18章](18-native-preservation-runtime.md)。本章是 Emberfield 三维实现与验收，不把自编公式测试当作原版运行数据。
 
+历史版本说明：本章记录v5保鲜里程碑，截图、数量与原始证据保持不变。当前v6已加入一格一堆和有限容量，新的分堆保鲜回归、旧档迁移与仓储操作见[23章](23-voxel-logistics-implementation.md)。
+
 ## 玩家操作
 
 在封闭房间内建冷气机，把蓝侧朝向冷库、橙侧通向可排热空间，并接通电源。冷气机装在墙口，两侧必须有空气。目标设成负温后，应检查实际室温；目标数值本身不保证房间已经冻结。

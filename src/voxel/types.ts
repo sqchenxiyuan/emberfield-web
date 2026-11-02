@@ -160,6 +160,17 @@ export interface Stockpile extends Pos {
   priority: number;
   accepts: Resource[];
 }
+export interface StorageCapacity extends Pos {
+  occupied: boolean;
+  resource: Resource | null;
+  crop: CropKind | null;
+  amount: number;
+  /** Empty cells have no assigned resource and therefore no single numeric limit. */
+  limit: number;
+  reserved: number;
+  available: Counts;
+  availableGrain: Record<CropKind, number>;
+}
 export interface FarmPlot extends Pos {
   crop: CropKind;
 }
@@ -209,6 +220,8 @@ export interface Job extends Pos {
   deliveredFood: Cargo[];
   cost: Partial<Counts>;
   reason: string;
+  /** Cancelled inputs remain in this finite job container until safely refunded. */
+  cancelled: boolean;
   axis?: Axis;
 }
 export interface Pawn extends Pos {
@@ -263,6 +276,7 @@ export interface VoxelSnapshot {
   trees: Tree[];
   jobs: Job[];
   stockpiles: Stockpile[];
+  storageCapacity: StorageCapacity[];
   farms: FarmPlot[];
   crops: Crop[];
   stoves: Stove[];
@@ -311,7 +325,7 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 5;
+  version: 6;
   generator: 1;
   seed: number;
   tick: number;

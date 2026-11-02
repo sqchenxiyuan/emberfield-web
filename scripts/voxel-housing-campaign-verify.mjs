@@ -81,6 +81,7 @@ async function save(name) {
   await writeFile(`${OUT}/${name}.json`, JSON.stringify(sim.save()));
 }
 try {
+  place('stock', p(28, 32), p(31, 36));
   for (const [x, y] of [
     [27, 29],
     [28, 27],

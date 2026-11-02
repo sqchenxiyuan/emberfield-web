@@ -69,6 +69,10 @@ const place = (tool, from, to, axis) => command({ type: 'designate', tool, from,
 const done = (name) => until(name, () => !sim.jobs.some((j) => j.kind !== 'refuel'));
 const save = async (name) => writeFile(`${OUT}/${name}.json`, JSON.stringify(sim.save()));
 try {
+  // Physical slots must be planned before fields; mineral and food stacks no
+  // longer fit in the original two starter cells without limit.
+  place('stock', p(28, 32), p(31, 36));
+  place('stock', p(34, 33), p(36, 36));
   const components = [];
   for (let z = 2; z <= 5; z++)
     for (let y = 1; y < 63; y++)
@@ -91,17 +95,25 @@ try {
     // The preservation campaign starts farming before industrial construction,
     // so the first natural harvest arrives within the initial ration runway.
     const reserved = new Set(sim.stockpiles.map((q) => at(q)));
-    for (const q of [p(32,31),p(33,32),p(40,30),p(27,28)]) reserved.add(at(q));
-    for(let y=27;y<=30;y++)for(let x=28;x<=31;x++)reserved.add(at(p(x,y)));
-    for(let y=28;y<=29;y++)for(let x=34;x<=37;x++)reserved.add(at(p(x,y)));
-    for(let y=29;y<=32;y++)for(let x=32;x<=33;x++)reserved.add(at(p(x,y)));
-    const fields=[];
-    for(let y=24;y<=41;y++)for(let x=24;x<=41;x++){
-      const q=p(x,y);if(!reserved.has(at(q))&&sim.standable(q)&&sim.cropCondition(q,'rice').fertility===1)fields.push(q);
-    }
-    fields.sort((a,b)=>Math.hypot(a.x-32,a.y-32)-Math.hypot(b.x-32,b.y-32));
-    assert.ok(fields.length>=120);
-    for(const q of fields.slice(0,120))command({type:'designate',tool:'farm',from:q,crop:'rice'});
+    for (const q of [p(32, 31), p(33, 32), p(40, 30), p(27, 28)]) reserved.add(at(q));
+    for (let y = 27; y <= 30; y++) for (let x = 28; x <= 31; x++) reserved.add(at(p(x, y)));
+    for (let y = 28; y <= 29; y++) for (let x = 34; x <= 37; x++) reserved.add(at(p(x, y)));
+    for (let y = 29; y <= 32; y++) for (let x = 32; x <= 33; x++) reserved.add(at(p(x, y)));
+    const fields = [];
+    for (let y = 24; y <= 41; y++)
+      for (let x = 24; x <= 41; x++) {
+        const q = p(x, y);
+        if (
+          !reserved.has(at(q)) &&
+          sim.standable(q) &&
+          sim.cropCondition(q, 'rice').fertility === 1
+        )
+          fields.push(q);
+      }
+    fields.sort((a, b) => Math.hypot(a.x - 32, a.y - 32) - Math.hypot(b.x - 32, b.y - 32));
+    assert.ok(fields.length >= 120);
+    for (const q of fields.slice(0, 120))
+      command({ type: 'designate', tool: 'farm', from: q, crop: 'rice' });
     check('preservation branch starts 120 real rice plots before power construction');
   }
   done('six mature trees harvested and hauled');

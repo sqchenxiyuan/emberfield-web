@@ -1,0 +1,458 @@
+[
+  {
+    "id": "LG01",
+    "kind": "xml-declared",
+    "statement": "WoodLog and Steel inherit ResourceBase.stackLimit=75; ComponentIndustrial explicitly overrides to 50.",
+    "sources": [
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_ResourceBase"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_ResourceVerbBase"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_WoodLog"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_Steel"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_ComponentIndustrial"
+      }
+    ]
+  },
+  {
+    "id": "LG02",
+    "kind": "xml-declared",
+    "statement": "ChunkGranite inherits stackLimit=1 and declares butcherProducts BlocksGranite=20; BlocksGranite inherits stackLimit=75. Project stone maps to abstract BlocksGranite material; mining directly yielding five is a project adaptation, not the original chunk process.",
+    "sources": [
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_ChunkBase"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_ChunkRockBase"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_StoneBlocksBase"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_ChunkGranite"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_BlocksGranite"
+      }
+    ]
+  },
+  {
+    "id": "LG03",
+    "kind": "xml-declared",
+    "statement": "RawRice, RawPotatoes and RawCorn each inherit stackLimit=75; MealSimple and MealSurvivalPack inherit 10. These are distinct ThingDefs, not a shared raw-food stack identity.",
+    "sources": [
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_ResourceBase"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_OrganicProductBase"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_PlantFoodRawBase"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_RawRice"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_RawPotatoes"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_RawCorn"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_MealBaseIngredientless"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_MealCookedIngredientless"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_MealCooked"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_MealBase"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_MealSimple"
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_MealSurvivalPack"
+      }
+    ]
+  },
+  {
+    "id": "LG04",
+    "kind": "xml-and-static-derived",
+    "statement": "Max hand carry count is min(stackLimit, RoundToInt(CarryingCapacity/VolumePerUnit)); VolumePerUnit defaults to 1 or 0.1 for smallVolume. The selected resource/food chains do not set smallVolume. This calculation does not divide by Mass.",
+    "sources": [
+      {
+        "group": "preservation",
+        "type": "Verse.Pawn_CarryTracker",
+        "line_start": 53,
+        "line_end": 67
+      },
+      {
+        "group": "energy",
+        "type": "Verse.ThingDef",
+        "line_start": 19,
+        "line_end": 27
+      },
+      {
+        "group": "energy",
+        "type": "Verse.ThingDef",
+        "line_start": 460,
+        "line_end": 470
+      }
+    ]
+  },
+  {
+    "id": "LG05",
+    "kind": "xml-and-static-derived",
+    "statement": "CarryingCapacity has default base value 75 and minimum 1, with a BodySize stat part and Manipulation capacity factor weight 1. StatPart_BodySize multiplies by pawn body size; 75 is a baseline, not a universal pawn result.",
+    "sources": [
+      {
+        "group": "logistics",
+        "xml_record": "StatDef_CarryingCapacity"
+      },
+      {
+        "group": "logistics",
+        "type": "RimWorld.StatPart_BodySize",
+        "line_start": 7,
+        "line_end": 28
+      }
+    ]
+  },
+  {
+    "id": "LG06",
+    "kind": "static-derived",
+    "statement": "CarryTracker uses a one-stack ThingOwner. Pickup is capped by job count, remaining hand stack space and source count; after a partial pickup, an unqueued source remainder reservation may be released.",
+    "sources": [
+      {
+        "group": "preservation",
+        "type": "Verse.Pawn_CarryTracker",
+        "line_start": 30,
+        "line_end": 36
+      },
+      {
+        "group": "preservation",
+        "type": "Verse.Pawn_CarryTracker",
+        "line_start": 84,
+        "line_end": 117
+      },
+      {
+        "group": "work",
+        "type": "Verse.AI.Toils_Haul",
+        "line_start": 34,
+        "line_end": 110
+      }
+    ]
+  },
+  {
+    "id": "LG07",
+    "kind": "xml-and-static-derived",
+    "statement": "Cell item capacity is edifice.MaxItemsInCell or 1 when no edifice exists; GetItemCount counts Item objects/stacks, not their units. Building reads maxItemsInCell and ShelfBase declares 3; this shelf value must not be applied to ordinary ground.",
+    "sources": [
+      {
+        "group": "logistics",
+        "type": "Verse.GridsUtility",
+        "line_start": 267,
+        "line_end": 284
+      },
+      {
+        "group": "energy",
+        "type": "Verse.Building",
+        "line_start": 62,
+        "line_end": 62
+      },
+      {
+        "group": "logistics",
+        "xml_record": "ThingDef_ShelfBase"
+      }
+    ]
+  },
+  {
+    "id": "LG08",
+    "kind": "static-derived",
+    "statement": "Normal storage accepts an existing compatible non-full stack even with no free stack slot; otherwise full item-slot count blocks placement. Base stacking requires non-destroyed Item, non-relic, same Def and Stuff, with ThingComp checks able to reject it.",
+    "sources": [
+      {
+        "group": "preservation",
+        "type": "RimWorld.StoreUtility",
+        "line_start": 103,
+        "line_end": 142
+      },
+      {
+        "group": "energy",
+        "type": "Verse.Thing",
+        "line_start": 1553,
+        "line_end": 1572
+      },
+      {
+        "group": "preservation",
+        "type": "Verse.ThingWithComps",
+        "line_start": 585,
+        "line_end": 604
+      }
+    ]
+  },
+  {
+    "id": "LG09",
+    "kind": "static-derived",
+    "statement": "GetItemStackSpaceLeftFor sums same-Def stack deficits plus max(cell capacity minus Item count,0)*def.stackLimit. It is a count estimate, not a substitute for complete CanStackWith compatibility.",
+    "sources": [
+      {
+        "group": "logistics",
+        "type": "Verse.GridsUtility",
+        "line_start": 300,
+        "line_end": 317
+      }
+    ]
+  },
+  {
+    "id": "LG10",
+    "kind": "static-derived",
+    "statement": "Standard HaulToCell pre-reserves destination cell then source with maxPawns=1 and stackCount=-1. ReservationManager resolves a cell to quantity1 and -1 to full available target quantity; IsGoodStoreCell rejects another respected reservation, static fire, blockers and unreachable destination. This is not a future-storage quantity ledger.",
+    "sources": [
+      {
+        "group": "work",
+        "type": "Verse.AI.JobDriver_HaulToCell",
+        "line_start": 56,
+        "line_end": 63
+      },
+      {
+        "group": "work",
+        "type": "Verse.AI.ReservationManager",
+        "line_start": 157,
+        "line_end": 236
+      },
+      {
+        "group": "preservation",
+        "type": "RimWorld.StoreUtility",
+        "line_start": 327,
+        "line_end": 378
+      }
+    ]
+  },
+  {
+    "id": "LG11",
+    "kind": "static-derived",
+    "statement": "HaulToCellStorageJob counts available capacity across its slot/storage group; fitInStoreCell=false can gather enough for multiple destination cells. Pickup still clamps to hand and source limits.",
+    "sources": [
+      {
+        "group": "work",
+        "type": "Verse.AI.HaulAIUtility",
+        "line_start": 120,
+        "line_end": 188
+      },
+      {
+        "group": "work",
+        "type": "Verse.AI.Toils_Haul",
+        "line_start": 48,
+        "line_end": 76
+      }
+    ]
+  },
+  {
+    "id": "LG12",
+    "kind": "static-derived",
+    "statement": "GenPlace Direct first merges into compatible stacks (largest stacks first), then splits at stackLimit into available slots. False may mean a partial transfer, with a remainder still unplaced. Direct has a special extra-slot fallback for stackLimit<=1, so ordinary storage validation and raw placement are different contracts.",
+    "sources": [
+      {
+        "group": "logistics",
+        "type": "Verse.GenPlace",
+        "line_start": 323,
+        "line_end": 379
+      },
+      {
+        "group": "preservation",
+        "type": "Verse.ThingUtility",
+        "line_start": 33,
+        "line_end": 41
+      },
+      {
+        "group": "energy",
+        "type": "Verse.Thing",
+        "line_start": 1574,
+        "line_end": 1638
+      }
+    ]
+  },
+  {
+    "id": "LG13",
+    "kind": "static-derived",
+    "statement": "GenPlace Near selects locations through initial9 cells, radius3 and radius12.9 bands, checking spawn suitability, validator, storage acceptance, item slots and stackability. It loops after a partial transfer while stack count changes; this is not an unbounded map search.",
+    "sources": [
+      {
+        "group": "logistics",
+        "type": "Verse.GenPlace",
+        "line_start": 19,
+        "line_end": 21
+      },
+      {
+        "group": "logistics",
+        "type": "Verse.GenPlace",
+        "line_start": 56,
+        "line_end": 87
+      },
+      {
+        "group": "logistics",
+        "type": "Verse.GenPlace",
+        "line_start": 125,
+        "line_end": 183
+      },
+      {
+        "group": "logistics",
+        "type": "Verse.GenPlace",
+        "line_start": 208,
+        "line_end": 281
+      }
+    ]
+  },
+  {
+    "id": "LG14",
+    "kind": "static-derived",
+    "statement": "ThingOwner TryDrop removes its contained thing only after GenDrop reports success; GenDrop delegates to GenPlace. A Direct partial failure keeps the remainder in the owner while already placed portions remain placed.",
+    "sources": [
+      {
+        "group": "preservation",
+        "type": "Verse.ThingOwner",
+        "line_start": 477,
+        "line_end": 491
+      },
+      {
+        "group": "logistics",
+        "type": "Verse.GenDrop",
+        "line_start": 9,
+        "line_end": 40
+      },
+      {
+        "group": "preservation",
+        "type": "Verse.Pawn_CarryTracker",
+        "line_start": 132,
+        "line_end": 157
+      }
+    ]
+  },
+  {
+    "id": "LG15",
+    "kind": "static-derived",
+    "statement": "Haul drop failure/partial completion can seek another store cell and continue with the remainder; if none, it tries HaulAside. The extreme final branch logs a warning and destroys the carried item. Preserving blocked cargo instead is an explicit safer project adaptation.",
+    "sources": [
+      {
+        "group": "work",
+        "type": "Verse.AI.Toils_Haul",
+        "line_start": 320,
+        "line_end": 395
+      }
+    ]
+  },
+  {
+    "id": "LG16",
+    "kind": "static-derived",
+    "statement": "Automatic better-storage selection uses a strictly higher priority than current and then approximate distance search within eligible groups. Original priorities are Unstored0,Low1,Normal2,Preferred3,Important4,Critical5; temperature is not part of this selection.",
+    "sources": [
+      {
+        "group": "preservation",
+        "type": "RimWorld.StoreUtility",
+        "line_start": 19,
+        "line_end": 35
+      },
+      {
+        "group": "preservation",
+        "type": "RimWorld.StoreUtility",
+        "line_start": 173,
+        "line_end": 240
+      },
+      {
+        "group": "preservation",
+        "type": "RimWorld.StoragePriority",
+        "line_start": 3,
+        "line_end": 12
+      }
+    ]
+  },
+  {
+    "id": "LG17",
+    "kind": "static-derived",
+    "statement": "Priority setter resorts destinations and recalculates haulables. An already active HaulToCell checks IsValidStorageFor while going to source/carrying: presence, filter and blockers, not whether another priority became preferable. Priority-only changes do not by these checks alone force immediate reroute.",
+    "sources": [
+      {
+        "group": "preservation",
+        "type": "RimWorld.StorageSettings",
+        "line_start": 23,
+        "line_end": 57
+      },
+      {
+        "group": "logistics",
+        "type": "RimWorld.HaulDestinationManager",
+        "line_start": 136,
+        "line_end": 141
+      },
+      {
+        "group": "work",
+        "type": "Verse.AI.JobDriver_HaulToCell",
+        "line_start": 114,
+        "line_end": 128
+      },
+      {
+        "group": "work",
+        "type": "Verse.AI.Toils_Haul",
+        "line_start": 254,
+        "line_end": 294
+      },
+      {
+        "group": "preservation",
+        "type": "RimWorld.StoreUtility",
+        "line_start": 103,
+        "line_end": 115
+      }
+    ]
+  },
+  {
+    "id": "LG18",
+    "kind": "static-derived",
+    "statement": "Raw GenSpawn is not a transactional stockpile-capacity API: when spawning an Item into a full playing-map cell it may despawn one existing Item and try to move it Near, destroying it if that fails. ThingGrid is a list registry, not the storage-capacity enforcement layer.",
+    "sources": [
+      {
+        "group": "logistics",
+        "type": "Verse.GenSpawn",
+        "line_start": 91,
+        "line_end": 179
+      },
+      {
+        "group": "logistics",
+        "type": "Verse.ThingGrid",
+        "line_start": 41,
+        "line_end": 55
+      }
+    ]
+  }
+]

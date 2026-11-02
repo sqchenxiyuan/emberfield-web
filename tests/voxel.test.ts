@@ -170,6 +170,7 @@ describe('material ownership, cancellation and recovery', () => {
         initial = s.counts(),
         target = pos(36, 34, 8);
       solo(s);
+      place(s, 'stock', pos(28, 34, 8), pos(30, 35, 8));
       place(s, 'wall', target);
       until(
         s,
@@ -196,7 +197,9 @@ describe('material ownership, cancellation and recovery', () => {
   );
   it('makes three workers compete for eight pieces of wood without negative or duplicated stock', () => {
     const s = new VoxelSimulation();
-    s.items.find((i) => i.resource === 'wood')!.amount = 8;
+    const wood = s.items.find(i => i.resource === 'wood')!;
+    s.items = s.items.filter(i => i.resource !== 'wood' || i.id === wood.id);
+    wood.amount = 8;
     const initial = s.counts();
     for (const y of [33, 34, 35]) place(s, 'wall', pos(36, y, 8));
     until(
@@ -380,7 +383,7 @@ describe('voxel persistence and input validation', () => {
     const original = s.save();
     const corruptions: Array<(save: VoxelSave) => void> = [
       (d) => {
-        (d as { version: number }).version = 6;
+        (d as { version: number }).version = 7;
       },
       (d) => {
         (d as { generator: number }).generator = 2;

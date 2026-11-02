@@ -1,0 +1,812 @@
+{
+  "evidence_id": "RW17-LOGISTICS-XML",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Selected direct declarations, attributes and explicit selected-root absence",
+  "limitations": [
+    "No enabled DLC/mod patch database evaluation.",
+    "Only selected resource parent chains are resolved; ShelfBase is a direct declaration, not a complete furniture inheritance chain.",
+    "Food chains previously examined for preservation are reselected here to bind stackLimit and explicit smallVolume absence. Ordinary carry capacity is not caravan inventory mass capacity."
+  ],
+  "records": [
+    {
+      "group": "resource",
+      "id": "ThingDef_ResourceBase",
+      "def_name": "ResourceBase",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Base.xml",
+        "xpath": "/Defs/ThingDef[@Name='ResourceBase']",
+        "sha256": "20595ae43a7e758f54c71dc98579cc95ac8638f21213896c7f1d6a2d61fd744a"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "stackLimit",
+        "smallVolume",
+        "statBases",
+        "butcherProducts"
+      ],
+      "absent_roots": [
+        "smallVolume",
+        "butcherProducts"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='ResourceBase']/thingClass",
+          "value": "ThingWithComps"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='ResourceBase']/category",
+          "value": "Item"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='ResourceBase']/stackLimit",
+          "value": "75"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='ResourceBase']/statBases/Beauty",
+          "value": "-4"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "resource",
+      "id": "ThingDef_ResourceVerbBase",
+      "def_name": "ResourceVerbBase",
+      "parent_name": "ResourceBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Exotic.xml",
+        "xpath": "/Defs/ThingDef[@Name='ResourceVerbBase']",
+        "sha256": "1e3e943dd91916b1215c91a8f4a39cc59651ebd44c1b36682cd50e795c789c53"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "stackLimit",
+        "smallVolume",
+        "statBases",
+        "butcherProducts"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "category",
+        "stackLimit",
+        "smallVolume",
+        "statBases",
+        "butcherProducts"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "resource",
+      "id": "ThingDef_Steel",
+      "def_name": "Steel",
+      "parent_name": "ResourceBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Stuff.xml",
+        "xpath": "/Defs/ThingDef[defName='Steel']",
+        "sha256": "8cdc15befea94055a946a1131c7724acc0cf999b866a5fad474a0816731c9088"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "stackLimit",
+        "smallVolume",
+        "statBases",
+        "butcherProducts"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "category",
+        "stackLimit",
+        "smallVolume",
+        "butcherProducts"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Steel']/statBases/MarketValue",
+          "value": "1.9"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Steel']/statBases/Mass",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Steel']/statBases/StuffPower_Armor_Sharp",
+          "value": "0.9"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Steel']/statBases/StuffPower_Armor_Blunt",
+          "value": "0.45"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Steel']/statBases/StuffPower_Armor_Heat",
+          "value": "0.60"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Steel']/statBases/StuffPower_Insulation_Cold",
+          "value": "3"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Steel']/statBases/StuffPower_Insulation_Heat",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Steel']/statBases/SharpDamageMultiplier",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Steel']/statBases/BluntDamageMultiplier",
+          "value": "1"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "resource",
+      "id": "ThingDef_WoodLog",
+      "def_name": "WoodLog",
+      "parent_name": "ResourceVerbBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Stuff.xml",
+        "xpath": "/Defs/ThingDef[defName='WoodLog']",
+        "sha256": "8cdc15befea94055a946a1131c7724acc0cf999b866a5fad474a0816731c9088"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "stackLimit",
+        "smallVolume",
+        "statBases",
+        "butcherProducts"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "category",
+        "stackLimit",
+        "smallVolume",
+        "butcherProducts"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/statBases/MarketValue",
+          "value": "1.2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/statBases/MaxHitPoints",
+          "value": "150"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/statBases/Mass",
+          "value": "0.4"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/statBases/Flammability",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/statBases/DeteriorationRate",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/statBases/StuffPower_Armor_Sharp",
+          "value": "0.54"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/statBases/StuffPower_Armor_Blunt",
+          "value": "0.54"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/statBases/StuffPower_Armor_Heat",
+          "value": "0.40"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/statBases/StuffPower_Insulation_Cold",
+          "value": "8"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/statBases/StuffPower_Insulation_Heat",
+          "value": "4"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/statBases/SharpDamageMultiplier",
+          "value": "0.40"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/statBases/BluntDamageMultiplier",
+          "value": "0.9"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "resource",
+      "id": "ThingDef_ComponentIndustrial",
+      "def_name": "ComponentIndustrial",
+      "parent_name": "ResourceBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Manufactured.xml",
+        "xpath": "/Defs/ThingDef[defName='ComponentIndustrial']",
+        "sha256": "a13061a6b2ddf7d22e29583903a359fbe1a74c4a6b27ec634c4f054ed66a7f7a"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "stackLimit",
+        "smallVolume",
+        "statBases",
+        "butcherProducts"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "category",
+        "smallVolume",
+        "butcherProducts"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='ComponentIndustrial']/stackLimit",
+          "value": "50"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ComponentIndustrial']/statBases/MaxHitPoints",
+          "value": "70"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ComponentIndustrial']/statBases/MarketValue",
+          "value": "32"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ComponentIndustrial']/statBases/Mass",
+          "value": "0.6"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ComponentIndustrial']/statBases/Flammability",
+          "value": "0.6"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ComponentIndustrial']/statBases/DeteriorationRate",
+          "value": "2.0"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stone",
+      "id": "ThingDef_ChunkBase",
+      "def_name": "ChunkBase",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[@Name='ChunkBase']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "stackLimit",
+        "smallVolume",
+        "statBases",
+        "butcherProducts"
+      ],
+      "absent_roots": [
+        "smallVolume",
+        "butcherProducts"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='ChunkBase']/category",
+          "value": "Item"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='ChunkBase']/thingClass",
+          "value": "Thing"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='ChunkBase']/statBases/MaxHitPoints",
+          "value": "300"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='ChunkBase']/statBases/Flammability",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='ChunkBase']/statBases/Beauty",
+          "value": "-8"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='ChunkBase']/statBases/Cleanliness",
+          "value": "-2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='ChunkBase']/stackLimit",
+          "value": "1"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stone",
+      "id": "ThingDef_ChunkRockBase",
+      "def_name": "ChunkRockBase",
+      "parent_name": "ChunkBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[@Name='ChunkRockBase']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "stackLimit",
+        "smallVolume",
+        "statBases",
+        "butcherProducts"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "category",
+        "stackLimit",
+        "smallVolume",
+        "butcherProducts"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='ChunkRockBase']/statBases/BeautyOutdoors",
+          "value": "0"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stone",
+      "id": "ThingDef_StoneBlocksBase",
+      "def_name": "StoneBlocksBase",
+      "parent_name": "ResourceBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "stackLimit",
+        "smallVolume",
+        "statBases",
+        "butcherProducts"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "category",
+        "stackLimit",
+        "smallVolume",
+        "butcherProducts"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']/statBases/MaxHitPoints",
+          "value": "200"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']/statBases/MarketValue",
+          "value": "0.9"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']/statBases/SharpDamageMultiplier",
+          "value": "0.6"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']/statBases/BluntDamageMultiplier",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']/statBases/Beauty",
+          "value": "-12"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='StoneBlocksBase']/statBases/ConstructionSpeedFactor",
+          "value": "0.8"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stone",
+      "id": "ThingDef_ChunkGranite",
+      "def_name": "ChunkGranite",
+      "parent_name": "ChunkRockBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[defName='ChunkGranite']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "stackLimit",
+        "smallVolume",
+        "statBases",
+        "butcherProducts"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "category",
+        "stackLimit",
+        "smallVolume"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='ChunkGranite']/statBases/Mass",
+          "value": "25"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ChunkGranite']/butcherProducts/BlocksGranite",
+          "value": "20"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stone",
+      "id": "ThingDef_BlocksGranite",
+      "def_name": "BlocksGranite",
+      "parent_name": "StoneBlocksBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[defName='BlocksGranite']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      "selected_roots": [
+        "thingClass",
+        "category",
+        "stackLimit",
+        "smallVolume",
+        "statBases",
+        "butcherProducts"
+      ],
+      "absent_roots": [
+        "thingClass",
+        "category",
+        "stackLimit",
+        "smallVolume",
+        "butcherProducts"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='BlocksGranite']/statBases/Mass",
+          "value": "1.25"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='BlocksGranite']/statBases/SharpDamageMultiplier",
+          "value": "0.65"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "food",
+      "id": "ThingDef_OrganicProductBase",
+      "def_name": "OrganicProductBase",
+      "parent_name": "ResourceBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+        "xpath": "/Defs/ThingDef[@Name='OrganicProductBase']",
+        "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c"
+      },
+      "selected_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "absent_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "food",
+      "id": "ThingDef_PlantFoodRawBase",
+      "def_name": "PlantFoodRawBase",
+      "parent_name": "OrganicProductBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+        "xpath": "/Defs/ThingDef[@Name='PlantFoodRawBase']",
+        "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c"
+      },
+      "selected_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "absent_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "food",
+      "id": "ThingDef_RawPotatoes",
+      "def_name": "RawPotatoes",
+      "parent_name": "PlantFoodRawBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+        "xpath": "/Defs/ThingDef[defName='RawPotatoes']",
+        "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c"
+      },
+      "selected_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "absent_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "food",
+      "id": "ThingDef_RawRice",
+      "def_name": "RawRice",
+      "parent_name": "PlantFoodRawBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+        "xpath": "/Defs/ThingDef[defName='RawRice']",
+        "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c"
+      },
+      "selected_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "absent_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "food",
+      "id": "ThingDef_RawCorn",
+      "def_name": "RawCorn",
+      "parent_name": "PlantFoodRawBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+        "xpath": "/Defs/ThingDef[defName='RawCorn']",
+        "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c"
+      },
+      "selected_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "absent_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "food",
+      "id": "ThingDef_MealBaseIngredientless",
+      "def_name": "MealBaseIngredientless",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+        "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']",
+        "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4"
+      },
+      "selected_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "absent_roots": [
+        "smallVolume"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='MealBaseIngredientless']/stackLimit",
+          "value": "10"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "food",
+      "id": "ThingDef_MealBase",
+      "def_name": "MealBase",
+      "parent_name": "MealBaseIngredientless",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+        "xpath": "/Defs/ThingDef[@Name='MealBase']",
+        "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4"
+      },
+      "selected_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "absent_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "food",
+      "id": "ThingDef_MealSurvivalPack",
+      "def_name": "MealSurvivalPack",
+      "parent_name": "MealBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+        "xpath": "/Defs/ThingDef[defName='MealSurvivalPack']",
+        "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4"
+      },
+      "selected_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "absent_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "food",
+      "id": "ThingDef_MealCookedIngredientless",
+      "def_name": "MealCookedIngredientless",
+      "parent_name": "MealBaseIngredientless",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+        "xpath": "/Defs/ThingDef[@Name='MealCookedIngredientless']",
+        "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4"
+      },
+      "selected_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "absent_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "food",
+      "id": "ThingDef_MealCooked",
+      "def_name": "MealCooked",
+      "parent_name": "MealCookedIngredientless",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+        "xpath": "/Defs/ThingDef[@Name='MealCooked']",
+        "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4"
+      },
+      "selected_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "absent_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "food",
+      "id": "ThingDef_MealSimple",
+      "def_name": "MealSimple",
+      "parent_name": "MealCooked",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+        "xpath": "/Defs/ThingDef[defName='MealSimple']",
+        "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4"
+      },
+      "selected_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "absent_roots": [
+        "stackLimit",
+        "smallVolume"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "capacity",
+      "id": "StatDef_CarryingCapacity",
+      "def_name": "CarryingCapacity",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_General.xml",
+        "xpath": "/Defs/StatDef[defName='CarryingCapacity']",
+        "sha256": "ec1df1afb1f24c3d812b3224f803354b613a226e3934ea1e235c9b195181f507"
+      },
+      "selected_roots": [
+        "defaultBaseValue",
+        "minValue",
+        "parts",
+        "capacityFactors"
+      ],
+      "absent_roots": [],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='CarryingCapacity']/defaultBaseValue",
+          "value": "75"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='CarryingCapacity']/minValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='CarryingCapacity']/parts/li",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='CarryingCapacity']/capacityFactors/li/capacity",
+          "value": "Manipulation"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='CarryingCapacity']/capacityFactors/li/weight",
+          "value": "1.0"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/StatDef[defName='CarryingCapacity']/parts/li",
+          "attributes": {
+            "Class": "StatPart_BodySize"
+          }
+        }
+      ]
+    },
+    {
+      "group": "shelf",
+      "id": "ThingDef_ShelfBase",
+      "def_name": "ShelfBase",
+      "parent_name": "FurnitureBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+        "xpath": "/Defs/ThingDef[@Name='ShelfBase']",
+        "sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55"
+      },
+      "selected_roots": [
+        "building"
+      ],
+      "absent_roots": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='ShelfBase']/building/preventDeteriorationOnTop",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='ShelfBase']/building/ignoreStoredThingsBeauty",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='ShelfBase']/building/maxItemsInCell",
+          "value": "3"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='ShelfBase']/building/blueprintClass",
+          "value": "Blueprint_Storage"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='ShelfBase']/building/paintable",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    }
+  ]
+}

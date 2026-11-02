@@ -187,6 +187,8 @@ try {
   await save('warm-stock');
 
   place('stock', pos(35, 29, 5), pos(37, 30, 5));
+  place('stock', pos(35, 27, 5), pos(37, 27, 5));
+  place('stock', pos(36, 28, 5), pos(37, 28, 5));
   command({
     type: 'storage',
     from: pos(35, 29, 5),
@@ -213,30 +215,32 @@ try {
   sim = VoxelSimulation.load(JSON.parse(before));
   const restored = sim.save();
   for (const field of ['items', 'stockpiles', 'stats', 'thermal'])
-    assert.deepEqual(restored[field], saved[field], `v5 preserves ${field}`);
+    assert.deepEqual(restored[field], saved[field], `save preserves ${field}`);
   assert.deepEqual(
     restored.pawns.map((p) => p.cargo),
     saved.pawns.map((p) => p.cargo),
-    'v5 preserves carried food',
+    'save preserves carried food',
   );
   assert.deepEqual(
     restored.jobs.map((j) => [j.id, j.delivered, j.deliveredFood]),
     saved.jobs.map((j) => [j.id, j.delivered, j.deliveredFood]),
-    'v5 preserves delivered ingredients',
+    'save preserves delivered ingredients',
   );
   const warm = VoxelSimulation.load(JSON.parse(before));
   command({ type: 'device', deviceId: cooler.id, on: false, target: -20 }, warm);
   const spoiledBefore = warm.stats.spoiled.meal,
     start = sim.tick;
   let nearSaved = false;
-  while (warm.stats.spoiled.meal === spoiledBefore && sim.tick - start < DAY * 8) {
+  while (warm.counts().meal > 0 && sim.tick - start < DAY * 8) {
     sim.step();
     warm.step();
     if (sim.tick % 40 === 0) {
       audit(sim);
       audit(warm);
     }
-    const warmMeal = warm.items.find((i) => i.resource === 'meal');
+    const warmMeal = warm.items
+      .filter((i) => i.resource === 'meal')
+      .sort((a, b) => b.rotProgress - a.rotProgress)[0];
     if (
       !nearSaved &&
       warmMeal &&
@@ -259,6 +263,7 @@ try {
   }
   assert.ok(nearSaved, 'naturally aged near-spoilage fixture recorded');
   assert.ok(warm.stats.spoiled.meal > spoiledBefore, 'unpowered warm stock spoils');
+  assert.equal(warm.counts().meal, 0, 'all unpowered meals eventually spoil or are eaten');
   assert.equal(
     sim.stats.spoiled.meal,
     saved.stats.spoiled.meal,

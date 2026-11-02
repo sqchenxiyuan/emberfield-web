@@ -1,0 +1,38 @@
+import assert from 'node:assert/strict';
+import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {verifyLogisticsEvidence} from './verify-logistics-evidence.mjs';
+const project=fileURLToPath(new URL('../../',import.meta.url));
+const out=path.join(project,'test-results/logistics-verifier-negative'),snapshot=path.join(out,'snapshot'),evidence=path.join(snapshot,'docs/research/rimworld/evidence');mkdirSync(evidence,{recursive:true});
+const names=[...['logistics','preservation','energy','work'].flatMap(g=>[`${g}-manifest.json`,`${g}-types.json`]),'logistics-claims.json','logistics-cases.json','logistics-xml.json'],original=new Map();
+for(const name of names){const bytes=readFileSync(path.join(project,'docs/research/rimworld/evidence',name));original.set(name,bytes);writeFileSync(path.join(evidence,name),bytes);}
+assert.equal(verifyLogisticsEvidence({root:snapshot}).status,'pass');
+const report={status:'passed',scope:'Verifier rejection checks in an isolated metadata copy. No game files, canonical evidence, project source or runtime UI are changed.',checks:[]};
+function reject(name,file,mutate){const value=JSON.parse(original.get(file));mutate(value);writeFileSync(path.join(evidence,file),JSON.stringify(value));try{assert.throws(()=>verifyLogisticsEvidence({root:snapshot}),undefined,name);report.checks.push({name,rejected:true});console.log('PASS rejects',name);}finally{writeFileSync(path.join(evidence,file),original.get(file));}}
+const field=(v,name,key)=>v.records.find(r=>r.def_name===name).fields.find(f=>f.xpath.endsWith('/'+key));
+reject('wrong game version','logistics-manifest.json',v=>{v.version_text='1.6';});
+reject('wrong assembly digest','logistics-manifest.json',v=>{v.source_sha256='0'.repeat(64);});
+reject('wrong decompiler digest','logistics-manifest.json',v=>{v.engine_sha256='0'.repeat(64);});
+reject('changed type coverage','logistics-types.json',v=>{v.pop();});
+reject('invalid source range','logistics-claims.json',v=>{v[3].sources[0].line_end=999999;});
+reject('unknown source group','logistics-claims.json',v=>{v[3].sources[0].group='unknown';});
+reject('duplicated claim','logistics-claims.json',v=>{v[1].id=v[0].id;});
+reject('wrong arithmetic result','logistics-cases.json',v=>{v[4].expected.remaining[0]=0;});
+reject('removed branch with consistent arrays','logistics-cases.json',v=>{v[6].inputs.rows.pop();v[6].expected.allowed.pop();});
+reject('shelf capacity silently applied to ground','logistics-cases.json',v=>{v[3].inputs.rows[0].slots=3;v[3].expected.remaining[0]=225;});
+reject('consistent but unbound carry capacity','logistics-cases.json',v=>{v[1].inputs.rows[0].capacity=60;v[1].expected.count[0]=60;v[1].expected.massCarried[0]=24;});
+reject('missing analytic limitation','logistics-cases.json',v=>{delete v[0].limitation;});
+reject('XML path traversal','logistics-xml.json',v=>{v.records[0].source.path='../../file.xml';});
+reject('missing ancestor','logistics-xml.json',v=>{v.records.find(r=>r.def_name==='WoodLog').parent_name='Absent';});
+reject('inheritance cycle','logistics-xml.json',v=>{v.records.find(r=>r.def_name==='ResourceVerbBase').parent_name='WoodLog';});
+reject('components incorrectly stack75','logistics-xml.json',v=>{field(v,'ComponentIndustrial','stackLimit').value='75';});
+reject('chunk incorrectly stacks75','logistics-xml.json',v=>{field(v,'ChunkBase','stackLimit').value='75';});
+reject('wrong base carrying capacity','logistics-xml.json',v=>{field(v,'CarryingCapacity','defaultBaseValue').value='100';});
+reject('wrong shelf declaration','logistics-xml.json',v=>{field(v,'ShelfBase','building/maxItemsInCell').value='1';});
+reject('wrong stone cutting output','logistics-xml.json',v=>{field(v,'ChunkGranite','butcherProducts/BlocksGranite').value='5';});
+reject('field under explicitly absent root','logistics-xml.json',v=>{const r=v.records.find(r=>r.def_name==='WoodLog');r.fields.push({xpath:r.source.xpath+'/smallVolume',value:'true'});});
+reject('missing body size stat part','logistics-xml.json',v=>{v.records.find(r=>r.def_name==='CarryingCapacity').node_attributes[0].attributes.Class='Other';});
+const first=JSON.parse(original.get('logistics-manifest.json')).types[0],derived=path.join(snapshot,first.local_file);mkdirSync(path.dirname(derived),{recursive:true});writeFileSync(derived,Buffer.concat([readFileSync(path.join(project,first.local_file)),Buffer.from('\n// corruption probe\n')]));
+assert.throws(()=>verifyLogisticsEvidence({root:snapshot,local:true}),/Derived hash mismatch/);report.checks.push({name:'modified derived source',rejected:true});
+assert.equal(verifyLogisticsEvidence({root:snapshot}).status,'pass');report.total=report.checks.length;report.finishedAt=new Date().toISOString();writeFileSync(path.join(out,'report.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({status:report.status,rejections:report.total,report:path.join(out,'report.json')},null,2));

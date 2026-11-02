@@ -48,6 +48,7 @@ function until(label,predicate,limit=8000) {
 
 try {
   audit();
+  designate('stock',28,32,8,31,36);
   designate('cut',27,29,8);
   until('a finite starting tree is cut and its wood physically hauled to surface storage',()=>sim.stats.cut===1&&sim.snapshot().stored.wood===initial.wood+27);
 

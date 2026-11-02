@@ -100,7 +100,7 @@ describe('food reference curves and physical farmland', () => {
     for (const p of s.pawns) for (const work of ['dig', 'build', 'cut', 'haul', 'grow', 'cook'] as const)
       expect(s.command({ type: 'priority', pawnId: p.id, work, value: p === s.pawns[0] && (work === 'cut' || work === 'build') ? 1 : 0 }).ok).toBe(true);
     place(s, 'cut', pos(27, 29)); until(s, () => s.stats.cut === 1, 1500, audit);
-    const loose = s.items.find(i => i.resource === 'wood' && !s.stockpiles.some(p => p.x === i.x && p.y === i.y && p.z === i.z))!;
+    const loose = s.items.find(i => i.resource === 'wood' && i.amount === 27 && !s.stockpiles.some(p => p.x === i.x && p.y === i.y && p.z === i.z))!;
     expect(loose.amount).toBe(27); const target = pos(loose.x, loose.y, loose.z);
     const planned = s.command({ type: 'designate', tool: 'stove', from: target });
     if (planned.ok) {
@@ -134,7 +134,7 @@ describe('food reference curves and physical farmland', () => {
     place(s, 'wall', shaft);
     until(s, () => s.jobs.some(j => j.kind === 'wall' && j.progress >= j.work), 2000, audit);
     expect(s.blocks[index(33, 32, 8)]).toBe(Block.Air); expect(s.blocks[index(33, 32, 9)]).toBe(Block.Air);
-    expect(s.items.find(i => i.id === ration.id)).toMatchObject({ x: 33, y: 32, z: 9, amount: 60 });
+    expect(s.items.find(i => i.id === ration.id)).toMatchObject({ x: 33, y: 32, z: 9, amount: 10 });
     expect(s.counts()).toEqual(counts); expect(s.stats.consumed.wood).toBe(consumedWood);
     place(s, 'cancel', shaft); audit(); expect(s.counts()).toEqual(counts);
   });
@@ -145,6 +145,7 @@ describe('real harvested inputs, cooking and food persistence', () => {
   beforeAll(() => {
     // Shared setup is a genuine eight-plus-day harvest, not a mature crop or item fixture.
     const s = new VoxelSimulation(); place(s, 'farm', pos(29, 28), pos(35, 30), 'rice');
+    place(s, 'stock', pos(29, 35), pos(35, 36));
     const audit = ledger(s);
     until(s, () => s.counts().grain >= 90 && s.pawns.every(p => p.food > 60), DAY * 12, audit);
     disableGrowing(s); harvestedSave = s.save();
@@ -240,7 +241,7 @@ describe('v1 voxel food migration', () => {
     for (const name of ['sown', 'harvested', 'cooked', 'eaten']) delete legacy.stats[name];
     for (const name of ['produced', 'consumed']) { delete legacy.stats[name].grain; delete legacy.stats[name].meal; }
     const untouched = structuredClone(legacy), loaded = VoxelSimulation.load(legacy), before = s.counts();
-    expect(legacy).toEqual(untouched); expect(loaded.save().version).toBe(5);
+    expect(legacy).toEqual(untouched); expect(loaded.save().version).toBe(6);
     expect(loaded.farms).toEqual([]); expect(loaded.crops).toEqual([]); expect(loaded.stoves).toEqual([]);
     expect(loaded.jobs[0].delivered).toEqual({ wood: 6 }); expect(loaded.counts()).toEqual(before);
     expect(loaded.pawns.every(p => p.priorities.grow === 1 && p.priorities.cook === 1 && p.eating === null)).toBe(true);

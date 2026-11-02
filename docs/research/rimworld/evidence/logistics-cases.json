@@ -1,0 +1,618 @@
+[
+  {
+    "label": "L01 Resource stack map",
+    "claims": [
+      "LG01",
+      "LG02",
+      "LG03"
+    ],
+    "inputs": {
+      "names": [
+        "WoodLog",
+        "BlocksGranite",
+        "Steel",
+        "ComponentIndustrial",
+        "MealSurvivalPack",
+        "RawRice",
+        "RawPotatoes",
+        "RawCorn",
+        "MealSimple",
+        "ChunkGranite"
+      ]
+    },
+    "expected": {
+      "limits": [
+        75,
+        75,
+        75,
+        50,
+        10,
+        75,
+        75,
+        75,
+        10,
+        1
+      ]
+    },
+    "limitation": "Resolves only selected XML chains. No enabled-mod database or native runtime execution."
+  },
+  {
+    "label": "L02 Carry volume versus mass",
+    "claims": [
+      "LG04",
+      "LG05"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "capacity": 75,
+          "limit": 75,
+          "volume": 1,
+          "mass": 0.4
+        },
+        {
+          "capacity": 75,
+          "limit": 75,
+          "volume": 1,
+          "mass": 1.25
+        },
+        {
+          "capacity": 75,
+          "limit": 50,
+          "volume": 1,
+          "mass": 0.6
+        },
+        {
+          "capacity": 75,
+          "limit": 10,
+          "volume": 1,
+          "mass": 0.3
+        },
+        {
+          "capacity": 75,
+          "limit": 500,
+          "volume": 0.1,
+          "mass": 0.008
+        },
+        {
+          "capacity": 37,
+          "limit": 75,
+          "volume": 1,
+          "mass": 1.25
+        }
+      ]
+    },
+    "expected": {
+      "count": [
+        75,
+        75,
+        50,
+        10,
+        500,
+        37
+      ],
+      "massCarried": [
+        30,
+        93.75,
+        30,
+        3,
+        4,
+        46.25
+      ]
+    },
+    "limitation": "Abstract already-evaluated CarryingCapacity inputs; no rounding tie or StatWorker simulation. The smallVolume row is synthetic."
+  },
+  {
+    "label": "L03 Pickup remaining space",
+    "claims": [
+      "LG06",
+      "LG11"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "maximum": 75,
+          "held": 70,
+          "job": 20,
+          "source": 100
+        },
+        {
+          "maximum": 50,
+          "held": 0,
+          "job": 75,
+          "source": 90
+        },
+        {
+          "maximum": 10,
+          "held": 0,
+          "job": 8,
+          "source": 4
+        },
+        {
+          "maximum": 75,
+          "held": 0,
+          "job": 5,
+          "source": 75
+        }
+      ]
+    },
+    "expected": {
+      "taken": [
+        5,
+        50,
+        4,
+        5
+      ],
+      "sourceRemainder": [
+        95,
+        40,
+        0,
+        70
+      ],
+      "heldAfter": [
+        75,
+        50,
+        4,
+        5
+      ]
+    },
+    "limitation": "Compatible single-stack contents assumed; source100 is a synthetic count boundary, not an ordinary legal ground stack."
+  },
+  {
+    "label": "L04 Cell count and room",
+    "claims": [
+      "LG07",
+      "LG09"
+    ],
+    "inputs": {
+      "limit": 75,
+      "def": "wood",
+      "rows": [
+        {
+          "slots": 1,
+          "stacks": []
+        },
+        {
+          "slots": 1,
+          "stacks": [
+            [
+              "wood",
+              70
+            ]
+          ]
+        },
+        {
+          "slots": 1,
+          "stacks": [
+            [
+              "wood",
+              75
+            ]
+          ]
+        },
+        {
+          "slots": 1,
+          "stacks": [
+            [
+              "steel",
+              10
+            ]
+          ]
+        },
+        {
+          "slots": 3,
+          "stacks": [
+            [
+              "wood",
+              70
+            ],
+            [
+              "steel",
+              10
+            ]
+          ]
+        }
+      ]
+    },
+    "expected": {
+      "itemCount": [
+        0,
+        1,
+        1,
+        1,
+        2
+      ],
+      "remaining": [
+        75,
+        5,
+        0,
+        0,
+        80
+      ]
+    },
+    "limitation": "Counts only Item stacks; building/path blockers and extra component compatibility are separate predicates."
+  },
+  {
+    "label": "L05 Direct partial transfer",
+    "claims": [
+      "LG12",
+      "LG14"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "limit": 75,
+          "slots": 1,
+          "stacks": [
+            70
+          ],
+          "other": 0,
+          "amount": 20
+        },
+        {
+          "limit": 75,
+          "slots": 1,
+          "stacks": [],
+          "other": 0,
+          "amount": 160
+        },
+        {
+          "limit": 75,
+          "slots": 3,
+          "stacks": [],
+          "other": 0,
+          "amount": 160
+        },
+        {
+          "limit": 75,
+          "slots": 1,
+          "stacks": [],
+          "other": 1,
+          "amount": 20
+        },
+        {
+          "limit": 10,
+          "slots": 1,
+          "stacks": [
+            8
+          ],
+          "other": 0,
+          "amount": 2
+        },
+        {
+          "limit": 50,
+          "slots": 1,
+          "stacks": [
+            50
+          ],
+          "other": 0,
+          "amount": 1
+        }
+      ]
+    },
+    "expected": {
+      "placed": [
+        5,
+        75,
+        160,
+        0,
+        2,
+        0
+      ],
+      "remaining": [
+        15,
+        85,
+        0,
+        20,
+        0,
+        1
+      ],
+      "success": [
+        false,
+        false,
+        true,
+        false,
+        true,
+        false
+      ],
+      "stacks": [
+        [
+          75
+        ],
+        [
+          75
+        ],
+        [
+          75,
+          75,
+          10
+        ],
+        [],
+        [
+          10
+        ],
+        [
+          50
+        ]
+      ]
+    },
+    "limitation": "Independent regular-stack count model; ignores raw GenSpawn side effects and stackLimit<=1 extra-slot special case."
+  },
+  {
+    "label": "L06 Near progress and conservation",
+    "claims": [
+      "LG13",
+      "LG14"
+    ],
+    "inputs": {
+      "amount": 100,
+      "selectedCellRooms": [
+        5,
+        75,
+        0
+      ]
+    },
+    "expected": {
+      "transfers": [
+        5,
+        75,
+        0
+      ],
+      "remaining": 20,
+      "placed": 80,
+      "success": false,
+      "conserved": 100
+    },
+    "limitation": "Models selected legal cells and partial progress, not the original spatial quality search or exact neighbor order."
+  },
+  {
+    "label": "L07 Storage blockers",
+    "claims": [
+      "LG08"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "compatibleRoom": true,
+          "items": 1,
+          "max": 1,
+          "blocker": false
+        },
+        {
+          "compatibleRoom": false,
+          "items": 1,
+          "max": 1,
+          "blocker": false
+        },
+        {
+          "compatibleRoom": false,
+          "items": 0,
+          "max": 1,
+          "blocker": false
+        },
+        {
+          "compatibleRoom": true,
+          "items": 1,
+          "max": 1,
+          "blocker": true
+        },
+        {
+          "compatibleRoom": false,
+          "items": 2,
+          "max": 3,
+          "blocker": false
+        }
+      ]
+    },
+    "expected": {
+      "allowed": [
+        true,
+        false,
+        true,
+        false,
+        true
+      ]
+    },
+    "limitation": "Isolated count/blocker branch; full filter, fire, reachability and reservations are tested separately."
+  },
+  {
+    "label": "L08 Reservation exclusivity",
+    "claims": [
+      "LG10"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "total": 1,
+          "want": -1,
+          "maxPawns": 1,
+          "others": []
+        },
+        {
+          "total": 1,
+          "want": -1,
+          "maxPawns": 1,
+          "others": [
+            {
+              "maxPawns": 1,
+              "count": -1
+            }
+          ]
+        },
+        {
+          "total": 75,
+          "want": 50,
+          "maxPawns": 1,
+          "others": [
+            {
+              "maxPawns": 1,
+              "count": 25
+            }
+          ]
+        },
+        {
+          "total": 75,
+          "want": 50,
+          "maxPawns": 2,
+          "others": [
+            {
+              "maxPawns": 2,
+              "count": 25
+            }
+          ]
+        },
+        {
+          "total": 75,
+          "want": 51,
+          "maxPawns": 2,
+          "others": [
+            {
+              "maxPawns": 2,
+              "count": 25
+            }
+          ]
+        },
+        {
+          "total": 75,
+          "want": 1,
+          "maxPawns": 2,
+          "others": [
+            {
+              "maxPawns": 1,
+              "count": 1
+            }
+          ]
+        }
+      ]
+    },
+    "expected": {
+      "canReserve": [
+        true,
+        false,
+        false,
+        true,
+        false,
+        false
+      ]
+    },
+    "limitation": "Assumes distinct claimants on the same respected reservation layer, valid map/target and no physical interaction reservation."
+  },
+  {
+    "label": "L09 Strict storage priorities",
+    "claims": [
+      "LG16"
+    ],
+    "inputs": {
+      "current": 2,
+      "candidates": [
+        {
+          "priority": 1,
+          "allows": true,
+          "reachable": true
+        },
+        {
+          "priority": 2,
+          "allows": true,
+          "reachable": true
+        },
+        {
+          "priority": 3,
+          "allows": true,
+          "reachable": true
+        },
+        {
+          "priority": 5,
+          "allows": true,
+          "reachable": true
+        },
+        {
+          "priority": 5,
+          "allows": false,
+          "reachable": true
+        },
+        {
+          "priority": 4,
+          "allows": true,
+          "reachable": false
+        }
+      ]
+    },
+    "expected": {
+      "eligible": [
+        false,
+        false,
+        true,
+        true,
+        false,
+        false
+      ],
+      "bestPriority": 5
+    },
+    "limitation": "Verifies strict priority and preconditions only, not approximate randomized intra-group distance traversal."
+  },
+  {
+    "label": "L10 Active destination validity",
+    "claims": [
+      "LG17"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "slot": true,
+          "accepts": true,
+          "space": true,
+          "newPriority": 1
+        },
+        {
+          "slot": true,
+          "accepts": false,
+          "space": true,
+          "newPriority": 5
+        },
+        {
+          "slot": true,
+          "accepts": true,
+          "space": false,
+          "newPriority": 5
+        },
+        {
+          "slot": false,
+          "accepts": true,
+          "space": true,
+          "newPriority": 5
+        }
+      ]
+    },
+    "expected": {
+      "valid": [
+        true,
+        false,
+        false,
+        false
+      ]
+    },
+    "limitation": "Represents IsValidStorageFor only; other job failure or interruption mechanisms may also end a job."
+  },
+  {
+    "label": "L11 Stone identity boundaries",
+    "claims": [
+      "LG02"
+    ],
+    "inputs": {
+      "chunks": 4,
+      "blocksPerChunk": 20,
+      "chunkLimit": 1,
+      "blockLimit": 75,
+      "projectYieldPerCell": 5,
+      "projectMinedCells": 4
+    },
+    "expected": {
+      "chunkStacks": 4,
+      "cutBlocks": 80,
+      "cutBlockStacks": 2,
+      "projectBlocks": 20,
+      "projectStacks": 1
+    },
+    "limitation": "Contrasts XML butcher output with disclosed project mining abstraction; does not claim original mining always drops a chunk."
+  }
+]

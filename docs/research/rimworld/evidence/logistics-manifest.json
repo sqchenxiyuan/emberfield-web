@@ -1,0 +1,67 @@
+{
+  "evidence_id": "RW17-LOGISTICS",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "Verse.GridsUtility",
+      "local_file": ".local-research/logistics/Verse.GridsUtility.cs",
+      "sha256": "22e66bf267ab9d4f4cbb1d8b8d227c0dde5472c6aedc8c8901530079e7b862d5",
+      "lines": 552
+    },
+    {
+      "type": "Verse.ThingGrid",
+      "local_file": ".local-research/logistics/Verse.ThingGrid.cs",
+      "sha256": "4e6f530642966c8fa50269e52362018a0b3939633e1eb3d7ec429164aa49938e",
+      "lines": 187
+    },
+    {
+      "type": "Verse.GenDrop",
+      "local_file": ".local-research/logistics/Verse.GenDrop.cs",
+      "sha256": "865cc4e1680e9f15e2f9886b16a0552ca98a8de8fa7f877b0b67b6235ba97b1e",
+      "lines": 41
+    },
+    {
+      "type": "Verse.GenPlace",
+      "local_file": ".local-research/logistics/Verse.GenPlace.cs",
+      "sha256": "72e9f795b464dd3dad6afb2b40908a23f06e9407c31fd10290fd78bee8747ecb",
+      "lines": 401
+    },
+    {
+      "type": "Verse.GenSpawn",
+      "local_file": ".local-research/logistics/Verse.GenSpawn.cs",
+      "sha256": "ae87c3214cc7c5e469e33564803c8c9936cfb99c00b2d56f420121bf61fdd110",
+      "lines": 520
+    },
+    {
+      "type": "RimWorld.Building_Storage",
+      "local_file": ".local-research/logistics/RimWorld.Building_Storage.cs",
+      "sha256": "680349a2c0e89d2a028ec586319c8781c8f722a8a1ce90f877b4c51bef7a635e",
+      "lines": 255
+    },
+    {
+      "type": "RimWorld.HaulDestinationManager",
+      "local_file": ".local-research/logistics/RimWorld.HaulDestinationManager.cs",
+      "sha256": "49e963ec98d190d46c64612fd8531f1a9f84775fc81b6317a0cafa0601eaa33a",
+      "lines": 210
+    },
+    {
+      "type": "RimWorld.StatPart_BodySize",
+      "local_file": ".local-research/logistics/RimWorld.StatPart_BodySize.cs",
+      "sha256": "260c7a242db52e042aae7e23e567765f123050f4ab8d21c8583fe1ede5bb6b01",
+      "lines": 29
+    }
+  ]
+}

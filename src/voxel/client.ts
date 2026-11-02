@@ -109,7 +109,13 @@ export class VoxelClient {
   import = async (save: unknown) => {
     await this.request('load', { save });
     this.select(null);
-    this.notice('体素存档已恢复，时间暂停');
+    const legacy =
+      save && typeof save === 'object' && 'version' in save && Number(save.version) < 6;
+    this.notice(
+      legacy
+        ? '旧存档物品已按容量拆分到附近空地，请检查冷库；时间暂停'
+        : '体素存档已恢复，时间暂停',
+    );
   };
   newGame = async (seed: number) => {
     await this.request('new', { seed });

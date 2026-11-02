@@ -57,14 +57,14 @@ describe('physical food age, destruction and harvest identity', () => {
   it('keeps a frozen ground meal age unchanged, then destroys it after two ticks at 5 C', () => {
     const sim = fixture(s => {
       addBatch(s, { ...freshBatch('meal', 3), rotProgress: 4 * DAY - 1 }, pos(15, 15));
-      addBatch(s, freshBatch('food', 60), pos(16, 15));
+      for (let x = 16; x < 22; x++) addBatch(s, freshBatch('food', 10), pos(x, 15));
     });
     const initial = ledger(sim); temperature(sim, pos(15, 15), -5); sim.step(20);
     expect(sim.items.find(i => i.resource === 'meal')!.rotProgress).toBe(4 * DAY - 1);
     temperature(sim, pos(15, 15), 5); sim.step(); expect(sim.counts().meal).toBe(3);
     sim.step(); expect(sim.counts().meal).toBe(0); expect(sim.stats.spoiled.meal).toBe(3);
     expect(sim.stats.consumed.meal).toBe(0); expect(sim.stats.eaten).toBe(0);
-    expect(sim.items.find(i => i.resource === 'food')).toMatchObject({ amount: 60 });
+    expect(sim.counts().food).toBe(60);
     expect(sim.items.find(i => i.resource === 'food')!.rotProgress).toBeUndefined();
     expect(ledger(sim)).toEqual(initial); sim.step(10); expect(sim.stats.spoiled.meal).toBe(3);
   });
@@ -105,29 +105,28 @@ describe('physical food age, destruction and harvest identity', () => {
 });
 
 describe('priority storage transfers preserve species and age', () => {
-  it('splits 30 units from a pile, inherits age, and merges the transferred amount by weighted age', () => {
+  it('splits by the remaining 30-unit capacity, inherits age, and merges by the transferred amount', () => {
     const sim = fixture(s => {
       s.pawns[0].priorities.haul = 1;
       s.stockpiles.push(stock(pos(13, 15), 1, ['grain']), stock(pos(19, 15), 3, ['grain']));
       addBatch(s, { ...freshBatch('grain', 50, 'rice'), rotProgress: 100 }, pos(13, 15));
-      addBatch(s, { ...freshBatch('grain', 10, 'rice'), rotProgress: 500 }, pos(19, 15));
+      addBatch(s, { ...freshBatch('grain', 45, 'rice'), rotProgress: 500 }, pos(19, 15));
     });
     until(sim, () => sim.pawns[0].cargo?.amount === 30);
     expect(sim.items.find(i => at(i) === at(pos(13, 15)))!).toMatchObject({ amount: 20, crop: 'rice', rotProgress: 100 + sim.tick });
     expect(sim.pawns[0].cargo).toMatchObject({ amount: 30, crop: 'rice', rotProgress: 100 + sim.tick });
-    until(sim, () => sim.items.some(i => at(i) === at(pos(19, 15)) && i.amount === 40));
-    expect(sim.items.find(i => at(i) === at(pos(19, 15)))!.rotProgress).toBeCloseTo(200 + sim.tick, 10);
-    until(sim, () => sim.items.some(i => at(i) === at(pos(19, 15)) && i.amount === 60));
-    expect(sim.items.find(i => at(i) === at(pos(19, 15)))!.rotProgress).toBeCloseTo((50 * 100 + 10 * 500) / 60 + sim.tick, 9);
+    until(sim, () => sim.items.some(i => at(i) === at(pos(19, 15)) && i.amount === 75));
+    expect(sim.items.find(i => at(i) === at(pos(19, 15)))!.rotProgress).toBeCloseTo((30 * 100 + 45 * 500) / 75 + sim.tick, 10);
+    expect(sim.items.find(i => at(i) === at(pos(13, 15)))!.amount).toBe(20);
     const hauled = sim.stats.hauled; sim.step(200); expect(sim.stats.hauled).toBe(hauled);
   });
-  it('never combines rice and potatoes into one age even when sharing a storage cell', () => {
+  it('never combines rice and potatoes and needs separate cells in the same storage region', () => {
     const sim = fixture(s => {
-      s.pawns[0].priorities.haul = 1; s.stockpiles.push(stock(pos(19, 15), 3, ['grain']));
+      s.pawns[0].priorities.haul = 1; s.stockpiles.push(stock(pos(19, 15), 3, ['grain']), stock(pos(20, 15), 3, ['grain']));
       addBatch(s, { ...freshBatch('grain', 5, 'rice'), rotProgress: 100 }, pos(13, 15));
       addBatch(s, { ...freshBatch('grain', 7, 'potato'), rotProgress: 500 }, pos(19, 15));
     });
-    until(sim, () => sim.items.length === 2 && sim.pawns.every(p => !p.cargo) && sim.items.every(i => at(i) === at(pos(19, 15))));
+    until(sim, () => sim.items.length === 2 && sim.pawns.every(p => !p.cargo) && sim.items.every(i => i.x >= 19));
     expect(sim.items).toHaveLength(2); expect(sim.counts().grain).toBe(12);
     expect(sim.items.find(i => i.crop === 'rice')!.rotProgress).toBeCloseTo(100 + sim.tick, 10);
     expect(sim.items.find(i => i.crop === 'potato')!.rotProgress).toBeCloseTo(500 + sim.tick, 10);
@@ -136,13 +135,13 @@ describe('priority storage transfers preserve species and age', () => {
     const sim = fixture(s => {
       carve(s, pos(17, 11, 11), pos(20, 13, 12)); carve(s, pos(16, 12, 8), pos(16, 12, 12));
       for (let z = 8; z <= 11; z++) s.ladders[index(16, 12, z)] = 1;
-      s.stockpiles.push(stock(pos(13, 15), 1), stock(pos(19, 12, 11), 3, ['grain', 'meal', 'food']));
+      s.stockpiles.push(stock(pos(13, 15), 1), stock(pos(14, 15), 1), stock(pos(19, 12, 11), 3, ['grain', 'meal', 'food']));
       s.pawns[0].priorities.haul = 1;
-      addBatch(s, freshBatch('grain', 4, 'corn'), pos(13, 15)); addBatch(s, freshBatch('wood', 10), pos(13, 15));
+      addBatch(s, freshBatch('grain', 4, 'corn'), pos(13, 15)); addBatch(s, freshBatch('wood', 10), pos(14, 15));
     });
     until(sim, () => sim.items.some(i => i.resource === 'grain' && i.z === 11));
     expect(sim.items.find(i => i.resource === 'grain')).toMatchObject({ ...pos(19, 12, 11), crop: 'corn', amount: 4 });
-    expect(sim.items.find(i => i.resource === 'wood')).toMatchObject({ ...pos(13, 15), amount: 10 });
+    expect(sim.items.find(i => i.resource === 'wood')).toMatchObject({ ...pos(14, 15), amount: 10 });
     expect(sim.pawns.every(p => sim.standable(p))).toBe(true);
   });
   it('does not move between equal priorities and evacuates a cell after its accepts rule changes', () => {
@@ -241,7 +240,7 @@ describe('cooking input containers and v5 food persistence', () => {
     delete old.items[0].crop; delete old.items[0].rotProgress; delete old.pawns[0].cargo.rotProgress;
     delete old.stockpiles[0].priority; delete old.stockpiles[0].accepts; delete old.stats.spoiled;
     const before = structuredClone(old), migrated = VoxelSimulation.load(old);
-    expect(old).toEqual(before); expect(migrated.save().version).toBe(5); expect(migrated.counts()).toEqual(sim.counts());
+    expect(old).toEqual(before); expect(migrated.save().version).toBe(6); expect(migrated.counts()).toEqual(sim.counts());
     expect(migrated.items[0]).toMatchObject({ crop: 'rice', rotProgress: 0 });
     expect(migrated.pawns[0].cargo).toMatchObject({ rotProgress: 0 });
     expect(migrated.stockpiles[0]).toMatchObject({ priority: 1, accepts: resources });

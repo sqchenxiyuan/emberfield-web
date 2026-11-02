@@ -96,13 +96,21 @@ async function modeRun(mode) {
     await control('查看');
     // Pawn bodies can cover a neighboring floor cell in an isometric view.
     // Click visible points within the requested cell, never set selection by API.
-    for (const [dx,dy] of [[0,0],[-.3,-.3],[.3,-.3],[.3,.3],[-.3,.3]]) {
-      await click({x:p.x+dx,y:p.y+dy,z:p.z+.05});
+    for (const [dx, dy] of [
+      [0, 0],
+      [-0.3, -0.3],
+      [0.3, -0.3],
+      [0.3, 0.3],
+      [-0.3, 0.3],
+    ]) {
+      await click({ x: p.x + dx, y: p.y + dy, z: p.z + 0.05 });
       await page.waitForTimeout(180);
-      const q=(await state()).selected;
-      if(q?.x===p.x&&q?.y===p.y&&q?.z===p.z)return;
+      const q = (await state()).selected;
+      if (q?.x === p.x && q?.y === p.y && q?.z === p.z) return;
     }
-    assert.fail(`visible inspection failed for ${JSON.stringify(p)}, selected ${JSON.stringify((await state()).selected)}`);
+    assert.fail(
+      `visible inspection failed for ${JSON.stringify(p)}, selected ${JSON.stringify((await state()).selected)}`,
+    );
   }
   async function load(name) {
     await control('菜单与存档');
@@ -117,7 +125,7 @@ async function modeRun(mode) {
     await page.getByRole('dialog').waitFor({ state: 'hidden' });
   }
   async function shot(name) {
-    await page.locator('.voxel-toast').waitFor({state:'hidden',timeout:8000});
+    await page.locator('.voxel-toast').waitFor({ state: 'hidden', timeout: 8000 });
     const file = path.join(OUT, `${mode}-${name}.png`);
     await page.screenshot({ path: file });
     result.screenshots.push(file);
@@ -169,14 +177,20 @@ async function modeRun(mode) {
 
     await layer(5);
     await control('仓储');
-    const a = await project(pos(35, 29)),
-      b = await project(pos(37, 30));
-    await page.mouse.move(a.x, a.y);
-    await page.mouse.down();
-    await page.mouse.move(b.x, b.y, { steps: 12 });
-    await page.mouse.up();
+    for (const [from, to] of [
+      [pos(35, 29), pos(37, 30)],
+      [pos(35, 27), pos(37, 27)],
+      [pos(36, 28), pos(37, 28)],
+    ]) {
+      const a = await project(from),
+        b = await project(to);
+      await page.mouse.move(a.x, a.y);
+      await page.mouse.down();
+      await page.mouse.move(b.x, b.y, { steps: 12 });
+      await page.mouse.up();
+    }
     await wait(
-      () => window.voxel.snapshot().snapshot.stockpiles.filter((s) => s.z === 5).length === 6,
+      () => window.voxel.snapshot().snapshot.stockpiles.filter((s) => s.z === 5).length === 11,
     );
     await inspect(pos(35, 29));
     await page.getByLabel('仓储优先级', { exact: true }).selectOption('3');
@@ -188,7 +202,7 @@ async function modeRun(mode) {
         .every((s) => s.priority === 3 && s.accepts.length === 3 && s.accepts.includes('meal')),
     );
     record(
-      'real drag creates six storage cells and DOM applies food filter and priority to connected zone',
+      'real drags create eleven finite storage cells around the heater and DOM applies food filters and priority',
     );
     await run();
     await wait(
@@ -235,7 +249,7 @@ async function modeRun(mode) {
       const q = window.voxel.snapshot().snapshot.stockpiles;
       return (
         q.find((s) => s.x === 35 && s.y === 29 && s.z === 5)?.accepts.length === 0 &&
-        q.filter((s) => s.z === 5 && s.accepts.length === 3).length === 5
+        q.filter((s) => s.z === 5 && s.accepts.length === 3).length === 10
       );
     });
     await control('仅收食物');
@@ -261,7 +275,7 @@ async function modeRun(mode) {
     });
     await shot('04-frozen-food');
     const saveBefore = await page.evaluate(() => window.voxel.exportSave());
-    assert.equal(saveBefore.version, 5);
+    assert.equal(saveBefore.version, 6);
     await control('菜单与存档');
     await control('保存营地');
     await page.getByText('手动保存成功', { exact: true }).waitFor();
@@ -283,7 +297,7 @@ async function modeRun(mode) {
       saveAfter.jobs.map((j) => [j.id, j.delivered, j.deliveredFood]),
       saveBefore.jobs.map((j) => [j.id, j.delivered, j.deliveredFood]),
     );
-    record('DOM v5 save/load preserves food ages species storage filters and all food containers');
+    record('DOM v6 save/load preserves food ages species storage filters and all food containers');
     const frozen = (await state()).snapshot,
       ages = new Map(
         frozen.items.filter((i) => i.resource === 'meal').map((i) => [i.id, i.rotProgress]),
@@ -302,7 +316,9 @@ async function modeRun(mode) {
     });
 
     await load('near-spoilage');
-    meal = (await state()).snapshot.items.find((i) => i.resource === 'meal');
+    meal = (await state()).snapshot.items
+      .filter((i) => i.resource === 'meal')
+      .sort((a, b) => b.rotProgress - a.rotProgress)[0];
     await inspect(meal);
     const before = (await state()).snapshot;
     assert.ok(meal.rotProgress > 47700);

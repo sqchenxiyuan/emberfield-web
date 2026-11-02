@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "research:check": "node scripts/research/verify-research.mjs && node scripts/research/verify-food-evidence.mjs && node scripts/research/verify-housing-evidence.mjs && node scripts/research/verify-energy-evidence.mjs && node scripts/research/verify-preservation-evidence.mjs && node scripts/research/verify-native-preservation-runtime.mjs",
+    "research:check": "node scripts/research/verify-research.mjs && node scripts/research/verify-food-evidence.mjs && node scripts/research/verify-housing-evidence.mjs && node scripts/research/verify-energy-evidence.mjs && node scripts/research/verify-preservation-evidence.mjs && node scripts/research/verify-native-preservation-runtime.mjs && node scripts/research/verify-logistics-evidence.mjs && node scripts/research/verify-logistics-runtime.mjs",
     "dev": "vite --host 127.0.0.1 --port 5178 --strictPort",
     "check": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
@@ -25,6 +25,8 @@
     "test:voxel:power:browser": "node scripts/voxel-power-browser-verify.mjs",
     "test:voxel:preservation": "node scripts/voxel-preservation-verify.mjs",
     "test:voxel:preservation:browser": "node scripts/voxel-preservation-browser-verify.mjs",
+    "test:voxel:logistics": "node scripts/voxel-logistics-campaign-verify.mjs",
+    "test:voxel:logistics:browser": "node scripts/voxel-logistics-browser-verify.mjs",
     "test:seeds": "node scripts/seeds-verify.mjs",
     "test:memory": "node scripts/memory-verify.mjs",
     "test:performance": "node scripts/simulation-benchmark.mjs"

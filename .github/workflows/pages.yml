@@ -44,6 +44,8 @@ jobs:
         run: npm run test:voxel:power
       - name: Verify farming, cold storage and natural food spoilage
         run: npm run test:voxel:preservation
+      - name: Verify finite storage, cross-level hauling and published save migration
+        run: npm run test:voxel:logistics
       - name: Build site with relative asset and Worker URLs
         run: npm run build
       - name: Configure GitHub Pages

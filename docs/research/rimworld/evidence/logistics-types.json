@@ -1,0 +1,10 @@
+[
+  "Verse.GridsUtility",
+  "Verse.ThingGrid",
+  "Verse.GenDrop",
+  "Verse.GenPlace",
+  "Verse.GenSpawn",
+  "RimWorld.Building_Storage",
+  "RimWorld.HaulDestinationManager",
+  "RimWorld.StatPart_BodySize"
+]

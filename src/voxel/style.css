@@ -701,6 +701,22 @@ a {
   gap: 6px;
   font-size: 11px;
 }
+.voxel-storage-capacity {
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+  background: rgba(231, 182, 107, 0.06);
+  border: 1px solid rgba(231, 182, 107, 0.2);
+  border-radius: 4px;
+}
+.voxel-storage-capacity progress {
+  width: 100%;
+}
+.voxel-stack-limit {
+  display: block;
+  margin-top: 5px;
+  opacity: 0.8;
+}
 .voxel-storage input[type='checkbox'] {
   width: 15px;
   height: 15px;

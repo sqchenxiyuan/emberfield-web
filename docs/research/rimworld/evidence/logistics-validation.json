@@ -1,0 +1,33 @@
+{
+  "evidence_id": "RW17-LOGISTICS-VALIDATION",
+  "validated_utc": "2026-11-02T19:12:22.9768740Z",
+  "status": "PASS",
+  "version_text": "1.7.4980 rev60",
+  "original_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "original_xml_files": 9,
+  "original_xml_records": 23,
+  "original_xml_leaves": 60,
+  "original_xml_attribute_nodes": 1,
+  "original_xml_absent_roots": 64,
+  "portable_and_derived": {
+    "status": "pass",
+    "version": "1.7.4980 rev60",
+    "newTypes": 8,
+    "reusedTypes": 14,
+    "claims": 18,
+    "codeReferences": 39,
+    "xmlReferences": 24,
+    "xmlFiles": 9,
+    "xmlRecords": 23,
+    "xmlLeaves": 60,
+    "xmlAttributeNodes": 1,
+    "xmlAbsentRoots": 64,
+    "cases": 11,
+    "analyticAssertions": 103,
+    "localDerivedFilesVerified": 22,
+    "originalGameExecuted": false,
+    "limitation": "Independent selected-branch arithmetic plus metadata, XML inheritance and optional derived-hash checks. No runtime execution, complete pathfinding simulation, enabled-mod database or project equivalence proof."
+  },
+  "original_game_executed_by_verifier": false,
+  "limitation": "Checks original DLL/version and selected XML declarations, parent chains, derived hashes, source references and independent arithmetic. Does not execute game classes, control the native UI, measure native logistics or establish project implementation equivalence."
+}

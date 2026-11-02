@@ -1,0 +1,4960 @@
+{
+  "generatedAt": "2026-11-02T19:19:01.622Z",
+  "kind": "web-runtime-validated",
+  "scope": "Finite ground logistics milestone on 64x64x16. Normal Node campaigns use command/step/save/load; real Chrome uses DOM/mouse/file chooser and read-only snapshots. Synthetic unit fixtures are separate. Native RimWorld static evidence and limited live 71-unit hauling observation are chapters 21 and 22. No large-map, population, 4 GiB or complete RimWorld equivalence claim.",
+  "sources": [
+    {
+      "file": "src/voxel/client.ts",
+      "sha256": "1878f4d3749a7b70453e3820f4775ce4c517250f54bee21962be3d49f1ad8c8e"
+    },
+    {
+      "file": "src/voxel/farming.ts",
+      "sha256": "c4820b307bc40cbc26feb1afa6dd79808f3af807db6d3ad37e883d54693b32bc"
+    },
+    {
+      "file": "src/voxel/logistics.ts",
+      "sha256": "70bb00fcfe37446ec798cbe45a98fa007aa57465964d00f4053d8adcce944036"
+    },
+    {
+      "file": "src/voxel/main.tsx",
+      "sha256": "159ee47cc597810f143c981b0a432343acb2b8913f6317967d997ebff3866242"
+    },
+    {
+      "file": "src/voxel/power.ts",
+      "sha256": "d24d824e96544a080106c4cd861cd9d7eaff9101de82ddced9bee4c5451f1585"
+    },
+    {
+      "file": "src/voxel/preservation.ts",
+      "sha256": "b0932909f857e11c5a57628c7c502525e47fbcad5d17e04d36b1cc418b2f0d39"
+    },
+    {
+      "file": "src/voxel/render.worker.ts",
+      "sha256": "191ced6c3d17b480fa11f2d3a6845b8e9df111f5f69ded8b7b2bbaf75caf22c0"
+    },
+    {
+      "file": "src/voxel/renderer.ts",
+      "sha256": "61a46b938906f933b92119693256865b03a74b3add7228923ba02eb57d4edd4a"
+    },
+    {
+      "file": "src/voxel/rest.ts",
+      "sha256": "843c08f8188d7a3b3a9cbef507a0568705bb3d5aa5ad2d89395443199aa12099"
+    },
+    {
+      "file": "src/voxel/rooms.ts",
+      "sha256": "67457f7cd217f5746b9562ea2e3ca059af1f424165368d28d511e8a374090b9d"
+    },
+    {
+      "file": "src/voxel/sim.worker.ts",
+      "sha256": "809a28fe11e9b28f5b04502d94d33261ea0deb66efa45c2c33784891b82b4162"
+    },
+    {
+      "file": "src/voxel/style.css",
+      "sha256": "d2d3374b9db3839b6fb89286d28925936296cdbd355b025f9effb1127466dd9b"
+    },
+    {
+      "file": "src/voxel/thermal.ts",
+      "sha256": "40c614996ba9c8843bc52fbd343a2a625c0fd77c788b1133ae2ba50b6494b127"
+    },
+    {
+      "file": "src/voxel/types.ts",
+      "sha256": "b34e1f9d0083932e61259aef80d122d0dd329208efb5aca3071b1e436c62f8f2"
+    },
+    {
+      "file": "src/voxel/world.ts",
+      "sha256": "6f81dcd12534da613bde9001d9b3e99abf50b386c6ffc39a2147fa8d56764897"
+    }
+  ],
+  "scripts": [
+    {
+      "file": "scripts/voxel-logistics-campaign-verify.mjs",
+      "sha256": "390eeabb90f04acc11dd3e8631bd5622b62c799d868a068afdb0426be27a6bc2"
+    },
+    {
+      "file": "scripts/voxel-logistics-browser-verify.mjs",
+      "sha256": "7d24d708aea2061100d5603812b68911cce29452ffd28a7dfaf5c4f8c8335324"
+    },
+    {
+      "file": "scripts/voxel-campaign-verify.mjs",
+      "sha256": "8f26ec872c13b9b6847b6d900345a363ce76776b58d0772fa5c7eb63b55b05e5"
+    },
+    {
+      "file": "scripts/voxel-food-campaign-verify.mjs",
+      "sha256": "c4543196381145265c08a79798d88c2ddd7f22c7e09cdcd72f269d5719f28c1d"
+    },
+    {
+      "file": "scripts/voxel-housing-campaign-verify.mjs",
+      "sha256": "21d6176e45d1cc67b776c8ecbb417068c5283eff045ad429191dcdfc120ac385"
+    },
+    {
+      "file": "scripts/voxel-power-campaign-verify.mjs",
+      "sha256": "b55e2a38964d7d2140681351a9f2b2dc20b674bcf25978b43ec09129e5961f09"
+    },
+    {
+      "file": "scripts/voxel-preservation-campaign-verify.mjs",
+      "sha256": "fe27424b50d40ea9e329a2ba57fa0d963845badb012733aeba330f4cfaa5c76e"
+    },
+    {
+      "file": "scripts/voxel-preservation-browser-verify.mjs",
+      "sha256": "3085a79d398c957a63d1a545eda74f335105bdc3e32aed8380bfb434d28ac820"
+    },
+    {
+      "file": "tests/voxel-logistics.test.ts",
+      "sha256": "8ad8621d209e741e0d652be4a5b3c1e53a63a1b75983819b8b7e34d824b71cd8"
+    },
+    {
+      "file": "tests/fixtures/voxel-v5-cold-store.json",
+      "sha256": "0f239085ebd34f8ff6f17da4716cc875e908255f82d527746847f28f543a9f20"
+    }
+  ],
+  "reports": [
+    {
+      "file": "test-results/voxel-logistics-campaign/report.json",
+      "sha256": "975ad033920f0e54ae560589fcb5ce998fba680efbc2ede30b0f0f5fc586b017"
+    },
+    {
+      "file": "test-results/voxel-food-campaign/report.json",
+      "sha256": "a5cae38971f20667a113b8dce068420a4b33aacc91eaf68590f910557ae50362"
+    },
+    {
+      "file": "test-results/voxel-housing-campaign/report.json",
+      "sha256": "dfb4981ef9ba44befbb8ea342bb14211f9f19a995698d967b876bdc101e20b9a"
+    },
+    {
+      "file": "test-results/voxel-power-campaign/report.json",
+      "sha256": "ffaff303728521a103ea59fb12824b6f81adbfdb7eb2c61b74eb6f88b8e13282"
+    },
+    {
+      "file": "test-results/voxel-preservation-campaign/report.json",
+      "sha256": "dd1ae60927d9a675ebe5d6e8d4527ca391fe5c5bae1429c899601f391b8477f5"
+    },
+    {
+      "file": "test-results/voxel-logistics-browser/report.json",
+      "sha256": "6f72f6e55f04d87459c8ee8bd2c046002a1fe2f33ff7c4b0d83579e10c7a53ba"
+    },
+    {
+      "file": "test-results/voxel-food-browser/report.json",
+      "sha256": "6f2d521b35dbf0142736ecb914bc9ccfa005029c16295b0ddb1ffa94f1582a9c"
+    },
+    {
+      "file": "test-results/voxel-housing-browser/report.json",
+      "sha256": "b5006a1b118ef8f4d8f20fcaace546acb683fded5c3dda0d561c33f5187e4c5a"
+    },
+    {
+      "file": "test-results/voxel-power-browser/report.json",
+      "sha256": "b22a5f279cc84d9a1abcd7d238b3c514d5ce439ff3fa04ba0fe7cf0ce4190d1a"
+    },
+    {
+      "file": "test-results/voxel-preservation-browser/report.json",
+      "sha256": "a8372920ce63ff78f6acede31d66eadf95b2602f96b5c8ed27cef972c170427c"
+    }
+  ],
+  "assets": [
+    {
+      "file": "assets/index-DeSHPeEy.js",
+      "sha256": "f0a5fc78174c56ae148cf0b010525ad4e63460c6e8bb0d10caa63ddb3c6b0981",
+      "bytes": 2356
+    },
+    {
+      "file": "assets/main-CkRa2mK5.css",
+      "sha256": "09e655158c70c29bc4c2106d2fa9a56186bea5d48b8936c68e1f08a2b422fb36",
+      "bytes": 11684
+    },
+    {
+      "file": "assets/client-CrowJ5J7.js",
+      "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+      "bytes": 221699
+    },
+    {
+      "file": "assets/main-D7qanm4p.js",
+      "sha256": "b32ffe2272a19b084cfa59c222249d9efc9e7036699b15ddc872fc75d610c1b3",
+      "bytes": 566716
+    },
+    {
+      "file": "assets/sim.worker-bt-TsseA.js",
+      "sha256": "6e83a29bd5e16f36aaecb893134225f2418abcdee25e25329acd75756f189296",
+      "bytes": 77677
+    },
+    {
+      "file": "assets/render.worker-BsuVrjkK.js",
+      "sha256": "4afd2eee1556d2b573af7534318af4b0ff50a4c57f405f2081dce18284875d41",
+      "bytes": 529307
+    }
+  ],
+  "unit": {
+    "passed": 237,
+    "total": 237,
+    "failed": 0
+  },
+  "campaign": {
+    "scope": "Normal command/step/save/load only, no injected resources, terrain, needs, items or time. Finite ground stacks, physical hauling, full storage, changed filters, expansion and cross-level transfer. Separately imports an unchanged save from the previously published v5 normal preservation campaign.",
+    "checks": [
+      {
+        "name": "new colony retains ninety wood and sixty rations in legal finite stacks",
+        "tick": 0
+      },
+      {
+        "name": "three haulers cannot exceed one seventy-five-unit wood slot",
+        "tick": 84,
+        "elapsed": 84
+      },
+      {
+        "name": "full warehouse remains stable while fifteen wood stays outside",
+        "tick": 324
+      },
+      {
+        "name": "changing a full cell filter never overwrites its existing wood",
+        "tick": 444
+      },
+      {
+        "name": "new wood storage frees the rejected cell and rations physically move in",
+        "tick": 508,
+        "elapsed": 64
+      },
+      {
+        "name": "expanding real ground storage admits the remaining wood and rations",
+        "tick": 700,
+        "elapsed": 192
+      },
+      {
+        "name": "ground inventory occupies separate finite stacks",
+        "tick": 700,
+        "items": [
+          {
+            "id": 310,
+            "resource": "wood",
+            "amount": 75,
+            "x": 37,
+            "y": 34,
+            "z": 8
+          },
+          {
+            "id": 311,
+            "resource": "food",
+            "amount": 10,
+            "x": 36,
+            "y": 34,
+            "z": 8
+          },
+          {
+            "id": 312,
+            "resource": "food",
+            "amount": 10,
+            "x": 34,
+            "y": 34,
+            "z": 8
+          },
+          {
+            "id": 313,
+            "resource": "wood",
+            "amount": 15,
+            "x": 37,
+            "y": 35,
+            "z": 8
+          },
+          {
+            "id": 314,
+            "resource": "food",
+            "amount": 10,
+            "x": 35,
+            "y": 34,
+            "z": 8
+          },
+          {
+            "id": 315,
+            "resource": "food",
+            "amount": 10,
+            "x": 34,
+            "y": 35,
+            "z": 8
+          },
+          {
+            "id": 316,
+            "resource": "food",
+            "amount": 10,
+            "x": 35,
+            "y": 35,
+            "z": 8
+          },
+          {
+            "id": 317,
+            "resource": "food",
+            "amount": 10,
+            "x": 36,
+            "y": 35,
+            "z": 8
+          }
+        ],
+        "capacity": [
+          {
+            "x": 30,
+            "y": 32,
+            "z": 8,
+            "occupied": false,
+            "resource": null,
+            "crop": null,
+            "amount": 0,
+            "limit": 0,
+            "reserved": 0,
+            "available": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "availableGrain": {
+              "rice": 0,
+              "potato": 0,
+              "corn": 0
+            }
+          },
+          {
+            "x": 30,
+            "y": 33,
+            "z": 8,
+            "occupied": false,
+            "resource": null,
+            "crop": null,
+            "amount": 0,
+            "limit": 0,
+            "reserved": 0,
+            "available": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "availableGrain": {
+              "rice": 0,
+              "potato": 0,
+              "corn": 0
+            }
+          },
+          {
+            "x": 36,
+            "y": 34,
+            "z": 8,
+            "occupied": true,
+            "resource": "food",
+            "crop": null,
+            "amount": 10,
+            "limit": 10,
+            "reserved": 0,
+            "available": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "availableGrain": {
+              "rice": 0,
+              "potato": 0,
+              "corn": 0
+            }
+          },
+          {
+            "x": 37,
+            "y": 34,
+            "z": 8,
+            "occupied": true,
+            "resource": "wood",
+            "crop": null,
+            "amount": 75,
+            "limit": 75,
+            "reserved": 0,
+            "available": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "availableGrain": {
+              "rice": 0,
+              "potato": 0,
+              "corn": 0
+            }
+          },
+          {
+            "x": 37,
+            "y": 35,
+            "z": 8,
+            "occupied": true,
+            "resource": "wood",
+            "crop": null,
+            "amount": 15,
+            "limit": 75,
+            "reserved": 0,
+            "available": {
+              "wood": 60,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "availableGrain": {
+              "rice": 0,
+              "potato": 0,
+              "corn": 0
+            }
+          },
+          {
+            "x": 34,
+            "y": 34,
+            "z": 8,
+            "occupied": true,
+            "resource": "food",
+            "crop": null,
+            "amount": 10,
+            "limit": 10,
+            "reserved": 0,
+            "available": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "availableGrain": {
+              "rice": 0,
+              "potato": 0,
+              "corn": 0
+            }
+          },
+          {
+            "x": 35,
+            "y": 34,
+            "z": 8,
+            "occupied": true,
+            "resource": "food",
+            "crop": null,
+            "amount": 10,
+            "limit": 10,
+            "reserved": 0,
+            "available": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "availableGrain": {
+              "rice": 0,
+              "potato": 0,
+              "corn": 0
+            }
+          },
+          {
+            "x": 34,
+            "y": 35,
+            "z": 8,
+            "occupied": true,
+            "resource": "food",
+            "crop": null,
+            "amount": 10,
+            "limit": 10,
+            "reserved": 0,
+            "available": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "availableGrain": {
+              "rice": 0,
+              "potato": 0,
+              "corn": 0
+            }
+          },
+          {
+            "x": 35,
+            "y": 35,
+            "z": 8,
+            "occupied": true,
+            "resource": "food",
+            "crop": null,
+            "amount": 10,
+            "limit": 10,
+            "reserved": 0,
+            "available": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "availableGrain": {
+              "rice": 0,
+              "potato": 0,
+              "corn": 0
+            }
+          },
+          {
+            "x": 36,
+            "y": 35,
+            "z": 8,
+            "occupied": true,
+            "resource": "food",
+            "crop": null,
+            "amount": 10,
+            "limit": 10,
+            "reserved": 0,
+            "available": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "availableGrain": {
+              "rice": 0,
+              "potato": 0,
+              "corn": 0
+            }
+          }
+        ]
+      },
+      {
+        "name": "workers excavate a real three-level shaft",
+        "tick": 1251,
+        "elapsed": 551
+      },
+      {
+        "name": "finite ore stacks are mined and transported away from future storage",
+        "tick": 1713,
+        "elapsed": 462
+      },
+      {
+        "name": "a finite wood cargo physically travels down the ladder",
+        "tick": 1781,
+        "elapsed": 68
+      },
+      {
+        "name": "save reload rebuilds reservations and completes cross-level storage",
+        "tick": 1826,
+        "elapsed": 45
+      },
+      {
+        "name": "unchanged published v5 cold-store save migrates and continues without losing food age or materials",
+        "tick": 1826,
+        "sourceSha256": "0f239085ebd34f8ff6f17da4716cc875e908255f82d527746847f28f543a9f20",
+        "sourceTick": 114985,
+        "migratedTick": 115225,
+        "oldAges": {
+          "grain/rice": {
+            "amount": 230,
+            "ageSum": 3615260.476190477
+          },
+          "meal/": {
+            "amount": 40,
+            "ageSum": 127383.17655691569
+          }
+        },
+        "migratedInitialAges": {
+          "grain/rice": {
+            "amount": 230,
+            "ageSum": 3615260.4761904767
+          },
+          "meal/": {
+            "amount": 40,
+            "ageSum": 127383.17655691569
+          }
+        }
+      }
+    ],
+    "commands": [
+      {
+        "tick": 0,
+        "command": {
+          "type": "storage",
+          "from": {
+            "x": 30,
+            "y": 32,
+            "z": 8,
+            "priority": 0,
+            "accepts": []
+          },
+          "accepts": [],
+          "priority": 0
+        },
+        "result": {
+          "ok": true,
+          "count": 1,
+          "message": "已更新 1 格仓储；搬运会优先选择更高优先级区域"
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "storage",
+          "from": {
+            "x": 30,
+            "y": 33,
+            "z": 8,
+            "priority": 0,
+            "accepts": []
+          },
+          "accepts": [],
+          "priority": 0
+        },
+        "result": {
+          "ok": true,
+          "count": 1,
+          "message": "已更新 1 格仓储；搬运会优先选择更高优先级区域"
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 36,
+            "y": 34,
+            "z": 8
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "storage",
+          "from": {
+            "x": 36,
+            "y": 34,
+            "z": 8
+          },
+          "accepts": [
+            "wood"
+          ],
+          "priority": 3
+        },
+        "result": {
+          "ok": true,
+          "count": 1,
+          "message": "已更新 1 格仓储；搬运会优先选择更高优先级区域"
+        }
+      },
+      {
+        "tick": 324,
+        "command": {
+          "type": "storage",
+          "from": {
+            "x": 36,
+            "y": 34,
+            "z": 8
+          },
+          "accepts": [
+            "food"
+          ],
+          "priority": 3
+        },
+        "result": {
+          "ok": true,
+          "count": 1,
+          "message": "已更新 1 格仓储；搬运会优先选择更高优先级区域"
+        }
+      },
+      {
+        "tick": 444,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 37,
+            "y": 34,
+            "z": 8
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 444,
+        "command": {
+          "type": "storage",
+          "from": {
+            "x": 37,
+            "y": 34,
+            "z": 8
+          },
+          "accepts": [
+            "wood"
+          ],
+          "priority": 3
+        },
+        "result": {
+          "ok": true,
+          "count": 1,
+          "message": "已更新 1 格仓储；搬运会优先选择更高优先级区域"
+        }
+      },
+      {
+        "tick": 508,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 37,
+            "y": 35,
+            "z": 8
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 508,
+        "command": {
+          "type": "storage",
+          "from": {
+            "x": 37,
+            "y": 35,
+            "z": 8
+          },
+          "accepts": [
+            "wood"
+          ],
+          "priority": 3
+        },
+        "result": {
+          "ok": true,
+          "count": 1,
+          "message": "已更新 1 格仓储；搬运会优先选择更高优先级区域"
+        }
+      },
+      {
+        "tick": 508,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 34,
+            "y": 34,
+            "z": 8
+          },
+          "to": {
+            "x": 36,
+            "y": 35,
+            "z": 8
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 6 格仓储；可搬运的物资将送往最近仓储",
+          "count": 6
+        }
+      },
+      {
+        "tick": 508,
+        "command": {
+          "type": "storage",
+          "from": {
+            "x": 34,
+            "y": 34,
+            "z": 8
+          },
+          "accepts": [
+            "food"
+          ],
+          "priority": 3,
+          "to": {
+            "x": 36,
+            "y": 35,
+            "z": 8
+          }
+        },
+        "result": {
+          "ok": true,
+          "count": 6,
+          "message": "已更新 6 格仓储；搬运会优先选择更高优先级区域"
+        }
+      },
+      {
+        "tick": 700,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 28,
+            "y": 34,
+            "z": 8
+          },
+          "to": {
+            "x": 30,
+            "y": 36,
+            "z": 8
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 9 格仓储；可搬运的物资将送往最近仓储",
+          "count": 9
+        }
+      },
+      {
+        "tick": 700,
+        "command": {
+          "type": "storage",
+          "from": {
+            "x": 28,
+            "y": 34,
+            "z": 8
+          },
+          "accepts": [
+            "stone",
+            "steel",
+            "components"
+          ],
+          "priority": 1,
+          "to": {
+            "x": 30,
+            "y": 36,
+            "z": 8
+          }
+        },
+        "result": {
+          "ok": true,
+          "count": 9,
+          "message": "已更新 9 格仓储；搬运会优先选择更高优先级区域"
+        }
+      },
+      {
+        "tick": 700,
+        "command": {
+          "type": "designate",
+          "tool": "shaft",
+          "from": {
+            "x": 33,
+            "y": 32,
+            "z": 8
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 4 项工作，需求木材 8；缺料和不可达任务会等待",
+          "count": 4
+        }
+      },
+      {
+        "tick": 1251,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 34,
+            "y": 32,
+            "z": 5
+          },
+          "to": {
+            "x": 36,
+            "y": 33,
+            "z": 5
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 6 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 6
+        }
+      },
+      {
+        "tick": 1713,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 34,
+            "y": 32,
+            "z": 5
+          },
+          "to": {
+            "x": 34,
+            "y": 33,
+            "z": 5
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 2 格仓储；可搬运的物资将送往最近仓储",
+          "count": 2
+        }
+      },
+      {
+        "tick": 1713,
+        "command": {
+          "type": "storage",
+          "from": {
+            "x": 34,
+            "y": 32,
+            "z": 5
+          },
+          "accepts": [
+            "wood"
+          ],
+          "priority": 3,
+          "to": {
+            "x": 34,
+            "y": 33,
+            "z": 5
+          }
+        },
+        "result": {
+          "ok": true,
+          "count": 2,
+          "message": "已更新 2 格仓储；搬运会优先选择更高优先级区域"
+        }
+      },
+      {
+        "tick": 1713,
+        "command": {
+          "type": "storage",
+          "from": {
+            "x": 37,
+            "y": 34,
+            "z": 8
+          },
+          "accepts": [
+            "wood"
+          ],
+          "priority": 2
+        },
+        "result": {
+          "ok": true,
+          "count": 1,
+          "message": "已更新 1 格仓储；搬运会优先选择更高优先级区域"
+        }
+      },
+      {
+        "tick": 1713,
+        "command": {
+          "type": "storage",
+          "from": {
+            "x": 37,
+            "y": 35,
+            "z": 8
+          },
+          "accepts": [
+            "wood"
+          ],
+          "priority": 2
+        },
+        "result": {
+          "ok": true,
+          "count": 1,
+          "message": "已更新 1 格仓储；搬运会优先选择更高优先级区域"
+        }
+      }
+    ],
+    "fixtures": {
+      "before-single": {
+        "file": "test-results/voxel-logistics-campaign/before-single.json",
+        "sha256": "151abdee0e6c9c74de46ea14f9d317e51c2846dc7677319713df8df5b4c49cd9",
+        "tick": 0
+      },
+      "full-single": {
+        "file": "test-results/voxel-logistics-campaign/full-single.json",
+        "sha256": "4700da3a538d9c16a00f6a1b4e3179671e8600f8fb1ded4dd19bf217fa77bfaf",
+        "tick": 324
+      },
+      "blocked-filter": {
+        "file": "test-results/voxel-logistics-campaign/blocked-filter.json",
+        "sha256": "f8f7981ac10f25d93eda0334619a6a56ac064834553c4be34a792a5a105add80",
+        "tick": 444
+      },
+      "expanded": {
+        "file": "test-results/voxel-logistics-campaign/expanded.json",
+        "sha256": "9acae2d74e6053759f0e01c5c06f314f0cd210ab7654480192dbfec6dfcabb64",
+        "tick": 700
+      },
+      "in-transit": {
+        "file": "test-results/voxel-logistics-campaign/in-transit.json",
+        "sha256": "fb42c289e6eb5d2a8b5bc4886f05b7c68ea849ae5bcfeed39eab1551a579da08",
+        "tick": 1781
+      },
+      "final": {
+        "file": "test-results/voxel-logistics-campaign/final.json",
+        "sha256": "8063226ef027897139f295a02e8b53963c94f1c48853c2c83e36edf1d628d36d",
+        "tick": 1826
+      },
+      "migrated-v5": {
+        "file": "test-results/voxel-logistics-campaign/migrated-v5.json",
+        "sha256": "47c33aae19d5b464211375d23dba1ddf07813e8af2804de9727a08b6acc60f80",
+        "tick": 115225
+      }
+    },
+    "errors": [],
+    "minimumFood": 62.17333333332742,
+    "final": {
+      "tick": 1826,
+      "counts": {
+        "wood": 82,
+        "stone": 15,
+        "steel": 160,
+        "components": 0,
+        "food": 60,
+        "grain": 0,
+        "meal": 0
+      },
+      "stats": {
+        "mined": 15,
+        "cut": 0,
+        "built": 4,
+        "hauled": 482,
+        "sown": 0,
+        "harvested": 0,
+        "cooked": 0,
+        "eaten": 0,
+        "consumed": {
+          "wood": 8,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meal": 0
+        },
+        "produced": {
+          "wood": 0,
+          "stone": 15,
+          "steel": 160,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meal": 0
+        },
+        "spoiled": {
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meal": 0
+        }
+      },
+      "minimumFood": 62.17333333332742
+    },
+    "status": "passed"
+  },
+  "browser": {
+    "base": "http://127.0.0.1:5183/?world=voxel",
+    "scope": "Real Chrome mouse, DOM, keyboard and file chooser. Read-only window.voxel snapshot/project/exportSave. Imports normal campaign checkpoints and unchanged published v5 gameplay save; never mutates simulation through hidden APIs.",
+    "fixtures": {
+      "before-single": {
+        "source": "test-results/voxel-logistics-campaign/before-single.json",
+        "sha256": "151abdee0e6c9c74de46ea14f9d317e51c2846dc7677319713df8df5b4c49cd9",
+        "tick": 0
+      },
+      "cross-level": {
+        "source": "test-results/voxel-logistics-campaign/final.json",
+        "sha256": "8063226ef027897139f295a02e8b53963c94f1c48853c2c83e36edf1d628d36d",
+        "tick": 1826
+      },
+      "legacy-v5": {
+        "source": "tests/fixtures/voxel-v5-cold-store.json",
+        "sha256": "0f239085ebd34f8ff6f17da4716cc875e908255f82d527746847f28f543a9f20",
+        "tick": 114985
+      }
+    },
+    "modes": [
+      {
+        "mode": "worker",
+        "status": "passed",
+        "checks": [
+          {
+            "name": "expected renderer backend"
+          },
+          {
+            "name": "real single-cell designation fills to seventy-five and exposes full capacity"
+          },
+          {
+            "name": "full warehouse does not repeatedly take and drop the remaining wood"
+          },
+          {
+            "name": "900px warehouse capacity and scope controls remain reachable"
+          },
+          {
+            "name": "expanding the warehouse resumes hauling into a second finite stack",
+            "piles": [
+              {
+                "resource": "wood",
+                "amount": 75,
+                "x": 36,
+                "y": 34,
+                "z": 8,
+                "id": 309
+              },
+              {
+                "resource": "wood",
+                "amount": 15,
+                "x": 36,
+                "y": 35,
+                "z": 8,
+                "id": 310
+              }
+            ]
+          },
+          {
+            "name": "a changed filter cannot overwrite incompatible material when evacuation space is insufficient"
+          },
+          {
+            "name": "DOM save/load retains finite stacks and warehouse filters"
+          },
+          {
+            "name": "unchanged published v5 save imports through file chooser without losing food quantities or weighted age"
+          },
+          {
+            "name": "normally excavated underground warehouse exposes its physical finite stacks"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "mode": "main",
+        "status": "passed",
+        "checks": [
+          {
+            "name": "expected renderer backend"
+          },
+          {
+            "name": "real single-cell designation fills to seventy-five and exposes full capacity"
+          },
+          {
+            "name": "full warehouse does not repeatedly take and drop the remaining wood"
+          },
+          {
+            "name": "900px warehouse capacity and scope controls remain reachable"
+          },
+          {
+            "name": "expanding the warehouse resumes hauling into a second finite stack",
+            "piles": [
+              {
+                "resource": "wood",
+                "amount": 75,
+                "x": 36,
+                "y": 34,
+                "z": 8,
+                "id": 309
+              },
+              {
+                "resource": "wood",
+                "amount": 15,
+                "x": 36,
+                "y": 35,
+                "z": 8,
+                "id": 310
+              }
+            ]
+          },
+          {
+            "name": "a changed filter cannot overwrite incompatible material when evacuation space is insufficient"
+          },
+          {
+            "name": "DOM save/load retains finite stacks and warehouse filters"
+          },
+          {
+            "name": "unchanged published v5 save imports through file chooser without losing food quantities or weighted age"
+          },
+          {
+            "name": "normally excavated underground warehouse exposes its physical finite stacks"
+          }
+        ],
+        "errors": []
+      }
+    ]
+  },
+  "regressions": {
+    "threeLayer": {
+      "scope": "Headless rules campaign through public command/step/save/load APIs. No terrain editing, inventory injection, pawn teleportation, or renderer used as gameplay proof.",
+      "checkpoints": [
+        {
+          "label": "a finite starting tree is cut and its wood physically hauled to surface storage",
+          "tick": 116,
+          "elapsed": 116,
+          "counts": {
+            "wood": 117,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 60,
+            "grain": 0,
+            "meal": 0
+          },
+          "stored": {
+            "wood": 117,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 60,
+            "grain": 0,
+            "meal": 0
+          },
+          "stats": {
+            "mined": 0,
+            "cut": 1,
+            "built": 0,
+            "hauled": 37,
+            "sown": 0,
+            "harvested": 0,
+            "cooked": 0,
+            "eaten": 0,
+            "consumed": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "produced": {
+              "wood": 27,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "spoiled": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            }
+          }
+        },
+        {
+          "label": "four connected ladder cells open a three-level descent",
+          "tick": 571,
+          "elapsed": 455,
+          "counts": {
+            "wood": 109,
+            "stone": 5,
+            "steel": 0,
+            "components": 0,
+            "food": 60,
+            "grain": 0,
+            "meal": 0
+          },
+          "stored": {
+            "wood": 109,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 60,
+            "grain": 0,
+            "meal": 0
+          },
+          "stats": {
+            "mined": 3,
+            "cut": 1,
+            "built": 4,
+            "hauled": 37,
+            "sown": 0,
+            "harvested": 0,
+            "cooked": 0,
+            "eaten": 0,
+            "consumed": {
+              "wood": 8,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "produced": {
+              "wood": 27,
+              "stone": 5,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "spoiled": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            }
+          }
+        },
+        {
+          "label": "underground steel is excavated and hauled through the shaft to surface storage",
+          "tick": 714,
+          "elapsed": 143,
+          "counts": {
+            "wood": 109,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 60,
+            "grain": 0,
+            "meal": 0
+          },
+          "stored": {
+            "wood": 109,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 60,
+            "grain": 0,
+            "meal": 0
+          },
+          "stats": {
+            "mined": 5,
+            "cut": 1,
+            "built": 4,
+            "hauled": 82,
+            "sown": 0,
+            "harvested": 0,
+            "cooked": 0,
+            "eaten": 0,
+            "consumed": {
+              "wood": 8,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "produced": {
+              "wood": 27,
+              "stone": 5,
+              "steel": 40,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "spoiled": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            }
+          }
+        },
+        {
+          "label": "upper ladder connects surface to feet level 11",
+          "tick": 921,
+          "elapsed": 207,
+          "counts": {
+            "wood": 103,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 60,
+            "grain": 0,
+            "meal": 0
+          },
+          "stored": {
+            "wood": 103,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 60,
+            "grain": 0,
+            "meal": 0
+          },
+          "stats": {
+            "mined": 5,
+            "cut": 1,
+            "built": 7,
+            "hauled": 82,
+            "sown": 0,
+            "harvested": 0,
+            "cooked": 0,
+            "eaten": 0,
+            "consumed": {
+              "wood": 14,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "produced": {
+              "wood": 27,
+              "stone": 5,
+              "steel": 40,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "spoiled": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            }
+          }
+        },
+        {
+          "label": "save during actual upper-floor material delivery or work",
+          "tick": 949,
+          "elapsed": 28,
+          "counts": {
+            "wood": 103,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 60,
+            "grain": 0,
+            "meal": 0
+          },
+          "stored": {
+            "wood": 100,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 60,
+            "grain": 0,
+            "meal": 0
+          },
+          "stats": {
+            "mined": 5,
+            "cut": 1,
+            "built": 7,
+            "hauled": 82,
+            "sown": 0,
+            "harvested": 0,
+            "cooked": 0,
+            "eaten": 0,
+            "consumed": {
+              "wood": 14,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "produced": {
+              "wood": 27,
+              "stone": 5,
+              "steel": 40,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "spoiled": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            }
+          }
+        },
+        {
+          "label": "loaded work completes a supported upper floor with physical material delivery",
+          "tick": 1211,
+          "elapsed": 262,
+          "counts": {
+            "wood": 94,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 60,
+            "grain": 0,
+            "meal": 0
+          },
+          "stored": {
+            "wood": 94,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 60,
+            "grain": 0,
+            "meal": 0
+          },
+          "stats": {
+            "mined": 5,
+            "cut": 1,
+            "built": 10,
+            "hauled": 85,
+            "sown": 0,
+            "harvested": 0,
+            "cooked": 0,
+            "eaten": 0,
+            "consumed": {
+              "wood": 23,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "produced": {
+              "wood": 27,
+              "stone": 5,
+              "steel": 40,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "spoiled": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            }
+          }
+        },
+        {
+          "label": "a colonist actually walks to the excavated underground cell",
+          "tick": 1228,
+          "elapsed": 17,
+          "counts": {
+            "wood": 94,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 60,
+            "grain": 0,
+            "meal": 0
+          },
+          "stored": {
+            "wood": 94,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 60,
+            "grain": 0,
+            "meal": 0
+          },
+          "stats": {
+            "mined": 5,
+            "cut": 1,
+            "built": 10,
+            "hauled": 85,
+            "sown": 0,
+            "harvested": 0,
+            "cooked": 0,
+            "eaten": 0,
+            "consumed": {
+              "wood": 23,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "produced": {
+              "wood": 27,
+              "stone": 5,
+              "steel": 40,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "spoiled": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            }
+          }
+        },
+        {
+          "label": "the same colonist walks from underground through surface to the upper floor",
+          "tick": 1260,
+          "elapsed": 32,
+          "counts": {
+            "wood": 94,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 60,
+            "grain": 0,
+            "meal": 0
+          },
+          "stored": {
+            "wood": 94,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 60,
+            "grain": 0,
+            "meal": 0
+          },
+          "stats": {
+            "mined": 5,
+            "cut": 1,
+            "built": 10,
+            "hauled": 85,
+            "sown": 0,
+            "harvested": 0,
+            "cooked": 0,
+            "eaten": 0,
+            "consumed": {
+              "wood": 23,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "produced": {
+              "wood": 27,
+              "stone": 5,
+              "steel": 40,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "spoiled": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            }
+          }
+        },
+        {
+          "label": "a supported upper wall occupies two actual voxel cells",
+          "tick": 1396,
+          "elapsed": 136,
+          "counts": {
+            "wood": 88,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 60,
+            "grain": 0,
+            "meal": 0
+          },
+          "stored": {
+            "wood": 88,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 60,
+            "grain": 0,
+            "meal": 0
+          },
+          "stats": {
+            "mined": 5,
+            "cut": 1,
+            "built": 11,
+            "hauled": 85,
+            "sown": 0,
+            "harvested": 0,
+            "cooked": 0,
+            "eaten": 0,
+            "consumed": {
+              "wood": 29,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "produced": {
+              "wood": 27,
+              "stone": 5,
+              "steel": 40,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            },
+            "spoiled": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            }
+          }
+        }
+      ],
+      "final": {
+        "tick": 1396,
+        "counts": {
+          "wood": 88,
+          "stone": 5,
+          "steel": 40,
+          "components": 0,
+          "food": 60,
+          "grain": 0,
+          "meal": 0
+        },
+        "stored": {
+          "wood": 88,
+          "stone": 5,
+          "steel": 40,
+          "components": 0,
+          "food": 60,
+          "grain": 0,
+          "meal": 0
+        },
+        "stats": {
+          "mined": 5,
+          "cut": 1,
+          "built": 11,
+          "hauled": 85,
+          "sown": 0,
+          "harvested": 0,
+          "cooked": 0,
+          "eaten": 0,
+          "consumed": {
+            "wood": 29,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 0,
+            "meal": 0
+          },
+          "produced": {
+            "wood": 27,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 0,
+            "grain": 0,
+            "meal": 0
+          },
+          "spoiled": {
+            "wood": 0,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 0,
+            "meal": 0
+          }
+        },
+        "gridBytes": 131072
+      }
+    },
+    "food": {
+      "scope": "Public command/step/save/load only, with normal day/night time progression. No resource injection, mature-crop injection, terrain editing, pawn teleportation or direct tick changes. Nominal edible nutrition explicitly includes the recipe gain: 10 grain at 0.05 becomes one 0.9 meal, adding 0.4 nutrition per cooked meal. This does not claim physical calorie conservation or unlimited colony sustainability.",
+      "final": {
+        "tick": 207306,
+        "calendarDays": 17.2755,
+        "ricePlots": 120,
+        "counts": {
+          "wood": 94,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 6,
+          "grain": 881,
+          "meal": 6
+        },
+        "stored": {
+          "wood": 94,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 6,
+          "grain": 881,
+          "meal": 6
+        },
+        "stats": {
+          "mined": 0,
+          "cut": 3,
+          "built": 1,
+          "hauled": 1533,
+          "sown": 363,
+          "harvested": 241,
+          "cooked": 57,
+          "eaten": 102,
+          "consumed": {
+            "wood": 77,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 54,
+            "grain": 570,
+            "meal": 48
+          },
+          "produced": {
+            "wood": 81,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 1451,
+            "meal": 57
+          },
+          "spoiled": {
+            "wood": 0,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 0,
+            "meal": 3
+          }
+        },
+        "nutrition": {
+          "availableNutrition": 54.85,
+          "eatenNominalNutrition": 91.80000000000001,
+          "spoiledNutrition": 2.7,
+          "initialNutrition": 54,
+          "harvestNutrition": 72.55,
+          "cookingNutritionGain": 22.8,
+          "grainEaten": 0
+        },
+        "minimumFood": 12.133333333322765,
+        "firstRiceHarvest": {
+          "tick": 96136,
+          "day": 8.011333333333333,
+          "crop": {
+            "id": 437,
+            "x": 32,
+            "y": 32,
+            "z": 8,
+            "kind": "rice",
+            "growth": 1,
+            "sownAt": 179
+          },
+          "growthDays": 7.996416666666667
+        },
+        "replantCount": 120
+      },
+      "browser": {
+        "base": "http://127.0.0.1:5183/?world=voxel",
+        "scope": "Chrome at 1280x720 and 900x700; actual DOM controls, map mouse drags and file chooser imports. window.voxel is used only for read-only projection, snapshots and save export. Calendar fixtures start from the UI-created save and use only VoxelSimulation.load/command/step/save. No mature crops, resources, terrain, pawn positions or tick values are injected. Fixture rendering is followed by real browser harvest/cooking and cross-level ingredient transport.",
+        "fixtures": [
+          {
+            "source": "test-results/voxel-food-browser/ui-grown-seedlings.json",
+            "sha256": "f32aaf5f95f6b131b22e6e8167d48cd74fddb688b9fda5914c78bda42b148306",
+            "tick": 95854,
+            "worldSourceSha256": "6f81dcd12534da613bde9001d9b3e99abf50b386c6ffc39a2147fa8d56764897",
+            "commands": [],
+            "file": "test-results/voxel-food-browser/normal-near-harvest.json",
+            "stats": {
+              "mined": 0,
+              "cut": 0,
+              "built": 1,
+              "hauled": 43,
+              "sown": 11,
+              "harvested": 0,
+              "cooked": 0,
+              "eaten": 48,
+              "consumed": {
+                "wood": 20,
+                "stone": 0,
+                "steel": 0,
+                "components": 0,
+                "food": 48,
+                "grain": 0,
+                "meal": 0
+              },
+              "produced": {
+                "wood": 0,
+                "stone": 0,
+                "steel": 0,
+                "components": 0,
+                "food": 0,
+                "grain": 0,
+                "meal": 0
+              },
+              "spoiled": {
+                "wood": 0,
+                "stone": 0,
+                "steel": 0,
+                "components": 0,
+                "food": 0,
+                "grain": 0,
+                "meal": 0
+              }
+            },
+            "growth": [
+              {
+                "kind": "rice",
+                "growth": 0.9980114963137826,
+                "sownAt": 80
+              },
+              {
+                "kind": "rice",
+                "growth": 0.9978170518693384,
+                "sownAt": 87
+              },
+              {
+                "kind": "rice",
+                "growth": 0.9974003852026724,
+                "sownAt": 102
+              },
+              {
+                "kind": "rice",
+                "growth": 0.9962337185360074,
+                "sownAt": 144
+              },
+              {
+                "kind": "rice",
+                "growth": 0.9958448296471191,
+                "sownAt": 158
+              },
+              {
+                "kind": "rice",
+                "growth": 0.9952892740915643,
+                "sownAt": 178
+              },
+              {
+                "kind": "rice",
+                "growth": 0.9941503852026771,
+                "sownAt": 219
+              },
+              {
+                "kind": "rice",
+                "growth": 0.9940392740915661,
+                "sownAt": 223
+              },
+              {
+                "kind": "rice",
+                "growth": 0.9936226074249,
+                "sownAt": 238
+              },
+              {
+                "kind": "potato",
+                "growth": 0.5132243371738132,
+                "sownAt": 288
+              },
+              {
+                "kind": "corn",
+                "growth": 0.26326263913937087,
+                "sownAt": 310
+              }
+            ]
+          },
+          {
+            "source": "test-results/voxel-food-browser/ui-grown-seedlings.json",
+            "sha256": "d1b9416e5e84b52bdcd1391a0d53d4110f2085744543c7cd0cd815b5777b8d10",
+            "tick": 97031,
+            "worldSourceSha256": "6f81dcd12534da613bde9001d9b3e99abf50b386c6ffc39a2147fa8d56764897",
+            "commands": [
+              {
+                "tick": 95854,
+                "command": {
+                  "type": "bill",
+                  "stoveId": 332,
+                  "target": 5,
+                  "paused": true
+                },
+                "result": {
+                  "ok": true,
+                  "message": "烹饪已暂停；无落地空间时材料保留原任务等待退回"
+                }
+              },
+              {
+                "tick": 96129,
+                "command": {
+                  "type": "designate",
+                  "tool": "up",
+                  "from": {
+                    "x": 33,
+                    "y": 32,
+                    "z": 8
+                  }
+                },
+                "result": {
+                  "ok": true,
+                  "message": "安排 4 项工作，需求木材 8；缺料和不可达任务会等待",
+                  "count": 4
+                }
+              },
+              {
+                "tick": 96571,
+                "command": {
+                  "type": "designate",
+                  "tool": "floor",
+                  "from": {
+                    "x": 34,
+                    "y": 31,
+                    "z": 11
+                  },
+                  "to": {
+                    "x": 35,
+                    "y": 32,
+                    "z": 11
+                  }
+                },
+                "result": {
+                  "ok": true,
+                  "message": "安排 4 项工作，需求木材 12；缺料和不可达任务会等待",
+                  "count": 4
+                }
+              },
+              {
+                "tick": 96857,
+                "command": {
+                  "type": "designate",
+                  "tool": "stove",
+                  "from": {
+                    "x": 35,
+                    "y": 31,
+                    "z": 11
+                  }
+                },
+                "result": {
+                  "ok": true,
+                  "message": "安排 1 项工作，需求木材 20；缺料和不可达任务会等待",
+                  "count": 1
+                }
+              },
+              {
+                "tick": 97031,
+                "command": {
+                  "type": "bill",
+                  "stoveId": 379,
+                  "target": 5,
+                  "paused": false
+                },
+                "result": {
+                  "ok": true,
+                  "message": "简餐不足 5 份时制作"
+                }
+              }
+            ],
+            "file": "test-results/voxel-food-browser/normal-upper-kitchen.json",
+            "stats": {
+              "mined": 0,
+              "cut": 0,
+              "built": 10,
+              "hauled": 44,
+              "sown": 20,
+              "harvested": 9,
+              "cooked": 0,
+              "eaten": 48,
+              "consumed": {
+                "wood": 60,
+                "stone": 0,
+                "steel": 0,
+                "components": 0,
+                "food": 48,
+                "grain": 0,
+                "meal": 0
+              },
+              "produced": {
+                "wood": 0,
+                "stone": 0,
+                "steel": 0,
+                "components": 0,
+                "food": 0,
+                "grain": 54,
+                "meal": 0
+              },
+              "spoiled": {
+                "wood": 0,
+                "stone": 0,
+                "steel": 0,
+                "components": 0,
+                "food": 0,
+                "grain": 0,
+                "meal": 0
+              }
+            },
+            "counts": {
+              "wood": 30,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 12,
+              "grain": 54,
+              "meal": 0
+            }
+          }
+        ],
+        "modes": [
+          {
+            "mode": "worker",
+            "status": "passed",
+            "checks": [
+              {
+                "name": "DOM crop selector and real mouse drag create three crop types",
+                "plots": 11
+              },
+              {
+                "name": "actual sowing produces seedlings and visible environmental conditions",
+                "detail": "29, 28 · Z 8\n×\n稻米\n\n有地板支撑的空间 · 地表\n\n室外连通空间\n\n30992 格体积 · 4096 格地面 · Z 6–15 · 22.2°C\n\n按实际六向空气连通判断；视图切层不改变房间。\n本轮生长\n0.7%\n\n生长中 · 肥力 100% · 光照 100% · 22.2°C\n\n下次播种：稻米 · 成熟收获 6 生食材。上方楼板会遮光。\n\n⌖ 对焦此处"
+              },
+              {
+                "name": "stove body inspection and bill target / pause / resume work through DOM"
+              },
+              {
+                "name": "calendar fixtures generated from UI save using normal commands and step only",
+                "fixtures": [
+                  {
+                    "file": "test-results/voxel-food-browser/normal-near-harvest.json",
+                    "tick": 95854,
+                    "sha256": "f32aaf5f95f6b131b22e6e8167d48cd74fddb688b9fda5914c78bda42b148306"
+                  },
+                  {
+                    "file": "test-results/voxel-food-browser/normal-upper-kitchen.json",
+                    "tick": 97031,
+                    "sha256": "d1b9416e5e84b52bdcd1391a0d53d4110f2085744543c7cd0cd815b5777b8d10"
+                  }
+                ]
+              },
+              {
+                "name": "imported normal-growth crops are actually harvested and ingredients delivered for cooking",
+                "tick": 96125,
+                "stats": {
+                  "mined": 0,
+                  "cut": 0,
+                  "built": 1,
+                  "hauled": 43,
+                  "sown": 11,
+                  "harvested": 3,
+                  "cooked": 0,
+                  "eaten": 48,
+                  "consumed": {
+                    "wood": 20,
+                    "stone": 0,
+                    "steel": 0,
+                    "components": 0,
+                    "food": 48,
+                    "grain": 0,
+                    "meal": 0
+                  },
+                  "produced": {
+                    "wood": 0,
+                    "stone": 0,
+                    "steel": 0,
+                    "components": 0,
+                    "food": 0,
+                    "grain": 18,
+                    "meal": 0
+                  },
+                  "spoiled": {
+                    "wood": 0,
+                    "stone": 0,
+                    "steel": 0,
+                    "components": 0,
+                    "food": 0,
+                    "grain": 0,
+                    "meal": 0
+                  }
+                }
+              },
+              {
+                "name": "paused cooking scene pixels stable within GPU rounding",
+                "changed": 0,
+                "overTwo": 0,
+                "maxDelta": 0
+              },
+              {
+                "name": "real cooking completes a meal",
+                "stats": {
+                  "mined": 0,
+                  "cut": 0,
+                  "built": 1,
+                  "hauled": 43,
+                  "sown": 13,
+                  "harvested": 5,
+                  "cooked": 1,
+                  "eaten": 48,
+                  "consumed": {
+                    "wood": 21,
+                    "stone": 0,
+                    "steel": 0,
+                    "components": 0,
+                    "food": 48,
+                    "grain": 10,
+                    "meal": 0
+                  },
+                  "produced": {
+                    "wood": 0,
+                    "stone": 0,
+                    "steel": 0,
+                    "components": 0,
+                    "food": 0,
+                    "grain": 30,
+                    "meal": 1
+                  },
+                  "spoiled": {
+                    "wood": 0,
+                    "stone": 0,
+                    "steel": 0,
+                    "components": 0,
+                    "food": 0,
+                    "grain": 0,
+                    "meal": 0
+                  }
+                },
+                "inventory": {
+                  "wood": 69,
+                  "stone": 0,
+                  "steel": 0,
+                  "components": 0,
+                  "food": 12,
+                  "grain": 20,
+                  "meal": 1
+                }
+              },
+              {
+                "name": "real colonist carries harvested grain through an intermediate ladder level",
+                "carriers": [
+                  {
+                    "id": 300,
+                    "name": "阿砾",
+                    "color": 10464968,
+                    "x": 33,
+                    "y": 32,
+                    "z": 9,
+                    "food": 72.97333333332911,
+                    "rest": 83.8499999999857,
+                    "priorities": {
+                      "dig": 1,
+                      "build": 1,
+                      "cut": 1,
+                      "haul": 2,
+                      "grow": 1,
+                      "cook": 1
+                    },
+                    "jobId": 380,
+                    "path": [
+                      43041,
+                      47138,
+                      47074
+                    ],
+                    "destination": 47074,
+                    "phase": "work",
+                    "cargo": {
+                      "resource": "grain",
+                      "amount": 6,
+                      "crop": "rice",
+                      "rotProgress": 859
+                    },
+                    "reason": "把材料送往工作面",
+                    "moveTick": 97153,
+                    "workTarget": {
+                      "x": 35,
+                      "y": 31,
+                      "z": 11
+                    },
+                    "eating": null,
+                    "sleepBedId": null,
+                    "sleepingSince": null,
+                    "schedule": [
+                      "sleep",
+                      "sleep",
+                      "sleep",
+                      "sleep",
+                      "sleep",
+                      "sleep",
+                      "anything",
+                      "anything",
+                      "anything",
+                      "anything",
+                      "anything",
+                      "anything",
+                      "anything",
+                      "anything",
+                      "anything",
+                      "anything",
+                      "anything",
+                      "anything",
+                      "anything",
+                      "anything",
+                      "anything",
+                      "anything",
+                      "sleep",
+                      "sleep"
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "upper kitchen cooks using physically delivered cross-level ingredients",
+                "stats": {
+                  "mined": 0,
+                  "cut": 0,
+                  "built": 10,
+                  "hauled": 44,
+                  "sown": 20,
+                  "harvested": 9,
+                  "cooked": 1,
+                  "eaten": 48,
+                  "consumed": {
+                    "wood": 61,
+                    "stone": 0,
+                    "steel": 0,
+                    "components": 0,
+                    "food": 48,
+                    "grain": 10,
+                    "meal": 0
+                  },
+                  "produced": {
+                    "wood": 0,
+                    "stone": 0,
+                    "steel": 0,
+                    "components": 0,
+                    "food": 0,
+                    "grain": 54,
+                    "meal": 1
+                  },
+                  "spoiled": {
+                    "wood": 0,
+                    "stone": 0,
+                    "steel": 0,
+                    "components": 0,
+                    "food": 0,
+                    "grain": 0,
+                    "meal": 0
+                  }
+                }
+              },
+              {
+                "name": "900x700 critical controls are reachable through actual toolbar/panel scrolling",
+                "reachability": [
+                  {
+                    "name": "种植区",
+                    "x": 560.5,
+                    "y": 660,
+                    "width": 53,
+                    "height": 56,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "灶台",
+                    "x": 618.5,
+                    "y": 660,
+                    "width": 53,
+                    "height": 56,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "擦除区域",
+                    "x": 615.5,
+                    "y": 660,
+                    "width": 53,
+                    "height": 56,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "取消规划",
+                    "x": 731.5,
+                    "y": 660,
+                    "width": 53,
+                    "height": 56,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "暂停",
+                    "x": 781.09375,
+                    "y": 670.5,
+                    "width": 25,
+                    "height": 29,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "3倍速",
+                    "x": 874.265625,
+                    "y": 670.5,
+                    "width": 27.46875,
+                    "height": 29,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "菜单与存档",
+                    "x": 847.5,
+                    "y": 37.5,
+                    "width": 81,
+                    "height": 33,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  }
+                ]
+              },
+              {
+                "name": "loaded production asset bytes match frozen dist assets",
+                "assets": [
+                  {
+                    "url": "http://127.0.0.1:5183/assets/index-DeSHPeEy.js",
+                    "sha256": "f0a5fc78174c56ae148cf0b010525ad4e63460c6e8bb0d10caa63ddb3c6b0981",
+                    "bytes": 2356
+                  },
+                  {
+                    "url": "http://127.0.0.1:5183/assets/main-CkRa2mK5.css",
+                    "sha256": "09e655158c70c29bc4c2106d2fa9a56186bea5d48b8936c68e1f08a2b422fb36",
+                    "bytes": 11684
+                  },
+                  {
+                    "url": "http://127.0.0.1:5183/assets/client-CrowJ5J7.js",
+                    "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+                    "bytes": 221699
+                  },
+                  {
+                    "url": "http://127.0.0.1:5183/assets/main-D7qanm4p.js",
+                    "sha256": "b32ffe2272a19b084cfa59c222249d9efc9e7036699b15ddc872fc75d610c1b3",
+                    "bytes": 566716
+                  },
+                  {
+                    "url": "http://127.0.0.1:5183/assets/sim.worker-bt-TsseA.js",
+                    "sha256": "6e83a29bd5e16f36aaecb893134225f2418abcdee25e25329acd75756f189296",
+                    "bytes": 77677
+                  },
+                  {
+                    "url": "http://127.0.0.1:5183/assets/render.worker-BsuVrjkK.js",
+                    "sha256": "4afd2eee1556d2b573af7534318af4b0ff50a4c57f405f2081dce18284875d41",
+                    "bytes": 529307
+                  }
+                ]
+              }
+            ],
+            "errors": []
+          }
+        ]
+      }
+    },
+    "housing": {
+      "scope": "Normal command/step/save/load only; no world, resource, need or time injection. Headless elapsed calendar simulation, not real-time native play.",
+      "final": {
+        "tick": 10008,
+        "beds": [
+          {
+            "id": 350,
+            "x": 35,
+            "y": 31,
+            "z": 5,
+            "axis": "x",
+            "owner": 298
+          },
+          {
+            "id": 371,
+            "x": 29,
+            "y": 29,
+            "z": 8,
+            "axis": "y",
+            "owner": 300
+          },
+          {
+            "id": 372,
+            "x": 33,
+            "y": 30,
+            "z": 11,
+            "axis": "y",
+            "owner": 299
+          }
+        ],
+        "doors": [
+          {
+            "id": 351,
+            "x": 34,
+            "y": 32,
+            "z": 5,
+            "axis": "y",
+            "mode": "auto",
+            "openUntil": 0
+          }
+        ],
+        "counts": {
+          "wood": 40,
+          "stone": 20,
+          "steel": 160,
+          "components": 0,
+          "food": 57,
+          "grain": 0,
+          "meal": 0
+        },
+        "stats": {
+          "mined": 17,
+          "cut": 6,
+          "built": 24,
+          "hauled": 325,
+          "sown": 0,
+          "harvested": 0,
+          "cooked": 0,
+          "eaten": 3,
+          "consumed": {
+            "wood": 212,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 3,
+            "grain": 0,
+            "meal": 0
+          },
+          "produced": {
+            "wood": 162,
+            "stone": 20,
+            "steel": 160,
+            "components": 0,
+            "food": 0,
+            "grain": 0,
+            "meal": 0
+          },
+          "spoiled": {
+            "wood": 0,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 0,
+            "meal": 0
+          }
+        },
+        "pawns": [
+          {
+            "id": 298,
+            "rest": 99.7308333333331,
+            "food": 37.06666666665683
+          },
+          {
+            "id": 299,
+            "rest": 99.57249999999962,
+            "food": 36.94666666665681
+          },
+          {
+            "id": 300,
+            "rest": 99.46958333333286,
+            "food": 36.933333333323475
+          }
+        ]
+      },
+      "browser": {
+        "base": "http://127.0.0.1:5183/?world=voxel",
+        "scope": "Real DOM controls, canvas mouse clicks, keyboard rotation and file chooser imports in Chrome. window.voxel is used only for projection, snapshots and save export. Beds and doors in the UI checks are built by normal colonist work from a fresh world. Sleeping fixtures come from the separate normal-command housing campaign; no pawn/terrain/need/tick injection. Both render Worker and main-thread fallback are checked at 1280x800 and 900x700.",
+        "modes": [
+          {
+            "mode": "worker",
+            "status": "passed-fixtures-only",
+            "checks": [
+              {
+                "name": "expected renderer backend active",
+                "worker": true,
+                "metrics": {
+                  "backend": "Three.js · WebGL2",
+                  "fps": 21.0500247610064,
+                  "drawCalls": 58,
+                  "triangles": 30148,
+                  "geometries": 27,
+                  "textures": 4,
+                  "chunkCount": 16,
+                  "pendingChunks": 0,
+                  "terrainVertices": 43984,
+                  "terrainGeometryBytes": 2067248,
+                  "gridBytes": 131072,
+                  "dpr": 1,
+                  "level": 8,
+                  "rotation": 0.7853981633974483,
+                  "zoom": 1.25
+                }
+              },
+              {
+                "name": "campaign room topology survives view slicing and door opening",
+                "fixture": "test-results/voxel-housing-campaign/housing-built.json",
+                "sha256": "6bee780b4b85f2f7a15cc9199b95b08634e79b4f82abfba703a82f916d0d0c45",
+                "tick": 2594,
+                "roomText": "封闭房间\n\n12 格体积 · 6 格地面 · Z 5–6 · 21.9°C\n\n按实际六向空气连通判断；视图切层不改变房间。",
+                "roomRevision": 1
+              },
+              {
+                "name": "all three campaign sleepers reload across underground, surface and upper layers",
+                "pawns": [
+                  {
+                    "id": 298,
+                    "z": 5,
+                    "bed": 350,
+                    "rest": 44.22708333330169
+                  },
+                  {
+                    "id": 299,
+                    "z": 11,
+                    "bed": 372,
+                    "rest": 44.60458334663505
+                  },
+                  {
+                    "id": 300,
+                    "z": 8,
+                    "bed": 371,
+                    "rest": 44.84726192663507
+                  }
+                ]
+              },
+              {
+                "name": "normal-campaign sleeping save reloads and paused pixels are stable",
+                "fixture": {
+                  "file": "test-results/voxel-housing-campaign/sleeping-save.json",
+                  "sha256": "0768ca44eefc43500c93bb0aa699f66b44f737f423f3b64ff1a40b2cb5ab87da",
+                  "tick": 7045,
+                  "pawnId": 298,
+                  "bed": {
+                    "id": 350,
+                    "x": 35,
+                    "y": 31,
+                    "z": 5,
+                    "axis": "x",
+                    "owner": 298
+                  }
+                },
+                "diff": {
+                  "changed": 0,
+                  "overTwo": 0,
+                  "maxDelta": 0
+                }
+              },
+              {
+                "name": "resumed browser simulation restores rest while remaining in assigned bed",
+                "before": 44.22708333330169,
+                "after": 44.436607153301715,
+                "tick": 7056
+              }
+            ],
+            "errors": []
+          },
+          {
+            "mode": "main",
+            "status": "passed-fixtures-only",
+            "checks": [
+              {
+                "name": "expected renderer backend active",
+                "worker": false,
+                "metrics": {
+                  "backend": "Three.js · WebGL2",
+                  "fps": 54.82866043613707,
+                  "drawCalls": 58,
+                  "triangles": 30148,
+                  "geometries": 27,
+                  "textures": 4,
+                  "chunkCount": 16,
+                  "pendingChunks": 0,
+                  "terrainVertices": 43984,
+                  "terrainGeometryBytes": 2067248,
+                  "gridBytes": 131072,
+                  "dpr": 1,
+                  "level": 8,
+                  "rotation": 0.7853981633974483,
+                  "zoom": 1.25
+                }
+              },
+              {
+                "name": "campaign room topology survives view slicing and door opening",
+                "fixture": "test-results/voxel-housing-campaign/housing-built.json",
+                "sha256": "6bee780b4b85f2f7a15cc9199b95b08634e79b4f82abfba703a82f916d0d0c45",
+                "tick": 2594,
+                "roomText": "封闭房间\n\n12 格体积 · 6 格地面 · Z 5–6 · 21.9°C\n\n按实际六向空气连通判断；视图切层不改变房间。",
+                "roomRevision": 1
+              },
+              {
+                "name": "all three campaign sleepers reload across underground, surface and upper layers",
+                "pawns": [
+                  {
+                    "id": 298,
+                    "z": 5,
+                    "bed": 350,
+                    "rest": 44.22708333330169
+                  },
+                  {
+                    "id": 299,
+                    "z": 11,
+                    "bed": 372,
+                    "rest": 44.60458334663505
+                  },
+                  {
+                    "id": 300,
+                    "z": 8,
+                    "bed": 371,
+                    "rest": 44.84726192663507
+                  }
+                ]
+              },
+              {
+                "name": "normal-campaign sleeping save reloads and paused pixels are stable",
+                "fixture": {
+                  "file": "test-results/voxel-housing-campaign/sleeping-save.json",
+                  "sha256": "0768ca44eefc43500c93bb0aa699f66b44f737f423f3b64ff1a40b2cb5ab87da",
+                  "tick": 7045,
+                  "pawnId": 298,
+                  "bed": {
+                    "id": 350,
+                    "x": 35,
+                    "y": 31,
+                    "z": 5,
+                    "axis": "x",
+                    "owner": 298
+                  }
+                },
+                "diff": {
+                  "changed": 0,
+                  "overTwo": 0,
+                  "maxDelta": 0
+                }
+              },
+              {
+                "name": "resumed browser simulation restores rest while remaining in assigned bed",
+                "before": 44.22708333330169,
+                "after": 44.68422621330174,
+                "tick": 7069
+              }
+            ],
+            "errors": []
+          }
+        ]
+      }
+    },
+    "power": {
+      "scope": "Normal command/step/save/load only. No injected terrain, resources, devices, fuel, energy, needs or time. Seed terrain inspected to plan finite ore excavation; headless calendar simulation, not native real-time measurement.",
+      "final": {
+        "tick": 26944,
+        "inventory": {
+          "wood": 55,
+          "stone": 565,
+          "steel": 62,
+          "components": 1,
+          "food": 48,
+          "grain": 0,
+          "meal": 0
+        },
+        "stats": {
+          "mined": 227,
+          "cut": 6,
+          "built": 44,
+          "hauled": 1166,
+          "sown": 0,
+          "harvested": 0,
+          "cooked": 0,
+          "eaten": 12,
+          "consumed": {
+            "wood": 213,
+            "stone": 0,
+            "steel": 419,
+            "components": 11,
+            "food": 12,
+            "grain": 0,
+            "meal": 0
+          },
+          "produced": {
+            "wood": 178,
+            "stone": 565,
+            "steel": 481,
+            "components": 12,
+            "food": 0,
+            "grain": 0,
+            "meal": 0
+          },
+          "spoiled": {
+            "wood": 0,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0,
+            "grain": 0,
+            "meal": 0
+          }
+        }
+      },
+      "browser": {
+        "base": "http://127.0.0.1:5183/?world=voxel",
+        "scope": "Real Chrome DOM, mouse, keyboard and file chooser input. window.voxel is read only (project, snapshot, exportSave). Campaign fixtures come from normal designate/step/save work with mined finite resources. Browser construction starts from mined-resources, with no injected devices, resources, fuel, temperature or time. Worker and main fallback, full device footprints, 900x700 scrolling, save/load, live energy consumption and paused pixels.",
+        "fixtures": {
+          "mined-resources": {
+            "file": "test-results\\voxel-power-campaign\\mined-resources.json",
+            "importFile": "test-results\\voxel-power-browser\\fixtures\\mined-resources.json",
+            "sha256": "780b9cf0be6ee8b3f744a02934bfa7ef3096568d59cc208eb03e528984ccdf53",
+            "tick": 11329
+          },
+          "powered-room": {
+            "file": "test-results\\voxel-power-campaign\\powered-room.json",
+            "importFile": "test-results\\voxel-power-browser\\fixtures\\powered-room.json",
+            "sha256": "37ae86863f4251771f7a80ddb75a589f68599bbbcd8e74392500cbae517dfa33",
+            "tick": 15548
+          },
+          "cooled-room": {
+            "file": "test-results\\voxel-power-campaign\\cooled-room.json",
+            "importFile": "test-results\\voxel-power-browser\\fixtures\\cooled-room.json",
+            "sha256": "78386495231368ec6690d8911be1972950cae7311c8d15dbc96d1a78ad85065c",
+            "tick": 16245
+          },
+          "final": {
+            "file": "test-results\\voxel-power-campaign\\final.json",
+            "importFile": "test-results\\voxel-power-browser\\fixtures\\final.json",
+            "sha256": "df18b73e3e93e4a226f822c7f60a4824abc78e68fbef14fb723bba2ba6313155",
+            "tick": 26944
+          }
+        },
+        "modes": [
+          {
+            "mode": "worker",
+            "status": "passed",
+            "checks": [
+              {
+                "name": "expected renderer backend",
+                "worker": true
+              },
+              {
+                "name": "R rotates a real battery blueprint and mouse cancellation removes it",
+                "originalAxis": "x",
+                "rotated": "y",
+                "blueprint": {
+                  "id": 532,
+                  "kind": "battery",
+                  "x": 36,
+                  "y": 28,
+                  "z": 8,
+                  "work": 267,
+                  "progress": 0,
+                  "owner": null,
+                  "delivered": {},
+                  "deliveredFood": [],
+                  "cancelled": false,
+                  "cost": {
+                    "steel": 70,
+                    "components": 2
+                  },
+                  "reason": "等待可达工人",
+                  "axis": "y"
+                }
+              },
+              {
+                "name": "normal colonist work builds mouse-placed heater and dragged wires from finite mined resources",
+                "elapsed": 609,
+                "steel": 52,
+                "components": 1,
+                "device": {
+                  "id": 536,
+                  "x": 31,
+                  "y": 28,
+                  "z": 8,
+                  "kind": "heater",
+                  "axis": "y",
+                  "on": true,
+                  "fuel": 0,
+                  "energy": 0,
+                  "target": 21,
+                  "powered": false,
+                  "active": false,
+                  "networkId": 0,
+                  "watts": -175,
+                  "reason": "电力不足，等待启动"
+                },
+                "wires": [
+                  {
+                    "x": 32,
+                    "y": 29,
+                    "z": 8
+                  },
+                  {
+                    "x": 33,
+                    "y": 29,
+                    "z": 8
+                  }
+                ]
+              },
+              {
+                "name": "all 24 occupied device cells inspect their anchors and every device toggles through DOM",
+                "inspected": [
+                  {
+                    "kind": "battery",
+                    "cell": {
+                      "x": 36,
+                      "y": 28,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "battery",
+                    "cell": {
+                      "x": 37,
+                      "y": 28,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "generator",
+                    "cell": {
+                      "x": 34,
+                      "y": 28,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "generator",
+                    "cell": {
+                      "x": 35,
+                      "y": 28,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "generator",
+                    "cell": {
+                      "x": 34,
+                      "y": 29,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "generator",
+                    "cell": {
+                      "x": 35,
+                      "y": 29,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "heater",
+                    "cell": {
+                      "x": 35,
+                      "y": 28,
+                      "z": 5
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 28,
+                      "y": 27,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 29,
+                      "y": 27,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 30,
+                      "y": 27,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 31,
+                      "y": 27,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 28,
+                      "y": 28,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 29,
+                      "y": 28,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 30,
+                      "y": 28,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 31,
+                      "y": 28,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 28,
+                      "y": 29,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 29,
+                      "y": 29,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 30,
+                      "y": 29,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 31,
+                      "y": 29,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 28,
+                      "y": 30,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 29,
+                      "y": 30,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 30,
+                      "y": 30,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 31,
+                      "y": 30,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "cooler",
+                    "cell": {
+                      "x": 38,
+                      "y": 29,
+                      "z": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "heater and cooler DOM target controls update simulation, cooler displays both directional faces",
+                "heater": 28,
+                "cooler": -8
+              },
+              {
+                "name": "fuel, battery storage and network budgets are visible",
+                "fuelText": "运行状态\n存档恢复，等待电网更新\n\n未供电 · 电网 1\n\n木燃料 72.6 / 75 · 每日消耗 22\n低于 22.5 自动补料；内部燃料不计入营地木材。\n\n关闭设备\n\n电网发电 0 W · 使用 0.0 / 需求 0.0 W\n储能 68.4 / 600 Wd",
+                "batteryText": "运行状态\n存档恢复，等待电网更新\n\n未供电 · 电网 1\n\n68.42 / 600 Wd · 充电效率 50% · 自耗 5 W\n\n关闭设备\n\n电网发电 0 W · 使用 0.0 / 需求 0.0 W\n储能 68.4 / 600 Wd"
+              },
+              {
+                "name": "two enclosed rooms display distinct cold-side and exhaust temperatures",
+                "coldText": "封闭房间\n\n24 格体积 · 12 格地面 · Z 5–6 · 10.0°C\n\n按实际六向空气连通判断；视图切层不改变房间。",
+                "hotText": "封闭房间\n\n12 格体积 · 6 格地面 · Z 5–6 · 62.7°C\n\n按实际六向空气连通判断；视图切层不改变房间。"
+              },
+              {
+                "name": "DOM manual save/load exactly restores fuel, energy, switches, targets, wires and room temperatures",
+                "tick": 16245,
+                "sha256": "504527311cf6bc45cd39cd1c94f7631c437afa4560c4e3ef8f21cabf175a25bb",
+                "thermal": [
+                  {
+                    "cell": 22118,
+                    "temperature": 19.070155482266973
+                  },
+                  {
+                    "cell": 22243,
+                    "temperature": 9.991002990925583
+                  },
+                  {
+                    "cell": 22311,
+                    "temperature": 62.66773770979125
+                  }
+                ]
+              },
+              {
+                "name": "900x700 new toolbar tools and inspector controls are reachable by actual scrolling",
+                "controls": [
+                  {
+                    "name": "木燃发电机",
+                    "x": 384.5,
+                    "y": 660,
+                    "width": 61,
+                    "height": 56,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "太阳能板",
+                    "x": 446.5,
+                    "y": 660,
+                    "width": 53,
+                    "height": 56,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "蓄电池",
+                    "x": 504.5,
+                    "y": 660,
+                    "width": 53,
+                    "height": 56,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "加热器",
+                    "x": 620.5,
+                    "y": 660,
+                    "width": 53,
+                    "height": 56,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "冷气机",
+                    "x": 678.5,
+                    "y": 660,
+                    "width": 53,
+                    "height": 56,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "电线",
+                    "x": 562.5,
+                    "y": 660,
+                    "width": 53,
+                    "height": 56,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "暂停",
+                    "x": 781.09375,
+                    "y": 670.5,
+                    "width": 25,
+                    "height": 29,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "3倍速",
+                    "x": 874.265625,
+                    "y": 670.5,
+                    "width": 27.46875,
+                    "height": 29,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "菜单与存档",
+                    "x": 847.5,
+                    "y": 37.5,
+                    "width": 81,
+                    "height": 33,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "旋转建造朝向",
+                    "x": 47,
+                    "y": 596,
+                    "width": 70,
+                    "height": 50,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "heater目标温度",
+                    "x": 196,
+                    "y": 423.5625,
+                    "width": 64,
+                    "height": 33,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "heater开关",
+                    "x": 129.5,
+                    "y": 467.5625,
+                    "width": 197,
+                    "height": 35,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "cooler目标温度",
+                    "x": 196,
+                    "y": 422.875,
+                    "width": 64,
+                    "height": 33,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "cooler开关",
+                    "x": 129.5,
+                    "y": 511.25,
+                    "width": 197,
+                    "height": 35,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "电池储能",
+                    "x": 96,
+                    "y": 413.84375,
+                    "width": 130,
+                    "height": 13,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "发电机开关",
+                    "x": 129.5,
+                    "y": 484.3125,
+                    "width": 197,
+                    "height": 35,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  }
+                ]
+              },
+              {
+                "name": "paused cooler body and active air effects do not drift",
+                "diff": {
+                  "changed": 0,
+                  "overTwo": 0,
+                  "maxDelta": 0
+                },
+                "clip": {
+                  "x": 539,
+                  "y": 266,
+                  "width": 200,
+                  "height": 200
+                },
+                "tick": 16250
+              },
+              {
+                "name": "resuming normal browser simulation consumes fuel and charges the battery while cooling",
+                "elapsed": 132,
+                "before": [
+                  [
+                    578,
+                    "battery",
+                    "y",
+                    true,
+                    21,
+                    0,
+                    140.3882330129353
+                  ],
+                  [
+                    579,
+                    "generator",
+                    "x",
+                    true,
+                    21,
+                    71.35716666665869,
+                    0
+                  ],
+                  [
+                    581,
+                    "heater",
+                    "x",
+                    false,
+                    32,
+                    0,
+                    0
+                  ],
+                  [
+                    582,
+                    "solar",
+                    "x",
+                    true,
+                    21,
+                    0,
+                    0
+                  ],
+                  [
+                    585,
+                    "cooler",
+                    "x",
+                    true,
+                    -7,
+                    0,
+                    0
+                  ]
+                ],
+                "after": [
+                  [
+                    578,
+                    "battery",
+                    "y",
+                    true,
+                    21,
+                    0,
+                    151.28233593607837
+                  ],
+                  [
+                    579,
+                    "generator",
+                    "x",
+                    true,
+                    21,
+                    71.11516666665815,
+                    0
+                  ],
+                  [
+                    581,
+                    "heater",
+                    "x",
+                    false,
+                    32,
+                    0,
+                    0
+                  ],
+                  [
+                    582,
+                    "solar",
+                    "x",
+                    true,
+                    21,
+                    0,
+                    0
+                  ],
+                  [
+                    585,
+                    "cooler",
+                    "x",
+                    true,
+                    -7,
+                    0,
+                    0
+                  ]
+                ]
+              },
+              {
+                "name": "final normal campaign imports through the file chooser without changing physical energy state",
+                "tick": 26944,
+                "sha256": "df18b73e3e93e4a226f822c7f60a4824abc78e68fbef14fb723bba2ba6313155"
+              }
+            ],
+            "errors": []
+          },
+          {
+            "mode": "main",
+            "status": "passed",
+            "checks": [
+              {
+                "name": "expected renderer backend",
+                "worker": false
+              },
+              {
+                "name": "R rotates a real battery blueprint and mouse cancellation removes it",
+                "originalAxis": "x",
+                "rotated": "y",
+                "blueprint": {
+                  "id": 532,
+                  "kind": "battery",
+                  "x": 36,
+                  "y": 28,
+                  "z": 8,
+                  "work": 267,
+                  "progress": 0,
+                  "owner": null,
+                  "delivered": {},
+                  "deliveredFood": [],
+                  "cancelled": false,
+                  "cost": {
+                    "steel": 70,
+                    "components": 2
+                  },
+                  "reason": "等待可达工人",
+                  "axis": "y"
+                }
+              },
+              {
+                "name": "normal colonist work builds mouse-placed heater and dragged wires from finite mined resources",
+                "elapsed": 604,
+                "steel": 52,
+                "components": 1,
+                "device": {
+                  "id": 536,
+                  "x": 31,
+                  "y": 28,
+                  "z": 8,
+                  "kind": "heater",
+                  "axis": "y",
+                  "on": true,
+                  "fuel": 0,
+                  "energy": 0,
+                  "target": 21,
+                  "powered": false,
+                  "active": false,
+                  "networkId": 0,
+                  "watts": -175,
+                  "reason": "电力不足，等待启动"
+                },
+                "wires": [
+                  {
+                    "x": 32,
+                    "y": 29,
+                    "z": 8
+                  },
+                  {
+                    "x": 33,
+                    "y": 29,
+                    "z": 8
+                  }
+                ]
+              },
+              {
+                "name": "all 24 occupied device cells inspect their anchors and every device toggles through DOM",
+                "inspected": [
+                  {
+                    "kind": "battery",
+                    "cell": {
+                      "x": 36,
+                      "y": 28,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "battery",
+                    "cell": {
+                      "x": 37,
+                      "y": 28,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "generator",
+                    "cell": {
+                      "x": 34,
+                      "y": 28,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "generator",
+                    "cell": {
+                      "x": 35,
+                      "y": 28,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "generator",
+                    "cell": {
+                      "x": 34,
+                      "y": 29,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "generator",
+                    "cell": {
+                      "x": 35,
+                      "y": 29,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "heater",
+                    "cell": {
+                      "x": 35,
+                      "y": 28,
+                      "z": 5
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 28,
+                      "y": 27,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 29,
+                      "y": 27,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 30,
+                      "y": 27,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 31,
+                      "y": 27,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 28,
+                      "y": 28,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 29,
+                      "y": 28,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 30,
+                      "y": 28,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 31,
+                      "y": 28,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 28,
+                      "y": 29,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 29,
+                      "y": 29,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 30,
+                      "y": 29,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 31,
+                      "y": 29,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 28,
+                      "y": 30,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 29,
+                      "y": 30,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 30,
+                      "y": 30,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "solar",
+                    "cell": {
+                      "x": 31,
+                      "y": 30,
+                      "z": 8
+                    }
+                  },
+                  {
+                    "kind": "cooler",
+                    "cell": {
+                      "x": 38,
+                      "y": 29,
+                      "z": 5
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "heater and cooler DOM target controls update simulation, cooler displays both directional faces",
+                "heater": 28,
+                "cooler": -8
+              },
+              {
+                "name": "fuel, battery storage and network budgets are visible",
+                "fuelText": "运行状态\n存档恢复，等待电网更新\n\n未供电 · 电网 1\n\n木燃料 72.6 / 75 · 每日消耗 22\n低于 22.5 自动补料；内部燃料不计入营地木材。\n\n关闭设备\n\n电网发电 0 W · 使用 0.0 / 需求 0.0 W\n储能 68.4 / 600 Wd",
+                "batteryText": "运行状态\n存档恢复，等待电网更新\n\n未供电 · 电网 1\n\n68.42 / 600 Wd · 充电效率 50% · 自耗 5 W\n\n关闭设备\n\n电网发电 0 W · 使用 0.0 / 需求 0.0 W\n储能 68.4 / 600 Wd"
+              },
+              {
+                "name": "two enclosed rooms display distinct cold-side and exhaust temperatures",
+                "coldText": "封闭房间\n\n24 格体积 · 12 格地面 · Z 5–6 · 10.0°C\n\n按实际六向空气连通判断；视图切层不改变房间。",
+                "hotText": "封闭房间\n\n12 格体积 · 6 格地面 · Z 5–6 · 62.7°C\n\n按实际六向空气连通判断；视图切层不改变房间。"
+              },
+              {
+                "name": "DOM manual save/load exactly restores fuel, energy, switches, targets, wires and room temperatures",
+                "tick": 16245,
+                "sha256": "504527311cf6bc45cd39cd1c94f7631c437afa4560c4e3ef8f21cabf175a25bb",
+                "thermal": [
+                  {
+                    "cell": 22118,
+                    "temperature": 19.070155482266973
+                  },
+                  {
+                    "cell": 22243,
+                    "temperature": 9.991002990925583
+                  },
+                  {
+                    "cell": 22311,
+                    "temperature": 62.66773770979125
+                  }
+                ]
+              },
+              {
+                "name": "900x700 new toolbar tools and inspector controls are reachable by actual scrolling",
+                "controls": [
+                  {
+                    "name": "木燃发电机",
+                    "x": 384.5,
+                    "y": 660,
+                    "width": 61,
+                    "height": 56,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "太阳能板",
+                    "x": 446.5,
+                    "y": 660,
+                    "width": 53,
+                    "height": 56,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "蓄电池",
+                    "x": 504.5,
+                    "y": 660,
+                    "width": 53,
+                    "height": 56,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "加热器",
+                    "x": 620.5,
+                    "y": 660,
+                    "width": 53,
+                    "height": 56,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "冷气机",
+                    "x": 678.5,
+                    "y": 660,
+                    "width": 53,
+                    "height": 56,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "电线",
+                    "x": 562.5,
+                    "y": 660,
+                    "width": 53,
+                    "height": 56,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "暂停",
+                    "x": 781.09375,
+                    "y": 670.5,
+                    "width": 25,
+                    "height": 29,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "3倍速",
+                    "x": 874.265625,
+                    "y": 670.5,
+                    "width": 27.46875,
+                    "height": 29,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "菜单与存档",
+                    "x": 847.5,
+                    "y": 37.5,
+                    "width": 81,
+                    "height": 33,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "旋转建造朝向",
+                    "x": 47,
+                    "y": 596,
+                    "width": 70,
+                    "height": 50,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "heater目标温度",
+                    "x": 196,
+                    "y": 423.5625,
+                    "width": 64,
+                    "height": 33,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "heater开关",
+                    "x": 129.5,
+                    "y": 467.5625,
+                    "width": 197,
+                    "height": 35,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "cooler目标温度",
+                    "x": 196,
+                    "y": 422.875,
+                    "width": 64,
+                    "height": 33,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "cooler开关",
+                    "x": 129.5,
+                    "y": 511.25,
+                    "width": 197,
+                    "height": 35,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "电池储能",
+                    "x": 96,
+                    "y": 413.84375,
+                    "width": 130,
+                    "height": 13,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  },
+                  {
+                    "name": "发电机开关",
+                    "x": 129.5,
+                    "y": 484.3125,
+                    "width": 197,
+                    "height": 35,
+                    "viewport": [
+                      900,
+                      700
+                    ],
+                    "hit": true
+                  }
+                ]
+              },
+              {
+                "name": "paused cooler body and active air effects do not drift",
+                "diff": {
+                  "changed": 0,
+                  "overTwo": 0,
+                  "maxDelta": 0
+                },
+                "clip": {
+                  "x": 539,
+                  "y": 266,
+                  "width": 200,
+                  "height": 200
+                },
+                "tick": 16261
+              },
+              {
+                "name": "resuming normal browser simulation consumes fuel and charges the battery while cooling",
+                "elapsed": 135,
+                "before": [
+                  [
+                    578,
+                    "battery",
+                    "y",
+                    true,
+                    21,
+                    0,
+                    141.34213795886637
+                  ],
+                  [
+                    579,
+                    "generator",
+                    "x",
+                    true,
+                    21,
+                    71.33699999999197,
+                    0
+                  ],
+                  [
+                    581,
+                    "heater",
+                    "x",
+                    false,
+                    32,
+                    0,
+                    0
+                  ],
+                  [
+                    582,
+                    "solar",
+                    "x",
+                    true,
+                    21,
+                    0,
+                    0
+                  ],
+                  [
+                    585,
+                    "cooler",
+                    "x",
+                    true,
+                    -7,
+                    0,
+                    0
+                  ]
+                ],
+                "after": [
+                  [
+                    578,
+                    "battery",
+                    "y",
+                    true,
+                    21,
+                    0,
+                    152.36641253948176
+                  ],
+                  [
+                    579,
+                    "generator",
+                    "x",
+                    true,
+                    21,
+                    71.08949999999143,
+                    0
+                  ],
+                  [
+                    581,
+                    "heater",
+                    "x",
+                    false,
+                    32,
+                    0,
+                    0
+                  ],
+                  [
+                    582,
+                    "solar",
+                    "x",
+                    true,
+                    21,
+                    0,
+                    0
+                  ],
+                  [
+                    585,
+                    "cooler",
+                    "x",
+                    true,
+                    -7,
+                    0,
+                    0
+                  ]
+                ]
+              },
+              {
+                "name": "final normal campaign imports through the file chooser without changing physical energy state",
+                "tick": 26944,
+                "sha256": "df18b73e3e93e4a226f822c7f60a4824abc78e68fbef14fb723bba2ba6313155"
+              }
+            ],
+            "errors": []
+          }
+        ]
+      }
+    },
+    "preservation": {
+      "scope": "Normal command/step/save/load only. Continues a freshly generated normal power campaign with mined finite resources; no injected food, age, temperature, fuel, energy, position or time. Crops grow through natural calendar cycles, ingredients are hauled and cooked. Frozen and power-off branches start from the same physical save. Accelerated Node ticks are not real-time native observations.",
+      "final": {
+        "tick": 169008,
+        "counts": {
+          "wood": 138,
+          "stone": 565,
+          "steel": 62,
+          "components": 1,
+          "food": 11,
+          "grain": 209,
+          "meal": 16
+        },
+        "spoiled": {
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meal": 0
+        },
+        "warmCounts": {
+          "wood": 138,
+          "stone": 565,
+          "steel": 62,
+          "components": 1,
+          "food": 11,
+          "grain": 209,
+          "meal": 0
+        },
+        "warmSpoiled": {
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meal": 16
+        },
+        "minimumFood": 15.906666666655683
+      },
+      "browser": {
+        "base": "http://127.0.0.1:5183/?world=voxel",
+        "scope": "Chrome DOM, mouse, keyboard and file chooser. Read-only window.voxel for projection, snapshots and save export; no simulation mutation through debug APIs. Uses frozen bytes from normal farming, mining, power and cooking campaigns. Both render Worker and main fallback. Explicitly accelerated campaign fixtures, not a native RimWorld run.",
+        "fixtures": {
+          "warm-stock": {
+            "file": "test-results\\voxel-preservation-browser\\fixtures\\warm-stock.json",
+            "sha256": "46e6c655a5ead65dae490c96516b208183333505f3f9c5d7d3c3e74eb946d8e8",
+            "tick": 122245
+          },
+          "cold-stock": {
+            "file": "test-results\\voxel-preservation-browser\\fixtures\\cold-stock.json",
+            "sha256": "0edaae6976e8fd52b6b4a2ac9d4f32b134b987932a742ad00a75e80ef5e7d457",
+            "tick": 123468
+          },
+          "near-spoilage": {
+            "file": "test-results\\voxel-preservation-browser\\fixtures\\near-spoilage.json",
+            "sha256": "66decb6c0d5d37205a582fc7a6d1d737dc75463370be19c760d22453241c6189",
+            "tick": 161328
+          }
+        },
+        "modes": [
+          {
+            "mode": "worker",
+            "status": "passed",
+            "checks": [
+              {
+                "name": "expected renderer backend"
+              },
+              {
+                "name": "naturally cooked warm meal displays existing age and temperature forecast",
+                "text": "简餐 · 营养 0.9/份\n× 10\n每堆上限 10 · 剩余 0\n27.5°C · 未冷藏\n按当前温度预计 3.04 日后腐坏",
+                "rotProgress": 11472.7
+              },
+              {
+                "name": "real drags create eleven finite storage cells around the heater and DOM applies food filters and priority"
+              },
+              {
+                "name": "workers move aged meals from existing surface storage into higher-priority underground storage",
+                "meal": {
+                  "resource": "meal",
+                  "amount": 10,
+                  "rotProgress": 6941.159942136404,
+                  "x": 36,
+                  "y": 30,
+                  "z": 5,
+                  "id": 1484
+                }
+              },
+              {
+                "name": "900x700 storage controls are reachable and single-cell scope does not alter neighboring rules",
+                "controls": [
+                  {
+                    "name": "仓储优先级",
+                    "x": 199,
+                    "y": 371.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "应用范围",
+                    "x": 38.5,
+                    "y": 405.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "收纳全部",
+                    "x": 78.5,
+                    "y": 438.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "仅收食物",
+                    "x": 180.5,
+                    "y": 438.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "仅收建材",
+                    "x": 78.5,
+                    "y": 476.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "停止收纳",
+                    "x": 180.5,
+                    "y": 476.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "收纳木材",
+                    "x": 38.5,
+                    "y": 519.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "收纳石料",
+                    "x": 140.5,
+                    "y": 519.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "收纳钢材",
+                    "x": 38.5,
+                    "y": 423.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "收纳零件",
+                    "x": 140.5,
+                    "y": 423.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "收纳包装生存口粮",
+                    "x": 38.5,
+                    "y": 465.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "收纳生食材",
+                    "x": 140.5,
+                    "y": 465.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "收纳简餐",
+                    "x": 38.5,
+                    "y": 507.875,
+                    "hit": true,
+                    "inside": true
+                  }
+                ]
+              },
+              {
+                "name": "powered freezer shows halted spoilage and remaining warm shelf life",
+                "text": "简餐 · 营养 0.9/份\n× 10\n每堆上限 10 · 剩余 0\n-1.0°C · 冻结 · 腐坏暂停\n回到常温后约剩 3.39 日"
+              },
+              {
+                "name": "DOM v6 save/load preserves food ages species storage filters and all food containers"
+              },
+              {
+                "name": "live powered freezing does not advance meal rot age",
+                "elapsed": 168,
+                "kept": [
+                  {
+                    "id": 1484,
+                    "age": 7294.097629816749
+                  },
+                  {
+                    "id": 1486,
+                    "age": 11674.267886319694
+                  },
+                  {
+                    "id": 1487,
+                    "age": 9994.390966374018
+                  },
+                  {
+                    "id": 1491,
+                    "age": 2613.937687680343
+                  }
+                ]
+              },
+              {
+                "name": "natural warm spoilage removes the real stack and records loss separately from eating",
+                "spoiled": 9,
+                "elapsed": 316
+              }
+            ],
+            "errors": []
+          },
+          {
+            "mode": "main",
+            "status": "passed",
+            "checks": [
+              {
+                "name": "expected renderer backend"
+              },
+              {
+                "name": "naturally cooked warm meal displays existing age and temperature forecast",
+                "text": "简餐 · 营养 0.9/份\n× 10\n每堆上限 10 · 剩余 0\n27.5°C · 未冷藏\n按当前温度预计 3.04 日后腐坏",
+                "rotProgress": 11472.7
+              },
+              {
+                "name": "real drags create eleven finite storage cells around the heater and DOM applies food filters and priority"
+              },
+              {
+                "name": "workers move aged meals from existing surface storage into higher-priority underground storage",
+                "meal": {
+                  "resource": "meal",
+                  "amount": 10,
+                  "rotProgress": 6951.159942136404,
+                  "x": 36,
+                  "y": 30,
+                  "z": 5,
+                  "id": 1484
+                }
+              },
+              {
+                "name": "900x700 storage controls are reachable and single-cell scope does not alter neighboring rules",
+                "controls": [
+                  {
+                    "name": "仓储优先级",
+                    "x": 199,
+                    "y": 371.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "应用范围",
+                    "x": 38.5,
+                    "y": 405.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "收纳全部",
+                    "x": 78.5,
+                    "y": 438.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "仅收食物",
+                    "x": 180.5,
+                    "y": 438.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "仅收建材",
+                    "x": 78.5,
+                    "y": 476.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "停止收纳",
+                    "x": 180.5,
+                    "y": 476.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "收纳木材",
+                    "x": 38.5,
+                    "y": 519.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "收纳石料",
+                    "x": 140.5,
+                    "y": 519.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "收纳钢材",
+                    "x": 38.5,
+                    "y": 423.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "收纳零件",
+                    "x": 140.5,
+                    "y": 423.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "收纳包装生存口粮",
+                    "x": 38.5,
+                    "y": 465.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "收纳生食材",
+                    "x": 140.5,
+                    "y": 465.875,
+                    "hit": true,
+                    "inside": true
+                  },
+                  {
+                    "name": "收纳简餐",
+                    "x": 38.5,
+                    "y": 507.875,
+                    "hit": true,
+                    "inside": true
+                  }
+                ]
+              },
+              {
+                "name": "powered freezer shows halted spoilage and remaining warm shelf life",
+                "text": "简餐 · 营养 0.9/份\n× 10\n每堆上限 10 · 剩余 0\n-1.0°C · 冻结 · 腐坏暂停\n回到常温后约剩 3.39 日"
+              },
+              {
+                "name": "DOM v6 save/load preserves food ages species storage filters and all food containers"
+              },
+              {
+                "name": "live powered freezing does not advance meal rot age",
+                "elapsed": 173,
+                "kept": [
+                  {
+                    "id": 1484,
+                    "age": 7294.097629816749
+                  },
+                  {
+                    "id": 1486,
+                    "age": 11674.267886319694
+                  },
+                  {
+                    "id": 1487,
+                    "age": 9994.390966374018
+                  },
+                  {
+                    "id": 1491,
+                    "age": 2613.937687680343
+                  }
+                ]
+              },
+              {
+                "name": "natural warm spoilage removes the real stack and records loss separately from eating",
+                "spoiled": 9,
+                "elapsed": 305
+              }
+            ],
+            "errors": []
+          }
+        ]
+      },
+      "source": {
+        "file": "test-results/voxel-preservation-power/final.json",
+        "sha256": "d06bd1934d4ef9d9b3fbfe90d72a3d245779f04523d9ab18bf7269cc770ffbd5",
+        "tick": 35873
+      },
+      "checks": [
+        {
+          "name": "workers excavate a real exhaust shaft to outdoors",
+          "tick": 36249,
+          "elapsed": 376
+        },
+        {
+          "name": "solar and battery cool the sealed room below freezing",
+          "tick": 36249,
+          "elapsed": 0
+        },
+        {
+          "name": "frozen room and outdoor exhaust",
+          "tick": 36249,
+          "cold": -3.49605853972947,
+          "exhaust": 21.910049385252254,
+          "devices": [
+            {
+              "id": 818,
+              "x": 36,
+              "y": 28,
+              "z": 8,
+              "kind": "battery",
+              "axis": "y",
+              "on": true,
+              "fuel": 0,
+              "energy": 600,
+              "target": 21,
+              "powered": true,
+              "active": true,
+              "networkId": 0,
+              "watts": 0,
+              "reason": "充电中"
+            },
+            {
+              "id": 819,
+              "x": 34,
+              "y": 28,
+              "z": 8,
+              "kind": "generator",
+              "axis": "x",
+              "on": false,
+              "fuel": 42.38866666667898,
+              "energy": 0,
+              "target": 21,
+              "powered": false,
+              "active": false,
+              "networkId": 0,
+              "watts": 0,
+              "reason": "已关闭"
+            },
+            {
+              "id": 821,
+              "x": 28,
+              "y": 27,
+              "z": 8,
+              "kind": "solar",
+              "axis": "x",
+              "on": true,
+              "fuel": 0,
+              "energy": 0,
+              "target": 21,
+              "powered": true,
+              "active": true,
+              "networkId": 0,
+              "watts": 1700,
+              "reason": "太阳能发电"
+            },
+            {
+              "id": 822,
+              "x": 35,
+              "y": 28,
+              "z": 5,
+              "kind": "heater",
+              "axis": "x",
+              "on": false,
+              "fuel": 0,
+              "energy": 0,
+              "target": 32,
+              "powered": false,
+              "active": false,
+              "networkId": 0,
+              "watts": -17.5,
+              "reason": "已关闭"
+            },
+            {
+              "id": 826,
+              "x": 38,
+              "y": 29,
+              "z": 5,
+              "kind": "cooler",
+              "axis": "x",
+              "on": true,
+              "fuel": 0,
+              "energy": 0,
+              "target": -20,
+              "powered": true,
+              "active": true,
+              "networkId": 0,
+              "watts": -200,
+              "reason": "制冷中"
+            }
+          ]
+        },
+        {
+          "name": "additional cooking wood is cut and hauled",
+          "tick": 36518,
+          "elapsed": 269
+        },
+        {
+          "name": "wood-fired stove constructed",
+          "tick": 36662,
+          "elapsed": 144
+        },
+        {
+          "name": "normal harvest and cooking accumulate forty meals",
+          "tick": 122245,
+          "elapsed": 85583
+        },
+        {
+          "name": "warm food ages before cold storage",
+          "tick": 122245,
+          "meals": [
+            {
+              "resource": "meal",
+              "amount": 0,
+              "rotProgress": 11733.7,
+              "x": 30,
+              "y": 33,
+              "z": 8,
+              "id": 1391
+            },
+            {
+              "resource": "meal",
+              "amount": 0,
+              "rotProgress": 9396.84,
+              "x": 31,
+              "y": 33,
+              "z": 8,
+              "id": 1407
+            },
+            {
+              "resource": "meal",
+              "amount": 0,
+              "rotProgress": 8446.25,
+              "x": 29,
+              "y": 35,
+              "z": 8,
+              "id": 1438
+            },
+            {
+              "resource": "meal",
+              "amount": 0,
+              "rotProgress": 2169,
+              "x": 29,
+              "y": 33,
+              "z": 8,
+              "id": 1459
+            },
+            {
+              "resource": "meal",
+              "amount": 0,
+              "rotProgress": 387,
+              "x": 28,
+              "y": 34,
+              "z": 8,
+              "id": 1480
+            },
+            {
+              "resource": "meal",
+              "amount": 0,
+              "rotProgress": 16,
+              "x": 31,
+              "y": 31,
+              "z": 8,
+              "id": 1483
+            }
+          ],
+          "stats": {
+            "mined": 228,
+            "cut": 12,
+            "built": 49,
+            "hauled": 1978,
+            "sown": 240,
+            "harvested": 120,
+            "cooked": 51,
+            "eaten": 61,
+            "consumed": {
+              "wood": 292,
+              "stone": 0,
+              "steel": 419,
+              "components": 11,
+              "food": 49,
+              "grain": 511,
+              "meal": 11
+            },
+            "produced": {
+              "wood": 340,
+              "stone": 565,
+              "steel": 481,
+              "components": 12,
+              "food": 0,
+              "grain": 720,
+              "meal": 51
+            },
+            "spoiled": {
+              "wood": 0,
+              "stone": 0,
+              "steel": 0,
+              "components": 0,
+              "food": 0,
+              "grain": 0,
+              "meal": 0
+            }
+          }
+        },
+        {
+          "name": "all meals physically reach the higher-priority underground cold store",
+          "tick": 122902,
+          "elapsed": 657
+        },
+        {
+          "name": "cold store recovers below zero after hauling",
+          "tick": 123468,
+          "elapsed": 566
+        },
+        {
+          "name": "cold inventory keeps its pre-existing age",
+          "tick": 123468,
+          "items": [
+            {
+              "resource": "meal",
+              "amount": 10,
+              "rotProgress": 7294.097629816749,
+              "x": 36,
+              "y": 30,
+              "z": 5,
+              "id": 1484
+            },
+            {
+              "resource": "meal",
+              "amount": 10,
+              "rotProgress": 11674.267886319694,
+              "x": 36,
+              "y": 29,
+              "z": 5,
+              "id": 1486
+            },
+            {
+              "resource": "meal",
+              "amount": 10,
+              "rotProgress": 9994.390966374018,
+              "x": 37,
+              "y": 30,
+              "z": 5,
+              "id": 1487
+            },
+            {
+              "resource": "meal",
+              "amount": 10,
+              "rotProgress": 2613.937687680343,
+              "x": 37,
+              "y": 28,
+              "z": 5,
+              "id": 1491
+            }
+          ],
+          "temperature": -1.0144041216183408
+        },
+        {
+          "name": "power-off food spoils while the identical powered cold store keeps food",
+          "tick": 169008,
+          "elapsed": 45540,
+          "cold": -13.047798893661314,
+          "warm": 20.413899265337676,
+          "frozenMeals": 16,
+          "warmSpoiled": 16
+        }
+      ],
+      "samples": [
+        {
+          "tick": 126000,
+          "cold": -13.545395948922009,
+          "warm": 20.339737595286717,
+          "frozenMeals": 37,
+          "warmMeals": 37,
+          "frozenSpoiled": 0,
+          "warmSpoiled": 0
+        },
+        {
+          "tick": 129000,
+          "cold": -19.936094166666667,
+          "warm": 14.655337670155356,
+          "frozenMeals": 37,
+          "warmMeals": 37,
+          "frozenSpoiled": 0,
+          "warmSpoiled": 0
+        },
+        {
+          "tick": 132000,
+          "cold": -15.839368194932117,
+          "warm": 17.94064421432282,
+          "frozenMeals": 34,
+          "warmMeals": 34,
+          "frozenSpoiled": 0,
+          "warmSpoiled": 0
+        },
+        {
+          "tick": 135000,
+          "cold": -9.506627320153429,
+          "warm": 23.785922804501812,
+          "frozenMeals": 34,
+          "warmMeals": 34,
+          "frozenSpoiled": 0,
+          "warmSpoiled": 0
+        },
+        {
+          "tick": 138000,
+          "cold": -13.676167179588298,
+          "warm": 20.501214021467586,
+          "frozenMeals": 31,
+          "warmMeals": 31,
+          "frozenSpoiled": 0,
+          "warmSpoiled": 0
+        },
+        {
+          "tick": 141000,
+          "cold": -19.936094166666667,
+          "warm": 14.65593765233118,
+          "frozenMeals": 31,
+          "warmMeals": 31,
+          "frozenSpoiled": 0,
+          "warmSpoiled": 0
+        },
+        {
+          "tick": 144000,
+          "cold": -15.839368194932117,
+          "warm": 17.940646443617943,
+          "frozenMeals": 28,
+          "warmMeals": 28,
+          "frozenSpoiled": 0,
+          "warmSpoiled": 0
+        },
+        {
+          "tick": 147000,
+          "cold": -9.506627320153429,
+          "warm": 23.785922812785,
+          "frozenMeals": 28,
+          "warmMeals": 28,
+          "frozenSpoiled": 0,
+          "warmSpoiled": 0
+        },
+        {
+          "tick": 150000,
+          "cold": -13.676167179588298,
+          "warm": 20.501214021498335,
+          "frozenMeals": 25,
+          "warmMeals": 25,
+          "frozenSpoiled": 0,
+          "warmSpoiled": 0
+        },
+        {
+          "tick": 153000,
+          "cold": -19.936094166666667,
+          "warm": 14.655937652331303,
+          "frozenMeals": 25,
+          "warmMeals": 25,
+          "frozenSpoiled": 0,
+          "warmSpoiled": 0
+        },
+        {
+          "tick": 156000,
+          "cold": -15.839368194932117,
+          "warm": 17.940646443617943,
+          "frozenMeals": 22,
+          "warmMeals": 22,
+          "frozenSpoiled": 0,
+          "warmSpoiled": 0
+        },
+        {
+          "tick": 159000,
+          "cold": -9.506627320153429,
+          "warm": 23.785922812785,
+          "frozenMeals": 22,
+          "warmMeals": 22,
+          "frozenSpoiled": 0,
+          "warmSpoiled": 0
+        },
+        {
+          "tick": 162000,
+          "cold": -13.676167179588298,
+          "warm": 20.501214021498335,
+          "frozenMeals": 19,
+          "warmMeals": 10,
+          "frozenSpoiled": 0,
+          "warmSpoiled": 9
+        },
+        {
+          "tick": 165000,
+          "cold": -19.936094166666667,
+          "warm": 14.655937652331303,
+          "frozenMeals": 19,
+          "warmMeals": 10,
+          "frozenSpoiled": 0,
+          "warmSpoiled": 9
+        },
+        {
+          "tick": 168000,
+          "cold": -15.839368194932117,
+          "warm": 17.940646443617943,
+          "frozenMeals": 16,
+          "warmMeals": 7,
+          "frozenSpoiled": 0,
+          "warmSpoiled": 9
+        }
+      ],
+      "fixtures": {
+        "warm-stock": {
+          "file": "test-results/voxel-preservation-campaign/warm-stock.json",
+          "sha256": "46e6c655a5ead65dae490c96516b208183333505f3f9c5d7d3c3e74eb946d8e8",
+          "tick": 122245
+        },
+        "cold-stock": {
+          "file": "test-results/voxel-preservation-campaign/cold-stock.json",
+          "sha256": "0edaae6976e8fd52b6b4a2ac9d4f32b134b987932a742ad00a75e80ef5e7d457",
+          "tick": 123468
+        },
+        "near-spoilage": {
+          "file": "test-results/voxel-preservation-campaign/near-spoilage.json",
+          "sha256": "66decb6c0d5d37205a582fc7a6d1d737dc75463370be19c760d22453241c6189",
+          "tick": 161328
+        },
+        "frozen-final": {
+          "file": "test-results/voxel-preservation-campaign/frozen-final.json",
+          "sha256": "8716552b3fc844d3ce5561b0fe5a49f68d5e7444f4aab9cfdf2d30657e940b22",
+          "tick": 169008
+        },
+        "warm-final": {
+          "file": "test-results/voxel-preservation-campaign/warm-final.json",
+          "sha256": "8e2f57edf8a9c2d79138a4f72b45711cbe18fd658d2f4c638d8b7a602edf98aa",
+          "tick": 169008
+        }
+      }
+    }
+  },
+  "screenshots": [
+    {
+      "file": "voxel/logistics-capacity.jpg",
+      "sha256": "db61cc665e8482e67e4f8e20d2a9ed978b931dcaf64934fec8a5ca6d7a9067db",
+      "source": "test-results/voxel-logistics-browser/worker-02-capacity-900.png",
+      "sourceSha256": "45522adac61870ef9468c06590edd4317c701639143b7ee6ca820408ece6b0d3",
+      "transform": "Full reviewed gameplay viewport, JPEG .83, no crop"
+    },
+    {
+      "file": "voxel/logistics-underground.jpg",
+      "sha256": "1706567803d4b7fb4f26da637813a17bce81fcc7068c6ad9a958f170ba1b3f21",
+      "source": "test-results/voxel-logistics-browser/worker-04-underground.png",
+      "sourceSha256": "02434e806c0bd5580f8f621f3d15d36f2d106ab80a0956d859ff4860f2e68ca9",
+      "transform": "Full reviewed gameplay viewport, JPEG .83, no crop"
+    }
+  ]
+}

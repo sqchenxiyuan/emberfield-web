@@ -5,6 +5,7 @@ import { CROPS, NUTRITION } from './farming';
 import { ASSIGNMENT_NAMES } from './rest';
 import { isDeviceKind } from './power';
 import { rotRateAtTemperature, rotLimit, remainingRotDays } from './preservation';
+import { stackLimit, carryLimit } from './logistics';
 import {
   BLOCK_NAMES,
   JOB_NAMES,
@@ -21,6 +22,7 @@ import {
   type Tool,
   type Work,
   type Cargo,
+  type Stockpile,
 } from './types';
 import './style.css';
 const client = new VoxelClient();
@@ -101,6 +103,28 @@ const equal = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
 const levelName = (z: number) => (z === 8 ? '地表' : z < 8 ? `地下 ${8 - z}` : `地上 +${z - 8}`);
 const STORAGE_RESOURCES = Object.keys(RESOURCE_NAMES) as Resource[];
 const FOOD_RESOURCES: Resource[] = ['food', 'grain', 'meal'];
+function connectedStorage(stockpiles: Stockpile[], start: Stockpile): Stockpile[] {
+  const key = (p: Pos) => `${p.x}/${p.y}/${p.z}`;
+  const byCell = new Map(stockpiles.map((p) => [key(p), p]));
+  const result = [start],
+    seen = new Set([key(start)]);
+  for (let i = 0; i < result.length; i++) {
+    const p = result[i];
+    for (const [dx, dy] of [
+      [1, 0],
+      [-1, 0],
+      [0, 1],
+      [0, -1],
+    ]) {
+      const next = byCell.get(key({ x: p.x + dx, y: p.y + dy, z: p.z }));
+      if (next && !seen.has(key(next))) {
+        seen.add(key(next));
+        result.push(next);
+      }
+    }
+  }
+  return result;
+}
 const foodName = (batch: Cargo) =>
   batch.resource === 'grain' && batch.crop
     ? CROPS[batch.crop].name
@@ -220,6 +244,13 @@ function App() {
   const tree = p ? s?.trees.find((v) => equal(v, p)) : null;
   const farm = p ? s?.farms.find((v) => equal(v, p)) : null;
   const storage = p ? s?.stockpiles.find((v) => equal(v, p)) : null;
+  const storageRegion =
+    storage && s ? (storageConnected ? connectedStorage(s.stockpiles, storage) : [storage]) : [];
+  const regionKeys = new Set(storageRegion.map((v) => `${v.x}/${v.y}/${v.z}`));
+  const capacity = s?.storageCapacity.filter((v) => regionKeys.has(`${v.x}/${v.y}/${v.z}`)) ?? [];
+  const occupiedSlots = capacity.filter((v) => v.occupied).length;
+  const reservedSlots = capacity.filter((v) => v.reserved > 0).length;
+  const canReceive = capacity.some((v) => Object.values(v.available).some((n) => n > 0));
   const crop = p ? s?.crops.find((v) => equal(v, p)) : null;
   const stove = p ? s?.stoves.find((v) => equal(v, p)) : null;
   const bed = p ? s?.beds.find((v) => bedCells(v).some((q) => equal(q, p))) : null;
@@ -591,6 +622,24 @@ function App() {
         {storage && (
           <div className="voxel-bill voxel-storage" data-testid="storage-settings">
             <b>仓储设置</b>
+            <div className="voxel-storage-capacity" data-testid="storage-capacity">
+              <span>
+                仓位 {occupiedSlots} / {capacity.length} 已占用
+              </span>
+              <progress
+                value={occupiedSlots}
+                max={Math.max(1, capacity.length)}
+                aria-label="仓位占用"
+              />
+              <small>
+                空格 {capacity.length - occupiedSlots} · 运输预留 {reservedSlots} 格
+              </small>
+              <small>
+                {canReceive
+                  ? '仍可接收物品，工人需要可达通路。'
+                  : '当前设置下没有可接收空间，可扩建仓储或调整筛选。'}
+              </small>
+            </div>
             <label>
               优先级
               <select
@@ -653,7 +702,7 @@ function App() {
               ))}
             </div>
             <small>
-              工人优先搬往更高优先级、允许该物品的可达仓储。冷库还需封闭房间与制冷供电。
+              每格一堆，同类且同品种可以补满。工人优先使用更高优先级的合格仓位；满仓时等待空位。冷库还需封闭房间与制冷供电。
             </small>
           </div>
         )}
@@ -780,6 +829,9 @@ function App() {
               </span>
               <b>× {i.amount}</b>
             </div>
+            <small className="voxel-stack-limit" data-testid="stack-capacity">
+              每堆上限 {stackLimit(i.resource)} · 剩余 {stackLimit(i.resource) - i.amount}
+            </small>
             <FoodCondition batch={i} temperature={temperatureOf(i)} />
           </div>
         ))}
@@ -832,7 +884,8 @@ function App() {
             {pawn.cargo && (
               <div data-testid="carried-food">
                 <p>
-                  携带 {foodName(pawn.cargo)} × {pawn.cargo.amount}
+                  携带 {foodName(pawn.cargo)} × {pawn.cargo.amount} /{' '}
+                  {carryLimit(pawn.cargo.resource)}
                 </p>
                 <FoodCondition batch={pawn.cargo} temperature={temperatureOf(pawn)} />
               </div>
@@ -1110,7 +1163,7 @@ function App() {
               <summary>试玩规则与性能计数</summary>
               <p>
                 64×64×16；逻辑 20 TPS，1 日 10
-                分钟。两格净空，一格高差可走；梯子可携货。种植、烹饪、床位、作息、电网与房间温度已接通；采用简化天光和三维导热。战斗、季节、腐坏、食物中毒、饥荒伤害、坍塌和流体尚未实现。
+                分钟。两格净空，一格高差可走；梯子可携货。种植、烹饪、床位、作息、电网、冷库保鲜和有限仓储已接通；采用简化天光和三维导热。战斗、季节、食物中毒、饥荒伤害、坍塌和流体尚未实现。
               </p>
               <p>
                 地形数组 {((s?.gridBytes ?? 0) / 1024).toFixed(0)} KiB；寻路数组{' '}
