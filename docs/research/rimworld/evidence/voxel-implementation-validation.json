@@ -1,0 +1,702 @@
+{
+  "generatedAt": "2026-11-02T15:00:36.128Z",
+  "kind": "web-runtime-validated",
+  "scope": "Emberfield voxel construction slice. These checks do not establish full RimWorld equivalence, 3D survival-system completion, large-map capacity or long-term leak freedom.",
+  "sources": [
+    {
+      "file": "src/voxel/client.ts",
+      "sha256": "37682b4239e819124984a5cd57d3c718b4fe58d08062f854095c33ef0ed499fb"
+    },
+    {
+      "file": "src/voxel/main.tsx",
+      "sha256": "07c2d0eafd28d682a377a065d25c0e08f01410a05874f1cd83440b9e980145da"
+    },
+    {
+      "file": "src/voxel/render.worker.ts",
+      "sha256": "191ced6c3d17b480fa11f2d3a6845b8e9df111f5f69ded8b7b2bbaf75caf22c0"
+    },
+    {
+      "file": "src/voxel/renderer.ts",
+      "sha256": "45fadbf184806e77092eee80b2d443bc901f7e2f7d691b9efcf8a76523acbd42"
+    },
+    {
+      "file": "src/voxel/sim.worker.ts",
+      "sha256": "97640ccee88b20cee953a2bec0b2c81cb5a62de463b578d82d4a439384a91035"
+    },
+    {
+      "file": "src/voxel/style.css",
+      "sha256": "bdc17ce5c2ab6d83160ed2dd8b8a6d0c753fe1cd6f303ed2b8ac11621d25239b"
+    },
+    {
+      "file": "src/voxel/types.ts",
+      "sha256": "78c0d3f9b31dfc0c4462c9ae5503fd4e31bcc6b83a7d42f3a87e7536a2f09eed"
+    },
+    {
+      "file": "src/voxel/world.ts",
+      "sha256": "c43868fba8097dacfaca3e961e3177d8a28d98e057ef6cc794f8a2549a2daa50"
+    }
+  ],
+  "assets": [
+    {
+      "file": "assets/index-BzDWoE0l.js",
+      "bytes": 2356,
+      "sha256": "450cad744c3b76e5430b6986a8e00912822b5b4203510af7bb0f62e46f18ca82"
+    },
+    {
+      "file": "assets/main-B7U-iZe6.css",
+      "bytes": 10013,
+      "sha256": "036f52e4d1d84a61dd3fd84db0aaa4231bc56ebaa47ff4b662cb2b1824d242ee"
+    },
+    {
+      "file": "assets/client-CrowJ5J7.js",
+      "bytes": 221699,
+      "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e"
+    },
+    {
+      "file": "assets/main-DIYsbP-R.js",
+      "bytes": 536090,
+      "sha256": "38a8759710ce7d7b2cc38512d60acd1033325616836d523e6a6f17d73556cdc3"
+    },
+    {
+      "file": "assets/sim.worker-Be7Wi8-_.js",
+      "bytes": 22431,
+      "sha256": "3283c45d68d40c945a8ff30d23e0e75dca7accf85607e84ff4791cde9defc225"
+    },
+    {
+      "file": "assets/render.worker-Cq7FsU71.js",
+      "bytes": 514206,
+      "sha256": "65cd5dc7e135d24cc3b334b7dca0c5a6ea0e39f7b185f7a86189dfef0e5cfe54"
+    }
+  ],
+  "unit": {
+    "passed": 51,
+    "total": 51,
+    "failed": 0
+  },
+  "campaign": {
+    "seed": 73129,
+    "scope": "Headless rules campaign through public command/step/save/load APIs. No terrain editing, inventory injection, pawn teleportation, or renderer used as gameplay proof.",
+    "checkpoints": [
+      {
+        "label": "a finite starting tree is cut and its wood physically hauled to surface storage",
+        "tick": 128,
+        "elapsed": 128,
+        "counts": {
+          "wood": 117,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 60
+        },
+        "stored": {
+          "wood": 117,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 60
+        },
+        "stats": {
+          "mined": 0,
+          "cut": 1,
+          "built": 0,
+          "hauled": 27,
+          "consumed": {
+            "wood": 0,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0
+          },
+          "produced": {
+            "wood": 27,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0
+          }
+        }
+      },
+      {
+        "label": "four connected ladder cells open a three-level descent",
+        "tick": 581,
+        "elapsed": 453,
+        "counts": {
+          "wood": 109,
+          "stone": 5,
+          "steel": 0,
+          "components": 0,
+          "food": 60
+        },
+        "stored": {
+          "wood": 109,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 60
+        },
+        "stats": {
+          "mined": 3,
+          "cut": 1,
+          "built": 4,
+          "hauled": 27,
+          "consumed": {
+            "wood": 8,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0
+          },
+          "produced": {
+            "wood": 27,
+            "stone": 5,
+            "steel": 0,
+            "components": 0,
+            "food": 0
+          }
+        }
+      },
+      {
+        "label": "underground steel is excavated and hauled through the shaft to surface storage",
+        "tick": 731,
+        "elapsed": 150,
+        "counts": {
+          "wood": 109,
+          "stone": 5,
+          "steel": 40,
+          "components": 0,
+          "food": 60
+        },
+        "stored": {
+          "wood": 109,
+          "stone": 5,
+          "steel": 40,
+          "components": 0,
+          "food": 60
+        },
+        "stats": {
+          "mined": 5,
+          "cut": 1,
+          "built": 4,
+          "hauled": 72,
+          "consumed": {
+            "wood": 8,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0
+          },
+          "produced": {
+            "wood": 27,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 0
+          }
+        }
+      },
+      {
+        "label": "upper ladder connects surface to feet level 11",
+        "tick": 971,
+        "elapsed": 240,
+        "counts": {
+          "wood": 103,
+          "stone": 5,
+          "steel": 40,
+          "components": 0,
+          "food": 60
+        },
+        "stored": {
+          "wood": 103,
+          "stone": 5,
+          "steel": 40,
+          "components": 0,
+          "food": 60
+        },
+        "stats": {
+          "mined": 5,
+          "cut": 1,
+          "built": 7,
+          "hauled": 72,
+          "consumed": {
+            "wood": 14,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0
+          },
+          "produced": {
+            "wood": 27,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 0
+          }
+        }
+      },
+      {
+        "label": "save during actual upper-floor material delivery or work",
+        "tick": 1009,
+        "elapsed": 38,
+        "counts": {
+          "wood": 103,
+          "stone": 5,
+          "steel": 40,
+          "components": 0,
+          "food": 60
+        },
+        "stored": {
+          "wood": 100,
+          "stone": 5,
+          "steel": 40,
+          "components": 0,
+          "food": 60
+        },
+        "stats": {
+          "mined": 5,
+          "cut": 1,
+          "built": 7,
+          "hauled": 72,
+          "consumed": {
+            "wood": 14,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0
+          },
+          "produced": {
+            "wood": 27,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 0
+          }
+        }
+      },
+      {
+        "label": "loaded work completes a supported upper floor with physical material delivery",
+        "tick": 1276,
+        "elapsed": 267,
+        "counts": {
+          "wood": 94,
+          "stone": 5,
+          "steel": 40,
+          "components": 0,
+          "food": 60
+        },
+        "stored": {
+          "wood": 94,
+          "stone": 5,
+          "steel": 40,
+          "components": 0,
+          "food": 60
+        },
+        "stats": {
+          "mined": 5,
+          "cut": 1,
+          "built": 10,
+          "hauled": 75,
+          "consumed": {
+            "wood": 23,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0
+          },
+          "produced": {
+            "wood": 27,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 0
+          }
+        }
+      },
+      {
+        "label": "a colonist actually walks to the excavated underground cell",
+        "tick": 1297,
+        "elapsed": 21,
+        "counts": {
+          "wood": 94,
+          "stone": 5,
+          "steel": 40,
+          "components": 0,
+          "food": 60
+        },
+        "stored": {
+          "wood": 94,
+          "stone": 5,
+          "steel": 40,
+          "components": 0,
+          "food": 60
+        },
+        "stats": {
+          "mined": 5,
+          "cut": 1,
+          "built": 10,
+          "hauled": 75,
+          "consumed": {
+            "wood": 23,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0
+          },
+          "produced": {
+            "wood": 27,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 0
+          }
+        }
+      },
+      {
+        "label": "the same colonist walks from underground through surface to the upper floor",
+        "tick": 1329,
+        "elapsed": 32,
+        "counts": {
+          "wood": 94,
+          "stone": 5,
+          "steel": 40,
+          "components": 0,
+          "food": 60
+        },
+        "stored": {
+          "wood": 94,
+          "stone": 5,
+          "steel": 40,
+          "components": 0,
+          "food": 60
+        },
+        "stats": {
+          "mined": 5,
+          "cut": 1,
+          "built": 10,
+          "hauled": 75,
+          "consumed": {
+            "wood": 23,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0
+          },
+          "produced": {
+            "wood": 27,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 0
+          }
+        }
+      },
+      {
+        "label": "a supported upper wall occupies two actual voxel cells",
+        "tick": 1475,
+        "elapsed": 146,
+        "counts": {
+          "wood": 88,
+          "stone": 5,
+          "steel": 40,
+          "components": 0,
+          "food": 60
+        },
+        "stored": {
+          "wood": 88,
+          "stone": 5,
+          "steel": 40,
+          "components": 0,
+          "food": 60
+        },
+        "stats": {
+          "mined": 5,
+          "cut": 1,
+          "built": 11,
+          "hauled": 75,
+          "consumed": {
+            "wood": 29,
+            "stone": 0,
+            "steel": 0,
+            "components": 0,
+            "food": 0
+          },
+          "produced": {
+            "wood": 27,
+            "stone": 5,
+            "steel": 40,
+            "components": 0,
+            "food": 0
+          }
+        }
+      }
+    ],
+    "visitedLayers": [
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "cargoLayers": {
+      "wood@8": 212,
+      "wood@7": 7,
+      "wood@6": 1,
+      "stone@6": 1,
+      "stone@7": 6,
+      "stone@8": 13,
+      "steel@5": 4,
+      "steel@6": 12,
+      "steel@7": 12,
+      "steel@8": 26,
+      "wood@9": 44,
+      "wood@10": 25,
+      "wood@11": 16
+    },
+    "final": {
+      "tick": 1475,
+      "counts": {
+        "wood": 88,
+        "stone": 5,
+        "steel": 40,
+        "components": 0,
+        "food": 60
+      },
+      "stored": {
+        "wood": 88,
+        "stone": 5,
+        "steel": 40,
+        "components": 0,
+        "food": 60
+      },
+      "stats": {
+        "mined": 5,
+        "cut": 1,
+        "built": 11,
+        "hauled": 75,
+        "consumed": {
+          "wood": 29,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0
+        },
+        "produced": {
+          "wood": 27,
+          "stone": 5,
+          "steel": 40,
+          "components": 0,
+          "food": 0
+        }
+      },
+      "gridBytes": 131072
+    }
+  },
+  "browser": {
+    "base": "http://127.0.0.1:5183/?world=voxel",
+    "scope": "Chrome, real DOM buttons and map mouse actions. Read-only window.voxel project/snapshot/exportSave for observing exact cells. No command injection, terrain edits or pawn teleports.",
+    "checks": [
+      {
+        "name": "worker-rendered 64x64x16 world",
+        "worker": true,
+        "metrics": {
+          "backend": "Three.js · WebGL2",
+          "fps": 28.493557984929033,
+          "drawCalls": 58,
+          "triangles": 29932,
+          "geometries": 25,
+          "textures": 4,
+          "chunkCount": 16,
+          "pendingChunks": 0,
+          "terrainVertices": 43984,
+          "terrainGeometryBytes": 2067248,
+          "gridBytes": 131072,
+          "dpr": 1,
+          "level": 8,
+          "rotation": 0.7853981633974483,
+          "zoom": 1.25
+        }
+      },
+      {
+        "name": "physical item inspection"
+      },
+      {
+        "name": "clicking a colonist body selects the foot-space object"
+      },
+      {
+        "name": "tree cut and wood hauled through actual UI"
+      },
+      {
+        "name": "three-level shaft built by colonists"
+      },
+      {
+        "name": "underground mining and cross-level steel hauling",
+        "steel": 40
+      },
+      {
+        "name": "upper floors receive physical materials; mid-construction save survives page reload"
+      },
+      {
+        "name": "upper storage and two-voxel-high wall"
+      },
+      {
+        "name": "four camera rotations pick the same cell; slices do not change simulation"
+      },
+      {
+        "name": "paused world pixels stable within GPU rounding (HUD FPS excluded)",
+        "changed": 0,
+        "overTwo": 0,
+        "maxDelta": 0
+      },
+      {
+        "name": "invalid construction is explained without material consumption"
+      },
+      {
+        "name": "removed ladder blocks cross-level movement; rebuilt ladder restores actual walking"
+      },
+      {
+        "name": "main-thread WebGL2 fallback loads the same voxel save"
+      }
+    ],
+    "errors": [],
+    "final": {
+      "tick": 1598,
+      "stats": {
+        "mined": 5,
+        "cut": 1,
+        "built": 12,
+        "hauled": 75,
+        "consumed": {
+          "wood": 31,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0
+        },
+        "produced": {
+          "wood": 28,
+          "stone": 5,
+          "steel": 40,
+          "components": 0,
+          "food": 0
+        }
+      },
+      "metrics": {
+        "backend": "Three.js · WebGL2",
+        "fps": 59.9475458937698,
+        "drawCalls": 60,
+        "triangles": 22642,
+        "geometries": 26,
+        "textures": 4,
+        "chunkCount": 16,
+        "pendingChunks": 0,
+        "terrainVertices": 45640,
+        "terrainGeometryBytes": 2145080,
+        "gridBytes": 131072,
+        "dpr": 1,
+        "level": 11,
+        "rotation": 7.0685834705770345,
+        "zoom": 1.25
+      }
+    }
+  },
+  "lifecycle": {
+    "base": "http://127.0.0.1:5183/?world=voxel",
+    "scope": "Chrome headless, DPR 1; one document without reload, six normal UI save/new-world/load cycles. Only read-only window.voxel.snapshot/exportSave/project observation. Renderer must remain Worker WebGL2. Render geometry/texture counts are live Three.js resources; terrainGeometryBytes counts tracked terrain buffers, not total GPU memory. CDP Performance JSHeapUsedSize/JSHeapTotalSize covers the main page isolate only, excluding simulation/render workers, native browser allocations and VRAM. This bounded lifecycle run is not a long-duration leak proof or universal capacity estimate.",
+    "cycles": 6,
+    "convergence": {
+      "geometries": {
+        "values": [
+          25,
+          25,
+          25,
+          25,
+          25,
+          25,
+          25
+        ],
+        "min": 25,
+        "max": 25,
+        "delta": 0
+      },
+      "textures": {
+        "values": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "min": 4,
+        "max": 4,
+        "delta": 0
+      },
+      "chunkCount": {
+        "values": [
+          16,
+          16,
+          16,
+          16,
+          16,
+          16,
+          16
+        ],
+        "min": 16,
+        "max": 16,
+        "delta": 0
+      },
+      "terrainGeometryBytes": {
+        "values": [
+          2067248,
+          2067248,
+          2067248,
+          2067248,
+          2067248,
+          2067248,
+          2067248
+        ],
+        "min": 2067248,
+        "max": 2067248,
+        "delta": 0
+      }
+    },
+    "uiControlsChecked": 75,
+    "uiFailures": [],
+    "browserErrors": [],
+    "mainPageIsolateHeapObservation": {
+      "samples": [
+        5404240,
+        6396152,
+        10246752,
+        11058212,
+        14333840,
+        6234532,
+        5435672
+      ],
+      "minBytes": 5404240,
+      "maxBytes": 14333840,
+      "finalMinusInitialBytes": 31432,
+      "monotonicallyIncreasing": false,
+      "interpretation": "Natural GC/JIT noise is retained. This is one page isolate and is not a whole-page or whole-browser leak/capacity claim."
+    },
+    "finishedAt": "2026-11-02T14:58:46.759Z"
+  },
+  "screenshots": [
+    {
+      "file": "voxel/underground.jpg",
+      "sha256": "e51d94172e50408725f192e08a030e3a75abdc46113c97a4232ad9ea6c038de9",
+      "source": "test-results/voxel-browser/03-underground-mined.png",
+      "sourceSha256": "3a898983fa4e0e79041c1583727ed141d39d60f246712cfb6ce73a08db1aaebb",
+      "transform": "JPEG quality 0.83, no crop, full game viewport"
+    },
+    {
+      "file": "voxel/upper-floor.jpg",
+      "sha256": "f2d4c29c7e86cc7cdd10536e77af4a9a4310bcc3b44624901fe7f8f99e8dbd1c",
+      "source": "test-results/voxel-browser/06-final-overview.png",
+      "sourceSha256": "dabacd79490bf93ba6535b56cd0a0db3f843cb514888b589109fe27a729a1ee3",
+      "transform": "JPEG quality 0.83, no crop, full game viewport"
+    }
+  ]
+}

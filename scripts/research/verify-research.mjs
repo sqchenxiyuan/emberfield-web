@@ -87,6 +87,16 @@ for (const shot of runtime.screenshots) {
 for(const group of groups){
   for(const example of read(`${group}-cases.json`))for(const id of example.claims??[])assert(ids.has(id),`unknown claim ${id}`);
 }
+const voxel = read('voxel-implementation-validation.json');
+assert.equal(voxel.kind, 'web-runtime-validated');
+assert.equal(voxel.unit.failed, 0);
+assert.equal(voxel.unit.passed, voxel.unit.total);
+assert.equal(voxel.browser.errors.length, 0);
+assert.equal(voxel.lifecycle.browserErrors.length, 0);
+for (const shot of voxel.screenshots) {
+  assert(/^voxel\/[a-z-]+\.jpg$/.test(shot.file));
+  assert.equal(sha(readFileSync(path.join(evidence, shot.file))), shot.sha256, `changed voxel image: ${shot.file}`);
+}
 for(const file of readdirSync(research).filter(f=>f.endsWith('.md'))){
   const body=readFileSync(path.join(research,file),'utf8');
   for(const match of body.matchAll(/\[[^\]\n]*\]\(([^)\s]+)\)/g)){

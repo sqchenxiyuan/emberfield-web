@@ -34,6 +34,8 @@ jobs:
         run: npm run research:check
       - name: Verify a complete colony campaign
         run: npm run test:campaign
+      - name: Verify cross-level excavation and construction
+        run: npm run test:voxel
       - name: Build site with relative asset and Worker URLs
         run: npm run build
       - name: Configure GitHub Pages

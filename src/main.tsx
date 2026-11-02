@@ -1123,6 +1123,7 @@ function App() {
                   <small className="welcome-note">
                     建议先暂停，建三张床、灶台和一片 6×8 谷物田。
                   </small>
+                  <a href="?world=voxel" style={{display:'inline-block',marginTop:14,color:'var(--gold)'}}>进入多层体素试玩 · 地下挖掘 / 楼上建造 ↗</a>
                 </div>
               </>
             )}
@@ -1179,6 +1180,7 @@ function App() {
                   手动与自动存档分别保存。页面切到后台会暂停；浏览器清理站点数据会删除本地存档，请定期导出。
                 </p>
                 <div className="settings-actions">
+                  <a href="?world=voxel">多层体素试玩（请先保存当前营地） ↗</a>
                   <button onClick={() => void save()} disabled={busy}>
                     保存到手动槽
                   </button>

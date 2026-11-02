@@ -8,7 +8,11 @@
 
 原版机制研究见 [RimWorld 详细机制与复刻设计](docs/research/rimworld/README.md)：工作与预定、战斗与医疗、房间温度与电网、财富叙事与贸易，附版本哈希、公式、算例和未验证边界。研究对象是本地 `1.7.4980 rev60`，这些数值不代表当前Web版已经实现。运行 `npm run research:check` 可独立核对证据索引与算例。
 
-2026-11-02更新：修复动物长时间等待，增加物品/动物/资源检查、劳动动画与墙/导线连续拖建。[原版运行对照与修复验证](docs/research/rimworld/07-runtime-interaction-comparison.md) 记录实际操作和边界；[世界生成与资源研究](docs/research/rimworld/06-world-generation-resources.md) 和 [真多层体素方案](docs/research/rimworld/08-voxel-feasibility.md) 为后续实施依据，当前游戏仍是单层二维地图。
+2026-11-02更新：修复动物长时间等待，增加物品/动物/资源检查、劳动动画与墙/导线连续拖建。[原版运行对照与修复验证](docs/research/rimworld/07-runtime-interaction-comparison.md) 记录实际操作和边界。
+
+新增 **[多层体素试玩](https://sqchenxiyuan.github.io/emberfield-web/?world=voxel)**：64×64×16，真实地下开凿、逐格搭梯、跨层搬运、二层楼板与墙体、旋转剖切和独立存档。[实现与验收](docs/research/rimworld/11-voxel-implementation.md) 说明规则、来源与验证。该入口是施工/物流切片，农业、战斗、房间与电网等系统尚未迁入；首页仍是原二维营地，两个入口分别保存进度。
+
+体素操作：伐木 → 下挖梯井 → 切「地下」挖矿 → 回地面向上搭梯 → 切「二层」从梯旁铺楼板。Q/E旋转、[ / ]逐格切层、滚轮缩放、中键拖转、WASD平移、Space暂停。体素入口使用Three.js WebGL2 Worker，`?world=voxel&render=main`为兼容路径；二维入口继续使用PixiJS 8。
 
 ## 启动
 
