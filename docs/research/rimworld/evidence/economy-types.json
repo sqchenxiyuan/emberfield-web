@@ -1,0 +1,21 @@
+[
+  "RimWorld.WealthWatcher",
+  "RimWorld.StorytellerUtility",
+  "RimWorld.StoryWatcher_Adaptation",
+  "RimWorld.StoryWatcher_PopAdaptation",
+  "RimWorld.IncidentWorker_Raid",
+  "RimWorld.IncidentWorker_RaidEnemy",
+  "RimWorld.PawnGroupMakerUtility",
+  "RimWorld.TradeUtility",
+  "RimWorld.Tradeable",
+  "RimWorld.StorytellerCompProperties_OnOffCycle",
+  "RimWorld.StorytellerComp_OnOffCycle",
+  "Verse.Map",
+  "RimWorld.StorytellerDef",
+  "RimWorld.Difficulty",
+  "RimWorld.PriceTypeUtlity",
+  "RimWorld.PawnGenOption",
+  "RimWorld.PawnGroupKindWorker_Normal",
+  "Verse.SimpleCurve",
+  "RimWorld.IncidentCycleUtility"
+]

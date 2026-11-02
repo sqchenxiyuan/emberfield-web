@@ -1,0 +1,117 @@
+[
+  {
+    "label": "home_wealth_threat",
+    "inputs": {
+      "items": 20000,
+      "buildings": 20000,
+      "pawns": 6000,
+      "colonists": 3,
+      "adapt": 0,
+      "effect": 0.9,
+      "days": 10,
+      "scale": 1
+    },
+    "expected": {
+      "wealth": 36000,
+      "wealthPoints": 136.78756476683938,
+      "pawnPoints": 70,
+      "base": 206.78756476683938,
+      "points": 118.6960621761658
+    },
+    "formula": "Home, healthy adults, targetRandom=1, baseline curves, lower bound inactive; W=I+.5B+P; multiply curve sum by lerp(1,adapt,effect), difficulty and days."
+  },
+  {
+    "label": "health_contribution",
+    "inputs": {
+      "health": 0.5
+    },
+    "expected": {
+      "factor": 0.675
+    },
+    "formula": "lerp(1,H,.65)"
+  },
+  {
+    "label": "adaptation_max_and_loss",
+    "inputs": {
+      "cap": 100,
+      "before": 30,
+      "loss": 6,
+      "effect": 0.9
+    },
+    "expected": {
+      "maxRawFactor": 1.4666666666666668,
+      "after": 24,
+      "rawFactor": 0.96,
+      "effectiveFactor": 0.964
+    },
+    "formula": "BaseStoryteller declared curve and cap; violent downing at population3; no other simultaneous changes."
+  },
+  {
+    "label": "raid_minimum_and_remainder",
+    "inputs": {
+      "points": 100,
+      "arrival": 0.8,
+      "strategy": 1,
+      "minimum": 90,
+      "unitCost": 40
+    },
+    "expected": {
+      "adjusted": 94.5,
+      "count": 2,
+      "remainder": 14.5
+    },
+    "formula": "max(P*arrival*strategy,minimum*1.05); all candidates cost40 and pass filters; illustrative inputs, not a faction fixture."
+  },
+  {
+    "label": "cycle_interval",
+    "inputs": {
+      "spacingDays": 1.9,
+      "onDays": 4.6
+    },
+    "expected": {
+      "spacingIntervals": 114,
+      "spacingTicks": 114000,
+      "onIntervals": 276
+    },
+    "formula": "round(days*60), each interval1000ticks."
+  },
+  {
+    "label": "normal_trade",
+    "inputs": {
+      "value": 100,
+      "loss": 0,
+      "negotiator": 0
+    },
+    "expected": {
+      "sell": 60,
+      "buy": 140
+    },
+    "formula": "Other multipliers1 and additive modifiers0; floor then round if>99.5, then cap sell at buy."
+  },
+  {
+    "label": "hard_trade",
+    "inputs": {
+      "value": 100,
+      "loss": 0.1,
+      "negotiator": 0.1
+    },
+    "expected": {
+      "sell": 59.4,
+      "buy": 139
+    },
+    "formula": "sell=100*.6*.9*1.1; buy=round(100*1.4*1.1*.9)."
+  },
+  {
+    "label": "minimum_trade",
+    "inputs": {
+      "value": 0.01,
+      "loss": 0,
+      "negotiator": 0
+    },
+    "expected": {
+      "sell": 0.01,
+      "buy": 0.5
+    },
+    "formula": "buy floor.5, sell floor.01."
+  }
+]

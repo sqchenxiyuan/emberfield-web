@@ -1,0 +1,65 @@
+[
+  {
+    "id":"RW17-WORK-CASE-01",
+    "label":"手动排序与emergency分类",
+    "claims":["RW17-WORK-01","RW17-WORK-03","RW17-WORK-06"],
+    "inputs":{"cooking_natural":1000,"growing_natural":700,"cooking_priority":2,"growing_priority":1,"doctor_priority":2,"best_normal_priority":1},
+    "expected":{"cooking_key":201000,"growing_key":300700,"first":"Growing","cooking_key_when_priority_1":301000,"doctor_in_emergency_list":false},
+    "formula":"K=n+(4-p)*100000; emergencyList=p<=bestNormalPriority",
+    "assumptions":"仅比较给定工作，候选是否实际可执行需另行检查。"
+  },
+  {
+    "id":"RW17-WORK-CASE-02",
+    "label":"部分数量预留",
+    "claims":["RW17-WORK-08","RW17-WORK-12"],
+    "inputs":{"stack":75,"existing_quantity":30,"existing_distinct_claimants":1,"existing_max_pawns":2,"request_max_pawns":2,"request_allowed":45,"request_excess":46},
+    "expected":{"sum_at_45":75,"sum_at_46":76,"request_45_allowed":true,"request_46_allowed":false,"request_max_pawns_1_allowed":false},
+    "formula":"sameMaxPawns && existingClaimants<maxPawns && existingQuantity+request<=stack",
+    "assumptions":"目标有效、同地图同层、相互尊重预留；非本人重复预留，无物理交互或建筑交互格冲突。普通搬运请求1人/-1，另行处理。"
+  },
+  {
+    "id":"RW17-WORK-CASE-03",
+    "label":"单次拿取与剩余任务量",
+    "claims":["RW17-WORK-13"],
+    "inputs":{"job_count":80,"available_carry_space":35,"source_stack":20,"subtract_actual_taken":true},
+    "expected":{"taken":20,"job_remaining":60},
+    "formula":"taken=min(jobCount,availableCarrySpace,sourceStack); remaining=jobCount-taken",
+    "assumptions":"实际拿取全部成功，源堆不足不会直接失败，subtractNumTakenFromJobCount启用。"
+  },
+  {
+    "id":"RW17-WORK-CASE-04",
+    "label":"仓储格提前结束的反例",
+    "claims":["RW17-WORK-15"],
+    "inputs":{"cell_count":1000,"random_fraction":0.01,"first_accepted_index":12,"accepted_distance":20,"later_closer_index":100,"later_closer_distance":1},
+    "expected":{"threshold_index":10,"chosen_distance_squared":400,"later_closer_distance_squared":1,"early_exit":true,"later_cell_visited":false},
+    "formula":"n=floor(N*r); accepted && i>=n => break",
+    "assumptions":"单个仓储组，索引从0开始，索引0到11均不合格，索引12不劣于目前最好结果。"
+  },
+  {
+    "id":"RW17-WORK-CASE-05",
+    "label":"顺路搬运几何门槛",
+    "claims":["RW17-WORK-17"],
+    "inputs":{"P":[0,0],"T":[20,0],"I":[5,0],"S":[15,0],"rejected_I":[11,0]},
+    "expected":{"D":20,"a":5,"b":10,"c":5,"IT":15,"detour_length":20,"detour_limit":34,"geometry_passes":true,"rejected_geometry_passes":false},
+    "formula":"D=|PT|; a=|PI|; b=|IS|; c=|ST|; D>=3 && a<=30 && a<=0.5D && a+|IT|<=1.7D && c<=50 && c<=0.6D && a+b+c<=1.7D && a+c<=D",
+    "assumptions":"资格、物品、仓储及25区域检查通过；这里只计算几何距离，不是障碍地图路径。"
+  },
+  {
+    "id":"RW17-WORK-CASE-06",
+    "label":"格成本与移动紧迫度",
+    "claims":["RW17-WORK-24","RW17-WORK-25"],
+    "inputs":{"base_cardinal_ticks":13,"terrain_cost":2,"thing_cost":27,"snow_cost":8},
+    "expected":{"grid_cost":27,"C":40,"Jog":40,"Walk":80,"Amble":120,"Sprint":30},
+    "formula":"grid=max(terrain,thing,snow); C=min(450,base+grid); Jog=C; Walk=max(2C,50); Amble=max(3C,60); Sprint=RoundToInt(0.75C)",
+    "assumptions":"没有建筑附加、重复成本例外、沙尘、门、火、地形标签倍率或同行配速；13是给定角色输入。"
+  },
+  {
+    "id":"RW17-WORK-CASE-07",
+    "label":"启发值与基础路线耗时",
+    "claims":["RW17-WORK-22","RW17-WORK-23"],
+    "inputs":{"dx":10,"dz":6,"strength":1,"animal_strength":1.75,"cardinal_ticks":13,"diagonal_ticks":18},
+    "expected":{"h":162.30837688,"animal_h":284.03965954,"hypothetical_unobstructed_base_ticks":160},
+    "formula":"h=13*s*(dx+dz-0.58579004*min(dx,dz)); baseTicks=min(dx,dz)*diagonalTicks+abs(dx-dz)*cardinalTicks",
+    "assumptions":"按十进制公式推算，允许浮点误差；路线耗时例子假定无障碍和其他成本，不是测量。"
+  }
+]

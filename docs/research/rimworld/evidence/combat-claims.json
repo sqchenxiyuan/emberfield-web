@@ -1,0 +1,966 @@
+[
+  {
+    "id": "CB01",
+    "kind": "static-derived",
+    "statement": "标准射击报告先组合射手距离、武器、天气、烟雾与近距离处决因素，再加黑暗偏移并设0.0201下限；之后乘体型、姿态和穿过掩体概率，最后Clamp01。报告值不是全部弹道交互后的实测命中率。",
+    "sources": [
+      {
+        "type": "Verse.ShotReport",
+        "member": "AimOnTargetChance_StandardTarget / TotalEstimatedHitChance",
+        "line_start": 34,
+        "line_end": 78
+      }
+    ],
+    "values": {
+      "minimum_standard_aim": 0.0201,
+      "prone_distance_min": 4.5,
+      "prone_factor": 0.5,
+      "execution_distance_max": 3.9,
+      "execution_factor": 7.5
+    }
+  },
+  {
+    "id": "CB02",
+    "kind": "static-derived",
+    "statement": "射手命中因子以每格精度a的distance次幂起算，再乘3/12/25/40格节点间的射手距离修正；不是把人物射击属性直接当整发命中率。",
+    "sources": [
+      {
+        "type": "Verse.ShotReport",
+        "member": "HitFactorFromShooter",
+        "line_start": 164,
+        "line_end": 196
+      }
+    ],
+    "values": {
+      "distance_breakpoints": [
+        3,
+        12,
+        25,
+        40
+      ],
+      "minimum_shooter_factor": 0.0201
+    }
+  },
+  {
+    "id": "CB03",
+    "kind": "static-derived",
+    "statement": "盲烟因子0.7；双方都在屋顶下才跳过天气因子；体型Clamp到0.5–2；独特武器可忽略天气/烟雾惩罚，Ideology启用时才按场所照明取偏移。",
+    "sources": [
+      {
+        "type": "Verse.ShotReport",
+        "member": "HitReportFor",
+        "line_start": 82,
+        "line_end": 161
+      }
+    ],
+    "values": {
+      "blind_smoke_factor": 0.7,
+      "target_size_min": 0.5,
+      "target_size_max": 2
+    }
+  },
+  {
+    "id": "CB04",
+    "kind": "static-derived",
+    "statement": "相邻八格掩体按方向与距离修正，阻挡概率以B+= (1-B)*b_i聚合；不是只取最大掩体或直接求和。全阻挡物作为角落掩体基准0.75，打开的门基准0。",
+    "sources": [
+      {
+        "type": "Verse.CoverUtility",
+        "member": "CalculateOverallBlockChance / TryFindAdjustedCoverInCell / BaseBlockChance",
+        "line_start": 29,
+        "line_end": 118
+      }
+    ],
+    "values": {
+      "angle_thresholds_degrees": [
+        15,
+        27,
+        40,
+        52,
+        65
+      ],
+      "angle_multipliers": [
+        1,
+        0.8,
+        0.6,
+        0.4,
+        0.2
+      ],
+      "diagonal_angle_multiplier": 1.75,
+      "near_cover_distance_thresholds": [
+        1.9,
+        2.9
+      ],
+      "near_cover_factors": [
+        0.3333,
+        0.66666
+      ],
+      "full_fill_cover": 0.75
+    }
+  },
+  {
+    "id": "CB05",
+    "kind": "static-derived",
+    "statement": "普通投射物发射将偏射和被掩体截住分开抽样；偏射检查使用忽略姿态的概率。强制偏移半径超过0.5时有单独落点路径；落点与碰撞标记决定可能误伤什么。",
+    "sources": [
+      {
+        "type": "Verse.Verb_LaunchProjectile",
+        "member": "TryCastShot",
+        "line_start": 120,
+        "line_end": 198
+      }
+    ],
+    "values": {
+      "forced_miss_branch_threshold": 0.5
+    }
+  },
+  {
+    "id": "CB06",
+    "kind": "static-derived",
+    "statement": "投射物有实际飞行tick与沿途拦截；体型影响路人拦截，卧倒路人另乘0.1，友伤受保护标志/难度修正；末端对4.5格以上卧倒目标再作0.5抽样。",
+    "sources": [
+      {
+        "type": "Verse.Projectile",
+        "member": "StartingTicksToImpact / Launch",
+        "line_start": 84,
+        "line_end": 95
+      },
+      {
+        "type": "Verse.Projectile",
+        "member": "Launch / TickInterval",
+        "line_start": 212,
+        "line_end": 268
+      },
+      {
+        "type": "Verse.Projectile",
+        "member": "CheckForFreeIntercept",
+        "line_start": 333,
+        "line_end": 414
+      },
+      {
+        "type": "Verse.Projectile",
+        "member": "CanHit / ImpactSomething",
+        "line_start": 449,
+        "line_end": 532
+      }
+    ],
+    "values": {
+      "incidental_pawn_intercept_base": 0.4,
+      "incidental_body_size_clamp": [
+        0.1,
+        2
+      ],
+      "incidental_prone_factor": 0.1,
+      "endpoint_prone_squared_distance": 20.25,
+      "endpoint_prone_factor": 0.5
+    }
+  },
+  {
+    "id": "CB07",
+    "kind": "static-derived",
+    "statement": "Bullet.Impact把伤害、穿透、方向、来源武器等封装为DamageInfo再交给TakeDamage；身体部位按存活部位覆盖权重及伤害类型修正抽取，并非固定头/躯干百分比。",
+    "sources": [
+      {
+        "type": "RimWorld.Bullet",
+        "member": "Impact",
+        "line_start": 12,
+        "line_end": 38
+      },
+      {
+        "type": "Verse.DamageWorker_AddInjury",
+        "member": "GetExactPartFromDamageInfo / ChooseHitPart",
+        "line_start": 338,
+        "line_end": 359
+      },
+      {
+        "type": "Verse.HediffSet",
+        "member": "GetRandomNotMissingPart",
+        "line_start": 982,
+        "line_end": 1005
+      }
+    ]
+  },
+  {
+    "id": "CB08",
+    "kind": "static-derived",
+    "statement": "护甲逐件处理覆盖受击部位的已穿装备，遍历顺序为WornApparel逆序，再处理自然护甲。有效值=max(护甲-穿透,0)；一次随机数落在前半区完全抵挡，次半区减半，否则全伤；减半锋利伤会改成钝伤，装备先承受本层输入伤害25%的随机舍入耐久损伤。此方法没有将有效护甲钳制为1。",
+    "sources": [
+      {
+        "type": "Verse.ArmorUtility",
+        "member": "GetPostArmorDamage / ApplyArmor",
+        "line_start": 13,
+        "line_end": 88
+      }
+    ],
+    "values": {
+      "deflect_threshold_factor": 0.5,
+      "armor_item_damage_factor": 0.25
+    }
+  },
+  {
+    "id": "CB09",
+    "kind": "static-derived",
+    "statement": "身体伤害在选部位和护甲后乘IncomingDamageFactor；之后仍有传播、外部部位保留及殖民者即死保护，不宜直接将武器伤害当作最后伤口严重度。",
+    "sources": [
+      {
+        "type": "Verse.DamageWorker_AddInjury",
+        "member": "ApplyDamageToPart",
+        "line_start": 142,
+        "line_end": 188
+      },
+      {
+        "type": "Verse.DamageWorker_AddInjury",
+        "member": "FinalizeAndAddInjury",
+        "line_start": 241,
+        "line_end": 268
+      },
+      {
+        "type": "Verse.DamageWorker_AddInjury",
+        "member": "ReduceDamageToPreserveOutsideParts",
+        "line_start": 369,
+        "line_end": 395
+      }
+    ]
+  },
+  {
+    "id": "CB10",
+    "kind": "static-derived",
+    "statement": "未止血伤口流血率=Severity*伤口类型bleedRate*物种因子*部位因子；已包扎、永久伤、硬质部位等分支不流血，伤龄达到按当前严重度计算的90000–180000 tick也会停止流血。",
+    "sources": [
+      {
+        "type": "Verse.Hediff_Injury",
+        "member": "BleedRate / AgeTicksToStopBleeding",
+        "line_start": 142,
+        "line_end": 188
+      }
+    ],
+    "values": {
+      "age_stop_tick_min": 90000,
+      "age_stop_tick_max": 180000,
+      "severity_interpolation_bounds": [
+        1,
+        30
+      ]
+    }
+  },
+  {
+    "id": "CB11",
+    "kind": "static-derived",
+    "statement": "全身流血把各Hediff流血率相加，乘阶段totalBleedFactor积并除HealthScale。常规60tick健康giver调用中，流血率>=0.1则增加BloodLoss严重度B*0.001，否则降低0.00033333333；这不表示所有极低出血率仍持续恶化。",
+    "sources": [
+      {
+        "type": "Verse.HediffSet",
+        "member": "CalculateBleedRate",
+        "line_start": 1299,
+        "line_end": 1325
+      },
+      {
+        "type": "Verse.Pawn_HealthTracker",
+        "member": "HealthTickInterval",
+        "line_start": 1258,
+        "line_end": 1275
+      },
+      {
+        "type": "Verse.HediffGiver_Bleeding",
+        "member": "OnIntervalPassed",
+        "line_start": 5,
+        "line_end": 15
+      }
+    ],
+    "values": {
+      "bleed_rate_threshold": 0.1,
+      "interval_ticks": 60,
+      "bleed_increment_multiplier": 0.001,
+      "recovery_per_interval": 0.00033333333
+    }
+  },
+  {
+    "id": "CB12",
+    "kind": "static-derived",
+    "statement": "基础治疗质量=clamp((医生MedicalTendQuality*药效+床位偏移)*自疗因子,0,药品质量上限)；无药药效0.3、上限0.7；无医生基础0.75；自疗乘0.7。每个伤情随后独立加[-0.25,0.25]浮动并再次钳制。",
+    "sources": [
+      {
+        "type": "RimWorld.TendUtility",
+        "member": "CalculateBaseTendQuality",
+        "line_start": 90,
+        "line_end": 110
+      },
+      {
+        "type": "Verse.HediffComp_TendDuration",
+        "member": "CompTended",
+        "line_start": 182,
+        "line_end": 199
+      }
+    ],
+    "values": {
+      "no_medicine_potency": 0.3,
+      "no_medicine_cap": 0.7,
+      "no_doctor_quality": 0.75,
+      "self_tend_multiplier": 0.7,
+      "quality_noise": [
+        -0.25,
+        0.25
+      ]
+    }
+  },
+  {
+    "id": "CB13",
+    "kind": "static-derived",
+    "statement": "一次DoTend只消耗一份药，可处理多个伤情；首先选最高治疗优先级项，若tendAllAtOnce则追加同类，若是用药处理伤口则追加总严重度不超过20的其他伤口。并非一药治所有，也不是固定一药一伤。",
+    "sources": [
+      {
+        "type": "RimWorld.TendUtility",
+        "member": "DoTend",
+        "line_start": 26,
+        "line_end": 43
+      },
+      {
+        "type": "RimWorld.TendUtility",
+        "member": "DoTend",
+        "line_start": 58,
+        "line_end": 71
+      },
+      {
+        "type": "RimWorld.TendUtility",
+        "member": "GetOptimalHediffsToTendWithSingleTreatment / SortByTendPriority",
+        "line_start": 113,
+        "line_end": 180
+      }
+    ],
+    "values": {
+      "injury_batch_severity_budget": 20,
+      "medicine_units_per_treatment": 1
+    }
+  },
+  {
+    "id": "CB14",
+    "kind": "static-derived",
+    "statement": "有限期护理的总有效tick=(baseHours+overlapHours)*2500；默认重叠3小时，余量小于重叠窗口时可再护理，再次护理累加剩余时长。baseHours<0表示永久护理。",
+    "sources": [
+      {
+        "type": "Verse.HediffCompProperties_TendDuration",
+        "member": "defaults / TendIsPermanent / TendTicksFull / TendTicksOverlap",
+        "line_start": 7,
+        "line_end": 62
+      },
+      {
+        "type": "Verse.HediffComp_TendDuration",
+        "member": "AllowTend",
+        "line_start": 56,
+        "line_end": 65
+      },
+      {
+        "type": "Verse.HediffComp_TendDuration",
+        "member": "CompTended",
+        "line_start": 182,
+        "line_end": 193
+      }
+    ],
+    "values": {
+      "default_overlap_hours": 3,
+      "ticks_per_hour": 2500
+    }
+  },
+  {
+    "id": "CB15",
+    "kind": "static-derived",
+    "statement": "每600tick的常规恢复检查在非饥饿条件下分别随机选一处自然可愈合伤和一处已护理可愈合伤；自然基础8/日，卧倒额外4/日并加床位值，护理加成8*(0.5+clamp01(Q))/日，再乘HealthScale与InjuryHealingFactor。不是每处伤口同时全速恢复。",
+    "sources": [
+      {
+        "type": "Verse.Pawn_HealthTracker",
+        "member": "HealthTickInterval",
+        "line_start": 1151,
+        "line_end": 1188
+      }
+    ],
+    "values": {
+      "interval_ticks": 600,
+      "natural_base_per_day": 8,
+      "lying_extra_per_day": 4,
+      "tend_base_per_day": 8,
+      "tend_quality_clamp": [
+        0,
+        1
+      ]
+    }
+  },
+  {
+    "id": "CB16",
+    "kind": "static-derived",
+    "statement": "伤口感染为两阶段：创建时按infectionChance抽是否进入延迟（动物乘0.1），延迟后按当前严重度、有效护理质量、首次/最近护理房间记录、难度等再抽；永久/硬质/人工部位有排除条件。不是每tick持续以15%掷骰。",
+    "sources": [
+      {
+        "type": "Verse.HediffComp_Infecter",
+        "member": "CompPostPostAdd",
+        "line_start": 35,
+        "line_end": 67
+      },
+      {
+        "type": "Verse.HediffComp_Infecter",
+        "member": "CompPostTickInterval / CompTended / CheckMakeInfection",
+        "line_start": 77,
+        "line_end": 134
+      }
+    ],
+    "values": {
+      "animal_initial_multiplier": 0.1,
+      "quality_curve": [
+        [
+          0,
+          0.7
+        ],
+        [
+          1,
+          0.4
+        ]
+      ],
+      "severity_curve": [
+        [
+          1,
+          0.1
+        ],
+        [
+          12,
+          1
+        ]
+      ]
+    }
+  },
+  {
+    "id": "CB17",
+    "kind": "static-derived",
+    "statement": "免疫每tick增量为疾病immunityPerDaySick*人物ImmunityGainSpeed*按疾病loadID与世界值固定种子的0.8–1.2因子/60000，非每tick重新漂移；未患病时改用immunityPerDayNotSick。非血肉不增加。",
+    "sources": [
+      {
+        "type": "Verse.ImmunityRecord",
+        "member": "ImmunityTickInterval / ImmunityChangePerTick",
+        "line_start": 21,
+        "line_end": 47
+      }
+    ],
+    "values": {
+      "ticks_per_day": 60000,
+      "per_instance_random_factor": [
+        0.8,
+        1.2
+      ],
+      "immunity_bounds": [
+        0,
+        1
+      ]
+    }
+  },
+  {
+    "id": "CB18",
+    "kind": "static-derived",
+    "statement": "免疫达到1后Immunizable改用免疫后严重度速率；护理严重度项独立贡献severityPerDayTended*实际质量。SeverityModifierBase按200tick增量把各项加到同一severityAdjustment。",
+    "sources": [
+      {
+        "type": "Verse.HediffComp_Immunizable",
+        "member": "FullyImmune",
+        "line_start": 40,
+        "line_end": 44
+      },
+      {
+        "type": "Verse.HediffComp_Immunizable",
+        "member": "CompPostPostAdd / SeverityChangePerDay",
+        "line_start": 103,
+        "line_end": 117
+      },
+      {
+        "type": "Verse.HediffComp_TendDuration",
+        "member": "SeverityChangePerDay",
+        "line_start": 164,
+        "line_end": 170
+      },
+      {
+        "type": "Verse.HediffComp_SeverityModifierBase",
+        "member": "CompPostTickInterval",
+        "line_start": 7,
+        "line_end": 18
+      }
+    ],
+    "values": {
+      "severity_interval_ticks": 200,
+      "per_day_fraction_per_update": 0.0033333334
+    }
+  },
+  {
+    "id": "CB19",
+    "kind": "static-derived",
+    "statement": "倒地由疼痛休克、能否保持清醒、移动能力及生命阶段等判定；死亡还考虑致死Hediff、必要能力、核心部位效率和累计伤害。非玩家部分单位倒地另有即时死亡判定，因此俘虏率并非仅由武器伤害决定。",
+    "sources": [
+      {
+        "type": "Verse.Pawn_HealthTracker",
+        "member": "CheckForStateChange",
+        "line_start": 518,
+        "line_end": 576
+      },
+      {
+        "type": "Verse.Pawn_HealthTracker",
+        "member": "ShouldBeDowned / ShouldBeDead / ShouldBeDeadFromRequiredCapacity / ShouldBeDeadFromLethalDamageThreshold",
+        "line_start": 642,
+        "line_end": 720
+      }
+    ]
+  },
+  {
+    "id": "CBX01",
+    "kind": "xml-declared",
+    "statement": "Core枪伤节点声明出血系数0.06、每严重度疼痛0.0125、初始感染资格概率0.15；这不是最终感染概率，也不含其他部位/物种/运行时修正。",
+    "sources": [
+      {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Injuries.xml",
+        "xpath": "/Defs/HediffDef[defName='Gunshot']",
+        "sha256": "643d0632e63678f0181c3894c9aa5aae647dbf1ee0ac29983ce898a88b33d91d"
+      }
+    ],
+    "values": {
+      "bleedRate": 0.06,
+      "painPerSeverity": 0.0125,
+      "infectionChance": 0.15
+    }
+  },
+  {
+    "id": "CBX02",
+    "kind": "xml-declared",
+    "statement": "Core三种药品直接statBases声明如下；不声称为任何Mod组合或运行时全部属性。",
+    "sources": [
+      {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Manufactured.xml",
+        "xpath": "/Defs/ThingDef[defName='MedicineHerbal']/statBases",
+        "sha256": "a13061a6b2ddf7d22e29583903a359fbe1a74c4a6b27ec634c4f054ed66a7f7a"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Manufactured.xml",
+        "xpath": "/Defs/ThingDef[defName='MedicineIndustrial']/statBases",
+        "sha256": "a13061a6b2ddf7d22e29583903a359fbe1a74c4a6b27ec634c4f054ed66a7f7a"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Manufactured.xml",
+        "xpath": "/Defs/ThingDef[defName='MedicineUltratech']/statBases",
+        "sha256": "a13061a6b2ddf7d22e29583903a359fbe1a74c4a6b27ec634c4f054ed66a7f7a"
+      }
+    ],
+    "values": {
+      "MedicineHerbal": {
+        "potency": 0.6,
+        "qualityMax": 0.7
+      },
+      "MedicineIndustrial": {
+        "potency": 1,
+        "qualityMax": 1
+      },
+      "MedicineUltratech": {
+        "potency": 1.6,
+        "qualityMax": 1.3
+      }
+    }
+  },
+  {
+    "id": "CBX03",
+    "kind": "xml-declared",
+    "statement": "WoundInfection直接声明未免疫严重度+0.84/日、免疫+0.6441/日、免疫后严重度-0.70/日、无病免疫-0.40/日、护理项-0.53*Q/日、基础护理12小时和致死严重度1；其InfectionBase祖先初始严重度0.001为显式定位声明。",
+    "sources": [
+      {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Infections.xml",
+        "xpath": "/Defs/HediffDef[defName='WoundInfection']",
+        "sha256": "6bb1cdbfb2eae169c588c7b6bf47468d900b89e33c29d8eebbf37855f6bccfa9"
+      },
+      {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Infections.xml",
+        "xpath": "/Defs/HediffDef[@Name='InfectionBase']/initialSeverity",
+        "sha256": "6bb1cdbfb2eae169c588c7b6bf47468d900b89e33c29d8eebbf37855f6bccfa9"
+      }
+    ],
+    "values": {
+      "severityPerDayNotImmune": 0.84,
+      "immunityPerDaySick": 0.6441,
+      "severityPerDayImmune": -0.7,
+      "immunityPerDayNotSick": -0.4,
+      "severityPerDayTended": -0.53,
+      "baseTendDurationHours": 12,
+      "lethalSeverity": 1,
+      "ancestorInitialSeverity": 0.001
+    }
+  },
+  {
+    "id": "CBX04",
+    "kind": "xml-declared",
+    "statement": "Flu直接声明未免疫严重度+0.2488/日、免疫+0.2388/日、免疫后严重度-0.4947/日、护理项-0.0773*Q/日与基础护理12小时。",
+    "sources": [
+      {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Infections.xml",
+        "xpath": "/Defs/HediffDef[defName='Flu']",
+        "sha256": "6bb1cdbfb2eae169c588c7b6bf47468d900b89e33c29d8eebbf37855f6bccfa9"
+      }
+    ],
+    "values": {
+      "severityPerDayNotImmune": 0.2488,
+      "immunityPerDaySick": 0.2388,
+      "severityPerDayImmune": -0.4947,
+      "severityPerDayTended": -0.0773,
+      "baseTendDurationHours": 12
+    }
+  },
+  {
+    "id": "CBX05",
+    "kind": "xml-declared",
+    "statement": "BloodLoss声明严重度1致死，0.15/0.30/0.45/0.60进入后续阶段，0.60阶段意识上限0.1。Human声明OrganicStandard giver集，而该集将HediffGiver_Bleeding接到BloodLoss。",
+    "sources": [
+      {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Global_Misc.xml",
+        "xpath": "/Defs/HediffDef[defName='BloodLoss']",
+        "sha256": "d3d38552d52b19273eef855e2d62e3155267b8176f640e6018c7d9a04c919d57"
+      },
+      {
+        "path": "Data/Core/Defs/HediffGiverSetDefs/HediffGiverSets.xml",
+        "xpath": "/Defs/HediffGiverSetDef[defName='OrganicStandard']/hediffGivers/li[@Class='HediffGiver_Bleeding']",
+        "sha256": "d4b0e53dc7bc5d54f15a3e870c6a3a9f36a2f434cb5b4023e5c995625cb55f44"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Races/Races_Humanlike.xml",
+        "xpath": "/Defs/ThingDef[defName='Human']/race/hediffGiverSets",
+        "sha256": "d95bb2236294115b32eeea1cb0f2edad0d255e7530b9a8c209a7e6c365a80bbf"
+      }
+    ],
+    "values": {
+      "lethalSeverity": 1,
+      "stageSeverity": [
+        0.15,
+        0.3,
+        0.45,
+        0.6
+      ],
+      "extremeConsciousnessCap": 0.1
+    }
+  },
+  {
+    "id": "CBX06",
+    "kind": "xml-declared",
+    "statement": "房间感染因子配置由Cleanliness曲线映射，点(-5,1),(0,0.5),(1,0.2)，无房间分数1；代码在护理发生时记录房间因子。",
+    "sources": [
+      {
+        "path": "Data/Core/Defs/Rooms/RoomStats.xml",
+        "xpath": "/Defs/RoomStatDef[defName='InfectionChanceFactor']",
+        "sha256": "5bac24103c894719dc665f4843afd7e7dbe2128d5d049b1be47e878cd7f85447"
+      }
+    ],
+    "values": {
+      "cleanliness_curve": [
+        [
+          -5,
+          1
+        ],
+        [
+          0,
+          0.5
+        ],
+        [
+          1,
+          0.2
+        ]
+      ],
+      "roomlessScore": 1
+    }
+  },
+  {
+    "id": "CBX07",
+    "kind": "xml-declared",
+    "statement": "人物射击精度有技能/身体偏移与后处理曲线，免疫速度有血液过滤、饥饿、疲劳、卧床与年龄修正配置；未追完整StatWorker，不能把单个技能值直接代入最终概率。",
+    "sources": [
+      {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_Combat.xml",
+        "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']",
+        "sha256": "62c56cdf89d32a9f7377b3fa03011b18b2270ebe4b38c188c31473333efd7aad"
+      },
+      {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_General.xml",
+        "xpath": "/Defs/StatDef[defName='ImmunityGainSpeed']",
+        "sha256": "ec1df1afb1f24c3d812b3224f803354b613a226e3934ea1e235c9b195181f507"
+      }
+    ],
+    "values": {
+      "shootingPostprocessExample": [
+        10,
+        0.97
+      ],
+      "immunityHungryFactor": 0.9,
+      "immunityStarvingFactor": 0.7,
+      "immunityExhaustedFactor": 0.8,
+      "immunityRestingFactor": 1.1
+    }
+  },
+  {
+    "id": "CBE01",
+    "kind": "inference",
+    "statement": "E01 命中估计与掩体组合：在明确固定输入与排除条件下由本轮静态公式计算，未运行原作。",
+    "sources": [
+      {
+        "type": "Verse.ShotReport",
+        "member": "AimOnTargetChance_StandardTarget / TotalEstimatedHitChance",
+        "line_start": 34,
+        "line_end": 78
+      },
+      {
+        "type": "Verse.ShotReport",
+        "member": "HitFactorFromShooter",
+        "line_start": 164,
+        "line_end": 196
+      },
+      {
+        "type": "Verse.CoverUtility",
+        "member": "CalculateOverallBlockChance / TryFindAdjustedCoverInCell / BaseBlockChance",
+        "line_start": 29,
+        "line_end": 118
+      }
+    ],
+    "values": {
+      "aim": 0.3480283794731181,
+      "oneCoverHitEstimate": 0.15661277076290314,
+      "twoCoverPass": 0.315,
+      "twoCoverHitEstimate": 0.10962893953403219
+    }
+  },
+  {
+    "id": "CBE02",
+    "kind": "inference",
+    "statement": "E02 单层护甲条件期望：在明确固定输入与排除条件下由本轮静态公式计算，未运行原作。",
+    "sources": [
+      {
+        "type": "Verse.ArmorUtility",
+        "member": "GetPostArmorDamage / ApplyArmor",
+        "line_start": 13,
+        "line_end": 88
+      }
+    ],
+    "values": {
+      "effectiveArmor": 0.7,
+      "fullBlockProbability": 0.35,
+      "halfDamageProbability": 0.35,
+      "fullDamageProbability": 0.3,
+      "conditionalExpectedDamage": 5.7,
+      "armorItemDamageBeforeRoll": 3
+    }
+  },
+  {
+    "id": "CBE03",
+    "kind": "inference",
+    "statement": "E03 草药护理质量及批处理：在明确固定输入与排除条件下由本轮静态公式计算，未运行原作。",
+    "sources": [
+      {
+        "type": "RimWorld.TendUtility",
+        "member": "CalculateBaseTendQuality",
+        "line_start": 90,
+        "line_end": 110
+      },
+      {
+        "type": "Verse.HediffComp_TendDuration",
+        "member": "CompTended",
+        "line_start": 182,
+        "line_end": 199
+      },
+      {
+        "type": "RimWorld.TendUtility",
+        "member": "DoTend",
+        "line_start": 26,
+        "line_end": 43
+      },
+      {
+        "type": "RimWorld.TendUtility",
+        "member": "DoTend",
+        "line_start": 58,
+        "line_end": 71
+      },
+      {
+        "type": "RimWorld.TendUtility",
+        "member": "GetOptimalHediffsToTendWithSingleTreatment / SortByTendPriority",
+        "line_start": 113,
+        "line_end": 180
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Manufactured.xml",
+        "xpath": "/Defs/ThingDef[defName='MedicineHerbal']/statBases",
+        "sha256": "a13061a6b2ddf7d22e29583903a359fbe1a74c4a6b27ec634c4f054ed66a7f7a"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Manufactured.xml",
+        "xpath": "/Defs/ThingDef[defName='MedicineIndustrial']/statBases",
+        "sha256": "a13061a6b2ddf7d22e29583903a359fbe1a74c4a6b27ec634c4f054ed66a7f7a"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Manufactured.xml",
+        "xpath": "/Defs/ThingDef[defName='MedicineUltratech']/statBases",
+        "sha256": "a13061a6b2ddf7d22e29583903a359fbe1a74c4a6b27ec634c4f054ed66a7f7a"
+      }
+    ],
+    "values": {
+      "baseQuality": 0.58,
+      "finalQualityRange": [
+        0.33,
+        0.7
+      ],
+      "selfTendBaseQuality": 0.406,
+      "selfTendQualityRange": [
+        0.156,
+        0.656
+      ],
+      "treatedSeverities": [
+        9,
+        8
+      ],
+      "remainingSeverities": [
+        6
+      ],
+      "medicineConsumed": 1
+    }
+  },
+  {
+    "id": "CBE04",
+    "kind": "inference",
+    "statement": "E04 两阶段伤口感染：在明确固定输入与排除条件下由本轮静态公式计算，未运行原作。",
+    "sources": [
+      {
+        "type": "Verse.HediffComp_Infecter",
+        "member": "CompPostPostAdd",
+        "line_start": 35,
+        "line_end": 67
+      },
+      {
+        "type": "Verse.HediffComp_Infecter",
+        "member": "CompPostTickInterval / CompTended / CheckMakeInfection",
+        "line_start": 77,
+        "line_end": 134
+      },
+      {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Injuries.xml",
+        "xpath": "/Defs/HediffDef[defName='Gunshot']",
+        "sha256": "643d0632e63678f0181c3894c9aa5aae647dbf1ee0ac29983ce898a88b33d91d"
+      },
+      {
+        "path": "Data/Core/Defs/Rooms/RoomStats.xml",
+        "xpath": "/Defs/RoomStatDef[defName='InfectionChanceFactor']",
+        "sha256": "5bac24103c894719dc665f4843afd7e7dbe2128d5d049b1be47e878cd7f85447"
+      }
+    ],
+    "values": {
+      "qualityFactor": 0.52,
+      "unconditionalInfectionProbability": 0.039,
+      "untendedProbability": 0.15,
+      "probabilityIfCurrentSeverity6": 0.019854545454545458
+    }
+  },
+  {
+    "id": "CBE05",
+    "kind": "inference",
+    "statement": "E05 固定伤势的出血与恢复：在明确固定输入与排除条件下由本轮静态公式计算，未运行原作。",
+    "sources": [
+      {
+        "type": "Verse.Hediff_Injury",
+        "member": "BleedRate / AgeTicksToStopBleeding",
+        "line_start": 142,
+        "line_end": 188
+      },
+      {
+        "type": "Verse.HediffSet",
+        "member": "CalculateBleedRate",
+        "line_start": 1299,
+        "line_end": 1325
+      },
+      {
+        "type": "Verse.Pawn_HealthTracker",
+        "member": "HealthTickInterval",
+        "line_start": 1258,
+        "line_end": 1275
+      },
+      {
+        "type": "Verse.HediffGiver_Bleeding",
+        "member": "OnIntervalPassed",
+        "line_start": 5,
+        "line_end": 15
+      },
+      {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Injuries.xml",
+        "xpath": "/Defs/HediffDef[defName='Gunshot']",
+        "sha256": "643d0632e63678f0181c3894c9aa5aae647dbf1ee0ac29983ce898a88b33d91d"
+      },
+      {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Global_Misc.xml",
+        "xpath": "/Defs/HediffDef[defName='BloodLoss']",
+        "sha256": "d3d38552d52b19273eef855e2d62e3155267b8176f640e6018c7d9a04c919d57"
+      },
+      {
+        "path": "Data/Core/Defs/HediffGiverSetDefs/HediffGiverSets.xml",
+        "xpath": "/Defs/HediffGiverSetDef[defName='OrganicStandard']/hediffGivers/li[@Class='HediffGiver_Bleeding']",
+        "sha256": "d4b0e53dc7bc5d54f15a3e870c6a3a9f36a2f434cb5b4023e5c995625cb55f44"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Races/Races_Humanlike.xml",
+        "xpath": "/Defs/ThingDef[defName='Human']/race/hediffGiverSets",
+        "sha256": "d95bb2236294115b32eeea1cb0f2edad0d255e7530b9a8c209a7e6c365a80bbf"
+      }
+    ],
+    "values": {
+      "bleedPerDay": 0.6,
+      "bloodLossPer60Tick": 0.0006,
+      "hoursToBloodLoss0_6IfConstant": 24,
+      "noBleedDaysToRecover0_6": 1.8
+    }
+  },
+  {
+    "id": "CBE06",
+    "kind": "inference",
+    "statement": "E06 伤口感染的严重度-免疫竞赛：在明确固定输入与排除条件下由本轮静态公式计算，未运行原作。",
+    "sources": [
+      {
+        "type": "Verse.ImmunityRecord",
+        "member": "ImmunityTickInterval / ImmunityChangePerTick",
+        "line_start": 21,
+        "line_end": 47
+      },
+      {
+        "type": "Verse.HediffComp_Immunizable",
+        "member": "FullyImmune",
+        "line_start": 40,
+        "line_end": 44
+      },
+      {
+        "type": "Verse.HediffComp_Immunizable",
+        "member": "CompPostPostAdd / SeverityChangePerDay",
+        "line_start": 103,
+        "line_end": 117
+      },
+      {
+        "type": "Verse.HediffComp_TendDuration",
+        "member": "SeverityChangePerDay",
+        "line_start": 164,
+        "line_end": 170
+      },
+      {
+        "type": "Verse.HediffComp_SeverityModifierBase",
+        "member": "CompPostTickInterval",
+        "line_start": 7,
+        "line_end": 18
+      },
+      {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Infections.xml",
+        "xpath": "/Defs/HediffDef[defName='WoundInfection']",
+        "sha256": "6bb1cdbfb2eae169c588c7b6bf47468d900b89e33c29d8eebbf37855f6bccfa9"
+      },
+      {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Infections.xml",
+        "xpath": "/Defs/HediffDef[@Name='InfectionBase']/initialSeverity",
+        "sha256": "6bb1cdbfb2eae169c588c7b6bf47468d900b89e33c29d8eebbf37855f6bccfa9"
+      }
+    ],
+    "values": {
+      "immuneDays": 1.5525539512498059,
+      "untendedLethalDays": 1.1892857142857143,
+      "tendedGrowthPerDay": 0.522,
+      "tendedLethalDaysWithoutImmunity": 1.9137931034482758,
+      "severityAtImmunity": 0.8114331625523987,
+      "minimumContinuousQualityToWinAtFactor1": 0.3708379245283019,
+      "minimumContinuousQualityToWinAtFactor0_8": 0.6136514716981132
+    }
+  }
+]

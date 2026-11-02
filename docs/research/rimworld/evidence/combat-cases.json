@@ -1,0 +1,170 @@
+[
+  {
+    "label": "E01 命中估计与掩体组合",
+    "inputs": {
+      "perCellAccuracy": 0.97,
+      "distance": 20,
+      "shooterDistanceMultiplier": 1,
+      "weaponFactor": 0.8,
+      "weatherFactor": 0.8,
+      "gasFactor": 1,
+      "size": 1,
+      "posture": 1,
+      "darknessOffset": 0,
+      "adjustedCoverBlocks": [
+        0.55,
+        0.3
+      ]
+    },
+    "expected": {
+      "aim": 0.3480283794731181,
+      "oneCoverHitEstimate": 0.15661277076290314,
+      "twoCoverPass": 0.315,
+      "twoCoverHitEstimate": 0.10962893953403219
+    },
+    "formula": "aim=0.97^20*0.8*0.8; one=aim*(1-0.55); two=aim*(1-0.55)*(1-0.30). Inputs are hypothetical finalized factors, not a named weapon or skill level; ignores path intercepts.",
+    "claims": [
+      "CB01",
+      "CB02",
+      "CB04"
+    ]
+  },
+  {
+    "label": "E02 单层护甲条件期望",
+    "inputs": {
+      "incomingDamage": 12,
+      "armor": 0.9,
+      "penetration": 0.2
+    },
+    "expected": {
+      "effectiveArmor": 0.7,
+      "fullBlockProbability": 0.35,
+      "halfDamageProbability": 0.35,
+      "fullDamageProbability": 0.3,
+      "conditionalExpectedDamage": 5.7,
+      "armorItemDamageBeforeRoll": 3
+    },
+    "formula": "e=max(0.9-0.2,0); E[D|reached layer]=12*(0.35*0.5+0.30); armor durability input=12*0.25. Other layers, body location and damage-protection branches excluded.",
+    "claims": [
+      "CB08"
+    ]
+  },
+  {
+    "label": "E03 草药护理质量及批处理",
+    "inputs": {
+      "doctorQuality": 0.8,
+      "potency": 0.6,
+      "bedOffset": 0.1,
+      "cap": 0.7,
+      "priorityOrderedInjuries": [
+        9,
+        8,
+        6
+      ]
+    },
+    "expected": {
+      "baseQuality": 0.58,
+      "finalQualityRange": [
+        0.33,
+        0.7
+      ],
+      "selfTendBaseQuality": 0.406,
+      "selfTendQualityRange": [
+        0.156,
+        0.656
+      ],
+      "treatedSeverities": [
+        9,
+        8
+      ],
+      "remainingSeverities": [
+        6
+      ],
+      "medicineConsumed": 1
+    },
+    "formula": "base=clamp(0.8*0.6+0.1,0,0.7); final=clamp(base+U[-0.25,0.25],0,0.7); self base=(0.8*0.6+0.1)*0.7; add injuries while accumulated severity<=20.",
+    "claims": [
+      "CB12",
+      "CB13",
+      "CBX02"
+    ]
+  },
+  {
+    "label": "E04 两阶段伤口感染",
+    "inputs": {
+      "initialGunshotChance": 0.15,
+      "currentSeverity": 12,
+      "tendQuality": 0.6,
+      "recordedRoomFactor": 0.5,
+      "difficultyFactor": 1,
+      "animal": false,
+      "eligibilitySurvives": true
+    },
+    "expected": {
+      "qualityFactor": 0.52,
+      "unconditionalInfectionProbability": 0.039,
+      "untendedProbability": 0.15,
+      "probabilityIfCurrentSeverity6": 0.019854545454545458
+    },
+    "formula": "P=0.15*1*0.5*(0.7-0.3*0.6)*1*1; severity6 factor=0.1+(6-1)*(1-0.1)/(12-1). Assumes wound remains until scheduled check, no regeneration/immunity exclusion.",
+    "claims": [
+      "CB16",
+      "CBX01",
+      "CBX06"
+    ]
+  },
+  {
+    "label": "E05 固定伤势的出血与恢复",
+    "inputs": {
+      "gunshotSeverity": 10,
+      "injuryBleedFactor": 0.06,
+      "raceFactor": 1,
+      "partFactor": 1,
+      "healthScale": 1,
+      "otherBleedFactor": 1,
+      "startBloodLoss": 0
+    },
+    "expected": {
+      "bleedPerDay": 0.6,
+      "bloodLossPer60Tick": 0.0006,
+      "hoursToBloodLoss0_6IfConstant": 24,
+      "noBleedDaysToRecover0_6": 1.8
+    },
+    "formula": "B=10*0.06; deltaLossPer60Tick=B*0.001; 60000/60 checks/day; recovery/day≈1000*0.00033333333. Fixed severity idealization excludes natural healing, age stop, tending, part modifiers and other injuries.",
+    "claims": [
+      "CB10",
+      "CB11",
+      "CBX01",
+      "CBX05"
+    ]
+  },
+  {
+    "label": "E06 伤口感染的严重度-免疫竞赛",
+    "inputs": {
+      "initialSeverity": 0.001,
+      "initialImmunity": 0,
+      "lethalSeverity": 1,
+      "severityPerDay": 0.84,
+      "tendSeverityFactor": -0.53,
+      "continuousActualQuality": 0.6,
+      "immunityPerDay": 0.6441,
+      "immunitySpeed": 1,
+      "instanceFactor": 1
+    },
+    "expected": {
+      "immuneDays": 1.5525539512498059,
+      "untendedLethalDays": 1.1892857142857143,
+      "tendedGrowthPerDay": 0.522,
+      "tendedLethalDaysWithoutImmunity": 1.9137931034482758,
+      "severityAtImmunity": 0.8114331625523987,
+      "minimumContinuousQualityToWinAtFactor1": 0.3708379245283019,
+      "minimumContinuousQualityToWinAtFactor0_8": 0.6136514716981132
+    },
+    "formula": "tI=1/(0.6441*speed*instanceFactor); tD=(1-0.001)/(0.84-0.53*Q); Qcrit=(0.84-(1-0.001)*0.6441*speed*instanceFactor)/0.53. Assumes continuously effective identical actual tend quality, constant stats, no other hediffs; continuous approximation of tick updates, not guaranteed survival threshold.",
+    "claims": [
+      "CB17",
+      "CB18",
+      "CBX03"
+    ]
+  }
+]

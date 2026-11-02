@@ -6,6 +6,8 @@
 
 在线试玩：[GitHub Pages](https://sqchenxiyuan.github.io/emberfield-web/) · 源码：[sqchenxiyuan/emberfield-web](https://github.com/sqchenxiyuan/emberfield-web)。
 
+原版机制研究见 [RimWorld 详细机制与复刻设计](docs/research/rimworld/README.md)：工作与预定、战斗与医疗、房间温度与电网、财富叙事与贸易，附版本哈希、公式、算例和未验证边界。研究对象是本地 `1.7.4980 rev60`，这些数值不代表当前Web版已经实现。运行 `npm run research:check` 可独立核对证据索引与算例。
+
 ## 启动
 
 在此目录执行，建议Node.js 22.12以上：

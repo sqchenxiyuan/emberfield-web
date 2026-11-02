@@ -1,0 +1,20 @@
+[
+  "RimWorld.JobGiver_Work",
+  "RimWorld.Pawn_WorkSettings",
+  "Verse.AI.ReservationManager",
+  "RimWorld.WorkGiver_Scanner",
+  "RimWorld.WorkGiver_HaulGeneral",
+  "RimWorld.WorkGiver_ConstructDeliverResources",
+  "Verse.AI.HaulAIUtility",
+  "Verse.AI.JobDriver_HaulToCell",
+  "RimWorld.StoreUtility",
+  "Verse.AI.Toils_Haul",
+  "Verse.AI.Pawn_PathFollower",
+  "Verse.PathFinder",
+  "Verse.Reachability",
+  "RimWorld.WorkGiver_DoBill",
+  "Verse.AI.ThinkNode_Priority",
+  "Verse.AI.Pawn_JobTracker",
+  "Verse.AI.PathGrid",
+  "Verse.PathFinderJob"
+]

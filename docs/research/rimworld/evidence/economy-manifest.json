@@ -1,0 +1,133 @@
+{
+  "evidence_id": "RW17-ECONOMY",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.WealthWatcher",
+      "local_file": ".local-research/economy/RimWorld.WealthWatcher.cs",
+      "sha256": "273dce0c7b6c6e598d68e60164f1cdb9e8d82fb3108f498e9b14330a529bfa33",
+      "lines": 263
+    },
+    {
+      "type": "RimWorld.StorytellerUtility",
+      "local_file": ".local-research/economy/RimWorld.StorytellerUtility.cs",
+      "sha256": "d61419fb1ea73896756e1b13f71b903d5ee292a4a6768500d48bb4e49b432957",
+      "lines": 437
+    },
+    {
+      "type": "RimWorld.StoryWatcher_Adaptation",
+      "local_file": ".local-research/economy/RimWorld.StoryWatcher_Adaptation.cs",
+      "sha256": "606addb3c4a68ff8436a4891d46451b7c1fef7b4a2c5dbed1478a9956eebe1f5",
+      "lines": 100
+    },
+    {
+      "type": "RimWorld.StoryWatcher_PopAdaptation",
+      "local_file": ".local-research/economy/RimWorld.StoryWatcher_PopAdaptation.cs",
+      "sha256": "11e9cc344184f66223dcc3a0b69270f878773866ee6b6d8a2f63482d04f5aa3e",
+      "lines": 52
+    },
+    {
+      "type": "RimWorld.IncidentWorker_Raid",
+      "local_file": ".local-research/economy/RimWorld.IncidentWorker_Raid.cs",
+      "sha256": "3baf9fed390521fff19a6bc6011c6a44e66b250d04cf6d8a8a3955cca9f39d60",
+      "lines": 374
+    },
+    {
+      "type": "RimWorld.IncidentWorker_RaidEnemy",
+      "local_file": ".local-research/economy/RimWorld.IncidentWorker_RaidEnemy.cs",
+      "sha256": "c98ed4fcaffe466b8ed5e8069be15b941e5a0e0e132e25d2244833bada2f9efc",
+      "lines": 175
+    },
+    {
+      "type": "RimWorld.PawnGroupMakerUtility",
+      "local_file": ".local-research/economy/RimWorld.PawnGroupMakerUtility.cs",
+      "sha256": "d26127c2696d7dda8dbd4732c68532b56194316c54d3710977e9b13f0d9aca83",
+      "lines": 383
+    },
+    {
+      "type": "RimWorld.TradeUtility",
+      "local_file": ".local-research/economy/RimWorld.TradeUtility.cs",
+      "sha256": "de12a556209ea51bb8f5a9196c0a2172d30c44a2022f3e11bbebba9c7ce19256",
+      "lines": 330
+    },
+    {
+      "type": "RimWorld.Tradeable",
+      "local_file": ".local-research/economy/RimWorld.Tradeable.cs",
+      "sha256": "520b439791a5e9943fe0be9b7a3c1dc78ff27654cadbfd5426133ec7ccd72ad2",
+      "lines": 526
+    },
+    {
+      "type": "RimWorld.StorytellerCompProperties_OnOffCycle",
+      "local_file": ".local-research/economy/RimWorld.StorytellerCompProperties_OnOffCycle.cs",
+      "sha256": "df43f30f4890a9a092d54871948a44c49afc0ea005b138797b37cd71fbb61c82",
+      "lines": 69
+    },
+    {
+      "type": "RimWorld.StorytellerComp_OnOffCycle",
+      "local_file": ".local-research/economy/RimWorld.StorytellerComp_OnOffCycle.cs",
+      "sha256": "0d96b3b7a23ddfe58dc43b86b16d97b939b49af997344e61c3ba9f4a0b6552f8",
+      "lines": 101
+    },
+    {
+      "type": "Verse.Map",
+      "local_file": ".local-research/economy/Verse.Map.cs",
+      "sha256": "b198e3b30c2c8ad7417404c54553a92e981bfe4c8807565163c86e0d3b45e099",
+      "lines": 1405
+    },
+    {
+      "type": "RimWorld.StorytellerDef",
+      "local_file": ".local-research/economy/RimWorld.StorytellerDef.cs",
+      "sha256": "daa3be4004bcf8209b4b319c3b3dfa36876a03f62f98a6d6335bef39de3876be",
+      "lines": 109
+    },
+    {
+      "type": "RimWorld.Difficulty",
+      "local_file": ".local-research/economy/RimWorld.Difficulty.cs",
+      "sha256": "013901f7cbcf33d5cf476e82a30dd1b4879c803e978bcc603fb152d7a0bb19e7",
+      "lines": 465
+    },
+    {
+      "type": "RimWorld.PriceTypeUtlity",
+      "local_file": ".local-research/economy/RimWorld.PriceTypeUtlity.cs",
+      "sha256": "712b64e4f8212feabcdc7e7c0b559fa2af6cc68e14df5edf6fadc7132821654a",
+      "lines": 41
+    },
+    {
+      "type": "RimWorld.PawnGenOption",
+      "local_file": ".local-research/economy/RimWorld.PawnGenOption.cs",
+      "sha256": "2bada5c4e7a876b8cb9543807734e2cb97f083c7245c85bfabcf11996a7e266a",
+      "lines": 25
+    },
+    {
+      "type": "RimWorld.PawnGroupKindWorker_Normal",
+      "local_file": ".local-research/economy/RimWorld.PawnGroupKindWorker_Normal.cs",
+      "sha256": "55167844e41a2e6e3e9cd03fca2920c5ec63c03332edfb7da06049b049b4f853",
+      "lines": 108
+    },
+    {
+      "type": "Verse.SimpleCurve",
+      "local_file": ".local-research/economy/Verse.SimpleCurve.cs",
+      "sha256": "cb4695789e5d965d616072ce05c75a3000a3ee53891da3db79e27e5319884617",
+      "lines": 287
+    },
+    {
+      "type": "RimWorld.IncidentCycleUtility",
+      "local_file": ".local-research/economy/RimWorld.IncidentCycleUtility.cs",
+      "sha256": "e75d5ad124dbb82a648c3088beba42ec28ad8b5b3b1e61c5a55fb5b52365945e",
+      "lines": 117
+    }
+  ]
+}

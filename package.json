@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "research:check": "node scripts/research/verify-research.mjs",
     "dev": "vite --host 127.0.0.1 --port 5178 --strictPort",
     "check": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",

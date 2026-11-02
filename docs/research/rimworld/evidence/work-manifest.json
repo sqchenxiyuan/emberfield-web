@@ -1,0 +1,127 @@
+{
+  "evidence_id": "RW17-WORK",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.JobGiver_Work",
+      "local_file": ".local-research/work/RimWorld.JobGiver_Work.cs",
+      "sha256": "f8c072215d7c295b934133ca0bca6bf075706c2f8ce11bc4066ea1eb8a42e60f",
+      "lines": 358
+    },
+    {
+      "type": "RimWorld.Pawn_WorkSettings",
+      "local_file": ".local-research/work/RimWorld.Pawn_WorkSettings.cs",
+      "sha256": "c0b2cb129f68f1fea5fc0d3afb9b217999ee9440ac4a4a2a94ef7af5d16c3aa0",
+      "lines": 281
+    },
+    {
+      "type": "Verse.AI.ReservationManager",
+      "local_file": ".local-research/work/Verse.AI.ReservationManager.cs",
+      "sha256": "c50e8c7de2866494b36e93cbdca0538cf1e911ab24a723c8d30df938068c1762",
+      "lines": 770
+    },
+    {
+      "type": "RimWorld.WorkGiver_Scanner",
+      "local_file": ".local-research/work/RimWorld.WorkGiver_Scanner.cs",
+      "sha256": "08b895a475c9f1044aed2ebcbcecca635e7fe95c1f7d0c50b1c43533fb1399f3",
+      "lines": 80
+    },
+    {
+      "type": "RimWorld.WorkGiver_HaulGeneral",
+      "local_file": ".local-research/work/RimWorld.WorkGiver_HaulGeneral.cs",
+      "sha256": "a41c16b1a8533357f27945723eef39736b6cff7b39578ee6bbd64be43a1ed7de",
+      "lines": 17
+    },
+    {
+      "type": "RimWorld.WorkGiver_ConstructDeliverResources",
+      "local_file": ".local-research/work/RimWorld.WorkGiver_ConstructDeliverResources.cs",
+      "sha256": "d56e9f6233e39792dc26e0380ad0ebe8626aad4cd5c0fdf6729847afc382d004",
+      "lines": 403
+    },
+    {
+      "type": "Verse.AI.HaulAIUtility",
+      "local_file": ".local-research/work/Verse.AI.HaulAIUtility.cs",
+      "sha256": "6276e39bb2fd29fc5989b84bc2424fc65b26e4cfcfd74b673d3686eec7d5ae59",
+      "lines": 379
+    },
+    {
+      "type": "Verse.AI.JobDriver_HaulToCell",
+      "local_file": ".local-research/work/Verse.AI.JobDriver_HaulToCell.cs",
+      "sha256": "e1511380cfa8c71d9d4d877e65cee439363a0c601de9d17b48ab58ca2dd1dcd1",
+      "lines": 157
+    },
+    {
+      "type": "RimWorld.StoreUtility",
+      "local_file": ".local-research/work/RimWorld.StoreUtility.cs",
+      "sha256": "b8241150a63e38993de851bdb82d06a8c6fbbb3359f1fdfb92b70bec3b5b960d",
+      "lines": 404
+    },
+    {
+      "type": "Verse.AI.Toils_Haul",
+      "local_file": ".local-research/work/Verse.AI.Toils_Haul.cs",
+      "sha256": "a2359a7c55a648b4304bd34fc2fccb59dcab10a50498f3e57b5d8b9894d2ea05",
+      "lines": 637
+    },
+    {
+      "type": "Verse.AI.Pawn_PathFollower",
+      "local_file": ".local-research/work/Verse.AI.Pawn_PathFollower.cs",
+      "sha256": "3131af1e4ea4bf68b5d4142843857e72d7f69205afe42e873d414e194ce83a9c",
+      "lines": 987
+    },
+    {
+      "type": "Verse.PathFinder",
+      "local_file": ".local-research/work/Verse.PathFinder.cs",
+      "sha256": "d38fc7509d072d88d56aeaaf542ec5c57f4c461c5212783edbcd25e1defcc67a",
+      "lines": 808
+    },
+    {
+      "type": "Verse.Reachability",
+      "local_file": ".local-research/work/Verse.Reachability.cs",
+      "sha256": "41cf46a8bd1825eff94190eb3337563a6e346775decf9f32c143b8372ea65123",
+      "lines": 550
+    },
+    {
+      "type": "RimWorld.WorkGiver_DoBill",
+      "local_file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+      "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+      "lines": 730
+    },
+    {
+      "type": "Verse.AI.ThinkNode_Priority",
+      "local_file": ".local-research/work/Verse.AI.ThinkNode_Priority.cs",
+      "sha256": "2975df8452390c5b188dce726b7bb0fad1de62b9b25746d667a4137fe590cd86",
+      "lines": 29
+    },
+    {
+      "type": "Verse.AI.Pawn_JobTracker",
+      "local_file": ".local-research/work/Verse.AI.Pawn_JobTracker.cs",
+      "sha256": "7934319bfedbd8a46aa54341a2afec9561efb469cd4fe58aec5745f9236fc5c4",
+      "lines": 1075
+    },
+    {
+      "type": "Verse.AI.PathGrid",
+      "local_file": ".local-research/work/Verse.AI.PathGrid.cs",
+      "sha256": "3ab1db721b82280c92d5bf7253b76e65a0b9fe4d1db03dd441e720d03f4d3d48",
+      "lines": 285
+    },
+    {
+      "type": "Verse.PathFinderJob",
+      "local_file": ".local-research/work/Verse.PathFinderJob.cs",
+      "sha256": "5aab959c39c4b9fbcd7e134b49a63bd71870a9fe376b80c7a50a7134916bd3e9",
+      "lines": 239
+    }
+  ]
+}

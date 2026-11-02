@@ -1,0 +1,159 @@
+[
+  {
+    "id": "ENV-E01", "kind": "static-derived",
+    "statement": "房间属性使用失效缓存；读取时按updatePriority降序更新，非ProperRoom或RegionCount>60使用roomlessScore，房间用途取最高评分。",
+    "sources": [{"type":"Verse.Room","member":"GetStat / UpdateRoomStatsAndRole","line_start":823,"line_end":879},{"type":"Verse.Room","member":"Notify_ContainedThingSpawnedOrDespawned / Notify_TerrainChanged","line_start":645,"line_end":670}],
+    "values": {"max_scored_region_count":60}
+  },
+  {
+    "id": "ENV-E02", "kind": "static-derived",
+    "statement": "温度室外判定为贴边或无顶格数>=ceil(面积*0.25)；工作室外判定为无顶>100或严格>面积*0.25；心理室外为无顶>=300或贴边且无顶比例>=0.5。",
+    "sources": [{"type":"Verse.Room","member":"UsesOutdoorTemperature","line_start":99,"line_end":108},{"type":"Verse.Room","member":"PsychologicallyOutdoors / OutdoorsForWork","line_start":378,"line_end":402}],
+    "values":{"thermal_unroofed_fraction":0.25,"work_unroofed_cell_limit_exclusive":100,"psychological_unroofed_cells_inclusive":300,"psychological_edge_fraction":0.5}
+  },
+  {
+    "id": "ENV-E03", "kind": "static-derived",
+    "statement": "房间财富累加房内及相邻建筑/植物的市场价*堆叠数和房间地面市场价，本方法不加入普通Item市场价。",
+    "sources":[{"type":"RimWorld.RoomStatWorker_Wealth","member":"GetScore","line_start":8,"line_end":24}]
+  },
+  {
+    "id": "ENV-E04", "kind": "static-derived",
+    "statement": "房间美观累加各格及指定相邻格CellBeauty，使用集合去重对象和相邻格；分母为CellCountCurve而非恒定面积。",
+    "sources":[{"type":"RimWorld.RoomStatWorker_Beauty","member":"CellCountCurve / GetScore","line_start":8,"line_end":45}],
+    "values":{"denominator_curve":[[0,20],[40,40],[100000,100000]]}
+  },
+  {
+    "id": "ENV-E05", "kind": "static-derived",
+    "statement": "空间分数为每Standable格1.4，否则WalkableByNormal格0.5，最高350；心理室外直接350。",
+    "sources":[{"type":"RimWorld.RoomStatWorker_Space","member":"GetScore","line_start":8,"line_end":26}],
+    "values":{"standable":1.4,"walkable_only":0.5,"cap":350}
+  },
+  {
+    "id": "ENV-E06", "kind": "static-derived",
+    "statement": "清洁度为建筑/物品/污物/植物清洁度*堆叠数加各格地面清洁度，再除以房间格数。",
+    "sources":[{"type":"RimWorld.RoomStatWorker_Cleanliness","member":"GetScore","line_start":8,"line_end":24}]
+  },
+  {
+    "id": "ENV-E07", "kind": "static-derived",
+    "statement": "豪华度将财富/1500、美观/3、空间/125、1+min(清洁度,0)/2.5作带符号对数变换；均值权重65%、最差项35%，超过空间因子5倍时再向该阈值插值75%，最后乘100。",
+    "sources":[{"type":"RimWorld.RoomStatWorker_Impressiveness","member":"GetScore / GetFactor","line_start":8,"line_end":35}],
+    "values":{"wealth_scale":1500,"beauty_scale":3,"space_scale":125,"cleanliness_scale":2.5,"minimum_weight":0.35,"space_threshold_multiplier":5,"space_penalty_weight":0.75,"output_scale":100}
+  },
+  {
+    "id": "ENV-E08", "kind": "xml-declared",
+    "statement": "Core声明豪华度阶段下界为20,30,40,50,65,85,120,170,240，首阶段未显式声明minScore；这不是心情加成表。",
+    "sources":[{"path":"Data/Core/Defs/Rooms/RoomStats.xml","xpath":"/Defs/RoomStatDef[defName='Impressiveness']/scoreStages","sha256":"5bac24103c894719dc665f4843afd7e7dbe2128d5d049b1be47e878cd7f85447"}],
+    "values":{"explicit_thresholds":[20,30,40,50,65,85,120,170,240]}
+  },
+  {
+    "id": "ENV-E09", "kind": "xml-declared",
+    "statement": "Core声明感染、手术、研究与房间食物中毒分别依赖清洁度曲线；这里只登记曲线节点，不认定最终系统概率或速度。",
+    "sources":[{"path":"Data/Core/Defs/Rooms/RoomStats.xml","xpath":"/Defs/RoomStatDef[defName='InfectionChanceFactor' or defName='SurgerySuccessChanceCleanlinessFactor' or defName='ResearchSpeedFactor' or defName='FoodPoisonChance']","sha256":"5bac24103c894719dc665f4843afd7e7dbe2128d5d049b1be47e878cd7f85447"}],
+    "values":{"infection":[[-5,1],[0,0.5],[1,0.2]],"surgery":[[-5,0.6],[0,1],[1,1.1],[5,1.15]],"research":[[-5,0.75],[-2.5,0.85],[0,1],[1,1.15]],"food_poison":[[-5,0.05],[-3.5,0.025],[-2,0]]}
+  },
+  {
+    "id": "ENV-E10", "kind": "static-derived",
+    "statement": "室内PushHeat按热量/房间格数改变房间温度；室外温度房间拒绝推热；温度设值裁剪至-273.15到1000。",
+    "sources":[{"type":"Verse.Room","member":"PushHeat","line_start":635,"line_end":642},{"type":"Verse.RoomTempTracker","member":"Temperature","line_start":48,"line_end":57}],
+    "values":{"temperature_min":-273.15,"temperature_max":1000}
+  },
+  {
+    "id": "ENV-E11", "kind": "static-derived",
+    "statement": "温控量先除以房间格数再按目标温差裁剪，加热与制冷各不反向；无房间或使用室外温度时返回0。",
+    "sources":[{"type":"Verse.GenTemperature","member":"ControlTemperatureTempChange","line_start":349,"line_end":365}]
+  },
+  {
+    "id": "ENV-E12", "kind": "static-derived",
+    "statement": "RoomTemperatureVacuum记录roomCell、temperature、vacuum及序列化方法；其自身不实现温度交换。",
+    "sources":[{"type":"RimWorld.Planet.RoomTemperatureVacuum","member":"Data / ExposeData","line_start":5,"line_end":26}]
+  },
+  {
+    "id": "ENV-E13", "kind": "static-derived",
+    "statement": "RoomTempEqualizeInterval常量120；普通室内EqualizeTemperature相加薄顶、无顶、墙体、厚顶四项，室外直接采用室外温度，门道单独处理；未追踪地图调度器实际调用。",
+    "sources":[{"type":"Verse.TemperatureTuning","member":"RoomTempEqualizeInterval","line_start":28,"line_end":28},{"type":"Verse.RoomTempTracker","member":"EqualizeTemperature","line_start":177,"line_end":212}],
+    "values":{"declared_interval_ticks":120}
+  },
+  {
+    "id": "ENV-E14", "kind": "static-derived",
+    "statement": "薄顶每次交换为调整后室外温差*比例*0.00005*120，无顶系数0.0007；超过100度的温差超出部分放大5倍；厚顶只对高于15度执行冷却，普通系数0.00005，地下生成器系数0.002。",
+    "sources":[{"type":"Verse.RoomTempTracker","member":"TempDiffFromOutdoorsAdjusted / ThinRoofEqualizationTempChangePerInterval / NoRoofEqualizationTempChangePerInterval / DeepEqualizationTempChangePerInterval","line_start":254,"line_end":296}],
+    "values":{"thin_roof_coefficient":0.00005,"no_roof_coefficient":0.0007,"difference_threshold":100,"difference_excess_multiplier":5,"deep_temperature":15,"deep_regular_coefficient":0.00005,"deep_underground_coefficient":0.002}
+  },
+  {
+    "id": "ENV-E15", "kind": "static-derived",
+    "statement": "墙体热交换从特定边界候选轮转抽样ceil(count*0.2)，普通环境取直接空气温差或0.5室外温差，平均后乘候选数*120*0.00017/房间格数；真空分支额外乘0.00005；本方法没有按墙体材料读取导热参数。",
+    "sources":[{"type":"Verse.RoomTempTracker","member":"RegenerateEqualizeCells","line_start":116,"line_end":174},{"type":"Verse.RoomTempTracker","member":"WallEqualizationTempChangePerInterval","line_start":215,"line_end":251}],
+    "values":{"sampling_fraction":0.2,"wall_factor":0.00017,"filled_cell_factor":0.5,"vacuum_factor":0.00005}
+  },
+  {
+    "id": "ENV-E16", "kind": "static-derived",
+    "statement": "建筑两侧/四周温度均衡使用不同房间温度的算术均值，再按每房间面积分摊并共同缩放防止过冲；真空且温度向下变化时另乘0.1。",
+    "sources":[{"type":"Verse.GenTemperature","member":"EqualizeTemperaturesThroughBuilding","line_start":368,"line_end":456}],
+    "values":{"vacuum_cooling_multiplier":0.1}
+  },
+  {
+    "id": "ENV-E17", "kind": "static-derived",
+    "statement": "温度调参类声明开门间隔34、关门间隔375、门交换率1、通风口交换率14；未展开门/通风口的真实调用条件。",
+    "sources":[{"type":"Verse.TemperatureTuning","member":"Door_TempEqualizeIntervalOpen / Door_TempEqualizeIntervalClosed / Door_TempEqualizeRate / Vent_TempEqualizeRate","line_start":30,"line_end":36}],
+    "values":{"open_door_interval":34,"closed_door_interval":375,"door_rate":1,"vent_rate":14}
+  },
+  {
+    "id": "ENV-E18", "kind": "xml-declared",
+    "statement": "Core Heater显式声明175W、热量+21、钢50/零部件1；Cooler为200W、热量-21、钢90/零部件3；两者均Rare ticker。",
+    "sources":[{"path":"Data/Core/Defs/ThingDefs_Buildings/Buildings_Temperature.xml","xpath":"/Defs/ThingDef[defName='Heater' or defName='Cooler']","sha256":"5a52378b24103968881042728e9a40639f010664ef46a37df20596c01bd4b1ec"}],
+    "values":{"heater":{"watts":175,"heat_per_second":21,"steel":50,"industrial_components":1},"cooler":{"watts":200,"heat_per_second":-21,"steel":90,"industrial_components":3}}
+  },
+  {
+    "id": "ENV-E19", "kind": "static-derived",
+    "statement": "温控属性代码默认目标21、可调上下限-50/50、低功耗倍率0.1；这些是默认属性值，应区别于Def解析后的有效值。",
+    "sources":[{"type":"RimWorld.CompProperties_TempControl","member":"defaultTargetTemperature / minTargetTemperature / maxTargetTemperature / lowPowerConsumptionFactor","line_start":7,"line_end":15}],
+    "values":{"default_target":21,"minimum_target":-50,"maximum_target":50,"low_power_factor":0.1}
+  },
+  {
+    "id": "ENV-E20", "kind": "static-derived",
+    "statement": "Heater在<=20度时效率1，20至120度线性降到0；每次TickRare热量为energyPerSecond*效率*4.1666665，温差非零使用全功耗，否则使用低功耗倍率。",
+    "sources":[{"type":"RimWorld.Building_Heater","member":"TickRare","line_start":10,"line_end":37}],
+    "values":{"efficiency_full_at":20,"efficiency_zero_at":120,"per_call_seconds_multiplier":4.1666665}
+  },
+  {
+    "id": "ENV-E21", "kind": "static-derived",
+    "statement": "Cooler效率为max(0,1-(H-min(C,40))/130)，未限制最高1；两侧不可通行时不工作；非零制冷时热侧推热为本轮未按目标裁剪的可用冷量绝对值*1.25。",
+    "sources":[{"type":"RimWorld.Building_Cooler","member":"TickRare","line_start":12,"line_end":53}],
+    "values":{"cold_reference_cap":40,"efficiency_difference_divisor":130,"exhaust_multiplier":1.25,"per_call_seconds_multiplier":4.1666665}
+  },
+  {
+    "id": "ENV-E22", "kind": "static-derived",
+    "statement": "RotRateAtTemperature低于0返回0，0至10线性T/10，>=10返回1；不等于完整物品腐烂时间计算。",
+    "sources":[{"type":"Verse.GenTemperature","member":"RotRateAtTemperature","line_start":459,"line_end":469}],
+    "values":{"freeze_temperature":0,"full_rate_temperature":10}
+  },
+  {
+    "id": "ENV-E23", "kind": "static-derived",
+    "statement": "电力每tick以PowerOutput*1.6666667E-05转换为Wd能量，电池显示单位Wd。",
+    "sources":[{"type":"RimWorld.CompPower","member":"WattsToWattDaysPerTick","line_start":20,"line_end":20},{"type":"RimWorld.CompPowerTrader","member":"EnergyOutputPerTick","line_start":72,"line_end":72},{"type":"RimWorld.CompPowerBattery","member":"CompInspectStringExtra","line_start":114,"line_end":121}],
+    "values":{"watts_to_watt_days_per_tick":0.000016666667}
+  },
+  {
+    "id": "ENV-E24", "kind": "xml-declared",
+    "statement": "Core Battery声明储量600Wd、效率0.5、钢70/零部件2，雨中短路和传导电力均true，且配置EMP击晕组件；代码默认1000容量不可当作此电池容量。",
+    "sources":[{"path":"Data/Core/Defs/ThingDefs_Buildings/Buildings_Power.xml","xpath":"/Defs/ThingDef[defName='Battery']","sha256":"f9213d01681e0d9082447c75a3d31113ba8e6b52f7595ef951d29ca624d0aaba"}],
+    "values":{"stored_energy_max_wd":600,"efficiency":0.5,"steel":70,"industrial_components":2,"short_circuit_in_rain":true,"transmits_power":true}
+  },
+  {
+    "id": "ENV-E25", "kind": "static-derived",
+    "statement": "电池每tick自耗5W对应能量，充电输入乘efficiency、放电直接扣储量；故障/EMP不接收充电，Breakdown清空储量；网络可用能量排除EMP但放电列表只筛储量>epsilon，应保留该运行边界。",
+    "sources":[{"type":"RimWorld.CompPowerBattery","member":"AmountCanAccept","line_start":15,"line_end":25},{"type":"RimWorld.CompPowerBattery","member":"CompTick / AddEnergy / DrawPower / ReceiveCompSignal","line_start":67,"line_end":110},{"type":"RimWorld.PowerNet","member":"CurrentStoredEnergy","line_start":198,"line_end":205},{"type":"RimWorld.PowerNet","member":"ChangeStoredEnergy","line_start":288,"line_end":305},{"type":"RimWorld.CompProperties_Battery","member":"storedEnergyMax / efficiency","line_start":5,"line_end":7}],
+    "values":{"self_discharge_watts":5,"class_default_capacity_wd":1000,"class_default_efficiency":0.5}
+  },
+  {
+    "id": "ENV-E26", "kind": "static-derived",
+    "statement": "网络正常结算门槛为本tick净能量+可用储量>=-1e-7且未禁电；启动按max(30,floor(200/n))间隔随机尝试约5%；电池储量>=0.1时启动缓冲减5Wd；不足或禁电每20tick随机尝试关闭约5%耗电设备。",
+    "sources":[{"type":"RimWorld.PowerNet","member":"CurrentEnergyGainRate / PowerNetTick","line_start":181,"line_end":270}],
+    "values":{"energy_epsilon":0.0000001,"startup_interval_numerator":200,"startup_min_interval":30,"device_fraction_per_attempt":0.05,"shutdown_interval":20,"startup_buffer_applies_at_wd":0.1,"startup_buffer_wd":5}
+  },
+  {
+    "id": "ENV-E27", "kind": "static-derived",
+    "statement": "电池充电列表先打乱，按最小可接受输入容量给所有未满电池均分，移除满电池后继续；不是按固定列表逐个充满。",
+    "sources":[{"type":"RimWorld.PowerNet","member":"DistributeEnergyAmongBatteries","line_start":323,"line_end":373}]
+  }
+]

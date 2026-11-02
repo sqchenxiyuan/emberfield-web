@@ -1,0 +1,139 @@
+{
+  "evidence_id": "RW17-COMBAT",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "Verse.ShotReport",
+      "local_file": ".local-research/combat/Verse.ShotReport.cs",
+      "sha256": "20f300a18370e264a1efed8dae742ba638c8a06e79bc9eaa0f8070a0c164c646",
+      "lines": 280
+    },
+    {
+      "type": "Verse.Verb_LaunchProjectile",
+      "local_file": ".local-research/combat/Verse.Verb_LaunchProjectile.cs",
+      "sha256": "150d00b4b865b34d2d80d6731937650aca98b9243e058332a4cc3416a6fd34a8",
+      "lines": 257
+    },
+    {
+      "type": "Verse.Projectile",
+      "local_file": ".local-research/combat/Verse.Projectile.cs",
+      "sha256": "954ae156e05b565467c61f72bebb48ebdf6a72e63c59b7fb2ef769390fb155d1",
+      "lines": 589
+    },
+    {
+      "type": "RimWorld.Bullet",
+      "local_file": ".local-research/combat/RimWorld.Bullet.cs",
+      "sha256": "5683d186a63fcb93648dd453b1d17a61ba8ded3675c6d892bc8391aec242d521",
+      "lines": 89
+    },
+    {
+      "type": "Verse.CoverUtility",
+      "local_file": ".local-research/combat/Verse.CoverUtility.cs",
+      "sha256": "64e8928cb8c63a4671b8c5c818a6af05aa62154097c31d33ced6e33b972e697b",
+      "lines": 160
+    },
+    {
+      "type": "Verse.DamageWorker_AddInjury",
+      "local_file": ".local-research/combat/Verse.DamageWorker_AddInjury.cs",
+      "sha256": "bb6e8b72dad8f745c7e0fff2f557fd03bfaa18ecfc0dc6ea591d7dadc18b1100",
+      "lines": 398
+    },
+    {
+      "type": "Verse.ArmorUtility",
+      "local_file": ".local-research/combat/Verse.ArmorUtility.cs",
+      "sha256": "a6f71511d3b60a873a20225e68411b1295f18f54e25d4aa83bbe55642df65d82",
+      "lines": 91
+    },
+    {
+      "type": "Verse.Hediff_Injury",
+      "local_file": ".local-research/combat/Verse.Hediff_Injury.cs",
+      "sha256": "757a36eda375abd98969faa765466478482c4d07b223b154d3fc72b5b261df8a",
+      "lines": 251
+    },
+    {
+      "type": "Verse.HediffSet",
+      "local_file": ".local-research/combat/Verse.HediffSet.cs",
+      "sha256": "8827fe0cf7ca719644ce2879d091d51ea97809f4806760a72f5f2e29de3a3a83",
+      "lines": 1392
+    },
+    {
+      "type": "RimWorld.TendUtility",
+      "local_file": ".local-research/combat/RimWorld.TendUtility.cs",
+      "sha256": "2b9ee74d83e14b10438f49e45654152fee2f5fe8c5923244f2a48169a2f456f5",
+      "lines": 184
+    },
+    {
+      "type": "Verse.HediffComp_TendDuration",
+      "local_file": ".local-research/combat/Verse.HediffComp_TendDuration.cs",
+      "sha256": "30120abcbe9e1f3bc8b83d04d22f04f77264cbd86877d952e596361d35762950",
+      "lines": 225
+    },
+    {
+      "type": "Verse.HediffComp_Immunizable",
+      "local_file": ".local-research/combat/Verse.HediffComp_Immunizable.cs",
+      "sha256": "2108dd043911287dd8f2432ab51a06a69f1da431f9fb1dfec2e659a3651c94f6",
+      "lines": 140
+    },
+    {
+      "type": "Verse.HediffComp_Infecter",
+      "local_file": ".local-research/combat/Verse.HediffComp_Infecter.cs",
+      "sha256": "5eb0cc2941c435b5f3031e41061b78af9e99aa8a27e2266c7fcce4305def6791",
+      "lines": 162
+    },
+    {
+      "type": "Verse.ImmunityRecord",
+      "local_file": ".local-research/combat/Verse.ImmunityRecord.cs",
+      "sha256": "ea200f9b5c8c27ec91c9d82dacc2144ac7bd22b9b947ab715626bfd4308a0d70",
+      "lines": 50
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "local_file": ".local-research/combat/Verse.Pawn_HealthTracker.cs",
+      "sha256": "13931efb22fe8cb3d9f274529d6558a20e144e96230a718df1e24e122a88c926",
+      "lines": 1400
+    },
+    {
+      "type": "Verse.HediffCompProperties_Immunizable",
+      "local_file": ".local-research/combat/Verse.HediffCompProperties_Immunizable.cs",
+      "sha256": "de2256b280fbcac68efc42c715a6c4e2e4e7cd56f7ee141f318223d35b7c9064",
+      "lines": 26
+    },
+    {
+      "type": "Verse.HediffCompProperties_Infecter",
+      "local_file": ".local-research/combat/Verse.HediffCompProperties_Infecter.cs",
+      "sha256": "47c7b25064bb83b5b6e5b3539be22b2ae34e27ed44bcefb135cf4f963548cbe0",
+      "lines": 12
+    },
+    {
+      "type": "Verse.HediffCompProperties_TendDuration",
+      "local_file": ".local-research/combat/Verse.HediffCompProperties_TendDuration.cs",
+      "sha256": "3a9a7175c70c2b6acf4d68291b5d21c5a2c6efe6ac3c0c26dcd35d45e9a2db58",
+      "lines": 71
+    },
+    {
+      "type": "Verse.HediffGiver_Bleeding",
+      "local_file": ".local-research/combat/Verse.HediffGiver_Bleeding.cs",
+      "sha256": "b41f335b6b704178b9050a5962fddd86f700f6bcfbfd23a7ac4cbf56d90c2c5c",
+      "lines": 18
+    },
+    {
+      "type": "Verse.HediffComp_SeverityModifierBase",
+      "local_file": ".local-research/combat/Verse.HediffComp_SeverityModifierBase.cs",
+      "sha256": "5a6168f546c26fe37c68dddd1516b3d3b4cb3c7e8321fd7053a2a39fee207e46",
+      "lines": 32
+    }
+  ]
+}

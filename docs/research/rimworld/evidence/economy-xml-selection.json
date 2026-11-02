@@ -1,0 +1,112 @@
+[
+  {
+    "id": "pointsFactorFromDaysPassed",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/pointsFactorFromDaysPassed/points/li"
+  },
+  {
+    "id": "adaptDaysLossFromColonistLostByPostPopulation",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/adaptDaysLossFromColonistLostByPostPopulation/points/li"
+  },
+  {
+    "id": "adaptDaysLossFromColonistViolentlyDownedByPopulation",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/adaptDaysLossFromColonistViolentlyDownedByPopulation/points/li"
+  },
+  {
+    "id": "adaptDaysGrowthRateCurve",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/adaptDaysGrowthRateCurve/points/li"
+  },
+  {
+    "id": "pointsFactorFromAdaptDays",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/pointsFactorFromAdaptDays/points/li"
+  },
+  {
+    "id": "adaptDaysMin",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/adaptDaysMin"
+  },
+  {
+    "id": "adaptDaysMax",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/adaptDaysMax"
+  },
+  {
+    "id": "adaptDaysGameStartGraceDays",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/adaptDaysGameStartGraceDays"
+  },
+  {
+    "id": "Cassandra-parent",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[defName='Cassandra']/@ParentName"
+  },
+  {
+    "id": "Phoebe-parent",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[defName='Phoebe']/@ParentName"
+  },
+  {
+    "id": "Randy-parent",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[defName='Randy']/@ParentName"
+  },
+  {
+    "id": "Peaceful-threatScale",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Peaceful']/threatScale"
+  },
+  {
+    "id": "Easy-threatScale",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Easy']/threatScale"
+  },
+  {
+    "id": "Medium-threatScale",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Medium']/threatScale"
+  },
+  {
+    "id": "Rough-threatScale",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Rough']/threatScale"
+  },
+  {
+    "id": "Hard-threatScale",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Hard']/threatScale"
+  },
+  {
+    "id": "Extreme-threatScale",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Extreme']/threatScale"
+  },
+  {
+    "id": "Rough-adaptationEffectFactor",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Rough']/adaptationEffectFactor"
+  },
+  {
+    "id": "Hard-adaptationEffectFactor",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Hard']/adaptationEffectFactor"
+  },
+  {
+    "id": "Extreme-adaptationEffectFactor",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Extreme']/adaptationEffectFactor"
+  },
+  {
+    "id": "Hard-tradePriceFactorLoss",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Hard']/tradePriceFactorLoss"
+  },
+  {
+    "id": "Extreme-tradePriceFactorLoss",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Extreme']/tradePriceFactorLoss"
+  }
+]

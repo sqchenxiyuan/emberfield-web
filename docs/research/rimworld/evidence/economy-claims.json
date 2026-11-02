@@ -1,0 +1,476 @@
+[
+  {
+    "id": "EC01",
+    "evidence_id": "RW17-ECONOMY",
+    "kind": "static-derived",
+    "statement": "基地正常模式的叙事财富为物品+0.5建筑+人物；固定财富模式和非基地地图另走分支。",
+    "sources": [
+      {
+        "type": "Verse.Map",
+        "member": "PlayerWealthForStoryteller",
+        "line_start": 412,
+        "line_end": 442
+      }
+    ],
+    "values": {
+      "building_factor": 0.5,
+      "map_random": 1
+    }
+  },
+  {
+    "id": "EC02",
+    "evidence_id": "RW17-ECONOMY",
+    "kind": "static-derived",
+    "statement": "建筑估值忽略当前HP；地板计入建筑；奴隶人物市值乘0.75；任务住客排除。",
+    "sources": [
+      {
+        "type": "RimWorld.WealthWatcher",
+        "member": "ForceRecount",
+        "line_start": 115,
+        "line_end": 171
+      }
+    ],
+    "values": {
+      "slave_factor": 0.75
+    }
+  },
+  {
+    "id": "EC03",
+    "evidence_id": "RW17-ECONOMY",
+    "kind": "static-derived",
+    "statement": "财富为按需缓存，Playing且严格大于5000 tick时自动重算；物品/迷雾/地基过滤见函数。",
+    "sources": [
+      {
+        "type": "RimWorld.WealthWatcher",
+        "member": "RecountIfNeeded",
+        "line_start": 107,
+        "line_end": 113
+      },
+      {
+        "type": "RimWorld.WealthWatcher",
+        "member": "CalculateWealthItems",
+        "line_start": 203,
+        "line_end": 217
+      },
+      {
+        "type": "RimWorld.WealthWatcher",
+        "member": "CalculateWealthFloors",
+        "line_start": 237,
+        "line_end": 261
+      }
+    ],
+    "values": {
+      "refresh_strictly_after_ticks": 5000
+    }
+  },
+  {
+    "id": "EC04",
+    "evidence_id": "RW17-ECONOMY",
+    "kind": "static-derived",
+    "statement": "基础威胁使用财富点+人口点后乘目标/适应/难度/日数，再裁到动态下限和10000。",
+    "sources": [
+      {
+        "type": "RimWorld.StorytellerUtility",
+        "member": "DefaultThreatPointsNow",
+        "line_start": 131,
+        "line_end": 189
+      },
+      {
+        "type": "RimWorld.StorytellerUtility",
+        "member": "PointsPerWealthCurve",
+        "line_start": 18,
+        "line_end": 25
+      },
+      {
+        "type": "RimWorld.StorytellerUtility",
+        "member": "PointsPerColonistByWealthCurve",
+        "line_start": 43,
+        "line_end": 49
+      }
+    ],
+    "values": {
+      "wealth_curve": [
+        [
+          0,
+          0
+        ],
+        [
+          14000,
+          0
+        ],
+        [
+          400000,
+          2400
+        ],
+        [
+          700000,
+          3600
+        ],
+        [
+          1000000,
+          4200
+        ]
+      ],
+      "colonist_curve": [
+        [
+          0,
+          15
+        ],
+        [
+          10000,
+          15
+        ],
+        [
+          400000,
+          140
+        ],
+        [
+          1000000,
+          200
+        ]
+      ],
+      "max_base_points": 10000
+    }
+  },
+  {
+    "id": "EC05",
+    "evidence_id": "RW17-ECONOMY",
+    "kind": "static-derived",
+    "statement": "人口贡献按类别确定，再经健康、容器、奴隶和条件年龄倍率；健康乘0.35+0.65H。",
+    "sources": [
+      {
+        "type": "RimWorld.StorytellerUtility",
+        "member": "DefaultThreatPointsNow",
+        "line_start": 131,
+        "line_end": 189
+      }
+    ],
+    "values": {
+      "health_lerp": 0.65,
+      "casket_factor": 0.3,
+      "combat_animal_power_factor": 0.08
+    }
+  },
+  {
+    "id": "EC06",
+    "evidence_id": "RW17-ECONOMY",
+    "kind": "static-derived",
+    "statement": "全局最低点数是按每2500tick种子在35和随天数变化的上限间取值；SimpleCurve端点外夹取。",
+    "sources": [
+      {
+        "type": "RimWorld.StorytellerUtility",
+        "member": "GlobalPointsMin",
+        "line_start": 98,
+        "line_end": 101
+      },
+      {
+        "type": "RimWorld.Difficulty",
+        "member": "minThreatPointsRangeCeilingCurveCached",
+        "line_start": 456,
+        "line_end": 462
+      },
+      {
+        "type": "Verse.SimpleCurve",
+        "member": "Evaluate",
+        "line_start": 139,
+        "line_end": 169
+      }
+    ],
+    "values": {
+      "min_floor": 35,
+      "seed_interval": 2500,
+      "min_curve_start_day": 12,
+      "min_curve_end_day": 35
+    }
+  },
+  {
+    "id": "EC07",
+    "evidence_id": "RW17-ECONOMY",
+    "kind": "static-derived",
+    "statement": "适应每半日更新，负值可在开局宽限期恢复；暴力倒地排队，与同tick失去去重。",
+    "sources": [
+      {
+        "type": "RimWorld.StoryWatcher_Adaptation",
+        "member": "Notify_PawnEvent",
+        "line_start": 24,
+        "line_end": 41
+      },
+      {
+        "type": "RimWorld.StoryWatcher_Adaptation",
+        "member": "ResolvePawnEvent",
+        "line_start": 43,
+        "line_end": 64
+      },
+      {
+        "type": "RimWorld.StoryWatcher_Adaptation",
+        "member": "AdaptationWatcherTick",
+        "line_start": 66,
+        "line_end": 83
+      }
+    ],
+    "values": {
+      "interval_ticks": 30000
+    }
+  },
+  {
+    "id": "EC08",
+    "evidence_id": "RW17-ECONOMY",
+    "kind": "xml-declared",
+    "statement": "基础叙事父定义声明适应范围-60至100、宽限30日、适应与伤亡曲线；继承/补丁未完全解析。",
+    "sources": [
+      {
+        "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+        "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/adaptDaysMin",
+        "sha256": "def397844c6f02595c447ad0f60f19edebecb84a6398e54e871a38b6fe8be0c5"
+      },
+      {
+        "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+        "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/adaptDaysMax",
+        "sha256": "def397844c6f02595c447ad0f60f19edebecb84a6398e54e871a38b6fe8be0c5"
+      },
+      {
+        "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+        "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/adaptDaysGameStartGraceDays",
+        "sha256": "def397844c6f02595c447ad0f60f19edebecb84a6398e54e871a38b6fe8be0c5"
+      },
+      {
+        "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+        "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/pointsFactorFromAdaptDays/points/li",
+        "sha256": "def397844c6f02595c447ad0f60f19edebecb84a6398e54e871a38b6fe8be0c5"
+      }
+    ],
+    "values": {
+      "min": -60,
+      "max": 100,
+      "grace_days": 30,
+      "adapt_curve": [
+        [
+          -30,
+          0.4
+        ],
+        [
+          0,
+          0.8
+        ],
+        [
+          30,
+          1
+        ],
+        [
+          60,
+          1.2
+        ],
+        [
+          120,
+          1.6
+        ],
+        [
+          180,
+          2
+        ]
+      ]
+    }
+  },
+  {
+    "id": "EC09",
+    "evidence_id": "RW17-ECONOMY",
+    "kind": "static-derived",
+    "statement": "OnOff周期使用1000tick区间、种子重建命中时间、约束间隔并裁剪接受比例；实际事件仍有CanFireNow筛选。",
+    "sources": [
+      {
+        "type": "RimWorld.IncidentCycleUtility",
+        "member": "IncidentCountThisInterval",
+        "line_start": 12,
+        "line_end": 50
+      },
+      {
+        "type": "RimWorld.IncidentCycleUtility",
+        "member": "GenerateHitList",
+        "line_start": 52,
+        "line_end": 85
+      },
+      {
+        "type": "RimWorld.IncidentCycleUtility",
+        "member": "DaysToIntervals",
+        "line_start": 112,
+        "line_end": 115
+      },
+      {
+        "type": "RimWorld.StorytellerComp_OnOffCycle",
+        "member": "GenerateIncident",
+        "line_start": 61,
+        "line_end": 88
+      }
+    ],
+    "values": {
+      "interval_ticks": 1000,
+      "intervals_per_day": 60
+    }
+  },
+  {
+    "id": "EC10",
+    "evidence_id": "RW17-ECONOMY",
+    "kind": "static-derived",
+    "statement": "袭击预算依次受到达、策略、年龄、世界层修正，至少达到策略最低点的1.05倍；特殊策略可自行生成。",
+    "sources": [
+      {
+        "type": "RimWorld.IncidentWorker_Raid",
+        "member": "TryGenerateRaidInfo",
+        "line_start": 70,
+        "line_end": 127
+      },
+      {
+        "type": "RimWorld.IncidentWorker_Raid",
+        "member": "AdjustedRaidPoints",
+        "line_start": 191,
+        "line_end": 211
+      }
+    ],
+    "values": {
+      "minimum_multiplier": 1.05
+    }
+  },
+  {
+    "id": "EC11",
+    "evidence_id": "RW17-ECONOMY",
+    "kind": "static-derived",
+    "statement": "组队以combatPower为基础成本，过滤剩余点与限制后按加权随机逐次扣费；不是固定点数除平均单价。",
+    "sources": [
+      {
+        "type": "RimWorld.PawnGenOption",
+        "member": "Cost",
+        "line_start": 12,
+        "line_end": 12
+      },
+      {
+        "type": "RimWorld.PawnGroupMakerUtility",
+        "member": "ChoosePawnGenOptionsByPoints",
+        "line_start": 225,
+        "line_end": 272
+      },
+      {
+        "type": "RimWorld.PawnGroupMakerUtility",
+        "member": "MaxPawnCost",
+        "line_start": 274,
+        "line_end": 291
+      },
+      {
+        "type": "RimWorld.PawnGroupMakerUtility",
+        "member": "TryGetRandomFactionForCombatPawnGroupWeighted",
+        "line_start": 365,
+        "line_end": 381
+      },
+      {
+        "type": "RimWorld.PawnGroupMakerUtility",
+        "member": "PawnWeightFactorByMostExpensivePawnCostFractionCurve",
+        "line_start": 13,
+        "line_end": 18
+      }
+    ],
+    "values": {
+      "cost_weight_curve": [
+        [
+          0.2,
+          0.01
+        ],
+        [
+          0.3,
+          0.3
+        ],
+        [
+          0.5,
+          1
+        ]
+      ],
+      "recent_faction_factor": 0.4
+    }
+  },
+  {
+    "id": "EC12",
+    "evidence_id": "RW17-ECONOMY",
+    "kind": "static-derived",
+    "statement": "银币路径基础买价1.4卖价0.6，买卖最低0.5/0.01，超过99.5时单价取整，其他修正乘加顺序见公式。",
+    "sources": [
+      {
+        "type": "RimWorld.TradeUtility",
+        "member": "GetPricePlayerSell",
+        "line_start": 256,
+        "line_end": 271
+      },
+      {
+        "type": "RimWorld.TradeUtility",
+        "member": "GetPricePlayerBuy",
+        "line_start": 273,
+        "line_end": 283
+      }
+    ],
+    "values": {
+      "buy_factor": 1.4,
+      "sell_factor": 0.6,
+      "buy_min": 0.5,
+      "sell_min": 0.01,
+      "round_above": 99.5
+    }
+  },
+  {
+    "id": "EC13",
+    "evidence_id": "RW17-ECONOMY",
+    "kind": "static-derived",
+    "statement": "商人价格档倍率0.4/0.7/1/2/5；会话最终卖价不超过买价，货币走等价分支。",
+    "sources": [
+      {
+        "type": "RimWorld.PriceTypeUtlity",
+        "member": "PriceMultiplier",
+        "line_start": 8,
+        "line_end": 19
+      },
+      {
+        "type": "RimWorld.Tradeable",
+        "member": "InitPriceDataIfNeeded",
+        "line_start": 250,
+        "line_end": 294
+      }
+    ],
+    "values": {
+      "price_multipliers": [
+        0.4,
+        0.7,
+        1,
+        2,
+        5
+      ]
+    }
+  },
+  {
+    "id": "EC14",
+    "evidence_id": "RW17-ECONOMY",
+    "kind": "xml-declared",
+    "statement": "六档预设的声明threatScale为0.10/0.30/0.60/1/1.55/2.2；Hard/Extreme交易损失为0.10/0.20。",
+    "sources": [
+      {
+        "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+        "xpath": "/Defs/DifficultyDef/threatScale",
+        "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90"
+      },
+      {
+        "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+        "xpath": "/Defs/DifficultyDef[defName='Hard' or defName='Extreme']/tradePriceFactorLoss",
+        "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90"
+      }
+    ],
+    "values": {
+      "threat_scales": [
+        0.1,
+        0.3,
+        0.6,
+        1,
+        1.55,
+        2.2
+      ],
+      "trade_losses": [
+        0.1,
+        0.2
+      ]
+    }
+  }
+]

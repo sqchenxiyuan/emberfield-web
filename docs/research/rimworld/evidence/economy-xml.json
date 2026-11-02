@@ -1,0 +1,219 @@
+[
+  {
+    "id": "pointsFactorFromDaysPassed",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/pointsFactorFromDaysPassed/points/li",
+    "sha256": "def397844c6f02595c447ad0f60f19edebecb84a6398e54e871a38b6fe8be0c5",
+    "values": [
+      "(10, 0.70)",
+      "(40, 1.00)"
+    ]
+  },
+  {
+    "id": "adaptDaysLossFromColonistLostByPostPopulation",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/adaptDaysLossFromColonistLostByPostPopulation/points/li",
+    "sha256": "def397844c6f02595c447ad0f60f19edebecb84a6398e54e871a38b6fe8be0c5",
+    "values": [
+      "( 0, 30)",
+      "(11, 30)",
+      "(20, 20)"
+    ]
+  },
+  {
+    "id": "adaptDaysLossFromColonistViolentlyDownedByPopulation",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/adaptDaysLossFromColonistViolentlyDownedByPopulation/points/li",
+    "sha256": "def397844c6f02595c447ad0f60f19edebecb84a6398e54e871a38b6fe8be0c5",
+    "values": [
+      "(1,  8)",
+      "(2,  6)",
+      "(3,  6)",
+      "(11, 5)",
+      "(20, 3.5)"
+    ]
+  },
+  {
+    "id": "adaptDaysGrowthRateCurve",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/adaptDaysGrowthRateCurve/points/li",
+    "sha256": "def397844c6f02595c447ad0f60f19edebecb84a6398e54e871a38b6fe8be0c5",
+    "values": [
+      "(-30.01, 6)",
+      "(-30,    3)",
+      "(-0.01,  3)",
+      "(0,      1)",
+      "(59.99,  1)",
+      "(60,     0.5)",
+      "(119.99, 0.5)",
+      "(120,    0.25)"
+    ]
+  },
+  {
+    "id": "pointsFactorFromAdaptDays",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/pointsFactorFromAdaptDays/points/li",
+    "sha256": "def397844c6f02595c447ad0f60f19edebecb84a6398e54e871a38b6fe8be0c5",
+    "values": [
+      "(-30, 0.40)",
+      "(  0, 0.80)",
+      "( 30, 1.00)",
+      "( 60, 1.20)",
+      "(120, 1.60)",
+      "(180, 2.00)"
+    ]
+  },
+  {
+    "id": "adaptDaysMin",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/adaptDaysMin",
+    "sha256": "def397844c6f02595c447ad0f60f19edebecb84a6398e54e871a38b6fe8be0c5",
+    "values": [
+      "-60"
+    ]
+  },
+  {
+    "id": "adaptDaysMax",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/adaptDaysMax",
+    "sha256": "def397844c6f02595c447ad0f60f19edebecb84a6398e54e871a38b6fe8be0c5",
+    "values": [
+      "100"
+    ]
+  },
+  {
+    "id": "adaptDaysGameStartGraceDays",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[@Name='BaseStoryteller']/adaptDaysGameStartGraceDays",
+    "sha256": "def397844c6f02595c447ad0f60f19edebecb84a6398e54e871a38b6fe8be0c5",
+    "values": [
+      "30"
+    ]
+  },
+  {
+    "id": "Cassandra-parent",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[defName='Cassandra']/@ParentName",
+    "sha256": "def397844c6f02595c447ad0f60f19edebecb84a6398e54e871a38b6fe8be0c5",
+    "values": [
+      "BaseStoryteller"
+    ]
+  },
+  {
+    "id": "Phoebe-parent",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[defName='Phoebe']/@ParentName",
+    "sha256": "def397844c6f02595c447ad0f60f19edebecb84a6398e54e871a38b6fe8be0c5",
+    "values": [
+      "BaseStoryteller"
+    ]
+  },
+  {
+    "id": "Randy-parent",
+    "path": "Data/Core/Defs/Storyteller/Storytellers.xml",
+    "xpath": "/Defs/StorytellerDef[defName='Randy']/@ParentName",
+    "sha256": "def397844c6f02595c447ad0f60f19edebecb84a6398e54e871a38b6fe8be0c5",
+    "values": [
+      "BaseStoryteller"
+    ]
+  },
+  {
+    "id": "Peaceful-threatScale",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Peaceful']/threatScale",
+    "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90",
+    "values": [
+      "0.10"
+    ]
+  },
+  {
+    "id": "Easy-threatScale",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Easy']/threatScale",
+    "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90",
+    "values": [
+      "0.30"
+    ]
+  },
+  {
+    "id": "Medium-threatScale",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Medium']/threatScale",
+    "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90",
+    "values": [
+      "0.60"
+    ]
+  },
+  {
+    "id": "Rough-threatScale",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Rough']/threatScale",
+    "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90",
+    "values": [
+      "1"
+    ]
+  },
+  {
+    "id": "Hard-threatScale",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Hard']/threatScale",
+    "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90",
+    "values": [
+      "1.55"
+    ]
+  },
+  {
+    "id": "Extreme-threatScale",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Extreme']/threatScale",
+    "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90",
+    "values": [
+      "2.2"
+    ]
+  },
+  {
+    "id": "Rough-adaptationEffectFactor",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Rough']/adaptationEffectFactor",
+    "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90",
+    "values": [
+      "0.9"
+    ]
+  },
+  {
+    "id": "Hard-adaptationEffectFactor",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Hard']/adaptationEffectFactor",
+    "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90",
+    "values": [
+      "0.7"
+    ]
+  },
+  {
+    "id": "Extreme-adaptationEffectFactor",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Extreme']/adaptationEffectFactor",
+    "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90",
+    "values": [
+      "0.4"
+    ]
+  },
+  {
+    "id": "Hard-tradePriceFactorLoss",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Hard']/tradePriceFactorLoss",
+    "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90",
+    "values": [
+      "0.10"
+    ]
+  },
+  {
+    "id": "Extreme-tradePriceFactorLoss",
+    "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+    "xpath": "/Defs/DifficultyDef[defName='Extreme']/tradePriceFactorLoss",
+    "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90",
+    "values": [
+      "0.20"
+    ]
+  }
+]

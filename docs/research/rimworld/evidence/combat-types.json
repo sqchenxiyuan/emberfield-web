@@ -1,0 +1,22 @@
+[
+  "Verse.ShotReport",
+  "Verse.Verb_LaunchProjectile",
+  "Verse.Projectile",
+  "RimWorld.Bullet",
+  "Verse.CoverUtility",
+  "Verse.DamageWorker_AddInjury",
+  "Verse.ArmorUtility",
+  "Verse.Hediff_Injury",
+  "Verse.HediffSet",
+  "RimWorld.TendUtility",
+  "Verse.HediffComp_TendDuration",
+  "Verse.HediffComp_Immunizable",
+  "Verse.HediffComp_Infecter",
+  "Verse.ImmunityRecord",
+  "Verse.Pawn_HealthTracker",
+  "Verse.HediffCompProperties_Immunizable",
+  "Verse.HediffCompProperties_Infecter",
+  "Verse.HediffCompProperties_TendDuration",
+  "Verse.HediffGiver_Bleeding",
+  "Verse.HediffComp_SeverityModifierBase"
+]

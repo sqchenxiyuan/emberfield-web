@@ -1,0 +1,139 @@
+{
+  "evidence_id": "RW17-ENVIRONMENT",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "Verse.Room",
+      "local_file": ".local-research/environment/Verse.Room.cs",
+      "sha256": "ef3f3f189635902d370aa88117c8d0d0e3bfd7c5d6b88ec6302e6843d296e53d",
+      "lines": 946
+    },
+    {
+      "type": "RimWorld.RoomStatWorker_Impressiveness",
+      "local_file": ".local-research/environment/RimWorld.RoomStatWorker_Impressiveness.cs",
+      "sha256": "83d6ba80161aa4e00dd5c8ca9142d3a83210d95d2607356cbe063c15305b1661",
+      "lines": 38
+    },
+    {
+      "type": "RimWorld.RoomStatWorker_Beauty",
+      "local_file": ".local-research/environment/RimWorld.RoomStatWorker_Beauty.cs",
+      "sha256": "99de19ace9dfdf2cdeca4860090225a392547ea9a15d919b2ebdc5aea285b04d",
+      "lines": 48
+    },
+    {
+      "type": "RimWorld.RoomStatWorker_Cleanliness",
+      "local_file": ".local-research/environment/RimWorld.RoomStatWorker_Cleanliness.cs",
+      "sha256": "e799847fe064ac93ce130cd718df3a25115f50515f11be04af8ead56c5228f4f",
+      "lines": 27
+    },
+    {
+      "type": "RimWorld.RoomStatWorker_Space",
+      "local_file": ".local-research/environment/RimWorld.RoomStatWorker_Space.cs",
+      "sha256": "2c6fff3aa03737aaec797b336ecf029e33a88ff970744b0056b6cab4c49d47c9",
+      "lines": 29
+    },
+    {
+      "type": "RimWorld.RoomStatWorker_Wealth",
+      "local_file": ".local-research/environment/RimWorld.RoomStatWorker_Wealth.cs",
+      "sha256": "e0225a654f3a31e3875caade64b3e56544c60a22f5886fd459c7c283d373db87",
+      "lines": 27
+    },
+    {
+      "type": "Verse.GenTemperature",
+      "local_file": ".local-research/environment/Verse.GenTemperature.cs",
+      "sha256": "4d8eca83fcc99ebeeeace9696c7be0761a078aa6578a2cc5033cca0fd24b0fc1",
+      "lines": 534
+    },
+    {
+      "type": "RimWorld.Planet.RoomTemperatureVacuum",
+      "local_file": ".local-research/environment/RimWorld.Planet.RoomTemperatureVacuum.cs",
+      "sha256": "fd121f32ee012c82f4b4c8553baebb45202bd800df5c4cf1a3b9e94191f95b1d",
+      "lines": 29
+    },
+    {
+      "type": "RimWorld.CompTempControl",
+      "local_file": ".local-research/environment/RimWorld.CompTempControl.cs",
+      "sha256": "4a5a8af2026ad4d000e93606decdfbc90772943fcd95a596403261c09a5bb1bb",
+      "lines": 153
+    },
+    {
+      "type": "RimWorld.Building_Heater",
+      "local_file": ".local-research/environment/RimWorld.Building_Heater.cs",
+      "sha256": "cb5f99330a232df8ac6d36e5b1b5c37d540c51137dfa780ecda3ef8111c63114",
+      "lines": 41
+    },
+    {
+      "type": "RimWorld.Building_Cooler",
+      "local_file": ".local-research/environment/RimWorld.Building_Cooler.cs",
+      "sha256": "e70c807c1b6d43a7b5f7b5a4d52b5ee12c2a4f3857c315cdff221e1b1e0dd4ef",
+      "lines": 56
+    },
+    {
+      "type": "RimWorld.CompProperties_Power",
+      "local_file": ".local-research/environment/RimWorld.CompProperties_Power.cs",
+      "sha256": "c02e66c7408866fa2df7ba68247fd7be04bc0b8cf747fcc2c23db131861ace29",
+      "lines": 70
+    },
+    {
+      "type": "RimWorld.CompPowerTrader",
+      "local_file": ".local-research/environment/RimWorld.CompPowerTrader.cs",
+      "sha256": "b5d1df5ea12e1e030fc5fbf5cbe2e90780fc6a8a42a738eaaef6b45ee9263708",
+      "lines": 330
+    },
+    {
+      "type": "RimWorld.CompPowerBattery",
+      "local_file": ".local-research/environment/RimWorld.CompPowerBattery.cs",
+      "sha256": "27f110f60e70176aacb61bd072a977cd1399c6c03a940660e3ce31f90df4001c",
+      "lines": 151
+    },
+    {
+      "type": "RimWorld.PowerNet",
+      "local_file": ".local-research/environment/RimWorld.PowerNet.cs",
+      "sha256": "cd05e1399473807bca48f2dd81e7a24833a71036c21f7ece23abddc838bee4d4",
+      "lines": 407
+    },
+    {
+      "type": "Verse.RoomTempTracker",
+      "local_file": ".local-research/environment/Verse.RoomTempTracker.cs",
+      "sha256": "5d590e5c4ef0d2bded8057c5cec2b6a94623ba04d606adccf88e5c33675b202a",
+      "lines": 326
+    },
+    {
+      "type": "Verse.TemperatureTuning",
+      "local_file": ".local-research/environment/Verse.TemperatureTuning.cs",
+      "sha256": "216ccbb00311de079bfaa94c441bb02954003e81312a323b5d25558856b614cf",
+      "lines": 46
+    },
+    {
+      "type": "RimWorld.CompProperties_Battery",
+      "local_file": ".local-research/environment/RimWorld.CompProperties_Battery.cs",
+      "sha256": "54ea3f71433ff5f2d853d3f48d1a60e563ee8d71036e7ebdbf12876aea22c6b4",
+      "lines": 14
+    },
+    {
+      "type": "RimWorld.CompProperties_TempControl",
+      "local_file": ".local-research/environment/RimWorld.CompProperties_TempControl.cs",
+      "sha256": "238f4822640b1c75ccc7cacfe9138078df8c73ce60a081896573a8c7225323c1",
+      "lines": 25
+    },
+    {
+      "type": "RimWorld.CompPower",
+      "local_file": ".local-research/environment/RimWorld.CompPower.cs",
+      "sha256": "01ddcfbb57e95ff746eb9a0cad13a27c3d983db7c3e7bd6f209508e3670a3cc1",
+      "lines": 252
+    }
+  ]
+}

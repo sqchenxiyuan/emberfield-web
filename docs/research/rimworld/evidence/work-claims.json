@@ -1,0 +1,175 @@
+[
+  {
+    "id": "RW17-WORK-01",
+    "kind": "static-derived",
+    "statement": "已启用工作类型按 naturalPriority + (4-manualPriority)*100000 降序缓存；禁用值为0，普通手动优先级1最高、4最低。",
+    "sources": [{"type":"RimWorld.Pawn_WorkSettings","member":"SetPriority / CacheWorkGiversInOrder","line_start":140,"line_end":157},{"type":"RimWorld.Pawn_WorkSettings","member":"CacheWorkGiversInOrder","line_start":207,"line_end":257}],
+    "values": {"disabled":0,"priority_scale":100000,"lowest_manual_priority":4}
+  },
+  {
+    "id": "RW17-WORK-02",
+    "kind": "static-derived",
+    "statement": "类人角色关闭手动优先级时，任何已启用工作的GetPriority结果为3，未启用为0。",
+    "sources": [{"type":"RimWorld.Pawn_WorkSettings","member":"GetPriority","line_start":160,"line_end":174}],
+    "values": {"enabled_without_manual_priorities":3}
+  },
+  {
+    "id": "RW17-WORK-03",
+    "kind": "static-derived",
+    "statement": "emergency工作提供者只有在其手动优先级不差于所有含非emergency提供者的已启用工作类型中的最佳优先级时，才进入emergency列表；否则进入普通列表。",
+    "sources": [{"type":"RimWorld.Pawn_WorkSettings","member":"CacheWorkGiversInOrder","line_start":207,"line_end":257}]
+  },
+  {
+    "id": "RW17-WORK-04",
+    "kind": "static-derived",
+    "statement": "JobGiver_Work在Anything/Work/Sleep/Joy或Meditate时段的竞争分值分别为5.5/9/3/2；这不是手动优先级。ThinkNode_Priority按子节点声明顺序返回首个有效结果。",
+    "sources": [{"type":"RimWorld.JobGiver_Work","member":"GetPriority","line_start":19,"line_end":46},{"type":"Verse.AI.ThinkNode_Priority","member":"TryIssueJobPackage","line_start":7,"line_end":26}],
+    "values": {"anything":5.5,"work":9,"sleep":3,"joy_or_meditate":2}
+  },
+  {
+    "id": "RW17-WORK-05",
+    "kind": "static-derived",
+    "statement": "工作提供者按已缓存顺序尝试；资格包含工作类型/标签禁用、ShouldSkip、能力等。cell扫描按目标分值与几何距离平方选择，并检查禁止、可执行和可达；不是统一的实际路径长度最小化。",
+    "sources": [{"type":"RimWorld.JobGiver_Work","member":"TryIssueJobPackage","line_start":78,"line_end":102},{"type":"RimWorld.JobGiver_Work","member":"TryIssueJobPackage","line_start":183,"line_end":245},{"type":"RimWorld.JobGiver_Work","member":"PawnCanUseWorkGiver","line_start":268,"line_end":294},{"type":"RimWorld.WorkGiver_Scanner","member":"Scanner defaults","line_start":12,"line_end":32}]
+  },
+  {
+    "id": "RW17-WORK-06",
+    "kind": "xml-declared",
+    "statement": "Core XML声明Firefighter/Doctor/Cooking/Growing/Hauling/Cleaning的naturalPriority依次为1400/1300/1000/700/300/200。",
+    "sources": [{"path":"Data/Core/Defs/WorkTypeDefs/WorkTypes.xml","xpath":"/Defs/WorkTypeDef[defName='Firefighter' or defName='Doctor' or defName='Cooking' or defName='Growing' or defName='Hauling' or defName='Cleaning']/naturalPriority","sha256":"442a5b1e70a96bf910432016a5dc258aa0ff7f1065092991b29822f315c1dbfe"}],
+    "values": {"Firefighter":1400,"Doctor":1300,"Cooking":1000,"Growing":700,"Hauling":300,"Cleaning":200}
+  },
+  {
+    "id": "RW17-WORK-07",
+    "kind": "xml-declared",
+    "statement": "Core XML中GrowerHarvest/GrowerSow/HaulGeneral的priorityInType为100/50/15；FightFires与DoctorTendEmergency标为emergency，后者priorityInType为110。",
+    "sources": [{"path":"Data/Core/Defs/WorkGiverDefs/WorkGivers.xml","xpath":"/Defs/WorkGiverDef[defName='GrowerHarvest' or defName='GrowerSow' or defName='HaulGeneral' or defName='DoctorTendEmergency']/priorityInType","sha256":"fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c"},{"path":"Data/Core/Defs/WorkGiverDefs/WorkGivers.xml","xpath":"/Defs/WorkGiverDef[defName='FightFires' or defName='DoctorTendEmergency']/emergency","sha256":"fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c"}],
+    "values": {"GrowerHarvest":100,"GrowerSow":50,"HaulGeneral":15,"DoctorTendEmergency":110}
+  },
+  {
+    "id": "RW17-WORK-08",
+    "kind": "static-derived",
+    "statement": "预留包含claimant、job、target、layer、maxPawns、stackCount身份；CanReserve先检查地图/目标/数量/物理交互，再统计同目标同层且需要尊重的其他不同claimant。MaxPawns不一致、人数已达上限或数量总和超堆叠均失败；-1代表当前全堆。",
+    "sources": [{"type":"Verse.AI.ReservationManager","member":"Reservation","line_start":12,"line_end":76},{"type":"Verse.AI.ReservationManager","member":"CanReserve","line_start":157,"line_end":235},{"type":"Verse.AI.ReservationManager","member":"RespectsReservationsOf","line_start":619,"line_end":667}],
+    "values": {"all_stack_sentinel":-1}
+  },
+  {
+    "id": "RW17-WORK-09",
+    "kind": "static-derived",
+    "statement": "重复的同claimant/job/layer且数量充足预留可幂等成功；玩家强制任务在忽略其他预留后仍合法时可添加预留并InterruptForced冲突任务，仍要求有效目标及足量物品。",
+    "sources": [{"type":"Verse.AI.ReservationManager","member":"Reserve","line_start":300,"line_end":372}]
+  },
+  {
+    "id": "RW17-WORK-10",
+    "kind": "static-derived",
+    "statement": "StartJob在建立toils前尝试前置预留；可暂停任务能保留预留入队，Cleanup是否释放预留和是否丢下携带物分别受参数/任务策略控制，不能将所有中断等同于释放并丢弃。",
+    "sources": [{"type":"Verse.AI.Pawn_JobTracker","member":"StartJob","line_start":318,"line_end":380},{"type":"Verse.AI.Pawn_JobTracker","member":"SuspendCurrentJob","line_start":402,"line_end":416},{"type":"Verse.AI.Pawn_JobTracker","member":"CleanupCurrentJob","line_start":475,"line_end":522},{"type":"Verse.AI.ReservationManager","member":"Release / ReleaseAllForTarget / ReleaseAllClaimedBy","line_start":375,"line_end":447}]
+  },
+  {
+    "id": "RW17-WORK-11",
+    "kind": "static-derived",
+    "statement": "自动搬运过滤迷雾、预留、操纵能力、绑定未完成物、可达性、食物社会归属、火等；普通CanReserve请求是1人和全堆。搬到仓储时寻找比当前优先级更高的目的地。",
+    "sources": [{"type":"Verse.AI.HaulAIUtility","member":"PawnCanAutomaticallyHaulFast_NewTemp","line_start":80,"line_end":118},{"type":"Verse.AI.HaulAIUtility","member":"HaulToStorageJob / HaulToCellStorageJob","line_start":121,"line_end":179}]
+  },
+  {
+    "id": "RW17-WORK-12",
+    "kind": "static-derived",
+    "statement": "HaulToCell前置预留先目的格再源物，各为1人/-1；流程经过走到源物、拿取、可选追加同类、走到目的地、延时门槛、放置。放置前要求达到任务startTick+30，不是每次到达另等30。",
+    "sources": [{"type":"Verse.AI.JobDriver_HaulToCell","member":"TryMakePreToilReservations","line_start":55,"line_end":61},{"type":"Verse.AI.JobDriver_HaulToCell","member":"MakeNewToils / PossiblyDelay","line_start":75,"line_end":154}],
+    "values": {"minimum_elapsed_ticks_before_drop":30,"max_pawns":1,"stack_count":-1}
+  },
+  {
+    "id": "RW17-WORK-13",
+    "kind": "static-derived",
+    "statement": "拿取请求量=min(job.count,可用携带空间,源堆数量)；按实际成功拿取量更新。subtractNumTakenFromJobCount启用时才扣除job.count，HaulToCell显式启用此选项。",
+    "sources": [{"type":"Verse.AI.Toils_Haul","member":"StartCarryThing","line_start":34,"line_end":110},{"type":"Verse.AI.JobDriver_HaulToCell","member":"MakeNewToils","line_start":125,"line_end":139}]
+  },
+  {
+    "id": "RW17-WORK-14",
+    "kind": "static-derived",
+    "statement": "普通格子仓储搜索以严格更高优先级为前提，只比较最高可用优先级层；有效格需满足过滤、禁用/阻挡/预留/火/施工和可达性条件。",
+    "sources": [{"type":"RimWorld.StoreUtility","member":"TryFindBestBetterStoreCellFor","line_start":173,"line_end":205},{"type":"RimWorld.StoreUtility","member":"IsGoodStoreCell","line_start":327,"line_end":377}]
+  },
+  {
+    "id": "RW17-WORK-15",
+    "kind": "static-derived",
+    "statement": "格子仓储按相对物品持有位置或搬运者位置的几何距离平方比较。accurate搜索阈值为floor(格数*随机0.005至0.018)，达到该索引且遇到可接受且不更远候选即可提前结束，因此不保证全仓库最近格。",
+    "sources": [{"type":"RimWorld.StoreUtility","member":"TryFindBestBetterStoreCellForWorker","line_start":215,"line_end":240}],
+    "values": {"scan_fraction_min":0.005,"scan_fraction_max":0.018}
+  },
+  {
+    "id": "RW17-WORK-16",
+    "kind": "static-derived",
+    "statement": "一次搬运中的追加同类拾取在半径8内寻找可达对象，受剩余携带空间/任务数量、同Def且可堆叠、非满堆、非禁止、社会归属、目的仓储适用和可预留约束。",
+    "sources": [{"type":"Verse.AI.Toils_Haul","member":"CheckForGetOpportunityDuplicate","line_start":185,"line_end":251}],
+    "values": {"pickup_radius":8}
+  },
+  {
+    "id": "RW17-WORK-17",
+    "kind": "static-derived",
+    "statement": "去执行另一工作前的顺路搬运要求工作允许prefix且非玩家强制等资格；D=PT至少3，a=PI不超过30及0.5D，a+IT不超过1.7D，c=ST不超过50及0.6D，a+IS+c不超过1.7D，a+c不超过D，PI与ST另需通过25区域范围检查。采用几何距离并返回列表中首个合格物品。",
+    "sources": [{"type":"Verse.AI.Pawn_JobTracker","member":"CanPawnTakeOpportunisticJob / TryOpportunisticJob","line_start":624,"line_end":743}],
+    "values": {"minimum_final_distance":3,"max_pickup_distance":30,"pickup_fraction":0.5,"max_storage_to_final_distance":50,"storage_to_final_fraction":0.6,"max_detour_ratio":1.7,"max_regions":25}
+  },
+  {
+    "id": "RW17-WORK-18",
+    "kind": "static-derived",
+    "statement": "施工配送考虑需求与在途量、已携带资源；能合并首个来源5格内资源和8格内邻近工地，形成多来源/目的队列，数量受携带空间限制。无法找到可达资源的失败缓存只对当前tick及pawn/resource/forced组合生效。",
+    "sources": [{"type":"RimWorld.WorkGiver_ConstructDeliverResources","member":"NoReachableResourceFailedThisTick / NotifyNoReachableResourceFound","line_start":97,"line_end":116},{"type":"RimWorld.WorkGiver_ConstructDeliverResources","member":"ResourceDeliverJobFor","line_start":151,"line_end":247},{"type":"RimWorld.WorkGiver_ConstructDeliverResources","member":"FindAvailableNearbyResources / FindNearbyNeeders","line_start":256,"line_end":327}],
+    "values": {"additional_source_radius":5,"nearby_destination_radius":8}
+  },
+  {
+    "id": "RW17-WORK-19",
+    "kind": "static-derived",
+    "statement": "生产订单检查工位、预留、火、交互格、燃料、订单顺序、工作类型、人员及技能限制；缺燃料可能转补燃料任务。缺原料通常将下一次检查推迟随机500至600tick，菜单人工检查有例外。",
+    "sources": [{"type":"RimWorld.WorkGiver_DoBill","member":"ReCheckFailedBillTicksRange","line_start":95,"line_end":95},{"type":"RimWorld.WorkGiver_DoBill","member":"JobOnThing","line_start":139,"line_end":174},{"type":"RimWorld.WorkGiver_DoBill","member":"JobOnThing","line_start":188,"line_end":281}],
+    "values": {"failed_ingredient_recheck_min_ticks":500,"failed_ingredient_recheck_max_ticks":600}
+  },
+  {
+    "id": "RW17-WORK-20",
+    "kind": "static-derived",
+    "statement": "订单原料搜索半径以工作台为中心，要求距离平方严格小于半径平方并满足物品资格和预留；区域BFS搜集过程中满足配方即可停止，不承诺全地图最优配料组合。",
+    "sources": [{"type":"RimWorld.WorkGiver_DoBill","member":"TryFindBestIngredientsHelper","line_start":438,"line_end":461},{"type":"RimWorld.WorkGiver_DoBill","member":"TryFindBestIngredientsHelper","line_start":522,"line_end":557}]
+  },
+  {
+    "id": "RW17-WORK-21",
+    "kind": "static-derived",
+    "statement": "Reachability使用近邻/同district快捷判定、区域图和缓存，特殊模式走cell判定；CanReach并不创建供角色逐格行走的路线。",
+    "sources": [{"type":"Verse.Reachability","member":"CanReach","line_start":102,"line_end":205}]
+  },
+  {
+    "id": "RW17-WORK-22",
+    "kind": "static-derived",
+    "statement": "1.7 PathFinder向工作任务传入角色实际直走/斜走tick；无pawn分支为18/18。heuristicStrength常规殖民者1，异常黑暗条件分支1.5，动物1.75，其他非殖民者按距离曲线取整。",
+    "sources": [{"type":"Verse.PathFinder","member":"HeuristicScaleAI","line_start":253,"line_end":257},{"type":"Verse.PathFinder","member":"DetermineHeuristicStrength","line_start":530,"line_end":549},{"type":"Verse.PathFinder","member":"ParameterizePathJob","line_start":642,"line_end":672}],
+    "values": {"colonist_strength":1,"unnatural_darkness_strength":1.5,"animal_strength":1.75,"non_colonist_distance_curve":[[40,1],[120,2]],"no_pawn_cardinal_ticks":18,"no_pawn_diagonal_ticks":18}
+  },
+  {
+    "id": "RW17-WORK-23",
+    "kind": "static-derived",
+    "statement": "PathFinderJob使用优先队列展开连通格，g累积格成本与移动tick，h=13*strength*(dx+dz-0.58579004*min(dx,dz))；跳过closed节点，展开上限为地图格数，斜穿角有限制。IndexCost为max(grid,provider)+(blocked?175:0)，而provider的ushort最大值对应10000。",
+    "sources": [{"type":"Verse.PathFinderJob","member":"Execute","line_start":90,"line_end":199},{"type":"Verse.PathFinderJob","member":"IndexCost","line_start":202,"line_end":208}],
+    "values": {"heuristic_base":13,"heuristic_diagonal_adjustment":-0.58579004,"blocked_penalty":175,"impassable_cost":10000}
+  },
+  {
+    "id": "RW17-WORK-24",
+    "kind": "static-derived",
+    "statement": "PathGrid对普通可走地面取terrain、物体、雪及适用沙尘成本的最大值，含部分重复物体例外；连续非自由通行门另加45。静态感知成本下未依附物体的火在本格加1000、邻格各加150；实际移动查询关闭静态火罚分。",
+    "sources": [{"type":"Verse.AI.PathGrid","member":"CalculatedCostAt","line_start":120,"line_end":205},{"type":"Verse.AI.Pawn_PathFollower","member":"CostToMoveIntoCell","line_start":746,"line_end":752}],
+    "values": {"consecutive_door_penalty":45,"own_cell_fire_penalty":1000,"adjacent_fire_penalty":150}
+  },
+  {
+    "id": "RW17-WORK-25",
+    "kind": "static-derived",
+    "statement": "实际入格成本C由角色移动tick、动态格成本、建筑成本及地形标签倍率组成，先截到450，再处理同行配速或urgency；Amble=max(3C,60)、Walk=max(2C,50)、Jog=C、Sprint=RoundToInt(0.75C)，最终至少1。",
+    "sources": [{"type":"Verse.AI.Pawn_PathFollower","member":"CostToMoveIntoCell","line_start":746,"line_end":808}],
+    "values": {"pre_urgency_cap":450,"amble_multiplier":3,"amble_minimum":60,"walk_multiplier":2,"walk_minimum":50,"sprint_multiplier":0.75,"final_minimum":1}
+  },
+  {
+    "id": "RW17-WORK-26",
+    "kind": "static-derived",
+    "statement": "任务跟踪器每30tick哈希间隔检查constant think tree，并持续执行现有任务、处理到期和空闲选工；寻路跟踪器也有30tick重寻路检查，结合目标移动及前方20个节点的可行性/碰撞/危险决定是否更新，不是每tick重建全部任务与路径。",
+    "sources": [{"type":"Verse.AI.Pawn_JobTracker","member":"JobTrackerTickInterval","line_start":138,"line_end":203},{"type":"Verse.AI.Pawn_PathFollower","member":"PatherTick","line_start":300,"line_end":310},{"type":"Verse.AI.Pawn_PathFollower","member":"NeedNewPath","line_start":881,"line_end":951}],
+    "values": {"hash_check_interval":30,"path_lookahead_nodes":20}
+  }
+]

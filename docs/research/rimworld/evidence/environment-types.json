@@ -1,0 +1,22 @@
+[
+  "Verse.Room",
+  "RimWorld.RoomStatWorker_Impressiveness",
+  "RimWorld.RoomStatWorker_Beauty",
+  "RimWorld.RoomStatWorker_Cleanliness",
+  "RimWorld.RoomStatWorker_Space",
+  "RimWorld.RoomStatWorker_Wealth",
+  "Verse.GenTemperature",
+  "RimWorld.Planet.RoomTemperatureVacuum",
+  "RimWorld.CompTempControl",
+  "RimWorld.Building_Heater",
+  "RimWorld.Building_Cooler",
+  "RimWorld.CompProperties_Power",
+  "RimWorld.CompPowerTrader",
+  "RimWorld.CompPowerBattery",
+  "RimWorld.PowerNet",
+  "Verse.RoomTempTracker",
+  "Verse.TemperatureTuning",
+  "RimWorld.CompProperties_Battery",
+  "RimWorld.CompProperties_TempControl",
+  "RimWorld.CompPower"
+]
