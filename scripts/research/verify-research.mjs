@@ -11,7 +11,7 @@ const evidence = path.join(research, 'evidence');
 const read = name => JSON.parse(readFileSync(path.join(evidence,name),'utf8').replace(/^\uFEFF/,''));
 const sha = value => createHash('sha256').update(value).digest('hex');
 const validHash = value => /^[a-f0-9]{64}$/.test(value);
-const groups = ['work','combat','environment','economy'];
+const groups = ['work','combat','environment','economy','generation'];
 const local = process.argv.includes('--local');
 const ids = new Set(), uniqueTypes = new Set();
 let claimsCount=0, sourceCount=0, caseCount=0, assertionCount=0, localFiles=0, linkCount=0;
@@ -73,6 +73,17 @@ for (const group of groups) {
   }
 }
 assert.equal(sourceHashes.size,1,'Mixed source assembly versions');
+const runtime = read('runtime-interactions.json');
+assert.equal(runtime.kind, 'runtime-observed');
+assert(sourceHashes.has(runtime.assembly_sha256), 'Runtime target differs from static target');
+for (const shot of runtime.screenshots) {
+  assert(/^runtime\/[a-z-]+\.png$/.test(shot.file), 'Unexpected runtime image path');
+  assert.equal(sha(readFileSync(path.join(evidence, shot.file))), shot.sha256, `changed runtime crop: ${shot.file}`);
+  assert(shot.crop.length === 4 && shot.crop.every(Number.isInteger));
+  assert(shot.crop[0] >= 0 && shot.crop[1] >= 0 && shot.crop[2] > 0 && shot.crop[3] > 0);
+  assert(validHash(shot.source_sha256) && Number.isFinite(Date.parse(shot.timestamp_utc)));
+  if (local) assert.equal(sha(readFileSync(path.join(root, shot.local_source))), shot.source_sha256);
+}
 for(const group of groups){
   for(const example of read(`${group}-cases.json`))for(const id of example.claims??[])assert(ids.has(id),`unknown claim ${id}`);
 }

@@ -15,9 +15,11 @@ import {
   type SaveData,
   type Work,
   type BuildingKind,
+  type Inspection,
 } from './types';
 import { Pathfinder } from './path';
 import { validateSave } from './save';
+import { planBuild } from './placement';
 const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
 const distance = (a: { x: number; y: number }, b: { x: number; y: number }) =>
   Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
@@ -254,59 +256,17 @@ export class Simulation {
     if (w.outcome === 'lost') return fail('所有幸存者已失去生命，请读取存档或重新开始。');
     switch (c.type) {
       case 'build': {
+        const plan = planBuild(w, c.kind, c.x, c.y, c.x2, c.y2);
+        if (!plan.ok) return fail(plan.reason + ' · 整段未放置');
         const d = BUILDINGS[c.kind];
-        if (!d) return fail('未知建筑');
-        if (!this.unlocked(c.kind)) return fail('需要先完成对应研究');
-        if (
-          !Number.isInteger(c.x) ||
-          !Number.isInteger(c.y) ||
-          c.x < 1 ||
-          c.y < 1 ||
-          c.x + d.w >= SIZE ||
-          c.y + d.h >= SIZE
-        )
-          return fail('超出地图范围');
-        for (let y = c.y; y < c.y + d.h; y++)
-          for (let x = c.x; x < c.x + d.w; x++) {
-            if (w.terrain[y * SIZE + x] === 2) return fail('无法在深水中建造');
-            if (
-              w.buildings.some((b) => {
-                const bd = BUILDINGS[b.kind];
-                return (
-                  x >= b.x &&
-                  x < b.x + bd.w &&
-                  y >= b.y &&
-                  y < b.y + bd.h &&
-                  b.kind !== 'wire' &&
-                  c.kind !== 'wire'
-                );
-              })
-            )
-              return fail('建筑占地重叠');
-            if (
-              w.buildings.some(
-                (b) => b.kind === 'wire' && c.kind === 'wire' && b.x === x && b.y === y,
-              )
-            )
-              return fail('这里已有导线');
-          }
-        w.buildings.push({
-          id: this.id(),
-          x: c.x,
-          y: c.y,
-          kind: c.kind,
-          progress: 0,
-          paid: false,
-          delivered: {},
-          hp: 100,
-          powered: false,
-          enabled: true,
-          energy: 0,
-          demolish: false,
-        });
-        w.nature.forEach((n) => {
-          if (n.x >= c.x && n.x < c.x + d.w && n.y >= c.y && n.y < c.y + d.h) n.marked = true;
-        });
+        for (const pos of plan.cells) {
+          w.buildings.push({ id: this.id(), x: pos.x, y: pos.y, kind: c.kind,
+            progress: 0, paid: false, delivered: {}, hp: 100, powered: false,
+            enabled: true, energy: 0, demolish: false });
+          w.nature.forEach((n) => {
+            if (n.x >= pos.x && n.x < pos.x + d.w && n.y >= pos.y && n.y < pos.y + d.h) n.marked = true;
+          });
+        }
         break;
       }
       case 'zone': {
@@ -871,6 +831,12 @@ export class Simulation {
     if (!j.path.length) return true;
     const index = j.path[0];
     if (this.nav.blocked[index]) {
+      if (p.animal) {
+        this.cancel(p);
+        p.waitUntil = this.world.tick + 10;
+        p.reason = '前路被挡 · 正在寻找邻近通路';
+        return false;
+      }
       const path = this.approach(
         p,
         j.x,
@@ -912,7 +878,8 @@ export class Simulation {
   }
   private finish(p: Pawn) {
     p.job = null;
-    p.waitUntil = this.world.tick + 5;
+    p.waitUntil = this.world.tick + (p.animal ? 30 + Math.floor(this.random() * 51) : 5);
+    if (p.animal) p.reason = '休息片刻';
   }
   private act(p: Pawn) {
     const w = this.world,
@@ -1051,7 +1018,7 @@ export class Simulation {
     if (j.progress < j.total) return;
     if (j.kind === 'move') {
       this.finish(p);
-      p.reason = '已到达目的地';
+      if (!p.animal) p.reason = '已到达目的地';
       return;
     }
     if (j.kind === 'eat') {
@@ -1281,10 +1248,15 @@ export class Simulation {
         if (p.downed) continue;
         if (p.animal) {
           if (!p.job && w.tick >= p.waitUntil) {
-            const x = clamp(Math.round(p.x) + (this.random() > 0.5 ? 3 : -3), 3, 92),
-              y = clamp(Math.round(p.y) + (this.random() > 0.5 ? 2 : -2), 3, 92);
-            p.job = this.makeJob(p, 'move', 0, x, y, 0);
-            p.waitUntil = w.tick + 200;
+            const path = this.nav.wander(p.x, p.y, this.random());
+            if (path?.length) {
+              const target = path[path.length - 1];
+              p.job = { kind: 'move', target: 0, x: target % SIZE, y: Math.floor(target / SIZE), path, progress: 0, total: 0 };
+              p.reason = '在附近漫游';
+            } else {
+              p.waitUntil = w.tick + 80;
+              p.reason = '周围没有可通行格 · 等待通路恢复';
+            }
           }
           if (p.job) this.act(p);
           continue;
@@ -1554,6 +1526,20 @@ export class Simulation {
         w.nextRaid = w.tick + DAY * (4 + this.random() * 2);
       }
     }
+  }
+  inspect(id: number): Inspection {
+    const w = this.world;
+    const pawn = w.pawns.find((p) => p.id === id);
+    if (pawn) return { kind: 'pawn', id, value: structuredClone(pawn) };
+    const item = w.items.find((i) => i.id === id && i.count > 0.001);
+    if (item) return { kind: 'item', id, value: { ...item } };
+    const nature = w.nature.find((n) => n.id === id && n.amount > 0);
+    if (nature) return { kind: 'nature', id, value: { ...nature } };
+    const building = w.buildings.find((b) => b.id === id);
+    if (building) return { kind: 'building', id, value: structuredClone(building) };
+    const crop = id < 0 ? w.crops.find((c) => -1 - c.y * SIZE - c.x === id) : undefined;
+    if (crop) return { kind: 'crop', id, value: { ...crop } };
+    return { kind: 'missing', id };
   }
   summary(): Summary {
     const w = this.world;

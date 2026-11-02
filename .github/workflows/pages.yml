@@ -28,6 +28,8 @@ jobs:
         run: npm ci
       - name: Test simulation rules
         run: npm test -- --silent
+      - name: Verify wildlife continues moving
+        run: npm run test:animals
       - name: Check research evidence and arithmetic
         run: npm run research:check
       - name: Verify a complete colony campaign

@@ -7,6 +7,26 @@ export class Pathfinder {
   private seen = new Uint32Array(SIZE * SIZE);
   private closed = new Uint32Array(SIZE * SIZE);
   private stamp = 0;
+  /** Bounded local flood: all returned destinations are reachable, at most 169 cells visited. */
+  wander(sx: number, sy: number, choice: number): number[] | null {
+    const x = Math.round(sx), y = Math.round(sy), start = y * SIZE + x;
+    const nodes = [start], parents = [-1], depths = [0], seen = new Set([start]);
+    for (let head = 0; head < nodes.length; head++) {
+      if (depths[head] >= 6) continue;
+      const i = nodes[head], nx = i % SIZE, ny = Math.floor(i / SIZE);
+      for (const n of [nx > 0 ? i - 1 : -1, nx < SIZE - 1 ? i + 1 : -1, ny > 0 ? i - SIZE : -1, ny < SIZE - 1 ? i + SIZE : -1]) {
+        if (n < 0 || this.blocked[n] || seen.has(n)) continue;
+        seen.add(n); nodes.push(n); parents.push(head); depths.push(depths[head] + 1);
+      }
+    }
+    if (nodes.length === 1) return null;
+    let candidates = depths.map((depth, i) => depth >= 2 ? i : -1).filter((i) => i > 0);
+    if (!candidates.length) candidates = nodes.map((_, i) => i).slice(1);
+    let index = candidates[Math.min(candidates.length - 1, Math.floor(choice * candidates.length))];
+    const path = [];
+    while (index > 0) { path.push(nodes[index]); index = parents[index]; }
+    return path.reverse();
+  }
   find(sx: number, sy: number, tx: number, ty: number, radius = 0): number[] | null {
     sx = Math.round(sx);
     sy = Math.round(sy);

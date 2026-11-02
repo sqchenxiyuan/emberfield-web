@@ -11,7 +11,7 @@ import {
   WORK_NAMES,
   WORKS,
 } from './sim/defs';
-import { DAY, HOUR, type BuildingKind, type Pawn, type Resource, type Summary } from './sim/types';
+import { DAY, HOUR, TPS, type BuildingKind, type Pawn, type Resource, type Summary, type Inspection } from './sim/types';
 import './style.css';
 import './layout.css';
 import { campAudio } from './audio';
@@ -70,6 +70,43 @@ function Bar({
     </div>
   );
 }
+const natureNames = { tree: '树木', ore: '金属矿脉', berry: '浆果丛', rock: '岩石' };
+function inspectionName(d: Inspection) {
+  if (d.kind === 'missing') return '对象已消失';
+  if (d.kind === 'pawn') return d.value.name + (d.value.animal ? ' · 野生动物' : d.value.enemy ? ' · 敌对' : '');
+  if (d.kind === 'item') return RESOURCE_NAMES[d.value.kind];
+  if (d.kind === 'nature') return natureNames[d.value.kind];
+  if (d.kind === 'building') return BUILDINGS[d.value.kind].name;
+  return d.value.crop === 'herb' ? '药草' : '谷物';
+}
+function ObjectInspector({ detail: d, tick }: { detail: Inspection; tick: number }) {
+  if (d.kind === 'missing') return <p className="subtle">该对象已经耗尽、被搬走或移除。请重新选择。</p>;
+  const v = d.value;
+  return <div className="object-inspector" data-object-kind={d.kind} data-object-id={d.id}>
+    <span className="eyebrow">{d.kind === 'pawn' ? '生物' : d.kind === 'item' ? '物品堆' : d.kind === 'nature' ? '自然资源' : '作物'}</span>
+    <p className="subtle">坐标 {v.x.toFixed(1)}, {v.y.toFixed(1)} · 再次点击同一格可切换对象</p>
+    {d.kind === 'pawn' && <>
+      <p className="current-job">{d.value.dead ? '已经死亡' : d.value.downed ? '倒地' : d.value.job ? JOB_NAMES[d.value.job.kind] + (d.value.job.path.length ? ' · 正在移动' : '') : d.value.reason}</p>
+      {d.value.animal && !d.value.job && !d.value.dead && d.value.waitUntil > tick && <p>{d.value.reason.includes('通行') ? '通路恢复后会继续漫游。' : `短暂休息 · 约 ${Math.ceil((d.value.waitUntil - tick) / TPS)} 秒`}</p>}
+      <Bar label="血液" value={d.value.blood} color="rose" />
+      <p>伤口 {d.value.wounds.length} 处 · 总伤害 {d.value.wounds.reduce((sum, w) => sum + w.damage, 0).toFixed(1)}</p>
+      {!d.value.animal && <p>武器：{d.value.weapon === 'gun' ? '步枪' : '短刀'}</p>}
+      <p className="subtle">{d.value.animal ? '野生动物自行活动，不能征召。' : d.value.enemy ? '敌对单位不可直接指挥；选择殖民者后右键攻击。' : d.value.dead ? '这名殖民者已经死亡。' : '选择殖民者头像可下达指令。'}</p>
+    </>}
+    {d.kind === 'item' && <>
+      <div className="thought"><span>数量</span><b>{d.value.count.toFixed(1)}</b></div>
+      <div className="thought"><span>已预留</span><b>{d.value.reserved.toFixed(1)}</b></div>
+      <div className="thought"><span>可用数量</span><b>{Math.max(0, d.value.count - d.value.reserved).toFixed(1)}</b></div>
+      <div className="thought"><span>存放时间</span><b>{(d.value.age / DAY).toFixed(2)} 日</b></div>
+    </>}
+    {d.kind === 'nature' && <>
+      <div className="thought"><span>剩余产量</span><b>{d.value.amount}</b></div>
+      <p>{d.value.marked ? '已安排采集 / 清理' : '尚未标记工作'}</p>
+    </>}
+    {d.kind === 'crop' && <Bar label="生长进度" value={d.value.growth * 100} />}
+    <button onClick={() => client.focus(v.x, v.y)}>⌖ 定位</button>
+  </div>;
+}
 function App() {
   const state = useSyncExternalStore(client.subscribe, client.snapshot);
   const s = state.summary;
@@ -84,7 +121,6 @@ function App() {
     [modal, setModal] = useState<string | null>('welcome'),
     [toast, setToast] = useState(''),
     [grid, setGrid] = useState(false),
-    [inspected, setInspected] = useState<number | null>(null),
     [seed, setSeed] = useState('73129'),
     [busy, setBusy] = useState(false),
     [audioEnabled, setAudioEnabled] = useState(true);
@@ -92,16 +128,10 @@ function App() {
     const unlock = () => campAudio.unlock();
     window.addEventListener('pointerdown', unlock, { once: true });
     client.onNotice = setToast;
-    client.onInspect = (x, y) => {
-      const b = client
-        .snapshot()
-        .summary?.buildings.find(
-          (b) =>
-            x >= b.x && x < b.x + BUILDINGS[b.kind].w && y >= b.y && y < b.y + BUILDINGS[b.kind].h,
-        );
-      setInspected(b?.id ?? null);
-      setPanelOpen(!!b);
-      if (b) setTab('overview');
+    client.onToolCancel = () => choose('select');
+    client.onInspect = (id) => {
+      setPanelOpen(id !== null);
+      if (id !== null) setTab('overview');
     };
     if (host.current) void client.mount(host.current);
     const esc = (e: KeyboardEvent) => {
@@ -109,7 +139,7 @@ function App() {
         setModal(null);
         setPanelOpen(false);
         client.select([]);
-        setInspected(null);
+        client.inspect(null, false);
         choose('select');
       }
     };
@@ -122,7 +152,7 @@ function App() {
   }, []);
   useEffect(() => {
     if (state.selection.length) {
-      setInspected(null);
+      client.inspect(null, false);
       setTab('overview');
       setDetailTab('needs');
       setPanelOpen(true);
@@ -146,10 +176,10 @@ function App() {
     setPanelOpen(true);
   };
   const togglePanel = (next: string) => {
-    if (panelOpen && tab === next && !pawn && !building) setPanelOpen(false);
+    if (panelOpen && tab === next && !pawn && !inspection) setPanelOpen(false);
     else {
       client.select([]);
-      setInspected(null);
+      client.inspect(null, false);
       showPanel(next);
     }
   };
@@ -182,7 +212,8 @@ function App() {
   const colonists = s?.pawns.filter((p) => !p.enemy) ?? [];
   const selected = colonists.filter((p) => state.selection.includes(p.id));
   const pawn = selected[0];
-  const building = s?.buildings.find((b) => b.id === inspected);
+  const inspection = state.inspection;
+  const building = inspection?.kind === 'building' ? inspection.value : undefined;
   const threats = s?.pawns.filter((p) => p.enemy && !p.dead && !p.downed) ?? [];
   const foods = s
     ? (s.inventory.meal + s.inventory.ration + s.inventory.raw / 18) /
@@ -293,7 +324,7 @@ function App() {
                 onClick={() => {
                   client.select([p.id]);
                   client.focus(p.x, p.y);
-                  setInspected(null);
+                  client.inspect(null, false);
                   showPanel('overview');
                 }}
                 aria-label={`选择${p.name}`}
@@ -348,7 +379,7 @@ function App() {
                 className="notice-warning"
                 onClick={() => {
                   client.select([]);
-                  setInspected(null);
+                  client.inspect(null, false);
                   showPanel('overview');
                 }}
               >
@@ -364,7 +395,7 @@ function App() {
               <button
                 onClick={() => {
                   client.select([]);
-                  setInspected(null);
+                  client.inspect(null, false);
                   showPanel('overview');
                 }}
               >
@@ -408,7 +439,7 @@ function App() {
                   {tool === 'select'
                     ? '左键选择 / 框选 · 右键指令 · 中键平移 · 滚轮缩放'
                     : tool === 'build'
-                      ? '点击地图放置蓝图 · 工人自动搬运材料施工 · ESC 退出'
+                      ? `${kind === 'wall' || kind === 'wire' ? '拖拽直线放置蓝图' : '点击放置蓝图'} · 工人搬料施工 · 右键 / ESC 退出`
                       : '拖动框选区域 · 松开鼠标确认 · ESC 退出'}
                 </small>
               </div>
@@ -428,8 +459,17 @@ function App() {
                       {c}
                     </button>
                   ))}
-                  <small>蓝图不立即扣材料</small>
+                  <small>{kind === 'wall' || kind === 'wire' ? '拖拽直线 · 松手整段放置' : '蓝图不立即扣材料'}</small>
                 </div>
+                {state.preview && (
+                  <div className={`build-preview-status ${state.preview.ok ? state.preview.warnings.length ? 'warning' : 'valid' : 'invalid'}`} role="status" aria-label="建造预览">
+                    <strong>{state.preview.reason}</strong>
+                    {state.preview.warnings.map((warning) => <span key={warning}>{warning}</span>)}
+                    <span>总需求：{Object.entries(state.preview.cost).map(([r, v]) => `${v}${RESOURCE_NAMES[r as Resource]}`).join(' · ') || '无'}</span>
+                    {!!Object.keys(state.preview.missing).length && <span>尚缺：{Object.entries(state.preview.missing).map(([r, v]) => `${Math.ceil(v!)}${RESOURCE_NAMES[r as Resource]}`).join(' · ')}（可先规划）</span>}
+                    {!state.preview.ok && <span>红格无效，整段不会放置；请调整终点。</span>}
+                  </div>
+                )}
                 <div className="build-items">
                   {(Object.keys(BUILDINGS) as BuildingKind[])
                     .filter((k) => BUILDINGS[k].category === category)
@@ -494,7 +534,7 @@ function App() {
           </div>
         </section>
         <aside
-          className={`sidebar panel-${tab} ${pawn || building ? 'inspector' : 'colony-panel'}`}
+          className={`sidebar panel-${tab} ${pawn || inspection ? 'inspector' : 'colony-panel'}`}
           hidden={!panelOpen}
           aria-label="信息面板"
         >
@@ -510,10 +550,10 @@ function App() {
                       ? `${pawn.name} · 幸存者`
                       : building
                         ? BUILDINGS[building.kind].name
-                        : '营地概览'}
+                        : inspection ? inspectionName(inspection) : '营地概览'}
             </h2>
             <button
-              onClick={() => setPanelOpen(false)}
+              onClick={() => { setPanelOpen(false); client.inspect(null, false); }}
               aria-label="收起信息面板"
               title="收起信息面板 · Esc"
             >
@@ -644,6 +684,8 @@ function App() {
                       {building.enabled ? '关闭设备' : '启用设备'}
                     </button>
                   </>
+                ) : inspection ? (
+                  <ObjectInspector detail={inspection} tick={s?.tick ?? 0} />
                 ) : (
                   <>
                     <div className="weather-card">
@@ -697,7 +739,7 @@ function App() {
                     </p>
                   </>
                 )}
-                {!pawn && !building && (
+                {!pawn && !inspection && (
                   <>
                     {!s?.tutorialHidden && (
                       <div className="objectives">

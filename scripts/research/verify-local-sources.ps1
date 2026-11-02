@@ -7,7 +7,7 @@ $evidence = Join-Path $project 'docs/research/rimworld/evidence'
 $docs = @{}
 $hashes = @{}
 $references = 0
-foreach ($group in @('work','combat','environment','economy')) {
+foreach ($group in @('work','combat','environment','economy','generation')) {
     $manifest = Get-Content -LiteralPath (Join-Path $evidence "$group-manifest.json") -Raw | ConvertFrom-Json
     if ($manifest.source_sha256 -ne $assemblyHash) { throw "Assembly hash mismatch for $group" }
     $claims = Get-Content -LiteralPath (Join-Path $evidence "$group-claims.json") -Raw | ConvertFrom-Json
@@ -36,4 +36,5 @@ foreach ($group in @('work','combat','environment','economy')) {
 & node (Join-Path $PSScriptRoot 'verify-research.mjs') --local
 if ($LASTEXITCODE -ne 0) { throw 'Derived evidence or arithmetic verification failed.' }
 & (Join-Path $PSScriptRoot 'extract-xml-values.ps1') -GameRoot $resolvedGame -Group economy -Verify
+& (Join-Path $PSScriptRoot 'verify-generation-evidence.ps1') -GameRoot $resolvedGame
 Write-Output "Verified assembly identity and $references XML references across $($docs.Count) files. No original-game code executed."

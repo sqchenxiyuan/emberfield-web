@@ -1,7 +1,8 @@
 import { Application, Container, Graphics, Sprite, Text, Texture } from 'pixi.js';
-import { BUILDINGS, RESOURCES } from './sim/defs';
-import { SIZE } from './sim/types';
+import { BUILDINGS, RESOURCES, JOB_NAMES } from './sim/defs';
+import { SIZE, type BuildingKind } from './sim/types';
 import { STRIDE, type Frame } from './protocol';
+import { buildCells, type BuildPreview } from './sim/placement';
 const TILE = 32,
   colors = [0x7c8c61, 0x6b8057, 0x315961];
 const hash = (n: number) => {
@@ -28,6 +29,11 @@ export class ColonyRenderer {
   private textures = new Map<string, Texture>();
   private entities = new Map<number, EntityView>();
   private selection: number[] = [];
+  private inspectedId: number | null = null;
+  private preview: BuildPreview | null = null;
+  private previewKey = '';
+  private hitKey = '';
+  private hitIndex = 0;
   private current: Frame | null = null;
   private previous: Frame | null = null;
   private receivedAt = 0;
@@ -529,6 +535,15 @@ export class ColonyRenderer {
       y: (y - this.height / 2) / (TILE * this.camera.zoom) + this.camera.y,
     };
   }
+  private requestPreview(force = false) {
+    if (this.tool !== 'build') return;
+    const start = this.startCell ?? this.hover;
+    const key = `${this.buildKind}:${start.x},${start.y}:${this.hover.x},${this.hover.y}`;
+    if (!force && key === this.previewKey) return;
+    this.previewKey = key;
+    this.preview = null;
+    this.emit({ type: 'buildPreviewRequest', kind: this.buildKind, x: start.x, y: start.y, x2: this.hover.x, y2: this.hover.y });
+  }
   message(m: any) {
     if (m.type === 'resize') {
       this.width = m.width;
@@ -539,8 +554,15 @@ export class ColonyRenderer {
     if (m.type === 'tool') {
       this.tool = m.tool;
       this.buildKind = m.kind ?? this.buildKind;
+      this.startCell = null;
+      this.preview = null;
+      this.previewKey = '';
+      this.requestPreview();
     }
     if (m.type === 'select') this.selection = m.ids;
+    if (m.type === 'inspect') this.inspectedId = m.id;
+    if (m.type === 'buildPreview') this.preview = m.preview;
+    if (m.type === 'refreshPreview') this.requestPreview(true);
     if (m.type === 'focus') {
       this.camera.x = m.x;
       this.camera.y = m.y;
@@ -588,6 +610,7 @@ export class ColonyRenderer {
           this.moved = true;
         this.emit({ type: 'hover', ...this.hover });
       }
+      if (m.action !== 'up') this.requestPreview();
       if (m.action === 'up') {
         if (this.dragging) {
           this.dragging = false;
@@ -597,28 +620,49 @@ export class ColonyRenderer {
         const start = this.startCell ?? this.hover;
         this.startCell = null;
         if (m.button === 2) {
+          if (this.tool !== 'select') {
+            this.emit({ type: 'cancelTool' });
+            return;
+          }
           this.emit({ type: 'intent', kind: 'move', x: this.hover.x, y: this.hover.y });
           return;
         }
         if (m.button !== 0) return;
         if (this.tool === 'select') {
           const ids: number[] = [];
+          const hits: { id: number; type: number; rank: number; state: number }[] = [];
           if (this.current) {
             const a = new Float32Array(this.current.buffer);
             for (let i = 0; i < this.current.count; i++) {
               const o = i * STRIDE;
-              if (a[o + 1] !== 80) continue;
-              const inside = this.moved
-                ? a[o + 2] >= Math.min(start.x, this.hover.x) &&
+              const type = a[o + 1];
+              if (!this.moved) {
+                const x = a[o + 2], y = a[o + 3];
+                const d = type >= 20 && type < 50 ? BUILDINGS[Object.keys(BUILDINGS)[type - 20] as BuildingKind] : null;
+                const actor = type >= 80 && type < 90;
+                const hit = actor ? Math.abs(x + 0.5 - p.x) < 0.7 && Math.abs(y + 0.5 - p.y) < 0.9 :
+                  p.x >= x && p.x < x + (d?.w ?? 1) && p.y >= y && p.y < y + (d?.h ?? 1);
+                if (hit) hits.push({ id: a[o], type, state: a[o + 7], rank: actor ? 0 : type >= 50 && type < 80 ? 1 : type < 20 ? 2 : d ? 3 : 4 });
+                continue;
+              }
+              if (type !== 80 || a[o + 7] === 5) continue;
+              const inside = a[o + 2] >= Math.min(start.x, this.hover.x) &&
                   a[o + 2] <= Math.max(start.x, this.hover.x) + 1 &&
                   a[o + 3] >= Math.min(start.y, this.hover.y) &&
-                  a[o + 3] <= Math.max(start.y, this.hover.y) + 1
-                : Math.abs(a[o + 2] + 0.5 - p.x) < 0.8 && Math.abs(a[o + 3] + 0.5 - p.y) < 0.9;
+                  a[o + 3] <= Math.max(start.y, this.hover.y) + 1;
               if (inside) ids.push(a[o]);
             }
           }
-          this.emit({ type: 'selection', ids });
-          if (!ids.length) this.emit({ type: 'inspect', x: this.hover.x, y: this.hover.y });
+          if (this.moved) this.emit({ type: 'selection', ids });
+          else {
+            hits.sort((a, b) => a.rank - b.rank || a.id - b.id);
+            const key = `${this.hover.x},${this.hover.y}:${hits.map((h) => h.id).join(',')}`;
+            this.hitIndex = key === this.hitKey && hits.length ? (this.hitIndex + 1) % hits.length : 0;
+            this.hitKey = key;
+            const hit = hits[this.hitIndex];
+            this.emit({ type: 'selection', ids: hit?.type === 80 && hit.state !== 5 ? [hit.id] : [] });
+            if (!hit || hit.type !== 80 || hit.state === 5) this.emit({ type: 'inspect', id: hit?.id ?? null });
+          }
         } else
           this.emit({
             type: 'intent',
@@ -629,6 +673,7 @@ export class ColonyRenderer {
             x2: this.hover.x,
             y2: this.hover.y,
           });
+        this.requestPreview(true);
       }
     }
   }
@@ -679,6 +724,7 @@ export class ColonyRenderer {
         if (v.shadow) v.shadow.visible = visible;
         if (v.label) v.label.visible = visible;
         if (!visible) continue;
+        if (id === this.inspectedId) this.fx.rect(x * TILE, y * TILE, TILE, TILE).stroke({ color: 0xf0d193, width: 2 });
         if (type === 1) {
           px -= 10;
           py -= 29;
@@ -712,6 +758,29 @@ export class ColonyRenderer {
           if (a[o + 9]) this.fx.rect(x * TILE + 22, y * TILE + 14, 10, 8).fill(0xb8a16d);
           if (a[o + 11] > 32) this.fx.circle(x * TILE + 35, y * TILE + 13, 4).fill(0xffe5a5);
           if (a[o + 7] === 3) this.fx.circle(x * TILE + 28, y * TILE - 2, 2).fill(0xd3d8bd);
+          if (a[o + 12]) {
+            const kind = Object.keys(JOB_NAMES)[a[o + 8]];
+            const targetX = (a[o + 13] + 0.5) * TILE, targetY = (a[o + 14] + 0.5) * TILE;
+            const simulationTick = (this.previous?.tick ?? this.tick) + (this.tick - (this.previous?.tick ?? this.tick)) * alpha;
+            const phase = ((simulationTick + id % 13) % 16) / 16;
+            const swing = Math.sin(phase * Math.PI * 2);
+            const direction = Math.atan2(targetY - (y * TILE + 16), targetX - (x * TILE + 16));
+            const angle = direction - 0.7 + swing * 0.7;
+            const hx = x * TILE + 16 + Math.cos(direction) * 9, hy = y * TILE + 13 + Math.sin(direction) * 6;
+            const tx = hx + Math.cos(angle) * 19, ty = hy + Math.sin(angle) * 19;
+            this.fx.moveTo(hx, hy).lineTo(tx, ty).stroke({ color: 0xc7a879, width: 3 });
+            const head = kind === 'grow' ? 0xa1b775 : kind === 'cut' ? 0xd6d4bb : 0xb6c9ce;
+            this.fx.moveTo(tx - Math.sin(angle) * 6, ty + Math.cos(angle) * 6)
+              .lineTo(tx + Math.sin(angle) * 6, ty - Math.cos(angle) * 6).stroke({ color: head, width: kind === 'mine' ? 3 : 5 });
+            this.fx.circle(targetX, targetY, 11).stroke({ color: head, width: 1, alpha: 0.4 });
+            for (let k = 0; k < 3; k++) {
+              const q = (phase + k / 3) % 1, v = hash(id * 31 + k);
+              this.fx.rect(targetX + ((v % 17) - 8) * q, targetY - 18 * q + 12 * q * q, 2 + k % 2, 2)
+                .fill({ color: head, alpha: 1 - q });
+            }
+            this.fx.rect(x * TILE + 2, y * TILE + 30, 28, 3).fill(0x263b36)
+              .rect(x * TILE + 2, y * TILE + 30, 28 * a[o + 15], 3).fill(head);
+          }
         }
         if (a[o + 10] && type < 20)
           this.fx
@@ -742,7 +811,17 @@ export class ColonyRenderer {
         this.overlay.moveTo(minX * TILE, y * TILE).lineTo(maxX * TILE, y * TILE);
       this.overlay.stroke({ color: 0xe4ddbd, alpha: 0.15, width: 1 });
     }
-    if (this.tool !== 'select') {
+    if (this.tool === 'build') {
+      const d = BUILDINGS[this.buildKind as BuildingKind], start = this.startCell ?? this.hover;
+      const cells = this.preview?.cells ?? buildCells(this.buildKind as BuildingKind, start.x, start.y, this.hover.x, this.hover.y).map((p) => ({ ...p, valid: true }));
+      for (const c of cells) {
+        const color = !this.preview ? 0xe8d39b : !c.valid ? 0xe28b7a : this.preview.warnings.length ? 0xe8c479 : 0x9dc990;
+        this.overlay.rect(c.x * TILE + 1, c.y * TILE + 1, d.w * TILE - 2, d.h * TILE - 2)
+          .fill({ color, alpha: 0.27 }).stroke({ color, width: 2 });
+        if (!c.valid) this.overlay.moveTo(c.x * TILE + 7, c.y * TILE + 7).lineTo(c.x * TILE + 25, c.y * TILE + 25)
+          .moveTo(c.x * TILE + 25, c.y * TILE + 7).lineTo(c.x * TILE + 7, c.y * TILE + 25).stroke({ color, width: 2 });
+      }
+    } else if (this.tool !== 'select') {
       const d = BUILDINGS[this.buildKind as keyof typeof BUILDINGS];
       const s = this.startCell ?? this.hover;
       const x = this.tool === 'build' ? this.hover.x : Math.min(s.x, this.hover.x),

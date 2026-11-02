@@ -812,3 +812,9 @@
     display: none;
   }
 }
+/* Planning feedback stays with the bottom architect palette. */
+.build-preview-status { display: flex; flex-wrap: wrap; gap: 4px 16px; padding: 7px 12px; font-size: 12px; border-top: 1px solid #61705d; color: #cadbb2; }
+.build-preview-status strong { width: 100%; }
+.build-preview-status.invalid { color: #edb09c; border-color: #945e52; }
+.build-preview-status.warning { color: #e8ca8e; border-color: #a48b55; }
+.object-inspector .current-job { margin: 12px 0; }

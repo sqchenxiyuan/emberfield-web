@@ -186,7 +186,7 @@ export interface World {
   power: { generated: number; demand: number; stored: number };
 }
 export type Command =
-  | { type: 'build'; kind: BuildingKind; x: number; y: number }
+  | { type: 'build'; kind: BuildingKind; x: number; y: number; x2?: number; y2?: number }
   | { type: 'zone'; zone: number; x: number; y: number; x2: number; y2: number }
   | {
       type: 'mark';
@@ -209,6 +209,13 @@ export interface Result {
   ok: boolean;
   reason: string;
 }
+export type Inspection =
+  | { kind: 'pawn'; id: number; value: Pawn }
+  | { kind: 'item'; id: number; value: Item }
+  | { kind: 'nature'; id: number; value: Nature }
+  | { kind: 'building'; id: number; value: Building }
+  | { kind: 'crop'; id: number; value: Crop }
+  | { kind: 'missing'; id: number };
 export interface Summary {
   tick: number;
   revision: number;

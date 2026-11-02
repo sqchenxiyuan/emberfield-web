@@ -1,0 +1,258 @@
+[
+  {
+    "label": "G01 世界格点温度",
+    "inputs": {
+      "latitude": 45,
+      "elevation": 1200,
+      "noiseOffset": 0,
+      "overallCurve": "identity"
+    },
+    "expected": {
+      "latitudeBase": 7,
+      "elevationReduction": 8,
+      "temperature": -1
+    },
+    "formula": "x=abs(latitude)/90=.5; latitude curve(x)=7; reduction=clamp01((1200-250)/4750)*40=8; T=7-8+0. Not a seasonal/room temperature.",
+    "claims": [
+      "GN03"
+    ]
+  },
+  {
+    "label": "G02 矿脉尝试数及双重取整",
+    "inputs": {
+      "mapSizeX": 250,
+      "rates": [
+        4,
+        8,
+        11,
+        15,
+        16
+      ],
+      "nomadicFactor": 1,
+      "placementFactor": 1
+    },
+    "expected": {
+      "cellDivisors": [
+        2500,
+        1250,
+        909,
+        667,
+        625
+      ],
+      "attemptCounts": [
+        25,
+        50,
+        69,
+        94,
+        100
+      ]
+    },
+    "formula": "divisor=RoundToInt(10000/rate); n=RoundToInt(mapSizeX^2/divisor); final=RoundToInt(n*placementFactor). Unity nearest-even rounding assumed; no midpoint in this case. Attempts are not guaranteed successful veins.",
+    "claims": [
+      "GN16",
+      "GN17"
+    ]
+  },
+  {
+    "label": "G03 土壤与石地分支边界",
+    "inputs": {
+      "patchResult": null,
+      "preferRock": false,
+      "noGravel": false,
+      "cells": [
+        {
+          "e": 0.5,
+          "f": 0.87
+        },
+        {
+          "e": 0.5,
+          "f": 0.87001
+        },
+        {
+          "e": 0.6,
+          "f": 0.9
+        },
+        {
+          "e": 0.61,
+          "f": 0.9
+        },
+        {
+          "e": 0.7,
+          "f": 0.9
+        }
+      ],
+      "caves": 0
+    },
+    "expected": {
+      "terrain": [
+        "Soil",
+        "SoilRich",
+        "Gravel",
+        "naturalStone",
+        "naturalStone"
+      ],
+      "spawnsRock": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "formula": "Patch null; gravel if .55<e<.61; stone if e>=.61; else first inclusive fertility interval. Soil [-999,.87] precedes SoilRich [.87,999]. Solid rock requires e>.7.",
+    "claims": [
+      "GN11",
+      "GN13"
+    ]
+  },
+  {
+    "label": "G04 矿种抽签权重",
+    "inputs": {
+      "weights": {
+        "steel": 1,
+        "silver": 0.1,
+        "gold": 0.07,
+        "uranium": 0.12,
+        "plasteel": 0.05,
+        "jade": 0.065,
+        "components": 1
+      },
+      "eligibleOnlyTheseSeven": true
+    },
+    "expected": {
+      "totalWeight": 2.405,
+      "steelProbability": 0.4158004158004158,
+      "componentProbability": 0.4158004158004158,
+      "goldProbability": 0.02910602910602911
+    },
+    "formula": "P(type|successful center and this eligible set)=weight/sum(weights). Not probability that a map contains the resource; excludes all mods, extra positive-weight defs, tutorial skip and maxValue filter.",
+    "claims": [
+      "GN17",
+      "GN18"
+    ]
+  },
+  {
+    "label": "G05 两名矿工累计矿产量",
+    "inputs": {
+      "maxHP": 1000,
+      "mining": [
+        {
+          "effectiveDamage": 600,
+          "yieldStat": 0.6
+        },
+        {
+          "effectiveDamage": 400,
+          "yieldStat": 1
+        }
+      ],
+      "baseYield": 40,
+      "mineYieldFactor": 1,
+      "wasteable": true,
+      "dropChance": 1
+    },
+    "expected": {
+      "yieldPct": 0.76,
+      "effectiveBase": 40,
+      "preRoundYield": 30.4,
+      "outputDistribution": {
+        "30": 0.6,
+        "31": 0.4
+      },
+      "expectedYield": 30.4
+    },
+    "formula": "q=(600/1000)*.6+(400/1000)*1=.76; effectiveBase=RoundToInt(40*1); max(1,RoundRandom(40*.76)). Abstract full-health target and damage slices, not a named mineral HP value.",
+    "claims": [
+      "GN20"
+    ]
+  },
+  {
+    "label": "G06 肥力敏感度与休眠",
+    "inputs": {
+      "fertilities": [
+        0.7,
+        1.4
+      ],
+      "riceSensitivity": 1,
+      "potatoSensitivity": 0.4,
+      "riceGrowDays": 3,
+      "activeDayFraction": 0.55,
+      "allOtherGrowthFactors": 1
+    },
+    "expected": {
+      "riceFertilityFactors": [
+        0.7,
+        1.4
+      ],
+      "potatoFertilityFactors": [
+        0.88,
+        1.16
+      ],
+      "riceIdealCalendarDaysOnSoil": 5.454545454545454
+    },
+    "formula": "factor=f*s+1-s. CalendarDays=growDays/.55 is continuous idealization from full light and optimum temperature only during .25..8 day fraction; excludes tick quantization and seedling initial growth.",
+    "claims": [
+      "GN26",
+      "GN27",
+      "GN31"
+    ]
+  },
+  {
+    "label": "G07 早收受损作物与采收失败",
+    "inputs": {
+      "baseYield": 6,
+      "growth": 0.825,
+      "minGrowth": 0.65,
+      "hpFraction": 0.5,
+      "cropYieldFactor": 1,
+      "humanlike": true,
+      "harvestFailable": true,
+      "blighted": false,
+      "harvestStat": 0.8
+    },
+    "expected": {
+      "growthFactor": 0.75,
+      "hpFactor": 0.75,
+      "preRoundYield": 3.375,
+      "failProbability": 0.2,
+      "outputDistribution": {
+        "0": 0.2,
+        "3": 0.5,
+        "4": 0.3
+      },
+      "expectedYield": 2.7
+    },
+    "formula": "gFactor=.5+.5*((.825-.65)/(1-.65))=.75; hpFactor=.5+.5*.5=.75; Y=6*.75*.75=3.375. Humanlike/failable failure P=.2; success does not multiply Y by .8. RoundRandom yields 3/4 with .625/.375. Same expected value as scaling does not imply same distribution.",
+    "claims": [
+      "GN28",
+      "GN29"
+    ]
+  },
+  {
+    "label": "G08 生态密度目标",
+    "inputs": {
+      "biomePlantDensity": 0.65,
+      "plantDensityFactor": 1,
+      "fertilities": [
+        0.7,
+        1,
+        1.4
+      ],
+      "ordinaryOutdoorCells": true,
+      "area": 62500,
+      "desiredAnimalDensity": 3.7
+    },
+    "expected": {
+      "desiredPlantsPerCell": [
+        0.3185,
+        0.65,
+        1
+      ],
+      "desiredAnimalWeight": 23.125
+    },
+    "formula": "ordinary plant count=min(.65*f^2,1); animal targetWeight=62500*3.7/10000. Animal density supplied after season/condition factors; target weight is not head count.",
+    "claims": [
+      "GN23",
+      "GN24"
+    ]
+  }
+]

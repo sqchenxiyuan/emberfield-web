@@ -2,6 +2,8 @@ import { Simulation } from './sim/world';
 import { BUILDINGS, JOB_NAMES, RESOURCES } from './sim/defs';
 import { TPS, type Command } from './sim/types';
 import { STRIDE } from './protocol';
+import { planBuild } from './sim/placement';
+import { laborActivity } from './sim/activity';
 const ctx = self as unknown as {
   postMessage: (m: unknown, t?: Transferable[]) => void;
   onmessage: ((e: MessageEvent) => void) | null;
@@ -26,6 +28,7 @@ let saveStatus = '尚未保存',
   saving = false,
   generation = 0,
   lastTerrainBuilt = 0;
+let inspectedId: number | null = null;
 const buildingKinds = Object.keys(BUILDINGS),
   jobs = Object.keys(JOB_NAMES);
 async function db() {
@@ -82,6 +85,8 @@ function terrain() {
   ]);
 }
 function reset() {
+  inspectedId = null;
+  ctx.postMessage({ type: 'inspection', id: null, detail: null });
   generation++;
   lastTerrainBuilt = sim.world.stats.built;
   speed = 0;
@@ -93,6 +98,7 @@ function reset() {
 }
 function ui() {
   ctx.postMessage({ type: 'summary', summary: sim.summary(), speed, saveStatus });
+  if (inspectedId !== null) ctx.postMessage({ type: 'inspection', id: inspectedId, detail: sim.inspect(inspectedId) });
 }
 function publish() {
   if (!port || !buffers.length) return;
@@ -122,9 +128,13 @@ function publish() {
     carry = 0,
     marked = 0,
     extra = 0,
+    labor = 0,
+    targetX = 0,
+    targetY = 0,
+    workProgress = 0,
   ) => {
     f.set(
-      [id, type, x, y, progress, hp, color, state, job, carry, marked, extra],
+      [id, type, x, y, progress, hp, color, state, job, carry, marked, extra, labor, targetX, targetY, workProgress],
       count++ * STRIDE,
     );
   };
@@ -162,7 +172,8 @@ function publish() {
     if (i.count > 0.01) write(i.id, 50 + RESOURCES.indexOf(i.kind), i.x, i.y, i.count);
   for (const c of w.crops)
     write(-1 - c.y * 96 - c.x, c.crop === 'herb' ? 91 : 90, c.x, c.y, c.growth);
-  for (const p of w.pawns)
+  for (const p of w.pawns) {
+    const activity = laborActivity(p, w);
     write(
       p.id,
       p.animal ? 82 : p.enemy ? 81 : 80,
@@ -186,12 +197,25 @@ function publish() {
       p.carry ? 1 : 0,
       p.drafted ? 1 : 0,
       p.cooldown,
+      activity ? 1 : 0,
+      activity?.x ?? 0,
+      activity?.y ?? 0,
+      activity?.progress ?? 0,
     );
+  }
   byteCount += count * STRIDE * 4;
   port.postMessage({ type: 'frame', buffer, count, tick: w.tick, sequence: sequence++ }, [buffer]);
 }
 ctx.onmessage = async ({ data: m }) => {
   try {
+    if (m.type === 'inspect') {
+      inspectedId = Number.isInteger(m.id) ? m.id : null;
+      ctx.postMessage({ type: 'inspection', id: inspectedId, detail: inspectedId === null ? null : sim.inspect(inspectedId) });
+    }
+    if (m.type === 'previewBuild') {
+      ctx.postMessage({ type: 'response', requestId: m.requestId, ok: true,
+        value: planBuild(sim.world, m.kind, m.x, m.y, m.x2, m.y2) });
+    }
     if (m.type === 'init') {
       sim = new Simulation(m.seed || 73129);
       ready = true;

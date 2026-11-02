@@ -1,0 +1,229 @@
+{
+  "evidence_id": "RW17-GENERATION",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.Planet.WorldGenerator",
+      "local_file": ".local-research/generation/RimWorld.Planet.WorldGenerator.cs",
+      "sha256": "0508168f1e8f66e190699425e8aaffea8be8dc914c9569c3e196d1b6dff19e5a",
+      "lines": 181
+    },
+    {
+      "type": "RimWorld.Planet.WorldGenStep_Tiles",
+      "local_file": ".local-research/generation/RimWorld.Planet.WorldGenStep_Tiles.cs",
+      "sha256": "1decec2299c2301fd27c4c2e2197543223d0a03a43c56a64f83eacab3f6882b8",
+      "lines": 28
+    },
+    {
+      "type": "RimWorld.Planet.WorldGenStep_Terrain",
+      "local_file": ".local-research/generation/RimWorld.Planet.WorldGenStep_Terrain.cs",
+      "sha256": "8a255410ae0416bc036f81d8e3646ac6e93a7f4d41d2bb35525c34257ddcfeda",
+      "lines": 325
+    },
+    {
+      "type": "RimWorld.Planet.WorldGenStep_Rivers",
+      "local_file": ".local-research/generation/RimWorld.Planet.WorldGenStep_Rivers.cs",
+      "sha256": "1efc9fe02dc35cda8497551a992171c38f5d1a2382f33e6b268f233765f42149",
+      "lines": 212
+    },
+    {
+      "type": "RimWorld.Planet.WorldGenStep_Mutators",
+      "local_file": ".local-research/generation/RimWorld.Planet.WorldGenStep_Mutators.cs",
+      "sha256": "8784490f2b99f10bbf29b419a51b9ca816bb4f10d60acfc2ae64d542aaf7b7aa",
+      "lines": 100
+    },
+    {
+      "type": "Verse.MapGenerator",
+      "local_file": ".local-research/generation/Verse.MapGenerator.cs",
+      "sha256": "199791e7823f0033654ea5a6e4206d741357e57d5ba133c9c97cf69f8c812a3f",
+      "lines": 453
+    },
+    {
+      "type": "RimWorld.GenStep_ElevationFertility",
+      "local_file": ".local-research/generation/RimWorld.GenStep_ElevationFertility.cs",
+      "sha256": "fc74ce518d0d9c6ef17e7fac05f11fbe62eb573366688fcb15dd144f47d57aee",
+      "lines": 98
+    },
+    {
+      "type": "RimWorld.GenStep_Terrain",
+      "local_file": ".local-research/generation/RimWorld.GenStep_Terrain.cs",
+      "sha256": "3e16b7a40b64001d485055224245a36324eaa405c7904daeee0d210fa0eb5685",
+      "lines": 35
+    },
+    {
+      "type": "RimWorld.GenStep_RocksFromGrid",
+      "local_file": ".local-research/generation/RimWorld.GenStep_RocksFromGrid.cs",
+      "sha256": "11847acfd1532c853028b6daaf3f3c7a905fa9626eec64d456ee0596674ed0b7",
+      "lines": 158
+    },
+    {
+      "type": "Verse.RockNoises",
+      "local_file": ".local-research/generation/Verse.RockNoises.cs",
+      "sha256": "d4a0385a0b5a0bb6566bb442449f6e4f6e6174e236cbe1895237121bebc8f95d",
+      "lines": 37
+    },
+    {
+      "type": "RimWorld.GenStep_ScatterLumpsMineable",
+      "local_file": ".local-research/generation/RimWorld.GenStep_ScatterLumpsMineable.cs",
+      "sha256": "17466dd271fa9f139c7a90086ea2832c05dd338ab89ae17c28c17455344a544f",
+      "lines": 116
+    },
+    {
+      "type": "Verse.GenStep_Scatterer",
+      "local_file": ".local-research/generation/Verse.GenStep_Scatterer.cs",
+      "sha256": "862c99bece0855fbfa06a65d66fe202e9316364eeae4cc3e2f939f5254550009",
+      "lines": 291
+    },
+    {
+      "type": "RimWorld.GenStep_Plants",
+      "local_file": ".local-research/generation/RimWorld.GenStep_Plants.cs",
+      "sha256": "64c9180b9003c7d783389429a93a34ea8723880d96ae4cf6b6eeef8fab35167c",
+      "lines": 24
+    },
+    {
+      "type": "RimWorld.WildPlantSpawner",
+      "local_file": ".local-research/generation/RimWorld.WildPlantSpawner.cs",
+      "sha256": "954d73ad5603d293b00f2e17d9d990b97b72b2d284db5a288b02100d2c6d41bf",
+      "lines": 759
+    },
+    {
+      "type": "RimWorld.GenStep_Animals",
+      "local_file": ".local-research/generation/RimWorld.GenStep_Animals.cs",
+      "sha256": "05a3f0a2e83a07ac5a451f792c3dac545aac9202881caa840899f646bfb5e4d2",
+      "lines": 28
+    },
+    {
+      "type": "RimWorld.WildAnimalSpawner",
+      "local_file": ".local-research/generation/RimWorld.WildAnimalSpawner.cs",
+      "sha256": "a5aeaa387c91716c53c69e4abc7c46be1c1b3f9a096acfb7556679bc00e3aae7",
+      "lines": 189
+    },
+    {
+      "type": "RimWorld.Mineable",
+      "local_file": ".local-research/generation/RimWorld.Mineable.cs",
+      "sha256": "7f2c5ab7e7577ff881015f8a451025fe5b17acba10152af67f5265b43bbd199b",
+      "lines": 99
+    },
+    {
+      "type": "RimWorld.JobDriver_Mine",
+      "local_file": ".local-research/generation/RimWorld.JobDriver_Mine.cs",
+      "sha256": "2f60bee18f344bd31a67e69e4f22cbdb770e821edce5a4088dc49db7fe6fd9b9",
+      "lines": 142
+    },
+    {
+      "type": "RimWorld.Plant",
+      "local_file": ".local-research/generation/RimWorld.Plant.cs",
+      "sha256": "4b0d69c4136423e496490a23276e7c98c8dd053e2fb27c705d282c5d2c8e3f09",
+      "lines": 1253
+    },
+    {
+      "type": "RimWorld.JobDriver_PlantWork",
+      "local_file": ".local-research/generation/RimWorld.JobDriver_PlantWork.cs",
+      "sha256": "a9e2a816364984ba266860a686190bbe959a09edad3d5a8a3ffce071cc2fb160",
+      "lines": 148
+    },
+    {
+      "type": "RimWorld.TileMutatorWorker_River",
+      "local_file": ".local-research/generation/RimWorld.TileMutatorWorker_River.cs",
+      "sha256": "2c8b581ad9bd21fa7c437bf2a1462621a16cdbdc581eb4564badb5fb61acec91",
+      "lines": 362
+    },
+    {
+      "type": "Verse.MapGeneratorDef",
+      "local_file": ".local-research/generation/Verse.MapGeneratorDef.cs",
+      "sha256": "f7f10e33a4dc4d266b8662b8c0f11d52d6cc076662ea2fdb018f1943badc73c9",
+      "lines": 41
+    },
+    {
+      "type": "Verse.GenCommandLine",
+      "local_file": ".local-research/generation/Verse.GenCommandLine.cs",
+      "sha256": "96b16adc224daa79fe4e2f5fd35677617aadfd6bbb8764fea9ded95cb898d53b",
+      "lines": 59
+    },
+    {
+      "type": "Verse.GenFilePaths",
+      "local_file": ".local-research/generation/Verse.GenFilePaths.cs",
+      "sha256": "2e8847b940f237cf91a97c78e300cc6acb01401a450713bd9b5e47e0f6251db3",
+      "lines": 438
+    },
+    {
+      "type": "RimWorld.MapGenUtility",
+      "local_file": ".local-research/generation/RimWorld.MapGenUtility.cs",
+      "sha256": "88fa71df6dbfcfdd5dcd161669b958b955bf4b433c41c8a10ca28c5fc555c56d",
+      "lines": 1327
+    },
+    {
+      "type": "RimWorld.MapGenTuning",
+      "local_file": ".local-research/generation/RimWorld.MapGenTuning.cs",
+      "sha256": "70f66f7390c3e925038fc80722f4fab5b92a5afacb829b923299090aa45c7ca2",
+      "lines": 17
+    },
+    {
+      "type": "RimWorld.TileMutatorWorker_Caves",
+      "local_file": ".local-research/generation/RimWorld.TileMutatorWorker_Caves.cs",
+      "sha256": "dd9d9a55132abad593d6966a9b7fc4feec28755812ba4f2e2ee1ebe871e6f0d6",
+      "lines": 95
+    },
+    {
+      "type": "RimWorld.Planet.World",
+      "local_file": ".local-research/generation/RimWorld.Planet.World.cs",
+      "sha256": "916e1ff8af7a9d24f1a9b5831ef0885a6787b1c934849807e776c83405b42bef",
+      "lines": 485
+    },
+    {
+      "type": "RimWorld.BuildingProperties",
+      "local_file": ".local-research/generation/RimWorld.BuildingProperties.cs",
+      "sha256": "fe0e1c9905ef65e9600941b247f8827d14d90a4575594e3a6c1fa45839969a16",
+      "lines": 682
+    },
+    {
+      "type": "RimWorld.PlantUtility",
+      "local_file": ".local-research/generation/RimWorld.PlantUtility.cs",
+      "sha256": "f4e6a1a29290379e13eda80662252ea2fe8f3b6a37f9fb7050eefee125ff4fc6",
+      "lines": 410
+    },
+    {
+      "type": "RimWorld.GenStep_MutatorPostElevationFertility",
+      "local_file": ".local-research/generation/RimWorld.GenStep_MutatorPostElevationFertility.cs",
+      "sha256": "295b56eb53533371728c34300da8a313acdf5e304d2d75c67900c3ebbafcfc7a",
+      "lines": 17
+    },
+    {
+      "type": "RimWorld.GenStep_MutatorPostTerrain",
+      "local_file": ".local-research/generation/RimWorld.GenStep_MutatorPostTerrain.cs",
+      "sha256": "a46cc31907074075c3598db6bd195313f80d6393efa169f66c2de997b4c5baad",
+      "lines": 17
+    },
+    {
+      "type": "Verse.GenMath",
+      "local_file": ".local-research/generation/Verse.GenMath.cs",
+      "sha256": "639bc810485b043ff454902b285ade5d875d8b123f3809672371111519429b1e",
+      "lines": 702
+    },
+    {
+      "type": "RimWorld.TerrainThreshold",
+      "local_file": ".local-research/generation/RimWorld.TerrainThreshold.cs",
+      "sha256": "216468df76511873f589f0539e5e59553acf8ef63cceabc1ded87b4634a28d93",
+      "lines": 26
+    },
+    {
+      "type": "RimWorld.PlantProperties",
+      "local_file": ".local-research/generation/RimWorld.PlantProperties.cs",
+      "sha256": "2cb1e8f5f442f53401efb520b2bba0a8086a746e96076ae0b5e3c97d67dceca3",
+      "lines": 383
+    }
+  ]
+}

@@ -1,0 +1,1164 @@
+[
+  {
+    "id": "GN01",
+    "kind": "static-derived",
+    "statement": "世界种子由稳定字符串哈希产生；世界步骤与层内步骤使用 SeedPart 派生 RNG，重复 SeedPart 加上此前出现次数。",
+    "sources": [
+      {
+        "type": "RimWorld.Planet.WorldGenerator",
+        "member": "GenerateWorld",
+        "line_start": 30,
+        "line_end": 79
+      },
+      {
+        "type": "RimWorld.Planet.WorldGenerator",
+        "member": "GeneratePlanetLayer",
+        "line_start": 83,
+        "line_end": 104
+      },
+      {
+        "type": "RimWorld.Planet.WorldGenerator",
+        "member": "GetSeedPart/GetSeedFromSeedString",
+        "line_start": 162,
+        "line_end": 179
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN02",
+    "kind": "xml-declared",
+    "statement": "Core Surface 层使用列出的 worldGenSteps；Terrain 0、Lakes 150、Rivers 200、Mutators 700。Tiles 通用步骤虽存在但未列入 Surface。",
+    "sources": [
+      {
+        "path": "Data/Core/Defs/PlanetLayerDefs/PlanetLayers.xml",
+        "xpath": "/Defs/PlanetLayerDef[defName='Surface']",
+        "sha256": "8bcd61f2fe92c9ddfd05a0d4055e0705ed7e074016683d288096f18ea26cc2b8"
+      },
+      {
+        "path": "Data/Core/Defs/WorldGeneration/WorldGenerator.xml",
+        "xpath": "/Defs/WorldGenStepDef[defName='Terrain']",
+        "sha256": "0f167893584e7ec3960dd4dbeb7faa97bfb982ac9b7147a44495835043303a34"
+      },
+      {
+        "path": "Data/Core/Defs/WorldGeneration/WorldGenerator.xml",
+        "xpath": "/Defs/WorldGenStepDef[defName='Lakes']",
+        "sha256": "0f167893584e7ec3960dd4dbeb7faa97bfb982ac9b7147a44495835043303a34"
+      },
+      {
+        "path": "Data/Core/Defs/WorldGeneration/WorldGenerator.xml",
+        "xpath": "/Defs/WorldGenStepDef[defName='Rivers']",
+        "sha256": "0f167893584e7ec3960dd4dbeb7faa97bfb982ac9b7147a44495835043303a34"
+      },
+      {
+        "path": "Data/Core/Defs/WorldGeneration/WorldGenerator.xml",
+        "xpath": "/Defs/WorldGenStepDef[defName='Mutators']",
+        "sha256": "0f167893584e7ec3960dd4dbeb7faa97bfb982ac9b7147a44495835043303a34"
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN03",
+    "kind": "static-derived",
+    "statement": "世界格点海拔、温度、降雨、山地类型和 biome 由多层噪声及 biome worker 评分形成；温度基线为纬度曲线减海拔降温加噪声。",
+    "sources": [
+      {
+        "type": "RimWorld.Planet.WorldGenStep_Terrain",
+        "member": "noise configuration",
+        "line_start": 25,
+        "line_end": 75
+      },
+      {
+        "type": "RimWorld.Planet.WorldGenStep_Terrain",
+        "member": "SetupElevationNoise",
+        "line_start": 91,
+        "line_end": 124
+      },
+      {
+        "type": "RimWorld.Planet.WorldGenStep_Terrain",
+        "member": "GenerateTileFor/BiomeFrom",
+        "line_start": 215,
+        "line_end": 307
+      },
+      {
+        "type": "RimWorld.Planet.WorldGenStep_Terrain",
+        "member": "temperature helpers",
+        "line_start": 309,
+        "line_end": 323
+      }
+    ],
+    "values": {
+      "temperatureLatitudeCurve": [
+        [
+          0,
+          30
+        ],
+        [
+          0.1,
+          29
+        ],
+        [
+          0.5,
+          7
+        ],
+        [
+          1,
+          -37
+        ]
+      ],
+      "temperatureElevationStart": 250,
+      "temperatureElevationEnd": 5000,
+      "maxElevationReduction": 40
+    }
+  },
+  {
+    "id": "GN04",
+    "kind": "static-derived",
+    "statement": "世界降雨由纬度曲线、海拔衰减、噪声及低值变换产生，再取1.5次方乘4000并经总体雨量曲线。",
+    "sources": [
+      {
+        "type": "RimWorld.Planet.WorldGenStep_Terrain",
+        "member": "SetupRainfallNoise",
+        "line_start": 133,
+        "line_end": 182
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN05",
+    "kind": "static-derived",
+    "statement": "世界河流从沿海海水格建立有成本的汇水树；累积降雨并扣除蒸发；按 RiverDef 流量阈值、生成概率及退化/分支规则建立连接。",
+    "sources": [
+      {
+        "type": "RimWorld.Planet.WorldGenStep_Rivers",
+        "member": "GenerateRivers/GetImpliedElevation",
+        "line_start": 39,
+        "line_end": 96
+      },
+      {
+        "type": "RimWorld.Planet.WorldGenStep_Rivers",
+        "member": "AccumulateFlow/CreateRivers/ExtendRiver",
+        "line_start": 127,
+        "line_end": 190
+      },
+      {
+        "type": "RimWorld.Planet.WorldGenStep_Rivers",
+        "member": "evaporation",
+        "line_start": 192,
+        "line_end": 209
+      },
+      {
+        "path": "Data/Core/Defs/RiverDefs/RiverDefs.xml",
+        "xpath": "/Defs/RiverDef[defName='HugeRiver']",
+        "sha256": "1d2cd2169ec6c1ec230cd0739c6744c62a5ca63be3186201d85064538251df7e"
+      },
+      {
+        "path": "Data/Core/Defs/RiverDefs/RiverDefs.xml",
+        "xpath": "/Defs/RiverDef[defName='LargeRiver']",
+        "sha256": "1d2cd2169ec6c1ec230cd0739c6744c62a5ca63be3186201d85064538251df7e"
+      },
+      {
+        "path": "Data/Core/Defs/RiverDefs/RiverDefs.xml",
+        "xpath": "/Defs/RiverDef[defName='River']",
+        "sha256": "1d2cd2169ec6c1ec230cd0739c6744c62a5ca63be3186201d85064538251df7e"
+      },
+      {
+        "path": "Data/Core/Defs/RiverDefs/RiverDefs.xml",
+        "xpath": "/Defs/RiverDef[defName='Creek']",
+        "sha256": "1d2cd2169ec6c1ec230cd0739c6744c62a5ca63be3186201d85064538251df7e"
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN06",
+    "kind": "static-derived",
+    "statement": "山地和不可通行山地尝试加入 Mountain；Mountainous 以0.5、LargeHills以0.25尝试加入 Caves；还需有效性与重复检查。",
+    "sources": [
+      {
+        "type": "RimWorld.Planet.WorldGenStep_Mutators",
+        "member": "AddMutatorsFromTile",
+        "line_start": 28,
+        "line_end": 60
+      },
+      {
+        "type": "RimWorld.Planet.WorldGenStep_Mutators",
+        "member": "TryAddMutator",
+        "line_start": 78,
+        "line_end": 97
+      },
+      {
+        "path": "Data/Core/Defs/MapGeneration/TileMutators.xml",
+        "xpath": "/Defs/TileMutatorDef[defName='Mountain']",
+        "sha256": "54b81b229983304346ca35dffcaadb1a0129566389e4177bca7079364a1cbbaa"
+      },
+      {
+        "path": "Data/Core/Defs/MapGeneration/TileMutators.xml",
+        "xpath": "/Defs/TileMutatorDef[defName='Caves']",
+        "sha256": "54b81b229983304346ca35dffcaadb1a0129566389e4177bca7079364a1cbbaa"
+      },
+      {
+        "path": "Data/Core/Defs/MapGeneration/TileMutators.xml",
+        "xpath": "/Defs/TileMutatorDef[defName='River']",
+        "sha256": "54b81b229983304346ca35dffcaadb1a0129566389e4177bca7079364a1cbbaa"
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN07",
+    "kind": "static-derived",
+    "statement": "局部地图种子使用世界种子与 tile hash；pocket map 改用 parent ID。步骤合并 generator、biome、mutator 和额外步骤，过滤后按 order/index 执行并逐步派生 RNG。",
+    "sources": [
+      {
+        "type": "Verse.MapGenerator",
+        "member": "GenerateMap seed",
+        "line_start": 79,
+        "line_end": 95
+      },
+      {
+        "type": "Verse.MapGenerator",
+        "member": "GenerateMap step composition",
+        "line_start": 141,
+        "line_end": 186
+      },
+      {
+        "type": "Verse.MapGenerator",
+        "member": "GenerateContentsIntoMap",
+        "line_start": 289,
+        "line_end": 335
+      },
+      {
+        "type": "Verse.MapGenerator",
+        "member": "GetSeedPart",
+        "line_start": 439,
+        "line_end": 450
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN08",
+    "kind": "xml-declared",
+    "statement": "Base_Player 继承 MapCommonBase 并加入 RocksFromGrid、ScatterShrines、CaveHives 等；生成阶段顺序由 GenStepDef.order 决定。",
+    "sources": [
+      {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      {
+        "path": "Data/Core/Defs/MapGeneration/BasePlayerMapGenerator.xml",
+        "xpath": "/Defs/MapGeneratorDef[defName='Base_Player']",
+        "sha256": "f4392aa10f2f86d87dcb130fd7966200fbabc251d8b397935bfe3c7449e1ad0e"
+      },
+      {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='ElevationFertility']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='MutatorPostElevationFertility']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='RocksFromGrid']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='Terrain']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='MutatorPostTerrain']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='Plants']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='Animals']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='Fog']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN09",
+    "kind": "static-derived",
+    "statement": "局部高程和肥力是独立标量场；高程噪声受山地系数影响，地下图设为1；肥力噪声频率约0.021、6层。",
+    "sources": [
+      {
+        "type": "RimWorld.GenStep_ElevationFertility",
+        "member": "constants",
+        "line_start": 11,
+        "line_end": 31
+      },
+      {
+        "type": "RimWorld.GenStep_ElevationFertility",
+        "member": "Generate",
+        "line_start": 35,
+        "line_end": 95
+      },
+      {
+        "type": "RimWorld.MapGenTuning",
+        "member": "elevation factors",
+        "line_start": 5,
+        "line_end": 15
+      }
+    ],
+    "values": {
+      "elevationFactors": {
+        "Flat": 0.8,
+        "SmallHills": 0.9,
+        "LargeHills": 1,
+        "Mountainous": 1.1,
+        "Impassable": 1.2
+      }
+    }
+  },
+  {
+    "id": "GN10",
+    "kind": "static-derived",
+    "statement": "自然石种优先采用 biome 强制列表，否则以 tile hash 为 RNG 种子从适用石种中取2–3种；每种石噪声频率0.005，逐格选择最高值。",
+    "sources": [
+      {
+        "type": "RimWorld.Planet.World",
+        "member": "NaturalRockTypesIn/RockAllowedInBiome",
+        "line_start": 391,
+        "line_end": 429
+      },
+      {
+        "type": "Verse.RockNoises",
+        "member": "Init",
+        "line_start": 19,
+        "line_end": 28
+      },
+      {
+        "type": "RimWorld.GenStep_RocksFromGrid",
+        "member": "RockDefAt",
+        "line_start": 26,
+        "line_end": 45
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN11",
+    "kind": "static-derived",
+    "statement": "高程>0.7且洞穴场<=0生成岩体；高程>0.7*1.14为厚岩顶，否则>0.7*1.04为薄岩顶；不足20格的自然屋顶连通块被移除。",
+    "sources": [
+      {
+        "type": "RimWorld.GenStep_RocksFromGrid",
+        "member": "Generate",
+        "line_start": 48,
+        "line_end": 108
+      }
+    ],
+    "values": {
+      "rockThreshold": 0.7,
+      "thickRoofThresholdApprox": 0.798,
+      "thinRoofThresholdApprox": 0.728,
+      "minRoofRegionCells": 20
+    }
+  },
+  {
+    "id": "GN12",
+    "kind": "static-derived",
+    "statement": "mutator post-elevation 回调生成洞穴场，post-terrain 回调铺洞内水/碎石；基础洞穴参数分叉0.02、每格宽度衰减0.034、最小宽度1.4，底层开洞工具未在本组展开。",
+    "sources": [
+      {
+        "type": "RimWorld.GenStep_MutatorPostElevationFertility",
+        "member": "Generate",
+        "line_start": 9,
+        "line_end": 14
+      },
+      {
+        "type": "RimWorld.GenStep_MutatorPostTerrain",
+        "member": "Generate",
+        "line_start": 9,
+        "line_end": 14
+      },
+      {
+        "type": "RimWorld.TileMutatorWorker_Caves",
+        "member": "configuration/GenerateCaves",
+        "line_start": 11,
+        "line_end": 55
+      },
+      {
+        "type": "RimWorld.TileMutatorWorker_Caves",
+        "member": "GeneratePostTerrain",
+        "line_start": 57,
+        "line_end": 78
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN13",
+    "kind": "static-derived",
+    "statement": "自然地表优先 terrain patch；否则0.55<e<0.61产生碎石，e>=0.61产生石地，再回退肥力阈值。实心物/洞穴可强制支持岩石的地表为石地。阈值包含端点且首个匹配优先。",
+    "sources": [
+      {
+        "type": "RimWorld.MapGenUtility",
+        "member": "GetNaturalTerrainAt/TerrainFrom",
+        "line_start": 617,
+        "line_end": 677
+      },
+      {
+        "type": "RimWorld.TerrainThreshold",
+        "member": "TerrainAtValue",
+        "line_start": 14,
+        "line_end": 24
+      },
+      {
+        "type": "RimWorld.GenStep_Terrain",
+        "member": "Generate",
+        "line_start": 10,
+        "line_end": 31
+      },
+      {
+        "path": "Data/Core/Defs/BiomeDefs/Biomes_Temperate.xml",
+        "xpath": "/Defs/BiomeDef[defName='TemperateForest']",
+        "sha256": "4d6a48e5f6f0b5eed5f239077a1af78cadd8924785d76bdde2329da137dbc7ae"
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN14",
+    "kind": "xml-declared",
+    "statement": "地表实际 fertility 与生成肥力场不同；Core 声明 Soil1、SoilRich1.4、Riverbank1.4、Gravel0.7、Sand0.1、Mud0。",
+    "sources": [
+      {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='Soil']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='SoilRich']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='Riverbank']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='Gravel']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='Sand']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='Mud']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN15",
+    "kind": "static-derived",
+    "statement": "河流在 post-terrain 根据世界河流连接生成图，中心在地图30%–70%区域；曲线和宽度噪声塑形，depth>4且浅滩噪声>0.2为深流，否则depth>0为浅流。depth是相对中心线距离场，不是物理水深。",
+    "sources": [
+      {
+        "type": "RimWorld.TileMutatorWorker_River",
+        "member": "noise configuration/Init",
+        "line_start": 13,
+        "line_end": 85
+      },
+      {
+        "type": "RimWorld.TileMutatorWorker_River",
+        "member": "GeneratePostTerrain",
+        "line_start": 88,
+        "line_end": 130
+      },
+      {
+        "type": "RimWorld.TileMutatorWorker_River",
+        "member": "GenerateRiverGraph/GetRiverCenter",
+        "line_start": 140,
+        "line_end": 173
+      },
+      {
+        "type": "RimWorld.TileMutatorWorker_River",
+        "member": "GenerateDepthMaps",
+        "line_start": 188,
+        "line_end": 210
+      },
+      {
+        "type": "RimWorld.TileMutatorWorker_River",
+        "member": "GetDisplacedPoint/RiverTerrainAt/RiverBankTerrainAt",
+        "line_start": 252,
+        "line_end": 306
+      },
+      {
+        "type": "RimWorld.TileMutatorWorker_River",
+        "member": "GetRiverWidthAt",
+        "line_start": 217,
+        "line_end": 220
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN16",
+    "kind": "static-derived",
+    "statement": "岩体步骤内部生成矿脉；每万格基率Flat4/SmallHills8/LargeHills11/Mountainous15/Impassable16。具体数量用x边长平方和两次RoundToInt，之后再乘placementFactor取整；非初始图可受nomadic因子影响。",
+    "sources": [
+      {
+        "type": "RimWorld.GenStep_RocksFromGrid",
+        "member": "Generate/GetResourceBlotchesPer10KCellsForMap",
+        "line_start": 109,
+        "line_end": 146
+      },
+      {
+        "type": "RimWorld.GenStep_ScatterLumpsMineable",
+        "member": "CalculateFinalCount",
+        "line_start": 39,
+        "line_end": 50
+      },
+      {
+        "type": "Verse.GenStep_Scatterer",
+        "member": "CountFromPer10kCells",
+        "line_start": 266,
+        "line_end": 273
+      },
+      {
+        "type": "Verse.GenStep_Scatterer",
+        "member": "GetPlacementFactor",
+        "line_start": 253,
+        "line_end": 263
+      }
+    ],
+    "values": {
+      "baseRates": {
+        "Flat": 4,
+        "SmallHills": 8,
+        "LargeHills": 11,
+        "Mountainous": 15,
+        "Impassable": 16
+      }
+    }
+  },
+  {
+    "id": "GN17",
+    "kind": "static-derived",
+    "statement": "矿脉中心要求自然岩石且满足间距；找不到中心会结束剩余生成。矿种按commonality权重选取，矿脉形状由IrregularLump生成并排除UsedRects/洞穴；不保证每种资源或足量可达资源。",
+    "sources": [
+      {
+        "type": "RimWorld.GenStep_ScatterLumpsMineable",
+        "member": "Generate",
+        "line_start": 22,
+        "line_end": 36
+      },
+      {
+        "type": "RimWorld.GenStep_ScatterLumpsMineable",
+        "member": "ChooseThingDef/CanScatterAt/ScatterAt",
+        "line_start": 53,
+        "line_end": 113
+      },
+      {
+        "type": "Verse.GenStep_Scatterer",
+        "member": "CalculateFinalMinSpacing",
+        "line_start": 276,
+        "line_end": 283
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN18",
+    "kind": "xml-declared",
+    "statement": "本地Core七种矿物的直接声明含产物、单格基础产量、权重及矿脉大小；六种原料矿产量40，组件矿2。",
+    "sources": [
+      {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml",
+        "xpath": "/Defs/ThingDef[defName='MineableSteel']",
+        "sha256": "d0c032a63781ca1a2ee12ea667b54237fe65d38738bcc81a76771653a0b6b9d6"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml",
+        "xpath": "/Defs/ThingDef[defName='MineableSilver']",
+        "sha256": "d0c032a63781ca1a2ee12ea667b54237fe65d38738bcc81a76771653a0b6b9d6"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml",
+        "xpath": "/Defs/ThingDef[defName='MineableGold']",
+        "sha256": "d0c032a63781ca1a2ee12ea667b54237fe65d38738bcc81a76771653a0b6b9d6"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml",
+        "xpath": "/Defs/ThingDef[defName='MineableUranium']",
+        "sha256": "d0c032a63781ca1a2ee12ea667b54237fe65d38738bcc81a76771653a0b6b9d6"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml",
+        "xpath": "/Defs/ThingDef[defName='MineablePlasteel']",
+        "sha256": "d0c032a63781ca1a2ee12ea667b54237fe65d38738bcc81a76771653a0b6b9d6"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml",
+        "xpath": "/Defs/ThingDef[defName='MineableJade']",
+        "sha256": "d0c032a63781ca1a2ee12ea667b54237fe65d38738bcc81a76771653a0b6b9d6"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml",
+        "xpath": "/Defs/ThingDef[defName='MineableComponentsIndustrial']",
+        "sha256": "d0c032a63781ca1a2ee12ea667b54237fe65d38738bcc81a76771653a0b6b9d6"
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN19",
+    "kind": "static-derived",
+    "statement": "正常挖掘击打间隔Round(100/MiningSpeed)，天然岩体每击80否则40；非玩家采矿速度下限0.6；最后一击显式累计贡献再DestroyMined。",
+    "sources": [
+      {
+        "type": "RimWorld.JobDriver_Mine",
+        "member": "DoDamage",
+        "line_start": 103,
+        "line_end": 124
+      },
+      {
+        "type": "RimWorld.JobDriver_Mine",
+        "member": "ResetTicksToPickHit",
+        "line_start": 126,
+        "line_end": 134
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN20",
+    "kind": "static-derived",
+    "statement": "矿产量按各次有效采矿伤害占最大HP的比例乘该矿工MiningYield累加；难度先作用基础产量取整，wasteable产出再随机取整并最低1，掉落还受mineableDropChance门控。",
+    "sources": [
+      {
+        "type": "RimWorld.Mineable",
+        "member": "PreApplyDamage",
+        "line_start": 17,
+        "line_end": 27
+      },
+      {
+        "type": "RimWorld.Mineable",
+        "member": "TrySpawnYield/Notify_TookMiningDamage",
+        "line_start": 66,
+        "line_end": 97
+      },
+      {
+        "type": "RimWorld.BuildingProperties",
+        "member": "mining defaults",
+        "line_start": 267,
+        "line_end": 281
+      },
+      {
+        "type": "RimWorld.BuildingProperties",
+        "member": "EffectiveMineableYield",
+        "line_start": 432,
+        "line_end": 432
+      },
+      {
+        "type": "Verse.GenMath",
+        "member": "RoundRandom",
+        "line_start": 62,
+        "line_end": 65
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN21",
+    "kind": "xml-declared",
+    "statement": "普通五种石头直接声明0.25掉落概率，继承UglyRockBase的非wasteable；默认基础产量1，因此默认难度下挖碎石块是25%掉1块。",
+    "sources": [
+      {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[defName='Sandstone']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[defName='Granite']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[defName='Limestone']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[defName='Slate']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[defName='Marble']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[@Name='UglyRockBase']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      {
+        "type": "RimWorld.BuildingProperties",
+        "member": "mineable defaults",
+        "line_start": 267,
+        "line_end": 281
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN22",
+    "kind": "static-derived",
+    "statement": "初始野生植物随机遍历地图，0.001概率跳过；通过适生/密度/群落权重后生成，初始growth=clamp01(U(0.15,1.5))。",
+    "sources": [
+      {
+        "type": "RimWorld.GenStep_Plants",
+        "member": "Generate",
+        "line_start": 11,
+        "line_end": 21
+      },
+      {
+        "type": "RimWorld.WildPlantSpawner",
+        "member": "InitialGrowthRandomRange",
+        "line_start": 58,
+        "line_end": 58
+      },
+      {
+        "type": "RimWorld.WildPlantSpawner",
+        "member": "CheckSpawnWildPlantAt/SpawnPlant",
+        "line_start": 411,
+        "line_end": 466
+      },
+      {
+        "type": "RimWorld.WildPlantSpawner",
+        "member": "PlantChoiceWeight",
+        "line_start": 469,
+        "line_end": 514
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN23",
+    "kind": "static-derived",
+    "statement": "普通非洞穴正肥力格的期望植物量min(biomeDensity*plantDensityFactor*f^2,1)，不是单纯乘f；洞穴、特殊水生植物和覆盖密度曲线另有分支。",
+    "sources": [
+      {
+        "type": "RimWorld.WildPlantSpawner",
+        "member": "CurrentPlantDensityFactor/CurrentWholeMapNumDesiredPlants",
+        "line_start": 98,
+        "line_end": 113
+      },
+      {
+        "type": "RimWorld.WildPlantSpawner",
+        "member": "GetBaseDesiredPlantsCountAt/GetDesiredPlantsCountAt",
+        "line_start": 704,
+        "line_end": 727
+      },
+      {
+        "path": "Data/Core/Defs/BiomeDefs/Biomes_Temperate.xml",
+        "xpath": "/Defs/BiomeDef[defName='TemperateForest']",
+        "sha256": "4d6a48e5f6f0b5eed5f239077a1af78cadd8924785d76bdde2329da137dbc7ae"
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN24",
+    "kind": "static-derived",
+    "statement": "野生植物再生分摊到格扫描，并经MTB、密度、屋顶和适生条件；野生动物按生态权重填充，目标weight=area*desiredDensity/10000，群体一次生成可超越目标。",
+    "sources": [
+      {
+        "type": "RimWorld.WildPlantSpawner",
+        "member": "WildPlantSpawnerTickInternal",
+        "line_start": 286,
+        "line_end": 317
+      },
+      {
+        "type": "RimWorld.WildPlantSpawner",
+        "member": "CanRegrowAt",
+        "line_start": 671,
+        "line_end": 682
+      },
+      {
+        "type": "RimWorld.GenStep_Animals",
+        "member": "Generate",
+        "line_start": 9,
+        "line_end": 25
+      },
+      {
+        "type": "RimWorld.WildAnimalSpawner",
+        "member": "density/weight",
+        "line_start": 30,
+        "line_end": 94
+      },
+      {
+        "type": "RimWorld.WildAnimalSpawner",
+        "member": "group spawn",
+        "line_start": 140,
+        "line_end": 159
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN25",
+    "kind": "static-derived",
+    "statement": "动物选择需季节适宜，其权重为当前commonality/平均群体大小；运行期每1213tick以0.026955556*desiredDensity概率尝试从边缘补充，另需未满和可达入口。",
+    "sources": [
+      {
+        "type": "RimWorld.WildAnimalSpawner",
+        "member": "WildAnimalSpawnerTick/SpawnRandomWildAnimalAt",
+        "line_start": 101,
+        "line_end": 114
+      },
+      {
+        "type": "RimWorld.WildAnimalSpawner",
+        "member": "CommonalityOfAnimalNow",
+        "line_start": 163,
+        "line_end": 181
+      },
+      {
+        "path": "Data/Core/Defs/BiomeDefs/Biomes_Temperate.xml",
+        "xpath": "/Defs/BiomeDef[defName='TemperateForest']",
+        "sha256": "4d6a48e5f6f0b5eed5f239077a1af78cadd8924785d76bdde2329da137dbc7ae"
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN26",
+    "kind": "static-derived",
+    "statement": "植物每tick理论增长为GrowthRate/(60000*growDays)，非生长期、休眠、病害等使其停止；休眠为本地日比例<0.25或>0.8。",
+    "sources": [
+      {
+        "type": "RimWorld.Plant",
+        "member": "Resting/GrowthRate",
+        "line_start": 277,
+        "line_end": 302
+      },
+      {
+        "type": "RimWorld.Plant",
+        "member": "GrowthPerTick",
+        "line_start": 334,
+        "line_end": 347
+      },
+      {
+        "type": "RimWorld.Plant",
+        "member": "TickLong growth",
+        "line_start": 820,
+        "line_end": 825
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN27",
+    "kind": "static-derived",
+    "statement": "植物肥力增速=f*s+(1-s)；光照在min/optimal之间clamp插值；温度有两侧插值。类默认光照0.51/1、温度0/6/42/58，必须允许Def覆盖。",
+    "sources": [
+      {
+        "type": "RimWorld.PlantUtility",
+        "member": "GrowthRateFactorFor_*",
+        "line_start": 352,
+        "line_end": 380
+      },
+      {
+        "type": "Verse.GenMath",
+        "member": "InverseLerp",
+        "line_start": 418,
+        "line_end": 429
+      },
+      {
+        "type": "RimWorld.PlantProperties",
+        "member": "growth defaults",
+        "line_start": 75,
+        "line_end": 93
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Potato']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN28",
+    "kind": "static-derived",
+    "statement": "植物必须growth>harvestMinGrowth且可采、未枯萎才可产出；产量=base*(0.5+0.5*inverseLerp(gMin,1,g))*(0.5+0.5*hpFrac)*difficulty，然后随机取整。",
+    "sources": [
+      {
+        "type": "RimWorld.Plant",
+        "member": "HarvestableNow",
+        "line_start": 109,
+        "line_end": 119
+      },
+      {
+        "type": "RimWorld.Plant",
+        "member": "CanYieldNow/YieldNow",
+        "line_start": 927,
+        "line_end": 959
+      },
+      {
+        "type": "RimWorld.PlantProperties",
+        "member": "harvest defaults",
+        "line_start": 48,
+        "line_end": 61
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN29",
+    "kind": "static-derived",
+    "statement": "人类且harvestFailable且未blighted时，Rand.Value>harvestStat会收获失败；stat<=1不直接缩产量，stat>1在YieldNow后再次随机取整放大。",
+    "sources": [
+      {
+        "type": "RimWorld.JobDriver_PlantWork",
+        "member": "harvest completion",
+        "line_start": 62,
+        "line_end": 108
+      },
+      {
+        "type": "Verse.GenMath",
+        "member": "RoundRandom",
+        "line_start": 62,
+        "line_end": 65
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN30",
+    "kind": "static-derived",
+    "statement": "采收完成后按HarvestDestroys销毁或将growth重置为harvestAfterGrowth；失败分支仍进入PlantCollected。",
+    "sources": [
+      {
+        "type": "RimWorld.JobDriver_PlantWork",
+        "member": "harvest completion",
+        "line_start": 70,
+        "line_end": 108
+      },
+      {
+        "type": "RimWorld.Plant",
+        "member": "PlantCollected",
+        "line_start": 621,
+        "line_end": 663
+      },
+      {
+        "type": "RimWorld.PlantProperties",
+        "member": "HarvestDestroys",
+        "line_start": 205,
+        "line_end": 205
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_Temperate.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Berry']",
+        "sha256": "648f1b176bf950762413c631e2e800580ddd270b752a1ed9e73ae9ff99653665"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='TreeBase']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN31",
+    "kind": "xml-declared",
+    "statement": "作物growDays/yield/产品和父级声明用于重建农业链，但growDays不是含休眠、温度、光照后的实际成熟天数。",
+    "sources": [
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Rice']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Potato']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Corn']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Strawberry']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Haygrass']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Cotton']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Devilstrand']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Healroot']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[@Name='HealrootBase']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN32",
+    "kind": "xml-declared",
+    "statement": "野生浆果growDays6/yield10/采后growth0.3；野生药草继承HealrootBase；橡树growDays30/yield46，白杨15.05/yield27，木材/采收门槛沿树基类声明。",
+    "sources": [
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_Temperate.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Berry']",
+        "sha256": "648f1b176bf950762413c631e2e800580ddd270b752a1ed9e73ae9ff99653665"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_General.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_HealrootWild']",
+        "sha256": "3349380779d25788ee83120a210bb4a0f8140fcb97ab87e04ecf472d80066d09"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[@Name='HealrootBase']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_Temperate.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_TreeOak']",
+        "sha256": "648f1b176bf950762413c631e2e800580ddd270b752a1ed9e73ae9ff99653665"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_Temperate.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_TreePoplar']",
+        "sha256": "648f1b176bf950762413c631e2e800580ddd270b752a1ed9e73ae9ff99653665"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='TreeBase']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      },
+      {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='DeciduousTreeBase']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN33",
+    "kind": "static-derived",
+    "statement": "savedatafolder 或 -savedatafolder=VALUE 被命令行解析，Config/Saves 等由此根目录派生；参数必须恰好含一个等号。",
+    "sources": [
+      {
+        "type": "Verse.GenCommandLine",
+        "member": "TryGetCommandLineArg",
+        "line_start": 22,
+        "line_end": 38
+      },
+      {
+        "type": "Verse.GenFilePaths",
+        "member": "SaveDataFolderPath",
+        "line_start": 93,
+        "line_end": 108
+      },
+      {
+        "type": "Verse.GenFilePaths",
+        "member": "Config/Saves paths",
+        "line_start": 178,
+        "line_end": 208
+      },
+      {
+        "type": "Verse.GenFilePaths",
+        "member": "FolderUnderSaveData",
+        "line_start": 344,
+        "line_end": 353
+      }
+    ],
+    "values": {}
+  },
+  {
+    "id": "GN34",
+    "kind": "inference",
+    "statement": "复现地图须锁定版本、Def/patch/包顺序、种子哈希、RNG、噪声、地图尺寸、格点身份和生成步骤；本组没有证明跨版本或跨语言逐格一致。",
+    "sources": [
+      {
+        "type": "RimWorld.Planet.WorldGenerator",
+        "member": "GetSeedFromSeedString",
+        "line_start": 176,
+        "line_end": 179
+      },
+      {
+        "type": "Verse.MapGenerator",
+        "member": "GenerateMap",
+        "line_start": 79,
+        "line_end": 95
+      },
+      {
+        "type": "Verse.MapGenerator",
+        "member": "GenerateContentsIntoMap",
+        "line_start": 306,
+        "line_end": 329
+      },
+      {
+        "type": "Verse.RockNoises",
+        "member": "Init",
+        "line_start": 19,
+        "line_end": 28
+      }
+    ],
+    "values": {}
+  }
+]

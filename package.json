@@ -11,6 +11,8 @@
     "preview": "vite preview --host 127.0.0.1 --port 4178 --strictPort",
     "test": "vitest run",
     "test:browser": "node scripts/browser-verify.mjs",
+    "test:interactions": "node scripts/interaction-browser-verify.mjs",
+    "test:animals": "node scripts/animal-motion-verify.mjs",
     "test:campaign": "node scripts/campaign-verify.mjs",
     "test:seeds": "node scripts/seeds-verify.mjs",
     "test:memory": "node scripts/memory-verify.mjs",

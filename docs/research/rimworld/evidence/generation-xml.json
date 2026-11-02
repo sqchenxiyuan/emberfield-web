@@ -1,0 +1,4411 @@
+{
+  "evidence_id": "RW17-GENERATION-XML",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Selected direct XML declarations, not an effective inherited Def database",
+  "limitations": [
+    "ParentName is retained but not resolved here.",
+    "MayRequire and Inherit attributes are retained; active packages and patches are not evaluated.",
+    "Omitted fields are not evidence of absence."
+  ],
+  "records": [
+    {
+      "group": "world_layers",
+      "id": "Surface",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/PlanetLayerDefs/PlanetLayers.xml",
+        "xpath": "/Defs/PlanetLayerDef[defName='Surface']",
+        "sha256": "8bcd61f2fe92c9ddfd05a0d4055e0705ed7e074016683d288096f18ea26cc2b8"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/PlanetLayerDef[defName='Surface']/layerType",
+          "value": "SurfaceLayer",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/PlanetLayerDef[defName='Surface']/tileType",
+          "value": "SurfaceTile",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/PlanetLayerDef[defName='Surface']/worldGenSteps/li[1]",
+          "value": "Terrain",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/PlanetLayerDef[defName='Surface']/worldGenSteps/li[2]",
+          "value": "Lakes",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/PlanetLayerDef[defName='Surface']/worldGenSteps/li[3]",
+          "value": "Rivers",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/PlanetLayerDef[defName='Surface']/worldGenSteps/li[4]",
+          "value": "Mutators",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/PlanetLayerDef[defName='Surface']/worldGenSteps/li[5]",
+          "value": "Landmarks",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        },
+        {
+          "xpath": "/Defs/PlanetLayerDef[defName='Surface']/worldGenSteps/li[6]",
+          "value": "AncientSites",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/PlanetLayerDef[defName='Surface']/worldGenSteps/li[7]",
+          "value": "AncientRoads",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/PlanetLayerDef[defName='Surface']/worldGenSteps/li[8]",
+          "value": "Pollution",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        },
+        {
+          "xpath": "/Defs/PlanetLayerDef[defName='Surface']/worldGenSteps/li[9]",
+          "value": "Factions",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/PlanetLayerDef[defName='Surface']/worldGenSteps/li[10]",
+          "value": "Roads",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/PlanetLayerDef[defName='Surface']/worldGenSteps/li[11]",
+          "value": "Features",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "world_steps",
+      "id": "Terrain",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/WorldGeneration/WorldGenerator.xml",
+        "xpath": "/Defs/WorldGenStepDef[defName='Terrain']",
+        "sha256": "0f167893584e7ec3960dd4dbeb7faa97bfb982ac9b7147a44495835043303a34"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='Terrain']/order",
+          "value": "0",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='Terrain']/worldGenStep",
+          "value": "",
+          "attributes": {
+            "Class": "WorldGenStep_Terrain"
+          }
+        }
+      ]
+    },
+    {
+      "group": "world_steps",
+      "id": "Tiles",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/WorldGeneration/WorldGenerator.xml",
+        "xpath": "/Defs/WorldGenStepDef[defName='Tiles']",
+        "sha256": "0f167893584e7ec3960dd4dbeb7faa97bfb982ac9b7147a44495835043303a34"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='Tiles']/order",
+          "value": "5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='Tiles']/worldGenStep",
+          "value": "",
+          "attributes": {
+            "Class": "WorldGenStep_Tiles"
+          }
+        }
+      ]
+    },
+    {
+      "group": "world_steps",
+      "id": "Lakes",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/WorldGeneration/WorldGenerator.xml",
+        "xpath": "/Defs/WorldGenStepDef[defName='Lakes']",
+        "sha256": "0f167893584e7ec3960dd4dbeb7faa97bfb982ac9b7147a44495835043303a34"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='Lakes']/order",
+          "value": "150",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='Lakes']/worldGenStep",
+          "value": "",
+          "attributes": {
+            "Class": "WorldGenStep_Lakes"
+          }
+        }
+      ]
+    },
+    {
+      "group": "world_steps",
+      "id": "Rivers",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/WorldGeneration/WorldGenerator.xml",
+        "xpath": "/Defs/WorldGenStepDef[defName='Rivers']",
+        "sha256": "0f167893584e7ec3960dd4dbeb7faa97bfb982ac9b7147a44495835043303a34"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='Rivers']/order",
+          "value": "200",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='Rivers']/worldGenStep",
+          "value": "",
+          "attributes": {
+            "Class": "WorldGenStep_Rivers"
+          }
+        }
+      ]
+    },
+    {
+      "group": "world_steps",
+      "id": "AncientSites",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/WorldGeneration/WorldGenerator.xml",
+        "xpath": "/Defs/WorldGenStepDef[defName='AncientSites']",
+        "sha256": "0f167893584e7ec3960dd4dbeb7faa97bfb982ac9b7147a44495835043303a34"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='AncientSites']/order",
+          "value": "300",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='AncientSites']/worldGenStep/ancientSitesPer100kTiles",
+          "value": "10~20",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "world_steps",
+      "id": "AncientRoads",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/WorldGeneration/WorldGenerator.xml",
+        "xpath": "/Defs/WorldGenStepDef[defName='AncientRoads']",
+        "sha256": "0f167893584e7ec3960dd4dbeb7faa97bfb982ac9b7147a44495835043303a34"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='AncientRoads']/order",
+          "value": "400",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='AncientRoads']/worldGenStep/maximumSiteCurve",
+          "value": "15",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='AncientRoads']/worldGenStep/maximumSegmentCurviness",
+          "value": "1.5",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "world_steps",
+      "id": "Factions",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/WorldGeneration/WorldGenerator.xml",
+        "xpath": "/Defs/WorldGenStepDef[defName='Factions']",
+        "sha256": "0f167893584e7ec3960dd4dbeb7faa97bfb982ac9b7147a44495835043303a34"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='Factions']/order",
+          "value": "500",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='Factions']/worldGenStep",
+          "value": "",
+          "attributes": {
+            "Class": "WorldGenStep_Factions"
+          }
+        }
+      ]
+    },
+    {
+      "group": "world_steps",
+      "id": "Roads",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/WorldGeneration/WorldGenerator.xml",
+        "xpath": "/Defs/WorldGenStepDef[defName='Roads']",
+        "sha256": "0f167893584e7ec3960dd4dbeb7faa97bfb982ac9b7147a44495835043303a34"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='Roads']/order",
+          "value": "600",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='Roads']/worldGenStep",
+          "value": "",
+          "attributes": {
+            "Class": "WorldGenStep_Roads"
+          }
+        }
+      ]
+    },
+    {
+      "group": "world_steps",
+      "id": "Mutators",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/WorldGeneration/WorldGenerator.xml",
+        "xpath": "/Defs/WorldGenStepDef[defName='Mutators']",
+        "sha256": "0f167893584e7ec3960dd4dbeb7faa97bfb982ac9b7147a44495835043303a34"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='Mutators']/order",
+          "value": "700",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='Mutators']/worldGenStep",
+          "value": "",
+          "attributes": {
+            "Class": "WorldGenStep_Mutators"
+          }
+        }
+      ]
+    },
+    {
+      "group": "world_steps",
+      "id": "Features",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/WorldGeneration/WorldGenerator.xml",
+        "xpath": "/Defs/WorldGenStepDef[defName='Features']",
+        "sha256": "0f167893584e7ec3960dd4dbeb7faa97bfb982ac9b7147a44495835043303a34"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='Features']/order",
+          "value": "1000",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/WorldGenStepDef[defName='Features']/worldGenStep",
+          "value": "",
+          "attributes": {
+            "Class": "WorldGenStep_Features"
+          }
+        }
+      ]
+    },
+    {
+      "group": "map_base",
+      "id": "MapCommonBase",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[1]",
+          "value": "ElevationFertility",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[2]",
+          "value": "MutatorPostElevationFertility",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[3]",
+          "value": "Terrain",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[4]",
+          "value": "MutatorPostTerrain",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[5]",
+          "value": "Roads",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[6]",
+          "value": "RockChunks",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[7]",
+          "value": "MutatorCriticalStructures",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[8]",
+          "value": "MutatorNonCriticalStructures",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[9]",
+          "value": "ScatterRuinsSimple",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[10]",
+          "value": "SteamGeysers",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[11]",
+          "value": "ScatterRoadDebris",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Ideology"
+          }
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[12]",
+          "value": "ScatterCaveDebris",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Ideology"
+          }
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[13]",
+          "value": "AncientUtilityBuilding",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Ideology"
+          }
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[14]",
+          "value": "MechanoidRemains",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Ideology"
+          }
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[15]",
+          "value": "AncientTurret",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Ideology"
+          }
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[16]",
+          "value": "AncientMechs",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Ideology"
+          }
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[17]",
+          "value": "AncientLandingPad",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Ideology"
+          }
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[18]",
+          "value": "AncientFences",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Ideology"
+          }
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[19]",
+          "value": "AncientPipelineSection",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Ideology"
+          }
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[20]",
+          "value": "AncientJunkClusters",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Ideology"
+          }
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[21]",
+          "value": "FindPlayerStartSpot",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[22]",
+          "value": "ScenParts",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[23]",
+          "value": "Pollution",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[24]",
+          "value": "AncientPollutionJunk",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[25]",
+          "value": "Plants",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[26]",
+          "value": "Snow",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[27]",
+          "value": "MutatorFinal",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[28]",
+          "value": "Animals",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[@Name='MapCommonBase']/genSteps/li[29]",
+          "value": "Fog",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "ElevationFertility",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='ElevationFertility']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='ElevationFertility']/order",
+          "value": "10",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='ElevationFertility']/genStep",
+          "value": "",
+          "attributes": {
+            "Class": "GenStep_ElevationFertility"
+          }
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "MutatorPostElevationFertility",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='MutatorPostElevationFertility']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='MutatorPostElevationFertility']/order",
+          "value": "20",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='MutatorPostElevationFertility']/genStep",
+          "value": "",
+          "attributes": {
+            "Class": "GenStep_MutatorPostElevationFertility"
+          }
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "RocksFromGrid",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='RocksFromGrid']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='RocksFromGrid']/order",
+          "value": "200",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='RocksFromGrid']/genStep",
+          "value": "",
+          "attributes": {
+            "Class": "GenStep_RocksFromGrid"
+          }
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "RocksFromGrid_NoMinerals",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='RocksFromGrid_NoMinerals']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='RocksFromGrid_NoMinerals']/order",
+          "value": "200",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='RocksFromGrid_NoMinerals']/genStep/maxMineableValue",
+          "value": "0",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='RocksFromGrid_NoMinerals']/genStep/ignoreMaxIfGravship",
+          "value": "true",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "Terrain",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='Terrain']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='Terrain']/order",
+          "value": "210",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='Terrain']/genStep",
+          "value": "",
+          "attributes": {
+            "Class": "GenStep_Terrain"
+          }
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "MutatorPostTerrain",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='MutatorPostTerrain']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='MutatorPostTerrain']/order",
+          "value": "220",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='MutatorPostTerrain']/genStep",
+          "value": "",
+          "attributes": {
+            "Class": "GenStep_MutatorPostTerrain"
+          }
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "RemoveTinyIslands",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='RemoveTinyIslands']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='RemoveTinyIslands']/order",
+          "value": "240",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='RemoveTinyIslands']/genStep",
+          "value": "",
+          "attributes": {
+            "Class": "GenStep_RemoveTinyIslands"
+          }
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "Roads",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='Roads']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='Roads']/order",
+          "value": "390",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='Roads']/genStep",
+          "value": "",
+          "attributes": {
+            "Class": "GenStep_Roads"
+          }
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "RockChunks",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='RockChunks']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='RockChunks']/order",
+          "value": "970",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='RockChunks']/genStep",
+          "value": "",
+          "attributes": {
+            "Class": "GenStep_RockChunks"
+          }
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "MutatorCriticalStructures",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='MutatorCriticalStructures']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='MutatorCriticalStructures']/order",
+          "value": "500",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='MutatorCriticalStructures']/genStep",
+          "value": "",
+          "attributes": {
+            "Class": "GenStep_MutatorCriticalStructures"
+          }
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "MutatorNonCriticalStructures",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='MutatorNonCriticalStructures']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='MutatorNonCriticalStructures']/order",
+          "value": "700",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='MutatorNonCriticalStructures']/genStep",
+          "value": "",
+          "attributes": {
+            "Class": "GenStep_MutatorNonCriticalStructures"
+          }
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "ScatterRuinsSimple",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='ScatterRuinsSimple']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='ScatterRuinsSimple']/order",
+          "value": "750",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='ScatterRuinsSimple']/genStep/allowInWaterBiome",
+          "value": "false",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='ScatterRuinsSimple']/genStep/countPer10kCellsRange",
+          "value": "0~3",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='ScatterRuinsSimple']/genStep/canBeOnEdge",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='ScatterRuinsSimple']/genStep/ignoreUsedRects",
+          "value": "true",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "SteamGeysers",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='SteamGeysers']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='SteamGeysers']/order",
+          "value": "950",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='SteamGeysers']/genStep/thingDef",
+          "value": "SteamGeyser",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='SteamGeysers']/genStep/allowInWaterBiome",
+          "value": "false",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='SteamGeysers']/genStep/minSpacing",
+          "value": "25",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='SteamGeysers']/genStep/extraNoBuildEdgeDist",
+          "value": "4",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='SteamGeysers']/genStep/countPer10kCellsRange",
+          "value": "0.7~1",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='SteamGeysers']/genStep/clearSpaceSize",
+          "value": "30",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='SteamGeysers']/genStep/terrainValidationRadius",
+          "value": "4",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='SteamGeysers']/genStep/terrainValidationDisallowed/li",
+          "value": "Road",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='SteamGeysers']/genStep/validators/li[1]/radius",
+          "value": "4",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='SteamGeysers']/genStep/validators/li[1]/affordance",
+          "value": "Heavy",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='SteamGeysers']/genStep/validators/li[2]/radius",
+          "value": "4",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='SteamGeysers']/genStep/validators/li[3]",
+          "value": "",
+          "attributes": {
+            "Class": "ScattererValidator_AvoidSpecialThings"
+          }
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='SteamGeysers']/genStep/validators/li[4]/size",
+          "value": "(6, 6)",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "FindPlayerStartSpot",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='FindPlayerStartSpot']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='FindPlayerStartSpot']/order",
+          "value": "850",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='FindPlayerStartSpot']/genStep",
+          "value": "",
+          "attributes": {
+            "Class": "GenStep_FindPlayerStartSpot"
+          }
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "ScenParts",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='ScenParts']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='ScenParts']/order",
+          "value": "875",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='ScenParts']/genStep",
+          "value": "",
+          "attributes": {
+            "Class": "GenStep_ScenParts"
+          }
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "Plants",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='Plants']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='Plants']/order",
+          "value": "900",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='Plants']/genStep",
+          "value": "",
+          "attributes": {
+            "Class": "GenStep_Plants"
+          }
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "Snow",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='Snow']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='Snow']/order",
+          "value": "1150",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='Snow']/genStep",
+          "value": "",
+          "attributes": {
+            "Class": "GenStep_Snow"
+          }
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "Animals",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='Animals']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='Animals']/order",
+          "value": "1200",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='Animals']/genStep",
+          "value": "",
+          "attributes": {
+            "Class": "GenStep_Animals"
+          }
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "Fog",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='Fog']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='Fog']/order",
+          "value": "1500",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='Fog']/genStep",
+          "value": "",
+          "attributes": {
+            "Class": "GenStep_Fog"
+          }
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "MutatorFinal",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='MutatorFinal']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='MutatorFinal']/order",
+          "value": "1600",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='MutatorFinal']/genStep",
+          "value": "",
+          "attributes": {
+            "Class": "GenStep_MutatorFinal"
+          }
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "Underground_RocksFromGrid",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='Underground_RocksFromGrid']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='Underground_RocksFromGrid']/order",
+          "value": "200",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='Underground_RocksFromGrid']/genStep/overrideBlotchesPer10kCells",
+          "value": "10",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "PlaceCaveExit",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='PlaceCaveExit']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='PlaceCaveExit']/order",
+          "value": "400",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='PlaceCaveExit']/genStep",
+          "value": "",
+          "attributes": {
+            "Class": "GenStep_PlaceCaveExit"
+          }
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "Underground_ScatterRuinsSimple",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='Underground_ScatterRuinsSimple']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='Underground_ScatterRuinsSimple']/order",
+          "value": "700",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='Underground_ScatterRuinsSimple']/genStep/allowInWaterBiome",
+          "value": "false",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='Underground_ScatterRuinsSimple']/genStep/countPer10kCellsRange",
+          "value": "2~3",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='Underground_ScatterRuinsSimple']/genStep/mustBeStandable",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='Underground_ScatterRuinsSimple']/genStep/canBeOnEdge",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='Underground_ScatterRuinsSimple']/genStep/ignoreUsedRects",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='Underground_ScatterRuinsSimple']/genStep/ruinSizeChanceCurve/points/li[1]",
+          "value": "(6, 0)",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='Underground_ScatterRuinsSimple']/genStep/ruinSizeChanceCurve/points/li[2]",
+          "value": "(6.001, 4)",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='Underground_ScatterRuinsSimple']/genStep/ruinSizeChanceCurve/points/li[3]",
+          "value": "(10, 0)",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='Underground_ScatterRuinsSimple']/genStep/destroyChanceExp",
+          "value": "3",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='Underground_ScatterRuinsSimple']/genStep/clearSurroundingArea",
+          "value": "true",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "map_steps",
+      "id": "AncientMiscDebris",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/CommonMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[@Name='AncientMiscDebris']",
+        "sha256": "72bfebf19c27acbd5259b78401fe81d3782bb2b5677c1e7d5d25e3c8b180b49c"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[@Name='AncientMiscDebris']/order",
+          "value": "960",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[@Name='AncientMiscDebris']/genStep/allowInWaterBiome",
+          "value": "false",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[@Name='AncientMiscDebris']/genStep/isJunk",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[@Name='AncientMiscDebris']/genStep/minSpacing",
+          "value": "50",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[@Name='AncientMiscDebris']/genStep/countPer10kCellsRange",
+          "value": "0.25~0.5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[@Name='AncientMiscDebris']/genStep/validators/li/radius",
+          "value": "5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[@Name='AncientMiscDebris']/genStep/validators/li/affordance",
+          "value": "Heavy",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[@Name='AncientMiscDebris']/genStep/filthDef",
+          "value": "Filth_MachineBits",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[@Name='AncientMiscDebris']/genStep/filthExpandBy",
+          "value": "1",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[@Name='AncientMiscDebris']/genStep/filthChance",
+          "value": "0.4",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "player_map",
+      "id": "Base_Player",
+      "parent_name": "MapCommonBase",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/BasePlayerMapGenerator.xml",
+        "xpath": "/Defs/MapGeneratorDef[defName='Base_Player']",
+        "sha256": "f4392aa10f2f86d87dcb130fd7966200fbabc251d8b397935bfe3c7449e1ad0e"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/MapGeneratorDef[defName='Base_Player']/genSteps/li[1]",
+          "value": "RocksFromGrid",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[defName='Base_Player']/genSteps/li[2]",
+          "value": "ScatterShrines",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[defName='Base_Player']/genSteps/li[3]",
+          "value": "CaveHives",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[defName='Base_Player']/genSteps/li[4]",
+          "value": "AnimaTrees",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Royalty"
+          }
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[defName='Base_Player']/genSteps/li[5]",
+          "value": "AncientExostriderRemains",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[defName='Base_Player']/genSteps/li[6]",
+          "value": "PoluxTrees",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        },
+        {
+          "xpath": "/Defs/MapGeneratorDef[defName='Base_Player']/genSteps/li[7]",
+          "value": "VoidMonolith",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Anomaly"
+          }
+        }
+      ]
+    },
+    {
+      "group": "player_map",
+      "id": "ScatterShrines",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/BasePlayerMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='ScatterShrines']",
+        "sha256": "f4392aa10f2f86d87dcb130fd7966200fbabc251d8b397935bfe3c7449e1ad0e"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='ScatterShrines']/order",
+          "value": "750",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='ScatterShrines']/genStep/allowInWaterBiome",
+          "value": "false",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='ScatterShrines']/genStep/countPer10kCellsRange/min",
+          "value": "0.12",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='ScatterShrines']/genStep/countPer10kCellsRange/max",
+          "value": "0.25",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "player_map",
+      "id": "CaveHives",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/BasePlayerMapGenerator.xml",
+        "xpath": "/Defs/GenStepDef[defName='CaveHives']",
+        "sha256": "f4392aa10f2f86d87dcb130fd7966200fbabc251d8b397935bfe3c7449e1ad0e"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/GenStepDef[defName='CaveHives']/order",
+          "value": "1120",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/GenStepDef[defName='CaveHives']/genStep",
+          "value": "",
+          "attributes": {
+            "Class": "GenStep_CaveHives"
+          }
+        }
+      ]
+    },
+    {
+      "group": "mutators",
+      "id": "Mountain",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/TileMutators.xml",
+        "xpath": "/Defs/TileMutatorDef[defName='Mountain']",
+        "sha256": "54b81b229983304346ca35dffcaadb1a0129566389e4177bca7079364a1cbbaa"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/TileMutatorDef[defName='Mountain']/categories/li",
+          "value": "Mountain",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TileMutatorDef[defName='Mountain']/workerClass",
+          "value": "TileMutatorWorker_Mountain",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TileMutatorDef[defName='Mountain']/genOrder",
+          "value": "-200",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "mutators",
+      "id": "Caves",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/TileMutators.xml",
+        "xpath": "/Defs/TileMutatorDef[defName='Caves']",
+        "sha256": "54b81b229983304346ca35dffcaadb1a0129566389e4177bca7079364a1cbbaa"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/TileMutatorDef[defName='Caves']/categories/li[1]",
+          "value": "Caves",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TileMutatorDef[defName='Caves']/categories/li[2]",
+          "value": "BaseCaves",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TileMutatorDef[defName='Caves']/workerClass",
+          "value": "TileMutatorWorker_Caves",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TileMutatorDef[defName='Caves']/genOrder",
+          "value": "-100",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "mutators",
+      "id": "Coast",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/TileMutators.xml",
+        "xpath": "/Defs/TileMutatorDef[defName='Coast']",
+        "sha256": "54b81b229983304346ca35dffcaadb1a0129566389e4177bca7079364a1cbbaa"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/TileMutatorDef[defName='Coast']/categories/li",
+          "value": "Coast",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TileMutatorDef[defName='Coast']/workerClass",
+          "value": "TileMutatorWorker_Coast",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TileMutatorDef[defName='Coast']/genOrder",
+          "value": "100",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "mutators",
+      "id": "River",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/TileMutators.xml",
+        "xpath": "/Defs/TileMutatorDef[defName='River']",
+        "sha256": "54b81b229983304346ca35dffcaadb1a0129566389e4177bca7079364a1cbbaa"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/TileMutatorDef[defName='River']/categories/li",
+          "value": "River",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TileMutatorDef[defName='River']/workerClass",
+          "value": "TileMutatorWorker_River",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TileMutatorDef[defName='River']/genOrder",
+          "value": "50",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "mutators",
+      "id": "UndergroundCave",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/MapGeneration/TileMutators.xml",
+        "xpath": "/Defs/TileMutatorDef[defName='UndergroundCave']",
+        "sha256": "54b81b229983304346ca35dffcaadb1a0129566389e4177bca7079364a1cbbaa"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/TileMutatorDef[defName='UndergroundCave']/categories/li",
+          "value": "Caves",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TileMutatorDef[defName='UndergroundCave']/priority",
+          "value": "5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TileMutatorDef[defName='UndergroundCave']/workerClass",
+          "value": "TileMutatorWorker_UndergroundCave",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TileMutatorDef[defName='UndergroundCave']/genOrder",
+          "value": "-100",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "rivers",
+      "id": "HugeRiver",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/RiverDefs/RiverDefs.xml",
+        "xpath": "/Defs/RiverDef[defName='HugeRiver']",
+        "sha256": "1d2cd2169ec6c1ec230cd0739c6744c62a5ca63be3186201d85064538251df7e"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/RiverDef[defName='HugeRiver']/spawnFlowThreshold",
+          "value": "1000000",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='HugeRiver']/spawnChance",
+          "value": "1",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='HugeRiver']/degradeThreshold",
+          "value": "500000",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='HugeRiver']/degradeChild",
+          "value": "LargeRiver",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='HugeRiver']/branches/li[1]/minFlow",
+          "value": "750000",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='HugeRiver']/branches/li[1]/child",
+          "value": "HugeRiver",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='HugeRiver']/branches/li[1]/chance",
+          "value": "0.6",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='HugeRiver']/branches/li[2]/minFlow",
+          "value": "125000",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='HugeRiver']/branches/li[2]/child",
+          "value": "LargeRiver",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='HugeRiver']/branches/li[2]/chance",
+          "value": "0.3",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='HugeRiver']/branches/li[3]/minFlow",
+          "value": "75000",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='HugeRiver']/branches/li[3]/child",
+          "value": "River",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='HugeRiver']/branches/li[3]/chance",
+          "value": "0.3",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='HugeRiver']/widthOnMap",
+          "value": "30",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "rivers",
+      "id": "LargeRiver",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/RiverDefs/RiverDefs.xml",
+        "xpath": "/Defs/RiverDef[defName='LargeRiver']",
+        "sha256": "1d2cd2169ec6c1ec230cd0739c6744c62a5ca63be3186201d85064538251df7e"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/RiverDef[defName='LargeRiver']/spawnFlowThreshold",
+          "value": "500000",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='LargeRiver']/spawnChance",
+          "value": "0.75",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='LargeRiver']/degradeThreshold",
+          "value": "250000",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='LargeRiver']/degradeChild",
+          "value": "River",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='LargeRiver']/branches/li/minFlow",
+          "value": "100000",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='LargeRiver']/branches/li/child",
+          "value": "River",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='LargeRiver']/branches/li/chance",
+          "value": "0.3",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='LargeRiver']/widthOnMap",
+          "value": "14",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "rivers",
+      "id": "River",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/RiverDefs/RiverDefs.xml",
+        "xpath": "/Defs/RiverDef[defName='River']",
+        "sha256": "1d2cd2169ec6c1ec230cd0739c6744c62a5ca63be3186201d85064538251df7e"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/RiverDef[defName='River']/spawnFlowThreshold",
+          "value": "100000",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='River']/spawnChance",
+          "value": "0.5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='River']/degradeThreshold",
+          "value": "50000",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='River']/degradeChild",
+          "value": "Creek",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='River']/branches/li/minFlow",
+          "value": "50000",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='River']/branches/li/child",
+          "value": "Creek",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='River']/branches/li/chance",
+          "value": "0.3",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='River']/widthOnMap",
+          "value": "6",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "rivers",
+      "id": "Creek",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/RiverDefs/RiverDefs.xml",
+        "xpath": "/Defs/RiverDef[defName='Creek']",
+        "sha256": "1d2cd2169ec6c1ec230cd0739c6744c62a5ca63be3186201d85064538251df7e"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/RiverDef[defName='Creek']/degradeThreshold",
+          "value": "20000",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/RiverDef[defName='Creek']/widthOnMap",
+          "value": "4",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "minerals",
+      "id": "RockBase",
+      "parent_name": "BuildingNaturalBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml",
+        "xpath": "/Defs/ThingDef[@Name='RockBase']",
+        "sha256": "d0c032a63781ca1a2ee12ea667b54237fe65d38738bcc81a76771653a0b6b9d6"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='RockBase']/statBases/Flammability",
+          "value": "0",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='RockBase']/building/isInert",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='RockBase']/building/isNaturalRock",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='RockBase']/building/isAirtight",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='RockBase']/building/canBuildNonEdificesUnder",
+          "value": "false",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='RockBase']/building/deconstructible",
+          "value": "false",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='RockBase']/building/destroyShakeAmount",
+          "value": "0",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='RockBase']/building/supportsWallAttachments",
+          "value": "true",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "minerals",
+      "id": "MineableSteel",
+      "parent_name": "RockBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml",
+        "xpath": "/Defs/ThingDef[defName='MineableSteel']",
+        "sha256": "d0c032a63781ca1a2ee12ea667b54237fe65d38738bcc81a76771653a0b6b9d6"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableSteel']/statBases/MaxHitPoints",
+          "value": "1500",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableSteel']/building/isResourceRock",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableSteel']/building/mineableThing",
+          "value": "Steel",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableSteel']/building/mineableYield",
+          "value": "40",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableSteel']/building/mineableScatterCommonality",
+          "value": "1",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableSteel']/building/mineableScatterLumpSizeRange",
+          "value": "30~40",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableSteel']/building/veinMineable",
+          "value": "true",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "minerals",
+      "id": "MineableSilver",
+      "parent_name": "RockBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml",
+        "xpath": "/Defs/ThingDef[defName='MineableSilver']",
+        "sha256": "d0c032a63781ca1a2ee12ea667b54237fe65d38738bcc81a76771653a0b6b9d6"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableSilver']/statBases/MaxHitPoints",
+          "value": "1500",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableSilver']/building/isResourceRock",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableSilver']/building/mineableThing",
+          "value": "Silver",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableSilver']/building/mineableYield",
+          "value": "40",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableSilver']/building/mineableScatterCommonality",
+          "value": "0.10",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableSilver']/building/mineableScatterLumpSizeRange",
+          "value": "4~12",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableSilver']/building/veinMineable",
+          "value": "true",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "minerals",
+      "id": "MineableGold",
+      "parent_name": "RockBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml",
+        "xpath": "/Defs/ThingDef[defName='MineableGold']",
+        "sha256": "d0c032a63781ca1a2ee12ea667b54237fe65d38738bcc81a76771653a0b6b9d6"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableGold']/statBases/MaxHitPoints",
+          "value": "1500",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableGold']/building/isResourceRock",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableGold']/building/mineableThing",
+          "value": "Gold",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableGold']/building/mineableYield",
+          "value": "40",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableGold']/building/mineableScatterCommonality",
+          "value": "0.07",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableGold']/building/mineableScatterLumpSizeRange",
+          "value": "2~8",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableGold']/building/veinMineable",
+          "value": "true",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "minerals",
+      "id": "MineableUranium",
+      "parent_name": "RockBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml",
+        "xpath": "/Defs/ThingDef[defName='MineableUranium']",
+        "sha256": "d0c032a63781ca1a2ee12ea667b54237fe65d38738bcc81a76771653a0b6b9d6"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableUranium']/statBases/MaxHitPoints",
+          "value": "4000",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableUranium']/building/isResourceRock",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableUranium']/building/mineableThing",
+          "value": "Uranium",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableUranium']/building/mineableYield",
+          "value": "40",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableUranium']/building/mineableScatterCommonality",
+          "value": "0.12",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableUranium']/building/mineableScatterLumpSizeRange",
+          "value": "6~12",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableUranium']/building/veinMineable",
+          "value": "true",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "minerals",
+      "id": "MineablePlasteel",
+      "parent_name": "RockBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml",
+        "xpath": "/Defs/ThingDef[defName='MineablePlasteel']",
+        "sha256": "d0c032a63781ca1a2ee12ea667b54237fe65d38738bcc81a76771653a0b6b9d6"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='MineablePlasteel']/statBases/MaxHitPoints",
+          "value": "8000",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineablePlasteel']/building/isResourceRock",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineablePlasteel']/building/mineableThing",
+          "value": "Plasteel",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineablePlasteel']/building/mineableYield",
+          "value": "40",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineablePlasteel']/building/mineableScatterCommonality",
+          "value": "0.05",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineablePlasteel']/building/mineableScatterLumpSizeRange",
+          "value": "2~8",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineablePlasteel']/building/veinMineable",
+          "value": "true",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "minerals",
+      "id": "MineableJade",
+      "parent_name": "RockBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml",
+        "xpath": "/Defs/ThingDef[defName='MineableJade']",
+        "sha256": "d0c032a63781ca1a2ee12ea667b54237fe65d38738bcc81a76771653a0b6b9d6"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableJade']/statBases/MaxHitPoints",
+          "value": "1500",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableJade']/building/isResourceRock",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableJade']/building/mineableThing",
+          "value": "Jade",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableJade']/building/mineableYield",
+          "value": "40",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableJade']/building/mineableScatterCommonality",
+          "value": "0.065",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableJade']/building/mineableScatterLumpSizeRange",
+          "value": "2~8",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableJade']/building/veinMineable",
+          "value": "true",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "minerals",
+      "id": "MineableComponentsIndustrial",
+      "parent_name": "RockBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml",
+        "xpath": "/Defs/ThingDef[defName='MineableComponentsIndustrial']",
+        "sha256": "d0c032a63781ca1a2ee12ea667b54237fe65d38738bcc81a76771653a0b6b9d6"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableComponentsIndustrial']/statBases/MaxHitPoints",
+          "value": "2000",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableComponentsIndustrial']/building/isResourceRock",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableComponentsIndustrial']/building/mineableThing",
+          "value": "ComponentIndustrial",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableComponentsIndustrial']/building/mineableYield",
+          "value": "2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableComponentsIndustrial']/building/mineableScatterCommonality",
+          "value": "1.00",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableComponentsIndustrial']/building/mineableScatterLumpSizeRange",
+          "value": "3~6",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MineableComponentsIndustrial']/building/veinMineable",
+          "value": "true",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "stone",
+      "id": "UglyRockBase",
+      "parent_name": "RockBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[@Name='UglyRockBase']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='UglyRockBase']/statBases/Flammability",
+          "value": "0",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='UglyRockBase']/statBases/Beauty",
+          "value": "-2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='UglyRockBase']/building/mineableYieldWasteable",
+          "value": "false",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "stone",
+      "id": "Sandstone",
+      "parent_name": "UglyRockBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[defName='Sandstone']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandstone']/statBases/MaxHitPoints",
+          "value": "400",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandstone']/building/mineableThing",
+          "value": "ChunkSandstone",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandstone']/building/mineableDropChance",
+          "value": "0.25",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandstone']/building/smoothedThing",
+          "value": "SmoothedSandstone",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "stone",
+      "id": "Granite",
+      "parent_name": "UglyRockBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[defName='Granite']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Granite']/statBases/MaxHitPoints",
+          "value": "900",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Granite']/building/mineableThing",
+          "value": "ChunkGranite",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Granite']/building/mineableDropChance",
+          "value": "0.25",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Granite']/building/smoothedThing",
+          "value": "SmoothedGranite",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "stone",
+      "id": "Limestone",
+      "parent_name": "UglyRockBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[defName='Limestone']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Limestone']/statBases/MaxHitPoints",
+          "value": "700",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Limestone']/building/mineableThing",
+          "value": "ChunkLimestone",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Limestone']/building/mineableDropChance",
+          "value": "0.25",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Limestone']/building/smoothedThing",
+          "value": "SmoothedLimestone",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "stone",
+      "id": "Slate",
+      "parent_name": "UglyRockBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[defName='Slate']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Slate']/statBases/MaxHitPoints",
+          "value": "500",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Slate']/building/mineableThing",
+          "value": "ChunkSlate",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Slate']/building/mineableDropChance",
+          "value": "0.25",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Slate']/building/smoothedThing",
+          "value": "SmoothedSlate",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "stone",
+      "id": "Marble",
+      "parent_name": "UglyRockBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Various_Stone.xml",
+        "xpath": "/Defs/ThingDef[defName='Marble']",
+        "sha256": "f3f4b7e7e2efa0efc646f6b17394f318e8141d60f4593e5d80b54a0372e002e6"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Marble']/statBases/MaxHitPoints",
+          "value": "450",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Marble']/statBases/Beauty",
+          "value": "-1",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Marble']/building/mineableThing",
+          "value": "ChunkMarble",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Marble']/building/mineableDropChance",
+          "value": "0.25",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Marble']/building/smoothedThing",
+          "value": "SmoothedMarble",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "terrain",
+      "id": "Soil",
+      "parent_name": "NaturalTerrainBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='Soil']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[defName='Soil']/pathCost",
+          "value": "2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Soil']/affordances/li[1]",
+          "value": "Light",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Soil']/affordances/li[2]",
+          "value": "Medium",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Soil']/affordances/li[3]",
+          "value": "Heavy",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Soil']/affordances/li[4]",
+          "value": "GrowSoil",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Soil']/affordances/li[5]",
+          "value": "Diggable",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Soil']/fertility",
+          "value": "1.0",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "terrain",
+      "id": "MossyTerrain",
+      "parent_name": "NaturalTerrainBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='MossyTerrain']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[defName='MossyTerrain']/pathCost",
+          "value": "3",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='MossyTerrain']/affordances/li[1]",
+          "value": "Light",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='MossyTerrain']/affordances/li[2]",
+          "value": "Medium",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='MossyTerrain']/affordances/li[3]",
+          "value": "Heavy",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='MossyTerrain']/affordances/li[4]",
+          "value": "GrowSoil",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='MossyTerrain']/affordances/li[5]",
+          "value": "Diggable",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='MossyTerrain']/fertility",
+          "value": "1",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "terrain",
+      "id": "MarshyTerrain",
+      "parent_name": "NaturalTerrainBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='MarshyTerrain']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[defName='MarshyTerrain']/pathCost",
+          "value": "14",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='MarshyTerrain']/affordances/li[1]",
+          "value": "Light",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='MarshyTerrain']/affordances/li[2]",
+          "value": "GrowSoil",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='MarshyTerrain']/affordances/li[3]",
+          "value": "Diggable",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='MarshyTerrain']/affordances/li[4]",
+          "value": "Bridgeable",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='MarshyTerrain']/fertility",
+          "value": "1.0",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "terrain",
+      "id": "SoilRich",
+      "parent_name": "NaturalTerrainBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='SoilRich']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoilRich']/pathCost",
+          "value": "2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoilRich']/affordances/li[1]",
+          "value": "Light",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoilRich']/affordances/li[2]",
+          "value": "Medium",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoilRich']/affordances/li[3]",
+          "value": "Heavy",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoilRich']/affordances/li[4]",
+          "value": "GrowSoil",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoilRich']/affordances/li[5]",
+          "value": "Diggable",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoilRich']/fertility",
+          "value": "1.4",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "terrain",
+      "id": "Riverbank",
+      "parent_name": "NaturalTerrainBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='Riverbank']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[defName='Riverbank']/pathCost",
+          "value": "4",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Riverbank']/affordances/li[1]",
+          "value": "Light",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Riverbank']/affordances/li[2]",
+          "value": "Medium",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Riverbank']/affordances/li[3]",
+          "value": "Heavy",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Riverbank']/affordances/li[4]",
+          "value": "GrowSoil",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Riverbank']/affordances/li[5]",
+          "value": "Diggable",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Riverbank']/fertility",
+          "value": "1.4",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "terrain",
+      "id": "Gravel",
+      "parent_name": "NaturalTerrainBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='Gravel']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[defName='Gravel']/pathCost",
+          "value": "2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Gravel']/affordances/li[1]",
+          "value": "Light",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Gravel']/affordances/li[2]",
+          "value": "Medium",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Gravel']/affordances/li[3]",
+          "value": "Heavy",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Gravel']/affordances/li[4]",
+          "value": "GrowSoil",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Gravel']/affordances/li[5]",
+          "value": "Diggable",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Gravel']/fertility",
+          "value": "0.7",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "terrain",
+      "id": "Sand",
+      "parent_name": "NaturalTerrainBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='Sand']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[defName='Sand']/pathCost",
+          "value": "4",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Sand']/affordances/li[1]",
+          "value": "Light",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Sand']/affordances/li[2]",
+          "value": "Medium",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Sand']/affordances/li[3]",
+          "value": "Heavy",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Sand']/affordances/li[4]",
+          "value": "Diggable",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Sand']/fertility",
+          "value": "0.10",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "terrain",
+      "id": "SoftSand",
+      "parent_name": "NaturalTerrainBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='SoftSand']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoftSand']/pathCost",
+          "value": "14",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoftSand']/affordances/li[1]",
+          "value": "Light",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoftSand']/affordances/li[2]",
+          "value": "Diggable",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='SoftSand']/fertility",
+          "value": "0",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "terrain",
+      "id": "Mud",
+      "parent_name": "NaturalTerrainBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='Mud']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[defName='Mud']/pathCost",
+          "value": "14",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Mud']/affordances/li[1]",
+          "value": "Bridgeable",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Mud']/affordances/li[2]",
+          "value": "WaterproofConduitable",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Mud']/fertility",
+          "value": "0",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "terrain",
+      "id": "Ice",
+      "parent_name": "NaturalTerrainBase",
+      "source": {
+        "path": "Data/Core/Defs/TerrainDefs/Terrain_Natural.xml",
+        "xpath": "/Defs/TerrainDef[defName='Ice']",
+        "sha256": "a3297812d86e5b1ed95c74d79daabb7e5a658683838a64c03720aea42fd414d5"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/TerrainDef[defName='Ice']/pathCost",
+          "value": "14",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Ice']/affordances/li[1]",
+          "value": "Light",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Ice']/affordances/li[2]",
+          "value": "Medium",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Ice']/affordances/li[3]",
+          "value": "Heavy",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Ice']/affordances/li[4]",
+          "value": "Diggable",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/TerrainDef[defName='Ice']/fertility",
+          "value": "0.00",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "biome",
+      "id": "TemperateForest",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/BiomeDefs/Biomes_Temperate.xml",
+        "xpath": "/Defs/BiomeDef[defName='TemperateForest']",
+        "sha256": "4d6a48e5f6f0b5eed5f239077a1af78cadd8924785d76bdde2329da137dbc7ae"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/workerClass",
+          "value": "BiomeWorker_TemperateForest",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/animalDensity",
+          "value": "3.7",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/plantDensity",
+          "value": "0.65",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlantRegrowDays",
+          "value": "20",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainsByFertility/li[1]/terrain",
+          "value": "Soil",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainsByFertility/li[1]/min",
+          "value": "-999",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainsByFertility/li[1]/max",
+          "value": "0.87",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainsByFertility/li[2]/terrain",
+          "value": "SoilRich",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainsByFertility/li[2]/min",
+          "value": "0.87",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainsByFertility/li[2]/max",
+          "value": "999",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/perlinFrequency",
+          "value": "0.015",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/isPond",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/thresholds/li[1]/terrain",
+          "value": "SoilRich",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/thresholds/li[1]/min",
+          "value": "0.73",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/thresholds/li[1]/max",
+          "value": "0.80",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/thresholds/li[2]/terrain",
+          "value": "Mud",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/thresholds/li[2]/min",
+          "value": "0.80",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/thresholds/li[2]/max",
+          "value": "0.93",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/thresholds/li[3]/terrain",
+          "value": "WaterShallow",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/thresholds/li[3]/min",
+          "value": "0.93",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/terrainPatchMakers/li/thresholds/li[3]/max",
+          "value": "999",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Grass",
+          "value": "5.0",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_GrayGrass",
+          "value": "2",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_TallGrass",
+          "value": "2.0",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Brambles",
+          "value": "1.0",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Ripthorn",
+          "value": "0.8",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Dandelion",
+          "value": "0.5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Bush",
+          "value": "0.6",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_TreeOak",
+          "value": "0.5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_TreePoplar",
+          "value": "0.5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Berry",
+          "value": "0.05",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_HealrootWild",
+          "value": "0.05",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Witchwood",
+          "value": "0.5",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Reeds",
+          "value": "1",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_LilyPad",
+          "value": "0.2",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildPlants/Plant_Bulrush",
+          "value": "0.2",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Donkey",
+          "value": "0.20",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/GuineaPig",
+          "value": "0.45",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Yak",
+          "value": "0.06",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Bison",
+          "value": "0.07",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Horse",
+          "value": "0.20",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Hare",
+          "value": "1.0",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Squirrel",
+          "value": "1.0",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Rat",
+          "value": "1.0",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Deer",
+          "value": "0.5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/WildBoar",
+          "value": "0.5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Turkey",
+          "value": "0.5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Raccoon",
+          "value": "0.5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Ibex",
+          "value": "0.5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Muffalo",
+          "value": "0.5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Alpaca",
+          "value": "0.5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Boomalope",
+          "value": "0.4",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Boomrat",
+          "value": "0.4",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Tortoise",
+          "value": "0.3",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Gazelle",
+          "value": "0.3",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Megasloth",
+          "value": "0.2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Rhinoceros",
+          "value": "0.1",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Bear_Grizzly",
+          "value": "0.07",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Wolf_Timber",
+          "value": "0.07",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Fox_Red",
+          "value": "0.07",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Cougar",
+          "value": "0.07",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Lynx",
+          "value": "0.07",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Warg",
+          "value": "0.07",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Porcupine",
+          "value": "0.2",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Wolverine",
+          "value": "0.07",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Mink",
+          "value": "0.1",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Swan",
+          "value": "0.1",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Badger",
+          "value": "0.2",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Sparrow",
+          "value": "0.5",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Crow",
+          "value": "0.5",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Bluebird",
+          "value": "0.5",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        },
+        {
+          "xpath": "/Defs/BiomeDef[defName='TemperateForest']/wildAnimals/Quail",
+          "value": "0.5",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        }
+      ]
+    },
+    {
+      "group": "crops",
+      "id": "Plant_Rice",
+      "parent_name": "PlantBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Rice']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Rice']/statBases/MaxHitPoints",
+          "value": "85",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Rice']/statBases/Nutrition",
+          "value": "0.175",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Rice']/plant/harvestTag",
+          "value": "Standard",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Rice']/plant/harvestedThingDef",
+          "value": "RawRice",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Rice']/plant/harvestYield",
+          "value": "6",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Rice']/plant/sowTags/li[1]",
+          "value": "Ground",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Rice']/plant/sowTags/li[2]",
+          "value": "Hydroponic",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Rice']/plant/growDays",
+          "value": "3",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Rice']/plant/wildOrder",
+          "value": "2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Rice']/plant/purpose",
+          "value": "Food",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Rice']/plant/humanFoodPlant",
+          "value": "true",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "crops",
+      "id": "Plant_Potato",
+      "parent_name": "PlantBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Potato']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Potato']/statBases/MaxHitPoints",
+          "value": "85",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Potato']/statBases/Nutrition",
+          "value": "0.25",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Potato']/plant/fertilitySensitivity",
+          "value": "0.4",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Potato']/plant/harvestTag",
+          "value": "Standard",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Potato']/plant/harvestedThingDef",
+          "value": "RawPotatoes",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Potato']/plant/harvestYield",
+          "value": "11",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Potato']/plant/sowTags/li[1]",
+          "value": "Ground",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Potato']/plant/sowTags/li[2]",
+          "value": "Hydroponic",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Potato']/plant/growDays",
+          "value": "5.8",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Potato']/plant/wildOrder",
+          "value": "2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Potato']/plant/purpose",
+          "value": "Food",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Potato']/plant/humanFoodPlant",
+          "value": "true",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "crops",
+      "id": "Plant_Corn",
+      "parent_name": "PlantBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Corn']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Corn']/statBases/MaxHitPoints",
+          "value": "150",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Corn']/statBases/Nutrition",
+          "value": "0.4",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Corn']/plant/fertilityMin",
+          "value": "0.70",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Corn']/plant/harvestTag",
+          "value": "Standard",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Corn']/plant/harvestedThingDef",
+          "value": "RawCorn",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Corn']/plant/harvestYield",
+          "value": "22",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Corn']/plant/sowTags/li",
+          "value": "Ground",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Corn']/plant/growDays",
+          "value": "11.3",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Corn']/plant/wildOrder",
+          "value": "2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Corn']/plant/purpose",
+          "value": "Food",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Corn']/plant/humanFoodPlant",
+          "value": "true",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "crops",
+      "id": "Plant_Strawberry",
+      "parent_name": "PlantBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Strawberry']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Strawberry']/statBases/MaxHitPoints",
+          "value": "85",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Strawberry']/statBases/Nutrition",
+          "value": "0.2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Strawberry']/plant/growDays",
+          "value": "4.6",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Strawberry']/plant/harvestTag",
+          "value": "Standard",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Strawberry']/plant/harvestedThingDef",
+          "value": "RawBerries",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Strawberry']/plant/harvestYield",
+          "value": "8",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Strawberry']/plant/sowMinSkill",
+          "value": "5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Strawberry']/plant/sowTags/li[1]",
+          "value": "Ground",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Strawberry']/plant/sowTags/li[2]",
+          "value": "Hydroponic",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Strawberry']/plant/wildOrder",
+          "value": "2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Strawberry']/plant/purpose",
+          "value": "Food",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Strawberry']/plant/humanFoodPlant",
+          "value": "true",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "crops",
+      "id": "Plant_Haygrass",
+      "parent_name": "PlantBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Haygrass']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Haygrass']/statBases/MaxHitPoints",
+          "value": "85",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Haygrass']/statBases/Flammability",
+          "value": "1.3",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Haygrass']/statBases/Nutrition",
+          "value": "0.3",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Haygrass']/plant/fertilitySensitivity",
+          "value": "0.6",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Haygrass']/plant/growDays",
+          "value": "7",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Haygrass']/plant/harvestTag",
+          "value": "Standard",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Haygrass']/plant/harvestedThingDef",
+          "value": "Hay",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Haygrass']/plant/harvestYield",
+          "value": "18",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Haygrass']/plant/sowTags/li",
+          "value": "Ground",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Haygrass']/plant/wildOrder",
+          "value": "1",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Haygrass']/plant/purpose",
+          "value": "Food",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "crops",
+      "id": "Plant_Cotton",
+      "parent_name": "PlantBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Cotton']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Cotton']/statBases/MaxHitPoints",
+          "value": "85",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Cotton']/statBases/Nutrition",
+          "value": "0.2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Cotton']/plant/growDays",
+          "value": "8",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Cotton']/plant/harvestTag",
+          "value": "Standard",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Cotton']/plant/harvestedThingDef",
+          "value": "Cloth",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Cotton']/plant/harvestYield",
+          "value": "10",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Cotton']/plant/sowTags/li[1]",
+          "value": "Ground",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Cotton']/plant/sowTags/li[2]",
+          "value": "Hydroponic",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Cotton']/plant/wildOrder",
+          "value": "2",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "crops",
+      "id": "Plant_Devilstrand",
+      "parent_name": "PlantBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Devilstrand']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Devilstrand']/statBases/MaxHitPoints",
+          "value": "85",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Devilstrand']/statBases/Nutrition",
+          "value": "0.2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Devilstrand']/plant/growDays",
+          "value": "22.5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Devilstrand']/plant/sowWork",
+          "value": "400",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Devilstrand']/plant/harvestTag",
+          "value": "Standard",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Devilstrand']/plant/harvestedThingDef",
+          "value": "DevilstrandCloth",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Devilstrand']/plant/harvestYield",
+          "value": "6",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Devilstrand']/plant/neverBlightable",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Devilstrand']/plant/sowTags/li",
+          "value": "Ground",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Devilstrand']/plant/sowMinSkill",
+          "value": "10",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Devilstrand']/plant/sowResearchPrerequisites/li",
+          "value": "Devilstrand",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Devilstrand']/plant/wildOrder",
+          "value": "2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Devilstrand']/plant/wildClusterRadius",
+          "value": "5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Devilstrand']/plant/wildClusterWeight",
+          "value": "250",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Devilstrand']/plant/pollution",
+          "value": "Any",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Devilstrand']/plant/fertilityMin",
+          "value": "0.50",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "crops",
+      "id": "HealrootBase",
+      "parent_name": "PlantBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[@Name='HealrootBase']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='HealrootBase']/statBases/MaxHitPoints",
+          "value": "60",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='HealrootBase']/statBases/Nutrition",
+          "value": "0.2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='HealrootBase']/plant/growDays",
+          "value": "10",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='HealrootBase']/plant/harvestWork",
+          "value": "400",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='HealrootBase']/plant/harvestTag",
+          "value": "Standard",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='HealrootBase']/plant/harvestedThingDef",
+          "value": "MedicineHerbal",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='HealrootBase']/plant/harvestYield",
+          "value": "1",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='HealrootBase']/plant/wildOrder",
+          "value": "2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='HealrootBase']/plant/allowAutoCut",
+          "value": "false",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "crops",
+      "id": "Plant_Healroot",
+      "parent_name": "HealrootBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Healroot']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Healroot']/plant/growDays",
+          "value": "7",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Healroot']/plant/sowWork",
+          "value": "800",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Healroot']/plant/sowMinSkill",
+          "value": "8",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Healroot']/plant/sowTags/li[1]",
+          "value": "Ground",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Healroot']/plant/sowTags/li[2]",
+          "value": "Hydroponic",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Healroot']/plant/purpose",
+          "value": "Health",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "crops",
+      "id": "Plant_Hops",
+      "parent_name": "PlantBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Hops']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Hops']/statBases/MaxHitPoints",
+          "value": "85",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Hops']/statBases/Nutrition",
+          "value": "0.2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Hops']/plant/fertilitySensitivity",
+          "value": "0.7",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Hops']/plant/growDays",
+          "value": "5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Hops']/plant/harvestTag",
+          "value": "Standard",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Hops']/plant/harvestedThingDef",
+          "value": "RawHops",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Hops']/plant/drugForHarvestPurposes",
+          "value": "True",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Hops']/plant/harvestYield",
+          "value": "8",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Hops']/plant/sowMinSkill",
+          "value": "3",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Hops']/plant/sowTags/li[1]",
+          "value": "Ground",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Hops']/plant/sowTags/li[2]",
+          "value": "Hydroponic",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Hops']/plant/wildOrder",
+          "value": "2",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "crops",
+      "id": "Plant_Smokeleaf",
+      "parent_name": "PlantBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Smokeleaf']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Smokeleaf']/statBases/MaxHitPoints",
+          "value": "85",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Smokeleaf']/statBases/Nutrition",
+          "value": "0.2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Smokeleaf']/plant/growDays",
+          "value": "7.50",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Smokeleaf']/plant/harvestTag",
+          "value": "Standard",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Smokeleaf']/plant/drugForHarvestPurposes",
+          "value": "True",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Smokeleaf']/plant/harvestedThingDef",
+          "value": "SmokeleafLeaves",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Smokeleaf']/plant/harvestYield",
+          "value": "9",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Smokeleaf']/plant/sowMinSkill",
+          "value": "4",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Smokeleaf']/plant/sowTags/li[1]",
+          "value": "Ground",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Smokeleaf']/plant/sowTags/li[2]",
+          "value": "Hydroponic",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Smokeleaf']/plant/wildOrder",
+          "value": "2",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "crops",
+      "id": "Plant_Psychoid",
+      "parent_name": "PlantBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Psychoid']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Psychoid']/statBases/MaxHitPoints",
+          "value": "85",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Psychoid']/statBases/Nutrition",
+          "value": "0.2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Psychoid']/plant/growDays",
+          "value": "9.00",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Psychoid']/plant/harvestTag",
+          "value": "Standard",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Psychoid']/plant/harvestedThingDef",
+          "value": "PsychoidLeaves",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Psychoid']/plant/drugForHarvestPurposes",
+          "value": "True",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Psychoid']/plant/harvestYield",
+          "value": "8",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Psychoid']/plant/sowMinSkill",
+          "value": "6",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Psychoid']/plant/sowTags/li[1]",
+          "value": "Ground",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Psychoid']/plant/sowTags/li[2]",
+          "value": "Hydroponic",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Psychoid']/plant/wildOrder",
+          "value": "2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Psychoid']/plant/pollution",
+          "value": "Any",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Psychoid']/plant/fertilityMin",
+          "value": "0.50",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Psychoid']/plant/fertilitySensitivity",
+          "value": "0.4",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "crops",
+      "id": "Plant_TreeCocoa",
+      "parent_name": "TreeBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_TreeCocoa']",
+        "sha256": "98e29a86249329363653a7b6ea776c51c7f50676613e5fcfbaec3e15a956d5b4"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeCocoa']/statBases/Beauty",
+          "value": "2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeCocoa']/statBases/BeautyOutdoors",
+          "value": "2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeCocoa']/statBases/Nutrition",
+          "value": "1.5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeCocoa']/plant/growDays",
+          "value": "16",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeCocoa']/plant/sowMinSkill",
+          "value": "8",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeCocoa']/plant/sowTags/li",
+          "value": "Ground",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeCocoa']/plant/sowResearchPrerequisites/li",
+          "value": "Cocoa",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeCocoa']/plant/mustBeWildToSow",
+          "value": "false",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeCocoa']/plant/harvestWork",
+          "value": "310",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeCocoa']/plant/harvestTag",
+          "value": "Standard",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeCocoa']/plant/forceIsTree",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeCocoa']/plant/harvestYield",
+          "value": "20",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeCocoa']/plant/harvestedThingDef",
+          "value": "Chocolate",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeCocoa']/plant/harvestFailable",
+          "value": "true",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "plant_bases",
+      "id": "PlantBaseNonEdible",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']/statBases/Flammability",
+          "value": "1",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']/statBases/BeautyOutdoors",
+          "value": "1",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']/plant/fertilityMin",
+          "value": "0.7",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']/plant/fertilitySensitivity",
+          "value": "1.0",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']/plant/sowWork",
+          "value": "170",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']/plant/harvestWork",
+          "value": "200",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "plant_bases",
+      "id": "PlantBase",
+      "parent_name": "PlantBaseNonEdible",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='PlantBase']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      },
+      "fields": []
+    },
+    {
+      "group": "plant_bases",
+      "id": "TreeBase",
+      "parent_name": "PlantBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='TreeBase']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/statBases/MaxHitPoints",
+          "value": "200",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/statBases/Flammability",
+          "value": "0.8",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/statBases/Nutrition",
+          "value": "2.0",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/statBases/Mass",
+          "value": "150",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/lifespanDaysPerGrowDays",
+          "value": "9",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/fertilitySensitivity",
+          "value": "0.5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/sowWork",
+          "value": "4000",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/sowMinSkill",
+          "value": "6",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/sowResearchPrerequisites/li",
+          "value": "TreeSowing",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/mustBeWildToSow",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/harvestWork",
+          "value": "800",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/harvestedThingDef",
+          "value": "WoodLog",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/harvestYield",
+          "value": "25",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/harvestTag",
+          "value": "Wood",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/harvestMinGrowth",
+          "value": "0.40",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/harvestFailable",
+          "value": "false",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/blockAdjacentSow",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/treeLoversCareIfChopped",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/burnedThingDef",
+          "value": "BurnedTree",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/choppedThingDef",
+          "value": "ChoppedStump",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/smashedThingDef",
+          "value": "SmashedStump",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/treeCategory",
+          "value": "Full",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/sowTags/li",
+          "value": "Ground",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/wildClusterRadius",
+          "value": "8",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/wildClusterWeight",
+          "value": "24",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/wildOrder",
+          "value": "3",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/interferesWithRoof",
+          "value": "true",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/destroyedByFlooding",
+          "value": "false",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "plant_bases",
+      "id": "DeciduousTreeBase",
+      "parent_name": "TreeBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='DeciduousTreeBase']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      },
+      "fields": []
+    },
+    {
+      "group": "wild_plants",
+      "id": "Plant_Berry",
+      "parent_name": "PlantBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_Temperate.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_Berry']",
+        "sha256": "648f1b176bf950762413c631e2e800580ddd270b752a1ed9e73ae9ff99653665"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Berry']/statBases/MaxHitPoints",
+          "value": "120",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Berry']/statBases/Nutrition",
+          "value": "0.50",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Berry']/plant/fertilityMin",
+          "value": "0.5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Berry']/plant/fertilitySensitivity",
+          "value": "0.5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Berry']/plant/growDays",
+          "value": "6",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Berry']/plant/harvestYield",
+          "value": "10",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Berry']/plant/harvestWork",
+          "value": "250",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Berry']/plant/harvestTag",
+          "value": "Standard",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Berry']/plant/harvestAfterGrowth",
+          "value": "0.30",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Berry']/plant/harvestedThingDef",
+          "value": "RawBerries",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Berry']/plant/wildClusterRadius",
+          "value": "5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Berry']/plant/wildClusterWeight",
+          "value": "250",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Berry']/plant/wildOrder",
+          "value": "2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_Berry']/plant/purpose",
+          "value": "Food",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "wild_plants",
+      "id": "Plant_TreeOak",
+      "parent_name": "DeciduousTreeBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_Temperate.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_TreeOak']",
+        "sha256": "648f1b176bf950762413c631e2e800580ddd270b752a1ed9e73ae9ff99653665"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeOak']/statBases/Beauty",
+          "value": "2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeOak']/statBases/BeautyOutdoors",
+          "value": "2",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeOak']/plant/growDays",
+          "value": "30",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeOak']/plant/harvestWork",
+          "value": "1400",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeOak']/plant/harvestYield",
+          "value": "46",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreeOak']/plant/wildClusterWeight",
+          "value": "35",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "wild_plants",
+      "id": "Plant_TreePoplar",
+      "parent_name": "DeciduousTreeBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_Temperate.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_TreePoplar']",
+        "sha256": "648f1b176bf950762413c631e2e800580ddd270b752a1ed9e73ae9ff99653665"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreePoplar']/statBases/Beauty",
+          "value": "1",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreePoplar']/statBases/Nutrition",
+          "value": "1.5",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreePoplar']/plant/growDays",
+          "value": "15.05",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreePoplar']/plant/harvestWork",
+          "value": "800",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreePoplar']/plant/harvestYield",
+          "value": "27",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_TreePoplar']/plant/wildClusterWeight",
+          "value": "35",
+          "attributes": {}
+        }
+      ]
+    },
+    {
+      "group": "wild_herb",
+      "id": "Plant_HealrootWild",
+      "parent_name": "HealrootBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_General.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_HealrootWild']",
+        "sha256": "3349380779d25788ee83120a210bb4a0f8140fcb97ab87e04ecf472d80066d09"
+      },
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_HealrootWild']/plant/wildClusterRadius",
+          "value": "4",
+          "attributes": {}
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_HealrootWild']/plant/wildClusterWeight",
+          "value": "80",
+          "attributes": {}
+        }
+      ]
+    }
+  ]
+}

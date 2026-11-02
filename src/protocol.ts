@@ -1,5 +1,6 @@
-import type { Summary } from './sim/types';
-export const STRIDE = 12;
+import type { Inspection, Summary } from './sim/types';
+import type { BuildPreview } from './sim/placement';
+export const STRIDE = 16;
 export type Frame = {
   type: 'frame';
   buffer: ArrayBuffer;
@@ -47,4 +48,6 @@ export interface ClientState {
   error: string | null;
   selection: number[];
   hover: { x: number; y: number } | null;
+  inspection: Inspection | null;
+  preview: BuildPreview | null;
 }

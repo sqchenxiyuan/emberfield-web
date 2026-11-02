@@ -13,6 +13,8 @@ export class GameClient {
     error: null,
     selection: [],
     hover: null,
+    inspection: null,
+    preview: null,
   };
   private listeners = new Set<() => void>();
   private requests = new Map<number, { resolve: (v: any) => void; reject: (e: Error) => void }>();
@@ -22,9 +24,13 @@ export class GameClient {
   private activeTool = 'select';
   private cleanup: (() => void)[] = [];
   onNotice: (text: string) => void = () => {};
-  onInspect: (x: number, y: number) => void = () => {};
+  private inspectedId: number | null = null;
+  private previewRequest = 0;
+  onInspect: (id: number | null) => void = () => {};
+  onToolCancel: () => void = () => {};
   constructor() {
     this.sim.onmessage = ({ data: m }) => {
+      if (m.type === 'inspection' && m.id === this.inspectedId) this.set({ inspection: m.detail });
       if (m.type === 'summary') {
         const old = this.state.summary;
         if (old && m.summary.tick >= old.tick) {
@@ -100,11 +106,22 @@ export class GameClient {
     return this.ask('new', { seed });
   }
   select(ids: number[]) {
-    this.set({ selection: ids });
-    this.sendRender({ type: 'select', ids });
+    const controllable = ids.filter((id) => this.state.summary?.pawns.some((p) => p.id === id && !p.enemy && !p.animal && !p.dead));
+    this.inspect(null, false);
+    this.set({ selection: controllable });
+    this.sendRender({ type: 'select', ids: controllable });
+  }
+  inspect(id: number | null, notify = true) {
+    this.inspectedId = id;
+    this.set({ inspection: null });
+    this.sim.postMessage({ type: 'inspect', id });
+    this.sendRender({ type: 'inspect', id });
+    if (notify) this.onInspect(id);
   }
   tool(tool: string, kind?: string) {
     this.activeTool = tool;
+    this.previewRequest++;
+    this.set({ preview: null });
     this.sendRender({ type: 'tool', tool, kind });
   }
   focus(x: number, y: number) {
@@ -118,10 +135,19 @@ export class GameClient {
     else this.fallback?.message(m);
   }
   private rendered = (m: any) => {
+    if (m.type === 'cancelTool') this.onToolCancel();
     if (m.type === 'renderMetrics') this.set({ metrics: { ...this.state.metrics, ...m.value } });
     if (m.type === 'hover') this.set({ hover: { x: m.x, y: m.y } });
     if (m.type === 'selection') this.select(m.ids);
-    if (m.type === 'inspect') this.onInspect(m.x, m.y);
+    if (m.type === 'inspect') this.inspect(m.id);
+    if (m.type === 'buildPreviewRequest') {
+      const request = ++this.previewRequest;
+      this.ask('previewBuild', { kind: m.kind, x: m.x, y: m.y, x2: m.x2, y2: m.y2 }).then((preview) => {
+        if (request !== this.previewRequest || this.activeTool !== 'build') return;
+        this.set({ preview });
+        this.sendRender({ type: 'buildPreview', preview });
+      }).catch((e) => this.onNotice(e.message));
+    }
     if (m.type === 'rendererError') {
       this.set({ error: `渲染线程异常：${m.error}` });
       this.speed(0);
@@ -129,8 +155,8 @@ export class GameClient {
     if (m.type === 'intent') {
       const rect = { x: m.x, y: m.y, x2: m.x2, y2: m.y2 };
       let cmd: Command | null = null;
-      if (m.kind === 'move') cmd = { type: 'move', ids: this.state.selection, x: m.x, y: m.y };
-      if (m.kind === 'build') cmd = { type: 'build', kind: m.building, x: m.x2, y: m.y2 };
+      if (m.kind === 'move' && this.state.selection.length) cmd = { type: 'move', ids: this.state.selection, x: m.x, y: m.y };
+      if (m.kind === 'build') cmd = { type: 'build', kind: m.building, ...rect };
       if (['stock', 'farm', 'herb', 'erase'].includes(m.kind))
         cmd = {
           type: 'zone',
@@ -139,7 +165,9 @@ export class GameClient {
         };
       if (['cut', 'mine', 'harvest', 'cancel', 'demolish'].includes(m.kind))
         cmd = { type: 'mark', mode: m.kind, ...rect };
-      if (cmd) this.command(cmd).catch((e) => this.onNotice(e.message));
+      if (cmd) this.command(cmd).then(() => {
+        if (cmd?.type === 'build') this.sendRender({ type: 'refreshPreview' });
+      }).catch((e) => this.onNotice(e.message));
     }
   };
   async mount(host: HTMLDivElement) {

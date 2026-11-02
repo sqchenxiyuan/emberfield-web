@@ -34,6 +34,23 @@ const trade = p => {
   const buy = round(Math.max(.5,p.value*1.4*(1+p.loss)*(1-p.negotiator)));
   return {buy,sell:Math.min(buy,round(Math.max(.01,p.value*.6*(1-p.loss)*(1+p.negotiator))))};
 };
+// Generation examples use nearest-even integer rounding and distributions instead
+// of consuming randomness. These helpers do not change the four earlier groups.
+const roundEven = value => {
+  const lower=Math.floor(value),fraction=value-lower;
+  return fraction===.5 ? (lower%2===0 ? lower : lower+1) : Math.round(value);
+};
+const addOutcome = (distribution,output,probability) => {
+  if(probability>0) distribution[output]=(distribution[output]??0)+probability;
+};
+const roundedDistribution = (value,minimum=0) => {
+  if(!Number.isFinite(value) || value<0) throw new Error('RoundRandom example requires a finite nonnegative value.');
+  const lower=Math.floor(value),fraction=value-lower,result={};
+  addOutcome(result,Math.max(minimum,lower),1-fraction);
+  addOutcome(result,Math.max(minimum,lower+1),fraction);
+  return result;
+};
+const expectation = distribution => Object.entries(distribution).reduce((sum,[output,p])=>sum+Number(output)*p,0);
 export const models = {
   work: {
     '手动排序与emergency分类':p=>{
@@ -133,6 +150,67 @@ export const models = {
       const remaining=p.lethalSeverity-p.initialSeverity,tendedGrowthPerDay=p.severityPerDay+p.tendSeverityFactor*p.continuousActualQuality;
       const crit=f=>(p.severityPerDay-remaining*p.immunityPerDay*p.immunitySpeed*f/(1-p.initialImmunity))/-p.tendSeverityFactor;
       return {immuneDays,untendedLethalDays:remaining/p.severityPerDay,tendedGrowthPerDay,tendedLethalDaysWithoutImmunity:remaining/tendedGrowthPerDay,severityAtImmunity:p.initialSeverity+immuneDays*tendedGrowthPerDay,minimumContinuousQualityToWinAtFactor1:crit(1),minimumContinuousQualityToWinAtFactor0_8:crit(.8)};
+    }
+  },
+  generation: {
+    'G01 世界格点温度':p=>{
+      if(p.overallCurve!=='identity') throw new Error('This temperature example assumes an identity overall curve.');
+      const latitudeBase=curve([[0,30],[.1,29],[.5,7],[1,-37]],Math.abs(p.latitude)/90);
+      const elevationReduction=40*clamp((p.elevation-250)/4750,0,1);
+      return {latitudeBase,elevationReduction,temperature:latitudeBase-elevationReduction+p.noiseOffset};
+    },
+    'G02 矿脉尝试数及双重取整':p=>{
+      const cellDivisors=p.rates.map(rate=>roundEven(10000/(rate*p.nomadicFactor)));
+      return {cellDivisors,attemptCounts:cellDivisors.map(divisor=>roundEven(roundEven(p.mapSizeX**2/divisor)*p.placementFactor))};
+    },
+    'G03 土壤与石地分支边界':p=>{
+      if(p.patchResult!==null || p.preferRock || p.caves!==0) throw new Error('This boundary example excludes terrain patches and forced rock floors.');
+      const terrain=p.cells.map(({e,f})=>{
+        if(e>.55 && e<.61 && !p.noGravel) return 'Gravel';
+        if(e>=.61) return 'naturalStone';
+        if(f>=-999 && f<=.87) return 'Soil';
+        if(f>=.87 && f<=999) return 'SoilRich';
+        return 'Sand';
+      });
+      return {terrain,spawnsRock:p.cells.map(({e})=>e>.7 && p.caves<=0)};
+    },
+    'G04 矿种抽签权重':p=>{
+      if(!p.eligibleOnlyTheseSeven) throw new Error('This example restricts eligibility to the seven supplied minerals.');
+      const totalWeight=Object.values(p.weights).reduce((sum,weight)=>sum+weight,0);
+      return {totalWeight,steelProbability:p.weights.steel/totalWeight,componentProbability:p.weights.components/totalWeight,goldProbability:p.weights.gold/totalWeight};
+    },
+    'G05 两名矿工累计矿产量':p=>{
+      const yieldPct=p.mining.reduce((sum,slice)=>sum+slice.effectiveDamage/p.maxHP*slice.yieldStat,0);
+      const effectiveBase=roundEven(p.baseYield*p.mineYieldFactor);
+      const baseOutput=Math.max(1,effectiveBase),preRoundYield=baseOutput*(p.wasteable?yieldPct:1);
+      const outputDistribution={},dropProbability=clamp(p.dropChance,0,1);
+      addOutcome(outputDistribution,0,1-dropProbability);
+      for(const [output,probability] of Object.entries(roundedDistribution(preRoundYield,1))) addOutcome(outputDistribution,output,dropProbability*probability);
+      return {yieldPct,effectiveBase,preRoundYield,outputDistribution,expectedYield:expectation(outputDistribution)};
+    },
+    'G06 肥力敏感度与休眠':p=>({
+      riceFertilityFactors:p.fertilities.map(f=>f*p.riceSensitivity+1-p.riceSensitivity),
+      potatoFertilityFactors:p.fertilities.map(f=>f*p.potatoSensitivity+1-p.potatoSensitivity),
+      riceIdealCalendarDaysOnSoil:p.riceGrowDays/(p.activeDayFraction*p.allOtherGrowthFactors)
+    }),
+    'G07 早收受损作物与采收失败':p=>{
+      const growthFactor=.5+.5*clamp((p.growth-p.minGrowth)/(1-p.minGrowth),0,1);
+      const hpFactor=.5+.5*clamp(p.hpFraction,0,1);
+      const canYield=p.growth>p.minGrowth && p.baseYield>0 && !p.blighted;
+      const preRoundYield=canYield?p.baseYield*growthFactor*hpFactor*p.cropYieldFactor:0;
+      const failProbability=p.humanlike && p.harvestFailable && !p.blighted?clamp(1-p.harvestStat,0,1):0;
+      const outputDistribution={};
+      addOutcome(outputDistribution,0,failProbability);
+      for(const [initial,probability] of Object.entries(roundedDistribution(preRoundYield))){
+        // The first random rounding precedes a second rounding when stat > 1.
+        const afterStat=p.harvestStat>1?roundedDistribution(Number(initial)*p.harvestStat):{[initial]:1};
+        for(const [output,conditional] of Object.entries(afterStat)) addOutcome(outputDistribution,output,(1-failProbability)*probability*conditional);
+      }
+      return {growthFactor,hpFactor,preRoundYield,failProbability,outputDistribution,expectedYield:expectation(outputDistribution)};
+    },
+    'G08 生态密度目标':p=>{
+      if(!p.ordinaryOutdoorCells || p.fertilities.some(f=>f<=0)) throw new Error('This example models ordinary positive-fertility outdoor cells.');
+      return {desiredPlantsPerCell:p.fertilities.map(f=>Math.min(p.biomePlantDensity*p.plantDensityFactor*f*f,1)),desiredAnimalWeight:p.area*p.desiredAnimalDensity/10000};
     }
   }
 };

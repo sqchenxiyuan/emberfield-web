@@ -1,0 +1,15 @@
+{
+  "evidence_id": "RW17-GENERATION-VALIDATION",
+  "validated_utc": "2026-11-02T13:48:50.2435770Z",
+  "original_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "types": 35,
+  "claims": 34,
+  "code_references": 87,
+  "xml_references": 65,
+  "xml_files": 14,
+  "xml_records": 94,
+  "xml_leaves": 630,
+  "analytic_cases_checked": 8,
+  "status": "PASS",
+  "limitation": "Verifies provenance, source locations, selected XML values and analytic examples; does not execute RimWorld or prove semantic equivalence."
+}

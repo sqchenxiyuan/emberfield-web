@@ -1,0 +1,447 @@
+{
+  "kind": "Design arithmetic; not a benchmark or measured browser memory",
+  "selectedDirection": {
+    "status": "Confirmed user requirement",
+    "world": "True multi-level voxel world",
+    "requiredCapabilities": [
+      "Underground excavation",
+      "Multi-storey construction",
+      "Rotatable view"
+    ],
+    "implementationStatus": "Design only; no 3D implementation or voxel benchmark delivered",
+    "note": "Chunk size, dimensions, field layout and viewport settings below are proposed parameters, not user-mandated values"
+  },
+  "units": {
+    "MiB": "1024^2 bytes",
+    "GiB": "1024^3 bytes"
+  },
+  "assumptions": {
+    "chunkEdge": 16,
+    "cellsPerChunk": 4096,
+    "fields": [
+      {
+        "name": "blockId",
+        "type": "Uint16",
+        "bytes": 2
+      },
+      {
+        "name": "blockState",
+        "type": "Uint8",
+        "bytes": 1
+      },
+      {
+        "name": "flags",
+        "type": "Uint8",
+        "bytes": 1
+      },
+      {
+        "name": "packedSkyAndBlockLight",
+        "type": "Uint8",
+        "bytes": 1
+      },
+      {
+        "name": "roomId",
+        "type": "Uint32",
+        "bytes": 4
+      },
+      {
+        "name": "navigationMask",
+        "type": "Uint8",
+        "bytes": 1
+      },
+      {
+        "name": "zoneId",
+        "type": "Uint8",
+        "bytes": 1
+      },
+      {
+        "name": "workDesignation",
+        "type": "Uint8",
+        "bytes": 1
+      }
+    ],
+    "bytesPerCell": 12,
+    "bytesPerColumn": 4,
+    "packedMetadataPerResidentChunk": 256,
+    "directoryBytesPerSlot": 4,
+    "omitted": [
+      "Actual JS objects/Map overhead, allocator alignment and fragmentation",
+      "Pawn/item/job objects, room and portal graphs, paths currently owned by pawns",
+      "Cold chunk records or procedural generator caches outside expanded arrays",
+      "Mesh worker halo copies, upload buffers and retained graphics-driver allocations",
+      "Save compression, serialization peaks, browser UI, audio, code and runtime overhead",
+      "Other textures, shadows, post-processing, full-frame render targets"
+    ]
+  },
+  "currentPrototypeArrayCounts": {
+    "worldThreeByteGrids": {
+      "bytes": 27648,
+      "MiB": 0.0263671875
+    },
+    "pathPersistentGrids": {
+      "bytes": 156672,
+      "MiB": 0.1494140625
+    },
+    "threeInitialEntityFrameBuffers": {
+      "bytes": 589824,
+      "MiB": 0.5625
+    }
+  },
+  "worldProfiles": [
+    {
+      "dimensions": {
+        "width": 64,
+        "depth": 64,
+        "height": 16
+      },
+      "logicalCells": 65536,
+      "chunkCounts": [
+        4,
+        4,
+        1
+      ],
+      "chunkSlots": 16,
+      "expandedFraction": 1,
+      "residentChunks": 16,
+      "expandedCells": 65536,
+      "cellArrays": {
+        "bytes": 786432,
+        "MiB": 0.75
+      },
+      "packedChunkMetadata": {
+        "bytes": 4096,
+        "MiB": 0.00390625
+      },
+      "packedDirectory": {
+        "bytes": 64,
+        "MiB": 0.00006103515625
+      },
+      "columnArrays": {
+        "bytes": 16384,
+        "MiB": 0.015625
+      },
+      "subtotal": {
+        "bytes": 806976,
+        "MiB": 0.76959228515625
+      }
+    },
+    {
+      "dimensions": {
+        "width": 128,
+        "depth": 128,
+        "height": 32
+      },
+      "logicalCells": 524288,
+      "chunkCounts": [
+        8,
+        8,
+        2
+      ],
+      "chunkSlots": 128,
+      "expandedFraction": 1,
+      "residentChunks": 128,
+      "expandedCells": 524288,
+      "cellArrays": {
+        "bytes": 6291456,
+        "MiB": 6
+      },
+      "packedChunkMetadata": {
+        "bytes": 32768,
+        "MiB": 0.03125
+      },
+      "packedDirectory": {
+        "bytes": 512,
+        "MiB": 0.00048828125
+      },
+      "columnArrays": {
+        "bytes": 65536,
+        "MiB": 0.0625
+      },
+      "subtotal": {
+        "bytes": 6390272,
+        "MiB": 6.09423828125
+      }
+    },
+    {
+      "dimensions": {
+        "width": 256,
+        "depth": 256,
+        "height": 64
+      },
+      "logicalCells": 4194304,
+      "chunkCounts": [
+        16,
+        16,
+        4
+      ],
+      "chunkSlots": 1024,
+      "expandedFraction": 1,
+      "residentChunks": 1024,
+      "expandedCells": 4194304,
+      "cellArrays": {
+        "bytes": 50331648,
+        "MiB": 48
+      },
+      "packedChunkMetadata": {
+        "bytes": 262144,
+        "MiB": 0.25
+      },
+      "packedDirectory": {
+        "bytes": 4096,
+        "MiB": 0.00390625
+      },
+      "columnArrays": {
+        "bytes": 262144,
+        "MiB": 0.25
+      },
+      "subtotal": {
+        "bytes": 50860032,
+        "MiB": 48.50390625
+      }
+    },
+    {
+      "dimensions": {
+        "width": 256,
+        "depth": 256,
+        "height": 64
+      },
+      "logicalCells": 4194304,
+      "chunkCounts": [
+        16,
+        16,
+        4
+      ],
+      "chunkSlots": 1024,
+      "expandedFraction": 0.25,
+      "residentChunks": 256,
+      "expandedCells": 1048576,
+      "cellArrays": {
+        "bytes": 12582912,
+        "MiB": 12
+      },
+      "packedChunkMetadata": {
+        "bytes": 65536,
+        "MiB": 0.0625
+      },
+      "packedDirectory": {
+        "bytes": 4096,
+        "MiB": 0.00390625
+      },
+      "columnArrays": {
+        "bytes": 262144,
+        "MiB": 0.25
+      },
+      "subtotal": {
+        "bytes": 12914688,
+        "MiB": 12.31640625
+      }
+    },
+    {
+      "dimensions": {
+        "width": 512,
+        "depth": 512,
+        "height": 128
+      },
+      "logicalCells": 33554432,
+      "chunkCounts": [
+        32,
+        32,
+        8
+      ],
+      "chunkSlots": 8192,
+      "expandedFraction": 1,
+      "residentChunks": 8192,
+      "expandedCells": 33554432,
+      "cellArrays": {
+        "bytes": 402653184,
+        "MiB": 384
+      },
+      "packedChunkMetadata": {
+        "bytes": 2097152,
+        "MiB": 2
+      },
+      "packedDirectory": {
+        "bytes": 32768,
+        "MiB": 0.03125
+      },
+      "columnArrays": {
+        "bytes": 1048576,
+        "MiB": 1
+      },
+      "subtotal": {
+        "bytes": 405831680,
+        "MiB": 387.03125
+      }
+    },
+    {
+      "dimensions": {
+        "width": 512,
+        "depth": 512,
+        "height": 128
+      },
+      "logicalCells": 33554432,
+      "chunkCounts": [
+        32,
+        32,
+        8
+      ],
+      "chunkSlots": 8192,
+      "expandedFraction": 0.25,
+      "residentChunks": 2048,
+      "expandedCells": 8388608,
+      "cellArrays": {
+        "bytes": 100663296,
+        "MiB": 96
+      },
+      "packedChunkMetadata": {
+        "bytes": 524288,
+        "MiB": 0.5
+      },
+      "packedDirectory": {
+        "bytes": 32768,
+        "MiB": 0.03125
+      },
+      "columnArrays": {
+        "bytes": 1048576,
+        "MiB": 1
+      },
+      "subtotal": {
+        "bytes": 102268928,
+        "MiB": 97.53125
+      }
+    }
+  ],
+  "geometryProfiles": [
+    {
+      "label": "Illustrative 250000 exposed quads; not a measured terrain",
+      "quads": 250000,
+      "bytesPerQuad": 152,
+      "oneGeometryCopy": {
+        "bytes": 38000000,
+        "MiB": 36.2396240234375
+      },
+      "retainedCpuPlusGpu": {
+        "bytes": 76000000,
+        "MiB": 72.479248046875
+      },
+      "oldAndNewCpuPlusGpuDuringReplacement": {
+        "bytes": 152000000,
+        "MiB": 144.95849609375
+      }
+    },
+    {
+      "label": "Completely solid 256x256x64 rectangular volume; exterior only, no greedy merge",
+      "quads": 196608,
+      "bytesPerQuad": 152,
+      "oneGeometryCopy": {
+        "bytes": 29884416,
+        "MiB": 28.5
+      },
+      "retainedCpuPlusGpu": {
+        "bytes": 59768832,
+        "MiB": 57
+      },
+      "oldAndNewCpuPlusGpuDuringReplacement": {
+        "bytes": 119537664,
+        "MiB": 114
+      }
+    },
+    {
+      "label": "256x256x64 alternating solid/air checkerboard; all six solid faces exposed",
+      "quads": 12582912,
+      "bytesPerQuad": 152,
+      "oneGeometryCopy": {
+        "bytes": 1912602624,
+        "MiB": 1824
+      },
+      "retainedCpuPlusGpu": {
+        "bytes": 3825205248,
+        "MiB": 3648
+      },
+      "oldAndNewCpuPlusGpuDuringReplacement": {
+        "bytes": 7650410496,
+        "MiB": 7296
+      }
+    }
+  ],
+  "instancing": {
+    "label": "One float32 4x4 instance matrix for every cell of a full 256x256x64 volume",
+    "instanceCount": 4194304,
+    "oneMatrixBuffer": {
+      "bytes": 268435456,
+      "MiB": 256
+    },
+    "cpuAndGpuMatrixBuffers": {
+      "bytes": 536870912,
+      "MiB": 512
+    },
+    "note": "Excludes base geometry, colors and objects; instancing does not itself remove hidden faces"
+  },
+  "pathProfiles": [
+    {
+      "label": "One full-volume dense context",
+      "nodeCapacity": 4194304,
+      "contexts": 1,
+      "bytesPerNode": 24,
+      "total": {
+        "bytes": 100663296,
+        "MiB": 96
+      }
+    },
+    {
+      "label": "Four full-volume dense contexts",
+      "nodeCapacity": 4194304,
+      "contexts": 4,
+      "bytesPerNode": 24,
+      "total": {
+        "bytes": 402653184,
+        "MiB": 384
+      }
+    },
+    {
+      "label": "Four bounded hierarchical-search contexts",
+      "nodeCapacity": 262144,
+      "contexts": 4,
+      "bytesPerNode": 24,
+      "total": {
+        "bytes": 25165824,
+        "MiB": 24
+      }
+    }
+  ],
+  "textureProfiles": [
+    {
+      "edge": 2048,
+      "format": "RGBA8",
+      "mipLevels": 12,
+      "total": {
+        "bytes": 22369620,
+        "MiB": 21.333332061767578
+      }
+    },
+    {
+      "edge": 4096,
+      "format": "RGBA8",
+      "mipLevels": 13,
+      "total": {
+        "bytes": 89478484,
+        "MiB": 85.33333206176758
+      }
+    }
+  ],
+  "renderTargets": {
+    "drawingBuffer": [
+      3840,
+      2160
+    ],
+    "rgba8AndDepth32NoMsaa": {
+      "bytes": 66355200,
+      "MiB": 63.28125
+    },
+    "rgba8AndDepth32FourSamplesPlusResolvedRgba8": {
+      "bytes": 298598400,
+      "MiB": 284.765625
+    },
+    "note": "Illustrative attachments only; actual formats, backbuffers, HDR and driver allocations differ"
+  }
+}

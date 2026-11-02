@@ -8,6 +8,8 @@
 
 原版机制研究见 [RimWorld 详细机制与复刻设计](docs/research/rimworld/README.md)：工作与预定、战斗与医疗、房间温度与电网、财富叙事与贸易，附版本哈希、公式、算例和未验证边界。研究对象是本地 `1.7.4980 rev60`，这些数值不代表当前Web版已经实现。运行 `npm run research:check` 可独立核对证据索引与算例。
 
+2026-11-02更新：修复动物长时间等待，增加物品/动物/资源检查、劳动动画与墙/导线连续拖建。[原版运行对照与修复验证](docs/research/rimworld/07-runtime-interaction-comparison.md) 记录实际操作和边界；[世界生成与资源研究](docs/research/rimworld/06-world-generation-resources.md) 和 [真多层体素方案](docs/research/rimworld/08-voxel-feasibility.md) 为后续实施依据，当前游戏仍是单层二维地图。
+
 ## 启动
 
 在此目录执行，建议Node.js 22.12以上：
@@ -44,8 +46,9 @@ npm run preview
 
 | 操作 | 效果 |
 |---|---|
-| 左键 / 拖动框选 | 选择人物、放置蓝图、划定区域 |
-| 右键 | 给选中人物下移动/攻击指令 |
+| 左键 / 拖动框选 | 单击检查人物、动物、物品、资源、作物和建筑；框选只选殖民者，同格反复单击切换对象 |
+| 建造工具内左键拖动 | 墙/导线按横竖主方向连续规划，显示材料需求和无效位置；材料不足也可放蓝图 |
+| 右键 | 选择工具下指挥殖民者移动/攻击；建造等工具下退出工具 |
 | 中键拖动、WASD、方向键 | 移动镜头 |
 | 滚轮 | 缩放 |
 | Space | 暂停/恢复 |
@@ -64,6 +67,7 @@ npm run preview
 - 身体六部位、伤口、出血、倒地、死亡、救援与包扎；射程、墙体视线、掩体和战后恢复。
 - 日夜、天气、作物受温度影响、食品腐败、有限事件日志；普通袭击、终局两波、胜败和继续经营。
 - 版本化完整存档、导入验证、独立手动/自动槽、页面重载恢复；生成式小型纹理与合成音效。
+- 可达范围内的动物闲逛、短休和受困提示；选中对象实时检查；劳动工具/粒子与进度反馈，移动不挥工具、暂停冻结。
 
 这是基于设计稿核心链条做出的第一版独立游戏，不是完整Core或DLC内容实现。尚未加入贸易/派系任务、招募与人口成长、动物狩猎/驯养、感染与免疫、详细社交、屋顶/房间热交换、火灾、装备制造与护甲、多地图、多人和Mod兼容。冷藏在本版是设备周围四格的简化效果；营火用于局部寒冷心情与娱乐，不是完整房间热力系统。
 
@@ -87,11 +91,14 @@ npm run preview
 
 ```powershell
 npm test
+npm run test:animals
 npm run test:campaign
 npm run test:seeds
 npm run test:performance
 # 另一个终端保持 npm run preview 运行
 npm run test:browser
+$env:COLONY_TEST_URL='http://127.0.0.1:4178'
+npm run test:interactions
 npm run test:memory
 ```
 

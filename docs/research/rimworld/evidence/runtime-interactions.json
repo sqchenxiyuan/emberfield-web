@@ -1,0 +1,144 @@
+{
+  "evidence_id": "RW17-RUNTIME-INTERACTIONS-20261102",
+  "kind": "runtime-observed",
+  "version": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "active_mods": [
+    "ludeon.rimworld",
+    "ludeon.rimworld.odyssey"
+  ],
+  "profile": ".local-research/runtime/profile-20261102",
+  "scenario": "Crashlanded",
+  "storyteller": "Cassandra",
+  "difficulty": "Rough",
+  "world_seed": "whip",
+  "coverage": 0.5,
+  "map_size": [
+    250,
+    1,
+    250
+  ],
+  "saved_ticks_game": 10459,
+  "local_save": "New Arrivals1.rws",
+  "save_sha256": "855a173e4b12e1a1f485a302e2bd00337388b58b53a20d31bb2e91e22cac1b11",
+  "screenshots": [
+    {
+      "file": "runtime/original-item.png",
+      "sha256": "24b0dce1097d20d75385fe28f5a37156a0ae66c60ee55b83f5657b22e8a1b462",
+      "local_source": ".local-research/runtime/018-item.png",
+      "source_sha256": "dc45af642c19312366c0214be270d34c0774d60b4f7097f7a5d5eeb241c77217",
+      "crop": [
+        0,
+        1238,
+        530,
+        166
+      ],
+      "timestamp_utc": "2026-11-02T13:27:17.2737746Z",
+      "action": "click"
+    },
+    {
+      "file": "runtime/original-animal.png",
+      "sha256": "f2990b8bc68882277162d784916807dc384e2138b28e8226a2a55ed628a116ba",
+      "local_source": ".local-research/runtime/019-animal.png",
+      "source_sha256": "8d84615393a076fed6da437a241a00551ca40a0026340cde5a3f2a81b48a7a85",
+      "crop": [
+        0,
+        1208,
+        610,
+        196
+      ],
+      "timestamp_utc": "2026-11-02T13:27:43.2053434Z",
+      "action": "click"
+    },
+    {
+      "file": "runtime/original-blueprint-info.png",
+      "sha256": "117e4dbfa9f2da8849864c5199ef42ad05d810313f108f93d33a8f6f241e7305",
+      "local_source": ".local-research/runtime/029-blueprint-selected.png",
+      "source_sha256": "3a5f1aa778e3d975497189d1b2c2ebb97547818e45aa76ce0582451d2a8b7f01",
+      "crop": [
+        0,
+        1238,
+        1010,
+        166
+      ],
+      "timestamp_utc": "2026-11-02T13:31:10.7926288Z",
+      "action": "click"
+    },
+    {
+      "file": "runtime/original-wall-line.png",
+      "sha256": "dbcf6ec7a456e9f692e8dd5662351421c01da89617e05019248ce7d9fb8c5f8b",
+      "local_source": ".local-research/runtime/025-wall-line.png",
+      "source_sha256": "b583ef661d139d55e35da7d0f000f068c6f45f46628664af5ec1de0ab4f481e6",
+      "crop": [
+        1100,
+        585,
+        600,
+        130
+      ],
+      "timestamp_utc": "2026-11-02T13:29:53.2126311Z",
+      "action": "drag"
+    },
+    {
+      "file": "runtime/original-harvest-work.png",
+      "sha256": "947b2d040acc516f0cfdb6770c1c8c0668b167ebd8db38374140c624252d9cbc",
+      "local_source": ".local-research/runtime/037-work.png",
+      "source_sha256": "688aa54653526deb83cf5fd3a591e8ec091569a2a88a757fad0e0dc647e13441",
+      "crop": [
+        950,
+        480,
+        230,
+        135
+      ],
+      "timestamp_utc": "2026-11-02T13:38:26.6507086Z",
+      "action": "key"
+    },
+    {
+      "file": "runtime/original-harvest-info.png",
+      "sha256": "f81df5bb0dda7bd9312d0910bec72d6a8f221aa5c282549246063eba3c12b7fd",
+      "local_source": ".local-research/runtime/037-work.png",
+      "source_sha256": "688aa54653526deb83cf5fd3a591e8ec091569a2a88a757fad0e0dc647e13441",
+      "crop": [
+        0,
+        1208,
+        610,
+        196
+      ],
+      "timestamp_utc": "2026-11-02T13:38:26.6507086Z",
+      "action": "key"
+    },
+    {
+      "file": "runtime/original-mining-work.png",
+      "sha256": "0f640690e133ee73b0380a5d219dfd4ccadeefaeb7a7d702526fbb50eff15c74",
+      "local_source": ".local-research/runtime/047-mining.png",
+      "source_sha256": "c4b117ba3b77b5e8cc85b6199e8d1a0fab2b3b3538aa45b57073e14c94845c41",
+      "crop": [
+        830,
+        550,
+        220,
+        130
+      ],
+      "timestamp_utc": "2026-11-02T13:44:36.6398772Z",
+      "action": "key"
+    },
+    {
+      "file": "runtime/original-mining-info.png",
+      "sha256": "c1306b50f9bdba9fdcdb48ca1119a987d2d4e399d2a998e665ba8ca41116e85c",
+      "local_source": ".local-research/runtime/047-mining.png",
+      "source_sha256": "c4b117ba3b77b5e8cc85b6199e8d1a0fab2b3b3538aa45b57073e14c94845c41",
+      "crop": [
+        0,
+        1208,
+        610,
+        196
+      ],
+      "timestamp_utc": "2026-11-02T13:44:36.6398772Z",
+      "action": "key"
+    }
+  ],
+  "limitations": [
+    "Single new colony using Core plus Odyssey; no controlled probability or performance measurement.",
+    "Screenshots are cropped research evidence, not extracted game assets.",
+    "Screenshots alone do not establish animation timing or algorithm equivalence.",
+    "All source images and the fresh research save stay local and ignored."
+  ]
+}
