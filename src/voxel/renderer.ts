@@ -56,6 +56,8 @@ import {
   stonecutterInteraction,
   tailorCells,
   tailorInteraction,
+  weaponBenchCells,
+  weaponBenchInteraction,
   type ChunkUpdate,
   type Device,
   type DeviceKind,
@@ -66,6 +68,8 @@ import {
   type VoxelSnapshot,
 } from './types';
 import { BATTERY_CAPACITY } from './power';
+import { WEAPON_KINDS, type WeaponKind } from './weapons';
+import { SMITHY_FUEL_CAPACITY } from './weaponProduction';
 
 /** x/y are horizontal simulation coordinates; Three uses x/z horizontally. */
 export interface VoxelView {
@@ -109,7 +113,9 @@ type PawnVisual = {
   leftArm: Group;
   rightArm: Group;
   tool: Group;
-  knife: Group;
+  hammer: Group;
+  weapons: Record<WeaponKind, Group>;
+  cargoWeapons: Record<WeaponKind, Group>;
   cargo: Mesh;
   torso: Mesh;
   label: Sprite;
@@ -152,6 +158,35 @@ const RESOURCE_COLORS: Record<Resource, number> = {
   meal: 0xd88d5f,
   cloth: 0xe7dfc8,
   apparel: 0x86aaa2,
+  weapon: 0xb9cbd0,
+};
+// Local Three coordinates: x across the grip, y thickness, z along the blade.
+// The same four parts identify each actual item on the ground, in cargo and in hand.
+type WeaponPart = [number, number, number, number, number, number, number];
+const WEAPON_MODEL_PARTS: Record<WeaponKind, WeaponPart[]> = {
+  woodClub: [
+    [0, 0, 0.13, 0.075, 0.075, 0.4, 0x93683e],
+    [0, 0, 0.43, 0.18, 0.16, 0.29, 0xb88850],
+    [0, 0, 0.58, 0.14, 0.14, 0.08, 0xc59a61],
+    [0, 0, -0.04, 0.09, 0.09, 0.05, 0x6c4f36],
+  ],
+  steelKnife: [
+    [0, 0, 0.02, 0.065, 0.07, 0.19, 0x76533b],
+    [0, 0, 0.13, 0.17, 0.055, 0.045, 0x8a9b9f],
+    [0, 0, 0.3, 0.08, 0.04, 0.3, 0xd7e2e5],
+    [0, 0, 0.47, 0.04, 0.035, 0.06, 0xf0f4e9],
+  ],
+  steelLongsword: [
+    [0, 0, 0.025, 0.07, 0.075, 0.25, 0x664a39],
+    [0, 0, 0.18, 0.37, 0.065, 0.07, 0xc4b382],
+    [0, 0, 0.53, 0.095, 0.045, 0.65, 0xd7e2e5],
+    [0, 0, 0.89, 0.05, 0.04, 0.08, 0xf0f4e9],
+  ],
+};
+const WEAPON_MODEL_CENTER: Record<WeaponKind, number> = {
+  woodClub: 0.27,
+  steelKnife: 0.21,
+  steelLongsword: 0.415,
 };
 const BLOCK_COLORS: Record<number, number> = {
   [Block.Soil]: 0x9b7959,
@@ -1052,7 +1087,10 @@ export class VoxelRenderer {
     });
     this.finish(cactus);
     const loose = this.data.items.filter((item) => item.amount > 0 && item.z <= this.level);
-    const items = loose.filter((item) => item.resource !== 'chunk' && item.resource !== 'apparel');
+    const items = loose.filter(
+      (item) =>
+        item.resource !== 'chunk' && item.resource !== 'apparel' && item.resource !== 'weapon',
+    );
     const garments = loose.filter((item) => item.resource === 'apparel' && item.apparel);
     const chunks = loose.filter((item) => item.resource === 'chunk');
     const rocks = this.batch(
@@ -1158,6 +1196,55 @@ export class VoxelRenderer {
       );
     });
     this.finish(clothes);
+    const weapons = loose.filter((item) => item.resource === 'weapon' && item.weapon);
+    const weaponModels = this.batch(
+      'loose-weapons',
+      weapons.length * 4,
+      this.box,
+      this.batchMaterial('loose-weapons'),
+    );
+    const forbidden = this.batch(
+      'weapon-forbidden',
+      weapons.length * 2,
+      this.box,
+      this.effectMaterial('weapon-forbidden', 0.85),
+    );
+    this.inspectBatches.set(weaponModels, { cells: weapons, instancesPerCell: 4 });
+    this.inspectBatches.set(forbidden, { cells: weapons, instancesPerCell: 2 });
+    weapons.forEach((item, i) => {
+      const kind = item.weapon!.kind;
+      const yaw = 0.28;
+      WEAPON_MODEL_PARTS[kind].forEach(([x, y, z, sx, sy, sz, color], n) => {
+        const along = z - WEAPON_MODEL_CENTER[kind];
+        this.instance(
+          weaponModels,
+          i * 4 + n,
+          item.x + 0.5 + (x * Math.cos(yaw) + along * Math.sin(yaw)) * 0.82,
+          item.z + 0.12 + y * 0.82,
+          item.y + 0.5 + (along * Math.cos(yaw) - x * Math.sin(yaw)) * 0.82,
+          sx * 0.82,
+          sy * 0.82,
+          sz * 0.82,
+          color,
+          yaw,
+        );
+      });
+      for (let n = 0; n < 2; n++)
+        this.instance(
+          forbidden,
+          i * 2 + n,
+          item.x + 0.78,
+          item.z + 0.16,
+          item.y + 0.22,
+          item.forbidden ? 0.25 : 0,
+          item.forbidden ? 0.025 : 0,
+          item.forbidden ? 0.04 : 0,
+          0xe76d63,
+          n ? Math.PI / 4 : -Math.PI / 4,
+        );
+    });
+    this.finish(weaponModels);
+    this.finish(forbidden);
     const stock = this.data.stockpiles.filter((pos) => pos.z === this.level);
     const storage = this.batch('stock', stock.length, this.box, this.batchMaterial('stock', true));
     stock.forEach((pos, i) =>
@@ -1167,6 +1254,7 @@ export class VoxelRenderer {
     this.updateFarming();
     this.updateStonecutters();
     this.updateTailors();
+    this.updateWeaponBenches();
     this.updateHousing();
     this.updatePower();
     this.updateJobLines();
@@ -2059,6 +2147,185 @@ export class VoxelRenderer {
     this.finish(markers);
   }
 
+  private updateWeaponBenches() {
+    if (!this.data) return;
+    const benches = this.data.weaponBenches.filter((b) => b.z <= this.level);
+    const markers = this.batch(
+      'weapon-bench-operating-cell',
+      benches.length,
+      this.box,
+      this.batchMaterial('weapon-bench-operating-cell', true),
+    );
+    const workpieces = this.batch(
+      'weapon-bench-workpieces',
+      benches.length * 4,
+      this.box,
+      this.batchMaterial('weapon-bench-workpieces'),
+    );
+    this.inspectBatches.set(workpieces, { cells: benches, instancesPerCell: 4 });
+    for (const kind of ['craftingSpot', 'smithy'] as const) {
+      const tables = benches.filter((b) => b.kind === kind);
+      const count = kind === 'craftingSpot' ? 7 : 16;
+      const bodies = this.batch(
+        `weapon-bench-${kind}`,
+        tables.length * count,
+        this.box,
+        this.batchMaterial(`weapon-bench-${kind}`),
+      );
+      this.inspectBatches.set(bodies, { cells: tables, instancesPerCell: count });
+      tables.forEach((table, i) => {
+        const fuel = MathUtils.clamp(table.fuel / SMITHY_FUEL_CAPACITY, 0, 1);
+        // The mat is traversable; the smithy's anvil and firebox occupy its three tiles.
+        const parts =
+          kind === 'craftingSpot'
+            ? [
+                [0.5, 0.5, 0.035, 0.88, 0.88, 0.045, 0x826b4d],
+                [0.12, 0.12, 0.07, 0.18, 0.08, 0.035, 0xe0c394],
+                [0.88, 0.12, 0.07, 0.18, 0.08, 0.035, 0xe0c394],
+                [0.12, 0.88, 0.07, 0.18, 0.08, 0.035, 0xe0c394],
+                [0.88, 0.88, 0.07, 0.18, 0.08, 0.035, 0xe0c394],
+                [0.77, 0.5, 0.1, 0.055, 0.28, 0.06, 0xa78559],
+                [0.77, 0.64, 0.12, 0.15, 0.08, 0.08, 0x9aadb2],
+              ]
+            : [
+                [1.5, 0.5, 0.68, 2.86, 0.88, 0.18, 0x657177],
+                [0.2, 0.2, 0.3, 0.17, 0.17, 0.6, 0x49585e],
+                [2.8, 0.2, 0.3, 0.17, 0.17, 0.6, 0x49585e],
+                [0.2, 0.8, 0.3, 0.17, 0.17, 0.6, 0x49585e],
+                [2.8, 0.8, 0.3, 0.17, 0.17, 0.6, 0x49585e],
+                [1.55, 0.5, 0.83, 0.7, 0.58, 0.14, 0x46535a],
+                [1.55, 0.5, 1, 0.32, 0.32, 0.23, 0x788a92],
+                [1.55, 0.5, 1.14, 0.88, 0.42, 0.13, 0xb0c0c4],
+                [1.04, 0.5, 1.12, 0.23, 0.2, 0.1, 0x99acb2],
+                [0.42, 0.5, 0.83, 0.65, 0.75, 0.16, 0x594e46],
+                [0.42, 0.14, 1.02, 0.65, 0.12, 0.43, 0x8a7765],
+                [0.12, 0.5, 1.02, 0.12, 0.6, 0.43, 0x8a7765],
+                [0.72, 0.5, 1.02, 0.12, 0.6, 0.43, 0x8a7765],
+                [0.42, 0.2, 1.55, 0.35, 0.3, 0.7, 0x546269],
+                [2.5, 0.5, 0.16 + fuel * 0.14, 0.6, 0.6, fuel * 0.28, 0xa47c4f],
+                [2.52, 0.5, 0.83, 0.35, 0.13, 0.09, 0xb0c0c4],
+              ];
+        parts.forEach(([x, y, z, sx, sy, sz, color], n) => {
+          const swap = table.axis === 'y';
+          this.instance(
+            bodies,
+            i * count + n,
+            table.x + (swap ? y : x),
+            table.z + z,
+            table.y + (swap ? x : y),
+            swap ? sy : sx,
+            sz,
+            swap ? sx : sy,
+            color,
+          );
+        });
+      });
+      this.finish(bodies);
+    }
+    benches.forEach((table, i) => {
+      const job = this.data!.jobs.find(
+        (j) =>
+          j.kind === 'smith' &&
+          !j.cancelled &&
+          j.x === table.x &&
+          j.y === table.y &&
+          j.z === table.z,
+      );
+      const hasInput =
+        !!job?.weaponKind && Object.values(job.delivered).some((amount) => amount > 0);
+      const kind = job?.weaponKind ?? 'woodClub';
+      WEAPON_MODEL_PARTS[kind].forEach(([x, y, z, sx, sy, sz, color], n) => {
+        const localX =
+          (table.kind === 'smithy' ? 1.55 : 0.5) + (z - WEAPON_MODEL_CENTER[kind]) * 0.72;
+        const localY = 0.5 + x * 0.72;
+        const swap = table.axis === 'y';
+        const scale = hasInput ? 0.72 : 0;
+        this.instance(
+          workpieces,
+          i * 4 + n,
+          table.x + (swap ? localY : localX),
+          table.z + (table.kind === 'smithy' ? 1.24 : 0.14) + y * scale,
+          table.y + (swap ? localX : localY),
+          (swap ? sx : sz) * scale,
+          sy * scale,
+          (swap ? sz : sx) * scale,
+          color,
+        );
+      });
+      const front = weaponBenchInteraction(table);
+      this.instance(
+        markers,
+        i,
+        front.x + 0.5,
+        front.z + 0.02,
+        front.y + 0.5,
+        0.82,
+        0.025,
+        0.82,
+        table.kind === 'smithy' ? 0xd69b5b : 0xc5b683,
+      );
+    });
+    this.finish(workpieces);
+    this.finish(markers);
+  }
+
+  private animateWeaponBenches(time: number, working: Set<number>) {
+    const active = (this.data?.weaponBenches ?? []).filter(
+      (b) => b.kind === 'smithy' && b.z <= this.level && b.fuel > 0 && working.has(b.id),
+    );
+    const fire = this.batch(
+      'smithy-fire',
+      active.length * 3,
+      this.treeCrown,
+      this.effectMaterial('smithy-fire', 1),
+    );
+    const sparks = this.batch(
+      'smithy-sparks',
+      active.length * 5,
+      this.box,
+      this.effectMaterial('smithy-sparks', 1),
+    );
+    active.forEach((table, i) => {
+      const swap = table.axis === 'y';
+      for (let n = 0; n < 3; n++) {
+        const pulse = 0.8 + Math.sin(time * 9 + table.id + n * 2) * 0.2;
+        const x = 0.3 + n * 0.12,
+          y = 0.48;
+        this.instance(
+          fire,
+          i * 3 + n,
+          table.x + (swap ? y : x),
+          table.z + 0.98,
+          table.y + (swap ? x : y),
+          0.075,
+          0.17 * pulse,
+          0.075,
+          n === 1 ? 0xffe2a2 : 0xf3a249,
+        );
+      }
+      for (let n = 0; n < 5; n++) {
+        const phase = (time * 2 + n * 0.2 + table.id * 0.17) % 1;
+        const angle = n * Math.PI * 0.4 + table.id;
+        const x = 1.55 + Math.cos(angle) * phase * 0.48;
+        const y = 0.5 + Math.sin(angle) * phase * 0.4;
+        const size = (1 - phase) * 0.045;
+        this.instance(
+          sparks,
+          i * 5 + n,
+          table.x + (swap ? y : x),
+          table.z + 1.24 + Math.sin(phase * Math.PI) * 0.36,
+          table.y + (swap ? x : y),
+          size,
+          size,
+          size,
+          n % 2 ? 0xffd389 : 0xf6a85c,
+        );
+      }
+    });
+    this.finish(fire);
+    this.finish(sparks);
+  }
+
   private effectMaterial(name: string, opacity: number) {
     return (
       this.batches.get(name)?.material ??
@@ -2190,33 +2457,54 @@ export class VoxelRenderer {
       const bottom = floor ? job.z - 0.06 : job.z + 0.025;
       if (job.z > this.level + 1 || job.z < this.level - 2) continue;
       const planting = job.kind === 'sow' || job.kind === 'harvest';
+      const weaponBench = this.data?.weaponBenches.find(
+        (b) => b.x === job.x && b.y === job.y && b.z === job.z,
+      );
+      const weaponBenchKind =
+        job.kind === 'smithy' || job.kind === 'craftingSpot'
+          ? job.kind
+          : job.kind === 'smith'
+            ? job.weaponBenchKind
+            : job.kind === 'refuel' || job.kind === 'remove'
+              ? weaponBench?.kind
+              : undefined;
       const deviceKind = Object.hasOwn(DEVICE_SIZES, job.kind)
         ? (job.kind as DeviceKind)
-        : job.kind === 'refuel'
+        : job.kind === 'refuel' && !weaponBenchKind
           ? 'generator'
           : null;
-      const footprint = deviceKind
-        ? deviceCells({ ...job, kind: deviceKind, axis: job.axis ?? 'x' })
-        : job.kind === 'stonecutter' || job.kind === 'stonecut'
-          ? stonecutterCells({ ...job, axis: job.axis ?? 'x' })
-          : job.kind === 'tailor' || job.kind === 'tailoring'
-            ? tailorCells({ ...job, axis: job.axis ?? 'x' })
-            : null;
-      const height = floor
-        ? 0.07
-        : job.kind === 'wire'
-          ? 0.06
-          : deviceKind
-            ? { generator: 1.85, solar: 1.6, battery: 1.2, heater: 0.8, cooler: 2 }[deviceKind]
-            : planting
-              ? 0.14
-              : job.kind === 'bed'
-                ? 0.5
-                : job.kind === 'door'
-                  ? 2
-                  : job.kind === 'wall'
-                    ? 0.57
-                    : 0.9;
+      const footprint = weaponBenchKind
+        ? weaponBenchCells({
+            ...job,
+            kind: weaponBenchKind,
+            axis: weaponBench?.axis ?? job.axis ?? 'x',
+          })
+        : deviceKind
+          ? deviceCells({ ...job, kind: deviceKind, axis: job.axis ?? 'x' })
+          : job.kind === 'stonecutter' || job.kind === 'stonecut'
+            ? stonecutterCells({ ...job, axis: job.axis ?? 'x' })
+            : job.kind === 'tailor' || job.kind === 'tailoring'
+              ? tailorCells({ ...job, axis: job.axis ?? 'x' })
+              : null;
+      const height = weaponBenchKind
+        ? weaponBenchKind === 'smithy'
+          ? 1.9
+          : 0.16
+        : floor
+          ? 0.07
+          : job.kind === 'wire'
+            ? 0.06
+            : deviceKind
+              ? { generator: 1.85, solar: 1.6, battery: 1.2, heater: 0.8, cooler: 2 }[deviceKind]
+              : planting
+                ? 0.14
+                : job.kind === 'bed'
+                  ? 0.5
+                  : job.kind === 'door'
+                    ? 2
+                    : job.kind === 'wall'
+                      ? 0.57
+                      : 0.9;
       const right = footprint
         ? Math.max(...footprint.map((p) => p.x)) + 0.96
         : job.x + (job.kind === 'bed' && job.axis === 'x' ? 1.96 : 0.96);
@@ -2332,13 +2620,41 @@ export class VoxelRenderer {
     rightArm.add(tool);
     part(tool, hair, 0, 0, 0.15, 0.055, 0.055, 0.6);
     part(tool, dark, 0, 0, 0.43, 0.38, 0.1, 0.11);
-    const knife = new Group();
-    knife.position.set(0, -0.44, 0.1);
-    rightArm.add(knife);
-    part(knife, hair, 0, 0, 0.04, 0.065, 0.065, 0.14);
     const steel = this.keepMaterial(new MeshLambertMaterial({ color: 0xd1dce0 }));
-    part(knife, steel, 0, 0, 0.23, 0.045, 0.09, 0.25);
-    knife.visible = pawn.weapon === 'steelKnife';
+    const hammer = new Group();
+    hammer.position.set(0, -0.44, 0.1);
+    rightArm.add(hammer);
+    part(hammer, hair, 0, 0, 0.13, 0.055, 0.055, 0.35);
+    part(hammer, steel, 0, 0, 0.32, 0.21, 0.13, 0.12);
+    hammer.visible = false;
+    const weaponMaterials = new Map<number, MeshLambertMaterial>();
+    const weaponModel = (kind: WeaponKind, centered: boolean) => {
+      const group = new Group();
+      for (const [x, y, z, sx, sy, sz, color] of WEAPON_MODEL_PARTS[kind]) {
+        let material = weaponMaterials.get(color);
+        if (!material) {
+          material = this.keepMaterial(new MeshLambertMaterial({ color }));
+          weaponMaterials.set(color, material);
+        }
+        part(group, material, x, y, z - (centered ? WEAPON_MODEL_CENTER[kind] : 0), sx, sy, sz);
+      }
+      group.visible = false;
+      return group;
+    };
+    const weapons = {} as Record<WeaponKind, Group>;
+    const cargoWeapons = {} as Record<WeaponKind, Group>;
+    for (const kind of WEAPON_KINDS) {
+      const held = weaponModel(kind, false);
+      held.position.set(0, -0.44, 0.1);
+      rightArm.add(held);
+      weapons[kind] = held;
+      const carried = weaponModel(kind, true);
+      carried.position.set(0, 0.72, 0.4);
+      carried.rotation.y = Math.PI / 2;
+      carried.scale.setScalar(0.75);
+      body.add(carried);
+      cargoWeapons[kind] = carried;
+    }
     const cargoMaterial = this.keepMaterial(new MeshLambertMaterial({ color: 0xc69b60 }));
     const cargo = part(body, cargoMaterial, 0, 0.72, 0.39, 0.43, 0.31, 0.33);
     cargo.visible = false;
@@ -2400,7 +2716,9 @@ export class VoxelRenderer {
       leftArm,
       rightArm,
       tool,
-      knife,
+      hammer,
+      weapons,
+      cargoWeapons,
       cargo,
       label,
       sleepSymbol,
@@ -2448,9 +2766,14 @@ export class VoxelRenderer {
     const time = (this.data.tick + extraTicks) / TPS;
     let moteCount = 0;
     const cookingCells = new Set<number>();
+    const smithingBenches = new Set<number>();
     for (const visual of this.pawnVisuals.values()) {
       const pawn = visual.pawn;
-      visual.knife.visible = pawn.weapon === 'steelKnife';
+      for (const kind of WEAPON_KINDS) {
+        visual.weapons[kind].visible = false;
+        visual.cargoWeapons[kind].visible = false;
+      }
+      visual.hammer.visible = false;
       const visible = pawn.z <= this.level;
       visual.root.visible = visible;
       const fraction =
@@ -2487,19 +2810,33 @@ export class VoxelRenderer {
         visual.cargo.visible = false;
         continue;
       }
-      visual.cargo.visible = !!pawn.cargo;
+      visual.cargo.visible = !!pawn.cargo && pawn.cargo.resource !== 'weapon';
+      if (pawn.cargo?.weapon) visual.cargoWeapons[pawn.cargo.weapon.kind].visible = true;
       const moving = pawn.path.length > 0 || fraction < 1;
       const working =
         pawn.phase === 'work' && pawn.path.length === 0 && !pawn.cargo && fraction >= 1;
       const job = this.data.jobs.find((candidate) => candidate.id === pawn.jobId);
-      const workTarget =
-        job?.kind === 'stonecut'
+      const weaponBench =
+        job?.kind === 'smith'
+          ? this.data.weaponBenches.find((b) => b.x === job.x && b.y === job.y && b.z === job.z)
+          : undefined;
+      const workTarget = weaponBench
+        ? weaponBenchCells(weaponBench)[weaponBench.kind === 'smithy' ? 1 : 0]
+        : job?.kind === 'stonecut'
           ? stonecutterCells({ ...job, axis: job.axis ?? 'x' })[1]
           : job?.kind === 'tailoring'
             ? tailorCells({ ...job, axis: job.axis ?? 'x' })[1]
             : pawn.workTarget;
       const cooking = working && job?.kind === 'cook';
       const sewing = working && job?.kind === 'tailoring';
+      const weaponCrafting =
+        working &&
+        !!weaponBench &&
+        !!job &&
+        job.progress < job.work &&
+        (weaponBench.kind === 'craftingSpot' || weaponBench.fuel > 0);
+      const smithing = weaponCrafting && weaponBench?.kind === 'smithy';
+      const carving = weaponCrafting && weaponBench?.kind === 'craftingSpot';
       const dressing = pawn.phase === 'apparel' && pawn.apparelTask?.stage === 'work' && !moving;
       const feeding = pawn.phase === 'care' && pawn.carePhase === 'feed' && !moving;
       const bandaging = pawn.phase === 'care' && pawn.carePhase === 'tend' && !moving;
@@ -2513,14 +2850,27 @@ export class VoxelRenderer {
         opponent.z === pawn.z &&
         Math.abs(opponent.x - pawn.x) + Math.abs(opponent.y - pawn.y) === 1;
       const carryingPatient = pawn.carryingPawnId !== null;
+      const holdingWeapon =
+        !!pawn.weapon &&
+        !pawn.weaponDropPending &&
+        !pawn.weaponTask &&
+        !pawn.cargo &&
+        !carryingPatient &&
+        !working &&
+        pawn.phase !== 'care' &&
+        (pawn.drafted || pawn.faction === 'raider' || pawn.phase === 'combat');
+      if (holdingWeapon) visual.weapons[pawn.weapon!.kind].visible = true;
       const tending =
         working && (job?.kind === 'sow' || job?.kind === 'plantTree' || job?.kind === 'harvest');
       if (cooking && job) cookingCells.add(index(job.x, job.y, job.z));
+      if (smithing && weaponBench) smithingBenches.add(weaponBench.id);
       const swing = Math.sin(time * 12 + pawn.id * 1.7);
-      visual.leftLeg.rotation.x = moving ? swing * 0.55 : 0;
-      visual.rightLeg.rotation.x = moving ? -swing * 0.55 : 0;
-      visual.leftArm.rotation.x =
-        sewing || dressing || bandaging
+      if (carving) visual.body.position.y = -0.16;
+      visual.leftLeg.rotation.x = carving ? -0.45 : moving ? swing * 0.55 : 0;
+      visual.rightLeg.rotation.x = carving ? -0.45 : moving ? -swing * 0.55 : 0;
+      visual.leftArm.rotation.x = weaponCrafting
+        ? -0.92 + Math.sin(time * 5 + pawn.id) * 0.07
+        : sewing || dressing || bandaging
           ? -0.9 + Math.sin(time * 5 + pawn.id) * 0.13
           : pawn.cargo || carryingPatient
             ? -0.9
@@ -2533,29 +2883,41 @@ export class VoxelRenderer {
                   : 0;
       visual.rightArm.rotation.x = fighting
         ? -0.7 + Math.sin(time * 10 + pawn.id) * 0.85
-        : sewing || dressing || bandaging
-          ? -1 - Math.sin(time * 5 + pawn.id) * 0.18
-          : feeding
-            ? -1 + Math.sin(time * 4 + pawn.id) * 0.2
-            : pawn.cargo || carryingPatient
-              ? -0.9
-              : cooking
-                ? -0.8 + Math.sin(time * 4 + pawn.id) * 0.14
-                : tending
-                  ? -0.85 - swing * 0.15
-                  : working
-                    ? -1.05 + swing * 0.8
-                    : moving
-                      ? swing * 0.35
-                      : 0;
-      visual.torso.rotation.x = cooking
-        ? 0.03
-        : tending
-          ? 0.2
-          : working
-            ? 0.08 + Math.max(0, swing) * 0.08
-            : 0;
-      visual.tool.visible = working && !cooking && !tending && !sewing;
+        : smithing
+          ? -0.95 + Math.sin(time * 9 + pawn.id) * 0.7
+          : carving
+            ? -0.98 + Math.sin(time * 6 + pawn.id) * 0.18
+            : sewing || dressing || bandaging
+              ? -1 - Math.sin(time * 5 + pawn.id) * 0.18
+              : feeding
+                ? -1 + Math.sin(time * 4 + pawn.id) * 0.2
+                : pawn.cargo || carryingPatient
+                  ? -0.9
+                  : cooking
+                    ? -0.8 + Math.sin(time * 4 + pawn.id) * 0.14
+                    : tending
+                      ? -0.85 - swing * 0.15
+                      : working
+                        ? -1.05 + swing * 0.8
+                        : holdingWeapon && !moving
+                          ? -0.35
+                          : moving
+                            ? swing * 0.35
+                            : 0;
+      visual.torso.rotation.x = carving
+        ? 0.3
+        : smithing
+          ? 0.12 + Math.max(0, swing) * 0.06
+          : cooking
+            ? 0.03
+            : tending
+              ? 0.2
+              : working
+                ? 0.08 + Math.max(0, swing) * 0.08
+                : 0;
+      visual.tool.visible = working && !cooking && !tending && !sewing && !weaponBench;
+      visual.hammer.visible = weaponCrafting;
+      visual.hammer.scale.setScalar(carving ? 0.6 : 1);
       const patient =
         feeding || bandaging ? this.data.pawns.find((v) => v.id === pawn.patientId) : opponent;
       if (patient) {
@@ -2570,7 +2932,7 @@ export class VoxelRenderer {
           dz = visual.to.z - visual.from.z;
         if (Math.abs(dx) + Math.abs(dz) > 0.001) visual.root.rotation.y = Math.atan2(dx, dz);
       }
-      if (visible && working && !cooking && !sewing && workTarget) {
+      if (visible && working && !cooking && !sewing && !weaponBench && workTarget) {
         for (let j = 0; j < 4 && moteCount < 256; j++) {
           const phase = (time * 2.5 + j * 0.25 + pawn.id * 0.13) % 1;
           const angle = (j * Math.PI) / 2 + pawn.id;
@@ -2606,6 +2968,7 @@ export class VoxelRenderer {
     this.workMotes.count = moteCount;
     this.workMotes.instanceMatrix.needsUpdate = true;
     this.animateStoves(time, cookingCells);
+    this.animateWeaponBenches(time, smithingBenches);
     this.animateDevices();
   }
 

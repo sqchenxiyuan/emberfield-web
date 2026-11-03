@@ -1,0 +1,864 @@
+[
+  {
+    "id": "WC01",
+    "model": "work",
+    "claims": [
+      "WM02",
+      "WM05"
+    ],
+    "inputs": {
+      "base": [
+        1200,
+        1800,
+        18000,
+        1800
+      ],
+      "material": [
+        0.7,
+        1,
+        1,
+        1
+      ],
+      "pawn": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "bench": [
+        0.5,
+        0.5,
+        1,
+        0.8
+      ],
+      "sourceTPS": 60
+    },
+    "expected": {
+      "work": [
+        840,
+        1800,
+        18000,
+        1800
+      ],
+      "ticks": [
+        1680,
+        3600,
+        18000,
+        2250
+      ],
+      "seconds": [
+        28,
+        60,
+        300,
+        37.5
+      ]
+    },
+    "limitation": "Independent fixed-input arithmetic or branch model; not original execution, enabled-mod data or project integration proof."
+  },
+  {
+    "id": "WC02",
+    "model": "hp",
+    "claims": [
+      "WM08"
+    ],
+    "inputs": {
+      "base": 100,
+      "material": [
+        0.65,
+        1,
+        1
+      ],
+      "qualities": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    "expected": {
+      "hp": [
+        65,
+        100,
+        100
+      ],
+      "qualityChangesHP": false
+    },
+    "limitation": "Independent fixed-input arithmetic or branch model; not original execution, enabled-mod data or project integration proof."
+  },
+  {
+    "id": "WC03",
+    "model": "tool",
+    "claims": [
+      "WM10",
+      "WM11"
+    ],
+    "inputs": {
+      "power": [
+        9,
+        14,
+        9,
+        12,
+        13,
+        9,
+        23,
+        23
+      ],
+      "material": [
+        0.9,
+        0.9,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "quality": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "cooldown": [
+        2,
+        2,
+        2,
+        1.5,
+        2,
+        2,
+        2.6,
+        2.6
+      ]
+    },
+    "expected": {
+      "damage": [
+        8.1,
+        12.6,
+        9,
+        12,
+        13,
+        9,
+        23,
+        23
+      ],
+      "ap": [
+        0.1215,
+        0.189,
+        0.135,
+        0.18,
+        0.195,
+        0.135,
+        0.345,
+        0.345
+      ],
+      "minDamage": [
+        6.48,
+        10.08,
+        7.2,
+        9.6,
+        10.4,
+        7.2,
+        18.4,
+        18.4
+      ],
+      "maxDamage": [
+        9.72,
+        15.12,
+        10.8,
+        14.4,
+        15.6,
+        10.8,
+        27.6,
+        27.6
+      ]
+    },
+    "limitation": "Independent fixed-input arithmetic or branch model; not original execution, enabled-mod data or project integration proof."
+  },
+  {
+    "id": "WC04",
+    "model": "tool",
+    "claims": [
+      "WM11"
+    ],
+    "inputs": {
+      "power": [
+        23,
+        23,
+        23,
+        23,
+        23,
+        23,
+        23
+      ],
+      "material": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "quality": [
+        0.8,
+        0.9,
+        1,
+        1.1,
+        1.2,
+        1.45,
+        1.65
+      ],
+      "cooldown": [
+        2.6,
+        2.6,
+        2.6,
+        2.6,
+        2.6,
+        2.6,
+        2.6
+      ]
+    },
+    "expected": {
+      "damage": [
+        18.4,
+        20.7,
+        23,
+        25.3,
+        27.6,
+        33.35,
+        37.95
+      ],
+      "ap": [
+        0.276,
+        0.3105,
+        0.345,
+        0.3795,
+        0.414,
+        0.50025,
+        0.56925
+      ],
+      "minDamage": [
+        14.72,
+        16.56,
+        18.4,
+        20.24,
+        22.08,
+        26.68,
+        30.36
+      ],
+      "maxDamage": [
+        22.08,
+        24.84,
+        27.6,
+        30.36,
+        33.12,
+        40.02,
+        45.54
+      ]
+    },
+    "limitation": "Independent fixed-input arithmetic or branch model; not original execution, enabled-mod data or project integration proof."
+  },
+  {
+    "id": "WC05",
+    "model": "selection",
+    "claims": [
+      "WM10",
+      "WM12"
+    ],
+    "inputs": {
+      "damage": [
+        8.2,
+        8.2,
+        8.2,
+        5,
+        8.1,
+        12.6
+      ],
+      "cooldown": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "chance": [
+        1,
+        1,
+        0.07,
+        0.2,
+        1,
+        1
+      ]
+    },
+    "expected": {
+      "category": [
+        "Mid",
+        "Mid",
+        "Worst",
+        "Worst",
+        "Mid",
+        "Best"
+      ],
+      "probability": [
+        0.08333333333333333,
+        0.08333333333333333,
+        0,
+        0,
+        0.08333333333333333,
+        0.75
+      ]
+    },
+    "limitation": "Independent fixed-input arithmetic or branch model; not original execution, enabled-mod data or project integration proof."
+  },
+  {
+    "id": "WC06",
+    "model": "selection",
+    "claims": [
+      "WM11",
+      "WM12"
+    ],
+    "inputs": {
+      "damage": [
+        8.2,
+        8.2,
+        8.2,
+        5,
+        9,
+        12,
+        13
+      ],
+      "cooldown": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        1.5,
+        2
+      ],
+      "chance": [
+        1,
+        1,
+        0.07,
+        0.2,
+        1,
+        1,
+        1
+      ]
+    },
+    "expected": {
+      "category": [
+        "Mid",
+        "Mid",
+        "Worst",
+        "Worst",
+        "Mid",
+        "Best",
+        "Mid"
+      ],
+      "probability": [
+        0.0625,
+        0.0625,
+        0,
+        0,
+        0.0625,
+        0.75,
+        0.0625
+      ]
+    },
+    "limitation": "Independent fixed-input arithmetic or branch model; not original execution, enabled-mod data or project integration proof."
+  },
+  {
+    "id": "WC07",
+    "model": "selection",
+    "claims": [
+      "WM11",
+      "WM12"
+    ],
+    "inputs": {
+      "damage": [
+        8.2,
+        8.2,
+        8.2,
+        5,
+        9,
+        23,
+        23
+      ],
+      "cooldown": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2.6,
+        2.6
+      ],
+      "chance": [
+        1,
+        1,
+        0.07,
+        0.2,
+        1,
+        1,
+        1
+      ]
+    },
+    "expected": {
+      "category": [
+        "Mid",
+        "Mid",
+        "Worst",
+        "Worst",
+        "Mid",
+        "Best",
+        "Best"
+      ],
+      "probability": [
+        0.08333333333333333,
+        0.08333333333333333,
+        0,
+        0,
+        0.08333333333333333,
+        0.375,
+        0.375
+      ]
+    },
+    "limitation": "Independent fixed-input arithmetic or branch model; not original execution, enabled-mod data or project integration proof."
+  },
+  {
+    "id": "WC08",
+    "model": "category",
+    "claims": [
+      "WM12"
+    ],
+    "inputs": {
+      "weights": [
+        0.24999,
+        0.25,
+        0.94999,
+        0.95,
+        1
+      ]
+    },
+    "expected": [
+      "Worst",
+      "Mid",
+      "Mid",
+      "Best",
+      "Best"
+    ],
+    "limitation": "Independent fixed-input arithmetic or branch model; not original execution, enabled-mod data or project integration proof."
+  },
+  {
+    "id": "WC09",
+    "model": "usability",
+    "claims": [
+      "WM13",
+      "WM14"
+    ],
+    "inputs": {
+      "efficiency": [
+        0,
+        0.01,
+        0.8,
+        0
+      ],
+      "ensure": [
+        false,
+        false,
+        false,
+        true
+      ],
+      "baseDamage": [
+        8.2,
+        8.2,
+        8.2,
+        5
+      ],
+      "manipulation": [
+        0,
+        0.0001,
+        0.5,
+        1
+      ]
+    },
+    "expected": {
+      "factor": [
+        0,
+        0.01,
+        0.8,
+        0.4
+      ],
+      "damage": [
+        0,
+        0.082,
+        6.56,
+        2
+      ],
+      "usable": [
+        false,
+        true,
+        true,
+        true
+      ],
+      "canManipulate": [
+        false,
+        true,
+        true,
+        true
+      ]
+    },
+    "limitation": "Independent fixed-input arithmetic or branch model; not original execution, enabled-mod data or project integration proof."
+  },
+  {
+    "id": "WC10",
+    "model": "fuel",
+    "claims": [
+      "WM04"
+    ],
+    "inputs": {
+      "fuel": [
+        0,
+        0.0001,
+        15,
+        15.0001,
+        49,
+        49.1,
+        50
+      ],
+      "capacity": 50,
+      "threshold": 0,
+      "auto": 0.3,
+      "rate": 80,
+      "sourceDay": 60000,
+      "usedTicks": [
+        0,
+        600,
+        1800,
+        18000
+      ]
+    },
+    "expected": {
+      "hasFuel": [
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "autoFuelCondition": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "isFull": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ],
+      "consumed": [
+        0,
+        0.8,
+        2.4,
+        24
+      ]
+    },
+    "limitation": "Independent fixed-input arithmetic or branch model; not original execution, enabled-mod data or project integration proof."
+  },
+  {
+    "id": "WC11",
+    "model": "time",
+    "claims": [
+      "WM15",
+      "WM16",
+      "WM20"
+    ],
+    "inputs": {
+      "sourceTPS": 60,
+      "projectTPS": 20,
+      "sourceDay": 60000,
+      "projectDay": 12000,
+      "dropTicks": 30,
+      "knifeTicks": 1800,
+      "fuelPerDay": 80,
+      "cooldown": [
+        2,
+        2.6
+      ]
+    },
+    "expected": {
+      "dropProjectTicks": 10,
+      "knifeProjectTicks": 600,
+      "cooldownProjectTicks": [
+        40,
+        52
+      ],
+      "sourceKnifeFuel": 2.4,
+      "projectKnifeFuelByDay": 4,
+      "projectKnifeFuelBySeconds": 2.4
+    },
+    "limitation": "Independent fixed-input arithmetic or branch model; not original execution, enabled-mod data or project integration proof."
+  },
+  {
+    "id": "WC12",
+    "model": "deterioration",
+    "claims": [
+      "WM09"
+    ],
+    "inputs": {
+      "base": 2,
+      "rows": [
+        {
+          "q": 1,
+          "roof": true,
+          "outside": false,
+          "rain": 0,
+          "terrain": 0,
+          "protected": false
+        },
+        {
+          "q": 1,
+          "roof": false,
+          "outside": true,
+          "rain": 0,
+          "terrain": 0,
+          "protected": false
+        },
+        {
+          "q": 1,
+          "roof": false,
+          "outside": true,
+          "rain": 1,
+          "terrain": 0,
+          "protected": false
+        },
+        {
+          "q": 0.1,
+          "roof": false,
+          "outside": true,
+          "rain": 1,
+          "terrain": 0,
+          "protected": false
+        },
+        {
+          "q": 2,
+          "roof": true,
+          "outside": true,
+          "rain": 1,
+          "terrain": 0,
+          "protected": false
+        },
+        {
+          "q": 1,
+          "roof": false,
+          "outside": true,
+          "rain": 1,
+          "terrain": 0,
+          "protected": true
+        }
+      ]
+    },
+    "expected": [
+      0,
+      2,
+      10,
+      1,
+      2,
+      0
+    ],
+    "limitation": "Independent fixed-input arithmetic or branch model; not original execution, enabled-mod data or project integration proof."
+  },
+  {
+    "id": "WC13",
+    "model": "cancel",
+    "claims": [
+      "WM06"
+    ],
+    "inputs": {
+      "stacks": [
+        40,
+        30,
+        100
+      ],
+      "fraction": 0.75
+    },
+    "expected": {
+      "expectation": [
+        30,
+        22.5,
+        75
+      ],
+      "possible": [
+        [
+          30
+        ],
+        [
+          22,
+          23
+        ],
+        [
+          75
+        ]
+      ]
+    },
+    "limitation": "Independent fixed-input arithmetic or branch model; not original execution, enabled-mod data or project integration proof."
+  },
+  {
+    "id": "WC14",
+    "model": "drop",
+    "claims": [
+      "WM16",
+      "WM17",
+      "WM18",
+      "WM19"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "cause": "manual",
+          "spawned": true,
+          "bed": false
+        },
+        {
+          "cause": "down",
+          "spawned": true,
+          "bed": false
+        },
+        {
+          "cause": "down",
+          "spawned": true,
+          "bed": true
+        },
+        {
+          "cause": "death",
+          "spawned": true,
+          "bed": true
+        },
+        {
+          "cause": "down",
+          "spawned": false,
+          "bed": false
+        },
+        {
+          "cause": "manipulation",
+          "spawned": true,
+          "bed": false
+        },
+        {
+          "cause": "death",
+          "spawned": true,
+          "bed": false,
+          "enclosed": true
+        },
+        {
+          "cause": "down",
+          "spawned": true,
+          "bed": false,
+          "destroyGear": true
+        }
+      ]
+    },
+    "expected": {
+      "location": [
+        "ground",
+        "ground",
+        "equipped",
+        "ground",
+        "equipped",
+        "ground",
+        "container",
+        "destroyed"
+      ],
+      "forbidden": [
+        true,
+        true,
+        false,
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      "remember": [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "delaySourceTicks": [
+        30,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "limitation": "Independent fixed-input arithmetic or branch model; not original execution, enabled-mod data or project integration proof."
+  },
+  {
+    "id": "WC15",
+    "model": "equip",
+    "claims": [
+      "WM08",
+      "WM14",
+      "WM15"
+    ],
+    "inputs": {
+      "incoming": {
+        "id": "w1",
+        "hp": 37,
+        "stuff": "WoodLog",
+        "forbidden": true
+      },
+      "old": {
+        "id": "w2",
+        "hp": 81,
+        "stuff": "Steel",
+        "forbidden": false
+      }
+    },
+    "expected": {
+      "equipped": {
+        "id": "w1",
+        "hp": 37,
+        "stuff": "WoodLog",
+        "forbidden": false
+      },
+      "ground": {
+        "id": "w2",
+        "hp": 81,
+        "stuff": "Steel",
+        "forbidden": false
+      },
+      "uniqueCount": 2,
+      "extraDelaySourceTicks": 0
+    },
+    "limitation": "Independent fixed-input arithmetic or branch model; not original execution, enabled-mod data or project integration proof."
+  }
+]

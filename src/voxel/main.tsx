@@ -13,6 +13,9 @@ import { SurvivalPanel } from './SurvivalPanel';
 import { ApparelPanel, WearApparel } from './ApparelPanel';
 import { TailorPanel } from './TailorPanel';
 import { CombatPanel, ThreatControl } from './CombatPanel';
+import { WeaponPanel, WeaponBenchPanel, EquipWeapon } from './WeaponPanel';
+import { weaponName } from './weapons';
+import { WEAPON_BENCH_NAMES } from './weaponProduction';
 import { APPAREL_NAMES } from './apparel';
 import {
   BLOCK_NAMES,
@@ -25,6 +28,7 @@ import {
   stonecutterCells,
   stonecutterInteraction,
   tailorCells,
+  weaponBenchCells,
   DEVICE_NAMES,
   type Assignment,
   type CropKind,
@@ -53,6 +57,8 @@ const tools: Tool[] = [
   'stove',
   'stonecutter',
   'tailor',
+  'craftingSpot',
+  'smithy',
   'bed',
   'door',
   'generator',
@@ -80,6 +86,8 @@ const icons = [
   '♨',
   '⚒',
   '✂',
+  '◇',
+  '⚔',
   '▰',
   '▯',
   '⚙',
@@ -93,6 +101,8 @@ const icons = [
   '×',
 ];
 const hints: Record<Tool, string> = {
+  craftingSpot: '一格制作点，无需建材。点击设置木棒或钢匕首配方，加工速度为锻造台的一半。',
+  smithy: '3×1 燃料锻造台，100 钢材。R 旋转，留出操作位；需木材燃料，可制作钢长剑。',
   generator: '2×2，占地需两格净空；100 钢材 + 2 零件。补充木材后发电 1000 W，每日耗木 22。',
   solar: '4×4，100 钢材 + 3 零件；峰值 1700 W，夜间停机，上方楼板按遮挡比例减产。',
   battery: '1×2，70 钢材 + 2 零件；容量 600 Wd，充电效率 50%。R 切换朝向。',
@@ -151,11 +161,13 @@ function connectedStorage(stockpiles: Stockpile[], start: Stockpile): Stockpile[
   return result;
 }
 const foodName = (batch: Cargo) =>
-  batch.apparel
-    ? `布制${APPAREL_NAMES[batch.apparel.kind]}`
-    : batch.resource === 'grain' && batch.crop
-      ? CROPS[batch.crop].name
-      : RESOURCE_NAMES[batch.resource];
+  batch.weapon
+    ? weaponName(batch.weapon)
+    : batch.apparel
+      ? `布制${APPAREL_NAMES[batch.apparel.kind]}`
+      : batch.resource === 'grain' && batch.crop
+        ? CROPS[batch.crop].name
+        : RESOURCE_NAMES[batch.resource];
 function FoodCondition({ batch, temperature }: { batch: Cargo; temperature: number }) {
   const days = remainingRotDays(batch),
     limit = rotLimit(batch);
@@ -287,6 +299,9 @@ function App() {
     ? s?.stonecutters.find((v) => stonecutterCells(v).some((q) => equal(q, p)))
     : null;
   const tailor = p ? s?.tailors.find((v) => tailorCells(v).some((q) => equal(q, p))) : null;
+  const weaponBench = p
+    ? s?.weaponBenches.find((b) => weaponBenchCells(b).some((q) => equal(q, p)))
+    : null;
   const bed = p ? s?.beds.find((v) => bedCells(v).some((q) => equal(q, p))) : null;
   const door = p ? s?.doors.find((v) => equal(v, p)) : null;
   const device = p
@@ -305,6 +320,10 @@ function App() {
     ? (s?.jobs.filter(
         (v) =>
           equal(v, p) ||
+          (v.kind === 'smithy' &&
+            weaponBenchCells({ ...v, kind: 'smithy', axis: v.axis ?? 'x' }).some((q) =>
+              equal(q, p),
+            )) ||
           ((v.kind === 'stonecutter' || v.kind === 'stonecut') &&
             stonecutterCells({ ...v, axis: v.axis ?? 'x' }).some((q) => equal(q, p))) ||
           ((v.kind === 'tailor' || v.kind === 'tailoring') &&
@@ -345,6 +364,7 @@ function App() {
       (device ? DEVICE_NAMES[device.kind] : null) ??
       (stonecutter ? '木制切石台' : null) ??
       (tailor ? '手工裁缝台' : null) ??
+      (weaponBench ? WEAPON_BENCH_NAMES[weaponBench.kind] : null) ??
       (bed
         ? '木床'
         : door
@@ -1054,6 +1074,14 @@ function App() {
             }
           />
         )}
+        {weaponBench && s && (
+          <WeaponBenchPanel
+            key={weaponBench.id}
+            bench={weaponBench}
+            snapshot={s}
+            command={(c) => void client.command(c)}
+          />
+        )}
         {items.map((i) => (
           <div className="voxel-item-detail" key={i.id} data-testid="item-detail">
             <div className="voxel-info-row">
@@ -1067,6 +1095,14 @@ function App() {
               每堆上限 {stackLimit(i.resource)} · 剩余 {stackLimit(i.resource) - i.amount}
             </small>
             <FoodCondition batch={i} temperature={temperatureOf(i)} />
+            {i.weapon && s && (
+              <EquipWeapon
+                item={i}
+                pawns={s.pawns}
+                preferredPawnId={selectedPawn}
+                command={(c) => void client.command(c)}
+              />
+            )}
             {i.apparel && s && (
               <WearApparel
                 piece={i.apparel}
@@ -1126,6 +1162,7 @@ function App() {
                 void client.command({ type: 'removeApparel', pawnId: pawn.id, apparelId })
               }
             />
+            <WeaponPanel pawn={pawn} command={(c) => void client.command(c)} />
             {pawn.faction === 'colony' &&
               !pawn.dead &&
               (pawn.downed || pawn.trauma.wounds.some((w) => w.tendQuality === null)) && (
@@ -1355,7 +1392,7 @@ function App() {
         <div className="voxel-tool-hint">
           <span className="voxel-kicker">
             {TOOL_NAMES[state.tool]}
-            {(['bed', 'door', 'stonecutter', 'tailor'].includes(state.tool) ||
+            {(['bed', 'door', 'stonecutter', 'tailor', 'smithy'].includes(state.tool) ||
               isDeviceKind(state.tool)) && (
               <button onClick={() => client.rotatePlan()} aria-label="旋转建造朝向">
                 朝向 {state.axis.toUpperCase()} · R

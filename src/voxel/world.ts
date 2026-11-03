@@ -21,6 +21,8 @@ import {
   stonecutterInteraction,
   tailorCells,
   tailorInteraction,
+  weaponBenchCells,
+  weaponBenchInteraction,
 } from './types';
 import {
   APPAREL_DEFS,
@@ -35,6 +37,29 @@ import {
   apparelWearDamage,
   APPAREL_WEAR_INTERVAL,
 } from './apparel';
+import {
+  WEAPON_DEFS,
+  WEAPON_KINDS,
+  WEAPON_NAMES,
+  WEAPON_DROP_TICKS,
+  makeWeapon,
+  validWeapon,
+  weaponWork,
+  selectMeleeAttack,
+  meleeBodyFromTrauma,
+  type WeaponKind,
+  type WeaponPiece,
+  type WeaponBenchKind,
+} from './weapons';
+import {
+  SMITHY_COST,
+  SMITHY_WORK,
+  SMITHY_FUEL_CAPACITY,
+  SMITHY_REFUEL_AT,
+  SMITHY_FUEL_PER_TICK,
+  isWeaponBenchKind,
+  makeWeaponBench,
+} from './weaponProduction';
 import { VoxelRooms } from './rooms';
 import { VoxelPower, DEVICE_COSTS, DEVICE_WORK, isDeviceKind } from './power';
 import { VoxelThermal } from './thermal';
@@ -148,6 +173,7 @@ import type {
   ApparelKind,
   ApparelPiece,
   Tailor,
+  WeaponBench,
 } from './types';
 
 const same = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
@@ -162,89 +188,103 @@ const costOf = (
   kind: JobKind,
   material: ConstructionMaterial = 'wood',
   apparelKind?: ApparelKind,
+  weaponKind?: WeaponKind,
+  weaponBenchKind?: WeaponBenchKind,
 ): Partial<Counts> =>
-  kind === 'tailor'
-    ? { ...TAILOR_COST }
-    : kind === 'tailoring'
-      ? { cloth: APPAREL_DEFS[apparelKind ?? 'shirt'].cloth }
-      : kind === 'stonecutter'
-        ? { ...STONECUTTER_COST }
-        : kind === 'stonecut'
-          ? { chunk: STONECUTTING.input }
-          : material === 'stone' && (kind === 'wall' || kind === 'floor')
-            ? { stone: STONE_CONSTRUCTION[kind].cost }
-            : isDeviceKind(kind)
-              ? { ...DEVICE_COSTS[kind] }
-              : kind === 'wire'
-                ? { steel: 1 }
-                : kind === 'cook'
-                  ? { grain: SIMPLE_MEAL.ingredients, wood: SIMPLE_MEAL.wood }
-                  : (
-                        {
-                          floor: 3,
-                          wall: 6,
-                          ladder: 2,
-                          digLadder: 2,
-                          stove: 20,
-                          bed: 45,
-                          door: 25,
-                        } as Partial<Record<JobKind, number>>
-                      )[kind]
-                    ? {
-                        wood: (
-                          {
-                            floor: 3,
-                            wall: 6,
-                            ladder: 2,
-                            digLadder: 2,
-                            stove: 20,
-                            bed: 45,
-                            door: 25,
-                          } as Partial<Record<JobKind, number>>
-                        )[kind]!,
-                      }
-                    : {};
+  kind === 'smithy'
+    ? { ...SMITHY_COST }
+    : kind === 'smith'
+      ? { ...WEAPON_DEFS[weaponKind!].cost }
+      : kind === 'tailor'
+        ? { ...TAILOR_COST }
+        : kind === 'tailoring'
+          ? { cloth: APPAREL_DEFS[apparelKind ?? 'shirt'].cloth }
+          : kind === 'stonecutter'
+            ? { ...STONECUTTER_COST }
+            : kind === 'stonecut'
+              ? { chunk: STONECUTTING.input }
+              : material === 'stone' && (kind === 'wall' || kind === 'floor')
+                ? { stone: STONE_CONSTRUCTION[kind].cost }
+                : isDeviceKind(kind)
+                  ? { ...DEVICE_COSTS[kind] }
+                  : kind === 'wire'
+                    ? { steel: 1 }
+                    : kind === 'cook'
+                      ? { grain: SIMPLE_MEAL.ingredients, wood: SIMPLE_MEAL.wood }
+                      : (
+                            {
+                              floor: 3,
+                              wall: 6,
+                              ladder: 2,
+                              digLadder: 2,
+                              stove: 20,
+                              bed: 45,
+                              door: 25,
+                            } as Partial<Record<JobKind, number>>
+                          )[kind]
+                        ? {
+                            wood: (
+                              {
+                                floor: 3,
+                                wall: 6,
+                                ladder: 2,
+                                digLadder: 2,
+                                stove: 20,
+                                bed: 45,
+                                door: 25,
+                              } as Partial<Record<JobKind, number>>
+                            )[kind]!,
+                          }
+                        : {};
 const workOf = (
   kind: JobKind,
   material: ConstructionMaterial = 'wood',
   species: TreeSpecies = 'poplar',
   legacyCut = false,
   apparelKind?: ApparelKind,
+  weaponKind?: WeaponKind,
+  weaponBenchKind?: WeaponBenchKind,
 ) =>
-  kind === 'tailor'
-    ? TAILOR_WORK
-    : kind === 'tailoring'
-      ? APPAREL_DEFS[apparelKind ?? 'shirt'].work
-      : kind === 'cut'
-        ? legacyCut
-          ? 60
-          : treeCutWork(species)
-        : kind === 'plantTree'
-          ? treeSowWork(species)
-          : material === 'stone' && (kind === 'wall' || kind === 'floor')
-            ? STONE_CONSTRUCTION[kind].work
-            : {
-                ...DEVICE_WORK,
-                wire: 12,
-                refuel: 80,
-                mine: 70,
-                cut: 60,
-                floor: 45,
-                wall: 80,
-                ladder: 40,
-                digLadder: 90,
-                remove: 40,
-                sow: 57,
-                harvest: 67,
-                stove: 120,
-                bed: 187,
-                door: 199,
-                cook: SIMPLE_MEAL.work,
-                stonecutter: STONECUTTER_WORK,
-                stonecut: STONECUTTING.work,
-              }[kind];
+  kind === 'smithy'
+    ? SMITHY_WORK
+    : kind === 'craftingSpot'
+      ? 1
+      : kind === 'smith'
+        ? weaponWork(weaponKind!, weaponBenchKind!)
+        : kind === 'tailor'
+          ? TAILOR_WORK
+          : kind === 'tailoring'
+            ? APPAREL_DEFS[apparelKind ?? 'shirt'].work
+            : kind === 'cut'
+              ? legacyCut
+                ? 60
+                : treeCutWork(species)
+              : kind === 'plantTree'
+                ? treeSowWork(species)
+                : material === 'stone' && (kind === 'wall' || kind === 'floor')
+                  ? STONE_CONSTRUCTION[kind].work
+                  : {
+                      ...DEVICE_WORK,
+                      wire: 12,
+                      refuel: 80,
+                      mine: 70,
+                      cut: 60,
+                      floor: 45,
+                      wall: 80,
+                      ladder: 40,
+                      digLadder: 90,
+                      remove: 40,
+                      sow: 57,
+                      harvest: 67,
+                      stove: 120,
+                      bed: 187,
+                      door: 199,
+                      cook: SIMPLE_MEAL.work,
+                      stonecutter: STONECUTTER_WORK,
+                      stonecut: STONECUTTING.work,
+                    }[kind];
 const workType = (kind: JobKind): Work =>
-  kind === 'stonecut' || kind === 'tailoring'
+  kind === 'stonecut' || kind === 'tailoring' || kind === 'smith'
     ? 'craft'
     : kind === 'refuel'
       ? 'haul'
@@ -311,6 +351,7 @@ export class VoxelSimulation {
   stoves: Stove[] = [];
   stonecutters: Stonecutter[] = [];
   tailors: Tailor[] = [];
+  weaponBenches: WeaponBench[] = [];
   beds: Bed[] = [];
   doors: Door[] = [];
   devices: Device[] = [];
@@ -338,6 +379,7 @@ export class VoxelSimulation {
     cooked: 0,
     stonecut: 0,
     tailored: 0,
+    weaponsMade: 0,
     destroyed: emptyCounts(),
     treesPlanted: 0,
     treesRegrown: 0,
@@ -546,6 +588,12 @@ export class VoxelSimulation {
     return this.distance[at(to)] >= 0 ? this.route(at(to)) : null;
   }
   private stands(j: Job): number[] {
+    if (j.kind === 'smith') {
+      const bench = this.weaponBenches.find((b) => same(b, j));
+      if (!bench) return [];
+      const point = weaponBenchInteraction(bench);
+      return this.standable(point) ? [at(point)] : [];
+    }
     if (j.kind === 'tailoring') {
       const bench = this.tailors.find((b) => same(b, j));
       if (!bench) return [];
@@ -559,12 +607,17 @@ export class VoxelSimulation {
       return this.standable(point) ? [at(point)] : [];
     }
     const device = j.kind === 'refuel' || j.kind === 'remove' ? this.deviceAt(j) : undefined;
-    const bench = j.kind === 'remove' ? (this.stonecutterAt(j) ?? this.tailorAt(j)) : undefined;
+    const bench =
+      j.kind === 'remove' || j.kind === 'refuel'
+        ? (this.stonecutterAt(j) ?? this.tailorAt(j) ?? this.weaponBenchAt(j))
+        : undefined;
     const cells =
-      j.kind === 'stonecutter' || j.kind === 'tailor'
+      j.kind === 'stonecutter' || j.kind === 'tailor' || j.kind === 'smithy'
         ? stonecutterCells({ ...j, axis: j.axis ?? 'x' })
         : bench
-          ? stonecutterCells(bench)
+          ? 'kind' in bench
+            ? weaponBenchCells(bench)
+            : stonecutterCells(bench)
           : isDeviceKind(j.kind)
             ? deviceCells({ ...j, kind: j.kind, axis: j.axis ?? 'x' })
             : device
@@ -583,7 +636,12 @@ export class VoxelSimulation {
       .filter(
         (p) =>
           this.standable(p) &&
-          (!(isDeviceKind(j.kind) || j.kind === 'stonecutter' || j.kind === 'tailor') ||
+          (!(
+            isDeviceKind(j.kind) ||
+            j.kind === 'stonecutter' ||
+            j.kind === 'tailor' ||
+            j.kind === 'smithy'
+          ) ||
             !cells.some((c) => same(c, p))),
       )
       .map(at);
@@ -815,6 +873,11 @@ export class VoxelSimulation {
     return best;
   }
   private chunkReserved(item: Stack, pawnId: number): boolean {
+    if (item.weapon) {
+      const assigned = this.pawns.find((p) => p.weaponTask?.weaponId === item.weapon!.id);
+      if ((item.forbidden && assigned?.id !== pawnId) || (assigned && assigned.id !== pawnId))
+        return true;
+    }
     if (
       item.apparel &&
       this.pawns.some((p) => p.id !== pawnId && p.apparelTask?.apparelId === item.apparel!.id)
@@ -832,7 +895,7 @@ export class VoxelSimulation {
     p.phase = phase;
   }
   private footprint(j: Pos & { kind: JobKind; axis?: Axis }): Pos[] {
-    if (j.kind === 'stonecutter' || j.kind === 'tailor')
+    if (j.kind === 'stonecutter' || j.kind === 'tailor' || j.kind === 'smithy')
       return stonecutterCells({ ...j, axis: j.axis ?? 'x' }).flatMap((p) => [
         p,
         { ...p, z: p.z + 1 },
@@ -865,6 +928,7 @@ export class VoxelSimulation {
         ...this.devices.flatMap(deviceCells),
         ...this.stonecutters.flatMap(stonecutterCells),
         ...this.tailors.flatMap(tailorCells),
+        ...this.weaponBenches.filter((b) => b.kind === 'smithy').flatMap(weaponBenchCells),
       ].flatMap((p) => [at(p), at({ ...p, z: p.z + 1 })]),
     );
     this.skyCache.clear();
@@ -884,11 +948,20 @@ export class VoxelSimulation {
       tailorCells(b).some((q) => q.x === p.x && q.y === p.y && (p.z === q.z || p.z === q.z + 1)),
     );
   }
+  private weaponBenchAt(p: Pos) {
+    return this.weaponBenches.find((b) =>
+      weaponBenchCells(b).some(
+        (q) =>
+          q.x === p.x && q.y === p.y && (q.z === p.z || (b.kind === 'smithy' && q.z + 1 === p.z)),
+      ),
+    );
+  }
   private furnitureAt(p: Pos) {
     return (
       this.deviceAt(p) ||
       this.stonecutterAt(p) ||
       this.tailorAt(p) ||
+      this.weaponBenchAt(p) ||
       this.beds.find((b) =>
         bedCells(b).some((q) => q.x === p.x && q.y === p.y && (p.z === q.z || p.z === q.z + 1)),
       ) ||
@@ -1020,7 +1093,8 @@ export class VoxelSimulation {
       ) ||
       this.jobs.some((j) => j.id !== ownJob && this.stands(j).some((i) => overlap(position(i)))) ||
       this.stonecutters.some((b) => overlap(stonecutterInteraction(b))) ||
-      this.tailors.some((b) => overlap(tailorInteraction(b)))
+      this.tailors.some((b) => overlap(tailorInteraction(b))) ||
+      this.weaponBenches.some((b) => overlap(weaponBenchInteraction(b)))
     )
       return false;
     // A tree removes one walking vertex. It may not split any previously joined
@@ -1209,7 +1283,18 @@ export class VoxelSimulation {
         )
       )
         this.cancel(j);
-      if (j.kind === 'refuel' && !this.devices.some((d) => d.kind === 'generator' && same(d, j)))
+      if (
+        j.kind === 'smith' &&
+        !this.weaponBenches.some(
+          (b) => same(b, j) && b.bills.some((v) => v.kind === j.weaponKind && !v.paused),
+        )
+      )
+        this.cancel(j);
+      if (
+        j.kind === 'refuel' &&
+        !this.devices.some((d) => d.kind === 'generator' && same(d, j)) &&
+        !this.weaponBenches.some((b) => b.kind === 'smithy' && same(b, j))
+      )
         this.cancel(j);
     }
     for (const f of this.farms) {
@@ -1270,6 +1355,37 @@ export class VoxelSimulation {
       this.jobs.push(this.makeJob('tailoring', bench, bench.axis, 'wood', bill.kind));
       apparelCounts[bill.kind]++;
     }
+    const weaponCounts = Object.fromEntries(
+      WEAPON_KINDS.map((kind) => [
+        kind,
+        this.weaponPieces().filter((w) => w.kind === kind).length +
+          this.jobs.filter((j) => j.kind === 'smith' && !j.cancelled && j.weaponKind === kind)
+            .length,
+      ]),
+    ) as Record<WeaponKind, number>;
+    for (const bench of this.weaponBenches) {
+      if (
+        this.jobs.length >= 512 ||
+        this.jobs.some((j) => same(j, bench) && !['smith', 'refuel'].includes(j.kind))
+      )
+        continue;
+      if (
+        bench.kind === 'smithy' &&
+        !this.jobs.some((j) => same(j, bench) && j.kind === 'refuel') &&
+        bench.fuel <= SMITHY_REFUEL_AT
+      ) {
+        const job = this.makeJob('refuel', bench);
+        job.cost = { wood: Math.ceil(SMITHY_FUEL_CAPACITY - bench.fuel) };
+        this.jobs.push(job);
+      }
+      if (this.jobs.some((j) => same(j, bench) && j.kind === 'smith')) continue;
+      const bill = bench.bills.find((b) => !b.paused && weaponCounts[b.kind] < b.target);
+      if (!bill) continue;
+      this.jobs.push(
+        this.makeJob('smith', bench, bench.axis, 'wood', undefined, bill.kind, bench.kind),
+      );
+      weaponCounts[bill.kind]++;
+    }
     for (const d of this.devices) {
       if (
         d.kind !== 'generator' ||
@@ -1298,6 +1414,48 @@ export class VoxelSimulation {
       this.pawns.some((p) => p.id === c.pawnId && p.faction !== 'colony')
     )
       return { ok: false, message: '无法指挥敌对人物' };
+    if (c.type === 'weaponBill') {
+      const bench = this.weaponBenches.find((b) => b.id === c.benchId);
+      const bill = bench?.bills.find((b) => b.kind === c.kind);
+      if (
+        !bench ||
+        !bill ||
+        !Number.isInteger(c.target) ||
+        c.target < 0 ||
+        c.target > 100 ||
+        typeof c.paused !== 'boolean'
+      )
+        return { ok: false, message: '武器配方或目标无效' };
+      bill.target = c.target;
+      bill.paused = c.paused;
+      if (c.paused)
+        for (const job of [...this.jobs])
+          if (job.kind === 'smith' && same(job, bench) && job.weaponKind === c.kind)
+            this.cancel(job);
+      this.syncProduction();
+      return { ok: true, message: c.paused ? '已暂停配方，已运原料会退回' : '武器制作目标已更新' };
+    }
+    if (c.type === 'equipWeapon' || c.type === 'dropWeapon') {
+      const pawn = this.pawns.find((p) => p.id === c.pawnId);
+      const ok =
+        !!pawn &&
+        this.startWeapon(
+          pawn,
+          c.type === 'equipWeapon' ? c.weaponId : (pawn.weapon?.id ?? -1),
+          c.type === 'equipWeapon' ? 'equip' : 'drop',
+        );
+      return { ok, message: ok ? pawn!.reason : '当前无法取用武器，请检查通路、预约与人物状态' };
+    }
+    if (c.type === 'weaponForbidden') {
+      const item = this.items.find((i) => i.weapon?.id === c.weaponId);
+      if (!item || typeof c.forbidden !== 'boolean')
+        return { ok: false, message: '地面武器不存在' };
+      item.forbidden = c.forbidden;
+      for (const pawn of this.pawns)
+        if (pawn.weaponTask?.weaponId === c.weaponId) this.release(pawn);
+      this.refreshReservations();
+      return { ok: true, message: c.forbidden ? '已禁止自动搬运此武器' : '已允许自动搬运此武器' };
+    }
     if (c.type === 'threats') {
       if (typeof c.enabled !== 'boolean') return { ok: false, message: '袭击设置无效' };
       if (c.enabled !== this.combat.enabled) {
@@ -1768,7 +1926,15 @@ export class VoxelSimulation {
             this.furnitureAt(p) ||
             this.jobs.some(
               (j) =>
-                (['bed', 'door', 'stove', 'stonecutter', 'tailor'].includes(j.kind) ||
+                ([
+                  'bed',
+                  'door',
+                  'stove',
+                  'stonecutter',
+                  'tailor',
+                  'smithy',
+                  'craftingSpot',
+                ].includes(j.kind) ||
                   isDeviceKind(j.kind)) &&
                 this.footprint(j).some((q) => same(q, p)),
             ),
@@ -1790,12 +1956,26 @@ export class VoxelSimulation {
         count: positions.length,
       };
     }
+    if (c.tool === 'craftingSpot') {
+      const p = positions[0];
+      if (
+        positions.length !== 1 ||
+        this.weaponBenches.length >= 128 ||
+        this.placementReason('craftingSpot', p) ||
+        this.jobs.some((j) => this.footprint(j).some((q) => same(p, q)))
+      )
+        return { ok: false, message: '制作点需要一格有支撑的空地，不能重叠区域或已有设施' };
+      this.weaponBenches.push(makeWeaponBench(this.id(), 'craftingSpot', p, 'x'));
+      this.revision++;
+      return { ok: true, message: '已划定制作点，点击设置木棒或匕首配方', count: 1 };
+    }
     const plans: Job[] = [];
     const errors: string[] = [];
     if (c.axis !== undefined && c.axis !== 'x' && c.axis !== 'y')
       return { ok: false, message: '朝向无效' };
     if (
-      (['bed', 'door', 'stonecutter', 'tailor'].includes(c.tool) || isDeviceKind(c.tool)) &&
+      (['bed', 'door', 'stonecutter', 'tailor', 'smithy'].includes(c.tool) ||
+        isDeviceKind(c.tool)) &&
       positions.length !== 1
     )
       return { ok: false, message: '设施每次放置一件，R 切换朝向' };
@@ -1861,7 +2041,10 @@ export class VoxelSimulation {
         this.jobs.some(
           (k) =>
             this.jobCellConflict(j, k) &&
-            !(j.kind === 'remove' && ['cook', 'refuel', 'stonecut', 'tailoring'].includes(k.kind)),
+            !(
+              j.kind === 'remove' &&
+              ['cook', 'refuel', 'stonecut', 'tailoring', 'smith'].includes(k.kind)
+            ),
         ),
       )
     )
@@ -1881,13 +2064,17 @@ export class VoxelSimulation {
       this.stonecutters.length +
         [...this.jobs, ...plans].filter((j) => j.kind === 'stonecutter').length >
         128 ||
-      this.tailors.length + [...this.jobs, ...plans].filter((j) => j.kind === 'tailor').length > 128
+      this.tailors.length + [...this.jobs, ...plans].filter((j) => j.kind === 'tailor').length >
+        128 ||
+      this.weaponBenches.length +
+        [...this.jobs, ...plans].filter((j) => j.kind === 'smithy').length >
+        128
     )
       return { ok: false, message: '设施数量已达到上限' };
     for (const j of plans)
       if (j.kind === 'remove')
         for (const k of [...this.jobs])
-          if (['cook', 'refuel', 'stonecut', 'tailoring'].includes(k.kind) && same(k, j))
+          if (['cook', 'refuel', 'stonecut', 'tailoring', 'smith'].includes(k.kind) && same(k, j))
             this.cancel(k);
     this.jobs.push(...plans);
     this.notice = `安排 ${plans.length} 项工作，需求木材 ${plans.reduce((n, j) => n + (j.cost.wood ?? 0), 0)}；缺料和不可达任务会等待`;
@@ -1899,6 +2086,8 @@ export class VoxelSimulation {
     axis: Axis = 'x',
     material: ConstructionMaterial = 'wood',
     apparelKind?: ApparelKind,
+    weaponKind?: WeaponKind,
+    weaponBenchKind?: WeaponBenchKind,
   ): Job {
     const species =
       kind === 'cut'
@@ -1912,23 +2101,33 @@ export class VoxelSimulation {
       x: p.x,
       y: p.y,
       z: p.z,
-      work: workOf(kind, material, species, false, apparelKind),
+      work: workOf(kind, material, species, false, apparelKind, weaponKind, weaponBenchKind),
       progress: 0,
       owner: null,
       delivered: {},
       deliveredFood: [],
       cancelled: false,
-      cost: costOf(kind, material, apparelKind),
+      cost: costOf(kind, material, apparelKind, weaponKind, weaponBenchKind),
       reason: '等待可达工人',
-      ...(['bed', 'door', 'stonecutter', 'tailor'].includes(kind) || isDeviceKind(kind)
+      ...(['bed', 'door', 'stonecutter', 'tailor', 'smithy'].includes(kind) || isDeviceKind(kind)
         ? { axis }
         : {}),
       ...(['wall', 'floor'].includes(kind) ? { material } : {}),
       ...(species ? { treeSpecies: species } : {}),
       ...(apparelKind ? { apparelKind } : {}),
+      ...(weaponKind ? { weaponKind, weaponBenchKind } : {}),
     };
   }
   private placementReason(kind: JobKind, p: Pos, axis: Axis = 'x') {
+    if (kind === 'craftingSpot')
+      return !this.standable(p) ||
+        this.ladders[at(p)] ||
+        this.furnitureAt(p) ||
+        this.farms.some((f) => same(f, p)) ||
+        this.stockpiles.some((f) => same(f, p)) ||
+        this.treePlots.some((f) => same(f, p))
+        ? '制作点需要空地'
+        : '';
     if (
       !['cut', 'remove', 'plantTree'].includes(kind) &&
       this.treePlots.some((f) => this.footprint({ ...p, kind, axis }).some((q) => same(q, f)))
@@ -1942,13 +2141,13 @@ export class VoxelSimulation {
           : '';
     if (kind !== 'remove' && this.footprint({ ...p, kind, axis }).some((q) => this.furnitureAt(q)))
       return '这里已有床或门，请先拆除';
-    if (isDeviceKind(kind) || kind === 'stonecutter' || kind === 'tailor') {
+    if (isDeviceKind(kind) || kind === 'stonecutter' || kind === 'tailor' || kind === 'smithy') {
       const cells =
-        kind === 'stonecutter' || kind === 'tailor'
+        kind === 'stonecutter' || kind === 'tailor' || kind === 'smithy'
           ? stonecutterCells({ ...p, axis })
           : deviceCells({ ...p, kind, axis });
       if (
-        (kind === 'stonecutter' || kind === 'tailor') &&
+        (kind === 'stonecutter' || kind === 'tailor' || kind === 'smithy') &&
         !this.standable(stonecutterInteraction({ ...p, axis }))
       )
         return '切石台正面需要有支撑、两格净空的工作位置';
@@ -2340,8 +2539,14 @@ export class VoxelSimulation {
       summary = healthSummary(p);
     const downed =
       !death && (summary.pain >= 0.8 || summary.consciousness < 0.3 || summary.moving <= 0.15);
+    const inBed = this.beds.some((b) => b.id === p.sleepBedId && same(b, p));
+    if (p.weapon && (death || summary.manipulation <= 0 || (downed && !inBed)))
+      p.weaponDropPending = true;
+    // Losing both usable arms need not knock a pawn down. Cancel its equipment
+    // action before forced drops or arrival can reuse an invalid reservation.
+    if (summary.manipulation <= 0 && p.weaponTask) this.release(p);
     if (death || p.downed !== downed) {
-      const bed = this.patientBed(p);
+      const bed = this.beds.find((b) => b.id === p.sleepBedId && same(b, p)) ?? this.patientBed(p);
       for (const q of this.pawns) if (q.patientId === p.id) this.release(q);
       p.dead = !!death;
       p.downed = downed;
@@ -2409,7 +2614,7 @@ export class VoxelSimulation {
       rest: 100,
       ...initialSurvival(this.seed, id),
       faction: 'raider',
-      weapon: 'steelKnife',
+      weapon: makeWeapon(this.id(), 'steelKnife'),
       priorities: { dig: 0, build: 0, cut: 0, haul: 0, grow: 0, cook: 0, craft: 0, care: 0 },
       worn: [],
       apparelTask: null,
@@ -2495,19 +2700,15 @@ export class VoxelSimulation {
       p.path = [];
       p.destination = null;
       if (this.tick < p.nextAttackTick) return;
-      const roll = plantRandom(this.seed, p.id, this.tick, 11);
-      // Healthy Normal steel knife + four body tools: blade Best; point, handle and fists Mid.
-      // Wounded-state verb regrouping and the full skill/stat pipeline remain unimplemented.
-      const strike =
-        p.weapon === 'fists'
-          ? { kind: 'bruise' as const, damage: 8.2, cooldown: 40 }
-          : roll < 0.75
-            ? { kind: 'cut' as const, damage: 12, cooldown: 30 }
-            : roll < 0.8125
-              ? { kind: 'stab' as const, damage: 13, cooldown: 40 }
-              : roll < 0.875
-                ? { kind: 'bruise' as const, damage: 9, cooldown: 40 }
-                : { kind: 'bruise' as const, damage: 8.2, cooldown: 40 };
+      const strike = selectMeleeAttack(
+        p.weaponDropPending ? null : p.weapon,
+        plantRandom(this.seed, p.id, this.tick, 11),
+        meleeBodyFromTrauma(p.trauma),
+      );
+      if (!strike) {
+        p.reason = '没有可用近战动作';
+        return;
+      }
       p.nextAttackTick = this.tick + strike.cooldown;
       // No skill system yet. This fixed hit chance is not a reconstructed RimWorld stat calculation.
       if (
@@ -2554,6 +2755,111 @@ export class VoxelSimulation {
       ...this.items.flatMap((i) => (i.apparel ? [i.apparel] : [])),
       ...this.pawns.flatMap((p) => [...p.worn, ...(p.cargo?.apparel ? [p.cargo.apparel] : [])]),
     ];
+  }
+  private weaponPieces(): WeaponPiece[] {
+    return [
+      ...this.items.flatMap((i) => (i.weapon ? [i.weapon] : [])),
+      ...this.pawns.flatMap((p) => [
+        ...(p.weapon ? [p.weapon] : []),
+        ...(p.cargo?.weapon ? [p.cargo.weapon] : []),
+      ]),
+    ];
+  }
+  private dropPrimary(p: Pawn, forbidden: boolean): boolean {
+    if (!p.weapon) {
+      p.weaponDropPending = false;
+      return true;
+    }
+    if (p.carriedBy !== null) return false;
+    const plan = this.planPlacement(
+      [{ batch: { resource: 'weapon', amount: 1, weapon: { ...p.weapon }, forbidden }, origin: p }],
+      this.items,
+      DROP_DISTANCE,
+      new Set(),
+      p.id,
+    );
+    if (!plan) return false;
+    this.commitPlacement(plan);
+    p.weapon = null;
+    p.weaponDropPending = false;
+    return true;
+  }
+  private startWeapon(p: Pawn, weaponId: number, action: 'equip' | 'drop'): boolean {
+    if (
+      p.dead ||
+      p.downed ||
+      p.carriedBy !== null ||
+      p.weaponDropPending ||
+      healthSummary(p).manipulation <= 0 ||
+      !Number.isSafeInteger(weaponId)
+    )
+      return false;
+    if (this.pawns.some((q) => q.id !== p.id && q.weaponTask?.weaponId === weaponId)) return false;
+    if (action === 'drop') {
+      if (p.weapon?.id !== weaponId) return false;
+      this.release(p);
+      p.weaponTask = { action, weaponId, stage: 'work', progress: 0 };
+      p.phase = 'weapon';
+      p.reason = '准备放下武器';
+      return true;
+    }
+    const item = this.items.find((i) => i.weapon?.id === weaponId),
+      own = p.cargo?.weapon?.id === weaponId;
+    if (!item && !own) return false;
+    if (item && this.path(p, item) === null) return false;
+    if (!own && !this.dropCargo(p)) return false;
+    this.release(p);
+    // Native player Equip removes forbidden before the physical job starts.
+    if (item) item.forbidden = false;
+    p.weaponTask = { action, weaponId, stage: own ? 'work' : 'fetch', progress: 0 };
+    if (item) {
+      this.search(p);
+      this.go(p, at(item), 'weapon');
+    } else p.phase = 'weapon';
+    p.reason = '前往装备' + WEAPON_NAMES[(item?.weapon ?? p.cargo!.weapon)!.kind];
+    return true;
+  }
+  private arriveWeapon(p: Pawn) {
+    const task = p.weaponTask;
+    if (!task) {
+      this.release(p);
+      return;
+    }
+    if (task.action === 'drop') {
+      task.progress = Math.min(WEAPON_DROP_TICKS, task.progress + 1);
+      if (task.progress < WEAPON_DROP_TICKS) return;
+      if (!this.dropPrimary(p, true)) {
+        p.reason = '附近没有武器落地空间，保留武器等待';
+        return;
+      }
+      this.release(p);
+      p.reason = '已放下武器，标为禁止自动搬运';
+      return;
+    }
+    if (task.stage === 'fetch') {
+      const item = this.items.find((i) => i.weapon?.id === task.weaponId);
+      if (!item || !same(item, p) || !this.take(p, 'weapon', 1, item.id)) {
+        this.release(p);
+        p.reason = '目标武器已移动，请重新安排';
+        return;
+      }
+      task.stage = 'work';
+      p.path = [];
+      p.destination = null;
+    }
+    const piece = p.cargo?.weapon;
+    if (!piece || piece.id !== task.weaponId) {
+      this.release(p);
+      return;
+    }
+    if (!this.dropPrimary(p, false)) {
+      p.reason = '旧武器无处放下，保留新旧武器等待';
+      return;
+    }
+    p.weapon = piece;
+    p.cargo = null;
+    this.release(p);
+    p.reason = '已装备' + WEAPON_NAMES[piece.kind];
   }
   private updateApparelWear() {
     for (const p of this.pawns) {
@@ -2671,6 +2977,7 @@ export class VoxelSimulation {
     p.attackTargetId = null;
     this.releaseCare(p);
     p.apparelTask = null;
+    p.weaponTask = null;
     this.craftSources.delete(p.id);
     this.storageReservations.delete(p.id);
     const j = this.jobs.find((j) => j.id === p.jobId);
@@ -2728,16 +3035,33 @@ export class VoxelSimulation {
         !this.treeSiteReason(j, j.treeSpecies!, j.id)
       );
     if (j.kind === 'cut') return this.trees.some((t) => same(t, j) && t.species === j.treeSpecies);
-    if (isDeviceKind(j.kind) || j.kind === 'stonecutter' || j.kind === 'tailor')
+    if (
+      isDeviceKind(j.kind) ||
+      j.kind === 'stonecutter' ||
+      j.kind === 'tailor' ||
+      j.kind === 'smithy'
+    )
       return !this.placementReason(j.kind, j, j.axis);
+    if (j.kind === 'smith')
+      return this.weaponBenches.some(
+        (b) =>
+          same(b, j) &&
+          b.kind === j.weaponBenchKind &&
+          b.bills.some((v) => v.kind === j.weaponKind && !v.paused),
+      );
     if (j.kind === 'tailoring')
       return this.tailors.some(
         (b) => same(b, j) && b.bills.some((bill) => bill.kind === j.apparelKind && !bill.paused),
       );
     if (j.kind === 'stonecut') return this.stonecutters.some((b) => same(b, j) && !b.paused);
     if (j.kind === 'refuel')
-      return this.devices.some(
-        (d) => d.kind === 'generator' && same(d, j) && (j.cost.wood ?? 0) <= 75,
+      return (
+        this.devices.some(
+          (d) => d.kind === 'generator' && same(d, j) && (j.cost.wood ?? 0) <= 75,
+        ) ||
+        this.weaponBenches.some(
+          (b) => b.kind === 'smithy' && same(b, j) && (j.cost.wood ?? 0) <= 50,
+        )
       );
     if (j.kind === 'bed' || j.kind === 'door') return !this.placementReason(j.kind, j, j.axis);
     if (j.kind === 'wall' || j.kind === 'stove') return this.blocks[index(j.x, j.y, j.z - 1)] !== 0;
@@ -2814,6 +3138,14 @@ export class VoxelSimulation {
     }
     this.search(p);
     for (const j of jobs) {
+      if (
+        j.kind === 'smith' &&
+        j.progress < j.work &&
+        this.weaponBenches.some((b) => same(b, j) && b.kind === 'smithy' && b.fuel <= 0)
+      ) {
+        j.reason = '等待补充燃料';
+        continue;
+      }
       if (!this.supported(j)) {
         j.reason = '等待支撑或相邻梯子施工';
         continue;
@@ -3059,6 +3391,10 @@ export class VoxelSimulation {
       p.destination = null;
       return;
     }
+    if (p.phase === 'weapon') {
+      this.arriveWeapon(p);
+      return;
+    }
     if (p.phase === 'apparel') {
       this.arriveApparel(p);
       return;
@@ -3163,6 +3499,17 @@ export class VoxelSimulation {
         this.continueJob(p, j);
         return;
       }
+      if (j.kind === 'smith') {
+        const bench = this.weaponBenches.find((b) => same(b, j))!;
+        if (bench.kind === 'smithy') {
+          if (j.progress < j.work && bench.fuel <= 0) {
+            j.reason = '缺少燃料，保留加工进度';
+            this.release(p);
+            return;
+          }
+          if (j.progress < j.work) bench.fuel = Math.max(0, bench.fuel - SMITHY_FUEL_PER_TICK);
+        }
+      }
       p.reason = '正在' + JOB_NAMES[j.kind];
       const cutting =
         j.kind === 'cut' && !j.legacyCut ? this.trees.find((t) => same(t, j)) : undefined;
@@ -3184,7 +3531,7 @@ export class VoxelSimulation {
       return;
     }
     const devicePlan =
-      j.kind === 'stonecutter' || j.kind === 'tailor'
+      j.kind === 'stonecutter' || j.kind === 'tailor' || j.kind === 'smithy'
         ? stonecutterCells({ ...j, axis: j.axis ?? 'x' })
         : isDeviceKind(j.kind)
           ? deviceCells({ ...j, kind: j.kind, axis: j.axis ?? 'x' })
@@ -3239,6 +3586,12 @@ export class VoxelSimulation {
         for (const [r, n] of Object.entries(DEVICE_COSTS[device.kind]))
           yields[r as Resource] = Math.floor(n / 2);
         if (device.kind === 'generator') yields.wood = Math.floor(device.fuel);
+      } else if (this.weaponBenchAt(j)) {
+        const bench = this.weaponBenchAt(j)!;
+        if (bench.kind === 'smithy') {
+          yields.steel = 50;
+          yields.wood = Math.floor(bench.fuel);
+        }
       } else if (this.tailorAt(j)) {
         yields.wood = Math.floor(TAILOR_COST.wood! / 2);
       } else if (this.stonecutterAt(j)) {
@@ -3287,6 +3640,7 @@ export class VoxelSimulation {
     if (j.kind === 'cook') yields.meal = SIMPLE_MEAL.output;
     if (j.kind === 'stonecut') yields.stone = STONECUTTING.output;
     if (j.kind === 'tailoring') yields.apparel = 1;
+    if (j.kind === 'smith') yields.weapon = 1;
     const previous = changes.map((c) => ({
       i: at(c.pos),
       block: this.blocks[at(c.pos)],
@@ -3324,7 +3678,7 @@ export class VoxelSimulation {
     if (
       this.pawns.some((p) => !this.standable(p)) ||
       this.stockpiles.some((s) => !this.standable(s) || this.ladders[at(s)]) ||
-      this.stoves.some(
+      [...this.stoves, ...this.weaponBenches.filter((b) => b.kind === 'craftingSpot')].some(
         (s) =>
           !this.blocks[at(s) - WIDTH * DEPTH] ||
           this.blocks[at(s)] ||
@@ -3336,6 +3690,7 @@ export class VoxelSimulation {
         ...this.devices.flatMap(deviceCells),
         ...this.stonecutters.flatMap(stonecutterCells),
         ...this.tailors.flatMap(tailorCells),
+        ...this.weaponBenches.filter((b) => b.kind === 'smithy').flatMap(weaponBenchCells),
       ].some(
         (s) =>
           !this.blocks[at(s) - WIDTH * DEPTH] ||
@@ -3373,17 +3728,19 @@ export class VoxelSimulation {
       .filter(([, n]) => n > 0)
       .map(([resource, n]) => ({
         batch:
-          resource === 'apparel'
-            ? {
-                resource: 'apparel' as const,
-                amount: 1,
-                apparel: makeApparel(j.id, j.apparelKind!),
-              }
-            : freshBatch(
-                resource as Resource,
-                n,
-                resource === 'grain' && harvestedCrop !== 'cotton' ? harvestedCrop : undefined,
-              ),
+          resource === 'weapon'
+            ? { resource: 'weapon' as const, amount: 1, weapon: makeWeapon(j.id, j.weaponKind!) }
+            : resource === 'apparel'
+              ? {
+                  resource: 'apparel' as const,
+                  amount: 1,
+                  apparel: makeApparel(j.id, j.apparelKind!),
+                }
+              : freshBatch(
+                  resource as Resource,
+                  n,
+                  resource === 'grain' && harvestedCrop !== 'cotton' ? harvestedCrop : undefined,
+                ),
         origin: p,
       }));
     const placement = this.planPlacement(
@@ -3412,7 +3769,18 @@ export class VoxelSimulation {
       }
     }
     if (j.kind === 'plantTree') this.createTree(j, j.treeSpecies!, true);
-    if (j.kind === 'tailor') {
+    if (j.kind === 'smithy') {
+      this.weaponBenches.push(makeWeaponBench(this.id(), 'smithy', j, j.axis ?? 'x'));
+      this.rebuildDevices();
+      this.revision++;
+    } else if (j.kind === 'smith') {
+      this.stats.weaponsMade++;
+    } else if (j.kind === 'remove' && this.weaponBenchAt(j)) {
+      const bench = this.weaponBenchAt(j)!;
+      this.weaponBenches = this.weaponBenches.filter((b) => b.id !== bench.id);
+      this.rebuildDevices();
+      this.revision++;
+    } else if (j.kind === 'tailor') {
       this.tailors.push({
         id: this.id(),
         x: j.x,
@@ -3476,8 +3844,12 @@ export class VoxelSimulation {
       this.powerDirty = true;
       this.revision++;
     } else if (j.kind === 'refuel') {
-      const device = this.deviceAt(j)!;
-      device.fuel = Math.min(75, device.fuel + (j.delivered.wood ?? 0));
+      const bench = this.weaponBenchAt(j);
+      if (bench?.kind === 'smithy') bench.fuel = Math.min(50, bench.fuel + (j.delivered.wood ?? 0));
+      else {
+        const device = this.deviceAt(j)!;
+        device.fuel = Math.min(75, device.fuel + (j.delivered.wood ?? 0));
+      }
     } else if (j.kind === 'remove' && this.deviceAt(j)) {
       const device = this.deviceAt(j)!;
       this.devices = this.devices.filter((d) => d.id !== device.id);
@@ -3561,7 +3933,7 @@ export class VoxelSimulation {
     }
     for (const r of resources) this.stats.consumed[r] += j.delivered[r] ?? 0;
     if (
-      (j.cost.wood && !['cook', 'refuel'].includes(j.kind)) ||
+      (j.cost.wood && !['cook', 'refuel', 'smith', 'tailoring'].includes(j.kind)) ||
       (j.material === 'stone' && ['wall', 'floor'].includes(j.kind)) ||
       isDeviceKind(j.kind) ||
       j.kind === 'wire'
@@ -3581,6 +3953,7 @@ export class VoxelSimulation {
       this.refreshReservations();
       this.updateApparelWear();
       this.updateSurvival();
+      for (const pawn of this.pawns) if (pawn.weaponDropPending) this.dropPrimary(pawn, true);
       this.updateRaids();
       // Only temperature/daylight change each tick; occlusion is cached until terrain changes.
       for (const c of this.crops)
@@ -3589,10 +3962,11 @@ export class VoxelSimulation {
       if (this.tick % 20 === 0) this.syncProduction();
       for (const p of this.pawns) {
         if (p.dead || p.downed || p.carriedBy !== null) continue;
-        const combatant = p.drafted || p.faction === 'raider';
+        const combatant = (p.drafted || p.faction === 'raider') && p.weaponTask === null;
         if (combatant) this.combatTick(p);
         if (
           !combatant &&
+          !p.drafted &&
           this.pawns.some((q) => q.patientId === p.id && q.carePhase?.startsWith('tend'))
         ) {
           p.reason = '等待同伴包扎';
@@ -3605,6 +3979,7 @@ export class VoxelSimulation {
         if (
           p.phase !== 'care' &&
           !combatant &&
+          !p.drafted &&
           p.phase !== 'travel' &&
           !p.eating &&
           p.food >= 30 &&
@@ -3617,6 +3992,7 @@ export class VoxelSimulation {
         if (
           p.food < 30 &&
           !combatant &&
+          !p.drafted &&
           p.phase !== 'idle' &&
           p.phase !== 'travel' &&
           !p.eating &&
@@ -3637,6 +4013,7 @@ export class VoxelSimulation {
         if (
           !['rest', 'sleepTravel', 'travel', 'care'].includes(p.phase) &&
           !combatant &&
+          !p.drafted &&
           !p.eating &&
           (this.tick + p.id) % 20 === 0 &&
           wantsSleep(p.rest, assignmentAt(p.schedule, this.tick))
@@ -3861,6 +4238,7 @@ export class VoxelSimulation {
     for (const p of this.pawns) {
       if (p.cargo) out[p.cargo.resource] += p.cargo.amount;
       out.apparel += p.worn.length;
+      out.weapon += p.weapon ? 1 : 0;
     }
     for (const j of this.jobs) for (const r of resources) out[r] += j.delivered[r] ?? 0;
     return out;
@@ -3900,6 +4278,7 @@ export class VoxelSimulation {
       stoves: this.stoves,
       stonecutters: this.stonecutters,
       tailors: this.tailors,
+      weaponBenches: this.weaponBenches,
       beds: this.beds,
       doors: this.doors,
       rooms: this.rooms.snapshot(),
@@ -3935,7 +4314,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 12,
+      version: 13,
       combat: this.combat,
       generator: this.generator,
       settings: this.settings,
@@ -3956,6 +4335,7 @@ export class VoxelSimulation {
       stoves: this.stoves,
       stonecutters: this.stonecutters,
       tailors: this.tailors,
+      weaponBenches: this.weaponBenches,
       beds: this.beds,
       doors: this.doors,
       devices: this.devices,
@@ -3969,7 +4349,7 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
@@ -4045,7 +4425,7 @@ export class VoxelSimulation {
       old.stockpiles = old.stockpiles.map((s: Pos) => ({
         ...s,
         priority: 1,
-        accepts: resources.filter((r) => !['chunk', 'cloth', 'apparel'].includes(r)),
+        accepts: resources.filter((r) => !['chunk', 'cloth', 'apparel', 'weapon'].includes(r)),
       }));
       old.stats.spoiled = emptyCounts();
       old.version = 5;
@@ -4138,6 +4518,7 @@ export class VoxelSimulation {
       for (const p of old.pawns) {
         p.worn = [];
         p.apparelTask = null;
+        p.weaponTask = null;
         p.apparelWearTicks = 0;
       }
       for (const key of ['produced', 'consumed', 'spoiled']) {
@@ -4162,6 +4543,20 @@ export class VoxelSimulation {
           weapon: 'fists',
         });
       old.version = 12;
+    }
+    if (old.version === 12) {
+      if (!Array.isArray(old.pawns) || !old.stats || !Number.isSafeInteger(old.nextId))
+        throw new Error('旧武器数据无效');
+      old.weaponBenches = [];
+      for (const p of old.pawns) {
+        if (!['fists', 'steelKnife'].includes(p.weapon)) throw new Error('旧武器种类无效');
+        p.weapon = p.weapon === 'steelKnife' ? makeWeapon(old.nextId++, 'steelKnife') : null;
+        p.weaponTask = null;
+        p.weaponDropPending = !!p.weapon && (p.dead || p.downed);
+      }
+      for (const key of ['produced', 'consumed', 'spoiled', 'destroyed']) old.stats[key].weapon = 0;
+      old.stats.weaponsMade = 0;
+      old.version = 13;
     }
     const d = old as VoxelSave;
     if (
@@ -4191,6 +4586,7 @@ export class VoxelSimulation {
       [d.stoves, 512],
       [d.stonecutters, 128],
       [d.tailors, 128],
+      [d.weaponBenches, 128],
       [d.beds, 128],
       [d.doors, 512],
       [d.devices, 256],
@@ -4223,6 +4619,7 @@ export class VoxelSimulation {
       ...d.stoves,
       ...d.stonecutters,
       ...d.tailors,
+      ...d.weaponBenches,
       ...d.beds,
       ...d.doors,
       ...d.devices,
@@ -4246,6 +4643,8 @@ export class VoxelSimulation {
                 'crop',
                 'rotProgress',
                 'apparel',
+                'weapon',
+                'forbidden',
                 'x',
                 'y',
                 'z',
@@ -4285,6 +4684,7 @@ export class VoxelSimulation {
         d.stoves,
         d.stonecutters,
         d.tailors,
+        d.weaponBenches,
         d.stockpiles,
         d.doors,
         d.wires,
@@ -4376,6 +4776,33 @@ export class VoxelSimulation {
       )
         throw new Error('裁缝台或衣物配方无效');
     }
+    for (const bench of d.weaponBenches) {
+      if (
+        !isWeaponBenchKind(bench.kind) ||
+        !['x', 'y'].includes(bench.axis) ||
+        !zero(bench.fuel) ||
+        bench.fuel > SMITHY_FUEL_CAPACITY ||
+        (bench.kind === 'craftingSpot' && bench.fuel !== 0) ||
+        weaponBenchCells(bench).some((p) => !inside(p) || p.z < 1 || p.z >= HEIGHT - 1) ||
+        !inside(weaponBenchInteraction(bench)) ||
+        !Array.isArray(bench.bills)
+      )
+        throw new Error('武器工作台数据无效');
+      const kinds = WEAPON_KINDS.filter((k) => WEAPON_DEFS[k].benches.includes(bench.kind));
+      if (
+        bench.bills.length !== kinds.length ||
+        new Set(bench.bills.map((b) => b.kind)).size !== kinds.length ||
+        bench.bills.some(
+          (b) =>
+            !kinds.includes(b.kind) ||
+            !Number.isInteger(b.target) ||
+            b.target < 0 ||
+            b.target > 100 ||
+            typeof b.paused !== 'boolean',
+        )
+      )
+        throw new Error('武器配方无效');
+    }
     for (const bench of d.stonecutters)
       if (
         !['x', 'y'].includes(bench.axis) ||
@@ -4418,6 +4845,7 @@ export class VoxelSimulation {
       ...d.stoves,
       ...d.stonecutters.flatMap(stonecutterCells),
       ...d.tailors.flatMap(tailorCells),
+      ...d.weaponBenches.flatMap(weaponBenchCells),
       ...d.devices.flatMap(deviceCells),
     ];
     if (
@@ -4451,9 +4879,38 @@ export class VoxelSimulation {
     const plainCargo = (batch: Cargo) =>
       validBatch(batch) &&
       Object.keys(batch).every((key) =>
-        ['resource', 'amount', 'crop', 'rotProgress', 'apparel'].includes(key),
+        ['resource', 'amount', 'crop', 'rotProgress', 'apparel', 'weapon', 'forbidden'].includes(
+          key,
+        ),
       );
     for (const j of d.jobs) {
+      if (
+        j.kind === 'smith'
+          ? !WEAPON_KINDS.includes(j.weaponKind!) ||
+            !isWeaponBenchKind(j.weaponBenchKind!) ||
+            !WEAPON_DEFS[j.weaponKind!].benches.includes(j.weaponBenchKind!) ||
+            (!j.cancelled &&
+              !d.weaponBenches.some(
+                (b) =>
+                  same(b, j) &&
+                  b.kind === j.weaponBenchKind &&
+                  b.bills.some((v) => v.kind === j.weaponKind && !v.paused),
+              ))
+          : j.weaponKind !== undefined || j.weaponBenchKind !== undefined
+      )
+        throw new Error('武器加工任务无效');
+      if (
+        ['smith', 'refuel'].includes(j.kind) &&
+        d.jobs.some(
+          (other) =>
+            other !== j &&
+            !other.cancelled &&
+            !j.cancelled &&
+            other.kind === j.kind &&
+            same(other, j),
+        )
+      )
+        throw new Error('工作台存在重复加工或加油任务');
       if (
         !Object.hasOwn(JOB_NAMES, j.kind) ||
         j.z < 1 ||
@@ -4464,7 +4921,16 @@ export class VoxelSimulation {
         (j.kind === 'tailoring'
           ? !Object.hasOwn(APPAREL_DEFS, j.apparelKind ?? '')
           : j.apparelKind !== undefined) ||
-        j.work !== workOf(j.kind, j.material, j.treeSpecies, j.legacyCut, j.apparelKind) ||
+        j.work !==
+          workOf(
+            j.kind,
+            j.material,
+            j.treeSpecies,
+            j.legacyCut,
+            j.apparelKind,
+            j.weaponKind,
+            j.weaponBenchKind,
+          ) ||
         (['cut', 'plantTree'].includes(j.kind)
           ? !Object.hasOwn(TREE_DATA, j.treeSpecies ?? '')
           : j.treeSpecies !== undefined) ||
@@ -4478,10 +4944,11 @@ export class VoxelSimulation {
         (['wall', 'floor'].includes(j.kind)
           ? !['wood', 'stone'].includes(j.material ?? '')
           : j.material !== undefined) ||
-        ((['bed', 'door', 'stonecutter', 'tailor'].includes(j.kind) || isDeviceKind(j.kind)) &&
+        ((['bed', 'door', 'stonecutter', 'tailor', 'smithy'].includes(j.kind) ||
+          isDeviceKind(j.kind)) &&
           (!['x', 'y'].includes(j.axis ?? '') ||
             (j.kind === 'bed' && bedCells({ ...j, axis: j.axis! }).some((p) => !inside(p))) ||
-            ((j.kind === 'stonecutter' || j.kind === 'tailor') &&
+            ((j.kind === 'stonecutter' || j.kind === 'tailor' || j.kind === 'smithy') &&
               (stonecutterCells({ ...j, axis: j.axis! }).some((p) => !inside(p)) ||
                 !inside(stonecutterInteraction({ ...j, axis: j.axis! })))) ||
             (isDeviceKind(j.kind) &&
@@ -4495,8 +4962,8 @@ export class VoxelSimulation {
                 ? r === 'wood'
                   ? j.cost.wood
                   : 0
-                : (costOf(j.kind, j.material, j.apparelKind)[r] ?? 0)) ||
-            (j.delivered[r] ?? 0) > (j.cost[r] ?? 0),
+                : (costOf(j.kind, j.material, j.apparelKind, j.weaponKind, j.weaponBenchKind)[r] ??
+                  0)) || (j.delivered[r] ?? 0) > (j.cost[r] ?? 0),
         ) ||
         (!j.cancelled && j.kind === 'cook' && !d.stoves.some((s) => same(s, j))) ||
         (!j.cancelled && j.kind === 'stonecut' && !d.stonecutters.some((b) => same(b, j))) ||
@@ -4504,7 +4971,11 @@ export class VoxelSimulation {
         (j.kind === 'refuel' &&
           (!positive(j.cost.wood!) ||
             j.cost.wood! > 75 ||
-            (!j.cancelled && !d.devices.some((v) => v.kind === 'generator' && same(v, j)))))
+            (!j.cancelled &&
+              !d.devices.some((v) => v.kind === 'generator' && same(v, j)) &&
+              !d.weaponBenches.some(
+                (b) => b.kind === 'smithy' && same(b, j) && j.cost.wood! <= 50,
+              ))))
       )
         throw new Error('任务数据无效');
       if (
@@ -4530,7 +5001,9 @@ export class VoxelSimulation {
       if (
         !validTrauma(p.trauma, d.tick) ||
         !['colony', 'raider'].includes(p.faction) ||
-        !['fists', 'steelKnife'].includes(p.weapon) ||
+        (p.weapon !== null && !validWeapon(p.weapon)) ||
+        typeof p.weaponDropPending !== 'boolean' ||
+        (p.weaponDropPending && !p.weapon) ||
         typeof p.drafted !== 'boolean' ||
         typeof p.retreating !== 'boolean' ||
         (p.retreating && (p.faction !== 'raider' || p.attackTargetId !== null)) ||
@@ -4538,13 +5011,17 @@ export class VoxelSimulation {
         (p.drafted && (p.faction !== 'colony' || p.dead || p.downed)) ||
         !Number.isSafeInteger(p.nextAttackTick) ||
         p.nextAttackTick < 0 ||
-        p.nextAttackTick > d.tick + 40 ||
+        p.nextAttackTick > d.tick + 200 ||
         (p.attackTargetId !== null &&
           (!d.pawns.some(
             (q) => q.id === p.attackTargetId && q.id !== p.id && !q.dead && !q.downed,
           ) ||
             (!p.drafted && p.faction !== 'raider'))) ||
-        (!p.dead && !p.downed && (p.drafted || p.faction === 'raider') && p.phase !== 'combat')
+        (!p.dead &&
+          !p.downed &&
+          (p.drafted || p.faction === 'raider') &&
+          p.phase !== 'combat' &&
+          p.phase !== 'weapon')
       )
         throw new Error('人物外伤或战斗状态无效');
       for (const wound of p.trauma.wounds) {
@@ -4564,6 +5041,44 @@ export class VoxelSimulation {
         (p.apparelTask === null) !== (p.phase !== 'apparel')
       )
         throw new Error('人物衣物或穿戴任务无效');
+      if ((p.weaponTask === null) !== (p.phase !== 'weapon')) throw new Error('武器任务阶段无效');
+      if (p.weaponTask !== null) {
+        const task = p.weaponTask;
+        if (
+          !task ||
+          !['equip', 'drop'].includes(task.action) ||
+          !['fetch', 'work'].includes(task.stage) ||
+          !positive(task.weaponId) ||
+          !Number.isInteger(task.progress) ||
+          task.progress < 0 ||
+          task.progress > (task.action === 'drop' ? WEAPON_DROP_TICKS : 0) ||
+          p.dead ||
+          p.downed ||
+          p.carriedBy !== null ||
+          p.weaponDropPending ||
+          healthSummary(p).manipulation <= 0 ||
+          p.faction !== 'colony' ||
+          p.jobId !== null ||
+          p.eating !== null ||
+          p.carePhase !== null ||
+          p.apparelTask !== null ||
+          d.pawns.some((q) => q !== p && q.weaponTask?.weaponId === task.weaponId)
+        )
+          throw new Error('武器预定无效');
+        const piece =
+          task.action === 'drop'
+            ? p.weapon
+            : task.stage === 'fetch'
+              ? d.items.find((i) => i.weapon?.id === task.weaponId)?.weapon
+              : p.cargo?.weapon;
+        if (
+          !piece ||
+          piece.id !== task.weaponId ||
+          (task.action === 'drop' && task.stage !== 'work') ||
+          (task.stage === 'fetch' && (p.cargo !== null || task.progress !== 0))
+        )
+          throw new Error('武器实例不存在或取用阶段无效');
+      }
       if (p.apparelTask !== null) {
         const task = p.apparelTask;
         if (
@@ -4634,6 +5149,7 @@ export class VoxelSimulation {
           'care',
           'apparel',
           'combat',
+          'weapon',
           'downed',
           'dead',
         ].includes(p.phase) ||
@@ -4811,6 +5327,24 @@ export class VoxelSimulation {
         throw new Error('衣物实例身份重复或无效');
       apparelIds.add(piece.id);
     }
+    const weaponIds = new Set<number>();
+    for (const piece of [
+      ...d.items.flatMap((i) => (i.weapon ? [i.weapon] : [])),
+      ...d.pawns.flatMap((p) => [
+        ...(p.weapon ? [p.weapon] : []),
+        ...(p.cargo?.weapon ? [p.cargo.weapon] : []),
+      ]),
+    ]) {
+      if (
+        !validWeapon(piece) ||
+        piece.id >= d.nextId ||
+        ids.has(piece.id) ||
+        apparelIds.has(piece.id) ||
+        weaponIds.has(piece.id)
+      )
+        throw new Error('武器实例身份重复或无效');
+      weaponIds.add(piece.id);
+    }
     if (
       !d.stats ||
       ![
@@ -4823,6 +5357,7 @@ export class VoxelSimulation {
         'cooked',
         'stonecut',
         'tailored',
+        'weaponsMade',
         'treesPlanted',
         'treesRegrown',
         'treesDied',
@@ -4836,8 +5371,8 @@ export class VoxelSimulation {
           Number.isSafeInteger(d.stats.destroyed[r]) &&
           (r === 'apparel' || d.stats.destroyed[r] === 0),
       ) ||
-      !['stonecut', 'tailored', 'treesPlanted', 'treesRegrown', 'treesDied'].every((key) =>
-        Number.isSafeInteger(d.stats[key as 'stonecut']),
+      !['stonecut', 'tailored', 'weaponsMade', 'treesPlanted', 'treesRegrown', 'treesDied'].every(
+        (key) => Number.isSafeInteger(d.stats[key as 'stonecut']),
       ) ||
       !resources.every(
         (r) =>
@@ -4868,6 +5403,7 @@ export class VoxelSimulation {
         stoves: d.stoves,
         stonecutters: d.stonecutters,
         tailors: d.tailors,
+        weaponBenches: d.weaponBenches,
         beds: d.beds,
         doors: d.doors,
         devices: d.devices,
@@ -4885,6 +5421,7 @@ export class VoxelSimulation {
         ...s.devices.flatMap(deviceCells),
         ...s.stonecutters.flatMap(stonecutterCells),
         ...s.tailors.flatMap(tailorCells),
+        ...s.weaponBenches.filter((b) => b.kind === 'smithy').flatMap(weaponBenchCells),
       ].some(
         (p) =>
           !s.blocks[at(p) - WIDTH * DEPTH] ||
@@ -4897,7 +5434,7 @@ export class VoxelSimulation {
     )
       throw new Error('床或门没有合法支撑或净空');
     if (
-      s.stoves.some(
+      [...s.stoves, ...s.weaponBenches.filter((b) => b.kind === 'craftingSpot')].some(
         (p) =>
           s.blocks[at(p)] ||
           s.blocks[at(p) + WIDTH * DEPTH] ||
@@ -4950,7 +5487,28 @@ export class VoxelSimulation {
       j.reason = j.cancelled ? '已取消，保留原任务材料等待退回' : '回读后等待重新安排';
     }
     for (const p of s.pawns) {
-      if (!p.dead && !p.downed && (p.drafted || p.faction === 'raider')) {
+      if (p.weaponTask !== null) {
+        p.jobId = null;
+        p.path = [];
+        p.destination = null;
+        p.workTarget = null;
+        p.eating = null;
+        p.moveTick = s.tick;
+        p.phase = 'weapon';
+        if (p.weaponTask.stage === 'fetch') {
+          const item = s.items.find((i) => i.weapon?.id === p.weaponTask!.weaponId)!;
+          const route = s.path(p, item);
+          if (route === null) {
+            s.release(p);
+            p.reason = '回读后武器通路中断，保留物品';
+          } else {
+            p.path = route;
+            p.destination = at(item);
+          }
+        }
+        continue;
+      }
+      if (!p.dead && !p.downed && (p.drafted || p.faction === 'raider') && p.weaponTask === null) {
         const destination = p.destination;
         p.path = [];
         p.destination = null;

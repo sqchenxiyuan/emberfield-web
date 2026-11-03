@@ -117,7 +117,7 @@ async function verify(mode) {
     assert.equal((await state()).worker, mode === 'worker');
     const legacy = await load('tests/fixtures/voxel-v9-start.json');
     const migrated = await save();
-    assert.equal(migrated.version, 12);
+    assert.equal(migrated.version, 13);
     assert.deepEqual(migrated.blocks, legacy.blocks);
     assert.deepEqual(migrated.trees, legacy.trees);
     assert(migrated.pawns.every((p) => !p.dead && !p.downed && p.health.malnutrition === 0));

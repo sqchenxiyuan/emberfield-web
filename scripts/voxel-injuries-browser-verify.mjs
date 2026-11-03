@@ -116,10 +116,10 @@ async function verify(mode) {
     await click('关闭菜单');
     const old = await load('tests/fixtures/voxel-v11-start.json');
     const current = await save();
-    assert.equal(current.version, 12);
+    assert.equal(current.version, 13);
     assert.deepEqual(current.items, old.items);
     assert.equal(current.combat.enabled, false);
-    assert(current.pawns.every((p) => p.weapon === 'fists' && p.trauma.wounds.length === 0));
+    assert(current.pawns.every((p) => p.weapon === null && p.trauma.wounds.length === 0));
     check('the genuine v11 colony loads with no retroactive injuries, weapons or threats');
     const raid = await load(FIXTURES + '/raid.json');
     assert.equal(await page.locator('.voxel-colonists button').count(), 3);

@@ -1,0 +1,86 @@
+{
+  "status": "pass",
+  "checked_at_utc": "2026-11-03T00:35:11.5899575Z",
+  "original_game_executed": false,
+  "installed_assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "installed_xml_files": 17,
+  "fresh_xml_matches": true,
+  "local": {
+    "status": "pass",
+    "version": "1.7.4980 rev60",
+    "newTypes": 14,
+    "reusedTypes": 22,
+    "claims": 20,
+    "cases": 15,
+    "codeReferences": 77,
+    "xmlReferences": 60,
+    "xmlFiles": 17,
+    "xmlRecords": 40,
+    "xmlLeaves": 297,
+    "xmlAttributes": 26,
+    "xmlAbsences": 174,
+    "analyticAssertions": 224,
+    "localDerivedFilesVerified": 36,
+    "effectiveRecipeUsers": {
+      "Club": [
+        "ElectricSmithy",
+        "FueledSmithy",
+        "CraftingSpot"
+      ],
+      "Knife": [
+        "ElectricSmithy",
+        "FueledSmithy",
+        "CraftingSpot"
+      ],
+      "LongSword": [
+        "ElectricSmithy",
+        "FueledSmithy"
+      ]
+    },
+    "originalGameExecuted": false,
+    "scope": "Static selected artifact evidence and independent fixed-input models; no native runtime, effective mods, complete combat/crafting or project equivalence."
+  },
+  "portable": {
+    "status": "pass",
+    "version": "1.7.4980 rev60",
+    "newTypes": 14,
+    "reusedTypes": 22,
+    "claims": 20,
+    "cases": 15,
+    "codeReferences": 77,
+    "xmlReferences": 60,
+    "xmlFiles": 17,
+    "xmlRecords": 40,
+    "xmlLeaves": 297,
+    "xmlAttributes": 26,
+    "xmlAbsences": 174,
+    "analyticAssertions": 224,
+    "localDerivedFilesVerified": 0,
+    "effectiveRecipeUsers": {
+      "Club": [
+        "ElectricSmithy",
+        "FueledSmithy",
+        "CraftingSpot"
+      ],
+      "Knife": [
+        "ElectricSmithy",
+        "FueledSmithy",
+        "CraftingSpot"
+      ],
+      "LongSword": [
+        "ElectricSmithy",
+        "FueledSmithy"
+      ]
+    },
+    "originalGameExecuted": false,
+    "scope": "Static selected artifact evidence and independent fixed-input models; no native runtime, effective mods, complete combat/crafting or project equivalence."
+  },
+  "negative": {
+    "status": "pass",
+    "rejected": 22,
+    "portableBaseline": "pass",
+    "localBaseline": "pass",
+    "scope": "Evidence corruption checks; not gameplay tests."
+  },
+  "scope": "Static artifact and independent arithmetic verification; no original execution or project simulation equivalence."
+}

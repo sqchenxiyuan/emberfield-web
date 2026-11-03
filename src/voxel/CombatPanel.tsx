@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Pawn, VoxelCommand, VoxelSnapshot } from './types';
 import { DAY } from './types';
+import { weaponName } from './weapons';
 
 export function ThreatControl({
   snapshot: s,
@@ -49,7 +50,7 @@ export function CombatPanel({
     <section className="voxel-bill" data-testid="combat-controls">
       <div className="voxel-info-row">
         <b>{pawn.faction === 'raider' ? '敌对袭击者' : '战斗'}</b>
-        <span>{pawn.weapon === 'steelKnife' ? '钢匕首' : '徒手'}</span>
+        <span>{pawn.weapon ? weaponName(pawn.weapon) : '徒手'}</span>
       </div>
       {pawn.faction === 'colony' && !pawn.dead && !pawn.downed && (
         <>

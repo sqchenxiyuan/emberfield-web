@@ -58,6 +58,8 @@ jobs:
         run: npm run test:voxel:apparel
       - name: Verify scheduled raids, real melee injuries, physical tending and recovery
         run: npm run test:voxel:injuries
+      - name: Verify mined resources, upper-floor smithing and physical weapon equipment
+        run: npm run test:voxel:weapons
       - name: Build site with relative asset and Worker URLs
         run: npm run build
       - name: Configure GitHub Pages

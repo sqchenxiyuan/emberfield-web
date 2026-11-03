@@ -1,4 +1,5 @@
 import type { Trauma } from './injuries';
+import type { WeaponPiece, WeaponKind, WeaponBenchKind } from './weapons';
 // Voxel rules are Emberfield designs. See research/10 for source boundaries.
 export const WIDTH = 64,
   DEPTH = 64,
@@ -62,7 +63,8 @@ export type Resource =
   | 'meal'
   | 'chunk'
   | 'cloth'
-  | 'apparel';
+  | 'apparel'
+  | 'weapon';
 export type Work = 'dig' | 'build' | 'cut' | 'haul' | 'grow' | 'cook' | 'craft' | 'care';
 export type ConstructionMaterial = 'wood' | 'stone';
 export type FoodCropKind = 'rice' | 'potato' | 'corn';
@@ -183,6 +185,8 @@ export type Tool =
   | 'stove'
   | 'stonecutter'
   | 'tailor'
+  | 'craftingSpot'
+  | 'smithy'
   | 'bed'
   | 'door'
   | 'clearZone'
@@ -237,6 +241,9 @@ export interface Cargo {
   /** Required for grain; rice/potato/corn remain one aggregate inventory resource. */
   crop?: FoodCropKind;
   apparel?: ApparelPiece;
+  weapon?: WeaponPiece;
+  /** Ground weapon forbidden state; manual equip overrides it. */
+  forbidden?: boolean;
   /** Equivalent unfrozen age in our simulation ticks; required for grain/meal. */
   rotProgress?: number;
 }
@@ -294,6 +301,27 @@ export interface Tailor extends Pos {
 }
 export const tailorCells = stonecutterCells;
 export const tailorInteraction = stonecutterInteraction;
+export interface WeaponBench extends Pos {
+  id: number;
+  kind: WeaponBenchKind;
+  axis: Axis;
+  fuel: number;
+  bills: { kind: WeaponKind; target: number; paused: boolean }[];
+}
+export const weaponBenchCells = (bench: Pos & { kind: WeaponBenchKind; axis: Axis }): Pos[] =>
+  bench.kind === 'craftingSpot'
+    ? [{ x: bench.x, y: bench.y, z: bench.z }]
+    : stonecutterCells(bench);
+export const weaponBenchInteraction = (bench: Pos & { kind: WeaponBenchKind; axis: Axis }): Pos =>
+  bench.kind === 'craftingSpot'
+    ? { x: bench.x, y: bench.y, z: bench.z }
+    : stonecutterInteraction(bench);
+export interface WeaponTask {
+  action: 'equip' | 'drop';
+  weaponId: number;
+  stage: 'fetch' | 'work';
+  progress: number;
+}
 export interface CropCondition {
   fertility: number;
   light: number;
@@ -320,6 +348,9 @@ export type JobKind =
   | 'stonecut'
   | 'tailor'
   | 'tailoring'
+  | 'craftingSpot'
+  | 'smithy'
+  | 'smith'
   | 'bed'
   | 'door'
   | 'cook';
@@ -340,6 +371,8 @@ export interface Job extends Pos {
   material?: ConstructionMaterial;
   treeSpecies?: TreeSpecies;
   apparelKind?: ApparelKind;
+  weaponKind?: WeaponKind;
+  weaponBenchKind?: WeaponBenchKind;
   /** Existing pre-v9 cutting jobs retain their original 60-tick work/progress. */
   legacyCut?: true;
 }
@@ -376,8 +409,10 @@ export interface Pawn extends Pos {
   retreating: boolean;
   attackTargetId: number | null;
   nextAttackTick: number;
-  /** Initial equipment stays with its owner, including on the corpse. */
-  weapon: 'fists' | 'steelKnife';
+  weapon: WeaponPiece | null;
+  weaponTask: WeaponTask | null;
+  /** Retain the physical weapon if a forced drop has no space; retry without using it. */
+  weaponDropPending: boolean;
   worn: ApparelPiece[];
   apparelTask: ApparelTask | null;
   apparelWearTicks: number;
@@ -407,6 +442,7 @@ export interface Pawn extends Pos {
     | 'care'
     | 'apparel'
     | 'combat'
+    | 'weapon'
     | 'downed'
     | 'dead';
   cargo: Cargo | null;
@@ -429,6 +465,7 @@ export interface Counts {
   chunk: number;
   cloth: number;
   apparel: number;
+  weapon: number;
 }
 export interface VoxelStats {
   mined: number;
@@ -440,6 +477,7 @@ export interface VoxelStats {
   cooked: number;
   stonecut: number;
   tailored: number;
+  weaponsMade: number;
   destroyed: Counts;
   treesPlanted: number;
   treesRegrown: number;
@@ -472,6 +510,7 @@ export interface VoxelSnapshot {
   stoves: Stove[];
   stonecutters: Stonecutter[];
   tailors: Tailor[];
+  weaponBenches: WeaponBench[];
   beds: Bed[];
   doors: Door[];
   rooms: RoomSummary[];
@@ -503,6 +542,10 @@ export type VoxelCommand =
   | { type: 'threats'; enabled: boolean }
   | { type: 'draft'; pawnId: number; drafted: boolean }
   | { type: 'attack'; pawnId: number; targetId: number }
+  | { type: 'weaponBill'; benchId: number; kind: WeaponKind; target: number; paused: boolean }
+  | { type: 'equipWeapon'; pawnId: number; weaponId: number }
+  | { type: 'dropWeapon'; pawnId: number }
+  | { type: 'weaponForbidden'; weaponId: number; forbidden: boolean }
   | {
       type: 'storage';
       from: Pos;
@@ -542,7 +585,7 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 12;
+  version: 13;
   combat: CombatState;
   generator: 1 | 2;
   settings: WorldSettings;
@@ -564,6 +607,7 @@ export interface VoxelSave {
   stoves: Stove[];
   stonecutters: Stonecutter[];
   tailors: Tailor[];
+  weaponBenches: WeaponBench[];
   beds: Bed[];
   doors: Door[];
   devices: Device[];
@@ -590,6 +634,7 @@ export const RESOURCE_NAMES: Record<Resource, string> = {
   chunk: '花岗岩块',
   cloth: '布料',
   apparel: '衣物',
+  weapon: '武器',
   steel: '钢材',
   components: '零件',
   food: '包装生存口粮',
@@ -619,6 +664,9 @@ export const JOB_NAMES: Record<JobKind, string> = {
   stonecut: '切割岩块',
   tailor: '造手工裁缝台',
   tailoring: '缝制衣物',
+  craftingSpot: '划定制作点',
+  smithy: '造燃料锻造台',
+  smith: '制作武器',
   bed: '造床',
   door: '造门',
   cook: '烹饪简餐',
@@ -640,6 +688,8 @@ export const TOOL_NAMES: Record<Tool, string> = {
   stove: '灶台',
   stonecutter: '切石台',
   tailor: '手工裁缝台',
+  craftingSpot: '制作点',
+  smithy: '燃料锻造台',
   bed: '床',
   door: '门',
   clearZone: '擦除区域',
@@ -657,4 +707,5 @@ export const emptyCounts = (): Counts => ({
   chunk: 0,
   cloth: 0,
   apparel: 0,
+  weapon: 0,
 });

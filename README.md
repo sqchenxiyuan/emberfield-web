@@ -32,7 +32,9 @@
 
 2026-11-03衣物裁缝更新：棉花成熟直接产布，3×1 手工裁缝台用 75 木材建造，可制作无边帽、派克大衣、长外套、T 恤和长裤。点击衣物指定同伴取穿，人物衣着栏可脱下；旧衣物真实落地，穿着改变温度耐受并逐日磨损。新营地每人有普通布衫和长裤，v11 保留旧营地原有状态，不补发衣物。当前只开放布材质，制作固定普通品质、研究预解锁。[36原版规则](docs/research/rimworld/36-apparel-tailoring-mechanisms.md)、[37实机验证](docs/research/rimworld/37-native-apparel-runtime.md)、[38实现验收](docs/research/rimworld/38-voxel-apparel-implementation.md)分别说明来源与适配。
 
-2026-11-03外伤更新：菜单可开启有三日准备期的袭击，殖民者支持征召、近战和战术移动。真实外伤进入疼痛、失血与能力计算；医护实际赶路逐处无药包扎，包扎后仍需恢复。败退敌人恢复后沿通路离场，v12保留旧营地和平设置。[39原版规则](docs/research/rimworld/39-injuries-medicine-mechanisms.md)、[40原版护理实机](docs/research/rimworld/40-native-injuries-runtime.md)、[41实现边界与验收](docs/research/rimworld/41-voxel-combat-injuries-implementation.md)。当前七区人体、固定命中与袭击节奏为项目适配；无完整护甲、实体武器换装、药物感染和俘虏系统。
+2026-11-03外伤更新：菜单可开启有三日准备期的袭击，殖民者支持征召、近战和战术移动。真实外伤进入疼痛、失血与能力计算；医护实际赶路逐处无药包扎，包扎后仍需恢复。败退敌人恢复后沿通路离场，v12保留旧营地和平设置。[39原版规则](docs/research/rimworld/39-injuries-medicine-mechanisms.md)、[40原版护理实机](docs/research/rimworld/40-native-injuries-runtime.md)、[41实现边界与验收](docs/research/rimworld/41-voxel-combat-injuries-implementation.md)。当前七区人体、固定命中与袭击节奏为项目适配；无完整护甲、药物感染和俘虏系统。
+
+2026-11-03实体武器更新：免费制作点可制作木棒和钢匕首，100 钢材建造的燃料锻造台还可制作钢长剑。工人实际运料、加工和搬运成品；点击武器查看信息、安排取用，人物面板可放下。更换旧武器落地，主动丢弃和地面倒地后的武器禁止自动搬运，明确装备可解除。v13 保存武器身份、耐久、燃料和中途任务；全量 420 项单元测试通过。当前制作固定普通品质、科技技能预解锁，无环境腐蚀或完整护甲。[42规则研究](docs/research/rimworld/42-weapons-crafting-equipment-mechanisms.md)、[43原版正常制作与换装](docs/research/rimworld/43-native-weapons-runtime.md)、[44实现与验证](docs/research/rimworld/44-voxel-weapons-implementation.md)。
 
 体素供粮：尽早在土壤上规划约110–128格稻米（每次框选最多128格），保留阳光，建一座20木材灶台。点击灶台设置简餐目标；每餐消耗10生食材和1木材。稻米约8游戏日首收，1日常速10分钟，可开3倍速。简餐宜少量制作，囤餐需实际降温的冷库；树木需继续砍伐补燃料。新世界需考虑季节和土壤：寒带低温会停长，沙地不能种普通作物；8日首收是适温普通土壤的参考。断粮现在会产生健康后果，食物中毒尚未实现。
 

@@ -284,7 +284,7 @@ async function modeRun(mode) {
     });
     await shot('04-frozen-food');
     const saveBefore = await page.evaluate(() => window.voxel.exportSave());
-    assert.equal(saveBefore.version, 12);
+    assert.equal(saveBefore.version, 13);
     await control('菜单与存档');
     await control('保存营地');
     await page.getByText('手动保存成功', { exact: true }).waitFor();

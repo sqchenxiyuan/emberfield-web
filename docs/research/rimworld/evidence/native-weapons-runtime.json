@@ -1,0 +1,4081 @@
+{
+  "schema_version": 1,
+  "evidence_id": "RW17-NATIVE-WEAPONS-RUNTIME",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "executable": "F:\\SteamLibrary\\steamapps\\common\\RimWorld\\RimWorld.exe",
+  "process_id": 29920,
+  "window_handle": 988850,
+  "profile": ".local-research/runtime/profile-20261102",
+  "active_mods": [
+    "ludeon.rimworld",
+    "ludeon.rimworld.odyssey"
+  ],
+  "method": "REA skill v42 evidence discipline; existing Windows provider boundary reused. Guarded foreground Windows input, original saves and screenshots; not REA native UI execution.",
+  "provider_boundary_reference": "native-plants-runtime.json",
+  "snapshots": [
+    {
+      "name": "injuries-stopped-b",
+      "path": ".local-research/runtime/profile-20261102/Saves/injuries-stopped-b.rws",
+      "save": {
+        "file": "injuries-stopped-b.rws",
+        "sha256": "2ed58c52089a455d700a0e2f43105e731f6ddb5d94f1666356df479bfd2dcf97",
+        "bytes": 6124125,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 77192,
+        "worker": {
+          "id": "Human961",
+          "nick": "Squint",
+          "pos": "(100, 0, 119)",
+          "crafting": {
+            "level": 3,
+            "xp_since_level": 105.001068
+          },
+          "equipment": [],
+          "inventory": [
+            {
+              "id": "WakeUp964",
+              "def": "WakeUp",
+              "stuff": "",
+              "quality": "",
+              "quality_field_present": false,
+              "health": 50,
+              "count": 4,
+              "pos": "",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": -1
+            }
+          ],
+          "carried": [],
+          "job": {
+            "def": "Skygaze",
+            "target_a": "(100, 0, 119)",
+            "target_b": "",
+            "target_c": "",
+            "bill": "null",
+            "count": 1,
+            "player_forced": false,
+            "driver": "JobDriver_Skygaze",
+            "toil_index": 1,
+            "ticks_left": 2927,
+            "start_tick": 75804,
+            "work_left": 0.0,
+            "bill_start_tick": 0,
+            "ticks_spent_recipe": 0
+          },
+          "work_priority_values": [
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            0
+          ]
+        },
+        "ground_weapons": [
+          {
+            "id": "Gun_BoltActionRifle38568",
+            "def": "Gun_BoltActionRifle",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 97,
+            "count": 1,
+            "pos": "(106, 0, 121)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 271,
+            "despawned_tick": -1
+          },
+          {
+            "id": "Gun_Revolver38569",
+            "def": "Gun_Revolver",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 100,
+            "count": 1,
+            "pos": "(113, 0, 119)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 305,
+            "despawned_tick": -1
+          },
+          {
+            "id": "MeleeWeapon_Knife38570",
+            "def": "MeleeWeapon_Knife",
+            "stuff": "Plasteel",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 276,
+            "count": 1,
+            "pos": "(111, 0, 121)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 301,
+            "despawned_tick": -1
+          }
+        ],
+        "wood": [
+          {
+            "id": "WoodLog38593",
+            "count": 45,
+            "pos": "(107, 0, 109)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38594",
+            "count": 53,
+            "pos": "(112, 0, 111)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38595",
+            "count": 47,
+            "pos": "(111, 0, 107)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38596",
+            "count": 61,
+            "pos": "(108, 0, 110)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38597",
+            "count": 45,
+            "pos": "(121, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38598",
+            "count": 49,
+            "pos": "(118, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog41897",
+            "count": 2,
+            "pos": "(105, 0, 125)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42138",
+            "count": 4,
+            "pos": "(105, 0, 133)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42139",
+            "count": 32,
+            "pos": "(108, 0, 133)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42142",
+            "count": 75,
+            "pos": "(105, 0, 129)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog77974",
+            "count": 14,
+            "pos": "(123, 0, 132)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          }
+        ],
+        "wood_total": 427,
+        "spots": [],
+        "unfinished": [],
+        "scope": "Read-only explicit XML. Active map subtree only for ground weapons and wood (including pawn and unfinished containers); world-pawn gear excluded. Omitted forbidden is false; omitted quality remains absent, not Normal. Other omitted numeric fields use zero; repeatCount presence retained. Work-priority vector is not decoded."
+      }
+    },
+    {
+      "name": "weapons-entry-a",
+      "path": ".local-research/runtime/profile-20261102/Saves/weapons-entry-a.rws",
+      "save": {
+        "file": "weapons-entry-a.rws",
+        "sha256": "618adf6d09dd88bf5b87fc7cf18c861423a76a0a6d1e748a814472d09204a1a1",
+        "bytes": 6124125,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 77192,
+        "worker": {
+          "id": "Human961",
+          "nick": "Squint",
+          "pos": "(100, 0, 119)",
+          "crafting": {
+            "level": 3,
+            "xp_since_level": 105.001068
+          },
+          "equipment": [],
+          "inventory": [
+            {
+              "id": "WakeUp964",
+              "def": "WakeUp",
+              "stuff": "",
+              "quality": "",
+              "quality_field_present": false,
+              "health": 50,
+              "count": 4,
+              "pos": "",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": -1
+            }
+          ],
+          "carried": [],
+          "job": {
+            "def": "Skygaze",
+            "target_a": "(100, 0, 119)",
+            "target_b": "",
+            "target_c": "",
+            "bill": "null",
+            "count": 1,
+            "player_forced": false,
+            "driver": "JobDriver_Skygaze",
+            "toil_index": 1,
+            "ticks_left": 2927,
+            "start_tick": 75804,
+            "work_left": 0.0,
+            "bill_start_tick": 0,
+            "ticks_spent_recipe": 0
+          },
+          "work_priority_values": [
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            0
+          ]
+        },
+        "ground_weapons": [
+          {
+            "id": "Gun_BoltActionRifle38568",
+            "def": "Gun_BoltActionRifle",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 97,
+            "count": 1,
+            "pos": "(106, 0, 121)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 271,
+            "despawned_tick": -1
+          },
+          {
+            "id": "Gun_Revolver38569",
+            "def": "Gun_Revolver",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 100,
+            "count": 1,
+            "pos": "(113, 0, 119)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 305,
+            "despawned_tick": -1
+          },
+          {
+            "id": "MeleeWeapon_Knife38570",
+            "def": "MeleeWeapon_Knife",
+            "stuff": "Plasteel",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 276,
+            "count": 1,
+            "pos": "(111, 0, 121)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 301,
+            "despawned_tick": -1
+          }
+        ],
+        "wood": [
+          {
+            "id": "WoodLog38593",
+            "count": 45,
+            "pos": "(107, 0, 109)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38594",
+            "count": 53,
+            "pos": "(112, 0, 111)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38595",
+            "count": 47,
+            "pos": "(111, 0, 107)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38596",
+            "count": 61,
+            "pos": "(108, 0, 110)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38597",
+            "count": 45,
+            "pos": "(121, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38598",
+            "count": 49,
+            "pos": "(118, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog41897",
+            "count": 2,
+            "pos": "(105, 0, 125)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42138",
+            "count": 4,
+            "pos": "(105, 0, 133)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42139",
+            "count": 32,
+            "pos": "(108, 0, 133)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42142",
+            "count": 75,
+            "pos": "(105, 0, 129)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog77974",
+            "count": 14,
+            "pos": "(123, 0, 132)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          }
+        ],
+        "wood_total": 427,
+        "spots": [],
+        "unfinished": [],
+        "scope": "Read-only explicit XML. Active map subtree only for ground weapons and wood (including pawn and unfinished containers); world-pawn gear excluded. Omitted forbidden is false; omitted quality remains absent, not Normal. Other omitted numeric fields use zero; repeatCount presence retained. Work-priority vector is not decoded."
+      }
+    },
+    {
+      "name": "weapons-entry-b",
+      "path": ".local-research/runtime/profile-20261102/Saves/weapons-entry-b.rws",
+      "save": {
+        "file": "weapons-entry-b.rws",
+        "sha256": "26754de48d85bba58953d4446903d39c11f201c62d937ddbc294a4ee2a067df1",
+        "bytes": 6124125,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 77192,
+        "worker": {
+          "id": "Human961",
+          "nick": "Squint",
+          "pos": "(100, 0, 119)",
+          "crafting": {
+            "level": 3,
+            "xp_since_level": 105.001068
+          },
+          "equipment": [],
+          "inventory": [
+            {
+              "id": "WakeUp964",
+              "def": "WakeUp",
+              "stuff": "",
+              "quality": "",
+              "quality_field_present": false,
+              "health": 50,
+              "count": 4,
+              "pos": "",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": -1
+            }
+          ],
+          "carried": [],
+          "job": {
+            "def": "Skygaze",
+            "target_a": "(100, 0, 119)",
+            "target_b": "",
+            "target_c": "",
+            "bill": "null",
+            "count": 1,
+            "player_forced": false,
+            "driver": "JobDriver_Skygaze",
+            "toil_index": 1,
+            "ticks_left": 2927,
+            "start_tick": 75804,
+            "work_left": 0.0,
+            "bill_start_tick": 0,
+            "ticks_spent_recipe": 0
+          },
+          "work_priority_values": [
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            0
+          ]
+        },
+        "ground_weapons": [
+          {
+            "id": "Gun_BoltActionRifle38568",
+            "def": "Gun_BoltActionRifle",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 97,
+            "count": 1,
+            "pos": "(106, 0, 121)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 271,
+            "despawned_tick": -1
+          },
+          {
+            "id": "Gun_Revolver38569",
+            "def": "Gun_Revolver",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 100,
+            "count": 1,
+            "pos": "(113, 0, 119)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 305,
+            "despawned_tick": -1
+          },
+          {
+            "id": "MeleeWeapon_Knife38570",
+            "def": "MeleeWeapon_Knife",
+            "stuff": "Plasteel",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 276,
+            "count": 1,
+            "pos": "(111, 0, 121)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 301,
+            "despawned_tick": -1
+          }
+        ],
+        "wood": [
+          {
+            "id": "WoodLog38593",
+            "count": 45,
+            "pos": "(107, 0, 109)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38594",
+            "count": 53,
+            "pos": "(112, 0, 111)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38595",
+            "count": 47,
+            "pos": "(111, 0, 107)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38596",
+            "count": 61,
+            "pos": "(108, 0, 110)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38597",
+            "count": 45,
+            "pos": "(121, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38598",
+            "count": 49,
+            "pos": "(118, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog41897",
+            "count": 2,
+            "pos": "(105, 0, 125)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42138",
+            "count": 4,
+            "pos": "(105, 0, 133)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42139",
+            "count": 32,
+            "pos": "(108, 0, 133)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42142",
+            "count": 75,
+            "pos": "(105, 0, 129)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog77974",
+            "count": 14,
+            "pos": "(123, 0, 132)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          }
+        ],
+        "wood_total": 427,
+        "spots": [],
+        "unfinished": [],
+        "scope": "Read-only explicit XML. Active map subtree only for ground weapons and wood (including pawn and unfinished containers); world-pawn gear excluded. Omitted forbidden is false; omitted quality remains absent, not Normal. Other omitted numeric fields use zero; repeatCount presence retained. Work-priority vector is not decoded."
+      }
+    },
+    {
+      "name": "weapons-knife-ready",
+      "path": ".local-research/runtime/profile-20261102/Saves/weapons-knife-ready.rws",
+      "save": {
+        "file": "weapons-knife-ready.rws",
+        "sha256": "d8423a8cdec90752777986134f6a66a8aaeff74693d3ed1453a2f1c0fb812218",
+        "bytes": 6124415,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 77192,
+        "worker": {
+          "id": "Human961",
+          "nick": "Squint",
+          "pos": "(100, 0, 119)",
+          "crafting": {
+            "level": 3,
+            "xp_since_level": 105.001068
+          },
+          "equipment": [],
+          "inventory": [
+            {
+              "id": "WakeUp964",
+              "def": "WakeUp",
+              "stuff": "",
+              "quality": "",
+              "quality_field_present": false,
+              "health": 50,
+              "count": 4,
+              "pos": "",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": -1
+            }
+          ],
+          "carried": [],
+          "job": {
+            "def": "Equip",
+            "target_a": "Thing_MeleeWeapon_Knife38570",
+            "target_b": "",
+            "target_c": "",
+            "bill": "null",
+            "count": 1,
+            "player_forced": true,
+            "driver": "JobDriver_Equip",
+            "toil_index": 1,
+            "ticks_left": 0,
+            "start_tick": 77192,
+            "work_left": 0.0,
+            "bill_start_tick": 0,
+            "ticks_spent_recipe": 0
+          },
+          "work_priority_values": [
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            0
+          ]
+        },
+        "ground_weapons": [
+          {
+            "id": "Gun_BoltActionRifle38568",
+            "def": "Gun_BoltActionRifle",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 97,
+            "count": 1,
+            "pos": "(106, 0, 121)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 271,
+            "despawned_tick": -1
+          },
+          {
+            "id": "Gun_Revolver38569",
+            "def": "Gun_Revolver",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 100,
+            "count": 1,
+            "pos": "(113, 0, 119)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 305,
+            "despawned_tick": -1
+          },
+          {
+            "id": "MeleeWeapon_Knife38570",
+            "def": "MeleeWeapon_Knife",
+            "stuff": "Plasteel",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 276,
+            "count": 1,
+            "pos": "(111, 0, 121)",
+            "forbidden": false,
+            "forbidden_field_present": false,
+            "spawned_tick": 301,
+            "despawned_tick": -1
+          }
+        ],
+        "wood": [
+          {
+            "id": "WoodLog38593",
+            "count": 45,
+            "pos": "(107, 0, 109)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38594",
+            "count": 53,
+            "pos": "(112, 0, 111)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38595",
+            "count": 47,
+            "pos": "(111, 0, 107)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38596",
+            "count": 61,
+            "pos": "(108, 0, 110)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38597",
+            "count": 45,
+            "pos": "(121, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38598",
+            "count": 49,
+            "pos": "(118, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog41897",
+            "count": 2,
+            "pos": "(105, 0, 125)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42138",
+            "count": 4,
+            "pos": "(105, 0, 133)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42139",
+            "count": 32,
+            "pos": "(108, 0, 133)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42142",
+            "count": 75,
+            "pos": "(105, 0, 129)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog77974",
+            "count": 14,
+            "pos": "(123, 0, 132)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          }
+        ],
+        "wood_total": 427,
+        "spots": [],
+        "unfinished": [],
+        "scope": "Read-only explicit XML. Active map subtree only for ground weapons and wood (including pawn and unfinished containers); world-pawn gear excluded. Omitted forbidden is false; omitted quality remains absent, not Normal. Other omitted numeric fields use zero; repeatCount presence retained. Work-priority vector is not decoded."
+      }
+    },
+    {
+      "name": "weapons-knife-equipped",
+      "path": ".local-research/runtime/profile-20261102/Saves/weapons-knife-equipped.rws",
+      "save": {
+        "file": "weapons-knife-equipped.rws",
+        "sha256": "ca092fe425d9f6ef2ac6831d41cf4d5dfdf3323e6383486321f3f7c7f1767b34",
+        "bytes": 6126653,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 78093,
+        "worker": {
+          "id": "Human961",
+          "nick": "Squint",
+          "pos": "(91, 0, 135)",
+          "crafting": {
+            "level": 3,
+            "xp_since_level": 105.001068
+          },
+          "equipment": [
+            {
+              "id": "MeleeWeapon_Knife38570",
+              "def": "MeleeWeapon_Knife",
+              "stuff": "Plasteel",
+              "quality": "Normal",
+              "quality_field_present": true,
+              "health": 276,
+              "count": 1,
+              "pos": "(111, 0, 121)",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": 77400
+            }
+          ],
+          "inventory": [
+            {
+              "id": "WakeUp964",
+              "def": "WakeUp",
+              "stuff": "",
+              "quality": "",
+              "quality_field_present": false,
+              "health": 50,
+              "count": 4,
+              "pos": "",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": -1
+            }
+          ],
+          "carried": [],
+          "job": {
+            "def": "GotoWander",
+            "target_a": "(101, 0, 134)",
+            "target_b": "",
+            "target_c": "",
+            "bill": "null",
+            "count": 1,
+            "player_forced": false,
+            "driver": "JobDriver_Goto",
+            "toil_index": 0,
+            "ticks_left": -42,
+            "start_tick": 78051,
+            "work_left": 0.0,
+            "bill_start_tick": 0,
+            "ticks_spent_recipe": 0
+          },
+          "work_priority_values": [
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            0
+          ]
+        },
+        "ground_weapons": [
+          {
+            "id": "Gun_BoltActionRifle38568",
+            "def": "Gun_BoltActionRifle",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 97,
+            "count": 1,
+            "pos": "(106, 0, 121)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 271,
+            "despawned_tick": -1
+          },
+          {
+            "id": "Gun_Revolver38569",
+            "def": "Gun_Revolver",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 100,
+            "count": 1,
+            "pos": "(113, 0, 119)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 305,
+            "despawned_tick": -1
+          }
+        ],
+        "wood": [
+          {
+            "id": "WoodLog38593",
+            "count": 45,
+            "pos": "(107, 0, 109)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38594",
+            "count": 53,
+            "pos": "(112, 0, 111)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38595",
+            "count": 47,
+            "pos": "(111, 0, 107)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38596",
+            "count": 61,
+            "pos": "(108, 0, 110)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38597",
+            "count": 45,
+            "pos": "(121, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38598",
+            "count": 49,
+            "pos": "(118, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog41897",
+            "count": 2,
+            "pos": "(105, 0, 125)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42138",
+            "count": 4,
+            "pos": "(105, 0, 133)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42139",
+            "count": 32,
+            "pos": "(108, 0, 133)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42142",
+            "count": 75,
+            "pos": "(105, 0, 129)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog77974",
+            "count": 14,
+            "pos": "(123, 0, 132)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          }
+        ],
+        "wood_total": 427,
+        "spots": [],
+        "unfinished": [],
+        "scope": "Read-only explicit XML. Active map subtree only for ground weapons and wood (including pawn and unfinished containers); world-pawn gear excluded. Omitted forbidden is false; omitted quality remains absent, not Normal. Other omitted numeric fields use zero; repeatCount presence retained. Work-priority vector is not decoded."
+      }
+    },
+    {
+      "name": "weapons-craft-ready",
+      "path": ".local-research/runtime/profile-20261102/Saves/weapons-craft-ready.rws",
+      "save": {
+        "file": "weapons-craft-ready.rws",
+        "sha256": "a7a8001fc2e0a0571933451038793b28e967c200b1e5df9d3d124b33c63a1441",
+        "bytes": 6128915,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 78093,
+        "worker": {
+          "id": "Human961",
+          "nick": "Squint",
+          "pos": "(91, 0, 135)",
+          "crafting": {
+            "level": 3,
+            "xp_since_level": 105.001068
+          },
+          "equipment": [
+            {
+              "id": "MeleeWeapon_Knife38570",
+              "def": "MeleeWeapon_Knife",
+              "stuff": "Plasteel",
+              "quality": "Normal",
+              "quality_field_present": true,
+              "health": 276,
+              "count": 1,
+              "pos": "(111, 0, 121)",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": 77400
+            }
+          ],
+          "inventory": [
+            {
+              "id": "WakeUp964",
+              "def": "WakeUp",
+              "stuff": "",
+              "quality": "",
+              "quality_field_present": false,
+              "health": 50,
+              "count": 4,
+              "pos": "",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": -1
+            }
+          ],
+          "carried": [],
+          "job": {
+            "def": "DoBill",
+            "target_a": "Thing_CraftingSpot78052",
+            "target_b": "Thing_WoodLog42142",
+            "target_c": "",
+            "bill": "Bill_Make_MeleeWeapon_Club_2",
+            "count": 40,
+            "player_forced": true,
+            "driver": "JobDriver_DoBill",
+            "toil_index": 4,
+            "ticks_left": 0,
+            "start_tick": 78093,
+            "work_left": 0.0,
+            "bill_start_tick": 0,
+            "ticks_spent_recipe": 0
+          },
+          "work_priority_values": [
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            0
+          ]
+        },
+        "ground_weapons": [
+          {
+            "id": "Gun_BoltActionRifle38568",
+            "def": "Gun_BoltActionRifle",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 97,
+            "count": 1,
+            "pos": "(106, 0, 121)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 271,
+            "despawned_tick": -1
+          },
+          {
+            "id": "Gun_Revolver38569",
+            "def": "Gun_Revolver",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 100,
+            "count": 1,
+            "pos": "(113, 0, 119)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 305,
+            "despawned_tick": -1
+          }
+        ],
+        "wood": [
+          {
+            "id": "WoodLog38593",
+            "count": 45,
+            "pos": "(107, 0, 109)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38594",
+            "count": 53,
+            "pos": "(112, 0, 111)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38595",
+            "count": 47,
+            "pos": "(111, 0, 107)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38596",
+            "count": 61,
+            "pos": "(108, 0, 110)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38597",
+            "count": 45,
+            "pos": "(121, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38598",
+            "count": 49,
+            "pos": "(118, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog41897",
+            "count": 2,
+            "pos": "(105, 0, 125)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42138",
+            "count": 4,
+            "pos": "(105, 0, 133)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42139",
+            "count": 32,
+            "pos": "(108, 0, 133)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42142",
+            "count": 75,
+            "pos": "(105, 0, 129)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog77974",
+            "count": 14,
+            "pos": "(123, 0, 132)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          }
+        ],
+        "wood_total": 427,
+        "spots": [
+          {
+            "id": "CraftingSpot78052",
+            "pos": "(108, 0, 130)",
+            "spawned_tick": 78093,
+            "bills": [
+              {
+                "id": 2,
+                "recipe": "Make_MeleeWeapon_Club",
+                "repeat_mode": "RepeatCount",
+                "repeat_count": 1,
+                "repeat_count_field_present": true,
+                "store_mode": "BestStockpile",
+                "bound_uft": "null",
+                "allowed_materials": [
+                  "WoodLog"
+                ]
+              }
+            ]
+          }
+        ],
+        "unfinished": [],
+        "scope": "Read-only explicit XML. Active map subtree only for ground weapons and wood (including pawn and unfinished containers); world-pawn gear excluded. Omitted forbidden is false; omitted quality remains absent, not Normal. Other omitted numeric fields use zero; repeatCount presence retained. Work-priority vector is not decoded."
+      }
+    },
+    {
+      "name": "weapons-crafting",
+      "path": ".local-research/runtime/profile-20261102/Saves/weapons-crafting.rws",
+      "save": {
+        "file": "weapons-crafting.rws",
+        "sha256": "6323d1c9c32c5330a7dcb011a36726f689c139642d43d7480641061b4c0d81a2",
+        "bytes": 6128569,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 79302,
+        "worker": {
+          "id": "Human961",
+          "nick": "Squint",
+          "pos": "(108, 0, 129)",
+          "crafting": {
+            "level": 3,
+            "xp_since_level": 137.236435
+          },
+          "equipment": [
+            {
+              "id": "MeleeWeapon_Knife38570",
+              "def": "MeleeWeapon_Knife",
+              "stuff": "Plasteel",
+              "quality": "Normal",
+              "quality_field_present": true,
+              "health": 276,
+              "count": 1,
+              "pos": "(111, 0, 121)",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": 77400
+            }
+          ],
+          "inventory": [
+            {
+              "id": "WakeUp964",
+              "def": "WakeUp",
+              "stuff": "",
+              "quality": "",
+              "quality_field_present": false,
+              "health": 50,
+              "count": 4,
+              "pos": "",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": -1
+            }
+          ],
+          "carried": [],
+          "job": {
+            "def": "DoBill",
+            "target_a": "Thing_CraftingSpot78052",
+            "target_b": "Thing_UnfinishedWeapon78056",
+            "target_c": "(108, 0, 130)",
+            "bill": "Bill_Make_MeleeWeapon_Club_2",
+            "count": 40,
+            "player_forced": true,
+            "driver": "JobDriver_DoBill",
+            "toil_index": 14,
+            "ticks_left": -919,
+            "start_tick": 78093,
+            "work_left": 471.596252,
+            "bill_start_tick": 78384,
+            "ticks_spent_recipe": 921
+          },
+          "work_priority_values": [
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            0
+          ]
+        },
+        "ground_weapons": [
+          {
+            "id": "Gun_BoltActionRifle38568",
+            "def": "Gun_BoltActionRifle",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 97,
+            "count": 1,
+            "pos": "(106, 0, 121)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 271,
+            "despawned_tick": -1
+          },
+          {
+            "id": "Gun_Revolver38569",
+            "def": "Gun_Revolver",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 100,
+            "count": 1,
+            "pos": "(113, 0, 119)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 305,
+            "despawned_tick": -1
+          }
+        ],
+        "wood": [
+          {
+            "id": "WoodLog38593",
+            "count": 45,
+            "pos": "(107, 0, 109)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38594",
+            "count": 53,
+            "pos": "(112, 0, 111)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38595",
+            "count": 47,
+            "pos": "(111, 0, 107)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38596",
+            "count": 61,
+            "pos": "(108, 0, 110)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38597",
+            "count": 45,
+            "pos": "(121, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38598",
+            "count": 49,
+            "pos": "(118, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog41897",
+            "count": 2,
+            "pos": "(105, 0, 125)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42138",
+            "count": 4,
+            "pos": "(105, 0, 133)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42139",
+            "count": 32,
+            "pos": "(108, 0, 133)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42142",
+            "count": 35,
+            "pos": "(105, 0, 129)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog77974",
+            "count": 14,
+            "pos": "(123, 0, 132)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog78055",
+            "count": 40,
+            "pos": "(108, 0, 130)",
+            "parent": "ingredients",
+            "ingredient_of": "UnfinishedWeapon78056",
+            "forbidden": false
+          }
+        ],
+        "wood_total": 427,
+        "spots": [
+          {
+            "id": "CraftingSpot78052",
+            "pos": "(108, 0, 130)",
+            "spawned_tick": 78093,
+            "bills": [
+              {
+                "id": 2,
+                "recipe": "Make_MeleeWeapon_Club",
+                "repeat_mode": "RepeatCount",
+                "repeat_count": 1,
+                "repeat_count_field_present": true,
+                "store_mode": "BestStockpile",
+                "bound_uft": "Thing_UnfinishedWeapon78056",
+                "allowed_materials": [
+                  "WoodLog"
+                ]
+              }
+            ]
+          }
+        ],
+        "unfinished": [
+          {
+            "id": "UnfinishedWeapon78056",
+            "stuff": "WoodLog",
+            "recipe": "Make_MeleeWeapon_Club",
+            "bill": "Bill_Make_MeleeWeapon_Club_2",
+            "creator": "Thing_Human961",
+            "pos": "(108, 0, 130)",
+            "spawned_tick": 78384,
+            "work_left": 471.596252,
+            "ingredients": [
+              {
+                "id": "WoodLog78055",
+                "def": "WoodLog",
+                "stuff": "",
+                "quality": "",
+                "quality_field_present": false,
+                "health": 150,
+                "count": 40,
+                "pos": "(108, 0, 130)",
+                "forbidden": false,
+                "forbidden_field_present": false,
+                "spawned_tick": 0,
+                "despawned_tick": 78384
+              }
+            ]
+          }
+        ],
+        "scope": "Read-only explicit XML. Active map subtree only for ground weapons and wood (including pawn and unfinished containers); world-pawn gear excluded. Omitted forbidden is false; omitted quality remains absent, not Normal. Other omitted numeric fields use zero; repeatCount presence retained. Work-priority vector is not decoded."
+      }
+    },
+    {
+      "name": "weapons-crafting-progress",
+      "path": ".local-research/runtime/profile-20261102/Saves/weapons-crafting-progress.rws",
+      "save": {
+        "file": "weapons-crafting-progress.rws",
+        "sha256": "bc0303a64d1f9e99745a562bfa2078ac860f8343e482f39f7b6ec6e2502c89b3",
+        "bytes": 6128887,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 79865,
+        "worker": {
+          "id": "Human961",
+          "nick": "Squint",
+          "pos": "(108, 0, 129)",
+          "crafting": {
+            "level": 3,
+            "xp_since_level": 156.870636
+          },
+          "equipment": [
+            {
+              "id": "MeleeWeapon_Knife38570",
+              "def": "MeleeWeapon_Knife",
+              "stuff": "Plasteel",
+              "quality": "Normal",
+              "quality_field_present": true,
+              "health": 276,
+              "count": 1,
+              "pos": "(111, 0, 121)",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": 77400
+            }
+          ],
+          "inventory": [
+            {
+              "id": "WakeUp964",
+              "def": "WakeUp",
+              "stuff": "",
+              "quality": "",
+              "quality_field_present": false,
+              "health": 50,
+              "count": 4,
+              "pos": "",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": -1
+            }
+          ],
+          "carried": [],
+          "job": {
+            "def": "DoBill",
+            "target_a": "Thing_CraftingSpot78052",
+            "target_b": "Thing_UnfinishedWeapon78056",
+            "target_c": "(108, 0, 130)",
+            "bill": "Bill_Make_MeleeWeapon_Club_2",
+            "count": 40,
+            "player_forced": true,
+            "driver": "JobDriver_DoBill",
+            "toil_index": 14,
+            "ticks_left": -1482,
+            "start_tick": 78093,
+            "work_left": 247.194092,
+            "bill_start_tick": 78384,
+            "ticks_spent_recipe": 1482
+          },
+          "work_priority_values": [
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            0
+          ]
+        },
+        "ground_weapons": [
+          {
+            "id": "Gun_BoltActionRifle38568",
+            "def": "Gun_BoltActionRifle",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 97,
+            "count": 1,
+            "pos": "(106, 0, 121)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 271,
+            "despawned_tick": -1
+          },
+          {
+            "id": "Gun_Revolver38569",
+            "def": "Gun_Revolver",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 100,
+            "count": 1,
+            "pos": "(113, 0, 119)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 305,
+            "despawned_tick": -1
+          }
+        ],
+        "wood": [
+          {
+            "id": "WoodLog38593",
+            "count": 45,
+            "pos": "(107, 0, 109)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38594",
+            "count": 53,
+            "pos": "(112, 0, 111)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38595",
+            "count": 47,
+            "pos": "(111, 0, 107)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38596",
+            "count": 61,
+            "pos": "(108, 0, 110)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38597",
+            "count": 45,
+            "pos": "(121, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38598",
+            "count": 49,
+            "pos": "(118, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog41897",
+            "count": 2,
+            "pos": "(105, 0, 125)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42138",
+            "count": 4,
+            "pos": "(105, 0, 133)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42139",
+            "count": 32,
+            "pos": "(108, 0, 133)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42142",
+            "count": 35,
+            "pos": "(105, 0, 129)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog77974",
+            "count": 14,
+            "pos": "(123, 0, 132)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog78055",
+            "count": 40,
+            "pos": "(108, 0, 130)",
+            "parent": "ingredients",
+            "ingredient_of": "UnfinishedWeapon78056",
+            "forbidden": false
+          }
+        ],
+        "wood_total": 427,
+        "spots": [
+          {
+            "id": "CraftingSpot78052",
+            "pos": "(108, 0, 130)",
+            "spawned_tick": 78093,
+            "bills": [
+              {
+                "id": 2,
+                "recipe": "Make_MeleeWeapon_Club",
+                "repeat_mode": "RepeatCount",
+                "repeat_count": 1,
+                "repeat_count_field_present": true,
+                "store_mode": "BestStockpile",
+                "bound_uft": "Thing_UnfinishedWeapon78056",
+                "allowed_materials": [
+                  "WoodLog"
+                ]
+              }
+            ]
+          }
+        ],
+        "unfinished": [
+          {
+            "id": "UnfinishedWeapon78056",
+            "stuff": "WoodLog",
+            "recipe": "Make_MeleeWeapon_Club",
+            "bill": "Bill_Make_MeleeWeapon_Club_2",
+            "creator": "Thing_Human961",
+            "pos": "(108, 0, 130)",
+            "spawned_tick": 78384,
+            "work_left": 247.194092,
+            "ingredients": [
+              {
+                "id": "WoodLog78055",
+                "def": "WoodLog",
+                "stuff": "",
+                "quality": "",
+                "quality_field_present": false,
+                "health": 150,
+                "count": 40,
+                "pos": "(108, 0, 130)",
+                "forbidden": false,
+                "forbidden_field_present": false,
+                "spawned_tick": 0,
+                "despawned_tick": 78384
+              }
+            ]
+          }
+        ],
+        "scope": "Read-only explicit XML. Active map subtree only for ground weapons and wood (including pawn and unfinished containers); world-pawn gear excluded. Omitted forbidden is false; omitted quality remains absent, not Normal. Other omitted numeric fields use zero; repeatCount presence retained. Work-priority vector is not decoded."
+      }
+    },
+    {
+      "name": "weapons-crafted",
+      "path": ".local-research/runtime/profile-20261102/Saves/weapons-crafted.rws",
+      "save": {
+        "file": "weapons-crafted.rws",
+        "sha256": "d1cfbca623d8964744b92c9fc5346a135f898de9553dce57644b1e6ce4d95e1a",
+        "bytes": 6125320,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 80782,
+        "worker": {
+          "id": "Human961",
+          "nick": "Squint",
+          "pos": "(103, 0, 125)",
+          "crafting": {
+            "level": 3,
+            "xp_since_level": 178.499756
+          },
+          "equipment": [
+            {
+              "id": "MeleeWeapon_Knife38570",
+              "def": "MeleeWeapon_Knife",
+              "stuff": "Plasteel",
+              "quality": "Normal",
+              "quality_field_present": true,
+              "health": 276,
+              "count": 1,
+              "pos": "(111, 0, 121)",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": 77400
+            }
+          ],
+          "inventory": [
+            {
+              "id": "WakeUp964",
+              "def": "WakeUp",
+              "stuff": "",
+              "quality": "",
+              "quality_field_present": false,
+              "health": 50,
+              "count": 4,
+              "pos": "",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": -1
+            }
+          ],
+          "carried": [],
+          "job": {
+            "def": "HaulToCell",
+            "target_a": "Thing_WoodLog41897",
+            "target_b": "(105, 0, 129)",
+            "target_c": "",
+            "bill": "null",
+            "count": 4,
+            "player_forced": false,
+            "driver": "JobDriver_HaulToCell",
+            "toil_index": 4,
+            "ticks_left": -76,
+            "start_tick": 80706,
+            "work_left": 0.0,
+            "bill_start_tick": 0,
+            "ticks_spent_recipe": 0
+          },
+          "work_priority_values": [
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            0
+          ]
+        },
+        "ground_weapons": [
+          {
+            "id": "Gun_BoltActionRifle38568",
+            "def": "Gun_BoltActionRifle",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 97,
+            "count": 1,
+            "pos": "(106, 0, 121)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 271,
+            "despawned_tick": -1
+          },
+          {
+            "id": "Gun_Revolver38569",
+            "def": "Gun_Revolver",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 100,
+            "count": 1,
+            "pos": "(113, 0, 119)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 305,
+            "despawned_tick": -1
+          },
+          {
+            "id": "MeleeWeapon_Club78067",
+            "def": "MeleeWeapon_Club",
+            "stuff": "WoodLog",
+            "quality": "",
+            "quality_field_present": false,
+            "health": 65,
+            "count": 1,
+            "pos": "(108, 0, 129)",
+            "forbidden": false,
+            "forbidden_field_present": false,
+            "spawned_tick": 80481,
+            "despawned_tick": -1
+          }
+        ],
+        "wood": [
+          {
+            "id": "WoodLog38593",
+            "count": 45,
+            "pos": "(107, 0, 109)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38594",
+            "count": 53,
+            "pos": "(112, 0, 111)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38595",
+            "count": 47,
+            "pos": "(111, 0, 107)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38596",
+            "count": 61,
+            "pos": "(108, 0, 110)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38597",
+            "count": 45,
+            "pos": "(121, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38598",
+            "count": 49,
+            "pos": "(118, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog41897",
+            "count": 2,
+            "pos": "(105, 0, 125)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42142",
+            "count": 71,
+            "pos": "(105, 0, 129)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog77974",
+            "count": 14,
+            "pos": "(123, 0, 132)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          }
+        ],
+        "wood_total": 387,
+        "spots": [
+          {
+            "id": "CraftingSpot78052",
+            "pos": "(108, 0, 130)",
+            "spawned_tick": 78093,
+            "bills": [
+              {
+                "id": 2,
+                "recipe": "Make_MeleeWeapon_Club",
+                "repeat_mode": "RepeatCount",
+                "repeat_count": 0,
+                "repeat_count_field_present": false,
+                "store_mode": "BestStockpile",
+                "bound_uft": "null",
+                "allowed_materials": [
+                  "WoodLog"
+                ]
+              }
+            ]
+          }
+        ],
+        "unfinished": [],
+        "scope": "Read-only explicit XML. Active map subtree only for ground weapons and wood (including pawn and unfinished containers); world-pawn gear excluded. Omitted forbidden is false; omitted quality remains absent, not Normal. Other omitted numeric fields use zero; repeatCount presence retained. Work-priority vector is not decoded."
+      }
+    },
+    {
+      "name": "weapons-swap-ready",
+      "path": ".local-research/runtime/profile-20261102/Saves/weapons-swap-ready.rws",
+      "save": {
+        "file": "weapons-swap-ready.rws",
+        "sha256": "41d7f9c64a3149ee1e84357baac3b0bf52527ad8a9437ffb9b9a94f9c0b823fb",
+        "bytes": 6125000,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 80782,
+        "worker": {
+          "id": "Human961",
+          "nick": "Squint",
+          "pos": "(103, 0, 125)",
+          "crafting": {
+            "level": 3,
+            "xp_since_level": 178.499756
+          },
+          "equipment": [
+            {
+              "id": "MeleeWeapon_Knife38570",
+              "def": "MeleeWeapon_Knife",
+              "stuff": "Plasteel",
+              "quality": "Normal",
+              "quality_field_present": true,
+              "health": 276,
+              "count": 1,
+              "pos": "(111, 0, 121)",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": 77400
+            }
+          ],
+          "inventory": [
+            {
+              "id": "WakeUp964",
+              "def": "WakeUp",
+              "stuff": "",
+              "quality": "",
+              "quality_field_present": false,
+              "health": 50,
+              "count": 4,
+              "pos": "",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": -1
+            }
+          ],
+          "carried": [],
+          "job": {
+            "def": "Equip",
+            "target_a": "Thing_MeleeWeapon_Club78067",
+            "target_b": "",
+            "target_c": "",
+            "bill": "null",
+            "count": 1,
+            "player_forced": true,
+            "driver": "JobDriver_Equip",
+            "toil_index": 1,
+            "ticks_left": 0,
+            "start_tick": 80782,
+            "work_left": 0.0,
+            "bill_start_tick": 0,
+            "ticks_spent_recipe": 0
+          },
+          "work_priority_values": [
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            0
+          ]
+        },
+        "ground_weapons": [
+          {
+            "id": "Gun_BoltActionRifle38568",
+            "def": "Gun_BoltActionRifle",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 97,
+            "count": 1,
+            "pos": "(106, 0, 121)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 271,
+            "despawned_tick": -1
+          },
+          {
+            "id": "Gun_Revolver38569",
+            "def": "Gun_Revolver",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 100,
+            "count": 1,
+            "pos": "(113, 0, 119)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 305,
+            "despawned_tick": -1
+          },
+          {
+            "id": "MeleeWeapon_Club78067",
+            "def": "MeleeWeapon_Club",
+            "stuff": "WoodLog",
+            "quality": "",
+            "quality_field_present": false,
+            "health": 65,
+            "count": 1,
+            "pos": "(108, 0, 129)",
+            "forbidden": false,
+            "forbidden_field_present": false,
+            "spawned_tick": 80481,
+            "despawned_tick": -1
+          }
+        ],
+        "wood": [
+          {
+            "id": "WoodLog38593",
+            "count": 45,
+            "pos": "(107, 0, 109)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38594",
+            "count": 53,
+            "pos": "(112, 0, 111)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38595",
+            "count": 47,
+            "pos": "(111, 0, 107)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38596",
+            "count": 61,
+            "pos": "(108, 0, 110)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38597",
+            "count": 45,
+            "pos": "(121, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38598",
+            "count": 49,
+            "pos": "(118, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog41897",
+            "count": 2,
+            "pos": "(105, 0, 125)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42142",
+            "count": 71,
+            "pos": "(105, 0, 129)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog77974",
+            "count": 14,
+            "pos": "(123, 0, 132)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          }
+        ],
+        "wood_total": 387,
+        "spots": [
+          {
+            "id": "CraftingSpot78052",
+            "pos": "(108, 0, 130)",
+            "spawned_tick": 78093,
+            "bills": [
+              {
+                "id": 2,
+                "recipe": "Make_MeleeWeapon_Club",
+                "repeat_mode": "RepeatCount",
+                "repeat_count": 0,
+                "repeat_count_field_present": false,
+                "store_mode": "BestStockpile",
+                "bound_uft": "null",
+                "allowed_materials": [
+                  "WoodLog"
+                ]
+              }
+            ]
+          }
+        ],
+        "unfinished": [],
+        "scope": "Read-only explicit XML. Active map subtree only for ground weapons and wood (including pawn and unfinished containers); world-pawn gear excluded. Omitted forbidden is false; omitted quality remains absent, not Normal. Other omitted numeric fields use zero; repeatCount presence retained. Work-priority vector is not decoded."
+      }
+    },
+    {
+      "name": "weapons-club-equipped",
+      "path": ".local-research/runtime/profile-20261102/Saves/weapons-club-equipped.rws",
+      "save": {
+        "file": "weapons-club-equipped.rws",
+        "sha256": "40fc982733061d672b8bba75b3384e79afa9790a42acb6caaa625416474363a8",
+        "bytes": 6125072,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 81017,
+        "worker": {
+          "id": "Human961",
+          "nick": "Squint",
+          "pos": "(104, 0, 127)",
+          "crafting": {
+            "level": 3,
+            "xp_since_level": 178.499756
+          },
+          "equipment": [
+            {
+              "id": "MeleeWeapon_Club78067",
+              "def": "MeleeWeapon_Club",
+              "stuff": "WoodLog",
+              "quality": "",
+              "quality_field_present": false,
+              "health": 65,
+              "count": 1,
+              "pos": "(108, 0, 129)",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": 80937
+            }
+          ],
+          "inventory": [
+            {
+              "id": "WakeUp964",
+              "def": "WakeUp",
+              "stuff": "",
+              "quality": "",
+              "quality_field_present": false,
+              "health": 50,
+              "count": 4,
+              "pos": "",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": -1
+            }
+          ],
+          "carried": [],
+          "job": {
+            "def": "HaulToCell",
+            "target_a": "Thing_WoodLog41897",
+            "target_b": "(105, 0, 129)",
+            "target_c": "",
+            "bill": "null",
+            "count": 4,
+            "player_forced": false,
+            "driver": "JobDriver_HaulToCell",
+            "toil_index": 4,
+            "ticks_left": -77,
+            "start_tick": 80940,
+            "work_left": 0.0,
+            "bill_start_tick": 0,
+            "ticks_spent_recipe": 0
+          },
+          "work_priority_values": [
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            0
+          ]
+        },
+        "ground_weapons": [
+          {
+            "id": "Gun_BoltActionRifle38568",
+            "def": "Gun_BoltActionRifle",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 97,
+            "count": 1,
+            "pos": "(106, 0, 121)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 271,
+            "despawned_tick": -1
+          },
+          {
+            "id": "Gun_Revolver38569",
+            "def": "Gun_Revolver",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 100,
+            "count": 1,
+            "pos": "(113, 0, 119)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 305,
+            "despawned_tick": -1
+          },
+          {
+            "id": "MeleeWeapon_Knife38570",
+            "def": "MeleeWeapon_Knife",
+            "stuff": "Plasteel",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 276,
+            "count": 1,
+            "pos": "(108, 0, 129)",
+            "forbidden": false,
+            "forbidden_field_present": false,
+            "spawned_tick": 80937,
+            "despawned_tick": -1
+          }
+        ],
+        "wood": [
+          {
+            "id": "WoodLog38593",
+            "count": 45,
+            "pos": "(107, 0, 109)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38594",
+            "count": 53,
+            "pos": "(112, 0, 111)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38595",
+            "count": 47,
+            "pos": "(111, 0, 107)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38596",
+            "count": 61,
+            "pos": "(108, 0, 110)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38597",
+            "count": 45,
+            "pos": "(121, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38598",
+            "count": 49,
+            "pos": "(118, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog41897",
+            "count": 2,
+            "pos": "(105, 0, 125)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42142",
+            "count": 71,
+            "pos": "(105, 0, 129)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog77974",
+            "count": 14,
+            "pos": "(123, 0, 132)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          }
+        ],
+        "wood_total": 387,
+        "spots": [
+          {
+            "id": "CraftingSpot78052",
+            "pos": "(108, 0, 130)",
+            "spawned_tick": 78093,
+            "bills": [
+              {
+                "id": 2,
+                "recipe": "Make_MeleeWeapon_Club",
+                "repeat_mode": "RepeatCount",
+                "repeat_count": 0,
+                "repeat_count_field_present": false,
+                "store_mode": "BestStockpile",
+                "bound_uft": "null",
+                "allowed_materials": [
+                  "WoodLog"
+                ]
+              }
+            ]
+          }
+        ],
+        "unfinished": [],
+        "scope": "Read-only explicit XML. Active map subtree only for ground weapons and wood (including pawn and unfinished containers); world-pawn gear excluded. Omitted forbidden is false; omitted quality remains absent, not Normal. Other omitted numeric fields use zero; repeatCount presence retained. Work-priority vector is not decoded."
+      }
+    },
+    {
+      "name": "weapons-drop-ready",
+      "path": ".local-research/runtime/profile-20261102/Saves/weapons-drop-ready.rws",
+      "save": {
+        "file": "weapons-drop-ready.rws",
+        "sha256": "a246384edbe7d3a35e026de9d8f1af41e9098fd1f990b43f7835d655403e7918",
+        "bytes": 6124434,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 81017,
+        "worker": {
+          "id": "Human961",
+          "nick": "Squint",
+          "pos": "(104, 0, 127)",
+          "crafting": {
+            "level": 3,
+            "xp_since_level": 178.499756
+          },
+          "equipment": [
+            {
+              "id": "MeleeWeapon_Club78067",
+              "def": "MeleeWeapon_Club",
+              "stuff": "WoodLog",
+              "quality": "",
+              "quality_field_present": false,
+              "health": 65,
+              "count": 1,
+              "pos": "(108, 0, 129)",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": 80937
+            }
+          ],
+          "inventory": [
+            {
+              "id": "WakeUp964",
+              "def": "WakeUp",
+              "stuff": "",
+              "quality": "",
+              "quality_field_present": false,
+              "health": 50,
+              "count": 4,
+              "pos": "",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": -1
+            }
+          ],
+          "carried": [],
+          "job": {
+            "def": "DropEquipment",
+            "target_a": "Thing_MeleeWeapon_Club78067",
+            "target_b": "",
+            "target_c": "",
+            "bill": "null",
+            "count": 1,
+            "player_forced": true,
+            "driver": "JobDriver_DropEquipment",
+            "toil_index": 0,
+            "ticks_left": 30,
+            "start_tick": 81017,
+            "work_left": 0.0,
+            "bill_start_tick": 0,
+            "ticks_spent_recipe": 0
+          },
+          "work_priority_values": [
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            0
+          ]
+        },
+        "ground_weapons": [
+          {
+            "id": "Gun_BoltActionRifle38568",
+            "def": "Gun_BoltActionRifle",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 97,
+            "count": 1,
+            "pos": "(106, 0, 121)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 271,
+            "despawned_tick": -1
+          },
+          {
+            "id": "Gun_Revolver38569",
+            "def": "Gun_Revolver",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 100,
+            "count": 1,
+            "pos": "(113, 0, 119)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 305,
+            "despawned_tick": -1
+          },
+          {
+            "id": "MeleeWeapon_Knife38570",
+            "def": "MeleeWeapon_Knife",
+            "stuff": "Plasteel",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 276,
+            "count": 1,
+            "pos": "(108, 0, 129)",
+            "forbidden": false,
+            "forbidden_field_present": false,
+            "spawned_tick": 80937,
+            "despawned_tick": -1
+          }
+        ],
+        "wood": [
+          {
+            "id": "WoodLog38593",
+            "count": 45,
+            "pos": "(107, 0, 109)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38594",
+            "count": 53,
+            "pos": "(112, 0, 111)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38595",
+            "count": 47,
+            "pos": "(111, 0, 107)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38596",
+            "count": 61,
+            "pos": "(108, 0, 110)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38597",
+            "count": 45,
+            "pos": "(121, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38598",
+            "count": 49,
+            "pos": "(118, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog41897",
+            "count": 2,
+            "pos": "(105, 0, 125)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42142",
+            "count": 71,
+            "pos": "(105, 0, 129)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog77974",
+            "count": 14,
+            "pos": "(123, 0, 132)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          }
+        ],
+        "wood_total": 387,
+        "spots": [
+          {
+            "id": "CraftingSpot78052",
+            "pos": "(108, 0, 130)",
+            "spawned_tick": 78093,
+            "bills": [
+              {
+                "id": 2,
+                "recipe": "Make_MeleeWeapon_Club",
+                "repeat_mode": "RepeatCount",
+                "repeat_count": 0,
+                "repeat_count_field_present": false,
+                "store_mode": "BestStockpile",
+                "bound_uft": "null",
+                "allowed_materials": [
+                  "WoodLog"
+                ]
+              }
+            ]
+          }
+        ],
+        "unfinished": [],
+        "scope": "Read-only explicit XML. Active map subtree only for ground weapons and wood (including pawn and unfinished containers); world-pawn gear excluded. Omitted forbidden is false; omitted quality remains absent, not Normal. Other omitted numeric fields use zero; repeatCount presence retained. Work-priority vector is not decoded."
+      }
+    },
+    {
+      "name": "weapons-dropped",
+      "path": ".local-research/runtime/profile-20261102/Saves/weapons-dropped.rws",
+      "save": {
+        "file": "weapons-dropped.rws",
+        "sha256": "25ea3a453195d11e01212f04498d023d7e6323f8a0f6e6f3a304d49c75d97aa3",
+        "bytes": 6124300,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 81128,
+        "worker": {
+          "id": "Human961",
+          "nick": "Squint",
+          "pos": "(104, 0, 125)",
+          "crafting": {
+            "level": 3,
+            "xp_since_level": 178.499756
+          },
+          "equipment": [],
+          "inventory": [
+            {
+              "id": "WakeUp964",
+              "def": "WakeUp",
+              "stuff": "",
+              "quality": "",
+              "quality_field_present": false,
+              "health": 50,
+              "count": 4,
+              "pos": "",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": -1
+            }
+          ],
+          "carried": [],
+          "job": {
+            "def": "HaulToCell",
+            "target_a": "Thing_WoodLog41897",
+            "target_b": "(105, 0, 129)",
+            "target_c": "",
+            "bill": "null",
+            "count": 4,
+            "player_forced": false,
+            "driver": "JobDriver_HaulToCell",
+            "toil_index": 4,
+            "ticks_left": -80,
+            "start_tick": 81048,
+            "work_left": 0.0,
+            "bill_start_tick": 0,
+            "ticks_spent_recipe": 0
+          },
+          "work_priority_values": [
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            0
+          ]
+        },
+        "ground_weapons": [
+          {
+            "id": "Gun_BoltActionRifle38568",
+            "def": "Gun_BoltActionRifle",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 97,
+            "count": 1,
+            "pos": "(106, 0, 121)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 271,
+            "despawned_tick": -1
+          },
+          {
+            "id": "Gun_Revolver38569",
+            "def": "Gun_Revolver",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 100,
+            "count": 1,
+            "pos": "(113, 0, 119)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 305,
+            "despawned_tick": -1
+          },
+          {
+            "id": "MeleeWeapon_Club78067",
+            "def": "MeleeWeapon_Club",
+            "stuff": "WoodLog",
+            "quality": "",
+            "quality_field_present": false,
+            "health": 65,
+            "count": 1,
+            "pos": "(104, 0, 127)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 81047,
+            "despawned_tick": -1
+          },
+          {
+            "id": "MeleeWeapon_Knife38570",
+            "def": "MeleeWeapon_Knife",
+            "stuff": "Plasteel",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 276,
+            "count": 1,
+            "pos": "(108, 0, 129)",
+            "forbidden": false,
+            "forbidden_field_present": false,
+            "spawned_tick": 80937,
+            "despawned_tick": -1
+          }
+        ],
+        "wood": [
+          {
+            "id": "WoodLog38593",
+            "count": 45,
+            "pos": "(107, 0, 109)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38594",
+            "count": 53,
+            "pos": "(112, 0, 111)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38595",
+            "count": 47,
+            "pos": "(111, 0, 107)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38596",
+            "count": 61,
+            "pos": "(108, 0, 110)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38597",
+            "count": 45,
+            "pos": "(121, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38598",
+            "count": 49,
+            "pos": "(118, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog41897",
+            "count": 2,
+            "pos": "(105, 0, 125)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42142",
+            "count": 71,
+            "pos": "(105, 0, 129)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog77974",
+            "count": 14,
+            "pos": "(123, 0, 132)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          }
+        ],
+        "wood_total": 387,
+        "spots": [
+          {
+            "id": "CraftingSpot78052",
+            "pos": "(108, 0, 130)",
+            "spawned_tick": 78093,
+            "bills": [
+              {
+                "id": 2,
+                "recipe": "Make_MeleeWeapon_Club",
+                "repeat_mode": "RepeatCount",
+                "repeat_count": 0,
+                "repeat_count_field_present": false,
+                "store_mode": "BestStockpile",
+                "bound_uft": "null",
+                "allowed_materials": [
+                  "WoodLog"
+                ]
+              }
+            ]
+          }
+        ],
+        "unfinished": [],
+        "scope": "Read-only explicit XML. Active map subtree only for ground weapons and wood (including pawn and unfinished containers); world-pawn gear excluded. Omitted forbidden is false; omitted quality remains absent, not Normal. Other omitted numeric fields use zero; repeatCount presence retained. Work-priority vector is not decoded."
+      }
+    },
+    {
+      "name": "weapons-stopped-a",
+      "path": ".local-research/runtime/profile-20261102/Saves/weapons-stopped-a.rws",
+      "save": {
+        "file": "weapons-stopped-a.rws",
+        "sha256": "a19abcd5cbb547b8642df0c6b825b3f45684fb538f35d470f29d944747a0f9a1",
+        "bytes": 6124300,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 81128,
+        "worker": {
+          "id": "Human961",
+          "nick": "Squint",
+          "pos": "(104, 0, 125)",
+          "crafting": {
+            "level": 3,
+            "xp_since_level": 178.499756
+          },
+          "equipment": [],
+          "inventory": [
+            {
+              "id": "WakeUp964",
+              "def": "WakeUp",
+              "stuff": "",
+              "quality": "",
+              "quality_field_present": false,
+              "health": 50,
+              "count": 4,
+              "pos": "",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": -1
+            }
+          ],
+          "carried": [],
+          "job": {
+            "def": "HaulToCell",
+            "target_a": "Thing_WoodLog41897",
+            "target_b": "(105, 0, 129)",
+            "target_c": "",
+            "bill": "null",
+            "count": 4,
+            "player_forced": false,
+            "driver": "JobDriver_HaulToCell",
+            "toil_index": 4,
+            "ticks_left": -80,
+            "start_tick": 81048,
+            "work_left": 0.0,
+            "bill_start_tick": 0,
+            "ticks_spent_recipe": 0
+          },
+          "work_priority_values": [
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            0
+          ]
+        },
+        "ground_weapons": [
+          {
+            "id": "Gun_BoltActionRifle38568",
+            "def": "Gun_BoltActionRifle",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 97,
+            "count": 1,
+            "pos": "(106, 0, 121)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 271,
+            "despawned_tick": -1
+          },
+          {
+            "id": "Gun_Revolver38569",
+            "def": "Gun_Revolver",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 100,
+            "count": 1,
+            "pos": "(113, 0, 119)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 305,
+            "despawned_tick": -1
+          },
+          {
+            "id": "MeleeWeapon_Club78067",
+            "def": "MeleeWeapon_Club",
+            "stuff": "WoodLog",
+            "quality": "",
+            "quality_field_present": false,
+            "health": 65,
+            "count": 1,
+            "pos": "(104, 0, 127)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 81047,
+            "despawned_tick": -1
+          },
+          {
+            "id": "MeleeWeapon_Knife38570",
+            "def": "MeleeWeapon_Knife",
+            "stuff": "Plasteel",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 276,
+            "count": 1,
+            "pos": "(108, 0, 129)",
+            "forbidden": false,
+            "forbidden_field_present": false,
+            "spawned_tick": 80937,
+            "despawned_tick": -1
+          }
+        ],
+        "wood": [
+          {
+            "id": "WoodLog38593",
+            "count": 45,
+            "pos": "(107, 0, 109)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38594",
+            "count": 53,
+            "pos": "(112, 0, 111)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38595",
+            "count": 47,
+            "pos": "(111, 0, 107)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38596",
+            "count": 61,
+            "pos": "(108, 0, 110)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38597",
+            "count": 45,
+            "pos": "(121, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38598",
+            "count": 49,
+            "pos": "(118, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog41897",
+            "count": 2,
+            "pos": "(105, 0, 125)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42142",
+            "count": 71,
+            "pos": "(105, 0, 129)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog77974",
+            "count": 14,
+            "pos": "(123, 0, 132)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          }
+        ],
+        "wood_total": 387,
+        "spots": [
+          {
+            "id": "CraftingSpot78052",
+            "pos": "(108, 0, 130)",
+            "spawned_tick": 78093,
+            "bills": [
+              {
+                "id": 2,
+                "recipe": "Make_MeleeWeapon_Club",
+                "repeat_mode": "RepeatCount",
+                "repeat_count": 0,
+                "repeat_count_field_present": false,
+                "store_mode": "BestStockpile",
+                "bound_uft": "null",
+                "allowed_materials": [
+                  "WoodLog"
+                ]
+              }
+            ]
+          }
+        ],
+        "unfinished": [],
+        "scope": "Read-only explicit XML. Active map subtree only for ground weapons and wood (including pawn and unfinished containers); world-pawn gear excluded. Omitted forbidden is false; omitted quality remains absent, not Normal. Other omitted numeric fields use zero; repeatCount presence retained. Work-priority vector is not decoded."
+      }
+    },
+    {
+      "name": "weapons-stopped-b",
+      "path": ".local-research/runtime/profile-20261102/Saves/weapons-stopped-b.rws",
+      "save": {
+        "file": "weapons-stopped-b.rws",
+        "sha256": "2699fc8b81d98ecf94b2839a928804b964498165fdec94120e42164778197edf",
+        "bytes": 6124300,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 81128,
+        "worker": {
+          "id": "Human961",
+          "nick": "Squint",
+          "pos": "(104, 0, 125)",
+          "crafting": {
+            "level": 3,
+            "xp_since_level": 178.499756
+          },
+          "equipment": [],
+          "inventory": [
+            {
+              "id": "WakeUp964",
+              "def": "WakeUp",
+              "stuff": "",
+              "quality": "",
+              "quality_field_present": false,
+              "health": 50,
+              "count": 4,
+              "pos": "",
+              "forbidden": false,
+              "forbidden_field_present": false,
+              "spawned_tick": 0,
+              "despawned_tick": -1
+            }
+          ],
+          "carried": [],
+          "job": {
+            "def": "HaulToCell",
+            "target_a": "Thing_WoodLog41897",
+            "target_b": "(105, 0, 129)",
+            "target_c": "",
+            "bill": "null",
+            "count": 4,
+            "player_forced": false,
+            "driver": "JobDriver_HaulToCell",
+            "toil_index": 4,
+            "ticks_left": -80,
+            "start_tick": 81048,
+            "work_left": 0.0,
+            "bill_start_tick": 0,
+            "ticks_spent_recipe": 0
+          },
+          "work_priority_values": [
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            0
+          ]
+        },
+        "ground_weapons": [
+          {
+            "id": "Gun_BoltActionRifle38568",
+            "def": "Gun_BoltActionRifle",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 97,
+            "count": 1,
+            "pos": "(106, 0, 121)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 271,
+            "despawned_tick": -1
+          },
+          {
+            "id": "Gun_Revolver38569",
+            "def": "Gun_Revolver",
+            "stuff": "",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 100,
+            "count": 1,
+            "pos": "(113, 0, 119)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 305,
+            "despawned_tick": -1
+          },
+          {
+            "id": "MeleeWeapon_Club78067",
+            "def": "MeleeWeapon_Club",
+            "stuff": "WoodLog",
+            "quality": "",
+            "quality_field_present": false,
+            "health": 65,
+            "count": 1,
+            "pos": "(104, 0, 127)",
+            "forbidden": true,
+            "forbidden_field_present": true,
+            "spawned_tick": 81047,
+            "despawned_tick": -1
+          },
+          {
+            "id": "MeleeWeapon_Knife38570",
+            "def": "MeleeWeapon_Knife",
+            "stuff": "Plasteel",
+            "quality": "Normal",
+            "quality_field_present": true,
+            "health": 276,
+            "count": 1,
+            "pos": "(108, 0, 129)",
+            "forbidden": false,
+            "forbidden_field_present": false,
+            "spawned_tick": 80937,
+            "despawned_tick": -1
+          }
+        ],
+        "wood": [
+          {
+            "id": "WoodLog38593",
+            "count": 45,
+            "pos": "(107, 0, 109)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38594",
+            "count": 53,
+            "pos": "(112, 0, 111)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38595",
+            "count": 47,
+            "pos": "(111, 0, 107)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38596",
+            "count": 61,
+            "pos": "(108, 0, 110)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38597",
+            "count": 45,
+            "pos": "(121, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog38598",
+            "count": 49,
+            "pos": "(118, 0, 126)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": true
+          },
+          {
+            "id": "WoodLog41897",
+            "count": 2,
+            "pos": "(105, 0, 125)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog42142",
+            "count": 71,
+            "pos": "(105, 0, 129)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          },
+          {
+            "id": "WoodLog77974",
+            "count": 14,
+            "pos": "(123, 0, 132)",
+            "parent": "things",
+            "ingredient_of": "",
+            "forbidden": false
+          }
+        ],
+        "wood_total": 387,
+        "spots": [
+          {
+            "id": "CraftingSpot78052",
+            "pos": "(108, 0, 130)",
+            "spawned_tick": 78093,
+            "bills": [
+              {
+                "id": 2,
+                "recipe": "Make_MeleeWeapon_Club",
+                "repeat_mode": "RepeatCount",
+                "repeat_count": 0,
+                "repeat_count_field_present": false,
+                "store_mode": "BestStockpile",
+                "bound_uft": "null",
+                "allowed_materials": [
+                  "WoodLog"
+                ]
+              }
+            ]
+          }
+        ],
+        "unfinished": [],
+        "scope": "Read-only explicit XML. Active map subtree only for ground weapons and wood (including pawn and unfinished containers); world-pawn gear excluded. Omitted forbidden is false; omitted quality remains absent, not Normal. Other omitted numeric fields use zero; repeatCount presence retained. Work-priority vector is not decoded."
+      }
+    }
+  ],
+  "preparation": {
+    "baseline": "injuries-stopped-b",
+    "worker": "Human961",
+    "god_mode_inherited": true,
+    "god_mode_disabled_before_actions": true,
+    "developer_mode_retained": true,
+    "dev_spawned_items": false,
+    "dev_spawned_materials": false,
+    "skills_modified": false,
+    "research_modified": false,
+    "save_xml_edited": false,
+    "spot_placed_normally": true,
+    "spot": "CraftingSpot78052",
+    "spot_spawned_tick": 78093,
+    "materials_source": "pre-existing scene WoodLog, not harvested during this round",
+    "initial_weapon_source": "pre-existing forbidden Plasteel Knife38570",
+    "ordinary_wood_only_filter": true,
+    "ordinary_work_assignment_changed": false
+  },
+  "clock": {
+    "entry_ticks": [
+      77192,
+      77192
+    ],
+    "run_windows": [
+      {
+        "start_image": "weapons-008-run-equip-knife.png",
+        "pause_image": "weapons-009-pause-knife.png",
+        "speed_key": 3,
+        "input_start_utc": "2026-11-03T00:21:44.3265258Z",
+        "pause_input_start_utc": "2026-11-03T00:21:46.5998986Z",
+        "requested_capture_wait_ms": 1400,
+        "before_tick": 77192,
+        "after_tick": 78093
+      },
+      {
+        "start_image": "weapons-029-run-craft.png",
+        "pause_image": "weapons-030-pause-craft.png",
+        "speed_key": 3,
+        "input_start_utc": "2026-11-03T00:31:37.1729428Z",
+        "pause_input_start_utc": "2026-11-03T00:31:40.3174226Z",
+        "requested_capture_wait_ms": 2300,
+        "before_tick": 78093,
+        "after_tick": 79302
+      },
+      {
+        "start_image": "weapons-032-run-work.png",
+        "pause_image": "weapons-033-pause-work.png",
+        "speed_key": 3,
+        "input_start_utc": "2026-11-03T00:32:19.4621689Z",
+        "pause_input_start_utc": "2026-11-03T00:32:20.8212265Z",
+        "requested_capture_wait_ms": 500,
+        "before_tick": 79302,
+        "after_tick": 79865
+      },
+      {
+        "start_image": "weapons-034-run-finish.png",
+        "pause_image": "weapons-035-pause-finished.png",
+        "speed_key": 3,
+        "input_start_utc": "2026-11-03T00:33:02.7131856Z",
+        "pause_input_start_utc": "2026-11-03T00:33:05.0614451Z",
+        "requested_capture_wait_ms": 1300,
+        "before_tick": 79865,
+        "after_tick": 80782
+      },
+      {
+        "start_image": "weapons-040-run-swap.png",
+        "pause_image": "weapons-041-pause-swapped.png",
+        "speed_key": 1,
+        "input_start_utc": "2026-11-03T00:35:03.3115446Z",
+        "pause_input_start_utc": "2026-11-03T00:35:06.7585586Z",
+        "requested_capture_wait_ms": 2600,
+        "before_tick": 80782,
+        "after_tick": 81017
+      },
+      {
+        "start_image": "weapons-044-run-drop.png",
+        "pause_image": "weapons-045-pause-dropped.png",
+        "speed_key": 1,
+        "input_start_utc": "2026-11-03T00:36:23.5393724Z",
+        "pause_input_start_utc": "2026-11-03T00:36:25.078932Z",
+        "requested_capture_wait_ms": 600,
+        "before_tick": 81017,
+        "after_tick": 81128
+      }
+    ],
+    "total_advanced_ticks": 3936,
+    "reloads": 0,
+    "space_inputs": 0,
+    "final_ticks": [
+      81128,
+      81128
+    ],
+    "final_pause_verified": true,
+    "exact_action_duration_measured": false
+  },
+  "ui": {
+    "worker": "Squint",
+    "recipe": "Make club",
+    "base_work_amount": 20,
+    "material_required": 40,
+    "spot_work_speed_percent": 40,
+    "spot_environment": "outdoors",
+    "making_activity": "Making club.",
+    "complete_notification": "Bill complete: Make club.",
+    "product": "Wooden club",
+    "product_health_display": "65 / 65",
+    "product_quality_suffix_present": false,
+    "club_mass_kg": 2,
+    "knife_mass_kg": 0.5,
+    "drop_activity": "Dropping wooden club.",
+    "no_storage_reason": "No empty, accessible spot configured to store it"
+  },
+  "outcomes": {
+    "normal_initial_equip_completed": true,
+    "normal_crafting_completed": true,
+    "unfinished_ingredients_observed": true,
+    "wood_consumed": 40,
+    "wood_before": 427,
+    "wood_after": 387,
+    "source_stack": "WoodLog42142",
+    "ingredient_stack": "WoodLog78055",
+    "unfinished_item": "UnfinishedWeapon78056",
+    "produced_item": "MeleeWeapon_Club78067",
+    "produced_stuff": "WoodLog",
+    "produced_health": 65,
+    "produced_quality_field_present": false,
+    "normal_swap_completed": true,
+    "swapped_out_weapon": "MeleeWeapon_Knife38570",
+    "swapped_out_forbidden": false,
+    "normal_drop_completed": true,
+    "dropped_forbidden": true,
+    "drop_ready_ticks_left": 30,
+    "drop_spawned_tick": 81047,
+    "drop_start_tick": 81017,
+    "combat_tested": false,
+    "quality_distribution_tested": false,
+    "research_unlock_tested": false,
+    "precise_duration_tested": false
+  },
+  "screenshots": [
+    {
+      "id": "god-disabled",
+      "image": "runtime/weapons-god-disabled.png",
+      "sha256": "081ae22b9791d3ea772427213e199ce171ecd000eaa198e3640431edf047e4ed",
+      "source_file": ".local-research/runtime/weapons-003-god-disabled.png",
+      "source_sha256": "d1c6737c7c5fd02c8e56657ccf6167a49d5f15870de25ce1eb88ad2e1fa6c5a4",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        1170,
+        0,
+        220,
+        90
+      ],
+      "observed_utc": "2026-11-03T00:20:53.219266Z",
+      "observation": "Inherited God mode toggled off before ordinary weapon actions; toolbar face white."
+    },
+    {
+      "id": "empty-gear",
+      "image": "runtime/weapons-empty-gear.png",
+      "sha256": "5560da00d55f99db1678f0dc7aefc6bb4d73aaec25d984bb09e29d8faec57f94",
+      "source_file": ".local-research/runtime/weapons-005-empty-gear.png",
+      "source_sha256": "cb98e1332816ecccd0ccca14146c41ee81dda0ab5480a4fd03a3cf2feb285e44",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        750,
+        460,
+        470
+      ],
+      "observed_utc": "2026-11-03T00:20:55.9402928Z",
+      "observation": "Squint equipment initially empty; inherited clothes and Wake-up inventory retained."
+    },
+    {
+      "id": "equip-knife-menu",
+      "image": "runtime/weapons-equip-knife-menu.png",
+      "sha256": "daf76be0b04eb7a8cd3251c57dbf09676b00ee0df52a7e627a69afef1efedd8c",
+      "source_file": ".local-research/runtime/weapons-006-knife-menu.png",
+      "source_sha256": "ad2098bde17fe9cc043fc68eea286d38362f2021a287a32aeb2b12f459d9b614",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        1390,
+        995,
+        305,
+        70
+      ],
+      "observed_utc": "2026-11-03T00:20:57.3177736Z",
+      "observation": "Ordinary Equip plasteel knife (normal 99%) option."
+    },
+    {
+      "id": "knife-equipped",
+      "image": "runtime/weapons-knife-equipped.png",
+      "sha256": "8f2827522b7c1c1f518cc190e3d6793d60a6b07d9d059a8d1c40ce5df871cc07",
+      "source_file": ".local-research/runtime/weapons-009-pause-knife.png",
+      "source_sha256": "09a74f52098bff90689a5766c037da642e47a7cc80f338f6a7177f51bb674f68",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        750,
+        460,
+        470
+      ],
+      "observed_utc": "2026-11-03T00:21:47.5990919Z",
+      "observation": "Same existing plasteel knife appears in Equipment, 0.5 kg."
+    },
+    {
+      "id": "crafting-spot",
+      "image": "runtime/weapons-crafting-spot.png",
+      "sha256": "2e000fbbe8a05f04ddc174c16d231e42c6fd12065975a5ab4dc75dbe55de740e",
+      "source_file": ".local-research/runtime/weapons-016-spot-selected.png",
+      "source_sha256": "f0d0928934eee39c351c3055c1ececad9fd14a9ea9bfbb2d31e97283ca4264bb",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1220,
+        650,
+        190
+      ],
+      "observed_utc": "2026-11-03T00:24:24.2718996Z",
+      "observation": "Ordinarily placed crafting spot, UI work speed 40% outdoors."
+    },
+    {
+      "id": "club-recipe",
+      "image": "runtime/weapons-club-recipe.png",
+      "sha256": "5fb6daad594807c46c571f16f1470ca47b41e3f062266aa2dc44f552ad9cf3cc",
+      "source_file": ".local-research/runtime/weapons-020-resume.png",
+      "source_sha256": "e75182a044b5482eca0a1779de41f0075280839f34fbff93f57800346fde8e04",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        75,
+        750,
+        600,
+        245
+      ],
+      "observed_utc": "2026-11-03T00:29:41.5547744Z",
+      "observation": "Make club recipe tooltip shows 40 material and 1 product."
+    },
+    {
+      "id": "wood-only-bill",
+      "image": "runtime/weapons-wood-only-bill.png",
+      "sha256": "b52018204a5d2966fb30ea4d87d11cb9f15993f88dec34627bb13654b4274af5",
+      "source_file": ".local-research/runtime/weapons-024-wood-only.png",
+      "source_sha256": "e7a402d6a800b189f1aa6bc49812539f41935425f5fa74dcf505c3db8e98f00f",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        875,
+        385,
+        810,
+        670
+      ],
+      "observed_utc": "2026-11-03T00:30:56.6486349Z",
+      "observation": "Ordinary bill Do 1x, only Wood allowed; base work amount 20, requires 40 metal wood or stone."
+    },
+    {
+      "id": "prioritize-craft",
+      "image": "runtime/weapons-prioritize-craft.png",
+      "sha256": "eae73666d4c225656a4370108084a0dd9bda2f3366a8838e811986e4680ca2c6",
+      "source_file": ".local-research/runtime/weapons-027-prioritize-menu.png",
+      "source_sha256": "7dd98640de788bef2dccf0aaa284c92f1e1608deb1f4f1cb3b25606090359202",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        1295,
+        735,
+        280,
+        65
+      ],
+      "observed_utc": "2026-11-03T00:31:00.7033499Z",
+      "observation": "Ordinary Prioritize crafting at crafting spot option."
+    },
+    {
+      "id": "making-activity",
+      "image": "runtime/weapons-making-activity.png",
+      "sha256": "bfcb4ef72b4c362e7b56a1a2c6b53bddf99ca092cfb465a57a0c7fa000b0221f",
+      "source_file": ".local-research/runtime/weapons-031-crafting-visible.png",
+      "source_sha256": "da0c52ad0975479f3a2366a578aeccf2561caff18fa1441081063de2314b42da",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1220,
+        650,
+        190
+      ],
+      "observed_utc": "2026-11-03T00:32:19.0830059Z",
+      "observation": "Squint normally Making club; original intermediate save contains unfinished weapon."
+    },
+    {
+      "id": "making-scene",
+      "image": "runtime/weapons-making-scene.png",
+      "sha256": "b5d2bf78e767cface752a5354402f7d6a7c3df56b78b7a4c5e32c424c3365c16",
+      "source_file": ".local-research/runtime/weapons-031-crafting-visible.png",
+      "source_sha256": "da0c52ad0975479f3a2366a578aeccf2561caff18fa1441081063de2314b42da",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        1270,
+        720,
+        160,
+        105
+      ],
+      "observed_utc": "2026-11-03T00:32:19.0830059Z",
+      "observation": "Worker at ordinary outdoor crafting spot."
+    },
+    {
+      "id": "bill-complete",
+      "image": "runtime/weapons-bill-complete.png",
+      "sha256": "efa1de47019e9381e9b83e014429e1b1b1fc48579990e1add184c9bd2cc52ecf",
+      "source_file": ".local-research/runtime/weapons-035-pause-finished.png",
+      "source_sha256": "07559f95852cf7678b9b0ec2b29c13bb2a156c885c32117137d84edb3f1875fc",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        130,
+        8,
+        550,
+        45
+      ],
+      "observed_utc": "2026-11-03T00:33:06.079393Z",
+      "observation": "Original notification Bill complete: Make club."
+    },
+    {
+      "id": "wooden-club",
+      "image": "runtime/weapons-wooden-club.png",
+      "sha256": "a291fce33befbe976d96c6e75f39b0e289eaea6d4c9aca8c8bb7bfd4ffa073e8",
+      "source_file": ".local-research/runtime/weapons-036-club-product.png",
+      "source_sha256": "d5dc24ec3da048dbd76a970a87c39f8eac84d921198c4c435523cadac7db3efc",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1220,
+        540,
+        190
+      ],
+      "observed_utc": "2026-11-03T00:34:11.3184674Z",
+      "observation": "Ordinary product Wooden club, 65/65 HP; no quality suffix; allowed on ground."
+    },
+    {
+      "id": "equip-club-menu",
+      "image": "runtime/weapons-equip-club-menu.png",
+      "sha256": "2a575dee0872428228bd17d6feee8e6e00bdf7df98a9da69c86ea79bd6fa9ea9",
+      "source_file": ".local-research/runtime/weapons-038-swap-menu.png",
+      "source_sha256": "01b6f7b29f2c8db4cd11fb4faf851e6740f98ecb9a827edd6c7cc4e02943033c",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        1300,
+        760,
+        335,
+        110
+      ],
+      "observed_utc": "2026-11-03T00:34:14.0720521Z",
+      "observation": "Equip wooden club; cannot haul because no empty accessible storage spot."
+    },
+    {
+      "id": "club-equipped",
+      "image": "runtime/weapons-club-equipped.png",
+      "sha256": "8cf74ffbaf10ca516325c4d3e6f2527dd78ae2a9212382a6a80aaebbad2776d6",
+      "source_file": ".local-research/runtime/weapons-042-club-gear.png",
+      "source_sha256": "5030286ecff9560c15934714e909cdcf142c13f78af55feb306997b7c563fbc8",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        750,
+        460,
+        470
+      ],
+      "observed_utc": "2026-11-03T00:35:44.8906999Z",
+      "observation": "Wooden club appears in Equipment, 2 kg, no quality suffix."
+    },
+    {
+      "id": "drop-order",
+      "image": "runtime/weapons-drop-order.png",
+      "sha256": "116b580afe01f33f34743003d4785e4ce810195b492f3951911e91fe7c7fa02c",
+      "source_file": ".local-research/runtime/weapons-043-drop-order.png",
+      "source_sha256": "bd641d08fcc43bd142e41548cc303ced2bd903769346070e5e0916e2f1ac4f28",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1220,
+        700,
+        190
+      ],
+      "observed_utc": "2026-11-03T00:36:11.9430381Z",
+      "observation": "Normal Gear drop arrow orders Dropping wooden club."
+    },
+    {
+      "id": "gear-empty-after-drop",
+      "image": "runtime/weapons-gear-empty-after-drop.png",
+      "sha256": "5560da00d55f99db1678f0dc7aefc6bb4d73aaec25d984bb09e29d8faec57f94",
+      "source_file": ".local-research/runtime/weapons-045-pause-dropped.png",
+      "source_sha256": "6c09113b35227a8b0437ecbd97656e4440ac824be5602d6ab477055694381404",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        750,
+        460,
+        470
+      ],
+      "observed_utc": "2026-11-03T00:36:26.1516316Z",
+      "observation": "Equipment empty after normal Drop; weapon not placed in inventory."
+    },
+    {
+      "id": "dropped-forbidden",
+      "image": "runtime/weapons-dropped-forbidden.png",
+      "sha256": "baf03d42363232837af0be0b83ca9bd47ca24fe9c93ca2c512b9e1f050602e7b",
+      "source_file": ".local-research/runtime/weapons-046-dropped-inspect.png",
+      "source_sha256": "df2d743f5b84418e307cb65cae7fad6430686c49eb2be0f1f5c26d5dec6e345d",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1220,
+        540,
+        190
+      ],
+      "observed_utc": "2026-11-03T00:37:13.4489053Z",
+      "observation": "Same Wooden club 65/65; Allow toggle shows red cross after explicit drop."
+    },
+    {
+      "id": "final-paused",
+      "image": "runtime/weapons-final-paused.png",
+      "sha256": "8944559ce1b33b4a59a324992bdf1f57b1f685c7a460ebc427db835cd1037acc",
+      "source_file": ".local-research/runtime/weapons-stopped-b-return.png",
+      "source_sha256": "4e28eaa2e88cb73ff513c45cf1951523bf5a05e8c067a60e755ad7415a88745b",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        2250,
+        1130,
+        310,
+        280
+      ],
+      "observed_utc": "2026-11-03T00:37:35.9777634Z",
+      "observation": "Final pause control; independent stopped saves both tick 81128."
+    }
+  ],
+  "actions": {
+    "file": "native-weapons-actions.jsonl",
+    "sha256": "0c35856e478f0eb42b2f2f3b0cca591cab762b1ea1e366ee96bd487d233d6509",
+    "count": 130
+  },
+  "limitations": [
+    "One worker and one wood club. No combat, armor penetration, DPS, breakage, ranged attack, accuracy or quality distribution runtime test.",
+    "Developer mode remains enabled from earlier rounds; inherited God mode was explicitly disabled before weapon actions. No new Dev-generated weapons or materials, skill changes, instant construction or save edits in this round.",
+    "Scene and clothing include earlier experiment preparation, including a Dev parka and God-built medical bed. Existing wood provenance is inherited scene stock, not a claimed natural harvest in this round.",
+    "Club has no quality field or quality suffix. Static CompQuality absence is established separately in chapter42; an absent value is not decoded as Normal.",
+    "Wood427 includes forbidden stacks and materials held inside unfinished weapon. HUD stockpile numbers75/35/71 are not total map inventory; normal actors subsequently consolidate loose wood.",
+    "Crafting spot placed through normal Architect UI; zero-build placement alone does not validate construction labor for other benches. Work assignment was already enabled; no blocked-assignment contrast or research unlock tested.",
+    "Bounded run windows include travel, screenshots and resumed ordinary jobs. No per-frame timing was captured. Drop ready30 and spawn tick delta30 agree with static rule, but no stopwatch timing claim is made.",
+    "Two DoBill snapshots advance563 game ticks but recorded ticksSpentDoingRecipeWork rises561; remaining work falls224.402160. Do not equate every elapsed map tick with one recipe-work tick or claim a precise timing model.",
+    "BestStockpile bill produced a ground item because no accessible weapon storage was configured. Weapon hauling/storage was not successfully tested.",
+    "Portable verification checks retained summaries, hashes, identity, material conservation, crops and action ledger. Local mode re-extracts original XML/capture metadata; neither reruns gameplay nor performs OCR.",
+    "Camera edge-scroll occurred while paused near the Dev toolbar; one duplicate spot-placement rejection and one ineffective Add bill click remain in the ledger. Only one CraftingSpot exists in saved scene.",
+    "Original profile and prior baseline untouched; final independent saves share tick81128. No more original-game input by this evidence author after2026-11-03T00:37:35Z."
+  ],
+  "final_state": {
+    "canonical_save": "weapons-stopped-b.rws",
+    "paused": true,
+    "pause_confirmed_by_two_equal_saves": true,
+    "baseline_untouched": true,
+    "normal_profile_touched": false,
+    "game_files_modified": false,
+    "mods_installed": false,
+    "developer_mode": true,
+    "god_mode": false
+  }
+}

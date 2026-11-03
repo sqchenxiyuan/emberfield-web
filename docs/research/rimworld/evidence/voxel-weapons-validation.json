@@ -1,0 +1,4504 @@
+{
+  "generatedAt": "2026-11-03T00:55:22.374Z",
+  "kind": "web-runtime-validated",
+  "scope": "Physical melee weapon production, transport, equip/swap/drop/prohibition and v13 save validation in the true multilayer colony. Controlled boundary tests and one normal seed are separately labeled; native evidence is independent.",
+  "sources": [
+    {
+      "file": "src/voxel/ApparelPanel.tsx",
+      "sha256": "7a3aed1524009e13f3adf784c63ed6f43a100ae88a4f6ac74e290a986d6c5265"
+    },
+    {
+      "file": "src/voxel/CombatPanel.tsx",
+      "sha256": "9ee9b0b137381d2e0d349feac6745d9dfc337c6653fb1a9e3524430810d0bc28"
+    },
+    {
+      "file": "src/voxel/SurvivalPanel.tsx",
+      "sha256": "fa06477460dc705936bc544ff47ef8f1119626fbc746e98057dbd8115b98ae55"
+    },
+    {
+      "file": "src/voxel/TailorPanel.tsx",
+      "sha256": "5efcc439746742be39e603df95c8533c89a00a5c44cbfc74d3c565e2c680014a"
+    },
+    {
+      "file": "src/voxel/WeaponPanel.tsx",
+      "sha256": "5990adb796eb29ea2c02ce84a88d49bc3ad4d4b466a09bb1103bbaf840ea7824"
+    },
+    {
+      "file": "src/voxel/WorldSetup.tsx",
+      "sha256": "32951f3f9d082074ed545795ea51abbd39b2dfbfc88ae62cd63e755db097068a"
+    },
+    {
+      "file": "src/voxel/apparel.ts",
+      "sha256": "d5c0ad649ee59f44a52a38fe0a3f47a32be974fcc11b36c44f5fe5a704eb1629"
+    },
+    {
+      "file": "src/voxel/client.ts",
+      "sha256": "cadf25b5430ad97dcfd6fd9cfa053f8a002f8f90a7df777bc3923c6133e80356"
+    },
+    {
+      "file": "src/voxel/climate.ts",
+      "sha256": "2386d38fc2b258034516de80caee53627d62c184bd18cadb741c213cc781bf29"
+    },
+    {
+      "file": "src/voxel/crafting.ts",
+      "sha256": "b782d30555b5915f647e9d986849da9d6ff0c2ce29f83ab3caf7dd205f174997"
+    },
+    {
+      "file": "src/voxel/farming.ts",
+      "sha256": "0984bc364efff88d7f7773d99f9d7e1cfa5379d4614816669d193d1e7c718c79"
+    },
+    {
+      "file": "src/voxel/injuries.ts",
+      "sha256": "0c704d15e127c776b3de1dec1c6bcfc89ecf34916efed2d3d9639d3c8417df00"
+    },
+    {
+      "file": "src/voxel/logistics.ts",
+      "sha256": "f4262564877d793a62dac672739beb8a31ba7b1cda73c6e56c47f6dc1ef1c381"
+    },
+    {
+      "file": "src/voxel/main.tsx",
+      "sha256": "cbdc141a493aa5a199d2d7d884c2ba1a00fc78b2c096be11c1796d6f6bf039f6"
+    },
+    {
+      "file": "src/voxel/plants.ts",
+      "sha256": "baa7f01b82c047536c8d0a2ee3097e15bce8466418e4442e39155d6be6400195"
+    },
+    {
+      "file": "src/voxel/power.ts",
+      "sha256": "d24d824e96544a080106c4cd861cd9d7eaff9101de82ddced9bee4c5451f1585"
+    },
+    {
+      "file": "src/voxel/preservation.ts",
+      "sha256": "99c86a68c50a032097916e060a667fe1e3ad8d7f5def9d5b55b516acc112048e"
+    },
+    {
+      "file": "src/voxel/render.worker.ts",
+      "sha256": "191ced6c3d17b480fa11f2d3a6845b8e9df111f5f69ded8b7b2bbaf75caf22c0"
+    },
+    {
+      "file": "src/voxel/renderer.ts",
+      "sha256": "4d139255bffe72c4c582d62065a7d8cd1d742ed1ce88421091db1d56c9ba1151"
+    },
+    {
+      "file": "src/voxel/rest.ts",
+      "sha256": "843c08f8188d7a3b3a9cbef507a0568705bb3d5aa5ad2d89395443199aa12099"
+    },
+    {
+      "file": "src/voxel/rooms.ts",
+      "sha256": "67457f7cd217f5746b9562ea2e3ca059af1f424165368d28d511e8a374090b9d"
+    },
+    {
+      "file": "src/voxel/sim.worker.ts",
+      "sha256": "0323931264b656a7e286ee8eeedb3fbb48a8d2bd6ca83206180d78c0f907fb82"
+    },
+    {
+      "file": "src/voxel/style.css",
+      "sha256": "583e19faef1fde263e4df3282a70a7135b062621d1cdc124116ebde04267c520"
+    },
+    {
+      "file": "src/voxel/survival.ts",
+      "sha256": "662cd32c963222ad33f945d1b494e6493c93243a803476cf0d0b0d251c936b6d"
+    },
+    {
+      "file": "src/voxel/thermal.ts",
+      "sha256": "40c614996ba9c8843bc52fbd343a2a625c0fd77c788b1133ae2ba50b6494b127"
+    },
+    {
+      "file": "src/voxel/types.ts",
+      "sha256": "e0aaba0bd8f6a6bc18af471ba92d50f06c018ca613da3758498fe7cea5755c07"
+    },
+    {
+      "file": "src/voxel/weaponProduction.ts",
+      "sha256": "6914c06f25fce40b14f6af8509fed5180fd3c096367af5e2a6896f4ea7518f9f"
+    },
+    {
+      "file": "src/voxel/weapons.ts",
+      "sha256": "83ed4d6c1ebb69e7e070decb1d02aa8fcea884702ab26d966ba1a03cdb0fc730"
+    },
+    {
+      "file": "src/voxel/world.ts",
+      "sha256": "b7eea9a4cbf3b0988cb91544b111b2eada15c4300229bda577091db5faf377fc"
+    },
+    {
+      "file": "src/voxel/worldgen.ts",
+      "sha256": "7f3acf989d9e366793be11bef8f42f352cc36523c09a75a8acb9c944af7770fb"
+    }
+  ],
+  "scripts": [
+    {
+      "file": "scripts/voxel-weapons-campaign-verify.mjs",
+      "sha256": "b66da5d07a6d0daa315877b90f37bec617810fc8ade04a0696632d46cae3c33c"
+    },
+    {
+      "file": "scripts/voxel-weapons-browser-verify.mjs",
+      "sha256": "f2f24f6480ef8f88feb3def433637a52659b7c5332d27e6ccfc77217978fb9fc"
+    },
+    {
+      "file": "scripts/research/verify-voxel-weapons-validation.mjs",
+      "sha256": "6cb1e35f5794027a0d3635cdb28c1781b805c537f4b433a24cf87f5ded0cb7e3"
+    },
+    {
+      "file": "tests/voxel-weapon-production.test.ts",
+      "sha256": "703da53b4435c851f3128feafd41389039aee52c316079a2603b8450a5093329"
+    },
+    {
+      "file": "tests/voxel-weapon-transport.test.ts",
+      "sha256": "7590fb1c34e5bafe4fc9c9cdfe9555c1ed47fab0651c1a3c46e6615092ec5006"
+    },
+    {
+      "file": "tests/voxel-weapons-rules.test.ts",
+      "sha256": "6ef603a4d8de8b2665674c2ec6ac100695f60bdfe7c4853abf80d2a4e885b33d"
+    }
+  ],
+  "assets": [
+    {
+      "file": "dist/assets/CanvasRenderer-B6Mdl2XH.js",
+      "sha256": "10062f733eb334b62322dc9a5c349144757377db9c8f83700bdebc1631dc4c33"
+    },
+    {
+      "file": "dist/assets/CanvasRenderer-CvJKv8ea.js",
+      "sha256": "5d4b258c03d718f6d853263e02653a609eb32e89b492ae3468484e11c9abda64"
+    },
+    {
+      "file": "dist/assets/Filter-3Gl5Xq8e.js",
+      "sha256": "ff7d610e3f8192440593d21cd136f96e4becc82a23699aa498414c5990d20521"
+    },
+    {
+      "file": "dist/assets/Filter-Bmql8mKn.js",
+      "sha256": "2132980b70fc0fbd8ff952708fea983b6914b9e22fdd62b3fb33664b59edd03a"
+    },
+    {
+      "file": "dist/assets/RenderTargetSystem-10VWBYJN.js",
+      "sha256": "15a4d6d93c6085a7dd593141cb9efbe26da8807881658b4798f40b2e03174394"
+    },
+    {
+      "file": "dist/assets/RenderTargetSystem-Cc-lAYeq.js",
+      "sha256": "3e7aeb0965b86f16aee2df1de807a524771ed427801dc1591e0943feb37a6fd3"
+    },
+    {
+      "file": "dist/assets/WebGLRenderer-BOop3V_f.js",
+      "sha256": "bc33a461adc7aad937c65dd40a117b526eda37adfe794cfa834214dd5d122484"
+    },
+    {
+      "file": "dist/assets/WebGLRenderer-CkfXA5YI.js",
+      "sha256": "ffb0495f652127d5d191baaceaf822ada0de7d6be3afe298a6c9672f7cb06717"
+    },
+    {
+      "file": "dist/assets/WebGPURenderer-DWr0ftim.js",
+      "sha256": "74032dee41cfecc9bb311b0e515e0dbc43d4f7760cc5d3ac6056ce63b8385e2d"
+    },
+    {
+      "file": "dist/assets/WebGPURenderer-zMFGatTH.js",
+      "sha256": "d094ebc94dc94a8338c5c0ca7bd6b1909447156a2302247416b321c8ae974126"
+    },
+    {
+      "file": "dist/assets/browserAll-ASrJ4BcO.js",
+      "sha256": "33d97a428be670cefbae2d08bdffad431d2be465e651593704fd7e2d5caae65c"
+    },
+    {
+      "file": "dist/assets/browserAll-DcLNF0vk.js",
+      "sha256": "c0b603ca84267894b381ec6cfae9636912e71499c9135b3cbc18aa453c8eef66"
+    },
+    {
+      "file": "dist/assets/client-CrowJ5J7.js",
+      "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e"
+    },
+    {
+      "file": "dist/assets/getTexelRangeRects-CAzEyzDY.js",
+      "sha256": "ddf268dfde72f3251686976548f8f76fd460f2f516ba379a39cd7ea03fcdcfa6"
+    },
+    {
+      "file": "dist/assets/getTexelRangeRects-Dy8HUIoI.js",
+      "sha256": "8bbb0d808ef79bbde316b91d4311ad257e0676d7cef252b4d4b335c890e13d70"
+    },
+    {
+      "file": "dist/assets/index-BERpEbbU.js",
+      "sha256": "919bfb558a575a0fc7ea6ebff5c322733493e3ec7c907f25a6d90bf01f3e438f"
+    },
+    {
+      "file": "dist/assets/main-Bd4OPQD3.css",
+      "sha256": "dc5627827651affe81bedfa46cbf7057ef1e88932911b4ea18396538b97e69fa"
+    },
+    {
+      "file": "dist/assets/main-BfMgf-Vo.css",
+      "sha256": "77ca9c1f51017f7b74bc8a39db477c52bca3a36b64b499bfc3942c01224dfef8"
+    },
+    {
+      "file": "dist/assets/main-Csg3uMLG.js",
+      "sha256": "aaa7a21fbdde6f6085de4070f311f4fd753892ccc86a1a837464030017af0e5e"
+    },
+    {
+      "file": "dist/assets/main-DV5J8vt8.js",
+      "sha256": "c8aa1dade5109a20576816cf03a062ecf33f54df4670803ff99bf1e5fa5eb21a"
+    },
+    {
+      "file": "dist/assets/render.worker-C2HXeM9H.js",
+      "sha256": "9d1767ad89de98bf5df0e629eda8aed3446166c1d4091382e969a581f6a38d48"
+    },
+    {
+      "file": "dist/assets/render.worker-DSNcKIh7.js",
+      "sha256": "d20eee6ca33b28ab9af0145994a83d57538f915cded4c5c52b0f5ce649a11a58"
+    },
+    {
+      "file": "dist/assets/renderer-DHQ5c_i5.js",
+      "sha256": "6850b28fb79e038e29c3784c38a1ad7c2f52c8dde1ef80a6bada2f004aee9df8"
+    },
+    {
+      "file": "dist/assets/sim.worker-DU3wClZ2.js",
+      "sha256": "3ea82937797e4faff70cf8dd412a5140d2dccc0019a376af619a7061ec1c9422"
+    },
+    {
+      "file": "dist/assets/sim.worker-TVFgUzzb.js",
+      "sha256": "660607d5f3448266fb3aa9d9c6ac5e433a3524c096ab3f5d266cff8590dd8d36"
+    },
+    {
+      "file": "dist/assets/webworkerAll-0b5Tygjj.js",
+      "sha256": "ae2ba31eb7d7b32069b781ede54a2cdf24eb4a5e0b0cd6ad27e0498ed5b47a95"
+    },
+    {
+      "file": "dist/assets/webworkerAll-kJAGJcYC.js",
+      "sha256": "48ba8b3699b88684386fe33d076cc22642620046da511914cd9983084d70ad94"
+    }
+  ],
+  "reports": [
+    {
+      "file": "test-results/weapons-unit.json",
+      "sha256": "c8da188ebd175fce0198e1c31c5c732009518ed76ee136c20b9e5ce62ebbef60"
+    },
+    {
+      "file": "test-results/weapons-build.log",
+      "sha256": "46be8ab3f1012cd497afaea353e1442c2ac6377c36a2cfb28b1c7087e25c9020"
+    },
+    {
+      "file": "test-results/voxel-weapons-campaign/report.json",
+      "sha256": "631db447732a01d69c75b04c857b8d25d26f550259ae568f4b66e8d4c508d7cf"
+    },
+    {
+      "file": "test-results/voxel-weapons-browser/report.json",
+      "sha256": "d4d9d2430e96a874ce72cad484809b87e3c8bc883943c8f27e20b837411860d7"
+    },
+    {
+      "file": "test-results/weapons-regressions.json",
+      "sha256": "8733d1f208f4afc9fc2f4d6b7dc0b474da223138e39a58b5cdf527e4560cb450"
+    },
+    {
+      "file": "test-results/voxel-injuries-browser/report.json",
+      "sha256": "9a8e3418849b140a286e5baf6b9b5d654d53fe0633c1b0c1b1e52f1bbbd2cc0d"
+    },
+    {
+      "file": "test-results/voxel-apparel-browser/report.json",
+      "sha256": "5f4fc7959fa4760c217ec05d29bb9b67627ed822580b7dee81834ada42e04b66"
+    }
+  ],
+  "unit": {
+    "total": 420,
+    "passed": 420,
+    "failed": 0
+  },
+  "weaponTests": [
+    {
+      "title": "migrates genuine published v12 bytes without adding gear or changing needs",
+      "status": "passed"
+    },
+    {
+      "title": "places a free walkable crafting spot and produces a physical no-quality club only after delivering 40 wood",
+      "status": "passed"
+    },
+    {
+      "title": "rejects unsupported spots and longswords at a crafting spot",
+      "status": "passed"
+    },
+    {
+      "title": "retains progress and delivered steel through reload and returns materials when paused",
+      "status": "passed"
+    },
+    {
+      "title": "refuels an empty smithy while a production bill is queued and burns fuel only during actual work",
+      "status": "passed"
+    },
+    {
+      "title": "releases a completed blocked output after fuel is exhausted without repeating work or consuming inputs twice",
+      "status": "passed"
+    },
+    {
+      "title": "keeps weapon while downed in own bed, but ordinary death drops and forbids it",
+      "status": "passed"
+    },
+    {
+      "title": "rejects forged bench recipes, incompatible smith jobs and cross-category duplicate instance identities",
+      "status": "passed"
+    },
+    {
+      "title": "keeps forbidden ground weapons out of automatic hauling, but explicit equip clears the flag and reserves one identity",
+      "status": "passed"
+    },
+    {
+      "title": "reuses the just-vacated pickup tile for the old weapon even when every other ground cell is full",
+      "status": "passed"
+    },
+    {
+      "title": "keeps a drafted equip order through hunger and exhaustion checks and reloads while fetching",
+      "status": "passed"
+    },
+    {
+      "title": "rejects player equipment orders for an enemy instead of producing an unloadable weapon task",
+      "status": "passed"
+    },
+    {
+      "title": "cancels equipped-fetch on actual dual-arm loss without requiring death or downing and preserves saveable weapon identities",
+      "status": "passed"
+    },
+    {
+      "title": "cancels equipped-work on actual dual-arm loss without requiring death or downing and preserves saveable weapon identities",
+      "status": "passed"
+    },
+    {
+      "title": "cancels dropping on actual dual-arm loss without requiring death or downing and preserves saveable weapon identities",
+      "status": "passed"
+    },
+    {
+      "title": "cancels unarmed-fetch on actual dual-arm loss without requiring death or downing and preserves saveable weapon identities",
+      "status": "passed"
+    },
+    {
+      "title": "rejects a saved equip task whose valid injuries already remove all manipulation",
+      "status": "passed"
+    },
+    {
+      "title": "rejects a saved drop task whose valid injuries already remove all manipulation",
+      "status": "passed"
+    },
+    {
+      "title": "retains an equipped old weapon and carried replacement when no cell is free, through save/load and interruption",
+      "status": "passed"
+    },
+    {
+      "title": "failed pre-equip unloading is atomic and does not clear prohibition or partially merge cargo",
+      "status": "passed"
+    },
+    {
+      "title": "persists the half-second voluntary drop and marks the resulting physical object forbidden",
+      "status": "passed"
+    },
+    {
+      "title": "keeps a casualty weapon pending on full ground, then drops exactly once after one cell becomes free",
+      "status": "passed"
+    },
+    {
+      "title": "honors a newly applied prohibition while an automatic hauler is still approaching",
+      "status": "passed"
+    },
+    {
+      "title": "hauls one nonmergeable weapon up a ladder and preserves quality and HP across cargo save/load",
+      "status": "passed"
+    },
+    {
+      "title": "rejects duplicate equipped/cargo identities, contradictory pending drops and misplaced prohibition fields",
+      "status": "passed"
+    },
+    {
+      "title": "keeps three materially distinct recipes, bench speed and original longsword requirements",
+      "status": "passed"
+    },
+    {
+      "title": "preserves identity and material HP; club has no rolled quality, weapons have no wear clock",
+      "status": "passed"
+    },
+    {
+      "title": "applies wood blunt material power and preserves the Poke source damage definition",
+      "status": "passed"
+    },
+    {
+      "title": "uses weapon-specific quality factors and derives AP before hit damage randomization",
+      "status": "passed"
+    },
+    {
+      "title": "normalizes the healthy bare-handed Best group to two equal fists, not a 7% bite chance",
+      "status": "passed"
+    },
+    {
+      "title": "selects club head as Best and shares Mid across its handle and both natural fists",
+      "status": "passed"
+    },
+    {
+      "title": "reconstructs normal knife distribution including the two natural fists",
+      "status": "passed"
+    },
+    {
+      "title": "shares longsword Best across stab and slash, and quality can remove fists from Mid",
+      "status": "passed"
+    },
+    {
+      "title": "recomputes the bounded candidate groups for injured or missing natural tools",
+      "status": "passed"
+    },
+    {
+      "title": "keeps body group damage, global attack factors and weapon eligibility separate",
+      "status": "passed"
+    },
+    {
+      "title": "labels seven-region injury mapping explicitly and preserves permanent limb disability",
+      "status": "passed"
+    },
+    {
+      "title": "uses caller-supplied sampling deterministically across JSON persistence and boundaries",
+      "status": "passed"
+    },
+    {
+      "title": "strictly rejects malformed persisted items, invented club quality and invalid numerical inputs",
+      "status": "passed"
+    }
+  ],
+  "historicalSave": {
+    "file": "tests/fixtures/voxel-v12-start.json",
+    "sha256": "3cda54c4a0a4553175be0c982baeb22a87ee5acb514865b42c788ad69a272086"
+  },
+  "campaign": {
+    "startedAt": "2026-11-03T00:52:56.573Z",
+    "scope": "Fresh generator-2 colony, normal command/step/save/load and read-only terrain queries. No injected resources, terrain, health, positions, work progress or time. Actual woodcutting, underground mining, elevated smithy, physical weapons and equipment transactions.",
+    "checks": [
+      {
+        "name": "normal trees supply physical wood for weapons, fuel and the upper platform",
+        "tick": 1272,
+        "elapsed": 1272
+      },
+      {
+        "name": "the free crafting spot receives wood and produces one physical club",
+        "tick": 1861,
+        "elapsed": 589
+      },
+      {
+        "name": "workers excavate an actual three-level mineshaft",
+        "tick": 2285,
+        "elapsed": 424
+      },
+      {
+        "name": "miners follow a reachable underground corridor to real steel",
+        "tick": 3005,
+        "elapsed": 720
+      },
+      {
+        "name": "miners follow a reachable underground corridor to real steel",
+        "tick": 4465,
+        "elapsed": 1460
+      },
+      {
+        "name": "miners follow a reachable underground corridor to real steel",
+        "tick": 6645,
+        "elapsed": 2180
+      },
+      {
+        "name": "miners follow a reachable underground corridor to real steel",
+        "tick": 11174,
+        "elapsed": 4529
+      },
+      {
+        "name": "miners follow a reachable underground corridor to real steel",
+        "tick": 12055,
+        "elapsed": 881
+      },
+      {
+        "name": "miners follow a reachable underground corridor to real steel",
+        "tick": 12126,
+        "elapsed": 71
+      },
+      {
+        "name": "finite ore supplied all metal without granting materials",
+        "tick": 12126,
+        "steel": 240
+      },
+      {
+        "name": "steel is carried from the mine into a real knife recipe",
+        "tick": 13506,
+        "elapsed": 1380
+      },
+      {
+        "name": "wooden ladders reach the elevated workshop",
+        "tick": 13915,
+        "elapsed": 409
+      },
+      {
+        "name": "upper landing is built",
+        "tick": 14014,
+        "elapsed": 99
+      },
+      {
+        "name": "platform extends from physically carried wood",
+        "tick": 14350,
+        "elapsed": 336
+      },
+      {
+        "name": "platform extends from physically carried wood",
+        "tick": 14612,
+        "elapsed": 262
+      },
+      {
+        "name": "platform extends from physically carried wood",
+        "tick": 14900,
+        "elapsed": 288
+      },
+      {
+        "name": "platform extends from physically carried wood",
+        "tick": 15217,
+        "elapsed": 317
+      },
+      {
+        "name": "100 steel is delivered upstairs and the fueled smithy is built",
+        "tick": 16441,
+        "elapsed": 1224
+      },
+      {
+        "name": "fuel and steel reach the upper smithy and sword work starts",
+        "tick": 17052,
+        "elapsed": 611
+      },
+      {
+        "name": "production reload preserves delivered metal, fuel and unfinished work",
+        "tick": 17052
+      },
+      {
+        "name": "normal work reaches the last seconds of the longsword",
+        "tick": 27343,
+        "elapsed": 10291
+      },
+      {
+        "name": "one physical longsword completes after normal needs and working time",
+        "tick": 27388,
+        "elapsed": 45
+      },
+      {
+        "name": "all three weapon kinds are physically hauled onto the upper storage floor",
+        "tick": 27388,
+        "elapsed": 0
+      },
+      {
+        "name": "drafted colonist climbs to the stockpile and equips the real club",
+        "tick": 27422,
+        "elapsed": 34
+      },
+      {
+        "name": "equipping a knife drops the previous club without forbidding or duplicating it",
+        "tick": 27426,
+        "elapsed": 4
+      },
+      {
+        "name": "a delayed manual drop survives reload and forbids the actual ground knife",
+        "tick": 27436,
+        "elapsed": 6
+      },
+      {
+        "name": "explicit re-equipping removes the ground prohibition",
+        "tick": 27438,
+        "elapsed": 2
+      },
+      {
+        "name": "the physical longsword replaces the knife while all three identities remain",
+        "tick": 27442,
+        "elapsed": 4
+      },
+      {
+        "name": "final save keeps physical equipment, ground items and resource accounting",
+        "tick": 27442
+      }
+    ],
+    "commands": [
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "craftingSpot",
+          "from": {
+            "x": 31,
+            "y": 30,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "已划定制作点，点击设置木棒或匕首配方",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 30,
+            "y": 30,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 34,
+            "y": 30,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 31,
+            "y": 31,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 33,
+            "y": 31,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 32,
+            "y": 32,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 32,
+            "y": 27,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 31,
+            "y": 28,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 30,
+            "y": 29,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 29,
+            "y": 30,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 30,
+            "y": 31,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 34,
+            "y": 31,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 31,
+            "y": 32,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 33,
+            "y": 32,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 32,
+            "y": 33,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 32,
+            "y": 26,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 31,
+            "y": 27,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 33,
+            "y": 27,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 30,
+            "y": 28,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 34,
+            "y": 28,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 29,
+            "y": 29,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 35,
+            "y": 29,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 28,
+            "y": 30,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 36,
+            "y": 30,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 29,
+            "y": 31,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 35,
+            "y": 31,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 30,
+            "y": 32,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 34,
+            "y": 32,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 32,
+            "y": 25,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 31,
+            "y": 26,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 33,
+            "y": 26,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 30,
+            "y": 27,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 34,
+            "y": 27,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 35,
+            "y": 28,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 28,
+            "y": 29,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 36,
+            "y": 29,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 27,
+            "y": 30,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 37,
+            "y": 30,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 36,
+            "y": 31,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 29,
+            "y": 32,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 35,
+            "y": 32,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 30,
+            "y": 33,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 32,
+            "y": 24,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 33,
+            "y": 25,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 30,
+            "y": 26,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 34,
+            "y": 26,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 29,
+            "y": 27,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 35,
+            "y": 27,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 28,
+            "y": 28,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 35,
+            "y": 30,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 28,
+            "y": 31,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 31,
+            "y": 25,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 26,
+            "y": 30,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 32,
+            "y": 23,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 27,
+            "y": 32,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 26,
+            "y": 28,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 23,
+            "y": 30,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 27,
+            "y": 25,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 26,
+            "y": 26,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 23,
+            "y": 29,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 41,
+            "y": 31,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 1272,
+        "command": {
+          "type": "weaponBill",
+          "benchId": 381,
+          "kind": "woodClub",
+          "target": 1,
+          "paused": false
+        },
+        "result": {
+          "ok": true,
+          "message": "武器制作目标已更新"
+        }
+      },
+      {
+        "tick": 1861,
+        "command": {
+          "type": "designate",
+          "tool": "shaft",
+          "from": {
+            "x": 32,
+            "y": 31,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 4 项工作，需求木材 8；缺料和不可达任务会等待",
+          "count": 4
+        }
+      },
+      {
+        "tick": 2285,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 32,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 2285,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 33,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 2285,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 34,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 2285,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 35,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 2285,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 36,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 2285,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 37,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 2285,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 38,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 2285,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 39,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 2285,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 40,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 3005,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 3005,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 34,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 3005,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 35,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 3005,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 36,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 3005,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 37,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 3005,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 38,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 3005,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 39,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 3005,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 40,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 3005,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 41,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 3005,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 42,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 3005,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 43,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 3005,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 44,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 3005,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 45,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 3005,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 46,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 3005,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 47,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 3005,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 48,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 3005,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 48,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 3005,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 48,
+            "y": 29,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 29,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 28,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 27,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 26,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 25,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 24,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 23,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 22,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 21,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 20,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 19,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 18,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 17,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 16,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 15,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 14,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 13,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 12,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 11,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 10,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 9,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 8,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 7,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4465,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 6,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 29,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 28,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 27,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 26,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 25,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 24,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 23,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 22,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 21,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 20,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 19,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 18,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 17,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 16,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 15,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 14,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 13,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 12,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 11,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 10,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 9,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 8,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6645,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 7,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 29,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 28,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 27,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 26,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 25,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 24,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 23,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 22,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 21,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 20,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 19,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 18,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 17,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 16,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 15,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 14,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 13,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 12,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 11,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 10,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 9,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 8,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 7,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 11174,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 6,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12055,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 6,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12126,
+        "command": {
+          "type": "weaponBill",
+          "benchId": 381,
+          "kind": "steelKnife",
+          "target": 1,
+          "paused": false
+        },
+        "result": {
+          "ok": true,
+          "message": "武器制作目标已更新"
+        }
+      },
+      {
+        "tick": 13506,
+        "command": {
+          "type": "designate",
+          "tool": "up",
+          "from": {
+            "x": 32,
+            "y": 35,
+            "z": 8
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 4 项工作，需求木材 8；缺料和不可达任务会等待",
+          "count": 4
+        }
+      },
+      {
+        "tick": 13915,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 32,
+            "y": 36,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 14014,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 33,
+            "y": 34,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 14014,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 33,
+            "y": 35,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 14014,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 33,
+            "y": 36,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 14014,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 33,
+            "y": 37,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 14350,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 34,
+            "y": 34,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 14350,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 34,
+            "y": 35,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 14350,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 34,
+            "y": 36,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 14350,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 34,
+            "y": 37,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 14612,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 35,
+            "y": 34,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 14612,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 35,
+            "y": 35,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 14612,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 35,
+            "y": 36,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 14612,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 35,
+            "y": 37,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 14900,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 36,
+            "y": 34,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 14900,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 36,
+            "y": 35,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 14900,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 36,
+            "y": 36,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 14900,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 36,
+            "y": 37,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15217,
+        "command": {
+          "type": "designate",
+          "tool": "smithy",
+          "from": {
+            "x": 33,
+            "y": 35,
+            "z": 11
+          },
+          "axis": "x"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 16441,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 33,
+            "y": 37,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 16441,
+        "command": {
+          "type": "storage",
+          "from": {
+            "x": 33,
+            "y": 37,
+            "z": 11
+          },
+          "priority": 3,
+          "accepts": [
+            "weapon"
+          ]
+        },
+        "result": {
+          "ok": true,
+          "count": 1,
+          "message": "已更新 1 格仓储；搬运会优先选择更高优先级区域"
+        }
+      },
+      {
+        "tick": 16441,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 34,
+            "y": 37,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 16441,
+        "command": {
+          "type": "storage",
+          "from": {
+            "x": 34,
+            "y": 37,
+            "z": 11
+          },
+          "priority": 3,
+          "accepts": [
+            "weapon"
+          ]
+        },
+        "result": {
+          "ok": true,
+          "count": 1,
+          "message": "已更新 1 格仓储；搬运会优先选择更高优先级区域"
+        }
+      },
+      {
+        "tick": 16441,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 35,
+            "y": 37,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 16441,
+        "command": {
+          "type": "storage",
+          "from": {
+            "x": 35,
+            "y": 37,
+            "z": 11
+          },
+          "priority": 3,
+          "accepts": [
+            "weapon"
+          ]
+        },
+        "result": {
+          "ok": true,
+          "count": 1,
+          "message": "已更新 1 格仓储；搬运会优先选择更高优先级区域"
+        }
+      },
+      {
+        "tick": 16441,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 36,
+            "y": 37,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 16441,
+        "command": {
+          "type": "storage",
+          "from": {
+            "x": 36,
+            "y": 37,
+            "z": 11
+          },
+          "priority": 3,
+          "accepts": [
+            "weapon"
+          ]
+        },
+        "result": {
+          "ok": true,
+          "count": 1,
+          "message": "已更新 1 格仓储；搬运会优先选择更高优先级区域"
+        }
+      },
+      {
+        "tick": 16441,
+        "command": {
+          "type": "weaponBill",
+          "benchId": 636,
+          "kind": "steelLongsword",
+          "target": 1,
+          "paused": false
+        },
+        "result": {
+          "ok": true,
+          "message": "武器制作目标已更新"
+        }
+      },
+      {
+        "tick": 27388,
+        "command": {
+          "type": "draft",
+          "pawnId": 364,
+          "drafted": true
+        },
+        "result": {
+          "ok": true,
+          "message": "已征召，等待战斗指令"
+        }
+      },
+      {
+        "tick": 27388,
+        "command": {
+          "type": "equipWeapon",
+          "pawnId": 364,
+          "weaponId": 416
+        },
+        "result": {
+          "ok": true,
+          "message": "前往装备木棒"
+        }
+      },
+      {
+        "tick": 27422,
+        "command": {
+          "type": "equipWeapon",
+          "pawnId": 364,
+          "weaponId": 594
+        },
+        "result": {
+          "ok": true,
+          "message": "前往装备钢匕首"
+        }
+      },
+      {
+        "tick": 27426,
+        "command": {
+          "type": "dropWeapon",
+          "pawnId": 364
+        },
+        "result": {
+          "ok": true,
+          "message": "准备放下武器"
+        }
+      },
+      {
+        "tick": 27436,
+        "command": {
+          "type": "equipWeapon",
+          "pawnId": 364,
+          "weaponId": 594
+        },
+        "result": {
+          "ok": true,
+          "message": "前往装备钢匕首"
+        }
+      },
+      {
+        "tick": 27438,
+        "command": {
+          "type": "equipWeapon",
+          "pawnId": 364,
+          "weaponId": 638
+        },
+        "result": {
+          "ok": true,
+          "message": "前往装备钢长剑"
+        }
+      }
+    ],
+    "fixtures": {
+      "working": {
+        "file": "test-results/voxel-weapons-campaign/working.json",
+        "sha256": "09158fe649858968ee3464efad1f66d5852fa09c90a2c0cc3df0459e6091d414",
+        "tick": 17052
+      },
+      "finishing": {
+        "file": "test-results/voxel-weapons-campaign/finishing.json",
+        "sha256": "eff2b58619f09fd142606aac968d63a815528bf65b9db6a24a8b58dddf10ff36",
+        "tick": 27343
+      },
+      "ready": {
+        "file": "test-results/voxel-weapons-campaign/ready.json",
+        "sha256": "101b3fb4655921831c48953ab0e1b891af8200b58a337cd7f464ca97a2421e48",
+        "tick": 27388
+      },
+      "equipped": {
+        "file": "test-results/voxel-weapons-campaign/equipped.json",
+        "sha256": "3612ece19ca71001e7036356b5013e30ce9a8d49b0b94469460dd5557f6f3793",
+        "tick": 27426
+      },
+      "dropping": {
+        "file": "test-results/voxel-weapons-campaign/dropping.json",
+        "sha256": "0b4691cbbad971ab04c98af470a5835fa02c3bbfa9282e582daa468568de9b3f",
+        "tick": 27430
+      },
+      "final": {
+        "file": "test-results/voxel-weapons-campaign/final.json",
+        "sha256": "d384b5297d883810f0bdf7a737619e860544f31e3556dc3310e59969f925fa43",
+        "tick": 27442
+      }
+    },
+    "carriedLayers": {
+      "wood@7": 54,
+      "food@7": 4,
+      "chunk@5": 14,
+      "chunk@4": 80,
+      "chunk@6": 5,
+      "chunk@7": 39,
+      "steel@4": 59,
+      "steel@6": 4,
+      "steel@7": 17,
+      "steel@5": 1,
+      "wood@8": 6,
+      "wood@9": 9,
+      "wood@10": 2,
+      "wood@11": 10,
+      "steel@10": 1,
+      "steel@8": 1,
+      "weapon@7": 2,
+      "weapon@11": 3,
+      "weapon@9": 1,
+      "steel@11": 2
+    },
+    "errors": [],
+    "status": "passed",
+    "layout": {
+      "base": {
+        "x": 32,
+        "y": 35,
+        "z": 8
+      },
+      "upper": {
+        "x": 32,
+        "y": 35,
+        "z": 11
+      },
+      "table": {
+        "x": 33,
+        "y": 35,
+        "z": 11
+      },
+      "spot": {
+        "x": 31,
+        "y": 30,
+        "z": 7
+      },
+      "shaft": {
+        "x": 32,
+        "y": 31,
+        "z": 7
+      }
+    },
+    "final": {
+      "tick": 27442,
+      "version": 13,
+      "counts": {
+        "wood": 250,
+        "stone": 0,
+        "steel": 10,
+        "components": 0,
+        "food": 48,
+        "grain": 0,
+        "meal": 0,
+        "chunk": 32,
+        "cloth": 0,
+        "apparel": 6,
+        "weapon": 3
+      },
+      "stats": {
+        "mined": 209,
+        "cut": 12,
+        "built": 25,
+        "hauled": 516,
+        "sown": 0,
+        "harvested": 0,
+        "cooked": 0,
+        "stonecut": 0,
+        "tailored": 0,
+        "weaponsMade": 3,
+        "destroyed": {
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "apparel": 0,
+          "weapon": 0
+        },
+        "treesPlanted": 0,
+        "treesRegrown": 13,
+        "treesDied": 4,
+        "eaten": 12,
+        "consumed": {
+          "wood": 157,
+          "stone": 0,
+          "steel": 230,
+          "components": 0,
+          "food": 12,
+          "grain": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "apparel": 0,
+          "weapon": 0
+        },
+        "produced": {
+          "wood": 317,
+          "stone": 0,
+          "steel": 240,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meal": 0,
+          "chunk": 32,
+          "cloth": 0,
+          "apparel": 0,
+          "weapon": 3
+        },
+        "spoiled": {
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "apparel": 0,
+          "weapon": 0
+        }
+      },
+      "weapons": [
+        {
+          "id": 416,
+          "kind": "woodClub",
+          "quality": 2,
+          "hitPoints": 65
+        },
+        {
+          "id": 594,
+          "kind": "steelKnife",
+          "quality": 2,
+          "hitPoints": 100
+        },
+        {
+          "id": 638,
+          "kind": "steelLongsword",
+          "quality": 2,
+          "hitPoints": 100
+        }
+      ],
+      "fuel": 26.000000000007972
+    }
+  },
+  "browser": {
+    "base": "http://127.0.0.1:5183/?world=voxel",
+    "startedAt": "2026-11-03T00:53:24.482Z",
+    "scope": "Production Chrome DOM/canvas and file chooser, real normal-command weapon campaign fixtures and genuine v12 save; read-only snapshot/project/exportSave only. All mutations through visible controls. Both render modes.",
+    "modes": [
+      {
+        "mode": "worker",
+        "checks": [
+          {
+            "name": "genuine v12 save migrates through the file chooser without adding weapons"
+          },
+          {
+            "name": "free crafting spot is selectable and offers only its two valid recipes"
+          },
+          {
+            "name": "upper smithy displays real fuel and accepts sword target and pause controls"
+          },
+          {
+            "name": "smithy placement can be rotated with the visible control"
+          },
+          {
+            "name": "normal saved sword work finishes once with actual steel consumption"
+          },
+          {
+            "name": "ground knife inspection, prohibition and drafted physical equip work through visible UI"
+          },
+          {
+            "name": "manual browser save and load preserve weapon identities and physical locations"
+          },
+          {
+            "name": "swapping to the actual longsword leaves the old knife on reachable ground"
+          },
+          {
+            "name": "timed manual drop produces a forbidden physical weapon that can be allowed again"
+          },
+          {
+            "name": "weapon inspection and equip controls stay accessible at 900 by 700"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:5183/assets/index-BERpEbbU.js",
+            "status": 200,
+            "bytes": 2356,
+            "sha256": "919bfb558a575a0fc7ea6ebff5c322733493e3ec7c907f25a6d90bf01f3e438f",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-BfMgf-Vo.css",
+            "status": 200,
+            "bytes": 15171,
+            "sha256": "77ca9c1f51017f7b74bc8a39db477c52bca3a36b64b499bfc3942c01224dfef8",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "bytes": 221699,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-Csg3uMLG.js",
+            "status": 200,
+            "bytes": 622177,
+            "sha256": "aaa7a21fbdde6f6085de4070f311f4fd753892ccc86a1a837464030017af0e5e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/sim.worker-DU3wClZ2.js",
+            "status": 200,
+            "bytes": 157822,
+            "sha256": "3ea82937797e4faff70cf8dd412a5140d2dccc0019a376af619a7061ec1c9422",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/render.worker-C2HXeM9H.js",
+            "status": 200,
+            "bytes": 544291,
+            "sha256": "9d1767ad89de98bf5df0e629eda8aed3446166c1d4091382e969a581f6a38d48",
+            "matchesLocalBuild": true
+          }
+        ],
+        "screenshots": [
+          "test-results/voxel-weapons-browser/worker-smithy.png",
+          "test-results/voxel-weapons-browser/worker-equipped.png",
+          "test-results/voxel-weapons-browser/worker-dropped.png",
+          "test-results/voxel-weapons-browser/worker-compact.png"
+        ],
+        "fixtures": [
+          {
+            "file": "tests/fixtures/voxel-v12-start.json",
+            "sha256": "3cda54c4a0a4553175be0c982baeb22a87ee5acb514865b42c788ad69a272086",
+            "tick": 0
+          },
+          {
+            "file": "test-results/voxel-weapons-campaign/ready.json",
+            "sha256": "101b3fb4655921831c48953ab0e1b891af8200b58a337cd7f464ca97a2421e48",
+            "tick": 27388
+          },
+          {
+            "file": "test-results/voxel-weapons-campaign/finishing.json",
+            "sha256": "eff2b58619f09fd142606aac968d63a815528bf65b9db6a24a8b58dddf10ff36",
+            "tick": 27343
+          },
+          {
+            "file": "test-results/voxel-weapons-campaign/ready.json",
+            "sha256": "101b3fb4655921831c48953ab0e1b891af8200b58a337cd7f464ca97a2421e48",
+            "tick": 27388
+          },
+          {
+            "file": "test-results/voxel-weapons-campaign/ready.json",
+            "sha256": "101b3fb4655921831c48953ab0e1b891af8200b58a337cd7f464ca97a2421e48",
+            "tick": 27388
+          }
+        ],
+        "status": "passed"
+      },
+      {
+        "mode": "main",
+        "checks": [
+          {
+            "name": "genuine v12 save migrates through the file chooser without adding weapons"
+          },
+          {
+            "name": "free crafting spot is selectable and offers only its two valid recipes"
+          },
+          {
+            "name": "upper smithy displays real fuel and accepts sword target and pause controls"
+          },
+          {
+            "name": "smithy placement can be rotated with the visible control"
+          },
+          {
+            "name": "normal saved sword work finishes once with actual steel consumption"
+          },
+          {
+            "name": "ground knife inspection, prohibition and drafted physical equip work through visible UI"
+          },
+          {
+            "name": "manual browser save and load preserve weapon identities and physical locations"
+          },
+          {
+            "name": "swapping to the actual longsword leaves the old knife on reachable ground"
+          },
+          {
+            "name": "timed manual drop produces a forbidden physical weapon that can be allowed again"
+          },
+          {
+            "name": "weapon inspection and equip controls stay accessible at 900 by 700"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:5183/assets/index-BERpEbbU.js",
+            "status": 200,
+            "bytes": 2356,
+            "sha256": "919bfb558a575a0fc7ea6ebff5c322733493e3ec7c907f25a6d90bf01f3e438f",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-BfMgf-Vo.css",
+            "status": 200,
+            "bytes": 15171,
+            "sha256": "77ca9c1f51017f7b74bc8a39db477c52bca3a36b64b499bfc3942c01224dfef8",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "bytes": 221699,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-Csg3uMLG.js",
+            "status": 200,
+            "bytes": 622177,
+            "sha256": "aaa7a21fbdde6f6085de4070f311f4fd753892ccc86a1a837464030017af0e5e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/sim.worker-DU3wClZ2.js",
+            "status": 200,
+            "bytes": 157822,
+            "sha256": "3ea82937797e4faff70cf8dd412a5140d2dccc0019a376af619a7061ec1c9422",
+            "matchesLocalBuild": true
+          }
+        ],
+        "screenshots": [
+          "test-results/voxel-weapons-browser/main-smithy.png",
+          "test-results/voxel-weapons-browser/main-equipped.png",
+          "test-results/voxel-weapons-browser/main-dropped.png",
+          "test-results/voxel-weapons-browser/main-compact.png"
+        ],
+        "fixtures": [
+          {
+            "file": "tests/fixtures/voxel-v12-start.json",
+            "sha256": "3cda54c4a0a4553175be0c982baeb22a87ee5acb514865b42c788ad69a272086",
+            "tick": 0
+          },
+          {
+            "file": "test-results/voxel-weapons-campaign/ready.json",
+            "sha256": "101b3fb4655921831c48953ab0e1b891af8200b58a337cd7f464ca97a2421e48",
+            "tick": 27388
+          },
+          {
+            "file": "test-results/voxel-weapons-campaign/finishing.json",
+            "sha256": "eff2b58619f09fd142606aac968d63a815528bf65b9db6a24a8b58dddf10ff36",
+            "tick": 27343
+          },
+          {
+            "file": "test-results/voxel-weapons-campaign/ready.json",
+            "sha256": "101b3fb4655921831c48953ab0e1b891af8200b58a337cd7f464ca97a2421e48",
+            "tick": 27388
+          },
+          {
+            "file": "test-results/voxel-weapons-campaign/ready.json",
+            "sha256": "101b3fb4655921831c48953ab0e1b891af8200b58a337cd7f464ca97a2421e48",
+            "tick": 27388
+          }
+        ],
+        "status": "passed"
+      }
+    ],
+    "finishedAt": "2026-11-03T00:54:42.169Z"
+  },
+  "regressions": {
+    "startedAt": "2026-11-03T00:44:34.668Z",
+    "runs": [
+      {
+        "script": "scripts/voxel-housing-campaign-verify.mjs",
+        "code": 0,
+        "log": "test-results/weapons-regression-voxel-housing-campaign-verify.mjs.log",
+        "elapsedMs": 3507
+      },
+      {
+        "script": "scripts/voxel-injuries-campaign-verify.mjs",
+        "code": 0,
+        "log": "test-results/weapons-regression-voxel-injuries-campaign-verify.mjs.log",
+        "elapsedMs": 7935
+      },
+      {
+        "script": "scripts/voxel-injuries-browser-verify.mjs",
+        "code": 0,
+        "log": "test-results/weapons-regression-voxel-injuries-browser-verify.mjs.log",
+        "elapsedMs": 37420
+      },
+      {
+        "script": "scripts/voxel-apparel-campaign-verify.mjs",
+        "code": 0,
+        "log": "test-results/weapons-regression-voxel-apparel-campaign-verify.mjs.log",
+        "elapsedMs": 125266
+      },
+      {
+        "script": "scripts/voxel-apparel-browser-verify.mjs",
+        "code": 0,
+        "log": "test-results/weapons-regression-voxel-apparel-browser-verify.mjs.log",
+        "elapsedMs": 75464
+      }
+    ],
+    "injuriesBrowser": [
+      {
+        "mode": "worker",
+        "status": "passed",
+        "checks": 8,
+        "errors": []
+      },
+      {
+        "mode": "main",
+        "status": "passed",
+        "checks": 8,
+        "errors": []
+      }
+    ],
+    "apparelBrowser": [
+      {
+        "mode": "worker",
+        "status": "passed",
+        "checks": 14,
+        "errors": []
+      },
+      {
+        "mode": "main",
+        "status": "passed",
+        "checks": 14,
+        "errors": []
+      }
+    ]
+  },
+  "screenshots": [
+    {
+      "file": "voxel/weapons-smithy.jpg",
+      "sha256": "260116c267ceaff0537f91cb0ac44337ca87e915ffbf55fbf820571e0be575c5"
+    },
+    {
+      "file": "voxel/weapons-equipped.jpg",
+      "sha256": "e2713d6930b3e21b055edfac9bd0696bbfdd3b7f2ebb9ce5b8bbb339085f85b0"
+    },
+    {
+      "file": "voxel/weapons-dropped.jpg",
+      "sha256": "4f58e7cefa456453d6941a9cf2786bcc3cee69da9926d76e1716639f94b78d4e"
+    },
+    {
+      "file": "voxel/weapons-compact.jpg",
+      "sha256": "db4334993cc53205fba0f0c853735a054cb6eb2321883a45bcdd635266d9e7a7"
+    }
+  ],
+  "limitations": [
+    "Three fixed-material melee weapons only; no ranged weapons, full armor or complete original damage workers.",
+    "Research and skills are pre-unlocked; crafted steel weapons use normal quality; wooden club has no quality component.",
+    "Work-in-progress uses a job container and cancels with full refund, unlike native unfinished entities and 75 percent refund.",
+    "No environmental deterioration, automated re-equip memory or original room/outdoor/light speed modifiers.",
+    "Fuel preserves native per-recipe base usage at 20 TPS; project days are compressed, so 48 per project day rather than native 80.",
+    "One normal campaign seed is not balance or long-term population validation. Browser verification uses read-only debug projections/snapshots and actual controls, not screen-only inference."
+  ]
+}

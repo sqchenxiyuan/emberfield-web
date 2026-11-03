@@ -146,12 +146,12 @@ describe('voxel combat and physical tending', () => {
     );
     const s = VoxelSimulation.load(old);
     expect(old.version).toBe(11);
-    expect(s.save().version).toBe(12);
+    expect(s.save().version).toBe(13);
     expect(s.combat).toEqual({ enabled: false, nextRaid: 0, wave: 0 });
     expect(s.pawns.map((p) => [p.id, p.food, p.rest, p.worn])).toEqual(
       old.pawns.map((p: any) => [p.id, p.food, p.rest, p.worn]),
     );
-    expect(s.pawns.every((p) => p.weapon === 'fists' && p.trauma.wounds.length === 0)).toBe(true);
+    expect(s.pawns.every((p) => p.weapon === null && p.trauma.wounds.length === 0)).toBe(true);
   });
   it('requires drafting and spends travel/cooldown ticks before causing a real injury', () => {
     const s = fixture(),

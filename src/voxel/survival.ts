@@ -55,6 +55,8 @@ export function initialSurvival(
   | 'attackTargetId'
   | 'nextAttackTick'
   | 'weapon'
+  | 'weaponTask'
+  | 'weaponDropPending'
 > {
   // Deterministic personal sampling is a prototype adaptation; the original uses its pawn RNG.
   let hash = Math.imul(seed ^ id, 0x45d9f3b);
@@ -66,7 +68,9 @@ export function initialSurvival(
     retreating: false,
     attackTargetId: null,
     nextAttackTick: 0,
-    weapon: 'fists',
+    weapon: null,
+    weaponTask: null,
+    weaponDropPending: false,
     health: {
       malnutrition: 0,
       hypothermia: 0,

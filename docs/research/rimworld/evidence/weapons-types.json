@@ -1,0 +1,16 @@
+[
+  "Verse.AI.JobDriver_Equip",
+  "RimWorld.JobDriver_DropEquipment",
+  "Verse.Pawn_EquipmentTracker",
+  "Verse.CompEquippable",
+  "RimWorld.EquipmentUtility",
+  "RimWorld.FloatMenuOptionProvider_Equip",
+  "RimWorld.FloatMenuOptionProvider_DropEquipment",
+  "Verse.XmlInheritance",
+  "RimWorld.Building_WorkTable",
+  "RimWorld.QualityUtility",
+  "Verse.Verb",
+  "RimWorld.SteadyEnvironmentEffects",
+  "Verse.UnfinishedThing",
+  "RimWorld.StatPart_EnvironmentalEffects"
+]

@@ -1,0 +1,941 @@
+[
+  {
+    "id": "WM01",
+    "title": "父链与自动配方",
+    "kind": "xml-and-static-derived",
+    "statement": "XML li默认追加而非整表替换。Club/Knife的recipeUsers包含父类两种smithy以及本层CraftingSpot；LongSword只有两种smithy。RecipeDefGenerator生成Make_ThingDef配方，材料成本与技能/科技/工位来自最终Def。",
+    "sources": [
+      {
+        "group": "weapons",
+        "type": "Verse.XmlInheritance",
+        "line_start": 287,
+        "line_end": 395,
+        "range_sha256": "67b64896319b7b1aaa9fba06f67f5d27a2ef5c7af2e935b4ffb6739c02558d74"
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.RecipeDefGenerator",
+        "line_start": 29,
+        "line_end": 118,
+        "range_sha256": "de33505f9790a34f6baa025fee910666f02beb4a0018f478485a8b5a2940ffbf"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_BaseWeapon"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_BaseMeleeWeapon"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_BaseMeleeWeapon_Blunt"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_BaseMeleeWeapon_Sharp"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_BaseMeleeWeapon_Sharp_Quality"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_MeleeWeapon_Club"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_MeleeWeapon_Knife"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_MeleeWeapon_LongSword"
+      }
+    ]
+  },
+  {
+    "id": "WM02",
+    "title": "配方成本与门槛",
+    "kind": "xml-and-static-derived",
+    "statement": "Club40材料/基础工作1200；Knife30金属/1800；LongSword100金属或木/18000，Crafting5与LongBlades。锋利父类默认过滤排除木材但类别允许木长剑，不是固定材料资格禁止。Smithing基础研究700，LongBlades400且前置Smithing；实际研究成本仍受科技等修正。制作点工作类型Crafting、smithy工作类型Smithing，配方工作技能均Crafting。",
+    "sources": [
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_MeleeWeapon_Club"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_MeleeWeapon_Knife"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_MeleeWeapon_LongSword"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_BaseMeleeWeapon"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_BaseMeleeWeapon_Sharp"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ResearchProjectDef_Smithing"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ResearchProjectDef_LongBlades"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "WorkGiverDef_DoBillsMakeWeapons"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "WorkGiverDef_DoBillsUseCraftingSpot"
+      },
+      {
+        "group": "food",
+        "type": "Verse.RecipeDef",
+        "line_start": 241,
+        "line_end": 268,
+        "range_sha256": "be567c32a7a3446d42d6ed0fae8a7f4473e3372246ec202ad8e07b1f2b8cb99a"
+      },
+      {
+        "group": "food",
+        "type": "Verse.RecipeDef",
+        "line_start": 568,
+        "line_end": 588,
+        "range_sha256": "576721180e828e4eec7231021d14093992769a5055c420c7fad0028642c1fce3"
+      }
+    ]
+  },
+  {
+    "id": "WM03",
+    "title": "工位尺寸与建设",
+    "kind": "xml-declared",
+    "statement": "CraftingSpot占1x1、偏移(0,0,-1)、建设工作0、工作台倍率.5。FueledSmithy占3x1、偏移(0,0,-1)、100钢/建设工作3000/HP180/Construction4/Smithing。ElectricSmithy另3组件、Construction5、Electricity、耗电210。偏移需按旋转；真实图形drawSize不是占地。",
+    "sources": [
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_CraftingSpot"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_FueledSmithy"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_ElectricSmithy"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_BenchBase"
+      }
+    ]
+  },
+  {
+    "id": "WM04",
+    "title": "燃料",
+    "kind": "xml-and-static-derived",
+    "statement": "燃料锻造台容量50、只允许WoodLog、每实际使用tick扣80/60000；空闲不走日常扣油分支。默认初始0、最低阈值0、自动补充比例.3、每木燃料倍率1；HasFuel必须>0。自动补充燃料比例<=.3且未满，再受烧毁/开关/拆除等资格与取料工作影响。",
+    "sources": [
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_FueledSmithy"
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.CompProperties_Refuelable",
+        "line_start": 9,
+        "line_end": 51,
+        "range_sha256": "83ec1c09bb663ebf98523618198a72ddf9edaba37219ae4e13fbada585213901"
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.CompRefuelable",
+        "line_start": 35,
+        "line_end": 104,
+        "range_sha256": "33b27852e4e1a01148e846688e4bd3cdf2f20613fdd5f71e0dd5047ee9315906"
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.CompRefuelable",
+        "line_start": 223,
+        "line_end": 248,
+        "range_sha256": "6051548c3910a0929a0b72190df5ca5c568988e4cf3350d23ae2737752624bb8"
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.CompRefuelable",
+        "line_start": 258,
+        "line_end": 285,
+        "range_sha256": "a7fb8557ba35384dde8c8d7ccd4560b05d6284f643cfb5ac6fe7fc4e453b227c"
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.CompRefuelable",
+        "line_start": 321,
+        "line_end": 333,
+        "range_sha256": "b750a73a1406927026f2875fabfd8e40e58663903ade7d4a6de7d4a196d08ef6"
+      },
+      {
+        "group": "weapons",
+        "type": "RimWorld.Building_WorkTable",
+        "line_start": 70,
+        "line_end": 76,
+        "range_sha256": "29351ec8a3eafb45068b36e80f6b2b2a66d478dbc45deea1bacaf75ac69144c8"
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 76,
+        "line_end": 89,
+        "range_sha256": "c23bfef1c79e5195418920e624c42123bee9a3bdaa05804e570a34cc9298fcfe"
+      }
+    ]
+  },
+  {
+    "id": "WM05",
+    "title": "工作量与实际工时",
+    "kind": "xml-and-static-derived",
+    "statement": "RecipeMaker.workAmount缺省-1，RecipeDef用成品WorkToMake及Stuff计算工作量；每进度间隔扣最终GeneralLaborSpeed*WorkTableWorkSpeedFactor*delta。Wood工作倍率.7，木棒工作840；理想人物最终速度1、制作点.5时1680原版tick。室内非Workshop的smithy另*.8；心理室外不应用该房型项，仍有其他环境修正。",
+    "sources": [
+      {
+        "group": "apparel",
+        "type": "Verse.RecipeMakerProperties",
+        "line_start": 11,
+        "line_end": 40,
+        "range_sha256": "ccc0ab98317941cbf09adf5257937653cac17aa7bcca35dc44629d31d2ee12af"
+      },
+      {
+        "group": "food",
+        "type": "Verse.RecipeDef",
+        "line_start": 403,
+        "line_end": 425,
+        "range_sha256": "356b0771fa8f3c93bcb700cd02325ba72b6bf53c5011ca062e8e35850cf517e1"
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 91,
+        "line_end": 130,
+        "range_sha256": "3e80d7609b0bfe74ab9336a51d0c0a9bdf0c571fa764cd40db67d6d1f3397011"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 300,
+        "line_end": 313,
+        "range_sha256": "ab418e83a0364b3ba1d0c84b4122d87116756760ea1897eea24f97d6822724be"
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.StatPart_WorkTableRoomRole",
+        "line_start": 8,
+        "line_end": 36,
+        "range_sha256": "fb049cd5e67afedfa34ba52c282c6562413ea8440f15b0e1eeb94a61e238b3c6"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_WoodLog"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_Steel"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "StatDef_WorkToMake"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "StatDef_GeneralLaborSpeed"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "StatDef_WorkTableWorkSpeedFactor"
+      }
+    ]
+  },
+  {
+    "id": "WM06",
+    "title": "未完成品与实物材料",
+    "kind": "xml-and-static-derived",
+    "statement": "武器继承UnfinishedWeapon。工作前取材料并从地图移出，存入未完成品ingredients，记录creator/bill/workLeft；继续加工读取进度，完工生成有Stuff的成品并消费材料。取消未完成品按每堆75%随机舍入回收，不能把暂停与取消混为全额退款。",
+    "sources": [
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_BaseMeleeWeapon"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_UnfinishedBase"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_UnfinishedWeapon"
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 11,
+        "line_end": 38,
+        "range_sha256": "9da76b379e25c643914991832e2d0e59ec2514e7a53f72f8b76c0578f09563f1"
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 44,
+        "line_end": 74,
+        "range_sha256": "b2303594ab784809fb394359ba02066845c769800aa0c003aa132de638e74584"
+      },
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 188,
+        "line_end": 199,
+        "range_sha256": "0466b9f5e8048f5001ceb383ef2d5ae0d4f034cce521f78fe3ad6225088b335c"
+      },
+      {
+        "group": "food",
+        "type": "Verse.GenRecipe",
+        "line_start": 9,
+        "line_end": 38,
+        "range_sha256": "44bccb661640a067a92b5c7135fd7055667c1be27106461faa487ed046fed57b"
+      },
+      {
+        "group": "weapons",
+        "type": "Verse.UnfinishedThing",
+        "line_start": 136,
+        "line_end": 170,
+        "range_sha256": "9ff5c1961be9377b092c26d09f24d27e8fcc5f146724532c6dd428ce4211e607"
+      }
+    ]
+  },
+  {
+    "id": "WM07",
+    "title": "品质",
+    "kind": "xml-and-static-derived",
+    "statement": "Club父链不含CompQuality，Knife/LongSword有。只有存在CompQuality的成品才按制造者Crafting生成品质；固定普通品质属于项目简化。原代码技能中心0级.7、5级2.2、10级3.1、20级4.2，以不对称高斯、整数截断及重抽限制，灵感+2，角色效果另加。",
+    "sources": [
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_BaseWeapon"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_BaseMeleeWeapon"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_BaseMeleeWeapon_Blunt"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_BaseMeleeWeapon_Sharp_Quality"
+      },
+      {
+        "group": "food",
+        "type": "Verse.GenRecipe",
+        "line_start": 79,
+        "line_end": 105,
+        "range_sha256": "b7a96df62a3ac251fc7ef63e784d4de92c62b2ef3449f2b33f1b8d72ff3e56b5"
+      },
+      {
+        "group": "weapons",
+        "type": "RimWorld.QualityUtility",
+        "line_start": 155,
+        "line_end": 277,
+        "range_sha256": "57ab6d8d891f80f5107199c21bb14b1312f5ea995e0ae8d14a00a4454c54c11d"
+      },
+      {
+        "group": "weapons",
+        "type": "RimWorld.QualityUtility",
+        "line_start": 28,
+        "line_end": 39,
+        "range_sha256": "edaeaa4ee05ff7caa548eba925e9eabbf73a26785298b5621fcca40c24c72928"
+      }
+    ]
+  },
+  {
+    "id": "WM08",
+    "title": "HP与持久身份",
+    "kind": "xml-and-static-derived",
+    "statement": "所选武器基础HP100，材料Wood*.65/Steel*1，所以木棒65、钢刀/钢剑100；当前MaxHitPoints Stat无品质part。Thing保存health；EquipmentTracker深存equipment内物品，重新加载绑定verbs caster。拾取/替换/掉落移动物品本体，不应把武器仅当人物字符串或重新生成满耐久副本。",
+    "sources": [
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_BaseWeapon"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_WoodLog"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_Steel"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "StatDef_MaxHitPoints"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 300,
+        "line_end": 313,
+        "range_sha256": "ab418e83a0364b3ba1d0c84b4122d87116756760ea1897eea24f97d6822724be"
+      },
+      {
+        "group": "food",
+        "type": "Verse.Thing",
+        "line_start": 93,
+        "line_end": 105,
+        "range_sha256": "4b3b2d07da8bf6e7c2aa1914ba267af5e7bbf5afb8b7eeea4e73b584df8e30ea"
+      },
+      {
+        "group": "food",
+        "type": "Verse.Thing",
+        "line_start": 1234,
+        "line_end": 1245,
+        "range_sha256": "9fc05ef5dd9a11630eb200710c2b62823dd74ccaa2449069396dd2de5137f380"
+      },
+      {
+        "group": "weapons",
+        "type": "Verse.Pawn_EquipmentTracker",
+        "line_start": 82,
+        "line_end": 104,
+        "range_sha256": "063fb83de3b0233fe9f1c214c805a1bd934fc14036a5852e9fc4ceebcc3fb59f"
+      },
+      {
+        "group": "energy",
+        "type": "Verse.ThingDef",
+        "line_start": 19,
+        "line_end": 19,
+        "range_sha256": "7b1659f94a9082b746540e862fbec2b07d48d83a70530e4a150aa984c636e12b"
+      },
+      {
+        "group": "energy",
+        "type": "Verse.ThingDef",
+        "line_start": 110,
+        "line_end": 110,
+        "range_sha256": "538297502167e851c4bd1ea6c4d6649e3b3ad7cb687158558a11d64c4a0078a1"
+      },
+      {
+        "group": "food",
+        "type": "Verse.Thing",
+        "line_start": 778,
+        "line_end": 783,
+        "range_sha256": "d37829e7616cbc09a0c2933430f564a567281b209d4699c17983eb425ea1690b"
+      }
+    ]
+  },
+  {
+    "id": "WM09",
+    "title": "耐久变化边界",
+    "kind": "xml-and-static-derived",
+    "statement": "已查近战执行路径把DamageInfo作用于目标，未见每次挥击扣武器HP。武器基础环境损坏2HP/日，品质倍率2/1.5/1/.8/.6/.3/.1。环境项为未盖顶.5+室外温度房.5+地形额外项，未盖顶再乘雨量1..5，保护设施可归0。地图中未Spawned且不允许未spawn损坏的持有物FinalDeteriorationRate返回0；天气/DLC等还可修正。",
+    "sources": [
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_BaseWeapon"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "StatDef_DeteriorationRate"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.Verb_MeleeAttackDamage",
+        "line_start": 14,
+        "line_end": 114,
+        "range_sha256": "bb51886197917c4fe389e72d0f8ee7b0b5366b74fe81ccdc1e8f53bb68fed9ce"
+      },
+      {
+        "group": "weapons",
+        "type": "RimWorld.StatPart_EnvironmentalEffects",
+        "line_start": 15,
+        "line_end": 43,
+        "range_sha256": "42e885241a183ff79b263bdb0f129825c0966aa42f708834ed7111a1d1696a35"
+      },
+      {
+        "group": "weapons",
+        "type": "RimWorld.StatPart_EnvironmentalEffects",
+        "line_start": 80,
+        "line_end": 88,
+        "range_sha256": "a2175de5375b7893fb25073d87d471e88edc2a49931db29fda2cf33501654ab9"
+      },
+      {
+        "group": "weapons",
+        "type": "RimWorld.SteadyEnvironmentEffects",
+        "line_start": 254,
+        "line_end": 283,
+        "range_sha256": "d0bfb55af68d1fbdc5d49b0ae883c456ff564978eb7e6f008e9614b0328424b8"
+      },
+      {
+        "group": "weapons",
+        "type": "RimWorld.SteadyEnvironmentEffects",
+        "line_start": 314,
+        "line_end": 336,
+        "range_sha256": "7c68ad5abe7715b9af2104153bb8f9f64c26a2c2dd5c946a06dff5a0da8a35d8"
+      },
+      {
+        "group": "energy",
+        "type": "Verse.ThingDef",
+        "line_start": 121,
+        "line_end": 123,
+        "range_sha256": "9c945bb91c8784d2830feb6d0d2fa1fd7629738feb6e566eaa7b7d7c97d7c9fc"
+      },
+      {
+        "group": "energy",
+        "type": "Verse.ThingDef",
+        "line_start": 714,
+        "line_end": 733,
+        "range_sha256": "e63bcd50450890a321336a2471e83e72ad2bfe9570dd7ac09704fb8fbdc47ac3"
+      }
+    ]
+  },
+  {
+    "id": "WM10",
+    "title": "木棒与Poke",
+    "kind": "xml-and-static-derived",
+    "statement": "Club柄Poke9/2秒、头Blunt14/2秒，木材钝伤*.9得到8.1和12.6。Poke的Maneuver指向DamageDef Poke，它继承Blunt伤情/钝甲类别但使用Stab worker且forcedInternal=.4；仅外伤近似可映Bruise，却不能宣称完整等同Blunt传播。",
+    "sources": [
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_MeleeWeapon_Club"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_WoodLog"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ManeuverDef_Poke"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ManeuverDef_Smash"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "DamageDef_Poke"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "DamageDef_Blunt"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.Tool",
+        "line_start": 64,
+        "line_end": 104,
+        "range_sha256": "7173035e9da2494a665c67712d74274a74bcf5aeb662156ec444931bb5982ac9"
+      }
+    ]
+  },
+  {
+    "id": "WM11",
+    "title": "钢刀钢剑与材质品质",
+    "kind": "xml-and-static-derived",
+    "statement": "Steel锋利/钝伤倍率1、冷却Stat未覆盖而默认1。普通钢刀柄9/2、刃12/1.5、尖13/2；普通钢剑柄9/2、尖23/2.6、刃23/2.6。品质伤害倍率.8/.9/1/1.1/1.2/1.45/1.65；品质不直接改冷却。缺省AP=调整伤害*.015，随后每击伤害随机*.8..1.2；HP比例未进入这条伤害公式。",
+    "sources": [
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_MeleeWeapon_Knife"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_MeleeWeapon_LongSword"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_Steel"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "StatDef_MeleeWeapon_DamageMultiplier"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "StatDef_MeleeWeapon_CooldownMultiplier"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "StatDef_SharpDamageMultiplier"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "StatDef_BluntDamageMultiplier"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ManeuverDef_Slash"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ManeuverDef_Stab"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.Tool",
+        "line_start": 26,
+        "line_end": 32,
+        "range_sha256": "1727c13e07a595e174c3ea2939a2d1682a4c9e438fbf4070e07b0890a9b49838"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.Tool",
+        "line_start": 68,
+        "line_end": 104,
+        "range_sha256": "def9ce6aa00eca561d40cbf554c6fe0023552e7b209de5a6dc7c8e2ad701e2e4"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.VerbProperties",
+        "line_start": 335,
+        "line_end": 386,
+        "range_sha256": "b72b9313d7bdc7ddeedc1261eb955b63e97680a042e442b9510b89199305212f"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.VerbProperties",
+        "line_start": 506,
+        "line_end": 545,
+        "range_sha256": "3d338cf33fc81945412295b53beecdce5326eb5817ac4532ece8f83148c6b532"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.Verb_MeleeAttackDamage",
+        "line_start": 14,
+        "line_end": 55,
+        "range_sha256": "053eb11530990b572fcb245d309f1b4514cfd90addd41a583514d78404271cee"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatPart_Quality",
+        "line_start": 39,
+        "line_end": 75,
+        "range_sha256": "927b6064cf5559999c3ab1ef9368a8ed81229e4350ff0650462b26b608a8536a"
+      }
+    ]
+  },
+  {
+    "id": "WM12",
+    "title": "候选与分组",
+    "kind": "xml-and-static-derived",
+    "statement": "普通非地形分支包含可用身体+装备+其他来源tools。W=调整伤害*(1+AP)*accuracyTouch/fullCycle*附加选择因子；>=最高.95为Best、<最高.25为Worst，其余Mid；Best组.75/Mid组.25，同组均分后按目标归一。原版含地形4%尝试分支、目标过滤与60tick缓存；固定候选算例不覆盖这些运行条件。",
+    "sources": [
+      {
+        "group": "weapons",
+        "xml_record": "ThingDef_Human"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "ManeuverDef_Bite"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.VerbUtility",
+        "line_start": 208,
+        "line_end": 269,
+        "range_sha256": "650ddd4b124ea40b31b4e56a7cf764ed460c66ffa380e5acd1a2c1754d550d60"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.Pawn_MeleeVerbs",
+        "line_start": 46,
+        "line_end": 76,
+        "range_sha256": "b640fea262e2b3dbe7185f01d87dd4284c900ee5ca82951fcc399fdf4bd4cb38"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.Pawn_MeleeVerbs",
+        "line_start": 114,
+        "line_end": 242,
+        "range_sha256": "9cff9c9ee911e455785e6d9efa73f89319ebb0b380702b4155bb3f3b3374fd4b"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.VerbEntry",
+        "line_start": 26,
+        "line_end": 39,
+        "range_sha256": "5b72e6c237dac3114e235bff0f41b829193e270ca22a39c0d82ab68dc8746b93"
+      }
+    ]
+  },
+  {
+    "id": "WM13",
+    "title": "损伤后的可用工具",
+    "kind": "xml-and-static-derived",
+    "statement": "Verb.IsStillUsableBy要求Available、owner仍拥有且GetDamageFactorFor不为0；身体组效率0会剔除，但ensureAlwaysUsable组有.4下限。装备工具没有自然身体组时不直接乘手臂效率；操作能力归零会由HealthTracker转移或掉落武器。",
+    "sources": [
+      {
+        "group": "weapons",
+        "type": "Verse.Verb",
+        "line_start": 263,
+        "line_end": 282,
+        "range_sha256": "338dcaa085f67599d4de9e8aeb60550b7056d3cd92936baea4daaf744e0b05b8"
+      },
+      {
+        "group": "weapons",
+        "type": "Verse.Verb",
+        "line_start": 437,
+        "line_end": 457,
+        "range_sha256": "345ccf895a54e8d1c15eb6a003960a78f93044065e2fe61307d1c8181a389320"
+      },
+      {
+        "group": "weapons",
+        "type": "Verse.CompEquippable",
+        "line_start": 76,
+        "line_end": 83,
+        "range_sha256": "81d400464abf2595bb4d27d7a9e953519e2e8303e894f9934836f69dc583d90e"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.VerbProperties",
+        "line_start": 589,
+        "line_end": 618,
+        "range_sha256": "fe02ca5160cbf7e3f9475c45dce6fc4823f098420e7f13a40ba69986d39d787a"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 580,
+        "line_end": 612,
+        "range_sha256": "07b0acab4dd263e64dad6fdbcf57a14cc1a9e0157034322acdb7b1ec9bcd82ac"
+      }
+    ]
+  },
+  {
+    "id": "WM14",
+    "title": "装备入口与资格",
+    "kind": "xml-and-static-derived",
+    "statement": "玩家装备菜单检查暴力/射击工作禁用、路径、Manipulation能力、燃烧、访客及绑定/角色限制。明确点击装备会先解除目标禁止，再提交Equip任务。Manipulation.CapableOf为level>minForCapable，当前min默认0；并非只检查是否还有一只手。",
+    "sources": [
+      {
+        "group": "weapons",
+        "type": "RimWorld.FloatMenuOptionProvider_Equip",
+        "line_start": 20,
+        "line_end": 59,
+        "range_sha256": "38073d9f748eb455d38e62a0ce358894b97a5c23cd84fbb94b9e2f7f6b173feb"
+      },
+      {
+        "group": "weapons",
+        "type": "RimWorld.FloatMenuOptionProvider_Equip",
+        "line_start": 81,
+        "line_end": 90,
+        "range_sha256": "43c7361faece3a3c0153e4660dfd1f5bf65df635f8ed6f4de83b070f82a5f82f"
+      },
+      {
+        "group": "weapons",
+        "type": "RimWorld.EquipmentUtility",
+        "line_start": 39,
+        "line_end": 71,
+        "range_sha256": "a5b9a8fd6dfb292ce41daa47183c5fcdedd5093ac4951bbc3358be45c557a4d7"
+      },
+      {
+        "group": "survival",
+        "type": "Verse.PawnCapacitiesHandler",
+        "line_start": 78,
+        "line_end": 81,
+        "range_sha256": "c5889b680a4d5a0957a1321652197519fed9b8bb70000996ced6cee88e91dde0"
+      },
+      {
+        "group": "survival",
+        "type": "Verse.PawnCapacityDef",
+        "line_start": 33,
+        "line_end": 39,
+        "range_sha256": "8677f1ad34f90b627233f6ffcf64262e8337482a6b6907c92ed542a37e80de91"
+      },
+      {
+        "group": "weapons",
+        "xml_record": "PawnCapacityDef_Manipulation"
+      }
+    ]
+  },
+  {
+    "id": "WM15",
+    "title": "装备与替换耗时",
+    "kind": "xml-and-static-derived",
+    "statement": "Equip先预约、到ClosestTouch，再Instant；无额外武器EquipDelay。取物体若可堆叠则拆1，否则Despawn同物；MakeRoomFor将原主武器Near掉地且forbidden=false，再AddEquipment。架子路径另处理，不在项目最小地面路径中。",
+    "sources": [
+      {
+        "group": "weapons",
+        "xml_record": "JobDef_Equip"
+      },
+      {
+        "group": "weapons",
+        "type": "Verse.AI.JobDriver_Equip",
+        "line_start": 39,
+        "line_end": 123,
+        "range_sha256": "6fcf504586ebc092641599ae34e1d91f63ce47a32f4272dd29c45ae4686392fe"
+      },
+      {
+        "group": "weapons",
+        "type": "Verse.Pawn_EquipmentTracker",
+        "line_start": 120,
+        "line_end": 147,
+        "range_sha256": "6006665375a668576192cd96f7c8dc125a8a239534fa1a9629340b8c0d32a0ae"
+      },
+      {
+        "group": "weapons",
+        "type": "Verse.Pawn_EquipmentTracker",
+        "line_start": 219,
+        "line_end": 230,
+        "range_sha256": "e46d22ead24e05016535190c188dbd1ab7cf02a65708e2d64f44c924f2d687b1"
+      }
+    ]
+  },
+  {
+    "id": "WM16",
+    "title": "主动卸下",
+    "kind": "xml-and-static-derived",
+    "statement": "DropEquipment不预约地图物品，停止移动、等30原版tick再TryDropEquipment；默认forbid=true，失败报Incompletable。仅该主动任务有.5秒等待，不能套到替换、倒地和死亡掉落。",
+    "sources": [
+      {
+        "group": "weapons",
+        "xml_record": "JobDef_DropEquipment"
+      },
+      {
+        "group": "weapons",
+        "type": "RimWorld.JobDriver_DropEquipment",
+        "line_start": 9,
+        "line_end": 37,
+        "range_sha256": "3dd231bc60297d44a7be40804291998cdb2cacfee76659b7029f7cb76772f2d6"
+      },
+      {
+        "group": "weapons",
+        "type": "RimWorld.FloatMenuOptionProvider_DropEquipment",
+        "line_start": 23,
+        "line_end": 38,
+        "range_sha256": "349c8e10627c204526e6c4938622026b51ae67fe9a1a2f4031a312dec770a7a6"
+      },
+      {
+        "group": "weapons",
+        "type": "Verse.Pawn_EquipmentTracker",
+        "line_start": 150,
+        "line_end": 178,
+        "range_sha256": "ec2950b24c7e3bc31f81c81c007fc95d2d0d5f10b36992868d6f5dab97f4723e"
+      }
+    ]
+  },
+  {
+    "id": "WM17",
+    "title": "倒地和出生检查",
+    "kind": "static-derived",
+    "statement": "MakeDowned在Spawned时DropAndForbidEverything(keepInventoryAndEquipmentIfInBed:true,rememberPrimary:true)。地图地面掉落forbidden=true并记droppedWeapon；床上保留装备。EquipmentTracker还在spawned通知中处理已倒地非床姿态（含特殊运输例外）。该记忆字段不保证所有场景自动拾回。",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 837,
+        "line_end": 864,
+        "range_sha256": "2ffd5d47404813d0178a763a4058c133576b216d1db100c08540d9e2cb13fd96"
+      },
+      {
+        "group": "preservation",
+        "type": "Verse.Pawn",
+        "line_start": 2890,
+        "line_end": 2929,
+        "range_sha256": "5753a2d698da0f0878ee90cf6d269af1793e8078c870d012b33dd73e1106b1f8"
+      },
+      {
+        "group": "weapons",
+        "type": "Verse.Pawn_EquipmentTracker",
+        "line_start": 169,
+        "line_end": 178,
+        "range_sha256": "138a97633f02a5d0fda9ead3772b46bf8738224ec40ccc1fbfc91da088c7f8c1"
+      },
+      {
+        "group": "weapons",
+        "type": "Verse.Pawn_EquipmentTracker",
+        "line_start": 341,
+        "line_end": 354,
+        "range_sha256": "1a3e88a5e5daeccb6eae7c8d9fe100f61da15163444d868e0de3274b2846fa75"
+      }
+    ]
+  },
+  {
+    "id": "WM18",
+    "title": "死亡与特殊容器",
+    "kind": "static-derived",
+    "statement": "Pawn死亡地图分支调用默认DropAndForbidEverything，没有床上保留/记主武器参数。封闭容器转移到holdingOwner；destroyGearOnDrop种类销毁装备；离图/商队死亡走不同路径。EquipmentTracker.Notify_PawnDied本身主要处理绑定解除，不是唯一掉落入口。",
+    "sources": [
+      {
+        "group": "preservation",
+        "type": "Verse.Pawn",
+        "line_start": 2215,
+        "line_end": 2237,
+        "range_sha256": "e73f447e836d1d78d4173cae591e308c00bd2542774a7359533267356668038b"
+      },
+      {
+        "group": "preservation",
+        "type": "Verse.Pawn",
+        "line_start": 2890,
+        "line_end": 2929,
+        "range_sha256": "5753a2d698da0f0878ee90cf6d269af1793e8078c870d012b33dd73e1106b1f8"
+      },
+      {
+        "group": "weapons",
+        "type": "Verse.Pawn_EquipmentTracker",
+        "line_start": 357,
+        "line_end": 364,
+        "range_sha256": "072b879238f995933c9bb6633b40bfc295f56710cb960e5957e998f2463732e2"
+      }
+    ]
+  },
+  {
+    "id": "WM19",
+    "title": "失去操作能力",
+    "kind": "static-derived",
+    "statement": "健康重算发现Manipulation不Capable时，即使没倒地也处理主武器：地图掉落forbidden=true，封闭容器转移，商队尝试放入inventory，指定种类或无法保留路径销毁。此路径不rememberPrimary。",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 580,
+        "line_end": 612,
+        "range_sha256": "07b0acab4dd263e64dad6fdbcf57a14cc1a9e0157034322acdb7b1ec9bcd82ac"
+      },
+      {
+        "group": "weapons",
+        "type": "Verse.Pawn_EquipmentTracker",
+        "line_start": 150,
+        "line_end": 167,
+        "range_sha256": "5bd78791e6e2cd29a09793590c5de3dc9c94bae03b243ec73632490a1f823ef9"
+      }
+    ]
+  },
+  {
+    "id": "WM20",
+    "title": "时间适配边界",
+    "kind": "design-adaptation",
+    "statement": "动作保持真实秒用projectTPS/sourceTPS；燃料保持模拟日用sourceDay/projectDay。项目20TPS/12000tick每天与原版60TPS/60000不同，保持动作秒和80燃料/日会改变每件耗料，必须明确选择。静态数值不证明项目实现等价。",
+    "sources": [
+      {
+        "group": "food",
+        "type": "Verse.AI.Toils_Recipe",
+        "line_start": 108,
+        "line_end": 117,
+        "range_sha256": "e26e0272fda11903b3237ce94386ca41966714d46ee299bab6abf39513848c12"
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.CompRefuelable",
+        "line_start": 81,
+        "line_end": 81,
+        "range_sha256": "713ef9ec4e2f2078cd2eae5bdb4bb6dc58be252e32883b72fe04dfcbad5c1b59"
+      },
+      {
+        "group": "weapons",
+        "type": "RimWorld.JobDriver_DropEquipment",
+        "line_start": 9,
+        "line_end": 28,
+        "range_sha256": "62a3aba6c6fb0d8dfbcf075608d42547f8b15b5619dc6d0f14d326e9ddc5b62d"
+      }
+    ]
+  }
+]

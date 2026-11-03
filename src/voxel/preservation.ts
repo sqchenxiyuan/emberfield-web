@@ -1,5 +1,6 @@
 import { DAY, type Cargo, type FoodCropKind, type Resource } from './types';
 import { validApparel } from './apparel';
+import { validWeapon } from './weapons';
 
 // RimWorld 1.7 source/Defs: 60000 original ticks/day, rate * elapsed ticks.
 // We preserve days, using this simulation's DAY=12000 instead. Unlike the native
@@ -22,7 +23,7 @@ export function remainingRotDays(batch: Cargo): number | null {
   return limit === null ? null : Math.max(0, (limit - (batch.rotProgress ?? 0)) / DAY);
 }
 export function freshBatch(resource: Resource, amount: number, crop?: FoodCropKind): Cargo {
-  if (resource === 'apparel') throw new Error('衣物需要独立实例信息');
+  if (resource === 'apparel' || resource === 'weapon') throw new Error('装备需要独立实例信息');
   return {
     resource,
     amount,
@@ -40,6 +41,8 @@ export function portion(batch: Cargo, amount: number): Cargo {
     amount,
     ...(batch.crop !== undefined ? { crop: batch.crop } : {}),
     ...(batch.apparel !== undefined ? { apparel: { ...batch.apparel } } : {}),
+    ...(batch.weapon !== undefined ? { weapon: { ...batch.weapon } } : {}),
+    ...(batch.forbidden !== undefined ? { forbidden: batch.forbidden } : {}),
     ...(batch.rotProgress !== undefined ? { rotProgress: batch.rotProgress } : {}),
   };
 }
@@ -47,12 +50,16 @@ export function compatibleBatches(a: Cargo, b: Cargo): boolean {
   return (
     a.resource === b.resource &&
     a.crop === b.crop &&
+    (a.resource !== 'weapon' || (!!a.weapon && !!b.weapon && a.weapon.id === b.weapon.id)) &&
     (a.resource !== 'apparel' || (!!a.apparel && !!b.apparel && a.apparel.id === b.apparel.id))
   );
 }
 /** Merge only the transferred amount, weighted by actual quantities. */
 export function mergeBatch(target: Cargo, incoming: Cargo): void {
-  if (target.resource === 'apparel' || incoming.resource === 'apparel')
+  if (
+    ['apparel', 'weapon'].includes(target.resource) ||
+    ['apparel', 'weapon'].includes(incoming.resource)
+  )
     throw new Error('衣物实例不能合并');
   if (!compatibleBatches(target, incoming) || incoming.amount <= 0 || target.amount <= 0)
     throw new Error('Only positive compatible batches can merge');
@@ -88,6 +95,7 @@ export function validBatch(batch: unknown): batch is Cargo {
       'meal',
       'cloth',
       'apparel',
+      'weapon',
     ].includes(b.resource) ||
     !Number.isSafeInteger(b.amount) ||
     b.amount <= 0 ||
@@ -102,6 +110,14 @@ export function validBatch(batch: unknown): batch is Cargo {
     return false;
   if (
     b.resource === 'apparel' ? b.amount !== 1 || !validApparel(b.apparel) : b.apparel !== undefined
+  )
+    return false;
+  if (
+    b.resource === 'weapon'
+      ? b.amount !== 1 ||
+        !validWeapon(b.weapon) ||
+        (b.forbidden !== undefined && typeof b.forbidden !== 'boolean')
+      : b.weapon !== undefined || b.forbidden !== undefined
   )
     return false;
   const limit = rotLimit(b);

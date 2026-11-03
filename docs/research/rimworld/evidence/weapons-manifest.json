@@ -1,0 +1,103 @@
+{
+  "evidence_id": "RW17-WEAPONS",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "Verse.AI.JobDriver_Equip",
+      "local_file": ".local-research/weapons/Verse.AI.JobDriver_Equip.cs",
+      "sha256": "fc798602cb4b8305ece76dc03432d24ceb6f8e3ebf46d0565b83443683589471",
+      "lines": 125
+    },
+    {
+      "type": "RimWorld.JobDriver_DropEquipment",
+      "local_file": ".local-research/weapons/RimWorld.JobDriver_DropEquipment.cs",
+      "sha256": "0756494cf9599bc54547fe8940bd661161605267bd90dfcfab063f8be817effd",
+      "lines": 40
+    },
+    {
+      "type": "Verse.Pawn_EquipmentTracker",
+      "local_file": ".local-research/weapons/Verse.Pawn_EquipmentTracker.cs",
+      "sha256": "8a9b755bf34bc9794e6501415f6443358d0843975bf3ec1836ea981cb356b70a",
+      "lines": 382
+    },
+    {
+      "type": "Verse.CompEquippable",
+      "local_file": ".local-research/weapons/Verse.CompEquippable.cs",
+      "sha256": "9761fba9d190f4095384c1612443f3bc2f7a436f7527d483e16f9438de1f573d",
+      "lines": 85
+    },
+    {
+      "type": "RimWorld.EquipmentUtility",
+      "local_file": ".local-research/weapons/RimWorld.EquipmentUtility.cs",
+      "sha256": "9aa02f7df5369555b5b6b8b504d43b9315de25cfc3b406583de02f2e887b13b5",
+      "lines": 222
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_Equip",
+      "local_file": ".local-research/weapons/RimWorld.FloatMenuOptionProvider_Equip.cs",
+      "sha256": "8f7c6cd684307bac95c205ac17dea46f8341f58cb528cdf3316e6371715c7625",
+      "lines": 92
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_DropEquipment",
+      "local_file": ".local-research/weapons/RimWorld.FloatMenuOptionProvider_DropEquipment.cs",
+      "sha256": "bcfd353fa7ea3a8cd8558798c06ff69910afcb19a50bfdeb7b94fcc52bb846bc",
+      "lines": 40
+    },
+    {
+      "type": "Verse.XmlInheritance",
+      "local_file": ".local-research/weapons/Verse.XmlInheritance.cs",
+      "sha256": "1e61777641e8db0d47a3b57bfdb8f276ffafe510a98c2b6265a4ac333c0939e7",
+      "lines": 430
+    },
+    {
+      "type": "RimWorld.Building_WorkTable",
+      "local_file": ".local-research/weapons/RimWorld.Building_WorkTable.cs",
+      "sha256": "93950a425067412ffbd0caaa8b3471ef584d02096beec027cf21f630bc5fba19",
+      "lines": 120
+    },
+    {
+      "type": "RimWorld.QualityUtility",
+      "local_file": ".local-research/weapons/RimWorld.QualityUtility.cs",
+      "sha256": "5405ad9826ffab0e283ce40bb11529a1f2f9a17dc7766aa8a24efd6c977e8821",
+      "lines": 373
+    },
+    {
+      "type": "Verse.Verb",
+      "local_file": ".local-research/weapons/Verse.Verb.cs",
+      "sha256": "97ba0c63bc17d9cc1ed870324ba9da426fcad7f2886e64770eed972837ddad24",
+      "lines": 908
+    },
+    {
+      "type": "RimWorld.SteadyEnvironmentEffects",
+      "local_file": ".local-research/weapons/RimWorld.SteadyEnvironmentEffects.cs",
+      "sha256": "a280b83a6bedc914f47c3b75010733ba94c659dc63c34dcae062986d3548f119",
+      "lines": 361
+    },
+    {
+      "type": "Verse.UnfinishedThing",
+      "local_file": ".local-research/weapons/Verse.UnfinishedThing.cs",
+      "sha256": "10d275ee4842391fd15f07e8cc4c29d1fb17f5c69b6c50a230525cb6716159c9",
+      "lines": 253
+    },
+    {
+      "type": "RimWorld.StatPart_EnvironmentalEffects",
+      "local_file": ".local-research/weapons/RimWorld.StatPart_EnvironmentalEffects.cs",
+      "sha256": "c2a82a657b5f17ca025932eae80bd1e84714126c2371683261b9dbb348da322c",
+      "lines": 89
+    }
+  ]
+}
