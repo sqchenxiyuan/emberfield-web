@@ -9,7 +9,7 @@
     "check": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1 --port 4178 --strictPort",
-    "test": "vitest run",
+    "test": "vitest run --maxWorkers=2",
     "test:browser": "node scripts/browser-verify.mjs",
     "test:interactions": "node scripts/interaction-browser-verify.mjs",
     "test:animals": "node scripts/animal-motion-verify.mjs",
@@ -85,7 +85,10 @@
     "test:voxel:environment:browser": "node scripts/voxel-environment-browser-verify.mjs",
     "research:husbandry": "node scripts/research/verify-animal-husbandry-evidence.mjs",
     "test:voxel:husbandry": "node scripts/voxel-husbandry-campaign-verify.mjs",
-    "test:voxel:husbandry:browser": "node scripts/voxel-husbandry-browser-verify.mjs"
+    "test:voxel:husbandry:browser": "node scripts/voxel-husbandry-browser-verify.mjs",
+    "test:voxel:pens": "node scripts/voxel-pens-campaign-verify.mjs",
+    "test:voxel:pens:browser": "node scripts/voxel-pens-browser-verify.mjs",
+    "research:pens": "node scripts/research/verify-animal-pens-evidence.mjs"
   },
   "dependencies": {
     "pixi.js": "8.22.0",

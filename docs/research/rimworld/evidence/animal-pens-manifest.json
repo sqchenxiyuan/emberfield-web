@@ -1,0 +1,181 @@
+{
+  "evidence_id": "RW17-ANIMAL-PENS",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "Verse.AnimalPenEnclosureCalculator",
+      "local_file": ".local-research/animal-pens/Verse.AnimalPenEnclosureCalculator.cs",
+      "sha256": "feb4fadf81cb9327301d996b56b65825c9b21cbbacbdba246b8acdbaab26274c",
+      "lines": 108
+    },
+    {
+      "type": "Verse.AnimalPenConnectedDistrictsCalculator",
+      "local_file": ".local-research/animal-pens/Verse.AnimalPenConnectedDistrictsCalculator.cs",
+      "sha256": "e4401235ffc78d97c9aa76a26787c4914263f6e45a132c86ce95a6a58e7c577b",
+      "lines": 72
+    },
+    {
+      "type": "Verse.AnimalPenEnclosureStateCalculator",
+      "local_file": ".local-research/animal-pens/Verse.AnimalPenEnclosureStateCalculator.cs",
+      "sha256": "ae89f1384ba6e3d3f0580f134701270cb58707929da2929bd917e035aea7ef8d",
+      "lines": 89
+    },
+    {
+      "type": "Verse.AnimalPenManager",
+      "local_file": ".local-research/animal-pens/Verse.AnimalPenManager.cs",
+      "sha256": "2317ef99dabf55c303b5cdfc51e3dd7269641715b9bf1320e66095aab189b316",
+      "lines": 158
+    },
+    {
+      "type": "Verse.AnimalPenBalanceCalculator",
+      "local_file": ".local-research/animal-pens/Verse.AnimalPenBalanceCalculator.cs",
+      "sha256": "c51e53ad60aba0376caeec644aa8bfcc85419f3bbdd51e79adb8d2244e085130",
+      "lines": 103
+    },
+    {
+      "type": "RimWorld.CompAnimalPenMarker",
+      "local_file": ".local-research/animal-pens/RimWorld.CompAnimalPenMarker.cs",
+      "sha256": "926a1851c49a76ba2a8c070f335afcd633abff007e9114386a5b9f5d6e305731",
+      "lines": 189
+    },
+    {
+      "type": "RimWorld.CompProperties_AnimalPenMarker",
+      "local_file": ".local-research/animal-pens/RimWorld.CompProperties_AnimalPenMarker.cs",
+      "sha256": "1a328691e74f7734c56d3a56c97c71b62dc83cf51e7c76042bdcb2e3704bf11b",
+      "lines": 12
+    },
+    {
+      "type": "RimWorld.ITab_PenAnimals",
+      "local_file": ".local-research/animal-pens/RimWorld.ITab_PenAnimals.cs",
+      "sha256": "7b59df293d8ff24a5c73b101efd4fd6a934bb17db1eccf255eb3dd7c702bc69e",
+      "lines": 32
+    },
+    {
+      "type": "RimWorld.WorkGiver_TakeToPen",
+      "local_file": ".local-research/animal-pens/RimWorld.WorkGiver_TakeToPen.cs",
+      "sha256": "728a07f39e46113296a226d68d4791b0d1b88a51060d6b883fc13c7efa025cb1",
+      "lines": 158
+    },
+    {
+      "type": "RimWorld.JobDriver_RopeToDestination",
+      "local_file": ".local-research/animal-pens/RimWorld.JobDriver_RopeToDestination.cs",
+      "sha256": "a806f6ce107f14ff991ea303599f4495e339a418bf75c6e3913069ae7b99dfd9",
+      "lines": 155
+    },
+    {
+      "type": "RimWorld.JobDriver_RopeToPen",
+      "local_file": ".local-research/animal-pens/RimWorld.JobDriver_RopeToPen.cs",
+      "sha256": "901903f0c10f62e0373c74a0ea8b40a6f15e1ccbf4136a14ba09af179b73a09a",
+      "lines": 56
+    },
+    {
+      "type": "RimWorld.JobDriver_RopeRoamerToUnenclosedPen",
+      "local_file": ".local-research/animal-pens/RimWorld.JobDriver_RopeRoamerToUnenclosedPen.cs",
+      "sha256": "cdf530a2cffdbcfcbebc595581b3a3b9abbdadcd076be5ca96d0c52c91c6570e",
+      "lines": 32
+    },
+    {
+      "type": "Verse.AI.Toils_Rope",
+      "local_file": ".local-research/animal-pens/Verse.AI.Toils_Rope.cs",
+      "sha256": "acd2a5b9cfc0ff3e03d1444c04ffb9c188ad0699d090de77893b48c1b7de4fe8",
+      "lines": 91
+    },
+    {
+      "type": "Verse.AI.JobDriver_FollowRoper",
+      "local_file": ".local-research/animal-pens/Verse.AI.JobDriver_FollowRoper.cs",
+      "sha256": "f1ac83932a0ee7325f47e57702b22418cde7339c359196b96277bd48db5b46de",
+      "lines": 105
+    },
+    {
+      "type": "RimWorld.JobGiver_FollowRoper",
+      "local_file": ".local-research/animal-pens/RimWorld.JobGiver_FollowRoper.cs",
+      "sha256": "de2df66e39aa99d0f25b40ebb5db927abead31f2742c77c86105bf610a05c296",
+      "lines": 35
+    },
+    {
+      "type": "RimWorld.Pawn_RopeTracker",
+      "local_file": ".local-research/animal-pens/RimWorld.Pawn_RopeTracker.cs",
+      "sha256": "d087455d61013c929ceb6d3ed3f28794ee1764ee56dd7ce1b2697ba6c87dc7c7",
+      "lines": 308
+    },
+    {
+      "type": "RimWorld.JobGiver_SeekAllowedArea",
+      "local_file": ".local-research/animal-pens/RimWorld.JobGiver_SeekAllowedArea.cs",
+      "sha256": "5aac9c9ebe8684bacec43bcd2dc5f6ab849e255417d063895ce7c081df36b74b",
+      "lines": 86
+    },
+    {
+      "type": "RimWorld.Area_Allowed",
+      "local_file": ".local-research/animal-pens/RimWorld.Area_Allowed.cs",
+      "sha256": "2937e7b91929ebf0a5d8e8c6808574592f539f6b30c6fb9e6619d3265e1faa6d",
+      "lines": 96
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "local_file": ".local-research/animal-pens/RimWorld.Pawn_PlayerSettings.cs",
+      "sha256": "c23d3b5de6c9a96cad59170531efc71f3964d8d99d07b582eda580bfbdd00494",
+      "lines": 423
+    },
+    {
+      "type": "Verse.AI.ThinkNode_ChancePerDay_Roam",
+      "local_file": ".local-research/animal-pens/Verse.AI.ThinkNode_ChancePerDay_Roam.cs",
+      "sha256": "21064fa90baa67e52d4a19eb4a53c93c2a41f04bc52d0f345ac7390fcc8714de",
+      "lines": 10
+    },
+    {
+      "type": "Verse.PenMarkerState",
+      "local_file": ".local-research/animal-pens/Verse.PenMarkerState.cs",
+      "sha256": "673e3d4e85c58bfa9c7ebc6860f6154facf612d3f4f083a4ff12817c42a9da85",
+      "lines": 58
+    },
+    {
+      "type": "RimWorld.SpecialThingFilterWorker_AllowFemales",
+      "local_file": ".local-research/animal-pens/RimWorld.SpecialThingFilterWorker_AllowFemales.cs",
+      "sha256": "23a626d92d9c9a76c80080607898d066f1970a05561c3c2f207068ccac3ccc75",
+      "lines": 12
+    },
+    {
+      "type": "RimWorld.SpecialThingFilterWorker_AllowMales",
+      "local_file": ".local-research/animal-pens/RimWorld.SpecialThingFilterWorker_AllowMales.cs",
+      "sha256": "f20d8ede28719eaf4333d8cc0ef05991422de172779471bf5d9e30b5cee70d8c",
+      "lines": 12
+    },
+    {
+      "type": "Verse.AI.MentalState_Roaming",
+      "local_file": ".local-research/animal-pens/Verse.AI.MentalState_Roaming.cs",
+      "sha256": "430396200cf3709a207cabc133c895da1ac7815ee9013e9a20c90ab4a77bf70f",
+      "lines": 79
+    },
+    {
+      "type": "Verse.AI.MentalStateWorker_Roaming",
+      "local_file": ".local-research/animal-pens/Verse.AI.MentalStateWorker_Roaming.cs",
+      "sha256": "9f8999c267144eb76af765e5b748146c9cbe18b82356b317e6cd8207f1e001ae",
+      "lines": 27
+    },
+    {
+      "type": "RimWorld.JobGiver_StartRoaming",
+      "local_file": ".local-research/animal-pens/RimWorld.JobGiver_StartRoaming.cs",
+      "sha256": "a9d5d9234abf970addbcbff362e4275e02c9255bd529ddee8a31d29611c54b82",
+      "lines": 21
+    },
+    {
+      "type": "RimWorld.SpecialThingFilterWorker_AllowGender",
+      "local_file": ".local-research/animal-pens/RimWorld.SpecialThingFilterWorker_AllowGender.cs",
+      "sha256": "daa930775e46656f73e5c025747c73df9d7ef603d8486acdf4aadf9f5e1d5eb5",
+      "lines": 28
+    }
+  ]
+}

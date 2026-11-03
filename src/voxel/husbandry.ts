@@ -1,3 +1,4 @@
+import { initialAnimalPenState } from './pens';
 import { DAY, type AnimalSpecies, type Resource, type WildAnimal } from './types';
 import { NUTRITION } from './farming';
 
@@ -27,6 +28,7 @@ export const ANIMAL_HUSBANDRY: Readonly<Record<AnimalSpecies, {
 });
 export type AnimalLifeStage = 'baby' | 'juvenile' | 'adult';
 export type AnimalHusbandryState = Pick<WildAnimal,
+  'allowedAreaId' | 'ropePaused' | 'requestedPenId' | 'nextRoamTick' |
   'faction' | 'sex' | 'ageTicks' | 'growth' | 'tame' | 'slaughter' | 'releaseMarked' |
   'malnutrition' | 'pregnancy' | 'mateId' | 'mateProgress' | 'nextMateTick' | 'tameness' |
   'nextTamenessDecayTick' | 'nextInteractionTick' | 'path' | 'goal' | 'eatProgress' | 'reason'>;
@@ -37,7 +39,8 @@ export function initialAnimalState(id: number, species: AnimalSpecies, tick: num
   if (!Number.isSafeInteger(id) || id <= 0 || !Object.hasOwn(ANIMAL_HUSBANDRY, species) ||
       !Number.isSafeInteger(tick) || tick < 0 || !Number.isSafeInteger(tick + HUSBANDRY_RULES.tamenessDecayTicks))
     throw new RangeError('动物初始状态无效');
-  return { faction: 'wild', sex: Math.floor(id / 2) % 2 ? 'male' : 'female',
+  return { ...initialAnimalPenState(tick),
+    faction: 'wild', sex: Math.floor(id / 2) % 2 ? 'male' : 'female',
     ageTicks: HUSBANDRY_RULES.adultTicks, growth: 1, tame: false, slaughter: false, releaseMarked: false,
     malnutrition: 0, pregnancy: null, mateId: null, mateProgress: 0,
     nextMateTick: tick + HUSBANDRY_RULES.mateInterval,

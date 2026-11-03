@@ -71,6 +71,7 @@ import {
   type VoxelSnapshot,
   type WildAnimal,
   type AnimalSpecies,
+  type Axis,
 } from './types';
 import { BATTERY_CAPACITY } from './power';
 import { isPartMissing, partEfficiency } from './anatomy';
@@ -90,6 +91,17 @@ export interface VoxelView {
   rotation?: number;
   zoom?: number;
   focus?: Pos;
+  penId?: number | null;
+  animalAreaId?: number | null;
+  placementPreview?: PlacementPreview | null;
+}
+
+export interface PlacementPreview {
+  tool: 'fence' | 'fenceGate' | 'penMarker' | 'animalArea';
+  from: Pos;
+  to: Pos;
+  axis: Axis;
+  erase: boolean;
 }
 
 export interface VoxelRenderMetrics {
@@ -475,6 +487,9 @@ export class VoxelRenderer {
   private pawnVisuals = new Map<number, PawnVisual>();
   private animalVisuals = new Map<number, AnimalVisual>();
   private selectedAnimalId: number | null = null;
+  private selectedPenId: number | null = null;
+  private selectedAnimalAreaId: number | null = null;
+  private placementPreview: PlacementPreview | null = null;
   private data: VoxelSnapshot | null = null;
   private snapshotAt = 0;
   private level = SURFACE;
@@ -797,6 +812,9 @@ export class VoxelRenderer {
 
   view(view: VoxelView) {
     if (this.disposed) return;
+    if (view.penId !== undefined) { this.selectedPenId = view.penId; this.updatePenOverlay(); }
+    if (view.animalAreaId !== undefined) { this.selectedAnimalAreaId = view.animalAreaId; this.updatePenOverlay(); }
+    if (view.placementPreview !== undefined) { this.placementPreview = view.placementPreview; this.updatePlacementPreview(); }
     if (view.level !== undefined && Number.isFinite(view.level)) {
       const level = MathUtils.clamp(Math.round(view.level), 1, HEIGHT - 2);
       if (level !== this.level) {
@@ -935,7 +953,11 @@ export class VoxelRenderer {
       const batch = this.inspectBatches.get(intersection.object as InstancedMesh);
       if (!batch || intersection.instanceId === undefined) continue;
       const cell = batch.cells[Math.floor(intersection.instanceId / batch.instancesPerCell)];
-      if (cell) return { x: cell.x, y: cell.y, z: cell.z };
+      if (cell) {
+        const marker = this.data?.penMarkers.find(m => m.x === cell.x && m.y === cell.y && m.z === cell.z);
+        const gate = this.data?.fenceGates.find(g => g.x === cell.x && g.y === cell.y && g.z === cell.z);
+        return { x: cell.x, y: cell.y, z: cell.z, ...(marker ? { penMarkerId: marker.id } : {}), ...(gate ? { fenceGateId: gate.id } : {}) };
+      }
     }
     return fallback;
   }
@@ -951,7 +973,7 @@ export class VoxelRenderer {
   highlight(pos: Pos | null) {
     if (this.disposed) return;
     this.hover = pos ? { ...pos } : null;
-    this.selectedAnimalId = pos ? this.data?.animals.find(a => 'animalId' in pos ? a.id === pos.animalId : a.x === pos.x && a.y === pos.y && a.z === pos.z)?.id ?? null : null;
+    this.selectedAnimalId = pos && !('penMarkerId' in pos) && !('fenceGateId' in pos) ? this.data?.animals.find(a => 'animalId' in pos ? a.id === pos.animalId : a.x === pos.x && a.y === pos.y && a.z === pos.z)?.id ?? null : null;
     this.updateCursor();
   }
 
@@ -1432,6 +1454,9 @@ export class VoxelRenderer {
     this.updateWeaponBenches();
     this.updateSandbags();
     this.updateHousing();
+    this.updatePens();
+    this.updatePenOverlay();
+    this.updatePlacementPreview();
     this.updatePower();
     this.updateJobLines();
   }
@@ -1623,6 +1648,91 @@ export class VoxelRenderer {
     edges.forEach((edge, i) => this.instance(borders, i, edge.x, edge.z + .055, edge.y,
       edge.alongX ? .98 : .035, .026, edge.alongX ? .035 : .98, 0xdabb77));
     this.finish(borders);
+  }
+
+  private updatePens() {
+    if (!this.data) return;
+    const parts: DevicePart[] = [];
+    const put = (cell: Pos, x: number, y: number, z: number, sx: number, sy: number, sz: number, color: number) =>
+      parts.push({ cell, x: cell.x + x, y: cell.y + y, z: cell.z + z, sx, sy, sz, color });
+    const boundaries = new Set([...this.data.fences, ...this.data.fenceGates].map(p => index(p.x, p.y, p.z)));
+    for (const f of this.data.fences.filter(p => p.z <= this.level)) {
+      put(f, .5, .5, .4, .13, .13, .8, 0xb59969);
+      let links = 0;
+      for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+        if (f.x + dx < 0 || f.x + dx >= WIDTH || f.y + dy < 0 || f.y + dy >= DEPTH) continue;
+        if (!boundaries.has(index(f.x + dx, f.y + dy, f.z)) && this.block(f.x + dx, f.y + dy, f.z) === Block.Air) continue;
+        links++;
+        for (const z of [.28, .62]) put(f, .5 + dx * .25, .5 + dy * .25, z, dx ? .5 : .065, dy ? .5 : .065, .08, 0x94764e);
+      }
+      if (!links) for (const z of [.28, .62]) put(f, .5, .5, z, .7, .065, .08, 0x94764e);
+    }
+    for (const g of this.data.fenceGates.filter(p => p.z <= this.level)) {
+      const alongX = g.axis === 'x';
+      const part = (along: number, across: number, z: number, sl: number, sw: number, sz: number, color: number) =>
+        put(g, alongX ? along : across, alongX ? across : along, z, alongX ? sl : sw, alongX ? sw : sl, sz, color);
+      const open = g.mode === 'open' || (g.mode === 'auto' && this.data.tick <= g.openUntil);
+      part(.08, .5, .44, .14, .16, .88, 0xbba574); part(.92, .5, .44, .14, .16, .88, 0xbba574);
+      for (const z of [.25, .61]) part(open ? .16 : .5, open ? .83 : .5, z, open ? .08 : .7, open ? .7 : .08, .09, 0xb18b58);
+      for (const a of [.25, .5, .75]) part(open ? .16 : a, open ? .5 + a : .5, .44, .07, .07, .62, 0x98774c);
+      part(open ? .16 : .79, open ? 1.12 : .58, .5, .12, .1, .12, g.mode === 'locked' ? 0xeb957f : 0xf2d7a1);
+    }
+    for (const marker of this.data.penMarkers.filter(p => p.z <= this.level)) {
+      const closed = this.data.penSummaries.find(p => p.markerId === marker.id)?.closed;
+      put(marker, .5, .5, .51, .1, .1, 1.02, 0x856c4d);
+      put(marker, .5, .5, .92, .67, .12, .36, closed ? 0x8cb489 : 0xcf9378);
+      put(marker, .5, .424, .93, .34, .022, .07, 0xf1e7c4);
+      put(marker, .5, .424, .83, .18, .022, .05, 0xf1e7c4);
+    }
+    this.deviceBatch('pen-structures', parts);
+  }
+
+  private updatePenOverlay() {
+    const pen = this.data?.penSummaries.find(p => p.markerId === this.selectedPenId);
+    const area = this.data?.animalAreas.find(a => a.id === this.selectedAnimalAreaId);
+    const cells = new Set(area?.cells ?? pen?.cells ?? []);
+    const color = area?.color ?? (pen?.closed ? 0x8fcd8b : 0xeb9876);
+    const parts: DevicePart[] = [], fills: DevicePart[] = [];
+    for (const n of cells) {
+      const p = { x: n % WIDTH, y: Math.floor(n / WIDTH) % DEPTH, z: Math.floor(n / (WIDTH * DEPTH)) };
+      if (p.z !== this.level) continue;
+      fills.push({ cell: p, x: p.x + .5, y: p.y + .5, z: p.z + .047, sx: .96, sy: .96, sz: .014, color });
+      for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+        const x = p.x + dx, y = p.y + dy;
+        if (x >= 0 && x < WIDTH && y >= 0 && y < DEPTH && cells.has(index(x, y, p.z))) continue;
+        parts.push({ cell: p, x: p.x + .5 + dx * .48, y: p.y + .5 + dy * .48, z: p.z + .08,
+          sx: dx ? .045 : .98, sy: dy ? .045 : .98, sz: .035, color });
+      }
+    }
+    this.deviceBatch('pen-overlay-fill', fills, this.box, true, .14, false);
+    this.deviceBatch('pen-overlay-border', parts, this.box, true, .85, false);
+  }
+
+  private updatePlacementPreview() {
+    const preview = this.placementPreview, parts: DevicePart[] = [];
+    if (preview && preview.from.z === this.level) {
+      const color = preview.erase ? 0xf2a186 : preview.tool === 'animalArea' ? 0x9dd59d : 0x9be0df;
+      for (let y = Math.max(0, Math.min(preview.from.y, preview.to.y)); y <= Math.min(DEPTH - 1, Math.max(preview.from.y, preview.to.y)); y++) {
+        for (let x = Math.max(0, Math.min(preview.from.x, preview.to.x)); x <= Math.min(WIDTH - 1, Math.max(preview.from.x, preview.to.x)); x++) {
+          const p = { x, y, z: preview.from.z };
+          const put = (dx: number, dy: number, dz: number, sx: number, sy: number, sz: number) =>
+            parts.push({ cell: p, x: x + dx, y: y + dy, z: p.z + dz, sx, sy, sz, color });
+          put(.5, .5, .09, .94, .94, .035);
+          if (preview.tool === 'fence') {
+            put(.5, .5, .4, .12, .12, .8);
+            const alongX = preview.from.y === preview.to.y;
+            for (const h of [.28, .62]) put(.5, .5, h, alongX ? 1 : .06, alongX ? .06 : 1, .08);
+          } else if (preview.tool === 'fenceGate') {
+            const alongX = preview.axis === 'x';
+            for (const a of [.08, .92]) put(alongX ? a : .5, alongX ? .5 : a, .44, .14, .14, .88);
+            for (const h of [.25, .61]) put(.5, .5, h, alongX ? .7 : .08, alongX ? .08 : .7, .09);
+          } else if (preview.tool === 'penMarker') {
+            put(.5, .5, .5, .1, .1, 1); put(.5, .5, .9, .67, .12, .36);
+          }
+        }
+      }
+    }
+    this.deviceBatch('pen-placement-preview', parts, this.box, true, .5, false);
   }
 
   /** Local device x/y follow the footprint contract; axis y exchanges those axes. */
@@ -3107,6 +3217,10 @@ export class VoxelRenderer {
                   ? 0.5
                   : job.kind === 'door'
                     ? 2
+                    : job.kind === 'fence' || job.kind === 'fenceGate'
+                      ? .8
+                    : job.kind === 'penMarker'
+                      ? 1.1
                     : job.kind === 'wall'
                       ? 0.57
                       : 0.9;
@@ -3133,7 +3247,7 @@ export class VoxelRenderer {
             ? 0xe6bf6d
             : job.kind === 'cut' || planting
               ? 0xa4cc83
-              : 0x82c4cb,
+              : ['fence', 'fenceGate', 'penMarker'].includes(job.kind) ? 0xbcd89d : 0x82c4cb,
       );
       for (const [a, b] of edges) {
         positions.push(...corners[a], ...corners[b]);
@@ -3238,6 +3352,29 @@ export class VoxelRenderer {
       visual.label.position.y = markerHeight + .32;
       visual.label.visible = visual.selected.visible || a.hunt || a.tame || a.slaughter || a.releaseMarked;
     }
+    this.animateRopes();
+  }
+
+  private animateRopes() {
+    if (!this.data) return;
+    const tasks = [...this.pawnVisuals.values()].filter(v => !v.pawn.dead && !v.pawn.downed &&
+      v.pawn.phase === 'rope' && (v.pawn.ropeTask?.stage === 'lead' || v.pawn.ropeTask?.stage === 'detach'));
+    const mesh = this.batch('animal-ropes', tasks.length * 4, this.box, this.batchMaterial('animal-ropes'));
+    let count = 0;
+    for (const handler of tasks) {
+      const animal = this.animalVisuals.get(handler.pawn.ropeTask!.animalId);
+      if (!animal || animal.animal.dead || !handler.root.visible || !animal.root.visible) continue;
+      const left = partEfficiency(handler.pawn.trauma, 'rightHand') <= 0;
+      handler.root.updateMatrixWorld(true); animal.root.updateMatrixWorld(true);
+      const hand = new Vector3(); (left ? handler.leftHand : handler.rightHand).getWorldPosition(hand);
+      const size = .45 + MathUtils.clamp(animal.animal.growth, 0, 1) * .55;
+      const neck = new Vector3(0, (animal.animal.species === 'deer' ? .93 : .3) * size, .25 * size);
+      animal.root.localToWorld(neck);
+      const at = (t: number): Pos => ({ x: hand.x + (neck.x - hand.x) * t,
+        y: hand.z + (neck.z - hand.z) * t, z: hand.y + (neck.y - hand.y) * t - Math.sin(t * Math.PI) * .12 });
+      for (let i = 0; i < 4; i++) if (this.combatSegment(mesh, count, at(i / 4), at((i + 1) / 4), .026, 0xe5cd98)) count++;
+    }
+    mesh.count = count; this.finish(mesh);
   }
 
   private makePawn(pawn: Pawn): PawnVisual {
@@ -3832,6 +3969,8 @@ export class VoxelRenderer {
       const handledAnimal = pawn.phase === 'handle' && pawn.handleTask?.stage === 'interact'
         ? this.data.animals.find(a => a.id === pawn.handleTask!.animalId && !a.dead) : undefined;
       const handling = !!handledAnimal && !moving && !mental && touches(handledAnimal);
+      const ropeAnimal = pawn.phase === 'rope' && pawn.ropeTask
+        ? this.data.animals.find(a => a.id === pawn.ropeTask!.animalId && !a.dead) : undefined;
       const firefighting = !!fireTarget && !moving && !pawn.cargo && !mental && pawn.carryingPawnId === null && touches(fireTarget);
       const repairCells = repairTarget ? fireDamageCells(repairTarget, this.data) : [];
       const repairCell = repairCells.find(touches);
@@ -4031,6 +4170,14 @@ export class VoxelRenderer {
         visual.torso.rotation.x = .1; visual.head.rotation.x = .1;
         toolArm.rotation.x = -.45 - Math.sin(beat * Math.PI) * .7;
         visual.hammer.visible = true; visual.hammer.scale.setScalar(1); visual.tool.visible = false;
+      } else if (ropeAnimal && pawn.ropeTask && !mental && pawn.ropeTask.stage !== 'approach') {
+        const leading = pawn.ropeTask.stage === 'lead';
+        if (!leading) visual.root.rotation.y = Math.atan2(ropeAnimal.x - pawn.x, ropeAnimal.y - pawn.y);
+        visual.torso.rotation.x = leading ? .04 : .14;
+        visual.head.rotation.x = leading ? 0 : .15;
+        toolArm.rotation.x = leading ? -.45 : -.8 + Math.sin(time * 3 + pawn.id) * .12;
+        if (!leading) (useLeftHand ? visual.rightArm : visual.leftArm).rotation.x = -.5;
+        visual.tool.visible = false; visual.hammer.visible = false;
       } else if (handling && handledAnimal) {
         const slaughtering = pawn.handleTask!.action === 'slaughter';
         visual.root.rotation.y = Math.atan2(handledAnimal.x - pawn.x, handledAnimal.y - pawn.y);
@@ -4178,6 +4325,13 @@ export class VoxelRenderer {
       rotation: this.rotation,
       zoom: this.zoom,
       weather: { ...this.weatherRender },
+      pens: {
+        structures: this.batches.get('pen-structures')?.mesh.count ?? 0,
+        ropeSegments: this.batches.get('animal-ropes')?.mesh.count ?? 0,
+        overlayCells: this.batches.get('pen-overlay-fill')?.mesh.count ?? 0,
+        previewParts: this.batches.get('pen-placement-preview')?.mesh.count ?? 0,
+        selectedPenId: this.selectedPenId, selectedAreaId: this.selectedAnimalAreaId,
+      },
     };
   }
 

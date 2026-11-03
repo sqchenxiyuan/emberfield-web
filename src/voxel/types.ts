@@ -11,6 +11,7 @@ import type { Filth, CleanTask, FoodPoisoning, RoomCleanliness, CookingOutcome }
 import type { Fire, FireDamage, FireHazards, FireLogEntry, FirefightTask, RepairTask } from './fire';
 import type { WeatherState, WeatherView, SnowCover } from './weather';
 import type { EnvironmentView } from './environment';
+import type { Fence, FenceGate, PenMarker, AnimalArea, PenSummary, RopeTask } from './pens';
 // Voxel rules are Emberfield designs. See research/10 for source boundaries.
 export const WIDTH = 64,
   DEPTH = 64,
@@ -252,6 +253,10 @@ export interface RoomSummary {
   maxZ: number;
 }
 export type Tool =
+  | 'fence'
+  | 'fenceGate'
+  | 'penMarker'
+  | 'animalArea'
   | 'horseshoePin'
   | 'butcherSpot'
   | DeviceKind
@@ -372,7 +377,7 @@ export interface Stove extends Pos {
 }
 export type AnimalSpecies = 'hare' | 'deer';
 export interface GrassPatch extends Pos { growth: number }
-export interface AnimalGoal { kind: 'grass' | 'crop' | 'food' | 'mate'; id: number }
+export interface AnimalGoal { kind: 'grass' | 'crop' | 'food' | 'mate' | 'area' | 'exit'; id: number }
 export interface HandleTask {
   animalId: number;
   action: 'tame' | 'maintain' | 'feed' | 'slaughter' | 'release';
@@ -384,13 +389,17 @@ export interface HandleTask {
 }
 export interface HusbandryEvent {
   tick: number;
-  kind: 'tame' | 'failed' | 'fed' | 'pregnancy' | 'birth' | 'miscarriage' | 'rewild' | 'slaughter' | 'release' | 'starved';
+  kind: 'tame' | 'failed' | 'fed' | 'pregnancy' | 'birth' | 'miscarriage' | 'rewild' | 'slaughter' | 'release' | 'starved' | 'escaped';
   animalId: number;
   otherId: number | null;
   message: string;
 }
 /** Wildlife uses its own small state machine, separate from human anatomy. */
 export interface WildAnimal extends Pos {
+  allowedAreaId: number | null;
+  ropePaused: boolean;
+  requestedPenId: number | null;
+  nextRoamTick: number;
   faction: 'wild' | 'colony';
   sex: 'male' | 'female';
   ageTicks: number;
@@ -416,7 +425,7 @@ export interface WildAnimal extends Pos {
   health: number;
   hunger: number;
   dead: boolean;
-  phase: 'roam' | 'graze' | 'rest' | 'flee' | 'dead' | 'eat' | 'mate' | 'interact';
+  phase: 'roam' | 'graze' | 'rest' | 'flee' | 'dead' | 'eat' | 'mate' | 'interact' | 'rope';
   hunt: boolean;
   moveTick: number;
   decisionTick: number;
@@ -510,6 +519,9 @@ export interface CropCondition {
   reason: string;
 }
 export type JobKind =
+  | 'fence'
+  | 'fenceGate'
+  | 'penMarker'
   | 'horseshoePin'
   | 'butcherSpot'
   | 'butcher'
@@ -600,6 +612,7 @@ export interface CombatState {
   wave: number;
 }
 export interface Pawn extends Pos {
+  ropeTask: RopeTask | null;
   handleTask: HandleTask | null;
   firefightTask: FirefightTask | null;
   repairTask: RepairTask | null;
@@ -649,6 +662,7 @@ export interface Pawn extends Pos {
   path: number[];
   destination: number | null;
   phase:
+    | 'rope'
     | 'handle'
     | 'firefight'
     | 'repair'
@@ -719,6 +733,11 @@ export interface VoxelStats {
   spoiled: Counts;
 }
 export interface VoxelSnapshot {
+  fences: Fence[];
+  fenceGates: FenceGate[];
+  penMarkers: PenMarker[];
+  animalAreas: AnimalArea[];
+  penSummaries: PenSummary[];
   grass: GrassPatch[];
   husbandryLog: HusbandryEvent[];
   environment: EnvironmentView;
@@ -794,6 +813,15 @@ export interface ChunkUpdate {
   ladders: Uint8Array;
 }
 export type VoxelCommand =
+  | { type: 'fenceGate'; gateId: number; mode: FenceGate['mode'] }
+  | { type: 'penFilter'; markerId: number; filter: PenMarker['filter'] }
+  | { type: 'penName'; markerId: number; name: string }
+  | { type: 'ropeAnimal'; animalId: number; penId: number | null; paused: boolean }
+  | { type: 'animalAreaCreate'; name: string }
+  | { type: 'animalAreaRename'; areaId: number; name: string }
+  | { type: 'animalAreaDelete'; areaId: number }
+  | { type: 'animalAreaPaint'; areaId: number; from: Pos; to?: Pos; erase: boolean }
+  | { type: 'animalAreaAssign'; animalId: number; areaId: number | null }
   | { type: 'animalOrder'; animalId: number; order: 'tame' | 'slaughter' | 'release'; enabled: boolean }
   | { type: 'firefight'; pawnId: number; fireId: number }
   | { type: 'cancelFirefight'; pawnId: number }
@@ -856,11 +884,16 @@ export type VoxelCommand =
   | { type: 'rest'; pawnId: number }
   | { type: 'move'; pawnId: number; target: Pos };
 export interface CommandResult {
+  areaId?: number;
   ok: boolean;
   message: string;
   count?: number;
 }
 export interface VoxelSave {
+  fences: Fence[];
+  fenceGates: FenceGate[];
+  penMarkers: PenMarker[];
+  animalAreas: AnimalArea[];
   grass: GrassPatch[];
   husbandryLog: HusbandryEvent[];
   weather: WeatherState;
@@ -872,7 +905,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 29;
+  version: 30;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;
@@ -944,6 +977,7 @@ export const RESOURCE_NAMES: Record<Resource, string> = {
   meal: '简餐',
 };
 export const JOB_NAMES: Record<JobKind, string> = {
+  fence: '建围栏', fenceGate: '建栏门', penMarker: '建圈地标记',
   horseshoePin: '建马蹄铁桩',
   butcherSpot: '划定屠宰点',
   butcher: '屠宰动物',
@@ -982,6 +1016,7 @@ export const JOB_NAMES: Record<JobKind, string> = {
   cook: '烹饪简餐',
 };
 export const TOOL_NAMES: Record<Tool, string> = {
+  fence: '围栏', fenceGate: '栏门', penMarker: '圈地标记', animalArea: '动物活动范围',
   horseshoePin: '马蹄铁桩',
   butcherSpot: '屠宰点',
   ...DEVICE_NAMES,

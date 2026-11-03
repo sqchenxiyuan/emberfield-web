@@ -1,0 +1,14 @@
+{
+  "version": 29,
+  "source": "test-results/voxel-husbandry/pregnant.json",
+  "sha256": "be5cced3f7cb4f8f10bb93b85eee2675d63d9c20494fb0d7ef2df879742fdc60",
+  "tick": 131774,
+  "scope": "Fresh colony with public world settings. Only public player commands, ordinary simulation ticks and exact save/load mutate the game. Read-only terrain/routes choose sites. No spawned animals, injected food, ownership, pregnancy, growth, needs, clock or RNG edits. One bounded husbandry lifecycle, not probability calibration or long-term balance.",
+  "campaignExecution": {
+    "bundleSha256": "b89138ce74de518fd15061bad67b95a0f5084a5c47ada5b9e8d0a50c9854c1e4",
+    "scriptSha256": "2507f14233ce767d3d64e9974a907f21e89ea52c3ed2ae80ebb6df27e432b224"
+  },
+  "sourceReport": "test-results/voxel-husbandry/report.json",
+  "sourceReportSha256": "ad3fb3ffdbb1f3562fd8e2dac8cde0bbda4e9c6174bf986594051b98dbccbfbb",
+  "copyMethod": "Exact source bytes copied without parsing or rewriting. Original v29 schema retained."
+}

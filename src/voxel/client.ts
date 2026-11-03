@@ -1,4 +1,4 @@
-import { VoxelRenderer } from './renderer';
+import { VoxelRenderer, type VoxelView, type PlacementPreview } from './renderer';
 import { isDeviceKind } from './power';
 import {
   HEIGHT,
@@ -29,6 +29,10 @@ export interface ClientState {
   treeSpecies: TreeSpecies;
   axis: Axis;
   material: 'wood' | 'stone';
+  selectedPenId: number | null;
+  selectedAnimalAreaId: number | null;
+  animalAreaErase: boolean;
+  placementPreview: PlacementPreview | null;
   metrics: Record<string, unknown>;
   worker: boolean;
 }
@@ -45,6 +49,7 @@ export class VoxelClient {
   private renderPending = new Map<number, Pending>();
   private sequence = 0;
   private alive = true;
+  private cancelPlacement = () => {};
   private zoom = 1.25;
   private focus = { x: 32, y: 32, z: SURFACE };
   private state: ClientState = {
@@ -58,6 +63,10 @@ export class VoxelClient {
     treeSpecies: 'poplar',
     axis: 'x',
     material: 'wood',
+    selectedPenId: null,
+    selectedAnimalAreaId: null,
+    animalAreaErase: false,
+    placementPreview: null,
     metrics: {},
     worker: false,
   };
@@ -72,7 +81,11 @@ export class VoxelClient {
   chooseCrop = (crop: CropKind) => this.emit({ crop });
   chooseTree = (treeSpecies: TreeSpecies) => this.emit({ treeSpecies });
   chooseMaterial = (material: 'wood' | 'stone') => this.emit({ material });
-  rotatePlan = () => this.emit({ axis: this.state.axis === 'x' ? 'y' : 'x' });
+  rotatePlan = () => {
+    const axis = this.state.axis === 'x' ? 'y' : 'x';
+    this.emit({ axis });
+    if (this.state.placementPreview) this.view({ placementPreview: { ...this.state.placementPreview, axis } });
+  };
   roomAt = (p: Pos) =>
     inside(p)
       ? (this.state.snapshot?.rooms.find((r) => r.id === this.roomIds[at(p)]) ?? null)
@@ -119,6 +132,8 @@ export class VoxelClient {
   export = (): Promise<VoxelSave> => this.request('save');
   import = async (save: unknown) => {
     await this.request('load', { save });
+    this.cancelPlacement();
+    this.view({ penId: null, animalAreaId: null });
     this.home();
     this.select(null);
     const legacy =
@@ -135,11 +150,27 @@ export class VoxelClient {
     this.request('preview', { seed, settings });
   newGame = async (seed: number, settings?: WorldSettings) => {
     await this.request('new', { seed, settings });
+    this.cancelPlacement();
+    this.view({ penId: null, animalAreaId: null });
     this.home();
     this.select(null);
   };
   choose = (tool: Tool) => {
+    this.cancelPlacement();
     this.emit({ tool });
+  };
+  showPen = (id: number | null) => {
+    if (this.state.tool === 'animalArea') this.choose('inspect');
+    this.view({ penId: id, animalAreaId: null });
+  };
+  showAnimalArea = (id: number | null) => {
+    if (id === null && this.state.tool === 'animalArea') this.choose('inspect');
+    this.view({ penId: null, animalAreaId: id });
+  };
+  editAnimalArea = (id: number, erase = false) => {
+    this.choose('animalArea');
+    this.emit({ animalAreaErase: erase });
+    this.showAnimalArea(id);
   };
   select = (pos: Pos | null) => {
     this.emit({ selected: pos });
@@ -153,8 +184,9 @@ export class VoxelClient {
     const c = this.chunksCache.get(Math.floor(p.y / 16) * 4 + Math.floor(p.x / 16));
     return c ? c.ladders[(p.z * 16 + (p.y % 16)) * 16 + (p.x % 16)] : 0;
   };
-  view = (view: { level?: number; rotation?: number; zoom?: number; focus?: Pos }) => {
+  view = (view: VoxelView) => {
     if (view.level !== undefined) view.level = Math.max(1, Math.min(HEIGHT - 2, view.level));
+    if (view.level !== undefined && view.level !== this.state.level) this.cancelPlacement();
     if (view.zoom !== undefined) {
       this.zoom = Math.max(0.45, Math.min(3, view.zoom));
       view.zoom = this.zoom;
@@ -164,6 +196,9 @@ export class VoxelClient {
     this.emit({
       level: view.level ?? this.state.level,
       rotation: view.rotation ?? this.state.rotation,
+      ...(view.penId !== undefined ? { selectedPenId: view.penId } : {}),
+      ...(view.animalAreaId !== undefined ? { selectedAnimalAreaId: view.animalAreaId } : {}),
+      ...(view.placementPreview !== undefined ? { placementPreview: view.placementPreview } : {}),
     });
   };
   home = () => {
@@ -234,6 +269,9 @@ export class VoxelClient {
         rotation: this.state.rotation,
         zoom: this.zoom,
         focus: this.focus,
+        penId: this.state.selectedPenId,
+        animalAreaId: this.state.selectedAnimalAreaId,
+        placementPreview: this.state.placementPreview,
       });
       this.emit({ ready: true });
     };
@@ -261,7 +299,23 @@ export class VoxelClient {
     let start: Promise<Pos | null> | null = null,
       downX = 0,
       downY = 0;
+    let dragTool: Tool | null = null, dragSequence = 0, previewSequence = 0;
+    const previews = (tool: Tool) => ['fence', 'fenceGate', 'penMarker', 'animalArea'].includes(tool);
+    const preview = (from: Pos, target: Pos, tool: Tool) => {
+      const to = { ...target, z: from.z };
+      if (tool === 'fence') {
+        if (Math.abs(to.x - from.x) >= Math.abs(to.y - from.y)) to.y = from.y;
+        else to.x = from.x;
+      }
+      if (tool === 'fenceGate' || tool === 'penMarker') Object.assign(to, from);
+      this.view({ placementPreview: { tool: tool as PlacementPreview['tool'], from, to, axis: this.state.axis,
+        erase: tool === 'animalArea' && this.state.animalAreaErase } });
+    };
     const bind = (c: HTMLCanvasElement) => {
+      this.cancelPlacement = () => {
+        start = null; dragTool = null; dragSequence++; previewSequence++;
+        if (this.state.placementPreview) this.view({ placementPreview: null });
+      };
       c.oncontextmenu = (e) => e.preventDefault();
       c.onpointerdown = (e) => {
         if (e.button === 2) {
@@ -278,9 +332,14 @@ export class VoxelClient {
         }
         if (e.button === 0) {
           c.setPointerCapture(e.pointerId);
+          dragTool = this.state.tool;
+          const sequence = ++dragSequence;
           start = this.atPointer(e);
           void start.then((p) => {
-            if (p) this.select(p);
+            if (p && sequence === dragSequence) {
+              this.select(p);
+              if (dragTool && previews(dragTool)) preview(p, p, dragTool);
+            }
           });
         }
       };
@@ -294,25 +353,48 @@ export class VoxelClient {
             rotation: this.state.rotation - dx * 0.008,
             zoom: this.zoom * Math.exp(-dy * 0.004),
           });
+          return;
+        }
+        const tool = dragTool ?? this.state.tool;
+        if (previews(tool)) {
+          const request = ++previewSequence, gesture = dragSequence;
+          const beginning = start;
+          const target = this.atPointer(e);
+          void Promise.all([beginning ?? target, target]).then(([from, to]) => {
+            if (request !== previewSequence || gesture !== dragSequence || this.state.tool !== tool) return;
+            if (from && to) preview(from, to, tool);
+            else this.view({ placementPreview: null });
+          });
         }
       };
       c.onpointerup = async (e) => {
         if (e.button !== 0 || !start) return;
         const pending = start;
+        const tool = dragTool ?? this.state.tool, gesture = dragSequence;
         start = null;
         const from = await pending;
         const to = await this.atPointer(e);
+        if (gesture !== dragSequence) return;
+        this.cancelPlacement();
         if (!from || !to) return;
-        if (this.state.tool === 'inspect') {
+        if (tool === 'inspect') {
           this.select(to);
           return;
         }
-        if (this.state.tool === 'wall') {
+        if (tool === 'wall' || tool === 'fence') {
           if (Math.abs(to.x - from.x) >= Math.abs(to.y - from.y)) to.y = from.y;
           else to.x = from.x;
         }
+        if (tool === 'animalArea') {
+          const areaId = this.state.selectedAnimalAreaId;
+          if (areaId === null) { this.notice('先在动物面板创建或选择活动范围'); return; }
+          await this.command({ type: 'animalAreaPaint', areaId, from, to: { ...to, z: from.z }, erase: this.state.animalAreaErase });
+          return;
+        }
         const single =
           [
+            'fenceGate',
+            'penMarker',
             'shaft',
             'up',
             'ladder',
@@ -324,18 +406,21 @@ export class VoxelClient {
             'smithy',
             'machining',
             'researchBench',
-          ].includes(this.state.tool) || isDeviceKind(this.state.tool);
+          ].includes(tool) || isDeviceKind(tool);
         await this.command({
           type: 'designate',
-          tool: this.state.tool,
+          tool,
           from,
           to: single ? from : { ...to, z: from.z },
           crop: this.state.crop,
-          ...(this.state.tool === 'grove' ? { treeSpecies: this.state.treeSpecies } : {}),
+          ...(tool === 'grove' ? { treeSpecies: this.state.treeSpecies } : {}),
           axis: this.state.axis,
-          ...(['wall', 'floor'].includes(this.state.tool) ? { material: this.state.material } : {}),
+          ...(['wall', 'floor'].includes(tool) ? { material: this.state.material } : {}),
         });
       };
+      c.onpointercancel = () => this.cancelPlacement();
+      c.onpointerleave = () => { if (!start) this.view({ placementPreview: null }); };
+      c.onlostpointercapture = () => { if (start) this.cancelPlacement(); };
       c.onwheel = (e) => {
         e.preventDefault();
         this.view({ zoom: this.zoom * Math.exp(-e.deltaY * 0.001) });

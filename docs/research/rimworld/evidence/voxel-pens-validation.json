@@ -1,0 +1,486 @@
+{
+  "version": 30,
+  "recordedAt": "2026-11-03T22:25:49.804Z",
+  "scope": "Local Web validation. Native prepared-scene observations are separate in chapter 92. The ordinary campaign uses public player commands and simulation ticks; browser tests use its checkpoints and visible controls. Controlled unit tests are not ordinary play evidence.",
+  "unit": {
+    "file": "test-results/v30-unit-final.json",
+    "sha256": "b7a14f2db7e1d5ac69efc9ae391646dc2a251204ed557277603fad68f8a71448",
+    "tests": 1010,
+    "passed": 1010,
+    "failed": 0,
+    "pending": 0,
+    "files": 71
+  },
+  "build": {
+    "file": "test-results/v30-build.log",
+    "sha256": "d77a3ad78316043d9974870991a0f0f1f3ad8d453b43e6ad78765c1bfffb91a2",
+    "processExitCode": 0
+  },
+  "campaign": {
+    "file": "test-results/voxel-pens-final/report.json",
+    "sha256": "780661415ddca920e7deead862c537b8c26f9203d673a790a283e015dd7e7869",
+    "scope": "Fresh seed 73129 colony. Only player commands, ordinary simulation ticks and exact save/load mutate state. Read-only terrain, routes and summaries select sites. Real farmed grain, construction, taming, physically attached ropes, ordinary animal motion and saved area edits. No injected animals, ownership, food, needs, positions, clock or RNG. This is bounded play evidence, not calibrated probability or indefinite grazing balance.",
+    "execution": {
+      "bundleSha256": "cd787abcd59af072b8943da6031a94336bb0f7df3c284817b3b398115b08ac29",
+      "scriptSha256": "20843d01b7fd0b79184b15373ffaeaa0198c1cfc99e71489e1ae2518c8229a42"
+    },
+    "checks": [
+      {
+        "name": "ordinary builders finish three beds, stove and recreation",
+        "tick": 2872,
+        "elapsedTicks": 2872
+      },
+      {
+        "name": "160 real rice plots produce harvested animal feed",
+        "tick": 100756,
+        "elapsedTicks": 97884
+      },
+      {
+        "name": "all raw feed originated in actual farming",
+        "tick": 100756,
+        "producedGrain": 240
+      },
+      {
+        "name": "construction plans do not become physical containment before completion",
+        "tick": 100756
+      },
+      {
+        "name": "builders finish real fences gates and markers while intentional gaps remain",
+        "tick": 119709,
+        "elapsedTicks": 18953
+      },
+      {
+        "name": "one missing fence per enclosure keeps both pens open",
+        "tick": 119709
+      },
+      {
+        "name": "final fence completion makes both actual pens closed",
+        "tick": 126258,
+        "elapsedTicks": 6549
+      },
+      {
+        "name": "a real handler reaches a tamed deer and starts attaching a rope",
+        "tick": 132634,
+        "elapsedTicks": 6376
+      },
+      {
+        "name": "completed attachment starts physical leading along an actual route",
+        "tick": 132669,
+        "elapsedTicks": 35
+      },
+      {
+        "name": "exact save/load retains the attached animal and leading route",
+        "tick": 132669
+      },
+      {
+        "name": "leading moves the handler and animal over neighboring ground",
+        "tick": 132683,
+        "elapsedTicks": 14
+      },
+      {
+        "name": "rope movement follows the actual handler instead of teleporting to a marker",
+        "tick": 132683
+      },
+      {
+        "name": "opposite sex deer are both genuinely tamed and physically placed in their filtered pens",
+        "tick": 147290,
+        "elapsedTicks": 14607
+      },
+      {
+        "name": "held open gate immediately breaks containment without moving any animal",
+        "tick": 147290
+      },
+      {
+        "name": "actual fence dismantling opens the pen boundary",
+        "tick": 148320,
+        "elapsedTicks": 1030
+      },
+      {
+        "name": "repaired fence restores the actual closed boundary",
+        "tick": 149113,
+        "elapsedTicks": 793
+      },
+      {
+        "name": "changed sex filters cause a real handler to transfer the rejected male deer",
+        "tick": 149635,
+        "elapsedTicks": 522
+      },
+      {
+        "name": "real carried feed and repeated interactions tame a rabbit",
+        "tick": 150134,
+        "elapsedTicks": 499
+      },
+      {
+        "name": "assigned rabbit physically walks back and crosses a fence into its permitted area",
+        "tick": 150379,
+        "movement": 24
+      },
+      {
+        "name": "exact reload preserves edited area name cells assignment and all pen structures",
+        "tick": 150379
+      },
+      {
+        "name": "deleting an area removes its assignment without moving the rabbit",
+        "tick": 150379
+      }
+    ],
+    "finalTick": 150379,
+    "fixtures": {
+      "initial": {
+        "file": "test-results/voxel-pens-final/initial.json",
+        "tick": 0,
+        "sha256": "4e3c4a8f399b0868eb3c6729569cd33620d53447df6419c271288934cfa181d7"
+      },
+      "ready": {
+        "file": "test-results/voxel-pens-final/ready.json",
+        "tick": 100756,
+        "sha256": "f0719a7acdc43cda836f06c870520c81a38b0f5b7581a0031ca33fe5bb250651"
+      },
+      "blueprints": {
+        "file": "test-results/voxel-pens-final/blueprints.json",
+        "tick": 100756,
+        "sha256": "ea5220a9d175082f763ea5199e964e3985973bbc33fad84ffeb63ec90ce872c7"
+      },
+      "gaps": {
+        "file": "test-results/voxel-pens-final/gaps.json",
+        "tick": 119709,
+        "sha256": "a4f4f91eeddbb706e85b79d0f3fe461b942319413023ee98e382762a6543f317"
+      },
+      "built": {
+        "file": "test-results/voxel-pens-final/built.json",
+        "tick": 126258,
+        "sha256": "9115b06ffebf13f129a6b5432edb84ef6f11207c0e1726bb9b58c47537e5004f"
+      },
+      "attaching": {
+        "file": "test-results/voxel-pens-final/attaching.json",
+        "tick": 132634,
+        "sha256": "48238963514e90e449a35640422de6318c0580b5d4b7feadd597dbc0fca209c7"
+      },
+      "leading": {
+        "file": "test-results/voxel-pens-final/leading.json",
+        "tick": 132669,
+        "sha256": "110fa3b3d2e8f0a4458671d7760f07814462ef28ba2e46b0c56889d5e4d7a2bf"
+      },
+      "penned": {
+        "file": "test-results/voxel-pens-final/penned.json",
+        "tick": 147290,
+        "sha256": "edc7f27251fcaf7c011d6d9d1076a15c37e87e3eb81ebf3c1c2aaba18078529e"
+      },
+      "open-gate": {
+        "file": "test-results/voxel-pens-final/open-gate.json",
+        "tick": 147290,
+        "sha256": "ed44c01443a1dfdcdee80b2abb1c8cef772a14f9a1e79b1dad0a8177b4768d0d"
+      },
+      "transferred": {
+        "file": "test-results/voxel-pens-final/transferred.json",
+        "tick": 149635,
+        "sha256": "4b6f55d58b9ca891db5004c033f6020228036ea04a31db435412d7fd4a6e02f9"
+      },
+      "area-assigned": {
+        "file": "test-results/voxel-pens-final/area-assigned.json",
+        "tick": 150134,
+        "sha256": "341992b11273e9ab4bbb4e4e38a5c8e6d45861751fc29e235bcab87731c15d80"
+      },
+      "area-edited": {
+        "file": "test-results/voxel-pens-final/area-edited.json",
+        "tick": 150379,
+        "sha256": "099ecd27538f66cf4046798d04d82e1e30d9704f382df8fedeb58125c0a623cb"
+      },
+      "final": {
+        "file": "test-results/voxel-pens-final/final.json",
+        "tick": 150379,
+        "sha256": "821c3abb813787805fddae19ad64a2c355ce7310c24e72eee57e24ce935ea77e"
+      }
+    }
+  },
+  "browser": {
+    "file": "test-results/voxel-pens-browser-final/report.json",
+    "sha256": "c86fc3082d69edeefa70b593c5543c29327eb74ba2a50d18c1d6f4df769d9d02",
+    "scope": "Worker and main browser play from SHA-verified ordinary-play saves. All mutations use visible controls, actual canvas pointer drags and file chooser import/export. snapshot/project/exportSave are read-only. Checks actual fences, blueprint timing, gate state, sex filters, attached rope rendering and movement, normal rabbit area return, persisted editing, and 900px layout. No state injection.",
+    "scriptSha256": "0903922d38a99530b84aa6e9d407558f5928b26881ba63aec0ca339c927abe11",
+    "campaign": {
+      "file": "test-results/voxel-pens-final/report.json",
+      "sha256": "780661415ddca920e7deead862c537b8c26f9203d673a790a283e015dd7e7869"
+    },
+    "modes": [
+      {
+        "mode": "worker",
+        "checks": [
+          {
+            "name": "canvas fence drag previews and creates a straight three-cell line without instant structures"
+          },
+          {
+            "name": "visible gate and marker tools place actual construction jobs"
+          },
+          {
+            "name": "one unfinished boundary is clearly reported as open with repair guidance"
+          },
+          {
+            "name": "physical marker is canvas-selectable and exposes authoritative enclosure nutrition and overlay"
+          },
+          {
+            "name": "actual gate mesh inspection and visible mode selector re-evaluate containment"
+          },
+          {
+            "name": "species and sex filters are editable with only the implemented deer male and female rules"
+          },
+          {
+            "name": "approach and attachment display actual handler status without a premature rope line"
+          },
+          {
+            "name": "leading save export/import preserves rope and ordinary elapsed play visibly moves the same animal"
+          },
+          {
+            "name": "visible pause releases a rope in place and resume restores scheduling"
+          },
+          {
+            "name": "area creation rectangle paint erase and rename use real visible canvas and form controls"
+          },
+          {
+            "name": "edited activity cells and names survive visible export/import"
+          },
+          {
+            "name": "visible rabbit assignment preserves position then normal simulation walks it into its permitted area"
+          },
+          {
+            "name": "900 pixel layout keeps pen and activity range controls accessible",
+            "drawer": {
+              "x": 573,
+              "y": 204,
+              "width": 315,
+              "height": 328
+            },
+            "bounds": [
+              {
+                "x": 597,
+                "right": 659,
+                "y": 465.015625,
+                "bottom": 496.015625
+              },
+              {
+                "x": 664,
+                "right": 704,
+                "y": 465.015625,
+                "bottom": 496.015625
+              },
+              {
+                "x": 709,
+                "right": 749,
+                "y": 465.015625,
+                "bottom": 496.015625
+              },
+              {
+                "x": 754,
+                "right": 816,
+                "y": 465.015625,
+                "bottom": 496.015625
+              }
+            ]
+          },
+          {
+            "name": "visible area deletion clears rabbit assignment"
+          },
+          {
+            "name": "all served production JS and CSS assets match the current build by SHA"
+          },
+          {
+            "name": "no page or console errors"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:4178/assets/index-DHsQ5XEu.js",
+            "status": 200,
+            "sha256": "ab31eab40fc4d18b7c56228413c2262951de2feddf1606ac4e3553a143ab814a",
+            "bytes": 2356,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/main-Di7sI6ff.css",
+            "status": 200,
+            "sha256": "83e39e4f4d451ab596c40babc712e45df6ce03cd8090af57f0407265d5ad1e89",
+            "bytes": 40292,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "bytes": 221699,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/main-BqvtmXQT.js",
+            "status": 200,
+            "sha256": "4ddd72d7447abd98448f538621f3cd8ff5d037b375d7372cb486ad6e7dbf0657",
+            "bytes": 834435,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/sim.worker-BHIBljX8.js",
+            "status": 200,
+            "sha256": "f69ebe024e2c46230af30a9d9a560975a212ebd594c3c2c920298ca25e610800",
+            "bytes": 462066,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/render.worker-DxTRUpcW.js",
+            "status": 200,
+            "sha256": "6e4a5fa878c16262bc40a1e8021202fa6a8e0cd0cce8379cb669466b9255cd46",
+            "bytes": 609839,
+            "matchesLocalBuild": true
+          }
+        ]
+      },
+      {
+        "mode": "main",
+        "checks": [
+          {
+            "name": "canvas fence drag previews and creates a straight three-cell line without instant structures"
+          },
+          {
+            "name": "visible gate and marker tools place actual construction jobs"
+          },
+          {
+            "name": "one unfinished boundary is clearly reported as open with repair guidance"
+          },
+          {
+            "name": "physical marker is canvas-selectable and exposes authoritative enclosure nutrition and overlay"
+          },
+          {
+            "name": "actual gate mesh inspection and visible mode selector re-evaluate containment"
+          },
+          {
+            "name": "species and sex filters are editable with only the implemented deer male and female rules"
+          },
+          {
+            "name": "approach and attachment display actual handler status without a premature rope line"
+          },
+          {
+            "name": "leading save export/import preserves rope and ordinary elapsed play visibly moves the same animal"
+          },
+          {
+            "name": "visible pause releases a rope in place and resume restores scheduling"
+          },
+          {
+            "name": "area creation rectangle paint erase and rename use real visible canvas and form controls"
+          },
+          {
+            "name": "edited activity cells and names survive visible export/import"
+          },
+          {
+            "name": "visible rabbit assignment preserves position then normal simulation walks it into its permitted area"
+          },
+          {
+            "name": "900 pixel layout keeps pen and activity range controls accessible",
+            "drawer": {
+              "x": 573,
+              "y": 204,
+              "width": 315,
+              "height": 328
+            },
+            "bounds": [
+              {
+                "x": 597,
+                "right": 659,
+                "y": 465.015625,
+                "bottom": 496.015625
+              },
+              {
+                "x": 664,
+                "right": 704,
+                "y": 465.015625,
+                "bottom": 496.015625
+              },
+              {
+                "x": 709,
+                "right": 749,
+                "y": 465.015625,
+                "bottom": 496.015625
+              },
+              {
+                "x": 754,
+                "right": 816,
+                "y": 465.015625,
+                "bottom": 496.015625
+              }
+            ]
+          },
+          {
+            "name": "visible area deletion clears rabbit assignment"
+          },
+          {
+            "name": "all served production JS and CSS assets match the current build by SHA"
+          },
+          {
+            "name": "no page or console errors"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:4178/assets/index-DHsQ5XEu.js",
+            "status": 200,
+            "sha256": "ab31eab40fc4d18b7c56228413c2262951de2feddf1606ac4e3553a143ab814a",
+            "bytes": 2356,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/main-Di7sI6ff.css",
+            "status": 200,
+            "sha256": "83e39e4f4d451ab596c40babc712e45df6ce03cd8090af57f0407265d5ad1e89",
+            "bytes": 40292,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "bytes": 221699,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/main-BqvtmXQT.js",
+            "status": 200,
+            "sha256": "4ddd72d7447abd98448f538621f3cd8ff5d037b375d7372cb486ad6e7dbf0657",
+            "bytes": 834435,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/sim.worker-BHIBljX8.js",
+            "status": 200,
+            "sha256": "f69ebe024e2c46230af30a9d9a560975a212ebd594c3c2c920298ca25e610800",
+            "bytes": 462066,
+            "matchesLocalBuild": true
+          }
+        ]
+      }
+    ]
+  },
+  "screenshots": [
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-pens-enclosure.png",
+      "sha256": "c847f43f8b8a1e534c7bca58b878ea69bef642adadf4e96baa2fe085c2209955"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-pens-rope.png",
+      "sha256": "6df504f5b768f8cb5745dadab5fe131cb2929ad3505aa19a57d37eaae0d4d913"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-pens-area.png",
+      "sha256": "30c971bddd2c0dbfb376945105c818158345dd52c8c138003a7442502f769ee0"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-pens-narrow.png",
+      "sha256": "a61fb6a406e07cec25eff20ee115aafb2aeea8f94c14ce0270c2a2d7f4d2401b"
+    }
+  ],
+  "limitations": [
+    "Mechanisms first; no balance calibration or long-term roaming/grazing distribution validation",
+    "Deer and rabbits; wood fences/gates and ordinary pen markers only",
+    "No animal products, training, comprehensive animal injuries, hitching posts or multiple animals on one rope",
+    "Native scene used explicitly documented developer preparation",
+    "Tests run locally; Pages CI only installs, type-checks, builds and deploys"
+  ]
+}

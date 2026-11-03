@@ -53,7 +53,7 @@ describe('fire lifecycle and physical interruption integration', () => {
     const proof = JSON.parse(readFileSync(new URL('./fixtures/voxel-v25-fire-initial.provenance.json', import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(proof.sha256);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old);
-    expect(old.version).toBe(25); expect(s.save().version).toBe(29);
+    expect(old.version).toBe(25); expect(s.save().version).toBe(30);
     expect(s.fires).toEqual([]); expect(s.fireDamage).toEqual([]);
     expect(s.items).toEqual(old.items); expect(s.stats).toEqual(old.stats);
     expect(s.pawns.map(p => ({ id: p.id, ...pos(p.x, p.y, p.z) })))

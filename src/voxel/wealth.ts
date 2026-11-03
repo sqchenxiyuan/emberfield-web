@@ -1,3 +1,4 @@
+import { PEN_BUILDINGS } from './pens';
 import type { VoxelSimulation } from './world';
 import { Block, type ApparelPiece, type Cargo, type Counts, type Pawn, type Resource } from './types';
 import { WEAPON_DEFS, type WeaponPiece } from './weapons';
@@ -194,6 +195,9 @@ export function colonyWealthDetails(sim: VoxelSimulation): WealthDetails {
   add(sim.sandbags.length, SANDBAG_COST, SANDBAG_WORK);
   add(sim.horseshoePins.length, HORSESHOE_COST, HORSESHOE_WORK);
   add(sim.wires.length, { steel: 1 }, 12);
+  add(sim.fences.length,PEN_BUILDINGS.fence.cost,PEN_BUILDINGS.fence.work);
+  add(sim.fenceGates.length,PEN_BUILDINGS.fenceGate.cost,PEN_BUILDINGS.fenceGate.work);
+  add(sim.penMarkers.length,PEN_BUILDINGS.penMarker.cost,PEN_BUILDINGS.penMarker.work);
   for (const bench of sim.weaponBenches) {
     if (bench.kind === 'smithy') add(1, SMITHY_COST, SMITHY_WORK);
     else if (bench.kind === 'machining') add(1, MACHINING_COST, MACHINING_WORK);

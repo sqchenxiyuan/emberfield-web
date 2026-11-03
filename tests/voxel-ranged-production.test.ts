@@ -90,7 +90,7 @@ describe('v18 ranged migration and powered physical production', () => {
         s = VoxelSimulation.load(old),
         save = s.save();
       expect(old).toEqual(before);
-      expect(save.version).toBe(29);
+      expect(save.version).toBe(30);
       expectWildlifeIds(old.nextId, save);
       for (const key of [
         'tick',

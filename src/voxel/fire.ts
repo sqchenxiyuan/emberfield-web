@@ -1,3 +1,4 @@
+import { PEN_BUILDINGS } from './pens';
 import { DAY, CELLS, HEIGHT, at, inside, bedCells, deviceCells, stonecutterCells, tailorCells,
   weaponBenchCells, researchBenchCells, type Pos, type VoxelSave } from './types';
 
@@ -6,7 +7,7 @@ export interface Fire extends Pos {
   id: number; size: number; startedTick: number; nextDamageTick: number; nextSpreadTick: number; source: FireSource;
 }
 export type BurnTargetKind = 'block' | 'ladder' | 'bed' | 'door' | 'stove' | 'stonecutter' |
-  'tailor' | 'weaponBench' | 'researchBench' | 'horseshoePin' | 'butcherSpot' | 'device' | 'wire';
+  'tailor' | 'weaponBench' | 'researchBench' | 'horseshoePin' | 'butcherSpot' | 'device' | 'wire' | 'fence' | 'fenceGate' | 'penMarker';
 export interface FireDamage extends Pos {
   key: string; kind: BurnTargetKind; targetId: number | null; hitPoints: number; maxHitPoints: number;
 }
@@ -30,11 +31,12 @@ export const FIRE_MAX_HP: Readonly<Record<BurnTargetKind, number>> = {
   block: 100, ladder: 60, bed: 100, door: 120, stove: 120, stonecutter: 140,
   tailor: 120, weaponBench: 160, researchBench: 140, horseshoePin: 80, butcherSpot: 60,
   device: 150, wire: 40,
+  fence:PEN_BUILDINGS.fence.maxHitPoints, fenceGate:PEN_BUILDINGS.fenceGate.maxHitPoints, penMarker:PEN_BUILDINGS.penMarker.maxHitPoints,
 };
 export const FIRE_TARGET_NAMES: Readonly<Record<BurnTargetKind, string>> = {
   block: '木结构', ladder: '木梯', bed: '床', door: '木门', stove: '灶台', stonecutter: '切石台',
   tailor: '裁缝台', weaponBench: '武器工作台', researchBench: '研究台', horseshoePin: '马蹄铁桩',
-  butcherSpot: '屠宰点', device: '电力设备', wire: '电线',
+  butcherSpot: '屠宰点', device: '电力设备', wire: '电线', fence:'木围栏', fenceGate:'栏门', penMarker:'圈地标记',
 };
 export function fireRandom(seed: number, identity: number, tick: number, stream = 0): number {
   let h = Math.imul(seed ^ identity, 0x45d9f3b) ^ Math.imul(tick, 0x27d4eb2d) ^ Math.imul(stream + 41, 0x85ebca6b);

@@ -96,6 +96,9 @@
 | [88 动物驯养与繁殖机制](88-animal-husbandry-mechanisms.md) | 实际喂食、驯服判定、驯顺维护、种群成长与繁殖如何连接？ |
 | [89 原版动物驯服实机](89-native-animal-husbandry-runtime.md) | 开发准备后的普通驯服命令、真实取粮和派系变化能证明什么？ |
 | [90 体素动物经营](90-animal-husbandry-gameplay.md) | 如何由正常种田进入驯养、繁殖、幼体成长与实际肉食生产？ |
+| [91 围栏、圈地与牵引机制](91-animal-pens-mechanisms.md) | 物理封闭、接纳筛选、牵引路线与活动范围分别约束什么？ |
+| [92 原版牵引与圈地实机](92-native-animal-pens-runtime.md) | 开发准备后普通挂绳、入圈解绳及保持开门怎样改变实际状态？ |
+| [93 体素圈养与活动范围](93-animal-pens-gameplay.md) | 围栏施工、三维圈地、实体牵引、兔返区与中断存读怎样衔接？ |
 
 每篇均含具体来源与未决问题。先读感兴趣的系统，再查其 `evidence/*-claims.json` 和 `*-manifest.json`，不要把“已抽取一个类型”当成“这个类型涉及的全部机制已经理解”。
 

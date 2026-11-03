@@ -1596,6 +1596,34 @@ a {
 .voxel-animal-handler { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 5px 9px; }
 .voxel-animal-handler label { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: #c3d1bc; }
 .voxel-animal-handler select { min-width: 76px; }
+.voxel-animal-tabs { display: flex; gap: 6px; margin: 14px 0; padding-bottom: 10px; border-bottom: 1px solid #bdc9bc2e; }
+.voxel-animal-tabs button { flex: 1; }
+.voxel-animal-tabs button[aria-selected='true'], .voxel-pen-actions button[aria-pressed='true'], .voxel-area-toolbar button[aria-pressed='true'] { color: #e7d6a2; border-color: #d6c28a99; background: #cab27422; }
+.voxel-pen-panel h3 { margin: 18px 0 10px; font-size: 14px; color: #d9dfbc; }
+.voxel-pen-card { display: grid; gap: 9px; margin: 12px 0; padding: 12px; border: 1px solid #bdc9bc44; background: #14202188; }
+.voxel-pen-card p { margin: 0; }
+.voxel-pen-card label, .voxel-animal-pen label { display: grid; gap: 5px; color: #c9d1bf; font-size: 11px; min-width: 0; }
+.voxel-pen-card input, .voxel-pen-card select, .voxel-animal-pen select { width: 100%; min-width: 0; }
+.voxel-pen-card fieldset { display: flex; flex-wrap: wrap; gap: 13px; margin: 0; padding: 8px 10px; border: 1px solid #bdc9bc2e; }
+.voxel-pen-card legend { color: #c9d1bf; font-size: 11px; }
+.voxel-pen-card fieldset label { display: flex; align-items: center; gap: 5px; }
+.voxel-pen-card input[type='checkbox'] { width: auto; accent-color: #b9c68b; }
+.voxel-pen-numbers { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 10px; color: #bacaba; font-size: 11px; }
+.voxel-pen-numbers span { display: flex; flex-direction: column; gap: 4px; }
+.voxel-pen-numbers b { color: #e0dbb3; font-size: 15px; font-variant-numeric: tabular-nums; }
+.voxel-pen-warning { color: #ecb497 !important; }
+.voxel-pen-actions { display: flex; flex-wrap: wrap; gap: 5px; }
+.voxel-pen-actions button { font-size: 11px; padding: 7px 8px; }
+.voxel-pen-create { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; margin-bottom: 9px; }
+.voxel-pen-create input { min-width: 0; width: 100%; }
+.voxel-pen-create button { padding-inline: 7px; font-size: 11px; }
+.voxel-area-swatch { display: inline-block; width: 9px; height: 9px; margin-right: 7px; border-radius: 2px; }
+.voxel-wildlife-list section > .voxel-animal-pen, .voxel-animal-pen { display: grid; align-items: stretch; justify-content: stretch; gap: 8px; margin-top: 9px; padding-top: 9px; border-top: 1px solid #bdc9bc2e; }
+.voxel-tool-hint:has(.voxel-area-toolbar) { grid-template-columns: 320px minmax(0, 1fr); }
+.voxel-area-toolbar { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+.voxel-area-toolbar b { flex: 1; min-width: 0; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.voxel-area-toolbar button { padding: 4px 7px; }
+@media (max-width: 1050px) { .voxel-pen-card { padding: 10px; } .voxel-area-toolbar b { max-width: 110px; } .voxel-tool-hint:has(.voxel-area-toolbar) { grid-template-columns: 290px minmax(0, 1fr); } }
 .voxel-wildlife-workers ol { padding-left: 18px; }
 .voxel-carcass-detail { display: grid; gap: 8px; margin-top: 8px; }
 @media (max-width: 1050px) { .voxel-wildlife-drawer { right: 12px; top: 204px; width: 315px; padding: 12px; } }

@@ -1,0 +1,67 @@
+param([string]$GameRoot='F:/SteamLibrary/steamapps/common/RimWorld')
+# Read-only static analysis. Reconstructed C# is data; never execute game code.
+$ErrorActionPreference='Stop'
+$root=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
+$out=Join-Path $root 'docs/research/rimworld/evidence'
+$manifest=Get-Content (Join-Path $out 'animal-pens-manifest.json') -Raw|ConvertFrom-Json
+function Source([string]$file,[int]$start=1,[int]$end=0){
+ $path=Join-Path $root $file;$lines=Get-Content -LiteralPath $path
+ if(!$end){$end=$lines.Count}
+ if($start -lt 1 -or $end -gt $lines.Count -or $end -lt $start){throw "Invalid source range $file"}
+ [ordered]@{file=$file;sha256=(Get-FileHash -LiteralPath $path).Hash.ToLowerInvariant();lines=@($start,$end)}
+}
+$p='.local-research/animal-pens';$r='.local-research/husbandry-reproduction';$h='.local-research/housing'
+$claims=@(
+ [ordered]@{id='AP01';finding='Deer has roamMtbDays2 and is a Roamer/FenceBlocked animal. Hare lacks that field in its selected Core inheritance and supports allowed areas. Pen membership is not universal for all tame animals.';sources=@((Source "$r/Verse.RaceProperties.cs"),(Source "$p/RimWorld.Pawn_PlayerSettings.cs"));xml=@('PX04','PX05','PX06')},
+ [ordered]@{id='AP02';finding='Fence, FenceGate and PenMarker base costStuffCount are1/25/30; WorkToBuild70/500/600; MaxHitPoints40/20/100. All allow Metallic/Woody/Stony; gate inherits DoorBase. These are baseDefs before stuff factors.';sources=@((Source "$p/RimWorld.CompProperties_AnimalPenMarker.cs"));xml=@('PX01','PX02')},
+ [ordered]@{id='AP03';finding='Walls, fences and doors have different region/path semantics. Door gives Portal, GetFence gives Fence, ordinary walkable cells Normal and full-fill blocking buildings None. A fence is PassThroughOnly with pathCost80 and fillPercent0.25, not a universal impassable wall.';sources=@((Source "$h/Verse.RegionTypeUtility.cs"));xml=@('PX01')},
+ [ordered]@{id='AP04';finding='A marker starts from its district; null or map-edge-touching districts are unenclosed. Region traversal visits Normal and Doorway regions, blocks at doors that roamers cannot pass, and fails if any reached region touches the map edge.';sources=@((Source "$p/Verse.AnimalPenEnclosureCalculator.cs"),(Source "$p/Verse.AnimalPenConnectedDistrictsCalculator.cs"));xml=@()},
+ [ordered]@{id='AP05';finding='RoamerCanPass(door) uses door.FreePassage OR building.roamerCanOpen. FreePassage needs Open and then HoldOpen or not WillCloseSoon. A transiently opened automatic-closing gate is not equivalent to a held-open boundary.';sources=@((Source "$p/Verse.AnimalPenEnclosureCalculator.cs"),(Source "$h/RimWorld.Building_Door.cs" 75 153));xml=@('PX01')},
+ [ordered]@{id='AP06';finding='AnimalFlap explicitly has roamerCanOpen=true and therefore connects roaming regions. A closed ordinary door or fence gate can contain a free deer; a roped animal can pass when its roper can open the door.';sources=@((Source "$h/RimWorld.Building_Door.cs" 439 477),(Source "$p/Verse.AnimalPenEnclosureCalculator.cs"));xml=@('PX01')},
+ [ordered]@{id='AP07';finding='Enclosure state retains direct/connected regions and passable/impassable doors. Door passability changes cause recalculation; building spawn/despawn marks the pen manager dirty. Recompute topology after breaches and gate state changes.';sources=@((Source "$p/Verse.AnimalPenEnclosureStateCalculator.cs"),(Source "$p/Verse.AnimalPenManager.cs"),(Source "$p/Verse.PenMarkerState.cs"));xml=@()},
+ [ordered]@{id='AP08';finding='Enclosed and accessible from outside are separate properties: an enclosed marker reports outside access when an impassable-to-roamer doorway exists. A fence-only loop can be enclosed yet have no usable exterior entry for roping.';sources=@((Source "$p/Verse.PenMarkerState.cs"),(Source "$p/RimWorld.CompAnimalPenMarker.cs"));xml=@()},
+ [ordered]@{id='AP09';finding='AcceptsToPen is the intersection of the marker animalFilter and a fixed filter restricted to Roamer animals. UI is ordinary ThingFilterUI; female/male special filters match pawn.gender, both allowed by default. No dedicated age filter is established here.';sources=@((Source "$p/RimWorld.CompAnimalPenMarker.cs"),(Source "$r/Verse.AnimalPenUtility.cs" 17 39),(Source "$p/RimWorld.ITab_PenAnimals.cs"),(Source "$p/RimWorld.SpecialThingFilterWorker_AllowGender.cs"),(Source "$p/RimWorld.SpecialThingFilterWorker_AllowFemales.cs"),(Source "$p/RimWorld.SpecialThingFilterWorker_AllowMales.cs"));xml=@('PX03')},
+ [ordered]@{id='AP10';finding='TakeToPen requires an eligible same-faction roaming species on a player home map, reservation and interaction access. Animals in a non-Roaming mental state or designated release-to-wild are rejected; roper allowed-area restrictions matter. Roping explicitly ignores minimum handling skill, unlike taming.';sources=@((Source "$p/RimWorld.WorkGiver_TakeToPen.cs"),(Source "$r/Verse.AnimalPenUtility.cs" 199 320));xml=@('PX07')},
+ [ordered]@{id='AP11';finding='Target pen must accept the animal, be allowed and reachable. Reachability uses the roper with the animal fenceblocked setting; a human ability to cross fences does not authorize leading a deer across them. Enclosed pens are considered before hitching posts and optional unenclosed destinations.';sources=@((Source "$p/RimWorld.WorkGiver_TakeToPen.cs"),(Source "$r/Verse.AnimalPenUtility.cs" 147 320));xml=@('PX07')},
+ [ordered]@{id='AP12';finding='Rope attachment needs a valid cardinally adjacent interaction cell that both participants can occupy. Ordinary job walks there, attaches, and waits30ticks, also temporarily putting the animal into Wait. Pen destination is a reachable reservable cell in connected pen regions, not the marker tile itself.';sources=@((Source "$r/Verse.AnimalPenUtility.cs" 365),(Source "$p/Verse.AI.Toils_Rope.cs"));xml=@()},
+ [ordered]@{id='AP13';finding='RopeToDestination may add nearby animals for the same destination up to default10, within10cells; movement uses the slowest ropee. Animal FollowRoper uses paths and a follow distance7.2; nominal RopeLength is8. This is not instantaneous relocation.';sources=@((Source "$p/RimWorld.JobDriver_RopeToDestination.cs"),(Source "$p/Verse.AI.JobDriver_FollowRoper.cs"),(Source "$p/RimWorld.Pawn_RopeTracker.cs"));xml=@()},
+ [ordered]@{id='AP14';finding='RopeToPen releases each animal when its own region belongs to the pen connected regions; reaching the exact marker is unnecessary. The finish action drops ropes. If the destination ceases to be enclosed, arrival logic returns true and drops ropes rather than preserving containment.';sources=@((Source "$p/RimWorld.JobDriver_RopeToPen.cs"),(Source "$p/RimWorld.JobDriver_RopeToDestination.cs"));xml=@()},
+ [ordered]@{id='AP15';finding='Roping state is saved as bidirectional references. Death, downing, drafting, fire, sleeping ropee, incompatible mental state, an incompatible roper job or loss of mutual reachability can break the link. Roping and ownership are independent.';sources=@((Source "$p/RimWorld.Pawn_RopeTracker.cs"));xml=@()},
+ [ordered]@{id='AP16';finding='SupportsAllowedAreas is !Roamer and !disableAreaControl. Loading a roamer clears allowed areas. SeekAllowedArea requests an ordinary reachable Goto into allowed space and can interrupt forbidden goals; area restrictions are behavioral preferences, not walls or teleportation.';sources=@((Source "$p/RimWorld.Pawn_PlayerSettings.cs"),(Source "$p/RimWorld.JobGiver_SeekAllowedArea.cs"),(Source "$p/RimWorld.Area_Allowed.cs"));xml=@('PX04','PX05','PX06')},
+ [ordered]@{id='AP17';finding='A breach does not immediately remove ownership or delete the animal. Natural Roaming requires spawned/playerhome/player faction/Roamer, >=300000ticks since game start, not roped, no roaming cooldown, and reachability to the map edge. Chance node reads species RoamMtbDays;2days is not a fixed escape timer.';sources=@((Source "$p/Verse.AI.MentalStateWorker_Roaming.cs"),(Source "$p/Verse.AI.ThinkNode_ChancePerDay_Roam.cs"),(Source "$p/RimWorld.JobGiver_StartRoaming.cs"));xml=@('PX05','PX08')},
+ [ordered]@{id='AP18';finding='Roaming finds a reachable exit; absence of exit or a new rope recovers the state. Within12cells of the exit it starts a7000..8000tick wait; ShouldExitMapNow also becomes true after state age>60000. Recovery starts a30000tick cooldown. Final map-exit job behavior is outside this extraction.';sources=@((Source "$p/Verse.AI.MentalState_Roaming.cs"),(Source '.local-research/prisoners/Verse.AI.Pawn_MindState.cs' 187 197));xml=@()},
+ [ordered]@{id='AP19';finding='Pen rebalancing compares total BodySize divided by district cell count, with candidate density*1.2<other density. It can account for animals being moved. This density test is not the displayed nutrition-capacity estimate or a hard maximum animal count.';sources=@((Source "$p/Verse.AnimalPenBalanceCalculator.cs"));xml=@()},
+ [ordered]@{id='AP20';finding='Native sampled evidence separately verifies normal sex-filter changes, priority rope job, saved bidirectional rope state, movement into the enclosure and release, and a normal held-open gate causing Unenclosed(open door). The deer/buildings were developer-prepared; no probability or construction-time calibration was performed.';sources=@((Source "$p/RimWorld.JobDriver_RopeToPen.cs"));xml=@()}
+)
+$specs=@(
+ @('PX01','Data/Core/Defs/ThingDefs_Buildings/Buildings_Structure.xml','/Defs/ThingDef[@Name="DoorBase" or defName="Door" or defName="AnimalFlap" or defName="Wall" or defName="Fence" or defName="FenceGate"]'),
+ @('PX02','Data/Core/Defs/ThingDefs_Buildings/Buildings_Misc.xml','/Defs/ThingDef[defName="PenMarker"]'),
+ @('PX03','Data/Core/Defs/Misc/SpecialThingFilterDefs/SpecialThingFilters.xml','/Defs/SpecialThingFilterDef[defName="AllowFemaleGender" or defName="AllowMaleGender"]'),
+ @('PX04','Data/Core/Defs/ThingDefs_Races/Races_Animal_Hares.xml','/Defs/ThingDef[@Name="BaseHare" or defName="Hare"]'),
+ @('PX05','Data/Core/Defs/ThingDefs_Races/Races_Animal_PigGroup.xml','/Defs/ThingDef[defName="Deer"]'),
+ @('PX06','Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml','/Defs/ThingDef[@Name="AnimalThingBase" or @Name="BasePawn"]'),
+ @('PX07','Data/Core/Defs/WorkGiverDefs/WorkGivers.xml','/Defs/WorkGiverDef[defName="TakeToPen" or defName="TakeRoamingAnimalsToPen" or defName="RebalanceAnimalsInPens"]'),
+ @('PX08','Data/Core/Defs/ThinkTreeDefs/Animal.xml','/Defs/ThinkTreeDef[defName="Animal"]//li[@Class="ThinkNode_ChancePerDay_Roam" or @Class="ThinkNode_ConditionalRoamer"]')
+)
+$keep=@('defName','thingClass','category','passability','pathCost','fillPercent','costStuffCount','stuffCategories','holdsRoof','blockWind','blockWeather','terrainAffordanceNeeded','workerClass','parentCategory','allowedByDefault','workType','verb','priorityInType','giverClass','subNodes')
+$nested=@{statBases=@('MaxHitPoints','WorkToBuild','DoorOpenSpeed','Wildness');building=@('isFence','roamerCanOpen','ai_chillDestination');race=@('roamMtbDays','disableAreaControl','trainability','baseHungerRate','baseBodySize','hasGenders')}
+$xml=@(foreach($spec in $specs){
+ $path=Join-Path $GameRoot $spec[1];$doc=[xml](Get-Content -LiteralPath $path -Raw);$nodes=$doc.SelectNodes($spec[2]);if(!$nodes.Count){throw "Empty XPath $($spec[0])"}
+ $selected=@(foreach($node in $nodes){
+  $copy=$node.CloneNode($false)
+  foreach($child in $node.ChildNodes){
+   if($child.LocalName -in $keep){[void]$copy.AppendChild($child.CloneNode($true))}
+   elseif($nested.ContainsKey($child.LocalName)){$subcopy=$child.CloneNode($false);foreach($sub in $child.ChildNodes){if($sub.LocalName -in $nested[$child.LocalName]){[void]$subcopy.AppendChild($sub.CloneNode($true))}};[void]$copy.AppendChild($subcopy)}
+  };$copy.OuterXml
+ })
+ [ordered]@{id=$spec[0];file=$spec[1];source_sha256=(Get-FileHash -LiteralPath $path).Hash.ToLowerInvariant();xpath=$spec[2];projection='Original attributes and selected gameplay children only; not the complete selected node';nodes=$selected}
+})
+$prior=Get-Content (Join-Path $out 'animal-husbandry-evidence.json') -Raw|ConvertFrom-Json
+$e=[ordered]@{
+ evidence_id='RW17-ANIMAL-PENS-MECHANISMS';date_local='2026-11-04';version_text=$manifest.version_text;source_sha256=$manifest.source_sha256
+ kind='Static ILSpy-derived C# and selected Core XML; native observations are a separate evidence layer';manifest='animal-pens-manifest.json';types='animal-pens-types.json';claims=$claims;xml=$xml;rea_members=$prior.rea_members
+ native_runtime_report='../92-native-animal-pens-runtime.md'
+ limitations=@('Derived C# is not original source; ILSpy tolerated unresolved dependencies.','REA artifact identity was available, but the67108864byte member representation budget was exceeded; member unavailability is not absence evidence. No repeated member request was made.','Core XML projections preserve selected inheritance and values, not a full effective modded Def database.','Roping and a held-open gate were observed after developer preparation; normal construction cost/time, natural taming, fence destruction, allowed-area travel, long-term roaming/map exit and nutrition capacity were not calibrated.','The native sample is before300000ticks and cannot establish natural Roaming; Web time/cost mappings remain provisional adaptations.')
+}
+[IO.File]::WriteAllText((Join-Path $out 'animal-pens-evidence.json'),($e|ConvertTo-Json -Depth 18).Replace("`r`n","`n")+"`n",[Text.UTF8Encoding]::new($false))
+"$($claims.Count) claims; $($xml.Count) XML selections; $($manifest.types.Count) types."

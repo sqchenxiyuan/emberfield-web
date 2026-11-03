@@ -98,8 +98,8 @@ export function validateHusbandry(d: VoxelSave): void {
       const father = animalById.get(a.pregnancy.fatherId);
       if (father && (father.sex !== 'male' || father.species !== a.species)) fail('父代身份不符');
     }
-    if (a.goal !== null && (!exact(a.goal, ['kind', 'id']) || !['grass', 'crop', 'food', 'mate'].includes(a.goal.kind) ||
-        (a.goal.kind === 'grass' ? !integer(a.goal.id, 0, CELLS - 1) : !id(a.goal.id)))) fail('动物目标无效');
+    if (a.goal !== null && (!exact(a.goal, ['kind', 'id']) || !['grass', 'crop', 'food', 'mate', 'area', 'exit'].includes(a.goal.kind) ||
+        (['grass','exit'].includes(a.goal.kind) ? !integer(a.goal.id, 0, CELLS - 1) : !id(a.goal.id)))) fail('动物目标无效');
     if (a.path.length && a.goal === null) fail('动物路径缺少目标');
     if (a.mateId !== null) {
       const mate = animalById.get(a.mateId);
@@ -108,7 +108,7 @@ export function validateHusbandry(d: VoxelSave): void {
           a.goal?.kind !== 'mate' || a.goal.id !== a.mateId) fail('配偶引用无效');
       mates.add(a.mateId);
     } else if (a.mateProgress !== 0 || a.goal?.kind === 'mate') fail('交配进度缺少配偶');
-    if (a.eatProgress > 0 && (!a.goal || a.goal.kind === 'mate')) fail('进食进度缺少食物目标');
+    if (a.eatProgress > 0 && (!a.goal || !['grass','crop','food'].includes(a.goal.kind))) fail('进食进度缺少食物目标');
   }
   const grassCells = new Set<number>();
   for (const g of d.grass) {
@@ -119,7 +119,7 @@ export function validateHusbandry(d: VoxelSave): void {
   let previousTick = -1;
   for (const e of d.husbandryLog) {
     if (!exact(e, ['tick', 'kind', 'animalId', 'otherId', 'message']) || !integer(e.tick, previousTick, d.tick) ||
-        !['tame', 'failed', 'fed', 'pregnancy', 'birth', 'miscarriage', 'rewild', 'slaughter', 'release', 'starved'].includes(e.kind) ||
+        !['tame', 'failed', 'fed', 'pregnancy', 'birth', 'miscarriage', 'rewild', 'slaughter', 'release', 'starved', 'escaped'].includes(e.kind) ||
         !id(e.animalId) || (e.otherId !== null && !id(e.otherId)) || typeof e.message !== 'string' || e.message.length > 500)
       fail('动物事件记录无效');
     previousTick = e.tick;

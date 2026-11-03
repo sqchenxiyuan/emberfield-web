@@ -1,0 +1,630 @@
+{
+  "evidence_id": "RW17-ANIMAL-PENS-MECHANISMS",
+  "date_local": "2026-11-04",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Static ILSpy-derived C# and selected Core XML; native observations are a separate evidence layer",
+  "manifest": "animal-pens-manifest.json",
+  "types": "animal-pens-types.json",
+  "claims": [
+    {
+      "id": "AP01",
+      "finding": "Deer has roamMtbDays2 and is a Roamer/FenceBlocked animal. Hare lacks that field in its selected Core inheritance and supports allowed areas. Pen membership is not universal for all tame animals.",
+      "sources": [
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.RaceProperties.cs",
+          "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+          "lines": [
+            1,
+            787
+          ]
+        },
+        {
+          "file": ".local-research/animal-pens/RimWorld.Pawn_PlayerSettings.cs",
+          "sha256": "c23d3b5de6c9a96cad59170531efc71f3964d8d99d07b582eda580bfbdd00494",
+          "lines": [
+            1,
+            422
+          ]
+        }
+      ],
+      "xml": [
+        "PX04",
+        "PX05",
+        "PX06"
+      ]
+    },
+    {
+      "id": "AP02",
+      "finding": "Fence, FenceGate and PenMarker base costStuffCount are1/25/30; WorkToBuild70/500/600; MaxHitPoints40/20/100. All allow Metallic/Woody/Stony; gate inherits DoorBase. These are baseDefs before stuff factors.",
+      "sources": [
+        {
+          "file": ".local-research/animal-pens/RimWorld.CompProperties_AnimalPenMarker.cs",
+          "sha256": "1a328691e74f7734c56d3a56c97c71b62dc83cf51e7c76042bdcb2e3704bf11b",
+          "lines": [
+            1,
+            11
+          ]
+        }
+      ],
+      "xml": [
+        "PX01",
+        "PX02"
+      ]
+    },
+    {
+      "id": "AP03",
+      "finding": "Walls, fences and doors have different region/path semantics. Door gives Portal, GetFence gives Fence, ordinary walkable cells Normal and full-fill blocking buildings None. A fence is PassThroughOnly with pathCost80 and fillPercent0.25, not a universal impassable wall.",
+      "sources": [
+        {
+          "file": ".local-research/housing/Verse.RegionTypeUtility.cs",
+          "sha256": "b97f4e1c226d1ef96b0d4c57260dda7501e176d9d9a836cbb7283103b3fd15a8",
+          "lines": [
+            1,
+            50
+          ]
+        }
+      ],
+      "xml": [
+        "PX01"
+      ]
+    },
+    {
+      "id": "AP04",
+      "finding": "A marker starts from its district; null or map-edge-touching districts are unenclosed. Region traversal visits Normal and Doorway regions, blocks at doors that roamers cannot pass, and fails if any reached region touches the map edge.",
+      "sources": [
+        {
+          "file": ".local-research/animal-pens/Verse.AnimalPenEnclosureCalculator.cs",
+          "sha256": "feb4fadf81cb9327301d996b56b65825c9b21cbbacbdba246b8acdbaab26274c",
+          "lines": [
+            1,
+            107
+          ]
+        },
+        {
+          "file": ".local-research/animal-pens/Verse.AnimalPenConnectedDistrictsCalculator.cs",
+          "sha256": "e4401235ffc78d97c9aa76a26787c4914263f6e45a132c86ce95a6a58e7c577b",
+          "lines": [
+            1,
+            71
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "AP05",
+      "finding": "RoamerCanPass(door) uses door.FreePassage OR building.roamerCanOpen. FreePassage needs Open and then HoldOpen or not WillCloseSoon. A transiently opened automatic-closing gate is not equivalent to a held-open boundary.",
+      "sources": [
+        {
+          "file": ".local-research/animal-pens/Verse.AnimalPenEnclosureCalculator.cs",
+          "sha256": "feb4fadf81cb9327301d996b56b65825c9b21cbbacbdba246b8acdbaab26274c",
+          "lines": [
+            1,
+            107
+          ]
+        },
+        {
+          "file": ".local-research/housing/RimWorld.Building_Door.cs",
+          "sha256": "f6c2dd451cf71a9db48cf09b05e4bfeaef3029b642fe29acca573e57eccdae27",
+          "lines": [
+            75,
+            153
+          ]
+        }
+      ],
+      "xml": [
+        "PX01"
+      ]
+    },
+    {
+      "id": "AP06",
+      "finding": "AnimalFlap explicitly has roamerCanOpen=true and therefore connects roaming regions. A closed ordinary door or fence gate can contain a free deer; a roped animal can pass when its roper can open the door.",
+      "sources": [
+        {
+          "file": ".local-research/housing/RimWorld.Building_Door.cs",
+          "sha256": "f6c2dd451cf71a9db48cf09b05e4bfeaef3029b642fe29acca573e57eccdae27",
+          "lines": [
+            439,
+            477
+          ]
+        },
+        {
+          "file": ".local-research/animal-pens/Verse.AnimalPenEnclosureCalculator.cs",
+          "sha256": "feb4fadf81cb9327301d996b56b65825c9b21cbbacbdba246b8acdbaab26274c",
+          "lines": [
+            1,
+            107
+          ]
+        }
+      ],
+      "xml": [
+        "PX01"
+      ]
+    },
+    {
+      "id": "AP07",
+      "finding": "Enclosure state retains direct/connected regions and passable/impassable doors. Door passability changes cause recalculation; building spawn/despawn marks the pen manager dirty. Recompute topology after breaches and gate state changes.",
+      "sources": [
+        {
+          "file": ".local-research/animal-pens/Verse.AnimalPenEnclosureStateCalculator.cs",
+          "sha256": "ae89f1384ba6e3d3f0580f134701270cb58707929da2929bd917e035aea7ef8d",
+          "lines": [
+            1,
+            88
+          ]
+        },
+        {
+          "file": ".local-research/animal-pens/Verse.AnimalPenManager.cs",
+          "sha256": "2317ef99dabf55c303b5cdfc51e3dd7269641715b9bf1320e66095aab189b316",
+          "lines": [
+            1,
+            157
+          ]
+        },
+        {
+          "file": ".local-research/animal-pens/Verse.PenMarkerState.cs",
+          "sha256": "673e3d4e85c58bfa9c7ebc6860f6154facf612d3f4f083a4ff12817c42a9da85",
+          "lines": [
+            1,
+            57
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "AP08",
+      "finding": "Enclosed and accessible from outside are separate properties: an enclosed marker reports outside access when an impassable-to-roamer doorway exists. A fence-only loop can be enclosed yet have no usable exterior entry for roping.",
+      "sources": [
+        {
+          "file": ".local-research/animal-pens/Verse.PenMarkerState.cs",
+          "sha256": "673e3d4e85c58bfa9c7ebc6860f6154facf612d3f4f083a4ff12817c42a9da85",
+          "lines": [
+            1,
+            57
+          ]
+        },
+        {
+          "file": ".local-research/animal-pens/RimWorld.CompAnimalPenMarker.cs",
+          "sha256": "926a1851c49a76ba2a8c070f335afcd633abff007e9114386a5b9f5d6e305731",
+          "lines": [
+            1,
+            188
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "AP09",
+      "finding": "AcceptsToPen is the intersection of the marker animalFilter and a fixed filter restricted to Roamer animals. UI is ordinary ThingFilterUI; female/male special filters match pawn.gender, both allowed by default. No dedicated age filter is established here.",
+      "sources": [
+        {
+          "file": ".local-research/animal-pens/RimWorld.CompAnimalPenMarker.cs",
+          "sha256": "926a1851c49a76ba2a8c070f335afcd633abff007e9114386a5b9f5d6e305731",
+          "lines": [
+            1,
+            188
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.AnimalPenUtility.cs",
+          "sha256": "fbc92dcf75908d45f445f835fc83d0f9251cdd3c7d84482a27fdcd91d524b3f9",
+          "lines": [
+            17,
+            39
+          ]
+        },
+        {
+          "file": ".local-research/animal-pens/RimWorld.ITab_PenAnimals.cs",
+          "sha256": "7b59df293d8ff24a5c73b101efd4fd6a934bb17db1eccf255eb3dd7c702bc69e",
+          "lines": [
+            1,
+            31
+          ]
+        },
+        {
+          "file": ".local-research/animal-pens/RimWorld.SpecialThingFilterWorker_AllowGender.cs",
+          "sha256": "daa930775e46656f73e5c025747c73df9d7ef603d8486acdf4aadf9f5e1d5eb5",
+          "lines": [
+            1,
+            27
+          ]
+        },
+        {
+          "file": ".local-research/animal-pens/RimWorld.SpecialThingFilterWorker_AllowFemales.cs",
+          "sha256": "23a626d92d9c9a76c80080607898d066f1970a05561c3c2f207068ccac3ccc75",
+          "lines": [
+            1,
+            11
+          ]
+        },
+        {
+          "file": ".local-research/animal-pens/RimWorld.SpecialThingFilterWorker_AllowMales.cs",
+          "sha256": "f20d8ede28719eaf4333d8cc0ef05991422de172779471bf5d9e30b5cee70d8c",
+          "lines": [
+            1,
+            11
+          ]
+        }
+      ],
+      "xml": [
+        "PX03"
+      ]
+    },
+    {
+      "id": "AP10",
+      "finding": "TakeToPen requires an eligible same-faction roaming species on a player home map, reservation and interaction access. Animals in a non-Roaming mental state or designated release-to-wild are rejected; roper allowed-area restrictions matter. Roping explicitly ignores minimum handling skill, unlike taming.",
+      "sources": [
+        {
+          "file": ".local-research/animal-pens/RimWorld.WorkGiver_TakeToPen.cs",
+          "sha256": "728a07f39e46113296a226d68d4791b0d1b88a51060d6b883fc13c7efa025cb1",
+          "lines": [
+            1,
+            157
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.AnimalPenUtility.cs",
+          "sha256": "fbc92dcf75908d45f445f835fc83d0f9251cdd3c7d84482a27fdcd91d524b3f9",
+          "lines": [
+            199,
+            320
+          ]
+        }
+      ],
+      "xml": [
+        "PX07"
+      ]
+    },
+    {
+      "id": "AP11",
+      "finding": "Target pen must accept the animal, be allowed and reachable. Reachability uses the roper with the animal fenceblocked setting; a human ability to cross fences does not authorize leading a deer across them. Enclosed pens are considered before hitching posts and optional unenclosed destinations.",
+      "sources": [
+        {
+          "file": ".local-research/animal-pens/RimWorld.WorkGiver_TakeToPen.cs",
+          "sha256": "728a07f39e46113296a226d68d4791b0d1b88a51060d6b883fc13c7efa025cb1",
+          "lines": [
+            1,
+            157
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.AnimalPenUtility.cs",
+          "sha256": "fbc92dcf75908d45f445f835fc83d0f9251cdd3c7d84482a27fdcd91d524b3f9",
+          "lines": [
+            147,
+            320
+          ]
+        }
+      ],
+      "xml": [
+        "PX07"
+      ]
+    },
+    {
+      "id": "AP12",
+      "finding": "Rope attachment needs a valid cardinally adjacent interaction cell that both participants can occupy. Ordinary job walks there, attaches, and waits30ticks, also temporarily putting the animal into Wait. Pen destination is a reachable reservable cell in connected pen regions, not the marker tile itself.",
+      "sources": [
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.AnimalPenUtility.cs",
+          "sha256": "fbc92dcf75908d45f445f835fc83d0f9251cdd3c7d84482a27fdcd91d524b3f9",
+          "lines": [
+            365,
+            443
+          ]
+        },
+        {
+          "file": ".local-research/animal-pens/Verse.AI.Toils_Rope.cs",
+          "sha256": "acd2a5b9cfc0ff3e03d1444c04ffb9c188ad0699d090de77893b48c1b7de4fe8",
+          "lines": [
+            1,
+            90
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "AP13",
+      "finding": "RopeToDestination may add nearby animals for the same destination up to default10, within10cells; movement uses the slowest ropee. Animal FollowRoper uses paths and a follow distance7.2; nominal RopeLength is8. This is not instantaneous relocation.",
+      "sources": [
+        {
+          "file": ".local-research/animal-pens/RimWorld.JobDriver_RopeToDestination.cs",
+          "sha256": "a806f6ce107f14ff991ea303599f4495e339a418bf75c6e3913069ae7b99dfd9",
+          "lines": [
+            1,
+            154
+          ]
+        },
+        {
+          "file": ".local-research/animal-pens/Verse.AI.JobDriver_FollowRoper.cs",
+          "sha256": "f1ac83932a0ee7325f47e57702b22418cde7339c359196b96277bd48db5b46de",
+          "lines": [
+            1,
+            104
+          ]
+        },
+        {
+          "file": ".local-research/animal-pens/RimWorld.Pawn_RopeTracker.cs",
+          "sha256": "d087455d61013c929ceb6d3ed3f28794ee1764ee56dd7ce1b2697ba6c87dc7c7",
+          "lines": [
+            1,
+            307
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "AP14",
+      "finding": "RopeToPen releases each animal when its own region belongs to the pen connected regions; reaching the exact marker is unnecessary. The finish action drops ropes. If the destination ceases to be enclosed, arrival logic returns true and drops ropes rather than preserving containment.",
+      "sources": [
+        {
+          "file": ".local-research/animal-pens/RimWorld.JobDriver_RopeToPen.cs",
+          "sha256": "901903f0c10f62e0373c74a0ea8b40a6f15e1ccbf4136a14ba09af179b73a09a",
+          "lines": [
+            1,
+            55
+          ]
+        },
+        {
+          "file": ".local-research/animal-pens/RimWorld.JobDriver_RopeToDestination.cs",
+          "sha256": "a806f6ce107f14ff991ea303599f4495e339a418bf75c6e3913069ae7b99dfd9",
+          "lines": [
+            1,
+            154
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "AP15",
+      "finding": "Roping state is saved as bidirectional references. Death, downing, drafting, fire, sleeping ropee, incompatible mental state, an incompatible roper job or loss of mutual reachability can break the link. Roping and ownership are independent.",
+      "sources": [
+        {
+          "file": ".local-research/animal-pens/RimWorld.Pawn_RopeTracker.cs",
+          "sha256": "d087455d61013c929ceb6d3ed3f28794ee1764ee56dd7ce1b2697ba6c87dc7c7",
+          "lines": [
+            1,
+            307
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "AP16",
+      "finding": "SupportsAllowedAreas is !Roamer and !disableAreaControl. Loading a roamer clears allowed areas. SeekAllowedArea requests an ordinary reachable Goto into allowed space and can interrupt forbidden goals; area restrictions are behavioral preferences, not walls or teleportation.",
+      "sources": [
+        {
+          "file": ".local-research/animal-pens/RimWorld.Pawn_PlayerSettings.cs",
+          "sha256": "c23d3b5de6c9a96cad59170531efc71f3964d8d99d07b582eda580bfbdd00494",
+          "lines": [
+            1,
+            422
+          ]
+        },
+        {
+          "file": ".local-research/animal-pens/RimWorld.JobGiver_SeekAllowedArea.cs",
+          "sha256": "5aac9c9ebe8684bacec43bcd2dc5f6ab849e255417d063895ce7c081df36b74b",
+          "lines": [
+            1,
+            85
+          ]
+        },
+        {
+          "file": ".local-research/animal-pens/RimWorld.Area_Allowed.cs",
+          "sha256": "2937e7b91929ebf0a5d8e8c6808574592f539f6b30c6fb9e6619d3265e1faa6d",
+          "lines": [
+            1,
+            95
+          ]
+        }
+      ],
+      "xml": [
+        "PX04",
+        "PX05",
+        "PX06"
+      ]
+    },
+    {
+      "id": "AP17",
+      "finding": "A breach does not immediately remove ownership or delete the animal. Natural Roaming requires spawned/playerhome/player faction/Roamer, >=300000ticks since game start, not roped, no roaming cooldown, and reachability to the map edge. Chance node reads species RoamMtbDays;2days is not a fixed escape timer.",
+      "sources": [
+        {
+          "file": ".local-research/animal-pens/Verse.AI.MentalStateWorker_Roaming.cs",
+          "sha256": "9f8999c267144eb76af765e5b748146c9cbe18b82356b317e6cd8207f1e001ae",
+          "lines": [
+            1,
+            26
+          ]
+        },
+        {
+          "file": ".local-research/animal-pens/Verse.AI.ThinkNode_ChancePerDay_Roam.cs",
+          "sha256": "21064fa90baa67e52d4a19eb4a53c93c2a41f04bc52d0f345ac7390fcc8714de",
+          "lines": [
+            1,
+            9
+          ]
+        },
+        {
+          "file": ".local-research/animal-pens/RimWorld.JobGiver_StartRoaming.cs",
+          "sha256": "a9d5d9234abf970addbcbff362e4275e02c9255bd529ddee8a31d29611c54b82",
+          "lines": [
+            1,
+            20
+          ]
+        }
+      ],
+      "xml": [
+        "PX05",
+        "PX08"
+      ]
+    },
+    {
+      "id": "AP18",
+      "finding": "Roaming finds a reachable exit; absence of exit or a new rope recovers the state. Within12cells of the exit it starts a7000..8000tick wait; ShouldExitMapNow also becomes true after state age>60000. Recovery starts a30000tick cooldown. Final map-exit job behavior is outside this extraction.",
+      "sources": [
+        {
+          "file": ".local-research/animal-pens/Verse.AI.MentalState_Roaming.cs",
+          "sha256": "430396200cf3709a207cabc133c895da1ac7815ee9013e9a20c90ab4a77bf70f",
+          "lines": [
+            1,
+            78
+          ]
+        },
+        {
+          "file": ".local-research/prisoners/Verse.AI.Pawn_MindState.cs",
+          "sha256": "b606531ba468fc6f4c1a2fbd9fbd25dd366ac45f3ef241b1a58fd298f82b7c12",
+          "lines": [
+            187,
+            197
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "AP19",
+      "finding": "Pen rebalancing compares total BodySize divided by district cell count, with candidate density*1.2<other density. It can account for animals being moved. This density test is not the displayed nutrition-capacity estimate or a hard maximum animal count.",
+      "sources": [
+        {
+          "file": ".local-research/animal-pens/Verse.AnimalPenBalanceCalculator.cs",
+          "sha256": "c51e53ad60aba0376caeec644aa8bfcc85419f3bbdd51e79adb8d2244e085130",
+          "lines": [
+            1,
+            102
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "AP20",
+      "finding": "Native sampled evidence separately verifies normal sex-filter changes, priority rope job, saved bidirectional rope state, movement into the enclosure and release, and a normal held-open gate causing Unenclosed(open door). The deer/buildings were developer-prepared; no probability or construction-time calibration was performed.",
+      "sources": [
+        {
+          "file": ".local-research/animal-pens/RimWorld.JobDriver_RopeToPen.cs",
+          "sha256": "901903f0c10f62e0373c74a0ea8b40a6f15e1ccbf4136a14ba09af179b73a09a",
+          "lines": [
+            1,
+            55
+          ]
+        }
+      ],
+      "xml": []
+    }
+  ],
+  "xml": [
+    {
+      "id": "PX01",
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Structure.xml",
+      "source_sha256": "5e4f3958b557e14513eb1dc06fc58bb14aabf10148b96b3d69db5aa9d9d3d523",
+      "xpath": "/Defs/ThingDef[@Name=\"DoorBase\" or defName=\"Door\" or defName=\"AnimalFlap\" or defName=\"Wall\" or defName=\"Fence\" or defName=\"FenceGate\"]",
+      "projection": "Original attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<ThingDef ParentName=\"BuildingBase\" Name=\"DoorBase\" Abstract=\"True\"><thingClass>Building_Door</thingClass><category>Building</category><fillPercent>1</fillPercent><stuffCategories><li>Metallic</li><li>Woody</li><li>Stony</li></stuffCategories><statBases><MaxHitPoints>160</MaxHitPoints></statBases><terrainAffordanceNeeded>Light</terrainAffordanceNeeded><blockWind>true</blockWind><holdsRoof>true</holdsRoof><building><ai_chillDestination>false</ai_chillDestination></building></ThingDef>",
+        "<ThingDef Name=\"Door\" ParentName=\"DoorBase\"><defName>Door</defName><statBases><WorkToBuild>850</WorkToBuild></statBases><costStuffCount>25</costStuffCount><building></building></ThingDef>",
+        "<ThingDef ParentName=\"DoorBase\"><defName>AnimalFlap</defName><statBases><WorkToBuild>850</WorkToBuild><MaxHitPoints>20</MaxHitPoints></statBases><costStuffCount>25</costStuffCount><stuffCategories Inherit=\"False\"><li>Fabric</li><li>Leathery</li></stuffCategories><building><roamerCanOpen>true</roamerCanOpen><ai_chillDestination>false</ai_chillDestination></building></ThingDef>",
+        "<ThingDef ParentName=\"BuildingBase\" Name=\"Wall\"><defName>Wall</defName><thingClass>Building</thingClass><category>Building</category><statBases><MaxHitPoints>300</MaxHitPoints><WorkToBuild>135</WorkToBuild></statBases><costStuffCount>5</costStuffCount><passability>Impassable</passability><blockWind>true</blockWind><fillPercent>1</fillPercent><terrainAffordanceNeeded>Heavy</terrainAffordanceNeeded><holdsRoof>true</holdsRoof><stuffCategories><li>Metallic</li><li>Woody</li><li>Stony</li></stuffCategories><building><ai_chillDestination>false</ai_chillDestination></building></ThingDef>",
+        "<ThingDef ParentName=\"BuildingBase\"><defName>Fence</defName><thingClass>Building</thingClass><category>Building</category><statBases><MaxHitPoints>40</MaxHitPoints><WorkToBuild>70</WorkToBuild></statBases><costStuffCount>1</costStuffCount><passability>PassThroughOnly</passability><pathCost>80</pathCost><blockWind>false</blockWind><fillPercent>0.25</fillPercent><terrainAffordanceNeeded>Light</terrainAffordanceNeeded><stuffCategories><li>Metallic</li><li>Woody</li><li>Stony</li></stuffCategories><building><isFence>true</isFence><ai_chillDestination>false</ai_chillDestination></building></ThingDef>",
+        "<ThingDef ParentName=\"DoorBase\"><defName>FenceGate</defName><statBases><MaxHitPoints>20</MaxHitPoints><WorkToBuild>500</WorkToBuild><DoorOpenSpeed>1.15</DoorOpenSpeed></statBases><costStuffCount>25</costStuffCount><holdsRoof>false</holdsRoof><blockWeather>true</blockWeather><blockWind>false</blockWind><building><ai_chillDestination>false</ai_chillDestination></building></ThingDef>"
+      ]
+    },
+    {
+      "id": "PX02",
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Misc.xml",
+      "source_sha256": "3ee922aa81ded536f0a1e887ae49e7755f0d0deb07a1337c9baf03fca8e4247a",
+      "xpath": "/Defs/ThingDef[defName=\"PenMarker\"]",
+      "projection": "Original attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<ThingDef ParentName=\"BuildingBase\"><defName>PenMarker</defName><thingClass>Building</thingClass><passability>PassThroughOnly</passability><fillPercent>0.15</fillPercent><pathCost>0</pathCost><statBases><MaxHitPoints>100</MaxHitPoints><WorkToBuild>600</WorkToBuild></statBases><stuffCategories><li>Metallic</li><li>Woody</li><li>Stony</li></stuffCategories><costStuffCount>30</costStuffCount><building><ai_chillDestination>false</ai_chillDestination></building></ThingDef>"
+      ]
+    },
+    {
+      "id": "PX03",
+      "file": "Data/Core/Defs/Misc/SpecialThingFilterDefs/SpecialThingFilters.xml",
+      "source_sha256": "a3d81da38d9de4145d46cfb46ab8891f3ac7648cb73b481763be88b48a79806f",
+      "xpath": "/Defs/SpecialThingFilterDef[defName=\"AllowFemaleGender\" or defName=\"AllowMaleGender\"]",
+      "projection": "Original attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<SpecialThingFilterDef><defName>AllowFemaleGender</defName><parentCategory>Animals</parentCategory><allowedByDefault>true</allowedByDefault><workerClass>SpecialThingFilterWorker_AllowFemales</workerClass></SpecialThingFilterDef>",
+        "<SpecialThingFilterDef><defName>AllowMaleGender</defName><parentCategory>Animals</parentCategory><allowedByDefault>true</allowedByDefault><workerClass>SpecialThingFilterWorker_AllowMales</workerClass></SpecialThingFilterDef>"
+      ]
+    },
+    {
+      "id": "PX04",
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Hares.xml",
+      "source_sha256": "bda7f200ded2c9f8ee4b29dc8d9ea2e8d6977f20782797c51352af20aa6d835e",
+      "xpath": "/Defs/ThingDef[@Name=\"BaseHare\" or defName=\"Hare\"]",
+      "projection": "Original attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<ThingDef Abstract=\"True\" ParentName=\"AnimalThingBase\" Name=\"BaseHare\"><statBases><Wildness>0.75</Wildness></statBases><race><baseBodySize>0.2</baseBodySize><baseHungerRate>0.115</baseHungerRate><trainability>None</trainability></race></ThingDef>",
+        "<ThingDef ParentName=\"BaseHare\"><defName>Hare</defName><race></race></ThingDef>"
+      ]
+    },
+    {
+      "id": "PX05",
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_PigGroup.xml",
+      "source_sha256": "87d3d069440e7ad2a3e66f3bb0778e5210c38429c5eb7788b23b87cc64df4ab1",
+      "xpath": "/Defs/ThingDef[defName=\"Deer\"]",
+      "projection": "Original attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<ThingDef ParentName=\"AnimalThingBase\"><defName>Deer</defName><statBases><Wildness>0.75</Wildness></statBases><race><baseBodySize>1.2</baseBodySize><baseHungerRate>0.2</baseHungerRate><roamMtbDays>2</roamMtbDays></race></ThingDef>"
+      ]
+    },
+    {
+      "id": "PX06",
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+      "source_sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4",
+      "xpath": "/Defs/ThingDef[@Name=\"AnimalThingBase\" or @Name=\"BasePawn\"]",
+      "projection": "Original attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<ThingDef Name=\"BasePawn\" Abstract=\"True\"><thingClass>Pawn</thingClass><category>Pawn</category><statBases></statBases><race></race></ThingDef>",
+        "<ThingDef ParentName=\"BasePawn\" Name=\"AnimalThingBase\" Abstract=\"True\"><statBases></statBases><race><hasGenders>true</hasGenders><trainability>None</trainability></race></ThingDef>"
+      ]
+    },
+    {
+      "id": "PX07",
+      "file": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+      "source_sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c",
+      "xpath": "/Defs/WorkGiverDef[defName=\"TakeToPen\" or defName=\"TakeRoamingAnimalsToPen\" or defName=\"RebalanceAnimalsInPens\"]",
+      "projection": "Original attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<WorkGiverDef ParentName=\"TakeToPen\"><defName>TakeRoamingAnimalsToPen</defName><giverClass>WorkGiver_TakeRoamingAnimalsToPen</giverClass><priorityInType>160</priorityInType></WorkGiverDef>",
+        "<WorkGiverDef Name=\"TakeToPen\"><defName>TakeToPen</defName><giverClass>WorkGiver_TakeToPen</giverClass><workType>Handling</workType><verb>rope</verb><priorityInType>130</priorityInType></WorkGiverDef>",
+        "<WorkGiverDef ParentName=\"TakeToPen\"><defName>RebalanceAnimalsInPens</defName><giverClass>WorkGiver_RebalanceAnimalsInPens</giverClass><priorityInType>60</priorityInType></WorkGiverDef>"
+      ]
+    },
+    {
+      "id": "PX08",
+      "file": "Data/Core/Defs/ThinkTreeDefs/Animal.xml",
+      "source_sha256": "d857fb17533f17f90da48fae355d5014f7a4f78ab3dcc6ee755a881bda732121",
+      "xpath": "/Defs/ThinkTreeDef[defName=\"Animal\"]//li[@Class=\"ThinkNode_ChancePerDay_Roam\" or @Class=\"ThinkNode_ConditionalRoamer\"]",
+      "projection": "Original attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<li Class=\"ThinkNode_ChancePerDay_Roam\"><subNodes><li Class=\"ThinkNode_Tagger\"><tagToGive>Misc</tagToGive><subNodes><li Class=\"JobGiver_StartRoaming\" /></subNodes></li></subNodes></li>",
+        "<li Class=\"ThinkNode_ConditionalRoamer\"><subNodes><li Class=\"JobGiver_WanderInRoofedCellsInPen\"><maxDanger>None</maxDanger><ticksBetweenWandersRange>120~240</ticksBetweenWandersRange><expiryInterval>500</expiryInterval></li><!-- tame roamers should not wander too far, and if unenclosed wander near a suitable pen marker 10% of the time --><li Class=\"ThinkNode_ConditionalRandom\"><chance>0.1</chance><subNodes><li Class=\"JobGiver_WanderInPen\"><maxDanger>None</maxDanger><ticksBetweenWandersRange>120~240</ticksBetweenWandersRange><expiryInterval>500</expiryInterval></li></subNodes></li><li Class=\"JobGiver_WanderAnywhere\"><maxDanger>None</maxDanger><ticksBetweenWandersRange>120~240</ticksBetweenWandersRange></li></subNodes></li>"
+      ]
+    }
+  ],
+  "rea_members": {
+    "source_file": ".local-research/husbandry-reproduction/rea-members-summary.json",
+    "sha256": "66427c4d04e6914ff6bb0fac9db74298abf00bd55e00c75ac765042ca21e40c8",
+    "evidence_id": "ev_69dd93b13c6a61b745e389803b4f0df51ea1529b0acda8bce3ce328ac99356a9",
+    "parent_evidence_id": "ev_1394217e2f4381602cdb14a099b269b54074ae46cf73bb12d9adbbc7a30bb0b8",
+    "status": "unavailable",
+    "reason": "Managed metadata exceeds the67108864byte representation budget; zero returned members is not absence evidence"
+  },
+  "native_runtime_report": "../92-native-animal-pens-runtime.md",
+  "limitations": [
+    "Derived C# is not original source; ILSpy tolerated unresolved dependencies.",
+    "REA artifact identity was available, but the67108864byte member representation budget was exceeded; member unavailability is not absence evidence. No repeated member request was made.",
+    "Core XML projections preserve selected inheritance and values, not a full effective modded Def database.",
+    "Roping and a held-open gate were observed after developer preparation; normal construction cost/time, natural taming, fence destruction, allowed-area travel, long-term roaming/map exit and nutrition capacity were not calibrated.",
+    "The native sample is before300000ticks and cannot establish natural Roaming; Web time/cost mappings remain provisional adaptations."
+  ]
+}

@@ -13,7 +13,7 @@ function pawn(id: number, extra: Partial<Pawn> = {}): Pawn {
     destination: null, cargo: null, eating: null, reason: '', moveTick: 0, workTarget: null,
     sleepingSince: null, sleepBedId: null, schedule: Array(24).fill('work'),
     priorities: { handle: 0, firefight: 0, clean: 0, warden: 1, care: 0, hunt: 0, dig: 0, build: 0, cut: 0, haul: 0, grow: 0,
-      cook: 0, craft: 0, research: 0 }, prisoner: null, wardenTask: null, handleTask: null, ...extra };
+      cook: 0, craft: 0, research: 0 }, prisoner: null, wardenTask: null, handleTask: null, ropeTask: null, ...extra };
 }
 function fixture(): VoxelSave {
   const q = pawn(2, { x: 20, faction: 'prisoner', prisoner: initialPrisoner(200, 90), phase: 'prisoner' });

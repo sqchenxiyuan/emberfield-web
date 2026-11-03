@@ -1,6 +1,8 @@
+import { stripPensFields } from './legacy-pens-defaults';
 import { expect } from 'vitest';
 /** Synthetic fixtures only: historical bytes are never rewritten. */
 export function stripHusbandryFields(raw: Record<string, any>) {
+  stripPensFields(raw);
   for (const p of raw.pawns ?? []) expect(p.handleTask ?? null).toBeNull();
   for (const a of raw.animals ?? []) {
     expect(a.faction ?? 'wild').toBe('wild');

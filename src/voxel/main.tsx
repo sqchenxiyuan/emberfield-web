@@ -14,6 +14,7 @@ import { SanitationPanel, SanitationDetails, CleaningStatus } from './Sanitation
 import { FirePanel, FireDetails, FireDamageDetails, FireWorkStatus } from './FirePanel';
 import { WeatherPanel, WeatherCellDetails } from './WeatherPanel';
 import { AnimalPanel, AnimalDetails } from './AnimalPanel';
+import { FenceGateDetails, PenDetails, type PenControls } from './PenPanel';
 import { BatchDurability, ItemCondition } from './ItemCondition';
 import type { EnvironmentView } from './environment';
 import { WEATHER_NAMES } from './weather';
@@ -85,6 +86,9 @@ const tools: Tool[] = [
   'bed',
   'horseshoePin',
   'door',
+  'fence',
+  'fenceGate',
+  'penMarker',
   'generator',
   'solar',
   'battery',
@@ -119,6 +123,9 @@ const icons = [
   '▰',
   '∩',
   '▯',
+  '╫',
+  '⊓',
+  '⚑',
   '⚙',
   '☀',
   '▣',
@@ -130,6 +137,10 @@ const icons = [
   '×',
 ];
 const hints: Record<Tool, string> = {
+  fence: '左键拖动建造直线围栏，留下栏门的位置。完工后拦住鹿，人和兔可缓慢跨越；圈地不需要屋顶。',
+  fenceGate: '点击建造木制栏门，R 旋转。饲养员经栏门牵入鹿；自动开关保持圈地有效，保持敞开会打开边界。',
+  penMarker: '在已围起的区域内建造圈地标记，点击查看是否封闭、现有草料和接纳筛选。标记自身不能拦住动物。',
+  animalArea: '左键拖动涂绘矩形活动范围。兔会按通路返回，寻找范围内的食物与休息位置；右键结束涂绘。',
   horseshoePin: '20 木材建造一格马蹄铁桩。沿直线留出两格空地和通路，殖民者会站在两格外投掷；可在作息中安排娱乐，或在人物面板手动安排。',
   butcherSpot: '划定一格屠宰点，开启烹饪分工后自动加工可达尸体。点击点位可暂停或恢复；生肉可直接食用，也可与谷物混合做简餐。',
   craftingSpot: '一格制作点，无需建材。可制作木棒、钢匕首和短弓，加工速度为锻造台的一半。',
@@ -365,8 +376,9 @@ function App() {
     const selected = state.selected;
     const animals = client.snapshot().snapshot?.animals ?? [];
     const person = selected && client.snapshot().snapshot?.pawns.find(v => equal(v, selected) && (v.faction === 'prisoner' || (v.faction === 'raider' && v.downed && !v.dead)));
-    const animal = selected && animals.find(v => 'animalId' in selected ? v.id === selected.animalId : equal(v, selected));
-    setSelectedAnimal(current => selected && !('animalId' in selected) && animals.some(v => v.id === current && equal(v, selected)) ? current : animal?.id ?? null);
+    const structure = selected && ('penMarkerId' in selected || 'fenceGateId' in selected);
+    const animal = selected && !structure ? animals.find(v => 'animalId' in selected ? v.id === selected.animalId : equal(v, selected)) : undefined;
+    setSelectedAnimal(current => selected && !structure && !('animalId' in selected) && animals.some(v => v.id === current && equal(v, selected)) ? current : animal?.id ?? null);
     if (animal) setSelectedPawn(null);
     else if (person) setSelectedPawn(current => client.snapshot().snapshot?.pawns.some(v => v.id === current && equal(v, selected!)) ? current : person.id);
   }, [state.selected]);
@@ -376,6 +388,19 @@ function App() {
     if (carcass) client.select(carcass);
     setSelectedAnimal(null);
   }, [s?.tick, selectedAnimal]);
+  useEffect(() => {
+    if (!s) return;
+    if (state.selectedPenId !== null && !s.penMarkers.some(p => p.id === state.selectedPenId)) client.showPen(null);
+    if (state.selectedAnimalAreaId !== null && !s.animalAreas.some(a => a.id === state.selectedAnimalAreaId)) {
+      client.showAnimalArea(null);
+      if (state.tool === 'animalArea') client.choose('inspect');
+    }
+  }, [s?.penMarkers, s?.animalAreas, state.selectedPenId, state.selectedAnimalAreaId, state.tool]);
+  useEffect(() => {
+    if (state.tool !== 'inspect' || !state.selected) return;
+    const marker = client.snapshot().snapshot?.penMarkers.find(m => equal(m, state.selected!));
+    if (marker) client.showPen(marker.id);
+  }, [state.selected, state.tool]);
   useEffect(() => {
     const t = setInterval(() => {
       if (client.snapshot().snapshot?.tick)
@@ -404,7 +429,7 @@ function App() {
     }
   };
   const animal = s?.animals.find(v => v.id === selectedAnimal) ??
-    (state.selected ? s?.animals.find(v => equal(v, state.selected!)) : undefined);
+    (state.selected && !('penMarkerId' in state.selected) && !('fenceGateId' in state.selected) ? s?.animals.find(v => equal(v, state.selected!)) : undefined);
   const p = animal ?? state.selected;
   const spawn = s?.spawn ?? { x: 32, y: 32, z: 8 };
   const people = p ? (s?.pawns.filter((v) => equal(v, p)) ?? []) : [];
@@ -439,6 +464,9 @@ function App() {
     : null;
   const bed = p ? s?.beds.find((v) => bedCells(v).some((q) => equal(q, p))) : null;
   const door = p ? s?.doors.find((v) => equal(v, p)) : null;
+  const fence = p ? s?.fences.find(v => equal(v, p)) : null;
+  const fenceGate = p ? s?.fenceGates.find(v => equal(v, p)) : null;
+  const penMarker = p ? s?.penMarkers.find(v => equal(v, p)) : null;
   const device = p
     ? s?.devices.find((d) =>
         deviceCells(d).some((q) => q.x === p.x && q.y === p.y && (q.z === p.z || q.z + 1 === p.z)),
@@ -515,6 +543,7 @@ function App() {
   const block = p ? client.blockAt(p) : 0;
   const title = p
     ? (animal?.name ?? people[0]?.name ??
+      penMarker?.name ?? (fenceGate ? '木制栏门' : null) ?? (fence ? '木制围栏' : null) ??
       (butcherSpot ? '屠宰点' : null) ??
       (horseshoePin ? '马蹄铁桩' : null) ??
       (device ? DEVICE_NAMES[device.kind] : null) ??
@@ -550,9 +579,16 @@ function App() {
     : '营地概览';
   const focus = (target: Pos) => {
     client.focusOn(target);
-    const selection = 'species' in target && 'id' in target ? { ...target, animalId: target.id } : target;
+    const selection = 'species' in target && 'id' in target ? { ...target, animalId: target.id }
+      : 'filter' in target && 'id' in target ? { ...target, penMarkerId: target.id } : target;
     client.select(selection);
   };
+  const penControls: PenControls = {
+    selectedPenId: state.selectedPenId, selectedAreaId: state.selectedAnimalAreaId,
+    editingArea: state.tool === 'animalArea', showPen: client.showPen, showArea: client.showAnimalArea,
+    editArea: client.editAnimalArea,
+  };
+  const editingArea = s?.animalAreas.find(a => a.id === state.selectedAnimalAreaId);
   return (
     <div className="voxel-app">
       <div className="voxel-scene" ref={host} />
@@ -870,7 +906,10 @@ function App() {
             · {levelName(p.z, spawn.z)}
           </p>
         )}
-        {animal && s && <AnimalDetails animal={animal} snapshot={s} command={c => void client.command(c)} focus={focus} />}
+        {animal && s && <AnimalDetails animal={animal} snapshot={s} command={client.command} focus={focus} penControls={penControls} />}
+        {penMarker && s && <PenDetails marker={penMarker} snapshot={s} command={client.command} focus={focus} controls={penControls} />}
+        {fenceGate && s && <FenceGateDetails gate={fenceGate} tick={s.tick} command={client.command} />}
+        {fence && <p data-testid="fence-detail">围栏可拦住鹿。人和兔可缓慢跨越；完整圈地需要连接围栏、栏门和内部标记。使用拆除工具可移除这段围栏。</p>}
         {grass && <section className="voxel-animal-detail" data-testid="grass-detail" data-growth={grass.growth}>
           <label>野草 · 生长 {Math.round(grass.growth * 100)}%<progress aria-label="野草生长" value={grass.growth} max={1} /></label>
           <small>动物可自行寻找草地。取食会减少这里的草，之后随光照和温度恢复。</small>
@@ -1752,6 +1791,7 @@ function App() {
             {([
               'bed',
               'door',
+              'fenceGate',
               'stonecutter',
               'tailor',
               'smithy',
@@ -1799,6 +1839,15 @@ function App() {
                 <option value="stone">花岗岩砖</option>
               </select>
             )}
+            {state.tool === 'animalArea' && <span className="voxel-area-toolbar" data-testid="area-edit-toolbar">
+              <b>{editingArea?.name ?? '请选择活动范围'}</b>
+              <button aria-pressed={!state.animalAreaErase} disabled={!editingArea} onClick={() => editingArea && client.editAnimalArea(editingArea.id)}>涂绘</button>
+              <button aria-pressed={state.animalAreaErase} disabled={!editingArea} onClick={() => editingArea && client.editAnimalArea(editingArea.id, true)}>擦除</button>
+              <button onClick={() => client.choose('inspect')}>结束</button>
+            </span>}
+            {state.placementPreview && <small data-testid="placement-preview-info">
+              {state.placementPreview.tool === 'animalArea' ? state.animalAreaErase ? '擦除' : '涂绘' : '规划'} · {(Math.abs(state.placementPreview.to.x - state.placementPreview.from.x) + 1) * (Math.abs(state.placementPreview.to.y - state.placementPreview.from.y) + 1)} 格
+            </small>}
           </span>
           <p>
             {state.tool === 'farm' && state.crop === 'healroot'
@@ -1908,7 +1957,7 @@ function App() {
         </details>
       </aside>}
       {wildlifeOpen && s && <AnimalPanel snapshot={s} selectedAnimalId={selectedAnimal} baseLevel={spawn.z}
-        command={c => void client.command(c)} choose={tool => client.choose(tool)}
+        command={client.command} choose={tool => client.choose(tool)} penControls={penControls}
         focus={pos => { setSelectedAnimal(null); focus(pos); }}
         selectAnimal={target => { setSelectedAnimal(target.id); setSelectedPawn(null); focus(target); }}
         selectPawn={person => { setSelectedAnimal(null); setSelectedPawn(person.id); focus(person); }}

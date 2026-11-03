@@ -96,6 +96,9 @@ import { migrateWildlife, validateWildlife } from './wildlifePersistence';
 import { initialAnimalState, HUSBANDRY_RULES } from './husbandry';
 import { rejectLegacyHusbandryFields, migrateHusbandry, validateHusbandry } from './husbandryPersistence';
 import { seedGrass, updateHusbandry, tryHandle, handleTick, animalOrder, releaseAnimalHandlers } from './husbandryWorld';
+import { PEN_RULES, PEN_BUILDINGS, initialPenFilter, isAnimalGroundStep, type Fence, type FenceGate, type PenMarker, type AnimalArea } from './pens';
+import { pensCommand, penSummaries, penCells, tryRope, ropeTick, cancelAnimalRopes, removePenMarker } from './pensWorld';
+import { rejectLegacyPensFields, migratePens, validatePens } from './pensPersistence';
 import type { GrassPatch, HusbandryEvent } from './types';
 import type { WildAnimal, ButcherSpot, HorseshoePin } from './types';
 import { initialPsyche, remember, advancePsyche, recreationGain, shouldRecreate, validatePsyche, MOOD_RULES } from './mood';
@@ -320,6 +323,7 @@ const costOf = (
   weaponKind?: WeaponKind,
   weaponBenchKind?: WeaponBenchKind,
 ): Partial<Counts> =>
+  kind === 'fence' || kind === 'fenceGate' || kind === 'penMarker' ? {...PEN_BUILDINGS[kind].cost} :
   kind === 'horseshoePin' ? { ...HORSESHOE_COST } : kind === 'butcher' ? { carcass: 1 } : kind === 'machining'
     ? { ...MACHINING_COST }
     : kind === 'sandbag'
@@ -381,7 +385,7 @@ const workOf = (
   weaponBenchKind?: WeaponBenchKind,
   cropKind: CropKind = 'rice',
 ) =>
-  kind === 'machining'
+  kind === 'fence' || kind === 'fenceGate' || kind === 'penMarker' ? PEN_BUILDINGS[kind].work : kind === 'machining'
     ? MACHINING_WORK
     : kind === 'sandbag'
       ? SANDBAG_WORK
@@ -500,6 +504,14 @@ export class VoxelSimulation {
   private cleanlinessRevision = -1;
   private cleanlinessBase = new Map<number, { total: number; count: number }>();
   animals: WildAnimal[] = [];
+  fences: Fence[] = [];
+  fenceGates: FenceGate[] = [];
+  penMarkers: PenMarker[] = [];
+  animalAreas: AnimalArea[] = [];
+  private penLookupRevision = -1;
+  private fenceLookup = new Map<number, Fence>();
+  private gateLookup = new Map<number, FenceGate>();
+  private markerLookup = new Map<number, PenMarker>();
   grass: GrassPatch[] = [];
   husbandryLog: HusbandryEvent[] = [];
   butcherSpots: ButcherSpot[] = [];
@@ -626,7 +638,7 @@ export class VoxelSimulation {
         food: 100,
         rest: 100,
         skills: initialSkills(i),
-        prisoner: null, wardenTask: null, handleTask: null,
+        prisoner: null, wardenTask: null, handleTask: null, ropeTask: null,
         psyche: initialPsyche(),
         priorities: {
           handle: 2,
@@ -733,6 +745,7 @@ export class VoxelSimulation {
     animal.health = Math.max(0, animal.health - shot.damage);
     animal.threatId = shot.shooterId;
     animal.fleeUntil = this.tick + 200;
+    cancelAnimalRopes(this,animal.id);
     animal.phase = 'flee';
     this.combatEvent(animal, shot.shooterId, animal.id, 'hit', shot.damage, `击中${animal.name}`);
     if (animal.health > 0) return;
@@ -748,6 +761,7 @@ export class VoxelSimulation {
     animal.tame = false; animal.slaughter = false; animal.releaseMarked = false;
     animal.pregnancy = null; animal.path = []; animal.goal = null; animal.mateId = null; animal.mateProgress = 0;
     animal.eatProgress = 0; animal.reason = reason;
+    animal.allowedAreaId = null; animal.requestedPenId = null; animal.ropePaused = false;
     releaseAnimalHandlers(this, animal);
     for (const other of this.animals) if (other.mateId === animal.id) {
       other.mateId = null; other.mateProgress = 0; other.goal = null; other.path = []; other.phase = 'roam';
@@ -834,6 +848,7 @@ export class VoxelSimulation {
       !this.stoveCells.has(i) &&
       !this.deviceBlocks.has(i) &&
       !this.deviceBlocks.has(i + WIDTH * DEPTH) &&
+      this.gateAt(p)?.mode !== 'locked' &&
       !this.doors.some(
         (d) =>
           d.mode === 'locked' &&
@@ -845,7 +860,30 @@ export class VoxelSimulation {
     );
   }
   private canStop(p: Pos) {
-    return this.standable(p) && !this.sandbags.some((b) => same(b, p));
+    return this.standable(p) && !this.fenceAt(p) && !this.sandbags.some((b) => same(b, p));
+  }
+  private refreshPens() {
+    if (this.penLookupRevision === this.revision) return;
+    this.fenceLookup = new Map(this.fences.map(f => [at(f), f]));
+    this.gateLookup = new Map(this.fenceGates.map(g => [at(g), g]));
+    this.markerLookup = new Map(this.penMarkers.map(m => [at(m), m]));
+    this.penLookupRevision = this.revision;
+  }
+  private fenceAt(p: Pos) { this.refreshPens(); return this.fenceLookup.get(at(p)); }
+  private gateAt(p: Pos) { this.refreshPens(); return this.gateLookup.get(at(p)); }
+  private markerAt(p: Pos) { this.refreshPens(); return this.markerLookup.get(at(p)); }
+  penStandable(p: Pos): boolean {
+    return this.standable(p) && !!this.blocks[at(p) - WIDTH * DEPTH] && !this.ladders[at(p)] &&
+      !this.fenceAt(p) && (!this.furnitureAt(p) || !!this.markerAt(p) || !!this.gateAt(p) || this.doors.some(d => same(d,p)));
+  }
+  penNeighbors(p: Pos, mode: 'enclosure' | 'rope'): number[] {
+    const pass = (q: Pos) => {
+      if (!this.penStandable(q)) return false;
+      const gate = this.gateAt(q) ?? this.doors.find(d => same(d,q));
+      return !gate || gate.mode === 'open' || (mode === 'rope' && gate.mode === 'auto');
+    };
+    if (!pass(p)) return [];
+    return this.neighbors(p).filter(n => isAnimalGroundStep(p, position(n)) && pass(position(n)));
   }
   private neighbors(p: Pos): number[] {
     const out: number[] = [];
@@ -965,6 +1003,7 @@ export class VoxelSimulation {
       .filter(
         (p) =>
           this.standable(p) &&
+          !this.fenceAt(p) &&
           !this.sandbags.some((b) => same(b, p)) &&
           (!(
             isDeviceKind(j.kind) ||
@@ -1321,6 +1360,7 @@ export class VoxelSimulation {
   }
   private furnitureAt(p: Pos) {
     return (
+      this.fenceAt(p) || this.gateAt(p) || this.markerAt(p) ||
       this.horseshoePins.find(b => same(b, p)) ||
       this.butcherSpots.find(b => same(b, p)) ||
       this.sandbags.find((b) => same(b, p)) ||
@@ -1826,6 +1866,8 @@ export class VoxelSimulation {
   }
   command(c: VoxelCommand): CommandResult {
     if (!c || typeof c !== 'object') return { ok: false, message: '命令格式无效' };
+    const penResult = pensCommand(this, c);
+    if (penResult) return penResult;
     const nextId = this.nextId;
     if (c.type === 'benchPower') {
       const bench = this.weaponBenches.find((b) => b.id === c.benchId && b.kind === 'machining');
@@ -2267,11 +2309,12 @@ export class VoxelSimulation {
         return { ok: false, message: '门设置无效' };
       if (
         c.mode === 'locked' &&
-        (this.pawns.some((p) => same(p, d)) || this.items.some((p) => same(p, d)))
+        (this.pawns.some((p) => same(p, d)) || this.animals.some(a=>same(a,d)) || this.items.some((p) => same(p, d)))
       )
         return { ok: false, message: '门口有人或物资，请移开后再锁门' };
       d.mode = c.mode;
       d.openUntil = c.mode === 'open' ? this.tick + 37 : 0;
+      this.revision++;cancelAnimalRopes(this);
       return {
         ok: true,
         message:
@@ -2624,7 +2667,7 @@ export class VoxelSimulation {
     if (c.axis !== undefined && c.axis !== 'x' && c.axis !== 'y')
       return { ok: false, message: '朝向无效' };
     if (
-      (['bed', 'door', 'stonecutter', 'tailor', 'smithy', 'machining', 'researchBench'].includes(
+      (['bed', 'door', 'fenceGate', 'stonecutter', 'tailor', 'smithy', 'machining', 'researchBench'].includes(
         c.tool,
       ) ||
         isDeviceKind(c.tool)) &&
@@ -2711,6 +2754,10 @@ export class VoxelSimulation {
     )
       return { ok: false, message: '规划与已有任务重叠，请先取消原规划' };
     if (!plans.length) return { ok: false, message: errors[0] ?? '没有可安排的目标' };
+    if (this.fences.length + [...this.jobs, ...plans].filter(j => j.kind === 'fence').length > PEN_RULES.maxFences ||
+        this.fenceGates.length + [...this.jobs, ...plans].filter(j => j.kind === 'fenceGate').length > PEN_RULES.maxGates ||
+        this.penMarkers.length + [...this.jobs, ...plans].filter(j => j.kind === 'penMarker').length > PEN_RULES.maxMarkers)
+      return {ok:false,message:'围栏、栏门或圈地标记数量已达到上限'};
     if (this.jobs.length + plans.length > 512)
       return { ok: false, message: '规划上限为 512 项，请等部分任务完成' };
     if (
@@ -2796,7 +2843,7 @@ export class VoxelSimulation {
       cancelled: false,
       cost: costOf(kind, material, apparelKind, weaponKind, weaponBenchKind),
       reason: '等待可达工人',
-      ...(['bed', 'door', 'stonecutter', 'tailor', 'smithy', 'machining', 'researchBench'].includes(
+      ...(['bed', 'door', 'fenceGate', 'stonecutter', 'tailor', 'smithy', 'machining', 'researchBench'].includes(
         kind,
       ) || isDeviceKind(kind)
         ? { axis }
@@ -2816,6 +2863,10 @@ export class VoxelSimulation {
     };
   }
   private placementReason(kind: JobKind, p: Pos, axis: Axis = 'x') {
+    if (kind === 'fence' || kind === 'fenceGate' || kind === 'penMarker')
+      return !this.standable(p) || !this.blocks[at(p) - WIDTH * DEPTH] || this.ladders[at(p)] ||
+        this.furnitureAt(p) || this.farms.some(f=>same(f,p)) || this.treePlots.some(f=>same(f,p)) ||
+        this.stockpiles.some(f=>same(f,p)) ? '圈养建筑需要有完整支撑的空地，不能重叠设施、种植区或仓储' : '';
     if (kind === 'researchBench') {
       const cells = researchBenchCells({ ...p, axis });
       if (!this.canStop(researchBenchInteraction({ ...p, axis })))
@@ -3687,7 +3738,7 @@ export class VoxelSimulation {
       rest: 100,
       skills: initialSkills(0, true),
       ...initialSurvival(this.seed, id),
-      prisoner: null, wardenTask: null, handleTask: null,
+      prisoner: null, wardenTask: null, handleTask: null, ropeTask: null,
       psyche: initialPsyche(this.tick),
       faction: 'raider',
       weapon,
@@ -4742,11 +4793,12 @@ export class VoxelSimulation {
     const cell = at(target), oldBlock = this.blocks[cell], oldLadder = this.ladders[cell];
     const properties = { bed: 'beds', door: 'doors', stove: 'stoves', stonecutter: 'stonecutters', tailor: 'tailors',
       weaponBench: 'weaponBenches', researchBench: 'researchBenches', horseshoePin: 'horseshoePins',
-      butcherSpot: 'butcherSpots', device: 'devices' } as const;
+      butcherSpot: 'butcherSpots', device: 'devices', fence:'fences', fenceGate:'fenceGates', penMarker:'penMarkers' } as const;
     const originals = { beds: this.beds, doors: this.doors, stoves: this.stoves, stonecutters: this.stonecutters,
       tailors: this.tailors, weaponBenches: this.weaponBenches, researchBenches: this.researchBenches,
       horseshoePins: this.horseshoePins, butcherSpots: this.butcherSpots, devices: this.devices,
-      wires: this.wires, sandbags: this.sandbags, trees: this.trees };
+      wires: this.wires, sandbags: this.sandbags, trees: this.trees,
+      fences:this.fences,fenceGates:this.fenceGates,penMarkers:this.penMarkers };
     if (target.kind === 'block') this.blocks[cell] = Block.Air;
     if (target.kind === 'ladder') this.ladders[cell] = 0;
     const support = (p: Pos) => inside(p) && p.z > 0 && p.z + 1 < HEIGHT &&
@@ -4769,18 +4821,21 @@ export class VoxelSimulation {
     this.sandbags = this.sandbags.filter(support);
     this.trees = this.trees.filter(t => t.z > 0 && this.blocks[at(t) - WIDTH * DEPTH] && !this.blocks[at(t)]);
     this.stoveCells = new Set(this.stoves.map(at)); this.rebuildDevices(); this.rebuildTrees();
+    this.penLookupRevision = -1;
     const falling = new Map<Pawn | WildAnimal, Pos>();
     for (const actor of [...this.pawns, ...this.animals]) if (!this.standable(actor)) {
       const landing = this.fireLanding(actor);
       if (!landing) {
         this.blocks[cell] = oldBlock; this.ladders[cell] = oldLadder;
-        Object.assign(this, originals); this.stoveCells = new Set(this.stoves.map(at)); this.rebuildDevices(); this.rebuildTrees();
+        Object.assign(this, originals); this.penLookupRevision = -1; this.stoveCells = new Set(this.stoves.map(at)); this.rebuildDevices(); this.rebuildTrees();
         return false;
       }
       falling.set(actor, landing);
     }
+    cancelAnimalRopes(this);
     if (target.kind === 'block') this.structureKinds[cell] = 0;
     for (const d of removed) {
+      if (d.kind === 'penMarker') removePenMarker(this,d.targetId!);
       if (d.kind === 'bed') { const bed = originals.beds.find(b => b.id === d.targetId)!; this.invalidatePrisonBed(bed); }
       for (const p of this.pawns) if (p.psyche.recreation?.spotId === d.targetId || p.repairTask?.damageKey === d.key) this.release(p);
       const cells = new Set(fireDamageCells(d, originals).map(at));
@@ -4821,6 +4876,9 @@ export class VoxelSimulation {
     return true;
   }
   private release(p: Pawn) {
+    const roped = this.animals.find(a => a.id === p.ropeTask?.animalId);
+    if (roped && roped.phase === 'rope') { roped.phase = 'roam'; roped.decisionTick = this.tick; }
+    p.ropeTask = null;
     const animal = this.animals.find(a => a.id === p.handleTask?.animalId);
     if (animal && animal.phase === 'interact') { animal.phase = 'roam'; animal.decisionTick = this.tick; }
     p.handleTask = null;
@@ -4870,13 +4928,15 @@ export class VoxelSimulation {
   animalTake(p: Pawn, id: number, amount: number) { return this.take(p, undefined, amount, id); }
   animalMoveTicks(a: WildAnimal, from: Pos) {
     return this.weatherMoveTicks(from, ANIMAL_DEFS[a.species].moveTicks * (a.phase === 'flee' ? .65 : 1) *
-      (1 + a.malnutrition), a);
+      (1 + a.malnutrition), a, this.fenceAt(a) && !this.fenceAt(from) ? 14 : 0);
   }
   animalNeighbors(a: WildAnimal, p: Pos) {
     return this.neighbors(p).filter(n => {
       const target = position(n);
-      const door = this.doors.find(d => same(d, target));
-      if (this.ladders[n] || (!door && this.furnitureAt(target)) || this.fires.some(f => same(f, target))) return false;
+      const door = this.gateAt(target) ?? this.doors.find(d => same(d, target));
+      const fence = this.fenceAt(target);
+      if (!isAnimalGroundStep(p,target) || this.ladders[n] || (fence && a.species === 'deer') ||
+          (!door && !fence && !this.markerAt(target) && this.furnitureAt(target)) || this.fires.some(f => same(f, target))) return false;
       return !door || door.mode === 'open' || door.openUntil > this.tick ||
         (a.faction === 'colony' && a.species === 'hare' && door.mode !== 'locked');
     });
@@ -4960,13 +5020,14 @@ export class VoxelSimulation {
     if (!this.neighbors(p).includes(next)) {
       this.release(p); p.reason = '通路改变，等待重新规划'; return;
     }
-    const door = this.doors.find(d => same(d, position(next)));
+    const door = this.gateAt(position(next)) ?? this.doors.find(d => same(d, position(next)));
     if (door?.mode === 'auto') {
       if (door.openUntil < this.tick) door.openUntil = this.tick + 13 + 37;
       if (this.tick < door.openUntil - 37) { p.reason = '等待木门打开'; return; }
       door.openUntil = this.tick + 37;
     }
-    const crossingSandbags = this.sandbags.some(b => same(b, position(next))) && !this.sandbags.some(b => same(b, p));
+    const crossingSandbags = (!!this.fenceAt(position(next)) && !this.fenceAt(p)) ||
+      (this.sandbags.some(b => same(b, position(next))) && !this.sandbags.some(b => same(b, p)));
     const previous = { x: p.x, y: p.y, z: p.z };
     Object.assign(p, position(next)); p.path.shift();
     this.trackDirt(p, previous);
@@ -4979,6 +5040,13 @@ export class VoxelSimulation {
     }
   }
   tradeRelease(p: Pawn) { this.release(p); }
+  penMoveHandler(p: Pawn, next: number): boolean {
+    if (!this.penNeighbors(p,'rope').includes(next)) return false;
+    const before = at(p);
+    p.path = [next]; this.moveAlongPath(p); p.path = []; p.destination = null;
+    return at(p) !== before;
+  }
+  penApproach(p: Pawn, target: Pos): number[] | null { return this.path(p,target); }
   tradeDropCargo(p: Pawn) { return this.dropCargo(p); }
   tradePlace(entries: { batch: Cargo; origin: Pos }[], base: Stack[]) { return this.planPlacement(entries, base); }
   tradeApplyPlacement(plan: Placement, reason = '预留物品已交易，重新安排任务') {
@@ -5037,7 +5105,7 @@ export class VoxelSimulation {
     for (const [i, role] of kinds.entries()) {
       const def = VISITOR_KINDS[role], id = this.id();
       const weapon = visitorWeapon(role, () => this.id(), random);
-      const p: Pawn = { ...structuredClone(colonist), prisoner: null, wardenTask: null, handleTask: null, psyche: initialPsyche(this.tick), ...initialSurvival(this.seed, id), ...edges[i],
+      const p: Pawn = { ...structuredClone(colonist), prisoner: null, wardenTask: null, handleTask: null, ropeTask: null, psyche: initialPsyche(this.tick), ...initialSurvival(this.seed, id), ...edges[i],
         id, name: `${def.name} ${this.trade.visits + 1}-${i + 1}`, color: role === 'trader' ? 0xd8bf79 : 0x96b5cc,
         food: 100, rest: 100, skills: initialSkills(i, true), faction: 'trader', weapon,
         priorities: Object.fromEntries(Object.keys(colonist.priorities).map(key => [key, 0])) as Pawn['priorities'],
@@ -5080,6 +5148,7 @@ export class VoxelSimulation {
     return undefined;
   }
   private supported(j: Job) {
+    if (j.kind === 'fence' || j.kind === 'fenceGate' || j.kind === 'penMarker') return !this.placementReason(j.kind,j,j.axis);
     if (j.kind === 'butcher') return this.butcherSpots.some(b => same(b, j) && !b.paused);
     if (j.kind === 'research')
       return (
@@ -5215,7 +5284,7 @@ export class VoxelSimulation {
         triedExtras.add(work);
         if (work === 'haul') this.search(p);
         if (work === 'firefight' ? tryFirefight(this, p) : work === 'repair' ? tryRepair(this, p) :
-            work === 'warden' ? tryWarden(this, p) : work === 'handle' ? tryHandle(this, p) : work === 'hunt' ? this.tryHunt(p) :
+            work === 'warden' ? tryWarden(this, p) : work === 'handle' ? (tryHandle(this, p) || tryRope(this,p)) : work === 'hunt' ? this.tryHunt(p) :
             work === 'clean' ? this.tryClean(p) : this.tryHaul(p)) return true;
       }
       // Each helper can replace the shared BFS tree. Restore it only when the
@@ -5828,6 +5897,9 @@ export class VoxelSimulation {
       this.release(p);
       return;
     }
+    if (j.kind === 'fence' && [...this.pawns,...this.animals].some(a=>same(a,j))) {
+      j.reason='围栏位置被占用，等待人物或动物离开';this.release(p);return;
+    }
     if (j.kind === 'plantTree' && !this.treeCanAppear(j, j.treeSpecies!, j.id)) {
       j.reason = '树苗会阻挡人物、工作位置或唯一通路，等待位置腾空';
       this.release(p);
@@ -5895,7 +5967,10 @@ export class VoxelSimulation {
     else if (j.kind === 'ladder') changes.push({ pos: j, ladder: 1 });
     else if (j.kind === 'remove') {
       const device = this.deviceAt(j);
-      if (device) {
+      if (this.fenceAt(j) || this.gateAt(j) || this.markerAt(j)) {
+        const kind = this.fenceAt(j) ? 'fence' : this.gateAt(j) ? 'fenceGate' : 'penMarker';
+        yields.wood = Math.floor(PEN_BUILDINGS[kind].cost.wood / 2);
+      } else if (device) {
         for (const [r, n] of Object.entries(DEVICE_COSTS[device.kind]))
           yields[r as Resource] = Math.floor(n / 2);
         if (device.kind === 'generator') yields.wood = Math.floor(device.fuel);
@@ -6022,7 +6097,7 @@ export class VoxelSimulation {
       [
         ...this.beds.flatMap(bedCells),
         ...this.sandbags,
-        ...this.doors,
+        ...this.doors, ...this.fences, ...this.fenceGates, ...this.penMarkers,
         ...this.devices.flatMap(deviceCells),
         ...this.stonecutters.flatMap(stonecutterCells),
         ...this.tailors.flatMap(tailorCells),
@@ -6050,7 +6125,7 @@ export class VoxelSimulation {
     const forbidden = new Set(
       j.kind === 'bed'
         ? bedCells({ ...j, axis: j.axis ?? 'x' }).map(at)
-        : j.kind === 'sandbag'
+        : j.kind === 'sandbag' || j.kind === 'fence'
           ? [at(j)]
           : [],
     );
@@ -6130,6 +6205,18 @@ export class VoxelSimulation {
       }
     }
     if (j.kind === 'plantTree') this.createTree(j, j.treeSpecies!, true);
+    if (j.kind === 'fence' || j.kind === 'fenceGate' || j.kind === 'penMarker') {
+      const base = {id:this.id(),x:j.x,y:j.y,z:j.z};
+      if (j.kind === 'fence') this.fences.push(base);
+      else if (j.kind === 'fenceGate') this.fenceGates.push({...base,axis:j.axis ?? 'x',mode:'auto',openUntil:0});
+      else this.penMarkers.push({...base,name:`圈地 ${this.penMarkers.length+1}`,filter:initialPenFilter()});
+      this.revision++;
+    } else if (j.kind === 'remove' && (this.fenceAt(j) || this.gateAt(j) || this.markerAt(j))) {
+      const marker = this.markerAt(j);
+      if (marker) removePenMarker(this,marker.id);
+      this.fences = this.fences.filter(f=>!same(f,j)); this.fenceGates = this.fenceGates.filter(g=>!same(g,j));
+      cancelAnimalRopes(this); this.revision++;
+    }
     if (j.kind === 'researchBench') {
       this.researchBenches.push({ id: this.id(), x: j.x, y: j.y, z: j.z, axis: j.axis ?? 'x' });
       this.rebuildDevices();
@@ -6376,6 +6463,7 @@ export class VoxelSimulation {
         if (combatant) this.combatTick(p);
         else if (p.phase === 'hunt') this.huntTick(p);
         else if (p.phase === 'handle') handleTick(this, p);
+        else if (p.phase === 'rope') ropeTick(this,p);
         else if (p.phase === 'warden') wardenTick(this, p);
         if (
           !combatant &&
@@ -6452,7 +6540,7 @@ export class VoxelSimulation {
           this.release(p); p.reason = '娱乐场地不可用，重新安排';
         }
         if (!combatant && !p.drafted && !p.eating && !p.cargo &&
-            !['rest', 'sleepTravel', 'travel', 'care', 'apparel', 'weapon', 'recreation', 'trade', 'warden', 'handle'].includes(p.phase) &&
+            !['rest', 'sleepTravel', 'travel', 'care', 'apparel', 'weapon', 'recreation', 'trade', 'warden', 'handle', 'rope'].includes(p.phase) &&
             p.food >= 30 && p.rest >= 20 && (this.tick + p.id) % 20 === 0 &&
             shouldRecreate(p, assignmentAt(p.schedule, this.tick)) && this.startRecreation(p)) continue;
         if (!combatant && p.jobId !== null && this.tick % 10 === 0) {
@@ -6494,12 +6582,12 @@ export class VoxelSimulation {
         if (p.phase === 'repair') { repairTick(this, p); continue; }
         if (p.phase === 'clean') { this.cleanTick(p); continue; }
         if (p.phase === 'recreation') { this.recreationTick(p); continue; }
-        if (combatant || p.phase === 'trade' || p.phase === 'hunt' || p.phase === 'warden' || p.phase === 'handle') continue;
+        if (combatant || p.phase === 'trade' || p.phase === 'hunt' || p.phase === 'warden' || p.phase === 'handle' || p.phase === 'rope') continue;
         if (p.phase === 'idle') {
           if ((this.tick + p.id) % 20 === 0) this.assign(p);
         } else this.arrive(p);
       }
-      for (const d of this.doors)
+      for (const d of [...this.doors, ...this.fenceGates])
         if (
           d.mode !== 'locked' &&
           (this.pawns.some((p) => same(p, d)) || this.animals.some(a => same(a,d)) || this.items.some((i) => same(i, d)))
@@ -6810,6 +6898,7 @@ export class VoxelSimulation {
       fires: this.fires, fireDamage: this.fireDamage, fireHazards: this.fireHazards, fireLog: this.fireLog,
       filth: this.filth,
       roomCleanliness: this.roomCleanliness(),
+      penSummaries: penSummaries(this),
       trade: { ...this.trade, quote: quoteTrade(this) },
       homeArea: [...this.homeArea],
       combat: this.combat,
@@ -6823,6 +6912,7 @@ export class VoxelSimulation {
       sandbags: this.sandbags,
       animals: this.animals,
       grass: this.grass, husbandryLog: this.husbandryLog,
+      fences: this.fences, fenceGates: this.fenceGates, penMarkers: this.penMarkers, animalAreas: this.animalAreas,
       butcherSpots: this.butcherSpots,
       horseshoePins: this.horseshoePins,
       seed: this.seed,
@@ -6889,7 +6979,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 29,
+      version: 30,
       weather: this.weather, snow: this.snow,
       fires: this.fires, fireDamage: this.fireDamage, fireHazards: this.fireHazards, fireLog: this.fireLog,
       filth: this.filth,
@@ -6903,6 +6993,7 @@ export class VoxelSimulation {
       sandbags: this.sandbags,
       animals: this.animals,
       grass: this.grass, husbandryLog: this.husbandryLog,
+      fences: this.fences, fenceGates: this.fenceGates, penMarkers: this.penMarkers, animalAreas: this.animalAreas,
       butcherSpots: this.butcherSpots,
       horseshoePins: this.horseshoePins,
       generator: this.generator,
@@ -6940,11 +7031,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyPensFields(old);
     rejectLegacyEnvironmentFields(old);
     rejectLegacyWeatherFields(old);
     rejectLegacyFireFields(old);
@@ -7282,7 +7374,8 @@ export class VoxelSimulation {
     migrateWeather(old, sourceVersion);
     migrateEnvironment(old, sourceVersion);
     migrateHusbandry(old, sourceVersion);
-    old.version = 29;
+    migratePens(old, sourceVersion);
+    old.version = 30;
     const d = old as VoxelSave;
     const loadHealth = (p: Pawn) =>
       oldHealth.get(p.id) ?? {
@@ -7332,6 +7425,7 @@ export class VoxelSimulation {
       [d.researchBenches, 128],
       [d.beds, 128],
       [d.doors, 512],
+      [d.fences,PEN_RULES.maxFences], [d.fenceGates,PEN_RULES.maxGates], [d.penMarkers,PEN_RULES.maxMarkers],
       [d.devices, 256],
       [d.wires, 4096],
     ];
@@ -7376,10 +7470,10 @@ export class VoxelSimulation {
       ...d.weaponBenches,
       ...d.researchBenches,
       ...d.beds,
-      ...d.doors,
+      ...d.doors, ...d.fences, ...d.fenceGates, ...d.penMarkers,
       ...d.devices,
       ...d.sandbags,
-      ...d.projectiles,
+      ...d.projectiles, ...d.animalAreas,
     ]) {
       if (!positive(e.id) || ids.has(e.id) || e.id >= d.nextId)
         throw new Error('重复或无效的对象编号');
@@ -7657,7 +7751,7 @@ export class VoxelSimulation {
       ...d.horseshoePins,
       ...d.sandbags,
       ...d.beds.flatMap(bedCells),
-      ...d.doors,
+      ...d.doors, ...d.fences, ...d.fenceGates, ...d.penMarkers,
       ...d.stoves,
       ...d.stonecutters.flatMap(stonecutterCells),
       ...d.tailors.flatMap(tailorCells),
@@ -7863,7 +7957,7 @@ export class VoxelSimulation {
         (['wall', 'floor'].includes(j.kind)
           ? !['wood', 'stone'].includes(j.material ?? '')
           : j.material !== undefined) ||
-        ((['bed', 'door', 'stonecutter', 'tailor', 'smithy', 'machining', 'researchBench'].includes(
+        ((['bed', 'door', 'fenceGate', 'stonecutter', 'tailor', 'smithy', 'machining', 'researchBench'].includes(
           j.kind,
         ) ||
           isDeviceKind(j.kind)) &&
@@ -8094,7 +8188,7 @@ export class VoxelSimulation {
           'apparel',
           'combat',
           'hunt',
-          'handle',
+          'handle', 'rope',
           'firefight',
           'repair',
           'clean',
@@ -8376,6 +8470,7 @@ export class VoxelSimulation {
     validateTrade(d, ids, apparelIds, weaponIds);
     validateWildlife(d, ids, new Set([...apparelIds, ...weaponIds]));
     validateHusbandry(d);
+    validatePens(d);
     const recreationPins = new Set<number>();
     const recreationCells = new Set<number>();
     for (const p of d.pawns) {
@@ -8418,6 +8513,7 @@ export class VoxelSimulation {
         sandbags: d.sandbags,
         animals: d.animals,
         grass: d.grass, husbandryLog: d.husbandryLog,
+        fences: d.fences, fenceGates: d.fenceGates, penMarkers: d.penMarkers, animalAreas: d.animalAreas,
         butcherSpots: d.butcherSpots,
         horseshoePins: d.horseshoePins,
         nextId: d.nextId,
@@ -8454,7 +8550,7 @@ export class VoxelSimulation {
       [
         ...s.beds.flatMap(bedCells),
         ...s.sandbags,
-        ...s.doors,
+        ...s.doors, ...s.fences, ...s.fenceGates, ...s.penMarkers,
         ...s.devices.flatMap(deviceCells),
         ...s.stonecutters.flatMap(stonecutterCells),
         ...s.tailors.flatMap(tailorCells),
@@ -8526,7 +8622,22 @@ export class VoxelSimulation {
     }
     for (const p of s.pawns) {
       // Prison tasks carry explicit destinations and progress. Movement rechecks every edge.
-      if (p.wardenTask || p.handleTask || p.faction === 'prisoner') continue;
+      if (p.ropeTask) {
+        const task=p.ropeTask, a=s.animals.find(a=>a.id===task.animalId)!;
+        const cells=penCells(s,task.penId);
+        let animal=a as Pos,handler=p as Pos;
+        let valid=!!cells && (task.stage!=='detach'||cells.has(at(a)));
+        if(task.stage!=='approach') {
+          valid=valid&&s.penNeighbors(animal,'rope').includes(at(handler));
+          for(const next of task.path) {
+            if(!s.penNeighbors(handler,'rope').includes(next)||!s.penNeighbors(animal,'rope').includes(at(handler))) {valid=false;break;}
+            animal=handler;handler=position(next);
+          }
+        }
+        if(!valid)s.release(p);
+        continue;
+      }
+      if (p.wardenTask || p.handleTask || p.ropeTask || p.faction === 'prisoner') continue;
       if (p.firefightTask || p.repairTask) {
         const targets = p.firefightTask ? [s.fires.find(f => f.id === p.firefightTask!.fireId)!] :
           fireDamageCells(s.fireDamage.find(d => d.key === p.repairTask!.damageKey)!, s);

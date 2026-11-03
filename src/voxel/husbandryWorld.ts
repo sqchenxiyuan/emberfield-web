@@ -1,3 +1,5 @@
+import { animalAllowed, animalManagementTick, inheritAnimalArea, cancelAnimalRopes, type PensHost } from './pensWorld';
+import { initialAnimalPenState } from './pens';
 import { at, CELLS, DAY, position, type Cargo, type Crop, type GrassPatch, type HandleTask,
   type HusbandryEvent, type Pawn, type Pos, type Stack, type WildAnimal, type CommandResult } from './types';
 import { ANIMAL_DEFS } from './wildlife';
@@ -8,7 +10,7 @@ import { healthSummary } from './survival';
 import { HUSBANDRY_RULES, ANIMAL_HUSBANDRY, initialAnimalState, isAnimalAdult,
   animalNutritionCapacity, animalFeedAmount, tameChance, advanceAnimalNeeds } from './husbandry';
 
-export interface HusbandryHost {
+export interface HusbandryHost extends PensHost {
   seed: number; tick: number; nextId: number; notice: string;
   animals: WildAnimal[]; pawns: Pawn[]; items: Stack[]; crops: Crop[];
   grass: GrassPatch[]; husbandryLog: HusbandryEvent[];
@@ -40,6 +42,7 @@ function clearAnimal(a: WildAnimal) {
   if (!a.dead) a.phase='roam';
 }
 export function releaseAnimalHandlers(s: HusbandryHost, a: WildAnimal) {
+  cancelAnimalRopes(s,a.id);
   for (const p of s.pawns) if (p.handleTask?.animalId===a.id) s.prisonRelease(p);
 }
 export function animalOrder(s: HusbandryHost, id: number, order: string, enabled: boolean): CommandResult {
@@ -94,6 +97,7 @@ function foodTargets(s:HusbandryHost,a:WildAnimal) {
   for(const g of s.grass)if(g.growth>=HUSBANDRY_RULES.grassMinGrowth)targets.set(at(g),{kind:'grass',id:at(g)});
   for(const c of s.crops)if(['rice','potato','corn'].includes(c.kind)&&c.growth>=.1)targets.set(at(c),{kind:'crop',id:c.id});
   for(const f of s.items)if(edible(f)&&s.animalAvailable(f)>0)targets.set(at(f),{kind:'food',id:f.id});
+  for (const cell of targets.keys()) if (!animalAllowed(s,a,position(cell))) targets.delete(cell);
   return targets;
 }
 function goalPosition(s:HusbandryHost,a:WildAnimal):Pos|undefined {
@@ -101,7 +105,7 @@ function goalPosition(s:HusbandryHost,a:WildAnimal):Pos|undefined {
   if(goal.kind==='grass')return s.grass.find(g=>at(g)===goal.id&&g.growth>=HUSBANDRY_RULES.grassMinGrowth&&s.animalGrassSite(g));
   if(goal.kind==='crop')return s.crops.find(c=>c.id===goal.id&&c.growth>=.1);
   if(goal.kind==='food')return s.items.find(i=>i.id===goal.id&&edible(i)&&s.animalAvailable(i)>0);
-  return s.animals.find(q=>q.id===goal.id&&!q.dead);
+  return goal.kind==='mate' ? s.animals.find(q=>q.id===goal.id&&!q.dead) : undefined;
 }
 function consumeNutrition(a:WildAnimal,nutrition:number) {
   a.hunger=Math.min(100,a.hunger+100*nutrition/animalNutritionCapacity(a));
@@ -131,11 +135,11 @@ function compatibleMate(a:WildAnimal,b:WildAnimal) {
 function mateTick(s:HusbandryHost,a:WildAnimal):boolean {
   if(a.mateId===null)return false;
   const b=s.animals.find(b=>b.id===a.mateId);
-  if(!b||!compatibleMate(a,b)||s.pawns.some(p=>p.handleTask?.animalId===b.id)){clearAnimal(a);return false;}
+  if(!b||!compatibleMate(a,b)||s.pawns.some(p=>p.handleTask?.animalId===b.id||p.ropeTask?.animalId===b.id)||!animalAllowed(s,a,b)){clearAnimal(a);return false;}
   a.phase='mate';a.reason='靠近配偶';
   if(!adjacent(a,b)){
     if(!a.path.length||s.tick%80===0){
-      const targets=new Map(s.animalNeighbors(a,b).filter(n=>adjacent(position(n),b)).map(n=>[n,{kind:'mate' as const,id:b.id}]));
+      const targets=new Map(s.animalNeighbors(a,b).filter(n=>adjacent(position(n),b)&&animalAllowed(s,a,position(n))).map(n=>[n,{kind:'mate' as const,id:b.id}]));
       const result=route(s,a,targets);if(!result){clearAnimal(a);a.nextMateTick=s.tick+200;return false;}
       a.path=result.path;a.goal=result.goal;
     }
@@ -157,7 +161,7 @@ function birth(s:HusbandryHost,a:WildAnimal) {
     id,species:a.species,name:a.name,health:ANIMAL_DEFS[a.species].health,hunger:80,dead:false,phase:'roam',hunt:false,
     moveTick:s.tick+20,decisionTick:s.tick,fleeUntil:0,threatId:null,retryTick:0,rotProgress:0,
     faction:a.faction,ageTicks:0,growth:0,tameness:a.faction==='colony'?5:0};
-  s.animals.push(child);a.pregnancy=null;
+  inheritAnimalArea(a,child);s.animals.push(child);a.pregnancy=null;
   event(s,'birth',a,`${a.name}产下一只幼崽`,id);
 }
 export function updateHusbandry(s:HusbandryHost) {
@@ -170,13 +174,13 @@ export function updateHusbandry(s:HusbandryHost) {
     if(a.malnutrition>=1){event(s,'starved',a,`${a.name}因长期饥饿死亡`);s.killAnimal(a,'长期饥饿');continue;}
     if(a.faction==='colony'&&a.species==='hare'&&s.tick>=a.nextTamenessDecayTick){
       a.tameness=Math.max(0,a.tameness-1);a.nextTamenessDecayTick=s.tick+HUSBANDRY_RULES.tamenessDecayTicks;
-      if(!a.tameness){releaseAnimalHandlers(s,a);a.faction='wild';a.slaughter=false;a.releaseMarked=false;clearAnimal(a);
+      if(!a.tameness){releaseAnimalHandlers(s,a);a.faction='wild';Object.assign(a,initialAnimalPenState(s.tick));a.slaughter=false;a.releaseMarked=false;clearAnimal(a);
         event(s,'rewild',a,`${a.name}长期缺少维护，重新变为野生动物`);}
     }
     birth(s,a);
     const threat=s.pawns.find(p=>p.id===a.threatId&&!p.dead);
     if(a.fleeUntil>s.tick&&threat){
-      clearAnimal(a);a.phase='flee';a.reason='逃离威胁';
+      cancelAnimalRopes(s,a.id);clearAnimal(a);a.phase='flee';a.reason='逃离威胁';
       if(s.tick>=a.moveTick){const choices=s.animalNeighbors(a,a).map(position).sort((x,y)=>Math.hypot(y.x-threat.x,y.y-threat.y)-Math.hypot(x.x-threat.x,x.y-threat.y));
         if(choices.length){const from={...a};Object.assign(a,choices[0]);a.moveTick=s.tick+s.animalMoveTicks(a,from);}}
       continue;
@@ -184,6 +188,7 @@ export function updateHusbandry(s:HusbandryHost) {
     a.threatId=null;
     const handler=s.pawns.find(p=>p.handleTask?.animalId===a.id&&p.handleTask.stage==='interact');
     if(handler){clearAnimal(a);a.phase='interact';a.reason=handler.reason;continue;}
+    if(animalManagementTick(s,a))continue;
     const suitor=s.animals.find(b=>b.mateId===a.id&&compatibleMate(b,a));
     if(suitor&&a.hunger>30){clearAnimal(a);a.phase='mate';a.reason='等待配偶靠近';continue;}
     if(mateTick(s,a))continue;
@@ -200,7 +205,7 @@ export function updateHusbandry(s:HusbandryHost) {
       a.reason='找不到可达食物；需要草地或投放粮食';
     }
     if(a.sex==='male'&&a.faction==='colony'&&s.tick>=a.nextMateTick&&a.hunger>45){
-      for(const b of s.animals.filter(b=>compatibleMate(a,b)&&!s.animals.some(other=>other.mateId===b.id))){
+      for(const b of s.animals.filter(b=>compatibleMate(a,b)&&animalAllowed(s,a,b)&&!s.pawns.some(p=>p.ropeTask?.animalId===b.id)&&!s.animals.some(other=>other.mateId===b.id))){
         const result=route(s,a,new Map(s.animalNeighbors(a,b).filter(n=>adjacent(position(n),b)).map(n=>[n,{kind:'mate' as const,id:b.id}])));
         if(result){a.mateId=b.id;a.path=result.path;a.goal=result.goal;mateTick(s,a);break;}
       }
@@ -210,7 +215,7 @@ export function updateHusbandry(s:HusbandryHost) {
     const night=hourAt(s.tick)<6||hourAt(s.tick)>=20;
     a.phase=night&&a.hunger>30?'rest':'roam';
     if(a.phase==='rest'){a.reason='休息';continue;}
-    const choices=s.animalNeighbors(a,a).filter(n=>!s.animals.some(b=>b!==a&&at(b)===n));
+    const choices=s.animalNeighbors(a,a).filter(n=>animalAllowed(s,a,position(n))&&!s.animals.some(b=>b!==a&&at(b)===n));
     if(choices.length){const from={...a};Object.assign(a,position(choices[Math.floor(random(s,a,1102)*choices.length)]));a.moveTick=s.tick+s.animalMoveTicks(a,from);}
     if(a.hunger>=65)a.reason='自由活动';
   }
@@ -224,7 +229,7 @@ function actionFor(a:WildAnimal):HandleTask['action']|null {
 function handlerRoute(p:Pawn,path:number[]){p.path=path;p.destination=path.at(-1)??null;p.phase='handle';}
 export function tryHandle(s:HusbandryHost,p:Pawn):boolean {
   if(!canHandle(p)||p.cargo||p.food<30||p.rest<20)return false;
-  for(const a of s.animals.filter(a=>!a.dead&&s.tick>=a.retryTick&&a.phase!=='flee'&&
+  for(const a of s.animals.filter(a=>!a.dead&&!s.pawns.some(p=>p.ropeTask?.animalId===a.id)&&s.tick>=a.retryTick&&a.phase!=='flee'&&
     !s.pawns.some(q=>q.handleTask?.animalId===a.id)).sort((a,b)=>a.hunger-b.hunger)){
     const action=actionFor(a);if(!action)continue;
     if(['tame','maintain'].includes(action)&&(s.tick<a.nextInteractionTick||p.skills.animals.level<ANIMAL_HUSBANDRY[a.species].minSkill||a.phase==='rest'))continue;
@@ -287,7 +292,7 @@ export function handleTick(s:HusbandryHost,p:Pawn) {
     a.nextInteractionTick=s.tick+HUSBANDRY_RULES.interactionCooldown;
     const success=random(s,a,1103)<tameChance({...a,faction:'wild'},p.skills.animals.level);
     if(success){
-      if(task.action==='tame'){a.faction='colony';a.tame=false;a.hunt=false;a.tameness=5;event(s,'tame',a,`${p.name}成功驯服${a.name}`,p.id);}
+      if(task.action==='tame'){Object.assign(a,initialAnimalPenState(s.tick));a.faction='colony';a.tame=false;a.hunt=false;a.tameness=5;event(s,'tame',a,`${p.name}成功驯服${a.name}`,p.id);}
       else a.tameness=Math.min(5,a.tameness+1);
       a.nextTamenessDecayTick=s.tick+HUSBANDRY_RULES.tamenessDecayTicks;clearAnimal(a);
     }else event(s,'failed',a,`${p.name}的${task.action==='tame'?'驯服':'驯顺维护'}尝试失败，稍后可再次尝试`,p.id);
@@ -296,6 +301,6 @@ export function handleTick(s:HusbandryHost,p:Pawn) {
   p.reason=(task.action==='slaughter'?'正在宰杀':'正在放归')+a.name;
   if(++task.progress<HUSBANDRY_RULES.slaughterWork)return;
   if(task.action==='slaughter'){event(s,'slaughter',a,`${p.name}宰杀了${a.name}`,p.id);s.killAnimal(a,'宰杀');}
-  else{a.faction='wild';a.releaseMarked=false;a.slaughter=false;a.tame=false;a.tameness=0;clearAnimal(a);event(s,'release',a,`${p.name}将${a.name}放归野外`,p.id);}
+  else{a.faction='wild';Object.assign(a,initialAnimalPenState(s.tick));a.releaseMarked=false;a.slaughter=false;a.tame=false;a.tameness=0;clearAnimal(a);event(s,'release',a,`${p.name}将${a.name}放归野外`,p.id);}
   cancel('动物管理完成');
 }

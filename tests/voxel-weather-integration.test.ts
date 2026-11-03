@@ -1,3 +1,4 @@
+import { stripPensFields } from './legacy-pens-defaults';
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -64,7 +65,7 @@ describe('genuine v26 weather migration', () => {
     const proof = JSON.parse(readFileSync(new URL(`./fixtures/voxel-v26-weather-${name}.provenance.json`, import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(sha); expect(proof.sha256).toBe(sha);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old);
-    expect(old.version).toBe(26); expect(s.save().version).toBe(29);
+    expect(old.version).toBe(26); expect(s.save().version).toBe(30);
     expect(s.tick).toBe(old.tick); expect(s.items).toEqual(old.items); expect(s.stats).toEqual(old.stats);
     expect(s.fires).toEqual(old.fires); expect(s.fireDamage).toEqual(old.fireDamage);
     expect(s.fireHazards).toEqual(old.fireHazards); expect(s.fireLog).toEqual(old.fireLog);
@@ -232,7 +233,7 @@ describe('integrated save rejection', () => {
     expect(() => VoxelSimulation.load(duplicate)).toThrow(/积雪/);
     const invalid = s.save(); invalid.snow[0].z++;
     expect(() => VoxelSimulation.load(invalid)).toThrow(/积雪/);
-    const old = s.save() as any; old.version = 26;
+    const old = s.save() as any; stripPensFields(old); old.version = 26;
     expect(() => VoxelSimulation.load(old)).toThrow(/旧版本包含新版天气/);
   });
 });
