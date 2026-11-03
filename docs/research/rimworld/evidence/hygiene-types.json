@@ -1,0 +1,15 @@
+[
+  "RimWorld.Filth",
+  "RimWorld.FilthProperties",
+  "RimWorld.FilthMaker",
+  "RimWorld.Pawn_FilthTracker",
+  "RimWorld.ListerFilthInHomeArea",
+  "RimWorld.WorkGiver_CleanFilth",
+  "RimWorld.JobDriver_CleanFilth",
+  "RimWorld.CompFoodPoisonable",
+  "RimWorld.CompProperties_FoodPoisonable",
+  "RimWorld.FoodPoisonCause",
+  "RimWorld.CompSpawnerFilth",
+  "RimWorld.CompProperties_SpawnerFilth",
+  "RimWorld.JobDriver_Vomit"
+]

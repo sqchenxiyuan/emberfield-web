@@ -128,6 +128,7 @@ type PawnVisual = {
   tool: Group;
   hammer: Group;
   pencil: Group;
+  broom: Group;
   weapons: Record<WeaponKind, Group>;
   cargoWeapons: Record<WeaponKind, Group>;
   cargoHerb: Group;
@@ -140,6 +141,8 @@ type PawnVisual = {
   recreationMarker: Sprite;
   mentalMarker: Sprite;
   talkMarker: Sprite;
+  cleaningMarker: Sprite;
+  poisoningMarker: Sprite;
   horseshoe: Group;
   apparel: { hat: Group; coat: Mesh; sleeves: Mesh[]; shirt: Mesh[]; pants: Mesh[] };
   shadow: Mesh;
@@ -459,6 +462,7 @@ export class VoxelRenderer {
   private treeCrown: ConeGeometry;
   private potGeometry: CylinderGeometry;
   private smokeGeometry: IcosahedronGeometry;
+  private filthGeometry: CylinderGeometry;
   private pawnVisuals = new Map<number, PawnVisual>();
   private animalVisuals = new Map<number, AnimalVisual>();
   private selectedAnimalId: number | null = null;
@@ -527,6 +531,7 @@ export class VoxelRenderer {
     this.treeCrown = this.keepGeometry(new ConeGeometry(1, 1.5, 6));
     this.potGeometry = this.keepGeometry(new CylinderGeometry(0.5, 0.44, 1, 10));
     this.smokeGeometry = this.keepGeometry(new IcosahedronGeometry(1, 0));
+    this.filthGeometry = this.keepGeometry(new CylinderGeometry(.5, .5, 1, 7));
 
     const base = new Mesh(
       this.keepGeometry(new PlaneGeometry(WIDTH + 0.08, DEPTH + 0.08)),
@@ -1404,6 +1409,7 @@ export class VoxelRenderer {
     );
     this.finish(storage);
     this.updateHomeArea();
+    this.updateFilth();
     this.updateWildlifeObjects();
     this.updateRecreationObjects();
     this.updateFarming();
@@ -1415,6 +1421,24 @@ export class VoxelRenderer {
     this.updateHousing();
     this.updatePower();
     this.updateJobLines();
+  }
+
+  private updateFilth() {
+    if (!this.data) return;
+    const filth = this.data.filth.filter(f => f.amount > 0 && f.z <= this.level);
+    const stains = this.batch('ground-filth', filth.length * 4, this.filthGeometry, this.batchMaterial('ground-filth'));
+    this.inspectBatches.set(stains, { cells: filth, instancesPerCell: 4 });
+    const colors = { dirt: 0x766044, blood: 0x904b41, butcher: 0x9b5d50, vomit: 0x8b8e49 };
+    filth.forEach((f, i) => {
+      const scale = .38 + Math.min(f.amount, 6) * .065;
+      for (let n = 0; n < 4; n++) {
+        const angle = f.id * 1.71 + n * 2.4, radius = n ? .19 : .025;
+        const size = scale * (n ? .38 : 1);
+        this.instance(stains, i * 4 + n, f.x + .5 + Math.cos(angle) * radius, f.z + .032 + n * .002,
+          f.y + .5 + Math.sin(angle) * radius, size, .012, size * .72, colors[f.kind], angle);
+      }
+    });
+    this.finish(stains);
   }
 
   private updateRecreationObjects() {
@@ -3155,6 +3179,14 @@ export class VoxelRenderer {
     part(pencil, hair, 0, 0, 0.1, 0.025, 0.025, 0.28);
     part(pencil, steel, 0, 0, 0.25, 0.018, 0.018, 0.035);
     pencil.visible = false;
+    const broom = new Group();
+    broom.position.set(0, -.42, .12);
+    rightArm.add(broom);
+    const straw = this.keepMaterial(new MeshLambertMaterial({ color: 0xb9ab76 }));
+    part(broom, hair, 0, -.17, .18, .055, .65, .055);
+    part(broom, straw, 0, -.53, .18, .38, .16, .13);
+    part(broom, dark, 0, -.45, .18, .33, .035, .12);
+    broom.visible = false;
     const weaponMaterials = new Map<number, MeshLambertMaterial>();
     const weaponModel = (kind: WeaponKind, centered: boolean) => {
       const group = new Group();
@@ -3267,6 +3299,8 @@ export class VoxelRenderer {
       return marker;
     };
     const recreationMarker = activityMarker('娱乐', 0xb9d59b), mentalMarker = activityMarker('悲伤', 0xe1a17d), talkMarker = activityMarker('交谈', 0xe1c49a);
+    const cleaningMarker = activityMarker('清扫', 0xc2d2ad), poisoningMarker = activityMarker('食物中毒', 0xc9c480);
+    poisoningMarker.position.y = 2.62;
     const horseshoe = new Group(), iron = this.keepMaterial(new MeshLambertMaterial({ color: 0xc4d1c7 }));
     part(horseshoe, iron, -.105, 0, 0, .055, .055, .26);
     part(horseshoe, iron, .105, 0, 0, .055, .055, .26);
@@ -3288,6 +3322,7 @@ export class VoxelRenderer {
       tool,
       hammer,
       pencil,
+      broom,
       weapons,
       cargoWeapons,
       cargoHerb,
@@ -3299,6 +3334,8 @@ export class VoxelRenderer {
       recreationMarker,
       mentalMarker,
       talkMarker,
+      cleaningMarker,
+      poisoningMarker,
       horseshoe,
       apparel: { hat, coat, sleeves, shirt, pants },
       shadow,
@@ -3555,6 +3592,9 @@ export class VoxelRenderer {
       visual.recreationMarker.visible = !!recreation;
       visual.mentalMarker.visible = mental;
       visual.talkMarker.visible = !!talkPartner;
+      visual.cleaningMarker.visible = false;
+      visual.poisoningMarker.visible = !!pawn.foodPoisoning && !pawn.dead;
+      visual.broom.visible = false;
       visual.horseshoe.visible = false;
       visual.head.rotation.set(0, 0, 0);
       visual.head.visible = !isPartMissing(pawn.trauma, 'head');
@@ -3572,6 +3612,7 @@ export class VoxelRenderer {
         visual.tool,
         visual.hammer,
         visual.pencil,
+        visual.broom,
         ...Object.values(visual.weapons),
       ])
         if (held.parent !== toolArm) toolArm.add(held);
@@ -3600,7 +3641,7 @@ export class VoxelRenderer {
       visual.shadow.visible = !bed && pawn.carriedBy === null;
       visual.sleepSymbol.visible = sleeping;
       visual.healthMarker.visible =
-        !pawn.dead && (pawn.downed || needsMedicalTending(pawn, this.data.tick));
+        !pawn.dead && (pawn.downed || !!pawn.foodPoisoning || needsMedicalTending(pawn, this.data.tick));
       visual.healthMarker.position.set(-0.38, bed ? 1.2 : 0.9, 0.5);
       visual.label.material.color.setHex(pawn.dead ? 0xaaaaaa : mental ? 0xf3be9e : 0xffffff);
       visual.label.position.set(0, lying ? 1.2 : 1.91, lying ? 0.5 : 0);
@@ -3629,6 +3670,11 @@ export class VoxelRenderer {
       visual.cargoHerb.visible = pawn.cargo?.resource === 'herb';
       if (pawn.cargo?.carcass) visual.cargoCarcasses[pawn.cargo.carcass.species].visible = true;
       const moving = pawn.path.length > 0 || fraction < 1;
+      const cleaningTarget = pawn.phase === 'clean' && pawn.cleanTask ? this.data.filth.find(f => f.id === pawn.cleanTask!.filthId) : undefined;
+      const cleaning = !!cleaningTarget && !moving && !pawn.cargo && !mental &&
+        pawn.x === cleaningTarget.x && pawn.y === cleaningTarget.y && pawn.z === cleaningTarget.z;
+      visual.broom.visible = cleaning;
+      visual.cleaningMarker.visible = cleaning;
       const working =
         pawn.phase === 'work' && pawn.path.length === 0 && !pawn.cargo && fraction >= 1;
       const job = this.data.jobs.find((candidate) => candidate.id === pawn.jobId);
@@ -3808,7 +3854,12 @@ export class VoxelRenderer {
           dz = visual.to.z - visual.from.z;
         if (Math.abs(dx) + Math.abs(dz) > 0.001) visual.root.rotation.y = Math.atan2(dx, dz);
       }
-      if (talkPartner && !moving) {
+      if (cleaning) {
+        visual.torso.rotation.x = .12;
+        visual.head.rotation.x = .12;
+        toolArm.rotation.x = -.1 + Math.sin(time * 5 + pawn.id) * .13;
+        visual.broom.rotation.z = Math.sin(time * 5 + pawn.id) * .18;
+      } else if (talkPartner && !moving) {
         visual.root.rotation.y = Math.atan2(talkPartner.x - pawn.x, talkPartner.y - pawn.y);
         visual.head.rotation.x = Math.sin(time * 2.1 + pawn.id) * .06;
         visual.leftArm.rotation.x = -.18;

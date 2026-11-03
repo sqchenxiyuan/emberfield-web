@@ -1,0 +1,97 @@
+{
+  "evidence_id": "RW17-HYGIENE",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.Filth",
+      "local_file": ".local-research/hygiene/RimWorld.Filth.cs",
+      "sha256": "0263757bcc2324bbbd6950c0b8dafac5270f5fdf45b2df51058fe2f261930e0b",
+      "lines": 193
+    },
+    {
+      "type": "RimWorld.FilthProperties",
+      "local_file": ".local-research/hygiene/RimWorld.FilthProperties.cs",
+      "sha256": "7216a041a87a2211ae598c521b7704d6aba9285ad5a14a2653b4ce6e4a0f44a0",
+      "lines": 27
+    },
+    {
+      "type": "RimWorld.FilthMaker",
+      "local_file": ".local-research/hygiene/RimWorld.FilthMaker.cs",
+      "sha256": "5f33e4958cb3771dce17d0bcfa8c9790043ac6e208f5360cac241f144ae1edd2",
+      "lines": 162
+    },
+    {
+      "type": "RimWorld.Pawn_FilthTracker",
+      "local_file": ".local-research/hygiene/RimWorld.Pawn_FilthTracker.cs",
+      "sha256": "9bfba043ca3eef746178a6796f19f3f35de270ceef9b87c255c7663e803cb10d",
+      "lines": 232
+    },
+    {
+      "type": "RimWorld.ListerFilthInHomeArea",
+      "local_file": ".local-research/hygiene/RimWorld.ListerFilthInHomeArea.cs",
+      "sha256": "222fbb9ef3b67583935c20b98cc8f3d2affba7a35bb0544c92fa07d1d14a7803",
+      "lines": 83
+    },
+    {
+      "type": "RimWorld.WorkGiver_CleanFilth",
+      "local_file": ".local-research/hygiene/RimWorld.WorkGiver_CleanFilth.cs",
+      "sha256": "7f8c2e0910a0b0f45c9b3e5be1a5a96e45d6f4fca5877800322f8d0ece8fbe4f",
+      "lines": 111
+    },
+    {
+      "type": "RimWorld.JobDriver_CleanFilth",
+      "local_file": ".local-research/hygiene/RimWorld.JobDriver_CleanFilth.cs",
+      "sha256": "ec8fcb887464796aa483694456757c9317751770a62a10c7465b8b026d06c3c3",
+      "lines": 84
+    },
+    {
+      "type": "RimWorld.CompFoodPoisonable",
+      "local_file": ".local-research/hygiene/RimWorld.CompFoodPoisonable.cs",
+      "sha256": "ecfe1fc47946e0c44b7fe47dc8cc24ee20c57f98893e71f581a0024bf689f639",
+      "lines": 73
+    },
+    {
+      "type": "RimWorld.CompProperties_FoodPoisonable",
+      "local_file": ".local-research/hygiene/RimWorld.CompProperties_FoodPoisonable.cs",
+      "sha256": "063982365283d8cfd405b1e94ed4aac10f2092bdb45899195bc99b756148ab10",
+      "lines": 12
+    },
+    {
+      "type": "RimWorld.FoodPoisonCause",
+      "local_file": ".local-research/hygiene/RimWorld.FoodPoisonCause.cs",
+      "sha256": "6bdbb5131356152f63a4e207c2e4af297f18a652f42b06fa732e0cac3e7220c8",
+      "lines": 11
+    },
+    {
+      "type": "RimWorld.CompSpawnerFilth",
+      "local_file": ".local-research/hygiene/RimWorld.CompSpawnerFilth.cs",
+      "sha256": "0779215755f5d3b33866d3337719e8c3caaff5752404eb8fdfbbe6ebadbca077",
+      "lines": 84
+    },
+    {
+      "type": "RimWorld.CompProperties_SpawnerFilth",
+      "local_file": ".local-research/hygiene/RimWorld.CompProperties_SpawnerFilth.cs",
+      "sha256": "3cd5bec59a16b29aec8d29acb168a229cde0db242bee7f7e408fed53de5697a5",
+      "lines": 24
+    },
+    {
+      "type": "RimWorld.JobDriver_Vomit",
+      "local_file": ".local-research/hygiene/RimWorld.JobDriver_Vomit.cs",
+      "sha256": "d33e9dd993f7f9553666e05c3735787b23dd0e72c12a672166a88d0dd27d9266",
+      "lines": 71
+    }
+  ]
+}

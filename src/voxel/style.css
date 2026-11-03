@@ -342,6 +342,30 @@ a {
   flex-shrink: 0;
 }
 .voxel-readonly-equipment { border: 0; padding: 0; margin: 0; min-width: 0; }
+.voxel-sanitation-drawer { position: absolute; z-index: 4; right: 24px; top: 90px; bottom: 168px; width: 355px; padding: 16px; overflow-y: auto; overscroll-behavior: contain; border: 1px solid #bcc99c60; border-radius: 6px; background: #1c292af7; box-shadow: 0 12px 35px #0004; }
+.voxel-sanitation-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.voxel-sanitation-heading h2 { margin: 0; font-size: 18px; color: #d9d6aa; }
+.voxel-sanitation-drawer h3 { font-size: 13px; color: #d5d3aa; margin: 12px 0; }
+.voxel-sanitation-drawer p, .voxel-sanitation-drawer small, .voxel-sanitation-detail small, .voxel-cleaning-status small, .voxel-food-poisoning small { display: block; font-size: 11px; line-height: 1.65; color: #bdc9bc; }
+.voxel-sanitation-drawer p { margin: 10px 0; }
+.voxel-sanitation-guide, .voxel-sanitation-home, .voxel-sanitation-workers, .voxel-sanitation-list > div, .voxel-sanitation-detail, .voxel-cleaning-status, .voxel-food-poisoning { margin: 12px 0; padding: 12px; border: 1px solid #b9c79a33; background: #14202166; }
+.voxel-sanitation-drawer summary, .voxel-sanitation-detail summary { cursor: pointer; color: #d9d4ac; line-height: 1.6; }
+.voxel-sanitation-home > div { display: flex; flex-wrap: wrap; gap: 7px; margin: 10px 0; }
+.voxel-sanitation-home button { font-size: 11px; padding: 7px; }
+.voxel-sanitation-workers > div { display: grid; gap: 7px; margin-top: 12px; }
+.voxel-sanitation-workers label { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.voxel-sanitation-workers select { width: 95px; }
+.voxel-sanitation-list > div > small { margin: 7px 0; }
+.voxel-sanitation-list > button { display: block; width: 100%; margin-top: 7px; }
+.voxel-sanitation-list .voxel-info-row span { font-size: 10px; }
+.voxel-sanitation-detail > *, .voxel-cleaning-status > *, .voxel-food-poisoning > * { margin-top: 8px; }
+.voxel-sanitation-detail > summary, .voxel-cleaning-status > :first-child, .voxel-food-poisoning > :first-child { margin-top: 0; }
+.voxel-sanitation-detail label, .voxel-food-poisoning label { display: grid; gap: 6px; font-size: 11px; }
+.voxel-sanitation-detail button, .voxel-cleaning-status button { width: 100%; font-size: 11px; }
+.voxel-filth-row { margin: 10px 0; padding-top: 9px; border-top: 1px solid #d1d7b625; }
+.voxel-sanitation-detail progress, .voxel-cleaning-status progress, .voxel-food-poisoning progress { display: block; width: 100%; height: 6px; accent-color: #b9be83; }
+.voxel-food-poisoning { border-color: #d2c7796b; }
+@media (max-width: 1050px) { .voxel-sanitation-drawer { right: 12px; top: 204px; width: 315px; padding: 12px; } }
 .voxel-prison-drawer { position: absolute; z-index: 4; right: 24px; top: 90px; bottom: 168px; width: 355px; padding: 16px; overflow-y: auto; overscroll-behavior: contain; border: 1px solid #c6aa795f; border-radius: 6px; background: #1c292af7; box-shadow: 0 12px 35px #0004; }
 .voxel-prison-heading, .voxel-prison-list section > div { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .voxel-prison-heading h2 { margin: 0; font-size: 18px; color: #e1cba1; }

@@ -71,6 +71,7 @@ function fixture() {
     p.worn = [];
     p.schedule.fill('work');
     p.priorities = {
+      clean: 0,
       warden: 0,
       hunt: 0,
       dig: 0,
@@ -459,7 +460,7 @@ describe('physical dressing, interruption, death and migration', () => {
     );
     const old = JSON.parse(raw.toString()),
       s = VoxelSimulation.load(old);
-    expect(s.save().version).toBe(24);
+    expect(s.save().version).toBe(25);
     expect(s.items).toEqual(old.items);
     expect(s.pawns.map((p) => p.health)).toEqual(old.pawns.map((p: any) => p.health));
     expect(s.counts().apparel).toBe(0);

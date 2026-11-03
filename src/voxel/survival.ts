@@ -9,6 +9,7 @@ import {
 } from './injuries';
 import { roundedCapacity, type CapacityReasons } from './anatomy';
 import { initialMedical, infectionEffects, type MedicalState } from './medicine';
+import { SANITATION_RULES } from './sanitation';
 
 // Source contract: chapter 33. Whole healthy adult body, no apparel, genes or traits.
 // Source 60000 ticks/day is mapped to our DAY, independently of render/real-time TPS.
@@ -44,6 +45,9 @@ export function initialSurvival(
   id: number,
 ): Pick<
   Pawn,
+  | 'cleanTask'
+  | 'dirtCarry'
+  | 'foodPoisoning'
   | 'health'
   | 'dead'
   | 'downed'
@@ -74,6 +78,7 @@ export function initialSurvival(
   let hash = Math.imul(seed ^ id, 0x45d9f3b);
   hash = Math.imul(hash ^ (hash >>> 16), 0x45d9f3b);
   return {
+    cleanTask: null, dirtCarry: 0, foodPoisoning: null,
     trauma: initialTrauma(),
     medical: initialMedical(),
     faction: 'colony',
@@ -350,7 +355,7 @@ export function healthDeathReason(
 }
 export function healthSummary(
   p: Pick<Pawn, 'health' | 'dead' | 'deathReason'> &
-    Partial<Pick<Pawn, 'worn' | 'trauma' | 'medical'>>,
+    Partial<Pick<Pawn, 'worn' | 'trauma' | 'medical' | 'foodPoisoning'>>,
 ) {
   const trauma = traumaSummary(p.trauma ?? initialTrauma()),
     derived = capacities(p.health, trauma, p.dead, p.medical);
@@ -367,11 +372,19 @@ export function healthSummary(
       ]
         .filter(Boolean)
         .join('、') || '健康';
+  if (p.foodPoisoning && !p.dead) {
+    const symptoms = SANITATION_RULES.capacity[p.foodPoisoning.stage];
+    if (symptoms) {
+      derived.moving = roundedCapacity(derived.moving * symptoms.moving);
+      derived.manipulation = roundedCapacity(derived.manipulation * symptoms.manipulation);
+    }
+    derived.capacityReasons.moving.push('食物中毒'); derived.capacityReasons.manipulation.push('食物中毒');
+  }
   const protection = insulation(p.worn ?? []);
   return {
     ...derived,
     bleedRate: trauma.bleedRate,
-    reason,
+    reason: p.foodPoisoning && !p.dead ? (reason === '健康' ? '食物中毒' : reason + '、食物中毒') : reason,
     comfortableMin: COMFORTABLE_MIN - protection.cold,
     comfortableMax: COMFORTABLE_MAX + protection.heat,
     safeMin: SAFE_MIN - protection.cold,

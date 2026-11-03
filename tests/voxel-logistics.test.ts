@@ -80,6 +80,7 @@ function fixture(setup: (s: VoxelSimulation) => void = () => {}) {
   for (let i = 0; i < s.pawns.length; i++) {
     Object.assign(s.pawns[i], pos(10 + i, 18));
     s.pawns[i].priorities = {
+      clean: 0,
       warden: 0,
       hunt: 0,
       dig: 0,
@@ -122,6 +123,7 @@ function invariants(s: VoxelSimulation) {
           'weapon',
           'carcass',
           'forbidden',
+          'poisonChance',
         ].includes(k),
       ),
     ).toBe(true);
@@ -173,7 +175,7 @@ describe('bounded physical stacks and hauling reservations', () => {
     expect(s.items.filter((i) => i.resource === 'food').map((i) => i.amount)).toEqual([
       10, 10, 10, 10, 10, 10,
     ]);
-    expect(s.save().version).toBe(24);
+    expect(s.save().version).toBe(25);
     expect(VoxelSimulation.load(s.save()).counts()).toEqual(s.counts());
   });
   it.each(resources)('carries and stores %s only within its native one-stack limit', (resource) => {
@@ -374,11 +376,15 @@ describe('bounded outputs and interrupted physical containers', () => {
     expect(ledger(s)).toEqual(initial);
   });
   it('pauses cooked output without consuming ingredients until a nearby stack expires', () => {
-    const s = fullKitchen();
+    let s = fullKitchen();
     until(s, () => s.jobs.some((j) => j.reason.includes('附近可达落地空间')));
     expect(s.stats.cooked).toBe(0);
     expect(s.stats.consumed.grain).toBe(0);
     expect(s.jobs[0].delivered.grain).toBe(10);
+    const outcome = structuredClone(s.jobs[0].cookingOutcome);
+    expect(outcome).toBeDefined();
+    s = VoxelSimulation.load(s.save());
+    expect(s.jobs[0].cookingOutcome).toEqual(outcome);
     until(s, () => s.stats.cooked === 1, 500);
     expect(s.stats.produced.meal).toBe(1);
     expect(s.stats.consumed.grain).toBe(10);

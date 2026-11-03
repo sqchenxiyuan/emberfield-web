@@ -6,7 +6,9 @@
 
 在线试玩：[GitHub Pages](https://sqchenxiyuan.github.io/emberfield-web/) · 源码：[sqchenxiyuan/emberfield-web](https://github.com/sqchenxiyuan/emberfield-web)。
 
-当前开发重点是先搭好可操作的玩法和机制闭环，数值采用初步默认值，后续再平衡。已接通体素动物、狩猎与肉食生产的首条循环，见[开发路线](docs/research/rimworld/05-reconstruction-roadmap.md)；研究文档中的原版数值不代表当前游戏已经完成平衡。
+当前开发重点是先搭好可操作的玩法和机制闭环，数值采用初步默认值，后续再平衡。体素模式已接通狩猎与肉食生产、心情娱乐、俘虏招募及卫生清洁，见[开发路线](docs/research/rimworld/05-reconstruction-roadmap.md)；研究文档中的原版数值不代表当前游戏已经完成平衡。
+
+2026-11-04卫生更新（v25）：人物把泥土带上铺装地板，流血、屠宰和呕吐产生真实污物；“卫生”面板可设置家园范围、安排清扫，清洁与搬运遵循分工优先级。厨房卫生与厨师技能影响简餐污染，餐食搬运、混堆、喂食和存档保留污染状态。食物中毒经历初期、严重和恢复期，呕吐会打断工作，恢复中再次摄入可能返回严重期；清扫也影响既有伤口护理环境。旧档不补发污物或疾病，具体平衡仍待调整。见[76原版机制](docs/research/rimworld/76-sanitation-food-poisoning-mechanisms.md)、[77原版实机](docs/research/rimworld/77-native-sanitation-runtime.md)和[78玩法与验证](docs/research/rimworld/78-sanitation-gameplay.md)。
 
 2026-11-04俘虏与招募更新（v24）：倒地袭击者可由未征召的殖民者实际抱入牢房，护理和喂食使用真实物资；恢复后由看守面对面交谈降低抵抗，归零后的下一次招募交谈才加入殖民地。囚犯床同房联动，支持仅照料、降低抵抗、招募和步行释放；途中任务与新增人口可保存。当前牢房要求封闭且有屋顶，暂不含越狱、奴役和完整社会关系。见[73原版机制](docs/research/rimworld/73-prisoner-recruitment-mechanisms.md)、[74原版床位操作](docs/research/rimworld/74-native-prisoner-runtime.md)与[75玩法和验证](docs/research/rimworld/75-prisoners-gameplay.md)。
 

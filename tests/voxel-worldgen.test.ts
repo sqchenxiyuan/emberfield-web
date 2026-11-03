@@ -67,6 +67,7 @@ function plotWorld(soil: number, meanTemperature = 20) {
   s.pawns.forEach((p, i) => {
     Object.assign(p, point(10 + i, 12));
     p.priorities = {
+      clean: 0,
       warden: 0,
       hunt: 0,
       dig: 1,
@@ -299,7 +300,7 @@ describe('v8 world persistence and validation', () => {
       s = VoxelSimulation.load(raw),
       saved = s.save();
     expect(raw).toEqual(original);
-    expect(saved.version).toBe(24);
+    expect(saved.version).toBe(25);
     expect(saved.generator).toBe(1);
     expect(saved.blocks).toEqual(raw.blocks);
     expect(saved.ladders).toEqual(raw.ladders);

@@ -38,6 +38,7 @@ function fixture(configure: (s: VoxelSimulation) => void = () => {}) {
     Object.assign(p, pos(11, 11 + i));
     p.schedule.fill('work');
     p.priorities = {
+      clean: 0,
       warden: 0,
       hunt: 0,
       dig: 0,

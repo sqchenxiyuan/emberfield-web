@@ -70,7 +70,10 @@
     "test:voxel:mood": "node scripts/voxel-mood-campaign-verify.mjs",
     "test:voxel:mood:browser": "node scripts/voxel-mood-browser-verify.mjs",
     "test:voxel:prisoners": "node scripts/voxel-prisoners-campaign-verify.mjs",
-    "test:voxel:prisoners:browser": "node scripts/voxel-prisoners-browser-verify.mjs"
+    "test:voxel:prisoners:browser": "node scripts/voxel-prisoners-browser-verify.mjs",
+    "research:sanitation": "node scripts/research/verify-sanitation-evidence.mjs",
+    "test:voxel:sanitation": "node scripts/voxel-sanitation-campaign-verify.mjs",
+    "test:voxel:sanitation:browser": "node scripts/voxel-sanitation-browser-verify.mjs"
   },
   "dependencies": {
     "pixi.js": "8.22.0",

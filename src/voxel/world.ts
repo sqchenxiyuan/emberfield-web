@@ -98,6 +98,9 @@ import { initialPsyche, remember, advancePsyche, recreationGain, shouldRecreate,
 import { HORSESHOE_COST, HORSESHOE_WORK } from './recreation';
 import { startCapture, setPrisonerPolicy, tryWarden, wardenTick, prisonerTick, releaseWarden } from './prisonWorld';
 import { rejectLegacyPrisonerFields, migratePrisoners, validatePrisoners } from './prisonPersistence';
+import { FILTH_NAMES, SANITATION_RULES, cookingOutcome, exposeFoodPoisoning, poisoningStage, sanitationRandom,
+  type Filth, type FilthKind, type RoomCleanliness } from './sanitation';
+import { rejectLegacySanitationFields, migrateSanitation, validateSanitation } from './sanitationPersistence';
 import { colonyWealth, summaryHealthPercent } from './wealth';
 import { STORY_INTERVAL, threatPoints, growAdaptation, adaptationAfterLoss } from './storytellerRules';
 import {
@@ -467,6 +470,9 @@ function decode(raw: unknown, max: number): Uint8Array<ArrayBuffer> {
 }
 
 export class VoxelSimulation {
+  filth: Filth[] = [];
+  private cleanlinessRevision = -1;
+  private cleanlinessBase = new Map<number, { total: number; count: number }>();
   animals: WildAnimal[] = [];
   butcherSpots: ButcherSpot[] = [];
   horseshoePins: HorseshoePin[] = [];
@@ -593,6 +599,7 @@ export class VoxelSimulation {
         prisoner: null, wardenTask: null,
         psyche: initialPsyche(),
         priorities: {
+          clean: 3,
           warden: 1,
           hunt: 2,
           dig: 1,
@@ -1807,7 +1814,13 @@ export class VoxelSimulation {
     }
     const result = this.applyCommand(c);
     if (!result.ok) this.nextId = nextId;
-    else for (const p of this.pawns) if (p.carePhase && !this.validCare(p)) this.release(p);
+    else {
+      this.pruneFilth();
+      for (const p of this.pawns) {
+        if (p.carePhase && !this.validCare(p)) this.release(p);
+        if (p.cleanTask && !this.validClean(p)) this.release(p);
+      }
+    }
     return result;
   }
   private applyCommand(c: VoxelCommand): CommandResult {
@@ -1833,9 +1846,22 @@ export class VoxelSimulation {
     }
     // Management settings remain editable during a break; direct pawn control does not.
     if ('pawnId' in c && c.pawnId !== null &&
-        ['draft', 'attack', 'move', 'rest', 'care', 'wear', 'removeApparel', 'equipWeapon', 'dropWeapon', 'tradeTalk', 'recreate', 'cancelRecreation'].includes(c.type) &&
+        ['clean', 'cancelClean', 'draft', 'attack', 'move', 'rest', 'care', 'wear', 'removeApparel', 'equipWeapon', 'dropWeapon', 'tradeTalk', 'recreate', 'cancelRecreation'].includes(c.type) &&
         this.pawns.some(p => p.id === c.pawnId && p.psyche.breakUntil > this.tick))
       return { ok: false, message: '精神崩溃中，暂时无法接受指令；恢复后会重新工作' };
+    if (c.type === 'clean' || c.type === 'cancelClean') {
+      const p = this.pawns.find(p => p.id === c.pawnId && p.faction === 'colony');
+      if (!p || p.dead || p.downed || p.drafted || p.carriedBy !== null)
+        return { ok: false, message: '需要可自由行动的殖民者' };
+      if (c.type === 'cancelClean') {
+        if (!p.cleanTask) return { ok: false, message: '当前没有清扫任务' };
+        this.release(p); p.reason = '清扫已取消，等待工作安排';
+        return { ok: true, message: p.reason };
+      }
+      const f = this.filth.find(f => f.id === c.filthId);
+      const ok = !!f && this.startClean(p, f);
+      return { ok, message: ok ? p.reason : '需要家园区域内可达、未被预约的污物，以及可卸货的空间' };
+    }
     if (c.type === 'recreate' || c.type === 'cancelRecreation') {
       const p = this.pawns.find(p => p.id === c.pawnId && p.faction === 'colony');
       if (!p || p.dead || p.downed || p.drafted || p.carriedBy !== null)
@@ -2229,7 +2255,7 @@ export class VoxelSimulation {
       if (
         !p ||
         p.dead ||
-        !['warden', 'hunt', 'dig', 'build', 'cut', 'haul', 'grow', 'cook', 'craft', 'care', 'research'].includes(
+        !['clean', 'warden', 'hunt', 'dig', 'build', 'cut', 'haul', 'grow', 'cook', 'craft', 'care', 'research'].includes(
           c.work,
         ) ||
         !Number.isInteger(c.value) ||
@@ -2923,30 +2949,113 @@ export class VoxelSimulation {
     this.updateRooms();
     const room = this.rooms.roomAt(patient);
     if (!room || room.outdoor) return 1;
-    // Terrain and physical stone chunks. Filth, furniture cleanliness and native
-    // region-count thresholds do not exist in the voxel world yet.
-    let total = 0,
-      count = 0;
-    for (let i = WIDTH * DEPTH; i < CELLS - WIDTH * DEPTH; i++) {
-      if (
-        this.rooms.roomIds[i] !== room.id ||
-        !this.blocks[i - WIDTH * DEPTH] ||
-        this.blocks[i + WIDTH * DEPTH]
-      )
-        continue;
-      const floor = this.blocks[i - WIDTH * DEPTH];
-      total += [Block.Soil, Block.RichSoil, Block.Sand, Block.Gravel].includes(
-        floor as 1 | 8 | 9 | 10,
-      )
-        ? -1
-        : 0;
-      count++;
+    return infectionRoomFactor(this.cleanlinessAt(patient));
+  }
+  /** Cache the costly floor scan until the room topology changes. Filth and
+   * loose chunks are small dynamic lists, aggregated only when a consumer asks. */
+  private roomCleanliness(): RoomCleanliness[] {
+    this.updateRooms();
+    if (this.cleanlinessRevision !== this.roomRevision) {
+      this.cleanlinessBase.clear();
+      for (const room of this.rooms.snapshot()) this.cleanlinessBase.set(room.id, { total: 0, count: 0 });
+      for (let i = WIDTH * DEPTH; i < CELLS - WIDTH * DEPTH; i++) {
+        const base = this.cleanlinessBase.get(this.rooms.roomIds[i]);
+        if (!base || !this.blocks[i - WIDTH * DEPTH] || this.blocks[i + WIDTH * DEPTH]) continue;
+        base.count++;
+        if (this.dirtyGround(this.blocks[i - WIDTH * DEPTH])) base.total--;
+      }
+      this.cleanlinessRevision = this.roomRevision;
     }
-    for (const item of this.items) {
-      if (item.resource === 'chunk' && this.rooms.roomIds[at(item)] === room.id)
-        total -= 2 * item.amount;
+    const totals = new Map([...this.cleanlinessBase].map(([id, base]) => [id, { ...base, filthAmount: 0 }]));
+    for (const f of this.filth) {
+      const room = totals.get(this.rooms.roomIds[at(f)]);
+      if (room) {
+        // Thickness extends cleaning work; a filth Thing contributes its cleanliness once.
+        room.total -= SANITATION_RULES.filthPenalty[f.kind]; room.filthAmount += f.amount;
+      }
     }
-    return count ? infectionRoomFactor(total / count) : 1;
+    for (const item of this.items) if (item.resource === 'chunk') {
+      const room = totals.get(this.rooms.roomIds[at(item)]);
+      if (room) room.total -= 2 * item.amount;
+    }
+    return [...totals].map(([roomId, v]) => ({ roomId, cleanliness: v.count ? v.total / v.count : 0,
+      filthAmount: v.filthAmount, floorCells: v.count }));
+  }
+  cleanlinessAt(pos: Pos): number {
+    if (!inside(pos)) return 0;
+    this.updateRooms();
+    return this.roomCleanliness().find(r => r.roomId === this.rooms.roomIds[at(pos)])?.cleanliness ?? 0;
+  }
+  private dirtyGround(block: number): boolean {
+    return ([Block.Soil, Block.RichSoil, Block.Sand, Block.Gravel] as readonly number[]).includes(block);
+  }
+  private filthSupported(p: Pos): boolean {
+    return inside(p) && p.z > 0 && p.z < HEIGHT - 1 && this.blocks[at(p)] === Block.Air &&
+      this.blocks[at(p) + WIDTH * DEPTH] === Block.Air && this.blocks[at(p) - WIDTH * DEPTH] !== Block.Air;
+  }
+  private addFilth(kind: FilthKind, pos: Pos, amount = 1) {
+    if (!this.filthSupported(pos)) return;
+    const existing = this.filth.find(f => f.kind === kind && same(f, pos));
+    if (existing) existing.amount = Math.min(SANITATION_RULES.maxLayers, existing.amount + amount);
+    else if (this.filth.length < SANITATION_RULES.maxFilth)
+      this.filth.push({ id: this.id(), x: pos.x, y: pos.y, z: pos.z, kind, amount, createdTick: this.tick });
+  }
+  private pruneFilth() {
+    this.filth = this.filth.filter(f => this.filthSupported(f));
+    for (const p of this.pawns) if (p.cleanTask && !this.validClean(p)) this.release(p);
+  }
+  private trackDirt(p: Pawn, from: Pos) {
+    const oldFloor = from.z > 0 ? this.blocks[at(from) - WIDTH * DEPTH] : Block.Air;
+    const foot = at(p) - WIDTH * DEPTH, newFloor = this.blocks[foot];
+    if (this.dirtyGround(oldFloor) || this.dirtyGround(newFloor)) p.dirtCarry = SANITATION_RULES.dirtCarry;
+    if ((newFloor === Block.Wood || newFloor === Block.Masonry) &&
+        [0, 1].includes(this.structureKinds[foot]) && p.dirtCarry > 0 && this.filthSupported(p)) {
+      this.addFilth('dirt', p); p.dirtCarry--;
+    }
+  }
+  private validClean(p: Pawn): boolean {
+    const f = this.filth.find(f => f.id === p.cleanTask?.filthId);
+    return !!f && p.phase === 'clean' && p.faction === 'colony' && !p.dead && !p.downed &&
+      !p.drafted && p.carriedBy === null && p.carryingPawnId === null && p.cargo === null &&
+      p.jobId === null && p.carePhase === null && p.wardenTask === null && p.psyche.breakUntil <= this.tick &&
+      healthSummary(p).manipulation > 0 && this.homeArea.has(at(f)) && this.filthSupported(f) && this.canStop(f) &&
+      !this.pawns.some(other => other !== p && other.cleanTask?.filthId === f.id);
+  }
+  private startClean(p: Pawn, f: Filth): boolean {
+    if (p.faction !== 'colony' || p.dead || p.downed || p.drafted || p.carriedBy !== null ||
+        p.carryingPawnId !== null || p.psyche.breakUntil > this.tick || healthSummary(p).manipulation <= 0 ||
+        !this.homeArea.has(at(f)) || !this.canStop(f) || !this.filthSupported(f) ||
+        this.pawns.some(other => other !== p && other.cleanTask?.filthId === f.id)) return false;
+    const route = this.path(p, f);
+    if (route === null || !this.dropCargo(p)) return false;
+    this.release(p);
+    p.cleanTask = { filthId: f.id, progress: 0 }; p.phase = 'clean';
+    p.path = route; p.destination = route.length ? at(f) : null;
+    p.reason = `清扫${FILTH_NAMES[f.kind]}`;
+    return true;
+  }
+  private tryClean(p: Pawn): boolean {
+    if (!p.priorities.clean || p.cargo || !this.homeArea.size || !this.filth.length) return false;
+    const candidates = this.filth.filter(f => this.homeArea.has(at(f)) && this.canStop(f) &&
+      !this.pawns.some(other => other.cleanTask?.filthId === f.id));
+    if (!candidates.length) return false;
+    this.search(p);
+    const f = candidates.filter(f => this.distance[at(f)] >= 0)
+      .sort((a, b) => this.distance[at(a)] - this.distance[at(b)] || a.id - b.id)[0];
+    return !!f && this.startClean(p, f);
+  }
+  private cleanTick(p: Pawn) {
+    if (!this.validClean(p)) { this.release(p); return; }
+    const f = this.filth.find(f => f.id === p.cleanTask!.filthId)!;
+    if (!same(p, f)) { this.release(p); return; }
+    p.destination = null;
+    p.cleanTask!.progress += healthSummary(p).manipulation;
+    if (p.cleanTask!.progress < SANITATION_RULES.cleanWork) return;
+    p.cleanTask!.progress = 0; f.amount--;
+    if (f.amount === 0) {
+      this.filth = this.filth.filter(other => other.id !== f.id);
+      this.release(p); p.reason = '已清扫污物';
+    }
   }
   private startMedicalRest(p: Pawn): boolean {
     if (
@@ -3298,9 +3407,10 @@ export class VoxelSimulation {
     p.careProgress += healthSummary(p).manipulation;
     p.reason = '喂食' + patient.name;
     if (p.careProgress < FEED_WORK) return;
-    const amount = this.consume(patient, p.cargo!.resource, p.cargo!.amount);
+    const amount = this.consume(patient, p.cargo!, p.cargo!.amount);
     p.cargo!.amount -= amount;
     if (p.cargo!.amount === 0) p.cargo = null;
+    this.reconcileHealth(patient);
     this.release(p);
     p.reason = '已喂食' + patient.name;
     patient.reason = '已进食，营养不良逐步恢复';
@@ -3308,8 +3418,26 @@ export class VoxelSimulation {
   private updateSurvival() {
     for (const p of this.pawns) {
       if (p.dead) continue;
+      if (p.foodPoisoning) {
+        if (this.tick >= p.foodPoisoning.endsTick) {
+          p.foodPoisoning = null;
+          this.notice = `${p.name}已从食物中毒中恢复`;
+        } else {
+          p.foodPoisoning.stage = poisoningStage(p.foodPoisoning, this.tick);
+          if (this.tick >= p.foodPoisoning.nextVomitTick) {
+            p.foodPoisoning.nextVomitTick += SANITATION_RULES.vomitInterval;
+            p.food = Math.max(0, p.food - SANITATION_RULES.vomitFoodLoss);
+            p.rest = Math.max(0, p.rest - SANITATION_RULES.vomitRestLoss);
+            this.addFilth('vomit', p);
+            if (!p.downed && p.carriedBy === null && p.faction === 'colony') {
+              this.release(p); p.reason = '食物中毒引起呕吐，等待重新安排';
+            }
+          }
+        }
+      }
       const factor = p.food <= 0 ? 0 : p.food < 12 ? 0.25 : p.food < 24 ? 0.5 : 1;
-      p.food = Math.max(0, p.food - FOOD_FALL_PER_TICK * factor * hungerMultiplier(p.health));
+      p.food = Math.max(0, p.food - FOOD_FALL_PER_TICK * factor * hungerMultiplier(p.health) *
+        (p.foodPoisoning ? SANITATION_RULES.hungerFactor : 1));
       updateHealth(p.health, p.food, this.temperature(p), this.tick, p.worn);
       advanceTrauma(p.trauma, this.tick, {
         seed: this.seed,
@@ -3330,6 +3458,8 @@ export class VoxelSimulation {
         allocId: () => this.id(),
       });
       this.reconcileHealth(p);
+      if (!p.dead && this.tick % SANITATION_RULES.bloodInterval === 0 &&
+          healthSummary(p).bleedRate >= SANITATION_RULES.bloodMinRate) this.addFilth('blood', p);
       if (
         !p.dead &&
         !p.downed &&
@@ -3509,7 +3639,7 @@ export class VoxelSimulation {
       faction: 'raider',
       weapon,
       priorities: {
-        warden: 0,
+        clean: 0, warden: 0,
         hunt: 0,
         dig: 0,
         build: 0,
@@ -4467,11 +4597,16 @@ export class VoxelSimulation {
       const door = this.doors.find(d => same(d, position(i)));
       return !door || door.mode === 'open' || door.openUntil >= this.tick;
     });
-    if (eligible.length) Object.assign(p, position(eligible[(Math.floor(this.tick / 60) + p.id) % eligible.length]));
+    if (eligible.length) {
+      const previous = { x: p.x, y: p.y, z: p.z };
+      Object.assign(p, position(eligible[(Math.floor(this.tick / 60) + p.id) % eligible.length]));
+      this.trackDirt(p, previous);
+    }
     p.moveTick = this.tick + 60;
   }
   private release(p: Pawn) {
     releaseWarden(this, p);
+    p.cleanTask = null;
     p.psyche.recreation = null;
     if (this.trade.session?.pawnId === p.id) this.trade.session = null;
     this.cancelShooting(p);
@@ -4547,8 +4682,9 @@ export class VoxelSimulation {
       order.indexOf(a.resource) - order.indexOf(b.resource) || this.distance[at(a)] - this.distance[at(b)] || a.id - b.id)[0];
     if (!food) return false;
     if (same(p, food)) {
-      food.amount -= this.consume(p, food.resource, this.availableStack(food));
+      food.amount -= this.consume(p, food, this.availableStack(food));
       this.items = this.items.filter(i => i.amount > 0);
+      this.reconcileHealth(p);
       p.path = []; p.destination = null; p.reason = '已吃过牢房内的食物';
     } else { this.go(p, at(food), 'prisoner'); p.reason = '前往牢房内取食'; }
     return true;
@@ -4585,7 +4721,9 @@ export class VoxelSimulation {
       door.openUntil = this.tick + 37;
     }
     const crossingSandbags = this.sandbags.some(b => same(b, position(next))) && !this.sandbags.some(b => same(b, p));
+    const previous = { x: p.x, y: p.y, z: p.z };
     Object.assign(p, position(next)); p.path.shift();
+    this.trackDirt(p, previous);
     p.moveTick = this.tick + (crossingSandbags ? 14 : 0) + Math.ceil(
       (p.cargo || p.carryingPawnId !== null ? 6 : 4) /
       (apparelMoveFactor(p.worn, healthSummary(p).moving) * (p.staggerUntil > this.tick ? .17 : 1)));
@@ -4821,6 +4959,26 @@ export class VoxelSimulation {
       p.priorities.haul > 0 &&
       this.stockpiles.length > 0 &&
       this.items.some((i) => this.canImproveStorage(i));
+    // These work types are generated from world state instead of Job objects.
+    // Use the same priority ordering in the jobless branch and around regular
+    // jobs; each failed option is attempted at most once in this assignment.
+    const triedExtras = new Set<Work>();
+    const tryExtras = (through: number, includeHaul: boolean, restoreSearch = false): boolean => {
+      const options = (['warden', 'hunt', 'haul', 'clean'] as const)
+        .filter(work => (includeHaul || work !== 'haul') && !triedExtras.has(work) &&
+          p.priorities[work] > 0 && p.priorities[work] <= through)
+        .sort((a, b) => p.priorities[a] - p.priorities[b]);
+      for (const work of options) {
+        triedExtras.add(work);
+        if (work === 'haul') this.search(p);
+        if (work === 'warden' ? tryWarden(this, p) : work === 'hunt' ? this.tryHunt(p) :
+            work === 'clean' ? this.tryClean(p) : this.tryHaul(p)) return true;
+      }
+      // Each helper can replace the shared BFS tree. Restore it only when the
+      // caller will inspect a normal Job, not during empty idle assignments.
+      if (restoreSearch && options.length) this.search(p);
+      return false;
+    };
     // Most growing ticks have no work. Avoid traversing the full 3D map for idle people.
     if (
       !loose &&
@@ -4832,7 +4990,7 @@ export class VoxelSimulation {
             this.items.some((i) => i.resource === missing(j))),
       )
     ) {
-      if (tryWarden(this, p) || this.tryHunt(p)) return;
+      if (tryExtras(4, false)) return;
       for (const j of jobs) {
         const needed = missing(j);
         j.reason = !this.supported(j)
@@ -4852,26 +5010,8 @@ export class VoxelSimulation {
       return;
     }
     this.search(p);
-    let triedWarden = false;
-    let triedHunting = false;
     for (const j of jobs) {
-      if (!triedWarden && p.priorities.warden > 0 && p.priorities.warden <= p.priorities[workType(j.kind)]) {
-        triedWarden = true;
-        if (tryWarden(this, p)) return;
-        this.search(p);
-      }
-      if (!triedHunting && p.priorities.hunt > 0 && p.priorities.hunt <= p.priorities[workType(j.kind)]) {
-        triedHunting = true;
-        if (this.tryHunt(p)) return;
-        this.search(p);
-      }
-      if (
-        j.kind === 'research' &&
-        p.priorities.haul > 0 &&
-        p.priorities.haul <= p.priorities.research &&
-        this.tryHaul(p)
-      )
-        return;
+      if (tryExtras(p.priorities[workType(j.kind)], j.kind === 'research', true)) return;
       const skillFailure = this.skillFailure(p, j);
       if (skillFailure) {
         j.reason = skillFailure;
@@ -4915,9 +5055,7 @@ export class VoxelSimulation {
       this.continueJob(p, j);
       return;
     }
-    if (tryWarden(this, p) || this.tryHunt(p)) return;
-    this.search(p);
-    if (this.tryHaul(p)) return;
+    if (tryExtras(4, true)) return;
     p.phase = 'idle';
     p.reason =
       jobs.length && jobs.every((j) => this.skillFailure(p, j))
@@ -5148,7 +5286,8 @@ export class VoxelSimulation {
     this.items = this.items.filter((i) => i.amount > 0);
     return true;
   }
-  private consume(p: Pawn, resource: Resource, available: number) {
+  private consume(p: Pawn, batch: Cargo, available: number) {
+    const resource = batch.resource;
     const nutrition = NUTRITION[resource];
     if (!nutrition) return 0;
     const amount =
@@ -5159,14 +5298,20 @@ export class VoxelSimulation {
     this.stats.consumed[resource] += amount;
     this.stats.eaten += amount;
     if (amount > 0 && (resource === 'grain' || resource === 'meat')) remember(p.psyche, 'ateRaw', this.tick);
+    if (amount > 0 && resource === 'meal' && (batch.poisonChance ?? 0) > 0 &&
+        sanitationRandom(this.seed, p.id, this.tick, 26) < batch.poisonChance!) {
+      p.foodPoisoning = exposeFoodPoisoning(p.foodPoisoning, this.tick);
+      this.notice = `${p.name}吃过食物后出现中毒症状`;
+    }
     return amount;
   }
   private tryFood(p: Pawn) {
     if (p.dead || p.downed || p.carriedBy !== null) return false;
     if (p.cargo && NUTRITION[p.cargo.resource]) {
-      p.cargo.amount -= this.consume(p, p.cargo.resource, p.cargo.amount);
+      p.cargo.amount -= this.consume(p, p.cargo, p.cargo.amount);
       if (!p.cargo.amount) p.cargo = null;
       this.release(p);
+      this.reconcileHealth(p);
       p.reason = '吃过随身食物';
       return true;
     }
@@ -5222,9 +5367,10 @@ export class VoxelSimulation {
     if (p.phase === 'fetch') {
       if (!j) {
         const food = this.items.find((i) => same(i, p) && i.resource === p.eating);
-        if (food) food.amount -= this.consume(p, food.resource, this.availableStack(food, p.id));
+        if (food) food.amount -= this.consume(p, food, this.availableStack(food, p.id));
         this.items = this.items.filter((i) => i.amount > 0);
         this.release(p);
+        this.reconcileHealth(p);
         return;
       }
       const needed = missing(j);
@@ -5572,7 +5718,11 @@ export class VoxelSimulation {
         harvestedCrop === 'cotton' ? 'cloth' : harvestedCrop === 'healroot' ? 'herb' : 'grain'
       ] = j.harvestResult!.amount;
     }
-    if (j.kind === 'cook') yields.meal = SIMPLE_MEAL.output;
+    if (j.kind === 'cook') {
+      yields.meal = SIMPLE_MEAL.output;
+      const cleanliness = this.cleanlinessAt(p), room = this.rooms.roomAt(p);
+      j.cookingOutcome ??= cookingOutcome(this.seed, j.id, p.id, p.skills.cooking.level, cleanliness, !room || room.outdoor);
+    }
     if (j.kind === 'butcher') {
       const carcass = j.deliveredFood.find(b => b.resource === 'carcass')?.carcass;
       if (!carcass) { j.reason = '等待新鲜动物尸体'; this.release(p); return; }
@@ -5695,6 +5845,8 @@ export class VoxelSimulation {
                 ),
         origin: p,
       }));
+    for (const entry of output) if (entry.batch.resource === 'meal' && j.cookingOutcome)
+      (entry.batch as Cargo).poisonChance = j.cookingOutcome.poisonChance;
     const placement = this.planPlacement(
       [...displaced, ...output],
       this.items.filter((i) => !displacedIds.has(i.id)),
@@ -5710,6 +5862,7 @@ export class VoxelSimulation {
       return;
     }
     this.commitPlacement(placement);
+    if (j.kind === 'butcher') this.addFilth('butcher', p, SANITATION_RULES.butcherLayers);
     // Identity is committed only after all support, access and item-placement
     // checks succeed. A failed build never leaves valued phantom structures.
     for (const c of changes) if (c.block !== undefined)
@@ -5939,6 +6092,7 @@ export class VoxelSimulation {
       this.stats.mined += changes.filter((c) => c.block === 0).length;
     this.jobs = this.jobs.filter((k) => k.id !== j.id);
     this.release(p);
+    this.pruneFilth();
   }
   step(count = 1) {
     for (let n = 0; n < count; n++) {
@@ -5950,6 +6104,7 @@ export class VoxelSimulation {
       this.refreshReservations();
       this.updateApparelWear();
       this.updateSurvival();
+      this.pruneFilth();
       this.updatePsychology();
       this.updateProjectiles();
       this.updateWildlife();
@@ -6082,6 +6237,7 @@ export class VoxelSimulation {
           }
         }
         if (p.path.length) { this.moveAlongPath(p); continue; }
+        if (p.phase === 'clean') { this.cleanTick(p); continue; }
         if (p.phase === 'recreation') { this.recreationTick(p); continue; }
         if (combatant || p.phase === 'trade' || p.phase === 'hunt' || p.phase === 'warden') continue;
         if (p.phase === 'idle') {
@@ -6261,7 +6417,7 @@ export class VoxelSimulation {
           else delete job.delivered[batch.resource];
           job.progress = 0;
           job.workTicks = 0;
-          if (job.kind === 'cook') job.cookTraining = [];
+          if (job.kind === 'cook') { job.cookTraining = []; delete job.cookingOutcome; }
           job.reason = '已配送食材腐坏，等待新原料';
           removed = true;
           return false;
@@ -6290,6 +6446,8 @@ export class VoxelSimulation {
       if (this.stockpiles.some((s) => same(s, i) && s.accepts.includes(i.resource)))
         stored[i.resource] += i.amount;
     return structuredClone({
+      filth: this.filth,
+      roomCleanliness: this.roomCleanliness(),
       trade: { ...this.trade, quote: quoteTrade(this) },
       homeArea: [...this.homeArea],
       combat: this.combat,
@@ -6368,7 +6526,8 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 24,
+      version: 25,
+      filth: this.filth,
       trade: this.trade,
       homeArea: [...this.homeArea],
       combat: this.combat,
@@ -6415,11 +6574,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacySanitationFields(old);
     rejectLegacyPrisonerFields(old);
     if (sourceVersion < 23 && (old.horseshoePins !== undefined || old.pawns?.some((p: any) =>
         p?.psyche !== undefined || ['recreation', 'mental'].includes(p?.phase) || p?.schedule?.includes('recreation')) ||
@@ -6747,7 +6907,8 @@ export class VoxelSimulation {
       old.version = 23;
     }
     migratePrisoners(old, sourceVersion);
-    old.version = 24;
+    migrateSanitation(old, sourceVersion);
+    old.version = 25;
     const d = old as VoxelSave;
     const loadHealth = (p: Pawn) =>
       oldHealth.get(p.id) ?? {
@@ -6774,6 +6935,7 @@ export class VoxelSimulation {
     )
       throw new Error('存档计时或种子无效');
     const arrays: [unknown, number][] = [
+      [d.filth, SANITATION_RULES.maxFilth],
       [d.pawns, 64],
       [d.animals, WILDLIFE.cap],
       [d.butcherSpots, 128],
@@ -6821,6 +6983,7 @@ export class VoxelSimulation {
     const zero = (n: number) => Number.isFinite(n) && n >= 0 && n <= 10000000;
     const ids = new Set<number>();
     for (const e of [
+      ...d.filth,
       ...d.pawns,
       ...d.animals,
       ...d.butcherSpots,
@@ -6862,6 +7025,7 @@ export class VoxelSimulation {
                 'weapon',
                 'forbidden',
                 'carcass',
+                'poisonChance',
                 'x',
                 'y',
                 'z',
@@ -7153,7 +7317,7 @@ export class VoxelSimulation {
     const plainCargo = (batch: Cargo) =>
       validBatch(batch) &&
       Object.keys(batch).every((key) =>
-        ['resource', 'amount', 'crop', 'rotProgress', 'apparel', 'weapon', 'forbidden', 'carcass'].includes(
+        ['resource', 'amount', 'crop', 'rotProgress', 'apparel', 'weapon', 'forbidden', 'carcass', 'poisonChance'].includes(
           key,
         ),
       );
@@ -7552,6 +7716,7 @@ export class VoxelSimulation {
           'apparel',
           'combat',
           'hunt',
+          'clean',
           'recreation',
           'mental',
           'warden',
@@ -7743,9 +7908,9 @@ export class VoxelSimulation {
             p.sleepingSince < 0 ||
             p.sleepingSince > d.tick)) ||
         !p.priorities ||
-        Object.values(p.priorities).length !== 11 ||
+        Object.values(p.priorities).length !== 12 ||
         (
-          ['warden', 'hunt', 'dig', 'cut', 'build', 'haul', 'grow', 'cook', 'craft', 'care', 'research'] as Work[]
+          ['clean', 'warden', 'hunt', 'dig', 'cut', 'build', 'haul', 'grow', 'cook', 'craft', 'care', 'research'] as Work[]
         ).some(
           (k) => !Number.isInteger(p.priorities[k]) || p.priorities[k] < 0 || p.priorities[k] > 4,
         ) ||
@@ -7824,6 +7989,7 @@ export class VoxelSimulation {
       )
     )
       throw new Error('统计数据无效');
+    validateSanitation(d);
     validatePrisoners(d);
     validateRangedState(d);
     validateTrade(d, ids, apparelIds, weaponIds);
@@ -7859,6 +8025,7 @@ export class VoxelSimulation {
       s,
       structuredClone({
         tick: d.tick,
+        filth: d.filth,
         combat: d.combat,
         storyteller: d.storyteller,
         trade: d.trade,
@@ -7894,6 +8061,7 @@ export class VoxelSimulation {
     s.rebuildTrees();
     s.stoveCells = new Set(s.stoves.map(at));
     s.rebuildDevices();
+    if (s.filth.some(f => !s.filthSupported(f))) throw new Error('污物没有合法地面支撑或净空');
     if (
       [
         ...s.beds.flatMap(bedCells),
@@ -7971,6 +8139,13 @@ export class VoxelSimulation {
     for (const p of s.pawns) {
       // Prison tasks carry explicit destinations and progress. Movement rechecks every edge.
       if (p.wardenTask || p.faction === 'prisoner') continue;
+      if (p.cleanTask) {
+        const target = s.filth.find(f => f.id === p.cleanTask!.filthId)!;
+        const route = s.path(p, target);
+        if (!s.validClean(p) || route === null) s.release(p);
+        else { p.path = route; p.destination = route.length ? at(target) : null; }
+        continue;
+      }
       if (p.phase === 'mental') { p.path = []; p.destination = null; continue; }
       if (p.phase === 'recreation') {
         const activity = p.psyche.recreation!;

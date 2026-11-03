@@ -1,5 +1,5 @@
 import { healthSummary } from './survival';
-import type { Bed, Pawn, VoxelCommand } from './types';
+import { DAY, type Bed, type Pawn, type VoxelCommand } from './types';
 import { MedicinePanel } from './MedicinePanel';
 import { BODY_REGIONS, INJURY_NAMES, isFreshStump } from './injuries';
 import {
@@ -25,6 +25,7 @@ const capacityLabels: Record<CapacityKey, string> = {
   talking: '说话',
   eating: '进食',
 };
+const poisoningStages = { initial: '初期', major: '严重', recovering: '恢复' } as const;
 function partDepth(part: BodyPartId): number {
   const parent = BODY_PARTS[part].parent;
   return parent ? partDepth(parent) + 1 : 0;
@@ -82,6 +83,15 @@ export function SurvivalPanel({
         </strong>
       </div>
       <MedicinePanel pawn={pawn} pawns={pawns} beds={beds} tick={tick} command={command} />
+      {pawn.foodPoisoning && <section className="voxel-food-poisoning" data-testid="food-poisoning-detail" data-stage={pawn.foodPoisoning.stage}>
+        <div className="voxel-info-row"><b>食物中毒</b><span>{pawn.dead ? '遗体记录' : `${poisoningStages[pawn.foodPoisoning.stage]}阶段`}</span></div>
+        <small>进食后出现食物中毒，病程内会影响身体能力，并可能呕吐、损失饱食度和留下新的污物。</small>
+        <label>病程进度<progress aria-label="食物中毒恢复进度"
+          value={Math.max(0, Math.min(tick, pawn.foodPoisoning.endsTick) - pawn.foodPoisoning.startedTick)}
+          max={Math.max(1, pawn.foodPoisoning.endsTick - pawn.foodPoisoning.startedTick)} /></label>
+        {!pawn.dead && <small data-testid="food-poisoning-recovery">剩余约 {Math.max(0, Math.ceil((pawn.foodPoisoning.endsTick - tick) / DAY * 24 * 60))} 游戏分钟，随时间恢复。保持食物供给，减少后续饮食风险。</small>}
+        <small>当前意识 {Math.round(summary.consciousness * 100)}% · 移动 {Math.round(summary.moving * 100)}% · 操作 {Math.round(summary.manipulation * 100)}%。身体能力详情列出各项影响。</small>
+      </section>}
       {(pawn.trauma.wounds.length > 0 ||
         pawn.trauma.bloodLoss > 0 ||
         pawn.trauma.missingParts.length > 0) && (

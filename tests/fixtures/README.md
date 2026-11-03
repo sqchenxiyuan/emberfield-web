@@ -1,5 +1,13 @@
 # Persisted gameplay fixtures
 
+`voxel-v24-sanitation-initial.json` preserves the exact tick-zero bytes from the
+ordinary v24 prisoner campaign, root commit
+`d5da2d13515341b5221c292946657254eb6f6d60`. Its adjacent provenance JSON records
+the original SHA256, script and executed simulation bundle. The v25 migration
+test imports these bytes unchanged and checks that adding sanitation creates
+neither dirt, illness nor new resources. Do not regenerate it with the current
+simulation or add v25 defaults directly to this file.
+
 `voxel-v5-cold-store.json` is an Emberfield save produced by the normal farming,
 mining, cooking and power campaign published in commit
 `632042ea7a5b8a1ba1d08ebf310a0606d056a7af`. It is not a RimWorld save.

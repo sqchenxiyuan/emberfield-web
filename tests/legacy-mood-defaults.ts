@@ -1,9 +1,11 @@
 import { expect } from 'vitest';
+import { stripSanitationFields } from './legacy-sanitation-defaults';
 
 /** Synthetic old-schema fixtures only. Ordinary need changes may have happened
  * while arranging the test, but no v23 activity or structure may be discarded.
  * Genuine historical fixture bytes never pass through this helper. */
 export function stripMoodFields(raw: Record<string, any>) {
+  stripSanitationFields(raw);
   for (const pawn of raw.pawns) {
     expect(pawn.prisoner).toBeNull();
     expect(pawn.wardenTask).toBeNull();

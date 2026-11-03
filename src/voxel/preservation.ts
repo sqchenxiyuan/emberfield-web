@@ -51,6 +51,7 @@ export function portion(batch: Cargo, amount: number): Cargo {
     ...(batch.carcass !== undefined ? { carcass: { ...batch.carcass } } : {}),
     ...(batch.forbidden !== undefined ? { forbidden: batch.forbidden } : {}),
     ...(batch.rotProgress !== undefined ? { rotProgress: batch.rotProgress } : {}),
+    ...(batch.poisonChance !== undefined ? { poisonChance: batch.poisonChance } : {}),
   };
 }
 export function compatibleBatches(a: Cargo, b: Cargo): boolean {
@@ -78,6 +79,9 @@ export function mergeBatch(target: Cargo, incoming: Cargo): void {
       ((target.rotProgress ?? 0) * target.amount + (incoming.rotProgress ?? 0) * incoming.amount) /
       total;
   }
+  if (target.resource === 'meal' && (target.poisonChance !== undefined || incoming.poisonChance !== undefined))
+    target.poisonChance = ((target.poisonChance ?? 0) * target.amount + (incoming.poisonChance ?? 0) * incoming.amount) /
+      (target.amount + incoming.amount);
   target.amount += incoming.amount;
 }
 /** True means the entire stack expires now. The owner removes/counts it once. */
@@ -92,6 +96,8 @@ export function advanceRot(batch: Cargo, temperature: number, ticks = 1): boolea
 export function validBatch(batch: unknown): batch is Cargo {
   if (!batch || typeof batch !== 'object' || Array.isArray(batch)) return false;
   const b = batch as Cargo;
+  if (b.poisonChance !== undefined && (b.resource !== 'meal' || !Number.isFinite(b.poisonChance) ||
+      b.poisonChance < 0 || b.poisonChance > 1)) return false;
   if (
     ![
       'silver',

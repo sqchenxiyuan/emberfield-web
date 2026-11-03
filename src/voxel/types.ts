@@ -7,6 +7,7 @@ import type { Difficulty, StorytellerState, StorytellerView } from './storytelle
 import type { TradeCommand, TradeState, TradeView } from './tradeTypes';
 import type { Psyche } from './mood';
 import type { PrisonerState, PrisonerPolicy, WardenTask } from './prisoners';
+import type { Filth, CleanTask, FoodPoisoning, RoomCleanliness, CookingOutcome } from './sanitation';
 // Voxel rules are Emberfield designs. See research/10 for source boundaries.
 export const WIDTH = 64,
   DEPTH = 64,
@@ -77,6 +78,7 @@ export type Resource =
   | 'apparel'
   | 'weapon';
 export type Work =
+  | 'clean'
   | 'warden'
   | 'hunt'
   | 'dig'
@@ -328,6 +330,8 @@ export interface Cargo {
   forbidden?: boolean;
   /** Equivalent unfrozen age in our simulation ticks; required for grain/meal. */
   rotProgress?: number;
+  /** Hidden contaminated fraction. Missing means safe; only cooked meals carry it. */
+  poisonChance?: number;
 }
 export interface Stockpile extends Pos {
   /** 0 low, 1 normal, 2 preferred, 3 critical. Empty accepts disables storage. */
@@ -493,6 +497,7 @@ export type JobKind =
   | 'door'
   | 'cook';
 export interface Job extends Pos {
+  cookingOutcome?: CookingOutcome;
   id: number;
   kind: JobKind;
   progress: number;
@@ -549,6 +554,9 @@ export interface CombatState {
   wave: number;
 }
 export interface Pawn extends Pos {
+  cleanTask: CleanTask | null;
+  dirtCarry: number;
+  foodPoisoning: FoodPoisoning | null;
   prisoner: PrisonerState | null;
   wardenTask: WardenTask | null;
   psyche: Psyche;
@@ -592,6 +600,7 @@ export interface Pawn extends Pos {
   path: number[];
   destination: number | null;
   phase:
+    | 'clean'
     | 'warden'
     | 'prisoner'
     | 'recreation'
@@ -658,6 +667,8 @@ export interface VoxelStats {
   spoiled: Counts;
 }
 export interface VoxelSnapshot {
+  filth: Filth[];
+  roomCleanliness: RoomCleanliness[];
   horseshoePins: HorseshoePin[];
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
@@ -720,6 +731,8 @@ export interface ChunkUpdate {
   ladders: Uint8Array;
 }
 export type VoxelCommand =
+  | { type: 'clean'; pawnId: number; filthId: number }
+  | { type: 'cancelClean'; pawnId: number }
   | { type: 'bedPrisoner'; bedId: number; prisoner: boolean }
   | { type: 'capture'; pawnId: number; targetId: number }
   | { type: 'prisonerPolicy'; prisonerId: number; policy: PrisonerPolicy }
@@ -779,9 +792,10 @@ export interface CommandResult {
   count?: number;
 }
 export interface VoxelSave {
+  filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 24;
+  version: 25;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;

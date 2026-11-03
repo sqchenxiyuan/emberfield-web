@@ -1,0 +1,442 @@
+{
+  "evidence_id": "RW17-SANITATION-FOOD-POISONING",
+  "date_local": "2026-11-04",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Static derived managed-code reconstruction plus selected shipped Core XML; native observation separate",
+  "artifact_identity": "artifact-identity.json",
+  "manifest": "hygiene-manifest.json",
+  "types": "hygiene-types.json",
+  "claims": [
+    {
+      "id": "HY01",
+      "finding": "Movement can pick up, drop and generate filth; terrain acceptance and same-type thickening are separate from a universal dirt timer.",
+      "sources": [
+        {
+          "file": ".local-research/hygiene/RimWorld.Pawn_FilthTracker.cs",
+          "sha256": "9bfba043ca3eef746178a6796f19f3f35de270ceef9b87c255c7663e803cb10d",
+          "lines": [
+            81,
+            231
+          ]
+        },
+        {
+          "file": ".local-research/hygiene/RimWorld.FilthMaker.cs",
+          "sha256": "5f33e4958cb3771dce17d0bcfa8c9790043ac6e208f5360cac241f144ae1edd2",
+          "lines": [
+            1,
+            161
+          ]
+        },
+        {
+          "file": ".local-research/hygiene/RimWorld.Filth.cs",
+          "sha256": "0263757bcc2324bbbd6950c0b8dafac5270f5fdf45b2df51058fe2f261930e0b",
+          "lines": [
+            1,
+            192
+          ]
+        }
+      ],
+      "xml": [
+        "XML01"
+      ]
+    },
+    {
+      "id": "HY02",
+      "finding": "Room cleanliness averages eligible contained/adjacent thing stats and room terrain over cell count. The worker multiplies stackCount, not Filth.thickness.",
+      "sources": [
+        {
+          "file": ".local-research/environment/RimWorld.RoomStatWorker_Cleanliness.cs",
+          "sha256": "e799847fe064ac93ce130cd718df3a25115f50515f11be04af8ead56c5228f4f",
+          "lines": [
+            1,
+            26
+          ]
+        },
+        {
+          "file": ".local-research/hygiene/RimWorld.Filth.cs",
+          "sha256": "0263757bcc2324bbbd6950c0b8dafac5270f5fdf45b2df51058fe2f261930e0b",
+          "lines": [
+            1,
+            192
+          ]
+        }
+      ],
+      "xml": [
+        "XML01",
+        "XML02",
+        "XML03"
+      ]
+    },
+    {
+      "id": "HY03",
+      "finding": "Cooking reads the cooks room FoodPoisonChance. ProperRoom and region-count gating cause ordinary open outdoor rooms to return roomlessScore rather than map-wide filth average.",
+      "sources": [
+        {
+          "file": ".local-research/environment/Verse.Room.cs",
+          "sha256": "ef3f3f189635902d370aa88117c8d0d0e3bfd7c5d6b88ec6302e6843d296e53d",
+          "lines": [
+            536,
+            553
+          ]
+        },
+        {
+          "file": ".local-research/environment/Verse.Room.cs",
+          "sha256": "ef3f3f189635902d370aa88117c8d0d0e3bfd7c5d6b88ec6302e6843d296e53d",
+          "lines": [
+            823,
+            834
+          ]
+        },
+        {
+          "file": ".local-research/environment/Verse.Room.cs",
+          "sha256": "ef3f3f189635902d370aa88117c8d0d0e3bfd7c5d6b88ec6302e6843d296e53d",
+          "lines": [
+            859,
+            879
+          ]
+        },
+        {
+          "file": ".local-research/technology/RimWorld.RoomStatWorker_FromStatByCurve.cs",
+          "sha256": "73a9e2a8b6382c6722295cc710ec172aa65c541b0b28152e6e53c1a91f634f69",
+          "lines": [
+            1,
+            11
+          ]
+        },
+        {
+          "file": ".local-research/hygiene/RimWorld.CompFoodPoisonable.cs",
+          "sha256": "ecfe1fc47946e0c44b7fe47dc8cc24ee20c57f98893e71f581a0024bf689f639",
+          "lines": [
+            36,
+            46
+          ]
+        }
+      ],
+      "xml": [
+        "XML02"
+      ]
+    },
+    {
+      "id": "HY04",
+      "finding": "Cleaning candidates and forced jobs require Home area; recently thickened filth waits 600 ticks. Cleaning reserves, walks and reduces layers with terrain-adjusted work; leaving Home invalidates targets.",
+      "sources": [
+        {
+          "file": ".local-research/hygiene/RimWorld.ListerFilthInHomeArea.cs",
+          "sha256": "222fbb9ef3b67583935c20b98cc8f3d2affba7a35bb0544c92fa07d1d14a7803",
+          "lines": [
+            1,
+            82
+          ]
+        },
+        {
+          "file": ".local-research/hygiene/RimWorld.WorkGiver_CleanFilth.cs",
+          "sha256": "7f8c2e0910a0b0f45c9b3e5be1a5a96e45d6f4fca5877800322f8d0ece8fbe4f",
+          "lines": [
+            1,
+            110
+          ]
+        },
+        {
+          "file": ".local-research/hygiene/RimWorld.JobDriver_CleanFilth.cs",
+          "sha256": "ec8fcb887464796aa483694456757c9317751770a62a10c7465b8b026d06c3c3",
+          "lines": [
+            1,
+            83
+          ]
+        }
+      ],
+      "xml": [
+        "XML01",
+        "XML04",
+        "XML05"
+      ]
+    },
+    {
+      "id": "HY05",
+      "finding": "Recipe production checks kitchen risk first and cook risk only on failure; a successful check marks the produced stack poisonPct=1. Each product entry is one Thing and one notification.",
+      "sources": [
+        {
+          "file": ".local-research/hygiene/RimWorld.CompFoodPoisonable.cs",
+          "sha256": "ecfe1fc47946e0c44b7fe47dc8cc24ee20c57f98893e71f581a0024bf689f639",
+          "lines": [
+            15,
+            46
+          ]
+        },
+        {
+          "file": ".local-research/food/Verse.GenRecipe.cs",
+          "sha256": "41cb19d602f388137484b15bc4126fbcdebad63013c34f8432cabff5b28337e3",
+          "lines": [
+            9,
+            38
+          ]
+        },
+        {
+          "file": ".local-research/preservation/Verse.ThingWithComps.cs",
+          "sha256": "9ae0bf1c6884b0fd48213cf5bb2cfda7d0ee63eb43cbe97689f90e4287c2ed6b",
+          "lines": [
+            815,
+            824
+          ]
+        }
+      ],
+      "xml": [
+        "XML02",
+        "XML06",
+        "XML07",
+        "XML08"
+      ]
+    },
+    {
+      "id": "HY06",
+      "finding": "Split preserves poison percentage and cause. Merge weights by actual absorbed count. Ingestion rolls the stored percentage multiplied by the eater factor.",
+      "sources": [
+        {
+          "file": ".local-research/hygiene/RimWorld.CompFoodPoisonable.cs",
+          "sha256": "ecfe1fc47946e0c44b7fe47dc8cc24ee20c57f98893e71f581a0024bf689f639",
+          "lines": [
+            21,
+            72
+          ]
+        },
+        {
+          "file": ".local-research/food/RimWorld.FoodUtility.cs",
+          "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+          "lines": [
+            1352,
+            1379
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "HY07",
+      "finding": "Food poisoning starts severity 1, decreases naturally, progresses initial-major-recovering and is removed at severity <=0. Its Core Def is not tendable.",
+      "sources": [
+        {
+          "file": ".local-research/combat/Verse.HediffComp_SeverityModifierBase.cs",
+          "sha256": "5a6168f546c26fe37c68dddd1516b3d3b4cb3c7e8321fd7053a2a39fee207e46",
+          "lines": [
+            1,
+            31
+          ]
+        },
+        {
+          "file": ".local-research/combat/Verse.HediffComp_SeverityPerDay.cs",
+          "sha256": "a1bbf503dc354f15f5f1a41bc4fc5b7814400f1c6d1acbb8b3e86b7c0aaefa57",
+          "lines": [
+            1,
+            65
+          ]
+        },
+        {
+          "file": ".local-research/survival/Verse.Hediff.cs",
+          "sha256": "b370c42a21c8e21655b047d8f569002efde73dea3d4f9ed8d3bbe71f5736fad3",
+          "lines": [
+            177,
+            177
+          ]
+        },
+        {
+          "file": ".local-research/survival/Verse.Hediff.cs",
+          "sha256": "b370c42a21c8e21655b047d8f569002efde73dea3d4f9ed8d3bbe71f5736fad3",
+          "lines": [
+            322,
+            336
+          ]
+        },
+        {
+          "file": ".local-research/survival/Verse.HediffDef.cs",
+          "sha256": "eac8869b10ebf97190b18c8de954c2ed6bdb3931de722ac4593f95cfed4cf2fb",
+          "lines": [
+            34,
+            34
+          ]
+        }
+      ],
+      "xml": [
+        "XML09"
+      ]
+    },
+    {
+      "id": "HY08",
+      "finding": "A repeated poisoning event does not stack a second illness; an existing non-initial illness is reset to severity .799 while initial stage is unchanged.",
+      "sources": [
+        {
+          "file": ".local-research/food/RimWorld.FoodUtility.cs",
+          "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+          "lines": [
+            1332,
+            1349
+          ]
+        }
+      ],
+      "xml": [
+        "XML09"
+      ]
+    },
+    {
+      "id": "HY09",
+      "finding": "Vomit is an intermittent interrupting job with resume requested; it stops movement, creates vomit filth and can remove food need, creating further cleaning work.",
+      "sources": [
+        {
+          "file": ".local-research/survival/Verse.Hediff.cs",
+          "sha256": "b370c42a21c8e21655b047d8f569002efde73dea3d4f9ed8d3bbe71f5736fad3",
+          "lines": [
+            478,
+            481
+          ]
+        },
+        {
+          "file": ".local-research/hygiene/RimWorld.JobDriver_Vomit.cs",
+          "sha256": "d33e9dd993f7f9553666e05c3735787b23dd0e72c12a672166a88d0dd27d9266",
+          "lines": [
+            1,
+            70
+          ]
+        }
+      ],
+      "xml": [
+        "XML01",
+        "XML09",
+        "XML10"
+      ]
+    },
+    {
+      "id": "HY10",
+      "finding": "Dangerous food-type poisoning is a separate ingestion path from contaminated cooked stacks; eater factor includes difficulty, health-stage and applicable DLC modifiers.",
+      "sources": [
+        {
+          "file": ".local-research/food/Verse.Thing.cs",
+          "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+          "lines": [
+            2137,
+            2141
+          ]
+        },
+        {
+          "file": ".local-research/food/RimWorld.FoodUtility.cs",
+          "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+          "lines": [
+            1352,
+            1379
+          ]
+        }
+      ],
+      "xml": [
+        "XML03"
+      ]
+    }
+  ],
+  "xml": [
+    {
+      "id": "XML01",
+      "file": "Data/Core/Defs/ThingDefs_Misc/Filth_Various.xml",
+      "source_sha256": "3009403c4d02d0a057c88490d107d7b396f756c5979e129df96fbcd8e2f5c1f2",
+      "xpath": "/Defs/ThingDef[@Name=\"BaseFilth\" or defName=\"Filth_Dirt\" or defName=\"Filth_Blood\" or defName=\"Filth_Vomit\"]",
+      "nodes": [
+        "<ThingDef Name=\"BaseFilth\" Abstract=\"True\"><thingClass>Filth</thingClass><category>Filth</category><altitudeLayer>Filth</altitudeLayer><useHitPoints>false</useHitPoints><drawerType>MapMeshOnly</drawerType><graphicData><graphicClass>Graphic_Cluster</graphicClass><shaderType>Transparent</shaderType></graphicData><statBases><Beauty>-15</Beauty><Cleanliness>-5</Cleanliness></statBases><filth><cleaningSound>Interact_CleanFilth</cleaningSound></filth></ThingDef>",
+        "<ThingDef ParentName=\"BaseFilth\"><defName>Filth_Dirt</defName><label>dirt</label><graphicData><texPath>Things/Filth/Grainy</texPath><color>(91,75,65,97)</color></graphicData><filth><placementMask><li>Terrain</li></placementMask><disappearsInDays>45~50</disappearsInDays><rainWashes>true</rainWashes><cleaningWorkToReduceThickness>35</cleaningWorkToReduceThickness><canFilthAttach>true</canFilthAttach><cleaningSound>Interact_CleanFilth_Dirt</cleaningSound></filth><statBases><BeautyOutdoors>-1</BeautyOutdoors></statBases></ThingDef>",
+        "<ThingDef ParentName=\"BaseFilth\" Name=\"FilthBlood\"><defName>Filth_Blood</defName><label>blood</label><statBases><Beauty>-30</Beauty><Cleanliness>-10</Cleanliness></statBases><graphicData><texPath>Things/Filth/Spatter</texPath><color>(131, 34, 34, 180)</color></graphicData><filth><ignoreFilthMultiplierStat>true</ignoreFilthMultiplierStat><disappearsInDays>35~40</disappearsInDays><rainWashes>true</rainWashes><cleaningWorkToReduceThickness>70</cleaningWorkToReduceThickness><canFilthAttach>true</canFilthAttach><cleaningSound>Interact_CleanFilth_Fluid</cleaningSound></filth></ThingDef>",
+        "<ThingDef ParentName=\"BaseFilth\"><defName>Filth_Vomit</defName><label>vomit</label><statBases><Beauty>-40</Beauty><Cleanliness>-15</Cleanliness></statBases><graphicData><texPath>Things/Filth/PoolSoft</texPath><color>(179, 185, 73, 180)</color></graphicData><filth><ignoreFilthMultiplierStat>true</ignoreFilthMultiplierStat><disappearsInDays>35~40</disappearsInDays><rainWashes>true</rainWashes><cleaningWorkToReduceThickness>70</cleaningWorkToReduceThickness><canFilthAttach>true</canFilthAttach><cleaningSound>Interact_CleanFilth_Fluid</cleaningSound></filth></ThingDef>"
+      ]
+    },
+    {
+      "id": "XML02",
+      "file": "Data/Core/Defs/Rooms/RoomStats.xml",
+      "source_sha256": "5bac24103c894719dc665f4843afd7e7dbe2128d5d049b1be47e878cd7f85447",
+      "xpath": "/Defs/RoomStatDef[defName=\"Cleanliness\" or defName=\"FoodPoisonChance\"]",
+      "nodes": [
+        "<RoomStatDef><defName>Cleanliness</defName><label>cleanliness</label><workerClass>RoomStatWorker_Cleanliness</workerClass><updatePriority>2</updatePriority><roomlessScore>0</roomlessScore><scoreStages><li><label>very dirty</label></li><li><minScore>-1.1</minScore><label>dirty</label></li><li><minScore>-0.4</minScore><label>slightly dirty</label></li><li><minScore>-0.05</minScore><label>clean</label></li><li><minScore>0.4</minScore><label>sterile</label></li></scoreStages></RoomStatDef>",
+        "<RoomStatDef><defName>FoodPoisonChance</defName><label>food poison chance</label><workerClass>RoomStatWorker_FromStatByCurve</workerClass><updatePriority>0</updatePriority><isHidden>true</isHidden><roomlessScore>0.02</roomlessScore><inputStat>Cleanliness</inputStat><curve><points><li>(-5, 0.05)</li><li>(-3.5, 0.025)</li><li>(-2, 0)</li></points></curve></RoomStatDef>"
+      ]
+    },
+    {
+      "id": "XML03",
+      "file": "Data/Core/Defs/Stats/Stats_Basics_General.xml",
+      "source_sha256": "c4d702421c19796993483ddd43f9869c54bb7afa1414232a568829ced5218d87",
+      "xpath": "/Defs/StatDef[defName=\"Cleanliness\" or defName=\"FoodPoisonChanceFixedHuman\"]",
+      "nodes": [
+        "<StatDef><defName>Cleanliness</defName><label>cleanliness</label><description>How much an object contributes to an area's cleanliness score.</description><category>BasicsNonPawn</category><defaultBaseValue>0</defaultBaseValue><maxValue>1000</maxValue><minValue>-1000</minValue><hideAtValue>0</hideAtValue><toStringStyle>FloatOne</toStringStyle><applyFactorsIfNegative>false</applyFactorsIfNegative><displayPriorityInCategory>3000</displayPriorityInCategory></StatDef>",
+        "<StatDef><defName>FoodPoisonChanceFixedHuman</defName><label>food poison chance</label><labelForFullStatList>food poison chance (food stat)</labelForFullStatList><description>The chance this food will cause food poisoning.</description><category>BasicsNonPawn</category><defaultBaseValue>0</defaultBaseValue><minValue>0</minValue><hideAtValue>0</hideAtValue><toStringStyle>PercentZero</toStringStyle><parts><li Class=\"StatPart_MaxChanceIfRotting\" /></parts><displayPriorityInCategory>4000</displayPriorityInCategory></StatDef>"
+      ]
+    },
+    {
+      "id": "XML04",
+      "file": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+      "source_sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c",
+      "xpath": "/Defs/WorkGiverDef[defName=\"CleanFilth\"]",
+      "nodes": [
+        "<WorkGiverDef><defName>CleanFilth</defName><label>clean filth</label><giverClass>WorkGiver_CleanFilth</giverClass><workType>Cleaning</workType><verb>clean</verb><gerund>cleaning</gerund><priorityInType>5</priorityInType><requiredCapacities><li>Manipulation</li></requiredCapacities></WorkGiverDef>"
+      ]
+    },
+    {
+      "id": "XML05",
+      "file": "Data/Core/Defs/JobDefs/Jobs_Work.xml",
+      "source_sha256": "0c2cc583de4ad306681c1dcd65763539461adedf33a5360fe716a36deddef2a1",
+      "xpath": "/Defs/JobDef[defName=\"Clean\"]",
+      "nodes": [
+        "<JobDef><defName>Clean</defName><driverClass>JobDriver_CleanFilth</driverClass><reportString>cleaning TargetA.</reportString><allowOpportunisticPrefix>true</allowOpportunisticPrefix></JobDef>"
+      ]
+    },
+    {
+      "id": "XML06",
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_WorkRecipes.xml",
+      "source_sha256": "1304fce1d4a7a1729aacb5ef25cf493beee4474494c8b4a6cb5a720bca92f9e3",
+      "xpath": "/Defs/StatDef[defName=\"FoodPoisonChance\"]",
+      "nodes": [
+        "<StatDef><defName>FoodPoisonChance</defName><label>food poison chance</label><labelForFullStatList>food poison chance (chance to poison a meal)</labelForFullStatList><description>The probability that this character will inadvertently poison a meal they cook.\\n\\nAnyone who eats a food-poisoned meal will be temporarily debilitated with pain, weakness, and vomiting.</description><category>PawnWork</category><defaultBaseValue>1</defaultBaseValue><minValue>0</minValue><toStringStyle>PercentTwo</toStringStyle><skillNeedFactors><li Class=\"SkillNeed_Direct\"><skill>Cooking</skill><valuesPerLevel><li>0.050</li><li>0.040</li><li>0.030</li><li>0.020</li><li>0.015</li><li>0.010</li><li>0.005</li><li>0.0025</li><li>0.0015</li><li>0.001</li><li>0.001</li><li>0.001</li><li>0.001</li><li>0.001</li><li>0.001</li><li>0.001</li><li>0.001</li><li>0.001</li><li>0.001</li><li>0.001</li></valuesPerLevel></li></skillNeedFactors><displayPriorityInCategory>4542</displayPriorityInCategory></StatDef>"
+      ]
+    },
+    {
+      "id": "XML07",
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+      "source_sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+      "xpath": "/Defs/ThingDef[@Name=\"MealBaseIngredientless\" or @Name=\"MealBase\" or defName=\"MealSimple\"]",
+      "nodes": [
+        "<ThingDef Name=\"MealBaseIngredientless\" Abstract=\"True\"><thingClass>ThingWithComps</thingClass><category>Item</category><drawerType>MapMeshOnly</drawerType><useHitPoints>true</useHitPoints><healthAffectsPrice>false</healthAffectsPrice><selectable>true</selectable><statBases><MaxHitPoints>50</MaxHitPoints><Flammability>1.0</Flammability><Beauty>0</Beauty><Mass>0.44</Mass><DeteriorationRate>10</DeteriorationRate></statBases><altitudeLayer>Item</altitudeLayer><stackLimit>10</stackLimit><tickerType>Rare</tickerType><socialPropernessMatters>true</socialPropernessMatters><thingCategories><li>FoodMeals</li></thingCategories><alwaysHaulable>true</alwaysHaulable><comps><li Class=\"CompProperties_Forbiddable\" /><li Class=\"CompProperties_FoodPoisonable\" /><li MayRequire=\"Ludeon.RimWorld.Anomaly\" Class=\"CompProperties_MetalhorrorInfectible\" /></comps><pathCost>14</pathCost><allowedArchonexusCount>40</allowedArchonexusCount><resourceReadoutPriority>Last</resourceReadoutPriority><drawGUIOverlay>true</drawGUIOverlay><uiIconForStackCount>1</uiIconForStackCount><ingestible><foodType>Meal</foodType><maxNumToIngestAtOnce>1</maxNumToIngestAtOnce><defaultNumToIngestAtOnce>1</defaultNumToIngestAtOnce><optimalityOffsetHumanlikes>16</optimalityOffsetHumanlikes></ingestible></ThingDef>",
+        "<ThingDef Name=\"MealBase\" ParentName=\"MealBaseIngredientless\" Abstract=\"True\"><comps><li Class=\"CompProperties_Ingredients\"><splitTransferableFoodKind>true</splitTransferableFoodKind></li></comps><ingestible><optimalityOffsetFeedingAnimals>-25</optimalityOffsetFeedingAnimals></ingestible></ThingDef>",
+        "<ThingDef ParentName=\"MealCooked\"><defName>MealSimple</defName><label>simple meal</label><description>A simple meal quickly cooked from one main ingredient.</description><graphicData><texPath>Things/Item/Meal/Simple</texPath><graphicClass>Graphic_MealVariants</graphicClass></graphicData><statBases><MarketValue>15</MarketValue><WorkToMake>300</WorkToMake><Nutrition>0.9</Nutrition></statBases><ingestible><preferability>MealSimple</preferability><ingestEffect>EatVegetarian</ingestEffect><ingestSound>Meal_Eat</ingestSound><optimalityOffsetFeedingAnimals>-25</optimalityOffsetFeedingAnimals></ingestible></ThingDef>"
+      ]
+    },
+    {
+      "id": "XML08",
+      "file": "Data/Core/Defs/RecipeDefs/Recipes_Meals.xml",
+      "source_sha256": "ecb025e0b521b2e174f3d8cecb7d0263a1c7310b957cf6d849d414361b566789",
+      "xpath": "/Defs/RecipeDef[defName=\"CookMealSimple\" or defName=\"CookMealSimpleBulk\"]",
+      "nodes": [
+        "<RecipeDef ParentName=\"CookMealBase\"><defName>CookMealSimple</defName><label>cook simple meal</label><description>Cook a straightforward meal from one ingredient.</description><jobString>Cooking simple meal.</jobString><workSpeedStat>CookSpeed</workSpeedStat><requiredGiverWorkType>Cooking</requiredGiverWorkType><effectWorking>Cook</effectWorking><soundWorking>Recipe_CookMeal</soundWorking><allowMixingIngredients>true</allowMixingIngredients><ingredientValueGetterClass>IngredientValueGetter_Nutrition</ingredientValueGetterClass><ingredients><li><filter><categories><li>FoodRaw</li></categories></filter><count>0.5</count></li></ingredients><products><MealSimple>1</MealSimple></products><workSkill>Cooking</workSkill><displayPriority>100</displayPriority></RecipeDef>",
+        "<RecipeDef ParentName=\"CookMealBase\"><defName>CookMealSimpleBulk</defName><label>cook simple meal x4</label><description>Cook 4 straightforward meals from one ingredient.</description><jobString>Cooking 4 simple meals.</jobString><workAmount>1200</workAmount><workSpeedStat>CookSpeed</workSpeedStat><requiredGiverWorkType>Cooking</requiredGiverWorkType><effectWorking>Cook</effectWorking><soundWorking>Recipe_CookMeal</soundWorking><allowMixingIngredients>true</allowMixingIngredients><ingredientValueGetterClass>IngredientValueGetter_Nutrition</ingredientValueGetterClass><ingredients><li><filter><categories><li>FoodRaw</li></categories></filter><count>2.0</count></li></ingredients><products><MealSimple>4</MealSimple></products><workSkill>Cooking</workSkill><displayPriority>110</displayPriority></RecipeDef>"
+      ]
+    },
+    {
+      "id": "XML09",
+      "file": "Data/Core/Defs/HediffDefs/Hediffs_Global_Misc.xml",
+      "source_sha256": "d3d38552d52b19273eef855e2d62e3155267b8176f640e6018c7d9a04c919d57",
+      "xpath": "/Defs/HediffDef[@Name=\"DiseaseBase\" or defName=\"FoodPoisoning\"]",
+      "nodes": [
+        "<HediffDef Name=\"DiseaseBase\" Abstract=\"True\"><hediffClass>HediffWithComps</hediffClass><defaultLabelColor>(0.9, 1.0, 0.35)</defaultLabelColor><initialSeverity>0.001</initialSeverity><removeOnRedressChanceByDaysCurve><points><li>(0, 0)</li><li>(2, 0)</li><li>(7, 0.5)</li><li>(20, 1)</li></points></removeOnRedressChanceByDaysCurve></HediffDef>",
+        "<HediffDef ParentName=\"DiseaseBase\"><defName>FoodPoisoning</defName><label>food poisoning</label><description>Gastrointestinal illness caused by consuming decayed or unclean food. It can be caused by eating rotten food, by incompetent cooks accidentally poisoning meals, or by eating from unsafe wild sources. The patient will vomit and feel sick for some time.</description><scenarioCanAdd>true</scenarioCanAdd><initialSeverity>1</initialSeverity><comps><li Class=\"HediffCompProperties_SeverityPerDay\"><severityPerDay>-1</severityPerDay></li></comps><stages><li><label>recovering</label><vomitMtbDays>0.4</vomitMtbDays><painOffset>0.2</painOffset><capMods><li><capacity>Consciousness</capacity><postFactor>0.6</postFactor></li><li><capacity>Moving</capacity><postFactor>0.8</postFactor></li><li><capacity>Manipulation</capacity><postFactor>0.9</postFactor></li><li><capacity>BloodFiltration</capacity><postFactor>0.95</postFactor></li><li><capacity>Eating</capacity><postFactor>0.5</postFactor></li></capMods></li><li><label>major</label><minSeverity>0.2</minSeverity><vomitMtbDays>0.2</vomitMtbDays><painOffset>0.4</painOffset><capMods><li><capacity>Consciousness</capacity><postFactor>0.5</postFactor></li><li><capacity>Moving</capacity><postFactor>0.5</postFactor></li><li><capacity>Manipulation</capacity><postFactor>0.8</postFactor></li><li><capacity>BloodFiltration</capacity><postFactor>0.85</postFactor></li><li><capacity>Talking</capacity><postFactor>0.8</postFactor></li><li><capacity>Eating</capacity><postFactor>0.3</postFactor></li></capMods></li><li><label>initial</label><minSeverity>0.8</minSeverity><vomitMtbDays>0.3</vomitMtbDays><painOffset>0.2</painOffset><capMods><li><capacity>Consciousness</capacity><postFactor>0.6</postFactor></li><li><capacity>Moving</capacity><postFactor>0.8</postFactor></li><li><capacity>Manipulation</capacity><postFactor>0.9</postFactor></li><li><capacity>BloodFiltration</capacity><postFactor>0.95</postFactor></li><li><capacity>Eating</capacity><postFactor>0.5</postFactor></li></capMods></li></stages></HediffDef>"
+      ]
+    },
+    {
+      "id": "XML10",
+      "file": "Data/Core/Defs/JobDefs/Jobs_Misc.xml",
+      "source_sha256": "537728d9066def61890253439953631e86afb7f2d5f08501a2a70172bcf5d714",
+      "xpath": "/Defs/JobDef[defName=\"Vomit\"]",
+      "nodes": [
+        "<JobDef><defName>Vomit</defName><driverClass>JobDriver_Vomit</driverClass><playerInterruptible>false</playerInterruptible><casualInterruptible>false</casualInterruptible><reportString>vomiting.</reportString><suspendable>false</suspendable></JobDef>"
+      ]
+    }
+  ],
+  "native_runtime_report": "../77-native-sanitation-runtime.md",
+  "limitations": [
+    "Derived ILSpy C# is not original source.",
+    "Selected packaged XML is not an effective runtime Def database; inheritance and mod patches are not globally resolved.",
+    "Native run validates one ordinary clean job, not kitchen probabilities, layer work timing, disease duration or cure behavior.",
+    "Capacity post-factors are not direct final movement-speed multipliers.",
+    "Deterministic Web random streams and accelerated illness duration are design choices, not original code claims."
+  ]
+}

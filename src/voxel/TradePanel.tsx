@@ -199,6 +199,7 @@ export function TradePanel({ snapshot: s, selectedPos, selectedPawnId, command, 
       <details className="voxel-home-area" open>
         <summary>家园范围 · {s.homeArea.length} 格</summary>
         <p>金色边界内的落地物资可参与贸易，仓储中的落地物资也可。商人还需要能走到物资处并愿意收购。</p>
+        <small>家园范围也决定清扫区域；在人物分工或卫生面板开启清洁后，殖民者会处理范围内的污物。</small>
         <small>用查看工具点选地图，设定矩形起点，再点选同层终点。</small>
         <div><button disabled={!selectedPos || busy} onClick={() => { setAnchor(selectedPos && { ...selectedPos }); setError(''); }}>设为范围起点</button><button disabled={!anchor} onClick={() => setAnchor(null)}>清除起点</button></div>
         <small>{anchor ? `起点 (${anchor.x}, ${anchor.y}) · 第 ${anchor.z} 层` : '未设起点时只修改选中格。'}</small>

@@ -1,0 +1,10 @@
+{
+  "version": 24,
+  "source": "test-results/voxel-prisoners/initial.json",
+  "sourceCommit": "d5da2d13515341b5221c292946657254eb6f6d60",
+  "sha256": "488d8c87d7de28617d93305f01d5cca8c110dbf6997ad99ebfd1c745f89549b8",
+  "scope": "Fresh v24 world; public commands, elapsed ticks and save/load only. No injected enemies, health, items, buildings, positions or resistance.",
+  "tick": 0,
+  "campaignBundleSha256": "f5f08bfb67f8e6ef3e7ff7b11d292e2f6a8e409327f1490501fc6e1058482d58",
+  "campaignScriptSha256": "4d45decf22ff46d53bf3025356bf9932cd82695568e790be7e2ed8fa92a3814b"
+}

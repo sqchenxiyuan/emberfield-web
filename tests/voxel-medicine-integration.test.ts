@@ -71,7 +71,7 @@ function herb(s: VoxelSimulation, n = 4, point = pos(28, 20, 11)) {
 }
 
 describe('physical medical care, agriculture and v18 migration', () => {
-  it('uses soil and each physical chunk in the treatment room, retaining the snapshot after hauling', () => {
+  it('uses soil, physical chunks and actual bleeding filth in the treatment room, retaining the snapshot after hauling', () => {
     const s = fixture(),
       p = wound(s);
     for (let x = 14; x <= 19; x++)
@@ -89,12 +89,14 @@ describe('physical medical care, agriculture and v18 migration', () => {
     command(s, { type: 'medicalPolicy', pawnId: p.id, policy: 'noMedicine' });
     command(s, { type: 'care', pawnId: s.pawns[1].id, patientId: p.id, action: 'tend' });
     until(s, () => p.medical.lastTend !== null);
-    expect(p.medical.lastTend!.roomFactor).toBeCloseTo(0.625);
+    expect(s.filth.filter(f => f.kind === 'blood' && s.rooms.roomAt(f)?.id === s.rooms.roomAt(p)?.id)).toHaveLength(1);
+    // 16 soil tiles, two chunks and one blood stain: (-16 - 4 - 1) / 16.
+    expect(p.medical.lastTend!.roomFactor).toBeCloseTo(0.63125, 8);
     const risk = p.medical.risks.find((r) => r.woundId === p.medical.lastTend!.recordIds[0])!;
-    expect(risk.roomFactor).toBeCloseTo(0.625);
+    expect(risk.roomFactor).toBeCloseTo(0.63125, 8);
     Object.assign(chunk, pos(12, 12));
     s.step(10);
-    expect(risk.roomFactor).toBeCloseTo(0.625);
+    expect(risk.roomFactor).toBeCloseTo(0.63125, 8);
     expect(() => VoxelSimulation.load(s.save())).not.toThrow();
   });
   it.each([false, true])('applies downed rest immunity only in a real bed (bed=%s)', (bed) => {
@@ -284,7 +286,7 @@ describe('physical medical care, agriculture and v18 migration', () => {
       const old = JSON.parse(bytes.toString()),
         save = VoxelSimulation.load(old).save();
       expect(old.version).toBe(18);
-      expect(save.version).toBe(24);
+      expect(save.version).toBe(25);
       expect(save.items).toEqual(old.items);
       expect(save.research).toEqual(old.research);
       expectWildlifeIds(old.nextId, save);

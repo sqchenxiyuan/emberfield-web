@@ -26,7 +26,7 @@ describe('physical trade, visitors and genuine v20 migration', () => {
   it('migrates seven genuine saves without giving old colonies silver or moving an appointment', () => {
     for (const name of ['initial', 'working', 'carrying', 'combat', 'injured', 'recovered', 'scheduled']) {
       const old = fixture(name), sim = VoxelSimulation.load(old), saved = sim.save();
-      expect(saved.version).toBe(24);
+      expect(saved.version).toBe(25);
       expect(saved.items).toEqual(old.items);
       expect(saved.storyteller).toEqual(old.storyteller);
       expect(saved.trade).toEqual(initialTrade(old.seed, old.tick));

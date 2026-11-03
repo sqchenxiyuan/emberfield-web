@@ -22,6 +22,7 @@ const WORK_SKILLS: Record<Work, SkillKey | null> = {
   cut: 'plants',
   build: 'construction',
   haul: null,
+  clean: null,
   grow: 'plants',
   cook: 'cooking',
   craft: 'crafting',

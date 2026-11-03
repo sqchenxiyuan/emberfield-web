@@ -45,6 +45,7 @@ function fixture() {
     p.worn = [];
     p.schedule.fill('work');
     p.priorities = {
+      clean: 0,
       warden: 0,
       hunt: 0,
       dig: 0,
