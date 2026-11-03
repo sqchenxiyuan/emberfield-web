@@ -106,7 +106,7 @@ async function save(name) {
   return data;
 }
 try {
-  assert.equal(s.save().version, 18);
+  assert.equal(s.save().version, 19);
   const crafterId = s.pawns[2].id,
     before = structuredClone(s.pawns.map((p) => p.skills));
   report.beforeSkills = before;

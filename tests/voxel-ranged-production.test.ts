@@ -1,3 +1,4 @@
+import { withMedicineLedgers } from './legacy-medicine-defaults';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
@@ -86,7 +87,7 @@ describe('v18 ranged migration and powered physical production', () => {
         s = VoxelSimulation.load(old),
         save = s.save();
       expect(old).toEqual(before);
-      expect(save.version).toBe(18);
+      expect(save.version).toBe(19);
       for (const key of [
         'tick',
         'nextId',
@@ -100,7 +101,7 @@ describe('v18 ranged migration and powered physical production', () => {
         'devices',
         'wires',
       ] as const)
-        expect(save[key]).toEqual(old[key]);
+        expect(save[key]).toEqual(key === 'stats' ? withMedicineLedgers(old.stats) : old[key]);
       expect(save.projectiles).toEqual([]);
       expect(save.combatEvents).toEqual([]);
       expect(save.sandbags).toEqual([]);

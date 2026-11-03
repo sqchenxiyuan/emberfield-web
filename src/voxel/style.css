@@ -170,6 +170,33 @@ a {
   color: #bdc9bc;
   line-height: 1.6;
 }
+.voxel-medicine,
+.voxel-medical-policy,
+.voxel-infections {
+  display: grid;
+  gap: 8px;
+}
+.voxel-medical-policy > label:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.voxel-medical-policy select {
+  max-width: 100%;
+  min-width: 0;
+}
+.voxel-infections {
+  border-top: 1px solid #526354;
+  padding-top: 8px;
+}
+.voxel-immunity progress {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+  accent-color: #8fbe9f;
+}
 .voxel-capacities {
   display: flex;
   flex-wrap: wrap;

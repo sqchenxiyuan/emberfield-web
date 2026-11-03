@@ -1,0 +1,15 @@
+[
+  "Verse.ImmunityHandler",
+  "RimWorld.MedicalCareCategory",
+  "RimWorld.MedicalCareUtility",
+  "Verse.HediffComp_Discoverable",
+  "Verse.HediffCompProperties_Discoverable",
+  "RimWorld.StatPart_Resting",
+  "RimWorld.StatPart_Rest",
+  "Verse.HediffWithComps",
+  "RimWorld.StatPart_Age",
+  "RimWorld.StatPart_BedStat",
+  "RimWorld.StatPart_Food",
+  "RimWorld.PawnCapacityFactor",
+  "RimWorld.TerrainDefGenerator_Stone"
+]

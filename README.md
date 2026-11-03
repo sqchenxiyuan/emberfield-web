@@ -6,6 +6,8 @@
 
 在线试玩：[GitHub Pages](https://sqchenxiyuan.github.io/emberfield-web/) · 源码：[sqchenxiyuan/emberfield-web](https://github.com/sqchenxiyuan/emberfield-web)。
 
+2026-11-03医疗更新（v19）：多层体素模式加入药根种植与实体草药、三档护理策略、伤口感染、共享免疫和实际卧床休养。种植8级可播药根，医生从真实药堆取药并逐批护理；草药可以跨层入库和冷藏，护理不会立刻抹掉伤口或疾病。人物面板显示病情、免疫、护理期限和实际医生进度。旧档保留营地，旧伤不补抽感染。[60原版机制](docs/research/rimworld/60-medicine-infection-mechanisms.md)、[61实机护理](docs/research/rimworld/61-native-medicine-runtime.md)、[62实现与验收](docs/research/rimworld/62-voxel-medicine-implementation.md)区分来源和适配。工业药、医院床、自疗、手术和其他疾病尚未实现。
+
 2026-11-03远程战斗（v18）：多层体素模式加入短弓、左轮、冲锋手枪、供电机械加工台和布沙袋。先研究锻造→机械加工→枪械制造/反冲式自动武器，再用实际木材、钢材和零件制造；楼上机械台需要跨层布线。征召后选择目标射击，瞄准、连发、飞行、掩体、误伤及护甲伤口由模拟推进，检查面板显示命中因素。旧档保留现有营地和制作进度，新枪械科技需要研究。[57原版规则](docs/research/rimworld/57-ranged-combat-mechanisms.md)、[58实机观察](docs/research/rimworld/58-native-ranged-runtime.md)、[59实现与验收](docs/research/rimworld/59-voxel-ranged-implementation.md)分别记录来源、三维适配和验证边界。
 
 2026-11-03护甲更新（v17）：燃料锻造台可实际制作钢头盔和钢板甲，板甲需研究及工艺7级。护甲按真实部位、穿透和层次判定挡下/减伤，每击消耗耐久，损毁计入物品账本；板甲减慢实际步行。点击装备查看品质、防护、覆盖和移动影响，旧档保留现有营地并新增未完成的板甲研究。[54规则](docs/research/rimworld/54-armor-penetration-mechanisms.md)、[55原版实机](docs/research/rimworld/55-native-armor-runtime.md)、[56实现与验收](docs/research/rimworld/56-voxel-armor-implementation.md)。此前版本介绍中的“无护甲”“无远程”属于历史边界。

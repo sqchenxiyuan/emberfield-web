@@ -8,6 +8,7 @@ import {
   type LegacyTrauma,
 } from './injuries';
 import { roundedCapacity, type CapacityReasons } from './anatomy';
+import { initialMedical, infectionEffects, type MedicalState } from './medicine';
 
 // Source contract: chapter 33. Whole healthy adult body, no apparel, genes or traits.
 // Source 60000 ticks/day is mapped to our DAY, independently of render/real-time TPS.
@@ -54,8 +55,10 @@ export function initialSurvival(
   | 'carePhase'
   | 'careProgress'
   | 'careFoodId'
+  | 'careMedicineId'
   | 'careAmount'
   | 'trauma'
+  | 'medical'
   | 'faction'
   | 'drafted'
   | 'retreating'
@@ -72,6 +75,7 @@ export function initialSurvival(
   hash = Math.imul(hash ^ (hash >>> 16), 0x45d9f3b);
   return {
     trauma: initialTrauma(),
+    medical: initialMedical(),
     faction: 'colony',
     drafted: false,
     retreating: false,
@@ -98,6 +102,7 @@ export function initialSurvival(
     carePhase: null,
     careProgress: 0,
     careFoodId: null,
+    careMedicineId: null,
     careAmount: 0,
   };
 }
@@ -204,22 +209,34 @@ export function legacyHealthState(h: SurvivalHealth, t: LegacyTrauma) {
     pain,
   };
 }
-function capacities(h: SurvivalHealth, trauma: ReturnType<typeof traumaSummary>, dead: boolean) {
+function capacities(
+  h: SurvivalHealth,
+  trauma: ReturnType<typeof traumaSummary>,
+  dead: boolean,
+  medical?: MedicalState,
+) {
+  const infection = infectionEffects(medical);
+  const breathing = roundedCapacity(
+    trauma.breathing > 0 ? trauma.breathing + infection.breathingOffset : trauma.breathing,
+  );
   const mal = stage(h.malnutrition, [0, 0.2, 0.4, 0.6, 0.8]),
     cold = stage(h.hypothermia, [0, 0.04, 0.2, 0.35, 0.62]),
     hot = stage(h.heatstroke, [0, 0.04, 0.2, 0.35, 0.62]);
-  const pain = clamp(trauma.pain + [0, 0, 0, 0.15, 0.3][cold] + [0, 0, 0, 0.15, 0.3][hot]);
+  const pain = clamp(
+    trauma.pain + infection.pain + [0, 0, 0, 0.15, 0.3][cold] + [0, 0, 0, 0.15, 0.3][hot],
+  );
   const penalty = clamp(((pain - 0.1) / 0.9) * 0.4, 0, 0.4);
   const consciousRaw =
     (trauma.consciousnessSource - (penalty >= 0.01 ? penalty : 0)) *
     (0.8 + 0.2 * Math.min(trauma.bloodPumping, 1)) *
-    (0.8 + 0.2 * Math.min(trauma.breathing, 1)) *
+    (0.8 + 0.2 * Math.min(breathing, 1)) *
     (0.9 + 0.1 * Math.min(trauma.bloodFiltration, 1));
   const consciousOffset =
     [0, -0.05, -0.1, -0.2, -0.3][mal] +
     [0, -0.05, -0.1, -0.2, 0][cold] +
     [0, -0.05, -0.1, -0.2, 0][hot] +
-    trauma.consciousnessOffset;
+    trauma.consciousnessOffset +
+    infection.consciousnessOffset;
   // PawnCapacityUtility: only positive worker results receive condition modifiers.
   const consciousness = dead
     ? 0
@@ -229,10 +246,14 @@ function capacities(h: SurvivalHealth, trauma: ReturnType<typeof traumaSummary>,
               consciousRaw + consciousOffset,
               mal === 4 || cold === 4 || hot === 4 ? 0.1 : 1,
               trauma.consciousnessMax,
+              infection.consciousnessMax,
             )
           : consciousRaw,
       );
-  const movingRaw = trauma.movingFactor * Math.min(consciousness, 1),
+  const movingRaw =
+      ((trauma.movingFactor * (0.8 + 0.2 * Math.min(breathing, 1))) /
+        (0.8 + 0.2 * Math.min(trauma.breathing, 1))) *
+      Math.min(consciousness, 1),
     manipulationRaw = trauma.manipulationFactor * consciousness;
   const moving =
     consciousness < 0.3
@@ -276,6 +297,10 @@ function capacities(h: SurvivalHealth, trauma: ReturnType<typeof traumaSummary>,
   if (h.heatstroke > 0)
     for (const key of ['consciousness', 'moving'] as const) capacityReasons[key].push('中暑');
   if (trauma.consciousnessOffset !== 0) capacityReasons.consciousness.push('失血');
+  if (medical?.infections.length) {
+    capacityReasons.consciousness.push('伤口感染');
+    if (infection.breathingOffset !== 0) capacityReasons.breathing.push('重度感染');
+  }
   const labels = ['初期', '轻微', '中度', '严重', '极重'];
   return {
     consciousness,
@@ -284,7 +309,7 @@ function capacities(h: SurvivalHealth, trauma: ReturnType<typeof traumaSummary>,
     pain,
     capacityReasons,
     sight: dead ? 0 : trauma.sight,
-    breathing: dead ? 0 : trauma.breathing,
+    breathing: dead ? 0 : breathing,
     bloodPumping: dead ? 0 : trauma.bloodPumping,
     bloodFiltration: dead ? 0 : trauma.bloodFiltration,
     metabolism: dead ? 0 : trauma.metabolism,
@@ -302,26 +327,33 @@ function capacities(h: SurvivalHealth, trauma: ReturnType<typeof traumaSummary>,
 export function healthDeathReason(
   h: SurvivalHealth,
   trauma: Trauma = initialTrauma(),
+  medical?: MedicalState,
 ): string | null {
   const summary = traumaSummary(trauma);
-  return (
+  const primary =
     summary.deathReason ||
+    (infectionEffects(medical).lethal ? '伤口感染致死' : null) ||
     (h.malnutrition >= 1
       ? '营养不良致死'
       : h.hypothermia >= 1
         ? '失温致死'
         : h.heatstroke >= 1
           ? '中暑致死'
-          : capacities(h, summary, false).consciousness <= 0
-            ? '意识功能丧失致死'
-            : null)
-  );
+          : null);
+  if (primary) return primary;
+  const derived = capacities(h, summary, false, medical);
+  return derived.breathing <= 0
+    ? '呼吸功能丧失致死'
+    : derived.consciousness <= 0
+      ? '意识功能丧失致死'
+      : null;
 }
 export function healthSummary(
-  p: Pick<Pawn, 'health' | 'dead' | 'deathReason'> & Partial<Pick<Pawn, 'worn' | 'trauma'>>,
+  p: Pick<Pawn, 'health' | 'dead' | 'deathReason'> &
+    Partial<Pick<Pawn, 'worn' | 'trauma' | 'medical'>>,
 ) {
   const trauma = traumaSummary(p.trauma ?? initialTrauma()),
-    derived = capacities(p.health, trauma, p.dead);
+    derived = capacities(p.health, trauma, p.dead, p.medical);
   const reason = p.dead
     ? (p.deathReason ?? '死亡')
     : [
@@ -331,6 +363,7 @@ export function healthSummary(
         p.trauma?.wounds.length ? `${p.trauma.wounds.length} 处外伤` : '',
         p.trauma?.missingParts.length ? `${p.trauma.missingParts.length} 处部位缺失` : '',
         p.trauma && p.trauma.bloodLoss > 0 ? '失血' : '',
+        p.medical?.infections.length ? `${p.medical.infections.length} 处感染` : '',
       ]
         .filter(Boolean)
         .join('、') || '健康';

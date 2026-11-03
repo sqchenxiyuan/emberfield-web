@@ -5,14 +5,15 @@ import { validWeapon } from './weapons';
 // RimWorld 1.7 source/Defs: 60000 original ticks/day, rate * elapsed ticks.
 // We preserve days, using this simulation's DAY=12000 instead. Unlike the native
 // rare-tick scheduler, world containers advance once per simulation tick.
-export const ROT_DAYS = Object.freeze({ rice: 40, potato: 30, corn: 60, meal: 4 });
-export const isPerishable = (resource: Resource) => resource === 'grain' || resource === 'meal';
+export const ROT_DAYS = Object.freeze({ rice: 40, potato: 30, corn: 60, meal: 4, herb: 150 });
+export const isPerishable = (resource: Resource) => ['grain', 'meal', 'herb'].includes(resource);
 export function rotRateAtTemperature(temperature: number): number {
   if (!Number.isFinite(temperature)) throw new RangeError('Temperature must be finite');
   return temperature <= 0 ? 0 : temperature >= 10 ? 1 : temperature / 10;
 }
 export function rotLimit(batch: Pick<Cargo, 'resource' | 'crop'>): number | null {
   if (batch.resource === 'meal') return ROT_DAYS.meal * DAY;
+  if (batch.resource === 'herb') return ROT_DAYS.herb * DAY;
   if (batch.resource === 'grain' && batch.crop && Object.hasOwn(ROT_DAYS, batch.crop))
     return ROT_DAYS[batch.crop] * DAY;
   return null;
@@ -29,7 +30,7 @@ export function freshBatch(resource: Resource, amount: number, crop?: FoodCropKi
     amount,
     ...(resource === 'grain'
       ? { crop: crop ?? 'rice', rotProgress: 0 }
-      : resource === 'meal'
+      : resource === 'meal' || resource === 'herb'
         ? { rotProgress: 0 }
         : {}),
   };
@@ -94,6 +95,7 @@ export function validBatch(batch: unknown): batch is Cargo {
       'grain',
       'meal',
       'cloth',
+      'herb',
       'apparel',
       'weapon',
     ].includes(b.resource) ||

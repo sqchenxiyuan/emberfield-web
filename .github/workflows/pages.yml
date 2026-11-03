@@ -68,6 +68,11 @@ jobs:
         run: npm run test:voxel:armor
       - name: Verify firearm research, powered machining, ranged combat and in-flight saves
         run: npm run test:voxel:ranged
+      - name: Verify real herb farming, cross-floor medical logistics and natural infection outcomes
+        run: npm run test:voxel:medicine
+        env:
+          VOXEL_MEDICINE_FINAL: '1'
+          VOXEL_MEDICINE_OUT: test-results/voxel-medicine-campaign
       - name: Build site with relative asset and Worker URLs
         run: npm run build
       - name: Configure GitHub Pages

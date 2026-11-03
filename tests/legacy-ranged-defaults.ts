@@ -1,8 +1,10 @@
 import { expect } from 'vitest';
+import { stripMedicineDefaults } from './legacy-medicine-defaults';
 /** Older synthetic schema tests start from a current empty test world. Remove
  * only v18 defaults before applying that test's historical schema conversion.
  * Authentic historical fixture bytes never pass through this helper. */
 export function stripRangedDefaults(raw: Record<string, any>) {
+  stripMedicineDefaults(raw);
   for (const key of ['projectiles', 'combatEvents', 'sandbags']) {
     expect(raw[key]).toEqual([]);
     delete raw[key];

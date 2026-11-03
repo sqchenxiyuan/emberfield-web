@@ -1,0 +1,970 @@
+[
+  {
+    "id": "MD01",
+    "title": "药品定义、消耗与保存",
+    "statement": "三种药品继承MedicineBase，堆叠25/HP60。草药potency .6/maxQ .7/150标准腐坏日；工业1/1；高级1.6/1.3。工业配方1草药+1中性胺+3布/工作700/DrugLab/MedicineProduction/双技能4。高级药本选定Core父链未声明配方。草药Rare更新按温度累积rotProg；不是150墙钟日必然消失。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_ResourceBase",
+        "xml_line_start": 4,
+        "xml_line_end": 24
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_MedicineBase",
+        "xml_line_start": 6,
+        "xml_line_end": 20
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_MedicineHerbal",
+        "xml_line_start": 22,
+        "xml_line_end": 49
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_MedicineIndustrial",
+        "xml_line_start": 51,
+        "xml_line_end": 91
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_MedicineUltratech",
+        "xml_line_start": 93,
+        "xml_line_end": 117
+      },
+      {
+        "group": "preservation",
+        "type": "RimWorld.CompRottable",
+        "line_start": 85,
+        "line_end": 151,
+        "range_sha256": "2040fd684f4f3891269be27540a606c5e3358a86a81a713e753b74d9f3048cbc"
+      },
+      {
+        "group": "preservation",
+        "type": "RimWorld.CompProperties_Rottable",
+        "line_start": 1,
+        "line_end": 47,
+        "range_sha256": "257e33df5bf76380a3e6042a752db9ad82ebf84a895c9d3a6619beac32835805"
+      }
+    ]
+  },
+  {
+    "id": "MD02",
+    "title": "药草供给与实际产量",
+    "statement": "HealrootBase全光生长预算10日/收获400/基础产出1草药；栽培型7日/播种800/Plants8，野生继承10日。父链肥力门槛.7/敏感度1，默认harvestMinGrowth .65且严格大于才可收获；自动田间等成熟。产量先按成熟度、HP、难度随机取整，再经收获能力成功/增产，不能保证每棵固定1。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_PlantBaseNonEdible",
+        "xml_line_start": 4,
+        "xml_line_end": 35
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_PlantBase",
+        "xml_line_start": 37,
+        "xml_line_end": 42
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_HealrootBase",
+        "xml_line_start": 255,
+        "xml_line_end": 280
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_Plant_Healroot",
+        "xml_line_start": 282,
+        "xml_line_end": 296
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_Plant_HealrootWild",
+        "xml_line_start": 120,
+        "xml_line_end": 129
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.PlantProperties",
+        "line_start": 30,
+        "line_end": 100,
+        "range_sha256": "fdfcf6bd787be9d65e3db2d38b464a5e58960d6575c0d7bae4ee006eceea15ac"
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 109,
+        "line_end": 119,
+        "range_sha256": "0d15ef8c2911af4233930ddc00e40bc931ceaa39286201fe38837b544cfadb9f"
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 927,
+        "line_end": 964,
+        "range_sha256": "6700585ed4ae2122bbb4540c39b8ee331da954a3a2d0af37be64c9fdef0c8101"
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.JobDriver_PlantWork",
+        "line_start": 59,
+        "line_end": 113,
+        "range_sha256": "256970fbf09782beeb9d2e963305f1c2d5cd96f27cffee24dadc3e8b07f611c8"
+      },
+      {
+        "group": "plants",
+        "type": "RimWorld.WorkGiver_GrowerSow",
+        "line_start": 145,
+        "line_end": 166,
+        "range_sha256": "dbdbb04b5853380f70437be1de4a864087f033b45bb8e9bf52be1ea0e4093d89"
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.WorkGiver_GrowerHarvest",
+        "line_start": 1,
+        "line_end": 93,
+        "range_sha256": "06fde7b9f9f23810b29fa2143afbb7fc971ecc3957163c20979942e2a460aa8f"
+      }
+    ]
+  },
+  {
+    "id": "MD03",
+    "title": "护理政策与找药",
+    "statement": "五档策略：NoCare停止普通护理；NoMeds可无药护理；Herbal/Normal以potency阈值筛选，Best放开。找药过滤禁用、许可、可预留、估计批次数；背包与患者位置出发的可达地面药按药效比较，等药效优先医生背包，另有殖民动物库存回退。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "medicine",
+        "type": "RimWorld.MedicalCareCategory",
+        "line_start": 1,
+        "line_end": 11,
+        "range_sha256": "e7ed98c74d75e63ef01d2226f17279f8b4f56d9f8a8d0e676fd43c3deb4d5eb6"
+      },
+      {
+        "group": "medicine",
+        "type": "RimWorld.MedicalCareUtility",
+        "line_start": 73,
+        "line_end": 84,
+        "range_sha256": "9c03f7c43910b9dbf33834afd4967d7aa092ba8df1684135e46728399524c719"
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.HealthAIUtility",
+        "line_start": 47,
+        "line_end": 76,
+        "range_sha256": "970bfa2e90803e41a77bae3a1951dbef2cc32abf12c8c23affe9c1bc881e10be"
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.HealthAIUtility",
+        "line_start": 147,
+        "line_end": 207,
+        "range_sha256": "1055421189cc5c4df76cbca7c9d83a275e762888fc6e5c7298ff81d6da18c0fe"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.Medicine",
+        "line_start": 1,
+        "line_end": 51,
+        "range_sha256": "3768af210514f133e54b343229abc7818c011e0ce1004305b336ec9b087a8885"
+      }
+    ]
+  },
+  {
+    "id": "MD04",
+    "title": "物理取药、护理和经验",
+    "statement": "工作预留患者/药物、搬取估算批次数的药，按患者所在床交互格或地面邻近格靠近；基础等待int(600/MedicalTendSpeed)。完成一次实际批次耗1药，空药可继续无药处理；切换政策可中断。人类护理原始经验500、动物175，乘clamp(potency*.7,.5,1)，无药.5，再受技能学习系统修正。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "injuries",
+        "type": "RimWorld.JobDriver_TendPatient",
+        "line_start": 51,
+        "line_end": 159,
+        "range_sha256": "ebb0fb597f75e855d99cc9b548c15d5129337e0315120c299743f772cc609389"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.JobDriver_TendPatient",
+        "line_start": 169,
+        "line_end": 208,
+        "range_sha256": "4ba33bc00b75d5b5fb1e99e764ce0baca3412296a2e8e2689c9ace3fc4469352"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.Toils_Tend",
+        "line_start": 1,
+        "line_end": 86,
+        "range_sha256": "8fb249325b6eaf57452b332f9a5c718a75865136484d8b0effc06d7af89850f5"
+      },
+      {
+        "group": "energy",
+        "type": "Verse.ThingDef",
+        "line_start": 712,
+        "line_end": 712,
+        "range_sha256": "9c0ab9abe6499e2c84dfceca4fd252fc21fa33601c5f644fcd81b2985f7a708e"
+      },
+      {
+        "group": "combat",
+        "type": "RimWorld.TendUtility",
+        "line_start": 26,
+        "line_end": 71,
+        "range_sha256": "a5cd929fc7d5740766ed473333318437ce4b00e3e62945bf66eeafefcd79585c"
+      }
+    ]
+  },
+  {
+    "id": "MD05",
+    "title": "批次排序与严重度20",
+    "statement": "TendPriority=max(致命阶段1,出血率*1.5,护理能降低严重度则.025)，再按severity降序。第一项总被选；tendAllAtOnce追加同Def；否则有药且第一项是Injury，累计severity≤20收纳其他Injury，超额候选跳过后继续。首项>20仍单独处理。WoundInfection默认不tendAllAtOnce。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "Verse.Hediff",
+        "line_start": 215,
+        "line_end": 233,
+        "range_sha256": "def00cc4330f0f4c31590afb2ea32015bd2e9c90480efb95e7288a49a85d5e7f"
+      },
+      {
+        "group": "combat",
+        "type": "RimWorld.TendUtility",
+        "line_start": 113,
+        "line_end": 181,
+        "range_sha256": "74132e28b859b2eea7eaaf8dc290bbcb35974ddedee471b89e9a650602e59e81"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffCompProperties_TendDuration",
+        "line_start": 5,
+        "line_end": 29,
+        "range_sha256": "b429f0f862780655fbfa9b7cf236581924b05b4063f77c66bf386119c736e8d6"
+      },
+      {
+        "group": "medicine",
+        "xml_record": "HediffDef_WoundInfection",
+        "xml_line_start": 206,
+        "xml_line_end": 269
+      }
+    ]
+  },
+  {
+    "id": "MD06",
+    "title": "基础质量与逐伤情扰动",
+    "statement": "baseQ=clamp((最终医生质量*potency+床offset)*(自疗?.7:1),0,maxQ)，没有医生取.75，无药potency .3/maxQ .7。每个Hediff按组件顺序分别执行CompTended，各自加入[-.25,.25]后再clamp；totalTendQuality累积各次实际值。先clamp后扰动不可交换。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "RimWorld.TendUtility",
+        "line_start": 90,
+        "line_end": 110,
+        "range_sha256": "7dda03727880a6f5391f6ecaa398ce3c01bad6f68e16d225180e129d105444ed"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffComp_TendDuration",
+        "line_start": 182,
+        "line_end": 199,
+        "range_sha256": "d684fe1b40ddf67d8626312f18037ca392fc5f29c9a24dd82cd74dba2c07d83d"
+      },
+      {
+        "group": "medicine",
+        "type": "Verse.HediffWithComps",
+        "line_start": 257,
+        "line_end": 280,
+        "range_sha256": "2f43f5b252a07c1869d0ca3d885e6da3447ee62ea9a501f848597032f4c83550"
+      },
+      {
+        "group": "medicine",
+        "xml_record": "StatDef_MedicalTendQualityOffset",
+        "xml_line_start": 107,
+        "xml_line_end": 117
+      }
+    ]
+  },
+  {
+    "id": "MD07",
+    "title": "医疗技能与身体能力",
+    "statement": "健康基线速度=.4+.06*Medicine，另乘WorkSpeedGlobal及Sight权重.8上限1.3、Manipulation权重1；速度下限.1。质量输入=.2+.1*Medicine，Sight权重.7及Manipulation权重1均封顶1.4，然后经(0,0)(1,1)(2,1.5)(4,2)后处理。能力权重由Lerp(value,value*capacityFactor,weight)应用。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "medicine",
+        "xml_record": "StatDef_MedicalTendSpeed",
+        "xml_line_start": 4,
+        "xml_line_end": 36
+      },
+      {
+        "group": "medicine",
+        "xml_record": "StatDef_MedicalTendQuality",
+        "xml_line_start": 38,
+        "xml_line_end": 75
+      },
+      {
+        "group": "medicine",
+        "type": "RimWorld.PawnCapacityFactor",
+        "line_start": 1,
+        "line_end": 38,
+        "range_sha256": "4534a4c8f3efcd51636fbfecb1b5ead2b3611e9fde554445b9f1947be84edf18"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 350,
+        "line_end": 395,
+        "range_sha256": "79897e32019bb6fbaad49a64b89256e336d7e997fcf9e0d58dac8e2bf0d019e3"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 798,
+        "line_end": 830,
+        "range_sha256": "06579357c44cb9aca037a36d1a38b624bf7266f156fbdf50eab119142b7b35dd"
+      },
+      {
+        "group": "economy",
+        "type": "Verse.SimpleCurve",
+        "line_start": 139,
+        "line_end": 171,
+        "range_sha256": "a98629e7a4636061558f3fc915b71f31fa7bde3c351ca77b43208ac242c185aa"
+      }
+    ]
+  },
+  {
+    "id": "MD08",
+    "title": "永久护理与重叠窗口",
+    "statement": "普通伤口永久护理left=1；有限感染护理12+3小时=37500source ticks，剩余严格<7500才可重护；新时间max(0,left)+37500，不重置为37500。IsTended需left>0。完全免疫后TendableNow拒绝继续护理，即使ignoreTimer。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.HediffCompProperties_TendDuration",
+        "line_start": 1,
+        "line_end": 71,
+        "range_sha256": "3a9a7175c70c2b6acf4d68291b5d21c5a2c6efe6ac3c0c26dcd35d45e9a2db58"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffComp_TendDuration",
+        "line_start": 44,
+        "line_end": 65,
+        "range_sha256": "879fbaf42d506b21eda169829e18e74642a215a1955eefc9dbd40af0748e48e9"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffComp_TendDuration",
+        "line_start": 157,
+        "line_end": 199,
+        "range_sha256": "fd08418ba83ec216af1fa96b80ad159f446be4b6a47810e6422e868d643bacca"
+      },
+      {
+        "group": "survival",
+        "type": "Verse.Hediff",
+        "line_start": 322,
+        "line_end": 340,
+        "range_sha256": "57b245b0a09512a4d2524d76031398f69512263c1ab77dbef68109ae54af6278"
+      },
+      {
+        "group": "medicine",
+        "xml_record": "HediffDef_InjuryBase",
+        "xml_line_start": 30,
+        "xml_line_end": 35
+      },
+      {
+        "group": "medicine",
+        "xml_record": "HediffDef_WoundInfection",
+        "xml_line_start": 206,
+        "xml_line_end": 269
+      }
+    ]
+  },
+  {
+    "id": "MD09",
+    "title": "伤口感染的第一阶段",
+    "statement": "Infecter排除永久、硬质、人工部位及其后代；Cut/Stab/Gunshot/Crush .15，Bite .30；Bruise与Crack没有Infecter组件，动物初始概率乘.1。初始Rand.Value<=chance选中后等待随机15000–45000source ticks；未选中state=-2。延迟到期只检查一次。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.HediffComp_Infecter",
+        "line_start": 5,
+        "line_end": 86,
+        "range_sha256": "7b39d9533ba5d353289765e97461190b1a05f94ac824aa316da5bedcfeb25bb4"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.HealthTuning",
+        "line_start": 68,
+        "line_end": 68,
+        "range_sha256": "fc65f9c975d2f3889f8c0d4805fdcf29f38e0dcd00d8bbe9394fac25b8d6a46f"
+      },
+      {
+        "group": "medicine",
+        "xml_record": "HediffDef_Cut",
+        "xml_line_start": 175,
+        "xml_line_end": 201
+      },
+      {
+        "group": "medicine",
+        "xml_record": "HediffDef_Stab",
+        "xml_line_start": 297,
+        "xml_line_end": 323
+      },
+      {
+        "group": "medicine",
+        "xml_record": "HediffDef_Gunshot",
+        "xml_line_start": 325,
+        "xml_line_end": 352
+      },
+      {
+        "group": "medicine",
+        "xml_record": "HediffDef_Bite",
+        "xml_line_start": 269,
+        "xml_line_end": 295
+      },
+      {
+        "group": "medicine",
+        "xml_record": "HediffDef_Crush",
+        "xml_line_start": 126,
+        "xml_line_end": 151
+      },
+      {
+        "group": "medicine",
+        "xml_record": "HediffDef_Bruise",
+        "xml_line_start": 382,
+        "xml_line_end": 400
+      },
+      {
+        "group": "medicine",
+        "xml_record": "HediffDef_Crack",
+        "xml_line_start": 153,
+        "xml_line_end": 173
+      }
+    ]
+  },
+  {
+    "id": "MD10",
+    "title": "延迟检查与房间快照",
+    "statement": "每次实际CompTended且PawnSpawned有room时覆盖roomFactor快照，无首次或截止限制。到期DiseaseContractChanceFactor≤.001或再生直接失败；否则最终概率=当前伤口severity曲线*玩家难度*(仍有效护理时缓存房间factor*质量曲线)。contract只作门槛、不连续乘概率；最终roll<概率。state=-3失败/-4已生成，感染附着同部位。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.HediffComp_Infecter",
+        "line_start": 88,
+        "line_end": 134,
+        "range_sha256": "954ea2d239bf1db70038a5f5313191334200ef49582affac28097ece9634c08a"
+      },
+      {
+        "group": "economy",
+        "type": "Verse.SimpleCurve",
+        "line_start": 139,
+        "line_end": 171,
+        "range_sha256": "a98629e7a4636061558f3fc915b71f31fa7bde3c351ca77b43208ac242c185aa"
+      },
+      {
+        "group": "medicine",
+        "type": "Verse.ImmunityHandler",
+        "line_start": 34,
+        "line_end": 76,
+        "range_sha256": "98b997c7078b45a54316e7694d9db6d4b96062755eb751cf4f1157e4d9079868"
+      }
+    ]
+  },
+  {
+    "id": "MD11",
+    "title": "房间、地面洁净度与边界",
+    "statement": "房间洁净度=(所含/邻接建筑、物品、污渍、植物的stack*Cleanliness + 各地格Cleanliness)/CellCount。ProperRoom且RegionCount≤60才算stats，否则roomlessScore1；ProperRoom需不接触地图边缘且有Normal district，不由屋顶直接决定。曲线(-5,1)(0,.5)(1,.2)。Soil=-1，木地板和花岗岩板默认0；程序生成Granite_Rough/RoughHewn未设Cleanliness，默认0；ChunkBase每块Cleanliness=-2。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "environment",
+        "type": "RimWorld.RoomStatWorker_Cleanliness",
+        "line_start": 1,
+        "line_end": 27,
+        "range_sha256": "e799847fe064ac93ce130cd718df3a25115f50515f11be04af8ead56c5228f4f"
+      },
+      {
+        "group": "environment",
+        "type": "Verse.Room",
+        "line_start": 536,
+        "line_end": 553,
+        "range_sha256": "d2a8e41af8e00492e3af65e3e4f2d1f18159880433faebe04dba30f7fc08cab3"
+      },
+      {
+        "group": "environment",
+        "type": "Verse.Room",
+        "line_start": 823,
+        "line_end": 835,
+        "range_sha256": "097c5cbae0481832bb560197354a6bb9fd208ac2f8c6ad2f8deaf9a1ecb71202"
+      },
+      {
+        "group": "environment",
+        "type": "Verse.Room",
+        "line_start": 859,
+        "line_end": 879,
+        "range_sha256": "14005ef186af063b890086018d7064f148f01dbabb94b2d302ad699b90ddef86"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.RoomStatWorker_FromStatByCurve",
+        "line_start": 1,
+        "line_end": 12,
+        "range_sha256": "73a9e2a8b6382c6722295cc710ec172aa65c541b0b28152e6e53c1a91f634f69"
+      },
+      {
+        "group": "medicine",
+        "type": "RimWorld.TerrainDefGenerator_Stone",
+        "line_start": 10,
+        "line_end": 105,
+        "range_sha256": "17ad09acc6ceaf4407bcb3444a81e7d6338b7916ff80974140a2cf2c6e876a96"
+      },
+      {
+        "group": "medicine",
+        "xml_record": "RoomStatDef_Cleanliness",
+        "xml_line_start": 181,
+        "xml_line_end": 208
+      },
+      {
+        "group": "medicine",
+        "xml_record": "RoomStatDef_InfectionChanceFactor",
+        "xml_line_start": 221,
+        "xml_line_end": 236
+      },
+      {
+        "group": "medicine",
+        "xml_record": "StatDef_Cleanliness",
+        "xml_line_start": 243,
+        "xml_line_end": 255
+      },
+      {
+        "group": "medicine",
+        "xml_record": "TerrainDef_NaturalTerrainBase",
+        "xml_line_start": 4,
+        "xml_line_end": 32
+      },
+      {
+        "group": "medicine",
+        "xml_record": "TerrainDef_Soil",
+        "xml_line_start": 36,
+        "xml_line_end": 74
+      },
+      {
+        "group": "medicine",
+        "xml_record": "TerrainDef_FloorBase",
+        "xml_line_start": 4,
+        "xml_line_end": 25
+      },
+      {
+        "group": "medicine",
+        "xml_record": "TerrainDef_WoodPlankFloor",
+        "xml_line_start": 102,
+        "xml_line_end": 123
+      },
+      {
+        "group": "medicine",
+        "xml_record": "TerrainDef_FlagstoneBase",
+        "xml_line_start": 70,
+        "xml_line_end": 89
+      },
+      {
+        "group": "medicine",
+        "xml_record": "TerrainDef_FlagstoneGranite",
+        "xml_line_start": 100,
+        "xml_line_end": 107
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_Granite",
+        "xml_line_start": 236,
+        "xml_line_end": 251
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_ChunkBase",
+        "xml_line_start": 6,
+        "xml_line_end": 27
+      }
+    ]
+  },
+  {
+    "id": "MD12",
+    "title": "感染严重度与状态显示",
+    "statement": "WoundInfection初始.001、致死1；未免疫+.84/日，已免疫-.70/日，有效护理另加-.53*Q/日，Q>1不钳1。阶段.33/.78/.87，后两阶段致命优先级1；.87意识上限.1/疼痛.85/呼吸-.05。Discoverable在PostAdd和103hash tick检查可见性并发信，不是延迟随机生成感染的组件。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "medicine",
+        "xml_record": "HediffDef_InfectionBase",
+        "xml_line_start": 4,
+        "xml_line_end": 17
+      },
+      {
+        "group": "medicine",
+        "xml_record": "HediffDef_WoundInfection",
+        "xml_line_start": 206,
+        "xml_line_end": 269
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffComp_Immunizable",
+        "line_start": 92,
+        "line_end": 119,
+        "range_sha256": "cd02d723e3b28dbe07f5ebb6d467361906ed84b460fa96265da8e272b06384e1"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffCompProperties_Immunizable",
+        "line_start": 1,
+        "line_end": 26,
+        "range_sha256": "de2256b280fbcac68efc42c715a6c4e2e4e7cd56f7ee141f318223d35b7c9064"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffComp_TendDuration",
+        "line_start": 164,
+        "line_end": 171,
+        "range_sha256": "b4f2117279b081b8ff1bdee6a4cbd3968a49dad3fad688d7bed3f1753490d743"
+      },
+      {
+        "group": "medicine",
+        "type": "Verse.HediffComp_Discoverable",
+        "line_start": 5,
+        "line_end": 72,
+        "range_sha256": "d8abca48a23dc92d5c1c4cd0783975119ac299683b00b116d6143f9299a3eb05"
+      },
+      {
+        "group": "medicine",
+        "type": "Verse.HediffCompProperties_Discoverable",
+        "line_start": 1,
+        "line_end": 20,
+        "range_sha256": "4594105c90c6fd1c2c44b5de2925fc400821b8bdf31ce6b57a3276043cef9557"
+      }
+    ]
+  },
+  {
+    "id": "MD13",
+    "title": "共享免疫和每实例固定随机",
+    "statement": "每Pawn+Def仅一条免疫记录。按首个活跃同Def感染计算+.6441*最终免疫速度*固定实例因子(.8–1.2)/日，多部位不会多倍增长。因子以疾病loadID xor世界值播种、Push/Pop不污染外部随机；首个感染消失后可能换因子。无病-.4/日不乘身体Stat，0且不再需要才删记录。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "medicine",
+        "type": "Verse.ImmunityHandler",
+        "line_start": 99,
+        "line_end": 160,
+        "range_sha256": "b05d80a258fea01ceff507614d29b31e218320e47e45497d0869bbc4e31ac856"
+      },
+      {
+        "group": "medicine",
+        "type": "Verse.ImmunityHandler",
+        "line_start": 196,
+        "line_end": 238,
+        "range_sha256": "8ea7328e56af1f1d89d0b56ff2c192a8ebd3b7709b98b64ce58ff98bc1624feb"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.ImmunityRecord",
+        "line_start": 1,
+        "line_end": 50,
+        "range_sha256": "ea200f9b5c8c27ec91c9d82dacc2144ac7bd22b9b947ab715626bfd4308a0d70"
+      },
+      {
+        "group": "medicine",
+        "xml_record": "HediffDef_WoundInfection",
+        "xml_line_start": 206,
+        "xml_line_end": 269
+      }
+    ]
+  },
+  {
+    "id": "MD14",
+    "title": "重复感染资格",
+    "statement": "同Def同Part已存在时contract=0；其他部位可独立感染，但共享免疫使contract=Lerp(1,0,I/.6)，I≥.6时0。Infecter仅检测≤.001，故略低于.6也可被阻止；普通风险路径拒绝同部位重复。强制Add同Def同Part走TryMergeWith，severity相加、age重置，再分派CompPostMerged。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "medicine",
+        "type": "Verse.ImmunityHandler",
+        "line_start": 40,
+        "line_end": 76,
+        "range_sha256": "30bf51ab07f1258ac14900b5fd2cc84fc02c8ee3fb689bb901e873353afeca1e"
+      },
+      {
+        "group": "survival",
+        "type": "Verse.Hediff",
+        "line_start": 654,
+        "line_end": 666,
+        "range_sha256": "86501e5ff8e9c2c6cfe2954a590fa665e37cd780044950a6378d5661ffb59960"
+      },
+      {
+        "group": "medicine",
+        "type": "Verse.HediffWithComps",
+        "line_start": 265,
+        "line_end": 279,
+        "range_sha256": "dd990d5ab256dd2b4059a5b2dc536de422265d445ddd957f25b16d1ad0bcb976"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffSet",
+        "line_start": 311,
+        "line_end": 339,
+        "range_sha256": "09ea730eac5f6c74a7faaaa2f35c9a80dbf6bdbe22f64333b8a4206d5a05c8ee"
+      }
+    ]
+  },
+  {
+    "id": "MD15",
+    "title": "免疫速度与床、食物、睡眠",
+    "statement": "免疫速度含血液过滤权重.5、饥饿/疲劳倍率、当前床ImmunityGainSpeedFactor、Resting1.1、整岁生物年龄/种族寿命曲线。人类食物≤0/.12/.24与睡眠.01/.14/.28为分类边界。Stat默认1；普通Bed完整父链经BasicBedBase、SansComfortBedBase、ArtableBedBase、BedWithQualityBase、BedBase、FurnitureBase到BuildingBase，继承SansComfortBedBase的1.07（Buildings_Furniture.xml L162）；医院床直接1.11。倒地裸地不满足Resting，卧床满足；设施/DLC修饰仍另算。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "medicine",
+        "xml_record": "StatDef_ImmunityGainSpeed",
+        "xml_line_start": 235,
+        "xml_line_end": 282
+      },
+      {
+        "group": "medicine",
+        "xml_record": "StatDef_ImmunityGainSpeedFactor",
+        "xml_line_start": 119,
+        "xml_line_end": 129
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_Bed",
+        "xml_line_start": 201,
+        "xml_line_end": 228
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_BasicBedBase",
+        "xml_line_start": 186,
+        "xml_line_end": 199
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_SansComfortBedBase",
+        "xml_line_start": 159,
+        "xml_line_end": 184
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_ArtableBedBase",
+        "xml_line_start": 146,
+        "xml_line_end": 157
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_BedWithQualityBase",
+        "xml_line_start": 137,
+        "xml_line_end": 144
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_BedBase",
+        "xml_line_start": 109,
+        "xml_line_end": 135
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_FurnitureBase",
+        "xml_line_start": 4,
+        "xml_line_end": 11
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_BuildingBase",
+        "xml_line_start": 4,
+        "xml_line_end": 18
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_HospitalBed",
+        "xml_line_start": 298,
+        "xml_line_end": 358
+      },
+      {
+        "group": "medicine",
+        "type": "RimWorld.StatPart_Food",
+        "line_start": 1,
+        "line_end": 45,
+        "range_sha256": "974aaec9be90dd1bd14663c00fef8dd3fc0a78afa533cb606eae13d57ab691aa"
+      },
+      {
+        "group": "medicine",
+        "type": "RimWorld.StatPart_Rest",
+        "line_start": 1,
+        "line_end": 45,
+        "range_sha256": "075de2498b20e25499966da8c64aab4502d0efdfcd67461c449dd1fabfd011d9"
+      },
+      {
+        "group": "medicine",
+        "type": "RimWorld.StatPart_Resting",
+        "line_start": 1,
+        "line_end": 36,
+        "range_sha256": "b1d571a59bd90c7ba1bcfe8447174554f7586254fde35124a70adcd2b65141fe"
+      },
+      {
+        "group": "medicine",
+        "type": "RimWorld.StatPart_Age",
+        "line_start": 1,
+        "line_end": 61,
+        "range_sha256": "5a856cd884d8a4bcc8af00453f9eca0db80a40ff5176d340bbfe7c68bec12ff0"
+      },
+      {
+        "group": "medicine",
+        "type": "RimWorld.StatPart_BedStat",
+        "line_start": 1,
+        "line_end": 40,
+        "range_sha256": "d4f3bb4604aca0cdc892fed1a43210f35e18adc1364dd6de4fee3de0983cd563"
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.Need_Food",
+        "line_start": 19,
+        "line_end": 47,
+        "range_sha256": "43dd91869ddb2673a594161dce3c68e37223ba48def66b27129f179a952db416"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.Need_Rest",
+        "line_start": 21,
+        "line_end": 53,
+        "range_sha256": "4b08a237fb8424661abdd601111532ef2b1d3a0e731b78cfd5e6863f6b015367"
+      }
+    ]
+  },
+  {
+    "id": "MD16",
+    "title": "伤口愈合、断肢与感染移除",
+    "statement": "普通伤口删除后其pending Infecter不再常规tick，独立WoundInfection不随该伤口消失。MissingPart.PostAdd却调用RestorePart(part,this,false)，递归清掉该部位及后代除保留特例外Hediff，包括pending伤口和既有感染；其它部位保留。疾病Severity≤0清除；Hediff健康循环先更新/删Hediff再更新共享免疫。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "injuries",
+        "type": "Verse.Hediff_MissingPart",
+        "line_start": 191,
+        "line_end": 207,
+        "range_sha256": "6046ba44388a795b6d1e358cc678f18c63e2bb1d48148d6f7dda3844562c4e1a"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 268,
+        "line_end": 279,
+        "range_sha256": "2c8e51ff6546e323a9164b54e9b389e30c9b0b87a26348c48b3cfc24c54d9dc1"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 447,
+        "line_end": 479,
+        "range_sha256": "3152fac0ca40265c74a6d9285e93c7b7f1b67c77e0616f240544295968a715cf"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 1098,
+        "line_end": 1150,
+        "range_sha256": "73ef870b1ed999b1c0f4b6618543e6a4a92b40c0d6ae27d3198d687d29e43396"
+      },
+      {
+        "group": "survival",
+        "type": "Verse.Hediff",
+        "line_start": 177,
+        "line_end": 177,
+        "range_sha256": "362054e75288e8643d1b2baa87f4b1c0d0aa61b0670f35158e233ef3ca183372"
+      },
+      {
+        "group": "survival",
+        "type": "Verse.HediffDef",
+        "line_start": 74,
+        "line_end": 74,
+        "range_sha256": "af2e6db3d0c3a63eb25acf3135be1038d90884f50641c30bd6ce95c80730b06d"
+      },
+      {
+        "group": "medicine",
+        "type": "Verse.HediffWithComps",
+        "line_start": 225,
+        "line_end": 239,
+        "range_sha256": "9cdf5661e78a030881f620b9b2cd8e05c58b21d8520e265afdc3be83f5af8b3a"
+      }
+    ]
+  },
+  {
+    "id": "MD17",
+    "title": "离散更新与项目时钟",
+    "statement": "原版严重度日速率每200source hash ticks贡献约1/300，各组件汇总一次写Severity，免疫按delta/60000。严重度先推进，致死可提前返回，不能同tick先加免疫再切换为消退。项目12000tick/日应保留游戏日比例：感染等待3000–9000、15小时7500、重叠1500、严重度周期40。治疗/播种/收获动作按20/60换算另标适配：600→200、800→267、400→134；每tick连续积分是另一个明确调度适配。两时钟不能同时保留现实秒和每游戏日产能。",
+    "kind": "design-adaptation",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.HediffComp_SeverityModifierBase",
+        "line_start": 1,
+        "line_end": 32,
+        "range_sha256": "5a6168f546c26fe37c68dddd1516b3d3b4cb3c7e8321fd7053a2a39fee207e46"
+      },
+      {
+        "group": "medicine",
+        "type": "Verse.HediffWithComps",
+        "line_start": 225,
+        "line_end": 239,
+        "range_sha256": "9cdf5661e78a030881f620b9b2cd8e05c58b21d8520e265afdc3be83f5af8b3a"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.ImmunityRecord",
+        "line_start": 21,
+        "line_end": 47,
+        "range_sha256": "751cc76fdca74f5225cbb712074afbc49729dfdec0419dd0ea97aef48e8d8125"
+      },
+      {
+        "group": "survival",
+        "type": "Verse.Hediff",
+        "line_start": 239,
+        "line_end": 269,
+        "range_sha256": "2a2e7baadffa18dfad76846479905b04f0dea36bec09a7c6127b6ec599538d51"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 1098,
+        "line_end": 1150,
+        "range_sha256": "73ef870b1ed999b1c0f4b6618543e6a4a92b40c0d6ae27d3198d687d29e43396"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.JobDriver_TendPatient",
+        "line_start": 14,
+        "line_end": 14,
+        "range_sha256": "7f3a5c436f30902e11d6884f3c7012e127755ec191e0afdd0278609f83ca22d8"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.HealthTuning",
+        "line_start": 68,
+        "line_end": 68,
+        "range_sha256": "fc65f9c975d2f3889f8c0d4805fdcf29f38e0dcd00d8bbe9394fac25b8d6a46f"
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_Plant_Healroot",
+        "xml_line_start": 282,
+        "xml_line_end": 296
+      },
+      {
+        "group": "medicine",
+        "xml_record": "ThingDef_HealrootBase",
+        "xml_line_start": 255,
+        "xml_line_end": 280
+      }
+    ]
+  }
+]

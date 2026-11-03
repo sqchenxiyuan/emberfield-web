@@ -17,12 +17,61 @@ export const MIN_CROP_FERTILITY = 0.7;
 // Reference fields are documented separately from the 3D and time-scale design in chapter 12.
 export const CROPS: Record<
   CropKind,
-  { name: string; days: number; yield: number; fertilitySensitivity: number; sowWork: number }
+  {
+    name: string;
+    days: number;
+    yield: number;
+    fertilitySensitivity: number;
+    sowWork: number;
+    harvestWork: number;
+    minSkill: number;
+  }
 > = {
-  rice: { name: '稻米', days: 3, yield: 6, fertilitySensitivity: 1, sowWork: 57 },
-  potato: { name: '土豆', days: 5.8, yield: 11, fertilitySensitivity: 0.4, sowWork: 57 },
-  corn: { name: '玉米', days: 11.3, yield: 22, fertilitySensitivity: 1, sowWork: 57 },
-  cotton: { name: '棉花', days: 8, yield: 10, fertilitySensitivity: 1, sowWork: 57 },
+  rice: {
+    name: '稻米',
+    days: 3,
+    yield: 6,
+    fertilitySensitivity: 1,
+    sowWork: 57,
+    harvestWork: 67,
+    minSkill: 0,
+  },
+  potato: {
+    name: '土豆',
+    days: 5.8,
+    yield: 11,
+    fertilitySensitivity: 0.4,
+    sowWork: 57,
+    harvestWork: 67,
+    minSkill: 0,
+  },
+  corn: {
+    name: '玉米',
+    days: 11.3,
+    yield: 22,
+    fertilitySensitivity: 1,
+    sowWork: 57,
+    harvestWork: 67,
+    minSkill: 0,
+  },
+  cotton: {
+    name: '棉花',
+    days: 8,
+    yield: 10,
+    fertilitySensitivity: 1,
+    sowWork: 57,
+    harvestWork: 67,
+    minSkill: 0,
+  },
+  healroot: {
+    name: '药根',
+    days: 7,
+    yield: 1,
+    fertilitySensitivity: 1,
+    sowWork: 267,
+    harvestWork: 134,
+    minSkill: 8,
+  },
 };
 export const SIMPLE_MEAL = { ingredients: 10, wood: 1, output: 1, work: 100 };
 export const NUTRITION: Partial<Record<Resource, number>> = { meal: 0.9, food: 0.9, grain: 0.05 };

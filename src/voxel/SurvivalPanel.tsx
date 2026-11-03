@@ -1,5 +1,6 @@
 import { healthSummary } from './survival';
-import type { Pawn } from './types';
+import type { Bed, Pawn, VoxelCommand } from './types';
+import { MedicinePanel } from './MedicinePanel';
 import { BODY_REGIONS, INJURY_NAMES, isFreshStump } from './injuries';
 import {
   BODY_PART_LIST,
@@ -29,7 +30,21 @@ function partDepth(part: BodyPartId): number {
   return parent ? partDepth(parent) + 1 : 0;
 }
 
-export function SurvivalPanel({ pawn, temperature }: { pawn: Pawn; temperature: number }) {
+export function SurvivalPanel({
+  pawn,
+  pawns,
+  beds,
+  temperature,
+  tick,
+  command,
+}: {
+  pawn: Pawn;
+  pawns: Pawn[];
+  beds: Bed[];
+  temperature: number;
+  tick: number;
+  command: (command: VoxelCommand) => void;
+}) {
   const summary = healthSummary(pawn);
   const conditions = [
     {
@@ -66,6 +81,7 @@ export function SurvivalPanel({ pawn, temperature }: { pawn: Pawn; temperature: 
           {pawn.dead ? '已死亡' : pawn.downed ? '倒地 · 需要援助' : summary.reason}
         </strong>
       </div>
+      <MedicinePanel pawn={pawn} pawns={pawns} beds={beds} tick={tick} command={command} />
       {(pawn.trauma.wounds.length > 0 ||
         pawn.trauma.bloodLoss > 0 ||
         pawn.trauma.missingParts.length > 0) && (

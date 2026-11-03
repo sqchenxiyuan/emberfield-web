@@ -123,7 +123,7 @@ async function verify(mode) {
     assert.equal((await state()).worker, mode === 'worker');
     const old = await load('tests/fixtures/voxel-v12-start.json'),
       migrated = await save();
-    assert.equal(migrated.version, 18);
+    assert.equal(migrated.version, 19);
     assert.deepEqual(migrated.items, old.items);
     assert(migrated.pawns.every((p) => p.weapon === null));
     check('genuine v12 save migrates through the file chooser without adding weapons');

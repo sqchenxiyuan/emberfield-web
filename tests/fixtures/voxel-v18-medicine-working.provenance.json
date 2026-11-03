@@ -1,0 +1,25 @@
+{
+  "capturedAt": "2026-11-03T08:13:42.481Z",
+  "workspaceCommit": "174cece13cbcf55d7e96a995dfca99a4462867f4",
+  "publishedCommit": "27b3852cd0b0803795358088042816382f385434",
+  "generator": "Exact normal-command v18 ranged campaign output; original bytes loaded by its retained executed v18 source bundle before medicine changes",
+  "source": "test-results/voxel-ranged-final/machining-working.json",
+  "sourceReport": "test-results/voxel-ranged-final/report.json",
+  "sourceReportSha256": "863a8ce247b4134437013edc486fec13516b5f475aa25d695fa6c9b370d7e975",
+  "originalSourceBundle": "test-results/voxel-ranged-final/executed-world.mjs",
+  "originalSourceBundleSha256": "8db7ae29975d9f79c68bef687b7bcc45b39f89d10af7a51be90f4828f038219c",
+  "sha256": "7ec661d81db60b95346fef8a91531720829005be99c779bbdc26f8513abfade7",
+  "version": 18,
+  "tick": 554579,
+  "loadedByOriginalSource": true,
+  "originalSourceRoundtripPreserved": [
+    "physical items",
+    "terrain",
+    "recipe progress and ingredients",
+    "injuries and health",
+    "equipment",
+    "skills",
+    "projectiles and shooting state"
+  ],
+  "scope": "A real powered revolver batch with delivered steel and components, partial work and its live crafter."
+}

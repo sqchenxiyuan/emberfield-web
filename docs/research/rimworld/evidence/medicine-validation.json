@@ -1,0 +1,196 @@
+{
+  "status": "pass",
+  "checked_at_utc": "2026-11-03T08:49:14.6295375Z",
+  "original_game_executed": false,
+  "installed_assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "installed_xml_files": 20,
+  "fresh_xml_matches": true,
+  "local": {
+    "status": "pass",
+    "version": "1.7.4980 rev60",
+    "newTypes": 13,
+    "reusedTypes": 33,
+    "claims": 17,
+    "cases": 61,
+    "codeReferences": 76,
+    "xmlReferences": 50,
+    "xmlRecords": 50,
+    "referencedXmlFiles": 20,
+    "xmlLeaves": 286,
+    "xmlAttributes": 38,
+    "xmlAbsences": 233,
+    "analyticAssertions": 144,
+    "localDerivedFilesVerified": 46,
+    "originalGameExecuted": false,
+    "scope": "Static artifact and independent double-precision arithmetic/state verification; no native random stream, enabled-mod database or project simulation equivalence."
+  },
+  "portable": {
+    "status": "pass",
+    "version": "1.7.4980 rev60",
+    "newTypes": 13,
+    "reusedTypes": 33,
+    "claims": 17,
+    "cases": 61,
+    "codeReferences": 76,
+    "xmlReferences": 50,
+    "xmlRecords": 50,
+    "referencedXmlFiles": 20,
+    "xmlLeaves": 286,
+    "xmlAttributes": 38,
+    "xmlAbsences": 233,
+    "analyticAssertions": 144,
+    "localDerivedFilesVerified": 0,
+    "originalGameExecuted": false,
+    "scope": "Static artifact and independent double-precision arithmetic/state verification; no native random stream, enabled-mod database or project simulation equivalence."
+  },
+  "negative": {
+    "status": "pass",
+    "rejected": 18,
+    "corruptions": [
+      "xml-potency",
+      "xml-parent",
+      "xml-absence",
+      "xml-attribute",
+      "xml-source",
+      "bed-middle-parent-deleted",
+      "bed-inherited-immunity-changed",
+      "bed-raw-line-changed",
+      "manifest-source",
+      "manifest-tool",
+      "manifest-derived",
+      "historical-source",
+      "types-incomplete",
+      "claim-content",
+      "claim-range",
+      "case-expected",
+      "model-data",
+      "local-derived-bytes"
+    ],
+    "formulaMutants": 16,
+    "mutations": [
+      {
+        "name": "no-medicine-aggregates",
+        "model": "batch",
+        "killedBy": [
+          "MV06"
+        ]
+      },
+      {
+        "name": "batch-stops-at-large-candidate",
+        "model": "batch",
+        "killedBy": [
+          "MV05"
+        ]
+      },
+      {
+        "name": "medicine-per-wound",
+        "model": "batch",
+        "killedBy": [
+          "MV05"
+        ]
+      },
+      {
+        "name": "variance-before-first-clamp",
+        "model": "quality",
+        "killedBy": [
+          "MV11",
+          "MV14"
+        ]
+      },
+      {
+        "name": "one-quality-roll-for-entire-batch",
+        "model": "quality",
+        "killedBy": [
+          "MV10",
+          "MV11",
+          "MV13",
+          "MV14"
+        ]
+      },
+      {
+        "name": "overlap-inclusive",
+        "model": "duration",
+        "killedBy": [
+          "MV15"
+        ]
+      },
+      {
+        "name": "retend-resets-duration",
+        "model": "duration",
+        "killedBy": [
+          "MV16"
+        ]
+      },
+      {
+        "name": "initial-infection-strict-roll",
+        "model": "pending",
+        "killedBy": [
+          "MV20",
+          "MV60",
+          "MV61"
+        ]
+      },
+      {
+        "name": "contract-multiplies-final-risk",
+        "model": "risk",
+        "killedBy": [
+          "MV29"
+        ]
+      },
+      {
+        "name": "multiple-infections-multiply-immunity",
+        "model": "immunity",
+        "killedBy": [
+          "MV40"
+        ]
+      },
+      {
+        "name": "quality-over-one-clamped-for-disease",
+        "model": "disease",
+        "killedBy": [
+          "MV38"
+        ]
+      },
+      {
+        "name": "immune-before-severity",
+        "model": "raceStep",
+        "killedBy": [
+          "MV56",
+          "MV57"
+        ]
+      },
+      {
+        "name": "floor-only-ignores-existing-objects",
+        "model": "room",
+        "killedBy": [
+          "MV24"
+        ]
+      },
+      {
+        "name": "action-clock-uses-day-scale",
+        "model": "clock",
+        "killedBy": [
+          "MV54",
+          "MV55"
+        ]
+      },
+      {
+        "name": "ordinary-bed-drops-inherited-factor",
+        "model": "immunityStat",
+        "killedBy": [
+          "MV44",
+          "MV58"
+        ]
+      },
+      {
+        "name": "crush-injury-omits-infecter",
+        "model": "pending",
+        "killedBy": [
+          "MV59"
+        ]
+      }
+    ],
+    "originalGameExecuted": false
+  },
+  "scope": "Static artifact and independent arithmetic/state verification; no original execution, native random-stream replay or project simulation equivalence."
+}

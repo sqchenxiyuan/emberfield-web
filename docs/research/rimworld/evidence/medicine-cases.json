@@ -1,0 +1,1282 @@
+[
+  {
+    "id": "MV01",
+    "model": "policy",
+    "title": "拒绝护理",
+    "claims": [
+      "MD03"
+    ],
+    "inputs": {
+      "policy": "NoCare",
+      "potency": 0.6
+    },
+    "expected": {
+      "care": false,
+      "medicine": false
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV02",
+    "model": "policy",
+    "title": "无药仍护理",
+    "claims": [
+      "MD03"
+    ],
+    "inputs": {
+      "policy": "NoMeds",
+      "potency": 0.6
+    },
+    "expected": {
+      "care": true,
+      "medicine": false
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV03",
+    "model": "policy",
+    "title": "草药药效阈值包含等号",
+    "claims": [
+      "MD03"
+    ],
+    "inputs": {
+      "policy": "HerbalOrWorse",
+      "potency": 0.6
+    },
+    "expected": {
+      "care": true,
+      "medicine": true
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV04",
+    "model": "policy",
+    "title": "工业档拒绝高级药",
+    "claims": [
+      "MD03"
+    ],
+    "inputs": {
+      "policy": "NormalOrWorse",
+      "potency": 1.6
+    },
+    "expected": {
+      "care": true,
+      "medicine": false
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV05",
+    "model": "batch",
+    "title": "超额中项跳过后继续",
+    "claims": [
+      "MD05"
+    ],
+    "inputs": {
+      "hediffs": [
+        {
+          "id": "a",
+          "injury": true,
+          "severity": 12,
+          "bleed": 0.6
+        },
+        {
+          "id": "b",
+          "injury": true,
+          "severity": 10,
+          "bleed": 0.5
+        },
+        {
+          "id": "c",
+          "injury": true,
+          "severity": 8,
+          "bleed": 0.4
+        }
+      ],
+      "medicine": true
+    },
+    "expected": {
+      "ids": [
+        "a",
+        "c"
+      ],
+      "consumed": 1
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV06",
+    "model": "batch",
+    "title": "无药不合批",
+    "claims": [
+      "MD05"
+    ],
+    "inputs": {
+      "hediffs": [
+        {
+          "id": "a",
+          "injury": true,
+          "severity": 12,
+          "bleed": 0.6
+        },
+        {
+          "id": "b",
+          "injury": true,
+          "severity": 10,
+          "bleed": 0.5
+        },
+        {
+          "id": "c",
+          "injury": true,
+          "severity": 8,
+          "bleed": 0.4
+        }
+      ],
+      "medicine": false
+    },
+    "expected": {
+      "ids": [
+        "a"
+      ],
+      "consumed": 0
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV07",
+    "model": "batch",
+    "title": "首项超过20仍处理",
+    "claims": [
+      "MD05"
+    ],
+    "inputs": {
+      "hediffs": [
+        {
+          "id": "large",
+          "injury": true,
+          "severity": 22,
+          "bleed": 2
+        },
+        {
+          "id": "a",
+          "injury": true,
+          "severity": 12,
+          "bleed": 0.6
+        },
+        {
+          "id": "b",
+          "injury": true,
+          "severity": 10,
+          "bleed": 0.5
+        },
+        {
+          "id": "c",
+          "injury": true,
+          "severity": 8,
+          "bleed": 0.4
+        }
+      ],
+      "medicine": true
+    },
+    "expected": {
+      "ids": [
+        "large"
+      ],
+      "consumed": 1
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV08",
+    "model": "batch",
+    "title": "感染优先级与独立批次",
+    "claims": [
+      "MD05",
+      "MD12"
+    ],
+    "inputs": {
+      "hediffs": [
+        {
+          "id": "infection",
+          "severity": 0.8,
+          "lifeThreatening": true,
+          "tendedSeverityNegative": true
+        },
+        {
+          "id": "a",
+          "injury": true,
+          "severity": 12,
+          "bleed": 0.6
+        },
+        {
+          "id": "b",
+          "injury": true,
+          "severity": 10,
+          "bleed": 0.5
+        },
+        {
+          "id": "c",
+          "injury": true,
+          "severity": 8,
+          "bleed": 0.4
+        }
+      ],
+      "medicine": true
+    },
+    "expected": {
+      "ids": [
+        "infection"
+      ],
+      "consumed": 1
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV09",
+    "model": "batch",
+    "title": "无待治状态不消耗",
+    "claims": [
+      "MD04",
+      "MD08"
+    ],
+    "inputs": {
+      "hediffs": [
+        {
+          "id": "immune",
+          "severity": 0.6,
+          "tendable": false
+        }
+      ],
+      "medicine": true
+    },
+    "expected": {
+      "ids": [],
+      "consumed": 0
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV10",
+    "model": "quality",
+    "title": "草药同批各伤情独立变化",
+    "claims": [
+      "MD06"
+    ],
+    "inputs": {
+      "doctor": 1,
+      "medicine": "Herbal",
+      "offsets": [
+        -0.25,
+        0,
+        0.25
+      ]
+    },
+    "expected": {
+      "base": 0.6,
+      "actual": [
+        0.35,
+        0.6,
+        0.7
+      ],
+      "xpFactor": 0.5
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV11",
+    "model": "quality",
+    "title": "过强医生先截断再扰动",
+    "claims": [
+      "MD06"
+    ],
+    "inputs": {
+      "doctor": 3,
+      "medicine": "Herbal",
+      "offsets": [
+        -0.25,
+        0.25
+      ]
+    },
+    "expected": {
+      "base": 0.7,
+      "actual": [
+        0.45,
+        0.7
+      ],
+      "xpFactor": 0.5
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV12",
+    "model": "quality",
+    "title": "床偏移在自疗折扣前",
+    "claims": [
+      "MD06"
+    ],
+    "inputs": {
+      "doctor": 1,
+      "medicine": "Industrial",
+      "bed": 0.1,
+      "self": true,
+      "offsets": [
+        0
+      ]
+    },
+    "expected": {
+      "base": 0.77,
+      "actual": [
+        0.77
+      ],
+      "xpFactor": 0.7
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV13",
+    "model": "quality",
+    "title": "无药默认医生质量",
+    "claims": [
+      "MD06"
+    ],
+    "inputs": {
+      "offsets": [
+        -0.25,
+        0.25
+      ]
+    },
+    "expected": {
+      "base": 0.225,
+      "actual": [
+        0,
+        0.475
+      ],
+      "xpFactor": 0.5
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV14",
+    "model": "quality",
+    "title": "高级药质量可大于1",
+    "claims": [
+      "MD06"
+    ],
+    "inputs": {
+      "doctor": 1,
+      "medicine": "Ultratech",
+      "offsets": [
+        -0.25,
+        0.25
+      ]
+    },
+    "expected": {
+      "base": 1.3,
+      "actual": [
+        1.05,
+        1.3
+      ],
+      "xpFactor": 1
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV15",
+    "model": "duration",
+    "title": "重叠等号不能重护",
+    "claims": [
+      "MD08"
+    ],
+    "inputs": {
+      "left": 7500,
+      "attempt": true
+    },
+    "expected": {
+      "allowed": false,
+      "tended": true,
+      "after": 7500
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV16",
+    "model": "duration",
+    "title": "重护累加残余",
+    "claims": [
+      "MD08"
+    ],
+    "inputs": {
+      "left": 7499,
+      "attempt": true
+    },
+    "expected": {
+      "allowed": true,
+      "tended": true,
+      "after": 44999
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV17",
+    "model": "duration",
+    "title": "逾期不抵扣新护理时长",
+    "claims": [
+      "MD08"
+    ],
+    "inputs": {
+      "left": -20,
+      "attempt": true
+    },
+    "expected": {
+      "allowed": true,
+      "tended": false,
+      "after": 37500
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV18",
+    "model": "duration",
+    "title": "永久伤口已经护理",
+    "claims": [
+      "MD08"
+    ],
+    "inputs": {
+      "left": 1,
+      "permanent": true,
+      "attempt": true
+    },
+    "expected": {
+      "allowed": false,
+      "tended": true,
+      "after": 1
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV19",
+    "model": "duration",
+    "title": "免疫后不再护理",
+    "claims": [
+      "MD08"
+    ],
+    "inputs": {
+      "left": 0,
+      "immune": true,
+      "attempt": true
+    },
+    "expected": {
+      "allowed": false,
+      "tended": false,
+      "after": 0
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV20",
+    "model": "pending",
+    "title": "初始概率包含等号",
+    "claims": [
+      "MD09"
+    ],
+    "inputs": {
+      "base": 0.15,
+      "roll": 0.15,
+      "delay": 45000
+    },
+    "expected": {
+      "state": 45000
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV21",
+    "model": "pending",
+    "title": "动物初始风险十分之一",
+    "claims": [
+      "MD09"
+    ],
+    "inputs": {
+      "base": 0.15,
+      "animal": true,
+      "roll": 0.02
+    },
+    "expected": {
+      "state": -2
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV22",
+    "model": "pending",
+    "title": "硬质等排除先于随机",
+    "claims": [
+      "MD09"
+    ],
+    "inputs": {
+      "eligible": false,
+      "roll": 0
+    },
+    "expected": {
+      "state": -2
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV23",
+    "model": "room",
+    "title": "无污渍土屋",
+    "claims": [
+      "MD11"
+    ],
+    "inputs": {
+      "floors": [
+        -1,
+        -1,
+        -1,
+        -1
+      ]
+    },
+    "expected": {
+      "cleanliness": -1,
+      "factor": 0.6
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV24",
+    "model": "room",
+    "title": "同地面污物改变平均",
+    "claims": [
+      "MD11"
+    ],
+    "inputs": {
+      "floors": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "objects": [
+        {
+          "value": -2,
+          "stack": 3
+        }
+      ]
+    },
+    "expected": {
+      "cleanliness": -1.5,
+      "factor": 0.65
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV25",
+    "model": "room",
+    "title": "61regions回退roomless",
+    "claims": [
+      "MD11"
+    ],
+    "inputs": {
+      "regions": 61,
+      "floors": [
+        0
+      ]
+    },
+    "expected": {
+      "cleanliness": null,
+      "factor": 1
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV26",
+    "model": "room",
+    "title": "地图边缘非proper",
+    "claims": [
+      "MD11"
+    ],
+    "inputs": {
+      "proper": false,
+      "floors": [
+        0
+      ]
+    },
+    "expected": {
+      "cleanliness": null,
+      "factor": 1
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV27",
+    "model": "risk",
+    "title": "已护理严重伤清洁房间",
+    "claims": [
+      "MD10"
+    ],
+    "inputs": {
+      "severity": 12,
+      "tended": true,
+      "quality": 0.7,
+      "room": 0.5,
+      "roll": 0.24
+    },
+    "expected": {
+      "chance": 0.245,
+      "state": -4
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV28",
+    "model": "risk",
+    "title": "最后随机严格小于",
+    "claims": [
+      "MD10"
+    ],
+    "inputs": {
+      "severity": 12,
+      "roll": 1
+    },
+    "expected": {
+      "chance": 1,
+      "state": -3
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV29",
+    "model": "risk",
+    "title": "contract不作连续乘数",
+    "claims": [
+      "MD10"
+    ],
+    "inputs": {
+      "severity": 12,
+      "contract": 0.01,
+      "roll": 0.9
+    },
+    "expected": {
+      "chance": 1,
+      "state": -4
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV30",
+    "model": "risk",
+    "title": "contract阈值包含等号",
+    "claims": [
+      "MD10"
+    ],
+    "inputs": {
+      "severity": 12,
+      "contract": 0.001,
+      "roll": 0
+    },
+    "expected": {
+      "chance": 0,
+      "state": -3
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV31",
+    "model": "risk",
+    "title": "伤口已缩小且质量曲线端点钳制",
+    "claims": [
+      "MD10"
+    ],
+    "inputs": {
+      "severity": 0.5,
+      "tended": true,
+      "quality": 1.3,
+      "room": 0.5,
+      "roll": 0.03
+    },
+    "expected": {
+      "chance": 0.02,
+      "state": -3
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV32",
+    "model": "risk",
+    "title": "NPC不乘玩家难度",
+    "claims": [
+      "MD10"
+    ],
+    "inputs": {
+      "severity": 12,
+      "player": false,
+      "difficulty": 0.1,
+      "roll": 0.5
+    },
+    "expected": {
+      "chance": 1,
+      "state": -4
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV33",
+    "model": "contract",
+    "title": "免疫60%禁止再感染",
+    "claims": [
+      "MD14"
+    ],
+    "inputs": {
+      "immunity": 0.6
+    },
+    "expected": {
+      "factor": 0
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV34",
+    "model": "contract",
+    "title": "其他部位在低免疫可感染",
+    "claims": [
+      "MD14"
+    ],
+    "inputs": {
+      "immunity": 0.3,
+      "samePart": false
+    },
+    "expected": {
+      "factor": 0.5
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV35",
+    "model": "contract",
+    "title": "同部位已有感染被排除",
+    "claims": [
+      "MD14"
+    ],
+    "inputs": {
+      "immunity": 0,
+      "samePart": true
+    },
+    "expected": {
+      "factor": 0
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV36",
+    "model": "disease",
+    "title": "草药最佳护理仍恶化但更慢",
+    "claims": [
+      "MD12"
+    ],
+    "inputs": {
+      "severity": 0.001,
+      "immunity": 0,
+      "quality": 0.7,
+      "tended": true,
+      "days": 1
+    },
+    "expected": {
+      "rate": 0.469,
+      "after": 0.47,
+      "remove": false,
+      "lethal": false,
+      "tendable": true,
+      "priority": 0.025
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV37",
+    "model": "disease",
+    "title": "完全免疫仍未立即清零",
+    "claims": [
+      "MD08",
+      "MD12"
+    ],
+    "inputs": {
+      "severity": 0.8,
+      "immunity": 1,
+      "quality": 0.7,
+      "tended": true,
+      "days": 0.5
+    },
+    "expected": {
+      "rate": -1.071,
+      "after": 0.2645,
+      "remove": false,
+      "lethal": false,
+      "tendable": false,
+      "priority": 1
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV38",
+    "model": "disease",
+    "title": "高级质量不钳1",
+    "claims": [
+      "MD12"
+    ],
+    "inputs": {
+      "severity": 0.1,
+      "immunity": 0,
+      "quality": 1.3,
+      "tended": true,
+      "days": 1
+    },
+    "expected": {
+      "rate": 0.151,
+      "after": 0.251,
+      "remove": false,
+      "lethal": false,
+      "tendable": true,
+      "priority": 0.025
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV39",
+    "model": "disease",
+    "title": "达到零才移除",
+    "claims": [
+      "MD16"
+    ],
+    "inputs": {
+      "severity": 0.7,
+      "immunity": 1,
+      "days": 1
+    },
+    "expected": {
+      "rate": -0.7,
+      "after": 0,
+      "remove": true,
+      "lethal": false,
+      "tendable": false,
+      "priority": 0.025
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV40",
+    "model": "immunity",
+    "title": "两个部位共享一份增长",
+    "claims": [
+      "MD13"
+    ],
+    "inputs": {
+      "instances": [
+        {
+          "factor": 0.8
+        },
+        {
+          "factor": 1.2
+        }
+      ],
+      "speed": 1,
+      "delta": 60000
+    },
+    "expected": {
+      "rate": 0.51528,
+      "value": 0.51528,
+      "recordCount": 1
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV41",
+    "model": "immunity",
+    "title": "首个感染消失改变固定因子",
+    "claims": [
+      "MD13"
+    ],
+    "inputs": {
+      "value": 0.1,
+      "instances": [
+        {
+          "factor": 1.2
+        }
+      ],
+      "speed": 1,
+      "delta": 60000
+    },
+    "expected": {
+      "rate": 0.77292,
+      "value": 0.87292,
+      "recordCount": 1
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV42",
+    "model": "immunity",
+    "title": "康复衰减不乘Stat",
+    "claims": [
+      "MD13"
+    ],
+    "inputs": {
+      "value": 0.8,
+      "instances": [],
+      "speed": 2,
+      "delta": 60000
+    },
+    "expected": {
+      "rate": -0.4,
+      "value": 0.4,
+      "recordCount": 1
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV43",
+    "model": "immunity",
+    "title": "无病免疫归零删除记录",
+    "claims": [
+      "MD13"
+    ],
+    "inputs": {
+      "value": 0.2,
+      "instances": [],
+      "delta": 60000
+    },
+    "expected": {
+      "rate": -0.4,
+      "value": 0,
+      "recordCount": 0
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV44",
+    "model": "immunityStat",
+    "title": "普通床继承1.07再乘静养",
+    "claims": [
+      "MD15"
+    ],
+    "inputs": {
+      "bed": 1.07,
+      "resting": true
+    },
+    "expected": {
+      "value": 1.177
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV45",
+    "model": "immunityStat",
+    "title": "医院床静养",
+    "claims": [
+      "MD15"
+    ],
+    "inputs": {
+      "bed": 1.11,
+      "resting": true
+    },
+    "expected": {
+      "value": 1.221
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV46",
+    "model": "immunityStat",
+    "title": "饥饿疲惫衰老过滤组合",
+    "claims": [
+      "MD15"
+    ],
+    "inputs": {
+      "blood": 0.5,
+      "food": 0,
+      "rest": 0.005,
+      "ageRatio": 1
+    },
+    "expected": {
+      "value": 0.378
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV47",
+    "model": "immunityStat",
+    "title": "类别边界上沿",
+    "claims": [
+      "MD15"
+    ],
+    "inputs": {
+      "food": 0.12,
+      "rest": 0.14
+    },
+    "expected": {
+      "value": 0.96
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV48",
+    "model": "medicalStats",
+    "title": "医疗10级健康基线",
+    "claims": [
+      "MD07"
+    ],
+    "inputs": {
+      "skill": 10
+    },
+    "expected": {
+      "quality": 1.1,
+      "speed": 1,
+      "workSourceTicks": 600
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV49",
+    "model": "medicalStats",
+    "title": "低技能仍能无药护理",
+    "claims": [
+      "MD07"
+    ],
+    "inputs": {
+      "skill": 0
+    },
+    "expected": {
+      "quality": 0.2,
+      "speed": 0.4,
+      "workSourceTicks": 1500
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV50",
+    "model": "medicalStats",
+    "title": "能力权重非直接乘能力",
+    "claims": [
+      "MD07"
+    ],
+    "inputs": {
+      "skill": 8,
+      "sight": 0.5,
+      "manipulation": 1
+    },
+    "expected": {
+      "quality": 0.65,
+      "speed": 0.528,
+      "workSourceTicks": 1136
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV51",
+    "model": "cleanup",
+    "title": "断臂清理伤口感染及后代",
+    "claims": [
+      "MD16"
+    ],
+    "inputs": {
+      "removedPart": "arm",
+      "parents": {
+        "hand": "arm",
+        "arm": "torso",
+        "leg": "torso"
+      },
+      "hediffs": [
+        {
+          "id": "pending",
+          "part": "arm"
+        },
+        {
+          "id": "infection",
+          "part": "hand"
+        },
+        {
+          "id": "other",
+          "part": "leg"
+        },
+        {
+          "id": "keep",
+          "part": "arm",
+          "keep": true
+        }
+      ]
+    },
+    "expected": {
+      "kept": [
+        "other",
+        "keep"
+      ]
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV52",
+    "model": "clock",
+    "title": "感染最长延迟按日换算",
+    "claims": [
+      "MD17"
+    ],
+    "inputs": {
+      "sourceTicks": 45000,
+      "scale": "day"
+    },
+    "expected": {
+      "projectTicks": 9000
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV53",
+    "model": "clock",
+    "title": "感染护理按日换算",
+    "claims": [
+      "MD17"
+    ],
+    "inputs": {
+      "sourceTicks": 37500,
+      "scale": "day"
+    },
+    "expected": {
+      "projectTicks": 7500
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV54",
+    "model": "clock",
+    "title": "护理动作按实际秒换算",
+    "claims": [
+      "MD17"
+    ],
+    "inputs": {
+      "sourceTicks": 600,
+      "scale": "action"
+    },
+    "expected": {
+      "projectTicks": 200
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV55",
+    "model": "clock",
+    "title": "药草播种向上取整",
+    "claims": [
+      "MD17"
+    ],
+    "inputs": {
+      "sourceTicks": 800,
+      "scale": "action"
+    },
+    "expected": {
+      "projectTicks": 267
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV56",
+    "model": "raceStep",
+    "title": "同更新先严重度致死不会先获免疫",
+    "claims": [
+      "MD17"
+    ],
+    "inputs": {
+      "severity": 0.999,
+      "immunity": 0.999
+    },
+    "expected": {
+      "severity": 1,
+      "immunity": 0.999,
+      "dead": true
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV57",
+    "model": "raceStep",
+    "title": "免疫达标此更新仍先恶化",
+    "claims": [
+      "MD17"
+    ],
+    "inputs": {
+      "severity": 0.8,
+      "immunity": 0.999
+    },
+    "expected": {
+      "severity": 0.8028,
+      "immunity": 1,
+      "dead": false
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV58",
+    "model": "immunityStat",
+    "title": "普通床饥饿患者组合倍率",
+    "claims": [
+      "MD15"
+    ],
+    "inputs": {
+      "bed": 1.07,
+      "resting": true,
+      "food": 0
+    },
+    "expected": {
+      "value": 0.8239
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV59",
+    "model": "pending",
+    "title": "挤压伤也具有感染组件",
+    "claims": [
+      "MD09"
+    ],
+    "inputs": {
+      "kind": "Crush",
+      "roll": 0.1
+    },
+    "expected": {
+      "state": 15000
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV60",
+    "model": "pending",
+    "title": "瘀伤无感染组件不参与零概率等号",
+    "claims": [
+      "MD09"
+    ],
+    "inputs": {
+      "kind": "Bruise",
+      "roll": 0
+    },
+    "expected": {
+      "state": -2
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  },
+  {
+    "id": "MV61",
+    "model": "pending",
+    "title": "硬质裂伤无感染组件",
+    "claims": [
+      "MD09"
+    ],
+    "inputs": {
+      "kind": "Crack",
+      "roll": 0
+    },
+    "expected": {
+      "state": -2
+    },
+    "limitation": "Independent double-precision arithmetic/state model; not original execution, RNG stream replay, effective mods or project integration equivalence."
+  }
+]

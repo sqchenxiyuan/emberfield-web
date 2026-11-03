@@ -1,4 +1,5 @@
 import type { Trauma } from './injuries';
+import type { MedicalState, MedicalPolicy } from './medicine';
 import type { WeaponPiece, WeaponKind, WeaponBenchKind } from './weapons';
 import type { SkillSet } from './skills';
 import type { ResearchKey, ResearchState } from './research';
@@ -65,6 +66,7 @@ export type Resource =
   | 'meal'
   | 'chunk'
   | 'cloth'
+  | 'herb'
   | 'apparel'
   | 'weapon';
 export type Work =
@@ -79,7 +81,7 @@ export type Work =
   | 'research';
 export type ConstructionMaterial = 'wood' | 'stone';
 export type FoodCropKind = 'rice' | 'potato' | 'corn';
-export type CropKind = FoodCropKind | 'cotton';
+export type CropKind = FoodCropKind | 'cotton' | 'healroot';
 export type ArmorKind = 'simpleHelmet' | 'plateArmor';
 export type ApparelKind = 'tuque' | 'parka' | 'duster' | 'shirt' | 'pants' | ArmorKind;
 export type ApparelQuality = 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -477,6 +479,8 @@ export interface Job extends Pos {
   axis?: Axis;
   material?: ConstructionMaterial;
   treeSpecies?: TreeSpecies;
+  /** Crop identity fixes per-crop work even after a zone is changed or removed. */
+  cropKind?: CropKind;
   apparelKind?: ApparelKind;
   weaponKind?: WeaponKind;
   weaponBenchKind?: WeaponBenchKind;
@@ -497,6 +501,7 @@ export type CarePhase =
   | 'feedFetch'
   | 'feedApproach'
   | 'feed'
+  | 'tendFetch'
   | 'tendApproach'
   | 'tend';
 export interface CombatState {
@@ -513,6 +518,7 @@ export interface Pawn extends Pos {
   skills: SkillSet;
   health: SurvivalHealth;
   trauma: Trauma;
+  medical: MedicalState;
   faction: 'colony' | 'raider';
   drafted: boolean;
   retreating: boolean;
@@ -537,6 +543,7 @@ export interface Pawn extends Pos {
   carePhase: CarePhase | null;
   careProgress: number;
   careFoodId: number | null;
+  careMedicineId: number | null;
   careAmount: number;
   priorities: Record<Work, number>;
   jobId: number | null;
@@ -575,6 +582,7 @@ export interface Counts {
   meal: number;
   chunk: number;
   cloth: number;
+  herb: number;
   apparel: number;
   weapon: number;
 }
@@ -693,6 +701,8 @@ export type VoxelCommand =
   | { type: 'bedOwner'; bedId: number; pawnId: number | null }
   | { type: 'bedMedical'; bedId: number; medical: boolean }
   | { type: 'care'; pawnId: number; patientId: number; action: 'rescue' | 'feed' | 'tend' }
+  | { type: 'medicalPolicy'; pawnId: number; policy: MedicalPolicy }
+  | { type: 'medicalRest'; pawnId: number; enabled: boolean }
   | { type: 'door'; doorId: number; mode: Door['mode'] }
   | { type: 'schedule'; pawnId: number; hour: number; assignment: Assignment }
   | { type: 'rest'; pawnId: number }
@@ -704,7 +714,7 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 18;
+  version: 19;
   combat: CombatState;
   projectiles: Projectile[];
   combatEvents: CombatEvent[];
@@ -757,6 +767,7 @@ export const RESOURCE_NAMES: Record<Resource, string> = {
   stone: '花岗岩砖',
   chunk: '花岗岩块',
   cloth: '布料',
+  herb: '草药',
   apparel: '衣物',
   weapon: '武器',
   steel: '钢材',
@@ -838,6 +849,7 @@ export const emptyCounts = (): Counts => ({
   meal: 0,
   chunk: 0,
   cloth: 0,
+  herb: 0,
   apparel: 0,
   weapon: 0,
 });

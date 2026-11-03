@@ -71,7 +71,7 @@ import {
 } from './types';
 import { BATTERY_CAPACITY } from './power';
 import { isPartMissing, partEfficiency } from './anatomy';
-import { needsTending } from './injuries';
+import { needsMedicalTending } from './medicine';
 import { WEAPON_KINDS, type WeaponKind } from './weapons';
 import { SMITHY_FUEL_CAPACITY } from './weaponProduction';
 import { isRangedKind } from './ranged';
@@ -126,6 +126,7 @@ type PawnVisual = {
   pencil: Group;
   weapons: Record<WeaponKind, Group>;
   cargoWeapons: Record<WeaponKind, Group>;
+  cargoHerb: Group;
   cargo: Mesh;
   torso: Mesh;
   label: Sprite;
@@ -166,14 +167,23 @@ const RESOURCE_COLORS: Record<Resource, number> = {
   food: 0x99b869,
   grain: 0xd6bd71,
   meal: 0xd88d5f,
+  herb: 0x6ca889,
   cloth: 0xe7dfc8,
   apparel: 0x86aaa2,
   weapon: 0xb9cbd0,
 };
 // Local Three coordinates: x across the grip, y thickness, z along the blade.
 // The same four parts identify each actual item on the ground, in cargo and in hand.
-type WeaponPart = [number, number, number, number, number, number, number];
-const WEAPON_MODEL_PARTS: Record<WeaponKind, WeaponPart[]> = {
+type ModelPart = [number, number, number, number, number, number, number];
+// A tied leaf bundle identifies the same physical herb batch on the ground and in a carrier's hands.
+const HERB_MODEL_PARTS: ModelPart[] = [
+  [-0.13, 0, 0, 0.17, 0.16, 0.42, 0x477d63],
+  [0.13, 0.02, 0.02, 0.17, 0.16, 0.44, 0x6ca889],
+  [0, 0.07, 0.08, 0.18, 0.13, 0.46, 0x87bb91],
+  [0, 0.02, -0.06, 0.44, 0.22, 0.08, 0xe2d1a5],
+  [0, -0.01, -0.25, 0.17, 0.1, 0.17, 0x978556],
+];
+const WEAPON_MODEL_PARTS: Record<WeaponKind, ModelPart[]> = {
   shortBow: [
     [-0.29, 0, 0.25, 0.07, 0.06, 0.5, 0xb88a54],
     [0.29, 0, 0.25, 0.07, 0.06, 0.5, 0xb88a54],
@@ -1128,7 +1138,10 @@ export class VoxelRenderer {
     const loose = this.data.items.filter((item) => item.amount > 0 && item.z <= this.level);
     const items = loose.filter(
       (item) =>
-        item.resource !== 'chunk' && item.resource !== 'apparel' && item.resource !== 'weapon',
+        item.resource !== 'chunk' &&
+        item.resource !== 'apparel' &&
+        item.resource !== 'weapon' &&
+        item.resource !== 'herb',
     );
     const garments = loose.filter((item) => item.resource === 'apparel' && item.apparel);
     const chunks = loose.filter((item) => item.resource === 'chunk');
@@ -1179,6 +1192,33 @@ export class VoxelRenderer {
       }
     });
     this.finish(piles);
+    const herbs = loose.filter((item) => item.resource === 'herb');
+    const herbBundles = this.batch(
+      'loose-herbs',
+      herbs.length * HERB_MODEL_PARTS.length,
+      this.box,
+      this.batchMaterial('loose-herbs'),
+    );
+    this.inspectBatches.set(herbBundles, {
+      cells: herbs,
+      instancesPerCell: HERB_MODEL_PARTS.length,
+    });
+    herbs.forEach((item, i) =>
+      HERB_MODEL_PARTS.forEach(([x, y, z, sx, sy, sz, color], n) =>
+        this.instance(
+          herbBundles,
+          i * HERB_MODEL_PARTS.length + n,
+          item.x + 0.5 + x,
+          item.z + 0.16 + y,
+          item.y + 0.5 + z,
+          sx,
+          sy,
+          sz,
+          color,
+        ),
+      ),
+    );
+    this.finish(herbBundles);
     const clothes = this.batch(
       'loose-apparel',
       garments.length * 5,
@@ -1882,6 +1922,36 @@ export class VoxelRenderer {
             blossom,
             0xece2bd,
           );
+      } else if (crop.kind === 'healroot') {
+        for (let leaf = 0; leaf < 6; leaf++) {
+          const angle = (leaf * Math.PI) / 3;
+          add(
+            crop,
+            0.5 + Math.cos(angle) * 0.17 * size,
+            0.12 + (leaf % 2) * 0.07 * size,
+            0.5 + Math.sin(angle) * 0.17 * size,
+            0.39 * size,
+            0.09 * size,
+            0.17 * size,
+            leaf % 2 ? 0x6ca889 : 0x477d63,
+            angle,
+          );
+        }
+        const stalk = 0.56 * size;
+        add(crop, 0.5, 0.1 + stalk / 2, 0.5, 0.045, stalk, 0.045, 0x6b9161);
+        const bloom = Math.max(0.001, (growth - 0.45) / 0.55) * 0.15;
+        for (let flower = 0; flower < 3; flower++) {
+          add(
+            crop,
+            0.5 + (flower - 1) * 0.09 * size,
+            0.09 + stalk + (flower === 1 ? 0.1 : 0),
+            0.5 + (flower % 2) * 0.04,
+            bloom,
+            bloom * 0.9,
+            bloom,
+            flower === 1 ? 0xe3b7d3 : 0xb787c2,
+          );
+        }
       } else if (crop.kind === 'cotton') {
         add(crop, 0.5, 0.1 + 0.3 * size, 0.5, 0.055, 0.6 * size, 0.055, 0x718248);
         for (let n = 0; n < 4; n++) {
@@ -2906,6 +2976,19 @@ export class VoxelRenderer {
       body.add(carried);
       cargoWeapons[kind] = carried;
     }
+    const cargoHerb = new Group();
+    cargoHerb.position.set(0, 0.72, 0.41);
+    cargoHerb.scale.setScalar(0.9);
+    for (const [x, y, z, sx, sy, sz, color] of HERB_MODEL_PARTS) {
+      let material = weaponMaterials.get(color);
+      if (!material) {
+        material = this.keepMaterial(new MeshLambertMaterial({ color }));
+        weaponMaterials.set(color, material);
+      }
+      part(cargoHerb, material, x, y, z, sx, sy, sz);
+    }
+    cargoHerb.visible = false;
+    body.add(cargoHerb);
     const cargoMaterial = this.keepMaterial(new MeshLambertMaterial({ color: 0xc69b60 }));
     const cargo = part(body, cargoMaterial, 0, 0.72, 0.39, 0.43, 0.31, 0.33);
     cargo.visible = false;
@@ -2974,6 +3057,7 @@ export class VoxelRenderer {
       pencil,
       weapons,
       cargoWeapons,
+      cargoHerb,
       cargo,
       label,
       sleepSymbol,
@@ -3250,6 +3334,7 @@ export class VoxelRenderer {
       }
       visual.hammer.visible = false;
       visual.pencil.visible = false;
+      visual.cargoHerb.visible = false;
       const visible = pawn.z <= this.level;
       visual.root.visible = visible;
       const fraction =
@@ -3265,7 +3350,8 @@ export class VoxelRenderer {
       visual.body.position.set(0, bed ? 0.61 : lying ? 0.2 : 0, lying ? 1.1 : 0);
       visual.shadow.visible = !bed && pawn.carriedBy === null;
       visual.sleepSymbol.visible = sleeping;
-      visual.healthMarker.visible = !pawn.dead && (pawn.downed || needsTending(pawn.trauma));
+      visual.healthMarker.visible =
+        !pawn.dead && (pawn.downed || needsMedicalTending(pawn, this.data.tick));
       visual.healthMarker.position.set(-0.38, bed ? 1.2 : 0.9, 0.5);
       visual.label.material.color.setHex(pawn.dead ? 0xaaaaaa : 0xffffff);
       visual.label.position.set(0, lying ? 1.2 : 1.91, lying ? 0.5 : 0);
@@ -3285,8 +3371,10 @@ export class VoxelRenderer {
         visual.cargo.visible = false;
         continue;
       }
-      visual.cargo.visible = !!pawn.cargo && pawn.cargo.resource !== 'weapon';
+      visual.cargo.visible =
+        !!pawn.cargo && pawn.cargo.resource !== 'weapon' && pawn.cargo.resource !== 'herb';
       if (pawn.cargo?.weapon) visual.cargoWeapons[pawn.cargo.weapon.kind].visible = true;
+      visual.cargoHerb.visible = pawn.cargo?.resource === 'herb';
       const moving = pawn.path.length > 0 || fraction < 1;
       const working =
         pawn.phase === 'work' && pawn.path.length === 0 && !pawn.cargo && fraction >= 1;

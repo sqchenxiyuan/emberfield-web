@@ -1,3 +1,4 @@
+import { withMedicineLedgers } from './voxel-migration-expectations.mjs';
 import { chromium } from '@playwright/test';
 import assert from 'node:assert/strict';
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
@@ -145,9 +146,9 @@ async function verify(mode) {
     for (const name of ['apparel', 'trauma']) {
       const old = await load(`tests/fixtures/voxel-v16-${name}.json`),
         migrated = await save();
-      assert.equal(migrated.version, 18);
+      assert.equal(migrated.version, 19);
       for (const field of ['blocks', 'items', 'stats', 'tick'])
-        assert.deepEqual(migrated[field], old[field]);
+        assert.deepEqual(migrated[field], field === 'stats' ? withMedicineLedgers(old.stats) : old[field]);
       for (const pawn of migrated.pawns) {
         const before = old.pawns.find((p) => p.id === pawn.id);
         for (const field of [

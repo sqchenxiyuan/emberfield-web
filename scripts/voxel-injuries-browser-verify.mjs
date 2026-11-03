@@ -116,7 +116,7 @@ async function verify(mode) {
     await click('关闭菜单');
     const old = await load('tests/fixtures/voxel-v11-start.json');
     const current = await save();
-    assert.equal(current.version, 18);
+    assert.equal(current.version, 19);
     assert.deepEqual(current.items, old.items);
     assert.equal(current.combat.enabled, false);
     assert(current.pawns.every((p) => p.weapon === null && p.trauma.wounds.length === 0));
@@ -168,8 +168,15 @@ async function verify(mode) {
     );
     await selectPawn(patient.id);
     assert.match(await page.getByTestId('injury-detail').innerText(), /出血[\s\S]*尚未包扎/);
+    await page.getByLabel('医疗政策', { exact: true }).selectOption('noMedicine');
+    await wait(
+      (id) =>
+        window.voxel.snapshot().snapshot.pawns.find((p) => p.id === id).medical.policy ===
+        'noMedicine',
+      patient.id,
+    );
     await page.getByLabel('医护人员', { exact: true }).selectOption(String(doctor.id));
-    await click('优先包扎（无药）');
+    await click('优先护理');
     await click('3倍速');
     await wait(
       (id) => window.voxel.snapshot().snapshot.pawns.find((p) => p.id === id).careProgress > 30,

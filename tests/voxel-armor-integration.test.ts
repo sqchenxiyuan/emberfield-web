@@ -1,3 +1,4 @@
+import { withMedicineLedgers } from './legacy-medicine-defaults';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
@@ -119,9 +120,9 @@ describe('armor save migration and strict physical schemas', () => {
       const s = VoxelSimulation.load(old),
         saved = s.save();
       expect(old).toEqual(before);
-      expect(saved.version).toBe(18);
+      expect(saved.version).toBe(19);
       for (const key of ['tick', 'nextId', 'blocks', 'items', 'stats', 'researchBenches'] as const)
-        expect(saved[key]).toEqual(old[key]);
+        expect(saved[key]).toEqual(key === 'stats' ? withMedicineLedgers(old.stats) : old[key]);
       expect(saved.research).toEqual({
         ...old.research,
         progress: { ...old.research.progress, PlateArmor: 0, Machining: 0, Gunsmithing: 0, BlowbackOperation: 0 },

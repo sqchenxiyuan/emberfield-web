@@ -10,7 +10,7 @@ import { rotRateAtTemperature, rotLimit, remainingRotDays } from './preservation
 import { stackLimit, carryLimit } from './logistics';
 import { STONE_CONSTRUCTION } from './crafting';
 import { SurvivalPanel } from './SurvivalPanel';
-import { needsTending } from './injuries';
+import { needsMedicalTending } from './medicine';
 import { healthSummary } from './survival';
 import { SkillPanel, WorkSkill } from './SkillPanel';
 import { ResearchPanel, ResearchBenchPanel } from './ResearchPanel';
@@ -198,6 +198,9 @@ function FoodCondition({ batch, temperature }: { batch: Cargo; temperature: numb
   const rate = rotRateAtTemperature(temperature);
   return (
     <div className="voxel-food-condition" data-testid="food-condition">
+      {batch.resource === 'herb' && (
+        <small data-testid="herb-use">草药用于医疗护理，不能食用；冷藏可延缓腐坏。</small>
+      )}
       <span>
         {temperature.toFixed(1)}°C ·{' '}
         {rate === 0 ? '冻结 · 腐坏暂停' : rate < 1 ? '冷藏 · 腐坏减缓' : '未冷藏'}
@@ -498,7 +501,7 @@ function App() {
       <aside className="voxel-resources">
         <span className="voxel-kicker">营地物资</span>
         {(Object.keys(RESOURCE_NAMES) as Resource[]).map((r) => (
-          <div key={r}>
+          <div key={r} data-resource={r}>
             <span>{RESOURCE_NAMES[r]}</span>
             <strong>{s?.inventory[r] ?? 0}</strong>
             <small>入库 {s?.stored[r] ?? 0}</small>
@@ -908,6 +911,7 @@ function App() {
               <button onClick={() => updateStorage(storage.priority, ['cloth', 'apparel'])}>
                 布料与衣物
               </button>
+              <button onClick={() => updateStorage(storage.priority, ['herb'])}>仅收草药</button>
               <button onClick={() => updateStorage(storage.priority, [])}>停止收纳</button>
             </div>
             <div className="voxel-storage-filters">
@@ -1012,7 +1016,7 @@ function App() {
           </div>
         )}
         {farm && condition && (
-          <div className="voxel-farm-detail">
+          <div className="voxel-farm-detail" data-testid="farm-detail">
             <div className="voxel-info-row">
               <span>本轮生长</span>
               <b>{crop ? `${(crop.growth * 100).toFixed(1)}%` : '等待播种'}</b>
@@ -1024,9 +1028,18 @@ function App() {
             </p>
             <p>
               下次播种：{CROPS[farm.crop].name} · 成熟收获 {CROPS[crop?.kind ?? farm.crop].yield}{' '}
-              {(crop?.kind ?? farm.crop) === 'cotton' ? '布料；不能食用。' : '生食材。'}
+              {(crop?.kind ?? farm.crop) === 'cotton'
+                ? '布料；不能食用。'
+                : (crop?.kind ?? farm.crop) === 'healroot'
+                  ? '草药；用于医疗，不能食用。'
+                  : '生食材。'}
               上方楼板会遮光。
             </p>
+            {CROPS[farm.crop].minSkill > 0 && (
+              <small data-testid="crop-sowing-skill">
+                播种需要种植 {CROPS[farm.crop].minSkill} 级；收获不受此等级限制。
+              </small>
+            )}
           </div>
         )}
         {stove && (
@@ -1220,7 +1233,14 @@ function App() {
               <b>{pawn.name}</b>
               <span>{pawn.reason}</span>
             </div>
-            <SurvivalPanel pawn={pawn} temperature={temperatureOf(pawn)} />
+            <SurvivalPanel
+              pawn={pawn}
+              pawns={s?.pawns ?? []}
+              beds={s?.beds ?? []}
+              temperature={temperatureOf(pawn)}
+              tick={s?.tick ?? 0}
+              command={(c) => void client.command(c)}
+            />
             {s && (
               <CombatPanel
                 key={pawn.id}
@@ -1240,7 +1260,7 @@ function App() {
             <WeaponPanel pawn={pawn} command={(c) => void client.command(c)} />
             {pawn.faction === 'colony' &&
               !pawn.dead &&
-              (pawn.downed || needsTending(pawn.trauma)) && (
+              (pawn.downed || needsMedicalTending(pawn, s?.tick ?? 0)) && (
                 <div className="voxel-care-actions" data-testid="care-controls">
                   <label>
                     安排同伴
@@ -1298,7 +1318,8 @@ function App() {
                         !carer ||
                         pawn.drafted ||
                         pawn.carriedBy !== null ||
-                        !needsTending(pawn.trauma)
+                        pawn.medical.policy === 'none' ||
+                        !needsMedicalTending(pawn, s?.tick ?? 0)
                       }
                       onClick={() =>
                         carer &&
@@ -1310,10 +1331,14 @@ function App() {
                         })
                       }
                     >
-                      优先包扎（无药）
+                      优先护理
                     </button>
                   </div>
-                  <small>同伴会实际前往；无通路、床位或食物时会说明原因。</small>
+                  <small>
+                    {pawn.medical.policy === 'none'
+                      ? '当前医疗政策禁止护理；可在健康面板调整。'
+                      : '同伴会按患者政策取药并实际前往；缺少通路、床位或物资时会说明原因。'}
+                  </small>
                 </div>
               )}
             <div className="voxel-needs">
@@ -1531,7 +1556,9 @@ function App() {
             )}
           </span>
           <p>
-            {hints[state.tool]}
+            {state.tool === 'farm' && state.crop === 'healroot'
+              ? `拖动划定药根种植区。播种需要种植 ${CROPS.healroot.minSkill} 级，收获不受此等级限制；成熟产出草药，不能食用，可存入冷库。`
+              : hints[state.tool]}
             {(state.tool === 'floor' || state.tool === 'wall') &&
               ` 每格 ${state.material === 'stone' ? STONE_CONSTRUCTION[state.tool].cost : state.tool === 'wall' ? 6 : 3} ${state.material === 'stone' ? '花岗岩砖' : '木材'}。`}
           </p>
@@ -1695,7 +1722,7 @@ function App() {
               <summary>试玩规则与性能计数</summary>
               <p>
                 64×64×16；逻辑 20 TPS，1 日 10
-                分钟。两格净空，一格高差可走；梯子可携货。种植、烹饪、床位、作息、电网、冷库保鲜、有限仓储和岩块切石已接通。新世界有三种生态和四档起伏，土壤肥力与季节气温影响生产。断粮、过冷或过热会逐渐损害健康，严重时倒地甚至死亡；同伴可以救援到医疗床并喂食。种棉获得布料，手工裁缝台制作衣物，实际穿戴后改变温度耐受；每件独立保存品质与耐久。新营地配基础布衫和长裤，旧存档保留原装备。天然岩石有机会留下岩块，切石台加工后才能用于石砖墙和楼板；切石与衣物科技暂默认解锁，制衣固定普通品质。采用简化天光和三维导热。战斗伤口、疾病、食物中毒、坍塌、天气降水和流体尚未实现。
+                分钟。两格净空，一格高差可走；梯子可携货。种植、烹饪、床位、作息、电网、冷库保鲜、有限仓储和岩块切石已接通。新世界有三种生态和四档起伏，土壤肥力与季节气温影响生产。断粮、过冷或过热会逐渐损害健康，严重时倒地甚至死亡；同伴可以救援到医疗床并喂食。种棉获得布料，手工裁缝台制作衣物，实际穿戴后改变温度耐受；每件独立保存品质与耐久。新营地配基础布衫和长裤，旧存档保留原装备。天然岩石有机会留下岩块，切石台加工后才能用于石砖墙和楼板；切石与衣物科技暂默认解锁。采用简化天光和三维导热。近战与射击会造成部位伤口；部分伤口可能延迟感染，需要关注护理和免疫进展。药根成熟后产出草药，医生按患者政策实际取药护理；感染者可前往医疗床休养。其他疾病、食物中毒、坍塌、天气降水和流体尚未实现。
               </p>
               <p>
                 地形数组 {((s?.gridBytes ?? 0) / 1024).toFixed(0)} KiB；寻路数组{' '}

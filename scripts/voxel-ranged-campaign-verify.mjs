@@ -212,7 +212,7 @@ const machining = () => s.weaponBenches.find((b) => b.kind === 'machining');
 const weapon = (kind) => s.items.find((i) => i.weapon?.kind === kind)?.weapon;
 try {
   if (!resume) {
-    assert.equal(s.save().version, 18);
+    assert.equal(s.save().version, 19);
     assert.equal(s.command({ type: 'research', project: 'Gunsmithing' }).ok, false);
     check('firearm research requires its real prerequisite');
     report.layout = await researchOpening({

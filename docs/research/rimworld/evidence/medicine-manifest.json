@@ -1,0 +1,97 @@
+{
+  "evidence_id": "RW17-MEDICINE",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "Verse.ImmunityHandler",
+      "local_file": ".local-research/medicine/Verse.ImmunityHandler.cs",
+      "sha256": "11551177a8917d92cfd1b3891708a4fbf49284f82af6a7bb98145737a58a183b",
+      "lines": 238
+    },
+    {
+      "type": "RimWorld.MedicalCareCategory",
+      "local_file": ".local-research/medicine/RimWorld.MedicalCareCategory.cs",
+      "sha256": "e7ed98c74d75e63ef01d2226f17279f8b4f56d9f8a8d0e676fd43c3deb4d5eb6",
+      "lines": 11
+    },
+    {
+      "type": "RimWorld.MedicalCareUtility",
+      "local_file": ".local-research/medicine/RimWorld.MedicalCareUtility.cs",
+      "sha256": "6d4e0a362edd2ae780e059508f2b7b607674aa9c4f5fcee3fb9e411a2f1a4a90",
+      "lines": 132
+    },
+    {
+      "type": "Verse.HediffComp_Discoverable",
+      "local_file": ".local-research/medicine/Verse.HediffComp_Discoverable.cs",
+      "sha256": "8c5070979c461a4f4db8063d2fc5d1126af51cd167ce5835da6a8f6187fce35f",
+      "lines": 84
+    },
+    {
+      "type": "Verse.HediffCompProperties_Discoverable",
+      "local_file": ".local-research/medicine/Verse.HediffCompProperties_Discoverable.cs",
+      "sha256": "4594105c90c6fd1c2c44b5de2925fc400821b8bdf31ce6b57a3276043cef9557",
+      "lines": 20
+    },
+    {
+      "type": "RimWorld.StatPart_Resting",
+      "local_file": ".local-research/medicine/RimWorld.StatPart_Resting.cs",
+      "sha256": "b1d571a59bd90c7ba1bcfe8447174554f7586254fde35124a70adcd2b65141fe",
+      "lines": 36
+    },
+    {
+      "type": "RimWorld.StatPart_Rest",
+      "local_file": ".local-research/medicine/RimWorld.StatPart_Rest.cs",
+      "sha256": "075de2498b20e25499966da8c64aab4502d0efdfcd67461c449dd1fabfd011d9",
+      "lines": 45
+    },
+    {
+      "type": "Verse.HediffWithComps",
+      "local_file": ".local-research/medicine/Verse.HediffWithComps.cs",
+      "sha256": "3057fc7c941abbf496183bc70a7edc28535a12089f4be5668c6efa447001f44c",
+      "lines": 451
+    },
+    {
+      "type": "RimWorld.StatPart_Age",
+      "local_file": ".local-research/medicine/RimWorld.StatPart_Age.cs",
+      "sha256": "5a856cd884d8a4bcc8af00453f9eca0db80a40ff5176d340bbfe7c68bec12ff0",
+      "lines": 61
+    },
+    {
+      "type": "RimWorld.StatPart_BedStat",
+      "local_file": ".local-research/medicine/RimWorld.StatPart_BedStat.cs",
+      "sha256": "d4f3bb4604aca0cdc892fed1a43210f35e18adc1364dd6de4fee3de0983cd563",
+      "lines": 40
+    },
+    {
+      "type": "RimWorld.StatPart_Food",
+      "local_file": ".local-research/medicine/RimWorld.StatPart_Food.cs",
+      "sha256": "974aaec9be90dd1bd14663c00fef8dd3fc0a78afa533cb606eae13d57ab691aa",
+      "lines": 45
+    },
+    {
+      "type": "RimWorld.PawnCapacityFactor",
+      "local_file": ".local-research/medicine/RimWorld.PawnCapacityFactor.cs",
+      "sha256": "4534a4c8f3efcd51636fbfecb1b5ead2b3611e9fde554445b9f1947be84edf18",
+      "lines": 38
+    },
+    {
+      "type": "RimWorld.TerrainDefGenerator_Stone",
+      "local_file": ".local-research/medicine/RimWorld.TerrainDefGenerator_Stone.cs",
+      "sha256": "c45ef15784e73b90a84cdc2ebb1ada37f75ddb2e0e3a75f33953cfa7de194f7b",
+      "lines": 183
+    }
+  ]
+}

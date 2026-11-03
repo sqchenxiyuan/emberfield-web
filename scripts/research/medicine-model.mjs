@@ -1,0 +1,23 @@
+// Independent numerical/state models. Never imports project gameplay or executes game code.
+export const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+export function curve(points,x){if(x<=points[0][0])return points[0][1];for(let i=1;i<points.length;i++)if(x<=points[i][0]){const[a,b]=points[i-1],[c,d]=points[i];return b+(d-b)*(x-a)/(c-a);}return points.at(-1)[1];}
+export function medicineModels(d){
+ const priority=h=>Math.max(h.lifeThreatening?1:0,(h.bleed??0)*1.5,h.tendedSeverityNegative?.025:0);
+ return{
+  policy:({policy,potency})=>({care:policy!=='NoCare',medicine:policy==='Best'||policy==='HerbalOrWorse'&&potency<=d.medicines.Herbal.potency||policy==='NormalOrWorse'&&potency<=d.medicines.Industrial.potency}),
+  batch:({hediffs,medicine})=>{const hs=hediffs.filter(h=>h.tendable!==false).sort((a,b)=>priority(b)-priority(a)||b.severity-a.severity);if(!hs.length)return{ids:[],consumed:0};const first=hs[0],ids=[first.id];let total=first.severity;for(const h of hs.slice(1))if(first.tendAllAtOnce?h.def===first.def:first.injury&&medicine&&h.injury&&total+h.severity<=d.batchSeverity){ids.push(h.id);total+=h.severity;}return{ids,consumed:medicine?1:0};},
+  quality:({doctor=.75,medicine='None',bed=0,self=false,offsets=[0]})=>{const m=d.medicines[medicine],base=clamp((doctor*m.potency+bed)*(self?d.selfFactor:1),0,m.maxQuality);return{base,actual:offsets.map(x=>clamp(base+x,0,m.maxQuality)),xpFactor:medicine==='None'?.5:clamp(m.potency*.7,.5,1)};},
+  duration:({left,permanent=false,immune=false,attempt=false})=>{const allowed=!immune&&(permanent?left<=0:left<d.tend.overlap);return{allowed,tended:left>0,after:attempt&&allowed?(permanent?1:Math.max(0,left)+d.tend.full):left};},
+  pending:({eligible=true,base,kind='Cut',animal=false,roll,delay=15000})=>({state:eligible&&d.injuryRisk[kind]!==undefined&&roll<=(base??d.injuryRisk[kind])*(animal?.1:1)?delay:-2}),
+  room:({proper=true,regions=1,floors=[],objects=[]})=>{const computed=proper&&regions<=60,cleanliness=computed?(floors.reduce((a,b)=>a+b,0)+objects.reduce((a,b)=>a+b.value*b.stack,0))/floors.length:null;return{cleanliness,factor:computed?curve(d.roomCurve,cleanliness):1};},
+  risk:({severity,tended=false,quality=0,room=1,player=true,difficulty=1,contract=1,regeneration=false,roll})=>{if(contract<=.001||regeneration)return{chance:0,state:-3};const chance=curve(d.severityCurve,severity)*(tended?room*curve(d.qualityRiskCurve,quality):1)*(player?difficulty:1);return{chance,state:roll<chance?-4:-3};},
+  contract:({immunity=0,samePart=false,flesh=true,immuneRace=false})=>({factor:!flesh||immuneRace||samePart?0:1-clamp(immunity/.6,0,1)}),
+  disease:({severity,immunity,quality=0,tended=false,days=0})=>{const rate=(immunity>=1?d.disease.immune:d.disease.sick)+(tended?d.disease.tended*quality:0),after=severity+rate*days;return{rate,after,remove:after<=0,lethal:after>=1,tendable:immunity<1&&severity>0,priority:severity>=.78?1:.025};},
+  immunity:({value=0,instances=[],speed=1,delta=60000,flesh=true})=>{const rate=!flesh?0:instances.length?d.disease.immunitySick*speed*instances[0].factor:d.disease.immunityHealthy;return{rate,value:clamp(value+rate*delta/d.clock.sourceDay,0,1),recordCount:instances.length||value+rate*delta/d.clock.sourceDay>0?1:0};},
+  raceStep:({severity,immunity,quality=0,tended=false,delta=200,speed=1,factor=1,due=true})=>{const rate=(immunity>=1?d.disease.immune:d.disease.sick)+(tended?d.disease.tended*quality:0);const next=clamp(severity+(due?rate/300:0),0,1);return{severity:next,immunity:next>=1?immunity:clamp(immunity+(next>0?d.disease.immunitySick*speed*factor:d.disease.immunityHealthy)*delta/d.clock.sourceDay,0,1),dead:next>=1};},
+  immunityStat:({blood=1,food=1,rest=1,bed=1,resting=false,ageRatio=.5})=>{const foodFactor=food<=0?.7:food<.12?.9:1,restFactor=rest<.01?.8:rest<.14?.92:rest<.28?.96:1;return{value:(1+(blood-1)*.5)*foodFactor*restFactor*bed*(resting?1.1:1)*curve(d.ageCurve,ageRatio)};},
+  medicalStats:({skill,sight=1,manipulation=1,work=1})=>{const quality=curve(d.medicalQualityCurve,(.2+.1*skill)*(1+(Math.min(sight,1.4)-1)*.7)*Math.min(manipulation,1.4)),speed=Math.max(.1,(.4+.06*skill)*work*(1+(Math.min(sight,1.3)-1)*.8)*manipulation);return{quality,speed,workSourceTicks:Math.trunc(600/speed)};},
+  cleanup:({removedPart,parents,hediffs})=>{const descendant=p=>{while(p){if(p===removedPart)return true;p=parents[p];}return false;};return{kept:hediffs.filter(h=>h.keep||!descendant(h.part)).map(h=>h.id)};},
+  clock:({sourceTicks,scale})=>({projectTicks:scale==='day'?sourceTicks*d.clock.projectDay/d.clock.sourceDay:Math.ceil(sourceTicks*d.clock.projectTPS/d.clock.sourceTPS)}),
+ };
+}

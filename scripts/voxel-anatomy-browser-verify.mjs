@@ -1,3 +1,4 @@
+import { withMedicineLedgers } from './voxel-migration-expectations.mjs';
 import { chromium } from '@playwright/test';
 import assert from 'node:assert/strict';
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
@@ -108,10 +109,10 @@ async function verify(mode) {
     for (const name of ['trauma', 'research']) {
       const old = await load(`tests/fixtures/voxel-v15-${name}.json`),
         migrated = await save();
-      assert.equal(migrated.version, 18);
+      assert.equal(migrated.version, 19);
       assert.equal((await state()).snapshot.speed, 0);
       for (const key of ['items', 'researchBenches', 'stats'])
-        assert.deepEqual(migrated[key], old[key]);
+        assert.deepEqual(migrated[key], key === 'stats' ? withMedicineLedgers(old.stats) : old[key]);
       assert.deepEqual(migrated.research, {
         ...old.research,
         progress: { ...old.research.progress, PlateArmor: 0 },
@@ -164,8 +165,15 @@ async function verify(mode) {
     await anatomy.locator('summary').click();
     check('controlled hand loss marks descendants missing and eye HP explains vision loss');
 
+    await page.getByLabel('医疗政策', { exact: true }).selectOption('noMedicine');
+    await wait(
+      (id) =>
+        window.voxel.snapshot().snapshot.pawns.find((p) => p.id === id).medical.policy ===
+        'noMedicine',
+      patientId,
+    );
     await page.getByLabel('医护人员', { exact: true }).selectOption(String(doctorId));
-    await click('优先包扎（无药）');
+    await click('优先护理');
     await click('3倍速');
     await wait(
       (id) => window.voxel.snapshot().snapshot.pawns.find((p) => p.id === id).careProgress > 40,
