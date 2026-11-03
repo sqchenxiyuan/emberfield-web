@@ -185,7 +185,7 @@ async function verify(mode) {
     await settle();
     assert.equal((await state()).worker, mode === 'worker');
     const fresh = await save();
-    assert.equal(fresh.version, 20);
+    assert.equal(fresh.version, 21);
     assert.equal(fresh.research.origin, 'industrial-start');
     assert.equal(fresh.research.current, null);
     assert.equal(fresh.researchBenches.length, 0);
@@ -216,7 +216,7 @@ async function verify(mode) {
     assert.equal(result.fixtures.at(-1).sha256, provenance.sha256);
     const migrated = await save();
     assert.equal(old.version, 14);
-    assert.equal(migrated.version, 20);
+    assert.equal(migrated.version, 21);
     assert.equal(migrated.research.origin, 'legacy-unlocked');
     assert.deepEqual(migrated.research.progress, COSTS);
     assert.equal(migrated.research.current, null);
@@ -241,7 +241,7 @@ async function verify(mode) {
     );
 
     const built = await load(FIXTURES + '/bench-built.json');
-    assert.equal(built.version, 20);
+    assert.equal(built.version, 21);
     assert.equal(built.research.origin, 'industrial-start');
     assert(
       built.researchBenches.some((b) => b.z !== built.spawn.z),

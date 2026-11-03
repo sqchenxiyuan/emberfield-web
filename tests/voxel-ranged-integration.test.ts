@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
+import { initialTrade } from '../src/voxel/trade';
 import { makeWeapon } from '../src/voxel/weapons';
 import { makeApparel } from '../src/voxel/apparel';
 import { makeWeaponBench } from '../src/voxel/weaponProduction';
@@ -25,6 +26,7 @@ function until(s: VoxelSimulation, done: () => boolean, limit = 120) {
 function fixture(kind: 'shortBow' | 'revolver' | 'machinePistol' = 'revolver', seed = 1) {
   const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
   s.seed = seed;
+  s.trade = initialTrade(s.seed, s.tick);
   s.blocks.fill(Block.Stone);
   s.ladders.fill(0);
   s.trees = [];

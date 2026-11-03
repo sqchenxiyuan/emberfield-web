@@ -6,6 +6,8 @@
 
 在线试玩：[GitHub Pages](https://sqchenxiyuan.github.io/emberfield-web/) · 源码：[sqchenxiyuan/emberfield-web](https://github.com/sqchenxiyuan/emberfield-web)。
 
+2026-11-03商队贸易更新（v21）：多层体素模式加入实体银币、大宗/军火商队、家园区域和社交议价。人物实际走到商人旁交谈，再选择买卖数量；购入物品在商人附近落地，需要搬回营地。物品年龄、装备身份和有限库存保留；可赠礼，商人银币不足时需明确接受少收。新营地800银，旧档不补发，可出售真实产出积累资金。701项本地单元测试、16.07游戏日普通经营和Worker/main各17项页面检查通过。[66原版规则](docs/research/rimworld/66-trade-market-mechanisms.md)、[68实现与验收](docs/research/rimworld/68-voxel-trade-implementation.md)记录数值和边界；载畜、完整派系外交及商队食宿仍待实现。以下版本记录中的“无贸易”指当时状态；二维入口保持原有功能范围。
+
 2026-11-03财富与叙事更新（v20）：多层体素模式按实物统计物品、建筑和殖民者财富，结合健康人口、难度、营地年龄和伤亡适应计算威胁。菜单可选择六档难度并展开财富/压力明细。Cassandra 的初始袭击机会在第5.4天；第11天起按4.6天活动、6天休息的周期安排1–2次机会，是否入场仍需检查。袭击按预算组成多人队伍，关闭再开启不会重置日历。旧v19待发生袭击保留一次，旧墙/地板身份不明的格子使用明确标记的兼容估值。当前只实现Cassandra袭击与三种低阶海盗兵种子集，未实现贸易、其他叙事者、围攻及完整事件库。[63原版机制](docs/research/rimworld/63-storyteller-wealth-mechanisms.md)、[64原版财富实机](docs/research/rimworld/64-native-storyteller-runtime.md)、[65实现与验证](docs/research/rimworld/65-voxel-storyteller-validation.md)记录证据和实际验收状态。
 
 2026-11-03医疗更新（v19）：多层体素模式加入药根种植与实体草药、三档护理策略、伤口感染、共享免疫和实际卧床休养。种植8级可播药根，医生从真实药堆取药并逐批护理；草药可以跨层入库和冷藏，护理不会立刻抹掉伤口或疾病。人物面板显示病情、免疫、护理期限和实际医生进度。旧档保留营地，旧伤不补抽感染。[60原版机制](docs/research/rimworld/60-medicine-infection-mechanisms.md)、[61实机护理](docs/research/rimworld/61-native-medicine-runtime.md)、[62实现与验收](docs/research/rimworld/62-voxel-medicine-implementation.md)区分来源和适配。工业药、医院床、自疗、手术和其他疾病尚未实现。

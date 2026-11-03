@@ -95,7 +95,7 @@ async function save(name) {
   };
 }
 try {
-  assert.equal(s.save().version, 20);
+  assert.equal(s.save().version, 21);
   assert.equal(s.command({ type: 'research', project: 'LongBlades' }).ok, false);
   assert.equal(s.command({ type: 'designate', tool: 'smithy', from: point(s.spawn) }).ok, false);
   check('new-world prerequisites and building gate reject premature unlocks');

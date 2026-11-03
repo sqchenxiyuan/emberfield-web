@@ -87,7 +87,7 @@ describe('v18 ranged migration and powered physical production', () => {
         s = VoxelSimulation.load(old),
         save = s.save();
       expect(old).toEqual(before);
-      expect(save.version).toBe(20);
+      expect(save.version).toBe(21);
       for (const key of [
         'tick',
         'nextId',
@@ -116,6 +116,7 @@ describe('v18 ranged migration and powered physical production', () => {
         expect(p.skills).toEqual({
           ...prior.skills,
           shooting: initialSkills(i, p.faction === 'raider').shooting,
+          social: initialSkills(i, p.faction !== 'colony').social,
         });
         expect(p.shooting).toBeNull();
         expect(p.staggerUntil).toBe(0);

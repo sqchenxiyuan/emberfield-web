@@ -213,7 +213,7 @@ async function verify(mode) {
     const old = await loadFile(LEGACY, legacyProvenance.sha256);
     assert.equal(old.version, 17);
     const migrated = await save();
-    assert.equal(migrated.version, 20);
+    assert.equal(migrated.version, 21);
     for (const field of ['blocks', 'items', 'stats', 'tick'])
       assert.deepEqual(migrated[field], field === 'stats' ? withMedicineLedgers(old.stats) : old[field]);
     for (const [profile, pawn] of old.pawns.entries()) {

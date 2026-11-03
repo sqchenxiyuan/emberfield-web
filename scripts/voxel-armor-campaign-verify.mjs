@@ -132,7 +132,7 @@ const smithy = () => s.weaponBenches.find((b) => b.kind === 'smithy');
 const bill = (kind, target, paused = false) =>
   command({ type: 'armorBill', benchId: smithy().id, kind, target, paused });
 try {
-  assert.equal(s.save().version, 20);
+  assert.equal(s.save().version, 21);
   assert.equal(s.command({ type: 'research', project: 'PlateArmor' }).ok, false);
   check('plate research is locked behind its real prerequisites');
   report.layout = await researchOpening({

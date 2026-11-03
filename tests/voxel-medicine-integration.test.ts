@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { initialSkills } from '../src/voxel/skills';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { VoxelSimulation } from '../src/voxel/world';
@@ -280,20 +281,20 @@ describe('physical medical care, agriculture and v18 migration', () => {
       const old = JSON.parse(bytes.toString()),
         save = VoxelSimulation.load(old).save();
       expect(old.version).toBe(18);
-      expect(save.version).toBe(20);
+      expect(save.version).toBe(21);
       expect(save.items).toEqual(old.items);
       expect(save.research).toEqual(old.research);
       expect(save.nextId).toBe(old.nextId);
       expect(save.tick).toBe(old.tick);
       for (const [i, p] of save.pawns.entries()) {
         expect(p.trauma).toEqual(old.pawns[i].trauma);
-        expect(p.skills).toEqual(old.pawns[i].skills);
+        expect(p.skills).toEqual({ ...old.pawns[i].skills, social: initialSkills(i, p.faction !== 'colony').social });
         expect(p.medical.infections).toEqual([]);
         expect(p.medical.immunity).toBe(0);
         expect(p.medical.risks.every((r) => r.state === 'legacy')).toBe(true);
       }
       for (const key of ['produced', 'consumed', 'spoiled', 'destroyed'] as const)
-        expect(save.stats[key]).toEqual({ ...old.stats[key], herb: 0 });
+        expect(save.stats[key]).toEqual({ ...old.stats[key], herb: 0, silver: 0 });
       const contaminated = structuredClone(old);
       contaminated.pawns[0].medical = initialMedical();
       expect(() => VoxelSimulation.load(contaminated)).toThrow('旧存档');

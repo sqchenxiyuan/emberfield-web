@@ -78,6 +78,7 @@ describe('voxel generation and chunk delivery', () => {
     expect(a.blocks).toHaveLength(CELLS);
     expect(a.pawns.every((p) => p.z === a.spawn.z && a.standable(p))).toBe(true);
     expect(a.counts()).toEqual({
+      silver: 800,
       wood: 90,
       stone: 0,
       steel: 0,

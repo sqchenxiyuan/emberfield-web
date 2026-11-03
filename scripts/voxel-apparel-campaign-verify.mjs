@@ -131,7 +131,7 @@ try {
   );
   const legacy = JSON.parse(legacyBytes),
     migrated = VoxelSimulation.load(legacy).save();
-  assert.equal(migrated.version, 20);
+  assert.equal(migrated.version, 21);
   for (const field of ['blocks', 'items', 'crops', 'trees', 'tick'])
     assert.deepEqual(migrated[field], legacy[field]);
   assert(migrated.pawns.every((p) => p.worn.length === 0));

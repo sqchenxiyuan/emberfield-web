@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { initialStoryteller } from '../src/voxel/storyteller';
+import { initialTrade } from '../src/voxel/trade';
 import {
   APPAREL_DEFS,
   APPAREL_KINDS,
@@ -434,6 +435,7 @@ describe('physical dressing, interruption, death and migration', () => {
     )!;
     s.tick = day * DAY - 1;
     s.storyteller = initialStoryteller(s.seed, s.tick);
+    s.trade = initialTrade(s.seed, s.tick);
     p.apparelWearTicks = s.tick;
     const origin = ledger(s);
     s = VoxelSimulation.load(s.save());
@@ -453,7 +455,7 @@ describe('physical dressing, interruption, death and migration', () => {
     );
     const old = JSON.parse(raw.toString()),
       s = VoxelSimulation.load(old);
-    expect(s.save().version).toBe(20);
+    expect(s.save().version).toBe(21);
     expect(s.items).toEqual(old.items);
     expect(s.pawns.map((p) => p.health)).toEqual(old.pawns.map((p: any) => p.health));
     expect(s.counts().apparel).toBe(0);

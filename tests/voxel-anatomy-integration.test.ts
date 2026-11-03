@@ -9,6 +9,7 @@ import { applyInjury, needsTending, traumaIds, traumaSummary } from '../src/voxe
 import { BODY_PARTS, isPartMissing, partHealth, type BodyPartId } from '../src/voxel/anatomy';
 import { healthSummary, legacyHealthState } from '../src/voxel/survival';
 import { makeWeapon } from '../src/voxel/weapons';
+import { initialSkills } from '../src/voxel/skills';
 
 const pos = (x: number, y: number, z = 8): Pos => ({ x, y, z });
 // Controlled geometry and explicit wounds isolate integration boundaries. Ordinary
@@ -71,7 +72,7 @@ describe('anatomy integration with work, physical treatment and save migration',
       const s = VoxelSimulation.load(old),
         save = s.save();
       expect(old).toEqual(before);
-      expect(save.version).toBe(20);
+      expect(save.version).toBe(21);
       expect(s.tick).toBe(old.tick);
       for (const key of ['blocks', 'items', 'researchBenches', 'stats'] as const)
         expect(save[key]).toEqual(key === 'stats' ? withMedicineLedgers(old.stats) : old[key]);
@@ -89,10 +90,14 @@ describe('anatomy integration with work, physical treatment and save migration',
               : [],
         })),
       );
-      for (const p of save.pawns) {
+      for (const [i, p] of save.pawns.entries()) {
         const prior = old.pawns.find((q: any) => q.id === p.id);
         for (const key of ['food', 'rest', 'worn', 'weapon', 'cargo', 'skills', 'health'] as const)
-          expect(p[key]).toEqual(key === 'skills' ? { ...prior.skills, shooting: p.skills.shooting } : prior[key]);
+          expect(p[key]).toEqual(key === 'skills' ? {
+            ...prior.skills,
+            shooting: initialSkills(i, p.faction !== 'colony').shooting,
+            social: initialSkills(i, p.faction !== 'colony').social,
+          } : prior[key]);
         const retained = [
           ...p.trauma.wounds,
           ...p.trauma.missingParts.flatMap((m) => m.legacyWounds),

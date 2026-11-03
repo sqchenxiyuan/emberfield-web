@@ -100,6 +100,10 @@ import {
   type StoryEvent, type StorytellerState,
 } from './storyteller';
 import { rejectLegacyStorytellerFields, validateStoryteller } from './storytellerPersistence';
+import { initialTrade, makeTraderStock, merchantStayTicks, TRADER_NAMES, visitorGroup, visitorWeapon, VISITOR_KINDS } from './trade';
+import { applyTradeCommand, quoteTrade, updateTrade, tradeHostile, tradeHarmed, type Placement } from './tradeWorld';
+import type { TradeState } from './tradeTypes';
+import { rejectLegacyTradeFields, migrateTradeFields, validateTrade } from './tradePersistence';
 import {
   MEDICAL_POLICIES,
   MEDICAL_POLICY_NAMES,
@@ -451,6 +455,8 @@ function decode(raw: unknown, max: number): Uint8Array<ArrayBuffer> {
 }
 
 export class VoxelSimulation {
+  trade: TradeState;
+  homeArea = new Set<number>();
   combat = { enabled: false, nextRaid: 0, wave: 0 };
   storyteller: StorytellerState;
   structureKinds = new Uint8Array(CELLS);
@@ -537,6 +543,7 @@ export class VoxelSimulation {
   ) {
     if (!Number.isSafeInteger(seed)) throw new Error('种子必须是安全整数');
     this.storyteller = initialStoryteller(seed);
+    this.trade = initialTrade(seed);
     this.settings = sanitizeWorldSettings(settings);
     if (!restoreOnly) this.generate();
   }
@@ -604,6 +611,12 @@ export class VoxelSimulation {
       !this.addItem('food', 60, this.stockpiles[1])
     )
       throw new Error('开局物资缺少合法放置空间');
+    if (!this.addItem('silver', 800, this.spawn)) throw new Error('开局银币缺少落地空间');
+    for (let y = this.spawn.y - 4; y <= this.spawn.y + 4; y++)
+      for (let x = this.spawn.x - 4; x <= this.spawn.x + 4; x++) {
+        const cell = { x, y, z: this.spawn.z };
+        if (inside(cell)) this.homeArea.add(at(cell));
+      }
     this.markAll();
   }
   private rebuildTrees() {
@@ -1641,12 +1654,14 @@ export class VoxelSimulation {
     return result;
   }
   private applyCommand(c: VoxelCommand): CommandResult {
+    if (c.type === 'tradeTalk' || c.type === 'tradeCancel' || c.type === 'tradeCommit' || c.type === 'homeArea')
+      return applyTradeCommand(this, c);
     if (
       'pawnId' in c &&
       c.pawnId !== null &&
       this.pawns.some((p) => p.id === c.pawnId && p.faction !== 'colony')
     )
-      return { ok: false, message: '无法指挥敌对人物' };
+      return { ok: false, message: '无法指挥其他派系人物' };
     if (c.type === 'research') {
       if (c.project !== null && !RESEARCH_KEYS.includes(c.project))
         return { ok: false, message: '未知研究项目' };
@@ -3453,7 +3468,7 @@ export class VoxelSimulation {
       if (!target.downed)
         learnSkill(
           p.skills.shooting,
-          (target.faction !== p.faction ? 170 : 20) * stats.fullCycleSeconds,
+          (tradeHostile(target, p, this.trade.goodwill) ? 170 : 20) * stats.fullCycleSeconds,
         );
     }
     let stream = 180;
@@ -3490,6 +3505,7 @@ export class VoxelSimulation {
         state.startedTick + stats.burstOffsetsTicks[stats.burstCount - state.shotsLeft];
   }
   private projectileHitPawn(shot: Projectile, target: Pawn) {
+    tradeHarmed(this, { faction: shot.shooterFaction }, target, this.pawns.find(p => p.id === shot.targetId), shot.damage);
     const def = shot.kind === 'shortBow' ? 'Arrow' : 'Bullet';
     let stream = 300;
     const random = () => plantRandom(this.seed, shot.id, this.tick, stream++);
@@ -3601,7 +3617,7 @@ export class VoxelSimulation {
                 origin: shot.from,
                 cell,
                 prone: pawn.downed || pawn.phase === 'rest',
-                friendly: pawn.faction === shot.shooterFaction,
+                friendly: !tradeHostile(pawn, { faction: shot.shooterFaction }, this.trade.goodwill),
               })
             ) {
               this.projectileHitPawn(shot, pawn);
@@ -3686,7 +3702,7 @@ export class VoxelSimulation {
                 length,
                 candidate.pawn.downed || candidate.pawn.phase === 'rest',
               ) *
-              (candidate.pawn.faction === shot.shooterFaction
+              (!tradeHostile(candidate.pawn, { faction: shot.shooterFaction }, this.trade.goodwill)
                 ? interceptDistanceFactor(shot.from, destination)
                 : 1)
             : 1.5 * candidate.cover.fillPercent;
@@ -3737,7 +3753,7 @@ export class VoxelSimulation {
     let target = this.pawns.find((q) => q.id === p.attackTargetId);
     const adjacent = this.pawns.find(
       (q) =>
-        q.faction !== p.faction &&
+        tradeHostile(q, p, this.trade.goodwill) &&
         !q.dead &&
         !q.downed &&
         q.carriedBy === null &&
@@ -3751,18 +3767,18 @@ export class VoxelSimulation {
     if (!target || target.dead || target.downed || target.carriedBy !== null) {
       p.attackTargetId = null;
       target = undefined;
-      if (p.faction === 'raider') {
+      if (p.faction !== 'colony') {
         if ((this.tick + p.id) % 20 !== 0) return;
         this.search(p);
         target = this.pawns
-          .filter((q) => q.faction === 'colony' && !q.dead && !q.downed)
+          .filter((q) => tradeHostile(q, p, this.trade.goodwill) && !q.dead && !q.downed)
           .map((q) => ({ pawn: q, stand: ranged ? this.shootingStand(p, q) : this.careStand(q) }))
           .filter((q) => q.stand >= 0)
           .sort((a, b) => this.distance[a.stand] - this.distance[b.stand])[0]?.pawn;
       } else if (p.drafted) {
         target = this.pawns.find(
           (q) =>
-            q.faction !== p.faction &&
+            tradeHostile(q, p, this.trade.goodwill) &&
             !q.dead &&
             !q.downed &&
             ((q.z === p.z && Math.abs(p.x - q.x) + Math.abs(p.y - q.y) === 1) ||
@@ -3776,6 +3792,7 @@ export class VoxelSimulation {
       if (!p.path.length) p.reason = p.drafted ? '征召待命' : '没有可攻击目标';
       return;
     }
+    if (p.faction === 'trader') p.phase = 'combat';
     if (p.z === target.z && Math.abs(p.x - target.x) + Math.abs(p.y - target.y) === 1) {
       this.cancelShooting(p);
       p.path = [];
@@ -3827,6 +3844,7 @@ export class VoxelSimulation {
         allocId: () => this.id(),
         armor: { worn: target.worn, armorPenetration: strike.armorPenetration },
       });
+      tradeHarmed(this, p, target, target, damage);
       if (result.armor) {
         this.stats.destroyed.apparel += result.armor.destroyedIds.length;
         target.worn = result.armor.worn;
@@ -3872,13 +3890,13 @@ export class VoxelSimulation {
   private apparelPieces(): ApparelPiece[] {
     return [
       ...this.items.flatMap((i) => (i.apparel ? [i.apparel] : [])),
-      ...this.pawns.flatMap((p) => [...p.worn, ...(p.cargo?.apparel ? [p.cargo.apparel] : [])]),
+      ...this.pawns.filter(p => p.faction === 'colony').flatMap((p) => [...p.worn, ...(p.cargo?.apparel ? [p.cargo.apparel] : [])]),
     ];
   }
   private weaponPieces(): WeaponPiece[] {
     return [
       ...this.items.flatMap((i) => (i.weapon ? [i.weapon] : [])),
-      ...this.pawns.flatMap((p) => [
+      ...this.pawns.filter(p => p.faction === 'colony').flatMap((p) => [
         ...(p.weapon ? [p.weapon] : []),
         ...(p.cargo?.weapon ? [p.cargo.weapon] : []),
       ]),
@@ -3900,6 +3918,7 @@ export class VoxelSimulation {
     );
     if (!plan) return false;
     this.commitPlacement(plan);
+    if (p.faction !== 'colony') this.trade.imported.weapon++;
     p.weapon = null;
     p.weaponDropPending = false;
     return true;
@@ -4101,6 +4120,7 @@ export class VoxelSimulation {
     p.reason = message + APPAREL_NAMES[piece.kind];
   }
   private release(p: Pawn) {
+    if (this.trade.session?.pawnId === p.id) this.trade.session = null;
     this.cancelShooting(p);
     p.attackTargetId = null;
     this.releaseCare(p);
@@ -4124,6 +4144,80 @@ export class VoxelSimulation {
     p.eating = null;
     p.sleepBedId = null;
     p.sleepingSince = null;
+  }
+  tradeRelease(p: Pawn) { this.release(p); }
+  tradeDropCargo(p: Pawn) { return this.dropCargo(p); }
+  tradePlace(entries: { batch: Cargo; origin: Pos }[], base: Stack[]) { return this.planPlacement(entries, base); }
+  tradeApplyPlacement(plan: Placement) {
+    // Selling a reserved stack invalidates its consumers in the same atomic
+    // operation, before a snapshot can preserve a dangling fetch reference.
+    const changed = new Set(this.items.filter(item => {
+      const remaining = plan.items.find(i => i.id === item.id);
+      return !remaining || remaining.amount < item.amount;
+    }).map(item => item.id));
+    const gear = this.items.filter(item => changed.has(item.id));
+    this.commitPlacement(plan);
+    for (const p of this.pawns) if (
+      (p.careFoodId !== null && changed.has(p.careFoodId)) ||
+      (p.careMedicineId !== null && changed.has(p.careMedicineId)) ||
+      (p.weaponTask?.stage === 'fetch' && gear.some(i => i.weapon?.id === p.weaponTask!.weaponId)) ||
+      (p.apparelTask?.stage === 'fetch' && gear.some(i => i.apparel?.id === p.apparelTask!.apparelId))
+    ) { this.release(p); p.reason = '预留物品已交易，重新安排任务'; }
+  }
+  tradeTemperature(pawn: Pawn) { return this.temperature(pawn); }
+  tradeReachable(pawn: Pawn): Set<number> {
+    this.search(pawn);
+    return new Set(this.items.filter(i => this.distance[at(i)] >= 0).map(at));
+  }
+  tradeExit(pawn: Pawn): number[] | null {
+    this.search(pawn);
+    let best = -1, distance = Infinity;
+    for (let i = 0; i < CELLS; i++) {
+      const p = position(i);
+      if (p.x !== 0 && p.x !== WIDTH - 1 && p.y !== 0 && p.y !== DEPTH - 1) continue;
+      if (this.distance[i] >= 0 && this.distance[i] < distance) { best = i; distance = this.distance[i]; }
+    }
+    return best < 0 ? null : this.path(pawn, position(best));
+  }
+  tradeSpawn() {
+    if (this.trade.goodwill <= -75 || this.trade.caravans.some(c => c.pawnIds.some(id => this.pawns.some(p => p.id === id && !p.dead)))) return;
+    const colonist = this.pawns.find(p => p.faction === 'colony' && !p.dead && !p.downed);
+    if (!colonist) return;
+    const random = storyRandom(this.seed ^ 0x3cf790d, this.tick), kinds = visitorGroup(random);
+    if (this.pawns.length + kinds.length > 64) { this.notice = '人物与遗体已达容量，商队本次未入场'; return; }
+    this.search(colonist);
+    const edges: Pos[] = [];
+    for (let i = 0; i < CELLS; i++) {
+      const p = position(i);
+      if ((p.x === 0 || p.x === WIDTH - 1 || p.y === 0 || p.y === DEPTH - 1) &&
+          this.distance[i] >= 0 && !this.pawns.some(q => same(p, q))) edges.push(p);
+    }
+    if (!edges.length) { this.notice = '商队找不到通往营地的边缘入口'; return; }
+    const entry = edges[Math.floor(random() * edges.length)];
+    edges.sort((a, b) => Math.abs(a.x - entry.x) + Math.abs(a.y - entry.y) + Math.abs(a.z - entry.z) -
+      Math.abs(b.x - entry.x) - Math.abs(b.y - entry.y) - Math.abs(b.z - entry.z) || at(a) - at(b));
+    if (edges.length < kinds.length) return;
+    const meeting = this.standable(this.spawn) && this.distance[at(this.spawn)] >= 0 ? this.spawn : colonist;
+    const caravanId = this.id(), kind = random() < 2 / 3 ? 'bulk' : 'combat';
+    const pawnIds: number[] = [];
+    for (const [i, role] of kinds.entries()) {
+      const def = VISITOR_KINDS[role], id = this.id();
+      const weapon = visitorWeapon(role, () => this.id(), random);
+      const p: Pawn = { ...structuredClone(colonist), ...initialSurvival(this.seed, id), ...edges[i],
+        id, name: `${def.name} ${this.trade.visits + 1}-${i + 1}`, color: role === 'trader' ? 0xd8bf79 : 0x96b5cc,
+        food: 100, rest: 100, skills: initialSkills(i, true), faction: 'trader', weapon,
+        priorities: Object.fromEntries(Object.keys(colonist.priorities).map(key => [key, 0])) as Pawn['priorities'],
+        worn: [], apparelTask: null, apparelWearTicks: 0, jobId: null, path: [], destination: null,
+        phase: 'idle', cargo: null, reason: '商队前往营地', moveTick: this.tick, workTarget: null,
+        eating: null, sleepBedId: null, sleepingSince: null, schedule: defaultSchedule() };
+      this.pawns.push(p); pawnIds.push(id);
+    }
+    const traderId = pawnIds[0];
+    this.trade.caravans.push({ id: caravanId, kind, name: TRADER_NAMES[kind], pawnIds, traderId,
+      stock: makeTraderStock(kind, traderId, () => this.id(), random), meeting: { x: meeting.x, y: meeting.y, z: meeting.z },
+      stage: 'arriving', arrivedAt: this.tick, visitingAt: null, stayTicks: merchantStayTicks(random), reason: '商队正在前往营地' });
+    this.trade.visits++; this.revision++;
+    this.notice = `${TRADER_NAMES[kind]}从地图边缘抵达；安排殖民者前往交谈`;
   }
   private cancel(j: Job) {
     for (const p of this.pawns) if (p.jobId === j.id) this.release(p);
@@ -5367,6 +5461,7 @@ export class VoxelSimulation {
       this.updateApparelWear();
       this.updateSurvival();
       this.updateProjectiles();
+      updateTrade(this);
       for (const pawn of this.pawns) if (pawn.weaponDropPending) this.dropPrimary(pawn, true);
       this.updateRaids();
       // Only temperature/daylight change each tick; occlusion is cached until terrain changes.
@@ -5376,7 +5471,7 @@ export class VoxelSimulation {
       if (this.tick % 20 === 0) this.syncProduction();
       for (const p of this.pawns) {
         if (p.dead || p.downed || p.carriedBy !== null) continue;
-        const combatant = (p.drafted || p.faction === 'raider') && p.weaponTask === null;
+        const combatant = (p.drafted || p.faction !== 'colony') && p.weaponTask === null;
         if (combatant) this.combatTick(p);
         if (
           !combatant &&
@@ -5520,7 +5615,7 @@ export class VoxelSimulation {
           }
           continue;
         }
-        if (combatant) continue;
+        if (combatant || p.phase === 'trade') continue;
         if (p.phase === 'idle') {
           if ((this.tick + p.id) % 20 === 0) this.assign(p);
         } else this.arrive(p);
@@ -5710,6 +5805,7 @@ export class VoxelSimulation {
     const out = emptyCounts();
     for (const i of this.items) out[i.resource] += i.amount;
     for (const p of this.pawns) {
+      if (p.faction !== 'colony') continue;
       if (p.cargo) out[p.cargo.resource] += p.cargo.amount;
       out.apparel += p.worn.length;
       out.weapon += p.weapon ? 1 : 0;
@@ -5725,6 +5821,8 @@ export class VoxelSimulation {
       if (this.stockpiles.some((s) => same(s, i) && s.accepts.includes(i.resource)))
         stored[i.resource] += i.amount;
     return structuredClone({
+      trade: { ...this.trade, quote: quoteTrade(this) },
+      homeArea: [...this.homeArea],
       combat: this.combat,
       storyteller: {
         ...this.storyteller, threat: this.threatBreakdown(),
@@ -5798,7 +5896,9 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 20,
+      version: 21,
+      trade: this.trade,
+      homeArea: [...this.homeArea],
       combat: this.combat,
       storyteller: this.storyteller,
       structureKinds: encode(this.structureKinds),
@@ -5840,11 +5940,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyTradeFields(old);
     rejectLegacyStorytellerFields(old);
     rejectLegacyRangedFields(old);
     rejectLegacyMedicineFields(old);
@@ -5920,7 +6021,7 @@ export class VoxelSimulation {
         ...s,
         priority: 1,
         accepts: resources.filter(
-          (r) => !['chunk', 'cloth', 'apparel', 'weapon', 'herb'].includes(r),
+          (r) => !['silver', 'chunk', 'cloth', 'apparel', 'weapon', 'herb'].includes(r),
         ),
       }));
       old.stats.spoiled = emptyCounts();
@@ -6158,6 +6259,7 @@ export class VoxelSimulation {
       old.structureKinds = [0, CELLS];
       old.version = 20;
     }
+    migrateTradeFields(old, sourceVersion);
     const d = old as VoxelSave;
     const loadHealth = (p: Pawn) =>
       oldHealth.get(p.id) ?? {
@@ -6794,7 +6896,7 @@ export class VoxelSimulation {
       if (!validSkills(p.skills)) throw new Error('人物技能数据无效');
       if (
         !validTrauma(p.trauma, d.tick) ||
-        !['colony', 'raider'].includes(p.faction) ||
+        !['colony', 'raider', 'trader'].includes(p.faction) ||
         (p.weapon !== null && !validWeapon(p.weapon)) ||
         typeof p.weaponDropPending !== 'boolean' ||
         (p.weaponDropPending && !p.weapon) ||
@@ -6810,7 +6912,7 @@ export class VoxelSimulation {
           (!d.pawns.some(
             (q) => q.id === p.attackTargetId && q.id !== p.id && !q.dead && !q.downed,
           ) ||
-            (!p.drafted && p.faction !== 'raider'))) ||
+            (!p.drafted && p.faction === 'colony'))) ||
         (!p.dead &&
           !p.downed &&
           (p.drafted || p.faction === 'raider') &&
@@ -6949,6 +7051,7 @@ export class VoxelSimulation {
           'apparel',
           'combat',
           'weapon',
+          'trade',
           'downed',
           'dead',
         ].includes(p.phase) ||
@@ -7213,6 +7316,7 @@ export class VoxelSimulation {
     )
       throw new Error('统计数据无效');
     validateRangedState(d);
+    validateTrade(d, ids, apparelIds, weaponIds);
     // Restore into empty state. Never rerun generation over an existing colony.
     const s = new VoxelSimulation(d.seed, d.settings, true);
     s.generator = d.generator;
@@ -7227,6 +7331,7 @@ export class VoxelSimulation {
         tick: d.tick,
         combat: d.combat,
         storyteller: d.storyteller,
+        trade: d.trade,
         projectiles: d.projectiles,
         combatEvents: d.combatEvents,
         sandbags: d.sandbags,
@@ -7252,6 +7357,7 @@ export class VoxelSimulation {
         stats: d.stats,
       }),
     );
+    s.homeArea = new Set(d.homeArea);
     s.rebuildTrees();
     s.stoveCells = new Set(s.stoves.map(at));
     s.rebuildDevices();
@@ -7330,6 +7436,7 @@ export class VoxelSimulation {
       j.reason = j.cancelled ? '已取消，保留原任务材料等待退回' : '回读后等待重新安排';
     }
     for (const p of s.pawns) {
+      if (p.phase === 'trade' || p.faction === 'trader') continue;
       if (p.weaponTask !== null) {
         p.jobId = null;
         p.path = [];

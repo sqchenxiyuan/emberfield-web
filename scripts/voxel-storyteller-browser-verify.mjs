@@ -119,7 +119,7 @@ async function verify(mode) {
     assert.equal((await state()).worker, mode === 'worker');
     for (const fixture of legacy) {
       const old = await loadFile(fixture.file, fixture.sha256), current = await exported();
-      assert.equal(current.version, 20);
+      assert.equal(current.version, 21);
       for (const field of ['tick', 'blocks', 'ladders', 'items', 'research', 'nextId', 'projectiles', 'combatEvents', 'sandbags', 'stats']) assert.deepEqual(current[field], old[field], `v19 ${fixture.name} ${field}`);
       for (const job of old.jobs) {
         const next = current.jobs.find((j) => j.id === job.id); assert(next);

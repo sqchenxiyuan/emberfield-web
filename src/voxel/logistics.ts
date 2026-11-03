@@ -3,6 +3,7 @@ import { compatibleBatches } from './preservation';
 
 /** Native Def stack limits. Stone denotes cut stone blocks, not rock chunks. */
 export const STACK_LIMITS: Readonly<Record<Resource, number>> = Object.freeze({
+  silver: 500,
   wood: 75,
   stone: 75,
   steel: 75,

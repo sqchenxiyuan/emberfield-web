@@ -1,0 +1,1410 @@
+{
+  "version": "1.7.4980 rev60",
+  "scope": "Selected Core static declarations; double-precision analytic specification, no native execution or RNG stream.",
+  "buyGlobal": 1.4,
+  "sellGlobal": 0.6,
+  "minimumBuy": 0.5,
+  "minimumSell": 0.01,
+  "roundAbove": 99.5,
+  "allowedDefects": [
+    0.05,
+    0.2
+  ],
+  "priceTypes": {
+    "VeryCheap": 0.4,
+    "Cheap": 0.7,
+    "Normal": 1,
+    "Expensive": 2,
+    "Exorbitant": 5
+  },
+  "giftDivisor": 40,
+  "giftCurve": [
+    [
+      0,
+      1
+    ],
+    [
+      75,
+      0.25
+    ]
+  ],
+  "tradeGoodwillDivisor": 600,
+  "stockWeight": [
+    [
+      0,
+      1
+    ],
+    [
+      500,
+      0.5
+    ],
+    [
+      1500,
+      0.2
+    ],
+    [
+      5000,
+      0.1
+    ]
+  ],
+  "allyCurve": [
+    [
+      0.25,
+      0.6
+    ],
+    [
+      1,
+      1
+    ]
+  ],
+  "difficulties": {
+    "Peaceful": 0,
+    "Easy": 0,
+    "Medium": 0,
+    "Rough": 0,
+    "Hard": 0.1,
+    "Extreme": 0.2
+  },
+  "schedule": {
+    "offsetDays": 5,
+    "onDays": 60,
+    "offDays": 0,
+    "count": 5,
+    "spacingDays": 6
+  },
+  "stayRange": [
+    27000,
+    45000
+  ],
+  "guardPointRange": [
+    550,
+    1000
+  ],
+  "items": {
+    "WoodLog": {
+      "id": "ThingDef_WoodLog",
+      "name": "WoodLog",
+      "tradeability": "All",
+      "sellFactor": 1,
+      "baseValue": 1.2,
+      "stackLimit": 75,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "ResourcesRaw"
+      ],
+      "ancestors": [
+        "ResourcesRaw",
+        "Root"
+      ],
+      "tags": [],
+      "generic": true,
+      "tech": "Neolithic",
+      "startingHpRange": "1~1"
+    },
+    "Steel": {
+      "id": "ThingDef_Steel",
+      "name": "Steel",
+      "tradeability": "All",
+      "sellFactor": 1,
+      "baseValue": 1.9,
+      "stackLimit": 75,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "ResourcesRaw"
+      ],
+      "ancestors": [
+        "ResourcesRaw",
+        "Root"
+      ],
+      "tags": [],
+      "generic": true,
+      "tech": "Undefined",
+      "startingHpRange": "1~1"
+    },
+    "BlocksGranite": {
+      "id": "ThingDef_BlocksGranite",
+      "name": "BlocksGranite",
+      "tradeability": "Buyable",
+      "sellFactor": 1,
+      "baseValue": 0.9,
+      "stackLimit": 75,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "StoneBlocks"
+      ],
+      "ancestors": [
+        "StoneBlocks",
+        "ResourcesRaw",
+        "Root"
+      ],
+      "tags": [],
+      "generic": true,
+      "tech": "Undefined",
+      "startingHpRange": "1~1"
+    },
+    "ChunkGranite": {
+      "id": "ThingDef_ChunkGranite",
+      "name": "ChunkGranite",
+      "tradeability": "None",
+      "sellFactor": 1,
+      "baseValue": null,
+      "stackLimit": 1,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "StoneChunks"
+      ],
+      "ancestors": [
+        "StoneChunks",
+        "Chunks",
+        "Root"
+      ],
+      "tags": [],
+      "generic": true,
+      "tech": "Undefined",
+      "startingHpRange": "1~1"
+    },
+    "Cloth": {
+      "id": "ThingDef_Cloth",
+      "name": "Cloth",
+      "tradeability": "All",
+      "sellFactor": 1,
+      "baseValue": 1.5,
+      "stackLimit": 75,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "Textiles"
+      ],
+      "ancestors": [
+        "Textiles",
+        "Manufactured",
+        "Root"
+      ],
+      "tags": [],
+      "generic": true,
+      "tech": "Undefined",
+      "startingHpRange": "1~1"
+    },
+    "ComponentIndustrial": {
+      "id": "ThingDef_ComponentIndustrial",
+      "name": "ComponentIndustrial",
+      "tradeability": "All",
+      "sellFactor": 1,
+      "baseValue": 32,
+      "stackLimit": 50,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "Manufactured"
+      ],
+      "ancestors": [
+        "Manufactured",
+        "Root"
+      ],
+      "tags": [],
+      "generic": true,
+      "tech": "Undefined",
+      "startingHpRange": "1~1"
+    },
+    "MealSurvivalPack": {
+      "id": "ThingDef_MealSurvivalPack",
+      "name": "MealSurvivalPack",
+      "tradeability": "All",
+      "sellFactor": 1,
+      "baseValue": 24,
+      "stackLimit": 10,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "FoodMeals"
+      ],
+      "ancestors": [
+        "FoodMeals",
+        "Foods",
+        "Root"
+      ],
+      "tags": [],
+      "generic": true,
+      "tech": "Undefined",
+      "startingHpRange": "1~1"
+    },
+    "RawRice": {
+      "id": "ThingDef_RawRice",
+      "name": "RawRice",
+      "tradeability": "All",
+      "sellFactor": 1,
+      "baseValue": 1.1,
+      "stackLimit": 75,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "PlantFoodRaw"
+      ],
+      "ancestors": [
+        "PlantFoodRaw",
+        "FoodRaw",
+        "Foods",
+        "Root"
+      ],
+      "tags": [],
+      "generic": true,
+      "tech": "Undefined",
+      "startingHpRange": "1~1"
+    },
+    "RawPotatoes": {
+      "id": "ThingDef_RawPotatoes",
+      "name": "RawPotatoes",
+      "tradeability": "All",
+      "sellFactor": 1,
+      "baseValue": 1.1,
+      "stackLimit": 75,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "PlantFoodRaw"
+      ],
+      "ancestors": [
+        "PlantFoodRaw",
+        "FoodRaw",
+        "Foods",
+        "Root"
+      ],
+      "tags": [],
+      "generic": true,
+      "tech": "Undefined",
+      "startingHpRange": "1~1"
+    },
+    "RawCorn": {
+      "id": "ThingDef_RawCorn",
+      "name": "RawCorn",
+      "tradeability": "All",
+      "sellFactor": 1,
+      "baseValue": 1.1,
+      "stackLimit": 75,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "PlantFoodRaw"
+      ],
+      "ancestors": [
+        "PlantFoodRaw",
+        "FoodRaw",
+        "Foods",
+        "Root"
+      ],
+      "tags": [],
+      "generic": true,
+      "tech": "Undefined",
+      "startingHpRange": "1~1"
+    },
+    "MealSimple": {
+      "id": "ThingDef_MealSimple",
+      "name": "MealSimple",
+      "tradeability": "Buyable",
+      "sellFactor": 1,
+      "baseValue": 15,
+      "stackLimit": 10,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "FoodMeals"
+      ],
+      "ancestors": [
+        "FoodMeals",
+        "Foods",
+        "Root"
+      ],
+      "tags": [],
+      "generic": true,
+      "tech": "Undefined",
+      "startingHpRange": "1~1"
+    },
+    "MedicineHerbal": {
+      "id": "ThingDef_MedicineHerbal",
+      "name": "MedicineHerbal",
+      "tradeability": "All",
+      "sellFactor": 1,
+      "baseValue": 10,
+      "stackLimit": 25,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "Medicine"
+      ],
+      "ancestors": [
+        "Medicine",
+        "Manufactured",
+        "Root"
+      ],
+      "tags": [],
+      "generic": true,
+      "tech": "Neolithic",
+      "startingHpRange": "1~1"
+    },
+    "MedicineIndustrial": {
+      "id": "ThingDef_MedicineIndustrial",
+      "name": "MedicineIndustrial",
+      "tradeability": "All",
+      "sellFactor": 1,
+      "baseValue": 18,
+      "stackLimit": 25,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "Medicine"
+      ],
+      "ancestors": [
+        "Medicine",
+        "Manufactured",
+        "Root"
+      ],
+      "tags": [],
+      "generic": true,
+      "tech": "Industrial",
+      "startingHpRange": "1~1"
+    },
+    "Silver": {
+      "id": "ThingDef_Silver",
+      "name": "Silver",
+      "tradeability": "All",
+      "sellFactor": 1,
+      "baseValue": 1,
+      "stackLimit": 500,
+      "smallVolume": true,
+      "volume": 0.1,
+      "category": "Item",
+      "categories": [
+        "ResourcesRaw"
+      ],
+      "ancestors": [
+        "ResourcesRaw",
+        "Root"
+      ],
+      "tags": [],
+      "generic": true,
+      "tech": "Undefined",
+      "startingHpRange": "1~1"
+    },
+    "MeleeWeapon_Club": {
+      "id": "ThingDef_MeleeWeapon_Club",
+      "name": "MeleeWeapon_Club",
+      "tradeability": "All",
+      "sellFactor": 0.2,
+      "baseValue": null,
+      "stackLimit": 1,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "WeaponsMelee"
+      ],
+      "ancestors": [
+        "WeaponsMelee",
+        "Weapons",
+        "Root"
+      ],
+      "tags": [
+        "WeaponMelee"
+      ],
+      "generic": true,
+      "tech": "Neolithic",
+      "startingHpRange": "1~1"
+    },
+    "MeleeWeapon_Knife": {
+      "id": "ThingDef_MeleeWeapon_Knife",
+      "name": "MeleeWeapon_Knife",
+      "tradeability": "All",
+      "sellFactor": 0.2,
+      "baseValue": null,
+      "stackLimit": 1,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "WeaponsMelee"
+      ],
+      "ancestors": [
+        "WeaponsMelee",
+        "Weapons",
+        "Root"
+      ],
+      "tags": [
+        "WeaponMelee"
+      ],
+      "generic": true,
+      "tech": "Neolithic",
+      "startingHpRange": "1~1"
+    },
+    "MeleeWeapon_LongSword": {
+      "id": "ThingDef_MeleeWeapon_LongSword",
+      "name": "MeleeWeapon_LongSword",
+      "tradeability": "All",
+      "sellFactor": 0.2,
+      "baseValue": null,
+      "stackLimit": 1,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "WeaponsMelee"
+      ],
+      "ancestors": [
+        "WeaponsMelee",
+        "Weapons",
+        "Root"
+      ],
+      "tags": [
+        "WeaponMelee"
+      ],
+      "generic": true,
+      "tech": "Medieval",
+      "startingHpRange": "1~1"
+    },
+    "Bow_Short": {
+      "id": "ThingDef_Bow_Short",
+      "name": "Bow_Short",
+      "tradeability": "All",
+      "sellFactor": 0.2,
+      "baseValue": null,
+      "stackLimit": 1,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "WeaponsRanged"
+      ],
+      "ancestors": [
+        "WeaponsRanged",
+        "Weapons",
+        "Root"
+      ],
+      "tags": [
+        "WeaponRanged"
+      ],
+      "generic": true,
+      "tech": "Neolithic",
+      "startingHpRange": "1~1"
+    },
+    "Gun_Revolver": {
+      "id": "ThingDef_Gun_Revolver",
+      "name": "Gun_Revolver",
+      "tradeability": "All",
+      "sellFactor": 0.2,
+      "baseValue": null,
+      "stackLimit": 1,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "WeaponsRanged"
+      ],
+      "ancestors": [
+        "WeaponsRanged",
+        "Weapons",
+        "Root"
+      ],
+      "tags": [
+        "WeaponRanged"
+      ],
+      "generic": true,
+      "tech": "Industrial",
+      "startingHpRange": "1~1"
+    },
+    "Gun_MachinePistol": {
+      "id": "ThingDef_Gun_MachinePistol",
+      "name": "Gun_MachinePistol",
+      "tradeability": "All",
+      "sellFactor": 0.2,
+      "baseValue": null,
+      "stackLimit": 1,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "WeaponsRanged"
+      ],
+      "ancestors": [
+        "WeaponsRanged",
+        "Weapons",
+        "Root"
+      ],
+      "tags": [
+        "WeaponRanged"
+      ],
+      "generic": true,
+      "tech": "Industrial",
+      "startingHpRange": "1~1"
+    },
+    "Gun_BoltActionRifle": {
+      "id": "ThingDef_Gun_BoltActionRifle",
+      "name": "Gun_BoltActionRifle",
+      "tradeability": "All",
+      "sellFactor": 0.2,
+      "baseValue": null,
+      "stackLimit": 1,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "WeaponsRanged"
+      ],
+      "ancestors": [
+        "WeaponsRanged",
+        "Weapons",
+        "Root"
+      ],
+      "tags": [
+        "WeaponRanged"
+      ],
+      "generic": true,
+      "tech": "Industrial",
+      "startingHpRange": "1~1"
+    },
+    "Apparel_Tuque": {
+      "id": "ThingDef_Apparel_Tuque",
+      "name": "Apparel_Tuque",
+      "tradeability": "All",
+      "sellFactor": 1,
+      "baseValue": null,
+      "stackLimit": 1,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "Headgear"
+      ],
+      "ancestors": [
+        "Headgear",
+        "Apparel",
+        "Root"
+      ],
+      "tags": [
+        "Clothing",
+        "BasicClothing"
+      ],
+      "generic": true,
+      "tech": "Medieval",
+      "startingHpRange": "1~1"
+    },
+    "Apparel_Parka": {
+      "id": "ThingDef_Apparel_Parka",
+      "name": "Apparel_Parka",
+      "tradeability": "All",
+      "sellFactor": 1,
+      "baseValue": null,
+      "stackLimit": 1,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "ApparelMisc"
+      ],
+      "ancestors": [
+        "ApparelMisc",
+        "Apparel",
+        "Root"
+      ],
+      "tags": [
+        "Clothing",
+        "BasicClothing"
+      ],
+      "generic": true,
+      "tech": "Neolithic",
+      "startingHpRange": "1~1"
+    },
+    "Apparel_Duster": {
+      "id": "ThingDef_Apparel_Duster",
+      "name": "Apparel_Duster",
+      "tradeability": "All",
+      "sellFactor": 1,
+      "baseValue": null,
+      "stackLimit": 1,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "ApparelMisc"
+      ],
+      "ancestors": [
+        "ApparelMisc",
+        "Apparel",
+        "Root"
+      ],
+      "tags": [
+        "Clothing",
+        "BasicClothing"
+      ],
+      "generic": true,
+      "tech": "Medieval",
+      "startingHpRange": "1~1"
+    },
+    "Apparel_BasicShirt": {
+      "id": "ThingDef_Apparel_BasicShirt",
+      "name": "Apparel_BasicShirt",
+      "tradeability": "All",
+      "sellFactor": 1,
+      "baseValue": null,
+      "stackLimit": 1,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "ApparelMisc"
+      ],
+      "ancestors": [
+        "ApparelMisc",
+        "Apparel",
+        "Root"
+      ],
+      "tags": [
+        "Clothing",
+        "BasicClothing"
+      ],
+      "generic": true,
+      "tech": "Medieval",
+      "startingHpRange": "1~1"
+    },
+    "Apparel_Pants": {
+      "id": "ThingDef_Apparel_Pants",
+      "name": "Apparel_Pants",
+      "tradeability": "All",
+      "sellFactor": 1,
+      "baseValue": null,
+      "stackLimit": 1,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "ApparelMisc"
+      ],
+      "ancestors": [
+        "ApparelMisc",
+        "Apparel",
+        "Root"
+      ],
+      "tags": [
+        "Clothing",
+        "BasicClothing"
+      ],
+      "generic": true,
+      "tech": "Medieval",
+      "startingHpRange": "1~1"
+    },
+    "Apparel_SimpleHelmet": {
+      "id": "ThingDef_Apparel_SimpleHelmet",
+      "name": "Apparel_SimpleHelmet",
+      "tradeability": "All",
+      "sellFactor": 1,
+      "baseValue": null,
+      "stackLimit": 1,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "ArmorHeadgear"
+      ],
+      "ancestors": [
+        "ArmorHeadgear",
+        "ApparelArmor",
+        "Apparel",
+        "Root"
+      ],
+      "tags": [
+        "Clothing",
+        "Armor"
+      ],
+      "generic": true,
+      "tech": "Industrial",
+      "startingHpRange": "1~1"
+    },
+    "Apparel_PlateArmor": {
+      "id": "ThingDef_Apparel_PlateArmor",
+      "name": "Apparel_PlateArmor",
+      "tradeability": "All",
+      "sellFactor": 1,
+      "baseValue": null,
+      "stackLimit": 1,
+      "smallVolume": false,
+      "volume": 1,
+      "category": "Item",
+      "categories": [
+        "ApparelArmor"
+      ],
+      "ancestors": [
+        "ApparelArmor",
+        "Apparel",
+        "Root"
+      ],
+      "tags": [
+        "Clothing",
+        "Armor"
+      ],
+      "generic": true,
+      "tech": "Medieval",
+      "startingHpRange": "1~1"
+    }
+  },
+  "traders": {
+    "Caravan_Outlander_BulkGoods": [
+      {
+        "class": "StockGenerator_SingleDef",
+        "mayRequire": null,
+        "values": {
+          "thingDef": "Silver",
+          "countRange": "750~1200"
+        }
+      },
+      {
+        "class": "StockGenerator_SingleDef",
+        "mayRequire": null,
+        "values": {
+          "thingDef": "ComponentIndustrial",
+          "countRange": "30~40"
+        }
+      },
+      {
+        "class": "StockGenerator_SingleDef",
+        "mayRequire": null,
+        "values": {
+          "thingDef": "ComponentSpacer",
+          "countRange": "-10~2"
+        }
+      },
+      {
+        "class": "StockGenerator_SingleDef",
+        "mayRequire": null,
+        "values": {
+          "thingDef": "Steel",
+          "countRange": "250~400"
+        }
+      },
+      {
+        "class": "StockGenerator_SingleDef",
+        "mayRequire": null,
+        "values": {
+          "thingDef": "Cloth",
+          "countRange": "250~400"
+        }
+      },
+      {
+        "class": "StockGenerator_SingleDef",
+        "mayRequire": null,
+        "values": {
+          "thingDef": "Chemfuel",
+          "countRange": "250~400"
+        }
+      },
+      {
+        "class": "StockGenerator_SingleDef",
+        "mayRequire": null,
+        "values": {
+          "thingDef": "Neutroamine",
+          "countRange": "70~160"
+        }
+      },
+      {
+        "class": "StockGenerator_SingleDef",
+        "mayRequire": null,
+        "values": {
+          "thingDef": "Beer",
+          "totalPriceRange": "-100~100"
+        }
+      },
+      {
+        "class": "StockGenerator_SingleDef",
+        "mayRequire": null,
+        "values": {
+          "thingDef": "Chocolate",
+          "totalPriceRange": "10~40"
+        }
+      },
+      {
+        "class": "StockGenerator_SingleDef",
+        "mayRequire": null,
+        "values": {
+          "thingDef": "Dye",
+          "countRange": "15~20"
+        }
+      },
+      {
+        "class": "StockGenerator_ReinforcedBarrels",
+        "mayRequire": null,
+        "values": {
+          "countRange": "1~4"
+        }
+      },
+      {
+        "class": "StockGenerator_Category",
+        "mayRequire": null,
+        "values": {
+          "categoryDef": "FoodRaw",
+          "thingDefCountRange": "3~3",
+          "totalPriceRange": "150~600",
+          "excludedCategories/li": "EggsFertilized"
+        }
+      },
+      {
+        "class": "StockGenerator_Category",
+        "mayRequire": null,
+        "values": {
+          "categoryDef": "Textiles",
+          "excludedThingDefs/li": "Leather_Dread"
+        }
+      },
+      {
+        "class": "StockGenerator_MultiDef",
+        "mayRequire": null,
+        "values": {
+          "thingDefs/li[1]": "Chocolate",
+          "thingDefs/li[2]": "Kibble",
+          "thingDefs/li[3]": "Pemmican"
+        }
+      },
+      {
+        "class": "StockGenerator_Category",
+        "mayRequire": null,
+        "values": {
+          "categoryDef": "Drugs"
+        }
+      },
+      {
+        "class": "StockGenerator_SingleDef",
+        "mayRequire": null,
+        "values": {
+          "thingDef": "TextBook",
+          "countRange": "0~2"
+        }
+      },
+      {
+        "class": "StockGenerator_SingleDef",
+        "mayRequire": null,
+        "values": {
+          "thingDef": "Schematic",
+          "countRange": "1~1"
+        }
+      },
+      {
+        "class": "StockGenerator_SingleDef",
+        "mayRequire": null,
+        "values": {
+          "thingDef": "Novel",
+          "countRange": "1~1"
+        }
+      },
+      {
+        "class": "StockGenerator_MarketValue",
+        "mayRequire": null,
+        "values": {
+          "tradeTag": "BasicClothing",
+          "countRange": "7~7"
+        }
+      },
+      {
+        "class": "StockGenerator_MarketValue",
+        "mayRequire": null,
+        "values": {
+          "tradeTag": "Clothing",
+          "countRange": "3~3"
+        }
+      },
+      {
+        "class": "StockGenerator_Category",
+        "mayRequire": null,
+        "values": {
+          "categoryDef": "BuildingsFurniture",
+          "thingDefCountRange": "3~3",
+          "countRange": "1~1"
+        }
+      },
+      {
+        "class": "StockGenerator_Animals",
+        "mayRequire": null,
+        "values": {
+          "maxWildness": "0.70",
+          "tradeTagsSell/li": "AnimalFarm",
+          "tradeTagsBuy/li": "AnimalExotic",
+          "kindCountRange": "1",
+          "countRange": "3~4",
+          "createMatingPair/li": "AnimalFarm"
+        }
+      },
+      {
+        "class": "StockGenerator_SingleDef",
+        "mayRequire": "Ludeon.RimWorld.Anomaly",
+        "values": {
+          "thingDef": "Apparel_CultistMask",
+          "countRange": "-1~2"
+        }
+      },
+      {
+        "class": "StockGenerator_SingleDef",
+        "mayRequire": "Ludeon.RimWorld.Anomaly",
+        "values": {
+          "thingDef": "Apparel_CeremonialCultistMask",
+          "countRange": "-1~2"
+        }
+      },
+      {
+        "class": "StockGenerator_BuyExpensiveSimple",
+        "mayRequire": null,
+        "values": {}
+      },
+      {
+        "class": "StockGenerator_BuyTradeTag",
+        "mayRequire": null,
+        "values": {
+          "tag": "Art"
+        }
+      },
+      {
+        "class": "StockGenerator_BuyTradeTag",
+        "mayRequire": null,
+        "values": {
+          "tag": "MusicalInstrument"
+        }
+      }
+    ],
+    "Caravan_Outlander_CombatSupplier": [
+      {
+        "class": "StockGenerator_SingleDef",
+        "mayRequire": null,
+        "values": {
+          "thingDef": "Silver",
+          "countRange": "750~1200"
+        }
+      },
+      {
+        "class": "StockGenerator_SingleDef",
+        "mayRequire": null,
+        "values": {
+          "thingDef": "MedicineIndustrial",
+          "countRange": "10~20"
+        }
+      },
+      {
+        "class": "StockGenerator_Techprints",
+        "mayRequire": null,
+        "values": {
+          "countChances/li/count": "1",
+          "countChances/li/chance": "1"
+        }
+      },
+      {
+        "class": "StockGenerator_MarketValue",
+        "mayRequire": null,
+        "values": {
+          "tradeTag": "WeaponRanged",
+          "countRange": "5~5"
+        }
+      },
+      {
+        "class": "StockGenerator_Category",
+        "mayRequire": null,
+        "values": {
+          "categoryDef": "WeaponsMelee",
+          "thingDefCountRange": "6~6",
+          "countRange": "1~1"
+        }
+      },
+      {
+        "class": "StockGenerator_Tag",
+        "mayRequire": null,
+        "values": {
+          "tradeTag": "MortarShell",
+          "thingDefCountRange": "1~2",
+          "countRange": "3~15",
+          "excludedThingDefs/li": "Shell_Deadlife"
+        }
+      },
+      {
+        "class": "StockGenerator_MarketValue",
+        "mayRequire": null,
+        "values": {
+          "tradeTag": "Armor",
+          "countRange": "5~5"
+        }
+      },
+      {
+        "class": "StockGenerator_SingleDef",
+        "mayRequire": "Ludeon.RimWorld.Biotech",
+        "values": {
+          "thingDef": "Genepack",
+          "countRange": "1~1"
+        }
+      },
+      {
+        "class": "StockGenerator_BuyExpensiveSimple",
+        "mayRequire": null,
+        "values": {}
+      },
+      {
+        "class": "StockGenerator_BuyTradeTag",
+        "mayRequire": null,
+        "values": {
+          "tag": "Art"
+        }
+      },
+      {
+        "class": "StockGenerator_BuyTradeTag",
+        "mayRequire": null,
+        "values": {
+          "tag": "HiTechArmor"
+        }
+      },
+      {
+        "class": "StockGenerator_BuyTradeTag",
+        "mayRequire": null,
+        "values": {
+          "tag": "MusicalInstrument"
+        }
+      },
+      {
+        "class": "StockGenerator_BuyTradeTag",
+        "mayRequire": null,
+        "values": {
+          "tag": "Drugs"
+        }
+      },
+      {
+        "class": "StockGenerator_BuyTradeTag",
+        "mayRequire": null,
+        "values": {
+          "tag": "HoraxWeapon"
+        }
+      }
+    ]
+  },
+  "pawns": {
+    "Town_Trader": {
+      "combatPower": 45,
+      "quality": "Normal",
+      "health": "1~1",
+      "weaponMoney": "200~200",
+      "weaponTags": [
+        "Gun"
+      ]
+    },
+    "Villager": {
+      "combatPower": 45,
+      "quality": "Poor",
+      "health": "0.2~2.0",
+      "weaponMoney": "65~250",
+      "weaponTags": [
+        "Gun",
+        "MedievalMeleeBasic"
+      ]
+    },
+    "Town_Guard": {
+      "combatPower": 60,
+      "quality": "Normal",
+      "health": "0.6~2",
+      "weaponMoney": "250~400",
+      "weaponTags": [
+        "Gun"
+      ]
+    },
+    "Grenadier_Destructive": {
+      "combatPower": 70,
+      "quality": "Normal",
+      "health": "0.7~2.3",
+      "weaponMoney": "500~500",
+      "weaponTags": [
+        "GrenadeDestructive"
+      ]
+    },
+    "Mercenary_Slasher": {
+      "combatPower": 140,
+      "quality": "Normal",
+      "health": "0.7~3.2",
+      "weaponMoney": "200~500",
+      "weaponTags": [
+        "MedievalMeleeDecent",
+        "MedievalMeleeAdvanced"
+      ]
+    },
+    "Mercenary_Gunner": {
+      "combatPower": 85,
+      "quality": "Normal",
+      "health": "0.7~3.2",
+      "weaponMoney": "330~650",
+      "weaponTags": [
+        "Gun"
+      ]
+    },
+    "Mercenary_Elite": {
+      "combatPower": 130,
+      "quality": "Normal",
+      "health": "1~1",
+      "weaponMoney": "500~1400",
+      "weaponTags": [
+        "IndustrialGunAdvanced"
+      ]
+    },
+    "Muffalo": {
+      "combatPower": 100,
+      "quality": "Normal",
+      "health": "1~1",
+      "weaponMoney": "0~0",
+      "weaponTags": []
+    },
+    "Dromedary": {
+      "combatPower": 90,
+      "quality": "Normal",
+      "health": "1~1",
+      "weaponMoney": "0~0",
+      "weaponTags": []
+    },
+    "Alpaca": {
+      "combatPower": 65,
+      "quality": "Normal",
+      "health": "1~1",
+      "weaponMoney": "0~0",
+      "weaponTags": []
+    },
+    "Elephant": {
+      "combatPower": 260,
+      "quality": "Normal",
+      "health": "1~1",
+      "weaponMoney": "0~0",
+      "weaponTags": []
+    }
+  },
+  "abstractValues": {
+    "MeleeWeapon_Club": {
+      "value": 84.32,
+      "base": 84.32,
+      "ingredients": 80,
+      "work": 1200,
+      "workMake": 1200,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "BaseWeapon",
+        "BaseMeleeWeapon",
+        "BaseMeleeWeapon_Blunt",
+        "MeleeWeapon_Club"
+      ]
+    },
+    "MeleeWeapon_Knife": {
+      "value": 66.48,
+      "base": 66.48,
+      "ingredients": 60,
+      "work": 1800,
+      "workMake": 1800,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "BaseWeapon",
+        "BaseMeleeWeapon",
+        "BaseMeleeWeapon_Sharp",
+        "BaseMeleeWeapon_Sharp_Quality",
+        "MeleeWeapon_Knife"
+      ]
+    },
+    "MeleeWeapon_LongSword": {
+      "value": 265,
+      "base": 264.8,
+      "ingredients": 200,
+      "work": 18000,
+      "workMake": 18000,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "BaseWeapon",
+        "BaseMeleeWeapon",
+        "BaseMeleeWeapon_Sharp",
+        "BaseMeleeWeapon_Sharp_Quality",
+        "MeleeWeapon_LongSword"
+      ]
+    },
+    "Bow_Short": {
+      "value": 44.64,
+      "base": 44.64,
+      "ingredients": 36,
+      "work": 2400,
+      "workMake": 2400,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "BaseWeapon",
+        "BaseWeaponNeolithic",
+        "Bow_Short"
+      ]
+    },
+    "Gun_Revolver": {
+      "value": 135.4,
+      "base": 135.4,
+      "ingredients": 121,
+      "work": 4000,
+      "workMake": 4000,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "BaseWeapon",
+        "BaseGun",
+        "BaseGunWithQuality",
+        "BaseMakeableGun",
+        "BaseHumanMakeableGun",
+        "Gun_Revolver"
+      ]
+    },
+    "Gun_MachinePistol": {
+      "value": 220,
+      "base": 221.1,
+      "ingredients": 181.5,
+      "work": 11000,
+      "workMake": 11000,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "BaseWeapon",
+        "BaseGun",
+        "BaseGunWithQuality",
+        "BaseMakeableGun",
+        "BaseHumanMakeableGun",
+        "Gun_MachinePistol"
+      ]
+    },
+    "Gun_BoltActionRifle": {
+      "value": 255,
+      "base": 253.2,
+      "ingredients": 210,
+      "work": 12000,
+      "workMake": 12000,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "BaseWeapon",
+        "BaseGun",
+        "BaseGunWithQuality",
+        "BaseMakeableGun",
+        "BaseHumanMakeableGun",
+        "Gun_BoltActionRifle"
+      ]
+    },
+    "Apparel_Tuque": {
+      "value": 44.32,
+      "base": 44.32,
+      "ingredients": 40,
+      "work": 1200,
+      "workMake": 1200,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "ApparelNoQualityBase",
+        "ApparelBase",
+        "ApparelMakeableBase",
+        "HatMakeableBase",
+        "Apparel_Tuque"
+      ]
+    },
+    "Apparel_Parka": {
+      "value": 188.8,
+      "base": 188.8,
+      "ingredients": 160,
+      "work": 8000,
+      "workMake": 8000,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "ApparelNoQualityBase",
+        "ApparelBase",
+        "ApparelMakeableBase",
+        "Apparel_Parka"
+      ]
+    },
+    "Apparel_Duster": {
+      "value": 196,
+      "base": 196,
+      "ingredients": 160,
+      "work": 10000,
+      "workMake": 10000,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "ApparelNoQualityBase",
+        "ApparelBase",
+        "ApparelMakeableBase",
+        "Apparel_Duster"
+      ]
+    },
+    "Apparel_BasicShirt": {
+      "value": 85.76,
+      "base": 85.76,
+      "ingredients": 80,
+      "work": 1600,
+      "workMake": 1600,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "ApparelNoQualityBase",
+        "ApparelBase",
+        "ApparelMakeableBase",
+        "Apparel_BasicShirt"
+      ]
+    },
+    "Apparel_Pants": {
+      "value": 85.76,
+      "base": 85.76,
+      "ingredients": 80,
+      "work": 1600,
+      "workMake": 1600,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "ApparelNoQualityBase",
+        "ApparelBase",
+        "ApparelMakeableBase",
+        "Apparel_Pants"
+      ]
+    },
+    "Apparel_SimpleHelmet": {
+      "value": 91.52,
+      "base": 91.52,
+      "ingredients": 80,
+      "work": 3200,
+      "workMake": 3200,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "ApparelNoQualityBase",
+        "ApparelBase",
+        "ArmorMachineableBase",
+        "ArmorHelmetMakeableBase",
+        "Apparel_SimpleHelmet"
+      ]
+    },
+    "Apparel_PlateArmor": {
+      "value": 475,
+      "base": 476.79999999999995,
+      "ingredients": 340,
+      "work": 38000,
+      "workMake": 38000,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "ApparelNoQualityBase",
+        "ApparelBase",
+        "ArmorSmithableBase",
+        "Apparel_PlateArmor"
+      ]
+    }
+  }
+}

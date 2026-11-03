@@ -128,7 +128,7 @@ async function verify(mode) {
     );
     const legacy = await load('tests/fixtures/voxel-v10-start.json'),
       migrated = await save();
-    assert.equal(migrated.version, 20);
+    assert.equal(migrated.version, 21);
     assert.deepEqual(migrated.blocks, legacy.blocks);
     assert.deepEqual(migrated.items, legacy.items);
     assert(migrated.pawns.every((p) => p.worn.length === 0));

@@ -14,6 +14,7 @@ import type { WealthTotals } from './storytellerRules';
 
 /** Core 1.7 selected full-HP resource prices. Underground deposits/plants are not items. */
 export const RESOURCE_MARKET_VALUE: Readonly<Record<Exclude<Resource, 'apparel' | 'weapon'>, number>> = {
+  silver: 1,
   wood: 1.2, stone: .9, steel: 1.9, components: 32, food: 24,
   grain: 1.1, meal: 15, chunk: 0, cloth: 1.5, herb: 10,
 };
@@ -110,7 +111,7 @@ export function pawnMarketValue(pawn: Pawn): number {
     const capable = actual[key] > (key === 'moving' ? .15 : 0);
     factor *= capable ? .5 + .5 * clamp(trade[key]) : .6;
   }
-  // Explicit project subset: original averages all 12 skills, this game stores 9.
+  // Explicit project subset: original averages all 12 skills, this game stores 10.
   const average = SKILL_KEYS.reduce((sum, key) => sum + pawn.skills[key].level, 0) / SKILL_KEYS.length;
   factor *= line([[0, .2], [5.5, 1], [20, 3]], average);
   return finalizeMarketValue(1750 * Math.max(.1, factor));

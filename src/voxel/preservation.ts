@@ -86,6 +86,7 @@ export function validBatch(batch: unknown): batch is Cargo {
   const b = batch as Cargo;
   if (
     ![
+      'silver',
       'wood',
       'stone',
       'chunk',

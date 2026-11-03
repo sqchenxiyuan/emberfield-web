@@ -279,7 +279,7 @@ function mineComponents(target) {
 }
 const gear = (kind) => s.items.find((item) => item.weapon?.kind === kind || item.apparel?.kind === kind);
 async function opening(resumeStage = null) {
-  assert.equal(s.save().version, 20);
+  assert.equal(s.save().version, 21);
   if (resumeStage !== 'powered') {
   if (resumeStage !== 'components') {
     report.initialThreat = s.threatBreakdown();

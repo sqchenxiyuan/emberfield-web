@@ -146,7 +146,7 @@ async function verify(mode) {
     for (const name of ['apparel', 'trauma']) {
       const old = await load(`tests/fixtures/voxel-v16-${name}.json`),
         migrated = await save();
-      assert.equal(migrated.version, 20);
+      assert.equal(migrated.version, 21);
       for (const field of ['blocks', 'items', 'stats', 'tick'])
         assert.deepEqual(migrated[field], field === 'stats' ? withMedicineLedgers(old.stats) : old[field]);
       for (const pawn of migrated.pawns) {

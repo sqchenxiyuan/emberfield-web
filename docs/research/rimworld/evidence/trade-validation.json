@@ -1,0 +1,535 @@
+{
+  "status": "pass",
+  "checked_at_utc": "2026-11-03T11:57:36.6497795Z",
+  "original_game_executed": false,
+  "installed_assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "installed_xml_files": 30,
+  "fresh_xml_matches": true,
+  "local": {
+    "status": "pass",
+    "version": "1.7.4980 rev60",
+    "newTypes": 50,
+    "reusedTypes": 17,
+    "claims": 22,
+    "cases": 176,
+    "items": 28,
+    "abstractValuations": 14,
+    "structureAssertions": 646,
+    "analyticAssertions": 456,
+    "codeReferences": 113,
+    "xmlReferences": 60,
+    "xmlRecords": 124,
+    "referencedXmlFiles": 30,
+    "xmlLeaves": 1018,
+    "xmlAttributes": 166,
+    "xmlAbsences": 1510,
+    "localDerivedFilesVerified": 67,
+    "originalGameExecuted": false,
+    "scope": "Static identity, selected parent/category closure and independent arithmetic; no native execution, enabled-mod Def engine, native RNG stream, transaction exception rollback or project equivalence."
+  },
+  "portable": {
+    "status": "pass",
+    "version": "1.7.4980 rev60",
+    "newTypes": 50,
+    "reusedTypes": 17,
+    "claims": 22,
+    "cases": 176,
+    "items": 28,
+    "abstractValuations": 14,
+    "structureAssertions": 646,
+    "analyticAssertions": 456,
+    "codeReferences": 113,
+    "xmlReferences": 60,
+    "xmlRecords": 124,
+    "referencedXmlFiles": 30,
+    "xmlLeaves": 1018,
+    "xmlAttributes": 166,
+    "xmlAbsences": 1510,
+    "localDerivedFilesVerified": 0,
+    "originalGameExecuted": false,
+    "scope": "Static identity, selected parent/category closure and independent arithmetic; no native execution, enabled-mod Def engine, native RNG stream, transaction exception rollback or project equivalence."
+  },
+  "negative": {
+    "status": "pass",
+    "rejected": 22,
+    "corruptions": [
+      "silver-stack-limit",
+      "missing-intermediate-clothing-parent",
+      "parent-cycle",
+      "category-ancestry",
+      "abstract-concrete-id-collision",
+      "xml-attribute",
+      "xml-absence",
+      "xml-file-hash",
+      "xml-line-range",
+      "target-assembly",
+      "decompiler-version",
+      "derived-file-hash",
+      "reused-manifest",
+      "selected-types",
+      "claim-statement",
+      "claim-code-range",
+      "claim-xml-reference",
+      "manual-case",
+      "price-factor",
+      "abstract-value",
+      "category-acceptance",
+      "local-derived-bytes"
+    ],
+    "formulaMutants": 53,
+    "mutations": [
+      {
+        "name": "buy-global-1.2",
+        "model": "price",
+        "killedBy": [
+          "TV09",
+          "TV10",
+          "TV11",
+          "TV12",
+          "TV13",
+          "TV15",
+          "TV17",
+          "TV18",
+          "TV19",
+          "TV20",
+          "TV21",
+          "TV22"
+        ]
+      },
+      {
+        "name": "sell-global-.5",
+        "model": "price",
+        "killedBy": [
+          "TV09",
+          "TV10",
+          "TV11",
+          "TV12",
+          "TV13",
+          "TV17",
+          "TV18",
+          "TV19",
+          "TV20",
+          "TV21"
+        ]
+      },
+      {
+        "name": "weapon-sell-factor-ignored",
+        "model": "price",
+        "killedBy": [
+          "TV10",
+          "TV11",
+          "TV12",
+          "TV13"
+        ]
+      },
+      {
+        "name": "difficulty-loss-ignored",
+        "model": "price",
+        "killedBy": [
+          "TV11",
+          "TV12"
+        ]
+      },
+      {
+        "name": "settlement-gain-ignored",
+        "model": "price",
+        "killedBy": [
+          "TV17"
+        ]
+      },
+      {
+        "name": "currency-marked-up",
+        "model": "price",
+        "killedBy": [
+          "TV16"
+        ]
+      },
+      {
+        "name": "minimum-buy-zero",
+        "model": "price",
+        "killedBy": [
+          "TV14"
+        ]
+      },
+      {
+        "name": "minimum-sell-zero",
+        "model": "price",
+        "killedBy": [
+          "TV14"
+        ]
+      },
+      {
+        "name": "threshold-inclusive",
+        "model": "price",
+        "killedBy": [
+          "TV19"
+        ]
+      },
+      {
+        "name": "integer-every-unit-price",
+        "model": "price",
+        "killedBy": [
+          "TV09",
+          "TV10",
+          "TV11",
+          "TV12",
+          "TV13",
+          "TV14",
+          "TV15",
+          "TV18",
+          "TV19"
+        ]
+      },
+      {
+        "name": "omit-sell-price-ceiling",
+        "model": "price",
+        "killedBy": [
+          "TV14",
+          "TV15",
+          "TV16",
+          "TV17",
+          "TV18",
+          "TV22"
+        ]
+      },
+      {
+        "name": "social-one-percent",
+        "model": "negotiator",
+        "killedBy": [
+          "TV02",
+          "TV03",
+          "TV04",
+          "TV05",
+          "TV07",
+          "TV08"
+        ]
+      },
+      {
+        "name": "capacity-defect-ignored",
+        "model": "negotiator",
+        "killedBy": [
+          "TV03",
+          "TV04"
+        ]
+      },
+      {
+        "name": "capacity-zero-forces-zero-gain",
+        "model": "negotiator",
+        "killedBy": [
+          "TV05"
+        ]
+      },
+      {
+        "name": "leader-offset-ignored",
+        "model": "negotiator",
+        "killedBy": [
+          "TV06",
+          "TV07"
+        ]
+      },
+      {
+        "name": "negotiator-cap-ignored",
+        "model": "negotiator",
+        "killedBy": [
+          "TV06"
+        ]
+      },
+      {
+        "name": "round-each-total-row",
+        "model": "settlement",
+        "killedBy": [
+          "TV23",
+          "TV24",
+          "TV25",
+          "TV26"
+        ]
+      },
+      {
+        "name": "settlement-half-up",
+        "model": "settlement",
+        "killedBy": [
+          "TV24"
+        ]
+      },
+      {
+        "name": "merchant-shortfall-silently-accepted",
+        "model": "settlement",
+        "killedBy": [
+          "TV29"
+        ]
+      },
+      {
+        "name": "player-insufficient-allowed",
+        "model": "settlement",
+        "killedBy": [
+          "TV28"
+        ]
+      },
+      {
+        "name": "forbidden-items-excluded",
+        "model": "eligibility",
+        "killedBy": [
+          "TV32"
+        ]
+      },
+      {
+        "name": "carried-items-included",
+        "model": "eligibility",
+        "killedBy": [
+          "TV35"
+        ]
+      },
+      {
+        "name": "all-map-items-included",
+        "model": "eligibility",
+        "killedBy": [
+          "TV34"
+        ]
+      },
+      {
+        "name": "tainted-apparel-allowed",
+        "model": "eligibility",
+        "killedBy": [
+          "TV38"
+        ]
+      },
+      {
+        "name": "buyable-means-player-can-sell",
+        "model": "eligibility",
+        "killedBy": [
+          "TV41"
+        ]
+      },
+      {
+        "name": "gift-one-linear-curve-evaluation",
+        "model": "gift",
+        "killedBy": [
+          "TV47"
+        ]
+      },
+      {
+        "name": "gift-uses-market-divisor-600",
+        "model": "gift",
+        "killedBy": [
+          "TV45",
+          "TV46",
+          "TV47",
+          "TV48",
+          "TV49"
+        ]
+      },
+      {
+        "name": "trade-goodwill-round-not-truncate",
+        "model": "tradeGoodwill",
+        "killedBy": [
+          "TV50"
+        ]
+      },
+      {
+        "name": "stock-price-count-floor",
+        "model": "stockCount",
+        "killedBy": [
+          "TV56"
+        ]
+      },
+      {
+        "name": "stock-count-100-attempts",
+        "model": "stockCount",
+        "killedBy": [
+          "TV58"
+        ]
+      },
+      {
+        "name": "trader-quality-round-not-truncate",
+        "model": "quality",
+        "killedBy": [
+          "TV61",
+          "TV63"
+        ]
+      },
+      {
+        "name": "trader-quality-can-be-awful",
+        "model": "quality",
+        "killedBy": [
+          "TV60"
+        ]
+      },
+      {
+        "name": "trader-quality-can-be-legendary",
+        "model": "quality",
+        "killedBy": [
+          "TV64"
+        ]
+      },
+      {
+        "name": "uniform-marketvalue-selection",
+        "model": "stockWeight",
+        "killedBy": [
+          "TV65",
+          "TV66"
+        ]
+      },
+      {
+        "name": "carriers-count-rounded",
+        "model": "carriers",
+        "killedBy": [
+          "TV68",
+          "TV70",
+          "TV71"
+        ]
+      },
+      {
+        "name": "guard-budget-keeps-trader-cost",
+        "model": "carriers",
+        "killedBy": [
+          "TV67",
+          "TV68",
+          "TV69",
+          "TV70",
+          "TV71"
+        ]
+      },
+      {
+        "name": "schedule-no-five-day-offset",
+        "model": "schedule",
+        "killedBy": [
+          "TV72",
+          "TV73",
+          "TV74",
+          "TV75"
+        ]
+      },
+      {
+        "name": "stay-greater-or-equal",
+        "model": "stay",
+        "killedBy": [
+          "TV79"
+        ]
+      },
+      {
+        "name": "all-friendly-is-only-half-frequency",
+        "model": "allyFraction",
+        "killedBy": [
+          "TV77",
+          "TV78"
+        ]
+      },
+      {
+        "name": "bulk-does-not-accept-armor",
+        "model": "accept",
+        "killedBy": [
+          "TV135",
+          "TV137"
+        ]
+      },
+      {
+        "name": "bulk-basicclothing-excludes-coats",
+        "model": "accept",
+        "killedBy": [
+          "TV127",
+          "TV129"
+        ]
+      },
+      {
+        "name": "natural-goodwill-ignored",
+        "model": "goodwill",
+        "killedBy": [
+          "TV139",
+          "TV140",
+          "TV142",
+          "TV146"
+        ]
+      },
+      {
+        "name": "natural-adjustment-not-limited-to-distance",
+        "model": "goodwill",
+        "killedBy": [
+          "TV141",
+          "TV143",
+          "TV144",
+          "TV145",
+          "TV153"
+        ]
+      },
+      {
+        "name": "hostile-threshold-off-by-one",
+        "model": "goodwill",
+        "killedBy": [
+          "TV145"
+        ]
+      },
+      {
+        "name": "relationship-state-forgotten",
+        "model": "goodwill",
+        "killedBy": [
+          "TV147",
+          "TV148"
+        ]
+      },
+      {
+        "name": "goodwill-base-confused-with-effective",
+        "model": "goodwill",
+        "killedBy": [
+          "TV153"
+        ]
+      },
+      {
+        "name": "attack-damage-cap-omitted",
+        "model": "harm",
+        "killedBy": [
+          "TV159"
+        ]
+      },
+      {
+        "name": "attack-damage-rounded",
+        "model": "harm",
+        "killedBy": [
+          "TV155"
+        ]
+      },
+      {
+        "name": "crossfire-not-exempt",
+        "model": "harm",
+        "killedBy": [
+          "TV160"
+        ]
+      },
+      {
+        "name": "npc-quality-fixed-normal",
+        "model": "pawnQuality",
+        "killedBy": [
+          "TV162",
+          "TV163",
+          "TV164",
+          "TV167",
+          "TV168",
+          "TV171"
+        ]
+      },
+      {
+        "name": "npc-quality-max-masterwork",
+        "model": "pawnQuality",
+        "killedBy": [
+          "TV168"
+        ]
+      },
+      {
+        "name": "npc-hp-half-up",
+        "model": "gearHp",
+        "killedBy": [
+          "TV172"
+        ]
+      },
+      {
+        "name": "npc-hp-overfull",
+        "model": "gearHp",
+        "killedBy": [
+          "TV172",
+          "TV176"
+        ]
+      }
+    ],
+    "originalGameExecuted": false
+  },
+  "scope": "Static artifact + independent arithmetic/state specification, not original runtime or project simulation equivalence."
+}

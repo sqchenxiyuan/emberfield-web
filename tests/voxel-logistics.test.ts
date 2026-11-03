@@ -164,7 +164,7 @@ describe('bounded physical stacks and hauling reservations', () => {
     expect(s.items.filter((i) => i.resource === 'food').map((i) => i.amount)).toEqual([
       10, 10, 10, 10, 10, 10,
     ]);
-    expect(s.save().version).toBe(20);
+    expect(s.save().version).toBe(21);
     expect(VoxelSimulation.load(s.save()).counts()).toEqual(s.counts());
   });
   it.each(resources)('carries and stores %s only within its native one-stack limit', (resource) => {
@@ -175,7 +175,7 @@ describe('bounded physical stacks and hauling reservations', () => {
     });
     until(s, () => !!s.pawns[0].cargo);
     expect(s.pawns[0].cargo!.amount).toBe(carryLimit(resource));
-    until(s, () => !!s.items.find((i) => at(i) === at(pos(20, 15))));
+    until(s, () => s.items.find((i) => at(i) === at(pos(20, 15)))?.amount === stackLimit(resource));
     expect(s.storageCapacity()[0]).toMatchObject({
       amount: stackLimit(resource),
       reserved: 0,

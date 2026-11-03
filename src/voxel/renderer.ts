@@ -159,6 +159,7 @@ const CHUNKS_Y = Math.ceil(DEPTH / CHUNK);
 const CHUNK_COUNT = CHUNKS_X * CHUNKS_Y * Math.ceil(HEIGHT / CHUNK);
 const UP = new Vector3(0, 1, 0);
 const RESOURCE_COLORS: Record<Resource, number> = {
+  silver: 0xd9dbe1,
   wood: 0xbc874d,
   stone: 0x949fa5,
   chunk: 0x77878b,
@@ -1332,6 +1333,7 @@ export class VoxelRenderer {
       this.instance(storage, i, pos.x + 0.5, pos.z + 0.026, pos.y + 0.5, 0.9, 0.04, 0.9, 0x70bbac),
     );
     this.finish(storage);
+    this.updateHomeArea();
     this.updateFarming();
     this.updateStonecutters();
     this.updateTailors();
@@ -1341,6 +1343,25 @@ export class VoxelRenderer {
     this.updateHousing();
     this.updatePower();
     this.updateJobLines();
+  }
+
+  private updateHomeArea() {
+    if (!this.data) return;
+    const cells = new Set(this.data.homeArea ?? []);
+    const edges: { x: number; y: number; z: number; alongX: boolean }[] = [];
+    for (const cell of cells) {
+      const x = cell % WIDTH, y = Math.floor(cell / WIDTH) % DEPTH, z = Math.floor(cell / (WIDTH * DEPTH));
+      if (z !== this.level) continue;
+      for (const [dx, dy] of [[0, -1], [0, 1], [-1, 0], [1, 0]]) {
+        const nx = x + dx, ny = y + dy;
+        if (nx >= 0 && nx < WIDTH && ny >= 0 && ny < DEPTH && cells.has((z * DEPTH + ny) * WIDTH + nx)) continue;
+        edges.push({ x: x + .5 + dx * .48, y: y + .5 + dy * .48, z, alongX: dy !== 0 });
+      }
+    }
+    const borders = this.batch('home-area', edges.length, this.box, this.effectMaterial('home-area', .65));
+    edges.forEach((edge, i) => this.instance(borders, i, edge.x, edge.z + .055, edge.y,
+      edge.alongX ? .98 : .035, .026, edge.alongX ? .035 : .98, 0xdabb77));
+    this.finish(borders);
   }
 
   /** Local device x/y follow the footprint contract; axis y exchanges those axes. */
@@ -2992,6 +3013,11 @@ export class VoxelRenderer {
     const cargoMaterial = this.keepMaterial(new MeshLambertMaterial({ color: 0xc69b60 }));
     const cargo = part(body, cargoMaterial, 0, 0.72, 0.39, 0.43, 0.31, 0.33);
     cargo.visible = false;
+    if (pawn.faction === 'trader') {
+      const satchel = this.keepMaterial(new MeshLambertMaterial({ color: 0xa67d48 }));
+      part(body, satchel, 0, .83, -.22, .44, .42, .19);
+      part(body, satchel, .2, 1.02, 0, .065, .08, .42);
+    }
     const shadow = new Mesh(
       this.keepGeometry(new CircleGeometry(0.34, 12)),
       this.keepMaterial(
@@ -3009,7 +3035,7 @@ export class VoxelRenderer {
     const label = new Sprite(
       this.keepMaterial(
         new SpriteMaterial({
-          map: nameTexture(pawn.name, pawn.color),
+          map: nameTexture(pawn.faction === 'trader' ? `商 · ${pawn.name}` : pawn.name, pawn.faction === 'trader' ? 0xe7c987 : pawn.color),
           depthTest: false,
           depthWrite: false,
         }),

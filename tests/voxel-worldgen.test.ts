@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { initialStoryteller } from '../src/voxel/storyteller';
+import { initialTrade } from '../src/voxel/trade';
 import {
   WORLD_PRESETS,
   generateWorld,
@@ -294,7 +295,7 @@ describe('v8 world persistence and validation', () => {
       s = VoxelSimulation.load(raw),
       saved = s.save();
     expect(raw).toEqual(original);
-    expect(saved.version).toBe(20);
+    expect(saved.version).toBe(21);
     expect(saved.generator).toBe(1);
     expect(saved.blocks).toEqual(raw.blocks);
     expect(saved.ladders).toEqual(raw.ladders);
@@ -302,6 +303,7 @@ describe('v8 world persistence and validation', () => {
     for (const tick of [0, 100, DAY * 20, DAY * 50]) {
       s.tick = tick;
       s.storyteller = initialStoryteller(s.seed, tick);
+      s.trade = initialTrade(s.seed, tick);
       expect(s.outdoorTemperature()).toBe(temperatureAt(tick));
     }
     expect(VoxelSimulation.load(s.save()).outdoorTemperature()).toBe(temperatureAt(s.tick));

@@ -19,6 +19,7 @@ import { ApparelPanel, WearApparel } from './ApparelPanel';
 import { TailorPanel } from './TailorPanel';
 import { ArmorBenchPanel } from './ArmorPanel';
 import { CombatPanel, ThreatControl, storyOpportunityText } from './CombatPanel';
+import { TradePanel, TraderInspector } from './TradePanel';
 import { WeaponPanel, WeaponBenchPanel, EquipWeapon } from './WeaponPanel';
 import { weaponName } from './weapons';
 import { WEAPON_BENCH_NAMES } from './weaponProduction';
@@ -260,6 +261,7 @@ function App() {
     [menu, setMenu] = useState(false),
     [help, setHelp] = useState(true),
     [researchOpen, setResearchOpen] = useState(false),
+    [tradeOpen, setTradeOpen] = useState(false),
     [busy, setBusy] = useState(false),
     [selectedPawn, setSelectedPawn] = useState<number | null>(null),
     [selectedCarer, setSelectedCarer] = useState<number | null>(null),
@@ -274,6 +276,13 @@ function App() {
     const t = setTimeout(() => setNotice(''), 6000);
     return () => clearTimeout(t);
   }, [notice]);
+  useEffect(() => {
+    if (s?.trade.session?.stage !== 'ready' || !s.trade.quote) return;
+    if (s.speed !== 0) void client.speed(0);
+    setTradeOpen(true);
+    setResearchOpen(false);
+    setMenu(false);
+  }, [s?.trade.session?.id, s?.trade.session?.stage, !!s?.trade.quote, s?.speed]);
   useEffect(() => {
     const t = setInterval(() => {
       if (client.snapshot().snapshot?.tick)
@@ -365,7 +374,7 @@ function App() {
             deviceCells({ ...v, kind: v.kind, axis: v.axis ?? 'x' }).some((q) => equal(q, p))),
       ) ?? [])
     : [];
-  const pawn = s?.pawns.find((v) => v.id === selectedPawn) ?? people[0];
+  const pawn = people.find((v) => v.faction === 'trader') ?? s?.pawns.find((v) => v.id === selectedPawn) ?? people[0];
   const carers =
     s?.pawns.filter(
       (v) =>
@@ -474,9 +483,20 @@ function App() {
         </div>
         <div className="voxel-header-actions">
           <button
+            aria-label="商队与家园"
+            aria-expanded={tradeOpen}
+            onClick={() => {
+              setTradeOpen((value) => !value);
+              setResearchOpen(false);
+              client.choose('inspect');
+            }}
+          >
+            贸易{s?.trade.caravans.length ? ` · ${s.trade.caravans.length}` : ''}
+          </button>
+          <button
             aria-label="研究科技"
             aria-expanded={researchOpen}
-            onClick={() => setResearchOpen((v) => !v)}
+            onClick={() => { setResearchOpen((v) => !v); setTradeOpen(false); }}
             title={
               s?.research.current
                 ? `正在研究：${RESEARCH_DEFS[s.research.current].name}`
@@ -1236,7 +1256,10 @@ function App() {
             ))}
           </div>
         ))}
-        {pawn && (
+        {pawn?.faction === 'trader' && (
+          <TraderInspector pawn={pawn} openTrade={() => { setTradeOpen(true); setResearchOpen(false); client.choose('inspect'); }} />
+        )}
+        {pawn && pawn.faction !== 'trader' && (
           <div className="voxel-pawn-detail">
             <div className="voxel-info-row">
               <b>{pawn.name}</b>
@@ -1617,6 +1640,17 @@ function App() {
           snapshot={s}
           command={(c) => void client.command(c)}
           close={() => setResearchOpen(false)}
+        />
+      )}
+      {s && (tradeOpen || s.trade.session?.stage === 'ready') && (
+        <TradePanel
+          snapshot={s}
+          selectedPos={p}
+          selectedPawnId={selectedPawn}
+          command={(command) => client.command(command)}
+          speed={(value) => client.speed(value)}
+          focus={(trader) => { setSelectedPawn(trader.id); focus(trader); }}
+          close={() => setTradeOpen(false)}
         />
       )}
       {notice && (

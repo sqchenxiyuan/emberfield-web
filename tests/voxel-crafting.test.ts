@@ -2,6 +2,7 @@ import { legacySimulation } from './fixtures/legacy-start';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
+import { initialTrade } from '../src/voxel/trade';
 import {
   STONECUTTER_COST,
   STONECUTTER_WORK,
@@ -83,6 +84,7 @@ function fixture(setup: (s: VoxelSimulation) => void = () => {}) {
     };
   });
   setup(s);
+  s.trade = initialTrade(s.seed, s.tick);
   return VoxelSimulation.load(s.save());
 }
 function ledger(s: VoxelSimulation): Counts {
@@ -502,7 +504,7 @@ describe('masonry recovery and v7 validation', () => {
       s = VoxelSimulation.load(raw);
     expect(raw.version).toBe(6);
     expect(raw).toEqual(before);
-    expect(s.save().version).toBe(20);
+    expect(s.save().version).toBe(21);
     expect(s.counts().stone).toBe(15);
     expect(s.counts().chunk).toBe(0);
     expect(s.stats.stonecut).toBe(0);

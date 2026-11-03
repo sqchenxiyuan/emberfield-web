@@ -1,0 +1,301 @@
+{
+  "capturedAt": "2026-11-03T11:28:40.169Z",
+  "workspaceCommit": "677e8fdcb4d23e25d52153c28950bd1d76e56fb6",
+  "publishedCommit": "545df1c6d8891f84e5d36d164451448cea24245a",
+  "generator": "Exact original bytes from the formal v20 storyteller campaign. Validated by normal load/save twice using the unchanged published v20 bundle; no commands, steps or direct state/version edits.",
+  "scope": "Ordinary mainline save 120 ticks before the already scheduled opportunity; calendar, RNG-derived opportunity and prior events must survive migration.",
+  "source": "test-results/voxel-storyteller-final3/event-ready.json",
+  "sourceSha256": "836e03bfb19f6db82ea6c6fef16fe362adcedc5c8ecf84ddcc4e163c8506ba21",
+  "sourceBranch": "extreme-main",
+  "sourceReport": "test-results/voxel-storyteller-final3/report.json",
+  "sourceReportSha256": "b2499db12ec1ad8c23a67690e28830e536ed2127da78ba2164f33b5b4c6aa7de",
+  "sourceFixtureKey": "event-ready",
+  "sourceExecution": {
+    "bundle": "test-results/voxel-storyteller-final3/executed-world-resumed.mjs",
+    "sha256": "af30837052684b98e39f2f342386a03683ce71fd3e32acee341060467b17363a",
+    "script": "test-results/voxel-storyteller-final3/executed-campaign-resumed.mjs",
+    "scriptSha256": "8b5f7f34b66a260e87318f026c3634ab85c0adab972240f7edab8005213239bd",
+    "openingSha256": "82f6fc838360e725b5547978193addc54c8f965c8a2a0d828b96b71067791d63"
+  },
+  "sourceExecutionSegments": [
+    {
+      "report": {
+        "file": "test-results/voxel-storyteller-final2/report.json",
+        "sha256": "c8d190db49530ca84f06568f391812a192b702f83b074fd96a00c94c08e8572d"
+      },
+      "execution": {
+        "bundle": "test-results/voxel-storyteller-final2/executed-world.mjs",
+        "sha256": "af30837052684b98e39f2f342386a03683ce71fd3e32acee341060467b17363a",
+        "script": "test-results/voxel-storyteller-final2/executed-campaign.mjs",
+        "scriptSha256": "8ad213068f1f353843479cc8d47ef02841b9ea241c2916b256bf4ebc904c907a",
+        "openingSha256": "82f6fc838360e725b5547978193addc54c8f965c8a2a0d828b96b71067791d63"
+      },
+      "status": "failed",
+      "terminalTick": 780204,
+      "resumedFixture": {
+        "file": "test-results/voxel-storyteller-final2/failure.json",
+        "branch": "ordinary-main",
+        "tick": 780204,
+        "version": 20,
+        "sha256": "a75c5924ed8b5e1bb3cd5162314cc1c2fcaa6aaa7c6e89c2c38523894766c571"
+      },
+      "mode": "powered"
+    }
+  ],
+  "originalSourceBundle": "test-results/voxel-storyteller-final3/executed-world-resumed.mjs",
+  "originalSourceBundleSha256": "af30837052684b98e39f2f342386a03683ce71fd3e32acee341060467b17363a",
+  "frozenSourceBundle": "test-results/voxel-trade-v20-freeze/executed-world.mjs",
+  "frozenSourceBundleSha256": "af30837052684b98e39f2f342386a03683ce71fd3e32acee341060467b17363a",
+  "currentSourceBundleMatched": true,
+  "version": 20,
+  "tick": 1034680,
+  "sha256": "836e03bfb19f6db82ea6c6fef16fe362adcedc5c8ecf84ddcc4e163c8506ba21",
+  "loadedByOriginalSource": true,
+  "normalLoadSave": {
+    "file": "test-results/voxel-trade-v20-freeze/scheduled-roundtrip.json",
+    "sha256": "ffc9417d1b7f619d229de169b7cb94ff4a1dbb991ad5631c5eb8c012f577e8eb",
+    "repeatedPhysicalRoundtripPassed": true
+  },
+  "originalSourceRoundtripPreserved": {
+    "strategy": "Compare every save field after removing only the listed reconstructed fields.",
+    "reconstructedFields": {
+      "pawns": [
+        "path",
+        "jobId",
+        "destination",
+        "phase",
+        "reason",
+        "moveTick",
+        "workTarget"
+      ],
+      "jobs": [
+        "owner",
+        "reason"
+      ],
+      "devices": [
+        "active",
+        "watts",
+        "network",
+        "reason"
+      ],
+      "weaponBenches.power": [
+        "active",
+        "watts",
+        "network",
+        "reason"
+      ]
+    }
+  },
+  "observations": {
+    "tick": 1034680,
+    "carrying": [],
+    "unfinishedProduction": [],
+    "liveRaiders": [],
+    "colonists": [
+      {
+        "id": 364,
+        "dead": false,
+        "downed": false,
+        "wounds": [],
+        "infections": []
+      },
+      {
+        "id": 365,
+        "dead": false,
+        "downed": false,
+        "wounds": [],
+        "infections": []
+      },
+      {
+        "id": 366,
+        "dead": false,
+        "downed": false,
+        "wounds": [],
+        "infections": []
+      }
+    ],
+    "equipmentOwners": [
+      {
+        "id": 367,
+        "owner": "worn:364",
+        "piece": {
+          "id": 367,
+          "kind": "shirt",
+          "material": "cloth",
+          "quality": 2,
+          "hitPoints": 69,
+          "wearTicks": 1034680
+        }
+      },
+      {
+        "id": 368,
+        "owner": "worn:364",
+        "piece": {
+          "id": 368,
+          "kind": "pants",
+          "material": "cloth",
+          "quality": 2,
+          "hitPoints": 61,
+          "wearTicks": 1034680
+        }
+      },
+      {
+        "id": 369,
+        "owner": "worn:365",
+        "piece": {
+          "id": 369,
+          "kind": "shirt",
+          "material": "cloth",
+          "quality": 2,
+          "hitPoints": 59,
+          "wearTicks": 1034680
+        }
+      },
+      {
+        "id": 370,
+        "owner": "worn:365",
+        "piece": {
+          "id": 370,
+          "kind": "pants",
+          "material": "cloth",
+          "quality": 2,
+          "hitPoints": 71,
+          "wearTicks": 1034680
+        }
+      },
+      {
+        "id": 371,
+        "owner": "worn:366",
+        "piece": {
+          "id": 371,
+          "kind": "shirt",
+          "material": "cloth",
+          "quality": 2,
+          "hitPoints": 58,
+          "wearTicks": 1034680
+        }
+      },
+      {
+        "id": 372,
+        "owner": "worn:366",
+        "piece": {
+          "id": 372,
+          "kind": "pants",
+          "material": "cloth",
+          "quality": 2,
+          "hitPoints": 70,
+          "wearTicks": 1034680
+        }
+      },
+      {
+        "id": 5772,
+        "owner": "pawn:364",
+        "piece": {
+          "id": 5772,
+          "kind": "machinePistol",
+          "quality": 1,
+          "hitPoints": 100
+        }
+      },
+      {
+        "id": 6731,
+        "owner": "pawn:365",
+        "piece": {
+          "id": 6731,
+          "kind": "machinePistol",
+          "quality": 2,
+          "hitPoints": 100
+        }
+      },
+      {
+        "id": 6923,
+        "owner": "pawn:366",
+        "piece": {
+          "id": 6923,
+          "kind": "machinePistol",
+          "quality": 2,
+          "hitPoints": 100
+        }
+      },
+      {
+        "id": 6996,
+        "owner": "worn:364",
+        "piece": {
+          "id": 6996,
+          "kind": "simpleHelmet",
+          "material": "steel",
+          "quality": 3,
+          "hitPoints": 94,
+          "wearTicks": 199978
+        }
+      },
+      {
+        "id": 7003,
+        "owner": "worn:364",
+        "piece": {
+          "id": 7003,
+          "kind": "plateArmor",
+          "material": "steel",
+          "quality": 2,
+          "hitPoints": 283,
+          "wearTicks": 199676
+        }
+      }
+    ],
+    "raidsEnabled": true,
+    "storytellerEventCount": 11,
+    "storytellerLastInterval": 5173
+  },
+  "countsAfterNormalLoad": {
+    "wood": 130,
+    "stone": 0,
+    "steel": 231,
+    "components": 1,
+    "food": 0,
+    "grain": 3162,
+    "meal": 8,
+    "chunk": 116,
+    "cloth": 202,
+    "herb": 28,
+    "apparel": 8,
+    "weapon": 3
+  },
+  "wealthAfterNormalLoad": {
+    "items": 6206.689799999999,
+    "buildings": 1354.3708,
+    "pawns": 5450,
+    "total": 13011.060599999999,
+    "storyteller": 12333.875199999999,
+    "itemSources": {
+      "ground": 4808.099999999999,
+      "cargo": 0,
+      "equipment": 1398.5898,
+      "delivered": 0
+    },
+    "buildingSources": {
+      "structures": 44.40599999999999,
+      "facilities": 1287.3088,
+      "ladders": 22.656000000000002
+    },
+    "legacyStructureCells": 0,
+    "unvaluedCorpses": 0,
+    "pawnValues": [
+      {
+        "id": 364,
+        "value": 1735,
+        "summaryHealth": 1
+      },
+      {
+        "id": 365,
+        "value": 1950,
+        "summaryHealth": 1
+      },
+      {
+        "id": 366,
+        "value": 1765,
+        "summaryHealth": 1
+      }
+    ]
+  },
+  "nextOpportunityAfterNormalLoad": 1034800
+}

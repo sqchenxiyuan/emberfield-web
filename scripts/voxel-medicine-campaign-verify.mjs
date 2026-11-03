@@ -268,7 +268,7 @@ function mineTo(resource, block, target) {
   assert(s.counts()[resource] >= target, `${resource} excavation target`);
 }
 async function opening() {
-  assert.equal(s.save().version, 20);
+  assert.equal(s.save().version, 21);
   assert.equal(s.counts().herb, 0);
   const free = surface(),
     reserved = new Set();

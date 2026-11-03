@@ -140,7 +140,7 @@ export function validateRangedState(d: VoxelSave) {
       !identity(shot.shooterId) ||
       !identity(shot.targetId) ||
       shot.shooterId === shot.targetId ||
-      !['colony', 'raider'].includes(shot.shooterFaction) ||
+      !['colony', 'raider', 'trader'].includes(shot.shooterFaction) ||
       !isRangedKind(shot.kind) ||
       !integer(shot.quality) ||
       shot.quality > 6 ||

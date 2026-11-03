@@ -3,6 +3,7 @@ import { legacySimulation } from './fixtures/legacy-start';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { initialStoryteller } from '../src/voxel/storyteller';
+import { initialTrade } from '../src/voxel/trade';
 import { VoxelThermal } from '../src/voxel/thermal';
 import { temperatureAt } from '../src/voxel/farming';
 import {
@@ -329,6 +330,7 @@ describe('solar sky visibility through the world integration', () => {
     return fixture((source) => {
       source.tick = tick;
       source.storyteller = initialStoryteller(source.seed, tick);
+      source.trade = initialTrade(source.seed, tick);
       carve(source, pos(10, 10), pos(13, 13, HEIGHT - 1));
       const solar = addDevice(source, 'solar', pos(10, 10));
       for (const p of deviceCells(solar).slice(0, shaded)) {
@@ -600,7 +602,7 @@ describe('v4 energy persistence and malformed-input rejection', () => {
     const original = savedWorld(),
       saved = original.save(),
       restored = VoxelSimulation.load(saved);
-    expect(saved.version).toBe(20);
+    expect(saved.version).toBe(21);
     expect(restored.devices.map((d) => [d.fuel, d.energy, d.target])).toEqual(
       original.devices.map((d) => [d.fuel, d.energy, d.target]),
     );
@@ -697,7 +699,7 @@ describe('v4 energy persistence and malformed-input rejection', () => {
     delete old.wires;
     delete old.thermal;
     const restored = VoxelSimulation.load(old);
-    expect(restored.save().version).toBe(20);
+    expect(restored.save().version).toBe(21);
     expect(restored.devices).toEqual([]);
     expect(restored.wires).toEqual([]);
     expect(restored.blocks).toEqual(sim.blocks);

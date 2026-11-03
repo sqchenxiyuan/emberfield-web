@@ -4,6 +4,7 @@ import type { WeaponPiece, WeaponKind, WeaponBenchKind } from './weapons';
 import type { SkillSet } from './skills';
 import type { ResearchKey, ResearchState } from './research';
 import type { Difficulty, StorytellerState, StorytellerView } from './storyteller';
+import type { TradeCommand, TradeState, TradeView } from './tradeTypes';
 // Voxel rules are Emberfield designs. See research/10 for source boundaries.
 export const WIDTH = 64,
   DEPTH = 64,
@@ -58,6 +59,7 @@ export interface WorldPreview {
   summary: WorldSummary;
 }
 export type Resource =
+  | 'silver'
   | 'wood'
   | 'stone'
   | 'steel'
@@ -156,7 +158,7 @@ export interface ShootingState {
 export interface Projectile {
   id: number;
   shooterId: number;
-  shooterFaction: 'colony' | 'raider';
+  shooterFaction: 'colony' | 'raider' | 'trader';
   quality: number;
   targetId: number;
   kind: 'shortBow' | 'revolver' | 'machinePistol';
@@ -520,7 +522,7 @@ export interface Pawn extends Pos {
   health: SurvivalHealth;
   trauma: Trauma;
   medical: MedicalState;
-  faction: 'colony' | 'raider';
+  faction: 'colony' | 'raider' | 'trader';
   drafted: boolean;
   retreating: boolean;
   attackTargetId: number | null;
@@ -551,6 +553,7 @@ export interface Pawn extends Pos {
   path: number[];
   destination: number | null;
   phase:
+    | 'trade'
     | 'idle'
     | 'travel'
     | 'work'
@@ -574,6 +577,7 @@ export interface Pawn extends Pos {
   sleepingSince: number | null;
 }
 export interface Counts {
+  silver: number;
   wood: number;
   stone: number;
   steel: number;
@@ -608,6 +612,8 @@ export interface VoxelStats {
   spoiled: Counts;
 }
 export interface VoxelSnapshot {
+  trade: TradeView;
+  homeArea: number[];
   combat: CombatState;
   storyteller: StorytellerView;
   projectiles: Projectile[];
@@ -665,6 +671,7 @@ export interface ChunkUpdate {
   ladders: Uint8Array;
 }
 export type VoxelCommand =
+  | TradeCommand
   | { type: 'research'; project: ResearchKey | null }
   | { type: 'difficulty'; difficulty: Difficulty }
   | { type: 'threats'; enabled: boolean }
@@ -717,7 +724,9 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 20;
+  version: 21;
+  trade: TradeState;
+  homeArea: number[];
   combat: CombatState;
   storyteller: StorytellerState;
   structureKinds: number[];
@@ -768,6 +777,7 @@ export const BLOCK_NAMES = [
   '砾石地',
 ];
 export const RESOURCE_NAMES: Record<Resource, string> = {
+  silver: '银币',
   wood: '木材',
   stone: '花岗岩砖',
   chunk: '花岗岩块',
@@ -845,6 +855,7 @@ export const TOOL_NAMES: Record<Tool, string> = {
   cancel: '取消规划',
 };
 export const emptyCounts = (): Counts => ({
+  silver: 0,
   wood: 0,
   stone: 0,
   steel: 0,

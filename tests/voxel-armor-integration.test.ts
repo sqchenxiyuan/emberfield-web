@@ -1,4 +1,6 @@
 import { withMedicineLedgers } from './legacy-medicine-defaults';
+import { initialSkills } from '../src/voxel/skills';
+import { initialTrade } from '../src/voxel/trade';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
@@ -120,7 +122,7 @@ describe('armor save migration and strict physical schemas', () => {
       const s = VoxelSimulation.load(old),
         saved = s.save();
       expect(old).toEqual(before);
-      expect(saved.version).toBe(20);
+      expect(saved.version).toBe(21);
       for (const key of ['tick', 'nextId', 'blocks', 'items', 'stats', 'researchBenches'] as const)
         expect(saved[key]).toEqual(key === 'stats' ? withMedicineLedgers(old.stats) : old[key]);
       expect(saved.research).toEqual({
@@ -140,7 +142,7 @@ describe('armor save migration and strict physical schemas', () => {
               : [],
         })),
       );
-      for (const p of saved.pawns) {
+      for (const [i, p] of saved.pawns.entries()) {
         const prior = old.pawns.find((q: any) => q.id === p.id);
         for (const key of [
           'food',
@@ -152,7 +154,11 @@ describe('armor save migration and strict physical schemas', () => {
           'health',
           'trauma',
         ] as const)
-          expect(p[key]).toEqual(key === 'skills' ? { ...prior.skills, shooting: p.skills.shooting } : prior[key]);
+          expect(p[key]).toEqual(key === 'skills' ? {
+            ...prior.skills,
+            shooting: initialSkills(i, p.faction !== 'colony').shooting,
+            social: initialSkills(i, p.faction !== 'colony').social,
+          } : prior[key]);
       }
       expect(() => VoxelSimulation.load(saved)).not.toThrow();
     },
@@ -367,6 +373,7 @@ function battle(seed: number, hitPoints = 290) {
   const s = fixture(),
     [attacker, target] = s.pawns;
   s.seed = seed;
+  s.trade = initialTrade(s.seed, s.tick);
   attacker.weapon = makeWeapon(s.nextId++, 'steelKnife');
   target.worn = [makeApparel(s.nextId++, 'plateArmor')];
   target.worn[0].hitPoints = hitPoints;

@@ -1424,3 +1424,149 @@ a {
     padding: 12px;
   }
 }
+
+.voxel-trade-drawer {
+  position: absolute;
+  right: 24px;
+  top: 90px;
+  bottom: 168px;
+  z-index: 4;
+  width: 355px;
+  padding: 16px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid #d9c58a66;
+  border-radius: 6px;
+  background: #1c292af7;
+  box-shadow: 0 12px 35px #0004;
+}
+.voxel-trade-drawer-heading,
+.voxel-trade-dialog-header,
+.voxel-trade-caravan > div,
+.voxel-trade-toolbar,
+.voxel-trade-confirm-row,
+.voxel-trade-quantity {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.voxel-trade-drawer h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #eedbb5;
+}
+.voxel-trade-drawer p,
+.voxel-trade-drawer small,
+.voxel-trader-inspector small {
+  display: block;
+  font-size: 11px;
+  line-height: 1.65;
+  color: #bdc9bc;
+}
+.voxel-trade-negotiator {
+  display: grid;
+  gap: 7px;
+  margin: 14px 0;
+}
+.voxel-trade-caravan,
+.voxel-trade-walking,
+.voxel-home-area,
+.voxel-trade-receipts {
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid #bdc9bc2e;
+  background: #14202166;
+}
+.voxel-trade-caravan > div + small,
+.voxel-trade-caravan > small + div,
+.voxel-home-area > small,
+.voxel-home-area > div,
+.voxel-trade-walking > small,
+.voxel-trade-walking > button {
+  margin-top: 8px;
+}
+.voxel-home-area > div { display: flex; flex-wrap: wrap; gap: 7px; }
+.voxel-trade-caravan > div > span { font-size: 11px; color: #e6cd92; }
+.voxel-trade-receipts > div { display: grid; gap: 5px; margin-top: 12px; }
+.voxel-trade-receipts b { font-size: 12px; }
+.voxel-trade-drawer summary,
+.voxel-trade-price-details summary { cursor: pointer; }
+.voxel-trader-inspector { display: grid; gap: 8px; margin: 12px 0; }
+.voxel-trader-inspector p { margin: 0; }
+.voxel-trade-backdrop { z-index: 20; padding: 18px; }
+.voxel-trade-dialog {
+  display: flex;
+  flex-direction: column;
+  width: min(980px, 100%);
+  min-width: 0;
+  max-width: 100%;
+  max-height: min(850px, calc(100dvh - 36px));
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid #cdb78088;
+  border-radius: 8px;
+  background: #202d2d;
+  box-shadow: 0 20px 90px #0007;
+}
+.voxel-trade-dialog-header { padding: 18px 22px 12px; flex-shrink: 0; }
+.voxel-trade-dialog-header h2 { margin: 6px 0 0; font-size: 22px; color: #eedbb5; font-weight: 500; }
+.voxel-trade-dialog-header button { font-size: 20px; }
+.voxel-trade-balances {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 25px;
+  padding: 10px 22px;
+  border-block: 1px solid #d7dfcb26;
+  font-size: 12px;
+  background: #13202155;
+}
+.voxel-trade-balances strong { margin-left: 7px; color: #e8d7ab; font-variant-numeric: tabular-nums; }
+.voxel-trade-toolbar { align-items: flex-start; padding: 12px 22px; flex-shrink: 0; }
+.voxel-trade-toolbar > div { display: flex; gap: 6px; }
+.voxel-trade-price-details { font-size: 11px; max-width: 65%; line-height: 1.6; text-align: right; }
+.voxel-trade-price-details p { margin: 8px 0; text-align: left; color: #b9c8be; }
+.voxel-trade-price-details[open] { max-height: 130px; overflow-y: auto; }
+.voxel-trade-lists {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  min-height: 100px;
+  padding: 0 22px 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+}
+.voxel-trade-list { min-width: 0; }
+.voxel-trade-list h3 { position: sticky; top: 0; z-index: 1; margin: 0; padding: 10px 0; background: #202d2d; color: #d8ca9c; font-size: 13px; }
+.voxel-trade-row { display: grid; grid-template-columns: minmax(0, 1fr) 100px; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid #bdc9bc26; }
+.voxel-trade-item-name { display: grid; gap: 5px; min-width: 0; }
+.voxel-trade-item-name b { font-size: 12px; overflow-wrap: anywhere; }
+.voxel-trade-item-name small { font-size: 10px; line-height: 1.5; color: #b7c5ba; }
+.voxel-trade-quantity { gap: 4px; }
+.voxel-trade-quantity input { width: 62px; min-width: 0; padding: 7px 4px 7px 7px; }
+.voxel-trade-quantity button { font-size: 10px; padding: 7px 4px; white-space: nowrap; }
+.voxel-trade-empty { color: #aebfb2; font-size: 12px; line-height: 1.6; }
+.voxel-trade-settlement { flex-shrink: 0; display: grid; gap: 10px; padding: 14px 22px; border-top: 1px solid #d7dfcb33; background: #172525; }
+.voxel-trade-totals { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.voxel-trade-totals > span { color: #bdc9bc; font-size: 12px; }
+.voxel-trade-totals strong { color: #eedbb5; font-variant-numeric: tabular-nums; }
+.voxel-trade-shortfall { display: flex; align-items: flex-start; gap: 8px; color: #f0bd94; font-size: 12px; line-height: 1.5; }
+.voxel-trade-shortfall input { margin-top: 3px; accent-color: #dabb77; }
+.voxel-trade-error { margin: 0; color: #f0a18a !important; font-size: 12px; line-height: 1.5; }
+.voxel-trade-confirm-row > small { flex: 1; min-width: 0; margin-right: auto; color: #b5c7b9; font-size: 11px; line-height: 1.5; }
+.voxel-trade-confirm-row button { flex: 0 0 auto; width: auto; margin-top: 0; }
+@media (max-width: 1050px) {
+  .voxel-trade-drawer { right: 12px; width: 315px; padding: 12px; }
+}
+@media (max-width: 700px) {
+  .voxel-trade-backdrop { padding: 8px; }
+  .voxel-trade-dialog { max-height: calc(100dvh - 16px); }
+  .voxel-trade-dialog-header,
+  .voxel-trade-balances,
+  .voxel-trade-toolbar,
+  .voxel-trade-settlement { padding-left: 14px; padding-right: 14px; }
+  .voxel-trade-lists { padding-left: 14px; padding-right: 14px; grid-template-columns: 1fr; }
+  .voxel-trade-confirm-row { flex-wrap: wrap; }
+  .voxel-trade-confirm-row > small { flex-basis: 100%; }
+}

@@ -1,0 +1,3083 @@
+[
+  {
+    "id": "TV01",
+    "model": "negotiator",
+    "inputs": {
+      "social": 0
+    },
+    "expected": {
+      "gain": 0,
+      "factors": [
+        1,
+        1
+      ]
+    },
+    "claims": [
+      "TR02"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV02",
+    "model": "negotiator",
+    "inputs": {
+      "social": 8
+    },
+    "expected": {
+      "gain": 0.12,
+      "factors": [
+        1,
+        1
+      ]
+    },
+    "claims": [
+      "TR02"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV03",
+    "model": "negotiator",
+    "inputs": {
+      "social": 8,
+      "talking": 0.95,
+      "hearing": 0.8
+    },
+    "expected": {
+      "gain": 0.12,
+      "factors": [
+        1,
+        1
+      ]
+    },
+    "claims": [
+      "TR02"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV04",
+    "model": "negotiator",
+    "inputs": {
+      "social": 8,
+      "talking": 0.475,
+      "hearing": 0.4
+    },
+    "expected": {
+      "gain": 0.0363,
+      "factors": [
+        0.55,
+        0.55
+      ]
+    },
+    "claims": [
+      "TR02"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV05",
+    "model": "negotiator",
+    "inputs": {
+      "social": 20,
+      "talking": 0,
+      "hearing": 0
+    },
+    "expected": {
+      "gain": 0.003,
+      "factors": [
+        0.1,
+        0.1
+      ]
+    },
+    "claims": [
+      "TR02"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV06",
+    "model": "negotiator",
+    "inputs": {
+      "social": 20,
+      "offset": 0.2
+    },
+    "expected": {
+      "gain": 0.395,
+      "factors": [
+        1,
+        1
+      ]
+    },
+    "claims": [
+      "TR02"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV07",
+    "model": "negotiator",
+    "inputs": {
+      "social": 8,
+      "offset": 0.02
+    },
+    "expected": {
+      "gain": 0.14,
+      "factors": [
+        1,
+        1
+      ]
+    },
+    "claims": [
+      "TR02"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV08",
+    "model": "negotiator",
+    "inputs": {
+      "social": 8,
+      "talking": 1.3,
+      "hearing": 1.5
+    },
+    "expected": {
+      "gain": 0.12,
+      "factors": [
+        1,
+        1
+      ]
+    },
+    "claims": [
+      "TR02"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV09",
+    "model": "price",
+    "inputs": {
+      "value": 1.2,
+      "gain": 0.12
+    },
+    "expected": {
+      "buy": 1.4784,
+      "sell": 0.8064
+    },
+    "claims": [
+      "TR01"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV10",
+    "model": "price",
+    "inputs": {
+      "value": 220,
+      "gain": 0.12,
+      "sellFactor": 0.2
+    },
+    "expected": {
+      "buy": 271,
+      "sell": 29.568
+    },
+    "claims": [
+      "TR01"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV11",
+    "model": "price",
+    "inputs": {
+      "value": 220,
+      "gain": 0.12,
+      "sellFactor": 0.2,
+      "loss": 0.1
+    },
+    "expected": {
+      "buy": 298,
+      "sell": 26.6112
+    },
+    "claims": [
+      "TR03"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV12",
+    "model": "price",
+    "inputs": {
+      "value": 220,
+      "gain": 0.12,
+      "sellFactor": 0.2,
+      "loss": 0.2
+    },
+    "expected": {
+      "buy": 325,
+      "sell": 23.6544
+    },
+    "claims": [
+      "TR03"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV13",
+    "model": "price",
+    "inputs": {
+      "value": 135.4,
+      "gain": 0.12,
+      "sellFactor": 0.2
+    },
+    "expected": {
+      "buy": 167,
+      "sell": 18.19776
+    },
+    "claims": [
+      "TR03"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV14",
+    "model": "price",
+    "inputs": {
+      "value": 0
+    },
+    "expected": {
+      "buy": 0.5,
+      "sell": 0.01
+    },
+    "claims": [
+      "TR01"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV15",
+    "model": "price",
+    "inputs": {
+      "value": 100,
+      "buyType": 0.4,
+      "gain": 0.395
+    },
+    "expected": {
+      "buy": 33.88,
+      "sell": 33.88
+    },
+    "claims": [
+      "TR01"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV16",
+    "model": "price",
+    "inputs": {
+      "value": 1,
+      "currency": true,
+      "gain": 0.3,
+      "loss": 0.2
+    },
+    "expected": {
+      "buy": 1,
+      "sell": 1
+    },
+    "claims": [
+      "TR01"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV17",
+    "model": "price",
+    "inputs": {
+      "value": 100,
+      "buyType": 2,
+      "settlement": 0.05
+    },
+    "expected": {
+      "buy": 266,
+      "sell": 63
+    },
+    "claims": [
+      "TR01"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV18",
+    "model": "price",
+    "inputs": {
+      "value": 100,
+      "joinAs": 0.6,
+      "humanFactor": 0.6,
+      "drug": 0.1,
+      "animal": 0.1
+    },
+    "expected": {
+      "buy": 84,
+      "sell": 43.2
+    },
+    "claims": [
+      "TR01"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV19",
+    "model": "price",
+    "inputs": {
+      "value": 100,
+      "buyType": 0.7107142857142857
+    },
+    "expected": {
+      "buy": 99.5,
+      "sell": 60
+    },
+    "claims": [
+      "TR01"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV20",
+    "model": "price",
+    "inputs": {
+      "value": 100,
+      "buyType": 0.7178571428571429
+    },
+    "expected": {
+      "buy": 100,
+      "sell": 60
+    },
+    "claims": [
+      "TR01"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV21",
+    "model": "price",
+    "inputs": {
+      "value": 100,
+      "buyType": 0.725
+    },
+    "expected": {
+      "buy": 102,
+      "sell": 60
+    },
+    "claims": [
+      "TR01"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV22",
+    "model": "price",
+    "inputs": {
+      "value": 100,
+      "favor": 3
+    },
+    "expected": {
+      "buy": 140,
+      "sell": 3
+    },
+    "claims": [
+      "TR01"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV23",
+    "model": "settlement",
+    "inputs": {
+      "rows": [
+        {
+          "quantity": 1,
+          "buy": 0.6,
+          "sell": 0.3
+        },
+        {
+          "quantity": 1,
+          "buy": 0.6,
+          "sell": 0.3
+        }
+      ],
+      "playerSilver": 1,
+      "traderSilver": 0
+    },
+    "expected": {
+      "net": 1.2,
+      "due": 1,
+      "status": "committed",
+      "playerSilver": 0,
+      "traderSilver": 1,
+      "shortfall": 0
+    },
+    "claims": [
+      "TR04"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV24",
+    "model": "settlement",
+    "inputs": {
+      "rows": [
+        {
+          "quantity": 5,
+          "buy": 0.5,
+          "sell": 0.1
+        }
+      ],
+      "playerSilver": 2,
+      "traderSilver": 10
+    },
+    "expected": {
+      "net": 2.5,
+      "due": 2,
+      "status": "committed",
+      "playerSilver": 0,
+      "traderSilver": 12,
+      "shortfall": 0
+    },
+    "claims": [
+      "TR04"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV25",
+    "model": "settlement",
+    "inputs": {
+      "rows": [
+        {
+          "quantity": 7,
+          "buy": 0.5,
+          "sell": 0.1
+        }
+      ],
+      "playerSilver": 4,
+      "traderSilver": 10
+    },
+    "expected": {
+      "net": 3.5,
+      "due": 4,
+      "status": "committed",
+      "playerSilver": 0,
+      "traderSilver": 14,
+      "shortfall": 0
+    },
+    "claims": [
+      "TR04"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV26",
+    "model": "settlement",
+    "inputs": {
+      "rows": [
+        {
+          "quantity": -5,
+          "buy": 1,
+          "sell": 0.5
+        }
+      ],
+      "playerSilver": 0,
+      "traderSilver": 10
+    },
+    "expected": {
+      "net": -2.5,
+      "due": -2,
+      "status": "committed",
+      "playerSilver": 2,
+      "traderSilver": 8,
+      "shortfall": 0
+    },
+    "claims": [
+      "TR04"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV27",
+    "model": "settlement",
+    "inputs": {
+      "rows": [
+        {
+          "quantity": 2,
+          "buy": 10,
+          "sell": 4
+        },
+        {
+          "quantity": -3,
+          "buy": 8,
+          "sell": 6
+        }
+      ],
+      "playerSilver": 2,
+      "traderSilver": 10
+    },
+    "expected": {
+      "net": 2,
+      "due": 2,
+      "status": "committed",
+      "playerSilver": 0,
+      "traderSilver": 12,
+      "shortfall": 0
+    },
+    "claims": [
+      "TR04"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV28",
+    "model": "settlement",
+    "inputs": {
+      "rows": [
+        {
+          "quantity": 2,
+          "buy": 10,
+          "sell": 4
+        }
+      ],
+      "playerSilver": 19,
+      "traderSilver": 10
+    },
+    "expected": {
+      "net": 20,
+      "due": 20,
+      "status": "player-insufficient",
+      "playerSilver": 19,
+      "traderSilver": 10,
+      "shortfall": 0
+    },
+    "claims": [
+      "TR04"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV29",
+    "model": "settlement",
+    "inputs": {
+      "rows": [
+        {
+          "quantity": -5,
+          "buy": 10,
+          "sell": 4
+        }
+      ],
+      "playerSilver": 1,
+      "traderSilver": 19
+    },
+    "expected": {
+      "net": -20,
+      "due": -20,
+      "status": "needs-shortfall-confirmation",
+      "playerSilver": 1,
+      "traderSilver": 19,
+      "shortfall": 1
+    },
+    "claims": [
+      "TR05"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV30",
+    "model": "settlement",
+    "inputs": {
+      "rows": [
+        {
+          "quantity": -5,
+          "buy": 10,
+          "sell": 4
+        }
+      ],
+      "playerSilver": 1,
+      "traderSilver": 19,
+      "confirmShortfall": true
+    },
+    "expected": {
+      "net": -20,
+      "due": -20,
+      "status": "committed",
+      "playerSilver": 20,
+      "traderSilver": 0,
+      "shortfall": 1
+    },
+    "claims": [
+      "TR05"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV31",
+    "model": "settlement",
+    "inputs": {
+      "rows": [],
+      "playerSilver": 1,
+      "traderSilver": 10
+    },
+    "expected": {
+      "net": 0,
+      "due": 0,
+      "status": "committed",
+      "playerSilver": 1,
+      "traderSilver": 10,
+      "shortfall": 0
+    },
+    "claims": [
+      "TR04"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV32",
+    "model": "eligibility",
+    "inputs": {
+      "home": true,
+      "forbidden": true
+    },
+    "expected": {
+      "sellable": true
+    },
+    "claims": [
+      "TR06"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV33",
+    "model": "eligibility",
+    "inputs": {
+      "stored": true
+    },
+    "expected": {
+      "sellable": true
+    },
+    "claims": [
+      "TR06"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV34",
+    "model": "eligibility",
+    "inputs": {
+      "home": false,
+      "stored": false
+    },
+    "expected": {
+      "sellable": false
+    },
+    "claims": [
+      "TR06"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV35",
+    "model": "eligibility",
+    "inputs": {
+      "home": true,
+      "spawned": false
+    },
+    "expected": {
+      "sellable": false
+    },
+    "claims": [
+      "TR06"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV36",
+    "model": "eligibility",
+    "inputs": {
+      "home": true,
+      "fogged": true
+    },
+    "expected": {
+      "sellable": false
+    },
+    "claims": [
+      "TR06"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV37",
+    "model": "eligibility",
+    "inputs": {
+      "home": true,
+      "reachable": false
+    },
+    "expected": {
+      "sellable": false
+    },
+    "claims": [
+      "TR06"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV38",
+    "model": "eligibility",
+    "inputs": {
+      "home": true,
+      "tainted": true
+    },
+    "expected": {
+      "sellable": false
+    },
+    "claims": [
+      "TR06"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV39",
+    "model": "eligibility",
+    "inputs": {
+      "home": true,
+      "fresh": false
+    },
+    "expected": {
+      "sellable": false
+    },
+    "claims": [
+      "TR06"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV40",
+    "model": "eligibility",
+    "inputs": {
+      "home": true,
+      "biocoded": true
+    },
+    "expected": {
+      "sellable": false
+    },
+    "claims": [
+      "TR06"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV41",
+    "model": "eligibility",
+    "inputs": {
+      "home": true,
+      "tradeability": "Buyable"
+    },
+    "expected": {
+      "sellable": false
+    },
+    "claims": [
+      "TR06"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV42",
+    "model": "eligibility",
+    "inputs": {
+      "home": true,
+      "abstractValue": 0
+    },
+    "expected": {
+      "sellable": false
+    },
+    "claims": [
+      "TR06"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV43",
+    "model": "eligibility",
+    "inputs": {
+      "home": true,
+      "willTrade": false
+    },
+    "expected": {
+      "sellable": false
+    },
+    "claims": [
+      "TR06"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV44",
+    "model": "eligibility",
+    "inputs": {
+      "home": true,
+      "nearbyBlocker": true
+    },
+    "expected": {
+      "sellable": false
+    },
+    "claims": [
+      "TR06"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV45",
+    "model": "gift",
+    "inputs": {
+      "goodwill": -100,
+      "lines": [
+        {
+          "count": 40,
+          "price": 1
+        }
+      ]
+    },
+    "expected": {
+      "base": 1,
+      "delta": 1,
+      "after": -99
+    },
+    "claims": [
+      "TR15"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence. Gift delta is before the generic natural-goodwill layer; after assumes that layer adds zero, which is tested separately."
+  },
+  {
+    "id": "TV46",
+    "model": "gift",
+    "inputs": {
+      "goodwill": 75,
+      "lines": [
+        {
+          "count": 160,
+          "price": 1
+        }
+      ]
+    },
+    "expected": {
+      "base": 4,
+      "delta": 1,
+      "after": 76
+    },
+    "claims": [
+      "TR15"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence. Gift delta is before the generic natural-goodwill layer; after assumes that layer adds zero, which is tested separately."
+  },
+  {
+    "id": "TV47",
+    "model": "gift",
+    "inputs": {
+      "goodwill": 0,
+      "lines": [
+        {
+          "count": 40,
+          "price": 1
+        }
+      ]
+    },
+    "expected": {
+      "base": 1,
+      "delta": 0,
+      "after": 0
+    },
+    "claims": [
+      "TR15"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence. Gift delta is before the generic natural-goodwill layer; after assumes that layer adds zero, which is tested separately."
+  },
+  {
+    "id": "TV48",
+    "model": "gift",
+    "inputs": {
+      "goodwill": 100,
+      "lines": [
+        {
+          "count": 160,
+          "price": 1
+        }
+      ]
+    },
+    "expected": {
+      "base": 4,
+      "delta": 1,
+      "after": 100
+    },
+    "claims": [
+      "TR15"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence. Gift delta is before the generic natural-goodwill layer; after assumes that layer adds zero, which is tested separately."
+  },
+  {
+    "id": "TV49",
+    "model": "gift",
+    "inputs": {
+      "goodwill": -100,
+      "lines": [
+        {
+          "count": 1,
+          "price": 20,
+          "sameFactionPrisoner": true
+        }
+      ]
+    },
+    "expected": {
+      "base": 1,
+      "delta": 1,
+      "after": -99
+    },
+    "claims": [
+      "TR15"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence. Gift delta is before the generic natural-goodwill layer; after assumes that layer adds zero, which is tested separately."
+  },
+  {
+    "id": "TV50",
+    "model": "tradeGoodwill",
+    "inputs": {
+      "soldValue": 599
+    },
+    "expected": {
+      "delta": 0
+    },
+    "claims": [
+      "TR15"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV51",
+    "model": "tradeGoodwill",
+    "inputs": {
+      "soldValue": 600
+    },
+    "expected": {
+      "delta": 1
+    },
+    "claims": [
+      "TR15"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV52",
+    "model": "stockCount",
+    "inputs": {
+      "countRange": [
+        750,
+        1200
+      ],
+      "countRoll": 1200
+    },
+    "expected": {
+      "count": 1200,
+      "generated": 1200,
+      "attempts": 1
+    },
+    "claims": [
+      "TR09"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV53",
+    "model": "stockCount",
+    "inputs": {
+      "countRange": [
+        -10,
+        2
+      ],
+      "countRoll": -3
+    },
+    "expected": {
+      "count": -3,
+      "generated": 0,
+      "attempts": 1
+    },
+    "claims": [
+      "TR09"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV54",
+    "model": "stockCount",
+    "inputs": {
+      "priceRange": [
+        150,
+        600
+      ],
+      "priceRoll": 150,
+      "baseValue": 1.1
+    },
+    "expected": {
+      "count": 136,
+      "generated": 136,
+      "attempts": 1
+    },
+    "claims": [
+      "TR09"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV55",
+    "model": "stockCount",
+    "inputs": {
+      "priceRange": [
+        0,
+        100
+      ],
+      "priceRoll": 5,
+      "baseValue": 2
+    },
+    "expected": {
+      "count": 2,
+      "generated": 2,
+      "attempts": 1
+    },
+    "claims": [
+      "TR09"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV56",
+    "model": "stockCount",
+    "inputs": {
+      "priceRange": [
+        0,
+        100
+      ],
+      "priceRoll": 7,
+      "baseValue": 2
+    },
+    "expected": {
+      "count": 4,
+      "generated": 4,
+      "attempts": 1
+    },
+    "claims": [
+      "TR09"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV57",
+    "model": "stockCount",
+    "inputs": {
+      "countRange": [
+        1,
+        4
+      ],
+      "priceRange": [
+        20,
+        40
+      ],
+      "countRolls": [
+        1,
+        3
+      ],
+      "baseValue": 10
+    },
+    "expected": {
+      "count": 3,
+      "generated": 3,
+      "attempts": 2
+    },
+    "claims": [
+      "TR09"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV58",
+    "model": "stockCount",
+    "inputs": {
+      "countRange": [
+        1,
+        4
+      ],
+      "priceRange": [
+        200,
+        400
+      ],
+      "countRolls": [
+        1
+      ],
+      "baseValue": 10
+    },
+    "expected": {
+      "count": 1,
+      "generated": 1,
+      "attempts": 101
+    },
+    "claims": [
+      "TR09"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV59",
+    "model": "stockCount",
+    "inputs": {},
+    "expected": {
+      "count": 0,
+      "generated": 0,
+      "attempts": 0
+    },
+    "claims": [
+      "TR09"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV60",
+    "model": "quality",
+    "inputs": {
+      "gaussian": -1
+    },
+    "expected": {
+      "quality": 2
+    },
+    "claims": [
+      "TR10"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV61",
+    "model": "quality",
+    "inputs": {
+      "gaussian": 2.99
+    },
+    "expected": {
+      "quality": 2
+    },
+    "claims": [
+      "TR10"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV62",
+    "model": "quality",
+    "inputs": {
+      "gaussian": 3
+    },
+    "expected": {
+      "quality": 3
+    },
+    "claims": [
+      "TR10"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV63",
+    "model": "quality",
+    "inputs": {
+      "gaussian": 4.9
+    },
+    "expected": {
+      "quality": 4
+    },
+    "claims": [
+      "TR10"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV64",
+    "model": "quality",
+    "inputs": {
+      "gaussian": 7
+    },
+    "expected": {
+      "quality": 5
+    },
+    "claims": [
+      "TR10"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV65",
+    "model": "stockWeight",
+    "inputs": {
+      "baseValue": 250
+    },
+    "expected": {
+      "weight": 0.75
+    },
+    "claims": [
+      "TR09"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV66",
+    "model": "stockWeight",
+    "inputs": {
+      "baseValue": 1000
+    },
+    "expected": {
+      "weight": 0.35
+    },
+    "claims": [
+      "TR09"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV67",
+    "model": "carriers",
+    "inputs": {
+      "nonPawnEntries": 0,
+      "totalPoints": 550
+    },
+    "expected": {
+      "carriers": 0,
+      "guardBudget": 505
+    },
+    "claims": [
+      "TR18"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV68",
+    "model": "carriers",
+    "inputs": {
+      "nonPawnEntries": 1,
+      "totalPoints": 550
+    },
+    "expected": {
+      "carriers": 1,
+      "guardBudget": 505
+    },
+    "claims": [
+      "TR18"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV69",
+    "model": "carriers",
+    "inputs": {
+      "nonPawnEntries": 8,
+      "totalPoints": 550
+    },
+    "expected": {
+      "carriers": 1,
+      "guardBudget": 505
+    },
+    "claims": [
+      "TR18"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV70",
+    "model": "carriers",
+    "inputs": {
+      "nonPawnEntries": 9,
+      "totalPoints": 550
+    },
+    "expected": {
+      "carriers": 2,
+      "guardBudget": 505
+    },
+    "claims": [
+      "TR18"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV71",
+    "model": "carriers",
+    "inputs": {
+      "nonPawnEntries": 17,
+      "totalPoints": 550
+    },
+    "expected": {
+      "carriers": 3,
+      "guardBudget": 505
+    },
+    "claims": [
+      "TR18"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV72",
+    "model": "schedule",
+    "inputs": {
+      "ticks": 299999
+    },
+    "expected": {
+      "interval": 299,
+      "relative": -1,
+      "cycle": -1,
+      "offset": -1
+    },
+    "claims": [
+      "TR16"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV73",
+    "model": "schedule",
+    "inputs": {
+      "ticks": 300000
+    },
+    "expected": {
+      "interval": 300,
+      "relative": 0,
+      "cycle": 0,
+      "offset": 0
+    },
+    "claims": [
+      "TR16"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV74",
+    "model": "schedule",
+    "inputs": {
+      "ticks": 3899999
+    },
+    "expected": {
+      "interval": 3899,
+      "relative": 3599,
+      "cycle": 0,
+      "offset": 3599
+    },
+    "claims": [
+      "TR16"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV75",
+    "model": "schedule",
+    "inputs": {
+      "ticks": 3900000
+    },
+    "expected": {
+      "interval": 3900,
+      "relative": 3600,
+      "cycle": 1,
+      "offset": 0
+    },
+    "claims": [
+      "TR16"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV76",
+    "model": "allyFraction",
+    "inputs": {
+      "nonHostile": 0,
+      "canBeNonHostile": 4
+    },
+    "expected": {
+      "fraction": -1
+    },
+    "claims": [
+      "TR16"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV77",
+    "model": "allyFraction",
+    "inputs": {
+      "nonHostile": 1,
+      "canBeNonHostile": 4
+    },
+    "expected": {
+      "fraction": 0.6
+    },
+    "claims": [
+      "TR16"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV78",
+    "model": "allyFraction",
+    "inputs": {
+      "nonHostile": 4,
+      "canBeNonHostile": 4
+    },
+    "expected": {
+      "fraction": 1
+    },
+    "claims": [
+      "TR16"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV79",
+    "model": "stay",
+    "inputs": {
+      "duration": 27000,
+      "elapsed": 27000
+    },
+    "expected": {
+      "leave": false
+    },
+    "claims": [
+      "TR19"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV80",
+    "model": "stay",
+    "inputs": {
+      "duration": 27000,
+      "elapsed": 27001
+    },
+    "expected": {
+      "leave": true
+    },
+    "claims": [
+      "TR19"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV81",
+    "model": "loss",
+    "inputs": {
+      "violent": 1,
+      "ever": 5
+    },
+    "expected": {
+      "fightingExit": true,
+      "importantExit": false
+    },
+    "claims": [
+      "TR19"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV82",
+    "model": "loss",
+    "inputs": {
+      "violent": 0,
+      "ever": 5,
+      "important": true
+    },
+    "expected": {
+      "fightingExit": false,
+      "importantExit": true
+    },
+    "claims": [
+      "TR19"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV83",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "WoodLog"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV84",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "WoodLog"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV85",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "Steel"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV86",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "Steel"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV87",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "BlocksGranite"
+    },
+    "expected": {
+      "playerSellable": false,
+      "willTrade": false,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV88",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "BlocksGranite"
+    },
+    "expected": {
+      "playerSellable": false,
+      "willTrade": false,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV89",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "ChunkGranite"
+    },
+    "expected": {
+      "playerSellable": false,
+      "willTrade": false,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV90",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "ChunkGranite"
+    },
+    "expected": {
+      "playerSellable": false,
+      "willTrade": false,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV91",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "Cloth"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV92",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "Cloth"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV93",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "ComponentIndustrial"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV94",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "ComponentIndustrial"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV95",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "MealSurvivalPack"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV96",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "MealSurvivalPack"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV97",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "RawRice"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV98",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "RawRice"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV99",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "RawPotatoes"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV100",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "RawPotatoes"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV101",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "RawCorn"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV102",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "RawCorn"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV103",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "MealSimple"
+    },
+    "expected": {
+      "playerSellable": false,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV104",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "MealSimple"
+    },
+    "expected": {
+      "playerSellable": false,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV105",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "MedicineHerbal"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV106",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "MedicineHerbal"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV107",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "MedicineIndustrial"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV108",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "MedicineIndustrial"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV109",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "Silver"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV110",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "Silver"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV111",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "MeleeWeapon_Club"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 0.2
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV112",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "MeleeWeapon_Club"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 0.2
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV113",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "MeleeWeapon_Knife"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 0.2
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV114",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "MeleeWeapon_Knife"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 0.2
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV115",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "MeleeWeapon_LongSword"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 0.2
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV116",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "MeleeWeapon_LongSword"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 0.2
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV117",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "Bow_Short"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 0.2
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV118",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "Bow_Short"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 0.2
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV119",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "Gun_Revolver"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 0.2
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV120",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "Gun_Revolver"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 0.2
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV121",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "Gun_MachinePistol"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 0.2
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV122",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "Gun_MachinePistol"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 0.2
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV123",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "Gun_BoltActionRifle"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 0.2
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV124",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "Gun_BoltActionRifle"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 0.2
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV125",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "Apparel_Tuque"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV126",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "Apparel_Tuque"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV127",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "Apparel_Parka"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV128",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "Apparel_Parka"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV129",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "Apparel_Duster"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV130",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "Apparel_Duster"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV131",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "Apparel_BasicShirt"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV132",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "Apparel_BasicShirt"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV133",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "Apparel_Pants"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV134",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "Apparel_Pants"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": false,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV135",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "Apparel_SimpleHelmet"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV136",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "Apparel_SimpleHelmet"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV137",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_BulkGoods",
+      "name": "Apparel_PlateArmor"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV138",
+    "model": "accept",
+    "inputs": {
+      "traderId": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+      "name": "Apparel_PlateArmor"
+    },
+    "expected": {
+      "playerSellable": true,
+      "willTrade": true,
+      "sellFactor": 1
+    },
+    "claims": [
+      "TR08"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV139",
+    "model": "goodwill",
+    "inputs": {
+      "current": -10,
+      "natural": 0,
+      "delta": 4
+    },
+    "expected": {
+      "adjusted": 5,
+      "after": -5,
+      "effective": -5,
+      "relation": "Neutral"
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV140",
+    "model": "goodwill",
+    "inputs": {
+      "current": -10,
+      "natural": 0,
+      "delta": 3
+    },
+    "expected": {
+      "adjusted": 4,
+      "after": -6,
+      "effective": -6,
+      "relation": "Neutral"
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV141",
+    "model": "goodwill",
+    "inputs": {
+      "current": -2,
+      "natural": 0,
+      "delta": 10
+    },
+    "expected": {
+      "adjusted": 10,
+      "after": 8,
+      "effective": 8,
+      "relation": "Neutral"
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV142",
+    "model": "goodwill",
+    "inputs": {
+      "current": 10,
+      "natural": 0,
+      "delta": -6
+    },
+    "expected": {
+      "adjusted": -8,
+      "after": 2,
+      "effective": 2,
+      "relation": "Neutral"
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV143",
+    "model": "goodwill",
+    "inputs": {
+      "current": 0,
+      "natural": 0,
+      "delta": -76
+    },
+    "expected": {
+      "adjusted": -76,
+      "after": -76,
+      "effective": -76,
+      "relation": "Hostile"
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV144",
+    "model": "goodwill",
+    "inputs": {
+      "current": 0,
+      "natural": 0,
+      "delta": -74
+    },
+    "expected": {
+      "adjusted": -74,
+      "after": -74,
+      "effective": -74,
+      "relation": "Neutral"
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV145",
+    "model": "goodwill",
+    "inputs": {
+      "current": 0,
+      "natural": 0,
+      "delta": -75
+    },
+    "expected": {
+      "adjusted": -75,
+      "after": -75,
+      "effective": -75,
+      "relation": "Hostile"
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV146",
+    "model": "goodwill",
+    "inputs": {
+      "current": -10,
+      "natural": 0,
+      "delta": 8,
+      "relation": "Hostile"
+    },
+    "expected": {
+      "adjusted": 10,
+      "after": 0,
+      "effective": 0,
+      "relation": "Neutral"
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV147",
+    "model": "goodwill",
+    "inputs": {
+      "current": -10,
+      "natural": 0,
+      "delta": 1,
+      "relation": "Hostile"
+    },
+    "expected": {
+      "adjusted": 1,
+      "after": -9,
+      "effective": -9,
+      "relation": "Hostile"
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV148",
+    "model": "goodwill",
+    "inputs": {
+      "current": 50,
+      "natural": 0,
+      "delta": -1,
+      "relation": "Ally"
+    },
+    "expected": {
+      "adjusted": -1,
+      "after": 49,
+      "effective": 49,
+      "relation": "Ally"
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV149",
+    "model": "goodwill",
+    "inputs": {
+      "current": 1,
+      "natural": 0,
+      "delta": -1,
+      "relation": "Ally"
+    },
+    "expected": {
+      "adjusted": -1,
+      "after": 0,
+      "effective": 0,
+      "relation": "Neutral"
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV150",
+    "model": "goodwill",
+    "inputs": {
+      "current": 74,
+      "natural": 0,
+      "delta": 1
+    },
+    "expected": {
+      "adjusted": 1,
+      "after": 75,
+      "effective": 75,
+      "relation": "Ally"
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV151",
+    "model": "goodwill",
+    "inputs": {
+      "current": 99,
+      "natural": 0,
+      "delta": 10
+    },
+    "expected": {
+      "adjusted": 10,
+      "after": 100,
+      "effective": 100,
+      "relation": "Ally"
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV152",
+    "model": "goodwill",
+    "inputs": {
+      "current": -99,
+      "natural": 0,
+      "delta": -10,
+      "relation": "Hostile"
+    },
+    "expected": {
+      "adjusted": -10,
+      "after": -100,
+      "effective": -100,
+      "relation": "Hostile"
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV153",
+    "model": "goodwill",
+    "inputs": {
+      "current": 70,
+      "base": 80,
+      "natural": 0,
+      "delta": 5,
+      "maxGoodwill": 70
+    },
+    "expected": {
+      "adjusted": 5,
+      "after": 85,
+      "effective": 70,
+      "relation": "Neutral"
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV154",
+    "model": "goodwill",
+    "inputs": {
+      "current": -10,
+      "natural": 0,
+      "delta": 0
+    },
+    "expected": {
+      "adjusted": 0,
+      "after": -10,
+      "effective": -10,
+      "relation": "Neutral"
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV155",
+    "model": "harm",
+    "inputs": {
+      "amount": 0.5
+    },
+    "expected": {
+      "rawDelta": 0
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV156",
+    "model": "harm",
+    "inputs": {
+      "amount": 1
+    },
+    "expected": {
+      "rawDelta": -1
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV157",
+    "model": "harm",
+    "inputs": {
+      "amount": 10
+    },
+    "expected": {
+      "rawDelta": -13
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV158",
+    "model": "harm",
+    "inputs": {
+      "amount": 100
+    },
+    "expected": {
+      "rawDelta": -130
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV159",
+    "model": "harm",
+    "inputs": {
+      "amount": 200
+    },
+    "expected": {
+      "rawDelta": -130
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV160",
+    "model": "harm",
+    "inputs": {
+      "amount": 10,
+      "mutuallyHostileCrossfire": true
+    },
+    "expected": {
+      "rawDelta": 0
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV161",
+    "model": "harm",
+    "inputs": {
+      "amount": 10,
+      "exempt": true
+    },
+    "expected": {
+      "rawDelta": 0
+    },
+    "claims": [
+      "TR21"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV162",
+    "model": "pawnQuality",
+    "inputs": {
+      "roll": 0.099
+    },
+    "expected": {
+      "quality": 1
+    },
+    "claims": [
+      "TR22"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV163",
+    "model": "pawnQuality",
+    "inputs": {
+      "roll": 0.1
+    },
+    "expected": {
+      "quality": 3
+    },
+    "claims": [
+      "TR22"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV164",
+    "model": "pawnQuality",
+    "inputs": {
+      "roll": 0.199
+    },
+    "expected": {
+      "quality": 3
+    },
+    "claims": [
+      "TR22"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV165",
+    "model": "pawnQuality",
+    "inputs": {
+      "roll": 0.2
+    },
+    "expected": {
+      "quality": 2
+    },
+    "claims": [
+      "TR22"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV166",
+    "model": "pawnQuality",
+    "inputs": {
+      "roll": 0.5
+    },
+    "expected": {
+      "quality": 2
+    },
+    "claims": [
+      "TR22"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV167",
+    "model": "pawnQuality",
+    "inputs": {
+      "center": 0,
+      "roll": 0
+    },
+    "expected": {
+      "quality": 0
+    },
+    "claims": [
+      "TR22"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV168",
+    "model": "pawnQuality",
+    "inputs": {
+      "center": 4,
+      "roll": 0.15
+    },
+    "expected": {
+      "quality": 4
+    },
+    "claims": [
+      "TR22"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV169",
+    "model": "pawnQuality",
+    "inputs": {
+      "center": 1,
+      "roll": 0.15
+    },
+    "expected": {
+      "quality": 2
+    },
+    "claims": [
+      "TR22"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV170",
+    "model": "pawnQuality",
+    "inputs": {
+      "center": 1,
+      "roll": 0.15,
+      "forceNormal": true
+    },
+    "expected": {
+      "quality": 2
+    },
+    "claims": [
+      "TR22"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV171",
+    "model": "pawnQuality",
+    "inputs": {
+      "roll": 0.5,
+      "forceQuality": 5
+    },
+    "expected": {
+      "quality": 5
+    },
+    "claims": [
+      "TR22"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV172",
+    "model": "gearHp",
+    "inputs": {
+      "roll": 0.25,
+      "maxHp": 10
+    },
+    "expected": {
+      "hp": 2
+    },
+    "claims": [
+      "TR22"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV173",
+    "model": "gearHp",
+    "inputs": {
+      "roll": 0.35,
+      "maxHp": 10
+    },
+    "expected": {
+      "hp": 4
+    },
+    "claims": [
+      "TR22"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV174",
+    "model": "gearHp",
+    "inputs": {
+      "roll": 0.001,
+      "maxHp": 10
+    },
+    "expected": {
+      "hp": 1
+    },
+    "claims": [
+      "TR22"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV175",
+    "model": "gearHp",
+    "inputs": {
+      "roll": 1,
+      "maxHp": 100
+    },
+    "expected": {
+      "hp": 100
+    },
+    "claims": [
+      "TR22"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  },
+  {
+    "id": "TV176",
+    "model": "gearHp",
+    "inputs": {
+      "roll": 1.5,
+      "maxHp": 100
+    },
+    "expected": {
+      "hp": 100
+    },
+    "claims": [
+      "TR22"
+    ],
+    "limitation": "Independent analytic expectation; not original execution, loaded Def validation or project simulation evidence."
+  }
+]

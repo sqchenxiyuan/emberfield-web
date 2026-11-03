@@ -1,0 +1,1329 @@
+[
+  {
+    "id": "TR01",
+    "title": "贸易单价与银币",
+    "kind": "xml-and-static-derived",
+    "statement": "买价V*1.4*type*join*(1+loss)*(1-g-s)，卖价V*.6*type*SellPriceFactor*human*(1-loss)*(1+g+s+drug+animal)。分别max .5/.01，严格>99.5才Round，最后sell=min(sell,buy)。Silver绕过公式，双方价格恒MarketValue=1。RoyalFavor使用另一货币分支，未纳入项目。",
+    "sources": [
+      {
+        "group": "economy",
+        "type": "RimWorld.TradeUtility",
+        "line_start": 1,
+        "line_end": 330,
+        "range_sha256": "de12a556209ea51bb8f5a9196c0a2172d30c44a2022f3e11bbebba9c7ce19256"
+      },
+      {
+        "group": "economy",
+        "type": "RimWorld.Tradeable",
+        "line_start": 1,
+        "line_end": 526,
+        "range_sha256": "520b439791a5e9943fe0be9b7a3c1dc78ff27654cadbfd5426133ec7ccd72ad2"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.PriceTypeUtlity",
+        "line_start": 1,
+        "line_end": 41,
+        "range_sha256": "712b64e4f8212feabcdc7e7c0b559fa2af6cc68e14df5edf6fadc7132821654a"
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_Silver",
+        "xml_line_start": 7,
+        "xml_line_end": 67
+      },
+      {
+        "group": "trade",
+        "xml_record": "StatDef_SellPriceFactor",
+        "xml_line_start": 110,
+        "xml_line_end": 121
+      }
+    ]
+  },
+  {
+    "id": "TR02",
+    "title": "谈判技能与能力",
+    "kind": "xml-and-static-derived",
+    "statement": "一般无其它modifier时TradePriceImprovement=.015*Social*[.1+.9*min(1,Talking/.95)]*[.1+.9*min(1,Hearing/.8)]，PlayerFactionLeader再加.02，最终clamp 0..0.395。能力缺陷是InverseLerp补偿后逐项Lerp乘积；不能把原始能力直接相乘，也不能把leader加两次。",
+    "sources": [
+      {
+        "group": "trade",
+        "type": "RimWorld.SkillNeed_BaseBonus",
+        "line_start": 1,
+        "line_end": 42,
+        "range_sha256": "0f138059de75d31cd1a0d3d028b08e5332923786fb830d8544f5182e3a5c49ca"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.PawnCapacityFactor",
+        "line_start": 1,
+        "line_end": 38,
+        "range_sha256": "4534a4c8f3efcd51636fbfecb1b5ead2b3611e9fde554445b9f1947be84edf18"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.StatPart_PlayerFactionLeader",
+        "line_start": 1,
+        "line_end": 41,
+        "range_sha256": "9d802af9d1e106dbadbae20377d0ff8008952cece2289b9c8d5ca7b30cb4163e"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 370,
+        "line_end": 398,
+        "range_sha256": "0ba540fffe16ee9b1e3c9ed743c341914ed2dce196b87d6c053b8226246e1d49"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 796,
+        "line_end": 835,
+        "range_sha256": "3e887a5c9218ecea55c75f942006841c489b0f38128ee97711f4852a20a34fea"
+      },
+      {
+        "group": "trade",
+        "xml_record": "StatDef_TradePriceImprovement",
+        "xml_line_start": 87,
+        "xml_line_end": 124
+      },
+      {
+        "group": "trade",
+        "xml_record": "StatDef_NegotiationAbility",
+        "xml_line_start": 4,
+        "xml_line_end": 34
+      }
+    ]
+  },
+  {
+    "id": "TR03",
+    "title": "难度与市场价层次",
+    "kind": "xml-and-static-derived",
+    "statement": "Peaceful/Easy/Medium/Rough贸易损耗默认0，Hard .10、Extreme .20。MarketValue先含材质/品质增益封顶、耐久曲线和最终>200五单位取整，再进入贸易公式；武器SellPriceFactor=.20，普通与护甲衣物=1。",
+    "sources": [
+      {
+        "group": "economy",
+        "type": "RimWorld.Difficulty",
+        "line_start": 1,
+        "line_end": 465,
+        "range_sha256": "013901f7cbcf33d5cf476e82a30dd1b4879c803e978bcc603fb152d7a0bb19e7"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.StatWorker_MarketValue",
+        "line_start": 1,
+        "line_end": 151,
+        "range_sha256": "e47a2c46fa51be66ebe01e9b287f90416557bbedad6b139d7a7c97fa35dd7902"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 796,
+        "line_end": 835,
+        "range_sha256": "3e887a5c9218ecea55c75f942006841c489b0f38128ee97711f4852a20a34fea"
+      },
+      {
+        "group": "trade",
+        "xml_record": "DifficultyDef_Hard",
+        "xml_line_start": 131,
+        "xml_line_end": 160
+      },
+      {
+        "group": "trade",
+        "xml_record": "DifficultyDef_Extreme",
+        "xml_line_start": 162,
+        "xml_line_end": 194
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_BaseWeapon",
+        "xml_line_start": 4,
+        "xml_line_end": 35
+      },
+      {
+        "group": "trade",
+        "xml_record": "StatDef_MarketValue",
+        "xml_line_start": 76,
+        "xml_line_end": 103
+      }
+    ]
+  },
+  {
+    "id": "TR04",
+    "title": "总价与正常成交",
+    "kind": "xml-and-static-derived",
+    "statement": "普通CountToTransfer正为买入、负为卖出，所有非银币行数量*实际单价先求浮点净成本，再统一RoundToInt ties-even并取反为殖民地银币变化。玩家银币不足返回false；正常成交逐行ResolveTrade，再Reset、派系通知、结束贸易灵感。此路径不是跨行异常回滚事务。",
+    "sources": [
+      {
+        "group": "trade",
+        "type": "RimWorld.TradeDeal",
+        "line_start": 130,
+        "line_end": 250,
+        "range_sha256": "a551bd10a81b8144bd59819e92669526cbf5c45fc857888b4bc9788431da7401"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.Transferable",
+        "line_start": 1,
+        "line_end": 166,
+        "range_sha256": "bed3019f016f1e904fab64ec8a96c1db2ec767d037cffa38d544148be9b277b5"
+      },
+      {
+        "group": "economy",
+        "type": "RimWorld.Tradeable",
+        "line_start": 1,
+        "line_end": 526,
+        "range_sha256": "520b439791a5e9943fe0be9b7a3c1dc78ff27654cadbfd5426133ec7ccd72ad2"
+      },
+      {
+        "group": "economy",
+        "type": "RimWorld.Tradeable",
+        "line_start": 1,
+        "line_end": 526,
+        "range_sha256": "520b439791a5e9943fe0be9b7a3c1dc78ff27654cadbfd5426133ec7ccd72ad2"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.TransferableUtility",
+        "line_start": 48,
+        "line_end": 91,
+        "range_sha256": "65225101758946205df9a2db83519ac77899139a80de185778df130d117df118"
+      }
+    ]
+  },
+  {
+    "id": "TR05",
+    "title": "商人缺银需显式确认",
+    "kind": "xml-and-static-derived",
+    "statement": "Dialog_Trade在DoesTraderHaveEnoughSilver失败时显示ConfirmTraderShortFunds，玩家确认才执行。LimitCurrencyCountToFunds仅截断双方可支付银币，不减少已选择商品、不产生债务。项目必须让少收金额可见，禁止静默确认。",
+    "sources": [
+      {
+        "group": "trade",
+        "type": "RimWorld.Dialog_Trade",
+        "line_start": 365,
+        "line_end": 395,
+        "range_sha256": "32a97e0652afd28f1a8262d432e841725ee355742650be9c503f79192a283011"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.TradeDeal",
+        "line_start": 215,
+        "line_end": 250,
+        "range_sha256": "e42492103c0326979652619de7f41969bfda81039f5af3ed3dfdf593609258cd"
+      }
+    ]
+  },
+  {
+    "id": "TR06",
+    "title": "可售对象与位置",
+    "kind": "xml-and-static-derived",
+    "statement": "EverPlayerSellable先检查tradeability PlayerCanSell、抽象MarketValue>0及Item/Pawn/可搬建筑；PlayerSellableNow排腐烂、尸体穿过衣物、biocoded及Pawn例外。陆行地图物品还要求非fog、Home或storage、商人Touch可达；TradeDeal要求spawned，特殊容器例外。forbidden没有筛选，手持/背包/装备未spawned不进入普通清单。",
+    "sources": [
+      {
+        "group": "economy",
+        "type": "RimWorld.TradeUtility",
+        "line_start": 1,
+        "line_end": 330,
+        "range_sha256": "de12a556209ea51bb8f5a9196c0a2172d30c44a2022f3e11bbebba9c7ce19256"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.Pawn_TraderTracker",
+        "line_start": 102,
+        "line_end": 155,
+        "range_sha256": "795cfb6268336cb3ccb1e7b8e3d1f5a784d9a7c29f4212469e566649cf25e3f7"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.Pawn_TraderTracker",
+        "line_start": 256,
+        "line_end": 269,
+        "range_sha256": "3d61251387c1bf3b1659d176fe543f27e1fac4d1ae7fb65fb9b1718fcef86413"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.TradeDeal",
+        "line_start": 41,
+        "line_end": 128,
+        "range_sha256": "b2b2a4aad1e343e366ef238557e87e3d1311e19181192fa876a534ccc5405471"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.TradeabilityUtility",
+        "line_start": 1,
+        "line_end": 23,
+        "range_sha256": "745d7f2af2a69ab22f8fc6fff95c40c2c8ef85d38a583f710cee850a3f64fda6"
+      }
+    ]
+  },
+  {
+    "id": "TR07",
+    "title": "商人接受与报价发生器",
+    "kind": "xml-and-static-derived",
+    "statement": "WillTrade只需任一StockGenerator HandlesThingDef；显示不愿交易行由UI拦截，赠礼也同样限制。买价类型来自首个匹配发生器，卖价始终Normal；Silver类型Undefined但不走乘数。Category按后代、Tag按tradeTags、BuyExpensiveSimple排衣物武器药物且BaseMarketValue/VolumePerUnit>=15。",
+    "sources": [
+      {
+        "group": "trade",
+        "type": "RimWorld.TraderKindDef",
+        "line_start": 1,
+        "line_end": 112,
+        "range_sha256": "6d2b8c6ef0517bdfb69bd2f175ee40f303170f4c4893d1ec85f836572e6dd9a0"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.TradeUI",
+        "line_start": 25,
+        "line_end": 80,
+        "range_sha256": "f68fa4e99be9612984063ecc5464e02e4d6c0275287f2974d8dac0032078ea7d"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.StockGenerator_BuyExpensiveSimple",
+        "line_start": 1,
+        "line_end": 39,
+        "range_sha256": "fae47412518833a95b5116894773e21b128bdb62ed2378add1505c33c385b928"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.StockGenerator_BuyTradeTag",
+        "line_start": 1,
+        "line_end": 35,
+        "range_sha256": "33c8cdb492a0f66a1d7cfe39234d7c3a348359badab60e848e0e047e3b03c36a"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.StockGenerator_BuySingleDef",
+        "line_start": 1,
+        "line_end": 31,
+        "range_sha256": "4c2198650adf85f2e5fe9aef496945a6f6c623a2edf262f56305ab8c24194504"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.StockGenerator_Category",
+        "line_start": 1,
+        "line_end": 50,
+        "range_sha256": "02d74232f7ef4dc93d19c75b2acb084ca7f51370d9de22a5a4e6fb4716f3bc65"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.StockGenerator_Tag",
+        "line_start": 1,
+        "line_end": 50,
+        "range_sha256": "0d9170cc7c8ae2756002afe9d893923e683f7b99af9ee0d62a7a73115eb59758"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.StockGenerator_MultiDef",
+        "line_start": 1,
+        "line_end": 40,
+        "range_sha256": "13cd07088dd21be0fc165dc3640891c9284ae80474f7645466c1f9e13ded118d"
+      },
+      {
+        "group": "energy",
+        "type": "Verse.ThingDef",
+        "line_start": 145,
+        "line_end": 150,
+        "range_sha256": "ff25da94deac6c3a453f44b0f0ebec1c0a8bf70624c247d9277efe514fd0657f"
+      },
+      {
+        "group": "energy",
+        "type": "Verse.ThingDef",
+        "line_start": 460,
+        "line_end": 470,
+        "range_sha256": "d253f012bb36865a3cde61edc5f5c6f623a9a394255039a2f23024d9448a3c39"
+      },
+      {
+        "group": "trade",
+        "xml_record": "TraderKindDef_Caravan_Outlander_BulkGoods",
+        "xml_line_start": 4,
+        "xml_line_end": 160
+      },
+      {
+        "group": "trade",
+        "xml_record": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+        "xml_line_start": 164,
+        "xml_line_end": 250
+      }
+    ]
+  },
+  {
+    "id": "TR08",
+    "title": "现有资源与装备矩阵",
+    "kind": "xml-and-static-derived",
+    "statement": "选定目录：杂货收steel/components/cloth/raw crops/survivalPack/普通衣物及Clothing+Armor双标签的simpleHelmet/plate；战斗收components/survivalPack/武器/Armor；两者银币自动结算。wood与herb两者不收；granite blocks和simple meal是Buyable，玩家不可卖；chunk=None。这不是所有原版商人的全局拒收结论。",
+    "sources": [
+      {
+        "group": "trade",
+        "type": "RimWorld.StockGenerator_BuyExpensiveSimple",
+        "line_start": 1,
+        "line_end": 39,
+        "range_sha256": "fae47412518833a95b5116894773e21b128bdb62ed2378add1505c33c385b928"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.TradeabilityUtility",
+        "line_start": 1,
+        "line_end": 23,
+        "range_sha256": "745d7f2af2a69ab22f8fc6fff95c40c2c8ef85d38a583f710cee850a3f64fda6"
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_WoodLog",
+        "xml_line_start": 249,
+        "xml_line_end": 324
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_Steel",
+        "xml_line_start": 134,
+        "xml_line_end": 188
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_BlocksGranite",
+        "xml_line_start": 291,
+        "xml_line_end": 314
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_ChunkGranite",
+        "xml_line_start": 276,
+        "xml_line_end": 289
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_Cloth",
+        "xml_line_start": 451,
+        "xml_line_end": 514
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_ComponentIndustrial",
+        "xml_line_start": 122,
+        "xml_line_end": 150
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_MealSurvivalPack",
+        "xml_line_start": 54,
+        "xml_line_end": 77
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_RawRice",
+        "xml_line_start": 85,
+        "xml_line_end": 106
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_RawPotatoes",
+        "xml_line_start": 36,
+        "xml_line_end": 56
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_RawCorn",
+        "xml_line_start": 130,
+        "xml_line_end": 152
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_MealSimple",
+        "xml_line_start": 125,
+        "xml_line_end": 144
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_MedicineHerbal",
+        "xml_line_start": 22,
+        "xml_line_end": 49
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_MedicineIndustrial",
+        "xml_line_start": 51,
+        "xml_line_end": 91
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_Silver",
+        "xml_line_start": 7,
+        "xml_line_end": 67
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_MeleeWeapon_Club",
+        "xml_line_start": 4,
+        "xml_line_end": 56
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_MeleeWeapon_Knife",
+        "xml_line_start": 58,
+        "xml_line_end": 117
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_MeleeWeapon_LongSword",
+        "xml_line_start": 120,
+        "xml_line_end": 179
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_Bow_Short",
+        "xml_line_start": 53,
+        "xml_line_end": 113
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_Gun_Revolver",
+        "xml_line_start": 20,
+        "xml_line_end": 88
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_Gun_MachinePistol",
+        "xml_line_start": 173,
+        "xml_line_end": 243
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_Gun_BoltActionRifle",
+        "xml_line_start": 533,
+        "xml_line_end": 595
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_Apparel_Tuque",
+        "xml_line_start": 205,
+        "xml_line_end": 274
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_Apparel_Parka",
+        "xml_line_start": 208,
+        "xml_line_end": 289
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_Apparel_Duster",
+        "xml_line_start": 454,
+        "xml_line_end": 537
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_Apparel_BasicShirt",
+        "xml_line_start": 345,
+        "xml_line_end": 397
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_Apparel_Pants",
+        "xml_line_start": 293,
+        "xml_line_end": 343
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_Apparel_SimpleHelmet",
+        "xml_line_start": 414,
+        "xml_line_end": 465
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingDef_Apparel_PlateArmor",
+        "xml_line_start": 620,
+        "xml_line_end": 701
+      }
+    ]
+  },
+  {
+    "id": "TR09",
+    "title": "库存计数与分组抽样",
+    "kind": "xml-and-static-derived",
+    "statement": "SingleDef使用RandomCountOf；仅count则IntRange inclusive抽样，仅totalPrice则RoundToInt(priceRoll/Def.BaseMarketValue)。两者皆有最多101次取样，仍不满足也返回末次。非正数量不生成。Category随机无放回选Def；Misc/MarketValue按次数有放回选Def；MarketValue权重曲线0:1,500:.5,1500:.2,5000:.1。",
+    "sources": [
+      {
+        "group": "trade",
+        "type": "RimWorld.StockGenerator",
+        "line_start": 1,
+        "line_end": 97,
+        "range_sha256": "31de0793d3395dc828100e2bfa7b411d6f6daeaf809bcc5cc39a8e611ac7d70e"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.StockGenerator_SingleDef",
+        "line_start": 1,
+        "line_end": 36,
+        "range_sha256": "4a6f07875138f4ca9758fa57fd0c6c4cfb7c4c706578b7bb698fdff155ba12bf"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.StockGenerator_Category",
+        "line_start": 1,
+        "line_end": 50,
+        "range_sha256": "02d74232f7ef4dc93d19c75b2acb084ca7f51370d9de22a5a4e6fb4716f3bc65"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.StockGenerator_Tag",
+        "line_start": 1,
+        "line_end": 50,
+        "range_sha256": "0d9170cc7c8ae2756002afe9d893923e683f7b99af9ee0d62a7a73115eb59758"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.StockGenerator_MiscItems",
+        "line_start": 1,
+        "line_end": 42,
+        "range_sha256": "63ffab2553180610112d7e102566f6d1b32939eaf035f63ab8ce8d69e6090d7e"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.StockGenerator_MarketValue",
+        "line_start": 1,
+        "line_end": 46,
+        "range_sha256": "0f09d8ac162a53c22acabf300b426cf814bb352b4ffd87bdd951f185c7eb11b2"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.StockGeneratorUtility",
+        "line_start": 1,
+        "line_end": 55,
+        "range_sha256": "318e8b47698a702f35dd1ba73c7785dc1f7ea47efc9e1e54935afef6c490cda4"
+      }
+    ]
+  },
+  {
+    "id": "TR10",
+    "title": "库存生成材质品质与耐久",
+    "kind": "xml-and-static-derived",
+    "statement": "ThingSetMaker_TraderStock按发生器顺序生成并调用PostGeneratedForTrader；MadeFromStuff按stuff commonality选择合法材料。CompQuality调用floor(clamp(Gaussian(2.5,1),Normal2,Masterwork5))，无Awful/Poor/Legendary。默认startingHpRange=1，原生PostMake全HP。品质不是PawnKind装备品质。条目数与stackLimit不同，商人可保存超大stack。",
+    "sources": [
+      {
+        "group": "trade",
+        "type": "RimWorld.ThingSetMaker_TraderStock",
+        "line_start": 1,
+        "line_end": 103,
+        "range_sha256": "04728eb70176605577406504a0b58231e1402f8e74c0fc6c2c717aab124cec35"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.ThingSetMaker",
+        "line_start": 23,
+        "line_end": 45,
+        "range_sha256": "bb974cecfacc336f724536ab4ce9258933f6a2a0499549fff17d95fdc827e728"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.StockGeneratorUtility",
+        "line_start": 1,
+        "line_end": 55,
+        "range_sha256": "318e8b47698a702f35dd1ba73c7785dc1f7ea47efc9e1e54935afef6c490cda4"
+      },
+      {
+        "group": "trade",
+        "type": "Verse.Thing",
+        "line_start": 777,
+        "line_end": 784,
+        "range_sha256": "8abc4b0690771df57dcb871f6222d74ec58547007fc61d8fa675be2640bc69e5"
+      },
+      {
+        "group": "trade",
+        "type": "Verse.Thing",
+        "line_start": 1106,
+        "line_end": 1113,
+        "range_sha256": "a51728fc79b0803e71c2b7b957f1997a208e846b26f4c6cf322c41e1f3f66759"
+      },
+      {
+        "group": "trade",
+        "type": "Verse.ThingWithComps",
+        "line_start": 743,
+        "line_end": 753,
+        "range_sha256": "962df98e6ae007a3dd5d49638b8d1e77a3a21b886efbb4b0ddcea67992ea3081"
+      },
+      {
+        "group": "armor",
+        "type": "RimWorld.CompQuality",
+        "line_start": 30,
+        "line_end": 36,
+        "range_sha256": "91956bc5b91ce7cca09e4bd0aa5ee24aa1be2151332abf10b46a929658234f5b"
+      },
+      {
+        "group": "weapons",
+        "type": "RimWorld.QualityUtility",
+        "line_start": 111,
+        "line_end": 114,
+        "range_sha256": "a01155eec8f6f39ca49bef41afdc425a8b41f8c8a2d99f97ba6771d3d178d8cc"
+      },
+      {
+        "group": "weapons",
+        "type": "RimWorld.QualityUtility",
+        "line_start": 268,
+        "line_end": 281,
+        "range_sha256": "9dacdd4c13107df31361e5fb39905e2fcf0a3e3f4820898a2960b5330119c992"
+      },
+      {
+        "group": "energy",
+        "type": "Verse.ThingDef",
+        "line_start": 105,
+        "line_end": 111,
+        "range_sha256": "2b17ff26156f6c50caf63f5910095b1ec88b4968ff095d9514d9ea244ddeb969"
+      },
+      {
+        "group": "trade",
+        "xml_record": "ThingSetMakerDef_TraderStock",
+        "xml_line_start": 126,
+        "xml_line_end": 133
+      }
+    ]
+  },
+  {
+    "id": "TR11",
+    "title": "两类陆行库存范围",
+    "kind": "xml-and-static-derived",
+    "statement": "Outlander_BulkGoods银币750..1200、components30..40、steel和cloth250..400，FoodRaw3种每种预算150..600，BasicClothing7次+Clothing3次；Combat银币750..1200、工业药10..20、WeaponRanged5次、WeaponsMelee6种各1、Armor5次。原版还有未实现内容，缩小目录后重归一化不等于原版完整分布。",
+    "sources": [
+      {
+        "group": "trade",
+        "xml_record": "TraderKindDef_Caravan_Outlander_BulkGoods",
+        "xml_line_start": 4,
+        "xml_line_end": 160
+      },
+      {
+        "group": "trade",
+        "xml_record": "TraderKindDef_Caravan_Outlander_CombatSupplier",
+        "xml_line_start": 164,
+        "xml_line_end": 250
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.StockGenerator_MarketValue",
+        "line_start": 1,
+        "line_end": 46,
+        "range_sha256": "0f09d8ac162a53c22acabf300b426cf814bb352b4ffd87bdd951f185c7eb11b2"
+      }
+    ]
+  },
+  {
+    "id": "TR12",
+    "title": "交互与暂停",
+    "kind": "xml-and-static-derived",
+    "statement": "浮动菜单先检查商人CanTradeNow、选中殖民者可达、Social未完全禁用、未Dismiss、头衔许可；JobDriver预留商人并Touch接近，到达仍可交易才建立Dialog。窗口forcePause，改数量仅改单据，取消不Resolve，模式切换Reset。 本次审计的普通JobDriver/Dialog/TradeDeal/Pawn_TraderTracker链没有显式SkillRecord.Learn；不能据此增加按次Social XP，也不主张全游戏无任何相关经验来源。",
+    "sources": [
+      {
+        "group": "trade",
+        "type": "RimWorld.FloatMenuOptionProvider_Trade",
+        "line_start": 1,
+        "line_end": 70,
+        "range_sha256": "6cf6ef8c96e4cb2771a4e7fe800d9f89f29789f04d2fc10fe1e7e8e092b3bc75"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.JobDriver_TradeWithPawn",
+        "line_start": 1,
+        "line_end": 32,
+        "range_sha256": "132b6a8f5d6236fbe44a8a599ffbc0191925dde82c90993d29fb9d1b7d3450c9"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.TradeSession",
+        "line_start": 1,
+        "line_end": 40,
+        "range_sha256": "a8295741a45550be1ac5af0b974b0c64616726059d3d9d92c6baf0a4b5cf4bb8"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.Dialog_Trade",
+        "line_start": 235,
+        "line_end": 258,
+        "range_sha256": "1519903e23356c11f59e7007be5fb032ab1e309443e3da1740a92184a5210e82"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.Dialog_Trade",
+        "line_start": 398,
+        "line_end": 441,
+        "range_sha256": "2f38be65eeab8abf968cf9481339a45dd85eaa3490e9f87a4af2cb9b6d615149"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.Pawn_TraderTracker",
+        "line_start": 65,
+        "line_end": 84,
+        "range_sha256": "00505441ae1c14175fff41810671cd51b045f338cda7cd49f75d3236bc6475b6"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.PawnUtility",
+        "line_start": 198,
+        "line_end": 236,
+        "range_sha256": "e4722d680d3db2a0b8684e2a19db1205fd2b402a6f8355c57cc9920056c47fe8"
+      }
+    ]
+  },
+  {
+    "id": "TR13",
+    "title": "实物交割与持有者",
+    "kind": "design-adaptation",
+    "statement": "卖出SplitOff后合并商队库存或随机载畜容器，买入SplitOff并在原持有者位置附近放地面；不能原地放下会Destroy并日志，不是自动入殖民者钱包。货物在商队carrier内不属殖民地持有财富。项目预验证并一次提交、购买品落地供搬运，是可靠性适配。 GiveSoldThingToPlayer先记录原持有者PositionHeld，再SplitOff并Near放置；没有SetForbidden(false)。CompForbiddable.PostSplitOff继承forbidden，且无PrePreTraded覆盖。Lord.extraForbiddenThings限制商队拾取，不是玩家禁用标记。项目库存不保存forbidden而购买后允许使用属适配。",
+    "sources": [
+      {
+        "group": "trade",
+        "type": "RimWorld.Pawn_TraderTracker",
+        "line_start": 15,
+        "line_end": 58,
+        "range_sha256": "03a567d4dabf7298d97b19606872d2b7bc1caf87716136da92f823aec8383769"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.Pawn_TraderTracker",
+        "line_start": 157,
+        "line_end": 213,
+        "range_sha256": "41f79802f21c0fe9fc69084c348112f6dd1cbb252cb782e520cc15e6733d23d0"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.Pawn_TraderTracker",
+        "line_start": 235,
+        "line_end": 255,
+        "range_sha256": "1564f4943c7722f942404e49e12224cbaf2bd1cdfddfdf82bcb36250607fa6f5"
+      },
+      {
+        "group": "economy",
+        "type": "RimWorld.WealthWatcher",
+        "line_start": 115,
+        "line_end": 183,
+        "range_sha256": "3eea98117539b476dce735b7bfbc0e97cf156551d951f945840f4faff130de8f"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.CompForbiddable",
+        "line_start": 1,
+        "line_end": 146,
+        "range_sha256": "7e84d5006a99cdb19c9c1f2a62fc358bd9871a3fe7094ec327cf8fe386ae48e7"
+      },
+      {
+        "group": "trade",
+        "type": "Verse.ThingWithComps",
+        "line_start": 731,
+        "line_end": 741,
+        "range_sha256": "3df6d8cebb48c53a161eb1c01c0b49a976f7806274220db832ab92ca2a23180a"
+      },
+      {
+        "group": "trade",
+        "type": "Verse.Thing",
+        "line_start": 1102,
+        "line_end": 1104,
+        "range_sha256": "d0cb2ae0f2cbf253f6000591f14cbd5c918826f7e298cd2b4683d2d94081883d"
+      }
+    ]
+  },
+  {
+    "id": "TR14",
+    "title": "贸易行合并",
+    "kind": "design-adaptation",
+    "statement": "TransferAsOne检查Def/material、tradeNeverStack、品质、尸衣标志等；耐久影响价格时HP差>=10分行，Item还要CanStackWith。AnyThing优先FirstThingColony；并非所有同种物资必须一个价。项目逐件装备保留真实品质/HP是更严格的身份分组。",
+    "sources": [
+      {
+        "group": "trade",
+        "type": "RimWorld.TransferableUtility",
+        "line_start": 93,
+        "line_end": 219,
+        "range_sha256": "147c6ebadef9016a5c2998e2567a3d169051cf6905a9412b3a70e95e64c5e1cd"
+      },
+      {
+        "group": "economy",
+        "type": "RimWorld.Tradeable",
+        "line_start": 1,
+        "line_end": 526,
+        "range_sha256": "520b439791a5e9943fe0be9b7a3c1dc78ff27654cadbfd5426133ec7ccd72ad2"
+      }
+    ]
+  },
+  {
+    "id": "TR15",
+    "title": "赠礼与外交",
+    "kind": "xml-and-static-derived",
+    "statement": "赠礼只移交PlayerSells行，不从商人收钱；基础value/40，对方阵营囚犯*2；relations曲线(0,1),(75,.25)按.25基础好感步进重新求值，最后trunc(min(delta,200))。银币可手填。普通交易好感trunc(PlayerSells实际价值总和/600)，包含支付银币行；没有额外NegotiationAbility乘数。",
+    "sources": [
+      {
+        "group": "trade",
+        "type": "RimWorld.Planet.FactionGiftUtility",
+        "line_start": 29,
+        "line_end": 46,
+        "range_sha256": "65359acb959a0e05afb7d64ea521409ee22d6a0ddba2fe1097b6fc9c2d01bef2"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.Planet.FactionGiftUtility",
+        "line_start": 159,
+        "line_end": 204,
+        "range_sha256": "6f8636011ab27b4a0dd29726bb70ffc3f20c26558db971735f243e03f19989c9"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.DiplomacyTuning",
+        "line_start": 84,
+        "line_end": 99,
+        "range_sha256": "0b6ee949246451ab96e8888c49122885fbe54c4a6c3f522615c4626e6c552450"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.Faction",
+        "line_start": 1086,
+        "line_end": 1090,
+        "range_sha256": "73f3975a45e205a1f75b8b098fc16d529a1736e10a4ec2d9c621f8cd23c45e44"
+      },
+      {
+        "group": "economy",
+        "type": "RimWorld.Tradeable",
+        "line_start": 1,
+        "line_end": 526,
+        "range_sha256": "520b439791a5e9943fe0be9b7a3c1dc78ff27654cadbfd5426133ec7ccd72ad2"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.TradeDeal",
+        "line_start": 151,
+        "line_end": 214,
+        "range_sha256": "0bdeb770487541607d25a51a6e0ee36485fca5bd96b922b933342e94c584f029"
+      }
+    ]
+  },
+  {
+    "id": "TR16",
+    "title": "自然商队周期",
+    "kind": "xml-and-static-derived",
+    "statement": "Cassandra/Phoebe在第5天偏移之后60天on、0off，每窗口5个候选，最小间隔6天；acceptFraction依据非敌对派系比例曲线(.25,.6),(1,1)。每1000tick按绝对settle interval查询，重放cycle0至当前cycle，前周期hit列表最后元素作为fixedHit；accept<1时shuffle后最后不保证最大。非第5天必来，非固定每6天。",
+    "sources": [
+      {
+        "group": "trade",
+        "type": "RimWorld.StorytellerComp_FactionInteraction",
+        "line_start": 1,
+        "line_end": 38,
+        "range_sha256": "95cf68b1d8cc784d603b10c1393d2786d136ff172a6f956c66001908e64c04ea"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.StorytellerCompProperties_FactionInteraction",
+        "line_start": 1,
+        "line_end": 22,
+        "range_sha256": "b2246417397b8955b55a52eaa58c2f44b54dd07cea5ddbfd298195c6449a3e30"
+      },
+      {
+        "group": "economy",
+        "type": "RimWorld.IncidentCycleUtility",
+        "line_start": 1,
+        "line_end": 117,
+        "range_sha256": "e75d5ad124dbb82a648c3088beba42ec28ad8b5b3b1e61c5a55fb5b52365945e"
+      },
+      {
+        "group": "economy",
+        "type": "RimWorld.StorytellerUtility",
+        "line_start": 196,
+        "line_end": 221,
+        "range_sha256": "0b08316e2ed6231ac56924346b796ff4dddc82b297d1665e4afeaf7a9e470b66"
+      },
+      {
+        "group": "economy",
+        "type": "RimWorld.StorytellerUtility",
+        "line_start": 86,
+        "line_end": 90,
+        "range_sha256": "51c0d549a50fef04daa3af1a695e3dc6305c1a8784ef4265a46e2ab1fbe2da7b"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.Storyteller",
+        "line_start": 213,
+        "line_end": 234,
+        "range_sha256": "cd65dbc4241847d9610c8634cbdfb0efe39f8367247cb9699201832a0a263023"
+      },
+      {
+        "group": "trade",
+        "xml_record": "StorytellerDef_Cassandra",
+        "xml_line_start": 290,
+        "xml_line_end": 476
+      },
+      {
+        "group": "trade",
+        "xml_record": "StorytellerDef_Phoebe",
+        "xml_line_start": 478,
+        "xml_line_end": 663
+      },
+      {
+        "group": "trade",
+        "xml_record": "StorytellerDef_Randy",
+        "xml_line_start": 665,
+        "xml_line_end": 802
+      },
+      {
+        "group": "trade",
+        "xml_record": "IncidentDef_TraderCaravanArrival",
+        "xml_line_start": 35,
+        "xml_line_end": 45
+      }
+    ]
+  },
+  {
+    "id": "TR17",
+    "title": "到达资格和地图生成",
+    "kind": "xml-and-static-derived",
+    "statement": "可用派系必须非玩家/非败亡/非临时/非隐藏/非敌对、有对应商队maker与traderKind，并通过温度、planet layer、hostile lord、preventNeutralVisitors等约束；从地图边缘道路偏好入口生成，散布在入口5格内，选择全队可达殖民地外围chillSpot。部分失败可发生在spawn后，本章不称失败全原子。",
+    "sources": [
+      {
+        "group": "trade",
+        "type": "RimWorld.IncidentWorker_TraderCaravanArrival",
+        "line_start": 1,
+        "line_end": 145,
+        "range_sha256": "2e2575835071d079b42f87fb086df5d46e8f45586760b7e240df0787a95677c4"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.IncidentWorker_NeutralGroup",
+        "line_start": 1,
+        "line_end": 100,
+        "range_sha256": "3e07ea6cf995df873aa3c5edb39863a1da4db9d42e00ff9b6df0535a38e5cdb6"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.IncidentWorker_PawnsArrive",
+        "line_start": 1,
+        "line_end": 87,
+        "range_sha256": "c3ef0d08c6401103307c7219d140921daca7f2cf5840bcfcc6b2d435299fc8f4"
+      }
+    ]
+  },
+  {
+    "id": "TR18",
+    "title": "商人载畜护卫组成",
+    "kind": "xml-and-static-derived",
+    "statement": "先抽商人种类再生1名Town_Trader；guard total points=整数Rand.Range(550,1000)减商人combat45，再以原版ChoosePawnGenOptionsByPoints按权重选护卫。非Pawn货物条目数n决定ceil(n/8)载畜，载畜kind由biome允许集合加权取一个，全队同种。载畜不是每8件或按重量估算。",
+    "sources": [
+      {
+        "group": "trade",
+        "type": "RimWorld.PawnGroupKindWorker_Trader",
+        "line_start": 1,
+        "line_end": 153,
+        "range_sha256": "25d7ec73091d700855033859fc42b5be2036d942227fa672c69143fb70fad8e5"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.TraderCaravanUtility",
+        "line_start": 1,
+        "line_end": 46,
+        "range_sha256": "d5465e42693eade60c3a75d247b70c5f2bf3864c0b38fe7995c6d76d052e5e61"
+      },
+      {
+        "group": "economy",
+        "type": "RimWorld.PawnGroupMakerUtility",
+        "line_start": 1,
+        "line_end": 383,
+        "range_sha256": "d26127c2696d7dda8dbd4732c68532b56194316c54d3710977e9b13f0d9aca83"
+      },
+      {
+        "group": "trade",
+        "xml_record": "FactionDef_OutlanderCivil",
+        "xml_line_start": 184,
+        "xml_line_end": 195
+      },
+      {
+        "group": "trade",
+        "xml_record": "PawnKindDef_Town_Trader",
+        "xml_line_start": 68,
+        "xml_line_end": 104
+      },
+      {
+        "group": "trade",
+        "xml_record": "PawnKindDef_Villager",
+        "xml_line_start": 16,
+        "xml_line_end": 39
+      },
+      {
+        "group": "trade",
+        "xml_record": "PawnKindDef_Town_Guard",
+        "xml_line_start": 41,
+        "xml_line_end": 66
+      },
+      {
+        "group": "trade",
+        "xml_record": "PawnKindDef_Grenadier_Destructive",
+        "xml_line_start": 53,
+        "xml_line_end": 63
+      },
+      {
+        "group": "trade",
+        "xml_record": "PawnKindDef_Mercenary_Slasher",
+        "xml_line_start": 232,
+        "xml_line_end": 235
+      },
+      {
+        "group": "trade",
+        "xml_record": "PawnKindDef_Mercenary_Gunner",
+        "xml_line_start": 139,
+        "xml_line_end": 142
+      },
+      {
+        "group": "trade",
+        "xml_record": "PawnKindDef_Mercenary_Elite",
+        "xml_line_start": 334,
+        "xml_line_end": 337
+      },
+      {
+        "group": "trade",
+        "xml_record": "PawnKindDef_Muffalo",
+        "xml_line_start": 524,
+        "xml_line_end": 578
+      },
+      {
+        "group": "trade",
+        "xml_record": "PawnKindDef_Dromedary",
+        "xml_line_start": 869,
+        "xml_line_end": 923
+      },
+      {
+        "group": "trade",
+        "xml_record": "PawnKindDef_Alpaca",
+        "xml_line_start": 320,
+        "xml_line_end": 370
+      },
+      {
+        "group": "trade",
+        "xml_record": "PawnKindDef_Elephant",
+        "xml_line_start": 2105,
+        "xml_line_end": 2167
+      }
+    ]
+  },
+  {
+    "id": "TR19",
+    "title": "停留和离场",
+    "kind": "xml-and-static-derived",
+    "statement": "状态是Travel->外围DefendTraderCaravan->ExitMapAndEscort；到达停留后Trigger_TicksPassed严格>Rand.Range(27000,45000)，再离场（并非立即消失）。受伤途中守备1200无伤ticks后恢复Travel；危险温度/天气/condition、Dismiss、重要成员失去、关系变敌会离开；损失>=20%触发fighting exit，escort exit60000后一般ExitMap。普通leaving不是CanTradeNow显式禁用条件。",
+    "sources": [
+      {
+        "group": "trade",
+        "type": "RimWorld.LordJob_TradeWithColony",
+        "line_start": 1,
+        "line_end": 137,
+        "range_sha256": "a6598fd4892ed55b9be03c20aae8a6fbbde830af360c336d89fca731f7438866"
+      },
+      {
+        "group": "trade",
+        "type": "Verse.AI.Group.Trigger_TicksPassed",
+        "line_start": 1,
+        "line_end": 42,
+        "range_sha256": "96bea9cd5ff7df2910afcc3ed356bbe632aaca4a3aee0db5c1fed4383942fb7a"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.LordToil_DefendTraderCaravan",
+        "line_start": 1,
+        "line_end": 51,
+        "range_sha256": "746f820d339dc837c981a485878d2bd6e4db8860a17d33f7795222657bb9c35c"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.LordToil_ExitMapAndEscortCarriers",
+        "line_start": 1,
+        "line_end": 174,
+        "range_sha256": "ba7e97fcb6a20e51f02a4decedbcf9e96ada72f6d6dc0c9dd8bf0fb420f3a952"
+      },
+      {
+        "group": "trade",
+        "type": "Verse.AI.Group.Trigger_FractionPawnsLost",
+        "line_start": 1,
+        "line_end": 21,
+        "range_sha256": "16bcef0242d2246f6b1ac8b88208e13f7d95f94e2d3451c138c58a2cc7ec7964"
+      },
+      {
+        "group": "trade",
+        "type": "Verse.AI.Group.Trigger_ImportantTraderCaravanPeopleLost",
+        "line_start": 1,
+        "line_end": 23,
+        "range_sha256": "15970d420e047e92207075d1c90512c14323fe431ecd34099cdc4badc809e1cc"
+      }
+    ]
+  },
+  {
+    "id": "TR20",
+    "title": "项目边界和旧档迁移",
+    "kind": "design-adaptation",
+    "statement": "建议实体silver、Home或storage过滤、接近商人后报价/取消/双向成交/明确少收/赠礼、种类库存、持有者财富和保存恢复。仅两类商人与支持目录，不含完整载畜/所有护卫装备、轨道/世界旅行/奴隶/皇家恩典/完整外交。旧档不赠币，不补发历史机会；按绝对周期重演，今后继续。同批预验证与一次提交是项目保证，未把原版逐行函数声称为可回滚事务。",
+    "sources": [
+      {
+        "group": "trade",
+        "type": "RimWorld.TradeDeal",
+        "line_start": 1,
+        "line_end": 251,
+        "range_sha256": "f87412f2d7f56971edf3df99ec146554be166adef3e2b27a8fbd88927ed85295"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.PawnGroupKindWorker_Trader",
+        "line_start": 1,
+        "line_end": 153,
+        "range_sha256": "25d7ec73091d700855033859fc42b5be2036d942227fa672c69143fb70fad8e5"
+      },
+      {
+        "group": "economy",
+        "type": "RimWorld.IncidentCycleUtility",
+        "line_start": 1,
+        "line_end": 117,
+        "range_sha256": "e75d5ad124dbb82a648c3088beba42ec28ad8b5b3b1e61c5a55fb5b52365945e"
+      }
+    ]
+  },
+  {
+    "id": "TR21",
+    "title": "通用外交层与袭击商队",
+    "kind": "xml-and-static-derived",
+    "statement": "交易/赠礼/伤害的原始delta进入TryAffectGoodwillWith后，若方向朝NaturalGoodwill，额外加同号RoundToInt(.25*min(abs(current-natural),abs(delta)))，再夹base至[-100,100]并按有效好感转换。非敌对人类商队受玩家外力攻击一般rawDelta=trunc(-1.3*min(100,DamageInfo.Amount))，在护甲吸收前通知；双方共同敌人IntendedTarget的交叉火力免罚，精神/奴隶/越狱等有例外。factionHostileOnHarmByPlayer默认false；普通关系<=-75变敌，敌对>=0恢复中立，>=75结盟、盟友<=0恢复中立。受伤守备、变敌护送退出和暴力损失>=20%战斗退出是不同触发。",
+    "sources": [
+      {
+        "group": "trade",
+        "type": "RimWorld.Faction",
+        "line_start": 58,
+        "line_end": 58,
+        "range_sha256": "09ad165185ba03c4cc2616ef9d32260986f32e6c60e526e631891fba9b8957ed"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.Faction",
+        "line_start": 509,
+        "line_end": 527,
+        "range_sha256": "76a2dc135cacfd93123e54f97bcf23548bb271caebc0dd4e29c2c92c0b5178c9"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.Faction",
+        "line_start": 550,
+        "line_end": 613,
+        "range_sha256": "76dfd672d2d4b48160b8fbf2ffad4b28e75f923a866df0468366e2ef9d25c0bc"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.Faction",
+        "line_start": 747,
+        "line_end": 771,
+        "range_sha256": "325104bebd0c98c796023ef6ffb353fea85b5414d490009942a73074dbbe1f2c"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.Faction",
+        "line_start": 818,
+        "line_end": 856,
+        "range_sha256": "fd5f80fd14412b30ad59ec7e8d6b4066b426b375a85262821dc454450fb53246"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.Faction",
+        "line_start": 1284,
+        "line_end": 1302,
+        "range_sha256": "985fd696aa21d4412a1225262cfa68be93d8b0f3dbb4e880b610d03bad89627a"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.FactionRelation",
+        "line_start": 25,
+        "line_end": 50,
+        "range_sha256": "1a2e8969228f62eceb396e9f876af35ef7a6e1d8648e9d0456d131c3ed829f3b"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.DiplomacyTuning",
+        "line_start": 17,
+        "line_end": 42,
+        "range_sha256": "2d33b4b0df541728ce90125318fdfa5a70fd3f41e41d0e0a50057a942afb7b72"
+      },
+      {
+        "group": "trade",
+        "type": "RimWorld.LordJob_TradeWithColony",
+        "line_start": 78,
+        "line_end": 126,
+        "range_sha256": "176cc491f32158b25fabd5ea6a34739795b6d8a99103047c0cb8db9849e334b9"
+      },
+      {
+        "group": "trade",
+        "type": "Verse.AI.Group.Trigger_PawnHarmed",
+        "line_start": 1,
+        "line_end": 83,
+        "range_sha256": "dd3314054eb486358789d7eeddf9f58fab11c15ebc2b12164b1155de69e9a4fa"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 321,
+        "line_end": 357,
+        "range_sha256": "32c8744b63c59bdcfc3b6ea2641607a0f50e8bdea19bedf8966aed9147dbd276"
+      }
+    ]
+  },
+  {
+    "id": "TR22",
+    "title": "自用装备生成与商品分开",
+    "kind": "xml-and-static-derived",
+    "statement": "PawnKind默认itemQuality Normal、gearHealthRange1、weaponMoney0、minQuality Awful/maxQuality Excellent；质量按rand<.1中心-1、<.2中心+1、否则中心并夹范围，forceNormal/forceWeapon/指定衣物/爵位可覆盖。HP抽样<1才max(1,RoundToInt(r*MaxHP))，>=1保持满值。武器先按抽样预算、标签、材料、能力、允许概率筛选；权重pair.Commonality*pair.Price*理念*异种，Def生成权重在材料对间归一。不同于商品Normal..Masterwork Gaussian和市场值曲线。",
+    "sources": [
+      {
+        "group": "trade",
+        "type": "Verse.PawnKindDef",
+        "line_start": 188,
+        "line_end": 202,
+        "range_sha256": "a25c1603e97cd70f1229f4ce712f408feb3964c22e11e3acad21dc9c93028479"
+      },
+      {
+        "group": "trade",
+        "type": "Verse.PawnKindDef",
+        "line_start": 259,
+        "line_end": 261,
+        "range_sha256": "36ed8ee831c3c2cea5aaf49e1cadcddf801531b9152b1a20c92527c637a747cb"
+      },
+      {
+        "group": "weapons",
+        "type": "RimWorld.QualityUtility",
+        "line_start": 125,
+        "line_end": 157,
+        "range_sha256": "e17aa61e42f27311609f49b55dcecd92f57bb980e6cbfa6748ced1b39d81cadf"
+      },
+      {
+        "group": "storyteller",
+        "type": "Verse.PawnGenerator",
+        "line_start": 2025,
+        "line_end": 2051,
+        "range_sha256": "efe3d7fe6602ce193139607df057e7ce8e0d669b91e52c54c8686c9238f9549b"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.PawnWeaponGenerator",
+        "line_start": 22,
+        "line_end": 44,
+        "range_sha256": "51589831d2c1a477aeed51a642a78ce7d52499c2fb267e34f173aa92dfd44936"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.PawnWeaponGenerator",
+        "line_start": 55,
+        "line_end": 141,
+        "range_sha256": "6fdb8061daa36d1d18eece9a5aa655cebf3f85c18e7ea4ef0fdfb878e1f16bf0"
+      },
+      {
+        "group": "trade",
+        "xml_record": "PawnKindDef_Town_Trader",
+        "xml_line_start": 68,
+        "xml_line_end": 104
+      },
+      {
+        "group": "trade",
+        "xml_record": "PawnKindDef_Town_Guard",
+        "xml_line_start": 41,
+        "xml_line_end": 66
+      },
+      {
+        "group": "trade",
+        "xml_record": "PawnKindDef_Villager",
+        "xml_line_start": 16,
+        "xml_line_end": 39
+      }
+    ]
+  }
+]

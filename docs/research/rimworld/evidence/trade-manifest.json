@@ -1,0 +1,319 @@
+{
+  "evidence_id": "RW17-TRADE",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.TradeDeal",
+      "local_file": ".local-research/trade/RimWorld.TradeDeal.cs",
+      "sha256": "f87412f2d7f56971edf3df99ec146554be166adef3e2b27a8fbd88927ed85295",
+      "lines": 251
+    },
+    {
+      "type": "RimWorld.TradeSession",
+      "local_file": ".local-research/trade/RimWorld.TradeSession.cs",
+      "sha256": "a8295741a45550be1ac5af0b974b0c64616726059d3d9d92c6baf0a4b5cf4bb8",
+      "lines": 40
+    },
+    {
+      "type": "RimWorld.TraderKindDef",
+      "local_file": ".local-research/trade/RimWorld.TraderKindDef.cs",
+      "sha256": "6d2b8c6ef0517bdfb69bd2f175ee40f303170f4c4893d1ec85f836572e6dd9a0",
+      "lines": 112
+    },
+    {
+      "type": "RimWorld.PriceTypeUtlity",
+      "local_file": ".local-research/trade/RimWorld.PriceTypeUtlity.cs",
+      "sha256": "712b64e4f8212feabcdc7e7c0b559fa2af6cc68e14df5edf6fadc7132821654a",
+      "lines": 41
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "local_file": ".local-research/trade/RimWorld.Pawn_TraderTracker.cs",
+      "sha256": "b57852d9a71cc3f748570a22b8e8fbd5222bae48cbf4fed652059d72d1996b6c",
+      "lines": 270
+    },
+    {
+      "type": "RimWorld.IncidentWorker_TraderCaravanArrival",
+      "local_file": ".local-research/trade/RimWorld.IncidentWorker_TraderCaravanArrival.cs",
+      "sha256": "2e2575835071d079b42f87fb086df5d46e8f45586760b7e240df0787a95677c4",
+      "lines": 145
+    },
+    {
+      "type": "RimWorld.LordJob_TradeWithColony",
+      "local_file": ".local-research/trade/RimWorld.LordJob_TradeWithColony.cs",
+      "sha256": "a6598fd4892ed55b9be03c20aae8a6fbbde830af360c336d89fca731f7438866",
+      "lines": 137
+    },
+    {
+      "type": "RimWorld.PawnGroupKindWorker_Trader",
+      "local_file": ".local-research/trade/RimWorld.PawnGroupKindWorker_Trader.cs",
+      "sha256": "25d7ec73091d700855033859fc42b5be2036d942227fa672c69143fb70fad8e5",
+      "lines": 153
+    },
+    {
+      "type": "RimWorld.JobDriver_TradeWithPawn",
+      "local_file": ".local-research/trade/RimWorld.JobDriver_TradeWithPawn.cs",
+      "sha256": "132b6a8f5d6236fbe44a8a599ffbc0191925dde82c90993d29fb9d1b7d3450c9",
+      "lines": 32
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_Trade",
+      "local_file": ".local-research/trade/RimWorld.FloatMenuOptionProvider_Trade.cs",
+      "sha256": "6cf6ef8c96e4cb2771a4e7fe800d9f89f29789f04d2fc10fe1e7e8e092b3bc75",
+      "lines": 70
+    },
+    {
+      "type": "RimWorld.StockGenerator",
+      "local_file": ".local-research/trade/RimWorld.StockGenerator.cs",
+      "sha256": "31de0793d3395dc828100e2bfa7b411d6f6daeaf809bcc5cc39a8e611ac7d70e",
+      "lines": 97
+    },
+    {
+      "type": "RimWorld.StockGeneratorUtility",
+      "local_file": ".local-research/trade/RimWorld.StockGeneratorUtility.cs",
+      "sha256": "318e8b47698a702f35dd1ba73c7785dc1f7ea47efc9e1e54935afef6c490cda4",
+      "lines": 55
+    },
+    {
+      "type": "RimWorld.StockGenerator_SingleDef",
+      "local_file": ".local-research/trade/RimWorld.StockGenerator_SingleDef.cs",
+      "sha256": "4a6f07875138f4ca9758fa57fd0c6c4cfb7c4c706578b7bb698fdff155ba12bf",
+      "lines": 36
+    },
+    {
+      "type": "RimWorld.StockGenerator_Category",
+      "local_file": ".local-research/trade/RimWorld.StockGenerator_Category.cs",
+      "sha256": "02d74232f7ef4dc93d19c75b2acb084ca7f51370d9de22a5a4e6fb4716f3bc65",
+      "lines": 50
+    },
+    {
+      "type": "RimWorld.StockGenerator_Tag",
+      "local_file": ".local-research/trade/RimWorld.StockGenerator_Tag.cs",
+      "sha256": "0d9170cc7c8ae2756002afe9d893923e683f7b99af9ee0d62a7a73115eb59758",
+      "lines": 50
+    },
+    {
+      "type": "RimWorld.StockGenerator_MultiDef",
+      "local_file": ".local-research/trade/RimWorld.StockGenerator_MultiDef.cs",
+      "sha256": "13cd07088dd21be0fc165dc3640891c9284ae80474f7645466c1f9e13ded118d",
+      "lines": 40
+    },
+    {
+      "type": "RimWorld.StockGenerator_MiscItems",
+      "local_file": ".local-research/trade/RimWorld.StockGenerator_MiscItems.cs",
+      "sha256": "63ffab2553180610112d7e102566f6d1b32939eaf035f63ab8ce8d69e6090d7e",
+      "lines": 42
+    },
+    {
+      "type": "RimWorld.StockGenerator_MarketValue",
+      "local_file": ".local-research/trade/RimWorld.StockGenerator_MarketValue.cs",
+      "sha256": "0f09d8ac162a53c22acabf300b426cf814bb352b4ffd87bdd951f185c7eb11b2",
+      "lines": 46
+    },
+    {
+      "type": "RimWorld.StockGenerator_BuyTradeTag",
+      "local_file": ".local-research/trade/RimWorld.StockGenerator_BuyTradeTag.cs",
+      "sha256": "33c8cdb492a0f66a1d7cfe39234d7c3a348359badab60e848e0e047e3b03c36a",
+      "lines": 35
+    },
+    {
+      "type": "RimWorld.StockGenerator_BuySingleDef",
+      "local_file": ".local-research/trade/RimWorld.StockGenerator_BuySingleDef.cs",
+      "sha256": "4c2198650adf85f2e5fe9aef496945a6f6c623a2edf262f56305ab8c24194504",
+      "lines": 31
+    },
+    {
+      "type": "RimWorld.TransferableUtility",
+      "local_file": ".local-research/trade/RimWorld.TransferableUtility.cs",
+      "sha256": "bd8980e58e0e7039895b9747addb38f84fbf356c5febf3cfdfc8f72871c60be5",
+      "lines": 401
+    },
+    {
+      "type": "RimWorld.Planet.FactionGiftUtility",
+      "local_file": ".local-research/trade/RimWorld.Planet.FactionGiftUtility.cs",
+      "sha256": "2e560e5912e5b20146563ca42291fbf7a2c23969e05a059ea9329af154c31a76",
+      "lines": 211
+    },
+    {
+      "type": "RimWorld.SkillNeed_BaseBonus",
+      "local_file": ".local-research/trade/RimWorld.SkillNeed_BaseBonus.cs",
+      "sha256": "0f138059de75d31cd1a0d3d028b08e5332923786fb830d8544f5182e3a5c49ca",
+      "lines": 42
+    },
+    {
+      "type": "RimWorld.PawnCapacityFactor",
+      "local_file": ".local-research/trade/RimWorld.PawnCapacityFactor.cs",
+      "sha256": "4534a4c8f3efcd51636fbfecb1b5ead2b3611e9fde554445b9f1947be84edf18",
+      "lines": 38
+    },
+    {
+      "type": "RimWorld.StatPart_PlayerFactionLeader",
+      "local_file": ".local-research/trade/RimWorld.StatPart_PlayerFactionLeader.cs",
+      "sha256": "9d802af9d1e106dbadbae20377d0ff8008952cece2289b9c8d5ca7b30cb4163e",
+      "lines": 41
+    },
+    {
+      "type": "RimWorld.Dialog_Trade",
+      "local_file": ".local-research/trade/RimWorld.Dialog_Trade.cs",
+      "sha256": "569407ba233ccd0b25115c182d2b40ab75b692ed1c52ac3c06edf05d482342d0",
+      "lines": 531
+    },
+    {
+      "type": "Verse.AI.Group.Trigger_TicksPassed",
+      "local_file": ".local-research/trade/Verse.AI.Group.Trigger_TicksPassed.cs",
+      "sha256": "96bea9cd5ff7df2910afcc3ed356bbe632aaca4a3aee0db5c1fed4383942fb7a",
+      "lines": 42
+    },
+    {
+      "type": "RimWorld.LordToil_DefendTraderCaravan",
+      "local_file": ".local-research/trade/RimWorld.LordToil_DefendTraderCaravan.cs",
+      "sha256": "746f820d339dc837c981a485878d2bd6e4db8860a17d33f7795222657bb9c35c",
+      "lines": 51
+    },
+    {
+      "type": "RimWorld.LordToil_ExitMapAndEscortCarriers",
+      "local_file": ".local-research/trade/RimWorld.LordToil_ExitMapAndEscortCarriers.cs",
+      "sha256": "ba7e97fcb6a20e51f02a4decedbcf9e96ada72f6d6dc0c9dd8bf0fb420f3a952",
+      "lines": 174
+    },
+    {
+      "type": "RimWorld.IncidentWorker_NeutralGroup",
+      "local_file": ".local-research/trade/RimWorld.IncidentWorker_NeutralGroup.cs",
+      "sha256": "3e07ea6cf995df873aa3c5edb39863a1da4db9d42e00ff9b6df0535a38e5cdb6",
+      "lines": 100
+    },
+    {
+      "type": "RimWorld.DiplomacyTuning",
+      "local_file": ".local-research/trade/RimWorld.DiplomacyTuning.cs",
+      "sha256": "977b0461440a85d000edb08ca20c8a63aaffb9c48fcce7d37904fd6fe6ba9871",
+      "lines": 146
+    },
+    {
+      "type": "RimWorld.ThingSetMaker_TraderStock",
+      "local_file": ".local-research/trade/RimWorld.ThingSetMaker_TraderStock.cs",
+      "sha256": "04728eb70176605577406504a0b58231e1402f8e74c0fc6c2c717aab124cec35",
+      "lines": 103
+    },
+    {
+      "type": "RimWorld.TraderCaravanUtility",
+      "local_file": ".local-research/trade/RimWorld.TraderCaravanUtility.cs",
+      "sha256": "d5465e42693eade60c3a75d247b70c5f2bf3864c0b38fe7995c6d76d052e5e61",
+      "lines": 46
+    },
+    {
+      "type": "RimWorld.TradeabilityUtility",
+      "local_file": ".local-research/trade/RimWorld.TradeabilityUtility.cs",
+      "sha256": "745d7f2af2a69ab22f8fc6fff95c40c2c8ef85d38a583f710cee850a3f64fda6",
+      "lines": 23
+    },
+    {
+      "type": "RimWorld.Transferable",
+      "local_file": ".local-research/trade/RimWorld.Transferable.cs",
+      "sha256": "bed3019f016f1e904fab64ec8a96c1db2ec767d037cffa38d544148be9b277b5",
+      "lines": 166
+    },
+    {
+      "type": "RimWorld.StockGenerator_BuyExpensiveSimple",
+      "local_file": ".local-research/trade/RimWorld.StockGenerator_BuyExpensiveSimple.cs",
+      "sha256": "fae47412518833a95b5116894773e21b128bdb62ed2378add1505c33c385b928",
+      "lines": 39
+    },
+    {
+      "type": "RimWorld.StorytellerComp_FactionInteraction",
+      "local_file": ".local-research/trade/RimWorld.StorytellerComp_FactionInteraction.cs",
+      "sha256": "95cf68b1d8cc784d603b10c1393d2786d136ff172a6f956c66001908e64c04ea",
+      "lines": 38
+    },
+    {
+      "type": "RimWorld.StorytellerCompProperties_FactionInteraction",
+      "local_file": ".local-research/trade/RimWorld.StorytellerCompProperties_FactionInteraction.cs",
+      "sha256": "b2246417397b8955b55a52eaa58c2f44b54dd07cea5ddbfd298195c6449a3e30",
+      "lines": 22
+    },
+    {
+      "type": "RimWorld.ThingSetMaker",
+      "local_file": ".local-research/trade/RimWorld.ThingSetMaker.cs",
+      "sha256": "3a57a99642cd7e2950adfe49d89efb83b6aa98ba84aaf9fdf8b538a71b8091b2",
+      "lines": 157
+    },
+    {
+      "type": "Verse.Thing",
+      "local_file": ".local-research/trade/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "lines": 2235
+    },
+    {
+      "type": "Verse.ThingWithComps",
+      "local_file": ".local-research/trade/Verse.ThingWithComps.cs",
+      "sha256": "9ae0bf1c6884b0fd48213cf5bb2cfda7d0ee63eb43cbe97689f90e4287c2ed6b",
+      "lines": 1040
+    },
+    {
+      "type": "RimWorld.Faction",
+      "local_file": ".local-research/trade/RimWorld.Faction.cs",
+      "sha256": "3c298acebe6f036e95612f81792592a1682c240cb971be228215686df344b82c",
+      "lines": 1397
+    },
+    {
+      "type": "RimWorld.TradeUI",
+      "local_file": ".local-research/trade/RimWorld.TradeUI.cs",
+      "sha256": "a48ec267514e9213f0b61b4ac153b93ac1d917a2772e0b7b470090b25440769e",
+      "lines": 184
+    },
+    {
+      "type": "RimWorld.IncidentWorker_PawnsArrive",
+      "local_file": ".local-research/trade/RimWorld.IncidentWorker_PawnsArrive.cs",
+      "sha256": "c3ef0d08c6401103307c7219d140921daca7f2cf5840bcfcc6b2d435299fc8f4",
+      "lines": 87
+    },
+    {
+      "type": "Verse.AI.Group.Trigger_FractionPawnsLost",
+      "local_file": ".local-research/trade/Verse.AI.Group.Trigger_FractionPawnsLost.cs",
+      "sha256": "16bcef0242d2246f6b1ac8b88208e13f7d95f94e2d3451c138c58a2cc7ec7964",
+      "lines": 21
+    },
+    {
+      "type": "Verse.AI.Group.Trigger_ImportantTraderCaravanPeopleLost",
+      "local_file": ".local-research/trade/Verse.AI.Group.Trigger_ImportantTraderCaravanPeopleLost.cs",
+      "sha256": "15970d420e047e92207075d1c90512c14323fe431ecd34099cdc4badc809e1cc",
+      "lines": 23
+    },
+    {
+      "type": "RimWorld.CompForbiddable",
+      "local_file": ".local-research/trade/RimWorld.CompForbiddable.cs",
+      "sha256": "7e84d5006a99cdb19c9c1f2a62fc358bd9871a3fe7094ec327cf8fe386ae48e7",
+      "lines": 146
+    },
+    {
+      "type": "Verse.PawnKindDef",
+      "local_file": ".local-research/trade/Verse.PawnKindDef.cs",
+      "sha256": "ed61e81fb785b34b7485b2695b97d9e5442be689ccb676805c169fb08ed49919",
+      "lines": 510
+    },
+    {
+      "type": "RimWorld.FactionRelation",
+      "local_file": ".local-research/trade/RimWorld.FactionRelation.cs",
+      "sha256": "39e3686bcac4e53fdfd159c04d311f36f090a66da0ce6defb98ca4ec524038c6",
+      "lines": 64
+    },
+    {
+      "type": "Verse.AI.Group.Trigger_PawnHarmed",
+      "local_file": ".local-research/trade/Verse.AI.Group.Trigger_PawnHarmed.cs",
+      "sha256": "dd3314054eb486358789d7eeddf9f58fab11c15ebc2b12164b1155de69e9a4fa",
+      "lines": 83
+    }
+  ]
+}

@@ -6,6 +6,7 @@ import { DAY, Block } from '../src/voxel/types';
 import { initialStoryteller, nextOpportunity, planRaid, raidWeapon, cycleHits, storyRandom } from '../src/voxel/storyteller';
 import { applyInjury } from '../src/voxel/injuries';
 import { STORY_INTERVAL } from '../src/voxel/storytellerRules';
+import { initialTrade } from '../src/voxel/trade';
 
 // White-box clock/health fixtures test transitions. Normal gameplay evidence is
 // collected separately by the command-only storyteller campaign.
@@ -13,6 +14,7 @@ function atTick(tick: number) {
   const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
   s.tick = tick;
   s.storyteller = initialStoryteller(s.seed, tick);
+  s.trade = initialTrade(s.seed, tick);
   return s;
 }
 describe('persistent colony storyteller', () => {
@@ -24,13 +26,19 @@ describe('persistent colony storyteller', () => {
       expect(createHash('sha256').update(bytes).digest('hex')).toBe(provenance.sha256);
       const s = VoxelSimulation.load(old), saved = s.save();
       expect(old.version).toBe(19);
-      expect(saved.version).toBe(20);
-      for (const key of ['tick', 'nextId', 'blocks', 'ladders', 'items', 'research', 'stats', 'combat'] as const)
+      expect(saved.version).toBe(21);
+      for (const key of ['tick', 'nextId', 'blocks', 'ladders', 'items', 'research', 'combat'] as const)
         expect(saved[key], key).toEqual(old[key]);
+      for (const [key, value] of Object.entries(old.stats))
+        expect(saved.stats[key as keyof typeof saved.stats]).toEqual(
+          ['produced', 'consumed', 'spoiled', 'destroyed'].includes(key) ? { ...(value as object), silver: 0 } : value);
       for (const p of saved.pawns) {
         const before = old.pawns.find((q: { id: number }) => q.id === p.id);
-        for (const key of ['trauma', 'medical', 'skills', 'cargo', 'weapon', 'worn', 'careProgress', 'dead', 'downed'] as const)
+        for (const key of ['trauma', 'medical', 'cargo', 'weapon', 'worn', 'careProgress', 'dead', 'downed'] as const)
           expect(p[key], `${p.id}:${key}`).toEqual(before[key]);
+        const { social, ...preserved } = p.skills;
+        expect(preserved).toEqual(before.skills);
+        expect(social.xp).toBe(0);
       }
       expect(saved.storyteller.adaptationDays).toBe(0);
       expect(saved.storyteller.losses).toEqual([]);
