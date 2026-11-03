@@ -1,0 +1,271 @@
+{
+  "kind": "native-runtime-observed",
+  "version": "1.7.4980 rev60",
+  "scope": "Selected purchase endpoints and UI observations, not a complete trade experiment.",
+  "preparation": "Developer-generated Shaman caravan in an isolated research profile; not a natural arrival or the implemented Outlander trader catalogs.",
+  "saves": [
+    {
+      "name": "trade-rejected-verified-a",
+      "file": ".local-research/runtime/profile-20261102/Saves/trade-rejected-verified-a.rws",
+      "sha256": "36edc2b932ab072ac16db077a21a600840cb56f86fcfb794f2cbb09b38f64920",
+      "tick": 188426,
+      "merchantId": "Human78584",
+      "traderKind": "Caravan_Neolithic_ShamanMerchant",
+      "goods": [
+        {
+          "id": "MedicineHerbal78324",
+          "def": "MedicineHerbal",
+          "count": 1,
+          "owner": "",
+          "pos": "(94, 0, 113)"
+        },
+        {
+          "id": "Silver41859",
+          "def": "Silver",
+          "count": 500,
+          "owner": "",
+          "pos": "(111, 0, 122)"
+        },
+        {
+          "id": "Silver38564",
+          "def": "Silver",
+          "count": 300,
+          "owner": "",
+          "pos": "(113, 0, 120)"
+        },
+        {
+          "id": "Silver78580",
+          "def": "Silver",
+          "count": 500,
+          "owner": "",
+          "pos": "(116, 0, 123)"
+        },
+        {
+          "id": "Silver78589",
+          "def": "Silver",
+          "count": 974,
+          "owner": "Muffalo78602",
+          "pos": ""
+        },
+        {
+          "id": "MedicineHerbal78594",
+          "def": "MedicineHerbal",
+          "count": 2,
+          "owner": "Muffalo78603",
+          "pos": ""
+        }
+      ]
+    },
+    {
+      "name": "trade-rejected-verified-b",
+      "file": ".local-research/runtime/profile-20261102/Saves/trade-rejected-verified-b.rws",
+      "sha256": "bf78cbe878025e56209d13e496dd794ef42063b3735571c04f0c0b75093f88e7",
+      "tick": 188426,
+      "merchantId": "Human78584",
+      "traderKind": "Caravan_Neolithic_ShamanMerchant",
+      "goods": [
+        {
+          "id": "MedicineHerbal78324",
+          "def": "MedicineHerbal",
+          "count": 1,
+          "owner": "",
+          "pos": "(94, 0, 113)"
+        },
+        {
+          "id": "Silver41859",
+          "def": "Silver",
+          "count": 500,
+          "owner": "",
+          "pos": "(111, 0, 122)"
+        },
+        {
+          "id": "Silver38564",
+          "def": "Silver",
+          "count": 300,
+          "owner": "",
+          "pos": "(113, 0, 120)"
+        },
+        {
+          "id": "Silver78580",
+          "def": "Silver",
+          "count": 500,
+          "owner": "",
+          "pos": "(116, 0, 123)"
+        },
+        {
+          "id": "Silver78589",
+          "def": "Silver",
+          "count": 974,
+          "owner": "Muffalo78602",
+          "pos": ""
+        },
+        {
+          "id": "MedicineHerbal78594",
+          "def": "MedicineHerbal",
+          "count": 2,
+          "owner": "Muffalo78603",
+          "pos": ""
+        }
+      ]
+    },
+    {
+      "name": "trade-buy-verified-a",
+      "file": ".local-research/runtime/profile-20261102/Saves/trade-buy-verified-a.rws",
+      "sha256": "d080c7816a17045a88fdedc3559930c6dccfad8bd3f7fbdd97f7475280a7b88d",
+      "tick": 189222,
+      "merchantId": "Human78584",
+      "traderKind": "Caravan_Neolithic_ShamanMerchant",
+      "goods": [
+        {
+          "id": "MedicineHerbal78324",
+          "def": "MedicineHerbal",
+          "count": 1,
+          "owner": "",
+          "pos": "(94, 0, 113)"
+        },
+        {
+          "id": "MedicineHerbal78594",
+          "def": "MedicineHerbal",
+          "count": 2,
+          "owner": "",
+          "pos": "(122, 0, 128)"
+        },
+        {
+          "id": "Silver41859",
+          "def": "Silver",
+          "count": 473,
+          "owner": "",
+          "pos": "(111, 0, 122)"
+        },
+        {
+          "id": "Silver38564",
+          "def": "Silver",
+          "count": 300,
+          "owner": "",
+          "pos": "(113, 0, 120)"
+        },
+        {
+          "id": "Silver78580",
+          "def": "Silver",
+          "count": 500,
+          "owner": "",
+          "pos": "(116, 0, 123)"
+        },
+        {
+          "id": "Silver78589",
+          "def": "Silver",
+          "count": 1001,
+          "owner": "Muffalo78602",
+          "pos": ""
+        }
+      ]
+    },
+    {
+      "name": "trade-buy-verified-b",
+      "file": ".local-research/runtime/profile-20261102/Saves/trade-buy-verified-b.rws",
+      "sha256": "417a7846d88bba8b8001b5d62dec206bc601d2c554185bc5004bd285fd75be82",
+      "tick": 189222,
+      "merchantId": "Human78584",
+      "traderKind": "Caravan_Neolithic_ShamanMerchant",
+      "goods": [
+        {
+          "id": "MedicineHerbal78324",
+          "def": "MedicineHerbal",
+          "count": 1,
+          "owner": "",
+          "pos": "(94, 0, 113)"
+        },
+        {
+          "id": "MedicineHerbal78594",
+          "def": "MedicineHerbal",
+          "count": 2,
+          "owner": "",
+          "pos": "(122, 0, 128)"
+        },
+        {
+          "id": "Silver41859",
+          "def": "Silver",
+          "count": 473,
+          "owner": "",
+          "pos": "(111, 0, 122)"
+        },
+        {
+          "id": "Silver38564",
+          "def": "Silver",
+          "count": 300,
+          "owner": "",
+          "pos": "(113, 0, 120)"
+        },
+        {
+          "id": "Silver78580",
+          "def": "Silver",
+          "count": 500,
+          "owner": "",
+          "pos": "(116, 0, 123)"
+        },
+        {
+          "id": "Silver78589",
+          "def": "Silver",
+          "count": 1001,
+          "owner": "Muffalo78602",
+          "pos": ""
+        }
+      ]
+    }
+  ],
+  "images": [
+    {
+      "source": ".local-research/runtime/trade-083-herbal-price.png",
+      "sourceSha256": "6b5929eb2074ce7665c18629e49fb5e89398aeaa26d507ae99f1665b785602f4",
+      "file": "docs/research/rimworld/evidence/runtime/native-trade-buy-quote.png",
+      "sha256": "2bd2a229fa4c7179b876444ff8ed11e19dc4af96702688b6213660f2fa86d0c9",
+      "rectangle": [
+        768,
+        0,
+        1110,
+        1415
+      ]
+    },
+    {
+      "source": ".local-research/runtime/trade-070-grump-health.png",
+      "sourceSha256": "5ca3fd932fa40731b4ad63302a19fd7e48a9d0a3c4887979b0670bfb74564358",
+      "file": "docs/research/rimworld/evidence/runtime/native-trade-health.png",
+      "sha256": "ec39fb06e67a8899e6c21dbfe15ed3554bf406f2ffb11e3972ba70aa551bb26d",
+      "rectangle": [
+        0,
+        780,
+        635,
+        625
+      ]
+    }
+  ],
+  "observed": [
+    "ordinary walk and trade dialog",
+    "cancellation UI",
+    "buy two herbal medicines",
+    "same herbal item identity moved from pack animal inventory to ground",
+    "27 silver transferred between the colony and this caravan"
+  ],
+  "unobserved": [
+    "completed sale",
+    "gifts",
+    "merchant shortfall confirmation",
+    "natural caravan arrival",
+    "full caravan departure",
+    "statistical probabilities",
+    "exact unrounded Talking capacity"
+  ],
+  "terminal": {
+    "lastVerifiedSave": "trade-buy-verified-b",
+    "lastVerifiedTick": 189222,
+    "processId": 29920,
+    "observedCurrentProcess": "not-running",
+    "verificationUtc": "2026-11-03T15:15:01.2697186Z"
+  },
+  "limitations": [
+    "Earlier pause/menu/Steam-notification and foreground failures are retained locally and are not controlled same-tick experiments.",
+    "Before and after purchase differ by 796 game ticks; only the selected goods and transfer are compared.",
+    "The 218 silver carried by unrelated visitor Human78393 is excluded from both trading parties.",
+    "All original saves and full screenshots remain local; this report contains selected summaries and crops."
+  ]
+}
