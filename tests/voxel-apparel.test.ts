@@ -174,6 +174,9 @@ describe('apparel source values and physical identity', () => {
 describe('cotton and actual tailoring containers', () => {
   it('sows cotton and harvests real non-food cloth with bounded physical output', () => {
     const s = fixture();
+    // This isolates the cloth container transaction at the native 100% yield skill.
+    // Low-skill failed harvests are covered by the skills integration suite.
+    for (const p of s.pawns) p.skills.plants.level = 8;
     command(s, { type: 'designate', tool: 'farm', from: pos(15, 15), crop: 'cotton' });
     until(s, () => s.crops.length === 1);
     expect(s.crops[0].kind).toBe('cotton');
@@ -187,7 +190,7 @@ describe('cotton and actual tailoring containers', () => {
     expect(s.items.find((i) => i.resource === 'cloth')).not.toHaveProperty('rotProgress');
     expect(ledger(s)).toEqual(before);
   });
-  it('builds a real 3-cell bench, delivers cloth, and produces one Normal independent garment', () => {
+  it('builds a real 3-cell bench, delivers cloth, and produces one independent garment with worker quality', () => {
     const s = fixture(),
       b = bench(s);
     stack(s, 'cloth', 20);
@@ -195,7 +198,8 @@ describe('cotton and actual tailoring containers', () => {
     command(s, { type: 'tailorBill', tailorId: b.id, kind: 'tuque', target: 1, paused: false });
     until(s, () => s.stats.tailored === 1);
     const piece = allPieces(s)[0];
-    expect(piece).toMatchObject({ kind: 'tuque', quality: 2, hitPoints: 80, wearTicks: 0 });
+    expect(piece).toMatchObject({ kind: 'tuque', hitPoints: 80, wearTicks: 0 });
+    expect(Number.isInteger(piece.quality) && piece.quality >= 0 && piece.quality <= 5).toBe(true);
     expect(s.counts().cloth).toBe(0);
     expect(s.stats.consumed.cloth).toBe(20);
     expect(s.stats.produced.apparel).toBe(1);
@@ -446,7 +450,7 @@ describe('physical dressing, interruption, death and migration', () => {
     );
     const old = JSON.parse(raw.toString()),
       s = VoxelSimulation.load(old);
-    expect(s.save().version).toBe(13);
+    expect(s.save().version).toBe(14);
     expect(s.items).toEqual(old.items);
     expect(s.pawns.map((p) => p.health)).toEqual(old.pawns.map((p: any) => p.health));
     expect(s.counts().apparel).toBe(0);

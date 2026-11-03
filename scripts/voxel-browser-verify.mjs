@@ -149,7 +149,10 @@ try {
   record('three-level shaft built by colonists');
   await designate('挖掘', pos(34, 32, 5));
   await run();
-  await wait(() => window.voxel.snapshot().snapshot.stored.steel >= 40);
+  await wait(() => {
+    const s = window.voxel.snapshot().snapshot;
+    return s.stats.produced.steel > 0 && s.stored.steel === s.stats.produced.steel;
+  });
   await pause();
   await screenshot('03-underground-mined');
   record('underground mining and cross-level steel hauling', {

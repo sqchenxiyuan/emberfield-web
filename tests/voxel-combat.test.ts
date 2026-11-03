@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { VoxelSimulation } from '../src/voxel/world';
 import { Block, index, DAY, type VoxelCommand } from '../src/voxel/types';
 import { applyInjury, traumaSummary } from '../src/voxel/injuries';
+import { plantRandom } from '../src/voxel/plants';
 
 // Bounded state-machine geometry; the separate campaign uses only normal commands.
 function fixture() {
@@ -32,6 +33,31 @@ function until(s: VoxelSimulation, done: () => boolean, max = 2000) {
 }
 
 describe('voxel combat and physical tending', () => {
+  it.each(['miss', 'dodge'])('sleeping targets bypass %s and do not train melee', (branch) => {
+    const s = fixture(),
+      [attacker, target] = s.pawns;
+    attacker.faction = 'raider';
+    attacker.phase = 'combat';
+    attacker.attackTargetId = target.id;
+    attacker.skills.melee.level = 0;
+    target.skills.melee.level = 20;
+    target.phase = 'rest';
+    target.rest = 20;
+    target.schedule.fill('sleep');
+    target.sleepingSince = 0;
+    // Choose actual deterministic rolls which would miss/dodge a standing target.
+    for (s.seed = 1; s.seed < 10000; s.seed++) {
+      const hit = plantRandom(s.seed, attacker.id, 1, 12);
+      const dodge = plantRandom(s.seed, attacker.id, 1, 15);
+      if (branch === 'miss' ? hit >= 0.5 : hit < 0.5 && dodge < 0.3) break;
+    }
+    expect(s.seed).toBeLessThan(10000);
+    s.step();
+    expect(target.trauma.wounds).toHaveLength(1);
+    expect(attacker.skills.melee.xp).toBe(0);
+    expect(attacker.skills.melee.dailyXp).toBe(0);
+    expect(attacker.nextAttackTick).toBeGreaterThan(s.tick);
+  });
   it('a downed raider recovers without attacking again, waits for an exit, and physically leaves after reload', () => {
     let s = fixture();
     const enemy = {
@@ -146,7 +172,7 @@ describe('voxel combat and physical tending', () => {
     );
     const s = VoxelSimulation.load(old);
     expect(old.version).toBe(11);
-    expect(s.save().version).toBe(13);
+    expect(s.save().version).toBe(14);
     expect(s.combat).toEqual({ enabled: false, nextRaid: 0, wave: 0 });
     expect(s.pawns.map((p) => [p.id, p.food, p.rest, p.worn])).toEqual(
       old.pawns.map((p: any) => [p.id, p.food, p.rest, p.worn]),

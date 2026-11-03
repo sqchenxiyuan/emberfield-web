@@ -1,5 +1,6 @@
 import type { Trauma } from './injuries';
 import type { WeaponPiece, WeaponKind, WeaponBenchKind } from './weapons';
+import type { SkillSet } from './skills';
 // Voxel rules are Emberfield designs. See research/10 for source boundaries.
 export const WIDTH = 64,
   DEPTH = 64,
@@ -359,6 +360,16 @@ export interface Job extends Pos {
   kind: JobKind;
   progress: number;
   work: number;
+  /** Actual local work ticks; excludes travel, fuel waits and blocked finished output. */
+  workTicks: number;
+  /** No unfinished meal entity: defer cooking XP until the meal transaction commits. */
+  cookTraining?: { pawnId: number; ticks: number }[];
+  /** Mining yield weighted by actual progress contributions, not by the last worker. */
+  miningYieldWork?: number;
+  /** Harvest outcome is fixed on completion, before attempting physical placement. */
+  harvestResult?: { amount: number; skill: number; workerId: number };
+  /** First completion locks a quality roll even while physical output is blocked. */
+  productQuality?: { value: ApparelQuality; skill: number; workerId: number };
   owner: number | null;
   delivered: Partial<Counts>;
   /** Perishable physical inputs; quantities must match delivered grain/meal. */
@@ -402,6 +413,7 @@ export interface Pawn extends Pos {
   color: number;
   food: number;
   rest: number;
+  skills: SkillSet;
   health: SurvivalHealth;
   trauma: Trauma;
   faction: 'colony' | 'raider';
@@ -585,7 +597,7 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 13;
+  version: 14;
   combat: CombatState;
   generator: 1 | 2;
   settings: WorldSettings;

@@ -78,6 +78,8 @@ function fixture(configure: (s: VoxelSimulation) => void = () => {}) {
   s.spawn = p(11, 22);
   s.pawns.forEach((pawn, i) => {
     Object.assign(pawn, p(10 + i, 22));
+    // This geometry/lifecycle fixture has a qualified forester; skill gates have separate tests.
+    if (i === 0) pawn.skills.plants.level = 8;
     pawn.priorities = {
       dig: 0,
       cut: i === 0 ? 1 : 0,
@@ -391,7 +393,7 @@ describe('real v8 migration and v9 validation', () => {
       s = VoxelSimulation.load(raw);
     expect(raw.version).toBe(8);
     expect(raw).toEqual(before);
-    expect(s.save().version).toBe(13);
+    expect(s.save().version).toBe(14);
     expect(s.save().blocks).toEqual(raw.blocks);
     expect(s.items).toEqual(raw.items);
     expect(s.treePlots).toEqual([]);

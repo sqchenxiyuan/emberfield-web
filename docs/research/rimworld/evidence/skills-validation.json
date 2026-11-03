@@ -1,0 +1,156 @@
+{
+  "status": "pass",
+  "checked_at_utc": "2026-11-03T01:47:21.4298494Z",
+  "original_game_executed": false,
+  "installed_assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "installed_xml_files": 27,
+  "fresh_xml_matches": true,
+  "local": {
+    "status": "pass",
+    "version": "1.7.4980 rev60",
+    "newTypes": 15,
+    "reusedTypes": 21,
+    "claims": 20,
+    "cases": 26,
+    "codeReferences": 64,
+    "xmlReferences": 92,
+    "xmlFiles": 27,
+    "xmlRecords": 89,
+    "xmlLeaves": 369,
+    "xmlAttributes": 19,
+    "xmlAbsences": 395,
+    "analyticAssertions": 127,
+    "sampledProducts": 1200000,
+    "qualityProbabilities": {
+      "0": [
+        0.6461697201189841,
+        0.30174902599126624,
+        0.050061069734071116,
+        0.002001656170887652,
+        1.8508796487331608E-05,
+        1.9188303631624164E-08
+      ],
+      "3": [
+        0.09121272983148718,
+        0.5075027832179814,
+        0.3344914629423764,
+        0.06382888536972876,
+        0.002948289630877336,
+        1.5849007548979285E-05
+      ],
+      "5": [
+        0.022752709554316283,
+        0.3467316780619689,
+        0.47195343367223236,
+        0.14645070035186133,
+        0.011994955235236835,
+        0.00011652312438427702
+      ],
+      "10": [
+        0.0002336941760521229,
+        0.03328918564352004,
+        0.4021965369413104,
+        0.4376198469601546,
+        0.12217369506250343,
+        0.004487041216459398
+      ],
+      "15": [
+        3.4893622989728244E-06,
+        0.0023598200051859137,
+        0.12247768597313777,
+        0.5375759543926012,
+        0.30931359082550464,
+        0.028269459441271613
+      ],
+      "20": [
+        5.214933606885771E-08,
+        0.0001325961122435512,
+        0.02442212324046704,
+        0.37419354855332937,
+        0.5060692730156896,
+        0.09518240692893436
+      ]
+    },
+    "localDerivedFilesVerified": 36,
+    "originalGameExecuted": false,
+    "scope": "Static artifact verification, independent branch arithmetic and seeded quality distribution sampling; no native runtime or project integration equivalence."
+  },
+  "portable": {
+    "status": "pass",
+    "version": "1.7.4980 rev60",
+    "newTypes": 15,
+    "reusedTypes": 21,
+    "claims": 20,
+    "cases": 26,
+    "codeReferences": 64,
+    "xmlReferences": 92,
+    "xmlFiles": 27,
+    "xmlRecords": 89,
+    "xmlLeaves": 369,
+    "xmlAttributes": 19,
+    "xmlAbsences": 395,
+    "analyticAssertions": 127,
+    "sampledProducts": 1200000,
+    "qualityProbabilities": {
+      "0": [
+        0.6461697201189841,
+        0.30174902599126624,
+        0.050061069734071116,
+        0.002001656170887652,
+        1.8508796487331608E-05,
+        1.9188303631624164E-08
+      ],
+      "3": [
+        0.09121272983148718,
+        0.5075027832179814,
+        0.3344914629423764,
+        0.06382888536972876,
+        0.002948289630877336,
+        1.5849007548979285E-05
+      ],
+      "5": [
+        0.022752709554316283,
+        0.3467316780619689,
+        0.47195343367223236,
+        0.14645070035186133,
+        0.011994955235236835,
+        0.00011652312438427702
+      ],
+      "10": [
+        0.0002336941760521229,
+        0.03328918564352004,
+        0.4021965369413104,
+        0.4376198469601546,
+        0.12217369506250343,
+        0.004487041216459398
+      ],
+      "15": [
+        3.4893622989728244E-06,
+        0.0023598200051859137,
+        0.12247768597313777,
+        0.5375759543926012,
+        0.30931359082550464,
+        0.028269459441271613
+      ],
+      "20": [
+        5.214933606885771E-08,
+        0.0001325961122435512,
+        0.02442212324046704,
+        0.37419354855332937,
+        0.5060692730156896,
+        0.09518240692893436
+      ]
+    },
+    "localDerivedFilesVerified": 0,
+    "originalGameExecuted": false,
+    "scope": "Static artifact verification, independent branch arithmetic and seeded quality distribution sampling; no native runtime or project integration equivalence."
+  },
+  "negative": {
+    "status": "pass",
+    "rejected": 20,
+    "portableBaseline": "pass",
+    "localBaseline": "pass",
+    "scope": "Corruption checks on evidence, not gameplay tests."
+  },
+  "scope": "Static artifact and independent arithmetic verification; no original execution or project simulation equivalence."
+}

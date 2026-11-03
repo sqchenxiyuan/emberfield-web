@@ -115,7 +115,8 @@ try {
   place('mine', p(34, 32, 5));
   until(
     'the guaranteed steel cell supplies workbench metal',
-    () => !sim.jobs.length && sim.counts().steel >= 40,
+    // Skill affects ore yield; the actual bench recipe needs 30 steel.
+    () => !sim.jobs.length && sim.counts().steel >= 30,
   );
   place('mine', p(35, 30, 5), p(39, 33, 5));
   until('first granite chamber is excavated', () => !sim.jobs.length);
@@ -232,7 +233,7 @@ try {
   assert.equal(sha(bytes), '8063226ef027897139f295a02e8b53963c94f1c48853c2c83e36edf1d628d36d');
   const migrated = VoxelSimulation.load(old);
   const after = migrated.save();
-  assert.equal(after.version, 13);
+  assert.equal(after.version, 14);
   assert.equal(migrated.counts().stone, 15);
   assert.equal(migrated.counts().chunk, 0);
   assert.deepEqual(after.stockpiles, old.stockpiles);

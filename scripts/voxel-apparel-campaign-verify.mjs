@@ -131,7 +131,7 @@ try {
   );
   const legacy = JSON.parse(legacyBytes),
     migrated = VoxelSimulation.load(legacy).save();
-  assert.equal(migrated.version, 13);
+  assert.equal(migrated.version, 14);
   for (const field of ['blocks', 'items', 'crops', 'trees', 'tick'])
     assert.deepEqual(migrated[field], legacy[field]);
   assert(migrated.pawns.every((p) => p.worn.length === 0));
@@ -300,8 +300,11 @@ try {
   );
   assert.equal(sim.stats.consumed.cloth, 260);
   assert.equal(sim.stats.produced.apparel, 5);
-  assert(pieces().every((p) => p.quality === 2));
+  assert(pieces().every((p) => Number.isInteger(p.quality) && p.quality >= 0 && p.quality <= 5));
   for (const b of sim.tailors[0].bills) bill(b.kind, b.target, true);
+  // Stop new hauling reservations during the explicit outfit sequence. Faster
+  // skilled workers can otherwise claim the next garment while the first is worn.
+  for (const p of sim.pawns) command({ type: 'priority', pawnId: p.id, work: 'haul', value: 0 });
   until(
     'finished garments are put down and available for selection',
     () => !sim.pawns.some((p) => p.cargo?.apparel),

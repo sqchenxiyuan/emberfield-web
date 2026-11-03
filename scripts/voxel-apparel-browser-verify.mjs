@@ -128,7 +128,7 @@ async function verify(mode) {
     );
     const legacy = await load('tests/fixtures/voxel-v10-start.json'),
       migrated = await save();
-    assert.equal(migrated.version, 13);
+    assert.equal(migrated.version, 14);
     assert.deepEqual(migrated.blocks, legacy.blocks);
     assert.deepEqual(migrated.items, legacy.items);
     assert(migrated.pawns.every((p) => p.worn.length === 0));
@@ -208,10 +208,9 @@ async function verify(mode) {
     assert(parka);
     await click('二层');
     await inspect(parka, 0.2);
-    assert.match(
-      await page.getByTestId('item-detail').getByTestId('apparel-detail').innerText(),
-      /普通[\s\S]*隔冷 36.0/,
-    );
+    const detail = await page.getByTestId('item-detail').getByTestId('apparel-detail').innerText();
+    assert(detail.includes(['极差', '较差', '普通', '良好', '优秀', '大师', '传奇'][parka.apparel.quality]));
+    assert(detail.includes('隔冷 ' + (36 * [0.8, 0.9, 1, 1.1, 1.2, 1.5, 1.8][parka.apparel.quality]).toFixed(1)));
     await page.getByLabel('穿戴者', { exact: true }).selectOption(String(pawnId));
     await click('前往穿上');
     await wait(

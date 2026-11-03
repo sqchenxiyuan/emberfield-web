@@ -1,0 +1,722 @@
+[
+  {
+    "model": "requirements",
+    "claims": [
+      "SK02"
+    ],
+    "inputs": {
+      "levels": [
+        0,
+        1,
+        9,
+        10,
+        18,
+        19,
+        20
+      ]
+    },
+    "expected": [
+      1000,
+      2000,
+      10000,
+      12000,
+      28000,
+      30000,
+      30000
+    ],
+    "id": "SC01",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "learn",
+    "claims": [
+      "SK02",
+      "SK03",
+      "SK04"
+    ],
+    "inputs": {
+      "state": {
+        "level": 3,
+        "xp": 178,
+        "passion": 0,
+        "dailyXp": 0
+      },
+      "xp": 450
+    },
+    "expected": {
+      "level": 3,
+      "xp": 335.5,
+      "passion": 0,
+      "dailyXp": 157.5
+    },
+    "id": "SC02",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "learn",
+    "claims": [
+      "SK02",
+      "SK03",
+      "SK04"
+    ],
+    "inputs": {
+      "state": {
+        "level": 3,
+        "xp": 0,
+        "passion": 1,
+        "dailyXp": 4000
+      },
+      "xp": 100
+    },
+    "expected": {
+      "level": 3,
+      "xp": 100,
+      "passion": 1,
+      "dailyXp": 4100
+    },
+    "id": "SC03",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "learn",
+    "claims": [
+      "SK02",
+      "SK03",
+      "SK04"
+    ],
+    "inputs": {
+      "state": {
+        "level": 3,
+        "xp": 0,
+        "passion": 1,
+        "dailyXp": 4000.01
+      },
+      "xp": 100
+    },
+    "expected": {
+      "level": 3,
+      "xp": 20,
+      "passion": 1,
+      "dailyXp": 4020.01
+    },
+    "id": "SC04",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "learn",
+    "claims": [
+      "SK02",
+      "SK03",
+      "SK04"
+    ],
+    "inputs": {
+      "state": {
+        "level": 3,
+        "xp": 0,
+        "passion": 1,
+        "dailyXp": 3999
+      },
+      "xp": 100
+    },
+    "expected": {
+      "level": 3,
+      "xp": 100,
+      "passion": 1,
+      "dailyXp": 4099
+    },
+    "id": "SC05",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "learn",
+    "claims": [
+      "SK02",
+      "SK03",
+      "SK04"
+    ],
+    "inputs": {
+      "state": {
+        "level": 10,
+        "xp": -999.95,
+        "passion": 2,
+        "dailyXp": 0
+      },
+      "xp": -0.1
+    },
+    "expected": {
+      "level": 9,
+      "xp": 8999.95,
+      "passion": 2,
+      "dailyXp": -0.1
+    },
+    "id": "SC06",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "learn",
+    "claims": [
+      "SK02",
+      "SK03",
+      "SK04"
+    ],
+    "inputs": {
+      "state": {
+        "level": 0,
+        "xp": 12,
+        "passion": 1,
+        "dailyXp": 0
+      },
+      "xp": -100
+    },
+    "expected": {
+      "level": 0,
+      "xp": 12,
+      "passion": 1,
+      "dailyXp": 0
+    },
+    "id": "SC07",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "learn",
+    "claims": [
+      "SK02",
+      "SK03",
+      "SK04"
+    ],
+    "inputs": {
+      "state": {
+        "level": 3,
+        "xp": 0,
+        "passion": 2,
+        "dailyXp": 5000
+      },
+      "xp": 100,
+      "direct": true,
+      "global": 2
+    },
+    "expected": {
+      "level": 3,
+      "xp": 150,
+      "passion": 2,
+      "dailyXp": 5000
+    },
+    "id": "SC08",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "learn",
+    "claims": [
+      "SK02",
+      "SK03",
+      "SK04"
+    ],
+    "inputs": {
+      "state": {
+        "level": 3,
+        "xp": 0,
+        "passion": 0,
+        "dailyXp": 5000
+      },
+      "xp": 100,
+      "ignoreLearnRate": true
+    },
+    "expected": {
+      "level": 3,
+      "xp": 100,
+      "passion": 0,
+      "dailyXp": 5100
+    },
+    "id": "SC09",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "learn",
+    "claims": [
+      "SK02",
+      "SK03",
+      "SK04"
+    ],
+    "inputs": {
+      "state": {
+        "level": 19,
+        "xp": 29950,
+        "passion": 1,
+        "dailyXp": 0
+      },
+      "xp": 30100
+    },
+    "expected": {
+      "level": 20,
+      "xp": 29999,
+      "passion": 1,
+      "dailyXp": 30100
+    },
+    "id": "SC10",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "decay",
+    "claims": [
+      "SK04",
+      "SK20"
+    ],
+    "inputs": {
+      "levels": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ],
+      "sourceDay": 60000,
+      "sourceInterval": 200,
+      "projectDay": 12000,
+      "projectInterval": 40
+    },
+    "expected": {
+      "perInterval": [
+        0,
+        0.1,
+        0.2,
+        0.4,
+        0.6,
+        1,
+        1.8,
+        2.8,
+        4,
+        6,
+        8,
+        12
+      ],
+      "sourceEvents": 300,
+      "projectEvents": 300,
+      "fixedLevelDaily": [
+        0,
+        30,
+        60,
+        120,
+        180,
+        300,
+        540,
+        840,
+        1200,
+        1800,
+        2400,
+        3600
+      ]
+    },
+    "id": "SC11",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "work",
+    "claims": [
+      "SK05",
+      "SK06"
+    ],
+    "inputs": {
+      "level": 0,
+      "manipulation": 1,
+      "sight": 1,
+      "global": 1
+    },
+    "expected": {
+      "mining": 0.1,
+      "plants": 0.1,
+      "construction": 0.3,
+      "cooking": 0.4,
+      "medicine": 0.4,
+      "general": 1
+    },
+    "id": "SC12",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "work",
+    "claims": [
+      "SK05",
+      "SK06"
+    ],
+    "inputs": {
+      "level": 10,
+      "manipulation": 0.5,
+      "sight": 1,
+      "global": 1
+    },
+    "expected": {
+      "mining": 0.62,
+      "plants": 0.615,
+      "construction": 0.5875,
+      "cooking": 0.52,
+      "medicine": 0.5,
+      "general": 0.5
+    },
+    "id": "SC13",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "combatMedical",
+    "claims": [
+      "SK12",
+      "SK13"
+    ],
+    "inputs": {
+      "level": 10,
+      "manipulation": 1,
+      "sight": 1,
+      "moving": 1
+    },
+    "expected": {
+      "hit": 0.8,
+      "dodge": 0.1,
+      "tend": 1.1
+    },
+    "id": "SC14",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "combatMedical",
+    "claims": [
+      "SK12",
+      "SK13"
+    ],
+    "inputs": {
+      "level": 20,
+      "manipulation": 1,
+      "sight": 1,
+      "moving": 1
+    },
+    "expected": {
+      "hit": 0.9,
+      "dodge": 0.3,
+      "tend": 1.55
+    },
+    "id": "SC15",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "timing",
+    "claims": [
+      "SK08",
+      "SK09",
+      "SK10",
+      "SK11",
+      "SK12",
+      "SK20"
+    ],
+    "inputs": {
+      "sourceWorkTicks": 4500,
+      "projectWorkTicks": 1500,
+      "baseRates": [
+        0.07,
+        0.085,
+        0.25,
+        0.1,
+        0
+      ],
+      "humanTendBase": 500,
+      "medicineFactors": [
+        0.5,
+        0.5,
+        0.7,
+        1
+      ],
+      "meleeSeconds": 2
+    },
+    "expected": {
+      "rawXP": [
+        315,
+        382.5,
+        1125,
+        450,
+        0
+      ],
+      "projectRawXP": [
+        315,
+        382.5,
+        1125,
+        450,
+        0
+      ],
+      "tendRawXP": [
+        250,
+        250,
+        350,
+        500
+      ],
+      "meleeRawXP": 400
+    },
+    "id": "SC16",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "qualityBranch",
+    "claims": [
+      "SK14"
+    ],
+    "inputs": {
+      "level": 3,
+      "random": [
+        0.6065306597126334,
+        0.25
+      ],
+      "inspired": false
+    },
+    "expected": {
+      "quality": 2,
+      "draws": 2
+    },
+    "id": "SC17",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "qualityBranch",
+    "claims": [
+      "SK14"
+    ],
+    "inputs": {
+      "level": 3,
+      "random": [
+        0.6065306597126334,
+        0.75
+      ],
+      "inspired": false
+    },
+    "expected": {
+      "quality": 1,
+      "draws": 2
+    },
+    "id": "SC18",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "qualityBranch",
+    "claims": [
+      "SK14"
+    ],
+    "inputs": {
+      "level": 20,
+      "random": [
+        0.1353352832366127,
+        0.25,
+        0.5
+      ],
+      "inspired": false
+    },
+    "expected": {
+      "quality": 5,
+      "draws": 3
+    },
+    "id": "SC19",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "qualityBranch",
+    "claims": [
+      "SK14"
+    ],
+    "inputs": {
+      "level": 20,
+      "random": [
+        0.1353352832366127,
+        0.25,
+        0.49,
+        0.6065306597126334,
+        0.75
+      ],
+      "inspired": false
+    },
+    "expected": {
+      "quality": 3,
+      "draws": 5
+    },
+    "id": "SC20",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "qualityBranch",
+    "claims": [
+      "SK14"
+    ],
+    "inputs": {
+      "level": 20,
+      "random": [
+        0.1353352832366127,
+        0.25,
+        0.9
+      ],
+      "inspired": true
+    },
+    "expected": {
+      "quality": 6,
+      "draws": 3
+    },
+    "id": "SC21",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "qualityDistribution",
+    "claims": [
+      "SK14",
+      "SK15"
+    ],
+    "inputs": {
+      "levels": [
+        0,
+        3,
+        5,
+        10,
+        15,
+        20
+      ],
+      "samplesPerLevel": 200000,
+      "seed": 194531,
+      "maxStandardErrors": 7
+    },
+    "expected": {
+      "probabilitiesSum": 1,
+      "ordinaryLegendary": 0
+    },
+    "id": "SC22",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "constructionMaterial",
+    "claims": [
+      "SK08",
+      "SK18"
+    ],
+    "inputs": {
+      "base": 135,
+      "level": 10,
+      "stuff": [
+        {
+          "factor": 1,
+          "offset": 0,
+          "speed": 1
+        },
+        {
+          "factor": 6,
+          "offset": 140,
+          "speed": 0.8
+        }
+      ]
+    },
+    "expected": {
+      "work": [
+        135,
+        950
+      ],
+      "progress": [
+        1.9975,
+        1.598
+      ]
+    },
+    "id": "SC23",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "batchSaturation",
+    "claims": [
+      "SK03",
+      "SK10"
+    ],
+    "inputs": {
+      "startDaily": 3999,
+      "rawEvents": [
+        100
+      ],
+      "splitEvents": [
+        2,
+        98
+      ]
+    },
+    "expected": {
+      "batch": 100,
+      "split": 21.6,
+      "afterBoundaryExample": 20
+    },
+    "id": "SC24",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "harvest",
+    "claims": [
+      "SK07"
+    ],
+    "inputs": {
+      "base": 10,
+      "rows": [
+        {
+          "stat": 0.6,
+          "failable": true,
+          "failDraw": 0.7,
+          "roundDraw": 0.2
+        },
+        {
+          "stat": 0.6,
+          "failable": true,
+          "failDraw": 0.2,
+          "roundDraw": 0.2
+        },
+        {
+          "stat": 0.6,
+          "failable": false,
+          "failDraw": 0.7,
+          "roundDraw": 0.2
+        },
+        {
+          "stat": 1.13,
+          "failable": true,
+          "failDraw": 0.7,
+          "roundDraw": 0.2
+        }
+      ]
+    },
+    "expected": [
+      0,
+      10,
+      10,
+      12
+    ],
+    "id": "SC25",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  },
+  {
+    "model": "mineYield",
+    "claims": [
+      "SK07"
+    ],
+    "inputs": {
+      "base": 40,
+      "maxHP": 100,
+      "damage": [
+        {
+          "amount": 50,
+          "remainingHP": 100,
+          "stat": 0.6
+        },
+        {
+          "amount": 70,
+          "remainingHP": 50,
+          "stat": 1.13
+        }
+      ],
+      "roundDraw": 0.4
+    },
+    "expected": {
+      "yieldPct": 0.865,
+      "product": 35
+    },
+    "id": "SC26",
+    "limitation": "Independent static-rule arithmetic and seeded sampling; not original execution or project integration proof."
+  }
+]

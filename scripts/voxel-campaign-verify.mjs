@@ -59,7 +59,7 @@ try {
   assert.ok(sim.path(pos(32,32,8),pos(33,32,5))?.length);
   assert.equal(sim.blocks[at(34,32,5)],3,'guaranteed underground steel vein');
   designate('mine',34,32,5);
-  until('underground steel is excavated and hauled through the shaft to surface storage',()=>sim.blocks[at(34,32,5)]===0&&sim.snapshot().stored.steel>=40&&!sim.jobs.length);
+  until('underground steel is excavated and hauled through the shaft to surface storage',()=>sim.blocks[at(34,32,5)]===0&&sim.stats.produced.steel>0&&sim.snapshot().stored.steel===sim.stats.produced.steel&&!sim.jobs.length);
   assert.ok(report.cargoLayers['steel@5']>0&&report.cargoLayers['steel@8']>0,'steel actually crosses layers while carried');
 
   designate('up',33,32,8);

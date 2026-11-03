@@ -1,0 +1,17 @@
+[
+  "RimWorld.SkillRecord",
+  "RimWorld.Pawn_SkillTracker",
+  "RimWorld.SkillDef",
+  "RimWorld.Passion",
+  "RimWorld.SkillNeed",
+  "RimWorld.PawnCapacityFactor",
+  "RimWorld.PawnCapacityOffset",
+  "Verse.SkillRequirement",
+  "Verse.Rand",
+  "RimWorld.SkillNeed_BaseBonus",
+  "RimWorld.SkillNeed_Direct",
+  "RimWorld.SkillNeed_Curve",
+  "RimWorld.JobDriver_ConstructFinishFrame",
+  "RimWorld.JobDriver_RemoveBuilding",
+  "RimWorld.GenConstruct"
+]

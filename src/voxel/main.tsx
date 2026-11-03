@@ -10,6 +10,7 @@ import { rotRateAtTemperature, rotLimit, remainingRotDays } from './preservation
 import { stackLimit, carryLimit } from './logistics';
 import { STONE_CONSTRUCTION } from './crafting';
 import { SurvivalPanel } from './SurvivalPanel';
+import { SkillPanel, WorkSkill } from './SkillPanel';
 import { ApparelPanel, WearApparel } from './ApparelPanel';
 import { TailorPanel } from './TailorPanel';
 import { CombatPanel, ThreatControl } from './CombatPanel';
@@ -1267,11 +1268,13 @@ function App() {
                 <FoodCondition batch={pawn.cargo} temperature={temperatureOf(pawn)} />
               </div>
             )}
+            <SkillPanel pawn={pawn} />
             <div className="voxel-priorities">
               {(['care', 'dig', 'cut', 'build', 'haul', 'grow', 'cook', 'craft'] as Work[]).map(
                 (w, i) => (
                   <label key={w}>
                     {['医护', '挖掘', '伐木', '施工', '搬运', '种植', '烹饪', '加工'][i]}
+                    <WorkSkill pawn={pawn} work={w} />
                     <select
                       aria-label={`${pawn.name} ${w}优先级`}
                       disabled={pawn.dead || pawn.faction !== 'colony'}

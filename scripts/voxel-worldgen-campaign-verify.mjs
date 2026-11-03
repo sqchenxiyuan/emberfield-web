@@ -112,7 +112,7 @@ async function campaign(biome, hilliness, seed) {
     result.fixtures[name] = { file, sha256: hash(bytes), tick: sim.tick };
   }
   assert.equal(sim.generator, 2);
-  assert.equal(sim.save().version, 13);
+  assert.equal(sim.save().version, 14);
   audit();
   await save('start');
   for (const p of surface

@@ -1,0 +1,109 @@
+{
+  "evidence_id": "RW17-SKILLS",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.SkillRecord",
+      "local_file": ".local-research/skills/RimWorld.SkillRecord.cs",
+      "sha256": "be0c0ac1f216f46ddf727c711d2caef5da919d87f59b1872ff694fbc7488d77f",
+      "lines": 434
+    },
+    {
+      "type": "RimWorld.Pawn_SkillTracker",
+      "local_file": ".local-research/skills/RimWorld.Pawn_SkillTracker.cs",
+      "sha256": "c97fd0e6e904e9ec53347c9e40358db25be532407f6f55f70d9414d6cc51e520",
+      "lines": 184
+    },
+    {
+      "type": "RimWorld.SkillDef",
+      "local_file": ".local-research/skills/RimWorld.SkillDef.cs",
+      "sha256": "745c704f080085231c0e0f5b3cf9752bcf40820825b296cf8ec5801b16c07f65",
+      "lines": 78
+    },
+    {
+      "type": "RimWorld.Passion",
+      "local_file": ".local-research/skills/RimWorld.Passion.cs",
+      "sha256": "5eb8bb2843c7678840a526a18b66cb7ff56fcad0df9c78d4d0dbc793f3720ab3",
+      "lines": 9
+    },
+    {
+      "type": "RimWorld.SkillNeed",
+      "local_file": ".local-research/skills/RimWorld.SkillNeed.cs",
+      "sha256": "738dec26bed8ae4780d27d0bae4afcefdbe9baecc1c334e5495969d7097f4831",
+      "lines": 24
+    },
+    {
+      "type": "RimWorld.PawnCapacityFactor",
+      "local_file": ".local-research/skills/RimWorld.PawnCapacityFactor.cs",
+      "sha256": "4534a4c8f3efcd51636fbfecb1b5ead2b3611e9fde554445b9f1947be84edf18",
+      "lines": 38
+    },
+    {
+      "type": "RimWorld.PawnCapacityOffset",
+      "local_file": ".local-research/skills/RimWorld.PawnCapacityOffset.cs",
+      "sha256": "9735cfa03f3c65783738192e83f07935fdb9a27b7a52dc03521f80a27cd06425",
+      "lines": 19
+    },
+    {
+      "type": "Verse.SkillRequirement",
+      "local_file": ".local-research/skills/Verse.SkillRequirement.cs",
+      "sha256": "c8e5472ec764f9f82c405b38e1e030e3abf6475aa3810eaf6495fb1adbb93f01",
+      "lines": 52
+    },
+    {
+      "type": "Verse.Rand",
+      "local_file": ".local-research/skills/Verse.Rand.cs",
+      "sha256": "f5edc56975095070d8feb0dc52a2d03f85992b8a6a27aa0cab787664ec466070",
+      "lines": 906
+    },
+    {
+      "type": "RimWorld.SkillNeed_BaseBonus",
+      "local_file": ".local-research/skills/RimWorld.SkillNeed_BaseBonus.cs",
+      "sha256": "0f138059de75d31cd1a0d3d028b08e5332923786fb830d8544f5182e3a5c49ca",
+      "lines": 42
+    },
+    {
+      "type": "RimWorld.SkillNeed_Direct",
+      "local_file": ".local-research/skills/RimWorld.SkillNeed_Direct.cs",
+      "sha256": "0983bddf958c2548d38759abc87c5e250da9048c7d0c5d01a25e8ecdc8ce48c5",
+      "lines": 28
+    },
+    {
+      "type": "RimWorld.SkillNeed_Curve",
+      "local_file": ".local-research/skills/RimWorld.SkillNeed_Curve.cs",
+      "sha256": "8a805f34bac7d5465d9b53fe46b02c787201802ff62db3eec74c93263c11a335",
+      "lines": 18
+    },
+    {
+      "type": "RimWorld.JobDriver_ConstructFinishFrame",
+      "local_file": ".local-research/skills/RimWorld.JobDriver_ConstructFinishFrame.cs",
+      "sha256": "e62e8a4546b450eab544166f2a2c45a9318b3a462155f9d9337959ac75212373",
+      "lines": 91
+    },
+    {
+      "type": "RimWorld.JobDriver_RemoveBuilding",
+      "local_file": ".local-research/skills/RimWorld.JobDriver_RemoveBuilding.cs",
+      "sha256": "8bd3b38e25cc9bd027687b6d3c1ded359a450a46f4cf98d46130aa4ae9a4591e",
+      "lines": 89
+    },
+    {
+      "type": "RimWorld.GenConstruct",
+      "local_file": ".local-research/skills/RimWorld.GenConstruct.cs",
+      "sha256": "b4895c5536662931c685958c1d22826b7f07bb4f01d970f9671f853ad4c0fe77",
+      "lines": 1007
+    }
+  ]
+}

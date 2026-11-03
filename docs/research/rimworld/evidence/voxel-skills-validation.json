@@ -1,0 +1,2419 @@
+{
+  "generatedAt": "2026-11-03T02:08:06.651Z",
+  "kind": "web-runtime-validated",
+  "scope": "Seven skills, actual work XP, passions and decay, qualification checks, progress-weighted mining, crop failure, locked harvest/product quality and v14 migration. Controlled tests, normal colony campaigns and native observations are distinct evidence layers.",
+  "sources": [
+    {
+      "file": "src/voxel/ApparelPanel.tsx",
+      "sha256": "7a3aed1524009e13f3adf784c63ed6f43a100ae88a4f6ac74e290a986d6c5265"
+    },
+    {
+      "file": "src/voxel/CombatPanel.tsx",
+      "sha256": "9ee9b0b137381d2e0d349feac6745d9dfc337c6653fb1a9e3524430810d0bc28"
+    },
+    {
+      "file": "src/voxel/SkillPanel.tsx",
+      "sha256": "4f3d3954708a69bf1ca0beaed5e2e371c905abe140930e4ff31068ed8d2de784"
+    },
+    {
+      "file": "src/voxel/SurvivalPanel.tsx",
+      "sha256": "fa06477460dc705936bc544ff47ef8f1119626fbc746e98057dbd8115b98ae55"
+    },
+    {
+      "file": "src/voxel/TailorPanel.tsx",
+      "sha256": "89c3a38fa8c82e4ccf7aa44d2f68ff5fd84d318e284f632d1e66bd486541b821"
+    },
+    {
+      "file": "src/voxel/WeaponPanel.tsx",
+      "sha256": "e99ff7f8cead70344393e07d984ca7da36bbe6e07988d46e61a44b9aefec7774"
+    },
+    {
+      "file": "src/voxel/WorldSetup.tsx",
+      "sha256": "32951f3f9d082074ed545795ea51abbd39b2dfbfc88ae62cd63e755db097068a"
+    },
+    {
+      "file": "src/voxel/apparel.ts",
+      "sha256": "d5c0ad649ee59f44a52a38fe0a3f47a32be974fcc11b36c44f5fe5a704eb1629"
+    },
+    {
+      "file": "src/voxel/client.ts",
+      "sha256": "cadf25b5430ad97dcfd6fd9cfa053f8a002f8f90a7df777bc3923c6133e80356"
+    },
+    {
+      "file": "src/voxel/climate.ts",
+      "sha256": "2386d38fc2b258034516de80caee53627d62c184bd18cadb741c213cc781bf29"
+    },
+    {
+      "file": "src/voxel/crafting.ts",
+      "sha256": "b782d30555b5915f647e9d986849da9d6ff0c2ce29f83ab3caf7dd205f174997"
+    },
+    {
+      "file": "src/voxel/farming.ts",
+      "sha256": "0984bc364efff88d7f7773d99f9d7e1cfa5379d4614816669d193d1e7c718c79"
+    },
+    {
+      "file": "src/voxel/injuries.ts",
+      "sha256": "0c704d15e127c776b3de1dec1c6bcfc89ecf34916efed2d3d9639d3c8417df00"
+    },
+    {
+      "file": "src/voxel/logistics.ts",
+      "sha256": "f4262564877d793a62dac672739beb8a31ba7b1cda73c6e56c47f6dc1ef1c381"
+    },
+    {
+      "file": "src/voxel/main.tsx",
+      "sha256": "1219346f61c36ccb9e196d0cb8a8e61ae001a6d19e9dc83356e329f636d1a41b"
+    },
+    {
+      "file": "src/voxel/plants.ts",
+      "sha256": "baa7f01b82c047536c8d0a2ee3097e15bce8466418e4442e39155d6be6400195"
+    },
+    {
+      "file": "src/voxel/power.ts",
+      "sha256": "d24d824e96544a080106c4cd861cd9d7eaff9101de82ddced9bee4c5451f1585"
+    },
+    {
+      "file": "src/voxel/preservation.ts",
+      "sha256": "99c86a68c50a032097916e060a667fe1e3ad8d7f5def9d5b55b516acc112048e"
+    },
+    {
+      "file": "src/voxel/render.worker.ts",
+      "sha256": "191ced6c3d17b480fa11f2d3a6845b8e9df111f5f69ded8b7b2bbaf75caf22c0"
+    },
+    {
+      "file": "src/voxel/renderer.ts",
+      "sha256": "4d139255bffe72c4c582d62065a7d8cd1d742ed1ce88421091db1d56c9ba1151"
+    },
+    {
+      "file": "src/voxel/rest.ts",
+      "sha256": "843c08f8188d7a3b3a9cbef507a0568705bb3d5aa5ad2d89395443199aa12099"
+    },
+    {
+      "file": "src/voxel/rooms.ts",
+      "sha256": "67457f7cd217f5746b9562ea2e3ca059af1f424165368d28d511e8a374090b9d"
+    },
+    {
+      "file": "src/voxel/sim.worker.ts",
+      "sha256": "0323931264b656a7e286ee8eeedb3fbb48a8d2bd6ca83206180d78c0f907fb82"
+    },
+    {
+      "file": "src/voxel/skills.ts",
+      "sha256": "ef47782220943c5c921ee1cf65814741d218e7a43867f6726fa7a2393dcf097a"
+    },
+    {
+      "file": "src/voxel/style.css",
+      "sha256": "e4d62fb69272c8adea2e28a93e450914e2220714890b08c9b324c0015d5decaf"
+    },
+    {
+      "file": "src/voxel/survival.ts",
+      "sha256": "662cd32c963222ad33f945d1b494e6493c93243a803476cf0d0b0d251c936b6d"
+    },
+    {
+      "file": "src/voxel/thermal.ts",
+      "sha256": "40c614996ba9c8843bc52fbd343a2a625c0fd77c788b1133ae2ba50b6494b127"
+    },
+    {
+      "file": "src/voxel/types.ts",
+      "sha256": "3a21dc901e82c6a893b2f040d82c49ef6529e3489d65629dd099813195f8ffee"
+    },
+    {
+      "file": "src/voxel/weaponProduction.ts",
+      "sha256": "6914c06f25fce40b14f6af8509fed5180fd3c096367af5e2a6896f4ea7518f9f"
+    },
+    {
+      "file": "src/voxel/weapons.ts",
+      "sha256": "83ed4d6c1ebb69e7e070decb1d02aa8fcea884702ab26d966ba1a03cdb0fc730"
+    },
+    {
+      "file": "src/voxel/world.ts",
+      "sha256": "d4a62bef7718bc6d4a2afe709e97c3f6319f922a7ad6915de0f3dba950361c36"
+    },
+    {
+      "file": "src/voxel/worldgen.ts",
+      "sha256": "7f3acf989d9e366793be11bef8f42f352cc36523c09a75a8acb9c944af7770fb"
+    }
+  ],
+  "scripts": [
+    {
+      "file": "scripts/voxel-skills-campaign-verify.mjs",
+      "sha256": "414288494254b27c1686c87dabb39bda6e0acc8f6e4c5a4508bee62ca3b8cc62"
+    },
+    {
+      "file": "scripts/voxel-skills-browser-verify.mjs",
+      "sha256": "9ea598ece650558d8a0ba8ddfe63a2158b3f0585cbffb2055f0ca2d006018453"
+    },
+    {
+      "file": "scripts/research/verify-voxel-skills-validation.mjs",
+      "sha256": "d5ea4a66d6a093b61304e5f663401f0a019820b085a8570d403078915fd189b0"
+    },
+    {
+      "file": "tests/voxel-skills-rules.test.ts",
+      "sha256": "b7574d394e206a56abccbbe4088eb35e9faa3a8a54bad7164f914aa60a7fbae4"
+    },
+    {
+      "file": "tests/voxel-skills-integration.test.ts",
+      "sha256": "63aec6ec9536a5056b7c98863986676c27340a0013aeba644a84782962ba910d"
+    },
+    {
+      "file": "tests/voxel-skills-yields.test.ts",
+      "sha256": "21d4f9cb88ee389a774bebc47097b98a95be1f66de83b745e821e0ad3b944bef"
+    },
+    {
+      "file": "tests/voxel-combat.test.ts",
+      "sha256": "7707ba4118aa98eb7ded640af2e244438bfd44f1b92d59cb92a6c515da4b6842"
+    }
+  ],
+  "assets": [
+    {
+      "file": "dist/assets/CanvasRenderer-B6Mdl2XH.js",
+      "sha256": "10062f733eb334b62322dc9a5c349144757377db9c8f83700bdebc1631dc4c33"
+    },
+    {
+      "file": "dist/assets/CanvasRenderer-BPFAOk3D.js",
+      "sha256": "e37d5f098c703d28abddb07e72d7d688db8f6e80b36ee0e24750692eea9f6f70"
+    },
+    {
+      "file": "dist/assets/Filter-3Gl5Xq8e.js",
+      "sha256": "ff7d610e3f8192440593d21cd136f96e4becc82a23699aa498414c5990d20521"
+    },
+    {
+      "file": "dist/assets/Filter-C9A4ZqHC.js",
+      "sha256": "51e2024a6ed4c6e87f497ffd0ebc89d5ca581fff6f804c3e00d0615b7d3b2a7a"
+    },
+    {
+      "file": "dist/assets/RenderTargetSystem-10VWBYJN.js",
+      "sha256": "15a4d6d93c6085a7dd593141cb9efbe26da8807881658b4798f40b2e03174394"
+    },
+    {
+      "file": "dist/assets/RenderTargetSystem-DVBE9-Sq.js",
+      "sha256": "b8ea4795a173cf1ea8e38464fd783c466302b4e1c458ae0eac7a0fb1d23d9b88"
+    },
+    {
+      "file": "dist/assets/WebGLRenderer-BOop3V_f.js",
+      "sha256": "bc33a461adc7aad937c65dd40a117b526eda37adfe794cfa834214dd5d122484"
+    },
+    {
+      "file": "dist/assets/WebGLRenderer-C-LZ5ny6.js",
+      "sha256": "eb012d808ed6544d7ce8be06b96a79b15fe4344540b0ca098c0b746a4aed2bb5"
+    },
+    {
+      "file": "dist/assets/WebGPURenderer-CDs4p3ei.js",
+      "sha256": "c4588c1fd29184b7197a20bc2c7c0952f7f4479f7ef5470913214b36039dae31"
+    },
+    {
+      "file": "dist/assets/WebGPURenderer-zMFGatTH.js",
+      "sha256": "d094ebc94dc94a8338c5c0ca7bd6b1909447156a2302247416b321c8ae974126"
+    },
+    {
+      "file": "dist/assets/browserAll-C1UpoyWA.js",
+      "sha256": "91a9d04ba5f21ce9a76c6293d4250098253b2d8d4a99d90e309208046d1aa200"
+    },
+    {
+      "file": "dist/assets/browserAll-DcLNF0vk.js",
+      "sha256": "c0b603ca84267894b381ec6cfae9636912e71499c9135b3cbc18aa453c8eef66"
+    },
+    {
+      "file": "dist/assets/client-CrowJ5J7.js",
+      "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e"
+    },
+    {
+      "file": "dist/assets/getTexelRangeRects-Cxt6Ib_7.js",
+      "sha256": "237232fe9fd283afe05816ad9a3e00b8bc16e0db87f3c31d54b22196083c5a99"
+    },
+    {
+      "file": "dist/assets/getTexelRangeRects-Dy8HUIoI.js",
+      "sha256": "8bbb0d808ef79bbde316b91d4311ad257e0676d7cef252b4d4b335c890e13d70"
+    },
+    {
+      "file": "dist/assets/index-Cuz0uWqZ.js",
+      "sha256": "a0e86e03a381fdd3d8cceaa271a9f1098523b26880af9c5d887932a8c89114ea"
+    },
+    {
+      "file": "dist/assets/main-Bd4OPQD3.css",
+      "sha256": "dc5627827651affe81bedfa46cbf7057ef1e88932911b4ea18396538b97e69fa"
+    },
+    {
+      "file": "dist/assets/main-C4OEIIn2.js",
+      "sha256": "6f3720651068c90e1bece2d04570715ae78dce4a46df2fbbdea81896e2a8c16c"
+    },
+    {
+      "file": "dist/assets/main-DPTF2nc2.css",
+      "sha256": "eee579943d4aae63bb8a032e90618d1e279ce0a2d4fb136a69bd497a602058e9"
+    },
+    {
+      "file": "dist/assets/main-DYBd6Zk-.js",
+      "sha256": "6e85c94cc95a18f367e9d5a48e5949919c3d3306c55d7b9632eac917d4f09704"
+    },
+    {
+      "file": "dist/assets/render.worker-C2HXeM9H.js",
+      "sha256": "9d1767ad89de98bf5df0e629eda8aed3446166c1d4091382e969a581f6a38d48"
+    },
+    {
+      "file": "dist/assets/render.worker-DSNcKIh7.js",
+      "sha256": "d20eee6ca33b28ab9af0145994a83d57538f915cded4c5c52b0f5ce649a11a58"
+    },
+    {
+      "file": "dist/assets/renderer-CeHQXvmj.js",
+      "sha256": "cb37d8bf6473e84ef370344468b9d779ffac233555c7003e1cd3be6ada3977e3"
+    },
+    {
+      "file": "dist/assets/sim.worker-C0RjGWs6.js",
+      "sha256": "5c7d832926825235ac70dcd1ab5fc5929580681ca209cc71e2db8c23975abc7b"
+    },
+    {
+      "file": "dist/assets/sim.worker-TVFgUzzb.js",
+      "sha256": "660607d5f3448266fb3aa9d9c6ac5e433a3524c096ab3f5d266cff8590dd8d36"
+    },
+    {
+      "file": "dist/assets/webworkerAll-0b5Tygjj.js",
+      "sha256": "ae2ba31eb7d7b32069b781ede54a2cdf24eb4a5e0b0cd6ad27e0498ed5b47a95"
+    },
+    {
+      "file": "dist/assets/webworkerAll-BeTFHRgX.js",
+      "sha256": "a699651c2d48006ae0f66940789106f10b1402a44b0bc5221f129bfcf6040243"
+    }
+  ],
+  "reports": [
+    {
+      "file": "test-results/skills-unit.json",
+      "sha256": "8fb491c9322ccbe59c89a50a38bc9931f5b811abc8934166d04e4a2ecb2f24c7"
+    },
+    {
+      "file": "test-results/skills-build.log",
+      "sha256": "8fb7eaa0c35028303c36bb0d95ebd4fde887747b0fd4eb5d9431b31a4805c449"
+    },
+    {
+      "file": "test-results/voxel-skills-campaign/report.json",
+      "sha256": "c15ad8ba46a50ebed29f65350ee39e087af8c51bdfabf7e0b5f59e56bf6128bb"
+    },
+    {
+      "file": "test-results/voxel-skills-campaign/opening/report.json",
+      "sha256": "001655f6738cf5c95fe03c6dad4dd1e4bb86a980c5c6a38adc5d11fca6ecec96"
+    },
+    {
+      "file": "test-results/voxel-skills-browser/report.json",
+      "sha256": "9c672b010bad1970906ba3b76ff4afd69d46ce7798c1f8326b309f134e011855"
+    },
+    {
+      "file": "test-results/skills-regressions.json",
+      "sha256": "2717c6242e3e20d4e2e0fd4a06c00fa08009c2afe81528f54f8a690d74652b06"
+    },
+    {
+      "file": "test-results/voxel-apparel-browser/report.json",
+      "sha256": "a57bf300bea1a2a6cc90a65ed79ee0bbee6fa3c21cd1f2091a888051879f1731"
+    },
+    {
+      "file": "test-results/voxel-injuries-browser/report.json",
+      "sha256": "d2da9c698372316133f53a8c11092cca15f26580d48a8c351816f5523d420a27"
+    },
+    {
+      "file": "test-results/skills-regression-voxel-food-campaign-verify.mjs.log",
+      "sha256": "86ad5ce44d4c811dc9622bd6b64aea238789cee9a3bd35248841a7705d5fe768"
+    },
+    {
+      "file": "test-results/skills-regression-voxel-plants-campaign-verify.mjs.log",
+      "sha256": "25b01961d2366a2a8c70be711cf115431f2a3f3ca36641f166f9fcb245440758"
+    },
+    {
+      "file": "test-results/skills-regression-voxel-housing-campaign-verify.mjs.log",
+      "sha256": "d61356c52b58bc7d49661ec7f1b9720456936fc2c039041da7a70c8fa4a800dd"
+    },
+    {
+      "file": "test-results/skills-regression-voxel-power-campaign-verify.mjs.log",
+      "sha256": "2c6ef8fc86810e3578483073b4faac805f2154ec57091a298c5d62c423b000cf"
+    },
+    {
+      "file": "test-results/skills-regression-voxel-injuries-campaign-verify.mjs.log",
+      "sha256": "72ebe230812fe74651475cb9a226d3872efc9f0cc008721ad928bedf1e4c0757"
+    },
+    {
+      "file": "test-results/skills-regression-voxel-apparel-campaign-verify.mjs.log",
+      "sha256": "cd41e3e6c9c1a31853a2470ceca074e930aeb7ca947d6a7a037bc21e22dfcaae"
+    },
+    {
+      "file": "test-results/skills-regression-voxel-apparel-temperature-verify.mjs.log",
+      "sha256": "8a7e7f7889baeeb5ef9e4fbcbcd20e873efe386cf6336b8c95c595e5fc25f11c"
+    },
+    {
+      "file": "test-results/skills-regression-voxel-preservation-verify.mjs.log",
+      "sha256": "bb99af59d80a82b99992765c40a14e9df6db65e8af11a8ca88cb13524e44de0e"
+    },
+    {
+      "file": "test-results/skills-regression-voxel-stonecutting-campaign-verify.mjs.log",
+      "sha256": "3be2e0809406e939c0dbde2ecba1eeaffced6d4d77d4746a8c74a12916c97c84"
+    },
+    {
+      "file": "test-results/skills-regression-voxel-worldgen-campaign-verify.mjs.log",
+      "sha256": "0cb6b4457b35ca3815852ca294b5e15f57f22384e533ba6960c5934d61bcb183"
+    },
+    {
+      "file": "test-results/skills-regression-voxel-logistics-campaign-verify.mjs.log",
+      "sha256": "e03d6ae7870a31c90543d23670e3bf94e05108695d168aa4037689cdcbbcd30f"
+    },
+    {
+      "file": "test-results/skills-regression-voxel-survival-campaign-verify.mjs.log",
+      "sha256": "df46b54cbc8dcf0134b59a6ce9c336f8101bbab7e585e7863d1f094f6ce6e8e9"
+    },
+    {
+      "file": "test-results/skills-regression-voxel-survival-temperature-verify.mjs.log",
+      "sha256": "84bb09a74bb5ee67a020d212f5ca650924b9f2ab6d003eb55cdc0c2b201036da"
+    }
+  ],
+  "unit": {
+    "total": 452,
+    "passed": 452,
+    "failed": 0
+  },
+  "skillTests": [
+    {
+      "title": "migrates original v13 bytes without changing gear, terrain, needs or inventing historical XP",
+      "status": "passed"
+    },
+    {
+      "title": "awards unfinished recipe XP only on actual work, not travel or fuel waits",
+      "status": "passed"
+    },
+    {
+      "title": "locks finishing worker and quality through full ground, reassignment, load and retry",
+      "status": "passed"
+    },
+    {
+      "title": "rejects an underqualified smith, then lets a qualified worker complete the same order",
+      "status": "passed"
+    },
+    {
+      "title": "defers cooking training until physical output succeeds and discards cancelled work credit",
+      "status": "passed"
+    },
+    {
+      "title": "rejects malformed skill records, unearned quality and contradictory work clocks",
+      "status": "passed"
+    },
+    {
+      "title": "uses three fixed starter profiles and independently owned zero-XP records",
+      "status": "passed"
+    },
+    {
+      "title": "uses the piecewise upgrade curve, including its clamped level-20 endpoint",
+      "status": "passed"
+    },
+    {
+      "title": "applies passion and saturates only when the event starts above 4000 effective daily XP",
+      "status": "passed"
+    },
+    {
+      "title": "keeps negative progress until -1000, subtracts decay from daily XP, and downgrades correctly",
+      "status": "passed"
+    },
+    {
+      "title": "caps level-20 progress without discarding earned daily XP and supports crossing several levels",
+      "status": "passed"
+    },
+    {
+      "title": "decays only on the 40-tick clock, preserves negative progress through JSON and resets daily learning",
+      "status": "passed"
+    },
+    {
+      "title": "strictly validates serialized keys, finite values, legal negative progress and normalized level bounds",
+      "status": "passed"
+    },
+    {
+      "title": "separates work type from learnable skill and never teaches through stonecutting, refuel or equipment handling",
+      "status": "passed"
+    },
+    {
+      "title": "uses mining/plants/construction curves and both construction drivers include the native 1.7 factor",
+      "status": "passed"
+    },
+    {
+      "title": "keeps Crafting level out of GeneralLaborSpeed and applies cooking capacity as skill offset",
+      "status": "passed"
+    },
+    {
+      "title": "keeps medical speed and doctor quality as distinct native stats",
+      "status": "passed"
+    },
+    {
+      "title": "uses distinct low-skill mineral yield and crop success curves, then shared expert yield bonuses",
+      "status": "passed"
+    },
+    {
+      "title": "weights yield capacities additively around their importance and caps mineral capacities at 100%",
+      "status": "passed"
+    },
+    {
+      "title": "allows enhanced manipulation to improve plant yield up to 150% and rejects invalid capacities",
+      "status": "passed"
+    },
+    {
+      "title": "evaluates melee accuracy and dodge with their separate capacity offsets and capped sight terms",
+      "status": "passed"
+    },
+    {
+      "title": "truncates the native skill centers instead of rounding and uses asymmetric Gaussian widths",
+      "status": "passed"
+    },
+    {
+      "title": "can replace Masterwork with a lower second result and makes no extra draws at the 50% boundary",
+      "status": "passed"
+    },
+    {
+      "title": "is reproducible across JSON-held RNG state and never yields Legendary without inspiration",
+      "status": "passed"
+    },
+    {
+      "title": "keeps both miners progress-weighted yields through full output, handoff and load",
+      "status": "passed"
+    },
+    {
+      "title": "loses an entire low-skill crop harvest but never applies that failure to a mature tree",
+      "status": "passed"
+    },
+    {
+      "title": "freezes the first harvest outcome across a blocked floor, different worker and reload without XP farming",
+      "status": "passed"
+    },
+    {
+      "title": "erases stale cooking training when delivered ingredients spoil and rewards only replacement work",
+      "status": "passed"
+    },
+    {
+      "title": "rechecks plantTree level 6 after qualification loss and rejects an unqualified handoff",
+      "status": "passed"
+    },
+    {
+      "title": "rechecks solar level 6 after qualification loss and rejects an unqualified handoff",
+      "status": "passed"
+    }
+  ],
+  "combatExceptions": [
+    {
+      "title": "sleeping targets bypass miss and do not train melee",
+      "status": "passed"
+    },
+    {
+      "title": "sleeping targets bypass dodge and do not train melee",
+      "status": "passed"
+    }
+  ],
+  "historicalSave": {
+    "file": "tests/fixtures/voxel-v13-start.json",
+    "sha256": "4672d325a7aedf544554c1235fed784a296e5198237c7208ad7177a0d1a7d6d4"
+  },
+  "campaign": {
+    "startedAt": "2026-11-03T01:52:48.026Z",
+    "scope": "Fresh-world weapon opening, then continued ordinary mining, forestry and elevated smithing to train a passionate crafter. No terrain, resources, health, positions, skills, XP, progress or clock injections. Commands/step/save/load only; read-only spatial queries.",
+    "opening": {
+      "file": "test-results/voxel-skills-campaign/opening/report.json",
+      "checks": 30,
+      "saveSha256": "226ed20efe9e7d057eee936a2e1ae9faf490c4c3eb8ddd0d3a5bc1c025a46779"
+    },
+    "checks": [
+      {
+        "name": "ordinary opening has already trained mining, construction, plants and crafting",
+        "tick": 36259
+      },
+      {
+        "name": "normal forestry supplies fuel for prolonged training",
+        "tick": 37846,
+        "elapsed": 1587
+      },
+      {
+        "name": "continued actual mining supplies training metal with skill-based yield",
+        "tick": 38125,
+        "elapsed": 279
+      },
+      {
+        "name": "continued actual mining supplies training metal with skill-based yield",
+        "tick": 38245,
+        "elapsed": 120
+      },
+      {
+        "name": "continued actual mining supplies training metal with skill-based yield",
+        "tick": 39965,
+        "elapsed": 1720
+      },
+      {
+        "name": "continued actual mining supplies training metal with skill-based yield",
+        "tick": 40696,
+        "elapsed": 731
+      },
+      {
+        "name": "continued actual mining supplies training metal with skill-based yield",
+        "tick": 41685,
+        "elapsed": 989
+      },
+      {
+        "name": "continued actual mining supplies training metal with skill-based yield",
+        "tick": 41857,
+        "elapsed": 172
+      },
+      {
+        "name": "continued actual mining supplies training metal with skill-based yield",
+        "tick": 41985,
+        "elapsed": 128
+      },
+      {
+        "name": "continued actual mining supplies training metal with skill-based yield",
+        "tick": 42397,
+        "elapsed": 412
+      },
+      {
+        "name": "continued actual mining supplies training metal with skill-based yield",
+        "tick": 42524,
+        "elapsed": 127
+      },
+      {
+        "name": "passionate crafter physically starts the elevated order",
+        "tick": 42970,
+        "elapsed": 446
+      },
+      {
+        "name": "mid-work save preserves exact experience and work clocks",
+        "tick": 42970
+      },
+      {
+        "name": "four additional swords finish using physical fuel and delivered metal",
+        "tick": 87549,
+        "elapsed": 44579
+      },
+      {
+        "name": "ordinary repeated crafting raises a skill level without injected experience",
+        "tick": 87549,
+        "before": {
+          "level": 8,
+          "xp": 1660.5000000001069,
+          "passion": 2,
+          "dailyXp": 89.10000000000032
+        },
+        "after": {
+          "level": 9,
+          "xp": 3460.4999999985444,
+          "passion": 2,
+          "dailyXp": 1597.5000000001005
+        }
+      },
+      {
+        "name": "finished steel quality is stored per item while the club retains its no-quality sentinel",
+        "tick": 87549,
+        "weapons": [
+          {
+            "id": 416,
+            "kind": "woodClub",
+            "quality": 2,
+            "hitPoints": 65
+          },
+          {
+            "id": 637,
+            "kind": "steelKnife",
+            "quality": 1,
+            "hitPoints": 100
+          },
+          {
+            "id": 780,
+            "kind": "steelLongsword",
+            "quality": 2,
+            "hitPoints": 100
+          },
+          {
+            "id": 791,
+            "kind": "steelLongsword",
+            "quality": 1,
+            "hitPoints": 100
+          },
+          {
+            "id": 798,
+            "kind": "steelLongsword",
+            "quality": 2,
+            "hitPoints": 100
+          },
+          {
+            "id": 804,
+            "kind": "steelLongsword",
+            "quality": 2,
+            "hitPoints": 100
+          },
+          {
+            "id": 671,
+            "kind": "steelLongsword",
+            "quality": 3,
+            "hitPoints": 100
+          }
+        ]
+      }
+    ],
+    "commands": [
+      {
+        "tick": 36259,
+        "command": {
+          "type": "draft",
+          "pawnId": 364,
+          "drafted": false
+        },
+        "result": {
+          "ok": true,
+          "message": "解除征召，恢复工作"
+        }
+      },
+      {
+        "tick": 36259,
+        "command": {
+          "type": "priority",
+          "pawnId": 364,
+          "work": "craft",
+          "value": 0
+        },
+        "result": {
+          "ok": true,
+          "message": "工作优先级已更新；0 为禁用"
+        }
+      },
+      {
+        "tick": 36259,
+        "command": {
+          "type": "priority",
+          "pawnId": 365,
+          "work": "craft",
+          "value": 0
+        },
+        "result": {
+          "ok": true,
+          "message": "工作优先级已更新；0 为禁用"
+        }
+      },
+      {
+        "tick": 36259,
+        "command": {
+          "type": "priority",
+          "pawnId": 366,
+          "work": "craft",
+          "value": 1
+        },
+        "result": {
+          "ok": true,
+          "message": "工作优先级已更新；0 为禁用"
+        }
+      },
+      {
+        "tick": 36259,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 26,
+            "y": 35,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 36259,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 31,
+            "y": 39,
+            "z": 8
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 36259,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 35,
+            "y": 21,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 36259,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 25,
+            "y": 25,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 36259,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 22,
+            "y": 32,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 36259,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 41,
+            "y": 32,
+            "z": 8
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 36259,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 30,
+            "y": 19,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 36259,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 43,
+            "y": 28,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 36259,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 21,
+            "y": 28,
+            "z": 8
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 36259,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 20,
+            "y": 31,
+            "z": 8
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 37846,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 6,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 38125,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 5,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 38245,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 49,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 38245,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 50,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 38245,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 51,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 38245,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 52,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 38245,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 53,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 38245,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 54,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 38245,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 54,
+            "y": 32,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 38245,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 54,
+            "y": 33,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 38245,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 54,
+            "y": 34,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 38245,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 54,
+            "y": 35,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 38245,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 54,
+            "y": 36,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 38245,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 54,
+            "y": 37,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 38245,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 54,
+            "y": 38,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 39965,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 39965,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 32,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 39965,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 33,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 39965,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 34,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 39965,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 35,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 39965,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 36,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 39965,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 37,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 39965,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 38,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 40696,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 40696,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 40696,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 29,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 40696,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 28,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 40696,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 27,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 40696,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 26,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 40696,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 25,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 40696,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 24,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 41685,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 39,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 41857,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 40,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 41985,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 32,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 41985,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 33,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 41985,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 34,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 41985,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 35,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 41985,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 36,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 41985,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 37,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 41985,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 38,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 41985,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 39,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 41985,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 40,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 42397,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 41,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 42524,
+        "command": {
+          "type": "weaponBill",
+          "benchId": 669,
+          "kind": "steelLongsword",
+          "target": 5,
+          "paused": false
+        },
+        "result": {
+          "ok": true,
+          "message": "武器制作目标已更新"
+        }
+      }
+    ],
+    "fixtures": {
+      "training": {
+        "file": "test-results/voxel-skills-campaign/training.json",
+        "sha256": "6df80cd04846f3210bfef7a9fd44ca29ffcada2c958848b5f161beba23531c74",
+        "tick": 42970
+      },
+      "final": {
+        "file": "test-results/voxel-skills-campaign/final.json",
+        "sha256": "6867b6f4348fff3d4d365507944b6a896e343c0e3b37ae4aa33b0554f6e53c56",
+        "tick": 87549
+      }
+    },
+    "errors": [],
+    "status": "passed",
+    "beforeSkills": [
+      {
+        "mining": {
+          "level": 8,
+          "xp": 815.8500000000492,
+          "passion": 2,
+          "dailyXp": 0
+        },
+        "construction": {
+          "level": 6,
+          "xp": 120.75,
+          "passion": 1,
+          "dailyXp": 0
+        },
+        "plants": {
+          "level": 3,
+          "xp": 155.6520000000026,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "cooking": {
+          "level": 4,
+          "xp": 0,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "crafting": {
+          "level": 5,
+          "xp": 301.34999999999695,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "medicine": {
+          "level": 3,
+          "xp": 0,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "melee": {
+          "level": 6,
+          "xp": 0,
+          "passion": 1,
+          "dailyXp": 0
+        }
+      },
+      {
+        "mining": {
+          "level": 3,
+          "xp": 242.69699999999048,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "construction": {
+          "level": 3,
+          "xp": 57.225000000000215,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "plants": {
+          "level": 8,
+          "xp": 581.7825000000012,
+          "passion": 2,
+          "dailyXp": 0
+        },
+        "cooking": {
+          "level": 6,
+          "xp": 0,
+          "passion": 1,
+          "dailyXp": 0
+        },
+        "crafting": {
+          "level": 4,
+          "xp": 126.0000000000015,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "medicine": {
+          "level": 8,
+          "xp": 0,
+          "passion": 1,
+          "dailyXp": 0
+        },
+        "melee": {
+          "level": 4,
+          "xp": 0,
+          "passion": 0,
+          "dailyXp": 0
+        }
+      },
+      {
+        "mining": {
+          "level": 5,
+          "xp": 615.1215000000277,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "construction": {
+          "level": 7,
+          "xp": 751.5,
+          "passion": 1,
+          "dailyXp": 0
+        },
+        "plants": {
+          "level": 4,
+          "xp": 132.5362500000045,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "cooking": {
+          "level": 3,
+          "xp": 0,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "crafting": {
+          "level": 8,
+          "xp": 1660.5000000001069,
+          "passion": 2,
+          "dailyXp": 89.10000000000032
+        },
+        "medicine": {
+          "level": 4,
+          "xp": 0,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "melee": {
+          "level": 5,
+          "xp": 0,
+          "passion": 0,
+          "dailyXp": 0
+        }
+      }
+    ],
+    "final": {
+      "tick": 87549,
+      "version": 14,
+      "counts": {
+        "wood": 400,
+        "stone": 0,
+        "steel": 8,
+        "components": 0,
+        "food": 18,
+        "grain": 0,
+        "meal": 0,
+        "chunk": 61,
+        "cloth": 0,
+        "apparel": 6,
+        "weapon": 7
+      },
+      "stats": {
+        "mined": 345,
+        "cut": 22,
+        "built": 25,
+        "hauled": 881,
+        "sown": 0,
+        "harvested": 0,
+        "cooked": 0,
+        "stonecut": 0,
+        "tailored": 0,
+        "weaponsMade": 7,
+        "destroyed": {
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "apparel": 0,
+          "weapon": 0
+        },
+        "treesPlanted": 0,
+        "treesRegrown": 27,
+        "treesDied": 20,
+        "eaten": 42,
+        "consumed": {
+          "wood": 265,
+          "stone": 0,
+          "steel": 630,
+          "components": 0,
+          "food": 42,
+          "grain": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "apparel": 0,
+          "weapon": 0
+        },
+        "produced": {
+          "wood": 575,
+          "stone": 0,
+          "steel": 638,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meal": 0,
+          "chunk": 61,
+          "cloth": 0,
+          "apparel": 0,
+          "weapon": 7
+        },
+        "spoiled": {
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "apparel": 0,
+          "weapon": 0
+        }
+      },
+      "skills": [
+        {
+          "id": 364,
+          "name": "林澈",
+          "skills": {
+            "mining": {
+              "level": 8,
+              "xp": 988.4700000000792,
+              "passion": 2,
+              "dailyXp": 0
+            },
+            "construction": {
+              "level": 6,
+              "xp": 120.75,
+              "passion": 1,
+              "dailyXp": 0
+            },
+            "plants": {
+              "level": 3,
+              "xp": 267.92849999999345,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "cooking": {
+              "level": 4,
+              "xp": 0,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "crafting": {
+              "level": 5,
+              "xp": 301.34999999999695,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "medicine": {
+              "level": 3,
+              "xp": 0,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "melee": {
+              "level": 6,
+              "xp": 0,
+              "passion": 1,
+              "dailyXp": 0
+            }
+          }
+        },
+        {
+          "id": 365,
+          "name": "温岚",
+          "skills": {
+            "mining": {
+              "level": 3,
+              "xp": 294.4410000000023,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "construction": {
+              "level": 3,
+              "xp": 57.225000000000215,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "plants": {
+              "level": 8,
+              "xp": 1009.4175000000571,
+              "passion": 2,
+              "dailyXp": 0
+            },
+            "cooking": {
+              "level": 6,
+              "xp": 0,
+              "passion": 1,
+              "dailyXp": 0
+            },
+            "crafting": {
+              "level": 4,
+              "xp": 126.0000000000015,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "medicine": {
+              "level": 8,
+              "xp": 0,
+              "passion": 1,
+              "dailyXp": 0
+            },
+            "melee": {
+              "level": 4,
+              "xp": 0,
+              "passion": 0,
+              "dailyXp": 0
+            }
+          }
+        },
+        {
+          "id": 366,
+          "name": "阿砾",
+          "skills": {
+            "mining": {
+              "level": 5,
+              "xp": 867.1529999999154,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "construction": {
+              "level": 7,
+              "xp": 751.5,
+              "passion": 1,
+              "dailyXp": 0
+            },
+            "plants": {
+              "level": 4,
+              "xp": 261.77024999999395,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "cooking": {
+              "level": 3,
+              "xp": 0,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "crafting": {
+              "level": 9,
+              "xp": 3460.4999999985444,
+              "passion": 2,
+              "dailyXp": 1597.5000000001005
+            },
+            "medicine": {
+              "level": 4,
+              "xp": 0,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "melee": {
+              "level": 5,
+              "xp": 0,
+              "passion": 0,
+              "dailyXp": 0
+            }
+          }
+        }
+      ],
+      "weapons": [
+        {
+          "id": 416,
+          "kind": "woodClub",
+          "quality": 2,
+          "hitPoints": 65
+        },
+        {
+          "id": 637,
+          "kind": "steelKnife",
+          "quality": 1,
+          "hitPoints": 100
+        },
+        {
+          "id": 780,
+          "kind": "steelLongsword",
+          "quality": 2,
+          "hitPoints": 100
+        },
+        {
+          "id": 791,
+          "kind": "steelLongsword",
+          "quality": 1,
+          "hitPoints": 100
+        },
+        {
+          "id": 798,
+          "kind": "steelLongsword",
+          "quality": 2,
+          "hitPoints": 100
+        },
+        {
+          "id": 804,
+          "kind": "steelLongsword",
+          "quality": 2,
+          "hitPoints": 100
+        },
+        {
+          "id": 671,
+          "kind": "steelLongsword",
+          "quality": 3,
+          "hitPoints": 100
+        }
+      ]
+    },
+    "finishedAt": "2026-11-03T01:53:16.495Z"
+  },
+  "browser": {
+    "base": "http://127.0.0.1:5183/?world=voxel",
+    "startedAt": "2026-11-03T02:00:26.310Z",
+    "scope": "Production Chrome in both renderer modes. Genuine v13 file-chooser migration and normal-command v14 campaign fixtures. Visible DOM/canvas controls only for changes; window.voxel snapshot/project/exportSave are read-only observations. No injected skills, quality, resources, work, time or commands.",
+    "modes": [
+      {
+        "mode": "worker",
+        "checks": [
+          {
+            "name": "genuine v13 imports into v14 with unchanged gear quality and fixed zero-XP starter skill profiles",
+            "sourceSha256": "4672d325a7aedf544554c1235fed784a296e5198237c7208ad7177a0d1a7d6d4"
+          },
+          {
+            "name": "all work priorities show their actual associated skill and changing priority does not grant XP"
+          },
+          {
+            "name": "real ongoing crafting gains XP through the speed control and pause freezes the complete skill state",
+            "fromTick": 42970,
+            "toTick": 42983,
+            "gains": [
+              {
+                "id": 366,
+                "skill": {
+                  "level": 8,
+                  "xp": 1687.5000000001096,
+                  "passion": 2,
+                  "dailyXp": 116.10000000000049
+                }
+              }
+            ]
+          },
+          {
+            "name": "manual save/load restores earned experience, passion, daily learning and existing gear exactly"
+          },
+          {
+            "name": "the real campaign weapon inspector displays its persisted quality and durability without assuming a fixed roll",
+            "weapon": {
+              "id": 637,
+              "kind": "steelKnife",
+              "quality": 1,
+              "hitPoints": 100
+            }
+          },
+          {
+            "name": "900 by 700 layout keeps skill rows and actual priority controls reachable"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:5183/assets/index-Cuz0uWqZ.js",
+            "status": 200,
+            "bytes": 2356,
+            "sha256": "a0e86e03a381fdd3d8cceaa271a9f1098523b26880af9c5d887932a8c89114ea",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-DPTF2nc2.css",
+            "status": 200,
+            "bytes": 16181,
+            "sha256": "eee579943d4aae63bb8a032e90618d1e279ce0a2d4fb136a69bd497a602058e9",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "bytes": 221699,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-DYBd6Zk-.js",
+            "status": 200,
+            "bytes": 627297,
+            "sha256": "6e85c94cc95a18f367e9d5a48e5949919c3d3306c55d7b9632eac917d4f09704",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/sim.worker-C0RjGWs6.js",
+            "status": 200,
+            "bytes": 167568,
+            "sha256": "5c7d832926825235ac70dcd1ab5fc5929580681ca209cc71e2db8c23975abc7b",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/render.worker-C2HXeM9H.js",
+            "status": 200,
+            "bytes": 544291,
+            "sha256": "9d1767ad89de98bf5df0e629eda8aed3446166c1d4091382e969a581f6a38d48",
+            "matchesLocalBuild": true
+          }
+        ],
+        "screenshots": [
+          "test-results/voxel-skills-browser/worker-starter-skills.png",
+          "test-results/voxel-skills-browser/worker-learning.png",
+          "test-results/voxel-skills-browser/worker-crafted-quality.png",
+          "test-results/voxel-skills-browser/worker-compact-skills.png",
+          "test-results/voxel-skills-browser/worker-compact-priorities.png"
+        ],
+        "fixtures": [
+          {
+            "file": "tests/fixtures/voxel-v13-start.json",
+            "sha256": "4672d325a7aedf544554c1235fed784a296e5198237c7208ad7177a0d1a7d6d4",
+            "version": 13,
+            "tick": 0
+          },
+          {
+            "file": "test-results/voxel-skills-campaign/training.json",
+            "sha256": "6df80cd04846f3210bfef7a9fd44ca29ffcada2c958848b5f161beba23531c74",
+            "version": 14,
+            "tick": 42970
+          },
+          {
+            "file": "tests/fixtures/voxel-v13-start.json",
+            "sha256": "4672d325a7aedf544554c1235fed784a296e5198237c7208ad7177a0d1a7d6d4",
+            "version": 13,
+            "tick": 0
+          },
+          {
+            "file": "test-results/voxel-skills-campaign/final.json",
+            "sha256": "6867b6f4348fff3d4d365507944b6a896e343c0e3b37ae4aa33b0554f6e53c56",
+            "version": 14,
+            "tick": 87549
+          }
+        ],
+        "status": "passed"
+      },
+      {
+        "mode": "main",
+        "checks": [
+          {
+            "name": "genuine v13 imports into v14 with unchanged gear quality and fixed zero-XP starter skill profiles",
+            "sourceSha256": "4672d325a7aedf544554c1235fed784a296e5198237c7208ad7177a0d1a7d6d4"
+          },
+          {
+            "name": "all work priorities show their actual associated skill and changing priority does not grant XP"
+          },
+          {
+            "name": "real ongoing crafting gains XP through the speed control and pause freezes the complete skill state",
+            "fromTick": 42970,
+            "toTick": 42993,
+            "gains": [
+              {
+                "id": 366,
+                "skill": {
+                  "level": 8,
+                  "xp": 1692.00000000011,
+                  "passion": 2,
+                  "dailyXp": 120.60000000000052
+                }
+              }
+            ]
+          },
+          {
+            "name": "manual save/load restores earned experience, passion, daily learning and existing gear exactly"
+          },
+          {
+            "name": "the real campaign weapon inspector displays its persisted quality and durability without assuming a fixed roll",
+            "weapon": {
+              "id": 637,
+              "kind": "steelKnife",
+              "quality": 1,
+              "hitPoints": 100
+            }
+          },
+          {
+            "name": "900 by 700 layout keeps skill rows and actual priority controls reachable"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:5183/assets/index-Cuz0uWqZ.js",
+            "status": 200,
+            "bytes": 2356,
+            "sha256": "a0e86e03a381fdd3d8cceaa271a9f1098523b26880af9c5d887932a8c89114ea",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-DPTF2nc2.css",
+            "status": 200,
+            "bytes": 16181,
+            "sha256": "eee579943d4aae63bb8a032e90618d1e279ce0a2d4fb136a69bd497a602058e9",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "bytes": 221699,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-DYBd6Zk-.js",
+            "status": 200,
+            "bytes": 627297,
+            "sha256": "6e85c94cc95a18f367e9d5a48e5949919c3d3306c55d7b9632eac917d4f09704",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/sim.worker-C0RjGWs6.js",
+            "status": 200,
+            "bytes": 167568,
+            "sha256": "5c7d832926825235ac70dcd1ab5fc5929580681ca209cc71e2db8c23975abc7b",
+            "matchesLocalBuild": true
+          }
+        ],
+        "screenshots": [
+          "test-results/voxel-skills-browser/main-starter-skills.png",
+          "test-results/voxel-skills-browser/main-learning.png",
+          "test-results/voxel-skills-browser/main-crafted-quality.png",
+          "test-results/voxel-skills-browser/main-compact-skills.png",
+          "test-results/voxel-skills-browser/main-compact-priorities.png"
+        ],
+        "fixtures": [
+          {
+            "file": "tests/fixtures/voxel-v13-start.json",
+            "sha256": "4672d325a7aedf544554c1235fed784a296e5198237c7208ad7177a0d1a7d6d4",
+            "version": 13,
+            "tick": 0
+          },
+          {
+            "file": "test-results/voxel-skills-campaign/training.json",
+            "sha256": "6df80cd04846f3210bfef7a9fd44ca29ffcada2c958848b5f161beba23531c74",
+            "version": 14,
+            "tick": 42970
+          },
+          {
+            "file": "tests/fixtures/voxel-v13-start.json",
+            "sha256": "4672d325a7aedf544554c1235fed784a296e5198237c7208ad7177a0d1a7d6d4",
+            "version": 13,
+            "tick": 0
+          },
+          {
+            "file": "test-results/voxel-skills-campaign/final.json",
+            "sha256": "6867b6f4348fff3d4d365507944b6a896e343c0e3b37ae4aa33b0554f6e53c56",
+            "version": 14,
+            "tick": 87549
+          }
+        ],
+        "status": "passed"
+      }
+    ],
+    "finishedAt": "2026-11-03T02:01:32.733Z"
+  },
+  "regressions": {
+    "startedAt": "2026-11-03T01:54:25.802Z",
+    "runs": [
+      {
+        "script": "scripts/voxel-food-campaign-verify.mjs",
+        "code": 0,
+        "log": "test-results/skills-regression-voxel-food-campaign-verify.mjs.log",
+        "elapsedMs": 98010
+      },
+      {
+        "script": "scripts/voxel-plants-campaign-verify.mjs",
+        "code": 0,
+        "log": "test-results/skills-regression-voxel-plants-campaign-verify.mjs.log",
+        "elapsedMs": 82388
+      },
+      {
+        "script": "scripts/voxel-housing-campaign-verify.mjs",
+        "code": 0,
+        "log": "test-results/skills-regression-voxel-housing-campaign-verify.mjs.log",
+        "elapsedMs": 3667
+      },
+      {
+        "script": "scripts/voxel-power-campaign-verify.mjs",
+        "code": 0,
+        "log": "test-results/skills-regression-voxel-power-campaign-verify.mjs.log",
+        "elapsedMs": 19733
+      },
+      {
+        "script": "scripts/voxel-injuries-campaign-verify.mjs",
+        "code": 0,
+        "log": "test-results/skills-regression-voxel-injuries-campaign-verify.mjs.log",
+        "elapsedMs": 8677
+      },
+      {
+        "script": "scripts/voxel-apparel-campaign-verify.mjs",
+        "code": 0,
+        "log": "test-results/skills-regression-voxel-apparel-campaign-verify.mjs.log",
+        "elapsedMs": 130043
+      },
+      {
+        "script": "scripts/voxel-apparel-temperature-verify.mjs",
+        "code": 0,
+        "log": "test-results/skills-regression-voxel-apparel-temperature-verify.mjs.log",
+        "elapsedMs": 2196
+      },
+      {
+        "script": "scripts/voxel-preservation-verify.mjs",
+        "code": 0,
+        "log": "test-results/skills-regression-voxel-preservation-verify.mjs.log",
+        "elapsedMs": 92629
+      },
+      {
+        "script": "scripts/voxel-stonecutting-campaign-verify.mjs",
+        "code": 0,
+        "log": "test-results/skills-regression-voxel-stonecutting-campaign-verify.mjs.log",
+        "elapsedMs": 6181
+      },
+      {
+        "script": "scripts/voxel-worldgen-campaign-verify.mjs",
+        "code": 0,
+        "log": "test-results/skills-regression-voxel-worldgen-campaign-verify.mjs.log",
+        "elapsedMs": 56912
+      },
+      {
+        "script": "scripts/voxel-logistics-campaign-verify.mjs",
+        "code": 0,
+        "log": "test-results/skills-regression-voxel-logistics-campaign-verify.mjs.log",
+        "elapsedMs": 2386
+      },
+      {
+        "script": "scripts/voxel-survival-campaign-verify.mjs",
+        "code": 0,
+        "log": "test-results/skills-regression-voxel-survival-campaign-verify.mjs.log",
+        "elapsedMs": 7605
+      },
+      {
+        "script": "scripts/voxel-survival-temperature-verify.mjs",
+        "code": 0,
+        "log": "test-results/skills-regression-voxel-survival-temperature-verify.mjs.log",
+        "elapsedMs": 4224
+      }
+    ],
+    "apparelBrowser": [
+      {
+        "mode": "worker",
+        "status": "passed",
+        "checks": 14,
+        "errors": []
+      },
+      {
+        "mode": "main",
+        "status": "passed",
+        "checks": 14,
+        "errors": []
+      }
+    ],
+    "injuriesBrowser": [
+      {
+        "mode": "worker",
+        "status": "passed",
+        "checks": 8,
+        "errors": []
+      },
+      {
+        "mode": "main",
+        "status": "passed",
+        "checks": 8,
+        "errors": []
+      }
+    ]
+  },
+  "screenshots": [
+    {
+      "file": "voxel/skills-starter.jpg",
+      "sha256": "b3d9cec6dd0bd67b78beb61f8d636d70ddcb96499d654c4c395b965288c77d83"
+    },
+    {
+      "file": "voxel/skills-learning.jpg",
+      "sha256": "b34b02212ef341d72adf3c7ae7edeefc03be6349a1402576d633df6a1644adb5"
+    },
+    {
+      "file": "voxel/skills-quality.jpg",
+      "sha256": "403768607914032cd2e167e562bda0890812c16463e8b5a34be0e64a62c6c974"
+    },
+    {
+      "file": "voxel/skills-compact.jpg",
+      "sha256": "8d7dcda7a5aa36f15bf200191aafe94f9049d6bcbb14c9de58a34cdef0112838"
+    }
+  ],
+  "limitations": [
+    "Seven skills only; research, backgrounds, disabled work, traits, genes, inspiration and complete environmental work-speed modifiers remain unimplemented.",
+    "Project continuous progress-weighted mining adapts native damage-weighted mining. Per-job seeded random streams are not the native global random sequence.",
+    "Work XP uses 3 native ticks per project tick while decay and midnight follow the compressed project day; existing job work amounts remain explicit adaptations.",
+    "Cooking tracks shared-task workers and rewards physical successful output; this differs from native session counters and unfinished-entity storage.",
+    "One ordinary campaign seed and its seven products do not validate the native probability distribution, long-term balance, or population scaling.",
+    "Browser checks use actual controls plus read-only snapshots and projection helpers, not screen-only inference. Native steel-knife observations are independently recorded in chapter 46."
+  ]
+}

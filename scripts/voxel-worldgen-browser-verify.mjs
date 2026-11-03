@@ -224,7 +224,7 @@ async function verify(mode) {
     check('world setup remains reachable at 900 by 700');
     await importLegacyStart(page);
     assert.equal((await save()).generator, 1);
-    assert.equal((await save()).version, 13);
+    assert.equal((await save()).version, 14);
     assert.equal((await state()).snapshot.temperature, 21);
     check('unchanged published v7 colony loads as generator 1 with its original climate');
     await Promise.all(reads);

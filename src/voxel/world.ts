@@ -61,6 +61,22 @@ import {
   makeWeaponBench,
 } from './weaponProduction';
 import { VoxelRooms } from './rooms';
+import {
+  initialSkills,
+  validSkills,
+  tickSkills,
+  craftedQuality,
+  learnSkill,
+  workSpeed,
+  jobSkill,
+  jobXP,
+  tendSpeed,
+  tendQuality,
+  meleeHitChance,
+  meleeDodgeChance,
+  miningYield,
+  plantYield,
+} from './skills';
 import { VoxelPower, DEVICE_COSTS, DEVICE_WORK, isDeviceKind } from './power';
 import { VoxelThermal } from './thermal';
 import {
@@ -445,6 +461,7 @@ export class VoxelSimulation {
         z: this.spawn.z,
         food: 100,
         rest: 100,
+        skills: initialSkills(i),
         priorities: { dig: 1, build: 1, cut: 1, haul: 2, grow: 1, cook: 1, craft: 1, care: 1 },
         ...initialSurvival(this.seed, this.nextId - 1),
         worn: [],
@@ -2103,6 +2120,9 @@ export class VoxelSimulation {
       z: p.z,
       work: workOf(kind, material, species, false, apparelKind, weaponKind, weaponBenchKind),
       progress: 0,
+      workTicks: 0,
+      ...(kind === 'cook' ? { cookTraining: [] } : {}),
+      ...(['mine', 'digLadder'].includes(kind) ? { miningYieldWork: 0 } : {}),
       owner: null,
       delivered: {},
       deliveredFood: [],
@@ -2493,12 +2513,24 @@ export class VoxelSimulation {
       return;
     }
     if (p.carePhase === 'tendApproach' || p.carePhase === 'tend') {
+      if (healthSummary(p).manipulation <= 0) {
+        this.release(p);
+        p.reason = '操作能力不足，无法护理';
+        return;
+      }
       p.carePhase = 'tend';
       p.destination = null;
-      p.careProgress += Math.max(0.01, healthSummary(p).manipulation);
+      p.careProgress += tendSpeed(p.skills, healthSummary(p).manipulation);
       p.reason = '无药包扎' + patient.name;
       if (p.careProgress < 200) return;
-      tendOne(patient.trauma, this.seed, p.id, this.tick, 0.75 * healthSummary(p).manipulation);
+      learnSkill(p.skills.medicine, 250);
+      tendOne(
+        patient.trauma,
+        this.seed,
+        p.id,
+        this.tick,
+        tendQuality(p.skills, healthSummary(p).manipulation),
+      );
       p.careProgress = 0;
       if (!patient.trauma.wounds.some((w) => w.tendQuality === null)) {
         this.release(p);
@@ -2612,6 +2644,7 @@ export class VoxelSimulation {
       color: 0xc65b52,
       food: 100,
       rest: 100,
+      skills: initialSkills(0, true),
       ...initialSurvival(this.seed, id),
       faction: 'raider',
       weapon: makeWeapon(this.id(), 'steelKnife'),
@@ -2710,12 +2743,24 @@ export class VoxelSimulation {
         return;
       }
       p.nextAttackTick = this.tick + strike.cooldown;
-      // No skill system yet. This fixed hit chance is not a reconstructed RimWorld stat calculation.
+      // Rest is this model's non-standing posture. Native immobile targets
+      // provide no melee practice and bypass both the miss and dodge rolls.
+      const targetImmobile = target.phase === 'rest';
+      if (!targetImmobile) learnSkill(p.skills.melee, (200 * strike.cooldown) / TPS);
       if (
+        !targetImmobile &&
         plantRandom(this.seed, p.id, this.tick, 12) >=
-        0.75 * Math.max(0.1, healthSummary(p).manipulation)
+          meleeHitChance(p.skills, healthSummary(p).manipulation)
       ) {
         p.reason = '近战落空：' + target.name;
+        return;
+      }
+      if (
+        !targetImmobile &&
+        plantRandom(this.seed, p.id, this.tick, 15) <
+          meleeDodgeChance(target.skills, healthSummary(target).moving)
+      ) {
+        p.reason = target.name + '躲开了近战攻击';
         return;
       }
       const regions = (Object.keys(BODY_REGIONS) as BodyRegion[]).filter(
@@ -3138,6 +3183,11 @@ export class VoxelSimulation {
     }
     this.search(p);
     for (const j of jobs) {
+      const skillFailure = this.skillFailure(p, j);
+      if (skillFailure) {
+        j.reason = skillFailure;
+        continue;
+      }
       if (
         j.kind === 'smith' &&
         j.progress < j.work &&
@@ -3205,7 +3255,33 @@ export class VoxelSimulation {
       }
     }
     p.phase = 'idle';
-    p.reason = jobs.length ? '等待材料或可达通路' : '暂无工作';
+    p.reason =
+      jobs.length && jobs.every((j) => this.skillFailure(p, j))
+        ? this.skillFailure(p, jobs[0])!
+        : jobs.length
+          ? '等待材料或可达通路'
+          : '暂无工作';
+  }
+  private skillFailure(p: Pawn, j: Job): string | null {
+    if (healthSummary(p).manipulation <= 0) return '操作能力不足，无法劳动';
+    if (j.kind === 'smith') {
+      const level = WEAPON_DEFS[j.weaponKind!].sourceCraftingLevel;
+      if (p.skills.crafting.level < level)
+        return `需要工艺 ${level} 级；${p.name} 当前 ${p.skills.crafting.level} 级`;
+    }
+    if (j.kind === 'plantTree' && p.skills.plants.level < 6)
+      return `播种树木需要种植 6 级；${p.name} 当前 ${p.skills.plants.level} 级`;
+    const construction =
+      j.kind === 'floor' && j.material === 'stone'
+        ? 3
+        : ((
+            { smithy: 4, generator: 4, solar: 6, heater: 5, cooler: 5 } as Partial<
+              Record<JobKind, number>
+            >
+          )[j.kind] ?? 0);
+    if (p.skills.construction.level < construction)
+      return `需要建造 ${construction} 级；${p.name} 当前 ${p.skills.construction.level} 级`;
+    return null;
   }
   private startSleep(p: Pawn) {
     this.release(p);
@@ -3247,6 +3323,13 @@ export class VoxelSimulation {
   private continueJob(p: Pawn, j: Job) {
     if (j.cancelled) {
       this.release(p);
+      return;
+    }
+    const skillFailure = this.skillFailure(p, j);
+    if (skillFailure) {
+      j.reason = skillFailure;
+      this.release(p);
+      p.reason = skillFailure;
       return;
     }
     if (p.cargo) {
@@ -3478,6 +3561,13 @@ export class VoxelSimulation {
       return;
     }
     if (p.phase === 'work' && j) {
+      const skillFailure = this.skillFailure(p, j);
+      if (skillFailure) {
+        j.reason = skillFailure;
+        this.release(p);
+        p.reason = skillFailure;
+        return;
+      }
       if (!this.stands(j).includes(at(p))) {
         this.continueJob(p, j);
         return;
@@ -3513,12 +3603,69 @@ export class VoxelSimulation {
       p.reason = '正在' + JOB_NAMES[j.kind];
       const cutting =
         j.kind === 'cut' && !j.legacyCut ? this.trees.find((t) => same(t, j)) : undefined;
-      j.progress = Math.min(
-        j.work,
-        j.progress + (cutting ? treeWorkSpeed(cutting.growth) : 1) * healthSummary(p).manipulation,
-      );
-      if (j.progress >= j.work) this.finish(p, j);
+      if (j.progress < j.work) {
+        j.workTicks++;
+        if (j.kind === 'cook') {
+          const credit = j.cookTraining!.find((c) => c.pawnId === p.id);
+          if (credit) credit.ticks++;
+          else j.cookTraining!.push({ pawnId: p.id, ticks: 1 });
+        } else {
+          const skill = jobSkill(j.kind);
+          const tree = j.kind === 'cut' ? this.trees.find((t) => same(t, j)) : undefined;
+          const eligible =
+            j.kind === 'cut'
+              ? !!tree && tree.growth > TREE_DATA[tree.species].minGrowth && tree.health > 0
+              : j.kind === 'remove'
+                ? this.weaponBenchAt(j)?.kind !== 'craftingSpot'
+                : true;
+          if (skill && eligible) learnSkill(p.skills[skill], jobXP(j.kind));
+        }
+        const previousProgress = j.progress;
+        j.progress = Math.min(
+          j.work,
+          j.progress +
+            (cutting ? treeWorkSpeed(cutting.growth) : 1) *
+              (j.material === 'stone' && ['wall', 'floor'].includes(j.kind) ? 0.8 : 1) *
+              workSpeed(p.skills, j.kind, healthSummary(p).manipulation),
+        );
+        if (j.kind === 'mine' || j.kind === 'digLadder')
+          j.miningYieldWork! +=
+            (j.progress - previousProgress) * miningYield(p.skills, healthSummary(p).manipulation);
+      }
+      if (j.progress >= j.work) {
+        this.lockWorkOutcome(p, j);
+        this.finish(p, j);
+      }
     }
+  }
+  private lockWorkOutcome(p: Pawn, j: Job) {
+    if ((j.kind === 'cut' || j.kind === 'harvest') && !j.harvestResult) {
+      const tree = j.kind === 'cut' ? this.trees.find((t) => same(t, j)) : undefined;
+      const crop = j.kind === 'harvest' ? this.crops.find((c) => same(c, j)) : undefined;
+      const base = tree ? treeYield(tree, this.seed) : crop ? CROPS[crop.kind].yield : 0;
+      const factor = plantYield(p.skills, healthSummary(p).manipulation);
+      const fails = j.kind === 'harvest' && plantRandom(this.seed, j.id, p.id, 4702) > factor;
+      const exact = fails ? 0 : base * Math.max(1, factor);
+      j.harvestResult = {
+        amount: Math.floor(exact) + (plantRandom(this.seed, j.id, p.id, 4703) < exact % 1 ? 1 : 0),
+        skill: p.skills.plants.level,
+        workerId: p.id,
+      };
+    }
+    if (
+      j.productQuality ||
+      !(j.kind === 'tailoring' || (j.kind === 'smith' && WEAPON_DEFS[j.weaponKind!].hasQuality))
+    )
+      return;
+    // A stable, per-job random stream is an adaptation of the original global
+    // RNG. Saving or retrying a blocked output never changes a completed roll.
+    let draw = 0;
+    const skill = p.skills.crafting.level;
+    j.productQuality = {
+      value: craftedQuality(skill, () => plantRandom(this.seed ^ j.id, p.id, ++draw, 4701)),
+      skill,
+      workerId: p.id,
+    };
   }
   private finish(p: Pawn, j: Job) {
     if (j.cancelled) {
@@ -3551,11 +3698,16 @@ export class VoxelSimulation {
       if (resource)
         yields[resource] =
           (yields[resource] ?? 0) +
-          (resource === 'steel'
-            ? 40
-            : resource === 'components'
-              ? 2
-              : naturalChunkDrop(this.seed, p));
+          (resource === 'chunk'
+            ? naturalChunkDrop(this.seed, p)
+            : (() => {
+                const exact = ((resource === 'steel' ? 40 : 2) * j.miningYieldWork!) / j.work;
+                return Math.max(
+                  1,
+                  Math.floor(exact) +
+                    (plantRandom(this.seed ^ j.id, p.x, p.y, p.z + 4704) < exact % 1 ? 1 : 0),
+                );
+              })());
     };
     if (j.kind === 'mine' || j.kind === 'digLadder') {
       for (const z of j.kind === 'mine' ? [j.z, j.z + 1] : [j.z]) {
@@ -3630,12 +3782,11 @@ export class VoxelSimulation {
     // Determine every output before mutating its physical source. A full local
     // floor keeps the tree, ore, crop or delivered recipe intact for a retry.
     if (j.kind === 'cut') {
-      const tree = this.trees.find((t) => same(t, j));
-      yields.wood = tree ? treeYield(tree, this.seed) : 0;
+      yields.wood = j.harvestResult!.amount;
     }
     if (j.kind === 'harvest') {
       harvestedCrop = this.crops.find((c) => same(c, j))!.kind;
-      yields[harvestedCrop === 'cotton' ? 'cloth' : 'grain'] = CROPS[harvestedCrop].yield;
+      yields[harvestedCrop === 'cotton' ? 'cloth' : 'grain'] = j.harvestResult!.amount;
     }
     if (j.kind === 'cook') yields.meal = SIMPLE_MEAL.output;
     if (j.kind === 'stonecut') yields.stone = STONECUTTING.output;
@@ -3729,12 +3880,16 @@ export class VoxelSimulation {
       .map(([resource, n]) => ({
         batch:
           resource === 'weapon'
-            ? { resource: 'weapon' as const, amount: 1, weapon: makeWeapon(j.id, j.weaponKind!) }
+            ? {
+                resource: 'weapon' as const,
+                amount: 1,
+                weapon: makeWeapon(j.id, j.weaponKind!, j.productQuality?.value ?? 2),
+              }
             : resource === 'apparel'
               ? {
                   resource: 'apparel' as const,
                   amount: 1,
-                  apparel: makeApparel(j.id, j.apparelKind!),
+                  apparel: makeApparel(j.id, j.apparelKind!, j.productQuality!.value),
                 }
               : freshBatch(
                   resource as Resource,
@@ -3758,6 +3913,13 @@ export class VoxelSimulation {
       return;
     }
     this.commitPlacement(placement);
+    // Project tasks can be resumed by another cook; reward each actual worker
+    // only after the physical meal exists. Cancellation and blocked retries pay nothing.
+    if (j.kind === 'cook')
+      for (const credit of j.cookTraining!) {
+        const cook = this.pawns.find((p) => p.id === credit.pawnId && !p.dead);
+        if (cook) learnSkill(cook.skills.cooking, credit.ticks * jobXP('cook'));
+      }
     if (j.kind === 'cut') {
       const tree = this.trees.find((t) => same(t, j));
       if (tree) {
@@ -3876,8 +4038,6 @@ export class VoxelSimulation {
       this.revision++;
     } else if (j.kind === 'harvest') {
       const crop = this.crops.find((c) => same(c, j))!;
-      harvestedCrop = crop.kind;
-      yields[crop.kind === 'cotton' ? 'cloth' : 'grain'] = CROPS[crop.kind].yield;
       this.crops = this.crops.filter((c) => c.id !== crop.id);
       this.stats.harvested++;
       this.revision++;
@@ -3947,6 +4107,7 @@ export class VoxelSimulation {
   step(count = 1) {
     for (let n = 0; n < count; n++) {
       this.tick++;
+      for (const pawn of this.pawns) if (!pawn.dead) tickSkills(pawn.skills, this.tick, DAY);
       this.updateEnvironment();
       this.updatePreservation();
       this.updateTrees();
@@ -4225,6 +4386,8 @@ export class VoxelSimulation {
           if (remaining) job.delivered[batch.resource] = remaining;
           else delete job.delivered[batch.resource];
           job.progress = 0;
+          job.workTicks = 0;
+          if (job.kind === 'cook') job.cookTraining = [];
           job.reason = '已配送食材腐坏，等待新原料';
           removed = true;
           return false;
@@ -4314,7 +4477,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 13,
+      version: 14,
       combat: this.combat,
       generator: this.generator,
       settings: this.settings,
@@ -4349,7 +4512,7 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
@@ -4557,6 +4720,23 @@ export class VoxelSimulation {
       for (const key of ['produced', 'consumed', 'spoiled', 'destroyed']) old.stats[key].weapon = 0;
       old.stats.weaponsMade = 0;
       old.version = 13;
+    }
+    if (old.version === 13) {
+      if (!Array.isArray(old.pawns) || !Array.isArray(old.jobs)) throw new Error('旧技能数据无效');
+      let profile = 0;
+      for (const p of old.pawns) p.skills = initialSkills(profile++, p.faction === 'raider');
+      // The old format did not measure elapsed work. Preserve progress, but do
+      // not invent historical training or change an existing item's quality.
+      for (const j of old.jobs) {
+        j.workTicks = 0;
+        if (j.kind === 'cook') j.cookTraining = [];
+        else delete j.cookTraining;
+        if (j.kind === 'mine' || j.kind === 'digLadder') j.miningYieldWork = j.progress;
+        else delete j.miningYieldWork;
+        delete j.harvestResult;
+        delete j.productQuality;
+      }
+      old.version = 14;
     }
     const d = old as VoxelSave;
     if (
@@ -4884,6 +5064,81 @@ export class VoxelSimulation {
         ),
       );
     for (const j of d.jobs) {
+      if (!Number.isSafeInteger(j.workTicks) || j.workTicks < 0 || j.workTicks > d.tick)
+        throw new Error('实际劳动计时无效');
+      if (j.kind === 'cook') {
+        if (
+          !Array.isArray(j.cookTraining) ||
+          j.cookTraining.length > 64 ||
+          j.cookTraining.some(
+            (c) =>
+              !c ||
+              typeof c !== 'object' ||
+              Object.keys(c).length !== 2 ||
+              !Number.isSafeInteger(c.pawnId) ||
+              c.pawnId <= 0 ||
+              c.pawnId >= d.nextId ||
+              !Number.isSafeInteger(c.ticks) ||
+              c.ticks <= 0,
+          ) ||
+          new Set(j.cookTraining.map((c) => c.pawnId)).size !== j.cookTraining.length ||
+          j.cookTraining.reduce((n, c) => n + c.ticks, 0) !== j.workTicks
+        )
+          throw new Error('烹饪学习记录无效');
+      } else if (j.cookTraining !== undefined) throw new Error('非烹饪任务含烹饪学习记录');
+      if (j.kind === 'mine' || j.kind === 'digLadder') {
+        if (
+          !Number.isFinite(j.miningYieldWork) ||
+          j.miningYieldWork! < 0 ||
+          j.miningYieldWork! > j.progress * 1.25 + 1e-7
+        )
+          throw new Error('采矿贡献记录无效');
+      } else if (j.miningYieldWork !== undefined) throw new Error('非采矿任务含采矿贡献记录');
+      if (j.harvestResult !== undefined) {
+        const h = j.harvestResult;
+        if (
+          !h ||
+          typeof h !== 'object' ||
+          Array.isArray(h) ||
+          Object.keys(h).length !== 3 ||
+          !['cut', 'harvest'].includes(j.kind) ||
+          j.progress !== j.work ||
+          !Number.isSafeInteger(h.amount) ||
+          h.amount < 0 ||
+          h.amount > 100 ||
+          !Number.isInteger(h.skill) ||
+          h.skill < 0 ||
+          h.skill > 20 ||
+          !Number.isSafeInteger(h.workerId) ||
+          h.workerId <= 0 ||
+          h.workerId >= d.nextId
+        )
+          throw new Error('收获结果记录无效');
+      }
+      if (j.productQuality !== undefined) {
+        const q = j.productQuality;
+        if (
+          !q ||
+          typeof q !== 'object' ||
+          Array.isArray(q) ||
+          Object.keys(q).length !== 3 ||
+          !(
+            j.kind === 'tailoring' ||
+            (j.kind === 'smith' && WEAPON_DEFS[j.weaponKind!]?.hasQuality)
+          ) ||
+          j.progress !== j.work ||
+          !Number.isInteger(q.value) ||
+          q.value < 0 ||
+          q.value > 5 ||
+          !Number.isInteger(q.skill) ||
+          q.skill < 0 ||
+          q.skill > 20 ||
+          !Number.isSafeInteger(q.workerId) ||
+          q.workerId <= 0 ||
+          q.workerId >= d.nextId
+        )
+          throw new Error('制作完成品质记录无效');
+      }
       if (
         j.kind === 'smith'
           ? !WEAPON_KINDS.includes(j.weaponKind!) ||
@@ -4998,6 +5253,7 @@ export class VoxelSimulation {
         throw new Error('配送食材容器与任务数量不一致');
     }
     for (const p of d.pawns) {
+      if (!validSkills(p.skills)) throw new Error('人物技能数据无效');
       if (
         !validTrauma(p.trauma, d.tick) ||
         !['colony', 'raider'].includes(p.faction) ||

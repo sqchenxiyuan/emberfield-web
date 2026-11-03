@@ -162,7 +162,7 @@ describe('bounded physical stacks and hauling reservations', () => {
     expect(s.items.filter((i) => i.resource === 'food').map((i) => i.amount)).toEqual([
       10, 10, 10, 10, 10, 10,
     ]);
-    expect(s.save().version).toBe(13);
+    expect(s.save().version).toBe(14);
     expect(VoxelSimulation.load(s.save()).counts()).toEqual(s.counts());
   });
   it.each(resources)('carries and stores %s only within its native one-stack limit', (resource) => {
@@ -422,7 +422,8 @@ describe('bounded outputs and interrupted physical containers', () => {
       const s = fixture((s) => {
         tiny(s);
         fillTiny(s, [pos(12, 12)]);
-        add(s, pos(12, 12), 'meal', 10, { rotProgress: 4 * DAY - 300 });
+        // Remain full beyond the novice forester's slower actual cutting time.
+        add(s, pos(12, 12), 'meal', 10, { rotProgress: 4 * DAY - 1000 });
         if (kind === 'cut') {
           carve(s, pos(13, 11));
           s.trees.push({
@@ -448,7 +449,7 @@ describe('bounded outputs and interrupted physical containers', () => {
       until(s, () => s.jobs.some((j) => j.reason.includes('附近可达落地空间')));
       expect(kind === 'cut' ? s.trees.length : s.crops.length).toBe(1);
       expect(s.stats.cut + s.stats.harvested).toBe(0);
-      until(s, () => s.stats.cut + s.stats.harvested === 1, 500);
+      until(s, () => s.stats.cut + s.stats.harvested === 1, 1500);
       expect(s.stats.produced[kind === 'cut' ? 'wood' : 'grain']).toBe(kind === 'cut' ? 27 : 6);
     },
   );
