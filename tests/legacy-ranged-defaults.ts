@@ -4,6 +4,12 @@ import { stripMedicineDefaults } from './legacy-medicine-defaults';
  * only v18 defaults before applying that test's historical schema conversion.
  * Authentic historical fixture bytes never pass through this helper. */
 export function stripRangedDefaults(raw: Record<string, any>) {
+  expect(raw.storyteller.events).toEqual([]);
+  expect(raw.storyteller.losses).toEqual([]);
+  expect(raw.storyteller.adaptationDays).toBe(0);
+  expect(raw.structureKinds).toEqual([0, 64 * 64 * 16]);
+  delete raw.storyteller;
+  delete raw.structureKinds;
   stripMedicineDefaults(raw);
   for (const key of ['projectiles', 'combatEvents', 'sandbags']) {
     expect(raw[key]).toEqual([]);

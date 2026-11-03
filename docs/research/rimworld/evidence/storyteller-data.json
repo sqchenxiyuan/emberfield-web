@@ -1,0 +1,1303 @@
+{
+  "version": "1.7.4980 rev60",
+  "scope": "Selected Core declarations and static-derived formulas; no general Def loader, enabled-mod database, native RNG replay or project equivalence.",
+  "quality": [
+    0.5,
+    0.75,
+    1,
+    1.25,
+    1.5,
+    2.5,
+    5
+  ],
+  "qualityCap": [
+    0,
+    0,
+    0,
+    500,
+    1000,
+    2000,
+    3000
+  ],
+  "durability": [
+    [
+      0,
+      0
+    ],
+    [
+      0.5,
+      0.1
+    ],
+    [
+      0.6,
+      0.5
+    ],
+    [
+      0.9,
+      1
+    ]
+  ],
+  "averageSkill": [
+    [
+      0,
+      0.2
+    ],
+    [
+      5.5,
+      1
+    ],
+    [
+      20,
+      3
+    ]
+  ],
+  "childAge": [
+    [
+      3,
+      0.5
+    ],
+    [
+      13,
+      0.9
+    ],
+    [
+      18,
+      1
+    ]
+  ],
+  "wealthPoints": [
+    [
+      0,
+      0
+    ],
+    [
+      14000,
+      0
+    ],
+    [
+      400000,
+      2400
+    ],
+    [
+      700000,
+      3600
+    ],
+    [
+      1000000,
+      4200
+    ]
+  ],
+  "colonistPoints": [
+    [
+      0,
+      15
+    ],
+    [
+      10000,
+      15
+    ],
+    [
+      400000,
+      140
+    ],
+    [
+      1000000,
+      200
+    ]
+  ],
+  "daysFactor": [
+    [
+      10,
+      0.7
+    ],
+    [
+      40,
+      1
+    ]
+  ],
+  "adaptation": {
+    "factor": [
+      [
+        -30,
+        0.4
+      ],
+      [
+        0,
+        0.8
+      ],
+      [
+        30,
+        1
+      ],
+      [
+        60,
+        1.2
+      ],
+      [
+        120,
+        1.6
+      ],
+      [
+        180,
+        2
+      ]
+    ],
+    "growth": [
+      [
+        -30.01,
+        6
+      ],
+      [
+        -30,
+        3
+      ],
+      [
+        -0.01,
+        3
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        59.99,
+        1
+      ],
+      [
+        60,
+        0.5
+      ],
+      [
+        119.99,
+        0.5
+      ],
+      [
+        120,
+        0.25
+      ]
+    ],
+    "downed": [
+      [
+        1,
+        8
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        11,
+        5
+      ],
+      [
+        20,
+        3.5
+      ]
+    ],
+    "lost": [
+      [
+        0,
+        30
+      ],
+      [
+        11,
+        30
+      ],
+      [
+        20,
+        20
+      ]
+    ],
+    "min": -60,
+    "max": 100,
+    "grace": 30
+  },
+  "pawnWeight": [
+    [
+      0.2,
+      0.01
+    ],
+    [
+      0.3,
+      0.3
+    ],
+    [
+      0.5,
+      1
+    ]
+  ],
+  "pirateMaxCost": [
+    [
+      0,
+      35
+    ],
+    [
+      70,
+      50
+    ],
+    [
+      700,
+      100
+    ],
+    [
+      1300,
+      150
+    ],
+    [
+      100000,
+      10000
+    ]
+  ],
+  "difficulties": {
+    "Peaceful": {
+      "scale": 0.1,
+      "effect": 1,
+      "growth": 0,
+      "ceiling": 45,
+      "big": false,
+      "intro": false
+    },
+    "Easy": {
+      "scale": 0.3,
+      "effect": 1,
+      "growth": 0.25,
+      "ceiling": 45,
+      "big": true,
+      "intro": true
+    },
+    "Medium": {
+      "scale": 0.6,
+      "effect": 1,
+      "growth": 0.75,
+      "ceiling": 70,
+      "big": true,
+      "intro": true
+    },
+    "Rough": {
+      "scale": 1,
+      "effect": 0.9,
+      "growth": 1,
+      "ceiling": 70,
+      "big": true,
+      "intro": true
+    },
+    "Hard": {
+      "scale": 1.55,
+      "effect": 0.7,
+      "growth": 1,
+      "ceiling": 70,
+      "big": true,
+      "intro": true
+    },
+    "Extreme": {
+      "scale": 2.2,
+      "effect": 0.4,
+      "growth": 1,
+      "ceiling": 70,
+      "big": true,
+      "intro": true
+    }
+  },
+  "schedules": {
+    "Cassandra": {
+      "minDays": 11,
+      "onDays": 4.6,
+      "offDays": 6,
+      "spacing": 1.9,
+      "count": [
+        1,
+        2
+      ],
+      "forceRaidBefore": 20
+    },
+    "Phoebe": {
+      "minDays": 13,
+      "onDays": 8,
+      "offDays": 8,
+      "spacing": 0,
+      "count": [
+        1,
+        1
+      ],
+      "forceRaidBefore": 20
+    },
+    "Randy": {
+      "mtbDays": 1.35,
+      "maxThreatDays": 13,
+      "pointsRange": [
+        0.5,
+        1.5
+      ],
+      "weights": {
+        "Misc": 3.5,
+        "ThreatBig": 1.4,
+        "OrbitalVisitor": 1.1,
+        "FactionArrival": 2.4,
+        "ThreatSmall": 0.6,
+        "ShipChunkDrop": 0.22
+      }
+    }
+  },
+  "nativeValues": {
+    "WoodLog": {
+      "id": "ThingDef_WoodLog",
+      "stuff": null,
+      "value": 1.2,
+      "base": 1.2,
+      "ingredients": 0,
+      "work": 1,
+      "workMake": 1,
+      "workBuild": 1,
+      "explicit": true,
+      "chain": [
+        "ResourceBase",
+        "ResourceVerbBase",
+        "WoodLog"
+      ]
+    },
+    "Steel": {
+      "id": "ThingDef_Steel",
+      "stuff": null,
+      "value": 1.9,
+      "base": 1.9,
+      "ingredients": 0,
+      "work": 1,
+      "workMake": 1,
+      "workBuild": 1,
+      "explicit": true,
+      "chain": [
+        "ResourceBase",
+        "Steel"
+      ]
+    },
+    "BlocksGranite": {
+      "id": "ThingDef_BlocksGranite",
+      "stuff": null,
+      "value": 0.9,
+      "base": 0.9,
+      "ingredients": 0,
+      "work": 1,
+      "workMake": 1,
+      "workBuild": 1,
+      "explicit": true,
+      "chain": [
+        "ResourceBase",
+        "StoneBlocksBase",
+        "BlocksGranite"
+      ]
+    },
+    "ChunkGranite": {
+      "id": "ThingDef_ChunkGranite",
+      "stuff": null,
+      "value": 0,
+      "base": 0,
+      "ingredients": 0,
+      "work": 1,
+      "workMake": 1,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "ChunkBase",
+        "ChunkRockBase",
+        "ChunkGranite"
+      ]
+    },
+    "Cloth": {
+      "id": "ThingDef_Cloth",
+      "stuff": null,
+      "value": 1.5,
+      "base": 1.5,
+      "ingredients": 0,
+      "work": 1,
+      "workMake": 1,
+      "workBuild": 1,
+      "explicit": true,
+      "chain": [
+        "ResourceBase",
+        "Cloth"
+      ]
+    },
+    "ComponentIndustrial": {
+      "id": "ThingDef_ComponentIndustrial",
+      "stuff": null,
+      "value": 32,
+      "base": 32,
+      "ingredients": 0,
+      "work": 1,
+      "workMake": 1,
+      "workBuild": 1,
+      "explicit": true,
+      "chain": [
+        "ResourceBase",
+        "ComponentIndustrial"
+      ]
+    },
+    "MealSurvivalPack": {
+      "id": "ThingDef_MealSurvivalPack",
+      "stuff": null,
+      "value": 24,
+      "base": 24,
+      "ingredients": 0,
+      "work": 450,
+      "workMake": 450,
+      "workBuild": 1,
+      "explicit": true,
+      "chain": [
+        "MealBaseIngredientless",
+        "MealBase",
+        "MealSurvivalPack"
+      ]
+    },
+    "RawRice": {
+      "id": "ThingDef_RawRice",
+      "stuff": null,
+      "value": 1.1,
+      "base": 1.1,
+      "ingredients": 0,
+      "work": 1,
+      "workMake": 1,
+      "workBuild": 1,
+      "explicit": true,
+      "chain": [
+        "ResourceBase",
+        "OrganicProductBase",
+        "PlantFoodRawBase",
+        "RawRice"
+      ]
+    },
+    "RawPotatoes": {
+      "id": "ThingDef_RawPotatoes",
+      "stuff": null,
+      "value": 1.1,
+      "base": 1.1,
+      "ingredients": 0,
+      "work": 1,
+      "workMake": 1,
+      "workBuild": 1,
+      "explicit": true,
+      "chain": [
+        "ResourceBase",
+        "OrganicProductBase",
+        "PlantFoodRawBase",
+        "RawPotatoes"
+      ]
+    },
+    "RawCorn": {
+      "id": "ThingDef_RawCorn",
+      "stuff": null,
+      "value": 1.1,
+      "base": 1.1,
+      "ingredients": 0,
+      "work": 1,
+      "workMake": 1,
+      "workBuild": 1,
+      "explicit": true,
+      "chain": [
+        "ResourceBase",
+        "OrganicProductBase",
+        "PlantFoodRawBase",
+        "RawCorn"
+      ]
+    },
+    "MealSimple": {
+      "id": "ThingDef_MealSimple",
+      "stuff": null,
+      "value": 15,
+      "base": 15,
+      "ingredients": 0,
+      "work": 300,
+      "workMake": 300,
+      "workBuild": 1,
+      "explicit": true,
+      "chain": [
+        "MealBaseIngredientless",
+        "MealCookedIngredientless",
+        "MealCooked",
+        "MealSimple"
+      ]
+    },
+    "MedicineHerbal": {
+      "id": "ThingDef_MedicineHerbal",
+      "stuff": null,
+      "value": 10,
+      "base": 10,
+      "ingredients": 0,
+      "work": 1,
+      "workMake": 1,
+      "workBuild": 1,
+      "explicit": true,
+      "chain": [
+        "ResourceBase",
+        "MedicineBase",
+        "MedicineHerbal"
+      ]
+    },
+    "Silver": {
+      "id": "ThingDef_Silver",
+      "stuff": null,
+      "value": 1,
+      "base": 1,
+      "ingredients": 0,
+      "work": 1,
+      "workMake": 1,
+      "workBuild": 1,
+      "explicit": true,
+      "chain": [
+        "ResourceBase",
+        "Silver"
+      ]
+    },
+    "Human": {
+      "id": "ThingDef_Human",
+      "stuff": null,
+      "value": 1750,
+      "base": 1750,
+      "ingredients": 0,
+      "work": 1,
+      "workMake": 1,
+      "workBuild": 1,
+      "explicit": true,
+      "chain": [
+        "BasePawn",
+        "Human"
+      ]
+    },
+    "Wall": {
+      "id": "ThingDef_Wall",
+      "stuff": "ThingDef_WoodLog",
+      "value": 6.3402,
+      "base": 6.3402,
+      "ingredients": 6,
+      "work": 94.5,
+      "workMake": 0.7,
+      "workBuild": 94.5,
+      "explicit": false,
+      "chain": [
+        "BuildingBase",
+        "Wall"
+      ]
+    },
+    "Door": {
+      "id": "ThingDef_Door",
+      "stuff": "ThingDef_WoodLog",
+      "value": 32.142,
+      "base": 32.142,
+      "ingredients": 30,
+      "work": 595,
+      "workMake": 0.7,
+      "workBuild": 595,
+      "explicit": false,
+      "chain": [
+        "BuildingBase",
+        "DoorBase",
+        "Door"
+      ]
+    },
+    "Bed": {
+      "id": "ThingDef_Bed",
+      "stuff": "ThingDef_WoodLog",
+      "value": 56.016,
+      "base": 56.016,
+      "ingredients": 54,
+      "work": 560,
+      "workMake": 0.7,
+      "workBuild": 560,
+      "explicit": false,
+      "chain": [
+        "BuildingBase",
+        "FurnitureBase",
+        "BedBase",
+        "BedWithQualityBase",
+        "ArtableBedBase",
+        "SansComfortBedBase",
+        "BasicBedBase",
+        "Bed"
+      ]
+    },
+    "WoodFiredGenerator": {
+      "id": "ThingDef_WoodFiredGenerator",
+      "stuff": null,
+      "value": 265,
+      "base": 263,
+      "ingredients": 254,
+      "work": 2500,
+      "workMake": 1,
+      "workBuild": 2500,
+      "explicit": false,
+      "chain": [
+        "BuildingBase",
+        "WoodFiredGenerator"
+      ]
+    },
+    "SolarGenerator": {
+      "id": "ThingDef_SolarGenerator",
+      "stuff": null,
+      "value": 295,
+      "base": 295,
+      "ingredients": 286,
+      "work": 2500,
+      "workMake": 1,
+      "workBuild": 2500,
+      "explicit": false,
+      "chain": [
+        "BuildingBase",
+        "SolarGenerator"
+      ]
+    },
+    "Battery": {
+      "id": "ThingDef_Battery",
+      "stuff": null,
+      "value": 199.88,
+      "base": 199.88,
+      "ingredients": 197,
+      "work": 800,
+      "workMake": 1,
+      "workBuild": 800,
+      "explicit": false,
+      "chain": [
+        "BuildingBase",
+        "Battery"
+      ]
+    },
+    "Heater": {
+      "id": "ThingDef_Heater",
+      "stuff": null,
+      "value": 130.6,
+      "base": 130.6,
+      "ingredients": 127,
+      "work": 1000,
+      "workMake": 1,
+      "workBuild": 1000,
+      "explicit": false,
+      "chain": [
+        "BuildingBase",
+        "Heater"
+      ]
+    },
+    "Cooler": {
+      "id": "ThingDef_Cooler",
+      "stuff": null,
+      "value": 275,
+      "base": 272.76,
+      "ingredients": 267,
+      "work": 1600,
+      "workMake": 1,
+      "workBuild": 1600,
+      "explicit": false,
+      "chain": [
+        "BuildingBase",
+        "Cooler"
+      ]
+    },
+    "PowerConduit": {
+      "id": "ThingDef_PowerConduit",
+      "stuff": null,
+      "value": 2.026,
+      "base": 2.026,
+      "ingredients": 1.9,
+      "work": 35,
+      "workMake": 1,
+      "workBuild": 35,
+      "explicit": false,
+      "chain": [
+        "BuildingBase",
+        "PowerConduit"
+      ]
+    },
+    "FueledStove": {
+      "id": "ThingDef_FueledStove",
+      "stuff": null,
+      "value": 159.2,
+      "base": 159.2,
+      "ingredients": 152,
+      "work": 2000,
+      "workMake": 1,
+      "workBuild": 2000,
+      "explicit": false,
+      "chain": [
+        "BuildingBase",
+        "BenchBase",
+        "FueledStove"
+      ]
+    },
+    "TableStonecutter": {
+      "id": "ThingDef_TableStonecutter",
+      "stuff": "ThingDef_WoodLog",
+      "value": 152.04,
+      "base": 152.04,
+      "ingredients": 147,
+      "work": 1400,
+      "workMake": 0.7,
+      "workBuild": 1400,
+      "explicit": false,
+      "chain": [
+        "BuildingBase",
+        "BenchBase",
+        "TableStonecutter"
+      ]
+    },
+    "HandTailoringBench": {
+      "id": "ThingDef_HandTailoringBench",
+      "stuff": "ThingDef_WoodLog",
+      "value": 95.04,
+      "base": 95.04,
+      "ingredients": 90,
+      "work": 1400,
+      "workMake": 0.7,
+      "workBuild": 1400,
+      "explicit": false,
+      "chain": [
+        "BuildingBase",
+        "BenchBase",
+        "HandTailoringBench"
+      ]
+    },
+    "CraftingSpot": {
+      "id": "ThingDef_CraftingSpot",
+      "stuff": null,
+      "value": 0,
+      "base": 0,
+      "ingredients": 0,
+      "work": 1,
+      "workMake": 1,
+      "workBuild": 0,
+      "explicit": false,
+      "chain": [
+        "BuildingBase",
+        "CraftingSpot"
+      ]
+    },
+    "FueledSmithy": {
+      "id": "ThingDef_FueledSmithy",
+      "stuff": null,
+      "value": 200,
+      "base": 200.8,
+      "ingredients": 190,
+      "work": 3000,
+      "workMake": 1,
+      "workBuild": 3000,
+      "explicit": false,
+      "chain": [
+        "BuildingBase",
+        "BenchBase",
+        "FueledSmithy"
+      ]
+    },
+    "TableMachining": {
+      "id": "ThingDef_TableMachining",
+      "stuff": null,
+      "value": 455,
+      "base": 455.8,
+      "ingredients": 445,
+      "work": 3000,
+      "workMake": 1,
+      "workBuild": 3000,
+      "explicit": false,
+      "chain": [
+        "BuildingBase",
+        "BenchBase",
+        "TableMachining"
+      ]
+    },
+    "SimpleResearchBench": {
+      "id": "ThingDef_SimpleResearchBench",
+      "stuff": "ThingDef_WoodLog",
+      "value": 144.556,
+      "base": 144.556,
+      "ingredients": 137.5,
+      "work": 1960,
+      "workMake": 0.7,
+      "workBuild": 1960,
+      "explicit": false,
+      "chain": [
+        "BuildingBase",
+        "BenchBase",
+        "SimpleResearchBench"
+      ]
+    },
+    "Sandbags": {
+      "id": "ThingDef_Sandbags",
+      "stuff": "ThingDef_Cloth",
+      "value": 8.148,
+      "base": 8.148,
+      "ingredients": 7.5,
+      "work": 180,
+      "workMake": 1,
+      "workBuild": 180,
+      "explicit": false,
+      "chain": [
+        "BuildingBase",
+        "Sandbags"
+      ]
+    },
+    "MeleeWeapon_Club": {
+      "id": "ThingDef_MeleeWeapon_Club",
+      "stuff": "ThingDef_WoodLog",
+      "value": 51.024,
+      "base": 51.024,
+      "ingredients": 48,
+      "work": 840,
+      "workMake": 840,
+      "workBuild": 0.7,
+      "explicit": false,
+      "chain": [
+        "BaseWeapon",
+        "BaseMeleeWeapon",
+        "BaseMeleeWeapon_Blunt",
+        "MeleeWeapon_Club"
+      ]
+    },
+    "MeleeWeapon_Knife": {
+      "id": "ThingDef_MeleeWeapon_Knife",
+      "stuff": "ThingDef_Steel",
+      "value": 63.48,
+      "base": 63.48,
+      "ingredients": 57,
+      "work": 1800,
+      "workMake": 1800,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "BaseWeapon",
+        "BaseMeleeWeapon",
+        "BaseMeleeWeapon_Sharp",
+        "BaseMeleeWeapon_Sharp_Quality",
+        "MeleeWeapon_Knife"
+      ]
+    },
+    "MeleeWeapon_LongSword": {
+      "id": "ThingDef_MeleeWeapon_LongSword",
+      "stuff": "ThingDef_Steel",
+      "value": 255,
+      "base": 254.8,
+      "ingredients": 190,
+      "work": 18000,
+      "workMake": 18000,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "BaseWeapon",
+        "BaseMeleeWeapon",
+        "BaseMeleeWeapon_Sharp",
+        "BaseMeleeWeapon_Sharp_Quality",
+        "MeleeWeapon_LongSword"
+      ]
+    },
+    "Bow_Short": {
+      "id": "ThingDef_Bow_Short",
+      "stuff": null,
+      "value": 44.64,
+      "base": 44.64,
+      "ingredients": 36,
+      "work": 2400,
+      "workMake": 2400,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "BaseWeapon",
+        "BaseWeaponNeolithic",
+        "Bow_Short"
+      ]
+    },
+    "Gun_Revolver": {
+      "id": "ThingDef_Gun_Revolver",
+      "stuff": null,
+      "value": 135.4,
+      "base": 135.4,
+      "ingredients": 121,
+      "work": 4000,
+      "workMake": 4000,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "BaseWeapon",
+        "BaseGun",
+        "BaseGunWithQuality",
+        "BaseMakeableGun",
+        "BaseHumanMakeableGun",
+        "Gun_Revolver"
+      ]
+    },
+    "Gun_MachinePistol": {
+      "id": "ThingDef_Gun_MachinePistol",
+      "stuff": null,
+      "value": 220,
+      "base": 221.1,
+      "ingredients": 181.5,
+      "work": 11000,
+      "workMake": 11000,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "BaseWeapon",
+        "BaseGun",
+        "BaseGunWithQuality",
+        "BaseMakeableGun",
+        "BaseHumanMakeableGun",
+        "Gun_MachinePistol"
+      ]
+    },
+    "Apparel_Tuque": {
+      "id": "ThingDef_Apparel_Tuque",
+      "stuff": "ThingDef_Cloth",
+      "value": 34.32,
+      "base": 34.32,
+      "ingredients": 30,
+      "work": 1200,
+      "workMake": 1200,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "ApparelNoQualityBase",
+        "ApparelBase",
+        "ApparelMakeableBase",
+        "HatMakeableBase",
+        "Apparel_Tuque"
+      ]
+    },
+    "Apparel_Parka": {
+      "id": "ThingDef_Apparel_Parka",
+      "stuff": "ThingDef_Cloth",
+      "value": 148.8,
+      "base": 148.8,
+      "ingredients": 120,
+      "work": 8000,
+      "workMake": 8000,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "ApparelNoQualityBase",
+        "ApparelBase",
+        "ApparelMakeableBase",
+        "Apparel_Parka"
+      ]
+    },
+    "Apparel_Duster": {
+      "id": "ThingDef_Apparel_Duster",
+      "stuff": "ThingDef_Cloth",
+      "value": 156,
+      "base": 156,
+      "ingredients": 120,
+      "work": 10000,
+      "workMake": 10000,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "ApparelNoQualityBase",
+        "ApparelBase",
+        "ApparelMakeableBase",
+        "Apparel_Duster"
+      ]
+    },
+    "Apparel_BasicShirt": {
+      "id": "ThingDef_Apparel_BasicShirt",
+      "stuff": "ThingDef_Cloth",
+      "value": 65.76,
+      "base": 65.76,
+      "ingredients": 60,
+      "work": 1600,
+      "workMake": 1600,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "ApparelNoQualityBase",
+        "ApparelBase",
+        "ApparelMakeableBase",
+        "Apparel_BasicShirt"
+      ]
+    },
+    "Apparel_Pants": {
+      "id": "ThingDef_Apparel_Pants",
+      "stuff": "ThingDef_Cloth",
+      "value": 65.76,
+      "base": 65.76,
+      "ingredients": 60,
+      "work": 1600,
+      "workMake": 1600,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "ApparelNoQualityBase",
+        "ApparelBase",
+        "ApparelMakeableBase",
+        "Apparel_Pants"
+      ]
+    },
+    "Apparel_SimpleHelmet": {
+      "id": "ThingDef_Apparel_SimpleHelmet",
+      "stuff": "ThingDef_Steel",
+      "value": 87.52,
+      "base": 87.52,
+      "ingredients": 76,
+      "work": 3200,
+      "workMake": 3200,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "ApparelNoQualityBase",
+        "ApparelBase",
+        "ArmorMachineableBase",
+        "ArmorHelmetMakeableBase",
+        "Apparel_SimpleHelmet"
+      ]
+    },
+    "Apparel_PlateArmor": {
+      "id": "ThingDef_Apparel_PlateArmor",
+      "stuff": "ThingDef_Steel",
+      "value": 460,
+      "base": 459.79999999999995,
+      "ingredients": 323,
+      "work": 38000,
+      "workMake": 38000,
+      "workBuild": 1,
+      "explicit": false,
+      "chain": [
+        "ApparelNoQualityBase",
+        "ApparelBase",
+        "ArmorSmithableBase",
+        "Apparel_PlateArmor"
+      ]
+    },
+    "WoodPlankFloor": {
+      "id": "TerrainDef_WoodPlankFloor",
+      "stuff": null,
+      "value": 3.9059999999999997,
+      "base": 3.9059999999999997,
+      "ingredients": 3.5999999999999996,
+      "work": 85,
+      "workMake": 1,
+      "workBuild": 85,
+      "explicit": false,
+      "chain": [
+        "FloorBase",
+        "WoodPlankFloor"
+      ]
+    },
+    "FlagstoneGranite": {
+      "id": "TerrainDef_FlagstoneGranite",
+      "stuff": null,
+      "value": 5.4,
+      "base": 5.4,
+      "ingredients": 3.6,
+      "work": 500,
+      "workMake": 1,
+      "workBuild": 500,
+      "explicit": false,
+      "chain": [
+        "FloorBase",
+        "FlagstoneBase",
+        "FlagstoneGranite"
+      ]
+    },
+    "TileGranite": {
+      "id": "TerrainDef_TileGranite",
+      "stuff": null,
+      "value": 7.5600000000000005,
+      "base": 7.5600000000000005,
+      "ingredients": 3.6,
+      "work": 1100,
+      "workMake": 1,
+      "workBuild": 1100,
+      "explicit": false,
+      "chain": [
+        "FloorBase",
+        "TileStoneBase",
+        "TileGranite"
+      ]
+    }
+  },
+  "raiders": {
+    "Drifter": {
+      "id": "PawnKindDef_Drifter",
+      "cost": 35,
+      "weaponMoney": [
+        60,
+        200
+      ],
+      "tags": [
+        "MedievalMeleeBasic",
+        "NeolithicMeleeBasic"
+      ],
+      "quality": "Poor",
+      "health": [
+        0.2,
+        0.6
+      ],
+      "chain": [
+        "PirateBase",
+        "Drifter"
+      ]
+    },
+    "Scavenger": {
+      "id": "PawnKindDef_Scavenger",
+      "cost": 50,
+      "weaponMoney": [
+        200,
+        300
+      ],
+      "tags": [
+        "Gun"
+      ],
+      "quality": "Poor",
+      "health": [
+        0.4,
+        1.1
+      ],
+      "chain": [
+        "PirateBase",
+        "PirateScavTierBase",
+        "Scavenger"
+      ]
+    },
+    "Thrasher": {
+      "id": "PawnKindDef_Thrasher",
+      "cost": 50,
+      "weaponMoney": [
+        100,
+        160
+      ],
+      "tags": [
+        "NeolithicMeleeBasic",
+        "MedievalMeleeBasic",
+        "MedievalMeleeDecent"
+      ],
+      "quality": "Poor",
+      "health": [
+        0.4,
+        1.1
+      ],
+      "chain": [
+        "PirateBase",
+        "PirateScavTierBase",
+        "Thrasher"
+      ]
+    },
+    "Pirate": {
+      "id": "PawnKindDef_Pirate",
+      "cost": 65,
+      "weaponMoney": [
+        250,
+        345
+      ],
+      "tags": [
+        "Gun"
+      ],
+      "health": [
+        0.7,
+        2.3
+      ],
+      "chain": [
+        "PirateBase",
+        "Pirate"
+      ]
+    },
+    "Tribal_Penitent": {
+      "id": "PawnKindDef_Tribal_Penitent",
+      "cost": 40,
+      "weaponMoney": [
+        90,
+        150
+      ],
+      "tags": [
+        "NeolithicMeleeBasic"
+      ],
+      "quality": "Poor",
+      "health": [
+        0.2,
+        1.1
+      ],
+      "chain": [
+        "TribalBase",
+        "Tribal_Penitent"
+      ]
+    },
+    "Tribal_Archer": {
+      "id": "PawnKindDef_Tribal_Archer",
+      "cost": 45,
+      "weaponMoney": [
+        80,
+        80
+      ],
+      "tags": [
+        "NeolithicRangedBasic"
+      ],
+      "quality": "Poor",
+      "health": [
+        0.5,
+        1.8
+      ],
+      "chain": [
+        "TribalBase",
+        "Tribal_Archer"
+      ]
+    },
+    "Tribal_Warrior": {
+      "id": "PawnKindDef_Tribal_Warrior",
+      "cost": 50,
+      "weaponMoney": [
+        150,
+        150
+      ],
+      "tags": [
+        "NeolithicMeleeDecent"
+      ],
+      "quality": "Poor",
+      "health": [
+        0.5,
+        1.8
+      ],
+      "chain": [
+        "TribalBase",
+        "Tribal_Warrior"
+      ]
+    }
+  },
+  "weapons": {
+    "MeleeWeapon_Club": {
+      "price": 51.024,
+      "tags": [
+        "NeolithicMeleeBasic"
+      ]
+    },
+    "MeleeWeapon_Knife": {
+      "price": 63.48,
+      "tags": [
+        "MedievalMeleeBasic",
+        "NeolithicMeleeBasic"
+      ]
+    },
+    "MeleeWeapon_LongSword": {
+      "price": 255,
+      "tags": [
+        "MedievalMeleeAdvanced",
+        "LongSword"
+      ]
+    },
+    "Bow_Short": {
+      "price": 44.64,
+      "tags": [
+        "Neolithic",
+        "NeolithicRangedBasic"
+      ]
+    },
+    "Gun_Revolver": {
+      "price": 135.4,
+      "tags": [
+        "Gun",
+        "SimpleGun",
+        "Revolver"
+      ]
+    },
+    "Gun_MachinePistol": {
+      "price": 220,
+      "tags": [
+        "Gun",
+        "ShortShots"
+      ]
+    }
+  }
+}

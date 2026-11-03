@@ -109,7 +109,7 @@ async function verify(mode) {
     for (const name of ['trauma', 'research']) {
       const old = await load(`tests/fixtures/voxel-v15-${name}.json`),
         migrated = await save();
-      assert.equal(migrated.version, 19);
+      assert.equal(migrated.version, 20);
       assert.equal((await state()).snapshot.speed, 0);
       for (const key of ['items', 'researchBenches', 'stats'])
         assert.deepEqual(migrated[key], key === 'stats' ? withMedicineLedgers(old.stats) : old[key]);

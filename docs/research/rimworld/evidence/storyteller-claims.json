@@ -1,0 +1,1033 @@
+[
+  {
+    "id": "ST01",
+    "title": "市值基价、材料与工作量",
+    "statement": "显式MarketValue优先；否则固定配方或CostList/Stuff的材料价，加max(WorkToMake,WorkToBuild)*.0036，work<=2不加劳动，按首产品数量分摊。Stuff工作修正为base*factor+offset，工作属性先按>300取最近5，再参与市值；无指定Stuff时每份估价2。本证据数值重建仅覆盖所列显式值与直接成本路径，未实现一般RecipeDef回退。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "storyteller",
+        "type": "RimWorld.StatWorker_MarketValue",
+        "line_start": 14,
+        "line_end": 121,
+        "range_sha256": "f21b251fc5dff46156f3681f6c8662322d95b6b8c61dbd1547f74d3bd962cf0f"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.StatPart_Stuff",
+        "line_start": 1,
+        "line_end": 51,
+        "range_sha256": "e5f3e99d67b19d386c0e48080cc2d6cb2e06034f79608590aee91209641d7633"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 299,
+        "line_end": 315,
+        "range_sha256": "f405f7986b70de746794c940cfbbe4590e9edad13040001978e1cf0fb1b7ee3a"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 798,
+        "line_end": 834,
+        "range_sha256": "32ef6ceccd6d2c05f04ccf75fca408c8eeb9339eacfdc6e802679aa5eef5fc99"
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "StatDef_WorkToMake",
+        "xml_line_start": 151,
+        "xml_line_end": 163
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "StatDef_WorkToBuild",
+        "xml_line_start": 4,
+        "xml_line_end": 16
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "ThingDef_WoodLog",
+        "xml_line_start": 249,
+        "xml_line_end": 324
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "ThingDef_Steel",
+        "xml_line_start": 134,
+        "xml_line_end": 188
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "ThingDef_BlocksGranite",
+        "xml_line_start": 291,
+        "xml_line_end": 314
+      }
+    ]
+  },
+  {
+    "id": "ST02",
+    "title": "品质、耐久与最终取整",
+    "statement": "MarketValue父定义品质倍率.5/.75/1/1.25/1.5/2.5/5，Good以上正收益封顶500/1000/2000/3000；先品质再其他StatParts/健康/Scenario，最后绝对值>200才按ties-to-even最近5，低于门槛保留小数。健康曲线(0,0)(.5,.1)(.6,.5)(.9,1)，IgnoreHp不含该健康部件，且需useHitPoints与healthAffectsPrice。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "housing",
+        "type": "RimWorld.StatPart_Quality",
+        "line_start": 1,
+        "line_end": 98,
+        "range_sha256": "3b80ea8e8f92ffce05a05631972d7f948e0acaa03c3ceeb4d484ecfab72339e0"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.StatPart_Health",
+        "line_start": 1,
+        "line_end": 26,
+        "range_sha256": "08d4ff196049da78baa56170a2f90cb65bb371c6931f408910163910d72255cf"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 798,
+        "line_end": 834,
+        "range_sha256": "32ef6ceccd6d2c05f04ccf75fca408c8eeb9339eacfdc6e802679aa5eef5fc99"
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "StatDef_MarketValueBase",
+        "xml_line_start": 43,
+        "xml_line_end": 74
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "StatDef_MarketValue",
+        "xml_line_start": 76,
+        "xml_line_end": 103
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "StatDef_MarketValueIgnoreHp",
+        "xml_line_start": 104,
+        "xml_line_end": 108
+      }
+    ]
+  },
+  {
+    "id": "ST03",
+    "title": "生物编码、尸体及污损服装",
+    "statement": "生物编码使相应物品市值为0；曾被尸体穿着的服装倍率.1。尸体Def生成基价为基础屠宰肉/皮等价的.6，非新鲜尸体价格0；不等于死者活体市场价。尸体本身与其内部装备由容器遍历分别处理。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "storyteller",
+        "type": "RimWorld.StatPart_Biocoded",
+        "line_start": 1,
+        "line_end": 18,
+        "range_sha256": "304f0f2cc2a98218cd7d1837e37615dfbb8e5f91fae6fd003fc60a7d48d89186"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.StatPart_WornByCorpse",
+        "line_start": 1,
+        "line_end": 26,
+        "range_sha256": "3d98b4d5e13fe8b7671be7018130e53e4918722877ed47ff7e193bef75e4fd35"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.StatPart_IsCorpseFresh",
+        "line_start": 1,
+        "line_end": 40,
+        "range_sha256": "f77cce8c8b5c9be4a2815c48dd79c10601444b7cb687aa983d1097010e293a77"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.ThingDefGenerator_Corpses",
+        "line_start": 1,
+        "line_end": 235,
+        "range_sha256": "9ded26860ae46392aa35a054c178c8adb9f81e54beee848ff1358813169158bf"
+      },
+      {
+        "group": "storyteller",
+        "type": "Verse.Corpse",
+        "line_start": 170,
+        "line_end": 202,
+        "range_sha256": "1a82ff760c064bd7191d8a3a42d9bf8f96f42bcf795a94b976b59de347336ecb"
+      }
+    ]
+  },
+  {
+    "id": "ST04",
+    "title": "财富统计与叙事财富",
+    "statement": "总财富=I+B+P；普通玩家基地叙事财富=I+.5B+P。人工玩家建筑按IgnoreHp，不因受损而下降；上层地板需可见，foundation另计。玩家Pawn排除临时住客、奴隶*.75，附属地图递归。自然石墙非人工建筑，不能照人工墙计价。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "economy",
+        "type": "RimWorld.WealthWatcher",
+        "line_start": 115,
+        "line_end": 171,
+        "range_sha256": "3fe57eec6fbb0da2c448971ba0a9c242b295cd31cc5fff423ef3cc443455dee4"
+      },
+      {
+        "group": "economy",
+        "type": "RimWorld.WealthWatcher",
+        "line_start": 237,
+        "line_end": 263,
+        "range_sha256": "e0ae4bb980d4439892796879080c14bbe4444bde4b96deb18e949b079cac77ad"
+      },
+      {
+        "group": "economy",
+        "type": "Verse.Map",
+        "line_start": 366,
+        "line_end": 442,
+        "range_sha256": "6e1749c19b0e3c5731de4527f435858715dd1b50ea895ce6d8b7c2ad1e84fd4e"
+      }
+    ]
+  },
+  {
+    "id": "ST05",
+    "title": "物品、搬运、容器与迷雾",
+    "statement": "物品遍历HaulableEver且自身或父容器spawned、根位置不在迷雾；不要求每件物品归玩家所有。经过飞船/MapComponent/敌方Pawn/临时住客容器被过滤。allowUnreal=false跳过尸体直接内部Pawn但仍递归其子持有者，殖民者遗体装备可计入，敌人随身装备在被其持有时排除。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "economy",
+        "type": "RimWorld.WealthWatcher",
+        "line_start": 173,
+        "line_end": 235,
+        "range_sha256": "85cfba0e579da9237a17de5edb4a8adf9d1bd6e31ce9266c9da90e94621c15aa"
+      },
+      {
+        "group": "storyteller",
+        "type": "Verse.ThingOwnerUtility",
+        "line_start": 304,
+        "line_end": 384,
+        "range_sha256": "b52b84dc62696dcba6aa12ca8c4f8e4b0e61c24df6868528a92ba2cccce25065"
+      },
+      {
+        "group": "storyteller",
+        "type": "Verse.ThingRequestGroupUtility",
+        "line_start": 1,
+        "line_end": 97,
+        "range_sha256": "a762745abc03a9852779fd3885a7a78c47a33a32b524cd38e5659e9f249407f2"
+      },
+      {
+        "group": "storyteller",
+        "type": "Verse.ThingListGroupHelper",
+        "line_start": 1,
+        "line_end": 43,
+        "range_sha256": "66df6714db12c84253caa9988bf81100e0e06c47d4162febdb3285adec26d2a8"
+      },
+      {
+        "group": "storyteller",
+        "type": "Verse.Corpse",
+        "line_start": 170,
+        "line_end": 202,
+        "range_sha256": "1a82ff760c064bd7191d8a3a42d9bf8f96f42bcf795a94b976b59de347336ecb"
+      }
+    ]
+  },
+  {
+    "id": "ST06",
+    "title": "框架、未完成产品与燃料",
+    "statement": "Frame实现IThingHolder，resourceContainer的已送材料仍按物品计价；普通生成Frame自身无成本/工作价。UnfinishedThing.ingredients只是List，不是持有者，所选Core UnfinishedBase/Weapon/Gun/Apparel/Armor无市值与成本/工作声明，不能按完成进度估值。Refuel把实物拆分销毁后存fuel浮点，Comp不提供市场价修正/持有者，已装燃料不额外计财富；释放成物品后重新计入。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "storyteller",
+        "type": "RimWorld.Frame",
+        "line_start": 1,
+        "line_end": 190,
+        "range_sha256": "631b8ca5b79a4cefa7a88f3ce4fa767fb105faa6252ee27fab3ca1d350e0e540"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.ThingDefGenerator_Buildings",
+        "line_start": 1,
+        "line_end": 294,
+        "range_sha256": "5bfd1107539e4e59b65f76a4a4178bfbb772eb8708e1fbe45462ad940844db49"
+      },
+      {
+        "group": "weapons",
+        "type": "Verse.UnfinishedThing",
+        "line_start": 1,
+        "line_end": 253,
+        "range_sha256": "10d275ee4842391fd15f07e8cc4c29d1fb17f5c69b6c50a230525cb6716159c9"
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.CompRefuelable",
+        "line_start": 1,
+        "line_end": 24,
+        "range_sha256": "671e0fecd0955df85e5d1dc90f120a999037a29ab5119ee3c506c08752e291c8"
+      },
+      {
+        "group": "energy",
+        "type": "RimWorld.CompRefuelable",
+        "line_start": 259,
+        "line_end": 321,
+        "range_sha256": "982010be35cb0ffe4231b9b0862cdbebbf4ad63b81d93d62d75b84373404f32b"
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "ThingDef_UnfinishedBase",
+        "xml_line_start": 5,
+        "xml_line_end": 42
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "ThingDef_UnfinishedWeapon",
+        "xml_line_start": 73,
+        "xml_line_end": 86
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "ThingDef_UnfinishedGun",
+        "xml_line_start": 59,
+        "xml_line_end": 71
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "ThingDef_UnfinishedApparel",
+        "xml_line_start": 127,
+        "xml_line_end": 145
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "ThingDef_UnfinishedArmor",
+        "xml_line_start": 88,
+        "xml_line_end": 101
+      }
+    ]
+  },
+  {
+    "id": "ST07",
+    "title": "缓存、历史曲线与调试读取",
+    "statement": "财富在Playing且读取时距上次统计严格>5000ticks才重算；历史页打开ForceRecount，可暂停读取Statistics的四类财富F0。HistoryRecorder独立按sampleInterval采样保存浮点字节，财富/威胁30000ticks、适应60000；ThreatPoints历史worker除10。调试Current threat points强制重算后输出F2。不是以图表最后一个样本代表当前值。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "economy",
+        "type": "RimWorld.WealthWatcher",
+        "line_start": 107,
+        "line_end": 113,
+        "range_sha256": "3ab250c0460a7156d6ee3a3f9eb68e352ad3ef903e56261c6a6fd06ddcf30f36"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.HistoryAutoRecorder",
+        "line_start": 1,
+        "line_end": 68,
+        "range_sha256": "8a82e6457bbd329bbd52f9d584529e58a9f447b37dd6e004220b91ab3b490a1f"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.HistoryAutoRecorderDef",
+        "line_start": 1,
+        "line_end": 40,
+        "range_sha256": "5de6b2845ff62561b0f3fa6e55b3f72fc26a5a824b05aeedf2007bc9c5c9076a"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.HistoryAutoRecorderWorker_ThreatPoints",
+        "line_start": 1,
+        "line_end": 16,
+        "range_sha256": "a86aba483e7234904a69480044be73115b036b7f49ac07eb60f34c8617974a8c"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.MainTabWindow_History",
+        "line_start": 80,
+        "line_end": 150,
+        "range_sha256": "57d7de5cb77f5306a64df0c9372e2f862103e4659e4cec98e2169d40bd219f7f"
+      },
+      {
+        "group": "storyteller",
+        "type": "Verse.DebugOutputsIncidents",
+        "line_start": 82,
+        "line_end": 104,
+        "range_sha256": "33d3693b8f30af93ab9d3b4344d534b7cfc7f98d1a52127c8a5eadfe6699b05f"
+      },
+      {
+        "group": "storyteller",
+        "type": "Verse.DebugOutputsEconomy",
+        "line_start": 1,
+        "line_end": 776,
+        "range_sha256": "e26b07d31d67259475beced8fed7bbf793e84a25f2a901d3c5ea5b7025fa5e3f"
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "HistoryAutoRecorderDef_Wealth_Total",
+        "xml_line_start": 4,
+        "xml_line_end": 11
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "HistoryAutoRecorderDef_Wealth_Items",
+        "xml_line_start": 13,
+        "xml_line_end": 20
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "HistoryAutoRecorderDef_Wealth_Buildings",
+        "xml_line_start": 22,
+        "xml_line_end": 29
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "HistoryAutoRecorderDef_Wealth_Pawns",
+        "xml_line_start": 31,
+        "xml_line_end": 38
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "HistoryAutoRecorderDef_ThreatPoints",
+        "xml_line_start": 78,
+        "xml_line_end": 85
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "HistoryAutoRecorderDef_Adaptation",
+        "xml_line_start": 69,
+        "xml_line_end": 76
+      }
+    ]
+  },
+  {
+    "id": "ST08",
+    "title": "综合健康不是伤害百分比相加",
+    "statement": "活体SummaryHealth=clamp(各Hediff的(1-min(impact,.95))连乘,.05,1)，缺失部位只取共同祖先一次，死人0。非永久可见Injury的impact=severity/(75*HealthScale)；MissingPart需新鲜非硬质且有标签/子部位/出血等资格；普通疾病基础impact0。因此疾病可降低能力而不直接降低SummaryHealth。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "storyteller",
+        "type": "Verse.SummaryHealthHandler",
+        "line_start": 14,
+        "line_end": 44,
+        "range_sha256": "ca168ae782a759a8e4a7e9d607520210cfd8855d6b171511bcd6803859559bd4"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Hediff_Injury",
+        "line_start": 116,
+        "line_end": 138,
+        "range_sha256": "03ceb22e65dc93cc0109a41e98b6209f8ed82b6854dbca2c3e5ffa1285a895f8"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.Hediff_MissingPart",
+        "line_start": 12,
+        "line_end": 50,
+        "range_sha256": "c78457d30bc23362fa76314ae0f5a228bf5f830aa09aa9fca92e7b9120fc0976"
+      },
+      {
+        "group": "survival",
+        "type": "Verse.Hediff",
+        "line_start": 1,
+        "line_end": 869,
+        "range_sha256": "b370c42a21c8e21655b047d8f569002efde73dea3d4f9ed8d3bbe71f5736fad3"
+      }
+    ]
+  },
+  {
+    "id": "ST09",
+    "title": "人物价格与能力的两种读取",
+    "statement": "Human基础1750；因子=(.2+.8*SummaryHealth)*所有capacity因子*全部技能平均曲线*lifeStage，随后加未压制trait偏移和Beauty*.2，因子下限.1，最后另加Hediff价值偏移。能力不可用乘.6，否则Lerp(.5,1,forTradePrice capacity)；forTradePrice跳过priceImpact=false的直接CapMods，但仍受当前依赖能力、疼痛及实际awake/capable判断影响。Core有11capacity，原版12skill；Biotech年龄另走MarketValue的3/.5,13/.9,18/1。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "storyteller",
+        "type": "RimWorld.PriceUtility",
+        "line_start": 1,
+        "line_end": 90,
+        "range_sha256": "9437acd3ea698ce4c84d052293eb2ba3c7da0e0d2c214fb6235cdbe26f3e4084"
+      },
+      {
+        "group": "survival",
+        "type": "Verse.PawnCapacityUtility",
+        "line_start": 74,
+        "line_end": 168,
+        "range_sha256": "de7b0fa286df70a375260cdf2602a6486962696d461842d6cfd6e336bdbb65cb"
+      },
+      {
+        "group": "survival",
+        "type": "Verse.PawnCapacitiesHandler",
+        "line_start": 1,
+        "line_end": 95,
+        "range_sha256": "5b327ef3d06bbcd52b3512c44969d2fda9d5f167775521446a23941c1d0fc928"
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "ThingDef_Human",
+        "xml_line_start": 4,
+        "xml_line_end": 227
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "StatDef_MarketValue",
+        "xml_line_start": 76,
+        "xml_line_end": 103
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "PawnCapacityDef_Consciousness",
+        "xml_line_start": 5,
+        "xml_line_end": 16
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "PawnCapacityDef_Moving",
+        "xml_line_start": 18,
+        "xml_line_end": 27
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "PawnCapacityDef_Eating",
+        "xml_line_start": 51,
+        "xml_line_end": 61
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "HediffDef_Malnutrition",
+        "xml_line_start": 4,
+        "xml_line_end": 71
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "HediffDef_WoundInfection",
+        "xml_line_start": 206,
+        "xml_line_end": 269
+      }
+    ]
+  },
+  {
+    "id": "ST10",
+    "title": "威胁点、健康人口与取样下限",
+    "statement": "普通玩家基地威胁=(wealthCurve(I+.5B+P)+ΣcolonistCurve(W)*(.35+.65*健康))*地图随机1*适应混合*难度*settlement曲线，再夹GlobalMin至10000。settlement曲线用整数DaysPassedSinceSettle，下限上界用float日数，12日前35，35日达到难度上界，随机seed=ticksGame/2500。非基地、动物、机械体、奴隶、儿童等另有原版分支，本独立算例只覆盖健康输入的自由成年殖民者。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "economy",
+        "type": "RimWorld.StorytellerUtility",
+        "line_start": 14,
+        "line_end": 189,
+        "range_sha256": "ea613cc1e7283c538484458921b216767ad8bc5cf8aef1d5305538e42a5cd671"
+      },
+      {
+        "group": "economy",
+        "type": "Verse.Map",
+        "line_start": 366,
+        "line_end": 442,
+        "range_sha256": "6e1749c19b0e3c5731de4527f435858715dd1b50ea895ce6d8b7c2ad1e84fd4e"
+      },
+      {
+        "group": "biomes",
+        "type": "RimWorld.GenDate",
+        "line_start": 1,
+        "line_end": 474,
+        "range_sha256": "ac1ca575db0759de73512933216f92e9706bbd9b4a5d3e63d49cdea47680be80"
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "StorytellerDef_BaseStoryteller",
+        "xml_line_start": 4,
+        "xml_line_end": 288
+      }
+    ]
+  },
+  {
+    "id": "ST11",
+    "title": "适应值增长、损失与同tick去重",
+    "statement": "适应初值0、范围-60至100、每半天增长.5*分段growth；30日前非负值不增长，负值仍恢复；只有当前值>0才乘难度正增长因子。外部暴力倒地排队，同tick失去会移除该倒地，避免扣两次；倒地按当前人口，失去按Population-1。适应曲线虽有180=2端点，但上限100时raw最大1.4666667。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "economy",
+        "type": "RimWorld.StoryWatcher_Adaptation",
+        "line_start": 1,
+        "line_end": 100,
+        "range_sha256": "606addb3c4a68ff8436a4891d46451b7c1fef7b4a2c5dbed1478a9956eebe1f5"
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "StorytellerDef_BaseStoryteller",
+        "xml_line_start": 4,
+        "xml_line_end": 288
+      }
+    ]
+  },
+  {
+    "id": "ST12",
+    "title": "六档难度和默认补值",
+    "statement": "Peaceful/Easy/Medium/Rough/Hard/Extreme的threatScale=.1/.3/.6/1/1.55/2.2；adaptationEffect=1/1/1/.9/.7/.4，正增长=0/.25/.75/1/1/1；minCeiling45/45/70/70/70/70。Difficulty未声明字段走类默认，minCeiling<35在PostLoad修到70；Peaceful关闭bigThreats和introThreats。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "economy",
+        "type": "RimWorld.Difficulty",
+        "line_start": 1,
+        "line_end": 465,
+        "range_sha256": "013901f7cbcf33d5cf476e82a30dd1b4879c803e978bcc603fb152d7a0bb19e7"
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "DifficultyDef_Peaceful",
+        "xml_line_start": 4,
+        "xml_line_end": 41
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "DifficultyDef_Easy",
+        "xml_line_start": 43,
+        "xml_line_end": 74
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "DifficultyDef_Medium",
+        "xml_line_start": 76,
+        "xml_line_end": 102
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "DifficultyDef_Rough",
+        "xml_line_start": 104,
+        "xml_line_end": 129
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "DifficultyDef_Hard",
+        "xml_line_start": 131,
+        "xml_line_end": 160
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "DifficultyDef_Extreme",
+        "xml_line_start": 162,
+        "xml_line_end": 194
+      }
+    ]
+  },
+  {
+    "id": "ST13",
+    "title": "Cassandra/Phoebe开关周期",
+    "statement": "大威胁Cassandra minDay11、on4.6/off6、间距1.9、1~2事件；Phoebe minDay13、on8/off8、1事件，未显式间距用类默认。周期1000ticks一步，天数*60经Mathf.RoundToInt；先抽事件数、位置排序，再用Relax规则移动，尾项<=onEnd可接受，恰好落第一off间隔是允许边界。acceptFraction<1时shuffle+truncate不重排。原生随机种子含世界/目标/comp索引/周期；不同于项目PRNG。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "economy",
+        "type": "RimWorld.IncidentCycleUtility",
+        "line_start": 1,
+        "line_end": 117,
+        "range_sha256": "e75d5ad124dbb82a648c3088beba42ec28ad8b5b3b1e61c5a55fb5b52365945e"
+      },
+      {
+        "group": "economy",
+        "type": "RimWorld.StorytellerComp_OnOffCycle",
+        "line_start": 1,
+        "line_end": 101,
+        "range_sha256": "0d96b3b7a23ddfe58dc43b86b16d97b939b49af997344e61c3ba9f4a0b6552f8"
+      },
+      {
+        "group": "economy",
+        "type": "RimWorld.StorytellerCompProperties_OnOffCycle",
+        "line_start": 1,
+        "line_end": 69,
+        "range_sha256": "df43f30f4890a9a092d54871948a44c49afc0ea005b138797b37cd71fbb61c82"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.Storyteller",
+        "line_start": 1,
+        "line_end": 418,
+        "range_sha256": "2d252032a7e13b250c72bc97e0514c4441174ce9e895f28b6db8b986daf17297"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.StorytellerComp",
+        "line_start": 1,
+        "line_end": 202,
+        "range_sha256": "90a84f295616cde744e53a88789829d6267d0976e886ea310aff65ab4bfd72fa"
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "StorytellerDef_Cassandra",
+        "xml_line_start": 290,
+        "xml_line_end": 476
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "StorytellerDef_Phoebe",
+        "xml_line_start": 478,
+        "xml_line_end": 663
+      }
+    ]
+  },
+  {
+    "id": "ST14",
+    "title": "开局事件与普通周期独立",
+    "statement": "ClassicIntro在全局interval150/204/264/324分别触发访客40~100点、小威胁或misc、misc、40点RaidEnemy，首袭击带forceOneDowned与neverFleeIndividual；前者令首Pawn免随机倒地即死并可招募、不个体逃跑，不立即使其倒地，也不阻止重要器官损毁致死。只在精确边界触发，晚加入不补发；5.4日首袭不是Cassandra11日普通大威胁周期提前。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "storyteller",
+        "type": "RimWorld.StorytellerComp_ClassicIntro",
+        "line_start": 1,
+        "line_end": 64,
+        "range_sha256": "96627a1f7a09eae29664b8cd1bce51ab38ad0f1b7673a9c93773840f265ff532"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.StorytellerCompProperties_ClassicIntro",
+        "line_start": 1,
+        "line_end": 10,
+        "range_sha256": "b356c5df7a1177abec8439cfeeefbbd3df9e5e4b2336691283eb99d2ad7d3743"
+      },
+      {
+        "group": "economy",
+        "type": "RimWorld.PawnGroupKindWorker_Normal",
+        "line_start": 85,
+        "line_end": 98,
+        "range_sha256": "8bc4522126cfe56d5420811afbe03397df874af676467e1ad3d2de4a7307b9d6"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 507,
+        "line_end": 578,
+        "range_sha256": "324c08428d3b833667270746aededaa4b0e04b1232f099d15333f340ea3c89f8"
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "StorytellerDef_Cassandra",
+        "xml_line_start": 290,
+        "xml_line_end": 476
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "StorytellerDef_Phoebe",
+        "xml_line_start": 478,
+        "xml_line_end": 663
+      }
+    ]
+  },
+  {
+    "id": "ST15",
+    "title": "Randy先过MTB再强制大威胁类别",
+    "statement": "Randy每1000ticks先过MTB1.35日检查；距最后大威胁严格>13日只影响成功检查后的类别选择，并非13日固定截止。类别权重Misc3.5/Big1.4/Orbital1.1/Faction2.4/Small.6/Chunk.22；DefaultThreatPoints完成夹取后再乘随机.5~1.5，不能把该额外随机搬到全部叙事者的地图系数。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "storyteller",
+        "type": "RimWorld.StorytellerComp_RandomMain",
+        "line_start": 1,
+        "line_end": 60,
+        "range_sha256": "0e6489e447a59ffedf2ec138d0c52a44dd6f0ec58e32b1d0a04750cd4d7403ee"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.StorytellerCompProperties_RandomMain",
+        "line_start": 1,
+        "line_end": 27,
+        "range_sha256": "cfe779786183de4a83509de47696be281f69b07e9b85aefd5773e4023cfe23d3"
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "StorytellerDef_Randy",
+        "xml_line_start": 665,
+        "xml_line_end": 802
+      }
+    ]
+  },
+  {
+    "id": "ST16",
+    "title": "袭击预算按顺序修正",
+    "statement": "先解析点数/派系/策略/到达/年龄，arrival曲线在原点数求值后相乘，strategy在调整后的点数求值，再乘年龄和地图层。最后max(strategy.MinimumPoints*1.05)。ImmediateAttack默认minPawns1；Pirate最便宜Drifter35使底线36.75。人数不是固定波次：后续按预算逐个选Pawn。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "economy",
+        "type": "RimWorld.IncidentWorker_Raid",
+        "line_start": 60,
+        "line_end": 211,
+        "range_sha256": "3e77a7e962947421055e22559a944cf2a0bce272af8be5638d350efce3b82b79"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.RaidStrategyWorker",
+        "line_start": 60,
+        "line_end": 113,
+        "range_sha256": "215387164869c3a81bd0fd1c6888095e917b6f1a39c26f9fefe1402bbf1720aa"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.RaidStrategyWorker_ImmediateAttack",
+        "line_start": 1,
+        "line_end": 24,
+        "range_sha256": "3565e4bd80ce2644712109b44df58064a2c506428cf124cfe8c33ea1b6251260"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.RaidStrategyDef",
+        "line_start": 1,
+        "line_end": 56,
+        "range_sha256": "62b679a17b1262d2ac0bca5ec756ca96c98ed816365598bd2c90ac8707b960ff"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.FactionDef",
+        "line_start": 1,
+        "line_end": 585,
+        "range_sha256": "fe7b592b2bbbfaa4bec345aafe4ddaf890b5eb033332034e52a8cbe0b9f0deea"
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "RaidStrategyDef_ImmediateAttack",
+        "xml_line_start": 4,
+        "xml_line_end": 40
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "PawnsArrivalModeDef_EdgeWalkIn",
+        "xml_line_start": 4,
+        "xml_line_end": 17
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "FactionDef_Pirate",
+        "xml_line_start": 510,
+        "xml_line_end": 677
+      }
+    ]
+  },
+  {
+    "id": "ST17",
+    "title": "袭击组与成本加权",
+    "statement": "先选pawnGroupMaker再选单位；Pirate主Combat权重100，另有近战30/远程20/爆破15/狙击10/流浪者2.5组。MaxPawnCost=min(factionCurve,budget/minPawns)后至少factionMin*1.2及strategyAllowedMin*1.2。逐个过滤剩余预算/最大成本/领袖/策略等，权重=selectionWeight*curve(cost/历史最高可选成本)，最高值不在下一轮重置，曲线(.2,.01)(.3,.3)(.5,1)。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "economy",
+        "type": "RimWorld.PawnGroupMakerUtility",
+        "line_start": 1,
+        "line_end": 290,
+        "range_sha256": "386df82793e360e0c111020e5d164470b5ffaf1ca5e0a72263fa30877ab0d644"
+      },
+      {
+        "group": "economy",
+        "type": "RimWorld.PawnGroupKindWorker_Normal",
+        "line_start": 1,
+        "line_end": 108,
+        "range_sha256": "55167844e41a2e6e3e9cd03fca2920c5ec63c03332edfb7da06049b049b4f853"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.PawnGroupMaker",
+        "line_start": 1,
+        "line_end": 60,
+        "range_sha256": "90d2a855ed6c8e449b9bbb136c4f6393a8b2af553effa4afb9bc65bd6962c192"
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "FactionDef_Pirate",
+        "xml_line_start": 510,
+        "xml_line_end": 677
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "FactionDef_TribeSavage",
+        "xml_line_start": 501,
+        "xml_line_end": 506
+      }
+    ]
+  },
+  {
+    "id": "ST18",
+    "title": "低阶PawnKind与装备预算",
+    "statement": "Drifter35/weaponMoney60~200/Poor中心/HP.2~.6；Scavenger50/200~300/Gun/Poor/.4~1.1；Thrasher50/100~160/近战标签/Poor/.4~1.1。Inherited weaponTags列表追加：MachinePistol的ShortShots仍保留父Gun。武器按Normal满耐久抽象最终价<=随机预算筛选，选好后才生成品质和耐久；不能先降为Poor折价再放进预算。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "storyteller",
+        "xml_record": "PawnKindDef_Drifter",
+        "xml_line_start": 15,
+        "xml_line_end": 48
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "PawnKindDef_Scavenger",
+        "xml_line_start": 79,
+        "xml_line_end": 88
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "PawnKindDef_Thrasher",
+        "xml_line_start": 90,
+        "xml_line_end": 106
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "PawnKindDef_Pirate",
+        "xml_line_start": 110,
+        "xml_line_end": 148
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "PawnKindDef_Tribal_Penitent",
+        "xml_line_start": 18,
+        "xml_line_end": 38
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "PawnKindDef_Tribal_Archer",
+        "xml_line_start": 42,
+        "xml_line_end": 66
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "PawnKindDef_Tribal_Warrior",
+        "xml_line_start": 70,
+        "xml_line_end": 90
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "ThingDef_Gun_MachinePistol",
+        "xml_line_start": 173,
+        "xml_line_end": 243
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "ThingDef_BaseWeapon",
+        "xml_line_start": 4,
+        "xml_line_end": 35
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "ThingDef_BaseHumanMakeableGun",
+        "xml_line_start": 86,
+        "xml_line_end": 96
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.PawnWeaponGenerator",
+        "line_start": 55,
+        "line_end": 105,
+        "range_sha256": "6ae0d70e59d7c181f57b97e11f16ed5dcd1aef88a3a9a93b4699e4026150da5b"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.ThingStuffPair",
+        "line_start": 1,
+        "line_end": 151,
+        "range_sha256": "5fcdfb4dce60edd576133aaa74651b652699b35b15ba9cf5386f8dd567cae8b7"
+      }
+    ]
+  },
+  {
+    "id": "ST19",
+    "title": "装备权重、品质分布和耐久",
+    "statement": "武器pair权重=Commonality*Price*Ideo*Xenotype；AllWith与Reset在全材料集合归一化每种武器总commonality，固定只取wood/steel再归一化是项目简化。默认装备quality以itemQuality为中心：roll<.1低1、<.2高1、其余原值，再clamp；forceNormal/forceWeapon等优先。随后按gearHealthRange，<1时max(1,RoundToInt(roll*MaxHP))，>=1满血。Club无CompQuality，项目中不能制造不存在的品质加价。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "storyteller",
+        "type": "RimWorld.PawnWeaponGenerator",
+        "line_start": 21,
+        "line_end": 53,
+        "range_sha256": "e4b942061bced545a9b4f819fe1498a981f9eac1ffac437c0f5cae5265d072f2"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.PawnWeaponGenerator",
+        "line_start": 102,
+        "line_end": 159,
+        "range_sha256": "c3d1c26240910ec3f7072d9b9c5c7c58d8f86a9ac2e568ec9db6cce8c19f1fd5"
+      },
+      {
+        "group": "storyteller",
+        "type": "RimWorld.ThingStuffPair",
+        "line_start": 1,
+        "line_end": 151,
+        "range_sha256": "5fcdfb4dce60edd576133aaa74651b652699b35b15ba9cf5386f8dd567cae8b7"
+      },
+      {
+        "group": "storyteller",
+        "type": "Verse.DebugOutputsGeneral",
+        "line_start": 1,
+        "line_end": 459,
+        "range_sha256": "9b4455ad3b05fd32365d21ab55cd706b9f83fbf2a52e4e44260cddc44244043d"
+      },
+      {
+        "group": "weapons",
+        "type": "RimWorld.QualityUtility",
+        "line_start": 125,
+        "line_end": 158,
+        "range_sha256": "32918798198c346f12d6382b621cf89a4a73f4c26e4cb1ee142bba8293f638b5"
+      },
+      {
+        "group": "storyteller",
+        "type": "Verse.PawnGenerator",
+        "line_start": 2025,
+        "line_end": 2051,
+        "range_sha256": "efe3d7fe6602ce193139607df057e7ce8e0d669b91e52c54c8686c9238f9549b"
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "ThingDef_MeleeWeapon_Club",
+        "xml_line_start": 4,
+        "xml_line_end": 56
+      }
+    ]
+  },
+  {
+    "id": "ST20",
+    "title": "本项目估值与叙事适配边界",
+    "statement": "项目仅9技能及现有11能力；建造价使用实际项目材料与动作work*3回到source-work，事件日时钟另为*5，不能混用。两层墙每格计半墙、floor含劳动、天然岩石0、旧无身份结构报告估计。Corpse自身暂0但殖民者遗留装备计入；crafting已送输入在事务完成前保值，与原版UnfinishedThing0不同。只有三个低阶海盗/固定材料武器、全图可见、无pocket/fog/奴隶等分支，不声称完整原版复现。",
+    "kind": "design-adaptation",
+    "sources": [
+      {
+        "group": "storyteller",
+        "type": "RimWorld.StatWorker_MarketValue",
+        "line_start": 54,
+        "line_end": 121,
+        "range_sha256": "6aa585cbe7f2a177582f826b755a32a2306c7b7440e5ba70a1409a1d413a079b"
+      },
+      {
+        "group": "economy",
+        "type": "RimWorld.WealthWatcher",
+        "line_start": 115,
+        "line_end": 261,
+        "range_sha256": "d798ac6af4d341de25f73c7ccf997a00e83fec20486dd631d096d419f9a4871b"
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "ThingDef_Wall",
+        "xml_line_start": 218,
+        "xml_line_end": 331
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "ThingDef_Bed",
+        "xml_line_start": 201,
+        "xml_line_end": 228
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "ThingDef_Door",
+        "xml_line_start": 65,
+        "xml_line_end": 86
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "TerrainDef_WoodPlankFloor",
+        "xml_line_start": 102,
+        "xml_line_end": 123
+      },
+      {
+        "group": "storyteller",
+        "xml_record": "TerrainDef_TileGranite",
+        "xml_line_start": 34,
+        "xml_line_end": 41
+      }
+    ]
+  }
+]

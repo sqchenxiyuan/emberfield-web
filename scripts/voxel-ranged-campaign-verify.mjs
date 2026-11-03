@@ -212,7 +212,7 @@ const machining = () => s.weaponBenches.find((b) => b.kind === 'machining');
 const weapon = (kind) => s.items.find((i) => i.weapon?.kind === kind)?.weapon;
 try {
   if (!resume) {
-    assert.equal(s.save().version, 19);
+    assert.equal(s.save().version, 20);
     assert.equal(s.command({ type: 'research', project: 'Gunsmithing' }).ok, false);
     check('firearm research requires its real prerequisite');
     report.layout = await researchOpening({
@@ -405,9 +405,9 @@ try {
   audit();
   command({ type: 'threats', enabled: true });
   until(
-    'first scheduled raider enters carrying the original knife',
+    'the storyteller calendar produces an actual armed raid',
     () => s.combat.wave >= 1,
-    40000,
+    12000 * 15,
   );
   for (const p of colonists())
     if (!p.downed) command({ type: 'draft', pawnId: p.id, drafted: true });
@@ -437,13 +437,27 @@ try {
     },
     15000,
   );
+  const activeEnemies = () => s.pawns.filter(p => p.faction === 'raider' && !p.dead && !p.downed && !p.retreating);
+  until('defenders stop the complete first group', () => activeEnemies().length === 0, 20000);
   for (const p of colonists())
     if (!p.dead && !p.downed) command({ type: 'draft', pawnId: p.id, drafted: false });
   await save('first-combat-after');
-  until('a later scheduled wave carries a native short bow', () => s.combat.wave >= 2, 100000);
-  enemy = s.pawns.find((p) => p.faction === 'raider' && !p.dead && !p.downed && !p.retreating);
-  assert(enemy);
-  assert.equal(enemy.weapon.kind, 'shortBow');
+  // v20 chooses a supported Pirate group from points. A later wave is not
+  // guaranteed to carry a bow (nor to contain only one person). Keep every
+  // ordinary outcome and fight intervening melee groups; never reroll a save.
+  enemy = null;
+  for (let opportunity = 0; opportunity < 6 && !enemy; opportunity++) {
+    until('a later ordinary group enters', () => activeEnemies().length > 0, 12000 * 15);
+    enemy = activeEnemies().find(p => ['shortBow', 'revolver', 'machinePistol'].includes(p.weapon?.kind));
+    if (enemy) break;
+    for (const p of colonists()) if (!p.dead && !p.downed) {
+      command({ type: 'draft', pawnId: p.id, drafted: true });
+      command({ type: 'attack', pawnId: p.id, targetId: activeEnemies()[0].id });
+    }
+    until('ordinary defenders stop the intervening melee group', () => activeEnemies().length === 0, 20000);
+    for (const p of colonists()) if (!p.dead && !p.downed) command({ type: 'draft', pawnId: p.id, drafted: false });
+  }
+  assert(enemy, 'No ranged opponent observed in six actual groups; this run does not establish enemy-fire coverage');
   report.rangedEnemyId = enemy.id;
   for (const p of colonists())
     if (!p.downed) {

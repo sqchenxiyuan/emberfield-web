@@ -1,0 +1,235 @@
+{
+  "evidence_id": "RW17-STORYTELLER",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.StatWorker_MarketValue",
+      "local_file": ".local-research/storyteller/RimWorld.StatWorker_MarketValue.cs",
+      "sha256": "e47a2c46fa51be66ebe01e9b287f90416557bbedad6b139d7a7c97fa35dd7902",
+      "lines": 151
+    },
+    {
+      "type": "RimWorld.StatPart_Stuff",
+      "local_file": ".local-research/storyteller/RimWorld.StatPart_Stuff.cs",
+      "sha256": "e5f3e99d67b19d386c0e48080cc2d6cb2e06034f79608590aee91209641d7633",
+      "lines": 51
+    },
+    {
+      "type": "RimWorld.HistoryAutoRecorder",
+      "local_file": ".local-research/storyteller/RimWorld.HistoryAutoRecorder.cs",
+      "sha256": "8a82e6457bbd329bbd52f9d584529e58a9f447b37dd6e004220b91ab3b490a1f",
+      "lines": 68
+    },
+    {
+      "type": "RimWorld.HistoryAutoRecorderDef",
+      "local_file": ".local-research/storyteller/RimWorld.HistoryAutoRecorderDef.cs",
+      "sha256": "5de6b2845ff62561b0f3fa6e55b3f72fc26a5a824b05aeedf2007bc9c5c9076a",
+      "lines": 40
+    },
+    {
+      "type": "RimWorld.HistoryAutoRecorderWorker_ThreatPoints",
+      "local_file": ".local-research/storyteller/RimWorld.HistoryAutoRecorderWorker_ThreatPoints.cs",
+      "sha256": "a86aba483e7234904a69480044be73115b036b7f49ac07eb60f34c8617974a8c",
+      "lines": 16
+    },
+    {
+      "type": "Verse.DebugOutputsEconomy",
+      "local_file": ".local-research/storyteller/Verse.DebugOutputsEconomy.cs",
+      "sha256": "e26b07d31d67259475beced8fed7bbf793e84a25f2a901d3c5ea5b7025fa5e3f",
+      "lines": 776
+    },
+    {
+      "type": "Verse.DebugOutputsIncidents",
+      "local_file": ".local-research/storyteller/Verse.DebugOutputsIncidents.cs",
+      "sha256": "2a212a500c7cc70834cd50f0398b4de6d344c1ba227536a0896a71fe8c2a1bdd",
+      "lines": 442
+    },
+    {
+      "type": "RimWorld.StorytellerComp_RandomMain",
+      "local_file": ".local-research/storyteller/RimWorld.StorytellerComp_RandomMain.cs",
+      "sha256": "0e6489e447a59ffedf2ec138d0c52a44dd6f0ec58e32b1d0a04750cd4d7403ee",
+      "lines": 60
+    },
+    {
+      "type": "RimWorld.StorytellerCompProperties_RandomMain",
+      "local_file": ".local-research/storyteller/RimWorld.StorytellerCompProperties_RandomMain.cs",
+      "sha256": "cfe779786183de4a83509de47696be281f69b07e9b85aefd5773e4023cfe23d3",
+      "lines": 27
+    },
+    {
+      "type": "RimWorld.Storyteller",
+      "local_file": ".local-research/storyteller/RimWorld.Storyteller.cs",
+      "sha256": "2d252032a7e13b250c72bc97e0514c4441174ce9e895f28b6db8b986daf17297",
+      "lines": 418
+    },
+    {
+      "type": "RimWorld.StorytellerComp",
+      "local_file": ".local-research/storyteller/RimWorld.StorytellerComp.cs",
+      "sha256": "90a84f295616cde744e53a88789829d6267d0976e886ea310aff65ab4bfd72fa",
+      "lines": 202
+    },
+    {
+      "type": "RimWorld.StorytellerComp_ClassicIntro",
+      "local_file": ".local-research/storyteller/RimWorld.StorytellerComp_ClassicIntro.cs",
+      "sha256": "96627a1f7a09eae29664b8cd1bce51ab38ad0f1b7673a9c93773840f265ff532",
+      "lines": 64
+    },
+    {
+      "type": "RimWorld.StorytellerCompProperties_ClassicIntro",
+      "local_file": ".local-research/storyteller/RimWorld.StorytellerCompProperties_ClassicIntro.cs",
+      "sha256": "b356c5df7a1177abec8439cfeeefbbd3df9e5e4b2336691283eb99d2ad7d3743",
+      "lines": 10
+    },
+    {
+      "type": "RimWorld.PawnWeaponGenerator",
+      "local_file": ".local-research/storyteller/RimWorld.PawnWeaponGenerator.cs",
+      "sha256": "3ad5c727edf09006d2306bc4894505454696ceebbfc863a6cba08bcb245665a8",
+      "lines": 188
+    },
+    {
+      "type": "RimWorld.RaidStrategyWorker_ImmediateAttack",
+      "local_file": ".local-research/storyteller/RimWorld.RaidStrategyWorker_ImmediateAttack.cs",
+      "sha256": "3565e4bd80ce2644712109b44df58064a2c506428cf124cfe8c33ea1b6251260",
+      "lines": 24
+    },
+    {
+      "type": "RimWorld.RaidStrategyWorker",
+      "local_file": ".local-research/storyteller/RimWorld.RaidStrategyWorker.cs",
+      "sha256": "277dc97c09e17ac4c9d6c3321218500828774e94d9b1927d5f0c6fbb88736d84",
+      "lines": 142
+    },
+    {
+      "type": "RimWorld.RaidStrategyDef",
+      "local_file": ".local-research/storyteller/RimWorld.RaidStrategyDef.cs",
+      "sha256": "62b679a17b1262d2ac0bca5ec756ca96c98ed816365598bd2c90ac8707b960ff",
+      "lines": 56
+    },
+    {
+      "type": "Verse.Corpse",
+      "local_file": ".local-research/storyteller/Verse.Corpse.cs",
+      "sha256": "d1cc43887a753253145387cface5acbf12914b72a8a690ed8da090de053e85f8",
+      "lines": 529
+    },
+    {
+      "type": "Verse.ThingOwnerUtility",
+      "local_file": ".local-research/storyteller/Verse.ThingOwnerUtility.cs",
+      "sha256": "e2136e956dbeb27afd6f30b4bbdf83c3d88971bdc7b505cbccc7d0266ea539c9",
+      "lines": 412
+    },
+    {
+      "type": "Verse.DebugOutputsGeneral",
+      "local_file": ".local-research/storyteller/Verse.DebugOutputsGeneral.cs",
+      "sha256": "9b4455ad3b05fd32365d21ab55cd706b9f83fbf2a52e4e44260cddc44244043d",
+      "lines": 459
+    },
+    {
+      "type": "RimWorld.Frame",
+      "local_file": ".local-research/storyteller/RimWorld.Frame.cs",
+      "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+      "lines": 607
+    },
+    {
+      "type": "RimWorld.MainTabWindow_History",
+      "local_file": ".local-research/storyteller/RimWorld.MainTabWindow_History.cs",
+      "sha256": "bff609cd856bf9bca900ba256e18eb9f9eba573cd0377b715133d95258802dd2",
+      "lines": 378
+    },
+    {
+      "type": "RimWorld.PriceUtility",
+      "local_file": ".local-research/storyteller/RimWorld.PriceUtility.cs",
+      "sha256": "9437acd3ea698ce4c84d052293eb2ba3c7da0e0d2c214fb6235cdbe26f3e4084",
+      "lines": 90
+    },
+    {
+      "type": "RimWorld.StatPart_Biocoded",
+      "local_file": ".local-research/storyteller/RimWorld.StatPart_Biocoded.cs",
+      "sha256": "304f0f2cc2a98218cd7d1837e37615dfbb8e5f91fae6fd003fc60a7d48d89186",
+      "lines": 18
+    },
+    {
+      "type": "RimWorld.StatPart_Health",
+      "local_file": ".local-research/storyteller/RimWorld.StatPart_Health.cs",
+      "sha256": "08d4ff196049da78baa56170a2f90cb65bb371c6931f408910163910d72255cf",
+      "lines": 26
+    },
+    {
+      "type": "RimWorld.StatPart_IsCorpseFresh",
+      "local_file": ".local-research/storyteller/RimWorld.StatPart_IsCorpseFresh.cs",
+      "sha256": "f77cce8c8b5c9be4a2815c48dd79c10601444b7cb687aa983d1097010e293a77",
+      "lines": 40
+    },
+    {
+      "type": "RimWorld.StatPart_WornByCorpse",
+      "local_file": ".local-research/storyteller/RimWorld.StatPart_WornByCorpse.cs",
+      "sha256": "3d98b4d5e13fe8b7671be7018130e53e4918722877ed47ff7e193bef75e4fd35",
+      "lines": 26
+    },
+    {
+      "type": "RimWorld.ThingDefGenerator_Buildings",
+      "local_file": ".local-research/storyteller/RimWorld.ThingDefGenerator_Buildings.cs",
+      "sha256": "5bfd1107539e4e59b65f76a4a4178bfbb772eb8708e1fbe45462ad940844db49",
+      "lines": 294
+    },
+    {
+      "type": "RimWorld.ThingDefGenerator_Corpses",
+      "local_file": ".local-research/storyteller/RimWorld.ThingDefGenerator_Corpses.cs",
+      "sha256": "9ded26860ae46392aa35a054c178c8adb9f81e54beee848ff1358813169158bf",
+      "lines": 235
+    },
+    {
+      "type": "RimWorld.FactionDef",
+      "local_file": ".local-research/storyteller/RimWorld.FactionDef.cs",
+      "sha256": "fe7b592b2bbbfaa4bec345aafe4ddaf890b5eb033332034e52a8cbe0b9f0deea",
+      "lines": 585
+    },
+    {
+      "type": "Verse.ThingRequestGroupUtility",
+      "local_file": ".local-research/storyteller/Verse.ThingRequestGroupUtility.cs",
+      "sha256": "a762745abc03a9852779fd3885a7a78c47a33a32b524cd38e5659e9f249407f2",
+      "lines": 97
+    },
+    {
+      "type": "RimWorld.ThingStuffPair",
+      "local_file": ".local-research/storyteller/RimWorld.ThingStuffPair.cs",
+      "sha256": "5fcdfb4dce60edd576133aaa74651b652699b35b15ba9cf5386f8dd567cae8b7",
+      "lines": 151
+    },
+    {
+      "type": "Verse.SummaryHealthHandler",
+      "local_file": ".local-research/storyteller/Verse.SummaryHealthHandler.cs",
+      "sha256": "486a3ec2c4c3e9a9874f6b52861726dbeb94844602190404d05c68f3bd2f1359",
+      "lines": 57
+    },
+    {
+      "type": "RimWorld.PawnGroupMaker",
+      "local_file": ".local-research/storyteller/RimWorld.PawnGroupMaker.cs",
+      "sha256": "90d2a855ed6c8e449b9bbb136c4f6393a8b2af553effa4afb9bc65bd6962c192",
+      "lines": 60
+    },
+    {
+      "type": "Verse.ThingListGroupHelper",
+      "local_file": ".local-research/storyteller/Verse.ThingListGroupHelper.cs",
+      "sha256": "52528b69946437e4d8f5d250d5984d50452a431d58d42a603b550deb2e96cfe7",
+      "lines": 243
+    },
+    {
+      "type": "Verse.PawnGenerator",
+      "local_file": ".local-research/storyteller/Verse.PawnGenerator.cs",
+      "sha256": "96e7447c568916a4eb9aa4d334723567d9b09dc939636f5dcdfee484dcc42180",
+      "lines": 2173
+    }
+  ]
+}

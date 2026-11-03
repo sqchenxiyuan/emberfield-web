@@ -18,7 +18,7 @@ import { RESEARCH_DEFS, toolResearchReason } from './research';
 import { ApparelPanel, WearApparel } from './ApparelPanel';
 import { TailorPanel } from './TailorPanel';
 import { ArmorBenchPanel } from './ArmorPanel';
-import { CombatPanel, ThreatControl } from './CombatPanel';
+import { CombatPanel, ThreatControl, storyOpportunityText } from './CombatPanel';
 import { WeaponPanel, WeaponBenchPanel, EquipWeapon } from './WeaponPanel';
 import { weaponName } from './weapons';
 import { WEAPON_BENCH_NAMES } from './weaponProduction';
@@ -508,16 +508,25 @@ function App() {
           </div>
         ))}
         <p>包括散落、携带、穿戴和工地材料</p>
+        {s && (
+          <button
+            className="voxel-storyteller-open"
+            aria-label="查看财富与压力"
+            onClick={() => {
+              void client.speed(0);
+              setMenu(true);
+            }}
+          >
+            财富与压力
+            <small>估值 {s.storyteller.threat.totalWealth.toLocaleString('zh-CN', { maximumFractionDigits: 0 })}</small>
+          </button>
+        )}
         {s &&
           (s.combat.enabled ||
             s.pawns.some((v) => v.faction === 'raider' && !v.dead && !v.downed)) && (
             <details open data-testid="raid-status">
               <summary>营地安全</summary>
-              <small>
-                {s.combat.enabled
-                  ? `下次来袭约 ${Math.max(0, (s.combat.nextRaid - s.tick) / DAY).toFixed(2)} 天`
-                  : '后续袭击已关闭'}
-              </small>
+              <small>{storyOpportunityText(s)}</small>
               {s.pawns
                 .filter((v) => v.faction === 'raider' && !v.dead)
                 .map((v) => (

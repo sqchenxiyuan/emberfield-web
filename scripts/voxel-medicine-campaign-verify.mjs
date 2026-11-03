@@ -268,7 +268,7 @@ function mineTo(resource, block, target) {
   assert(s.counts()[resource] >= target, `${resource} excavation target`);
 }
 async function opening() {
-  assert.equal(s.save().version, 19);
+  assert.equal(s.save().version, 20);
   assert.equal(s.counts().herb, 0);
   const free = surface(),
     reserved = new Set();
@@ -661,9 +661,9 @@ try {
       command({ type: 'threats', enabled: true });
       const wave = s.combat.wave;
       until(
-        'three actual preparation days pass before the next scheduled raid',
+        'the current storyteller calendar reaches an eligible raid opportunity',
         () => s.combat.wave > wave,
-        DAY * 4,
+        DAY * 15,
       );
       command({ type: 'threats', enabled: false });
       const raider = s.pawns.findLast((p) => p.faction === 'raider' && !p.dead && !p.downed);

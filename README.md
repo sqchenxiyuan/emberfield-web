@@ -6,6 +6,8 @@
 
 在线试玩：[GitHub Pages](https://sqchenxiyuan.github.io/emberfield-web/) · 源码：[sqchenxiyuan/emberfield-web](https://github.com/sqchenxiyuan/emberfield-web)。
 
+2026-11-03财富与叙事更新（v20）：多层体素模式按实物统计物品、建筑和殖民者财富，结合健康人口、难度、营地年龄和伤亡适应计算威胁。菜单可选择六档难度并展开财富/压力明细。Cassandra 的初始袭击机会在第5.4天；第11天起按4.6天活动、6天休息的周期安排1–2次机会，是否入场仍需检查。袭击按预算组成多人队伍，关闭再开启不会重置日历。旧v19待发生袭击保留一次，旧墙/地板身份不明的格子使用明确标记的兼容估值。当前只实现Cassandra袭击与三种低阶海盗兵种子集，未实现贸易、其他叙事者、围攻及完整事件库。[63原版机制](docs/research/rimworld/63-storyteller-wealth-mechanisms.md)、[64原版财富实机](docs/research/rimworld/64-native-storyteller-runtime.md)、[65实现与验证](docs/research/rimworld/65-voxel-storyteller-validation.md)记录证据和实际验收状态。
+
 2026-11-03医疗更新（v19）：多层体素模式加入药根种植与实体草药、三档护理策略、伤口感染、共享免疫和实际卧床休养。种植8级可播药根，医生从真实药堆取药并逐批护理；草药可以跨层入库和冷藏，护理不会立刻抹掉伤口或疾病。人物面板显示病情、免疫、护理期限和实际医生进度。旧档保留营地，旧伤不补抽感染。[60原版机制](docs/research/rimworld/60-medicine-infection-mechanisms.md)、[61实机护理](docs/research/rimworld/61-native-medicine-runtime.md)、[62实现与验收](docs/research/rimworld/62-voxel-medicine-implementation.md)区分来源和适配。工业药、医院床、自疗、手术和其他疾病尚未实现。
 
 2026-11-03远程战斗（v18）：多层体素模式加入短弓、左轮、冲锋手枪、供电机械加工台和布沙袋。先研究锻造→机械加工→枪械制造/反冲式自动武器，再用实际木材、钢材和零件制造；楼上机械台需要跨层布线。征召后选择目标射击，瞄准、连发、飞行、掩体、误伤及护甲伤口由模拟推进，检查面板显示命中因素。旧档保留现有营地和制作进度，新枪械科技需要研究。[57原版规则](docs/research/rimworld/57-ranged-combat-mechanisms.md)、[58实机观察](docs/research/rimworld/58-native-ranged-runtime.md)、[59实现与验收](docs/research/rimworld/59-voxel-ranged-implementation.md)分别记录来源、三维适配和验证边界。
@@ -40,7 +42,7 @@
 
 2026-11-03衣物裁缝更新：棉花成熟直接产布，3×1 手工裁缝台用 75 木材建造，可制作无边帽、派克大衣、长外套、T 恤和长裤。点击衣物指定同伴取穿，人物衣着栏可脱下；旧衣物真实落地，穿着改变温度耐受并逐日磨损。新营地每人有普通布衫和长裤，v11 保留旧营地原有状态，不补发衣物。当前只开放布材质，制作固定普通品质、研究预解锁。[36原版规则](docs/research/rimworld/36-apparel-tailoring-mechanisms.md)、[37实机验证](docs/research/rimworld/37-native-apparel-runtime.md)、[38实现验收](docs/research/rimworld/38-voxel-apparel-implementation.md)分别说明来源与适配。
 
-2026-11-03外伤更新：菜单可开启有三日准备期的袭击，殖民者支持征召、近战和战术移动。真实外伤进入疼痛、失血与能力计算；医护实际赶路逐处无药包扎，包扎后仍需恢复。败退敌人恢复后沿通路离场，v12保留旧营地和平设置。[39原版规则](docs/research/rimworld/39-injuries-medicine-mechanisms.md)、[40原版护理实机](docs/research/rimworld/40-native-injuries-runtime.md)、[41实现边界与验收](docs/research/rimworld/41-voxel-combat-injuries-implementation.md)。当前七区人体、固定命中与袭击节奏为项目适配；无完整护甲、药物感染和俘虏系统。
+2026-11-03外伤历史更新（v12，固定准备期已由v20日历替代）：当时菜单可开启有三日准备期的袭击，殖民者支持征召、近战和战术移动。真实外伤进入疼痛、失血与能力计算；医护实际赶路逐处无药包扎，包扎后仍需恢复。败退敌人恢复后沿通路离场，v12保留旧营地和平设置。[39原版规则](docs/research/rimworld/39-injuries-medicine-mechanisms.md)、[40原版护理实机](docs/research/rimworld/40-native-injuries-runtime.md)、[41实现边界与验收](docs/research/rimworld/41-voxel-combat-injuries-implementation.md)。当前七区人体、固定命中与袭击节奏为项目适配；无完整护甲、药物感染和俘虏系统。
 
 2026-11-03实体武器更新：免费制作点可制作木棒和钢匕首，100 钢材建造的燃料锻造台还可制作钢长剑。工人实际运料、加工和搬运成品；点击武器查看信息、安排取用，人物面板可放下。更换旧武器落地，主动丢弃和地面倒地后的武器禁止自动搬运，明确装备可解除。v13 保存武器身份、耐久、燃料和中途任务，该阶段420项单元测试通过；后续技能和品质见下方v14更新。无环境腐蚀或完整护甲。[42规则研究](docs/research/rimworld/42-weapons-crafting-equipment-mechanisms.md)、[43原版正常制作与换装](docs/research/rimworld/43-native-weapons-runtime.md)、[44实现与验证](docs/research/rimworld/44-voxel-weapons-implementation.md)。
 

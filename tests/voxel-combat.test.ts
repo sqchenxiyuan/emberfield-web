@@ -117,6 +117,7 @@ describe('voxel combat and physical tending', () => {
     ])
       for (const z of [8, 9]) s.blocks[index(x, y, z)] = Block.Wood;
     s.combat = { enabled: true, nextRaid: 1, wave: 0 };
+    s.storyteller.legacyRaidAt = 1;
     s.step();
     expect(s.pawns.filter((p) => p.faction === 'raider')).toHaveLength(1);
     expect(s.combat.wave).toBe(1);
@@ -183,7 +184,7 @@ describe('voxel combat and physical tending', () => {
     );
     const s = VoxelSimulation.load(old);
     expect(old.version).toBe(11);
-    expect(s.save().version).toBe(19);
+    expect(s.save().version).toBe(20);
     expect(s.combat).toEqual({ enabled: false, nextRaid: 0, wave: 0 });
     expect(s.pawns.map((p) => [p.id, p.food, p.rest, p.worn])).toEqual(
       old.pawns.map((p: any) => [p.id, p.food, p.rest, p.worn]),
@@ -255,10 +256,10 @@ describe('voxel combat and physical tending', () => {
     expect(patient.trauma.wounds[0].tendQuality).toBeNull();
     expect(() => VoxelSimulation.load(s.save())).not.toThrow();
   });
-  it('persists opt-in raid dates and does not postpone them by repeatedly enabling the option', () => {
+  it('persists opt-in storyteller checks without resetting the calendar when repeatedly enabled', () => {
     let s = fixture();
     command(s, { type: 'threats', enabled: true });
-    const due = s.tick + DAY * 3;
+    const due = (Math.floor(s.tick / 200) + 1) * 200;
     expect(s.combat.nextRaid).toBe(due);
     s.step(100);
     command(s, { type: 'threats', enabled: true });

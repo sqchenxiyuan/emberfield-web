@@ -3,6 +3,7 @@ import type { MedicalState, MedicalPolicy } from './medicine';
 import type { WeaponPiece, WeaponKind, WeaponBenchKind } from './weapons';
 import type { SkillSet } from './skills';
 import type { ResearchKey, ResearchState } from './research';
+import type { Difficulty, StorytellerState, StorytellerView } from './storyteller';
 // Voxel rules are Emberfield designs. See research/10 for source boundaries.
 export const WIDTH = 64,
   DEPTH = 64,
@@ -608,6 +609,7 @@ export interface VoxelStats {
 }
 export interface VoxelSnapshot {
   combat: CombatState;
+  storyteller: StorytellerView;
   projectiles: Projectile[];
   combatEvents: CombatEvent[];
   sandbags: Sandbag[];
@@ -664,6 +666,7 @@ export interface ChunkUpdate {
 }
 export type VoxelCommand =
   | { type: 'research'; project: ResearchKey | null }
+  | { type: 'difficulty'; difficulty: Difficulty }
   | { type: 'threats'; enabled: boolean }
   | { type: 'draft'; pawnId: number; drafted: boolean }
   | { type: 'attack'; pawnId: number; targetId: number }
@@ -714,8 +717,10 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 19;
+  version: 20;
   combat: CombatState;
+  storyteller: StorytellerState;
+  structureKinds: number[];
   projectiles: Projectile[];
   combatEvents: CombatEvent[];
   sandbags: Sandbag[];

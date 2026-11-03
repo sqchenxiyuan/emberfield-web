@@ -233,7 +233,7 @@ try {
   assert.equal(sha(bytes), '8063226ef027897139f295a02e8b53963c94f1c48853c2c83e36edf1d628d36d');
   const migrated = VoxelSimulation.load(old);
   const after = migrated.save();
-  assert.equal(after.version, 19);
+  assert.equal(after.version, 20);
   assert.equal(migrated.counts().stone, 15);
   assert.equal(migrated.counts().chunk, 0);
   assert.deepEqual(after.stockpiles, old.stockpiles);

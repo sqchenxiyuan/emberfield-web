@@ -1,0 +1,1834 @@
+[
+  {
+    "id": "SV01",
+    "model": "market",
+    "title": "低价值保留小数",
+    "inputs": {
+      "base": 63.48
+    },
+    "expected": {
+      "afterQuality": 63.48,
+      "health": 1,
+      "raw": 63.48,
+      "value": 63.48
+    },
+    "claims": [
+      "ST01",
+      "ST02"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV02",
+    "model": "market",
+    "title": "正收益封顶再乘耐久",
+    "inputs": {
+      "base": 4000,
+      "quality": 6,
+      "hp": 0.5
+    },
+    "expected": {
+      "afterQuality": 7000,
+      "health": 0.1,
+      "raw": 700,
+      "value": 700
+    },
+    "claims": [
+      "ST02"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV03",
+    "model": "market",
+    "title": "穷困品质不是正收益归零",
+    "inputs": {
+      "base": 100,
+      "quality": 1
+    },
+    "expected": {
+      "afterQuality": 75,
+      "health": 1,
+      "raw": 75,
+      "value": 75
+    },
+    "claims": [
+      "ST02"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV04",
+    "model": "market",
+    "title": "耐久50%仅值10%",
+    "inputs": {
+      "base": 100,
+      "hp": 0.5
+    },
+    "expected": {
+      "afterQuality": 100,
+      "health": 0.1,
+      "raw": 10,
+      "value": 10
+    },
+    "claims": [
+      "ST02"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV05",
+    "model": "market",
+    "title": "耐久60%价值50%",
+    "inputs": {
+      "base": 100,
+      "hp": 0.6
+    },
+    "expected": {
+      "afterQuality": 100,
+      "health": 0.5,
+      "raw": 50,
+      "value": 50
+    },
+    "claims": [
+      "ST02"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV06",
+    "model": "market",
+    "title": "90%进入满价平台",
+    "inputs": {
+      "base": 100,
+      "hp": 0.95
+    },
+    "expected": {
+      "afterQuality": 100,
+      "health": 1,
+      "raw": 100,
+      "value": 100
+    },
+    "claims": [
+      "ST02"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV07",
+    "model": "market",
+    "title": "建筑IgnoreHp",
+    "inputs": {
+      "base": 100,
+      "hp": 0.1,
+      "ignoreHp": true
+    },
+    "expected": {
+      "afterQuality": 100,
+      "health": 1,
+      "raw": 100,
+      "value": 100
+    },
+    "claims": [
+      "ST02",
+      "ST04"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV08",
+    "model": "market",
+    "title": "禁用耐久价格的Def",
+    "inputs": {
+      "base": 100,
+      "hp": 0,
+      "healthAffectsPrice": false
+    },
+    "expected": {
+      "afterQuality": 100,
+      "health": 1,
+      "raw": 100,
+      "value": 100
+    },
+    "claims": [
+      "ST02"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV09",
+    "model": "market",
+    "title": "生物编码价值零",
+    "inputs": {
+      "base": 100,
+      "biocoded": true
+    },
+    "expected": {
+      "afterQuality": 100,
+      "health": 1,
+      "raw": 0,
+      "value": 0
+    },
+    "claims": [
+      "ST03"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV10",
+    "model": "market",
+    "title": "尸衣折扣在最终取整前",
+    "inputs": {
+      "base": 254.8,
+      "tainted": true,
+      "hp": 0.6
+    },
+    "expected": {
+      "afterQuality": 254.8,
+      "health": 0.5,
+      "raw": 12.74,
+      "value": 12.74
+    },
+    "claims": [
+      "ST02",
+      "ST03"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV11",
+    "model": "market",
+    "title": "不要先把长剑254.8取为255",
+    "inputs": {
+      "base": 254.8,
+      "hp": 0.6
+    },
+    "expected": {
+      "afterQuality": 254.8,
+      "health": 0.5,
+      "raw": 127.4,
+      "value": 127.4
+    },
+    "claims": [
+      "ST01",
+      "ST02"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV12",
+    "model": "market",
+    "title": "202.5 ties-to-even到200",
+    "inputs": {
+      "base": 202.5
+    },
+    "expected": {
+      "afterQuality": 202.5,
+      "health": 1,
+      "raw": 202.5,
+      "value": 200
+    },
+    "claims": [
+      "ST02"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV13",
+    "model": "market",
+    "title": "207.5 ties-to-even到210",
+    "inputs": {
+      "base": 207.5
+    },
+    "expected": {
+      "afterQuality": 207.5,
+      "health": 1,
+      "raw": 207.5,
+      "value": 210
+    },
+    "claims": [
+      "ST02"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV14",
+    "model": "market",
+    "title": "Scenario在最终取整前",
+    "inputs": {
+      "base": 254.8,
+      "scenario": 0.5
+    },
+    "expected": {
+      "afterQuality": 254.8,
+      "health": 1,
+      "raw": 127.4,
+      "value": 127.4
+    },
+    "claims": [
+      "ST02"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV15",
+    "model": "market",
+    "title": "腐败尸体零价",
+    "inputs": {
+      "base": 500,
+      "fresh": false
+    },
+    "expected": {
+      "afterQuality": 500,
+      "health": 1,
+      "raw": 0,
+      "value": 0
+    },
+    "claims": [
+      "ST03"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV16",
+    "model": "wealth",
+    "title": "地面到搬运到框架价值相同",
+    "inputs": {
+      "items": [
+        {
+          "value": 1.2,
+          "count": 10
+        },
+        {
+          "value": 1.2,
+          "count": 10,
+          "holder": "colonist"
+        },
+        {
+          "value": 1.2,
+          "count": 10,
+          "holder": "frame"
+        }
+      ]
+    },
+    "expected": {
+      "items": 36,
+      "buildings": 0,
+      "pawns": 0,
+      "total": 36,
+      "storyteller": 36
+    },
+    "claims": [
+      "ST05",
+      "ST06"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV17",
+    "model": "wealth",
+    "title": "不可见和被过滤容器不计",
+    "inputs": {
+      "items": [
+        {
+          "value": 100,
+          "visible": false
+        },
+        {
+          "value": 100,
+          "spawned": false
+        },
+        {
+          "value": 100,
+          "holder": "enemy"
+        },
+        {
+          "value": 100,
+          "holder": "quest"
+        },
+        {
+          "value": 100,
+          "holder": "ship"
+        },
+        {
+          "value": 100,
+          "holder": "component"
+        },
+        {
+          "value": 10,
+          "player": false
+        }
+      ]
+    },
+    "expected": {
+      "items": 10,
+      "buildings": 0,
+      "pawns": 0,
+      "total": 10,
+      "storyteller": 10
+    },
+    "claims": [
+      "ST05"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV18",
+    "model": "wealth",
+    "title": "建筑完整价值与地板foundation",
+    "inputs": {
+      "buildings": [
+        {
+          "ignoreHpValue": 100,
+          "hp": 0.1
+        },
+        {
+          "ignoreHpValue": 500,
+          "artificial": false
+        },
+        {
+          "ignoreHpValue": 500,
+          "player": false
+        }
+      ],
+      "floors": [
+        {
+          "value": 4
+        },
+        {
+          "value": 4,
+          "visible": false
+        },
+        {
+          "value": 4,
+          "foundation": true,
+          "visible": false
+        }
+      ]
+    },
+    "expected": {
+      "items": 0,
+      "buildings": 108,
+      "pawns": 0,
+      "total": 108,
+      "storyteller": 54
+    },
+    "claims": [
+      "ST04"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV19",
+    "model": "wealth",
+    "title": "任务住客死亡敌人排除奴隶折扣",
+    "inputs": {
+      "pawns": [
+        {
+          "value": 100
+        },
+        {
+          "value": 100,
+          "slave": true
+        },
+        {
+          "value": 100,
+          "quest": true
+        },
+        {
+          "value": 100,
+          "dead": true
+        },
+        {
+          "value": 100,
+          "player": false
+        }
+      ]
+    },
+    "expected": {
+      "items": 0,
+      "buildings": 0,
+      "pawns": 175,
+      "total": 175,
+      "storyteller": 175
+    },
+    "claims": [
+      "ST04"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV20",
+    "model": "wealth",
+    "title": "未完成品和燃料不变成材料容器",
+    "inputs": {
+      "items": [
+        {
+          "value": 0,
+          "holder": "unfinished"
+        }
+      ],
+      "buildings": [
+        {
+          "ignoreHpValue": 265,
+          "fuel": 75,
+          "energy": 600
+        }
+      ]
+    },
+    "expected": {
+      "items": 0,
+      "buildings": 265,
+      "pawns": 0,
+      "total": 265,
+      "storyteller": 132.5
+    },
+    "claims": [
+      "ST06"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV21",
+    "model": "summaryHealth",
+    "title": "两伤口连乘非相加",
+    "inputs": {
+      "hediffs": [
+        {
+          "kind": "injury",
+          "severity": 15
+        },
+        {
+          "kind": "injury",
+          "severity": 15
+        }
+      ]
+    },
+    "expected": {
+      "value": 0.64
+    },
+    "claims": [
+      "ST08"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV22",
+    "model": "summaryHealth",
+    "title": "永久与疾病自身不减综合健康",
+    "inputs": {
+      "hediffs": [
+        {
+          "kind": "injury",
+          "severity": 20,
+          "permanent": true
+        },
+        {
+          "kind": "disease",
+          "severity": 0.9
+        }
+      ]
+    },
+    "expected": {
+      "value": 1
+    },
+    "claims": [
+      "ST08"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV23",
+    "model": "summaryHealth",
+    "title": "缺失祖先只算一次",
+    "inputs": {
+      "hediffs": [
+        {
+          "kind": "missing",
+          "basePartHp": 30,
+          "freshNonSolid": true,
+          "tags": true
+        },
+        {
+          "kind": "missing",
+          "basePartHp": 10,
+          "freshNonSolid": true,
+          "tags": true,
+          "commonAncestor": false
+        }
+      ]
+    },
+    "expected": {
+      "value": 0.6
+    },
+    "claims": [
+      "ST08"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV24",
+    "model": "summaryHealth",
+    "title": "旧伤断肢不再直接减综合健康",
+    "inputs": {
+      "hediffs": [
+        {
+          "kind": "missing",
+          "basePartHp": 30,
+          "freshNonSolid": false,
+          "tags": true
+        }
+      ]
+    },
+    "expected": {
+      "value": 1
+    },
+    "claims": [
+      "ST08"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV25",
+    "model": "summaryHealth",
+    "title": "活体下限5%",
+    "inputs": {
+      "hediffs": [
+        {
+          "kind": "injury",
+          "severity": 100
+        },
+        {
+          "kind": "injury",
+          "severity": 100
+        }
+      ]
+    },
+    "expected": {
+      "value": 0.05
+    },
+    "claims": [
+      "ST08"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV26",
+    "model": "summaryHealth",
+    "title": "死亡直接零",
+    "inputs": {
+      "dead": true
+    },
+    "expected": {
+      "value": 0
+    },
+    "claims": [
+      "ST08"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV27",
+    "model": "summaryHealth",
+    "title": "身体比例影响伤口",
+    "inputs": {
+      "scale": 2,
+      "hediffs": [
+        {
+          "kind": "injury",
+          "severity": 15
+        }
+      ]
+    },
+    "expected": {
+      "value": 0.9
+    },
+    "claims": [
+      "ST08"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV28",
+    "model": "pawnPrice",
+    "title": "健康全技能均值5.5",
+    "inputs": {
+      "skills": [
+        5,
+        6
+      ]
+    },
+    "expected": {
+      "factor": 1,
+      "unfinalized": 1750,
+      "age": 1,
+      "value": 1750
+    },
+    "claims": [
+      "ST09"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV29",
+    "model": "pawnPrice",
+    "title": "零技能仍有人物价值",
+    "inputs": {
+      "skills": [
+        0,
+        0
+      ]
+    },
+    "expected": {
+      "factor": 0.2,
+      "unfinalized": 350,
+      "age": 1,
+      "value": 350
+    },
+    "claims": [
+      "ST09"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV30",
+    "model": "pawnPrice",
+    "title": "能力半值产生.75因子",
+    "inputs": {
+      "capacities": [
+        {
+          "level": 0.5
+        }
+      ]
+    },
+    "expected": {
+      "factor": 0.75,
+      "unfinalized": 1312.5,
+      "age": 1,
+      "value": 1310
+    },
+    "claims": [
+      "ST09"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV31",
+    "model": "pawnPrice",
+    "title": "不可用走.6不是.5",
+    "inputs": {
+      "capacities": [
+        {
+          "level": 0,
+          "capable": false
+        }
+      ]
+    },
+    "expected": {
+      "factor": 0.6,
+      "unfinalized": 1050,
+      "age": 1,
+      "value": 1050
+    },
+    "claims": [
+      "ST09"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV32",
+    "model": "pawnPrice",
+    "title": "价因子下限并保留低价小数",
+    "inputs": {
+      "traitOffset": -2,
+      "hediffOffset": 0.25
+    },
+    "expected": {
+      "factor": 0.1,
+      "unfinalized": 175.25,
+      "age": 1,
+      "value": 175.25
+    },
+    "claims": [
+      "ST09"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV33",
+    "model": "pawnPrice",
+    "title": "Biotech儿童额外年龄倍率",
+    "inputs": {
+      "biotech": true,
+      "age": 3
+    },
+    "expected": {
+      "factor": 1,
+      "unfinalized": 1750,
+      "age": 0.5,
+      "value": 875
+    },
+    "claims": [
+      "ST09"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV34",
+    "model": "pawnPrice",
+    "title": "健康与能力是不同因子",
+    "inputs": {
+      "summaryHealth": 0.5,
+      "capacities": [
+        {
+          "level": 0.5
+        }
+      ]
+    },
+    "expected": {
+      "factor": 0.45,
+      "unfinalized": 787.5,
+      "age": 1,
+      "value": 790
+    },
+    "claims": [
+      "ST08",
+      "ST09"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV35",
+    "model": "threat",
+    "title": "三人基地产生财富和人口两部分",
+    "inputs": {
+      "items": 20000,
+      "buildings": 20000,
+      "pawns": 6000,
+      "health": [
+        1,
+        1,
+        1
+      ],
+      "days": 10
+    },
+    "expected": {
+      "wealth": 36000,
+      "wealthPoints": 136.78756476683938,
+      "populationPoints": 70,
+      "adapt": 0.82,
+      "days": 0.7,
+      "min": 35,
+      "raw": 118.6960621761658,
+      "points": 118.6960621761658
+    },
+    "claims": [
+      "ST10"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV36",
+    "model": "threat",
+    "title": "零财富仍受全局下限",
+    "inputs": {
+      "items": 0,
+      "buildings": 0,
+      "pawns": 0,
+      "health": [],
+      "days": 35,
+      "roll": 0.5
+    },
+    "expected": {
+      "wealth": 0,
+      "wealthPoints": 0,
+      "populationPoints": 0,
+      "adapt": 0.82,
+      "days": 0.95,
+      "min": 52.5,
+      "raw": 0,
+      "points": 52.5
+    },
+    "claims": [
+      "ST10"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV37",
+    "model": "threat",
+    "title": "结算天整数而下限天连续",
+    "inputs": {
+      "items": 0,
+      "buildings": 0,
+      "pawns": 0,
+      "health": [],
+      "days": 20.9,
+      "roll": 1
+    },
+    "expected": {
+      "wealth": 0,
+      "wealthPoints": 0,
+      "populationPoints": 0,
+      "adapt": 0.82,
+      "days": 0.8,
+      "min": 48.54347826086956,
+      "raw": 0,
+      "points": 48.54347826086956
+    },
+    "claims": [
+      "ST10"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV38",
+    "model": "threat",
+    "title": "健康一半人口仍贡献67.5%",
+    "inputs": {
+      "items": 10000,
+      "buildings": 0,
+      "pawns": 0,
+      "health": [
+        0.5
+      ],
+      "days": 40,
+      "adapt": 30
+    },
+    "expected": {
+      "wealth": 10000,
+      "wealthPoints": 0,
+      "populationPoints": 10.125,
+      "adapt": 1,
+      "days": 1,
+      "min": 35,
+      "raw": 10.125,
+      "points": 35
+    },
+    "claims": [
+      "ST10"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV39",
+    "model": "threat",
+    "title": "财富曲线端点封顶和威胁10000",
+    "inputs": {
+      "items": 2000000,
+      "buildings": 0,
+      "pawns": 0,
+      "health": [
+        1,
+        1,
+        1
+      ],
+      "days": 40,
+      "adapt": 30,
+      "scale": 3
+    },
+    "expected": {
+      "wealth": 2000000,
+      "wealthPoints": 4200,
+      "populationPoints": 600,
+      "adapt": 1,
+      "days": 1,
+      "min": 35,
+      "raw": 14400,
+      "points": 10000
+    },
+    "claims": [
+      "ST10"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV40",
+    "model": "adaptation",
+    "title": "30日宽限不增长",
+    "inputs": {
+      "value": 0,
+      "days": 29.99,
+      "halfDay": true
+    },
+    "expected": {
+      "value": 0
+    },
+    "claims": [
+      "ST11"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV41",
+    "model": "adaptation",
+    "title": "零点不乘正数增长因子",
+    "inputs": {
+      "value": 0,
+      "days": 30,
+      "halfDay": true,
+      "positiveGrowth": 0
+    },
+    "expected": {
+      "value": 0.5
+    },
+    "claims": [
+      "ST11",
+      "ST12"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV42",
+    "model": "adaptation",
+    "title": "正值乘难度增长",
+    "inputs": {
+      "value": 1,
+      "days": 31,
+      "halfDay": true,
+      "positiveGrowth": 0.25
+    },
+    "expected": {
+      "value": 1.125
+    },
+    "claims": [
+      "ST11"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV43",
+    "model": "adaptation",
+    "title": "负值宽限内恢复",
+    "inputs": {
+      "value": -30,
+      "days": 1,
+      "halfDay": true,
+      "positiveGrowth": 0
+    },
+    "expected": {
+      "value": -28.5
+    },
+    "claims": [
+      "ST11"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV44",
+    "model": "adaptation",
+    "title": "同tick倒地后失去只扣一次",
+    "inputs": {
+      "value": 0,
+      "events": [
+        {
+          "kind": "downed",
+          "id": 1,
+          "external": true,
+          "population": 3
+        },
+        {
+          "kind": "lost",
+          "id": 1,
+          "population": 3
+        }
+      ]
+    },
+    "expected": {
+      "value": -30
+    },
+    "claims": [
+      "ST11"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV45",
+    "model": "adaptation",
+    "title": "失去按扣除前人口减1",
+    "inputs": {
+      "value": 0,
+      "events": [
+        {
+          "kind": "lost",
+          "id": 1,
+          "population": 12
+        }
+      ]
+    },
+    "expected": {
+      "value": -30
+    },
+    "claims": [
+      "ST11"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV46",
+    "model": "adaptation",
+    "title": "非外部暴力倒地不扣值",
+    "inputs": {
+      "value": 0,
+      "events": [
+        {
+          "kind": "downed",
+          "id": 1,
+          "external": false,
+          "population": 3
+        }
+      ]
+    },
+    "expected": {
+      "value": 0
+    },
+    "claims": [
+      "ST11"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV47",
+    "model": "adaptation",
+    "title": "损失与增长各自钳制",
+    "inputs": {
+      "value": -59,
+      "events": [
+        {
+          "kind": "downed",
+          "id": 1,
+          "external": true,
+          "population": 3
+        }
+      ]
+    },
+    "expected": {
+      "value": -60
+    },
+    "claims": [
+      "ST11"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV48",
+    "model": "adaptation",
+    "title": "增长上限100",
+    "inputs": {
+      "value": 99.9,
+      "days": 40,
+      "halfDay": true
+    },
+    "expected": {
+      "value": 100
+    },
+    "claims": [
+      "ST11"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV49",
+    "model": "relax",
+    "title": "原式j偏移并非j-i",
+    "inputs": {
+      "hits": [
+        100,
+        101,
+        101,
+        101
+      ],
+      "previous": 80,
+      "spacing": 1,
+      "end": 110
+    },
+    "expected": {
+      "hits": [
+        100,
+        101,
+        102,
+        105
+      ],
+      "valid": true
+    },
+    "claims": [
+      "ST13"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV50",
+    "model": "relax",
+    "title": "第一off间隔边界可接受",
+    "inputs": {
+      "hits": [
+        8
+      ],
+      "previous": 0,
+      "spacing": 10,
+      "end": 10
+    },
+    "expected": {
+      "hits": [
+        10
+      ],
+      "valid": true
+    },
+    "claims": [
+      "ST13"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV51",
+    "model": "relax",
+    "title": "超尾部无效",
+    "inputs": {
+      "hits": [
+        8
+      ],
+      "previous": 0,
+      "spacing": 11,
+      "end": 10
+    },
+    "expected": {
+      "hits": [
+        11
+      ],
+      "valid": false
+    },
+    "claims": [
+      "ST13"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV52",
+    "model": "cycleWindow",
+    "title": "Cassandra普通大威胁开始前",
+    "inputs": {
+      "tick": 659999,
+      "minDays": 11,
+      "onDays": 4.6,
+      "offDays": 6
+    },
+    "expected": {
+      "cycle": -1,
+      "offset": -1,
+      "on": false
+    },
+    "claims": [
+      "ST13"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV53",
+    "model": "cycleWindow",
+    "title": "Cassandra首cycle起点",
+    "inputs": {
+      "tick": 660000,
+      "minDays": 11,
+      "onDays": 4.6,
+      "offDays": 6
+    },
+    "expected": {
+      "cycle": 0,
+      "offset": 0,
+      "on": true
+    },
+    "claims": [
+      "ST13"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV54",
+    "model": "cycleWindow",
+    "title": "原始窗口first off与已松弛事件区分",
+    "inputs": {
+      "tick": 936000,
+      "minDays": 11,
+      "onDays": 4.6,
+      "offDays": 6
+    },
+    "expected": {
+      "cycle": 0,
+      "offset": 276,
+      "on": false
+    },
+    "claims": [
+      "ST13"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV55",
+    "model": "raidBudget",
+    "title": "顺序求值arrival后strategy",
+    "inputs": {
+      "points": 100,
+      "arrival": [
+        [
+          0,
+          2
+        ]
+      ],
+      "strategy": [
+        [
+          0,
+          1
+        ],
+        [
+          200,
+          2
+        ]
+      ],
+      "minimum": 35
+    },
+    "expected": {
+      "arrival": 200,
+      "strategy": 400,
+      "budget": 400
+    },
+    "claims": [
+      "ST16"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV56",
+    "model": "raidBudget",
+    "title": "低点数仍有最小可生成预算",
+    "inputs": {
+      "points": 35,
+      "minimum": 35
+    },
+    "expected": {
+      "arrival": 35,
+      "strategy": 35,
+      "budget": 36.75
+    },
+    "claims": [
+      "ST16"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV57",
+    "model": "raidBudget",
+    "title": "年龄地图层在最低值前",
+    "inputs": {
+      "points": 100,
+      "minimum": 35,
+      "age": 0.5,
+      "layer": 0.5
+    },
+    "expected": {
+      "arrival": 100,
+      "strategy": 100,
+      "budget": 36.75
+    },
+    "claims": [
+      "ST16"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV58",
+    "model": "maximumPawnCost",
+    "title": "Drifter最低可选42",
+    "inputs": {
+      "budget": 36.75,
+      "factionMin": 35,
+      "strategyMin": 35
+    },
+    "expected": {
+      "value": 42
+    },
+    "claims": [
+      "ST17"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV59",
+    "model": "maximumPawnCost",
+    "title": "maxPawn先min后至少42",
+    "inputs": {
+      "budget": 35,
+      "factionMin": 35,
+      "minPawns": 2
+    },
+    "expected": {
+      "value": 42
+    },
+    "claims": [
+      "ST17"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV60",
+    "model": "raidOptions",
+    "title": "最高候选成本控制权重",
+    "inputs": {
+      "left": 100,
+      "max": 100,
+      "options": [
+        {
+          "id": "cheap",
+          "cost": 20,
+          "weight": 10
+        },
+        {
+          "id": "mid",
+          "cost": 30,
+          "weight": 10
+        },
+        {
+          "id": "large",
+          "cost": 100,
+          "weight": 10
+        }
+      ]
+    },
+    "expected": {
+      "highest": 100,
+      "options": [
+        {
+          "id": "cheap",
+          "cost": 20,
+          "weight": 0.1
+        },
+        {
+          "id": "mid",
+          "cost": 30,
+          "weight": 3
+        },
+        {
+          "id": "large",
+          "cost": 100,
+          "weight": 10
+        }
+      ]
+    },
+    "claims": [
+      "ST17"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV61",
+    "model": "raidOptions",
+    "title": "下一次最高成本不重置",
+    "inputs": {
+      "left": 30,
+      "max": 100,
+      "highest": 100,
+      "options": [
+        {
+          "id": "cheap",
+          "cost": 20,
+          "weight": 10
+        },
+        {
+          "id": "mid",
+          "cost": 30,
+          "weight": 10
+        },
+        {
+          "id": "large",
+          "cost": 100,
+          "weight": 10
+        }
+      ]
+    },
+    "expected": {
+      "highest": 100,
+      "options": [
+        {
+          "id": "cheap",
+          "cost": 20,
+          "weight": 0.1
+        },
+        {
+          "id": "mid",
+          "cost": 30,
+          "weight": 3
+        }
+      ]
+    },
+    "claims": [
+      "ST17"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV62",
+    "model": "raidOptions",
+    "title": "无预算选项退出",
+    "inputs": {
+      "left": 19,
+      "max": 100,
+      "highest": 100,
+      "options": [
+        {
+          "id": "cheap",
+          "cost": 20,
+          "weight": 10
+        },
+        {
+          "id": "mid",
+          "cost": 30,
+          "weight": 10
+        },
+        {
+          "id": "large",
+          "cost": 100,
+          "weight": 10
+        }
+      ]
+    },
+    "expected": {
+      "highest": 100,
+      "options": []
+    },
+    "claims": [
+      "ST17"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV63",
+    "model": "weaponOptions",
+    "title": "60预算只有棍",
+    "inputs": {
+      "weapons": [
+        {
+          "id": "club",
+          "price": 51.024,
+          "tags": [
+            "NeolithicMeleeBasic"
+          ]
+        },
+        {
+          "id": "knife",
+          "price": 63.48,
+          "tags": [
+            "MedievalMeleeBasic"
+          ]
+        },
+        {
+          "id": "longsword",
+          "price": 255,
+          "tags": [
+            "MedievalMeleeDecent"
+          ]
+        },
+        {
+          "id": "revolver",
+          "price": 135.4,
+          "tags": [
+            "Gun"
+          ]
+        },
+        {
+          "id": "machinePistol",
+          "price": 220,
+          "tags": [
+            "Gun",
+            "ShortShots"
+          ]
+        }
+      ],
+      "money": 60,
+      "tags": [
+        "NeolithicMeleeBasic",
+        "MedievalMeleeBasic"
+      ]
+    },
+    "expected": {
+      "ids": [
+        "club"
+      ]
+    },
+    "claims": [
+      "ST18"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV64",
+    "model": "weaponOptions",
+    "title": "刀价包含等号",
+    "inputs": {
+      "weapons": [
+        {
+          "id": "club",
+          "price": 51.024,
+          "tags": [
+            "NeolithicMeleeBasic"
+          ]
+        },
+        {
+          "id": "knife",
+          "price": 63.48,
+          "tags": [
+            "MedievalMeleeBasic"
+          ]
+        },
+        {
+          "id": "longsword",
+          "price": 255,
+          "tags": [
+            "MedievalMeleeDecent"
+          ]
+        },
+        {
+          "id": "revolver",
+          "price": 135.4,
+          "tags": [
+            "Gun"
+          ]
+        },
+        {
+          "id": "machinePistol",
+          "price": 220,
+          "tags": [
+            "Gun",
+            "ShortShots"
+          ]
+        }
+      ],
+      "money": 63.48,
+      "tags": [
+        "NeolithicMeleeBasic",
+        "MedievalMeleeBasic"
+      ]
+    },
+    "expected": {
+      "ids": [
+        "club",
+        "knife"
+      ]
+    },
+    "claims": [
+      "ST18"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV65",
+    "model": "weaponOptions",
+    "title": "200预算不提前按Poor折价",
+    "inputs": {
+      "weapons": [
+        {
+          "id": "club",
+          "price": 51.024,
+          "tags": [
+            "NeolithicMeleeBasic"
+          ]
+        },
+        {
+          "id": "knife",
+          "price": 63.48,
+          "tags": [
+            "MedievalMeleeBasic"
+          ]
+        },
+        {
+          "id": "longsword",
+          "price": 255,
+          "tags": [
+            "MedievalMeleeDecent"
+          ]
+        },
+        {
+          "id": "revolver",
+          "price": 135.4,
+          "tags": [
+            "Gun"
+          ]
+        },
+        {
+          "id": "machinePistol",
+          "price": 220,
+          "tags": [
+            "Gun",
+            "ShortShots"
+          ]
+        }
+      ],
+      "money": 200,
+      "tags": [
+        "Gun"
+      ]
+    },
+    "expected": {
+      "ids": [
+        "revolver"
+      ]
+    },
+    "claims": [
+      "ST18"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV66",
+    "model": "weaponOptions",
+    "title": "MachinePistol继承Gun",
+    "inputs": {
+      "weapons": [
+        {
+          "id": "club",
+          "price": 51.024,
+          "tags": [
+            "NeolithicMeleeBasic"
+          ]
+        },
+        {
+          "id": "knife",
+          "price": 63.48,
+          "tags": [
+            "MedievalMeleeBasic"
+          ]
+        },
+        {
+          "id": "longsword",
+          "price": 255,
+          "tags": [
+            "MedievalMeleeDecent"
+          ]
+        },
+        {
+          "id": "revolver",
+          "price": 135.4,
+          "tags": [
+            "Gun"
+          ]
+        },
+        {
+          "id": "machinePistol",
+          "price": 220,
+          "tags": [
+            "Gun",
+            "ShortShots"
+          ]
+        }
+      ],
+      "money": 220,
+      "tags": [
+        "Gun"
+      ]
+    },
+    "expected": {
+      "ids": [
+        "revolver",
+        "machinePistol"
+      ]
+    },
+    "claims": [
+      "ST18"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV67",
+    "model": "gear",
+    "title": "Poor中心下10%",
+    "inputs": {
+      "center": 1,
+      "roll": 0.099,
+      "healthRoll": 0.5,
+      "maxHp": 105
+    },
+    "expected": {
+      "quality": 0,
+      "hp": 52
+    },
+    "claims": [
+      "ST19"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV68",
+    "model": "gear",
+    "title": "品质.1边界向上",
+    "inputs": {
+      "center": 1,
+      "roll": 0.1,
+      "healthRoll": 0.5,
+      "maxHp": 107
+    },
+    "expected": {
+      "quality": 2,
+      "hp": 54
+    },
+    "claims": [
+      "ST19"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV69",
+    "model": "gear",
+    "title": "品质.2边界保持",
+    "inputs": {
+      "center": 1,
+      "roll": 0.2,
+      "healthRoll": 1.1,
+      "maxHp": 100
+    },
+    "expected": {
+      "quality": 1,
+      "hp": 100
+    },
+    "claims": [
+      "ST19"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV70",
+    "model": "gear",
+    "title": "品质最低值与HP至少1",
+    "inputs": {
+      "center": 0,
+      "roll": 0,
+      "healthRoll": 0,
+      "maxHp": 100
+    },
+    "expected": {
+      "quality": 0,
+      "hp": 1
+    },
+    "claims": [
+      "ST19"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  },
+  {
+    "id": "SV71",
+    "model": "gear",
+    "title": "forceNormal优先级",
+    "inputs": {
+      "forceNormal": true,
+      "forceQuality": 6,
+      "roll": 0,
+      "healthRoll": 1,
+      "maxHp": 100
+    },
+    "expected": {
+      "quality": 2,
+      "hp": 100
+    },
+    "claims": [
+      "ST19"
+    ],
+    "limitation": "Independent arithmetic/state model; not original execution."
+  }
+]

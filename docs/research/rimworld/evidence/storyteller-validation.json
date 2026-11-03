@@ -1,0 +1,300 @@
+{
+  "status": "pass",
+  "checked_at_utc": "2026-11-03T10:28:18.4737488Z",
+  "original_game_executed": false,
+  "installed_assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "installed_xml_files": 42,
+  "fresh_xml_matches": true,
+  "local": {
+    "status": "pass",
+    "version": "1.7.4980 rev60",
+    "newTypes": 36,
+    "reusedTypes": 23,
+    "claims": 20,
+    "cases": 71,
+    "codeReferences": 73,
+    "xmlReferences": 60,
+    "xmlRecords": 149,
+    "referencedXmlFiles": 42,
+    "xmlLeaves": 1377,
+    "xmlAttributes": 171,
+    "xmlAbsences": 2013,
+    "nativeValuations": 47,
+    "valuationAssertions": 514,
+    "analyticAssertions": 232,
+    "localDerivedFilesVerified": 59,
+    "originalGameExecuted": false,
+    "scope": "Static artifact plus independent double-precision arithmetic/state verification; not native RNG, enabled-mod database or project simulation equivalence."
+  },
+  "portable": {
+    "status": "pass",
+    "version": "1.7.4980 rev60",
+    "newTypes": 36,
+    "reusedTypes": 23,
+    "claims": 20,
+    "cases": 71,
+    "codeReferences": 73,
+    "xmlReferences": 60,
+    "xmlRecords": 149,
+    "referencedXmlFiles": 42,
+    "xmlLeaves": 1377,
+    "xmlAttributes": 171,
+    "xmlAbsences": 2013,
+    "nativeValuations": 47,
+    "valuationAssertions": 514,
+    "analyticAssertions": 232,
+    "localDerivedFilesVerified": 0,
+    "originalGameExecuted": false,
+    "scope": "Static artifact plus independent double-precision arithmetic/state verification; not native RNG, enabled-mod database or project simulation equivalence."
+  },
+  "negative": {
+    "status": "pass",
+    "rejected": 21,
+    "corruptions": [
+      "resource-price",
+      "missing-intermediate-bed-parent",
+      "parent-cycle",
+      "weapon-parent-tag",
+      "xml-range",
+      "xml-attributes",
+      "xml-absences",
+      "xml-file-hash",
+      "assembly-identity",
+      "decompiler-identity",
+      "derived-identity",
+      "historical-manifest",
+      "selected-types",
+      "claim-text",
+      "claim-range",
+      "claim-xml-link",
+      "case-expected",
+      "quality-cap-data",
+      "native-valuations",
+      "difficulty-default",
+      "local-derived-bytes"
+    ],
+    "formulaMutants": 29,
+    "mutations": [
+      {
+        "name": "uncapped-quality-gain",
+        "model": "market",
+        "killedBy": [
+          "SV02"
+        ]
+      },
+      {
+        "name": "linear-durability",
+        "model": "market",
+        "killedBy": [
+          "SV02",
+          "SV04",
+          "SV05",
+          "SV06",
+          "SV10",
+          "SV11"
+        ]
+      },
+      {
+        "name": "building-uses-current-hp",
+        "model": "market",
+        "killedBy": [
+          "SV07"
+        ]
+      },
+      {
+        "name": "biocoded-value-ten-percent",
+        "model": "market",
+        "killedBy": [
+          "SV09"
+        ]
+      },
+      {
+        "name": "pre-round-equipment-base",
+        "model": "market",
+        "killedBy": [
+          "SV10",
+          "SV11",
+          "SV12",
+          "SV13",
+          "SV14"
+        ]
+      },
+      {
+        "name": "tainted-apparel-keeps-full-value",
+        "model": "market",
+        "killedBy": [
+          "SV10"
+        ]
+      },
+      {
+        "name": "unowned-ground-excluded",
+        "model": "wealth",
+        "killedBy": [
+          "SV17"
+        ]
+      },
+      {
+        "name": "enemy-held-gear-included",
+        "model": "wealth",
+        "killedBy": [
+          "SV17"
+        ]
+      },
+      {
+        "name": "loaded-fuel-recounted-as-items",
+        "model": "wealth",
+        "killedBy": [
+          "SV20"
+        ]
+      },
+      {
+        "name": "summary-health-adds-damage",
+        "model": "summaryHealth",
+        "killedBy": [
+          "SV21",
+          "SV23"
+        ]
+      },
+      {
+        "name": "missing-child-double-counted",
+        "model": "summaryHealth",
+        "killedBy": [
+          "SV23"
+        ]
+      },
+      {
+        "name": "disease-directly-reduces-summary-health",
+        "model": "summaryHealth",
+        "killedBy": [
+          "SV22"
+        ]
+      },
+      {
+        "name": "incapable-price-factor-is-half",
+        "model": "pawnPrice",
+        "killedBy": [
+          "SV31"
+        ]
+      },
+      {
+        "name": "storyteller-buildings-full-weight",
+        "model": "threat",
+        "killedBy": [
+          "SV35"
+        ]
+      },
+      {
+        "name": "population-health-multiplies-directly",
+        "model": "threat",
+        "killedBy": [
+          "SV38"
+        ]
+      },
+      {
+        "name": "settlement-days-not-floored",
+        "model": "threat",
+        "killedBy": [
+          "SV37"
+        ]
+      },
+      {
+        "name": "downed-and-lost-double-loss",
+        "model": "adaptation",
+        "killedBy": [
+          "SV44"
+        ]
+      },
+      {
+        "name": "lost-uses-pre-population",
+        "model": "adaptation",
+        "killedBy": [
+          "SV45"
+        ]
+      },
+      {
+        "name": "zero-value-multiplies-positive-growth",
+        "model": "adaptation",
+        "killedBy": [
+          "SV41"
+        ]
+      },
+      {
+        "name": "grace-also-blocks-negative-recovery",
+        "model": "adaptation",
+        "killedBy": [
+          "SV43"
+        ]
+      },
+      {
+        "name": "cycle-end-strict-less",
+        "model": "relax",
+        "killedBy": [
+          "SV50"
+        ]
+      },
+      {
+        "name": "relax-uses-j-minus-i",
+        "model": "relax",
+        "killedBy": [
+          "SV49"
+        ]
+      },
+      {
+        "name": "strategy-evaluates-original-points",
+        "model": "raidBudget",
+        "killedBy": [
+          "SV55"
+        ]
+      },
+      {
+        "name": "maximum-cost-min-after-floor",
+        "model": "maximumPawnCost",
+        "killedBy": [
+          "SV58",
+          "SV59"
+        ]
+      },
+      {
+        "name": "highest-cost-reset-each-choice",
+        "model": "raidOptions",
+        "killedBy": [
+          "SV61",
+          "SV62"
+        ]
+      },
+      {
+        "name": "weapon-budget-uses-poor-price",
+        "model": "weaponOptions",
+        "killedBy": [
+          "SV63",
+          "SV65"
+        ]
+      },
+      {
+        "name": "child-weapon-tags-replace-parent",
+        "model": "weaponOptions",
+        "killedBy": [
+          "SV66"
+        ]
+      },
+      {
+        "name": "poor-fixed-not-distributed",
+        "model": "gear",
+        "killedBy": [
+          "SV67",
+          "SV68",
+          "SV71"
+        ]
+      },
+      {
+        "name": "health-rounds-half-up",
+        "model": "gear",
+        "killedBy": [
+          "SV67"
+        ]
+      }
+    ],
+    "originalGameExecuted": false
+  },
+  "scope": "Static artifact plus independent arithmetic/state verification; no original execution, native random-stream replay, full Def loader or project simulation equivalence."
+}

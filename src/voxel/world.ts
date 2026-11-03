@@ -91,6 +91,15 @@ import {
   simpleBenchFactor,
 } from './research';
 import { VoxelRooms } from './rooms';
+import { colonyWealth, summaryHealthPercent } from './wealth';
+import { STORY_INTERVAL, threatPoints, growAdaptation, adaptationAfterLoss } from './storytellerRules';
+import {
+  ADAPTATION_INTERVAL, DIFFICULTIES, DIFFICULTY, DIFFICULTY_NAMES, INTRO_INTERVAL,
+  initialStoryteller, cycleAt, cycleHits, nextOpportunity, livingColonists,
+  planRaid, raidWeapon, storyRandom, RAID_COST, RAID_NAMES,
+  type StoryEvent, type StorytellerState,
+} from './storyteller';
+import { rejectLegacyStorytellerFields, validateStoryteller } from './storytellerPersistence';
 import {
   MEDICAL_POLICIES,
   MEDICAL_POLICY_NAMES,
@@ -443,6 +452,9 @@ function decode(raw: unknown, max: number): Uint8Array<ArrayBuffer> {
 
 export class VoxelSimulation {
   combat = { enabled: false, nextRaid: 0, wave: 0 };
+  storyteller: StorytellerState;
+  structureKinds = new Uint8Array(CELLS);
+  private pendingAdaptation = new Map<number, 'downed' | 'lost'>();
   projectiles: Projectile[] = [];
   combatEvents: CombatEvent[] = [];
   sandbags: Sandbag[] = [];
@@ -524,6 +536,7 @@ export class VoxelSimulation {
     restoreOnly = false,
   ) {
     if (!Number.isSafeInteger(seed)) throw new Error('种子必须是安全整数');
+    this.storyteller = initialStoryteller(seed);
     this.settings = sanitizeWorldSettings(settings);
     if (!restoreOnly) this.generate();
   }
@@ -1720,16 +1733,21 @@ export class VoxelSimulation {
       this.refreshReservations();
       return { ok: true, message: c.forbidden ? '已禁止自动搬运此武器' : '已允许自动搬运此武器' };
     }
+    if (c.type === 'difficulty') {
+      if (!DIFFICULTIES.includes(c.difficulty)) return { ok: false, message: '难度设置无效' };
+      this.storyteller.difficulty = c.difficulty;
+      return { ok: true, message: `难度已设为${DIFFICULTY_NAMES[c.difficulty]}；事件日历与伤亡适应保持原进度` };
+    }
     if (c.type === 'threats') {
       if (typeof c.enabled !== 'boolean') return { ok: false, message: '袭击设置无效' };
       if (c.enabled !== this.combat.enabled) {
         this.combat.enabled = c.enabled;
-        this.combat.nextRaid = c.enabled ? this.tick + DAY * 3 : 0;
+        this.combat.nextRaid = c.enabled ? (Math.floor(this.tick / STORY_INTERVAL) + 1) * STORY_INTERVAL : 0;
       }
       return {
         ok: true,
         message: c.enabled
-          ? '已开启袭击；首次来袭前有三天准备时间'
+          ? '已开启袭击；按殖民地事件日历调度，不重置准备时间'
           : '已关闭后续袭击，场上的敌人仍然存在',
       };
     }
@@ -3079,7 +3097,8 @@ export class VoxelSimulation {
         this.release(p);
     }
   }
-  private reconcileHealth(p: Pawn) {
+  private reconcileHealth(p: Pawn, externalViolence = false) {
+    const wasDead = p.dead, wasDowned = p.downed;
     trackInfectionRisks(p, this.seed, p.id, this.tick);
     const death = healthDeathReason(p.health, p.trauma, p.medical),
       summary = healthSummary(p);
@@ -3113,26 +3132,88 @@ export class VoxelSimulation {
       p.reason = death ?? (p.downed ? summary.reason + '，倒地等待救援' : '恢复行动');
       if (p.dead) for (const b of this.beds) if (b.owner === p.id) b.owner = null;
     }
+    if (p.faction === 'colony' && !wasDead) {
+      if (p.dead) this.pendingAdaptation.set(p.id, 'lost');
+      else if (!wasDowned && p.downed && externalViolence && this.pendingAdaptation.get(p.id) !== 'lost')
+        this.pendingAdaptation.set(p.id, 'downed');
+    }
   }
   private updateRaids() {
-    if (!this.combat.enabled || this.tick < this.combat.nextRaid) return;
+    const state = this.storyteller, interval = Math.floor(this.tick / STORY_INTERVAL);
+    const due: StoryEvent['source'][] = [];
+    if (state.legacyRaidAt !== null && this.tick >= state.legacyRaidAt) {
+      due.push('legacy');
+      state.legacyRaidAt = null;
+    }
+    if (interval > state.lastInterval) {
+      state.lastInterval = interval;
+      const cycle = cycleAt(interval);
+      if (cycle !== state.cycle) {
+        state.cycle = cycle;
+        state.cycleHits = cycleHits(this.seed, cycle);
+      }
+      if (!state.introHandled && interval >= INTRO_INTERVAL) {
+        state.introHandled = true;
+        if (interval === INTRO_INTERVAL) due.push('intro');
+      }
+      if (state.cycleHits.includes(interval)) due.push('cycle');
+    }
+    this.combat.nextRaid = this.combat.enabled ? (interval + 1) * STORY_INTERVAL : 0;
+    for (const source of due) this.tryRaid(source);
+  }
+  threatBreakdown() {
+    return threatPoints(colonyWealth(this), livingColonists(this.pawns).map(p => ({ id: p.id, health: summaryHealthPercent(p) })),
+      this.storyteller.adaptationDays, this.tick / DAY, DIFFICULTY[this.storyteller.difficulty],
+      plantRandom(this.seed, Math.floor(this.tick / (DAY / 24)), 0, 8703));
+  }
+  private updateAdaptation() {
+    const state = this.storyteller, population = livingColonists(this.pawns).length;
+    for (const [pawnId, kind] of this.pendingAdaptation) {
+      const before = state.adaptationDays;
+      state.adaptationDays = adaptationAfterLoss(before, kind, population);
+      state.losses.push({ tick: this.tick, pawnId, kind, population, before, after: state.adaptationDays });
+    }
+    state.losses = state.losses.slice(-32);
+    this.pendingAdaptation.clear();
+    if (this.tick % ADAPTATION_INTERVAL === 0)
+      state.adaptationDays = growAdaptation(state.adaptationDays, this.tick / DAY, DIFFICULTY[state.difficulty].adaptationGrowth);
+  }
+  private tryRaid(source: StoryEvent['source']) {
+    const threat = this.threatBreakdown(), random = storyRandom(this.seed, this.tick + (source === 'legacy' ? 51 : 0));
+    const event: StoryEvent = { tick: this.tick, source, outcome: 'skipped', reason: '', threat,
+      budget: source === 'intro' ? 40 : Math.max(35 * 1.05, threat.points), spent: 0, remainder: 0, members: [] };
+    event.remainder = event.budget;
+    const record = (reason: string) => {
+      event.reason = reason;
+      this.storyteller.events.push(event);
+      this.storyteller.events = this.storyteller.events.slice(-32);
+      if (this.combat.enabled && DIFFICULTY[this.storyteller.difficulty].allowThreats) this.notice = reason;
+    };
+    if (!this.combat.enabled || !DIFFICULTY[this.storyteller.difficulty].allowThreats) {
+      record('和平设置：跳过本次袭击机会');
+      return;
+    }
+    if (source !== 'legacy' && this.storyteller.legacyRaidAt !== null) {
+      record('旧存档已有待发生袭击，本次新日历机会跳过');
+      return;
+    }
     const colonists = this.pawns.filter((p) => p.faction === 'colony' && !p.dead && !p.downed);
     if (
       !colonists.length ||
       this.pawns.some((p) => p.faction === 'raider' && !p.dead && !p.downed)
     ) {
-      this.combat.nextRaid = this.tick + DAY;
+      record(!colonists.length ? '没有可行动的殖民者，本次袭击跳过' : '场上仍有活动敌人，本次袭击跳过');
       return;
     }
     // Do not grow an unbounded retained corpse list. No existing body or gear is deleted.
     if (this.pawns.length >= 64) {
       this.combat.enabled = false;
       this.combat.nextRaid = 0;
-      this.notice = '地图上的人物与遗体已达上限，后续袭击暂停';
+      record('地图上的人物与遗体已达上限，后续袭击暂停');
+      this.notice = event.reason;
       return;
     }
-    let entry: Pos | null = null,
-      score = -Infinity;
+    const entries = new Map<number, Pos>();
     for (const colonist of colonists) {
       this.search(colonist);
       for (let y = 0; y < DEPTH; y++)
@@ -3144,34 +3225,34 @@ export class VoxelSimulation {
             const distance = Math.min(
               ...colonists.map((p) => Math.abs(x - p.x) + Math.abs(y - p.y) + Math.abs(z - p.z)),
             );
-            if (distance >= 16 && distance > score) {
-              entry = candidate;
-              score = distance;
-            }
+            if (distance >= 16 && !this.pawns.some(p => same(p, candidate))) entries.set(at(candidate), candidate);
             break;
           }
         }
     }
+    const distance = (a: Pos, b: Pos) => Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z);
+    const available = [...entries.values()].sort((a, b) => Math.min(...colonists.map(p => distance(p, b))) - Math.min(...colonists.map(p => distance(p, a))) || at(a) - at(b));
+    const entry = available[0];
     if (!entry) {
-      this.combat.nextRaid = this.tick + DAY / 4;
-      this.notice = '袭击者找不到通往营地的地图边缘入口';
+      record('袭击者找不到通往营地的地图边缘入口，本次袭击跳过');
       return;
     }
-    const id = this.id(),
-      raidWeapon: WeaponKind = (['steelKnife', 'shortBow', 'revolver', 'machinePistol'] as const)[
-        Math.min(this.combat.wave, 3)
-      ];
+    const placements = available.filter(p => distance(p, entry) <= 8).sort((a, b) => distance(a, entry) - distance(b, entry) || at(a) - at(b));
+    const plan = planRaid(event.budget, Math.min(64 - this.pawns.length, placements.length), random);
+    Object.assign(event, { budget: plan.budget, spent: plan.spent, remainder: plan.remainder });
+    for (const [i, kind] of plan.kinds.entries()) {
+    const id = this.id(), weapon = raidWeapon(kind, this.id(), random);
     this.pawns.push({
-      ...entry,
+      ...placements[i],
       id,
-      name: `袭击者 ${this.combat.wave + 1}`,
+      name: `${RAID_NAMES[kind]} ${this.combat.wave + 1}-${i + 1}`,
       color: 0xc65b52,
       food: 100,
       rest: 100,
       skills: initialSkills(0, true),
       ...initialSurvival(this.seed, id),
       faction: 'raider',
-      weapon: makeWeapon(this.id(), raidWeapon),
+      weapon,
       priorities: {
         dig: 0,
         build: 0,
@@ -3199,12 +3280,12 @@ export class VoxelSimulation {
       sleepingSince: null,
       schedule: defaultSchedule(),
     });
+    event.members.push({ pawnId: id, kind, cost: RAID_COST[kind], weapon: { ...weapon } });
+    }
+    if (!event.members.length) { record('本次预算或入口容量无法生成袭击者'); return; }
     this.combat.wave++;
-    this.combat.nextRaid = this.tick + DAY * 5;
-    this.notice =
-      '一名持' +
-      WEAPON_NAMES[raidWeapon] +
-      '的袭击者从地图边缘逼近。征召同伴，利用掩体、门与多层通路防守。';
+    event.outcome = 'spawned';
+    record(`${event.members.length} 名袭击者从地图边缘逼近。征召同伴，利用掩体、门与多层通路防守。`);
   }
   private shotBlocked(cell: Pos) {
     return (
@@ -3438,7 +3519,7 @@ export class VoxelSimulation {
         ? target.name + '的护甲挡下弹丸'
         : target.name + '被' + WEAPON_NAMES[shot.kind] + '击中',
     );
-    this.reconcileHealth(target);
+    this.reconcileHealth(target, true);
   }
   private projectileHitCover(shot: Projectile, id: number) {
     const bag = this.sandbags.find((b) => b.id === id),
@@ -3767,7 +3848,7 @@ export class VoxelSimulation {
             : '（护甲减半）';
       if (result.armor?.destroyedIds.length)
         p.reason += `；${result.armor.destroyedIds.length} 件衣物损毁`;
-      this.reconcileHealth(target);
+      this.reconcileHealth(target, true);
       if (target.dead || target.downed) {
         p.attackTargetId = null;
         this.notice = target.name + '：' + target.reason;
@@ -5058,6 +5139,10 @@ export class VoxelSimulation {
       return;
     }
     this.commitPlacement(placement);
+    // Identity is committed only after all support, access and item-placement
+    // checks succeed. A failed build never leaves valued phantom structures.
+    for (const c of changes) if (c.block !== undefined)
+      this.structureKinds[at(c.pos)] = !c.block ? 0 : j.kind === 'floor' ? 1 : j.kind === 'wall' ? (c.pos.z === j.z ? 2 : 3) : 0;
     // Project tasks can be resumed by another cook; reward each actual worker
     // only after the physical meal exists. Cancellation and blocked retries pay nothing.
     if (j.kind === 'cook')
@@ -5446,6 +5531,7 @@ export class VoxelSimulation {
           (this.pawns.some((p) => same(p, d)) || this.items.some((i) => same(i, d)))
         )
           d.openUntil = this.tick + 37;
+      this.updateAdaptation();
       this.updateRooms();
     }
   }
@@ -5640,6 +5726,11 @@ export class VoxelSimulation {
         stored[i.resource] += i.amount;
     return structuredClone({
       combat: this.combat,
+      storyteller: {
+        ...this.storyteller, threat: this.threatBreakdown(),
+        nextOpportunity: this.combat.enabled ? nextOpportunity(this.storyteller, this.seed, this.tick) : null,
+        legacyStructureCells: this.blocks.reduce((n, b, i) => n + Number((b === Block.Wood || b === Block.Masonry) && this.structureKinds[i] === 0), 0),
+      },
       projectiles: this.projectiles,
       combatEvents: this.combatEvents,
       sandbags: this.sandbags,
@@ -5693,7 +5784,7 @@ export class VoxelSimulation {
       stored,
       stats: this.stats,
       notice: this.notice,
-      gridBytes: this.blocks.byteLength + this.ladders.byteLength,
+      gridBytes: this.blocks.byteLength + this.ladders.byteLength + this.structureKinds.byteLength,
       navigationBytes:
         this.distance.byteLength +
         this.parents.byteLength +
@@ -5707,8 +5798,10 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 19,
+      version: 20,
       combat: this.combat,
+      storyteller: this.storyteller,
+      structureKinds: encode(this.structureKinds),
       projectiles: this.projectiles,
       combatEvents: this.combatEvents,
       sandbags: this.sandbags,
@@ -5747,11 +5840,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyStorytellerFields(old);
     rejectLegacyRangedFields(old);
     rejectLegacyMedicineFields(old);
     if (old.version === 1) {
@@ -6059,6 +6153,11 @@ export class VoxelSimulation {
     }
     migrateRangedFields(old);
     migrateMedicineFields(old);
+    if (old.version === 19) {
+      old.storyteller = initialStoryteller(old.seed, old.tick, old.combat?.enabled ? old.combat.nextRaid : null);
+      old.structureKinds = [0, CELLS];
+      old.version = 20;
+    }
     const d = old as VoxelSave;
     const loadHealth = (p: Pawn) =>
       oldHealth.get(p.id) ?? {
@@ -7120,11 +7219,14 @@ export class VoxelSimulation {
     s.spawn = structuredClone(d.spawn);
     s.blocks = decode(d.blocks, sourceVersion <= 6 ? 6 : sourceVersion === 7 ? 7 : 10);
     s.ladders = decode(d.ladders, 1);
+    s.structureKinds = decode(d.structureKinds, 3);
+    validateStoryteller(d, s.blocks, s.structureKinds);
     Object.assign(
       s,
       structuredClone({
         tick: d.tick,
         combat: d.combat,
+        storyteller: d.storyteller,
         projectiles: d.projectiles,
         combatEvents: d.combatEvents,
         sandbags: d.sandbags,
@@ -7378,6 +7480,7 @@ export class VoxelSimulation {
       for (const p of s.pawns) s.reconcileHealth(p);
       for (const p of s.pawns) if (p.carePhase !== null && !s.validCare(p)) s.release(p);
     }
+    s.pendingAdaptation.clear();
     s.markAll();
     s.notice = migrateAnatomy
       ? '旧存档已升级：伤势保留，身体能力按新规则重算；请在暂停中检查人物'

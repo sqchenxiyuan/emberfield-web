@@ -176,6 +176,70 @@ a {
   display: grid;
   gap: 8px;
 }
+.voxel-storyteller,
+.voxel-storyteller-body,
+.voxel-storyteller-pressure,
+.voxel-storyteller-events {
+  display: grid;
+  gap: 9px;
+  min-width: 0;
+}
+.voxel-storyteller small {
+  font-size: 11px;
+  color: #bdc9bc;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.voxel-storyteller {
+  font-size: 12px;
+}
+.voxel-storyteller .voxel-threat-toggle {
+  justify-content: flex-start;
+  gap: 8px;
+  margin: 4px 0;
+}
+.voxel-storyteller select {
+  min-width: 0;
+  max-width: 100%;
+}
+.voxel-storyteller-details {
+  border-top: 1px solid #526354;
+  padding-top: 10px;
+}
+.voxel-storyteller-details > summary {
+  cursor: pointer;
+  color: #e8d5a8;
+}
+.voxel-storyteller-body {
+  margin-top: 12px;
+}
+.voxel-storyteller-values {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.voxel-storyteller-values > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+.voxel-storyteller-values dd {
+  margin: 0;
+  color: #e8d5a8;
+}
+.voxel-storyteller-events > div {
+  display: grid;
+  gap: 4px;
+  border-top: 1px solid #526354;
+  padding-top: 8px;
+}
+.voxel-storyteller-open {
+  display: grid;
+  gap: 5px;
+  width: 100%;
+  text-align: left;
+}
 .voxel-medical-policy > label:first-child {
   display: flex;
   justify-content: space-between;

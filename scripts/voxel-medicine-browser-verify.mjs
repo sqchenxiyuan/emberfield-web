@@ -241,7 +241,7 @@ async function verify(mode) {
     for (const fixture of legacy) {
       const old = await loadFile(fixture.file, fixture.sha256),
         migrated = await exported();
-      assert.equal(migrated.version, 19);
+      assert.equal(migrated.version, 20);
       for (const field of [
         'blocks',
         'ladders',

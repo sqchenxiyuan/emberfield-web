@@ -280,7 +280,7 @@ describe('physical medical care, agriculture and v18 migration', () => {
       const old = JSON.parse(bytes.toString()),
         save = VoxelSimulation.load(old).save();
       expect(old.version).toBe(18);
-      expect(save.version).toBe(19);
+      expect(save.version).toBe(20);
       expect(save.items).toEqual(old.items);
       expect(save.research).toEqual(old.research);
       expect(save.nextId).toBe(old.nextId);

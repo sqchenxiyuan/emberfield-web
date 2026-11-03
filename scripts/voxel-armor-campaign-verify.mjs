@@ -132,7 +132,7 @@ const smithy = () => s.weaponBenches.find((b) => b.kind === 'smithy');
 const bill = (kind, target, paused = false) =>
   command({ type: 'armorBill', benchId: smithy().id, kind, target, paused });
 try {
-  assert.equal(s.save().version, 19);
+  assert.equal(s.save().version, 20);
   assert.equal(s.command({ type: 'research', project: 'PlateArmor' }).ok, false);
   check('plate research is locked behind its real prerequisites');
   report.layout = await researchOpening({
@@ -276,7 +276,7 @@ try {
   });
   for (const p of colonists()) command({ type: 'priority', pawnId: p.id, work: 'care', value: 0 });
   command({ type: 'threats', enabled: true });
-  until('ordinary threat timer produces a reachable raider', () => !!enemy(), 36001);
+  until('ordinary storyteller calendar produces a reachable raid', () => !!enemy(), 12000 * 15);
   command({ type: 'threats', enabled: false });
   const hp = Object.fromEntries(wearer().worn.map((p) => [p.id, p.hitPoints]));
   report.armorBeforeCombat = structuredClone(wearer().worn);
@@ -285,7 +285,7 @@ try {
     command({ type: 'attack', pawnId: p.id, targetId: enemy().id });
   }
   await save('raid');
-  until('defenders stop the ordinary raider', () => enemy().dead || enemy().downed, 10000);
+  until('defenders stop the ordinary raid', () => s.pawns.every(p => p.faction !== 'raider' || p.dead || p.downed || p.retreating), 20000);
   report.armorAfterCombat = structuredClone(wearer().worn);
   report.observedArmorHit = wearer().worn.some(
     (p) => p.material === 'steel' && p.hitPoints < hp[p.id],
