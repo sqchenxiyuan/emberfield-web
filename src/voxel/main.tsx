@@ -27,6 +27,7 @@ import { APPAREL_NAMES } from './apparel';
 import { ANIMAL_DEFS, ANIMAL_PHASE_NAMES } from './wildlife';
 import { isRangedKind } from './ranged';
 import { moodView, RECREATION_NAMES } from './mood';
+import { PRISON_POLICY_NAMES, PRISON_POLICIES, PRISON_RULES, type PrisonerPolicy } from './prisoners';
 import {
   BLOCK_NAMES,
   JOB_NAMES,
@@ -157,7 +158,7 @@ const hints: Record<Tool, string> = {
   stonecutter:
     '3×1 木制切石台，75 木材 + 30 钢材。R 旋转，留出标记的操作位；1 岩块加工为 20 石砖。',
   tailor: '3×1 手工裁缝台，75 木材。R 旋转并留出操作位；种棉获得布料，再设置各类衣物的制作目标。',
-  bed: '两格木床，45 木材。R 旋转朝向；点击分配主人或改作医疗床，供同伴救援和照料病人。',
+  bed: '两格木床，45 木材。R 旋转朝向；点击设置主人、医疗或囚犯用途。同一封闭房间的床会一起切换囚犯用途；医疗用途可同时启用。',
   door: '点击放置木门，25 木材。R 旋转朝向；自动开关、保持敞开或锁定。门仍分隔两侧房间。',
   clearZone: '拖动擦除种植区、林地区和仓储；农作物会清理且没有收成，树木和已建成设施保留。',
   remove: '拆除墙、楼板、设施或梯子，回收部分材料。正在支撑人物的结构会等待人物移开。',
@@ -313,10 +314,12 @@ function App() {
     [researchOpen, setResearchOpen] = useState(false),
     [tradeOpen, setTradeOpen] = useState(false),
     [wildlifeOpen, setWildlifeOpen] = useState(false),
+    [prisonOpen, setPrisonOpen] = useState(false),
     [busy, setBusy] = useState(false),
     [selectedPawn, setSelectedPawn] = useState<number | null>(null),
     [selectedAnimal, setSelectedAnimal] = useState<number | null>(null),
     [selectedCarer, setSelectedCarer] = useState<number | null>(null),
+    [selectedCaptor, setSelectedCaptor] = useState<number | null>(null),
     [storageConnected, setStorageConnected] = useState(true),
     [saveStatus, setSaveStatus] = useState('尚未保存');
   useEffect(() => {
@@ -334,14 +337,17 @@ function App() {
     setTradeOpen(true);
     setResearchOpen(false);
     setWildlifeOpen(false);
+    setPrisonOpen(false);
     setMenu(false);
   }, [s?.trade.session?.id, s?.trade.session?.stage, !!s?.trade.quote, s?.speed]);
   useEffect(() => {
     const selected = state.selected;
     const animals = client.snapshot().snapshot?.animals ?? [];
+    const person = selected && client.snapshot().snapshot?.pawns.find(v => equal(v, selected) && (v.faction === 'prisoner' || (v.faction === 'raider' && v.downed && !v.dead)));
     const animal = selected && animals.find(v => equal(v, selected));
     setSelectedAnimal(current => selected && animals.some(v => v.id === current && equal(v, selected)) ? current : animal?.id ?? null);
     if (animal) setSelectedPawn(null);
+    else if (person) setSelectedPawn(current => client.snapshot().snapshot?.pawns.some(v => v.id === current && equal(v, selected!)) ? current : person.id);
   }, [state.selected]);
   useEffect(() => {
     if (!s || selectedAnimal === null || s.animals.some(a => a.id === selectedAnimal)) return;
@@ -444,7 +450,7 @@ function App() {
             deviceCells({ ...v, kind: v.kind, axis: v.axis ?? 'x' }).some((q) => equal(q, p))),
       ) ?? [])
     : [];
-  const pawn = animal ? undefined : people.find((v) => v.faction === 'trader') ?? s?.pawns.find((v) => v.id === selectedPawn) ?? people[0];
+  const pawn = animal ? undefined : people.find(v => v.id === selectedPawn) ?? people.find((v) => v.faction === 'trader' || v.faction === 'prisoner' || (v.faction === 'raider' && v.downed && !v.dead)) ?? s?.pawns.find((v) => v.id === selectedPawn) ?? people[0];
   const hunters = s?.pawns.filter(v => v.faction === 'colony' && !v.dead && !v.downed && !v.drafted && v.psyche.breakUntil <= s.tick && v.priorities.hunt > 0 && v.weapon && isRangedKind(v.weapon.kind)) ?? [];
   const assignedHunter = animal ? s?.pawns.find(v => v.phase === 'hunt' && v.attackTargetId === animal.id) : undefined;
   const carers =
@@ -459,6 +465,13 @@ function App() {
         healthSummary(v).manipulation > 0,
     ) ?? [];
   const carer = carers.find((v) => v.id === selectedCarer) ?? carers[0];
+  const captors = s?.pawns.filter(v => v.faction === 'colony' && !v.dead && !v.downed && !v.drafted && v.carriedBy === null && v.carryingPawnId === null && v.psyche.breakUntil <= s.tick && healthSummary(v).manipulation > 0 && healthSummary(v).moving > 0) ?? [];
+  const captor = captors.find(v => v.id === selectedCaptor) ?? captors[0];
+  const prisoners = s?.pawns.filter(v => v.faction === 'prisoner' && !v.dead) ?? [];
+  const captureTargets = s?.pawns.filter(v => v.faction === 'raider' && v.downed && !v.dead) ?? [];
+  const prisonBeds = s?.beds.filter(v => v.prisoner) ?? [];
+  const prisonerBed = pawn?.prisoner ? s?.beds.find(b => b.id === pawn.prisoner!.bedId) : undefined;
+  const prisonerWorker = pawn ? s?.pawns.find(v => v.wardenTask?.prisonerId === pawn.id) : undefined;
   const casualties = s?.pawns.filter((v) => v.faction === 'colony' && (v.dead || v.downed)) ?? [];
   const temperatureOf = (target: Pos) => {
     const targetRoom = client.roomAt(target);
@@ -536,6 +549,7 @@ function App() {
             .map((v) => (
               <button
                 key={v.id}
+                data-colonist-id={v.id}
                 className={[
                   selectedPawn === v.id ? 'selected' : '',
                   v.dead ? 'is-dead' : v.downed ? 'is-downed' : '',
@@ -562,8 +576,11 @@ function App() {
             ))}
         </div>
         <div className="voxel-header-actions">
+          <button aria-label="囚犯与招募" aria-expanded={prisonOpen} onClick={() => {
+            setPrisonOpen(v => !v); setWildlifeOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
+          }}>囚犯{prisoners.length ? ` · ${prisoners.length}` : ''}</button>
           <button aria-label="野生动物与狩猎" aria-expanded={wildlifeOpen} onClick={() => {
-            setWildlifeOpen(v => !v); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
+            setWildlifeOpen(v => !v); setPrisonOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
           }}>野生动物{s?.animals.filter(a => a.hunt && !a.dead).length ? ` · ${s.animals.filter(a => a.hunt && !a.dead).length}` : ''}</button>
           <button
             aria-label="商队与家园"
@@ -572,6 +589,7 @@ function App() {
               setTradeOpen((value) => !value);
               setResearchOpen(false);
               setWildlifeOpen(false);
+              setPrisonOpen(false);
               client.choose('inspect');
             }}
           >
@@ -580,7 +598,7 @@ function App() {
           <button
             aria-label="研究科技"
             aria-expanded={researchOpen}
-            onClick={() => { setResearchOpen((v) => !v); setTradeOpen(false); setWildlifeOpen(false); }}
+            onClick={() => { setResearchOpen((v) => !v); setTradeOpen(false); setWildlifeOpen(false); setPrisonOpen(false); }}
             title={
               s?.research.current
                 ? `正在研究：${RESEARCH_DEFS[s.research.current].name}`
@@ -692,7 +710,7 @@ function App() {
           ↷
         </button>
       </div>
-      {help && !researchOpen && !wildlifeOpen && !tradeOpen && (
+      {help && !researchOpen && !wildlifeOpen && !prisonOpen && !tradeOpen && (
         <aside className="voxel-guide">
           <div className="voxel-panel-title">
             <span className="voxel-kicker">从地表到地下</span>
@@ -1066,7 +1084,12 @@ function App() {
           </div>
         )}
         {bed && (
-          <div className="voxel-bill">
+          <div className="voxel-bill" data-testid="bed-detail">
+            <label className="voxel-check">
+              <input type="checkbox" aria-label="囚犯床" checked={bed.prisoner} onChange={e => void client.command({ type: 'bedPrisoner', bedId: bed.id, prisoner: e.target.checked })} />
+              囚犯床
+            </label>
+            <small data-testid="prison-bed-room">{bed.prisoner ? '囚犯专用 · ' : ''}{room && !room.outdoor ? '当前位于封闭房间；切换会同时更改这个房间内的床位。' : '当前未形成封闭房间，尚不满足囚禁条件。'}囚犯床需要完整墙体、屋顶和可达通路；医疗用途可以同时启用。</small>
             <label>
               床位用途
               <select
@@ -1088,7 +1111,7 @@ function App() {
               床位主人
               <select
                 aria-label="床位主人"
-                disabled={bed.medical}
+                disabled={bed.medical || bed.prisoner}
                 value={bed.owner ?? ''}
                 onChange={(e) =>
                   void client.command({
@@ -1098,9 +1121,9 @@ function App() {
                   })
                 }
               >
-                <option value="">未分配（可自动认领）</option>
+                <option value="">{bed.prisoner ? '俘虏时自动分配' : '未分配（可自动认领）'}</option>
                 {s?.pawns
-                  .filter((p) => !p.dead)
+                  .filter((p) => !p.dead && (p.faction === 'colony' || p.id === bed.owner))
                   .map((p) => (
                     <option key={p.id} value={p.id}>
                       {p.name}
@@ -1116,6 +1139,7 @@ function App() {
             {bed.medical && (
               <small>医疗床供救援与休养使用，不分配固定主人。请留出入口和适宜温度。</small>
             )}
+            {bed.prisoner && <small>已安置：{s?.pawns.filter(v => v.prisoner?.bedId === bed.id && !v.dead).map(v => v.name).join('、') || '暂无囚犯'}。普通殖民者不会认领囚犯床。</small>}
           </div>
         )}
         {door && (
@@ -1370,7 +1394,7 @@ function App() {
           </div>
         ))}
         {pawn?.faction === 'trader' && (
-          <TraderInspector pawn={pawn} openTrade={() => { setTradeOpen(true); setResearchOpen(false); client.choose('inspect'); }} />
+          <TraderInspector pawn={pawn} openTrade={() => { setTradeOpen(true); setResearchOpen(false); setPrisonOpen(false); client.choose('inspect'); }} />
         )}
         {pawn && pawn.faction !== 'trader' && (
           <div className="voxel-pawn-detail">
@@ -1378,6 +1402,32 @@ function App() {
               <b>{pawn.name}</b>
               <span>{pawn.reason}</span>
             </div>
+            {pawn.faction === 'raider' && pawn.downed && !pawn.dead && <section className="voxel-capture-panel" data-testid="capture-controls">
+              <b>俘虏倒地敌人</b>
+              <p>未征召的殖民者会前来抱起伤员，送到可用囚犯床。先准备封闭房间中的囚犯床，并及时安排护理。</p>
+              <label>执行俘虏<select aria-label="俘虏执行者" value={captor?.id ?? ''} disabled={!captors.length} onChange={e => setSelectedCaptor(Number(e.target.value))}>
+                {!captors.length && <option value="">暂无可行动的殖民者</option>}
+                {captors.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}
+              </select></label>
+              <button disabled={!captor || pawn.carriedBy !== null || !prisonBeds.length} onClick={() => captor && void client.command({ type: 'capture', pawnId: captor.id, targetId: pawn.id })}>俘虏并送往囚犯床</button>
+              {!captors.length && <small>需要未征召、能移动和操作且没有精神崩溃的殖民者；请先解除征召。</small>}
+              {!prisonBeds.length && <small>尚无囚犯床。建造木床后勾选“囚犯床”。</small>}
+              {prisonerWorker && <small>{prisonerWorker.name} · {prisonerWorker.reason}</small>}
+            </section>}
+            {pawn.faction === 'prisoner' && pawn.prisoner && <section className="voxel-prisoner-detail" data-testid="prisoner-detail" data-prisoner-id={pawn.id}>
+              <div className="voxel-info-row"><b>囚犯 · {pawn.name}</b><span>{pawn.prisoner.releasing ? '正在办理释放' : pawn.downed ? '受伤倒地' : '囚禁中'}</span></div>
+              <div className="voxel-info-row"><span>抵抗</span><b data-testid="prisoner-resistance">{pawn.prisoner.resistance.toFixed(1)}</b></div>
+              <progress aria-label="囚犯抵抗" value={pawn.prisoner.resistance} max={PRISON_RULES.maxResistance} />
+              <label>囚犯政策<select aria-label="囚犯政策" value={pawn.prisoner.policy} disabled={pawn.dead || pawn.prisoner.releasing} onChange={e => void client.command({ type: 'prisonerPolicy', prisonerId: pawn.id, policy: e.target.value as PrisonerPolicy })}>
+                {PRISON_POLICIES.map(policy => <option value={policy} key={policy}>{PRISON_POLICY_NAMES[policy]}</option>)}
+              </select></label>
+              <p>{pawn.prisoner.policy === 'maintain' ? '维持囚禁、食物和护理，不安排招募交谈。' : pawn.prisoner.policy === 'release' ? '等待狱卒安排释放，之后离开殖民地。' : pawn.prisoner.resistance > 0 ? pawn.prisoner.policy === 'reduceResistance' ? '狱卒通过实际交谈降低抵抗；归零后停止，不会自动招募。' : '狱卒通过实际交谈降低抵抗；本次抵抗归零后，需再进行一次招募交谈。' : pawn.prisoner.policy === 'recruit' ? '抵抗已归零，等待下次招募交谈。' : '抵抗已归零，降低抵抗任务已完成；此政策不会自动招募。'}</p>
+              <small>{prisonerWorker ? `${prisonerWorker.name} · ${prisonerWorker.reason}` : pawn.prisoner.policy === 'recruit' || (pawn.prisoner.policy === 'reduceResistance' && pawn.prisoner.resistance > 0) ? pawn.prisoner.nextInteractionTick > (s?.tick ?? 0) ? `下次交谈约 ${Math.ceil((pawn.prisoner.nextInteractionTick - (s?.tick ?? 0)) / DAY * 24 * 60)} 游戏分钟后可安排。` : '已到交谈时机，等待开启狱卒分工的殖民者。' : '需要时由狱卒安排照料。'}</small>
+              <small data-testid="prisoner-last-interaction">上次结果：{pawn.prisoner.lastInteraction || '尚未交谈'}</small>
+              <small>位置 {pawn.x}, {pawn.y} · Z {pawn.z} · 俘虏于第 {Math.floor(pawn.prisoner.capturedTick / DAY) + 1} 日</small>
+              {prisonerBed ? <button onClick={() => focus(prisonerBed)}>定位分配的囚犯床</button> : <small>未分配有效囚犯床，请检查房间与床位。</small>}
+              <small>囚犯保留伤情和需求，可以被护理与喂食；招募后才能像殖民者一样征召、分工和安排作息。</small>
+            </section>}
             {pawn.faction === 'colony' && <MoodPanel pawn={pawn} tick={s?.tick ?? 0} temperature={temperatureOf(pawn)}
               pin={s?.horseshoePins.toSorted((a, b) => Math.abs(a.x - pawn.x) + Math.abs(a.y - pawn.y) + Math.abs(a.z - pawn.z) - Math.abs(b.x - pawn.x) - Math.abs(b.y - pawn.y) - Math.abs(b.z - pawn.z))[0]}
               focus={focus} />}
@@ -1399,16 +1449,18 @@ function App() {
                 command={(c) => void client.command(c)}
               />
             )}
+            <fieldset className="voxel-readonly-equipment" disabled={pawn.faction === 'prisoner'}>
             <ApparelPanel
               pawn={pawn}
               remove={(apparelId) =>
                 void client.command({ type: 'removeApparel', pawnId: pawn.id, apparelId })
               }
             />
+            </fieldset>
             <WeaponPanel pawn={pawn} command={(c) => void client.command(c)} />
-            {pawn.faction === 'colony' &&
+            {(pawn.faction === 'colony' || pawn.faction === 'prisoner') &&
               !pawn.dead &&
-              (pawn.downed || needsMedicalTending(pawn, s?.tick ?? 0)) && (
+              (pawn.downed || needsMedicalTending(pawn, s?.tick ?? 0) || (pawn.faction === 'prisoner' && pawn.food < 26)) && (
                 <div className="voxel-care-actions" data-testid="care-controls">
                   <label>
                     安排同伴
@@ -1444,10 +1496,10 @@ function App() {
                     <button
                       disabled={
                         !carer ||
-                        !pawn.downed ||
-                        pawn.food > 26 ||
+                        (pawn.faction === 'colony' && !pawn.downed) ||
+                        (pawn.faction === 'prisoner' ? pawn.food >= 26 : pawn.food > 26) ||
                         pawn.carriedBy !== null ||
-                        pawn.sleepBedId === null
+                        (pawn.faction === 'prisoner' ? !prisonerBed || !equal(pawn, prisonerBed) : pawn.sleepBedId === null)
                       }
                       onClick={() =>
                         carer &&
@@ -1520,6 +1572,7 @@ function App() {
               {(
                 [
                   'care',
+                  'warden',
                   'dig',
                   'cut',
                   'build',
@@ -1532,7 +1585,7 @@ function App() {
                 ] as Work[]
               ).map((w, i) => (
                 <label key={w}>
-                  {['医护', '挖掘', '伐木', '施工', '搬运', '种植', '烹饪', '狩猎', '加工', '研究'][i]}
+                  {['医护', '狱卒', '挖掘', '伐木', '施工', '搬运', '种植', '烹饪', '狩猎', '加工', '研究'][i]}
                   <WorkSkill pawn={pawn} work={w} />
                   <select
                     aria-label={`${pawn.name} ${w}优先级`}
@@ -1760,6 +1813,43 @@ function App() {
           close={() => setResearchOpen(false)}
         />
       )}
+      {prisonOpen && s && <aside className="voxel-prison-drawer" aria-label="囚犯与招募" data-testid="prison-panel">
+        <div className="voxel-prison-heading"><h2>囚犯与招募</h2><button aria-label="关闭囚犯面板" onClick={() => setPrisonOpen(false)}>×</button></div>
+        <p>{prisoners.length} 名囚犯 · {prisonBeds.length} 张囚犯床 · {captors.filter(v => v.priorities.warden > 0).length} 位可用狱卒</p>
+        <details className="voxel-prison-guide" open><summary>从俘虏到殖民者</summary>
+          <ol><li>建好封闭有屋顶的房间，把床设为囚犯床。</li><li>选择倒地且存活的敌人，由未征召的殖民者实际抱到床上。</li><li>照料食物与伤势，开启狱卒分工并选择囚犯政策。</li><li>招募政策先降低抵抗；抵抗归零后的下一次招募交谈会使其加入。</li></ol>
+          <button onClick={() => { client.choose('bed'); setPrisonOpen(false); }}>建造木床</button>
+          <small>“降低抵抗”归零后会停止，不会自行招募。招募完成后，新成员出现在上方殖民者栏。</small>
+        </details>
+        <div className="voxel-prison-list" role="list" aria-label="囚犯名单">
+          {!prisoners.length && <p>目前没有囚犯。</p>}
+          {prisoners.map(person => <section role="listitem" key={person.id} data-prisoner-row={person.id} className={selectedPawn === person.id ? 'selected' : ''}>
+            <div><b>{person.name}</b><span>{person.prisoner?.releasing ? '正在释放' : person.downed ? '倒地' : '囚禁中'}</span></div>
+            <small>饱食 {Math.round(person.food)}% · 抵抗 {person.prisoner?.resistance.toFixed(1) ?? '—'} · {person.prisoner ? PRISON_POLICY_NAMES[person.prisoner.policy] : ''}</small>
+            <small>{person.reason}</small>
+            <button aria-label={`查看囚犯 ${person.name} #${person.id}`} onClick={() => { setSelectedPawn(person.id); setSelectedAnimal(null); focus(person); }}>查看与定位</button>
+          </section>)}
+        </div>
+        <details className="voxel-prison-list" open={captureTargets.length > 0}><summary>可俘虏的倒地敌人 · {captureTargets.length}</summary>
+          {captureTargets.map(person => <section key={person.id} data-capture-target={person.id}>
+            <b>{person.name}</b><small>意识 {Math.round(healthSummary(person).consciousness * 100)}% · {levelName(person.z, spawn.z)} · {person.carriedBy === null ? '等待救治或俘虏' : '正在被搬运'}</small>
+            <button aria-label={`查看倒地敌人 ${person.name} #${person.id}`} onClick={() => { setSelectedPawn(person.id); setSelectedAnimal(null); focus(person); }}>选择并安排俘虏</button>
+          </section>)}
+        </details>
+        <details className="voxel-prison-list"><summary>床位设置 · {s.beds.length}</summary>
+          {!s.beds.length && <p>先建造木床，再选择囚犯用途。</p>}
+          {s.beds.map(b => <section key={b.id}>
+            <button onClick={() => { setSelectedPawn(null); setSelectedAnimal(null); focus(b); }}>{b.prisoner ? '囚犯床' : '木床'} #{b.id}{b.medical ? ' · 医疗' : ''}</button>
+            <small>{client.roomAt(b)?.outdoor === false ? '封闭房间' : '尚未形成封闭房间'} · Z {b.z}</small>
+          </section>)}
+        </details>
+        <details className="voxel-prison-list"><summary>狱卒分工与社交</summary>
+          {s.pawns.filter(v => v.faction === 'colony' && !v.dead).map(person => <section key={person.id}>
+            <button onClick={() => { setSelectedPawn(person.id); setSelectedAnimal(null); focus(person); }}>{person.name}</button>
+            <small>社交 {person.skills.social.level} · {person.priorities.warden > 0 ? `狱卒优先级 ${person.priorities.warden}` : '狱卒已停用'}{person.drafted ? ' · 请先解除征召' : ''}</small>
+          </section>)}
+        </details>
+      </aside>}
       {wildlifeOpen && s && <aside className="voxel-wildlife-drawer" aria-label="野生动物与狩猎" data-testid="wildlife-panel">
         <div className="voxel-wildlife-heading"><h2>野生动物与狩猎</h2><button aria-label="关闭野生动物面板" onClick={() => setWildlifeOpen(false)}>×</button></div>
         <p>{s.animals.filter(a => !a.dead).length} 只野生动物 · {s.animals.filter(a => a.hunt && !a.dead).length} 只已标记 · {hunters.length} 位可用远程猎人</p>

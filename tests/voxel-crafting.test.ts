@@ -72,6 +72,7 @@ function fixture(setup: (s: VoxelSimulation) => void = () => {}) {
   s.pawns.forEach((p, n) => {
     Object.assign(p, pos(10 + n, 18));
     p.priorities = {
+      warden: 0,
       hunt: 0,
       dig: 0,
       build: 0,
@@ -505,7 +506,7 @@ describe('masonry recovery and v7 validation', () => {
       s = VoxelSimulation.load(raw);
     expect(raw.version).toBe(6);
     expect(raw).toEqual(before);
-    expect(s.save().version).toBe(23);
+    expect(s.save().version).toBe(24);
     expect(s.counts().stone).toBe(15);
     expect(s.counts().chunk).toBe(0);
     expect(s.stats.stonecut).toBe(0);

@@ -25,7 +25,7 @@ export interface TradeHost {
 }
 const same = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
 const distance = (a: Pos, b: Pos) => Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z);
-export const tradeHostile = (a: Pick<Pawn, 'faction'>, b: Pick<Pawn, 'faction'>, goodwill: number) => a.faction !== b.faction &&
+export const tradeHostile = (a: Pick<Pawn, 'faction'>, b: Pick<Pawn, 'faction'>, goodwill: number) => a.faction !== 'prisoner' && b.faction !== 'prisoner' && a.faction !== b.faction &&
   (a.faction === 'raider' || b.faction === 'raider' || goodwill <= -75);
 /** Native damage notification uses incoming Amount, even if armor absorbs it.
  * Crossfire is exempt only when the intended target is hostile to both sides. */

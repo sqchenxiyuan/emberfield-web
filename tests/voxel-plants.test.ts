@@ -86,6 +86,7 @@ function fixture(configure: (s: VoxelSimulation) => void = () => {}) {
     // This geometry/lifecycle fixture has a qualified forester; skill gates have separate tests.
     if (i === 0) pawn.skills.plants.level = 8;
     pawn.priorities = {
+      warden: 0,
       hunt: 0,
       dig: 0,
       cut: i === 0 ? 1 : 0,
@@ -302,7 +303,7 @@ describe('safe natural renewal, aging and deterministic continuation', () => {
           if (kind === 'stove')
             s.stoves.push({ ...target, id: s.nextId++, target: 0, paused: true });
           if (kind === 'bed')
-            s.beds.push({ ...target, id: s.nextId++, axis: 'x', owner: null, medical: false });
+            s.beds.push({ ...target, id: s.nextId++, axis: 'x', owner: null, prisoner: false, medical: false });
           if (kind === 'ladder') s.ladders[at(target)] = 1;
           if (kind === 'items')
             s.items.push({ ...freshBatch('wood', 1), ...target, id: s.nextId++ });
@@ -400,7 +401,7 @@ describe('real v8 migration and v9 validation', () => {
       s = VoxelSimulation.load(raw);
     expect(raw.version).toBe(8);
     expect(raw).toEqual(before);
-    expect(s.save().version).toBe(23);
+    expect(s.save().version).toBe(24);
     expect(s.save().blocks).toEqual(raw.blocks);
     expect(s.items).toEqual(raw.items);
     expect(s.treePlots).toEqual([]);

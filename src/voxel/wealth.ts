@@ -146,7 +146,9 @@ export interface WealthDetails extends WealthTotals {
   pawnValues: { id: number; value: number; summaryHealth: number }[];
 }
 /** All present map cells are visible in this project. No fog, ownership claims,
- * pocket maps, guest/slave pawns, plants-as-assets or underground mineral wealth.
+ * pocket maps, slaves, plants-as-assets or underground mineral wealth.
+ * Captured raiders retain their original-faction identity: prisoner bodies and
+ * carried gear remain excluded; actual dropped items are counted on the ground.
  * Fuel/energy floats are already consumed inputs. Human corpse meat/leather value
  * remains 0; former-colony gear remains a physical item asset. Animal carcasses
  * are separate physical cargo, valued from their provisional meat yield. */

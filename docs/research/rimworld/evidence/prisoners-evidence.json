@@ -1,0 +1,459 @@
+{
+  "evidence_id": "RW17-PRISONER-RECRUITMENT-MECHANISMS",
+  "date_local": "2026-11-04",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Static derived managed-code reconstruction plus selected shipped Core XML; native observations are separate",
+  "artifact_identity": "artifact-identity.json",
+  "manifest": "prisoners-manifest.json",
+  "types": "prisoners-types.json",
+  "claims": [
+    {
+      "id": "PR01",
+      "finding": "Prison beds require a proper non-huge room, not an explicit roof test; UI owner-type changes propagate across contained beds and bed selection checks prisoner compatibility.",
+      "sources": [
+        {
+          "file": ".local-research/housing/RimWorld.Building_Bed.cs",
+          "sha256": "2ee2bf86f55b05d4106ea896a26c8aa0c3442e4fa3aea917f9afb39071aada6c",
+          "lines": [
+            333,
+            479
+          ]
+        },
+        {
+          "file": ".local-research/environment/Verse.Room.cs",
+          "sha256": "ef3f3f189635902d370aa88117c8d0d0e3bfd7c5d6b88ec6302e6843d296e53d",
+          "lines": [
+            129,
+            131
+          ]
+        },
+        {
+          "file": ".local-research/environment/Verse.Room.cs",
+          "sha256": "ef3f3f189635902d370aa88117c8d0d0e3bfd7c5d6b88ec6302e6843d296e53d",
+          "lines": [
+            536,
+            553
+          ]
+        },
+        {
+          "file": ".local-research/environment/Verse.Room.cs",
+          "sha256": "ef3f3f189635902d370aa88117c8d0d0e3bfd7c5d6b88ec6302e6843d296e53d",
+          "lines": [
+            685,
+            728
+          ]
+        },
+        {
+          "file": ".local-research/housing/RimWorld.RestUtility.cs",
+          "sha256": "e0f84f3a9d891e7c6130159b9dfd6751063147eb3e090effe854661171e3f73e",
+          "lines": [
+            70,
+            146
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "PR02",
+      "finding": "Capture reserves pawn and bed, walks, carries and tucks into a prisoner bed; failure is not success and no-bed is reported. Same-faction imprisonment has an earlier status-transition branch.",
+      "sources": [
+        {
+          "file": ".local-research/prisoners/RimWorld.FloatMenuOptionProvider_CapturePawn.cs",
+          "sha256": "84acd5ce5f461323ad5a12e3f1aa84ba2ec113a774d9bba2b6e44d176108806d",
+          "lines": [
+            1,
+            62
+          ]
+        },
+        {
+          "file": ".local-research/survival/RimWorld.JobDriver_TakeToBed.cs",
+          "sha256": "152297f764d3217f164d6d8bab92f228709beed0cd5130b2c0a6bce3f7689aca",
+          "lines": [
+            40,
+            179
+          ]
+        }
+      ],
+      "xml": [
+        "XML07"
+      ]
+    },
+    {
+      "id": "PR03",
+      "finding": "Ordinary foreign prisoners retain original Faction while receiving host and Prisoner guest status; capture clears behavior, undrafts, drops possessions and initializes resistance separately from enslavement will.",
+      "sources": [
+        {
+          "file": ".local-research/prisoners/RimWorld.Pawn_GuestTracker.cs",
+          "sha256": "0d37d2c0a1210dad405e31097fae6d41cd5838675927d6e36752c044a395414f",
+          "lines": [
+            443,
+            576
+          ]
+        }
+      ],
+      "xml": [
+        "XML06"
+      ]
+    },
+    {
+      "id": "PR04",
+      "finding": "Prisoners have their own food/rest branch; wardens deliver real food when necessary and feed in-bed downed or medical-rest prisoners through a separate job.",
+      "sources": [
+        {
+          "file": ".local-research/prisoners/RimWorld.WorkGiver_Warden.cs",
+          "sha256": "b39bc750f38ab1c7cc2fe1fd788773e9e0d524eed1f9a3fe49664058ce156b7f",
+          "lines": [
+            10,
+            30
+          ]
+        },
+        {
+          "file": ".local-research/prisoners/RimWorld.WorkGiver_Warden_Feed.cs",
+          "sha256": "ad58fb14a667dfc415a6f0ce8228c5707c0d42244d15e9c07f191717d5a07f24",
+          "lines": [
+            1,
+            55
+          ]
+        },
+        {
+          "file": ".local-research/prisoners/RimWorld.WorkGiver_Warden_DeliverFood.cs",
+          "sha256": "b07bd8669c7621fb21948f5cd30b348a2ea366ab3d681b3c206490a2a6acaf11",
+          "lines": [
+            1,
+            110
+          ]
+        },
+        {
+          "file": ".local-research/prisoners/RimWorld.WardenFeedUtility.cs",
+          "sha256": "767e92e40bbe9d2b25b42aa7f64155dd106f049b6bf9da1a5ac3c62294f64282",
+          "lines": [
+            1,
+            27
+          ]
+        },
+        {
+          "file": ".local-research/prisoners/RimWorld.WorkGiver_Warden_TakeToBed.cs",
+          "sha256": "5e2f44768371148901ded2f77c81a65d10e94ec241186fdaf187704a17b0e643",
+          "lines": [
+            1,
+            86
+          ]
+        }
+      ],
+      "xml": [
+        "XML01",
+        "XML04",
+        "XML07"
+      ]
+    },
+    {
+      "id": "PR05",
+      "finding": "Ordinary prisoners cannot open host-faction doors, have no Core Joy need and take the prisoner think-tree branch before ordinary colonist work. Release and special doors are separate cases.",
+      "sources": [
+        {
+          "file": ".local-research/housing/RimWorld.Building_Door.cs",
+          "sha256": "f6c2dd451cf71a9db48cf09b05e4bfeaef3029b642fe29acca573e57eccdae27",
+          "lines": [
+            426,
+            483
+          ]
+        },
+        {
+          "file": ".local-research/prisoners/Verse.AI.GenAI.cs",
+          "sha256": "22136e92f443bab7fed65e56cffe997e1f3f86470331a50057c6162164958c7e",
+          "lines": [
+            9,
+            24
+          ]
+        },
+        {
+          "file": ".local-research/survival/RimWorld.Pawn_NeedsTracker.cs",
+          "sha256": "7ebf6eb59577301c610458b0dfac7660f614134a6c5e58edd2baa9ff858a7a63",
+          "lines": [
+            260,
+            281
+          ]
+        },
+        {
+          "file": ".local-research/preservation/Verse.Pawn.cs",
+          "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+          "lines": [
+            454,
+            491
+          ]
+        }
+      ],
+      "xml": [
+        "XML01",
+        "XML02"
+      ]
+    },
+    {
+      "id": "PR06",
+      "finding": "Recruit and reduce-resistance modes generate physical chat jobs gated by target/warden eligibility and interaction timing. Five rapport phases precede the final attempt; last-interaction count is updated before that attempt.",
+      "sources": [
+        {
+          "file": ".local-research/prisoners/RimWorld.WorkGiver_Warden_Chat.cs",
+          "sha256": "5b4bacb5b37062b1cfba86e7f859cfb339cd4b243c34c4aef37e76fdded0166e",
+          "lines": [
+            1,
+            47
+          ]
+        },
+        {
+          "file": ".local-research/prisoners/RimWorld.Pawn_GuestTracker.cs",
+          "sha256": "0d37d2c0a1210dad405e31097fae6d41cd5838675927d6e36752c044a395414f",
+          "lines": [
+            105,
+            115
+          ]
+        },
+        {
+          "file": ".local-research/prisoners/RimWorld.Pawn_GuestTracker.cs",
+          "sha256": "0d37d2c0a1210dad405e31097fae6d41cd5838675927d6e36752c044a395414f",
+          "lines": [
+            217,
+            260
+          ]
+        },
+        {
+          "file": ".local-research/prisoners/RimWorld.JobDriver_ChatWithPrisoner.cs",
+          "sha256": "00cb5249c36d21de427d3a519a6fc8f01eb5e773dc2aabdc309ccc12b359963a",
+          "lines": [
+            1,
+            57
+          ]
+        },
+        {
+          "file": ".local-research/prisoners/RimWorld.Toils_Interpersonal.cs",
+          "sha256": "c655fcb56fc30e22d1ef2daef4bc0a4e68ab7221f523ca67f75c4693703c1863",
+          "lines": [
+            147,
+            167
+          ]
+        },
+        {
+          "file": ".local-research/prisoners/RimWorld.Toils_Interpersonal.cs",
+          "sha256": "c655fcb56fc30e22d1ef2daef4bc0a4e68ab7221f523ca67f75c4693703c1863",
+          "lines": [
+            209,
+            239
+          ]
+        },
+        {
+          "file": ".local-research/prisoners/Verse.AI.Pawn_MindState.cs",
+          "sha256": "b606531ba468fc6f4c1a2fbd9fbd25dd366ac45f3ef241b1a58fd298f82b7c12",
+          "lines": [
+            561,
+            566
+          ]
+        }
+      ],
+      "xml": [
+        "XML03",
+        "XML07"
+      ]
+    },
+    {
+      "id": "PR07",
+      "finding": "Ordinary human resistance reduction uses negotiation, instantaneous mood target and opinion. Reaching zero does not recruit in that same interaction; a later zero-resistance interaction directly recruits. Animal/wildman probability branch is distinct.",
+      "sources": [
+        {
+          "file": ".local-research/prisoners/RimWorld.InteractionWorker_RecruitAttempt.cs",
+          "sha256": "b865b4d6a8418fdb54d21ae1bdb9d02a2c44f037a52af3c4f355eff76f47d6aa",
+          "lines": [
+            7,
+            156
+          ]
+        }
+      ],
+      "xml": [
+        "XML05"
+      ]
+    },
+    {
+      "id": "PR08",
+      "finding": "Recruitment changes the same pawn: guest cleared, faction changed, dynamic components/registries/work settings/needs updated; persistent health and skills are not replaced by spawning a new pawn.",
+      "sources": [
+        {
+          "file": ".local-research/prisoners/RimWorld.RecruitUtility.cs",
+          "sha256": "41edbc4b1fe16c2d63e0545ec563034ac5be40dbc6703af628560e86ef7fb336",
+          "lines": [
+            1,
+            33
+          ]
+        },
+        {
+          "file": ".local-research/preservation/Verse.Pawn.cs",
+          "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+          "lines": [
+            2702,
+            2767
+          ]
+        },
+        {
+          "file": ".local-research/prisoners/RimWorld.Pawn_GuestTracker.cs",
+          "sha256": "0d37d2c0a1210dad405e31097fae6d41cd5838675927d6e36752c044a395414f",
+          "lines": [
+            633,
+            637
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "PR09",
+      "finding": "Release requires a warden job carrying the non-downed prisoner to a release cell, marks released and permits exit. Former player members can remain; foreign prisoners clear guest status during exit, rather than joining the colony.",
+      "sources": [
+        {
+          "file": ".local-research/prisoners/RimWorld.WorkGiver_Warden_ReleasePrisoner.cs",
+          "sha256": "c7267625963e1b7f1373fad18d48a265ce5e317d5828cd83a5e669f735cf6c3e",
+          "lines": [
+            1,
+            37
+          ]
+        },
+        {
+          "file": ".local-research/prisoners/Verse.AI.JobDriver_ReleasePrisoner.cs",
+          "sha256": "58084270c33a66becacd3bea0820757a45a6e3b886e82ef829a03e7622f9f7d5",
+          "lines": [
+            1,
+            44
+          ]
+        },
+        {
+          "file": ".local-research/prisoners/RimWorld.GenGuest.cs",
+          "sha256": "db8aa52357978b6878a4b2361076fe415136a1014ddc294fafe989bdacba1b23",
+          "lines": [
+            8,
+            81
+          ]
+        },
+        {
+          "file": ".local-research/preservation/Verse.Pawn.cs",
+          "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+          "lines": [
+            2577,
+            2593
+          ]
+        }
+      ],
+      "xml": [
+        "XML03",
+        "XML07"
+      ]
+    },
+    {
+      "id": "PR10",
+      "finding": "Foreign prisoners retaining a non-player faction are outside WealthPawns and the pawn-holder item traversal. Dropped map items are separate; imprisoned player-faction pawns and slaves are different cases.",
+      "sources": [
+        {
+          "file": ".local-research/economy/RimWorld.WealthWatcher.cs",
+          "sha256": "273dce0c7b6c6e598d68e60164f1cdb9e8d82fb3108f498e9b14330a529bfa33",
+          "lines": [
+            144,
+            163
+          ]
+        },
+        {
+          "file": ".local-research/economy/RimWorld.WealthWatcher.cs",
+          "sha256": "273dce0c7b6c6e598d68e60164f1cdb9e8d82fb3108f498e9b14330a529bfa33",
+          "lines": [
+            216,
+            251
+          ]
+        }
+      ],
+      "xml": []
+    }
+  ],
+  "xml": [
+    {
+      "id": "XML01",
+      "file": "Data/Core/Defs/ThinkTreeDefs/Humanlike.xml",
+      "source_sha256": "047fc3c5bcb60ead007adbcd0090690a25af882adeb11298df8f4b551bbbdd4e",
+      "xpath": "/Defs/ThinkTreeDef[defName=\"Humanlike\"]/thinkRoot/subNodes/li[@Class=\"ThinkNode_ConditionalPrisoner\"]",
+      "nodes": [
+        "<li Class=\"ThinkNode_ConditionalPrisoner\"><leaveJoinableLordIfIssuesJob>true</leaveJoinableLordIfIssuesJob><subNodes><!-- If it's the player home map... --><li Class=\"ThinkNode_ConditionalInNonPlayerHomeMap\"><invert>true</invert><subNodes><!-- Wait instead of escaping if should --><li Class=\"ThinkNode_Tagger\"><tagToGive>Idle</tagToGive><subNodes><li Class=\"JobGiver_PrisonerWaitInsteadOfEscaping\"><maxDanger>Deadly</maxDanger></li></subNodes></li><!-- Escape --><li Class=\"ThinkNode_Tagger\"><tagToGive>Escaping</tagToGive><subNodes><li Class=\"JobGiver_PrisonerEscape\" /></subNodes></li></subNodes></li><!-- Exit map if released --><li Class=\"ThinkNode_ConditionalReleased\"><subNodes><li Class=\"ThinkNode_Tagger\"><tagToGive>Misc</tagToGive><subNodes><li Class=\"JobGiver_ExitMapBest\"><defaultLocomotion>Walk</defaultLocomotion></li></subNodes></li></subNodes></li><li Class=\"ThinkNode_Tagger\"><tagToGive>RestingForMedicalReasons</tagToGive><subNodes><li Class=\"JobGiver_PatientGoToBed\" /></subNodes></li><li Class=\"ThinkNode_Tagger\"><tagToGive>ChangingApparel</tagToGive><subNodes><li Class=\"JobGiver_PrisonerGetDressed\" /></subNodes></li><li Class=\"ThinkNode_Tagger\"><tagToGive>SatisfyingNeeds</tagToGive><subNodes><li Class=\"ThinkNode_PrioritySorter\"><subNodes><li Class=\"JobGiver_Autofeed\" MayRequire=\"Ludeon.RimWorld.Biotech\" /><li Class=\"JobGiver_GetFood\" /><li Class=\"JobGiver_GetRest\" /><li Class=\"JobGiver_SatisfyChemicalNeed\" /><li Class=\"JobGiver_SatifyChemicalDependency\" MayRequire=\"Ludeon.RimWorld.Biotech\" /><li Class=\"JobGiver_GetHemogen\" MayRequire=\"Ludeon.RimWorld.Biotech\" /><li Class=\"JobGiver_GetDeathrest\" MayRequire=\"Ludeon.RimWorld.Biotech\" /><li Class=\"ThinkNode_Priority_GetJoy\"><subNodes><li Class=\"JobGiver_GetJoy\" /><li Class=\"JobGiver_GetJoyInBed\" /></subNodes></li><li Class=\"JobGiver_Meditate\" /></subNodes></li></subNodes></li><!-- If in non-PlayerHomeMap --><li Class=\"ThinkNode_ConditionalInNonPlayerHomeMap\"><subNodes><!-- No colonist spawned in the map --><li Class=\"ThinkNode_ConditionalAnyUndownedColonistSpawnedNearby\"><invert>true</invert><subNodes><li Class=\"ThinkNode_Tagger\"><tagToGive>Escaping</tagToGive><subNodes><li Class=\"JobGiver_PrisonerEscape\" /></subNodes></li></subNodes></li><!-- Wander --><li Class=\"ThinkNode_Tagger\"><tagToGive>Idle</tagToGive><subNodes><li Class=\"JobGiver_WanderColony\"><maxDanger>Deadly</maxDanger></li></subNodes></li></subNodes></li><li Class=\"ThinkNode_Tagger\"><tagToGive>Idle</tagToGive><subNodes><li Class=\"JobGiver_WanderCurrentRoom\"><maxDanger>Deadly</maxDanger></li></subNodes></li><li Class=\"JobGiver_IdleError\" /></subNodes></li>"
+      ]
+    },
+    {
+      "id": "XML02",
+      "file": "Data/Core/Defs/NeedDefs/Needs.xml",
+      "source_sha256": "f0abfb6e11cf85ec43f55ac2191735c8cd029e7d76bd0411f014f37be3a3249c",
+      "xpath": "/Defs/NeedDef[defName=\"Joy\"]",
+      "nodes": [
+        "<NeedDef><defName>Joy</defName><needClass>Need_Joy</needClass><label>recreation</label><description>Recreation is the need to have fun. Repeating the same kind of activity makes it less fun, so variety is necessary.</description><minIntelligence>Humanlike</minIntelligence><colonistsOnly>true</colonistsOnly><neverOnPrisoner>true</neverOnPrisoner><neverOnSlave>true</neverOnSlave><listPriority>500</listPriority><major>true</major><freezeWhileSleeping>true</freezeWhileSleeping><freezeInMentalState>true</freezeInMentalState><developmentalStageFilter>Adult</developmentalStageFilter></NeedDef>"
+      ]
+    },
+    {
+      "id": "XML03",
+      "file": "Data/Core/Defs/Misc/PrisonerInteractionModeDefs/PrisonerInteractionMode.xml",
+      "source_sha256": "6e9fb8e1b5bc7259d3229025d09a9133e18b29768bafe3ccebd724629069d355",
+      "xpath": "/Defs/PrisonerInteractionModeDef[defName=\"MaintainOnly\" or defName=\"AttemptRecruit\" or defName=\"ReduceResistance\" or defName=\"Release\"]",
+      "nodes": [
+        "<PrisonerInteractionModeDef><defName>MaintainOnly</defName><label>maintain only</label><listOrder>0</listOrder><description>Just feed the prisoner and provide for their basic needs, without attempting any other interaction.</description></PrisonerInteractionModeDef>",
+        "<PrisonerInteractionModeDef><defName>AttemptRecruit</defName><label>recruit</label><listOrder>10</listOrder><allowOnWildMan>False</allowOnWildMan><description>Wardens will attempt to recruit the prisoner. If the prisoner still has resistance, wardens will speak to them to reduce it.</description><hideIfNotRecruitable>true</hideIfNotRecruitable></PrisonerInteractionModeDef>",
+        "<PrisonerInteractionModeDef><defName>ReduceResistance</defName><label>reduce resistance only</label><isChildInteraction>true</isChildInteraction><listOrder>11</listOrder><allowOnWildMan>False</allowOnWildMan><description>If the prisoner still has resistance, wardens will speak to them to reduce it. No recruit attempts will be made.</description><hideIfNotRecruitable>true</hideIfNotRecruitable></PrisonerInteractionModeDef>",
+        "<PrisonerInteractionModeDef><defName>Release</defName><label>release</label><listOrder>35</listOrder><description>A warden will release the prisoner.</description></PrisonerInteractionModeDef>"
+      ]
+    },
+    {
+      "id": "XML04",
+      "file": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+      "source_sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c",
+      "xpath": "/Defs/WorkGiverDef[defName=\"ReleasePrisoner\" or defName=\"TakePrisonerToBed\" or defName=\"FeedPrisoner\" or defName=\"DeliverFoodToPrisoner\" or defName=\"ChatWithPrisoner\"]",
+      "nodes": [
+        "<WorkGiverDef Name=\"ReleasePrisoner\"><defName>ReleasePrisoner</defName><label>release prisoners</label><giverClass>WorkGiver_Warden_ReleasePrisoner</giverClass><workType>Warden</workType><verb>release</verb><gerund>releasing</gerund><priorityInType>100</priorityInType><requiredCapacities><li>Manipulation</li></requiredCapacities><equivalenceGroup>ReleasePrisoner</equivalenceGroup></WorkGiverDef>",
+        "<WorkGiverDef><defName>TakePrisonerToBed</defName><label>take prisoners to bed</label><giverClass>WorkGiver_Warden_TakeToBed</giverClass><workType>Warden</workType><verb>take to bed</verb><gerund>taking to bed</gerund><priorityInType>90</priorityInType><requiredCapacities><li>Manipulation</li></requiredCapacities></WorkGiverDef>",
+        "<WorkGiverDef><defName>FeedPrisoner</defName><label>feed prisoners</label><giverClass>WorkGiver_Warden_Feed</giverClass><workType>Warden</workType><verb>feed</verb><gerund>feeding</gerund><priorityInType>80</priorityInType><requiredCapacities><li>Manipulation</li></requiredCapacities></WorkGiverDef>",
+        "<WorkGiverDef><defName>DeliverFoodToPrisoner</defName><label>deliver food to prisoners</label><giverClass>WorkGiver_Warden_DeliverFood</giverClass><workType>Warden</workType><verb>deliver food for</verb><gerund>delivering food for</gerund><priorityInType>70</priorityInType><requiredCapacities><li>Manipulation</li></requiredCapacities></WorkGiverDef>",
+        "<WorkGiverDef><defName>ChatWithPrisoner</defName><label>chat with prisoners</label><giverClass>WorkGiver_Warden_Chat</giverClass><workType>Warden</workType><verb>chat with</verb><gerund>chatting with</gerund><priorityInType>60</priorityInType><requiredCapacities><li>Talking</li></requiredCapacities></WorkGiverDef>"
+      ]
+    },
+    {
+      "id": "XML05",
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_Social.xml",
+      "source_sha256": "a3db914be034226f29b2b511f63561edc5df8b0a20b9ae79e18dd2fb75c8b026",
+      "xpath": "/Defs/StatDef[defName=\"NegotiationAbility\"]",
+      "nodes": [
+        "<StatDef><defName>NegotiationAbility</defName><label>negotiation ability</label><description>How effective this person is as a negotiator.\\n\\nThis affects the speed of prisoner recruitment, impact on faction relations when giving gifts, and the outcome of peace talks.</description><category>PawnSocial</category><defaultBaseValue>1</defaultBaseValue><minValue>0.4</minValue><toStringStyle>PercentTwo</toStringStyle><skillNeedFactors><li Class=\"SkillNeed_BaseBonus\"><skill>Social</skill><baseValue>0.4</baseValue><bonusPerLevel>0.075</bonusPerLevel></li></skillNeedFactors><capacityFactors><li><capacity>Talking</capacity><weight>0.9</weight><allowedDefect>0.05</allowedDefect><max>1</max></li><li><capacity>Hearing</capacity><weight>0.9</weight><allowedDefect>0.20</allowedDefect><max>1</max></li></capacityFactors><displayPriorityInCategory>2600</displayPriorityInCategory></StatDef>"
+      ]
+    },
+    {
+      "id": "XML06",
+      "file": "Data/Core/Defs/PawnKindDefs_Humanlikes/PawnKinds_Pirate.xml",
+      "source_sha256": "f43578dccde35b33673186f75332414a212db82f102429cda2ddd906e1c8e516",
+      "xpath": "/Defs/PawnKindDef[defName=\"Drifter\"]/*[self::defName or self::initialResistanceRange or self::initialWillRange]",
+      "nodes": [
+        "<defName>Drifter</defName>",
+        "<initialWillRange>0~1</initialWillRange>",
+        "<initialResistanceRange>7~12</initialResistanceRange>"
+      ]
+    },
+    {
+      "id": "XML07",
+      "file": "Data/Core/Defs/JobDefs/Jobs_Work.xml",
+      "source_sha256": "0c2cc583de4ad306681c1dcd65763539461adedf33a5360fe716a36deddef2a1",
+      "xpath": "/Defs/JobDef[defName=\"Capture\" or defName=\"ReleasePrisoner\" or defName=\"FeedPatient\" or defName=\"DeliverFood\" or defName=\"PrisonerAttemptRecruit\"]",
+      "nodes": [
+        "<JobDef><defName>Capture</defName><driverClass>JobDriver_TakeToBed</driverClass><reportString>capturing TargetA.</reportString><alwaysShowWeapon>true</alwaysShowWeapon><makeTargetPrisoner>true</makeTargetPrisoner><casualInterruptible>false</casualInterruptible><carryThingAfterJob>true</carryThingAfterJob></JobDef>",
+        "<JobDef><defName>ReleasePrisoner</defName><driverClass>JobDriver_ReleasePrisoner</driverClass><reportString>releasing TargetA.</reportString><alwaysShowWeapon>true</alwaysShowWeapon><allowOpportunisticPrefix>true</allowOpportunisticPrefix><carryThingAfterJob>true</carryThingAfterJob></JobDef>",
+        "<JobDef><defName>FeedPatient</defName><driverClass>JobDriver_FoodFeedPatient</driverClass><reportString>feeding TargetA to TargetB.</reportString><allowOpportunisticPrefix>true</allowOpportunisticPrefix></JobDef>",
+        "<JobDef><defName>DeliverFood</defName><driverClass>JobDriver_FoodDeliver</driverClass><reportString>feeding TargetA to TargetB.</reportString><allowOpportunisticPrefix>true</allowOpportunisticPrefix></JobDef>",
+        "<JobDef><defName>PrisonerAttemptRecruit</defName><driverClass>JobDriver_ChatWithPrisoner</driverClass><reportString>attempting to recruit TargetA.</reportString><allowOpportunisticPrefix>true</allowOpportunisticPrefix></JobDef>"
+      ]
+    }
+  ],
+  "native_runtime_report": "../74-native-prisoner-runtime.md",
+  "limitations": [
+    "Derived ILSpy C# is not original source; unresolved references are tolerated.",
+    "Selected packaged XML is not an effective runtime Def database and inheritance or mod patches are not globally resolved.",
+    "Ordinary adult recruitable human path only; no exhaustive DLC, prison-break, child, slavery or mental-state analysis.",
+    "No native recruitment rate, probability or full natural capture-to-recruitment measurement.",
+    "Web recommendations are analyst design choices, not validation of implementation."
+  ]
+}

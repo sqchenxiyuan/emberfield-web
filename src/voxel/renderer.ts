@@ -139,6 +139,7 @@ type PawnVisual = {
   healthMarker: Group;
   recreationMarker: Sprite;
   mentalMarker: Sprite;
+  talkMarker: Sprite;
   horseshoe: Group;
   apparel: { hat: Group; coat: Mesh; sleeves: Mesh[]; shirt: Mesh[]; pants: Mesh[] };
   shadow: Mesh;
@@ -703,6 +704,9 @@ export class VoxelRenderer {
       }
     for (const pawn of snapshot.pawns) {
       let visual = this.pawnVisuals.get(pawn.id);
+      if (visual && (visual.pawn.faction !== pawn.faction || visual.pawn.name !== pawn.name)) {
+        this.removePawn(visual); this.pawnVisuals.delete(pawn.id); visual = undefined;
+      }
       if (!visual) {
         visual = this.makePawn(pawn);
         this.pawnVisuals.set(pawn.id, visual);
@@ -1798,7 +1802,7 @@ export class VoxelRenderer {
     this.inspectBatches.set(bedParts, { cells: beds, instancesPerCell: 12 });
     beds.forEach((bed, i) => {
       const owner = this.data!.pawns.find((pawn) => pawn.id === bed.owner);
-      const accent = bed.medical ? 0x81bdc4 : (owner?.color ?? 0x84958a);
+      const accent = bed.prisoner ? 0xc69b65 : bed.medical ? 0x81bdc4 : (owner?.color ?? 0x84958a);
       const part = (
         n: number,
         width: number,
@@ -1828,7 +1832,7 @@ export class VoxelRenderer {
       part(3, 0.5, 1.22, 0.49, 0.77, 1.2, 0.05, accent);
       part(4, 0.5, 0.08, 0.43, 0.9, 0.12, 0.68, 0x9e774e);
       part(5, 0.5, 1.92, 0.31, 0.9, 0.12, 0.44, 0xa17b53);
-      part(6, 0.5, 0.075, 0.68, 0.64, 0.13, 0.07, accent);
+      part(6, 0.5, 0.075, 0.68, 0.64, 0.13, 0.07, bed.medical ? 0x81bdc4 : accent);
       part(7, 0.1, 1, 0.3, 0.07, 1.78, 0.18, 0x765b40);
       for (let leg = 0; leg < 4; leg++)
         part(
@@ -3227,7 +3231,7 @@ export class VoxelRenderer {
     const label = new Sprite(
       this.keepMaterial(
         new SpriteMaterial({
-          map: nameTexture(pawn.faction === 'trader' ? `商 · ${pawn.name}` : pawn.name, pawn.faction === 'trader' ? 0xe7c987 : pawn.color),
+          map: nameTexture(pawn.faction === 'trader' ? `商 · ${pawn.name}` : pawn.faction === 'prisoner' ? `囚 · ${pawn.name}` : pawn.name, pawn.faction === 'trader' ? 0xe7c987 : pawn.faction === 'prisoner' ? 0xe2ac79 : pawn.color),
           depthTest: false,
           depthWrite: false,
         }),
@@ -3262,7 +3266,7 @@ export class VoxelRenderer {
       marker.scale.set(.9, .29, 1); marker.position.set(0, 2.3, 0); marker.visible = false; marker.renderOrder = 12; root.add(marker);
       return marker;
     };
-    const recreationMarker = activityMarker('娱乐', 0xb9d59b), mentalMarker = activityMarker('悲伤', 0xe1a17d);
+    const recreationMarker = activityMarker('娱乐', 0xb9d59b), mentalMarker = activityMarker('悲伤', 0xe1a17d), talkMarker = activityMarker('交谈', 0xe1c49a);
     const horseshoe = new Group(), iron = this.keepMaterial(new MeshLambertMaterial({ color: 0xc4d1c7 }));
     part(horseshoe, iron, -.105, 0, 0, .055, .055, .26);
     part(horseshoe, iron, .105, 0, 0, .055, .055, .26);
@@ -3294,6 +3298,7 @@ export class VoxelRenderer {
       healthMarker,
       recreationMarker,
       mentalMarker,
+      talkMarker,
       horseshoe,
       apparel: { hat, coat, sleeves, shirt, pants },
       shadow,
@@ -3544,8 +3549,12 @@ export class VoxelRenderer {
       const pawn = visual.pawn;
       const mental = !pawn.dead && !pawn.downed && pawn.psyche.breakUntil > this.data.tick;
       const recreation = !pawn.dead && !pawn.downed && !mental && pawn.phase === 'recreation' ? pawn.psyche.recreation : null;
+      const ownTalk = pawn.phase === 'warden' && pawn.wardenTask?.stage === 'talk' ? this.data.pawns.find(p => p.id === pawn.wardenTask!.prisonerId) : undefined;
+      const otherTalk = pawn.faction === 'prisoner' ? this.data.pawns.find(p => p.phase === 'warden' && p.wardenTask?.stage === 'talk' && p.wardenTask.prisonerId === pawn.id) : undefined;
+      const talkPartner = !pawn.dead && !pawn.downed && !mental ? ownTalk ?? otherTalk : undefined;
       visual.recreationMarker.visible = !!recreation;
       visual.mentalMarker.visible = mental;
+      visual.talkMarker.visible = !!talkPartner;
       visual.horseshoe.visible = false;
       visual.head.rotation.set(0, 0, 0);
       visual.head.visible = !isPartMissing(pawn.trauma, 'head');
@@ -3598,6 +3607,7 @@ export class VoxelRenderer {
       if (lying) {
         visual.recreationMarker.visible = false;
         visual.mentalMarker.visible = false;
+        visual.talkMarker.visible = false;
         // The anchor is the head tile. Do not interpolate a lying pawn in from the doorway.
         if (bed) {
           visual.root.position.set(bed.x + 0.5, bed.z, bed.y + 0.5);
@@ -3798,7 +3808,12 @@ export class VoxelRenderer {
           dz = visual.to.z - visual.from.z;
         if (Math.abs(dx) + Math.abs(dz) > 0.001) visual.root.rotation.y = Math.atan2(dx, dz);
       }
-      if (mental) {
+      if (talkPartner && !moving) {
+        visual.root.rotation.y = Math.atan2(talkPartner.x - pawn.x, talkPartner.y - pawn.y);
+        visual.head.rotation.x = Math.sin(time * 2.1 + pawn.id) * .06;
+        visual.leftArm.rotation.x = -.18;
+        visual.rightArm.rotation.x = -.35 + Math.sin(time * 2.5 + pawn.id) * .17;
+      } else if (mental) {
         visual.head.rotation.x = .22 + Math.sin(time * .7 + pawn.id) * .035;
         visual.torso.rotation.x = .15;
         visual.leftArm.rotation.x = .12; visual.rightArm.rotation.x = .12;

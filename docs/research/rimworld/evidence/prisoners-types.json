@@ -1,0 +1,22 @@
+[
+  "RimWorld.FloatMenuOptionProvider_CapturePawn",
+  "RimWorld.WorkGiver_Warden",
+  "RimWorld.WorkGiver_Warden_Chat",
+  "RimWorld.WorkGiver_Warden_Feed",
+  "RimWorld.WorkGiver_Warden_DeliverFood",
+  "RimWorld.WorkGiver_Warden_ReleasePrisoner",
+  "RimWorld.WorkGiver_Warden_TakeToBed",
+  "RimWorld.InteractionWorker_RecruitAttempt",
+  "RimWorld.RecruitUtility",
+  "RimWorld.Pawn_GuestTracker",
+  "RimWorld.PrisonerInteractionModeDef",
+  "RimWorld.ITab_Pawn_Prisoner",
+  "Verse.AI.JobDriver_ReleasePrisoner",
+  "RimWorld.Toils_Interpersonal",
+  "RimWorld.GuestStatus",
+  "RimWorld.WardenFeedUtility",
+  "RimWorld.GenGuest",
+  "Verse.AI.GenAI",
+  "RimWorld.JobDriver_ChatWithPrisoner",
+  "Verse.AI.Pawn_MindState"
+]

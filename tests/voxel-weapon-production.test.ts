@@ -28,6 +28,7 @@ function fixture() {
     Object.assign(p, pos(11, 11 + i));
     p.schedule.fill('work');
     p.priorities = {
+      warden: 0,
       hunt: 0,
       dig: 0,
       build: 0,
@@ -79,7 +80,7 @@ describe('physical weapon production and persistence', () => {
     const old = JSON.parse(bytes.toString()),
       s = VoxelSimulation.load(old);
     expect(old.version).toBe(12);
-    expect(s.save().version).toBe(23);
+    expect(s.save().version).toBe(24);
     expect(s.weaponBenches).toEqual([]);
     expect(s.items).toEqual(old.items);
     expect(s.save().blocks).toEqual(old.blocks);
@@ -221,7 +222,7 @@ describe('physical weapon production and persistence', () => {
       p = s.pawns[0];
     const w = makeWeapon(s.nextId++, 'steelKnife');
     p.weapon = w;
-    s.beds.push({ ...pos(p.x, p.y), id: s.nextId++, owner: p.id, axis: 'x', medical: false });
+    s.beds.push({ ...pos(p.x, p.y), id: s.nextId++, owner: p.id, axis: 'x', prisoner: false, medical: false });
     p.sleepBedId = s.beds[0].id;
     p.phase = 'rest';
     p.sleepingSince = s.tick;

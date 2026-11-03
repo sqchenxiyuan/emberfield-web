@@ -39,7 +39,7 @@ export function MedicinePanel({
     : null;
   return (
     <div className="voxel-medicine" data-testid="medical-detail">
-      {pawn.faction === 'colony' && !pawn.dead && (
+      {['colony', 'prisoner'].includes(pawn.faction) && !pawn.dead && (
         <div className="voxel-medical-policy" data-testid="medical-policy">
           <label>
             医疗政策

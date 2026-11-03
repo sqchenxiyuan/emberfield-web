@@ -21,6 +21,7 @@ function fixture() {
   s.pawns.forEach((p, i) => {
     Object.assign(p, { x: 12 + i, y: 12, z: 8 });
     p.priorities = {
+      warden: 0,
       hunt: 0,
       dig: 0,
       build: 0,
@@ -187,7 +188,7 @@ describe('voxel combat and physical tending', () => {
     );
     const s = VoxelSimulation.load(old);
     expect(old.version).toBe(11);
-    expect(s.save().version).toBe(23);
+    expect(s.save().version).toBe(24);
     expect(s.combat).toEqual({ enabled: false, nextRaid: 0, wave: 0 });
     expect(s.pawns.map((p) => [p.id, p.food, p.rest, p.worn])).toEqual(
       old.pawns.map((p: any) => [p.id, p.food, p.rest, p.worn]),

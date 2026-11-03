@@ -4,6 +4,13 @@ import { expect } from 'vitest';
  * while arranging the test, but no v23 activity or structure may be discarded.
  * Genuine historical fixture bytes never pass through this helper. */
 export function stripMoodFields(raw: Record<string, any>) {
+  for (const pawn of raw.pawns) {
+    expect(pawn.prisoner).toBeNull();
+    expect(pawn.wardenTask).toBeNull();
+    expect(['warden', 'prisoner'].includes(pawn.phase)).toBe(false);
+    delete pawn.prisoner; delete pawn.wardenTask; delete pawn.priorities.warden;
+  }
+  for (const bed of raw.beds ?? []) { expect(bed.prisoner).toBe(false); delete bed.prisoner; }
   expect(raw.horseshoePins).toEqual([]);
   expect(raw.jobs.some((job: any) => job.kind === 'horseshoePin')).toBe(false);
   for (const pawn of raw.pawns) {

@@ -173,7 +173,9 @@ export function validateRangedState(d: VoxelSave) {
     )
       throw new Error('弹丸伤害、穿甲或飞行计时不一致');
     const shooter = d.pawns.find((p) => p.id === shot.shooterId);
-    if (shooter && shooter.faction !== shot.shooterFaction) throw new Error('发射者阵营不一致');
+    if (shooter && shooter.faction !== shot.shooterFaction &&
+        !(shooter.faction === 'prisoner' && shooter.prisoner?.originalFaction === shot.shooterFaction &&
+          shot.launchedTick <= shooter.prisoner.capturedTick)) throw new Error('发射者阵营不一致');
   }
   let priorTick = 0;
   for (const e of d.combatEvents) {

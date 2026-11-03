@@ -6,6 +6,7 @@ import type { ResearchKey, ResearchState } from './research';
 import type { Difficulty, StorytellerState, StorytellerView } from './storyteller';
 import type { TradeCommand, TradeState, TradeView } from './tradeTypes';
 import type { Psyche } from './mood';
+import type { PrisonerState, PrisonerPolicy, WardenTask } from './prisoners';
 // Voxel rules are Emberfield designs. See research/10 for source boundaries.
 export const WIDTH = 64,
   DEPTH = 64,
@@ -76,6 +77,7 @@ export type Resource =
   | 'apparel'
   | 'weapon';
 export type Work =
+  | 'warden'
   | 'hunt'
   | 'dig'
   | 'build'
@@ -218,6 +220,7 @@ export function deviceCells(d: Pos & { kind: DeviceKind; axis: Axis }): Pos[] {
   return out;
 }
 export interface Bed extends Pos {
+  prisoner: boolean;
   id: number;
   axis: Axis;
   owner: number | null;
@@ -546,6 +549,8 @@ export interface CombatState {
   wave: number;
 }
 export interface Pawn extends Pos {
+  prisoner: PrisonerState | null;
+  wardenTask: WardenTask | null;
   psyche: Psyche;
   id: number;
   name: string;
@@ -556,7 +561,7 @@ export interface Pawn extends Pos {
   health: SurvivalHealth;
   trauma: Trauma;
   medical: MedicalState;
-  faction: 'colony' | 'raider' | 'trader';
+  faction: 'colony' | 'raider' | 'trader' | 'prisoner';
   drafted: boolean;
   retreating: boolean;
   attackTargetId: number | null;
@@ -587,6 +592,8 @@ export interface Pawn extends Pos {
   path: number[];
   destination: number | null;
   phase:
+    | 'warden'
+    | 'prisoner'
     | 'recreation'
     | 'mental'
     | 'hunt'
@@ -713,6 +720,9 @@ export interface ChunkUpdate {
   ladders: Uint8Array;
 }
 export type VoxelCommand =
+  | { type: 'bedPrisoner'; bedId: number; prisoner: boolean }
+  | { type: 'capture'; pawnId: number; targetId: number }
+  | { type: 'prisonerPolicy'; prisonerId: number; policy: PrisonerPolicy }
   | { type: 'recreate'; pawnId: number }
   | { type: 'cancelRecreation'; pawnId: number }
   | { type: 'hunt'; animalId: number; enabled: boolean }
@@ -771,7 +781,7 @@ export interface CommandResult {
 export interface VoxelSave {
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 23;
+  version: 24;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;

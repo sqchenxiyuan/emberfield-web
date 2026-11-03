@@ -8,6 +8,8 @@
 
 当前开发重点是先搭好可操作的玩法和机制闭环，数值采用初步默认值，后续再平衡。已接通体素动物、狩猎与肉食生产的首条循环，见[开发路线](docs/research/rimworld/05-reconstruction-roadmap.md)；研究文档中的原版数值不代表当前游戏已经完成平衡。
 
+2026-11-04俘虏与招募更新（v24）：倒地袭击者可由未征召的殖民者实际抱入牢房，护理和喂食使用真实物资；恢复后由看守面对面交谈降低抵抗，归零后的下一次招募交谈才加入殖民地。囚犯床同房联动，支持仅照料、降低抵抗、招募和步行释放；途中任务与新增人口可保存。当前牢房要求封闭且有屋顶，暂不含越狱、奴役和完整社会关系。见[73原版机制](docs/research/rimworld/73-prisoner-recruitment-mechanisms.md)、[74原版床位操作](docs/research/rimworld/74-native-prisoner-runtime.md)与[75玩法和验证](docs/research/rimworld/75-prisoners-gameplay.md)。
+
 2026-11-04心情与娱乐更新（v23）：人物可查看当前心情、目标和具体原因；加入户外散步、实体马蹄铁桩、娱乐作息、同类厌倦和有限期失落游荡。活动需要实际到场，饥饿/睡眠/医疗会参与调度，旧档可继续。玩法参数先用集中定义的默认值，完整关系、性格、娱乐室和其他崩溃类型后续扩展。见[原版机制](docs/research/rimworld/71-mood-recreation-mechanisms.md)与[玩法及验证](docs/research/rimworld/72-voxel-mood-gameplay.md)。
 
 2026-11-03动物与狩猎更新（v22）：鹿和野兔有持续活动、觅食、休息与受伤逃跑，可在地图或野生动物列表选择、定位和标记狩猎。持弓或枪的猎人实际追踪与射击，尸体经搬运和屠宰产出生肉，再进入混合烹饪、冷藏与食用。加入狩猎分工、屠宰开关、尸体身份保留和v21旧档迁移；暂定参数集中配置，驯养与繁殖后续再做。见[玩法与验证](docs/research/rimworld/70-voxel-wildlife-gameplay.md)。

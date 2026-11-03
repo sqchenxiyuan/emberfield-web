@@ -15,6 +15,7 @@ import {
 import { healthSummary } from './survival';
 
 const WORK_SKILLS: Record<Work, SkillKey | null> = {
+  warden: 'social',
   hunt: 'shooting',
   care: 'medicine',
   dig: 'mining',

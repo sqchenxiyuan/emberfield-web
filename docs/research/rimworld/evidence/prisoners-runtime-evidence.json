@@ -1,0 +1,543 @@
+{
+  "evidence_id": "RW17-NATIVE-PRISONER-ROOM-UI",
+  "date_local": "2026-11-04",
+  "version": "1.7.4980 rev60",
+  "kind": "Original native UI actions and original-game save, not a Web harness or modified save",
+  "launch": {
+    "started_utc": "2026-11-03T16:22:35.65767Z",
+    "pid": 26176,
+    "launch_record": ".local-research/runtime/prisoner-launch.json",
+    "launch_record_sha256": "f61d3be0195c72b1360655343ac19423aa9ab3c5c28d9cfde5ddea80769e474a",
+    "profile": ".local-research/runtime/profile-prisoners-20261104",
+    "mods_config_sha256": "41595349c9d4e0815c74d5fa89fa6dad2dd3af494f547c5734b028918f2151ff",
+    "active_mods": [
+      "ludeon.rimworld",
+      "ludeon.rimworld.odyssey"
+    ]
+  },
+  "baseline": {
+    "file": ".local-research/runtime/profile-prisoners-20261104/Saves/prisoner-baseline.rws",
+    "sha256": "417a7846d88bba8b8001b5d62dec206bc601d2c554185bc5004bd285fd75be82",
+    "ticks_game": 189222,
+    "copied_from": ".local-research/runtime/profile-20261102/Saves/trade-buy-verified-b.rws",
+    "source_sha256": "417a7846d88bba8b8001b5d62dec206bc601d2c554185bc5004bd285fd75be82",
+    "copy_matches_source": true
+  },
+  "final_save": {
+    "file": ".local-research/runtime/profile-prisoners-20261104/Saves/New Arrivals1.rws",
+    "sha256": "ce0620ce2809fa582014cbbbe2302703d828585ebdb97f6260958fc65d88dc0d",
+    "ticks_game": 203135,
+    "tick_delta_from_baseline": 13913,
+    "bed_xpath": "//maps/li/things/thing[def=\"SleepingSpot\" or def=\"Bed\"]",
+    "beds": [
+      {
+        "id": "Bed77946",
+        "def": "Bed",
+        "position": "(113, 0, 124)",
+        "for_owner_type_raw": null,
+        "spawned_tick": "64249",
+        "xml": "<thing Class=\"Building_Bed\"><def>Bed</def><id>Bed77946</id><map>0</map><pos>(113, 0, 124)</pos><rot>2</rot><health>91</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>64249</spawnedTick><despawnedTick>-1</despawnedTick><assignedPawns /><uninstalledAssignedPawns /><quality>Normal</quality><taleRef IsNull=\"True\" /><medical>True</medical><alreadySetDefaultMed>True</alreadySetDefaultMed></thing>"
+      },
+      {
+        "id": "SleepingSpot150535",
+        "def": "SleepingSpot",
+        "position": "(102, 0, 139)",
+        "for_owner_type_raw": "Prisoner",
+        "spawned_tick": "203135",
+        "xml": "<thing Class=\"Building_Bed\"><def>SleepingSpot</def><id>SleepingSpot150535</id><map>0</map><pos>(102, 0, 139)</pos><rot>2</rot><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>203135</spawnedTick><despawnedTick>-1</despawnedTick><assignedPawns /><uninstalledAssignedPawns /><alreadySetDefaultMed>True</alreadySetDefaultMed><forOwnerType>Prisoner</forOwnerType></thing>"
+      },
+      {
+        "id": "SleepingSpot150536",
+        "def": "SleepingSpot",
+        "position": "(106, 0, 139)",
+        "for_owner_type_raw": "Prisoner",
+        "spawned_tick": "203135",
+        "xml": "<thing Class=\"Building_Bed\"><def>SleepingSpot</def><id>SleepingSpot150536</id><map>0</map><pos>(106, 0, 139)</pos><rot>2</rot><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>203135</spawnedTick><despawnedTick>-1</despawnedTick><assignedPawns /><uninstalledAssignedPawns /><alreadySetDefaultMed>True</alreadySetDefaultMed><forOwnerType>Prisoner</forOwnerType></thing>"
+      }
+    ]
+  },
+  "observations": [
+    {
+      "id": "PRR01",
+      "finding": "Outdoor wooden bed rejects the For prisoners toggle; UI says Only beds in enclosed spaces can be set for prisoners.",
+      "evidence": [
+        "PRR01"
+      ]
+    },
+    {
+      "id": "PRR02",
+      "finding": "Two sleeping spots placed through normal Architect/Furniture UI in one existing room; selected spot initially reads For colonist use.",
+      "evidence": [
+        "PRR02"
+      ]
+    },
+    {
+      "id": "PRR03",
+      "finding": "Toggling the first sleeping spot changes both room spots to yellow and room role to Prison barracks.",
+      "evidence": [
+        "PRR03"
+      ]
+    },
+    {
+      "id": "PRR04",
+      "finding": "Selecting the other spot independently shows For prisoner use; final original save contains two Prisoner owner-type spots.",
+      "evidence": [
+        "PRR04",
+        "final_save"
+      ]
+    }
+  ],
+  "images": [
+    {
+      "id": "PRR01",
+      "source_file": ".local-research/runtime/prisoner-009-outdoor-disabled.png",
+      "source_sha256": "d7dc340b4bf6710b18ce1076f1e5bb29c0279bfad9ccb7c381f1d2885998e885",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        0,
+        1240,
+        1090,
+        165
+      ],
+      "file": "prisoners-runtime/outdoor-bed-rejected.png",
+      "sha256": "b6f63ee2835d4b445d65218ebc191aca6ece780e05485bc5d9d02a9af56e306a"
+    },
+    {
+      "id": "PRR02",
+      "source_file": ".local-research/runtime/prisoner-018-spot-selected.png",
+      "source_sha256": "91fca1c73e95cba626427ec430718eb66033157af2ba90766fc28334ac692483",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        1500,
+        500,
+        320,
+        320
+      ],
+      "file": "prisoners-runtime/room-before.png",
+      "sha256": "8b68c66b7471dad615960aed07230e9baae8af488d760123e4a5b3432f5a3885"
+    },
+    {
+      "id": "PRR03",
+      "source_file": ".local-research/runtime/prisoner-019-toggle-prisoner.png",
+      "source_sha256": "25baaeac1fdd33afd3eee307a5142f74d7beba8ddd95fe1b65bce3089db4884c",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        1500,
+        500,
+        320,
+        320
+      ],
+      "file": "prisoners-runtime/room-after.png",
+      "sha256": "01cd0be7c68fd4daa374e7df2517ec1f648217121135bd4c9569785c506faf19"
+    },
+    {
+      "id": "PRR04",
+      "source_file": ".local-research/runtime/prisoner-020-other-bed-synced.png",
+      "source_sha256": "4d604aa01d50303b38df6e09d0832f9a8bee7980f55f5ec275f43e2387e29d31",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        0,
+        1230,
+        1070,
+        175
+      ],
+      "file": "prisoners-runtime/other-bed-prisoner-panel.png",
+      "sha256": "3535d9cf8010227dfd460c4452e41234debc9f7042d9aabb645017380950e35c"
+    }
+  ],
+  "actions": [
+    {
+      "source_file": ".local-research/runtime/prisoner-001-launch.png.actions.jsonl",
+      "source_sha256": "0eb8b3b5c386ede6c96aecf09f4889324a2969081ceb18880288308795598ab8",
+      "started_utc": "2026-11-03T16:23:28.0823488Z",
+      "finished_utc": "2026-11-03T16:23:29.0637971Z",
+      "action": "capture",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 300,
+      "image_name": "prisoner-001-launch.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-002-load-menu.png.actions.jsonl",
+      "source_sha256": "5232f0f6fdd3cf95158d4da4740e94269016cb3f882e3d2ef0e69ab132086e46",
+      "started_utc": "2026-11-03T16:23:51.6244939Z",
+      "finished_utc": "2026-11-03T16:23:52.9537119Z",
+      "action": "click",
+      "x": 2168,
+      "y": 692,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 400,
+      "image_name": "prisoner-002-load-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-003-load-baseline.png.actions.jsonl",
+      "source_sha256": "bdad436461a41a02bb5b5319ebfeb366e4dacae7be313cbddbd6c3300f063970",
+      "started_utc": "2026-11-03T16:24:26.1344403Z",
+      "finished_utc": "2026-11-03T16:24:33.6371967Z",
+      "action": "click",
+      "x": 1470,
+      "y": 441,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 3000,
+      "image_name": "prisoner-003-load-baseline.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-004-select-speed-one.png.actions.jsonl",
+      "source_sha256": "d66a0ca87441f9de325d732aa07eeb03ec64ee92610ac8c451021c618f3b1b14",
+      "started_utc": "2026-11-03T16:24:34.7111946Z",
+      "finished_utc": "2026-11-03T16:24:35.2908742Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 49,
+      "control": false,
+      "wait_ms": 40,
+      "image_name": "prisoner-004-select-speed-one.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-005-load-paused.png.actions.jsonl",
+      "source_sha256": "afbc9f8321494448215b651d62387e0797bdeb885ffe6f653526bf19107a6724",
+      "started_utc": "2026-11-03T16:24:35.633114Z",
+      "finished_utc": "2026-11-03T16:24:36.239044Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 32,
+      "control": false,
+      "wait_ms": 80,
+      "image_name": "prisoner-005-load-paused.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-006-current.png.actions.jsonl",
+      "source_sha256": "bd8f7c5617d41acb9b13b2ffb28d80134064473f40adb08d60c90eeca70582a9",
+      "started_utc": "2026-11-03T16:28:05.5820267Z",
+      "finished_utc": "2026-11-03T16:28:06.4675833Z",
+      "action": "capture",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 250,
+      "image_name": "prisoner-006-current.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-007-verified-pause.png.actions.jsonl",
+      "source_sha256": "45db8856418bace652da7428af47c4fd032bcebcd9f327e61bfe25be0007a6d2",
+      "started_utc": "2026-11-03T16:28:33.5868065Z",
+      "finished_utc": "2026-11-03T16:28:35.5743528Z",
+      "action": "clickpause",
+      "x": 1100,
+      "y": 750,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 250,
+      "image_name": "prisoner-007-verified-pause.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-008-outdoor-bed.png.actions.jsonl",
+      "source_sha256": "a7bbba29adab1d24d8a1821b325eb96522e163f3ba7323f353d893adac8e1959",
+      "started_utc": "2026-11-03T16:29:35.9093118Z",
+      "finished_utc": "2026-11-03T16:29:37.0740904Z",
+      "action": "click",
+      "x": 1927,
+      "y": 1173,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 250,
+      "image_name": "prisoner-008-outdoor-bed.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-009-outdoor-disabled.png.actions.jsonl",
+      "source_sha256": "c012fb3de6e681b89d93fc1200dc949a4ab9ecf8e95c8367f4f3156057c58b89",
+      "started_utc": "2026-11-03T16:30:18.21556Z",
+      "finished_utc": "2026-11-03T16:30:20.2707514Z",
+      "action": "click",
+      "x": 723,
+      "y": 1354,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 1000,
+      "image_name": "prisoner-009-outdoor-disabled.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-010-architect.png.actions.jsonl",
+      "source_sha256": "2498461bd0ea199e3087419ecc2a872a08954d001df8566736618f41d2085bee",
+      "started_utc": "2026-11-03T16:30:39.2897524Z",
+      "finished_utc": "2026-11-03T16:30:40.4851924Z",
+      "action": "click",
+      "x": 100,
+      "y": 1421,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 250,
+      "image_name": "prisoner-010-architect.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-011-furniture.png.actions.jsonl",
+      "source_sha256": "c2229f15bade37ac33a2d77acfbf50725f1e48b59eab7ee6796bd40d5903dce0",
+      "started_utc": "2026-11-03T16:31:21.7219037Z",
+      "finished_utc": "2026-11-03T16:31:22.9042596Z",
+      "action": "click",
+      "x": 52,
+      "y": 1233,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 250,
+      "image_name": "prisoner-011-furniture.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-012-choose-spot.png.actions.jsonl",
+      "source_sha256": "facb2fc8d8f6b280ae2faf6e88a38d7db48ea863b9e8c6e9ca9eb478c982444a",
+      "started_utc": "2026-11-03T16:32:14.8389954Z",
+      "finished_utc": "2026-11-03T16:32:16.103735Z",
+      "action": "click",
+      "x": 406,
+      "y": 1355,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 250,
+      "image_name": "prisoner-012-choose-spot.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-013-spot-a.png.actions.jsonl",
+      "source_sha256": "86a5f45da7f18a15f44df852bf3dc725b0f7c8a55912d6d2a404df0e5e59200a",
+      "started_utc": "2026-11-03T16:32:16.4222241Z",
+      "finished_utc": "2026-11-03T16:32:17.4244012Z",
+      "action": "click",
+      "x": 1597,
+      "y": 680,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 250,
+      "image_name": "prisoner-013-spot-a.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-014-spot-b.png.actions.jsonl",
+      "source_sha256": "66773115f972294f6e7968c92d2a21bc678cdd4dbf33650acba72c0948dd7819",
+      "started_utc": "2026-11-03T16:32:17.7139009Z",
+      "finished_utc": "2026-11-03T16:32:18.7410905Z",
+      "action": "click",
+      "x": 1718,
+      "y": 680,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 250,
+      "image_name": "prisoner-014-spot-b.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-015-placed.png.actions.jsonl",
+      "source_sha256": "e4874b7bf9b3813c1ce8682503026c5052e3c548e5de3ab5129e9f1398247319",
+      "started_utc": "2026-11-03T16:32:19.0374053Z",
+      "finished_utc": "2026-11-03T16:32:19.8065649Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 250,
+      "image_name": "prisoner-015-placed.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-016-select-spot-a.png.actions.jsonl",
+      "source_sha256": "41292039e1c3e0e32ae13e07863953ef968e217ddbf593c692432ec2041d92e5",
+      "started_utc": "2026-11-03T16:32:20.1120801Z",
+      "finished_utc": "2026-11-03T16:32:21.137695Z",
+      "action": "click",
+      "x": 1597,
+      "y": 680,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 250,
+      "image_name": "prisoner-016-select-spot-a.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-017-cancel-build.png.actions.jsonl",
+      "source_sha256": "47988e5895d05efba4b42519c89ae16d3ba2bbfc0576ad81fdb5a57f278c0154",
+      "started_utc": "2026-11-03T16:35:38.600026Z",
+      "finished_utc": "2026-11-03T16:35:39.805268Z",
+      "action": "rightclick",
+      "x": 1597,
+      "y": 680,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 250,
+      "image_name": "prisoner-017-cancel-build.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-018-spot-selected.png.actions.jsonl",
+      "source_sha256": "ab6eb7e2e0a0ccff28635ed9c93026b344347bd0b1fa3d3bfb0607b39a8f7195",
+      "started_utc": "2026-11-03T16:35:40.1169652Z",
+      "finished_utc": "2026-11-03T16:35:41.1508239Z",
+      "action": "click",
+      "x": 1597,
+      "y": 700,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 250,
+      "image_name": "prisoner-018-spot-selected.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-019-toggle-prisoner.png.actions.jsonl",
+      "source_sha256": "27b3bf154e4857b1823e256a7a45b5a9a3d909229c87f7c212995d82a39cbda5",
+      "started_utc": "2026-11-03T16:37:10.0686836Z",
+      "finished_utc": "2026-11-03T16:37:11.2287106Z",
+      "action": "click",
+      "x": 948,
+      "y": 1355,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 250,
+      "image_name": "prisoner-019-toggle-prisoner.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-020-other-bed-synced.png.actions.jsonl",
+      "source_sha256": "dbdad9673053f6127ac3cc9aac2b8515940c11e2f4cd765a0c0d1437b51e96b8",
+      "started_utc": "2026-11-03T16:39:06.4964334Z",
+      "finished_utc": "2026-11-03T16:39:07.7055255Z",
+      "action": "click",
+      "x": 1718,
+      "y": 700,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 250,
+      "image_name": "prisoner-020-other-bed-synced.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-021-clear.png.actions.jsonl",
+      "source_sha256": "49a97bf3c947941e5685f810e5307ef01c58d1ea7f56f99f9180087296cd436e",
+      "started_utc": "2026-11-03T16:39:08.0431708Z",
+      "finished_utc": "2026-11-03T16:39:09.1152601Z",
+      "action": "click",
+      "x": 1100,
+      "y": 750,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 250,
+      "image_name": "prisoner-021-clear.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-022-menu.png.actions.jsonl",
+      "source_sha256": "52a12dd0186669585894b8494e4b6ea226f339fd21e2f5d60e7b3e82cebe4c1c",
+      "started_utc": "2026-11-03T16:39:09.4592299Z",
+      "finished_utc": "2026-11-03T16:39:10.2684697Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 250,
+      "image_name": "prisoner-022-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-023-save-dialog.png.actions.jsonl",
+      "source_sha256": "47cacd4aac63da1e4d8287051ddc55e558f467b5ad5daf4e4dfc229d0ca1164f",
+      "started_utc": "2026-11-03T16:40:05.4888077Z",
+      "finished_utc": "2026-11-03T16:40:06.6578933Z",
+      "action": "click",
+      "x": 2212,
+      "y": 1055,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 250,
+      "image_name": "prisoner-023-save-dialog.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-024-select-save-name.png.actions.jsonl",
+      "source_sha256": "d8f0a30cddd7186f5ad609d9323451329a4dd7cdc0c0bc2890e3fd76424bbd99",
+      "started_utc": "2026-11-03T16:41:04.133141Z",
+      "finished_utc": "2026-11-03T16:41:05.1403254Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 65,
+      "control": true,
+      "wait_ms": 250,
+      "image_name": "prisoner-024-select-save-name.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-025-name.png.actions.jsonl",
+      "source_sha256": "b152b72ca19f9c48cda1d676769ce3e323deccf6bc210d0b2c66ff8034c93c35",
+      "started_utc": "2026-11-03T16:41:05.4581217Z",
+      "finished_utc": "2026-11-03T16:41:08.2778331Z",
+      "action": "text",
+      "x": 1280,
+      "y": 720,
+      "text": "prisoner-room-verified",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 250,
+      "image_name": "prisoner-025-name.png"
+    },
+    {
+      "source_file": ".local-research/runtime/prisoner-026-saved.png.actions.jsonl",
+      "source_sha256": "9efea5bae2d18ee5060ec1b4d82d4ae2f9730773ef904aab86e4280b6548715c",
+      "started_utc": "2026-11-03T16:41:08.5829329Z",
+      "finished_utc": "2026-11-03T16:41:10.3586984Z",
+      "action": "click",
+      "x": 1490,
+      "y": 976,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "wait_ms": 1000,
+      "image_name": "prisoner-026-saved.png"
+    }
+  ],
+  "shutdown": {
+    "method": "Ordinary native Quit to OS button clicked at client (2215,1315) from observed main menu after save",
+    "attempted_capture": "prisoner-027-quit-confirm.png",
+    "capture_result": "Guard rejected capture after target lost foreground; no image claimed",
+    "observed_utc": "2026-11-03T16:44:35.5373102Z",
+    "rimworld_processes_after_exit": [],
+    "normal_profile_or_user_save_loaded": false
+  },
+  "limitations": [
+    "Initial speed/pause keys during loading did not establish a paused map; final save is 13913 ticks after the copied baseline.",
+    "Save-name typing did not change the default name; actual successful file is New Arrivals1.rws, not the requested prisoner-room-verified.rws.",
+    "Single final save and visual pause evidence; no equal-tick save-pair proof.",
+    "No newly captured enemy, prisoner feeding, conversation, actual recruitment or release was observed in this run.",
+    "Roof absence was not tested; the no-explicit-roof claim is static PR01 only.",
+    "Screenshots are diagnostic crops with source hashes, not gameplay assets.",
+    "The isolated profile had development mode enabled from prior Config; no developer spawning, instant recruit, save XML edit or code injection was used in this run."
+  ]
+}

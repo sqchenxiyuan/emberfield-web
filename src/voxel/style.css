@@ -109,11 +109,16 @@ a {
 .voxel-colonists {
   display: flex;
   gap: 10px;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
 }
 .voxel-colonists button {
   position: relative;
   display: flex;
   width: 160px;
+  flex-shrink: 0;
   text-align: left;
   align-items: center;
   gap: 11px;
@@ -334,7 +339,25 @@ a {
   margin-left: auto;
   display: flex;
   gap: 9px;
+  flex-shrink: 0;
 }
+.voxel-readonly-equipment { border: 0; padding: 0; margin: 0; min-width: 0; }
+.voxel-prison-drawer { position: absolute; z-index: 4; right: 24px; top: 90px; bottom: 168px; width: 355px; padding: 16px; overflow-y: auto; overscroll-behavior: contain; border: 1px solid #c6aa795f; border-radius: 6px; background: #1c292af7; box-shadow: 0 12px 35px #0004; }
+.voxel-prison-heading, .voxel-prison-list section > div { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.voxel-prison-heading h2 { margin: 0; font-size: 18px; color: #e1cba1; }
+.voxel-prison-drawer p, .voxel-prison-drawer small, .voxel-capture-panel small, .voxel-prisoner-detail small { display: block; color: #bdc9bc; font-size: 11px; line-height: 1.65; }
+.voxel-prison-guide, .voxel-prison-list section, .voxel-capture-panel, .voxel-prisoner-detail { margin: 12px 0; padding: 12px; border: 1px solid #c6aa793d; background: #14202166; }
+.voxel-prison-drawer summary { cursor: pointer; color: #dccaa9; }
+.voxel-prison-guide ol { margin: 12px 0; padding-left: 20px; color: #c7d1bc; line-height: 1.8; font-size: 11px; }
+.voxel-prison-list { margin: 14px 0; }
+.voxel-prison-list section.selected { border-color: #e8c596; background: #d9ac7e12; }
+.voxel-prison-list section > small { margin: 7px 0; }
+.voxel-prison-list section > div > span { font-size: 11px; color: #cbbca2; }
+.voxel-capture-panel, .voxel-prisoner-detail { display: grid; gap: 10px; }
+.voxel-capture-panel p, .voxel-prisoner-detail p { margin: 0; font-size: 11px; line-height: 1.7; }
+.voxel-capture-panel label, .voxel-prisoner-detail label { display: grid; gap: 6px; font-size: 11px; }
+.voxel-prisoner-detail progress { display: block; width: 100%; height: 6px; accent-color: #c9a877; }
+@media (max-width: 1050px) { .voxel-prison-drawer { right: 12px; top: 204px; width: 315px; padding: 12px; } }
 .voxel-kicker {
   text-transform: uppercase;
   letter-spacing: 1.8px;

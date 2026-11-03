@@ -1,0 +1,139 @@
+{
+  "evidence_id": "RW17-PRISONERS",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_CapturePawn",
+      "local_file": ".local-research/prisoners/RimWorld.FloatMenuOptionProvider_CapturePawn.cs",
+      "sha256": "84acd5ce5f461323ad5a12e3f1aa84ba2ec113a774d9bba2b6e44d176108806d",
+      "lines": 63
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden",
+      "local_file": ".local-research/prisoners/RimWorld.WorkGiver_Warden.cs",
+      "sha256": "b39bc750f38ab1c7cc2fe1fd788773e9e0d524eed1f9a3fe49664058ce156b7f",
+      "lines": 59
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_Chat",
+      "local_file": ".local-research/prisoners/RimWorld.WorkGiver_Warden_Chat.cs",
+      "sha256": "5b4bacb5b37062b1cfba86e7f859cfb339cd4b243c34c4aef37e76fdded0166e",
+      "lines": 48
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_Feed",
+      "local_file": ".local-research/prisoners/RimWorld.WorkGiver_Warden_Feed.cs",
+      "sha256": "ad58fb14a667dfc415a6f0ce8228c5707c0d42244d15e9c07f191717d5a07f24",
+      "lines": 56
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "local_file": ".local-research/prisoners/RimWorld.WorkGiver_Warden_DeliverFood.cs",
+      "sha256": "b07bd8669c7621fb21948f5cd30b348a2ea366ab3d681b3c206490a2a6acaf11",
+      "lines": 111
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_ReleasePrisoner",
+      "local_file": ".local-research/prisoners/RimWorld.WorkGiver_Warden_ReleasePrisoner.cs",
+      "sha256": "c7267625963e1b7f1373fad18d48a265ce5e317d5828cd83a5e669f735cf6c3e",
+      "lines": 38
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_TakeToBed",
+      "local_file": ".local-research/prisoners/RimWorld.WorkGiver_Warden_TakeToBed.cs",
+      "sha256": "5e2f44768371148901ded2f77c81a65d10e94ec241186fdaf187704a17b0e643",
+      "lines": 87
+    },
+    {
+      "type": "RimWorld.InteractionWorker_RecruitAttempt",
+      "local_file": ".local-research/prisoners/RimWorld.InteractionWorker_RecruitAttempt.cs",
+      "sha256": "b865b4d6a8418fdb54d21ae1bdb9d02a2c44f037a52af3c4f355eff76f47d6aa",
+      "lines": 236
+    },
+    {
+      "type": "RimWorld.RecruitUtility",
+      "local_file": ".local-research/prisoners/RimWorld.RecruitUtility.cs",
+      "sha256": "41edbc4b1fe16c2d63e0545ec563034ac5be40dbc6703af628560e86ef7fb336",
+      "lines": 34
+    },
+    {
+      "type": "RimWorld.Pawn_GuestTracker",
+      "local_file": ".local-research/prisoners/RimWorld.Pawn_GuestTracker.cs",
+      "sha256": "0d37d2c0a1210dad405e31097fae6d41cd5838675927d6e36752c044a395414f",
+      "lines": 638
+    },
+    {
+      "type": "RimWorld.PrisonerInteractionModeDef",
+      "local_file": ".local-research/prisoners/RimWorld.PrisonerInteractionModeDef.cs",
+      "sha256": "f0ea0b757ecc0774cfdf0aa6b73e781370d39d49ff8e025a2910a2e0c38f0199",
+      "lines": 29
+    },
+    {
+      "type": "RimWorld.ITab_Pawn_Prisoner",
+      "local_file": ".local-research/prisoners/RimWorld.ITab_Pawn_Prisoner.cs",
+      "sha256": "6adeca4fc154a3a42dc781756f6de924d4c2bafa210c5fafadc0b3f3786ae309",
+      "lines": 13
+    },
+    {
+      "type": "Verse.AI.JobDriver_ReleasePrisoner",
+      "local_file": ".local-research/prisoners/Verse.AI.JobDriver_ReleasePrisoner.cs",
+      "sha256": "58084270c33a66becacd3bea0820757a45a6e3b886e82ef829a03e7622f9f7d5",
+      "lines": 45
+    },
+    {
+      "type": "RimWorld.Toils_Interpersonal",
+      "local_file": ".local-research/prisoners/RimWorld.Toils_Interpersonal.cs",
+      "sha256": "c655fcb56fc30e22d1ef2daef4bc0a4e68ab7221f523ca67f75c4693703c1863",
+      "lines": 359
+    },
+    {
+      "type": "RimWorld.GuestStatus",
+      "local_file": ".local-research/prisoners/RimWorld.GuestStatus.cs",
+      "sha256": "a0b06bbe59780f38e9ff0f7d601b1f55353cf94db03d9e1dc6bb37c0317bf755",
+      "lines": 9
+    },
+    {
+      "type": "RimWorld.WardenFeedUtility",
+      "local_file": ".local-research/prisoners/RimWorld.WardenFeedUtility.cs",
+      "sha256": "767e92e40bbe9d2b25b42aa7f64155dd106f049b6bf9da1a5ac3c62294f64282",
+      "lines": 28
+    },
+    {
+      "type": "RimWorld.GenGuest",
+      "local_file": ".local-research/prisoners/RimWorld.GenGuest.cs",
+      "sha256": "db8aa52357978b6878a4b2361076fe415136a1014ddc294fafe989bdacba1b23",
+      "lines": 154
+    },
+    {
+      "type": "Verse.AI.GenAI",
+      "local_file": ".local-research/prisoners/Verse.AI.GenAI.cs",
+      "sha256": "22136e92f443bab7fed65e56cffe997e1f3f86470331a50057c6162164958c7e",
+      "lines": 198
+    },
+    {
+      "type": "RimWorld.JobDriver_ChatWithPrisoner",
+      "local_file": ".local-research/prisoners/RimWorld.JobDriver_ChatWithPrisoner.cs",
+      "sha256": "00cb5249c36d21de427d3a519a6fc8f01eb5e773dc2aabdc309ccc12b359963a",
+      "lines": 58
+    },
+    {
+      "type": "Verse.AI.Pawn_MindState",
+      "local_file": ".local-research/prisoners/Verse.AI.Pawn_MindState.cs",
+      "sha256": "b606531ba468fc6f4c1a2fbd9fbd25dd366ac45f3ef241b1a58fd298f82b7c12",
+      "lines": 936
+    }
+  ]
+}
