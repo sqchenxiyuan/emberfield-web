@@ -59,8 +59,8 @@ async function verify(mode) {
     const b = page.getByRole('button', { name, exact: true });
     await b.scrollIntoViewIfNeeded();
     await b.click();
-    if (name === '暂停') await wait(() => window.voxel.snapshot().snapshot.speed === 0);
-    if (name === '3倍速') await wait(() => window.voxel.snapshot().snapshot.speed === 3);
+    if (name === '暂停') await wait(() => window.voxel.snapshot().snapshot?.speed === 0);
+    if (name === '3倍速') await wait(() => window.voxel.snapshot().snapshot?.speed === 3);
   };
   const settle = async () => {
     await page.waitForTimeout(400);
@@ -113,7 +113,10 @@ async function verify(mode) {
   }
   try {
     await page.goto(String(url));
-    await wait(() => window.voxel?.snapshot().ready);
+    await wait(() => {
+      const state = window.voxel?.snapshot();
+      return state?.ready && state.snapshot !== null;
+    });
     await click('暂停');
     await click('收起指引');
     await settle();
