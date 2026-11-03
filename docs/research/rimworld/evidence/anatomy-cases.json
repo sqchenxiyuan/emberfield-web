@@ -1,0 +1,1415 @@
+[
+  {
+    "id": "AE01",
+    "model": "structure",
+    "claims": [
+      "AC01",
+      "AC02"
+    ],
+    "inputs": {},
+    "expected": {
+      "nodes": 64,
+      "definitions": 32,
+      "outsidePositive": 39,
+      "inside": 24,
+      "conceptual": 1,
+      "totalCoverage": 1,
+      "outsideCoverage": 0.619631
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE02",
+    "model": "partHealth",
+    "claims": [
+      "AC03"
+    ],
+    "inputs": {
+      "max": 20,
+      "rows": [
+        {
+          "damage": 0.5
+        },
+        {
+          "damage": 1.5
+        },
+        {
+          "damage": 19.4
+        },
+        {
+          "damage": 19.5
+        },
+        {
+          "damage": 30
+        },
+        {
+          "damage": 30,
+          "destroys": false
+        },
+        {
+          "damage": 30,
+          "destroyable": false
+        },
+        {
+          "damage": 0,
+          "missing": true
+        }
+      ]
+    },
+    "expected": [
+      20,
+      18,
+      1,
+      0,
+      0,
+      1,
+      1,
+      0
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE03",
+    "model": "partEfficiency",
+    "claims": [
+      "AC07"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "max": 20,
+          "remaining": 20
+        },
+        {
+          "max": 20,
+          "remaining": 10
+        },
+        {
+          "max": 20,
+          "remaining": 2
+        },
+        {
+          "max": 20,
+          "remaining": 1
+        },
+        {
+          "max": 20,
+          "remaining": 10,
+          "inside": true
+        },
+        {
+          "max": 40,
+          "remaining": 20,
+          "core": true
+        }
+      ]
+    },
+    "expected": [
+      1,
+      0.4444444444444444,
+      0,
+      0,
+      0.5,
+      0.5
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE04",
+    "model": "partEfficiency",
+    "claims": [
+      "AC07"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "max": 20,
+          "remaining": 10,
+          "offset": 0.2
+        },
+        {
+          "max": 20,
+          "remaining": 0,
+          "ignoreMissingHP": true
+        },
+        {
+          "max": 20,
+          "remaining": 10,
+          "addedMultiplier": 1.5
+        },
+        {
+          "max": 20,
+          "remaining": 0,
+          "ancestorAdded": 1.25
+        },
+        {
+          "max": 20,
+          "remaining": 10,
+          "parentMissing": true
+        }
+      ]
+    },
+    "expected": [
+      0.6444444444444444,
+      1,
+      0.6666666666666666,
+      1.25,
+      0
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE05",
+    "model": "capacityWrapper",
+    "claims": [
+      "AC10"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "raw": 0,
+          "offset": 1
+        },
+        {
+          "raw": 0,
+          "min": 0.1
+        },
+        {
+          "raw": 0.8,
+          "offset": 0.2,
+          "post": 1.5,
+          "max": 1.2
+        },
+        {
+          "raw": 0.8,
+          "offset": -1
+        },
+        {
+          "raw": 1,
+          "awake": false,
+          "zeroIfCannotBeAwake": true,
+          "min": 0.1
+        },
+        {
+          "raw": 1,
+          "awake": false
+        }
+      ]
+    },
+    "expected": [
+      0,
+      0.1,
+      1.2,
+      0,
+      0,
+      1
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE06",
+    "model": "capacities",
+    "claims": [
+      "AC11",
+      "AC12",
+      "AC13",
+      "AC14",
+      "AC15"
+    ],
+    "inputs": {
+      "pick": [
+        "Consciousness",
+        "Manipulation",
+        "Moving",
+        "Sight",
+        "Hearing",
+        "Breathing",
+        "BloodPumping",
+        "BloodFiltration",
+        "Eating",
+        "Talking",
+        "Metabolism"
+      ]
+    },
+    "expected": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE07",
+    "model": "capacities",
+    "claims": [
+      "AC03",
+      "AC07",
+      "AC14"
+    ],
+    "inputs": {
+      "wounds": [
+        {
+          "part": "left-eye",
+          "amount": 5
+        }
+      ],
+      "pick": [
+        "Sight",
+        "Consciousness"
+      ]
+    },
+    "expected": [
+      0.86,
+      1
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE08",
+    "model": "capacities",
+    "claims": [
+      "AC14"
+    ],
+    "inputs": {
+      "missing": [
+        "left-eye"
+      ],
+      "pick": [
+        "Sight"
+      ]
+    },
+    "expected": [
+      0.75
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE09",
+    "model": "capacities",
+    "claims": [
+      "AC14",
+      "AC24"
+    ],
+    "inputs": {
+      "missing": [
+        "left-eye",
+        "right-eye"
+      ],
+      "pick": [
+        "Sight",
+        "Manipulation",
+        "Consciousness"
+      ]
+    },
+    "expected": [
+      0,
+      1,
+      1
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE10",
+    "model": "capacities",
+    "claims": [
+      "AC14"
+    ],
+    "inputs": {
+      "missing": [
+        "left-ear"
+      ],
+      "pick": [
+        "Hearing"
+      ]
+    },
+    "expected": [
+      0.75
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE11",
+    "model": "capacities",
+    "claims": [
+      "AC07",
+      "AC09",
+      "AC13"
+    ],
+    "inputs": {
+      "wounds": [
+        {
+          "part": "left-hand",
+          "amount": 5
+        }
+      ],
+      "pick": [
+        "Manipulation",
+        "Consciousness"
+      ]
+    },
+    "expected": [
+      0.86,
+      1
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE12",
+    "model": "capacities",
+    "claims": [
+      "AC09",
+      "AC13"
+    ],
+    "inputs": {
+      "missing": [
+        "left-pinky"
+      ],
+      "pick": [
+        "Manipulation"
+      ]
+    },
+    "expected": [
+      0.92
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE13",
+    "model": "capacities",
+    "claims": [
+      "AC04",
+      "AC09"
+    ],
+    "inputs": {
+      "missing": [
+        "left-hand"
+      ],
+      "pick": [
+        "Manipulation"
+      ]
+    },
+    "expected": [
+      0.5
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE14",
+    "model": "capacities",
+    "claims": [
+      "AC09"
+    ],
+    "inputs": {
+      "missing": [
+        "left-clavicle"
+      ],
+      "pick": [
+        "Manipulation"
+      ]
+    },
+    "expected": [
+      0.5
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE15",
+    "model": "capacities",
+    "claims": [
+      "AC09",
+      "AC13"
+    ],
+    "inputs": {
+      "missing": [
+        "left-hand",
+        "right-hand"
+      ],
+      "pick": [
+        "Manipulation",
+        "Moving",
+        "Consciousness"
+      ]
+    },
+    "expected": [
+      0,
+      1,
+      1
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE16",
+    "model": "capacities",
+    "claims": [
+      "AC09",
+      "AC13"
+    ],
+    "inputs": {
+      "missing": [
+        "left-little-toe"
+      ],
+      "pick": [
+        "Moving"
+      ]
+    },
+    "expected": [
+      0.96
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE17",
+    "model": "capacities",
+    "claims": [
+      "AC13"
+    ],
+    "inputs": {
+      "missing": [
+        "left-leg"
+      ],
+      "pick": [
+        "Moving"
+      ]
+    },
+    "expected": [
+      0.5
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE18",
+    "model": "capacities",
+    "claims": [
+      "AC13"
+    ],
+    "inputs": {
+      "missing": [
+        "left-leg",
+        "right-leg"
+      ],
+      "pick": [
+        "Moving"
+      ]
+    },
+    "expected": [
+      0
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE19",
+    "model": "capacities",
+    "claims": [
+      "AC13"
+    ],
+    "inputs": {
+      "missing": [
+        "spine"
+      ],
+      "pick": [
+        "Moving"
+      ]
+    },
+    "expected": [
+      0
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE20",
+    "model": "capacities",
+    "claims": [
+      "AC11",
+      "AC12",
+      "AC13"
+    ],
+    "inputs": {
+      "missing": [
+        "left-lung"
+      ],
+      "pick": [
+        "Breathing",
+        "Consciousness",
+        "Manipulation",
+        "Moving"
+      ]
+    },
+    "expected": [
+      0.5,
+      0.9,
+      0.9,
+      0.81
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE21",
+    "model": "capacities",
+    "claims": [
+      "AC11"
+    ],
+    "inputs": {
+      "missing": [
+        "sternum"
+      ],
+      "pick": [
+        "Breathing",
+        "Consciousness",
+        "Moving"
+      ]
+    },
+    "expected": [
+      0.5,
+      0.9,
+      0.81
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE22",
+    "model": "capacities",
+    "claims": [
+      "AC11",
+      "AC12"
+    ],
+    "inputs": {
+      "missing": [
+        "left-kidney"
+      ],
+      "pick": [
+        "BloodFiltration",
+        "Consciousness",
+        "Moving"
+      ]
+    },
+    "expected": [
+      0.5,
+      0.95,
+      0.95
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE23",
+    "model": "capacities",
+    "claims": [
+      "AC15"
+    ],
+    "inputs": {
+      "missing": [
+        "stomach"
+      ],
+      "pick": [
+        "Metabolism",
+        "Consciousness"
+      ]
+    },
+    "expected": [
+      0.5,
+      1
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE24",
+    "model": "capacities",
+    "claims": [
+      "AC11",
+      "AC15"
+    ],
+    "inputs": {
+      "missing": [
+        "liver"
+      ],
+      "pick": [
+        "Metabolism",
+        "BloodFiltration",
+        "Consciousness"
+      ]
+    },
+    "expected": [
+      0.5,
+      0,
+      0.9
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE25",
+    "model": "capacities",
+    "claims": [
+      "AC15"
+    ],
+    "inputs": {
+      "missing": [
+        "tongue"
+      ],
+      "pick": [
+        "Talking",
+        "Eating"
+      ]
+    },
+    "expected": [
+      0,
+      0.5
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE26",
+    "model": "capacities",
+    "claims": [
+      "AC15"
+    ],
+    "inputs": {
+      "missing": [
+        "jaw"
+      ],
+      "pick": [
+        "Talking",
+        "Eating"
+      ]
+    },
+    "expected": [
+      0,
+      0.1
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE27",
+    "model": "capacities",
+    "claims": [
+      "AC10",
+      "AC12"
+    ],
+    "inputs": {
+      "missing": [
+        "brain"
+      ],
+      "pick": [
+        "Consciousness",
+        "Moving",
+        "Manipulation",
+        "Eating",
+        "Talking",
+        "Sight"
+      ]
+    },
+    "expected": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE28",
+    "model": "capacities",
+    "claims": [
+      "AC12"
+    ],
+    "inputs": {
+      "pain": 0.122,
+      "pick": [
+        "Consciousness"
+      ]
+    },
+    "expected": [
+      1
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE29",
+    "model": "capacities",
+    "claims": [
+      "AC12"
+    ],
+    "inputs": {
+      "pain": 0.125,
+      "pick": [
+        "Consciousness"
+      ]
+    },
+    "expected": [
+      0.99
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE30",
+    "model": "capacities",
+    "claims": [
+      "AC12"
+    ],
+    "inputs": {
+      "pain": 1,
+      "pick": [
+        "Consciousness"
+      ]
+    },
+    "expected": [
+      0.6
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE31",
+    "model": "missing",
+    "claims": [
+      "AC04"
+    ],
+    "inputs": {
+      "roots": [
+        "left-hand"
+      ],
+      "wounds": [
+        {
+          "part": "left-hand",
+          "amount": 4
+        },
+        {
+          "part": "left-thumb",
+          "amount": 2
+        },
+        {
+          "part": "right-hand",
+          "amount": 3
+        }
+      ]
+    },
+    "expected": {
+      "missingCount": 6,
+      "remainingWounds": [
+        "right-hand"
+      ],
+      "roots": [
+        "left-hand"
+      ]
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE32",
+    "model": "missing",
+    "claims": [
+      "AC04"
+    ],
+    "inputs": {
+      "roots": [
+        "left-thumb",
+        "left-hand"
+      ],
+      "wounds": []
+    },
+    "expected": {
+      "missingCount": 6,
+      "remainingWounds": [],
+      "roots": [
+        "left-hand"
+      ]
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE33",
+    "model": "stump",
+    "claims": [
+      "AC05"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "part": "left-hand",
+          "fresh": true,
+          "age": 0
+        },
+        {
+          "part": "left-hand",
+          "fresh": true,
+          "age": 89999
+        },
+        {
+          "part": "left-hand",
+          "fresh": true,
+          "age": 90000
+        },
+        {
+          "part": "left-hand",
+          "fresh": false
+        },
+        {
+          "part": "left-hand",
+          "fresh": true,
+          "tended": true
+        },
+        {
+          "part": "left-hand",
+          "fresh": true,
+          "parentMissing": true
+        },
+        {
+          "part": "heart",
+          "fresh": true
+        },
+        {
+          "part": "jaw",
+          "fresh": true
+        },
+        {
+          "part": "left-eye",
+          "fresh": true
+        }
+      ]
+    },
+    "expected": [
+      {
+        "bleed": 2.4,
+        "pain": 0.25
+      },
+      {
+        "bleed": 2.4,
+        "pain": 0.25
+      },
+      {
+        "bleed": 0,
+        "pain": 0
+      },
+      {
+        "bleed": 0,
+        "pain": 0
+      },
+      {
+        "bleed": 0,
+        "pain": 0
+      },
+      {
+        "bleed": 0,
+        "pain": 0
+      },
+      {
+        "bleed": 0,
+        "pain": 0
+      },
+      {
+        "bleed": 0,
+        "pain": 0
+      },
+      {
+        "bleed": 1.2,
+        "pain": 0.125
+      }
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE34",
+    "model": "hitWeights",
+    "claims": [
+      "AC17"
+    ],
+    "inputs": {
+      "damage": "Blunt",
+      "depth": "Outside"
+    },
+    "expected": {
+      "total": 0.611231,
+      "eyeWeight": 0,
+      "utilityWeight": 0
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE35",
+    "model": "hitWeights",
+    "claims": [
+      "AC17"
+    ],
+    "inputs": {
+      "damage": "Cut",
+      "depth": "Outside"
+    },
+    "expected": {
+      "total": 0.619631,
+      "eyeWeight": 0.0084,
+      "utilityWeight": 0
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE36",
+    "model": "mapping",
+    "claims": [
+      "AC18"
+    ],
+    "inputs": {
+      "rows": [
+        [
+          "Blunt",
+          "left-hand"
+        ],
+        [
+          "Blunt",
+          "left-eye"
+        ],
+        [
+          "Blunt",
+          "ribcage"
+        ],
+        [
+          "Cut",
+          "left-eye"
+        ],
+        [
+          "Cut",
+          "ribcage"
+        ],
+        [
+          "Stab",
+          "heart"
+        ],
+        [
+          "Stab",
+          "ribcage"
+        ],
+        [
+          "Poke",
+          "left-hand"
+        ],
+        [
+          "Poke",
+          "left-eye"
+        ],
+        [
+          "Bite",
+          "jaw"
+        ]
+      ]
+    },
+    "expected": [
+      "Bruise",
+      "Crush",
+      "Crack",
+      "Cut",
+      "Crack",
+      "Stab",
+      "Crack",
+      "Bruise",
+      "Crush",
+      "Crack"
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE37",
+    "model": "preserve",
+    "claims": [
+      "AC19"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "damage": 19,
+          "hp": 20,
+          "max": 20,
+          "range": [
+            0,
+            0.1
+          ],
+          "roll": 0.5
+        },
+        {
+          "damage": 20,
+          "hp": 20,
+          "max": 20,
+          "range": [
+            0,
+            0.1
+          ],
+          "roll": 0.5
+        },
+        {
+          "damage": 21,
+          "hp": 20,
+          "max": 20,
+          "range": [
+            0,
+            0.1
+          ],
+          "roll": 0.49
+        },
+        {
+          "damage": 21,
+          "hp": 20,
+          "max": 20,
+          "range": [
+            0,
+            0.1
+          ],
+          "roll": 0.51
+        },
+        {
+          "damage": 28,
+          "hp": 20,
+          "max": 20,
+          "range": [
+            0.4,
+            1
+          ],
+          "roll": 0.1
+        },
+        {
+          "damage": 40,
+          "hp": 20,
+          "max": 20,
+          "range": [
+            0.4,
+            1
+          ],
+          "roll": 0.99
+        },
+        {
+          "damage": 40,
+          "hp": 20,
+          "max": 20,
+          "range": [
+            0.4,
+            1
+          ],
+          "roll": 0.99,
+          "inside": true
+        }
+      ]
+    },
+    "expected": [
+      19,
+      19,
+      21,
+      19,
+      19,
+      40,
+      40
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE38",
+    "model": "stabPlan",
+    "claims": [
+      "AC20"
+    ],
+    "inputs": {
+      "part": "brain",
+      "damage": 20
+    },
+    "expected": [
+      {
+        "part": "brain",
+        "damage": 8
+      },
+      {
+        "part": "skull",
+        "damage": 8
+      },
+      {
+        "part": "head",
+        "damage": 15
+      }
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE39",
+    "model": "stabPlan",
+    "claims": [
+      "AC20"
+    ],
+    "inputs": {
+      "part": "left-hand",
+      "damage": 12
+    },
+    "expected": [
+      {
+        "part": "left-hand",
+        "damage": 12
+      }
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE40",
+    "model": "cutInsidePlan",
+    "claims": [
+      "AC21"
+    ],
+    "inputs": {
+      "part": "brain",
+      "damage": 20
+    },
+    "expected": [
+      {
+        "part": "brain",
+        "damage": 4
+      },
+      {
+        "part": "skull",
+        "damage": 8
+      },
+      {
+        "part": "head",
+        "damage": 8
+      }
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE41",
+    "model": "cutCleave",
+    "claims": [
+      "AC21"
+    ],
+    "inputs": {
+      "damage": 12,
+      "targets": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "expected": [
+      12,
+      8.470588235294118,
+      6.545454545454546,
+      5.333333333333333
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE42",
+    "model": "bluntPlan",
+    "claims": [
+      "AC22"
+    ],
+    "inputs": {
+      "damage": 20,
+      "convert": 0.15,
+      "extra": 0.25,
+      "hp": [
+        8,
+        30
+      ]
+    },
+    "expected": {
+      "outer": [
+        8,
+        9
+      ],
+      "inner": 8
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE43",
+    "model": "bluntPlan",
+    "claims": [
+      "AC22"
+    ],
+    "inputs": {
+      "damage": 10,
+      "convert": 0,
+      "extra": 0,
+      "hp": [
+        9,
+        30
+      ]
+    },
+    "expected": {
+      "outer": [
+        9
+      ],
+      "inner": 0
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE44",
+    "model": "fatal",
+    "claims": [
+      "AC16"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "missing": [
+            "heart"
+          ]
+        },
+        {
+          "missing": [
+            "brain"
+          ]
+        },
+        {
+          "missing": [
+            "left-lung",
+            "right-lung"
+          ]
+        },
+        {
+          "missing": [
+            "liver"
+          ]
+        },
+        {
+          "missing": [
+            "stomach"
+          ]
+        },
+        {
+          "missing": [
+            "stomach",
+            "liver"
+          ]
+        },
+        {
+          "missing": [
+            "left-hand",
+            "right-hand"
+          ]
+        }
+      ]
+    },
+    "expected": [
+      [
+        "BloodPumping"
+      ],
+      [
+        "Consciousness"
+      ],
+      [
+        "Breathing"
+      ],
+      [
+        "BloodFiltration"
+      ],
+      [],
+      [
+        "BloodFiltration",
+        "Metabolism"
+      ],
+      []
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE45",
+    "model": "statSight",
+    "claims": [
+      "AC25"
+    ],
+    "inputs": {
+      "level": 10,
+      "manipulation": 1,
+      "sight": 0
+    },
+    "expected": {
+      "mining": 0.62,
+      "plants": 0.861,
+      "construction": 1.598,
+      "tendSpeed": 0.2,
+      "tendQuality": 0.36,
+      "cooking": 0.76,
+      "research": 0.615
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE46",
+    "model": "statSight",
+    "claims": [
+      "AC25"
+    ],
+    "inputs": {
+      "level": 10,
+      "manipulation": 1,
+      "sight": 2
+    },
+    "expected": {
+      "mining": 1.24,
+      "plants": 1.23,
+      "construction": 1.9975,
+      "tendSpeed": 1.24,
+      "tendQuality": 1.268,
+      "cooking": 1.12,
+      "research": 1.2915
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE47",
+    "model": "workQualification",
+    "claims": [
+      "AC24"
+    ],
+    "inputs": {
+      "manipulations": [
+        0,
+        0.01,
+        1
+      ],
+      "sights": [
+        0,
+        0,
+        0
+      ]
+    },
+    "expected": [
+      false,
+      true,
+      true
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE48",
+    "model": "naturalGroup",
+    "claims": [
+      "AC08"
+    ],
+    "inputs": {
+      "group": "LeftHand",
+      "missing": [
+        "left-hand"
+      ]
+    },
+    "expected": 0,
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  },
+  {
+    "id": "AE49",
+    "model": "time",
+    "claims": [
+      "AC26"
+    ],
+    "inputs": {
+      "nativeTicks": 90000,
+      "nativeDay": 60000,
+      "projectDay": 12000
+    },
+    "expected": 18000,
+    "limitation": "Independent static-rule arithmetic/state case; not original execution or project integration proof."
+  }
+]

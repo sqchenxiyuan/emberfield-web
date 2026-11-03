@@ -637,7 +637,7 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 15;
+  version: 16;
   combat: CombatState;
   generator: 1 | 2;
   settings: WorldSettings;

@@ -219,7 +219,8 @@ describe('weapon transport, prohibition and interrupted transactions', () => {
       expect(pawn.weaponTask?.stage).toBe(mode.includes('fetch') ? 'fetch' : 'work');
       expect(() => VoxelSimulation.load(s.save())).not.toThrow();
 
-      // Real bounded injury rules: 2 × 30 arm HP, total pain .75, no bleeding.
+      // Low-level destruction fixture: 2 × 30 arm HP, total fresh-stump pain .75.
+      // Fresh missing parts bleed even when the triggering wound was blunt.
       // Consciousness and walking remain above the downing thresholds while Manipulation is zero.
       applyInjury(pawn.trauma, s.nextId++, 'leftArm', 'bruise', 30);
       applyInjury(pawn.trauma, s.nextId++, 'rightArm', 'bruise', 30);
@@ -229,7 +230,7 @@ describe('weapon transport, prohibition and interrupted transactions', () => {
       expect(health.pain).toBeCloseTo(0.75);
       expect(health.consciousness).toBeGreaterThan(0.3);
       expect(health.moving).toBeGreaterThan(0.15);
-      expect(health.bleedRate).toBe(0);
+      expect(health.bleedRate).toBeCloseTo(7.2);
 
       s.step();
       expect(pawn.dead).toBe(false);

@@ -44,7 +44,6 @@
 | [36 衣物与裁缝规则](36-apparel-tailoring-mechanisms.md) | 布料、品质、隔热、层与身体部位冲突、穿脱耗时和穿着磨损如何计算？ |
 | [37 原版衣物与裁缝实机](37-native-apparel-runtime.md) | 实际穿脱和裁缝操作验证了什么，哪些步骤用了开发准备？ |
 | [38 体素棉花与衣物](38-voxel-apparel-implementation.md) | 自然种棉、楼上制衣、实体换装、保温和 v11 兼容怎样验收？ |
-
 | [39 伤口、失血、护理与药物](39-injuries-medicine-mechanisms.md) | 近战工具、部位伤口、流血、护理和恢复如何计算？ |
 | [40 原版无药护理实机](40-native-injuries-runtime.md) | 实际分工门槛、护理等待与品质0包扎证明什么？ |
 | [41 体素征召、近战与护理](41-voxel-combat-injuries-implementation.md) | 定时袭击、真实外伤、逐伤包扎、恢复和v12迁移怎样验收？ |
@@ -54,10 +53,12 @@
 | [45 技能、学习、工速与品质](45-skills-learning-quality-mechanisms.md) | 热情/饱和/升级/衰退、能力曲线、采收产率和品质随机过程如何连接？ |
 | [46 原版制刀与技能观察](46-native-skills-runtime.md) | 普通制刀的经验、热情、品质和账单技能门槛实测了什么？ |
 | [47 体素技能与产出](47-voxel-skills-implementation.md) | 实际劳动升级、多人贡献、锁定品质、技能资格和v14迁移怎样验收？ |
-
 | [48 研究与科技规则](48-research-technology-mechanisms.md) | 起始知识、研究速度、台效率、科技成本和解锁如何计算？ |
 | [49 原版实际研究](49-native-research-runtime.md) | 正常造台、自动研究、暂停与切换的进度和经验说明什么？ |
 | [50 体素研究与科技解锁](50-voxel-research-implementation.md) | 上层科研台、真实劳动、智识成长、前置门槛与v15迁移怎样验收？ |
+| [51 人体、能力与伤害传播](51-anatomy-capacity-mechanisms.md) | 64部位、11能力、缺失树及普通近战伤害如何相连？ |
+| [52 原版人体与护理实机](52-native-anatomy-runtime.md) | 眼伤、部位缺失与普通护理的实际数值能证明什么？ |
+| [53 体素人体实现](53-voxel-anatomy-implementation.md) | 实际工作影响、断端护理、持械外观与v16原伤迁移怎样验收？ |
 
 每篇均含具体来源与未决问题。先读感兴趣的系统，再查其 `evidence/*-claims.json` 和 `*-manifest.json`，不要把“已抽取一个类型”当成“这个类型涉及的全部机制已经理解”。
 

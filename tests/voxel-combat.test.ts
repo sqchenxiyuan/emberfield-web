@@ -63,7 +63,8 @@ describe('voxel combat and physical tending', () => {
     }
     expect(s.seed).toBeLessThan(10000);
     s.step();
-    expect(target.trauma.wounds).toHaveLength(1);
+    // A single blunt strike may also crack an internal bone.
+    expect(target.trauma.wounds.length).toBeGreaterThan(0);
     expect(attacker.skills.melee.xp).toBe(0);
     expect(attacker.skills.melee.dailyXp).toBe(0);
     expect(attacker.nextAttackTick).toBeGreaterThan(s.tick);
@@ -182,7 +183,7 @@ describe('voxel combat and physical tending', () => {
     );
     const s = VoxelSimulation.load(old);
     expect(old.version).toBe(11);
-    expect(s.save().version).toBe(15);
+    expect(s.save().version).toBe(16);
     expect(s.combat).toEqual({ enabled: false, nextRaid: 0, wave: 0 });
     expect(s.pawns.map((p) => [p.id, p.food, p.rest, p.worn])).toEqual(
       old.pawns.map((p: any) => [p.id, p.food, p.rest, p.worn]),

@@ -76,13 +76,23 @@ describe('physical weapon production and persistence', () => {
     const old = JSON.parse(bytes.toString()),
       s = VoxelSimulation.load(old);
     expect(old.version).toBe(12);
-    expect(s.save().version).toBe(15);
+    expect(s.save().version).toBe(16);
     expect(s.weaponBenches).toEqual([]);
     expect(s.items).toEqual(old.items);
     expect(s.save().blocks).toEqual(old.blocks);
-    expect(s.pawns.map((p) => [p.food, p.rest, p.health, p.trauma, p.worn])).toEqual(
-      old.pawns.map((p: any) => [p.food, p.rest, p.health, p.trauma, p.worn]),
+    expect(
+      s.pawns.map((p) => [p.food, p.rest, p.health, p.trauma.wounds, p.trauma.bloodLoss, p.worn]),
+    ).toEqual(
+      old.pawns.map((p: any) => [
+        p.food,
+        p.rest,
+        p.health,
+        p.trauma.wounds,
+        p.trauma.bloodLoss,
+        p.worn,
+      ]),
     );
+    expect(s.pawns.every((p) => p.trauma.missingParts.length === 0)).toBe(true);
     expect(s.pawns.every((p) => p.weapon === null && p.weaponTask === null)).toBe(true);
     // Separately marked legacy-state fixture exercises v12's former string equipment.
     old.pawns[0].weapon = 'steelKnife';

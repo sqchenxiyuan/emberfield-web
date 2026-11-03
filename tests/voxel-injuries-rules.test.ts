@@ -12,13 +12,13 @@ function days(t: Trauma, count: number, c: Partial<TraumaContext> = {}, start = 
 }
 
 describe('voxel injury rules and evidence boundaries', () => {
-  it('keeps independent initial state and declares seven coarse regions with normalized project weights', () => {
+  it('keeps independent initial state and declares the actual 64-part body with normalized coverage', () => {
     const a = initialTrauma(), b = initialTrauma();
     applyInjury(a, 1, 'leftArm', 'bruise', 8.2);
-    expect(b).toEqual({ wounds: [], bloodLoss: 0, brokenParts: [] });
-    expect(Object.keys(BODY_REGIONS)).toHaveLength(7);
+    expect(b).toEqual({ wounds: [], bloodLoss: 0, missingParts: [] });
+    expect(Object.keys(BODY_REGIONS)).toHaveLength(64);
     expect(Object.values(BODY_REGIONS).reduce((sum, p) => sum + p.weight, 0)).toBeCloseTo(1);
-    expect(Object.values(BODY_REGIONS).map((p) => p.hitPoints)).toEqual([40, 25, 25, 30, 30, 30, 30]);
+    expect(['torso', 'head', 'neck', 'leftArm', 'rightArm', 'leftLeg', 'rightLeg'].map(p => BODY_REGIONS[p as keyof typeof BODY_REGIONS].hitPoints)).toEqual([40, 25, 25, 30, 30, 30, 30]);
   });
   it('normal punching produces pain without invented bleeding; cuts use actual part bleed factors', () => {
     const t = initialTrauma();
@@ -69,8 +69,8 @@ describe('voxel injury rules and evidence boundaries', () => {
     for (const part of ['torso', 'head', 'neck'] as const) {
       const t = initialTrauma();
       applyInjury(t, 1, part, 'bruise', BODY_REGIONS[part].hitPoints + 3);
-      expect(t.wounds[0].severity).toBe(BODY_REGIONS[part].hitPoints + 3);
-      expect(t.brokenParts).toContain(part);
+      if (part === 'torso') expect(t.wounds[0].severity).toBe(BODY_REGIONS[part].hitPoints + 3);
+      else expect(t.missingParts[0].part).toBe(part);
       expect(traumaSummary(t).deathReason).toContain('致死');
       const before = structuredClone(t); days(t, 1);
       expect(t).toEqual(before);
@@ -135,9 +135,10 @@ describe('voxel injury rules and evidence boundaries', () => {
     applyInjury(t, 1, 'leftLeg', 'bruise', 35);
     expect(traumaSummary(t).movingFactor).toBe(0.5);
     expect(traumaSummary(t).deathReason).toBeNull();
+    tendOne(t, 1, 7, 0);
     days(t, 5, { resting: true, inBed: true });
     expect(t.wounds).toEqual([]);
-    expect(t.brokenParts).toEqual(['leftLeg']);
+    expect(t.missingParts.map(m => m.part)).toEqual(['leftLeg']);
     expect(traumaSummary(t).movingFactor).toBe(0.5);
     applyInjury(t, 2, 'rightLeg', 'bruise', 30);
     applyInjury(t, 3, 'leftArm', 'bruise', 30);
@@ -163,7 +164,7 @@ describe('voxel injury rules and evidence boundaries', () => {
     const invalid: unknown[] = [null, [], { ...t, extra: true }, { ...t, bloodLoss: NaN },
       { ...t, bloodLoss: -1 }, { ...t, bloodLoss: 1.1 }, { ...t, brokenParts: ['brain'] },
       { ...t, brokenParts: ['leftArm', 'leftArm'] }, { ...t, wounds: [...t.wounds, ...t.wounds] }];
-    for (const field of [{ id: -1 }, { part: 'brain' }, { kind: 'fire' }, { severity: Infinity },
+    for (const field of [{ id: -1 }, { part: 'not-a-body-part' }, { kind: 'fire' }, { severity: Infinity },
       { severity: 0 }, { severity: 30 }, { ageTicks: -1 }, { ageTicks: 11 },
       { tendQuality: NaN }, { tendQuality: -0.1 }, { tendQuality: 0.71 }, { extra: true }])
       invalid.push({ ...t, wounds: [{ ...t.wounds[0], ...field }] });

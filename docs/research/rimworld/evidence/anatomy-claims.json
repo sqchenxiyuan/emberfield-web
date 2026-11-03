@@ -1,0 +1,1733 @@
+[
+  {
+    "id": "AC01",
+    "title": "Human身份与范围",
+    "statement": "固定1.7.4980 rev60程序集及ILSpy11.2.0.10050；Human原生64记录、32种部位定义，完整树数据包含Inside及conceptual UtilitySlot。这里是静态Core声明及派生代码；非启用DLC/Mod后的有效数据库，非原版运行证明。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "anatomy",
+        "xml_record": "BodyDef_Human"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Torso"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Shoulder"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Arm"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Hand"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Finger"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Waist"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Toe"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Clavicle"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Sternum"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Humerus"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Radius"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Pelvis"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Femur"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Tibia"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Head"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Skull"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Brain"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Eye"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Ear"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Nose"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Jaw"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Neck"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Ribcage"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Spine"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Leg"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Foot"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Tongue"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Heart"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Lung"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Kidney"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Liver"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Stomach"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "ThingDef_Human"
+      }
+    ]
+  },
+  {
+    "id": "AC02",
+    "title": "树、coverage与索引",
+    "statement": "BodyDef按前序遍历建立AllParts/原版Index；父指针按结构建立。root withChildren=1，child=parent*relativeCoverage；self=withChildren*max(0,1−直接子coverage和)，残差abs<1e−5归0。未指定height/depth由父继承，根默认Middle/Outside。groups不从父自动继承。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "injuries",
+        "type": "Verse.BodyDef",
+        "line_start": 145,
+        "line_end": 203,
+        "range_sha256": "37c418534041c8b8d63dd8a28506cf43bd2fa599d9cb4c41799f1a6e1d682baf"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.BodyPartRecord",
+        "line_start": 8,
+        "line_end": 43,
+        "range_sha256": "44e89ce91036d0ae00b8f57c6c59b14ab6882d33506ee984beccca37d0c9c533"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.BodyPartRecord",
+        "line_start": 80,
+        "line_end": 168,
+        "range_sha256": "ba56fa7778c7dfe49ff02c16528f4a66f7208308989a1d53b3508e66f4ee0bf6"
+      },
+      {
+        "group": "anatomy",
+        "type": "Verse.BodyPartHeight",
+        "line_start": 1,
+        "line_end": 10,
+        "range_sha256": "ae7cb9f89273072a3d30fed8e10006d4cff032aebd6d71d128710320c3650fe8"
+      },
+      {
+        "group": "anatomy",
+        "type": "Verse.BodyPartDepth",
+        "line_start": 1,
+        "line_end": 9,
+        "range_sha256": "4caaa178c5a788c3931d7d639bcf503d10be7a9fc39032deed3e07583c85156b"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyDef_Human"
+      }
+    ]
+  },
+  {
+    "id": "AC03",
+    "title": "部位属性与HP取整",
+    "statement": "BodyPartDef默认HP10、bleed1、skinCovered/solid/conceptual=false、destroyableByDamage=true、alive=true；maxHP=Ceil(hitPoints*HealthScale)。GetPartHealth按hediff顺序逐伤扣：不毁部位的伤每次至少保1；Missing直接0；末尾夹非负、不可毁部位至少1，再Mathf.RoundToInt。Conceptual命中因子0；指定damage因子优先，其他默认1。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "injuries",
+        "type": "Verse.BodyPartDef",
+        "line_start": 8,
+        "line_end": 48,
+        "range_sha256": "09f89350ce974b4894a473049ae5a9a06c20fd83e1e975dca772c10f7a777f91"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.BodyPartDef",
+        "line_start": 106,
+        "line_end": 157,
+        "range_sha256": "adbce3c02fd7684ca82ff02e41c81bb9fab0da05a514e47816d2e686d2b0a2d6"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffSet",
+        "line_start": 581,
+        "line_end": 605,
+        "range_sha256": "00cabea7f3ce2a073e6f48fbc4b5f068c5ae9d7fe20c8cb7c74ccc7afbffe1c8"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Torso"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Shoulder"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Arm"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Hand"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Finger"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Waist"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Toe"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Clavicle"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Sternum"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Humerus"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Radius"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Pelvis"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Femur"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Tibia"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Head"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Skull"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Brain"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Eye"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Ear"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Nose"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Jaw"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Neck"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Ribcage"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Spine"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Leg"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Foot"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Tongue"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Heart"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Lung"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Kidney"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Liver"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Stomach"
+      }
+    ]
+  },
+  {
+    "id": "AC04",
+    "title": "缺失子树与旧伤清理",
+    "statement": "非核心部位GetPartHealth==0后创建MissingPart，天然部位IsFresh=true。MissingPart.PostAdd调用RestorePart保留自身例外，递归清除该部位与后代未标keepOnBodyPartRestoration的旧hediff，再给每个子节点递归建立nonfresh缺失。原版逐节点存MissingPart；项目只存最高根并推导后代属于存储适配，必须同样清除普通伤口，不能双计旧痛/旧出血。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.HediffSet",
+        "line_start": 310,
+        "line_end": 370,
+        "range_sha256": "d6ef1c3269dcba097d8ffa90ee746d795c0f92fe681b74253dda86f66507a683"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.Hediff_MissingPart",
+        "line_start": 184,
+        "line_end": 207,
+        "range_sha256": "4d0ab384688bd30753e13f779389e0a58e5f5d183348c98b734da887b8a239b7"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 447,
+        "line_end": 478,
+        "range_sha256": "a2049e2d47558edc8f2749ac2306409bbfe24326ee93fb885dfdf27796546fd2"
+      }
+    ]
+  },
+  {
+    "id": "AC05",
+    "title": "新鲜残端",
+    "statement": "IsFresh要求存储fresh且age<90000源tick；fresh、Outside、非solid、无缺失parent且无义体祖先时，残端bleed=maxHP*.12*partBleed*raceBleed，pain=maxHP*.0125/HealthScale。Inside、solid、非fresh不贡献这条残端；成功Tended令IsFresh=false，质量0也可以；ShouldRemove=false，护理不恢复部位。直接Dev AddMissing默认fresh=false。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "injuries",
+        "type": "Verse.Hediff_MissingPart",
+        "line_start": 9,
+        "line_end": 29,
+        "range_sha256": "52d9ecdf9dc421f25c990313bfe9b425f28071343c86dba0097b55e97d316354"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.Hediff_MissingPart",
+        "line_start": 85,
+        "line_end": 207,
+        "range_sha256": "2e3e26ee3b549e22c91599c960034b68141a15d56cd3e495bc310ef88f51dbe4"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "HediffDef_MissingBodyPart"
+      }
+    ]
+  },
+  {
+    "id": "AC06",
+    "title": "普通伤口与材质",
+    "statement": "普通伤痛Severity*painPerSeverity/HealthScale，永久伤另用平均永久疼痛及PainFactor。普通出血排除死亡、年龄止血、solid、已护理、永久伤及非有机直接义体；伤情bleed乘部位与种族，体总量乘各Stage.totalBleedFactor再除HealthScale。Bruise系数0，Crush .01，Cut/Stab/Bite .06；Crack普通疼痛.01且默认无出血。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.Hediff_Injury",
+        "line_start": 125,
+        "line_end": 191,
+        "range_sha256": "b32b4106b58573b7fc7af38d3602fc1ab92deff1a39f3765fea507118dbd18c9"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffSet",
+        "line_start": 1299,
+        "line_end": 1368,
+        "range_sha256": "855b060408e12d996b384063bd8de802e3a8b994312b429d3190505222cdd72e"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "HediffDef_MissingBodyPart"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "HediffDef_InjuryBase"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "HediffDef_Crush"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "HediffDef_Crack"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "HediffDef_Cut"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "HediffDef_Bite"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "HediffDef_Stab"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "HediffDef_Bruise"
+      }
+    ]
+  },
+  {
+    "id": "AC07",
+    "title": "部位效率",
+    "statement": "CalculatePartEfficiency先遇到祖先AddedPart即返回其partEfficiency；父缺失返回0。自身addedPart倍率连乘；同部位Stage效率offset相加，ignoreMissingHP取任一true。未忽略HP时乘整数PartHealth/maxHP；Outside非core把该比例作InverseLerp(.1,1,r)。最后加offset并夹>=0。天然身体无义体/Stage时即该HP效率；不能把所有内部器官也套外部10%区间。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "Verse.PawnCapacityUtility",
+        "line_start": 166,
+        "line_end": 243,
+        "range_sha256": "89c70bf1fba582feb2bfea42367c41213f99132114ebdcfb71c5ebc6e390cc7b"
+      },
+      {
+        "group": "anatomy",
+        "type": "Verse.Hediff_AddedPart",
+        "line_start": 1,
+        "line_end": 21,
+        "range_sha256": "e5f192564d5a1026b5dee9fb00bc102bb40b945c1ba4a964fd04160b610eadea"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.DamageWorker_AddInjury",
+        "line_start": 389,
+        "line_end": 398,
+        "range_sha256": "f3960170b8c75b9606004081bba1d0439c0ce6e4517dbc686cb43e818759d21e"
+      }
+    ]
+  },
+  {
+    "id": "AC08",
+    "title": "tag、自然组与即时效率",
+    "statement": "tag遍历完整body所带tag，缺失以0计入分母；无tag返回1。普通平均，best权重>=0且数量>=2时best*w+其余平均*(1−w)，再可选FloatRange映射、maximum上限。NaturalPartsAverage只遍历not-missing组，义体部位算0但计数，空组返回0。Immediate在有义体ancestor时返回1，其余走普通效率。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "Verse.PawnCapacityUtility",
+        "line_start": 245,
+        "line_end": 310,
+        "range_sha256": "ed041356bd9af485ee4d3bcb171943af3cfd65cdb6cc0441972d3348c18e5a31"
+      }
+    ]
+  },
+  {
+    "id": "AC09",
+    "title": "肢体链",
+    "statement": "对每个limbCore取自身效率，再乘GetConnectedParts(segment)全部效率；此遍历先沿连续segment父节点上爬，再递归取所有segment后代，包括骨节点。若有digit后代，乘(1−appendageWeight)+appendageWeight*全部digit平均。最后平均所有core；functionalPercentage是效率>0的core比例。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "Verse.PawnCapacityUtility",
+        "line_start": 312,
+        "line_end": 344,
+        "range_sha256": "6e43f3bc4ce4a675c64562bca2af00643d7df267b63538bacc5641db7b3e712a"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.BodyPartRecord",
+        "line_start": 92,
+        "line_end": 168,
+        "range_sha256": "e160c0c3611e4588e5723ef626be9621ead5f2a5ab0470a101612d2e858b9799"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Torso"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Shoulder"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Arm"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Hand"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Finger"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Waist"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Toe"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Clavicle"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Sternum"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Humerus"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Radius"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Pelvis"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Femur"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Tibia"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Head"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Skull"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Brain"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Eye"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Ear"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Nose"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Jaw"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Neck"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Ribcage"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Spine"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Leg"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Foot"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Tongue"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Heart"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Lung"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Kidney"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Liver"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Stomach"
+      }
+    ]
+  },
+  {
+    "id": "AC10",
+    "title": "最终能力与资格",
+    "statement": "zeroIfCannotBeAwake且Consciousness<.3时直接0。先算worker，只有raw>0才应用健康/基因offset总和、postFactor乘积和最小setMax；再max(minValue)并Mathf.Round(value*100)/100。血肉必需能力按CapableOf严格大于minForCapable判断；Moving阈值.15，其余0。Eating最终floor .1，但昏迷早退绕过floor。Dead时能力handler全部返回0。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "Verse.PawnCapacityUtility",
+        "line_start": 74,
+        "line_end": 164,
+        "range_sha256": "635cc541c3bb0146bb3ad6ad104c01c777808139837fd518f00046228bc2b749"
+      },
+      {
+        "group": "survival",
+        "type": "Verse.PawnCapacitiesHandler",
+        "line_start": 23,
+        "line_end": 88,
+        "range_sha256": "343c59cc485565b18c900fa83606713da69c6d708a44f945a779e2e377be752f"
+      },
+      {
+        "group": "survival",
+        "type": "Verse.PawnCapacityModifier",
+        "line_start": 8,
+        "line_end": 47,
+        "range_sha256": "859b9677a5ce73e8edd9d9607fa25b26b35c461be8afffedb1013d8d40db2863"
+      },
+      {
+        "group": "survival",
+        "type": "Verse.PawnCapacityDef",
+        "line_start": 28,
+        "line_end": 43,
+        "range_sha256": "dc58d7bb15c7461cb28a03300e78e0c1e01993dd3efc9c9a647c85d5f9f0ab8e"
+      },
+      {
+        "group": "anatomy",
+        "type": "Verse.GenMath",
+        "line_start": 36,
+        "line_end": 39,
+        "range_sha256": "1ba3ae55a018b693d7b4d9f5cd3bafef66853d389e48c528f719a00b1d1fb9f7"
+      },
+      {
+        "group": "anatomy",
+        "type": "Verse.PawnCapacityWorker",
+        "line_start": 1,
+        "line_end": 30,
+        "range_sha256": "e7c7eb91a7875d42cee22bf3873dade3021e54569a30f44dce66569f58cf2124"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Consciousness"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Moving"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Manipulation"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Talking"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Eating"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Sight"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Hearing"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Breathing"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_BloodFiltration"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_BloodPumping"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Metabolism"
+      }
+    ]
+  },
+  {
+    "id": "AC11",
+    "title": "呼吸循环过滤",
+    "statement": "BloodPumping=tag(BloodPumpingSource)；Breathing=tag(BreathingSource)*min(tag(BreathingPathway),1)*min(tag(BreathingSourceCage),1)；有Kidney tag时BloodFiltration=tag(Kidney)*tag(Liver)，否则tag(BloodFiltrationSource)。Human肺平均、胸廓为ribcage/sternum平均、颈为pathway、双肾平均再乘肝。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "anatomy",
+        "type": "RimWorld.PawnCapacityWorker_BloodPumping",
+        "line_start": 1,
+        "line_end": 18,
+        "range_sha256": "2178d842e2e56f44a1a22465af21f61772ca629837e09ebdab91252c8eee3a77"
+      },
+      {
+        "group": "anatomy",
+        "type": "RimWorld.PawnCapacityWorker_Breathing",
+        "line_start": 1,
+        "line_end": 26,
+        "range_sha256": "48d42cbb409f677ff84e114e576771cf84260a921fad1ec47ff83c487dd0eafb"
+      },
+      {
+        "group": "anatomy",
+        "type": "RimWorld.PawnCapacityWorker_BloodFiltration",
+        "line_start": 1,
+        "line_end": 34,
+        "range_sha256": "b2b9febe89e80d55eebe62507b45a8a78543250568b7ec63117c29fa1881b8f3"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Torso"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Shoulder"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Arm"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Hand"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Finger"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Waist"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Toe"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Clavicle"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Sternum"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Humerus"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Radius"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Pelvis"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Femur"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Tibia"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Head"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Skull"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Brain"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Eye"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Ear"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Nose"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Jaw"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Neck"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Ribcage"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Spine"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Leg"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Foot"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Tongue"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Heart"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Lung"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Kidney"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Liver"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Stomach"
+      }
+    ]
+  },
+  {
+    "id": "AC12",
+    "title": "意识",
+    "statement": "Consciousness从Brain的ConsciousnessSource效率开始；painPenalty=clamp((pain−.1)/.9*.4,0,.4)，只有>=.01才扣。随后乘(.8+.2min(BloodPumping,1))*(.8+.2min(Breathing,1))*(.9+.1min(BloodFiltration,1))；健康阶段offset等最后在能力wrapper应用。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "RimWorld.PawnCapacityWorker_Consciousness",
+        "line_start": 1,
+        "line_end": 28,
+        "range_sha256": "ef161417050ffbd4fc8f5817e83ecf7ab3d650fd41506765a5aeb455eb2ff05b"
+      },
+      {
+        "group": "survival",
+        "type": "Verse.PawnCapacityUtility",
+        "line_start": 74,
+        "line_end": 164,
+        "range_sha256": "635cc541c3bb0146bb3ad6ad104c01c777808139837fd518f00046228bc2b749"
+      }
+    ]
+  },
+  {
+    "id": "AC13",
+    "title": "操作与移动",
+    "statement": "Manipulation=limbEfficiency(.8)*Consciousness。Moving在alwaysDowned生命阶段为0；limbEfficiency(.4)若functional<.4999则0，否则再乘Pelvis、Spine、(.8+.2Breathing)、(.8+.2BloodPumping)、min(Consciousness,1)。呼吸/泵血在Moving这里不设1上限。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "RimWorld.PawnCapacityWorker_Manipulation",
+        "line_start": 1,
+        "line_end": 19,
+        "range_sha256": "df1cba370f3e506d1f5b931293230ca39420065eab1866383e49a56b2555ba38"
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.PawnCapacityWorker_Moving",
+        "line_start": 1,
+        "line_end": 39,
+        "range_sha256": "fd137c64f230f745fa856e19d81484a693f8772a7e469b5f0f8d0c7d990b7bae"
+      }
+    ]
+  },
+  {
+    "id": "AC14",
+    "title": "视力与听力",
+    "statement": "Sight与Hearing均为对应tag的best .75、其余平均.25；只有一个部位时普通平均。Human单眼或单耳缺失、另一侧完整时基础能力.75，非.5。两能力没有zeroIfCannotBeAwake。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "anatomy",
+        "type": "RimWorld.PawnCapacityWorker_Sight",
+        "line_start": 1,
+        "line_end": 22,
+        "range_sha256": "dd23570cde546e4b83df08d82f1d875289141cad840a32dd7844918656814c7c"
+      },
+      {
+        "group": "anatomy",
+        "type": "RimWorld.PawnCapacityWorker_Hearing",
+        "line_start": 1,
+        "line_end": 18,
+        "range_sha256": "613553ddc0bb2c2b4257fed2394939baab5e9b159038077e891f49c1dee69ca6"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Sight"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Hearing"
+      }
+    ]
+  },
+  {
+    "id": "AC15",
+    "title": "说话进食消化",
+    "statement": "Talking=source*min(pathway,1)*min(tongue,1)*Consciousness；Eating=eatingSource*min(pathway,1)*(.5+.5*tongue)*Consciousness；Metabolism是MetabolismSource平均，Human胃和肝。Talking/Eating昏迷早退0；Eating普通最终floor.1；Metabolism是血肉必需致死能力。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "anatomy",
+        "type": "RimWorld.PawnCapacityWorker_Talking",
+        "line_start": 1,
+        "line_end": 26,
+        "range_sha256": "c6e1d638e2c2672e50f1562337c62f61e8e657f9d03a2d73c0730ded001934b8"
+      },
+      {
+        "group": "anatomy",
+        "type": "RimWorld.PawnCapacityWorker_Eating",
+        "line_start": 1,
+        "line_end": 23,
+        "range_sha256": "0cb55602851cd5bf7eacecb287b74bdb3ca16c3a6a93baa303bf0bcb520e8644"
+      },
+      {
+        "group": "anatomy",
+        "type": "RimWorld.PawnCapacityWorker_Metabolism",
+        "line_start": 1,
+        "line_end": 18,
+        "range_sha256": "b3ca3fffb211ba39d2786d787790ab22ff616d0d2e5ccb3cb4c5f5fbe93c11b1"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Consciousness"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Moving"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Manipulation"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Talking"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Eating"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Sight"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Hearing"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Breathing"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_BloodFiltration"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_BloodPumping"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Metabolism"
+      }
+    ]
+  },
+  {
+    "id": "AC16",
+    "title": "倒地与死亡",
+    "statement": "普通成人倒地由PainShock、CanBeAwake、Moving.CapableOf检查；死亡先检查preventsDeath例外/致死hediff，再必需能力、core效率<=.0001、累计仍存在Injury严重度>=150*HealthScale。自然Human必需能力为意识、呼吸、泵血、过滤、消化；缺肢清除的旧伤不继续参与150阈值。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 73,
+        "line_end": 74,
+        "range_sha256": "7b48c2cb508eaa81988ec0517da3eacc98ed5b3689c26a278af9089048bc8449"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 642,
+        "line_end": 720,
+        "range_sha256": "bf38cce2a35df708375932fb44e9e0676baa6d835689fd24ec928496dd4a9f23"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Consciousness"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Moving"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Manipulation"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Talking"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Eating"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Sight"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Hearing"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Breathing"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_BloodFiltration"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_BloodPumping"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "PawnCapacityDef_Metabolism"
+      }
+    ]
+  },
+  {
+    "id": "AC17",
+    "title": "初始命中抽样",
+    "statement": "按not-missing、height/depth/直接parent筛选；无正coverage时只放开height，不放开depth或parent；先按coverageAbs*damageHitFactor抽样，若全0退回coverageAbs。Eye对Blunt factor0。普通近战DamageInfo为Outside，Cut/Blunt固定Outside；Stab可再选直接Inside子节点。显式HitPart只要求not-missing，绕过随机筛选。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.HediffSet",
+        "line_start": 969,
+        "line_end": 1005,
+        "range_sha256": "5b0a1a57fb5775c357a2eaea4378c729ecb97e62e228a0f9205f6d722612740f"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.DamageWorker_AddInjury",
+        "line_start": 338,
+        "line_end": 359,
+        "range_sha256": "dfc386a22f947bf50c66cd28348e48e6ba0716a5d9669b2df2516509a3f2f061"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.Verb_MeleeAttackDamage",
+        "line_start": 39,
+        "line_end": 55,
+        "range_sha256": "453c5ff7ae447bc915e2df610dc02d7702823639f4450952a5d205a73f039e05"
+      },
+      {
+        "group": "anatomy",
+        "type": "Verse.DamageWorker_Cut",
+        "line_start": 9,
+        "line_end": 12,
+        "range_sha256": "d41a8be44041ba460ac851dd20fc1e609392c9356bb277ee6f620a9b91dab9fd"
+      },
+      {
+        "group": "anatomy",
+        "type": "Verse.DamageWorker_Blunt",
+        "line_start": 14,
+        "line_end": 17,
+        "range_sha256": "d41a8be44041ba460ac851dd20fc1e609392c9356bb277ee6f620a9b91dab9fd"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Torso"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Shoulder"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Arm"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Hand"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Finger"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Waist"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Toe"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Clavicle"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Sternum"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Humerus"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Radius"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Pelvis"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Femur"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Tibia"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Head"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Skull"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Brain"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Eye"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Ear"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Nose"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Jaw"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Neck"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Ribcage"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Spine"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Leg"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Foot"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Tongue"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Heart"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Lung"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Kidney"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Liver"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "BodyPartDef_Stomach"
+      }
+    ]
+  },
+  {
+    "id": "AC18",
+    "title": "DamageDef到Hediff",
+    "statement": "先DamageDef.hediff，再skinCovered且hediffSkin存在时覆盖，最后solid且hediffSolid存在时优先覆盖。Cut软部位Cut/硬Crack，Stab软Stab/硬Crack；Blunt默认Crush、skinBruise、solidCrack；Poke继承Blunt映射却走Stab worker，不能提前丢弃DamageDef身份。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "Verse.HealthUtility",
+        "line_start": 519,
+        "line_end": 532,
+        "range_sha256": "f414f10fa7d5a47900d99e8a7f86b985c68aeb80f6f84d37cd5d515b76ad99f0"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "DamageDef_Cut"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "DamageDef_Crush"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "DamageDef_Blunt"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "DamageDef_Poke"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "DamageDef_Stab"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "DamageDef_Bite"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "HediffDef_MissingBodyPart"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "HediffDef_InjuryBase"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "HediffDef_Crush"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "HediffDef_Crack"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "HediffDef_Cut"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "HediffDef_Bite"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "HediffDef_Stab"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "HediffDef_Bruise"
+      }
+    ]
+  },
+  {
+    "id": "AC19",
+    "title": "外部保留与过量伤",
+    "statement": "外部非core且D>=当前HP时计算f=(D−HP)/maxHP，以overkill区间InverseLerp抽签；失败削为HP−1，成功保留D。Cut/Bite区间0~.1，Stab/Blunt/Poke .4~1。调用位置由worker决定：Blunt override不调用通用外部保1，不能给所有Blunt统一套保护。Bite仅强制Outside并继承base的保留、写伤及Inside时外层复制，没有Cut邻近裂伤。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.DamageWorker_AddInjury",
+        "line_start": 369,
+        "line_end": 398,
+        "range_sha256": "79c4d2a3bf5ed0c3f6c8ee9caa95388246b1460c33aede2c538609c71444b7ef"
+      },
+      {
+        "group": "anatomy",
+        "type": "Verse.DamageWorker_Blunt",
+        "line_start": 19,
+        "line_end": 47,
+        "range_sha256": "7169b613eed23fec16376980fd00d5bbac67aef962451479e56d0df430411ab7"
+      },
+      {
+        "group": "anatomy",
+        "type": "Verse.DamageWorker_Stab",
+        "line_start": 26,
+        "line_end": 31,
+        "range_sha256": "6007051ee0d8995f0da03b9b8ff148f878ff49d9fbd90fe28f51e496f43647c1"
+      },
+      {
+        "group": "anatomy",
+        "type": "Verse.DamageWorker_Cut",
+        "line_start": 53,
+        "line_end": 61,
+        "range_sha256": "c9360e116acfbd84f9591f1a840f7b8732d3b5d294461ac7875f92a7810acb41"
+      },
+      {
+        "group": "anatomy",
+        "type": "Verse.DamageWorker_Bite",
+        "line_start": 1,
+        "line_end": 10,
+        "range_sha256": "9f6b841e5d3d3a147103076e88445b02fe0269370320cdf1b22977cb09553200"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.DamageWorker_AddInjury",
+        "line_start": 192,
+        "line_end": 197,
+        "range_sha256": "d8962321c9e80f280ea95a069744d4547bdbd8cd7b1fad1742e09ed1a2b2910f"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.DamageWorker_AddInjury",
+        "line_start": 284,
+        "line_end": 323,
+        "range_sha256": "e3fb2d001cbaaa86efa8299278f94d0dfa311e14b614fa09dafdb217a438d266"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "DamageDef_Cut"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "DamageDef_Crush"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "DamageDef_Blunt"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "DamageDef_Poke"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "DamageDef_Stab"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "DamageDef_Bite"
+      }
+    ]
+  },
+  {
+    "id": "AC20",
+    "title": "Stab与Poke内部链",
+    "statement": "初始命中非Inside时，按Stab .6/Poke .4尝试命中该点直接Inside子节点。实际命中点向上列到第一个Outside；链长1给全D，多节点每个Inside给.4D、Outside给.75D，发生在一次外部保留判定之后；不是每级减剩余，也不额外重复通用外层伤。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "anatomy",
+        "type": "Verse.DamageWorker_Stab",
+        "line_start": 1,
+        "line_end": 55,
+        "range_sha256": "89ec0048660a49f3fdb35ddfb71074ceaaf998fb89a71718f981104c7443f892"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "DamageDef_Stab"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "DamageDef_Poke"
+      }
+    ]
+  },
+  {
+    "id": "AC21",
+    "title": "Cut邻近裂伤",
+    "statement": "一般选Outside；若显式Inside，沿父链到Outside分摊：首节点权重.5，其余1，总权重n−.5。外部时N由cutExtraTargetsCurve对均匀roll求值并随机舍入；候选为直接孩子+parent+(有祖父时parent直接孩子)，Except主点，再随机Take(N)，之后才过滤conceptual/coverage，未预过滤missing。最后加主点；每处D*(1+1.4)/(实际列表数+1.4)，仅原N==0执行外部保1。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "anatomy",
+        "type": "Verse.DamageWorker_Cut",
+        "line_start": 1,
+        "line_end": 70,
+        "range_sha256": "45b0cb36a3ba8f900c4097272ef26060f87fb4ea72221456d9b00318f175fc35"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "DamageDef_Cut"
+      }
+    ]
+  },
+  {
+    "id": "AC22",
+    "title": "Blunt溢出、内骨与眩晕",
+    "statement": "40%内部事件抽转换.1~.2，否则0；外部伤D*(1−convert)，每次扣实际min(伤严重度,命中前HP)，只有该部位已missing且剩余>1时沿parent继续。若内部事件且最终外部点非solid，可按coverage选它的直接Inside solid孩子，内伤D*convert+D*U(.2,.35)。不是随机任意内脏。躯干/意识同branch的眩晕另按D/躯干maxHP查两条曲线，存活时可加2秒Stun。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "anatomy",
+        "type": "Verse.DamageWorker_Blunt",
+        "line_start": 14,
+        "line_end": 81,
+        "range_sha256": "96a23581a02d5f87f2ad83d88207a278533dd766faa0ed8d30392f4f05743eab"
+      },
+      {
+        "group": "anatomy",
+        "type": "Verse.DamageWorker_Blunt",
+        "line_start": 112,
+        "line_end": 126,
+        "range_sha256": "c275105fb51c9495f1dc9ab9279212087a5e44b6bb2cfa6f8b248bfad27778c7"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.DamageWorker_AddInjury",
+        "line_start": 241,
+        "line_end": 282,
+        "range_sha256": "13910afea159d5b833c4564c7762945be620d6893b49fdd03a1fa926b4b84d96"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "DamageDef_Blunt"
+      }
+    ]
+  },
+  {
+    "id": "AC23",
+    "title": "共同写入与未闭合保护边界",
+    "statement": "实际顺序为选部位→护甲→IncomingDamageFactor→是否允许传播→worker→Finalize。Finalize先permanent预处理，再可用最多7次试伤调整殖民者即死保护，写Hediff并返回min(severity,旧HP)。本包提供天然身体、普通伤的完整主干，但未运行原版；护甲、多段小体型、永久伤随机、难度/即死保护、Stun动作系统、义体基因仍须各自集成/验证，不能称全部TakeDamage等价。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.DamageWorker_AddInjury",
+        "line_start": 18,
+        "line_end": 61,
+        "range_sha256": "2939720a8aeed94ea66f6c4ed6aeb077f63130ed15d3ac6f896054a4b0f87885"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.DamageWorker_AddInjury",
+        "line_start": 142,
+        "line_end": 282,
+        "range_sha256": "a5b2c81d574e41d988e51303d8c185fd50ee60dee72571abaa34f88c9d6d36c4"
+      }
+    ]
+  },
+  {
+    "id": "AC24",
+    "title": "工作能力门槛",
+    "statement": "七个所选Core工作定义仅requiredCapacities=Manipulation，不要求Sight。WorkGiver.MissingRequiredCapacity严格CapableOf，普通与强制优先JobGiver路径均检查；矿工/建设/种植/护理/科研选定路径无独立Sight资格阈值。零视力的数值后果由Stat处理，不应新增盲人禁工。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "anatomy",
+        "xml_record": "WorkGiverDef_DoctorTendToHumanlikes"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "WorkGiverDef_ConstructFinishFrames"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "WorkGiverDef_GrowerHarvest"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "WorkGiverDef_GrowerSow"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "WorkGiverDef_Mine"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "WorkGiverDef_PlantsCut"
+      },
+      {
+        "group": "anatomy",
+        "xml_record": "WorkGiverDef_Research"
+      },
+      {
+        "group": "anatomy",
+        "type": "RimWorld.WorkGiver",
+        "line_start": 1,
+        "line_end": 32,
+        "range_sha256": "985213446db1fa0d95f2f954e0e4934f721e644db988880b6891d7772238b3b7"
+      },
+      {
+        "group": "anatomy",
+        "type": "RimWorld.WorkGiver_Miner",
+        "line_start": 1,
+        "line_end": 35,
+        "range_sha256": "f6c81fd3bf148b2c7b8bd8667e71b0d7c77e2565640e30453d926541cc096ff3"
+      },
+      {
+        "group": "anatomy",
+        "type": "RimWorld.MineAIUtility",
+        "line_start": 48,
+        "line_end": 108,
+        "range_sha256": "5e077a444598cca881f38d447d6374afb7387c05657118fe9c0243a5e54baf13"
+      },
+      {
+        "group": "anatomy",
+        "type": "RimWorld.WorkGiver_ConstructFinishFrames",
+        "line_start": 1,
+        "line_end": 46,
+        "range_sha256": "9f8019bb9f315462413fbf4aafcb6e46881cdf0dedec68836a066f7e1e9b9042"
+      },
+      {
+        "group": "work",
+        "type": "RimWorld.JobGiver_Work",
+        "line_start": 268,
+        "line_end": 313,
+        "range_sha256": "f9165b22c447182d74139768d7b4f633dc8287bca44d6360523ece16cd41a381"
+      },
+      {
+        "group": "skills",
+        "type": "RimWorld.GenConstruct",
+        "line_start": 1,
+        "line_end": 1007,
+        "range_sha256": "b4895c5536662931c685958c1d22826b7f07bb4f01d970f9671f853ad4c0fe77"
+      },
+      {
+        "group": "plants",
+        "type": "RimWorld.WorkGiver_Grower",
+        "line_start": 1,
+        "line_end": 63,
+        "range_sha256": "631afb9a56cc0847321f9ed4b78f008e87bd53eba8442d5a9b3efc07785e5ce0"
+      },
+      {
+        "group": "plants",
+        "type": "RimWorld.WorkGiver_GrowerSow",
+        "line_start": 1,
+        "line_end": 214,
+        "range_sha256": "d2deb7f107f31a60a4b5bd47dc08fa4793f5c729979c683d97234a77a6b8b9e1"
+      },
+      {
+        "group": "food",
+        "type": "RimWorld.WorkGiver_GrowerHarvest",
+        "line_start": 1,
+        "line_end": 93,
+        "range_sha256": "06fde7b9f9f23810b29fa2143afbb7fc971ecc3957163c20979942e2a460aa8f"
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.WorkGiver_Tend",
+        "line_start": 1,
+        "line_end": 60,
+        "range_sha256": "56f516a61965421554032f9365e9d8240036c6d6c36ef7970d46ead04f6c0782"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.WorkGiver_Researcher",
+        "line_start": 1,
+        "line_end": 67,
+        "range_sha256": "70386fd75158a989a92fda39ef9c25e8ea237d1eaea0d51a52f1e770e67c8a62"
+      }
+    ]
+  },
+  {
+    "id": "AC25",
+    "title": "视力接回既有Stat",
+    "statement": "视力容量因子：MiningSpeed .5/max1、PlantWorkSpeed .3/max1、ConstructionSpeed .2/max1、MedicalTendSpeed .8/max1.3、MedicalTendQuality .7/max1.4(在postcurve前)、ResearchSpeed .5/max1.1。CookSpeed使用Sight offset4/max1.5。普通capacityFactor=(1−weight)+weight*min(cap,max)，不是cap^weight；完整Stat还含未实现因素。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "skills",
+        "xml_record": "StatDef_MiningSpeed"
+      },
+      {
+        "group": "skills",
+        "xml_record": "StatDef_PlantWorkSpeed"
+      },
+      {
+        "group": "skills",
+        "xml_record": "StatDef_ConstructionSpeed"
+      },
+      {
+        "group": "skills",
+        "xml_record": "StatDef_MedicalTendSpeed"
+      },
+      {
+        "group": "skills",
+        "xml_record": "StatDef_MedicalTendQuality"
+      },
+      {
+        "group": "skills",
+        "xml_record": "StatDef_CookSpeed"
+      },
+      {
+        "group": "technology",
+        "xml_record": "StatDef_IntellectualSkillBase"
+      },
+      {
+        "group": "technology",
+        "xml_record": "StatDef_ResearchSpeed"
+      },
+      {
+        "group": "skills",
+        "type": "RimWorld.PawnCapacityFactor",
+        "line_start": 7,
+        "line_end": 37,
+        "range_sha256": "d8b916d9b001047e8f47a8176a940aceba9b649fa7c40ab77a3a693c751304c9"
+      },
+      {
+        "group": "skills",
+        "type": "RimWorld.PawnCapacityOffset",
+        "line_start": 1,
+        "line_end": 19,
+        "range_sha256": "9735cfa03f3c65783738192e83f07935fdb9a27b7a52dc03521f80a27cd06425"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 367,
+        "line_end": 398,
+        "range_sha256": "706351bce36c3ae02d7d7b6562037bb8b92e50c429e707f64e5ed756bce690ef"
+      }
+    ]
+  },
+  {
+    "id": "AC26",
+    "title": "项目时间和迁移适配",
+    "statement": "部位/能力公式不靠tick改变；fresh90000源tick按每日60000→项目每日12000映射为18000项目tick。64结构的语义ID由English标签生成，不是原版存档index；项目camelCase映射及旧七区损毁归档、missing根压缩存储均为显式项目设计，不能宣称历史七区伤势含有原先不存在的细分器官信息。",
+    "kind": "design-adaptation",
+    "sources": [
+      {
+        "group": "injuries",
+        "type": "Verse.Hediff_MissingPart",
+        "line_start": 148,
+        "line_end": 166,
+        "range_sha256": "ab8715d9f8162b062e41d17e4fb0172f3c3f7ba84f02f3093691cb0d2aa23a8f"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.BodyDef",
+        "line_start": 145,
+        "line_end": 203,
+        "range_sha256": "37c418534041c8b8d63dd8a28506cf43bd2fa599d9cb4c41799f1a6e1d682baf"
+      }
+    ]
+  }
+]

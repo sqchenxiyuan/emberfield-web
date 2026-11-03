@@ -1,0 +1,23 @@
+[
+  "Verse.BodyPartHeight",
+  "Verse.BodyPartDepth",
+  "Verse.PawnCapacityWorker",
+  "Verse.GenMath",
+  "Verse.DamageWorker_Blunt",
+  "Verse.DamageWorker_Cut",
+  "Verse.DamageWorker_Stab",
+  "Verse.Hediff_AddedPart",
+  "RimWorld.PawnCapacityWorker_BloodFiltration",
+  "RimWorld.PawnCapacityWorker_BloodPumping",
+  "RimWorld.PawnCapacityWorker_Breathing",
+  "RimWorld.PawnCapacityWorker_Sight",
+  "RimWorld.PawnCapacityWorker_Hearing",
+  "RimWorld.PawnCapacityWorker_Talking",
+  "RimWorld.PawnCapacityWorker_Eating",
+  "RimWorld.PawnCapacityWorker_Metabolism",
+  "RimWorld.WorkGiver",
+  "RimWorld.WorkGiver_Miner",
+  "RimWorld.WorkGiver_ConstructFinishFrames",
+  "RimWorld.MineAIUtility",
+  "Verse.DamageWorker_Bite"
+]

@@ -65,7 +65,7 @@ describe('physical melee weapon rules from the bounded native evidence', () => {
     expect(attacks.map((a) => a.damage)).toEqual([8.1, 12.6]);
     expect(attacks.map((a) => a.cooldown)).toEqual([40, 40]);
     expect(attacks[0].damageDef).toBe('Poke');
-    expect(attacks[0].kind).toBe('bruise'); // Coarse external skin mapping, not internal Stab propagation.
+    expect(attacks[0].kind).toBe('bruise'); // External skin result; the damage worker can penetrate inside.
     expect(attacks[0].armorPenetration).toBeCloseTo(0.1215);
     expect(attacks[1].armorPenetration).toBeCloseTo(0.189);
   });
@@ -171,16 +171,16 @@ describe('physical melee weapon rules from the bounded native evidence', () => {
     expect(selectMeleeAttack(null, 0.5, { damageFactor: 0 })).toBeNull();
   });
 
-  it('labels seven-region injury mapping explicitly and preserves permanent limb disability', () => {
+  it('uses linked fingers, jaw and head groups and excludes missing descendants', () => {
     const trauma = initialTrauma();
     applyInjury(trauma, 1, 'leftArm', 'bruise', 15);
-    expect(meleeBodyFromTrauma(trauma).leftHand).toBe(0.5);
+    expect(meleeBodyFromTrauma(trauma).leftHand).toBe(1); // Fist tools link to finger groups.
     applyInjury(trauma, 2, 'rightArm', 'bruise', 30);
     trauma.wounds = trauma.wounds.filter((w) => w.part !== 'rightArm');
     expect(meleeBodyFromTrauma(trauma).rightHand).toBe(0);
     applyInjury(trauma, 3, 'head', 'bruise', 5);
-    expect(meleeBodyFromTrauma(trauma).teeth).toBe(0.8);
-    expect(meleeBodyFromTrauma(trauma).head).toBe(0.8);
+    expect(meleeBodyFromTrauma(trauma).teeth).toBe(1);
+    expect(meleeBodyFromTrauma(trauma).head).toBeCloseTo((0.8 - 0.1) / 0.9);
     applyInjury(trauma, 4, 'torso', 'cut', 40);
     expect(selectMeleeAttack(null, 0, meleeBodyFromTrauma(trauma))).toBeNull();
   });

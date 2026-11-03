@@ -58,6 +58,8 @@ jobs:
         run: npm run test:voxel:apparel
       - name: Verify scheduled raids, real melee injuries, physical tending and recovery
         run: npm run test:voxel:injuries
+      - name: Verify full anatomy injuries and capacity consequences in ordinary combat
+        run: npm run test:voxel:anatomy
       - name: Verify weapon production followed by actual skill growth and stored quality
         run: npm run test:voxel:skills
       - name: Verify actual multilevel research and technology unlocks

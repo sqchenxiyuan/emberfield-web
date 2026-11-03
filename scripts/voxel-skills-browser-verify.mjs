@@ -51,7 +51,7 @@ const report = {
   base: BASE,
   startedAt: new Date().toISOString(),
   scope:
-    'Production Chrome in both renderer modes. Genuine v13 file-chooser migration and normal-command v15 campaign fixtures. Visible DOM/canvas controls only for changes; window.voxel snapshot/project/exportSave are read-only observations. No injected skills, quality, resources, work, time or commands.',
+    'Production Chrome in both renderer modes. Genuine v13 file-chooser migration and normal-command v16 campaign fixtures. Visible DOM/canvas controls only for changes; window.voxel snapshot/project/exportSave are read-only observations. No injected skills, quality, resources, work, time or commands.',
   modes: [],
 };
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
@@ -226,7 +226,7 @@ async function verify(mode) {
     assert.equal(result.fixtures.at(-1).sha256, provenance.sha256);
     assert.equal(old.version, 13);
     const migrated = await save();
-    assert.equal(migrated.version, 15);
+    assert.equal(migrated.version, 16);
     assert.deepEqual(migrated.items, old.items);
     assert.deepEqual(migrated.blocks, old.blocks);
     assert.deepEqual(qualityItems(migrated), qualityItems(old));
@@ -244,7 +244,7 @@ async function verify(mode) {
       await verifySkillPanel(pawn);
     }
     check(
-      'genuine v13 imports into v15 with unchanged gear quality and fixed zero-XP starter skill profiles',
+      'genuine v13 imports into v16 with unchanged gear quality and fixed zero-XP starter skill profiles',
       { sourceSha256: provenance.sha256 },
     );
     const colonist = migrated.pawns[0];
@@ -290,7 +290,7 @@ async function verify(mode) {
     );
 
     const training = await load(FIXTURES + '/training.json');
-    assert.equal(training.version, 15);
+    assert.equal(training.version, 16);
     assert(
       training.jobs.some(
         (j) =>
@@ -369,7 +369,7 @@ async function verify(mode) {
     );
 
     const final = await load(FIXTURES + '/final.json');
-    assert.equal(final.version, 15);
+    assert.equal(final.version, 16);
     assert(
       final.pawns.some((p) => KEYS.some((k) => p.skills[k].xp !== 0 || p.skills[k].dailyXp !== 0)),
     );

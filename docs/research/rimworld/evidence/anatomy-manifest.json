@@ -1,0 +1,145 @@
+{
+  "evidence_id": "RW17-ANATOMY",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "Verse.BodyPartHeight",
+      "local_file": ".local-research/anatomy/Verse.BodyPartHeight.cs",
+      "sha256": "ae7cb9f89273072a3d30fed8e10006d4cff032aebd6d71d128710320c3650fe8",
+      "lines": 10
+    },
+    {
+      "type": "Verse.BodyPartDepth",
+      "local_file": ".local-research/anatomy/Verse.BodyPartDepth.cs",
+      "sha256": "4caaa178c5a788c3931d7d639bcf503d10be7a9fc39032deed3e07583c85156b",
+      "lines": 9
+    },
+    {
+      "type": "Verse.PawnCapacityWorker",
+      "local_file": ".local-research/anatomy/Verse.PawnCapacityWorker.cs",
+      "sha256": "e7c7eb91a7875d42cee22bf3873dade3021e54569a30f44dce66569f58cf2124",
+      "lines": 30
+    },
+    {
+      "type": "Verse.GenMath",
+      "local_file": ".local-research/anatomy/Verse.GenMath.cs",
+      "sha256": "639bc810485b043ff454902b285ade5d875d8b123f3809672371111519429b1e",
+      "lines": 702
+    },
+    {
+      "type": "Verse.DamageWorker_Blunt",
+      "local_file": ".local-research/anatomy/Verse.DamageWorker_Blunt.cs",
+      "sha256": "49f662b261e52ccfa7d7f18df28df3a0650b234562100c9b135dacf73e256f47",
+      "lines": 127
+    },
+    {
+      "type": "Verse.DamageWorker_Cut",
+      "local_file": ".local-research/anatomy/Verse.DamageWorker_Cut.cs",
+      "sha256": "45b0cb36a3ba8f900c4097272ef26060f87fb4ea72221456d9b00318f175fc35",
+      "lines": 70
+    },
+    {
+      "type": "Verse.DamageWorker_Stab",
+      "local_file": ".local-research/anatomy/Verse.DamageWorker_Stab.cs",
+      "sha256": "89ec0048660a49f3fdb35ddfb71074ceaaf998fb89a71718f981104c7443f892",
+      "lines": 55
+    },
+    {
+      "type": "Verse.Hediff_AddedPart",
+      "local_file": ".local-research/anatomy/Verse.Hediff_AddedPart.cs",
+      "sha256": "e5f192564d5a1026b5dee9fb00bc102bb40b945c1ba4a964fd04160b610eadea",
+      "lines": 21
+    },
+    {
+      "type": "RimWorld.PawnCapacityWorker_BloodFiltration",
+      "local_file": ".local-research/anatomy/RimWorld.PawnCapacityWorker_BloodFiltration.cs",
+      "sha256": "b2b9febe89e80d55eebe62507b45a8a78543250568b7ec63117c29fa1881b8f3",
+      "lines": 34
+    },
+    {
+      "type": "RimWorld.PawnCapacityWorker_BloodPumping",
+      "local_file": ".local-research/anatomy/RimWorld.PawnCapacityWorker_BloodPumping.cs",
+      "sha256": "2178d842e2e56f44a1a22465af21f61772ca629837e09ebdab91252c8eee3a77",
+      "lines": 18
+    },
+    {
+      "type": "RimWorld.PawnCapacityWorker_Breathing",
+      "local_file": ".local-research/anatomy/RimWorld.PawnCapacityWorker_Breathing.cs",
+      "sha256": "48d42cbb409f677ff84e114e576771cf84260a921fad1ec47ff83c487dd0eafb",
+      "lines": 26
+    },
+    {
+      "type": "RimWorld.PawnCapacityWorker_Sight",
+      "local_file": ".local-research/anatomy/RimWorld.PawnCapacityWorker_Sight.cs",
+      "sha256": "dd23570cde546e4b83df08d82f1d875289141cad840a32dd7844918656814c7c",
+      "lines": 22
+    },
+    {
+      "type": "RimWorld.PawnCapacityWorker_Hearing",
+      "local_file": ".local-research/anatomy/RimWorld.PawnCapacityWorker_Hearing.cs",
+      "sha256": "613553ddc0bb2c2b4257fed2394939baab5e9b159038077e891f49c1dee69ca6",
+      "lines": 18
+    },
+    {
+      "type": "RimWorld.PawnCapacityWorker_Talking",
+      "local_file": ".local-research/anatomy/RimWorld.PawnCapacityWorker_Talking.cs",
+      "sha256": "c6e1d638e2c2672e50f1562337c62f61e8e657f9d03a2d73c0730ded001934b8",
+      "lines": 26
+    },
+    {
+      "type": "RimWorld.PawnCapacityWorker_Eating",
+      "local_file": ".local-research/anatomy/RimWorld.PawnCapacityWorker_Eating.cs",
+      "sha256": "0cb55602851cd5bf7eacecb287b74bdb3ca16c3a6a93baa303bf0bcb520e8644",
+      "lines": 23
+    },
+    {
+      "type": "RimWorld.PawnCapacityWorker_Metabolism",
+      "local_file": ".local-research/anatomy/RimWorld.PawnCapacityWorker_Metabolism.cs",
+      "sha256": "b3ca3fffb211ba39d2786d787790ab22ff616d0d2e5ccb3cb4c5f5fbe93c11b1",
+      "lines": 18
+    },
+    {
+      "type": "RimWorld.WorkGiver",
+      "local_file": ".local-research/anatomy/RimWorld.WorkGiver.cs",
+      "sha256": "985213446db1fa0d95f2f954e0e4934f721e644db988880b6891d7772238b3b7",
+      "lines": 32
+    },
+    {
+      "type": "RimWorld.WorkGiver_Miner",
+      "local_file": ".local-research/anatomy/RimWorld.WorkGiver_Miner.cs",
+      "sha256": "f6c81fd3bf148b2c7b8bd8667e71b0d7c77e2565640e30453d926541cc096ff3",
+      "lines": 35
+    },
+    {
+      "type": "RimWorld.WorkGiver_ConstructFinishFrames",
+      "local_file": ".local-research/anatomy/RimWorld.WorkGiver_ConstructFinishFrames.cs",
+      "sha256": "9f8019bb9f315462413fbf4aafcb6e46881cdf0dedec68836a066f7e1e9b9042",
+      "lines": 46
+    },
+    {
+      "type": "RimWorld.MineAIUtility",
+      "local_file": ".local-research/anatomy/RimWorld.MineAIUtility.cs",
+      "sha256": "428d02755dc7e6e54c28637fa4149decc6f6ce1701f5e95303e04781e6e01a84",
+      "lines": 109
+    },
+    {
+      "type": "Verse.DamageWorker_Bite",
+      "local_file": ".local-research/anatomy/Verse.DamageWorker_Bite.cs",
+      "sha256": "9f6b841e5d3d3a147103076e88445b02fe0269370320cdf1b22977cb09553200",
+      "lines": 10
+    }
+  ]
+}

@@ -248,8 +248,13 @@ export function plantYield(set: SkillSet, manipulation = 1, sight = 1): number {
     ),
   );
 }
-export function tendSpeed(set: SkillSet, manipulation = 1): number {
-  return Math.max(0.1, (0.4 + 0.06 * set.medicine.level) * capacity(manipulation));
+export function tendSpeed(set: SkillSet, manipulation = 1, sight = 1): number {
+  return Math.max(
+    0.1,
+    (0.4 + 0.06 * set.medicine.level) *
+      capacity(manipulation) *
+      (0.2 + 0.8 * Math.min(capacity(sight), 1.3)),
+  );
 }
 /** Native ResearchSpeed with global work speed fixed at one. */
 export function researchSpeed(set: SkillSet, manipulation = 1, sight = 1): number {
@@ -261,13 +266,18 @@ export function researchSpeed(set: SkillSet, manipulation = 1, sight = 1): numbe
   );
 }
 /** Doctor stat before medicine potency and the tending model's random variation. */
-export function tendQuality(set: SkillSet, manipulation = 1): number {
-  return curve((0.2 + 0.1 * set.medicine.level) * Math.min(1.4, capacity(manipulation)), [
-    [0, 0],
-    [1, 1],
-    [2, 1.5],
-    [4, 2],
-  ]);
+export function tendQuality(set: SkillSet, manipulation = 1, sight = 1): number {
+  return curve(
+    (0.2 + 0.1 * set.medicine.level) *
+      Math.min(1.4, capacity(manipulation)) *
+      (0.3 + 0.7 * Math.min(capacity(sight), 1.4)),
+    [
+      [0, 0],
+      [1, 1],
+      [2, 1.5],
+      [4, 2],
+    ],
+  );
 }
 /** Native human touch accuracy before opponent dodge; caller handles sleeping,
  * downed, surprise and non-pawn targets separately. */
@@ -295,27 +305,35 @@ export function meleeDodgeChance(set: SkillSet, moving = 1, sight = 1): number {
     [60, 0.5],
   ]);
 }
-/** Sight and global work speed are fixed at 1 in this model. Construction includes
+/** Global work speed is fixed at 1 in this model. Construction includes
  * the original job's 1.7 multiplier, after the stat's .1 floor.
  */
-export function workSpeed(set: SkillSet, kind: string, manipulation = 1): number {
+export function workSpeed(set: SkillSet, kind: string, manipulation = 1, sight = 1): number {
   const m = capacity(manipulation),
+    vision = capacity(sight),
     skill = jobSkill(kind);
-  if (skill === 'mining') return Math.max(0.1, (0.04 + 0.12 * set.mining.level) * m);
-  if (skill === 'plants') return Math.max(0.1, (0.08 + 0.115 * set.plants.level) * m);
+  if (skill === 'mining')
+    return Math.max(0.1, (0.04 + 0.12 * set.mining.level) * m * (0.5 + 0.5 * Math.min(vision, 1)));
+  if (skill === 'plants')
+    return Math.max(0.1, (0.08 + 0.115 * set.plants.level) * m * (0.7 + 0.3 * Math.min(vision, 1)));
   if (skill === 'construction')
-    return Math.max(0.1, (0.3 + 0.0875 * set.construction.level) * m) * 1.7;
+    return (
+      Math.max(
+        0.1,
+        (0.3 + 0.0875 * set.construction.level) * m * (0.8 + 0.2 * Math.min(vision, 1)),
+      ) * 1.7
+    );
   if (skill === 'cooking')
     return Math.max(
       0.1,
-      curve(set.cooking.level + 16 * (Math.min(m, 1.5) - 1), [
+      curve(set.cooking.level + 16 * (Math.min(m, 1.5) - 1) + 4 * (Math.min(vision, 1.5) - 1), [
         [-20, 0.01],
         [0, 0.4],
         [20, 1.6],
       ]),
     );
-  if (kind === 'tend') return tendSpeed(set, m);
-  if (kind === 'research') return researchSpeed(set, m);
+  if (kind === 'tend') return tendSpeed(set, m, vision);
+  if (kind === 'research') return researchSpeed(set, m, vision);
   return Math.max(0.1, m);
 }
 

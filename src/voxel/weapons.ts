@@ -1,11 +1,6 @@
 import { TPS, type Counts } from './types';
-import {
-  BODY_REGIONS,
-  traumaSummary,
-  type Trauma,
-  type BodyRegion,
-  type InjuryKind,
-} from './injuries';
+import { traumaSummary, type Trauma, type InjuryKind } from './injuries';
+import { naturalGroupEfficiency } from './anatomy';
 
 export type WeaponKind = 'woodClub' | 'steelKnife' | 'steelLongsword';
 export type WeaponQuality = 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -294,27 +289,18 @@ export function weaponAttacks(
 }
 
 /**
- * Explicit coarse-body adapter: arms stand in for hand groups and head for teeth.
- * This is not native CalculateNaturalPartsAverageEfficiency or the 64-part anatomy.
+ * Core Human natural-tool groups use remaining-part average efficiency. The
+ * LeftHand/RightHand groups contain the fingers; Teeth is the jaw; head is HeadAttackTool.
  * Source weapon tools have no linked body group: do not multiply their damage by
  * Manipulation; hit chance/equipment eligibility remain the caller's responsibility.
  */
 export function meleeBodyFromTrauma(trauma: Trauma): MeleeBodyState {
-  const fraction = (part: BodyRegion) =>
-    trauma.brokenParts.includes(part)
-      ? 0
-      : Math.max(
-          0,
-          1 -
-            trauma.wounds.filter((w) => w.part === part).reduce((n, w) => n + w.severity, 0) /
-              BODY_REGIONS[part].hitPoints,
-        );
   return {
     ...HEALTHY_BODY,
-    leftHand: fraction('leftArm'),
-    rightHand: fraction('rightArm'),
-    head: fraction('head'),
-    teeth: fraction('head'),
+    leftHand: naturalGroupEfficiency(trauma, 'LeftHand'),
+    rightHand: naturalGroupEfficiency(trauma, 'RightHand'),
+    head: naturalGroupEfficiency(trauma, 'HeadAttackTool'),
+    teeth: naturalGroupEfficiency(trauma, 'Teeth'),
     active: !traumaSummary(trauma).deathReason,
   };
 }

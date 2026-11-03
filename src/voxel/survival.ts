@@ -1,6 +1,13 @@
 import { DAY, type Pawn, type SurvivalHealth, type ApparelPiece } from './types';
 import { insulation } from './apparel';
-import { initialTrauma, traumaSummary, type Trauma } from './injuries';
+import {
+  initialTrauma,
+  traumaSummary,
+  BODY_REGIONS,
+  type Trauma,
+  type LegacyTrauma,
+} from './injuries';
+import { roundedCapacity, type CapacityReasons } from './anatomy';
 
 // Source contract: chapter 33. Whole healthy adult body, no apparel, genes or traits.
 // Source 60000 ticks/day is mapped to our DAY, independently of render/real-time TPS.
@@ -121,81 +128,216 @@ export function updateHealth(
   else if (temperature < comfortableMax)
     h.heatstroke = clamp(h.heatstroke - clamp(h.heatstroke * 0.027, 0.0015, 0.015));
 }
-export function healthDeathReason(h: SurvivalHealth, trauma?: Trauma): string | null {
-  return (
-    (trauma && traumaSummary(trauma).deathReason) ||
-    (h.malnutrition >= 1
-      ? '营养不良致死'
-      : h.hypothermia >= 1
-        ? '失温致死'
-        : h.heatstroke >= 1
-          ? '中暑致死'
-          : null)
-  );
-}
-export function healthSummary(
-  p: Pick<Pawn, 'health' | 'dead' | 'deathReason'> & Partial<Pick<Pawn, 'worn' | 'trauma'>>,
-) {
-  const trauma = traumaSummary(p.trauma ?? initialTrauma());
-  const h = p.health,
-    mal = stage(h.malnutrition, [0, 0.2, 0.4, 0.6, 0.8]),
+/** The pre-v16 health contract is retained only to validate genuine old saves. */
+export function legacyHealthState(h: SurvivalHealth, t: LegacyTrauma) {
+  const damage = (part: string) =>
+    t.wounds.reduce((sum, w) => sum + (w.part === part ? w.severity : 0), 0);
+  const broken = (part: keyof typeof BODY_REGIONS) =>
+    t.brokenParts.includes(part as (typeof t.brokenParts)[number]) ||
+    damage(part) >= BODY_REGIONS[part].hitPoints;
+  const core = (['torso', 'head', 'neck'] as const).find(broken);
+  const deathReason = core
+    ? `${BODY_REGIONS[core].name}损毁致死`
+    : t.bloodLoss >= 1
+      ? '失血致死'
+      : h.malnutrition >= 1
+        ? '营养不良致死'
+        : h.hypothermia >= 1
+          ? '失温致死'
+          : h.heatstroke >= 1
+            ? '中暑致死'
+            : null;
+  const dead = deathReason !== null;
+  const fraction = (part: keyof typeof BODY_REGIONS) =>
+    broken(part) ? 0 : clamp(1 - damage(part) / BODY_REGIONS[part].hitPoints);
+  const mal = stage(h.malnutrition, [0, 0.2, 0.4, 0.6, 0.8]),
     cold = stage(h.hypothermia, [0, 0.04, 0.2, 0.35, 0.62]),
-    hot = stage(h.heatstroke, [0, 0.04, 0.2, 0.35, 0.62]);
-  const pain = clamp(trauma.pain + [0, 0, 0, 0.15, 0.3][cold] + [0, 0, 0, 0.15, 0.3][hot]);
+    hot = stage(h.heatstroke, [0, 0.04, 0.2, 0.35, 0.62]),
+    blood = stage(t.bloodLoss, [0, 0.15, 0.3, 0.45, 0.6]);
+  const traumaDead = !!core || t.bloodLoss >= 1;
+  const pain = clamp(
+    (traumaDead ? 0 : t.wounds.reduce((sum, w) => sum + w.severity * 0.0125, 0)) +
+      [0, 0, 0, 0.15, 0.3][cold] +
+      [0, 0, 0, 0.15, 0.3][hot],
+  );
   const penalty = clamp(((pain - 0.1) / 0.9) * 0.4, 0, 0.4);
-  const consciousOffset =
-    [0, -0.05, -0.1, -0.2, -0.3][mal] +
-    [0, -0.05, -0.1, -0.2, 0][cold] +
-    [0, -0.05, -0.1, -0.2, 0][hot] +
-    trauma.consciousnessOffset;
-  const consciousness = p.dead
+  const consciousness = dead
     ? 0
     : rounded(
         Math.min(
-          1 - (penalty >= 0.01 ? penalty : 0) + consciousOffset,
-          mal === 4 || cold === 4 || hot === 4 ? 0.1 : 1,
-          trauma.consciousnessMax,
+          1 -
+            (penalty >= 0.01 ? penalty : 0) +
+            [0, -0.05, -0.1, -0.2, -0.3][mal] +
+            [0, -0.05, -0.1, -0.2, 0][cold] +
+            [0, -0.05, -0.1, -0.2, 0][hot] +
+            [0, -0.1, -0.2, -0.4, -0.4][blood],
+          mal === 4 || cold === 4 || hot === 4 || blood === 4 ? 0.1 : 1,
         ),
       );
   const moving =
     consciousness < 0.3
       ? 0
       : rounded(
-          (Math.min(consciousness, 1) + [0, 0, -0.1, -0.3, 0][cold] + [0, 0, -0.1, -0.3, 0][hot]) *
-            trauma.movingFactor,
+          ((Math.min(consciousness, 1) + [0, 0, -0.1, -0.3, 0][cold] + [0, 0, -0.1, -0.3, 0][hot]) *
+            (fraction('leftLeg') + fraction('rightLeg'))) /
+            2,
         );
   const manipulation =
     consciousness < 0.3
       ? 0
-      : rounded((consciousness + [0, -0.08, -0.2, -0.5, 0][cold]) * trauma.manipulationFactor);
-  const labels = ['初期', '轻微', '中度', '严重', '极重'];
-  const stages = {
-    malnutrition: h.malnutrition > 0 ? labels[mal] : '无',
-    hypothermia: h.hypothermia > 0 ? labels[cold] : '无',
-    heatstroke: h.heatstroke > 0 ? labels[hot] : '无',
+      : rounded(
+          ((consciousness + [0, -0.08, -0.2, -0.5, 0][cold]) *
+            (fraction('leftArm') + fraction('rightArm'))) /
+            2,
+        );
+  return {
+    dead,
+    downed: !dead && (pain >= 0.8 || consciousness < 0.3 || moving <= 0.15),
+    deathReason,
+    manipulation,
+    moving,
+    consciousness,
+    pain,
   };
-  const reason = p.dead
-    ? (p.deathReason ?? '死亡')
-    : [
-        h.malnutrition > 0 ? '营养不良（' + stages.malnutrition + '）' : '',
-        h.hypothermia > 0 ? '失温（' + stages.hypothermia + '）' : '',
-        h.heatstroke > 0 ? '中暑（' + stages.heatstroke + '）' : '',
-        p.trauma?.wounds.length ? `${p.trauma.wounds.length} 处外伤` : '',
-        p.trauma && p.trauma.bloodLoss > 0 ? '失血' : '',
-      ]
-        .filter(Boolean)
-        .join('、') || '健康';
+}
+function capacities(h: SurvivalHealth, trauma: ReturnType<typeof traumaSummary>, dead: boolean) {
+  const mal = stage(h.malnutrition, [0, 0.2, 0.4, 0.6, 0.8]),
+    cold = stage(h.hypothermia, [0, 0.04, 0.2, 0.35, 0.62]),
+    hot = stage(h.heatstroke, [0, 0.04, 0.2, 0.35, 0.62]);
+  const pain = clamp(trauma.pain + [0, 0, 0, 0.15, 0.3][cold] + [0, 0, 0, 0.15, 0.3][hot]);
+  const penalty = clamp(((pain - 0.1) / 0.9) * 0.4, 0, 0.4);
+  const consciousRaw =
+    (trauma.consciousnessSource - (penalty >= 0.01 ? penalty : 0)) *
+    (0.8 + 0.2 * Math.min(trauma.bloodPumping, 1)) *
+    (0.8 + 0.2 * Math.min(trauma.breathing, 1)) *
+    (0.9 + 0.1 * Math.min(trauma.bloodFiltration, 1));
+  const consciousOffset =
+    [0, -0.05, -0.1, -0.2, -0.3][mal] +
+    [0, -0.05, -0.1, -0.2, 0][cold] +
+    [0, -0.05, -0.1, -0.2, 0][hot] +
+    trauma.consciousnessOffset;
+  // PawnCapacityUtility: only positive worker results receive condition modifiers.
+  const consciousness = dead
+    ? 0
+    : roundedCapacity(
+        consciousRaw > 0
+          ? Math.min(
+              consciousRaw + consciousOffset,
+              mal === 4 || cold === 4 || hot === 4 ? 0.1 : 1,
+              trauma.consciousnessMax,
+            )
+          : consciousRaw,
+      );
+  const movingRaw = trauma.movingFactor * Math.min(consciousness, 1),
+    manipulationRaw = trauma.manipulationFactor * consciousness;
+  const moving =
+    consciousness < 0.3
+      ? 0
+      : roundedCapacity(
+          movingRaw > 0
+            ? movingRaw + [0, 0, -0.1, -0.3, 0][cold] + [0, 0, -0.1, -0.3, 0][hot]
+            : movingRaw,
+        );
+  const manipulation =
+    consciousness < 0.3
+      ? 0
+      : roundedCapacity(
+          manipulationRaw > 0 ? manipulationRaw + [0, -0.08, -0.2, -0.5, 0][cold] : manipulationRaw,
+        );
+  const capacityReasons = Object.fromEntries(
+    Object.entries(trauma.capacityReasons).map(([key, reasons]) => [key, [...reasons]]),
+  ) as CapacityReasons;
+  if (penalty >= 0.01) capacityReasons.consciousness.push(`疼痛 ${Math.round(pain * 100)}%`);
+  for (const [key, name] of [
+    ['bloodPumping', '血液循环'],
+    ['breathing', '呼吸'],
+    ['bloodFiltration', '血液过滤'],
+  ] as const) {
+    if (trauma[key] !== 1)
+      capacityReasons.consciousness.push(
+        `${name} ${Math.round(trauma[key] * 100)}%（${capacityReasons[key].join('；')}）`,
+      );
+    if (key !== 'bloodFiltration' && trauma[key] !== 1)
+      capacityReasons.moving.push(`${name} ${Math.round(trauma[key] * 100)}%`);
+  }
+  if (consciousness !== 1)
+    for (const key of ['moving', 'manipulation', 'talking', 'eating'] as const)
+      capacityReasons[key].push(
+        `意识 ${Math.round(consciousness * 100)}%${consciousness < 0.3 ? '，低于清醒阈值30%' : ''}`,
+      );
+  if (h.malnutrition > 0) capacityReasons.consciousness.push('营养不良');
+  if (h.hypothermia > 0)
+    for (const key of ['consciousness', 'moving', 'manipulation'] as const)
+      capacityReasons[key].push('失温');
+  if (h.heatstroke > 0)
+    for (const key of ['consciousness', 'moving'] as const) capacityReasons[key].push('中暑');
+  if (trauma.consciousnessOffset !== 0) capacityReasons.consciousness.push('失血');
+  const labels = ['初期', '轻微', '中度', '严重', '极重'];
   return {
     consciousness,
     moving,
     manipulation,
     pain,
+    capacityReasons,
+    sight: dead ? 0 : trauma.sight,
+    breathing: dead ? 0 : trauma.breathing,
+    bloodPumping: dead ? 0 : trauma.bloodPumping,
+    bloodFiltration: dead ? 0 : trauma.bloodFiltration,
+    metabolism: dead ? 0 : trauma.metabolism,
+    hearing: dead ? 0 : trauma.hearing,
+    talking: consciousness < 0.3 ? 0 : roundedCapacity(trauma.talkingFactor * consciousness),
+    eating:
+      consciousness < 0.3 ? 0 : roundedCapacity(Math.max(0.1, trauma.eatingFactor * consciousness)),
+    stages: {
+      malnutrition: h.malnutrition > 0 ? labels[mal] : '无',
+      hypothermia: h.hypothermia > 0 ? labels[cold] : '无',
+      heatstroke: h.heatstroke > 0 ? labels[hot] : '无',
+    },
+  };
+}
+export function healthDeathReason(
+  h: SurvivalHealth,
+  trauma: Trauma = initialTrauma(),
+): string | null {
+  const summary = traumaSummary(trauma);
+  return (
+    summary.deathReason ||
+    (h.malnutrition >= 1
+      ? '营养不良致死'
+      : h.hypothermia >= 1
+        ? '失温致死'
+        : h.heatstroke >= 1
+          ? '中暑致死'
+          : capacities(h, summary, false).consciousness <= 0
+            ? '意识功能丧失致死'
+            : null)
+  );
+}
+export function healthSummary(
+  p: Pick<Pawn, 'health' | 'dead' | 'deathReason'> & Partial<Pick<Pawn, 'worn' | 'trauma'>>,
+) {
+  const trauma = traumaSummary(p.trauma ?? initialTrauma()),
+    derived = capacities(p.health, trauma, p.dead);
+  const reason = p.dead
+    ? (p.deathReason ?? '死亡')
+    : [
+        p.health.malnutrition > 0 ? `营养不良（${derived.stages.malnutrition}）` : '',
+        p.health.hypothermia > 0 ? `失温（${derived.stages.hypothermia}）` : '',
+        p.health.heatstroke > 0 ? `中暑（${derived.stages.heatstroke}）` : '',
+        p.trauma?.wounds.length ? `${p.trauma.wounds.length} 处外伤` : '',
+        p.trauma?.missingParts.length ? `${p.trauma.missingParts.length} 处部位缺失` : '',
+        p.trauma && p.trauma.bloodLoss > 0 ? '失血' : '',
+      ]
+        .filter(Boolean)
+        .join('、') || '健康';
+  const protection = insulation(p.worn ?? []);
+  return {
+    ...derived,
     bleedRate: trauma.bleedRate,
     reason,
-    stages,
-    comfortableMin: COMFORTABLE_MIN - insulation(p.worn ?? []).cold,
-    comfortableMax: COMFORTABLE_MAX + insulation(p.worn ?? []).heat,
-    safeMin: SAFE_MIN - insulation(p.worn ?? []).cold,
-    safeMax: SAFE_MAX + insulation(p.worn ?? []).heat,
+    comfortableMin: COMFORTABLE_MIN - protection.cold,
+    comfortableMax: COMFORTABLE_MAX + protection.heat,
+    safeMin: SAFE_MIN - protection.cold,
+    safeMax: SAFE_MAX + protection.heat,
   };
 }

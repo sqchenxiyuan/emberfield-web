@@ -6,6 +6,8 @@
 
 在线试玩：[GitHub Pages](https://sqchenxiyuan.github.io/emberfield-web/) · 源码：[sqchenxiyuan/emberfield-web](https://github.com/sqchenxiyuan/emberfield-web)。
 
+2026-11-03人体更新（v16）：多层体素模式加入64部位、11身体能力、近战伤害传播、缺失子树和断端护理；视力与手部功能影响真实劳动与研究。旧伤、物资、装备及科研保留，读取后按新规则重算能力并暂停。右手缺失可改用左手持械。[51规则](docs/research/rimworld/51-anatomy-capacity-mechanisms.md)、[52原版实机](docs/research/rimworld/52-native-anatomy-runtime.md)、[53实现与验收](docs/research/rimworld/53-voxel-anatomy-implementation.md)。
+
 原版机制研究见 [RimWorld 详细机制与复刻设计](docs/research/rimworld/README.md)：工作与预定、战斗与医疗、房间温度与电网、财富叙事与贸易，附版本哈希、公式、算例和未验证边界。研究对象是本地 `1.7.4980 rev60`，这些数值不代表当前Web版已经实现。运行 `npm run research:check` 可独立核对证据索引与算例。
 
 2026-11-02更新：修复动物长时间等待，增加物品/动物/资源检查、劳动动画与墙/导线连续拖建。[原版运行对照与修复验证](docs/research/rimworld/07-runtime-interaction-comparison.md) 记录实际操作和边界。

@@ -54,8 +54,8 @@ export function WorkSkill({ pawn, work }: { pawn: Pawn; work: Work }) {
 }
 
 export function SkillPanel({ pawn }: { pawn: Pawn }) {
-  const { manipulation, moving } = healthSummary(pawn);
-  const harvestYield = plantYield(pawn.skills, manipulation);
+  const { manipulation, moving, sight } = healthSummary(pawn);
+  const harvestYield = plantYield(pawn.skills, manipulation, sight);
   return (
     <details className="voxel-skills" open data-testid="pawn-skills">
       <summary>技能与学习</summary>
@@ -93,12 +93,14 @@ export function SkillPanel({ pawn }: { pawn: Pawn }) {
                   <>
                     {' '}
                     · {example.label}速度{' '}
-                    {Math.round(workSpeed(pawn.skills, example.kind, manipulation) * 100)}%
+                    {Math.round(workSpeed(pawn.skills, example.kind, manipulation, sight) * 100)}%
                   </>
                 )}
               </small>
               {key === 'mining' && (
-                <small>矿物产量 {Math.round(miningYield(pawn.skills, manipulation) * 100)}%</small>
+                <small>
+                  矿物产量 {Math.round(miningYield(pawn.skills, manipulation, sight) * 100)}%
+                </small>
               )}
               {key === 'plants' && (
                 <small title="作物收获可能失败；砍树不会收获失败。成功时按产量倍率结算。">
@@ -108,8 +110,8 @@ export function SkillPanel({ pawn }: { pawn: Pawn }) {
               )}
               {key === 'melee' && (
                 <small>
-                  基础命中 {Math.round(meleeHitChance(pawn.skills, manipulation) * 100)}% · 闪避{' '}
-                  {Math.round(meleeDodgeChance(pawn.skills, moving) * 100)}%
+                  基础命中 {Math.round(meleeHitChance(pawn.skills, manipulation, sight) * 100)}% ·
+                  闪避 {Math.round(meleeDodgeChance(pawn.skills, moving, sight) * 100)}%
                 </small>
               )}
             </div>

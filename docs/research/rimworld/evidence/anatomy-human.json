@@ -1,0 +1,2004 @@
+{
+  "evidence_id": "RW17-ANATOMY-HUMAN",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "body": "Human",
+  "source": {
+    "path": "Data/Core/Defs/Bodies/Bodies_Humanlike.xml",
+    "sha256": "1f48fff9256187f0f8306b7df4a1dd07a0be1d37b49e70c3251875ec8cb1e85e",
+    "xpath": "/Defs/BodyDef[defName='Human']"
+  },
+  "derivation": "BodyDef.CacheDataRecursive preorder, inherited height/depth; BodyPartDef class defaults. IDs are project-side stable English label slugs, not native save identifiers. Coverage arithmetic uses double precision rounded to 15 decimal places; not C# float-bit emulation.",
+  "nodes": [
+    {
+      "id": "torso",
+      "index": 0,
+      "defName": "Torso",
+      "label": "torso",
+      "parentId": null,
+      "childIds": [
+        "ribcage",
+        "sternum",
+        "pelvis",
+        "spine",
+        "stomach",
+        "heart",
+        "left-lung",
+        "right-lung",
+        "left-kidney",
+        "right-kidney",
+        "liver",
+        "neck",
+        "left-shoulder",
+        "right-shoulder",
+        "utility-slot",
+        "left-leg",
+        "right-leg"
+      ],
+      "height": "Middle",
+      "depth": "Outside",
+      "coverageRelative": 1.0,
+      "coverageAbsWithChildren": 1.0,
+      "coverageAbs": 0.15,
+      "groups": [
+        "Torso"
+      ],
+      "tags": [],
+      "hitPoints": 40,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Torso",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart"
+    },
+    {
+      "id": "ribcage",
+      "index": 1,
+      "defName": "Ribcage",
+      "label": "ribcage",
+      "parentId": "torso",
+      "childIds": [],
+      "height": "Middle",
+      "depth": "Inside",
+      "coverageRelative": 0.036,
+      "coverageAbsWithChildren": 0.036,
+      "coverageAbs": 0.036,
+      "groups": [
+        "Torso"
+      ],
+      "tags": [
+        "BreathingSourceCage"
+      ],
+      "hitPoints": 30,
+      "bleedRate": 0.0,
+      "skinCovered": false,
+      "solid": true,
+      "conceptual": false,
+      "destroyableByDamage": false,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Ribcage",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[1]"
+    },
+    {
+      "id": "sternum",
+      "index": 2,
+      "defName": "Sternum",
+      "label": "sternum",
+      "parentId": "torso",
+      "childIds": [],
+      "height": "Middle",
+      "depth": "Inside",
+      "coverageRelative": 0.015,
+      "coverageAbsWithChildren": 0.015,
+      "coverageAbs": 0.015,
+      "groups": [
+        "Torso"
+      ],
+      "tags": [
+        "BreathingSourceCage"
+      ],
+      "hitPoints": 20,
+      "bleedRate": 0.0,
+      "skinCovered": false,
+      "solid": true,
+      "conceptual": false,
+      "destroyableByDamage": false,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Sternum",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[2]"
+    },
+    {
+      "id": "pelvis",
+      "index": 3,
+      "defName": "Pelvis",
+      "label": "pelvis",
+      "parentId": "torso",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Inside",
+      "coverageRelative": 0.025,
+      "coverageAbsWithChildren": 0.025,
+      "coverageAbs": 0.025,
+      "groups": [
+        "Torso"
+      ],
+      "tags": [
+        "Pelvis"
+      ],
+      "hitPoints": 25,
+      "bleedRate": 0.0,
+      "skinCovered": false,
+      "solid": true,
+      "conceptual": false,
+      "destroyableByDamage": false,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Pelvis",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[3]"
+    },
+    {
+      "id": "spine",
+      "index": 4,
+      "defName": "Spine",
+      "label": "spine",
+      "parentId": "torso",
+      "childIds": [],
+      "height": "Middle",
+      "depth": "Inside",
+      "coverageRelative": 0.025,
+      "coverageAbsWithChildren": 0.025,
+      "coverageAbs": 0.025,
+      "groups": [
+        "Torso"
+      ],
+      "tags": [
+        "Spine"
+      ],
+      "hitPoints": 25,
+      "bleedRate": 0.0,
+      "skinCovered": false,
+      "solid": true,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Spine",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[4]"
+    },
+    {
+      "id": "stomach",
+      "index": 5,
+      "defName": "Stomach",
+      "label": "stomach",
+      "parentId": "torso",
+      "childIds": [],
+      "height": "Middle",
+      "depth": "Inside",
+      "coverageRelative": 0.025,
+      "coverageAbsWithChildren": 0.025,
+      "coverageAbs": 0.025,
+      "groups": [
+        "Torso"
+      ],
+      "tags": [
+        "MetabolismSource"
+      ],
+      "hitPoints": 20,
+      "bleedRate": 1.0,
+      "skinCovered": false,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Stomach",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[5]"
+    },
+    {
+      "id": "heart",
+      "index": 6,
+      "defName": "Heart",
+      "label": "heart",
+      "parentId": "torso",
+      "childIds": [],
+      "height": "Middle",
+      "depth": "Inside",
+      "coverageRelative": 0.02,
+      "coverageAbsWithChildren": 0.02,
+      "coverageAbs": 0.02,
+      "groups": [
+        "Torso"
+      ],
+      "tags": [
+        "BloodPumpingSource"
+      ],
+      "hitPoints": 15,
+      "bleedRate": 5.0,
+      "skinCovered": false,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Heart",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[6]"
+    },
+    {
+      "id": "left-lung",
+      "index": 7,
+      "defName": "Lung",
+      "label": "left lung",
+      "parentId": "torso",
+      "childIds": [],
+      "height": "Middle",
+      "depth": "Inside",
+      "coverageRelative": 0.025,
+      "coverageAbsWithChildren": 0.025,
+      "coverageAbs": 0.025,
+      "groups": [
+        "Torso"
+      ],
+      "tags": [
+        "BreathingSource"
+      ],
+      "hitPoints": 15,
+      "bleedRate": 1.0,
+      "skinCovered": false,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Lung",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[7]"
+    },
+    {
+      "id": "right-lung",
+      "index": 8,
+      "defName": "Lung",
+      "label": "right lung",
+      "parentId": "torso",
+      "childIds": [],
+      "height": "Middle",
+      "depth": "Inside",
+      "coverageRelative": 0.025,
+      "coverageAbsWithChildren": 0.025,
+      "coverageAbs": 0.025,
+      "groups": [
+        "Torso"
+      ],
+      "tags": [
+        "BreathingSource"
+      ],
+      "hitPoints": 15,
+      "bleedRate": 1.0,
+      "skinCovered": false,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Lung",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[8]"
+    },
+    {
+      "id": "left-kidney",
+      "index": 9,
+      "defName": "Kidney",
+      "label": "left kidney",
+      "parentId": "torso",
+      "childIds": [],
+      "height": "Middle",
+      "depth": "Inside",
+      "coverageRelative": 0.017,
+      "coverageAbsWithChildren": 0.017,
+      "coverageAbs": 0.017,
+      "groups": [
+        "Torso"
+      ],
+      "tags": [
+        "BloodFiltrationKidney"
+      ],
+      "hitPoints": 15,
+      "bleedRate": 1.0,
+      "skinCovered": false,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Kidney",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[9]"
+    },
+    {
+      "id": "right-kidney",
+      "index": 10,
+      "defName": "Kidney",
+      "label": "right kidney",
+      "parentId": "torso",
+      "childIds": [],
+      "height": "Middle",
+      "depth": "Inside",
+      "coverageRelative": 0.017,
+      "coverageAbsWithChildren": 0.017,
+      "coverageAbs": 0.017,
+      "groups": [
+        "Torso"
+      ],
+      "tags": [
+        "BloodFiltrationKidney"
+      ],
+      "hitPoints": 15,
+      "bleedRate": 1.0,
+      "skinCovered": false,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Kidney",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[10]"
+    },
+    {
+      "id": "liver",
+      "index": 11,
+      "defName": "Liver",
+      "label": "liver",
+      "parentId": "torso",
+      "childIds": [],
+      "height": "Middle",
+      "depth": "Inside",
+      "coverageRelative": 0.025,
+      "coverageAbsWithChildren": 0.025,
+      "coverageAbs": 0.025,
+      "groups": [
+        "Torso"
+      ],
+      "tags": [
+        "BloodFiltrationLiver",
+        "MetabolismSource"
+      ],
+      "hitPoints": 20,
+      "bleedRate": 1.0,
+      "skinCovered": false,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Liver",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[11]"
+    },
+    {
+      "id": "neck",
+      "index": 12,
+      "defName": "Neck",
+      "label": "neck",
+      "parentId": "torso",
+      "childIds": [
+        "head"
+      ],
+      "height": "Top",
+      "depth": "Outside",
+      "coverageRelative": 0.075,
+      "coverageAbsWithChildren": 0.075,
+      "coverageAbs": 0.015,
+      "groups": [
+        "Neck"
+      ],
+      "tags": [
+        "BreathingPathway",
+        "EatingPathway",
+        "TalkingPathway"
+      ],
+      "hitPoints": 25,
+      "bleedRate": 4.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Neck",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]"
+    },
+    {
+      "id": "head",
+      "index": 13,
+      "defName": "Head",
+      "label": "head",
+      "parentId": "neck",
+      "childIds": [
+        "skull",
+        "left-eye",
+        "right-eye",
+        "left-ear",
+        "right-ear",
+        "nose",
+        "jaw"
+      ],
+      "height": "Top",
+      "depth": "Outside",
+      "coverageRelative": 0.8,
+      "coverageAbsWithChildren": 0.06,
+      "coverageAbs": 0.0174,
+      "groups": [
+        "UpperHead",
+        "FullHead",
+        "HeadAttackTool"
+      ],
+      "tags": [],
+      "hitPoints": 25,
+      "bleedRate": 2.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Head",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li[1]"
+    },
+    {
+      "id": "skull",
+      "index": 14,
+      "defName": "Skull",
+      "label": "skull",
+      "parentId": "head",
+      "childIds": [
+        "brain"
+      ],
+      "height": "Top",
+      "depth": "Inside",
+      "coverageRelative": 0.18,
+      "coverageAbsWithChildren": 0.0108,
+      "coverageAbs": 0.00216,
+      "groups": [
+        "UpperHead",
+        "Eyes",
+        "FullHead"
+      ],
+      "tags": [],
+      "hitPoints": 25,
+      "bleedRate": 0.0,
+      "skinCovered": false,
+      "solid": true,
+      "conceptual": false,
+      "destroyableByDamage": false,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Skull",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li[1]/parts/li[1]"
+    },
+    {
+      "id": "brain",
+      "index": 15,
+      "defName": "Brain",
+      "label": "brain",
+      "parentId": "skull",
+      "childIds": [],
+      "height": "Top",
+      "depth": "Inside",
+      "coverageRelative": 0.8,
+      "coverageAbsWithChildren": 0.00864,
+      "coverageAbs": 0.00864,
+      "groups": [
+        "UpperHead",
+        "Eyes",
+        "FullHead"
+      ],
+      "tags": [
+        "ConsciousnessSource"
+      ],
+      "hitPoints": 10,
+      "bleedRate": 1.0,
+      "skinCovered": false,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Brain",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li[1]/parts/li[1]/parts/li[1]"
+    },
+    {
+      "id": "left-eye",
+      "index": 16,
+      "defName": "Eye",
+      "label": "left eye",
+      "parentId": "head",
+      "childIds": [],
+      "height": "Top",
+      "depth": "Outside",
+      "coverageRelative": 0.07,
+      "coverageAbsWithChildren": 0.0042,
+      "coverageAbs": 0.0042,
+      "groups": [
+        "FullHead",
+        "Eyes"
+      ],
+      "tags": [
+        "SightSource"
+      ],
+      "hitPoints": 10,
+      "bleedRate": 1.0,
+      "skinCovered": false,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {
+        "Blunt": 0.0
+      },
+      "definitionRef": "BodyPartDef_Eye",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li[1]/parts/li[2]"
+    },
+    {
+      "id": "right-eye",
+      "index": 17,
+      "defName": "Eye",
+      "label": "right eye",
+      "parentId": "head",
+      "childIds": [],
+      "height": "Top",
+      "depth": "Outside",
+      "coverageRelative": 0.07,
+      "coverageAbsWithChildren": 0.0042,
+      "coverageAbs": 0.0042,
+      "groups": [
+        "FullHead",
+        "Eyes"
+      ],
+      "tags": [
+        "SightSource"
+      ],
+      "hitPoints": 10,
+      "bleedRate": 1.0,
+      "skinCovered": false,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {
+        "Blunt": 0.0
+      },
+      "definitionRef": "BodyPartDef_Eye",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li[1]/parts/li[3]"
+    },
+    {
+      "id": "left-ear",
+      "index": 18,
+      "defName": "Ear",
+      "label": "left ear",
+      "parentId": "head",
+      "childIds": [],
+      "height": "Top",
+      "depth": "Outside",
+      "coverageRelative": 0.07,
+      "coverageAbsWithChildren": 0.0042,
+      "coverageAbs": 0.0042,
+      "groups": [
+        "UpperHead",
+        "FullHead"
+      ],
+      "tags": [
+        "HearingSource"
+      ],
+      "hitPoints": 12,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Ear",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li[1]/parts/li[4]"
+    },
+    {
+      "id": "right-ear",
+      "index": 19,
+      "defName": "Ear",
+      "label": "right ear",
+      "parentId": "head",
+      "childIds": [],
+      "height": "Top",
+      "depth": "Outside",
+      "coverageRelative": 0.07,
+      "coverageAbsWithChildren": 0.0042,
+      "coverageAbs": 0.0042,
+      "groups": [
+        "UpperHead",
+        "FullHead"
+      ],
+      "tags": [
+        "HearingSource"
+      ],
+      "hitPoints": 12,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Ear",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li[1]/parts/li[5]"
+    },
+    {
+      "id": "nose",
+      "index": 20,
+      "defName": "Nose",
+      "label": "nose",
+      "parentId": "head",
+      "childIds": [],
+      "height": "Top",
+      "depth": "Outside",
+      "coverageRelative": 0.1,
+      "coverageAbsWithChildren": 0.006,
+      "coverageAbs": 0.006,
+      "groups": [
+        "FullHead"
+      ],
+      "tags": [],
+      "hitPoints": 10,
+      "bleedRate": 0.0,
+      "skinCovered": true,
+      "solid": true,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Nose",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li[1]/parts/li[6]"
+    },
+    {
+      "id": "jaw",
+      "index": 21,
+      "defName": "Jaw",
+      "label": "jaw",
+      "parentId": "head",
+      "childIds": [
+        "tongue"
+      ],
+      "height": "Top",
+      "depth": "Outside",
+      "coverageRelative": 0.15,
+      "coverageAbsWithChildren": 0.009,
+      "coverageAbs": 0.008991,
+      "groups": [
+        "Teeth",
+        "FullHead",
+        "Mouth"
+      ],
+      "tags": [
+        "EatingSource",
+        "TalkingSource"
+      ],
+      "hitPoints": 20,
+      "bleedRate": 0.0,
+      "skinCovered": false,
+      "solid": true,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Jaw",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li[1]/parts/li[7]"
+    },
+    {
+      "id": "tongue",
+      "index": 22,
+      "defName": "Tongue",
+      "label": "tongue",
+      "parentId": "jaw",
+      "childIds": [],
+      "height": "Top",
+      "depth": "Inside",
+      "coverageRelative": 0.001,
+      "coverageAbsWithChildren": 9E-06,
+      "coverageAbs": 9E-06,
+      "groups": [
+        "FullHead"
+      ],
+      "tags": [
+        "Tongue"
+      ],
+      "hitPoints": 10,
+      "bleedRate": 0.0,
+      "skinCovered": false,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Tongue",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li[1]/parts/li[7]/parts/li[1]"
+    },
+    {
+      "id": "left-shoulder",
+      "index": 23,
+      "defName": "Shoulder",
+      "label": "left shoulder",
+      "parentId": "torso",
+      "childIds": [
+        "left-clavicle",
+        "left-arm"
+      ],
+      "height": "Middle",
+      "depth": "Outside",
+      "coverageRelative": 0.12,
+      "coverageAbsWithChildren": 0.12,
+      "coverageAbs": 0.0168,
+      "groups": [
+        "Shoulders"
+      ],
+      "tags": [
+        "ManipulationLimbSegment",
+        "Mirrored"
+      ],
+      "hitPoints": 30,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Shoulder",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]"
+    },
+    {
+      "id": "left-clavicle",
+      "index": 24,
+      "defName": "Clavicle",
+      "label": "left clavicle",
+      "parentId": "left-shoulder",
+      "childIds": [],
+      "height": "Top",
+      "depth": "Inside",
+      "coverageRelative": 0.09,
+      "coverageAbsWithChildren": 0.0108,
+      "coverageAbs": 0.0108,
+      "groups": [
+        "Torso"
+      ],
+      "tags": [
+        "ManipulationLimbSegment",
+        "Mirrored"
+      ],
+      "hitPoints": 25,
+      "bleedRate": 0.0,
+      "skinCovered": false,
+      "solid": true,
+      "conceptual": false,
+      "destroyableByDamage": false,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Clavicle",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[1]"
+    },
+    {
+      "id": "left-arm",
+      "index": 25,
+      "defName": "Arm",
+      "label": "left arm",
+      "parentId": "left-shoulder",
+      "childIds": [
+        "left-humerus",
+        "left-radius",
+        "left-hand"
+      ],
+      "height": "Middle",
+      "depth": "Outside",
+      "coverageRelative": 0.77,
+      "coverageAbsWithChildren": 0.0924,
+      "coverageAbs": 0.060984,
+      "groups": [
+        "Arms"
+      ],
+      "tags": [
+        "ManipulationLimbCore",
+        "Mirrored"
+      ],
+      "hitPoints": 30,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Arm",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]"
+    },
+    {
+      "id": "left-humerus",
+      "index": 26,
+      "defName": "Humerus",
+      "label": "left humerus",
+      "parentId": "left-arm",
+      "childIds": [],
+      "height": "Middle",
+      "depth": "Inside",
+      "coverageRelative": 0.1,
+      "coverageAbsWithChildren": 0.00924,
+      "coverageAbs": 0.00924,
+      "groups": [
+        "Arms"
+      ],
+      "tags": [
+        "ManipulationLimbSegment",
+        "Mirrored"
+      ],
+      "hitPoints": 25,
+      "bleedRate": 0.0,
+      "skinCovered": false,
+      "solid": true,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Humerus",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[1]"
+    },
+    {
+      "id": "left-radius",
+      "index": 27,
+      "defName": "Radius",
+      "label": "left radius",
+      "parentId": "left-arm",
+      "childIds": [],
+      "height": "Middle",
+      "depth": "Inside",
+      "coverageRelative": 0.1,
+      "coverageAbsWithChildren": 0.00924,
+      "coverageAbs": 0.00924,
+      "groups": [
+        "Arms"
+      ],
+      "tags": [
+        "ManipulationLimbSegment",
+        "Mirrored"
+      ],
+      "hitPoints": 20,
+      "bleedRate": 0.0,
+      "skinCovered": false,
+      "solid": true,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Radius",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[2]"
+    },
+    {
+      "id": "left-hand",
+      "index": 28,
+      "defName": "Hand",
+      "label": "left hand",
+      "parentId": "left-arm",
+      "childIds": [
+        "left-pinky",
+        "left-ring-finger",
+        "left-middle-finger",
+        "left-index-finger",
+        "left-thumb"
+      ],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.14,
+      "coverageAbsWithChildren": 0.012936,
+      "coverageAbs": 0.00827904,
+      "groups": [
+        "Hands"
+      ],
+      "tags": [
+        "ManipulationLimbSegment"
+      ],
+      "hitPoints": 20,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Hand",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]"
+    },
+    {
+      "id": "left-pinky",
+      "index": 29,
+      "defName": "Finger",
+      "label": "left pinky",
+      "parentId": "left-hand",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.06,
+      "coverageAbsWithChildren": 0.00077616,
+      "coverageAbs": 0.00077616,
+      "groups": [
+        "Hands",
+        "LeftHand"
+      ],
+      "tags": [
+        "ManipulationLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Finger",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[1]"
+    },
+    {
+      "id": "left-ring-finger",
+      "index": 30,
+      "defName": "Finger",
+      "label": "left ring finger",
+      "parentId": "left-hand",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.07,
+      "coverageAbsWithChildren": 0.00090552,
+      "coverageAbs": 0.00090552,
+      "groups": [
+        "Hands",
+        "LeftHand"
+      ],
+      "tags": [
+        "ManipulationLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Finger",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[2]"
+    },
+    {
+      "id": "left-middle-finger",
+      "index": 31,
+      "defName": "Finger",
+      "label": "left middle finger",
+      "parentId": "left-hand",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.08,
+      "coverageAbsWithChildren": 0.00103488,
+      "coverageAbs": 0.00103488,
+      "groups": [
+        "Hands",
+        "LeftHand",
+        "MiddleFingers"
+      ],
+      "tags": [
+        "ManipulationLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Finger",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[3]"
+    },
+    {
+      "id": "left-index-finger",
+      "index": 32,
+      "defName": "Finger",
+      "label": "left index finger",
+      "parentId": "left-hand",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.07,
+      "coverageAbsWithChildren": 0.00090552,
+      "coverageAbs": 0.00090552,
+      "groups": [
+        "Hands",
+        "LeftHand"
+      ],
+      "tags": [
+        "ManipulationLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Finger",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[4]"
+    },
+    {
+      "id": "left-thumb",
+      "index": 33,
+      "defName": "Finger",
+      "label": "left thumb",
+      "parentId": "left-hand",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.08,
+      "coverageAbsWithChildren": 0.00103488,
+      "coverageAbs": 0.00103488,
+      "groups": [
+        "Hands",
+        "LeftHand"
+      ],
+      "tags": [
+        "ManipulationLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Finger",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[5]"
+    },
+    {
+      "id": "right-shoulder",
+      "index": 34,
+      "defName": "Shoulder",
+      "label": "right shoulder",
+      "parentId": "torso",
+      "childIds": [
+        "right-clavicle",
+        "right-arm"
+      ],
+      "height": "Middle",
+      "depth": "Outside",
+      "coverageRelative": 0.12,
+      "coverageAbsWithChildren": 0.12,
+      "coverageAbs": 0.0168,
+      "groups": [
+        "Shoulders"
+      ],
+      "tags": [
+        "ManipulationLimbSegment",
+        "Mirrored"
+      ],
+      "hitPoints": 30,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Shoulder",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]"
+    },
+    {
+      "id": "right-clavicle",
+      "index": 35,
+      "defName": "Clavicle",
+      "label": "right clavicle",
+      "parentId": "right-shoulder",
+      "childIds": [],
+      "height": "Top",
+      "depth": "Inside",
+      "coverageRelative": 0.09,
+      "coverageAbsWithChildren": 0.0108,
+      "coverageAbs": 0.0108,
+      "groups": [
+        "Torso"
+      ],
+      "tags": [
+        "ManipulationLimbSegment",
+        "Mirrored"
+      ],
+      "hitPoints": 25,
+      "bleedRate": 0.0,
+      "skinCovered": false,
+      "solid": true,
+      "conceptual": false,
+      "destroyableByDamage": false,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Clavicle",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[1]"
+    },
+    {
+      "id": "right-arm",
+      "index": 36,
+      "defName": "Arm",
+      "label": "right arm",
+      "parentId": "right-shoulder",
+      "childIds": [
+        "right-humerus",
+        "right-radius",
+        "right-hand"
+      ],
+      "height": "Middle",
+      "depth": "Outside",
+      "coverageRelative": 0.77,
+      "coverageAbsWithChildren": 0.0924,
+      "coverageAbs": 0.060984,
+      "groups": [
+        "Arms"
+      ],
+      "tags": [
+        "ManipulationLimbCore",
+        "Mirrored"
+      ],
+      "hitPoints": 30,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Arm",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]"
+    },
+    {
+      "id": "right-humerus",
+      "index": 37,
+      "defName": "Humerus",
+      "label": "right humerus",
+      "parentId": "right-arm",
+      "childIds": [],
+      "height": "Middle",
+      "depth": "Inside",
+      "coverageRelative": 0.1,
+      "coverageAbsWithChildren": 0.00924,
+      "coverageAbs": 0.00924,
+      "groups": [
+        "Arms"
+      ],
+      "tags": [
+        "ManipulationLimbSegment",
+        "Mirrored"
+      ],
+      "hitPoints": 25,
+      "bleedRate": 0.0,
+      "skinCovered": false,
+      "solid": true,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Humerus",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[1]"
+    },
+    {
+      "id": "right-radius",
+      "index": 38,
+      "defName": "Radius",
+      "label": "right radius",
+      "parentId": "right-arm",
+      "childIds": [],
+      "height": "Middle",
+      "depth": "Inside",
+      "coverageRelative": 0.1,
+      "coverageAbsWithChildren": 0.00924,
+      "coverageAbs": 0.00924,
+      "groups": [
+        "Arms"
+      ],
+      "tags": [
+        "ManipulationLimbSegment",
+        "Mirrored"
+      ],
+      "hitPoints": 20,
+      "bleedRate": 0.0,
+      "skinCovered": false,
+      "solid": true,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Radius",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[2]"
+    },
+    {
+      "id": "right-hand",
+      "index": 39,
+      "defName": "Hand",
+      "label": "right hand",
+      "parentId": "right-arm",
+      "childIds": [
+        "right-pinky",
+        "right-ring-finger",
+        "right-middle-finger",
+        "right-index-finger",
+        "right-thumb"
+      ],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.14,
+      "coverageAbsWithChildren": 0.012936,
+      "coverageAbs": 0.00827904,
+      "groups": [
+        "Hands"
+      ],
+      "tags": [
+        "ManipulationLimbSegment"
+      ],
+      "hitPoints": 20,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Hand",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]"
+    },
+    {
+      "id": "right-pinky",
+      "index": 40,
+      "defName": "Finger",
+      "label": "right pinky",
+      "parentId": "right-hand",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.06,
+      "coverageAbsWithChildren": 0.00077616,
+      "coverageAbs": 0.00077616,
+      "groups": [
+        "Hands",
+        "RightHand"
+      ],
+      "tags": [
+        "ManipulationLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Finger",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[1]"
+    },
+    {
+      "id": "right-ring-finger",
+      "index": 41,
+      "defName": "Finger",
+      "label": "right ring finger",
+      "parentId": "right-hand",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.07,
+      "coverageAbsWithChildren": 0.00090552,
+      "coverageAbs": 0.00090552,
+      "groups": [
+        "Hands",
+        "RightHand"
+      ],
+      "tags": [
+        "ManipulationLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Finger",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[2]"
+    },
+    {
+      "id": "right-middle-finger",
+      "index": 42,
+      "defName": "Finger",
+      "label": "right middle finger",
+      "parentId": "right-hand",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.08,
+      "coverageAbsWithChildren": 0.00103488,
+      "coverageAbs": 0.00103488,
+      "groups": [
+        "Hands",
+        "RightHand",
+        "MiddleFingers"
+      ],
+      "tags": [
+        "ManipulationLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Finger",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[3]"
+    },
+    {
+      "id": "right-index-finger",
+      "index": 43,
+      "defName": "Finger",
+      "label": "right index finger",
+      "parentId": "right-hand",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.07,
+      "coverageAbsWithChildren": 0.00090552,
+      "coverageAbs": 0.00090552,
+      "groups": [
+        "Hands",
+        "RightHand"
+      ],
+      "tags": [
+        "ManipulationLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Finger",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[4]"
+    },
+    {
+      "id": "right-thumb",
+      "index": 44,
+      "defName": "Finger",
+      "label": "right thumb",
+      "parentId": "right-hand",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.08,
+      "coverageAbsWithChildren": 0.00103488,
+      "coverageAbs": 0.00103488,
+      "groups": [
+        "Hands",
+        "RightHand"
+      ],
+      "tags": [
+        "ManipulationLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Finger",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[5]"
+    },
+    {
+      "id": "utility-slot",
+      "index": 45,
+      "defName": "Waist",
+      "label": "utility slot",
+      "parentId": "torso",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.0,
+      "coverageAbsWithChildren": 0.0,
+      "coverageAbs": 0.0,
+      "groups": [
+        "Waist"
+      ],
+      "tags": [],
+      "hitPoints": 10,
+      "bleedRate": 1.0,
+      "skinCovered": false,
+      "solid": false,
+      "conceptual": true,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Waist",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[15]"
+    },
+    {
+      "id": "left-leg",
+      "index": 46,
+      "defName": "Leg",
+      "label": "left leg",
+      "parentId": "torso",
+      "childIds": [
+        "left-femur",
+        "left-tibia",
+        "left-foot"
+      ],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.14,
+      "coverageAbsWithChildren": 0.14,
+      "coverageAbs": 0.098,
+      "groups": [
+        "Legs"
+      ],
+      "tags": [
+        "MovingLimbCore"
+      ],
+      "hitPoints": 30,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Leg",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]"
+    },
+    {
+      "id": "left-femur",
+      "index": 47,
+      "defName": "Femur",
+      "label": "left femur",
+      "parentId": "left-leg",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Inside",
+      "coverageRelative": 0.1,
+      "coverageAbsWithChildren": 0.014,
+      "coverageAbs": 0.014,
+      "groups": [
+        "Legs"
+      ],
+      "tags": [
+        "MovingLimbSegment",
+        "Mirrored"
+      ],
+      "hitPoints": 25,
+      "bleedRate": 0.0,
+      "skinCovered": false,
+      "solid": true,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Femur",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[1]"
+    },
+    {
+      "id": "left-tibia",
+      "index": 48,
+      "defName": "Tibia",
+      "label": "left tibia",
+      "parentId": "left-leg",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Inside",
+      "coverageRelative": 0.1,
+      "coverageAbsWithChildren": 0.014,
+      "coverageAbs": 0.014,
+      "groups": [
+        "Legs"
+      ],
+      "tags": [
+        "MovingLimbSegment",
+        "Mirrored"
+      ],
+      "hitPoints": 25,
+      "bleedRate": 0.0,
+      "skinCovered": false,
+      "solid": true,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Tibia",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[2]"
+    },
+    {
+      "id": "left-foot",
+      "index": 49,
+      "defName": "Foot",
+      "label": "left foot",
+      "parentId": "left-leg",
+      "childIds": [
+        "left-little-toe",
+        "left-fourth-toe",
+        "left-middle-toe",
+        "left-second-toe",
+        "left-big-toe"
+      ],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.1,
+      "coverageAbsWithChildren": 0.014,
+      "coverageAbs": 0.00854,
+      "groups": [
+        "Feet"
+      ],
+      "tags": [
+        "MovingLimbSegment"
+      ],
+      "hitPoints": 25,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Foot",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]"
+    },
+    {
+      "id": "left-little-toe",
+      "index": 50,
+      "defName": "Toe",
+      "label": "left little toe",
+      "parentId": "left-foot",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.06,
+      "coverageAbsWithChildren": 0.00084,
+      "coverageAbs": 0.00084,
+      "groups": [
+        "Feet"
+      ],
+      "tags": [
+        "MovingLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Toe",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[1]"
+    },
+    {
+      "id": "left-fourth-toe",
+      "index": 51,
+      "defName": "Toe",
+      "label": "left fourth toe",
+      "parentId": "left-foot",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.07,
+      "coverageAbsWithChildren": 0.00098,
+      "coverageAbs": 0.00098,
+      "groups": [
+        "Feet"
+      ],
+      "tags": [
+        "MovingLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Toe",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[2]"
+    },
+    {
+      "id": "left-middle-toe",
+      "index": 52,
+      "defName": "Toe",
+      "label": "left middle toe",
+      "parentId": "left-foot",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.08,
+      "coverageAbsWithChildren": 0.00112,
+      "coverageAbs": 0.00112,
+      "groups": [
+        "Feet"
+      ],
+      "tags": [
+        "MovingLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Toe",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[3]"
+    },
+    {
+      "id": "left-second-toe",
+      "index": 53,
+      "defName": "Toe",
+      "label": "left second toe",
+      "parentId": "left-foot",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.09,
+      "coverageAbsWithChildren": 0.00126,
+      "coverageAbs": 0.00126,
+      "groups": [
+        "Feet"
+      ],
+      "tags": [
+        "MovingLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Toe",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[4]"
+    },
+    {
+      "id": "left-big-toe",
+      "index": 54,
+      "defName": "Toe",
+      "label": "left big toe",
+      "parentId": "left-foot",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.09,
+      "coverageAbsWithChildren": 0.00126,
+      "coverageAbs": 0.00126,
+      "groups": [
+        "Feet"
+      ],
+      "tags": [
+        "MovingLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Toe",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[5]"
+    },
+    {
+      "id": "right-leg",
+      "index": 55,
+      "defName": "Leg",
+      "label": "right leg",
+      "parentId": "torso",
+      "childIds": [
+        "right-femur",
+        "right-tibia",
+        "right-foot"
+      ],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.14,
+      "coverageAbsWithChildren": 0.14,
+      "coverageAbs": 0.098,
+      "groups": [
+        "Legs"
+      ],
+      "tags": [
+        "MovingLimbCore"
+      ],
+      "hitPoints": 30,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Leg",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]"
+    },
+    {
+      "id": "right-femur",
+      "index": 56,
+      "defName": "Femur",
+      "label": "right femur",
+      "parentId": "right-leg",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Inside",
+      "coverageRelative": 0.1,
+      "coverageAbsWithChildren": 0.014,
+      "coverageAbs": 0.014,
+      "groups": [
+        "Legs"
+      ],
+      "tags": [
+        "MovingLimbSegment",
+        "Mirrored"
+      ],
+      "hitPoints": 25,
+      "bleedRate": 0.0,
+      "skinCovered": false,
+      "solid": true,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Femur",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[1]"
+    },
+    {
+      "id": "right-tibia",
+      "index": 57,
+      "defName": "Tibia",
+      "label": "right tibia",
+      "parentId": "right-leg",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Inside",
+      "coverageRelative": 0.1,
+      "coverageAbsWithChildren": 0.014,
+      "coverageAbs": 0.014,
+      "groups": [
+        "Legs"
+      ],
+      "tags": [
+        "MovingLimbSegment",
+        "Mirrored"
+      ],
+      "hitPoints": 25,
+      "bleedRate": 0.0,
+      "skinCovered": false,
+      "solid": true,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Tibia",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[2]"
+    },
+    {
+      "id": "right-foot",
+      "index": 58,
+      "defName": "Foot",
+      "label": "right foot",
+      "parentId": "right-leg",
+      "childIds": [
+        "right-little-toe",
+        "right-fourth-toe",
+        "right-middle-toe",
+        "right-second-toe",
+        "right-big-toe"
+      ],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.1,
+      "coverageAbsWithChildren": 0.014,
+      "coverageAbs": 0.00854,
+      "groups": [
+        "Feet"
+      ],
+      "tags": [
+        "MovingLimbSegment"
+      ],
+      "hitPoints": 25,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Foot",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]"
+    },
+    {
+      "id": "right-little-toe",
+      "index": 59,
+      "defName": "Toe",
+      "label": "right little toe",
+      "parentId": "right-foot",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.06,
+      "coverageAbsWithChildren": 0.00084,
+      "coverageAbs": 0.00084,
+      "groups": [
+        "Feet"
+      ],
+      "tags": [
+        "MovingLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Toe",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[1]"
+    },
+    {
+      "id": "right-fourth-toe",
+      "index": 60,
+      "defName": "Toe",
+      "label": "right fourth toe",
+      "parentId": "right-foot",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.07,
+      "coverageAbsWithChildren": 0.00098,
+      "coverageAbs": 0.00098,
+      "groups": [
+        "Feet"
+      ],
+      "tags": [
+        "MovingLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Toe",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[2]"
+    },
+    {
+      "id": "right-middle-toe",
+      "index": 61,
+      "defName": "Toe",
+      "label": "right middle toe",
+      "parentId": "right-foot",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.08,
+      "coverageAbsWithChildren": 0.00112,
+      "coverageAbs": 0.00112,
+      "groups": [
+        "Feet"
+      ],
+      "tags": [
+        "MovingLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Toe",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[3]"
+    },
+    {
+      "id": "right-second-toe",
+      "index": 62,
+      "defName": "Toe",
+      "label": "right second toe",
+      "parentId": "right-foot",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.09,
+      "coverageAbsWithChildren": 0.00126,
+      "coverageAbs": 0.00126,
+      "groups": [
+        "Feet"
+      ],
+      "tags": [
+        "MovingLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Toe",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[4]"
+    },
+    {
+      "id": "right-big-toe",
+      "index": 63,
+      "defName": "Toe",
+      "label": "right big toe",
+      "parentId": "right-foot",
+      "childIds": [],
+      "height": "Bottom",
+      "depth": "Outside",
+      "coverageRelative": 0.09,
+      "coverageAbsWithChildren": 0.00126,
+      "coverageAbs": 0.00126,
+      "groups": [
+        "Feet"
+      ],
+      "tags": [
+        "MovingLimbDigit",
+        "Mirrored"
+      ],
+      "hitPoints": 8,
+      "bleedRate": 1.0,
+      "skinCovered": true,
+      "solid": false,
+      "conceptual": false,
+      "destroyableByDamage": true,
+      "alive": true,
+      "hitChanceFactors": {},
+      "definitionRef": "BodyPartDef_Toe",
+      "sourceXPath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[5]"
+    }
+  ]
+}

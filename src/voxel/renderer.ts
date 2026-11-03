@@ -70,6 +70,8 @@ import {
   type VoxelSnapshot,
 } from './types';
 import { BATTERY_CAPACITY } from './power';
+import { isPartMissing, partEfficiency } from './anatomy';
+import { needsTending } from './injuries';
 import { WEAPON_KINDS, type WeaponKind } from './weapons';
 import { SMITHY_FUEL_CAPACITY } from './weaponProduction';
 
@@ -110,6 +112,9 @@ type Batch = {
 type PawnVisual = {
   root: Group;
   body: Group;
+  head: Group;
+  leftHand: Mesh;
+  rightHand: Mesh;
   leftLeg: Group;
   rightLeg: Group;
   leftArm: Group;
@@ -2654,9 +2659,11 @@ export class VoxelRenderer {
       return mesh;
     };
     const torso = part(body, cloth, 0, 0.83, 0, 0.43, 0.56, 0.3);
-    part(body, skin, 0, 1.3, 0, 0.3, 0.31, 0.29);
-    part(body, hair, 0, 1.47, -0.015, 0.33, 0.12, 0.31);
-    part(body, skin, 0, 1.29, 0.17, 0.11, 0.12, 0.09);
+    const head = new Group();
+    body.add(head);
+    part(head, skin, 0, 1.3, 0, 0.3, 0.31, 0.29);
+    part(head, hair, 0, 1.47, -0.015, 0.33, 0.12, 0.31);
+    part(head, skin, 0, 1.29, 0.17, 0.11, 0.12, 0.09);
     const leftLeg = new Group(),
       rightLeg = new Group();
     leftLeg.position.set(-0.12, 0.54, 0);
@@ -2675,8 +2682,8 @@ export class VoxelRenderer {
       part(leftArm, cloth, 0, -0.18, 0, 0.13, 0.38, 0.16),
       part(rightArm, cloth, 0, -0.18, 0, 0.13, 0.38, 0.16),
     ];
-    part(leftArm, skin, 0, -0.4, 0, 0.12, 0.14, 0.14);
-    part(rightArm, skin, 0, -0.4, 0, 0.12, 0.14, 0.14);
+    const leftHand = part(leftArm, skin, 0, -0.4, 0, 0.12, 0.14, 0.14);
+    const rightHand = part(rightArm, skin, 0, -0.4, 0, 0.12, 0.14, 0.14);
     body.add(leftLeg, rightLeg, leftArm, rightArm);
     const outer = this.keepMaterial(new MeshLambertMaterial({ color: 0x789f9b }));
     const coat = part(body, outer, 0, 0.84, 0, 0.49, 0.69, 0.37);
@@ -2689,7 +2696,7 @@ export class VoxelRenderer {
     part(hat, wool, 0, 1.53, 0, 0.37, 0.18, 0.35);
     part(hat, wool, 0, 1.43, 0, 0.41, 0.07, 0.39);
     part(hat, wool, 0, 1.66, 0, 0.13, 0.12, 0.13);
-    body.add(hat);
+    head.add(hat);
     const tool = new Group();
     tool.position.set(0, -0.44, 0.1);
     rightArm.add(tool);
@@ -2791,6 +2798,9 @@ export class VoxelRenderer {
     return {
       root,
       body,
+      head,
+      leftHand,
+      rightHand,
       torso,
       leftLeg,
       rightLeg,
@@ -2851,6 +2861,24 @@ export class VoxelRenderer {
     const smithingBenches = new Set<number>();
     for (const visual of this.pawnVisuals.values()) {
       const pawn = visual.pawn;
+      visual.head.visible = !isPartMissing(pawn.trauma, 'head');
+      visual.leftArm.visible = !isPartMissing(pawn.trauma, 'leftArm');
+      visual.rightArm.visible = !isPartMissing(pawn.trauma, 'rightArm');
+      visual.leftLeg.visible = !isPartMissing(pawn.trauma, 'leftLeg');
+      visual.rightLeg.visible = !isPartMissing(pawn.trauma, 'rightLeg');
+      visual.leftHand.visible = !isPartMissing(pawn.trauma, 'leftHand');
+      visual.rightHand.visible = !isPartMissing(pawn.trauma, 'rightHand');
+      const useLeftHand =
+        partEfficiency(pawn.trauma, 'rightHand') <= 0 &&
+        partEfficiency(pawn.trauma, 'leftHand') > 0;
+      const toolArm = useLeftHand ? visual.leftArm : visual.rightArm;
+      for (const held of [
+        visual.tool,
+        visual.hammer,
+        visual.pencil,
+        ...Object.values(visual.weapons),
+      ])
+        if (held.parent !== toolArm) toolArm.add(held);
       for (const kind of WEAPON_KINDS) {
         visual.weapons[kind].visible = false;
         visual.cargoWeapons[kind].visible = false;
@@ -2872,8 +2900,7 @@ export class VoxelRenderer {
       visual.body.position.set(0, bed ? 0.61 : lying ? 0.2 : 0, lying ? 1.1 : 0);
       visual.shadow.visible = !bed && pawn.carriedBy === null;
       visual.sleepSymbol.visible = sleeping;
-      visual.healthMarker.visible =
-        !pawn.dead && (pawn.downed || pawn.trauma.wounds.some((w) => w.tendQuality === null));
+      visual.healthMarker.visible = !pawn.dead && (pawn.downed || needsTending(pawn.trauma));
       visual.healthMarker.position.set(-0.38, bed ? 1.2 : 0.9, 0.5);
       visual.label.material.color.setHex(pawn.dead ? 0xaaaaaa : 0xffffff);
       visual.label.position.set(0, lying ? 1.2 : 1.91, lying ? 0.5 : 0);
@@ -3013,6 +3040,11 @@ export class VoxelRenderer {
                             : moving
                               ? swing * 0.35
                               : 0;
+      if (useLeftHand) {
+        const leftRotation = visual.leftArm.rotation.x;
+        visual.leftArm.rotation.x = visual.rightArm.rotation.x;
+        visual.rightArm.rotation.x = leftRotation;
+      }
       visual.torso.rotation.x = carving
         ? 0.3
         : smithing

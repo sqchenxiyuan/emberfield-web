@@ -36,7 +36,7 @@ const report = {
   base: BASE,
   startedAt: new Date().toISOString(),
   scope:
-    'Production Chrome worker/main modes. All changes through visible DOM/canvas/file chooser. Only snapshot/project/exportSave are read-only observations. Genuine v14 migration and normal-command v15 campaign fixtures; no injected progress, XP, technology, resources or time.',
+    'Production Chrome worker/main modes. All changes through visible DOM/canvas/file chooser. Only snapshot/project/exportSave are read-only observations. Genuine v14 migration and normal-command v16 campaign fixtures; no injected progress, XP, technology, resources or time.',
   modes: [],
 };
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
@@ -185,7 +185,7 @@ async function verify(mode) {
     await settle();
     assert.equal((await state()).worker, mode === 'worker');
     const fresh = await save();
-    assert.equal(fresh.version, 15);
+    assert.equal(fresh.version, 16);
     assert.equal(fresh.research.origin, 'industrial-start');
     assert.equal(fresh.research.current, null);
     assert.equal(fresh.researchBenches.length, 0);
@@ -216,7 +216,7 @@ async function verify(mode) {
     assert.equal(result.fixtures.at(-1).sha256, provenance.sha256);
     const migrated = await save();
     assert.equal(old.version, 14);
-    assert.equal(migrated.version, 15);
+    assert.equal(migrated.version, 16);
     assert.equal(migrated.research.origin, 'legacy-unlocked');
     assert.deepEqual(migrated.research.progress, COSTS);
     assert.equal(migrated.research.current, null);
@@ -241,7 +241,7 @@ async function verify(mode) {
     );
 
     const built = await load(FIXTURES + '/bench-built.json');
-    assert.equal(built.version, 15);
+    assert.equal(built.version, 16);
     assert.equal(built.research.origin, 'industrial-start');
     assert(
       built.researchBenches.some((b) => b.z !== built.spawn.z),

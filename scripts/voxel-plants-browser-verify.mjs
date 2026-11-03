@@ -117,7 +117,7 @@ async function verify(mode) {
     assert.equal((await state()).worker, mode === 'worker');
     const legacy = await load('tests/fixtures/voxel-v8-start.json');
     const migrated = await save();
-    assert.equal(migrated.version, 15);
+    assert.equal(migrated.version, 16);
     assert.deepEqual(migrated.blocks, legacy.blocks);
     assert.deepEqual(
       migrated.trees.map((t) => [t.id, t.wood, t.species]),

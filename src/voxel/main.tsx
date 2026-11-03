@@ -10,6 +10,8 @@ import { rotRateAtTemperature, rotLimit, remainingRotDays } from './preservation
 import { stackLimit, carryLimit } from './logistics';
 import { STONE_CONSTRUCTION } from './crafting';
 import { SurvivalPanel } from './SurvivalPanel';
+import { needsTending } from './injuries';
+import { healthSummary } from './survival';
 import { SkillPanel, WorkSkill } from './SkillPanel';
 import { ResearchPanel, ResearchBenchPanel } from './ResearchPanel';
 import { RESEARCH_DEFS, toolResearchReason } from './research';
@@ -352,7 +354,13 @@ function App() {
   const pawn = s?.pawns.find((v) => v.id === selectedPawn) ?? people[0];
   const carers =
     s?.pawns.filter(
-      (v) => v.faction === 'colony' && !v.drafted && !v.dead && !v.downed && v.id !== pawn?.id,
+      (v) =>
+        v.faction === 'colony' &&
+        !v.drafted &&
+        !v.dead &&
+        !v.downed &&
+        v.id !== pawn?.id &&
+        healthSummary(v).manipulation > 0,
     ) ?? [];
   const carer = carers.find((v) => v.id === selectedCarer) ?? carers[0];
   const casualties = s?.pawns.filter((v) => v.faction === 'colony' && (v.dead || v.downed)) ?? [];
@@ -1201,7 +1209,7 @@ function App() {
             <WeaponPanel pawn={pawn} command={(c) => void client.command(c)} />
             {pawn.faction === 'colony' &&
               !pawn.dead &&
-              (pawn.downed || pawn.trauma.wounds.some((w) => w.tendQuality === null)) && (
+              (pawn.downed || needsTending(pawn.trauma)) && (
                 <div className="voxel-care-actions" data-testid="care-controls">
                   <label>
                     安排同伴
@@ -1259,7 +1267,7 @@ function App() {
                         !carer ||
                         pawn.drafted ||
                         pawn.carriedBy !== null ||
-                        !pawn.trauma.wounds.some((w) => w.tendQuality === null)
+                        !needsTending(pawn.trauma)
                       }
                       onClick={() =>
                         carer &&

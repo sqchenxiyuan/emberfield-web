@@ -1,0 +1,4914 @@
+{
+  "evidence_id": "RW17-ANATOMY-XML",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Selected direct Core Human body, all used part definitions, all eleven capacities, selected work qualifications and ordinary physical damage declarations",
+  "limitations": [
+    "Selected direct declarations, reviewed DamageDef parents and class defaults; not the enabled-mod effective database.",
+    "No target code execution or native runtime assertion."
+  ],
+  "records": [
+    {
+      "group": "body",
+      "id": "BodyDef_Human",
+      "def_name": "Human",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/Bodies_Humanlike.xml",
+        "xpath": "/Defs/BodyDef[defName='Human']",
+        "sha256": "1f48fff9256187f0f8306b7df4a1dd07a0be1d37b49e70c3251875ec8cb1e85e"
+      },
+      "selected_paths": [
+        "corePart"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/def",
+          "value": "Torso"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/height",
+          "value": "Middle"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/depth",
+          "value": "Outside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/groups/li",
+          "value": "Torso"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[1]/def",
+          "value": "Ribcage"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[1]/coverage",
+          "value": "0.036"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[1]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[1]/groups/li",
+          "value": "Torso"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[2]/def",
+          "value": "Sternum"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[2]/coverage",
+          "value": "0.015"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[2]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[2]/groups/li",
+          "value": "Torso"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[3]/def",
+          "value": "Pelvis"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[3]/coverage",
+          "value": "0.025"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[3]/height",
+          "value": "Bottom"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[3]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[3]/groups/li",
+          "value": "Torso"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[4]/def",
+          "value": "Spine"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[4]/coverage",
+          "value": "0.025"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[4]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[4]/groups/li",
+          "value": "Torso"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[5]/def",
+          "value": "Stomach"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[5]/coverage",
+          "value": "0.025"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[5]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[5]/groups/li",
+          "value": "Torso"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[6]/def",
+          "value": "Heart"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[6]/coverage",
+          "value": "0.020"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[6]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[6]/groups/li",
+          "value": "Torso"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[7]/def",
+          "value": "Lung"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[7]/customLabel",
+          "value": "left lung"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[7]/coverage",
+          "value": "0.025"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[7]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[7]/groups/li",
+          "value": "Torso"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[8]/def",
+          "value": "Lung"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[8]/customLabel",
+          "value": "right lung"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[8]/coverage",
+          "value": "0.025"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[8]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[8]/groups/li",
+          "value": "Torso"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[9]/def",
+          "value": "Kidney"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[9]/customLabel",
+          "value": "left kidney"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[9]/coverage",
+          "value": "0.017"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[9]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[9]/groups/li",
+          "value": "Torso"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[10]/def",
+          "value": "Kidney"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[10]/customLabel",
+          "value": "right kidney"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[10]/coverage",
+          "value": "0.017"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[10]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[10]/groups/li",
+          "value": "Torso"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[11]/def",
+          "value": "Liver"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[11]/coverage",
+          "value": "0.025"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[11]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[11]/groups/li",
+          "value": "Torso"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/def",
+          "value": "Neck"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/coverage",
+          "value": "0.075"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/height",
+          "value": "Top"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/groups/li",
+          "value": "Neck"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/def",
+          "value": "Head"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/coverage",
+          "value": "0.80"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/groups/li[1]",
+          "value": "UpperHead"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/groups/li[2]",
+          "value": "FullHead"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/groups/li[3]",
+          "value": "HeadAttackTool"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[1]/def",
+          "value": "Skull"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[1]/coverage",
+          "value": "0.18"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[1]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[1]/groups/li[1]",
+          "value": "UpperHead"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[1]/groups/li[2]",
+          "value": "Eyes"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[1]/groups/li[3]",
+          "value": "FullHead"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[1]/parts/li/def",
+          "value": "Brain"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[1]/parts/li/coverage",
+          "value": "0.8"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[1]/parts/li/groups/li[1]",
+          "value": "UpperHead"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[1]/parts/li/groups/li[2]",
+          "value": "Eyes"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[1]/parts/li/groups/li[3]",
+          "value": "FullHead"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[2]/def",
+          "value": "Eye"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[2]/customLabel",
+          "value": "left eye"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[2]/coverage",
+          "value": "0.07"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[2]/groups/li[1]",
+          "value": "FullHead"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[2]/groups/li[2]",
+          "value": "Eyes"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[2]/woundAnchorTag",
+          "value": "LeftEye"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[2]/flipGraphic",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[2]/visibleHediffRots/li[1]",
+          "value": "South"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[2]/visibleHediffRots/li[2]",
+          "value": "West"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[3]/def",
+          "value": "Eye"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[3]/customLabel",
+          "value": "right eye"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[3]/coverage",
+          "value": "0.07"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[3]/groups/li[1]",
+          "value": "FullHead"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[3]/groups/li[2]",
+          "value": "Eyes"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[3]/woundAnchorTag",
+          "value": "RightEye"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[3]/visibleHediffRots/li[1]",
+          "value": "South"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[3]/visibleHediffRots/li[2]",
+          "value": "East"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[4]/def",
+          "value": "Ear"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[4]/customLabel",
+          "value": "left ear"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[4]/coverage",
+          "value": "0.07"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[4]/flipGraphic",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[4]/groups/li[1]",
+          "value": "UpperHead"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[4]/groups/li[2]",
+          "value": "FullHead"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[5]/def",
+          "value": "Ear"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[5]/customLabel",
+          "value": "right ear"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[5]/coverage",
+          "value": "0.07"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[5]/groups/li[1]",
+          "value": "UpperHead"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[5]/groups/li[2]",
+          "value": "FullHead"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[6]/def",
+          "value": "Nose"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[6]/coverage",
+          "value": "0.10"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[6]/groups/li",
+          "value": "FullHead"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[7]/def",
+          "value": "Jaw"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[7]/coverage",
+          "value": "0.15"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[7]/groups/li[1]",
+          "value": "Teeth"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[7]/groups/li[2]",
+          "value": "FullHead"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[7]/groups/li[3]",
+          "value": "Mouth"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[7]/parts/li/def",
+          "value": "Tongue"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[7]/parts/li/coverage",
+          "value": "0.001"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[7]/parts/li/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[12]/parts/li/parts/li[7]/parts/li/groups/li",
+          "value": "FullHead"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/def",
+          "value": "Shoulder"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/customLabel",
+          "value": "left shoulder"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/coverage",
+          "value": "0.12"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/woundAnchorTag",
+          "value": "LeftShoulder"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/flipGraphic",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/groups/li",
+          "value": "Shoulders"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[1]/def",
+          "value": "Clavicle"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[1]/customLabel",
+          "value": "left clavicle"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[1]/coverage",
+          "value": "0.09"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[1]/height",
+          "value": "Top"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[1]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[1]/flipGraphic",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[1]/groups/li",
+          "value": "Torso"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/def",
+          "value": "Arm"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/customLabel",
+          "value": "left arm"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/coverage",
+          "value": "0.77"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/flipGraphic",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/groups/li",
+          "value": "Arms"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[1]/def",
+          "value": "Humerus"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[1]/customLabel",
+          "value": "left humerus"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[1]/coverage",
+          "value": "0.1"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[1]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[1]/groups/li",
+          "value": "Arms"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[2]/def",
+          "value": "Radius"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[2]/customLabel",
+          "value": "left radius"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[2]/coverage",
+          "value": "0.1"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[2]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[2]/groups/li",
+          "value": "Arms"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/def",
+          "value": "Hand"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/customLabel",
+          "value": "left hand"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/coverage",
+          "value": "0.14"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/height",
+          "value": "Bottom"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/flipGraphic",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/groups/li",
+          "value": "Hands"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[1]/def",
+          "value": "Finger"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[1]/customLabel",
+          "value": "left pinky"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[1]/coverage",
+          "value": "0.06"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[1]/groups/li[1]",
+          "value": "Hands"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[1]/groups/li[2]",
+          "value": "LeftHand"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[2]/def",
+          "value": "Finger"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[2]/customLabel",
+          "value": "left ring finger"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[2]/coverage",
+          "value": "0.07"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[2]/groups/li[1]",
+          "value": "Hands"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[2]/groups/li[2]",
+          "value": "LeftHand"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[3]/def",
+          "value": "Finger"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[3]/customLabel",
+          "value": "left middle finger"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[3]/coverage",
+          "value": "0.08"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[3]/groups/li[1]",
+          "value": "Hands"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[3]/groups/li[2]",
+          "value": "LeftHand"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[3]/groups/li[3]",
+          "value": "MiddleFingers"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[4]/def",
+          "value": "Finger"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[4]/customLabel",
+          "value": "left index finger"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[4]/coverage",
+          "value": "0.07"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[4]/groups/li[1]",
+          "value": "Hands"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[4]/groups/li[2]",
+          "value": "LeftHand"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[5]/def",
+          "value": "Finger"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[5]/customLabel",
+          "value": "left thumb"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[5]/coverage",
+          "value": "0.08"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[5]/groups/li[1]",
+          "value": "Hands"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[13]/parts/li[2]/parts/li[3]/parts/li[5]/groups/li[2]",
+          "value": "LeftHand"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/def",
+          "value": "Shoulder"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/customLabel",
+          "value": "right shoulder"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/coverage",
+          "value": "0.12"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/woundAnchorTag",
+          "value": "RightShoulder"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/groups/li",
+          "value": "Shoulders"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[1]/def",
+          "value": "Clavicle"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[1]/customLabel",
+          "value": "right clavicle"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[1]/coverage",
+          "value": "0.09"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[1]/height",
+          "value": "Top"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[1]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[1]/groups/li",
+          "value": "Torso"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/def",
+          "value": "Arm"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/customLabel",
+          "value": "right arm"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/coverage",
+          "value": "0.77"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/groups/li",
+          "value": "Arms"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[1]/def",
+          "value": "Humerus"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[1]/customLabel",
+          "value": "right humerus"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[1]/coverage",
+          "value": "0.1"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[1]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[1]/groups/li",
+          "value": "Arms"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[2]/def",
+          "value": "Radius"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[2]/customLabel",
+          "value": "right radius"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[2]/coverage",
+          "value": "0.1"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[2]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[2]/groups/li",
+          "value": "Arms"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/def",
+          "value": "Hand"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/customLabel",
+          "value": "right hand"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/coverage",
+          "value": "0.14"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/height",
+          "value": "Bottom"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/groups/li",
+          "value": "Hands"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[1]/def",
+          "value": "Finger"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[1]/customLabel",
+          "value": "right pinky"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[1]/coverage",
+          "value": "0.06"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[1]/groups/li[1]",
+          "value": "Hands"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[1]/groups/li[2]",
+          "value": "RightHand"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[2]/def",
+          "value": "Finger"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[2]/customLabel",
+          "value": "right ring finger"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[2]/coverage",
+          "value": "0.07"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[2]/groups/li[1]",
+          "value": "Hands"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[2]/groups/li[2]",
+          "value": "RightHand"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[3]/def",
+          "value": "Finger"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[3]/customLabel",
+          "value": "right middle finger"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[3]/coverage",
+          "value": "0.08"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[3]/groups/li[1]",
+          "value": "Hands"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[3]/groups/li[2]",
+          "value": "RightHand"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[3]/groups/li[3]",
+          "value": "MiddleFingers"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[4]/def",
+          "value": "Finger"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[4]/customLabel",
+          "value": "right index finger"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[4]/coverage",
+          "value": "0.07"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[4]/groups/li[1]",
+          "value": "Hands"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[4]/groups/li[2]",
+          "value": "RightHand"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[5]/def",
+          "value": "Finger"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[5]/customLabel",
+          "value": "right thumb"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[5]/coverage",
+          "value": "0.08"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[5]/groups/li[1]",
+          "value": "Hands"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[14]/parts/li[2]/parts/li[3]/parts/li[5]/groups/li[2]",
+          "value": "RightHand"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[15]/def",
+          "value": "Waist"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[15]/coverage",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[15]/height",
+          "value": "Bottom"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[15]/groups/li",
+          "value": "Waist"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/def",
+          "value": "Leg"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/customLabel",
+          "value": "left leg"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/coverage",
+          "value": "0.14"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/height",
+          "value": "Bottom"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/groups/li",
+          "value": "Legs"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/woundAnchorTag",
+          "value": "LeftLeg"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/flipGraphic",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[1]/def",
+          "value": "Femur"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[1]/customLabel",
+          "value": "left femur"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[1]/coverage",
+          "value": "0.1"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[1]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[1]/groups/li",
+          "value": "Legs"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[2]/def",
+          "value": "Tibia"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[2]/customLabel",
+          "value": "left tibia"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[2]/coverage",
+          "value": "0.1"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[2]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[2]/groups/li",
+          "value": "Legs"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/def",
+          "value": "Foot"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/customLabel",
+          "value": "left foot"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/coverage",
+          "value": "0.1"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/flipGraphic",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/groups/li",
+          "value": "Feet"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[1]/def",
+          "value": "Toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[1]/customLabel",
+          "value": "left little toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[1]/coverage",
+          "value": "0.06"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[1]/groups/li",
+          "value": "Feet"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[2]/def",
+          "value": "Toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[2]/customLabel",
+          "value": "left fourth toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[2]/coverage",
+          "value": "0.07"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[2]/groups/li",
+          "value": "Feet"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[3]/def",
+          "value": "Toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[3]/customLabel",
+          "value": "left middle toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[3]/coverage",
+          "value": "0.08"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[3]/groups/li",
+          "value": "Feet"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[4]/def",
+          "value": "Toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[4]/customLabel",
+          "value": "left second toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[4]/coverage",
+          "value": "0.09"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[4]/groups/li",
+          "value": "Feet"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[5]/def",
+          "value": "Toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[5]/customLabel",
+          "value": "left big toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[5]/coverage",
+          "value": "0.09"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[16]/parts/li[3]/parts/li[5]/groups/li",
+          "value": "Feet"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/def",
+          "value": "Leg"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/customLabel",
+          "value": "right leg"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/coverage",
+          "value": "0.14"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/height",
+          "value": "Bottom"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/groups/li",
+          "value": "Legs"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/woundAnchorTag",
+          "value": "RightLeg"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[1]/def",
+          "value": "Femur"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[1]/customLabel",
+          "value": "right femur"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[1]/coverage",
+          "value": "0.1"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[1]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[1]/groups/li",
+          "value": "Legs"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[2]/def",
+          "value": "Tibia"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[2]/customLabel",
+          "value": "right tibia"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[2]/coverage",
+          "value": "0.1"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[2]/depth",
+          "value": "Inside"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[2]/groups/li",
+          "value": "Legs"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/def",
+          "value": "Foot"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/customLabel",
+          "value": "right foot"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/coverage",
+          "value": "0.1"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/groups/li",
+          "value": "Feet"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[1]/def",
+          "value": "Toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[1]/customLabel",
+          "value": "right little toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[1]/coverage",
+          "value": "0.06"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[1]/groups/li",
+          "value": "Feet"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[2]/def",
+          "value": "Toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[2]/customLabel",
+          "value": "right fourth toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[2]/coverage",
+          "value": "0.07"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[2]/groups/li",
+          "value": "Feet"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[3]/def",
+          "value": "Toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[3]/customLabel",
+          "value": "right middle toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[3]/coverage",
+          "value": "0.08"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[3]/groups/li",
+          "value": "Feet"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[4]/def",
+          "value": "Toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[4]/customLabel",
+          "value": "right second toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[4]/coverage",
+          "value": "0.09"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[4]/groups/li",
+          "value": "Feet"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[5]/def",
+          "value": "Toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[5]/customLabel",
+          "value": "right big toe"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[5]/coverage",
+          "value": "0.09"
+        },
+        {
+          "xpath": "/Defs/BodyDef[defName='Human']/corePart/parts/li[17]/parts/li[3]/parts/li[5]/groups/li",
+          "value": "Feet"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "capacity",
+      "id": "PawnCapacityDef_Consciousness",
+      "def_name": "Consciousness",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/PawnCapacityDefs/PawnCapacity.xml",
+        "xpath": "/Defs/PawnCapacityDef[defName='Consciousness']",
+        "sha256": "327744af11a5fb775139c5460e408a9f86eab0d7e0bce838244b73d3c92f94f7"
+      },
+      "selected_paths": [
+        "workerClass",
+        "minForCapable",
+        "minValue",
+        "zeroIfCannotBeAwake",
+        "lethalFlesh",
+        "lethalMechanoids"
+      ],
+      "absent_paths": [
+        "minForCapable",
+        "minValue",
+        "zeroIfCannotBeAwake"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Consciousness']/workerClass",
+          "value": "PawnCapacityWorker_Consciousness"
+        },
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Consciousness']/lethalFlesh",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Consciousness']/lethalMechanoids",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "capacity",
+      "id": "PawnCapacityDef_Moving",
+      "def_name": "Moving",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/PawnCapacityDefs/PawnCapacity.xml",
+        "xpath": "/Defs/PawnCapacityDef[defName='Moving']",
+        "sha256": "327744af11a5fb775139c5460e408a9f86eab0d7e0bce838244b73d3c92f94f7"
+      },
+      "selected_paths": [
+        "workerClass",
+        "minForCapable",
+        "minValue",
+        "zeroIfCannotBeAwake",
+        "lethalFlesh",
+        "lethalMechanoids"
+      ],
+      "absent_paths": [
+        "minValue",
+        "lethalFlesh",
+        "lethalMechanoids"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Moving']/workerClass",
+          "value": "PawnCapacityWorker_Moving"
+        },
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Moving']/minForCapable",
+          "value": "0.15"
+        },
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Moving']/zeroIfCannotBeAwake",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "capacity",
+      "id": "PawnCapacityDef_Manipulation",
+      "def_name": "Manipulation",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/PawnCapacityDefs/PawnCapacity.xml",
+        "xpath": "/Defs/PawnCapacityDef[defName='Manipulation']",
+        "sha256": "327744af11a5fb775139c5460e408a9f86eab0d7e0bce838244b73d3c92f94f7"
+      },
+      "selected_paths": [
+        "workerClass",
+        "minForCapable",
+        "minValue",
+        "zeroIfCannotBeAwake",
+        "lethalFlesh",
+        "lethalMechanoids"
+      ],
+      "absent_paths": [
+        "minForCapable",
+        "minValue",
+        "lethalFlesh",
+        "lethalMechanoids"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Manipulation']/workerClass",
+          "value": "PawnCapacityWorker_Manipulation"
+        },
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Manipulation']/zeroIfCannotBeAwake",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "capacity",
+      "id": "PawnCapacityDef_Talking",
+      "def_name": "Talking",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/PawnCapacityDefs/PawnCapacity.xml",
+        "xpath": "/Defs/PawnCapacityDef[defName='Talking']",
+        "sha256": "327744af11a5fb775139c5460e408a9f86eab0d7e0bce838244b73d3c92f94f7"
+      },
+      "selected_paths": [
+        "workerClass",
+        "minForCapable",
+        "minValue",
+        "zeroIfCannotBeAwake",
+        "lethalFlesh",
+        "lethalMechanoids"
+      ],
+      "absent_paths": [
+        "minForCapable",
+        "minValue",
+        "lethalFlesh",
+        "lethalMechanoids"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Talking']/workerClass",
+          "value": "PawnCapacityWorker_Talking"
+        },
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Talking']/zeroIfCannotBeAwake",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "capacity",
+      "id": "PawnCapacityDef_Eating",
+      "def_name": "Eating",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/PawnCapacityDefs/PawnCapacity.xml",
+        "xpath": "/Defs/PawnCapacityDef[defName='Eating']",
+        "sha256": "327744af11a5fb775139c5460e408a9f86eab0d7e0bce838244b73d3c92f94f7"
+      },
+      "selected_paths": [
+        "workerClass",
+        "minForCapable",
+        "minValue",
+        "zeroIfCannotBeAwake",
+        "lethalFlesh",
+        "lethalMechanoids"
+      ],
+      "absent_paths": [
+        "minForCapable",
+        "lethalFlesh",
+        "lethalMechanoids"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Eating']/workerClass",
+          "value": "PawnCapacityWorker_Eating"
+        },
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Eating']/minValue",
+          "value": "0.1"
+        },
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Eating']/zeroIfCannotBeAwake",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "capacity",
+      "id": "PawnCapacityDef_Sight",
+      "def_name": "Sight",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/PawnCapacityDefs/PawnCapacity.xml",
+        "xpath": "/Defs/PawnCapacityDef[defName='Sight']",
+        "sha256": "327744af11a5fb775139c5460e408a9f86eab0d7e0bce838244b73d3c92f94f7"
+      },
+      "selected_paths": [
+        "workerClass",
+        "minForCapable",
+        "minValue",
+        "zeroIfCannotBeAwake",
+        "lethalFlesh",
+        "lethalMechanoids"
+      ],
+      "absent_paths": [
+        "minForCapable",
+        "minValue",
+        "zeroIfCannotBeAwake",
+        "lethalFlesh",
+        "lethalMechanoids"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Sight']/workerClass",
+          "value": "PawnCapacityWorker_Sight"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "capacity",
+      "id": "PawnCapacityDef_Hearing",
+      "def_name": "Hearing",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/PawnCapacityDefs/PawnCapacity.xml",
+        "xpath": "/Defs/PawnCapacityDef[defName='Hearing']",
+        "sha256": "327744af11a5fb775139c5460e408a9f86eab0d7e0bce838244b73d3c92f94f7"
+      },
+      "selected_paths": [
+        "workerClass",
+        "minForCapable",
+        "minValue",
+        "zeroIfCannotBeAwake",
+        "lethalFlesh",
+        "lethalMechanoids"
+      ],
+      "absent_paths": [
+        "minForCapable",
+        "minValue",
+        "zeroIfCannotBeAwake",
+        "lethalFlesh",
+        "lethalMechanoids"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Hearing']/workerClass",
+          "value": "PawnCapacityWorker_Hearing"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "capacity",
+      "id": "PawnCapacityDef_Breathing",
+      "def_name": "Breathing",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/PawnCapacityDefs/PawnCapacity.xml",
+        "xpath": "/Defs/PawnCapacityDef[defName='Breathing']",
+        "sha256": "327744af11a5fb775139c5460e408a9f86eab0d7e0bce838244b73d3c92f94f7"
+      },
+      "selected_paths": [
+        "workerClass",
+        "minForCapable",
+        "minValue",
+        "zeroIfCannotBeAwake",
+        "lethalFlesh",
+        "lethalMechanoids"
+      ],
+      "absent_paths": [
+        "minForCapable",
+        "minValue",
+        "zeroIfCannotBeAwake",
+        "lethalMechanoids"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Breathing']/workerClass",
+          "value": "PawnCapacityWorker_Breathing"
+        },
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Breathing']/lethalFlesh",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "capacity",
+      "id": "PawnCapacityDef_BloodFiltration",
+      "def_name": "BloodFiltration",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/PawnCapacityDefs/PawnCapacity.xml",
+        "xpath": "/Defs/PawnCapacityDef[defName='BloodFiltration']",
+        "sha256": "327744af11a5fb775139c5460e408a9f86eab0d7e0bce838244b73d3c92f94f7"
+      },
+      "selected_paths": [
+        "workerClass",
+        "minForCapable",
+        "minValue",
+        "zeroIfCannotBeAwake",
+        "lethalFlesh",
+        "lethalMechanoids"
+      ],
+      "absent_paths": [
+        "minForCapable",
+        "minValue",
+        "zeroIfCannotBeAwake"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='BloodFiltration']/workerClass",
+          "value": "PawnCapacityWorker_BloodFiltration"
+        },
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='BloodFiltration']/lethalFlesh",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='BloodFiltration']/lethalMechanoids",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "capacity",
+      "id": "PawnCapacityDef_BloodPumping",
+      "def_name": "BloodPumping",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/PawnCapacityDefs/PawnCapacity.xml",
+        "xpath": "/Defs/PawnCapacityDef[defName='BloodPumping']",
+        "sha256": "327744af11a5fb775139c5460e408a9f86eab0d7e0bce838244b73d3c92f94f7"
+      },
+      "selected_paths": [
+        "workerClass",
+        "minForCapable",
+        "minValue",
+        "zeroIfCannotBeAwake",
+        "lethalFlesh",
+        "lethalMechanoids"
+      ],
+      "absent_paths": [
+        "minForCapable",
+        "minValue",
+        "zeroIfCannotBeAwake"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='BloodPumping']/workerClass",
+          "value": "PawnCapacityWorker_BloodPumping"
+        },
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='BloodPumping']/lethalFlesh",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='BloodPumping']/lethalMechanoids",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "capacity",
+      "id": "PawnCapacityDef_Metabolism",
+      "def_name": "Metabolism",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/PawnCapacityDefs/PawnCapacity.xml",
+        "xpath": "/Defs/PawnCapacityDef[defName='Metabolism']",
+        "sha256": "327744af11a5fb775139c5460e408a9f86eab0d7e0bce838244b73d3c92f94f7"
+      },
+      "selected_paths": [
+        "workerClass",
+        "minForCapable",
+        "minValue",
+        "zeroIfCannotBeAwake",
+        "lethalFlesh",
+        "lethalMechanoids"
+      ],
+      "absent_paths": [
+        "minForCapable",
+        "minValue",
+        "zeroIfCannotBeAwake",
+        "lethalMechanoids"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Metabolism']/workerClass",
+          "value": "PawnCapacityWorker_Metabolism"
+        },
+        {
+          "xpath": "/Defs/PawnCapacityDef[defName='Metabolism']/lethalFlesh",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "damage",
+      "id": "DamageDef_Cut",
+      "def_name": "Cut",
+      "parent_name": "",
+      "name_attribute": "CutBase",
+      "source": {
+        "path": "Data/Core/Defs/DamageDefs/Damages_MeleeWeapon.xml",
+        "xpath": "/Defs/DamageDef[defName='Cut']",
+        "sha256": "27fff07b342b7c7908f69cb314f6a44734889828f07fd3e782655a8fa4fd9538"
+      },
+      "selected_paths": [
+        "workerClass",
+        "hediff",
+        "hediffSkin",
+        "hediffSolid",
+        "armorCategory",
+        "externalViolence",
+        "harmAllLayersUntilOutside",
+        "stabChanceOfForcedInternal",
+        "cutExtraTargetsCurve",
+        "cutCleaveBonus",
+        "bluntInnerHitChance",
+        "bluntInnerHitDamageFractionToConvert",
+        "bluntInnerHitDamageFractionToAdd",
+        "bluntStunDuration",
+        "bluntStunChancePerDamagePctOfCorePartToHeadCurve",
+        "bluntStunChancePerDamagePctOfCorePartToBodyCurve",
+        "overkillPctToDestroyPart"
+      ],
+      "absent_paths": [
+        "stabChanceOfForcedInternal",
+        "bluntInnerHitChance",
+        "bluntInnerHitDamageFractionToConvert",
+        "bluntInnerHitDamageFractionToAdd",
+        "bluntStunDuration",
+        "bluntStunChancePerDamagePctOfCorePartToHeadCurve",
+        "bluntStunChancePerDamagePctOfCorePartToBodyCurve"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/DamageDef[defName='Cut']/workerClass",
+          "value": "DamageWorker_Cut"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Cut']/hediff",
+          "value": "Cut"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Cut']/hediffSkin",
+          "value": "Cut"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Cut']/hediffSolid",
+          "value": "Crack"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Cut']/armorCategory",
+          "value": "Sharp"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Cut']/externalViolence",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Cut']/harmAllLayersUntilOutside",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Cut']/cutExtraTargetsCurve/points/li[1]",
+          "value": "0, 0"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Cut']/cutExtraTargetsCurve/points/li[2]",
+          "value": "0.6, 1"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Cut']/cutExtraTargetsCurve/points/li[3]",
+          "value": "0.9, 2"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Cut']/cutExtraTargetsCurve/points/li[4]",
+          "value": "1, 3"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Cut']/cutCleaveBonus",
+          "value": "1.4"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Cut']/overkillPctToDestroyPart",
+          "value": "0~0.1"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "damage",
+      "id": "DamageDef_Crush",
+      "def_name": "Crush",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/DamageDefs/Damages_MeleeWeapon.xml",
+        "xpath": "/Defs/DamageDef[defName='Crush']",
+        "sha256": "27fff07b342b7c7908f69cb314f6a44734889828f07fd3e782655a8fa4fd9538"
+      },
+      "selected_paths": [
+        "workerClass",
+        "hediff",
+        "hediffSkin",
+        "hediffSolid",
+        "armorCategory",
+        "externalViolence",
+        "harmAllLayersUntilOutside",
+        "stabChanceOfForcedInternal",
+        "cutExtraTargetsCurve",
+        "cutCleaveBonus",
+        "bluntInnerHitChance",
+        "bluntInnerHitDamageFractionToConvert",
+        "bluntInnerHitDamageFractionToAdd",
+        "bluntStunDuration",
+        "bluntStunChancePerDamagePctOfCorePartToHeadCurve",
+        "bluntStunChancePerDamagePctOfCorePartToBodyCurve",
+        "overkillPctToDestroyPart"
+      ],
+      "absent_paths": [
+        "stabChanceOfForcedInternal",
+        "cutExtraTargetsCurve",
+        "cutCleaveBonus",
+        "bluntInnerHitChance",
+        "bluntInnerHitDamageFractionToConvert",
+        "bluntInnerHitDamageFractionToAdd",
+        "bluntStunDuration",
+        "bluntStunChancePerDamagePctOfCorePartToHeadCurve",
+        "bluntStunChancePerDamagePctOfCorePartToBodyCurve"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/DamageDef[defName='Crush']/workerClass",
+          "value": "DamageWorker_AddInjury"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Crush']/hediff",
+          "value": "Crush"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Crush']/hediffSkin",
+          "value": "Cut"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Crush']/hediffSolid",
+          "value": "Crack"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Crush']/armorCategory",
+          "value": "Blunt"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Crush']/externalViolence",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Crush']/harmAllLayersUntilOutside",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Crush']/overkillPctToDestroyPart",
+          "value": "0.4~1.0"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "damage",
+      "id": "DamageDef_Blunt",
+      "def_name": "Blunt",
+      "parent_name": "",
+      "name_attribute": "BluntBase",
+      "source": {
+        "path": "Data/Core/Defs/DamageDefs/Damages_MeleeWeapon.xml",
+        "xpath": "/Defs/DamageDef[defName='Blunt']",
+        "sha256": "27fff07b342b7c7908f69cb314f6a44734889828f07fd3e782655a8fa4fd9538"
+      },
+      "selected_paths": [
+        "workerClass",
+        "hediff",
+        "hediffSkin",
+        "hediffSolid",
+        "armorCategory",
+        "externalViolence",
+        "harmAllLayersUntilOutside",
+        "stabChanceOfForcedInternal",
+        "cutExtraTargetsCurve",
+        "cutCleaveBonus",
+        "bluntInnerHitChance",
+        "bluntInnerHitDamageFractionToConvert",
+        "bluntInnerHitDamageFractionToAdd",
+        "bluntStunDuration",
+        "bluntStunChancePerDamagePctOfCorePartToHeadCurve",
+        "bluntStunChancePerDamagePctOfCorePartToBodyCurve",
+        "overkillPctToDestroyPart"
+      ],
+      "absent_paths": [
+        "stabChanceOfForcedInternal",
+        "cutExtraTargetsCurve",
+        "cutCleaveBonus"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/DamageDef[defName='Blunt']/workerClass",
+          "value": "DamageWorker_Blunt"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Blunt']/hediff",
+          "value": "Crush"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Blunt']/hediffSkin",
+          "value": "Bruise"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Blunt']/hediffSolid",
+          "value": "Crack"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Blunt']/armorCategory",
+          "value": "Blunt"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Blunt']/externalViolence",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Blunt']/harmAllLayersUntilOutside",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Blunt']/bluntInnerHitChance",
+          "value": "0.4"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Blunt']/bluntInnerHitDamageFractionToConvert",
+          "value": "0.1~0.2"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Blunt']/bluntInnerHitDamageFractionToAdd",
+          "value": "0.2~0.35"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Blunt']/bluntStunDuration",
+          "value": "2.0"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Blunt']/bluntStunChancePerDamagePctOfCorePartToHeadCurve/points/li[1]",
+          "value": "(0.04, 0.20)"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Blunt']/bluntStunChancePerDamagePctOfCorePartToHeadCurve/points/li[2]",
+          "value": "(0.5, 1)"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Blunt']/bluntStunChancePerDamagePctOfCorePartToBodyCurve/points/li[1]",
+          "value": "(0.4, 0)"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Blunt']/bluntStunChancePerDamagePctOfCorePartToBodyCurve/points/li[2]",
+          "value": "(0.9, 0.15)"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Blunt']/overkillPctToDestroyPart",
+          "value": "0.4~1.0"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "damage",
+      "id": "DamageDef_Poke",
+      "def_name": "Poke",
+      "parent_name": "BluntBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/DamageDefs/Damages_MeleeWeapon.xml",
+        "xpath": "/Defs/DamageDef[defName='Poke']",
+        "sha256": "27fff07b342b7c7908f69cb314f6a44734889828f07fd3e782655a8fa4fd9538"
+      },
+      "selected_paths": [
+        "workerClass",
+        "hediff",
+        "hediffSkin",
+        "hediffSolid",
+        "armorCategory",
+        "externalViolence",
+        "harmAllLayersUntilOutside",
+        "stabChanceOfForcedInternal",
+        "cutExtraTargetsCurve",
+        "cutCleaveBonus",
+        "bluntInnerHitChance",
+        "bluntInnerHitDamageFractionToConvert",
+        "bluntInnerHitDamageFractionToAdd",
+        "bluntStunDuration",
+        "bluntStunChancePerDamagePctOfCorePartToHeadCurve",
+        "bluntStunChancePerDamagePctOfCorePartToBodyCurve",
+        "overkillPctToDestroyPart"
+      ],
+      "absent_paths": [
+        "hediff",
+        "hediffSkin",
+        "hediffSolid",
+        "armorCategory",
+        "externalViolence",
+        "harmAllLayersUntilOutside",
+        "cutExtraTargetsCurve",
+        "cutCleaveBonus",
+        "bluntInnerHitChance",
+        "bluntInnerHitDamageFractionToConvert",
+        "bluntInnerHitDamageFractionToAdd",
+        "bluntStunDuration",
+        "bluntStunChancePerDamagePctOfCorePartToHeadCurve",
+        "bluntStunChancePerDamagePctOfCorePartToBodyCurve",
+        "overkillPctToDestroyPart"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/DamageDef[defName='Poke']/workerClass",
+          "value": "DamageWorker_Stab"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Poke']/stabChanceOfForcedInternal",
+          "value": "0.4"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "damage",
+      "id": "DamageDef_Stab",
+      "def_name": "Stab",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/DamageDefs/Damages_MeleeWeapon.xml",
+        "xpath": "/Defs/DamageDef[defName='Stab']",
+        "sha256": "27fff07b342b7c7908f69cb314f6a44734889828f07fd3e782655a8fa4fd9538"
+      },
+      "selected_paths": [
+        "workerClass",
+        "hediff",
+        "hediffSkin",
+        "hediffSolid",
+        "armorCategory",
+        "externalViolence",
+        "harmAllLayersUntilOutside",
+        "stabChanceOfForcedInternal",
+        "cutExtraTargetsCurve",
+        "cutCleaveBonus",
+        "bluntInnerHitChance",
+        "bluntInnerHitDamageFractionToConvert",
+        "bluntInnerHitDamageFractionToAdd",
+        "bluntStunDuration",
+        "bluntStunChancePerDamagePctOfCorePartToHeadCurve",
+        "bluntStunChancePerDamagePctOfCorePartToBodyCurve",
+        "overkillPctToDestroyPart"
+      ],
+      "absent_paths": [
+        "hediffSkin",
+        "harmAllLayersUntilOutside",
+        "cutExtraTargetsCurve",
+        "cutCleaveBonus",
+        "bluntInnerHitChance",
+        "bluntInnerHitDamageFractionToConvert",
+        "bluntInnerHitDamageFractionToAdd",
+        "bluntStunDuration",
+        "bluntStunChancePerDamagePctOfCorePartToHeadCurve",
+        "bluntStunChancePerDamagePctOfCorePartToBodyCurve"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/DamageDef[defName='Stab']/workerClass",
+          "value": "DamageWorker_Stab"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Stab']/hediff",
+          "value": "Stab"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Stab']/hediffSolid",
+          "value": "Crack"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Stab']/armorCategory",
+          "value": "Sharp"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Stab']/externalViolence",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Stab']/stabChanceOfForcedInternal",
+          "value": "0.6"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Stab']/overkillPctToDestroyPart",
+          "value": "0.4~1.0"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "damage",
+      "id": "DamageDef_Bite",
+      "def_name": "Bite",
+      "parent_name": "",
+      "name_attribute": "Bite",
+      "source": {
+        "path": "Data/Core/Defs/DamageDefs/Damages_MeleeWeapon.xml",
+        "xpath": "/Defs/DamageDef[defName='Bite']",
+        "sha256": "27fff07b342b7c7908f69cb314f6a44734889828f07fd3e782655a8fa4fd9538"
+      },
+      "selected_paths": [
+        "workerClass",
+        "hediff",
+        "hediffSkin",
+        "hediffSolid",
+        "armorCategory",
+        "externalViolence",
+        "harmAllLayersUntilOutside",
+        "stabChanceOfForcedInternal",
+        "cutExtraTargetsCurve",
+        "cutCleaveBonus",
+        "bluntInnerHitChance",
+        "bluntInnerHitDamageFractionToConvert",
+        "bluntInnerHitDamageFractionToAdd",
+        "bluntStunDuration",
+        "bluntStunChancePerDamagePctOfCorePartToHeadCurve",
+        "bluntStunChancePerDamagePctOfCorePartToBodyCurve",
+        "overkillPctToDestroyPart"
+      ],
+      "absent_paths": [
+        "hediffSkin",
+        "stabChanceOfForcedInternal",
+        "cutExtraTargetsCurve",
+        "cutCleaveBonus",
+        "bluntInnerHitChance",
+        "bluntInnerHitDamageFractionToConvert",
+        "bluntInnerHitDamageFractionToAdd",
+        "bluntStunDuration",
+        "bluntStunChancePerDamagePctOfCorePartToHeadCurve",
+        "bluntStunChancePerDamagePctOfCorePartToBodyCurve"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/DamageDef[defName='Bite']/workerClass",
+          "value": "DamageWorker_Bite"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Bite']/hediff",
+          "value": "Bite"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Bite']/hediffSolid",
+          "value": "Crack"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Bite']/armorCategory",
+          "value": "Sharp"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Bite']/externalViolence",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Bite']/harmAllLayersUntilOutside",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Bite']/overkillPctToDestroyPart",
+          "value": "0~0.1"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "injury",
+      "id": "HediffDef_MissingBodyPart",
+      "def_name": "MissingBodyPart",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Injuries.xml",
+        "xpath": "/Defs/HediffDef[defName='MissingBodyPart']",
+        "sha256": "643d0632e63678f0181c3894c9aa5aae647dbf1ee0ac29983ce898a88b33d91d"
+      },
+      "selected_paths": [
+        "hediffClass",
+        "tendable",
+        "injuryProps",
+        "comps"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/HediffDef[defName='MissingBodyPart']/hediffClass",
+          "value": "Hediff_MissingPart"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='MissingBodyPart']/tendable",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='MissingBodyPart']/injuryProps/bleedRate",
+          "value": "0.12"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='MissingBodyPart']/injuryProps/painPerSeverity",
+          "value": "0.0125"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='MissingBodyPart']/comps/li/showTendQuality",
+          "value": "false"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/HediffDef[defName='MissingBodyPart']/comps/li",
+          "attributes": {
+            "Class": "HediffCompProperties_TendDuration"
+          }
+        }
+      ]
+    },
+    {
+      "group": "injury",
+      "id": "HediffDef_InjuryBase",
+      "def_name": "InjuryBase",
+      "parent_name": "",
+      "name_attribute": "InjuryBase",
+      "source": {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Injuries.xml",
+        "xpath": "/Defs/HediffDef[@Name='InjuryBase']",
+        "sha256": "643d0632e63678f0181c3894c9aa5aae647dbf1ee0ac29983ce898a88b33d91d"
+      },
+      "selected_paths": [
+        "hediffClass",
+        "tendable",
+        "injuryProps",
+        "comps"
+      ],
+      "absent_paths": [
+        "injuryProps",
+        "comps"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/HediffDef[@Name='InjuryBase']/hediffClass",
+          "value": "Hediff_Injury"
+        },
+        {
+          "xpath": "/Defs/HediffDef[@Name='InjuryBase']/tendable",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "injury",
+      "id": "HediffDef_Crush",
+      "def_name": "Crush",
+      "parent_name": "InjuryBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Injuries.xml",
+        "xpath": "/Defs/HediffDef[defName='Crush']",
+        "sha256": "643d0632e63678f0181c3894c9aa5aae647dbf1ee0ac29983ce898a88b33d91d"
+      },
+      "selected_paths": [
+        "hediffClass",
+        "tendable",
+        "injuryProps",
+        "comps"
+      ],
+      "absent_paths": [
+        "hediffClass",
+        "tendable"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Crush']/injuryProps/painPerSeverity",
+          "value": "0.0125"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Crush']/injuryProps/averagePainPerSeverityPermanent",
+          "value": "0.00625"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Crush']/injuryProps/bleedRate",
+          "value": "0.01"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Crush']/injuryProps/canMerge",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Crush']/comps/li[2]/infectionChance",
+          "value": "0.15"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Crush']/comps/li[1]",
+          "attributes": {
+            "Class": "HediffCompProperties_TendDuration"
+          }
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Crush']/comps/li[2]",
+          "attributes": {
+            "Class": "HediffCompProperties_Infecter"
+          }
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Crush']/comps/li[3]",
+          "attributes": {
+            "Class": "HediffCompProperties_GetsPermanent"
+          }
+        }
+      ]
+    },
+    {
+      "group": "injury",
+      "id": "HediffDef_Crack",
+      "def_name": "Crack",
+      "parent_name": "InjuryBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Injuries.xml",
+        "xpath": "/Defs/HediffDef[defName='Crack']",
+        "sha256": "643d0632e63678f0181c3894c9aa5aae647dbf1ee0ac29983ce898a88b33d91d"
+      },
+      "selected_paths": [
+        "hediffClass",
+        "tendable",
+        "injuryProps",
+        "comps"
+      ],
+      "absent_paths": [
+        "hediffClass",
+        "tendable"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Crack']/injuryProps/painPerSeverity",
+          "value": "0.01"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Crack']/injuryProps/averagePainPerSeverityPermanent",
+          "value": "0.00625"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Crack']/comps/li[1]",
+          "attributes": {
+            "Class": "HediffCompProperties_TendDuration"
+          }
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Crack']/comps/li[2]",
+          "attributes": {
+            "Class": "HediffCompProperties_GetsPermanent"
+          }
+        }
+      ]
+    },
+    {
+      "group": "injury",
+      "id": "HediffDef_Cut",
+      "def_name": "Cut",
+      "parent_name": "InjuryBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Injuries.xml",
+        "xpath": "/Defs/HediffDef[defName='Cut']",
+        "sha256": "643d0632e63678f0181c3894c9aa5aae647dbf1ee0ac29983ce898a88b33d91d"
+      },
+      "selected_paths": [
+        "hediffClass",
+        "tendable",
+        "injuryProps",
+        "comps"
+      ],
+      "absent_paths": [
+        "hediffClass",
+        "tendable"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/injuryProps/painPerSeverity",
+          "value": "0.0125"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/injuryProps/averagePainPerSeverityPermanent",
+          "value": "0.00625"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/injuryProps/bleedRate",
+          "value": "0.06"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/injuryProps/canMerge",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/comps/li[2]/infectionChance",
+          "value": "0.15"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/comps/li[1]",
+          "attributes": {
+            "Class": "HediffCompProperties_TendDuration"
+          }
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/comps/li[2]",
+          "attributes": {
+            "Class": "HediffCompProperties_Infecter"
+          }
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/comps/li[3]",
+          "attributes": {
+            "Class": "HediffCompProperties_GetsPermanent"
+          }
+        }
+      ]
+    },
+    {
+      "group": "injury",
+      "id": "HediffDef_Bite",
+      "def_name": "Bite",
+      "parent_name": "InjuryBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Injuries.xml",
+        "xpath": "/Defs/HediffDef[defName='Bite']",
+        "sha256": "643d0632e63678f0181c3894c9aa5aae647dbf1ee0ac29983ce898a88b33d91d"
+      },
+      "selected_paths": [
+        "hediffClass",
+        "tendable",
+        "injuryProps",
+        "comps"
+      ],
+      "absent_paths": [
+        "hediffClass",
+        "tendable"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Bite']/injuryProps/painPerSeverity",
+          "value": "0.0125"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Bite']/injuryProps/averagePainPerSeverityPermanent",
+          "value": "0.00625"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Bite']/injuryProps/bleedRate",
+          "value": "0.06"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Bite']/injuryProps/canMerge",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Bite']/comps/li[2]/infectionChance",
+          "value": "0.30"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Bite']/comps/li[1]",
+          "attributes": {
+            "Class": "HediffCompProperties_TendDuration"
+          }
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Bite']/comps/li[2]",
+          "attributes": {
+            "Class": "HediffCompProperties_Infecter"
+          }
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Bite']/comps/li[3]",
+          "attributes": {
+            "Class": "HediffCompProperties_GetsPermanent"
+          }
+        }
+      ]
+    },
+    {
+      "group": "injury",
+      "id": "HediffDef_Stab",
+      "def_name": "Stab",
+      "parent_name": "InjuryBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Injuries.xml",
+        "xpath": "/Defs/HediffDef[defName='Stab']",
+        "sha256": "643d0632e63678f0181c3894c9aa5aae647dbf1ee0ac29983ce898a88b33d91d"
+      },
+      "selected_paths": [
+        "hediffClass",
+        "tendable",
+        "injuryProps",
+        "comps"
+      ],
+      "absent_paths": [
+        "hediffClass",
+        "tendable"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Stab']/injuryProps/painPerSeverity",
+          "value": "0.0125"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Stab']/injuryProps/averagePainPerSeverityPermanent",
+          "value": "0.00625"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Stab']/injuryProps/bleedRate",
+          "value": "0.06"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Stab']/injuryProps/canMerge",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Stab']/comps/li[2]/infectionChance",
+          "value": "0.15"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Stab']/comps/li[1]",
+          "attributes": {
+            "Class": "HediffCompProperties_TendDuration"
+          }
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Stab']/comps/li[2]",
+          "attributes": {
+            "Class": "HediffCompProperties_Infecter"
+          }
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Stab']/comps/li[3]",
+          "attributes": {
+            "Class": "HediffCompProperties_GetsPermanent"
+          }
+        }
+      ]
+    },
+    {
+      "group": "injury",
+      "id": "HediffDef_Bruise",
+      "def_name": "Bruise",
+      "parent_name": "InjuryBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Injuries.xml",
+        "xpath": "/Defs/HediffDef[defName='Bruise']",
+        "sha256": "643d0632e63678f0181c3894c9aa5aae647dbf1ee0ac29983ce898a88b33d91d"
+      },
+      "selected_paths": [
+        "hediffClass",
+        "tendable",
+        "injuryProps",
+        "comps"
+      ],
+      "absent_paths": [
+        "hediffClass",
+        "tendable"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Bruise']/injuryProps/painPerSeverity",
+          "value": "0.0125"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Bruise']/injuryProps/averagePainPerSeverityPermanent",
+          "value": "0.00625"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Bruise']/injuryProps/canMerge",
+          "value": "false"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Bruise']/comps/li",
+          "attributes": {
+            "Class": "HediffCompProperties_TendDuration"
+          }
+        }
+      ]
+    },
+    {
+      "group": "human",
+      "id": "ThingDef_Human",
+      "def_name": "Human",
+      "parent_name": "BasePawn",
+      "name_attribute": "Human",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Races/Races_Humanlike.xml",
+        "xpath": "/Defs/ThingDef[defName='Human']",
+        "sha256": "d95bb2236294115b32eeea1cb0f2edad0d255e7530b9a8c209a7e6c365a80bbf"
+      },
+      "selected_paths": [
+        "race/body",
+        "race/baseHealthScale",
+        "race/bleedRateFactor",
+        "race/alwaysAwake",
+        "race/lethalDamageThreshold",
+        "tools"
+      ],
+      "absent_paths": [
+        "race/bleedRateFactor",
+        "race/alwaysAwake",
+        "race/lethalDamageThreshold"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/race/body",
+          "value": "Human"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/race/baseHealthScale",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[1]/label",
+          "value": "left fist"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[1]/labelNoLocation",
+          "value": "fist"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[1]/capacities/li",
+          "value": "Blunt"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[1]/power",
+          "value": "8.2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[1]/cooldownTime",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[1]/linkedBodyPartsGroup",
+          "value": "LeftHand"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[1]/surpriseAttack/extraMeleeDamages/li/def",
+          "value": "Stun"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[1]/surpriseAttack/extraMeleeDamages/li/amount",
+          "value": "14"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[2]/label",
+          "value": "right fist"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[2]/labelNoLocation",
+          "value": "fist"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[2]/capacities/li",
+          "value": "Blunt"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[2]/power",
+          "value": "8.2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[2]/cooldownTime",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[2]/linkedBodyPartsGroup",
+          "value": "RightHand"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[2]/surpriseAttack/extraMeleeDamages/li/def",
+          "value": "Stun"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[2]/surpriseAttack/extraMeleeDamages/li/amount",
+          "value": "14"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[3]/label",
+          "value": "teeth"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[3]/capacities/li",
+          "value": "Bite"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[3]/power",
+          "value": "8.2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[3]/cooldownTime",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[3]/linkedBodyPartsGroup",
+          "value": "Teeth"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[3]/chanceFactor",
+          "value": "0.07"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[3]/soundMeleeHit",
+          "value": "Pawn_Melee_HumanBite_Hit"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[3]/soundMeleeMiss",
+          "value": "Pawn_Melee_HumanBite_Miss"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[4]/label",
+          "value": "head"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[4]/capacities/li",
+          "value": "Blunt"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[4]/power",
+          "value": "5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[4]/cooldownTime",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[4]/linkedBodyPartsGroup",
+          "value": "HeadAttackTool"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[4]/ensureLinkedBodyPartsGroupAlwaysUsable",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Human']/tools/li[4]/chanceFactor",
+          "value": "0.2"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "work",
+      "id": "WorkGiverDef_DoctorTendToHumanlikes",
+      "def_name": "DoctorTendToHumanlikes",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+        "xpath": "/Defs/WorkGiverDef[defName='DoctorTendToHumanlikes']",
+        "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c"
+      },
+      "selected_paths": [
+        "giverClass",
+        "workType",
+        "requiredCapacities"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='DoctorTendToHumanlikes']/giverClass",
+          "value": "WorkGiver_TendOther_Humanlike"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='DoctorTendToHumanlikes']/workType",
+          "value": "Doctor"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='DoctorTendToHumanlikes']/requiredCapacities/li",
+          "value": "Manipulation"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "work",
+      "id": "WorkGiverDef_ConstructFinishFrames",
+      "def_name": "ConstructFinishFrames",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+        "xpath": "/Defs/WorkGiverDef[defName='ConstructFinishFrames']",
+        "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c"
+      },
+      "selected_paths": [
+        "giverClass",
+        "workType",
+        "requiredCapacities"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='ConstructFinishFrames']/giverClass",
+          "value": "WorkGiver_ConstructFinishFrames"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='ConstructFinishFrames']/workType",
+          "value": "Construction"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='ConstructFinishFrames']/requiredCapacities/li",
+          "value": "Manipulation"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "work",
+      "id": "WorkGiverDef_GrowerHarvest",
+      "def_name": "GrowerHarvest",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+        "xpath": "/Defs/WorkGiverDef[defName='GrowerHarvest']",
+        "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c"
+      },
+      "selected_paths": [
+        "giverClass",
+        "workType",
+        "requiredCapacities"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='GrowerHarvest']/giverClass",
+          "value": "WorkGiver_GrowerHarvest"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='GrowerHarvest']/workType",
+          "value": "Growing"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='GrowerHarvest']/requiredCapacities/li",
+          "value": "Manipulation"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "work",
+      "id": "WorkGiverDef_GrowerSow",
+      "def_name": "GrowerSow",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+        "xpath": "/Defs/WorkGiverDef[defName='GrowerSow']",
+        "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c"
+      },
+      "selected_paths": [
+        "giverClass",
+        "workType",
+        "requiredCapacities"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='GrowerSow']/giverClass",
+          "value": "WorkGiver_GrowerSow"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='GrowerSow']/workType",
+          "value": "Growing"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='GrowerSow']/requiredCapacities/li",
+          "value": "Manipulation"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "work",
+      "id": "WorkGiverDef_Mine",
+      "def_name": "Mine",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+        "xpath": "/Defs/WorkGiverDef[defName='Mine']",
+        "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c"
+      },
+      "selected_paths": [
+        "giverClass",
+        "workType",
+        "requiredCapacities"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='Mine']/giverClass",
+          "value": "WorkGiver_Miner"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='Mine']/workType",
+          "value": "Mining"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='Mine']/requiredCapacities/li",
+          "value": "Manipulation"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "work",
+      "id": "WorkGiverDef_PlantsCut",
+      "def_name": "PlantsCut",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+        "xpath": "/Defs/WorkGiverDef[defName='PlantsCut']",
+        "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c"
+      },
+      "selected_paths": [
+        "giverClass",
+        "workType",
+        "requiredCapacities"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='PlantsCut']/giverClass",
+          "value": "WorkGiver_PlantsCut"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='PlantsCut']/workType",
+          "value": "PlantCutting"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='PlantsCut']/requiredCapacities/li",
+          "value": "Manipulation"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "work",
+      "id": "WorkGiverDef_Research",
+      "def_name": "Research",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+        "xpath": "/Defs/WorkGiverDef[defName='Research']",
+        "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c"
+      },
+      "selected_paths": [
+        "giverClass",
+        "workType",
+        "requiredCapacities"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='Research']/giverClass",
+          "value": "WorkGiver_Researcher"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='Research']/workType",
+          "value": "Research"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='Research']/requiredCapacities/li",
+          "value": "Manipulation"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Torso",
+      "def_name": "Torso",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_Humanoid.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Torso']",
+        "sha256": "92d9136f5f7eb9232073ef111fb926079a0b5cd1c0d59cea855968be51718bbb"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "bleedRate",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Torso']/label",
+          "value": "torso"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Torso']/hitPoints",
+          "value": "40"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Torso']/skinCovered",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Shoulder",
+      "def_name": "Shoulder",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_Humanoid.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Shoulder']",
+        "sha256": "92d9136f5f7eb9232073ef111fb926079a0b5cd1c0d59cea855968be51718bbb"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "bleedRate",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Shoulder']/label",
+          "value": "shoulder"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Shoulder']/hitPoints",
+          "value": "30"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Shoulder']/skinCovered",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Shoulder']/tags/li[1]",
+          "value": "ManipulationLimbSegment"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Shoulder']/tags/li[2]",
+          "value": "Mirrored"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Arm",
+      "def_name": "Arm",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_Humanoid.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Arm']",
+        "sha256": "92d9136f5f7eb9232073ef111fb926079a0b5cd1c0d59cea855968be51718bbb"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "bleedRate",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Arm']/label",
+          "value": "arm"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Arm']/hitPoints",
+          "value": "30"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Arm']/skinCovered",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Arm']/tags/li[1]",
+          "value": "ManipulationLimbCore"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Arm']/tags/li[2]",
+          "value": "Mirrored"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Hand",
+      "def_name": "Hand",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_Humanoid.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Hand']",
+        "sha256": "92d9136f5f7eb9232073ef111fb926079a0b5cd1c0d59cea855968be51718bbb"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "bleedRate",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Hand']/label",
+          "value": "hand"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Hand']/hitPoints",
+          "value": "20"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Hand']/skinCovered",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Hand']/tags/li",
+          "value": "ManipulationLimbSegment"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Finger",
+      "def_name": "Finger",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_Humanoid.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Finger']",
+        "sha256": "92d9136f5f7eb9232073ef111fb926079a0b5cd1c0d59cea855968be51718bbb"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "bleedRate",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Finger']/label",
+          "value": "finger"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Finger']/hitPoints",
+          "value": "8"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Finger']/skinCovered",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Finger']/tags/li[1]",
+          "value": "ManipulationLimbDigit"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Finger']/tags/li[2]",
+          "value": "Mirrored"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Waist",
+      "def_name": "Waist",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_Humanoid.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Waist']",
+        "sha256": "92d9136f5f7eb9232073ef111fb926079a0b5cd1c0d59cea855968be51718bbb"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Waist']/label",
+          "value": "utility slot"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Waist']/conceptual",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Toe",
+      "def_name": "Toe",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_Humanoid.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Toe']",
+        "sha256": "92d9136f5f7eb9232073ef111fb926079a0b5cd1c0d59cea855968be51718bbb"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "bleedRate",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Toe']/label",
+          "value": "toe"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Toe']/hitPoints",
+          "value": "8"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Toe']/skinCovered",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Toe']/tags/li[1]",
+          "value": "MovingLimbDigit"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Toe']/tags/li[2]",
+          "value": "Mirrored"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Clavicle",
+      "def_name": "Clavicle",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_Humanoid.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Clavicle']",
+        "sha256": "92d9136f5f7eb9232073ef111fb926079a0b5cd1c0d59cea855968be51718bbb"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "conceptual",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Clavicle']/label",
+          "value": "clavicle"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Clavicle']/hitPoints",
+          "value": "25"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Clavicle']/bleedRate",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Clavicle']/skinCovered",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Clavicle']/solid",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Clavicle']/destroyableByDamage",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Clavicle']/tags/li[1]",
+          "value": "ManipulationLimbSegment"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Clavicle']/tags/li[2]",
+          "value": "Mirrored"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Sternum",
+      "def_name": "Sternum",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_Humanoid.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Sternum']",
+        "sha256": "92d9136f5f7eb9232073ef111fb926079a0b5cd1c0d59cea855968be51718bbb"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "conceptual",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Sternum']/label",
+          "value": "sternum"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Sternum']/hitPoints",
+          "value": "20"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Sternum']/bleedRate",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Sternum']/skinCovered",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Sternum']/solid",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Sternum']/destroyableByDamage",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Sternum']/tags/li",
+          "value": "BreathingSourceCage"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Humerus",
+      "def_name": "Humerus",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_Humanoid.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Humerus']",
+        "sha256": "92d9136f5f7eb9232073ef111fb926079a0b5cd1c0d59cea855968be51718bbb"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Humerus']/label",
+          "value": "humerus"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Humerus']/hitPoints",
+          "value": "25"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Humerus']/bleedRate",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Humerus']/skinCovered",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Humerus']/solid",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Humerus']/tags/li[1]",
+          "value": "ManipulationLimbSegment"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Humerus']/tags/li[2]",
+          "value": "Mirrored"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Radius",
+      "def_name": "Radius",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_Humanoid.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Radius']",
+        "sha256": "92d9136f5f7eb9232073ef111fb926079a0b5cd1c0d59cea855968be51718bbb"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Radius']/label",
+          "value": "radius"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Radius']/hitPoints",
+          "value": "20"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Radius']/bleedRate",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Radius']/skinCovered",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Radius']/solid",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Radius']/tags/li[1]",
+          "value": "ManipulationLimbSegment"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Radius']/tags/li[2]",
+          "value": "Mirrored"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Pelvis",
+      "def_name": "Pelvis",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_Humanoid.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Pelvis']",
+        "sha256": "92d9136f5f7eb9232073ef111fb926079a0b5cd1c0d59cea855968be51718bbb"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "conceptual",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Pelvis']/label",
+          "value": "pelvis"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Pelvis']/hitPoints",
+          "value": "25"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Pelvis']/bleedRate",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Pelvis']/skinCovered",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Pelvis']/solid",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Pelvis']/destroyableByDamage",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Pelvis']/tags/li",
+          "value": "Pelvis"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Femur",
+      "def_name": "Femur",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_Humanoid.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Femur']",
+        "sha256": "92d9136f5f7eb9232073ef111fb926079a0b5cd1c0d59cea855968be51718bbb"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Femur']/label",
+          "value": "femur"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Femur']/hitPoints",
+          "value": "25"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Femur']/bleedRate",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Femur']/skinCovered",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Femur']/solid",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Femur']/tags/li[1]",
+          "value": "MovingLimbSegment"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Femur']/tags/li[2]",
+          "value": "Mirrored"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Tibia",
+      "def_name": "Tibia",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_Humanoid.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Tibia']",
+        "sha256": "92d9136f5f7eb9232073ef111fb926079a0b5cd1c0d59cea855968be51718bbb"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Tibia']/label",
+          "value": "tibia"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Tibia']/hitPoints",
+          "value": "25"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Tibia']/bleedRate",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Tibia']/skinCovered",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Tibia']/solid",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Tibia']/tags/li[1]",
+          "value": "MovingLimbSegment"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Tibia']/tags/li[2]",
+          "value": "Mirrored"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Head",
+      "def_name": "Head",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Head']",
+        "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Head']/label",
+          "value": "head"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Head']/hitPoints",
+          "value": "25"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Head']/bleedRate",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Head']/skinCovered",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Skull",
+      "def_name": "Skull",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Skull']",
+        "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "conceptual",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Skull']/label",
+          "value": "skull"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Skull']/hitPoints",
+          "value": "25"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Skull']/bleedRate",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Skull']/skinCovered",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Skull']/solid",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Skull']/destroyableByDamage",
+          "value": "false"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Brain",
+      "def_name": "Brain",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Brain']",
+        "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "bleedRate",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Brain']/label",
+          "value": "brain"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Brain']/hitPoints",
+          "value": "10"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Brain']/skinCovered",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Brain']/delicate",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Brain']/tags/li",
+          "value": "ConsciousnessSource"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Eye",
+      "def_name": "Eye",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Eye']",
+        "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "bleedRate",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Eye']/label",
+          "value": "eye"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Eye']/hitPoints",
+          "value": "10"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Eye']/skinCovered",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Eye']/delicate",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Eye']/socketed",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Eye']/hitChanceFactors/li/key",
+          "value": "Blunt"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Eye']/hitChanceFactors/li/value",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Eye']/tags/li",
+          "value": "SightSource"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Ear",
+      "def_name": "Ear",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Ear']",
+        "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "bleedRate",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Ear']/label",
+          "value": "ear"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Ear']/hitPoints",
+          "value": "12"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Ear']/skinCovered",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Ear']/tags/li",
+          "value": "HearingSource"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Nose",
+      "def_name": "Nose",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Nose']",
+        "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Nose']/label",
+          "value": "nose"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Nose']/hitPoints",
+          "value": "10"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Nose']/bleedRate",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Nose']/skinCovered",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Nose']/solid",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Jaw",
+      "def_name": "Jaw",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Jaw']",
+        "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Jaw']/label",
+          "value": "jaw"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Jaw']/hitPoints",
+          "value": "20"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Jaw']/bleedRate",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Jaw']/skinCovered",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Jaw']/solid",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Jaw']/tags/li[1]",
+          "value": "EatingSource"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Jaw']/tags/li[2]",
+          "value": "TalkingSource"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Neck",
+      "def_name": "Neck",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Neck']",
+        "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Neck']/label",
+          "value": "neck"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Neck']/hitPoints",
+          "value": "25"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Neck']/bleedRate",
+          "value": "4"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Neck']/skinCovered",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Neck']/tags/li[1]",
+          "value": "BreathingPathway"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Neck']/tags/li[2]",
+          "value": "EatingPathway"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Neck']/tags/li[3]",
+          "value": "TalkingPathway"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Ribcage",
+      "def_name": "Ribcage",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Ribcage']",
+        "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "conceptual",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Ribcage']/label",
+          "value": "ribcage"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Ribcage']/hitPoints",
+          "value": "30"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Ribcage']/bleedRate",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Ribcage']/skinCovered",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Ribcage']/solid",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Ribcage']/destroyableByDamage",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Ribcage']/tags/li",
+          "value": "BreathingSourceCage"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Spine",
+      "def_name": "Spine",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Spine']",
+        "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Spine']/label",
+          "value": "spine"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Spine']/hitPoints",
+          "value": "25"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Spine']/bleedRate",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Spine']/skinCovered",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Spine']/solid",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Spine']/tags/li",
+          "value": "Spine"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Leg",
+      "def_name": "Leg",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Leg']",
+        "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "bleedRate",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Leg']/label",
+          "value": "leg"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Leg']/hitPoints",
+          "value": "30"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Leg']/skinCovered",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Leg']/tags/li",
+          "value": "MovingLimbCore"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Foot",
+      "def_name": "Foot",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Foot']",
+        "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "bleedRate",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Foot']/label",
+          "value": "foot"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Foot']/hitPoints",
+          "value": "25"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Foot']/skinCovered",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Foot']/tags/li",
+          "value": "MovingLimbSegment"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Tongue",
+      "def_name": "Tongue",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Tongue']",
+        "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "hitPoints",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Tongue']/label",
+          "value": "tongue"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Tongue']/bleedRate",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Tongue']/skinCovered",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Tongue']/tags/li",
+          "value": "Tongue"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Heart",
+      "def_name": "Heart",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_Organs.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Heart']",
+        "sha256": "eeeb6f166bde4804b5d91933a3734954f84239e1abad3b3e000fcbe8609e5f80"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Heart']/label",
+          "value": "heart"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Heart']/hitPoints",
+          "value": "15"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Heart']/bleedRate",
+          "value": "5"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Heart']/skinCovered",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Heart']/tags/li",
+          "value": "BloodPumpingSource"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Lung",
+      "def_name": "Lung",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_Organs.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Lung']",
+        "sha256": "eeeb6f166bde4804b5d91933a3734954f84239e1abad3b3e000fcbe8609e5f80"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "bleedRate",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Lung']/label",
+          "value": "lung"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Lung']/hitPoints",
+          "value": "15"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Lung']/skinCovered",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Lung']/tags/li",
+          "value": "BreathingSource"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Kidney",
+      "def_name": "Kidney",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_Organs.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Kidney']",
+        "sha256": "eeeb6f166bde4804b5d91933a3734954f84239e1abad3b3e000fcbe8609e5f80"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "bleedRate",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Kidney']/label",
+          "value": "kidney"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Kidney']/hitPoints",
+          "value": "15"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Kidney']/skinCovered",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Kidney']/tags/li",
+          "value": "BloodFiltrationKidney"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Liver",
+      "def_name": "Liver",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_Organs.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Liver']",
+        "sha256": "eeeb6f166bde4804b5d91933a3734954f84239e1abad3b3e000fcbe8609e5f80"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "bleedRate",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Liver']/label",
+          "value": "liver"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Liver']/hitPoints",
+          "value": "20"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Liver']/skinCovered",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Liver']/tags/li[1]",
+          "value": "BloodFiltrationLiver"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Liver']/tags/li[2]",
+          "value": "MetabolismSource"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "part",
+      "id": "BodyPartDef_Stomach",
+      "def_name": "Stomach",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Bodies/BodyParts_Organs.xml",
+        "xpath": "/Defs/BodyPartDef[defName='Stomach']",
+        "sha256": "eeeb6f166bde4804b5d91933a3734954f84239e1abad3b3e000fcbe8609e5f80"
+      },
+      "selected_paths": [
+        "label",
+        "hitPoints",
+        "bleedRate",
+        "skinCovered",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors",
+        "tags"
+      ],
+      "absent_paths": [
+        "bleedRate",
+        "solid",
+        "conceptual",
+        "destroyableByDamage",
+        "alive",
+        "delicate",
+        "socketed",
+        "hitChanceFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Stomach']/label",
+          "value": "stomach"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Stomach']/hitPoints",
+          "value": "20"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Stomach']/skinCovered",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/BodyPartDef[defName='Stomach']/tags/li",
+          "value": "MetabolismSource"
+        }
+      ],
+      "node_attributes": []
+    }
+  ]
+}

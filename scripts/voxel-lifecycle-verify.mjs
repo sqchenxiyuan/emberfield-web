@@ -105,11 +105,18 @@ async function auditControl(viewport, label, locator) {
   // reachable through its normal scrolling container without DOM mutation.
   await locator.scrollIntoViewIfNeeded();
   const afterScroll = await hitDetails(locator);
-  const check = { viewport, label, initial, afterScroll };
+  const disabled = await locator.isDisabled();
+  const disabledReason = disabled ? await locator.getAttribute('title') : null;
+  const check = { viewport, label, initial, afterScroll, disabled, disabledReason };
   report.uiChecks.push(check);
   if (!afterScroll.fullyWithinViewport || !afterScroll.allSamplePointsClickable)
     report.uiFailures.push({ viewport, label, reason: 'clipped or covered', details: afterScroll });
-  else await locator.click({ trial: true });
+  else if (disabled) {
+    // Research locks are legitimate UI states. Keep the layout/occlusion audit
+    // and verify the requirement instead of trying to click an unavailable tool.
+    assert.equal(label, '林地区', `Unexpected disabled control: ${label}`);
+    assert.equal(disabledReason, '需要研究「树木播种」');
+  } else await locator.click({ trial: true });
 }
 async function auditViewport(width, height) {
   await page.setViewportSize({ width, height }); await settle();

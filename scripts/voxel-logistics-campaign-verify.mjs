@@ -251,7 +251,7 @@ try {
   }
   const migrated = VoxelSimulation.load(legacy),
     newSave = migrated.save();
-  assert.equal(newSave.version, 15);
+  assert.equal(newSave.version, 16);
   const oldAges = foodAges(legacy),
     newAges = foodAges(newSave);
   assert.deepEqual(Object.keys(newAges).sort(), Object.keys(oldAges).sort());

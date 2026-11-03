@@ -1,0 +1,11 @@
+{
+  "capturedAt": "2026-11-03T03:36:09.108Z",
+  "workspaceCommit": "43173d3748cb4ab8e45ec4eca6c07bfeee03d8fd",
+  "publishedCommit": "95333e90a2849d6bc137147c4be558b52dec28f7",
+  "generator": "Exact normal-command campaign output, validated by the published v15 loader before anatomy edits",
+  "source": "test-results/voxel-research-campaign/research-working.json",
+  "sha256": "0404964426306f1b72a6d25dcf8aa035f2ef60b685fe1e0bc359407825e6aa97",
+  "version": 15,
+  "tick": 24424,
+  "loadedByOriginalSource": true
+}

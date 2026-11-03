@@ -295,7 +295,7 @@ describe('research save integrity and real v14 migration', () => {
       s = VoxelSimulation.load(old),
       saved = s.save();
     expect(old).toEqual(before);
-    expect(saved.version).toBe(15);
+    expect(saved.version).toBe(16);
     expect(saved.research.origin).toBe('legacy-unlocked');
     expect(saved.blocks).toEqual(old.blocks);
     expect(saved.items).toEqual(old.items);

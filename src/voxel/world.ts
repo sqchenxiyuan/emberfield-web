@@ -142,6 +142,7 @@ import {
 import {
   initialSurvival,
   healthSummary,
+  legacyHealthState,
   updateHealth,
   healthDeathReason,
   FEED_WORK,
@@ -154,10 +155,12 @@ import {
   traumaSummary,
   validTrauma,
   tendOne,
-  applyInjury,
-  BODY_REGIONS,
-  type BodyRegion,
+  applyBodyDamage,
+  needsTending,
+  migrateLegacyTrauma,
+  traumaIds,
 } from './injuries';
+import { BODY_PARTS, chooseHitPart } from './anatomy';
 import {
   CROPS,
   SIMPLE_MEAL,
@@ -2457,6 +2460,7 @@ export class VoxelSimulation {
   private startCare(p: Pawn, patient: Pawn, action: 'rescue' | 'feed' | 'tend'): boolean {
     if (
       p === patient ||
+      healthSummary(p).manipulation <= 0 ||
       p.dead ||
       p.downed ||
       p.drafted ||
@@ -2472,8 +2476,7 @@ export class VoxelSimulation {
       return false;
     const patientBed = this.patientBed(patient);
     if (action === 'tend') {
-      if (patient.drafted || !patient.trauma.wounds.some((w) => w.tendQuality === null))
-        return false;
+      if (patient.drafted || !needsTending(patient.trauma)) return false;
     } else if (action === 'rescue' ? !!patientBed : !patientBed || patient.food > 26) return false;
     this.search(p);
     const stand = this.careStand(patient);
@@ -2528,7 +2531,7 @@ export class VoxelSimulation {
     const patients = this.pawns
       .filter(
         (q) =>
-          (q.downed || q.trauma.wounds.some((w) => w.tendQuality === null)) &&
+          (q.downed || needsTending(q.trauma)) &&
           q.faction === 'colony' &&
           !q.drafted &&
           q.carePhase === null &&
@@ -2547,24 +2550,19 @@ export class VoxelSimulation {
         this.startCare(
           p,
           patient,
-          patient.trauma.wounds.some((w) => w.tendQuality === null)
-            ? 'tend'
-            : this.patientBed(patient)
-              ? 'feed'
-              : 'rescue',
+          needsTending(patient.trauma) ? 'tend' : this.patientBed(patient) ? 'feed' : 'rescue',
         )
       )
         return true;
     return false;
   }
   private validCare(p: Pawn): boolean {
+    if (healthSummary(p).manipulation <= 0) return false;
     const patient = this.pawns.find((q) => q.id === p.patientId);
     if (!patient || patient.dead || patient.faction !== 'colony' || patient.drafted || !p.carePhase)
       return false;
     if (p.carePhase.startsWith('tend'))
-      return (
-        patient.carriedBy === null && patient.trauma.wounds.some((w) => w.tendQuality === null)
-      );
+      return patient.carriedBy === null && needsTending(patient.trauma);
     if (!patient.downed) return false;
     if (p.carePhase === 'rescueApproach' || p.carePhase === 'rescueCarry')
       return (
@@ -2656,7 +2654,7 @@ export class VoxelSimulation {
       }
       p.carePhase = 'tend';
       p.destination = null;
-      p.careProgress += tendSpeed(p.skills, healthSummary(p).manipulation);
+      p.careProgress += tendSpeed(p.skills, healthSummary(p).manipulation, healthSummary(p).sight);
       p.reason = '无药包扎' + patient.name;
       if (p.careProgress < 200) return;
       learnSkill(p.skills.medicine, 250);
@@ -2665,10 +2663,10 @@ export class VoxelSimulation {
         this.seed,
         p.id,
         this.tick,
-        tendQuality(p.skills, healthSummary(p).manipulation),
+        tendQuality(p.skills, healthSummary(p).manipulation, healthSummary(p).sight),
       );
       p.careProgress = 0;
-      if (!patient.trauma.wounds.some((w) => w.tendQuality === null)) {
+      if (!needsTending(patient.trauma)) {
         this.release(p);
         p.reason = '已完成包扎，伤口继续自然愈合';
       }
@@ -2710,9 +2708,15 @@ export class VoxelSimulation {
     const inBed = this.beds.some((b) => b.id === p.sleepBedId && same(b, p));
     if (p.weapon && (death || summary.manipulation <= 0 || (downed && !inBed)))
       p.weaponDropPending = true;
-    // Losing both usable arms need not knock a pawn down. Cancel its equipment
-    // action before forced drops or arrival can reuse an invalid reservation.
-    if (summary.manipulation <= 0 && p.weaponTask) this.release(p);
+    // Capacity loss can leave a conscious pawn standing. Release reservations
+    // before another tick can perform labor, hauling or care with unusable hands.
+    if (
+      summary.manipulation <= 0 &&
+      (p.weaponTask || p.jobId !== null || p.carePhase !== null || p.phase === 'haul')
+    ) {
+      this.release(p);
+      p.reason = '操作能力不足，已中止劳动';
+    }
     if (death || p.downed !== downed) {
       const bed = this.beds.find((b) => b.id === p.sleepBedId && same(b, p)) ?? this.patientBed(p);
       for (const q of this.pawns) if (q.patientId === p.id) this.release(q);
@@ -2896,7 +2900,7 @@ export class VoxelSimulation {
       if (
         !targetImmobile &&
         plantRandom(this.seed, p.id, this.tick, 12) >=
-          meleeHitChance(p.skills, healthSummary(p).manipulation)
+          meleeHitChance(p.skills, healthSummary(p).manipulation, healthSummary(p).sight)
       ) {
         p.reason = '近战落空：' + target.name;
         return;
@@ -2904,24 +2908,32 @@ export class VoxelSimulation {
       if (
         !targetImmobile &&
         plantRandom(this.seed, p.id, this.tick, 15) <
-          meleeDodgeChance(target.skills, healthSummary(target).moving)
+          meleeDodgeChance(target.skills, healthSummary(target).moving, healthSummary(target).sight)
       ) {
         p.reason = target.name + '躲开了近战攻击';
         return;
       }
-      const regions = (Object.keys(BODY_REGIONS) as BodyRegion[]).filter(
-        (r) => !target!.trauma.brokenParts.includes(r),
+      const part = chooseHitPart(
+        target.trauma,
+        strike.damageDef,
+        plantRandom(this.seed, p.id, this.tick, 13),
       );
-      let weight =
-        plantRandom(this.seed, p.id, this.tick, 13) *
-        regions.reduce((n, r) => n + BODY_REGIONS[r].weight, 0);
-      const part = regions.find((r) => (weight -= BODY_REGIONS[r].weight) <= 0) ?? 'torso';
+      if (part === null) return;
       const damage = Math.max(
         1,
         Math.round(strike.damage * (0.8 + plantRandom(this.seed, p.id, this.tick, 14) * 0.4)),
       );
-      applyInjury(target.trauma, this.id(), part, strike.kind, damage);
-      p.reason = '击中' + target.name + '的' + BODY_REGIONS[part].name;
+      let damageStream = 20;
+      const result = applyBodyDamage(target.trauma, strike.damageDef, part, damage, {
+        random: () => plantRandom(this.seed, p.id, this.tick, damageStream++),
+        allocId: () => this.id(),
+      });
+      p.reason = result.hits.length
+        ? '击中' +
+          target.name +
+          '的' +
+          [...new Set(result.hits.map((hit) => BODY_PARTS[hit.part].name))].join('、')
+        : '攻击' + target.name + '，未造成新的伤口';
       this.reconcileHealth(target);
       if (target.dead || target.downed) {
         p.attackTargetId = null;
@@ -3303,6 +3315,11 @@ export class VoxelSimulation {
       this.startSleep(p);
       return;
     }
+    if (healthSummary(p).manipulation <= 0) {
+      this.dropCargo(p);
+      p.reason = '操作能力不足，无法劳动';
+      return;
+    }
     if (p.cargo) {
       this.deliverCargo(p);
       return;
@@ -3415,7 +3432,7 @@ export class VoxelSimulation {
   }
   /** Uses the current navigation search; shared by idle and research preemption. */
   private tryHaul(p: Pawn): boolean {
-    if (p.priorities.haul > 0) {
+    if (p.priorities.haul > 0 && healthSummary(p).manipulation > 0) {
       let best: Stack | undefined;
       let priority = -1;
       for (const i of this.items)
@@ -3791,6 +3808,7 @@ export class VoxelSimulation {
               p.skills,
               healthSummary(p).manipulation,
               this.researchBenchFactor(bench),
+              healthSummary(p).sight,
             ),
         );
         learnSkill(p.skills.intellectual, jobXP('research'));
@@ -3842,11 +3860,12 @@ export class VoxelSimulation {
           j.progress +
             (cutting ? treeWorkSpeed(cutting.growth) : 1) *
               (j.material === 'stone' && ['wall', 'floor'].includes(j.kind) ? 0.8 : 1) *
-              workSpeed(p.skills, j.kind, healthSummary(p).manipulation),
+              workSpeed(p.skills, j.kind, healthSummary(p).manipulation, healthSummary(p).sight),
         );
         if (j.kind === 'mine' || j.kind === 'digLadder')
           j.miningYieldWork! +=
-            (j.progress - previousProgress) * miningYield(p.skills, healthSummary(p).manipulation);
+            (j.progress - previousProgress) *
+            miningYield(p.skills, healthSummary(p).manipulation, healthSummary(p).sight);
       }
       if (j.progress >= j.work) {
         this.lockWorkOutcome(p, j);
@@ -3859,7 +3878,7 @@ export class VoxelSimulation {
       const tree = j.kind === 'cut' ? this.trees.find((t) => same(t, j)) : undefined;
       const crop = j.kind === 'harvest' ? this.crops.find((c) => same(c, j)) : undefined;
       const base = tree ? treeYield(tree, this.seed) : crop ? CROPS[crop.kind].yield : 0;
-      const factor = plantYield(p.skills, healthSummary(p).manipulation);
+      const factor = plantYield(p.skills, healthSummary(p).manipulation, healthSummary(p).sight);
       const fails = j.kind === 'harvest' && plantRandom(this.seed, j.id, p.id, 4702) > factor;
       const exact = fails ? 0 : base * Math.max(1, factor);
       j.harvestResult = {
@@ -4746,7 +4765,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 15,
+      version: 16,
       combat: this.combat,
       generator: this.generator,
       settings: this.settings,
@@ -4783,7 +4802,7 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
@@ -4968,7 +4987,7 @@ export class VoxelSimulation {
       if (!Array.isArray(old.pawns)) throw new Error('旧人物数据无效');
       for (const p of old.pawns)
         Object.assign(p, {
-          trauma: initialTrauma(),
+          trauma: { wounds: [], bloodLoss: 0, brokenParts: [] },
           faction: 'colony',
           drafted: false,
           retreating: false,
@@ -5030,7 +5049,36 @@ export class VoxelSimulation {
       old.research = initialResearch(true);
       old.version = 15;
     }
+    const migrateAnatomy = old.version === 15;
+    const oldHealth = new Map<
+      number,
+      ReturnType<typeof legacyHealthState> & { needsTending: boolean }
+    >();
+    if (migrateAnatomy) {
+      if (!Array.isArray(old.pawns) || !Number.isSafeInteger(old.nextId) || old.nextId <= 0)
+        throw new Error('旧人体存档无效');
+      for (const p of old.pawns) {
+        const previous = p.trauma;
+        const trauma = migrateLegacyTrauma(previous, old.tick, () => old.nextId++);
+        oldHealth.set(p.id, {
+          ...legacyHealthState(p.health, previous),
+          needsTending: previous.wounds.some(
+            (w: { tendQuality: number | null }) => w.tendQuality === null,
+          ),
+        });
+        p.trauma = trauma;
+      }
+      old.version = 16;
+    }
     const d = old as VoxelSave;
+    const loadHealth = (p: Pawn) =>
+      oldHealth.get(p.id) ?? {
+        ...healthSummary(p),
+        dead: healthDeathReason(p.health, p.trauma) !== null,
+        deathReason: healthDeathReason(p.health, p.trauma),
+      };
+    const loadNeedsTending = (p: Pawn) =>
+      oldHealth.get(p.id)?.needsTending ?? needsTending(p.trauma);
     if (!validResearch(d.research)) throw new Error('研究进度、前置或当前项目无效');
     if (
       !validWorldSettings(d.settings) ||
@@ -5599,9 +5647,9 @@ export class VoxelSimulation {
           p.phase !== 'weapon')
       )
         throw new Error('人物外伤或战斗状态无效');
-      for (const wound of p.trauma.wounds) {
-        if (ids.has(wound.id) || wound.id >= d.nextId) throw new Error('伤口身份重复或无效');
-        ids.add(wound.id);
+      for (const id of traumaIds(p.trauma)) {
+        if (ids.has(id) || id >= d.nextId) throw new Error('伤情身份重复或无效');
+        ids.add(id);
       }
       if (
         !Array.isArray(p.worn) ||
@@ -5631,7 +5679,7 @@ export class VoxelSimulation {
           p.downed ||
           p.carriedBy !== null ||
           p.weaponDropPending ||
-          healthSummary(p).manipulation <= 0 ||
+          loadHealth(p).manipulation <= 0 ||
           p.faction !== 'colony' ||
           p.jobId !== null ||
           p.eating !== null ||
@@ -5706,13 +5754,13 @@ export class VoxelSimulation {
         p.health.starvationFactor > 1.2 ||
         typeof p.dead !== 'boolean' ||
         typeof p.downed !== 'boolean' ||
-        p.dead !== (healthDeathReason(p.health, p.trauma) !== null) ||
-        p.deathReason !== (p.dead ? healthDeathReason(p.health, p.trauma) : null) ||
+        p.dead !== loadHealth(p).dead ||
+        p.deathReason !== (p.dead ? loadHealth(p).deathReason : null) ||
         p.downed !==
           (!p.dead &&
-            (healthSummary(p).pain >= 0.8 ||
-              healthSummary(p).consciousness < 0.3 ||
-              healthSummary(p).moving <= 0.15)) ||
+            (loadHealth(p).pain >= 0.8 ||
+              loadHealth(p).consciousness < 0.3 ||
+              loadHealth(p).moving <= 0.15)) ||
         ![
           'idle',
           'travel',
@@ -5778,7 +5826,8 @@ export class VoxelSimulation {
       const patient = d.pawns.find((q) => q.id === p.patientId);
       if (
         p.carePhase !== null &&
-        (!patient ||
+        ((!migrateAnatomy && loadHealth(p).manipulation <= 0) ||
+          !patient ||
           patient === p ||
           patient.dead ||
           (!p.carePhase.startsWith('tend') && !patient.downed) ||
@@ -5791,7 +5840,7 @@ export class VoxelSimulation {
         throw new Error('病人护理预定无效');
       if (
         p.carePhase?.startsWith('tend') &&
-        (!patient?.trauma.wounds.some((w) => w.tendQuality === null) || patient.carriedBy !== null)
+        (!patient || !loadNeedsTending(patient) || patient.carriedBy !== null)
       )
         throw new Error('包扎目标无有效伤口');
       if (p.carriedBy !== null) {
@@ -6202,8 +6251,14 @@ export class VoxelSimulation {
         }
       }
     }
+    if (migrateAnatomy) {
+      for (const p of s.pawns) s.reconcileHealth(p);
+      for (const p of s.pawns) if (p.carePhase !== null && !s.validCare(p)) s.release(p);
+    }
     s.markAll();
-    s.notice = '体素存档已恢复；路径与任务预定重新建立';
+    s.notice = migrateAnatomy
+      ? '旧存档已升级：伤势保留，身体能力按新规则重算；请在暂停中检查人物'
+      : '体素存档已恢复；路径与任务预定重新建立';
     return s;
   }
 }

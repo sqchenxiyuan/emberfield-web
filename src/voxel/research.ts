@@ -220,7 +220,8 @@ export function researchPointsPerTick(
   skills: SkillSet,
   manipulation: number,
   benchFactor: number,
+  sight = 1,
 ): number {
   if (!Number.isFinite(benchFactor) || benchFactor < 0) throw new RangeError('研究台效率无效');
-  return 0.02475 * researchSpeed(skills, manipulation) * benchFactor;
+  return 0.02475 * researchSpeed(skills, manipulation, sight) * benchFactor;
 }
