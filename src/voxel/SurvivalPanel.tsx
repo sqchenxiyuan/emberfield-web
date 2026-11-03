@@ -1,5 +1,6 @@
 import { healthSummary } from './survival';
 import type { Pawn } from './types';
+import { BODY_REGIONS } from './injuries';
 
 export function SurvivalPanel({ pawn, temperature }: { pawn: Pawn; temperature: number }) {
   const summary = healthSummary(pawn);
@@ -38,6 +39,42 @@ export function SurvivalPanel({ pawn, temperature }: { pawn: Pawn; temperature: 
           {pawn.dead ? '已死亡' : pawn.downed ? '倒地 · 需要援助' : summary.reason}
         </strong>
       </div>
+      {(pawn.trauma.wounds.length > 0 ||
+        pawn.trauma.bloodLoss > 0 ||
+        pawn.trauma.brokenParts.length > 0) && (
+        <div data-testid="injury-detail">
+          <div className="voxel-info-row">
+            <span>疼痛 {Math.round(summary.pain * 100)}%</span>
+            <b>失血 {(pawn.trauma.bloodLoss * 100).toFixed(1)}%</b>
+          </div>
+          <small>
+            {summary.bleedRate > 0
+              ? `出血 ${Math.round(summary.bleedRate * 100)}% / 天，尽快安排包扎。`
+              : '没有持续出血；血液与伤口恢复需要时间。'}
+          </small>
+          {pawn.trauma.brokenParts.map((part) => (
+            <small className="danger" key={part}>
+              {BODY_REGIONS[part].name}已损毁，无法自然恢复功能。
+            </small>
+          ))}
+          {pawn.trauma.wounds.map((w) => (
+            <div className="voxel-condition" key={w.id}>
+              <div>
+                <span>
+                  {BODY_REGIONS[w.part].name} ·{' '}
+                  {{ bruise: '挫伤', bite: '咬伤', cut: '割伤', stab: '刺伤' }[w.kind]}
+                </span>
+                <b>{w.severity.toFixed(1)}</b>
+              </div>
+              <small>
+                {w.tendQuality === null
+                  ? '尚未包扎'
+                  : `已包扎 · 品质 ${Math.round(w.tendQuality * 100)}%`}
+              </small>
+            </div>
+          ))}
+        </div>
+      )}
       {pawn.dead ? (
         <p>{pawn.deathReason ?? '死亡'}。遗体与随身物资保留在地图中。</p>
       ) : (

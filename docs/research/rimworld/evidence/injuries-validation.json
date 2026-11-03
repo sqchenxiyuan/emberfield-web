@@ -1,0 +1,287 @@
+{
+  "status": "pass",
+  "checked_at_utc": "2026-11-02T23:48:57.8025044Z",
+  "original_game_executed": false,
+  "installed_assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "installed_xml_files": 23,
+  "fresh_xml_matches": true,
+  "local": {
+    "status": "pass",
+    "version": "1.7.4980 rev60",
+    "newTypes": 20,
+    "reusedTypes": 13,
+    "claims": 24,
+    "codeReferences": 71,
+    "xmlReferences": 70,
+    "xmlFiles": 23,
+    "xmlRecords": 67,
+    "xmlLeaves": 608,
+    "xmlAttributes": 11,
+    "xmlAbsences": 269,
+    "cases": 18,
+    "analyticAssertions": 195,
+    "localDerivedFilesVerified": 33,
+    "bodyRecords": 64,
+    "outsideRecords": 39,
+    "outsideCoverage": 0.619631,
+    "bodyCoverage": [
+      {
+        "part": "Torso",
+        "count": 1,
+        "absoluteCoverage": 0.1499999999999999,
+        "normalizedOutsideCoverage": 0.24207956025440933,
+        "baseHP": 40,
+        "partBleedFactor": 1
+      },
+      {
+        "part": "Neck",
+        "count": 1,
+        "absoluteCoverage": 0.014999999999999996,
+        "normalizedOutsideCoverage": 0.02420795602544094,
+        "baseHP": 25,
+        "partBleedFactor": 4
+      },
+      {
+        "part": "Head",
+        "count": 1,
+        "absoluteCoverage": 0.017399999999999995,
+        "normalizedOutsideCoverage": 0.02808122898951149,
+        "baseHP": 25,
+        "partBleedFactor": 2
+      },
+      {
+        "part": "Eye",
+        "count": 2,
+        "absoluteCoverage": 0.008400000000000001,
+        "normalizedOutsideCoverage": 0.013556455374246932,
+        "baseHP": 10,
+        "partBleedFactor": 1
+      },
+      {
+        "part": "Ear",
+        "count": 2,
+        "absoluteCoverage": 0.008400000000000001,
+        "normalizedOutsideCoverage": 0.013556455374246932,
+        "baseHP": 12,
+        "partBleedFactor": 1
+      },
+      {
+        "part": "Nose",
+        "count": 1,
+        "absoluteCoverage": 0.006,
+        "normalizedOutsideCoverage": 0.00968318241017638,
+        "baseHP": 10,
+        "partBleedFactor": 0
+      },
+      {
+        "part": "Jaw",
+        "count": 1,
+        "absoluteCoverage": 0.008990999999999999,
+        "normalizedOutsideCoverage": 0.014510248841649302,
+        "baseHP": 20,
+        "partBleedFactor": 0
+      },
+      {
+        "part": "Shoulder",
+        "count": 2,
+        "absoluteCoverage": 0.033600000000000005,
+        "normalizedOutsideCoverage": 0.05422582149698773,
+        "baseHP": 30,
+        "partBleedFactor": 1
+      },
+      {
+        "part": "Arm",
+        "count": 2,
+        "absoluteCoverage": 0.12196799999999998,
+        "normalizedOutsideCoverage": 0.19683973203406538,
+        "baseHP": 30,
+        "partBleedFactor": 1
+      },
+      {
+        "part": "Hand",
+        "count": 2,
+        "absoluteCoverage": 0.01655808,
+        "normalizedOutsideCoverage": 0.026722484833715546,
+        "baseHP": 20,
+        "partBleedFactor": 1
+      },
+      {
+        "part": "Finger",
+        "count": 10,
+        "absoluteCoverage": 0.009313920000000002,
+        "normalizedOutsideCoverage": 0.015031397718964999,
+        "baseHP": 8,
+        "partBleedFactor": 1
+      },
+      {
+        "part": "Leg",
+        "count": 2,
+        "absoluteCoverage": 0.196,
+        "normalizedOutsideCoverage": 0.3163172920657617,
+        "baseHP": 30,
+        "partBleedFactor": 1
+      },
+      {
+        "part": "Foot",
+        "count": 2,
+        "absoluteCoverage": 0.01708,
+        "normalizedOutsideCoverage": 0.027564792594302095,
+        "baseHP": 25,
+        "partBleedFactor": 1
+      },
+      {
+        "part": "Toe",
+        "count": 10,
+        "absoluteCoverage": 0.010920000000000003,
+        "normalizedOutsideCoverage": 0.017623391986521013,
+        "baseHP": 8,
+        "partBleedFactor": 1
+      }
+    ],
+    "originalGameExecuted": false,
+    "limitation": "Static derived code and selected XML plus independent arithmetic/branch models; no native runtime, effective mods, full damage propagation or project gameplay equivalence."
+  },
+  "portable": {
+    "status": "pass",
+    "version": "1.7.4980 rev60",
+    "newTypes": 20,
+    "reusedTypes": 13,
+    "claims": 24,
+    "codeReferences": 71,
+    "xmlReferences": 70,
+    "xmlFiles": 23,
+    "xmlRecords": 67,
+    "xmlLeaves": 608,
+    "xmlAttributes": 11,
+    "xmlAbsences": 269,
+    "cases": 18,
+    "analyticAssertions": 195,
+    "localDerivedFilesVerified": 0,
+    "bodyRecords": 64,
+    "outsideRecords": 39,
+    "outsideCoverage": 0.619631,
+    "bodyCoverage": [
+      {
+        "part": "Torso",
+        "count": 1,
+        "absoluteCoverage": 0.1499999999999999,
+        "normalizedOutsideCoverage": 0.24207956025440933,
+        "baseHP": 40,
+        "partBleedFactor": 1
+      },
+      {
+        "part": "Neck",
+        "count": 1,
+        "absoluteCoverage": 0.014999999999999996,
+        "normalizedOutsideCoverage": 0.02420795602544094,
+        "baseHP": 25,
+        "partBleedFactor": 4
+      },
+      {
+        "part": "Head",
+        "count": 1,
+        "absoluteCoverage": 0.017399999999999995,
+        "normalizedOutsideCoverage": 0.02808122898951149,
+        "baseHP": 25,
+        "partBleedFactor": 2
+      },
+      {
+        "part": "Eye",
+        "count": 2,
+        "absoluteCoverage": 0.008400000000000001,
+        "normalizedOutsideCoverage": 0.013556455374246932,
+        "baseHP": 10,
+        "partBleedFactor": 1
+      },
+      {
+        "part": "Ear",
+        "count": 2,
+        "absoluteCoverage": 0.008400000000000001,
+        "normalizedOutsideCoverage": 0.013556455374246932,
+        "baseHP": 12,
+        "partBleedFactor": 1
+      },
+      {
+        "part": "Nose",
+        "count": 1,
+        "absoluteCoverage": 0.006,
+        "normalizedOutsideCoverage": 0.00968318241017638,
+        "baseHP": 10,
+        "partBleedFactor": 0
+      },
+      {
+        "part": "Jaw",
+        "count": 1,
+        "absoluteCoverage": 0.008990999999999999,
+        "normalizedOutsideCoverage": 0.014510248841649302,
+        "baseHP": 20,
+        "partBleedFactor": 0
+      },
+      {
+        "part": "Shoulder",
+        "count": 2,
+        "absoluteCoverage": 0.033600000000000005,
+        "normalizedOutsideCoverage": 0.05422582149698773,
+        "baseHP": 30,
+        "partBleedFactor": 1
+      },
+      {
+        "part": "Arm",
+        "count": 2,
+        "absoluteCoverage": 0.12196799999999998,
+        "normalizedOutsideCoverage": 0.19683973203406538,
+        "baseHP": 30,
+        "partBleedFactor": 1
+      },
+      {
+        "part": "Hand",
+        "count": 2,
+        "absoluteCoverage": 0.01655808,
+        "normalizedOutsideCoverage": 0.026722484833715546,
+        "baseHP": 20,
+        "partBleedFactor": 1
+      },
+      {
+        "part": "Finger",
+        "count": 10,
+        "absoluteCoverage": 0.009313920000000002,
+        "normalizedOutsideCoverage": 0.015031397718964999,
+        "baseHP": 8,
+        "partBleedFactor": 1
+      },
+      {
+        "part": "Leg",
+        "count": 2,
+        "absoluteCoverage": 0.196,
+        "normalizedOutsideCoverage": 0.3163172920657617,
+        "baseHP": 30,
+        "partBleedFactor": 1
+      },
+      {
+        "part": "Foot",
+        "count": 2,
+        "absoluteCoverage": 0.01708,
+        "normalizedOutsideCoverage": 0.027564792594302095,
+        "baseHP": 25,
+        "partBleedFactor": 1
+      },
+      {
+        "part": "Toe",
+        "count": 10,
+        "absoluteCoverage": 0.010920000000000003,
+        "normalizedOutsideCoverage": 0.017623391986521013,
+        "baseHP": 8,
+        "partBleedFactor": 1
+      }
+    ],
+    "originalGameExecuted": false,
+    "limitation": "Static derived code and selected XML plus independent arithmetic/branch models; no native runtime, effective mods, full damage propagation or project gameplay equivalence."
+  },
+  "negative": {
+    "status": "pass",
+    "rejected": 22,
+    "baseline": "portable pass",
+    "scope": "Evidence corruption is rejected; these are verifier tests, not gameplay tests."
+  },
+  "scope": "Static artifact and independent arithmetic verification. No original game code execution or project simulation equivalence."
+}

@@ -56,6 +56,8 @@ jobs:
         run: npm run test:voxel:stonecutting
       - name: Verify cotton growth, cross-level tailoring, physical outfits and temperature effects
         run: npm run test:voxel:apparel
+      - name: Verify scheduled raids, real melee injuries, physical tending and recovery
+        run: npm run test:voxel:injuries
       - name: Build site with relative asset and Worker URLs
         run: npm run build
       - name: Configure GitHub Pages

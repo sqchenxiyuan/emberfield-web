@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "research:check": "node scripts/research/verify-research.mjs && node scripts/research/verify-food-evidence.mjs && node scripts/research/verify-housing-evidence.mjs && node scripts/research/verify-energy-evidence.mjs && node scripts/research/verify-preservation-evidence.mjs && node scripts/research/verify-native-preservation-runtime.mjs && node scripts/research/verify-logistics-evidence.mjs && node scripts/research/verify-logistics-runtime.mjs && node scripts/research/verify-stonecutting-evidence.mjs && node scripts/research/verify-stonecutting-runtime.mjs && node scripts/research/verify-biomes-evidence.mjs && node scripts/research/verify-biomes-runtime.mjs && node scripts/research/verify-plants-evidence.mjs && node scripts/research/verify-voxel-plants-validation.mjs && node scripts/research/verify-plants-runtime.mjs && node scripts/research/verify-survival-evidence.mjs && node scripts/research/verify-survival-runtime.mjs && node scripts/research/verify-voxel-survival-validation.mjs && node scripts/research/verify-apparel-evidence.mjs && node scripts/research/verify-native-apparel-runtime.mjs && node scripts/research/verify-voxel-apparel-validation.mjs",
+    "research:check": "node scripts/research/verify-research.mjs && node scripts/research/verify-food-evidence.mjs && node scripts/research/verify-housing-evidence.mjs && node scripts/research/verify-energy-evidence.mjs && node scripts/research/verify-preservation-evidence.mjs && node scripts/research/verify-native-preservation-runtime.mjs && node scripts/research/verify-logistics-evidence.mjs && node scripts/research/verify-logistics-runtime.mjs && node scripts/research/verify-stonecutting-evidence.mjs && node scripts/research/verify-stonecutting-runtime.mjs && node scripts/research/verify-biomes-evidence.mjs && node scripts/research/verify-biomes-runtime.mjs && node scripts/research/verify-plants-evidence.mjs && node scripts/research/verify-voxel-plants-validation.mjs && node scripts/research/verify-plants-runtime.mjs && node scripts/research/verify-survival-evidence.mjs && node scripts/research/verify-survival-runtime.mjs && node scripts/research/verify-voxel-survival-validation.mjs && node scripts/research/verify-apparel-evidence.mjs && node scripts/research/verify-native-apparel-runtime.mjs && node scripts/research/verify-voxel-apparel-validation.mjs && node scripts/research/verify-injuries-evidence.mjs && node scripts/research/verify-native-injuries-runtime.mjs && node scripts/research/verify-voxel-injuries-validation.mjs",
     "dev": "vite --host 127.0.0.1 --port 5178 --strictPort",
     "check": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
@@ -39,7 +39,9 @@
     "test:voxel:survival": "node scripts/voxel-survival-campaign-verify.mjs && node scripts/voxel-survival-temperature-verify.mjs",
     "test:voxel:survival:browser": "node scripts/voxel-survival-browser-verify.mjs",
     "test:voxel:apparel": "node scripts/voxel-apparel-campaign-verify.mjs && node scripts/voxel-apparel-temperature-verify.mjs",
-    "test:voxel:apparel:browser": "node scripts/voxel-apparel-browser-verify.mjs"
+    "test:voxel:apparel:browser": "node scripts/voxel-apparel-browser-verify.mjs",
+    "test:voxel:injuries": "node scripts/voxel-injuries-campaign-verify.mjs",
+    "test:voxel:injuries:browser": "node scripts/voxel-injuries-browser-verify.mjs"
   },
   "dependencies": {
     "pixi.js": "8.22.0",

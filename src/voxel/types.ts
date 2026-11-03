@@ -1,3 +1,4 @@
+import type { Trauma } from './injuries';
 // Voxel rules are Emberfield designs. See research/10 for source boundaries.
 export const WIDTH = 64,
   DEPTH = 64,
@@ -349,7 +350,19 @@ export interface SurvivalHealth {
   /** Fixed individual severity rate, sampled once; not rerolled on load. */
   starvationFactor: number;
 }
-export type CarePhase = 'rescueApproach' | 'rescueCarry' | 'feedFetch' | 'feedApproach' | 'feed';
+export type CarePhase =
+  | 'rescueApproach'
+  | 'rescueCarry'
+  | 'feedFetch'
+  | 'feedApproach'
+  | 'feed'
+  | 'tendApproach'
+  | 'tend';
+export interface CombatState {
+  enabled: boolean;
+  nextRaid: number;
+  wave: number;
+}
 export interface Pawn extends Pos {
   id: number;
   name: string;
@@ -357,6 +370,14 @@ export interface Pawn extends Pos {
   food: number;
   rest: number;
   health: SurvivalHealth;
+  trauma: Trauma;
+  faction: 'colony' | 'raider';
+  drafted: boolean;
+  retreating: boolean;
+  attackTargetId: number | null;
+  nextAttackTick: number;
+  /** Initial equipment stays with its owner, including on the corpse. */
+  weapon: 'fists' | 'steelKnife';
   worn: ApparelPiece[];
   apparelTask: ApparelTask | null;
   apparelWearTicks: number;
@@ -385,6 +406,7 @@ export interface Pawn extends Pos {
     | 'sleepTravel'
     | 'care'
     | 'apparel'
+    | 'combat'
     | 'downed'
     | 'dead';
   cargo: Cargo | null;
@@ -428,6 +450,7 @@ export interface VoxelStats {
   spoiled: Counts;
 }
 export interface VoxelSnapshot {
+  combat: CombatState;
   seed: number;
   generator: 1 | 2;
   settings: WorldSettings;
@@ -477,6 +500,9 @@ export interface ChunkUpdate {
   ladders: Uint8Array;
 }
 export type VoxelCommand =
+  | { type: 'threats'; enabled: boolean }
+  | { type: 'draft'; pawnId: number; drafted: boolean }
+  | { type: 'attack'; pawnId: number; targetId: number }
   | {
       type: 'storage';
       from: Pos;
@@ -504,7 +530,7 @@ export type VoxelCommand =
   | { type: 'removeApparel'; pawnId: number; apparelId: number }
   | { type: 'bedOwner'; bedId: number; pawnId: number | null }
   | { type: 'bedMedical'; bedId: number; medical: boolean }
-  | { type: 'care'; pawnId: number; patientId: number; action: 'rescue' | 'feed' }
+  | { type: 'care'; pawnId: number; patientId: number; action: 'rescue' | 'feed' | 'tend' }
   | { type: 'door'; doorId: number; mode: Door['mode'] }
   | { type: 'schedule'; pawnId: number; hour: number; assignment: Assignment }
   | { type: 'rest'; pawnId: number }
@@ -516,7 +542,8 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 11;
+  version: 12;
+  combat: CombatState;
   generator: 1 | 2;
   settings: WorldSettings;
   spawn: Pos;

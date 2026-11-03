@@ -1,0 +1,44 @@
+param([Parameter(Mandatory=$true)][string]$GameRoot,[string]$Output=(Join-Path $PSScriptRoot '../../docs/research/rimworld/evidence/injuries-xml.json'))
+$ErrorActionPreference='Stop'
+$assembly=(Get-FileHash -LiteralPath (Join-Path $GameRoot 'Assembly-CSharp.dll') -Algorithm SHA256).Hash.ToLowerInvariant()
+if($assembly -ne 'eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3'){throw 'Review changed source before updating injury evidence.'}
+$injury=@('hediffClass','tendable','injuryProps/painPerSeverity','injuryProps/averagePainPerSeverityPermanent','injuryProps/bleedRate','injuryProps/canMerge','comps/li[@Class="HediffCompProperties_TendDuration"]/baseTendDurationHours','comps/li[@Class="HediffCompProperties_TendDuration"]/tendAllAtOnce','comps/li[@Class="HediffCompProperties_Infecter"]/infectionChance')
+$stat=@('defaultBaseValue','minValue','maxValue','parts','statFactors','skillNeedFactors','capacityFactors','postProcessCurve')
+$plant=@('statBases/MaxHitPoints','plant/growDays','plant/harvestedThingDef','plant/harvestYield','plant/harvestTag','plant/fertilityMin','plant/fertilitySensitivity','plant/sowWork','plant/harvestWork','plant/sowMinSkill','plant/sowTags','plant/harvestMinGrowth','plant/harvestFailable')
+$part=@('hitPoints','bleedRate','solid','skinCovered','conceptual','hitChanceFactors','tags')
+$weapon=@('tools','statBases','stuffCategories','comps','costStuffCount')
+$selections=@(
+ @('injury','Data/Core/Defs/HediffDefs/Hediffs_Local_Injuries.xml',"/Defs/HediffDef[@Name='InjuryBase' or defName='MissingBodyPart' or defName='Bruise' or defName='Bite' or defName='Cut' or defName='Stab' or defName='Crush' or defName='Gunshot']",$injury),
+ @('blood','Data/Core/Defs/HediffDefs/Hediffs_Global_Misc.xml',"/Defs/HediffDef[defName='BloodLoss']",@('lethalSeverity','stages','tendable','comps')),
+ @('giver','Data/Core/Defs/HediffGiverSetDefs/HediffGiverSets.xml',"/Defs/HediffGiverSetDef[defName='OrganicStandard']",@("hediffGivers/li[@Class='HediffGiver_Bleeding']")),
+ @('medicine','Data/Core/Defs/ThingDefs_Items/Items_Resource_Manufactured.xml',"/Defs/ThingDef[@Name='MedicineBase' or defName='MedicineHerbal' or defName='MedicineIndustrial' or defName='MedicineUltratech']",@('thingClass','stackLimit','statBases','comps','costList','recipeMaker','tickerType')),
+ @('resource','Data/Core/Defs/ThingDefs_Items/Items_Resource_Base.xml',"/Defs/ThingDef[@Name='ResourceBase']",@('stackLimit','statBases','comps')),
+ @('plant','Data/Core/Defs/ThingDefs_Plants/Plants_Cultivated_Farm.xml',"/Defs/ThingDef[@Name='HealrootBase' or defName='Plant_Healroot']",$plant),
+ @('plant','Data/Core/Defs/ThingDefs_Plants/Plants_Wild_General.xml',"/Defs/ThingDef[defName='Plant_HealrootWild']",$plant),
+ @('plant','Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml',"/Defs/ThingDef[@Name='PlantBase' or @Name='PlantBaseNonEdible']",$plant),
+ @('human','Data/Core/Defs/ThingDefs_Races/Races_Humanlike.xml',"/Defs/ThingDef[defName='Human']",@('tools','race/body','race/baseHealthScale','race/bleedRateFactor','race/hediffGiverSets')),
+ @('body','Data/Core/Defs/Bodies/Bodies_Humanlike.xml',"/Defs/BodyDef[defName='Human']",@('corePart//def','corePart//coverage','corePart//height','corePart//depth','corePart//groups')),
+ @('part','Data/Core/Defs/Bodies/BodyParts_Humanoid.xml',"/Defs/BodyPartDef[defName='Torso' or defName='Shoulder' or defName='Arm' or defName='Hand' or defName='Finger' or defName='Toe']",$part),
+ @('part','Data/Core/Defs/Bodies/BodyParts_General.xml',"/Defs/BodyPartDef[defName='Head' or defName='Neck' or defName='Leg' or defName='Foot' or defName='Eye' or defName='Ear' or defName='Nose' or defName='Jaw']",$part),
+ @('maneuver','Data/Core/Defs/Maneuvers/Maneuvers.xml',"/Defs/ManeuverDef[defName='Smash' or defName='Bite' or defName='Slash' or defName='Stab']",@('requiredCapacity','verb')),
+ @('damage','Data/Core/Defs/DamageDefs/Damages_MeleeWeapon.xml',"/Defs/DamageDef[defName='Blunt' or defName='Bite' or defName='Cut' or defName='Stab']",@('workerClass','hediff','hediffSkin','hediffSolid','armorCategory','externalViolence','harmAllLayersUntilOutside','stabChanceOfForcedInternal','cutExtraTargetsCurve','cutCleaveBonus','bluntInnerHitChance','bluntInnerHitDamageFractionToConvert','bluntInnerHitDamageFractionToAdd','overkillPctToDestroyPart')),
+ @('stat','Data/Core/Defs/Stats/Stats_Pawns_WorkMedical.xml',"/Defs/StatDef[defName='MedicalTendSpeed' or defName='MedicalTendQuality']",$stat),
+ @('stat','Data/Core/Defs/Stats/Stats_Basics_Special.xml',"/Defs/StatDef[defName='MedicalPotency' or defName='MedicalQualityMax']",$stat),
+ @('stat','Data/Core/Defs/Stats/Stats_Pawns_Combat.xml',"/Defs/StatDef[defName='MeleeDamageFactor' or defName='MeleeCooldownFactor' or defName='MeleeHitChance' or defName='MeleeDodgeChance']",$stat),
+ @('job','Data/Core/Defs/JobDefs/Jobs_Work.xml',"/Defs/JobDef[defName='TendPatient']",@('driverClass','reportString','casualInterruptible','playerInterruptible')),
+ @('weapon','Data/Core/Defs/ThingDefs_Misc/Weapons/MeleeNeolithic.xml',"/Defs/ThingDef[defName='MeleeWeapon_Knife']",$weapon),
+ @('weapon','Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml',"/Defs/ThingDef[@Name='BaseWeapon' or @Name='BaseMeleeWeapon' or @Name='BaseMeleeWeapon_Sharp' or @Name='BaseMeleeWeapon_Sharp_Quality']",$weapon),
+ @('stuff','Data/Core/Defs/ThingDefs_Items/Items_Resource_Stuff.xml',"/Defs/ThingDef[defName='Steel']",@('statBases/SharpDamageMultiplier','statBases/BluntDamageMultiplier','stuffProps/statFactors','stuffProps/statOffsets')),
+ @('stat','Data/Core/Defs/Stats/Stats_Weapons_Melee.xml',"/Defs/StatDef[defName='MeleeWeapon_DamageMultiplier' or defName='MeleeWeapon_CooldownMultiplier' or defName='SharpDamageMultiplier' or defName='BluntDamageMultiplier']",$stat),
+ @('bed','Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml',"/Defs/ThingDef[@Name='SansComfortBedBase' or @Name='BasicBedBase' or defName='Bed' or defName='HospitalBed']",@('building/bed_healPerDay','statBases/MedicalTendQualityOffset'))
+)
+function Relative-XPath($leaf,$root){$parts=[Collections.Generic.List[string]]::new();$cursor=$leaf;while($cursor -ne $root){$tag=$cursor.LocalName;$siblings=@($cursor.ParentNode.ChildNodes|Where-Object{$_.NodeType -eq 'Element' -and $_.LocalName -eq $tag});$segment=$tag;if($siblings.Count -gt 1){$segment+='['+([Array]::IndexOf($siblings,$cursor)+1)+']'};$parts.Insert(0,$segment);$cursor=$cursor.ParentNode};return ($parts -join '/')}
+$records=[Collections.Generic.List[object]]::new()
+foreach($s in $selections){$file=Join-Path $GameRoot $s[1];[xml]$doc=Get-Content -Raw -LiteralPath $file;$sha=(Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash.ToLowerInvariant();$nodes=$doc.SelectNodes($s[2]);if(!$nodes.Count){throw "No nodes: $($s[2])"}
+ foreach($node in $nodes){$def=$node.SelectSingleNode('defName');$name=if($def){$def.InnerText}else{$node.GetAttribute('Name')};$xp='/Defs/'+$node.LocalName+$(if($def){"[defName='$name']"}else{"[@Name='$name']"});$leaves=[Collections.Generic.List[object]]::new();$attrs=[Collections.Generic.List[object]]::new();$absent=[Collections.Generic.List[string]]::new()
+  foreach($selector in $s[3]){$chosen=$node.SelectNodes($selector);if(!$chosen.Count){$absent.Add($selector);continue};foreach($top in $chosen){$scan=@($top)+@($top.SelectNodes('.//*'));foreach($child in $scan){$rel=Relative-XPath $child $node;if($rel -match '/(description|reportString)$'){continue};if($child.Attributes.Count){$a=[ordered]@{};foreach($item in $child.Attributes){$a[$item.Name]=$item.Value};$attrs.Add([ordered]@{xpath=$xp+'/'+$rel;attributes=$a})};if(!$child.SelectNodes('*').Count){$leaves.Add([ordered]@{xpath=$xp+'/'+$rel;value=$child.InnerText})}}}}
+  $records.Add([ordered]@{group=$s[0];id=$node.LocalName+'_'+$name;def_name=$name;parent_name=$node.GetAttribute('ParentName');source=[ordered]@{path=$s[1];xpath=$xp;sha256=$sha};selected_paths=$s[3];absent_paths=@($absent.ToArray());fields=@($leaves.ToArray());node_attributes=@($attrs.ToArray())})
+ }
+}
+$result=[ordered]@{evidence_id='RW17-INJURIES-XML';version_text=(Get-Content -Raw -LiteralPath (Join-Path $GameRoot 'Version.txt')).Trim();assembly_sha256=$assembly;kind='Selected direct injury, medicine, human body, unarmed and steel knife declarations';limitations=@('Selected direct declarations and explicitly reviewed parents only; not the enabled-mod effective database.','Complete Human structural paths are retained for coverage arithmetic, but selected part definitions and capacities are not a full body simulator.','Static extraction does not execute original gameplay or project implementation.');records=@($records.ToArray())}
+[IO.File]::WriteAllText([IO.Path]::GetFullPath($Output),(($result|ConvertTo-Json -Depth 24) -replace "`r`n","`n")+"`n",[Text.UTF8Encoding]::new($false));Write-Output "Recorded $($records.Count) selected injury XML records."

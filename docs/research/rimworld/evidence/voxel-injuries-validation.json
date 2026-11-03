@@ -1,0 +1,1134 @@
+{
+  "generatedAt": "2026-11-03T00:05:31.495Z",
+  "kind": "web-runtime-validated",
+  "scope": "Selected true-multilayer colony combat and care: scheduled opt-in knife raider, real melee injuries, physical no-medicine tending, gradual recovery, genuine v11 migration and both browser rendering paths. One normal campaign seed is not balance validation. The final campaign attacker died; the recovering-and-retreating branch is verified separately with a controlled state-machine fixture.",
+  "sources": [
+    {
+      "file": "src/voxel/ApparelPanel.tsx",
+      "sha256": "7a3aed1524009e13f3adf784c63ed6f43a100ae88a4f6ac74e290a986d6c5265"
+    },
+    {
+      "file": "src/voxel/CombatPanel.tsx",
+      "sha256": "88691c114012da3ef694568fe357dfc5a86b071b63f70bf62ea9376ec8b465fe"
+    },
+    {
+      "file": "src/voxel/SurvivalPanel.tsx",
+      "sha256": "fa06477460dc705936bc544ff47ef8f1119626fbc746e98057dbd8115b98ae55"
+    },
+    {
+      "file": "src/voxel/TailorPanel.tsx",
+      "sha256": "5efcc439746742be39e603df95c8533c89a00a5c44cbfc74d3c565e2c680014a"
+    },
+    {
+      "file": "src/voxel/WorldSetup.tsx",
+      "sha256": "32951f3f9d082074ed545795ea51abbd39b2dfbfc88ae62cd63e755db097068a"
+    },
+    {
+      "file": "src/voxel/apparel.ts",
+      "sha256": "d5c0ad649ee59f44a52a38fe0a3f47a32be974fcc11b36c44f5fe5a704eb1629"
+    },
+    {
+      "file": "src/voxel/client.ts",
+      "sha256": "32674c926cb31eb893901f6d7b1f8c69b9243a3d148d5e326802e7baaa79e541"
+    },
+    {
+      "file": "src/voxel/climate.ts",
+      "sha256": "2386d38fc2b258034516de80caee53627d62c184bd18cadb741c213cc781bf29"
+    },
+    {
+      "file": "src/voxel/crafting.ts",
+      "sha256": "b782d30555b5915f647e9d986849da9d6ff0c2ce29f83ab3caf7dd205f174997"
+    },
+    {
+      "file": "src/voxel/farming.ts",
+      "sha256": "0984bc364efff88d7f7773d99f9d7e1cfa5379d4614816669d193d1e7c718c79"
+    },
+    {
+      "file": "src/voxel/injuries.ts",
+      "sha256": "0c704d15e127c776b3de1dec1c6bcfc89ecf34916efed2d3d9639d3c8417df00"
+    },
+    {
+      "file": "src/voxel/logistics.ts",
+      "sha256": "96a38bbddaef0f7aae9b86abc6ace75602a4f1c79e9d39913392bafe03cbd536"
+    },
+    {
+      "file": "src/voxel/main.tsx",
+      "sha256": "605c56bb42f348d8ef22291a016a4d35ae8886b8b4816f3410b52b2cc012cbc0"
+    },
+    {
+      "file": "src/voxel/plants.ts",
+      "sha256": "baa7f01b82c047536c8d0a2ee3097e15bce8466418e4442e39155d6be6400195"
+    },
+    {
+      "file": "src/voxel/power.ts",
+      "sha256": "d24d824e96544a080106c4cd861cd9d7eaff9101de82ddced9bee4c5451f1585"
+    },
+    {
+      "file": "src/voxel/preservation.ts",
+      "sha256": "2f306948e3faa0af689ea688b7081c962f5a23ac2a9cef2f863c3861b02468b4"
+    },
+    {
+      "file": "src/voxel/render.worker.ts",
+      "sha256": "191ced6c3d17b480fa11f2d3a6845b8e9df111f5f69ded8b7b2bbaf75caf22c0"
+    },
+    {
+      "file": "src/voxel/renderer.ts",
+      "sha256": "d858d9da414477739526aa861c95f40f2ad6f2a4d3c0a9042a4896a73a7e6682"
+    },
+    {
+      "file": "src/voxel/rest.ts",
+      "sha256": "843c08f8188d7a3b3a9cbef507a0568705bb3d5aa5ad2d89395443199aa12099"
+    },
+    {
+      "file": "src/voxel/rooms.ts",
+      "sha256": "67457f7cd217f5746b9562ea2e3ca059af1f424165368d28d511e8a374090b9d"
+    },
+    {
+      "file": "src/voxel/sim.worker.ts",
+      "sha256": "0323931264b656a7e286ee8eeedb3fbb48a8d2bd6ca83206180d78c0f907fb82"
+    },
+    {
+      "file": "src/voxel/style.css",
+      "sha256": "583e19faef1fde263e4df3282a70a7135b062621d1cdc124116ebde04267c520"
+    },
+    {
+      "file": "src/voxel/survival.ts",
+      "sha256": "d18470e0c16e7fe0d3a66e890e9a7b350b77cfeea73a414f2167dd66c361f8f0"
+    },
+    {
+      "file": "src/voxel/thermal.ts",
+      "sha256": "40c614996ba9c8843bc52fbd343a2a625c0fd77c788b1133ae2ba50b6494b127"
+    },
+    {
+      "file": "src/voxel/types.ts",
+      "sha256": "59d4c7e731e564cefc19b4be1dbdc98c1f2beb40072eb10ecc73e6e159c5b345"
+    },
+    {
+      "file": "src/voxel/world.ts",
+      "sha256": "f7b35518108dcc49d5965e4145b6b910a88ec3c3ddb05690ea51f11987ea9f26"
+    },
+    {
+      "file": "src/voxel/worldgen.ts",
+      "sha256": "7f3acf989d9e366793be11bef8f42f352cc36523c09a75a8acb9c944af7770fb"
+    }
+  ],
+  "scripts": [
+    {
+      "file": "scripts/voxel-injuries-campaign-verify.mjs",
+      "sha256": "ef41f462ec6394092738409969bbe84db75603f2d438ec7cb704c6a35b682688"
+    },
+    {
+      "file": "scripts/voxel-injuries-browser-verify.mjs",
+      "sha256": "f7489c98d9fab327f093fe72c90e332e54d366235417be08e446563dc00ce367"
+    },
+    {
+      "file": "scripts/research/verify-voxel-injuries-validation.mjs",
+      "sha256": "a7112d56d626193e49ea40210f7a190b0f952261c7e3d8c4a15a5f18f6ebe565"
+    },
+    {
+      "file": "tests/voxel-combat.test.ts",
+      "sha256": "dcd832eff82c7c946ff089e90b7afdfeaa07c2cd598408fb33cd9b0ec7509495"
+    },
+    {
+      "file": "tests/voxel-injuries-rules.test.ts",
+      "sha256": "3789c6d591dcf1bf7d4402b13855c65ba376f118e21819ab26d71baeafc0caa5"
+    }
+  ],
+  "assets": [
+    {
+      "file": "dist/assets/CanvasRenderer-B6Mdl2XH.js",
+      "sha256": "10062f733eb334b62322dc9a5c349144757377db9c8f83700bdebc1631dc4c33"
+    },
+    {
+      "file": "dist/assets/CanvasRenderer-BcVpmcSw.js",
+      "sha256": "df4958d42d3f1fff4bf62d624f3c2914c8c57da86b7e313ea49c50a4d9bf2dc7"
+    },
+    {
+      "file": "dist/assets/Filter-3Gl5Xq8e.js",
+      "sha256": "ff7d610e3f8192440593d21cd136f96e4becc82a23699aa498414c5990d20521"
+    },
+    {
+      "file": "dist/assets/Filter-BtKWt2Mo.js",
+      "sha256": "04d2b16dfda923dccdde46924bdce87d02f3efbbeba998d4274012458688b118"
+    },
+    {
+      "file": "dist/assets/RenderTargetSystem-10VWBYJN.js",
+      "sha256": "15a4d6d93c6085a7dd593141cb9efbe26da8807881658b4798f40b2e03174394"
+    },
+    {
+      "file": "dist/assets/RenderTargetSystem-C9tygM2t.js",
+      "sha256": "ed1892f6da37de9a3d886e36377b022d1a7a11ecaa02629e0aafb41a96415b6b"
+    },
+    {
+      "file": "dist/assets/WebGLRenderer-BOop3V_f.js",
+      "sha256": "bc33a461adc7aad937c65dd40a117b526eda37adfe794cfa834214dd5d122484"
+    },
+    {
+      "file": "dist/assets/WebGLRenderer-DCEiyc2P.js",
+      "sha256": "01aca1779a5211676147f48e98d1d2f8d08ecb6d765f11c5b45ffcf2a8ebdde5"
+    },
+    {
+      "file": "dist/assets/WebGPURenderer-eCfL3gYo.js",
+      "sha256": "66e8e6abfce96d062c0b12ff205bbd403ff631fe059e564958f53ed65d33b8cb"
+    },
+    {
+      "file": "dist/assets/WebGPURenderer-zMFGatTH.js",
+      "sha256": "d094ebc94dc94a8338c5c0ca7bd6b1909447156a2302247416b321c8ae974126"
+    },
+    {
+      "file": "dist/assets/browserAll-DVfT8fjS.js",
+      "sha256": "6f542c09a5d8067c82249fdf955850e093984a24ea87f31997dfe7c3d7a4fc88"
+    },
+    {
+      "file": "dist/assets/browserAll-DcLNF0vk.js",
+      "sha256": "c0b603ca84267894b381ec6cfae9636912e71499c9135b3cbc18aa453c8eef66"
+    },
+    {
+      "file": "dist/assets/client-CrowJ5J7.js",
+      "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e"
+    },
+    {
+      "file": "dist/assets/getTexelRangeRects-DguKKYe6.js",
+      "sha256": "1b2a5d79f9bb0e65af520d2efbea8db851fe94572954da0f503780150d090f70"
+    },
+    {
+      "file": "dist/assets/getTexelRangeRects-Dy8HUIoI.js",
+      "sha256": "8bbb0d808ef79bbde316b91d4311ad257e0676d7cef252b4d4b335c890e13d70"
+    },
+    {
+      "file": "dist/assets/index-DPn-RfhT.js",
+      "sha256": "ac259ffbc1055c6df813ce64ae1e1aa3a5758ceb10736c60b31da8bb92dc9722"
+    },
+    {
+      "file": "dist/assets/main-Bd4OPQD3.css",
+      "sha256": "dc5627827651affe81bedfa46cbf7057ef1e88932911b4ea18396538b97e69fa"
+    },
+    {
+      "file": "dist/assets/main-BfMgf-Vo.css",
+      "sha256": "77ca9c1f51017f7b74bc8a39db477c52bca3a36b64b499bfc3942c01224dfef8"
+    },
+    {
+      "file": "dist/assets/main-CEIVPLr8.js",
+      "sha256": "dde14e9b5f511f91d05f0f7ed9e7b1e3b4e49a8cff83d58d61a3ade4312214cb"
+    },
+    {
+      "file": "dist/assets/main-CMovG1xe.js",
+      "sha256": "a1a65658afd559f500140aa34490132933730a5d540fc23cc9acf16b46d9f04b"
+    },
+    {
+      "file": "dist/assets/render.worker-B4wMjhbZ.js",
+      "sha256": "bad572c064649be12576d90c2cdb0613757d087501872cb58106f610cfda4c97"
+    },
+    {
+      "file": "dist/assets/render.worker-DSNcKIh7.js",
+      "sha256": "d20eee6ca33b28ab9af0145994a83d57538f915cded4c5c52b0f5ce649a11a58"
+    },
+    {
+      "file": "dist/assets/renderer-poiNSI_T.js",
+      "sha256": "2b6ac1bff3a911dc865567bd95442726067b665fe7cc08ea6848d78ecf2f19ac"
+    },
+    {
+      "file": "dist/assets/sim.worker-BZZzf5MS.js",
+      "sha256": "c7f097f250ba1ba0ac4779271274548ba576ea940597f9560330500c1e26ef5b"
+    },
+    {
+      "file": "dist/assets/sim.worker-TVFgUzzb.js",
+      "sha256": "660607d5f3448266fb3aa9d9c6ac5e433a3524c096ab3f5d266cff8590dd8d36"
+    },
+    {
+      "file": "dist/assets/webworkerAll-0b5Tygjj.js",
+      "sha256": "ae2ba31eb7d7b32069b781ede54a2cdf24eb4a5e0b0cd6ad27e0498ed5b47a95"
+    },
+    {
+      "file": "dist/assets/webworkerAll-DIkm-7px.js",
+      "sha256": "7b3b61b85d19f8523eb30b9f7aca7e09fd207beea046d81f33daa7b578a2f728"
+    }
+  ],
+  "reports": [
+    {
+      "file": "test-results/injuries-unit.json",
+      "sha256": "7b70e6660e80ed504e1006d3b3f37e5b60f877270dbbc01dd3acdfdea3b51e05"
+    },
+    {
+      "file": "test-results/injuries-build.log",
+      "sha256": "798d2618090f9ace622225a3456ff5e2af52054f6135a82f5b94c480b711b678"
+    },
+    {
+      "file": "test-results/injuries-regressions.json",
+      "sha256": "48592defc3e0f73c43c541221041b1dd6ac4753078076ebc204cbcb3b83e9ba3"
+    },
+    {
+      "file": "test-results/voxel-injuries-campaign/report.json",
+      "sha256": "6d437e2a60a1070a7322856e2fcd651c3ab199d95da3e55ccf26a95b2c0ef04f"
+    },
+    {
+      "file": "test-results/voxel-injuries-browser/report.json",
+      "sha256": "8c4ae5d245c43c67244a9200fd900527ebfb6833ad6babc61aa01aaa65bc6e8e"
+    },
+    {
+      "file": "test-results/voxel-survival-browser/report.json",
+      "sha256": "7585e58f4cc432b51a319246636a0e24f67cdf53ca6f0f4b2f1b96078b4cf9e9"
+    },
+    {
+      "file": "test-results/voxel-apparel-browser/report.json",
+      "sha256": "f939b0e0edafc33d8995aa6318ee475b766390c36558c5acf07fcf3eaa9394fa"
+    }
+  ],
+  "unit": {
+    "total": 381,
+    "passed": 381,
+    "failed": 0
+  },
+  "combatIntegration": [
+    {
+      "title": "a downed raider recovers without attacking again, waits for an exit, and physically leaves after reload",
+      "status": "passed"
+    },
+    {
+      "title": "finds a raid entry reachable from another colonist when the first is sealed inside",
+      "status": "passed"
+    },
+    {
+      "title": "a drafted move order leaves melee contact instead of being overwritten by automatic retaliation",
+      "status": "passed"
+    },
+    {
+      "title": "an attacker chooses a reachable colonist instead of fixating on the nearest sealed room",
+      "status": "passed"
+    },
+    {
+      "title": "three wounded doctors complete each other’s treatment without cancelling ongoing care",
+      "status": "passed"
+    },
+    {
+      "title": "migrates a genuinely published v11 colony without spawning threats, changing needs or supplying weapons",
+      "status": "passed"
+    },
+    {
+      "title": "requires drafting and spends travel/cooldown ticks before causing a real injury",
+      "status": "passed"
+    },
+    {
+      "title": "does not strike through vertical separation or an unreachable room",
+      "status": "passed"
+    },
+    {
+      "title": "physically approaches and tends one injury per work cycle; stopping and reloading cannot heal instantly",
+      "status": "passed"
+    },
+    {
+      "title": "drafting the patient cancels treatment reservations without losing wounds or cargo",
+      "status": "passed"
+    },
+    {
+      "title": "persists opt-in raid dates and does not postpone them by repeatedly enabling the option",
+      "status": "passed"
+    },
+    {
+      "title": "rejects forged wounds, duplicate wound IDs, invalid attack references and non-finite raid times",
+      "status": "passed"
+    }
+  ],
+  "historicalSave": {
+    "file": "tests/fixtures/voxel-v11-start.json",
+    "sha256": "25d42ed4a235ab04440921b00c8f36d3bd354d5f1de365b69407dff37a274918"
+  },
+  "campaign": {
+    "startedAt": "2026-11-03T00:02:53.812Z",
+    "scope": "Normal colony creation, commands, elapsed ticks, save and load. No injected terrain, resources, health, injuries, enemies, clock or needs. Optional raids spawn on their actual schedule and defenders fight through the normal combat command.",
+    "checks": [
+      {
+        "name": "colony physically builds and designates a medical bed before enabling threats",
+        "tick": 282
+      },
+      {
+        "name": "three full preparation days pass without an early or injected raid",
+        "tick": 36281
+      },
+      {
+        "name": "the scheduled knife raider enters at a reachable map edge after reload",
+        "tick": 36282,
+        "enemy": {
+          "x": 0,
+          "y": 62,
+          "z": 8
+        }
+      },
+      {
+        "name": "disabling future raids preserves the existing attacker",
+        "tick": 36282
+      },
+      {
+        "name": "ordinary melee causes real wounds while defenders traverse the map",
+        "tick": 36408
+      },
+      {
+        "name": "combat reload preserves injury identity, blood loss and attack cooldown without an extra hit",
+        "tick": 36408
+      },
+      {
+        "name": "defenders stop attacking when the raider is incapacitated",
+        "tick": 36448,
+        "patientId": 364,
+        "raiderDead": true,
+        "colonists": [
+          {
+            "id": 364,
+            "downed": false,
+            "wounds": [
+              {
+                "id": 400,
+                "part": "torso",
+                "kind": "cut",
+                "severity": 11.92,
+                "ageTicks": 102,
+                "tendQuality": null
+              },
+              {
+                "id": 401,
+                "part": "torso",
+                "kind": "cut",
+                "severity": 10,
+                "ageTicks": 72,
+                "tendQuality": null
+              }
+            ]
+          },
+          {
+            "id": 365,
+            "downed": false,
+            "wounds": []
+          },
+          {
+            "id": 366,
+            "downed": false,
+            "wounds": []
+          }
+        ]
+      },
+      {
+        "name": "doctor travels to the casualty and treatment survives save/load partway through its work",
+        "tick": 36510
+      },
+      {
+        "name": "bandaging stops bleeding without erasing injuries or using nonexistent medicine",
+        "tick": 36849,
+        "bloodLoss": 0.03463679999999998,
+        "wounds": [
+          {
+            "id": 400,
+            "part": "torso",
+            "kind": "cut",
+            "severity": 2.708144867461198,
+            "ageTicks": 12441,
+            "tendQuality": 0.321520502702333
+          },
+          {
+            "id": 401,
+            "part": "torso",
+            "kind": "cut",
+            "severity": 4.0800000000000045,
+            "ageTicks": 12411,
+            "tendQuality": 0
+          }
+        ]
+      },
+      {
+        "name": "normal feeding and elapsed game time reduce injuries after treatment",
+        "tick": 48849,
+        "remaining": [
+          {
+            "id": 400,
+            "part": "torso",
+            "kind": "cut",
+            "severity": 2.708144867461198,
+            "ageTicks": 12441,
+            "tendQuality": 0.321520502702333
+          },
+          {
+            "id": 401,
+            "part": "torso",
+            "kind": "cut",
+            "severity": 4.0800000000000045,
+            "ageTicks": 12411,
+            "tendQuality": 0
+          }
+        ],
+        "bloodLoss": 0
+      },
+      {
+        "name": "the defeated enemy has not resumed attacking during the recovery day",
+        "tick": 48849,
+        "outcome": "dead",
+        "limitation": "A dead or still downed enemy does not validate the recovery-and-retreat branch; that branch has a separate controlled integration test."
+      }
+    ],
+    "commands": [
+      {
+        "tick": 282,
+        "command": {
+          "type": "bedMedical",
+          "bedId": 383,
+          "medical": true
+        },
+        "result": {
+          "ok": true,
+          "message": "已设为医疗床，医护会优先救援倒地者"
+        }
+      },
+      {
+        "tick": 282,
+        "command": {
+          "type": "priority",
+          "pawnId": 364,
+          "work": "care",
+          "value": 0
+        },
+        "result": {
+          "ok": true,
+          "message": "工作优先级已更新；0 为禁用"
+        }
+      },
+      {
+        "tick": 282,
+        "command": {
+          "type": "priority",
+          "pawnId": 365,
+          "work": "care",
+          "value": 0
+        },
+        "result": {
+          "ok": true,
+          "message": "工作优先级已更新；0 为禁用"
+        }
+      },
+      {
+        "tick": 282,
+        "command": {
+          "type": "priority",
+          "pawnId": 366,
+          "work": "care",
+          "value": 0
+        },
+        "result": {
+          "ok": true,
+          "message": "工作优先级已更新；0 为禁用"
+        }
+      },
+      {
+        "tick": 282,
+        "command": {
+          "type": "threats",
+          "enabled": true
+        },
+        "result": {
+          "ok": true,
+          "message": "已开启袭击；首次来袭前有三天准备时间"
+        }
+      },
+      {
+        "tick": 36282,
+        "command": {
+          "type": "threats",
+          "enabled": false
+        },
+        "result": {
+          "ok": true,
+          "message": "已关闭后续袭击，场上的敌人仍然存在"
+        }
+      },
+      {
+        "tick": 36282,
+        "command": {
+          "type": "draft",
+          "pawnId": 364,
+          "drafted": true
+        },
+        "result": {
+          "ok": true,
+          "message": "已征召，等待战斗指令"
+        }
+      },
+      {
+        "tick": 36282,
+        "command": {
+          "type": "attack",
+          "pawnId": 364,
+          "targetId": 397
+        },
+        "result": {
+          "ok": true,
+          "message": "前往近战攻击袭击者 1"
+        }
+      },
+      {
+        "tick": 36282,
+        "command": {
+          "type": "draft",
+          "pawnId": 365,
+          "drafted": true
+        },
+        "result": {
+          "ok": true,
+          "message": "已征召，等待战斗指令"
+        }
+      },
+      {
+        "tick": 36282,
+        "command": {
+          "type": "attack",
+          "pawnId": 365,
+          "targetId": 397
+        },
+        "result": {
+          "ok": true,
+          "message": "前往近战攻击袭击者 1"
+        }
+      },
+      {
+        "tick": 36282,
+        "command": {
+          "type": "draft",
+          "pawnId": 366,
+          "drafted": true
+        },
+        "result": {
+          "ok": true,
+          "message": "已征召，等待战斗指令"
+        }
+      },
+      {
+        "tick": 36282,
+        "command": {
+          "type": "attack",
+          "pawnId": 366,
+          "targetId": 397
+        },
+        "result": {
+          "ok": true,
+          "message": "前往近战攻击袭击者 1"
+        }
+      },
+      {
+        "tick": 36448,
+        "command": {
+          "type": "draft",
+          "pawnId": 364,
+          "drafted": false
+        },
+        "result": {
+          "ok": true,
+          "message": "解除征召，恢复工作"
+        }
+      },
+      {
+        "tick": 36448,
+        "command": {
+          "type": "draft",
+          "pawnId": 365,
+          "drafted": false
+        },
+        "result": {
+          "ok": true,
+          "message": "解除征召，恢复工作"
+        }
+      },
+      {
+        "tick": 36448,
+        "command": {
+          "type": "draft",
+          "pawnId": 366,
+          "drafted": false
+        },
+        "result": {
+          "ok": true,
+          "message": "解除征召，恢复工作"
+        }
+      },
+      {
+        "tick": 36448,
+        "command": {
+          "type": "care",
+          "pawnId": 365,
+          "patientId": 364,
+          "action": "tend"
+        },
+        "result": {
+          "ok": true,
+          "message": "前往包扎林澈"
+        }
+      },
+      {
+        "tick": 36849,
+        "command": {
+          "type": "priority",
+          "pawnId": 364,
+          "work": "care",
+          "value": 1
+        },
+        "result": {
+          "ok": true,
+          "message": "工作优先级已更新；0 为禁用"
+        }
+      },
+      {
+        "tick": 36849,
+        "command": {
+          "type": "priority",
+          "pawnId": 365,
+          "work": "care",
+          "value": 1
+        },
+        "result": {
+          "ok": true,
+          "message": "工作优先级已更新；0 为禁用"
+        }
+      },
+      {
+        "tick": 36849,
+        "command": {
+          "type": "priority",
+          "pawnId": 366,
+          "work": "care",
+          "value": 1
+        },
+        "result": {
+          "ok": true,
+          "message": "工作优先级已更新；0 为禁用"
+        }
+      }
+    ],
+    "observations": [],
+    "errors": [],
+    "status": "passed",
+    "final": {
+      "tick": 48849,
+      "days": 4.07075,
+      "pawns": [
+        {
+          "id": 364,
+          "faction": "colony",
+          "dead": false,
+          "downed": false,
+          "trauma": {
+            "wounds": [
+              {
+                "id": 400,
+                "part": "torso",
+                "kind": "cut",
+                "severity": 2.708144867461198,
+                "ageTicks": 12441,
+                "tendQuality": 0.321520502702333
+              },
+              {
+                "id": 401,
+                "part": "torso",
+                "kind": "cut",
+                "severity": 4.0800000000000045,
+                "ageTicks": 12411,
+                "tendQuality": 0
+              }
+            ],
+            "bloodLoss": 0,
+            "brokenParts": []
+          },
+          "food": 75.0399999999961
+        },
+        {
+          "id": 365,
+          "faction": "colony",
+          "dead": false,
+          "downed": false,
+          "trauma": {
+            "wounds": [],
+            "bloodLoss": 0,
+            "brokenParts": []
+          },
+          "food": 78.02666666666323
+        },
+        {
+          "id": 366,
+          "faction": "colony",
+          "dead": false,
+          "downed": false,
+          "trauma": {
+            "wounds": [],
+            "bloodLoss": 0,
+            "brokenParts": []
+          },
+          "food": 78.0133333333299
+        },
+        {
+          "id": 397,
+          "faction": "raider",
+          "dead": true,
+          "downed": false,
+          "trauma": {
+            "wounds": [
+              {
+                "id": 398,
+                "part": "torso",
+                "kind": "bruise",
+                "severity": 9,
+                "ageTicks": 40,
+                "tendQuality": null
+              },
+              {
+                "id": 399,
+                "part": "torso",
+                "kind": "bruise",
+                "severity": 9,
+                "ageTicks": 40,
+                "tendQuality": null
+              },
+              {
+                "id": 402,
+                "part": "torso",
+                "kind": "bruise",
+                "severity": 9,
+                "ageTicks": 0,
+                "tendQuality": null
+              },
+              {
+                "id": 403,
+                "part": "torso",
+                "kind": "bruise",
+                "severity": 10,
+                "ageTicks": 0,
+                "tendQuality": null
+              },
+              {
+                "id": 404,
+                "part": "torso",
+                "kind": "bruise",
+                "severity": 8,
+                "ageTicks": 0,
+                "tendQuality": null
+              }
+            ],
+            "bloodLoss": 0,
+            "brokenParts": [
+              "torso"
+            ]
+          },
+          "food": 97.78666666666632
+        }
+      ]
+    },
+    "finishedAt": "2026-11-03T00:03:02.666Z"
+  },
+  "browser": {
+    "base": "http://127.0.0.1:5183/?world=voxel",
+    "startedAt": "2026-11-03T00:04:35.883Z",
+    "scope": "Actual production Chrome canvas, DOM and file chooser. Normal-command combat and care fixtures and genuinely published v11 save; read-only snapshot/project/exportSave. All combat and medical actions use visible controls in both rendering modes.",
+    "modes": [
+      {
+        "mode": "worker",
+        "checks": [
+          {
+            "name": "normal menu toggles future raids and displays the preparation period"
+          },
+          {
+            "name": "the genuine v11 colony loads with no retroactive injuries, weapons or threats"
+          },
+          {
+            "name": "the scheduled attacker is inspectable without appearing as a controllable colonist"
+          },
+          {
+            "name": "draft and melee controls create a real path toward the enemy"
+          },
+          {
+            "name": "visible treatment controls make the doctor approach and spend time on one wound"
+          },
+          {
+            "name": "manual saving and loading retain the active treatment and wound identity"
+          },
+          {
+            "name": "bandaging removes ongoing bleeding while visible injuries remain"
+          },
+          {
+            "name": "injury and combat controls remain accessible at 900 by 700"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:5183/assets/index-DPn-RfhT.js",
+            "status": 200,
+            "bytes": 2356,
+            "sha256": "ac259ffbc1055c6df813ce64ae1e1aa3a5758ceb10736c60b31da8bb92dc9722",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-BfMgf-Vo.css",
+            "status": 200,
+            "bytes": 15171,
+            "sha256": "77ca9c1f51017f7b74bc8a39db477c52bca3a36b64b499bfc3942c01224dfef8",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "bytes": 221699,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-CEIVPLr8.js",
+            "status": 200,
+            "bytes": 606254,
+            "sha256": "dde14e9b5f511f91d05f0f7ed9e7b1e3b4e49a8cff83d58d61a3ade4312214cb",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/sim.worker-BZZzf5MS.js",
+            "status": 200,
+            "bytes": 140357,
+            "sha256": "c7f097f250ba1ba0ac4779271274548ba576ea940597f9560330500c1e26ef5b",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/render.worker-B4wMjhbZ.js",
+            "status": 200,
+            "bytes": 538177,
+            "sha256": "bad572c064649be12576d90c2cdb0613757d087501872cb58106f610cfda4c97",
+            "matchesLocalBuild": true
+          }
+        ],
+        "screenshots": [
+          "test-results/voxel-injuries-browser/worker-enemy.png",
+          "test-results/voxel-injuries-browser/worker-drafted.png",
+          "test-results/voxel-injuries-browser/worker-tending.png",
+          "test-results/voxel-injuries-browser/worker-bandaged.png",
+          "test-results/voxel-injuries-browser/worker-compact.png"
+        ],
+        "fixtures": [
+          {
+            "file": "tests/fixtures/voxel-v11-start.json",
+            "sha256": "25d42ed4a235ab04440921b00c8f36d3bd354d5f1de365b69407dff37a274918",
+            "tick": 0
+          },
+          {
+            "file": "test-results/voxel-injuries-campaign/raid.json",
+            "sha256": "7fdf01e78b26ca891474e9ecff273199fe3db5a1887c52810f212608916e7a7a",
+            "tick": 36282
+          },
+          {
+            "file": "test-results/voxel-injuries-campaign/wounded.json",
+            "sha256": "e38e354e34a6897a21e4c543d36570042700b34af9914c6c4cd925fdd7d565f6",
+            "tick": 36448
+          }
+        ],
+        "status": "passed"
+      },
+      {
+        "mode": "main",
+        "checks": [
+          {
+            "name": "normal menu toggles future raids and displays the preparation period"
+          },
+          {
+            "name": "the genuine v11 colony loads with no retroactive injuries, weapons or threats"
+          },
+          {
+            "name": "the scheduled attacker is inspectable without appearing as a controllable colonist"
+          },
+          {
+            "name": "draft and melee controls create a real path toward the enemy"
+          },
+          {
+            "name": "visible treatment controls make the doctor approach and spend time on one wound"
+          },
+          {
+            "name": "manual saving and loading retain the active treatment and wound identity"
+          },
+          {
+            "name": "bandaging removes ongoing bleeding while visible injuries remain"
+          },
+          {
+            "name": "injury and combat controls remain accessible at 900 by 700"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:5183/assets/index-DPn-RfhT.js",
+            "status": 200,
+            "bytes": 2356,
+            "sha256": "ac259ffbc1055c6df813ce64ae1e1aa3a5758ceb10736c60b31da8bb92dc9722",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-BfMgf-Vo.css",
+            "status": 200,
+            "bytes": 15171,
+            "sha256": "77ca9c1f51017f7b74bc8a39db477c52bca3a36b64b499bfc3942c01224dfef8",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "bytes": 221699,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-CEIVPLr8.js",
+            "status": 200,
+            "bytes": 606254,
+            "sha256": "dde14e9b5f511f91d05f0f7ed9e7b1e3b4e49a8cff83d58d61a3ade4312214cb",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/sim.worker-BZZzf5MS.js",
+            "status": 200,
+            "bytes": 140357,
+            "sha256": "c7f097f250ba1ba0ac4779271274548ba576ea940597f9560330500c1e26ef5b",
+            "matchesLocalBuild": true
+          }
+        ],
+        "screenshots": [
+          "test-results/voxel-injuries-browser/main-enemy.png",
+          "test-results/voxel-injuries-browser/main-drafted.png",
+          "test-results/voxel-injuries-browser/main-tending.png",
+          "test-results/voxel-injuries-browser/main-bandaged.png",
+          "test-results/voxel-injuries-browser/main-compact.png"
+        ],
+        "fixtures": [
+          {
+            "file": "tests/fixtures/voxel-v11-start.json",
+            "sha256": "25d42ed4a235ab04440921b00c8f36d3bd354d5f1de365b69407dff37a274918",
+            "tick": 0
+          },
+          {
+            "file": "test-results/voxel-injuries-campaign/raid.json",
+            "sha256": "7fdf01e78b26ca891474e9ecff273199fe3db5a1887c52810f212608916e7a7a",
+            "tick": 36282
+          },
+          {
+            "file": "test-results/voxel-injuries-campaign/wounded.json",
+            "sha256": "e38e354e34a6897a21e4c543d36570042700b34af9914c6c4cd925fdd7d565f6",
+            "tick": 36448
+          }
+        ],
+        "status": "passed"
+      }
+    ],
+    "finishedAt": "2026-11-03T00:05:13.010Z"
+  },
+  "regressions": {
+    "startedAt": "2026-11-02T23:56:59.619Z",
+    "runs": [
+      {
+        "script": "voxel-campaign-verify.mjs",
+        "startedAt": "2026-11-02T23:56:59.620Z",
+        "finishedAt": "2026-11-02T23:57:01.246Z",
+        "code": 0,
+        "file": "test-results/injuries-regression-voxel-campaign-verify.mjs.log"
+      },
+      {
+        "script": "voxel-housing-campaign-verify.mjs",
+        "startedAt": "2026-11-02T23:57:01.248Z",
+        "finishedAt": "2026-11-02T23:57:04.209Z",
+        "code": 0,
+        "file": "test-results/injuries-regression-voxel-housing-campaign-verify.mjs.log"
+      },
+      {
+        "script": "voxel-survival-campaign-verify.mjs",
+        "startedAt": "2026-11-02T23:57:04.210Z",
+        "finishedAt": "2026-11-02T23:57:11.019Z",
+        "code": 0,
+        "file": "test-results/injuries-regression-voxel-survival-campaign-verify.mjs.log"
+      },
+      {
+        "script": "voxel-survival-temperature-verify.mjs",
+        "startedAt": "2026-11-02T23:57:11.020Z",
+        "finishedAt": "2026-11-02T23:57:14.960Z",
+        "code": 0,
+        "file": "test-results/injuries-regression-voxel-survival-temperature-verify.mjs.log"
+      },
+      {
+        "script": "voxel-apparel-campaign-verify.mjs",
+        "startedAt": "2026-11-02T23:57:14.960Z",
+        "finishedAt": "2026-11-02T23:59:18.633Z",
+        "code": 0,
+        "file": "test-results/injuries-regression-voxel-apparel-campaign-verify.mjs.log"
+      },
+      {
+        "script": "voxel-apparel-temperature-verify.mjs",
+        "startedAt": "2026-11-02T23:59:18.633Z",
+        "finishedAt": "2026-11-02T23:59:21.114Z",
+        "code": 0,
+        "file": "test-results/injuries-regression-voxel-apparel-temperature-verify.mjs.log"
+      },
+      {
+        "script": "voxel-survival-browser-verify.mjs",
+        "startedAt": "2026-11-02T23:59:21.115Z",
+        "finishedAt": "2026-11-03T00:00:17.251Z",
+        "code": 0,
+        "file": "test-results/injuries-regression-voxel-survival-browser-verify.mjs.log"
+      },
+      {
+        "script": "voxel-apparel-browser-verify.mjs",
+        "startedAt": "2026-11-03T00:00:17.252Z",
+        "finishedAt": "2026-11-03T00:01:30.540Z",
+        "code": 0,
+        "file": "test-results/injuries-regression-voxel-apparel-browser-verify.mjs.log"
+      }
+    ],
+    "survivalBrowser": [
+      {
+        "mode": "worker",
+        "status": "passed",
+        "checks": 13,
+        "errors": []
+      },
+      {
+        "mode": "main",
+        "status": "passed",
+        "checks": 13,
+        "errors": []
+      }
+    ],
+    "apparelBrowser": [
+      {
+        "mode": "worker",
+        "status": "passed",
+        "checks": 14,
+        "errors": []
+      },
+      {
+        "mode": "main",
+        "status": "passed",
+        "checks": 14,
+        "errors": []
+      }
+    ]
+  },
+  "screenshots": [
+    {
+      "file": "voxel/injuries-enemy.jpg",
+      "sha256": "e82754171005491b1c026628c672edc68336697cd141f8e545a9c787fafbbdbc"
+    },
+    {
+      "file": "voxel/injuries-tending.jpg",
+      "sha256": "7dc5ed544913f83655a5e4158d2eb83b3ba5562680cc8b202b9c387172074900"
+    },
+    {
+      "file": "voxel/injuries-bandaged.jpg",
+      "sha256": "0948c65b5a07568c3906fb3ded8a8738724dce3de27052131fff56fdae42d5b1"
+    },
+    {
+      "file": "voxel/injuries-compact.jpg",
+      "sha256": "64637d0662686e80f53f03e0fc013428f1660399957d4af5b329af0209fb6c25"
+    }
+  ],
+  "limitations": [
+    "Seven coarse body regions, project hit weights/capacity mapping and fixed hit chance; not the original full anatomy or combat pipeline.",
+    "Raid timing and defeated-enemy retreat are project rules. Knife is a persistent character field, not a physical crafted or looted weapon.",
+    "No armor, internal injury propagation, stump bleeding, original instant-death protection, infection, real medicine, surgery or prisoners.",
+    "Normal-campaign outcome is observed, not forced; the final enemy died, so that campaign does not independently prove surviving retreat.",
+    "Browser uses visible controls plus read-only debug snapshots and saved normal-command fixtures; not a screen-only agent evaluation.",
+    "Native observation used a Dev-prepared Cut and preexisting anesthesia/medical bed; actual normal tending was observed, not native natural combat."
+  ]
+}

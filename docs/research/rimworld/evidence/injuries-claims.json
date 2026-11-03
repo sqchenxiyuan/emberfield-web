@@ -1,0 +1,971 @@
+[
+  {
+    "id": "IM01",
+    "title": "时间单位",
+    "kind": "static-derived",
+    "statement": "标准健康检查60原版tick，伤口恢复600tick；60000tick/日、2500tick/游戏小时。动作秒与模拟日的项目映射应分开。",
+    "sources": [
+      {
+        "group": "injuries",
+        "type": "Verse.HealthTuning",
+        "line_start": 12,
+        "line_end": 45,
+        "range_sha256": "99e183f324a0c36d4ce26ec48f22a226b8538aca1f2009562b81160579cc5249"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffCompProperties_TendDuration",
+        "line_start": 29,
+        "line_end": 62,
+        "range_sha256": "1d00a1fe5238938155d12e3b2fbd1b1d88a99ceece1802aee86f982da098fea6"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 1258,
+        "line_end": 1294,
+        "range_sha256": "f14f7f8f3cd1a3446d73bfbda7bd10760b04e701d94b1d0823cb52ca267af31f"
+      }
+    ]
+  },
+  {
+    "id": "IM02",
+    "title": "空手工具",
+    "kind": "xml-and-static-derived",
+    "statement": "Human双拳8.2伤害/2秒，牙齿8.2/2秒且chanceFactor=.07，头撞5/2秒且factor=.2；缺省tool权重1、AP=-1。Blunt/Bite能力由Maneuver映射到相应伤害。",
+    "sources": [
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_Human"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ManeuverDef_Smash"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ManeuverDef_Bite"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.Tool",
+        "line_start": 26,
+        "line_end": 65,
+        "range_sha256": "610af92de15d0940385005590ef0acf91d8c75d6d5662ac32c5163a5643a0ba0"
+      }
+    ]
+  },
+  {
+    "id": "IM03",
+    "title": "近战工具分组",
+    "kind": "static-derived",
+    "statement": "初始权重=调整伤害*(1+AP)*accuracyTouch/完整周期*附加选择因子。最高的95%及以上为Best，低于25%为Worst且最终0；其余Mid。Best/Mid组分别分配.75/.25，同组均分后按可用目标再次归一。健康裸拳限定算例只选双拳，不把.07直接解释为7%。",
+    "sources": [
+      {
+        "group": "injuries",
+        "type": "Verse.VerbUtility",
+        "line_start": 208,
+        "line_end": 269,
+        "range_sha256": "650ddd4b124ea40b31b4e56a7cf764ed460c66ffa380e5acd1a2c1754d550d60"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.Pawn_MeleeVerbs",
+        "line_start": 201,
+        "line_end": 242,
+        "range_sha256": "7111a437f745e52f53d8a1ac05972dbd0b45f57b0d0d1793461526c073dc9ce2"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.VerbEntry",
+        "line_start": 26,
+        "line_end": 39,
+        "range_sha256": "5b72e6c237dac3114e235bff0f41b829193e270ca22a39c0d82ab68dc8746b93"
+      }
+    ]
+  },
+  {
+    "id": "IM04",
+    "title": "近战伤害与穿透",
+    "kind": "static-derived",
+    "statement": "最终近战伤害受部位效率、生命阶段和MeleeDamageFactor；缺省AP=调整伤害*.015；生成DamageInfo前伤害随机*.8..1.2但AP先算。伤害起始部位深度Outside，后续传播另算。冷却再乘人物MeleeCooldownFactor。",
+    "sources": [
+      {
+        "group": "injuries",
+        "type": "Verse.VerbProperties",
+        "line_start": 326,
+        "line_end": 386,
+        "range_sha256": "0c4056c8a3b776f13d0b4363e0be2d17cf6a9036b8c67e32ec72f8929ef6d22b"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.VerbProperties",
+        "line_start": 506,
+        "line_end": 545,
+        "range_sha256": "3d338cf33fc81945412295b53beecdce5326eb5817ac4532ece8f83148c6b532"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.VerbProperties",
+        "line_start": 579,
+        "line_end": 618,
+        "range_sha256": "ce3d4b097fc0aa842dcc89edf926758f96902a94021e68cbb438cf648d5eb2d9"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.Verb_MeleeAttackDamage",
+        "line_start": 14,
+        "line_end": 55,
+        "range_sha256": "053eb11530990b572fcb245d309f1b4514cfd90addd41a583514d78404271cee"
+      }
+    ]
+  },
+  {
+    "id": "IM05",
+    "title": "近战命中与躲闪",
+    "kind": "static-derived",
+    "statement": "近战先掷命中再掷躲闪。突袭或不能移动的目标有命中1/躲闪0分支；未倒地但非站立也视为不能移动。普通目标用已结算人物Stat，不能由工具power推断必命中。",
+    "sources": [
+      {
+        "group": "injuries",
+        "type": "RimWorld.Verb_MeleeAttack",
+        "line_start": 43,
+        "line_end": 88,
+        "range_sha256": "5b62c124d6a1b634016f507b6cb4efca48396b7e740308e5e0e574d86c4d2151"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.Verb_MeleeAttack",
+        "line_start": 126,
+        "line_end": 208,
+        "range_sha256": "96fb9675b54b6b735dfaeb95cf287512ce9793fe37d66166ca77f1c86aef96db"
+      }
+    ]
+  },
+  {
+    "id": "IM06",
+    "title": "普通钢匕首",
+    "kind": "xml-and-static-derived",
+    "statement": "knife柄9/2秒、刃12/1.5秒、尖13/2秒，分别Blunt/Cut/Stab；Steel锋利/钝伤材料倍率均1，未声明近战冷却倍率而Stat默认1。普通品质伤害倍率1，其他品质.8/.9/1.1/1.2/1.45/1.65。人物倍率均1时AP=.135/.18/.195。",
+    "sources": [
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_MeleeWeapon_Knife"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_BaseWeapon"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_BaseMeleeWeapon"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_BaseMeleeWeapon_Sharp"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_BaseMeleeWeapon_Sharp_Quality"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_Steel"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "StatDef_MeleeWeapon_DamageMultiplier"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "StatDef_MeleeWeapon_CooldownMultiplier"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "StatDef_SharpDamageMultiplier"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "StatDef_BluntDamageMultiplier"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.Tool",
+        "line_start": 65,
+        "line_end": 104,
+        "range_sha256": "9a8ddc29a763f74975c975b6960b786c704c4c97227e26e88b6843c9fce8cd96"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.VerbProperties",
+        "line_start": 374,
+        "line_end": 386,
+        "range_sha256": "61a4214e810546ffcebd38fd83340edeba1224b09aa8008d92d929044638e0aa"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatPart_Quality",
+        "line_start": 39,
+        "line_end": 75,
+        "range_sha256": "927b6064cf5559999c3ab1ef9368a8ed81229e4350ff0650462b26b608a8536a"
+      }
+    ]
+  },
+  {
+    "id": "IM07",
+    "title": "伤情映射与区别",
+    "kind": "xml-and-static-derived",
+    "statement": "伤害Def默认hediff先取值、皮肤覆盖可覆盖为hediffSkin、硬部位再优先覆盖hediffSolid；Blunt为Crush/Bruise/Crack。Bruise疼痛.0125且出血默认0；Cut/Stab/Bite疼痛.0125、出血.06，相同伤口恢复主干；Cut/Stab感染启动.15、Bite.30。Cut/Stab的传播差异不能伪装成不同伤情出血系数。",
+    "sources": [
+      {
+        "group": "injuries",
+        "xml_record": "HediffDef_InjuryBase"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "HediffDef_Bruise"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "HediffDef_Bite"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "HediffDef_Cut"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "HediffDef_Stab"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "HediffDef_Crush"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "DamageDef_Blunt"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "DamageDef_Bite"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "DamageDef_Cut"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "DamageDef_Stab"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.InjuryProps",
+        "line_start": 3,
+        "line_end": 20,
+        "range_sha256": "1f61f96ba5c7b33ab19cb3538dce1363152f03a99779eae50ca5582a1ad522bc"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.DamageDef",
+        "line_start": 1,
+        "line_end": 80,
+        "range_sha256": "408314915e0964743b4d425d4fde4ca2ae3689415f756815621bd9fac93793c8"
+      },
+      {
+        "group": "survival",
+        "type": "Verse.HealthUtility",
+        "line_start": 519,
+        "line_end": 531,
+        "range_sha256": "d7318fa6f50545d51b7ccd4c4126bfc49e9dda491c0349addca4c2d86c7a0e8e"
+      }
+    ]
+  },
+  {
+    "id": "IM08",
+    "title": "部位生命值",
+    "kind": "xml-and-static-derived",
+    "statement": "部位maxHP=ceil(声明HP*HealthScale)，当前HP扣同部位伤口、缺失为0、特殊不可摧毁与不破坏部位伤口有至少1HP分支，然后RoundToInt。不存在通用总HP100。",
+    "sources": [
+      {
+        "group": "injuries",
+        "xml_record": "BodyPartDef_Torso"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "BodyPartDef_Head"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "BodyPartDef_Neck"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "BodyPartDef_Shoulder"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "BodyPartDef_Arm"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "BodyPartDef_Hand"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "BodyPartDef_Finger"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "BodyPartDef_Leg"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "BodyPartDef_Foot"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "BodyPartDef_Toe"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.BodyPartDef",
+        "line_start": 14,
+        "line_end": 18,
+        "range_sha256": "a39ee151a955ba36e541143b48dc353e1b0833343681ae21fe670ba71749e4be"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.BodyPartDef",
+        "line_start": 137,
+        "line_end": 158,
+        "range_sha256": "d043869abe00a678920fd43fb00586802abea9e36b6b91af0dea04b98d8a868e"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.RaceProperties",
+        "line_start": 80,
+        "line_end": 84,
+        "range_sha256": "858cf5b69d857711ddd1e75f7a4bc51458f3f2c0ff1a7d15f941470e8ef5b0c6"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffSet",
+        "line_start": 581,
+        "line_end": 606,
+        "range_sha256": "e9e40c1443495190ff08a9976de51df066b8eb442b8fc431f5ddb3fa4b0d84db"
+      }
+    ]
+  },
+  {
+    "id": "IM09",
+    "title": "身体覆盖",
+    "kind": "xml-and-static-derived",
+    "statement": "Human结构是父子部位树；coverage是相对父级权重。withChildren=父withChildren*coverage，self=withChildren*max(0,1-各子coverage和)，不是直接把每行coverage当总体概率。按深度/高度与缺失过滤，再乘DamageDef命中因子抽样；此快照并非完整能力/器官模拟器。",
+    "sources": [
+      {
+        "group": "injuries",
+        "xml_record": "BodyDef_Human"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "BodyPartDef_Eye"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "BodyPartDef_Ear"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "BodyPartDef_Nose"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "BodyPartDef_Jaw"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.BodyPartRecord",
+        "line_start": 20,
+        "line_end": 44,
+        "range_sha256": "ffb1fd76bc02dfcc6ea885f72f0815d1b10a1ccf27436b81af1889894510ca76"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.BodyDef",
+        "line_start": 149,
+        "line_end": 203,
+        "range_sha256": "2ff92dcda244f675ed08b5cd586938766c2233439a3bb905e7a6fe839ace416d"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffSet",
+        "line_start": 969,
+        "line_end": 1005,
+        "range_sha256": "5b0a1a57fb5775c357a2eaea4378c729ecb97e62e228a0f9205f6d722612740f"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.BodyPartDef",
+        "line_start": 142,
+        "line_end": 158,
+        "range_sha256": "cc7666f173de69506dd36635a0bb01bc229de38bdfec36ee4b4c70fe2c154998"
+      }
+    ]
+  },
+  {
+    "id": "IM10",
+    "title": "疼痛与休克",
+    "kind": "static-derived",
+    "statement": "普通伤口疼痛=Severity*injury.painPerSeverity/HealthScale；死亡、某些人工部位或causesNoPain排除。全身加offset再乘健康/基因/特质factor并钳到0..1。PainShockThreshold缺省.8，休克是倒地条件之一。",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.Hediff_Injury",
+        "line_start": 128,
+        "line_end": 140,
+        "range_sha256": "a59669e1383714b7890758718d89103a17b855a8be416141ebcc6210f4bbcaae"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffSet",
+        "line_start": 1328,
+        "line_end": 1368,
+        "range_sha256": "af20c3314ccb8a5a1b18750d5de6bf3b93fa2f4a3da0dcb9199c446733fc8e87"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 95,
+        "line_end": 106,
+        "range_sha256": "5fd7cd8cac1e6356f71753710851d5ab4aafb6f16552f6fcc77316a902e3ca10"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.HealthTuning",
+        "line_start": 34,
+        "line_end": 36,
+        "range_sha256": "f9f2422323c3fa5784e500d13e547525a12ce2a4b0ca773c227f5167ba649819"
+      }
+    ]
+  },
+  {
+    "id": "IM11",
+    "title": "伤口出血",
+    "kind": "xml-and-static-derived",
+    "statement": "未护理、非永久、可出血且非硬/人工等排除状态：伤口Severity*injury.bleedRate*race.bleedRateFactor*part.bleedRate。总和乘阶段totalBleedFactor并除HealthScale。部位默认倍率1、Head2、Neck4。当前Severity1..30线性决定90000..180000tick伤龄止血阈值。",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.Hediff_Injury",
+        "line_start": 142,
+        "line_end": 188,
+        "range_sha256": "1a72639b34585122cb6868dc953a9f72efd25bae9598799d0c3d3fb6491384ed"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffSet",
+        "line_start": 1299,
+        "line_end": 1326,
+        "range_sha256": "19ae45b350b648359f60ab0ccac4a6abffb2e545c02416faabaa9e57cd990d3e"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.RaceProperties",
+        "line_start": 80,
+        "line_end": 84,
+        "range_sha256": "858cf5b69d857711ddd1e75f7a4bc51458f3f2c0ff1a7d15f941470e8ef5b0c6"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.BodyPartDef",
+        "line_start": 14,
+        "line_end": 18,
+        "range_sha256": "a39ee151a955ba36e541143b48dc353e1b0833343681ae21fe670ba71749e4be"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "BodyPartDef_Head"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "BodyPartDef_Neck"
+      }
+    ]
+  },
+  {
+    "id": "IM12",
+    "title": "失血推进",
+    "kind": "xml-and-static-derived",
+    "statement": "常规60tick giver调用中总出血B>=.1时BloodLoss加B*.001，否则减.00033333333。对固定伤势且普通调度约增加B/日或恢复1/3/日；B=.099仍走恢复分支。",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.HediffGiver_Bleeding",
+        "line_start": 3,
+        "line_end": 16,
+        "range_sha256": "e1b0ed297da11d5549cc6c791f1e5c098fd6c187f74769a954620b3dcde8b9c7"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 1258,
+        "line_end": 1294,
+        "range_sha256": "f14f7f8f3cd1a3446d73bfbda7bd10760b04e701d94b1d0823cb52ca267af31f"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "HediffGiverSetDef_OrganicStandard"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_Human"
+      }
+    ]
+  },
+  {
+    "id": "IM13",
+    "title": "失血阶段",
+    "kind": "xml-and-static-derived",
+    "statement": "BloodLoss .15/.30/.45/.60阶段意识offset分别-.1/-.2/-.4/-.4，.60另意识上限.1，1致死。失血严重度是损失指标，不是剩余血量；回血与伤口愈合分开。",
+    "sources": [
+      {
+        "group": "injuries",
+        "xml_record": "HediffDef_BloodLoss"
+      },
+      {
+        "group": "survival",
+        "type": "Verse.Hediff",
+        "line_start": 239,
+        "line_end": 271,
+        "range_sha256": "f4c7c8945cdbd76746f78c4c5c0286aa6209af450a823a7f733f35e69fe62e38"
+      }
+    ]
+  },
+  {
+    "id": "IM14",
+    "title": "倒地死亡与断肢",
+    "kind": "static-derived",
+    "statement": "疼痛休克、无法清醒或移动不够等会倒地；死亡还看致死Hediff、必要能力、核心部位效率及累计伤口150*HealthScale。非核心部位HP归0会生成MissingBodyPart；普通护理不会再生缺失肢体，不能只把伤口删掉就恢复部位。",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 73,
+        "line_end": 74,
+        "range_sha256": "7b48c2cb508eaa81988ec0517da3eacc98ed5b3689c26a278af9089048bc8449"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 642,
+        "line_end": 720,
+        "range_sha256": "bf38cce2a35df708375932fb44e9e0676baa6d835689fd24ec928496dd4a9f23"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffSet",
+        "line_start": 342,
+        "line_end": 363,
+        "range_sha256": "62e6fe0bdc830241bd6ee99d7a720e9c5e4f99cd1687ee5a88f007c69f48f070"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.Hediff_MissingPart",
+        "line_start": 27,
+        "line_end": 27,
+        "range_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.Hediff_MissingPart",
+        "line_start": 150,
+        "line_end": 205,
+        "range_sha256": "277a2a43b863ae608488c60bc46856ac6cee0ac5e4a3ca16a9566b0b83d757f1"
+      }
+    ]
+  },
+  {
+    "id": "IM15",
+    "title": "新鲜断肢",
+    "kind": "xml-and-static-derived",
+    "statement": "新鲜外部非硬断肢在父部位未缺失等条件下，以部位maxHP*.12*partBleed*raceBleed出血；年龄90000tick或护理置IsFresh=false停止新鲜状态。缺失标记仍保留。",
+    "sources": [
+      {
+        "group": "injuries",
+        "xml_record": "HediffDef_MissingBodyPart"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.Hediff_MissingPart",
+        "line_start": 89,
+        "line_end": 116,
+        "range_sha256": "d70a856657e5558b261df3ce2b6f3d8e71266ae1088e5554c1f8f92eae37e8a5"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.Hediff_MissingPart",
+        "line_start": 150,
+        "line_end": 191,
+        "range_sha256": "966c7d3fd6f015829bb472f3840aab790c2d6db21158368b63829d412d89770f"
+      }
+    ]
+  },
+  {
+    "id": "IM16",
+    "title": "伤口恢复预算",
+    "kind": "xml-and-static-derived",
+    "statement": "非饥饿每600tick：从可自然恢复伤口随机选一处，8/日+非站立4/日+该姿态下CurrentBed.healPerDay，再乘阶段自然恢复因子、HealthScale、InjuryHealingFactor。独立随机选一处已护理伤口加8*(.5+clamp01(Q))/日份额。每次预算*.01；不是每处伤口全额发放。普通床继承4、医院床10。",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 1151,
+        "line_end": 1188,
+        "range_sha256": "580bed2dcb2020850a723778f0faaa977e05f90a6762deb15277f31355895291"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.HediffUtility",
+        "line_start": 58,
+        "line_end": 71,
+        "range_sha256": "593d18cacb59c9fa465034e8e5ed1fbf3095f00ced28c31343586b463ca980f9"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Hediff_Injury",
+        "line_start": 201,
+        "line_end": 212,
+        "range_sha256": "9a98c1609aa4bdbe07f9c161fe52a1531b49d8e59655185a481e8351e075211a"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_SansComfortBedBase"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_BasicBedBase"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_Bed"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_HospitalBed"
+      }
+    ]
+  },
+  {
+    "id": "IM17",
+    "title": "护理资格与任务",
+    "kind": "xml-and-static-derived",
+    "statement": "正常WorkGiver要求人类病人卧床（自疗例外），动物非站立；征召/强制护理Driver存在地面邻接路径。医生预约病人和药品，走到病人；(int)(600/MedicalTendSpeed)原版tick后完成，离开即时可达范围失败。自疗开关与medCare限制会使任务失败。",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "RimWorld.WorkGiver_Tend",
+        "line_start": 23,
+        "line_end": 59,
+        "range_sha256": "7cf85dea85f4e5ba2f6231ed899c50b7a5a799802adf8896250bef597b91cc22"
+      },
+      {
+        "group": "survival",
+        "type": "Verse.Hediff",
+        "line_start": 322,
+        "line_end": 337,
+        "range_sha256": "068db4d86fe8cdfa3f1665e4a81dffcc6750d472cd25f7ddff12f50233eeb963"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.JobDriver_TendPatient",
+        "line_start": 49,
+        "line_end": 151,
+        "range_sha256": "ccec6cb532b27a84dd72ab12e07d4680279977cff9abe0a3da8eb646a1a2bb60"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "JobDef_TendPatient"
+      }
+    ]
+  },
+  {
+    "id": "IM18",
+    "title": "护理批次与药物实物",
+    "kind": "static-derived",
+    "statement": "优先级=max(危及生命1,出血*1.5,护理使严重度降低时.025)，再按严重度排序。单次先选首项；tendAllAtOnce追加同类，否则有药且首项为伤口时追加累计<=20的其他伤口。无药不合并该分支。DoTend仅实际处理时消耗1份药；Medicine.GetMedicineCountToFullyHeal是所需护理批次数估计，不是恢复全部伤口到0的药数。",
+    "sources": [
+      {
+        "group": "survival",
+        "type": "Verse.Hediff",
+        "line_start": 215,
+        "line_end": 233,
+        "range_sha256": "def00cc4330f0f4c31590afb2ea32015bd2e9c90480efb95e7288a49a85d5e7f"
+      },
+      {
+        "group": "combat",
+        "type": "RimWorld.TendUtility",
+        "line_start": 26,
+        "line_end": 71,
+        "range_sha256": "a5cd929fc7d5740766ed473333318437ce4b00e3e62945bf66eeafefcd79585c"
+      },
+      {
+        "group": "combat",
+        "type": "RimWorld.TendUtility",
+        "line_start": 113,
+        "line_end": 180,
+        "range_sha256": "4933b06261bb233bc0e4a973ef43d6146c249eefd95e254cdd3de28be9b2db6a"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.Medicine",
+        "line_start": 12,
+        "line_end": 49,
+        "range_sha256": "b82d9469ccd4d4ce73e07b2f6185f4e66f21115f42565275aa013525495f60d9"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.Toils_Tend",
+        "line_start": 11,
+        "line_end": 52,
+        "range_sha256": "092ea8bd927713175fb339ca1407b36998387c17f7657016e23ad13e632d48b6"
+      }
+    ]
+  },
+  {
+    "id": "IM19",
+    "title": "护理质量",
+    "kind": "static-derived",
+    "statement": "base=clamp((医生最终质量*药效+当前床偏移)*(自疗?.7:1),0,药品上限)；无医生.75，无药药效.3/上限.7。每伤情实际Q=clamp(base+随机[-.25,.25],0,上限)。质量0也会标记护理、普通伤口止血；较高质量促进额外恢复，但伤口恢复Q在1封顶。",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "RimWorld.TendUtility",
+        "line_start": 10,
+        "line_end": 16,
+        "range_sha256": "2b0226cb881c4518606fa47c3c2282b707656bb482581d23bfeb97a47e88af71"
+      },
+      {
+        "group": "combat",
+        "type": "RimWorld.TendUtility",
+        "line_start": 90,
+        "line_end": 110,
+        "range_sha256": "7dda03727880a6f5391f6ecaa398ce3c01bad6f68e16d225180e129d105444ed"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffComp_TendDuration",
+        "line_start": 182,
+        "line_end": 200,
+        "range_sha256": "340a4943a3e1b6a031f3e3ed7adc99c4b03c004dd88c8410030561d22e7e7751"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Hediff_Injury",
+        "line_start": 158,
+        "line_end": 161,
+        "range_sha256": "f55166a090417110d424da023f6ec1e60cca3c6f3e3d89c4de618c3deb5775fd"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 1181,
+        "line_end": 1187,
+        "range_sha256": "5cbc3a812cc32efad974f52fd0f3cfde374743925fae0067d07a0860b55bf699"
+      }
+    ]
+  },
+  {
+    "id": "IM20",
+    "title": "伤口护理永久与疾病护理过期",
+    "kind": "xml-and-static-derived",
+    "statement": "TendDuration的baseHours缺省-1，即永久护理：成功后tendTicksLeft=1且不递减。所选普通伤口未覆盖该字段。tendQuality存档默认0，字段省略本身不是护理成功证据。有限疾病使用(baseHours+3)*2500，并在剩余严格小于3*2500时可重复护理；不是所有伤口每12小时重包扎。",
+    "sources": [
+      {
+        "group": "injuries",
+        "xml_record": "HediffDef_Bruise"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "HediffDef_Bite"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "HediffDef_Cut"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "HediffDef_Stab"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffCompProperties_TendDuration",
+        "line_start": 7,
+        "line_end": 62,
+        "range_sha256": "c727589acc38b3e143a4f064c14f491bae3d924cb7662323588f2b0ac3c3a754"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffComp_TendDuration",
+        "line_start": 43,
+        "line_end": 65,
+        "range_sha256": "ade485eaababd100d24644d25488834a37ec23b9291d62c87ecb91f007807925"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffComp_TendDuration",
+        "line_start": 160,
+        "line_end": 165,
+        "range_sha256": "cdbe36e3c631895be40551270cf90818e1aa3bc6d216ea071d2f60f29370dc82"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffComp_TendDuration",
+        "line_start": 173,
+        "line_end": 193,
+        "range_sha256": "a6fd42f2a84cf3bf3840a85c5c6cb011f5f42fed6e444d2d38c8eb79e76e5203"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.HediffUtility",
+        "line_start": 32,
+        "line_end": 46,
+        "range_sha256": "58d036d316ae337e6e6cf32a2116b1c14f5424811ff51e1908a68cf390267551"
+      }
+    ]
+  },
+  {
+    "id": "IM21",
+    "title": "药物等级与策略",
+    "kind": "xml-and-static-derived",
+    "statement": "无药/草药/工业/高级药效=.3/.6/1/1.6，上限=.7/.7/1/1.3。MedicineBase堆叠25，草药150日腐坏起点。允许药物按potency阈值过滤而不只按名称；找药还受禁止、预约和路径影响，并比较随身与地图药效。",
+    "sources": [
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_MedicineBase"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_MedicineHerbal"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_MedicineIndustrial"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_MedicineUltratech"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_ResourceBase"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "StatDef_MedicalPotency"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "StatDef_MedicalQualityMax"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.MedicalCareUtility",
+        "line_start": 73,
+        "line_end": 84,
+        "range_sha256": "9c03f7c43910b9dbf33834afd4967d7aa092ba8df1684135e46728399524c719"
+      },
+      {
+        "group": "survival",
+        "type": "RimWorld.HealthAIUtility",
+        "line_start": 147,
+        "line_end": 205,
+        "range_sha256": "c32311fa8ef2734e867203477bef1df8eb73a318977c0969185b5dd1a5254edd"
+      }
+    ]
+  },
+  {
+    "id": "IM22",
+    "title": "医疗能力声明",
+    "kind": "xml-declared",
+    "statement": "MedicalTendSpeed声明技能因子.4+.06*Medicine级别，质量技能因子.2+.1*级别；两者另有视力/操作，速度还有WorkSpeedGlobal，质量另有后处理曲线。这里不把技能公式单独当最终Stat。",
+    "sources": [
+      {
+        "group": "injuries",
+        "xml_record": "StatDef_MedicalTendSpeed"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "StatDef_MedicalTendQuality"
+      }
+    ]
+  },
+  {
+    "id": "IM23",
+    "title": "药草生产链",
+    "kind": "xml-declared",
+    "statement": "可种植healroot生长参数7日、播种800工作、最低种植8级；继承HealrootBase收获400工作、基础产量1份MedicineHerbal和60HP。野生healroot未覆盖基类10日，也不声明播种标签。生长日参数不是固定日历成熟时间，收获失败/产率仍需植物链。",
+    "sources": [
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_Plant_Healroot"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_HealrootBase"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_Plant_HealrootWild"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_PlantBase"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "ThingDef_PlantBaseNonEdible"
+      }
+    ]
+  },
+  {
+    "id": "IM24",
+    "title": "感染延迟边界",
+    "kind": "xml-and-static-derived",
+    "statement": "伤口先按injury infectionChance启动延迟15000..45000tick（6..18游戏小时），到期再用当前严重度、难度、有效护理质量和护理时房间因子抽检。Bite的.30并非最终30%感染率。感染/免疫完整赛跑复用第02章，不把本章算例当原版运行。",
+    "sources": [
+      {
+        "group": "injuries",
+        "type": "Verse.HealthTuning",
+        "line_start": 64,
+        "line_end": 70,
+        "range_sha256": "4ed064b07564ad220c1546421113046574c55101a8f91297e95160aa915b8dae"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffComp_Infecter",
+        "line_start": 20,
+        "line_end": 67,
+        "range_sha256": "e20bdcc3627b9fe0d79584eb919aa9b825d916bead5b1648a1a27b2742aa2e37"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.HediffComp_Infecter",
+        "line_start": 77,
+        "line_end": 134,
+        "range_sha256": "d3451f458b8e6700aaeac60e8c8f6759e465e4c2875260c9772f5c135d2000a0"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "HediffDef_Bite"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "HediffDef_Cut"
+      },
+      {
+        "group": "injuries",
+        "xml_record": "HediffDef_Stab"
+      }
+    ]
+  }
+]

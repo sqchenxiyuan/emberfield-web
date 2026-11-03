@@ -1,0 +1,139 @@
+{
+  "evidence_id": "RW17-INJURIES",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "Verse.HealthTuning",
+      "local_file": ".local-research/injuries/Verse.HealthTuning.cs",
+      "sha256": "535fd90c360ae9778fe052f97ab10d9787e2f13debe2fd5369d37d90e4beeeef",
+      "lines": 150
+    },
+    {
+      "type": "Verse.HediffUtility",
+      "local_file": ".local-research/injuries/Verse.HediffUtility.cs",
+      "sha256": "8d0903b76be2d273afd083f5f33d1866f2300cf8594cd458fd07752372918ab4",
+      "lines": 87
+    },
+    {
+      "type": "Verse.InjuryProps",
+      "local_file": ".local-research/injuries/Verse.InjuryProps.cs",
+      "sha256": "92045c84e66c01dbc845a3fcdadcbba2642f7eb93d7eacf7654daaf7fd571e7a",
+      "lines": 21
+    },
+    {
+      "type": "Verse.BodyPartDef",
+      "local_file": ".local-research/injuries/Verse.BodyPartDef.cs",
+      "sha256": "f2802bc09f833da4ea7a742f7ce8ebc4cc78fb2b4687154a236ad5053d76b8bb",
+      "lines": 160
+    },
+    {
+      "type": "Verse.BodyPartRecord",
+      "local_file": ".local-research/injuries/Verse.BodyPartRecord.cs",
+      "sha256": "2abff52c224b98d81795a237e81ebc6bacfd00d9c74370e007354c32afd3b4f4",
+      "lines": 169
+    },
+    {
+      "type": "Verse.Hediff_MissingPart",
+      "local_file": ".local-research/injuries/Verse.Hediff_MissingPart.cs",
+      "sha256": "52e14eede9398b8a57259cff663c24fcb6ae03c511383587357a1c4ed451ab0c",
+      "lines": 221
+    },
+    {
+      "type": "RimWorld.JobDriver_TendPatient",
+      "local_file": ".local-research/injuries/RimWorld.JobDriver_TendPatient.cs",
+      "sha256": "630cce411adf6bd7cb40b6dafd5113c7b476d1ac896e2f65961771f245503ab4",
+      "lines": 208
+    },
+    {
+      "type": "RimWorld.Toils_Tend",
+      "local_file": ".local-research/injuries/RimWorld.Toils_Tend.cs",
+      "sha256": "8fb249325b6eaf57452b332f9a5c718a75865136484d8b0effc06d7af89850f5",
+      "lines": 86
+    },
+    {
+      "type": "RimWorld.Medicine",
+      "local_file": ".local-research/injuries/RimWorld.Medicine.cs",
+      "sha256": "3768af210514f133e54b343229abc7818c011e0ce1004305b336ec9b087a8885",
+      "lines": 51
+    },
+    {
+      "type": "RimWorld.MedicalCareUtility",
+      "local_file": ".local-research/injuries/RimWorld.MedicalCareUtility.cs",
+      "sha256": "6d4e0a362edd2ae780e059508f2b7b607674aa9c4f5fcee3fb9e411a2f1a4a90",
+      "lines": 132
+    },
+    {
+      "type": "Verse.Tool",
+      "local_file": ".local-research/injuries/Verse.Tool.cs",
+      "sha256": "c8719ea230a74ebeaa0e7c6d7ef09409e0dc064fc1e91162f4983f9adfade7e9",
+      "lines": 125
+    },
+    {
+      "type": "RimWorld.Pawn_MeleeVerbs",
+      "local_file": ".local-research/injuries/RimWorld.Pawn_MeleeVerbs.cs",
+      "sha256": "fcbb2a926117de6c2b0b1639a7db66fdfdd5b3b464fedd3d9246e7e54d2813fe",
+      "lines": 296
+    },
+    {
+      "type": "RimWorld.Verb_MeleeAttack",
+      "local_file": ".local-research/injuries/RimWorld.Verb_MeleeAttack.cs",
+      "sha256": "51e4f3687ca82491b830dd22763138682455df5e06a3a121916272f9bc948367",
+      "lines": 321
+    },
+    {
+      "type": "RimWorld.Verb_MeleeAttackDamage",
+      "local_file": ".local-research/injuries/RimWorld.Verb_MeleeAttackDamage.cs",
+      "sha256": "7f6c28a34c8e9ea4bd189c8b6df36dfb9d3b0848c79b2faecb18d2981c3d0ac1",
+      "lines": 116
+    },
+    {
+      "type": "Verse.RaceProperties",
+      "local_file": ".local-research/injuries/Verse.RaceProperties.cs",
+      "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+      "lines": 788
+    },
+    {
+      "type": "Verse.DamageDef",
+      "local_file": ".local-research/injuries/Verse.DamageDef.cs",
+      "sha256": "4fb7d507371802891beecbe3610b729b4d9c5cbc42b8f3d8f09397f05b8cf89a",
+      "lines": 199
+    },
+    {
+      "type": "Verse.VerbUtility",
+      "local_file": ".local-research/injuries/Verse.VerbUtility.cs",
+      "sha256": "4dd789f82d3cb740e3df1bd9a8eeaad0342cd9ddf3d775a74fa2f7c5e86a72a2",
+      "lines": 287
+    },
+    {
+      "type": "Verse.VerbProperties",
+      "local_file": ".local-research/injuries/Verse.VerbProperties.cs",
+      "sha256": "5765503800edd8cbe1a213c946c985d49d6fde2b8266653e8ed6fba1c76cd862",
+      "lines": 733
+    },
+    {
+      "type": "RimWorld.VerbEntry",
+      "local_file": ".local-research/injuries/RimWorld.VerbEntry.cs",
+      "sha256": "c29608bd750a042b0c9857e523618e2776b6350376f38f1e147209fd694a02c0",
+      "lines": 45
+    },
+    {
+      "type": "Verse.BodyDef",
+      "local_file": ".local-research/injuries/Verse.BodyDef.cs",
+      "sha256": "11d943d4b351b740abd8de2802c4d848d20e06b8fb3c5bd034025d580d50aab5",
+      "lines": 213
+    }
+  ]
+}

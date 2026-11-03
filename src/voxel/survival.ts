@@ -1,5 +1,6 @@
 import { DAY, type Pawn, type SurvivalHealth, type ApparelPiece } from './types';
 import { insulation } from './apparel';
+import { initialTrauma, traumaSummary, type Trauma } from './injuries';
 
 // Source contract: chapter 33. Whole healthy adult body, no apparel, genes or traits.
 // Source 60000 ticks/day is mapped to our DAY, independently of render/real-time TPS.
@@ -47,11 +48,25 @@ export function initialSurvival(
   | 'careProgress'
   | 'careFoodId'
   | 'careAmount'
+  | 'trauma'
+  | 'faction'
+  | 'drafted'
+  | 'retreating'
+  | 'attackTargetId'
+  | 'nextAttackTick'
+  | 'weapon'
 > {
   // Deterministic personal sampling is a prototype adaptation; the original uses its pawn RNG.
   let hash = Math.imul(seed ^ id, 0x45d9f3b);
   hash = Math.imul(hash ^ (hash >>> 16), 0x45d9f3b);
   return {
+    trauma: initialTrauma(),
+    faction: 'colony',
+    drafted: false,
+    retreating: false,
+    attackTargetId: null,
+    nextAttackTick: 0,
+    weapon: 'fists',
     health: {
       malnutrition: 0,
       hypothermia: 0,
@@ -102,44 +117,53 @@ export function updateHealth(
   else if (temperature < comfortableMax)
     h.heatstroke = clamp(h.heatstroke - clamp(h.heatstroke * 0.027, 0.0015, 0.015));
 }
-export function healthDeathReason(h: SurvivalHealth): string | null {
-  return h.malnutrition >= 1
-    ? '营养不良致死'
-    : h.hypothermia >= 1
-      ? '失温致死'
-      : h.heatstroke >= 1
-        ? '中暑致死'
-        : null;
+export function healthDeathReason(h: SurvivalHealth, trauma?: Trauma): string | null {
+  return (
+    (trauma && traumaSummary(trauma).deathReason) ||
+    (h.malnutrition >= 1
+      ? '营养不良致死'
+      : h.hypothermia >= 1
+        ? '失温致死'
+        : h.heatstroke >= 1
+          ? '中暑致死'
+          : null)
+  );
 }
 export function healthSummary(
-  p: Pick<Pawn, 'health' | 'dead' | 'deathReason'> & Partial<Pick<Pawn, 'worn'>>,
+  p: Pick<Pawn, 'health' | 'dead' | 'deathReason'> & Partial<Pick<Pawn, 'worn' | 'trauma'>>,
 ) {
+  const trauma = traumaSummary(p.trauma ?? initialTrauma());
   const h = p.health,
     mal = stage(h.malnutrition, [0, 0.2, 0.4, 0.6, 0.8]),
     cold = stage(h.hypothermia, [0, 0.04, 0.2, 0.35, 0.62]),
     hot = stage(h.heatstroke, [0, 0.04, 0.2, 0.35, 0.62]);
-  const pain = clamp([0, 0, 0, 0.15, 0.3][cold] + [0, 0, 0, 0.15, 0.3][hot]);
+  const pain = clamp(trauma.pain + [0, 0, 0, 0.15, 0.3][cold] + [0, 0, 0, 0.15, 0.3][hot]);
   const penalty = clamp(((pain - 0.1) / 0.9) * 0.4, 0, 0.4);
   const consciousOffset =
     [0, -0.05, -0.1, -0.2, -0.3][mal] +
     [0, -0.05, -0.1, -0.2, 0][cold] +
-    [0, -0.05, -0.1, -0.2, 0][hot];
+    [0, -0.05, -0.1, -0.2, 0][hot] +
+    trauma.consciousnessOffset;
   const consciousness = p.dead
     ? 0
     : rounded(
         Math.min(
           1 - (penalty >= 0.01 ? penalty : 0) + consciousOffset,
           mal === 4 || cold === 4 || hot === 4 ? 0.1 : 1,
+          trauma.consciousnessMax,
         ),
       );
   const moving =
     consciousness < 0.3
       ? 0
       : rounded(
-          Math.min(consciousness, 1) + [0, 0, -0.1, -0.3, 0][cold] + [0, 0, -0.1, -0.3, 0][hot],
+          (Math.min(consciousness, 1) + [0, 0, -0.1, -0.3, 0][cold] + [0, 0, -0.1, -0.3, 0][hot]) *
+            trauma.movingFactor,
         );
   const manipulation =
-    consciousness < 0.3 ? 0 : rounded(consciousness + [0, -0.08, -0.2, -0.5, 0][cold]);
+    consciousness < 0.3
+      ? 0
+      : rounded((consciousness + [0, -0.08, -0.2, -0.5, 0][cold]) * trauma.manipulationFactor);
   const labels = ['初期', '轻微', '中度', '严重', '极重'];
   const stages = {
     malnutrition: h.malnutrition > 0 ? labels[mal] : '无',
@@ -152,6 +176,8 @@ export function healthSummary(
         h.malnutrition > 0 ? '营养不良（' + stages.malnutrition + '）' : '',
         h.hypothermia > 0 ? '失温（' + stages.hypothermia + '）' : '',
         h.heatstroke > 0 ? '中暑（' + stages.heatstroke + '）' : '',
+        p.trauma?.wounds.length ? `${p.trauma.wounds.length} 处外伤` : '',
+        p.trauma && p.trauma.bloodLoss > 0 ? '失血' : '',
       ]
         .filter(Boolean)
         .join('、') || '健康';
@@ -160,6 +186,7 @@ export function healthSummary(
     moving,
     manipulation,
     pain,
+    bleedRate: trauma.bleedRate,
     reason,
     stages,
     comfortableMin: COMFORTABLE_MIN - insulation(p.worn ?? []).cold,

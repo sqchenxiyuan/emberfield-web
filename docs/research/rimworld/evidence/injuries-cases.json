@@ -1,0 +1,726 @@
+[
+  {
+    "id": "IC01",
+    "model": "time",
+    "claims": [
+      "IM01",
+      "IM17"
+    ],
+    "inputs": {
+      "sourceDay": 60000,
+      "projectDay": 12000,
+      "sourceTPS": 60,
+      "projectTPS": 20,
+      "healthInterval": 60,
+      "healInterval": 600,
+      "tendTicks": 600
+    },
+    "expected": {
+      "health": 12,
+      "heal": 120,
+      "tendBySeconds": 200,
+      "tendByDay": 120,
+      "ageStopDays": [
+        1.5,
+        3
+      ],
+      "infectionHours": [
+        6,
+        18
+      ]
+    },
+    "limitation": "Independent arithmetic and branch reconstruction under stated fixed inputs; not original execution, effective-mod database or project integration proof."
+  },
+  {
+    "id": "IC02",
+    "model": "melee",
+    "claims": [
+      "IM02",
+      "IM03",
+      "IM04"
+    ],
+    "inputs": {
+      "power": [
+        8.2,
+        8.2,
+        8.2,
+        5
+      ],
+      "cooldown": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "chance": [
+        1,
+        1,
+        0.07,
+        0.2
+      ]
+    },
+    "expected": {
+      "ap": [
+        0.123,
+        0.123,
+        0.123,
+        0.075
+      ],
+      "minDamage": [
+        6.56,
+        6.56,
+        6.56,
+        4
+      ],
+      "maxDamage": [
+        9.84,
+        9.84,
+        9.84,
+        6
+      ],
+      "category": [
+        "Best",
+        "Best",
+        "Worst",
+        "Worst"
+      ],
+      "probability": [
+        0.5,
+        0.5,
+        0,
+        0
+      ]
+    },
+    "limitation": "Independent arithmetic and branch reconstruction under stated fixed inputs; not original execution, effective-mod database or project integration proof."
+  },
+  {
+    "id": "IC03",
+    "model": "melee",
+    "claims": [
+      "IM03",
+      "IM04",
+      "IM06"
+    ],
+    "inputs": {
+      "power": [
+        8.2,
+        8.2,
+        8.2,
+        5,
+        9,
+        12,
+        13
+      ],
+      "cooldown": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        1.5,
+        2
+      ],
+      "chance": [
+        1,
+        1,
+        0.07,
+        0.2,
+        1,
+        1,
+        1
+      ]
+    },
+    "expected": {
+      "ap": [
+        0.123,
+        0.123,
+        0.123,
+        0.075,
+        0.135,
+        0.18,
+        0.195
+      ],
+      "minDamage": [
+        6.56,
+        6.56,
+        6.56,
+        4,
+        7.2,
+        9.6,
+        10.4
+      ],
+      "maxDamage": [
+        9.84,
+        9.84,
+        9.84,
+        6,
+        10.8,
+        14.4,
+        15.6
+      ],
+      "category": [
+        "Mid",
+        "Mid",
+        "Worst",
+        "Worst",
+        "Mid",
+        "Best",
+        "Mid"
+      ],
+      "probability": [
+        0.0625,
+        0.0625,
+        0,
+        0,
+        0.0625,
+        0.75,
+        0.0625
+      ]
+    },
+    "limitation": "Independent arithmetic and branch reconstruction under stated fixed inputs; not original execution, effective-mod database or project integration proof."
+  },
+  {
+    "id": "IC04",
+    "model": "meleeBoundary",
+    "claims": [
+      "IM03"
+    ],
+    "inputs": {
+      "weights": [
+        0.2499,
+        0.25,
+        0.9499,
+        0.95,
+        1
+      ],
+      "highest": 1
+    },
+    "expected": [
+      "Worst",
+      "Mid",
+      "Mid",
+      "Best",
+      "Best"
+    ],
+    "limitation": "Independent arithmetic and branch reconstruction under stated fixed inputs; not original execution, effective-mod database or project integration proof."
+  },
+  {
+    "id": "IC05",
+    "model": "bleed",
+    "claims": [
+      "IM07",
+      "IM10",
+      "IM11"
+    ],
+    "inputs": {
+      "severity": 10,
+      "injuryBleed": [
+        0,
+        0.06,
+        0.06,
+        0.06
+      ],
+      "partBleed": [
+        1,
+        1,
+        2,
+        4
+      ],
+      "scale": 1,
+      "race": 1
+    },
+    "expected": {
+      "bleed": [
+        0,
+        0.6,
+        1.2,
+        2.4
+      ],
+      "pain": [
+        0.125,
+        0.125,
+        0.125,
+        0.125
+      ],
+      "tendedBleed": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "limitation": "Independent arithmetic and branch reconstruction under stated fixed inputs; not original execution, effective-mod database or project integration proof."
+  },
+  {
+    "id": "IC06",
+    "model": "blood",
+    "claims": [
+      "IM12"
+    ],
+    "inputs": {
+      "bleed": [
+        0,
+        0.099,
+        0.1,
+        0.6
+      ],
+      "callsPerDay": 1000
+    },
+    "expected": {
+      "perCall": [
+        -0.00033333333,
+        -0.00033333333,
+        0.0001,
+        0.0006
+      ],
+      "perDay": [
+        -0.33333333,
+        -0.33333333,
+        0.1,
+        0.6
+      ]
+    },
+    "limitation": "Independent arithmetic and branch reconstruction under stated fixed inputs; not original execution, effective-mod database or project integration proof."
+  },
+  {
+    "id": "IC07",
+    "model": "bloodStages",
+    "claims": [
+      "IM13"
+    ],
+    "inputs": {
+      "severity": [
+        0,
+        0.149,
+        0.15,
+        0.299,
+        0.3,
+        0.449,
+        0.45,
+        0.599,
+        0.6,
+        1
+      ]
+    },
+    "expected": {
+      "offset": [
+        0,
+        0,
+        -0.1,
+        -0.1,
+        -0.2,
+        -0.2,
+        -0.4,
+        -0.4,
+        -0.4,
+        -0.4
+      ],
+      "maximum": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0.1,
+        0.1
+      ],
+      "lethal": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ]
+    },
+    "limitation": "Independent arithmetic and branch reconstruction under stated fixed inputs; not original execution, effective-mod database or project integration proof."
+  },
+  {
+    "id": "IC08",
+    "model": "healing",
+    "claims": [
+      "IM16"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "lying": false,
+          "bed": 0,
+          "q": null,
+          "starving": false
+        },
+        {
+          "lying": true,
+          "bed": 0,
+          "q": null,
+          "starving": false
+        },
+        {
+          "lying": true,
+          "bed": 4,
+          "q": 0,
+          "starving": false
+        },
+        {
+          "lying": true,
+          "bed": 4,
+          "q": 0.7,
+          "starving": false
+        },
+        {
+          "lying": true,
+          "bed": 10,
+          "q": 1.3,
+          "starving": false
+        },
+        {
+          "lying": true,
+          "bed": 10,
+          "q": 1,
+          "starving": true
+        }
+      ]
+    },
+    "expected": {
+      "natural": [
+        8,
+        12,
+        16,
+        16,
+        22,
+        0
+      ],
+      "tended": [
+        0,
+        0,
+        4,
+        9.6,
+        12,
+        0
+      ],
+      "total": [
+        8,
+        12,
+        20,
+        25.6,
+        34,
+        0
+      ]
+    },
+    "limitation": "Independent arithmetic and branch reconstruction under stated fixed inputs; not original execution, effective-mod database or project integration proof."
+  },
+  {
+    "id": "IC09",
+    "model": "quality",
+    "claims": [
+      "IM19",
+      "IM21"
+    ],
+    "inputs": {
+      "doctor": 0.8,
+      "bed": 0.1,
+      "potency": [
+        0.3,
+        0.6,
+        1,
+        1.6
+      ],
+      "max": [
+        0.7,
+        0.7,
+        1,
+        1.3
+      ],
+      "self": false
+    },
+    "expected": {
+      "base": [
+        0.34,
+        0.58,
+        0.9,
+        1.3
+      ],
+      "low": [
+        0.09,
+        0.33,
+        0.65,
+        1.05
+      ],
+      "high": [
+        0.59,
+        0.7,
+        1,
+        1.3
+      ]
+    },
+    "limitation": "Independent arithmetic and branch reconstruction under stated fixed inputs; not original execution, effective-mod database or project integration proof."
+  },
+  {
+    "id": "IC10",
+    "model": "quality",
+    "claims": [
+      "IM19"
+    ],
+    "inputs": {
+      "doctor": 0.8,
+      "bed": 0.1,
+      "potency": [
+        0.6
+      ],
+      "max": [
+        0.7
+      ],
+      "self": true
+    },
+    "expected": {
+      "base": [
+        0.406
+      ],
+      "low": [
+        0.156
+      ],
+      "high": [
+        0.656
+      ]
+    },
+    "limitation": "Independent arithmetic and branch reconstruction under stated fixed inputs; not original execution, effective-mod database or project integration proof."
+  },
+  {
+    "id": "IC11",
+    "model": "batch",
+    "claims": [
+      "IM18"
+    ],
+    "inputs": {
+      "severity": [
+        9,
+        8,
+        6
+      ],
+      "usingMedicine": true
+    },
+    "expected": {
+      "batches": [
+        [
+          9,
+          8
+        ],
+        [
+          6
+        ]
+      ],
+      "medicine": 2
+    },
+    "limitation": "Independent arithmetic and branch reconstruction under stated fixed inputs; not original execution, effective-mod database or project integration proof."
+  },
+  {
+    "id": "IC12",
+    "model": "batch",
+    "claims": [
+      "IM18"
+    ],
+    "inputs": {
+      "severity": [
+        9,
+        8,
+        6
+      ],
+      "usingMedicine": false
+    },
+    "expected": {
+      "batches": [
+        [
+          9
+        ],
+        [
+          8
+        ],
+        [
+          6
+        ]
+      ],
+      "medicine": 0
+    },
+    "limitation": "Independent arithmetic and branch reconstruction under stated fixed inputs; not original execution, effective-mod database or project integration proof."
+  },
+  {
+    "id": "IC13",
+    "model": "batch",
+    "claims": [
+      "IM18"
+    ],
+    "inputs": {
+      "severity": [
+        25,
+        11,
+        9,
+        1
+      ],
+      "usingMedicine": true
+    },
+    "expected": {
+      "batches": [
+        [
+          25
+        ],
+        [
+          11,
+          9
+        ],
+        [
+          1
+        ]
+      ],
+      "medicine": 3
+    },
+    "limitation": "Independent arithmetic and branch reconstruction under stated fixed inputs; not original execution, effective-mod database or project integration proof."
+  },
+  {
+    "id": "IC14",
+    "model": "tendTime",
+    "claims": [
+      "IM17"
+    ],
+    "inputs": {
+      "speed": [
+        0.1,
+        0.4,
+        1,
+        1.3,
+        2
+      ]
+    },
+    "expected": {
+      "sourceTicks": [
+        6000,
+        1500,
+        600,
+        461,
+        300
+      ],
+      "seconds": [
+        100,
+        25,
+        10,
+        7.683333333333333,
+        5
+      ]
+    },
+    "limitation": "Independent arithmetic and branch reconstruction under stated fixed inputs; not original execution, effective-mod database or project integration proof."
+  },
+  {
+    "id": "IC15",
+    "model": "tendTimer",
+    "claims": [
+      "IM20"
+    ],
+    "inputs": {
+      "baseHours": [
+        -1,
+        12
+      ],
+      "overlap": 3,
+      "elapsed": 1
+    },
+    "expected": {
+      "permanent": [
+        true,
+        false
+      ],
+      "initialTicks": [
+        1,
+        37500
+      ],
+      "afterTick": [
+        1,
+        37499
+      ],
+      "retendAtLeft": [
+        null,
+        7499
+      ]
+    },
+    "limitation": "Independent arithmetic and branch reconstruction under stated fixed inputs; not original execution, effective-mod database or project integration proof."
+  },
+  {
+    "id": "IC16",
+    "model": "missing",
+    "claims": [
+      "IM14",
+      "IM15"
+    ],
+    "inputs": {
+      "hp": 30,
+      "bleedFactor": 1,
+      "race": 1,
+      "scale": 1,
+      "age": 90000
+    },
+    "expected": {
+      "freshBleed": 3.6,
+      "pain": 0.375,
+      "tendedBleed": 0,
+      "agedBleed": 0,
+      "ordinaryRegrowth": false
+    },
+    "limitation": "Independent arithmetic and branch reconstruction under stated fixed inputs; not original execution, effective-mod database or project integration proof."
+  },
+  {
+    "id": "IC17",
+    "model": "infection",
+    "claims": [
+      "IM24"
+    ],
+    "inputs": {
+      "initial": [
+        0.15,
+        0.3
+      ],
+      "severity": 12,
+      "quality": 0.6,
+      "room": 0.5,
+      "difficulty": 1
+    },
+    "expected": {
+      "second": 0.26,
+      "total": [
+        0.039,
+        0.078
+      ]
+    },
+    "limitation": "Independent arithmetic and branch reconstruction under stated fixed inputs; not original execution, effective-mod database or project integration proof."
+  },
+  {
+    "id": "IC18",
+    "model": "injuryAge",
+    "claims": [
+      "IM11"
+    ],
+    "inputs": {
+      "severity": [
+        0,
+        1,
+        15.5,
+        30,
+        50
+      ]
+    },
+    "expected": {
+      "ticks": [
+        90000,
+        90000,
+        135000,
+        180000,
+        180000
+      ]
+    },
+    "limitation": "Independent arithmetic and branch reconstruction under stated fixed inputs; not original execution, effective-mod database or project integration proof."
+  }
+]

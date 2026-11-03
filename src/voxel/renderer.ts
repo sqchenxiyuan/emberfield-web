@@ -109,6 +109,7 @@ type PawnVisual = {
   leftArm: Group;
   rightArm: Group;
   tool: Group;
+  knife: Group;
   cargo: Mesh;
   torso: Mesh;
   label: Sprite;
@@ -2331,6 +2332,13 @@ export class VoxelRenderer {
     rightArm.add(tool);
     part(tool, hair, 0, 0, 0.15, 0.055, 0.055, 0.6);
     part(tool, dark, 0, 0, 0.43, 0.38, 0.1, 0.11);
+    const knife = new Group();
+    knife.position.set(0, -0.44, 0.1);
+    rightArm.add(knife);
+    part(knife, hair, 0, 0, 0.04, 0.065, 0.065, 0.14);
+    const steel = this.keepMaterial(new MeshLambertMaterial({ color: 0xd1dce0 }));
+    part(knife, steel, 0, 0, 0.23, 0.045, 0.09, 0.25);
+    knife.visible = pawn.weapon === 'steelKnife';
     const cargoMaterial = this.keepMaterial(new MeshLambertMaterial({ color: 0xc69b60 }));
     const cargo = part(body, cargoMaterial, 0, 0.72, 0.39, 0.43, 0.31, 0.33);
     cargo.visible = false;
@@ -2392,6 +2400,7 @@ export class VoxelRenderer {
       leftArm,
       rightArm,
       tool,
+      knife,
       cargo,
       label,
       sleepSymbol,
@@ -2441,6 +2450,7 @@ export class VoxelRenderer {
     const cookingCells = new Set<number>();
     for (const visual of this.pawnVisuals.values()) {
       const pawn = visual.pawn;
+      visual.knife.visible = pawn.weapon === 'steelKnife';
       const visible = pawn.z <= this.level;
       visual.root.visible = visible;
       const fraction =
@@ -2456,7 +2466,8 @@ export class VoxelRenderer {
       visual.body.position.set(0, bed ? 0.61 : lying ? 0.2 : 0, lying ? 1.1 : 0);
       visual.shadow.visible = !bed && pawn.carriedBy === null;
       visual.sleepSymbol.visible = sleeping;
-      visual.healthMarker.visible = pawn.downed && !pawn.dead;
+      visual.healthMarker.visible =
+        !pawn.dead && (pawn.downed || pawn.trauma.wounds.some((w) => w.tendQuality === null));
       visual.healthMarker.position.set(-0.38, bed ? 1.2 : 0.9, 0.5);
       visual.label.material.color.setHex(pawn.dead ? 0xaaaaaa : 0xffffff);
       visual.label.position.set(0, lying ? 1.2 : 1.91, lying ? 0.5 : 0);
@@ -2491,6 +2502,16 @@ export class VoxelRenderer {
       const sewing = working && job?.kind === 'tailoring';
       const dressing = pawn.phase === 'apparel' && pawn.apparelTask?.stage === 'work' && !moving;
       const feeding = pawn.phase === 'care' && pawn.carePhase === 'feed' && !moving;
+      const bandaging = pawn.phase === 'care' && pawn.carePhase === 'tend' && !moving;
+      const opponent =
+        pawn.phase === 'combat'
+          ? this.data.pawns.find((p) => p.id === pawn.attackTargetId)
+          : undefined;
+      const fighting =
+        !!opponent &&
+        !moving &&
+        opponent.z === pawn.z &&
+        Math.abs(opponent.x - pawn.x) + Math.abs(opponent.y - pawn.y) === 1;
       const carryingPatient = pawn.carryingPawnId !== null;
       const tending =
         working && (job?.kind === 'sow' || job?.kind === 'plantTree' || job?.kind === 'harvest');
@@ -2499,7 +2520,7 @@ export class VoxelRenderer {
       visual.leftLeg.rotation.x = moving ? swing * 0.55 : 0;
       visual.rightLeg.rotation.x = moving ? -swing * 0.55 : 0;
       visual.leftArm.rotation.x =
-        sewing || dressing
+        sewing || dressing || bandaging
           ? -0.9 + Math.sin(time * 5 + pawn.id) * 0.13
           : pawn.cargo || carryingPatient
             ? -0.9
@@ -2510,8 +2531,9 @@ export class VoxelRenderer {
                 : working
                   ? -0.45
                   : 0;
-      visual.rightArm.rotation.x =
-        sewing || dressing
+      visual.rightArm.rotation.x = fighting
+        ? -0.7 + Math.sin(time * 10 + pawn.id) * 0.85
+        : sewing || dressing || bandaging
           ? -1 - Math.sin(time * 5 + pawn.id) * 0.18
           : feeding
             ? -1 + Math.sin(time * 4 + pawn.id) * 0.2
@@ -2534,7 +2556,8 @@ export class VoxelRenderer {
             ? 0.08 + Math.max(0, swing) * 0.08
             : 0;
       visual.tool.visible = working && !cooking && !tending && !sewing;
-      const patient = feeding ? this.data.pawns.find((v) => v.id === pawn.patientId) : undefined;
+      const patient =
+        feeding || bandaging ? this.data.pawns.find((v) => v.id === pawn.patientId) : opponent;
       if (patient) {
         visual.root.rotation.y = Math.atan2(patient.x - pawn.x, patient.y - pawn.y);
       } else if (working && workTarget) {

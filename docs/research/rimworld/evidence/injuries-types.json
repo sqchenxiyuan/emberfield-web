@@ -1,0 +1,22 @@
+[
+  "Verse.HealthTuning",
+  "Verse.HediffUtility",
+  "Verse.InjuryProps",
+  "Verse.BodyPartDef",
+  "Verse.BodyPartRecord",
+  "Verse.Hediff_MissingPart",
+  "RimWorld.JobDriver_TendPatient",
+  "RimWorld.Toils_Tend",
+  "RimWorld.Medicine",
+  "RimWorld.MedicalCareUtility",
+  "Verse.Tool",
+  "RimWorld.Pawn_MeleeVerbs",
+  "RimWorld.Verb_MeleeAttack",
+  "RimWorld.Verb_MeleeAttackDamage",
+  "Verse.RaceProperties",
+  "Verse.DamageDef",
+  "Verse.VerbUtility",
+  "Verse.VerbProperties",
+  "RimWorld.VerbEntry",
+  "Verse.BodyDef"
+]

@@ -12,6 +12,7 @@ import { STONE_CONSTRUCTION } from './crafting';
 import { SurvivalPanel } from './SurvivalPanel';
 import { ApparelPanel, WearApparel } from './ApparelPanel';
 import { TailorPanel } from './TailorPanel';
+import { CombatPanel, ThreatControl } from './CombatPanel';
 import { APPAREL_NAMES } from './apparel';
 import {
   BLOCK_NAMES,
@@ -314,9 +315,12 @@ function App() {
       ) ?? [])
     : [];
   const pawn = s?.pawns.find((v) => v.id === selectedPawn) ?? people[0];
-  const carers = s?.pawns.filter((v) => !v.dead && !v.downed && v.id !== pawn?.id) ?? [];
+  const carers =
+    s?.pawns.filter(
+      (v) => v.faction === 'colony' && !v.drafted && !v.dead && !v.downed && v.id !== pawn?.id,
+    ) ?? [];
   const carer = carers.find((v) => v.id === selectedCarer) ?? carers[0];
-  const casualties = s?.pawns.filter((v) => v.dead || v.downed) ?? [];
+  const casualties = s?.pawns.filter((v) => v.faction === 'colony' && (v.dead || v.downed)) ?? [];
   const temperatureOf = (target: Pos) => {
     const targetRoom = client.roomAt(target);
     return (
@@ -382,29 +386,31 @@ function App() {
           </div>
         </div>
         <div className="voxel-colonists">
-          {s?.pawns.map((v) => (
-            <button
-              key={v.id}
-              className={[
-                selectedPawn === v.id ? 'selected' : '',
-                v.dead ? 'is-dead' : v.downed ? 'is-downed' : '',
-              ].join(' ')}
-              onClick={() => {
-                setSelectedPawn(v.id);
-                focus(v);
-              }}
-            >
-              <i style={{ background: '#' + v.color.toString(16) }} />
-              <span>
-                {v.name}
-                {v.dead ? ' · 已死亡' : v.downed ? ' · 倒地' : ''}
-                <small>
-                  {levelName(v.z, spawn.z)} · {v.reason}
-                </small>
-              </span>
-              <em style={{ width: `${v.rest}%` }} />
-            </button>
-          ))}
+          {s?.pawns
+            .filter((v) => v.faction === 'colony')
+            .map((v) => (
+              <button
+                key={v.id}
+                className={[
+                  selectedPawn === v.id ? 'selected' : '',
+                  v.dead ? 'is-dead' : v.downed ? 'is-downed' : '',
+                ].join(' ')}
+                onClick={() => {
+                  setSelectedPawn(v.id);
+                  focus(v);
+                }}
+              >
+                <i style={{ background: '#' + v.color.toString(16) }} />
+                <span>
+                  {v.name}
+                  {v.dead ? ' · 已死亡' : v.downed ? ' · 倒地' : ''}
+                  <small>
+                    {levelName(v.z, spawn.z)} · {v.reason}
+                  </small>
+                </span>
+                <em style={{ width: `${v.rest}%` }} />
+              </button>
+            ))}
         </div>
         <div className="voxel-header-actions">
           <button onClick={() => setHelp((v) => !v)} aria-label="玩法指引">
@@ -430,6 +436,32 @@ function App() {
           </div>
         ))}
         <p>包括散落、携带、穿戴和工地材料</p>
+        {s &&
+          (s.combat.enabled ||
+            s.pawns.some((v) => v.faction === 'raider' && !v.dead && !v.downed)) && (
+            <details open data-testid="raid-status">
+              <summary>营地安全</summary>
+              <small>
+                {s.combat.enabled
+                  ? `下次来袭约 ${Math.max(0, (s.combat.nextRaid - s.tick) / DAY).toFixed(2)} 天`
+                  : '后续袭击已关闭'}
+              </small>
+              {s.pawns
+                .filter((v) => v.faction === 'raider' && !v.dead)
+                .map((v) => (
+                  <button
+                    key={v.id}
+                    onClick={() => {
+                      setSelectedPawn(v.id);
+                      focus(v);
+                    }}
+                  >
+                    {v.name}
+                    {v.downed ? ' · 倒地' : ' · 敌对'}
+                  </button>
+                ))}
+            </details>
+          )}
       </aside>
       <div className="voxel-layer-control">
         <button onClick={() => client.view({ level: state.level + 1 })} aria-label="上移一层">
@@ -1038,7 +1070,7 @@ function App() {
             {i.apparel && s && (
               <WearApparel
                 piece={i.apparel}
-                pawns={s.pawns}
+                pawns={s.pawns.filter((v) => v.faction === 'colony')}
                 preferredPawnId={selectedPawn}
                 wear={(pawnId, apparelId) =>
                   void client.command({ type: 'wear', pawnId, apparelId })
@@ -1080,68 +1112,98 @@ function App() {
               <span>{pawn.reason}</span>
             </div>
             <SurvivalPanel pawn={pawn} temperature={temperatureOf(pawn)} />
+            {s && (
+              <CombatPanel
+                key={pawn.id}
+                pawn={pawn}
+                pawns={s.pawns}
+                command={(c) => void client.command(c)}
+              />
+            )}
             <ApparelPanel
               pawn={pawn}
               remove={(apparelId) =>
                 void client.command({ type: 'removeApparel', pawnId: pawn.id, apparelId })
               }
             />
-            {!pawn.dead && pawn.downed && (
-              <div className="voxel-care-actions" data-testid="care-controls">
-                <label>
-                  安排同伴
-                  <select
-                    aria-label="医护人员"
-                    value={carer?.id ?? ''}
-                    disabled={!carers.length}
-                    onChange={(e) => setSelectedCarer(Number(e.target.value))}
-                  >
-                    {!carers.length && <option value="">暂无可行动的同伴</option>}
-                    {carers.map((v) => (
-                      <option key={v.id} value={v.id}>
-                        {v.name}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <div>
-                  <button
-                    disabled={!carer || pawn.carriedBy !== null}
-                    onClick={() =>
-                      carer &&
-                      void client.command({
-                        type: 'care',
-                        pawnId: carer.id,
-                        patientId: pawn.id,
-                        action: 'rescue',
-                      })
-                    }
-                  >
-                    优先救援
-                  </button>
-                  <button
-                    disabled={
-                      !carer ||
-                      pawn.food > 26 ||
-                      pawn.carriedBy !== null ||
-                      pawn.sleepBedId === null
-                    }
-                    onClick={() =>
-                      carer &&
-                      void client.command({
-                        type: 'care',
-                        pawnId: carer.id,
-                        patientId: pawn.id,
-                        action: 'feed',
-                      })
-                    }
-                  >
-                    优先喂食
-                  </button>
+            {pawn.faction === 'colony' &&
+              !pawn.dead &&
+              (pawn.downed || pawn.trauma.wounds.some((w) => w.tendQuality === null)) && (
+                <div className="voxel-care-actions" data-testid="care-controls">
+                  <label>
+                    安排同伴
+                    <select
+                      aria-label="医护人员"
+                      value={carer?.id ?? ''}
+                      disabled={!carers.length}
+                      onChange={(e) => setSelectedCarer(Number(e.target.value))}
+                    >
+                      {!carers.length && <option value="">暂无可行动的同伴</option>}
+                      {carers.map((v) => (
+                        <option key={v.id} value={v.id}>
+                          {v.name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <div>
+                    <button
+                      disabled={!carer || !pawn.downed || pawn.carriedBy !== null}
+                      onClick={() =>
+                        carer &&
+                        void client.command({
+                          type: 'care',
+                          pawnId: carer.id,
+                          patientId: pawn.id,
+                          action: 'rescue',
+                        })
+                      }
+                    >
+                      优先救援
+                    </button>
+                    <button
+                      disabled={
+                        !carer ||
+                        !pawn.downed ||
+                        pawn.food > 26 ||
+                        pawn.carriedBy !== null ||
+                        pawn.sleepBedId === null
+                      }
+                      onClick={() =>
+                        carer &&
+                        void client.command({
+                          type: 'care',
+                          pawnId: carer.id,
+                          patientId: pawn.id,
+                          action: 'feed',
+                        })
+                      }
+                    >
+                      优先喂食
+                    </button>
+                    <button
+                      disabled={
+                        !carer ||
+                        pawn.drafted ||
+                        pawn.carriedBy !== null ||
+                        !pawn.trauma.wounds.some((w) => w.tendQuality === null)
+                      }
+                      onClick={() =>
+                        carer &&
+                        void client.command({
+                          type: 'care',
+                          pawnId: carer.id,
+                          patientId: pawn.id,
+                          action: 'tend',
+                        })
+                      }
+                    >
+                      优先包扎（无药）
+                    </button>
+                  </div>
+                  <small>同伴会实际前往；无通路、床位或食物时会说明原因。</small>
                 </div>
-                <small>同伴会实际前往；无通路、床位或食物时会说明原因。</small>
-              </div>
-            )}
+              )}
             <div className="voxel-needs">
               <label>
                 饱食 {Math.round(pawn.food)}%
@@ -1175,7 +1237,7 @@ function App() {
                     {['医护', '挖掘', '伐木', '施工', '搬运', '种植', '烹饪', '加工'][i]}
                     <select
                       aria-label={`${pawn.name} ${w}优先级`}
-                      disabled={pawn.dead}
+                      disabled={pawn.dead || pawn.faction !== 'colony'}
                       value={pawn.priorities[w]}
                       onChange={(e) =>
                         void client.command({
@@ -1207,7 +1269,7 @@ function App() {
                     {String(h).padStart(2, '0')}
                     <select
                       aria-label={`${pawn.name} ${h}点作息`}
-                      disabled={pawn.dead}
+                      disabled={pawn.dead || pawn.faction !== 'colony'}
                       value={a}
                       onChange={(e) =>
                         void client.command({
@@ -1233,6 +1295,8 @@ function App() {
               disabled={
                 pawn.dead ||
                 pawn.downed ||
+                pawn.faction !== 'colony' ||
+                pawn.drafted ||
                 pawn.rest >= 75 ||
                 pawn.phase === 'rest' ||
                 pawn.phase === 'sleepTravel'
@@ -1244,7 +1308,7 @@ function App() {
             {p && !equal(p, pawn) && (
               <button
                 className="voxel-primary"
-                disabled={pawn.dead || pawn.downed}
+                disabled={pawn.dead || pawn.downed || pawn.faction !== 'colony'}
                 onClick={() => void client.command({ type: 'move', pawnId: pawn.id, target: p })}
               >
                 让 {pawn.name} 前往选中位置
@@ -1261,7 +1325,8 @@ function App() {
       {casualties.length > 0 && (
         <aside className="voxel-survival-alert" aria-label="健康警报">
           <strong>
-            {casualties.every((v) => v.dead) && casualties.length === s?.pawns.length
+            {casualties.every((v) => v.dead) &&
+            casualties.length === s?.pawns.filter((v) => v.faction === 'colony').length
               ? '营地已无人存活'
               : '同伴需要关注'}
           </strong>
@@ -1475,6 +1540,7 @@ function App() {
               />
             </div>
             <p className="voxel-kicker">{saveStatus}</p>
+            {s && <ThreatControl snapshot={s} command={(c) => void client.command(c)} />}
             <WorldSetup
               client={client}
               busy={busy}

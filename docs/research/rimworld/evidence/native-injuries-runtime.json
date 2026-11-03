@@ -1,0 +1,3257 @@
+{
+  "schema_version": 1,
+  "evidence_id": "RW17-NATIVE-INJURIES-RUNTIME",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "executable": "F:\\SteamLibrary\\steamapps\\common\\RimWorld\\RimWorld.exe",
+  "process_id": 29920,
+  "window_handle": 988850,
+  "profile": ".local-research/runtime/profile-20261102",
+  "active_mods": [
+    "ludeon.rimworld",
+    "ludeon.rimworld.odyssey"
+  ],
+  "method": "REA skill v42 evidence discipline. Reuses established Windows native UI unsupported boundary; actual input is guarded Windows foreground UI, not REA native UI execution.",
+  "provider_boundary_reference": "native-plants-runtime.json",
+  "snapshots": [
+    {
+      "name": "apparel-stopped-b",
+      "path": ".local-research/runtime/profile-20261102/Saves/apparel-stopped-b.rws",
+      "save": {
+        "file": "apparel-stopped-b.rws",
+        "sha256": "a52de787f59a254793359992f9208c6b123cd54dc2ace4d95488c1fc44bfb3ae",
+        "bytes": 6126858,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 75374,
+        "patient": {
+          "id": "Human965",
+          "nick": "Grump",
+          "pos": "(113, 0, 124)",
+          "health_state_explicit": "Down",
+          "medical_care": "Best",
+          "hediffs": [
+            {
+              "id": 16,
+              "class": "Hediff_Injury",
+              "def": "Bite",
+              "severity": 6.0,
+              "age_ticks": 75370.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 12.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 77,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.264279217,
+              "age_ticks": 52470.0,
+              "tick_added": 22902.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 82,
+              "class": "HediffWithComps",
+              "def": "Anesthetic",
+              "severity": 0.850667477,
+              "age_ticks": 11130.0,
+              "tick_added": 64249.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            }
+          ],
+          "job": {
+            "def": "LayDown",
+            "target_a": "Thing_Bed77946",
+            "target_b": "",
+            "player_forced": false,
+            "driver": "JobDriver_LayDown",
+            "toil_index": 2.0,
+            "ticks_left": -10819.0,
+            "start_tick": 64555.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 4.0,
+              "present": true
+            },
+            "xp_since_level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_midnight": {
+              "value": 0.0,
+              "present": false
+            }
+          },
+          "work_priority_values": [
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "doctor": {
+          "id": "Human958",
+          "nick": "Prophet",
+          "pos": "(108, 0, 123)",
+          "health_state_explicit": "",
+          "medical_care": "Best",
+          "hediffs": [
+            {
+              "id": 10,
+              "class": "Hediff_Injury",
+              "def": "Stab",
+              "severity": 2.0,
+              "age_ticks": 75371.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 0.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 80,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.0621811971,
+              "age_ticks": 27492.0,
+              "tick_added": 47881.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            }
+          ],
+          "job": {
+            "def": "GotoWander",
+            "target_a": "(101, 0, 121)",
+            "target_b": "",
+            "player_forced": false,
+            "driver": "JobDriver_Goto",
+            "toil_index": 0.0,
+            "ticks_left": -370.0,
+            "start_tick": 75004.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_midnight": {
+              "value": 0.0,
+              "present": false
+            }
+          },
+          "work_priority_values": [
+            0,
+            3,
+            3,
+            3,
+            3,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0,
+            3,
+            3
+          ]
+        },
+        "medicines": [
+          {
+            "id": "MedicineIndustrial38566",
+            "def": "MedicineIndustrial",
+            "count": 5,
+            "pos": "(114, 0, 120)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineIndustrial41861",
+            "def": "MedicineIndustrial",
+            "count": 25,
+            "pos": "(111, 0, 119)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineUltratech38348",
+            "def": "MedicineUltratech",
+            "count": 4,
+            "pos": "(77, 0, 51)",
+            "forbidden": true
+          }
+        ],
+        "beds": [
+          {
+            "id": "Bed77946",
+            "pos": "(113, 0, 124)",
+            "medical": true,
+            "spawned_tick": 64249
+          }
+        ],
+        "scope": "Read-only explicit XML. Numeric omission presence retained where relevant; tendQuality omitted means serialized default zero, confirmed by UI. Work priority index semantics and computed bleeding are not inferred from XML."
+      }
+    },
+    {
+      "name": "injuries-entry-a",
+      "path": ".local-research/runtime/profile-20261102/Saves/injuries-entry-a.rws",
+      "save": {
+        "file": "injuries-entry-a.rws",
+        "sha256": "d60a7fea38512e7cda147f8c62bb72dc703082492ae6e53945e58b3b3fa5dc4a",
+        "bytes": 6126858,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 75374,
+        "patient": {
+          "id": "Human965",
+          "nick": "Grump",
+          "pos": "(113, 0, 124)",
+          "health_state_explicit": "Down",
+          "medical_care": "Best",
+          "hediffs": [
+            {
+              "id": 16,
+              "class": "Hediff_Injury",
+              "def": "Bite",
+              "severity": 6.0,
+              "age_ticks": 75370.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 12.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 77,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.264279217,
+              "age_ticks": 52470.0,
+              "tick_added": 22902.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 82,
+              "class": "HediffWithComps",
+              "def": "Anesthetic",
+              "severity": 0.850667477,
+              "age_ticks": 11130.0,
+              "tick_added": 64249.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            }
+          ],
+          "job": {
+            "def": "LayDown",
+            "target_a": "Thing_Bed77946",
+            "target_b": "",
+            "player_forced": false,
+            "driver": "JobDriver_LayDown",
+            "toil_index": 2.0,
+            "ticks_left": -10819.0,
+            "start_tick": 64555.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 4.0,
+              "present": true
+            },
+            "xp_since_level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_midnight": {
+              "value": 0.0,
+              "present": false
+            }
+          },
+          "work_priority_values": [
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "doctor": {
+          "id": "Human958",
+          "nick": "Prophet",
+          "pos": "(108, 0, 123)",
+          "health_state_explicit": "",
+          "medical_care": "Best",
+          "hediffs": [
+            {
+              "id": 10,
+              "class": "Hediff_Injury",
+              "def": "Stab",
+              "severity": 2.0,
+              "age_ticks": 75371.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 0.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 80,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.0621811971,
+              "age_ticks": 27492.0,
+              "tick_added": 47881.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            }
+          ],
+          "job": {
+            "def": "GotoWander",
+            "target_a": "(101, 0, 121)",
+            "target_b": "",
+            "player_forced": false,
+            "driver": "JobDriver_Goto",
+            "toil_index": 0.0,
+            "ticks_left": -370.0,
+            "start_tick": 75004.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_midnight": {
+              "value": 0.0,
+              "present": false
+            }
+          },
+          "work_priority_values": [
+            0,
+            3,
+            3,
+            3,
+            3,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0,
+            3,
+            3
+          ]
+        },
+        "medicines": [
+          {
+            "id": "MedicineIndustrial38566",
+            "def": "MedicineIndustrial",
+            "count": 5,
+            "pos": "(114, 0, 120)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineIndustrial41861",
+            "def": "MedicineIndustrial",
+            "count": 25,
+            "pos": "(111, 0, 119)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineUltratech38348",
+            "def": "MedicineUltratech",
+            "count": 4,
+            "pos": "(77, 0, 51)",
+            "forbidden": true
+          }
+        ],
+        "beds": [
+          {
+            "id": "Bed77946",
+            "pos": "(113, 0, 124)",
+            "medical": true,
+            "spawned_tick": 64249
+          }
+        ],
+        "scope": "Read-only explicit XML. Numeric omission presence retained where relevant; tendQuality omitted means serialized default zero, confirmed by UI. Work priority index semantics and computed bleeding are not inferred from XML."
+      }
+    },
+    {
+      "name": "injuries-entry-b",
+      "path": ".local-research/runtime/profile-20261102/Saves/injuries-entry-b.rws",
+      "save": {
+        "file": "injuries-entry-b.rws",
+        "sha256": "98e562091d923bc49a3d19ec18ac5649772ee07dbbe107f0bbf8996b2ab86ef0",
+        "bytes": 6126858,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 75374,
+        "patient": {
+          "id": "Human965",
+          "nick": "Grump",
+          "pos": "(113, 0, 124)",
+          "health_state_explicit": "Down",
+          "medical_care": "Best",
+          "hediffs": [
+            {
+              "id": 16,
+              "class": "Hediff_Injury",
+              "def": "Bite",
+              "severity": 6.0,
+              "age_ticks": 75370.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 12.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 77,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.264279217,
+              "age_ticks": 52470.0,
+              "tick_added": 22902.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 82,
+              "class": "HediffWithComps",
+              "def": "Anesthetic",
+              "severity": 0.850667477,
+              "age_ticks": 11130.0,
+              "tick_added": 64249.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            }
+          ],
+          "job": {
+            "def": "LayDown",
+            "target_a": "Thing_Bed77946",
+            "target_b": "",
+            "player_forced": false,
+            "driver": "JobDriver_LayDown",
+            "toil_index": 2.0,
+            "ticks_left": -10819.0,
+            "start_tick": 64555.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 4.0,
+              "present": true
+            },
+            "xp_since_level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_midnight": {
+              "value": 0.0,
+              "present": false
+            }
+          },
+          "work_priority_values": [
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "doctor": {
+          "id": "Human958",
+          "nick": "Prophet",
+          "pos": "(108, 0, 123)",
+          "health_state_explicit": "",
+          "medical_care": "Best",
+          "hediffs": [
+            {
+              "id": 10,
+              "class": "Hediff_Injury",
+              "def": "Stab",
+              "severity": 2.0,
+              "age_ticks": 75371.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 0.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 80,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.0621811971,
+              "age_ticks": 27492.0,
+              "tick_added": 47881.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            }
+          ],
+          "job": {
+            "def": "GotoWander",
+            "target_a": "(101, 0, 121)",
+            "target_b": "",
+            "player_forced": false,
+            "driver": "JobDriver_Goto",
+            "toil_index": 0.0,
+            "ticks_left": -370.0,
+            "start_tick": 75004.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_midnight": {
+              "value": 0.0,
+              "present": false
+            }
+          },
+          "work_priority_values": [
+            0,
+            3,
+            3,
+            3,
+            3,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0,
+            3,
+            3
+          ]
+        },
+        "medicines": [
+          {
+            "id": "MedicineIndustrial38566",
+            "def": "MedicineIndustrial",
+            "count": 5,
+            "pos": "(114, 0, 120)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineIndustrial41861",
+            "def": "MedicineIndustrial",
+            "count": 25,
+            "pos": "(111, 0, 119)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineUltratech38348",
+            "def": "MedicineUltratech",
+            "count": 4,
+            "pos": "(77, 0, 51)",
+            "forbidden": true
+          }
+        ],
+        "beds": [
+          {
+            "id": "Bed77946",
+            "pos": "(113, 0, 124)",
+            "medical": true,
+            "spawned_tick": 64249
+          }
+        ],
+        "scope": "Read-only explicit XML. Numeric omission presence retained where relevant; tendQuality omitted means serialized default zero, confirmed by UI. Work priority index semantics and computed bleeding are not inferred from XML."
+      }
+    },
+    {
+      "name": "injuries-prepared",
+      "path": ".local-research/runtime/profile-20261102/Saves/injuries-prepared.rws",
+      "save": {
+        "file": "injuries-prepared.rws",
+        "sha256": "07e58908d4f0ff6db26df4e407ce60bbaf8791390ea4423cc49bd1b88ed476ab",
+        "bytes": 6127357,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 75374,
+        "patient": {
+          "id": "Human965",
+          "nick": "Grump",
+          "pos": "(113, 0, 124)",
+          "health_state_explicit": "Down",
+          "medical_care": "NoMeds",
+          "hediffs": [
+            {
+              "id": 16,
+              "class": "Hediff_Injury",
+              "def": "Bite",
+              "severity": 6.0,
+              "age_ticks": 75370.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 12.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 77,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.264279217,
+              "age_ticks": 52470.0,
+              "tick_added": 22902.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 82,
+              "class": "HediffWithComps",
+              "def": "Anesthetic",
+              "severity": 0.850667477,
+              "age_ticks": 11130.0,
+              "tick_added": 64249.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 83,
+              "class": "Hediff_Injury",
+              "def": "Cut",
+              "severity": 0.5,
+              "age_ticks": 0.0,
+              "tick_added": 75374.0,
+              "body": "Human",
+              "part_index": {
+                "value": 25.0,
+                "present": true
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            }
+          ],
+          "job": {
+            "def": "LayDown",
+            "target_a": "Thing_Bed77946",
+            "target_b": "",
+            "player_forced": false,
+            "driver": "JobDriver_LayDown",
+            "toil_index": 2.0,
+            "ticks_left": -10819.0,
+            "start_tick": 64555.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 4.0,
+              "present": true
+            },
+            "xp_since_level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_midnight": {
+              "value": 0.0,
+              "present": false
+            }
+          },
+          "work_priority_values": [
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "doctor": {
+          "id": "Human958",
+          "nick": "Prophet",
+          "pos": "(108, 0, 123)",
+          "health_state_explicit": "",
+          "medical_care": "Best",
+          "hediffs": [
+            {
+              "id": 10,
+              "class": "Hediff_Injury",
+              "def": "Stab",
+              "severity": 2.0,
+              "age_ticks": 75371.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 0.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 80,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.0621811971,
+              "age_ticks": 27492.0,
+              "tick_added": 47881.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            }
+          ],
+          "job": {
+            "def": "GotoWander",
+            "target_a": "(101, 0, 121)",
+            "target_b": "",
+            "player_forced": false,
+            "driver": "JobDriver_Goto",
+            "toil_index": 0.0,
+            "ticks_left": -370.0,
+            "start_tick": 75004.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_midnight": {
+              "value": 0.0,
+              "present": false
+            }
+          },
+          "work_priority_values": [
+            0,
+            3,
+            3,
+            3,
+            3,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0,
+            3,
+            3
+          ]
+        },
+        "medicines": [
+          {
+            "id": "MedicineIndustrial38566",
+            "def": "MedicineIndustrial",
+            "count": 5,
+            "pos": "(114, 0, 120)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineIndustrial41861",
+            "def": "MedicineIndustrial",
+            "count": 25,
+            "pos": "(111, 0, 119)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineUltratech38348",
+            "def": "MedicineUltratech",
+            "count": 4,
+            "pos": "(77, 0, 51)",
+            "forbidden": true
+          }
+        ],
+        "beds": [
+          {
+            "id": "Bed77946",
+            "pos": "(113, 0, 124)",
+            "medical": true,
+            "spawned_tick": 64249
+          }
+        ],
+        "scope": "Read-only explicit XML. Numeric omission presence retained where relevant; tendQuality omitted means serialized default zero, confirmed by UI. Work priority index semantics and computed bleeding are not inferred from XML."
+      }
+    },
+    {
+      "name": "injuries-doctor-blocked",
+      "path": ".local-research/runtime/profile-20261102/Saves/injuries-doctor-blocked.rws",
+      "save": {
+        "file": "injuries-doctor-blocked.rws",
+        "sha256": "936a1075a30c319937e3ee1b74f4609982b434dd3e3bb89e622bc264c46a3647",
+        "bytes": 6127357,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 75374,
+        "patient": {
+          "id": "Human965",
+          "nick": "Grump",
+          "pos": "(113, 0, 124)",
+          "health_state_explicit": "Down",
+          "medical_care": "NoMeds",
+          "hediffs": [
+            {
+              "id": 16,
+              "class": "Hediff_Injury",
+              "def": "Bite",
+              "severity": 6.0,
+              "age_ticks": 75370.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 12.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 77,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.264279217,
+              "age_ticks": 52470.0,
+              "tick_added": 22902.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 82,
+              "class": "HediffWithComps",
+              "def": "Anesthetic",
+              "severity": 0.850667477,
+              "age_ticks": 11130.0,
+              "tick_added": 64249.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 83,
+              "class": "Hediff_Injury",
+              "def": "Cut",
+              "severity": 0.5,
+              "age_ticks": 0.0,
+              "tick_added": 75374.0,
+              "body": "Human",
+              "part_index": {
+                "value": 25.0,
+                "present": true
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            }
+          ],
+          "job": {
+            "def": "LayDown",
+            "target_a": "Thing_Bed77946",
+            "target_b": "",
+            "player_forced": false,
+            "driver": "JobDriver_LayDown",
+            "toil_index": 2.0,
+            "ticks_left": -10819.0,
+            "start_tick": 64555.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 4.0,
+              "present": true
+            },
+            "xp_since_level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_midnight": {
+              "value": 0.0,
+              "present": false
+            }
+          },
+          "work_priority_values": [
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "doctor": {
+          "id": "Human958",
+          "nick": "Prophet",
+          "pos": "(108, 0, 123)",
+          "health_state_explicit": "",
+          "medical_care": "Best",
+          "hediffs": [
+            {
+              "id": 10,
+              "class": "Hediff_Injury",
+              "def": "Stab",
+              "severity": 2.0,
+              "age_ticks": 75371.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 0.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 80,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.0621811971,
+              "age_ticks": 27492.0,
+              "tick_added": 47881.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            }
+          ],
+          "job": {
+            "def": "GotoWander",
+            "target_a": "(101, 0, 121)",
+            "target_b": "",
+            "player_forced": false,
+            "driver": "JobDriver_Goto",
+            "toil_index": 0.0,
+            "ticks_left": -370.0,
+            "start_tick": 75004.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_midnight": {
+              "value": 0.0,
+              "present": false
+            }
+          },
+          "work_priority_values": [
+            0,
+            3,
+            0,
+            3,
+            3,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0,
+            3,
+            3
+          ]
+        },
+        "medicines": [
+          {
+            "id": "MedicineIndustrial38566",
+            "def": "MedicineIndustrial",
+            "count": 5,
+            "pos": "(114, 0, 120)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineIndustrial41861",
+            "def": "MedicineIndustrial",
+            "count": 25,
+            "pos": "(111, 0, 119)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineUltratech38348",
+            "def": "MedicineUltratech",
+            "count": 4,
+            "pos": "(77, 0, 51)",
+            "forbidden": true
+          }
+        ],
+        "beds": [
+          {
+            "id": "Bed77946",
+            "pos": "(113, 0, 124)",
+            "medical": true,
+            "spawned_tick": 64249
+          }
+        ],
+        "scope": "Read-only explicit XML. Numeric omission presence retained where relevant; tendQuality omitted means serialized default zero, confirmed by UI. Work priority index semantics and computed bleeding are not inferred from XML."
+      }
+    },
+    {
+      "name": "injuries-tend-ready",
+      "path": ".local-research/runtime/profile-20261102/Saves/injuries-tend-ready.rws",
+      "save": {
+        "file": "injuries-tend-ready.rws",
+        "sha256": "eaa77b1f369977ad9093832fd9daf856118b5333a84a4c29e2de9f6bd63d7418",
+        "bytes": 6127684,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 75374,
+        "patient": {
+          "id": "Human965",
+          "nick": "Grump",
+          "pos": "(113, 0, 124)",
+          "health_state_explicit": "Down",
+          "medical_care": "NoMeds",
+          "hediffs": [
+            {
+              "id": 16,
+              "class": "Hediff_Injury",
+              "def": "Bite",
+              "severity": 6.0,
+              "age_ticks": 75370.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 12.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 77,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.264279217,
+              "age_ticks": 52470.0,
+              "tick_added": 22902.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 82,
+              "class": "HediffWithComps",
+              "def": "Anesthetic",
+              "severity": 0.850667477,
+              "age_ticks": 11130.0,
+              "tick_added": 64249.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 83,
+              "class": "Hediff_Injury",
+              "def": "Cut",
+              "severity": 0.5,
+              "age_ticks": 0.0,
+              "tick_added": 75374.0,
+              "body": "Human",
+              "part_index": {
+                "value": 25.0,
+                "present": true
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            }
+          ],
+          "job": {
+            "def": "LayDown",
+            "target_a": "Thing_Bed77946",
+            "target_b": "",
+            "player_forced": false,
+            "driver": "JobDriver_LayDown",
+            "toil_index": 2.0,
+            "ticks_left": -10819.0,
+            "start_tick": 64555.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 4.0,
+              "present": true
+            },
+            "xp_since_level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_midnight": {
+              "value": 0.0,
+              "present": false
+            }
+          },
+          "work_priority_values": [
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "doctor": {
+          "id": "Human958",
+          "nick": "Prophet",
+          "pos": "(108, 0, 123)",
+          "health_state_explicit": "",
+          "medical_care": "Best",
+          "hediffs": [
+            {
+              "id": 10,
+              "class": "Hediff_Injury",
+              "def": "Stab",
+              "severity": 2.0,
+              "age_ticks": 75371.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 0.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 80,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.0621811971,
+              "age_ticks": 27492.0,
+              "tick_added": 47881.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            }
+          ],
+          "job": {
+            "def": "TendPatient",
+            "target_a": "Thing_Human965",
+            "target_b": "",
+            "player_forced": true,
+            "driver": "JobDriver_TendPatient",
+            "toil_index": 0.0,
+            "ticks_left": 0.0,
+            "start_tick": 75374.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_midnight": {
+              "value": 0.0,
+              "present": false
+            }
+          },
+          "work_priority_values": [
+            0,
+            3,
+            3,
+            3,
+            3,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0,
+            3,
+            3
+          ]
+        },
+        "medicines": [
+          {
+            "id": "MedicineIndustrial38566",
+            "def": "MedicineIndustrial",
+            "count": 5,
+            "pos": "(114, 0, 120)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineIndustrial41861",
+            "def": "MedicineIndustrial",
+            "count": 25,
+            "pos": "(111, 0, 119)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineUltratech38348",
+            "def": "MedicineUltratech",
+            "count": 4,
+            "pos": "(77, 0, 51)",
+            "forbidden": true
+          }
+        ],
+        "beds": [
+          {
+            "id": "Bed77946",
+            "pos": "(113, 0, 124)",
+            "medical": true,
+            "spawned_tick": 64249
+          }
+        ],
+        "scope": "Read-only explicit XML. Numeric omission presence retained where relevant; tendQuality omitted means serialized default zero, confirmed by UI. Work priority index semantics and computed bleeding are not inferred from XML."
+      }
+    },
+    {
+      "name": "injuries-tending",
+      "path": ".local-research/runtime/profile-20261102/Saves/injuries-tending.rws",
+      "save": {
+        "file": "injuries-tending.rws",
+        "sha256": "8c8e50f9a7bf149affcf8715cd7afa0461c8447f119c88889369491c720cc2aa",
+        "bytes": 6125973,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 75699,
+        "patient": {
+          "id": "Human965",
+          "nick": "Grump",
+          "pos": "(113, 0, 124)",
+          "health_state_explicit": "Down",
+          "medical_care": "NoMeds",
+          "hediffs": [
+            {
+              "id": 16,
+              "class": "Hediff_Injury",
+              "def": "Bite",
+              "severity": 6.0,
+              "age_ticks": 75697.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 12.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 77,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.261876673,
+              "age_ticks": 52797.0,
+              "tick_added": 22902.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 82,
+              "class": "HediffWithComps",
+              "def": "Anesthetic",
+              "severity": 0.848000824,
+              "age_ticks": 11457.0,
+              "tick_added": 64249.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 83,
+              "class": "Hediff_Injury",
+              "def": "Cut",
+              "severity": 0.5,
+              "age_ticks": 327.0,
+              "tick_added": 75374.0,
+              "body": "Human",
+              "part_index": {
+                "value": 25.0,
+                "present": true
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            }
+          ],
+          "job": {
+            "def": "LayDown",
+            "target_a": "Thing_Bed77946",
+            "target_b": "",
+            "player_forced": false,
+            "driver": "JobDriver_LayDown",
+            "toil_index": 2.0,
+            "ticks_left": -11144.0,
+            "start_tick": 64555.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 4.0,
+              "present": true
+            },
+            "xp_since_level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_midnight": {
+              "value": 0.0,
+              "present": false
+            }
+          },
+          "work_priority_values": [
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "doctor": {
+          "id": "Human958",
+          "nick": "Prophet",
+          "pos": "(112, 0, 124)",
+          "health_state_explicit": "",
+          "medical_care": "Best",
+          "hediffs": [
+            {
+              "id": 10,
+              "class": "Hediff_Injury",
+              "def": "Stab",
+              "severity": 2.0,
+              "age_ticks": 75695.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 0.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 80,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.0601753518,
+              "age_ticks": 27816.0,
+              "tick_added": 47881.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            }
+          ],
+          "job": {
+            "def": "TendPatient",
+            "target_a": "Thing_Human965",
+            "target_b": "",
+            "player_forced": true,
+            "driver": "JobDriver_TendPatient",
+            "toil_index": 3.0,
+            "ticks_left": 1389.0,
+            "start_tick": 75374.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_midnight": {
+              "value": 0.0,
+              "present": false
+            }
+          },
+          "work_priority_values": [
+            0,
+            3,
+            3,
+            3,
+            3,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0,
+            3,
+            3
+          ]
+        },
+        "medicines": [
+          {
+            "id": "MedicineIndustrial38566",
+            "def": "MedicineIndustrial",
+            "count": 5,
+            "pos": "(114, 0, 120)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineIndustrial41861",
+            "def": "MedicineIndustrial",
+            "count": 25,
+            "pos": "(111, 0, 119)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineUltratech38348",
+            "def": "MedicineUltratech",
+            "count": 4,
+            "pos": "(77, 0, 51)",
+            "forbidden": true
+          }
+        ],
+        "beds": [
+          {
+            "id": "Bed77946",
+            "pos": "(113, 0, 124)",
+            "medical": true,
+            "spawned_tick": 64249
+          }
+        ],
+        "scope": "Read-only explicit XML. Numeric omission presence retained where relevant; tendQuality omitted means serialized default zero, confirmed by UI. Work priority index semantics and computed bleeding are not inferred from XML."
+      }
+    },
+    {
+      "name": "injuries-tending-wait",
+      "path": ".local-research/runtime/profile-20261102/Saves/injuries-tending-wait.rws",
+      "save": {
+        "file": "injuries-tending-wait.rws",
+        "sha256": "3b2c3a9286bb4abd25338254dcb15c09f3c8ee5fffd7e5b22d90e30b86b26c1c",
+        "bytes": 6124606,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 76102,
+        "patient": {
+          "id": "Human965",
+          "nick": "Grump",
+          "pos": "(113, 0, 124)",
+          "health_state_explicit": "Down",
+          "medical_care": "NoMeds",
+          "hediffs": [
+            {
+              "id": 16,
+              "class": "Hediff_Injury",
+              "def": "Bite",
+              "severity": 6.0,
+              "age_ticks": 76099.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 12.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 77,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.258272856,
+              "age_ticks": 53199.0,
+              "tick_added": 22902.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 82,
+              "class": "HediffWithComps",
+              "def": "Anesthetic",
+              "severity": 0.840000868,
+              "age_ticks": 11859.0,
+              "tick_added": 64249.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 83,
+              "class": "Hediff_Injury",
+              "def": "Cut",
+              "severity": 0.340000004,
+              "age_ticks": 729.0,
+              "tick_added": 75374.0,
+              "body": "Human",
+              "part_index": {
+                "value": 25.0,
+                "present": true
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            }
+          ],
+          "job": {
+            "def": "LayDown",
+            "target_a": "Thing_Bed77946",
+            "target_b": "",
+            "player_forced": false,
+            "driver": "JobDriver_LayDown",
+            "toil_index": 2.0,
+            "ticks_left": -11547.0,
+            "start_tick": 64555.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 4.0,
+              "present": true
+            },
+            "xp_since_level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_midnight": {
+              "value": 0.0,
+              "present": false
+            }
+          },
+          "work_priority_values": [
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "doctor": {
+          "id": "Human958",
+          "nick": "Prophet",
+          "pos": "(112, 0, 124)",
+          "health_state_explicit": "",
+          "medical_care": "Best",
+          "hediffs": [
+            {
+              "id": 10,
+              "class": "Hediff_Injury",
+              "def": "Stab",
+              "severity": 2.0,
+              "age_ticks": 76100.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 0.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 80,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.0571665838,
+              "age_ticks": 28221.0,
+              "tick_added": 47881.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            }
+          ],
+          "job": {
+            "def": "TendPatient",
+            "target_a": "Thing_Human965",
+            "target_b": "",
+            "player_forced": true,
+            "driver": "JobDriver_TendPatient",
+            "toil_index": 3.0,
+            "ticks_left": 986.0,
+            "start_tick": 75374.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_midnight": {
+              "value": 0.0,
+              "present": false
+            }
+          },
+          "work_priority_values": [
+            0,
+            3,
+            3,
+            3,
+            3,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0,
+            3,
+            3
+          ]
+        },
+        "medicines": [
+          {
+            "id": "MedicineIndustrial38566",
+            "def": "MedicineIndustrial",
+            "count": 5,
+            "pos": "(114, 0, 120)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineIndustrial41861",
+            "def": "MedicineIndustrial",
+            "count": 25,
+            "pos": "(111, 0, 119)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineUltratech38348",
+            "def": "MedicineUltratech",
+            "count": 4,
+            "pos": "(77, 0, 51)",
+            "forbidden": true
+          }
+        ],
+        "beds": [
+          {
+            "id": "Bed77946",
+            "pos": "(113, 0, 124)",
+            "medical": true,
+            "spawned_tick": 64249
+          }
+        ],
+        "scope": "Read-only explicit XML. Numeric omission presence retained where relevant; tendQuality omitted means serialized default zero, confirmed by UI. Work priority index semantics and computed bleeding are not inferred from XML."
+      }
+    },
+    {
+      "name": "injuries-stopped-a",
+      "path": ".local-research/runtime/profile-20261102/Saves/injuries-stopped-a.rws",
+      "save": {
+        "file": "injuries-stopped-a.rws",
+        "sha256": "9cfcfd34e168d5b488cbe5522d397cd3b4da7dac1921dce12e6bf8b87800bdb3",
+        "bytes": 6124125,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 77192,
+        "patient": {
+          "id": "Human965",
+          "nick": "Grump",
+          "pos": "(113, 0, 124)",
+          "health_state_explicit": "Down",
+          "medical_care": "NoMeds",
+          "hediffs": [
+            {
+              "id": 16,
+              "class": "Hediff_Injury",
+              "def": "Bite",
+              "severity": 6.0,
+              "age_ticks": 77188.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 12.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 77,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.249863952,
+              "age_ticks": 54288.0,
+              "tick_added": 22902.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 82,
+              "class": "HediffWithComps",
+              "def": "Anesthetic",
+              "severity": 0.826667607,
+              "age_ticks": 12948.0,
+              "tick_added": 64249.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 83,
+              "class": "Hediff_Injury",
+              "def": "Cut",
+              "severity": 0.0200000107,
+              "age_ticks": 1818.0,
+              "tick_added": 75374.0,
+              "body": "Human",
+              "part_index": {
+                "value": 25.0,
+                "present": true
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": 1.0,
+                "present": true
+              }
+            }
+          ],
+          "job": {
+            "def": "LayDown",
+            "target_a": "Thing_Bed77946",
+            "target_b": "",
+            "player_forced": false,
+            "driver": "JobDriver_LayDown",
+            "toil_index": 2.0,
+            "ticks_left": -12637.0,
+            "start_tick": 64555.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 4.0,
+              "present": true
+            },
+            "xp_since_level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_midnight": {
+              "value": 0.0,
+              "present": false
+            }
+          },
+          "work_priority_values": [
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "doctor": {
+          "id": "Human958",
+          "nick": "Prophet",
+          "pos": "(107, 0, 124)",
+          "health_state_explicit": "",
+          "medical_care": "Best",
+          "hediffs": [
+            {
+              "id": 10,
+              "class": "Hediff_Injury",
+              "def": "Stab",
+              "severity": 2.0,
+              "age_ticks": 77189.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 0.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 80,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.0501461253,
+              "age_ticks": 29310.0,
+              "tick_added": 47881.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            }
+          ],
+          "job": {
+            "def": "FeedPatient",
+            "target_a": "Thing_MealSurvivalPack41855",
+            "target_b": "Thing_Human965",
+            "player_forced": true,
+            "driver": "JobDriver_FoodFeedPatient",
+            "toil_index": 3.0,
+            "ticks_left": -103.0,
+            "start_tick": 77089.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_level": {
+              "value": 87.5,
+              "present": true
+            },
+            "xp_since_midnight": {
+              "value": 87.5,
+              "present": true
+            }
+          },
+          "work_priority_values": [
+            0,
+            3,
+            3,
+            3,
+            3,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0,
+            3,
+            3
+          ]
+        },
+        "medicines": [
+          {
+            "id": "MedicineIndustrial38566",
+            "def": "MedicineIndustrial",
+            "count": 5,
+            "pos": "(114, 0, 120)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineIndustrial41861",
+            "def": "MedicineIndustrial",
+            "count": 25,
+            "pos": "(111, 0, 119)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineUltratech38348",
+            "def": "MedicineUltratech",
+            "count": 4,
+            "pos": "(77, 0, 51)",
+            "forbidden": true
+          }
+        ],
+        "beds": [
+          {
+            "id": "Bed77946",
+            "pos": "(113, 0, 124)",
+            "medical": true,
+            "spawned_tick": 64249
+          }
+        ],
+        "scope": "Read-only explicit XML. Numeric omission presence retained where relevant; tendQuality omitted means serialized default zero, confirmed by UI. Work priority index semantics and computed bleeding are not inferred from XML."
+      }
+    },
+    {
+      "name": "injuries-stopped-b",
+      "path": ".local-research/runtime/profile-20261102/Saves/injuries-stopped-b.rws",
+      "save": {
+        "file": "injuries-stopped-b.rws",
+        "sha256": "2ed58c52089a455d700a0e2f43105e731f6ddb5d94f1666356df479bfd2dcf97",
+        "bytes": 6124125,
+        "version": "1.7.4980 rev60",
+        "mods": [
+          "ludeon.rimworld",
+          "ludeon.rimworld.odyssey"
+        ],
+        "tick": 77192,
+        "patient": {
+          "id": "Human965",
+          "nick": "Grump",
+          "pos": "(113, 0, 124)",
+          "health_state_explicit": "Down",
+          "medical_care": "NoMeds",
+          "hediffs": [
+            {
+              "id": 16,
+              "class": "Hediff_Injury",
+              "def": "Bite",
+              "severity": 6.0,
+              "age_ticks": 77188.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 12.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 77,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.249863952,
+              "age_ticks": 54288.0,
+              "tick_added": 22902.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 82,
+              "class": "HediffWithComps",
+              "def": "Anesthetic",
+              "severity": 0.826667607,
+              "age_ticks": 12948.0,
+              "tick_added": 64249.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 83,
+              "class": "Hediff_Injury",
+              "def": "Cut",
+              "severity": 0.0200000107,
+              "age_ticks": 1818.0,
+              "tick_added": 75374.0,
+              "body": "Human",
+              "part_index": {
+                "value": 25.0,
+                "present": true
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": 1.0,
+                "present": true
+              }
+            }
+          ],
+          "job": {
+            "def": "LayDown",
+            "target_a": "Thing_Bed77946",
+            "target_b": "",
+            "player_forced": false,
+            "driver": "JobDriver_LayDown",
+            "toil_index": 2.0,
+            "ticks_left": -12637.0,
+            "start_tick": 64555.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 4.0,
+              "present": true
+            },
+            "xp_since_level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_midnight": {
+              "value": 0.0,
+              "present": false
+            }
+          },
+          "work_priority_values": [
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            0,
+            3,
+            3,
+            0,
+            0,
+            3,
+            0,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "doctor": {
+          "id": "Human958",
+          "nick": "Prophet",
+          "pos": "(107, 0, 124)",
+          "health_state_explicit": "",
+          "medical_care": "Best",
+          "hediffs": [
+            {
+              "id": 10,
+              "class": "Hediff_Injury",
+              "def": "Stab",
+              "severity": 2.0,
+              "age_ticks": 77189.0,
+              "tick_added": 0.0,
+              "body": "Human",
+              "part_index": {
+                "value": 0.0,
+                "present": true
+              },
+              "permanent": true,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            },
+            {
+              "id": 80,
+              "class": "",
+              "def": "Malnutrition",
+              "severity": 0.0501461253,
+              "age_ticks": 29310.0,
+              "tick_added": 47881.0,
+              "body": "",
+              "part_index": {
+                "value": 0.0,
+                "present": false
+              },
+              "permanent": false,
+              "tend_quality": {
+                "value": 0.0,
+                "present": false
+              },
+              "tend_ticks_left": {
+                "value": -1.0,
+                "present": false
+              }
+            }
+          ],
+          "job": {
+            "def": "FeedPatient",
+            "target_a": "Thing_MealSurvivalPack41855",
+            "target_b": "Thing_Human965",
+            "player_forced": true,
+            "driver": "JobDriver_FoodFeedPatient",
+            "toil_index": 3.0,
+            "ticks_left": -103.0,
+            "start_tick": 77089.0
+          },
+          "carried": [],
+          "medicine_skill": {
+            "level": {
+              "value": 0.0,
+              "present": false
+            },
+            "xp_since_level": {
+              "value": 87.5,
+              "present": true
+            },
+            "xp_since_midnight": {
+              "value": 87.5,
+              "present": true
+            }
+          },
+          "work_priority_values": [
+            0,
+            3,
+            3,
+            3,
+            3,
+            0,
+            3,
+            0,
+            3,
+            3,
+            3,
+            0,
+            3,
+            0,
+            0,
+            3,
+            0,
+            0,
+            0,
+            3,
+            3
+          ]
+        },
+        "medicines": [
+          {
+            "id": "MedicineIndustrial38566",
+            "def": "MedicineIndustrial",
+            "count": 5,
+            "pos": "(114, 0, 120)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineIndustrial41861",
+            "def": "MedicineIndustrial",
+            "count": 25,
+            "pos": "(111, 0, 119)",
+            "forbidden": true
+          },
+          {
+            "id": "MedicineUltratech38348",
+            "def": "MedicineUltratech",
+            "count": 4,
+            "pos": "(77, 0, 51)",
+            "forbidden": true
+          }
+        ],
+        "beds": [
+          {
+            "id": "Bed77946",
+            "pos": "(113, 0, 124)",
+            "medical": true,
+            "spawned_tick": 64249
+          }
+        ],
+        "scope": "Read-only explicit XML. Numeric omission presence retained where relevant; tendQuality omitted means serialized default zero, confirmed by UI. Work priority index semantics and computed bleeding are not inferred from XML."
+      }
+    }
+  ],
+  "preparation": {
+    "baseline": "apparel-stopped-b",
+    "patient": "Human965",
+    "doctor": "Human958",
+    "dev_added_hediff": "Cut",
+    "hediff_load_id": 83,
+    "body_part_ui": "Left arm",
+    "body_part_index": 25,
+    "severity": 0.5,
+    "tick": 75374,
+    "inherited_anesthetic_id": 82,
+    "inherited_anesthetic_tick": 64249,
+    "inherited_god_built_bed": "Bed77946",
+    "bed_newly_created": false,
+    "medical_policy_chosen_normally": "NoMeds",
+    "doctor_normally_disabled_then_enabled": true,
+    "skills_modified": false,
+    "medicine_spawned": false,
+    "save_xml_edited": false
+  },
+  "clock": {
+    "entry_ticks": [
+      75374,
+      75374
+    ],
+    "run_windows": [
+      {
+        "start_image": "injuries-024-run-tend.png",
+        "pause_image": "injuries-025-pause-tend.png",
+        "speed_key": 1,
+        "input_start_utc": "2026-11-02T23:34:58.2864991Z",
+        "pause_input_start_utc": "2026-11-02T23:35:03.1583915Z",
+        "requested_capture_wait_ms": 4000,
+        "before_tick": 75374,
+        "after_tick": 75699
+      },
+      {
+        "start_image": "injuries-026-run-tend-wait.png",
+        "pause_image": "injuries-027-pause-tend-wait.png",
+        "speed_key": 1,
+        "input_start_utc": "2026-11-02T23:36:51.5753856Z",
+        "pause_input_start_utc": "2026-11-02T23:36:57.6657871Z",
+        "requested_capture_wait_ms": 5000,
+        "before_tick": 75699,
+        "after_tick": 76102
+      },
+      {
+        "start_image": "injuries-028-run-finish.png",
+        "pause_image": "injuries-029-pause-finish.png",
+        "speed_key": 3,
+        "input_start_utc": "2026-11-02T23:38:08.3958867Z",
+        "pause_input_start_utc": "2026-11-02T23:38:11.2312236Z",
+        "requested_capture_wait_ms": 1700,
+        "before_tick": 76102,
+        "after_tick": 77192
+      }
+    ],
+    "total_advanced_ticks": 1818,
+    "reloads": 0,
+    "space_inputs": 0,
+    "final_ticks": [
+      77192,
+      77192
+    ],
+    "final_pause_verified": true,
+    "exact_total_tend_duration_measured": false,
+    "exact_tend_finish_tick_observed": false
+  },
+  "ui": {
+    "initial_severity_display": 0.5,
+    "initial_bleeding_percent_per_day": 3,
+    "initial_treatment": "Needs tending now",
+    "blocked_reason": "Not assigned to doctoring",
+    "allowed_option": "Prioritize tending to Grump, Blaster",
+    "activity": "Tending to Grump.",
+    "final_treatment": "Bandaged (quality 0%)",
+    "final_tend_quality_percent": 0,
+    "final_severity_display": 0.0,
+    "final_bleeding_marker_absent": true,
+    "final_patient_unconscious": true
+  },
+  "outcomes": {
+    "normal_work_assignment_gate_observed": true,
+    "normal_tend_patient_completed": true,
+    "no_medicine_policy_and_job_observed": true,
+    "medicine_stack_quantities_unchanged": true,
+    "countdown_decrement_observed": 403,
+    "treated_same_hediff_id": 83,
+    "bandaged_zero_quality_observed": true,
+    "bleeding_ui_disappeared": true,
+    "severity_decreased_before_tend_completion": true,
+    "wound_fully_healed": false,
+    "patient_recovered": false,
+    "natural_combat_injury_tested": false,
+    "herbal_medicine_tested": false,
+    "infection_or_immunity_runtime_tested": false,
+    "quality_distribution_tested": false
+  },
+  "screenshots": [
+    {
+      "id": "health-before",
+      "image": "runtime/injuries-health-before.png",
+      "sha256": "8a8921ba3b26f62e6a7ceae75134b37117e6368735aa5c768614abf99cda4c90",
+      "source_file": ".local-research/runtime/injuries-003-health.png",
+      "source_sha256": "2335d29673e77ed40917bf133973530ecd5cc5c8348241ad20217345d12a8153",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        775,
+        640,
+        440
+      ],
+      "observed_utc": "2026-11-02T23:29:11.3459191Z",
+      "observation": "Inherited Bite scar, Malnutrition and developer-prepared Anesthetic from the prior study; no fresh Cut."
+    },
+    {
+      "id": "dev-cut-choice",
+      "image": "runtime/injuries-dev-cut-choice.png",
+      "sha256": "4ba34ab80df56e22848a5e2a298d2a73ad0cc6a9b8ac3bd5599b26a7b465d090",
+      "source_file": ".local-research/runtime/injuries-007-search-cut.png",
+      "source_sha256": "3f2f850f7be76a12d4e38a00a50533bd1c0584b07ecec2c0f2142faf6ac2cc9e",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        0,
+        440,
+        170
+      ],
+      "observed_utc": "2026-11-02T23:30:20.3279148Z",
+      "observation": "Developer Health Add hediff: Cut selected as experimental preparation, not combat."
+    },
+    {
+      "id": "cut-untended",
+      "image": "runtime/injuries-cut-untended.png",
+      "sha256": "1af00a02b048859a493d1fa3ae0866ae24a799c987d6d773d8b1e4328f033d9d",
+      "source_file": ".local-research/runtime/injuries-010-cut-tooltip.png",
+      "source_sha256": "5f7fe60c454c9999d46a15619376f053303872d672c9fe7495b622a6119a562d",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        775,
+        650,
+        440
+      ],
+      "observed_utc": "2026-11-02T23:31:20.7968069Z",
+      "observation": "Left arm Cut0.5, Bleeding3%/d, Needs tending now; screenshot includes tooltip and total bleeding."
+    },
+    {
+      "id": "care-policy",
+      "image": "runtime/injuries-care-policy.png",
+      "sha256": "0f64f85a9f2769bc8b5cbb69211a35e47a67927faa33f9fc8749b88282815a56",
+      "source_file": ".local-research/runtime/injuries-011-med-care-menu.png",
+      "source_sha256": "6e76656e263980282ee4f218d9274bd6ec268852672924f84239abf44bdd5064",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        775,
+        650,
+        450
+      ],
+      "observed_utc": "2026-11-02T23:31:22.1783617Z",
+      "observation": "Ordinary medical policy menu: Doctor care, but no medicine; chosen in next recorded action."
+    },
+    {
+      "id": "doctor-disabled",
+      "image": "runtime/injuries-doctor-disabled.png",
+      "sha256": "294e2c112a030b790e254485ad7f5b150df144eec2fae33393a0a21fddd401f4",
+      "source_file": ".local-research/runtime/injuries-014-doctor-disabled.png",
+      "source_sha256": "b79859d1953f08c9faeeb48dd69d3ecfefb11aa0aa33cd6d564b5b42cf1f51f4",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1160,
+        700,
+        240
+      ],
+      "observed_utc": "2026-11-02T23:32:57.1841224Z",
+      "observation": "Prophet Doctor checkbox normally disabled to test the work gate."
+    },
+    {
+      "id": "tend-blocked",
+      "image": "runtime/injuries-tend-blocked.png",
+      "sha256": "34a30f9c8e687580e6035e2206cb7b7c530b343531b6380d45ce8e9f2b3918c5",
+      "source_file": ".local-research/runtime/injuries-017-tend-blocked.png",
+      "source_sha256": "0cb7c1cc3900c6450eb357503272a57f439066c2a2a38ed5dadcb18d0e566f07",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        1430,
+        800,
+        500,
+        160
+      ],
+      "observed_utc": "2026-11-02T23:33:01.2200023Z",
+      "observation": "Cannot tend to Grump, Blaster: Not assigned to doctoring."
+    },
+    {
+      "id": "doctor-assigned",
+      "image": "runtime/injuries-doctor-assigned.png",
+      "sha256": "081b60689a50a16b3f448b5cec899ca819bf0c862e79f1afe62d36e96e49a5ed",
+      "source_file": ".local-research/runtime/injuries-020-doctor-assigned.png",
+      "source_sha256": "2d31e9fe9bf9f2169afa8001f31826392a49952d0101fcbb3b9f878d2c70dc4d",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1160,
+        700,
+        240
+      ],
+      "observed_utc": "2026-11-02T23:33:45.3278144Z",
+      "observation": "Prophet Doctor checkbox normally re-enabled, without skill editing."
+    },
+    {
+      "id": "tend-allowed",
+      "image": "runtime/injuries-tend-allowed.png",
+      "sha256": "4c26264d945e6031c3775ee78e8818c315afe9c32417c715a229c196d287a704",
+      "source_file": ".local-research/runtime/injuries-022-tend-allowed.png",
+      "source_sha256": "23389d132f32d0c663a2fed1086a1a095ce948f7c339be44885b4ec4224f9842",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        1430,
+        800,
+        500,
+        130
+      ],
+      "observed_utc": "2026-11-02T23:33:47.9422757Z",
+      "observation": "After assignment: Prioritize tending to Grump, Blaster."
+    },
+    {
+      "id": "tending-activity",
+      "image": "runtime/injuries-tending-activity.png",
+      "sha256": "a6537b1aa42074c161a530f69c1ccc94d56bec226dc9d6c5bc899a4037845cc8",
+      "source_file": ".local-research/runtime/injuries-025-pause-tend.png",
+      "source_sha256": "b0911754f209a80bb6628970a81135348caec5a84101de15e00a04bb5f09d5e9",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1220,
+        700,
+        190
+      ],
+      "observed_utc": "2026-11-02T23:35:04.1488432Z",
+      "observation": "Prophet activity Tending to Grump. after normal travel to the medical bed."
+    },
+    {
+      "id": "tending-scene",
+      "image": "runtime/injuries-tending-scene.png",
+      "sha256": "2e2275c197c9504a36541a18133bac54f3fa4e287a8c160d6dfdd9d17267403a",
+      "source_file": ".local-research/runtime/injuries-025-pause-tend.png",
+      "source_sha256": "b0911754f209a80bb6628970a81135348caec5a84101de15e00a04bb5f09d5e9",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        1370,
+        780,
+        180,
+        130
+      ],
+      "observed_utc": "2026-11-02T23:35:04.1488432Z",
+      "observation": "Doctor adjacent to patient in inherited medical bed during TendPatient."
+    },
+    {
+      "id": "tending-wait",
+      "image": "runtime/injuries-tending-wait.png",
+      "sha256": "a6537b1aa42074c161a530f69c1ccc94d56bec226dc9d6c5bc899a4037845cc8",
+      "source_file": ".local-research/runtime/injuries-027-pause-tend-wait.png",
+      "source_sha256": "b90feb9b3198f4a47ff4060afa34e3be42a5c787bcb04a9ff481d67f4499a89e",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        1220,
+        700,
+        190
+      ],
+      "observed_utc": "2026-11-02T23:36:58.6907915Z",
+      "observation": "Same tending activity after another bounded normal-speed window; save retains decreasing toil countdown."
+    },
+    {
+      "id": "bandaged-tooltip",
+      "image": "runtime/injuries-bandaged-tooltip.png",
+      "sha256": "408221e7f391fc77723bf54805dd5e4896f88a8379e6343110b05aa2ed372bb1",
+      "source_file": ".local-research/runtime/injuries-031-after-tooltip.png",
+      "source_sha256": "5a8c18704ed711b3d53f70536e1a9c361768b396ddb46783de7c9bf8fc71dcd3",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        0,
+        775,
+        650,
+        440
+      ],
+      "observed_utc": "2026-11-02T23:38:15.5173595Z",
+      "observation": "Left arm Cut displays0.0 by rounding, Bandaged(quality0%); bleeding marker/rate absent. Save residual severity is0.0200000107."
+    },
+    {
+      "id": "final-paused",
+      "image": "runtime/injuries-final-paused.png",
+      "sha256": "99583708ddb67bbdf8e6abd937ab1772e63e1d771fd7f0f34aaf1e30f8c32cb0",
+      "source_file": ".local-research/runtime/injuries-stopped-b-return.png",
+      "source_sha256": "fb5cfcddaaa669ab3f9620305c1032b503888cab6e09863387fe11858d73a470",
+      "source_size": [
+        2560,
+        1440
+      ],
+      "crop_xywh": [
+        1800,
+        920,
+        760,
+        520
+      ],
+      "observed_utc": "2026-11-02T23:39:22.3208521Z",
+      "observation": "Explicit final pause; two independent ending saves both77192."
+    }
+  ],
+  "actions": {
+    "file": "native-injuries-actions.jsonl",
+    "sha256": "3f34ebbe2f662eaf8f1d7e91e27f0f2c4c2e6b308544a1c9d2cb0bfa58d4c62b",
+    "count": 85
+  },
+  "limitations": [
+    "One small developer-added Cut0.5 on a patient already down from prior Anesthetic, in a previously God-built medical bed. Not natural combat or natural injury-caused downing.",
+    "Doctor Medicine0 and inherited minor health penalties were not edited; one result of quality0% does not establish a skill curve or quality distribution.",
+    "NoMeds chosen through ordinary UI; targetB and carried medicine absent during TendPatient, all recorded medicine stack quantities unchanged. No herbal, industrial, ultratech or medicine-consumption comparison.",
+    "Severity fell0.5 to0.340000004 while the same untreated wound was still being tended. Final0.0200000107 is not fully healed, despite UI rounding to0.0. No claim that tending alone caused recovery.",
+    "Intermediate toil3 countdown1389 to986 tracks403simulated ticks. Observation windows include travel and later work; exact complete tending duration and finish tick were not continuously measured.",
+    "Final doctor job became FeedPatient starting77089; this was not an additional manually issued command and the new feeding completion was not observed.",
+    "Final tendQuality omitted uses source serialization default0; tendTicksLeft1 is the permanent-tend marker, not evidence of one tick remaining. Treatment evidence combines UI, stable wound ID and ordinary job execution.",
+    "No blood-loss disease progression, infection, immunity, medicine quality comparison, repeat tending, long-term recovery, bed-factor comparison or autonomous task-selection experiment.",
+    "Portable verifier checks retained semantic claims, hashes, PNG dimensions and input chronology; local mode re-reads original XML and raw screenshots. Neither reruns gameplay or performsOCR.",
+    "Normal profile and game installation untouched. Old baseline retained. Final double-save tick77192 confirms pause; no original input after2026-11-02T23:39:22Z."
+  ],
+  "final_state": {
+    "canonical_save": "injuries-stopped-b.rws",
+    "paused": true,
+    "pause_confirmed_by_two_equal_saves": true,
+    "baseline_untouched": true,
+    "normal_profile_touched": false,
+    "game_files_modified": false,
+    "mods_installed": false,
+    "developer_mode": true,
+    "god_mode": true
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "format": "emberfield-fixture-provenance",
+  "fixture": "voxel-v11-start.json",
+  "sourceCommit": "4d6332d9cd38d3b57b9e2ad286fa7347ac2ccf0d",
+  "publishedSubtree": "df1b538a7cb10c9a71357f554245515044fa1076",
+  "capturedAt": "2026-11-02T23:29:02.035Z",
+  "creation": "Public new VoxelSimulation(73129) followed by save(), before injury/combat edits",
+  "encoding": "UTF-8 without BOM; compact JSON with one trailing LF",
+  "sha256": "25d42ed4a235ab04440921b00c8f36d3bd354d5f1de365b69407dff37a274918",
+  "bytes": 60732,
+  "version": 11,
+  "seed": 73129,
+  "sourceHashes": {
+    "src/voxel/world.ts": "faab84df436a3b0c2bbaa8744edb809cbc3a45259f52544f6691a294d9b9c2a9",
+    "src/voxel/types.ts": "cc64acb97237b10450f52f1f78323d7193aae679cfb76aad5c085b2e65c12565",
+    "src/voxel/survival.ts": "5ba4bc40da699eca4f90f96dfcb3eddd4cb9c80f4a63b7ec9ca5ba765ad8254e",
+    "src/voxel/apparel.ts": "d5c0ad649ee59f44a52a38fe0a3f47a32be974fcc11b36c44f5fe5a704eb1629"
+  }
+}
