@@ -222,8 +222,8 @@ try {
     'save preserves carried food',
   );
   assert.deepEqual(
-    restored.jobs.map((j) => [j.id, j.delivered, j.deliveredFood]),
-    saved.jobs.map((j) => [j.id, j.delivered, j.deliveredFood]),
+    restored.jobs.map((j) => [j.id, j.delivered, j.deliveredBatches]),
+    saved.jobs.map((j) => [j.id, j.delivered, j.deliveredBatches]),
     'save preserves delivered ingredients',
   );
   const warm = VoxelSimulation.load(JSON.parse(before));

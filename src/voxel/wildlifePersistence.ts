@@ -38,11 +38,13 @@ export function validateWildlife(d: VoxelSave, usedIds: Set<number>, equipmentId
         ![a.moveTick, a.decisionTick, a.fleeUntil, a.retryTick].every(integer) ||
         (a.threatId !== null && !identity(a.threatId)) ||
         !Number.isFinite(a.rotProgress) || a.rotProgress < 0 || a.rotProgress >= WILDLIFE.carcassRotDays * DAY ||
-        (!a.dead && a.rotProgress !== 0)) throw new Error('野生动物状态无效');
+        (!a.dead && a.rotProgress !== 0) ||
+        (a.carcassHitPoints !== undefined && (!a.dead || !Number.isInteger(a.carcassHitPoints) ||
+          a.carcassHitPoints < 1 || a.carcassHitPoints > 100))) throw new Error('野生动物状态无效');
   }
   for (const b of d.butcherSpots) if (typeof b.paused !== 'boolean') throw new Error('屠宰点状态无效');
   for (const batch of [...d.items, ...d.pawns.flatMap(p => p.cargo ? [p.cargo] : []),
-    ...d.jobs.flatMap(j => j.deliveredFood)]) {
+    ...d.jobs.flatMap(j => j.deliveredBatches)]) {
     if (!batch.carcass) continue;
     const id = batch.carcass.animalId;
     if (!identity(id) || usedIds.has(id) || equipmentIds.has(id)) throw new Error('动物尸体身份重复或无效');

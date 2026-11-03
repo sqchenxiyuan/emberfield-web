@@ -124,6 +124,7 @@ function invariants(s: VoxelSimulation) {
           'carcass',
           'forbidden',
           'poisonChance',
+          'hitPoints',
         ].includes(k),
       ),
     ).toBe(true);
@@ -175,7 +176,7 @@ describe('bounded physical stacks and hauling reservations', () => {
     expect(s.items.filter((i) => i.resource === 'food').map((i) => i.amount)).toEqual([
       10, 10, 10, 10, 10, 10,
     ]);
-    expect(s.save().version).toBe(27);
+    expect(s.save().version).toBe(28);
     expect(VoxelSimulation.load(s.save()).counts()).toEqual(s.counts());
   });
   it.each(resources)('carries and stores %s only within its native one-stack limit', (resource) => {
@@ -350,7 +351,7 @@ describe('bounded outputs and interrupted physical containers', () => {
       command(s, { type: 'bill', stoveId: s.stoves[0].id, target: 21, paused: false });
       const job = s.jobs.find((j) => j.kind === 'cook')!;
       job.delivered = { wood: 1, grain: 10 };
-      job.deliveredFood = [{ ...freshBatch('grain', 10, 'potato'), rotProgress: 100 }];
+      job.deliveredBatches = [freshBatch('wood', 1), { ...freshBatch('grain', 10, 'potato'), rotProgress: 100 }];
       job.progress = job.work - 1;
       s.pawns[0].priorities.cook = 1;
     });
@@ -422,6 +423,7 @@ describe('bounded outputs and interrupted physical containers', () => {
       add(s, pos(12, 11), 'grain', 73, { crop: 'rice', rotProgress: 500 });
       command(s, { type: 'designate', tool: 'wall', from: pos(11, 11) });
       s.jobs[0].delivered = { wood: 6 };
+      s.jobs[0].deliveredBatches = [freshBatch('wood', 6)];
       s.jobs[0].progress = s.jobs[0].work - 1;
       s.pawns[0].priorities.build = 1;
     });

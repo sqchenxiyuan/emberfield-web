@@ -138,7 +138,7 @@ async function verify(mode) {
       }
       for (const job of old.jobs) {
         const next = migrated.jobs.find(j => j.id === job.id); assert(next);
-        for (const field of ['delivered', 'deliveredFood', 'progress', 'work', 'kind', 'cost']) assert.deepEqual(next[field], job[field]);
+        for (const field of ['delivered', 'deliveredBatches', 'progress', 'work', 'kind', 'cost']) assert.deepEqual(next[field], job[field]);
       }
       assert.equal((await state()).snapshot.inventory.silver, 0); assert.deepEqual(migrated.trade.receipts, []);
       assert.deepEqual(migrated.trade.caravans, []); assert.deepEqual(migrated.homeArea, []);

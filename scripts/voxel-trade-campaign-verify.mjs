@@ -243,7 +243,7 @@ function transact(lines, gift = false, acceptShortfall = false) {
 
 function batches(data) {
   return [...data.items, ...data.pawns.flatMap(p => p.cargo ? [p.cargo] : []),
-    ...data.jobs.flatMap(j => j.deliveredFood), ...data.trade.caravans.flatMap(c => c.stock)];
+    ...data.jobs.flatMap(j => j.deliveredBatches), ...data.trade.caravans.flatMap(c => c.stock)];
 }
 function physicalTotals(data) {
   const result = Object.fromEntries(Object.keys(initial).map(k => [k, 0]));

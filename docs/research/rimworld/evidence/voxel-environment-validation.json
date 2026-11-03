@@ -1,0 +1,1269 @@
+{
+  "version": 28,
+  "recordedAt": "2026-11-03T20:22:03.180Z",
+  "scope": "Local Web validation only. Native evidence is separate in environment-storage-runtime-evidence.json. Browser mutations use UI; simulation campaign uses public commands, normal ticks and exact save/load. Controlled tests are not ordinary gameplay.",
+  "unit": {
+    "file": "test-results/v28-unit-final.json",
+    "tests": 926,
+    "passed": 926,
+    "failed": 0,
+    "pending": 0,
+    "files": 63,
+    "sha256": "f84eb7506fd8c488b25252d39c4f0ddd84afcd453d7dc3497d81c3fb0480b8bd"
+  },
+  "campaign": {
+    "scope": "Fresh colony, public settings and reproducible seed. Only public player commands, ordinary ticks and exact save/load mutate the colony. Planning reads terrain/routes/environment. No injected resources, HP, weather, filth, memory, needs, clocks or RNG. Bounded mechanism demonstration, not probability calibration.",
+    "execution": {
+      "bundleSha256": "aeb1704abd3f3d45462f0ac6741bd3c035e153d8a396136b7cca82eb5d63d29c",
+      "scriptSha256": "38484375b23caf8c3233e5769c3f05b3d57c1323501ab8643ae97aba9f457011"
+    },
+    "baseline": {
+      "seed": 73129,
+      "settings": {
+        "biome": "temperate",
+        "hilliness": "flat",
+        "meanTemperature": 24,
+        "rainfall": 1100,
+        "latitude": 0
+      },
+      "initial": {
+        "silver": 800,
+        "wood": 90,
+        "stone": 0,
+        "steel": 0,
+        "components": 0,
+        "food": 60,
+        "grain": 0,
+        "meat": 0,
+        "carcass": 0,
+        "meal": 0,
+        "chunk": 0,
+        "cloth": 0,
+        "herb": 0,
+        "apparel": 6,
+        "weapon": 0
+      }
+    },
+    "checks": [
+      {
+        "name": "ordinary forestry supplies physical construction materials",
+        "tick": 1835,
+        "ok": true,
+        "detail": {
+          "elapsed": 1835,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "idle",
+              "reason": "正在伐木",
+              "food": 75.53333333332951,
+              "rest": 85.4729166666538
+            },
+            {
+              "id": 365,
+              "phase": "idle",
+              "reason": "仓储已满或不可达，等待可用仓位",
+              "food": 75.53333333332951,
+              "rest": 85.4729166666538
+            },
+            {
+              "id": 366,
+              "phase": "idle",
+              "reason": "仓储已满或不可达，等待可用仓位",
+              "food": 75.53333333332951,
+              "rest": 85.4729166666538
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "three real beds support ordinary colony needs",
+        "tick": 2151,
+        "ok": true,
+        "detail": {
+          "elapsed": 316,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "idle",
+              "reason": "仓储已满或不可达，等待可用仓位",
+              "food": 71.31999999999552,
+              "rest": 82.97124999998492
+            },
+            {
+              "id": 365,
+              "phase": "idle",
+              "reason": "正在造床",
+              "food": 71.31999999999552,
+              "rest": 82.97124999998492
+            },
+            {
+              "id": 366,
+              "phase": "idle",
+              "reason": "仓储已满或不可达，等待可用仓位",
+              "food": 71.31999999999552,
+              "rest": 82.97124999998492
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "upper ladder constructed",
+        "tick": 2319,
+        "ok": true,
+        "detail": {
+          "elapsed": 168,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "idle",
+              "reason": "正在造梯子",
+              "food": 69.07999999999517,
+              "rest": 81.64124999998374
+            },
+            {
+              "id": 365,
+              "phase": "idle",
+              "reason": "仓储已满或不可达，等待可用仓位",
+              "food": 69.07999999999517,
+              "rest": 81.64124999998374
+            },
+            {
+              "id": 366,
+              "phase": "haul",
+              "reason": "运往仓储",
+              "food": 69.07999999999517,
+              "rest": 81.64124999998374
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "upper wooden platform completed with real materials",
+        "tick": 2564,
+        "ok": true,
+        "detail": {
+          "elapsed": 245,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "idle",
+              "reason": "正在铺楼板",
+              "food": 65.81333333332799,
+              "rest": 79.70166666664869
+            },
+            {
+              "id": 365,
+              "phase": "idle",
+              "reason": "运往仓储",
+              "food": 65.81333333332799,
+              "rest": 79.70166666664869
+            },
+            {
+              "id": 366,
+              "phase": "idle",
+              "reason": "仓储已满或不可达，等待可用仓位",
+              "food": 65.81333333332799,
+              "rest": 79.70166666664869
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "second ladder gives real access to roof level",
+        "tick": 2901,
+        "ok": true,
+        "detail": {
+          "elapsed": 337,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "idle",
+              "reason": "仓储已满或不可达，等待可用仓位",
+              "food": 61.319999999993954,
+              "rest": 77.03374999997966
+            },
+            {
+              "id": 365,
+              "phase": "idle",
+              "reason": "仓储已满或不可达，等待可用仓位",
+              "food": 61.319999999993954,
+              "rest": 77.03374999997966
+            },
+            {
+              "id": 366,
+              "phase": "idle",
+              "reason": "正在造梯子",
+              "food": 61.319999999993954,
+              "rest": 77.03374999997966
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "open shed over part of the upper platform completed",
+        "tick": 3015,
+        "ok": true,
+        "detail": {
+          "elapsed": 114,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "idle",
+              "reason": "仓储已满或不可达，等待可用仓位",
+              "food": 59.799999999993716,
+              "rest": 76.13124999997886
+            },
+            {
+              "id": 365,
+              "phase": "idle",
+              "reason": "仓储已满或不可达，等待可用仓位",
+              "food": 59.799999999993716,
+              "rest": 76.13124999997886
+            },
+            {
+              "id": 366,
+              "phase": "idle",
+              "reason": "正在铺楼板",
+              "food": 59.799999999993716,
+              "rest": 76.13124999997886
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "roofed shed is still outdoors",
+        "tick": 3015,
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "name": "both outdoor stockpiles contain real hauled wood",
+        "tick": 3097,
+        "ok": true,
+        "detail": {
+          "elapsed": 82,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "haul",
+              "reason": "收集散落物资",
+              "food": 58.70666666666021,
+              "rest": 75.48208333331162
+            },
+            {
+              "id": 365,
+              "phase": "idle",
+              "reason": "运往仓储",
+              "food": 58.70666666666021,
+              "rest": 75.48208333331162
+            },
+            {
+              "id": 366,
+              "phase": "haul",
+              "reason": "运往仓储",
+              "food": 58.70666666666021,
+              "rest": 75.48208333331162
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "pawn walks to actual selected cell",
+        "tick": 3121,
+        "ok": true,
+        "detail": {
+          "elapsed": 24,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "combat",
+              "reason": "前往指定位置",
+              "food": 58.38666666666016,
+              "rest": 75.29208333331145
+            },
+            {
+              "id": 365,
+              "phase": "idle",
+              "reason": "暂无工作",
+              "food": 58.38666666666016,
+              "rest": 75.29208333331145
+            },
+            {
+              "id": 366,
+              "phase": "idle",
+              "reason": "运往仓储",
+              "food": 58.38666666666016,
+              "rest": 75.29208333331145
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "pawn walks to actual selected cell",
+        "tick": 3129,
+        "ok": true,
+        "detail": {
+          "elapsed": 8,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "combat",
+              "reason": "前往指定位置",
+              "food": 58.27999999999348,
+              "rest": 75.22874999997806
+            },
+            {
+              "id": 365,
+              "phase": "idle",
+              "reason": "暂无工作",
+              "food": 58.27999999999348,
+              "rest": 75.22874999997806
+            },
+            {
+              "id": 366,
+              "phase": "idle",
+              "reason": "运往仓储",
+              "food": 58.27999999999348,
+              "rest": 75.22874999997806
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "normal dirty footsteps leave filth on exposed and covered flooring",
+        "tick": 3129,
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "name": "ordinary rain wets a colonist and damages actual exposed wood",
+        "tick": 7300,
+        "ok": true,
+        "detail": {
+          "elapsed": 4171,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "combat",
+              "reason": "征召待命",
+              "food": 13.333333333322633,
+              "rest": 42.20833333330172
+            },
+            {
+              "id": 365,
+              "phase": "rest",
+              "reason": "在床上睡觉",
+              "food": 73.09333333332913,
+              "rest": 49.70440502663559
+            },
+            {
+              "id": 366,
+              "phase": "rest",
+              "reason": "在床上睡觉",
+              "food": 73.07999999999579,
+              "rest": 49.73136931330226
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "pawn walks to actual selected cell",
+        "tick": 7326,
+        "ok": true,
+        "detail": {
+          "elapsed": 26,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "combat",
+              "reason": "前往指定位置",
+              "food": 13.159999999989319,
+              "rest": 42.002499999968386
+            },
+            {
+              "id": 365,
+              "phase": "rest",
+              "reason": "在床上睡觉",
+              "food": 72.7466666666624,
+              "rest": 50.199643146635644
+            },
+            {
+              "id": 366,
+              "phase": "rest",
+              "reason": "在床上睡觉",
+              "food": 72.73333333332907,
+              "rest": 50.22660743330231
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "pawn walks to actual selected cell",
+        "tick": 7354,
+        "ok": true,
+        "detail": {
+          "elapsed": 28,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "combat",
+              "reason": "前往指定位置",
+              "food": 12.973333333322673,
+              "rest": 41.78083333330172
+            },
+            {
+              "id": 365,
+              "phase": "rest",
+              "reason": "在床上睡觉",
+              "food": 72.37333333332901,
+              "rest": 50.7329765066357
+            },
+            {
+              "id": 366,
+              "phase": "rest",
+              "reason": "在床上睡觉",
+              "food": 72.35999999999568,
+              "rest": 50.75994079330237
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "stockpile zoning does not prevent rainfall deterioration",
+        "tick": 7354,
+        "ok": true,
+        "detail": {
+          "exposed": {
+            "id": 447,
+            "entity": "stack",
+            "environment": {
+              "exposed": true,
+              "outdoors": true,
+              "rainRate": 1
+            },
+            "hitPoints": 149,
+            "maxHitPoints": 150,
+            "rate": 2.5
+          },
+          "shed": {
+            "id": 444,
+            "entity": "stack",
+            "environment": {
+              "exposed": false,
+              "outdoors": true,
+              "rainRate": 1
+            },
+            "hitPoints": 150,
+            "maxHitPoints": 150,
+            "rate": 0.25
+          }
+        }
+      },
+      {
+        "name": "pawn walks to actual selected cell",
+        "tick": 7364,
+        "ok": true,
+        "detail": {
+          "elapsed": 10,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "combat",
+              "reason": "前往指定位置",
+              "food": 12.906666666656013,
+              "rest": 41.701666666635056
+            },
+            {
+              "id": 365,
+              "phase": "rest",
+              "reason": "在床上睡觉",
+              "food": 72.23999999999566,
+              "rest": 50.92345270663572
+            },
+            {
+              "id": 366,
+              "phase": "rest",
+              "reason": "在床上睡觉",
+              "food": 72.22666666666233,
+              "rest": 50.95041699330239
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "shelter stops wet-memory refresh without immediately curing it",
+        "tick": 7364,
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "name": "wet memory expires naturally while the pawn stays under the roof",
+        "tick": 8564,
+        "ok": true,
+        "detail": {
+          "elapsed": 1200,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "combat",
+              "reason": "征召待命",
+              "food": 8.453333333322226,
+              "rest": 32.20166666663517
+            },
+            {
+              "id": 365,
+              "phase": "rest",
+              "reason": "在床上睡觉",
+              "food": 56.23999999999316,
+              "rest": 73.78059670663453
+            },
+            {
+              "id": 366,
+              "phase": "rest",
+              "reason": "在床上睡觉",
+              "food": 56.226666666659824,
+              "rest": 73.80756099330118
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "drying retained the original expiry through save/load",
+        "tick": 8564,
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "name": "rain naturally washes exposed dirt",
+        "tick": 8564,
+        "ok": true,
+        "detail": {
+          "elapsed": 0,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "combat",
+              "reason": "征召待命",
+              "food": 8.453333333322226,
+              "rest": 32.20166666663517
+            },
+            {
+              "id": 365,
+              "phase": "rest",
+              "reason": "在床上睡觉",
+              "food": 56.23999999999316,
+              "rest": 73.78059670663453
+            },
+            {
+              "id": 366,
+              "phase": "rest",
+              "reason": "在床上睡觉",
+              "food": 56.226666666659824,
+              "rest": 73.80756099330118
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "sheltered filth retains its actual layers",
+        "tick": 8564,
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "name": "ordinary shaft reaches warehouse depth",
+        "tick": 10816,
+        "ok": true,
+        "detail": {
+          "elapsed": 2252,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "rest",
+              "reason": "在床上睡觉",
+              "food": 68.81666666665093,
+              "rest": 73.37910922663609
+            },
+            {
+              "id": 365,
+              "phase": "idle",
+              "reason": "仓储已满或不可达，等待可用仓位",
+              "food": 96.33333333333276,
+              "rest": 93.20749999999398
+            },
+            {
+              "id": 366,
+              "phase": "idle",
+              "reason": "正在开凿梯井",
+              "food": 96.26666666666608,
+              "rest": 93.19166666666064
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "warehouse doorway excavated",
+        "tick": 10945,
+        "ok": true,
+        "detail": {
+          "elapsed": 129,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "rest",
+              "reason": "在床上睡觉",
+              "food": 67.09666666665066,
+              "rest": 75.83625220663544
+            },
+            {
+              "id": 365,
+              "phase": "idle",
+              "reason": "仓储已满或不可达，等待可用仓位",
+              "food": 94.61333333333249,
+              "rest": 92.18624999999308
+            },
+            {
+              "id": 366,
+              "phase": "idle",
+              "reason": "正在挖掘",
+              "food": 94.54666666666581,
+              "rest": 92.17041666665973
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "warehouse chamber excavated from real terrain",
+        "tick": 11451,
+        "ok": true,
+        "detail": {
+          "elapsed": 506,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "rest",
+              "reason": "在床上睡觉",
+              "food": 60.34999999998294,
+              "rest": 85.47434792663287
+            },
+            {
+              "id": 365,
+              "phase": "idle",
+              "reason": "正在挖掘",
+              "food": 87.86666666666477,
+              "rest": 88.1804166666562
+            },
+            {
+              "id": 366,
+              "phase": "idle",
+              "reason": "仓储已满或不可达，等待可用仓位",
+              "food": 87.7999999999981,
+              "rest": 88.16458333332285
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "physical door encloses the underground warehouse",
+        "tick": 11790,
+        "ok": true,
+        "detail": {
+          "elapsed": 339,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "rest",
+              "reason": "在床上睡觉",
+              "food": 55.829999999982235,
+              "rest": 91.93149110663116
+            },
+            {
+              "id": 365,
+              "phase": "idle",
+              "reason": "仓储已满或不可达，等待可用仓位",
+              "food": 83.34666666666406,
+              "rest": 85.49666666665382
+            },
+            {
+              "id": 366,
+              "phase": "idle",
+              "reason": "正在造门",
+              "food": 83.27999999999739,
+              "rest": 85.48083333332048
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "closed warehouse is an indoor room",
+        "tick": 11790,
+        "ok": true,
+        "detail": {}
+      },
+      {
+        "name": "pawn walks to actual selected cell",
+        "tick": 11831,
+        "ok": true,
+        "detail": {
+          "elapsed": 41,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "combat",
+              "reason": "前往指定位置",
+              "food": 55.28333333331548,
+              "rest": 91.60690777329754
+            },
+            {
+              "id": 365,
+              "phase": "idle",
+              "reason": "暂无工作",
+              "food": 82.79999999999731,
+              "rest": 85.1720833333202
+            },
+            {
+              "id": 366,
+              "phase": "idle",
+              "reason": "暂无工作",
+              "food": 82.73333333333063,
+              "rest": 85.15624999998685
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "colonist picks up the actual damaged wood batch",
+        "tick": 11837,
+        "ok": true,
+        "detail": {
+          "elapsed": 6,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "haul",
+              "reason": "运往仓储",
+              "food": 55.20333333331547,
+              "rest": 91.5594077732975
+            },
+            {
+              "id": 365,
+              "phase": "idle",
+              "reason": "暂无工作",
+              "food": 82.7199999999973,
+              "rest": 85.12458333332016
+            },
+            {
+              "id": 366,
+              "phase": "idle",
+              "reason": "暂无工作",
+              "food": 82.65333333333062,
+              "rest": 85.10874999998681
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "colonist hauls damaged wood into the closed warehouse",
+        "tick": 11929,
+        "ok": true,
+        "detail": {
+          "elapsed": 92,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "idle",
+              "reason": "运往仓储",
+              "food": 53.97666666664861,
+              "rest": 90.83107443996352
+            },
+            {
+              "id": 365,
+              "phase": "idle",
+              "reason": "暂无工作",
+              "food": 81.49333333333044,
+              "rest": 84.39624999998618
+            },
+            {
+              "id": 366,
+              "phase": "idle",
+              "reason": "暂无工作",
+              "food": 81.42666666666376,
+              "rest": 84.38041666665283
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "indoor storage has zero environment deterioration and preserves delivered HP",
+        "tick": 11929,
+        "ok": true,
+        "detail": {
+          "damagedBefore": [
+            {
+              "id": 410,
+              "hp": 148,
+              "amount": 23
+            },
+            {
+              "id": 412,
+              "hp": 147,
+              "amount": 23
+            },
+            {
+              "id": 447,
+              "hp": 149,
+              "amount": 75
+            }
+          ],
+          "cargo": {
+            "resource": "wood",
+            "amount": 23,
+            "hitPoints": 148
+          },
+          "stored": {
+            "resource": "wood",
+            "amount": 23,
+            "hitPoints": 148,
+            "x": 37,
+            "y": 29,
+            "z": 4,
+            "id": 474
+          },
+          "environment": {
+            "id": 474,
+            "entity": "stack",
+            "environment": {
+              "exposed": false,
+              "outdoors": false,
+              "rainRate": 0
+            },
+            "hitPoints": 148,
+            "maxHitPoints": 150,
+            "rate": 0
+          }
+        }
+      },
+      {
+        "name": "protected stored batch survives continued ordinary weather and save/load",
+        "tick": 13429,
+        "ok": true,
+        "detail": {
+          "elapsed": 1500,
+          "pawns": [
+            {
+              "id": 364,
+              "phase": "idle",
+              "reason": "暂无工作",
+              "food": 33.976666666645485,
+              "rest": 78.956074439953
+            },
+            {
+              "id": 365,
+              "phase": "idle",
+              "reason": "暂无工作",
+              "food": 61.493333333327314,
+              "rest": 72.52124999997567
+            },
+            {
+              "id": 366,
+              "phase": "idle",
+              "reason": "暂无工作",
+              "food": 61.42666666666064,
+              "rest": 72.50541666664232
+            }
+          ],
+          "jobs": []
+        }
+      },
+      {
+        "name": "indoor HP stays constant",
+        "tick": 13429,
+        "ok": true,
+        "detail": {}
+      }
+    ],
+    "fixtures": {
+      "initial": {
+        "file": "test-results/voxel-environment/initial.json",
+        "tick": 0,
+        "sha256": "459da967705a49065a970c26a840785928bf975dea1ed8403c578705531dbf77"
+      },
+      "rain": {
+        "file": "test-results/voxel-environment/rain.json",
+        "tick": 7354,
+        "sha256": "09e3ca7e3ea204f9f8c4de71c59a94c610a0daf948662e8411367828fb49f4c9"
+      },
+      "drying": {
+        "file": "test-results/voxel-environment/drying.json",
+        "tick": 7364,
+        "sha256": "f4b911f2f810faf7070dabc7ac71e233881cf100d20159c332ea623b71e3c159"
+      },
+      "protected": {
+        "file": "test-results/voxel-environment/protected.json",
+        "tick": 11929,
+        "sha256": "c76f3351da0af4dc4a1b6fcc89bbe954a3fefc758c39b1c0f0c24c09341f5ed5"
+      },
+      "final": {
+        "file": "test-results/voxel-environment/final.json",
+        "tick": 13429,
+        "sha256": "ee6dd5ca35f64549e3c241215ee04708c7958ba2a212630c88eb10053fdb9f2b"
+      }
+    },
+    "browserContract": {
+      "rainFixture": "rain",
+      "dryingFixture": "drying",
+      "protectedFixture": "protected",
+      "pawnId": 364,
+      "exposedPos": {
+        "x": 29,
+        "y": 31,
+        "z": 10
+      },
+      "roofedPos": {
+        "x": 31,
+        "y": 31,
+        "z": 10
+      },
+      "exposedItemId": 447,
+      "roofedItemId": 444,
+      "washingFilthId": 449,
+      "indoorPos": {
+        "x": 37,
+        "y": 29,
+        "z": 4
+      },
+      "indoorItemId": 474
+    },
+    "finalTick": 13429
+  },
+  "browser": {
+    "scope": "Bounded v28 environment UI verification in Worker and main modes. Mutations use visible controls, real map clicks and file chooser import/export only. snapshot/project/exportSave are read-only. Checkpoints and campaign are hashed; no weather, HP, filth, memory, position or clocks are injected. Normal progression checks wet refresh/expiry, rain wash and protected HP. No stochastic-rate calibration or complete horseshoe behavior claim is made unless an ordinary eligible horseshoe checkpoint is supplied.",
+    "campaign": {
+      "file": "test-results/voxel-environment/report.json",
+      "sha256": "4c86cc15536c760619478404ac335c05252fb13a35558cfd3f1fd60e973da204",
+      "scope": "Fresh colony, public settings and reproducible seed. Only public player commands, ordinary ticks and exact save/load mutate the colony. Planning reads terrain/routes/environment. No injected resources, HP, weather, filth, memory, needs, clocks or RNG. Bounded mechanism demonstration, not probability calibration."
+    },
+    "modes": [
+      {
+        "mode": "worker",
+        "checks": [
+          {
+            "name": "ground item HP and stochastic rate match canonical environment; zoned outdoor stock deteriorates and an open shed only reduces the rate",
+            "exposed": {
+              "id": 447,
+              "entity": "stack",
+              "environment": {
+                "exposed": true,
+                "outdoors": true,
+                "rainRate": 1
+              },
+              "hitPoints": 149,
+              "maxHitPoints": 150,
+              "rate": 2.5
+            },
+            "roofed": {
+              "id": 444,
+              "entity": "stack",
+              "environment": {
+                "exposed": false,
+                "outdoors": true,
+                "rainRate": 1
+              },
+              "hitPoints": 150,
+              "maxHitPoints": 150,
+              "rate": 0.25
+            }
+          },
+          {
+            "name": "visible wet thought has -3 mood and the actual remaining duration; pause freezes it and continued normal rain refreshes expiry",
+            "pawnId": 364,
+            "originalExpiry": 8540,
+            "refreshedExpiry": 8564
+          },
+          {
+            "name": "visible export/import preserves physical item state filth weather and wet-memory expiry",
+            "groundStacks": 17,
+            "deliveredBatches": 0,
+            "carriedBatches": 0
+          },
+          {
+            "name": "nature restriction is explained separately and eligible recreation controls remain enabled in rain",
+            "horseshoeActivityVerified": false
+          },
+          {
+            "name": "actual exposed filth reports rain washing then loses layers under ordinary weather with no cleaner",
+            "filthId": 449,
+            "before": 1,
+            "after": 0
+          },
+          {
+            "name": "actual shelter stops refresh but preserves wet memory through save/import until its original expiry",
+            "pawnId": 364,
+            "expiry": 8564,
+            "observedExpiredTick": 8579
+          },
+          {
+            "name": "physically enclosed indoor storage reports protection and preserves actual HP during continued ordinary simulation",
+            "itemId": 474,
+            "before": 148,
+            "after": 148,
+            "elapsedTicks": 1313
+          },
+          {
+            "name": "900 pixel restore notice occupies map space without overlapping either side panel",
+            "toast": {
+              "x": 259,
+              "y": 480.8125,
+              "width": 302,
+              "height": 45.1875
+            },
+            "inspector": {
+              "x": 12,
+              "y": 315,
+              "width": 235,
+              "height": 217
+            },
+            "drawer": {
+              "x": 573,
+              "y": 204,
+              "width": 315,
+              "height": 328
+            }
+          },
+          {
+            "name": "900 pixel layout retains usable environment drawer and wet-memory details"
+          },
+          {
+            "name": "served production asset bytes match the local build"
+          },
+          {
+            "name": "no browser page or console errors"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:4178/assets/index-MbFXIFCn.js",
+            "status": 200,
+            "sha256": "8483786f8dafcb04498e1da88816e0e4de87c402afacf3244ca69b5d7347c611",
+            "bytes": 2356,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/main-CmjHddyf.css",
+            "status": 200,
+            "sha256": "70d4bace78dfa72185896124422ff63cabbd732304ad6fa1ebcbba6840e702bd",
+            "bytes": 36911,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "bytes": 221699,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/main-BJHJ0evl.js",
+            "status": 200,
+            "sha256": "afa2c5489e284630ec6c9b5fd743c500fc2c4861b3b0918b91905ea081d73d3e",
+            "bytes": 802886,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/sim.worker-CY21sxxI.js",
+            "status": 200,
+            "sha256": "b62e4693430d9da9e55b5eb7571402d628cd33a1c8302fce7ddb95866d7be923",
+            "bytes": 412161,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/render.worker-CfG2VBJ-.js",
+            "status": 200,
+            "sha256": "82c6bc06ab6ef11aacb458b63e9c9285a98e7241e063c4e4e2a60458172bfc41",
+            "bytes": 601576,
+            "matchesLocalBuild": true
+          }
+        ]
+      },
+      {
+        "mode": "main",
+        "checks": [
+          {
+            "name": "ground item HP and stochastic rate match canonical environment; zoned outdoor stock deteriorates and an open shed only reduces the rate",
+            "exposed": {
+              "id": 447,
+              "entity": "stack",
+              "environment": {
+                "exposed": true,
+                "outdoors": true,
+                "rainRate": 1
+              },
+              "hitPoints": 149,
+              "maxHitPoints": 150,
+              "rate": 2.5
+            },
+            "roofed": {
+              "id": 444,
+              "entity": "stack",
+              "environment": {
+                "exposed": false,
+                "outdoors": true,
+                "rainRate": 1
+              },
+              "hitPoints": 150,
+              "maxHitPoints": 150,
+              "rate": 0.25
+            }
+          },
+          {
+            "name": "visible wet thought has -3 mood and the actual remaining duration; pause freezes it and continued normal rain refreshes expiry",
+            "pawnId": 364,
+            "originalExpiry": 8540,
+            "refreshedExpiry": 8564
+          },
+          {
+            "name": "visible export/import preserves physical item state filth weather and wet-memory expiry",
+            "groundStacks": 17,
+            "deliveredBatches": 0,
+            "carriedBatches": 0
+          },
+          {
+            "name": "nature restriction is explained separately and eligible recreation controls remain enabled in rain",
+            "horseshoeActivityVerified": false
+          },
+          {
+            "name": "actual exposed filth reports rain washing then loses layers under ordinary weather with no cleaner",
+            "filthId": 449,
+            "before": 1,
+            "after": 0
+          },
+          {
+            "name": "actual shelter stops refresh but preserves wet memory through save/import until its original expiry",
+            "pawnId": 364,
+            "expiry": 8564,
+            "observedExpiredTick": 8576
+          },
+          {
+            "name": "physically enclosed indoor storage reports protection and preserves actual HP during continued ordinary simulation",
+            "itemId": 474,
+            "before": 148,
+            "after": 148,
+            "elapsedTicks": 1312
+          },
+          {
+            "name": "900 pixel restore notice occupies map space without overlapping either side panel",
+            "toast": {
+              "x": 259,
+              "y": 480.8125,
+              "width": 302,
+              "height": 45.1875
+            },
+            "inspector": {
+              "x": 12,
+              "y": 315,
+              "width": 235,
+              "height": 217
+            },
+            "drawer": {
+              "x": 573,
+              "y": 204,
+              "width": 315,
+              "height": 328
+            }
+          },
+          {
+            "name": "900 pixel layout retains usable environment drawer and wet-memory details"
+          },
+          {
+            "name": "served production asset bytes match the local build"
+          },
+          {
+            "name": "no browser page or console errors"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:4178/assets/index-MbFXIFCn.js",
+            "status": 200,
+            "sha256": "8483786f8dafcb04498e1da88816e0e4de87c402afacf3244ca69b5d7347c611",
+            "bytes": 2356,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/main-CmjHddyf.css",
+            "status": 200,
+            "sha256": "70d4bace78dfa72185896124422ff63cabbd732304ad6fa1ebcbba6840e702bd",
+            "bytes": 36911,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "bytes": 221699,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/main-BJHJ0evl.js",
+            "status": 200,
+            "sha256": "afa2c5489e284630ec6c9b5fd743c500fc2c4861b3b0918b91905ea081d73d3e",
+            "bytes": 802886,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/sim.worker-CY21sxxI.js",
+            "status": 200,
+            "sha256": "b62e4693430d9da9e55b5eb7571402d628cd33a1c8302fce7ddb95866d7be923",
+            "bytes": 412161,
+            "matchesLocalBuild": true
+          }
+        ]
+      }
+    ]
+  },
+  "screenshots": [
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-environment-exposed.png",
+      "sha256": "158d75567b343876488350155042d76f0b5211f04481b76f246e993b2cd3e1db"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-environment-sheltered.png",
+      "sha256": "9eb8c388c8ed23880529349853cc50507318f42e9118c93bd7e6245c41c57ad0"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-environment-protected.png",
+      "sha256": "11d9282821cd3b1e83333a7bb6a08b9b5e4f37cb4e6269e2af7f0de4470b0555"
+    }
+  ],
+  "limitations": [
+    "No probability calibration",
+    "No shelves or water terrain deterioration modifier",
+    "No complete native thought or recreation suite",
+    "No CI tests; all checks run locally"
+  ]
+}

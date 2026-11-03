@@ -1,7 +1,7 @@
 import { DAY, inside, type Assignment, type Pawn, type Pos } from './types';
 import { healthSummary } from './survival';
 
-export type MemoryKind = 'ateRaw' | 'sleptGround' | 'catharsis';
+export type MemoryKind = 'ateRaw' | 'sleptGround' | 'catharsis' | 'wet';
 export type RecreationKind = 'walk' | 'horseshoes';
 export interface Psyche {
   level: number;
@@ -33,8 +33,8 @@ export const MOOD_RULES = Object.freeze({
   joyDeprivedPenalty: 18, joyLowPenalty: 8, joyHighBonus: 5,
   lowThreshold: 25, lowDurationTicks: DAY / 12,
   breakDurationTicks: DAY / 10, recoveryLevel: 40, cooldownTicks: DAY / 2,
-  memoryDuration: Object.freeze({ ateRaw: DAY / 2, sleptGround: DAY, catharsis: DAY }),
-  memoryValue: Object.freeze({ ateRaw: -5, sleptGround: -6, catharsis: 16 }),
+  memoryDuration: Object.freeze({ ateRaw: DAY / 2, sleptGround: DAY, catharsis: DAY, wet: DAY / 10 }),
+  memoryValue: Object.freeze({ ateRaw: -5, sleptGround: -6, catharsis: 16, wet: -3 }),
   freeJoyThreshold: 45, scheduledJoyThreshold: 90, recreationStopJoy: 95,
   recreationMinFood: 20, recreationMinRest: 20, recreationDurationTicks: 600,
   recreationBaseGain: Object.freeze({ walk: .07, horseshoes: .11 }),
@@ -45,7 +45,7 @@ export const RECREATION_NAMES: Readonly<Record<RecreationKind, string>> = {
   walk: '户外散步', horseshoes: '马蹄铁投掷',
 };
 const MEMORY_NAMES: Readonly<Record<MemoryKind, string>> = {
-  ateRaw: '吃了生食', sleptGround: '睡在地上', catharsis: '发泄后的平静',
+  ateRaw: '吃了生食', sleptGround: '睡在地上', catharsis: '发泄后的平静', wet: '淋湿了',
 };
 const clamp = (n: number, min = 0, max = 100) => Math.max(min, Math.min(max, n));
 const integer = (n: unknown): n is number => typeof n === 'number' && Number.isSafeInteger(n) && n >= 0;
@@ -171,7 +171,7 @@ export function validatePsyche(p: Pawn, tick: number): boolean {
       !integer(q.cooldownUntil) || q.cooldownUntil > tick + MOOD_RULES.cooldownTicks ||
       !record(q.tolerance) || Object.keys(q.tolerance).length !== 2 ||
       !finiteBetween(q.tolerance.walk, 0, 1) || !finiteBetween(q.tolerance.horseshoes, 0, 1) ||
-      !Array.isArray(q.memories) || q.memories.length > 3 ||
+      !Array.isArray(q.memories) || q.memories.length > 4 ||
       new Set(q.memories.map(m => m?.kind)).size !== q.memories.length) return false;
   for (const m of q.memories) if (!record(m) || Object.keys(m).length !== 2 ||
       !Object.hasOwn(MOOD_RULES.memoryDuration, m.kind) || !integer(m.expires) ||

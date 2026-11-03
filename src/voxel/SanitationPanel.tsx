@@ -4,6 +4,14 @@ import { FILTH_NAMES, SANITATION_RULES } from './sanitation';
 import { healthSummary } from './survival';
 
 type Command = (command: VoxelCommand) => void;
+function RainWashStatus({ snapshot, id }: { snapshot: VoxelSnapshot; id: number }) {
+  const condition = snapshot.environment.filth.find(f => f.id === id);
+  if (!condition) return null;
+  return <small data-testid="rain-wash-status" data-filth-id={id} data-washing={condition.washing} data-exposed={condition.exposed}>
+    {condition.washing ? '雨水正在冲洗，污物会逐渐减少。' : !condition.rainWashes ? '这类污物不会被雨水冲走。'
+      : !condition.exposed ? '上方有屋顶，雨水不能冲洗此处。' : '当前没有有效的雨水冲洗，仍可安排清扫。'}
+  </small>;
+}
 const amount = (value: number) => value.toLocaleString('zh-CN', { maximumFractionDigits: 1 });
 const available = (p: Pawn, tick: number) => p.faction === 'colony' && !p.dead && !p.downed && !p.drafted &&
   p.carriedBy === null && p.carryingPawnId === null && p.psyche.breakUntil <= tick &&
@@ -47,6 +55,7 @@ export function SanitationDetails({ snapshot: s, pos, roomId, preferredPawnId, c
         const worker = s.pawns.find(p => p.cleanTask?.filthId === f.id);
         return <div key={f.id} className="voxel-filth-row" data-filth-id={f.id}>
           <div className="voxel-info-row"><b>{FILTH_NAMES[f.kind]}</b><span>{amount(f.amount)} 层</span></div>
+          <RainWashStatus snapshot={s} id={f.id} />
           {worker ? <small>{worker.name} · {worker.reason}</small> : <small>{home ? '开启清洁分工后自动安排，也可优先清扫。' : '需要先把这格加入家园范围。'}</small>}
           <button aria-label={`清扫${FILTH_NAMES[f.kind]} #${f.id}`} disabled={!cleaner || !home || !!worker}
             onClick={() => cleaner && command({ type: 'clean', pawnId: cleaner.id, filthId: f.id })}>{worker ? '已安排清扫' : '优先清扫这处污物'}</button>
@@ -73,6 +82,7 @@ export function SanitationPanel({ snapshot: s, selectedPos, focus, selectPawn, c
   return <aside className="voxel-sanitation-drawer" aria-label="卫生与清洁" data-testid="sanitation-panel">
     <div className="voxel-sanitation-heading"><h2>卫生与清洁</h2><button aria-label="关闭卫生面板" onClick={close}>×</button></div>
     <p>{inside.length} 处家园污物 · {s.filth.length - inside.length} 处范围外污物 · {patients.length} 人食物中毒</p>
+    {s.environment.filth.some(f => f.washing) && <p data-testid="rain-washing-summary">{s.environment.filth.filter(f => f.washing).length} 处露天污物正在被雨水冲洗；屋顶下仍需清扫。</p>}
     <div className="voxel-sanitation-guide">
       <b>先控制厨房环境，再安排清洁</b>
       <p>把厨房和经常活动的地面划入家园范围，开启殖民者的清洁分工。泥土、血迹、屠宰残渣和呕吐物会降低洁净度。</p>
@@ -103,6 +113,7 @@ export function SanitationPanel({ snapshot: s, selectedPos, focus, selectPawn, c
       {visibleFilth.map(f => <div key={f.id} data-sanitation-filth={f.id}>
         <div className="voxel-info-row"><b>{FILTH_NAMES[f.kind]} · {amount(f.amount)} 层</b><span>{home.has(at(f)) ? '家园内' : '家园外'}</span></div>
         <small>{f.x}, {f.y} · Z {f.z}</small>
+        <RainWashStatus snapshot={s} id={f.id} />
         <button aria-label={`查看${FILTH_NAMES[f.kind]} #${f.id}`} onClick={() => focus(f)}>查看与安排清扫</button>
       </div>)}
       {s.filth.length > visibleFilth.length && <small>这里列出家园内优先的前 30 处污物；地图上的其余污物也可点选。</small>}

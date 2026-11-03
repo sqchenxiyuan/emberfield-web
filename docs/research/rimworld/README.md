@@ -90,6 +90,9 @@
 | [82 天气与降水机制](82-weather-mechanisms.md) | 天气过渡、屋顶暴露、降水、积雪、移动与射击如何衔接？ |
 | [83 原版天气实机](83-native-weather-runtime.md) | 实际雨天过渡、屋顶检查与淋湿观察能证明哪些行为？ |
 | [84 体素天气玩法](84-weather-gameplay.md) | 正常雨天灭火、积雪行走、停雪保留与变暖融雪怎样验证？ |
+| [85 环境与物资保护](85-environment-storage-mechanisms.md) | 淋湿、户外娱乐、雨洗和物资 HP 如何与屋顶、房间连接？ |
+| [86 原版环境仓储实机](86-native-environment-storage-runtime.md) | 雨中布料与封闭房内的同类物资耐久有何变化？ |
+| [87 体素环境经营](87-environment-storage-gameplay.md) | 怎样实际建棚避雨、观察雨洗、把受损物资搬进封闭仓库？ |
 
 每篇均含具体来源与未决问题。先读感兴趣的系统，再查其 `evidence/*-claims.json` 和 `*-manifest.json`，不要把“已抽取一个类型”当成“这个类型涉及的全部机制已经理解”。
 

@@ -123,7 +123,7 @@ async function verify(mode) {
       for (const field of ['tick', 'blocks', 'ladders', 'items', 'research', 'nextId', 'projectiles', 'combatEvents', 'sandbags', 'stats']) assert.deepEqual(current[field], old[field], `v19 ${fixture.name} ${field}`);
       for (const job of old.jobs) {
         const next = current.jobs.find((j) => j.id === job.id); assert(next);
-        for (const field of ['kind', 'x', 'y', 'z', 'cost', 'delivered', 'deliveredFood', 'progress', 'work', 'workTicks', 'weaponKind', 'weaponBenchKind', 'apparelKind']) assert.deepEqual(next[field], job[field]);
+        for (const field of ['kind', 'x', 'y', 'z', 'cost', 'delivered', 'deliveredBatches', 'progress', 'work', 'workTicks', 'weaponKind', 'weaponBenchKind', 'apparelKind']) assert.deepEqual(next[field], job[field]);
       }
       for (const pawn of old.pawns) {
         const next = current.pawns.find((p) => p.id === pawn.id); assert(next);

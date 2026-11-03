@@ -10,6 +10,7 @@ import type { PrisonerState, PrisonerPolicy, WardenTask } from './prisoners';
 import type { Filth, CleanTask, FoodPoisoning, RoomCleanliness, CookingOutcome } from './sanitation';
 import type { Fire, FireDamage, FireHazards, FireLogEntry, FirefightTask, RepairTask } from './fire';
 import type { WeatherState, WeatherView, SnowCover } from './weather';
+import type { EnvironmentView } from './environment';
 // Voxel rules are Emberfield designs. See research/10 for source boundaries.
 export const WIDTH = 64,
   DEPTH = 64,
@@ -324,6 +325,8 @@ export interface TreeCondition extends CropCondition {
 export interface Cargo {
   resource: Resource;
   amount: number;
+  /** Ordinary item's HP; omitted means full. Equipment owns HP on its instance. */
+  hitPoints?: number;
   /** Required for grain; rice/potato/corn remain one aggregate inventory resource. */
   crop?: FoodCropKind;
   apparel?: ApparelPiece;
@@ -383,6 +386,8 @@ export interface WildAnimal extends Pos {
   threatId: number | null;
   retryTick: number;
   rotProgress: number;
+  /** Dead animal's physical carcass HP, inherited when placed as a Cargo. */
+  carcassHitPoints?: number;
 }
 export interface ButcherSpot extends Pos {
   id: number;
@@ -518,7 +523,7 @@ export interface Job extends Pos {
   owner: number | null;
   delivered: Partial<Counts>;
   /** Perishable physical inputs; quantities must match delivered grain/meal. */
-  deliveredFood: Cargo[];
+  deliveredBatches: Cargo[];
   cost: Partial<Counts>;
   reason: string;
   /** Cancelled inputs remain in this finite job container until safely refunded. */
@@ -674,6 +679,7 @@ export interface VoxelStats {
   spoiled: Counts;
 }
 export interface VoxelSnapshot {
+  environment: EnvironmentView;
   weather: WeatherView;
   snow: SnowCover[];
   weatherRoof: Uint8Array;
@@ -821,7 +827,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 27;
+  version: 28;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;

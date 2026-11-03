@@ -13,6 +13,7 @@ import { SKILL_KEYS } from './skills';
 import type { WealthTotals } from './storytellerRules';
 import { ANIMAL_DEFS } from './wildlife';
 import { HORSESHOE_COST, HORSESHOE_WORK } from './recreation';
+import { batchHpFraction } from './deterioration';
 
 /** Core 1.7 selected full-HP resource prices, except provisional meat=2.
  * Carcasses use their species' meat yield below; deposits/plants are not items. */
@@ -72,8 +73,8 @@ export function cargoMarketValue(cargo: Cargo): number {
   if (cargo.resource === 'apparel') return cargo.apparel ? apparelMarketValue(cargo.apparel) * cargo.amount : 0;
   // Reference asset value only. Animal carcass trading is not supported.
   if (cargo.resource === 'carcass') return cargo.carcass && Object.hasOwn(ANIMAL_DEFS, cargo.carcass.species)
-    ? ANIMAL_DEFS[cargo.carcass.species].meat * RESOURCE_MARKET_VALUE.meat * cargo.amount : 0;
-  return RESOURCE_MARKET_VALUE[cargo.resource] * cargo.amount;
+    ? itemMarketValue(ANIMAL_DEFS[cargo.carcass.species].meat * RESOURCE_MARKET_VALUE.meat, 2, batchHpFraction(cargo)) * cargo.amount : 0;
+  return itemMarketValue(RESOURCE_MARKET_VALUE[cargo.resource], 2, batchHpFraction(cargo)) * cargo.amount;
 }
 
 /** SummaryHealthHandler is a product of injury impacts, not an average of capacities.
@@ -157,17 +158,15 @@ export function colonyWealthDetails(sim: VoxelSimulation): WealthDetails {
   for (const item of sim.items) itemSources.ground += cargoMarketValue(item);
   for (const animal of sim.animals) if (animal.dead)
     itemSources.ground += cargoMarketValue({ resource: 'carcass', amount: 1,
-      carcass: { animalId: animal.id, species: animal.species } });
+      carcass: { animalId: animal.id, species: animal.species },
+      ...(animal.carcassHitPoints !== undefined ? { hitPoints: animal.carcassHitPoints } : {}) });
   for (const pawn of sim.pawns) if (pawn.faction === 'colony') {
     if (pawn.cargo) itemSources.cargo += cargoMarketValue(pawn.cargo);
     if (pawn.weapon) itemSources.equipment += weaponMarketValue(pawn.weapon);
     for (const piece of pawn.worn) itemSources.equipment += apparelMarketValue(piece, pawn.dead);
   }
-  // Ordinary food is already included in materialValue. Carcass value needs its
-  // species metadata, so its generic material value is zero and added exactly once here.
   // Crafting inputs retain value here until commit, an explicit difference from native UFT=0.
-  for (const job of sim.jobs) itemSources.delivered += materialValue(job.delivered) +
-    job.deliveredFood.filter(batch => batch.resource === 'carcass').reduce((n, batch) => n + cargoMarketValue(batch), 0);
+  for (const job of sim.jobs) itemSources.delivered += job.deliveredBatches.reduce((n, batch) => n + cargoMarketValue(batch), 0);
   const buildingSources = { structures: 0, facilities: 0, ladders: 0 };
   let legacyStructureCells = 0;
   const kinds = (sim as VoxelSimulation & { structureKinds?: Uint8Array }).structureKinds;

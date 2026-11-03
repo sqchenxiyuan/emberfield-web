@@ -1,0 +1,13 @@
+{
+  "version": 27,
+  "source": "test-results/voxel-weather/snow.json",
+  "sourceCommit": "aaf194de071353ada1c60de6158fe53a05e42adb",
+  "publishedCommit": "6fafecf8232395532da5d24ac6cdbfa05724c81d",
+  "sha256": "77af8979d89d1cf974277866623f13108fe6c01da86ce7f6bdc3d6aa0da07ed3",
+  "tick": 13000,
+  "scope": "Two fresh colonies with public world settings and selected reproducible seeds. Only public player commands, normal elapsed ticks and save/load mutate simulation. Terrain, paths and weather are planning observations. No injected weather, fires, snow, terrain, people, needs, resources, clocks or RNG. Seeds were selected for bounded warm rain and cold snow/melt examples, not occurrence statistics.",
+  "campaignExecution": {
+    "bundleSha256": "4047563ee58f9bad754dd592476a3ae18176c198431cef123758a319290f8995",
+    "scriptSha256": "c9921936ec5143acab80aec8bd6fae735cb867498b81e22a665b536080bef894"
+  }
+}

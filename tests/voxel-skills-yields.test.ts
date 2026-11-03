@@ -254,7 +254,10 @@ describe('skill yield and deferred learning transaction boundaries', () => {
     expect(cooking.cookTraining).toEqual([{ pawnId: s.pawns[0].id, ticks: 20 }]);
     expect(s.pawns[0].skills.cooking.xp).toBe(0);
     // Only freshness is injected; original inputs were delivered by the actual job.
-    for (const batch of cooking.deliveredFood) batch.rotProgress = rotLimit(batch)! - 0.001;
+    for (const batch of cooking.deliveredBatches) {
+      const limit = rotLimit(batch);
+      if (limit !== null) batch.rotProgress = limit - 0.001;
+    }
     s.step();
     expect(cooking.workTicks).toBe(0);
     expect(cooking.progress).toBe(0);

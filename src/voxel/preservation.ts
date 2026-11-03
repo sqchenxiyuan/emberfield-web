@@ -2,6 +2,7 @@ import { DAY, type Cargo, type FoodCropKind, type Resource } from './types';
 import { validApparel } from './apparel';
 import { validWeapon } from './weapons';
 import { WILDLIFE } from './wildlife';
+import { batchHitPoints, setBatchHitPoints, validBatchHitPoints } from './deterioration';
 
 // RimWorld 1.7 source/Defs: 60000 original ticks/day, rate * elapsed ticks.
 // We preserve days, using this simulation's DAY=12000 instead. Unlike the native
@@ -40,11 +41,12 @@ export function freshBatch(resource: Resource, amount: number, crop?: FoodCropKi
         : {}),
   };
 }
-/** A physical split inherits the current age exactly. */
+/** A physical split inherits current age and condition exactly. */
 export function portion(batch: Cargo, amount: number): Cargo {
   return {
     resource: batch.resource,
     amount,
+    ...(batch.hitPoints !== undefined ? { hitPoints: batch.hitPoints } : {}),
     ...(batch.crop !== undefined ? { crop: batch.crop } : {}),
     ...(batch.apparel !== undefined ? { apparel: { ...batch.apparel } } : {}),
     ...(batch.weapon !== undefined ? { weapon: { ...batch.weapon } } : {}),
@@ -73,6 +75,12 @@ export function mergeBatch(target: Cargo, incoming: Cargo): void {
     throw new Error('装备和动物尸体实例不能合并');
   if (!compatibleBatches(target, incoming) || incoming.amount <= 0 || target.amount <= 0)
     throw new Error('Only positive compatible batches can merge');
+  const hitPoints = batchHitPoints(target), incomingHitPoints = batchHitPoints(incoming);
+  if (hitPoints !== null && incomingHitPoints !== null)
+    // Native Thing.TryAbsorbStack weights only the actual transferred amount,
+    // then rounds upward. Repeated splitting/merging may regain fractional HP.
+    setBatchHitPoints(target, Math.ceil((hitPoints * target.amount + incomingHitPoints * incoming.amount) /
+      (target.amount + incoming.amount)));
   if (isPerishable(target.resource)) {
     const total = target.amount + incoming.amount;
     target.rotProgress =
@@ -121,6 +129,7 @@ export function validBatch(batch: unknown): batch is Cargo {
     b.amount > 10_000_000
   )
     return false;
+  if (!validBatchHitPoints(b)) return false;
   if (
     b.resource === 'grain'
       ? !['rice', 'potato', 'corn'].includes(b.crop ?? '')

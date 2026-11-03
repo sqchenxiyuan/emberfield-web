@@ -267,7 +267,7 @@ async function verify(mode) {
           'z',
           'cost',
           'delivered',
-          'deliveredFood',
+          'deliveredBatches',
           'progress',
           'work',
           'workTicks',

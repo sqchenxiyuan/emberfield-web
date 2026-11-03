@@ -1,0 +1,1110 @@
+{
+  "evidence_id": "RW17-NATIVE-ENVIRONMENT-STORAGE",
+  "date_local": "2026-11-04",
+  "version": "1.7.4980 rev60",
+  "kind": "Native developer item preparation followed by ordinary forbidding, simulation, inspection and original saves; no injected code or save editing",
+  "launch": {
+    "started_utc": "2026-11-03T19:45:50.756196Z",
+    "pid": 34856,
+    "launch_record": ".local-research/runtime/environment-storage-launch.json",
+    "launch_record_sha256": "3bbba7c5ea85ab114ecb6b24ff8837e77ef1515fa253f5e4a1427a2f948df48c",
+    "profile": ".local-research/runtime/profile-environment-storage-20261104",
+    "mods_config_sha256": "41595349c9d4e0815c74d5fa89fa6dad2dd3af494f547c5734b028918f2151ff",
+    "baseline_source_sha256": "4073a394fee8d9f39c7221a6ad1fefdd52a050afc2a1fe158e42fc47f5f5b859",
+    "baseline_copy_sha256": "4073a394fee8d9f39c7221a6ad1fefdd52a050afc2a1fe158e42fc47f5f5b859",
+    "active_mods": [
+      "ludeon.rimworld",
+      "ludeon.rimworld.odyssey"
+    ]
+  },
+  "preparation": {
+    "developer_action": true,
+    "method": "Spawn full thing stack -> Cloth; click indoors and outdoors while paused, then right-click to cancel and ordinary F to forbid all prepared stacks",
+    "reused_existing_rain": true,
+    "extra_spawn": "Escape opened the game menu without cancelling the spawn tool. A later map click placed one additional outdoor stack; all three new stacks are retained and reported.",
+    "no_statistical_calibration": true
+  },
+  "targets": [
+    {
+      "id": "Cloth222220",
+      "role": "enclosed-room-control",
+      "position": "(104, 0, 140)",
+      "ui_client": [
+        1660,
+        850
+      ],
+      "surface": "Constructed roof; wood floor; indoors",
+      "expected_before_hp": 80,
+      "observed_after_hp": 80
+    },
+    {
+      "id": "Cloth222221",
+      "role": "unroofed-outdoor-target",
+      "position": "(97, 0, 140)",
+      "ui_client": [
+        1450,
+        850
+      ],
+      "surface": "Unroofed; sand; outdoors",
+      "expected_before_hp": 80,
+      "observed_after_hp": 78
+    },
+    {
+      "id": "Cloth222222",
+      "role": "extra-unroofed-stack",
+      "position": "(98, 0, 140)",
+      "ui_client": [
+        1475,
+        850
+      ],
+      "surface": "Adjacent unroofed sand cell; included because of extra preparation click",
+      "expected_before_hp": 80,
+      "observed_after_hp": 78
+    }
+  ],
+  "saves": [
+    {
+      "file": ".local-research/runtime/profile-environment-storage-20261104/Saves/environment-storage-baseline.rws",
+      "sha256": "4073a394fee8d9f39c7221a6ad1fefdd52a050afc2a1fe158e42fc47f5f5b859",
+      "ticks_game": 209398,
+      "weather": {
+        "current": "Rain",
+        "previous": "Clear",
+        "age": 4463,
+        "xml": "<weatherManager><curWeatherAge>4463</curWeatherAge><curWeather>Rain</curWeather><lastWeather>Clear</lastWeather></weatherManager>"
+      },
+      "cloth": [
+        {
+          "id": "Cloth78003",
+          "position": "(109, 0, 133)",
+          "hit_points": 69,
+          "stack_count": 55,
+          "forbidden": false,
+          "spawned_tick": 70420,
+          "target": false,
+          "xml": "<thing Class=\"ThingWithComps\"><def>Cloth</def><id>Cloth78003</id><map>0</map><pos>(109, 0, 133)</pos><health>69</health><stackCount>55</stackCount><questTags IsNull=\"True\" /><spawnedTick>70420</spawnedTick><despawnedTick>-1</despawnedTick></thing>"
+        }
+      ]
+    },
+    {
+      "file": ".local-research/runtime/profile-environment-storage-20261104/Saves/New Arrivals1.rws",
+      "sha256": "bbdd2eac61352225742fa5a813f5b3dac4f74801d9e6d09e6fee42a9054a61ab",
+      "ticks_game": 213091,
+      "weather": {
+        "current": "Rain",
+        "previous": "Clear",
+        "age": 8156,
+        "xml": "<weatherManager><curWeatherAge>8156</curWeatherAge><curWeather>Rain</curWeather><lastWeather>Clear</lastWeather></weatherManager>"
+      },
+      "cloth": [
+        {
+          "id": "Cloth222220",
+          "position": "(104, 0, 140)",
+          "hit_points": 80,
+          "stack_count": 75,
+          "forbidden": true,
+          "spawned_tick": 213091,
+          "target": true,
+          "xml": "<thing Class=\"ThingWithComps\"><def>Cloth</def><id>Cloth222220</id><map>0</map><pos>(104, 0, 140)</pos><health>80</health><stackCount>75</stackCount><questTags IsNull=\"True\" /><spawnedTick>213091</spawnedTick><despawnedTick>-1</despawnedTick><forbidden>True</forbidden></thing>"
+        },
+        {
+          "id": "Cloth222221",
+          "position": "(97, 0, 140)",
+          "hit_points": 80,
+          "stack_count": 75,
+          "forbidden": true,
+          "spawned_tick": 213091,
+          "target": true,
+          "xml": "<thing Class=\"ThingWithComps\"><def>Cloth</def><id>Cloth222221</id><map>0</map><pos>(97, 0, 140)</pos><health>80</health><stackCount>75</stackCount><questTags IsNull=\"True\" /><spawnedTick>213091</spawnedTick><despawnedTick>-1</despawnedTick><forbidden>True</forbidden></thing>"
+        },
+        {
+          "id": "Cloth222222",
+          "position": "(98, 0, 140)",
+          "hit_points": 80,
+          "stack_count": 75,
+          "forbidden": true,
+          "spawned_tick": 213091,
+          "target": true,
+          "xml": "<thing Class=\"ThingWithComps\"><def>Cloth</def><id>Cloth222222</id><map>0</map><pos>(98, 0, 140)</pos><health>80</health><stackCount>75</stackCount><questTags IsNull=\"True\" /><spawnedTick>213091</spawnedTick><despawnedTick>-1</despawnedTick><forbidden>True</forbidden></thing>"
+        },
+        {
+          "id": "Cloth78003",
+          "position": "(109, 0, 133)",
+          "hit_points": 68,
+          "stack_count": 55,
+          "forbidden": false,
+          "spawned_tick": 70420,
+          "target": false,
+          "xml": "<thing Class=\"ThingWithComps\"><def>Cloth</def><id>Cloth78003</id><map>0</map><pos>(109, 0, 133)</pos><health>68</health><stackCount>55</stackCount><questTags IsNull=\"True\" /><spawnedTick>70420</spawnedTick><despawnedTick>-1</despawnedTick></thing>"
+        }
+      ]
+    },
+    {
+      "file": ".local-research/runtime/profile-environment-storage-20261104/Saves/New Arrivals2.rws",
+      "sha256": "880ff8901f21b7450bd6e03da7b433452ba0950a4404967f3246d8de4d556dee",
+      "ticks_game": 219037,
+      "weather": {
+        "current": "Rain",
+        "previous": "Clear",
+        "age": 14102,
+        "xml": "<weatherManager><curWeatherAge>14102</curWeatherAge><curWeather>Rain</curWeather><lastWeather>Clear</lastWeather></weatherManager>"
+      },
+      "cloth": [
+        {
+          "id": "Cloth222220",
+          "position": "(104, 0, 140)",
+          "hit_points": 80,
+          "stack_count": 75,
+          "forbidden": true,
+          "spawned_tick": 213091,
+          "target": true,
+          "xml": "<thing Class=\"ThingWithComps\"><def>Cloth</def><id>Cloth222220</id><map>0</map><pos>(104, 0, 140)</pos><health>80</health><stackCount>75</stackCount><questTags IsNull=\"True\" /><spawnedTick>213091</spawnedTick><despawnedTick>-1</despawnedTick><forbidden>True</forbidden></thing>"
+        },
+        {
+          "id": "Cloth222221",
+          "position": "(97, 0, 140)",
+          "hit_points": 78,
+          "stack_count": 75,
+          "forbidden": true,
+          "spawned_tick": 213091,
+          "target": true,
+          "xml": "<thing Class=\"ThingWithComps\"><def>Cloth</def><id>Cloth222221</id><map>0</map><pos>(97, 0, 140)</pos><health>78</health><stackCount>75</stackCount><questTags IsNull=\"True\" /><spawnedTick>213091</spawnedTick><despawnedTick>-1</despawnedTick><forbidden>True</forbidden></thing>"
+        },
+        {
+          "id": "Cloth222222",
+          "position": "(98, 0, 140)",
+          "hit_points": 78,
+          "stack_count": 75,
+          "forbidden": true,
+          "spawned_tick": 213091,
+          "target": true,
+          "xml": "<thing Class=\"ThingWithComps\"><def>Cloth</def><id>Cloth222222</id><map>0</map><pos>(98, 0, 140)</pos><health>78</health><stackCount>75</stackCount><questTags IsNull=\"True\" /><spawnedTick>213091</spawnedTick><despawnedTick>-1</despawnedTick><forbidden>True</forbidden></thing>"
+        },
+        {
+          "id": "Cloth78003",
+          "position": "(109, 0, 133)",
+          "hit_points": 66,
+          "stack_count": 55,
+          "forbidden": false,
+          "spawned_tick": 70420,
+          "target": false,
+          "xml": "<thing Class=\"ThingWithComps\"><def>Cloth</def><id>Cloth78003</id><map>0</map><pos>(109, 0, 133)</pos><health>66</health><stackCount>55</stackCount><questTags IsNull=\"True\" /><spawnedTick>70420</spawnedTick><despawnedTick>-1</despawnedTick></thing>"
+        }
+      ]
+    },
+    {
+      "file": ".local-research/runtime/profile-environment-storage-20261104/Saves/New Arrivals3.rws",
+      "sha256": "b21f5edc389a23880457a4db71c78dcd12069b56e598a7a7e1057b46d3ba7023",
+      "ticks_game": 219037,
+      "weather": {
+        "current": "Rain",
+        "previous": "Clear",
+        "age": 14102,
+        "xml": "<weatherManager><curWeatherAge>14102</curWeatherAge><curWeather>Rain</curWeather><lastWeather>Clear</lastWeather></weatherManager>"
+      },
+      "cloth": [
+        {
+          "id": "Cloth222220",
+          "position": "(104, 0, 140)",
+          "hit_points": 80,
+          "stack_count": 75,
+          "forbidden": true,
+          "spawned_tick": 213091,
+          "target": true,
+          "xml": "<thing Class=\"ThingWithComps\"><def>Cloth</def><id>Cloth222220</id><map>0</map><pos>(104, 0, 140)</pos><health>80</health><stackCount>75</stackCount><questTags IsNull=\"True\" /><spawnedTick>213091</spawnedTick><despawnedTick>-1</despawnedTick><forbidden>True</forbidden></thing>"
+        },
+        {
+          "id": "Cloth222221",
+          "position": "(97, 0, 140)",
+          "hit_points": 78,
+          "stack_count": 75,
+          "forbidden": true,
+          "spawned_tick": 213091,
+          "target": true,
+          "xml": "<thing Class=\"ThingWithComps\"><def>Cloth</def><id>Cloth222221</id><map>0</map><pos>(97, 0, 140)</pos><health>78</health><stackCount>75</stackCount><questTags IsNull=\"True\" /><spawnedTick>213091</spawnedTick><despawnedTick>-1</despawnedTick><forbidden>True</forbidden></thing>"
+        },
+        {
+          "id": "Cloth222222",
+          "position": "(98, 0, 140)",
+          "hit_points": 78,
+          "stack_count": 75,
+          "forbidden": true,
+          "spawned_tick": 213091,
+          "target": true,
+          "xml": "<thing Class=\"ThingWithComps\"><def>Cloth</def><id>Cloth222222</id><map>0</map><pos>(98, 0, 140)</pos><health>78</health><stackCount>75</stackCount><questTags IsNull=\"True\" /><spawnedTick>213091</spawnedTick><despawnedTick>-1</despawnedTick><forbidden>True</forbidden></thing>"
+        },
+        {
+          "id": "Cloth78003",
+          "position": "(109, 0, 133)",
+          "hit_points": 66,
+          "stack_count": 55,
+          "forbidden": false,
+          "spawned_tick": 70420,
+          "target": false,
+          "xml": "<thing Class=\"ThingWithComps\"><def>Cloth</def><id>Cloth78003</id><map>0</map><pos>(109, 0, 133)</pos><health>66</health><stackCount>55</stackCount><questTags IsNull=\"True\" /><spawnedTick>70420</spawnedTick><despawnedTick>-1</despawnedTick></thing>"
+        }
+      ]
+    }
+  ],
+  "timing": {
+    "load_to_before_ticks": 3693,
+    "observed_deterioration_window_ticks": 5946,
+    "after_save_pair_equal_ticks": true,
+    "exact_damage_ticks_measured": false
+  },
+  "observations": [
+    {
+      "id": "ESR-OBS01",
+      "finding": "The ordinary outdoor cloth panel shows 80/80, stack 75 and Unroofed, raining, outdoors (20/day) before running.",
+      "evidence": [
+        "ESR01",
+        "saves"
+      ]
+    },
+    {
+      "id": "ESR-OBS02",
+      "finding": "After four bounded speed-3 runs, the same outdoor target is 78/80 and the indoor control remains 80/80; target identity, position, stack count and forbidden flag stay unchanged.",
+      "evidence": [
+        "ESR03",
+        "ESR04",
+        "saves"
+      ]
+    },
+    {
+      "id": "ESR-OBS03",
+      "finding": "Native hover identifies constructed roof and wood floor for the enclosed control, versus outdoor sand; this contrasts storage conditions but does not isolate every environmental variable.",
+      "evidence": [
+        "ESR05",
+        "ESR06",
+        "ESR07"
+      ]
+    }
+  ],
+  "images": [
+    {
+      "id": "ESR01",
+      "source_file": ".local-research/runtime/environment-storage-019-forbid-outdoor.png",
+      "source_sha256": "ec6be63f15ade6dfeeb2ecdc244dc490d2a2f84555d5551213762355d4156391",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        0,
+        1240,
+        530,
+        165
+      ],
+      "file": "environment-storage-runtime/outdoor-before.png",
+      "sha256": "3dd50fbcab4992aa29a1ec29b05de298fd781bc60c508d671bd66e0fa01a0ad8"
+    },
+    {
+      "id": "ESR02",
+      "source_file": ".local-research/runtime/environment-storage-023-forbid-indoor.png",
+      "source_sha256": "e0cfc0a9f3a38e42335a54ecffcfaa1fc7e1fd22ca6195586b97209d096337a7",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        0,
+        1240,
+        530,
+        165
+      ],
+      "file": "environment-storage-runtime/indoor-before.png",
+      "sha256": "7009ffdd53fa9b766960f31173d6bb38a7f7a18096cf8f2c4c055054b259fec5"
+    },
+    {
+      "id": "ESR03",
+      "source_file": ".local-research/runtime/environment-storage-035-outdoor-after.png",
+      "source_sha256": "b33df00d16911a0e8b05ca265f7b25816e9db30dc1160e0f513598cde8f63751",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        0,
+        1240,
+        530,
+        165
+      ],
+      "file": "environment-storage-runtime/outdoor-after.png",
+      "sha256": "f87b80b59f7ffc665d8478bbd732c5cd639b05f3d4f72629517b64fa73691616"
+    },
+    {
+      "id": "ESR04",
+      "source_file": ".local-research/runtime/environment-storage-036-indoor-after.png",
+      "source_sha256": "d86db301d463c59e4f8e4e99e949cb787fec6ecc761aeca003af5aea9c0d3545",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        0,
+        1240,
+        530,
+        165
+      ],
+      "file": "environment-storage-runtime/indoor-after.png",
+      "sha256": "736e5994f6ebb8855c145633fd6acdfcc976f47ac9f685f3ac29aeb1224f7b68"
+    },
+    {
+      "id": "ESR05",
+      "source_file": ".local-research/runtime/environment-storage-037-indoor-ground.png",
+      "source_sha256": "2eca72e047ba738882f654215841102b77b436075658e9c2b603904ce545d226",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        0,
+        1318,
+        500,
+        85
+      ],
+      "file": "environment-storage-runtime/indoor-roof-floor.png",
+      "sha256": "0f42f1f1c98ee3a86971dc87dd4267afa6e1cd5c0ec3c5e972070d542b46cad2"
+    },
+    {
+      "id": "ESR06",
+      "source_file": ".local-research/runtime/environment-storage-038-outdoor-ground.png",
+      "source_sha256": "37a3142167e7bbe5b7b668f1ad5b3cb358d63ce78d88335bd9c0b2f7ce0e14cc",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        0,
+        1330,
+        500,
+        75
+      ],
+      "file": "environment-storage-runtime/outdoor-ground.png",
+      "sha256": "88bb512fae72138c83327e6497cda881cc7886e577d3c36dde7d3643f373e166"
+    },
+    {
+      "id": "ESR07",
+      "source_file": ".local-research/runtime/environment-storage-035-outdoor-after.png",
+      "source_sha256": "b33df00d16911a0e8b05ca265f7b25816e9db30dc1160e0f513598cde8f63751",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        1400,
+        710,
+        420,
+        300
+      ],
+      "file": "environment-storage-runtime/cloth-layout.png",
+      "sha256": "acdd18b5f4efb38ce2ce4e8e95966423623ebd37e9a3d8ce5bdda29b2f7f480a"
+    }
+  ],
+  "actions": [
+    {
+      "source_file": ".local-research/runtime/environment-storage-001-launch.png.actions.jsonl",
+      "source_sha256": "d9a59b84b402bf29e2d73d202510fbea20c76b5f17fad79248b128e0ebb5d2b7",
+      "started_utc": "2026-11-03T19:46:53.7071086Z",
+      "finished_utc": "2026-11-03T19:46:54.6513473Z",
+      "action": "capture",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-001-launch.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-002-load.png.actions.jsonl",
+      "source_sha256": "7a6ff7ec40044b0e40b0bba435887051d9dfe4132e2105d02434a2e6dadf7f92",
+      "started_utc": "2026-11-03T19:47:10.1246162Z",
+      "finished_utc": "2026-11-03T19:47:11.2936007Z",
+      "action": "click",
+      "x": 2165,
+      "y": 690,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-002-load.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-003-loaded.png.actions.jsonl",
+      "source_sha256": "2a01053bcef3200086aa42d9d71146bd9531bdd7aec1ac9c8a507b1a1167854b",
+      "started_utc": "2026-11-03T19:47:36.7128983Z",
+      "finished_utc": "2026-11-03T19:47:39.4159259Z",
+      "action": "click",
+      "x": 1470,
+      "y": 441,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 1700,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-003-loaded.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-004-map.png.actions.jsonl",
+      "source_sha256": "d556b60a445df18e3aec15e6a5fb4a7179b9253241e37b6ccf3a832873bf8377",
+      "started_utc": "2026-11-03T19:48:34.9623956Z",
+      "finished_utc": "2026-11-03T19:48:35.7844899Z",
+      "action": "capture",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-004-map.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-005-paused.png.actions.jsonl",
+      "source_sha256": "ccadfed1ddb31441edcbe6cd4420109412717b9071ef1b8f30fb99e1ed5247b4",
+      "started_utc": "2026-11-03T19:48:51.6368475Z",
+      "finished_utc": "2026-11-03T19:48:52.8222426Z",
+      "action": "click",
+      "x": 2441,
+      "y": 1305,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-005-paused.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-006-devmenu.png.actions.jsonl",
+      "source_sha256": "8cf1fd732c269ec6ad1d525849575cac993035fa9dda1bb8da5ffe0308639a85",
+      "started_utc": "2026-11-03T19:49:12.4985358Z",
+      "finished_utc": "2026-11-03T19:49:13.5531577Z",
+      "action": "click",
+      "x": 1240,
+      "y": 13,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-006-devmenu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-007-spawn-menu.png.actions.jsonl",
+      "source_sha256": "7eeec441c4e34dcaaf0195789c4d9508954ba1538db65b4720fda5431a6ea0b3",
+      "started_utc": "2026-11-03T19:49:32.155857Z",
+      "finished_utc": "2026-11-03T19:49:33.2447206Z",
+      "action": "click",
+      "x": 730,
+      "y": 455,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-007-spawn-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-008-search-focus.png.actions.jsonl",
+      "source_sha256": "2f7ba72b3295aa59b2f421c3e4814653e43de19ee66891c3941c613a2ee2e19c",
+      "started_utc": "2026-11-03T19:50:09.9744583Z",
+      "finished_utc": "2026-11-03T19:50:11.0523107Z",
+      "action": "click",
+      "x": 225,
+      "y": 32,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-008-search-focus.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-009-cloth-menu.png.actions.jsonl",
+      "source_sha256": "d26dfecb1e990d3cd3516183300e700801506297c5b23823d1558b4334e9debc",
+      "started_utc": "2026-11-03T19:50:11.3651276Z",
+      "finished_utc": "2026-11-03T19:50:12.4540453Z",
+      "action": "text",
+      "x": 1280,
+      "y": 720,
+      "text": "Cloth",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-009-cloth-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-010-cloth-search.png.actions.jsonl",
+      "source_sha256": "efc1e64d98902a5beb3ae6987000c52acab064c46855997043997fbfa1ef32ec",
+      "started_utc": "2026-11-03T19:50:33.6599152Z",
+      "finished_utc": "2026-11-03T19:50:34.6132052Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 13,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-010-cloth-search.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-011-cloth-tool.png.actions.jsonl",
+      "source_sha256": "9707135720b4008ec9a03389379f43472fb99643bac726407151080477d9730e",
+      "started_utc": "2026-11-03T19:50:54.8901735Z",
+      "finished_utc": "2026-11-03T19:50:56.0733986Z",
+      "action": "click",
+      "x": 70,
+      "y": 94,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-011-cloth-tool.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-012-place-indoor.png.actions.jsonl",
+      "source_sha256": "12bf8e01ab89e07e2d0a8e026b0d8987f8c5c8a47561072e53f4228336a64ff0",
+      "started_utc": "2026-11-03T19:51:22.4579421Z",
+      "finished_utc": "2026-11-03T19:51:23.63623Z",
+      "action": "click",
+      "x": 1660,
+      "y": 850,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1660,
+      "park_y": 850,
+      "image_name": "environment-storage-012-place-indoor.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-013-place-outdoor.png.actions.jsonl",
+      "source_sha256": "45a29b82085eac3881a3b154384d15caf35175c4cfa198a2d6a8aeaaf7a1467e",
+      "started_utc": "2026-11-03T19:51:23.9465244Z",
+      "finished_utc": "2026-11-03T19:51:24.9486903Z",
+      "action": "click",
+      "x": 1450,
+      "y": 850,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1450,
+      "park_y": 850,
+      "image_name": "environment-storage-013-place-outdoor.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-014-exit-tool.png.actions.jsonl",
+      "source_sha256": "58515519192636bc221731ec51bfdc1a81e14602ae027943859d88224f9f9b81",
+      "started_utc": "2026-11-03T19:51:25.2648102Z",
+      "finished_utc": "2026-11-03T19:51:26.0331168Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-014-exit-tool.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-015-outdoor-before.png.actions.jsonl",
+      "source_sha256": "7542297ffabb0c11bec1862eb7b97331a39894289bcee1d959e3accba37ef643",
+      "started_utc": "2026-11-03T19:51:26.3325469Z",
+      "finished_utc": "2026-11-03T19:51:27.3320739Z",
+      "action": "click",
+      "x": 1450,
+      "y": 850,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1450,
+      "park_y": 850,
+      "image_name": "environment-storage-015-outdoor-before.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-016-closemenu.png.actions.jsonl",
+      "source_sha256": "fe309d54f57e656bee56992e19a9e1dc08faee7fa9de7e25013a796d1977fae7",
+      "started_utc": "2026-11-03T19:51:53.4596209Z",
+      "finished_utc": "2026-11-03T19:51:54.3908537Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-016-closemenu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-017-canceltool.png.actions.jsonl",
+      "source_sha256": "935057772337fad3b7f9edcf76b4a4a4c7d1d0d1891dd3406a8be903a5370626",
+      "started_utc": "2026-11-03T19:51:54.6950133Z",
+      "finished_utc": "2026-11-03T19:51:55.7165213Z",
+      "action": "rightclick",
+      "x": 1450,
+      "y": 850,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-017-canceltool.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-018-select-outdoor.png.actions.jsonl",
+      "source_sha256": "668354c8255604ca86855f466a281b6f2a66f2b4ebdad9de0ab52544f76fda55",
+      "started_utc": "2026-11-03T19:51:56.0250239Z",
+      "finished_utc": "2026-11-03T19:51:57.0540227Z",
+      "action": "click",
+      "x": 1450,
+      "y": 850,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1450,
+      "park_y": 850,
+      "image_name": "environment-storage-018-select-outdoor.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-019-forbid-outdoor.png.actions.jsonl",
+      "source_sha256": "238beb5e32b6da7555d28619d1b67701564e290b3ce6b9c81c3f27cc77f0b7d6",
+      "started_utc": "2026-11-03T19:52:26.9215945Z",
+      "finished_utc": "2026-11-03T19:52:27.8386077Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 70,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1450,
+      "park_y": 850,
+      "image_name": "environment-storage-019-forbid-outdoor.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-020-select-extra.png.actions.jsonl",
+      "source_sha256": "94214c65af657a5a1e79a26ce21c65201b776e4270d36041ab3d7d953ffb4fb0",
+      "started_utc": "2026-11-03T19:52:28.1399918Z",
+      "finished_utc": "2026-11-03T19:52:29.1164809Z",
+      "action": "click",
+      "x": 1475,
+      "y": 850,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-020-select-extra.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-021-forbid-extra.png.actions.jsonl",
+      "source_sha256": "54f71638e5ddc45c8fec5ee4867d7cabd873396a84cd6888434c808bbd9bab23",
+      "started_utc": "2026-11-03T19:52:29.430454Z",
+      "finished_utc": "2026-11-03T19:52:30.2170057Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 70,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-021-forbid-extra.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-022-select-indoor.png.actions.jsonl",
+      "source_sha256": "5c184a51b7fae06b26c72682d949bb8134d71302c51c8b8b0c6814cb08379507",
+      "started_utc": "2026-11-03T19:52:30.5181202Z",
+      "finished_utc": "2026-11-03T19:52:31.5306089Z",
+      "action": "click",
+      "x": 1660,
+      "y": 850,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1660,
+      "park_y": 850,
+      "image_name": "environment-storage-022-select-indoor.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-023-forbid-indoor.png.actions.jsonl",
+      "source_sha256": "a4030fc818ff370f6471272b3e4918df503e043bd855a7b71dd9a3dd41bf763d",
+      "started_utc": "2026-11-03T19:52:31.824887Z",
+      "finished_utc": "2026-11-03T19:52:32.5615729Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 70,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1660,
+      "park_y": 850,
+      "image_name": "environment-storage-023-forbid-indoor.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-024-menu.png.actions.jsonl",
+      "source_sha256": "d729d9f59cf64961b7ca0fad187f4f20f1bc4106bc27dc156772e91052ab5085",
+      "started_utc": "2026-11-03T19:52:55.9072411Z",
+      "finished_utc": "2026-11-03T19:52:56.7988027Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-024-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-025-save-dialog.png.actions.jsonl",
+      "source_sha256": "bf9c569efb90be51bf6ee5a71966a26239f157d1dce0faa0088fe34da397ed28",
+      "started_utc": "2026-11-03T19:52:57.1133606Z",
+      "finished_utc": "2026-11-03T19:52:58.1487223Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-025-save-dialog.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-026-deselect.png.actions.jsonl",
+      "source_sha256": "efb142287223b13913e2df0660c296d63c0f0d5dc1d908b4a4fe73843daee0bb",
+      "started_utc": "2026-11-03T19:53:25.8516925Z",
+      "finished_utc": "2026-11-03T19:53:26.8265173Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-026-deselect.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-027-menu.png.actions.jsonl",
+      "source_sha256": "a0a1ebeef8bfb0ec054b5eb15f80eeea377ecdbbe45f5a21ab95ccbec8781ab4",
+      "started_utc": "2026-11-03T19:53:27.1599635Z",
+      "finished_utc": "2026-11-03T19:53:27.9272217Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-027-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-028-save-dialog.png.actions.jsonl",
+      "source_sha256": "31746dd3d509425e4ba0cec125378c80d3335c0303b8e26ac3ccf32009e3a340",
+      "started_utc": "2026-11-03T19:53:28.242621Z",
+      "finished_utc": "2026-11-03T19:53:29.236105Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-028-save-dialog.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-029-save-before.png.actions.jsonl",
+      "source_sha256": "85d62ec589fa9c118cd40456c49acbcad2b59a4d6cb239de1268f7ece5396ef5",
+      "started_utc": "2026-11-03T19:53:54.9451819Z",
+      "finished_utc": "2026-11-03T19:53:56.6825817Z",
+      "action": "click",
+      "x": 1490,
+      "y": 976,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 800,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-029-save-before.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-030-close-menu.png.actions.jsonl",
+      "source_sha256": "83aaba24188729875d4d4c0969e662aaef6bfac6718faf3f33b274f44b903d91",
+      "started_utc": "2026-11-03T19:53:56.9903945Z",
+      "finished_utc": "2026-11-03T19:53:57.7819563Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-030-close-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-031-run1.png.actions.jsonl",
+      "source_sha256": "b2864ef58b8c6034e634dc1e34048e2c1cf111637653e1b5bc98760ce49ef708",
+      "started_utc": "2026-11-03T19:53:58.3941577Z",
+      "finished_utc": "2026-11-03T19:54:03.3277757Z",
+      "action": "pulse",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 51,
+      "duration_ms": 4000,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-031-run1.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-032-run2.png.actions.jsonl",
+      "source_sha256": "65b42fbcd77cdbbccc0af793f5daf1a91029a80532fc0ecd00bfe76a477e913f",
+      "started_utc": "2026-11-03T19:54:57.179438Z",
+      "finished_utc": "2026-11-03T19:55:02.2584677Z",
+      "action": "pulse",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 51,
+      "duration_ms": 4000,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-032-run2.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-033-run3.png.actions.jsonl",
+      "source_sha256": "4ff7fc6b1942013b80a9d01e9bce88e8822eb99a23f1779a27bc3d0fee5291a8",
+      "started_utc": "2026-11-03T19:55:02.565886Z",
+      "finished_utc": "2026-11-03T19:55:07.481531Z",
+      "action": "pulse",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 51,
+      "duration_ms": 4000,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-033-run3.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-034-run4.png.actions.jsonl",
+      "source_sha256": "b296d27e6892a70b5cdf4eb4ee5b6c135edb82d279a7ec14369ec5ef442c85d5",
+      "started_utc": "2026-11-03T19:55:07.8160117Z",
+      "finished_utc": "2026-11-03T19:55:12.7116454Z",
+      "action": "pulse",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 51,
+      "duration_ms": 4000,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-034-run4.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-035-outdoor-after.png.actions.jsonl",
+      "source_sha256": "ac2ef0763c30fbde0529a1662a88711b0dbaac5b53c22d465d22f0c97de4fdff",
+      "started_utc": "2026-11-03T19:55:40.8396266Z",
+      "finished_utc": "2026-11-03T19:55:42.0642807Z",
+      "action": "click",
+      "x": 1450,
+      "y": 850,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1450,
+      "park_y": 850,
+      "image_name": "environment-storage-035-outdoor-after.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-036-indoor-after.png.actions.jsonl",
+      "source_sha256": "860c046c5b9eaae2afce409db1d806fd6a0596fdf3a02e3fdd16e1585f61a6ae",
+      "started_utc": "2026-11-03T19:56:20.5336526Z",
+      "finished_utc": "2026-11-03T19:56:21.8256498Z",
+      "action": "click",
+      "x": 1660,
+      "y": 850,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1660,
+      "park_y": 850,
+      "image_name": "environment-storage-036-indoor-after.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-037-indoor-ground.png.actions.jsonl",
+      "source_sha256": "33bf11f0ed759aec2c65c5d889aba458927a8e94725f470e06d1bd6a641ebc2e",
+      "started_utc": "2026-11-03T19:56:22.1733645Z",
+      "finished_utc": "2026-11-03T19:56:23.0107558Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1660,
+      "park_y": 850,
+      "image_name": "environment-storage-037-indoor-ground.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-038-outdoor-ground.png.actions.jsonl",
+      "source_sha256": "3819dcbfb69017715f77cb2705c68ef7d368fef6f89907fa48030d62be5c6953",
+      "started_utc": "2026-11-03T19:56:23.3434874Z",
+      "finished_utc": "2026-11-03T19:56:24.0596Z",
+      "action": "capture",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1450,
+      "park_y": 850,
+      "image_name": "environment-storage-038-outdoor-ground.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-039-menu.png.actions.jsonl",
+      "source_sha256": "0e8a7ab945097f82a8a446ea67e65d0ed53f6e8ee6cea722102fbdc254259ae7",
+      "started_utc": "2026-11-03T19:57:02.1647872Z",
+      "finished_utc": "2026-11-03T19:57:03.1119542Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-039-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-040-save-dialog.png.actions.jsonl",
+      "source_sha256": "c60d6a658efd1ab9f766aeeba20ecc9436bd6c354240b47befe378c75c8896d0",
+      "started_utc": "2026-11-03T19:57:03.4204063Z",
+      "finished_utc": "2026-11-03T19:57:04.3925742Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-040-save-dialog.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-041-save-after.png.actions.jsonl",
+      "source_sha256": "18b834f8086bd37182944b6f0ecc98e75fd327841222885f73cbd672875bf926",
+      "started_utc": "2026-11-03T19:57:04.7113826Z",
+      "finished_utc": "2026-11-03T19:57:06.2205525Z",
+      "action": "click",
+      "x": 1490,
+      "y": 976,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 800,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-041-save-after.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-042-save-check-dialog.png.actions.jsonl",
+      "source_sha256": "a1cc37eed581f5ed1471ce3c7ec620673cfb8c034f30bb3dad722418efdd8868",
+      "started_utc": "2026-11-03T19:57:06.5360014Z",
+      "finished_utc": "2026-11-03T19:57:07.5327816Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-042-save-check-dialog.png"
+    },
+    {
+      "source_file": ".local-research/runtime/environment-storage-043-save-check.png.actions.jsonl",
+      "source_sha256": "d3dc7cf3d48cde3b10074afe9ad6b195e97f4844486647e8b21a94c92cf95634",
+      "started_utc": "2026-11-03T19:57:47.8608983Z",
+      "finished_utc": "2026-11-03T19:57:49.5936674Z",
+      "action": "click",
+      "x": 1490,
+      "y": 976,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 800,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "environment-storage-043-save-check.png"
+    }
+  ],
+  "shutdown": {
+    "method": "Ordinary Quit to OS at (2215,1315) after the second final save",
+    "attempted_capture": "environment-storage-044-quit.png",
+    "capture_result": "Foreground guard rejected post-exit capture; no successful final action entry or exit screenshot claimed",
+    "observed_utc": "2026-11-03T20:05:04.1897085Z",
+    "rimworld_processes_after_exit": []
+  },
+  "limitations": [
+    "The initial load advanced 3693 ticks before confirmed pause and preparation.",
+    "Rain came from the prior developer-prepared weather save; this is not natural weather occurrence evidence.",
+    "One extra outdoor stack was unintentionally placed while cancelling the developer tool; it is disclosed, not omitted.",
+    "The enclosed control is cold and has wood flooring; the exposed target is on sand. Cloth does not rot, and both selected terrains have no extra deterioration factor, but this is not a single-variable roof-only experiment.",
+    "Only four bounded 4-second input runs; no long-run or rate-distribution calibration.",
+    "No recreation interruption, snow thought, filth-washing, stack-merging, worn-apparel or roofed-outdoor-shelter runtime experiment.",
+    "Full screenshots and original saves remain local; selected excerpts and crops are committed."
+  ]
+}

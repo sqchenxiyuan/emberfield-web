@@ -1,0 +1,133 @@
+{
+  "evidence_id": "RW17-ENVIRONMENT-STORAGE",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.JoyGiver",
+      "local_file": ".local-research/environment-storage/RimWorld.JoyGiver.cs",
+      "sha256": "57c3f66ac846b086c6add127b145d775ee83f722a4ed0e2d3bcb7a9e56915acf",
+      "lines": 77
+    },
+    {
+      "type": "RimWorld.JoyGiver_InteractBuilding",
+      "local_file": ".local-research/environment-storage/RimWorld.JoyGiver_InteractBuilding.cs",
+      "sha256": "140a61ce31e6f7559f31b15b5fe91e78cecfa0fbf45b313f864b910f422a1d08",
+      "lines": 113
+    },
+    {
+      "type": "RimWorld.JoyGiver_InteractBuildingInteractionCell",
+      "local_file": ".local-research/environment-storage/RimWorld.JoyGiver_InteractBuildingInteractionCell.cs",
+      "sha256": "e4521572c03bc4a9cc992c91b4299b82a67bc442dbee0c5a11c100da0fb5faa7",
+      "lines": 17
+    },
+    {
+      "type": "RimWorld.JoyGiver_Skygaze",
+      "local_file": ".local-research/environment-storage/RimWorld.JoyGiver_Skygaze.cs",
+      "sha256": "2044c0c2d6dd201b84c87c9e10a3737c70d69b03e80502250420062707a3e069",
+      "lines": 27
+    },
+    {
+      "type": "RimWorld.JobDriver_Skygaze",
+      "local_file": ".local-research/environment-storage/RimWorld.JobDriver_Skygaze.cs",
+      "sha256": "64c234eee6e7221a3ab9be9a1aad158d7f76ec5b1d2d62a30474139bea8c1d04",
+      "lines": 65
+    },
+    {
+      "type": "RimWorld.JobDriver_PlayHorseshoes",
+      "local_file": ".local-research/environment-storage/RimWorld.JobDriver_PlayHorseshoes.cs",
+      "sha256": "fe74d281ffe303e66e1524c808e30f3b258d1033243f9dc5144ff3c20bd281fb",
+      "lines": 18
+    },
+    {
+      "type": "RimWorld.JobDriver_SocialRelax",
+      "local_file": ".local-research/environment-storage/RimWorld.JobDriver_SocialRelax.cs",
+      "sha256": "ea5b3a8ce4d678c6e284bb4878d127644d87fd8f759530b3705be93b8705da64",
+      "lines": 85
+    },
+    {
+      "type": "RimWorld.Apparel",
+      "local_file": ".local-research/environment-storage/RimWorld.Apparel.cs",
+      "sha256": "e86e80be2095c32f775bb08e65f4ea8464d718898de030b9839084eee0235ffc",
+      "lines": 355
+    },
+    {
+      "type": "RimWorld.Pawn_ApparelTracker",
+      "local_file": ".local-research/environment-storage/RimWorld.Pawn_ApparelTracker.cs",
+      "sha256": "01ca5bbe6b91b6394da455d4a1ad37f6555457c570e2af67df24e3719b3c3ff2",
+      "lines": 820
+    },
+    {
+      "type": "Verse.Room",
+      "local_file": ".local-research/environment-storage/Verse.Room.cs",
+      "sha256": "ef3f3f189635902d370aa88117c8d0d0e3bfd7c5d6b88ec6302e6843d296e53d",
+      "lines": 946
+    },
+    {
+      "type": "RimWorld.Filth",
+      "local_file": ".local-research/environment-storage/RimWorld.Filth.cs",
+      "sha256": "0263757bcc2324bbbd6950c0b8dafac5270f5fdf45b2df51058fe2f261930e0b",
+      "lines": 193
+    },
+    {
+      "type": "Verse.DebugToolsSpawning",
+      "local_file": ".local-research/environment-storage/Verse.DebugToolsSpawning.cs",
+      "sha256": "552ead997e0b5d41ae0c1e5fb3c5619199f746194ec380466b2529dab4931eb8",
+      "lines": 1115
+    },
+    {
+      "type": "RimWorld.JobDriver_WatchBuilding",
+      "local_file": ".local-research/environment-storage/RimWorld.JobDriver_WatchBuilding.cs",
+      "sha256": "a96ad71a2a8d6662f389c6a65562fd9b9010b7d1017a014bae6d3b7f5c1ab305",
+      "lines": 87
+    },
+    {
+      "type": "RimWorld.JoyGiver_WatchBuilding",
+      "local_file": ".local-research/environment-storage/RimWorld.JoyGiver_WatchBuilding.cs",
+      "sha256": "d6da4095d347f643eba521432d9281386eb288246921bb064bb87e6ee9fda37b",
+      "lines": 31
+    },
+    {
+      "type": "Verse.DebugThingPlaceHelper",
+      "local_file": ".local-research/environment-storage/Verse.DebugThingPlaceHelper.cs",
+      "sha256": "9bb82e1265923e745bacb3f61f05496243f9c2c59a772aa780084df975f55983",
+      "lines": 199
+    },
+    {
+      "type": "RimWorld.ThingDefGenerator_Meat",
+      "local_file": ".local-research/environment-storage/RimWorld.ThingDefGenerator_Meat.cs",
+      "sha256": "50f424f55bdfd145a4450ae13f00a60813a85cb409cfec3ac1c213ae6df1ed3d",
+      "lines": 128
+    },
+    {
+      "type": "RimWorld.WatchBuildingUtility",
+      "local_file": ".local-research/environment-storage/RimWorld.WatchBuildingUtility.cs",
+      "sha256": "30865109aa04438fbd19304b5e39dbab1cf84e2a630678f933f25c07ada78d2f",
+      "lines": 202
+    },
+    {
+      "type": "RimWorld.JobDriver_GoForWalk",
+      "local_file": ".local-research/environment-storage/RimWorld.JobDriver_GoForWalk.cs",
+      "sha256": "e2f16aa26b82156600ec1cee61fe93f8fda8d7073422bdab54b8534e8cdf3646",
+      "lines": 44
+    },
+    {
+      "type": "RimWorld.JoyGiver_GoForWalk",
+      "local_file": ".local-research/environment-storage/RimWorld.JoyGiver_GoForWalk.cs",
+      "sha256": "6438d5cecdacb20d8f33f3ef11ebda2d1228aca0f351e2d2b12f0b18a5ecffc4",
+      "lines": 58
+    }
+  ]
+}

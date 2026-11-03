@@ -1298,6 +1298,17 @@ a {
     bottom: 162px;
   }
 }
+@media (min-width: 760px) and (max-width: 900px) {
+  .voxel-toast {
+    /* Leave 12px beside the 235px inspector and the 315px right drawer. */
+    left: 259px;
+    right: 339px;
+    width: auto;
+    max-width: none;
+    bottom: 174px;
+    transform: none;
+  }
+}
 @media (max-height: 800px) {
   .voxel-coordinates {
     display: none;

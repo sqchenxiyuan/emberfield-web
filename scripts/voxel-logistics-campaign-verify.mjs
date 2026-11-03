@@ -235,7 +235,7 @@ try {
     return [
       ...save.items,
       ...save.pawns.flatMap((p) => (p.cargo ? [p.cargo] : [])),
-      ...save.jobs.flatMap((j) => j.deliveredFood),
+      ...save.jobs.flatMap((j) => j.deliveredBatches),
     ];
   }
   function foodAges(save) {

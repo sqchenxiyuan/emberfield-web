@@ -79,7 +79,10 @@
     "test:voxel:fire:browser": "node scripts/voxel-fire-browser-verify.mjs",
     "research:weather": "node scripts/research/verify-weather-evidence.mjs",
     "test:voxel:weather": "node scripts/voxel-weather-campaign-verify.mjs",
-    "test:voxel:weather:browser": "node scripts/voxel-weather-browser-verify.mjs"
+    "test:voxel:weather:browser": "node scripts/voxel-weather-browser-verify.mjs",
+    "research:environment": "node scripts/research/verify-environment-storage-evidence.mjs",
+    "test:voxel:environment": "node scripts/voxel-environment-campaign-verify.mjs",
+    "test:voxel:environment:browser": "node scripts/voxel-environment-browser-verify.mjs"
   },
   "dependencies": {
     "pixi.js": "8.22.0",

@@ -48,10 +48,10 @@ describe('source market formulas and explicit voxel wealth mappings', () => {
     pawn.cargo = sim.items.pop()!;
     expect(colonyWealth(sim)).toEqual(before);
     pawn.cargo = null;
-    sim.jobs.push({ delivered: { steel: 10 }, deliveredFood: [] } as unknown as Job);
+    sim.jobs.push({ delivered: { steel: 10 }, deliveredBatches: [{ resource: 'steel', amount: 10 }] } as unknown as Job);
     expect(colonyWealth(sim)).toEqual(before);
     sim.jobs[0].delivered = { grain: 10 };
-    sim.jobs[0].deliveredFood = [{ resource: 'grain', crop: 'rice', amount: 10, rotProgress: 0 }];
+    sim.jobs[0].deliveredBatches = [{ resource: 'grain', crop: 'rice', amount: 10, rotProgress: 0 }];
     expect(colonyWealth(sim).items).toBe(11);
   });
   it('includes colony equipment once, excludes enemy held items and records zero-valued corpse scope', () => {

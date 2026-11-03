@@ -1,0 +1,21 @@
+[
+  "RimWorld.JoyGiver",
+  "RimWorld.JoyGiver_InteractBuilding",
+  "RimWorld.JoyGiver_InteractBuildingInteractionCell",
+  "RimWorld.JoyGiver_Skygaze",
+  "RimWorld.JobDriver_Skygaze",
+  "RimWorld.JobDriver_PlayHorseshoes",
+  "RimWorld.JobDriver_SocialRelax",
+  "RimWorld.Apparel",
+  "RimWorld.Pawn_ApparelTracker",
+  "Verse.Room",
+  "RimWorld.Filth",
+  "Verse.DebugToolsSpawning",
+  "RimWorld.JobDriver_WatchBuilding",
+  "RimWorld.JoyGiver_WatchBuilding",
+  "Verse.DebugThingPlaceHelper",
+  "RimWorld.ThingDefGenerator_Meat",
+  "RimWorld.WatchBuildingUtility",
+  "RimWorld.JobDriver_GoForWalk",
+  "RimWorld.JoyGiver_GoForWalk"
+]

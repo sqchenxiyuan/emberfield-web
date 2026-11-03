@@ -1592,7 +1592,7 @@ export class VoxelRenderer {
     this.finish(marked);
     const bodies = [
       ...this.data.items.filter(i => i.carcass && i.z <= this.level).map(i => ({ ...i, species: i.carcass!.species })),
-      ...this.data.jobs.filter(j => j.kind === 'butcher' && j.z <= this.level).flatMap(j => j.deliveredFood.filter(b => b.carcass).map(b => ({ x: j.x, y: j.y, z: j.z, species: b.carcass!.species }))),
+      ...this.data.jobs.filter(j => j.kind === 'butcher' && j.z <= this.level).flatMap(j => j.deliveredBatches.filter(b => b.carcass).map(b => ({ x: j.x, y: j.y, z: j.z, species: b.carcass!.species }))),
     ];
     const corpses = this.batch('animal-carcasses', bodies.length * 10, this.box, this.batchMaterial('animal-carcasses'));
     this.inspectBatches.set(corpses, { cells: bodies, instancesPerCell: 10 });

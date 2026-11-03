@@ -1,5 +1,6 @@
 import { stripRangedDefaults } from './legacy-ranged-defaults';
 import { legacySimulation } from './fixtures/legacy-start';
+import { setImmediate as yieldToRunner } from 'node:timers/promises';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import {
@@ -46,12 +47,27 @@ function until(s: VoxelSimulation, predicate: () => boolean, limit = 2400, audit
     }),
   ).toBe(true);
 }
+/** Preserve every tick and ledger check while allowing Vitest's RPC and timers
+ * to run during the genuine multi-day harvest setup. */
+async function untilCooperatively(
+  s: VoxelSimulation, predicate: () => boolean, limit: number, audit: () => void,
+) {
+  for (let n = 0; !predicate() && n < limit; n++) {
+    s.step();
+    audit();
+    if ((n + 1) % 250 === 0) await yieldToRunner();
+  }
+  until(s, predicate, 0);
+}
 function ledger(s: VoxelSimulation) {
   const before = {
     counts: s.counts(),
     produced: { ...s.stats.produced },
     consumed: { ...s.stats.consumed },
     spoiled: { ...s.stats.spoiled },
+    destroyed: { ...s.stats.destroyed },
+    imported: { ...s.trade.imported },
+    exported: { ...s.trade.exported },
   };
   return () => {
     const counts = s.counts();
@@ -61,8 +77,13 @@ function ledger(s: VoxelSimulation) {
           s.stats.consumed[r] -
           before.consumed[r] +
           s.stats.spoiled[r] -
-          before.spoiled[r] !==
-        before.counts[r] + s.stats.produced[r] - before.produced[r]
+          before.spoiled[r] +
+          s.stats.destroyed[r] -
+          before.destroyed[r] +
+          s.trade.exported[r] -
+          before.exported[r] !==
+        before.counts[r] + s.stats.produced[r] - before.produced[r] +
+          s.trade.imported[r] - before.imported[r]
       )
         throw new Error(`${r} material conservation failed at tick ${s.tick}`);
     if (s.items.some((i) => i.amount <= 0) || s.pawns.some((p) => p.cargo && p.cargo.amount <= 0))
@@ -288,16 +309,19 @@ describe('food reference curves and physical farmland', () => {
 
 describe('real harvested inputs, cooking and food persistence', () => {
   let harvestedSave: VoxelSave;
-  beforeAll(() => {
+  beforeAll(async () => {
     // Shared setup is a genuine eight-plus-day harvest, not a mature crop or item fixture.
-    const s = legacySimulation();
+    const started = performance.now(), s = legacySimulation(), startTick = s.tick;
     place(s, 'farm', pos(29, 28), pos(35, 30), 'rice');
     place(s, 'stock', pos(29, 35), pos(35, 36));
     const audit = ledger(s);
-    until(s, () => s.counts().grain >= 90 && s.pawns.every((p) => p.food > 60), DAY * 12, audit);
+    await untilCooperatively(s, () => s.counts().grain >= 90 && s.pawns.every((p) => p.food > 60), DAY * 12, audit);
+    expect(s.tick - startTick).toBeGreaterThanOrEqual(DAY * 8);
     disableGrowing(s);
     harvestedSave = s.save();
-  }, 60000);
+    console.info(`[voxel-food harvest] ${s.tick - startTick} ticks (${((s.tick - startTick) / DAY).toFixed(3)} days), ` +
+      `${s.counts().grain} grain, ${Math.round(performance.now() - started)} ms; every tick audited`);
+  }, 180000);
   const prepared = () => VoxelSimulation.load(harvestedSave);
 
   it('requires delivered grain and fuel, produces one meal, and treats the stove as solid', () => {
@@ -445,8 +469,10 @@ describe('real harvested inputs, cooking and food persistence', () => {
     expect(s.pawns.some((p) => p.food > 85)).toBe(true);
     expect(
       s.stats.produced.meal +
+        s.trade.imported.meal +
         harvestedSave.items.filter((i) => i.resource === 'meal').reduce((n, i) => n + i.amount, 0),
-    ).toBe(s.counts().meal + s.stats.consumed.meal + s.stats.spoiled.meal);
+    ).toBe(s.counts().meal + s.stats.consumed.meal + s.stats.spoiled.meal +
+      s.stats.destroyed.meal + s.trade.exported.meal);
   });
   it('rejects malformed food saves and bills without mutating the source world', () => {
     const s = prepared(),
@@ -520,7 +546,7 @@ describe('v1 voxel food migration', () => {
       loaded = VoxelSimulation.load(legacy),
       before = s.counts();
     expect(legacy).toEqual(untouched);
-    expect(loaded.save().version).toBe(27);
+    expect(loaded.save().version).toBe(28);
     expect(loaded.farms).toEqual([]);
     expect(loaded.crops).toEqual([]);
     expect(loaded.stoves).toEqual([]);

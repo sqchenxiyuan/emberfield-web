@@ -6,7 +6,7 @@ const exposedAt = (s: VoxelSnapshot, p: Pos) => p.z >= s.weatherRoof[p.y * WIDTH
 const snowAt = (s: VoxelSnapshot, p: Pos) => s.snow.find(cell => at(cell) === at(p))?.depth ?? 0;
 const snowTicks = (depth: number) => snowPathCost(depth) * TPS / 60;
 
-export function WeatherCellDetails({ snapshot: s, pos }: { snapshot: VoxelSnapshot; pos: Pos }) {
+export function WeatherCellDetails({ snapshot: s, pos, indoors }: { snapshot: VoxelSnapshot; pos: Pos; indoors: boolean }) {
   const exposed = exposedAt(s, pos), depth = snowAt(s, pos), effects = s.weather.effects;
   const move = exposed ? effects.moveFactor : 1, accuracy = exposed ? effects.accuracyFactor : 1;
   const rain = exposed ? effects.rainRate : 0, snow = exposed ? effects.snowRate : 0;
@@ -14,6 +14,9 @@ export function WeatherCellDetails({ snapshot: s, pos }: { snapshot: VoxelSnapsh
     data-snow-depth={depth} data-weather-move={move} data-weather-accuracy={accuracy} data-snow-ticks={snowTicks(depth)}>
     <div className="voxel-info-row"><b>当地天气影响</b><span>{exposed ? '露天' : '上方有遮蔽'}</span></div>
     <small>{pos.x}, {pos.y} · Z {pos.z} · {snow > 0 ? '雪可以落到此处' : rain > 0 ? '雨水可以落到此处' : exposed ? '当前没有降水' : '此处不受降水直接影响'}</small>
+    <small data-testid="cell-storage-protection" data-indoors={indoors}>{!exposed && indoors
+      ? '有顶室内：地面物资可免受环境劣化。' : !exposed
+        ? '有顶室外：棚下可以挡雨，易损物资仍会受室外环境影响。' : '露天：易损物资会受环境影响，降水会加快劣化。'}仓储划区本身不提供环境保护。</small>
     <dl>
       <div><dt>天气移速</dt><dd>{percent(move)}</dd></div>
       <div><dt>积雪覆盖</dt><dd>{percent(depth)}</dd></div>
@@ -25,8 +28,8 @@ export function WeatherCellDetails({ snapshot: s, pos }: { snapshot: VoxelSnapsh
   </section>;
 }
 
-export function WeatherPanel({ snapshot: s, selectedPos, focus, close }: {
-  snapshot: VoxelSnapshot; selectedPos: Pos | null; focus: (pos: Pos) => void; close: () => void;
+export function WeatherPanel({ snapshot: s, selectedPos, selectedIndoors, focus, close }: {
+  snapshot: VoxelSnapshot; selectedPos: Pos | null; selectedIndoors: boolean; focus: (pos: Pos) => void; close: () => void;
 }) {
   const weather = s.weather, effects = weather.effects;
   const snow = [...s.snow].sort((a, b) => b.depth - a.depth || at(a) - at(b));
@@ -46,11 +49,15 @@ export function WeatherPanel({ snapshot: s, selectedPos, focus, close }: {
       </dl>
       <small>射击任一端露天时计入天气；最终命中还取决于人物、武器、距离和掩护。</small>
     </section>
-    {selectedPos ? <WeatherCellDetails snapshot={s} pos={selectedPos} /> : <p>用查看工具选择一格，可查看其遮蔽、积雪和通行影响。</p>}
+    {selectedPos ? <WeatherCellDetails snapshot={s} pos={selectedPos} indoors={selectedIndoors} /> : <p>用查看工具选择一格，可查看其遮蔽、积雪和通行影响。</p>}
     <section className="voxel-weather-effects">
       <h3>降水与营地</h3>
       <p>{effects.rainRate > 0 ? `降水正在影响露天火焰；当前 ${outdoorFires} 处火点露天。` : '当前没有降水扑灭火焰的作用。'}</p>
       <small>真实屋顶可以遮挡降水；切换查看楼层不会移除屋顶。树冠和设备本身不视为屋顶。</small>
+      <p data-testid="environment-summary">{s.environment.wetPawnIds.length} 人正在淋雨 · {s.environment.filth.filter(f => f.washing).length} 处污物正在被雨水冲洗 · {s.environment.items.filter(item => item.rate > 0).length} 处地面物资正在劣化</p>
+      <small data-testid="weather-nature-status" data-available={s.environment.natureAvailable}>{s.environment.natureAvailable
+        ? '当前天气允许户外散步；人物状态、温度与可达位置仍需满足要求。'
+        : '当前天气不适合户外散步。马蹄铁投掷仍按场地、温度和可达性安排。'}</small>
       <p>太阳能按昼夜与面板上方遮挡发电。</p>
       {solar.length ? solar.map(d => <button key={d.id} aria-label={`查看太阳能发电机 #${d.id}`} onClick={() => focus(d)}>
         太阳能 #{d.id} · {Math.round(d.watts)} W

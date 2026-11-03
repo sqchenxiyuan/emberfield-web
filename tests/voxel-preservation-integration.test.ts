@@ -366,18 +366,19 @@ describe('cooking input containers and v5 food persistence', () => {
     const job = sim.jobs.find((j) => j.kind === 'cook')!,
       initial = ledger(sim);
     expect(job.delivered).toEqual({ wood: 1, grain: 10 });
-    expect(job.deliveredFood).toHaveLength(2);
-    expect(job.deliveredFood.find((i) => i.crop === 'rice')).toMatchObject({
+    expect(job.deliveredBatches).toHaveLength(3);
+    expect(job.deliveredBatches.find((i) => i.resource === 'wood')).toEqual(freshBatch('wood', 1));
+    expect(job.deliveredBatches.find((i) => i.crop === 'rice')).toMatchObject({
       amount: 6,
       rotProgress: 100 + sim.tick,
     });
-    expect(job.deliveredFood.find((i) => i.crop === 'potato')).toMatchObject({
+    expect(job.deliveredBatches.find((i) => i.crop === 'potato')).toMatchObject({
       amount: 4,
       rotProgress: 200 + sim.tick,
     });
     const saved = sim.save(),
       copy = VoxelSimulation.load(saved);
-    expect(copy.jobs[0].deliveredFood).toEqual(job.deliveredFood);
+    expect(copy.jobs[0].deliveredBatches).toEqual(job.deliveredBatches);
     expect(ledger(copy)).toEqual(initial);
     command(copy, { type: 'bill', stoveId: copy.stoves[0].id, target: 1, paused: true });
     expect(copy.jobs).toEqual([]);
@@ -406,9 +407,12 @@ describe('cooking input containers and v5 food persistence', () => {
       initial = ledger(sim);
     // Threshold age is the only injected test condition; these inputs were
     // physically hauled into the stove container by the normal job workflow.
-    for (const batch of job.deliveredFood) batch.rotProgress = rotLimit(batch)! - 1;
+    for (const batch of job.deliveredBatches) {
+      const limit = rotLimit(batch);
+      if (limit !== null) batch.rotProgress = limit - 1;
+    }
     sim.step();
-    expect(job.deliveredFood).toEqual([]);
+    expect(job.deliveredBatches).toEqual([freshBatch('wood', 1)]);
     expect(job.delivered.grain ?? 0).toBe(0);
     expect(job.delivered.wood).toBe(1);
     expect(job.progress).toBe(0);
@@ -416,7 +420,7 @@ describe('cooking input containers and v5 food persistence', () => {
     expect(sim.stats.consumed.grain).toBe(0);
     expect(sim.stats.produced.meal).toBe(0);
     expect(ledger(sim)).toEqual(initial);
-    expect(VoxelSimulation.load(sim.save()).jobs[0].deliveredFood).toEqual([]);
+    expect(VoxelSimulation.load(sim.save()).jobs[0].deliveredBatches).toEqual([freshBatch('wood', 1)]);
   });
   it('strictly rejects v5 inconsistent containers, ages, species, spoiled ledger and storage rules without modifying input', () => {
     const sim = kitchen();
@@ -425,28 +429,29 @@ describe('cooking input containers and v5 food persistence', () => {
     const saved = sim.save();
     const changes: ((s: VoxelSave) => void)[] = [
       (s) => {
-        delete s.jobs[0].deliveredFood[0].crop;
+        delete s.jobs[0].deliveredBatches.find((b) => b.resource === 'grain')!.crop;
       },
       (s) => {
-        delete s.jobs[0].deliveredFood[0].rotProgress;
+        delete s.jobs[0].deliveredBatches.find((b) => b.resource === 'grain')!.rotProgress;
       },
       (s) => {
-        s.jobs[0].deliveredFood[0].rotProgress = NaN;
+        s.jobs[0].deliveredBatches.find((b) => b.resource === 'grain')!.rotProgress = NaN;
       },
       (s) => {
-        s.jobs[0].deliveredFood[0].rotProgress = -1;
+        s.jobs[0].deliveredBatches.find((b) => b.resource === 'grain')!.rotProgress = -1;
       },
       (s) => {
-        s.jobs[0].deliveredFood[0].rotProgress = rotLimit(s.jobs[0].deliveredFood[0])!;
+        const batch = s.jobs[0].deliveredBatches.find((b) => b.resource === 'grain')!;
+        batch.rotProgress = rotLimit(batch)!;
       },
       (s) => {
-        s.jobs[0].deliveredFood[0].amount++;
+        s.jobs[0].deliveredBatches[0].amount++;
       },
       (s) => {
-        s.jobs[0].deliveredFood.push({ ...s.jobs[0].deliveredFood[0] });
+        s.jobs[0].deliveredBatches.push({ ...s.jobs[0].deliveredBatches[0] });
       },
       (s) => {
-        s.jobs[0].deliveredFood = [];
+        s.jobs[0].deliveredBatches = [];
       },
       (s) => {
         s.stats.spoiled.grain = -1;
@@ -503,7 +508,7 @@ describe('cooking input containers and v5 food persistence', () => {
     const before = structuredClone(old),
       migrated = VoxelSimulation.load(old);
     expect(old).toEqual(before);
-    expect(migrated.save().version).toBe(27);
+    expect(migrated.save().version).toBe(28);
     expect(migrated.counts()).toEqual(sim.counts());
     expect(migrated.items[0]).toMatchObject({ crop: 'rice', rotProgress: 0 });
     expect(migrated.pawns[0].cargo).toMatchObject({ rotProgress: 0 });

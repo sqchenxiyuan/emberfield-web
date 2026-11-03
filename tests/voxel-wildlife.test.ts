@@ -122,7 +122,7 @@ describe('wildlife, actual hunting and physical food chain', () => {
     const s = fixture(); add(s, carcass(s)); s.pawns[0].priorities.cook = 1;
     command(s, { type: 'designate', tool: 'butcherSpot', from: pos(12, 14) });
     until(s, () => !!s.jobs.find(j => j.kind === 'butcher')?.delivered.carcass);
-    const delivered = s.jobs.find(j => j.kind === 'butcher')!.deliveredFood[0];
+    const delivered = s.jobs.find(j => j.kind === 'butcher')!.deliveredBatches[0];
     expect(colonyWealthDetails(s).itemSources.delivered).toBe(cargoMarketValue(delivered));
     for (let x = 8; x <= 40; x++) for (let y = 8; y <= 30; y++) {
       const p = pos(x, y); if (!s.items.some(i => at(i) === at(p))) add(s, freshBatch('stone', 75), p);
@@ -162,7 +162,7 @@ describe('wildlife, actual hunting and physical food chain', () => {
     const old = JSON.parse(readFileSync('tests/fixtures/voxel-v21-wildlife-initial.json', 'utf8'));
     expect(old.version).toBe(21); expect(old.animals).toBeUndefined();
     const s = VoxelSimulation.load(old);
-    expect(s.items).toEqual(old.items); expect(s.animals).toHaveLength(8); expect(s.save().version).toBe(27);
+    expect(s.items).toEqual(old.items); expect(s.animals).toHaveLength(8); expect(s.save().version).toBe(28);
     expect(VoxelSimulation.load(s.save()).animals).toEqual(s.animals);
   });
 });

@@ -183,6 +183,11 @@ import { outdoorTemperature } from './climate';
 import { initialWeather, advanceWeather, weatherEffects, snowDepthAfter, snowPathCost,
   type WeatherState, type SnowCover } from './weather';
 import { rejectLegacyWeatherFields, migrateWeather, validateWeather } from './weatherPersistence';
+import { ENVIRONMENT_RULES, RAIN_WASHES, wettingWeather, natureWeatherAllowed, carcassBatch,
+  type EnvironmentView } from './environment';
+import { advanceDeterioration, batchHitPoints, batchMaxHitPoints, deteriorationRate, deteriorationRandom,
+  type DeteriorationEnvironment } from './deterioration';
+import { rejectLegacyEnvironmentFields, migrateEnvironment } from './environmentPersistence';
 import {
   TREE_NAMES,
   treeYield,
@@ -694,8 +699,7 @@ export class VoxelSimulation {
   private updateWildlife() {
     for (const a of [...this.animals]) {
       if (a.dead) {
-        const batch: Cargo = { resource: 'carcass', amount: 1,
-          carcass: { animalId: a.id, species: a.species }, rotProgress: a.rotProgress };
+        const batch = carcassBatch(a);
         if (advanceRot(batch, this.temperature(a))) {
           this.stats.spoiled.carcass++;
           this.animals = this.animals.filter(other => other !== a);
@@ -1055,9 +1059,15 @@ export class VoxelSimulation {
   }
   private commitPlacement(plan: NonNullable<ReturnType<VoxelSimulation['planPlacement']>>) {
     const existing = new Map(this.items.map((item) => [item.id, item]));
-    this.items = plan.items.map((item) =>
-      existing.has(item.id) ? Object.assign(existing.get(item.id)!, item) : item,
-    );
+    this.items = plan.items.map((item) => {
+      const previous = existing.get(item.id);
+      if (!previous) return item;
+      // A merge can restore canonical full HP (no optional field). Assignment
+      // alone would retain the old damaged HP on the existing object.
+      for (const key of Object.keys(previous) as (keyof Stack)[])
+        if (!Object.hasOwn(item, key)) delete previous[key];
+      return Object.assign(previous, item);
+    });
     this.nextId = plan.nextId;
     this.revision++;
   }
@@ -1085,12 +1095,11 @@ export class VoxelSimulation {
     this.storageReservations.delete(p.id);
     return true;
   }
-  private deliverFood(job: Job, source: Cargo, amount: number) {
-    if (!isPerishable(source.resource)) return;
+  private deliverBatch(job: Job, source: Cargo, amount: number) {
     const incoming = portion(source, amount),
-      old = job.deliveredFood.find((batch) => compatibleBatches(batch, incoming));
+      old = job.deliveredBatches.find((batch) => compatibleBatches(batch, incoming));
     if (old) mergeBatch(old, incoming);
-    else job.deliveredFood.push(incoming);
+    else job.deliveredBatches.push(incoming);
   }
   private storagePriority(item: Cargo & Pos): number {
     return (
@@ -1916,7 +1925,9 @@ export class VoxelSimulation {
         return { ok: true, message: p.reason };
       }
       const ok = this.startRecreation(p, true);
-      return { ok, message: ok ? p.reason : '暂无可达且舒适的户外空地或空闲马蹄铁桩' };
+      return { ok, message: ok ? p.reason : natureWeatherAllowed(this.weather, this.tick)
+        ? '暂无可达且舒适的户外空地或空闲马蹄铁桩'
+        : '天气不适合散步，且没有可达、舒适的空闲马蹄铁位置' };
     }
     if (c.type === 'hunt') {
       const animal = this.animals.find(a => a.id === c.animalId && !a.dead);
@@ -2784,7 +2795,7 @@ export class VoxelSimulation {
       ...(['mine', 'digLadder'].includes(kind) ? { miningYieldWork: 0 } : {}),
       owner: null,
       delivered: {},
-      deliveredFood: [],
+      deliveredBatches: [],
       cancelled: false,
       cost: costOf(kind, material, apparelKind, weaponKind, weaponBenchKind),
       reason: '等待可达工人',
@@ -4552,7 +4563,7 @@ export class VoxelSimulation {
     if (!activity || this.tick >= activity.endTick || p.food < 12 || p.rest < 1 ||
         !this.leisureCell(activity.target)) return false;
     if (!activity.forced && ['work', 'sleep'].includes(assignmentAt(p.schedule, this.tick))) return false;
-    if (activity.kind === 'walk') return this.skyAt(activity.target);
+    if (activity.kind === 'walk') return this.skyAt(activity.target) && natureWeatherAllowed(this.weather, this.tick);
     if (healthSummary(p).manipulation <= 0) return false;
     const pin = this.horseshoePins.find(b => b.id === activity.spotId);
     if (!pin || pin.z !== activity.target.z) return false;
@@ -4585,7 +4596,8 @@ export class VoxelSimulation {
       if (Math.abs(dx) + Math.abs(dy) < 2) continue;
       for (const dz of [0, 1, -1]) {
         const target = { x: p.x + dx, y: p.y + dy, z: p.z + dz };
-        if (!this.leisureCell(target) || !this.skyAt(target) || occupied(target) || this.distance[at(target)] < 0) continue;
+        if (!natureWeatherAllowed(this.weather, this.tick) || !this.leisureCell(target) ||
+          !this.skyAt(target) || occupied(target) || this.distance[at(target)] < 0) continue;
         candidates.push({ kind: 'walk', target, spotId: null,
           score: recreationGain('walk', p.psyche.tolerance.walk) * DAY - this.distance[at(target)] });
       }
@@ -4615,6 +4627,8 @@ export class VoxelSimulation {
   }
   private updatePsychology() {
     for (const p of this.pawns) {
+      if (p.faction === 'colony' && !p.dead && (this.tick + p.id) % ENVIRONMENT_RULES.wetInterval === 0 &&
+          this.weatherExposed(p) && wettingWeather(this.weather, this.tick)) remember(p.psyche, 'wet', this.tick);
       if (p.phase === 'rest' && p.sleepBedId === null && p.sleepingSince !== null && this.tick - p.sleepingSince >= 120)
         remember(p.psyche, 'sleptGround', this.tick);
       const event = advancePsyche(p, this.tick, this.temperature(p));
@@ -4673,7 +4687,7 @@ export class VoxelSimulation {
     if (!item) return;
     const lost = Math.min(item.amount, amount);
     const items = this.items.flatMap(i => i.id !== id ? [i] : i.amount > lost ? [{ ...i, amount: i.amount - lost }] : []);
-    this.tradeApplyPlacement({ items, nextId: this.nextId });
+    this.tradeApplyPlacement({ items, nextId: this.nextId }, '预留物品已烧毁，重新安排任务');
     this.stats.destroyed[item.resource] += lost;
     for (const p of this.pawns) if (this.craftSources.get(p.id) === id || this.storageReservations.get(p.id)?.sourceId === id) this.release(p);
     fireLog(this, 'destroyed', item, `${lost}单位${RESOURCE_NAMES[item.resource]}被烧毁`);
@@ -4937,7 +4951,7 @@ export class VoxelSimulation {
   tradeRelease(p: Pawn) { this.release(p); }
   tradeDropCargo(p: Pawn) { return this.dropCargo(p); }
   tradePlace(entries: { batch: Cargo; origin: Pos }[], base: Stack[]) { return this.planPlacement(entries, base); }
-  tradeApplyPlacement(plan: Placement) {
+  tradeApplyPlacement(plan: Placement, reason = '预留物品已交易，重新安排任务') {
     // Selling a reserved stack invalidates its consumers in the same atomic
     // operation, before a snapshot can preserve a dangling fetch reference.
     const changed = new Set(this.items.filter(item => {
@@ -4951,7 +4965,7 @@ export class VoxelSimulation {
       (p.careMedicineId !== null && changed.has(p.careMedicineId)) ||
       (p.weaponTask?.stage === 'fetch' && gear.some(i => i.weapon?.id === p.weaponTask!.weaponId)) ||
       (p.apparelTask?.stage === 'fetch' && gear.some(i => i.apparel?.id === p.apparelTask!.apparelId))
-    ) { this.release(p); p.reason = '预留物品已交易，重新安排任务'; }
+    ) { this.release(p); p.reason = reason; }
   }
   tradeTemperature(pawn: Pawn) { return this.temperature(pawn); }
   tradeReachable(pawn: Pawn): Set<number> {
@@ -5012,12 +5026,7 @@ export class VoxelSimulation {
     for (const p of this.pawns) if (p.jobId === j.id) this.release(p);
     j.cancelled = true;
     const origin = this.dropPoint(j);
-    const batches = [
-      ...resources
-        .filter((r) => j.delivered[r] && !isPerishable(r))
-        .map((r) => freshBatch(r, j.delivered[r]!)),
-      ...j.deliveredFood,
-    ];
+    const batches = j.deliveredBatches;
     const plan = origin
       ? this.planPlacement(batches.map((batch) => ({ batch, origin })))
       : batches.length
@@ -5652,7 +5661,7 @@ export class VoxelSimulation {
           return;
         }
         const n = Math.min(p.cargo.amount, needed);
-        this.deliverFood(j, p.cargo, n);
+        this.deliverBatch(j, p.cargo, n);
         j.delivered[resource] = (j.delivered[resource] ?? 0) + n;
         p.cargo.amount -= n;
         if (p.cargo.amount === 0) p.cargo = null;
@@ -5929,7 +5938,7 @@ export class VoxelSimulation {
       j.cookingOutcome ??= cookingOutcome(this.seed, j.id, p.id, p.skills.cooking.level, cleanliness, !room || room.outdoor);
     }
     if (j.kind === 'butcher') {
-      const carcass = j.deliveredFood.find(b => b.resource === 'carcass')?.carcass;
+      const carcass = j.deliveredBatches.find(b => b.resource === 'carcass')?.carcass;
       if (!carcass) { j.reason = '等待新鲜动物尸体'; this.release(p); return; }
       yields.meat = ANIMAL_DEFS[carcass.species].meat;
     }
@@ -6307,6 +6316,7 @@ export class VoxelSimulation {
       for (const pawn of this.pawns) if (!pawn.dead) tickSkills(pawn.skills, this.tick, DAY);
       this.updateEnvironment();
       if (this.tick % 100 === 0) this.updateSnow();
+      if (this.tick % ENVIRONMENT_RULES.interval === 0) this.updateEnvironmentalEffects();
       updateFires(this);
       this.updatePreservation();
       this.updateTrees();
@@ -6508,6 +6518,60 @@ export class VoxelSimulation {
     this.refreshWeatherRoof();
     return inside(p) && p.z >= this.weatherRoof[p.y * WIDTH + p.x];
   }
+  private deteriorationEnvironment(p: Pos): DeteriorationEnvironment {
+    return { exposed: this.weatherExposed(p), outdoors: this.rooms.roomAt(p)?.outdoor ?? true,
+      rainRate: weatherEffects(this.weather, this.tick).rainRate };
+  }
+  private environmentView(): EnvironmentView {
+    const view = (id: number, entity: 'stack' | 'carcass', p: Pos, batch: Cargo) => {
+      const environment = this.deteriorationEnvironment(p);
+      return { id, entity, environment, hitPoints: batchHitPoints(batch),
+        maxHitPoints: batchMaxHitPoints(batch), rate: deteriorationRate(batch, environment) };
+    };
+    const rain = weatherEffects(this.weather, this.tick).rainRate;
+    return {
+      items: [...this.items.map(i => view(i.id, 'stack', i, i)),
+        ...this.animals.filter(a => a.dead).map(a => view(a.id, 'carcass', a, carcassBatch(a)))],
+      filth: this.filth.map(f => ({ id: f.id, exposed: this.weatherExposed(f), rainWashes: RAIN_WASHES[f.kind],
+        washing: this.weatherExposed(f) && RAIN_WASHES[f.kind] && rain > 0 })),
+      wetPawnIds: wettingWeather(this.weather, this.tick)
+        ? this.pawns.filter(p => p.faction === 'colony' && !p.dead && this.weatherExposed(p)).map(p => p.id) : [],
+      natureAvailable: natureWeatherAllowed(this.weather, this.tick),
+    };
+  }
+  /** Environment acts on spawned physical containers. A stockpile designation
+   * changes logistics only; carried and delivered inputs are not ground stacks. */
+  private updateEnvironmentalEffects() {
+    this.updateRooms();
+    for (const item of [...this.items]) {
+      if (!advanceDeterioration(item, this.deteriorationEnvironment(item), this.seed, item.id, this.tick)) continue;
+      this.tradeApplyPlacement({ items: this.items.filter(i => i.id !== item.id), nextId: this.nextId },
+        '预留物品已劣化损毁，重新安排任务');
+      this.stats.destroyed[item.resource] += item.amount;
+      for (const p of this.pawns)
+        if (this.craftSources.get(p.id) === item.id || this.storageReservations.get(p.id)?.sourceId === item.id) {
+          this.release(p); p.reason = '预留物品已劣化损毁，重新安排任务';
+        }
+      this.notice = `${item.amount}单位${RESOURCE_NAMES[item.resource]}因环境劣化损毁。屋顶和封闭仓库可以保护物资。`;
+    }
+    for (const animal of [...this.animals]) if (animal.dead) {
+      const batch = carcassBatch(animal);
+      if (advanceDeterioration(batch, this.deteriorationEnvironment(animal), this.seed, animal.id, this.tick)) {
+        this.animals = this.animals.filter(a => a.id !== animal.id); this.stats.destroyed.carcass++;
+      } else if (batch.hitPoints !== undefined) animal.carcassHitPoints = batch.hitPoints;
+    }
+    const rain = weatherEffects(this.weather, this.tick).rainRate;
+    for (const f of this.filth) if (RAIN_WASHES[f.kind] && this.weatherExposed(f) &&
+        deteriorationRandom(this.seed ^ 0x61e245f, f.id, this.tick) <
+          rain * ENVIRONMENT_RULES.filthVisitsPerDay * ENVIRONMENT_RULES.interval / DAY) f.amount--;
+    const removed = new Set(this.filth.filter(f => f.amount === 0).map(f => f.id));
+    if (removed.size) {
+      this.filth = this.filth.filter(f => !removed.has(f.id));
+      for (const p of this.pawns) if (p.cleanTask && removed.has(p.cleanTask.filthId)) {
+        this.release(p); p.reason = '雨水已冲净污物';
+      }
+    }
+  }
   /** Base move time uses weather at departure, while terrain entry uses the
    * greater of snow or an obstacle cost. Costs are converted from native TPS. */
   weatherMoveTicks(from: Pos, baseTicks: number, to: Pos = from, obstacleTicks = 0): number {
@@ -6667,9 +6731,9 @@ export class VoxelSimulation {
         removed = true;
       }
     for (const job of this.jobs)
-      if (job.deliveredFood.length) {
+      if (job.deliveredBatches.length) {
         const temperature = this.temperature(job);
-        job.deliveredFood = job.deliveredFood.filter((batch) => {
+        job.deliveredBatches = job.deliveredBatches.filter((batch) => {
           if (!advanceRot(batch, temperature)) return true;
           this.stats.spoiled[batch.resource] += batch.amount;
           const remaining = (job.delivered[batch.resource] ?? 0) - batch.amount;
@@ -6708,6 +6772,7 @@ export class VoxelSimulation {
         stored[i.resource] += i.amount;
     return structuredClone({
       weather: { ...this.weather, effects: weatherEffects(this.weather, this.tick) },
+      environment: this.environmentView(),
       snow: this.snow, weatherRoof: this.weatherRoof,
       weatherBytes: this.weatherRoof.byteLength + this.snow.length * 32,
       fires: this.fires, fireDamage: this.fireDamage, fireHazards: this.fireHazards, fireLog: this.fireLog,
@@ -6791,7 +6856,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 27,
+      version: 28,
       weather: this.weather, snow: this.snow,
       fires: this.fires, fireDamage: this.fireDamage, fireHazards: this.fireHazards, fireLog: this.fireLog,
       filth: this.filth,
@@ -6841,11 +6906,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyEnvironmentFields(old);
     rejectLegacyWeatherFields(old);
     rejectLegacyFireFields(old);
     rejectLegacySanitationFields(old);
@@ -7179,7 +7245,8 @@ export class VoxelSimulation {
     migrateSanitation(old, sourceVersion);
     migrateFire(old, sourceVersion);
     migrateWeather(old, sourceVersion);
-    old.version = 27;
+    migrateEnvironment(old, sourceVersion);
+    old.version = 28;
     const d = old as VoxelSave;
     const loadHealth = (p: Pawn) =>
       oldHealth.get(p.id) ?? {
@@ -7300,6 +7367,7 @@ export class VoxelSimulation {
                 'forbidden',
                 'carcass',
                 'poisonChance',
+                'hitPoints',
                 'x',
                 'y',
                 'z',
@@ -7591,7 +7659,7 @@ export class VoxelSimulation {
     const plainCargo = (batch: Cargo) =>
       validBatch(batch) &&
       Object.keys(batch).every((key) =>
-        ['resource', 'amount', 'crop', 'rotProgress', 'apparel', 'weapon', 'forbidden', 'carcass', 'poisonChance'].includes(
+        ['resource', 'amount', 'crop', 'rotProgress', 'apparel', 'weapon', 'forbidden', 'carcass', 'poisonChance', 'hitPoints'].includes(
           key,
         ),
       );
@@ -7812,23 +7880,22 @@ export class VoxelSimulation {
       )
         throw new Error('任务数据无效');
       if (
-        !Array.isArray(j.deliveredFood) ||
-        j.deliveredFood.length > 6 ||
-        j.deliveredFood.some(
+        !Array.isArray(j.deliveredBatches) ||
+        j.deliveredBatches.length > 18 ||
+        j.deliveredBatches.some(
           (batch) =>
-            !(migrateLogistics ? validBatch(batch) : plainCargo(batch)) ||
-            !isPerishable(batch.resource),
+            !(migrateLogistics ? validBatch(batch) : plainCargo(batch)),
         ) ||
-        new Set(j.deliveredFood.map((batch) => `${batch.resource}/${batch.crop ?? ''}`)).size !==
-          j.deliveredFood.length ||
-        (['grain', 'meat', 'carcass', 'meal', 'herb'] as const).some(
+        new Set(j.deliveredBatches.map((batch) => `${batch.resource}/${batch.crop ?? ''}`)).size !==
+          j.deliveredBatches.length ||
+        resources.some(
           (resource) =>
-            j.deliveredFood
+            j.deliveredBatches
               .filter((batch) => batch.resource === resource)
               .reduce((sum, batch) => sum + batch.amount, 0) !== (j.delivered[resource] ?? 0),
         )
       )
-        throw new Error('配送食材容器与任务数量不一致');
+        throw new Error('配送实物批次与任务数量不一致');
     }
     validateMedicineState(d);
     for (const p of d.pawns) {
@@ -8389,7 +8456,7 @@ export class VoxelSimulation {
       }
       s.items = items;
       for (const job of s.jobs)
-        job.deliveredFood = job.deliveredFood.map((batch) => portion(batch, batch.amount));
+        job.deliveredBatches = job.deliveredBatches.map((batch) => portion(batch, batch.amount));
       for (const pawn of s.pawns)
         if (pawn.cargo) pawn.cargo = portion(pawn.cargo, pawn.cargo.amount);
       for (const pawn of s.pawns)

@@ -303,8 +303,8 @@ async function modeRun(mode) {
       saveBefore.pawns.map((p) => p.cargo),
     );
     assert.deepEqual(
-      saveAfter.jobs.map((j) => [j.id, j.delivered, j.deliveredFood]),
-      saveBefore.jobs.map((j) => [j.id, j.delivered, j.deliveredFood]),
+      saveAfter.jobs.map((j) => [j.id, j.delivered, j.deliveredBatches]),
+      saveBefore.jobs.map((j) => [j.id, j.delivered, j.deliveredBatches]),
     );
     record('DOM save/load preserves food ages species storage filters and all food containers');
     const frozen = (await state()).snapshot,

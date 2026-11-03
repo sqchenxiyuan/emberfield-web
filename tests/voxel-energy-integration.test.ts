@@ -6,6 +6,7 @@ import { initialStoryteller } from '../src/voxel/storyteller';
 import { initialTrade } from '../src/voxel/trade';
 import { initialFireHazards } from '../src/voxel/fire';
 import { initialWeather } from '../src/voxel/weather';
+import { freshBatch } from '../src/voxel/preservation';
 import { VoxelThermal } from '../src/voxel/thermal';
 import { temperatureAt } from '../src/voxel/farming';
 import {
@@ -387,6 +388,7 @@ describe('construction footprint transactions with explicitly injected fixtures'
     // Only the completion transaction is under test; material delivery/progress
     // are fixture injections, not evidence of a played construction campaign.
     job.delivered = { ...job.cost };
+    job.deliveredBatches = Object.entries(job.delivered).map(([resource, amount]) => freshBatch(resource as Resource, amount!));
     until(
       sim,
       () => sim.pawns[0].phase === 'work' && sim.pawns[0].jobId === job.id && job.progress > 0,
@@ -609,7 +611,7 @@ describe('v4 energy persistence and malformed-input rejection', () => {
     const original = savedWorld(),
       saved = original.save(),
       restored = VoxelSimulation.load(saved);
-    expect(saved.version).toBe(27);
+    expect(saved.version).toBe(28);
     expect(restored.devices.map((d) => [d.fuel, d.energy, d.target])).toEqual(
       original.devices.map((d) => [d.fuel, d.energy, d.target]),
     );
@@ -706,7 +708,7 @@ describe('v4 energy persistence and malformed-input rejection', () => {
     delete old.wires;
     delete old.thermal;
     const restored = VoxelSimulation.load(old);
-    expect(restored.save().version).toBe(27);
+    expect(restored.save().version).toBe(28);
     expect(restored.devices).toEqual([]);
     expect(restored.wires).toEqual([]);
     expect(restored.blocks).toEqual(sim.blocks);

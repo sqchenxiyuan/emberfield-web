@@ -105,7 +105,7 @@ describe('sanitation physical and interrupted boundaries', () => {
       s.stoves.push(stove); fill(s, [stove]);
       command(s, { type: 'bill', stoveId: stove.id, target: 1, paused: false });
       const job = s.jobs.find(j => j.kind === 'cook')!;
-      job.delivered = { wood: 1, grain: 10 }; job.deliveredFood = [freshBatch('grain', 10)];
+      job.delivered = { wood: 1, grain: 10 }; job.deliveredBatches = [freshBatch('wood', 1), freshBatch('grain', 10)];
       job.progress = job.work - 1; s.pawns[0].priorities.cook = 1;
     });
     until(s, () => s.jobs.some(j => j.kind === 'cook' && !!j.cookingOutcome));

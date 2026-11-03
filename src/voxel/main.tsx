@@ -13,6 +13,8 @@ import { SurvivalPanel } from './SurvivalPanel';
 import { SanitationPanel, SanitationDetails, CleaningStatus } from './SanitationPanel';
 import { FirePanel, FireDetails, FireDamageDetails, FireWorkStatus } from './FirePanel';
 import { WeatherPanel, WeatherCellDetails } from './WeatherPanel';
+import { BatchDurability, ItemCondition } from './ItemCondition';
+import type { EnvironmentView } from './environment';
 import { WEATHER_NAMES } from './weather';
 import { needsMedicalTending } from './medicine';
 import { healthSummary } from './survival';
@@ -206,8 +208,10 @@ const foodName = (batch: Cargo) =>
       : batch.resource === 'grain' && batch.crop
         ? CROPS[batch.crop].name
         : RESOURCE_NAMES[batch.resource];
-function MoodPanel({ pawn, tick, temperature, pin, focus }: { pawn: Pawn; tick: number; temperature: number; pin?: Pos; focus: (p: Pos) => void }) {
+function MoodPanel({ pawn, tick, temperature, environment, pin, focus }: { pawn: Pawn; tick: number; temperature: number; environment: EnvironmentView; pin?: Pos; focus: (p: Pos) => void }) {
   const view = moodView(pawn, tick, temperature), psyche = pawn.psyche, activity = psyche.recreation;
+  const wet = psyche.memories.find(memory => memory.kind === 'wet' && memory.expires > tick);
+  const wetting = environment.wetPawnIds.includes(pawn.id);
   const breaking = view.risk === 'break', unavailable = pawn.dead || pawn.downed || pawn.drafted || breaking;
   const remaining = (ticks: number) => `${Math.max(1, Math.ceil(ticks / DAY * 24 * 60))} 游戏分钟`;
   return <section className={`voxel-mood-panel mood-${view.risk}`} data-testid="mood-panel" data-risk={view.risk}>
@@ -228,6 +232,12 @@ function MoodPanel({ pawn, tick, temperature, pin, focus }: { pawn: Pawn; tick: 
       <ul>{view.thoughts.map((thought, i) => <li key={`${thought.label}-${i}`}><span>{thought.label}</span><b className={thought.value < 0 ? 'negative' : 'positive'}>{thought.value > 0 ? '+' : ''}{Number(thought.value.toFixed(1))}</b></li>)}</ul>
       <small>这些影响共同决定目标心情。吃饭、休息、处理疼痛和安排娱乐会改变实际原因。</small>
     </details>
+    {(wet || wetting) && <div className="voxel-recreation-status" data-testid="wet-memory-status" data-wetting={wetting}
+      data-expires={wet?.expires ?? ''} data-remaining-ticks={wet ? wet.expires - tick : 0}>
+      <b>{wetting ? '正在淋雨' : '已不再淋雨'}</b>
+      <small>{wet ? `淋湿影响剩余 ${remaining(wet.expires - tick)}。` : '持续淋雨会留下淋湿的心情影响。'}
+        {wetting ? '继续淋雨会刷新这段时间。' : '先前淋湿的影响会在剩余时间结束后消退。'}</small>
+    </div>}
     <details className="voxel-recreation-tolerance"><summary>活动耐受与恢复</summary>
       {(Object.keys(RECREATION_NAMES) as (keyof typeof RECREATION_NAMES)[]).map(kind => <label key={kind}>{RECREATION_NAMES[kind]} · 耐受 {Math.round(psyche.tolerance[kind] * 100)}%<progress aria-label={`${RECREATION_NAMES[kind]}耐受`} value={psyche.tolerance[kind]} max={1} /></label>)}
       <small>反复进行同一种活动，娱乐收益会减少；换种活动并等待一段时间，耐受会逐渐消退。</small>
@@ -238,6 +248,7 @@ function MoodPanel({ pawn, tick, temperature, pin, focus }: { pawn: Pawn; tick: 
         : <button disabled={unavailable} onClick={() => void client.command({ type: 'recreate', pawnId: pawn.id })}>现在去娱乐</button>}
       <button onClick={() => pin ? focus(pin) : client.choose('horseshoePin')}>{pin ? '定位马蹄铁桩' : '建造马蹄铁桩'}</button>
     </div>
+    {!environment.natureAvailable && <small data-testid="nature-weather-restriction">当前天气不适合户外散步。马蹄铁投掷仍按场地、温度和可达性安排。</small>}
     {pawn.drafted && <small>解除征召后才能安排娱乐。</small>}
   </section>;
 }
@@ -649,7 +660,10 @@ function App() {
             <small>入库 {s?.stored[r] ?? 0}</small>
           </div>
         ))}
-        <p>包括散落、携带、穿戴和工地材料</p>
+        <p>包括散落、携带、穿戴和工地材料。入库不代表受到屋顶或室内保护。</p>
+        {!!s?.environment.items.some(item => item.rate > 0) && <p data-testid="deteriorating-inventory-summary">
+          {s.environment.items.filter(item => item.rate > 0).length} 处地面物资正在环境劣化；选中物资查看耐久与原因。
+        </p>}
         {s && (
           <button
             className="voxel-storyteller-open"
@@ -860,7 +874,9 @@ function App() {
           <div className="voxel-info-row"><b>{ANIMAL_DEFS[animal.species].name}</b><span>{ANIMAL_PHASE_NAMES[animal.phase]}</span></div>
           <label>健康 {Math.ceil(animal.health)} / {ANIMAL_DEFS[animal.species].health}<progress aria-label="动物健康" value={animal.health} max={ANIMAL_DEFS[animal.species].health} /></label>
           <small>饱食 {Math.round(animal.hunger)}% · 位置 {animal.x}, {animal.y} · Z {animal.z}</small>
-          {animal.dead ? <p>等待附近空位放下尸体；尸体需要搬到屠宰点加工。</p> : <>
+          {animal.dead ? <><p>等待附近空位放下尸体；尸体需要搬到屠宰点加工。</p>
+            <ItemCondition condition={s?.environment.items.find(item => item.entity === 'carcass' && item.id === animal.id)} name={`${ANIMAL_DEFS[animal.species].name}尸体`} />
+          </> : <>
             <p>{assignedHunter ? `${assignedHunter.name} · ${assignedHunter.reason}` : animal.hunt ? '已标记，等待能行动的猎人。' : '尚未标记狩猎。'}</p>
             {!hunters.length && <small>需要未征召、能行动且装备短弓或枪械的殖民者，并开启狩猎分工。</small>}
             <button aria-label={animal.hunt ? '取消狩猎此动物' : '标记狩猎此动物'} aria-pressed={animal.hunt} onClick={() => void client.command({ type: 'hunt', animalId: animal.id, enabled: !animal.hunt })}>{animal.hunt ? '取消狩猎' : '标记狩猎'}</button>
@@ -933,7 +949,7 @@ function App() {
             <small>按实际六向空气连通判断；视图切层不改变房间。</small>
           </div>
         )}
-        {p && s && !weatherOpen && <WeatherCellDetails snapshot={s} pos={p} />}
+        {p && s && !weatherOpen && <WeatherCellDetails snapshot={s} pos={p} indoors={room?.outdoor === false} />}
         {p && s && <FireDetails snapshot={s} pos={p} preferredPawnId={selectedPawn} temperature={temperatureOf(p)} command={c => void client.command(c)} />}
         {p && s && <FireDamageDetails snapshot={s} pos={p} preferredPawnId={selectedPawn} command={c => void client.command(c)} />}
         {p && s && <SanitationDetails snapshot={s} pos={p} roomId={room?.id} preferredPawnId={selectedPawn}
@@ -1369,6 +1385,7 @@ function App() {
               每堆上限 {stackLimit(i.resource)} · 剩余 {stackLimit(i.resource) - i.amount}
             </small>
             <FoodCondition batch={i} temperature={temperatureOf(i)} />
+            <ItemCondition condition={s?.environment.items.find(item => item.entity === 'stack' && item.id === i.id)} name={foodName(i)} />
             {i.carcass && <div className="voxel-carcass-detail" data-testid="carcass-detail">
               <small>来源动物 #{i.carcass.animalId} · 完整{ANIMAL_DEFS[i.carcass.species].name}尸体</small>
               <button onClick={() => { client.choose('butcherSpot'); setNotice('在可达地面划定屠宰点，再开启人物的烹饪分工。'); }}>建造屠宰点</button>
@@ -1409,12 +1426,13 @@ function App() {
                 .map((r) => ` · ${RESOURCE_NAMES[r]} ${j.delivered[r] ?? 0}/${j.cost[r]}`)
                 .join('')}
             </small>
-            {j.deliveredFood?.map((batch, i) => (
+            {j.deliveredBatches.map((batch, i) => (
               <div key={i} data-testid="delivered-food">
                 <small>
                   已配送 {foodName(batch)} × {batch.amount}
                 </small>
                 <FoodCondition batch={batch} temperature={temperatureOf(j)} />
+                <BatchDurability batch={batch} name={foodName(batch)} />
               </div>
             ))}
           </div>
@@ -1455,6 +1473,7 @@ function App() {
               <small>囚犯保留伤情和需求，可以被护理与喂食；招募后才能像殖民者一样征召、分工和安排作息。</small>
             </section>}
             {pawn.faction === 'colony' && <MoodPanel pawn={pawn} tick={s?.tick ?? 0} temperature={temperatureOf(pawn)}
+              environment={s!.environment}
               pin={s?.horseshoePins.toSorted((a, b) => Math.abs(a.x - pawn.x) + Math.abs(a.y - pawn.y) + Math.abs(a.z - pawn.z) - Math.abs(b.x - pawn.x) - Math.abs(b.y - pawn.y) - Math.abs(b.z - pawn.z))[0]}
               focus={focus} />}
             {s && <CleaningStatus pawn={pawn} snapshot={s} command={c => void client.command(c)} />}
@@ -1593,6 +1612,7 @@ function App() {
                   {carryLimit(pawn.cargo.resource)}
                 </p>
                 <FoodCondition batch={pawn.cargo} temperature={temperatureOf(pawn)} />
+                <BatchDurability batch={pawn.cargo} name={foodName(pawn.cargo)} />
               </div>
             )}
             <SkillPanel pawn={pawn} />
@@ -1856,6 +1876,7 @@ function App() {
         selectPawn={person => { setSelectedAnimal(null); setSelectedPawn(person.id); focus(person); }}
         command={c => void client.command(c)} close={() => setFireOpen(false)} />}
       {weatherOpen && s && <WeatherPanel snapshot={s} selectedPos={state.selected}
+        selectedIndoors={!!state.selected && client.roomAt(state.selected)?.outdoor === false}
         focus={target => { setSelectedAnimal(null); setSelectedPawn(null); focus(target); }} close={() => setWeatherOpen(false)} />}
       {prisonOpen && s && <aside className="voxel-prison-drawer" aria-label="囚犯与招募" data-testid="prison-panel">
         <div className="voxel-prison-heading"><h2>囚犯与招募</h2><button aria-label="关闭囚犯面板" onClick={() => setPrisonOpen(false)}>×</button></div>
