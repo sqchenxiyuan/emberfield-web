@@ -1,5 +1,13 @@
 # Persisted gameplay fixtures
 
+`voxel-v26-weather-initial.json` and `voxel-v26-weather-fire-active.json` retain
+unaltered v26 fire-campaign bytes from root commit
+`57e90c65e3c52cd5cc9ecc46daab4dd8115a0747` (published subtree
+`6ae1ebc1a610a9acd9c7c1f61994bc2f4ed33be4`). Their companion provenance files
+record exact hashes, tick, source checkpoint and executed campaign hashes.
+The v27 weather migration must preserve the existing live fire and physical
+colony; these are not current saves with their version numbers rewritten.
+
 `voxel-v25-fire-initial.json` preserves the unmodified tick-zero v25 sanitation
 campaign checkpoint from root commit `fb009d6662f0ba4c1a7f62122a74469f5fb14bac`.
 It was produced by ordinary world creation, before v26 fire fields existed.

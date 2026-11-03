@@ -9,6 +9,7 @@ import type { Psyche } from './mood';
 import type { PrisonerState, PrisonerPolicy, WardenTask } from './prisoners';
 import type { Filth, CleanTask, FoodPoisoning, RoomCleanliness, CookingOutcome } from './sanitation';
 import type { Fire, FireDamage, FireHazards, FireLogEntry, FirefightTask, RepairTask } from './fire';
+import type { WeatherState, WeatherView, SnowCover } from './weather';
 // Voxel rules are Emberfield designs. See research/10 for source boundaries.
 export const WIDTH = 64,
   DEPTH = 64,
@@ -673,6 +674,10 @@ export interface VoxelStats {
   spoiled: Counts;
 }
 export interface VoxelSnapshot {
+  weather: WeatherView;
+  snow: SnowCover[];
+  weatherRoof: Uint8Array;
+  weatherBytes: number;
   fires: Fire[];
   fireDamage: FireDamage[];
   fireHazards: FireHazards;
@@ -807,6 +812,8 @@ export interface CommandResult {
   count?: number;
 }
 export interface VoxelSave {
+  weather: WeatherState;
+  snow: SnowCover[];
   fires: Fire[];
   fireDamage: FireDamage[];
   fireHazards: FireHazards;
@@ -814,7 +821,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 26;
+  version: 27;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;

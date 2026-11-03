@@ -4,6 +4,7 @@ import { VoxelPower } from './power';
 import { VoxelThermal } from './thermal';
 import { healthSummary } from './survival';
 import { learnSkill } from './skills';
+import { weatherEffects, WEATHER_RULES, type WeatherState } from './weather';
 import { FIRE_RULES, FIRE_MAX_HP, FIRE_TARGET_NAMES, fireRandom, fireDamageKey, fireDamageCells,
   fireDamageHomeCells, fireDamageBurning, makeFire, nextFireIncident,
   type Fire, type FireDamage, type FireHazards, type FireLogEntry, type BurnTargetKind, type FireSource } from './fire';
@@ -12,6 +13,8 @@ export interface FireHost extends Pick<VoxelSave, 'pawns' | 'items' | 'trees' | 
   'stonecutters' | 'tailors' | 'weaponBenches' | 'researchBenches' | 'horseshoePins' | 'butcherSpots' | 'devices' | 'wires'> {
   seed: number; tick: number; nextId: number; revision: number; notice: string;
   blocks: Uint8Array; ladders: Uint8Array; homeArea: Set<number>;
+  weather: WeatherState;
+  weatherExposed(p: Pos): boolean;
   fires: Fire[]; fireDamage: FireDamage[]; fireHazards: FireHazards; fireLog: FireLogEntry[];
   rooms: VoxelRooms; power: VoxelPower; thermal: VoxelThermal;
   updateRooms(): void;
@@ -116,7 +119,7 @@ function incident(s: FireHost) {
       }
     }
     if (electrical.size) { source = 'shortCircuit'; candidates = [...electrical.values()]; }
-    else {
+    else if (s.weather.kind === 'thunderstorm') {
       candidates = [...s.trees, ...s.crops].filter(p => openSky(s, p) && !s.fires.some(f => same(f, p)));
       if (!candidates.length) for (let i = WIDTH * DEPTH; i < s.blocks.length; i++) if (s.blocks[i] === Block.Wood) {
         const q = position(i), above = { ...q, z: q.z + 1 };
@@ -131,7 +134,7 @@ function incident(s: FireHost) {
   const networkId = fire && source === 'shortCircuit' ? candidateNetworks.get(at(fire)) ?? null : null;
   const reason = !state.enabled ? '玩家已关闭后续火灾事件' : fire ? source === 'shortCircuit'
     ? '通电网络发生故障并引燃附近实物；相连电池放电，既有发电继续' : '雷击引燃室外植物或木结构'
-    : '本次没有适合点燃的实物位置';
+    : source === 'lightning' && s.weather.kind !== 'thunderstorm' ? '没有通电故障目标且当前不是雷暴，未发生落雷' : '本次没有适合点燃的实物位置';
   if (fire && networkId !== null) for (const d of s.devices)
     if (d.kind === 'battery' && d.on && d.networkId === networkId) d.energy = 0;
   state.events.push({ tick: s.tick, source, outcome: fire ? 'ignited' : 'skipped',
@@ -143,6 +146,10 @@ export function updateFires(s: FireHost) {
   if (s.tick >= s.fireHazards.nextIncidentTick) incident(s);
   s.updateRooms();
   for (const fire of [...s.fires]) {
+    if (s.weatherExposed(fire)) {
+      fire.size -= weatherEffects(s.weather, s.tick).rainRate * WEATHER_RULES.rainExtinguishPerSecond / TPS;
+      if (fire.size < FIRE_RULES.minSize) { removeFire(s, fire, '露天火焰被降水扑灭'); continue; }
+    }
     let fuel = fireFuelAt(s, fire);
     if (!fuel.length) { removeFire(s, fire, '可燃物已耗尽，火焰熄灭'); continue; }
     const rooms = new Map<number, Pos>();

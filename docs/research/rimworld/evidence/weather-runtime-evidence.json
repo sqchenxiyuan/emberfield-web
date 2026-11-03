@@ -1,0 +1,802 @@
+{
+  "evidence_id": "RW17-NATIVE-WEATHER",
+  "date_local": "2026-11-04",
+  "version": "1.7.4980 rev60",
+  "kind": "Native developer weather preparation, ordinary UI observation and original unedited saves; no injected game code",
+  "launch": {
+    "started_utc": "2026-11-03T18:56:44.5291115Z",
+    "pid": 35300,
+    "launch_record": ".local-research/runtime/weather-launch.json",
+    "launch_record_sha256": "aee9e1fed24aedc1c2f3380db20159fd4692641ef8acfc5ddb099c07c31cfcd2",
+    "profile": ".local-research/runtime/profile-weather-20261104",
+    "mods_config_sha256": "41595349c9d4e0815c74d5fa89fa6dad2dd3af494f547c5734b028918f2151ff",
+    "baseline_source_sha256": "ce0620ce2809fa582014cbbbe2302703d828585ebdb97f6260958fc65d88dc0d",
+    "baseline_copy_sha256": "ce0620ce2809fa582014cbbbe2302703d828585ebdb97f6260958fc65d88dc0d",
+    "active_mods": [
+      "ludeon.rimworld",
+      "ludeon.rimworld.odyssey"
+    ]
+  },
+  "preparation": {
+    "method": "Developer Actions: Change weather..., select Rain",
+    "developer_action": true,
+    "menu_click": [
+      100,
+      925
+    ],
+    "weather_click": [
+      100,
+      118
+    ],
+    "natural_weather_occurrence_measured": false
+  },
+  "target": {
+    "pawn_id": "Human961",
+    "thought": "SoakingWet",
+    "selected_weather": "Rain",
+    "indoor_hover_client": [
+      1660,
+      750
+    ],
+    "outdoor_hover_client": [
+      1450,
+      700
+    ]
+  },
+  "saves": [
+    {
+      "file": ".local-research/runtime/profile-weather-20261104/Saves/weather-baseline.rws",
+      "sha256": "ce0620ce2809fa582014cbbbe2302703d828585ebdb97f6260958fc65d88dc0d",
+      "ticks_game": 203135,
+      "weather": {
+        "current": "Clear",
+        "previous": "Clear",
+        "age": 35492,
+        "xml": "<weatherManager><curWeatherAge>35492</curWeatherAge><curWeather>Clear</curWeather><lastWeather>Clear</lastWeather></weatherManager>",
+        "decider_duration": 155246,
+        "decider_xml": "<weatherDecider><curWeatherDuration>155246</curWeatherDuration></weatherDecider>"
+      },
+      "pawn": {
+        "id": "Human961",
+        "position": "(112, 0, 122)",
+        "job_def": "GotoWander",
+        "wet_memories": []
+      }
+    },
+    {
+      "file": ".local-research/runtime/profile-weather-20261104/Saves/New Arrivals1.rws",
+      "sha256": "35c533ef397e8fdcd2de0c7633dd3799b7cb76d4b00cfde76b71ccea5cd1924b",
+      "ticks_game": 204935,
+      "weather": {
+        "current": "Clear",
+        "previous": "Clear",
+        "age": 37292,
+        "xml": "<weatherManager><curWeatherAge>37292</curWeatherAge><curWeather>Clear</curWeather><lastWeather>Clear</lastWeather></weatherManager>",
+        "decider_duration": 155246,
+        "decider_xml": "<weatherDecider><curWeatherDuration>155246</curWeatherDuration></weatherDecider>"
+      },
+      "pawn": {
+        "id": "Human961",
+        "position": "(109, 0, 127)",
+        "job_def": "Wait_Wander",
+        "wet_memories": []
+      }
+    },
+    {
+      "file": ".local-research/runtime/profile-weather-20261104/Saves/New Arrivals2.rws",
+      "sha256": "bed98ff15d7b61b946c40f970e9eacbae0760e98a06585599b870abae246da45",
+      "ticks_game": 204935,
+      "weather": {
+        "current": "Rain",
+        "previous": "Clear",
+        "age": 0,
+        "xml": "<weatherManager><curWeatherAge>0</curWeatherAge><curWeather>Rain</curWeather><lastWeather>Clear</lastWeather></weatherManager>",
+        "decider_duration": 155246,
+        "decider_xml": "<weatherDecider><curWeatherDuration>155246</curWeatherDuration></weatherDecider>"
+      },
+      "pawn": {
+        "id": "Human961",
+        "position": "(109, 0, 127)",
+        "job_def": "Wait_Wander",
+        "wet_memories": []
+      }
+    },
+    {
+      "file": ".local-research/runtime/profile-weather-20261104/Saves/New Arrivals3.rws",
+      "sha256": "fd92be658685d8c21a00d04101b572bcd6107e0b0f43084c31fca4e432be42f7",
+      "ticks_game": 209398,
+      "weather": {
+        "current": "Rain",
+        "previous": "Clear",
+        "age": 4463,
+        "xml": "<weatherManager><curWeatherAge>4463</curWeatherAge><curWeather>Rain</curWeather><lastWeather>Clear</lastWeather></weatherManager>",
+        "decider_duration": 155246,
+        "decider_xml": "<weatherDecider><curWeatherDuration>155246</curWeatherDuration></weatherDecider>"
+      },
+      "pawn": {
+        "id": "Human961",
+        "position": "(105, 0, 130)",
+        "job_def": "GotoWander",
+        "wet_memories": [
+          {
+            "def": "SoakingWet",
+            "age": 150,
+            "xml": "<li><def>SoakingWet</def><sourcePrecept>null</sourcePrecept><otherPawn>null</otherPawn><age>150</age></li>"
+          }
+        ]
+      }
+    },
+    {
+      "file": ".local-research/runtime/profile-weather-20261104/Saves/New Arrivals4.rws",
+      "sha256": "4073a394fee8d9f39c7221a6ad1fefdd52a050afc2a1fe158e42fc47f5f5b859",
+      "ticks_game": 209398,
+      "weather": {
+        "current": "Rain",
+        "previous": "Clear",
+        "age": 4463,
+        "xml": "<weatherManager><curWeatherAge>4463</curWeatherAge><curWeather>Rain</curWeather><lastWeather>Clear</lastWeather></weatherManager>",
+        "decider_duration": 155246,
+        "decider_xml": "<weatherDecider><curWeatherDuration>155246</curWeatherDuration></weatherDecider>"
+      },
+      "pawn": {
+        "id": "Human961",
+        "position": "(105, 0, 130)",
+        "job_def": "GotoWander",
+        "wet_memories": [
+          {
+            "def": "SoakingWet",
+            "age": 150,
+            "xml": "<li><def>SoakingWet</def><sourcePrecept>null</sourcePrecept><otherPawn>null</otherPawn><age>150</age></li>"
+          }
+        ]
+      }
+    }
+  ],
+  "timing": {
+    "load_to_before_ticks": 1800,
+    "preparation_pair_equal_ticks": true,
+    "observed_weather_window_ticks": 4463,
+    "after_save_pair_equal_ticks": true,
+    "exact_onset_tick_measured": false
+  },
+  "observations": [
+    {
+      "id": "WER01",
+      "finding": "At the same game tick, developer transition changes current weather fromClear toRain, retains previousClear and resets age0. The immediate ordinary weather label still readsClear.",
+      "evidence": [
+        "WER01",
+        "WER02",
+        "saves"
+      ]
+    },
+    {
+      "id": "WER02",
+      "finding": "After three bounded speed3 runs, weather age4463 exceeds the4000tick transition duration; Rain label and rain overlay are visible.",
+      "evidence": [
+        "WER03",
+        "WER07",
+        "saves"
+      ]
+    },
+    {
+      "id": "WER03",
+      "finding": "Hovering outside shows Outdoors21C, while the constructed-roof room shows Indoors-8C and Dark0percent; both show the global Rain label. This is not a timed shelter movement experiment.",
+      "evidence": [
+        "WER03",
+        "WER04",
+        "WER05"
+      ]
+    },
+    {
+      "id": "WER04",
+      "finding": "Squint ordinary Needs panel shows Soaking wet -3; before and prepared saves contain no SoakingWet memory, both final same-tick saves contain one.",
+      "evidence": [
+        "WER06",
+        "saves"
+      ]
+    }
+  ],
+  "images": [
+    {
+      "id": "WER01",
+      "source_file": ".local-research/runtime/weather-012-weather-menu.png",
+      "source_sha256": "7fadb1c7351f9a2204cbe5c28515f27b56d94a96b4ac4db426f50d0ac3293b28",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        0,
+        0,
+        350,
+        280
+      ],
+      "file": "weather-runtime/developer-weather-menu.png",
+      "sha256": "91012fd0c99cc90d8d6e28bd3ff899d32df1f90fb7e5352488c3a1c4f81378be"
+    },
+    {
+      "id": "WER02",
+      "source_file": ".local-research/runtime/weather-013-rain-prepared.png",
+      "source_sha256": "3386577d30f14c4590622700f81d2a4c4d0f26ecdee3088046352a07bbe95f82",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        2410,
+        1160,
+        150,
+        145
+      ],
+      "file": "weather-runtime/prepared-still-clear-label.png",
+      "sha256": "5e4536e79fc70871af180b9406c9f460dbad7e27709536c525fbe41bb7f34d62"
+    },
+    {
+      "id": "WER03",
+      "source_file": ".local-research/runtime/weather-020-rain-run3.png",
+      "source_sha256": "65e1ebb9c4b4ffe706974c861fa957e51604f3442f58d3f0e959d3d99a306690",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        2410,
+        1160,
+        150,
+        145
+      ],
+      "file": "weather-runtime/rain-outdoor-label.png",
+      "sha256": "269712bae6778842e55fc8de5fefbc2e33bd1931effc6213db8049c9f8361a19"
+    },
+    {
+      "id": "WER04",
+      "source_file": ".local-research/runtime/weather-021-rain-indoor.png",
+      "source_sha256": "40081a063c796d7f969d9bba6e5c39b3f0ef09e0e0582be3c4cbf69520673035",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        2410,
+        1160,
+        150,
+        145
+      ],
+      "file": "weather-runtime/rain-indoor-label.png",
+      "sha256": "03aebb91d2c3c624803e0831d551a7b498a5fcbf1cfe18056a0576cc1ebb872a"
+    },
+    {
+      "id": "WER05",
+      "source_file": ".local-research/runtime/weather-021-rain-indoor.png",
+      "source_sha256": "40081a063c796d7f969d9bba6e5c39b3f0ef09e0e0582be3c4cbf69520673035",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        0,
+        1330,
+        450,
+        75
+      ],
+      "file": "weather-runtime/constructed-roof-label.png",
+      "sha256": "16201fd329b34924228379eb0db82069c9afc18a556b22ea8ddc15674a971af9"
+    },
+    {
+      "id": "WER06",
+      "source_file": ".local-research/runtime/weather-023-needs.png",
+      "source_sha256": "e758375a526e14c13a233778cddbbeb3c0298d28a851b084043799ed4053fafb",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        220,
+        690,
+        310,
+        285
+      ],
+      "file": "weather-runtime/soaking-wet-needs.png",
+      "sha256": "93cbeb03d8337272e1679af7573cf17c1da9eba09d0d9efa1535ed228aad190d"
+    },
+    {
+      "id": "WER07",
+      "source_file": ".local-research/runtime/weather-020-rain-run3.png",
+      "source_sha256": "65e1ebb9c4b4ffe706974c861fa957e51604f3442f58d3f0e959d3d99a306690",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        1400,
+        580,
+        650,
+        380
+      ],
+      "file": "weather-runtime/rain-scene.png",
+      "sha256": "505c39e12be7a80b5b134ebfe582c3e33564a76604fcb0abb01e3c2f6b33b8cd"
+    }
+  ],
+  "actions": [
+    {
+      "source_file": ".local-research/runtime/weather-001-launch.png.actions.jsonl",
+      "source_sha256": "1a8552d30137ebc4ee5d34f39cf2ddab74a81218366c4ec02c89df5f386afc25",
+      "started_utc": "2026-11-03T18:57:17.412106Z",
+      "finished_utc": "2026-11-03T18:57:18.2779231Z",
+      "action": "capture",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-001-launch.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-002-load.png.actions.jsonl",
+      "source_sha256": "58c38c24f18cabd254b948e71cf87ef080c5eb602c9107a51df950441c08bf77",
+      "started_utc": "2026-11-03T18:57:33.119795Z",
+      "finished_utc": "2026-11-03T18:57:34.3001931Z",
+      "action": "click",
+      "x": 2165,
+      "y": 690,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-002-load.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-003-loaded.png.actions.jsonl",
+      "source_sha256": "3a969d78902ac6877db73ab56d00bd1d807a6c762d71a14ac3e172afbaea2fcb",
+      "started_utc": "2026-11-03T18:57:51.5862546Z",
+      "finished_utc": "2026-11-03T18:57:53.9950219Z",
+      "action": "click",
+      "x": 1470,
+      "y": 441,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 1400,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-003-loaded.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-004-map.png.actions.jsonl",
+      "source_sha256": "fb885d74806c6834734cf5e9ed1b05debe15cd9fc685e3f86ef7ec4fb55f9d0b",
+      "started_utc": "2026-11-03T18:58:11.1042905Z",
+      "finished_utc": "2026-11-03T18:58:11.9395161Z",
+      "action": "capture",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-004-map.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-005-paused.png.actions.jsonl",
+      "source_sha256": "f4b7e56e828471ddf3f086ad18c6549c2ed252b80743b885bc7324d9843a17ce",
+      "started_utc": "2026-11-03T18:58:34.1398295Z",
+      "finished_utc": "2026-11-03T18:58:35.3413063Z",
+      "action": "click",
+      "x": 2441,
+      "y": 1305,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-005-paused.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-006-clear-indoor.png.actions.jsonl",
+      "source_sha256": "a286f59521fd98fafe6a46a929edec09e48728fcc656728fe7dbb0765a656db2",
+      "started_utc": "2026-11-03T18:59:38.8824253Z",
+      "finished_utc": "2026-11-03T18:59:39.7365904Z",
+      "action": "capture",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1660,
+      "park_y": 650,
+      "image_name": "weather-006-clear-indoor.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-007-menu.png.actions.jsonl",
+      "source_sha256": "4f07cf4c473512e3991bb5469f3a92224d46ff421c1fb26740458fcb8de6290d",
+      "started_utc": "2026-11-03T19:00:03.3937003Z",
+      "finished_utc": "2026-11-03T19:00:04.331126Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-007-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-008-save-dialog.png.actions.jsonl",
+      "source_sha256": "5a55498f2bc3bbfdc15950765a4fe7c665ccc54837815953b8a74782841b7c28",
+      "started_utc": "2026-11-03T19:00:28.8789523Z",
+      "finished_utc": "2026-11-03T19:00:30.0403266Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-008-save-dialog.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-009-save-clear.png.actions.jsonl",
+      "source_sha256": "3c76f4bf48172b18bcd1b9dbabd286390a3c1bc41f8841f3e823a94e550f2635",
+      "started_utc": "2026-11-03T19:00:56.9373232Z",
+      "finished_utc": "2026-11-03T19:00:58.9466944Z",
+      "action": "click",
+      "x": 1490,
+      "y": 976,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 1000,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-009-save-clear.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-010-close-menu.png.actions.jsonl",
+      "source_sha256": "5bd364d02f7d67ea516d84dff6835daf7d448eee58838709807740e4fa6b7fae",
+      "started_utc": "2026-11-03T19:01:01.872386Z",
+      "finished_utc": "2026-11-03T19:01:02.823148Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-010-close-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-011-dev-menu.png.actions.jsonl",
+      "source_sha256": "33d7f783488b7f7a91498ddaa2a82c2feee0bac213e01032e9b7c4434653ce9a",
+      "started_utc": "2026-11-03T19:01:31.2341386Z",
+      "finished_utc": "2026-11-03T19:01:32.2802776Z",
+      "action": "click",
+      "x": 1240,
+      "y": 13,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-011-dev-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-012-weather-menu.png.actions.jsonl",
+      "source_sha256": "c70df50dfe839ed38684c6f35b0fdbb134ef49921b7942321eceb20378b022e0",
+      "started_utc": "2026-11-03T19:02:06.1554712Z",
+      "finished_utc": "2026-11-03T19:02:07.2121544Z",
+      "action": "click",
+      "x": 100,
+      "y": 925,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-012-weather-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-013-rain-prepared.png.actions.jsonl",
+      "source_sha256": "e635cbae73d6f2f2adb49045a1534be5bfd9de97fca2ad3ee5910935ebfb7d9e",
+      "started_utc": "2026-11-03T19:02:38.4117325Z",
+      "finished_utc": "2026-11-03T19:02:39.6578866Z",
+      "action": "click",
+      "x": 100,
+      "y": 118,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-013-rain-prepared.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-014-menu.png.actions.jsonl",
+      "source_sha256": "7c41fd6eb0ee222fa6a0d08ddad36f25443bf0aa696185df1437d481adfa0645",
+      "started_utc": "2026-11-03T19:03:14.8192802Z",
+      "finished_utc": "2026-11-03T19:03:15.7522116Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-014-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-015-save-dialog.png.actions.jsonl",
+      "source_sha256": "0ed2ab5827d0e29f642b9370b824a4b66603da14c9248f99ba8a9db18267f88a",
+      "started_utc": "2026-11-03T19:03:16.0651802Z",
+      "finished_utc": "2026-11-03T19:03:17.0547441Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-015-save-dialog.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-016-save-transition.png.actions.jsonl",
+      "source_sha256": "5d799504843c652fc11e6560101ec4dd0264612c46f2edc6620d6c6a1b8fb29c",
+      "started_utc": "2026-11-03T19:03:17.3548766Z",
+      "finished_utc": "2026-11-03T19:03:19.1124747Z",
+      "action": "click",
+      "x": 1490,
+      "y": 976,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 1000,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-016-save-transition.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-017-close-menu.png.actions.jsonl",
+      "source_sha256": "abc612225c01d883a7560e7ebc444c848e2b5b56f64e24d54ad6e7795e19cd10",
+      "started_utc": "2026-11-03T19:03:57.6182026Z",
+      "finished_utc": "2026-11-03T19:03:58.6017549Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-017-close-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-018-rain-run1.png.actions.jsonl",
+      "source_sha256": "b5475b31dc080ed4ce30b452f00c6156dc20fcf7a2648be4c10e921794fda740",
+      "started_utc": "2026-11-03T19:03:58.927971Z",
+      "finished_utc": "2026-11-03T19:04:03.8545743Z",
+      "action": "pulse",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 51,
+      "duration_ms": 4000,
+      "wait_ms": 250,
+      "park_x": 1450,
+      "park_y": 700,
+      "image_name": "weather-018-rain-run1.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-019-rain-run2.png.actions.jsonl",
+      "source_sha256": "2dec48b8c8297eba8ac4de4344bcd38488fd98b27528fc42f9e61b8c9dbda588",
+      "started_utc": "2026-11-03T19:04:39.013844Z",
+      "finished_utc": "2026-11-03T19:04:44.207252Z",
+      "action": "pulse",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 51,
+      "duration_ms": 4000,
+      "wait_ms": 250,
+      "park_x": 1450,
+      "park_y": 700,
+      "image_name": "weather-019-rain-run2.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-020-rain-run3.png.actions.jsonl",
+      "source_sha256": "573315e69d1dd04f02ba61784d4dadc0a4c99a343d0f658d7154a07b07725f2f",
+      "started_utc": "2026-11-03T19:05:18.6090015Z",
+      "finished_utc": "2026-11-03T19:05:23.6956724Z",
+      "action": "pulse",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 51,
+      "duration_ms": 4000,
+      "wait_ms": 250,
+      "park_x": 1450,
+      "park_y": 700,
+      "image_name": "weather-020-rain-run3.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-021-rain-indoor.png.actions.jsonl",
+      "source_sha256": "520aeb0dc3eaf4c29b4c6223843c7da15ef3a0697609b3b9e947d170cbace2de",
+      "started_utc": "2026-11-03T19:06:02.8636492Z",
+      "finished_utc": "2026-11-03T19:06:03.7031527Z",
+      "action": "capture",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1660,
+      "park_y": 750,
+      "image_name": "weather-021-rain-indoor.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-022-squint.png.actions.jsonl",
+      "source_sha256": "c69b1ff4afe8485dbeb14a14697b9646c4d064175ac2118e8109335ff5a0683a",
+      "started_utc": "2026-11-03T19:06:04.0233499Z",
+      "finished_utc": "2026-11-03T19:06:05.0638534Z",
+      "action": "click",
+      "x": 1265,
+      "y": 40,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-022-squint.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-023-needs.png.actions.jsonl",
+      "source_sha256": "aa68436e499fe8e486de68dd75ec64262369e3cc696f84d884f03b2a8341af34",
+      "started_utc": "2026-11-03T19:07:34.8352609Z",
+      "finished_utc": "2026-11-03T19:07:36.015128Z",
+      "action": "click",
+      "x": 324,
+      "y": 1225,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-023-needs.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-024-clear-selection.png.actions.jsonl",
+      "source_sha256": "51ec8f57bdc81d2b6bc30df5774558b5f9b7290f30fb7158701704b622fda9a6",
+      "started_utc": "2026-11-03T19:08:16.1429122Z",
+      "finished_utc": "2026-11-03T19:08:17.3305378Z",
+      "action": "click",
+      "x": 1400,
+      "y": 1000,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-024-clear-selection.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-025-menu.png.actions.jsonl",
+      "source_sha256": "93a215ab16c98789a272fe5f4100317ed3dfeb049a9054316539696c93092cae",
+      "started_utc": "2026-11-03T19:08:17.6316818Z",
+      "finished_utc": "2026-11-03T19:08:18.4437695Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-025-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-026-save-dialog.png.actions.jsonl",
+      "source_sha256": "d9d1c4910208131c0df6556a401db0062708551275c9445d2b641ab4f84c7ce3",
+      "started_utc": "2026-11-03T19:08:18.7587808Z",
+      "finished_utc": "2026-11-03T19:08:19.7343694Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-026-save-dialog.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-027-save-rain.png.actions.jsonl",
+      "source_sha256": "8b7e7d4a4bc45e872716656956a09e57aca88157c73df4bb34a04136648d8949",
+      "started_utc": "2026-11-03T19:08:20.0359524Z",
+      "finished_utc": "2026-11-03T19:08:21.8159769Z",
+      "action": "click",
+      "x": 1490,
+      "y": 976,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 1000,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-027-save-rain.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-028-save-dialog.png.actions.jsonl",
+      "source_sha256": "dbc0ad73f8a019cb2e3093471d68e42128e23a46584ed1b75c524327dbc47637",
+      "started_utc": "2026-11-03T19:09:24.7606497Z",
+      "finished_utc": "2026-11-03T19:09:25.9594675Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-028-save-dialog.png"
+    },
+    {
+      "source_file": ".local-research/runtime/weather-029-save-check.png.actions.jsonl",
+      "source_sha256": "13a3875a0f3f9c8e520e6751621749a53810a7e0ad4a80bdaddb052130caaef0",
+      "started_utc": "2026-11-03T19:09:26.2968261Z",
+      "finished_utc": "2026-11-03T19:09:28.118856Z",
+      "action": "click",
+      "x": 1490,
+      "y": 976,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 1000,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "weather-029-save-check.png"
+    }
+  ],
+  "shutdown": {
+    "method": "Ordinary Quit to OS at (2215,1315) after the second final save",
+    "attempted_capture": "weather-030-quit.png",
+    "capture_result": "Foreground guard rejected capture after native exit; no exit screenshot or successful action-log entry claimed",
+    "observed_utc": "2026-11-03T19:14:50.6978471Z",
+    "rimworld_processes_after_exit": []
+  },
+  "limitations": [
+    "Initial load advanced1800ticks before confirmed pause.",
+    "Developer Change weather bypasses natural selection and does not reroll WeatherDecider duration.",
+    "Three4second wall-clock pulses are input bounds, not calibrated simulation-rate or memory-onset measurements.",
+    "The scene also progresses from15h toward17h, so changing brightness cannot be attributed solely to rain.",
+    "Indoor cold existed before rain; no claim that rain cooled the room.",
+    "No native snow, movement-speed, shooting, solar-output, rain-fire, deterioration-rate or rain-short-circuit experiment.",
+    "Only selected save fields and small diagnostic crops are committed; full saves/screenshots remain local."
+  ]
+}

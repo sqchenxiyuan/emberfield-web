@@ -1,0 +1,530 @@
+{
+  "evidence_id": "RW17-WEATHER-EXPOSURE-OPERATIONS",
+  "date_local": "2026-11-04",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Static derived managed-code reconstruction plus selected packaged XML; native observations separate",
+  "artifact_identity": "artifact-identity.json",
+  "manifest": "weather-manifest.json",
+  "types": "weather-types.json",
+  "claims": [
+    {
+      "id": "WE01",
+      "finding": "Weather selection combines biome commonality, rainfall curves, temperature and game-condition filters. Large fire danger shortens current duration threshold and raises rain weights; it does not guarantee immediate rain.",
+      "sources": [
+        {
+          "file": ".local-research/weather/RimWorld.WeatherDecider.cs",
+          "sha256": "37443e15971a60be6945c3a0ceb96344b1603a5a55daf498c8f6e53f90d44d10",
+          "lines": [
+            1,
+            217
+          ]
+        },
+        {
+          "file": ".local-research/weather/RimWorld.FireWatcher.cs",
+          "sha256": "287c8aba07e865865447a80ac292b51e84db3ff81c0c277d36c9c9701b309a04",
+          "lines": [
+            1,
+            53
+          ]
+        }
+      ],
+      "xml": [
+        "XML01",
+        "XML02"
+      ]
+    },
+    {
+      "id": "WE02",
+      "finding": "WeatherManager interpolates rates and movement/accuracy factors over4000ticks. Perceived label switches at priority-dependent fractions, while CurWeatherLerped switches at.5; workers handle overlays and events separately.",
+      "sources": [
+        {
+          "file": ".local-research/weather/RimWorld.WeatherManager.cs",
+          "sha256": "ba855d9db6860b85be7317c28084ae2c64adb8b898b15c6d9a9fbde630438ee8",
+          "lines": [
+            14,
+            180
+          ]
+        },
+        {
+          "file": ".local-research/weather/Verse.WeatherWorker.cs",
+          "sha256": "edfa00053a8540eee87fd79b322c679b03624a565b5c5c49114981fb7e00442c",
+          "lines": [
+            29,
+            95
+          ]
+        },
+        {
+          "file": ".local-research/economy/Verse.Map.cs",
+          "sha256": "b198e3b30c2c8ad7417404c54553a92e981bfe4c8807565163c86e0d3b45e099",
+          "lines": [
+            1068,
+            1106
+          ]
+        }
+      ],
+      "xml": [
+        "XML01"
+      ]
+    },
+    {
+      "id": "WE03",
+      "finding": "Pawn base movement time uses weather only when the current cell is unroofed. PathGrid takes the maximum terrain/object/snow surcharge; PathFollower adds this cost to base movement. Snow category thresholds and speed effects are separate from instantaneous precipitation.",
+      "sources": [
+        {
+          "file": ".local-research/preservation/Verse.Pawn.cs",
+          "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+          "lines": [
+            1971,
+            2013
+          ]
+        },
+        {
+          "file": ".local-research/weather/Verse.AI.PathGrid.cs",
+          "sha256": "3ab1db721b82280c92d5bf7253b76e65a0b9fe4d1db03dd441e720d03f4d3d48",
+          "lines": [
+            121,
+            178
+          ]
+        },
+        {
+          "file": ".local-research/weather/Verse.AI.Pawn_PathFollower.cs",
+          "sha256": "3131af1e4ea4bf68b5d4142843857e72d7f69205afe42e873d414e194ce83a9c",
+          "lines": [
+            746,
+            812
+          ]
+        },
+        {
+          "file": ".local-research/weather/Verse.WeatherBuildupUtility.cs",
+          "sha256": "fcbb82b087e9f6a14c136d736f9b9062175773f14c1a1d5421183acb8d0f08da",
+          "lines": [
+            5,
+            64
+          ]
+        }
+      ],
+      "xml": [
+        "XML01"
+      ]
+    },
+    {
+      "id": "WE04",
+      "finding": "SteadyEnvironmentEffects visits a fraction of map cells each tick. Unroofed outdoor-temperature cells receive noise-modulated snow; temperature melts accumulated snow. SnowGrid clamps depth and refreshes paths on category changes; large pawns reduce depth slightly when entering cells.",
+      "sources": [
+        {
+          "file": ".local-research/weather/RimWorld.SteadyEnvironmentEffects.cs",
+          "sha256": "a280b83a6bedc914f47c3b75010733ba94c659dc63c34dcae062986d3548f119",
+          "lines": [
+            57,
+            177
+          ]
+        },
+        {
+          "file": ".local-research/weather/RimWorld.SteadyEnvironmentEffects.cs",
+          "sha256": "a280b83a6bedc914f47c3b75010733ba94c659dc63c34dcae062986d3548f119",
+          "lines": [
+            207,
+            238
+          ]
+        },
+        {
+          "file": ".local-research/weather/Verse.SnowGrid.cs",
+          "sha256": "89cda9b590fc3dab698ccdede08360db2988b9e7a9df8653019cdf21087937ba",
+          "lines": [
+            1,
+            166
+          ]
+        },
+        {
+          "file": ".local-research/weather/Verse.AI.Pawn_PathFollower.cs",
+          "sha256": "3131af1e4ea4bf68b5d4142843857e72d7f69205afe42e873d414e194ce83a9c",
+          "lines": [
+            650,
+            654
+          ]
+        }
+      ],
+      "xml": [
+        "XML01"
+      ]
+    },
+    {
+      "id": "WE05",
+      "finding": "ShotReport applies weather accuracy when either shooter or target cell is unroofed, except equipment that ignores accuracy maluses. It is one factor in the shot calculation, not final hit probability.",
+      "sources": [
+        {
+          "file": ".local-research/combat/Verse.ShotReport.cs",
+          "sha256": "20f300a18370e264a1efed8dae742ba638c8a06e79bc9eaa0f8070a0c164c646",
+          "lines": [
+            58,
+            73
+          ]
+        },
+        {
+          "file": ".local-research/combat/Verse.ShotReport.cs",
+          "sha256": "20f300a18370e264a1efed8dae742ba638c8a06e79bc9eaa0f8070a0c164c646",
+          "lines": [
+            83,
+            123
+          ]
+        }
+      ],
+      "xml": [
+        "XML01"
+      ]
+    },
+    {
+      "id": "WE06",
+      "finding": "RainRate and roof vulnerability feed Fire extinguishing damage; snow Defs also have rainRate1. Thunderstorm event makers roll strength-scaled chances and lightning chooses an unroofed standable cell for flame explosion.",
+      "sources": [
+        {
+          "file": ".local-research/fire/RimWorld.Fire.cs",
+          "sha256": "3f10134af9a064a683242b3914e82db3dd40c012c70fc26e699a481673af2078",
+          "lines": [
+            312,
+            352
+          ]
+        },
+        {
+          "file": ".local-research/weather/Verse.WeatherEventMaker.cs",
+          "sha256": "e568268d36a34c1a282444c8d287e5f256b01a34d7e7bcbeaadf0400629e2f1c",
+          "lines": [
+            1,
+            19
+          ]
+        },
+        {
+          "file": ".local-research/weather/RimWorld.WeatherEvent_LightningStrike.cs",
+          "sha256": "7edbeb72f7282b31821f19e84fbd49b2d14ec1881e339c0530f511a13df4958f",
+          "lines": [
+            1,
+            59
+          ]
+        }
+      ],
+      "xml": [
+        "XML01"
+      ]
+    },
+    {
+      "id": "WE07",
+      "finding": "Solar output uses sky glow and unroofed occupied-cell fraction. Weather glow is min(celestial glow,maxGlow), separately from visual sky colors. Ordinary Core rain/fog lack a maxGlow override; Odyssey Overcast explicitly caps.95.",
+      "sources": [
+        {
+          "file": ".local-research/weather/Verse.WeatherDef.cs",
+          "sha256": "cf098eaec62babe0d955ee20992039e4f14d9b59dece59a369847e1acd8ee31e",
+          "lines": [
+            43,
+            59
+          ]
+        },
+        {
+          "file": ".local-research/weather/Verse.WeatherWorker.cs",
+          "sha256": "edfa00053a8540eee87fd79b322c679b03624a565b5c5c49114981fb7e00442c",
+          "lines": [
+            98,
+            131
+          ]
+        },
+        {
+          "file": ".local-research/weather/Verse.SkyManager.cs",
+          "sha256": "1d84abc06b1baec6427efe4336944822af77bd730d987ddac00a6ac9a53d1913",
+          "lines": [
+            40,
+            46
+          ]
+        },
+        {
+          "file": ".local-research/weather/Verse.SkyManager.cs",
+          "sha256": "1d84abc06b1baec6427efe4336944822af77bd730d987ddac00a6ac9a53d1913",
+          "lines": [
+            141,
+            171
+          ]
+        },
+        {
+          "file": ".local-research/weather/RimWorld.CompPowerPlantSolar.cs",
+          "sha256": "889ff8c9aefe0f3e00aa89462c1fbd19e160bc1db4efe632baef3a48d679453c",
+          "lines": [
+            1,
+            54
+          ]
+        },
+        {
+          "file": ".local-research/energy/Verse.GlowGrid.cs",
+          "sha256": "babdd947c9593f8740dc6dea01fa2ca2595f9854003851754c37fdda175b46bd",
+          "lines": [
+            248,
+            267
+          ]
+        }
+      ],
+      "xml": [
+        "XML01",
+        "XML03",
+        "XML06"
+      ]
+    },
+    {
+      "id": "WE08",
+      "finding": "Pawn_MindState uses CurWeatherLerped weatherThought every120hash ticks for eligible mood-bearing flesh pawns. Single-stage wet thought requires no roof and persists as memory; outdoor recreation eligibility also rejects rainRate>=.25.",
+      "sources": [
+        {
+          "file": ".local-research/prisoners/Verse.AI.Pawn_MindState.cs",
+          "sha256": "b606531ba468fc6f4c1a2fbd9fbd25dd366ac45f3ef241b1a58fd298f82b7c12",
+          "lines": [
+            534,
+            587
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.JoyUtility.cs",
+          "sha256": "858eb27df541ace277fced2ef82d331ef209a435b9cdf47f7d87f2ddc990f2e8",
+          "lines": [
+            16,
+            46
+          ]
+        }
+      ],
+      "xml": [
+        "XML01",
+        "XML04"
+      ]
+    },
+    {
+      "id": "WE09",
+      "finding": "Exposed rainWashes filth can lose a layer during environmental cell visits. Exposed item deterioration environmental factors are multiplied by lerp(1,5,RainRate), while a protective edifice can suppress deterioration. This is HP deterioration rather than food rot.",
+      "sources": [
+        {
+          "file": ".local-research/weather/RimWorld.SteadyEnvironmentEffects.cs",
+          "sha256": "a280b83a6bedc914f47c3b75010733ba94c659dc63c34dcae062986d3548f119",
+          "lines": [
+            118,
+            141
+          ]
+        },
+        {
+          "file": ".local-research/weather/RimWorld.SteadyEnvironmentEffects.cs",
+          "sha256": "a280b83a6bedc914f47c3b75010733ba94c659dc63c34dcae062986d3548f119",
+          "lines": [
+            197,
+            205
+          ]
+        },
+        {
+          "file": ".local-research/weather/RimWorld.SteadyEnvironmentEffects.cs",
+          "sha256": "a280b83a6bedc914f47c3b75010733ba94c659dc63c34dcae062986d3548f119",
+          "lines": [
+            314,
+            343
+          ]
+        },
+        {
+          "file": ".local-research/weapons/RimWorld.StatPart_EnvironmentalEffects.cs",
+          "sha256": "c2a82a657b5f17ca025932eae80bd1e84714126c2371683261b9dbb348da322c",
+          "lines": [
+            16,
+            46
+          ]
+        }
+      ],
+      "xml": [
+        "XML05"
+      ]
+    },
+    {
+      "id": "WE10",
+      "finding": "The rain short-circuit caller checks97tick intervals, probabilistic gates, a colonist electrical-fire candidate list and an unroofed selected building before calling TryShortCircuitInRain. This is separate from the conduit electrical incident.",
+      "sources": [
+        {
+          "file": ".local-research/weather/RimWorld.SteadyEnvironmentEffects.cs",
+          "sha256": "a280b83a6bedc914f47c3b75010733ba94c659dc63c34dcae062986d3548f119",
+          "lines": [
+            57,
+            66
+          ]
+        },
+        {
+          "file": ".local-research/weather/RimWorld.SteadyEnvironmentEffects.cs",
+          "sha256": "a280b83a6bedc914f47c3b75010733ba94c659dc63c34dcae062986d3548f119",
+          "lines": [
+            349,
+            360
+          ]
+        },
+        {
+          "file": ".local-research/fire/RimWorld.ShortCircuitUtility.cs",
+          "sha256": "339e2075f62c29affc2e7df1a49c3cc4ff1214986b592b3464dd27b47ef7c129",
+          "lines": [
+            90,
+            109
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "WE11",
+      "finding": "Developer Change weather calls WeatherManager.TransitionTo directly. The native experiment used this preparation, then ordinary speed, pause, hover, Needs and save UI; it does not measure natural weather occurrence.",
+      "sources": [
+        {
+          "file": ".local-research/weather/Verse.DebugActionsMisc.cs",
+          "sha256": "e27ba5236acda4b3e4fe302001daeec32fc7254242c973dfe06fe7f39d3e7214",
+          "lines": [
+            223,
+            235
+          ]
+        },
+        {
+          "file": ".local-research/weather/RimWorld.WeatherManager.cs",
+          "sha256": "ba855d9db6860b85be7317c28084ae2c64adb8b898b15c6d9a9fbde630438ee8",
+          "lines": [
+            138,
+            150
+          ]
+        }
+      ],
+      "xml": [
+        "XML01"
+      ]
+    }
+  ],
+  "xml": [
+    {
+      "id": "XML01",
+      "file": "Data/Core/Defs/WeatherDefs/Weathers.xml",
+      "source_sha256": "066d81870ad4a4450dbd35b34cf6bcaaddcbb791eecd419264d512695826d80b",
+      "xpath": "/Defs/WeatherDef[defName=\"Clear\" or defName=\"Fog\" or defName=\"Rain\" or defName=\"DryThunderstorm\" or defName=\"RainyThunderstorm\" or defName=\"FoggyRain\" or defName=\"SnowHard\" or defName=\"SnowGentle\"]/*[self::defName or self::repeatable or self::durationRange or self::favorability or self::temperatureRange or self::commonalityRainfallFactor or self::perceivePriority or self::rainRate or self::snowRate or self::windSpeedFactor or self::windSpeedOffset or self::moveSpeedMultiplier or self::accuracyMultiplier or self::maxGlow or self::weatherThought or self::eventMakers]",
+      "nodes": [
+        "<defName>Clear</defName>",
+        "<repeatable>true</repeatable>",
+        "<favorability>Good</favorability>",
+        "<perceivePriority>0</perceivePriority>",
+        "<defName>Fog</defName>",
+        "<windSpeedFactor>0.5</windSpeedFactor>",
+        "<accuracyMultiplier>0.5</accuracyMultiplier>",
+        "<favorability>Neutral</favorability>",
+        "<perceivePriority>1</perceivePriority>",
+        "<commonalityRainfallFactor><points><li>(0, 0)</li><li>(1300, 1)</li></points></commonalityRainfallFactor>",
+        "<defName>Rain</defName>",
+        "<temperatureRange>0~100</temperatureRange>",
+        "<windSpeedFactor>1.5</windSpeedFactor>",
+        "<accuracyMultiplier>0.8</accuracyMultiplier>",
+        "<favorability>Neutral</favorability>",
+        "<perceivePriority>1</perceivePriority>",
+        "<weatherThought>SoakingWet</weatherThought>",
+        "<rainRate>1</rainRate>",
+        "<moveSpeedMultiplier>0.9</moveSpeedMultiplier>",
+        "<commonalityRainfallFactor><points><li>(0, 0)</li><li>(1300, 1)</li><li>(4000, 3.0)</li></points></commonalityRainfallFactor>",
+        "<defName>DryThunderstorm</defName>",
+        "<temperatureRange>0~999</temperatureRange>",
+        "<windSpeedFactor>1.5</windSpeedFactor>",
+        "<windSpeedOffset>1.25</windSpeedOffset>",
+        "<favorability>VeryBad</favorability>",
+        "<perceivePriority>2</perceivePriority>",
+        "<durationRange>15000~40000</durationRange>",
+        "<eventMakers><li><averageInterval>1200</averageInterval><eventClass>WeatherEvent_LightningFlash</eventClass></li><li><averageInterval>1200</averageInterval><eventClass>WeatherEvent_LightningStrike</eventClass></li></eventMakers>",
+        "<defName>RainyThunderstorm</defName>",
+        "<temperatureRange>0~999</temperatureRange>",
+        "<windSpeedFactor>1.5</windSpeedFactor>",
+        "<windSpeedOffset>1.25</windSpeedOffset>",
+        "<favorability>Bad</favorability>",
+        "<perceivePriority>2</perceivePriority>",
+        "<weatherThought>SoakingWet</weatherThought>",
+        "<accuracyMultiplier>0.8</accuracyMultiplier>",
+        "<rainRate>1</rainRate>",
+        "<moveSpeedMultiplier>0.8</moveSpeedMultiplier>",
+        "<durationRange>15000~40000</durationRange>",
+        "<eventMakers><li><averageInterval>1200</averageInterval><eventClass>WeatherEvent_LightningFlash</eventClass></li><li><averageInterval>1200</averageInterval><eventClass>WeatherEvent_LightningStrike</eventClass></li></eventMakers>",
+        "<commonalityRainfallFactor><points><li>(0, 0)</li><li>(1300, 1)</li><li>(4000, 2.0)</li></points></commonalityRainfallFactor>",
+        "<defName>FoggyRain</defName>",
+        "<temperatureRange>0~999</temperatureRange>",
+        "<windSpeedFactor>1.5</windSpeedFactor>",
+        "<favorability>Neutral</favorability>",
+        "<perceivePriority>1</perceivePriority>",
+        "<weatherThought>SoakingWet</weatherThought>",
+        "<accuracyMultiplier>0.5</accuracyMultiplier>",
+        "<rainRate>1</rainRate>",
+        "<moveSpeedMultiplier>0.9</moveSpeedMultiplier>",
+        "<commonalityRainfallFactor><points><li>(0, 0)</li><li>(1300, 1)</li></points></commonalityRainfallFactor>",
+        "<defName>SnowHard</defName>",
+        "<temperatureRange>-999~-0.5</temperatureRange>",
+        "<snowRate>1.2</snowRate>",
+        "<windSpeedFactor>1.5</windSpeedFactor>",
+        "<accuracyMultiplier>0.8</accuracyMultiplier>",
+        "<favorability>Neutral</favorability>",
+        "<perceivePriority>1</perceivePriority>",
+        "<rainRate>1</rainRate>",
+        "<moveSpeedMultiplier>0.8</moveSpeedMultiplier>",
+        "<commonalityRainfallFactor><points><li>(0, 0)</li><li>(300,0.5)</li><li>(1300, 1)</li></points></commonalityRainfallFactor>",
+        "<defName>SnowGentle</defName>",
+        "<temperatureRange>-999~-0.5</temperatureRange>",
+        "<snowRate>0.8</snowRate>",
+        "<windSpeedFactor>1.5</windSpeedFactor>",
+        "<accuracyMultiplier>0.8</accuracyMultiplier>",
+        "<favorability>Neutral</favorability>",
+        "<perceivePriority>1</perceivePriority>",
+        "<rainRate>1</rainRate>",
+        "<commonalityRainfallFactor><points><li>(0, 0)</li><li>(300,0.5)</li><li>(1300, 1)</li></points></commonalityRainfallFactor>"
+      ]
+    },
+    {
+      "id": "XML02",
+      "file": "Data/Core/Defs/BiomeDefs/Biomes_Temperate.xml",
+      "source_sha256": "4d6a48e5f6f0b5eed5f239077a1af78cadd8924785d76bdde2329da137dbc7ae",
+      "xpath": "/Defs/BiomeDef[defName=\"TemperateForest\"]/defName | /Defs/BiomeDef[defName=\"TemperateForest\"]/baseWeatherCommonalities",
+      "nodes": [
+        "<defName>TemperateForest</defName>",
+        "<baseWeatherCommonalities><Clear>18</Clear><Fog>1</Fog><Rain>2</Rain><DryThunderstorm>1</DryThunderstorm><RainyThunderstorm>1</RainyThunderstorm><FoggyRain>1</FoggyRain><SnowGentle>4</SnowGentle><SnowHard>4</SnowHard><GrayPall MayRequire=\"Ludeon.RimWorld.Anomaly\">1</GrayPall><Overcast MayRequire=\"Ludeon.RimWorld.Odyssey\">2</Overcast></baseWeatherCommonalities>"
+      ]
+    },
+    {
+      "id": "XML03",
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Power.xml",
+      "source_sha256": "f9213d01681e0d9082447c75a3d31113ba8e6b52f7595ef951d29ca624d0aaba",
+      "xpath": "/Defs/ThingDef[defName=\"SolarGenerator\"]/defName | /Defs/ThingDef[defName=\"SolarGenerator\"]/comps/li[@Class=\"CompProperties_Power\"]",
+      "nodes": [
+        "<defName>SolarGenerator</defName>",
+        "<li Class=\"CompProperties_Power\"><compClass>CompPowerPlantSolar</compClass><basePowerConsumption>-1700</basePowerConsumption><transmitsPower>true</transmitsPower></li>"
+      ]
+    },
+    {
+      "id": "XML04",
+      "file": "Data/Core/Defs/ThoughtDefs/Thoughts_Memory_Misc.xml",
+      "source_sha256": "7b65e423087002397d1d3c26d64973f73795e73bff041eff26589c78eebb05cd",
+      "xpath": "/Defs/ThoughtDef[defName=\"SoakingWet\"]",
+      "nodes": [
+        "<ThoughtDef><defName>SoakingWet</defName><durationDays>0.1</durationDays><stackLimit>1</stackLimit><developmentalStageFilter>Baby, Child, Adult</developmentalStageFilter><nullifyingPrecepts><li MayRequire=\"Ludeon.RimWorld.Ideology\">RoughLiving_Welcomed</li></nullifyingPrecepts><stages><li><label>soaking wet</label><description>I'm soaking wet.</description><baseMoodEffect>-3</baseMoodEffect></li></stages></ThoughtDef>"
+      ]
+    },
+    {
+      "id": "XML05",
+      "file": "Data/Core/Defs/Stats/Stats_Basics_General.xml",
+      "source_sha256": "c4d702421c19796993483ddd43f9869c54bb7afa1414232a568829ced5218d87",
+      "xpath": "/Defs/StatDef[defName=\"DeteriorationRate\"]/defName | /Defs/StatDef[defName=\"DeteriorationRate\"]/parts/li[@Class=\"StatPart_EnvironmentalEffects\"]",
+      "nodes": [
+        "<defName>DeteriorationRate</defName>",
+        "<li Class=\"StatPart_EnvironmentalEffects\"><factorOffsetUnroofed>0.5</factorOffsetUnroofed><factorOffsetOutdoors>0.5</factorOffsetOutdoors><protectedByEdificeFactor>0</protectedByEdificeFactor></li>"
+      ]
+    },
+    {
+      "id": "XML06",
+      "file": "Data/Odyssey/Defs/WeatherDefs/Weathers.xml",
+      "source_sha256": "9af7d55b3fc75559d6d22ad73b6d975b3fe97b75a38a3740316b4ad71ffadffa",
+      "xpath": "/Defs/WeatherDef[defName=\"Overcast\"]/defName | /Defs/WeatherDef[defName=\"Overcast\"]/maxGlow",
+      "nodes": [
+        "<defName>Overcast</defName>",
+        "<maxGlow>0.95</maxGlow>"
+      ]
+    }
+  ],
+  "native_runtime_report": "../83-native-weather-runtime.md",
+  "limitations": [
+    "Derived C# is not original source.",
+    "Selected packaged XML does not resolve all inheritance or active-mod patches.",
+    "Core ordinary rain visual darkening must not be treated as a proven solar-output reduction.",
+    "Native Rain was prepared with developer UI; no natural distribution, snow, movement, gunfire, solar, rain-extinguishing or rain-short-circuit measurement.",
+    "Weather numbers are static reference parameters, not calibration targets for the Web simulation."
+  ]
+}

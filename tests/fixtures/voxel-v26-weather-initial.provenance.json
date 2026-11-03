@@ -1,0 +1,13 @@
+{
+  "version": 26,
+  "source": "test-results/voxel-fire/initial.json",
+  "sourceCommit": "57e90c65e3c52cd5cc9ecc46daab4dd8115a0747",
+  "publishedCommit": "6ae1ebc1a610a9acd9c7c1f61994bc2f4ed33be4",
+  "sha256": "5e2dee2eeab6ff10dc4164abd5de57b12ef613da89674f104c921f732cb59e06",
+  "tick": 0,
+  "scope": "Fresh colony. Public commands, normal elapsed ticks and save/load only; read-only terrain/path queries plan finite ore access. No injected fire, damage, resources, needs, terrain, people, incident clocks or RNG. The fixed-seed incident demonstrates a gameplay loop, not probability calibration.",
+  "campaignExecution": {
+    "bundleSha256": "f62618c13abc4b9c1c6845c01132e9f39f0a0dbd66be056cdb445a69c636d204",
+    "scriptSha256": "4d03baf680e5397f53dfc3e7844e333321e1a1c14e38b768a7ae576b2781f03a"
+  }
+}

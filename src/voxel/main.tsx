@@ -12,6 +12,8 @@ import { STONE_CONSTRUCTION } from './crafting';
 import { SurvivalPanel } from './SurvivalPanel';
 import { SanitationPanel, SanitationDetails, CleaningStatus } from './SanitationPanel';
 import { FirePanel, FireDetails, FireDamageDetails, FireWorkStatus } from './FirePanel';
+import { WeatherPanel, WeatherCellDetails } from './WeatherPanel';
+import { WEATHER_NAMES } from './weather';
 import { needsMedicalTending } from './medicine';
 import { healthSummary } from './survival';
 import { SkillPanel, WorkSkill } from './SkillPanel';
@@ -319,6 +321,7 @@ function App() {
     [prisonOpen, setPrisonOpen] = useState(false),
     [sanitationOpen, setSanitationOpen] = useState(false),
     [fireOpen, setFireOpen] = useState(false),
+    [weatherOpen, setWeatherOpen] = useState(false),
     [busy, setBusy] = useState(false),
     [selectedPawn, setSelectedPawn] = useState<number | null>(null),
     [selectedAnimal, setSelectedAnimal] = useState<number | null>(null),
@@ -344,6 +347,7 @@ function App() {
     setPrisonOpen(false);
     setSanitationOpen(false);
     setFireOpen(false);
+    setWeatherOpen(false);
     setMenu(false);
   }, [s?.trade.session?.id, s?.trade.session?.stage, !!s?.trade.quote, s?.speed]);
   useEffect(() => {
@@ -584,16 +588,16 @@ function App() {
         <div className="voxel-header-actions">
           <button aria-label="火灾与修理" aria-expanded={fireOpen} data-testid="fire-alert" data-active-fires={s?.fires.length ?? 0}
             title={s?.fires.length ? `${s.fires.length} 处正在燃烧，点击查看火情与安排灭火` : '查看火情、灭火与修理分工'} className={s?.fires.length ? 'voxel-fire-alarm' : ''} onClick={() => {
-            setFireOpen(v => !v); setSanitationOpen(false); setPrisonOpen(false); setWildlifeOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
+            setFireOpen(v => !v); setWeatherOpen(false); setSanitationOpen(false); setPrisonOpen(false); setWildlifeOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
           }}>火灾{s?.fires.length ? ` · ${s.fires.length}` : ''}</button>
           <button aria-label="卫生与清洁" aria-expanded={sanitationOpen} onClick={() => {
-            setSanitationOpen(v => !v); setFireOpen(false); setPrisonOpen(false); setWildlifeOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
+            setSanitationOpen(v => !v); setWeatherOpen(false); setFireOpen(false); setPrisonOpen(false); setWildlifeOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
           }}>卫生</button>
           <button aria-label="囚犯与招募" aria-expanded={prisonOpen} onClick={() => {
-            setPrisonOpen(v => !v); setSanitationOpen(false); setFireOpen(false); setWildlifeOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
+            setPrisonOpen(v => !v); setWeatherOpen(false); setSanitationOpen(false); setFireOpen(false); setWildlifeOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
           }}>囚犯{prisoners.length ? ` · ${prisoners.length}` : ''}</button>
           <button aria-label="野生动物与狩猎" aria-expanded={wildlifeOpen} onClick={() => {
-            setWildlifeOpen(v => !v); setPrisonOpen(false); setSanitationOpen(false); setFireOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
+            setWildlifeOpen(v => !v); setWeatherOpen(false); setPrisonOpen(false); setSanitationOpen(false); setFireOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
           }}>野生动物{s?.animals.filter(a => a.hunt && !a.dead).length ? ` · ${s.animals.filter(a => a.hunt && !a.dead).length}` : ''}</button>
           <button
             aria-label="商队与家园"
@@ -605,6 +609,7 @@ function App() {
               setPrisonOpen(false);
               setSanitationOpen(false);
               setFireOpen(false);
+              setWeatherOpen(false);
               client.choose('inspect');
             }}
           >
@@ -613,7 +618,7 @@ function App() {
           <button
             aria-label="研究科技"
             aria-expanded={researchOpen}
-            onClick={() => { setResearchOpen((v) => !v); setTradeOpen(false); setWildlifeOpen(false); setPrisonOpen(false); setSanitationOpen(false); setFireOpen(false); }}
+            onClick={() => { setResearchOpen((v) => !v); setWeatherOpen(false); setTradeOpen(false); setWildlifeOpen(false); setPrisonOpen(false); setSanitationOpen(false); setFireOpen(false); }}
             title={
               s?.research.current
                 ? `正在研究：${RESEARCH_DEFS[s.research.current].name}`
@@ -725,7 +730,7 @@ function App() {
           ↷
         </button>
       </div>
-      {help && !researchOpen && !wildlifeOpen && !prisonOpen && !tradeOpen && !sanitationOpen && !fireOpen && (
+      {help && !researchOpen && !wildlifeOpen && !prisonOpen && !tradeOpen && !sanitationOpen && !fireOpen && !weatherOpen && (
         <aside className="voxel-guide">
           <div className="voxel-panel-title">
             <span className="voxel-kicker">从地表到地下</span>
@@ -928,6 +933,7 @@ function App() {
             <small>按实际六向空气连通判断；视图切层不改变房间。</small>
           </div>
         )}
+        {p && s && !weatherOpen && <WeatherCellDetails snapshot={s} pos={p} />}
         {p && s && <FireDetails snapshot={s} pos={p} preferredPawnId={selectedPawn} temperature={temperatureOf(p)} command={c => void client.command(c)} />}
         {p && s && <FireDamageDetails snapshot={s} pos={p} preferredPawnId={selectedPawn} command={c => void client.command(c)} />}
         {p && s && <SanitationDetails snapshot={s} pos={p} roomId={room?.id} preferredPawnId={selectedPawn}
@@ -1812,7 +1818,11 @@ function App() {
               第 {Math.floor((s?.tick ?? 0) / DAY) + 1} 日 ·{' '}
               {String(Math.floor(s?.hour ?? 8)).padStart(2, '0')}:
               {String(Math.floor(((s?.hour ?? 8) % 1) * 60)).padStart(2, '0')} ·{' '}
-              {Math.round(s?.temperature ?? 21)}°C
+              <button className="voxel-weather-button" aria-label="天气与环境" aria-expanded={weatherOpen}
+                data-testid="weather-status" data-weather-kind={s?.weather.kind ?? 'clear'} onClick={() => {
+                  setWeatherOpen(v => !v); setFireOpen(false); setSanitationOpen(false); setPrisonOpen(false);
+                  setWildlifeOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
+                }}>{s ? WEATHER_NAMES[s.weather.kind] : '天气'} · {Math.round(s?.temperature ?? 21)}°C</button>
             </small>
             <div>
               {[0, 1, 2, 3].map((v) => (
@@ -1845,6 +1855,8 @@ function App() {
         focus={target => { setSelectedAnimal(null); setSelectedPawn(null); focus(target); }}
         selectPawn={person => { setSelectedAnimal(null); setSelectedPawn(person.id); focus(person); }}
         command={c => void client.command(c)} close={() => setFireOpen(false)} />}
+      {weatherOpen && s && <WeatherPanel snapshot={s} selectedPos={state.selected}
+        focus={target => { setSelectedAnimal(null); setSelectedPawn(null); focus(target); }} close={() => setWeatherOpen(false)} />}
       {prisonOpen && s && <aside className="voxel-prison-drawer" aria-label="囚犯与招募" data-testid="prison-panel">
         <div className="voxel-prison-heading"><h2>囚犯与招募</h2><button aria-label="关闭囚犯面板" onClick={() => setPrisonOpen(false)}>×</button></div>
         <p>{prisoners.length} 名囚犯 · {prisonBeds.length} 张囚犯床 · {captors.filter(v => v.priorities.warden > 0).length} 位可用狱卒</p>
@@ -2036,7 +2048,7 @@ function App() {
               <summary>试玩规则与性能计数</summary>
               <p>
                 64×64×16；逻辑 20 TPS，1 日 10
-                分钟。两格净空，一格高差可走；梯子可携货。种植、烹饪、床位、作息、电网、冷库保鲜、有限仓储和岩块切石已接通。新世界有三种生态和四档起伏，土壤肥力与季节气温影响生产。断粮、过冷或过热会逐渐损害健康，严重时倒地甚至死亡；同伴可以救援到医疗床并喂食。种棉获得布料，手工裁缝台制作衣物，实际穿戴后改变温度耐受；每件独立保存品质与耐久。新营地配基础布衫和长裤，旧存档保留原装备。天然岩石有机会留下岩块，切石台加工后才能用于石砖墙和楼板；切石与衣物科技暂默认解锁。采用简化天光和三维导热。近战与射击会造成部位伤口；部分伤口可能延迟感染，需要关注护理和免疫进展。药根成熟后产出草药，医生按患者政策实际取药护理；感染者可前往医疗床休养。其他疾病、食物中毒、坍塌、天气降水和流体尚未实现。
+                分钟。两格净空，一格高差可走；梯子可携货。种植、烹饪、床位、作息、电网、冷库保鲜、有限仓储和岩块切石已接通。新世界有三种生态和四档起伏，土壤肥力与季节气温影响生产。断粮、过冷或过热会逐渐损害健康，严重时倒地甚至死亡；同伴可以救援到医疗床并喂食。种棉获得布料，手工裁缝台制作衣物，实际穿戴后改变温度耐受；每件独立保存品质与耐久。新营地配基础布衫和长裤，旧存档保留原装备。天然岩石有机会留下岩块，切石台加工后才能用于石砖墙和楼板；切石与衣物科技暂默认解锁。采用简化天光和三维导热。近战与射击会造成部位伤口；部分伤口可能延迟感染，需要关注护理和免疫进展。药根成熟后产出草药，医生按患者政策实际取药护理；感染者可前往医疗床休养。天气变化会影响露天行走、射击、降水灭火与积雪通行；真实屋顶可遮挡降水。其他疾病、坍塌和流体尚未实现。
               </p>
               <p>
                 地形数组 {((s?.gridBytes ?? 0) / 1024).toFixed(0)} KiB；寻路数组{' '}

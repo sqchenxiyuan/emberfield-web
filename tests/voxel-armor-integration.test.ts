@@ -3,6 +3,7 @@ import { expectWildlifeIds } from './legacy-wildlife-defaults';
 import { initialSkills } from '../src/voxel/skills';
 import { initialTrade } from '../src/voxel/trade';
 import { initialFireHazards } from '../src/voxel/fire';
+import { initialWeather } from '../src/voxel/weather';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
@@ -126,7 +127,7 @@ describe('armor save migration and strict physical schemas', () => {
       const s = VoxelSimulation.load(old),
         saved = s.save();
       expect(old).toEqual(before);
-      expect(saved.version).toBe(26);
+      expect(saved.version).toBe(27);
       expectWildlifeIds(old.nextId, saved);
       for (const key of ['tick', 'blocks', 'items', 'stats', 'researchBenches'] as const)
         expect(saved[key]).toEqual(key === 'stats' ? withMedicineLedgers(old.stats) : old[key]);
@@ -380,6 +381,7 @@ function battle(seed: number, hitPoints = 290) {
   s.seed = seed;
   s.trade = initialTrade(s.seed, s.tick);
   s.fireHazards = initialFireHazards(s.seed, s.tick);
+  s.weather = initialWeather(s.seed, s.settings, s.tick, s.generator);
   attacker.weapon = makeWeapon(s.nextId++, 'steelKnife');
   target.worn = [makeApparel(s.nextId++, 'plateArmor')];
   target.worn[0].hitPoints = hitPoints;

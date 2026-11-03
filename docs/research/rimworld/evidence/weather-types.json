@@ -1,0 +1,17 @@
+[
+  "RimWorld.WeatherManager",
+  "RimWorld.WeatherDecider",
+  "Verse.WeatherDef",
+  "Verse.WeatherWorker",
+  "Verse.WeatherBuildupUtility",
+  "Verse.SnowGrid",
+  "Verse.SkyManager",
+  "Verse.AI.Pawn_PathFollower",
+  "Verse.AI.PathGrid",
+  "RimWorld.WeatherEvent_LightningStrike",
+  "Verse.WeatherEventMaker",
+  "RimWorld.CompPowerPlantSolar",
+  "RimWorld.SteadyEnvironmentEffects",
+  "Verse.DebugActionsMisc",
+  "RimWorld.FireWatcher"
+]

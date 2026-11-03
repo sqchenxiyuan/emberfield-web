@@ -180,6 +180,9 @@ import {
   validWorldSettings,
 } from './worldgen';
 import { outdoorTemperature } from './climate';
+import { initialWeather, advanceWeather, weatherEffects, snowDepthAfter, snowPathCost,
+  type WeatherState, type SnowCover } from './weather';
+import { rejectLegacyWeatherFields, migrateWeather, validateWeather } from './weatherPersistence';
 import {
   TREE_NAMES,
   treeYield,
@@ -475,6 +478,11 @@ function decode(raw: unknown, max: number): Uint8Array<ArrayBuffer> {
 }
 
 export class VoxelSimulation {
+  weather: WeatherState;
+  snow: SnowCover[] = [];
+  private weatherRoof = new Uint8Array(WIDTH * DEPTH);
+  private weatherRoofRevision = -1;
+  private snowLookup = new Map<number, number>();
   fires: Fire[] = [];
   fireDamage: FireDamage[] = [];
   fireHazards: FireHazards;
@@ -576,6 +584,7 @@ export class VoxelSimulation {
     this.storyteller = initialStoryteller(seed);
     this.trade = initialTrade(seed);
     this.settings = sanitizeWorldSettings(settings);
+    this.weather = initialWeather(seed, this.settings);
     if (!restoreOnly) this.generate();
   }
   private id() {
@@ -718,6 +727,7 @@ export class VoxelSimulation {
         if (crop) crop.growth = Math.max(0, crop.growth - .001);
       }
       if (a.phase === 'rest' || a.phase === 'graze' || this.tick < a.moveTick) continue;
+      const departure = { x: a.x, y: a.y, z: a.z };
       const choices = this.neighbors(a).map(position).filter(p =>
         !this.ladders[at(p)] && !this.doors.some(d => same(d, p)) && !this.furnitureAt(p) &&
         !this.animals.some(other => other !== a && same(other, p)) && !this.pawns.some(other => same(other, p)));
@@ -727,7 +737,7 @@ export class VoxelSimulation {
         const selected = choices[fleeing ? 0 : Math.floor(plantRandom(this.seed, a.id, this.tick, 972) * choices.length)];
         Object.assign(a, selected);
       }
-      a.moveTick = this.tick + Math.ceil(ANIMAL_DEFS[a.species].moveTicks * (fleeing ? .65 : 1));
+      a.moveTick = this.tick + this.weatherMoveTicks(departure, ANIMAL_DEFS[a.species].moveTicks * (fleeing ? .65 : 1), a);
     }
     if (this.tick % (DAY * 2) === 0 && this.animals.length < WILDLIFE.population)
       this.seedWildlife(this.animals.length + 1, true);
@@ -781,6 +791,7 @@ export class VoxelSimulation {
     this.roomsDirty = true;
     this.skyCache.clear();
     this.revision++;
+    this.pruneSnow();
     const cx = Math.floor(p.x / CHUNK),
       cy = Math.floor(p.y / CHUNK);
     this.dirty.add(cy * 4 + cx);
@@ -3748,8 +3759,9 @@ export class VoxelSimulation {
       shootingLevel: p.skills.shooting.level,
       sight: health.sight,
       manipulation: health.manipulation,
-      shooterRoofed: !this.skyAt(origin),
-      targetRoofed: !this.skyAt(target),
+      shooterRoofed: !this.weatherExposed(origin),
+      targetRoofed: !this.weatherExposed(target),
+      weatherAccuracy: weatherEffects(this.weather, this.tick).accuracyFactor,
       targetProne: prone,
       canBenefitFromCover: true,
       canHitOthers: true,
@@ -4630,12 +4642,12 @@ export class VoxelSimulation {
       const door = this.doors.find(d => same(d, position(i)));
       return !door || door.mode === 'open' || door.openUntil >= this.tick;
     });
+    const previous = { x: p.x, y: p.y, z: p.z };
     if (eligible.length) {
-      const previous = { x: p.x, y: p.y, z: p.z };
       Object.assign(p, position(eligible[(Math.floor(this.tick / 60) + p.id) % eligible.length]));
       this.trackDirt(p, previous);
     }
-    p.moveTick = this.tick + 60;
+    p.moveTick = this.tick + this.weatherMoveTicks(previous, 60, p);
   }
   fireRelease(p: Pawn) { this.release(p); }
   fireDropCargo(p: Pawn) { return this.dropCargo(p); }
@@ -4914,9 +4926,9 @@ export class VoxelSimulation {
     const previous = { x: p.x, y: p.y, z: p.z };
     Object.assign(p, position(next)); p.path.shift();
     this.trackDirt(p, previous);
-    p.moveTick = this.tick + (crossingSandbags ? 14 : 0) + Math.ceil(
+    p.moveTick = this.tick + this.weatherMoveTicks(previous,
       (p.cargo || p.carryingPawnId !== null ? 6 : 4) /
-      (apparelMoveFactor(p.worn, healthSummary(p).moving) * (p.staggerUntil > this.tick ? .17 : 1)));
+      (apparelMoveFactor(p.worn, healthSummary(p).moving) * (p.staggerUntil > this.tick ? .17 : 1)), p, crossingSandbags ? 14 : 0);
     if (p.carryingPawnId !== null) {
       const patient = this.pawns.find(q => q.id === p.carryingPawnId);
       if (patient) Object.assign(patient, { x: p.x, y: p.y, z: p.z });
@@ -6291,8 +6303,10 @@ export class VoxelSimulation {
   step(count = 1) {
     for (let n = 0; n < count; n++) {
       this.tick++;
+      advanceWeather(this.weather, this.seed, this.settings, this.tick, this.generator);
       for (const pawn of this.pawns) if (!pawn.dead) tickSkills(pawn.skills, this.tick, DAY);
       this.updateEnvironment();
+      if (this.tick % 100 === 0) this.updateSnow();
       updateFires(this);
       this.updatePreservation();
       this.updateTrees();
@@ -6478,6 +6492,52 @@ export class VoxelSimulation {
   outdoorTemperature() {
     return outdoorTemperature(this.tick, this.settings, this.generator);
   }
+  /** Roof exposure is vertical world geometry, independent of cutaway, trees,
+   * room connectivity and whether a door is open. A burning wall may be exposed
+   * above its own block; only higher solid blocks shelter it from precipitation. */
+  private refreshWeatherRoof() {
+    if (this.weatherRoofRevision === this.revision) return;
+    for (let y = 0; y < DEPTH; y++) for (let x = 0; x < WIDTH; x++) {
+      let z = HEIGHT - 1;
+      while (z > 0 && this.blocks[index(x, y, z)] === Block.Air) z--;
+      this.weatherRoof[y * WIDTH + x] = z;
+    }
+    this.weatherRoofRevision = this.revision;
+  }
+  weatherExposed(p: Pos): boolean {
+    this.refreshWeatherRoof();
+    return inside(p) && p.z >= this.weatherRoof[p.y * WIDTH + p.x];
+  }
+  /** Base move time uses weather at departure, while terrain entry uses the
+   * greater of snow or an obstacle cost. Costs are converted from native TPS. */
+  weatherMoveTicks(from: Pos, baseTicks: number, to: Pos = from, obstacleTicks = 0): number {
+    const factor = this.weatherExposed(from) ? weatherEffects(this.weather, this.tick).moveFactor : 1;
+    return Math.ceil(baseTicks / factor + Math.max(obstacleTicks, snowPathCost(this.snowLookup.get(at(to)) ?? 0) * TPS / 60));
+  }
+  private validSnowSupport(p: Pos): boolean {
+    return inside(p) && p.z > 0 && this.blocks[at(p)] === Block.Air && this.blocks[at(p) - WIDTH * DEPTH] !== Block.Air;
+  }
+  private pruneSnow() {
+    this.snow = this.snow.filter(p => this.validSnowSupport(p));
+    this.snowLookup = new Map(this.snow.map(p => [at(p), p.depth]));
+  }
+  private updateSnow() {
+    this.refreshWeatherRoof();
+    const rate = weatherEffects(this.weather, this.tick).snowRate, cells = new Map(this.snow.map(p => [at(p), p]));
+    if (rate > 0) for (let y = 0; y < DEPTH; y++) for (let x = 0; x < WIDTH; x++) {
+      const p = { x, y, z: this.weatherRoof[y * WIDTH + x] + 1 };
+      if (this.validSnowSupport(p) && !cells.has(at(p))) cells.set(at(p), { ...p, depth: 0 });
+    }
+    const result: SnowCover[] = [];
+    for (const p of cells.values()) {
+      if (!this.validSnowSupport(p)) continue;
+      const room = this.rooms.roomAt(p);
+      const depth = snowDepthAfter(p.depth, rate, this.temperature(p), this.weatherExposed(p), room?.outdoor ?? true, 100 / TPS);
+      if (depth > 0) result.push({ x: p.x, y: p.y, z: p.z, depth });
+    }
+    this.snow = result.sort((a, b) => at(a) - at(b));
+    this.snowLookup = new Map(this.snow.map(p => [at(p), p.depth]));
+  }
   get worldSummary(): WorldSummary {
     if (!this.summaryCache || this.summaryRevision !== this.revision) {
       this.summaryCache = summarizeWorld(this.blocks, this.trees, this.spawn, this.settings);
@@ -6641,11 +6701,15 @@ export class VoxelSimulation {
   snapshot(speed = 0, tickMs = 0): VoxelSnapshot {
     this.updateRooms();
     this.updatePower();
+    this.refreshWeatherRoof();
     const stored = emptyCounts();
     for (const i of this.items)
       if (this.stockpiles.some((s) => same(s, i) && s.accepts.includes(i.resource)))
         stored[i.resource] += i.amount;
     return structuredClone({
+      weather: { ...this.weather, effects: weatherEffects(this.weather, this.tick) },
+      snow: this.snow, weatherRoof: this.weatherRoof,
+      weatherBytes: this.weatherRoof.byteLength + this.snow.length * 32,
       fires: this.fires, fireDamage: this.fireDamage, fireHazards: this.fireHazards, fireLog: this.fireLog,
       filth: this.filth,
       roomCleanliness: this.roomCleanliness(),
@@ -6727,7 +6791,8 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 26,
+      version: 27,
+      weather: this.weather, snow: this.snow,
       fires: this.fires, fireDamage: this.fireDamage, fireHazards: this.fireHazards, fireLog: this.fireLog,
       filth: this.filth,
       trade: this.trade,
@@ -6776,11 +6841,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyWeatherFields(old);
     rejectLegacyFireFields(old);
     rejectLegacySanitationFields(old);
     rejectLegacyPrisonerFields(old);
@@ -7112,7 +7178,8 @@ export class VoxelSimulation {
     migratePrisoners(old, sourceVersion);
     migrateSanitation(old, sourceVersion);
     migrateFire(old, sourceVersion);
-    old.version = 26;
+    migrateWeather(old, sourceVersion);
+    old.version = 27;
     const d = old as VoxelSave;
     const loadHealth = (p: Pawn) =>
       oldHealth.get(p.id) ?? {
@@ -8234,6 +8301,7 @@ export class VoxelSimulation {
       s,
       structuredClone({
         tick: d.tick,
+        weather: d.weather, snow: d.snow,
         fires: d.fires, fireDamage: d.fireDamage, fireHazards: d.fireHazards, fireLog: d.fireLog,
         filth: d.filth,
         combat: d.combat,
@@ -8271,6 +8339,8 @@ export class VoxelSimulation {
     s.rebuildTrees();
     s.stoveCells = new Set(s.stoves.map(at));
     s.rebuildDevices();
+    validateWeather(d, s.blocks);
+    s.pruneSnow();
     validateFire(d, s);
     if (s.filth.some(f => !s.filthSupported(f))) throw new Error('污物没有合法地面支撑或净空');
     if (

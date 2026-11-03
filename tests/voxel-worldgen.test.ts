@@ -4,6 +4,7 @@ import { VoxelSimulation } from '../src/voxel/world';
 import { initialStoryteller } from '../src/voxel/storyteller';
 import { initialTrade } from '../src/voxel/trade';
 import { initialFireHazards } from '../src/voxel/fire';
+import { initialWeather } from '../src/voxel/weather';
 import {
   WORLD_PRESETS,
   generateWorld,
@@ -301,7 +302,7 @@ describe('v8 world persistence and validation', () => {
       s = VoxelSimulation.load(raw),
       saved = s.save();
     expect(raw).toEqual(original);
-    expect(saved.version).toBe(26);
+    expect(saved.version).toBe(27);
     expect(saved.generator).toBe(1);
     expect(saved.blocks).toEqual(raw.blocks);
     expect(saved.ladders).toEqual(raw.ladders);
@@ -311,6 +312,7 @@ describe('v8 world persistence and validation', () => {
       s.storyteller = initialStoryteller(s.seed, tick);
       s.trade = initialTrade(s.seed, tick);
       s.fireHazards = initialFireHazards(s.seed, tick);
+      s.weather = initialWeather(s.seed, s.settings, s.tick, s.generator);
       expect(s.outdoorTemperature()).toBe(temperatureAt(tick));
     }
     expect(VoxelSimulation.load(s.save()).outdoorTemperature()).toBe(temperatureAt(s.tick));

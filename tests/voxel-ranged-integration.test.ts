@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { initialTrade } from '../src/voxel/trade';
 import { initialFireHazards } from '../src/voxel/fire';
+import { initialWeather } from '../src/voxel/weather';
 import { makeWeapon } from '../src/voxel/weapons';
 import { makeApparel } from '../src/voxel/apparel';
 import { makeWeaponBench } from '../src/voxel/weaponProduction';
@@ -29,6 +30,7 @@ function fixture(kind: 'shortBow' | 'revolver' | 'machinePistol' = 'revolver', s
   s.seed = seed;
   s.trade = initialTrade(s.seed, s.tick);
   s.fireHazards = initialFireHazards(s.seed, s.tick);
+  s.weather = initialWeather(s.seed, s.settings, s.tick, s.generator);
   // Isolated terrain fixture excludes the newly spawned wildlife.
   s.animals = [];
   s.blocks.fill(Block.Stone);

@@ -9,6 +9,7 @@ import { applyInjury } from '../src/voxel/injuries';
 import { STORY_INTERVAL } from '../src/voxel/storytellerRules';
 import { initialTrade } from '../src/voxel/trade';
 import { initialFireHazards } from '../src/voxel/fire';
+import { initialWeather } from '../src/voxel/weather';
 
 // White-box clock/health fixtures test transitions. Normal gameplay evidence is
 // collected separately by the command-only storyteller campaign.
@@ -18,6 +19,7 @@ function atTick(tick: number) {
   s.storyteller = initialStoryteller(s.seed, tick);
   s.trade = initialTrade(s.seed, tick);
   s.fireHazards = initialFireHazards(s.seed, tick);
+  s.weather = initialWeather(s.seed, s.settings, s.tick, s.generator);
   return s;
 }
 describe('persistent colony storyteller', () => {
@@ -29,7 +31,7 @@ describe('persistent colony storyteller', () => {
       expect(createHash('sha256').update(bytes).digest('hex')).toBe(provenance.sha256);
       const s = VoxelSimulation.load(old), saved = s.save();
       expect(old.version).toBe(19);
-      expect(saved.version).toBe(26);
+      expect(saved.version).toBe(27);
       expectWildlifeIds(old.nextId, saved);
       for (const key of ['tick', 'blocks', 'ladders', 'items', 'research', 'combat'] as const)
         expect(saved[key], key).toEqual(old[key]);

@@ -5,6 +5,7 @@ import { VoxelSimulation } from '../src/voxel/world';
 import { initialStoryteller } from '../src/voxel/storyteller';
 import { initialTrade } from '../src/voxel/trade';
 import { initialFireHazards } from '../src/voxel/fire';
+import { initialWeather } from '../src/voxel/weather';
 import {
   APPAREL_DEFS,
   APPAREL_KINDS,
@@ -443,6 +444,7 @@ describe('physical dressing, interruption, death and migration', () => {
     s.storyteller = initialStoryteller(s.seed, s.tick);
     s.trade = initialTrade(s.seed, s.tick);
     s.fireHazards = initialFireHazards(s.seed, s.tick);
+    s.weather = initialWeather(s.seed, s.settings, s.tick, s.generator);
     p.apparelWearTicks = s.tick;
     const origin = ledger(s);
     s = VoxelSimulation.load(s.save());
@@ -462,7 +464,7 @@ describe('physical dressing, interruption, death and migration', () => {
     );
     const old = JSON.parse(raw.toString()),
       s = VoxelSimulation.load(old);
-    expect(s.save().version).toBe(26);
+    expect(s.save().version).toBe(27);
     expect(s.items).toEqual(old.items);
     expect(s.pawns.map((p) => p.health)).toEqual(old.pawns.map((p: any) => p.health));
     expect(s.counts().apparel).toBe(0);

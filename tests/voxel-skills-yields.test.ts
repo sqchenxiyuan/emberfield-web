@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { initialResearch } from '../src/voxel/research';
 import { initialFireHazards } from '../src/voxel/fire';
+import { initialWeather } from '../src/voxel/weather';
 import { freshBatch, rotLimit } from '../src/voxel/preservation';
 import { plantRandom } from '../src/voxel/plants';
 import {
@@ -95,6 +96,7 @@ function selectCropOutcomeSeed(s: VoxelSimulation, fails: boolean) {
     if (plantRandom(seed, j.id, id, 4702) > 0.6 === fails) {
       s.seed = seed;
       s.fireHazards = initialFireHazards(s.seed, s.tick);
+      s.weather = initialWeather(s.seed, s.settings, s.tick, s.generator);
       return;
     }
   throw new Error('No deterministic crop fixture seed');
@@ -192,6 +194,7 @@ describe('skill yield and deferred learning transaction boundaries', () => {
       if (plantRandom(seed, cutting.id, tree.pawns[0].id, 4702) > 0.6) {
         tree.seed = seed;
         tree.fireHazards = initialFireHazards(tree.seed, tree.tick);
+        tree.weather = initialWeather(tree.seed, tree.settings, tree.tick, tree.generator);
         break;
       }
     priority(tree, 0, 'cut', 1);

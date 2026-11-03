@@ -1,8 +1,10 @@
 import { expect } from 'vitest';
+import { stripWeatherFields } from './legacy-weather-defaults';
 
 /** Downgrade only synthetic, fire-free schema fixtures. Historical fixture
  * bytes remain immutable; never erase a real incident, loss or active task. */
 export function stripFireFields(raw: Record<string, any>) {
+  stripWeatherFields(raw);
   expect(raw.fires).toEqual([]);
   expect(raw.fireDamage).toEqual([]);
   expect(raw.fireLog).toEqual([]);

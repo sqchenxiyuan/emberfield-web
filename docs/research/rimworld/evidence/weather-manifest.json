@@ -1,0 +1,109 @@
+{
+  "evidence_id": "RW17-WEATHER",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.WeatherManager",
+      "local_file": ".local-research/weather/RimWorld.WeatherManager.cs",
+      "sha256": "ba855d9db6860b85be7317c28084ae2c64adb8b898b15c6d9a9fbde630438ee8",
+      "lines": 280
+    },
+    {
+      "type": "RimWorld.WeatherDecider",
+      "local_file": ".local-research/weather/RimWorld.WeatherDecider.cs",
+      "sha256": "37443e15971a60be6945c3a0ceb96344b1603a5a55daf498c8f6e53f90d44d10",
+      "lines": 218
+    },
+    {
+      "type": "Verse.WeatherDef",
+      "local_file": ".local-research/weather/Verse.WeatherDef.cs",
+      "sha256": "cf098eaec62babe0d955ee20992039e4f14d9b59dece59a369847e1acd8ee31e",
+      "lines": 109
+    },
+    {
+      "type": "Verse.WeatherWorker",
+      "local_file": ".local-research/weather/Verse.WeatherWorker.cs",
+      "sha256": "edfa00053a8540eee87fd79b322c679b03624a565b5c5c49114981fb7e00442c",
+      "lines": 157
+    },
+    {
+      "type": "Verse.WeatherBuildupUtility",
+      "local_file": ".local-research/weather/Verse.WeatherBuildupUtility.cs",
+      "sha256": "fcbb82b087e9f6a14c136d736f9b9062175773f14c1a1d5421183acb8d0f08da",
+      "lines": 95
+    },
+    {
+      "type": "Verse.SnowGrid",
+      "local_file": ".local-research/weather/Verse.SnowGrid.cs",
+      "sha256": "89cda9b590fc3dab698ccdede08360db2988b9e7a9df8653019cdf21087937ba",
+      "lines": 167
+    },
+    {
+      "type": "Verse.SkyManager",
+      "local_file": ".local-research/weather/Verse.SkyManager.cs",
+      "sha256": "1d84abc06b1baec6427efe4336944822af77bd730d987ddac00a6ac9a53d1913",
+      "lines": 208
+    },
+    {
+      "type": "Verse.AI.Pawn_PathFollower",
+      "local_file": ".local-research/weather/Verse.AI.Pawn_PathFollower.cs",
+      "sha256": "3131af1e4ea4bf68b5d4142843857e72d7f69205afe42e873d414e194ce83a9c",
+      "lines": 987
+    },
+    {
+      "type": "Verse.AI.PathGrid",
+      "local_file": ".local-research/weather/Verse.AI.PathGrid.cs",
+      "sha256": "3ab1db721b82280c92d5bf7253b76e65a0b9fe4d1db03dd441e720d03f4d3d48",
+      "lines": 285
+    },
+    {
+      "type": "RimWorld.WeatherEvent_LightningStrike",
+      "local_file": ".local-research/weather/RimWorld.WeatherEvent_LightningStrike.cs",
+      "sha256": "7edbeb72f7282b31821f19e84fbd49b2d14ec1881e339c0530f511a13df4958f",
+      "lines": 60
+    },
+    {
+      "type": "Verse.WeatherEventMaker",
+      "local_file": ".local-research/weather/Verse.WeatherEventMaker.cs",
+      "sha256": "e568268d36a34c1a282444c8d287e5f256b01a34d7e7bcbeaadf0400629e2f1c",
+      "lines": 20
+    },
+    {
+      "type": "RimWorld.CompPowerPlantSolar",
+      "local_file": ".local-research/weather/RimWorld.CompPowerPlantSolar.cs",
+      "sha256": "889ff8c9aefe0f3e00aa89462c1fbd19e160bc1db4efe632baef3a48d679453c",
+      "lines": 55
+    },
+    {
+      "type": "RimWorld.SteadyEnvironmentEffects",
+      "local_file": ".local-research/weather/RimWorld.SteadyEnvironmentEffects.cs",
+      "sha256": "a280b83a6bedc914f47c3b75010733ba94c659dc63c34dcae062986d3548f119",
+      "lines": 361
+    },
+    {
+      "type": "Verse.DebugActionsMisc",
+      "local_file": ".local-research/weather/Verse.DebugActionsMisc.cs",
+      "sha256": "e27ba5236acda4b3e4fe302001daeec32fc7254242c973dfe06fe7f39d3e7214",
+      "lines": 1226
+    },
+    {
+      "type": "RimWorld.FireWatcher",
+      "local_file": ".local-research/weather/RimWorld.FireWatcher.cs",
+      "sha256": "287c8aba07e865865447a80ac292b51e84db3ff81c0c277d36c9c9701b309a04",
+      "lines": 54
+    }
+  ]
+}

@@ -924,6 +924,24 @@ a {
   font-size: 11px;
   margin-left: 4px;
 }
+.voxel-time .voxel-weather-button { padding: 2px 5px; margin: 0; font-size: 10px; color: #d5dfcd; border-color: #b9ccce40; }
+.voxel-weather-drawer { position: absolute; z-index: 4; right: 24px; top: 90px; bottom: 168px; width: 355px; padding: 16px; overflow-y: auto; overscroll-behavior: contain; border: 1px solid #aac8d266; border-radius: 6px; background: #202b31f7; box-shadow: 0 12px 35px #0004; }
+.voxel-weather-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.voxel-weather-heading h2 { margin: 0; font-size: 18px; color: #c8e0e3; }
+.voxel-weather-drawer h3 { font-size: 13px; color: #c8dce0; margin: 0 0 9px; }
+.voxel-weather-drawer p, .voxel-weather-drawer small, .voxel-weather-cell small { display: block; font-size: 11px; line-height: 1.65; color: #becdd0; }
+.voxel-weather-drawer p { margin: 10px 0; }
+.voxel-weather-current, .voxel-weather-cell, .voxel-weather-effects, .voxel-weather-snow { margin: 12px 0; padding: 12px; border: 1px solid #aac8d238; background: #18232977; }
+.voxel-weather-cell > small, .voxel-weather-current > small { margin-top: 8px; }
+.voxel-weather-current dl, .voxel-weather-cell dl { display: grid; gap: 8px; font-size: 11px; margin: 12px 0; }
+.voxel-weather-current dl > div, .voxel-weather-cell dl > div { display: flex; justify-content: space-between; gap: 10px; }
+.voxel-weather-current dt, .voxel-weather-cell dt { color: #afc5cb; }
+.voxel-weather-current dd, .voxel-weather-cell dd { margin: 0; text-align: right; }
+.voxel-weather-cell progress { display: block; width: 100%; height: 6px; accent-color: #c8dce0; }
+.voxel-weather-effects button { display: block; font-size: 11px; width: 100%; margin-top: 8px; }
+.voxel-weather-snow > div { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 11px; margin: 8px 0; }
+.voxel-weather-snow button { font-size: 11px; padding: 6px 8px; }
+@media (max-width: 1050px) { .voxel-weather-drawer { right: 12px; top: 204px; width: 315px; padding: 12px; } }
 .voxel-loading,
 .voxel-modal-backdrop {
   position: absolute;

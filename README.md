@@ -6,7 +6,9 @@
 
 在线试玩：[多层体素](https://sqchenxiyuan.github.io/emberfield-web/?world=voxel) · [二维营地](https://sqchenxiyuan.github.io/emberfield-web/) · 源码：[sqchenxiyuan/emberfield-web](https://github.com/sqchenxiyuan/emberfield-web)。
 
-当前开发重点是先搭好可操作的玩法和机制闭环，数值采用初步默认值，后续再平衡。体素模式已接通狩猎与肉食生产、心情娱乐、俘虏招募、卫生清洁及火灾修理，见[开发路线](docs/research/rimworld/05-reconstruction-roadmap.md)；研究文档中的原版数值不代表当前游戏已经完成平衡。
+当前开发重点是先搭好可操作的玩法和机制闭环，数值采用初步默认值，后续再平衡。体素模式已接通狩猎与肉食生产、心情娱乐、俘虏招募、卫生清洁、火灾修理及天气联动，见[开发路线](docs/research/rimworld/05-reconstruction-roadmap.md)；研究文档中的原版数值不代表当前游戏已经完成平衡。
+
+2026-11-04天气更新（v27）：晴、雾、雨、雷雨与雪按实际日历过渡，降水压制露天火焰，天气影响露天移动和射击。积雪保留在真实地表或楼板上，停雪后仍影响通行，变暖后融化。底栏天气入口与选中格显示局部遮蔽、降水和雪层；剖切屋顶不会让室内淋雨。普通雨雾的画面暗化不会额外削减太阳能。见[82原版机制](docs/research/rimworld/82-weather-mechanisms.md)、[83原版实机](docs/research/rimworld/83-native-weather-runtime.md)及[84玩法与验证](docs/research/rimworld/84-weather-gameplay.md)。
 
 2026-11-04火灾更新（v26）：正常雷击或电气事件生成独立火焰，消耗真实可燃物、加热房间并留下结构损伤。“火灾与修理”面板可定位火点、划定家园、安排灭火分工或手动指派；人物到场后反复拍打。幸存建筑可由施工人员恢复耐久，烧毁对象需要重建。木楼板烧毁还会影响上层支撑。火势、蔓延与事件频率仍采用暂定参数，完整天气、人体烧伤与爆炸系统后续扩展。见[79原版机制](docs/research/rimworld/79-fire-firefighting-mechanisms.md)、[80原版实机](docs/research/rimworld/80-native-firefighting-runtime.md)和[81玩法与验证](docs/research/rimworld/81-fire-gameplay.md)。
 

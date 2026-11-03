@@ -440,6 +440,10 @@ function sleepTexture() {
 export class VoxelRenderer {
   private renderer: WebGLRenderer;
   private scene = new Scene();
+  private skyLight = new HemisphereLight(0xfff3d8, 0x64797c, 2.1);
+  private ambientLight = new AmbientLight(0xb4c2ad, .25);
+  private sunLight = new DirectionalLight(0xffe5bb, 2.2);
+  private weatherRender = { rainParticles: 0, snowParticles: 0, snowCells: 0, animationTick: 0, visualDim: 0 };
   private camera = new OrthographicCamera();
   private terrainRoot = new Group();
   private blockData = new Uint8Array(WIDTH * DEPTH * HEIGHT);
@@ -523,11 +527,10 @@ export class VoxelRenderer {
     this.renderer.setClearColor(0xd3ddcc);
     this.scene.background = new Color(0xd3ddcc);
     this.scene.fog = new Fog(0xd3ddcc, 100, 185);
-    this.scene.add(new HemisphereLight(0xfff3d8, 0x64797c, 2.1));
-    this.scene.add(new AmbientLight(0xb4c2ad, 0.25));
-    const sun = new DirectionalLight(0xffe5bb, 2.2);
-    sun.position.set(-32, 60, 18);
-    this.scene.add(sun);
+    this.scene.add(this.skyLight);
+    this.scene.add(this.ambientLight);
+    this.sunLight.position.set(-32, 60, 18);
+    this.scene.add(this.sunLight);
     this.scene.add(this.terrainRoot);
     this.box = this.keepGeometry(new BoxGeometry(1, 1, 1));
     this.treeTrunk = this.keepGeometry(new CylinderGeometry(0.12, 0.18, 1.55, 6));
@@ -1414,6 +1417,7 @@ export class VoxelRenderer {
     this.updateHomeArea();
     this.updateFilth();
     this.updateFireDamage();
+    this.updateSnow();
     this.updateWildlifeObjects();
     this.updateRecreationObjects();
     this.updateFarming();
@@ -1461,6 +1465,66 @@ export class VoxelRenderer {
       }
     });
     this.finish(outline);
+  }
+
+  private updateSnow() {
+    if (!this.data) return;
+    const cells = this.data.snow.filter(cell => cell.depth > 0 && cell.z <= this.level);
+    const snow = this.batch('weather-ground-snow', cells.length, this.box, this.batchMaterial('weather-ground-snow'));
+    this.inspectBatches.set(snow, { cells, instancesPerCell: 1 });
+    cells.forEach((cell, i) => {
+      const depth = MathUtils.clamp(cell.depth, 0, 1), height = .006 + depth * .17;
+      // Snow is held on the same air cell that actors enter. Never move it up to the view cut.
+      this.instance(snow, i, cell.x + .5, cell.z + height / 2 + .006, cell.y + .5,
+        .08 + Math.sqrt(depth) * .9, height, .08 + Math.sqrt(depth) * .9, 0xdde7e6);
+    });
+    this.finish(snow); this.weatherRender.snowCells = cells.length;
+  }
+
+  private animateWeather(time: number) {
+    if (!this.data) return;
+    const effects = this.data.weather.effects, dim = MathUtils.clamp(effects.visualDim, 0, 1);
+    // Weather tint is presentation only. Simulation light and solar output use maxSkyGlow, not visualDim.
+    this.skyLight.color.setHex(0xfff3d8).lerp(this.color.setHex(0xa9bec9), dim * 1.8);
+    this.skyLight.intensity = 2.1 * (1 - dim * .5);
+    this.sunLight.color.setHex(0xffe5bb).lerp(this.color.setHex(0xb4c8d3), dim * 2);
+    this.sunLight.intensity = 2.2 * (1 - dim * 1.6);
+    this.ambientLight.intensity = .25 + dim * .1;
+    const background = this.scene.background as Color;
+    background.setHex(0xd3ddcc).lerp(this.color.setHex(0x879da9), dim * 2);
+    const fog = this.scene.fog as Fog;
+    fog.color.copy(background); fog.near = 100 - dim * 170; fog.far = 185 - dim * 190;
+    this.renderer.setClearColor(background);
+
+    // rainRate also drives snow precipitation's fire suppression. Snow takes visual precedence.
+    const snowRate = MathUtils.clamp(effects.snowRate, 0, 1);
+    const rainRate = snowRate > 0 ? 0 : MathUtils.clamp(effects.rainRate, 0, 1);
+    const rain = this.batch('weather-rain', Math.ceil(rainRate * 850), this.box, this.effectMaterial('weather-rain', .5));
+    const snow = this.batch('weather-falling-snow', Math.ceil(snowRate * 650), this.smokeGeometry, this.effectMaterial('weather-falling-snow', .85));
+    let rainCount = 0, snowCount = 0;
+    const draw = (mesh: InstancedMesh, count: number, flakes: boolean) => {
+      let visible = 0;
+      for (let n = 0; n < count; n++) {
+        // Stable spatial sample and tick phase: pause/import and both render backends agree.
+        const column = (n * 1543 + (this.data!.seed >>> 0)) % (WIDTH * DEPTH);
+        const x = column % WIDTH, y = Math.floor(column / WIDTH), roof = this.data!.weatherRoof[column];
+        if (roof > this.level) continue;
+        const phase = (time * (flakes ? .24 : 1.5) + hash(x + n, y + 97)) % 1;
+        const bottom = roof + (roof === this.level ? .61 : 1.02), altitude = (1 - phase) * 4.5;
+        const drift = flakes ? Math.sin(time * .9 + n) * .16 : 0;
+        // Each drop stays in its sampled column; it cannot drift beneath a neighbouring roof.
+        const px = x + .5 + (hash(x, y + 31) - .5) * .45 + drift;
+        const py = y + .5 + (hash(y, x + 61) - .5) * .45;
+        const size = flakes ? .025 + hash(x + 7, y) * .035 : .013;
+        this.instance(mesh, visible++, px, bottom + altitude, py, size, flakes ? size : .38, size,
+          flakes ? 0xe7f0f1 : 0xa8c8db);
+      }
+      mesh.count = visible; this.finish(mesh); return visible;
+    };
+    if (rain.count) rainCount = draw(rain, rain.count, false); else this.finish(rain);
+    if (snow.count) snowCount = draw(snow, snow.count, true); else this.finish(snow);
+    this.weatherRender.rainParticles = rainCount; this.weatherRender.snowParticles = snowCount;
+    this.weatherRender.animationTick = time * TPS; this.weatherRender.visualDim = dim;
   }
 
   private animateFires(time: number) {
@@ -4012,6 +4076,7 @@ export class VoxelRenderer {
     this.animateStoves(time, cookingCells);
     this.animateWeaponBenches(time, workingWeaponBenches);
     this.animateFires(time);
+    this.animateWeather(time);
     this.animateDevices();
     this.animateCombat(this.data.tick + extraTicks);
   }
@@ -4068,6 +4133,7 @@ export class VoxelRenderer {
       level: this.level,
       rotation: this.rotation,
       zoom: this.zoom,
+      weather: { ...this.weatherRender },
     };
   }
 
