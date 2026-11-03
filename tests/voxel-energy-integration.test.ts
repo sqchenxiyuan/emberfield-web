@@ -1,3 +1,4 @@
+import { stripRangedDefaults } from './legacy-ranged-defaults';
 import { legacySimulation } from './fixtures/legacy-start';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
@@ -597,7 +598,7 @@ describe('v4 energy persistence and malformed-input rejection', () => {
     const original = savedWorld(),
       saved = original.save(),
       restored = VoxelSimulation.load(saved);
-    expect(saved.version).toBe(17);
+    expect(saved.version).toBe(18);
     expect(restored.devices.map((d) => [d.fuel, d.energy, d.target])).toEqual(
       original.devices.map((d) => [d.fuel, d.energy, d.target]),
     );
@@ -689,12 +690,12 @@ describe('v4 energy persistence and malformed-input rejection', () => {
   it('migrates a v3 save with no devices/wires/thermal and preserves the world', () => {
     const sim = fixture(),
       old = sim.save() as unknown as Record<string, unknown>;
-    old.version = 3;
+    stripRangedDefaults(old);    old.version = 3;
     delete old.devices;
     delete old.wires;
     delete old.thermal;
     const restored = VoxelSimulation.load(old);
-    expect(restored.save().version).toBe(17);
+    expect(restored.save().version).toBe(18);
     expect(restored.devices).toEqual([]);
     expect(restored.wires).toEqual([]);
     expect(restored.blocks).toEqual(sim.blocks);

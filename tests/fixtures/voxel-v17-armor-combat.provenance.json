@@ -1,0 +1,11 @@
+{
+  "capturedAt": "2026-11-03T06:12:44.566Z",
+  "workspaceCommit": "1ad44c5485c8d43e11461fe44dcb8f425c088833",
+  "publishedCommit": "816835f315a9b05b0e9e9d0121f4c627f57b74af",
+  "generator": "Exact normal-command campaign output, loaded by published v17 source before ranged changes",
+  "source": "test-results/voxel-armor-campaign/combat-after.json",
+  "sha256": "d417b864cc185d11170cb27c96d238a390c935dd7c462bbbfe519fd5f9909adf",
+  "version": 17,
+  "tick": 326168,
+  "loadedByOriginalSource": true
+}

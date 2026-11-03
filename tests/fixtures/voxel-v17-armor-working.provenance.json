@@ -1,0 +1,11 @@
+{
+  "capturedAt": "2026-11-03T06:12:44.541Z",
+  "workspaceCommit": "1ad44c5485c8d43e11461fe44dcb8f425c088833",
+  "publishedCommit": "816835f315a9b05b0e9e9d0121f4c627f57b74af",
+  "generator": "Exact normal-command campaign output, loaded by published v17 source before ranged changes",
+  "source": "test-results/voxel-armor-campaign/plate-working.json",
+  "sha256": "efc63fffe12a01ebebdb2a3457aeaf058ac9710e12ac194bc765de30b66bb0c5",
+  "version": 17,
+  "tick": 267890,
+  "loadedByOriginalSource": true
+}

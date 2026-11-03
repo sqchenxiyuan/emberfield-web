@@ -14,6 +14,9 @@ export const RESEARCH_KEYS = [
   'Batteries',
   'SolarPanels',
   'PlateArmor',
+  'Machining',
+  'Gunsmithing',
+  'BlowbackOperation',
 ] as const;
 export type ResearchKey = (typeof RESEARCH_KEYS)[number];
 export interface ResearchState {
@@ -114,11 +117,32 @@ export const RESEARCH_DEFS: Record<ResearchKey, ResearchDef> = {
     unlocks: ['钢板甲配方'],
     techLevel: 3,
   },
+  Machining: {
+    name: '机械加工',
+    cost: 1000,
+    prerequisites: ['Electricity', 'Smithing'],
+    unlocks: ['机械加工台'],
+    techLevel: 4,
+  },
+  Gunsmithing: {
+    name: '枪械制造',
+    cost: 500,
+    prerequisites: ['Machining'],
+    unlocks: ['左轮手枪'],
+    techLevel: 4,
+  },
+  BlowbackOperation: {
+    name: '自由枪机',
+    cost: 500,
+    prerequisites: ['Gunsmithing'],
+    unlocks: ['冲锋手枪'],
+    techLevel: 4,
+  },
 };
 const STARTING_RESEARCH: readonly ResearchKey[] = RESEARCH_KEYS.slice(0, 7);
 // Historical colonies retain their previous twelve unlocks. A newly introduced
 // technology still needs real research, including in a migrated legacy colony.
-const LEGACY_RESEARCH: readonly ResearchKey[] = RESEARCH_KEYS.filter((k) => k !== 'PlateArmor');
+const LEGACY_RESEARCH: readonly ResearchKey[] = RESEARCH_KEYS.slice(0, 12);
 export const RESEARCH_BENCH_COST = { wood: 75, steel: 25 } as const;
 export const RESEARCH_BENCH_WORK = Math.ceil(2800 / 3);
 export const RESEARCH_SESSION_TICKS = Math.ceil(4000 / 3);
@@ -193,6 +217,7 @@ export function validResearch(value: unknown): value is ResearchState {
 const TOOL_RESEARCH: Readonly<Record<string, ResearchKey>> = {
   grove: 'TreeSowing',
   smithy: 'Smithing',
+  machining: 'Machining',
   tailor: 'ComplexClothing',
   stonecutter: 'Stonecutting',
   solar: 'SolarPanels',
@@ -208,9 +233,14 @@ export function toolResearchReason(state: ResearchState, tool: string): string |
   return key && !researchComplete(state, key) ? `需要研究「${RESEARCH_DEFS[key].name}」` : null;
 }
 export function weaponResearchReason(state: ResearchState, kind: string): string | null {
-  return kind === 'steelLongsword' && !researchComplete(state, 'LongBlades')
-    ? '需要研究「长刃武器」'
-    : null;
+  const key = (
+    {
+      steelLongsword: 'LongBlades',
+      revolver: 'Gunsmithing',
+      machinePistol: 'BlowbackOperation',
+    } as const
+  )[kind as 'steelLongsword' | 'revolver' | 'machinePistol'];
+  return key && !researchComplete(state, key) ? `需要研究「${RESEARCH_DEFS[key].name}」` : null;
 }
 export function armorResearchReason(state: ResearchState, kind: string): string | null {
   const key = kind === 'plateArmor' ? 'PlateArmor' : 'Smithing';

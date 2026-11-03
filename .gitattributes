@@ -2,3 +2,5 @@
 docs/research/rimworld/evidence/*.jsonl text eol=lf
 # Published save fixtures retain their captured bytes on Windows checkouts too.
 tests/fixtures/voxel-v*.json text eol=lf
+# Research helper hashes must survive Windows and Linux checkouts unchanged.
+scripts/research/* text eol=lf

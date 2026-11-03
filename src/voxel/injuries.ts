@@ -16,7 +16,7 @@ import {
 } from './anatomy';
 
 export type BodyRegion = BodyPartId;
-export type InjuryKind = 'bruise' | 'bite' | 'cut' | 'stab' | 'crush' | 'crack';
+export type InjuryKind = 'bruise' | 'bite' | 'cut' | 'stab' | 'crush' | 'crack' | 'gunshot';
 export interface Injury {
   id: number;
   part: BodyPartId;
@@ -50,11 +50,12 @@ export const INJURY_NAMES: Record<InjuryKind, string> = {
   stab: '刺伤',
   crush: '挤压伤',
   crack: '骨裂',
+  gunshot: '枪伤',
 };
 export const BLOOD_INTERVAL = DAY / 1000,
   HEAL_INTERVAL = DAY / 100;
 export const STUMP_FRESH_TICKS = (90000 * DAY) / 60000;
-const kinds: readonly InjuryKind[] = ['bruise', 'bite', 'cut', 'stab', 'crush', 'crack'];
+const kinds: readonly InjuryKind[] = ['bruise', 'bite', 'cut', 'stab', 'crush', 'crack', 'gunshot'];
 const MAX_RECORDS = 1024,
   MAX_SEVERITY = 1000;
 const clamp = (n: number, min = 0, max = 1) => Math.max(min, Math.min(max, n));
@@ -96,7 +97,9 @@ export function injuryKindForDamagePart(damageDef: DamageDef, part: BodyPartId):
   if (!DAMAGE_DEFS.includes(damageDef) || !validBodyPart(part))
     throw new RangeError('伤害类型或部位无效');
   const p = BODY_PARTS[part];
+  if (damageDef === 'Bullet') return 'gunshot';
   if (p.solid) return 'crack';
+  if (damageDef === 'Arrow') return 'cut';
   if (damageDef === 'Blunt' || damageDef === 'Poke') return p.skinCovered ? 'bruise' : 'crush';
   return damageDef === 'Cut' ? 'cut' : damageDef === 'Stab' ? 'stab' : 'bite';
 }
@@ -316,7 +319,9 @@ export function applyBodyDamage(
     const probability =
       damageDef === 'Cut' || damageDef === 'Bite'
         ? clamp(overkill / 0.1)
-        : clamp((overkill - 0.4) / 0.6);
+        : damageDef === 'Bullet' || damageDef === 'Arrow'
+          ? clamp(overkill / 0.7)
+          : clamp((overkill - 0.4) / 0.6);
     return random() < probability ? damage : Math.max(0, hp - 1);
   };
   const chainToOutside = (part: BodyPartId): BodyPartId[] => {
@@ -425,7 +430,9 @@ export function applyBodyDamage(
     const damage = protectOutside(initialPart, amount);
     // Base worker's duplicate-to-outside check reads the effective damage Def;
     // a Bite diminished to Blunt no longer has harmAllLayersUntilOutside.
-    const parts = effectiveDamageDef === 'Bite' ? chainToOutside(initialPart) : [initialPart];
+    const parts = ['Bite', 'Bullet', 'Arrow'].includes(effectiveDamageDef)
+      ? chainToOutside(initialPart)
+      : [initialPart];
     for (const part of parts) add(part, damage);
   }
   if (!hits.length) return empty;

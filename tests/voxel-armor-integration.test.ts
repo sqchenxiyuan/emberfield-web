@@ -119,16 +119,17 @@ describe('armor save migration and strict physical schemas', () => {
       const s = VoxelSimulation.load(old),
         saved = s.save();
       expect(old).toEqual(before);
-      expect(saved.version).toBe(17);
+      expect(saved.version).toBe(18);
       for (const key of ['tick', 'nextId', 'blocks', 'items', 'stats', 'researchBenches'] as const)
         expect(saved[key]).toEqual(old[key]);
       expect(saved.research).toEqual({
         ...old.research,
-        progress: { ...old.research.progress, PlateArmor: 0 },
+        progress: { ...old.research.progress, PlateArmor: 0, Machining: 0, Gunsmithing: 0, BlowbackOperation: 0 },
       });
       expect(saved.weaponBenches).toEqual(
         old.weaponBenches.map((bench: any) => ({
           ...bench,
+          bills: [...bench.bills, { kind: 'shortBow', target: 0, paused: false }],
           armorBills:
             bench.kind === 'smithy'
               ? [
@@ -150,7 +151,7 @@ describe('armor save migration and strict physical schemas', () => {
           'health',
           'trauma',
         ] as const)
-          expect(p[key]).toEqual(prior[key]);
+          expect(p[key]).toEqual(key === 'skills' ? { ...prior.skills, shooting: p.skills.shooting } : prior[key]);
       }
       expect(() => VoxelSimulation.load(saved)).not.toThrow();
     },

@@ -1443,7 +1443,7 @@ const records = [
 ] as const;
 
 export type BodyPartId = (typeof records)[number]['id'];
-export type DamageDef = 'Blunt' | 'Poke' | 'Cut' | 'Stab' | 'Bite';
+export type DamageDef = 'Blunt' | 'Poke' | 'Cut' | 'Stab' | 'Bite' | 'Bullet' | 'Arrow';
 export interface BodyPart {
   id: BodyPartId;
   name: string;
@@ -1476,7 +1476,15 @@ export interface BodyState {
   wounds: readonly { part: BodyPartId; severity: number }[];
   missingParts: readonly { part: BodyPartId }[];
 }
-export const DAMAGE_DEFS: readonly DamageDef[] = ['Blunt', 'Poke', 'Cut', 'Stab', 'Bite'];
+export const DAMAGE_DEFS: readonly DamageDef[] = [
+  'Blunt',
+  'Poke',
+  'Cut',
+  'Stab',
+  'Bite',
+  'Bullet',
+  'Arrow',
+];
 const clamp = (n: number) => Math.max(0, Math.min(1, n));
 export function validBodyPart(value: unknown): value is BodyPartId {
   return typeof value === 'string' && Object.hasOwn(BODY_PARTS, value);

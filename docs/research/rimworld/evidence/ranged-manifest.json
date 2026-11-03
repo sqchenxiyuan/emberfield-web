@@ -1,0 +1,139 @@
+{
+  "evidence_id": "RW17-RANGED",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "Verse.Verb_Shoot",
+      "local_file": ".local-research/ranged/Verse.Verb_Shoot.cs",
+      "sha256": "7fc648ca43c5e65bb620c470319543893fee70876280bce695a5a5c1a93f2fd7",
+      "lines": 30
+    },
+    {
+      "type": "Verse.ShootLine",
+      "local_file": ".local-research/ranged/Verse.ShootLine.cs",
+      "sha256": "166fc4a89d0acb5a68e443963edeaccbe8de9e25aa3cc4087f6438b1625a0e3d",
+      "lines": 103
+    },
+    {
+      "type": "Verse.ShootLeanUtility",
+      "local_file": ".local-research/ranged/Verse.ShootLeanUtility.cs",
+      "sha256": "58587bea23a2dffcff536c38b3806b9a31c306d24624ec826b6bd6ac79ef14e9",
+      "lines": 148
+    },
+    {
+      "type": "Verse.VerbUtility",
+      "local_file": ".local-research/ranged/Verse.VerbUtility.cs",
+      "sha256": "4dd789f82d3cb740e3df1bd9a8eeaad0342cd9ddf3d775a74fa2f7c5e86a72a2",
+      "lines": 287
+    },
+    {
+      "type": "Verse.GenSight",
+      "local_file": ".local-research/ranged/Verse.GenSight.cs",
+      "sha256": "4163fd2352fe8e9bf5008e257b18344f86423a0d53f67af48664d9853768ef67",
+      "lines": 321
+    },
+    {
+      "type": "Verse.CoverInfo",
+      "local_file": ".local-research/ranged/Verse.CoverInfo.cs",
+      "sha256": "1462a26d41e7253cb5c851a5f2ca12be809611847c7efd61581fde06642cc891",
+      "lines": 21
+    },
+    {
+      "type": "Verse.ProjectileHitFlags",
+      "local_file": ".local-research/ranged/Verse.ProjectileHitFlags.cs",
+      "sha256": "11918d6b96bab7201e5d8f45824de6436f96cd2fd564b835b84d38623ccd587b",
+      "lines": 14
+    },
+    {
+      "type": "Verse.Stance_Warmup",
+      "local_file": ".local-research/ranged/Verse.Stance_Warmup.cs",
+      "sha256": "60f2e4505e82d331b8b173b38f9820a41ee8af220951d9cd28e08b7b6a29d7fd",
+      "lines": 225
+    },
+    {
+      "type": "Verse.Stance_Cooldown",
+      "local_file": ".local-research/ranged/Verse.Stance_Cooldown.cs",
+      "sha256": "d97b083e6162277ef0d11ec92ff13f5cfd34e30478759ba353ca984c74006927",
+      "lines": 29
+    },
+    {
+      "type": "Verse.AI.JobDriver_AttackStatic",
+      "local_file": ".local-research/ranged/Verse.AI.JobDriver_AttackStatic.cs",
+      "sha256": "3d080a670be774200dfe861f10e83eb419bfa8caf25bc3602cb8d5a8312ec23b",
+      "lines": 121
+    },
+    {
+      "type": "RimWorld.StatWorker_ShootingAccuracy",
+      "local_file": ".local-research/ranged/RimWorld.StatWorker_ShootingAccuracy.cs",
+      "sha256": "4b02d611fbf707f4aeb6d4c73665e90ce1179901ade923a70ae38e872fc5e658",
+      "lines": 24
+    },
+    {
+      "type": "RimWorld.WeatherManager",
+      "local_file": ".local-research/ranged/RimWorld.WeatherManager.cs",
+      "sha256": "ba855d9db6860b85be7317c28084ae2c64adb8b898b15c6d9a9fbde630438ee8",
+      "lines": 280
+    },
+    {
+      "type": "Verse.ShootTuning",
+      "local_file": ".local-research/ranged/Verse.ShootTuning.cs",
+      "sha256": "c59d0f0e451d07198e91f6aaf44959e23ff41a67f009a7243320c16a207b9445",
+      "lines": 93
+    },
+    {
+      "type": "Verse.CoverGrid",
+      "local_file": ".local-research/ranged/Verse.CoverGrid.cs",
+      "sha256": "38c47816fc08735fdbf77dc8cab21303823927bc3df04780f1a5f9c863bc356a",
+      "lines": 72
+    },
+    {
+      "type": "Verse.GenGrid",
+      "local_file": ".local-research/ranged/Verse.GenGrid.cs",
+      "sha256": "49d0bd1597228971bab4eb5b37bc55218d39ee116a3e1a4ece4a4b8ad0d3aca8",
+      "lines": 279
+    },
+    {
+      "type": "Verse.GenTicks",
+      "local_file": ".local-research/ranged/Verse.GenTicks.cs",
+      "sha256": "8366095ba56aeb4afe18ff3972f3163f67ad2370cb7fc285edbd847d9f5102fa",
+      "lines": 144
+    },
+    {
+      "type": "Verse.SimpleSurface",
+      "local_file": ".local-research/ranged/Verse.SimpleSurface.cs",
+      "sha256": "ba6eeef2c9caa729d587a47b04f3b734ee827b219e24abdd9341391af2719737",
+      "lines": 74
+    },
+    {
+      "type": "Verse.InjuryProps",
+      "local_file": ".local-research/ranged/Verse.InjuryProps.cs",
+      "sha256": "92045c84e66c01dbc845a3fcdadcbba2642f7eb93d7eacf7654daaf7fd571e7a",
+      "lines": 21
+    },
+    {
+      "type": "RimWorld.StaggerHandler",
+      "local_file": ".local-research/ranged/RimWorld.StaggerHandler.cs",
+      "sha256": "14aaf544588857c607ff16946a58b6eb57743a97a8271a40c879d46863cc5e15",
+      "lines": 92
+    },
+    {
+      "type": "Verse.VerbTracker",
+      "local_file": ".local-research/ranged/Verse.VerbTracker.cs",
+      "sha256": "1f08f1f0e96d2fbca66faf6d27d6246fcb22d66b264b8eaaf26237d75742883b",
+      "lines": 255
+    }
+  ]
+}

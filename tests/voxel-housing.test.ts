@@ -1,3 +1,4 @@
+import { stripRangedDefaults } from './legacy-ranged-defaults';
 import { legacySimulation } from './fixtures/legacy-start';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
@@ -157,7 +158,7 @@ describe('normal-command voxel housing', () => {
     const save = sim.save(),
       restored = VoxelSimulation.load(save),
       copy = restored.pawns.find((p) => p.id === pawn.id)!;
-    expect(save.version).toBe(17);
+    expect(save.version).toBe(18);
     expect(restored.counts()).toEqual(sim.counts());
     expect(copy).toMatchObject({
       phase: 'rest',
@@ -381,7 +382,7 @@ describe('normal-command voxel housing', () => {
     for (const version of [1, 2]) {
       // Data-format migration fixture: strip only fields absent from historical schemas.
       const old = structuredClone(sim.save()) as unknown as Record<string, any>;
-      old.version = version;
+      stripRangedDefaults(old);      old.version = version;
       delete old.beds;
       delete old.doors;
       for (const pawn of old.pawns) {
@@ -407,7 +408,7 @@ describe('normal-command voxel housing', () => {
       expect(restored.counts()).toEqual(before);
       expect(restored.beds).toEqual([]);
       expect(restored.doors).toEqual([]);
-      expect(restored.save().version).toBe(17);
+      expect(restored.save().version).toBe(18);
       expect(
         restored.pawns.every(
           (pawn) =>

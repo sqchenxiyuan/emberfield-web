@@ -1,3 +1,4 @@
+import { stripRangedDefaults } from './legacy-ranged-defaults';
 import { legacySimulation } from './fixtures/legacy-start';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
@@ -163,7 +164,7 @@ describe('bounded physical stacks and hauling reservations', () => {
     expect(s.items.filter((i) => i.resource === 'food').map((i) => i.amount)).toEqual([
       10, 10, 10, 10, 10, 10,
     ]);
-    expect(s.save().version).toBe(17);
+    expect(s.save().version).toBe(18);
     expect(VoxelSimulation.load(s.save()).counts()).toEqual(s.counts());
   });
   it.each(resources)('carries and stores %s only within its native one-stack limit', (resource) => {
@@ -460,7 +461,7 @@ describe('v6 strict saves and bounded v5 migration', () => {
   it('splits same-cell legacy species and excess cargo deterministically without changing totals or age', () => {
     const s = fixture(),
       raw = s.save() as unknown as Record<string, any>;
-    raw.version = 5;
+    stripRangedDefaults(raw);    raw.version = 5;
     raw.items = [
       { ...pos(15, 15), id: raw.nextId++, ...freshBatch('grain', 160, 'corn'), rotProgress: 1234 },
       { ...pos(15, 15), id: raw.nextId++, ...freshBatch('grain', 40, 'potato'), rotProgress: 4321 },
@@ -490,7 +491,7 @@ describe('v6 strict saves and bounded v5 migration', () => {
       carve(s, pos(30, 30), pos(40, 40, 9));
     });
     const raw = s.save() as unknown as Record<string, any>;
-    raw.version = 5;
+    stripRangedDefaults(raw);    raw.version = 5;
     raw.items[0].amount = 76;
     const before = structuredClone(raw);
     expect(() => VoxelSimulation.load(raw)).toThrow(/容量不足/);

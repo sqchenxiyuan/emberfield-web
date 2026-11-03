@@ -13,6 +13,7 @@ export async function researchOpening({
   reserved = [],
   elevated = false,
   steelTarget = 160,
+  foodPlots = 80,
   fixture = async () => {},
 }) {
   const point = (p) => ({ x: p.x, y: p.y, z: p.z });
@@ -89,13 +90,13 @@ export async function researchOpening({
       blocked.add(key(p));
     }
   }
-  if (s.farms.length < 80) {
+  if (s.farms.length < foodPlots) {
     const farms = surface
       .filter(
         (p) => !blocked.has(key(p)) && [1, 8, 10].includes(s.blocks[at({ ...p, z: p.z - 1 })]),
       )
-      .slice(0, 80 - s.farms.length);
-    assert.equal(farms.length, 80 - s.farms.length, 'food production land');
+      .slice(0, foodPlots - s.farms.length);
+    assert.equal(farms.length, foodPlots - s.farms.length, 'food production land');
     for (const p of farms) {
       place('farm', p, { crop: 'rice' });
       blocked.add(key(p));
@@ -122,7 +123,7 @@ export async function researchOpening({
   }
   until(
     'food plots and cooking station are physically prepared',
-    () => s.stoves.length > 0 && s.crops.length >= Math.min(80, s.farms.length),
+    () => s.stoves.length > 0 && s.crops.length >= Math.min(foodPlots, s.farms.length),
     60000,
   );
   command({ type: 'bill', stoveId: s.stoves[0].id, target: 8, paused: false });

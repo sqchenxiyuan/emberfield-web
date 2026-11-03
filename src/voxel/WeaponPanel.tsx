@@ -11,6 +11,7 @@ import {
 } from './weapons';
 import { WEAPON_BENCH_NAMES } from './weaponProduction';
 import { weaponResearchReason } from './research';
+import { isRangedKind, rangedStats } from './ranged';
 import {
   RESOURCE_NAMES,
   TPS,
@@ -25,21 +26,49 @@ import {
 export function WeaponDetails({ piece }: { piece: WeaponPiece }) {
   const stats = weaponStats(piece),
     attacks = meleeOptions(piece).filter((a) => a.source === 'weapon');
+  const ranged = isRangedKind(piece.kind)
+    ? rangedStats({ kind: piece.kind, quality: piece.quality })
+    : null;
   return (
     <div className="voxel-apparel-detail" data-testid="weapon-detail">
       <b>{weaponName(piece)}</b>
       <span>
         耐久 {piece.hitPoints} / {stats.maxHitPoints}
       </span>
+      {ranged && (
+        <div className="voxel-ranged-stats" data-testid="ranged-weapon-detail">
+          <span>
+            射程 <b>{ranged.range} 格</b> ·{' '}
+            {ranged.burstCount > 1 ? `${ranged.burstCount} 发连射` : '单发'}
+          </span>
+          <span>
+            每发伤害 <b>{ranged.damage}</b> · 穿透 {(ranged.armorPenetration * 100).toFixed(1)}%
+          </span>
+          <span>
+            瞄准 {(ranged.warmupTicks / TPS).toFixed(2)} 秒 · 冷却{' '}
+            {(ranged.cooldownTicks / TPS).toFixed(2)} 秒
+          </span>
+          <small>
+            武器精度（3 / 12 / 25 / 40 格）：
+            {ranged.accuracy.map((n) => `${Math.round(n * 100)}%`).join(' / ')}
+          </small>
+          <small>
+            实际命中还受射击技能、视力、操作能力、姿态与掩体影响。贴身会使用武器或身体进行近战。
+          </small>
+        </div>
+      )}
       {attacks.map((a) => (
         <small key={a.id}>
+          {ranged ? '近战 · ' : ''}
           {a.label}：基础伤害 {a.damage.toFixed(1)} · 穿透 {(a.armorPenetration * 100).toFixed(1)}%
           · 间隔 {a.cooldownSeconds.toFixed(1)} 秒
         </small>
       ))}
-      <small>
-        实际攻击还会使用可用的身体部位；命中后伤害有波动，穿透参与命中部位的逐层护甲结算。
-      </small>
+      {!ranged && (
+        <small>
+          实际攻击还会使用可用的身体部位；命中后伤害有波动，穿透参与命中部位的逐层护甲结算。
+        </small>
+      )}
     </div>
   );
 }
@@ -160,6 +189,10 @@ export function WeaponBenchPanel({
   const recipe = WEAPON_DEFS[kind],
     stand = weaponBenchInteraction(bench);
   const researchReason = weaponResearchReason(snapshot.research, kind);
+  const activeJob = snapshot.jobs.find(
+    (j) =>
+      j.kind === 'smith' && !j.cancelled && j.x === bench.x && j.y === bench.y && j.z === bench.z,
+  );
   const pieces = [
     ...snapshot.items.flatMap((i) => (i.weapon ? [i.weapon] : [])),
     ...snapshot.pawns.flatMap((p) => [
@@ -176,6 +209,38 @@ export function WeaponBenchPanel({
         <small data-testid="smithy-fuel">
           燃料 {bench.fuel.toFixed(1)} / 50 木材 · 加工时消耗，低于 15 自动补充
         </small>
+      )}
+      {bench.kind === 'machining' && (
+        <div className="voxel-bench-power" data-testid="machining-power">
+          <div className="voxel-info-row">
+            <b>{bench.power?.reason ?? '等待供电'}</b>
+            <span>{bench.power?.powered ? '350 W' : '未供电'}</span>
+          </div>
+          <small>
+            {bench.power?.networkId == null ? '未连接电网' : `电网 ${bench.power.networkId + 1}`} ·
+            停电时保留当前批次，恢复供电后继续加工。
+          </small>
+          <button
+            aria-pressed={!!bench.power?.on}
+            onClick={() => command({ type: 'benchPower', benchId: bench.id, on: !bench.power?.on })}
+          >
+            {bench.power?.on ? '关闭机械台电源' : '打开机械台电源'}
+          </button>
+        </div>
+      )}
+      {activeJob && (
+        <div className="voxel-aim-status" data-testid="weapon-production-progress">
+          <b>
+            {activeJob.weaponKind ? WEAPON_NAMES[activeJob.weaponKind] : '武器'} · 加工{' '}
+            {Math.floor((activeJob.progress / Math.max(1, activeJob.work)) * 100)}%
+          </b>
+          <progress
+            aria-label="武器制作进度"
+            value={activeJob.progress}
+            max={Math.max(1, activeJob.work)}
+          />
+          {activeJob.reason && <small>{activeJob.reason}</small>}
+        </div>
       )}
       <label>
         配方
@@ -195,7 +260,8 @@ export function WeaponBenchPanel({
         {Object.entries(recipe.cost)
           .map(([r, n]) => `${n} ${RESOURCE_NAMES[r as keyof typeof RESOURCE_NAMES]}`)
           .join(' + ')}{' '}
-        · 基础加工 {weaponWork(kind, bench.kind) / TPS} 秒
+        · 基础加工 {(weaponWork(kind, bench.kind) / TPS).toFixed(1)} 秒 · 工艺{' '}
+        {recipe.sourceCraftingLevel} 级
       </p>
       <small>
         全营地已有 {pieces.filter((p) => p.kind === kind).length} 件（含装备、携带及地面）
@@ -226,7 +292,7 @@ export function WeaponBenchPanel({
         需要「加工」分工，原料运达后开工。操作位 {stand.x}, {stand.y} · Z {stand.z}。
       </small>
       <small>
-        钢制武器品质由完工者的工艺等级决定，木棒无品质等级。钢长剑需要长刃武器研究与工艺5级。降低目标保留当前批次，暂停则退回原料。
+        武器品质由完工者的工艺等级决定，木棒无品质等级。降低目标保留当前批次，暂停则退回原料。
       </small>
     </section>
   );

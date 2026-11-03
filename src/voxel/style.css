@@ -1249,6 +1249,81 @@ a {
   opacity: 0.45;
   cursor: not-allowed;
 }
+.voxel-ranged-stats,
+.voxel-aim-status,
+.voxel-bench-power {
+  display: grid;
+  gap: 7px;
+  margin: 8px 0;
+  padding: 10px;
+  border: 1px solid #8cbcb43b;
+  background: #112b2a66;
+}
+.voxel-shot-report {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid #d6bd7b4d;
+  background: #d6bd7b09;
+}
+.voxel-shot-report strong {
+  color: #e7ce87;
+  font-size: 20px;
+}
+.voxel-shot-report > small {
+  display: block;
+  margin-top: 5px;
+  line-height: 1.55;
+}
+.voxel-shot-factors {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 5px 10px;
+  font-size: 11px;
+}
+.voxel-shot-factors dt {
+  color: #b9c9bf;
+}
+.voxel-shot-factors dd {
+  margin: 0;
+  color: #ede8ce;
+  font-variant-numeric: tabular-nums;
+}
+.voxel-shot-blocked {
+  border-left: 2px solid #e5a16f;
+  padding-left: 8px;
+  color: #efbb94;
+}
+.voxel-aim-status span {
+  font-size: 11px;
+  color: #c4d3c2;
+}
+.voxel-aim-status progress {
+  width: 100%;
+  accent-color: #dbbf77;
+}
+.voxel-combat-events {
+  display: grid;
+  gap: 5px;
+  margin-top: 10px;
+}
+.voxel-combat-events small {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  line-height: 1.5;
+}
+.voxel-combat-events small > span {
+  white-space: nowrap;
+  opacity: 0.55;
+}
+.voxel-combat-events [data-kind='hit'] {
+  color: #efa68a;
+}
+.voxel-combat-events [data-kind='cover'],
+.voxel-combat-events [data-kind='terrain'],
+.voxel-combat-events [data-kind='deflect'] {
+  color: #d9c48a;
+}
 @media (max-width: 1050px) {
   .voxel-research-drawer {
     right: 12px;

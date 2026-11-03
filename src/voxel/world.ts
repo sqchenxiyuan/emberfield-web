@@ -61,6 +61,13 @@ import {
 import {
   SMITHY_COST,
   SMITHY_WORK,
+  MACHINING_COST,
+  MACHINING_WORK,
+  MACHINING_POWER,
+  machiningWorkFactor,
+  SANDBAG_COST,
+  SANDBAG_WORK,
+  SANDBAG_HP,
   SMITHY_FUEL_CAPACITY,
   SMITHY_REFUEL_AT,
   SMITHY_FUEL_PER_TICK,
@@ -84,6 +91,23 @@ import {
   simpleBenchFactor,
 } from './research';
 import { VoxelRooms } from './rooms';
+import {
+  rejectLegacyRangedFields,
+  migrateRangedFields,
+  validateRangedState,
+} from './rangedPersistence';
+import {
+  isRangedKind,
+  rangedStats,
+  rangedShotReport,
+  resolveRangedLaunch,
+  projectileFlightTicks,
+  traceVoxelRay,
+  pawnInterceptChance,
+  interceptDistanceFactor,
+  projectilePostureChance,
+  type RangedCover,
+} from './ranged';
 import {
   initialSkills,
   validSkills,
@@ -216,6 +240,9 @@ import type {
   ApparelPiece,
   Tailor,
   WeaponBench,
+  Sandbag,
+  Projectile,
+  CombatEvent,
   ResearchBench,
 } from './types';
 
@@ -234,53 +261,57 @@ const costOf = (
   weaponKind?: WeaponKind,
   weaponBenchKind?: WeaponBenchKind,
 ): Partial<Counts> =>
-  kind === 'researchBench'
-    ? { ...RESEARCH_BENCH_COST }
-    : kind === 'smithy'
-      ? { ...SMITHY_COST }
-      : kind === 'smith'
-        ? { ...WEAPON_DEFS[weaponKind!].cost }
-        : kind === 'tailor'
-          ? { ...TAILOR_COST }
-          : kind === 'tailoring' || kind === 'armorsmith'
-            ? { ...APPAREL_DEFS[apparelKind ?? 'shirt'].cost }
-            : kind === 'stonecutter'
-              ? { ...STONECUTTER_COST }
-              : kind === 'stonecut'
-                ? { chunk: STONECUTTING.input }
-                : material === 'stone' && (kind === 'wall' || kind === 'floor')
-                  ? { stone: STONE_CONSTRUCTION[kind].cost }
-                  : isDeviceKind(kind)
-                    ? { ...DEVICE_COSTS[kind] }
-                    : kind === 'wire'
-                      ? { steel: 1 }
-                      : kind === 'cook'
-                        ? { grain: SIMPLE_MEAL.ingredients, wood: SIMPLE_MEAL.wood }
-                        : (
-                              {
-                                floor: 3,
-                                wall: 6,
-                                ladder: 2,
-                                digLadder: 2,
-                                stove: 20,
-                                bed: 45,
-                                door: 25,
-                              } as Partial<Record<JobKind, number>>
-                            )[kind]
-                          ? {
-                              wood: (
-                                {
-                                  floor: 3,
-                                  wall: 6,
-                                  ladder: 2,
-                                  digLadder: 2,
-                                  stove: 20,
-                                  bed: 45,
-                                  door: 25,
-                                } as Partial<Record<JobKind, number>>
-                              )[kind]!,
-                            }
-                          : {};
+  kind === 'machining'
+    ? { ...MACHINING_COST }
+    : kind === 'sandbag'
+      ? { ...SANDBAG_COST }
+      : kind === 'researchBench'
+        ? { ...RESEARCH_BENCH_COST }
+        : kind === 'smithy'
+          ? { ...SMITHY_COST }
+          : kind === 'smith'
+            ? { ...WEAPON_DEFS[weaponKind!].cost }
+            : kind === 'tailor'
+              ? { ...TAILOR_COST }
+              : kind === 'tailoring' || kind === 'armorsmith'
+                ? { ...APPAREL_DEFS[apparelKind ?? 'shirt'].cost }
+                : kind === 'stonecutter'
+                  ? { ...STONECUTTER_COST }
+                  : kind === 'stonecut'
+                    ? { chunk: STONECUTTING.input }
+                    : material === 'stone' && (kind === 'wall' || kind === 'floor')
+                      ? { stone: STONE_CONSTRUCTION[kind].cost }
+                      : isDeviceKind(kind)
+                        ? { ...DEVICE_COSTS[kind] }
+                        : kind === 'wire'
+                          ? { steel: 1 }
+                          : kind === 'cook'
+                            ? { grain: SIMPLE_MEAL.ingredients, wood: SIMPLE_MEAL.wood }
+                            : (
+                                  {
+                                    floor: 3,
+                                    wall: 6,
+                                    ladder: 2,
+                                    digLadder: 2,
+                                    stove: 20,
+                                    bed: 45,
+                                    door: 25,
+                                  } as Partial<Record<JobKind, number>>
+                                )[kind]
+                              ? {
+                                  wood: (
+                                    {
+                                      floor: 3,
+                                      wall: 6,
+                                      ladder: 2,
+                                      digLadder: 2,
+                                      stove: 20,
+                                      bed: 45,
+                                      door: 25,
+                                    } as Partial<Record<JobKind, number>>
+                                  )[kind]!,
+                                }
+                              : {};
 const workOf = (
   kind: JobKind,
   material: ConstructionMaterial = 'wood',
@@ -290,48 +321,52 @@ const workOf = (
   weaponKind?: WeaponKind,
   weaponBenchKind?: WeaponBenchKind,
 ) =>
-  kind === 'researchBench'
-    ? RESEARCH_BENCH_WORK
-    : kind === 'research'
-      ? RESEARCH_SESSION_TICKS
-      : kind === 'smithy'
-        ? SMITHY_WORK
-        : kind === 'craftingSpot'
-          ? 1
-          : kind === 'smith'
-            ? weaponWork(weaponKind!, weaponBenchKind!)
-            : kind === 'tailor'
-              ? TAILOR_WORK
-              : kind === 'tailoring' || kind === 'armorsmith'
-                ? APPAREL_DEFS[apparelKind ?? 'shirt'].work
-                : kind === 'cut'
-                  ? legacyCut
-                    ? 60
-                    : treeCutWork(species)
-                  : kind === 'plantTree'
-                    ? treeSowWork(species)
-                    : material === 'stone' && (kind === 'wall' || kind === 'floor')
-                      ? STONE_CONSTRUCTION[kind].work
-                      : {
-                          ...DEVICE_WORK,
-                          wire: 12,
-                          refuel: 80,
-                          mine: 70,
-                          cut: 60,
-                          floor: 45,
-                          wall: 80,
-                          ladder: 40,
-                          digLadder: 90,
-                          remove: 40,
-                          sow: 57,
-                          harvest: 67,
-                          stove: 120,
-                          bed: 187,
-                          door: 199,
-                          cook: SIMPLE_MEAL.work,
-                          stonecutter: STONECUTTER_WORK,
-                          stonecut: STONECUTTING.work,
-                        }[kind];
+  kind === 'machining'
+    ? MACHINING_WORK
+    : kind === 'sandbag'
+      ? SANDBAG_WORK
+      : kind === 'researchBench'
+        ? RESEARCH_BENCH_WORK
+        : kind === 'research'
+          ? RESEARCH_SESSION_TICKS
+          : kind === 'smithy'
+            ? SMITHY_WORK
+            : kind === 'craftingSpot'
+              ? 1
+              : kind === 'smith'
+                ? weaponWork(weaponKind!, weaponBenchKind!)
+                : kind === 'tailor'
+                  ? TAILOR_WORK
+                  : kind === 'tailoring' || kind === 'armorsmith'
+                    ? APPAREL_DEFS[apparelKind ?? 'shirt'].work
+                    : kind === 'cut'
+                      ? legacyCut
+                        ? 60
+                        : treeCutWork(species)
+                      : kind === 'plantTree'
+                        ? treeSowWork(species)
+                        : material === 'stone' && (kind === 'wall' || kind === 'floor')
+                          ? STONE_CONSTRUCTION[kind].work
+                          : {
+                              ...DEVICE_WORK,
+                              wire: 12,
+                              refuel: 80,
+                              mine: 70,
+                              cut: 60,
+                              floor: 45,
+                              wall: 80,
+                              ladder: 40,
+                              digLadder: 90,
+                              remove: 40,
+                              sow: 57,
+                              harvest: 67,
+                              stove: 120,
+                              bed: 187,
+                              door: 199,
+                              cook: SIMPLE_MEAL.work,
+                              stonecutter: STONECUTTER_WORK,
+                              stonecut: STONECUTTING.work,
+                            }[kind];
 const workType = (kind: JobKind): Work =>
   kind === 'research'
     ? 'research'
@@ -390,6 +425,9 @@ function decode(raw: unknown, max: number): Uint8Array<ArrayBuffer> {
 
 export class VoxelSimulation {
   combat = { enabled: false, nextRaid: 0, wave: 0 };
+  projectiles: Projectile[] = [];
+  combatEvents: CombatEvent[] = [];
+  sandbags: Sandbag[] = [];
   blocks = new Uint8Array(CELLS);
   ladders = new Uint8Array(CELLS);
   pawns: Pawn[] = [];
@@ -600,6 +638,9 @@ export class VoxelSimulation {
       (this.blocks[i - WIDTH * DEPTH] !== 0 || this.ladders[i] === 1)
     );
   }
+  private canStop(p: Pos) {
+    return this.standable(p) && !this.sandbags.some((b) => same(b, p));
+  }
   private neighbors(p: Pos): number[] {
     const out: number[] = [];
     for (const [dx, dy] of horizontal) {
@@ -647,7 +688,7 @@ export class VoxelSimulation {
     return path.reverse();
   }
   path(from: Pos, to: Pos) {
-    if (!inside(from) || !inside(to) || !this.standable(from) || !this.standable(to)) return null;
+    if (!inside(from) || !inside(to) || !this.standable(from) || !this.canStop(to)) return null;
     this.search(from);
     return this.distance[at(to)] >= 0 ? this.route(at(to)) : null;
   }
@@ -656,33 +697,33 @@ export class VoxelSimulation {
       const bench = this.researchBenches.find((b) => same(b, j));
       if (!bench) return [];
       const point = researchBenchInteraction(bench);
-      return this.standable(point) ? [at(point)] : [];
+      return this.canStop(point) ? [at(point)] : [];
     }
     const researchBench = j.kind === 'remove' ? this.researchBenchAt(j) : undefined;
     if (j.kind === 'researchBench' || researchBench) {
       const cells = researchBenchCells(researchBench ?? { ...j, axis: j.axis ?? 'x' });
       return cells
         .flatMap((v) => horizontal.map(([dx, dy]) => ({ x: v.x + dx, y: v.y + dy, z: v.z })))
-        .filter((q) => this.standable(q) && !cells.some((c) => same(c, q)))
+        .filter((q) => this.canStop(q) && !cells.some((c) => same(c, q)))
         .map(at);
     }
     if (j.kind === 'smith' || j.kind === 'armorsmith') {
       const bench = this.weaponBenches.find((b) => same(b, j));
       if (!bench) return [];
       const point = weaponBenchInteraction(bench);
-      return this.standable(point) ? [at(point)] : [];
+      return this.canStop(point) ? [at(point)] : [];
     }
     if (j.kind === 'tailoring') {
       const bench = this.tailors.find((b) => same(b, j));
       if (!bench) return [];
       const point = tailorInteraction(bench);
-      return this.standable(point) ? [at(point)] : [];
+      return this.canStop(point) ? [at(point)] : [];
     }
     if (j.kind === 'stonecut') {
       const bench = this.stonecutters.find((b) => same(b, j));
       if (!bench) return [];
       const point = stonecutterInteraction(bench);
-      return this.standable(point) ? [at(point)] : [];
+      return this.canStop(point) ? [at(point)] : [];
     }
     const device = j.kind === 'refuel' || j.kind === 'remove' ? this.deviceAt(j) : undefined;
     const bench =
@@ -690,7 +731,10 @@ export class VoxelSimulation {
         ? (this.stonecutterAt(j) ?? this.tailorAt(j) ?? this.weaponBenchAt(j))
         : undefined;
     const cells =
-      j.kind === 'stonecutter' || j.kind === 'tailor' || j.kind === 'smithy'
+      j.kind === 'stonecutter' ||
+      j.kind === 'tailor' ||
+      j.kind === 'smithy' ||
+      j.kind === 'machining'
         ? stonecutterCells({ ...j, axis: j.axis ?? 'x' })
         : bench
           ? 'kind' in bench
@@ -714,11 +758,13 @@ export class VoxelSimulation {
       .filter(
         (p) =>
           this.standable(p) &&
+          !this.sandbags.some((b) => same(b, p)) &&
           (!(
             isDeviceKind(j.kind) ||
             j.kind === 'stonecutter' ||
             j.kind === 'tailor' ||
-            j.kind === 'smithy'
+            j.kind === 'smithy' ||
+            j.kind === 'machining'
           ) ||
             !cells.some((c) => same(c, p))),
       )
@@ -732,7 +778,7 @@ export class VoxelSimulation {
   }
   private groundAllowed(p: Pos): boolean {
     return (
-      this.standable(p) &&
+      this.canStop(p) &&
       this.blocks[at(p) - WIDTH * DEPTH] !== 0 &&
       !this.ladders[at(p)] &&
       !this.bedAt(p)
@@ -981,7 +1027,12 @@ export class VoxelSimulation {
         { ...p, z: p.z + 1 },
       ]);
     }
-    if (j.kind === 'stonecutter' || j.kind === 'tailor' || j.kind === 'smithy')
+    if (
+      j.kind === 'stonecutter' ||
+      j.kind === 'tailor' ||
+      j.kind === 'smithy' ||
+      j.kind === 'machining'
+    )
       return stonecutterCells({ ...j, axis: j.axis ?? 'x' }).flatMap((p) => [
         p,
         { ...p, z: p.z + 1 },
@@ -1015,7 +1066,7 @@ export class VoxelSimulation {
         ...this.stonecutters.flatMap(stonecutterCells),
         ...this.tailors.flatMap(tailorCells),
         ...this.researchBenches.flatMap(researchBenchCells),
-        ...this.weaponBenches.filter((b) => b.kind === 'smithy').flatMap(weaponBenchCells),
+        ...this.weaponBenches.filter((b) => b.kind !== 'craftingSpot').flatMap(weaponBenchCells),
       ].flatMap((p) => [at(p), at({ ...p, z: p.z + 1 })]),
     );
     this.skyCache.clear();
@@ -1039,7 +1090,9 @@ export class VoxelSimulation {
     return this.weaponBenches.find((b) =>
       weaponBenchCells(b).some(
         (q) =>
-          q.x === p.x && q.y === p.y && (q.z === p.z || (b.kind === 'smithy' && q.z + 1 === p.z)),
+          q.x === p.x &&
+          q.y === p.y &&
+          (q.z === p.z || (b.kind !== 'craftingSpot' && q.z + 1 === p.z)),
       ),
     );
   }
@@ -1056,6 +1109,7 @@ export class VoxelSimulation {
   }
   private furnitureAt(p: Pos) {
     return (
+      this.sandbags.find((b) => same(b, p)) ||
       this.researchBenchAt(p) ||
       this.deviceAt(p) ||
       this.stonecutterAt(p) ||
@@ -1539,6 +1593,17 @@ export class VoxelSimulation {
   command(c: VoxelCommand): CommandResult {
     if (!c || typeof c !== 'object') return { ok: false, message: '命令格式无效' };
     const nextId = this.nextId;
+    if (c.type === 'benchPower') {
+      const bench = this.weaponBenches.find((b) => b.id === c.benchId && b.kind === 'machining');
+      if (!bench?.power || typeof c.on !== 'boolean')
+        return { ok: false, message: '机械台开关无效' };
+      bench.power.on = c.on;
+      if (!c.on) {
+        bench.power.powered = false;
+        bench.power.active = false;
+      }
+      return { ok: true, message: c.on ? '机械台已开启' : '机械台已关闭，保留加工进度' };
+    }
     const result = this.applyCommand(c);
     if (!result.ok) this.nextId = nextId;
     else for (const p of this.pawns) if (p.carePhase && !this.validCare(p)) this.release(p);
@@ -1675,12 +1740,17 @@ export class VoxelSimulation {
       )
         return { ok: false, message: '需要可行动的征召人物和有效攻击目标' };
       this.search(p);
-      const stand = this.careStand(target);
-      if (stand < 0) return { ok: false, message: '目标附近没有可达近战位置' };
+      const ranged = p.weapon && isRangedKind(p.weapon.kind) && !p.weaponDropPending;
+      const stand = ranged ? this.shootingStand(p, target) : this.careStand(target);
+      if (stand < 0)
+        return {
+          ok: false,
+          message: ranged ? '没有可达且无遮挡的射击位置' : '目标附近没有可达近战位置',
+        };
       this.release(p);
       p.attackTargetId = target.id;
       this.go(p, stand, 'combat');
-      p.reason = '前往近战攻击' + target.name;
+      p.reason = (ranged ? '前往射击' : '前往近战攻击') + target.name;
       return { ok: true, message: p.reason };
     }
     if (c.type === 'storage') {
@@ -1959,7 +2029,8 @@ export class VoxelSimulation {
         p.downed ||
         p.carriedBy !== null ||
         !inside(c.target) ||
-        !this.standable(c.target)
+        !this.standable(c.target) ||
+        this.sandbags.some((b) => same(b, c.target))
       )
         return { ok: false, message: '目标没有支撑或两格净空' };
       const path = this.path(p, c.target);
@@ -2118,6 +2189,8 @@ export class VoxelSimulation {
                   'stonecutter',
                   'tailor',
                   'smithy',
+                  'machining',
+                  'sandbag',
                   'craftingSpot',
                   'researchBench',
                 ].includes(j.kind) ||
@@ -2153,14 +2226,16 @@ export class VoxelSimulation {
         return { ok: false, message: '制作点需要一格有支撑的空地，不能重叠区域或已有设施' };
       this.weaponBenches.push(makeWeaponBench(this.id(), 'craftingSpot', p, 'x'));
       this.revision++;
-      return { ok: true, message: '已划定制作点，点击设置木棒或匕首配方', count: 1 };
+      return { ok: true, message: '已划定制作点，点击设置木棒、匕首或短弓配方', count: 1 };
     }
     const plans: Job[] = [];
     const errors: string[] = [];
     if (c.axis !== undefined && c.axis !== 'x' && c.axis !== 'y')
       return { ok: false, message: '朝向无效' };
     if (
-      (['bed', 'door', 'stonecutter', 'tailor', 'smithy', 'researchBench'].includes(c.tool) ||
+      (['bed', 'door', 'stonecutter', 'tailor', 'smithy', 'machining', 'researchBench'].includes(
+        c.tool,
+      ) ||
         isDeviceKind(c.tool)) &&
       positions.length !== 1
     )
@@ -2264,8 +2339,11 @@ export class VoxelSimulation {
       this.tailors.length + [...this.jobs, ...plans].filter((j) => j.kind === 'tailor').length >
         128 ||
       this.weaponBenches.length +
-        [...this.jobs, ...plans].filter((j) => j.kind === 'smithy').length >
-        128
+        [...this.jobs, ...plans].filter((j) => j.kind === 'smithy' || j.kind === 'machining')
+          .length >
+        128 ||
+      this.sandbags.length + [...this.jobs, ...plans].filter((j) => j.kind === 'sandbag').length >
+        512
     )
       return { ok: false, message: '设施数量已达到上限' };
     for (const j of plans)
@@ -2314,8 +2392,9 @@ export class VoxelSimulation {
       cancelled: false,
       cost: costOf(kind, material, apparelKind, weaponKind, weaponBenchKind),
       reason: '等待可达工人',
-      ...(['bed', 'door', 'stonecutter', 'tailor', 'smithy', 'researchBench'].includes(kind) ||
-      isDeviceKind(kind)
+      ...(['bed', 'door', 'stonecutter', 'tailor', 'smithy', 'machining', 'researchBench'].includes(
+        kind,
+      ) || isDeviceKind(kind)
         ? { axis }
         : {}),
       ...(['wall', 'floor'].includes(kind) ? { material } : {}),
@@ -2327,7 +2406,7 @@ export class VoxelSimulation {
   private placementReason(kind: JobKind, p: Pos, axis: Axis = 'x') {
     if (kind === 'researchBench') {
       const cells = researchBenchCells({ ...p, axis });
-      if (!this.standable(researchBenchInteraction({ ...p, axis })))
+      if (!this.canStop(researchBenchInteraction({ ...p, axis })))
         return '科研台正面需要有支撑、两格净空的工作位置';
       return cells.some(
         (q) =>
@@ -2343,14 +2422,14 @@ export class VoxelSimulation {
         ? '科研台需要3×2空地、完整支撑与两格净空，不能重叠区域或设施'
         : '';
     }
-    if (kind === 'craftingSpot')
+    if (kind === 'craftingSpot' || kind === 'sandbag')
       return !this.standable(p) ||
         this.ladders[at(p)] ||
         this.furnitureAt(p) ||
         this.farms.some((f) => same(f, p)) ||
         this.stockpiles.some((f) => same(f, p)) ||
         this.treePlots.some((f) => same(f, p))
-        ? '制作点需要空地'
+        ? '制作点或沙袋需要有支撑的空地'
         : '';
     if (
       !['cut', 'remove', 'plantTree'].includes(kind) &&
@@ -2365,14 +2444,23 @@ export class VoxelSimulation {
           : '';
     if (kind !== 'remove' && this.footprint({ ...p, kind, axis }).some((q) => this.furnitureAt(q)))
       return '这里已有床或门，请先拆除';
-    if (isDeviceKind(kind) || kind === 'stonecutter' || kind === 'tailor' || kind === 'smithy') {
+    if (
+      isDeviceKind(kind) ||
+      kind === 'stonecutter' ||
+      kind === 'tailor' ||
+      kind === 'smithy' ||
+      kind === 'machining'
+    ) {
       const cells =
-        kind === 'stonecutter' || kind === 'tailor' || kind === 'smithy'
+        kind === 'stonecutter' || kind === 'tailor' || kind === 'smithy' || kind === 'machining'
           ? stonecutterCells({ ...p, axis })
           : deviceCells({ ...p, kind, axis });
       if (
-        (kind === 'stonecutter' || kind === 'tailor' || kind === 'smithy') &&
-        !this.standable(stonecutterInteraction({ ...p, axis }))
+        (kind === 'stonecutter' ||
+          kind === 'tailor' ||
+          kind === 'smithy' ||
+          kind === 'machining') &&
+        !this.canStop(stonecutterInteraction({ ...p, axis }))
       )
         return '切石台正面需要有支撑、两格净空的工作位置';
       return cells.some(
@@ -2500,7 +2588,7 @@ export class VoxelSimulation {
     }));
     return (
       candidates
-        .filter((q) => this.standable(q) && this.distance[at(q)] >= 0)
+        .filter((q) => this.canStop(q) && this.distance[at(q)] >= 0)
         .sort((a, b) => this.distance[at(a)] - this.distance[at(b)])
         .map(at)[0] ?? -1
     );
@@ -2773,6 +2861,7 @@ export class VoxelSimulation {
     const inBed = this.beds.some((b) => b.id === p.sleepBedId && same(b, p));
     if (p.weapon && (death || summary.manipulation <= 0 || (downed && !inBed)))
       p.weaponDropPending = true;
+    if (p.shooting && (death || downed || summary.manipulation <= 0)) this.cancelShooting(p);
     // Capacity loss can leave a conscious pawn standing. Release reservations
     // before another tick can perform labor, hauling or care with unusable hands.
     if (
@@ -2841,7 +2930,10 @@ export class VoxelSimulation {
       this.notice = '袭击者找不到通往营地的地图边缘入口';
       return;
     }
-    const id = this.id();
+    const id = this.id(),
+      raidWeapon: WeaponKind = (['steelKnife', 'shortBow', 'revolver', 'machinePistol'] as const)[
+        Math.min(this.combat.wave, 3)
+      ];
     this.pawns.push({
       ...entry,
       id,
@@ -2852,7 +2944,7 @@ export class VoxelSimulation {
       skills: initialSkills(0, true),
       ...initialSurvival(this.seed, id),
       faction: 'raider',
-      weapon: makeWeapon(this.id(), 'steelKnife'),
+      weapon: makeWeapon(this.id(), raidWeapon),
       priorities: {
         dig: 0,
         build: 0,
@@ -2882,10 +2974,427 @@ export class VoxelSimulation {
     });
     this.combat.wave++;
     this.combat.nextRaid = this.tick + DAY * 5;
-    this.notice = '一名持钢匕首的袭击者从地图边缘逼近。征召同伴，利用门与多层通路防守。';
+    this.notice =
+      '一名持' +
+      WEAPON_NAMES[raidWeapon] +
+      '的袭击者从地图边缘逼近。征召同伴，利用掩体、门与多层通路防守。';
+  }
+  private shotBlocked(cell: Pos) {
+    return (
+      !!this.blocks[at(cell)] ||
+      this.doors.some(
+        (d) =>
+          d.x === cell.x &&
+          d.y === cell.y &&
+          cell.z >= d.z &&
+          cell.z <= d.z + 1 &&
+          d.mode !== 'open' &&
+          (d.mode === 'locked' || d.openUntil <= this.tick || this.tick < d.openUntil - 37),
+      )
+    );
+  }
+  private rangedCovers(target?: Pos): RangedCover[] {
+    const near = (p: Pos) =>
+      !target ||
+      (p.z === target.z && Math.max(Math.abs(p.x - target.x), Math.abs(p.y - target.y)) <= 1);
+    return [
+      ...this.sandbags
+        .filter(near)
+        .map((b) => ({ id: b.id, position: b, fillPercent: 0.55, height: 0.75 })),
+      ...this.trees.filter(near).map((t) => ({
+        id: t.id,
+        position: t,
+        fillPercent: t.species === 'saguaro' ? 0.35 : 0.25,
+        height: 2,
+      })),
+    ];
+  }
+  shotReport(p: Pawn, target: Pawn, origin: Pos = p) {
+    if (!p.weapon || !isRangedKind(p.weapon.kind)) return null;
+    const health = healthSummary(p),
+      prone = target.downed || target.phase === 'rest';
+    return rangedShotReport({
+      shooter: origin,
+      target,
+      weapon: { kind: p.weapon.kind, quality: p.weapon.quality },
+      shootingLevel: p.skills.shooting.level,
+      sight: health.sight,
+      manipulation: health.manipulation,
+      shooterRoofed: !this.skyAt(origin),
+      targetRoofed: !this.skyAt(target),
+      targetProne: prone,
+      canBenefitFromCover: true,
+      canHitOthers: true,
+      covers: this.rangedCovers(target),
+      bounds: { width: WIDTH, depth: DEPTH, height: HEIGHT },
+      blocked: (cell) => this.shotBlocked(cell),
+    });
+  }
+  private shootingStand(p: Pawn, target: Pawn) {
+    if (!this.sandbags.some((b) => same(b, p)) && this.shotReport(p, target)?.canShoot)
+      return at(p);
+    this.search(p);
+    const range =
+      p.weapon && isRangedKind(p.weapon.kind)
+        ? rangedStats({ ...p.weapon, kind: p.weapon.kind }).range
+        : 0;
+    // Search all reachable cells in path-distance order. A failed early sample
+    // must never be reported as an unreachable firing position.
+    const candidates: number[] = [];
+    for (let i = 0; i < CELLS; i++)
+      if (this.distance[i] >= 0) {
+        const q = position(i),
+          length = Math.hypot(q.x - target.x, q.y - target.y, q.z - target.z);
+        if (
+          length >= 1.421 &&
+          length <= range &&
+          this.standable(q) &&
+          !this.sandbags.some((b) => same(b, q))
+        )
+          candidates.push(i);
+      }
+    candidates.sort((a, b) => this.distance[a] - this.distance[b] || a - b);
+    return candidates.find((i) => this.shotReport(p, target, position(i))?.canShoot) ?? -1;
+  }
+  private combatEvent(
+    p: Pos,
+    shooterId: number,
+    targetId: number | null,
+    kind: CombatEvent['kind'],
+    damage: number,
+    message: string,
+  ) {
+    this.combatEvents.push({
+      x: Math.floor(p.x),
+      y: Math.floor(p.y),
+      z: Math.floor(p.z),
+      tick: this.tick,
+      shooterId,
+      targetId,
+      kind,
+      damage,
+      message,
+    });
+    if (this.combatEvents.length > 64) this.combatEvents.splice(0, this.combatEvents.length - 64);
+  }
+  private cancelShooting(p: Pawn) {
+    if (p.shooting?.phase === 'burst' && p.weapon && isRangedKind(p.weapon.kind))
+      p.nextAttackTick = Math.max(
+        p.nextAttackTick,
+        this.tick + rangedStats({ ...p.weapon, kind: p.weapon.kind }).cooldownTicks,
+      );
+    p.shooting = null;
+  }
+  private rangedCombat(p: Pawn, target: Pawn) {
+    const weapon = p.weapon!;
+    if (!isRangedKind(weapon.kind)) return;
+    const stats = rangedStats({ ...weapon, kind: weapon.kind }),
+      report = this.shotReport(p, target)!;
+    if (
+      !report.canShoot ||
+      healthSummary(p).manipulation <= 0 ||
+      p.weaponDropPending ||
+      this.sandbags.some((b) => same(b, p))
+    ) {
+      this.cancelShooting(p);
+      if (!p.path.length || (this.tick + p.id) % 20 === 0) {
+        const stand = this.shootingStand(p, target);
+        if (stand >= 0) this.go(p, stand, 'combat');
+        else {
+          p.path = [];
+          p.destination = null;
+        }
+        p.reason = stand >= 0 ? '寻找射击位置：' + target.name : '射程或视线受阻，等待通路';
+      }
+      return;
+    }
+    p.path = [];
+    p.destination = null;
+    if (this.tick < p.nextAttackTick) {
+      p.reason = '射击冷却';
+      return;
+    }
+    if (
+      p.shooting &&
+      (p.shooting.weaponId !== weapon.id ||
+        p.shooting.targetId !== target.id ||
+        !same(p, p.shooting.origin))
+    )
+      this.cancelShooting(p);
+    if (!p.shooting) {
+      p.shooting = {
+        weaponId: weapon.id,
+        targetId: target.id,
+        phase: 'aim',
+        startedTick: this.tick,
+        nextShotTick: this.tick + stats.warmupTicks,
+        shotsLeft: stats.burstCount,
+        origin: { x: p.x, y: p.y, z: p.z },
+      };
+    }
+    const state = p.shooting;
+    p.reason = (state.phase === 'aim' ? '瞄准' : '连发射击') + target.name;
+    if (this.tick < state.nextShotTick) return;
+    if (this.projectiles.length >= 256) {
+      p.reason = '等待在飞弹丸结算';
+      return;
+    }
+    if (state.phase === 'aim') {
+      state.phase = 'burst';
+      state.startedTick = this.tick;
+      if (!target.downed)
+        learnSkill(
+          p.skills.shooting,
+          (target.faction !== p.faction ? 170 : 20) * stats.fullCycleSeconds,
+        );
+    }
+    let stream = 180;
+    const launch = resolveRangedLaunch(report, () =>
+      plantRandom(this.seed, p.id, this.tick, stream++),
+    );
+    const id = this.id();
+    this.projectiles.push({
+      id,
+      shooterId: p.id,
+      shooterFaction: p.faction,
+      targetId: target.id,
+      quality: weapon.quality,
+      kind: weapon.kind,
+      from: report.origin,
+      destination: launch.destination,
+      launchedTick: this.tick,
+      impactTick: this.tick + projectileFlightTicks(launch.launchDistance, stats.speed),
+      damage: stats.damage,
+      armorPenetration: stats.armorPenetration,
+      canHitIntended: launch.canHitIntended,
+      canHitOthers: launch.canHitOthers,
+      canHitWorld: launch.canHitWorld,
+      coverId: launch.outcome === 'cover' ? launch.coverId : null,
+      postureImpactChance: launch.postureImpactChance,
+    });
+    this.combatEvent(p, p.id, target.id, 'fire', 0, WEAPON_NAMES[weapon.kind] + '发射');
+    state.shotsLeft--;
+    if (!state.shotsLeft) {
+      p.nextAttackTick = this.tick + stats.cooldownTicks;
+      p.shooting = null;
+    } else
+      state.nextShotTick =
+        state.startedTick + stats.burstOffsetsTicks[stats.burstCount - state.shotsLeft];
+  }
+  private projectileHitPawn(shot: Projectile, target: Pawn) {
+    const def = shot.kind === 'shortBow' ? 'Arrow' : 'Bullet';
+    let stream = 300;
+    const random = () => plantRandom(this.seed, shot.id, this.tick, stream++);
+    const part = chooseHitPart(target.trauma, def, random());
+    if (part === null) return;
+    const result = applyBodyDamage(target.trauma, def, part, shot.damage, {
+      random,
+      allocId: () => this.id(),
+      armor: { worn: target.worn, armorPenetration: shot.armorPenetration },
+    });
+    if (result.armor) {
+      this.stats.destroyed.apparel += result.armor.destroyedIds.length;
+      target.worn = result.armor.worn;
+      if (target.apparelTask && result.armor.destroyedIds.includes(target.apparelTask.apparelId))
+        this.release(target);
+    }
+    // Native Bullet notifies stagger after TakeDamage, including a full armor deflection.
+    if (rangedStats(shot).stoppingPower >= 1 - 0.001)
+      target.staggerUntil = Math.max(target.staggerUntil, this.tick + 32);
+    this.combatEvent(
+      target,
+      shot.shooterId,
+      target.id,
+      result.armor?.deflected ? 'deflect' : 'hit',
+      result.totalDamage,
+      result.armor?.deflected
+        ? target.name + '的护甲挡下弹丸'
+        : target.name + '被' + WEAPON_NAMES[shot.kind] + '击中',
+    );
+    this.reconcileHealth(target);
+  }
+  private projectileHitCover(shot: Projectile, id: number) {
+    const bag = this.sandbags.find((b) => b.id === id),
+      tree = this.trees.find((t) => t.id === id);
+    const cover = bag ?? tree;
+    if (!cover) return false;
+    const remainingHp = bag ? bag.hitPoints : tree!.health * TREE_DATA[tree!.species].maxHitPoints;
+    const actualDamage = Math.min(shot.damage, remainingHp);
+    this.combatEvent(
+      cover,
+      shot.shooterId,
+      id,
+      'cover',
+      actualDamage,
+      bag ? '弹丸击中沙袋' : '弹丸击中树木',
+    );
+    if (bag) bag.hitPoints = Math.max(0, remainingHp - actualDamage);
+    if (tree)
+      tree.health = Math.max(0, remainingHp - actualDamage) / TREE_DATA[tree.species].maxHitPoints;
+    if ((bag && bag.hitPoints <= 0) || (tree && tree.health <= 0)) {
+      for (const j of [...this.jobs])
+        if (same(j, cover) && (j.kind === 'remove' || j.kind === 'cut')) this.cancel(j);
+      if (bag) this.sandbags = this.sandbags.filter((b) => b.id !== id);
+      if (tree) {
+        this.trees = this.trees.filter((t) => t.id !== id);
+        this.stats.treesDied++;
+        this.rebuildTrees();
+        this.skyCache.clear();
+      }
+      this.revision++;
+    }
+    return true;
+  }
+  private updateProjectiles() {
+    const remaining: Projectile[] = [],
+      bounds = { width: WIDTH, depth: DEPTH, height: HEIGHT };
+    for (const shot of this.projectiles) {
+      const duration = shot.impactTick - shot.launchedTick,
+        previous = Math.max(0, (this.tick - 1 - shot.launchedTick) / duration),
+        progress = Math.min(1, (this.tick - shot.launchedTick) / duration),
+        destination = {
+          x: Math.floor(shot.destination.x),
+          y: Math.floor(shot.destination.y),
+          z: Math.floor(shot.destination.z),
+        };
+      let consumed = false,
+        stream = 500;
+      const random = () => plantRandom(this.seed, shot.id, this.tick, stream++);
+      for (const entry of traceVoxelRay(shot.from, shot.destination, bounds)) {
+        if (entry.tEnter <= previous || entry.tEnter > progress) continue;
+        const cell = entry.cell;
+        // Explicit 3D extension: a real wall/floor also blocks a well-aimed shot.
+        if (this.shotBlocked(cell)) {
+          this.combatEvent(
+            cell,
+            shot.shooterId,
+            null,
+            'terrain',
+            0,
+            '弹丸被墙体、楼板或关闭的门挡住',
+          );
+          consumed = true;
+          break;
+        }
+        if (same(cell, destination)) continue;
+        if (shot.canHitOthers || shot.canHitIntended)
+          for (const pawn of this.pawns) {
+            if (
+              pawn.id === shot.shooterId ||
+              (pawn.id === shot.targetId ? !shot.canHitIntended : !shot.canHitOthers) ||
+              pawn.dead ||
+              pawn.carriedBy !== null ||
+              !same(pawn, cell)
+            )
+              continue;
+            if (
+              random() <
+              pawnInterceptChance({
+                origin: shot.from,
+                cell,
+                prone: pawn.downed || pawn.phase === 'rest',
+                friendly: pawn.faction === shot.shooterFaction,
+              })
+            ) {
+              this.projectileHitPawn(shot, pawn);
+              consumed = true;
+              break;
+            }
+          }
+        if (consumed) break;
+        if (shot.canHitWorld)
+          for (const cover of this.rangedCovers(cell).filter((c) => same(c.position, cell))) {
+            const height = shot.from.z + (shot.destination.z - shot.from.z) * entry.tEnter;
+            if (height < cell.z || height > cell.z + cover.height || cover.fillPercent <= 0.2)
+              continue;
+            const adjacent =
+              destination.z === cell.z &&
+              Math.max(Math.abs(cell.x - destination.x), Math.abs(cell.y - destination.y)) <= 1;
+            if (
+              random() <
+              cover.fillPercent * (adjacent ? 1 : 0.15) * interceptDistanceFactor(shot.from, cell)
+            ) {
+              this.projectileHitCover(shot, cover.id);
+              consumed = true;
+              break;
+            }
+          }
+        if (consumed) break;
+      }
+      if (consumed) continue;
+      if (this.tick < shot.impactTick) {
+        remaining.push(shot);
+        continue;
+      }
+      // Native usedTarget is an identity. Moving away from the original endpoint
+      // does not itself cancel a targeted projectile; posture is read at impact.
+      const intended = this.pawns.find(
+        (p) => p.id === shot.targetId && !p.dead && p.carriedBy === null,
+      );
+      const length = Math.hypot(
+        shot.destination.x - shot.from.x,
+        shot.destination.y - shot.from.y,
+        shot.destination.z - shot.from.z,
+      );
+      if (shot.canHitIntended && intended) {
+        if (
+          random() < projectilePostureChance(length, intended.downed || intended.phase === 'rest')
+        )
+          this.projectileHitPawn(shot, intended);
+        else this.combatEvent(destination, shot.shooterId, null, 'miss', 0, '弹丸越过倒卧目标');
+        continue;
+      }
+      if (shot.coverId !== null && shot.canHitWorld && this.projectileHitCover(shot, shot.coverId))
+        continue;
+      const candidates: ({ pawn: Pawn } | { cover: RangedCover })[] = [
+        ...(shot.canHitOthers
+          ? this.pawns
+              .filter(
+                (p) =>
+                  p.id !== shot.shooterId &&
+                  p.id !== shot.targetId &&
+                  !p.dead &&
+                  p.carriedBy === null &&
+                  same(p, destination),
+              )
+              .map((pawn) => ({ pawn }))
+          : []),
+        ...(shot.canHitWorld
+          ? this.rangedCovers(destination)
+              .filter((c) => same(c.position, destination))
+              .map((cover) => ({ cover }))
+          : []),
+      ];
+      // Native terminal fallback shuffles candidates before testing their chance.
+      for (let i = candidates.length - 1; i > 0; i--) {
+        const j = Math.floor(random() * (i + 1));
+        [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+      }
+      for (const candidate of candidates) {
+        const chance =
+          'pawn' in candidate
+            ? 0.5 *
+              projectilePostureChance(
+                length,
+                candidate.pawn.downed || candidate.pawn.phase === 'rest',
+              ) *
+              (candidate.pawn.faction === shot.shooterFaction
+                ? interceptDistanceFactor(shot.from, destination)
+                : 1)
+            : 1.5 * candidate.cover.fillPercent;
+        if (random() >= chance) continue;
+        if ('pawn' in candidate) this.projectileHitPawn(shot, candidate.pawn);
+        else this.projectileHitCover(shot, candidate.cover.id);
+        consumed = true;
+        break;
+      }
+      if (!consumed) this.combatEvent(destination, shot.shooterId, null, 'miss', 0, '弹丸落地');
+    }
+    this.projectiles = remaining;
   }
   private combatTick(p: Pawn) {
     if (p.retreating) {
+      this.cancelShooting(p);
       p.attackTargetId = null;
       if (p.x === 0 || p.y === 0 || p.x === WIDTH - 1 || p.y === DEPTH - 1) {
         for (const q of this.pawns) if (q.attackTargetId === p.id) this.release(q);
@@ -2916,7 +3425,21 @@ export class VoxelSimulation {
     }
     // An explicit move order takes precedence over automatic adjacent retaliation.
     if (p.faction === 'colony' && p.attackTargetId === null && p.path.length > 0) return;
+    const ranged = !!p.weapon && isRangedKind(p.weapon.kind) && !p.weaponDropPending;
     let target = this.pawns.find((q) => q.id === p.attackTargetId);
+    const adjacent = this.pawns.find(
+      (q) =>
+        q.faction !== p.faction &&
+        !q.dead &&
+        !q.downed &&
+        q.carriedBy === null &&
+        q.z === p.z &&
+        Math.abs(p.x - q.x) + Math.abs(p.y - q.y) === 1,
+    );
+    if (adjacent) {
+      target = adjacent;
+      p.attackTargetId = target.id;
+    }
     if (!target || target.dead || target.downed || target.carriedBy !== null) {
       p.attackTargetId = null;
       target = undefined;
@@ -2925,7 +3448,7 @@ export class VoxelSimulation {
         this.search(p);
         target = this.pawns
           .filter((q) => q.faction === 'colony' && !q.dead && !q.downed)
-          .map((q) => ({ pawn: q, stand: this.careStand(q) }))
+          .map((q) => ({ pawn: q, stand: ranged ? this.shootingStand(p, q) : this.careStand(q) }))
           .filter((q) => q.stand >= 0)
           .sort((a, b) => this.distance[a.stand] - this.distance[b.stand])[0]?.pawn;
       } else if (p.drafted) {
@@ -2934,17 +3457,19 @@ export class VoxelSimulation {
             q.faction !== p.faction &&
             !q.dead &&
             !q.downed &&
-            q.z === p.z &&
-            Math.abs(p.x - q.x) + Math.abs(p.y - q.y) === 1,
+            ((q.z === p.z && Math.abs(p.x - q.x) + Math.abs(p.y - q.y) === 1) ||
+              (ranged && (this.tick + p.id) % 20 === 0 && this.shotReport(p, q)?.canShoot)),
         );
       }
       if (target) p.attackTargetId = target.id;
     }
     if (!target) {
+      this.cancelShooting(p);
       if (!p.path.length) p.reason = p.drafted ? '征召待命' : '没有可攻击目标';
       return;
     }
     if (p.z === target.z && Math.abs(p.x - target.x) + Math.abs(p.y - target.y) === 1) {
+      this.cancelShooting(p);
       p.path = [];
       p.destination = null;
       if (this.tick < p.nextAttackTick) return;
@@ -3020,6 +3545,8 @@ export class VoxelSimulation {
         p.attackTargetId = null;
         this.notice = target.name + '：' + target.reason;
       }
+    } else if (ranged) {
+      this.rangedCombat(p, target);
     } else if (!p.path.length || (this.tick + p.id) % 20 === 0) {
       this.search(p);
       const stand = this.careStand(target);
@@ -3050,6 +3577,7 @@ export class VoxelSimulation {
     ];
   }
   private dropPrimary(p: Pawn, forbidden: boolean): boolean {
+    this.cancelShooting(p);
     if (!p.weapon) {
       p.weaponDropPending = false;
       return true;
@@ -3265,6 +3793,7 @@ export class VoxelSimulation {
     p.reason = message + APPAREL_NAMES[piece.kind];
   }
   private release(p: Pawn) {
+    this.cancelShooting(p);
     p.attackTargetId = null;
     this.releaseCare(p);
     p.apparelTask = null;
@@ -3349,7 +3878,9 @@ export class VoxelSimulation {
       isDeviceKind(j.kind) ||
       j.kind === 'stonecutter' ||
       j.kind === 'tailor' ||
-      j.kind === 'smithy'
+      j.kind === 'smithy' ||
+      j.kind === 'machining' ||
+      j.kind === 'sandbag'
     )
       return !this.placementReason(j.kind, j, j.axis);
     if (j.kind === 'smith')
@@ -3480,7 +4011,7 @@ export class VoxelSimulation {
         continue;
       }
       if (this.waitingForFuel(j)) {
-        j.reason = '等待补充燃料';
+        j.reason = j.weaponBenchKind === 'machining' ? '机械加工台等待供电' : '等待补充燃料';
         continue;
       }
       if (!this.supported(j)) {
@@ -3572,7 +4103,7 @@ export class VoxelSimulation {
       j.kind === 'floor' && j.material === 'stone'
         ? 3
         : ((
-            { smithy: 4, generator: 4, solar: 6, heater: 5, cooler: 5 } as Partial<
+            { smithy: 4, machining: 4, generator: 4, solar: 6, heater: 5, cooler: 5 } as Partial<
               Record<JobKind, number>
             >
           )[j.kind] ?? 0);
@@ -3584,7 +4115,12 @@ export class VoxelSimulation {
     return (
       (j.kind === 'smith' || j.kind === 'armorsmith') &&
       j.progress < j.work &&
-      this.weaponBenches.some((b) => same(b, j) && b.kind === 'smithy' && b.fuel <= 0)
+      this.weaponBenches.some(
+        (b) =>
+          same(b, j) &&
+          ((b.kind === 'smithy' && b.fuel <= 0) ||
+            (b.kind === 'machining' && (!b.power?.on || !b.power.powered))),
+      )
     );
   }
   private startSleep(p: Pawn) {
@@ -3926,6 +4462,11 @@ export class VoxelSimulation {
       }
       if (j.kind === 'smith' || j.kind === 'armorsmith') {
         const bench = this.weaponBenches.find((b) => same(b, j))!;
+        if (bench.kind === 'machining' && (!bench.power?.on || !bench.power.powered)) {
+          j.reason = '机械加工台供电中断，保留原料和进度';
+          this.release(p);
+          return;
+        }
         if (bench.kind === 'smithy') {
           if (j.progress < j.work && bench.fuel <= 0) {
             j.reason = '缺少燃料，保留加工进度';
@@ -3959,7 +4500,10 @@ export class VoxelSimulation {
         j.progress = Math.min(
           j.work,
           j.progress +
-            (cutting ? treeWorkSpeed(cutting.growth) : 1) *
+            (j.weaponBenchKind === 'machining'
+              ? machiningWorkFactor(this.rooms.roomAt(j)?.outdoor ?? true, this.temperature(j))
+              : 1) *
+              (cutting ? treeWorkSpeed(cutting.growth) : 1) *
               (j.material === 'stone' && ['wall', 'floor'].includes(j.kind) ? 0.8 : 1) *
               workSpeed(p.skills, j.kind, healthSummary(p).manipulation, healthSummary(p).sight),
         );
@@ -4020,7 +4564,10 @@ export class VoxelSimulation {
     const devicePlan =
       j.kind === 'researchBench'
         ? researchBenchCells({ ...j, axis: j.axis ?? 'x' })
-        : j.kind === 'stonecutter' || j.kind === 'tailor' || j.kind === 'smithy'
+        : j.kind === 'stonecutter' ||
+            j.kind === 'tailor' ||
+            j.kind === 'smithy' ||
+            j.kind === 'machining'
           ? stonecutterCells({ ...j, axis: j.axis ?? 'x' })
           : isDeviceKind(j.kind)
             ? deviceCells({ ...j, kind: j.kind, axis: j.axis ?? 'x' })
@@ -4088,7 +4635,12 @@ export class VoxelSimulation {
         if (bench.kind === 'smithy') {
           yields.steel = 50;
           yields.wood = Math.floor(bench.fuel);
+        } else if (bench.kind === 'machining') {
+          yields.steel = 75;
+          yields.components = 2;
         }
+      } else if (this.sandbags.some((b) => same(b, j))) {
+        yields.cloth = 2;
       } else if (this.tailorAt(j)) {
         yields.wood = Math.floor(TAILOR_COST.wood! / 2);
       } else if (this.stonecutterAt(j)) {
@@ -4182,12 +4734,13 @@ export class VoxelSimulation {
       ) ||
       [
         ...this.beds.flatMap(bedCells),
+        ...this.sandbags,
         ...this.doors,
         ...this.devices.flatMap(deviceCells),
         ...this.stonecutters.flatMap(stonecutterCells),
         ...this.tailors.flatMap(tailorCells),
         ...this.researchBenches.flatMap(researchBenchCells),
-        ...this.weaponBenches.filter((b) => b.kind === 'smithy').flatMap(weaponBenchCells),
+        ...this.weaponBenches.filter((b) => b.kind !== 'craftingSpot').flatMap(weaponBenchCells),
       ].some(
         (s) =>
           !this.blocks[at(s) - WIDTH * DEPTH] ||
@@ -4208,7 +4761,11 @@ export class VoxelSimulation {
     // Construction nudges loose stacks one horizontal cell, never buries them or
     // silently teleports them to distant storage. Validate every displacement before committing.
     const forbidden = new Set(
-      j.kind === 'bed' ? bedCells({ ...j, axis: j.axis ?? 'x' }).map(at) : [],
+      j.kind === 'bed'
+        ? bedCells({ ...j, axis: j.axis ?? 'x' }).map(at)
+        : j.kind === 'sandbag'
+          ? [at(j)]
+          : [],
     );
     const displaced: { batch: Cargo; origin: Pos; cells: Pos[] }[] = [];
     const displacedIds = new Set<number>();
@@ -4288,15 +4845,23 @@ export class VoxelSimulation {
       this.researchBenches = this.researchBenches.filter((b) => b.id !== bench.id);
       this.rebuildDevices();
       this.revision++;
-    } else if (j.kind === 'smithy') {
-      this.weaponBenches.push(makeWeaponBench(this.id(), 'smithy', j, j.axis ?? 'x'));
+    } else if (j.kind === 'sandbag') {
+      this.sandbags.push({ id: this.id(), x: j.x, y: j.y, z: j.z, hitPoints: SANDBAG_HP });
+      this.revision++;
+    } else if (j.kind === 'remove' && this.sandbags.some((b) => same(b, j))) {
+      this.sandbags = this.sandbags.filter((b) => !same(b, j));
+      this.revision++;
+    } else if (j.kind === 'smithy' || j.kind === 'machining') {
+      this.weaponBenches.push(makeWeaponBench(this.id(), j.kind, j, j.axis ?? 'x'));
       this.rebuildDevices();
+      this.powerDirty = true;
       this.revision++;
     } else if (j.kind === 'smith') {
       this.stats.weaponsMade++;
     } else if (j.kind === 'remove' && this.weaponBenchAt(j)) {
       const bench = this.weaponBenchAt(j)!;
       this.weaponBenches = this.weaponBenches.filter((b) => b.id !== bench.id);
+      this.powerDirty = true;
       this.rebuildDevices();
       this.revision++;
     } else if (j.kind === 'tailor') {
@@ -4453,7 +5018,10 @@ export class VoxelSimulation {
       (j.cost.wood && !['cook', 'refuel', 'smith', 'armorsmith', 'tailoring'].includes(j.kind)) ||
       (j.material === 'stone' && ['wall', 'floor'].includes(j.kind)) ||
       isDeviceKind(j.kind) ||
-      j.kind === 'wire'
+      j.kind === 'wire' ||
+      j.kind === 'smithy' ||
+      j.kind === 'machining' ||
+      j.kind === 'sandbag'
     )
       this.stats.built++;
     if (j.kind === 'mine' || j.kind === 'digLadder')
@@ -4471,6 +5039,7 @@ export class VoxelSimulation {
       this.refreshReservations();
       this.updateApparelWear();
       this.updateSurvival();
+      this.updateProjectiles();
       for (const pawn of this.pawns) if (pawn.weaponDropPending) this.dropPrimary(pawn, true);
       this.updateRaids();
       // Only temperature/daylight change each tick; occlusion is cached until terrain changes.
@@ -4591,13 +5160,18 @@ export class VoxelSimulation {
             }
             door.openUntil = this.tick + 37;
           }
+          const crossingSandbags =
+            this.sandbags.some((b) => same(b, position(next))) &&
+            !this.sandbags.some((b) => same(b, p));
           Object.assign(p, position(next));
           p.path.shift();
           p.moveTick =
             this.tick +
+            (crossingSandbags ? 14 : 0) +
             Math.ceil(
               (p.cargo || p.carryingPawnId !== null ? 6 : 4) /
-                apparelMoveFactor(p.worn, healthSummary(p).moving),
+                (apparelMoveFactor(p.worn, healthSummary(p).moving) *
+                  (p.staggerUntil > this.tick ? 0.17 : 1)),
             );
           if (p.carryingPawnId !== null) {
             const patient = this.pawns.find((q) => q.id === p.carryingPawnId)!;
@@ -4652,7 +5226,11 @@ export class VoxelSimulation {
   }
   private updatePower() {
     if (this.powerDirty) {
-      this.power.rebuild(this.wires, this.devices);
+      this.power.rebuild(
+        this.wires,
+        this.devices,
+        this.weaponBenches.flatMap((b) => (b.power ? [b.power] : [])),
+      );
       this.powerDirty = false;
     }
   }
@@ -4806,6 +5384,9 @@ export class VoxelSimulation {
         stored[i.resource] += i.amount;
     return structuredClone({
       combat: this.combat,
+      projectiles: this.projectiles,
+      combatEvents: this.combatEvents,
+      sandbags: this.sandbags,
       seed: this.seed,
       generator: this.generator,
       settings: this.settings,
@@ -4870,8 +5451,11 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 17,
+      version: 18,
       combat: this.combat,
+      projectiles: this.projectiles,
+      combatEvents: this.combatEvents,
+      sandbags: this.sandbags,
       generator: this.generator,
       settings: this.settings,
       spawn: this.spawn,
@@ -4907,11 +5491,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyRangedFields(old);
     if (old.version === 1) {
       if (!Array.isArray(old.jobs) || !Array.isArray(old.pawns) || !old.stats)
         throw new Error('旧存档数据无效');
@@ -5213,6 +5798,7 @@ export class VoxelSimulation {
       old.research.progress.PlateArmor = 0;
       old.version = 17;
     }
+    migrateRangedFields(old);
     const d = old as VoxelSave;
     const loadHealth = (p: Pawn) =>
       oldHealth.get(p.id) ?? {
@@ -5251,6 +5837,7 @@ export class VoxelSimulation {
       [d.stonecutters, 128],
       [d.tailors, 128],
       [d.weaponBenches, 128],
+      [d.sandbags, 512],
       [d.researchBenches, 128],
       [d.beds, 128],
       [d.doors, 512],
@@ -5260,6 +5847,12 @@ export class VoxelSimulation {
     for (const [a, max] of arrays)
       if (!Array.isArray(a) || a.length > max || (a as Pos[]).some((p) => !p || !inside(p)))
         throw new Error('存档对象数量或坐标无效');
+    if (
+      !Array.isArray(d.projectiles) ||
+      d.projectiles.length > 256 ||
+      d.projectiles.some((p) => !p)
+    )
+      throw new Error('弹丸数组无效');
     if (d.pawns.length > 64 || d.pawns.filter((p) => p.faction === 'colony').length !== 3)
       throw new Error('存档需要三名殖民者，人物与遗体上限64');
     if (
@@ -5289,6 +5882,8 @@ export class VoxelSimulation {
       ...d.beds,
       ...d.doors,
       ...d.devices,
+      ...d.sandbags,
+      ...d.projectiles,
     ]) {
       if (!positive(e.id) || ids.has(e.id) || e.id >= d.nextId)
         throw new Error('重复或无效的对象编号');
@@ -5355,6 +5950,7 @@ export class VoxelSimulation {
         d.stockpiles,
         d.doors,
         d.wires,
+        d.sandbags,
       ].every(uniqueCells)
     )
       throw new Error('区域或设施位置重复');
@@ -5457,12 +6053,29 @@ export class VoxelSimulation {
         !['x', 'y'].includes(bench.axis) ||
         !zero(bench.fuel) ||
         bench.fuel > SMITHY_FUEL_CAPACITY ||
-        (bench.kind === 'craftingSpot' && bench.fuel !== 0) ||
+        (bench.kind !== 'smithy' && bench.fuel !== 0) ||
         weaponBenchCells(bench).some((p) => !inside(p) || p.z < 1 || p.z >= HEIGHT - 1) ||
         !inside(weaponBenchInteraction(bench)) ||
         !Array.isArray(bench.bills)
       )
         throw new Error('武器工作台数据无效');
+      if (bench.kind === 'machining') {
+        const power = bench.power;
+        if (
+          !power ||
+          power.id !== bench.id ||
+          !same(power, bench) ||
+          power.kind !== 'workbench' ||
+          power.consumption !== MACHINING_POWER ||
+          typeof power.on !== 'boolean' ||
+          typeof power.powered !== 'boolean'
+        )
+          throw new Error('机械台电源数据无效');
+        power.active = false;
+        power.watts = -MACHINING_POWER;
+        power.networkId = null;
+        power.reason = '等待电网更新';
+      } else if (bench.power !== undefined) throw new Error('非电力工作台不能包含电源');
       const kinds = WEAPON_KINDS.filter((k) => WEAPON_DEFS[k].benches.includes(bench.kind));
       if (
         bench.bills.length !== kinds.length ||
@@ -5529,7 +6142,17 @@ export class VoxelSimulation {
       device.networkId = null;
       device.reason = '存档恢复，等待电网更新';
     }
+    for (const bag of d.sandbags)
+      if (
+        !Number.isInteger(bag.hitPoints) ||
+        bag.hitPoints <= 0 ||
+        bag.hitPoints > SANDBAG_HP ||
+        bag.z < 1 ||
+        bag.z >= HEIGHT - 1
+      )
+        throw new Error('沙袋生命或高度无效');
     const furniture = [
+      ...d.sandbags,
       ...d.beds.flatMap(bedCells),
       ...d.doors,
       ...d.stoves,
@@ -5726,14 +6349,19 @@ export class VoxelSimulation {
         (['wall', 'floor'].includes(j.kind)
           ? !['wood', 'stone'].includes(j.material ?? '')
           : j.material !== undefined) ||
-        ((['bed', 'door', 'stonecutter', 'tailor', 'smithy', 'researchBench'].includes(j.kind) ||
+        ((['bed', 'door', 'stonecutter', 'tailor', 'smithy', 'machining', 'researchBench'].includes(
+          j.kind,
+        ) ||
           isDeviceKind(j.kind)) &&
           (!['x', 'y'].includes(j.axis ?? '') ||
             (j.kind === 'researchBench' &&
               (researchBenchCells({ ...j, axis: j.axis! }).some((p) => !inside(p)) ||
                 !inside(researchBenchInteraction({ ...j, axis: j.axis! })))) ||
             (j.kind === 'bed' && bedCells({ ...j, axis: j.axis! }).some((p) => !inside(p))) ||
-            ((j.kind === 'stonecutter' || j.kind === 'tailor' || j.kind === 'smithy') &&
+            ((j.kind === 'stonecutter' ||
+              j.kind === 'tailor' ||
+              j.kind === 'smithy' ||
+              j.kind === 'machining') &&
               (stonecutterCells({ ...j, axis: j.axis! }).some((p) => !inside(p)) ||
                 !inside(stonecutterInteraction({ ...j, axis: j.axis! })))) ||
             (isDeviceKind(j.kind) &&
@@ -6178,6 +6806,7 @@ export class VoxelSimulation {
       )
     )
       throw new Error('统计数据无效');
+    validateRangedState(d);
     // Restore into empty state. Never rerun generation over an existing colony.
     const s = new VoxelSimulation(d.seed, d.settings, true);
     s.generator = d.generator;
@@ -6189,6 +6818,9 @@ export class VoxelSimulation {
       structuredClone({
         tick: d.tick,
         combat: d.combat,
+        projectiles: d.projectiles,
+        combatEvents: d.combatEvents,
+        sandbags: d.sandbags,
         nextId: d.nextId,
         pawns: d.pawns,
         items: d.items,
@@ -6217,12 +6849,13 @@ export class VoxelSimulation {
     if (
       [
         ...s.beds.flatMap(bedCells),
+        ...s.sandbags,
         ...s.doors,
         ...s.devices.flatMap(deviceCells),
         ...s.stonecutters.flatMap(stonecutterCells),
         ...s.tailors.flatMap(tailorCells),
         ...s.researchBenches.flatMap(researchBenchCells),
-        ...s.weaponBenches.filter((b) => b.kind === 'smithy').flatMap(weaponBenchCells),
+        ...s.weaponBenches.filter((b) => b.kind !== 'craftingSpot').flatMap(weaponBenchCells),
       ].some(
         (p) =>
           !s.blocks[at(p) - WIDTH * DEPTH] ||
@@ -6310,6 +6943,9 @@ export class VoxelSimulation {
         continue;
       }
       if (!p.dead && !p.downed && (p.drafted || p.faction === 'raider') && p.weaponTask === null) {
+        // The trajectory and shot timers are persisted simulation state. Keep
+        // a valid aim/burst intact rather than replanning it into melee travel.
+        if (p.shooting !== null) continue;
         const destination = p.destination;
         p.path = [];
         p.destination = null;
@@ -6318,7 +6954,10 @@ export class VoxelSimulation {
         if (p.attackTargetId !== null) {
           const target = s.pawns.find((q) => q.id === p.attackTargetId)!;
           s.search(p);
-          const stand = s.careStand(target);
+          const stand =
+            p.weapon && isRangedKind(p.weapon.kind)
+              ? s.shootingStand(p, target)
+              : s.careStand(target);
           if (stand >= 0) s.go(p, stand, 'combat');
         } else if (destination !== null) {
           const route = s.path(p, position(destination));

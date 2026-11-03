@@ -15,7 +15,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
     steps:
       - name: Check out source
         uses: actions/checkout@v4
@@ -66,6 +66,8 @@ jobs:
         run: npm run test:voxel:research
       - name: Verify real armor research, cross-level forging, outfits and combat
         run: npm run test:voxel:armor
+      - name: Verify firearm research, powered machining, ranged combat and in-flight saves
+        run: npm run test:voxel:ranged
       - name: Build site with relative asset and Worker URLs
         run: npm run build
       - name: Configure GitHub Pages

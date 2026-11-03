@@ -57,6 +57,7 @@ const tools: Tool[] = [
   'up',
   'floor',
   'wall',
+  'sandbag',
   'ladder',
   'stock',
   'farm',
@@ -66,6 +67,7 @@ const tools: Tool[] = [
   'tailor',
   'craftingSpot',
   'smithy',
+  'machining',
   'researchBench',
   'bed',
   'door',
@@ -87,6 +89,7 @@ const icons = [
   '↥',
   '▱',
   '▥',
+  '▰',
   '☷',
   '▧',
   '♧',
@@ -96,6 +99,7 @@ const icons = [
   '✂',
   '◇',
   '⚔',
+  '⚙',
   '▤',
   '▰',
   '▯',
@@ -110,9 +114,13 @@ const icons = [
   '×',
 ];
 const hints: Record<Tool, string> = {
-  craftingSpot: '一格制作点，无需建材。点击设置木棒或钢匕首配方，加工速度为锻造台的一半。',
+  craftingSpot: '一格制作点，无需建材。可制作木棒、钢匕首和短弓，加工速度为锻造台的一半。',
   smithy:
     '3×1 燃料锻造台，100 钢材。R 旋转，留出操作位；需木材燃料，可制作武器、钢头盔和研究后的钢板甲。',
+  machining:
+    '3×1 机械加工台，150 钢材 + 5 零件。R 旋转并留出操作位，接电后消耗 350 W；研究解锁左轮与冲锋手枪。',
+  sandbag:
+    '每格 5 布料。拖动铺设沙袋掩体；可跨越，基础掩护率 55%，实际效果取决于射击角度与弹道高度。',
   researchBench:
     '3×2 简易科研台，75 木材 + 25 钢材。R 旋转并留出操作位；选择研究项目并开启人物的研究分工。',
   generator: '2×2，占地需两格净空；100 钢材 + 2 零件。补充木材后发电 1000 W，每日耗木 22。',
@@ -308,6 +316,7 @@ function App() {
   const canReceive = capacity.some((v) => Object.values(v.available).some((n) => n > 0));
   const crop = p ? s?.crops.find((v) => equal(v, p)) : null;
   const stove = p ? s?.stoves.find((v) => equal(v, p)) : null;
+  const sandbag = p ? s?.sandbags.find((v) => equal(v, p)) : null;
   const stonecutter = p
     ? s?.stonecutters.find((v) => stonecutterCells(v).some((q) => equal(q, p)))
     : null;
@@ -336,8 +345,8 @@ function App() {
     ? (s?.jobs.filter(
         (v) =>
           equal(v, p) ||
-          (v.kind === 'smithy' &&
-            weaponBenchCells({ ...v, kind: 'smithy', axis: v.axis ?? 'x' }).some((q) =>
+          ((v.kind === 'smithy' || v.kind === 'machining') &&
+            weaponBenchCells({ ...v, kind: v.kind, axis: v.axis ?? 'x' }).some((q) =>
               equal(q, p),
             )) ||
           ((v.kind === 'stonecutter' || v.kind === 'stonecut') &&
@@ -392,6 +401,7 @@ function App() {
       (tailor ? '手工裁缝台' : null) ??
       (researchBench ? '简易科研台' : null) ??
       (weaponBench ? WEAPON_BENCH_NAMES[weaponBench.kind] : null) ??
+      (sandbag ? '布制沙袋' : null) ??
       (bed
         ? '木床'
         : door
@@ -756,6 +766,15 @@ function App() {
             </p>
             <small>按实际六向空气连通判断；视图切层不改变房间。</small>
           </div>
+        )}
+        {sandbag && (
+          <section className="voxel-bill" data-testid="sandbag-detail">
+            <b>布制沙袋</b>
+            <p>耐久 {sandbag.hitPoints} / 300 · 基础掩护率 55%</p>
+            <small>
+              站在掩体背后相邻格可获得掩护。斜向、高处弹道和近距离射击会改变效果；沙袋可被命中损坏。
+            </small>
+          </section>
         )}
         {device && (
           <div className="voxel-bill" data-testid="device-detail">
@@ -1207,6 +1226,8 @@ function App() {
                 key={pawn.id}
                 pawn={pawn}
                 pawns={s.pawns}
+                snapshot={s}
+                blockAt={(cell) => client.blockAt(cell)}
                 command={(c) => void client.command(c)}
               />
             )}
@@ -1458,9 +1479,15 @@ function App() {
         <div className="voxel-tool-hint">
           <span className="voxel-kicker">
             {TOOL_NAMES[state.tool]}
-            {(['bed', 'door', 'stonecutter', 'tailor', 'smithy', 'researchBench'].includes(
-              state.tool,
-            ) ||
+            {([
+              'bed',
+              'door',
+              'stonecutter',
+              'tailor',
+              'smithy',
+              'machining',
+              'researchBench',
+            ].includes(state.tool) ||
               isDeviceKind(state.tool)) && (
               <button onClick={() => client.rotatePlan()} aria-label="旋转建造朝向">
                 朝向 {state.axis.toUpperCase()} · R

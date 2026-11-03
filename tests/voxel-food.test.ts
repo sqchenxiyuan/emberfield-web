@@ -1,3 +1,4 @@
+import { stripRangedDefaults } from './legacy-ranged-defaults';
 import { legacySimulation } from './fixtures/legacy-start';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
@@ -497,7 +498,7 @@ describe('v1 voxel food migration', () => {
     place(s, 'wall', pos(36, 34));
     until(s, () => (s.jobs[0]?.delivered.wood ?? 0) === 6);
     const legacy = s.save() as unknown as Record<string, any>;
-    legacy.version = 1;
+    stripRangedDefaults(legacy);    legacy.version = 1;
     delete legacy.farms;
     delete legacy.crops;
     delete legacy.stoves;
@@ -519,7 +520,7 @@ describe('v1 voxel food migration', () => {
       loaded = VoxelSimulation.load(legacy),
       before = s.counts();
     expect(legacy).toEqual(untouched);
-    expect(loaded.save().version).toBe(17);
+    expect(loaded.save().version).toBe(18);
     expect(loaded.farms).toEqual([]);
     expect(loaded.crops).toEqual([]);
     expect(loaded.stoves).toEqual([]);

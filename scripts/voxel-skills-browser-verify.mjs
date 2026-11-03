@@ -226,7 +226,7 @@ async function verify(mode) {
     assert.equal(result.fixtures.at(-1).sha256, provenance.sha256);
     assert.equal(old.version, 13);
     const migrated = await save();
-    assert.equal(migrated.version, 17);
+    assert.equal(migrated.version, 18);
     assert.deepEqual(migrated.items, old.items);
     assert.deepEqual(migrated.blocks, old.blocks);
     assert.deepEqual(qualityItems(migrated), qualityItems(old));
@@ -290,7 +290,7 @@ async function verify(mode) {
     );
 
     const training = await load(FIXTURES + '/training.json');
-    assert.equal(training.version, 17);
+    assert.equal(training.version, 18);
     assert(
       training.jobs.some(
         (j) =>
@@ -369,7 +369,7 @@ async function verify(mode) {
     );
 
     const final = await load(FIXTURES + '/final.json');
-    assert.equal(final.version, 17);
+    assert.equal(final.version, 18);
     assert(
       final.pawns.some((p) => KEYS.some((k) => p.skills[k].xp !== 0 || p.skills[k].dailyXp !== 0)),
     );

@@ -125,6 +125,58 @@ export interface PowerNetwork {
   surplusW: number;
   devices: number[];
 }
+/** A physical workbench load; its id and position are the owning bench's. */
+export interface WorkbenchPower extends Pos {
+  id: number;
+  kind: 'workbench';
+  consumption: number;
+  on: boolean;
+  powered: boolean;
+  active: boolean;
+  networkId: number | null;
+  watts: number;
+  reason: string;
+}
+export interface Sandbag extends Pos {
+  id: number;
+  hitPoints: number;
+}
+export interface ShootingState {
+  weaponId: number;
+  targetId: number;
+  phase: 'aim' | 'burst';
+  startedTick: number;
+  nextShotTick: number;
+  shotsLeft: number;
+  origin: Pos;
+}
+export interface Projectile {
+  id: number;
+  shooterId: number;
+  shooterFaction: 'colony' | 'raider';
+  quality: number;
+  targetId: number;
+  kind: 'shortBow' | 'revolver' | 'machinePistol';
+  from: Pos;
+  destination: Pos;
+  launchedTick: number;
+  impactTick: number;
+  damage: number;
+  armorPenetration: number;
+  canHitIntended: boolean;
+  canHitOthers: boolean;
+  canHitWorld: boolean;
+  coverId: number | null;
+  postureImpactChance: number;
+}
+export interface CombatEvent extends Pos {
+  tick: number;
+  shooterId: number;
+  targetId: number | null;
+  kind: 'fire' | 'hit' | 'miss' | 'cover' | 'terrain' | 'deflect';
+  damage: number;
+  message: string;
+}
 export interface RoomTemperature {
   roomId: number;
   temperature: number;
@@ -199,6 +251,8 @@ export type Tool =
   | 'tailor'
   | 'craftingSpot'
   | 'smithy'
+  | 'machining'
+  | 'sandbag'
   | 'researchBench'
   | 'bed'
   | 'door'
@@ -344,6 +398,7 @@ export interface WeaponBench extends Pos {
   fuel: number;
   bills: { kind: WeaponKind; target: number; paused: boolean }[];
   armorBills: { kind: ArmorKind; target: number; paused: boolean }[];
+  power?: WorkbenchPower;
 }
 export const weaponBenchCells = (bench: Pos & { kind: WeaponBenchKind; axis: Axis }): Pos[] =>
   bench.kind === 'craftingSpot'
@@ -387,6 +442,8 @@ export type JobKind =
   | 'tailoring'
   | 'craftingSpot'
   | 'smithy'
+  | 'machining'
+  | 'sandbag'
   | 'smith'
   | 'armorsmith'
   | 'researchBench'
@@ -461,6 +518,8 @@ export interface Pawn extends Pos {
   retreating: boolean;
   attackTargetId: number | null;
   nextAttackTick: number;
+  shooting: ShootingState | null;
+  staggerUntil: number;
   weapon: WeaponPiece | null;
   weaponTask: WeaponTask | null;
   /** Retain the physical weapon if a forced drop has no space; retry without using it. */
@@ -541,6 +600,9 @@ export interface VoxelStats {
 }
 export interface VoxelSnapshot {
   combat: CombatState;
+  projectiles: Projectile[];
+  combatEvents: CombatEvent[];
+  sandbags: Sandbag[];
   seed: number;
   generator: 1 | 2;
   settings: WorldSettings;
@@ -598,6 +660,7 @@ export type VoxelCommand =
   | { type: 'draft'; pawnId: number; drafted: boolean }
   | { type: 'attack'; pawnId: number; targetId: number }
   | { type: 'weaponBill'; benchId: number; kind: WeaponKind; target: number; paused: boolean }
+  | { type: 'benchPower'; benchId: number; on: boolean }
   | { type: 'armorBill'; benchId: number; kind: ArmorKind; target: number; paused: boolean }
   | { type: 'equipWeapon'; pawnId: number; weaponId: number }
   | { type: 'dropWeapon'; pawnId: number }
@@ -641,8 +704,11 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 17;
+  version: 18;
   combat: CombatState;
+  projectiles: Projectile[];
+  combatEvents: CombatEvent[];
+  sandbags: Sandbag[];
   generator: 1 | 2;
   settings: WorldSettings;
   spawn: Pos;
@@ -725,6 +791,8 @@ export const JOB_NAMES: Record<JobKind, string> = {
   armorsmith: '锻造护甲',
   craftingSpot: '划定制作点',
   smithy: '造燃料锻造台',
+  machining: '造机械加工台',
+  sandbag: '建沙袋',
   smith: '制作武器',
   researchBench: '造简易科研台',
   research: '研究',
@@ -751,6 +819,8 @@ export const TOOL_NAMES: Record<Tool, string> = {
   tailor: '手工裁缝台',
   craftingSpot: '制作点',
   smithy: '燃料锻造台',
+  machining: '机械加工台',
+  sandbag: '沙袋掩体',
   researchBench: '简易科研台',
   bed: '床',
   door: '门',

@@ -61,6 +61,8 @@ export function initialSurvival(
   | 'retreating'
   | 'attackTargetId'
   | 'nextAttackTick'
+  | 'shooting'
+  | 'staggerUntil'
   | 'weapon'
   | 'weaponTask'
   | 'weaponDropPending'
@@ -75,6 +77,8 @@ export function initialSurvival(
     retreating: false,
     attackTargetId: null,
     nextAttackTick: 0,
+    shooting: null,
+    staggerUntil: 0,
     weapon: null,
     weaponTask: null,
     weaponDropPending: false,

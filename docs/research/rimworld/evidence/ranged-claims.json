@@ -1,0 +1,1455 @@
+[
+  {
+    "id": "RG01",
+    "title": "身份、资料范围",
+    "statement": "固定1.7.4980 rev60、程序集SHA和ILSpy11.2；选定短弓/左轮/自动手枪/冲锋手枪的Core静态派生。含20个新增类型和复用已核验类型，不是原版源码、有效mod数据库、原版执行或复刻等价证明。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "ranged",
+        "type": "Verse.ShootTuning",
+        "line_start": 1,
+        "line_end": 93,
+        "range_sha256": "c59d0f0e451d07198e91f6aaf44959e23ff41a67f009a7243320c16a207b9445"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseWeapon"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseGun"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseGunWithQuality"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseMakeableGun"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseHumanMakeableGun"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseWeaponNeolithic"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Bow_Short"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Gun_Revolver"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Gun_Autopistol"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Gun_MachinePistol"
+      }
+    ]
+  },
+  {
+    "id": "RG02",
+    "title": "固定成本、继承制作条件",
+    "statement": "所选四武器均costList固定材料、无stuffCategories/costStuffCount，成品Stuff=null，不能把木材MaxHP/近战材料倍率再套短弓。HP100不随品质变化。弓30木/2400工作/Crafting2，无科研；父链工作台li追加为ElectricSmithy+FueledSmithy+CraftingSpot。左轮30钢+2组件/4000/Crafting3/Gunsmithing；自动手枪同成本/5000/Crafting4/BlowbackOperation；冲锋手枪45钢+3组件/11000/Crafting4/BlowbackOperation，枪均TableMachining。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseWeapon"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseGun"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseGunWithQuality"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseMakeableGun"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseHumanMakeableGun"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseWeaponNeolithic"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Bow_Short"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Gun_Revolver"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Gun_Autopistol"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Gun_MachinePistol"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_MaxHitPoints"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_WorkToMake"
+      },
+      {
+        "group": "weapons",
+        "type": "Verse.XmlInheritance",
+        "line_start": 260,
+        "line_end": 398,
+        "range_sha256": "9d0f6ace8d60dd191f1990d08c0938110d1c337a8c69fd6bcb562888cf7039aa"
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.RecipeDefGenerator",
+        "line_start": 1,
+        "line_end": 156,
+        "range_sha256": "bf8ff9929fbbd1beb92721f21ff3c10e91b4f5531764b7bc56f8c86befe1c3ef"
+      },
+      {
+        "group": "apparel",
+        "type": "Verse.RecipeMakerProperties",
+        "line_start": 1,
+        "line_end": 58,
+        "range_sha256": "0643b5b9d91ca8494111c0109fae3e73512fd043c89e1643e52472e453e2037b"
+      },
+      {
+        "group": "armor",
+        "type": "RimWorld.CompQuality",
+        "line_start": 1,
+        "line_end": 55,
+        "range_sha256": "e07103ce60d82c815919c0726d577f41bb8a46a9c932be2eee5c37c48af255bc"
+      },
+      {
+        "group": "armor",
+        "type": "Verse.ThingComp",
+        "line_start": 312,
+        "line_end": 320,
+        "range_sha256": "dc455fb3f19c3da46a5930fd818ff2ea6393a3bdaeb67636ab9d22ca7f81a6c5"
+      }
+    ]
+  },
+  {
+    "id": "RG03",
+    "title": "三段射击时间与连发",
+    "statement": "短弓warmup1.35/cooldown1.65/range22.9，左轮.3/1.6/25.9，自动手枪.3/1/25.9且burst=1，冲锋手枪.5/.9/19.9且burst3/XML名义间隔7原版tick。Pawn.Tick先stance热身完成立即首发，后EquipmentTrackerTick对非Normal ticker装备调用VerbsTick→VerbTick，同tick把新设的7减为6；所选装备人物热身路径三弹偏移0/6/13，而非0/7/14。后续弹由VerbTick内发射保留完整7间隔，末发或中止后冷却54tick。秒→tick为RoundToInt(60秒值)；热身乘AimingDelay与武器warmup multiplier，冷却乘pawn cooldown factor，非每发重热身。XP仍使用名义间隔，不由实际elapsed重算。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseWeapon"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseGun"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseGunWithQuality"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseMakeableGun"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseHumanMakeableGun"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseWeaponNeolithic"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Bow_Short"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Gun_Revolver"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Gun_Autopistol"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Gun_MachinePistol"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.VerbProperties",
+        "line_start": 25,
+        "line_end": 59,
+        "range_sha256": "add6880628c9e74773ab8ab125c30a70943e62b1f37bc0139ae3ddb93325fca2"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.VerbProperties",
+        "line_start": 496,
+        "line_end": 544,
+        "range_sha256": "4f898eb84621a8758a9b6043ef924874d30360747043a2a8798c7661f078cdc3"
+      },
+      {
+        "group": "weapons",
+        "type": "Verse.Verb",
+        "line_start": 349,
+        "line_end": 398,
+        "range_sha256": "8b0a4152bb24905bbef6b30c4b40dd7a4eefdee9bf326b72a16d23964f8e37f5"
+      },
+      {
+        "group": "weapons",
+        "type": "Verse.Verb",
+        "line_start": 461,
+        "line_end": 540,
+        "range_sha256": "7e38bf5cfa9cf28ae3af34e05993a8506dbecac738c15f1d5997bed8a3c0e0be"
+      },
+      {
+        "group": "preservation",
+        "type": "Verse.Pawn",
+        "line_start": 1565,
+        "line_end": 1597,
+        "range_sha256": "104ff269cecaf9b125a9952f76e3632c9bfc0e67361473f4c97b36eccdeccb83"
+      },
+      {
+        "group": "weapons",
+        "type": "Verse.Pawn_EquipmentTracker",
+        "line_start": 102,
+        "line_end": 113,
+        "range_sha256": "fe5b21eca0a1786dbe5eb233f728aa793be1e4fdd789513ba7fa4cfa91a90ef8"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.VerbTracker",
+        "line_start": 64,
+        "line_end": 73,
+        "range_sha256": "2e3a657ed530396cbaf6f7ba9fc0dc33c0d10e412681b18e759b4f813a0b960a"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Verb_LaunchProjectile",
+        "line_start": 10,
+        "line_end": 18,
+        "range_sha256": "26ad00f68c049134726b2ff54954642edc9655094eaeba43614aa39993b8d225"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.Stance_Cooldown",
+        "line_start": 1,
+        "line_end": 29,
+        "range_sha256": "d97b083e6162277ef0d11ec92ff13f5cfd34e30478759ba353ca984c74006927"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.GenTicks",
+        "line_start": 75,
+        "line_end": 83,
+        "range_sha256": "73e1e02604063e35d16b610fd7822bfb63be6c27b83f25601c4547125a0c3815"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_AimingDelayFactor"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_RangedCooldownFactor"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_RangedWeapon_WarmupMultiplier"
+      },
+      {
+        "group": "apparel",
+        "type": "RimWorld.StatDef",
+        "line_start": 90,
+        "line_end": 100,
+        "range_sha256": "7283060a55f8f50b9218e1d784a994128fca8fe25e47520b23da5fecc6fd1368"
+      }
+    ]
+  },
+  {
+    "id": "RG04",
+    "title": "品质、伤害、穿甲",
+    "statement": "Accuracy品质=.8/.9/1/1.1/1.2/1.35/1.5，每个距离stat先clamp .01..1再插值。远程伤害与AP品质=.9/1/1/1/1/1.25/1.5。弹体基础伤11/12/10/6，伤害先乘品质再RoundToInt；无显式AP时基础伤×.015×AP品质，不从已舍入伤反推。Range、Cooldown与MaxHP没有该品质部件。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseBullet"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseProjectileNeolithic"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Arrow_Short"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Bullet_Revolver"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Bullet_Autopistol"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Bullet_MachinePistol"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_AccuracyBase"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_AccuracyTouch"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_AccuracyShort"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_AccuracyMedium"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_AccuracyLong"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_RangedWeapon_DamageMultiplier"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_RangedWeapon_ArmorPenetrationMultiplier"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_RangedWeapon_Cooldown"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_RangedWeapon_RangeMultiplier"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_MaxHitPoints"
+      },
+      {
+        "group": "armor",
+        "type": "Verse.ProjectileProperties",
+        "line_start": 116,
+        "line_end": 198,
+        "range_sha256": "7b465a528ba764b23ca7ece7f956efee2bdf55b9192d8b1ea5c9b4fef72b8c36"
+      },
+      {
+        "group": "armor",
+        "type": "RimWorld.StatPart_Quality",
+        "line_start": 1,
+        "line_end": 98,
+        "range_sha256": "3b80ea8e8f92ffce05a05631972d7f948e0acaa03c3ceeb4d484ecfab72339e0"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 798,
+        "line_end": 835,
+        "range_sha256": "88816814afbee3605fc384db34220c79d25a09bbf92d666a7a3756c02543d99e"
+      }
+    ]
+  },
+  {
+    "id": "RG05",
+    "title": "距离精度和能力",
+    "statement": "武器在3/12/25/40格锚点线性插值，端点外保持端点；武器实际最大射程另验。成年常规pawn的ShootingAccuracy输入为skill+12*(min(Sight,2)-1)+8*(min(Manipulation,1)-1)，再过XML曲线；无skills才用noSkillOffset8。射手距离因子max(.0201,每格精度^距离×距离stat倍率)。StatWorker_ShootingAccuracy只重写说明显示。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "injuries",
+        "type": "Verse.VerbProperties",
+        "line_start": 547,
+        "line_end": 581,
+        "range_sha256": "c289f3374e4232f7e2aa8ef6c95a33620fe403f03118f49df471716c0043068a"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.VerbProperties",
+        "line_start": 650,
+        "line_end": 672,
+        "range_sha256": "2f2dcf2af6e2872385872b1be28ada6e2cda85f17e11a582074b28f1f80176d2"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.ShotReport",
+        "line_start": 166,
+        "line_end": 199,
+        "range_sha256": "e36bed4686b4b3c8c18acbcc4a0e611fcd23d2ea14fdc7135e057c88db9a3b7c"
+      },
+      {
+        "group": "ranged",
+        "type": "RimWorld.StatWorker_ShootingAccuracy",
+        "line_start": 1,
+        "line_end": 24,
+        "range_sha256": "4b02d611fbf707f4aeb6d4c73665e90ce1179901ade923a70ae38e872fc5e658"
+      },
+      {
+        "group": "skills",
+        "type": "RimWorld.PawnCapacityOffset",
+        "line_start": 1,
+        "line_end": 19,
+        "range_sha256": "9735cfa03f3c65783738192e83f07935fdb9a27b7a52dc03521f80a27cd06425"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 98,
+        "line_end": 132,
+        "range_sha256": "a199449903c902004d1d919dab483f7dcdf38796ac37e361a2f7d24aff4bf8c3"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 798,
+        "line_end": 835,
+        "range_sha256": "88816814afbee3605fc384db34220c79d25a09bbf92d666a7a3756c02543d99e"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_ShootingAccuracyPawn"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_ShootingAccuracyFactorBase"
+      }
+    ]
+  },
+  {
+    "id": "RG06",
+    "title": "ShotReport完整乘数",
+    "statement": "standard=max(.0201,shooter×weapon×weather×gas×execution+darknessOffset)，ignoringPosture=standard×clamp(targetSize,.5,2)，aim再乘posture，totalEstimated=clamp01(aim×passCover)。pawn尺寸BodySize；非pawn fill×占格面积×2.5。非站姿距离<=3.9处execution7.5，>=4.5处posture.5；中间空档二者均1。普通黑暗无通用减准项，darknessOffset是Ideology特殊stat。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.ShotReport",
+        "line_start": 31,
+        "line_end": 164,
+        "range_sha256": "5d546e0709c1e9a88c34c964889b3d9d953c2eb17db554b82c58db5a7f3ad0f4"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.ShootTuning",
+        "line_start": 17,
+        "line_end": 37,
+        "range_sha256": "fe4b040d33f205dde4a25dd8b4e454651b83e3f5810b0da4d9a38c1afb1b49d7"
+      }
+    ]
+  },
+  {
+    "id": "RG07",
+    "title": "天气、烟雾和屋顶",
+    "statement": "仅射手与目标都被屋顶覆盖才忽略天气；任一露天使用当前天气。Fog/FoggyRain=.5，Rain/RainyThunderstorm/SnowHard/SnowGentle=.8，Clear/DryThunderstorm/Underground默认1。天气切换使用last/current线性混合。实际射线存在任一BlindSmoke则gas=.7且只乘一次。此基线排除unique weapon ignore-maluses特性。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.ShotReport",
+        "line_start": 82,
+        "line_end": 164,
+        "range_sha256": "f1ff4cb20322aad19947d7910d6df22f9d76aa89e7b8cedef06ec30fd7aa5c68"
+      },
+      {
+        "group": "ranged",
+        "type": "RimWorld.WeatherManager",
+        "line_start": 53,
+        "line_end": 70,
+        "range_sha256": "1ea6305234f84da19c90d4cb8ecaa13fe6846a931e7137106cf849dc838f0467"
+      },
+      {
+        "group": "energy",
+        "type": "Verse.WeatherDef",
+        "line_start": 45,
+        "line_end": 52,
+        "range_sha256": "a28ed35d241a3d709863c82c53e74a9b7122df87a99b3770ba73453445ea29cf"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "WeatherDef_Clear"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "WeatherDef_Fog"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "WeatherDef_Rain"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "WeatherDef_DryThunderstorm"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "WeatherDef_RainyThunderstorm"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "WeatherDef_FoggyRain"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "WeatherDef_SnowHard"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "WeatherDef_SnowGentle"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "WeatherDef_Underground"
+      }
+    ]
+  },
+  {
+    "id": "RG08",
+    "title": "目标相邻掩体",
+    "statement": "目标周围8格选掩体；同格CoverGrid取最高def.fillPercent，没有树成熟度缩放。Pawn和炮塔可受掩体保护。fullfill侧角掩体基础.75，partial为fill，开门0。角度差对斜邻格×1.75，按严格<15/27/40/52/65度乘1/.8/.6/.4/.2，>=65不适用；射手距掩体<1.9乘.3333，<2.9乘.66666。多个覆盖B+= (1-B)*b，不能直接相加；overall排除射手所在格。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.CoverUtility",
+        "line_start": 11,
+        "line_end": 121,
+        "range_sha256": "e58b7f77f473880c95ba83ed0583066dbf26b4cf20ff5eafc88d1b272dcac02a"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.CoverGrid",
+        "line_start": 1,
+        "line_end": 72,
+        "range_sha256": "38c47816fc08735fdbf77dc8cab21303823927bc3df04780f1a5f9c863bc356a"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.CoverInfo",
+        "line_start": 1,
+        "line_end": 21,
+        "range_sha256": "1462a26d41e7253cb5c851a5f2ca12be809611847c7efd61581fde06642cc891"
+      },
+      {
+        "group": "energy",
+        "type": "Verse.ThingDef",
+        "line_start": 607,
+        "line_end": 622,
+        "range_sha256": "65a1e41a0ae3f229789ee400fc5b9868455b35d56714a154197b19ac057b67b3"
+      },
+      {
+        "group": "energy",
+        "type": "Verse.ThingDef",
+        "line_start": 825,
+        "line_end": 836,
+        "range_sha256": "23b7813a35396bc2b0b32d32a833f0c80391350ced7618fbe8b6c3f5a3f8aa25"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Sandbags"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Barricade"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Wall"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_PlantBaseNonEdible"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_PlantBase"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_TreeBase"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_DeciduousTreeBase"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Plant_TreeOak"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Plant_TreePoplar"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Plant_TreePine"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Plant_SaguaroCactus"
+      }
+    ]
+  },
+  {
+    "id": "RG09",
+    "title": "视线、探身和最小射程",
+    "statement": "起射检查同图、原位置至目标占格矩形最近格的射程，再查直接射线和pawn探身格；pawn目标也可用可射击侧格，fullfill目标用边缘LOS。GenGrid full建筑阻挡，开门/partial允许看过。站立敌对pawn目标的有效minRange至少1.421，倒地敌人例外。目标不再可射击、离图或原先站立目标倒地可取消热身；连发每发默认stopBurstWithoutLos=true。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "weapons",
+        "type": "Verse.Verb",
+        "line_start": 717,
+        "line_end": 832,
+        "range_sha256": "3940c8b512d7b8bb5a289a72cdc5fed543830101fd80aa6282155c461a6141df"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.VerbProperties",
+        "line_start": 635,
+        "line_end": 648,
+        "range_sha256": "be4056b28a03457708bd0eaff71f64ffa432aa261ae45e536753818834a83c36"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.VerbUtility",
+        "line_start": 190,
+        "line_end": 204,
+        "range_sha256": "255729003f5ec4177f4aa3487e5c85755630d15cf7a4f9fc2e9e7104454c4212"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.ShootLeanUtility",
+        "line_start": 1,
+        "line_end": 148,
+        "range_sha256": "58587bea23a2dffcff536c38b3806b9a31c306d24624ec826b6bd6ac79ef14e9"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.GenSight",
+        "line_start": 20,
+        "line_end": 135,
+        "range_sha256": "c23763ff3a4f1136dab7f88604eb580b9b55ab7119f907934a5e6f819a0f49f6"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.GenGrid",
+        "line_start": 213,
+        "line_end": 250,
+        "range_sha256": "ecacceed19c6a0384ea1f9ab6589452b0bdfafc6176b11226aab508df453e5ee"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.Stance_Warmup",
+        "line_start": 192,
+        "line_end": 224,
+        "range_sha256": "035c1b81b1a077c87bc81a0bdebab01f8669a09a7706598e75cb616e0ab18b62"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.AI.JobDriver_AttackStatic",
+        "line_start": 58,
+        "line_end": 120,
+        "range_sha256": "9953d68cb82f91a7a0df865f603028c6b1ca58f7ba195b2223cf1d4c91bb902c"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Verb_LaunchProjectile",
+        "line_start": 69,
+        "line_end": 90,
+        "range_sha256": "9e9e808b0fb6f9d2afb9c83a467daea02d553f936f810e9a9e5ef1da82009753"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.VerbProperties",
+        "line_start": 53,
+        "line_end": 59,
+        "range_sha256": "a4264382593673d4b76e1b6374d016bc9dc876ade82c01c0c1a6af7e58cbb1e2"
+      }
+    ]
+  },
+  {
+    "id": "RG10",
+    "title": "发射决策不是总命中率一次掷骰",
+    "statement": "普通无forcedMiss射击先按各掩体adjustedBlockChance加权选候选，aim roll使用IgnoringPosture。失败走wild，NonTargetWorld加50%机会允许NonTargetPawns；瞄准成功且可受掩体保护而passCover失败则朝掩体发射；否则朝目标。目标分支带IntendedTarget与允许的NonTargetPawns，仅空格/fullfill目标再带NonTargetWorld。估算面板值不替代后续飞行/姿态/拦截。Rand.Chance对p>=1立即true，与裸Rand.Value<1不同。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.Verb_LaunchProjectile",
+        "line_start": 145,
+        "line_end": 203,
+        "range_sha256": "75cd51d1e078924d9cb33a45f70d77c96d4a20823856d551adf947180c75aec9"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.ShotReport",
+        "line_start": 271,
+        "line_end": 279,
+        "range_sha256": "8542098205ebd80f4a04ecfe9d0cea4e37703ec87ed40f336bd18b3d2b7dc20f"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.ProjectileHitFlags",
+        "line_start": 1,
+        "line_end": 14,
+        "range_sha256": "11918d6b96bab7201e5d8f45824de6436f96cd2fd564b835b84d38623ccd587b"
+      },
+      {
+        "group": "skills",
+        "type": "Verse.Rand",
+        "line_start": 203,
+        "line_end": 214,
+        "range_sha256": "e72810083cd94f8ed4aff1bbb58aeaff306eeac0b300a22f7b2a6798cc861634"
+      }
+    ]
+  },
+  {
+    "id": "RG11",
+    "title": "偏射半径",
+    "statement": "wild的半径由AimOnTargetChance_StandardTarget与一个随机值双线性插值：aim .02/.04/.07/.11/.22/1时最大半径10/8/6/4/2/1，随机0对应1格。方向随机，落到格子；拒绝向射手背后偏射，非overhead遇完整遮挡时修正偏射终点。此不是高斯散布或按总命中率直接随机邻格。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "ranged",
+        "type": "Verse.ShootTuning",
+        "line_start": 39,
+        "line_end": 67,
+        "range_sha256": "28ab68826ac872804588ea64cfc934ac8fe9f192ceecce9326dddf1cf53e39eb"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.SimpleSurface",
+        "line_start": 11,
+        "line_end": 43,
+        "range_sha256": "1bed7c5264d9f631ab1a6b62f5fec2994146628cb05ac32f802cce343e658a42"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.ShootLine",
+        "line_start": 30,
+        "line_end": 102,
+        "range_sha256": "37bd8c845c5bbbfbf9959c217b7fec94d39b06fc8d48b9c7e29c14609d14bbc0"
+      }
+    ]
+  },
+  {
+    "id": "RG12",
+    "title": "飞行速度与快照",
+    "statement": "本构建SpeedTilesPerTick=XML speed/100，短弓44=>.44格/tick，三枪55=>.55格/tick；原版60tick/s下为26.4和33格/s。飞行时长max(1,ceil(起点终点三维距离/速度))，终点=usedTarget格中心+半径.3随机水平偏移。保存目标引用、发射位置与终点，品质快照供DamageInfo；DamageAmount/AP属性仍从equipment引用求值，不能声称所有弹体属性完整快照。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "armor",
+        "type": "Verse.ProjectileProperties",
+        "line_start": 8,
+        "line_end": 24,
+        "range_sha256": "fca2d8bd128c506c30d245e106bc7fba9ffb0425621da75c123c686841253ad0"
+      },
+      {
+        "group": "armor",
+        "type": "Verse.ProjectileProperties",
+        "line_start": 112,
+        "line_end": 124,
+        "range_sha256": "e3374cb8417be55221887d8c5e07abb9f1175f382535dead2321fb582da0bd4a"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Projectile",
+        "line_start": 80,
+        "line_end": 123,
+        "range_sha256": "104c7b641d673fd3161cc5e9ec3cb85e6957ceb6728c490f6918a01c752854f6"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Projectile",
+        "line_start": 147,
+        "line_end": 224,
+        "range_sha256": "01f14f8e8eaa2b621c4e5fbd434973a874dd81b7609be8231fdc4aa960cf5aab"
+      }
+    ]
+  },
+  {
+    "id": "RG13",
+    "title": "飞行途中拦截",
+    "statement": "每步检查跨格路径，长步细分约.2格。checkedCells在每次CheckForFreeInterceptBetween长步分支清空，只在当次采样内去重，不保证整个飞行每格只判一次；同格未跨格时直接返回。先排除终点格，再按距射手平方d²算factor：<=25为0，>=144为1，中间(d²-25)/119。factor0在fullwall检查之前返回；允许命中的fullwall否则立即截获，开门概率.05。pawn=.4*clamp(bodySize,.1,2)，趴下再×.1；友军可屏蔽或乘storyteller因子。partial非pawn必须fill>.2，相邻终点格fill×1，其余fill×.15，再乘距离factor。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.Projectile",
+        "line_start": 271,
+        "line_end": 414,
+        "range_sha256": "68ad8957c0cbefeb969a9ed90e5522f943b5d2b1243db1e631a65e1621cb731e"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.VerbUtility",
+        "line_start": 153,
+        "line_end": 165,
+        "range_sha256": "41a80ffc5722178e513305d55e7caa951cc199342717216d2b1c4c998ec60731"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.ShootTuning",
+        "line_start": 69,
+        "line_end": 92,
+        "range_sha256": "4efb2fa29e07165d9f04349bf54a15c00ce321704d620a2e06a28323eda6d3a2"
+      }
+    ]
+  },
+  {
+    "id": "RG14",
+    "title": "终点的目标引用语义",
+    "statement": "ImpactSomething首先检查usedTarget.HasThing且CanHit(该引用)；CanHit检查是否Spawned、同map、不是launcher、未被同格完整物覆盖及hit flags，但没有位置等于destination的检查。因此目标移动但仍可命中时，终点直接Impact原引用；不是纯空间碰撞、也不是逐帧重定终点。远距非站姿目标在此再50%判空。引用失效才遍历终点格候选：pawn=.5*clamp(bodySize,.1,2)，远距趴下×.5，友方再乘距离拦截factor，非pawn=1.5*fill，shuffle顺序。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "combat",
+        "type": "Verse.Projectile",
+        "line_start": 449,
+        "line_end": 573,
+        "range_sha256": "2567da261aafc8f25be08edc8e36e12f609c410bd8518d7fc5525d1a09f51f2b"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.CoverUtility",
+        "line_start": 132,
+        "line_end": 160,
+        "range_sha256": "3e3576229e7570a2233f12e9284bf6fddfb7ba93657ed89f23d2223183c20b0e"
+      }
+    ]
+  },
+  {
+    "id": "RG15",
+    "title": "伤害、伤口和护甲入口",
+    "statement": "Arrow和Bullet均DamageWorker_AddInjury、Sharp、harmAllLayersUntilOutside=true、overkill0~.7。Bullet映射Gunshot，skin/solid均null；Arrow默认Cut、solid Crack、skin null。Bullet.Impact不指定HitPart，沿用DamageInfo和已验证人体抽样/护甲管线；不调用Cut多目标或Stab/Poke强制内层worker。普通AddInjury内部命中可向外复制同伤，Armor半伤改Blunt后仍原AddInjury worker。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "ranged",
+        "xml_record": "DamageDef_Bullet"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "DamageDef_Arrow"
+      },
+      {
+        "group": "combat",
+        "type": "RimWorld.Bullet",
+        "line_start": 12,
+        "line_end": 35,
+        "range_sha256": "119a6ec1af57705d5d54c481ff592b7898f99268b0caabe60a50a82ec5d897f0"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.DamageWorker_AddInjury",
+        "line_start": 142,
+        "line_end": 220,
+        "range_sha256": "756476d3ed12b58d877b78969bf9b3d68e4e2dc69b5d9dba515f1b841f0e2816"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.DamageWorker_AddInjury",
+        "line_start": 283,
+        "line_end": 325,
+        "range_sha256": "3292c68ef9004fa4eb97b02a8f3a48524e5cc429cd5de0e88bbc8613793d733b"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.DamageWorker_AddInjury",
+        "line_start": 336,
+        "line_end": 386,
+        "range_sha256": "7df6c0760626491d4cfe68c70124f11af4047140e091d5f966e9dd10c964b059"
+      },
+      {
+        "group": "survival",
+        "type": "Verse.HealthUtility",
+        "line_start": 519,
+        "line_end": 530,
+        "range_sha256": "c87dcf486b820b24a59c3b1cc58bed12dc8c0f3935588218488441600dbd4e16"
+      },
+      {
+        "group": "armor",
+        "type": "Verse.DamageInfo",
+        "line_start": 143,
+        "line_end": 180,
+        "range_sha256": "c3a9877566152a89667fc0856b771ed8ef57122f1f7c37ba23afdf34212dfb81"
+      }
+    ]
+  },
+  {
+    "id": "RG16",
+    "title": "伤口疼痛失血与愈合",
+    "statement": "Gunshot/Cut painPerSeverity=.0125、permanent平均=.00625、bleedRate=.06、canMerge=false；Crack pain=.01、permanent=.00625、bleed0。疼痛=severity×pain/HealthScale，失血=severity×伤口bleed×种族bleed×部位bleed；solid部位、包扎、永久等条件可抑制。自然愈合无枪伤箭伤特例：非永久伤可用，肉身非饥饿每600tick随机1伤治疗(8+非站姿4+床值)×HealthScale×.01×InjuryHealingFactor；包扎额外随机1伤治疗8×(.5+clamp01(tendQuality))×同尺度。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "ranged",
+        "xml_record": "HediffDef_InjuryBase"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "HediffDef_Crack"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "HediffDef_Cut"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "HediffDef_Gunshot"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.InjuryProps",
+        "line_start": 1,
+        "line_end": 21,
+        "range_sha256": "92045c84e66c01dbc845a3fcdadcbba2642f7eb93d7eacf7654daaf7fd571e7a"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Hediff_Injury",
+        "line_start": 128,
+        "line_end": 176,
+        "range_sha256": "e5ef0baef94bb3b7f785ea0aa33656d2f62f0e340cb81b181f177945db25f86c"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.HediffUtility",
+        "line_start": 53,
+        "line_end": 71,
+        "range_sha256": "8f7d46197bfec2adbf02ca0791635ea5f082e0b260de0f7a05f2824616194ad3"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Pawn_HealthTracker",
+        "line_start": 1151,
+        "line_end": 1189,
+        "range_sha256": "530472e0b93a43c59b99922677e87d2b6c1ef93e3ac1d816dc815e113a65828a"
+      }
+    ]
+  },
+  {
+    "id": "RG17",
+    "title": "建筑植物受伤与材料",
+    "statement": "普通非pawn先应用DamageDef类别系数；Bullet/Arrow building/passable/impassable/plantDamageFactor默认均1，所选沙袋/路障/树父链无damageMultipliers。无普通护甲roll，伤害RoundRandom并限剩HP，再扣除/摧毁。沙袋5布/Work180/HP300/fill.55；路障5stuff/Work320/baseHP300/fill.55，木倍率Work.7/HP.65=>224/195；两者pathCost42和PassThroughOnly。Poplar/Pine/Oak HP200/fill.25；Saguaro HP130/fill.35；MaxHP和掩体不随growth变化。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Sandbags"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Barricade"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Wall"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_PlantBaseNonEdible"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_PlantBase"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_TreeBase"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_DeciduousTreeBase"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Plant_TreeOak"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Plant_TreePoplar"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Plant_TreePine"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Plant_SaguaroCactus"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Steel"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_WoodLog"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Cloth"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "DamageDef_Bullet"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "DamageDef_Arrow"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.DamageDef",
+        "line_start": 29,
+        "line_end": 43,
+        "range_sha256": "3478530b759a5d2e1d3f53118205007bc7bae58074c7dcb7a7800a6ee27cf701"
+      },
+      {
+        "group": "armor",
+        "type": "Verse.DamageWorker",
+        "line_start": 116,
+        "line_end": 160,
+        "range_sha256": "1a35fdd1b9ddfb49aad94313690867a3904d9280c9922b6d9336672347784bb6"
+      },
+      {
+        "group": "food",
+        "type": "Verse.Thing",
+        "line_start": 99,
+        "line_end": 108,
+        "range_sha256": "1a7f022709bd62259c532cdca8044880a7e3f62577316d3fa836476317dea966"
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.Plant",
+        "line_start": 83,
+        "line_end": 94,
+        "range_sha256": "a03491ebab8534e011a83e2255508a4528c41ffd6a0ecf525fbe48583758fa47"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_MaxHitPoints"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_WorkToBuild"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.CoverGrid",
+        "line_start": 1,
+        "line_end": 72,
+        "range_sha256": "38c47816fc08735fdbf77dc8cab21303823927bc3df04780f1a5f9c863bc356a"
+      }
+    ]
+  },
+  {
+    "id": "RG18",
+    "title": "命中减速",
+    "statement": "ProjectileProperties.stoppingPower默认.5，左轮显式1。Bullet.Impact在TakeDamage后通知stagger；即便护甲挡伤也会调用该通知。BodySize<=stoppingPower+.001或种族忽略体型时，默认95tick/移动倍率.17，再受种族覆写和StaggerDurationFactor影响；不是每种枪命中成年Human都减速。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseBullet"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseProjectileNeolithic"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Arrow_Short"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Bullet_Revolver"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Bullet_Autopistol"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Bullet_MachinePistol"
+      },
+      {
+        "group": "armor",
+        "type": "Verse.ProjectileProperties",
+        "line_start": 16,
+        "line_end": 24,
+        "range_sha256": "0c4efb96dde6861062ce9cc9c0e98259db2e3875fcb1606485fa37e23a283345"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Projectile",
+        "line_start": 183,
+        "line_end": 205,
+        "range_sha256": "d142ed009a74d491be6aae150f61d07e695a0583784fce39d122d8dfd6b35256"
+      },
+      {
+        "group": "combat",
+        "type": "RimWorld.Bullet",
+        "line_start": 21,
+        "line_end": 29,
+        "range_sha256": "784be8b11a52bd7ee1391073e66b34de1e469ddc55ecbba4aa0d6cb73adcc7f3"
+      },
+      {
+        "group": "ranged",
+        "type": "RimWorld.StaggerHandler",
+        "line_start": 7,
+        "line_end": 57,
+        "range_sha256": "0f49cfbfbb6f2eb2390ee14d1e57d0841930b102689643e6ca7f2102c6e86058"
+      }
+    ]
+  },
+  {
+    "id": "RG19",
+    "title": "经验按射击周期",
+    "statement": "Verb_Shoot.WarmupComplete调用base后，对非倒地、非殖民机械pawn目标给予Shooting Learn：敌对170×AdjustedFullCycleTime、非敌对20×；与击中和每颗弹数不直接挂钩。cycle=原始verb warmupTime+调整后cooldown+(burst-1)*interval/60，不含AimingDelay或武器warmup multiplier。Normal敌对短弓510/左轮323/自动221/冲锋277.6667原始XP，之后仍过SkillRecord激情/学习/每日上限机制。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "ranged",
+        "type": "Verse.Verb_Shoot",
+        "line_start": 1,
+        "line_end": 30,
+        "range_sha256": "7fc648ca43c5e65bb620c470319543893fee70876280bce695a5a5c1a93f2fd7"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.VerbProperties",
+        "line_start": 579,
+        "line_end": 583,
+        "range_sha256": "51fc95499dd879fa91c3a41c92ab86b27fc00e8a887832466bb97fa51642b37f"
+      },
+      {
+        "group": "skills",
+        "type": "RimWorld.SkillRecord",
+        "line_start": 1,
+        "line_end": 434,
+        "range_sha256": "be0c0ac1f216f46ddf727c711d2caef5da919d87f59b1872ff694fbc7488d77f"
+      }
+    ]
+  },
+  {
+    "id": "RG20",
+    "title": "科技与机械加工台",
+    "statement": "Machining1000 Industrial前置Electricity+Smithing，Gunsmithing500前置Machining，BlowbackOperation500前置Gunsmithing。TableMachining3×1/150钢+5组件/Work3000/HP180/Construction4/350W，室内且非PsychologicallyOutdoors、非Workshop时工速.8。BuildingProperties.unpoweredWorkTableWorkSpeedFactor默认0且该父链未覆写，Building_WorkTable断电不能加工；Stat最小.1不是断电许可。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "ranged",
+        "xml_record": "ResearchProjectDef_Machining"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ResearchProjectDef_Gunsmithing"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ResearchProjectDef_BlowbackOperation"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_CraftingSpot"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BenchBase"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_FueledSmithy"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_ElectricSmithy"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_TableMachining"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BuildingBase"
+      },
+      {
+        "group": "generation",
+        "type": "RimWorld.BuildingProperties",
+        "line_start": 306,
+        "line_end": 320,
+        "range_sha256": "41246c491b093924e0c79d93c1529a94b8657047ad88a049ea956d131bb872ea"
+      },
+      {
+        "group": "weapons",
+        "type": "RimWorld.Building_WorkTable",
+        "line_start": 18,
+        "line_end": 34,
+        "range_sha256": "2065611cb584dd4bb1a2545e78d65d550e63b8d0c29adb613ad477d7f7f1ead9"
+      },
+      {
+        "group": "weapons",
+        "type": "RimWorld.Building_WorkTable",
+        "line_start": 86,
+        "line_end": 112,
+        "range_sha256": "5e90295e5f60e4c2bb6e27e5ade535c445b8971bebf35081ef4179c78a90710f"
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.StatPart_WorkTableUnpowered",
+        "line_start": 1,
+        "line_end": 39,
+        "range_sha256": "7c7ade8e2b041ef505b740419bbed1cee0413970e80488346ff6ab70dc2ab86b"
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.StatPart_WorkTableRoomRole",
+        "line_start": 1,
+        "line_end": 57,
+        "range_sha256": "663a3b08c1ec067c04c856420c8bc65ef18ea9319c5ca14e11017ac59279002d"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_WorkTableWorkSpeedFactor"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_GeneralLaborSpeed"
+      }
+    ]
+  },
+  {
+    "id": "RG21",
+    "title": "枪托近战的多个动作",
+    "statement": "Tool.Maneuvers按requiredCapacity匹配所有Maneuver，随后每个tool×maneuver生成独立Verb。弓limb Blunt/Poke=>2候选；枪grip Blunt和barrel Blunt/Poke=>3候选。各power9/cooldown2，未指定AP=>调整damage×.015，固定cost武器不套材料倍率。权重DPS=damage*(1+AP)*accuracyTouch/cycle再乘chanceFactor；>=最高.95为Best，<最高.25为Worst，其余Mid，Best组.75/Mid组.25按组内Verb数平分再作目标过滤。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseWeapon"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseGun"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseGunWithQuality"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseMakeableGun"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseHumanMakeableGun"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseWeaponNeolithic"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Bow_Short"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Gun_Revolver"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Gun_Autopistol"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Gun_MachinePistol"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ManeuverDef_Smash"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ManeuverDef_Poke"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.Tool",
+        "line_start": 23,
+        "line_end": 94,
+        "range_sha256": "d8624db2cf8d309fc2dfc9cea33fd172c7c6ab6b664d3227553e8e392d6ad8ce"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.VerbUtility",
+        "line_start": 167,
+        "line_end": 269,
+        "range_sha256": "cb4391467d8b8dedf509f1423944b6494f9a54eff66be0bb83ec6213578ae58a"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.Pawn_MeleeVerbs",
+        "line_start": 198,
+        "line_end": 239,
+        "range_sha256": "94ee4d80fb90dd9b339687f87fc56c0b7afadb96012a88d40b8a13bb6bfb9632"
+      },
+      {
+        "group": "injuries",
+        "type": "RimWorld.VerbEntry",
+        "line_start": 1,
+        "line_end": 45,
+        "range_sha256": "c29608bd750a042b0c9857e523618e2776b6350376f38f1e147209fd694a02c0"
+      },
+      {
+        "group": "injuries",
+        "type": "Verse.VerbProperties",
+        "line_start": 331,
+        "line_end": 405,
+        "range_sha256": "22e2124cbc2e32ee5219c022ed83380b5a069ea9d8af6970ab2b44b51858c565"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "StatDef_MeleeWeapon_DamageMultiplier"
+      }
+    ]
+  },
+  {
+    "id": "RG22",
+    "title": "弹药和使用损耗的范围",
+    "statement": "所选Core武器定义不含普通弹药/装填消耗组件，相关verb也未设置consumeFuelPerShot/Burst；已审普通射击成功路径通知组件但不直接扣武器HP。武器仍有DeteriorationRate2，不能据此说永久不坏。CompChangeableProjectile或Charged owner等另有消耗路径，不把这四种普通武器结论推广到全部武器或mods。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseWeapon"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseGun"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseGunWithQuality"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseMakeableGun"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseHumanMakeableGun"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_BaseWeaponNeolithic"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Bow_Short"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Gun_Revolver"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Gun_Autopistol"
+      },
+      {
+        "group": "ranged",
+        "xml_record": "ThingDef_Gun_MachinePistol"
+      },
+      {
+        "group": "weapons",
+        "type": "Verse.Verb",
+        "line_start": 439,
+        "line_end": 540,
+        "range_sha256": "b77bd607afd73ae87ab4dddf8d84c506dbfeb95e06193bd41e84d8f31a3d88ed"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Verb_LaunchProjectile",
+        "line_start": 69,
+        "line_end": 90,
+        "range_sha256": "9e9e808b0fb6f9d2afb9c83a467daea02d553f936f810e9a9e5ef1da82009753"
+      },
+      {
+        "group": "preservation",
+        "type": "Verse.ThingWithComps",
+        "line_start": 875,
+        "line_end": 899,
+        "range_sha256": "121a02ac9149240ad846686cbd89cd5b258a0115e0a23a0c90a504acd249df7e"
+      },
+      {
+        "group": "weapons",
+        "type": "Verse.CompEquippable",
+        "line_start": 1,
+        "line_end": 85,
+        "range_sha256": "9761fba9d190f4095384c1612443f3bc2f7a436f7527d483e16f9438de1f573d"
+      },
+      {
+        "group": "armor",
+        "type": "Verse.ThingComp",
+        "line_start": 194,
+        "line_end": 200,
+        "range_sha256": "79e69bf560b1963dd2bf8625b199225583eea653d974cf19c714b7f54fbf6725"
+      }
+    ]
+  },
+  {
+    "id": "RG23",
+    "title": "复刻边界",
+    "statement": "原版Core2D方格LOS、leaning、同格Thing列表、Rand浮点与各mod扩展，不能由3D voxel射线、独立double算例或面板概率自动证明等价。本包公式模型验证静态数字及关键分支，项目需另外验证TPS换算、持久化弹体/连发、人体护甲连接与输入行为。",
+    "kind": "design-adaptation",
+    "sources": [
+      {
+        "group": "ranged",
+        "type": "Verse.ShootLeanUtility",
+        "line_start": 1,
+        "line_end": 148,
+        "range_sha256": "58587bea23a2dffcff536c38b3806b9a31c306d24624ec826b6bd6ac79ef14e9"
+      },
+      {
+        "group": "combat",
+        "type": "Verse.Projectile",
+        "line_start": 449,
+        "line_end": 573,
+        "range_sha256": "2567da261aafc8f25be08edc8e36e12f609c410bd8518d7fc5525d1a09f51f2b"
+      },
+      {
+        "group": "ranged",
+        "type": "Verse.GenTicks",
+        "line_start": 75,
+        "line_end": 83,
+        "range_sha256": "73e1e02604063e35d16b610fd7822bfb63be6c27b83f25601c4547125a0c3815"
+      }
+    ]
+  }
+]

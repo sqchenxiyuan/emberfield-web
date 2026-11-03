@@ -13,6 +13,7 @@ import {
   type DeviceKind,
   type Pos,
   type PowerNetwork,
+  type WorkbenchPower,
 } from './types';
 
 export const DEVICE_COSTS: Record<DeviceKind, Partial<Counts>> = {
@@ -32,7 +33,8 @@ export const DEVICE_WORK: Record<DeviceKind, number> = {
   cooler: 534,
 };
 export const isDeviceKind = (s: string): s is DeviceKind => Object.hasOwn(DEVICE_COSTS, s);
-const conductive = (d: Device) =>
+type PowerMember = Device | WorkbenchPower;
+const conductive = (d: PowerMember): d is Device =>
   d.kind === 'generator' || d.kind === 'solar' || d.kind === 'battery';
 const directions = [
   [1, 0, 0],
@@ -47,14 +49,16 @@ export class VoxelPower {
   private nodes = new Uint8Array(CELLS);
   private queue = new Int32Array(CELLS);
   private networks: PowerNetwork[] = [];
-  private groups: Device[][] = [];
+  private groups: PowerMember[][] = [];
+  private loads: WorkbenchPower[] = [];
   get memoryBytes() {
     return this.networkIds.byteLength + this.nodes.byteLength + this.queue.byteLength;
   }
-  rebuild(wires: readonly Pos[], devices: Device[]) {
+  rebuild(wires: readonly Pos[], devices: Device[], loads: WorkbenchPower[] = []) {
     this.nodes.fill(0);
     this.networkIds.fill(-1);
     this.groups = [];
+    this.loads = loads;
     for (const p of wires) if (inside(p)) this.nodes[at(p)] = 1;
     for (const d of devices)
       if (conductive(d)) for (const p of deviceCells(d)) this.nodes[at(p)] = 1;
@@ -80,7 +84,7 @@ export class VoxelPower {
       }
       id++;
     }
-    for (const d of devices) {
+    for (const d of [...devices, ...loads]) {
       let network = -1;
       if (conductive(d)) network = this.networkIds[at(d)];
       else {
@@ -102,7 +106,7 @@ export class VoxelPower {
       else d.powered = false;
     }
     this.networks = this.groups.map((group, id) => {
-      const batteries = group.filter((d) => d.kind === 'battery' && d.on);
+      const batteries = group.filter((d): d is Device => d.kind === 'battery' && d.on);
       return {
         id,
         generatedW: 0,
@@ -116,7 +120,7 @@ export class VoxelPower {
     });
   }
   step(tick: number, devices: Device[], solarLight: (d: Device) => number) {
-    for (const d of devices) {
+    for (const d of [...devices, ...this.loads]) {
       if (d.kind === 'generator') {
         const fuelUsed = d.on ? Math.min(d.fuel, 22 / DAY) : 0;
         d.fuel = Math.max(0, d.fuel - fuelUsed);
@@ -137,15 +141,21 @@ export class VoxelPower {
         d.reason = d.on ? '接入电网' : '已隔离（仍会自放电）';
       } else {
         if (!d.on || d.networkId === null) d.powered = false;
-        d.watts = -(d.kind === 'heater' ? 175 : 200) * (d.active ? 1 : 0.1);
+        d.watts =
+          d.kind === 'workbench'
+            ? -d.consumption
+            : -(d.kind === 'heater' ? 175 : 200) * (d.active ? 1 : 0.1);
+        if (d.kind === 'workbench') d.active = false;
         if (!d.on) d.reason = '已关闭';
         else if (d.networkId === null) d.reason = '本层 6 格接线范围内无线路';
       }
     }
     for (let id = 0; id < this.groups.length; id++) {
       const group = this.groups[id],
-        batteries = group.filter((d) => d.kind === 'battery' && d.on);
-      const consumers = group.filter((d) => d.kind === 'heater' || d.kind === 'cooler');
+        batteries = group.filter((d): d is Device => d.kind === 'battery' && d.on);
+      const consumers = group.filter(
+        (d) => d.kind === 'heater' || d.kind === 'cooler' || d.kind === 'workbench',
+      );
       const generation = group.reduce((s, d) => s + Math.max(0, d.watts), 0);
       let stored = batteries.reduce((s, d) => s + d.energy, 0);
       let used = consumers.reduce((s, d) => s + (d.on && d.powered ? -d.watts : 0), 0);
@@ -205,6 +215,10 @@ export class VoxelPower {
           continue;
         }
         paid += watts;
+        if (d.kind === 'workbench') {
+          d.active = true;
+          d.reason = '机械台已供电';
+        }
       }
       used = paid;
       let balance = (generation - used) / DAY;

@@ -1,0 +1,22 @@
+[
+  "Verse.Verb_Shoot",
+  "Verse.ShootLine",
+  "Verse.ShootLeanUtility",
+  "Verse.VerbUtility",
+  "Verse.GenSight",
+  "Verse.CoverInfo",
+  "Verse.ProjectileHitFlags",
+  "Verse.Stance_Warmup",
+  "Verse.Stance_Cooldown",
+  "Verse.AI.JobDriver_AttackStatic",
+  "RimWorld.StatWorker_ShootingAccuracy",
+  "RimWorld.WeatherManager",
+  "Verse.ShootTuning",
+  "Verse.CoverGrid",
+  "Verse.GenGrid",
+  "Verse.GenTicks",
+  "Verse.SimpleSurface",
+  "Verse.InjuryProps",
+  "RimWorld.StaggerHandler",
+  "Verse.VerbTracker"
+]

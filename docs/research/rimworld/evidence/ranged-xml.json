@@ -1,0 +1,5439 @@
+{
+  "evidence_id": "RW17-RANGED-XML",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Selected direct Core ranged weapons, projectile, accuracy, weather, cover, research and bench declarations",
+  "limitations": [
+    "Reviewed selected inheritance chains; not the enabled-mod effective database.",
+    "Source omissions are retained, not silently interpreted as effective values.",
+    "Static extraction does not execute original gameplay or project implementation."
+  ],
+  "records": [
+    {
+      "group": "weapon",
+      "id": "ThingDef_BaseWeapon",
+      "def_name": "BaseWeapon",
+      "parent_name": "",
+      "name_attribute": "BaseWeapon",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+        "xpath": "/Defs/ThingDef[@Name='BaseWeapon']",
+        "sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "equipmentType",
+        "useHitPoints",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "recipeMaker",
+        "comps",
+        "tools",
+        "verbs",
+        "techLevel",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "recipeMaker",
+        "tools",
+        "verbs",
+        "techLevel",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeapon']/thingClass",
+          "value": "ThingWithComps"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeapon']/category",
+          "value": "Item"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeapon']/equipmentType",
+          "value": "Primary"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeapon']/useHitPoints",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeapon']/statBases/MaxHitPoints",
+          "value": "100"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeapon']/statBases/Flammability",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeapon']/statBases/DeteriorationRate",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeapon']/statBases/Beauty",
+          "value": "-3"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeapon']/statBases/SellPriceFactor",
+          "value": "0.20"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeapon']/comps/li[1]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeapon']/comps/li[2]/compClass",
+          "value": "CompEquippable"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeapon']/comps/li[3]",
+          "value": ""
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeapon']/comps/li[1]",
+          "attributes": {
+            "Class": "CompProperties_Forbiddable"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeapon']/comps/li[3]",
+          "attributes": {
+            "Class": "CompProperties_Styleable"
+          }
+        }
+      ]
+    },
+    {
+      "group": "weapon",
+      "id": "ThingDef_BaseGun",
+      "def_name": "BaseGun",
+      "parent_name": "BaseWeapon",
+      "name_attribute": "BaseGun",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+        "xpath": "/Defs/ThingDef[@Name='BaseGun']",
+        "sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "equipmentType",
+        "useHitPoints",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "recipeMaker",
+        "comps",
+        "tools",
+        "verbs",
+        "techLevel",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "thingClass",
+        "category",
+        "equipmentType",
+        "useHitPoints",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "recipeMaker",
+        "tools",
+        "verbs",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseGun']/statBases/Flammability",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseGun']/comps/li/nameMaker",
+          "value": "NamerArtWeaponGun"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseGun']/comps/li/descriptionMaker",
+          "value": "ArtDescription_WeaponGun"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseGun']/comps/li/minQualityForArtistic",
+          "value": "Excellent"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseGun']/techLevel",
+          "value": "Industrial"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseGun']/comps/li",
+          "attributes": {
+            "Class": "CompProperties_Art"
+          }
+        }
+      ]
+    },
+    {
+      "group": "weapon",
+      "id": "ThingDef_BaseGunWithQuality",
+      "def_name": "BaseGunWithQuality",
+      "parent_name": "BaseGun",
+      "name_attribute": "BaseGunWithQuality",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+        "xpath": "/Defs/ThingDef[@Name='BaseGunWithQuality']",
+        "sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "equipmentType",
+        "useHitPoints",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "recipeMaker",
+        "comps",
+        "tools",
+        "verbs",
+        "techLevel",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "thingClass",
+        "category",
+        "equipmentType",
+        "useHitPoints",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "recipeMaker",
+        "tools",
+        "verbs",
+        "techLevel",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseGunWithQuality']/comps/li/compClass",
+          "value": "CompQuality"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "weapon",
+      "id": "ThingDef_BaseMakeableGun",
+      "def_name": "BaseMakeableGun",
+      "parent_name": "BaseGunWithQuality",
+      "name_attribute": "BaseMakeableGun",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+        "xpath": "/Defs/ThingDef[@Name='BaseMakeableGun']",
+        "sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "equipmentType",
+        "useHitPoints",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "recipeMaker",
+        "comps",
+        "tools",
+        "verbs",
+        "techLevel",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "thingClass",
+        "category",
+        "equipmentType",
+        "useHitPoints",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "comps",
+        "tools",
+        "verbs",
+        "techLevel",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseMakeableGun']/recipeMaker/workSpeedStat",
+          "value": "GeneralLaborSpeed"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseMakeableGun']/recipeMaker/workSkill",
+          "value": "Crafting"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseMakeableGun']/recipeMaker/effectWorking",
+          "value": "Smith"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseMakeableGun']/recipeMaker/soundWorking",
+          "value": "Recipe_Smith"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseMakeableGun']/recipeMaker/recipeUsers/li",
+          "value": "TableMachining"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseMakeableGun']/recipeMaker/unfinishedThingDef",
+          "value": "UnfinishedGun"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseMakeableGun']/recipeMaker/researchPrerequisite",
+          "value": "Gunsmithing"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "weapon",
+      "id": "ThingDef_BaseHumanMakeableGun",
+      "def_name": "BaseHumanMakeableGun",
+      "parent_name": "BaseMakeableGun",
+      "name_attribute": "BaseHumanMakeableGun",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+        "xpath": "/Defs/ThingDef[@Name='BaseHumanMakeableGun']",
+        "sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "equipmentType",
+        "useHitPoints",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "recipeMaker",
+        "comps",
+        "tools",
+        "verbs",
+        "techLevel",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "thingClass",
+        "category",
+        "equipmentType",
+        "useHitPoints",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "recipeMaker",
+        "tools",
+        "verbs",
+        "techLevel",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseHumanMakeableGun']/comps/li",
+          "value": ""
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseHumanMakeableGun']/comps/li",
+          "attributes": {
+            "Class": "CompProperties_Biocodable"
+          }
+        }
+      ]
+    },
+    {
+      "group": "weapon",
+      "id": "ThingDef_BaseWeaponNeolithic",
+      "def_name": "BaseWeaponNeolithic",
+      "parent_name": "BaseWeapon",
+      "name_attribute": "BaseWeaponNeolithic",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/RangedNeolithic.xml",
+        "xpath": "/Defs/ThingDef[@Name='BaseWeaponNeolithic']",
+        "sha256": "6177df52167d26e8f4eba6a83c8a1cc7eb705f8f4d34aa790169320b3acac4bb"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "equipmentType",
+        "useHitPoints",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "recipeMaker",
+        "comps",
+        "tools",
+        "verbs",
+        "techLevel",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "thingClass",
+        "category",
+        "equipmentType",
+        "useHitPoints",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "tools",
+        "verbs",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeaponNeolithic']/recipeMaker/workSpeedStat",
+          "value": "GeneralLaborSpeed"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeaponNeolithic']/recipeMaker/workSkill",
+          "value": "Crafting"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeaponNeolithic']/recipeMaker/recipeUsers/li[1]",
+          "value": "ElectricSmithy"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeaponNeolithic']/recipeMaker/recipeUsers/li[2]",
+          "value": "FueledSmithy"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeaponNeolithic']/recipeMaker/effectWorking",
+          "value": "Smelt"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeaponNeolithic']/recipeMaker/soundWorking",
+          "value": "Recipe_MakeBow"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeaponNeolithic']/recipeMaker/unfinishedThingDef",
+          "value": "UnfinishedWeapon"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeaponNeolithic']/comps/li/compClass",
+          "value": "CompQuality"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseWeaponNeolithic']/techLevel",
+          "value": "Neolithic"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "weapon",
+      "id": "ThingDef_Bow_Short",
+      "def_name": "Bow_Short",
+      "parent_name": "BaseWeaponNeolithic",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/RangedNeolithic.xml",
+        "xpath": "/Defs/ThingDef[defName='Bow_Short']",
+        "sha256": "6177df52167d26e8f4eba6a83c8a1cc7eb705f8f4d34aa790169320b3acac4bb"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "equipmentType",
+        "useHitPoints",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "recipeMaker",
+        "comps",
+        "tools",
+        "verbs",
+        "techLevel",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "thingClass",
+        "category",
+        "equipmentType",
+        "useHitPoints",
+        "costStuffCount",
+        "stuffCategories",
+        "comps",
+        "techLevel",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/statBases/WorkToMake",
+          "value": "2400"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/statBases/Mass",
+          "value": "0.8"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/statBases/AccuracyTouch",
+          "value": "0.75"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/statBases/AccuracyShort",
+          "value": "0.65"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/statBases/AccuracyMedium",
+          "value": "0.45"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/statBases/AccuracyLong",
+          "value": "0.25"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/statBases/RangedWeapon_Cooldown",
+          "value": "1.65"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/costList/WoodLog",
+          "value": "30"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/recipeMaker/recipeUsers/li",
+          "value": "CraftingSpot"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/recipeMaker/skillRequirements/Crafting",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/recipeMaker/displayPriority",
+          "value": "510"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/tools/li/label",
+          "value": "limb"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/tools/li/capacities/li[1]",
+          "value": "Blunt"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/tools/li/capacities/li[2]",
+          "value": "Poke"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/tools/li/power",
+          "value": "9"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/tools/li/cooldownTime",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/verbs/li/verbClass",
+          "value": "Verb_Shoot"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/verbs/li/hasStandardCommand",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/verbs/li/defaultProjectile",
+          "value": "Arrow_Short"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/verbs/li/warmupTime",
+          "value": "1.35"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/verbs/li/range",
+          "value": "22.9"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bow_Short']/verbs/li/soundCast",
+          "value": "Bow_Small"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "weapon",
+      "id": "ThingDef_Gun_Revolver",
+      "def_name": "Gun_Revolver",
+      "parent_name": "BaseHumanMakeableGun",
+      "name_attribute": "Gun_Revolver",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/RangedIndustrial.xml",
+        "xpath": "/Defs/ThingDef[defName='Gun_Revolver']",
+        "sha256": "761318b920a1bd459cb6955705766414fbb7b5a8a58513c646702aa2a5226aa5"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "equipmentType",
+        "useHitPoints",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "recipeMaker",
+        "comps",
+        "tools",
+        "verbs",
+        "techLevel",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "thingClass",
+        "category",
+        "equipmentType",
+        "useHitPoints",
+        "costStuffCount",
+        "stuffCategories",
+        "comps",
+        "techLevel",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/statBases/WorkToMake",
+          "value": "4000"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/statBases/Mass",
+          "value": "1.4"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/statBases/AccuracyTouch",
+          "value": "0.80"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/statBases/AccuracyShort",
+          "value": "0.75"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/statBases/AccuracyMedium",
+          "value": "0.55"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/statBases/AccuracyLong",
+          "value": "0.40"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/statBases/RangedWeapon_Cooldown",
+          "value": "1.6"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/costList/Steel",
+          "value": "30"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/costList/ComponentIndustrial",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/recipeMaker/skillRequirements/Crafting",
+          "value": "3"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/recipeMaker/displayPriority",
+          "value": "400"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/tools/li[1]/label",
+          "value": "grip"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/tools/li[1]/capacities/li",
+          "value": "Blunt"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/tools/li[1]/power",
+          "value": "9"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/tools/li[1]/cooldownTime",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/tools/li[2]/label",
+          "value": "barrel"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/tools/li[2]/capacities/li[1]",
+          "value": "Blunt"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/tools/li[2]/capacities/li[2]",
+          "value": "Poke"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/tools/li[2]/power",
+          "value": "9"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/tools/li[2]/cooldownTime",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/verbs/li/verbClass",
+          "value": "Verb_Shoot"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/verbs/li/hasStandardCommand",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/verbs/li/defaultProjectile",
+          "value": "Bullet_Revolver"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/verbs/li/warmupTime",
+          "value": "0.3"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/verbs/li/range",
+          "value": "25.9"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/verbs/li/soundCast",
+          "value": "Shot_Revolver"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/verbs/li/soundCastTail",
+          "value": "GunTail_Light"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Revolver']/verbs/li/muzzleFlashScale",
+          "value": "9"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "weapon",
+      "id": "ThingDef_Gun_Autopistol",
+      "def_name": "Gun_Autopistol",
+      "parent_name": "BaseHumanMakeableGun",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/RangedIndustrial.xml",
+        "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']",
+        "sha256": "761318b920a1bd459cb6955705766414fbb7b5a8a58513c646702aa2a5226aa5"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "equipmentType",
+        "useHitPoints",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "recipeMaker",
+        "comps",
+        "tools",
+        "verbs",
+        "techLevel",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "thingClass",
+        "category",
+        "equipmentType",
+        "useHitPoints",
+        "costStuffCount",
+        "stuffCategories",
+        "comps",
+        "techLevel",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/statBases/WorkToMake",
+          "value": "5000"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/statBases/Mass",
+          "value": "1.2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/statBases/AccuracyTouch",
+          "value": "0.80"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/statBases/AccuracyShort",
+          "value": "0.70"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/statBases/AccuracyMedium",
+          "value": "0.40"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/statBases/AccuracyLong",
+          "value": "0.30"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/statBases/RangedWeapon_Cooldown",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/costList/Steel",
+          "value": "30"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/costList/ComponentIndustrial",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/recipeMaker/researchPrerequisite",
+          "value": "BlowbackOperation"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/recipeMaker/skillRequirements/Crafting",
+          "value": "4"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/recipeMaker/displayPriority",
+          "value": "405"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/tools/li[1]/label",
+          "value": "grip"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/tools/li[1]/capacities/li",
+          "value": "Blunt"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/tools/li[1]/power",
+          "value": "9"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/tools/li[1]/cooldownTime",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/tools/li[2]/label",
+          "value": "barrel"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/tools/li[2]/capacities/li[1]",
+          "value": "Blunt"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/tools/li[2]/capacities/li[2]",
+          "value": "Poke"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/tools/li[2]/power",
+          "value": "9"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/tools/li[2]/cooldownTime",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/verbs/li/verbClass",
+          "value": "Verb_Shoot"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/verbs/li/hasStandardCommand",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/verbs/li/defaultProjectile",
+          "value": "Bullet_Autopistol"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/verbs/li/warmupTime",
+          "value": "0.3"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/verbs/li/range",
+          "value": "25.9"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/verbs/li/soundCast",
+          "value": "Shot_Autopistol"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/verbs/li/soundCastTail",
+          "value": "GunTail_Light"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_Autopistol']/verbs/li/muzzleFlashScale",
+          "value": "9"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "weapon",
+      "id": "ThingDef_Gun_MachinePistol",
+      "def_name": "Gun_MachinePistol",
+      "parent_name": "BaseHumanMakeableGun",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/RangedIndustrial.xml",
+        "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']",
+        "sha256": "761318b920a1bd459cb6955705766414fbb7b5a8a58513c646702aa2a5226aa5"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "equipmentType",
+        "useHitPoints",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "recipeMaker",
+        "comps",
+        "tools",
+        "verbs",
+        "techLevel",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "thingClass",
+        "category",
+        "equipmentType",
+        "useHitPoints",
+        "costStuffCount",
+        "stuffCategories",
+        "comps",
+        "techLevel",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/statBases/WorkToMake",
+          "value": "11000"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/statBases/Mass",
+          "value": "2.5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/statBases/AccuracyTouch",
+          "value": "0.90"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/statBases/AccuracyShort",
+          "value": "0.65"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/statBases/AccuracyMedium",
+          "value": "0.35"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/statBases/AccuracyLong",
+          "value": "0.15"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/statBases/RangedWeapon_Cooldown",
+          "value": "0.9"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/costList/Steel",
+          "value": "45"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/costList/ComponentIndustrial",
+          "value": "3"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/recipeMaker/researchPrerequisite",
+          "value": "BlowbackOperation"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/recipeMaker/skillRequirements/Crafting",
+          "value": "4"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/recipeMaker/displayPriority",
+          "value": "410"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/tools/li[1]/label",
+          "value": "grip"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/tools/li[1]/capacities/li",
+          "value": "Blunt"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/tools/li[1]/power",
+          "value": "9"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/tools/li[1]/cooldownTime",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/tools/li[2]/label",
+          "value": "barrel"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/tools/li[2]/capacities/li[1]",
+          "value": "Blunt"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/tools/li[2]/capacities/li[2]",
+          "value": "Poke"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/tools/li[2]/power",
+          "value": "9"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/tools/li[2]/cooldownTime",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/verbs/li/verbClass",
+          "value": "Verb_Shoot"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/verbs/li/hasStandardCommand",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/verbs/li/defaultProjectile",
+          "value": "Bullet_MachinePistol"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/verbs/li/warmupTime",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/verbs/li/range",
+          "value": "19.9"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/verbs/li/burstShotCount",
+          "value": "3"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/verbs/li/ticksBetweenBurstShots",
+          "value": "7"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/verbs/li/soundCast",
+          "value": "Shot_MachinePistol"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/verbs/li/soundCastTail",
+          "value": "GunTail_Light"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Gun_MachinePistol']/verbs/li/muzzleFlashScale",
+          "value": "9"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "projectile",
+      "id": "ThingDef_BaseBullet",
+      "def_name": "BaseBullet",
+      "parent_name": "",
+      "name_attribute": "BaseBullet",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+        "xpath": "/Defs/ThingDef[@Name='BaseBullet']",
+        "sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "useHitPoints",
+        "projectile"
+      ],
+      "absent_paths": [
+        "projectile"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseBullet']/thingClass",
+          "value": "Bullet"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseBullet']/category",
+          "value": "Projectile"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseBullet']/tickerType",
+          "value": "Normal"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseBullet']/useHitPoints",
+          "value": "False"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "projectile",
+      "id": "ThingDef_BaseProjectileNeolithic",
+      "def_name": "BaseProjectileNeolithic",
+      "parent_name": "",
+      "name_attribute": "BaseProjectileNeolithic",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/RangedNeolithic.xml",
+        "xpath": "/Defs/ThingDef[@Name='BaseProjectileNeolithic']",
+        "sha256": "6177df52167d26e8f4eba6a83c8a1cc7eb705f8f4d34aa790169320b3acac4bb"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "useHitPoints",
+        "projectile"
+      ],
+      "absent_paths": [
+        "projectile"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseProjectileNeolithic']/thingClass",
+          "value": "Bullet"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseProjectileNeolithic']/category",
+          "value": "Projectile"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseProjectileNeolithic']/tickerType",
+          "value": "Normal"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BaseProjectileNeolithic']/useHitPoints",
+          "value": "False"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "projectile",
+      "id": "ThingDef_Arrow_Short",
+      "def_name": "Arrow_Short",
+      "parent_name": "BaseProjectileNeolithic",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/RangedNeolithic.xml",
+        "xpath": "/Defs/ThingDef[defName='Arrow_Short']",
+        "sha256": "6177df52167d26e8f4eba6a83c8a1cc7eb705f8f4d34aa790169320b3acac4bb"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "useHitPoints",
+        "projectile"
+      ],
+      "absent_paths": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "useHitPoints"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Arrow_Short']/projectile/damageDef",
+          "value": "Arrow"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Arrow_Short']/projectile/damageAmountBase",
+          "value": "11"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Arrow_Short']/projectile/speed",
+          "value": "44"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "projectile",
+      "id": "ThingDef_Bullet_Revolver",
+      "def_name": "Bullet_Revolver",
+      "parent_name": "BaseBullet",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/RangedIndustrial.xml",
+        "xpath": "/Defs/ThingDef[defName='Bullet_Revolver']",
+        "sha256": "761318b920a1bd459cb6955705766414fbb7b5a8a58513c646702aa2a5226aa5"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "useHitPoints",
+        "projectile"
+      ],
+      "absent_paths": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "useHitPoints"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Bullet_Revolver']/projectile/damageDef",
+          "value": "Bullet"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bullet_Revolver']/projectile/damageAmountBase",
+          "value": "12"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bullet_Revolver']/projectile/stoppingPower",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bullet_Revolver']/projectile/speed",
+          "value": "55"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "projectile",
+      "id": "ThingDef_Bullet_Autopistol",
+      "def_name": "Bullet_Autopistol",
+      "parent_name": "BaseBullet",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/RangedIndustrial.xml",
+        "xpath": "/Defs/ThingDef[defName='Bullet_Autopistol']",
+        "sha256": "761318b920a1bd459cb6955705766414fbb7b5a8a58513c646702aa2a5226aa5"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "useHitPoints",
+        "projectile"
+      ],
+      "absent_paths": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "useHitPoints"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Bullet_Autopistol']/projectile/damageDef",
+          "value": "Bullet"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bullet_Autopistol']/projectile/damageAmountBase",
+          "value": "10"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bullet_Autopistol']/projectile/speed",
+          "value": "55"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "projectile",
+      "id": "ThingDef_Bullet_MachinePistol",
+      "def_name": "Bullet_MachinePistol",
+      "parent_name": "BaseBullet",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/RangedIndustrial.xml",
+        "xpath": "/Defs/ThingDef[defName='Bullet_MachinePistol']",
+        "sha256": "761318b920a1bd459cb6955705766414fbb7b5a8a58513c646702aa2a5226aa5"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "useHitPoints",
+        "projectile"
+      ],
+      "absent_paths": [
+        "thingClass",
+        "category",
+        "tickerType",
+        "useHitPoints"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Bullet_MachinePistol']/projectile/damageDef",
+          "value": "Bullet"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bullet_MachinePistol']/projectile/damageAmountBase",
+          "value": "6"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Bullet_MachinePistol']/projectile/speed",
+          "value": "55"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_AccuracyBase",
+      "def_name": "AccuracyBase",
+      "parent_name": "",
+      "name_attribute": "AccuracyBase",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Weapons_Ranged.xml",
+        "xpath": "/Defs/StatDef[@Name='AccuracyBase']",
+        "sha256": "f3f5e060ebc385d03da4d4d32ddc00bb70e3e9e62fb55175a107ee40a90b829a"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "workerClass",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[@Name='AccuracyBase']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='AccuracyBase']/minValue",
+          "value": "0.01"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='AccuracyBase']/maxValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='AccuracyBase']/parts/li/factorAwful",
+          "value": "0.8"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='AccuracyBase']/parts/li/factorPoor",
+          "value": "0.9"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='AccuracyBase']/parts/li/factorNormal",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='AccuracyBase']/parts/li/factorGood",
+          "value": "1.1"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='AccuracyBase']/parts/li/factorExcellent",
+          "value": "1.2"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='AccuracyBase']/parts/li/factorMasterwork",
+          "value": "1.35"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='AccuracyBase']/parts/li/factorLegendary",
+          "value": "1.5"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/StatDef[@Name='AccuracyBase']/parts/li",
+          "attributes": {
+            "Class": "StatPart_Quality"
+          }
+        }
+      ]
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_AccuracyTouch",
+      "def_name": "AccuracyTouch",
+      "parent_name": "AccuracyBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Weapons_Ranged.xml",
+        "xpath": "/Defs/StatDef[defName='AccuracyTouch']",
+        "sha256": "f3f5e060ebc385d03da4d4d32ddc00bb70e3e9e62fb55175a107ee40a90b829a"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_AccuracyShort",
+      "def_name": "AccuracyShort",
+      "parent_name": "AccuracyBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Weapons_Ranged.xml",
+        "xpath": "/Defs/StatDef[defName='AccuracyShort']",
+        "sha256": "f3f5e060ebc385d03da4d4d32ddc00bb70e3e9e62fb55175a107ee40a90b829a"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_AccuracyMedium",
+      "def_name": "AccuracyMedium",
+      "parent_name": "AccuracyBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Weapons_Ranged.xml",
+        "xpath": "/Defs/StatDef[defName='AccuracyMedium']",
+        "sha256": "f3f5e060ebc385d03da4d4d32ddc00bb70e3e9e62fb55175a107ee40a90b829a"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_AccuracyLong",
+      "def_name": "AccuracyLong",
+      "parent_name": "AccuracyBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Weapons_Ranged.xml",
+        "xpath": "/Defs/StatDef[defName='AccuracyLong']",
+        "sha256": "f3f5e060ebc385d03da4d4d32ddc00bb70e3e9e62fb55175a107ee40a90b829a"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_RangedWeapon_Cooldown",
+      "def_name": "RangedWeapon_Cooldown",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Weapons_Ranged.xml",
+        "xpath": "/Defs/StatDef[defName='RangedWeapon_Cooldown']",
+        "sha256": "f3f5e060ebc385d03da4d4d32ddc00bb70e3e9e62fb55175a107ee40a90b829a"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_Cooldown']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_Cooldown']/minValue",
+          "value": "0.01"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_RangedWeapon_DamageMultiplier",
+      "def_name": "RangedWeapon_DamageMultiplier",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Weapons_Ranged.xml",
+        "xpath": "/Defs/StatDef[defName='RangedWeapon_DamageMultiplier']",
+        "sha256": "f3f5e060ebc385d03da4d4d32ddc00bb70e3e9e62fb55175a107ee40a90b829a"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "maxValue",
+        "workerClass",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_DamageMultiplier']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_DamageMultiplier']/minValue",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_DamageMultiplier']/parts/li/factorAwful",
+          "value": "0.9"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_DamageMultiplier']/parts/li/factorPoor",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_DamageMultiplier']/parts/li/factorNormal",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_DamageMultiplier']/parts/li/factorGood",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_DamageMultiplier']/parts/li/factorExcellent",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_DamageMultiplier']/parts/li/factorMasterwork",
+          "value": "1.25"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_DamageMultiplier']/parts/li/factorLegendary",
+          "value": "1.5"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_DamageMultiplier']/parts/li",
+          "attributes": {
+            "Class": "StatPart_Quality"
+          }
+        }
+      ]
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_RangedWeapon_ArmorPenetrationMultiplier",
+      "def_name": "RangedWeapon_ArmorPenetrationMultiplier",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Weapons_Ranged.xml",
+        "xpath": "/Defs/StatDef[defName='RangedWeapon_ArmorPenetrationMultiplier']",
+        "sha256": "f3f5e060ebc385d03da4d4d32ddc00bb70e3e9e62fb55175a107ee40a90b829a"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "maxValue",
+        "workerClass",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_ArmorPenetrationMultiplier']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_ArmorPenetrationMultiplier']/minValue",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_ArmorPenetrationMultiplier']/parts/li/factorAwful",
+          "value": "0.9"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_ArmorPenetrationMultiplier']/parts/li/factorPoor",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_ArmorPenetrationMultiplier']/parts/li/factorNormal",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_ArmorPenetrationMultiplier']/parts/li/factorGood",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_ArmorPenetrationMultiplier']/parts/li/factorExcellent",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_ArmorPenetrationMultiplier']/parts/li/factorMasterwork",
+          "value": "1.25"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_ArmorPenetrationMultiplier']/parts/li/factorLegendary",
+          "value": "1.5"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_ArmorPenetrationMultiplier']/parts/li",
+          "attributes": {
+            "Class": "StatPart_Quality"
+          }
+        }
+      ]
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_RangedWeapon_RangeMultiplier",
+      "def_name": "RangedWeapon_RangeMultiplier",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Weapons_Ranged.xml",
+        "xpath": "/Defs/StatDef[defName='RangedWeapon_RangeMultiplier']",
+        "sha256": "f3f5e060ebc385d03da4d4d32ddc00bb70e3e9e62fb55175a107ee40a90b829a"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_RangeMultiplier']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_RangeMultiplier']/minValue",
+          "value": "0"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_RangedWeapon_WarmupMultiplier",
+      "def_name": "RangedWeapon_WarmupMultiplier",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Weapons_Ranged.xml",
+        "xpath": "/Defs/StatDef[defName='RangedWeapon_WarmupMultiplier']",
+        "sha256": "f3f5e060ebc385d03da4d4d32ddc00bb70e3e9e62fb55175a107ee40a90b829a"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "defaultBaseValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='RangedWeapon_WarmupMultiplier']/minValue",
+          "value": "0.01"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_RangedCooldownFactor",
+      "def_name": "RangedCooldownFactor",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_Combat.xml",
+        "xpath": "/Defs/StatDef[defName='RangedCooldownFactor']",
+        "sha256": "62c56cdf89d32a9f7377b3fa03011b18b2270ebe4b38c188c31473333efd7aad"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='RangedCooldownFactor']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='RangedCooldownFactor']/minValue",
+          "value": "0.01"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_ShootingAccuracyPawn",
+      "def_name": "ShootingAccuracyPawn",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_Combat.xml",
+        "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']",
+        "sha256": "62c56cdf89d32a9f7377b3fa03011b18b2270ebe4b38c188c31473333efd7aad"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "maxValue",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "capacityFactors",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/defaultBaseValue",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/minValue",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/workerClass",
+          "value": "StatWorker_ShootingAccuracy"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/skillNeedOffsets/li/skill",
+          "value": "Shooting"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/skillNeedOffsets/li/baseValue",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/skillNeedOffsets/li/bonusPerLevel",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/capacityOffsets/li[1]/capacity",
+          "value": "Sight"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/capacityOffsets/li[1]/scale",
+          "value": "12"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/capacityOffsets/li[1]/max",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/capacityOffsets/li[2]/capacity",
+          "value": "Manipulation"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/capacityOffsets/li[2]/scale",
+          "value": "8"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/capacityOffsets/li[2]/max",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[1]",
+          "value": "(-20, 0.70)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[2]",
+          "value": "(-10, 0.80)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[3]",
+          "value": "(-6, 0.83)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[4]",
+          "value": "(-4, 0.85)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[5]",
+          "value": "(-2, 0.87)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[6]",
+          "value": "(0, 0.89)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[7]",
+          "value": "(2, 0.93)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[8]",
+          "value": "(4, 0.94)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[9]",
+          "value": "(6, 0.95)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[10]",
+          "value": "(8, 0.96)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[11]",
+          "value": "(10, 0.97)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[12]",
+          "value": "(12, 0.975)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[13]",
+          "value": "(14, 0.98)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[14]",
+          "value": "(16, 0.98333)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[15]",
+          "value": "(18, 0.98666)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[16]",
+          "value": "(20, 0.99)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[17]",
+          "value": "(22, 0.9925)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[18]",
+          "value": "(26, 0.995)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[19]",
+          "value": "(30, 0.9965)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[20]",
+          "value": "(40, 0.998)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessCurve/points/li[21]",
+          "value": "(60, 0.999)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessStatFactors/li",
+          "value": "ShootingAccuracyChildFactor"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/noSkillOffset",
+          "value": "8"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/finalizeEquippedStatOffset",
+          "value": "false"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/skillNeedOffsets/li",
+          "attributes": {
+            "Class": "SkillNeed_BaseBonus"
+          }
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ShootingAccuracyPawn']/postProcessStatFactors/li",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        }
+      ]
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_ShootingAccuracyFactorBase",
+      "def_name": "ShootingAccuracyFactorBase",
+      "parent_name": "",
+      "name_attribute": "ShootingAccuracyFactorBase",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_Combat.xml",
+        "xpath": "/Defs/StatDef[@Name='ShootingAccuracyFactorBase']",
+        "sha256": "62c56cdf89d32a9f7377b3fa03011b18b2270ebe4b38c188c31473333efd7aad"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[@Name='ShootingAccuracyFactorBase']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='ShootingAccuracyFactorBase']/minValue",
+          "value": "0.01"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_ShootingAccuracyFactor_Touch",
+      "def_name": "ShootingAccuracyFactor_Touch",
+      "parent_name": "ShootingAccuracyFactorBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_Combat.xml",
+        "xpath": "/Defs/StatDef[defName='ShootingAccuracyFactor_Touch']",
+        "sha256": "62c56cdf89d32a9f7377b3fa03011b18b2270ebe4b38c188c31473333efd7aad"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_ShootingAccuracyFactor_Short",
+      "def_name": "ShootingAccuracyFactor_Short",
+      "parent_name": "ShootingAccuracyFactorBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_Combat.xml",
+        "xpath": "/Defs/StatDef[defName='ShootingAccuracyFactor_Short']",
+        "sha256": "62c56cdf89d32a9f7377b3fa03011b18b2270ebe4b38c188c31473333efd7aad"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_ShootingAccuracyFactor_Medium",
+      "def_name": "ShootingAccuracyFactor_Medium",
+      "parent_name": "ShootingAccuracyFactorBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_Combat.xml",
+        "xpath": "/Defs/StatDef[defName='ShootingAccuracyFactor_Medium']",
+        "sha256": "62c56cdf89d32a9f7377b3fa03011b18b2270ebe4b38c188c31473333efd7aad"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_ShootingAccuracyFactor_Long",
+      "def_name": "ShootingAccuracyFactor_Long",
+      "parent_name": "ShootingAccuracyFactorBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_Combat.xml",
+        "xpath": "/Defs/StatDef[defName='ShootingAccuracyFactor_Long']",
+        "sha256": "62c56cdf89d32a9f7377b3fa03011b18b2270ebe4b38c188c31473333efd7aad"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_AimingDelayFactor",
+      "def_name": "AimingDelayFactor",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_Combat.xml",
+        "xpath": "/Defs/StatDef[defName='AimingDelayFactor']",
+        "sha256": "62c56cdf89d32a9f7377b3fa03011b18b2270ebe4b38c188c31473333efd7aad"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "maxValue",
+        "workerClass",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='AimingDelayFactor']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='AimingDelayFactor']/minValue",
+          "value": "0.01"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='AimingDelayFactor']/parts/li/useBiologicalYears",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='AimingDelayFactor']/parts/li/humanlikeOnly",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='AimingDelayFactor']/parts/li/curve/points/li[1]",
+          "value": "(4,1.8)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='AimingDelayFactor']/parts/li/curve/points/li[2]",
+          "value": "(12,1.1)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='AimingDelayFactor']/parts/li/curve/points/li[3]",
+          "value": "(13,1)"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/StatDef[defName='AimingDelayFactor']/parts/li",
+          "attributes": {
+            "Class": "StatPart_Age",
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        }
+      ]
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_MeleeWeapon_DamageMultiplier",
+      "def_name": "MeleeWeapon_DamageMultiplier",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Weapons_Melee.xml",
+        "xpath": "/Defs/StatDef[defName='MeleeWeapon_DamageMultiplier']",
+        "sha256": "ed8806acbc4928b3061e1ea2f9ef36ee2be94bf7d2c05ee756b047a0e8133f6e"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "maxValue",
+        "workerClass",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='MeleeWeapon_DamageMultiplier']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='MeleeWeapon_DamageMultiplier']/minValue",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='MeleeWeapon_DamageMultiplier']/parts/li/factorAwful",
+          "value": "0.8"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='MeleeWeapon_DamageMultiplier']/parts/li/factorPoor",
+          "value": "0.9"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='MeleeWeapon_DamageMultiplier']/parts/li/factorNormal",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='MeleeWeapon_DamageMultiplier']/parts/li/factorGood",
+          "value": "1.1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='MeleeWeapon_DamageMultiplier']/parts/li/factorExcellent",
+          "value": "1.2"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='MeleeWeapon_DamageMultiplier']/parts/li/factorMasterwork",
+          "value": "1.45"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='MeleeWeapon_DamageMultiplier']/parts/li/factorLegendary",
+          "value": "1.65"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/StatDef[defName='MeleeWeapon_DamageMultiplier']/parts/li",
+          "attributes": {
+            "Class": "StatPart_Quality"
+          }
+        }
+      ]
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_MaxHitPoints",
+      "def_name": "MaxHitPoints",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Basics_General.xml",
+        "xpath": "/Defs/StatDef[defName='MaxHitPoints']",
+        "sha256": "c4d702421c19796993483ddd43f9869c54bb7afa1414232a568829ced5218d87"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='MaxHitPoints']/defaultBaseValue",
+          "value": "100"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='MaxHitPoints']/minValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='MaxHitPoints']/roundValue",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='MaxHitPoints']/roundToFiveOver",
+          "value": "200"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_WorkToMake",
+      "def_name": "WorkToMake",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Basics_General.xml",
+        "xpath": "/Defs/StatDef[defName='WorkToMake']",
+        "sha256": "c4d702421c19796993483ddd43f9869c54bb7afa1414232a568829ced5218d87"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='WorkToMake']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkToMake']/minValue",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkToMake']/roundToFiveOver",
+          "value": "300"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_WorkToBuild",
+      "def_name": "WorkToBuild",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Building_Special.xml",
+        "xpath": "/Defs/StatDef[defName='WorkToBuild']",
+        "sha256": "e57298ad955777e288239b2e7804def1b1f0d3cf7290bba5b723fff684c7d1ce"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='WorkToBuild']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkToBuild']/minValue",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkToBuild']/roundToFiveOver",
+          "value": "300"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_WorkTableWorkSpeedFactor",
+      "def_name": "WorkTableWorkSpeedFactor",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Building_Special.xml",
+        "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']",
+        "sha256": "e57298ad955777e288239b2e7804def1b1f0d3cf7290bba5b723fff684c7d1ce"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "maxValue",
+        "workerClass",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/minValue",
+          "value": "0.1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/parts/li[1]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/parts/li[2]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/parts/li[3]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/parts/li[4]",
+          "value": ""
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/parts/li[1]",
+          "attributes": {
+            "Class": "StatPart_WorkTableUnpowered"
+          }
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/parts/li[2]",
+          "attributes": {
+            "Class": "StatPart_WorkTableRoomRole"
+          }
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/parts/li[3]",
+          "attributes": {
+            "Class": "StatPart_WorkTableTemperature"
+          }
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkTableWorkSpeedFactor']/parts/li[4]",
+          "attributes": {
+            "Class": "StatPart_WorkTableOutdoors"
+          }
+        }
+      ]
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_GeneralLaborSpeed",
+      "def_name": "GeneralLaborSpeed",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_WorkRecipes.xml",
+        "xpath": "/Defs/StatDef[defName='GeneralLaborSpeed']",
+        "sha256": "1304fce1d4a7a1729aacb5ef25cf493beee4474494c8b4a6cb5a720bca92f9e3"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "workerClass",
+        "parts",
+        "statFactors",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityFactors",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "absent_paths": [
+        "maxValue",
+        "workerClass",
+        "parts",
+        "skillNeedFactors",
+        "skillNeedOffsets",
+        "capacityOffsets",
+        "postProcessCurve",
+        "postProcessStatFactors",
+        "noSkillOffset",
+        "finalizeEquippedStatOffset",
+        "roundValue",
+        "roundToFiveOver"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='GeneralLaborSpeed']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='GeneralLaborSpeed']/minValue",
+          "value": "0.1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='GeneralLaborSpeed']/statFactors/li",
+          "value": "WorkSpeedGlobal"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='GeneralLaborSpeed']/capacityFactors/li[1]/capacity",
+          "value": "Manipulation"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='GeneralLaborSpeed']/capacityFactors/li[1]/weight",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='GeneralLaborSpeed']/capacityFactors/li[2]/capacity",
+          "value": "Sight"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='GeneralLaborSpeed']/capacityFactors/li[2]/weight",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='GeneralLaborSpeed']/capacityFactors/li[2]/max",
+          "value": "1"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "research",
+      "id": "ResearchProjectDef_Machining",
+      "def_name": "Machining",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_2_Electricity.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='Machining']",
+        "sha256": "4775a1ebf4c263fb4515f53c22db05ce0388299c28340cee5d66c10891c6a44e"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities"
+      ],
+      "absent_paths": [
+        "requiredResearchBuilding",
+        "requiredResearchFacilities"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Machining']/baseCost",
+          "value": "1000"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Machining']/techLevel",
+          "value": "Industrial"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Machining']/prerequisites/li[1]",
+          "value": "Electricity"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Machining']/prerequisites/li[2]",
+          "value": "Smithing"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "research",
+      "id": "ResearchProjectDef_Gunsmithing",
+      "def_name": "Gunsmithing",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_2_Electricity.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='Gunsmithing']",
+        "sha256": "4775a1ebf4c263fb4515f53c22db05ce0388299c28340cee5d66c10891c6a44e"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities"
+      ],
+      "absent_paths": [
+        "requiredResearchBuilding",
+        "requiredResearchFacilities"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Gunsmithing']/baseCost",
+          "value": "500"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Gunsmithing']/techLevel",
+          "value": "Industrial"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Gunsmithing']/prerequisites/li",
+          "value": "Machining"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "research",
+      "id": "ResearchProjectDef_BlowbackOperation",
+      "def_name": "BlowbackOperation",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_2_Electricity.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='BlowbackOperation']",
+        "sha256": "4775a1ebf4c263fb4515f53c22db05ce0388299c28340cee5d66c10891c6a44e"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities"
+      ],
+      "absent_paths": [
+        "requiredResearchBuilding",
+        "requiredResearchFacilities"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='BlowbackOperation']/baseCost",
+          "value": "500"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='BlowbackOperation']/techLevel",
+          "value": "Industrial"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='BlowbackOperation']/prerequisites/li",
+          "value": "Gunsmithing"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "bench",
+      "id": "ThingDef_CraftingSpot",
+      "def_name": "CraftingSpot",
+      "parent_name": "BuildingBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Production.xml",
+        "xpath": "/Defs/ThingDef[defName='CraftingSpot']",
+        "sha256": "3221c30adc223498636ac7b6ca86ef9c50fce681b138be8f0919c6e652045a31"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "size",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "building",
+        "comps",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "pathCostIgnoreRepeat",
+        "damageMultipliers",
+        "useHitPoints"
+      ],
+      "absent_paths": [
+        "category",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "fillPercent",
+        "pathCost",
+        "pathCostIgnoreRepeat",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='CraftingSpot']/thingClass",
+          "value": "Building_WorkTable"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='CraftingSpot']/statBases/WorkToBuild",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='CraftingSpot']/statBases/WorkTableWorkSpeedFactor",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='CraftingSpot']/size",
+          "value": "(1,1)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='CraftingSpot']/hasInteractionCell",
+          "value": "True"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='CraftingSpot']/interactionCellOffset",
+          "value": "(0,0,-1)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='CraftingSpot']/building/spawnedConceptLearnOpportunity",
+          "value": "BillsTab"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='CraftingSpot']/building/sowTag",
+          "value": "SupportPlantsOnly"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='CraftingSpot']/building/canPlaceOverImpassablePlant",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='CraftingSpot']/building/ai_chillDestination",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='CraftingSpot']/building/wakeDormantPawnsOnConstruction",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='CraftingSpot']/building/artificialForMeditationPurposes",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='CraftingSpot']/building/buildingTags/li",
+          "value": "Production"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='CraftingSpot']/comps/li[1]/linkableFacilities/li",
+          "value": "ToolCabinet"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='CraftingSpot']/comps/li[2]/workSpeedStat",
+          "value": "WorkTableWorkSpeedFactor"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='CraftingSpot']/passability",
+          "value": "Standable"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='CraftingSpot']/useHitPoints",
+          "value": "false"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[defName='CraftingSpot']/comps/li[1]",
+          "attributes": {
+            "Class": "CompProperties_AffectedByFacilities"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='CraftingSpot']/comps/li[2]",
+          "attributes": {
+            "Class": "CompProperties_ReportWorkSpeed"
+          }
+        }
+      ]
+    },
+    {
+      "group": "bench",
+      "id": "ThingDef_BenchBase",
+      "def_name": "BenchBase",
+      "parent_name": "BuildingBase",
+      "name_attribute": "BenchBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Production.xml",
+        "xpath": "/Defs/ThingDef[@Name='BenchBase']",
+        "sha256": "3221c30adc223498636ac7b6ca86ef9c50fce681b138be8f0919c6e652045a31"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "size",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "building",
+        "comps",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "pathCostIgnoreRepeat",
+        "damageMultipliers",
+        "useHitPoints"
+      ],
+      "absent_paths": [
+        "thingClass",
+        "category",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "size",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "pathCostIgnoreRepeat",
+        "damageMultipliers",
+        "useHitPoints"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BenchBase']/statBases/Mass",
+          "value": "20"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BenchBase']/building/buildingTags/li",
+          "value": "Production"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BenchBase']/building/workTableRoomRole",
+          "value": "Workshop"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BenchBase']/comps/li/workSpeedStat",
+          "value": "WorkTableWorkSpeedFactor"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BenchBase']/comps/li",
+          "attributes": {
+            "Class": "CompProperties_ReportWorkSpeed"
+          }
+        }
+      ]
+    },
+    {
+      "group": "bench",
+      "id": "ThingDef_FueledSmithy",
+      "def_name": "FueledSmithy",
+      "parent_name": "BenchBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Production.xml",
+        "xpath": "/Defs/ThingDef[defName='FueledSmithy']",
+        "sha256": "3221c30adc223498636ac7b6ca86ef9c50fce681b138be8f0919c6e652045a31"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "size",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "building",
+        "comps",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "pathCostIgnoreRepeat",
+        "damageMultipliers",
+        "useHitPoints"
+      ],
+      "absent_paths": [
+        "category",
+        "costStuffCount",
+        "stuffCategories",
+        "pathCostIgnoreRepeat",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/thingClass",
+          "value": "Building_WorkTable"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/statBases/WorkToBuild",
+          "value": "3000"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/statBases/MaxHitPoints",
+          "value": "180"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/statBases/Flammability",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/statBases/Cleanliness",
+          "value": "-3"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/costList/Steel",
+          "value": "100"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/size",
+          "value": "(3,1)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/researchPrerequisites/li",
+          "value": "Smithing"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/constructionSkillPrerequisite",
+          "value": "4"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/hasInteractionCell",
+          "value": "True"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/interactionCellOffset",
+          "value": "(0,0,-1)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/building/spawnedConceptLearnOpportunity",
+          "value": "BillsTab"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/building/workTableRoomRole",
+          "value": "Workshop"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/building/workTableNotInRoomRoleFactor",
+          "value": "0.8"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/comps/li[1]/fuelConsumptionRate",
+          "value": "80.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/comps/li[1]/fuelCapacity",
+          "value": "50.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/comps/li[1]/fuelFilter/thingDefs/li",
+          "value": "WoodLog"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/comps/li[1]/consumeFuelOnlyWhenUsed",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/comps/li[1]/showAllowAutoRefuelToggle",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/comps/li[1]/canEjectFuel",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/comps/li[2]/linkableFacilities/li",
+          "value": "ToolCabinet"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/fillPercent",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/passability",
+          "value": "PassThroughOnly"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/pathCost",
+          "value": "50"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/useHitPoints",
+          "value": "True"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/comps/li[1]",
+          "attributes": {
+            "Class": "CompProperties_Refuelable"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/comps/li[2]",
+          "attributes": {
+            "Class": "CompProperties_AffectedByFacilities"
+          }
+        }
+      ]
+    },
+    {
+      "group": "bench",
+      "id": "ThingDef_ElectricSmithy",
+      "def_name": "ElectricSmithy",
+      "parent_name": "BenchBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Production.xml",
+        "xpath": "/Defs/ThingDef[defName='ElectricSmithy']",
+        "sha256": "3221c30adc223498636ac7b6ca86ef9c50fce681b138be8f0919c6e652045a31"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "size",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "building",
+        "comps",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "pathCostIgnoreRepeat",
+        "damageMultipliers",
+        "useHitPoints"
+      ],
+      "absent_paths": [
+        "category",
+        "costStuffCount",
+        "stuffCategories",
+        "pathCostIgnoreRepeat",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/thingClass",
+          "value": "Building_WorkTable"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/statBases/WorkToBuild",
+          "value": "3000"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/statBases/MaxHitPoints",
+          "value": "180"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/statBases/Flammability",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/statBases/Cleanliness",
+          "value": "-3"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/costList/Steel",
+          "value": "100"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/costList/ComponentIndustrial",
+          "value": "3"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/size",
+          "value": "(3,1)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/researchPrerequisites/li[1]",
+          "value": "Smithing"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/researchPrerequisites/li[2]",
+          "value": "Electricity"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/constructionSkillPrerequisite",
+          "value": "5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/hasInteractionCell",
+          "value": "True"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/interactionCellOffset",
+          "value": "(0,0,-1)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/building/spawnedConceptLearnOpportunity",
+          "value": "BillsTab"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/building/workTableRoomRole",
+          "value": "Workshop"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/building/workTableNotInRoomRoleFactor",
+          "value": "0.8"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/comps/li[1]/compClass",
+          "value": "CompPowerTrader"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/comps/li[1]/shortCircuitInRain",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/comps/li[1]/basePowerConsumption",
+          "value": "210"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/comps/li[2]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/comps/li[3]/linkableFacilities/li",
+          "value": "ToolCabinet"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/comps/li[4]/compClass",
+          "value": "CompHeatPusherPowered"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/comps/li[4]/heatPerSecond",
+          "value": "4"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/fillPercent",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/passability",
+          "value": "PassThroughOnly"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/pathCost",
+          "value": "50"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/useHitPoints",
+          "value": "True"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/comps/li[1]",
+          "attributes": {
+            "Class": "CompProperties_Power"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/comps/li[2]",
+          "attributes": {
+            "Class": "CompProperties_Flickable"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/comps/li[3]",
+          "attributes": {
+            "Class": "CompProperties_AffectedByFacilities"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/comps/li[4]",
+          "attributes": {
+            "Class": "CompProperties_HeatPusher"
+          }
+        }
+      ]
+    },
+    {
+      "group": "bench",
+      "id": "ThingDef_TableMachining",
+      "def_name": "TableMachining",
+      "parent_name": "BenchBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Production.xml",
+        "xpath": "/Defs/ThingDef[defName='TableMachining']",
+        "sha256": "3221c30adc223498636ac7b6ca86ef9c50fce681b138be8f0919c6e652045a31"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "size",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "building",
+        "comps",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "pathCostIgnoreRepeat",
+        "damageMultipliers",
+        "useHitPoints"
+      ],
+      "absent_paths": [
+        "category",
+        "costStuffCount",
+        "stuffCategories",
+        "pathCostIgnoreRepeat",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/thingClass",
+          "value": "Building_WorkTable"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/statBases/WorkToBuild",
+          "value": "3000"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/statBases/MaxHitPoints",
+          "value": "180"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/statBases/Flammability",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/statBases/Cleanliness",
+          "value": "-2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/costList/Steel",
+          "value": "150"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/costList/ComponentIndustrial",
+          "value": "5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/size",
+          "value": "(3,1)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/researchPrerequisites/li",
+          "value": "Machining"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/constructionSkillPrerequisite",
+          "value": "4"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/hasInteractionCell",
+          "value": "True"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/interactionCellOffset",
+          "value": "(0,0,-1)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/building/spawnedConceptLearnOpportunity",
+          "value": "BillsTab"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/building/workTableRoomRole",
+          "value": "Workshop"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/building/workTableNotInRoomRoleFactor",
+          "value": "0.8"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/comps/li[1]/compClass",
+          "value": "CompPowerTrader"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/comps/li[1]/shortCircuitInRain",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/comps/li[1]/basePowerConsumption",
+          "value": "350"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/comps/li[2]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/comps/li[3]/glowRadius",
+          "value": "5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/comps/li[3]/glowColor",
+          "value": "(73,123,138,0)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/comps/li[4]/linkableFacilities/li",
+          "value": "ToolCabinet"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/comps/li[5]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/fillPercent",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/passability",
+          "value": "PassThroughOnly"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/pathCost",
+          "value": "50"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/useHitPoints",
+          "value": "True"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/comps/li[1]",
+          "attributes": {
+            "Class": "CompProperties_Power"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/comps/li[2]",
+          "attributes": {
+            "Class": "CompProperties_Flickable"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/comps/li[3]",
+          "attributes": {
+            "Class": "CompProperties_Glower"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/comps/li[4]",
+          "attributes": {
+            "Class": "CompProperties_AffectedByFacilities"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='TableMachining']/comps/li[5]",
+          "attributes": {
+            "Class": "CompProperties_Breakdownable"
+          }
+        }
+      ]
+    },
+    {
+      "group": "building-parent",
+      "id": "ThingDef_BuildingBase",
+      "def_name": "BuildingBase",
+      "parent_name": "",
+      "name_attribute": "BuildingBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Base.xml",
+        "xpath": "/Defs/ThingDef[@Name='BuildingBase']",
+        "sha256": "b16e3a7934febd9ffb7883f18392d524ba376c9657da4c788d1951552f86d142"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "size",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "building",
+        "comps",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "pathCostIgnoreRepeat",
+        "damageMultipliers",
+        "useHitPoints"
+      ],
+      "absent_paths": [
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "size",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "building",
+        "comps",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "pathCostIgnoreRepeat",
+        "damageMultipliers",
+        "useHitPoints"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BuildingBase']/thingClass",
+          "value": "Building"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BuildingBase']/category",
+          "value": "Building"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BuildingBase']/statBases/SellPriceFactor",
+          "value": "0.70"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "cover",
+      "id": "ThingDef_Sandbags",
+      "def_name": "Sandbags",
+      "parent_name": "BuildingBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Security.xml",
+        "xpath": "/Defs/ThingDef[defName='Sandbags']",
+        "sha256": "e8bb731699e8f8a1d26c5cfcd1e7a2f38c689920977980f13dc44f695d712783"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "size",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "building",
+        "comps",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "pathCostIgnoreRepeat",
+        "damageMultipliers",
+        "useHitPoints"
+      ],
+      "absent_paths": [
+        "costList",
+        "size",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "comps",
+        "damageMultipliers",
+        "useHitPoints"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandbags']/thingClass",
+          "value": "Building"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandbags']/category",
+          "value": "Building"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandbags']/statBases/MaxHitPoints",
+          "value": "300"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandbags']/statBases/Beauty",
+          "value": "-10"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandbags']/statBases/WorkToBuild",
+          "value": "180"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandbags']/statBases/Flammability",
+          "value": "0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandbags']/costStuffCount",
+          "value": "5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandbags']/stuffCategories/li[1]",
+          "value": "Fabric"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandbags']/stuffCategories/li[2]",
+          "value": "Leathery"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandbags']/building/ai_chillDestination",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandbags']/building/isInert",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandbags']/building/blueprintGraphicData/texPath",
+          "value": "Things/Building/Linked/Sandbags_Blueprint_Atlas"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandbags']/building/canLandGravshipOn",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandbags']/fillPercent",
+          "value": "0.55"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandbags']/passability",
+          "value": "PassThroughOnly"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandbags']/pathCost",
+          "value": "42"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Sandbags']/pathCostIgnoreRepeat",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "cover",
+      "id": "ThingDef_Barricade",
+      "def_name": "Barricade",
+      "parent_name": "BuildingBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Security.xml",
+        "xpath": "/Defs/ThingDef[defName='Barricade']",
+        "sha256": "e8bb731699e8f8a1d26c5cfcd1e7a2f38c689920977980f13dc44f695d712783"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "size",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "building",
+        "comps",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "pathCostIgnoreRepeat",
+        "damageMultipliers",
+        "useHitPoints"
+      ],
+      "absent_paths": [
+        "costList",
+        "size",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "comps",
+        "damageMultipliers",
+        "useHitPoints"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/thingClass",
+          "value": "Building"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/category",
+          "value": "Building"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/statBases/MaxHitPoints",
+          "value": "300"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/statBases/Beauty",
+          "value": "-3"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/statBases/WorkToBuild",
+          "value": "320"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/statBases/Flammability",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/costStuffCount",
+          "value": "5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/stuffCategories/li[1]",
+          "value": "Metallic"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/stuffCategories/li[2]",
+          "value": "Woody"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/stuffCategories/li[3]",
+          "value": "Stony"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/building/ai_chillDestination",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/building/isInert",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/building/isFence",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/building/isPlaceOverableWall",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/building/blueprintGraphicData/texPath",
+          "value": "Things/Building/Linked/Barricade_Blueprint_Atlas"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/building/paintable",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/fillPercent",
+          "value": "0.55"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/passability",
+          "value": "PassThroughOnly"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/pathCost",
+          "value": "42"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Barricade']/pathCostIgnoreRepeat",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "cover",
+      "id": "ThingDef_Wall",
+      "def_name": "Wall",
+      "parent_name": "BuildingBase",
+      "name_attribute": "Wall",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Structure.xml",
+        "xpath": "/Defs/ThingDef[defName='Wall']",
+        "sha256": "5e4f3958b557e14513eb1dc06fc58bb14aabf10148b96b3d69db5aa9d9d3d523"
+      },
+      "selected_paths": [
+        "thingClass",
+        "category",
+        "statBases",
+        "costList",
+        "costStuffCount",
+        "stuffCategories",
+        "size",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "building",
+        "comps",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "pathCostIgnoreRepeat",
+        "damageMultipliers",
+        "useHitPoints"
+      ],
+      "absent_paths": [
+        "costList",
+        "size",
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "hasInteractionCell",
+        "interactionCellOffset",
+        "pathCost",
+        "pathCostIgnoreRepeat",
+        "useHitPoints"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/thingClass",
+          "value": "Building"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/category",
+          "value": "Building"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/statBases/MaxHitPoints",
+          "value": "300"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/statBases/WorkToBuild",
+          "value": "135"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/statBases/Flammability",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/statBases/MeditationFocusStrength",
+          "value": "0.22"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/costStuffCount",
+          "value": "5"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/stuffCategories/li[1]",
+          "value": "Metallic"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/stuffCategories/li[2]",
+          "value": "Woody"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/stuffCategories/li[3]",
+          "value": "Stony"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/paintable",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/isInert",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/isWall",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/isPlaceOverableWall",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/ai_chillDestination",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/supportsWallAttachments",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/isStuffableAirtight",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/blueprintGraphicData/texPath",
+          "value": "Things/Building/Linked/Wall_Blueprint_Atlas"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/relatedBuildCommands/li[1]",
+          "value": "Door"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/relatedBuildCommands/li[2]",
+          "value": "Autodoor"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/relatedBuildCommands/li[3]",
+          "value": "OrnateDoor"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/relatedBuildCommands/li[4]",
+          "value": "SecurityDoor"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/relatedBuildCommands/li[5]",
+          "value": "VacBarrier"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/relatedBuildCommands/li[6]",
+          "value": "Cooler"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/relatedBuildCommands/li[7]",
+          "value": "Vent"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/comps/li/statDef",
+          "value": "MeditationFocusStrength"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/comps/li/focusTypes/li",
+          "value": "Minimal"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/fillPercent",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/passability",
+          "value": "Impassable"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/damageMultipliers/li[1]/damageDef",
+          "value": "Bomb"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/damageMultipliers/li[1]/multiplier",
+          "value": "2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/damageMultipliers/li[2]/damageDef",
+          "value": "Thump"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/damageMultipliers/li[2]/multiplier",
+          "value": "2"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/relatedBuildCommands/li[4]",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Anomaly"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/building/relatedBuildCommands/li[5]",
+          "attributes": {
+            "MayRequire": "Ludeon.RimWorld.Odyssey"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Wall']/comps/li",
+          "attributes": {
+            "Class": "CompProperties_MeditationFocus"
+          }
+        }
+      ]
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_PlantBaseNonEdible",
+      "def_name": "PlantBaseNonEdible",
+      "parent_name": "",
+      "name_attribute": "PlantBaseNonEdible",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      },
+      "selected_paths": [
+        "category",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "statBases/MaxHitPoints",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "statBases/MaxHitPoints",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']/category",
+          "value": "Plant"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_PlantBase",
+      "def_name": "PlantBase",
+      "parent_name": "PlantBaseNonEdible",
+      "name_attribute": "PlantBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='PlantBase']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      },
+      "selected_paths": [
+        "category",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "statBases/MaxHitPoints",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "category",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "statBases/MaxHitPoints",
+        "damageMultipliers"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_TreeBase",
+      "def_name": "TreeBase",
+      "parent_name": "PlantBase",
+      "name_attribute": "TreeBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='TreeBase']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      },
+      "selected_paths": [
+        "category",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "statBases/MaxHitPoints",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "category",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/fillPercent",
+          "value": "0.25"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/passability",
+          "value": "PassThroughOnly"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/pathCost",
+          "value": "42"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/statBases/MaxHitPoints",
+          "value": "200"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_DeciduousTreeBase",
+      "def_name": "DeciduousTreeBase",
+      "parent_name": "TreeBase",
+      "name_attribute": "DeciduousTreeBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='DeciduousTreeBase']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      },
+      "selected_paths": [
+        "category",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "statBases/MaxHitPoints",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "category",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "statBases/MaxHitPoints",
+        "damageMultipliers"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_Plant_TreeOak",
+      "def_name": "Plant_TreeOak",
+      "parent_name": "DeciduousTreeBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_Temperate.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_TreeOak']",
+        "sha256": "648f1b176bf950762413c631e2e800580ddd270b752a1ed9e73ae9ff99653665"
+      },
+      "selected_paths": [
+        "category",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "statBases/MaxHitPoints",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "category",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "statBases/MaxHitPoints",
+        "damageMultipliers"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_Plant_TreePoplar",
+      "def_name": "Plant_TreePoplar",
+      "parent_name": "DeciduousTreeBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_Temperate.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_TreePoplar']",
+        "sha256": "648f1b176bf950762413c631e2e800580ddd270b752a1ed9e73ae9ff99653665"
+      },
+      "selected_paths": [
+        "category",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "statBases/MaxHitPoints",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "category",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "statBases/MaxHitPoints",
+        "damageMultipliers"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_Plant_TreePine",
+      "def_name": "Plant_TreePine",
+      "parent_name": "TreeBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_Temperate.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_TreePine']",
+        "sha256": "648f1b176bf950762413c631e2e800580ddd270b752a1ed9e73ae9ff99653665"
+      },
+      "selected_paths": [
+        "category",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "statBases/MaxHitPoints",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "category",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "statBases/MaxHitPoints",
+        "damageMultipliers"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_Plant_SaguaroCactus",
+      "def_name": "Plant_SaguaroCactus",
+      "parent_name": "TreeBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_Arid.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_SaguaroCactus']",
+        "sha256": "dd0c9c0a714eefc3204f51c50bde513181be3b246b382cec09b9acdab2ed7ea7"
+      },
+      "selected_paths": [
+        "category",
+        "fillPercent",
+        "passability",
+        "pathCost",
+        "statBases/MaxHitPoints",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "category",
+        "passability",
+        "pathCost",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_SaguaroCactus']/fillPercent",
+          "value": "0.35"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Plant_SaguaroCactus']/statBases/MaxHitPoints",
+          "value": "130"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "weather",
+      "id": "WeatherDef_Clear",
+      "def_name": "Clear",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/WeatherDefs/Weathers.xml",
+        "xpath": "/Defs/WeatherDef[defName='Clear']",
+        "sha256": "066d81870ad4a4450dbd35b34cf6bcaaddcbb791eecd419264d512695826d80b"
+      },
+      "selected_paths": [
+        "accuracyMultiplier"
+      ],
+      "absent_paths": [
+        "accuracyMultiplier"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "weather",
+      "id": "WeatherDef_Fog",
+      "def_name": "Fog",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/WeatherDefs/Weathers.xml",
+        "xpath": "/Defs/WeatherDef[defName='Fog']",
+        "sha256": "066d81870ad4a4450dbd35b34cf6bcaaddcbb791eecd419264d512695826d80b"
+      },
+      "selected_paths": [
+        "accuracyMultiplier"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/WeatherDef[defName='Fog']/accuracyMultiplier",
+          "value": "0.5"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "weather",
+      "id": "WeatherDef_Rain",
+      "def_name": "Rain",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/WeatherDefs/Weathers.xml",
+        "xpath": "/Defs/WeatherDef[defName='Rain']",
+        "sha256": "066d81870ad4a4450dbd35b34cf6bcaaddcbb791eecd419264d512695826d80b"
+      },
+      "selected_paths": [
+        "accuracyMultiplier"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/WeatherDef[defName='Rain']/accuracyMultiplier",
+          "value": "0.8"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "weather",
+      "id": "WeatherDef_DryThunderstorm",
+      "def_name": "DryThunderstorm",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/WeatherDefs/Weathers.xml",
+        "xpath": "/Defs/WeatherDef[defName='DryThunderstorm']",
+        "sha256": "066d81870ad4a4450dbd35b34cf6bcaaddcbb791eecd419264d512695826d80b"
+      },
+      "selected_paths": [
+        "accuracyMultiplier"
+      ],
+      "absent_paths": [
+        "accuracyMultiplier"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "weather",
+      "id": "WeatherDef_RainyThunderstorm",
+      "def_name": "RainyThunderstorm",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/WeatherDefs/Weathers.xml",
+        "xpath": "/Defs/WeatherDef[defName='RainyThunderstorm']",
+        "sha256": "066d81870ad4a4450dbd35b34cf6bcaaddcbb791eecd419264d512695826d80b"
+      },
+      "selected_paths": [
+        "accuracyMultiplier"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/WeatherDef[defName='RainyThunderstorm']/accuracyMultiplier",
+          "value": "0.8"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "weather",
+      "id": "WeatherDef_FoggyRain",
+      "def_name": "FoggyRain",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/WeatherDefs/Weathers.xml",
+        "xpath": "/Defs/WeatherDef[defName='FoggyRain']",
+        "sha256": "066d81870ad4a4450dbd35b34cf6bcaaddcbb791eecd419264d512695826d80b"
+      },
+      "selected_paths": [
+        "accuracyMultiplier"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/WeatherDef[defName='FoggyRain']/accuracyMultiplier",
+          "value": "0.5"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "weather",
+      "id": "WeatherDef_SnowHard",
+      "def_name": "SnowHard",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/WeatherDefs/Weathers.xml",
+        "xpath": "/Defs/WeatherDef[defName='SnowHard']",
+        "sha256": "066d81870ad4a4450dbd35b34cf6bcaaddcbb791eecd419264d512695826d80b"
+      },
+      "selected_paths": [
+        "accuracyMultiplier"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/WeatherDef[defName='SnowHard']/accuracyMultiplier",
+          "value": "0.8"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "weather",
+      "id": "WeatherDef_SnowGentle",
+      "def_name": "SnowGentle",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/WeatherDefs/Weathers.xml",
+        "xpath": "/Defs/WeatherDef[defName='SnowGentle']",
+        "sha256": "066d81870ad4a4450dbd35b34cf6bcaaddcbb791eecd419264d512695826d80b"
+      },
+      "selected_paths": [
+        "accuracyMultiplier"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/WeatherDef[defName='SnowGentle']/accuracyMultiplier",
+          "value": "0.8"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "weather",
+      "id": "WeatherDef_Underground",
+      "def_name": "Underground",
+      "parent_name": "",
+      "name_attribute": "Weather_Underground",
+      "source": {
+        "path": "Data/Core/Defs/WeatherDefs/Weathers.xml",
+        "xpath": "/Defs/WeatherDef[defName='Underground']",
+        "sha256": "066d81870ad4a4450dbd35b34cf6bcaaddcbb791eecd419264d512695826d80b"
+      },
+      "selected_paths": [
+        "accuracyMultiplier"
+      ],
+      "absent_paths": [
+        "accuracyMultiplier"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "damage",
+      "id": "DamageDef_Bullet",
+      "def_name": "Bullet",
+      "parent_name": "",
+      "name_attribute": "Bullet",
+      "source": {
+        "path": "Data/Core/Defs/DamageDefs/Damages_RangedWeapon.xml",
+        "xpath": "/Defs/DamageDef[defName='Bullet']",
+        "sha256": "3dda78cc05f5cf03b8edb02eec083c38fcda7d55a0c817ffbbae17df2ad7dc62"
+      },
+      "selected_paths": [
+        "workerClass",
+        "hediff",
+        "hediffSkin",
+        "hediffSolid",
+        "harmAllLayersUntilOutside",
+        "overkillPctToDestroyPart",
+        "isRanged",
+        "armorCategory",
+        "harmsHealth",
+        "externalViolence",
+        "defaultArmorPenetration",
+        "defaultStoppingPower",
+        "buildingDamageFactor",
+        "buildingDamageFactorPassable",
+        "buildingDamageFactorImpassable",
+        "scaleDamageToBuildingsBasedOnFlammability",
+        "plantDamageFactor",
+        "corpseDamageFactor"
+      ],
+      "absent_paths": [
+        "hediffSkin",
+        "hediffSolid",
+        "harmsHealth",
+        "defaultArmorPenetration",
+        "defaultStoppingPower",
+        "buildingDamageFactor",
+        "buildingDamageFactorPassable",
+        "buildingDamageFactorImpassable",
+        "scaleDamageToBuildingsBasedOnFlammability",
+        "plantDamageFactor",
+        "corpseDamageFactor"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/DamageDef[defName='Bullet']/workerClass",
+          "value": "DamageWorker_AddInjury"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Bullet']/hediff",
+          "value": "Gunshot"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Bullet']/harmAllLayersUntilOutside",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Bullet']/overkillPctToDestroyPart",
+          "value": "0~0.7"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Bullet']/isRanged",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Bullet']/armorCategory",
+          "value": "Sharp"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Bullet']/externalViolence",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "damage",
+      "id": "DamageDef_Arrow",
+      "def_name": "Arrow",
+      "parent_name": "",
+      "name_attribute": "Arrow",
+      "source": {
+        "path": "Data/Core/Defs/DamageDefs/Damages_RangedWeapon.xml",
+        "xpath": "/Defs/DamageDef[defName='Arrow']",
+        "sha256": "3dda78cc05f5cf03b8edb02eec083c38fcda7d55a0c817ffbbae17df2ad7dc62"
+      },
+      "selected_paths": [
+        "workerClass",
+        "hediff",
+        "hediffSkin",
+        "hediffSolid",
+        "harmAllLayersUntilOutside",
+        "overkillPctToDestroyPart",
+        "isRanged",
+        "armorCategory",
+        "harmsHealth",
+        "externalViolence",
+        "defaultArmorPenetration",
+        "defaultStoppingPower",
+        "buildingDamageFactor",
+        "buildingDamageFactorPassable",
+        "buildingDamageFactorImpassable",
+        "scaleDamageToBuildingsBasedOnFlammability",
+        "plantDamageFactor",
+        "corpseDamageFactor"
+      ],
+      "absent_paths": [
+        "hediffSkin",
+        "harmsHealth",
+        "defaultArmorPenetration",
+        "defaultStoppingPower",
+        "buildingDamageFactor",
+        "buildingDamageFactorPassable",
+        "buildingDamageFactorImpassable",
+        "scaleDamageToBuildingsBasedOnFlammability",
+        "plantDamageFactor",
+        "corpseDamageFactor"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/DamageDef[defName='Arrow']/workerClass",
+          "value": "DamageWorker_AddInjury"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Arrow']/hediff",
+          "value": "Cut"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Arrow']/hediffSolid",
+          "value": "Crack"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Arrow']/harmAllLayersUntilOutside",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Arrow']/overkillPctToDestroyPart",
+          "value": "0~0.7"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Arrow']/isRanged",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Arrow']/armorCategory",
+          "value": "Sharp"
+        },
+        {
+          "xpath": "/Defs/DamageDef[defName='Arrow']/externalViolence",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stuff",
+      "id": "ThingDef_Steel",
+      "def_name": "Steel",
+      "parent_name": "ResourceBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Stuff.xml",
+        "xpath": "/Defs/ThingDef[defName='Steel']",
+        "sha256": "8cdc15befea94055a946a1131c7724acc0cf999b866a5fad474a0816731c9088"
+      },
+      "selected_paths": [
+        "stuffProps/categories",
+        "stuffProps/statFactors",
+        "stuffProps/statOffsets",
+        "stuffProps/statFactorsQuality",
+        "stuffProps/statOffsetsQuality",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "stuffProps/statOffsets",
+        "stuffProps/statFactorsQuality",
+        "stuffProps/statOffsetsQuality",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Steel']/stuffProps/categories/li",
+          "value": "Metallic"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Steel']/stuffProps/statFactors/MaxHitPoints",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Steel']/stuffProps/statFactors/Beauty",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Steel']/stuffProps/statFactors/Flammability",
+          "value": "0.4"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stuff",
+      "id": "ThingDef_WoodLog",
+      "def_name": "WoodLog",
+      "parent_name": "ResourceVerbBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Stuff.xml",
+        "xpath": "/Defs/ThingDef[defName='WoodLog']",
+        "sha256": "8cdc15befea94055a946a1131c7724acc0cf999b866a5fad474a0816731c9088"
+      },
+      "selected_paths": [
+        "stuffProps/categories",
+        "stuffProps/statFactors",
+        "stuffProps/statOffsets",
+        "stuffProps/statFactorsQuality",
+        "stuffProps/statOffsetsQuality",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "stuffProps/statOffsets",
+        "stuffProps/statFactorsQuality",
+        "stuffProps/statOffsetsQuality",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/stuffProps/categories/li",
+          "value": "Woody"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/stuffProps/statFactors/MaxHitPoints",
+          "value": "0.65"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/stuffProps/statFactors/Beauty",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/stuffProps/statFactors/Flammability",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/stuffProps/statFactors/WorkToMake",
+          "value": "0.7"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/stuffProps/statFactors/WorkToBuild",
+          "value": "0.7"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodLog']/stuffProps/statFactors/DoorOpenSpeed",
+          "value": "1.2"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stuff",
+      "id": "ThingDef_Cloth",
+      "def_name": "Cloth",
+      "parent_name": "ResourceBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Stuff.xml",
+        "xpath": "/Defs/ThingDef[defName='Cloth']",
+        "sha256": "8cdc15befea94055a946a1131c7724acc0cf999b866a5fad474a0816731c9088"
+      },
+      "selected_paths": [
+        "stuffProps/categories",
+        "stuffProps/statFactors",
+        "stuffProps/statOffsets",
+        "stuffProps/statFactorsQuality",
+        "stuffProps/statOffsetsQuality",
+        "damageMultipliers"
+      ],
+      "absent_paths": [
+        "stuffProps/statOffsets",
+        "stuffProps/statFactorsQuality",
+        "stuffProps/statOffsetsQuality",
+        "damageMultipliers"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Cloth']/stuffProps/categories/li",
+          "value": "Fabric"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cloth']/stuffProps/statFactors/Flammability",
+          "value": "1.2"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cloth']/stuffProps/statFactors/Beauty",
+          "value": "1"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "injury",
+      "id": "HediffDef_InjuryBase",
+      "def_name": "InjuryBase",
+      "parent_name": "",
+      "name_attribute": "InjuryBase",
+      "source": {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Injuries.xml",
+        "xpath": "/Defs/HediffDef[@Name='InjuryBase']",
+        "sha256": "643d0632e63678f0181c3894c9aa5aae647dbf1ee0ac29983ce898a88b33d91d"
+      },
+      "selected_paths": [
+        "hediffClass",
+        "injuryProps",
+        "comps",
+        "tendable"
+      ],
+      "absent_paths": [
+        "injuryProps",
+        "comps"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/HediffDef[@Name='InjuryBase']/hediffClass",
+          "value": "Hediff_Injury"
+        },
+        {
+          "xpath": "/Defs/HediffDef[@Name='InjuryBase']/tendable",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "injury",
+      "id": "HediffDef_Crack",
+      "def_name": "Crack",
+      "parent_name": "InjuryBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Injuries.xml",
+        "xpath": "/Defs/HediffDef[defName='Crack']",
+        "sha256": "643d0632e63678f0181c3894c9aa5aae647dbf1ee0ac29983ce898a88b33d91d"
+      },
+      "selected_paths": [
+        "hediffClass",
+        "injuryProps",
+        "comps",
+        "tendable"
+      ],
+      "absent_paths": [
+        "hediffClass",
+        "tendable"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Crack']/injuryProps/painPerSeverity",
+          "value": "0.01"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Crack']/injuryProps/averagePainPerSeverityPermanent",
+          "value": "0.00625"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Crack']/injuryProps/destroyedLabel",
+          "value": "Shattered"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Crack']/comps/li[1]/labelTendedWell",
+          "value": "set"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Crack']/comps/li[1]/labelTendedWellInner",
+          "value": "set"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Crack']/comps/li[1]/labelSolidTendedWell",
+          "value": "set"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Crack']/comps/li[2]/permanentLabel",
+          "value": "permanent crack"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Crack']/comps/li[1]",
+          "attributes": {
+            "Class": "HediffCompProperties_TendDuration"
+          }
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Crack']/comps/li[2]",
+          "attributes": {
+            "Class": "HediffCompProperties_GetsPermanent"
+          }
+        }
+      ]
+    },
+    {
+      "group": "injury",
+      "id": "HediffDef_Cut",
+      "def_name": "Cut",
+      "parent_name": "InjuryBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Injuries.xml",
+        "xpath": "/Defs/HediffDef[defName='Cut']",
+        "sha256": "643d0632e63678f0181c3894c9aa5aae647dbf1ee0ac29983ce898a88b33d91d"
+      },
+      "selected_paths": [
+        "hediffClass",
+        "injuryProps",
+        "comps",
+        "tendable"
+      ],
+      "absent_paths": [
+        "hediffClass",
+        "tendable"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/injuryProps/painPerSeverity",
+          "value": "0.0125"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/injuryProps/averagePainPerSeverityPermanent",
+          "value": "0.00625"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/injuryProps/bleedRate",
+          "value": "0.06"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/injuryProps/canMerge",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/injuryProps/destroyedLabel",
+          "value": "Cut off"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/injuryProps/destroyedOutLabel",
+          "value": "Cut out"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/comps/li[1]/labelTendedWell",
+          "value": "bandaged"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/comps/li[1]/labelTendedWellInner",
+          "value": "sutured"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/comps/li[1]/labelSolidTendedWell",
+          "value": "set"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/comps/li[2]/infectionChance",
+          "value": "0.15"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/comps/li[3]/permanentLabel",
+          "value": "cut scar"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/comps/li[1]",
+          "attributes": {
+            "Class": "HediffCompProperties_TendDuration"
+          }
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/comps/li[2]",
+          "attributes": {
+            "Class": "HediffCompProperties_Infecter"
+          }
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Cut']/comps/li[3]",
+          "attributes": {
+            "Class": "HediffCompProperties_GetsPermanent"
+          }
+        }
+      ]
+    },
+    {
+      "group": "injury",
+      "id": "HediffDef_Gunshot",
+      "def_name": "Gunshot",
+      "parent_name": "InjuryBase",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/HediffDefs/Hediffs_Local_Injuries.xml",
+        "xpath": "/Defs/HediffDef[defName='Gunshot']",
+        "sha256": "643d0632e63678f0181c3894c9aa5aae647dbf1ee0ac29983ce898a88b33d91d"
+      },
+      "selected_paths": [
+        "hediffClass",
+        "injuryProps",
+        "comps",
+        "tendable"
+      ],
+      "absent_paths": [
+        "hediffClass",
+        "tendable"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Gunshot']/injuryProps/painPerSeverity",
+          "value": "0.0125"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Gunshot']/injuryProps/averagePainPerSeverityPermanent",
+          "value": "0.00625"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Gunshot']/injuryProps/bleedRate",
+          "value": "0.06"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Gunshot']/injuryProps/canMerge",
+          "value": "false"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Gunshot']/injuryProps/destroyedLabel",
+          "value": "Shot off"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Gunshot']/injuryProps/destroyedOutLabel",
+          "value": "Shot out"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Gunshot']/comps/li[1]/labelTendedWell",
+          "value": "bandaged"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Gunshot']/comps/li[1]/labelTendedWellInner",
+          "value": "sutured"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Gunshot']/comps/li[1]/labelSolidTendedWell",
+          "value": "set"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Gunshot']/comps/li[2]/infectionChance",
+          "value": "0.15"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Gunshot']/comps/li[3]/permanentLabel",
+          "value": "old gunshot"
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Gunshot']/comps/li[3]/instantlyPermanentLabel",
+          "value": "permanent gunshot injury"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/HediffDef[defName='Gunshot']/comps/li[1]",
+          "attributes": {
+            "Class": "HediffCompProperties_TendDuration"
+          }
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Gunshot']/comps/li[2]",
+          "attributes": {
+            "Class": "HediffCompProperties_Infecter"
+          }
+        },
+        {
+          "xpath": "/Defs/HediffDef[defName='Gunshot']/comps/li[3]",
+          "attributes": {
+            "Class": "HediffCompProperties_GetsPermanent"
+          }
+        }
+      ]
+    },
+    {
+      "group": "maneuver",
+      "id": "ManeuverDef_Smash",
+      "def_name": "Smash",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Maneuvers/Maneuvers.xml",
+        "xpath": "/Defs/ManeuverDef[defName='Smash']",
+        "sha256": "67a8e1b73c3b22e063f515fff2e7c4249e1bfafde448631db22c603e6b7590d7"
+      },
+      "selected_paths": [
+        "requiredCapacity",
+        "verb"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ManeuverDef[defName='Smash']/requiredCapacity",
+          "value": "Blunt"
+        },
+        {
+          "xpath": "/Defs/ManeuverDef[defName='Smash']/verb/verbClass",
+          "value": "Verb_MeleeAttackDamage"
+        },
+        {
+          "xpath": "/Defs/ManeuverDef[defName='Smash']/verb/meleeDamageDef",
+          "value": "Blunt"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "maneuver",
+      "id": "ManeuverDef_Poke",
+      "def_name": "Poke",
+      "parent_name": "",
+      "name_attribute": "",
+      "source": {
+        "path": "Data/Core/Defs/Maneuvers/Maneuvers.xml",
+        "xpath": "/Defs/ManeuverDef[defName='Poke']",
+        "sha256": "67a8e1b73c3b22e063f515fff2e7c4249e1bfafde448631db22c603e6b7590d7"
+      },
+      "selected_paths": [
+        "requiredCapacity",
+        "verb"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ManeuverDef[defName='Poke']/requiredCapacity",
+          "value": "Poke"
+        },
+        {
+          "xpath": "/Defs/ManeuverDef[defName='Poke']/verb/verbClass",
+          "value": "Verb_MeleeAttackDamage"
+        },
+        {
+          "xpath": "/Defs/ManeuverDef[defName='Poke']/verb/meleeDamageDef",
+          "value": "Poke"
+        }
+      ],
+      "node_attributes": []
+    }
+  ]
+}

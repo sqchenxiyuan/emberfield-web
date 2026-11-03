@@ -1,0 +1,1608 @@
+[
+  {
+    "id": "RV01",
+    "model": "equipment",
+    "claims": [
+      "RG02"
+    ],
+    "inputs": {
+      "ids": [
+        "Bow_Short",
+        "Gun_Revolver",
+        "Gun_Autopistol",
+        "Gun_MachinePistol"
+      ]
+    },
+    "expected": [
+      {
+        "cost": {
+          "WoodLog": 30
+        },
+        "work": 2400,
+        "hp": 100,
+        "research": null,
+        "crafting": 2,
+        "benches": [
+          "ElectricSmithy",
+          "FueledSmithy",
+          "CraftingSpot"
+        ],
+        "stuff": null
+      },
+      {
+        "cost": {
+          "Steel": 30,
+          "ComponentIndustrial": 2
+        },
+        "work": 4000,
+        "hp": 100,
+        "research": "Gunsmithing",
+        "crafting": 3,
+        "benches": [
+          "TableMachining"
+        ],
+        "stuff": null
+      },
+      {
+        "cost": {
+          "Steel": 30,
+          "ComponentIndustrial": 2
+        },
+        "work": 5000,
+        "hp": 100,
+        "research": "BlowbackOperation",
+        "crafting": 4,
+        "benches": [
+          "TableMachining"
+        ],
+        "stuff": null
+      },
+      {
+        "cost": {
+          "Steel": 45,
+          "ComponentIndustrial": 3
+        },
+        "work": 11000,
+        "hp": 100,
+        "research": "BlowbackOperation",
+        "crafting": 4,
+        "benches": [
+          "TableMachining"
+        ],
+        "stuff": null
+      }
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV02",
+    "model": "stats",
+    "claims": [
+      "RG02",
+      "RG04"
+    ],
+    "inputs": {
+      "id": "Bow_Short",
+      "qualities": [
+        0,
+        2,
+        5,
+        6
+      ]
+    },
+    "expected": [
+      {
+        "damage": 10,
+        "penetration": 0.1485,
+        "accuracy": [
+          0.6,
+          0.52,
+          0.36,
+          0.2
+        ],
+        "hp": 100,
+        "range": 22.9
+      },
+      {
+        "damage": 11,
+        "penetration": 0.165,
+        "accuracy": [
+          0.75,
+          0.65,
+          0.45,
+          0.25
+        ],
+        "hp": 100,
+        "range": 22.9
+      },
+      {
+        "damage": 14,
+        "penetration": 0.20625,
+        "accuracy": [
+          1,
+          0.8775,
+          0.6075,
+          0.3375
+        ],
+        "hp": 100,
+        "range": 22.9
+      },
+      {
+        "damage": 16,
+        "penetration": 0.2475,
+        "accuracy": [
+          1,
+          0.975,
+          0.675,
+          0.375
+        ],
+        "hp": 100,
+        "range": 22.9
+      }
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV03",
+    "model": "stats",
+    "claims": [
+      "RG04"
+    ],
+    "inputs": {
+      "id": "Gun_MachinePistol",
+      "qualities": [
+        2,
+        5,
+        6
+      ]
+    },
+    "expected": [
+      {
+        "damage": 6,
+        "penetration": 0.09,
+        "accuracy": [
+          0.9,
+          0.65,
+          0.35,
+          0.15
+        ],
+        "hp": 100,
+        "range": 19.9
+      },
+      {
+        "damage": 8,
+        "penetration": 0.1125,
+        "accuracy": [
+          1,
+          0.8775,
+          0.4725,
+          0.2025
+        ],
+        "hp": 100,
+        "range": 19.9
+      },
+      {
+        "damage": 9,
+        "penetration": 0.135,
+        "accuracy": [
+          1,
+          0.975,
+          0.525,
+          0.225
+        ],
+        "hp": 100,
+        "range": 19.9
+      }
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV04",
+    "model": "accuracy",
+    "claims": [
+      "RG05"
+    ],
+    "inputs": {
+      "id": "Bow_Short",
+      "distances": [
+        0,
+        3,
+        7.5,
+        12,
+        18.5,
+        25,
+        32.5,
+        40,
+        50
+      ]
+    },
+    "expected": [
+      0.75,
+      0.75,
+      0.7,
+      0.65,
+      0.55,
+      0.45,
+      0.35,
+      0.25,
+      0.25
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV05",
+    "model": "accuracy",
+    "claims": [
+      "RG04",
+      "RG05"
+    ],
+    "inputs": {
+      "id": "Gun_MachinePistol",
+      "quality": 6,
+      "distances": [
+        3,
+        7.5,
+        12,
+        18.5,
+        25,
+        40
+      ]
+    },
+    "expected": [
+      1,
+      0.9875,
+      0.975,
+      0.75,
+      0.525,
+      0.225
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV06",
+    "model": "pawnAccuracy",
+    "claims": [
+      "RG05"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "skill": 0
+        },
+        {
+          "skill": 6
+        },
+        {
+          "skill": 20
+        },
+        {
+          "skill": 6,
+          "sight": 0.5,
+          "manipulation": 0.5
+        },
+        {
+          "skill": 20,
+          "sight": 2.5,
+          "manipulation": 1.5
+        },
+        {
+          "skill": 0,
+          "hasSkills": false
+        }
+      ]
+    },
+    "expected": [
+      {
+        "raw": 0,
+        "perCell": 0.89
+      },
+      {
+        "raw": 6,
+        "perCell": 0.95
+      },
+      {
+        "raw": 20,
+        "perCell": 0.99
+      },
+      {
+        "raw": -4,
+        "perCell": 0.85
+      },
+      {
+        "raw": 32,
+        "perCell": 0.9968
+      },
+      {
+        "raw": 8,
+        "perCell": 0.96
+      }
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV07",
+    "model": "report",
+    "claims": [
+      "RG06"
+    ],
+    "inputs": {
+      "distance": 2,
+      "perCell": 0.9,
+      "weaponFactor": 0.8,
+      "weather": 0.5,
+      "size": 2,
+      "cover": 0.55
+    },
+    "expected": {
+      "shooter": 0.81,
+      "weatherFactor": 0.5,
+      "posture": 1,
+      "execution": 1,
+      "standard": 0.324,
+      "ignoringPosture": 0.648,
+      "aim": 0.648,
+      "passCover": 0.45,
+      "total": 0.2916
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV08",
+    "model": "report",
+    "claims": [
+      "RG07"
+    ],
+    "inputs": {
+      "distance": 10,
+      "weaponFactor": 0.8,
+      "weather": 0.5,
+      "shooterRoof": true,
+      "targetRoof": true,
+      "smoke": true
+    },
+    "expected": {
+      "shooter": 1,
+      "weatherFactor": 1,
+      "posture": 1,
+      "execution": 1,
+      "standard": 0.56,
+      "ignoringPosture": 0.56,
+      "aim": 0.56,
+      "passCover": 1,
+      "total": 0.56
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV09",
+    "model": "report",
+    "claims": [
+      "RG07"
+    ],
+    "inputs": {
+      "distance": 10,
+      "weaponFactor": 0.8,
+      "weather": 0.5,
+      "shooterRoof": true,
+      "targetRoof": false,
+      "smoke": true
+    },
+    "expected": {
+      "shooter": 1,
+      "weatherFactor": 0.5,
+      "posture": 1,
+      "execution": 1,
+      "standard": 0.28,
+      "ignoringPosture": 0.28,
+      "aim": 0.28,
+      "passCover": 1,
+      "total": 0.28
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV10",
+    "model": "report",
+    "claims": [
+      "RG06"
+    ],
+    "inputs": {
+      "distance": 3.9,
+      "weaponFactor": 0.2,
+      "prone": true
+    },
+    "expected": {
+      "shooter": 1,
+      "weatherFactor": 1,
+      "posture": 1,
+      "execution": 7.5,
+      "standard": 1.5,
+      "ignoringPosture": 1.5,
+      "aim": 1.5,
+      "passCover": 1,
+      "total": 1
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV11",
+    "model": "report",
+    "claims": [
+      "RG06"
+    ],
+    "inputs": {
+      "distance": 4,
+      "weaponFactor": 0.2,
+      "prone": true
+    },
+    "expected": {
+      "shooter": 1,
+      "weatherFactor": 1,
+      "posture": 1,
+      "execution": 1,
+      "standard": 0.2,
+      "ignoringPosture": 0.2,
+      "aim": 0.2,
+      "passCover": 1,
+      "total": 0.2
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV12",
+    "model": "report",
+    "claims": [
+      "RG06"
+    ],
+    "inputs": {
+      "distance": 4.5,
+      "weaponFactor": 0.2,
+      "prone": true
+    },
+    "expected": {
+      "shooter": 1,
+      "weatherFactor": 1,
+      "posture": 0.5,
+      "execution": 1,
+      "standard": 0.2,
+      "ignoringPosture": 0.2,
+      "aim": 0.1,
+      "passCover": 1,
+      "total": 0.1
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV13",
+    "model": "report",
+    "claims": [
+      "RG05",
+      "RG06"
+    ],
+    "inputs": {
+      "distance": 40,
+      "perCell": 0.1,
+      "weaponFactor": 0.01,
+      "weather": 0.5,
+      "size": 0.1
+    },
+    "expected": {
+      "shooter": 0.0201,
+      "weatherFactor": 0.5,
+      "posture": 1,
+      "execution": 1,
+      "standard": 0.0201,
+      "ignoringPosture": 0.01005,
+      "aim": 0.01005,
+      "passCover": 1,
+      "total": 0.01005
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV14",
+    "model": "cover",
+    "claims": [
+      "RG08"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "fill": 0.55,
+          "angle": 14.999
+        },
+        {
+          "fill": 0.55,
+          "angle": 15
+        },
+        {
+          "fill": 0.55,
+          "angle": 27
+        },
+        {
+          "fill": 0.55,
+          "angle": 40
+        },
+        {
+          "fill": 0.55,
+          "angle": 52
+        },
+        {
+          "fill": 0.55,
+          "angle": 65
+        },
+        {
+          "fill": 1
+        },
+        {
+          "fill": 1,
+          "openDoor": true
+        }
+      ]
+    },
+    "expected": [
+      0.55,
+      0.44,
+      0.33,
+      0.22,
+      0.11,
+      0,
+      0.75,
+      0
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV15",
+    "model": "cover",
+    "claims": [
+      "RG08"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "fill": 0.55,
+          "angle": 20,
+          "diagonal": true
+        },
+        {
+          "fill": 0.55,
+          "distance": 1.899
+        },
+        {
+          "fill": 0.55,
+          "distance": 1.9
+        },
+        {
+          "fill": 0.55,
+          "distance": 2.899
+        },
+        {
+          "fill": 0.55,
+          "distance": 2.9
+        }
+      ]
+    },
+    "expected": [
+      0.33,
+      0.183315,
+      0.366663,
+      0.366663,
+      0.55
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV16",
+    "model": "combineCover",
+    "claims": [
+      "RG08"
+    ],
+    "inputs": {
+      "blocks": [
+        0.55,
+        0.55
+      ]
+    },
+    "expected": 0.7975,
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV17",
+    "model": "combineCover",
+    "claims": [
+      "RG08"
+    ],
+    "inputs": {
+      "blocks": [
+        0.75,
+        0.25,
+        0.35
+      ]
+    },
+    "expected": 0.878125,
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV18",
+    "model": "launch",
+    "claims": [
+      "RG10"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "aim": 0.8,
+          "aimRoll": 0.7,
+          "prone": true
+        },
+        {
+          "aim": 0.8,
+          "aimRoll": 0.8,
+          "wildPawnRoll": 0.49
+        },
+        {
+          "aim": 0.8,
+          "aimRoll": 0.9,
+          "wildPawnRoll": 0.5
+        },
+        {
+          "aim": 1,
+          "aimRoll": 1,
+          "cover": 0.55,
+          "coverRoll": 0.45
+        },
+        {
+          "aim": 1,
+          "aimRoll": 0.99,
+          "cover": 0.55,
+          "coverRoll": 0.449
+        },
+        {
+          "aim": 1,
+          "aimRoll": 0.9,
+          "cover": 1,
+          "canBenefit": false,
+          "nonTargetPawns": false
+        },
+        {
+          "aim": 1,
+          "aimRoll": 1,
+          "fullTarget": true
+        }
+      ]
+    },
+    "expected": [
+      {
+        "destination": "target",
+        "flags": 3
+      },
+      {
+        "destination": "wild",
+        "flags": 6
+      },
+      {
+        "destination": "wild",
+        "flags": 4
+      },
+      {
+        "destination": "cover",
+        "flags": 6
+      },
+      {
+        "destination": "target",
+        "flags": 3
+      },
+      {
+        "destination": "target",
+        "flags": 1
+      },
+      {
+        "destination": "target",
+        "flags": 7
+      }
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV19",
+    "model": "missRadius",
+    "claims": [
+      "RG11"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "aim": 0.02,
+          "roll": 0
+        },
+        {
+          "aim": 0.02,
+          "roll": 1
+        },
+        {
+          "aim": 0.03,
+          "roll": 1
+        },
+        {
+          "aim": 0.055,
+          "roll": 0.5
+        },
+        {
+          "aim": 0.11,
+          "roll": 1
+        },
+        {
+          "aim": 0.22,
+          "roll": 1
+        },
+        {
+          "aim": 1,
+          "roll": 1
+        }
+      ]
+    },
+    "expected": [
+      1,
+      10,
+      9,
+      4,
+      4,
+      2,
+      1
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV20",
+    "model": "flight",
+    "claims": [
+      "RG12"
+    ],
+    "inputs": {
+      "id": "Bow_Short",
+      "distances": [
+        0,
+        1,
+        11,
+        22
+      ]
+    },
+    "expected": [
+      1,
+      3,
+      25,
+      50
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV21",
+    "model": "flight",
+    "claims": [
+      "RG12"
+    ],
+    "inputs": {
+      "id": "Gun_Revolver",
+      "distances": [
+        0,
+        1,
+        11,
+        22
+      ]
+    },
+    "expected": [
+      1,
+      2,
+      20,
+      40
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV22",
+    "model": "timing",
+    "claims": [
+      "RG03",
+      "RG19"
+    ],
+    "inputs": {
+      "id": "Bow_Short"
+    },
+    "expected": {
+      "warmup": 81,
+      "shots": [
+        81
+      ],
+      "cooldown": 99,
+      "end": 180,
+      "rawXP": 510
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV23",
+    "model": "timing",
+    "claims": [
+      "RG03",
+      "RG19"
+    ],
+    "inputs": {
+      "id": "Gun_Revolver"
+    },
+    "expected": {
+      "warmup": 18,
+      "shots": [
+        18
+      ],
+      "cooldown": 96,
+      "end": 114,
+      "rawXP": 323
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV24",
+    "model": "timing",
+    "claims": [
+      "RG03",
+      "RG19"
+    ],
+    "inputs": {
+      "id": "Gun_Autopistol"
+    },
+    "expected": {
+      "warmup": 18,
+      "shots": [
+        18
+      ],
+      "cooldown": 60,
+      "end": 78,
+      "rawXP": 221
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV25",
+    "model": "timing",
+    "claims": [
+      "RG03",
+      "RG19"
+    ],
+    "inputs": {
+      "id": "Gun_MachinePistol"
+    },
+    "expected": {
+      "warmup": 30,
+      "shots": [
+        30,
+        36,
+        43
+      ],
+      "cooldown": 54,
+      "end": 97,
+      "rawXP": 277.6666666666667
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV26",
+    "model": "timing",
+    "claims": [
+      "RG03",
+      "RG19"
+    ],
+    "inputs": {
+      "id": "Gun_MachinePistol",
+      "aimingFactor": 2
+    },
+    "expected": {
+      "warmup": 60,
+      "shots": [
+        60,
+        66,
+        73
+      ],
+      "cooldown": 54,
+      "end": 127,
+      "rawXP": 277.6666666666667
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV27",
+    "model": "timing",
+    "claims": [
+      "RG19"
+    ],
+    "inputs": {
+      "id": "Bow_Short",
+      "hostile": false
+    },
+    "expected": {
+      "warmup": 81,
+      "shots": [
+        81
+      ],
+      "cooldown": 99,
+      "end": 180,
+      "rawXP": 60
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV28",
+    "model": "timing",
+    "claims": [
+      "RG03",
+      "RG19"
+    ],
+    "inputs": {
+      "id": "Gun_MachinePistol",
+      "eligible": false
+    },
+    "expected": {
+      "warmup": 30,
+      "shots": [
+        30,
+        36,
+        43
+      ],
+      "cooldown": 54,
+      "end": 97,
+      "rawXP": 0
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV29",
+    "model": "interceptFactor",
+    "claims": [
+      "RG13"
+    ],
+    "inputs": {
+      "distances": [
+        0,
+        5,
+        6,
+        12,
+        20
+      ]
+    },
+    "expected": [
+      0,
+      0,
+      0.09243697478991597,
+      1,
+      1
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV30",
+    "model": "intercept",
+    "claims": [
+      "RG13"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "distance": 12,
+          "kind": "pawn"
+        },
+        {
+          "distance": 12,
+          "kind": "pawn",
+          "prone": true
+        },
+        {
+          "distance": 12,
+          "kind": "pawn",
+          "bodySize": 4
+        },
+        {
+          "distance": 12,
+          "kind": "pawn",
+          "friendly": true,
+          "preventFriendlyFire": true
+        },
+        {
+          "distance": 12,
+          "kind": "pawn",
+          "friendly": true,
+          "friendlyFactor": 0.4
+        },
+        {
+          "distance": 12,
+          "kind": "partial"
+        },
+        {
+          "distance": 12,
+          "kind": "partial",
+          "adjacentTarget": true
+        },
+        {
+          "distance": 12,
+          "kind": "open-door"
+        },
+        {
+          "distance": 12,
+          "kind": "partial",
+          "fill": 0.2
+        },
+        {
+          "distance": 12,
+          "kind": "wall"
+        },
+        {
+          "distance": 5,
+          "kind": "wall"
+        },
+        {
+          "distance": 12,
+          "kind": "wall",
+          "destinationCell": true
+        }
+      ]
+    },
+    "expected": [
+      0.4,
+      0.04,
+      0.8,
+      0,
+      0.16,
+      0.0825,
+      0.55,
+      0.05,
+      0,
+      1,
+      0,
+      0
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV31",
+    "model": "endpoint",
+    "claims": [
+      "RG14"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "kind": "intended"
+        },
+        {
+          "kind": "intended",
+          "prone": true
+        },
+        {
+          "kind": "intended",
+          "prone": true,
+          "distance": 4
+        },
+        {
+          "kind": "pawn"
+        },
+        {
+          "kind": "pawn",
+          "prone": true
+        },
+        {
+          "kind": "pawn",
+          "bodySize": 4
+        },
+        {
+          "kind": "partial",
+          "fill": 0.55
+        }
+      ]
+    },
+    "expected": [
+      1,
+      0.5,
+      1,
+      0.5,
+      0.25,
+      1,
+      0.825
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV32",
+    "model": "endpointTarget",
+    "claims": [
+      "RG14"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "moved": true
+        },
+        {
+          "moved": true,
+          "prone": true,
+          "roll": 0.5
+        },
+        {
+          "moved": true,
+          "prone": true,
+          "roll": 0.499
+        },
+        {
+          "spawned": false
+        },
+        {
+          "sameMap": false
+        },
+        {
+          "covered": true
+        },
+        {
+          "canHitFlags": false
+        }
+      ]
+    },
+    "expected": [
+      "used-target-reference",
+      "ground",
+      "used-target-reference",
+      "cell-fallback",
+      "cell-fallback",
+      "cell-fallback",
+      "cell-fallback"
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV33",
+    "model": "wound",
+    "claims": [
+      "RG15",
+      "RG16"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "damageDef": "Bullet",
+          "severity": 12
+        },
+        {
+          "damageDef": "Bullet",
+          "solid": true,
+          "severity": 12
+        },
+        {
+          "damageDef": "Arrow",
+          "severity": 11
+        },
+        {
+          "damageDef": "Arrow",
+          "solid": true,
+          "severity": 11
+        },
+        {
+          "damageDef": "Arrow",
+          "skin": true,
+          "severity": 11
+        }
+      ]
+    },
+    "expected": [
+      {
+        "injury": "Gunshot",
+        "pain": 0.15,
+        "bleed": 0.72,
+        "worker": "DamageWorker_AddInjury"
+      },
+      {
+        "injury": "Gunshot",
+        "pain": 0.15,
+        "bleed": 0,
+        "worker": "DamageWorker_AddInjury"
+      },
+      {
+        "injury": "Cut",
+        "pain": 0.1375,
+        "bleed": 0.66,
+        "worker": "DamageWorker_AddInjury"
+      },
+      {
+        "injury": "Crack",
+        "pain": 0.11,
+        "bleed": 0,
+        "worker": "DamageWorker_AddInjury"
+      },
+      {
+        "injury": "Cut",
+        "pain": 0.1375,
+        "bleed": 0.66,
+        "worker": "DamageWorker_AddInjury"
+      }
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV34",
+    "model": "buildingDamage",
+    "claims": [
+      "RG17"
+    ],
+    "inputs": {
+      "id": "Gun_Revolver",
+      "hp": 300
+    },
+    "expected": {
+      "damage": 12,
+      "hp": 288,
+      "penetration": 0.18
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV35",
+    "model": "buildingDamage",
+    "claims": [
+      "RG04",
+      "RG17"
+    ],
+    "inputs": {
+      "id": "Gun_MachinePistol",
+      "quality": 5,
+      "hp": 7
+    },
+    "expected": {
+      "damage": 7,
+      "hp": 0,
+      "penetration": 0.1125
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV36",
+    "model": "structure",
+    "claims": [
+      "RG17"
+    ],
+    "inputs": {
+      "id": "Sandbags",
+      "stuff": "Cloth"
+    },
+    "expected": {
+      "hp": 300,
+      "work": 180,
+      "fill": 0.55
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV37",
+    "model": "structure",
+    "claims": [
+      "RG17"
+    ],
+    "inputs": {
+      "id": "Barricade",
+      "stuff": "WoodLog"
+    },
+    "expected": {
+      "hp": 195,
+      "work": 224,
+      "fill": 0.55
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV38",
+    "model": "structure",
+    "claims": [
+      "RG17"
+    ],
+    "inputs": {
+      "id": "Barricade",
+      "stuff": "Steel"
+    },
+    "expected": {
+      "hp": 300,
+      "work": 320,
+      "fill": 0.55
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV39",
+    "model": "structure",
+    "claims": [
+      "RG17"
+    ],
+    "inputs": {
+      "id": "Plant_TreePoplar"
+    },
+    "expected": {
+      "hp": 200,
+      "work": 0,
+      "fill": 0.25
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV40",
+    "model": "structure",
+    "claims": [
+      "RG17"
+    ],
+    "inputs": {
+      "id": "Plant_SaguaroCactus"
+    },
+    "expected": {
+      "hp": 130,
+      "work": 0,
+      "fill": 0.35
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV41",
+    "model": "melee",
+    "claims": [
+      "RG21"
+    ],
+    "inputs": {
+      "id": "Bow_Short"
+    },
+    "expected": [
+      {
+        "tool": "limb",
+        "damageDef": "Blunt",
+        "damage": 9,
+        "penetration": 0.135,
+        "cooldown": 2
+      },
+      {
+        "tool": "limb",
+        "damageDef": "Poke",
+        "damage": 9,
+        "penetration": 0.135,
+        "cooldown": 2
+      }
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV42",
+    "model": "melee",
+    "claims": [
+      "RG21"
+    ],
+    "inputs": {
+      "id": "Gun_Revolver"
+    },
+    "expected": [
+      {
+        "tool": "grip",
+        "damageDef": "Blunt",
+        "damage": 9,
+        "penetration": 0.135,
+        "cooldown": 2
+      },
+      {
+        "tool": "barrel",
+        "damageDef": "Blunt",
+        "damage": 9,
+        "penetration": 0.135,
+        "cooldown": 2
+      },
+      {
+        "tool": "barrel",
+        "damageDef": "Poke",
+        "damage": 9,
+        "penetration": 0.135,
+        "cooldown": 2
+      }
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV43",
+    "model": "meleeWeights",
+    "claims": [
+      "RG21"
+    ],
+    "inputs": {
+      "weights": [
+        10,
+        10,
+        10,
+        5,
+        5,
+        2
+      ]
+    },
+    "expected": [
+      0.25,
+      0.25,
+      0.25,
+      0.125,
+      0.125,
+      0
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV44",
+    "model": "stagger",
+    "claims": [
+      "RG18"
+    ],
+    "inputs": {
+      "id": "Gun_Revolver",
+      "bodySizes": [
+        0.5,
+        1,
+        1.001,
+        1.01
+      ]
+    },
+    "expected": [
+      {
+        "ticks": 95,
+        "moveFactor": 0.17
+      },
+      {
+        "ticks": 95,
+        "moveFactor": 0.17
+      },
+      {
+        "ticks": 95,
+        "moveFactor": 0.17
+      },
+      {
+        "ticks": 0,
+        "moveFactor": 1
+      }
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV45",
+    "model": "stagger",
+    "claims": [
+      "RG18"
+    ],
+    "inputs": {
+      "id": "Bow_Short",
+      "bodySizes": [
+        0.5,
+        1
+      ]
+    },
+    "expected": [
+      {
+        "ticks": 95,
+        "moveFactor": 0.17
+      },
+      {
+        "ticks": 0,
+        "moveFactor": 1
+      }
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV46",
+    "model": "range",
+    "claims": [
+      "RG09"
+    ],
+    "inputs": {
+      "id": "Gun_Revolver",
+      "distances": [
+        1,
+        1.4142135623730951,
+        1.421,
+        25.9,
+        26
+      ]
+    },
+    "expected": [
+      false,
+      false,
+      true,
+      true,
+      false
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV47",
+    "model": "range",
+    "claims": [
+      "RG09"
+    ],
+    "inputs": {
+      "id": "Bow_Short",
+      "downed": true,
+      "distances": [
+        1,
+        22.9,
+        23
+      ]
+    },
+    "expected": [
+      true,
+      true,
+      false
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV48",
+    "model": "weather",
+    "claims": [
+      "RG07"
+    ],
+    "inputs": {
+      "last": "Clear",
+      "current": "Fog",
+      "t": 0.5
+    },
+    "expected": 0.75,
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV49",
+    "model": "weather",
+    "claims": [
+      "RG07"
+    ],
+    "inputs": {
+      "last": "Clear",
+      "current": "Fog",
+      "t": 0.5,
+      "shooterRoof": true,
+      "targetRoof": true
+    },
+    "expected": 1,
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "RV50",
+    "model": "chance",
+    "claims": [
+      "RG10"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "p": 0,
+          "roll": 0
+        },
+        {
+          "p": 0.5,
+          "roll": 0.5
+        },
+        {
+          "p": 0.5,
+          "roll": 0.499
+        },
+        {
+          "p": 1,
+          "roll": 1
+        },
+        {
+          "p": 2,
+          "roll": 1
+        }
+      ]
+    },
+    "expected": [
+      false,
+      false,
+      true,
+      true,
+      true
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  }
+]

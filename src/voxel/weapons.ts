@@ -2,9 +2,15 @@ import { TPS, type Counts } from './types';
 import { traumaSummary, type Trauma, type InjuryKind } from './injuries';
 import { naturalGroupEfficiency } from './anatomy';
 
-export type WeaponKind = 'woodClub' | 'steelKnife' | 'steelLongsword';
+export type WeaponKind =
+  | 'woodClub'
+  | 'steelKnife'
+  | 'steelLongsword'
+  | 'shortBow'
+  | 'revolver'
+  | 'machinePistol';
 export type WeaponQuality = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-export type WeaponBenchKind = 'craftingSpot' | 'smithy';
+export type WeaponBenchKind = 'craftingSpot' | 'smithy' | 'machining';
 export interface WeaponPiece {
   id: number;
   kind: WeaponKind;
@@ -14,7 +20,7 @@ export interface WeaponPiece {
 }
 export type MeleeDamageDef = 'Blunt' | 'Poke' | 'Cut' | 'Stab' | 'Bite';
 export interface WeaponTool {
-  id: 'handle' | 'head' | 'blade' | 'point' | 'edge';
+  id: 'handle' | 'head' | 'blade' | 'point' | 'edge' | 'limb' | 'grip' | 'barrel';
   label: string;
   damageDef: MeleeDamageDef;
   power: number;
@@ -28,7 +34,7 @@ export interface WeaponDefinition {
   /** Project work ticks at GeneralLaborSpeed=1 and worktable speed=1. */
   work: number;
   benches: readonly WeaponBenchKind[];
-  sourceResearch: 'LongBlades' | null;
+  sourceResearch: 'LongBlades' | 'Gunsmithing' | 'BlowbackOperation' | null;
   sourceCraftingLevel: number;
   material: 'wood' | 'steel';
   maxHitPoints: number;
@@ -40,6 +46,9 @@ export const WEAPON_NAMES: Record<WeaponKind, string> = {
   woodClub: '木棒',
   steelKnife: '钢匕首',
   steelLongsword: '钢长剑',
+  shortBow: '短弓',
+  revolver: '左轮手枪',
+  machinePistol: '冲锋手枪',
 };
 export const WEAPON_KINDS = Object.keys(WEAPON_NAMES) as WeaponKind[];
 export const WEAPON_QUALITY_NAMES = [
@@ -55,6 +64,7 @@ export const WEAPON_DAMAGE_QUALITY = [0.8, 0.9, 1, 1.1, 1.2, 1.45, 1.65] as cons
 export const WEAPON_BENCH_SPEED: Readonly<Record<WeaponBenchKind, number>> = Object.freeze({
   craftingSpot: 0.5,
   smithy: 1,
+  machining: 1,
 });
 /** Native DropEquipment waits 30 ticks; keep its half-second action duration. Equip is instant on arrival. */
 export const WEAPON_DROP_TICKS = TPS / 2;
@@ -68,6 +78,56 @@ export const WEAPON_DROP_TICKS = TPS / 2;
  * and external damage are separate systems; item HP does not scale melee damage.
  */
 export const WEAPON_DEFS: Record<WeaponKind, WeaponDefinition> = {
+  shortBow: {
+    cost: { wood: 30 },
+    sourceWork: 2400,
+    materialWorkFactor: 1,
+    work: 800,
+    benches: ['craftingSpot', 'smithy'],
+    sourceResearch: null,
+    sourceCraftingLevel: 2,
+    material: 'wood',
+    maxHitPoints: 100,
+    hasQuality: true,
+    tools: [
+      { id: 'limb', label: '弓臂敲击', damageDef: 'Blunt', power: 9, cooldownSeconds: 2 },
+      { id: 'limb', label: '弓臂戳击', damageDef: 'Poke', power: 9, cooldownSeconds: 2 },
+    ],
+  },
+  revolver: {
+    cost: { steel: 30, components: 2 },
+    sourceWork: 4000,
+    materialWorkFactor: 1,
+    work: 1334,
+    benches: ['machining'],
+    sourceResearch: 'Gunsmithing',
+    sourceCraftingLevel: 3,
+    material: 'steel',
+    maxHitPoints: 100,
+    hasQuality: true,
+    tools: [
+      { id: 'grip', label: '握柄', damageDef: 'Blunt', power: 9, cooldownSeconds: 2 },
+      { id: 'barrel', label: '枪管', damageDef: 'Blunt', power: 9, cooldownSeconds: 2 },
+      { id: 'barrel', label: '枪管戳击', damageDef: 'Poke', power: 9, cooldownSeconds: 2 },
+    ],
+  },
+  machinePistol: {
+    cost: { steel: 45, components: 3 },
+    sourceWork: 11000,
+    materialWorkFactor: 1,
+    work: 3667,
+    benches: ['machining'],
+    sourceResearch: 'BlowbackOperation',
+    sourceCraftingLevel: 4,
+    material: 'steel',
+    maxHitPoints: 100,
+    hasQuality: true,
+    tools: [
+      { id: 'grip', label: '握柄', damageDef: 'Blunt', power: 9, cooldownSeconds: 2 },
+      { id: 'barrel', label: '枪管', damageDef: 'Blunt', power: 9, cooldownSeconds: 2 },
+      { id: 'barrel', label: '枪管戳击', damageDef: 'Poke', power: 9, cooldownSeconds: 2 },
+    ],
+  },
   woodClub: {
     cost: { wood: 40 },
     sourceWork: 1200,
@@ -271,13 +331,15 @@ export function weaponAttacks(
   if (!state.active || state.damageFactor === 0) return [];
   return def.tools.map((tool) => {
     const materialFactor =
-      def.material === 'wood'
+      piece.kind === 'woodClub'
         ? tool.damageDef === 'Blunt' || tool.damageDef === 'Poke'
           ? 0.9
           : 0.4
         : 1;
     return attack(
-      `${piece.kind}.${tool.id}`,
+      ['woodClub', 'steelKnife', 'steelLongsword'].includes(piece.kind)
+        ? `${piece.kind}.${tool.id}`
+        : `${piece.kind}.${tool.id}.${tool.damageDef}`,
       tool.label,
       'weapon',
       tool.damageDef,

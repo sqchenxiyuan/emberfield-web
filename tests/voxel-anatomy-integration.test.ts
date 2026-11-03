@@ -1,3 +1,4 @@
+import { stripRangedDefaults } from './legacy-ranged-defaults';
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -44,7 +45,7 @@ function lose(s: VoxelSimulation, pawn: number, part: BodyPartId) {
 }
 function oldFixture() {
   const old: any = fixture().save();
-  old.version = 15;
+  stripRangedDefaults(old);  old.version = 15;
   delete old.research.progress.PlateArmor;
   for (const bench of old.weaponBenches) delete bench.armorBills;
   for (const p of old.pawns) p.trauma = { wounds: [], bloodLoss: 0, brokenParts: [] };
@@ -69,17 +70,18 @@ describe('anatomy integration with work, physical treatment and save migration',
       const s = VoxelSimulation.load(old),
         save = s.save();
       expect(old).toEqual(before);
-      expect(save.version).toBe(17);
+      expect(save.version).toBe(18);
       expect(s.tick).toBe(old.tick);
       for (const key of ['blocks', 'items', 'researchBenches', 'stats'] as const)
         expect(save[key]).toEqual(old[key]);
       expect(save.research).toEqual({
         ...old.research,
-        progress: { ...old.research.progress, PlateArmor: 0 },
+        progress: { ...old.research.progress, PlateArmor: 0, Machining: 0, Gunsmithing: 0, BlowbackOperation: 0 },
       });
       expect(save.weaponBenches).toEqual(
         old.weaponBenches.map((b: any) => ({
           ...b,
+          bills: [...b.bills, { kind: 'shortBow', target: 0, paused: false }],
           armorBills:
             b.kind === 'smithy'
               ? ['simpleHelmet', 'plateArmor'].map((kind) => ({ kind, target: 0, paused: false }))
@@ -89,7 +91,7 @@ describe('anatomy integration with work, physical treatment and save migration',
       for (const p of save.pawns) {
         const prior = old.pawns.find((q: any) => q.id === p.id);
         for (const key of ['food', 'rest', 'worn', 'weapon', 'cargo', 'skills', 'health'] as const)
-          expect(p[key]).toEqual(prior[key]);
+          expect(p[key]).toEqual(key === 'skills' ? { ...prior.skills, shooting: p.skills.shooting } : prior[key]);
         const retained = [
           ...p.trauma.wounds,
           ...p.trauma.missingParts.flatMap((m) => m.legacyWounds),

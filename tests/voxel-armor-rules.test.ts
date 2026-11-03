@@ -300,7 +300,7 @@ describe('ArmorUtility ordered impact rules', () => {
       { worn: [base.worn[0], base.worn[0]] },
       { worn: [{ ...base.worn[0], hitPoints: 0 }] },
       { part: 'not-a-part' },
-      { damageDef: 'Bullet' },
+      { damageDef: 'UnknownDamage' },
     ])
       expect(() => resolveArmor({ ...base, ...bad } as ArmorInput, rolls(0))).toThrow();
     expect(base).toEqual(before);

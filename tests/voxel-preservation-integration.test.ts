@@ -1,3 +1,4 @@
+import { stripRangedDefaults } from './legacy-ranged-defaults';
 import { legacySimulation } from './fixtures/legacy-start';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
@@ -489,7 +490,7 @@ describe('cooking input containers and v5 food persistence', () => {
     expect(same.pawns[0].cargo).toMatchObject({ rotProgress: 345 });
     expect(same.stockpiles[0].priority).toBe(3);
     const old = structuredClone(current) as unknown as Record<string, any>;
-    old.version = 4;
+    stripRangedDefaults(old);    old.version = 4;
     delete old.items[0].crop;
     delete old.items[0].rotProgress;
     delete old.pawns[0].cargo.rotProgress;
@@ -499,7 +500,7 @@ describe('cooking input containers and v5 food persistence', () => {
     const before = structuredClone(old),
       migrated = VoxelSimulation.load(old);
     expect(old).toEqual(before);
-    expect(migrated.save().version).toBe(17);
+    expect(migrated.save().version).toBe(18);
     expect(migrated.counts()).toEqual(sim.counts());
     expect(migrated.items[0]).toMatchObject({ crop: 'rice', rotProgress: 0 });
     expect(migrated.pawns[0].cargo).toMatchObject({ rotProgress: 0 });

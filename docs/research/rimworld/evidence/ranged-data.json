@@ -1,0 +1,620 @@
+{
+  "evidence_id": "RW17-RANGED-DATA",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Reviewed selected Core inheritance and static defaults; not the enabled-mod effective database.",
+  "quality": [
+    "Awful",
+    "Poor",
+    "Normal",
+    "Good",
+    "Excellent",
+    "Masterwork",
+    "Legendary"
+  ],
+  "accuracyQuality": [
+    0.8,
+    0.9,
+    1,
+    1.1,
+    1.2,
+    1.35,
+    1.5
+  ],
+  "damageQuality": [
+    0.9,
+    1,
+    1,
+    1,
+    1,
+    1.25,
+    1.5
+  ],
+  "penetrationQuality": [
+    0.9,
+    1,
+    1,
+    1,
+    1,
+    1.25,
+    1.5
+  ],
+  "meleeQuality": [
+    0.8,
+    0.9,
+    1,
+    1.1,
+    1.2,
+    1.45,
+    1.65
+  ],
+  "weapons": [
+    {
+      "id": "Bow_Short",
+      "sourceChain": [
+        "ThingDef_BaseWeapon",
+        "ThingDef_BaseWeaponNeolithic",
+        "ThingDef_Bow_Short"
+      ],
+      "cost": {
+        "WoodLog": 30
+      },
+      "stuff": null,
+      "work": 2400,
+      "maxHP": 100,
+      "mass": 0.8,
+      "accuracy": [
+        0.75,
+        0.65,
+        0.45,
+        0.25
+      ],
+      "cooldown": 1.65,
+      "warmup": 1.35,
+      "range": 22.9,
+      "burst": 1,
+      "burstInterval": 15,
+      "projectile": "Arrow_Short",
+      "verb": "Verb_Shoot",
+      "craftingMin": 2,
+      "research": null,
+      "benches": [
+        "ElectricSmithy",
+        "FueledSmithy",
+        "CraftingSpot"
+      ],
+      "workSkill": "Crafting",
+      "workSpeedStat": "GeneralLaborSpeed",
+      "tools": [
+        {
+          "label": "limb",
+          "capacities": [
+            "Blunt",
+            "Poke"
+          ],
+          "power": 9,
+          "cooldown": 2,
+          "armorPenetration": -1,
+          "chanceFactor": 1
+        }
+      ]
+    },
+    {
+      "id": "Gun_Revolver",
+      "sourceChain": [
+        "ThingDef_BaseWeapon",
+        "ThingDef_BaseGun",
+        "ThingDef_BaseGunWithQuality",
+        "ThingDef_BaseMakeableGun",
+        "ThingDef_BaseHumanMakeableGun",
+        "ThingDef_Gun_Revolver"
+      ],
+      "cost": {
+        "Steel": 30,
+        "ComponentIndustrial": 2
+      },
+      "stuff": null,
+      "work": 4000,
+      "maxHP": 100,
+      "mass": 1.4,
+      "accuracy": [
+        0.8,
+        0.75,
+        0.55,
+        0.4
+      ],
+      "cooldown": 1.6,
+      "warmup": 0.3,
+      "range": 25.9,
+      "burst": 1,
+      "burstInterval": 15,
+      "projectile": "Bullet_Revolver",
+      "verb": "Verb_Shoot",
+      "craftingMin": 3,
+      "research": "Gunsmithing",
+      "benches": [
+        "TableMachining"
+      ],
+      "workSkill": "Crafting",
+      "workSpeedStat": "GeneralLaborSpeed",
+      "tools": [
+        {
+          "label": "grip",
+          "capacities": [
+            "Blunt"
+          ],
+          "power": 9,
+          "cooldown": 2,
+          "armorPenetration": -1,
+          "chanceFactor": 1
+        },
+        {
+          "label": "barrel",
+          "capacities": [
+            "Blunt",
+            "Poke"
+          ],
+          "power": 9,
+          "cooldown": 2,
+          "armorPenetration": -1,
+          "chanceFactor": 1
+        }
+      ]
+    },
+    {
+      "id": "Gun_Autopistol",
+      "sourceChain": [
+        "ThingDef_BaseWeapon",
+        "ThingDef_BaseGun",
+        "ThingDef_BaseGunWithQuality",
+        "ThingDef_BaseMakeableGun",
+        "ThingDef_BaseHumanMakeableGun",
+        "ThingDef_Gun_Autopistol"
+      ],
+      "cost": {
+        "Steel": 30,
+        "ComponentIndustrial": 2
+      },
+      "stuff": null,
+      "work": 5000,
+      "maxHP": 100,
+      "mass": 1.2,
+      "accuracy": [
+        0.8,
+        0.7,
+        0.4,
+        0.3
+      ],
+      "cooldown": 1,
+      "warmup": 0.3,
+      "range": 25.9,
+      "burst": 1,
+      "burstInterval": 15,
+      "projectile": "Bullet_Autopistol",
+      "verb": "Verb_Shoot",
+      "craftingMin": 4,
+      "research": "BlowbackOperation",
+      "benches": [
+        "TableMachining"
+      ],
+      "workSkill": "Crafting",
+      "workSpeedStat": "GeneralLaborSpeed",
+      "tools": [
+        {
+          "label": "grip",
+          "capacities": [
+            "Blunt"
+          ],
+          "power": 9,
+          "cooldown": 2,
+          "armorPenetration": -1,
+          "chanceFactor": 1
+        },
+        {
+          "label": "barrel",
+          "capacities": [
+            "Blunt",
+            "Poke"
+          ],
+          "power": 9,
+          "cooldown": 2,
+          "armorPenetration": -1,
+          "chanceFactor": 1
+        }
+      ]
+    },
+    {
+      "id": "Gun_MachinePistol",
+      "sourceChain": [
+        "ThingDef_BaseWeapon",
+        "ThingDef_BaseGun",
+        "ThingDef_BaseGunWithQuality",
+        "ThingDef_BaseMakeableGun",
+        "ThingDef_BaseHumanMakeableGun",
+        "ThingDef_Gun_MachinePistol"
+      ],
+      "cost": {
+        "Steel": 45,
+        "ComponentIndustrial": 3
+      },
+      "stuff": null,
+      "work": 11000,
+      "maxHP": 100,
+      "mass": 2.5,
+      "accuracy": [
+        0.9,
+        0.65,
+        0.35,
+        0.15
+      ],
+      "cooldown": 0.9,
+      "warmup": 0.5,
+      "range": 19.9,
+      "burst": 3,
+      "burstInterval": 7,
+      "projectile": "Bullet_MachinePistol",
+      "verb": "Verb_Shoot",
+      "craftingMin": 4,
+      "research": "BlowbackOperation",
+      "benches": [
+        "TableMachining"
+      ],
+      "workSkill": "Crafting",
+      "workSpeedStat": "GeneralLaborSpeed",
+      "tools": [
+        {
+          "label": "grip",
+          "capacities": [
+            "Blunt"
+          ],
+          "power": 9,
+          "cooldown": 2,
+          "armorPenetration": -1,
+          "chanceFactor": 1
+        },
+        {
+          "label": "barrel",
+          "capacities": [
+            "Blunt",
+            "Poke"
+          ],
+          "power": 9,
+          "cooldown": 2,
+          "armorPenetration": -1,
+          "chanceFactor": 1
+        }
+      ]
+    }
+  ],
+  "projectiles": [
+    {
+      "id": "Arrow_Short",
+      "damageDef": "Arrow",
+      "damage": 11,
+      "speed": 44,
+      "speedTilesPerTick": 0.44,
+      "stoppingPower": 0.5,
+      "armorPenetrationBase": -1
+    },
+    {
+      "id": "Bullet_Revolver",
+      "damageDef": "Bullet",
+      "damage": 12,
+      "speed": 55,
+      "speedTilesPerTick": 0.55,
+      "stoppingPower": 1,
+      "armorPenetrationBase": -1
+    },
+    {
+      "id": "Bullet_Autopistol",
+      "damageDef": "Bullet",
+      "damage": 10,
+      "speed": 55,
+      "speedTilesPerTick": 0.55,
+      "stoppingPower": 0.5,
+      "armorPenetrationBase": -1
+    },
+    {
+      "id": "Bullet_MachinePistol",
+      "damageDef": "Bullet",
+      "damage": 6,
+      "speed": 55,
+      "speedTilesPerTick": 0.55,
+      "stoppingPower": 0.5,
+      "armorPenetrationBase": -1
+    }
+  ],
+  "bench": {
+    "id": "TableMachining",
+    "cost": {
+      "Steel": 150,
+      "ComponentIndustrial": 5
+    },
+    "work": 3000,
+    "maxHP": 180,
+    "size": "(3,1)",
+    "constructionMin": 4,
+    "research": [
+      "Machining"
+    ],
+    "power": 350,
+    "roomRole": "Workshop",
+    "notRoomFactor": 0.8,
+    "unpoweredFactor": 0,
+    "fill": 0.5,
+    "pathCost": 50
+  },
+  "research": [
+    {
+      "id": "Machining",
+      "cost": 1000,
+      "tech": "Industrial",
+      "prerequisites": [
+        "Electricity",
+        "Smithing"
+      ]
+    },
+    {
+      "id": "Gunsmithing",
+      "cost": 500,
+      "tech": "Industrial",
+      "prerequisites": [
+        "Machining"
+      ]
+    },
+    {
+      "id": "BlowbackOperation",
+      "cost": 500,
+      "tech": "Industrial",
+      "prerequisites": [
+        "Gunsmithing"
+      ]
+    }
+  ],
+  "covers": [
+    {
+      "id": "Sandbags",
+      "fill": 0.55,
+      "pathCost": 42,
+      "passability": "PassThroughOnly",
+      "cost": {},
+      "costStuffCount": 5,
+      "stuffCategories": [
+        "Fabric",
+        "Leathery"
+      ],
+      "maxHP": 300,
+      "work": 180
+    },
+    {
+      "id": "Barricade",
+      "fill": 0.55,
+      "pathCost": 42,
+      "passability": "PassThroughOnly",
+      "cost": {},
+      "costStuffCount": 5,
+      "stuffCategories": [
+        "Metallic",
+        "Woody",
+        "Stony"
+      ],
+      "maxHP": 300,
+      "work": 320
+    },
+    {
+      "id": "Wall",
+      "fill": 1,
+      "pathCost": 0,
+      "passability": "Impassable",
+      "cost": {},
+      "costStuffCount": 5,
+      "stuffCategories": [
+        "Metallic",
+        "Woody",
+        "Stony"
+      ],
+      "maxHP": 300,
+      "work": 135
+    },
+    {
+      "id": "Plant_TreeOak",
+      "fill": 0.25,
+      "pathCost": 42,
+      "passability": "PassThroughOnly",
+      "cost": {},
+      "costStuffCount": 0,
+      "stuffCategories": [],
+      "maxHP": 200,
+      "work": 0
+    },
+    {
+      "id": "Plant_TreePine",
+      "fill": 0.25,
+      "pathCost": 42,
+      "passability": "PassThroughOnly",
+      "cost": {},
+      "costStuffCount": 0,
+      "stuffCategories": [],
+      "maxHP": 200,
+      "work": 0
+    },
+    {
+      "id": "Plant_TreePoplar",
+      "fill": 0.25,
+      "pathCost": 42,
+      "passability": "PassThroughOnly",
+      "cost": {},
+      "costStuffCount": 0,
+      "stuffCategories": [],
+      "maxHP": 200,
+      "work": 0
+    },
+    {
+      "id": "Plant_SaguaroCactus",
+      "fill": 0.35,
+      "pathCost": 42,
+      "passability": "PassThroughOnly",
+      "cost": {},
+      "costStuffCount": 0,
+      "stuffCategories": [],
+      "maxHP": 130,
+      "work": 0
+    }
+  ],
+  "materials": {
+    "Steel": {
+      "hpFactor": 1,
+      "workFactor": 1
+    },
+    "WoodLog": {
+      "hpFactor": 0.65,
+      "workFactor": 0.7
+    },
+    "Cloth": {
+      "hpFactor": 1,
+      "workFactor": 1
+    }
+  },
+  "weather": {
+    "Clear": 1,
+    "Fog": 0.5,
+    "Rain": 0.8,
+    "DryThunderstorm": 1,
+    "RainyThunderstorm": 0.8,
+    "FoggyRain": 0.5,
+    "SnowHard": 0.8,
+    "SnowGentle": 0.8,
+    "Underground": 1
+  },
+  "shootingCurve": [
+    [
+      -20,
+      0.7
+    ],
+    [
+      -10,
+      0.8
+    ],
+    [
+      -6,
+      0.83
+    ],
+    [
+      -4,
+      0.85
+    ],
+    [
+      -2,
+      0.87
+    ],
+    [
+      0,
+      0.89
+    ],
+    [
+      2,
+      0.93
+    ],
+    [
+      4,
+      0.94
+    ],
+    [
+      6,
+      0.95
+    ],
+    [
+      8,
+      0.96
+    ],
+    [
+      10,
+      0.97
+    ],
+    [
+      12,
+      0.975
+    ],
+    [
+      14,
+      0.98
+    ],
+    [
+      16,
+      0.98333
+    ],
+    [
+      18,
+      0.98666
+    ],
+    [
+      20,
+      0.99
+    ],
+    [
+      22,
+      0.9925
+    ],
+    [
+      26,
+      0.995
+    ],
+    [
+      30,
+      0.9965
+    ],
+    [
+      40,
+      0.998
+    ],
+    [
+      60,
+      0.999
+    ]
+  ],
+  "damage": [
+    {
+      "id": "Bullet",
+      "worker": "DamageWorker_AddInjury",
+      "hediff": "Gunshot",
+      "skin": null,
+      "solid": null,
+      "category": "Sharp",
+      "harmAllLayersUntilOutside": true,
+      "overkill": "0~0.7"
+    },
+    {
+      "id": "Arrow",
+      "worker": "DamageWorker_AddInjury",
+      "hediff": "Cut",
+      "skin": null,
+      "solid": "Crack",
+      "category": "Sharp",
+      "harmAllLayersUntilOutside": true,
+      "overkill": "0~0.7"
+    }
+  ],
+  "injuries": [
+    {
+      "id": "Gunshot",
+      "pain": 0.0125,
+      "permanentPain": 0.00625,
+      "bleed": 0.06,
+      "canMerge": false
+    },
+    {
+      "id": "Cut",
+      "pain": 0.0125,
+      "permanentPain": 0.00625,
+      "bleed": 0.06,
+      "canMerge": false
+    },
+    {
+      "id": "Crack",
+      "pain": 0.01,
+      "permanentPain": 0.00625,
+      "bleed": 0,
+      "canMerge": false
+    }
+  ]
+}
