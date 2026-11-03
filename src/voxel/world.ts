@@ -23,6 +23,8 @@ import {
   tailorInteraction,
   weaponBenchCells,
   weaponBenchInteraction,
+  researchBenchCells,
+  researchBenchInteraction,
 } from './types';
 import {
   APPAREL_DEFS,
@@ -60,6 +62,21 @@ import {
   isWeaponBenchKind,
   makeWeaponBench,
 } from './weaponProduction';
+import {
+  initialResearch,
+  validResearch,
+  researchBlockReason,
+  researchComplete,
+  toolResearchReason,
+  weaponResearchReason,
+  RESEARCH_DEFS,
+  RESEARCH_KEYS,
+  RESEARCH_BENCH_COST,
+  RESEARCH_BENCH_WORK,
+  RESEARCH_SESSION_TICKS,
+  researchPointsPerTick,
+  simpleBenchFactor,
+} from './research';
 import { VoxelRooms } from './rooms';
 import {
   initialSkills,
@@ -190,6 +207,7 @@ import type {
   ApparelPiece,
   Tailor,
   WeaponBench,
+  ResearchBench,
 } from './types';
 
 const same = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
@@ -207,39 +225,29 @@ const costOf = (
   weaponKind?: WeaponKind,
   weaponBenchKind?: WeaponBenchKind,
 ): Partial<Counts> =>
-  kind === 'smithy'
-    ? { ...SMITHY_COST }
-    : kind === 'smith'
-      ? { ...WEAPON_DEFS[weaponKind!].cost }
-      : kind === 'tailor'
-        ? { ...TAILOR_COST }
-        : kind === 'tailoring'
-          ? { cloth: APPAREL_DEFS[apparelKind ?? 'shirt'].cloth }
-          : kind === 'stonecutter'
-            ? { ...STONECUTTER_COST }
-            : kind === 'stonecut'
-              ? { chunk: STONECUTTING.input }
-              : material === 'stone' && (kind === 'wall' || kind === 'floor')
-                ? { stone: STONE_CONSTRUCTION[kind].cost }
-                : isDeviceKind(kind)
-                  ? { ...DEVICE_COSTS[kind] }
-                  : kind === 'wire'
-                    ? { steel: 1 }
-                    : kind === 'cook'
-                      ? { grain: SIMPLE_MEAL.ingredients, wood: SIMPLE_MEAL.wood }
-                      : (
-                            {
-                              floor: 3,
-                              wall: 6,
-                              ladder: 2,
-                              digLadder: 2,
-                              stove: 20,
-                              bed: 45,
-                              door: 25,
-                            } as Partial<Record<JobKind, number>>
-                          )[kind]
-                        ? {
-                            wood: (
+  kind === 'researchBench'
+    ? { ...RESEARCH_BENCH_COST }
+    : kind === 'smithy'
+      ? { ...SMITHY_COST }
+      : kind === 'smith'
+        ? { ...WEAPON_DEFS[weaponKind!].cost }
+        : kind === 'tailor'
+          ? { ...TAILOR_COST }
+          : kind === 'tailoring'
+            ? { cloth: APPAREL_DEFS[apparelKind ?? 'shirt'].cloth }
+            : kind === 'stonecutter'
+              ? { ...STONECUTTER_COST }
+              : kind === 'stonecut'
+                ? { chunk: STONECUTTING.input }
+                : material === 'stone' && (kind === 'wall' || kind === 'floor')
+                  ? { stone: STONE_CONSTRUCTION[kind].cost }
+                  : isDeviceKind(kind)
+                    ? { ...DEVICE_COSTS[kind] }
+                    : kind === 'wire'
+                      ? { steel: 1 }
+                      : kind === 'cook'
+                        ? { grain: SIMPLE_MEAL.ingredients, wood: SIMPLE_MEAL.wood }
+                        : (
                               {
                                 floor: 3,
                                 wall: 6,
@@ -249,9 +257,21 @@ const costOf = (
                                 bed: 45,
                                 door: 25,
                               } as Partial<Record<JobKind, number>>
-                            )[kind]!,
-                          }
-                        : {};
+                            )[kind]
+                          ? {
+                              wood: (
+                                {
+                                  floor: 3,
+                                  wall: 6,
+                                  ladder: 2,
+                                  digLadder: 2,
+                                  stove: 20,
+                                  bed: 45,
+                                  door: 25,
+                                } as Partial<Record<JobKind, number>>
+                              )[kind]!,
+                            }
+                          : {};
 const workOf = (
   kind: JobKind,
   material: ConstructionMaterial = 'wood',
@@ -261,58 +281,64 @@ const workOf = (
   weaponKind?: WeaponKind,
   weaponBenchKind?: WeaponBenchKind,
 ) =>
-  kind === 'smithy'
-    ? SMITHY_WORK
-    : kind === 'craftingSpot'
-      ? 1
-      : kind === 'smith'
-        ? weaponWork(weaponKind!, weaponBenchKind!)
-        : kind === 'tailor'
-          ? TAILOR_WORK
-          : kind === 'tailoring'
-            ? APPAREL_DEFS[apparelKind ?? 'shirt'].work
-            : kind === 'cut'
-              ? legacyCut
-                ? 60
-                : treeCutWork(species)
-              : kind === 'plantTree'
-                ? treeSowWork(species)
-                : material === 'stone' && (kind === 'wall' || kind === 'floor')
-                  ? STONE_CONSTRUCTION[kind].work
-                  : {
-                      ...DEVICE_WORK,
-                      wire: 12,
-                      refuel: 80,
-                      mine: 70,
-                      cut: 60,
-                      floor: 45,
-                      wall: 80,
-                      ladder: 40,
-                      digLadder: 90,
-                      remove: 40,
-                      sow: 57,
-                      harvest: 67,
-                      stove: 120,
-                      bed: 187,
-                      door: 199,
-                      cook: SIMPLE_MEAL.work,
-                      stonecutter: STONECUTTER_WORK,
-                      stonecut: STONECUTTING.work,
-                    }[kind];
+  kind === 'researchBench'
+    ? RESEARCH_BENCH_WORK
+    : kind === 'research'
+      ? RESEARCH_SESSION_TICKS
+      : kind === 'smithy'
+        ? SMITHY_WORK
+        : kind === 'craftingSpot'
+          ? 1
+          : kind === 'smith'
+            ? weaponWork(weaponKind!, weaponBenchKind!)
+            : kind === 'tailor'
+              ? TAILOR_WORK
+              : kind === 'tailoring'
+                ? APPAREL_DEFS[apparelKind ?? 'shirt'].work
+                : kind === 'cut'
+                  ? legacyCut
+                    ? 60
+                    : treeCutWork(species)
+                  : kind === 'plantTree'
+                    ? treeSowWork(species)
+                    : material === 'stone' && (kind === 'wall' || kind === 'floor')
+                      ? STONE_CONSTRUCTION[kind].work
+                      : {
+                          ...DEVICE_WORK,
+                          wire: 12,
+                          refuel: 80,
+                          mine: 70,
+                          cut: 60,
+                          floor: 45,
+                          wall: 80,
+                          ladder: 40,
+                          digLadder: 90,
+                          remove: 40,
+                          sow: 57,
+                          harvest: 67,
+                          stove: 120,
+                          bed: 187,
+                          door: 199,
+                          cook: SIMPLE_MEAL.work,
+                          stonecutter: STONECUTTER_WORK,
+                          stonecut: STONECUTTING.work,
+                        }[kind];
 const workType = (kind: JobKind): Work =>
-  kind === 'stonecut' || kind === 'tailoring' || kind === 'smith'
-    ? 'craft'
-    : kind === 'refuel'
-      ? 'haul'
-      : kind === 'sow' || kind === 'harvest' || kind === 'plantTree'
-        ? 'grow'
-        : kind === 'cook'
-          ? 'cook'
-          : kind === 'mine' || kind === 'digLadder'
-            ? 'dig'
-            : kind === 'cut'
-              ? 'cut'
-              : 'build';
+  kind === 'research'
+    ? 'research'
+    : kind === 'stonecut' || kind === 'tailoring' || kind === 'smith'
+      ? 'craft'
+      : kind === 'refuel'
+        ? 'haul'
+        : kind === 'sow' || kind === 'harvest' || kind === 'plantTree'
+          ? 'grow'
+          : kind === 'cook'
+            ? 'cook'
+            : kind === 'mine' || kind === 'digLadder'
+              ? 'dig'
+              : kind === 'cut'
+                ? 'cut'
+                : 'build';
 const missing = (j: Job) => resources.find((r) => (j.cost[r] ?? 0) > (j.delivered[r] ?? 0));
 function encode(a: Uint8Array) {
   const out: number[] = [];
@@ -368,6 +394,8 @@ export class VoxelSimulation {
   stonecutters: Stonecutter[] = [];
   tailors: Tailor[] = [];
   weaponBenches: WeaponBench[] = [];
+  researchBenches: ResearchBench[] = [];
+  research = initialResearch();
   beds: Bed[] = [];
   doors: Door[] = [];
   devices: Device[] = [];
@@ -462,7 +490,17 @@ export class VoxelSimulation {
         food: 100,
         rest: 100,
         skills: initialSkills(i),
-        priorities: { dig: 1, build: 1, cut: 1, haul: 2, grow: 1, cook: 1, craft: 1, care: 1 },
+        priorities: {
+          dig: 1,
+          build: 1,
+          cut: 1,
+          haul: 2,
+          grow: 1,
+          cook: 1,
+          craft: 1,
+          care: 1,
+          research: 4,
+        },
         ...initialSurvival(this.seed, this.nextId - 1),
         worn: [],
         apparelTask: null,
@@ -605,6 +643,20 @@ export class VoxelSimulation {
     return this.distance[at(to)] >= 0 ? this.route(at(to)) : null;
   }
   private stands(j: Job): number[] {
+    if (j.kind === 'research') {
+      const bench = this.researchBenches.find((b) => same(b, j));
+      if (!bench) return [];
+      const point = researchBenchInteraction(bench);
+      return this.standable(point) ? [at(point)] : [];
+    }
+    const researchBench = j.kind === 'remove' ? this.researchBenchAt(j) : undefined;
+    if (j.kind === 'researchBench' || researchBench) {
+      const cells = researchBenchCells(researchBench ?? { ...j, axis: j.axis ?? 'x' });
+      return cells
+        .flatMap((v) => horizontal.map(([dx, dy]) => ({ x: v.x + dx, y: v.y + dy, z: v.z })))
+        .filter((q) => this.standable(q) && !cells.some((c) => same(c, q)))
+        .map(at);
+    }
     if (j.kind === 'smith') {
       const bench = this.weaponBenches.find((b) => same(b, j));
       if (!bench) return [];
@@ -912,6 +964,14 @@ export class VoxelSimulation {
     p.phase = phase;
   }
   private footprint(j: Pos & { kind: JobKind; axis?: Axis }): Pos[] {
+    if (j.kind === 'researchBench' || j.kind === 'research') {
+      const bench =
+        j.kind === 'research' ? this.researchBenches.find((b) => same(b, j)) : undefined;
+      return researchBenchCells(bench ?? { ...j, axis: j.axis ?? 'x' }).flatMap((p) => [
+        p,
+        { ...p, z: p.z + 1 },
+      ]);
+    }
     if (j.kind === 'stonecutter' || j.kind === 'tailor' || j.kind === 'smithy')
       return stonecutterCells({ ...j, axis: j.axis ?? 'x' }).flatMap((p) => [
         p,
@@ -945,6 +1005,7 @@ export class VoxelSimulation {
         ...this.devices.flatMap(deviceCells),
         ...this.stonecutters.flatMap(stonecutterCells),
         ...this.tailors.flatMap(tailorCells),
+        ...this.researchBenches.flatMap(researchBenchCells),
         ...this.weaponBenches.filter((b) => b.kind === 'smithy').flatMap(weaponBenchCells),
       ].flatMap((p) => [at(p), at({ ...p, z: p.z + 1 })]),
     );
@@ -973,8 +1034,20 @@ export class VoxelSimulation {
       ),
     );
   }
+  private researchBenchAt(p: Pos) {
+    return this.researchBenches.find((b) =>
+      researchBenchCells(b).some(
+        (q) => q.x === p.x && q.y === p.y && (q.z === p.z || q.z + 1 === p.z),
+      ),
+    );
+  }
+  researchBenchFactor(bench: ResearchBench): number {
+    this.updateRooms();
+    return simpleBenchFactor(this.rooms.roomAt(bench)?.outdoor ?? true, this.temperature(bench));
+  }
   private furnitureAt(p: Pos) {
     return (
+      this.researchBenchAt(p) ||
       this.deviceAt(p) ||
       this.stonecutterAt(p) ||
       this.tailorAt(p) ||
@@ -1111,6 +1184,7 @@ export class VoxelSimulation {
       this.jobs.some((j) => j.id !== ownJob && this.stands(j).some((i) => overlap(position(i)))) ||
       this.stonecutters.some((b) => overlap(stonecutterInteraction(b))) ||
       this.tailors.some((b) => overlap(tailorInteraction(b))) ||
+      this.researchBenches.some((b) => overlap(researchBenchInteraction(b))) ||
       this.weaponBenches.some((b) => overlap(weaponBenchInteraction(b)))
     )
       return false;
@@ -1269,6 +1343,8 @@ export class VoxelSimulation {
     return { fertility, light, temperature, growthRate, reason };
   }
   private syncProduction() {
+    for (const j of [...this.jobs])
+      if (j.kind === 'research' && (!this.supported(j) || j.cancelled)) this.cancel(j);
     for (const j of [...this.jobs]) {
       if (j.cancelled) {
         this.cancel(j);
@@ -1314,6 +1390,13 @@ export class VoxelSimulation {
       )
         this.cancel(j);
     }
+    if (this.research.current)
+      for (const b of this.researchBenches) {
+        if (this.jobs.length >= 512 || this.jobs.some((j) => same(j, b))) continue;
+        const job = this.makeJob('research', b);
+        job.researchProject = this.research.current;
+        this.jobs.push(job);
+      }
     for (const f of this.farms) {
       if (this.jobs.length >= 512 || this.jobs.some((j) => same(j, f)) || !this.farmable(f))
         continue;
@@ -1396,7 +1479,12 @@ export class VoxelSimulation {
         this.jobs.push(job);
       }
       if (this.jobs.some((j) => same(j, bench) && j.kind === 'smith')) continue;
-      const bill = bench.bills.find((b) => !b.paused && weaponCounts[b.kind] < b.target);
+      const bill = bench.bills.find(
+        (b) =>
+          !b.paused &&
+          !weaponResearchReason(this.research, b.kind) &&
+          weaponCounts[b.kind] < b.target,
+      );
       if (!bill) continue;
       this.jobs.push(
         this.makeJob('smith', bench, bench.axis, 'wood', undefined, bill.kind, bench.kind),
@@ -1431,6 +1519,22 @@ export class VoxelSimulation {
       this.pawns.some((p) => p.id === c.pawnId && p.faction !== 'colony')
     )
       return { ok: false, message: '无法指挥敌对人物' };
+    if (c.type === 'research') {
+      if (c.project !== null && !RESEARCH_KEYS.includes(c.project))
+        return { ok: false, message: '未知研究项目' };
+      const reason = c.project === null ? null : researchBlockReason(this.research, c.project);
+      if (reason) return { ok: false, message: reason };
+      if (c.project !== this.research.current) {
+        for (const job of [...this.jobs]) if (job.kind === 'research') this.cancel(job);
+        this.research.current = c.project;
+        this.syncProduction();
+      }
+      this.revision++;
+      this.notice = c.project
+        ? `开始研究${RESEARCH_DEFS[c.project].name}；需要研究员在科研台工作`
+        : '已停止研究，已有进度保留';
+      return { ok: true, message: this.notice };
+    }
     if (c.type === 'weaponBill') {
       const bench = this.weaponBenches.find((b) => b.id === c.benchId);
       const bill = bench?.bills.find((b) => b.kind === c.kind);
@@ -1443,6 +1547,8 @@ export class VoxelSimulation {
         typeof c.paused !== 'boolean'
       )
         return { ok: false, message: '武器配方或目标无效' };
+      const reason = !c.paused && c.target > 0 ? weaponResearchReason(this.research, c.kind) : null;
+      if (reason) return { ok: false, message: reason };
       bill.target = c.target;
       bill.paused = c.paused;
       if (c.paused)
@@ -1696,7 +1802,9 @@ export class VoxelSimulation {
       if (
         !p ||
         p.dead ||
-        !['dig', 'build', 'cut', 'haul', 'grow', 'cook', 'craft', 'care'].includes(c.work) ||
+        !['dig', 'build', 'cut', 'haul', 'grow', 'cook', 'craft', 'care', 'research'].includes(
+          c.work,
+        ) ||
         !Number.isInteger(c.value) ||
         c.value < 0 ||
         c.value > 4
@@ -1829,6 +1937,8 @@ export class VoxelSimulation {
       return { ok: false, message: '一次最多安排 128 格，请分批规划' };
     for (let y = y0; y <= y1; y++)
       for (let x = x0; x <= x1; x++) positions.push({ x, y, z: c.from.z });
+    const technologyReason = toolResearchReason(this.research, c.tool);
+    if (technologyReason) return { ok: false, message: technologyReason };
     if (c.tool === 'inspect') return { ok: true, message: '选择查看' };
     if (c.tool === 'clearZone') {
       for (const pos of positions) {
@@ -1951,6 +2061,7 @@ export class VoxelSimulation {
                   'tailor',
                   'smithy',
                   'craftingSpot',
+                  'researchBench',
                 ].includes(j.kind) ||
                   isDeviceKind(j.kind)) &&
                 this.footprint(j).some((q) => same(q, p)),
@@ -1991,7 +2102,7 @@ export class VoxelSimulation {
     if (c.axis !== undefined && c.axis !== 'x' && c.axis !== 'y')
       return { ok: false, message: '朝向无效' };
     if (
-      (['bed', 'door', 'stonecutter', 'tailor', 'smithy'].includes(c.tool) ||
+      (['bed', 'door', 'stonecutter', 'tailor', 'smithy', 'researchBench'].includes(c.tool) ||
         isDeviceKind(c.tool)) &&
       positions.length !== 1
     )
@@ -2060,7 +2171,7 @@ export class VoxelSimulation {
             this.jobCellConflict(j, k) &&
             !(
               j.kind === 'remove' &&
-              ['cook', 'refuel', 'stonecut', 'tailoring', 'smith'].includes(k.kind)
+              ['cook', 'refuel', 'stonecut', 'tailoring', 'smith', 'research'].includes(k.kind)
             ),
         ),
       )
@@ -2076,6 +2187,9 @@ export class VoxelSimulation {
     )
       return { ok: false, message: '电力设施或线路数量达到上限' };
     if (
+      this.researchBenches.length +
+        [...this.jobs, ...plans].filter((j) => j.kind === 'researchBench').length >
+        128 ||
       this.beds.length + [...this.jobs, ...plans].filter((j) => j.kind === 'bed').length > 128 ||
       this.doors.length + [...this.jobs, ...plans].filter((j) => j.kind === 'door').length > 512 ||
       this.stonecutters.length +
@@ -2091,7 +2205,10 @@ export class VoxelSimulation {
     for (const j of plans)
       if (j.kind === 'remove')
         for (const k of [...this.jobs])
-          if (['cook', 'refuel', 'stonecut', 'tailoring', 'smith'].includes(k.kind) && same(k, j))
+          if (
+            ['cook', 'refuel', 'stonecut', 'tailoring', 'smith', 'research'].includes(k.kind) &&
+            same(k, j)
+          )
             this.cancel(k);
     this.jobs.push(...plans);
     this.notice = `安排 ${plans.length} 项工作，需求木材 ${plans.reduce((n, j) => n + (j.cost.wood ?? 0), 0)}；缺料和不可达任务会等待`;
@@ -2129,7 +2246,8 @@ export class VoxelSimulation {
       cancelled: false,
       cost: costOf(kind, material, apparelKind, weaponKind, weaponBenchKind),
       reason: '等待可达工人',
-      ...(['bed', 'door', 'stonecutter', 'tailor', 'smithy'].includes(kind) || isDeviceKind(kind)
+      ...(['bed', 'door', 'stonecutter', 'tailor', 'smithy', 'researchBench'].includes(kind) ||
+      isDeviceKind(kind)
         ? { axis }
         : {}),
       ...(['wall', 'floor'].includes(kind) ? { material } : {}),
@@ -2139,6 +2257,24 @@ export class VoxelSimulation {
     };
   }
   private placementReason(kind: JobKind, p: Pos, axis: Axis = 'x') {
+    if (kind === 'researchBench') {
+      const cells = researchBenchCells({ ...p, axis });
+      if (!this.standable(researchBenchInteraction({ ...p, axis })))
+        return '科研台正面需要有支撑、两格净空的工作位置';
+      return cells.some(
+        (q) =>
+          !inside(q) ||
+          !this.standable(q) ||
+          !this.blocks[at(q) - WIDTH * DEPTH] ||
+          this.ladders[at(q)] ||
+          this.farms.some((f) => same(f, q)) ||
+          this.treePlots.some((f) => same(f, q)) ||
+          this.stockpiles.some((f) => same(f, q)) ||
+          this.furnitureAt(q),
+      )
+        ? '科研台需要3×2空地、完整支撑与两格净空，不能重叠区域或设施'
+        : '';
+    }
     if (kind === 'craftingSpot')
       return !this.standable(p) ||
         this.ladders[at(p)] ||
@@ -2648,7 +2784,17 @@ export class VoxelSimulation {
       ...initialSurvival(this.seed, id),
       faction: 'raider',
       weapon: makeWeapon(this.id(), 'steelKnife'),
-      priorities: { dig: 0, build: 0, cut: 0, haul: 0, grow: 0, cook: 0, craft: 0, care: 0 },
+      priorities: {
+        dig: 0,
+        build: 0,
+        cut: 0,
+        haul: 0,
+        grow: 0,
+        cook: 0,
+        craft: 0,
+        care: 0,
+        research: 0,
+      },
       worn: [],
       apparelTask: null,
       apparelWearTicks: 0,
@@ -3074,6 +3220,24 @@ export class VoxelSimulation {
     return undefined;
   }
   private supported(j: Job) {
+    if (j.kind === 'research')
+      return (
+        !!j.researchProject &&
+        this.research.current === j.researchProject &&
+        !researchBlockReason(this.research, j.researchProject) &&
+        this.researchBenches.some((b) => same(b, j)) &&
+        !this.jobs.some((k) => k.kind === 'remove' && !k.cancelled && same(k, j))
+      );
+    if (j.kind === 'researchBench') return !this.placementReason(j.kind, j, j.axis);
+    if (j.kind === 'smith' && weaponResearchReason(this.research, j.weaponKind!)) return false;
+    if (
+      j.kind !== 'remove' &&
+      toolResearchReason(
+        this.research,
+        j.kind === 'plantTree' ? 'grove' : (j.kind as import('./types').Tool),
+      )
+    )
+      return false;
     if (j.kind === 'plantTree')
       return (
         this.treePlots.some((f) => same(f, j) && f.species === j.treeSpecies) &&
@@ -3146,7 +3310,14 @@ export class VoxelSimulation {
     const jobs = this.jobs
       .filter((j) => !j.cancelled && j.owner === null && p.priorities[workType(j.kind)] > 0)
       .sort(
-        (a, b) => p.priorities[workType(a.kind)] - p.priorities[workType(b.kind)] || a.id - b.id,
+        (a, b) =>
+          p.priorities[workType(a.kind)] - p.priorities[workType(b.kind)] ||
+          Number(a.kind === 'research') - Number(b.kind === 'research') ||
+          (a.kind === 'research' && b.kind === 'research'
+            ? this.researchBenchFactor(this.researchBenches.find((v) => same(v, b))!) -
+              this.researchBenchFactor(this.researchBenches.find((v) => same(v, a))!)
+            : 0) ||
+          a.id - b.id,
       );
     const loose =
       p.priorities.haul > 0 &&
@@ -3183,16 +3354,19 @@ export class VoxelSimulation {
     }
     this.search(p);
     for (const j of jobs) {
+      if (
+        j.kind === 'research' &&
+        p.priorities.haul > 0 &&
+        p.priorities.haul <= p.priorities.research &&
+        this.tryHaul(p)
+      )
+        return;
       const skillFailure = this.skillFailure(p, j);
       if (skillFailure) {
         j.reason = skillFailure;
         continue;
       }
-      if (
-        j.kind === 'smith' &&
-        j.progress < j.work &&
-        this.weaponBenches.some((b) => same(b, j) && b.kind === 'smithy' && b.fuel <= 0)
-      ) {
+      if (this.waitingForFuel(j)) {
         j.reason = '等待补充燃料';
         continue;
       }
@@ -3206,11 +3380,11 @@ export class VoxelSimulation {
         continue;
       }
       if (
-        j.kind === 'stonecut' &&
+        ['stonecut', 'research', 'tailoring', 'smith'].includes(j.kind) &&
         this.jobs.some(
           (other) =>
             other.id !== j.id &&
-            other.kind === 'stonecut' &&
+            ['stonecut', 'research', 'tailoring', 'smith'].includes(other.kind) &&
             other.owner !== null &&
             this.stands(other).includes(stand),
         )
@@ -3230,6 +3404,17 @@ export class VoxelSimulation {
       this.continueJob(p, j);
       return;
     }
+    if (this.tryHaul(p)) return;
+    p.phase = 'idle';
+    p.reason =
+      jobs.length && jobs.every((j) => this.skillFailure(p, j))
+        ? this.skillFailure(p, jobs[0])!
+        : jobs.length
+          ? '等待材料或可达通路'
+          : '暂无工作';
+  }
+  /** Uses the current navigation search; shared by idle and research preemption. */
+  private tryHaul(p: Pawn): boolean {
     if (p.priorities.haul > 0) {
       let best: Stack | undefined;
       let priority = -1;
@@ -3251,16 +3436,10 @@ export class VoxelSimulation {
         this.reserveStorage(p, best, target, best.id);
         this.go(p, at(best), 'haul');
         p.reason = '收集散落物资';
-        return;
+        return true;
       }
     }
-    p.phase = 'idle';
-    p.reason =
-      jobs.length && jobs.every((j) => this.skillFailure(p, j))
-        ? this.skillFailure(p, jobs[0])!
-        : jobs.length
-          ? '等待材料或可达通路'
-          : '暂无工作';
+    return false;
   }
   private skillFailure(p: Pawn, j: Job): string | null {
     if (healthSummary(p).manipulation <= 0) return '操作能力不足，无法劳动';
@@ -3282,6 +3461,13 @@ export class VoxelSimulation {
     if (p.skills.construction.level < construction)
       return `需要建造 ${construction} 级；${p.name} 当前 ${p.skills.construction.level} 级`;
     return null;
+  }
+  private waitingForFuel(j: Job): boolean {
+    return (
+      j.kind === 'smith' &&
+      j.progress < j.work &&
+      this.weaponBenches.some((b) => same(b, j) && b.kind === 'smithy' && b.fuel <= 0)
+    );
   }
   private startSleep(p: Pawn) {
     this.release(p);
@@ -3589,6 +3775,36 @@ export class VoxelSimulation {
         this.continueJob(p, j);
         return;
       }
+      if (j.kind === 'research') {
+        if (!this.supported(j)) {
+          this.cancel(j);
+          return;
+        }
+        const project = j.researchProject!,
+          bench = this.researchBenches.find((b) => same(b, j))!;
+        const cost = RESEARCH_DEFS[project].cost;
+        // Native order: gain points with the current stat, then learn Intellectual.
+        this.research.progress[project] = Math.min(
+          cost,
+          this.research.progress[project] +
+            researchPointsPerTick(
+              p.skills,
+              healthSummary(p).manipulation,
+              this.researchBenchFactor(bench),
+            ),
+        );
+        learnSkill(p.skills.intellectual, jobXP('research'));
+        j.workTicks++;
+        j.progress++;
+        p.reason = '正在研究' + RESEARCH_DEFS[project].name;
+        if (researchComplete(this.research, project)) {
+          this.research.current = null;
+          for (const other of [...this.jobs]) if (other.kind === 'research') this.cancel(other);
+          this.notice = `研究完成：${RESEARCH_DEFS[project].name}`;
+          this.revision++;
+        } else if (j.progress >= j.work) this.cancel(j);
+        return;
+      }
       if (j.kind === 'smith') {
         const bench = this.weaponBenches.find((b) => same(b, j))!;
         if (bench.kind === 'smithy') {
@@ -3678,11 +3894,13 @@ export class VoxelSimulation {
       return;
     }
     const devicePlan =
-      j.kind === 'stonecutter' || j.kind === 'tailor' || j.kind === 'smithy'
-        ? stonecutterCells({ ...j, axis: j.axis ?? 'x' })
-        : isDeviceKind(j.kind)
-          ? deviceCells({ ...j, kind: j.kind, axis: j.axis ?? 'x' })
-          : [];
+      j.kind === 'researchBench'
+        ? researchBenchCells({ ...j, axis: j.axis ?? 'x' })
+        : j.kind === 'stonecutter' || j.kind === 'tailor' || j.kind === 'smithy'
+          ? stonecutterCells({ ...j, axis: j.axis ?? 'x' })
+          : isDeviceKind(j.kind)
+            ? deviceCells({ ...j, kind: j.kind, axis: j.axis ?? 'x' })
+            : [];
     const changes: { pos: Pos; block?: number; ladder?: number }[] = [];
     const yields: Partial<Counts> = {};
     let harvestedCrop: CropKind | undefined;
@@ -3738,6 +3956,9 @@ export class VoxelSimulation {
         for (const [r, n] of Object.entries(DEVICE_COSTS[device.kind]))
           yields[r as Resource] = Math.floor(n / 2);
         if (device.kind === 'generator') yields.wood = Math.floor(device.fuel);
+      } else if (this.researchBenchAt(j)) {
+        yields.wood = Math.floor(RESEARCH_BENCH_COST.wood / 2);
+        yields.steel = Math.floor(RESEARCH_BENCH_COST.steel / 2);
       } else if (this.weaponBenchAt(j)) {
         const bench = this.weaponBenchAt(j)!;
         if (bench.kind === 'smithy') {
@@ -3841,6 +4062,7 @@ export class VoxelSimulation {
         ...this.devices.flatMap(deviceCells),
         ...this.stonecutters.flatMap(stonecutterCells),
         ...this.tailors.flatMap(tailorCells),
+        ...this.researchBenches.flatMap(researchBenchCells),
         ...this.weaponBenches.filter((b) => b.kind === 'smithy').flatMap(weaponBenchCells),
       ].some(
         (s) =>
@@ -3931,7 +4153,18 @@ export class VoxelSimulation {
       }
     }
     if (j.kind === 'plantTree') this.createTree(j, j.treeSpecies!, true);
-    if (j.kind === 'smithy') {
+    if (j.kind === 'researchBench') {
+      this.researchBenches.push({ id: this.id(), x: j.x, y: j.y, z: j.z, axis: j.axis ?? 'x' });
+      this.rebuildDevices();
+      this.revision++;
+    } else if (j.kind === 'remove' && this.researchBenchAt(j)) {
+      const bench = this.researchBenchAt(j)!;
+      for (const job of [...this.jobs])
+        if (job.kind === 'research' && same(job, bench)) this.cancel(job);
+      this.researchBenches = this.researchBenches.filter((b) => b.id !== bench.id);
+      this.rebuildDevices();
+      this.revision++;
+    } else if (j.kind === 'smithy') {
       this.weaponBenches.push(makeWeaponBench(this.id(), 'smithy', j, j.axis ?? 'x'));
       this.rebuildDevices();
       this.revision++;
@@ -4181,6 +4414,40 @@ export class VoxelSimulation {
         ) {
           this.startSleep(p);
           continue;
+        }
+        if (!combatant && p.jobId !== null && this.tick % 10 === 0) {
+          const current = this.jobs.find((j) => j.id === p.jobId);
+          if (current?.kind === 'research') {
+            this.search(p);
+            const higher = this.jobs.some(
+              (j) =>
+                j !== current &&
+                !j.cancelled &&
+                j.owner === null &&
+                j.kind !== 'research' &&
+                p.priorities[workType(j.kind)] > 0 &&
+                p.priorities[workType(j.kind)] <= p.priorities.research &&
+                !this.skillFailure(p, j) &&
+                !this.waitingForFuel(j) &&
+                this.supported(j) &&
+                this.reachableStand(j) >= 0 &&
+                (!missing(j) || !!this.pileFor(p, missing(j)!)),
+            );
+            const hauling =
+              p.priorities.haul > 0 &&
+              p.priorities.haul <= p.priorities.research &&
+              this.items.some(
+                (i) =>
+                  this.distance[at(i)] >= 0 &&
+                  !this.chunkReserved(i, p.id) &&
+                  !!this.storageDestination(i, this.storagePriority(i), p.id),
+              );
+            if (higher || hauling) {
+              this.release(p);
+              this.assign(p);
+              continue;
+            }
+          }
         }
         if (p.path.length) {
           if (this.tick < p.moveTick) continue;
@@ -4442,6 +4709,8 @@ export class VoxelSimulation {
       stonecutters: this.stonecutters,
       tailors: this.tailors,
       weaponBenches: this.weaponBenches,
+      researchBenches: this.researchBenches,
+      research: this.research,
       beds: this.beds,
       doors: this.doors,
       rooms: this.rooms.snapshot(),
@@ -4477,7 +4746,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 14,
+      version: 15,
       combat: this.combat,
       generator: this.generator,
       settings: this.settings,
@@ -4499,6 +4768,8 @@ export class VoxelSimulation {
       stonecutters: this.stonecutters,
       tailors: this.tailors,
       weaponBenches: this.weaponBenches,
+      researchBenches: this.researchBenches,
+      research: this.research,
       beds: this.beds,
       doors: this.doors,
       devices: this.devices,
@@ -4512,7 +4783,7 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
@@ -4738,7 +5009,29 @@ export class VoxelSimulation {
       }
       old.version = 14;
     }
+    if (old.version === 14) {
+      if (!Array.isArray(old.pawns)) throw new Error('旧研究数据无效');
+      let profile = 0;
+      for (const p of old.pawns) {
+        const initial = initialSkills(profile++, p.faction === 'raider');
+        if (!p.skills || !p.priorities) throw new Error('旧技能或优先级无效');
+        if (
+          sourceVersion === 14 &&
+          (Object.keys(p.skills).length !== 7 ||
+            Object.hasOwn(p.skills, 'intellectual') ||
+            Object.keys(p.priorities).length !== 8 ||
+            Object.hasOwn(p.priorities, 'research'))
+        )
+          throw new Error('旧技能字段无效');
+        p.skills.intellectual = initial.intellectual;
+        p.priorities.research = p.faction === 'raider' ? 0 : 4;
+      }
+      old.researchBenches = [];
+      old.research = initialResearch(true);
+      old.version = 15;
+    }
     const d = old as VoxelSave;
+    if (!validResearch(d.research)) throw new Error('研究进度、前置或当前项目无效');
     if (
       !validWorldSettings(d.settings) ||
       !inside(d.spawn) ||
@@ -4767,6 +5060,7 @@ export class VoxelSimulation {
       [d.stonecutters, 128],
       [d.tailors, 128],
       [d.weaponBenches, 128],
+      [d.researchBenches, 128],
       [d.beds, 128],
       [d.doors, 512],
       [d.devices, 256],
@@ -4800,6 +5094,7 @@ export class VoxelSimulation {
       ...d.stonecutters,
       ...d.tailors,
       ...d.weaponBenches,
+      ...d.researchBenches,
       ...d.beds,
       ...d.doors,
       ...d.devices,
@@ -4865,6 +5160,7 @@ export class VoxelSimulation {
         d.stonecutters,
         d.tailors,
         d.weaponBenches,
+        d.researchBenches,
         d.stockpiles,
         d.doors,
         d.wires,
@@ -4937,6 +5233,14 @@ export class VoxelSimulation {
         (b.owner !== null && !d.pawns.some((p) => p.id === b.owner))
       )
         throw new Error('床位数据无效');
+    for (const b of d.researchBenches)
+      if (
+        !['x', 'y'].includes(b.axis) ||
+        Object.keys(b).length !== 5 ||
+        researchBenchCells(b).some((p) => !inside(p) || p.z < 1 || p.z >= HEIGHT - 1) ||
+        !inside(researchBenchInteraction(b))
+      )
+        throw new Error('科研台数据无效');
     for (const b of d.tailors) {
       if (
         !['x', 'y'].includes(b.axis) ||
@@ -5025,6 +5329,7 @@ export class VoxelSimulation {
       ...d.stoves,
       ...d.stonecutters.flatMap(stonecutterCells),
       ...d.tailors.flatMap(tailorCells),
+      ...d.researchBenches.flatMap(researchBenchCells),
       ...d.weaponBenches.flatMap(weaponBenchCells),
       ...d.devices.flatMap(deviceCells),
     ];
@@ -5155,7 +5460,7 @@ export class VoxelSimulation {
       )
         throw new Error('武器加工任务无效');
       if (
-        ['smith', 'refuel'].includes(j.kind) &&
+        ['smith', 'refuel', 'research'].includes(j.kind) &&
         d.jobs.some(
           (other) =>
             other !== j &&
@@ -5166,6 +5471,17 @@ export class VoxelSimulation {
         )
       )
         throw new Error('工作台存在重复加工或加油任务');
+      if (
+        j.kind === 'research'
+          ? !RESEARCH_KEYS.includes(j.researchProject!) ||
+            j.researchProject !== d.research.current ||
+            !d.researchBenches.some((b) => same(b, j)) ||
+            j.progress !== j.workTicks ||
+            j.progress >= j.work ||
+            j.cancelled
+          : j.researchProject !== undefined
+      )
+        throw new Error('研究任务与全局项目不一致');
       if (
         !Object.hasOwn(JOB_NAMES, j.kind) ||
         j.z < 1 ||
@@ -5199,9 +5515,12 @@ export class VoxelSimulation {
         (['wall', 'floor'].includes(j.kind)
           ? !['wood', 'stone'].includes(j.material ?? '')
           : j.material !== undefined) ||
-        ((['bed', 'door', 'stonecutter', 'tailor', 'smithy'].includes(j.kind) ||
+        ((['bed', 'door', 'stonecutter', 'tailor', 'smithy', 'researchBench'].includes(j.kind) ||
           isDeviceKind(j.kind)) &&
           (!['x', 'y'].includes(j.axis ?? '') ||
+            (j.kind === 'researchBench' &&
+              (researchBenchCells({ ...j, axis: j.axis! }).some((p) => !inside(p)) ||
+                !inside(researchBenchInteraction({ ...j, axis: j.axis! })))) ||
             (j.kind === 'bed' && bedCells({ ...j, axis: j.axis! }).some((p) => !inside(p))) ||
             ((j.kind === 'stonecutter' || j.kind === 'tailor' || j.kind === 'smithy') &&
               (stonecutterCells({ ...j, axis: j.axis! }).some((p) => !inside(p)) ||
@@ -5557,8 +5876,10 @@ export class VoxelSimulation {
             p.sleepingSince < 0 ||
             p.sleepingSince > d.tick)) ||
         !p.priorities ||
-        Object.values(p.priorities).length !== 8 ||
-        (['dig', 'cut', 'build', 'haul', 'grow', 'cook', 'craft', 'care'] as Work[]).some(
+        Object.values(p.priorities).length !== 9 ||
+        (
+          ['dig', 'cut', 'build', 'haul', 'grow', 'cook', 'craft', 'care', 'research'] as Work[]
+        ).some(
           (k) => !Number.isInteger(p.priorities[k]) || p.priorities[k] < 0 || p.priorities[k] > 4,
         ) ||
         (p.cargo !== null && !(migrateLogistics ? validBatch(p.cargo) : plainCargo(p.cargo))) ||
@@ -5660,6 +5981,8 @@ export class VoxelSimulation {
         stonecutters: d.stonecutters,
         tailors: d.tailors,
         weaponBenches: d.weaponBenches,
+        researchBenches: d.researchBenches,
+        research: d.research,
         beds: d.beds,
         doors: d.doors,
         devices: d.devices,
@@ -5677,6 +6000,7 @@ export class VoxelSimulation {
         ...s.devices.flatMap(deviceCells),
         ...s.stonecutters.flatMap(stonecutterCells),
         ...s.tailors.flatMap(tailorCells),
+        ...s.researchBenches.flatMap(researchBenchCells),
         ...s.weaponBenches.filter((b) => b.kind === 'smithy').flatMap(weaponBenchCells),
       ].some(
         (p) =>

@@ -71,6 +71,7 @@ function fixture(configure: (sim: VoxelSimulation) => void = () => {}) {
       cook: 0,
       craft: 0,
       care: 0,
+      research: 0,
     };
   }
   configure(source);
@@ -498,7 +499,7 @@ describe('cooking input containers and v5 food persistence', () => {
     const before = structuredClone(old),
       migrated = VoxelSimulation.load(old);
     expect(old).toEqual(before);
-    expect(migrated.save().version).toBe(14);
+    expect(migrated.save().version).toBe(15);
     expect(migrated.counts()).toEqual(sim.counts());
     expect(migrated.items[0]).toMatchObject({ crop: 'rice', rotProgress: 0 });
     expect(migrated.pawns[0].cargo).toMatchObject({ rotProgress: 0 });

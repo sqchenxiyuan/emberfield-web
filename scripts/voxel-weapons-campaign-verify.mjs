@@ -1,3 +1,4 @@
+import { researchOpening } from './voxel-research-opening.mjs';
 import assert from 'node:assert/strict';
 import { build } from 'esbuild';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
@@ -171,7 +172,7 @@ try {
         ores.push({ x, y, z });
   ores.sort((a, b) => dist(a, { ...shaft, z }) - dist(b, { ...shaft, z }));
   for (const ore of ores) {
-    if (s.stats.produced.steel >= 230) break;
+    if (s.stats.produced.steel >= 280) break;
     const line = [];
     for (let x = shaft.x; x !== ore.x; x += Math.sign(ore.x - shaft.x))
       line.push({ x, y: shaft.y, z });
@@ -184,7 +185,7 @@ try {
       () => !s.jobs.some((j) => j.kind === 'mine'),
     );
   }
-  assert(s.stats.produced.steel >= 230);
+  assert(s.stats.produced.steel >= 280);
   check('finite ore supplied all metal without granting materials', {
     steel: s.stats.produced.steel,
   });
@@ -205,6 +206,14 @@ try {
       () => !s.jobs.some((j) => j.kind === 'floor'),
     );
   }
+  await researchOpening({
+    getSim: () => s,
+    command,
+    until,
+    check,
+    projects: ['Smithing', 'LongBlades'],
+    reserved: [...surface.filter((p) => occupied.has(key(p))), ...s.weaponBenches],
+  });
   const table = { ...upper, x: upper.x + 1 };
   place('smithy', table, { axis: 'x' });
   until('100 steel is delivered upstairs and the fueled smithy is built', () =>

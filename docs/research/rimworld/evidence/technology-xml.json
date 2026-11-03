@@ -1,0 +1,3161 @@
+{
+  "evidence_id": "RW17-TECHNOLOGY-XML",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Selected research projects, starting tags, research stats, benches and gates",
+  "limitations": [
+    "Direct declarations and selected inheritance chains; not enabled-mod effective Defs.",
+    "Static collection does not execute the original game or prove project equivalence."
+  ],
+  "records": [
+    {
+      "group": "project",
+      "id": "ResearchProjectDef_PsychoidBrewing",
+      "def_name": "PsychoidBrewing",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_1.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='PsychoidBrewing']",
+        "sha256": "8fc372f2c4e4bb2eddbe2c1c807eb851d8f6d3f69bcc15e8713b1cc6a64bd3f7"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "absent_paths": [
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='PsychoidBrewing']/baseCost",
+          "value": "500"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='PsychoidBrewing']/techLevel",
+          "value": "Neolithic"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='PsychoidBrewing']/tags/li",
+          "value": "TribalStart"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "project",
+      "id": "ResearchProjectDef_TreeSowing",
+      "def_name": "TreeSowing",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_1.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='TreeSowing']",
+        "sha256": "8fc372f2c4e4bb2eddbe2c1c807eb851d8f6d3f69bcc15e8713b1cc6a64bd3f7"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "absent_paths": [
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='TreeSowing']/baseCost",
+          "value": "1000"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='TreeSowing']/techLevel",
+          "value": "Neolithic"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='TreeSowing']/tags/li",
+          "value": "TribalStart"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "project",
+      "id": "ResearchProjectDef_ComplexFurniture",
+      "def_name": "ComplexFurniture",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_1.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='ComplexFurniture']",
+        "sha256": "8fc372f2c4e4bb2eddbe2c1c807eb851d8f6d3f69bcc15e8713b1cc6a64bd3f7"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "absent_paths": [
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='ComplexFurniture']/baseCost",
+          "value": "300"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='ComplexFurniture']/techLevel",
+          "value": "Medieval"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='ComplexFurniture']/tags/li",
+          "value": "ClassicStart"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "project",
+      "id": "ResearchProjectDef_PassiveCooler",
+      "def_name": "PassiveCooler",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_1.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='PassiveCooler']",
+        "sha256": "8fc372f2c4e4bb2eddbe2c1c807eb851d8f6d3f69bcc15e8713b1cc6a64bd3f7"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "absent_paths": [
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='PassiveCooler']/baseCost",
+          "value": "400"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='PassiveCooler']/techLevel",
+          "value": "Neolithic"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='PassiveCooler']/tags/li[1]",
+          "value": "ClassicStart"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='PassiveCooler']/tags/li[2]",
+          "value": "TribalStart"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "project",
+      "id": "ResearchProjectDef_Stonecutting",
+      "def_name": "Stonecutting",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_1.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='Stonecutting']",
+        "sha256": "8fc372f2c4e4bb2eddbe2c1c807eb851d8f6d3f69bcc15e8713b1cc6a64bd3f7"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "absent_paths": [
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Stonecutting']/baseCost",
+          "value": "300"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Stonecutting']/techLevel",
+          "value": "Medieval"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Stonecutting']/tags/li",
+          "value": "ClassicStart"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "project",
+      "id": "ResearchProjectDef_ComplexClothing",
+      "def_name": "ComplexClothing",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_1.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='ComplexClothing']",
+        "sha256": "8fc372f2c4e4bb2eddbe2c1c807eb851d8f6d3f69bcc15e8713b1cc6a64bd3f7"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "absent_paths": [
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='ComplexClothing']/baseCost",
+          "value": "600"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='ComplexClothing']/techLevel",
+          "value": "Medieval"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='ComplexClothing']/tags/li",
+          "value": "ClassicStart"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "project",
+      "id": "ResearchProjectDef_Pemmican",
+      "def_name": "Pemmican",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_1.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='Pemmican']",
+        "sha256": "8fc372f2c4e4bb2eddbe2c1c807eb851d8f6d3f69bcc15e8713b1cc6a64bd3f7"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "absent_paths": [
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Pemmican']/baseCost",
+          "value": "500"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Pemmican']/techLevel",
+          "value": "Neolithic"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Pemmican']/tags/li",
+          "value": "TribalStart"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "project",
+      "id": "ResearchProjectDef_Smithing",
+      "def_name": "Smithing",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_1.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='Smithing']",
+        "sha256": "8fc372f2c4e4bb2eddbe2c1c807eb851d8f6d3f69bcc15e8713b1cc6a64bd3f7"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "absent_paths": [
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Smithing']/baseCost",
+          "value": "700"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Smithing']/techLevel",
+          "value": "Medieval"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "project",
+      "id": "ResearchProjectDef_RecurveBow",
+      "def_name": "RecurveBow",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_1.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='RecurveBow']",
+        "sha256": "8fc372f2c4e4bb2eddbe2c1c807eb851d8f6d3f69bcc15e8713b1cc6a64bd3f7"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "absent_paths": [
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='RecurveBow']/baseCost",
+          "value": "400"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='RecurveBow']/techLevel",
+          "value": "Neolithic"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='RecurveBow']/tags/li",
+          "value": "TribalStart"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "project",
+      "id": "ResearchProjectDef_LongBlades",
+      "def_name": "LongBlades",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_1.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='LongBlades']",
+        "sha256": "8fc372f2c4e4bb2eddbe2c1c807eb851d8f6d3f69bcc15e8713b1cc6a64bd3f7"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "absent_paths": [
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='LongBlades']/baseCost",
+          "value": "400"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='LongBlades']/techLevel",
+          "value": "Medieval"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='LongBlades']/prerequisites/li",
+          "value": "Smithing"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "project",
+      "id": "ResearchProjectDef_Electricity",
+      "def_name": "Electricity",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_2_Electricity.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='Electricity']",
+        "sha256": "4775a1ebf4c263fb4515f53c22db05ce0388299c28340cee5d66c10891c6a44e"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "absent_paths": [
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Electricity']/baseCost",
+          "value": "1600"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Electricity']/techLevel",
+          "value": "Industrial"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Electricity']/tags/li",
+          "value": "ClassicStart"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "project",
+      "id": "ResearchProjectDef_Batteries",
+      "def_name": "Batteries",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_2_Electricity.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='Batteries']",
+        "sha256": "4775a1ebf4c263fb4515f53c22db05ce0388299c28340cee5d66c10891c6a44e"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "absent_paths": [
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Batteries']/baseCost",
+          "value": "400"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Batteries']/techLevel",
+          "value": "Industrial"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Batteries']/prerequisites/li",
+          "value": "Electricity"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "project",
+      "id": "ResearchProjectDef_NutrientPaste",
+      "def_name": "NutrientPaste",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_2_Electricity.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='NutrientPaste']",
+        "sha256": "4775a1ebf4c263fb4515f53c22db05ce0388299c28340cee5d66c10891c6a44e"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "absent_paths": [
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='NutrientPaste']/baseCost",
+          "value": "400"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='NutrientPaste']/techLevel",
+          "value": "Industrial"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='NutrientPaste']/prerequisites/li",
+          "value": "Electricity"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='NutrientPaste']/tags/li",
+          "value": "ClassicStart"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "project",
+      "id": "ResearchProjectDef_SolarPanels",
+      "def_name": "SolarPanels",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_2_Electricity.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='SolarPanels']",
+        "sha256": "4775a1ebf4c263fb4515f53c22db05ce0388299c28340cee5d66c10891c6a44e"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "absent_paths": [
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='SolarPanels']/baseCost",
+          "value": "600"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='SolarPanels']/techLevel",
+          "value": "Industrial"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='SolarPanels']/prerequisites/li",
+          "value": "Electricity"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "project",
+      "id": "ResearchProjectDef_AirConditioning",
+      "def_name": "AirConditioning",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_2_Electricity.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='AirConditioning']",
+        "sha256": "4775a1ebf4c263fb4515f53c22db05ce0388299c28340cee5d66c10891c6a44e"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "absent_paths": [
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='AirConditioning']/baseCost",
+          "value": "500"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='AirConditioning']/techLevel",
+          "value": "Industrial"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='AirConditioning']/prerequisites/li",
+          "value": "Electricity"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='AirConditioning']/tags/li",
+          "value": "ClassicStart"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "project",
+      "id": "ResearchProjectDef_HospitalBed",
+      "def_name": "HospitalBed",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_3_Microelectronics.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='HospitalBed']",
+        "sha256": "db6bb20fa684b6fcae2b572fee5edb7cee08b3ac20cf20283ee84dbf10fd90ec"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "absent_paths": [
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='HospitalBed']/baseCost",
+          "value": "1200"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='HospitalBed']/techLevel",
+          "value": "Industrial"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='HospitalBed']/prerequisites/li",
+          "value": "MicroelectronicsBasics"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='HospitalBed']/hiddenPrerequisites/li[1]",
+          "value": "SterileMaterials"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='HospitalBed']/hiddenPrerequisites/li[2]",
+          "value": "ComplexFurniture"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='HospitalBed']/requiredResearchBuilding",
+          "value": "HiTechResearchBench"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "project",
+      "id": "ResearchProjectDef_MultiAnalyzer",
+      "def_name": "MultiAnalyzer",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_4_MultiAnalyzer.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='MultiAnalyzer']",
+        "sha256": "f0802f485c6a3d486aeb8d02f9ba674a4131f9aad2f0226a8f4b19cba8572bd1"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "absent_paths": [
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='MultiAnalyzer']/baseCost",
+          "value": "4000"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='MultiAnalyzer']/techLevel",
+          "value": "Industrial"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='MultiAnalyzer']/prerequisites/li",
+          "value": "MicroelectronicsBasics"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='MultiAnalyzer']/hiddenPrerequisites/li",
+          "value": "Machining"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='MultiAnalyzer']/requiredResearchBuilding",
+          "value": "HiTechResearchBench"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "project",
+      "id": "ResearchProjectDef_Fabrication",
+      "def_name": "Fabrication",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ResearchProjectDefs/ResearchProjects_4_MultiAnalyzer.xml",
+        "xpath": "/Defs/ResearchProjectDef[defName='Fabrication']",
+        "sha256": "f0802f485c6a3d486aeb8d02f9ba674a4131f9aad2f0226a8f4b19cba8572bd1"
+      },
+      "selected_paths": [
+        "baseCost",
+        "techLevel",
+        "prerequisites",
+        "hiddenPrerequisites",
+        "requiredResearchBuilding",
+        "requiredResearchFacilities",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "absent_paths": [
+        "hiddenPrerequisites",
+        "techprintCount",
+        "tags",
+        "knowledgeCost",
+        "requiresMechanitor",
+        "requiredAnalyzed",
+        "requireGravEngineInspected"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Fabrication']/baseCost",
+          "value": "4000"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Fabrication']/techLevel",
+          "value": "Industrial"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Fabrication']/prerequisites/li",
+          "value": "MultiAnalyzer"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Fabrication']/requiredResearchBuilding",
+          "value": "HiTechResearchBench"
+        },
+        {
+          "xpath": "/Defs/ResearchProjectDef[defName='Fabrication']/requiredResearchFacilities/li",
+          "value": "MultiAnalyzer"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_WorkSpeedGlobal",
+      "def_name": "WorkSpeedGlobal",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_WorkGeneral.xml",
+        "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']",
+        "sha256": "ce98d3d43f86691f47a069ecaf15658f7d12d2f1ad0f1fe32d039231b3cc23a7"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "skillNeedFactors",
+        "capacityFactors",
+        "statFactors",
+        "parts"
+      ],
+      "absent_paths": [
+        "maxValue",
+        "skillNeedFactors",
+        "capacityFactors",
+        "statFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']/minValue",
+          "value": "0.3"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']/parts/li[1]/humanlikeOnly",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']/parts/li[1]/factorFromGlowCurve/points/li[1]",
+          "value": "(0,0.80)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']/parts/li[1]/factorFromGlowCurve/points/li[2]",
+          "value": "(0.30,1.00)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']/parts/li[1]/ignoreIfIncapableOfSight",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']/parts/li[1]/ignoreIfPrefersDarkness",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']/parts/li[2]/factor",
+          "value": "0.85"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']/parts/li[3]/stat",
+          "value": "WorkSpeedGlobalOffsetMech"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']/parts/li[3]/label",
+          "value": "Offset from mechanitor"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']/parts/li[4]/useBiologicalYears",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']/parts/li[4]/humanlikeOnly",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']/parts/li[4]/curve/points/li[1]",
+          "value": "(4,0.2)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']/parts/li[4]/curve/points/li[2]",
+          "value": "(12,0.8)"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']/parts/li[4]/curve/points/li[3]",
+          "value": "(18,1)"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']/parts/li[1]",
+          "attributes": {
+            "Class": "StatPart_Glow"
+          }
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']/parts/li[2]",
+          "attributes": {
+            "Class": "StatPart_Slave",
+            "MayRequire": "Ludeon.RimWorld.Ideology"
+          }
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']/parts/li[3]",
+          "attributes": {
+            "Class": "StatPart_OverseerStatOffset",
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='WorkSpeedGlobal']/parts/li[4]",
+          "attributes": {
+            "Class": "StatPart_Age",
+            "MayRequire": "Ludeon.RimWorld.Biotech"
+          }
+        }
+      ]
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_IntellectualSkillBase",
+      "def_name": "IntellectualSkillBase",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_WorkGeneral.xml",
+        "xpath": "/Defs/StatDef[@Name='IntellectualSkillBase']",
+        "sha256": "ce98d3d43f86691f47a069ecaf15658f7d12d2f1ad0f1fe32d039231b3cc23a7"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "skillNeedFactors",
+        "capacityFactors",
+        "statFactors",
+        "parts"
+      ],
+      "absent_paths": [
+        "minValue",
+        "maxValue",
+        "parts"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[@Name='IntellectualSkillBase']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='IntellectualSkillBase']/skillNeedFactors/li/skill",
+          "value": "Intellectual"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='IntellectualSkillBase']/skillNeedFactors/li/baseValue",
+          "value": "0.08"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='IntellectualSkillBase']/skillNeedFactors/li/bonusPerLevel",
+          "value": "0.115"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='IntellectualSkillBase']/capacityFactors/li[1]/capacity",
+          "value": "Manipulation"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='IntellectualSkillBase']/capacityFactors/li[1]/weight",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='IntellectualSkillBase']/capacityFactors/li[1]/max",
+          "value": "1.1"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='IntellectualSkillBase']/capacityFactors/li[2]/capacity",
+          "value": "Sight"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='IntellectualSkillBase']/capacityFactors/li[2]/weight",
+          "value": "0.5"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='IntellectualSkillBase']/capacityFactors/li[2]/max",
+          "value": "1.1"
+        },
+        {
+          "xpath": "/Defs/StatDef[@Name='IntellectualSkillBase']/statFactors/li",
+          "value": "WorkSpeedGlobal"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/StatDef[@Name='IntellectualSkillBase']/skillNeedFactors/li",
+          "attributes": {
+            "Class": "SkillNeed_BaseBonus"
+          }
+        }
+      ]
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_ResearchSpeed",
+      "def_name": "ResearchSpeed",
+      "parent_name": "IntellectualSkillBase",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Pawns_WorkGeneral.xml",
+        "xpath": "/Defs/StatDef[defName='ResearchSpeed']",
+        "sha256": "ce98d3d43f86691f47a069ecaf15658f7d12d2f1ad0f1fe32d039231b3cc23a7"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "skillNeedFactors",
+        "capacityFactors",
+        "statFactors",
+        "parts"
+      ],
+      "absent_paths": [
+        "defaultBaseValue",
+        "maxValue",
+        "skillNeedFactors",
+        "capacityFactors",
+        "statFactors",
+        "parts"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='ResearchSpeed']/minValue",
+          "value": "0.1"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "stat",
+      "id": "StatDef_ResearchSpeedFactor",
+      "def_name": "ResearchSpeedFactor",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Stats/Stats_Building_Special.xml",
+        "xpath": "/Defs/StatDef[defName='ResearchSpeedFactor']",
+        "sha256": "e57298ad955777e288239b2e7804def1b1f0d3cf7290bba5b723fff684c7d1ce"
+      },
+      "selected_paths": [
+        "defaultBaseValue",
+        "minValue",
+        "maxValue",
+        "skillNeedFactors",
+        "capacityFactors",
+        "statFactors",
+        "parts"
+      ],
+      "absent_paths": [
+        "maxValue",
+        "skillNeedFactors",
+        "capacityFactors",
+        "statFactors"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/StatDef[defName='ResearchSpeedFactor']/defaultBaseValue",
+          "value": "1"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ResearchSpeedFactor']/minValue",
+          "value": "0.25"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ResearchSpeedFactor']/parts/li[1]/factorIndoors",
+          "value": "1.00"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ResearchSpeedFactor']/parts/li[1]/factorOutdoors",
+          "value": "0.75"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ResearchSpeedFactor']/parts/li[2]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ResearchSpeedFactor']/parts/li[3]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ResearchSpeedFactor']/parts/li[4]/roomStat",
+          "value": "ResearchSpeedFactor"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ResearchSpeedFactor']/parts/li[4]/customLabel",
+          "value": "Room cleanliness"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ResearchSpeedFactor']/parts/li[5]/roomStat",
+          "value": "ReadingBonus"
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ResearchSpeedFactor']/parts/li[5]/customLabel",
+          "value": "Reading bonus"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/StatDef[defName='ResearchSpeedFactor']/parts/li[1]",
+          "attributes": {
+            "Class": "StatPart_Outdoors"
+          }
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ResearchSpeedFactor']/parts/li[2]",
+          "attributes": {
+            "Class": "StatPart_WorkTableRoomRole"
+          }
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ResearchSpeedFactor']/parts/li[3]",
+          "attributes": {
+            "Class": "StatPart_WorkTableTemperature"
+          }
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ResearchSpeedFactor']/parts/li[4]",
+          "attributes": {
+            "Class": "StatPart_RoomStat"
+          }
+        },
+        {
+          "xpath": "/Defs/StatDef[defName='ResearchSpeedFactor']/parts/li[5]",
+          "attributes": {
+            "Class": "StatPart_RoomStat"
+          }
+        }
+      ]
+    },
+    {
+      "group": "skill",
+      "id": "SkillDef_Intellectual",
+      "def_name": "Intellectual",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/SkillDefs/Skills.xml",
+        "xpath": "/Defs/SkillDef[defName='Intellectual']",
+        "sha256": "f9fb34ae0d4f834ef6fcafeef3e5a0eba1979bb079c91842f31606ab7e1bc43a"
+      },
+      "selected_paths": [
+        "skillLabel",
+        "disablingWorkTags",
+        "neverDisabledBasedOnWorkTypes"
+      ],
+      "absent_paths": [
+        "disablingWorkTags",
+        "neverDisabledBasedOnWorkTypes"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/SkillDef[defName='Intellectual']/skillLabel",
+          "value": "intellectual"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "work",
+      "id": "JobDef_Research",
+      "def_name": "Research",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/JobDefs/Jobs_Work.xml",
+        "xpath": "/Defs/JobDef[defName='Research']",
+        "sha256": "0c2cc583de4ad306681c1dcd65763539461adedf33a5360fe716a36deddef2a1"
+      },
+      "selected_paths": [
+        "driverClass",
+        "allowOpportunisticPrefix",
+        "checkOverrideOnExpire",
+        "expiryInterval"
+      ],
+      "absent_paths": [
+        "checkOverrideOnExpire",
+        "expiryInterval"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/JobDef[defName='Research']/driverClass",
+          "value": "JobDriver_Research"
+        },
+        {
+          "xpath": "/Defs/JobDef[defName='Research']/allowOpportunisticPrefix",
+          "value": "true"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "work",
+      "id": "WorkGiverDef_Research",
+      "def_name": "Research",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+        "xpath": "/Defs/WorkGiverDef[defName='Research']",
+        "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c"
+      },
+      "selected_paths": [
+        "giverClass",
+        "workType",
+        "priorityInType",
+        "requiredCapacities",
+        "canBeDoneByMechs"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='Research']/giverClass",
+          "value": "WorkGiver_Researcher"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='Research']/workType",
+          "value": "Research"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='Research']/priorityInType",
+          "value": "100"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='Research']/requiredCapacities/li",
+          "value": "Manipulation"
+        },
+        {
+          "xpath": "/Defs/WorkGiverDef[defName='Research']/canBeDoneByMechs",
+          "value": "false"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "work",
+      "id": "WorkTypeDef_Research",
+      "def_name": "Research",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/WorkTypeDefs/WorkTypes.xml",
+        "xpath": "/Defs/WorkTypeDef[defName='Research']",
+        "sha256": "442a5b1e70a96bf910432016a5dc258aa0ff7f1065092991b29822f315c1dbfe"
+      },
+      "selected_paths": [
+        "naturalPriority",
+        "disabledForSlaves",
+        "relevantSkills",
+        "workTags"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/WorkTypeDef[defName='Research']/naturalPriority",
+          "value": "100"
+        },
+        {
+          "xpath": "/Defs/WorkTypeDef[defName='Research']/disabledForSlaves",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/WorkTypeDef[defName='Research']/relevantSkills/li",
+          "value": "Intellectual"
+        },
+        {
+          "xpath": "/Defs/WorkTypeDef[defName='Research']/workTags/li[1]",
+          "value": "Intellectual"
+        },
+        {
+          "xpath": "/Defs/WorkTypeDef[defName='Research']/workTags/li[2]",
+          "value": "Commoner"
+        },
+        {
+          "xpath": "/Defs/WorkTypeDef[defName='Research']/workTags/li[3]",
+          "value": "AllWork"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "room",
+      "id": "RoomStatDef_ReadingBonus",
+      "def_name": "ReadingBonus",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Rooms/RoomStats.xml",
+        "xpath": "/Defs/RoomStatDef[defName='ReadingBonus']",
+        "sha256": "5bac24103c894719dc665f4843afd7e7dbe2128d5d049b1be47e878cd7f85447"
+      },
+      "selected_paths": [
+        "workerClass",
+        "roomlessScore",
+        "inputStat",
+        "curve"
+      ],
+      "absent_paths": [
+        "inputStat",
+        "curve"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/RoomStatDef[defName='ReadingBonus']/workerClass",
+          "value": "RoomStatWorker_ReadingBonus"
+        },
+        {
+          "xpath": "/Defs/RoomStatDef[defName='ReadingBonus']/roomlessScore",
+          "value": "1"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "room",
+      "id": "RoomStatDef_ResearchSpeedFactor",
+      "def_name": "ResearchSpeedFactor",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Rooms/RoomStats.xml",
+        "xpath": "/Defs/RoomStatDef[defName='ResearchSpeedFactor']",
+        "sha256": "5bac24103c894719dc665f4843afd7e7dbe2128d5d049b1be47e878cd7f85447"
+      },
+      "selected_paths": [
+        "workerClass",
+        "roomlessScore",
+        "inputStat",
+        "curve"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/RoomStatDef[defName='ResearchSpeedFactor']/workerClass",
+          "value": "RoomStatWorker_FromStatByCurve"
+        },
+        {
+          "xpath": "/Defs/RoomStatDef[defName='ResearchSpeedFactor']/roomlessScore",
+          "value": "0.75"
+        },
+        {
+          "xpath": "/Defs/RoomStatDef[defName='ResearchSpeedFactor']/inputStat",
+          "value": "Cleanliness"
+        },
+        {
+          "xpath": "/Defs/RoomStatDef[defName='ResearchSpeedFactor']/curve/points/li[1]",
+          "value": "(-5.0, 0.75 )"
+        },
+        {
+          "xpath": "/Defs/RoomStatDef[defName='ResearchSpeedFactor']/curve/points/li[2]",
+          "value": "(-2.5, 0.85 )"
+        },
+        {
+          "xpath": "/Defs/RoomStatDef[defName='ResearchSpeedFactor']/curve/points/li[3]",
+          "value": "( 0.0, 1.00 )"
+        },
+        {
+          "xpath": "/Defs/RoomStatDef[defName='ResearchSpeedFactor']/curve/points/li[4]",
+          "value": "( 1.0, 1.15 )"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "room",
+      "id": "RoomRoleDef_Laboratory",
+      "def_name": "Laboratory",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Rooms/RoomRoles.xml",
+        "xpath": "/Defs/RoomRoleDef[defName='Laboratory']",
+        "sha256": "048c91e281149cf955911092c2892600cfcfcbaa8a93a1b25463c01d08393291"
+      },
+      "selected_paths": [
+        "workerClass",
+        "relatedStats"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/RoomRoleDef[defName='Laboratory']/workerClass",
+          "value": "RoomRoleWorker_Laboratory"
+        },
+        {
+          "xpath": "/Defs/RoomRoleDef[defName='Laboratory']/relatedStats/li",
+          "value": "Cleanliness"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "difficulty",
+      "id": "DifficultyDef_Peaceful",
+      "def_name": "Peaceful",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+        "xpath": "/Defs/DifficultyDef[defName='Peaceful']",
+        "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90"
+      },
+      "selected_paths": [
+        "label",
+        "researchSpeedFactor"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/DifficultyDef[defName='Peaceful']/label",
+          "value": "peaceful"
+        },
+        {
+          "xpath": "/Defs/DifficultyDef[defName='Peaceful']/researchSpeedFactor",
+          "value": "1.20"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "difficulty",
+      "id": "DifficultyDef_Easy",
+      "def_name": "Easy",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+        "xpath": "/Defs/DifficultyDef[defName='Easy']",
+        "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90"
+      },
+      "selected_paths": [
+        "label",
+        "researchSpeedFactor"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/DifficultyDef[defName='Easy']/label",
+          "value": "community builder"
+        },
+        {
+          "xpath": "/Defs/DifficultyDef[defName='Easy']/researchSpeedFactor",
+          "value": "1.20"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "difficulty",
+      "id": "DifficultyDef_Medium",
+      "def_name": "Medium",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+        "xpath": "/Defs/DifficultyDef[defName='Medium']",
+        "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90"
+      },
+      "selected_paths": [
+        "label",
+        "researchSpeedFactor"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/DifficultyDef[defName='Medium']/label",
+          "value": "adventure story"
+        },
+        {
+          "xpath": "/Defs/DifficultyDef[defName='Medium']/researchSpeedFactor",
+          "value": "1"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "difficulty",
+      "id": "DifficultyDef_Rough",
+      "def_name": "Rough",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+        "xpath": "/Defs/DifficultyDef[defName='Rough']",
+        "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90"
+      },
+      "selected_paths": [
+        "label",
+        "researchSpeedFactor"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/DifficultyDef[defName='Rough']/label",
+          "value": "strive to survive"
+        },
+        {
+          "xpath": "/Defs/DifficultyDef[defName='Rough']/researchSpeedFactor",
+          "value": "1"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "difficulty",
+      "id": "DifficultyDef_Hard",
+      "def_name": "Hard",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+        "xpath": "/Defs/DifficultyDef[defName='Hard']",
+        "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90"
+      },
+      "selected_paths": [
+        "label",
+        "researchSpeedFactor"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/DifficultyDef[defName='Hard']/label",
+          "value": "blood and dust"
+        },
+        {
+          "xpath": "/Defs/DifficultyDef[defName='Hard']/researchSpeedFactor",
+          "value": "0.95"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "difficulty",
+      "id": "DifficultyDef_Extreme",
+      "def_name": "Extreme",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+        "xpath": "/Defs/DifficultyDef[defName='Extreme']",
+        "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90"
+      },
+      "selected_paths": [
+        "label",
+        "researchSpeedFactor"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/DifficultyDef[defName='Extreme']/label",
+          "value": "losing is fun"
+        },
+        {
+          "xpath": "/Defs/DifficultyDef[defName='Extreme']/researchSpeedFactor",
+          "value": "0.9"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "difficulty",
+      "id": "DifficultyDef_Custom",
+      "def_name": "Custom",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Misc/DifficultyDefs/Difficulties.xml",
+        "xpath": "/Defs/DifficultyDef[defName='Custom']",
+        "sha256": "4588255920d559d6b3cb3efc3b71a48d5e656f62bea0fc6b0b9e8d6cf166ac90"
+      },
+      "selected_paths": [
+        "label",
+        "researchSpeedFactor"
+      ],
+      "absent_paths": [
+        "researchSpeedFactor"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/DifficultyDef[defName='Custom']/label",
+          "value": "Custom"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "faction",
+      "id": "FactionDef_PlayerFactionBase",
+      "def_name": "PlayerFactionBase",
+      "parent_name": "FactionBase",
+      "source": {
+        "path": "Data/Core/Defs/FactionDefs/Factions_Player.xml",
+        "xpath": "/Defs/FactionDef[@Name='PlayerFactionBase']",
+        "sha256": "457b369ecd843dbc3acc96edfb7c5f4440ea6dd307587145b75059e9199445ca"
+      },
+      "selected_paths": [
+        "techLevel",
+        "startingResearchTags",
+        "startingTechprintsResearchTags"
+      ],
+      "absent_paths": [
+        "techLevel",
+        "startingResearchTags",
+        "startingTechprintsResearchTags"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "faction",
+      "id": "FactionDef_PlayerColony",
+      "def_name": "PlayerColony",
+      "parent_name": "PlayerFactionBase",
+      "source": {
+        "path": "Data/Core/Defs/FactionDefs/Factions_Player.xml",
+        "xpath": "/Defs/FactionDef[defName='PlayerColony']",
+        "sha256": "457b369ecd843dbc3acc96edfb7c5f4440ea6dd307587145b75059e9199445ca"
+      },
+      "selected_paths": [
+        "techLevel",
+        "startingResearchTags",
+        "startingTechprintsResearchTags"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/FactionDef[defName='PlayerColony']/techLevel",
+          "value": "Industrial"
+        },
+        {
+          "xpath": "/Defs/FactionDef[defName='PlayerColony']/startingResearchTags/li",
+          "value": "ClassicStart"
+        },
+        {
+          "xpath": "/Defs/FactionDef[defName='PlayerColony']/startingTechprintsResearchTags/li[1]",
+          "value": "ClassicStart"
+        },
+        {
+          "xpath": "/Defs/FactionDef[defName='PlayerColony']/startingTechprintsResearchTags/li[2]",
+          "value": "ClassicStartTechprints"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "faction",
+      "id": "FactionDef_PlayerTribe",
+      "def_name": "PlayerTribe",
+      "parent_name": "PlayerFactionBase",
+      "source": {
+        "path": "Data/Core/Defs/FactionDefs/Factions_Player.xml",
+        "xpath": "/Defs/FactionDef[defName='PlayerTribe']",
+        "sha256": "457b369ecd843dbc3acc96edfb7c5f4440ea6dd307587145b75059e9199445ca"
+      },
+      "selected_paths": [
+        "techLevel",
+        "startingResearchTags",
+        "startingTechprintsResearchTags"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/FactionDef[defName='PlayerTribe']/techLevel",
+          "value": "Neolithic"
+        },
+        {
+          "xpath": "/Defs/FactionDef[defName='PlayerTribe']/startingResearchTags/li",
+          "value": "TribalStart"
+        },
+        {
+          "xpath": "/Defs/FactionDef[defName='PlayerTribe']/startingTechprintsResearchTags/li[1]",
+          "value": "TribalStart"
+        },
+        {
+          "xpath": "/Defs/FactionDef[defName='PlayerTribe']/startingTechprintsResearchTags/li[2]",
+          "value": "TribalStartTechprints"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "scenario",
+      "id": "ScenarioDef_ScenarioBase",
+      "def_name": "ScenarioBase",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/Scenarios/Scenarios_Classic.xml",
+        "xpath": "/Defs/ScenarioDef[@Name='ScenarioBase']",
+        "sha256": "af4cbeae6a48986366781ebadff64c5cd827d875e5c8c266b49371b903aebe3a"
+      },
+      "selected_paths": [
+        "scenario/playerFaction",
+        "scenario/parts/li[@Class=\"ScenPart_StartingResearch\"]"
+      ],
+      "absent_paths": [
+        "scenario/parts/li[@Class=\"ScenPart_StartingResearch\"]"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ScenarioDef[@Name='ScenarioBase']/scenario/playerFaction/def",
+          "value": "PlayerFaction"
+        },
+        {
+          "xpath": "/Defs/ScenarioDef[@Name='ScenarioBase']/scenario/playerFaction/factionDef",
+          "value": "PlayerColony"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "scenario",
+      "id": "ScenarioDef_Crashlanded",
+      "def_name": "Crashlanded",
+      "parent_name": "ScenarioBase",
+      "source": {
+        "path": "Data/Core/Defs/Scenarios/Scenarios_Classic.xml",
+        "xpath": "/Defs/ScenarioDef[defName='Crashlanded']",
+        "sha256": "af4cbeae6a48986366781ebadff64c5cd827d875e5c8c266b49371b903aebe3a"
+      },
+      "selected_paths": [
+        "scenario/playerFaction",
+        "scenario/parts/li[@Class=\"ScenPart_StartingResearch\"]"
+      ],
+      "absent_paths": [
+        "scenario/playerFaction",
+        "scenario/parts/li[@Class=\"ScenPart_StartingResearch\"]"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "scenario",
+      "id": "ScenarioDef_LostTribe",
+      "def_name": "LostTribe",
+      "parent_name": "ScenarioBase",
+      "source": {
+        "path": "Data/Core/Defs/Scenarios/Scenarios_Classic.xml",
+        "xpath": "/Defs/ScenarioDef[defName='LostTribe']",
+        "sha256": "af4cbeae6a48986366781ebadff64c5cd827d875e5c8c266b49371b903aebe3a"
+      },
+      "selected_paths": [
+        "scenario/playerFaction",
+        "scenario/parts/li[@Class=\"ScenPart_StartingResearch\"]"
+      ],
+      "absent_paths": [
+        "scenario/parts/li[@Class=\"ScenPart_StartingResearch\"]"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ScenarioDef[defName='LostTribe']/scenario/playerFaction/factionDef",
+          "value": "PlayerTribe"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "bench",
+      "id": "ThingDef_BuildingBase",
+      "def_name": "BuildingBase",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Base.xml",
+        "xpath": "/Defs/ThingDef[@Name='BuildingBase']",
+        "sha256": "b16e3a7934febd9ffb7883f18392d524ba376c9657da4c788d1951552f86d142"
+      },
+      "selected_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "thingClass",
+        "size",
+        "graphicData/drawSize",
+        "costStuffCount",
+        "costList",
+        "stuffCategories",
+        "statBases/WorkToBuild",
+        "statBases/ResearchSpeedFactor",
+        "statBases/MaxHitPoints",
+        "building/workTableRoomRole",
+        "building/workTableNotInRoomRoleFactor",
+        "interactionCellOffset",
+        "hasInteractionCell",
+        "comps",
+        "minifiedDef",
+        "terrainAffordanceNeeded",
+        "passability",
+        "pathCost"
+      ],
+      "absent_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "size",
+        "graphicData/drawSize",
+        "costStuffCount",
+        "costList",
+        "stuffCategories",
+        "statBases/WorkToBuild",
+        "statBases/ResearchSpeedFactor",
+        "statBases/MaxHitPoints",
+        "building/workTableRoomRole",
+        "building/workTableNotInRoomRoleFactor",
+        "interactionCellOffset",
+        "hasInteractionCell",
+        "comps",
+        "minifiedDef",
+        "passability",
+        "pathCost"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BuildingBase']/thingClass",
+          "value": "Building"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BuildingBase']/terrainAffordanceNeeded",
+          "value": "Light"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "bench",
+      "id": "ThingDef_BenchBase",
+      "def_name": "BenchBase",
+      "parent_name": "BuildingBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Production.xml",
+        "xpath": "/Defs/ThingDef[@Name='BenchBase']",
+        "sha256": "3221c30adc223498636ac7b6ca86ef9c50fce681b138be8f0919c6e652045a31"
+      },
+      "selected_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "thingClass",
+        "size",
+        "graphicData/drawSize",
+        "costStuffCount",
+        "costList",
+        "stuffCategories",
+        "statBases/WorkToBuild",
+        "statBases/ResearchSpeedFactor",
+        "statBases/MaxHitPoints",
+        "building/workTableRoomRole",
+        "building/workTableNotInRoomRoleFactor",
+        "interactionCellOffset",
+        "hasInteractionCell",
+        "comps",
+        "minifiedDef",
+        "terrainAffordanceNeeded",
+        "passability",
+        "pathCost"
+      ],
+      "absent_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "thingClass",
+        "size",
+        "graphicData/drawSize",
+        "costStuffCount",
+        "costList",
+        "stuffCategories",
+        "statBases/WorkToBuild",
+        "statBases/ResearchSpeedFactor",
+        "statBases/MaxHitPoints",
+        "building/workTableNotInRoomRoleFactor",
+        "interactionCellOffset",
+        "hasInteractionCell",
+        "passability",
+        "pathCost"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BenchBase']/building/workTableRoomRole",
+          "value": "Workshop"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BenchBase']/comps/li/workSpeedStat",
+          "value": "WorkTableWorkSpeedFactor"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BenchBase']/minifiedDef",
+          "value": "MinifiedThing"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='BenchBase']/terrainAffordanceNeeded",
+          "value": "Medium"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='BenchBase']/comps/li",
+          "attributes": {
+            "Class": "CompProperties_ReportWorkSpeed"
+          }
+        }
+      ]
+    },
+    {
+      "group": "bench",
+      "id": "ThingDef_SimpleResearchBench",
+      "def_name": "SimpleResearchBench",
+      "parent_name": "BenchBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Production.xml",
+        "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']",
+        "sha256": "3221c30adc223498636ac7b6ca86ef9c50fce681b138be8f0919c6e652045a31"
+      },
+      "selected_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "thingClass",
+        "size",
+        "graphicData/drawSize",
+        "costStuffCount",
+        "costList",
+        "stuffCategories",
+        "statBases/WorkToBuild",
+        "statBases/ResearchSpeedFactor",
+        "statBases/MaxHitPoints",
+        "building/workTableRoomRole",
+        "building/workTableNotInRoomRoleFactor",
+        "interactionCellOffset",
+        "hasInteractionCell",
+        "comps",
+        "minifiedDef",
+        "terrainAffordanceNeeded",
+        "passability",
+        "pathCost"
+      ],
+      "absent_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "minifiedDef",
+        "terrainAffordanceNeeded"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/thingClass",
+          "value": "Building_ResearchBench"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/size",
+          "value": "(3,2)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/graphicData/drawSize",
+          "value": "(5,4)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/costStuffCount",
+          "value": "75"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/costList/Steel",
+          "value": "25"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/stuffCategories/li[1]",
+          "value": "Metallic"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/stuffCategories/li[2]",
+          "value": "Woody"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/stuffCategories/li[3]",
+          "value": "Stony"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/statBases/WorkToBuild",
+          "value": "2800"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/statBases/ResearchSpeedFactor",
+          "value": "0.75"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/statBases/MaxHitPoints",
+          "value": "250"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/building/workTableRoomRole",
+          "value": "Laboratory"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/building/workTableNotInRoomRoleFactor",
+          "value": "0.8"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/interactionCellOffset",
+          "value": "(0,0,-1)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/hasInteractionCell",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/comps/li/workSpeedStat",
+          "value": "ResearchSpeedFactor"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/passability",
+          "value": "PassThroughOnly"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/pathCost",
+          "value": "50"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/comps",
+          "attributes": {
+            "Inherit": "False"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SimpleResearchBench']/comps/li",
+          "attributes": {
+            "Class": "CompProperties_ReportWorkSpeed"
+          }
+        }
+      ]
+    },
+    {
+      "group": "bench",
+      "id": "ThingDef_HiTechResearchBench",
+      "def_name": "HiTechResearchBench",
+      "parent_name": "BenchBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Production.xml",
+        "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']",
+        "sha256": "3221c30adc223498636ac7b6ca86ef9c50fce681b138be8f0919c6e652045a31"
+      },
+      "selected_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite",
+        "thingClass",
+        "size",
+        "graphicData/drawSize",
+        "costStuffCount",
+        "costList",
+        "stuffCategories",
+        "statBases/WorkToBuild",
+        "statBases/ResearchSpeedFactor",
+        "statBases/MaxHitPoints",
+        "building/workTableRoomRole",
+        "building/workTableNotInRoomRoleFactor",
+        "interactionCellOffset",
+        "hasInteractionCell",
+        "comps",
+        "minifiedDef",
+        "terrainAffordanceNeeded",
+        "passability",
+        "pathCost"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/researchPrerequisites/li",
+          "value": "MicroelectronicsBasics"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/constructionSkillPrerequisite",
+          "value": "6"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/thingClass",
+          "value": "Building_ResearchBench"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/size",
+          "value": "(5,2)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/graphicData/drawSize",
+          "value": "(7,4)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/costStuffCount",
+          "value": "150"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/costList/Steel",
+          "value": "100"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/costList/ComponentIndustrial",
+          "value": "10"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/stuffCategories/li",
+          "value": "Metallic"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/statBases/WorkToBuild",
+          "value": "5000"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/statBases/ResearchSpeedFactor",
+          "value": "1.0"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/statBases/MaxHitPoints",
+          "value": "250"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/building/workTableRoomRole",
+          "value": "Laboratory"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/building/workTableNotInRoomRoleFactor",
+          "value": "0.8"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/interactionCellOffset",
+          "value": "(0,0,-1)"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/hasInteractionCell",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/comps/li[1]/workSpeedStat",
+          "value": "ResearchSpeedFactor"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/comps/li[2]/compClass",
+          "value": "CompPowerTrader"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/comps/li[2]/basePowerConsumption",
+          "value": "250"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/comps/li[2]/shortCircuitInRain",
+          "value": "true"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/comps/li[3]",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/comps/li[4]/linkableFacilities/li",
+          "value": "MultiAnalyzer"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/minifiedDef",
+          "value": ""
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/terrainAffordanceNeeded",
+          "value": "Heavy"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/passability",
+          "value": "PassThroughOnly"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/pathCost",
+          "value": "50"
+        }
+      ],
+      "node_attributes": [
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/comps",
+          "attributes": {
+            "Inherit": "False"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/comps/li[1]",
+          "attributes": {
+            "Class": "CompProperties_ReportWorkSpeed"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/comps/li[2]",
+          "attributes": {
+            "Class": "CompProperties_Power"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/comps/li[3]",
+          "attributes": {
+            "Class": "CompProperties_Flickable"
+          }
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='HiTechResearchBench']/comps/li[4]",
+          "attributes": {
+            "Class": "CompProperties_AffectedByFacilities"
+          }
+        }
+      ]
+    },
+    {
+      "group": "build",
+      "id": "ThingDef_HandTailoringBench",
+      "def_name": "HandTailoringBench",
+      "parent_name": "BenchBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Production.xml",
+        "xpath": "/Defs/ThingDef[defName='HandTailoringBench']",
+        "sha256": "3221c30adc223498636ac7b6ca86ef9c50fce681b138be8f0919c6e652045a31"
+      },
+      "selected_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_paths": [
+        "constructionSkillPrerequisite"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='HandTailoringBench']/researchPrerequisites/li",
+          "value": "ComplexClothing"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "build",
+      "id": "ThingDef_ElectricTailoringBench",
+      "def_name": "ElectricTailoringBench",
+      "parent_name": "BenchBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Production.xml",
+        "xpath": "/Defs/ThingDef[defName='ElectricTailoringBench']",
+        "sha256": "3221c30adc223498636ac7b6ca86ef9c50fce681b138be8f0919c6e652045a31"
+      },
+      "selected_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricTailoringBench']/researchPrerequisites/li[1]",
+          "value": "ComplexClothing"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricTailoringBench']/researchPrerequisites/li[2]",
+          "value": "Electricity"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricTailoringBench']/constructionSkillPrerequisite",
+          "value": "4"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "build",
+      "id": "ThingDef_FueledSmithy",
+      "def_name": "FueledSmithy",
+      "parent_name": "BenchBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Production.xml",
+        "xpath": "/Defs/ThingDef[defName='FueledSmithy']",
+        "sha256": "3221c30adc223498636ac7b6ca86ef9c50fce681b138be8f0919c6e652045a31"
+      },
+      "selected_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/researchPrerequisites/li",
+          "value": "Smithing"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='FueledSmithy']/constructionSkillPrerequisite",
+          "value": "4"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "build",
+      "id": "ThingDef_ElectricSmithy",
+      "def_name": "ElectricSmithy",
+      "parent_name": "BenchBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Production.xml",
+        "xpath": "/Defs/ThingDef[defName='ElectricSmithy']",
+        "sha256": "3221c30adc223498636ac7b6ca86ef9c50fce681b138be8f0919c6e652045a31"
+      },
+      "selected_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/researchPrerequisites/li[1]",
+          "value": "Smithing"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/researchPrerequisites/li[2]",
+          "value": "Electricity"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricSmithy']/constructionSkillPrerequisite",
+          "value": "5"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "build",
+      "id": "ThingDef_ElectricStove",
+      "def_name": "ElectricStove",
+      "parent_name": "BenchBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Production.xml",
+        "xpath": "/Defs/ThingDef[defName='ElectricStove']",
+        "sha256": "3221c30adc223498636ac7b6ca86ef9c50fce681b138be8f0919c6e652045a31"
+      },
+      "selected_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricStove']/researchPrerequisites/li",
+          "value": "Electricity"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='ElectricStove']/constructionSkillPrerequisite",
+          "value": "4"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "build",
+      "id": "ThingDef_FueledStove",
+      "def_name": "FueledStove",
+      "parent_name": "BenchBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Production.xml",
+        "xpath": "/Defs/ThingDef[defName='FueledStove']",
+        "sha256": "3221c30adc223498636ac7b6ca86ef9c50fce681b138be8f0919c6e652045a31"
+      },
+      "selected_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "build",
+      "id": "ThingDef_TableStonecutter",
+      "def_name": "TableStonecutter",
+      "parent_name": "BenchBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Production.xml",
+        "xpath": "/Defs/ThingDef[defName='TableStonecutter']",
+        "sha256": "3221c30adc223498636ac7b6ca86ef9c50fce681b138be8f0919c6e652045a31"
+      },
+      "selected_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_paths": [
+        "constructionSkillPrerequisite"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='TableStonecutter']/researchPrerequisites/li",
+          "value": "Stonecutting"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "build",
+      "id": "ThingDef_PowerConduit",
+      "def_name": "PowerConduit",
+      "parent_name": "BuildingBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Power.xml",
+        "xpath": "/Defs/ThingDef[defName='PowerConduit']",
+        "sha256": "f9213d01681e0d9082447c75a3d31113ba8e6b52f7595ef951d29ca624d0aaba"
+      },
+      "selected_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_paths": [
+        "constructionSkillPrerequisite"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='PowerConduit']/researchPrerequisites/li",
+          "value": "Electricity"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "build",
+      "id": "ThingDef_WoodFiredGenerator",
+      "def_name": "WoodFiredGenerator",
+      "parent_name": "BuildingBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Power.xml",
+        "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']",
+        "sha256": "f9213d01681e0d9082447c75a3d31113ba8e6b52f7595ef951d29ca624d0aaba"
+      },
+      "selected_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/researchPrerequisites/li",
+          "value": "Electricity"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='WoodFiredGenerator']/constructionSkillPrerequisite",
+          "value": "4"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "build",
+      "id": "ThingDef_Battery",
+      "def_name": "Battery",
+      "parent_name": "BuildingBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Power.xml",
+        "xpath": "/Defs/ThingDef[defName='Battery']",
+        "sha256": "f9213d01681e0d9082447c75a3d31113ba8e6b52f7595ef951d29ca624d0aaba"
+      },
+      "selected_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_paths": [
+        "constructionSkillPrerequisite"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Battery']/researchPrerequisites/li",
+          "value": "Batteries"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "build",
+      "id": "ThingDef_SolarGenerator",
+      "def_name": "SolarGenerator",
+      "parent_name": "BuildingBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Power.xml",
+        "xpath": "/Defs/ThingDef[defName='SolarGenerator']",
+        "sha256": "f9213d01681e0d9082447c75a3d31113ba8e6b52f7595ef951d29ca624d0aaba"
+      },
+      "selected_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/researchPrerequisites/li",
+          "value": "SolarPanels"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='SolarGenerator']/constructionSkillPrerequisite",
+          "value": "6"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "build",
+      "id": "ThingDef_Heater",
+      "def_name": "Heater",
+      "parent_name": "BuildingBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Temperature.xml",
+        "xpath": "/Defs/ThingDef[defName='Heater']",
+        "sha256": "5a52378b24103968881042728e9a40639f010664ef46a37df20596c01bd4b1ec"
+      },
+      "selected_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/researchPrerequisites/li",
+          "value": "Electricity"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Heater']/constructionSkillPrerequisite",
+          "value": "5"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "build",
+      "id": "ThingDef_Cooler",
+      "def_name": "Cooler",
+      "parent_name": "BuildingBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Temperature.xml",
+        "xpath": "/Defs/ThingDef[defName='Cooler']",
+        "sha256": "5a52378b24103968881042728e9a40639f010664ef46a37df20596c01bd4b1ec"
+      },
+      "selected_paths": [
+        "researchPrerequisites",
+        "constructionSkillPrerequisite"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/researchPrerequisites/li",
+          "value": "AirConditioning"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='Cooler']/constructionSkillPrerequisite",
+          "value": "5"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_PlantBaseNonEdible",
+      "def_name": "PlantBaseNonEdible",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='PlantBaseNonEdible']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      },
+      "selected_paths": [
+        "plant/sowResearchPrerequisites",
+        "plant/sowMinSkill"
+      ],
+      "absent_paths": [
+        "plant/sowResearchPrerequisites",
+        "plant/sowMinSkill"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_PlantBase",
+      "def_name": "PlantBase",
+      "parent_name": "PlantBaseNonEdible",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='PlantBase']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      },
+      "selected_paths": [
+        "plant/sowResearchPrerequisites",
+        "plant/sowMinSkill"
+      ],
+      "absent_paths": [
+        "plant/sowResearchPrerequisites",
+        "plant/sowMinSkill"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_TreeBase",
+      "def_name": "TreeBase",
+      "parent_name": "PlantBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='TreeBase']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      },
+      "selected_paths": [
+        "plant/sowResearchPrerequisites",
+        "plant/sowMinSkill"
+      ],
+      "absent_paths": [],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/sowResearchPrerequisites/li",
+          "value": "TreeSowing"
+        },
+        {
+          "xpath": "/Defs/ThingDef[@Name='TreeBase']/plant/sowMinSkill",
+          "value": "6"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_DeciduousTreeBase",
+      "def_name": "DeciduousTreeBase",
+      "parent_name": "TreeBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+        "xpath": "/Defs/ThingDef[@Name='DeciduousTreeBase']",
+        "sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec"
+      },
+      "selected_paths": [
+        "plant/sowResearchPrerequisites",
+        "plant/sowMinSkill"
+      ],
+      "absent_paths": [
+        "plant/sowResearchPrerequisites",
+        "plant/sowMinSkill"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_Plant_TreeOak",
+      "def_name": "Plant_TreeOak",
+      "parent_name": "DeciduousTreeBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_Temperate.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_TreeOak']",
+        "sha256": "648f1b176bf950762413c631e2e800580ddd270b752a1ed9e73ae9ff99653665"
+      },
+      "selected_paths": [
+        "plant/sowResearchPrerequisites",
+        "plant/sowMinSkill"
+      ],
+      "absent_paths": [
+        "plant/sowResearchPrerequisites",
+        "plant/sowMinSkill"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_Plant_TreePine",
+      "def_name": "Plant_TreePine",
+      "parent_name": "TreeBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_Temperate.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_TreePine']",
+        "sha256": "648f1b176bf950762413c631e2e800580ddd270b752a1ed9e73ae9ff99653665"
+      },
+      "selected_paths": [
+        "plant/sowResearchPrerequisites",
+        "plant/sowMinSkill"
+      ],
+      "absent_paths": [
+        "plant/sowResearchPrerequisites",
+        "plant/sowMinSkill"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "plant",
+      "id": "ThingDef_Plant_TreeBirch",
+      "def_name": "Plant_TreeBirch",
+      "parent_name": "DeciduousTreeBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_Temperate.xml",
+        "xpath": "/Defs/ThingDef[defName='Plant_TreeBirch']",
+        "sha256": "648f1b176bf950762413c631e2e800580ddd270b752a1ed9e73ae9ff99653665"
+      },
+      "selected_paths": [
+        "plant/sowResearchPrerequisites",
+        "plant/sowMinSkill"
+      ],
+      "absent_paths": [
+        "plant/sowResearchPrerequisites",
+        "plant/sowMinSkill"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "recipe",
+      "id": "ThingDef_BaseWeapon",
+      "def_name": "BaseWeapon",
+      "parent_name": "",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+        "xpath": "/Defs/ThingDef[@Name='BaseWeapon']",
+        "sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107"
+      },
+      "selected_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "absent_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "recipe",
+      "id": "ThingDef_BaseMeleeWeapon",
+      "def_name": "BaseMeleeWeapon",
+      "parent_name": "BaseWeapon",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+        "xpath": "/Defs/ThingDef[@Name='BaseMeleeWeapon']",
+        "sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107"
+      },
+      "selected_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "absent_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "recipe",
+      "id": "ThingDef_BaseMeleeWeapon_Sharp",
+      "def_name": "BaseMeleeWeapon_Sharp",
+      "parent_name": "BaseMeleeWeapon",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+        "xpath": "/Defs/ThingDef[@Name='BaseMeleeWeapon_Sharp']",
+        "sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107"
+      },
+      "selected_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "absent_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "recipe",
+      "id": "ThingDef_BaseMeleeWeapon_Sharp_Quality",
+      "def_name": "BaseMeleeWeapon_Sharp_Quality",
+      "parent_name": "BaseMeleeWeapon_Sharp",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+        "xpath": "/Defs/ThingDef[@Name='BaseMeleeWeapon_Sharp_Quality']",
+        "sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107"
+      },
+      "selected_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "absent_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "recipe",
+      "id": "ThingDef_MeleeWeapon_LongSword",
+      "def_name": "MeleeWeapon_LongSword",
+      "parent_name": "BaseMeleeWeapon_Sharp_Quality",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Weapons/MeleeMedieval.xml",
+        "xpath": "/Defs/ThingDef[defName='MeleeWeapon_LongSword']",
+        "sha256": "29048e27b162d78c80015bd6e54f83f4d2b4783b01ec7341c11e1b7eeb735c96"
+      },
+      "selected_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "absent_paths": [
+        "recipeMaker/researchPrerequisites"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='MeleeWeapon_LongSword']/recipeMaker/researchPrerequisite",
+          "value": "LongBlades"
+        },
+        {
+          "xpath": "/Defs/ThingDef[defName='MeleeWeapon_LongSword']/recipeMaker/skillRequirements/Crafting",
+          "value": "5"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "recipe",
+      "id": "ThingDef_ApparelBase",
+      "def_name": "ApparelBase",
+      "parent_name": "ApparelNoQualityBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+        "xpath": "/Defs/ThingDef[@Name='ApparelBase']",
+        "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847"
+      },
+      "selected_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "absent_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "recipe",
+      "id": "ThingDef_ApparelMakeableBase",
+      "def_name": "ApparelMakeableBase",
+      "parent_name": "ApparelBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+        "xpath": "/Defs/ThingDef[@Name='ApparelMakeableBase']",
+        "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847"
+      },
+      "selected_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "absent_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "recipe",
+      "id": "ThingDef_Apparel_Parka",
+      "def_name": "Apparel_Parka",
+      "parent_name": "ApparelMakeableBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+        "xpath": "/Defs/ThingDef[defName='Apparel_Parka']",
+        "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847"
+      },
+      "selected_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "absent_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "recipe",
+      "id": "ThingDef_Apparel_Pants",
+      "def_name": "Apparel_Pants",
+      "parent_name": "ApparelMakeableBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+        "xpath": "/Defs/ThingDef[defName='Apparel_Pants']",
+        "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847"
+      },
+      "selected_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "absent_paths": [
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Apparel_Pants']/recipeMaker/researchPrerequisite",
+          "value": "ComplexClothing"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "recipe",
+      "id": "ThingDef_Apparel_BasicShirt",
+      "def_name": "Apparel_BasicShirt",
+      "parent_name": "ApparelMakeableBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+        "xpath": "/Defs/ThingDef[defName='Apparel_BasicShirt']",
+        "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847"
+      },
+      "selected_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "absent_paths": [
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Apparel_BasicShirt']/recipeMaker/researchPrerequisite",
+          "value": "ComplexClothing"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "recipe",
+      "id": "ThingDef_Apparel_Duster",
+      "def_name": "Apparel_Duster",
+      "parent_name": "ApparelMakeableBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+        "xpath": "/Defs/ThingDef[defName='Apparel_Duster']",
+        "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847"
+      },
+      "selected_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "absent_paths": [
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Apparel_Duster']/recipeMaker/researchPrerequisite",
+          "value": "ComplexClothing"
+        }
+      ],
+      "node_attributes": []
+    },
+    {
+      "group": "recipe",
+      "id": "ThingDef_HatMakeableBase",
+      "def_name": "HatMakeableBase",
+      "parent_name": "ApparelMakeableBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Apparel_Headgear.xml",
+        "xpath": "/Defs/ThingDef[@Name='HatMakeableBase']",
+        "sha256": "d78950e38f1943fca6c956247e613c22d4095cf3a62605a1bc5870c5293e6938"
+      },
+      "selected_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "absent_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "fields": [],
+      "node_attributes": []
+    },
+    {
+      "group": "recipe",
+      "id": "ThingDef_Apparel_Tuque",
+      "def_name": "Apparel_Tuque",
+      "parent_name": "HatMakeableBase",
+      "source": {
+        "path": "Data/Core/Defs/ThingDefs_Misc/Apparel_Headgear.xml",
+        "xpath": "/Defs/ThingDef[defName='Apparel_Tuque']",
+        "sha256": "d78950e38f1943fca6c956247e613c22d4095cf3a62605a1bc5870c5293e6938"
+      },
+      "selected_paths": [
+        "recipeMaker/researchPrerequisite",
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "absent_paths": [
+        "recipeMaker/researchPrerequisites",
+        "recipeMaker/skillRequirements"
+      ],
+      "fields": [
+        {
+          "xpath": "/Defs/ThingDef[defName='Apparel_Tuque']/recipeMaker/researchPrerequisite",
+          "value": "ComplexClothing"
+        }
+      ],
+      "node_attributes": []
+    }
+  ]
+}

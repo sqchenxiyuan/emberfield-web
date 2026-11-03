@@ -1,6 +1,7 @@
 import type { Trauma } from './injuries';
 import type { WeaponPiece, WeaponKind, WeaponBenchKind } from './weapons';
 import type { SkillSet } from './skills';
+import type { ResearchKey, ResearchState } from './research';
 // Voxel rules are Emberfield designs. See research/10 for source boundaries.
 export const WIDTH = 64,
   DEPTH = 64,
@@ -66,7 +67,16 @@ export type Resource =
   | 'cloth'
   | 'apparel'
   | 'weapon';
-export type Work = 'dig' | 'build' | 'cut' | 'haul' | 'grow' | 'cook' | 'craft' | 'care';
+export type Work =
+  | 'dig'
+  | 'build'
+  | 'cut'
+  | 'haul'
+  | 'grow'
+  | 'cook'
+  | 'craft'
+  | 'care'
+  | 'research';
 export type ConstructionMaterial = 'wood' | 'stone';
 export type FoodCropKind = 'rice' | 'potato' | 'corn';
 export type CropKind = FoodCropKind | 'cotton';
@@ -188,6 +198,7 @@ export type Tool =
   | 'tailor'
   | 'craftingSpot'
   | 'smithy'
+  | 'researchBench'
   | 'bed'
   | 'door'
   | 'clearZone'
@@ -302,6 +313,29 @@ export interface Tailor extends Pos {
 }
 export const tailorCells = stonecutterCells;
 export const tailorInteraction = stonecutterInteraction;
+export interface ResearchBench extends Pos {
+  id: number;
+  axis: Axis;
+}
+/** Native 3x2 footprint, represented by a corner anchor and two orientations. */
+export function researchBenchCells(bench: Pos & { axis: Axis }): Pos[] {
+  return Array.from({ length: 6 }, (_, i) => {
+    const x = i % 3,
+      y = Math.floor(i / 3);
+    return {
+      x: bench.x + (bench.axis === 'x' ? x : y),
+      y: bench.y + (bench.axis === 'x' ? y : x),
+      z: bench.z,
+    };
+  });
+}
+export function researchBenchInteraction(bench: Pos & { axis: Axis }): Pos {
+  return {
+    x: bench.x + (bench.axis === 'x' ? 1 : -1),
+    y: bench.y + (bench.axis === 'x' ? 2 : 1),
+    z: bench.z,
+  };
+}
 export interface WeaponBench extends Pos {
   id: number;
   kind: WeaponBenchKind;
@@ -352,6 +386,8 @@ export type JobKind =
   | 'craftingSpot'
   | 'smithy'
   | 'smith'
+  | 'researchBench'
+  | 'research'
   | 'bed'
   | 'door'
   | 'cook';
@@ -384,6 +420,7 @@ export interface Job extends Pos {
   apparelKind?: ApparelKind;
   weaponKind?: WeaponKind;
   weaponBenchKind?: WeaponBenchKind;
+  researchProject?: ResearchKey;
   /** Existing pre-v9 cutting jobs retain their original 60-tick work/progress. */
   legacyCut?: true;
 }
@@ -523,6 +560,8 @@ export interface VoxelSnapshot {
   stonecutters: Stonecutter[];
   tailors: Tailor[];
   weaponBenches: WeaponBench[];
+  researchBenches: ResearchBench[];
+  research: ResearchState;
   beds: Bed[];
   doors: Door[];
   rooms: RoomSummary[];
@@ -551,6 +590,7 @@ export interface ChunkUpdate {
   ladders: Uint8Array;
 }
 export type VoxelCommand =
+  | { type: 'research'; project: ResearchKey | null }
   | { type: 'threats'; enabled: boolean }
   | { type: 'draft'; pawnId: number; drafted: boolean }
   | { type: 'attack'; pawnId: number; targetId: number }
@@ -597,7 +637,7 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 14;
+  version: 15;
   combat: CombatState;
   generator: 1 | 2;
   settings: WorldSettings;
@@ -620,6 +660,8 @@ export interface VoxelSave {
   stonecutters: Stonecutter[];
   tailors: Tailor[];
   weaponBenches: WeaponBench[];
+  researchBenches: ResearchBench[];
+  research: ResearchState;
   beds: Bed[];
   doors: Door[];
   devices: Device[];
@@ -679,6 +721,8 @@ export const JOB_NAMES: Record<JobKind, string> = {
   craftingSpot: '划定制作点',
   smithy: '造燃料锻造台',
   smith: '制作武器',
+  researchBench: '造简易科研台',
+  research: '研究',
   bed: '造床',
   door: '造门',
   cook: '烹饪简餐',
@@ -702,6 +746,7 @@ export const TOOL_NAMES: Record<Tool, string> = {
   tailor: '手工裁缝台',
   craftingSpot: '制作点',
   smithy: '燃料锻造台',
+  researchBench: '简易科研台',
   bed: '床',
   door: '门',
   clearZone: '擦除区域',

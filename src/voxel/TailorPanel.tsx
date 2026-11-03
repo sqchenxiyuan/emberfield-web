@@ -63,7 +63,7 @@ export function TailorPanel({
         需要「加工」分工，实际运来布料后开工。操作位 {stand.x}, {stand.y} · Z {stand.z}。
       </small>
       <small>
-        降低目标不打断当前衣物，暂停此配方才中止并退料。工艺等级影响成品品质；操作能力影响制作速度。当前没有研究系统。
+        降低目标不打断当前衣物，暂停此配方才中止并退料。工艺等级影响成品品质；操作能力影响制作速度。
       </small>
       {tailor.bills.some((b) => b.target > 0) && (
         <div className="voxel-tailor-queue">

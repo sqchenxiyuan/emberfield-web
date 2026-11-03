@@ -75,6 +75,7 @@ function fixture() {
       cook: 0,
       craft: i === 0 ? 1 : 0,
       care: 0,
+      research: 0,
     };
   });
   return VoxelSimulation.load(s.save());
@@ -450,7 +451,7 @@ describe('physical dressing, interruption, death and migration', () => {
     );
     const old = JSON.parse(raw.toString()),
       s = VoxelSimulation.load(old);
-    expect(s.save().version).toBe(14);
+    expect(s.save().version).toBe(15);
     expect(s.items).toEqual(old.items);
     expect(s.pawns.map((p) => p.health)).toEqual(old.pawns.map((p: any) => p.health));
     expect(s.counts().apparel).toBe(0);

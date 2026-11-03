@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
+import { initialResearch } from '../src/voxel/research';
 import { WORLD_PRESETS, previewWorld } from '../src/voxel/worldgen';
 import {
   TREE_DATA,
@@ -64,6 +65,8 @@ function fixture(configure: (s: VoxelSimulation) => void = () => {}) {
     meanTemperature: 24,
     latitude: 0,
   });
+  // Controlled feature fixture represents a colony with research already completed.
+  s.research = initialResearch(true);
   s.blocks.fill(Block.Stone);
   s.ladders.fill(0);
   s.trees = [];
@@ -89,6 +92,7 @@ function fixture(configure: (s: VoxelSimulation) => void = () => {}) {
       cook: 0,
       craft: 0,
       care: 0,
+      research: 0,
     };
   });
   for (let x = 10; x <= 15; x++)
@@ -393,7 +397,7 @@ describe('real v8 migration and v9 validation', () => {
       s = VoxelSimulation.load(raw);
     expect(raw.version).toBe(8);
     expect(raw).toEqual(before);
-    expect(s.save().version).toBe(14);
+    expect(s.save().version).toBe(15);
     expect(s.save().blocks).toEqual(raw.blocks);
     expect(s.items).toEqual(raw.items);
     expect(s.treePlots).toEqual([]);

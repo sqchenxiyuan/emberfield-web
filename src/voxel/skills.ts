@@ -10,6 +10,7 @@ export const SKILL_KEYS = [
   'crafting',
   'medicine',
   'melee',
+  'intellectual',
 ] as const;
 export type SkillKey = (typeof SKILL_KEYS)[number];
 export type Passion = 0 | 1 | 2;
@@ -28,6 +29,7 @@ export const SKILL_NAMES: Record<SkillKey, string> = {
   crafting: '工艺',
   medicine: '医疗',
   melee: '格斗',
+  intellectual: '智识',
 };
 export const PASSION_NAMES = ['无热情', '有热情', '强烈热情'] as const;
 export const PASSION_LEARNING = [0.35, 1, 1.5] as const;
@@ -64,6 +66,7 @@ const BUILDING_JOBS = new Set([
   'heater',
   'cooler',
   'wire',
+  'researchBench',
 ]);
 const PLANT_JOBS = new Set(['sow', 'harvest', 'cut', 'plantTree']);
 
@@ -71,18 +74,18 @@ export function initialSkills(profile: number, raider = false): SkillSet {
   if (!Number.isSafeInteger(profile)) throw new RangeError('技能配置编号无效');
   const i = ((profile % 3) + 3) % 3;
   const levels = raider
-    ? [4, 4, 4, 4, 4, 3, 6]
+    ? [4, 4, 4, 4, 4, 3, 6, 4]
     : [
-        [8, 6, 3, 4, 5, 3, 6],
-        [3, 3, 8, 6, 4, 8, 4],
-        [5, 7, 4, 3, 8, 4, 5],
+        [8, 6, 3, 4, 5, 3, 6, 6],
+        [3, 3, 8, 6, 4, 8, 4, 8],
+        [5, 7, 4, 3, 8, 4, 5, 4],
       ][i];
   const passions = raider
-    ? [0, 0, 0, 0, 0, 0, 0]
+    ? [0, 0, 0, 0, 0, 0, 0, 0]
     : [
-        [2, 1, 0, 0, 0, 0, 1],
-        [0, 0, 2, 1, 0, 1, 0],
-        [0, 1, 0, 0, 2, 0, 0],
+        [2, 1, 0, 0, 0, 0, 1, 0],
+        [0, 0, 2, 1, 0, 1, 0, 1],
+        [0, 1, 0, 0, 2, 0, 0, 0],
       ][i];
   return Object.fromEntries(
     SKILL_KEYS.map((key, n) => [
@@ -184,6 +187,7 @@ export function jobSkill(kind: string): SkillKey | null {
   if (kind === 'cook') return 'cooking';
   if (kind === 'smith' || kind === 'tailoring' || kind === 'stonecut') return 'crafting';
   if (kind === 'tend') return 'medicine';
+  if (kind === 'research') return 'intellectual';
   return null;
 }
 /** Raw XP per actual project work tick. Cooking is settled on successful output;
@@ -200,7 +204,7 @@ export function jobXP(kind: string): number {
       ? 0.255
       : skill === 'construction'
         ? 0.75
-        : skill === 'cooking' || skill === 'crafting'
+        : skill === 'cooking' || skill === 'crafting' || skill === 'intellectual'
           ? 0.3
           : 0;
 }
@@ -246,6 +250,15 @@ export function plantYield(set: SkillSet, manipulation = 1, sight = 1): number {
 }
 export function tendSpeed(set: SkillSet, manipulation = 1): number {
   return Math.max(0.1, (0.4 + 0.06 * set.medicine.level) * capacity(manipulation));
+}
+/** Native ResearchSpeed with global work speed fixed at one. */
+export function researchSpeed(set: SkillSet, manipulation = 1, sight = 1): number {
+  return Math.max(
+    0.1,
+    (0.08 + 0.115 * set.intellectual.level) *
+      (0.5 + 0.5 * Math.min(capacity(manipulation), 1.1)) *
+      (0.5 + 0.5 * Math.min(capacity(sight), 1.1)),
+  );
 }
 /** Doctor stat before medicine potency and the tending model's random variation. */
 export function tendQuality(set: SkillSet, manipulation = 1): number {
@@ -302,6 +315,7 @@ export function workSpeed(set: SkillSet, kind: string, manipulation = 1): number
       ]),
     );
   if (kind === 'tend') return tendSpeed(set, m);
+  if (kind === 'research') return researchSpeed(set, m);
   return Math.max(0.1, m);
 }
 

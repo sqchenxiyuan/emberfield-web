@@ -18,7 +18,17 @@ function fixture() {
   s.spawn = { x: 12, y: 12, z: 8 };
   s.pawns.forEach((p, i) => {
     Object.assign(p, { x: 12 + i, y: 12, z: 8 });
-    p.priorities = { dig: 0, build: 0, cut: 0, haul: 0, grow: 0, cook: 0, craft: 0, care: 0 };
+    p.priorities = {
+      dig: 0,
+      build: 0,
+      cut: 0,
+      haul: 0,
+      grow: 0,
+      cook: 0,
+      craft: 0,
+      care: 0,
+      research: 0,
+    };
     p.schedule.fill('work');
   });
   return VoxelSimulation.load(s.save());
@@ -172,7 +182,7 @@ describe('voxel combat and physical tending', () => {
     );
     const s = VoxelSimulation.load(old);
     expect(old.version).toBe(11);
-    expect(s.save().version).toBe(14);
+    expect(s.save().version).toBe(15);
     expect(s.combat).toEqual({ enabled: false, nextRaid: 0, wave: 0 });
     expect(s.pawns.map((p) => [p.id, p.food, p.rest, p.worn])).toEqual(
       old.pawns.map((p: any) => [p.id, p.food, p.rest, p.worn]),

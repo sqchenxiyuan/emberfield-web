@@ -58,7 +58,17 @@ function fixture(upper = false) {
   s.spawn = pos(11, 11);
   s.pawns.forEach((p, i) => {
     Object.assign(p, pos(11, 11 + i));
-    p.priorities = { dig: 0, cut: 0, build: 0, haul: 0, grow: 0, cook: 0, craft: 0, care: 0 };
+    p.priorities = {
+      dig: 0,
+      cut: 0,
+      build: 0,
+      haul: 0,
+      grow: 0,
+      cook: 0,
+      craft: 0,
+      care: 0,
+      research: 0,
+    };
     p.schedule.fill('work');
   });
   if (upper) {
@@ -375,7 +385,7 @@ describe('voxel incapacitation and physical care', () => {
     );
     const old = JSON.parse(bytes.toString()),
       s = VoxelSimulation.load(old);
-    expect(s.save().version).toBe(14);
+    expect(s.save().version).toBe(15);
     expect(s.items).toEqual(old.items);
     expect(
       s.pawns.every(

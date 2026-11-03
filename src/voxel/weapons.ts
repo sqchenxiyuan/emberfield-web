@@ -68,7 +68,7 @@ export const WEAPON_DROP_TICKS = TPS / 2;
  * Core 1.7 XML: BaseWeapons, MeleeNeolithic, MeleeMedieval, Items_Resource_Stuff,
  * Stats_Weapons_Melee and Stats_Basics_General; research chapters 39/42.
  * Kinds fix material deliberately. Original steel recipes allow other materials;
- * the source research/skill requirements remain data even before those systems exist.
+ * world validates the research and crafting requirements before starting work.
  * No apparel-style daily wear: BaseWeapon tickerType=Never. Ground deterioration
  * and external damage are separate systems; item HP does not scale melee damage.
  */

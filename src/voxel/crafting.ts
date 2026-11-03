@@ -1,8 +1,8 @@
 import type { Counts, Pos } from './types';
 
 // Native 60 TPS work is converted to local 20 TPS with ceiling, as for power
-// equipment. Stonecutting research is considered unlocked in this prototype;
-// skill speed, experience, multi-recipe bills and hauling radii are not modeled.
+// equipment. Stonecutting is part of the industrial starting knowledge.
+// Skills and physical hauling are handled by the world; multi-recipe stone bills are absent.
 export const STONECUTTER_COST: Readonly<Partial<Counts>> = Object.freeze({ wood: 75, steel: 30 });
 export const STONECUTTER_WORK = Math.ceil((2000 * 0.7) / 3);
 export const STONECUTTING = Object.freeze({ input: 1, output: 20, work: Math.ceil(1600 / 3) });

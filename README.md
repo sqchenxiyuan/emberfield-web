@@ -149,3 +149,5 @@ git subtree push --prefix=experiments/rimworld-like emberfield main
 ```
 
 直接克隆独立仓库开发时，正常提交并推送到 `main` 即可触发发布。
+
+2026-11-03研究更新：3×2简易科研台、智识技能和五项后续科技已接入，工业新局保留七项起始知识；旧档v15保留旧功能。见[50研究实现与验收](docs/research/rimworld/50-voxel-research-implementation.md)。

@@ -42,7 +42,17 @@ function fixture() {
     Object.assign(p, pos(11, 11 + i));
     p.worn = [];
     p.schedule.fill('work');
-    p.priorities = { dig: 0, build: 0, cut: 0, haul: 0, grow: 0, cook: 0, craft: 0, care: 0 };
+    p.priorities = {
+      dig: 0,
+      build: 0,
+      cut: 0,
+      haul: 0,
+      grow: 0,
+      cook: 0,
+      craft: 0,
+      care: 0,
+      research: 0,
+    };
   });
   return VoxelSimulation.load(s.save());
 }

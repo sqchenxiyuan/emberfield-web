@@ -1,7 +1,7 @@
 import { type Counts, type Pos, type WeaponBench } from './types';
 import { WEAPON_KINDS, WEAPON_DEFS, type WeaponBenchKind } from './weapons';
 
-// Selected native FueledSmithy declarations; construction/research skills remain pre-unlocked.
+// Selected native FueledSmithy declarations; world checks research and construction skill.
 export const SMITHY_COST: Readonly<Partial<Counts>> = Object.freeze({ steel: 100 });
 export const SMITHY_WORK = 1000;
 export const SMITHY_FUEL_CAPACITY = 50;

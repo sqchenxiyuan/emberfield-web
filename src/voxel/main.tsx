@@ -11,6 +11,8 @@ import { stackLimit, carryLimit } from './logistics';
 import { STONE_CONSTRUCTION } from './crafting';
 import { SurvivalPanel } from './SurvivalPanel';
 import { SkillPanel, WorkSkill } from './SkillPanel';
+import { ResearchPanel, ResearchBenchPanel } from './ResearchPanel';
+import { RESEARCH_DEFS, toolResearchReason } from './research';
 import { ApparelPanel, WearApparel } from './ApparelPanel';
 import { TailorPanel } from './TailorPanel';
 import { CombatPanel, ThreatControl } from './CombatPanel';
@@ -29,6 +31,7 @@ import {
   stonecutterCells,
   stonecutterInteraction,
   tailorCells,
+  researchBenchCells,
   weaponBenchCells,
   DEVICE_NAMES,
   type Assignment,
@@ -60,6 +63,7 @@ const tools: Tool[] = [
   'tailor',
   'craftingSpot',
   'smithy',
+  'researchBench',
   'bed',
   'door',
   'generator',
@@ -89,6 +93,7 @@ const icons = [
   '✂',
   '◇',
   '⚔',
+  '▤',
   '▰',
   '▯',
   '⚙',
@@ -104,6 +109,8 @@ const icons = [
 const hints: Record<Tool, string> = {
   craftingSpot: '一格制作点，无需建材。点击设置木棒或钢匕首配方，加工速度为锻造台的一半。',
   smithy: '3×1 燃料锻造台，100 钢材。R 旋转，留出操作位；需木材燃料，可制作钢长剑。',
+  researchBench:
+    '3×2 简易科研台，75 木材 + 25 钢材。R 旋转并留出操作位；选择研究项目并开启人物的研究分工。',
   generator: '2×2，占地需两格净空；100 钢材 + 2 零件。补充木材后发电 1000 W，每日耗木 22。',
   solar: '4×4，100 钢材 + 3 零件；峰值 1700 W，夜间停机，上方楼板按遮挡比例减产。',
   battery: '1×2，70 钢材 + 2 零件；容量 600 Wd，充电效率 50%。R 切换朝向。',
@@ -237,6 +244,7 @@ function App() {
   const [notice, setNotice] = useState(''),
     [menu, setMenu] = useState(false),
     [help, setHelp] = useState(true),
+    [researchOpen, setResearchOpen] = useState(false),
     [busy, setBusy] = useState(false),
     [selectedPawn, setSelectedPawn] = useState<number | null>(null),
     [selectedCarer, setSelectedCarer] = useState<number | null>(null),
@@ -300,6 +308,9 @@ function App() {
     ? s?.stonecutters.find((v) => stonecutterCells(v).some((q) => equal(q, p)))
     : null;
   const tailor = p ? s?.tailors.find((v) => tailorCells(v).some((q) => equal(q, p))) : null;
+  const researchBench = p
+    ? s?.researchBenches.find((v) => researchBenchCells(v).some((q) => equal(q, p)))
+    : null;
   const weaponBench = p
     ? s?.weaponBenches.find((b) => weaponBenchCells(b).some((q) => equal(q, p)))
     : null;
@@ -329,6 +340,10 @@ function App() {
             stonecutterCells({ ...v, axis: v.axis ?? 'x' }).some((q) => equal(q, p))) ||
           ((v.kind === 'tailor' || v.kind === 'tailoring') &&
             tailorCells({ ...v, axis: v.axis ?? 'x' }).some((q) => equal(q, p))) ||
+          ((v.kind === 'researchBench' || v.kind === 'research') &&
+            researchBenchCells(
+              s?.researchBenches.find((b) => equal(b, v)) ?? { ...v, axis: v.axis ?? 'x' },
+            ).some((q) => equal(q, p))) ||
           (v.kind === 'bed' && bedCells({ ...v, axis: v.axis ?? 'x' }).some((q) => equal(q, p))) ||
           (isDeviceKind(v.kind) &&
             deviceCells({ ...v, kind: v.kind, axis: v.axis ?? 'x' }).some((q) => equal(q, p))),
@@ -365,6 +380,7 @@ function App() {
       (device ? DEVICE_NAMES[device.kind] : null) ??
       (stonecutter ? '木制切石台' : null) ??
       (tailor ? '手工裁缝台' : null) ??
+      (researchBench ? '简易科研台' : null) ??
       (weaponBench ? WEAPON_BENCH_NAMES[weaponBench.kind] : null) ??
       (bed
         ? '木床'
@@ -434,6 +450,18 @@ function App() {
             ))}
         </div>
         <div className="voxel-header-actions">
+          <button
+            aria-label="研究科技"
+            aria-expanded={researchOpen}
+            onClick={() => setResearchOpen((v) => !v)}
+            title={
+              s?.research.current
+                ? `正在研究：${RESEARCH_DEFS[s.research.current].name}`
+                : '选择营地研究项目'
+            }
+          >
+            研究
+          </button>
           <button onClick={() => setHelp((v) => !v)} aria-label="玩法指引">
             ?
           </button>
@@ -528,7 +556,7 @@ function App() {
           ↷
         </button>
       </div>
-      {help && (
+      {help && !researchOpen && (
         <aside className="voxel-guide">
           <div className="voxel-panel-title">
             <span className="voxel-kicker">从地表到地下</span>
@@ -588,7 +616,7 @@ function App() {
           </ol>
           <p className="voxel-guide-note">
             也可在土壤上划种植区、建灶台。稻米约 8
-            日首收，初始口粮需节约使用。采钢矿与机械矿后可建发电机、电池和冷暖设备；跨层供电需要连续电线。
+            日首收，初始口粮需节约使用。采钢矿与机械矿后可建发电机和冷暖设备；研究可解锁电池、太阳能与锻造，跨层供电需要连续电线。
           </p>
           <div className="voxel-progress">
             <span>
@@ -1075,6 +1103,13 @@ function App() {
             }
           />
         )}
+        {researchBench && s && (
+          <ResearchBenchPanel
+            bench={researchBench}
+            snapshot={s}
+            openResearch={() => setResearchOpen(true)}
+          />
+        )}
         {weaponBench && s && (
           <WeaponBenchPanel
             key={weaponBench.id}
@@ -1270,33 +1305,43 @@ function App() {
             )}
             <SkillPanel pawn={pawn} />
             <div className="voxel-priorities">
-              {(['care', 'dig', 'cut', 'build', 'haul', 'grow', 'cook', 'craft'] as Work[]).map(
-                (w, i) => (
-                  <label key={w}>
-                    {['医护', '挖掘', '伐木', '施工', '搬运', '种植', '烹饪', '加工'][i]}
-                    <WorkSkill pawn={pawn} work={w} />
-                    <select
-                      aria-label={`${pawn.name} ${w}优先级`}
-                      disabled={pawn.dead || pawn.faction !== 'colony'}
-                      value={pawn.priorities[w]}
-                      onChange={(e) =>
-                        void client.command({
-                          type: 'priority',
-                          pawnId: pawn.id,
-                          work: w,
-                          value: Number(e.target.value),
-                        })
-                      }
-                    >
-                      {[0, 1, 2, 3, 4].map((n) => (
-                        <option key={n} value={n}>
-                          {n === 0 ? '停用' : n}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                ),
-              )}
+              {(
+                [
+                  'care',
+                  'dig',
+                  'cut',
+                  'build',
+                  'haul',
+                  'grow',
+                  'cook',
+                  'craft',
+                  'research',
+                ] as Work[]
+              ).map((w, i) => (
+                <label key={w}>
+                  {['医护', '挖掘', '伐木', '施工', '搬运', '种植', '烹饪', '加工', '研究'][i]}
+                  <WorkSkill pawn={pawn} work={w} />
+                  <select
+                    aria-label={`${pawn.name} ${w}优先级`}
+                    disabled={pawn.dead || pawn.faction !== 'colony'}
+                    value={pawn.priorities[w]}
+                    onChange={(e) =>
+                      void client.command({
+                        type: 'priority',
+                        pawnId: pawn.id,
+                        work: w,
+                        value: Number(e.target.value),
+                      })
+                    }
+                  >
+                    {[0, 1, 2, 3, 4].map((n) => (
+                      <option key={n} value={n}>
+                        {n === 0 ? '停用' : n}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              ))}
             </div>
             <small>
               普通工作按 1～4 排序；医护开启后优先处理急救。0 停用自动工作，仍可手动安排救援。
@@ -1395,7 +1440,9 @@ function App() {
         <div className="voxel-tool-hint">
           <span className="voxel-kicker">
             {TOOL_NAMES[state.tool]}
-            {(['bed', 'door', 'stonecutter', 'tailor', 'smithy'].includes(state.tool) ||
+            {(['bed', 'door', 'stonecutter', 'tailor', 'smithy', 'researchBench'].includes(
+              state.tool,
+            ) ||
               isDeviceKind(state.tool)) && (
               <button onClick={() => client.rotatePlan()} aria-label="旋转建造朝向">
                 朝向 {state.axis.toUpperCase()} · R
@@ -1451,7 +1498,8 @@ function App() {
               <button
                 key={t}
                 className={state.tool === t ? 'active' : ''}
-                title={hints[t]}
+                title={(s && toolResearchReason(s.research, t)) || hints[t]}
+                disabled={!!s && !!toolResearchReason(s.research, t)}
                 aria-label={TOOL_NAMES[t]}
                 onClick={() => client.choose(t)}
               >
@@ -1483,6 +1531,13 @@ function App() {
         </div>
       </footer>
       {!state.ready && <div className="voxel-loading">正在生成三维山谷…</div>}
+      {researchOpen && s && (
+        <ResearchPanel
+          snapshot={s}
+          command={(c) => void client.command(c)}
+          close={() => setResearchOpen(false)}
+        />
+      )}
       {notice && (
         <div role="status" className="voxel-toast">
           {notice}

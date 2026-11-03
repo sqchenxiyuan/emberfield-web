@@ -70,7 +70,17 @@ function fixture(setup: (s: VoxelSimulation) => void = () => {}) {
   carve(s, pos(10, 10), pos(22, 18, 9));
   s.pawns.forEach((p, n) => {
     Object.assign(p, pos(10 + n, 18));
-    p.priorities = { dig: 0, build: 0, cut: 0, haul: 0, grow: 0, cook: 0, craft: 0, care: 0 };
+    p.priorities = {
+      dig: 0,
+      build: 0,
+      cut: 0,
+      haul: 0,
+      grow: 0,
+      cook: 0,
+      craft: 0,
+      care: 0,
+      research: 0,
+    };
   });
   setup(s);
   return VoxelSimulation.load(s.save());
@@ -492,7 +502,7 @@ describe('masonry recovery and v7 validation', () => {
       s = VoxelSimulation.load(raw);
     expect(raw.version).toBe(6);
     expect(raw).toEqual(before);
-    expect(s.save().version).toBe(14);
+    expect(s.save().version).toBe(15);
     expect(s.counts().stone).toBe(15);
     expect(s.counts().chunk).toBe(0);
     expect(s.stats.stonecut).toBe(0);

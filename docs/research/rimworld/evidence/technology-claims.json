@@ -1,0 +1,880 @@
+[
+  {
+    "id": "TC01",
+    "title": "全局进度与持久化",
+    "statement": "Core常规研究是ResearchManager的单currentProj及按ResearchProjectDef索引progress字典，均保存；科研台只展示共享current项目。换项目、StopProject清选择而不清进度。多个台可各有一人贡献同一项目，不为每台复制科技。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "technology",
+        "type": "RimWorld.ResearchManager",
+        "line_start": 25,
+        "line_end": 38,
+        "range_sha256": "a52e510804499349bc94406327ddeba3c29a0c2e37166a09721e71ebb2961c82"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.ResearchManager",
+        "line_start": 71,
+        "line_end": 80,
+        "range_sha256": "a95945c50ce4d5774bf0cfa9695abc6d8af43ff934b2d1c24f21fd3f476e654f"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.ResearchManager",
+        "line_start": 110,
+        "line_end": 168,
+        "range_sha256": "5878578fa44884ee1cbf6ef186262806526e4c99914b81504cee7deb7ff32640"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.ResearchManager",
+        "line_start": 190,
+        "line_end": 205,
+        "range_sha256": "b590aa0da3fd30fef1b70fcc29d094635dfc3c15bbea18a35149dfbd898bb4e0"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.Building_ResearchBench",
+        "line_start": 5,
+        "line_end": 21,
+        "range_sha256": "9711197bf157aba83193bbf3b9782756b31c941491a4d01a11b0f705bc89a70f"
+      }
+    ]
+  },
+  {
+    "id": "TC02",
+    "title": "每工作tick的研究点",
+    "statement": "JobDriver先ResearchSpeed乘ResearchSpeedFactor乘delta；Manager再乘.00825及难度researchSpeedFactor，除研究者阵营科技CostFactor。debug fastResearch另乘500不属于正常速度。记录与进度均加真实点数；完成时FinishProject钳baseCost。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "technology",
+        "type": "RimWorld.JobDriver_Research",
+        "line_start": 31,
+        "line_end": 40,
+        "range_sha256": "f92137c0be0f153b2a3e3d8cd702e30a2f4183e36000405272467810ba448fc4"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.ResearchManager",
+        "line_start": 309,
+        "line_end": 334,
+        "range_sha256": "d7a55557134caf4ee1e9b92b3553765d92388434a655ac8def27203e380b9590"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.ResearchManager",
+        "line_start": 428,
+        "line_end": 435,
+        "range_sha256": "9c045782efc822de02218cef20f4545a4529ca3435effba26c0cb8a36c8eaa81"
+      },
+      {
+        "group": "technology",
+        "xml_record": "DifficultyDef_Peaceful"
+      },
+      {
+        "group": "technology",
+        "xml_record": "DifficultyDef_Easy"
+      },
+      {
+        "group": "technology",
+        "xml_record": "DifficultyDef_Medium"
+      },
+      {
+        "group": "technology",
+        "xml_record": "DifficultyDef_Rough"
+      },
+      {
+        "group": "technology",
+        "xml_record": "DifficultyDef_Hard"
+      },
+      {
+        "group": "technology",
+        "xml_record": "DifficultyDef_Extreme"
+      },
+      {
+        "group": "technology",
+        "xml_record": "DifficultyDef_Custom"
+      }
+    ]
+  },
+  {
+    "id": "TC03",
+    "title": "Intellectual研究速度",
+    "statement": "ResearchSpeed继承IntellectualSkillBase：(.08+.115L)*WorkSpeedGlobal*操作权重.5(上限1.1)*视力权重.5(上限1.1)，最后min.1。正常容量项分别(.5+.5min(cap,1.1))，不是直接capacity^.5。特性、装备等完整Stat修正不在简化公式内。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "technology",
+        "xml_record": "StatDef_IntellectualSkillBase"
+      },
+      {
+        "group": "technology",
+        "xml_record": "StatDef_ResearchSpeed"
+      },
+      {
+        "group": "technology",
+        "xml_record": "StatDef_WorkSpeedGlobal"
+      },
+      {
+        "group": "skills",
+        "type": "RimWorld.SkillNeed_BaseBonus",
+        "line_start": 12,
+        "line_end": 25,
+        "range_sha256": "338b6f4b41eb2ba190d7697f0b33047644c2d46cef1ccf8c78d943c4ea2f7eb4"
+      },
+      {
+        "group": "skills",
+        "type": "RimWorld.PawnCapacityFactor",
+        "line_start": 7,
+        "line_end": 37,
+        "range_sha256": "d8b916d9b001047e8f47a8176a940aceba9b649fa7c40ab77a3a693c751304c9"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 367,
+        "line_end": 398,
+        "range_sha256": "706351bce36c3ae02d7d7b6562037bb8b92e50c429e707f64e5ed756bce690ef"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 800,
+        "line_end": 834,
+        "range_sha256": "be395c82847480ef9680fd4a3bb09a282c4a25678a29bd5981db15e8fca2316d"
+      }
+    ]
+  },
+  {
+    "id": "TC04",
+    "title": "科研XP",
+    "statement": "每实际研究工作tick在ResearchPerformed后给Intellectual原始.1XP，与点数效率/难度/科技差无直接乘法关系。正常学习再走热情.35/1/1.5、GlobalLearningFactor、事件前daily>4000乘.2；无研究工作、行走或等待不得仅凭选择项目发XP。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "technology",
+        "type": "RimWorld.JobDriver_Research",
+        "line_start": 31,
+        "line_end": 40,
+        "range_sha256": "f92137c0be0f153b2a3e3d8cd702e30a2f4183e36000405272467810ba448fc4"
+      },
+      {
+        "group": "skills",
+        "type": "RimWorld.SkillRecord",
+        "line_start": 256,
+        "line_end": 274,
+        "range_sha256": "8ff637aafe323061015f3a5a2d1feff7142e32c92d898d15721ccea0cec5a68a"
+      },
+      {
+        "group": "skills",
+        "type": "RimWorld.SkillRecord",
+        "line_start": 371,
+        "line_end": 398,
+        "range_sha256": "54e04161f2c8dc21927b6e10ba0d863b81aba8eac8439f4a79aca423591af779"
+      },
+      {
+        "group": "technology",
+        "xml_record": "SkillDef_Intellectual"
+      }
+    ]
+  },
+  {
+    "id": "TC05",
+    "title": "科技成本与显示",
+    "statement": "TechLevel Undefined0/Animal1/Neolithic2/Medieval3/Industrial4/Spacer5/Ultra6/Archotech7。CostFactor在项目非Undefined时为1+.5max(0,min(projectLevel,4)-factionLevel)，不随已完成科技自动提升FactionDef等级。真实cost=baseCost，显示cost/progress同时乘玩家CostFactor，百分比真实progress/baseCost。TechLevelUtility负责名称等不是成本公式。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "technology",
+        "type": "RimWorld.TechLevel",
+        "line_start": 1,
+        "line_end": 14,
+        "range_sha256": "c163476b5c3e87f808e4b07c11588823203d74e49f0758a2f94e3864008b78dd"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.TechLevelUtility",
+        "line_start": 8,
+        "line_end": 22,
+        "range_sha256": "761d410d013eecf49e12686623c5a705621f335cc2a3f483aea74428fc2bd34b"
+      },
+      {
+        "group": "technology",
+        "type": "Verse.ResearchProjectDef",
+        "line_start": 93,
+        "line_end": 132,
+        "range_sha256": "454c7eb625f265cf0b5e7f759f3dcbc8dd8278c7438ed3f95fa5c0e2d00ee3c0"
+      },
+      {
+        "group": "technology",
+        "type": "Verse.ResearchProjectDef",
+        "line_start": 486,
+        "line_end": 499,
+        "range_sha256": "8cb3f4d2bd76e5638d2759bfe9a106567a013a7344298f327344f9400c754a79"
+      },
+      {
+        "group": "technology",
+        "xml_record": "FactionDef_PlayerFactionBase"
+      },
+      {
+        "group": "technology",
+        "xml_record": "FactionDef_PlayerColony"
+      },
+      {
+        "group": "technology",
+        "xml_record": "FactionDef_PlayerTribe"
+      }
+    ]
+  },
+  {
+    "id": "TC06",
+    "title": "选择与台适配分层",
+    "statement": "CanStartNow检查未完成、显式及隐藏前置、techprint、mechanitor、分析/检视/隐藏等；仅requiredResearchBuilding非空才要求有适配台。扫描所有玩家地图时忽略科研台自身供电，但仍需active设施。CanBeResearchedAt仅检查台类型、供电与requiredResearchFacilities，不能把它称为前置校验。UI先CanStartNow再SetCurrentProject，Manager setter自己不检查前置。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "technology",
+        "type": "Verse.ResearchProjectDef",
+        "line_start": 164,
+        "line_end": 204,
+        "range_sha256": "3bc4afb5a3e304d43f762b3391689997042e802d515217bc93613803f6d4b698"
+      },
+      {
+        "group": "technology",
+        "type": "Verse.ResearchProjectDef",
+        "line_start": 351,
+        "line_end": 371,
+        "range_sha256": "a47655b6d2ef185346911567a2beb950ff1091e0044489fc426517363de7edc7"
+      },
+      {
+        "group": "technology",
+        "type": "Verse.ResearchProjectDef",
+        "line_start": 510,
+        "line_end": 545,
+        "range_sha256": "a3f4e6862837bee6cac6c39dfd117d3bcae9c1bc6f4dff29a0ee5f6c3feeed18"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.MainTabWindow_Research",
+        "line_start": 506,
+        "line_end": 523,
+        "range_sha256": "8f21dbbf2fcbab0763a2b0d84fa6218edafbb80e867e41bfb09b0b24be5fffab"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.MainTabWindow_Research",
+        "line_start": 693,
+        "line_end": 702,
+        "range_sha256": "4a9e65c431bb66f3cd66f99c33b0a5a2eb784f22f4474a0fa5364b19ad801c8e"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.ResearchManager",
+        "line_start": 110,
+        "line_end": 120,
+        "range_sha256": "968097a73dad796db6f7e4a6c2e9d856890dd13893086fb3159eaa88350ec63f"
+      }
+    ]
+  },
+  {
+    "id": "TC07",
+    "title": "设施与电力",
+    "statement": "所需设施必须存在于该台LinkedFacilities且IsFacilityActive；后者调用CompFacility.CanBeActive，有PowerTrader且PowerOn=false就不active。ignoreResearchBenchPowerStatus只忽略台自身，不忽略设施供电。HiTech台所需研究项目示例HospitalBed，Fabrication还需MultiAnalyzer；12项当前范围均不要求特定台或设施。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "technology",
+        "type": "RimWorld.CompAffectedByFacilities",
+        "line_start": 543,
+        "line_end": 560,
+        "range_sha256": "dd202a2ef0c41643a6e5891efed83f3cf54be68dbaac80aeb70c85c39f8983ab"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.CompFacility",
+        "line_start": 17,
+        "line_end": 28,
+        "range_sha256": "169badb4600ae10bc40306ff00606cafda62983bb2e004d9b6efbd356c80d00e"
+      },
+      {
+        "group": "technology",
+        "type": "Verse.ResearchProjectDef",
+        "line_start": 510,
+        "line_end": 545,
+        "range_sha256": "a3f4e6862837bee6cac6c39dfd117d3bcae9c1bc6f4dff29a0ee5f6c3feeed18"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_HospitalBed"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_MultiAnalyzer"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_Fabrication"
+      }
+    ]
+  },
+  {
+    "id": "TC08",
+    "title": "研究工作与预约",
+    "statement": "WorkGiver无current项目直接跳过；检查台适配、预约max1与交互格可坐位置以及研究历史事件许可。Prioritized=true，台优先值为ResearchSpeedFactor，通用工作扫描仍处理工作顺序、可达性。JobDriver走InteractionCell、预约台和spot，不是站任何邻格都能研究。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "technology",
+        "type": "RimWorld.WorkGiver_Researcher",
+        "line_start": 7,
+        "line_end": 65,
+        "range_sha256": "ae3369498b3e1b9d203b3fb2d87277ffcec4436ca0616b214f4ccbc15e12f508"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.JobDriver_Research",
+        "line_start": 15,
+        "line_end": 30,
+        "range_sha256": "f38d5609428dd1ec4bc365baa9a54ea9ffaaa0f27a4811542e01de6137243c69"
+      },
+      {
+        "group": "work",
+        "type": "RimWorld.JobGiver_Work",
+        "line_start": 77,
+        "line_end": 124,
+        "range_sha256": "2a9390b8e9b47d4e66dc5eb9ab0d4000b268b5979a8a6afdfe353e415d8f55cb"
+      },
+      {
+        "group": "technology",
+        "xml_record": "JobDef_Research"
+      },
+      {
+        "group": "technology",
+        "xml_record": "WorkGiverDef_Research"
+      },
+      {
+        "group": "technology",
+        "xml_record": "WorkTypeDef_Research"
+      }
+    ]
+  },
+  {
+    "id": "TC09",
+    "title": "session与中断",
+    "statement": "研究toil持续4000源tick，随后Wait2；实时读取current项目并FailOn项目为空/台不适合/不能触碰。通用EndCurrentJob释放预约，成功且未移动时可插Wait_MaintainPosture1再选工作；constant think tree每30源tick可抢占，不是所有需求都等4000tick。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "technology",
+        "type": "RimWorld.JobDriver_Research",
+        "line_start": 9,
+        "line_end": 13,
+        "range_sha256": "1e558971a0fd551f09bf6acc28b21f092249ab9de204b0a5a374162dc67f9d84"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.JobDriver_Research",
+        "line_start": 42,
+        "line_end": 52,
+        "range_sha256": "2948fe9228350b2aa4c3ba857e386e198c00ae752810ee44de9c4e83f17dd7c4"
+      },
+      {
+        "group": "work",
+        "type": "Verse.AI.Pawn_JobTracker",
+        "line_start": 138,
+        "line_end": 151,
+        "range_sha256": "2da009ae859706722f047cf644fc8778a73db6a3e90dd02bf1cfb2b5fe41de3f"
+      },
+      {
+        "group": "work",
+        "type": "Verse.AI.Pawn_JobTracker",
+        "line_start": 419,
+        "line_end": 473,
+        "range_sha256": "6b3cb02f6627c578e87afcf5068ccaa8d19abd314b7563813d74caf57ebc0d5c"
+      },
+      {
+        "group": "work",
+        "type": "Verse.AI.Pawn_JobTracker",
+        "line_start": 601,
+        "line_end": 623,
+        "range_sha256": "6f54aaf84a490a03741c079e74da1148033c643b65b51ac03ad3159e1f5c7749"
+      }
+    ]
+  },
+  {
+    "id": "TC10",
+    "title": "科研台基础与物理尺寸",
+    "statement": "SimpleResearchBench占3x2，75stuff+25Steel，WorkToBuild2800、效率.75、无电、Construction默认0；HiTech占5x2，150金属stuff+100Steel+10ComponentIndustrial，work5000、效率1、Construction6、250W、MicroelectronicsBasics。两者交互(0,0,-1)、Laboratory角色、错房间.8；drawSize不是碰撞尺寸。comps Inherit=False必须保留。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_BuildingBase"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_BenchBase"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_SimpleResearchBench"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_HiTechResearchBench"
+      },
+      {
+        "group": "stonecutting",
+        "type": "Verse.BuildableDef",
+        "line_start": 56,
+        "line_end": 66,
+        "range_sha256": "6a631582de0ecb789ac8e51653450151a18fe519b003d2a85762f9b4d9aeaca2"
+      }
+    ]
+  },
+  {
+    "id": "TC11",
+    "title": "科研台环境与最终下限",
+    "statement": "ResearchSpeedFactor依次乘Outdoors、WorkTableRoomRole、WorkTableTemperature、Room ResearchSpeedFactor、ReadingBonus，最终min.25。Outdoors是Room.OutdoorsForWork或台本格无屋顶；角色罚.8只在非PsychologicallyOutdoors房间且角色不符；温度严格<9或>35罚.7。room不存在时RoomStat part不乘，不能误用roomlessScore。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "technology",
+        "xml_record": "StatDef_ResearchSpeedFactor"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.StatPart_Outdoors",
+        "line_start": 25,
+        "line_end": 55,
+        "range_sha256": "a2daff6951aa7b8789c101d55fc513b4c826d907f0bebe40783d67038f3b5e9b"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.StatPart_RoomStat",
+        "line_start": 21,
+        "line_end": 31,
+        "range_sha256": "0e4c37c6f687b5e3cb97de3ced7e20af69870919610a6f8d6f90adc650331f23"
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.StatPart_WorkTableRoomRole",
+        "line_start": 25,
+        "line_end": 38,
+        "range_sha256": "b3834a328b2c2841850f93f5556c0e30d4ae98fcc799c81d48d09920d3540eb1"
+      },
+      {
+        "group": "stonecutting",
+        "type": "RimWorld.StatPart_WorkTableTemperature",
+        "line_start": 31,
+        "line_end": 57,
+        "range_sha256": "a8ce02e2e9af2dd1fadbf50bd3b93905bf8a424b8eb28fbfb60c6cedfc877438"
+      },
+      {
+        "group": "environment",
+        "type": "Verse.Room",
+        "line_start": 378,
+        "line_end": 405,
+        "range_sha256": "453f69489eeb8905d81ca390d4b529bd13d71ead2ad6f1bc867df2f51b410ad1"
+      },
+      {
+        "group": "housing",
+        "type": "RimWorld.StatWorker",
+        "line_start": 800,
+        "line_end": 834,
+        "range_sha256": "be395c82847480ef9680fd4a3bb09a282c4a25678a29bd5981db15e8fca2316d"
+      }
+    ]
+  },
+  {
+    "id": "TC12",
+    "title": "清洁与书架",
+    "statement": "Room ResearchSpeedFactor按Cleanliness曲线(-5,.75),(-2.5,.85),(0,1),(1,1.15)线性且端点夹紧。ReadingBonus按所有书架CellsFilledPercentage总和分格：首格.04、第二.02、第三.01、后续.005，上限+.2。Laboratory评分每个含/邻科研工作台60，最终与其他角色竞争。Room仅ProperRoom且RegionCount<=60才计算stats，否则GetStat研究卫生返回roomlessScore .75、reading1。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "technology",
+        "xml_record": "RoomStatDef_ReadingBonus"
+      },
+      {
+        "group": "technology",
+        "xml_record": "RoomStatDef_ResearchSpeedFactor"
+      },
+      {
+        "group": "technology",
+        "xml_record": "RoomRoleDef_Laboratory"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.RoomStatWorker_FromStatByCurve",
+        "line_start": 5,
+        "line_end": 11,
+        "range_sha256": "0797eb1b65473b6a0c6156aafa5da191b042a719d3db76c8a351cbd9cc81cb49"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.RoomStatWorker_ReadingBonus",
+        "line_start": 7,
+        "line_end": 33,
+        "range_sha256": "3ac6800b5fd7cdefb322aca196ab221e953038743da1817f868615a3a2aa6ae3"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.RoomRoleWorker_Laboratory",
+        "line_start": 5,
+        "line_end": 31,
+        "range_sha256": "02cc48ff6fc405fab86d655816f2793e93c49ae7270a07ac2cb0ac8929bd3877"
+      },
+      {
+        "group": "economy",
+        "type": "Verse.SimpleCurve",
+        "line_start": 138,
+        "line_end": 174,
+        "range_sha256": "2584ba8c093d9ebc6b92a9cfd763094fadf29c23efd039ebf3ed39573f5be2d2"
+      },
+      {
+        "group": "environment",
+        "type": "Verse.Room",
+        "line_start": 823,
+        "line_end": 834,
+        "range_sha256": "5335b471674c055c5d6a8df4b136513c59c3307d1cac6993cd47a818f597fdc1"
+      },
+      {
+        "group": "environment",
+        "type": "Verse.Room",
+        "line_start": 859,
+        "line_end": 885,
+        "range_sha256": "2fec182896cde54eb3efc9c13fd32719fc539ff31833daeb681da4ae88fe22c5"
+      }
+    ]
+  },
+  {
+    "id": "TC13",
+    "title": "起始研究",
+    "statement": "Crashlanded继承ScenarioBase的PlayerColony，Industrial+ClassicStart；LostTribe覆盖PlayerTribe，Neolithic+TribalStart。ResearchUtility按tag FinishProject，显式ScenPart_StartingResearch还可添加。Core ClassicStart为7项，TribalStart为5项；Ideology另有meme起始研究/techprint边界，不能说所有DLC和mod总是同一列表。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "technology",
+        "type": "ResearchUtility",
+        "line_start": 6,
+        "line_end": 49,
+        "range_sha256": "a7655216bbad5da74c4397ec5b0694bfc0e5389255487099436a636dfd10d17c"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.ScenPart_PlayerFaction",
+        "line_start": 48,
+        "line_end": 52,
+        "range_sha256": "0aad1a53ab3bd49116f80ae34e91ec9b2f445cff7c123ad369337bffec6d1932"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.ScenPart_StartingResearch",
+        "line_start": 28,
+        "line_end": 31,
+        "range_sha256": "224889d942dd3d3b83d511fb8503c099908d70bd954641e80fc23420fa616361"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.ScenPart_StartingResearch",
+        "line_start": 53,
+        "line_end": 59,
+        "range_sha256": "3f891dbfbe03b74f176804946fc83f6d85ba6af8c6082e1bac36b440ff4b161e"
+      },
+      {
+        "group": "technology",
+        "xml_record": "FactionDef_PlayerFactionBase"
+      },
+      {
+        "group": "technology",
+        "xml_record": "FactionDef_PlayerColony"
+      },
+      {
+        "group": "technology",
+        "xml_record": "FactionDef_PlayerTribe"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ScenarioDef_ScenarioBase"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ScenarioDef_Crashlanded"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ScenarioDef_LostTribe"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_PsychoidBrewing"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_TreeSowing"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_ComplexFurniture"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_PassiveCooler"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_Stonecutting"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_ComplexClothing"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_Pemmican"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_Smithing"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_RecurveBow"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_LongBlades"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_Electricity"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_Batteries"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_NutrientPaste"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_SolarPanels"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_AirConditioning"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_HospitalBed"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_MultiAnalyzer"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ResearchProjectDef_Fabrication"
+      }
+    ]
+  },
+  {
+    "id": "TC14",
+    "title": "完成状态",
+    "statement": "FinishProject会递归完成显式未完成前置、补techprints/分析并重应用mods，写baseCost、清当前项目、通知解锁与ResearchCompleted；普通劳动前置应在选择阶段合法。它没有自动选择下一项目；过量研究点不转给下一项目。隐藏前置在CanStartNow检查，但FinishProject递归只遍历显式prerequisites。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "technology",
+        "type": "RimWorld.ResearchManager",
+        "line_start": 403,
+        "line_end": 442,
+        "range_sha256": "275a86e36a96870642fe2d6bbc4f6b3a4ecdef5521d65c029d42298a03efb919"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.ResearchManager",
+        "line_start": 487,
+        "line_end": 512,
+        "range_sha256": "bec02125e97b6dcdd97049644b79f756a82da4a70ea56a713f4c8cea1205ede9"
+      }
+    ]
+  },
+  {
+    "id": "TC15",
+    "title": "现有内容研究门槛",
+    "statement": "建筑researchPrerequisites为全满足。切石Stonecutting；手裁缝ComplexClothing；电裁缝再Electricity；燃锻Smithing；电锻再Electricity；电池Batteries；太阳能SolarPanels；木发电机/电线/Heater Electricity；Cooler AirConditioning；燃料炉无研究。树由TreeBase继承TreeSowing和Plants6；LongSword配方LongBlades+Crafting5。BasicShirt/Pants/Duster/Tuque配方另需ComplexClothing；Parka所选父链无独立recipe研究门槛，工作台门槛独立。",
+    "kind": "xml-and-static-derived",
+    "sources": [
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_HandTailoringBench"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_ElectricTailoringBench"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_FueledSmithy"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_ElectricSmithy"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_ElectricStove"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_FueledStove"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_TableStonecutter"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_PowerConduit"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_WoodFiredGenerator"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_Battery"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_SolarGenerator"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_Heater"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_Cooler"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_PlantBaseNonEdible"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_PlantBase"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_TreeBase"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_DeciduousTreeBase"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_Plant_TreeOak"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_Plant_TreePine"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_Plant_TreeBirch"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_BaseWeapon"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_BaseMeleeWeapon"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_BaseMeleeWeapon_Sharp"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_BaseMeleeWeapon_Sharp_Quality"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_MeleeWeapon_LongSword"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_ApparelBase"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_ApparelMakeableBase"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_Apparel_Parka"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_Apparel_Pants"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_Apparel_BasicShirt"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_Apparel_Duster"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_HatMakeableBase"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_Apparel_Tuque"
+      },
+      {
+        "group": "stonecutting",
+        "type": "Verse.BuildableDef",
+        "line_start": 170,
+        "line_end": 189,
+        "range_sha256": "ae079884f8f50b9687c9b934b426b7cda024d4f129bf72be0ba98ad503f6feff"
+      }
+    ]
+  },
+  {
+    "id": "TC16",
+    "title": "20TPS项目适配",
+    "statement": "保留现实工作秒时源研究点.00825换项目.02475、原始XP.1换.3；不能乘5来同时保留日节奏。4000/3session若ceil为1334tick是有标注的取整；Wait2/3若取1亦是适配。项目本轮12科技、木制简易台、既有温度与室内映射；角色/室内卫生/书架系数暂固定1；项目outdoor额外乘原版roomlessScore .75，这是对既有outdoor的映射而非完整ProperRoom判定。旧v14迁移全解锁并legacy是兼容设计，不是原版机制。",
+    "kind": "design-adaptation",
+    "sources": [
+      {
+        "group": "technology",
+        "type": "RimWorld.ResearchManager",
+        "line_start": 309,
+        "line_end": 334,
+        "range_sha256": "d7a55557134caf4ee1e9b92b3553765d92388434a655ac8def27203e380b9590"
+      },
+      {
+        "group": "technology",
+        "type": "RimWorld.JobDriver_Research",
+        "line_start": 31,
+        "line_end": 52,
+        "range_sha256": "1389efa9afa2601c738d7555bf70671bd1bb84b13cac0e833c8ef75e25fd6a8c"
+      },
+      {
+        "group": "technology",
+        "xml_record": "ThingDef_SimpleResearchBench"
+      }
+    ]
+  }
+]

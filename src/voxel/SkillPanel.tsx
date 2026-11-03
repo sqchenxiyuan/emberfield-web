@@ -23,6 +23,7 @@ const WORK_SKILLS: Record<Work, SkillKey | null> = {
   grow: 'plants',
   cook: 'cooking',
   craft: 'crafting',
+  research: 'intellectual',
 };
 const SPEED_EXAMPLES: Partial<Record<SkillKey, { kind: string; label: string }>> = {
   mining: { kind: 'mine', label: '挖掘' },
@@ -31,6 +32,7 @@ const SPEED_EXAMPLES: Partial<Record<SkillKey, { kind: string; label: string }>>
   cooking: { kind: 'cook', label: '烹饪' },
   crafting: { kind: 'tailoring', label: '裁缝' },
   medicine: { kind: 'tend', label: '包扎' },
+  intellectual: { kind: 'research', label: '研究' },
 };
 const number = (n: number) => n.toLocaleString('zh-CN', { maximumFractionDigits: 1 });
 
@@ -119,7 +121,7 @@ export function SkillPanel({ pawn }: { pawn: Pawn }) {
         −1000 才会降级。
       </p>
       <p>
-        速度已计入当前健康，材料和设施另行影响工作；切石不提供工艺经验。分工优先级决定先做什么。当前没有研究系统。
+        速度已计入当前健康，材料和设施另行影响工作；切石不提供工艺经验。分工优先级决定先做什么，研究需要已选项目与科研台。
       </p>
     </details>
   );

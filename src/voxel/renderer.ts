@@ -56,6 +56,8 @@ import {
   stonecutterInteraction,
   tailorCells,
   tailorInteraction,
+  researchBenchCells,
+  researchBenchInteraction,
   weaponBenchCells,
   weaponBenchInteraction,
   type ChunkUpdate,
@@ -114,6 +116,7 @@ type PawnVisual = {
   rightArm: Group;
   tool: Group;
   hammer: Group;
+  pencil: Group;
   weapons: Record<WeaponKind, Group>;
   cargoWeapons: Record<WeaponKind, Group>;
   cargo: Mesh;
@@ -1254,6 +1257,7 @@ export class VoxelRenderer {
     this.updateFarming();
     this.updateStonecutters();
     this.updateTailors();
+    this.updateResearchBenches();
     this.updateWeaponBenches();
     this.updateHousing();
     this.updatePower();
@@ -2147,6 +2151,70 @@ export class VoxelRenderer {
     this.finish(markers);
   }
 
+  private updateResearchBenches() {
+    if (!this.data) return;
+    const tables = this.data.researchBenches.filter((t) => t.z <= this.level);
+    const parts = [
+      [1.5, 1, 0.76, 2.85, 1.85, 0.16, 0x997b59],
+      [0.2, 0.2, 0.35, 0.16, 0.16, 0.7, 0x665642],
+      [2.8, 0.2, 0.35, 0.16, 0.16, 0.7, 0x665642],
+      [0.2, 1.8, 0.35, 0.16, 0.16, 0.7, 0x665642],
+      [2.8, 1.8, 0.35, 0.16, 0.16, 0.7, 0x665642],
+      [1.5, 0.2, 0.38, 2.6, 0.12, 0.12, 0x665642],
+      [1.5, 1.36, 0.865, 0.98, 0.68, 0.025, 0xe7ddba],
+      [1.5, 1.36, 0.884, 0.025, 0.64, 0.012, 0xa39878],
+      [0.5, 0.45, 0.91, 0.55, 0.7, 0.16, 0x526c72],
+      [0.5, 0.45, 1.035, 0.48, 0.64, 0.09, 0x9b745c],
+      [0.5, 0.45, 1.112, 0.52, 0.66, 0.06, 0xc5b88a],
+      [2.4, 0.45, 0.94, 0.28, 0.28, 0.2, 0x607d73],
+      [2.15, 1.32, 0.87, 0.08, 0.54, 0.035, 0xd1b268],
+      [1.2, 0.45, 0.87, 0.38, 0.55, 0.035, 0xc9c1a1],
+    ];
+    const bodies = this.batch(
+      'research-bench-body',
+      tables.length * parts.length,
+      this.box,
+      this.batchMaterial('research-bench-body'),
+    );
+    const markers = this.batch(
+      'research-operating-cell',
+      tables.length,
+      this.box,
+      this.batchMaterial('research-operating-cell', true),
+    );
+    this.inspectBatches.set(bodies, { cells: tables, instancesPerCell: parts.length });
+    tables.forEach((table, i) => {
+      const swap = table.axis === 'y';
+      parts.forEach(([x, y, z, sx, sy, sz, color], n) =>
+        this.instance(
+          bodies,
+          i * parts.length + n,
+          table.x + (swap ? 2 - y : x),
+          table.z + z,
+          table.y + (swap ? x : y),
+          swap ? sy : sx,
+          sz,
+          swap ? sx : sy,
+          color,
+        ),
+      );
+      const front = researchBenchInteraction(table);
+      this.instance(
+        markers,
+        i,
+        front.x + 0.5,
+        front.z + 0.02,
+        front.y + 0.5,
+        0.8,
+        0.025,
+        0.8,
+        0xcbbd85,
+      );
+    });
+    this.finish(bodies);
+    this.finish(markers);
+  }
+
   private updateWeaponBenches() {
     if (!this.data) return;
     const benches = this.data.weaponBenches.filter((b) => b.z <= this.level);
@@ -2473,6 +2541,9 @@ export class VoxelRenderer {
         : job.kind === 'refuel' && !weaponBenchKind
           ? 'generator'
           : null;
+      const researchBench = this.data?.researchBenches.find(
+        (b) => b.x === job.x && b.y === job.y && b.z === job.z,
+      );
       const footprint = weaponBenchKind
         ? weaponBenchCells({
             ...job,
@@ -2483,9 +2554,13 @@ export class VoxelRenderer {
           ? deviceCells({ ...job, kind: deviceKind, axis: job.axis ?? 'x' })
           : job.kind === 'stonecutter' || job.kind === 'stonecut'
             ? stonecutterCells({ ...job, axis: job.axis ?? 'x' })
-            : job.kind === 'tailor' || job.kind === 'tailoring'
-              ? tailorCells({ ...job, axis: job.axis ?? 'x' })
-              : null;
+            : job.kind === 'researchBench' ||
+                job.kind === 'research' ||
+                (job.kind === 'remove' && researchBench)
+              ? researchBenchCells({ ...job, axis: researchBench?.axis ?? job.axis ?? 'x' })
+              : job.kind === 'tailor' || job.kind === 'tailoring'
+                ? tailorCells({ ...job, axis: job.axis ?? 'x' })
+                : null;
       const height = weaponBenchKind
         ? weaponBenchKind === 'smithy'
           ? 1.9
@@ -2627,6 +2702,12 @@ export class VoxelRenderer {
     part(hammer, hair, 0, 0, 0.13, 0.055, 0.055, 0.35);
     part(hammer, steel, 0, 0, 0.32, 0.21, 0.13, 0.12);
     hammer.visible = false;
+    const pencil = new Group();
+    pencil.position.set(0, -0.44, 0.08);
+    rightArm.add(pencil);
+    part(pencil, hair, 0, 0, 0.1, 0.025, 0.025, 0.28);
+    part(pencil, steel, 0, 0, 0.25, 0.018, 0.018, 0.035);
+    pencil.visible = false;
     const weaponMaterials = new Map<number, MeshLambertMaterial>();
     const weaponModel = (kind: WeaponKind, centered: boolean) => {
       const group = new Group();
@@ -2717,6 +2798,7 @@ export class VoxelRenderer {
       rightArm,
       tool,
       hammer,
+      pencil,
       weapons,
       cargoWeapons,
       cargo,
@@ -2774,6 +2856,7 @@ export class VoxelRenderer {
         visual.cargoWeapons[kind].visible = false;
       }
       visual.hammer.visible = false;
+      visual.pencil.visible = false;
       const visible = pawn.z <= this.level;
       visual.root.visible = visible;
       const fraction =
@@ -2820,13 +2903,37 @@ export class VoxelRenderer {
         job?.kind === 'smith'
           ? this.data.weaponBenches.find((b) => b.x === job.x && b.y === job.y && b.z === job.z)
           : undefined;
+      const researchBench =
+        job?.kind === 'research'
+          ? this.data.researchBenches.find((b) => b.x === job.x && b.y === job.y && b.z === job.z)
+          : undefined;
+      const researchStand = researchBench && researchBenchInteraction(researchBench);
+      const researching =
+        working &&
+        !!researchBench &&
+        !!job &&
+        !job.cancelled &&
+        job.owner === pawn.id &&
+        job.progress > 0 &&
+        job.progress < job.work &&
+        job.researchProject === this.data.research.current &&
+        !!researchStand &&
+        pawn.x === researchStand.x &&
+        pawn.y === researchStand.y &&
+        pawn.z === researchStand.z;
       const workTarget = weaponBench
         ? weaponBenchCells(weaponBench)[weaponBench.kind === 'smithy' ? 1 : 0]
-        : job?.kind === 'stonecut'
-          ? stonecutterCells({ ...job, axis: job.axis ?? 'x' })[1]
-          : job?.kind === 'tailoring'
-            ? tailorCells({ ...job, axis: job.axis ?? 'x' })[1]
-            : pawn.workTarget;
+        : researchBench
+          ? {
+              x: researchBench.x + (researchBench.axis === 'x' ? 1 : 0),
+              y: researchBench.y + 1,
+              z: researchBench.z,
+            }
+          : job?.kind === 'stonecut'
+            ? stonecutterCells({ ...job, axis: job.axis ?? 'x' })[1]
+            : job?.kind === 'tailoring'
+              ? tailorCells({ ...job, axis: job.axis ?? 'x' })[1]
+              : pawn.workTarget;
       const cooking = working && job?.kind === 'cook';
       const sewing = working && job?.kind === 'tailoring';
       const weaponCrafting =
@@ -2870,7 +2977,7 @@ export class VoxelRenderer {
       visual.rightLeg.rotation.x = carving ? -0.45 : moving ? -swing * 0.55 : 0;
       visual.leftArm.rotation.x = weaponCrafting
         ? -0.92 + Math.sin(time * 5 + pawn.id) * 0.07
-        : sewing || dressing || bandaging
+        : researching || sewing || dressing || bandaging
           ? -0.9 + Math.sin(time * 5 + pawn.id) * 0.13
           : pawn.cargo || carryingPatient
             ? -0.9
@@ -2887,35 +2994,41 @@ export class VoxelRenderer {
           ? -0.95 + Math.sin(time * 9 + pawn.id) * 0.7
           : carving
             ? -0.98 + Math.sin(time * 6 + pawn.id) * 0.18
-            : sewing || dressing || bandaging
-              ? -1 - Math.sin(time * 5 + pawn.id) * 0.18
-              : feeding
-                ? -1 + Math.sin(time * 4 + pawn.id) * 0.2
-                : pawn.cargo || carryingPatient
-                  ? -0.9
-                  : cooking
-                    ? -0.8 + Math.sin(time * 4 + pawn.id) * 0.14
-                    : tending
-                      ? -0.85 - swing * 0.15
-                      : working
-                        ? -1.05 + swing * 0.8
-                        : holdingWeapon && !moving
-                          ? -0.35
-                          : moving
-                            ? swing * 0.35
-                            : 0;
+            : researching
+              ? -1.02 + Math.sin(time * 7 + pawn.id) * 0.055
+              : sewing || dressing || bandaging
+                ? -1 - Math.sin(time * 5 + pawn.id) * 0.18
+                : feeding
+                  ? -1 + Math.sin(time * 4 + pawn.id) * 0.2
+                  : pawn.cargo || carryingPatient
+                    ? -0.9
+                    : cooking
+                      ? -0.8 + Math.sin(time * 4 + pawn.id) * 0.14
+                      : tending
+                        ? -0.85 - swing * 0.15
+                        : working
+                          ? -1.05 + swing * 0.8
+                          : holdingWeapon && !moving
+                            ? -0.35
+                            : moving
+                              ? swing * 0.35
+                              : 0;
       visual.torso.rotation.x = carving
         ? 0.3
         : smithing
           ? 0.12 + Math.max(0, swing) * 0.06
-          : cooking
-            ? 0.03
-            : tending
-              ? 0.2
-              : working
-                ? 0.08 + Math.max(0, swing) * 0.08
-                : 0;
-      visual.tool.visible = working && !cooking && !tending && !sewing && !weaponBench;
+          : researching
+            ? 0.09
+            : cooking
+              ? 0.03
+              : tending
+                ? 0.2
+                : working
+                  ? 0.08 + Math.max(0, swing) * 0.08
+                  : 0;
+      visual.tool.visible =
+        working && !cooking && !tending && !sewing && !weaponBench && !researchBench;
+      visual.pencil.visible = researching;
       visual.hammer.visible = weaponCrafting;
       visual.hammer.scale.setScalar(carving ? 0.6 : 1);
       const patient =
@@ -2932,7 +3045,15 @@ export class VoxelRenderer {
           dz = visual.to.z - visual.from.z;
         if (Math.abs(dx) + Math.abs(dz) > 0.001) visual.root.rotation.y = Math.atan2(dx, dz);
       }
-      if (visible && working && !cooking && !sewing && !weaponBench && workTarget) {
+      if (
+        visible &&
+        working &&
+        !cooking &&
+        !sewing &&
+        !weaponBench &&
+        !researchBench &&
+        workTarget
+      ) {
         for (let j = 0; j < 4 && moteCount < 256; j++) {
           const phase = (time * 2.5 + j * 0.25 + pawn.id * 0.13) % 1;
           const angle = (j * Math.PI) / 2 + pawn.id;

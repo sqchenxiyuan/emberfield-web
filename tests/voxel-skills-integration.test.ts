@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { VoxelSimulation } from '../src/voxel/world';
+import { initialResearch } from '../src/voxel/research';
 import { Block, index, type Pos, type VoxelCommand } from '../src/voxel/types';
 import { makeWeaponBench } from '../src/voxel/weaponProduction';
 import { freshBatch } from '../src/voxel/preservation';
@@ -10,6 +11,8 @@ const pos = (x: number, y: number, z = 8): Pos => ({ x, y, z });
 // Controlled geometry and stock for transactional boundary tests, not a normal campaign.
 function fixture() {
   const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  // Controlled feature fixture represents a colony with research already completed.
+  s.research = initialResearch(true);
   s.blocks.fill(Block.Stone);
   s.ladders.fill(0);
   s.trees = [];
@@ -24,7 +27,17 @@ function fixture() {
   s.pawns.forEach((p, i) => {
     Object.assign(p, pos(11, 11 + i));
     p.schedule.fill('work');
-    p.priorities = { dig: 0, build: 0, cut: 0, haul: 0, grow: 0, cook: 0, craft: 0, care: 0 };
+    p.priorities = {
+      dig: 0,
+      build: 0,
+      cut: 0,
+      haul: 0,
+      grow: 0,
+      cook: 0,
+      craft: 0,
+      care: 0,
+      research: 0,
+    };
   });
   return VoxelSimulation.load(s.save());
 }
@@ -65,7 +78,7 @@ describe('skills in real simulation tasks and saves', () => {
     expect(old.pawns[0].skills).toBeUndefined();
     const s = VoxelSimulation.load(old),
       saved = s.save();
-    expect(saved.version).toBe(14);
+    expect(saved.version).toBe(15);
     expect(saved.items).toEqual(old.items);
     expect(saved.blocks).toEqual(old.blocks);
     expect(saved.pawns.map((p) => [p.food, p.rest, p.worn, p.weapon, p.health])).toEqual(

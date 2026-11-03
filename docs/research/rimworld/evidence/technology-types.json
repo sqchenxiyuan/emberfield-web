@@ -1,0 +1,20 @@
+[
+  "RimWorld.ResearchManager",
+  "Verse.ResearchProjectDef",
+  "RimWorld.JobDriver_Research",
+  "RimWorld.WorkGiver_Researcher",
+  "RimWorld.Building_ResearchBench",
+  "RimWorld.TechLevel",
+  "RimWorld.TechLevelUtility",
+  "RimWorld.ScenPart_StartingResearch",
+  "RimWorld.ScenPart_PlayerFaction",
+  "ResearchUtility",
+  "RimWorld.StatPart_Outdoors",
+  "RimWorld.StatPart_RoomStat",
+  "RimWorld.RoomStatWorker_FromStatByCurve",
+  "RimWorld.RoomStatWorker_ReadingBonus",
+  "RimWorld.RoomRoleWorker_Laboratory",
+  "RimWorld.MainTabWindow_Research",
+  "RimWorld.CompAffectedByFacilities",
+  "RimWorld.CompFacility"
+]

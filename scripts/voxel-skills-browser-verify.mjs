@@ -7,20 +7,29 @@ import path from 'node:path';
 const BASE = process.env.VOXEL_TEST_URL ?? 'http://127.0.0.1:5183/?world=voxel';
 const OUT = process.env.VOXEL_SKILLS_BROWSER_OUT ?? 'test-results/voxel-skills-browser';
 const FIXTURES = process.env.VOXEL_SKILLS_OUT ?? 'test-results/voxel-skills-campaign';
-const KEYS = ['mining', 'construction', 'plants', 'cooking', 'crafting', 'medicine', 'melee'];
-const NAMES = ['采矿', '建造', '植物', '烹饪', '工艺', '医疗', '格斗'];
+const KEYS = [
+  'mining',
+  'construction',
+  'plants',
+  'cooking',
+  'crafting',
+  'medicine',
+  'melee',
+  'intellectual',
+];
+const NAMES = ['采矿', '建造', '植物', '烹饪', '工艺', '医疗', '格斗', '智识'];
 const PASSIONS = ['无热情', '有热情', '强烈热情'];
 const QUALITIES = ['极差', '较差', '普通', '良好', '优秀', '大师', '传奇'];
 const WEAPONS = { steelKnife: '钢匕首', steelLongsword: '钢长剑' };
 const LEVELS = [
-  [8, 6, 3, 4, 5, 3, 6],
-  [3, 3, 8, 6, 4, 8, 4],
-  [5, 7, 4, 3, 8, 4, 5],
+  [8, 6, 3, 4, 5, 3, 6, 6],
+  [3, 3, 8, 6, 4, 8, 4, 8],
+  [5, 7, 4, 3, 8, 4, 5, 4],
 ];
 const START_PASSIONS = [
-  [2, 1, 0, 0, 0, 0, 1],
-  [0, 0, 2, 1, 0, 1, 0],
-  [0, 1, 0, 0, 2, 0, 0],
+  [2, 1, 0, 0, 0, 0, 1, 0],
+  [0, 0, 2, 1, 0, 1, 0, 1],
+  [0, 1, 0, 0, 2, 0, 0, 0],
 ];
 const sha = (b) => createHash('sha256').update(b).digest('hex');
 const skillsOf = (pawns) => pawns.map((p) => ({ id: p.id, skills: p.skills }));
@@ -42,7 +51,7 @@ const report = {
   base: BASE,
   startedAt: new Date().toISOString(),
   scope:
-    'Production Chrome in both renderer modes. Genuine v13 file-chooser migration and normal-command v14 campaign fixtures. Visible DOM/canvas controls only for changes; window.voxel snapshot/project/exportSave are read-only observations. No injected skills, quality, resources, work, time or commands.',
+    'Production Chrome in both renderer modes. Genuine v13 file-chooser migration and normal-command v15 campaign fixtures. Visible DOM/canvas controls only for changes; window.voxel snapshot/project/exportSave are read-only observations. No injected skills, quality, resources, work, time or commands.',
   modes: [],
 };
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
@@ -146,7 +155,7 @@ async function verify(mode) {
   }
   async function verifySkillPanel(pawn) {
     const panel = page.getByTestId('pawn-skills');
-    assert.equal(await panel.locator('.voxel-skill').count(), 7);
+    assert.equal(await panel.locator('.voxel-skill').count(), 8);
     for (let i = 0; i < KEYS.length; i++) {
       const key = KEYS[i],
         skill = pawn.skills[key],
@@ -167,7 +176,7 @@ async function verify(mode) {
       assert.match(await row.innerText(), new RegExp('学习 ' + Math.round(rate * 100) + '%'));
     }
     assert.match(await panel.innerText(), /切石不提供工艺经验/);
-    assert.match(await panel.innerText(), /当前没有研究系统/);
+    assert.match(await panel.innerText(), /研究需要已选项目与科研台/);
   }
   async function inspectGround(item) {
     const pawns = (await state()).snapshot.pawns.filter((p) => p.faction === 'colony');
@@ -217,7 +226,7 @@ async function verify(mode) {
     assert.equal(result.fixtures.at(-1).sha256, provenance.sha256);
     assert.equal(old.version, 13);
     const migrated = await save();
-    assert.equal(migrated.version, 14);
+    assert.equal(migrated.version, 15);
     assert.deepEqual(migrated.items, old.items);
     assert.deepEqual(migrated.blocks, old.blocks);
     assert.deepEqual(qualityItems(migrated), qualityItems(old));
@@ -235,7 +244,7 @@ async function verify(mode) {
       await verifySkillPanel(pawn);
     }
     check(
-      'genuine v13 imports into v14 with unchanged gear quality and fixed zero-XP starter skill profiles',
+      'genuine v13 imports into v15 with unchanged gear quality and fixed zero-XP starter skill profiles',
       { sourceSha256: provenance.sha256 },
     );
     const colonist = migrated.pawns[0];
@@ -250,6 +259,7 @@ async function verify(mode) {
       grow: ['plants', '植物'],
       cook: ['cooking', '烹饪'],
       craft: ['crafting', '工艺'],
+      research: ['intellectual', '智识'],
     };
     for (const [work, [key, name]] of Object.entries(mapping)) {
       const select = page.getByLabel(`${colonist.name} ${work}优先级`, { exact: true });
@@ -280,7 +290,7 @@ async function verify(mode) {
     );
 
     const training = await load(FIXTURES + '/training.json');
-    assert.equal(training.version, 14);
+    assert.equal(training.version, 15);
     assert(
       training.jobs.some(
         (j) =>
@@ -359,7 +369,7 @@ async function verify(mode) {
     );
 
     const final = await load(FIXTURES + '/final.json');
-    assert.equal(final.version, 14);
+    assert.equal(final.version, 15);
     assert(
       final.pawns.some((p) => KEYS.some((k) => p.skills[k].xp !== 0 || p.skills[k].dailyXp !== 0)),
     );

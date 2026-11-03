@@ -62,7 +62,17 @@ function plotWorld(soil: number, meanTemperature = 20) {
   s.spawn = point(10, 10);
   s.pawns.forEach((p, i) => {
     Object.assign(p, point(10 + i, 12));
-    p.priorities = { dig: 1, cut: 0, build: 0, haul: 0, grow: 1, cook: 0, craft: 0, care: 0 };
+    p.priorities = {
+      dig: 1,
+      cut: 0,
+      build: 0,
+      haul: 0,
+      grow: 1,
+      cook: 0,
+      craft: 0,
+      care: 0,
+      research: 0,
+    };
   });
   s.items.push({ ...freshBatch('grain', 10), ...point(10, 11), id: s.nextId++ });
   return VoxelSimulation.load(s.save());
@@ -283,7 +293,7 @@ describe('v8 world persistence and validation', () => {
       s = VoxelSimulation.load(raw),
       saved = s.save();
     expect(raw).toEqual(original);
-    expect(saved.version).toBe(14);
+    expect(saved.version).toBe(15);
     expect(saved.generator).toBe(1);
     expect(saved.blocks).toEqual(raw.blocks);
     expect(saved.ladders).toEqual(raw.ladders);

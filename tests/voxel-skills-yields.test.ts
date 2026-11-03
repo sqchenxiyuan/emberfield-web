@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
+import { initialResearch } from '../src/voxel/research';
 import { freshBatch, rotLimit } from '../src/voxel/preservation';
 import { plantRandom } from '../src/voxel/plants';
 import {
@@ -18,6 +19,8 @@ const pos = (x: number, y: number, z = 8): Pos => ({ x, y, z });
  * Deliberate seed/rot/qualification changes below isolate specific boundaries. */
 function fixture(configure: (s: VoxelSimulation) => void = () => {}) {
   const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  // Controlled feature fixture represents a colony with research already completed.
+  s.research = initialResearch(true);
   s.blocks.fill(Block.Stone);
   s.ladders.fill(0);
   s.trees = [];
@@ -32,7 +35,17 @@ function fixture(configure: (s: VoxelSimulation) => void = () => {}) {
   s.pawns.forEach((p, i) => {
     Object.assign(p, pos(11, 11 + i));
     p.schedule.fill('work');
-    p.priorities = { dig: 0, build: 0, cut: 0, haul: 0, grow: 0, cook: 0, craft: 0, care: 0 };
+    p.priorities = {
+      dig: 0,
+      build: 0,
+      cut: 0,
+      haul: 0,
+      grow: 0,
+      cook: 0,
+      craft: 0,
+      care: 0,
+      research: 0,
+    };
     for (const skill of Object.values(p.skills))
       Object.assign(skill, { passion: 0, xp: 0, dailyXp: 0 });
   });

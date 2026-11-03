@@ -322,6 +322,7 @@ export class VoxelClient {
             'tailor',
             'craftingSpot',
             'smithy',
+            'researchBench',
           ].includes(this.state.tool) || isDeviceKind(this.state.tool);
         await this.command({
           type: 'designate',

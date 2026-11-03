@@ -10,6 +10,7 @@ import {
   type WeaponPiece,
 } from './weapons';
 import { WEAPON_BENCH_NAMES } from './weaponProduction';
+import { weaponResearchReason } from './research';
 import {
   RESOURCE_NAMES,
   TPS,
@@ -155,6 +156,7 @@ export function WeaponBenchPanel({
     kind = bill.kind;
   const recipe = WEAPON_DEFS[kind],
     stand = weaponBenchInteraction(bench);
+  const researchReason = weaponResearchReason(snapshot.research, kind);
   const pieces = [
     ...snapshot.items.flatMap((i) => (i.weapon ? [i.weapon] : [])),
     ...snapshot.pawns.flatMap((p) => [
@@ -200,6 +202,8 @@ export function WeaponBenchPanel({
         <select
           aria-label="武器目标数量"
           value={bill.target}
+          disabled={!!researchReason}
+          title={researchReason ?? undefined}
           onChange={(e) => update(Number(e.target.value), bill.paused)}
         >
           {[...new Set([0, 1, 2, 3, 5, 10, 20, bill.target])]
@@ -211,14 +215,15 @@ export function WeaponBenchPanel({
             ))}
         </select>
       </label>
-      <button onClick={() => update(bill.target, !bill.paused)}>
+      {researchReason && <p data-testid="weapon-research-lock">{researchReason}</p>}
+      <button disabled={!!researchReason} onClick={() => update(bill.target, !bill.paused)}>
         {bill.paused ? '恢复此配方' : '暂停此配方'}
       </button>
       <small>
         需要「加工」分工，原料运达后开工。操作位 {stand.x}, {stand.y} · Z {stand.z}。
       </small>
       <small>
-        钢制武器品质由完工者的工艺等级决定，木棒无品质等级。钢长剑需要工艺5级；当前没有研究系统。降低目标保留当前批次，暂停则退回原料。
+        钢制武器品质由完工者的工艺等级决定，木棒无品质等级。钢长剑需要长刃武器研究与工艺5级。降低目标保留当前批次，暂停则退回原料。
       </small>
     </section>
   );

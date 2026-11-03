@@ -1,0 +1,127 @@
+{
+  "evidence_id": "RW17-TECHNOLOGY",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.ResearchManager",
+      "local_file": ".local-research/technology/RimWorld.ResearchManager.cs",
+      "sha256": "59cf276e5b1dd8c9625aa8ccdd572310c233f6a1ee262bd5eb7bafb53f544bc5",
+      "lines": 580
+    },
+    {
+      "type": "Verse.ResearchProjectDef",
+      "local_file": ".local-research/technology/Verse.ResearchProjectDef.cs",
+      "sha256": "47d832633b07dd873fa76f0e81e34a331514cbe8861a984b5316bf352e2494f9",
+      "lines": 697
+    },
+    {
+      "type": "RimWorld.JobDriver_Research",
+      "local_file": ".local-research/technology/RimWorld.JobDriver_Research.cs",
+      "sha256": "9c779ea73f89eef91508024ed4a79aad9a007db297eea40c1aa713ae78db3cae",
+      "lines": 54
+    },
+    {
+      "type": "RimWorld.WorkGiver_Researcher",
+      "local_file": ".local-research/technology/RimWorld.WorkGiver_Researcher.cs",
+      "sha256": "70386fd75158a989a92fda39ef9c25e8ea237d1eaea0d51a52f1e770e67c8a62",
+      "lines": 67
+    },
+    {
+      "type": "RimWorld.Building_ResearchBench",
+      "local_file": ".local-research/technology/RimWorld.Building_ResearchBench.cs",
+      "sha256": "e5457dd8116ce358509c76659a123b43e1d306187f95b31d8a988dde783f6a78",
+      "lines": 22
+    },
+    {
+      "type": "RimWorld.TechLevel",
+      "local_file": ".local-research/technology/RimWorld.TechLevel.cs",
+      "sha256": "c163476b5c3e87f808e4b07c11588823203d74e49f0758a2f94e3864008b78dd",
+      "lines": 14
+    },
+    {
+      "type": "RimWorld.TechLevelUtility",
+      "local_file": ".local-research/technology/RimWorld.TechLevelUtility.cs",
+      "sha256": "9a2911a2a2e1409285f4dcda662e3cf66249196f73147d250f3c14340697cee5",
+      "lines": 69
+    },
+    {
+      "type": "RimWorld.ScenPart_StartingResearch",
+      "local_file": ".local-research/technology/RimWorld.ScenPart_StartingResearch.cs",
+      "sha256": "ca0c4bf956cce01b7a016583fbf2b4129c816d7d502ed56d14c30006b11d7a27",
+      "lines": 66
+    },
+    {
+      "type": "RimWorld.ScenPart_PlayerFaction",
+      "local_file": ".local-research/technology/RimWorld.ScenPart_PlayerFaction.cs",
+      "sha256": "a02ce644c7e8f63d10b5569cabc464ef4e027a4dea7ed3395bfb49c55fe88662",
+      "lines": 86
+    },
+    {
+      "type": "ResearchUtility",
+      "local_file": ".local-research/technology/ResearchUtility.cs",
+      "sha256": "2fb421c38b9e132cb1382685cbaf1096978eaf20f2e3bd99d9d5612061fe5b10",
+      "lines": 52
+    },
+    {
+      "type": "RimWorld.StatPart_Outdoors",
+      "local_file": ".local-research/technology/RimWorld.StatPart_Outdoors.cs",
+      "sha256": "57930380694ce425b0b34f26e5319da365c40d5c52e7dc9a942312bdf998ce8e",
+      "lines": 56
+    },
+    {
+      "type": "RimWorld.StatPart_RoomStat",
+      "local_file": ".local-research/technology/RimWorld.StatPart_RoomStat.cs",
+      "sha256": "f99bcc6b538be799d306705667040d4ab21e1424715203d3b383543d071785c9",
+      "lines": 47
+    },
+    {
+      "type": "RimWorld.RoomStatWorker_FromStatByCurve",
+      "local_file": ".local-research/technology/RimWorld.RoomStatWorker_FromStatByCurve.cs",
+      "sha256": "73a9e2a8b6382c6722295cc710ec172aa65c541b0b28152e6e53c1a91f634f69",
+      "lines": 12
+    },
+    {
+      "type": "RimWorld.RoomStatWorker_ReadingBonus",
+      "local_file": ".local-research/technology/RimWorld.RoomStatWorker_ReadingBonus.cs",
+      "sha256": "a38ca10b41eeeaeee0c3b7989edf653e53c8740609aa3335403153f322f40953",
+      "lines": 34
+    },
+    {
+      "type": "RimWorld.RoomRoleWorker_Laboratory",
+      "local_file": ".local-research/technology/RimWorld.RoomRoleWorker_Laboratory.cs",
+      "sha256": "f927d401818a7ea385fce3a1b1e6de12f6267b638a0995a3241aebc013ca29ba",
+      "lines": 32
+    },
+    {
+      "type": "RimWorld.MainTabWindow_Research",
+      "local_file": ".local-research/technology/RimWorld.MainTabWindow_Research.cs",
+      "sha256": "55ada3dbee09e550d6ede0506b8242f48eeb4ff255a49d08506de89f11c16af0",
+      "lines": 1605
+    },
+    {
+      "type": "RimWorld.CompAffectedByFacilities",
+      "local_file": ".local-research/technology/RimWorld.CompAffectedByFacilities.cs",
+      "sha256": "4c4629e61632c35f9a3f2d79b96aa1d26c2fe4925664b09a5182b7de655957de",
+      "lines": 574
+    },
+    {
+      "type": "RimWorld.CompFacility",
+      "local_file": ".local-research/technology/RimWorld.CompFacility.cs",
+      "sha256": "5811a88ec62c48931e43558202f1125cf63f009ccdd33e3b7712965cb7a7f8e7",
+      "lines": 279
+    }
+  ]
+}

@@ -1160,3 +1160,101 @@ a {
   background: #a6b6a219;
   border-radius: 3px;
 }
+.voxel-research-drawer {
+  position: absolute;
+  right: 24px;
+  top: 150px;
+  bottom: 168px;
+  width: 350px;
+  padding: 16px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: #1d292af5;
+  border: 1px solid #d7dfcb38;
+  border-radius: 5px;
+  box-shadow: 0 12px 35px #0004;
+  z-index: 4;
+}
+.voxel-research-drawer h2 {
+  margin: 10px 0;
+  color: #eedbb5;
+  font-size: 17px;
+}
+.voxel-research-drawer p {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.voxel-research-drawer small {
+  color: #bdc9bc;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.voxel-research-drawer progress,
+.voxel-research-bench progress {
+  width: 100%;
+  accent-color: #cdb779;
+}
+.voxel-research-current {
+  display: grid;
+  gap: 8px;
+  font-size: 12px;
+}
+.voxel-research-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+.voxel-research-entry {
+  padding: 12px;
+  border: 1px solid #b5c4ad2b;
+  background: #14202166;
+}
+.voxel-research-entry > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: baseline;
+}
+.voxel-research-entry b {
+  font-size: 13px;
+}
+.voxel-research-entry > div span {
+  color: #c5b684;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.voxel-research-entry small {
+  display: block;
+}
+.voxel-research-entry p {
+  margin: 6px 0;
+}
+.voxel-research-entry button {
+  margin-top: 8px;
+  width: 100%;
+  text-align: left;
+}
+.voxel-research-entry.is-active {
+  border-color: #cfbd7d;
+  background: #c4b97814;
+}
+.voxel-research-entry.is-complete {
+  opacity: 0.75;
+}
+.voxel-research-origin {
+  border-left: 2px solid #c5b684;
+  padding-left: 8px;
+}
+.voxel-footer nav button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+@media (max-width: 1050px) {
+  .voxel-research-drawer {
+    right: 12px;
+    top: 204px;
+    bottom: 168px;
+    width: 300px;
+    padding: 12px;
+  }
+}

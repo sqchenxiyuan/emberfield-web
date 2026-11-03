@@ -1,0 +1,7477 @@
+{
+  "generatedAt": "2026-11-03T03:20:38.292Z",
+  "kind": "web-runtime-validated",
+  "scope": "Physical upper-floor simple research bench, shared project progress, Intellectual work XP, industrial starting knowledge, prerequisites and recipe gates, save v15 and genuine v14 migration. Controlled tests, ordinary campaigns, browser controls and native runtime remain separate evidence layers.",
+  "sources": [
+    {
+      "file": "src/voxel/ApparelPanel.tsx",
+      "sha256": "7a3aed1524009e13f3adf784c63ed6f43a100ae88a4f6ac74e290a986d6c5265"
+    },
+    {
+      "file": "src/voxel/CombatPanel.tsx",
+      "sha256": "9ee9b0b137381d2e0d349feac6745d9dfc337c6653fb1a9e3524430810d0bc28"
+    },
+    {
+      "file": "src/voxel/ResearchPanel.tsx",
+      "sha256": "4e66974943a44217ce1b6245afa4dfcba0da4a7ffd10674731cb4f95597c09d8"
+    },
+    {
+      "file": "src/voxel/SkillPanel.tsx",
+      "sha256": "2a94456cc94882742e23494885dce50f4ed46dbedc8534b2794df68fa7a850b7"
+    },
+    {
+      "file": "src/voxel/SurvivalPanel.tsx",
+      "sha256": "fa06477460dc705936bc544ff47ef8f1119626fbc746e98057dbd8115b98ae55"
+    },
+    {
+      "file": "src/voxel/TailorPanel.tsx",
+      "sha256": "b1db6e17143a1bd78787e478daed6347c87ea75b8bbb262bd932afbe8bda570f"
+    },
+    {
+      "file": "src/voxel/WeaponPanel.tsx",
+      "sha256": "5c99b6d23812e9170fd1c2ab49b6dae2ca9b357351c0cec5cd1c54e29c4ae20b"
+    },
+    {
+      "file": "src/voxel/WorldSetup.tsx",
+      "sha256": "32951f3f9d082074ed545795ea51abbd39b2dfbfc88ae62cd63e755db097068a"
+    },
+    {
+      "file": "src/voxel/apparel.ts",
+      "sha256": "d5c0ad649ee59f44a52a38fe0a3f47a32be974fcc11b36c44f5fe5a704eb1629"
+    },
+    {
+      "file": "src/voxel/client.ts",
+      "sha256": "5b60422ea098af0a956ca77575641711c0862efeff3b730fbdf3fba9371d73f4"
+    },
+    {
+      "file": "src/voxel/climate.ts",
+      "sha256": "2386d38fc2b258034516de80caee53627d62c184bd18cadb741c213cc781bf29"
+    },
+    {
+      "file": "src/voxel/crafting.ts",
+      "sha256": "9ff99d07c56040b1bc91acc9bd6521c00550389068f669459516f730887fcadb"
+    },
+    {
+      "file": "src/voxel/farming.ts",
+      "sha256": "0984bc364efff88d7f7773d99f9d7e1cfa5379d4614816669d193d1e7c718c79"
+    },
+    {
+      "file": "src/voxel/injuries.ts",
+      "sha256": "0c704d15e127c776b3de1dec1c6bcfc89ecf34916efed2d3d9639d3c8417df00"
+    },
+    {
+      "file": "src/voxel/logistics.ts",
+      "sha256": "f4262564877d793a62dac672739beb8a31ba7b1cda73c6e56c47f6dc1ef1c381"
+    },
+    {
+      "file": "src/voxel/main.tsx",
+      "sha256": "2ef1bd606edee27af90c16326bb8036b7aaa0077ba4153ad464b49fc8f2aa890"
+    },
+    {
+      "file": "src/voxel/plants.ts",
+      "sha256": "baa7f01b82c047536c8d0a2ee3097e15bce8466418e4442e39155d6be6400195"
+    },
+    {
+      "file": "src/voxel/power.ts",
+      "sha256": "d24d824e96544a080106c4cd861cd9d7eaff9101de82ddced9bee4c5451f1585"
+    },
+    {
+      "file": "src/voxel/preservation.ts",
+      "sha256": "99c86a68c50a032097916e060a667fe1e3ad8d7f5def9d5b55b516acc112048e"
+    },
+    {
+      "file": "src/voxel/render.worker.ts",
+      "sha256": "191ced6c3d17b480fa11f2d3a6845b8e9df111f5f69ded8b7b2bbaf75caf22c0"
+    },
+    {
+      "file": "src/voxel/renderer.ts",
+      "sha256": "3394a2dbe9c4fecb4104a1d1a12c93e2d37f537b4949a2abd7d074ac15bca630"
+    },
+    {
+      "file": "src/voxel/research.ts",
+      "sha256": "44eb44200a1b933bd91be835fc5f236ec3ab4c1dd453d6c0061d38bc058ed43e"
+    },
+    {
+      "file": "src/voxel/rest.ts",
+      "sha256": "843c08f8188d7a3b3a9cbef507a0568705bb3d5aa5ad2d89395443199aa12099"
+    },
+    {
+      "file": "src/voxel/rooms.ts",
+      "sha256": "67457f7cd217f5746b9562ea2e3ca059af1f424165368d28d511e8a374090b9d"
+    },
+    {
+      "file": "src/voxel/sim.worker.ts",
+      "sha256": "0323931264b656a7e286ee8eeedb3fbb48a8d2bd6ca83206180d78c0f907fb82"
+    },
+    {
+      "file": "src/voxel/skills.ts",
+      "sha256": "11adfa7cbbaa2b5d46cb37da13abd7cc4554b5cbdd0aa8e70d92be3318de0c77"
+    },
+    {
+      "file": "src/voxel/style.css",
+      "sha256": "f64f1fd3ed7634a059507901887b67cd5ce30153191da24d1765b95586ca4dfd"
+    },
+    {
+      "file": "src/voxel/survival.ts",
+      "sha256": "662cd32c963222ad33f945d1b494e6493c93243a803476cf0d0b0d251c936b6d"
+    },
+    {
+      "file": "src/voxel/thermal.ts",
+      "sha256": "40c614996ba9c8843bc52fbd343a2a625c0fd77c788b1133ae2ba50b6494b127"
+    },
+    {
+      "file": "src/voxel/types.ts",
+      "sha256": "973eea3c6a366dc1fbe1d2c864a0ea70564ac52c8c26e7c27dda8ed33ea27065"
+    },
+    {
+      "file": "src/voxel/weaponProduction.ts",
+      "sha256": "27c934081d6d67106327c424ba4da49108c86ea5d7541efc68ad1d87f0e51685"
+    },
+    {
+      "file": "src/voxel/weapons.ts",
+      "sha256": "c974e003d8139ee40bd951e8ea2702c2949e4a53984eadb51caaf4544e648a40"
+    },
+    {
+      "file": "src/voxel/world.ts",
+      "sha256": "4ee532e6d3c970ed0514c6803c091e5193b939f995ef38bd7bc45b9fdf44d1ae"
+    },
+    {
+      "file": "src/voxel/worldgen.ts",
+      "sha256": "7f3acf989d9e366793be11bef8f42f352cc36523c09a75a8acb9c944af7770fb"
+    }
+  ],
+  "scripts": [
+    {
+      "file": "scripts/voxel-research-opening.mjs",
+      "sha256": "b47a445a540f28c406d55b682ac3dd42dd5bf2acd200f5bd3d4661248cd8d1f3"
+    },
+    {
+      "file": "scripts/voxel-research-campaign-verify.mjs",
+      "sha256": "2f78c84be47a211abc157bc5959c44e2eb424056ab39ff8e33234ad0af769b25"
+    },
+    {
+      "file": "scripts/voxel-research-browser-verify.mjs",
+      "sha256": "2e604d9067581596e9e47542d1fbf175b30fc8aa61cde3cf948e0a4667e382c9"
+    },
+    {
+      "file": "scripts/research/verify-voxel-research-validation.mjs",
+      "sha256": "629844352b3d7121c3780a6468cc248d353a5dd9823546d4fc4fa2e120264645"
+    },
+    {
+      "file": "tests/voxel-research.test.ts",
+      "sha256": "858e6e9ce080ee6d908b18c67a68ac08ecfa8b288f8004bdb9d3bc5b642f3a4e"
+    },
+    {
+      "file": "scripts/voxel-skills-campaign-verify.mjs",
+      "sha256": "732f0645624d87b02c0d3335711a21ec815ea3f9ee0a9377ebbc5bbf00ab069a"
+    },
+    {
+      "file": "scripts/voxel-weapons-campaign-verify.mjs",
+      "sha256": "a72a6922bbebc47f558407d157e0c87d9a67040e2c4951ee8b3456d900d36de3"
+    },
+    {
+      "file": "scripts/voxel-plants-campaign-verify.mjs",
+      "sha256": "00b870169eb7f84d04e60c6942668d8bb69d19ee3f6c03a95057ab4352009b93"
+    }
+  ],
+  "assets": [
+    {
+      "file": "dist/assets/CanvasRenderer-B6Mdl2XH.js",
+      "sha256": "10062f733eb334b62322dc9a5c349144757377db9c8f83700bdebc1631dc4c33"
+    },
+    {
+      "file": "dist/assets/CanvasRenderer-dREZuewb.js",
+      "sha256": "e138807516b0576c92077e02c7bcf8a03d906783f15a8d1aa2ca681e2a9d91e0"
+    },
+    {
+      "file": "dist/assets/Filter-3Gl5Xq8e.js",
+      "sha256": "ff7d610e3f8192440593d21cd136f96e4becc82a23699aa498414c5990d20521"
+    },
+    {
+      "file": "dist/assets/Filter-B9elJL62.js",
+      "sha256": "14f2535382dd29e7551e6f8b0e66d7af67012c1481a4ff24855598997217227b"
+    },
+    {
+      "file": "dist/assets/RenderTargetSystem-10VWBYJN.js",
+      "sha256": "15a4d6d93c6085a7dd593141cb9efbe26da8807881658b4798f40b2e03174394"
+    },
+    {
+      "file": "dist/assets/RenderTargetSystem-CHr8TCG6.js",
+      "sha256": "255ec32a0972143ad713029b6c846c70b8f7b297457243e33fd1f21667fd4555"
+    },
+    {
+      "file": "dist/assets/WebGLRenderer-BOop3V_f.js",
+      "sha256": "bc33a461adc7aad937c65dd40a117b526eda37adfe794cfa834214dd5d122484"
+    },
+    {
+      "file": "dist/assets/WebGLRenderer-BoJbkwAQ.js",
+      "sha256": "84339be0cbaabb0b49d5055a384b5534952c8c5d88092dd8511c7a7fdb0a44b6"
+    },
+    {
+      "file": "dist/assets/WebGPURenderer-afrKZCn_.js",
+      "sha256": "c97b84947fb5906ecd82131b7abd4dd9945e641e5970075c09932d242c60811f"
+    },
+    {
+      "file": "dist/assets/WebGPURenderer-zMFGatTH.js",
+      "sha256": "d094ebc94dc94a8338c5c0ca7bd6b1909447156a2302247416b321c8ae974126"
+    },
+    {
+      "file": "dist/assets/browserAll-CZSaOPs_.js",
+      "sha256": "001560b84cc33e62e622abf48ef2d59e369f813bafbee2d6176729fcae3afaa9"
+    },
+    {
+      "file": "dist/assets/browserAll-DcLNF0vk.js",
+      "sha256": "c0b603ca84267894b381ec6cfae9636912e71499c9135b3cbc18aa453c8eef66"
+    },
+    {
+      "file": "dist/assets/client-CrowJ5J7.js",
+      "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e"
+    },
+    {
+      "file": "dist/assets/getTexelRangeRects-6KmSJYmx.js",
+      "sha256": "845c5ff60fba6914b76a7310856097210b5f8164f29b0e0f141e6c088a87879d"
+    },
+    {
+      "file": "dist/assets/getTexelRangeRects-Dy8HUIoI.js",
+      "sha256": "8bbb0d808ef79bbde316b91d4311ad257e0676d7cef252b4d4b335c890e13d70"
+    },
+    {
+      "file": "dist/assets/index-opo6esVb.js",
+      "sha256": "230d9b5eaf1f924071c7610dbe255fc96bf65169de33818bc52d20d78a83a03e"
+    },
+    {
+      "file": "dist/assets/main-Bd4OPQD3.css",
+      "sha256": "dc5627827651affe81bedfa46cbf7057ef1e88932911b4ea18396538b97e69fa"
+    },
+    {
+      "file": "dist/assets/main-BdOrknhv.js",
+      "sha256": "c139f91d88470b299b4aa5be8d4fd69e30f8016bb40427b1d100526c7d34a15d"
+    },
+    {
+      "file": "dist/assets/main-DgWfS9gM.js",
+      "sha256": "2a9337250e95a7ab3d52ffd6a3ca52cd7ab188b683b4d14c184626450b16e320"
+    },
+    {
+      "file": "dist/assets/main-ZwypviP2.css",
+      "sha256": "b0cf9ae6a061940f01c4565f6a5a0a2ac13dc7d352a314355a6468f25929564e"
+    },
+    {
+      "file": "dist/assets/render.worker-D7m46SK7.js",
+      "sha256": "8fffee400460a507d8550cff104f1361593cd16ee1f711cc7eebe2b42a5a0665"
+    },
+    {
+      "file": "dist/assets/render.worker-DSNcKIh7.js",
+      "sha256": "d20eee6ca33b28ab9af0145994a83d57538f915cded4c5c52b0f5ce649a11a58"
+    },
+    {
+      "file": "dist/assets/renderer-CNQCW_sG.js",
+      "sha256": "2890b79e9934da3166ea600cb7a4c2c7000b93bf8329888a4abd4745f369f804"
+    },
+    {
+      "file": "dist/assets/sim.worker-D7wEvaEE.js",
+      "sha256": "61c95013bc478cad91f1db4f44ec541463bec1d0ea5598888e8dfd9b975c312b"
+    },
+    {
+      "file": "dist/assets/sim.worker-TVFgUzzb.js",
+      "sha256": "660607d5f3448266fb3aa9d9c6ac5e433a3524c096ab3f5d266cff8590dd8d36"
+    },
+    {
+      "file": "dist/assets/webworkerAll-0b5Tygjj.js",
+      "sha256": "ae2ba31eb7d7b32069b781ede54a2cdf24eb4a5e0b0cd6ad27e0498ed5b47a95"
+    },
+    {
+      "file": "dist/assets/webworkerAll-CdeLAaHn.js",
+      "sha256": "9569e94be613d6ace90dbecf93f7fdd3e9f081316e6ca973fad073af511f2302"
+    }
+  ],
+  "reports": [
+    {
+      "file": "test-results/technology-unit.json",
+      "sha256": "d2c09a96452f9a8000f565b319cc6d2e2095db8d56a2bf6f80b8070b0e2e8acb"
+    },
+    {
+      "file": "test-results/technology-unit-process.json",
+      "sha256": "27b9aa74c855a62c54d5af03e150149eb9abfc28487e179913a611d0113bd160"
+    },
+    {
+      "file": "test-results/technology-unit.log",
+      "sha256": "60c43b133ca22b626fb47caa9351ec564ac61b54d123e720d79516f4407f092d"
+    },
+    {
+      "file": "test-results/technology-build.log",
+      "sha256": "c5bc3a4dfee6bdc0f60994ca36ade98bffa8bf54ecda4a90399729f0b59abd48"
+    },
+    {
+      "file": "test-results/voxel-research-campaign/report.json",
+      "sha256": "298638c1dc8f1f144b41eb005306c9849d55b19852c99cd5dd1863682c2a70b9"
+    },
+    {
+      "file": "test-results/voxel-research-browser/report.json",
+      "sha256": "f9e4da3d61ef06b6554b140ef265ec06d6800cf3c1348f1c5efeaca2aa9970c9"
+    },
+    {
+      "file": "test-results/voxel-skills-campaign/report.json",
+      "sha256": "2fd78d273aaba6def3ad4de2422f44f9d58b92a3acf97a8394f5573548e1053a"
+    },
+    {
+      "file": "test-results/voxel-skills-browser/report.json",
+      "sha256": "9141d9ae2259de7ba8da1242bece1f5bd87c10f4832bacb1472ca54bb69b0816"
+    },
+    {
+      "file": "test-results/technology-regressions.json",
+      "sha256": "62a785f75719766d78ffe55607dab5b2807e067e6aad6c1231407c5b9e8be2ad"
+    },
+    {
+      "file": "test-results/technology-regressions/power-attempt-1.log",
+      "sha256": "2c6ef8fc86810e3578483073b4faac805f2154ec57091a298c5d62c423b000cf"
+    },
+    {
+      "file": "test-results/technology-regressions/plants-attempt-1.log",
+      "sha256": "3c6a4674a6aedff42556e744f3cf1d31f93548cb52ba7481668c30c20b85f4a7"
+    },
+    {
+      "file": "test-results/technology-regressions/food-attempt-1.log",
+      "sha256": "86ad5ce44d4c811dc9622bd6b64aea238789cee9a3bd35248841a7705d5fe768"
+    },
+    {
+      "file": "test-results/technology-regressions/housing-attempt-1.log",
+      "sha256": "d61356c52b58bc7d49661ec7f1b9720456936fc2c039041da7a70c8fa4a800dd"
+    },
+    {
+      "file": "test-results/technology-regressions/injuries-attempt-1.log",
+      "sha256": "72ebe230812fe74651475cb9a226d3872efc9f0cc008721ad928bedf1e4c0757"
+    },
+    {
+      "file": "test-results/technology-regressions/apparel-attempt-1.log",
+      "sha256": "cd41e3e6c9c1a31853a2470ceca074e930aeb7ca947d6a7a037bc21e22dfcaae"
+    },
+    {
+      "file": "test-results/technology-regressions/apparel-temperature-attempt-1.log",
+      "sha256": "8a7e7f7889baeeb5ef9e4fbcbcd20e873efe386cf6336b8c95c595e5fc25f11c"
+    },
+    {
+      "file": "test-results/technology-regressions/preservation-attempt-1.log",
+      "sha256": "bb99af59d80a82b99992765c40a14e9df6db65e8af11a8ca88cb13524e44de0e"
+    },
+    {
+      "file": "test-results/technology-regressions/stonecutting-attempt-1.log",
+      "sha256": "3be2e0809406e939c0dbde2ecba1eeaffced6d4d77d4746a8c74a12916c97c84"
+    },
+    {
+      "file": "test-results/technology-regressions/worldgen-attempt-1.log",
+      "sha256": "0cb6b4457b35ca3815852ca294b5e15f57f22384e533ba6960c5934d61bcb183"
+    },
+    {
+      "file": "test-results/technology-regressions/logistics-attempt-1.log",
+      "sha256": "e03d6ae7870a31c90543d23670e3bf94e05108695d168aa4037689cdcbbcd30f"
+    },
+    {
+      "file": "test-results/technology-regressions/survival-attempt-1.log",
+      "sha256": "df46b54cbc8dcf0134b59a6ce9c336f8101bbab7e585e7863d1f094f6ce6e8e9"
+    },
+    {
+      "file": "test-results/technology-regressions/survival-temperature-attempt-1.log",
+      "sha256": "84bb09a74bb5ee67a020d212f5ca650924b9f2ab6d003eb55cdc0c2b201036da"
+    },
+    {
+      "file": "test-results/technology-regressions/voxel-attempt-1.log",
+      "sha256": "12edf695ae3b610ecbb405f80b2bd935fd9accd00977d091c28278985aaacaf3"
+    }
+  ],
+  "unit": {
+    "total": 469,
+    "passed": 469,
+    "failed": 0,
+    "process": {
+      "command": "node ../../node_modules/vitest/vitest.mjs run --maxWorkers=2 --reporter=default --reporter=json --outputFile.json=test-results/technology-unit.json",
+      "startedAt": "2026-11-03T03:15:10.293Z",
+      "finishedAt": "2026-11-03T03:16:18.285Z",
+      "durationMs": 67989.97919999999,
+      "code": 0,
+      "signal": null,
+      "unhandledError": false,
+      "log": "test-results/technology-unit.log",
+      "logSha256": "60c43b133ca22b626fb47caa9351ec564ac61b54d123e720d79516f4407f092d"
+    }
+  },
+  "researchTests": [
+    {
+      "title": "starts with the seven industrial technologies and preserves previous releases as legacy unlocked",
+      "status": "passed"
+    },
+    {
+      "title": "uses research speed, manipulation, outdoor and temperature factors at 20 TPS",
+      "status": "passed"
+    },
+    {
+      "title": "rotates all six footprint cells and the operating position consistently",
+      "status": "passed"
+    },
+    {
+      "title": "allows project selection without a bench, but neither progress nor XP appears",
+      "status": "passed"
+    },
+    {
+      "title": "gains points then Intellectual XP only after arriving at the operating cell",
+      "status": "passed"
+    },
+    {
+      "title": "preserves partial research through switch, stop, save and load",
+      "status": "passed"
+    },
+    {
+      "title": "adds simultaneous work at separate benches into one global project",
+      "status": "passed"
+    },
+    {
+      "title": "releases finite research sessions without resetting project progress",
+      "status": "passed"
+    },
+    {
+      "title": "interrupts research for a newly reachable higher-priority construction job",
+      "status": "passed"
+    },
+    {
+      "title": "stops work immediately on drafting and while all research priorities are disabled",
+      "status": "passed"
+    },
+    {
+      "title": "does not repeatedly interrupt research for a higher-priority smith without fuel",
+      "status": "passed"
+    },
+    {
+      "title": "stops a research job when demolition is designated and dismantles the real bench",
+      "status": "passed"
+    },
+    {
+      "title": "completes once across simultaneous workers, clears all jobs and enables the unlock",
+      "status": "passed"
+    },
+    {
+      "title": "builds a six-cell research bench from finite carried inputs and cannot overlap it",
+      "status": "passed"
+    },
+    {
+      "title": "rejects prerequisite bypass and technology-gated designations at the simulation boundary",
+      "status": "passed"
+    },
+    {
+      "title": "migrates authentic v14 bytes without replacing existing skill XP or physical state",
+      "status": "passed"
+    },
+    {
+      "title": "rejects malformed progress, inconsistent prerequisite/current, duplicate benches and stale jobs",
+      "status": "passed"
+    }
+  ],
+  "historicalSave": {
+    "file": "tests/fixtures/voxel-v14-start.json",
+    "sha256": "664fe5181bdda6f179e30723fe9c5c91cfb7fedc4cb2f2d591f82a22039d4261"
+  },
+  "campaign": {
+    "startedAt": "2026-11-03T02:57:54.627Z",
+    "project": "Smithing",
+    "scope": "Fresh v15 industrial colony. Normal command/step/save/load only; read-only terrain and path queries. Actual forestry, underground ore, upper floor construction, carried bench inputs, working research, normal food/rest, project switch/stop and physical unlocked smithy. No injected knowledge, skills, resources, terrain, needs, positions or clock.",
+    "commands": [
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stove",
+          "from": {
+            "x": 32,
+            "y": 31,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 20；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 30,
+            "y": 30,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 34,
+            "y": 30,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 31,
+            "y": 31,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 33,
+            "y": 31,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 32,
+            "y": 32,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 32,
+            "y": 27,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 31,
+            "y": 28,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 30,
+            "y": 29,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 29,
+            "y": 30,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 30,
+            "y": 31,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 34,
+            "y": 31,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 31,
+            "y": 32,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 33,
+            "y": 32,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 32,
+            "y": 33,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 32,
+            "y": 26,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 31,
+            "y": 27,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 33,
+            "y": 27,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 30,
+            "y": 28,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 34,
+            "y": 28,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 29,
+            "y": 29,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 35,
+            "y": 29,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 28,
+            "y": 30,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 36,
+            "y": 30,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 29,
+            "y": 31,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 35,
+            "y": 31,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 30,
+            "y": 32,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 34,
+            "y": 32,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 32,
+            "y": 25,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 31,
+            "y": 26,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 33,
+            "y": 26,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 30,
+            "y": 27,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 34,
+            "y": 27,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 35,
+            "y": 28,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 28,
+            "y": 29,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 36,
+            "y": 29,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 27,
+            "y": 30,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 37,
+            "y": 30,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 36,
+            "y": 31,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 29,
+            "y": 32,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 35,
+            "y": 32,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 30,
+            "y": 33,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 32,
+            "y": 34,
+            "z": 8
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 32,
+            "y": 24,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 33,
+            "y": 25,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 30,
+            "y": 26,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 34,
+            "y": 26,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 29,
+            "y": 27,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 35,
+            "y": 27,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 28,
+            "y": 28,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 36,
+            "y": 28,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 27,
+            "y": 29,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 37,
+            "y": 29,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 38,
+            "y": 30,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 27,
+            "y": 31,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 37,
+            "y": 31,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 28,
+            "y": 32,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 29,
+            "y": 33,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 34,
+            "y": 33,
+            "z": 8
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 30,
+            "y": 34,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 33,
+            "y": 34,
+            "z": 8
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 31,
+            "y": 35,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 32,
+            "y": 35,
+            "z": 8
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 31,
+            "y": 24,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 33,
+            "y": 24,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 30,
+            "y": 25,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 34,
+            "y": 25,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 29,
+            "y": 26,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 35,
+            "y": 26,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 28,
+            "y": 27,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 36,
+            "y": 27,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 27,
+            "y": 28,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 37,
+            "y": 28,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 26,
+            "y": 29,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 38,
+            "y": 29,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 25,
+            "y": 30,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 39,
+            "y": 30,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 26,
+            "y": 31,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 38,
+            "y": 31,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 36,
+            "y": 32,
+            "z": 8
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 28,
+            "y": 33,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 35,
+            "y": 33,
+            "z": 8
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 29,
+            "y": 34,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 34,
+            "y": 34,
+            "z": 8
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 30,
+            "y": 35,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 33,
+            "y": 35,
+            "z": 8
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 32,
+            "y": 36,
+            "z": 8
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 32,
+            "y": 22,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 31,
+            "y": 23,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 33,
+            "y": 23,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 30,
+            "y": 24,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 29,
+            "y": 25,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 35,
+            "y": 25,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 28,
+            "y": 26,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 36,
+            "y": 26,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 27,
+            "y": 27,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 37,
+            "y": 27,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 25,
+            "y": 29,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 39,
+            "y": 29,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 24,
+            "y": 30,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 40,
+            "y": 30,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 25,
+            "y": 31,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "farm",
+          "from": {
+            "x": 39,
+            "y": 31,
+            "z": 7
+          },
+          "crop": "rice"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 格稻米；更换作物在下一次播种生效",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 35,
+            "y": 30,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 28,
+            "y": 31,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 31,
+            "y": 25,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 26,
+            "y": 30,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 32,
+            "y": 23,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 27,
+            "y": 32,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 26,
+            "y": 28,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 23,
+            "y": 30,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 4686,
+        "command": {
+          "type": "bill",
+          "stoveId": 471,
+          "target": 8,
+          "paused": false
+        },
+        "result": {
+          "ok": true,
+          "message": "简餐不足 8 份时制作"
+        }
+      },
+      {
+        "tick": 4686,
+        "command": {
+          "type": "designate",
+          "tool": "shaft",
+          "from": {
+            "x": 31,
+            "y": 30,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 4 项工作，需求木材 8；缺料和不可达任务会等待",
+          "count": 4
+        }
+      },
+      {
+        "tick": 5246,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 5246,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 5246,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 32,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 5246,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 33,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 5246,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 34,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 5246,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 35,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 5246,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 36,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 5246,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 37,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 5246,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 38,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 5246,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 39,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 5246,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 32,
+            "y": 40,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6585,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 33,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6585,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 34,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6585,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 35,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6585,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 36,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6585,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 37,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6585,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 38,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6585,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 39,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6585,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 40,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6585,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 41,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6585,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 42,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6585,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 43,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6585,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 44,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6585,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 45,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6585,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 46,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6585,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 47,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6585,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 48,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 6585,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 48,
+            "y": 29,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 29,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 28,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 27,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 26,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 25,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 24,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 23,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 22,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 21,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 20,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 19,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 18,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 17,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 16,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 15,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 14,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 13,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 12,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 11,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 10,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 9,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 8,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 7,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 12365,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 31,
+            "y": 6,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 29,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 28,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 27,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 26,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 25,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 24,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 23,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 22,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 21,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 20,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 19,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 18,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 17,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 16,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 15,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 14,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 13,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 12,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 11,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 10,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 9,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 8,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 15305,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 7,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 16464,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 6,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 16589,
+        "command": {
+          "type": "designate",
+          "tool": "up",
+          "from": {
+            "x": 35,
+            "y": 36,
+            "z": 8
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 4 项工作，需求木材 8；缺料和不可达任务会等待",
+          "count": 4
+        }
+      },
+      {
+        "tick": 17151,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 35,
+            "y": 37,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 17265,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 36,
+            "y": 35,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 17265,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 36,
+            "y": 36,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 17265,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 36,
+            "y": 37,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 17265,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 36,
+            "y": 38,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 17265,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 36,
+            "y": 39,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 17661,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 37,
+            "y": 35,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 17661,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 37,
+            "y": 36,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 17661,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 37,
+            "y": 37,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 17661,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 37,
+            "y": 38,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 17661,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 37,
+            "y": 39,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 18000,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 38,
+            "y": 35,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 18000,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 38,
+            "y": 36,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 18000,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 38,
+            "y": 37,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 18000,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 38,
+            "y": 38,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 18000,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 38,
+            "y": 39,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 18382,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 39,
+            "y": 35,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 18382,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 39,
+            "y": 36,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 18382,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 39,
+            "y": 37,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 18382,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 39,
+            "y": 38,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 18382,
+        "command": {
+          "type": "designate",
+          "tool": "floor",
+          "from": {
+            "x": 39,
+            "y": 39,
+            "z": 11
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 3；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 18806,
+        "command": {
+          "type": "research",
+          "project": "Smithing"
+        },
+        "result": {
+          "ok": true,
+          "message": "开始研究锻造；需要研究员在科研台工作"
+        }
+      },
+      {
+        "tick": 18806,
+        "command": {
+          "type": "designate",
+          "tool": "researchBench",
+          "from": {
+            "x": 37,
+            "y": 36,
+            "z": 11
+          },
+          "axis": "x"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 75；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 24320,
+        "command": {
+          "type": "priority",
+          "pawnId": 364,
+          "work": "research",
+          "value": 0
+        },
+        "result": {
+          "ok": true,
+          "message": "工作优先级已更新；0 为禁用"
+        }
+      },
+      {
+        "tick": 24320,
+        "command": {
+          "type": "priority",
+          "pawnId": 365,
+          "work": "research",
+          "value": 1
+        },
+        "result": {
+          "ok": true,
+          "message": "工作优先级已更新；0 为禁用"
+        }
+      },
+      {
+        "tick": 24320,
+        "command": {
+          "type": "priority",
+          "pawnId": 366,
+          "work": "research",
+          "value": 0
+        },
+        "result": {
+          "ok": true,
+          "message": "工作优先级已更新；0 为禁用"
+        }
+      },
+      {
+        "tick": 24883,
+        "command": {
+          "type": "research",
+          "project": "Batteries"
+        },
+        "result": {
+          "ok": true,
+          "message": "开始研究蓄电池；需要研究员在科研台工作"
+        }
+      },
+      {
+        "tick": 24905,
+        "command": {
+          "type": "research",
+          "project": null
+        },
+        "result": {
+          "ok": true,
+          "message": "已停止研究，已有进度保留"
+        }
+      },
+      {
+        "tick": 25005,
+        "command": {
+          "type": "research",
+          "project": "Smithing"
+        },
+        "result": {
+          "ok": true,
+          "message": "开始研究锻造；需要研究员在科研台工作"
+        }
+      },
+      {
+        "tick": 147098,
+        "command": {
+          "type": "priority",
+          "pawnId": 364,
+          "work": "research",
+          "value": 4
+        },
+        "result": {
+          "ok": true,
+          "message": "工作优先级已更新；0 为禁用"
+        }
+      },
+      {
+        "tick": 147098,
+        "command": {
+          "type": "priority",
+          "pawnId": 365,
+          "work": "research",
+          "value": 4
+        },
+        "result": {
+          "ok": true,
+          "message": "工作优先级已更新；0 为禁用"
+        }
+      },
+      {
+        "tick": 147098,
+        "command": {
+          "type": "priority",
+          "pawnId": 366,
+          "work": "research",
+          "value": 4
+        },
+        "result": {
+          "ok": true,
+          "message": "工作优先级已更新；0 为禁用"
+        }
+      },
+      {
+        "tick": 147098,
+        "command": {
+          "type": "designate",
+          "tool": "smithy",
+          "from": {
+            "x": 36,
+            "y": 36,
+            "z": 8
+          },
+          "axis": "x"
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      }
+    ],
+    "checks": [
+      {
+        "name": "new-world prerequisites and building gate reject premature unlocks",
+        "tick": 0
+      },
+      {
+        "name": "normal forestry supplies research construction and food fuel",
+        "tick": 4686,
+        "elapsed": 4686
+      },
+      {
+        "name": "food plots and cooking station are physically prepared",
+        "tick": 4686,
+        "elapsed": 0
+      },
+      {
+        "name": "research supply miners excavate three real levels",
+        "tick": 5246,
+        "elapsed": 560
+      },
+      {
+        "name": "finite underground ore supplies research and subsequent technology",
+        "tick": 6585,
+        "elapsed": 1339
+      },
+      {
+        "name": "finite underground ore supplies research and subsequent technology",
+        "tick": 12365,
+        "elapsed": 5780
+      },
+      {
+        "name": "finite underground ore supplies research and subsequent technology",
+        "tick": 15305,
+        "elapsed": 2940
+      },
+      {
+        "name": "finite underground ore supplies research and subsequent technology",
+        "tick": 16464,
+        "elapsed": 1159
+      },
+      {
+        "name": "finite underground ore supplies research and subsequent technology",
+        "tick": 16589,
+        "elapsed": 125
+      },
+      {
+        "name": "research floor is reached by physical ladders",
+        "tick": 17151,
+        "elapsed": 562
+      },
+      {
+        "name": "research landing is constructed",
+        "tick": 17265,
+        "elapsed": 114
+      },
+      {
+        "name": "upper research floor expands with carried wood",
+        "tick": 17661,
+        "elapsed": 396
+      },
+      {
+        "name": "upper research floor expands with carried wood",
+        "tick": 18000,
+        "elapsed": 339
+      },
+      {
+        "name": "upper research floor expands with carried wood",
+        "tick": 18382,
+        "elapsed": 382
+      },
+      {
+        "name": "upper research floor expands with carried wood",
+        "tick": 18806,
+        "elapsed": 424
+      },
+      {
+        "name": "75 wood and 25 steel are physically delivered and the research bench is built",
+        "tick": 24320,
+        "elapsed": 5514
+      },
+      {
+        "name": "actual work on Smithing begins",
+        "tick": 24424,
+        "elapsed": 104
+      },
+      {
+        "name": "partial Smithing research is earned through actual work",
+        "tick": 24883,
+        "elapsed": 459
+      },
+      {
+        "name": "switching projects earns separate actual progress",
+        "tick": 24905,
+        "elapsed": 22
+      },
+      {
+        "name": "switch and stop preserve earned points and stop training",
+        "tick": 25005
+      },
+      {
+        "name": "mid-project load preserves global progress and eighth skill",
+        "tick": 25005
+      },
+      {
+        "name": "Smithing completes through finite work sessions and normal needs",
+        "tick": 147098,
+        "elapsed": 122093
+      },
+      {
+        "name": "technology completed without injected knowledge",
+        "tick": 147098,
+        "project": "Smithing",
+        "points": 700
+      },
+      {
+        "name": "newly unlocked smithy consumes real metal and is physically built",
+        "tick": 148174,
+        "elapsed": 1076
+      },
+      {
+        "name": "completed research and its actual unlock survive a final reload",
+        "tick": 148174
+      }
+    ],
+    "fixtures": {
+      "bench-built": {
+        "file": "test-results/voxel-research-campaign/bench-built.json",
+        "sha256": "39777ce08760c2515ceb846cf29c8703c9f631229139e98a40089e6ee25b1929",
+        "tick": 24320
+      },
+      "research-working": {
+        "file": "test-results/voxel-research-campaign/research-working.json",
+        "sha256": "0404964426306f1b72a6d25dcf8aa035f2ef60b685fe1e0bc359407825e6aa97",
+        "tick": 24424
+      },
+      "research-partial": {
+        "file": "test-results/voxel-research-campaign/research-partial.json",
+        "sha256": "59b5c2b32551cced9027becc2d6a6a4a5927c24bbcdd0240b5ecbc57b35f8bbd",
+        "tick": 25005
+      },
+      "research-complete": {
+        "file": "test-results/voxel-research-campaign/research-complete.json",
+        "sha256": "cf23ba14e8c581afedff6349d78f4bdb75917ac0e9c9b6a9b5b60df1bab9b35f",
+        "tick": 147098
+      },
+      "final": {
+        "file": "test-results/voxel-research-campaign/final.json",
+        "sha256": "3ad1e3c78e323a260d55abe5e7a12d193a01195fd61eb3ea5aeb70d64e243e68",
+        "tick": 148174
+      }
+    },
+    "carriedLayers": {
+      "wood@7": 2052,
+      "food@7": 30,
+      "wood@6": 8,
+      "wood@5": 1,
+      "chunk@4": 635,
+      "chunk@5": 105,
+      "chunk@6": 104,
+      "chunk@7": 179,
+      "steel@4": 701,
+      "steel@5": 36,
+      "steel@6": 36,
+      "steel@7": 145,
+      "wood@8": 551,
+      "wood@9": 158,
+      "wood@10": 151,
+      "wood@11": 265,
+      "steel@8": 57,
+      "steel@9": 6,
+      "steel@10": 6,
+      "steel@11": 1,
+      "grain@7": 2480,
+      "grain@8": 127
+    },
+    "errors": [],
+    "status": "passed",
+    "layout": {
+      "base": {
+        "x": 35,
+        "y": 36,
+        "z": 8
+      },
+      "bench": {
+        "x": 37,
+        "y": 36,
+        "z": 11
+      },
+      "shaft": {
+        "x": 31,
+        "y": 30,
+        "z": 7
+      }
+    },
+    "final": {
+      "tick": 148174,
+      "version": 15,
+      "research": {
+        "origin": "industrial-start",
+        "current": null,
+        "progress": {
+          "ComplexFurniture": 300,
+          "PassiveCooler": 400,
+          "Stonecutting": 300,
+          "ComplexClothing": 600,
+          "Electricity": 1600,
+          "NutrientPaste": 400,
+          "AirConditioning": 500,
+          "TreeSowing": 0,
+          "Smithing": 700,
+          "LongBlades": 0,
+          "Batteries": 0.10441406250000002,
+          "SolarPanels": 0
+        }
+      },
+      "skills": [
+        {
+          "level": 6,
+          "xp": 0,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        {
+          "level": 9,
+          "xp": 9969.000000000742,
+          "passion": 1,
+          "dailyXp": 678.2999999999885
+        },
+        {
+          "level": 4,
+          "xp": 0,
+          "passion": 0,
+          "dailyXp": 0
+        }
+      ],
+      "counts": {
+        "wood": 89,
+        "stone": 0,
+        "steel": 63,
+        "components": 0,
+        "food": 15,
+        "grain": 118,
+        "meal": 8,
+        "chunk": 25,
+        "cloth": 0,
+        "apparel": 6,
+        "weapon": 0
+      },
+      "stats": {
+        "mined": 157,
+        "cut": 8,
+        "built": 31,
+        "hauled": 432,
+        "sown": 166,
+        "harvested": 86,
+        "cooked": 35,
+        "stonecut": 0,
+        "tailored": 0,
+        "weaponsMade": 0,
+        "destroyed": {
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "apparel": 0,
+          "weapon": 0
+        },
+        "treesPlanted": 0,
+        "treesRegrown": 31,
+        "treesDied": 33,
+        "eaten": 72,
+        "consumed": {
+          "wood": 209,
+          "stone": 0,
+          "steel": 125,
+          "components": 0,
+          "food": 45,
+          "grain": 350,
+          "meal": 27,
+          "chunk": 0,
+          "cloth": 0,
+          "apparel": 0,
+          "weapon": 0
+        },
+        "produced": {
+          "wood": 208,
+          "stone": 0,
+          "steel": 188,
+          "components": 0,
+          "food": 0,
+          "grain": 468,
+          "meal": 35,
+          "chunk": 25,
+          "cloth": 0,
+          "apparel": 0,
+          "weapon": 0
+        },
+        "spoiled": {
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "apparel": 0,
+          "weapon": 0
+        }
+      }
+    }
+  },
+  "browser": {
+    "base": "http://127.0.0.1:5183/?world=voxel",
+    "startedAt": "2026-11-03T03:16:42.630Z",
+    "scope": "Production Chrome worker/main modes. All changes through visible DOM/canvas/file chooser. Only snapshot/project/exportSave are read-only observations. Genuine v14 migration and normal-command v15 campaign fixtures; no injected progress, XP, technology, resources or time.",
+    "modes": [
+      {
+        "mode": "worker",
+        "checks": [
+          {
+            "name": "fresh industrial colony exposes twelve technologies, seven starting completions, native gates and selection without a bench"
+          },
+          {
+            "name": "genuine v14 migration preserves existing seven skills, physical gear and terrain while adding Intellectual and retaining old unlocks",
+            "sourceSha256": "664fe5181bdda6f179e30723fe9c5c91cfb7fedc4cb2f2d591f82a22039d4261"
+          },
+          {
+            "name": "the physical three-by-two upper-floor research bench is inspectable and shares the global technology selector and rotation controls",
+            "bench": {
+              "id": 733,
+              "x": 37,
+              "y": 36,
+              "z": 11,
+              "axis": "x"
+            },
+            "stand": {
+              "x": 38,
+              "y": 38
+            }
+          },
+          {
+            "name": "real upper-floor research advances both points and Intellectual, while pause freezes exact simulation state",
+            "fromTick": 24424,
+            "toTick": 24451,
+            "fromPoints": 0.2088281250000001,
+            "toPoints": 0.3758906250000002,
+            "learner": {
+              "id": 365,
+              "skill": {
+                "level": 8,
+                "xp": 10.800000000000004,
+                "passion": 1,
+                "dailyXp": 10.800000000000004
+              }
+            }
+          },
+          {
+            "name": "manual save/load restores actual research points, selected project, bench identities and all skills"
+          },
+          {
+            "name": "switching projects preserves both accumulated progresses and stopping cancels research labor without deleting knowledge"
+          },
+          {
+            "name": "completed Smithing unlocks the actual construction tool and LongBlades prerequisite"
+          },
+          {
+            "name": "the unlocked physical smithy keeps LongBlades recipe gated independently while steel knives remain available"
+          },
+          {
+            "name": "900 by 700 layout keeps technology selection and the Intellectual-linked research priority accessible without granting free XP"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:5183/assets/index-opo6esVb.js",
+            "status": 200,
+            "bytes": 2356,
+            "sha256": "230d9b5eaf1f924071c7610dbe255fc96bf65169de33818bc52d20d78a83a03e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-ZwypviP2.css",
+            "status": 200,
+            "bytes": 17655,
+            "sha256": "b0cf9ae6a061940f01c4565f6a5a0a2ac13dc7d352a314355a6468f25929564e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "bytes": 221699,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-DgWfS9gM.js",
+            "status": 200,
+            "bytes": 636701,
+            "sha256": "2a9337250e95a7ab3d52ffd6a3ca52cd7ab188b683b4d14c184626450b16e320",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/sim.worker-D7wEvaEE.js",
+            "status": 200,
+            "bytes": 178456,
+            "sha256": "61c95013bc478cad91f1db4f44ec541463bec1d0ea5598888e8dfd9b975c312b",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/render.worker-D7m46SK7.js",
+            "status": 200,
+            "bytes": 546438,
+            "sha256": "8fffee400460a507d8550cff104f1361593cd16ee1f711cc7eebe2b42a5a0665",
+            "matchesLocalBuild": true
+          }
+        ],
+        "screenshots": [
+          "test-results/voxel-research-browser/worker-technology.png",
+          "test-results/voxel-research-browser/worker-bench.png",
+          "test-results/voxel-research-browser/worker-learning.png",
+          "test-results/voxel-research-browser/worker-unlocked.png",
+          "test-results/voxel-research-browser/worker-longblade-lock.png",
+          "test-results/voxel-research-browser/worker-compact-research.png",
+          "test-results/voxel-research-browser/worker-compact-priority.png"
+        ],
+        "fixtures": [
+          {
+            "file": "tests/fixtures/voxel-v14-start.json",
+            "sha256": "664fe5181bdda6f179e30723fe9c5c91cfb7fedc4cb2f2d591f82a22039d4261",
+            "version": 14,
+            "tick": 0
+          },
+          {
+            "file": "test-results/voxel-research-campaign/bench-built.json",
+            "sha256": "39777ce08760c2515ceb846cf29c8703c9f631229139e98a40089e6ee25b1929",
+            "version": 15,
+            "tick": 24320
+          },
+          {
+            "file": "test-results/voxel-research-campaign/research-working.json",
+            "sha256": "0404964426306f1b72a6d25dcf8aa035f2ef60b685fe1e0bc359407825e6aa97",
+            "version": 15,
+            "tick": 24424
+          },
+          {
+            "file": "tests/fixtures/voxel-v14-start.json",
+            "sha256": "664fe5181bdda6f179e30723fe9c5c91cfb7fedc4cb2f2d591f82a22039d4261",
+            "version": 14,
+            "tick": 0
+          },
+          {
+            "file": "test-results/voxel-research-campaign/research-partial.json",
+            "sha256": "59b5c2b32551cced9027becc2d6a6a4a5927c24bbcdd0240b5ecbc57b35f8bbd",
+            "version": 15,
+            "tick": 25005
+          },
+          {
+            "file": "test-results/voxel-research-campaign/research-complete.json",
+            "sha256": "cf23ba14e8c581afedff6349d78f4bdb75917ac0e9c9b6a9b5b60df1bab9b35f",
+            "version": 15,
+            "tick": 147098
+          },
+          {
+            "file": "test-results/voxel-research-campaign/final.json",
+            "sha256": "3ad1e3c78e323a260d55abe5e7a12d193a01195fd61eb3ea5aeb70d64e243e68",
+            "version": 15,
+            "tick": 148174
+          }
+        ],
+        "status": "passed"
+      },
+      {
+        "mode": "main",
+        "checks": [
+          {
+            "name": "fresh industrial colony exposes twelve technologies, seven starting completions, native gates and selection without a bench"
+          },
+          {
+            "name": "genuine v14 migration preserves existing seven skills, physical gear and terrain while adding Intellectual and retaining old unlocks",
+            "sourceSha256": "664fe5181bdda6f179e30723fe9c5c91cfb7fedc4cb2f2d591f82a22039d4261"
+          },
+          {
+            "name": "the physical three-by-two upper-floor research bench is inspectable and shares the global technology selector and rotation controls",
+            "bench": {
+              "id": 733,
+              "x": 37,
+              "y": 36,
+              "z": 11,
+              "axis": "x"
+            },
+            "stand": {
+              "x": 38,
+              "y": 38
+            }
+          },
+          {
+            "name": "real upper-floor research advances both points and Intellectual, while pause freezes exact simulation state",
+            "fromTick": 24424,
+            "toTick": 24445,
+            "fromPoints": 0.2088281250000001,
+            "toPoints": 0.31324218750000016,
+            "learner": {
+              "id": 365,
+              "skill": {
+                "level": 8,
+                "xp": 9,
+                "passion": 1,
+                "dailyXp": 9
+              }
+            }
+          },
+          {
+            "name": "manual save/load restores actual research points, selected project, bench identities and all skills"
+          },
+          {
+            "name": "switching projects preserves both accumulated progresses and stopping cancels research labor without deleting knowledge"
+          },
+          {
+            "name": "completed Smithing unlocks the actual construction tool and LongBlades prerequisite"
+          },
+          {
+            "name": "the unlocked physical smithy keeps LongBlades recipe gated independently while steel knives remain available"
+          },
+          {
+            "name": "900 by 700 layout keeps technology selection and the Intellectual-linked research priority accessible without granting free XP"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:5183/assets/index-opo6esVb.js",
+            "status": 200,
+            "bytes": 2356,
+            "sha256": "230d9b5eaf1f924071c7610dbe255fc96bf65169de33818bc52d20d78a83a03e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-ZwypviP2.css",
+            "status": 200,
+            "bytes": 17655,
+            "sha256": "b0cf9ae6a061940f01c4565f6a5a0a2ac13dc7d352a314355a6468f25929564e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "bytes": 221699,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-DgWfS9gM.js",
+            "status": 200,
+            "bytes": 636701,
+            "sha256": "2a9337250e95a7ab3d52ffd6a3ca52cd7ab188b683b4d14c184626450b16e320",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/sim.worker-D7wEvaEE.js",
+            "status": 200,
+            "bytes": 178456,
+            "sha256": "61c95013bc478cad91f1db4f44ec541463bec1d0ea5598888e8dfd9b975c312b",
+            "matchesLocalBuild": true
+          }
+        ],
+        "screenshots": [
+          "test-results/voxel-research-browser/main-technology.png",
+          "test-results/voxel-research-browser/main-bench.png",
+          "test-results/voxel-research-browser/main-learning.png",
+          "test-results/voxel-research-browser/main-unlocked.png",
+          "test-results/voxel-research-browser/main-longblade-lock.png",
+          "test-results/voxel-research-browser/main-compact-research.png",
+          "test-results/voxel-research-browser/main-compact-priority.png"
+        ],
+        "fixtures": [
+          {
+            "file": "tests/fixtures/voxel-v14-start.json",
+            "sha256": "664fe5181bdda6f179e30723fe9c5c91cfb7fedc4cb2f2d591f82a22039d4261",
+            "version": 14,
+            "tick": 0
+          },
+          {
+            "file": "test-results/voxel-research-campaign/bench-built.json",
+            "sha256": "39777ce08760c2515ceb846cf29c8703c9f631229139e98a40089e6ee25b1929",
+            "version": 15,
+            "tick": 24320
+          },
+          {
+            "file": "test-results/voxel-research-campaign/research-working.json",
+            "sha256": "0404964426306f1b72a6d25dcf8aa035f2ef60b685fe1e0bc359407825e6aa97",
+            "version": 15,
+            "tick": 24424
+          },
+          {
+            "file": "tests/fixtures/voxel-v14-start.json",
+            "sha256": "664fe5181bdda6f179e30723fe9c5c91cfb7fedc4cb2f2d591f82a22039d4261",
+            "version": 14,
+            "tick": 0
+          },
+          {
+            "file": "test-results/voxel-research-campaign/research-partial.json",
+            "sha256": "59b5c2b32551cced9027becc2d6a6a4a5927c24bbcdd0240b5ecbc57b35f8bbd",
+            "version": 15,
+            "tick": 25005
+          },
+          {
+            "file": "test-results/voxel-research-campaign/research-complete.json",
+            "sha256": "cf23ba14e8c581afedff6349d78f4bdb75917ac0e9c9b6a9b5b60df1bab9b35f",
+            "version": 15,
+            "tick": 147098
+          },
+          {
+            "file": "test-results/voxel-research-campaign/final.json",
+            "sha256": "3ad1e3c78e323a260d55abe5e7a12d193a01195fd61eb3ea5aeb70d64e243e68",
+            "version": 15,
+            "tick": 148174
+          }
+        ],
+        "status": "passed"
+      }
+    ],
+    "finishedAt": "2026-11-03T03:18:38.797Z"
+  },
+  "skillsCampaign": {
+    "startedAt": "2026-11-03T03:01:44.157Z",
+    "scope": "Fresh-world weapon opening, then continued ordinary mining, forestry and elevated smithing to train a passionate crafter. No terrain, resources, health, positions, skills, XP, progress or clock injections. Commands/step/save/load only; read-only spatial queries.",
+    "opening": {
+      "file": "test-results/voxel-skills-campaign/opening/report.json",
+      "checks": 41,
+      "saveSha256": "205c209ca6e01153d26b146a00797cf05ec6349c3c78f005135ae459b0405b23"
+    },
+    "checks": [
+      {
+        "name": "ordinary opening has already trained mining, construction, plants and crafting",
+        "tick": 219781
+      },
+      {
+        "name": "normal forestry supplies fuel for prolonged training",
+        "tick": 222022,
+        "elapsed": 2241
+      },
+      {
+        "name": "continued actual mining supplies training metal with skill-based yield",
+        "tick": 228627,
+        "elapsed": 6605
+      },
+      {
+        "name": "continued actual mining supplies training metal with skill-based yield",
+        "tick": 231885,
+        "elapsed": 3258
+      },
+      {
+        "name": "continued actual mining supplies training metal with skill-based yield",
+        "tick": 232501,
+        "elapsed": 616
+      },
+      {
+        "name": "continued actual mining supplies training metal with skill-based yield",
+        "tick": 233825,
+        "elapsed": 1324
+      },
+      {
+        "name": "continued actual mining supplies training metal with skill-based yield",
+        "tick": 233997,
+        "elapsed": 172
+      },
+      {
+        "name": "continued actual mining supplies training metal with skill-based yield",
+        "tick": 234125,
+        "elapsed": 128
+      },
+      {
+        "name": "continued actual mining supplies training metal with skill-based yield",
+        "tick": 234675,
+        "elapsed": 550
+      },
+      {
+        "name": "continued actual mining supplies training metal with skill-based yield",
+        "tick": 234804,
+        "elapsed": 129
+      },
+      {
+        "name": "continued actual mining supplies training metal with skill-based yield",
+        "tick": 234925,
+        "elapsed": 121
+      },
+      {
+        "name": "passionate crafter physically starts the elevated order",
+        "tick": 239690,
+        "elapsed": 4765
+      },
+      {
+        "name": "mid-work save preserves exact experience and work clocks",
+        "tick": 239690
+      },
+      {
+        "name": "four additional swords finish using physical fuel and delivered metal",
+        "tick": 279563,
+        "elapsed": 39873
+      },
+      {
+        "name": "ordinary repeated crafting raises a skill level without injected experience",
+        "tick": 279563,
+        "before": {
+          "level": 8,
+          "xp": 2699.9999999998827,
+          "passion": 2,
+          "dailyXp": 1661.400000000107
+        },
+        "after": {
+          "level": 9,
+          "xp": 4499.999999998125,
+          "passion": 2,
+          "dailyXp": 1603.8000000001011
+        }
+      },
+      {
+        "name": "finished steel quality is stored per item while the club retains its no-quality sentinel",
+        "tick": 279563,
+        "weapons": [
+          {
+            "id": 416,
+            "kind": "woodClub",
+            "quality": 2,
+            "hitPoints": 65
+          },
+          {
+            "id": 640,
+            "kind": "steelKnife",
+            "quality": 2,
+            "hitPoints": 100
+          },
+          {
+            "id": 1790,
+            "kind": "steelLongsword",
+            "quality": 2,
+            "hitPoints": 100
+          },
+          {
+            "id": 1825,
+            "kind": "steelLongsword",
+            "quality": 3,
+            "hitPoints": 100
+          },
+          {
+            "id": 1843,
+            "kind": "steelLongsword",
+            "quality": 2,
+            "hitPoints": 100
+          },
+          {
+            "id": 1858,
+            "kind": "steelLongsword",
+            "quality": 2,
+            "hitPoints": 100
+          },
+          {
+            "id": 1366,
+            "kind": "steelLongsword",
+            "quality": 2,
+            "hitPoints": 100
+          }
+        ]
+      }
+    ],
+    "commands": [
+      {
+        "tick": 219781,
+        "command": {
+          "type": "draft",
+          "pawnId": 364,
+          "drafted": false
+        },
+        "result": {
+          "ok": true,
+          "message": "解除征召，恢复工作"
+        }
+      },
+      {
+        "tick": 219781,
+        "command": {
+          "type": "priority",
+          "pawnId": 364,
+          "work": "craft",
+          "value": 0
+        },
+        "result": {
+          "ok": true,
+          "message": "工作优先级已更新；0 为禁用"
+        }
+      },
+      {
+        "tick": 219781,
+        "command": {
+          "type": "priority",
+          "pawnId": 365,
+          "work": "craft",
+          "value": 0
+        },
+        "result": {
+          "ok": true,
+          "message": "工作优先级已更新；0 为禁用"
+        }
+      },
+      {
+        "tick": 219781,
+        "command": {
+          "type": "priority",
+          "pawnId": 366,
+          "work": "craft",
+          "value": 1
+        },
+        "result": {
+          "ok": true,
+          "message": "工作优先级已更新；0 为禁用"
+        }
+      },
+      {
+        "tick": 219781,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 29,
+            "y": 28,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 219781,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 33,
+            "y": 33,
+            "z": 8
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 219781,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 31,
+            "y": 34,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 219781,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 34,
+            "y": 24,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 219781,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 29,
+            "y": 24,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 219781,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 25,
+            "y": 27,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 219781,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 27,
+            "y": 24,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 219781,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 34,
+            "y": 38,
+            "z": 8
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 219781,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 31,
+            "y": 39,
+            "z": 8
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 219781,
+        "command": {
+          "type": "designate",
+          "tool": "cut",
+          "from": {
+            "x": 35,
+            "y": 21,
+            "z": 7
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 222022,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 30,
+            "y": 5,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 228627,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 49,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 228627,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 50,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 228627,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 51,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 228627,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 52,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 228627,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 53,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 228627,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 54,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 228627,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 54,
+            "y": 32,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 228627,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 54,
+            "y": 33,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 228627,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 54,
+            "y": 34,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 228627,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 54,
+            "y": 35,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 228627,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 54,
+            "y": 36,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 228627,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 54,
+            "y": 37,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 228627,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 54,
+            "y": 38,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 231885,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 231885,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 32,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 231885,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 33,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 231885,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 34,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 231885,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 35,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 231885,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 36,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 231885,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 37,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 231885,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 38,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 232501,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 31,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 232501,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 30,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 232501,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 29,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 232501,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 28,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 232501,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 27,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 232501,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 26,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 232501,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 25,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 232501,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 24,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 233825,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 39,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 233997,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 40,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 234125,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 32,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 234125,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 33,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 234125,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 34,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 234125,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 35,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 234125,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 36,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 234125,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 37,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 234125,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 38,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 234125,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 39,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 234125,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 40,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 234675,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 55,
+            "y": 41,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 234804,
+        "command": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 56,
+            "y": 41,
+            "z": 4
+          }
+        },
+        "result": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 234925,
+        "command": {
+          "type": "weaponBill",
+          "benchId": 1364,
+          "kind": "steelLongsword",
+          "target": 5,
+          "paused": false
+        },
+        "result": {
+          "ok": true,
+          "message": "武器制作目标已更新"
+        }
+      }
+    ],
+    "fixtures": {
+      "training": {
+        "file": "test-results/voxel-skills-campaign/training.json",
+        "sha256": "1b66f1efd9b588b8fc9d2935f1d9828127e5e9b4f9596c8e39afc53e783dd948",
+        "tick": 239690
+      },
+      "final": {
+        "file": "test-results/voxel-skills-campaign/final.json",
+        "sha256": "49f0b3f6a150137f4072a4b58010ea8c47cf5dde4328ceff2f718fd1a5a9f198",
+        "tick": 279563
+      }
+    },
+    "errors": [],
+    "status": "passed",
+    "beforeSkills": [
+      {
+        "mining": {
+          "level": 8,
+          "xp": 815.8500000000492,
+          "passion": 2,
+          "dailyXp": 0
+        },
+        "construction": {
+          "level": 6,
+          "xp": 654.75,
+          "passion": 1,
+          "dailyXp": 0
+        },
+        "plants": {
+          "level": 3,
+          "xp": 1126.5134999999236,
+          "passion": 0,
+          "dailyXp": 170.5567500000014
+        },
+        "cooking": {
+          "level": 4,
+          "xp": 82.425,
+          "passion": 0,
+          "dailyXp": 16.485
+        },
+        "crafting": {
+          "level": 5,
+          "xp": 58.799999999999315,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "medicine": {
+          "level": 3,
+          "xp": 0,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "melee": {
+          "level": 6,
+          "xp": 0,
+          "passion": 1,
+          "dailyXp": 0
+        },
+        "intellectual": {
+          "level": 6,
+          "xp": 0,
+          "passion": 0,
+          "dailyXp": 0
+        }
+      },
+      {
+        "mining": {
+          "level": 3,
+          "xp": 255.63299999998972,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "construction": {
+          "level": 3,
+          "xp": 63.00000000000028,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "plants": {
+          "level": 8,
+          "xp": 4077.832500000757,
+          "passion": 2,
+          "dailyXp": 456.32249999999306
+        },
+        "cooking": {
+          "level": 6,
+          "xp": 1306.7999999999997,
+          "passion": 1,
+          "dailyXp": 158.4
+        },
+        "crafting": {
+          "level": 4,
+          "xp": 126.0000000000015,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "medicine": {
+          "level": 8,
+          "xp": 0,
+          "passion": 1,
+          "dailyXp": 0
+        },
+        "melee": {
+          "level": 4,
+          "xp": 0,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "intellectual": {
+          "level": 10,
+          "xp": 9134.900000001551,
+          "passion": 1,
+          "dailyXp": -9.499999999999982
+        }
+      },
+      {
+        "mining": {
+          "level": 5,
+          "xp": 615.1215000000277,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "construction": {
+          "level": 7,
+          "xp": 769.5,
+          "passion": 1,
+          "dailyXp": 0
+        },
+        "plants": {
+          "level": 4,
+          "xp": 857.2462499999455,
+          "passion": 0,
+          "dailyXp": 0.9817500000000001
+        },
+        "cooking": {
+          "level": 3,
+          "xp": 254.30999999999992,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "crafting": {
+          "level": 8,
+          "xp": 2699.9999999998827,
+          "passion": 2,
+          "dailyXp": 1661.400000000107
+        },
+        "medicine": {
+          "level": 4,
+          "xp": 0,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "melee": {
+          "level": 5,
+          "xp": 0,
+          "passion": 0,
+          "dailyXp": 0
+        },
+        "intellectual": {
+          "level": 4,
+          "xp": 0,
+          "passion": 0,
+          "dailyXp": 0
+        }
+      }
+    ],
+    "final": {
+      "tick": 279563,
+      "version": 15,
+      "counts": {
+        "wood": 223,
+        "stone": 0,
+        "steel": 20,
+        "components": 0,
+        "food": 0,
+        "grain": 44,
+        "meal": 8,
+        "chunk": 61,
+        "cloth": 0,
+        "apparel": 6,
+        "weapon": 7
+      },
+      "stats": {
+        "mined": 347,
+        "cut": 22,
+        "built": 27,
+        "hauled": 1481,
+        "sown": 252,
+        "harvested": 172,
+        "cooked": 85,
+        "stonecut": 0,
+        "tailored": 0,
+        "weaponsMade": 7,
+        "destroyed": {
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "apparel": 0,
+          "weapon": 0
+        },
+        "treesPlanted": 0,
+        "treesRegrown": 65,
+        "treesDied": 57,
+        "eaten": 143,
+        "consumed": {
+          "wood": 445,
+          "stone": 0,
+          "steel": 655,
+          "components": 0,
+          "food": 60,
+          "grain": 856,
+          "meal": 77,
+          "chunk": 0,
+          "cloth": 0,
+          "apparel": 0,
+          "weapon": 0
+        },
+        "produced": {
+          "wood": 578,
+          "stone": 0,
+          "steel": 675,
+          "components": 0,
+          "food": 0,
+          "grain": 900,
+          "meal": 85,
+          "chunk": 61,
+          "cloth": 0,
+          "apparel": 0,
+          "weapon": 7
+        },
+        "spoiled": {
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "apparel": 0,
+          "weapon": 0
+        }
+      },
+      "skills": [
+        {
+          "id": 364,
+          "name": "林澈",
+          "skills": {
+            "mining": {
+              "level": 8,
+              "xp": 1037.6100000000877,
+              "passion": 2,
+              "dailyXp": 0
+            },
+            "construction": {
+              "level": 6,
+              "xp": 654.75,
+              "passion": 1,
+              "dailyXp": 0
+            },
+            "plants": {
+              "level": 3,
+              "xp": 1654.6057499998806,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "cooking": {
+              "level": 4,
+              "xp": 313.21500000000015,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "crafting": {
+              "level": 5,
+              "xp": 58.799999999999315,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "medicine": {
+              "level": 3,
+              "xp": 0,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "melee": {
+              "level": 6,
+              "xp": 0,
+              "passion": 1,
+              "dailyXp": 0
+            },
+            "intellectual": {
+              "level": 6,
+              "xp": 0,
+              "passion": 0,
+              "dailyXp": 0
+            }
+          }
+        },
+        {
+          "id": 365,
+          "name": "温岚",
+          "skills": {
+            "mining": {
+              "level": 3,
+              "xp": 306.6420000000063,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "construction": {
+              "level": 3,
+              "xp": 63.00000000000028,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "plants": {
+              "level": 8,
+              "xp": 6015.194999999305,
+              "passion": 2,
+              "dailyXp": 0
+            },
+            "cooking": {
+              "level": 6,
+              "xp": 1979.9999999999982,
+              "passion": 1,
+              "dailyXp": 0
+            },
+            "crafting": {
+              "level": 4,
+              "xp": 126.0000000000015,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "medicine": {
+              "level": 8,
+              "xp": 0,
+              "passion": 1,
+              "dailyXp": 0
+            },
+            "melee": {
+              "level": 4,
+              "xp": 0,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "intellectual": {
+              "level": 10,
+              "xp": 8985.400000001007,
+              "passion": 1,
+              "dailyXp": -8.999999999999984
+            }
+          }
+        },
+        {
+          "id": 366,
+          "name": "阿砾",
+          "skills": {
+            "mining": {
+              "level": 5,
+              "xp": 849.5864999999233,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "construction": {
+              "level": 7,
+              "xp": 769.5,
+              "passion": 1,
+              "dailyXp": 0
+            },
+            "plants": {
+              "level": 4,
+              "xp": 1304.656499999909,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "cooking": {
+              "level": 3,
+              "xp": 290.63999999999993,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "crafting": {
+              "level": 9,
+              "xp": 4499.999999998125,
+              "passion": 2,
+              "dailyXp": 1603.8000000001011
+            },
+            "medicine": {
+              "level": 4,
+              "xp": 0,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "melee": {
+              "level": 5,
+              "xp": 0,
+              "passion": 0,
+              "dailyXp": 0
+            },
+            "intellectual": {
+              "level": 4,
+              "xp": 0,
+              "passion": 0,
+              "dailyXp": 0
+            }
+          }
+        }
+      ],
+      "weapons": [
+        {
+          "id": 416,
+          "kind": "woodClub",
+          "quality": 2,
+          "hitPoints": 65
+        },
+        {
+          "id": 640,
+          "kind": "steelKnife",
+          "quality": 2,
+          "hitPoints": 100
+        },
+        {
+          "id": 1790,
+          "kind": "steelLongsword",
+          "quality": 2,
+          "hitPoints": 100
+        },
+        {
+          "id": 1825,
+          "kind": "steelLongsword",
+          "quality": 3,
+          "hitPoints": 100
+        },
+        {
+          "id": 1843,
+          "kind": "steelLongsword",
+          "quality": 2,
+          "hitPoints": 100
+        },
+        {
+          "id": 1858,
+          "kind": "steelLongsword",
+          "quality": 2,
+          "hitPoints": 100
+        },
+        {
+          "id": 1366,
+          "kind": "steelLongsword",
+          "quality": 2,
+          "hitPoints": 100
+        }
+      ]
+    },
+    "finishedAt": "2026-11-03T03:02:12.473Z"
+  },
+  "skillsBrowser": {
+    "base": "http://127.0.0.1:5183/?world=voxel",
+    "startedAt": "2026-11-03T03:19:03.823Z",
+    "scope": "Production Chrome in both renderer modes. Genuine v13 file-chooser migration and normal-command v15 campaign fixtures. Visible DOM/canvas controls only for changes; window.voxel snapshot/project/exportSave are read-only observations. No injected skills, quality, resources, work, time or commands.",
+    "modes": [
+      {
+        "mode": "worker",
+        "checks": [
+          {
+            "name": "genuine v13 imports into v15 with unchanged gear quality and fixed zero-XP starter skill profiles",
+            "sourceSha256": "4672d325a7aedf544554c1235fed784a296e5198237c7208ad7177a0d1a7d6d4"
+          },
+          {
+            "name": "all work priorities show their actual associated skill and changing priority does not grant XP"
+          },
+          {
+            "name": "real ongoing crafting gains XP through the speed control and pause freezes the complete skill state",
+            "fromTick": 239690,
+            "toTick": 239709,
+            "gains": [
+              {
+                "id": 366,
+                "skill": {
+                  "level": 8,
+                  "xp": 2729.6999999998707,
+                  "passion": 2,
+                  "dailyXp": 29.699999999999967
+                }
+              }
+            ]
+          },
+          {
+            "name": "manual save/load restores earned experience, passion, daily learning and existing gear exactly"
+          },
+          {
+            "name": "the real campaign weapon inspector displays its persisted quality and durability without assuming a fixed roll",
+            "weapon": {
+              "id": 640,
+              "kind": "steelKnife",
+              "quality": 2,
+              "hitPoints": 100
+            }
+          },
+          {
+            "name": "900 by 700 layout keeps skill rows and actual priority controls reachable"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:5183/assets/index-opo6esVb.js",
+            "status": 200,
+            "bytes": 2356,
+            "sha256": "230d9b5eaf1f924071c7610dbe255fc96bf65169de33818bc52d20d78a83a03e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-ZwypviP2.css",
+            "status": 200,
+            "bytes": 17655,
+            "sha256": "b0cf9ae6a061940f01c4565f6a5a0a2ac13dc7d352a314355a6468f25929564e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "bytes": 221699,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-DgWfS9gM.js",
+            "status": 200,
+            "bytes": 636701,
+            "sha256": "2a9337250e95a7ab3d52ffd6a3ca52cd7ab188b683b4d14c184626450b16e320",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/sim.worker-D7wEvaEE.js",
+            "status": 200,
+            "bytes": 178456,
+            "sha256": "61c95013bc478cad91f1db4f44ec541463bec1d0ea5598888e8dfd9b975c312b",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/render.worker-D7m46SK7.js",
+            "status": 200,
+            "bytes": 546438,
+            "sha256": "8fffee400460a507d8550cff104f1361593cd16ee1f711cc7eebe2b42a5a0665",
+            "matchesLocalBuild": true
+          }
+        ],
+        "screenshots": [
+          "test-results/voxel-skills-browser/worker-starter-skills.png",
+          "test-results/voxel-skills-browser/worker-learning.png",
+          "test-results/voxel-skills-browser/worker-crafted-quality.png",
+          "test-results/voxel-skills-browser/worker-compact-skills.png",
+          "test-results/voxel-skills-browser/worker-compact-priorities.png"
+        ],
+        "fixtures": [
+          {
+            "file": "tests/fixtures/voxel-v13-start.json",
+            "sha256": "4672d325a7aedf544554c1235fed784a296e5198237c7208ad7177a0d1a7d6d4",
+            "version": 13,
+            "tick": 0
+          },
+          {
+            "file": "test-results/voxel-skills-campaign/training.json",
+            "sha256": "1b66f1efd9b588b8fc9d2935f1d9828127e5e9b4f9596c8e39afc53e783dd948",
+            "version": 15,
+            "tick": 239690
+          },
+          {
+            "file": "tests/fixtures/voxel-v13-start.json",
+            "sha256": "4672d325a7aedf544554c1235fed784a296e5198237c7208ad7177a0d1a7d6d4",
+            "version": 13,
+            "tick": 0
+          },
+          {
+            "file": "test-results/voxel-skills-campaign/final.json",
+            "sha256": "49f0b3f6a150137f4072a4b58010ea8c47cf5dde4328ceff2f718fd1a5a9f198",
+            "version": 15,
+            "tick": 279563
+          }
+        ],
+        "status": "passed"
+      },
+      {
+        "mode": "main",
+        "checks": [
+          {
+            "name": "genuine v13 imports into v15 with unchanged gear quality and fixed zero-XP starter skill profiles",
+            "sourceSha256": "4672d325a7aedf544554c1235fed784a296e5198237c7208ad7177a0d1a7d6d4"
+          },
+          {
+            "name": "all work priorities show their actual associated skill and changing priority does not grant XP"
+          },
+          {
+            "name": "real ongoing crafting gains XP through the speed control and pause freezes the complete skill state",
+            "fromTick": 239690,
+            "toTick": 239707,
+            "gains": [
+              {
+                "id": 366,
+                "skill": {
+                  "level": 8,
+                  "xp": 2728.799999999871,
+                  "passion": 2,
+                  "dailyXp": 28.79999999999997
+                }
+              }
+            ]
+          },
+          {
+            "name": "manual save/load restores earned experience, passion, daily learning and existing gear exactly"
+          },
+          {
+            "name": "the real campaign weapon inspector displays its persisted quality and durability without assuming a fixed roll",
+            "weapon": {
+              "id": 640,
+              "kind": "steelKnife",
+              "quality": 2,
+              "hitPoints": 100
+            }
+          },
+          {
+            "name": "900 by 700 layout keeps skill rows and actual priority controls reachable"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:5183/assets/index-opo6esVb.js",
+            "status": 200,
+            "bytes": 2356,
+            "sha256": "230d9b5eaf1f924071c7610dbe255fc96bf65169de33818bc52d20d78a83a03e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-ZwypviP2.css",
+            "status": 200,
+            "bytes": 17655,
+            "sha256": "b0cf9ae6a061940f01c4565f6a5a0a2ac13dc7d352a314355a6468f25929564e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "bytes": 221699,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/main-DgWfS9gM.js",
+            "status": 200,
+            "bytes": 636701,
+            "sha256": "2a9337250e95a7ab3d52ffd6a3ca52cd7ab188b683b4d14c184626450b16e320",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:5183/assets/sim.worker-D7wEvaEE.js",
+            "status": 200,
+            "bytes": 178456,
+            "sha256": "61c95013bc478cad91f1db4f44ec541463bec1d0ea5598888e8dfd9b975c312b",
+            "matchesLocalBuild": true
+          }
+        ],
+        "screenshots": [
+          "test-results/voxel-skills-browser/main-starter-skills.png",
+          "test-results/voxel-skills-browser/main-learning.png",
+          "test-results/voxel-skills-browser/main-crafted-quality.png",
+          "test-results/voxel-skills-browser/main-compact-skills.png",
+          "test-results/voxel-skills-browser/main-compact-priorities.png"
+        ],
+        "fixtures": [
+          {
+            "file": "tests/fixtures/voxel-v13-start.json",
+            "sha256": "4672d325a7aedf544554c1235fed784a296e5198237c7208ad7177a0d1a7d6d4",
+            "version": 13,
+            "tick": 0
+          },
+          {
+            "file": "test-results/voxel-skills-campaign/training.json",
+            "sha256": "1b66f1efd9b588b8fc9d2935f1d9828127e5e9b4f9596c8e39afc53e783dd948",
+            "version": 15,
+            "tick": 239690
+          },
+          {
+            "file": "tests/fixtures/voxel-v13-start.json",
+            "sha256": "4672d325a7aedf544554c1235fed784a296e5198237c7208ad7177a0d1a7d6d4",
+            "version": 13,
+            "tick": 0
+          },
+          {
+            "file": "test-results/voxel-skills-campaign/final.json",
+            "sha256": "49f0b3f6a150137f4072a4b58010ea8c47cf5dde4328ceff2f718fd1a5a9f198",
+            "version": 15,
+            "tick": 279563
+          }
+        ],
+        "status": "passed"
+      }
+    ],
+    "finishedAt": "2026-11-03T03:20:08.652Z"
+  },
+  "regressions": {
+    "schema": 1,
+    "startedAt": "2026-11-03T03:04:07.713Z",
+    "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+    "concurrency": 2,
+    "scope": "Fourteen regression commands against the research integration. No full unit rerun. Fresh campaigns earn research via commands and steps; old fixture campaigns retain documented legacy migration.",
+    "definitions": [
+      {
+        "name": "power",
+        "command": "node scripts/voxel-power-campaign-verify.mjs"
+      },
+      {
+        "name": "plants",
+        "command": "node scripts/voxel-plants-campaign-verify.mjs"
+      },
+      {
+        "name": "food",
+        "command": "node scripts/voxel-food-campaign-verify.mjs"
+      },
+      {
+        "name": "housing",
+        "command": "node scripts/voxel-housing-campaign-verify.mjs"
+      },
+      {
+        "name": "injuries",
+        "command": "node scripts/voxel-injuries-campaign-verify.mjs"
+      },
+      {
+        "name": "apparel",
+        "command": "node scripts/voxel-apparel-campaign-verify.mjs"
+      },
+      {
+        "name": "apparel-temperature",
+        "command": "node scripts/voxel-apparel-temperature-verify.mjs"
+      },
+      {
+        "name": "preservation",
+        "command": "node scripts/voxel-preservation-verify.mjs"
+      },
+      {
+        "name": "stonecutting",
+        "command": "node scripts/voxel-stonecutting-campaign-verify.mjs"
+      },
+      {
+        "name": "worldgen",
+        "command": "node scripts/voxel-worldgen-campaign-verify.mjs"
+      },
+      {
+        "name": "logistics",
+        "command": "node scripts/voxel-logistics-campaign-verify.mjs"
+      },
+      {
+        "name": "survival",
+        "command": "node scripts/voxel-survival-campaign-verify.mjs"
+      },
+      {
+        "name": "survival-temperature",
+        "command": "node scripts/voxel-survival-temperature-verify.mjs"
+      },
+      {
+        "name": "voxel",
+        "command": "node scripts/voxel-campaign-verify.mjs"
+      }
+    ],
+    "attempts": [
+      {
+        "name": "power",
+        "script": "scripts/voxel-power-campaign-verify.mjs",
+        "command": "node scripts/voxel-power-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-power-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/power-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:04:07.715Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:04:33.164Z",
+        "durationMs": 25445,
+        "signal": null
+      },
+      {
+        "name": "plants",
+        "script": "scripts/voxel-plants-campaign-verify.mjs",
+        "command": "node scripts/voxel-plants-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-plants-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/plants-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:04:07.735Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:08:52.749Z",
+        "durationMs": 285013,
+        "signal": null
+      },
+      {
+        "name": "food",
+        "script": "scripts/voxel-food-campaign-verify.mjs",
+        "command": "node scripts/voxel-food-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-food-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/food-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:04:33.165Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:06:38.297Z",
+        "durationMs": 125131,
+        "signal": null
+      },
+      {
+        "name": "housing",
+        "script": "scripts/voxel-housing-campaign-verify.mjs",
+        "command": "node scripts/voxel-housing-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-housing-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/housing-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:06:38.297Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:06:45.950Z",
+        "durationMs": 7651,
+        "signal": null
+      },
+      {
+        "name": "injuries",
+        "script": "scripts/voxel-injuries-campaign-verify.mjs",
+        "command": "node scripts/voxel-injuries-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-injuries-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/injuries-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:06:45.951Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:07:00.354Z",
+        "durationMs": 14403,
+        "signal": null
+      },
+      {
+        "name": "apparel",
+        "script": "scripts/voxel-apparel-campaign-verify.mjs",
+        "command": "node scripts/voxel-apparel-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-apparel-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/apparel-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:07:00.355Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:09:43.270Z",
+        "durationMs": 162915,
+        "signal": null
+      },
+      {
+        "name": "apparel-temperature",
+        "script": "scripts/voxel-apparel-temperature-verify.mjs",
+        "command": "node scripts/voxel-apparel-temperature-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-apparel-temperature-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/apparel-temperature-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:08:52.750Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:08:55.037Z",
+        "durationMs": 2287,
+        "signal": null
+      },
+      {
+        "name": "preservation",
+        "script": "scripts/voxel-preservation-verify.mjs",
+        "command": "node scripts/voxel-preservation-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-preservation-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/preservation-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:08:55.038Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:11:08.464Z",
+        "durationMs": 133425,
+        "signal": null
+      },
+      {
+        "name": "stonecutting",
+        "script": "scripts/voxel-stonecutting-campaign-verify.mjs",
+        "command": "node scripts/voxel-stonecutting-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-stonecutting-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/stonecutting-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:09:43.271Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:09:50.718Z",
+        "durationMs": 7446,
+        "signal": null
+      },
+      {
+        "name": "worldgen",
+        "script": "scripts/voxel-worldgen-campaign-verify.mjs",
+        "command": "node scripts/voxel-worldgen-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-worldgen-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/worldgen-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:09:50.719Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:11:17.788Z",
+        "durationMs": 87070,
+        "signal": null
+      },
+      {
+        "name": "logistics",
+        "script": "scripts/voxel-logistics-campaign-verify.mjs",
+        "command": "node scripts/voxel-logistics-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-logistics-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/logistics-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:11:08.465Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:11:11.684Z",
+        "durationMs": 3218,
+        "signal": null
+      },
+      {
+        "name": "survival",
+        "script": "scripts/voxel-survival-campaign-verify.mjs",
+        "command": "node scripts/voxel-survival-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-survival-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/survival-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:11:11.685Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:11:20.611Z",
+        "durationMs": 8925,
+        "signal": null
+      },
+      {
+        "name": "survival-temperature",
+        "script": "scripts/voxel-survival-temperature-verify.mjs",
+        "command": "node scripts/voxel-survival-temperature-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-survival-temperature-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/survival-temperature-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:11:17.789Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:11:22.322Z",
+        "durationMs": 4531,
+        "signal": null
+      },
+      {
+        "name": "voxel",
+        "script": "scripts/voxel-campaign-verify.mjs",
+        "command": "node scripts/voxel-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/voxel-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:11:20.612Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:11:22.519Z",
+        "durationMs": 1906,
+        "signal": null
+      }
+    ],
+    "status": "passed",
+    "updatedAt": "2026-11-03T03:11:22.520Z",
+    "latest": {
+      "power": {
+        "status": "passed",
+        "attempt": 1,
+        "exitCode": 0,
+        "log": "test-results/technology-regressions/power-attempt-1.log",
+        "durationMs": 25445
+      },
+      "plants": {
+        "status": "passed",
+        "attempt": 1,
+        "exitCode": 0,
+        "log": "test-results/technology-regressions/plants-attempt-1.log",
+        "durationMs": 285013
+      },
+      "food": {
+        "status": "passed",
+        "attempt": 1,
+        "exitCode": 0,
+        "log": "test-results/technology-regressions/food-attempt-1.log",
+        "durationMs": 125131
+      },
+      "housing": {
+        "status": "passed",
+        "attempt": 1,
+        "exitCode": 0,
+        "log": "test-results/technology-regressions/housing-attempt-1.log",
+        "durationMs": 7651
+      },
+      "injuries": {
+        "status": "passed",
+        "attempt": 1,
+        "exitCode": 0,
+        "log": "test-results/technology-regressions/injuries-attempt-1.log",
+        "durationMs": 14403
+      },
+      "apparel": {
+        "status": "passed",
+        "attempt": 1,
+        "exitCode": 0,
+        "log": "test-results/technology-regressions/apparel-attempt-1.log",
+        "durationMs": 162915
+      },
+      "apparel-temperature": {
+        "status": "passed",
+        "attempt": 1,
+        "exitCode": 0,
+        "log": "test-results/technology-regressions/apparel-temperature-attempt-1.log",
+        "durationMs": 2287
+      },
+      "preservation": {
+        "status": "passed",
+        "attempt": 1,
+        "exitCode": 0,
+        "log": "test-results/technology-regressions/preservation-attempt-1.log",
+        "durationMs": 133425
+      },
+      "stonecutting": {
+        "status": "passed",
+        "attempt": 1,
+        "exitCode": 0,
+        "log": "test-results/technology-regressions/stonecutting-attempt-1.log",
+        "durationMs": 7446
+      },
+      "worldgen": {
+        "status": "passed",
+        "attempt": 1,
+        "exitCode": 0,
+        "log": "test-results/technology-regressions/worldgen-attempt-1.log",
+        "durationMs": 87070
+      },
+      "logistics": {
+        "status": "passed",
+        "attempt": 1,
+        "exitCode": 0,
+        "log": "test-results/technology-regressions/logistics-attempt-1.log",
+        "durationMs": 3218
+      },
+      "survival": {
+        "status": "passed",
+        "attempt": 1,
+        "exitCode": 0,
+        "log": "test-results/technology-regressions/survival-attempt-1.log",
+        "durationMs": 8925
+      },
+      "survival-temperature": {
+        "status": "passed",
+        "attempt": 1,
+        "exitCode": 0,
+        "log": "test-results/technology-regressions/survival-temperature-attempt-1.log",
+        "durationMs": 4531
+      },
+      "voxel": {
+        "status": "passed",
+        "attempt": 1,
+        "exitCode": 0,
+        "log": "test-results/technology-regressions/voxel-attempt-1.log",
+        "durationMs": 1906
+      }
+    },
+    "completedAt": "2026-11-03T03:11:22.520Z",
+    "runs": [
+      {
+        "name": "power",
+        "script": "scripts/voxel-power-campaign-verify.mjs",
+        "command": "node scripts/voxel-power-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-power-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/power-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:04:07.715Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:04:33.164Z",
+        "durationMs": 25445,
+        "signal": null,
+        "code": 0
+      },
+      {
+        "name": "plants",
+        "script": "scripts/voxel-plants-campaign-verify.mjs",
+        "command": "node scripts/voxel-plants-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-plants-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/plants-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:04:07.735Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:08:52.749Z",
+        "durationMs": 285013,
+        "signal": null,
+        "code": 0
+      },
+      {
+        "name": "food",
+        "script": "scripts/voxel-food-campaign-verify.mjs",
+        "command": "node scripts/voxel-food-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-food-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/food-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:04:33.165Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:06:38.297Z",
+        "durationMs": 125131,
+        "signal": null,
+        "code": 0
+      },
+      {
+        "name": "housing",
+        "script": "scripts/voxel-housing-campaign-verify.mjs",
+        "command": "node scripts/voxel-housing-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-housing-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/housing-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:06:38.297Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:06:45.950Z",
+        "durationMs": 7651,
+        "signal": null,
+        "code": 0
+      },
+      {
+        "name": "injuries",
+        "script": "scripts/voxel-injuries-campaign-verify.mjs",
+        "command": "node scripts/voxel-injuries-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-injuries-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/injuries-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:06:45.951Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:07:00.354Z",
+        "durationMs": 14403,
+        "signal": null,
+        "code": 0
+      },
+      {
+        "name": "apparel",
+        "script": "scripts/voxel-apparel-campaign-verify.mjs",
+        "command": "node scripts/voxel-apparel-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-apparel-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/apparel-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:07:00.355Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:09:43.270Z",
+        "durationMs": 162915,
+        "signal": null,
+        "code": 0
+      },
+      {
+        "name": "apparel-temperature",
+        "script": "scripts/voxel-apparel-temperature-verify.mjs",
+        "command": "node scripts/voxel-apparel-temperature-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-apparel-temperature-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/apparel-temperature-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:08:52.750Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:08:55.037Z",
+        "durationMs": 2287,
+        "signal": null,
+        "code": 0
+      },
+      {
+        "name": "preservation",
+        "script": "scripts/voxel-preservation-verify.mjs",
+        "command": "node scripts/voxel-preservation-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-preservation-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/preservation-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:08:55.038Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:11:08.464Z",
+        "durationMs": 133425,
+        "signal": null,
+        "code": 0
+      },
+      {
+        "name": "stonecutting",
+        "script": "scripts/voxel-stonecutting-campaign-verify.mjs",
+        "command": "node scripts/voxel-stonecutting-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-stonecutting-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/stonecutting-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:09:43.271Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:09:50.718Z",
+        "durationMs": 7446,
+        "signal": null,
+        "code": 0
+      },
+      {
+        "name": "worldgen",
+        "script": "scripts/voxel-worldgen-campaign-verify.mjs",
+        "command": "node scripts/voxel-worldgen-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-worldgen-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/worldgen-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:09:50.719Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:11:17.788Z",
+        "durationMs": 87070,
+        "signal": null,
+        "code": 0
+      },
+      {
+        "name": "logistics",
+        "script": "scripts/voxel-logistics-campaign-verify.mjs",
+        "command": "node scripts/voxel-logistics-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-logistics-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/logistics-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:11:08.465Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:11:11.684Z",
+        "durationMs": 3218,
+        "signal": null,
+        "code": 0
+      },
+      {
+        "name": "survival",
+        "script": "scripts/voxel-survival-campaign-verify.mjs",
+        "command": "node scripts/voxel-survival-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-survival-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/survival-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:11:11.685Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:11:20.611Z",
+        "durationMs": 8925,
+        "signal": null,
+        "code": 0
+      },
+      {
+        "name": "survival-temperature",
+        "script": "scripts/voxel-survival-temperature-verify.mjs",
+        "command": "node scripts/voxel-survival-temperature-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-survival-temperature-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/survival-temperature-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:11:17.789Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:11:22.322Z",
+        "durationMs": 4531,
+        "signal": null,
+        "code": 0
+      },
+      {
+        "name": "voxel",
+        "script": "scripts/voxel-campaign-verify.mjs",
+        "command": "node scripts/voxel-campaign-verify.mjs",
+        "executable": "C:\\Program Files\\nodejs\\node.exe",
+        "args": [
+          "scripts/voxel-campaign-verify.mjs"
+        ],
+        "cwd": "C:\\Users\\chenxiyuan\\Documents\\ChatGPT\\game-re-build\\experiments\\rimworld-like",
+        "attempt": 1,
+        "log": "test-results/technology-regressions/voxel-attempt-1.log",
+        "status": "passed",
+        "startedAt": "2026-11-03T03:11:20.612Z",
+        "exitCode": 0,
+        "completedAt": "2026-11-03T03:11:22.519Z",
+        "durationMs": 1906,
+        "signal": null,
+        "code": 0
+      }
+    ]
+  },
+  "screenshots": [
+    {
+      "file": "voxel/research-technology.jpg",
+      "sha256": "9e1d0ff0f82e4e6a4a06e9316a28921302f493ecff96e34eff176db8e31b0dbe"
+    },
+    {
+      "file": "voxel/research-bench.jpg",
+      "sha256": "ffb8c816b11fcb118313d072ceb01a6a2d826681bdc6228a291600ad5faf2700"
+    },
+    {
+      "file": "voxel/research-learning.jpg",
+      "sha256": "34974f50d617c18ea8530bc179c9ec8f68ac4b95b9ce9906c8e5786717e1681d"
+    },
+    {
+      "file": "voxel/research-compact-research.jpg",
+      "sha256": "cfac3815c196f7e292c828b55bba6e11779fde69eb89f8be6fe4fdd3499a89e2"
+    }
+  ],
+  "limitations": [
+    "Only 12 selected industrial technologies and a simple bench; tribal scenarios, full technology tree, high-tech research, facilities, techprints, books and queue remain absent.",
+    "Voxel outdoor rooms map to native outdoor and roomless factors, but proper room role, cleanliness and bookshelves are not simulated. Indoor assumes neutral cleanliness without laboratory classification.",
+    "20 TPS keeps work seconds via x3 points/XP; 12000-tick project days remain compressed. Session duration rounds up and periodic scheduling adds up to one second, unlike native Wait2 and general posture waits.",
+    "One fresh research colony and the continued weapons/forestry campaigns do not establish long-term balance or population scaling.",
+    "Browser checks use actual controls with read-only snapshots and projection helpers, not screen-only inference. The native experiment measured partial research and switch/stop, not full technology completion."
+  ]
+}

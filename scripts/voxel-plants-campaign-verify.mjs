@@ -1,3 +1,4 @@
+import { researchOpening } from './voxel-research-opening.mjs';
 import assert from 'node:assert/strict';
 import { build } from 'esbuild';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -169,6 +170,14 @@ try {
     .slice(0, 8);
   assert.equal(cutTrees.length, 8);
   for (const t of cutTrees) designate('cut', t);
+  await researchOpening({
+    getSim: () => sim,
+    command,
+    until,
+    check,
+    projects: ['TreeSowing'],
+    reserved: surface.filter((p) => reserved.has(key(p))),
+  });
   designate('grove', plot, { treeSpecies: 'saguaro' });
   until(
     'workers build a stove, sow food and plant the chosen tree',

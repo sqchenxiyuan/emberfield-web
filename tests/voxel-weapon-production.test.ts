@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { VoxelSimulation } from '../src/voxel/world';
+import { initialResearch } from '../src/voxel/research';
 import { Block, index, type Pos, type VoxelCommand, type WeaponBench } from '../src/voxel/types';
 import { makeWeapon } from '../src/voxel/weapons';
 import { makeWeaponBench } from '../src/voxel/weaponProduction';
@@ -10,6 +11,8 @@ import { applyInjury } from '../src/voxel/injuries';
 const pos = (x: number, y: number, z = 8): Pos => ({ x, y, z });
 function fixture() {
   const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  // Controlled feature fixture represents a colony with research already completed.
+  s.research = initialResearch(true);
   s.blocks.fill(Block.Stone);
   s.ladders.fill(0);
   s.trees = [];
@@ -22,7 +25,17 @@ function fixture() {
   s.pawns.forEach((p, i) => {
     Object.assign(p, pos(11, 11 + i));
     p.schedule.fill('work');
-    p.priorities = { dig: 0, build: 0, cut: 0, haul: 0, grow: 0, cook: 0, craft: 0, care: 0 };
+    p.priorities = {
+      dig: 0,
+      build: 0,
+      cut: 0,
+      haul: 0,
+      grow: 0,
+      cook: 0,
+      craft: 0,
+      care: 0,
+      research: 0,
+    };
   });
   return VoxelSimulation.load(s.save());
 }
@@ -63,7 +76,7 @@ describe('physical weapon production and persistence', () => {
     const old = JSON.parse(bytes.toString()),
       s = VoxelSimulation.load(old);
     expect(old.version).toBe(12);
-    expect(s.save().version).toBe(14);
+    expect(s.save().version).toBe(15);
     expect(s.weaponBenches).toEqual([]);
     expect(s.items).toEqual(old.items);
     expect(s.save().blocks).toEqual(old.blocks);
