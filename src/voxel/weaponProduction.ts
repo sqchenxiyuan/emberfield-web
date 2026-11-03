@@ -1,5 +1,6 @@
 import { type Counts, type Pos, type WeaponBench } from './types';
 import { WEAPON_KINDS, WEAPON_DEFS, type WeaponBenchKind } from './weapons';
+import { ARMOR_KINDS } from './apparel';
 
 // Selected native FueledSmithy declarations; world checks research and construction skill.
 export const SMITHY_COST: Readonly<Partial<Counts>> = Object.freeze({ steel: 100 });
@@ -27,6 +28,11 @@ export function makeWeaponBench(
     axis,
     fuel: 0,
     bills: WEAPON_KINDS.filter((k) => WEAPON_DEFS[k].benches.includes(kind)).map((kind) => ({
+      kind,
+      target: 0,
+      paused: false,
+    })),
+    armorBills: (kind === 'smithy' ? ARMOR_KINDS : []).map((kind) => ({
       kind,
       target: 0,
       paused: false,

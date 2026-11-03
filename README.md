@@ -6,6 +6,8 @@
 
 在线试玩：[GitHub Pages](https://sqchenxiyuan.github.io/emberfield-web/) · 源码：[sqchenxiyuan/emberfield-web](https://github.com/sqchenxiyuan/emberfield-web)。
 
+2026-11-03护甲更新（v17）：燃料锻造台可实际制作钢头盔和钢板甲，板甲需研究及工艺7级。护甲按真实部位、穿透和层次判定挡下/减伤，每击消耗耐久，损毁计入物品账本；板甲减慢实际步行。点击装备查看品质、防护、覆盖和移动影响，旧档保留现有营地并新增未完成的板甲研究。[54规则](docs/research/rimworld/54-armor-penetration-mechanisms.md)、[55原版实机](docs/research/rimworld/55-native-armor-runtime.md)、[56实现与验收](docs/research/rimworld/56-voxel-armor-implementation.md)。此前版本介绍中的“无护甲”属于历史边界；远程战斗仍未接入。
+
 2026-11-03人体更新（v16）：多层体素模式加入64部位、11身体能力、近战伤害传播、缺失子树和断端护理；视力与手部功能影响真实劳动与研究。旧伤、物资、装备及科研保留，读取后按新规则重算能力并暂停。右手缺失可改用左手持械。[51规则](docs/research/rimworld/51-anatomy-capacity-mechanisms.md)、[52原版实机](docs/research/rimworld/52-native-anatomy-runtime.md)、[53实现与验收](docs/research/rimworld/53-voxel-anatomy-implementation.md)。
 
 原版机制研究见 [RimWorld 详细机制与复刻设计](docs/research/rimworld/README.md)：工作与预定、战斗与医疗、房间温度与电网、财富叙事与贸易，附版本哈希、公式、算例和未验证边界。研究对象是本地 `1.7.4980 rev60`，这些数值不代表当前Web版已经实现。运行 `npm run research:check` 可独立核对证据索引与算例。

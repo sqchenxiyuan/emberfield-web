@@ -13,6 +13,7 @@ export const RESEARCH_KEYS = [
   'LongBlades',
   'Batteries',
   'SolarPanels',
+  'PlateArmor',
 ] as const;
 export type ResearchKey = (typeof RESEARCH_KEYS)[number];
 export interface ResearchState {
@@ -106,8 +107,18 @@ export const RESEARCH_DEFS: Record<ResearchKey, ResearchDef> = {
     unlocks: ['太阳能发电板'],
     techLevel: 4,
   },
+  PlateArmor: {
+    name: '板甲',
+    cost: 600,
+    prerequisites: ['Smithing', 'ComplexClothing'],
+    unlocks: ['钢板甲配方'],
+    techLevel: 3,
+  },
 };
 const STARTING_RESEARCH: readonly ResearchKey[] = RESEARCH_KEYS.slice(0, 7);
+// Historical colonies retain their previous twelve unlocks. A newly introduced
+// technology still needs real research, including in a migrated legacy colony.
+const LEGACY_RESEARCH: readonly ResearchKey[] = RESEARCH_KEYS.filter((k) => k !== 'PlateArmor');
 export const RESEARCH_BENCH_COST = { wood: 75, steel: 25 } as const;
 export const RESEARCH_BENCH_WORK = Math.ceil(2800 / 3);
 export const RESEARCH_SESSION_TICKS = Math.ceil(4000 / 3);
@@ -119,7 +130,7 @@ export function initialResearch(legacy = false): ResearchState {
     progress: Object.fromEntries(
       RESEARCH_KEYS.map((key) => [
         key,
-        legacy || STARTING_RESEARCH.includes(key) ? RESEARCH_DEFS[key].cost : 0,
+        (legacy ? LEGACY_RESEARCH : STARTING_RESEARCH).includes(key) ? RESEARCH_DEFS[key].cost : 0,
       ]),
     ) as Record<ResearchKey, number>,
   };
@@ -163,7 +174,7 @@ export function validResearch(value: unknown): value is ResearchState {
   if (!STARTING_RESEARCH.every((key) => researchComplete(state, key))) return false;
   if (
     state.origin === 'legacy-unlocked' &&
-    !RESEARCH_KEYS.every((key) => researchComplete(state, key))
+    !LEGACY_RESEARCH.every((key) => researchComplete(state, key))
   )
     return false;
   if (
@@ -200,6 +211,10 @@ export function weaponResearchReason(state: ResearchState, kind: string): string
   return kind === 'steelLongsword' && !researchComplete(state, 'LongBlades')
     ? '需要研究「长刃武器」'
     : null;
+}
+export function armorResearchReason(state: ResearchState, kind: string): string | null {
+  const key = kind === 'plateArmor' ? 'PlateArmor' : 'Smithing';
+  return researchComplete(state, key) ? null : `需要研究「${RESEARCH_DEFS[key].name}」`;
 }
 /** Scoped simple-bench model: proper indoor rooms use neutral cleanliness,
  * role and bookcase modifiers. Outdoor rooms use native roomlessScore .75 in

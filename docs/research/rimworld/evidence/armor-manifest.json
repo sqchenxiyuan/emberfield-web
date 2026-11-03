@@ -1,0 +1,73 @@
+{
+  "evidence_id": "RW17-ARMOR",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "Verse.DamageInfo",
+      "local_file": ".local-research/armor/Verse.DamageInfo.cs",
+      "sha256": "617154769ef32b13ba1d4d8e3e854bc32cfb35b53fd5c0d0ded604d8b718e8e7",
+      "lines": 294
+    },
+    {
+      "type": "Verse.DamageWorker",
+      "local_file": ".local-research/armor/Verse.DamageWorker.cs",
+      "sha256": "026f7d89034c7857fe2c8ef108b4e3652a1303e133606633b21931e356b3593e",
+      "lines": 421
+    },
+    {
+      "type": "Verse.ProjectileProperties",
+      "local_file": ".local-research/armor/Verse.ProjectileProperties.cs",
+      "sha256": "6b9a7243bf348d6e8d51092c49458507bff525680192b9e21f0efdf0ab5f6fcd",
+      "lines": 220
+    },
+    {
+      "type": "RimWorld.StatPart_Quality",
+      "local_file": ".local-research/armor/RimWorld.StatPart_Quality.cs",
+      "sha256": "3b80ea8e8f92ffce05a05631972d7f948e0acaa03c3ceeb4d484ecfab72339e0",
+      "lines": 98
+    },
+    {
+      "type": "Verse.DamageArmorCategoryDef",
+      "local_file": ".local-research/armor/Verse.DamageArmorCategoryDef.cs",
+      "sha256": "50bd4f81a9175bb18a8a998f02b53d13ac22dbf3bd9a510e2a39b2fffc23e9a2",
+      "lines": 11
+    },
+    {
+      "type": "RimWorld.StatWorker_MeleeArmorPenetration",
+      "local_file": ".local-research/armor/RimWorld.StatWorker_MeleeArmorPenetration.cs",
+      "sha256": "efe99f2819d816e9c0e4039e1f73c7e3af8c4b88ef3a911f76cbb18180aa7064",
+      "lines": 69
+    },
+    {
+      "type": "RimWorld.StatWorker_MeleeAverageArmorPenetration",
+      "local_file": ".local-research/armor/RimWorld.StatWorker_MeleeAverageArmorPenetration.cs",
+      "sha256": "80fb11ea06cc8289bfdc7685e95d74949a7a34ede3ebe48a642d42259c74da12",
+      "lines": 65
+    },
+    {
+      "type": "Verse.ThingComp",
+      "local_file": ".local-research/armor/Verse.ThingComp.cs",
+      "sha256": "f9461fac8b7a40cafa9a13edc21ae0e0070e639587c98d3e9f2f6fd1d440a54f",
+      "lines": 364
+    },
+    {
+      "type": "RimWorld.CompQuality",
+      "local_file": ".local-research/armor/RimWorld.CompQuality.cs",
+      "sha256": "e07103ce60d82c815919c0726d577f41bb8a46a9c932be2eee5c37c48af255bc",
+      "lines": 55
+    }
+  ]
+}

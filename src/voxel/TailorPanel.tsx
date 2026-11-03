@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { APPAREL_DEFS, APPAREL_NAMES } from './apparel';
+import { APPAREL_DEFS, APPAREL_NAMES, TAILOR_KINDS } from './apparel';
 import { tailorInteraction, type ApparelKind, type Tailor, type VoxelSnapshot } from './types';
 
 export function TailorPanel({
@@ -30,7 +30,7 @@ export function TailorPanel({
           value={kind}
           onChange={(e) => select(e.target.value as ApparelKind)}
         >
-          {(Object.keys(APPAREL_NAMES) as ApparelKind[]).map((k) => (
+          {TAILOR_KINDS.map((k) => (
             <option key={k} value={k}>
               {APPAREL_NAMES[k]}
             </option>

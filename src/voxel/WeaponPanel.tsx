@@ -33,10 +33,13 @@ export function WeaponDetails({ piece }: { piece: WeaponPiece }) {
       </span>
       {attacks.map((a) => (
         <small key={a.id}>
-          {a.label}：基础伤害 {a.damage.toFixed(1)} · 间隔 {a.cooldownSeconds.toFixed(1)} 秒
+          {a.label}：基础伤害 {a.damage.toFixed(1)} · 穿透 {(a.armorPenetration * 100).toFixed(1)}%
+          · 间隔 {a.cooldownSeconds.toFixed(1)} 秒
         </small>
       ))}
-      <small>实际攻击还会使用可用的身体部位；命中后伤害有波动。当前未实现护甲减伤。</small>
+      <small>
+        实际攻击还会使用可用的身体部位；命中后伤害有波动，穿透参与命中部位的逐层护甲结算。
+      </small>
     </div>
   );
 }

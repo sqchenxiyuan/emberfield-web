@@ -1,0 +1,11 @@
+{
+  "capturedAt": "2026-11-03T04:47:47.929Z",
+  "workspaceCommit": "c4ae68d33eadc1eb79a4169c56e5ddb6cc09cbe3",
+  "publishedCommit": "5f21f85ec16ca126ea181e87af09e586b0b4bea2",
+  "generator": "Exact normal-command campaign output, validated by published v16 source before armor edits",
+  "source": "test-results/voxel-apparel-campaign/clothed.json",
+  "sha256": "fdaffe08e88f102bf2c73ff8814641eece28745920221be0e2b7bb18086b8909",
+  "version": 16,
+  "tick": 301133,
+  "loadedByOriginalSource": true
+}

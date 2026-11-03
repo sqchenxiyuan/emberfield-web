@@ -45,6 +45,8 @@ function lose(s: VoxelSimulation, pawn: number, part: BodyPartId) {
 function oldFixture() {
   const old: any = fixture().save();
   old.version = 15;
+  delete old.research.progress.PlateArmor;
+  for (const bench of old.weaponBenches) delete bench.armorBills;
   for (const p of old.pawns) p.trauma = { wounds: [], bloodLoss: 0, brokenParts: [] };
   return old;
 }
@@ -67,17 +69,23 @@ describe('anatomy integration with work, physical treatment and save migration',
       const s = VoxelSimulation.load(old),
         save = s.save();
       expect(old).toEqual(before);
-      expect(save.version).toBe(16);
+      expect(save.version).toBe(17);
       expect(s.tick).toBe(old.tick);
-      for (const key of [
-        'blocks',
-        'items',
-        'research',
-        'researchBenches',
-        'stats',
-        'weaponBenches',
-      ] as const)
+      for (const key of ['blocks', 'items', 'researchBenches', 'stats'] as const)
         expect(save[key]).toEqual(old[key]);
+      expect(save.research).toEqual({
+        ...old.research,
+        progress: { ...old.research.progress, PlateArmor: 0 },
+      });
+      expect(save.weaponBenches).toEqual(
+        old.weaponBenches.map((b: any) => ({
+          ...b,
+          armorBills:
+            b.kind === 'smithy'
+              ? ['simpleHelmet', 'plateArmor'].map((kind) => ({ kind, target: 0, paused: false }))
+              : [],
+        })),
+      );
       for (const p of save.pawns) {
         const prior = old.pawns.find((q: any) => q.id === p.id);
         for (const key of ['food', 'rest', 'worn', 'weapon', 'cargo', 'skills', 'health'] as const)

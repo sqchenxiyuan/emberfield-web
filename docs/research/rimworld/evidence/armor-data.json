@@ -1,0 +1,598 @@
+{
+  "evidence_id": "RW17-ARMOR-DATA",
+  "version_text": "1.7.4980 rev60",
+  "assembly_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Selected reviewed Core inheritance and static arithmetic; not an effective runtime database.",
+  "quality": [
+    "Awful",
+    "Poor",
+    "Normal",
+    "Good",
+    "Excellent",
+    "Masterwork",
+    "Legendary"
+  ],
+  "armorQuality": [
+    0.6,
+    0.8,
+    1,
+    1.15,
+    1.3,
+    1.45,
+    1.8
+  ],
+  "meleeQuality": [
+    0.8,
+    0.9,
+    1,
+    1.1,
+    1.2,
+    1.45,
+    1.65
+  ],
+  "rangedPenetrationQuality": [
+    0.9,
+    1,
+    1,
+    1,
+    1,
+    1.25,
+    1.5
+  ],
+  "materials": [
+    {
+      "id": "Steel",
+      "armor": [
+        0.9,
+        0.45,
+        0.6
+      ],
+      "cold": 3,
+      "heat": 0,
+      "hpFactor": 1
+    },
+    {
+      "id": "Cloth",
+      "armor": [
+        0.36,
+        0,
+        0.18
+      ],
+      "cold": 18,
+      "heat": 18,
+      "hpFactor": 1
+    },
+    {
+      "id": "WoodLog",
+      "armor": [
+        0.54,
+        0.54,
+        0.4
+      ],
+      "cold": 8,
+      "heat": 4,
+      "hpFactor": 0.65
+    }
+  ],
+  "layers": {
+    "OnSkin": 0,
+    "Middle": 100,
+    "Shell": 200,
+    "Overhead": 400
+  },
+  "garments": [
+    {
+      "id": "Apparel_Parka",
+      "sourceChain": [
+        "ThingDef_ApparelNoQualityBase",
+        "ThingDef_ApparelBase",
+        "ThingDef_ApparelMakeableBase",
+        "ThingDef_Apparel_Parka"
+      ],
+      "cost": 80,
+      "work": 8000,
+      "maxHP": 180,
+      "mass": 2,
+      "equipDelay": 3,
+      "armorMultiplier": 0.2,
+      "armorBase": [
+        0,
+        0,
+        0
+      ],
+      "coldMultiplier": 2,
+      "heatMultiplier": 0,
+      "moveOffset": 0,
+      "research": null,
+      "craftingMin": null,
+      "workSkill": "Crafting",
+      "workSpeedStat": "GeneralLaborSpeed",
+      "benches": [
+        "ElectricTailoringBench",
+        "HandTailoringBench"
+      ],
+      "stuffCategories": [
+        "Fabric",
+        "Leathery"
+      ],
+      "groups": [
+        "Torso",
+        "Neck",
+        "Shoulders",
+        "Arms"
+      ],
+      "layers": [
+        "Shell"
+      ],
+      "drawOrder": 200,
+      "coveredParts": [
+        "torso",
+        "ribcage",
+        "sternum",
+        "pelvis",
+        "spine",
+        "stomach",
+        "heart",
+        "left-lung",
+        "right-lung",
+        "left-kidney",
+        "right-kidney",
+        "liver",
+        "neck",
+        "left-shoulder",
+        "left-clavicle",
+        "left-arm",
+        "left-humerus",
+        "left-radius",
+        "right-shoulder",
+        "right-clavicle",
+        "right-arm",
+        "right-humerus",
+        "right-radius"
+      ],
+      "wearPerDay": 0.4
+    },
+    {
+      "id": "Apparel_Pants",
+      "sourceChain": [
+        "ThingDef_ApparelNoQualityBase",
+        "ThingDef_ApparelBase",
+        "ThingDef_ApparelMakeableBase",
+        "ThingDef_Apparel_Pants"
+      ],
+      "cost": 40,
+      "work": 1600,
+      "maxHP": 100,
+      "mass": 0.5,
+      "equipDelay": 2,
+      "armorMultiplier": 0.2,
+      "armorBase": [
+        0,
+        0,
+        0
+      ],
+      "coldMultiplier": 0.2,
+      "heatMultiplier": 0.08,
+      "moveOffset": 0,
+      "research": "ComplexClothing",
+      "craftingMin": null,
+      "workSkill": "Crafting",
+      "workSpeedStat": "GeneralLaborSpeed",
+      "benches": [
+        "ElectricTailoringBench",
+        "HandTailoringBench"
+      ],
+      "stuffCategories": [
+        "Fabric",
+        "Leathery"
+      ],
+      "groups": [
+        "Legs"
+      ],
+      "layers": [
+        "OnSkin"
+      ],
+      "drawOrder": 0,
+      "coveredParts": [
+        "left-leg",
+        "left-femur",
+        "left-tibia",
+        "right-leg",
+        "right-femur",
+        "right-tibia"
+      ],
+      "wearPerDay": 0.4
+    },
+    {
+      "id": "Apparel_BasicShirt",
+      "sourceChain": [
+        "ThingDef_ApparelNoQualityBase",
+        "ThingDef_ApparelBase",
+        "ThingDef_ApparelMakeableBase",
+        "ThingDef_Apparel_BasicShirt"
+      ],
+      "cost": 40,
+      "work": 1600,
+      "maxHP": 100,
+      "mass": 0.25,
+      "equipDelay": 1.5,
+      "armorMultiplier": 0.2,
+      "armorBase": [
+        0,
+        0,
+        0
+      ],
+      "coldMultiplier": 0.22,
+      "heatMultiplier": 0.1,
+      "moveOffset": 0,
+      "research": "ComplexClothing",
+      "craftingMin": null,
+      "workSkill": "Crafting",
+      "workSpeedStat": "GeneralLaborSpeed",
+      "benches": [
+        "ElectricTailoringBench",
+        "HandTailoringBench"
+      ],
+      "stuffCategories": [
+        "Fabric",
+        "Leathery"
+      ],
+      "groups": [
+        "Torso",
+        "Shoulders"
+      ],
+      "layers": [
+        "OnSkin"
+      ],
+      "drawOrder": 0,
+      "coveredParts": [
+        "torso",
+        "ribcage",
+        "sternum",
+        "pelvis",
+        "spine",
+        "stomach",
+        "heart",
+        "left-lung",
+        "right-lung",
+        "left-kidney",
+        "right-kidney",
+        "liver",
+        "left-shoulder",
+        "left-clavicle",
+        "right-shoulder",
+        "right-clavicle"
+      ],
+      "wearPerDay": 0.4
+    },
+    {
+      "id": "Apparel_CollarShirt",
+      "sourceChain": [
+        "ThingDef_ApparelNoQualityBase",
+        "ThingDef_ApparelBase",
+        "ThingDef_ApparelMakeableBase",
+        "ThingDef_Apparel_CollarShirt"
+      ],
+      "cost": 45,
+      "work": 2700,
+      "maxHP": 100,
+      "mass": 0.3,
+      "equipDelay": 1.5,
+      "armorMultiplier": 0.2,
+      "armorBase": [
+        0,
+        0,
+        0
+      ],
+      "coldMultiplier": 0.26,
+      "heatMultiplier": 0.1,
+      "moveOffset": 0,
+      "research": "ComplexClothing",
+      "craftingMin": null,
+      "workSkill": "Crafting",
+      "workSpeedStat": "GeneralLaborSpeed",
+      "benches": [
+        "ElectricTailoringBench",
+        "HandTailoringBench"
+      ],
+      "stuffCategories": [
+        "Fabric",
+        "Leathery"
+      ],
+      "groups": [
+        "Torso",
+        "Neck",
+        "Shoulders",
+        "Arms"
+      ],
+      "layers": [
+        "OnSkin"
+      ],
+      "drawOrder": 0,
+      "coveredParts": [
+        "torso",
+        "ribcage",
+        "sternum",
+        "pelvis",
+        "spine",
+        "stomach",
+        "heart",
+        "left-lung",
+        "right-lung",
+        "left-kidney",
+        "right-kidney",
+        "liver",
+        "neck",
+        "left-shoulder",
+        "left-clavicle",
+        "left-arm",
+        "left-humerus",
+        "left-radius",
+        "right-shoulder",
+        "right-clavicle",
+        "right-arm",
+        "right-humerus",
+        "right-radius"
+      ],
+      "wearPerDay": 0.4
+    },
+    {
+      "id": "Apparel_Duster",
+      "sourceChain": [
+        "ThingDef_ApparelNoQualityBase",
+        "ThingDef_ApparelBase",
+        "ThingDef_ApparelMakeableBase",
+        "ThingDef_Apparel_Duster"
+      ],
+      "cost": 80,
+      "work": 10000,
+      "maxHP": 200,
+      "mass": 2,
+      "equipDelay": 3,
+      "armorMultiplier": 0.3,
+      "armorBase": [
+        0,
+        0,
+        0
+      ],
+      "coldMultiplier": 0.6,
+      "heatMultiplier": 0.85,
+      "moveOffset": 0,
+      "research": "ComplexClothing",
+      "craftingMin": null,
+      "workSkill": "Crafting",
+      "workSpeedStat": "GeneralLaborSpeed",
+      "benches": [
+        "ElectricTailoringBench",
+        "HandTailoringBench"
+      ],
+      "stuffCategories": [
+        "Fabric",
+        "Leathery"
+      ],
+      "groups": [
+        "Torso",
+        "Neck",
+        "Shoulders",
+        "Arms",
+        "Legs"
+      ],
+      "layers": [
+        "Shell"
+      ],
+      "drawOrder": 200,
+      "coveredParts": [
+        "torso",
+        "ribcage",
+        "sternum",
+        "pelvis",
+        "spine",
+        "stomach",
+        "heart",
+        "left-lung",
+        "right-lung",
+        "left-kidney",
+        "right-kidney",
+        "liver",
+        "neck",
+        "left-shoulder",
+        "left-clavicle",
+        "left-arm",
+        "left-humerus",
+        "left-radius",
+        "right-shoulder",
+        "right-clavicle",
+        "right-arm",
+        "right-humerus",
+        "right-radius",
+        "left-leg",
+        "left-femur",
+        "left-tibia",
+        "right-leg",
+        "right-femur",
+        "right-tibia"
+      ],
+      "wearPerDay": 0.4
+    },
+    {
+      "id": "Apparel_PlateArmor",
+      "sourceChain": [
+        "ThingDef_ApparelNoQualityBase",
+        "ThingDef_ApparelBase",
+        "ThingDef_ArmorSmithableBase",
+        "ThingDef_Apparel_PlateArmor"
+      ],
+      "cost": 170,
+      "work": 38000,
+      "maxHP": 290,
+      "mass": 15,
+      "equipDelay": 15,
+      "armorMultiplier": 0.9,
+      "armorBase": [
+        0,
+        0,
+        0
+      ],
+      "coldMultiplier": 1,
+      "heatMultiplier": 0,
+      "moveOffset": -0.8,
+      "research": "PlateArmor",
+      "craftingMin": 7,
+      "workSkill": "Crafting",
+      "workSpeedStat": "GeneralLaborSpeed",
+      "benches": [
+        "ElectricSmithy",
+        "FueledSmithy"
+      ],
+      "stuffCategories": [
+        "Metallic",
+        "Woody"
+      ],
+      "groups": [
+        "Torso",
+        "Neck",
+        "Shoulders",
+        "Arms",
+        "Legs"
+      ],
+      "layers": [
+        "Middle",
+        "Shell"
+      ],
+      "drawOrder": 200,
+      "coveredParts": [
+        "torso",
+        "ribcage",
+        "sternum",
+        "pelvis",
+        "spine",
+        "stomach",
+        "heart",
+        "left-lung",
+        "right-lung",
+        "left-kidney",
+        "right-kidney",
+        "liver",
+        "neck",
+        "left-shoulder",
+        "left-clavicle",
+        "left-arm",
+        "left-humerus",
+        "left-radius",
+        "right-shoulder",
+        "right-clavicle",
+        "right-arm",
+        "right-humerus",
+        "right-radius",
+        "left-leg",
+        "left-femur",
+        "left-tibia",
+        "right-leg",
+        "right-femur",
+        "right-tibia"
+      ],
+      "wearPerDay": 0.4
+    },
+    {
+      "id": "Apparel_Tuque",
+      "sourceChain": [
+        "ThingDef_ApparelNoQualityBase",
+        "ThingDef_ApparelBase",
+        "ThingDef_ApparelMakeableBase",
+        "ThingDef_HatMakeableBase",
+        "ThingDef_Apparel_Tuque"
+      ],
+      "cost": 20,
+      "work": 1200,
+      "maxHP": 80,
+      "mass": 0.07,
+      "equipDelay": 0.8,
+      "armorMultiplier": 0.2,
+      "armorBase": [
+        0,
+        0,
+        0
+      ],
+      "coldMultiplier": 0.5,
+      "heatMultiplier": 0,
+      "moveOffset": 0,
+      "research": "ComplexClothing",
+      "craftingMin": null,
+      "workSkill": "Crafting",
+      "workSpeedStat": "GeneralLaborSpeed",
+      "benches": [
+        "ElectricTailoringBench",
+        "HandTailoringBench"
+      ],
+      "stuffCategories": [
+        "Fabric"
+      ],
+      "groups": [
+        "UpperHead"
+      ],
+      "layers": [
+        "Overhead"
+      ],
+      "drawOrder": 400,
+      "coveredParts": [
+        "head",
+        "skull",
+        "brain",
+        "left-ear",
+        "right-ear"
+      ],
+      "wearPerDay": 0.4
+    },
+    {
+      "id": "Apparel_SimpleHelmet",
+      "sourceChain": [
+        "ThingDef_ApparelNoQualityBase",
+        "ThingDef_ApparelBase",
+        "ThingDef_ArmorMachineableBase",
+        "ThingDef_ArmorHelmetMakeableBase",
+        "ThingDef_Apparel_SimpleHelmet"
+      ],
+      "cost": 40,
+      "work": 3200,
+      "maxHP": 100,
+      "mass": 2,
+      "equipDelay": 1.5,
+      "armorMultiplier": 0.5,
+      "armorBase": [
+        0,
+        0,
+        0
+      ],
+      "coldMultiplier": 0.15,
+      "heatMultiplier": 0,
+      "moveOffset": 0,
+      "research": "Smithing",
+      "craftingMin": null,
+      "workSkill": "Crafting",
+      "workSpeedStat": "GeneralLaborSpeed",
+      "benches": [
+        "TableMachining",
+        "ElectricSmithy",
+        "FueledSmithy"
+      ],
+      "stuffCategories": [
+        "Metallic"
+      ],
+      "groups": [
+        "UpperHead"
+      ],
+      "layers": [
+        "Overhead"
+      ],
+      "drawOrder": 400,
+      "coveredParts": [
+        "head",
+        "skull",
+        "brain",
+        "left-ear",
+        "right-ear"
+      ],
+      "wearPerDay": 0.4
+    }
+  ]
+}

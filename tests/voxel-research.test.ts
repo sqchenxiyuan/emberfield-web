@@ -67,7 +67,12 @@ describe('research definitions and native time conversion', () => {
     const state = initialResearch();
     expect(RESEARCH_KEYS.filter((k) => researchComplete(state, k))).toHaveLength(7);
     expect(validResearch(state)).toBe(true);
-    expect(RESEARCH_KEYS.every((k) => researchComplete(initialResearch(true), k))).toBe(true);
+    expect(
+      RESEARCH_KEYS.filter((k) => k !== 'PlateArmor').every((k) =>
+        researchComplete(initialResearch(true), k),
+      ),
+    ).toBe(true);
+    expect(initialResearch(true).progress.PlateArmor).toBe(0);
     expect(RESEARCH_DEFS.LongBlades.prerequisites).toEqual(['Smithing']);
   });
   it('uses research speed, manipulation, outdoor and temperature factors at 20 TPS', () => {
@@ -295,7 +300,7 @@ describe('research save integrity and real v14 migration', () => {
       s = VoxelSimulation.load(old),
       saved = s.save();
     expect(old).toEqual(before);
-    expect(saved.version).toBe(16);
+    expect(saved.version).toBe(17);
     expect(saved.research.origin).toBe('legacy-unlocked');
     expect(saved.blocks).toEqual(old.blocks);
     expect(saved.items).toEqual(old.items);

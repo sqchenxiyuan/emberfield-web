@@ -254,7 +254,7 @@ async function verify(mode) {
     );
     await pause();
     const saved = await page.evaluate(() => window.voxel.exportSave());
-    assert.equal(saved.version, 16);
+    assert.equal(saved.version, 17);
     await control('菜单与存档');
     await control('保存营地');
     await page.getByText('手动保存成功', { exact: true }).waitFor();
@@ -368,7 +368,7 @@ async function verify(mode) {
     await page.setViewportSize({ width: 1280, height: 800 });
     await load('legacy-v6');
     const migrated = await page.evaluate(() => window.voxel.exportSave());
-    assert.equal(migrated.version, 16);
+    assert.equal(migrated.version, 17);
     assert.deepEqual(migrated.items, fixtures['legacy-v6'].save.items);
     assert.deepEqual(migrated.stockpiles, fixtures['legacy-v6'].save.stockpiles);
     assert(migrated.pawns.every((q) => q.priorities.craft === 1));

@@ -1,0 +1,11 @@
+[
+  "Verse.DamageInfo",
+  "Verse.DamageWorker",
+  "Verse.ProjectileProperties",
+  "RimWorld.StatPart_Quality",
+  "Verse.DamageArmorCategoryDef",
+  "RimWorld.StatWorker_MeleeArmorPenetration",
+  "RimWorld.StatWorker_MeleeAverageArmorPenetration",
+  "Verse.ThingComp",
+  "RimWorld.CompQuality"
+]

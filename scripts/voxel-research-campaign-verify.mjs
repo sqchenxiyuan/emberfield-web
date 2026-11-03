@@ -22,7 +22,7 @@ const initial = s.counts(),
     startedAt: new Date().toISOString(),
     project: 'Smithing',
     scope:
-      'Fresh v16 industrial colony. Normal command/step/save/load only; read-only terrain and path queries. Actual forestry, underground ore, upper floor construction, carried bench inputs, working research, normal food/rest, project switch/stop and physical unlocked smithy. No injected knowledge, skills, resources, terrain, needs, positions or clock.',
+      'Fresh v17 industrial colony. Normal command/step/save/load only; read-only terrain and path queries. Actual forestry, underground ore, upper floor construction, carried bench inputs, working research, normal food/rest, project switch/stop and physical unlocked smithy. No injected knowledge, skills, resources, terrain, needs, positions or clock.',
     commands: [],
     checks: [],
     fixtures: {},
@@ -95,7 +95,7 @@ async function save(name) {
   };
 }
 try {
-  assert.equal(s.save().version, 16);
+  assert.equal(s.save().version, 17);
   assert.equal(s.command({ type: 'research', project: 'LongBlades' }).ok, false);
   assert.equal(s.command({ type: 'designate', tool: 'smithy', from: point(s.spawn) }).ok, false);
   check('new-world prerequisites and building gate reject premature unlocks');

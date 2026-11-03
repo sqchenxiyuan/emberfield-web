@@ -17,6 +17,7 @@ import { ResearchPanel, ResearchBenchPanel } from './ResearchPanel';
 import { RESEARCH_DEFS, toolResearchReason } from './research';
 import { ApparelPanel, WearApparel } from './ApparelPanel';
 import { TailorPanel } from './TailorPanel';
+import { ArmorBenchPanel } from './ArmorPanel';
 import { CombatPanel, ThreatControl } from './CombatPanel';
 import { WeaponPanel, WeaponBenchPanel, EquipWeapon } from './WeaponPanel';
 import { weaponName } from './weapons';
@@ -110,7 +111,8 @@ const icons = [
 ];
 const hints: Record<Tool, string> = {
   craftingSpot: '一格制作点，无需建材。点击设置木棒或钢匕首配方，加工速度为锻造台的一半。',
-  smithy: '3×1 燃料锻造台，100 钢材。R 旋转，留出操作位；需木材燃料，可制作钢长剑。',
+  smithy:
+    '3×1 燃料锻造台，100 钢材。R 旋转，留出操作位；需木材燃料，可制作武器、钢头盔和研究后的钢板甲。',
   researchBench:
     '3×2 简易科研台，75 木材 + 25 钢材。R 旋转并留出操作位；选择研究项目并开启人物的研究分工。',
   generator: '2×2，占地需两格净空；100 钢材 + 2 零件。补充木材后发电 1000 W，每日耗木 22。',
@@ -174,7 +176,7 @@ const foodName = (batch: Cargo) =>
   batch.weapon
     ? weaponName(batch.weapon)
     : batch.apparel
-      ? `布制${APPAREL_NAMES[batch.apparel.kind]}`
+      ? `${batch.apparel.material === 'steel' ? '钢制' : '布制'}${APPAREL_NAMES[batch.apparel.kind]}`
       : batch.resource === 'grain' && batch.crop
         ? CROPS[batch.crop].name
         : RESOURCE_NAMES[batch.resource];
@@ -1121,6 +1123,14 @@ function App() {
         {weaponBench && s && (
           <WeaponBenchPanel
             key={weaponBench.id}
+            bench={weaponBench}
+            snapshot={s}
+            command={(c) => void client.command(c)}
+          />
+        )}
+        {weaponBench?.kind === 'smithy' && s && (
+          <ArmorBenchPanel
+            key={`armor-${weaponBench.id}`}
             bench={weaponBench}
             snapshot={s}
             command={(c) => void client.command(c)}

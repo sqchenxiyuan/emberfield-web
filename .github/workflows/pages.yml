@@ -64,6 +64,8 @@ jobs:
         run: npm run test:voxel:skills
       - name: Verify actual multilevel research and technology unlocks
         run: npm run test:voxel:research
+      - name: Verify real armor research, cross-level forging, outfits and combat
+        run: npm run test:voxel:armor
       - name: Build site with relative asset and Worker URLs
         run: npm run build
       - name: Configure GitHub Pages

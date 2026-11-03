@@ -59,7 +59,7 @@ function until(done, max = 6000) {
 const colonists = () => s.pawns.filter((p) => p.faction === 'colony');
 const enemy = () => s.pawns.find((p) => p.faction === 'raider');
 try {
-  assert.equal(s.save().version, 16);
+  assert.equal(s.save().version, 17);
   assert.equal(BODY_PART_LIST.length, 64);
   let bedPoint;
   for (let dy = 2; dy < 8 && !bedPoint; dy++)

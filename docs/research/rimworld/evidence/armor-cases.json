@@ -1,0 +1,1200 @@
+[
+  {
+    "id": "AV01",
+    "model": "probabilities",
+    "claims": [
+      "AR04"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "armor": 0.9,
+          "penetration": 0.1
+        },
+        {
+          "armor": 0.2,
+          "penetration": 0.5
+        },
+        {
+          "armor": 1.5,
+          "penetration": 0
+        },
+        {
+          "armor": 2,
+          "penetration": 0
+        },
+        {
+          "armor": 1,
+          "penetration": 0
+        }
+      ]
+    },
+    "expected": [
+      {
+        "deflect": 0.4,
+        "half": 0.4,
+        "full": 0.2,
+        "expectedFraction": 0.4
+      },
+      {
+        "deflect": 0,
+        "half": 0,
+        "full": 1,
+        "expectedFraction": 1
+      },
+      {
+        "deflect": 0.75,
+        "half": 0.25,
+        "full": 0,
+        "expectedFraction": 0.125
+      },
+      {
+        "deflect": 1,
+        "half": 0,
+        "full": 0,
+        "expectedFraction": 0
+      },
+      {
+        "deflect": 0.5,
+        "half": 0.5,
+        "full": 0,
+        "expectedFraction": 0.25
+      }
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof. Probabilities use ideal continuous uniform rolls; native float endpoints and finite hash distribution are not modeled."
+  },
+  {
+    "id": "AV02",
+    "model": "threshold",
+    "claims": [
+      "AR04"
+    ],
+    "inputs": {
+      "armor": 0.75,
+      "penetration": 0.25,
+      "amount": 12,
+      "rolls": [
+        0,
+        0.2499,
+        0.25,
+        0.4999,
+        0.5,
+        0.999
+      ]
+    },
+    "expected": [
+      0,
+      0,
+      6,
+      6,
+      12,
+      12
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV03",
+    "model": "roundRandom",
+    "claims": [
+      "AR04"
+    ],
+    "inputs": {
+      "values": [
+        3,
+        2.5,
+        2.5,
+        0.25,
+        0.25,
+        0
+      ],
+      "rolls": [
+        0,
+        0.49,
+        0.5,
+        0.24,
+        0.25,
+        0.8
+      ]
+    },
+    "expected": [
+      3,
+      3,
+      2,
+      1,
+      0,
+      0
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV04",
+    "model": "layered",
+    "claims": [
+      "AR05",
+      "AR06",
+      "AR18"
+    ],
+    "inputs": {
+      "amount": 12,
+      "penetration": 0.1,
+      "layers": [
+        {
+          "id": "outer",
+          "armor": {
+            "Sharp": 0.9,
+            "Blunt": 0
+          },
+          "armorRoll": 0.6
+        },
+        {
+          "id": "inner",
+          "armor": {
+            "Sharp": 0.6,
+            "Blunt": 0
+          },
+          "armorRoll": 0.4
+        }
+      ]
+    },
+    "expected": {
+      "amount": 3,
+      "damageDef": "Blunt",
+      "originalWorker": "Cut",
+      "steps": [
+        {
+          "id": "outer",
+          "armorStat": "Sharp",
+          "incoming": 12,
+          "wear": 3,
+          "outcome": "half",
+          "remaining": 6,
+          "damageDef": "Blunt"
+        },
+        {
+          "id": "inner",
+          "armorStat": "Sharp",
+          "incoming": 6,
+          "wear": 1,
+          "outcome": "half",
+          "remaining": 3,
+          "damageDef": "Blunt"
+        },
+        {
+          "id": "natural",
+          "armorStat": "Sharp",
+          "incoming": 3,
+          "wear": 0,
+          "outcome": "full",
+          "remaining": 3,
+          "damageDef": "Blunt"
+        }
+      ]
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV05",
+    "model": "layered",
+    "claims": [
+      "AR06"
+    ],
+    "inputs": {
+      "amount": 12,
+      "penetration": 0,
+      "layers": [
+        {
+          "id": "lastHP",
+          "hp": 1,
+          "armor": {
+            "Sharp": 1
+          },
+          "armorRoll": 0.2
+        },
+        {
+          "id": "unreached",
+          "armor": {
+            "Sharp": 1
+          },
+          "armorRoll": 0.2
+        }
+      ]
+    },
+    "expected": {
+      "amount": 0,
+      "damageDef": "Cut",
+      "originalWorker": "Cut",
+      "steps": [
+        {
+          "id": "lastHP",
+          "armorStat": "Sharp",
+          "incoming": 12,
+          "wear": 1,
+          "outcome": "deflect",
+          "remaining": 0,
+          "damageDef": "Cut"
+        }
+      ]
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV06",
+    "model": "layered",
+    "claims": [
+      "AR04",
+      "AR06"
+    ],
+    "inputs": {
+      "amount": 12,
+      "penetration": 1,
+      "layers": [
+        {
+          "id": "weak",
+          "armor": {
+            "Sharp": 0.2
+          },
+          "armorRoll": 0.2
+        }
+      ]
+    },
+    "expected": {
+      "amount": 12,
+      "damageDef": "Cut",
+      "originalWorker": "Cut",
+      "steps": [
+        {
+          "id": "weak",
+          "armorStat": "Sharp",
+          "incoming": 12,
+          "wear": 3,
+          "outcome": "full",
+          "remaining": 12,
+          "damageDef": "Cut"
+        },
+        {
+          "id": "natural",
+          "armorStat": "Sharp",
+          "incoming": 12,
+          "wear": 0,
+          "outcome": "full",
+          "remaining": 12,
+          "damageDef": "Cut"
+        }
+      ]
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV07",
+    "model": "layered",
+    "claims": [
+      "AR18"
+    ],
+    "inputs": {
+      "amount": 1,
+      "penetration": 0,
+      "layers": [
+        {
+          "id": "roundZero",
+          "armor": {
+            "Sharp": 1
+          },
+          "armorRoll": 0.75,
+          "halfRoll": 0.9
+        }
+      ]
+    },
+    "expected": {
+      "amount": 0,
+      "damageDef": "Blunt",
+      "originalWorker": "Cut",
+      "steps": [
+        {
+          "id": "roundZero",
+          "armorStat": "Sharp",
+          "incoming": 1,
+          "wear": 0,
+          "outcome": "half",
+          "remaining": 0,
+          "damageDef": "Blunt"
+        }
+      ]
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV08",
+    "model": "layered",
+    "claims": [
+      "AR04",
+      "AR05"
+    ],
+    "inputs": {
+      "amount": 12,
+      "penetration": 0,
+      "category": "Heat",
+      "damageDef": "Flame",
+      "layers": [
+        {
+          "id": "heat",
+          "armor": {
+            "Heat": 1
+          },
+          "armorRoll": 0.75
+        }
+      ]
+    },
+    "expected": {
+      "amount": 6,
+      "damageDef": "Flame",
+      "originalWorker": "Flame",
+      "steps": [
+        {
+          "id": "heat",
+          "armorStat": "Heat",
+          "incoming": 12,
+          "wear": 3,
+          "outcome": "half",
+          "remaining": 6,
+          "damageDef": "Flame"
+        },
+        {
+          "id": "natural",
+          "armorStat": "Heat",
+          "incoming": 6,
+          "wear": 0,
+          "outcome": "full",
+          "remaining": 6,
+          "damageDef": "Flame"
+        }
+      ]
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV09",
+    "model": "layered",
+    "claims": [
+      "AR17"
+    ],
+    "inputs": {
+      "amount": 12,
+      "penetration": 0,
+      "category": null,
+      "layers": [
+        {
+          "id": "unused",
+          "armor": {
+            "Sharp": 2
+          },
+          "armorRoll": 0
+        }
+      ]
+    },
+    "expected": {
+      "amount": 12,
+      "damageDef": "Cut",
+      "originalWorker": "Cut",
+      "steps": []
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV10",
+    "model": "layered",
+    "claims": [
+      "AR09"
+    ],
+    "inputs": {
+      "amount": 12,
+      "penetration": 0,
+      "natural": 1,
+      "naturalRoll": 0.1
+    },
+    "expected": {
+      "amount": 0,
+      "damageDef": "Cut",
+      "originalWorker": "Cut",
+      "steps": [
+        {
+          "id": "natural",
+          "armorStat": "Sharp",
+          "incoming": 12,
+          "wear": 0,
+          "outcome": "deflect",
+          "remaining": 0,
+          "damageDef": "Cut"
+        }
+      ]
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV11",
+    "model": "armor",
+    "claims": [
+      "AR07",
+      "AR08"
+    ],
+    "inputs": {
+      "id": "Apparel_SimpleHelmet",
+      "stuff": "Steel",
+      "qualities": [
+        2
+      ],
+      "hpFractions": [
+        1,
+        0.5,
+        0.01
+      ]
+    },
+    "expected": [
+      [
+        0.45,
+        0.225,
+        0.3
+      ],
+      [
+        0.45,
+        0.225,
+        0.3
+      ],
+      [
+        0.45,
+        0.225,
+        0.3
+      ]
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV12",
+    "model": "armor",
+    "claims": [
+      "AR07",
+      "AR08"
+    ],
+    "inputs": {
+      "id": "Apparel_PlateArmor",
+      "stuff": "Steel",
+      "qualities": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    "expected": [
+      [
+        0.486,
+        0.243,
+        0.324
+      ],
+      [
+        0.648,
+        0.324,
+        0.432
+      ],
+      [
+        0.81,
+        0.405,
+        0.54
+      ],
+      [
+        0.9315,
+        0.46575,
+        0.621
+      ],
+      [
+        1.053,
+        0.5265,
+        0.702
+      ],
+      [
+        1.1745,
+        0.58725,
+        0.783
+      ],
+      [
+        1.458,
+        0.729,
+        0.972
+      ]
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV13",
+    "model": "armor",
+    "claims": [
+      "AR08"
+    ],
+    "inputs": {
+      "id": "Apparel_Duster",
+      "stuff": "Cloth",
+      "qualities": [
+        2
+      ]
+    },
+    "expected": [
+      [
+        0.108,
+        0,
+        0.054
+      ]
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV14",
+    "model": "armor",
+    "claims": [
+      "AR08"
+    ],
+    "inputs": {
+      "id": "Apparel_BasicShirt",
+      "stuff": "Cloth",
+      "qualities": [
+        2
+      ]
+    },
+    "expected": [
+      [
+        0.072,
+        0,
+        0.036
+      ]
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV15",
+    "model": "armor",
+    "claims": [
+      "AR08",
+      "AR13"
+    ],
+    "inputs": {
+      "id": "Apparel_PlateArmor",
+      "stuff": "WoodLog",
+      "qualities": [
+        2
+      ]
+    },
+    "expected": [
+      [
+        0.486,
+        0.486,
+        0.36
+      ]
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV16",
+    "model": "hp",
+    "claims": [
+      "AR07"
+    ],
+    "inputs": {
+      "id": "Apparel_SimpleHelmet",
+      "stuff": "Steel",
+      "qualities": [
+        0,
+        2,
+        6
+      ]
+    },
+    "expected": [
+      100,
+      100,
+      100
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV17",
+    "model": "hp",
+    "claims": [
+      "AR07"
+    ],
+    "inputs": {
+      "id": "Apparel_PlateArmor",
+      "stuff": "Steel",
+      "qualities": [
+        0,
+        2,
+        6
+      ]
+    },
+    "expected": [
+      290,
+      290,
+      290
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV18",
+    "model": "coverage",
+    "claims": [
+      "AR02",
+      "AR16"
+    ],
+    "inputs": {
+      "id": "Apparel_SimpleHelmet",
+      "parts": [
+        "head",
+        "skull",
+        "brain",
+        "left-ear",
+        "left-eye",
+        "nose",
+        "jaw",
+        "neck"
+      ]
+    },
+    "expected": [
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV19",
+    "model": "coverage",
+    "claims": [
+      "AR02",
+      "AR16"
+    ],
+    "inputs": {
+      "id": "Apparel_PlateArmor",
+      "parts": [
+        "torso",
+        "heart",
+        "ribcage",
+        "neck",
+        "left-arm",
+        "left-humerus",
+        "left-hand",
+        "left-pinky",
+        "left-leg",
+        "left-tibia",
+        "left-foot",
+        "head"
+      ]
+    },
+    "expected": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false,
+      true,
+      true,
+      false,
+      false
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV20",
+    "model": "compatibility",
+    "claims": [
+      "AR03"
+    ],
+    "inputs": {
+      "pairs": [
+        [
+          "Apparel_PlateArmor",
+          "Apparel_Duster"
+        ],
+        [
+          "Apparel_PlateArmor",
+          "Apparel_Parka"
+        ],
+        [
+          "Apparel_PlateArmor",
+          "Apparel_BasicShirt"
+        ],
+        [
+          "Apparel_PlateArmor",
+          "Apparel_Pants"
+        ],
+        [
+          "Apparel_SimpleHelmet",
+          "Apparel_Tuque"
+        ],
+        [
+          "Apparel_SimpleHelmet",
+          "Apparel_PlateArmor"
+        ],
+        [
+          "Apparel_BasicShirt",
+          "Apparel_Pants"
+        ]
+      ]
+    },
+    "expected": [
+      false,
+      false,
+      true,
+      true,
+      false,
+      true,
+      true
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV21",
+    "model": "order",
+    "claims": [
+      "AR02"
+    ],
+    "inputs": {
+      "ids": [
+        "Apparel_BasicShirt",
+        "Apparel_PlateArmor",
+        "Apparel_SimpleHelmet"
+      ]
+    },
+    "expected": [
+      "Apparel_SimpleHelmet",
+      "Apparel_PlateArmor",
+      "Apparel_BasicShirt"
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV22",
+    "model": "equipment",
+    "claims": [
+      "AR13",
+      "AR14"
+    ],
+    "inputs": {
+      "ids": [
+        "Apparel_SimpleHelmet",
+        "Apparel_PlateArmor"
+      ]
+    },
+    "expected": [
+      {
+        "cost": 40,
+        "work": 3200,
+        "maxHP": 100,
+        "research": "Smithing",
+        "craftingMin": null,
+        "benches": [
+          "TableMachining",
+          "ElectricSmithy",
+          "FueledSmithy"
+        ]
+      },
+      {
+        "cost": 170,
+        "work": 38000,
+        "maxHP": 290,
+        "research": "PlateArmor",
+        "craftingMin": 7,
+        "benches": [
+          "ElectricSmithy",
+          "FueledSmithy"
+        ]
+      }
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV23",
+    "model": "equipment",
+    "claims": [
+      "AR14"
+    ],
+    "inputs": {
+      "ids": [
+        "Apparel_Parka",
+        "Apparel_BasicShirt"
+      ]
+    },
+    "expected": [
+      {
+        "cost": 80,
+        "work": 8000,
+        "maxHP": 180,
+        "research": null,
+        "craftingMin": null,
+        "benches": [
+          "ElectricTailoringBench",
+          "HandTailoringBench"
+        ]
+      },
+      {
+        "cost": 40,
+        "work": 1600,
+        "maxHP": 100,
+        "research": "ComplexClothing",
+        "craftingMin": null,
+        "benches": [
+          "ElectricTailoringBench",
+          "HandTailoringBench"
+        ]
+      }
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV24",
+    "model": "move",
+    "claims": [
+      "AR15"
+    ],
+    "inputs": {
+      "moving": [
+        1,
+        0.5,
+        0.1,
+        0
+      ]
+    },
+    "expected": [
+      3.8,
+      1.9,
+      0.38,
+      0.15
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV25",
+    "model": "move",
+    "claims": [
+      "AR15"
+    ],
+    "inputs": {
+      "moving": [
+        1,
+        0.5
+      ],
+      "glow": 0.8
+    },
+    "expected": [
+      3.04,
+      1.52
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV26",
+    "model": "melee",
+    "claims": [
+      "AR10",
+      "AR11"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "baseDamage": 18,
+          "damageRoll": 0.8
+        },
+        {
+          "baseDamage": 18,
+          "damageRoll": 1.2
+        },
+        {
+          "baseDamage": 18,
+          "quality": 1.65,
+          "damageRoll": 1
+        }
+      ]
+    },
+    "expected": [
+      {
+        "damage": 14.4,
+        "penetration": 0.27
+      },
+      {
+        "damage": 21.6,
+        "penetration": 0.27
+      },
+      {
+        "damage": 29.7,
+        "penetration": 0.4455
+      }
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV27",
+    "model": "melee",
+    "claims": [
+      "AR10"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "baseDamage": 10,
+          "quality": 1.2,
+          "material": 0.5,
+          "pawnFactor": 0.5
+        },
+        {
+          "baseDamage": 10,
+          "explicit": 0.3,
+          "quality": 1.2,
+          "material": 0.5,
+          "pawnFactor": 0.5
+        }
+      ]
+    },
+    "expected": [
+      {
+        "damage": 3,
+        "penetration": 0.045
+      },
+      {
+        "damage": 3,
+        "penetration": 0.36
+      }
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV28",
+    "model": "ranged",
+    "claims": [
+      "AR12"
+    ],
+    "inputs": {
+      "rows": [
+        {
+          "damageBase": 10,
+          "defaultDamage": 20,
+          "quality": 1.5
+        },
+        {
+          "damageBase": -1,
+          "defaultDamage": 20,
+          "defPenetration": 0.4,
+          "quality": 1.25
+        },
+        {
+          "damageBase": 10,
+          "penetrationBase": 0.2,
+          "quality": 1.5
+        },
+        {
+          "category": false,
+          "damageBase": 10,
+          "quality": 1.5
+        }
+      ]
+    },
+    "expected": [
+      0.225,
+      0.5,
+      0.3,
+      0
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV29",
+    "model": "natural",
+    "claims": [
+      "AR09"
+    ],
+    "inputs": {},
+    "expected": [
+      0,
+      0,
+      0
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV30",
+    "model": "coverage",
+    "claims": [
+      "AR02",
+      "AR16"
+    ],
+    "inputs": {
+      "id": "Apparel_Duster",
+      "parts": [
+        "left-leg",
+        "right-leg",
+        "left-femur",
+        "left-tibia",
+        "left-foot",
+        "left-hand"
+      ]
+    },
+    "expected": [
+      true,
+      true,
+      true,
+      true,
+      false,
+      false
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV31",
+    "model": "coverage",
+    "claims": [
+      "AR02",
+      "AR16"
+    ],
+    "inputs": {
+      "id": "Apparel_Parka",
+      "parts": [
+        "left-leg",
+        "right-leg",
+        "left-femur",
+        "left-tibia",
+        "left-arm"
+      ]
+    },
+    "expected": [
+      false,
+      false,
+      false,
+      false,
+      true
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV32",
+    "model": "layered",
+    "claims": [
+      "AR05"
+    ],
+    "inputs": {
+      "amount": 10,
+      "penetration": 0,
+      "category": "Sharp",
+      "damageDef": "Bullet",
+      "layers": [
+        {
+          "id": "plate",
+          "armor": {
+            "Sharp": 1
+          },
+          "armorRoll": 0.75
+        }
+      ]
+    },
+    "expected": {
+      "amount": 5,
+      "damageDef": "Blunt",
+      "originalWorker": "Bullet",
+      "steps": [
+        {
+          "id": "plate",
+          "armorStat": "Sharp",
+          "incoming": 10,
+          "wear": 2,
+          "outcome": "half",
+          "remaining": 5,
+          "damageDef": "Blunt"
+        },
+        {
+          "id": "natural",
+          "armorStat": "Sharp",
+          "incoming": 5,
+          "wear": 0,
+          "outcome": "full",
+          "remaining": 5,
+          "damageDef": "Blunt"
+        }
+      ]
+    },
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV33",
+    "model": "randValue",
+    "claims": [
+      "AR04"
+    ],
+    "inputs": {
+      "ints": [
+        -2147483648,
+        0,
+        2147483647,
+        2147483520,
+        2147483519,
+        2147483518
+      ]
+    },
+    "expected": [
+      0,
+      0.5,
+      1,
+      1,
+      1,
+      0.9999999403953552
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV34",
+    "model": "threshold",
+    "claims": [
+      "AR04"
+    ],
+    "inputs": {
+      "armor": 2,
+      "penetration": 0,
+      "amount": 12,
+      "rolls": [
+        0,
+        0.9999999403953552,
+        1
+      ]
+    },
+    "expected": [
+      0,
+      0,
+      6
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  },
+  {
+    "id": "AV35",
+    "model": "threshold",
+    "claims": [
+      "AR04"
+    ],
+    "inputs": {
+      "armor": 1,
+      "penetration": 0,
+      "amount": 12,
+      "rolls": [
+        0.9999999403953552,
+        1
+      ]
+    },
+    "expected": [
+      6,
+      12
+    ],
+    "limitation": "Independent static-rule arithmetic/state case; not original execution, native RNG replay or project integration proof."
+  }
+]

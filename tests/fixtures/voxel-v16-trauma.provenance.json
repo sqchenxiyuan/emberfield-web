@@ -1,0 +1,11 @@
+{
+  "capturedAt": "2026-11-03T04:47:48.017Z",
+  "workspaceCommit": "c4ae68d33eadc1eb79a4169c56e5ddb6cc09cbe3",
+  "publishedCommit": "5f21f85ec16ca126ea181e87af09e586b0b4bea2",
+  "generator": "Exact normal-command campaign output, validated by published v16 source before armor edits",
+  "source": "test-results/voxel-anatomy-campaign/wounded.json",
+  "sha256": "e7e1338c258120723a30fc81bdb275108d6fe0e7827ba7b7f67e80a84d54ed9d",
+  "version": 16,
+  "tick": 36426,
+  "loadedByOriginalSource": true
+}

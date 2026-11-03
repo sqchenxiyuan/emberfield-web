@@ -385,7 +385,7 @@ describe('voxel incapacitation and physical care', () => {
     );
     const old = JSON.parse(bytes.toString()),
       s = VoxelSimulation.load(old);
-    expect(s.save().version).toBe(16);
+    expect(s.save().version).toBe(17);
     expect(s.items).toEqual(old.items);
     expect(
       s.pawns.every(

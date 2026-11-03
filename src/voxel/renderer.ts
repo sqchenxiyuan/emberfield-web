@@ -657,15 +657,23 @@ export class VoxelRenderer {
         visual.duration = 0;
       }
       visual.pawn = pawn;
-      const coat = pawn.worn.find((p) => p.kind === 'parka' || p.kind === 'duster');
-      visual.apparel.hat.visible = pawn.worn.some((p) => p.kind === 'tuque');
+      const plate = pawn.worn.some((p) => p.kind === 'plateArmor');
+      const coat = pawn.worn.find(
+        (p) => p.kind === 'parka' || p.kind === 'duster' || p.kind === 'plateArmor',
+      );
+      const helmet = pawn.worn.some((p) => p.kind === 'simpleHelmet');
+      visual.apparel.hat.visible = helmet || pawn.worn.some((p) => p.kind === 'tuque');
+      visual.apparel.hat.children.forEach((mesh, i) => {
+        mesh.visible = !helmet || i < 2;
+        ((mesh as Mesh).material as MeshLambertMaterial).color.setHex(helmet ? 0x9bafb9 : 0xdcd1b7);
+      });
       visual.apparel.coat.visible = !!coat;
       visual.apparel.coat.scale.y = coat?.kind === 'duster' ? 0.88 : 0.69;
       visual.apparel.coat.position.y = coat?.kind === 'duster' ? 0.74 : 0.84;
       for (const mesh of [visual.apparel.coat, ...visual.apparel.sleeves]) {
         mesh.visible = !!coat;
         (mesh.material as MeshLambertMaterial).color.setHex(
-          coat?.kind === 'duster' ? 0xbba47c : 0x789f9b,
+          plate ? 0x9bafb9 : coat?.kind === 'duster' ? 0xbba47c : 0x789f9b,
         );
       }
       for (const mesh of visual.apparel.shirt)
@@ -674,7 +682,7 @@ export class VoxelRenderer {
         );
       for (const mesh of visual.apparel.pants)
         (mesh.material as MeshLambertMaterial).color.setHex(
-          pawn.worn.some((p) => p.kind === 'pants') ? 0x485c61 : 0x8b857a,
+          plate ? 0x879ca8 : pawn.worn.some((p) => p.kind === 'pants') ? 0x485c61 : 0x8b857a,
         );
       visual.cargo.visible = !!pawn.cargo;
       if (pawn.cargo)
@@ -1158,13 +1166,15 @@ export class VoxelRenderer {
     garments.forEach((item, i) => {
       const kind = item.apparel!.kind;
       const color =
-        kind === 'duster'
-          ? 0xbba47c
-          : kind === 'parka'
-            ? 0x789f9b
-            : kind === 'pants'
-              ? 0x485c61
-              : 0xe5d7bb;
+        kind === 'simpleHelmet' || kind === 'plateArmor'
+          ? 0x9bafb9
+          : kind === 'duster'
+            ? 0xbba47c
+            : kind === 'parka'
+              ? 0x789f9b
+              : kind === 'pants'
+                ? 0x485c61
+                : 0xe5d7bb;
       const parts =
         kind === 'pants'
           ? [
@@ -1174,11 +1184,11 @@ export class VoxelRenderer {
               [0, 0, 0, 0, 0],
               [0, 0, 0, 0, 0],
             ]
-          : kind === 'tuque'
+          : kind === 'tuque' || kind === 'simpleHelmet'
             ? [
                 [0, 0, 0.39, 0.18, 0.4],
                 [0, 0, 0.46, 0.08, 0.46],
-                [0, 0, 0.12, 0.3, 0.12],
+                [0, 0, 0.12, kind === 'simpleHelmet' ? 0 : 0.3, 0.12],
                 [0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0],
               ]
@@ -2236,6 +2246,13 @@ export class VoxelRenderer {
       this.batchMaterial('weapon-bench-workpieces'),
     );
     this.inspectBatches.set(workpieces, { cells: benches, instancesPerCell: 4 });
+    const armorWorkpieces = this.batch(
+      'armor-bench-workpieces',
+      benches.length * 3,
+      this.box,
+      this.batchMaterial('armor-bench-workpieces'),
+    );
+    this.inspectBatches.set(armorWorkpieces, { cells: benches, instancesPerCell: 3 });
     for (const kind of ['craftingSpot', 'smithy'] as const) {
       const tables = benches.filter((b) => b.kind === kind);
       const count = kind === 'craftingSpot' ? 7 : 16;
@@ -2298,7 +2315,7 @@ export class VoxelRenderer {
     benches.forEach((table, i) => {
       const job = this.data!.jobs.find(
         (j) =>
-          j.kind === 'smith' &&
+          (j.kind === 'smith' || j.kind === 'armorsmith') &&
           !j.cancelled &&
           j.x === table.x &&
           j.y === table.y &&
@@ -2326,6 +2343,37 @@ export class VoxelRenderer {
         );
       });
       const front = weaponBenchInteraction(table);
+      const armorInput =
+        job?.kind === 'armorsmith' && Object.values(job.delivered).some((n) => n > 0);
+      const armorShape =
+        job?.apparelKind === 'simpleHelmet'
+          ? [
+              [0, 0, 0.42, 0.22, 0.42],
+              [0, 0, 0.5, 0.05, 0.5],
+              [0, 0, 0, 0, 0],
+            ]
+          : [
+              [0, 0, 0.43, 0.08, 0.6],
+              [-0.29, 0, 0.2, 0.1, 0.25],
+              [0.29, 0, 0.2, 0.1, 0.25],
+            ];
+      armorShape.forEach(([x, y, sx, sz, sy], n) => {
+        const scale = armorInput ? 1 : 0,
+          swap = table.axis === 'y';
+        const lx = 1.55 + x,
+          ly = 0.5 + y;
+        this.instance(
+          armorWorkpieces,
+          i * 3 + n,
+          table.x + (swap ? ly : lx),
+          table.z + 1.27,
+          table.y + (swap ? lx : ly),
+          (swap ? sy : sx) * scale,
+          sz * scale,
+          (swap ? sx : sy) * scale,
+          0x9bafb9,
+        );
+      });
       this.instance(
         markers,
         i,
@@ -2339,6 +2387,7 @@ export class VoxelRenderer {
       );
     });
     this.finish(workpieces);
+    this.finish(armorWorkpieces);
     this.finish(markers);
   }
 
@@ -2536,11 +2585,13 @@ export class VoxelRenderer {
       const weaponBenchKind =
         job.kind === 'smithy' || job.kind === 'craftingSpot'
           ? job.kind
-          : job.kind === 'smith'
-            ? job.weaponBenchKind
-            : job.kind === 'refuel' || job.kind === 'remove'
-              ? weaponBench?.kind
-              : undefined;
+          : job.kind === 'armorsmith'
+            ? 'smithy'
+            : job.kind === 'smith'
+              ? job.weaponBenchKind
+              : job.kind === 'refuel' || job.kind === 'remove'
+                ? weaponBench?.kind
+                : undefined;
       const deviceKind = Object.hasOwn(DEVICE_SIZES, job.kind)
         ? (job.kind as DeviceKind)
         : job.kind === 'refuel' && !weaponBenchKind
@@ -2927,7 +2978,7 @@ export class VoxelRenderer {
         pawn.phase === 'work' && pawn.path.length === 0 && !pawn.cargo && fraction >= 1;
       const job = this.data.jobs.find((candidate) => candidate.id === pawn.jobId);
       const weaponBench =
-        job?.kind === 'smith'
+        job?.kind === 'smith' || job?.kind === 'armorsmith'
           ? this.data.weaponBenches.find((b) => b.x === job.x && b.y === job.y && b.z === job.z)
           : undefined;
       const researchBench =

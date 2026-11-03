@@ -12,6 +12,7 @@ export async function researchOpening({
   projects,
   reserved = [],
   elevated = false,
+  steelTarget = 160,
   fixture = async () => {},
 }) {
   const point = (p) => ({ x: p.x, y: p.y, z: p.z });
@@ -125,7 +126,7 @@ export async function researchOpening({
     60000,
   );
   command({ type: 'bill', stoveId: s.stoves[0].id, target: 8, paused: false });
-  if (s.counts().steel < 25) {
+  if (s.counts().steel < Math.min(25, steelTarget)) {
     place('shaft', shaft);
     until(
       'research supply miners excavate three real levels',
@@ -140,7 +141,7 @@ export async function researchOpening({
           ores.push({ x, y, z });
     ores.sort((a, b) => dist(a, { ...shaft, z }) - dist(b, { ...shaft, z }));
     for (const ore of ores) {
-      if (s.counts().steel >= 160) break;
+      if (s.counts().steel >= steelTarget) break;
       const line = [];
       for (let x = shaft.x; x !== ore.x; x += Math.sign(ore.x - shaft.x))
         line.push({ x, y: shaft.y, z });
@@ -155,7 +156,7 @@ export async function researchOpening({
         60000,
       );
     }
-    assert(s.counts().steel >= 160, 'mine enough metal for bench and unlock usage');
+    assert(s.counts().steel >= steelTarget, 'mine enough metal for bench and unlock usage');
   }
   let bench = { ...base, x: base.x + 1 };
   if (elevated) {

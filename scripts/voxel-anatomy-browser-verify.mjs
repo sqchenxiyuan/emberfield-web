@@ -108,10 +108,14 @@ async function verify(mode) {
     for (const name of ['trauma', 'research']) {
       const old = await load(`tests/fixtures/voxel-v15-${name}.json`),
         migrated = await save();
-      assert.equal(migrated.version, 16);
+      assert.equal(migrated.version, 17);
       assert.equal((await state()).snapshot.speed, 0);
-      for (const key of ['items', 'research', 'researchBenches', 'stats'])
+      for (const key of ['items', 'researchBenches', 'stats'])
         assert.deepEqual(migrated[key], old[key]);
+      assert.deepEqual(migrated.research, {
+        ...old.research,
+        progress: { ...old.research.progress, PlateArmor: 0 },
+      });
       assert.deepEqual(
         migrated.pawns.map((p) => [p.id, p.skills, p.weapon, p.worn, p.cargo]),
         old.pawns.map((p) => [p.id, p.skills, p.weapon, p.worn, p.cargo]),

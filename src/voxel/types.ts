@@ -80,12 +80,13 @@ export type Work =
 export type ConstructionMaterial = 'wood' | 'stone';
 export type FoodCropKind = 'rice' | 'potato' | 'corn';
 export type CropKind = FoodCropKind | 'cotton';
-export type ApparelKind = 'tuque' | 'parka' | 'duster' | 'shirt' | 'pants';
+export type ArmorKind = 'simpleHelmet' | 'plateArmor';
+export type ApparelKind = 'tuque' | 'parka' | 'duster' | 'shirt' | 'pants' | ArmorKind;
 export type ApparelQuality = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export interface ApparelPiece {
   id: number;
   kind: ApparelKind;
-  material: 'cloth';
+  material: 'cloth' | 'steel';
   quality: ApparelQuality;
   hitPoints: number;
   /** Actual worn ticks; daily damage is scheduled by the pawn tracker. */
@@ -342,6 +343,7 @@ export interface WeaponBench extends Pos {
   axis: Axis;
   fuel: number;
   bills: { kind: WeaponKind; target: number; paused: boolean }[];
+  armorBills: { kind: ArmorKind; target: number; paused: boolean }[];
 }
 export const weaponBenchCells = (bench: Pos & { kind: WeaponBenchKind; axis: Axis }): Pos[] =>
   bench.kind === 'craftingSpot'
@@ -386,6 +388,7 @@ export type JobKind =
   | 'craftingSpot'
   | 'smithy'
   | 'smith'
+  | 'armorsmith'
   | 'researchBench'
   | 'research'
   | 'bed'
@@ -595,6 +598,7 @@ export type VoxelCommand =
   | { type: 'draft'; pawnId: number; drafted: boolean }
   | { type: 'attack'; pawnId: number; targetId: number }
   | { type: 'weaponBill'; benchId: number; kind: WeaponKind; target: number; paused: boolean }
+  | { type: 'armorBill'; benchId: number; kind: ArmorKind; target: number; paused: boolean }
   | { type: 'equipWeapon'; pawnId: number; weaponId: number }
   | { type: 'dropWeapon'; pawnId: number }
   | { type: 'weaponForbidden'; weaponId: number; forbidden: boolean }
@@ -637,7 +641,7 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 16;
+  version: 17;
   combat: CombatState;
   generator: 1 | 2;
   settings: WorldSettings;
@@ -718,6 +722,7 @@ export const JOB_NAMES: Record<JobKind, string> = {
   stonecut: '切割岩块',
   tailor: '造手工裁缝台',
   tailoring: '缝制衣物',
+  armorsmith: '锻造护甲',
   craftingSpot: '划定制作点',
   smithy: '造燃料锻造台',
   smith: '制作武器',

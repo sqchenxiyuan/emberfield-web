@@ -1,4 +1,5 @@
-import { DAY } from './types';
+import { DAY, type ApparelPiece } from './types';
+import { resolveArmor, type ArmorResolution } from './armor';
 import {
   BODY_PARTS,
   BODY_PART_LIST,
@@ -228,14 +229,17 @@ export function applyInjury(
 export interface BodyDamageContext {
   random: () => number;
   allocId: () => number;
+  armor?: { worn: readonly ApparelPiece[]; armorPenetration: number };
 }
 export interface BodyDamageResult {
   hits: Injury[];
   totalDamage: number;
   deathReason: string | null;
+  armor: ArmorResolution | null;
 }
 /**
- * Adult Human ordinary melee damage workers after armor. Native structural rules,
+ * Adult Human ordinary melee: choose actual part, optional armor, original worker.
+ * Native structural rules,
  * project-provided random stream; no implants, instant-kill protection, scars,
  * social-fight suppression, stun or float-bit emulation. Failed random/ID input
  * cannot partly mutate trauma; allocated IDs are committed only after planning.
@@ -262,12 +266,14 @@ export function applyBodyDamage(
     hits: [],
     totalDamage: 0,
     deathReason: traumaSummary(trauma).deathReason,
+    armor: null,
   };
   if (empty.deathReason || isPartMissing(trauma, initialPart)) return empty;
   const draft = structuredClone(trauma),
     hits: Injury[] = [];
   let temporaryId = Math.max(0, ...traumaIds(trauma)) + 1,
-    totalDamage = 0;
+    totalDamage = 0,
+    effectiveDamageDef = damageDef;
   const random = () => {
     const roll = context.random();
     if (!Number.isFinite(roll) || roll < 0 || roll >= 1) throw new RangeError('伤害随机值无效');
@@ -280,7 +286,7 @@ export function applyBodyDamage(
       draft,
       temporaryId++,
       part,
-      injuryKindForDamagePart(damageDef, part),
+      injuryKindForDamagePart(effectiveDamageDef, part),
       damage,
     );
     if (!wound) return 0;
@@ -321,13 +327,33 @@ export function applyBodyDamage(
     }
     return chain;
   };
+  // Stab's forced internal selection belongs to ChooseHitPart, before armor.
+  // Keep the original worker/overkill behavior after armor converts its Def.
   if (damageDef === 'Stab' || damageDef === 'Poke') {
-    let part = initialPart;
-    if (BODY_PARTS[part].depth !== 'Inside' && random() < (damageDef === 'Stab' ? 0.6 : 0.4))
-      part =
-        weighted(BODY_PARTS[part].children.filter((p) => BODY_PARTS[p].depth === 'Inside')) ?? part;
-    const damage = protectOutside(part, amount),
-      chain = chainToOutside(part);
+    if (BODY_PARTS[initialPart].depth !== 'Inside' && random() < (damageDef === 'Stab' ? 0.6 : 0.4))
+      initialPart =
+        weighted(
+          BODY_PARTS[initialPart].children.filter((p) => BODY_PARTS[p].depth === 'Inside'),
+        ) ?? initialPart;
+  }
+  if (context.armor) {
+    empty.armor = resolveArmor(
+      {
+        worn: context.armor.worn,
+        part: initialPart,
+        damageDef,
+        amount,
+        armorPenetration: context.armor.armorPenetration,
+      },
+      random,
+    );
+    amount = empty.armor.amount;
+    effectiveDamageDef = empty.armor.damageDef;
+    if (empty.armor.deflected) return empty;
+  }
+  if (damageDef === 'Stab' || damageDef === 'Poke') {
+    const damage = protectOutside(initialPart, amount),
+      chain = chainToOutside(initialPart);
     for (const p of chain)
       add(
         p,
@@ -397,7 +423,10 @@ export function applyBodyDamage(
     }
   } else {
     const damage = protectOutside(initialPart, amount);
-    for (const part of chainToOutside(initialPart)) add(part, damage);
+    // Base worker's duplicate-to-outside check reads the effective damage Def;
+    // a Bite diminished to Blunt no longer has harmAllLayersUntilOutside.
+    const parts = effectiveDamageDef === 'Bite' ? chainToOutside(initialPart) : [initialPart];
+    for (const part of parts) add(part, damage);
   }
   if (!hits.length) return empty;
   const taken = new Set(traumaIds(trauma)),
@@ -414,7 +443,7 @@ export function applyBodyDamage(
   trauma.wounds = draft.wounds;
   trauma.missingParts = draft.missingParts;
   trauma.bloodLoss = draft.bloodLoss;
-  return { hits, totalDamage, deathReason: traumaSummary(trauma).deathReason };
+  return { hits, totalDamage, deathReason: traumaSummary(trauma).deathReason, armor: empty.armor };
 }
 export interface TraumaContext {
   seed: number;

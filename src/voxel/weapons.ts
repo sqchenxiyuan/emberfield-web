@@ -203,7 +203,7 @@ export interface MeleeAttack {
   label: string;
   source: 'body' | 'weapon';
   damageDef: MeleeDamageDef;
-  /** Current seven-region skin-injury mapping. Poke keeps its source damageDef above. */
+  /** Skin default; injuries.ts maps the effective damage Def to the actual body part. */
   kind: InjuryKind;
   damage: number;
   armorPenetration: number;

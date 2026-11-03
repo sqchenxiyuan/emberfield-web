@@ -116,7 +116,7 @@ async function verify(mode) {
     await click('关闭菜单');
     const old = await load('tests/fixtures/voxel-v11-start.json');
     const current = await save();
-    assert.equal(current.version, 16);
+    assert.equal(current.version, 17);
     assert.deepEqual(current.items, old.items);
     assert.equal(current.combat.enabled, false);
     assert(current.pawns.every((p) => p.weapon === null && p.trauma.wounds.length === 0));

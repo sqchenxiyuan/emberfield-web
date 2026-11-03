@@ -78,7 +78,7 @@ describe('skills in real simulation tasks and saves', () => {
     expect(old.pawns[0].skills).toBeUndefined();
     const s = VoxelSimulation.load(old),
       saved = s.save();
-    expect(saved.version).toBe(16);
+    expect(saved.version).toBe(17);
     expect(saved.items).toEqual(old.items);
     expect(saved.blocks).toEqual(old.blocks);
     expect(saved.pawns.map((p) => [p.food, p.rest, p.worn, p.weapon, p.health])).toEqual(
