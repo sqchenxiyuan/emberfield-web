@@ -10,4 +10,10 @@ if (
   throw new Error('Historical v7 fixture changed');
 const legacyStart: unknown = JSON.parse(bytes.toString('utf8'));
 /** Frozen generator-1 terrain and clock for historical feature regression cases. */
-export const legacySimulation = () => VoxelSimulation.load(legacyStart);
+export const legacySimulation = () => {
+  const sim = VoxelSimulation.load(legacyStart);
+  // Historical isolated mechanism fixtures reshape terrain; exclude the newly
+  // seeded ecology here. Genuine migration tests still load frozen bytes directly.
+  sim.animals = [];
+  return sim;
+};

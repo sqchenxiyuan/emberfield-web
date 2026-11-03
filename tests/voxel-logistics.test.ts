@@ -3,9 +3,10 @@ import { legacySimulation } from './fixtures/legacy-start';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { carryLimit, STACK_LIMITS, stackLimit } from '../src/voxel/logistics';
-import { freshBatch, rotLimit } from '../src/voxel/preservation';
+import { freshBatch, rotLimit, validBatch } from '../src/voxel/preservation';
 import { makeApparel, validApparel } from '../src/voxel/apparel';
 import { makeWeapon, validWeapon } from '../src/voxel/weapons';
+import { plantYield } from '../src/voxel/skills';
 import {
   Block,
   DAY,
@@ -38,7 +39,9 @@ function add(
       ? { resource, amount, weapon: makeWeapon(s.nextId++, 'steelKnife') }
       : resource === 'apparel'
         ? { resource, amount, apparel: makeApparel(s.nextId++, 'tuque') }
-        : freshBatch(resource, amount)),
+        : resource === 'carcass'
+          ? { resource, amount, carcass: { animalId: s.nextId++, species: 'hare' as const }, rotProgress: 0 }
+          : freshBatch(resource, amount)),
     ...extra,
     x: p.x,
     y: p.y,
@@ -77,6 +80,7 @@ function fixture(setup: (s: VoxelSimulation) => void = () => {}) {
   for (let i = 0; i < s.pawns.length; i++) {
     Object.assign(s.pawns[i], pos(10 + i, 18));
     s.pawns[i].priorities = {
+      hunt: 0,
       dig: 0,
       build: 0,
       cut: 0,
@@ -115,10 +119,12 @@ function invariants(s: VoxelSimulation) {
           'rotProgress',
           'apparel',
           'weapon',
+          'carcass',
           'forbidden',
         ].includes(k),
       ),
     ).toBe(true);
+    expect(validBatch(i)).toBe(true);
     expect(i.resource === 'apparel' ? validApparel(i.apparel) : i.apparel === undefined).toBe(true);
     expect(i.resource === 'weapon' ? validWeapon(i.weapon) : i.weapon === undefined).toBe(true);
   }
@@ -139,7 +145,9 @@ function until(s: VoxelSimulation, condition: () => boolean, limit = 1600) {
     JSON.stringify({
       tick: s.tick,
       jobs: s.jobs,
-      pawns: s.pawns.map((p) => ({ cargo: p.cargo, reason: p.reason })),
+      harvested: s.stats.harvested,
+      producedGrain: s.stats.produced.grain,
+      pawns: s.pawns.map((p) => ({ cargo: p.cargo, reason: p.reason, plantsLevel: p.skills.plants.level })),
     }),
   ).toBe(true);
 }
@@ -164,7 +172,7 @@ describe('bounded physical stacks and hauling reservations', () => {
     expect(s.items.filter((i) => i.resource === 'food').map((i) => i.amount)).toEqual([
       10, 10, 10, 10, 10, 10,
     ]);
-    expect(s.save().version).toBe(21);
+    expect(s.save().version).toBe(22);
     expect(VoxelSimulation.load(s.save()).counts()).toEqual(s.counts());
   });
   it.each(resources)('carries and stores %s only within its native one-stack limit', (resource) => {
@@ -441,6 +449,9 @@ describe('bounded outputs and interrupted physical containers', () => {
           });
           s.pawns[0].priorities.cut = 1;
         } else {
+          // This case isolates blocked output, not the novice harvest-failure roll.
+          s.pawns[0].skills.plants.level = 8;
+          expect(plantYield(s.pawns[0].skills)).toBe(1);
           s.blocks[index(11, 11, 7)] = Block.Soil;
           s.farms.push({ ...pos(11, 11), crop: 'rice' });
           s.crops.push({ ...pos(11, 11), id: s.nextId++, kind: 'rice', growth: 1, sownAt: 0 });

@@ -75,7 +75,8 @@ export function quoteTrade(s: TradeHost): TradeQuote | null {
   };
   for (const stock of s.items) if ((s.homeArea.has(at(stock)) || s.stockpiles.some(p => same(p, stock))) &&
     accessible.has(at(stock)) && traderAccepts(caravan.kind, stock)) add('colony', stock);
-  for (const stock of caravan.stock) if (s.pawns.some(p => p.id === stock.carrierId && !p.dead && !p.downed)) add('trader', stock);
+  for (const stock of caravan.stock) if (stock.resource !== 'carcass' &&
+    s.pawns.some(p => p.id === stock.carrierId && !p.dead && !p.downed)) add('trader', stock);
   const silver = (side: 'colony' | 'trader') => offers.filter(o => o.side === side && o.currency).reduce((n, o) => n + o.amount, 0);
   // Full serialized terms avoid a hash collision authorizing different goods.
   const key = JSON.stringify([session.id, improvement, difficultyLoss, s.trade.goodwill, offers]);

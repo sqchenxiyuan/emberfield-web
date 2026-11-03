@@ -58,9 +58,12 @@ export function advanceTradeCalendar(state: TradeState, seed: number, tick: numb
 }
 /** StockGenerator.HandlesThingDef and Tradeability are separate gates. */
 export function traderAccepts(kind: TraderKind, batch: Cargo): boolean {
+  // Animal carcass transfers are outside the current trade feature.
+  if (batch.resource === 'carcass') return false;
   if (batch.resource === 'silver') return true;
   if (['wood', 'stone', 'chunk', 'meal', 'herb'].includes(batch.resource)) return false;
-  if (kind === 'bulk') return ['steel', 'components', 'cloth', 'grain', 'food', 'apparel'].includes(batch.resource);
+  // Local wildlife extension: bulk traders accept meat as raw food.
+  if (kind === 'bulk') return ['steel', 'components', 'cloth', 'grain', 'meat', 'food', 'apparel'].includes(batch.resource);
   return ['components', 'food', 'weapon'].includes(batch.resource) ||
     (batch.resource === 'apparel' && !!batch.apparel && ['simpleHelmet', 'plateArmor'].includes(batch.apparel.kind));
 }

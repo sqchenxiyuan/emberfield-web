@@ -10,6 +10,8 @@ export const STACK_LIMITS: Readonly<Record<Resource, number>> = Object.freeze({
   components: 50,
   food: 10,
   grain: 75,
+  meat: 75,
+  carcass: 1,
   meal: 10,
   chunk: 1,
   cloth: 75,
@@ -22,7 +24,7 @@ export const stackLimit = (resource: Resource) => STACK_LIMITS[resource];
 export const carryLimit = (resource: Resource) => Math.min(75, stackLimit(resource));
 export function stackSpace(
   existing: Cargo | undefined,
-  incoming: Pick<Cargo, 'resource' | 'crop'>,
+  incoming: Pick<Cargo, 'resource' | 'crop' | 'apparel' | 'weapon' | 'carcass'>,
 ): number {
   return existing && !compatibleBatches(existing, { ...incoming, amount: 1 })
     ? 0

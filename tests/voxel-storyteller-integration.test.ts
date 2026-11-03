@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { expectWildlifeIds } from './legacy-wildlife-defaults';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { VoxelSimulation } from '../src/voxel/world';
@@ -26,12 +27,14 @@ describe('persistent colony storyteller', () => {
       expect(createHash('sha256').update(bytes).digest('hex')).toBe(provenance.sha256);
       const s = VoxelSimulation.load(old), saved = s.save();
       expect(old.version).toBe(19);
-      expect(saved.version).toBe(21);
-      for (const key of ['tick', 'nextId', 'blocks', 'ladders', 'items', 'research', 'combat'] as const)
+      expect(saved.version).toBe(22);
+      expectWildlifeIds(old.nextId, saved);
+      for (const key of ['tick', 'blocks', 'ladders', 'items', 'research', 'combat'] as const)
         expect(saved[key], key).toEqual(old[key]);
       for (const [key, value] of Object.entries(old.stats))
         expect(saved.stats[key as keyof typeof saved.stats]).toEqual(
-          ['produced', 'consumed', 'spoiled', 'destroyed'].includes(key) ? { ...(value as object), silver: 0 } : value);
+          ['produced', 'consumed', 'spoiled', 'destroyed'].includes(key) ?
+            { ...(value as object), silver: 0, meat: 0, carcass: 0 } : value);
       for (const p of saved.pawns) {
         const before = old.pawns.find((q: { id: number }) => q.id === p.id);
         for (const key of ['trauma', 'medical', 'cargo', 'weapon', 'worn', 'careProgress', 'dead', 'downed'] as const)

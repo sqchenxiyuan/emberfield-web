@@ -27,6 +27,8 @@ function fixture(kind: 'shortBow' | 'revolver' | 'machinePistol' = 'revolver', s
   const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
   s.seed = seed;
   s.trade = initialTrade(s.seed, s.tick);
+  // Isolated terrain fixture excludes the newly spawned wildlife.
+  s.animals = [];
   s.blocks.fill(Block.Stone);
   s.ladders.fill(0);
   s.trees = [];

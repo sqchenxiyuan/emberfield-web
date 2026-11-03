@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { expectWildlifeIds } from './legacy-wildlife-defaults';
 import { initialSkills } from '../src/voxel/skills';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -32,6 +33,8 @@ function until(s: VoxelSimulation, test: () => boolean, max = 5000) {
 // Controlled finite medical/state-machine scenario, separate from normal-play evidence.
 function fixture() {
   const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  // Isolated terrain fixture excludes the newly spawned wildlife.
+  s.animals = [];
   s.blocks.fill(Block.Stone);
   s.ladders.fill(0);
   s.trees = [];
@@ -281,10 +284,10 @@ describe('physical medical care, agriculture and v18 migration', () => {
       const old = JSON.parse(bytes.toString()),
         save = VoxelSimulation.load(old).save();
       expect(old.version).toBe(18);
-      expect(save.version).toBe(21);
+      expect(save.version).toBe(22);
       expect(save.items).toEqual(old.items);
       expect(save.research).toEqual(old.research);
-      expect(save.nextId).toBe(old.nextId);
+      expectWildlifeIds(old.nextId, save);
       expect(save.tick).toBe(old.tick);
       for (const [i, p] of save.pawns.entries()) {
         expect(p.trauma).toEqual(old.pawns[i].trauma);
@@ -294,7 +297,7 @@ describe('physical medical care, agriculture and v18 migration', () => {
         expect(p.medical.risks.every((r) => r.state === 'legacy')).toBe(true);
       }
       for (const key of ['produced', 'consumed', 'spoiled', 'destroyed'] as const)
-        expect(save.stats[key]).toEqual({ ...old.stats[key], herb: 0, silver: 0 });
+        expect(save.stats[key]).toEqual({ ...old.stats[key], herb: 0, silver: 0, meat: 0, carcass: 0 });
       const contaminated = structuredClone(old);
       contaminated.pawns[0].medical = initialMedical();
       expect(() => VoxelSimulation.load(contaminated)).toThrow('旧存档');

@@ -91,6 +91,9 @@ import {
   simpleBenchFactor,
 } from './research';
 import { VoxelRooms } from './rooms';
+import { ANIMAL_DEFS, WILDLIFE, isAnimal } from './wildlife';
+import { migrateWildlife, validateWildlife } from './wildlifePersistence';
+import type { WildAnimal, ButcherSpot } from './types';
 import { colonyWealth, summaryHealthPercent } from './wealth';
 import { STORY_INTERVAL, threatPoints, growAdaptation, adaptationAfterLoss } from './storytellerRules';
 import {
@@ -291,7 +294,7 @@ const costOf = (
   weaponKind?: WeaponKind,
   weaponBenchKind?: WeaponBenchKind,
 ): Partial<Counts> =>
-  kind === 'machining'
+  kind === 'butcher' ? { carcass: 1 } : kind === 'machining'
     ? { ...MACHINING_COST }
     : kind === 'sandbag'
       ? { ...SANDBAG_COST }
@@ -395,6 +398,8 @@ const workOf = (
                               bed: 187,
                               door: 199,
                               cook: SIMPLE_MEAL.work,
+                              butcher: WILDLIFE.butcherWork,
+                              butcherSpot: 1,
                               stonecutter: STONECUTTER_WORK,
                               stonecut: STONECUTTING.work,
                             }[kind];
@@ -407,7 +412,7 @@ const workType = (kind: JobKind): Work =>
         ? 'haul'
         : kind === 'sow' || kind === 'harvest' || kind === 'plantTree'
           ? 'grow'
-          : kind === 'cook'
+          : kind === 'cook' || kind === 'butcher'
             ? 'cook'
             : kind === 'mine' || kind === 'digLadder'
               ? 'dig'
@@ -455,6 +460,8 @@ function decode(raw: unknown, max: number): Uint8Array<ArrayBuffer> {
 }
 
 export class VoxelSimulation {
+  animals: WildAnimal[] = [];
+  butcherSpots: ButcherSpot[] = [];
   trade: TradeState;
   homeArea = new Set<number>();
   combat = { enabled: false, nextRaid: 0, wave: 0 };
@@ -576,6 +583,7 @@ export class VoxelSimulation {
         rest: 100,
         skills: initialSkills(i),
         priorities: {
+          hunt: 2,
           dig: 1,
           build: 1,
           cut: 1,
@@ -618,9 +626,124 @@ export class VoxelSimulation {
         if (inside(cell)) this.homeArea.add(at(cell));
       }
     this.markAll();
+    this.seedWildlife();
   }
   private rebuildTrees() {
     this.treeCells = new Set(this.trees.flatMap((t) => [at(t), index(t.x, t.y, t.z + 1)]));
+  }
+  private seedWildlife(target: number = WILDLIFE.population, edge = false) {
+    if (this.animals.length >= target) return;
+    this.search(this.spawn);
+    const sites: Pos[] = [];
+    for (let i = 0; i < CELLS; i++) {
+      if (this.distance[i] < 0) continue;
+      const p = position(i), distance = Math.hypot(p.x - this.spawn.x, p.y - this.spawn.y);
+      if (distance < 8 || (!edge && distance > 22) ||
+          (edge && p.x !== 0 && p.y !== 0 && p.x !== WIDTH - 1 && p.y !== DEPTH - 1) ||
+          !this.skyAt(p) || this.ladders[i] || this.furnitureAt(p) ||
+          this.animals.some(a => same(a, p))) continue;
+      sites.push(p);
+    }
+    while (sites.length && this.animals.length < Math.min(target, WILDLIFE.cap)) {
+      const id = this.id(), choice = Math.floor(plantRandom(this.seed, id, this.tick, 970) * sites.length);
+      const site = sites.splice(choice, 1)[0], species = id % 2 ? 'hare' : 'deer';
+      this.animals.push({ ...site, id, species, name: ANIMAL_DEFS[species].name,
+        health: ANIMAL_DEFS[species].health, hunger: 75, dead: false, phase: 'roam', hunt: false,
+        moveTick: this.tick, decisionTick: this.tick, fleeUntil: 0, threatId: null,
+        retryTick: 0, rotProgress: 0 });
+    }
+  }
+  private updateWildlife() {
+    for (const a of [...this.animals]) {
+      if (a.dead) {
+        const batch: Cargo = { resource: 'carcass', amount: 1,
+          carcass: { animalId: a.id, species: a.species }, rotProgress: a.rotProgress };
+        if (advanceRot(batch, this.temperature(a))) {
+          this.stats.spoiled.carcass++;
+          this.animals = this.animals.filter(other => other !== a);
+          continue;
+        }
+        a.rotProgress = batch.rotProgress!;
+        const plan = this.planPlacement([{ batch, origin: a }]);
+        if (plan) {
+          this.commitPlacement(plan);
+          this.animals = this.animals.filter(other => other !== a);
+        }
+        continue;
+      }
+      a.hunger = Math.max(0, a.hunger - 60 / DAY);
+      const threat = this.pawns.find(p => p.id === a.threatId && !p.dead);
+      const fleeing = a.fleeUntil > this.tick && !!threat;
+      if (fleeing) a.phase = 'flee';
+      else if (a.phase === 'flee' || this.tick >= a.decisionTick) {
+        const night = hourAt(this.tick) < 6 || hourAt(this.tick) >= 20;
+        const fertile = fertilityOf(this.blocks[at(a) - WIDTH * DEPTH]) >= .7;
+        const roll = plantRandom(this.seed, a.id, this.tick, 971);
+        a.phase = night && a.hunger > 20 ? 'rest' : fertile && (a.hunger < 60 || roll < .25) ? 'graze' : 'roam';
+        a.decisionTick = this.tick + 80 + Math.floor(roll * 120);
+        a.threatId = null;
+      }
+      if (a.phase === 'graze') {
+        a.hunger = Math.min(100, a.hunger + .15);
+        const crop = this.crops.find(c => same(c, a));
+        if (crop) crop.growth = Math.max(0, crop.growth - .001);
+      }
+      if (a.phase === 'rest' || a.phase === 'graze' || this.tick < a.moveTick) continue;
+      const choices = this.neighbors(a).map(position).filter(p =>
+        !this.ladders[at(p)] && !this.doors.some(d => same(d, p)) && !this.furnitureAt(p) &&
+        !this.animals.some(other => other !== a && same(other, p)) && !this.pawns.some(other => same(other, p)));
+      if (choices.length) {
+        if (fleeing) choices.sort((x, y) =>
+          Math.hypot(y.x - threat.x, y.y - threat.y) - Math.hypot(x.x - threat.x, x.y - threat.y));
+        const selected = choices[fleeing ? 0 : Math.floor(plantRandom(this.seed, a.id, this.tick, 972) * choices.length)];
+        Object.assign(a, selected);
+      }
+      a.moveTick = this.tick + Math.ceil(ANIMAL_DEFS[a.species].moveTicks * (fleeing ? .65 : 1));
+    }
+    if (this.tick % (DAY * 2) === 0 && this.animals.length < WILDLIFE.population)
+      this.seedWildlife(this.animals.length + 1, true);
+  }
+  private damageAnimal(shot: Projectile, animal: WildAnimal) {
+    animal.health = Math.max(0, animal.health - shot.damage);
+    animal.threatId = shot.shooterId;
+    animal.fleeUntil = this.tick + 200;
+    animal.phase = 'flee';
+    this.combatEvent(animal, shot.shooterId, animal.id, 'hit', shot.damage, `击中${animal.name}`);
+    if (animal.health > 0) return;
+    animal.dead = true;
+    animal.phase = 'dead';
+    animal.hunt = false;
+    animal.threatId = null;
+    this.stats.produced.carcass++;
+    for (const p of this.pawns) if (p.attackTargetId === animal.id) this.release(p);
+    this.notice = `${animal.name}倒下，尸体可搬运至屠宰点加工`;
+  }
+  private tryHunt(p: Pawn): boolean {
+    if (!p.priorities.hunt || !p.weapon || !isRangedKind(p.weapon.kind) || p.weaponDropPending || p.cargo) return false;
+    const targets = this.animals.filter(a => a.hunt && !a.dead && a.retryTick <= this.tick &&
+      !this.pawns.some(other => other.id !== p.id && other.phase === 'hunt' && other.attackTargetId === a.id))
+      .sort((a, b) => Math.hypot(a.x - p.x, a.y - p.y, a.z - p.z) - Math.hypot(b.x - p.x, b.y - p.y, b.z - p.z));
+    for (const animal of targets) {
+      const stand = this.shootingStand(p, animal);
+      if (stand < 0) { animal.retryTick = this.tick + WILDLIFE.huntRetryTicks; continue; }
+      this.release(p);
+      p.phase = 'hunt'; p.attackTargetId = animal.id;
+      if (stand !== at(p)) { this.search(p); this.go(p, stand, 'hunt'); }
+      p.reason = `狩猎${animal.name}`;
+      return true;
+    }
+    return false;
+  }
+  private huntTick(p: Pawn) {
+    const animal = this.animals.find(a => a.id === p.attackTargetId && a.hunt && !a.dead);
+    if (!animal || !p.priorities.hunt || !p.weapon || !isRangedKind(p.weapon.kind) || p.weaponDropPending) {
+      this.release(p); return;
+    }
+    this.rangedCombat(p, animal);
+    if (!p.shooting && !p.path.length && !this.shotReport(p, animal)?.canShoot) {
+      animal.retryTick = this.tick + WILDLIFE.huntRetryTicks;
+      this.release(p); p.reason = '猎物暂不可达，稍后重试';
+    }
   }
   markAll() {
     for (let i = 0; i < 16; i++) this.dirty.add(i);
@@ -1052,7 +1175,7 @@ export class VoxelSimulation {
     )
       return true;
     return (
-      item.resource === 'chunk' &&
+      (item.resource === 'chunk' || item.resource === 'carcass') &&
       ([...this.craftSources].some(([id, source]) => id !== pawnId && source === item.id) ||
         [...this.storageReservations].some(([id, r]) => id !== pawnId && r.sourceId === item.id))
     );
@@ -1153,6 +1276,7 @@ export class VoxelSimulation {
   }
   private furnitureAt(p: Pos) {
     return (
+      this.butcherSpots.find(b => same(b, p)) ||
       this.sandbags.find((b) => same(b, p)) ||
       this.researchBenchAt(p) ||
       this.deviceAt(p) ||
@@ -1281,6 +1405,7 @@ export class VoxelSimulation {
     if (this.trees.length >= 4096 || this.treeSiteReason(p, species, ownJob, natural)) return false;
     const overlap = (q: Pos) => p.x === q.x && p.y === q.y && Math.abs(p.z - q.z) < 2;
     if (
+      this.animals.some(overlap) ||
       this.pawns.some(
         (pawn) =>
           overlap(pawn) ||
@@ -1449,6 +1574,15 @@ export class VoxelSimulation {
                 : '温度不适';
     return { fertility, light, temperature, growthRate, reason };
   }
+  private chooseMealIngredients(job: Job) {
+    // Lock real ingredients; delivered batches retain their identity and age.
+    const reserved = this.jobs.filter(j => j !== job && !j.cancelled)
+      .reduce((n, j) => n + Math.max(0, (j.cost.meat ?? 0) - (j.delivered.meat ?? 0)), 0);
+    const meat = Math.min(SIMPLE_MEAL.ingredients, Math.max(0,
+      this.items.filter(i => i.resource === 'meat').reduce((n, i) => n + i.amount, 0) - reserved));
+    job.cost = { wood: SIMPLE_MEAL.wood, ...(meat ? { meat } : {}),
+      ...(meat < SIMPLE_MEAL.ingredients ? { grain: SIMPLE_MEAL.ingredients - meat } : {}) };
+  }
   private syncProduction() {
     for (const j of [...this.jobs])
       if (j.kind === 'research' && (!this.supported(j) || j.cancelled)) this.cancel(j);
@@ -1474,6 +1608,9 @@ export class VoxelSimulation {
         this.cancel(j);
       if (j.kind === 'cut' && !this.trees.some((t) => same(t, j))) this.cancel(j);
       if (j.kind === 'cook' && !this.stoves.some((v) => same(v, j) && !v.paused)) this.cancel(j);
+      if (j.kind === 'butcher' && !this.butcherSpots.some(b => same(b, j) && !b.paused)) this.cancel(j);
+      if (j.kind === 'cook' && !j.cancelled && j.owner === null && !(j.delivered.grain || j.delivered.meat))
+        this.chooseMealIngredients(j);
       if (j.kind === 'stonecut' && !this.stonecutters.some((b) => same(b, j) && !b.paused))
         this.cancel(j);
       if (
@@ -1537,8 +1674,15 @@ export class VoxelSimulation {
         this.jobs.some((j) => same(j, stove))
       )
         continue;
-      this.jobs.push(this.makeJob('cook', stove));
+      const job = this.makeJob('cook', stove);
+      this.chooseMealIngredients(job);
+      this.jobs.push(job);
       meals += SIMPLE_MEAL.output;
+    }
+    let carcasses = this.counts().carcass - this.jobs.filter(j => j.kind === 'butcher').length;
+    for (const spot of this.butcherSpots) {
+      if (this.jobs.length >= 512 || spot.paused || carcasses <= 0 || this.jobs.some(j => same(j, spot))) continue;
+      this.jobs.push(this.makeJob('butcher', spot)); carcasses--;
     }
     let stone =
       this.counts().stone +
@@ -1654,6 +1798,22 @@ export class VoxelSimulation {
     return result;
   }
   private applyCommand(c: VoxelCommand): CommandResult {
+    if (c.type === 'hunt') {
+      const animal = this.animals.find(a => a.id === c.animalId && !a.dead);
+      if (!animal || typeof c.enabled !== 'boolean') return { ok: false, message: '请选择存活的野生动物' };
+      animal.hunt = c.enabled;
+      animal.retryTick = 0;
+      if (!c.enabled) for (const p of this.pawns) if (p.attackTargetId === animal.id) this.release(p);
+      return { ok: true, message: c.enabled ? '已标记狩猎；猎人需要装备短弓或枪械并开启狩猎工作' : '已取消狩猎；已发射的弹丸仍会飞行' };
+    }
+    if (c.type === 'butcherBill') {
+      const spot = this.butcherSpots.find(b => b.id === c.spotId);
+      if (!spot || typeof c.paused !== 'boolean') return { ok: false, message: '屠宰点或开关无效' };
+      spot.paused = c.paused;
+      if (spot.paused) for (const j of [...this.jobs]) if (j.kind === 'butcher' && same(j, spot)) this.cancel(j);
+      this.syncProduction();
+      return { ok: true, message: spot.paused ? '屠宰已暂停，尸体原样退回；无空间时保留在任务内' : '屠宰已开启，将自动加工可达的新鲜动物尸体' };
+    }
     if (c.type === 'tradeTalk' || c.type === 'tradeCancel' || c.type === 'tradeCommit' || c.type === 'homeArea')
       return applyTradeCommand(this, c);
     if (
@@ -2017,7 +2177,7 @@ export class VoxelSimulation {
       if (
         !p ||
         p.dead ||
-        !['dig', 'build', 'cut', 'haul', 'grow', 'cook', 'craft', 'care', 'research'].includes(
+        !['hunt', 'dig', 'build', 'cut', 'haul', 'grow', 'cook', 'craft', 'care', 'research'].includes(
           c.work,
         ) ||
         !Number.isInteger(c.value) ||
@@ -2306,6 +2466,16 @@ export class VoxelSimulation {
         count: positions.length,
       };
     }
+    if (c.tool === 'butcherSpot') {
+      const p = positions[0];
+      if (positions.length !== 1 || this.butcherSpots.length >= 128 ||
+          this.placementReason('butcherSpot', p) ||
+          this.jobs.some(j => this.footprint(j).some(q => same(p, q))))
+        return { ok: false, message: '屠宰点需要一格有支撑的空地，不能与区域或设施重叠' };
+      this.butcherSpots.push({ ...p, id: this.id(), paused: false });
+      this.syncProduction(); this.revision++;
+      return { ok: true, count: 1, message: '已划定屠宰点；厨师会搬来新鲜动物尸体并加工成肉' };
+    }
     if (c.tool === 'craftingSpot') {
       const p = positions[0];
       if (
@@ -2397,6 +2567,7 @@ export class VoxelSimulation {
               j.kind === 'remove' &&
               [
                 'cook',
+                'butcher',
                 'refuel',
                 'stonecut',
                 'tailoring',
@@ -2441,7 +2612,7 @@ export class VoxelSimulation {
       if (j.kind === 'remove')
         for (const k of [...this.jobs])
           if (
-            ['cook', 'refuel', 'stonecut', 'tailoring', 'smith', 'armorsmith', 'research'].includes(
+            ['cook', 'butcher', 'refuel', 'stonecut', 'tailoring', 'smith', 'armorsmith', 'research'].includes(
               k.kind,
             ) &&
             same(k, j)
@@ -2532,7 +2703,7 @@ export class VoxelSimulation {
         ? '科研台需要3×2空地、完整支撑与两格净空，不能重叠区域或设施'
         : '';
     }
-    if (kind === 'craftingSpot' || kind === 'sandbag')
+    if (kind === 'craftingSpot' || kind === 'sandbag' || kind === 'butcherSpot')
       return !this.standable(p) ||
         this.ladders[at(p)] ||
         this.furnitureAt(p) ||
@@ -2831,7 +3002,7 @@ export class VoxelSimulation {
         : undefined;
     const food =
       action === 'feed' && !carriedFood
-        ? (['meal', 'food', 'grain'] as Resource[]).map((r) => this.pileFor(p, r)).find(Boolean)
+        ? (['meal', 'food', 'grain', 'meat'] as Resource[]).map((r) => this.pileFor(p, r)).find(Boolean)
         : undefined;
     if (action === 'feed' && !carriedFood && !food) return false;
     // A full ground never destroys existing cargo to make room for a rescue.
@@ -2881,7 +3052,7 @@ export class VoxelSimulation {
       p.careFoodId = food!.id;
       p.careAmount = Math.min(
         this.availableStack(food!, p.id),
-        food!.resource === 'grain' ? Math.ceil((100 - patient.food) / (100 * NUTRITION.grain!)) : 1,
+        ['grain', 'meat'].includes(food!.resource) ? Math.ceil((100 - patient.food) / (100 * NUTRITION.grain!)) : 1,
       );
       p.carePhase = 'feedFetch';
       this.go(p, at(food!), 'care');
@@ -3269,6 +3440,7 @@ export class VoxelSimulation {
       faction: 'raider',
       weapon,
       priorities: {
+        hunt: 0,
         dig: 0,
         build: 0,
         cut: 0,
@@ -3332,10 +3504,10 @@ export class VoxelSimulation {
       })),
     ];
   }
-  shotReport(p: Pawn, target: Pawn, origin: Pos = p) {
+  shotReport(p: Pawn, target: Pawn | WildAnimal, origin: Pos = p) {
     if (!p.weapon || !isRangedKind(p.weapon.kind)) return null;
     const health = healthSummary(p),
-      prone = target.downed || target.phase === 'rest';
+      prone = (!isAnimal(target) && target.downed) || target.phase === 'rest';
     return rangedShotReport({
       shooter: origin,
       target,
@@ -3353,7 +3525,7 @@ export class VoxelSimulation {
       blocked: (cell) => this.shotBlocked(cell),
     });
   }
-  private shootingStand(p: Pawn, target: Pawn) {
+  private shootingStand(p: Pawn, target: Pawn | WildAnimal) {
     if (!this.sandbags.some((b) => same(b, p)) && this.shotReport(p, target)?.canShoot)
       return at(p);
     this.search(p);
@@ -3408,7 +3580,7 @@ export class VoxelSimulation {
       );
     p.shooting = null;
   }
-  private rangedCombat(p: Pawn, target: Pawn) {
+  private rangedCombat(p: Pawn, target: Pawn | WildAnimal) {
     const weapon = p.weapon!;
     if (!isRangedKind(weapon.kind)) return;
     const stats = rangedStats({ ...weapon, kind: weapon.kind }),
@@ -3422,7 +3594,7 @@ export class VoxelSimulation {
       this.cancelShooting(p);
       if (!p.path.length || (this.tick + p.id) % 20 === 0) {
         const stand = this.shootingStand(p, target);
-        if (stand >= 0) this.go(p, stand, 'combat');
+        if (stand >= 0) this.go(p, stand, p.phase === 'hunt' ? 'hunt' : 'combat');
         else {
           p.path = [];
           p.destination = null;
@@ -3465,10 +3637,10 @@ export class VoxelSimulation {
     if (state.phase === 'aim') {
       state.phase = 'burst';
       state.startedTick = this.tick;
-      if (!target.downed)
+      if (isAnimal(target) || !target.downed)
         learnSkill(
           p.skills.shooting,
-          (tradeHostile(target, p, this.trade.goodwill) ? 170 : 20) * stats.fullCycleSeconds,
+          (!isAnimal(target) && tradeHostile(target, p, this.trade.goodwill) ? 170 : 20) * stats.fullCycleSeconds,
         );
     }
     let stream = 180;
@@ -3602,12 +3774,12 @@ export class VoxelSimulation {
         }
         if (same(cell, destination)) continue;
         if (shot.canHitOthers || shot.canHitIntended)
-          for (const pawn of this.pawns) {
+          for (const pawn of [...this.pawns, ...this.animals]) {
             if (
               pawn.id === shot.shooterId ||
               (pawn.id === shot.targetId ? !shot.canHitIntended : !shot.canHitOthers) ||
               pawn.dead ||
-              pawn.carriedBy !== null ||
+              (!isAnimal(pawn) && pawn.carriedBy !== null) ||
               !same(pawn, cell)
             )
               continue;
@@ -3616,11 +3788,12 @@ export class VoxelSimulation {
               pawnInterceptChance({
                 origin: shot.from,
                 cell,
-                prone: pawn.downed || pawn.phase === 'rest',
-                friendly: !tradeHostile(pawn, { faction: shot.shooterFaction }, this.trade.goodwill),
+                prone: (!isAnimal(pawn) && pawn.downed) || pawn.phase === 'rest',
+                friendly: !isAnimal(pawn) && !tradeHostile(pawn, { faction: shot.shooterFaction }, this.trade.goodwill),
               })
             ) {
-              this.projectileHitPawn(shot, pawn);
+              if (isAnimal(pawn)) this.damageAnimal(shot, pawn);
+              else this.projectileHitPawn(shot, pawn);
               consumed = true;
               break;
             }
@@ -3652,8 +3825,8 @@ export class VoxelSimulation {
       }
       // Native usedTarget is an identity. Moving away from the original endpoint
       // does not itself cancel a targeted projectile; posture is read at impact.
-      const intended = this.pawns.find(
-        (p) => p.id === shot.targetId && !p.dead && p.carriedBy === null,
+      const intended = [...this.pawns, ...this.animals].find(
+        (p) => p.id === shot.targetId && !p.dead && (isAnimal(p) || p.carriedBy === null),
       );
       const length = Math.hypot(
         shot.destination.x - shot.from.x,
@@ -3662,23 +3835,24 @@ export class VoxelSimulation {
       );
       if (shot.canHitIntended && intended) {
         if (
-          random() < projectilePostureChance(length, intended.downed || intended.phase === 'rest')
+          random() < projectilePostureChance(length, (!isAnimal(intended) && intended.downed) || intended.phase === 'rest')
         )
-          this.projectileHitPawn(shot, intended);
+          { if (isAnimal(intended)) this.damageAnimal(shot, intended);
+            else this.projectileHitPawn(shot, intended); }
         else this.combatEvent(destination, shot.shooterId, null, 'miss', 0, '弹丸越过倒卧目标');
         continue;
       }
       if (shot.coverId !== null && shot.canHitWorld && this.projectileHitCover(shot, shot.coverId))
         continue;
-      const candidates: ({ pawn: Pawn } | { cover: RangedCover })[] = [
+      const candidates: ({ pawn: Pawn | WildAnimal } | { cover: RangedCover })[] = [
         ...(shot.canHitOthers
-          ? this.pawns
+          ? [...this.pawns, ...this.animals]
               .filter(
                 (p) =>
                   p.id !== shot.shooterId &&
                   p.id !== shot.targetId &&
                   !p.dead &&
-                  p.carriedBy === null &&
+                  (isAnimal(p) || p.carriedBy === null) &&
                   same(p, destination),
               )
               .map((pawn) => ({ pawn }))
@@ -3700,14 +3874,17 @@ export class VoxelSimulation {
             ? 0.5 *
               projectilePostureChance(
                 length,
-                candidate.pawn.downed || candidate.pawn.phase === 'rest',
+                (!isAnimal(candidate.pawn) && candidate.pawn.downed) || candidate.pawn.phase === 'rest',
               ) *
-              (!tradeHostile(candidate.pawn, { faction: shot.shooterFaction }, this.trade.goodwill)
+              (!isAnimal(candidate.pawn) && !tradeHostile(candidate.pawn, { faction: shot.shooterFaction }, this.trade.goodwill)
                 ? interceptDistanceFactor(shot.from, destination)
                 : 1)
             : 1.5 * candidate.cover.fillPercent;
         if (random() >= chance) continue;
-        if ('pawn' in candidate) this.projectileHitPawn(shot, candidate.pawn);
+        if ('pawn' in candidate) {
+          if (isAnimal(candidate.pawn)) this.damageAnimal(shot, candidate.pawn);
+          else this.projectileHitPawn(shot, candidate.pawn);
+        }
         else this.projectileHitCover(shot, candidate.cover.id);
         consumed = true;
         break;
@@ -4251,6 +4428,7 @@ export class VoxelSimulation {
     return undefined;
   }
   private supported(j: Job) {
+    if (j.kind === 'butcher') return this.butcherSpots.some(b => same(b, j) && !b.paused);
     if (j.kind === 'research')
       return (
         !!j.researchProject &&
@@ -4381,6 +4559,7 @@ export class VoxelSimulation {
             this.items.some((i) => i.resource === missing(j))),
       )
     ) {
+      if (this.tryHunt(p)) return;
       for (const j of jobs) {
         const needed = missing(j);
         j.reason = !this.supported(j)
@@ -4400,7 +4579,13 @@ export class VoxelSimulation {
       return;
     }
     this.search(p);
+    let triedHunting = false;
     for (const j of jobs) {
+      if (!triedHunting && p.priorities.hunt > 0 && p.priorities.hunt <= p.priorities[workType(j.kind)]) {
+        triedHunting = true;
+        if (this.tryHunt(p)) return;
+        this.search(p);
+      }
       if (
         j.kind === 'research' &&
         p.priorities.haul > 0 &&
@@ -4451,6 +4636,8 @@ export class VoxelSimulation {
       this.continueJob(p, j);
       return;
     }
+    if (this.tryHunt(p)) return;
+    this.search(p);
     if (this.tryHaul(p)) return;
     p.phase = 'idle';
     p.reason =
@@ -4595,7 +4782,7 @@ export class VoxelSimulation {
         return;
       }
       this.go(p, at(stack), 'fetch');
-      if (stack.resource === 'chunk') this.craftSources.set(p.id, stack.id);
+      if (stack.resource === 'chunk' || stack.resource === 'carcass') this.craftSources.set(p.id, stack.id);
       p.reason = `搬运${RESOURCE_NAMES[needed]}`;
       return;
     }
@@ -4685,7 +4872,7 @@ export class VoxelSimulation {
     const nutrition = NUTRITION[resource];
     if (!nutrition) return 0;
     const amount =
-      resource === 'grain'
+      (resource === 'grain' || resource === 'meat')
         ? Math.min(available, Math.ceil((100 - p.food) / (nutrition * 100)))
         : Math.min(1, available);
     p.food = Math.min(100, p.food + amount * nutrition * 100);
@@ -4704,7 +4891,7 @@ export class VoxelSimulation {
     }
     if (!this.items.some((i) => NUTRITION[i.resource])) return false;
     this.search(p);
-    const food = (['meal', 'food', 'grain'] as Resource[])
+    const food = (['meal', 'food', 'grain', 'meat'] as Resource[])
       .map((r) => this.pileFor(p, r))
       .find(Boolean);
     if (!food) return false;
@@ -5067,6 +5254,8 @@ export class VoxelSimulation {
         yields.wood = 12;
       } else if (this.stoves.some((s) => same(s, j))) {
         yields.wood = 10;
+      } else if (this.butcherSpots.some(b => same(b, j))) {
+        // Ground designation has no construction materials to refund.
       } else if (this.ladders[at(j)]) {
         changes.push({ pos: j, ladder: 0 });
         yields.wood = 1;
@@ -5101,6 +5290,11 @@ export class VoxelSimulation {
       ] = j.harvestResult!.amount;
     }
     if (j.kind === 'cook') yields.meal = SIMPLE_MEAL.output;
+    if (j.kind === 'butcher') {
+      const carcass = j.deliveredFood.find(b => b.resource === 'carcass')?.carcass;
+      if (!carcass) { j.reason = '等待新鲜动物尸体'; this.release(p); return; }
+      yields.meat = ANIMAL_DEFS[carcass.species].meat;
+    }
     if (j.kind === 'stonecut') yields.stone = STONECUTTING.output;
     if (j.kind === 'tailoring' || j.kind === 'armorsmith') yields.apparel = 1;
     if (j.kind === 'smith') yields.weapon = 1;
@@ -5139,9 +5333,9 @@ export class VoxelSimulation {
       this.deviceBlocks.add(at({ ...q, z: q.z + 1 }));
     }
     if (
-      this.pawns.some((p) => !this.standable(p)) ||
+      [...this.pawns, ...this.animals].some((p) => !this.standable(p)) ||
       this.stockpiles.some((s) => !this.standable(s) || this.ladders[at(s)]) ||
-      [...this.stoves, ...this.weaponBenches.filter((b) => b.kind === 'craftingSpot')].some(
+      [...this.stoves, ...this.butcherSpots, ...this.weaponBenches.filter((b) => b.kind === 'craftingSpot')].some(
         (s) =>
           !this.blocks[at(s) - WIDTH * DEPTH] ||
           this.blocks[at(s)] ||
@@ -5424,6 +5618,9 @@ export class VoxelSimulation {
     } else if (j.kind === 'cook') {
       yields.meal = SIMPLE_MEAL.output;
       this.stats.cooked++;
+    } else if (j.kind === 'remove' && this.butcherSpots.some(b => same(b, j))) {
+      this.butcherSpots = this.butcherSpots.filter(b => !same(b, j));
+      this.revision++;
     } else if (j.kind === 'remove' && this.stoves.some((s) => same(s, j))) {
       this.stoves = this.stoves.filter((s) => !same(s, j));
       this.stoveCells.delete(at(j));
@@ -5461,6 +5658,7 @@ export class VoxelSimulation {
       this.updateApparelWear();
       this.updateSurvival();
       this.updateProjectiles();
+      this.updateWildlife();
       updateTrade(this);
       for (const pawn of this.pawns) if (pawn.weaponDropPending) this.dropPrimary(pawn, true);
       this.updateRaids();
@@ -5473,6 +5671,7 @@ export class VoxelSimulation {
         if (p.dead || p.downed || p.carriedBy !== null) continue;
         const combatant = (p.drafted || p.faction !== 'colony') && p.weaponTask === null;
         if (combatant) this.combatTick(p);
+        else if (p.phase === 'hunt') this.huntTick(p);
         if (
           !combatant &&
           !p.drafted &&
@@ -5615,7 +5814,7 @@ export class VoxelSimulation {
           }
           continue;
         }
-        if (combatant || p.phase === 'trade') continue;
+        if (combatant || p.phase === 'trade' || p.phase === 'hunt') continue;
         if (p.phase === 'idle') {
           if ((this.tick + p.id) % 20 === 0) this.assign(p);
         } else this.arrive(p);
@@ -5811,6 +6010,7 @@ export class VoxelSimulation {
       out.weapon += p.weapon ? 1 : 0;
     }
     for (const j of this.jobs) for (const r of resources) out[r] += j.delivered[r] ?? 0;
+    out.carcass += this.animals.filter(a => a.dead).length;
     return out;
   }
   snapshot(speed = 0, tickMs = 0): VoxelSnapshot {
@@ -5832,6 +6032,8 @@ export class VoxelSimulation {
       projectiles: this.projectiles,
       combatEvents: this.combatEvents,
       sandbags: this.sandbags,
+      animals: this.animals,
+      butcherSpots: this.butcherSpots,
       seed: this.seed,
       generator: this.generator,
       settings: this.settings,
@@ -5896,7 +6098,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 21,
+      version: 22,
       trade: this.trade,
       homeArea: [...this.homeArea],
       combat: this.combat,
@@ -5905,6 +6107,8 @@ export class VoxelSimulation {
       projectiles: this.projectiles,
       combatEvents: this.combatEvents,
       sandbags: this.sandbags,
+      animals: this.animals,
+      butcherSpots: this.butcherSpots,
       generator: this.generator,
       settings: this.settings,
       spawn: this.spawn,
@@ -5940,7 +6144,7 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
@@ -6260,6 +6464,7 @@ export class VoxelSimulation {
       old.version = 20;
     }
     migrateTradeFields(old, sourceVersion);
+    migrateWildlife(old);
     const d = old as VoxelSave;
     const loadHealth = (p: Pawn) =>
       oldHealth.get(p.id) ?? {
@@ -6287,6 +6492,8 @@ export class VoxelSimulation {
       throw new Error('存档计时或种子无效');
     const arrays: [unknown, number][] = [
       [d.pawns, 64],
+      [d.animals, WILDLIFE.cap],
+      [d.butcherSpots, 128],
       [d.items, 10000],
       [d.trees, 4096],
       [d.treePlots, 512],
@@ -6331,6 +6538,8 @@ export class VoxelSimulation {
     const ids = new Set<number>();
     for (const e of [
       ...d.pawns,
+      ...d.animals,
+      ...d.butcherSpots,
       ...d.items,
       ...d.trees,
       ...d.jobs,
@@ -6367,6 +6576,7 @@ export class VoxelSimulation {
                 'apparel',
                 'weapon',
                 'forbidden',
+                'carcass',
                 'x',
                 'y',
                 'z',
@@ -6404,6 +6614,7 @@ export class VoxelSimulation {
         d.farms,
         d.crops,
         d.stoves,
+        d.butcherSpots,
         d.stonecutters,
         d.tailors,
         d.weaponBenches,
@@ -6613,6 +6824,7 @@ export class VoxelSimulation {
       )
         throw new Error('沙袋生命或高度无效');
     const furniture = [
+      ...d.butcherSpots,
       ...d.sandbags,
       ...d.beds.flatMap(bedCells),
       ...d.doors,
@@ -6654,7 +6866,7 @@ export class VoxelSimulation {
     const plainCargo = (batch: Cargo) =>
       validBatch(batch) &&
       Object.keys(batch).every((key) =>
-        ['resource', 'amount', 'crop', 'rotProgress', 'apparel', 'weapon', 'forbidden'].includes(
+        ['resource', 'amount', 'crop', 'rotProgress', 'apparel', 'weapon', 'forbidden', 'carcass'].includes(
           key,
         ),
       );
@@ -6840,16 +7052,18 @@ export class VoxelSimulation {
               deviceCells({ ...j, kind: j.kind, axis: j.axis! }).some((p) => !inside(p))))) ||
         !materialMap(j.cost) ||
         !materialMap(j.delivered) ||
+        (j.kind === 'cook' && (j.cost.grain ?? 0) + (j.cost.meat ?? 0) !== SIMPLE_MEAL.ingredients) ||
         resources.some(
           (r) =>
             (j.cost[r] ?? 0) !==
-              (j.kind === 'refuel'
+              (j.kind === 'cook' && (r === 'grain' || r === 'meat') ? (j.cost[r] ?? 0) : j.kind === 'refuel'
                 ? r === 'wood'
                   ? j.cost.wood
                   : 0
                 : (costOf(j.kind, j.material, j.apparelKind, j.weaponKind, j.weaponBenchKind)[r] ??
                   0)) || (j.delivered[r] ?? 0) > (j.cost[r] ?? 0),
         ) ||
+        (!j.cancelled && j.kind === 'butcher' && !d.butcherSpots.some(s => same(s, j) && !s.paused)) ||
         (!j.cancelled && j.kind === 'cook' && !d.stoves.some((s) => same(s, j))) ||
         (!j.cancelled && j.kind === 'stonecut' && !d.stonecutters.some((b) => same(b, j))) ||
         (!j.cancelled && j.kind === 'tailoring' && !d.tailors.some((b) => same(b, j))) ||
@@ -6874,7 +7088,7 @@ export class VoxelSimulation {
         throw new Error('任务数据无效');
       if (
         !Array.isArray(j.deliveredFood) ||
-        j.deliveredFood.length > 4 ||
+        j.deliveredFood.length > 6 ||
         j.deliveredFood.some(
           (batch) =>
             !(migrateLogistics ? validBatch(batch) : plainCargo(batch)) ||
@@ -6882,7 +7096,7 @@ export class VoxelSimulation {
         ) ||
         new Set(j.deliveredFood.map((batch) => `${batch.resource}/${batch.crop ?? ''}`)).size !==
           j.deliveredFood.length ||
-        (['grain', 'meal'] as const).some(
+        (['grain', 'meat', 'carcass', 'meal', 'herb'] as const).some(
           (resource) =>
             j.deliveredFood
               .filter((batch) => batch.resource === resource)
@@ -6909,10 +7123,10 @@ export class VoxelSimulation {
         p.nextAttackTick < 0 ||
         p.nextAttackTick > d.tick + 200 ||
         (p.attackTargetId !== null &&
-          (!d.pawns.some(
-            (q) => q.id === p.attackTargetId && q.id !== p.id && !q.dead && !q.downed,
-          ) ||
-            (!p.drafted && p.faction === 'colony'))) ||
+          (p.phase === 'hunt'
+            ? !d.animals.some(a => a.id === p.attackTargetId && a.hunt && !a.dead)
+            : (!d.pawns.some(q => q.id === p.attackTargetId && q.id !== p.id && !q.dead && !q.downed) ||
+              (!p.drafted && p.faction === 'colony')))) ||
         (!p.dead &&
           !p.downed &&
           (p.drafted || p.faction === 'raider') &&
@@ -7050,6 +7264,7 @@ export class VoxelSimulation {
           'care',
           'apparel',
           'combat',
+          'hunt',
           'weapon',
           'trade',
           'downed',
@@ -7234,9 +7449,9 @@ export class VoxelSimulation {
             p.sleepingSince < 0 ||
             p.sleepingSince > d.tick)) ||
         !p.priorities ||
-        Object.values(p.priorities).length !== 9 ||
+        Object.values(p.priorities).length !== 10 ||
         (
-          ['dig', 'cut', 'build', 'haul', 'grow', 'cook', 'craft', 'care', 'research'] as Work[]
+          ['hunt', 'dig', 'cut', 'build', 'haul', 'grow', 'cook', 'craft', 'care', 'research'] as Work[]
         ).some(
           (k) => !Number.isInteger(p.priorities[k]) || p.priorities[k] < 0 || p.priorities[k] > 4,
         ) ||
@@ -7317,6 +7532,7 @@ export class VoxelSimulation {
       throw new Error('统计数据无效');
     validateRangedState(d);
     validateTrade(d, ids, apparelIds, weaponIds);
+    validateWildlife(d, ids, new Set([...apparelIds, ...weaponIds]));
     // Restore into empty state. Never rerun generation over an existing colony.
     const s = new VoxelSimulation(d.seed, d.settings, true);
     s.generator = d.generator;
@@ -7335,6 +7551,8 @@ export class VoxelSimulation {
         projectiles: d.projectiles,
         combatEvents: d.combatEvents,
         sandbags: d.sandbags,
+        animals: d.animals,
+        butcherSpots: d.butcherSpots,
         nextId: d.nextId,
         pawns: d.pawns,
         items: d.items,
@@ -7383,7 +7601,7 @@ export class VoxelSimulation {
     )
       throw new Error('床或门没有合法支撑或净空');
     if (
-      [...s.stoves, ...s.weaponBenches.filter((b) => b.kind === 'craftingSpot')].some(
+      [...s.stoves, ...s.butcherSpots, ...s.weaponBenches.filter((b) => b.kind === 'craftingSpot')].some(
         (p) =>
           s.blocks[at(p)] ||
           s.blocks[at(p) + WIDTH * DEPTH] ||
@@ -7392,7 +7610,7 @@ export class VoxelSimulation {
       )
     )
       throw new Error('灶台没有合法支撑或净空');
-    if (s.pawns.some((p) => !s.standable(p))) throw new Error('人物没有合法支撑或净空');
+    if ([...s.pawns, ...s.animals].some((p) => !s.standable(p))) throw new Error('人物没有合法支撑或净空');
     if (migrateLogistics) {
       // All work happens on the isolated clone. Reachable bounded spill is stable
       // in original stack order and preserves age using the actual transferred amount.
@@ -7436,6 +7654,13 @@ export class VoxelSimulation {
       j.reason = j.cancelled ? '已取消，保留原任务材料等待退回' : '回读后等待重新安排';
     }
     for (const p of s.pawns) {
+      if (p.phase === 'hunt') {
+        // Preserve warmup/burst timers; travel paths can be rebuilt against current terrain.
+        if (p.shooting) continue;
+        p.path = []; p.destination = null;
+        s.huntTick(p);
+        continue;
+      }
       if (p.phase === 'trade' || p.faction === 'trader') continue;
       if (p.weaponTask !== null) {
         p.jobId = null;
@@ -7594,6 +7819,7 @@ export class VoxelSimulation {
       : migrateArmor
         ? '旧存档已升级：衣物、伤势与科研保留；护甲结算已启用，板甲需研究后制作'
         : '体素存档已恢复；路径与任务预定重新建立';
+    if (sourceVersion < 22) s.seedWildlife();
     return s;
   }
 }

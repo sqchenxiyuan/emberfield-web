@@ -24,6 +24,8 @@ import { WeaponPanel, WeaponBenchPanel, EquipWeapon } from './WeaponPanel';
 import { weaponName } from './weapons';
 import { WEAPON_BENCH_NAMES } from './weaponProduction';
 import { APPAREL_NAMES } from './apparel';
+import { ANIMAL_DEFS, ANIMAL_PHASE_NAMES } from './wildlife';
+import { isRangedKind } from './ranged';
 import {
   BLOCK_NAMES,
   JOB_NAMES,
@@ -64,6 +66,7 @@ const tools: Tool[] = [
   'farm',
   'grove',
   'stove',
+  'butcherSpot',
   'stonecutter',
   'tailor',
   'craftingSpot',
@@ -96,6 +99,7 @@ const icons = [
   '♧',
   '♣',
   '♨',
+  '⋈',
   '⚒',
   '✂',
   '◇',
@@ -115,6 +119,7 @@ const icons = [
   '×',
 ];
 const hints: Record<Tool, string> = {
+  butcherSpot: '划定一格屠宰点，开启烹饪分工后自动加工可达尸体。点击点位可暂停或恢复；生肉可直接食用，也可与谷物混合做简餐。',
   craftingSpot: '一格制作点，无需建材。可制作木棒、钢匕首和短弓，加工速度为锻造台的一半。',
   smithy:
     '3×1 燃料锻造台，100 钢材。R 旋转，留出操作位；需木材燃料，可制作武器、钢头盔和研究后的钢板甲。',
@@ -130,7 +135,7 @@ const hints: Record<Tool, string> = {
   wire: '每格 1 钢材。拖动布线；六向相邻线路可跨层连通。在梯井中逐层铺设竖直线路。',
   heater: '50 钢材 + 1 零件；工作 175 W，待机 17.5 W。同层 6 格方形范围内自动接线，需封闭房间。',
   cooler: '90 钢材 + 3 零件；工作 200 W。负 X/Y 蓝侧制冷，正 X/Y 橙侧排热，R 换轴。留出两侧风口。',
-  inspect: '点击人物、物资或地形查看详情。选中人物后，可在面板中选择目标位置并下达移动。',
+  inspect: '点击人物、动物、物资或地形查看详情。动物可逐只标记狩猎；选中人物后，可在面板中选择目标位置并下达移动。',
   cut: '点击或框选树木。幼苗没有木材，长大后产量逐渐提高；查看详情可了解当前收益，再决定何时砍伐。',
   mine: '点击或框选岩土。工人从相邻工作面挖开两格高通道；先建通路再深入。',
   shaft: '在可站立地面点击一次，向下逐格开凿三格梯井。完整入口消耗 8 木材。',
@@ -157,7 +162,7 @@ const equal = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
 const levelName = (z: number, base = 8) =>
   z === base ? '营地基准层' : z < base ? `基准层下 ${base - z}` : `基准层上 +${z - base}`;
 const STORAGE_RESOURCES = Object.keys(RESOURCE_NAMES) as Resource[];
-const FOOD_RESOURCES: Resource[] = ['food', 'grain', 'meal'];
+const FOOD_RESOURCES: Resource[] = ['food', 'grain', 'meat', 'meal'];
 const BUILDING_RESOURCES: Resource[] = ['wood', 'stone', 'steel', 'components', 'chunk'];
 function connectedStorage(stockpiles: Stockpile[], start: Stockpile): Stockpile[] {
   const key = (p: Pos) => `${p.x}/${p.y}/${p.z}`;
@@ -182,7 +187,9 @@ function connectedStorage(stockpiles: Stockpile[], start: Stockpile): Stockpile[
   return result;
 }
 const foodName = (batch: Cargo) =>
-  batch.weapon
+  batch.carcass
+    ? `${ANIMAL_DEFS[batch.carcass.species].name}尸体`
+    : batch.weapon
     ? weaponName(batch.weapon)
     : batch.apparel
       ? `${batch.apparel.material === 'steel' ? '钢制' : '布制'}${APPAREL_NAMES[batch.apparel.kind]}`
@@ -202,6 +209,8 @@ function FoodCondition({ batch, temperature }: { batch: Cargo; temperature: numb
       {batch.resource === 'herb' && (
         <small data-testid="herb-use">草药用于医疗护理，不能食用；冷藏可延缓腐坏。</small>
       )}
+      {batch.resource === 'carcass' && <small>需在开启的屠宰点加工，不能直接食用；冷藏可延缓腐坏。</small>}
+      {batch.resource === 'meat' && <small>可生吃或与谷物混合烹饪；尽快使用，或搬进冷库。</small>}
       <span>
         {temperature.toFixed(1)}°C ·{' '}
         {rate === 0 ? '冻结 · 腐坏暂停' : rate < 1 ? '冷藏 · 腐坏减缓' : '未冷藏'}
@@ -262,8 +271,10 @@ function App() {
     [help, setHelp] = useState(true),
     [researchOpen, setResearchOpen] = useState(false),
     [tradeOpen, setTradeOpen] = useState(false),
+    [wildlifeOpen, setWildlifeOpen] = useState(false),
     [busy, setBusy] = useState(false),
     [selectedPawn, setSelectedPawn] = useState<number | null>(null),
+    [selectedAnimal, setSelectedAnimal] = useState<number | null>(null),
     [selectedCarer, setSelectedCarer] = useState<number | null>(null),
     [storageConnected, setStorageConnected] = useState(true),
     [saveStatus, setSaveStatus] = useState('尚未保存');
@@ -281,8 +292,22 @@ function App() {
     if (s.speed !== 0) void client.speed(0);
     setTradeOpen(true);
     setResearchOpen(false);
+    setWildlifeOpen(false);
     setMenu(false);
   }, [s?.trade.session?.id, s?.trade.session?.stage, !!s?.trade.quote, s?.speed]);
+  useEffect(() => {
+    const selected = state.selected;
+    const animals = client.snapshot().snapshot?.animals ?? [];
+    const animal = selected && animals.find(v => equal(v, selected));
+    setSelectedAnimal(current => selected && animals.some(v => v.id === current && equal(v, selected)) ? current : animal?.id ?? null);
+    if (animal) setSelectedPawn(null);
+  }, [state.selected]);
+  useEffect(() => {
+    if (!s || selectedAnimal === null || s.animals.some(a => a.id === selectedAnimal)) return;
+    const carcass = s.items.find(i => i.carcass?.animalId === selectedAnimal);
+    if (carcass) client.select(carcass);
+    setSelectedAnimal(null);
+  }, [s?.tick, selectedAnimal]);
   useEffect(() => {
     const t = setInterval(() => {
       if (client.snapshot().snapshot?.tick)
@@ -310,7 +335,9 @@ function App() {
       setBusy(false);
     }
   };
-  const p = state.selected;
+  const animal = s?.animals.find(v => v.id === selectedAnimal) ??
+    (state.selected ? s?.animals.find(v => equal(v, state.selected!)) : undefined);
+  const p = animal ?? state.selected;
   const spawn = s?.spawn ?? { x: 32, y: 32, z: 8 };
   const people = p ? (s?.pawns.filter((v) => equal(v, p)) ?? []) : [];
   const items = p ? (s?.items.filter((v) => equal(v, p)) ?? []) : [];
@@ -328,6 +355,7 @@ function App() {
   const canReceive = capacity.some((v) => Object.values(v.available).some((n) => n > 0));
   const crop = p ? s?.crops.find((v) => equal(v, p)) : null;
   const stove = p ? s?.stoves.find((v) => equal(v, p)) : null;
+  const butcherSpot = p ? s?.butcherSpots.find(v => equal(v, p)) : null;
   const sandbag = p ? s?.sandbags.find((v) => equal(v, p)) : null;
   const stonecutter = p
     ? s?.stonecutters.find((v) => stonecutterCells(v).some((q) => equal(q, p)))
@@ -374,7 +402,9 @@ function App() {
             deviceCells({ ...v, kind: v.kind, axis: v.axis ?? 'x' }).some((q) => equal(q, p))),
       ) ?? [])
     : [];
-  const pawn = people.find((v) => v.faction === 'trader') ?? s?.pawns.find((v) => v.id === selectedPawn) ?? people[0];
+  const pawn = animal ? undefined : people.find((v) => v.faction === 'trader') ?? s?.pawns.find((v) => v.id === selectedPawn) ?? people[0];
+  const hunters = s?.pawns.filter(v => v.faction === 'colony' && !v.dead && !v.downed && !v.drafted && v.priorities.hunt > 0 && v.weapon && isRangedKind(v.weapon.kind)) ?? [];
+  const assignedHunter = animal ? s?.pawns.find(v => v.phase === 'hunt' && v.attackTargetId === animal.id) : undefined;
   const carers =
     s?.pawns.filter(
       (v) =>
@@ -407,7 +437,8 @@ function App() {
   };
   const block = p ? client.blockAt(p) : 0;
   const title = p
-    ? (people[0]?.name ??
+    ? (animal?.name ?? people[0]?.name ??
+      (butcherSpot ? '屠宰点' : null) ??
       (device ? DEVICE_NAMES[device.kind] : null) ??
       (stonecutter ? '木制切石台' : null) ??
       (tailor ? '手工裁缝台' : null) ??
@@ -466,6 +497,7 @@ function App() {
                 ].join(' ')}
                 onClick={() => {
                   setSelectedPawn(v.id);
+                  setSelectedAnimal(null);
                   focus(v);
                 }}
               >
@@ -482,12 +514,16 @@ function App() {
             ))}
         </div>
         <div className="voxel-header-actions">
+          <button aria-label="野生动物与狩猎" aria-expanded={wildlifeOpen} onClick={() => {
+            setWildlifeOpen(v => !v); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
+          }}>野生动物{s?.animals.filter(a => a.hunt && !a.dead).length ? ` · ${s.animals.filter(a => a.hunt && !a.dead).length}` : ''}</button>
           <button
             aria-label="商队与家园"
             aria-expanded={tradeOpen}
             onClick={() => {
               setTradeOpen((value) => !value);
               setResearchOpen(false);
+              setWildlifeOpen(false);
               client.choose('inspect');
             }}
           >
@@ -496,7 +532,7 @@ function App() {
           <button
             aria-label="研究科技"
             aria-expanded={researchOpen}
-            onClick={() => { setResearchOpen((v) => !v); setTradeOpen(false); }}
+            onClick={() => { setResearchOpen((v) => !v); setTradeOpen(false); setWildlifeOpen(false); }}
             title={
               s?.research.current
                 ? `正在研究：${RESEARCH_DEFS[s.research.current].name}`
@@ -608,7 +644,7 @@ function App() {
           ↷
         </button>
       </div>
-      {help && !researchOpen && (
+      {help && !researchOpen && !wildlifeOpen && !tradeOpen && (
         <aside className="voxel-guide">
           <div className="voxel-panel-title">
             <span className="voxel-kicker">从地表到地下</span>
@@ -704,7 +740,7 @@ function App() {
         {!p && <p>点击地图查看物资、人物与施工进度。先规划，再让殖民者工作。</p>}
         {!p && s && (
           <p>
-            累计腐坏：生食材 {s.stats.spoiled.grain} · 简餐 {s.stats.spoiled.meal}
+            累计腐坏：谷物 {s.stats.spoiled.grain} · 生肉 {s.stats.spoiled.meat} · 尸体 {s.stats.spoiled.carcass} · 简餐 {s.stats.spoiled.meal}
             。食品需搬入有供电、温度达标的封闭冷库。
           </p>
         )}
@@ -734,6 +770,18 @@ function App() {
             · {levelName(p.z, spawn.z)}
           </p>
         )}
+        {animal && <section className="voxel-animal-detail" data-testid="animal-detail" data-animal-id={animal.id}>
+          <div className="voxel-info-row"><b>{ANIMAL_DEFS[animal.species].name}</b><span>{ANIMAL_PHASE_NAMES[animal.phase]}</span></div>
+          <label>健康 {Math.ceil(animal.health)} / {ANIMAL_DEFS[animal.species].health}<progress aria-label="动物健康" value={animal.health} max={ANIMAL_DEFS[animal.species].health} /></label>
+          <small>饱食 {Math.round(animal.hunger)}% · 位置 {animal.x}, {animal.y} · Z {animal.z}</small>
+          {animal.dead ? <p>等待附近空位放下尸体；尸体需要搬到屠宰点加工。</p> : <>
+            <p>{assignedHunter ? `${assignedHunter.name} · ${assignedHunter.reason}` : animal.hunt ? '已标记，等待能行动的猎人。' : '尚未标记狩猎。'}</p>
+            {!hunters.length && <small>需要未征召、能行动且装备短弓或枪械的殖民者，并开启狩猎分工。</small>}
+            <button aria-label={animal.hunt ? '取消狩猎此动物' : '标记狩猎此动物'} aria-pressed={animal.hunt} onClick={() => void client.command({ type: 'hunt', animalId: animal.id, enabled: !animal.hunt })}>{animal.hunt ? '取消狩猎' : '标记狩猎'}</button>
+            <small>猎人会实际靠近并射击。取消会停止追猎，已飞出的弹丸仍会继续。</small>
+          </>}
+          <button onClick={() => focus(animal)}>定位这只动物</button>
+        </section>}
         {tree && treeCondition && (
           <div className="voxel-tree-detail" data-testid="tree-detail">
             <div className="voxel-info-row">
@@ -941,6 +989,7 @@ function App() {
                 布料与衣物
               </button>
               <button onClick={() => updateStorage(storage.priority, ['herb'])}>仅收草药</button>
+              <button onClick={() => updateStorage(storage.priority, ['meat', 'carcass'])}>肉类与尸体</button>
               <button onClick={() => updateStorage(storage.priority, [])}>停止收纳</button>
             </div>
             <div className="voxel-storage-filters">
@@ -964,7 +1013,7 @@ function App() {
               ))}
             </div>
             <small>
-              每格一堆，同类且同品种可以补满；衣物每格一件，分别保留品质和耐久。工人优先使用更高优先级的合格仓位；满仓时等待空位。冷库还需封闭房间与制冷供电。
+              每格一堆，同类且同品种可以补满；衣物和尸体每格一件。工人优先使用更高优先级的合格仓位；满仓时等待空位。冷库还需封闭房间与制冷供电。
             </small>
           </div>
         )}
@@ -1074,9 +1123,9 @@ function App() {
         {stove && (
           <div className="voxel-bill">
             <p>
-              10 生食材 + 1 木材 → 1 简餐
+              10 生肉或谷物 + 1 木材 → 1 简餐
               <br />
-              全营地简餐低于目标时制作，含在制数量。
+              全营地简餐低于目标时制作，含在制数量。优先使用易坏的肉，可与谷物混合配料。
             </p>
             <label>
               库存目标
@@ -1115,6 +1164,12 @@ function App() {
             </button>
           </div>
         )}
+        {butcherSpot && <section className="voxel-bill" data-testid="butcher-bill">
+          <b>{butcherSpot.paused ? '屠宰已暂停' : '自动屠宰已开启'}</b>
+          <p>开启烹饪分工的殖民者会取来可达的完整尸体，在这里加工成生肉。请留出附近落地空间。</p>
+          <button onClick={() => void client.command({ type: 'butcherBill', spotId: butcherSpot.id, paused: !butcherSpot.paused })}>{butcherSpot.paused ? '恢复屠宰' : '暂停屠宰'}</button>
+          <small>暂停会取消当前加工并安全退回尸体；空间被堵时，尸体保留在任务中等待。</small>
+        </section>}
         {stonecutter && (
           <div className="voxel-bill" data-testid="stonecutting-bill">
             <p>
@@ -1210,6 +1265,10 @@ function App() {
               每堆上限 {stackLimit(i.resource)} · 剩余 {stackLimit(i.resource) - i.amount}
             </small>
             <FoodCondition batch={i} temperature={temperatureOf(i)} />
+            {i.carcass && <div className="voxel-carcass-detail" data-testid="carcass-detail">
+              <small>来源动物 #{i.carcass.animalId} · 完整{ANIMAL_DEFS[i.carcass.species].name}尸体</small>
+              <button onClick={() => { client.choose('butcherSpot'); setNotice('在可达地面划定屠宰点，再开启人物的烹饪分工。'); }}>建造屠宰点</button>
+            </div>}
             {i.weapon && s && (
               <EquipWeapon
                 item={i}
@@ -1410,12 +1469,13 @@ function App() {
                   'haul',
                   'grow',
                   'cook',
+                  'hunt',
                   'craft',
                   'research',
                 ] as Work[]
               ).map((w, i) => (
                 <label key={w}>
-                  {['医护', '挖掘', '伐木', '施工', '搬运', '种植', '烹饪', '加工', '研究'][i]}
+                  {['医护', '挖掘', '伐木', '施工', '搬运', '种植', '烹饪', '狩猎', '加工', '研究'][i]}
                   <WorkSkill pawn={pawn} work={w} />
                   <select
                     aria-label={`${pawn.name} ${w}优先级`}
@@ -1642,6 +1702,37 @@ function App() {
           close={() => setResearchOpen(false)}
         />
       )}
+      {wildlifeOpen && s && <aside className="voxel-wildlife-drawer" aria-label="野生动物与狩猎" data-testid="wildlife-panel">
+        <div className="voxel-wildlife-heading"><h2>野生动物与狩猎</h2><button aria-label="关闭野生动物面板" onClick={() => setWildlifeOpen(false)}>×</button></div>
+        <p>{s.animals.filter(a => !a.dead).length} 只野生动物 · {s.animals.filter(a => a.hunt && !a.dead).length} 只已标记 · {hunters.length} 位可用远程猎人</p>
+        <details className="voxel-wildlife-guide" open><summary>从狩猎到餐桌</summary>
+          <ol><li>在制作点制作短弓，或取得枪械，为殖民者装备。</li><li>开启人物的狩猎分工，标记动物；猎人会靠近、瞄准并射击。</li><li>划定屠宰点，开启烹饪分工；尸体搬入加工为生肉。</li><li>生肉可食用，也可在灶台与谷物混合做简餐；肉和尸体应及时冷藏。</li></ol>
+          <div><button onClick={() => {
+            const spot = s.weaponBenches.find(b => b.kind === 'craftingSpot');
+            if (spot) { setSelectedAnimal(null); focus(spot); } else client.choose('craftingSpot');
+          }}>{s.weaponBenches.some(b => b.kind === 'craftingSpot') ? '查看制作点' : '建造制作点'}</button>
+          <button onClick={() => client.choose('butcherSpot')}>规划屠宰点</button></div>
+          <small>饥饿或疲劳可能打断狩猎，满足需求后会重新安排。取消狩猎不能召回已发射的弹丸。</small>
+        </details>
+        <details className="voxel-wildlife-workers"><summary>猎人分工与装备</summary>
+          {s.pawns.filter(v => v.faction === 'colony').map(v => <div key={v.id}>
+            <button onClick={() => { setSelectedAnimal(null); setSelectedPawn(v.id); focus(v); }}>{v.name}</button>
+            <small>{v.weapon ? weaponName(v.weapon) : '未装备武器'} · {v.priorities.hunt ? `狩猎优先级 ${v.priorities.hunt}` : '狩猎已停用'}{v.drafted ? ' · 征召中' : ''}</small>
+          </div>)}
+        </details>
+        <div className="voxel-wildlife-list" role="list" aria-label="地图上的动物">
+          {!s.animals.length && <p>地图上暂时没有野生动物。</p>}
+          {s.animals.map(a => <section role="listitem" key={a.id} className={selectedAnimal === a.id ? 'selected' : ''} data-animal-id={a.id}>
+            <div><b>{a.name}</b><span>{ANIMAL_PHASE_NAMES[a.phase]}</span></div>
+            <small>{ANIMAL_DEFS[a.species].name} · 健康 {Math.ceil(a.health)} / {ANIMAL_DEFS[a.species].health} · {levelName(a.z, spawn.z)}</small>
+            <div><button aria-label={`定位 ${a.name}`} onClick={() => { setSelectedAnimal(a.id); setSelectedPawn(null); focus(a); }}>定位</button>
+              <button aria-label={`${a.hunt ? '取消狩猎' : '标记狩猎'} ${a.name}`} disabled={a.dead} aria-pressed={a.hunt} onClick={() => void client.command({ type: 'hunt', animalId: a.id, enabled: !a.hunt })}>{a.hunt ? '取消狩猎' : '标记狩猎'}</button></div>
+          </section>)}
+        </div>
+        <details className="voxel-wildlife-workers"><summary>屠宰点 · {s.butcherSpots.length} 处</summary>
+          {s.butcherSpots.map(spot => <div key={spot.id}><button onClick={() => { setSelectedAnimal(null); focus(spot); }}>定位屠宰点 {spot.id}</button><small>{spot.paused ? '已暂停' : '自动加工开启'} · Z {spot.z}</small></div>)}
+        </details>
+      </aside>}
       {s && (tradeOpen || s.trade.session?.stage === 'ready') && (
         <TradePanel
           snapshot={s}

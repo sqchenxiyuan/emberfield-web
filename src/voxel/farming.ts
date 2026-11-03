@@ -74,7 +74,7 @@ export const CROPS: Record<
   },
 };
 export const SIMPLE_MEAL = { ingredients: 10, wood: 1, output: 1, work: 100 };
-export const NUTRITION: Partial<Record<Resource, number>> = { meal: 0.9, food: 0.9, grain: 0.05 };
+export const NUTRITION: Partial<Record<Resource, number>> = { meal: 0.9, food: 0.9, grain: 0.05, meat: 0.05 };
 export const FOOD_FALL_PER_TICK = (1.6 * 100) / DAY;
 export const hourAt = (tick: number) => (8 + (tick / DAY) * 24) % 24;
 export const temperatureAt = (tick: number) =>

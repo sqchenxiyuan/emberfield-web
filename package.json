@@ -64,7 +64,9 @@
     "research:storyteller": "node scripts/research/verify-storyteller-evidence.mjs && node scripts/research/test-storyteller-verifier.mjs",
     "research:trade": "node scripts/research/verify-trade-evidence.mjs && node scripts/research/test-trade-verifier.mjs",
     "test:voxel:trade": "node scripts/voxel-trade-campaign-verify.mjs --run",
-    "test:voxel:trade:browser": "node scripts/voxel-trade-browser-verify.mjs"
+    "test:voxel:trade:browser": "node scripts/voxel-trade-browser-verify.mjs",
+    "test:voxel:wildlife": "node scripts/voxel-wildlife-campaign-verify.mjs",
+    "test:voxel:wildlife:browser": "node scripts/voxel-wildlife-browser-verify.mjs"
   },
   "dependencies": {
     "pixi.js": "8.22.0",

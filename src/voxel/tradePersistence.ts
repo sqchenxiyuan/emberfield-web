@@ -52,7 +52,8 @@ export function validateTrade(d: VoxelSave, ids: Set<number>, apparelIds: Set<nu
       t.nextVisit !== nextTradeVisit(t, d.seed)) fail();
   for (const ledger of [t.imported, t.exported]) if (!record(ledger) ||
     Object.keys(ledger).length !== Object.keys(emptyCounts()).length ||
-    (Object.keys(emptyCounts()) as Resource[]).some(k => !integer(ledger[k], 0, 1e12))) fail();
+    (Object.keys(emptyCounts()) as Resource[]).some(k => !integer(ledger[k], 0, 1e12)) ||
+    ledger.carcass !== 0) fail();
   const addId = (id: number) => {
     if (!integer(id, 1, d.nextId - 1) || ids.has(id) || apparelIds.has(id) || weaponIds.has(id)) fail();
     ids.add(id);
@@ -75,7 +76,7 @@ export function validateTrade(d: VoxelSave, ids: Set<number>, apparelIds: Set<nu
       owned.add(id);
     }
     for (const stock of c.stock) {
-      if (!record(stock) || !validBatch(stock) || !c.pawnIds.includes(stock.carrierId) ||
+      if (!record(stock) || !validBatch(stock) || stock.resource === 'carcass' || !c.pawnIds.includes(stock.carrierId) ||
           !d.pawns.some(p => p.id === stock.carrierId && p.faction === 'trader')) fail();
       addId(stock.id);
       if (stock.apparel) {
@@ -111,7 +112,8 @@ export function validateTrade(d: VoxelSave, ids: Set<number>, apparelIds: Set<nu
       !integer(r.goodwillBefore, -100, 100) || !integer(r.goodwillAfter, -100, 100) ||
       !Array.isArray(r.transferred) || !r.transferred.length || r.transferred.length > 10000 ||
       r.transferred.some(row => !record(row) || !['colony', 'trader'].includes(row.side) ||
-        !integer(row.stockId, 1, d.nextId - 1) || !validBatch(row.batch) || (r.gift && row.side !== 'colony'))) fail();
+        !integer(row.stockId, 1, d.nextId - 1) || !validBatch(row.batch) || row.batch.resource === 'carcass' ||
+        (r.gift && row.side !== 'colony'))) fail();
     addId(r.id); priorTick = r.tick;
   }
 }

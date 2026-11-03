@@ -6,7 +6,9 @@
 
 在线试玩：[GitHub Pages](https://sqchenxiyuan.github.io/emberfield-web/) · 源码：[sqchenxiyuan/emberfield-web](https://github.com/sqchenxiyuan/emberfield-web)。
 
-当前开发重点是先搭好可操作的玩法和机制闭环，数值采用初步默认值，后续再平衡。下一步优先体素动物、狩猎与肉食生产，见[开发路线](docs/research/rimworld/05-reconstruction-roadmap.md)；研究文档中的原版数值不代表当前游戏已经完成平衡。
+当前开发重点是先搭好可操作的玩法和机制闭环，数值采用初步默认值，后续再平衡。已接通体素动物、狩猎与肉食生产的首条循环，见[开发路线](docs/research/rimworld/05-reconstruction-roadmap.md)；研究文档中的原版数值不代表当前游戏已经完成平衡。
+
+2026-11-03动物与狩猎更新（v22）：鹿和野兔有持续活动、觅食、休息与受伤逃跑，可在地图或野生动物列表选择、定位和标记狩猎。持弓或枪的猎人实际追踪与射击，尸体经搬运和屠宰产出生肉，再进入混合烹饪、冷藏与食用。加入狩猎分工、屠宰开关、尸体身份保留和v21旧档迁移；暂定参数集中配置，驯养与繁殖后续再做。见[玩法与验证](docs/research/rimworld/70-voxel-wildlife-gameplay.md)。
 
 2026-11-03商队贸易更新（v21）：多层体素模式加入实体银币、大宗/军火商队、家园区域和社交议价。人物实际走到商人旁交谈，再选择买卖数量；购入物品在商人附近落地，需要搬回营地。物品年龄、装备身份和有限库存保留；可赠礼，商人银币不足时需明确接受少收。新营地800银，旧档不补发，可出售真实产出积累资金。701项本地单元测试、16.07游戏日普通经营和Worker/main各17项页面检查通过。[66原版规则](docs/research/rimworld/66-trade-market-mechanisms.md)、[68实现与验收](docs/research/rimworld/68-voxel-trade-implementation.md)记录数值和边界；载畜、完整派系外交及商队食宿仍待实现。以下版本记录中的“无贸易”指当时状态；二维入口保持原有功能范围。
 

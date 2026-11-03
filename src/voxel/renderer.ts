@@ -31,6 +31,7 @@ import {
   PlaneGeometry,
   Quaternion,
   Raycaster,
+  RingGeometry,
   RepeatWrapping,
   RGBAFormat,
   Scene,
@@ -68,6 +69,8 @@ import {
   type Resource,
   type Stove,
   type VoxelSnapshot,
+  type WildAnimal,
+  type AnimalSpecies,
 } from './types';
 import { BATTERY_CAPACITY } from './power';
 import { isPartMissing, partEfficiency } from './anatomy';
@@ -76,6 +79,7 @@ import { WEAPON_KINDS, type WeaponKind } from './weapons';
 import { SMITHY_FUEL_CAPACITY } from './weaponProduction';
 import { isRangedKind } from './ranged';
 import { projectileViewPosition } from './rangedView';
+import { ANIMAL_DEFS } from './wildlife';
 
 /** x/y are horizontal simulation coordinates; Three uses x/z horizontally. */
 export interface VoxelView {
@@ -127,6 +131,7 @@ type PawnVisual = {
   weapons: Record<WeaponKind, Group>;
   cargoWeapons: Record<WeaponKind, Group>;
   cargoHerb: Group;
+  cargoCarcasses: Record<AnimalSpecies, Group>;
   cargo: Mesh;
   torso: Mesh;
   label: Sprite;
@@ -139,6 +144,11 @@ type PawnVisual = {
   start: number;
   duration: number;
   pawn: Pawn;
+};
+type AnimalVisual = {
+  root: Group; body: Group; head: Group; legs: Group[]; label: Sprite;
+  selected: Mesh; huntMark: Group; from: Vector3; to: Vector3;
+  start: number; duration: number; animal: WildAnimal;
 };
 type DevicePart = {
   cell: Pos;
@@ -167,6 +177,8 @@ const RESOURCE_COLORS: Record<Resource, number> = {
   components: 0xe8b55c,
   food: 0x99b869,
   grain: 0xd6bd71,
+  meat: 0xc16f68,
+  carcass: 0x976c4e,
   meal: 0xd88d5f,
   herb: 0x6ca889,
   cloth: 0xe7dfc8,
@@ -176,6 +188,21 @@ const RESOURCE_COLORS: Record<Resource, number> = {
 // Local Three coordinates: x across the grip, y thickness, z along the blade.
 // The same four parts identify each actual item on the ground, in cargo and in hand.
 type ModelPart = [number, number, number, number, number, number, number];
+/** Same identifiable body shape on the ground, in hauling cargo and at a work spot. */
+function carcassParts(species: AnimalSpecies): ModelPart[] {
+  const deer = species === 'deer', fur = ANIMAL_DEFS[species].color, scale = deer ? 1 : .65;
+  const parts: ModelPart[] = [
+    [0, .14, 0, .46, .26, .76, fur],
+    [.02, .13, .47, .26, .22, .32, fur],
+    [-.32, .07, .2, .34, .09, .09, fur], [.32, .07, .2, .34, .09, .09, fur],
+    [-.32, .07, -.25, .34, .09, .1, fur], [.32, .07, -.25, .34, .09, .1, fur],
+    [-.12, .14, deer ? .61 : .7, .055, .08, deer ? .13 : .32, deer ? 0xd0b794 : fur],
+    [.12, .14, deer ? .61 : .7, .055, .08, deer ? .13 : .32, deer ? 0xd0b794 : fur],
+    [0, .16, -.43, .15, .12, .13, 0xd9cdb2],
+    [0, .17, .64, .12, .09, .04, 0x443b32],
+  ];
+  return parts.map(([x, y, z, sx, sy, sz, color]) => [x * scale, y * scale, z * scale, sx * scale, sy * scale, sz * scale, color]);
+}
 // A tied leaf bundle identifies the same physical herb batch on the ground and in a carrier's hands.
 const HERB_MODEL_PARTS: ModelPart[] = [
   [-0.13, 0, 0, 0.17, 0.16, 0.42, 0x477d63],
@@ -429,6 +456,8 @@ export class VoxelRenderer {
   private potGeometry: CylinderGeometry;
   private smokeGeometry: IcosahedronGeometry;
   private pawnVisuals = new Map<number, PawnVisual>();
+  private animalVisuals = new Map<number, AnimalVisual>();
+  private selectedAnimalId: number | null = null;
   private data: VoxelSnapshot | null = null;
   private snapshotAt = 0;
   private level = SURFACE;
@@ -650,7 +679,7 @@ export class VoxelRenderer {
       }
     }
     this.ladderDirty = true;
-    this.highlight(this.hover);
+    this.updateCursor();
   }
 
   snapshot(snapshot: VoxelSnapshot) {
@@ -725,6 +754,25 @@ export class VoxelRenderer {
         );
     }
     this.entitiesDirty = true;
+    const animalIds = new Set(snapshot.animals.map(a => a.id));
+    for (const [id, visual] of this.animalVisuals) if (!animalIds.has(id)) {
+      this.removePawn(visual); this.animalVisuals.delete(id);
+    }
+    for (const animal of snapshot.animals) {
+      let visual = this.animalVisuals.get(animal.id);
+      if (visual && (visual.animal.species !== animal.species || visual.animal.name !== animal.name)) {
+        this.removePawn(visual); this.animalVisuals.delete(animal.id); visual = undefined;
+      }
+      if (!visual) { visual = this.makeAnimal(animal); this.animalVisuals.set(animal.id, visual); this.scene.add(visual.root); }
+      if (visual.to.x !== animal.x + .5 || visual.to.y !== animal.z || visual.to.z !== animal.y + .5) {
+        visual.from.copy(visual.root.position); visual.to.set(animal.x + .5, animal.z, animal.y + .5);
+        visual.start = this.snapshotAt; visual.duration = Math.max(45, 170 / Math.sqrt(Math.max(1, snapshot.speed)));
+      }
+      if (reset || snapshot.speed === 0 || visual.from.distanceTo(visual.to) > 4) {
+        visual.from.copy(visual.to); visual.root.position.copy(visual.to); visual.duration = 0;
+      }
+      visual.animal = animal;
+    }
   }
 
   view(view: VoxelView) {
@@ -753,7 +801,7 @@ export class VoxelRenderer {
     this.plane.constant = -this.level;
     this.grid.position.y = this.level + 0.018;
     this.updateCamera();
-    this.highlight(this.hover);
+    this.updateCursor();
   }
 
   private updateCamera() {
@@ -832,6 +880,7 @@ export class VoxelRenderer {
       this.entitiesDirty = false;
     }
     this.animatePawns(performance.now());
+    this.animateAnimals(performance.now());
     this.scene.updateMatrixWorld(true);
     const terrain = [...this.terrainMeshes.values()].filter((mesh) => mesh.visible);
     const obstruction = this.ray.intersectObjects(terrain, false)[0]?.distance ?? Infinity;
@@ -848,6 +897,13 @@ export class VoxelRenderer {
         const { x, y, z } = visual.pawn;
         pawnHits.push({ distance: intersection.distance, pos: { x, y, z } });
       }
+    }
+    for (const visual of this.animalVisuals.values()) {
+      if (!visual.root.visible) continue;
+      const parts: Mesh[] = [];
+      visual.body.traverseVisible(object => { if (object instanceof Mesh && object.geometry === this.box) parts.push(object); });
+      const hit = this.ray.intersectObjects(parts, false)[0];
+      if (hit && hit.distance <= obstruction + .02) pawnHits.push({ distance: hit.distance, pos: { x: visual.animal.x, y: visual.animal.y, z: visual.animal.z } });
     }
     pawnHits.sort((a, b) => a.distance - b.distance);
     if (pawnHits.length) return pawnHits[0].pos;
@@ -872,6 +928,12 @@ export class VoxelRenderer {
   highlight(pos: Pos | null) {
     if (this.disposed) return;
     this.hover = pos ? { ...pos } : null;
+    this.selectedAnimalId = pos ? this.data?.animals.find(a => a.x === pos.x && a.y === pos.y && a.z === pos.z)?.id ?? null : null;
+    this.updateCursor();
+  }
+
+  private updateCursor() {
+    const pos = this.hover;
     this.cursor.visible = !!pos && pos.z <= this.level;
     if (pos) {
       const solid = this.block(pos.x, pos.y, pos.z) !== Block.Air;
@@ -1142,6 +1204,7 @@ export class VoxelRenderer {
         item.resource !== 'chunk' &&
         item.resource !== 'apparel' &&
         item.resource !== 'weapon' &&
+        item.resource !== 'carcass' &&
         item.resource !== 'herb',
     );
     const garments = loose.filter((item) => item.resource === 'apparel' && item.apparel);
@@ -1334,6 +1397,7 @@ export class VoxelRenderer {
     );
     this.finish(storage);
     this.updateHomeArea();
+    this.updateWildlifeObjects();
     this.updateFarming();
     this.updateStonecutters();
     this.updateTailors();
@@ -1343,6 +1407,33 @@ export class VoxelRenderer {
     this.updateHousing();
     this.updatePower();
     this.updateJobLines();
+  }
+
+  private updateWildlifeObjects() {
+    if (!this.data) return;
+    const spots = this.data.butcherSpots.filter(p => p.z <= this.level);
+    const marked = this.batch('butcher-spots', spots.length * 7, this.box, this.batchMaterial('butcher-spots'));
+    this.inspectBatches.set(marked, { cells: spots, instancesPerCell: 7 });
+    spots.forEach((p, i) => {
+      const color = p.paused ? 0x77796a : 0xb7bd8f;
+      const parts: ModelPart[] = [
+        [0, .025, 0, .89, .035, .89, 0x736b50],
+        [-.43, .05, 0, .035, .04, .88, color], [.43, .05, 0, .035, .04, .88, color],
+        [0, .05, -.43, .88, .04, .035, color], [0, .05, .43, .88, .04, .035, color],
+        [-.14, .09, 0, .12, .07, .43, 0xc5d2c8], [-.14, .09, -.3, .1, .08, .21, 0x513d2d],
+      ];
+      parts.forEach(([x, y, z, sx, sy, sz, c], n) => this.instance(marked, i * 7 + n, p.x + .5 + x, p.z + y, p.y + .5 + z, sx, sy, sz, c));
+    });
+    this.finish(marked);
+    const bodies = [
+      ...this.data.items.filter(i => i.carcass && i.z <= this.level).map(i => ({ ...i, species: i.carcass!.species })),
+      ...this.data.jobs.filter(j => j.kind === 'butcher' && j.z <= this.level).flatMap(j => j.deliveredFood.filter(b => b.carcass).map(b => ({ x: j.x, y: j.y, z: j.z, species: b.carcass!.species }))),
+    ];
+    const corpses = this.batch('animal-carcasses', bodies.length * 10, this.box, this.batchMaterial('animal-carcasses'));
+    this.inspectBatches.set(corpses, { cells: bodies, instancesPerCell: 10 });
+    bodies.forEach((body, i) => carcassParts(body.species).forEach(([x, y, z, sx, sy, sz, color], n) =>
+      this.instance(corpses, i * 10 + n, body.x + .5 + x, body.z + .035 + y, body.y + .5 + z, sx, sy, sz, color)));
+    this.finish(corpses);
   }
 
   private updateHomeArea() {
@@ -2884,6 +2975,73 @@ export class VoxelRenderer {
     this.jobLines.geometry = geometry;
   }
 
+  private makeAnimal(animal: WildAnimal): AnimalVisual {
+    const root = new Group(), body = new Group(), head = new Group(), legs: Group[] = [];
+    root.add(body); body.add(head);
+    const deer = animal.species === 'deer';
+    const fur = this.keepMaterial(new MeshLambertMaterial({ color: ANIMAL_DEFS[animal.species].color }));
+    const dark = this.keepMaterial(new MeshLambertMaterial({ color: 0x40372e }));
+    const cream = this.keepMaterial(new MeshLambertMaterial({ color: 0xe2d3b4 }));
+    const part = (parent: Group, mat: MeshLambertMaterial, x: number, y: number, z: number, sx: number, sy: number, sz: number) => {
+      const mesh = new Mesh(this.box, mat); mesh.position.set(x, y, z); mesh.scale.set(sx, sy, sz); parent.add(mesh); return mesh;
+    };
+    part(body, fur, 0, deer ? .73 : .29, 0, deer ? .44 : .33, deer ? .44 : .29, deer ? .75 : .46);
+    part(body, cream, 0, deer ? .55 : .19, .02, deer ? .3 : .23, .07, deer ? .55 : .29);
+    part(body, cream, 0, deer ? .82 : .34, deer ? -.44 : -.28, .15, .14, .14);
+    head.position.set(0, deer ? .88 : .39, deer ? .34 : .21);
+    if (deer) part(head, fur, 0, .02, -.03, .22, .5, .24);
+    part(head, fur, 0, deer ? .31 : .02, .09, deer ? .25 : .28, deer ? .26 : .24, deer ? .34 : .26);
+    part(head, dark, 0, deer ? .25 : -.015, deer ? .28 : .25, .13, .08, .07);
+    for (const side of [-1, 1]) {
+      part(head, dark, side * (deer ? .13 : .145), deer ? .34 : .065, .16, .022, .042, .045);
+      const ear = part(head, fur, side * (deer ? .2 : .095), deer ? .48 : .29, deer ? .02 : .035, deer ? .2 : .07, deer ? .075 : .4, .085);
+      ear.rotation.z = side * (deer ? -.3 : -.15);
+      if (deer) {
+        part(head, cream, side * .08, .61, -.02, .045, .32, .045);
+        const branch = part(head, cream, side * .13, .68, -.02, .19, .035, .045); branch.rotation.z = side * .5;
+      }
+    }
+    for (const [x, z] of [[-.15, -.25], [.15, -.25], [-.15, .25], [.15, .25]]) {
+      const leg = new Group(); leg.position.set(x * (deer ? 1 : .75), deer ? .61 : .22, z * (deer ? 1 : .6));
+      part(leg, fur, 0, deer ? -.25 : -.08, 0, deer ? .1 : .11, deer ? .5 : .16, .12);
+      part(leg, deer ? dark : cream, 0, deer ? -.51 : -.17, .025, .11, .08, .16);
+      body.add(leg); legs.push(leg);
+    }
+    const selected = new Mesh(this.keepGeometry(new RingGeometry(deer ? .48 : .35, deer ? .54 : .41, 24)), this.keepMaterial(new MeshBasicMaterial({ color: 0xf2d58e, depthWrite: false })));
+    selected.rotation.x = -Math.PI / 2; selected.position.y = .035; root.add(selected);
+    const huntMark = new Group(); huntMark.position.set(0, deer ? 1.85 : 1.2, 0);
+    const red = this.keepMaterial(new MeshLambertMaterial({ color: 0xe49c80 }));
+    for (const angle of [-Math.PI / 4, Math.PI / 4]) { const bar = part(huntMark, red, 0, 0, 0, .28, .045, .045); bar.rotation.z = angle; }
+    root.add(huntMark);
+    const label = new Sprite(this.keepMaterial(new SpriteMaterial({ map: nameTexture(animal.name, 0xd3c397), depthTest: false, depthWrite: false })));
+    label.position.y = deer ? 2.17 : 1.52; label.scale.set(1.35, .37, 1); label.renderOrder = 12; root.add(label);
+    const pos = new Vector3(animal.x + .5, animal.z, animal.y + .5); root.position.copy(pos);
+    return { root, body, head, legs, label, selected, huntMark, from: pos.clone(), to: pos.clone(), start: performance.now(), duration: 0, animal };
+  }
+
+  private animateAnimals(now: number) {
+    if (!this.data) return;
+    const extra = this.data.speed > 0 ? Math.min(4, (now - this.snapshotAt) / 1000 * TPS * this.data.speed) : 0;
+    const time = (this.data.tick + extra) / TPS;
+    for (const visual of this.animalVisuals.values()) {
+      const a = visual.animal, deer = a.species === 'deer';
+      visual.root.visible = a.z <= this.level;
+      const fraction = visual.duration ? MathUtils.clamp((now - visual.start) / visual.duration, 0, 1) : 1;
+      visual.root.position.lerpVectors(visual.from, visual.to, fraction);
+      const dx = visual.to.x - visual.from.x, dz = visual.to.z - visual.from.z;
+      if (Math.abs(dx) + Math.abs(dz) > .001) visual.root.rotation.y = Math.atan2(dx, dz);
+      const moving = !a.dead && fraction < 1, resting = a.phase === 'rest', fleeing = a.phase === 'flee';
+      const wave = Math.sin(time * (fleeing ? 19 : 11) + a.id);
+      visual.body.position.y = a.dead ? .1 : resting ? (deer ? -.35 : -.1) : moving ? Math.abs(wave) * (deer ? .045 : .07) : 0;
+      visual.body.rotation.z = a.dead ? Math.PI / 2 : 0;
+      visual.head.rotation.x = a.phase === 'graze' ? .65 + Math.sin(time * 3 + a.id) * .08 : fleeing ? -.12 : resting ? .18 : Math.sin(time * .9 + a.id) * .025;
+      visual.legs.forEach((leg, i) => { leg.visible = !resting; leg.rotation.x = moving ? wave * (i === 0 || i === 3 ? 1 : -1) * (fleeing ? .65 : .4) : 0; });
+      visual.selected.visible = this.selectedAnimalId === a.id;
+      visual.huntMark.visible = a.hunt && !a.dead;
+      visual.label.visible = visual.selected.visible || a.hunt;
+    }
+  }
+
   private makePawn(pawn: Pawn): PawnVisual {
     const root = new Group();
     const body = new Group();
@@ -3010,6 +3168,16 @@ export class VoxelRenderer {
     }
     cargoHerb.visible = false;
     body.add(cargoHerb);
+    const cargoCarcasses = {} as Record<AnimalSpecies, Group>;
+    for (const species of ['hare', 'deer'] as const) {
+      const carried = new Group(); carried.position.set(0, .8, .37); carried.rotation.y = Math.PI / 2;
+      for (const [x, y, z, sx, sy, sz, color] of carcassParts(species)) {
+        let material = weaponMaterials.get(color);
+        if (!material) { material = this.keepMaterial(new MeshLambertMaterial({ color })); weaponMaterials.set(color, material); }
+        part(carried, material, x, y, z, sx, sy, sz);
+      }
+      carried.visible = false; body.add(carried); cargoCarcasses[species] = carried;
+    }
     const cargoMaterial = this.keepMaterial(new MeshLambertMaterial({ color: 0xc69b60 }));
     const cargo = part(body, cargoMaterial, 0, 0.72, 0.39, 0.43, 0.31, 0.33);
     cargo.visible = false;
@@ -3084,6 +3252,7 @@ export class VoxelRenderer {
       weapons,
       cargoWeapons,
       cargoHerb,
+      cargoCarcasses,
       cargo,
       label,
       sleepSymbol,
@@ -3098,7 +3267,7 @@ export class VoxelRenderer {
     };
   }
 
-  private removePawn(visual: PawnVisual) {
+  private removePawn(visual: Pick<PawnVisual, 'root'>) {
     this.scene.remove(visual.root);
     const materials = new Set<MeshLambertMaterial | MeshBasicMaterial | SpriteMaterial>();
     visual.root.traverse((object) => {
@@ -3225,7 +3394,7 @@ export class VoxelRenderer {
       gaugeCount = 0;
     for (const pawn of shooters) {
       const state = pawn.shooting!,
-        target = this.data.pawns.find((p) => p.id === state.targetId);
+        target = this.data.pawns.find((p) => p.id === state.targetId) ?? this.data.animals.find(a => a.id === state.targetId);
       if (!target) continue;
       const from = { x: state.origin.x + 0.5, y: state.origin.y + 0.5, z: state.origin.z + 0.5 };
       const to = { x: target.x + 0.5, y: target.y + 0.5, z: target.z + 0.5 };
@@ -3361,6 +3530,7 @@ export class VoxelRenderer {
       visual.hammer.visible = false;
       visual.pencil.visible = false;
       visual.cargoHerb.visible = false;
+      for (const body of Object.values(visual.cargoCarcasses)) body.visible = false;
       const visible = pawn.z <= this.level;
       visual.root.visible = visible;
       const fraction =
@@ -3398,9 +3568,10 @@ export class VoxelRenderer {
         continue;
       }
       visual.cargo.visible =
-        !!pawn.cargo && pawn.cargo.resource !== 'weapon' && pawn.cargo.resource !== 'herb';
+        !!pawn.cargo && pawn.cargo.resource !== 'weapon' && pawn.cargo.resource !== 'herb' && pawn.cargo.resource !== 'carcass';
       if (pawn.cargo?.weapon) visual.cargoWeapons[pawn.cargo.weapon.kind].visible = true;
       visual.cargoHerb.visible = pawn.cargo?.resource === 'herb';
+      if (pawn.cargo?.carcass) visual.cargoCarcasses[pawn.cargo.carcass.species].visible = true;
       const moving = pawn.path.length > 0 || fraction < 1;
       const working =
         pawn.phase === 'work' && pawn.path.length === 0 && !pawn.cargo && fraction >= 1;
@@ -3468,7 +3639,7 @@ export class VoxelRenderer {
         opponent.z === pawn.z &&
         Math.abs(opponent.x - pawn.x) + Math.abs(opponent.y - pawn.y) === 1;
       const shootingTarget = pawn.shooting
-        ? this.data.pawns.find((p) => p.id === pawn.shooting!.targetId)
+        ? this.data.pawns.find((p) => p.id === pawn.shooting!.targetId) ?? this.data.animals.find(a => a.id === pawn.shooting!.targetId)
         : undefined;
       const aiming = !!shootingTarget && !!pawn.weapon && isRangedKind(pawn.weapon.kind) && !moving;
       const carryingPatient = pawn.carryingPawnId !== null;
@@ -3480,7 +3651,7 @@ export class VoxelRenderer {
         !carryingPatient &&
         !working &&
         pawn.phase !== 'care' &&
-        (pawn.drafted || pawn.faction === 'raider' || pawn.phase === 'combat');
+        (pawn.drafted || pawn.faction === 'raider' || pawn.phase === 'combat' || pawn.phase === 'hunt');
       if (holdingWeapon) visual.weapons[pawn.weapon!.kind].visible = true;
       const tending =
         working && (job?.kind === 'sow' || job?.kind === 'plantTree' || job?.kind === 'harvest');
@@ -3560,7 +3731,8 @@ export class VoxelRenderer {
                   ? 0.08 + Math.max(0, swing) * 0.08
                   : 0;
       visual.tool.visible =
-        working && !cooking && !tending && !sewing && !weaponBench && !researchBench;
+        working && !cooking && !tending && !sewing && !weaponBench && !researchBench && job?.kind !== 'butcher';
+      if (working && job?.kind === 'butcher') visual.weapons.steelKnife.visible = true;
       visual.pencil.visible = researching;
       visual.hammer.visible = weaponCrafting && !machining;
       visual.hammer.scale.setScalar(carving ? 0.6 : 1);
@@ -3648,6 +3820,7 @@ export class VoxelRenderer {
       this.entitiesDirty = false;
     }
     this.animatePawns(now);
+    this.animateAnimals(now);
     this.renderer.render(this.scene, this.camera);
     this.frameCount++;
     if (now - this.fpsAt >= 800) {
@@ -3690,6 +3863,8 @@ export class VoxelRenderer {
     this.canvas.removeEventListener('webglcontextrestored', this.restored);
     for (const visual of this.pawnVisuals.values()) this.removePawn(visual);
     this.pawnVisuals.clear();
+    for (const visual of this.animalVisuals.values()) this.removePawn(visual);
+    this.animalVisuals.clear();
     for (const mesh of this.terrainMeshes.values()) mesh.geometry.dispose();
     for (const batch of this.batches.values()) batch.mesh.dispose();
     this.workMotes.dispose();

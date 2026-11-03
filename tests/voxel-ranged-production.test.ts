@@ -1,4 +1,5 @@
 import { withMedicineLedgers } from './legacy-medicine-defaults';
+import { expectWildlifeIds } from './legacy-wildlife-defaults';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
@@ -28,6 +29,8 @@ function fixture() {
   s.research = initialResearch(true);
   for (const key of ['Machining', 'Gunsmithing', 'BlowbackOperation'] as const)
     s.research.progress[key] = RESEARCH_DEFS[key].cost;
+  // Isolated terrain fixture excludes the newly spawned wildlife.
+  s.animals = [];
   s.blocks.fill(Block.Stone);
   s.ladders.fill(0);
   s.trees = [];
@@ -87,10 +90,10 @@ describe('v18 ranged migration and powered physical production', () => {
         s = VoxelSimulation.load(old),
         save = s.save();
       expect(old).toEqual(before);
-      expect(save.version).toBe(21);
+      expect(save.version).toBe(22);
+      expectWildlifeIds(old.nextId, save);
       for (const key of [
         'tick',
-        'nextId',
         'blocks',
         'ladders',
         'items',

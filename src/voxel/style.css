@@ -1440,6 +1440,30 @@ a {
   background: #1c292af7;
   box-shadow: 0 12px 35px #0004;
 }
+.voxel-wildlife-drawer {
+  position: absolute; z-index: 4; right: 24px; top: 90px; bottom: 168px;
+  width: 355px; padding: 16px; overflow-y: auto; overscroll-behavior: contain;
+  border: 1px solid #b5c98b66; border-radius: 6px; background: #1c292af7;
+  box-shadow: 0 12px 35px #0004;
+}
+.voxel-wildlife-heading, .voxel-wildlife-list section > div { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.voxel-wildlife-heading h2 { margin: 0; font-size: 18px; color: #dde0b3; }
+.voxel-wildlife-drawer p, .voxel-wildlife-drawer small, .voxel-animal-detail small { display: block; color: #bdc9bc; font-size: 11px; line-height: 1.65; }
+.voxel-wildlife-guide, .voxel-wildlife-workers { margin: 14px 0; padding: 12px; border: 1px solid #bdc9bc2e; background: #14202166; }
+.voxel-wildlife-drawer summary { cursor: pointer; color: #d5dfc0; }
+.voxel-wildlife-guide ol { margin: 12px 0; padding-left: 20px; color: #c7d1bc; line-height: 1.8; font-size: 11px; }
+.voxel-wildlife-guide > div { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.voxel-wildlife-workers > div { margin-top: 10px; }
+.voxel-wildlife-list section { margin: 10px 0; padding: 12px; border: 1px solid #bdc9bc2e; background: #14202166; }
+.voxel-wildlife-list section.selected { border-color: #e8d496; background: #d9c77e12; }
+.voxel-wildlife-list section > small { margin: 7px 0; }
+.voxel-wildlife-list section > div > span { color: #cbd6a8; font-size: 11px; }
+.voxel-wildlife-list button[aria-pressed='true'] { color: #f0c3a5; border-color: #cf947c99; background: #bf725d22; }
+.voxel-animal-detail { display: grid; gap: 10px; margin: 14px 0; padding: 12px; border: 1px solid #b5c98b55; background: #14202166; }
+.voxel-animal-detail label { display: grid; gap: 6px; }
+.voxel-animal-detail p { margin: 0; line-height: 1.6; }
+.voxel-carcass-detail { display: grid; gap: 8px; margin-top: 8px; }
+@media (max-width: 1050px) { .voxel-wildlife-drawer { right: 12px; top: 204px; width: 315px; padding: 12px; } }
 .voxel-trade-drawer-heading,
 .voxel-trade-dialog-header,
 .voxel-trade-caravan > div,

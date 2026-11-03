@@ -53,6 +53,8 @@ function fixture() {
     latitude: 0,
     rainfall: 1100,
   });
+  // Isolated terrain fixture excludes the newly spawned wildlife.
+  s.animals = [];
   s.blocks.fill(Block.Stone);
   s.ladders.fill(0);
   s.trees = [];
@@ -69,6 +71,7 @@ function fixture() {
     p.worn = [];
     p.schedule.fill('work');
     p.priorities = {
+      hunt: 0,
       dig: 0,
       build: i === 0 ? 1 : 0,
       cut: 0,
@@ -455,7 +458,7 @@ describe('physical dressing, interruption, death and migration', () => {
     );
     const old = JSON.parse(raw.toString()),
       s = VoxelSimulation.load(old);
-    expect(s.save().version).toBe(21);
+    expect(s.save().version).toBe(22);
     expect(s.items).toEqual(old.items);
     expect(s.pawns.map((p) => p.health)).toEqual(old.pawns.map((p: any) => p.health));
     expect(s.counts().apparel).toBe(0);

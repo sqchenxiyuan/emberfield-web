@@ -94,7 +94,7 @@ export function validateRangedState(d: VoxelSave) {
       p.retreating ||
       p.carriedBy !== null ||
       p.weaponDropPending ||
-      p.phase !== 'combat' ||
+      (p.phase !== 'combat' && p.phase !== 'hunt') ||
       p.path.length ||
       p.weaponTask !== null ||
       p.apparelTask !== null ||
@@ -104,7 +104,9 @@ export function validateRangedState(d: VoxelSave) {
       p.nextAttackTick > d.tick ||
       s.weaponId !== p.weapon.id ||
       s.targetId !== p.attackTargetId ||
-      !d.pawns.some((q) => q.id === s.targetId && q !== p && !q.dead && !q.downed) ||
+      !(p.phase === 'hunt'
+        ? d.animals.some(a => a.id === s.targetId && !a.dead && a.hunt)
+        : d.pawns.some((q) => q.id === s.targetId && q !== p && !q.dead && !q.downed)) ||
       !s.origin ||
       !inside(s.origin) ||
       !same(s.origin, p) ||

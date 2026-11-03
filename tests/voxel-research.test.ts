@@ -28,6 +28,8 @@ const pos = (x: number, y: number, z = 8): Pos => ({ x, y, z });
 // No research progress is granted except the explicitly labelled near-completion case.
 function fixture(benches = 1) {
   const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  // Isolated terrain fixture excludes the newly spawned wildlife.
+  s.animals = [];
   s.blocks.fill(Block.Stone);
   s.ladders.fill(0);
   s.trees = [];
@@ -300,7 +302,7 @@ describe('research save integrity and real v14 migration', () => {
       s = VoxelSimulation.load(old),
       saved = s.save();
     expect(old).toEqual(before);
-    expect(saved.version).toBe(21);
+    expect(saved.version).toBe(22);
     expect(saved.research.origin).toBe('legacy-unlocked');
     expect(saved.blocks).toEqual(old.blocks);
     expect(saved.items).toEqual(old.items);

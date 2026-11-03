@@ -11,12 +11,14 @@ import { isFreshStump, injuryBleedRate, traumaSummary } from './injuries';
 import { healthSummary } from './survival';
 import { SKILL_KEYS } from './skills';
 import type { WealthTotals } from './storytellerRules';
+import { ANIMAL_DEFS } from './wildlife';
 
-/** Core 1.7 selected full-HP resource prices. Underground deposits/plants are not items. */
+/** Core 1.7 selected full-HP resource prices, except provisional meat=2.
+ * Carcasses use their species' meat yield below; deposits/plants are not items. */
 export const RESOURCE_MARKET_VALUE: Readonly<Record<Exclude<Resource, 'apparel' | 'weapon'>, number>> = {
   silver: 1,
   wood: 1.2, stone: .9, steel: 1.9, components: 32, food: 24,
-  grain: 1.1, meal: 15, chunk: 0, cloth: 1.5, herb: 10,
+  grain: 1.1, meat: 2, carcass: 0, meal: 15, chunk: 0, cloth: 1.5, herb: 10,
 };
 const QUALITY = [.5, .75, 1, 1.25, 1.5, 2.5, 5] as const;
 const QUALITY_GAIN = [9999999, 9999999, 9999999, 500, 1000, 2000, 3000] as const;
@@ -67,6 +69,9 @@ export function apparelMarketValue(piece: ApparelPiece, tainted = false): number
 export function cargoMarketValue(cargo: Cargo): number {
   if (cargo.resource === 'weapon') return cargo.weapon ? weaponMarketValue(cargo.weapon) * cargo.amount : 0;
   if (cargo.resource === 'apparel') return cargo.apparel ? apparelMarketValue(cargo.apparel) * cargo.amount : 0;
+  // Reference asset value only. Animal carcass trading is not supported.
+  if (cargo.resource === 'carcass') return cargo.carcass && Object.hasOwn(ANIMAL_DEFS, cargo.carcass.species)
+    ? ANIMAL_DEFS[cargo.carcass.species].meat * RESOURCE_MARKET_VALUE.meat * cargo.amount : 0;
   return RESOURCE_MARKET_VALUE[cargo.resource] * cargo.amount;
 }
 
@@ -141,19 +146,25 @@ export interface WealthDetails extends WealthTotals {
 }
 /** All present map cells are visible in this project. No fog, ownership claims,
  * pocket maps, guest/slave pawns, plants-as-assets or underground mineral wealth.
- * Fuel/energy floats are already consumed inputs. Corpse meat/leather value is 0
- * until those resources exist; former-colony gear remains a physical item asset. */
+ * Fuel/energy floats are already consumed inputs. Human corpse meat/leather value
+ * remains 0; former-colony gear remains a physical item asset. Animal carcasses
+ * are separate physical cargo, valued from their provisional meat yield. */
 export function colonyWealthDetails(sim: VoxelSimulation): WealthDetails {
   const itemSources = { ground: 0, cargo: 0, equipment: 0, delivered: 0 };
   for (const item of sim.items) itemSources.ground += cargoMarketValue(item);
+  for (const animal of sim.animals) if (animal.dead)
+    itemSources.ground += cargoMarketValue({ resource: 'carcass', amount: 1,
+      carcass: { animalId: animal.id, species: animal.species } });
   for (const pawn of sim.pawns) if (pawn.faction === 'colony') {
     if (pawn.cargo) itemSources.cargo += cargoMarketValue(pawn.cargo);
     if (pawn.weapon) itemSources.equipment += weaponMarketValue(pawn.weapon);
     for (const piece of pawn.worn) itemSources.equipment += apparelMarketValue(piece, pawn.dead);
   }
-  // deliveredFood tracks the same quantities with age metadata: do not add it again.
+  // Ordinary food is already included in materialValue. Carcass value needs its
+  // species metadata, so its generic material value is zero and added exactly once here.
   // Crafting inputs retain value here until commit, an explicit difference from native UFT=0.
-  for (const job of sim.jobs) itemSources.delivered += materialValue(job.delivered);
+  for (const job of sim.jobs) itemSources.delivered += materialValue(job.delivered) +
+    job.deliveredFood.filter(batch => batch.resource === 'carcass').reduce((n, batch) => n + cargoMarketValue(batch), 0);
   const buildingSources = { structures: 0, facilities: 0, ladders: 0 };
   let legacyStructureCells = 0;
   const kinds = (sim as VoxelSimulation & { structureKinds?: Uint8Array }).structureKinds;

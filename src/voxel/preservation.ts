@@ -1,17 +1,21 @@
 import { DAY, type Cargo, type FoodCropKind, type Resource } from './types';
 import { validApparel } from './apparel';
 import { validWeapon } from './weapons';
+import { WILDLIFE } from './wildlife';
 
 // RimWorld 1.7 source/Defs: 60000 original ticks/day, rate * elapsed ticks.
 // We preserve days, using this simulation's DAY=12000 instead. Unlike the native
 // rare-tick scheduler, world containers advance once per simulation tick.
 export const ROT_DAYS = Object.freeze({ rice: 40, potato: 30, corn: 60, meal: 4, herb: 150 });
-export const isPerishable = (resource: Resource) => ['grain', 'meal', 'herb'].includes(resource);
+export const isPerishable = (resource: Resource) => ['grain', 'meat', 'carcass', 'meal', 'herb'].includes(resource);
 export function rotRateAtTemperature(temperature: number): number {
   if (!Number.isFinite(temperature)) throw new RangeError('Temperature must be finite');
   return temperature <= 0 ? 0 : temperature >= 10 ? 1 : temperature / 10;
 }
 export function rotLimit(batch: Pick<Cargo, 'resource' | 'crop'>): number | null {
+  // Animal food durations are provisional local values, not native calibration.
+  if (batch.resource === 'meat') return WILDLIFE.meatRotDays * DAY;
+  if (batch.resource === 'carcass') return WILDLIFE.carcassRotDays * DAY;
   if (batch.resource === 'meal') return ROT_DAYS.meal * DAY;
   if (batch.resource === 'herb') return ROT_DAYS.herb * DAY;
   if (batch.resource === 'grain' && batch.crop && Object.hasOwn(ROT_DAYS, batch.crop))
@@ -25,12 +29,13 @@ export function remainingRotDays(batch: Cargo): number | null {
 }
 export function freshBatch(resource: Resource, amount: number, crop?: FoodCropKind): Cargo {
   if (resource === 'apparel' || resource === 'weapon') throw new Error('装备需要独立实例信息');
+  if (resource === 'carcass') throw new Error('动物尸体需要独立动物身份信息');
   return {
     resource,
     amount,
     ...(resource === 'grain'
       ? { crop: crop ?? 'rice', rotProgress: 0 }
-      : resource === 'meal' || resource === 'herb'
+      : isPerishable(resource)
         ? { rotProgress: 0 }
         : {}),
   };
@@ -43,6 +48,7 @@ export function portion(batch: Cargo, amount: number): Cargo {
     ...(batch.crop !== undefined ? { crop: batch.crop } : {}),
     ...(batch.apparel !== undefined ? { apparel: { ...batch.apparel } } : {}),
     ...(batch.weapon !== undefined ? { weapon: { ...batch.weapon } } : {}),
+    ...(batch.carcass !== undefined ? { carcass: { ...batch.carcass } } : {}),
     ...(batch.forbidden !== undefined ? { forbidden: batch.forbidden } : {}),
     ...(batch.rotProgress !== undefined ? { rotProgress: batch.rotProgress } : {}),
   };
@@ -52,16 +58,18 @@ export function compatibleBatches(a: Cargo, b: Cargo): boolean {
     a.resource === b.resource &&
     a.crop === b.crop &&
     (a.resource !== 'weapon' || (!!a.weapon && !!b.weapon && a.weapon.id === b.weapon.id)) &&
-    (a.resource !== 'apparel' || (!!a.apparel && !!b.apparel && a.apparel.id === b.apparel.id))
+    (a.resource !== 'apparel' || (!!a.apparel && !!b.apparel && a.apparel.id === b.apparel.id)) &&
+    (a.resource !== 'carcass' || (!!a.carcass && !!b.carcass &&
+      a.carcass.animalId === b.carcass.animalId && a.carcass.species === b.carcass.species))
   );
 }
 /** Merge only the transferred amount, weighted by actual quantities. */
 export function mergeBatch(target: Cargo, incoming: Cargo): void {
   if (
-    ['apparel', 'weapon'].includes(target.resource) ||
-    ['apparel', 'weapon'].includes(incoming.resource)
+    ['apparel', 'weapon', 'carcass'].includes(target.resource) ||
+    ['apparel', 'weapon', 'carcass'].includes(incoming.resource)
   )
-    throw new Error('衣物实例不能合并');
+    throw new Error('装备和动物尸体实例不能合并');
   if (!compatibleBatches(target, incoming) || incoming.amount <= 0 || target.amount <= 0)
     throw new Error('Only positive compatible batches can merge');
   if (isPerishable(target.resource)) {
@@ -94,6 +102,8 @@ export function validBatch(batch: unknown): batch is Cargo {
       'components',
       'food',
       'grain',
+      'meat',
+      'carcass',
       'meal',
       'cloth',
       'herb',
@@ -123,6 +133,11 @@ export function validBatch(batch: unknown): batch is Cargo {
       : b.weapon !== undefined || b.forbidden !== undefined
   )
     return false;
+  if (b.resource === 'carcass') {
+    if (b.amount !== 1 || !b.carcass || typeof b.carcass !== 'object' || Array.isArray(b.carcass) ||
+        !Number.isSafeInteger(b.carcass.animalId) || b.carcass.animalId <= 0 ||
+        !['hare', 'deer'].includes(b.carcass.species)) return false;
+  } else if (b.carcass !== undefined) return false;
   const limit = rotLimit(b);
   return limit === null
     ? b.rotProgress === undefined

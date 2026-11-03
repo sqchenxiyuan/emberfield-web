@@ -13,6 +13,8 @@ function fixture() {
   const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
   // Controlled feature fixture represents a colony with research already completed.
   s.research = initialResearch(true);
+  // Isolated terrain fixture excludes the newly spawned wildlife.
+  s.animals = [];
   s.blocks.fill(Block.Stone);
   s.ladders.fill(0);
   s.trees = [];
@@ -28,6 +30,7 @@ function fixture() {
     Object.assign(p, pos(11, 11 + i));
     p.schedule.fill('work');
     p.priorities = {
+      hunt: 0,
       dig: 0,
       build: 0,
       cut: 0,
@@ -78,7 +81,7 @@ describe('skills in real simulation tasks and saves', () => {
     expect(old.pawns[0].skills).toBeUndefined();
     const s = VoxelSimulation.load(old),
       saved = s.save();
-    expect(saved.version).toBe(21);
+    expect(saved.version).toBe(22);
     expect(saved.items).toEqual(old.items);
     expect(saved.blocks).toEqual(old.blocks);
     expect(saved.pawns.map((p) => [p.food, p.rest, p.worn, p.weapon, p.health])).toEqual(

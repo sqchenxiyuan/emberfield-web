@@ -12,6 +12,8 @@ function fixture() {
   const pawn = sim.pawns[0];
   pawn.trauma = initialTrauma(); pawn.worn = []; pawn.weapon = null; pawn.cargo = null;
   for (const key of SKILL_KEYS) pawn.skills[key].level = 0;
+  // Isolated terrain fixture excludes the newly spawned wildlife.
+  sim.animals = [];
   sim.blocks.fill(Block.Air); sim.ladders.fill(0); sim.items = []; sim.pawns = [pawn];
   sim.jobs = []; sim.beds = []; sim.doors = []; sim.stoves = []; sim.stonecutters = []; sim.tailors = [];
   sim.researchBenches = []; sim.sandbags = []; sim.wires = []; sim.weaponBenches = []; sim.devices = [];

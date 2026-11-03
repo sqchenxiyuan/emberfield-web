@@ -67,6 +67,8 @@ function fixture(configure: (s: VoxelSimulation) => void = () => {}) {
   });
   // Controlled feature fixture represents a colony with research already completed.
   s.research = initialResearch(true);
+  // Isolated terrain fixture excludes the newly spawned wildlife.
+  s.animals = [];
   s.blocks.fill(Block.Stone);
   s.ladders.fill(0);
   s.trees = [];
@@ -84,6 +86,7 @@ function fixture(configure: (s: VoxelSimulation) => void = () => {}) {
     // This geometry/lifecycle fixture has a qualified forester; skill gates have separate tests.
     if (i === 0) pawn.skills.plants.level = 8;
     pawn.priorities = {
+      hunt: 0,
       dig: 0,
       cut: i === 0 ? 1 : 0,
       build: 0,
@@ -397,7 +400,7 @@ describe('real v8 migration and v9 validation', () => {
       s = VoxelSimulation.load(raw);
     expect(raw.version).toBe(8);
     expect(raw).toEqual(before);
-    expect(s.save().version).toBe(21);
+    expect(s.save().version).toBe(22);
     expect(s.save().blocks).toEqual(raw.blocks);
     expect(s.items).toEqual(raw.items);
     expect(s.treePlots).toEqual([]);

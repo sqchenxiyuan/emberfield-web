@@ -29,6 +29,8 @@ function until(s: VoxelSimulation, done: () => boolean, limit = 1500) {
 /** Bounded geometry tests transactions; full production is exercised by the normal campaign. */
 function fixture() {
   const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  // Isolated terrain fixture excludes the newly spawned wildlife.
+  s.animals = [];
   s.blocks.fill(Block.Stone);
   s.ladders.fill(0);
   s.trees = [];
@@ -43,6 +45,7 @@ function fixture() {
     p.worn = [];
     p.schedule.fill('work');
     p.priorities = {
+      hunt: 0,
       dig: 0,
       build: 0,
       cut: 0,

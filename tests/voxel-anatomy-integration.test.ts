@@ -16,6 +16,8 @@ const pos = (x: number, y: number, z = 8): Pos => ({ x, y, z });
 // raid behavior is separately exercised by voxel-anatomy-campaign-verify.mjs.
 function fixture() {
   const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  // Isolated terrain fixture excludes the newly spawned wildlife.
+  s.animals = [];
   s.blocks.fill(Block.Stone);
   s.ladders.fill(0);
   s.trees = [];
@@ -72,7 +74,7 @@ describe('anatomy integration with work, physical treatment and save migration',
       const s = VoxelSimulation.load(old),
         save = s.save();
       expect(old).toEqual(before);
-      expect(save.version).toBe(21);
+      expect(save.version).toBe(22);
       expect(s.tick).toBe(old.tick);
       for (const key of ['blocks', 'items', 'researchBenches', 'stats'] as const)
         expect(save[key]).toEqual(key === 'stats' ? withMedicineLedgers(old.stats) : old[key]);

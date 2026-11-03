@@ -8,6 +8,8 @@ import { Block, at, type Projectile } from '../src/voxel/types';
 // these isolated fixtures are not evidence of normal colony progression.
 function fixture() {
   const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  // Isolated terrain fixture excludes the newly spawned wildlife.
+  s.animals = [];
   s.blocks.fill(Block.Air);
   s.trees = [];
   s.doors = [];

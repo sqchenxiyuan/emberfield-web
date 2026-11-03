@@ -190,7 +190,7 @@ export function jobSkill(kind: string): SkillKey | null {
   if (kind === 'mine' || kind === 'digLadder') return 'mining';
   if (PLANT_JOBS.has(kind)) return 'plants';
   if (BUILDING_JOBS.has(kind)) return 'construction';
-  if (kind === 'cook') return 'cooking';
+  if (kind === 'cook' || kind === 'butcher') return 'cooking';
   if (kind === 'smith' || kind === 'armorsmith' || kind === 'tailoring' || kind === 'stonecut')
     return 'crafting';
   if (kind === 'tend') return 'medicine';

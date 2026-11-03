@@ -66,6 +66,8 @@ export type Resource =
   | 'components'
   | 'food'
   | 'grain'
+  | 'meat'
+  | 'carcass'
   | 'meal'
   | 'chunk'
   | 'cloth'
@@ -73,6 +75,7 @@ export type Resource =
   | 'apparel'
   | 'weapon';
 export type Work =
+  | 'hunt'
   | 'dig'
   | 'build'
   | 'cut'
@@ -238,6 +241,7 @@ export interface RoomSummary {
   maxZ: number;
 }
 export type Tool =
+  | 'butcherSpot'
   | DeviceKind
   | 'wire'
   | 'inspect'
@@ -314,6 +318,7 @@ export interface Cargo {
   crop?: FoodCropKind;
   apparel?: ApparelPiece;
   weapon?: WeaponPiece;
+  carcass?: { animalId: number; species: AnimalSpecies };
   /** Ground weapon forbidden state; manual equip overrides it. */
   forbidden?: boolean;
   /** Equivalent unfrozen age in our simulation ticks; required for grain/meal. */
@@ -347,6 +352,28 @@ export interface Crop extends Pos {
 export interface Stove extends Pos {
   id: number;
   target: number;
+  paused: boolean;
+}
+export type AnimalSpecies = 'hare' | 'deer';
+/** Wildlife uses its own small state machine, separate from human anatomy. */
+export interface WildAnimal extends Pos {
+  id: number;
+  species: AnimalSpecies;
+  name: string;
+  health: number;
+  hunger: number;
+  dead: boolean;
+  phase: 'roam' | 'graze' | 'rest' | 'flee' | 'dead';
+  hunt: boolean;
+  moveTick: number;
+  decisionTick: number;
+  fleeUntil: number;
+  threatId: number | null;
+  retryTick: number;
+  rotProgress: number;
+}
+export interface ButcherSpot extends Pos {
+  id: number;
   paused: boolean;
 }
 export interface Stonecutter extends Pos {
@@ -427,6 +454,8 @@ export interface CropCondition {
   reason: string;
 }
 export type JobKind =
+  | 'butcherSpot'
+  | 'butcher'
   | DeviceKind
   | 'wire'
   | 'refuel'
@@ -553,6 +582,7 @@ export interface Pawn extends Pos {
   path: number[];
   destination: number | null;
   phase:
+    | 'hunt'
     | 'trade'
     | 'idle'
     | 'travel'
@@ -584,6 +614,8 @@ export interface Counts {
   components: number;
   food: number;
   grain: number;
+  meat: number;
+  carcass: number;
   meal: number;
   chunk: number;
   cloth: number;
@@ -612,6 +644,8 @@ export interface VoxelStats {
   spoiled: Counts;
 }
 export interface VoxelSnapshot {
+  animals: WildAnimal[];
+  butcherSpots: ButcherSpot[];
   trade: TradeView;
   homeArea: number[];
   combat: CombatState;
@@ -671,6 +705,8 @@ export interface ChunkUpdate {
   ladders: Uint8Array;
 }
 export type VoxelCommand =
+  | { type: 'hunt'; animalId: number; enabled: boolean }
+  | { type: 'butcherBill'; spotId: number; paused: boolean }
   | TradeCommand
   | { type: 'research'; project: ResearchKey | null }
   | { type: 'difficulty'; difficulty: Difficulty }
@@ -724,7 +760,9 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   format: 'emberfield-voxel';
-  version: 21;
+  version: 22;
+  animals: WildAnimal[];
+  butcherSpots: ButcherSpot[];
   trade: TradeState;
   homeArea: number[];
   combat: CombatState;
@@ -789,9 +827,13 @@ export const RESOURCE_NAMES: Record<Resource, string> = {
   components: '零件',
   food: '包装生存口粮',
   grain: '生食材',
+  meat: '生肉',
+  carcass: '动物尸体',
   meal: '简餐',
 };
 export const JOB_NAMES: Record<JobKind, string> = {
+  butcherSpot: '划定屠宰点',
+  butcher: '屠宰动物',
   generator: '造发电机',
   solar: '造太阳能板',
   battery: '造蓄电池',
@@ -827,6 +869,7 @@ export const JOB_NAMES: Record<JobKind, string> = {
   cook: '烹饪简餐',
 };
 export const TOOL_NAMES: Record<Tool, string> = {
+  butcherSpot: '屠宰点',
   ...DEVICE_NAMES,
   wire: '电线',
   inspect: '查看',
@@ -862,6 +905,8 @@ export const emptyCounts = (): Counts => ({
   components: 0,
   food: 0,
   grain: 0,
+  meat: 0,
+  carcass: 0,
   meal: 0,
   chunk: 0,
   cloth: 0,

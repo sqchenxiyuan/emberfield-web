@@ -21,6 +21,8 @@ function fixture(configure: (s: VoxelSimulation) => void = () => {}) {
   const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
   // Controlled feature fixture represents a colony with research already completed.
   s.research = initialResearch(true);
+  // Isolated terrain fixture excludes the newly spawned wildlife.
+  s.animals = [];
   s.blocks.fill(Block.Stone);
   s.ladders.fill(0);
   s.trees = [];
@@ -36,6 +38,7 @@ function fixture(configure: (s: VoxelSimulation) => void = () => {}) {
     Object.assign(p, pos(11, 11 + i));
     p.schedule.fill('work');
     p.priorities = {
+      hunt: 0,
       dig: 0,
       build: 0,
       cut: 0,

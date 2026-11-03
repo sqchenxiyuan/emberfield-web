@@ -1,4 +1,5 @@
 import { withMedicineLedgers } from './legacy-medicine-defaults';
+import { expectWildlifeIds } from './legacy-wildlife-defaults';
 import { initialSkills } from '../src/voxel/skills';
 import { initialTrade } from '../src/voxel/trade';
 import { createHash } from 'node:crypto';
@@ -43,6 +44,8 @@ function until(s: VoxelSimulation, done: () => boolean, max = 3000) {
 function fixture() {
   const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
   s.research = initialResearch(true);
+  // Isolated terrain fixture excludes the newly spawned wildlife.
+  s.animals = [];
   s.blocks.fill(Block.Stone);
   s.ladders.fill(0);
   s.trees = [];
@@ -122,8 +125,9 @@ describe('armor save migration and strict physical schemas', () => {
       const s = VoxelSimulation.load(old),
         saved = s.save();
       expect(old).toEqual(before);
-      expect(saved.version).toBe(21);
-      for (const key of ['tick', 'nextId', 'blocks', 'items', 'stats', 'researchBenches'] as const)
+      expect(saved.version).toBe(22);
+      expectWildlifeIds(old.nextId, saved);
+      for (const key of ['tick', 'blocks', 'items', 'stats', 'researchBenches'] as const)
         expect(saved[key]).toEqual(key === 'stats' ? withMedicineLedgers(old.stats) : old[key]);
       expect(saved.research).toEqual({
         ...old.research,
