@@ -10,12 +10,12 @@ permissions:
 
 concurrency:
   group: github-pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 15
     steps:
       - name: Check out source
         uses: actions/checkout@v4
@@ -26,53 +26,6 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
-      - name: Test simulation rules
-        run: npm test -- --silent --maxWorkers=2
-      - name: Verify wildlife continues moving
-        run: npm run test:animals
-      - name: Check research evidence and arithmetic
-        run: npm run research:check
-      - name: Verify a complete colony campaign
-        run: npm run test:campaign
-      - name: Verify cross-level excavation and construction
-        run: npm run test:voxel
-      - name: Verify biome generation and real opening campaigns on varied terrain
-        run: npm run test:voxel:worldgen
-      - name: Verify normal calendar tree growth, forestry and natural reseeding
-        run: npm run test:voxel:plants
-      - name: Verify two food production cycles and material conservation
-        run: npm run test:voxel:food
-      - name: Verify multilevel housing and sleep persistence
-        run: npm run test:voxel:housing
-      - name: Verify physical power construction and room temperatures
-        run: npm run test:voxel:power
-      - name: Verify natural health consequences, cross-level rescue, feeding and survival saves
-        run: npm run test:voxel:survival
-      - name: Verify farming, cold storage and natural food spoilage
-        run: npm run test:voxel:preservation
-      - name: Verify finite storage, cross-level hauling and published save migration
-        run: npm run test:voxel:logistics
-      - name: Verify natural chunks, stonecutting bills and upper masonry construction
-        run: npm run test:voxel:stonecutting
-      - name: Verify cotton growth, cross-level tailoring, physical outfits and temperature effects
-        run: npm run test:voxel:apparel
-      - name: Verify scheduled raids, real melee injuries, physical tending and recovery
-        run: npm run test:voxel:injuries
-      - name: Verify full anatomy injuries and capacity consequences in ordinary combat
-        run: npm run test:voxel:anatomy
-      - name: Verify weapon production followed by actual skill growth and stored quality
-        run: npm run test:voxel:skills
-      - name: Verify actual multilevel research and technology unlocks
-        run: npm run test:voxel:research
-      - name: Verify real armor research, cross-level forging, outfits and combat
-        run: npm run test:voxel:armor
-      - name: Verify firearm research, powered machining, ranged combat and in-flight saves
-        run: npm run test:voxel:ranged
-      - name: Verify real herb farming, cross-floor medical logistics and natural infection outcomes
-        run: npm run test:voxel:medicine
-        env:
-          VOXEL_MEDICINE_FINAL: '1'
-          VOXEL_MEDICINE_OUT: test-results/voxel-medicine-campaign
       - name: Build site with relative asset and Worker URLs
         run: npm run build
       - name: Configure GitHub Pages

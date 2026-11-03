@@ -146,7 +146,7 @@ npm run test:memory
 
 ## GitHub Pages 发布
 
-推送到独立仓库的 `main` 后，GitHub Actions 会安装锁定依赖、运行规则与完整流程测试、构建并发布。也可在Actions中手动运行 **Deploy Emberfield to GitHub Pages**。Pages的Source设置为 **GitHub Actions**。
+推送到独立仓库的 `main` 后，GitHub Actions 只安装锁定依赖、构建并发布；`npm run build` 保留 TypeScript 类型检查。规则测试、经营长跑、研究证据与浏览器验收在本地完成，发布流水线不重复执行。新提交会取消尚未完成的旧发布。也可在 Actions 中手动运行 **Deploy Emberfield to GitHub Pages**。Pages 的 Source 设置为 **GitHub Actions**。
 
 Vite使用相对资源路径，模块Worker也由构建处理，因此可部署在 `/emberfield-web/` 子路径；不需要额外服务器或跨源隔离响应头。运行存档留在访问者浏览器，网站不会上传游戏存档。 localhost与GitHub Pages是不同来源，需要用JSON导出/导入迁移进度。
 
