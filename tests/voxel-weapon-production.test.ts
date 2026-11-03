@@ -28,7 +28,7 @@ function fixture() {
     Object.assign(p, pos(11, 11 + i));
     p.schedule.fill('work');
     p.priorities = {
-      firefight: 0, clean: 0,
+      handle: 0, firefight: 0, clean: 0,
       warden: 0,
       hunt: 0,
       dig: 0,
@@ -81,7 +81,7 @@ describe('physical weapon production and persistence', () => {
     const old = JSON.parse(bytes.toString()),
       s = VoxelSimulation.load(old);
     expect(old.version).toBe(12);
-    expect(s.save().version).toBe(28);
+    expect(s.save().version).toBe(29);
     expect(s.weaponBenches).toEqual([]);
     expect(s.items).toEqual(old.items);
     expect(s.save().blocks).toEqual(old.blocks);

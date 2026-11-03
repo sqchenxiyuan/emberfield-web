@@ -1,0 +1,67 @@
+{
+  "evidence_id": "RW17-ANIMAL-HUSBANDRY",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.Designator_Tame",
+      "local_file": ".local-research/animal-husbandry/RimWorld.Designator_Tame.cs",
+      "sha256": "4cd649ec3d389bb5050dad304ad8a2231a565d96b1934cfeb5818dd2b030a04b",
+      "lines": 102
+    },
+    {
+      "type": "RimWorld.TameUtility",
+      "local_file": ".local-research/animal-husbandry/RimWorld.TameUtility.cs",
+      "sha256": "e855716d5914b812492e58321284ae2ff6dc255e906160b29e8ceedee9ae13b8",
+      "lines": 61
+    },
+    {
+      "type": "RimWorld.WorkGiver_Tame",
+      "local_file": ".local-research/animal-husbandry/RimWorld.WorkGiver_Tame.cs",
+      "sha256": "c48ce634041314f456836361aaf92c5b2502325ee1a4b375d5862143e4f5cf0c",
+      "lines": 61
+    },
+    {
+      "type": "RimWorld.WorkGiver_InteractAnimal",
+      "local_file": ".local-research/animal-husbandry/RimWorld.WorkGiver_InteractAnimal.cs",
+      "sha256": "903fed0e6c79754eb2245294d4247f38b779d8cce2f9cfe779fd019b0f38bba2",
+      "lines": 120
+    },
+    {
+      "type": "RimWorld.JobDriver_Tame",
+      "local_file": ".local-research/animal-husbandry/RimWorld.JobDriver_Tame.cs",
+      "sha256": "7d8ed8c2a742d40f961914a407646402e710fc6fca82bb25994d05e5536efd08",
+      "lines": 54
+    },
+    {
+      "type": "RimWorld.TrainableUtility",
+      "local_file": ".local-research/animal-husbandry/RimWorld.TrainableUtility.cs",
+      "sha256": "bab3408df77f5a362068e6ee50652dce6c149ec90f4cffe82efe1cefe0b21602",
+      "lines": 249
+    },
+    {
+      "type": "RimWorld.WorkGiver_Train",
+      "local_file": ".local-research/animal-husbandry/RimWorld.WorkGiver_Train.cs",
+      "sha256": "9e790beb9412eea174401bcb68272d5bb2836933bf7231c10e82dfb15107b21b",
+      "lines": 57
+    },
+    {
+      "type": "RimWorld.JobDriver_Train",
+      "local_file": ".local-research/animal-husbandry/RimWorld.JobDriver_Train.cs",
+      "sha256": "3a21962cfe198d7fe22a9fe4ec5b352941dac974006175000a7c8e4ed5b1d1ac",
+      "lines": 22
+    }
+  ]
+}

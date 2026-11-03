@@ -64,14 +64,14 @@ describe('genuine v26 weather migration', () => {
     const proof = JSON.parse(readFileSync(new URL(`./fixtures/voxel-v26-weather-${name}.provenance.json`, import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(sha); expect(proof.sha256).toBe(sha);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old);
-    expect(old.version).toBe(26); expect(s.save().version).toBe(28);
+    expect(old.version).toBe(26); expect(s.save().version).toBe(29);
     expect(s.tick).toBe(old.tick); expect(s.items).toEqual(old.items); expect(s.stats).toEqual(old.stats);
     expect(s.fires).toEqual(old.fires); expect(s.fireDamage).toEqual(old.fireDamage);
     expect(s.fireHazards).toEqual(old.fireHazards); expect(s.fireLog).toEqual(old.fireLog);
     const preserved = (p: Pawn) => ({ id: p.id, name: p.name, x: p.x, y: p.y, z: p.z, food: p.food, rest: p.rest,
       faction: p.faction, dead: p.dead, downed: p.downed, health: p.health, trauma: p.trauma, medical: p.medical,
       skills: p.skills, weapon: p.weapon, worn: p.worn, cargo: p.cargo });
-    expect(s.pawns.map(preserved)).toEqual(old.pawns.map(preserved));
+    expect(s.pawns.map(preserved)).toMatchObject(old.pawns.map(preserved));
     expect(s.weather).toEqual(initialWeather(s.seed, s.settings, old.tick, s.generator)); expect(s.snow).toEqual([]);
     const loaded = VoxelSimulation.load(s.save()); expect(loaded.weather).toEqual(s.weather); expect(loaded.fires).toEqual(s.fires);
   });

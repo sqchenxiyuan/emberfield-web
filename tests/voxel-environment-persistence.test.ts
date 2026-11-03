@@ -35,11 +35,12 @@ function synthetic() {
 describe('authentic v27 environment migration', () => {
   it.each(['delivered', 'snow'] as const)('preserves genuine %s bytes, calendars, physical goods and prior progress', name => {
     const old = historical(name), before = JSON.stringify(old), s = VoxelSimulation.load(old);
-    expect(old.version).toBe(27); expect(s.save().version).toBe(28); expect(s.tick).toBe(old.tick);
+    expect(old.version).toBe(27); expect(s.save().version).toBe(29); expect(s.tick).toBe(old.tick);
     expect(JSON.stringify(old)).toBe(before);
-    for (const key of ['weather', 'snow', 'items', 'stats', 'fires', 'fireDamage', 'fireHazards', 'fireLog', 'trade', 'filth', 'animals'] as const)
+    for (const key of ['weather', 'snow', 'items', 'stats', 'fires', 'fireDamage', 'fireHazards', 'fireLog', 'trade', 'filth'] as const)
       expect(s[key], key).toEqual(old[key]);
-    expect(s.pawns.map(corePawn)).toEqual(old.pawns.map(corePawn));
+    expect(s.animals).toMatchObject(old.animals);
+    expect(s.pawns.map(corePawn)).toMatchObject(old.pawns.map(corePawn));
     expect(s.pawns.every(p => !p.psyche.memories.some(m => m.kind === 'wet'))).toBe(true);
     for (const previous of old.jobs) {
       const job = s.jobs.find(j => j.id === previous.id)!;

@@ -13,6 +13,7 @@ export const SKILL_KEYS = [
   'intellectual',
   'shooting',
   'social',
+  'animals',
 ] as const;
 export type SkillKey = (typeof SKILL_KEYS)[number];
 export type Passion = 0 | 1 | 2;
@@ -34,6 +35,7 @@ export const SKILL_NAMES: Record<SkillKey, string> = {
   intellectual: '智识',
   shooting: '射击',
   social: '社交',
+  animals: '驯养',
 };
 export const PASSION_NAMES = ['无热情', '有热情', '强烈热情'] as const;
 export const PASSION_LEARNING = [0.35, 1, 1.5] as const;
@@ -81,18 +83,18 @@ export function initialSkills(profile: number, raider = false): SkillSet {
   if (!Number.isSafeInteger(profile)) throw new RangeError('技能配置编号无效');
   const i = ((profile % 3) + 3) % 3;
   const levels = raider
-    ? [4, 4, 4, 4, 4, 3, 6, 4, 5, 4]
+    ? [4, 4, 4, 4, 4, 3, 6, 4, 5, 4, 0]
     : [
-        [8, 6, 3, 4, 5, 3, 6, 6, 6, 4],
-        [3, 3, 8, 6, 4, 8, 4, 8, 4, 8],
-        [5, 7, 4, 3, 8, 4, 5, 4, 8, 5],
+        [8, 6, 3, 4, 5, 3, 6, 6, 6, 4, 4],
+        [3, 3, 8, 6, 4, 8, 4, 8, 4, 8, 8],
+        [5, 7, 4, 3, 8, 4, 5, 4, 8, 5, 5],
       ][i];
   const passions = raider
-    ? [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ? [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     : [
-        [2, 1, 0, 0, 0, 0, 1, 0, 0, 0],
-        [0, 0, 2, 1, 0, 1, 0, 1, 0, 1],
-        [0, 1, 0, 0, 2, 0, 0, 0, 1, 0],
+        [2, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 0, 2, 1, 0, 1, 0, 1, 0, 1, 0],
+        [0, 1, 0, 0, 2, 0, 0, 0, 1, 0, 0],
       ][i];
   return Object.fromEntries(
     SKILL_KEYS.map((key, n) => [

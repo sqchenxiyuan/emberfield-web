@@ -1,0 +1,176 @@
+{
+  "evidence_id": "RW17-HUSBANDRY-REPRODUCTION",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "mvid": "8e962ecc-7ac7-42d2-8f3b-1b16cd24d2cd",
+  "rea_artifact_evidence": "ev_002f7c6a8e7e5c16296ff1beb7f5dc6ac1cc486e52a65155a913c3753871a42b",
+  "rea_summary_evidence": "ev_107c63f87f74870b8dc7c9c2205fec8ed587133e8dc9701a85c5682d8aa43cea",
+  "kind": "Static derived reconstruction; not original source; no target execution",
+  "limitations": [
+    "Unresolved dependencies tolerated by ILSpy",
+    "No runtime or effective modded Def database validation",
+    "Line ranges bind only to recorded derived hashes"
+  ],
+  "types": [
+    {
+      "type": "RimWorld.JobGiver_Mate",
+      "local_file": ".local-research/husbandry-reproduction/RimWorld.JobGiver_Mate.cs",
+      "sha256": "93697635707661ac2b2316a7b8d327a455b80190b0ee184c3e8dcedd34dd999f",
+      "lines": 44
+    },
+    {
+      "type": "RimWorld.JobDriver_Mate",
+      "local_file": ".local-research/husbandry-reproduction/RimWorld.JobDriver_Mate.cs",
+      "sha256": "1fe2232d072c3c7252d4754cad2a1e3ffc14fe405d4bdb9f34272b85f34cb59a",
+      "lines": 47
+    },
+    {
+      "type": "Verse.Hediff_Pregnant",
+      "local_file": ".local-research/husbandry-reproduction/Verse.Hediff_Pregnant.cs",
+      "sha256": "c8d706382ad523ccb43f496a31ad0de5d0a9b1c8d3fc20b73c52737e2a3b3d87",
+      "lines": 298
+    },
+    {
+      "type": "Verse.Pawn_AgeTracker",
+      "local_file": ".local-research/husbandry-reproduction/Verse.Pawn_AgeTracker.cs",
+      "sha256": "b71a11d960cd5efae59595cf2a0298305a13bef9e9e095ee58cea3cb828d39ec",
+      "lines": 823
+    },
+    {
+      "type": "RimWorld.LifeStageDef",
+      "local_file": ".local-research/husbandry-reproduction/RimWorld.LifeStageDef.cs",
+      "sha256": "93a5a86d46d9b6d954630d71044634ec69faddd67c473d1fed730e474c0034bd",
+      "lines": 132
+    },
+    {
+      "type": "Verse.RaceProperties",
+      "local_file": ".local-research/husbandry-reproduction/Verse.RaceProperties.cs",
+      "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+      "lines": 788
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "local_file": ".local-research/husbandry-reproduction/RimWorld.Pawn_TrainingTracker.cs",
+      "sha256": "5ccb647830a685a0fe951d707853b0a12910f580bc4283340a987c6da311bd7d",
+      "lines": 377
+    },
+    {
+      "type": "RimWorld.TrainableUtility",
+      "local_file": ".local-research/husbandry-reproduction/RimWorld.TrainableUtility.cs",
+      "sha256": "bab3408df77f5a362068e6ee50652dce6c149ec90f4cffe82efe1cefe0b21602",
+      "lines": 249
+    },
+    {
+      "type": "Verse.AnimalPenUtility",
+      "local_file": ".local-research/husbandry-reproduction/Verse.AnimalPenUtility.cs",
+      "sha256": "fbc92dcf75908d45f445f835fc83d0f9251cdd3c7d84482a27fdcd91d524b3f9",
+      "lines": 444
+    },
+    {
+      "type": "RimWorld.Need_Food",
+      "local_file": ".local-research/husbandry-reproduction/RimWorld.Need_Food.cs",
+      "sha256": "f17cbaf82d8792108557f869db585fdd6ac26c0ebb537e8acf04173179e7c4cd",
+      "lines": 227
+    },
+    {
+      "type": "RimWorld.JobGiver_GetFood",
+      "local_file": ".local-research/husbandry-reproduction/RimWorld.JobGiver_GetFood.cs",
+      "sha256": "c648efbdd091620603979d79de4c064f5a8174e7f6cf51950b6c19619a398a04",
+      "lines": 186
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "local_file": ".local-research/husbandry-reproduction/RimWorld.FoodUtility.cs",
+      "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+      "lines": 1686
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "local_file": ".local-research/husbandry-reproduction/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "lines": 1655
+    },
+    {
+      "type": "Verse.AI.ThinkNode_ChancePerHour_Mate",
+      "local_file": ".local-research/husbandry-reproduction/Verse.AI.ThinkNode_ChancePerHour_Mate.cs",
+      "sha256": "a6f7036698557610400ff043ca57a1b7863b56d670eccd568020ee1205d77bfc",
+      "lines": 10
+    },
+    {
+      "type": "RimWorld.StatWorker_MinimumHandlingSkill",
+      "local_file": ".local-research/husbandry-reproduction/RimWorld.StatWorker_MinimumHandlingSkill.cs",
+      "sha256": "7e724f9d36c362b1a3e17dcdc3ae48c774407d360bc54ab8b87a2479de966a69",
+      "lines": 43
+    },
+    {
+      "type": "RimWorld.FoodTypeFlags",
+      "local_file": ".local-research/husbandry-reproduction/RimWorld.FoodTypeFlags.cs",
+      "sha256": "ec648f096a7d3baf47113cbe8cd25a0ce7595bc8e3eda5e6a070fba4a8c55229",
+      "lines": 32
+    },
+    {
+      "type": "Verse.Pawn",
+      "local_file": ".local-research/husbandry-reproduction/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "lines": 4791
+    },
+    {
+      "type": "Verse.PawnGenerator",
+      "local_file": ".local-research/husbandry-reproduction/Verse.PawnGenerator.cs",
+      "sha256": "96e7447c568916a4eb9aa4d334723567d9b09dc939636f5dcdfee484dcc42180",
+      "lines": 2173
+    },
+    {
+      "type": "RimWorld.HungerLevelUtility",
+      "local_file": ".local-research/husbandry-reproduction/RimWorld.HungerLevelUtility.cs",
+      "sha256": "be023007bc1de7d662c5e526f48e50ddd516b9a68d9347c3b1c69c30c8726bef",
+      "lines": 36
+    }
+  ],
+  "xml": [
+    {
+      "source": "F:\\SteamLibrary\\steamapps\\common\\RimWorld\\Data\\Core\\Defs\\ThingDefs_Races\\Races_Animal_Hares.xml",
+      "local_file": ".local-research/husbandry-reproduction/Races_Animal_Hares.xml",
+      "sha256": "bda7f200ded2c9f8ee4b29dc8d9ea2e8d6977f20782797c51352af20aa6d835e"
+    },
+    {
+      "source": "F:\\SteamLibrary\\steamapps\\common\\RimWorld\\Data\\Core\\Defs\\ThingDefs_Races\\Races_Animal_PigGroup.xml",
+      "local_file": ".local-research/husbandry-reproduction/Races_Animal_PigGroup.xml",
+      "sha256": "87d3d069440e7ad2a3e66f3bb0778e5210c38429c5eb7788b23b87cc64df4ab1"
+    },
+    {
+      "source": "F:\\SteamLibrary\\steamapps\\common\\RimWorld\\Data\\Core\\Defs\\ThingDefs_Races\\Races_Animal_Base.xml",
+      "local_file": ".local-research/husbandry-reproduction/Races_Animal_Base.xml",
+      "sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4"
+    },
+    {
+      "source": "F:\\SteamLibrary\\steamapps\\common\\RimWorld\\Data\\Core\\Defs\\Misc\\LifeStageDefs\\LifeStages.xml",
+      "local_file": ".local-research/husbandry-reproduction/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc"
+    },
+    {
+      "source": "F:\\SteamLibrary\\steamapps\\common\\RimWorld\\Data\\Core\\Defs\\TrainableDefs\\Trainables.xml",
+      "local_file": ".local-research/husbandry-reproduction/Trainables.xml",
+      "sha256": "f3f111813e116a8dd7739f991d9c41fd1ccddbb76bbcc5718d95dac77438c488"
+    },
+    {
+      "source": "F:\\SteamLibrary\\steamapps\\common\\RimWorld\\Data\\Core\\Defs\\ThinkTreeDefs\\Animal.xml",
+      "local_file": ".local-research/husbandry-reproduction/Animal.xml",
+      "sha256": "d857fb17533f17f90da48fae355d5014f7a4f78ab3dcc6ee755a881bda732121"
+    },
+    {
+      "source": "F:\\SteamLibrary\\steamapps\\common\\RimWorld\\Data\\Core\\Defs\\HediffDefs\\Hediffs_Global_Needs.xml",
+      "local_file": ".local-research/husbandry-reproduction/Hediffs_Global_Needs.xml",
+      "sha256": "6dfa56f30ab51b2e107675d82be2dd17819f41df47afa1d9a1c6e5c91710b5a6"
+    },
+    {
+      "source": "F:\\SteamLibrary\\steamapps\\common\\RimWorld\\Data\\Core\\Defs\\HediffDefs\\Hediffs_Global_Misc.xml",
+      "local_file": ".local-research/husbandry-reproduction/Hediffs_Global_Misc.xml",
+      "sha256": "d3d38552d52b19273eef855e2d62e3155267b8176f640e6018c7d9a04c919d57"
+    }
+  ]
+}

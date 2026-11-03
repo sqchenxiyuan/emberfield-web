@@ -1,0 +1,14 @@
+{
+  "version": 28,
+  "source": "test-results/voxel-environment/initial.json",
+  "sha256": "459da967705a49065a970c26a840785928bf975dea1ed8403c578705531dbf77",
+  "tick": 0,
+  "scope": "Fresh colony, public settings and reproducible seed. Only public player commands, ordinary ticks and exact save/load mutate the colony. Planning reads terrain/routes/environment. No injected resources, HP, weather, filth, memory, needs, clocks or RNG. Bounded mechanism demonstration, not probability calibration.",
+  "campaignExecution": {
+    "bundleSha256": "aeb1704abd3f3d45462f0ac6741bd3c035e153d8a396136b7cca82eb5d63d29c",
+    "scriptSha256": "38484375b23caf8c3233e5769c3f05b3d57c1323501ab8643ae97aba9f457011"
+  },
+  "sourceReport": "test-results/voxel-environment/report.json",
+  "sourceReportSha256": "4c86cc15536c760619478404ac335c05252fb13a35558cfd3f1fd60e973da204",
+  "copyMethod": "Exact source bytes copied without parsing or rewriting. Original v28 save schema retained."
+}

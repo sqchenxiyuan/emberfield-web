@@ -127,7 +127,7 @@ describe('armor save migration and strict physical schemas', () => {
       const s = VoxelSimulation.load(old),
         saved = s.save();
       expect(old).toEqual(before);
-      expect(saved.version).toBe(28);
+      expect(saved.version).toBe(29);
       expectWildlifeIds(old.nextId, saved);
       for (const key of ['tick', 'blocks', 'items', 'stats', 'researchBenches'] as const)
         expect(saved[key]).toEqual(key === 'stats' ? withMedicineLedgers(old.stats) : old[key]);
@@ -164,6 +164,7 @@ describe('armor save migration and strict physical schemas', () => {
             ...prior.skills,
             shooting: initialSkills(i, p.faction !== 'colony').shooting,
             social: initialSkills(i, p.faction !== 'colony').social,
+            animals: initialSkills(i, p.faction !== 'colony').animals,
           } : prior[key]);
       }
       expect(() => VoxelSimulation.load(saved)).not.toThrow();

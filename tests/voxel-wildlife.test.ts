@@ -1,3 +1,4 @@
+import { initialAnimalState } from '../src/voxel/husbandry';
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
@@ -37,7 +38,7 @@ function carcass(s: VoxelSimulation): Cargo {
   return { resource: 'carcass', amount: 1, carcass: { animalId: s.nextId++, species: 'deer' }, rotProgress: 120 };
 }
 function animal(s: VoxelSimulation): WildAnimal {
-  const a: WildAnimal = { ...pos(22), id: s.nextId++, species: 'hare', name: '野兔', health: ANIMAL_DEFS.hare.health,
+  const a: WildAnimal = { ...pos(22), ...initialAnimalState(s.nextId, 'hare', s.tick), id: s.nextId++, species: 'hare', name: '野兔', health: ANIMAL_DEFS.hare.health,
     hunger: 80, dead: false, phase: 'roam', hunt: false, moveTick: 0, decisionTick: 0,
     fleeUntil: 0, threatId: null, retryTick: 0, rotProgress: 0 };
   s.animals.push(a); return a;
@@ -162,7 +163,7 @@ describe('wildlife, actual hunting and physical food chain', () => {
     const old = JSON.parse(readFileSync('tests/fixtures/voxel-v21-wildlife-initial.json', 'utf8'));
     expect(old.version).toBe(21); expect(old.animals).toBeUndefined();
     const s = VoxelSimulation.load(old);
-    expect(s.items).toEqual(old.items); expect(s.animals).toHaveLength(8); expect(s.save().version).toBe(28);
+    expect(s.items).toEqual(old.items); expect(s.animals).toHaveLength(8); expect(s.save().version).toBe(29);
     expect(VoxelSimulation.load(s.save()).animals).toEqual(s.animals);
   });
 });

@@ -1,0 +1,568 @@
+{
+  "version": 29,
+  "recordedAt": "2026-11-03T21:23:09.486Z",
+  "scope": "Local Web validation; native observations are separately recorded in chapter89. Ordinary campaign uses public commands and ticks; browser uses normal controls/import/export. Controlled schema and boundary tests are not ordinary gameplay.",
+  "unit": {
+    "file": "test-results/v29-unit-final.json",
+    "tests": 969,
+    "passed": 969,
+    "failed": 0,
+    "pending": 0,
+    "files": 67,
+    "sha256": "6caf25dc96fda741fc588cb264c61f379ba62d2c6a4c469115b1f5a18485f000"
+  },
+  "campaign": {
+    "scope": "Fresh colony with public world settings. Only public player commands, ordinary simulation ticks and exact save/load mutate the game. Read-only terrain/routes choose sites. No spawned animals, injected food, ownership, pregnancy, growth, needs, clock or RNG edits. One bounded husbandry lifecycle, not probability calibration or long-term balance.",
+    "execution": {
+      "bundleSha256": "b89138ce74de518fd15061bad67b95a0f5084a5c47ada5b9e8d0a50c9854c1e4",
+      "scriptSha256": "2507f14233ce767d3d64e9974a907f21e89ea52c3ed2ae80ebb6df27e432b224"
+    },
+    "baseline": {
+      "seed": 73129,
+      "settings": {
+        "biome": "temperate",
+        "hilliness": "flat",
+        "meanTemperature": 24,
+        "rainfall": 1500,
+        "latitude": 0
+      },
+      "initial": {
+        "silver": 800,
+        "wood": 90,
+        "stone": 0,
+        "steel": 0,
+        "components": 0,
+        "food": 60,
+        "grain": 0,
+        "meat": 0,
+        "carcass": 0,
+        "meal": 0,
+        "chunk": 0,
+        "cloth": 0,
+        "herb": 0,
+        "apparel": 6,
+        "weapon": 0
+      }
+    },
+    "checks": [
+      {
+        "name": "fresh colony has eight real adults, both sexes per species and no raw feed",
+        "tick": 0
+      },
+      {
+        "name": "packaged starting meals do not satisfy raw-feed taming requirement",
+        "tick": 240
+      },
+      {
+        "name": "ordinary builders provide beds, recreation and cooking",
+        "tick": 2443,
+        "elapsedTicks": 2203
+      },
+      {
+        "name": "farmers naturally sow, grow and harvest enough real rice for taming",
+        "tick": 99724,
+        "elapsedTicks": 97281
+      },
+      {
+        "name": "raw feed originated in harvested crops",
+        "tick": 99724,
+        "produced": 180,
+        "available": 80
+      },
+      {
+        "name": "handler physically carries harvested grain toward a marked animal",
+        "tick": 99729,
+        "elapsedTicks": 5
+      },
+      {
+        "name": "handler arrives adjacent and performs a real feeding interaction",
+        "tick": 99813,
+        "elapsedTicks": 84
+      },
+      {
+        "name": "independent attempts eventually tame both members of the real pair",
+        "tick": 107432,
+        "elapsedTicks": 7619
+      },
+      {
+        "name": "taming consumed physical feed and recorded success events",
+        "tick": 107432,
+        "successes": [
+          {
+            "tick": 100993,
+            "kind": "tame",
+            "animalId": 475,
+            "otherId": 452,
+            "message": "温岚成功驯服野兔"
+          },
+          {
+            "tick": 107432,
+            "kind": "tame",
+            "animalId": 477,
+            "otherId": 452,
+            "message": "温岚成功驯服野兔"
+          }
+        ],
+        "failures": 1
+      },
+      {
+        "name": "the domestic pair naturally mates and the female becomes pregnant",
+        "tick": 108015,
+        "elapsedTicks": 583
+      },
+      {
+        "name": "exact save/load retains real pregnancy and both animal identities",
+        "tick": 108015
+      },
+      {
+        "name": "pregnancy advances through ordinary time toward birth",
+        "tick": 131774,
+        "elapsedTicks": 23759
+      },
+      {
+        "name": "pregnancy naturally produces a real newborn in free neighboring ground",
+        "tick": 132014,
+        "elapsedTicks": 240
+      },
+      {
+        "name": "the young animal naturally eats and grows through juvenile life",
+        "tick": 151214,
+        "elapsedTicks": 19200
+      },
+      {
+        "name": "the young animal approaches adulthood without clock or growth edits",
+        "tick": 179918,
+        "elapsedTicks": 28704
+      },
+      {
+        "name": "the same newborn reaches adult life with persistent identity",
+        "tick": 180014,
+        "elapsedTicks": 96
+      },
+      {
+        "name": "animals consume real finite grass",
+        "tick": 105704,
+        "animalId": 475,
+        "cell": {
+          "x": 30,
+          "y": 60,
+          "z": 7
+        },
+        "growthBefore": 1,
+        "growthAfter": 0.5,
+        "hungerBefore": 63.88999999997269,
+        "hungerAfter": 100
+      },
+      {
+        "name": "handler approaches the adult marked for release",
+        "tick": 180184,
+        "elapsedTicks": 170
+      },
+      {
+        "name": "release is completed by a real handler and changes ownership",
+        "tick": 180224,
+        "elapsedTicks": 40
+      },
+      {
+        "name": "handler performs the actual marked slaughter",
+        "tick": 180389,
+        "elapsedTicks": 165
+      },
+      {
+        "name": "slaughter produces the original animal as a real carcass",
+        "tick": 180430,
+        "elapsedTicks": 41
+      },
+      {
+        "name": "a cook physically transports and butchers the carcass into meat",
+        "tick": 181070,
+        "elapsedTicks": 640
+      },
+      {
+        "name": "final exact reload preserves animals, finite vegetation and ownership",
+        "tick": 181070
+      }
+    ],
+    "fixtures": {
+      "initial": {
+        "file": "test-results/voxel-husbandry/initial.json",
+        "tick": 0,
+        "sha256": "127cae147b65671e35822960a46cefe20ee45bde59475c9088631999c1cf8bc5"
+      },
+      "ready": {
+        "file": "test-results/voxel-husbandry/ready.json",
+        "tick": 99724,
+        "sha256": "70868b2e2bb1b187bb1601d3719611153603825524855bf4ade8dba167eae193"
+      },
+      "carrying-feed": {
+        "file": "test-results/voxel-husbandry/carrying-feed.json",
+        "tick": 99729,
+        "sha256": "d9fc04f3ec710c41b9104044f246d0348b9026f1c1d3b2ca183113b4fe7993a0"
+      },
+      "interacting": {
+        "file": "test-results/voxel-husbandry/interacting.json",
+        "tick": 99813,
+        "sha256": "08c9a0e0a0f83ce1abd1e5ef9d03f1d2ded36886489d8ed7185e1e647b8c0937"
+      },
+      "tame-near-success": {
+        "file": "test-results/voxel-husbandry/tame-near-success.json",
+        "tick": 100983,
+        "sha256": "c7a6d489033ace0b004dcee5acd9429dd2e896e2eb2847c7d2763ade93e490dd"
+      },
+      "paired": {
+        "file": "test-results/voxel-husbandry/paired.json",
+        "tick": 107432,
+        "sha256": "0814b95822ca495e7e30bb4c4b32833c68bed5a1cbe77fa11762e345ff6e134d"
+      },
+      "pregnant": {
+        "file": "test-results/voxel-husbandry/pregnant.json",
+        "tick": 131774,
+        "sha256": "be5cced3f7cb4f8f10bb93b85eee2675d63d9c20494fb0d7ef2df879742fdc60"
+      },
+      "newborn": {
+        "file": "test-results/voxel-husbandry/newborn.json",
+        "tick": 132014,
+        "sha256": "7212b5c2531d6249d316bf9432ed80c67ade2f4894af4e96d1d59432b53a2aaf"
+      },
+      "juvenile": {
+        "file": "test-results/voxel-husbandry/juvenile.json",
+        "tick": 151214,
+        "sha256": "c37fca4d4f4d3ef857e82702405ecfe021d3f1452f0bec6e97377ea2adec89fe"
+      },
+      "near-adult": {
+        "file": "test-results/voxel-husbandry/near-adult.json",
+        "tick": 179918,
+        "sha256": "dab646efd54fd5a3ecbcbe7da9b8b048119ea5656444223f4ffb9f6859fdd62f"
+      },
+      "grown": {
+        "file": "test-results/voxel-husbandry/grown.json",
+        "tick": 180014,
+        "sha256": "5a3a166219a9146b14758cd67eee736a6fc50902a916828b8fbd1fb2440b3a47"
+      },
+      "release": {
+        "file": "test-results/voxel-husbandry/release.json",
+        "tick": 180184,
+        "sha256": "de33eea67c5a9373256db13ec590bb04bc58a30890e8145438a71d3c9f8bbf4c"
+      },
+      "slaughter": {
+        "file": "test-results/voxel-husbandry/slaughter.json",
+        "tick": 180389,
+        "sha256": "c0ce43c3bf547f464e4f1b963babb140d32a55153214bcc720452857e759b04c"
+      },
+      "carcass": {
+        "file": "test-results/voxel-husbandry/carcass.json",
+        "tick": 180430,
+        "sha256": "13f0ed6197850f6aeba41b506c0ea2607a27821f034b9b51d8ed192937d451b1"
+      },
+      "final": {
+        "file": "test-results/voxel-husbandry/final.json",
+        "tick": 181070,
+        "sha256": "52cb3889d55f3889b15d6ce082ca3c9d8519822c55c07f644b1f3be6f97ba557"
+      }
+    },
+    "browserContract": {
+      "handlerId": 452,
+      "noFeedId": 471,
+      "fatherId": 475,
+      "motherId": 477,
+      "readyFixture": "ready",
+      "pairedFixture": "paired",
+      "pregnantFixture": "pregnant",
+      "newbornFixture": "newborn",
+      "grownFixture": "grown",
+      "initialFixture": "initial",
+      "tameId": 475,
+      "tameFixture": "tame-near-success",
+      "childId": 1592,
+      "nearAdultFixture": "near-adult",
+      "releaseFixture": "release",
+      "slaughterFixture": "slaughter",
+      "carcassFixture": "carcass",
+      "butcherId": 1736
+    },
+    "finalTick": 181070
+  },
+  "browser": {
+    "scope": "Worker and main browser verification from hashed ordinary-play checkpoints. All mutations use visible buttons/selects, canvas clicks and normal file chooser import/export. snapshot/project/exportSave are read-only. Taming consumes real carried grain; birth, growth, release and slaughter proceed by normal simulation. No ownership, pregnancy, stock, growth, clock or RNG injection.",
+    "campaign": {
+      "file": "test-results/voxel-husbandry/report.json",
+      "sha256": "ad3fb3ffdbb1f3562fd8e2dac8cde0bbda4e9c6174bf986594051b98dbccbfbb",
+      "scope": "Fresh colony with public world settings. Only public player commands, ordinary simulation ticks and exact save/load mutate the game. Read-only terrain/routes choose sites. No spawned animals, injected food, ownership, pregnancy, growth, needs, clock or RNG edits. One bounded husbandry lifecycle, not probability calibration or long-term balance."
+    },
+    "scriptSha256": "4c3e4c1aa75a41b5453941c3708fbad296901f0b0490d0b178bf7120fd76b627",
+    "modes": [
+      {
+        "mode": "worker",
+        "checks": [
+          {
+            "name": "ordinary wildlife groups and independent handler priority/animal skill are usable"
+          },
+          {
+            "name": "starting packaged food does not instantly tame a marked animal"
+          },
+          {
+            "name": "visible taming and hunting orders are mutually exclusive and cancelable"
+          },
+          {
+            "name": "canceling an approaching handler preserves the actual carried feed"
+          },
+          {
+            "name": "ordinary feeding finishes a genuine taming attempt, consumes grain and changes ownership"
+          },
+          {
+            "name": "tamed male and female appear in the colony group with persistent identities"
+          },
+          {
+            "name": "visible export/import preserves pregnancy, age, finite grass and handler tasks exactly"
+          },
+          {
+            "name": "natural birth creates a small real offspring with a new stable identity",
+            "motherId": 477,
+            "childId": 1592
+          },
+          {
+            "name": "scaled newborn body remains directly selectable on the rendered map"
+          },
+          {
+            "name": "actual grass patches expose their finite saved growth through ground inspection"
+          },
+          {
+            "name": "the same young animal visibly reaches adulthood through ordinary elapsed ticks"
+          },
+          {
+            "name": "release can be canceled, then a real handler completes the reissued order"
+          },
+          {
+            "name": "marked slaughter requires physical execution and produces the same animal as a real carcass"
+          },
+          {
+            "name": "a normal cook continues from slaughter through physical corpse transport and butchering"
+          },
+          {
+            "name": "900 pixel drawer keeps animal orders visible and reachable",
+            "drawer": {
+              "x": 573,
+              "y": 204,
+              "width": 315,
+              "height": 328
+            },
+            "buttons": [
+              {
+                "x": 599,
+                "right": 647,
+                "y": 350.546875,
+                "bottom": 385.546875
+              },
+              {
+                "x": 655,
+                "right": 729,
+                "y": 350.546875,
+                "bottom": 385.546875
+              },
+              {
+                "x": 734,
+                "right": 808,
+                "y": 350.546875,
+                "bottom": 385.546875
+              }
+            ]
+          },
+          {
+            "name": "served production assets match the current local build byte for byte"
+          },
+          {
+            "name": "no browser page or console errors"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:4178/assets/index-LI6TOxlT.js",
+            "status": 200,
+            "sha256": "955bf3025adfb4def5561bb05a72158949eaf5dbd11bcfc9609f1522f0133d70",
+            "bytes": 2356,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/main-kmnL-P85.css",
+            "status": 200,
+            "sha256": "1e21add9921a8217d9b2bada2cd2cd1f62f7d04f7645d1842300a8aabc0c5377",
+            "bytes": 37845,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "bytes": 221699,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/main-BrS0hTdm.js",
+            "status": 200,
+            "sha256": "6c13f5a18bb730bd1a547e91cf5b56f0dea96f59bbe040b03e7adefb3df7cf01",
+            "bytes": 812241,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/sim.worker-Cd3GFhdi.js",
+            "status": 200,
+            "sha256": "c1883ed093f5f027023023838c9614a94bde6828b8bdbe0c1651a626ee96306f",
+            "bytes": 435863,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/render.worker-BFiw6wLy.js",
+            "status": 200,
+            "sha256": "93cd9cc52bc872aae4b14109743e85017dcaf0c92fa3130e1b22ba690b4ec3a2",
+            "bytes": 603969,
+            "matchesLocalBuild": true
+          }
+        ]
+      },
+      {
+        "mode": "main",
+        "checks": [
+          {
+            "name": "ordinary wildlife groups and independent handler priority/animal skill are usable"
+          },
+          {
+            "name": "starting packaged food does not instantly tame a marked animal"
+          },
+          {
+            "name": "visible taming and hunting orders are mutually exclusive and cancelable"
+          },
+          {
+            "name": "canceling an approaching handler preserves the actual carried feed"
+          },
+          {
+            "name": "ordinary feeding finishes a genuine taming attempt, consumes grain and changes ownership"
+          },
+          {
+            "name": "tamed male and female appear in the colony group with persistent identities"
+          },
+          {
+            "name": "visible export/import preserves pregnancy, age, finite grass and handler tasks exactly"
+          },
+          {
+            "name": "natural birth creates a small real offspring with a new stable identity",
+            "motherId": 477,
+            "childId": 1592
+          },
+          {
+            "name": "scaled newborn body remains directly selectable on the rendered map"
+          },
+          {
+            "name": "actual grass patches expose their finite saved growth through ground inspection"
+          },
+          {
+            "name": "the same young animal visibly reaches adulthood through ordinary elapsed ticks"
+          },
+          {
+            "name": "release can be canceled, then a real handler completes the reissued order"
+          },
+          {
+            "name": "marked slaughter requires physical execution and produces the same animal as a real carcass"
+          },
+          {
+            "name": "a normal cook continues from slaughter through physical corpse transport and butchering"
+          },
+          {
+            "name": "900 pixel drawer keeps animal orders visible and reachable",
+            "drawer": {
+              "x": 573,
+              "y": 204,
+              "width": 315,
+              "height": 328
+            },
+            "buttons": [
+              {
+                "x": 599,
+                "right": 647,
+                "y": 350.546875,
+                "bottom": 385.546875
+              },
+              {
+                "x": 655,
+                "right": 729,
+                "y": 350.546875,
+                "bottom": 385.546875
+              },
+              {
+                "x": 734,
+                "right": 808,
+                "y": 350.546875,
+                "bottom": 385.546875
+              }
+            ]
+          },
+          {
+            "name": "served production assets match the current local build byte for byte"
+          },
+          {
+            "name": "no browser page or console errors"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:4178/assets/index-LI6TOxlT.js",
+            "status": 200,
+            "sha256": "955bf3025adfb4def5561bb05a72158949eaf5dbd11bcfc9609f1522f0133d70",
+            "bytes": 2356,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/main-kmnL-P85.css",
+            "status": 200,
+            "sha256": "1e21add9921a8217d9b2bada2cd2cd1f62f7d04f7645d1842300a8aabc0c5377",
+            "bytes": 37845,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "bytes": 221699,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/main-BrS0hTdm.js",
+            "status": 200,
+            "sha256": "6c13f5a18bb730bd1a547e91cf5b56f0dea96f59bbe040b03e7adefb3df7cf01",
+            "bytes": 812241,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/sim.worker-Cd3GFhdi.js",
+            "status": 200,
+            "sha256": "c1883ed093f5f027023023838c9614a94bde6828b8bdbe0c1651a626ee96306f",
+            "bytes": 435863,
+            "matchesLocalBuild": true
+          }
+        ]
+      }
+    ]
+  },
+  "screenshots": [
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-husbandry-feeding.png",
+      "sha256": "16ba1745274c1fc9460c07640af80a7a0739ffa8eaddd7d963711f2f5a67c082"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-husbandry-newborn.png",
+      "sha256": "611bde52fa3ec5e62c6968c939bad435a22c5af4aded819665bc3ec6e6de7a1c"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-husbandry-pair.png",
+      "sha256": "e1ef15e51ec1b68fddfe42bed6d9e71298ea222b7595620aec3ec921e3218cf7"
+    }
+  ],
+  "limitations": [
+    "No balance calibration",
+    "No full pens/roping/allowed areas",
+    "One offspring per birth",
+    "No animal products, training, comprehensive injuries or temperature injuries",
+    "Tests run locally, not Pages CI"
+  ]
+}

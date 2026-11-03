@@ -45,12 +45,12 @@ function sequence(values: number[]) {
 
 describe('native bounded skill records and learning', () => {
   it('uses three fixed starter profiles and independently owned zero-XP records', () => {
-    expect(SKILL_KEYS.map((k) => initialSkills(0)[k].level)).toEqual([8, 6, 3, 4, 5, 3, 6, 6, 6, 4]);
-    expect(SKILL_KEYS.map((k) => initialSkills(1)[k].level)).toEqual([3, 3, 8, 6, 4, 8, 4, 8, 4, 8]);
-    expect(SKILL_KEYS.map((k) => initialSkills(2)[k].level)).toEqual([5, 7, 4, 3, 8, 4, 5, 4, 8, 5]);
-    expect(SKILL_KEYS.map((k) => initialSkills(0)[k].passion)).toEqual([2, 1, 0, 0, 0, 0, 1, 0, 0, 0]);
-    expect(SKILL_KEYS.map((k) => initialSkills(1)[k].passion)).toEqual([0, 0, 2, 1, 0, 1, 0, 1, 0, 1]);
-    expect(SKILL_KEYS.map((k) => initialSkills(2)[k].passion)).toEqual([0, 1, 0, 0, 2, 0, 0, 0, 1, 0]);
+    expect(SKILL_KEYS.map((k) => initialSkills(0)[k].level)).toEqual([8, 6, 3, 4, 5, 3, 6, 6, 6, 4, 4]);
+    expect(SKILL_KEYS.map((k) => initialSkills(1)[k].level)).toEqual([3, 3, 8, 6, 4, 8, 4, 8, 4, 8, 8]);
+    expect(SKILL_KEYS.map((k) => initialSkills(2)[k].level)).toEqual([5, 7, 4, 3, 8, 4, 5, 4, 8, 5, 5]);
+    expect(SKILL_KEYS.map((k) => initialSkills(0)[k].passion)).toEqual([2, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0]);
+    expect(SKILL_KEYS.map((k) => initialSkills(1)[k].passion)).toEqual([0, 0, 2, 1, 0, 1, 0, 1, 0, 1, 0]);
+    expect(SKILL_KEYS.map((k) => initialSkills(2)[k].passion)).toEqual([0, 1, 0, 0, 2, 0, 0, 0, 1, 0, 0]);
     const a = initialSkills(0),
       b = initialSkills(0);
     a.mining.xp = 9;

@@ -1,3 +1,4 @@
+import { initialAnimalState } from '../src/voxel/husbandry';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { Block, DAY, DEPTH, WIDTH, at, type Pawn, type Pos, type VoxelCommand } from '../src/voxel/types';
@@ -53,7 +54,7 @@ function nextDamage(s: VoxelSimulation, id: number, baseRate: number) {
 }
 function blockedCorpse(hitPoints = 100, rotProgress = 120) {
   let s = flat(); const id = s.nextId++;
-  s.animals.push({ ...pos(22), id, species: 'hare', name: '野兔', health: 0, hunger: 80,
+  s.animals.push({ ...pos(22), ...initialAnimalState(id, 'hare', s.tick), id, species: 'hare', name: '野兔', health: 0, hunger: 80,
     dead: true, phase: 'dead', hunt: false, moveTick: 0, decisionTick: 0,
     fleeUntil: 0, threatId: null, retryTick: 0, rotProgress,
     ...(hitPoints < 100 ? { carcassHitPoints: hitPoints } : {}) });

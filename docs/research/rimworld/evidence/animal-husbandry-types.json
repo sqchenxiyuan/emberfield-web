@@ -1,0 +1,10 @@
+[
+  "RimWorld.Designator_Tame",
+  "RimWorld.TameUtility",
+  "RimWorld.WorkGiver_Tame",
+  "RimWorld.WorkGiver_InteractAnimal",
+  "RimWorld.JobDriver_Tame",
+  "RimWorld.TrainableUtility",
+  "RimWorld.WorkGiver_Train",
+  "RimWorld.JobDriver_Train"
+]

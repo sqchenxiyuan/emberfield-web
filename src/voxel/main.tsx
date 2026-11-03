@@ -13,6 +13,7 @@ import { SurvivalPanel } from './SurvivalPanel';
 import { SanitationPanel, SanitationDetails, CleaningStatus } from './SanitationPanel';
 import { FirePanel, FireDetails, FireDamageDetails, FireWorkStatus } from './FirePanel';
 import { WeatherPanel, WeatherCellDetails } from './WeatherPanel';
+import { AnimalPanel, AnimalDetails } from './AnimalPanel';
 import { BatchDurability, ItemCondition } from './ItemCondition';
 import type { EnvironmentView } from './environment';
 import { WEATHER_NAMES } from './weather';
@@ -30,8 +31,7 @@ import { WeaponPanel, WeaponBenchPanel, EquipWeapon } from './WeaponPanel';
 import { weaponName } from './weapons';
 import { WEAPON_BENCH_NAMES } from './weaponProduction';
 import { APPAREL_NAMES } from './apparel';
-import { ANIMAL_DEFS, ANIMAL_PHASE_NAMES } from './wildlife';
-import { isRangedKind } from './ranged';
+import { ANIMAL_DEFS } from './wildlife';
 import { moodView, RECREATION_NAMES } from './mood';
 import { PRISON_POLICY_NAMES, PRISON_POLICIES, PRISON_RULES, type PrisonerPolicy } from './prisoners';
 import {
@@ -365,8 +365,8 @@ function App() {
     const selected = state.selected;
     const animals = client.snapshot().snapshot?.animals ?? [];
     const person = selected && client.snapshot().snapshot?.pawns.find(v => equal(v, selected) && (v.faction === 'prisoner' || (v.faction === 'raider' && v.downed && !v.dead)));
-    const animal = selected && animals.find(v => equal(v, selected));
-    setSelectedAnimal(current => selected && animals.some(v => v.id === current && equal(v, selected)) ? current : animal?.id ?? null);
+    const animal = selected && animals.find(v => 'animalId' in selected ? v.id === selected.animalId : equal(v, selected));
+    setSelectedAnimal(current => selected && !('animalId' in selected) && animals.some(v => v.id === current && equal(v, selected)) ? current : animal?.id ?? null);
     if (animal) setSelectedPawn(null);
     else if (person) setSelectedPawn(current => client.snapshot().snapshot?.pawns.some(v => v.id === current && equal(v, selected!)) ? current : person.id);
   }, [state.selected]);
@@ -422,6 +422,7 @@ function App() {
   const reservedSlots = capacity.filter((v) => v.reserved > 0).length;
   const canReceive = capacity.some((v) => Object.values(v.available).some((n) => n > 0));
   const crop = p ? s?.crops.find((v) => equal(v, p)) : null;
+  const grass = p ? s?.grass.find(v => equal(v, p)) : null;
   const stove = p ? s?.stoves.find((v) => equal(v, p)) : null;
   const butcherSpot = p ? s?.butcherSpots.find(v => equal(v, p)) : null;
   const horseshoePin = p ? s?.horseshoePins.find(v => equal(v, p)) : null;
@@ -472,8 +473,6 @@ function App() {
       ) ?? [])
     : [];
   const pawn = animal ? undefined : people.find(v => v.id === selectedPawn) ?? people.find((v) => v.faction === 'trader' || v.faction === 'prisoner' || (v.faction === 'raider' && v.downed && !v.dead)) ?? s?.pawns.find((v) => v.id === selectedPawn) ?? people[0];
-  const hunters = s?.pawns.filter(v => v.faction === 'colony' && !v.dead && !v.downed && !v.drafted && v.psyche.breakUntil <= s.tick && v.priorities.hunt > 0 && v.weapon && isRangedKind(v.weapon.kind)) ?? [];
-  const assignedHunter = animal ? s?.pawns.find(v => v.phase === 'hunt' && v.attackTargetId === animal.id) : undefined;
   const carers =
     s?.pawns.filter(
       (v) =>
@@ -551,7 +550,8 @@ function App() {
     : '营地概览';
   const focus = (target: Pos) => {
     client.focusOn(target);
-    client.select(target);
+    const selection = 'species' in target && 'id' in target ? { ...target, animalId: target.id } : target;
+    client.select(selection);
   };
   return (
     <div className="voxel-app">
@@ -609,7 +609,7 @@ function App() {
           }}>囚犯{prisoners.length ? ` · ${prisoners.length}` : ''}</button>
           <button aria-label="野生动物与狩猎" aria-expanded={wildlifeOpen} onClick={() => {
             setWildlifeOpen(v => !v); setWeatherOpen(false); setPrisonOpen(false); setSanitationOpen(false); setFireOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
-          }}>野生动物{s?.animals.filter(a => a.hunt && !a.dead).length ? ` · ${s.animals.filter(a => a.hunt && !a.dead).length}` : ''}</button>
+          }}>动物{s?.animals.filter(a => a.faction === 'colony' && !a.dead).length ? ` · ${s.animals.filter(a => a.faction === 'colony' && !a.dead).length}` : ''}</button>
           <button
             aria-label="商队与家园"
             aria-expanded={tradeOpen}
@@ -870,19 +870,10 @@ function App() {
             · {levelName(p.z, spawn.z)}
           </p>
         )}
-        {animal && <section className="voxel-animal-detail" data-testid="animal-detail" data-animal-id={animal.id}>
-          <div className="voxel-info-row"><b>{ANIMAL_DEFS[animal.species].name}</b><span>{ANIMAL_PHASE_NAMES[animal.phase]}</span></div>
-          <label>健康 {Math.ceil(animal.health)} / {ANIMAL_DEFS[animal.species].health}<progress aria-label="动物健康" value={animal.health} max={ANIMAL_DEFS[animal.species].health} /></label>
-          <small>饱食 {Math.round(animal.hunger)}% · 位置 {animal.x}, {animal.y} · Z {animal.z}</small>
-          {animal.dead ? <><p>等待附近空位放下尸体；尸体需要搬到屠宰点加工。</p>
-            <ItemCondition condition={s?.environment.items.find(item => item.entity === 'carcass' && item.id === animal.id)} name={`${ANIMAL_DEFS[animal.species].name}尸体`} />
-          </> : <>
-            <p>{assignedHunter ? `${assignedHunter.name} · ${assignedHunter.reason}` : animal.hunt ? '已标记，等待能行动的猎人。' : '尚未标记狩猎。'}</p>
-            {!hunters.length && <small>需要未征召、能行动且装备短弓或枪械的殖民者，并开启狩猎分工。</small>}
-            <button aria-label={animal.hunt ? '取消狩猎此动物' : '标记狩猎此动物'} aria-pressed={animal.hunt} onClick={() => void client.command({ type: 'hunt', animalId: animal.id, enabled: !animal.hunt })}>{animal.hunt ? '取消狩猎' : '标记狩猎'}</button>
-            <small>猎人会实际靠近并射击。取消会停止追猎，已飞出的弹丸仍会继续。</small>
-          </>}
-          <button onClick={() => focus(animal)}>定位这只动物</button>
+        {animal && s && <AnimalDetails animal={animal} snapshot={s} command={c => void client.command(c)} focus={focus} />}
+        {grass && <section className="voxel-animal-detail" data-testid="grass-detail" data-growth={grass.growth}>
+          <label>野草 · 生长 {Math.round(grass.growth * 100)}%<progress aria-label="野草生长" value={grass.growth} max={1} /></label>
+          <small>动物可自行寻找草地。取食会减少这里的草，之后随光照和温度恢复。</small>
         </section>}
         {tree && treeCondition && (
           <div className="voxel-tree-detail" data-testid="tree-detail">
@@ -1630,12 +1621,13 @@ function App() {
                   'grow',
                   'cook',
                   'hunt',
+                  'handle',
                   'craft',
                   'research',
                 ] as Work[]
               ).map((w, i) => (
                 <label key={w}>
-                  {['灭火', '医护', '狱卒', '挖掘', '伐木', '施工', '搬运', '清洁', '种植', '烹饪', '狩猎', '加工', '研究'][i]}
+                  {['灭火', '医护', '狱卒', '挖掘', '伐木', '施工', '搬运', '清洁', '种植', '烹饪', '狩猎', '饲养', '加工', '研究'][i]}
                   <WorkSkill pawn={pawn} work={w} />
                   <select
                     aria-label={`${pawn.name} ${w}优先级`}
@@ -1915,37 +1907,12 @@ function App() {
           </section>)}
         </details>
       </aside>}
-      {wildlifeOpen && s && <aside className="voxel-wildlife-drawer" aria-label="野生动物与狩猎" data-testid="wildlife-panel">
-        <div className="voxel-wildlife-heading"><h2>野生动物与狩猎</h2><button aria-label="关闭野生动物面板" onClick={() => setWildlifeOpen(false)}>×</button></div>
-        <p>{s.animals.filter(a => !a.dead).length} 只野生动物 · {s.animals.filter(a => a.hunt && !a.dead).length} 只已标记 · {hunters.length} 位可用远程猎人</p>
-        <details className="voxel-wildlife-guide" open><summary>从狩猎到餐桌</summary>
-          <ol><li>在制作点制作短弓，或取得枪械，为殖民者装备。</li><li>开启人物的狩猎分工，标记动物；猎人会靠近、瞄准并射击。</li><li>划定屠宰点，开启烹饪分工；尸体搬入加工为生肉。</li><li>生肉可食用，也可在灶台与谷物混合做简餐；肉和尸体应及时冷藏。</li></ol>
-          <div><button onClick={() => {
-            const spot = s.weaponBenches.find(b => b.kind === 'craftingSpot');
-            if (spot) { setSelectedAnimal(null); focus(spot); } else client.choose('craftingSpot');
-          }}>{s.weaponBenches.some(b => b.kind === 'craftingSpot') ? '查看制作点' : '建造制作点'}</button>
-          <button onClick={() => client.choose('butcherSpot')}>规划屠宰点</button></div>
-          <small>饥饿或疲劳可能打断狩猎，满足需求后会重新安排。取消狩猎不能召回已发射的弹丸。</small>
-        </details>
-        <details className="voxel-wildlife-workers"><summary>猎人分工与装备</summary>
-          {s.pawns.filter(v => v.faction === 'colony').map(v => <div key={v.id}>
-            <button onClick={() => { setSelectedAnimal(null); setSelectedPawn(v.id); focus(v); }}>{v.name}</button>
-            <small>{v.weapon ? weaponName(v.weapon) : '未装备武器'} · {v.priorities.hunt ? `狩猎优先级 ${v.priorities.hunt}` : '狩猎已停用'}{v.drafted ? ' · 征召中' : ''}</small>
-          </div>)}
-        </details>
-        <div className="voxel-wildlife-list" role="list" aria-label="地图上的动物">
-          {!s.animals.length && <p>地图上暂时没有野生动物。</p>}
-          {s.animals.map(a => <section role="listitem" key={a.id} className={selectedAnimal === a.id ? 'selected' : ''} data-animal-id={a.id}>
-            <div><b>{a.name}</b><span>{ANIMAL_PHASE_NAMES[a.phase]}</span></div>
-            <small>{ANIMAL_DEFS[a.species].name} · 健康 {Math.ceil(a.health)} / {ANIMAL_DEFS[a.species].health} · {levelName(a.z, spawn.z)}</small>
-            <div><button aria-label={`定位 ${a.name}`} onClick={() => { setSelectedAnimal(a.id); setSelectedPawn(null); focus(a); }}>定位</button>
-              <button aria-label={`${a.hunt ? '取消狩猎' : '标记狩猎'} ${a.name}`} disabled={a.dead} aria-pressed={a.hunt} onClick={() => void client.command({ type: 'hunt', animalId: a.id, enabled: !a.hunt })}>{a.hunt ? '取消狩猎' : '标记狩猎'}</button></div>
-          </section>)}
-        </div>
-        <details className="voxel-wildlife-workers"><summary>屠宰点 · {s.butcherSpots.length} 处</summary>
-          {s.butcherSpots.map(spot => <div key={spot.id}><button onClick={() => { setSelectedAnimal(null); focus(spot); }}>定位屠宰点 {spot.id}</button><small>{spot.paused ? '已暂停' : '自动加工开启'} · Z {spot.z}</small></div>)}
-        </details>
-      </aside>}
+      {wildlifeOpen && s && <AnimalPanel snapshot={s} selectedAnimalId={selectedAnimal} baseLevel={spawn.z}
+        command={c => void client.command(c)} choose={tool => client.choose(tool)}
+        focus={pos => { setSelectedAnimal(null); focus(pos); }}
+        selectAnimal={target => { setSelectedAnimal(target.id); setSelectedPawn(null); focus(target); }}
+        selectPawn={person => { setSelectedAnimal(null); setSelectedPawn(person.id); focus(person); }}
+        close={() => setWildlifeOpen(false)} />}
       {s && (tradeOpen || s.trade.session?.stage === 'ready') && (
         <TradePanel
           snapshot={s}

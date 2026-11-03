@@ -1585,6 +1585,18 @@ a {
 .voxel-animal-detail { display: grid; gap: 10px; margin: 14px 0; padding: 12px; border: 1px solid #b5c98b55; background: #14202166; }
 .voxel-animal-detail label { display: grid; gap: 6px; }
 .voxel-animal-detail p { margin: 0; line-height: 1.6; }
+.voxel-wildlife-list h3 { margin: 18px 0 8px; font-size: 13px; color: #d9dfbc; }
+.voxel-wildlife-list .voxel-animal-facts, .voxel-wildlife-list .voxel-animal-status { display: grid; justify-content: stretch; gap: 3px; }
+.voxel-animal-facts label { display: grid; gap: 4px; color: #c3d1bc; font-size: 11px; }
+.voxel-animal-facts progress { width: 100%; height: 5px; accent-color: #aec584; }
+.voxel-animal-status p { margin: 5px 0; }
+.voxel-animal-orders, .voxel-animal-row-actions { display: flex; flex-wrap: wrap; gap: 5px; }
+.voxel-wildlife-list section > .voxel-animal-row-actions { justify-content: flex-start; margin-top: 9px; }
+.voxel-animal-orders button { white-space: nowrap; }
+.voxel-animal-handler { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 5px 9px; }
+.voxel-animal-handler label { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: #c3d1bc; }
+.voxel-animal-handler select { min-width: 76px; }
+.voxel-wildlife-workers ol { padding-left: 18px; }
 .voxel-carcass-detail { display: grid; gap: 8px; margin-top: 8px; }
 @media (max-width: 1050px) { .voxel-wildlife-drawer { right: 12px; top: 204px; width: 315px; padding: 12px; } }
 .voxel-trade-drawer-heading,

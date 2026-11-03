@@ -6,7 +6,9 @@
 
 在线试玩：[多层体素](https://sqchenxiyuan.github.io/emberfield-web/?world=voxel) · [二维营地](https://sqchenxiyuan.github.io/emberfield-web/) · 源码：[sqchenxiyuan/emberfield-web](https://github.com/sqchenxiyuan/emberfield-web)。
 
-当前开发重点是先搭好可操作的玩法和机制闭环，数值采用初步默认值，后续再平衡。体素模式已接通狩猎与肉食生产、心情娱乐、俘虏招募、卫生清洁、火灾修理及天气联动，见[开发路线](docs/research/rimworld/05-reconstruction-roadmap.md)；研究文档中的原版数值不代表当前游戏已经完成平衡。
+当前开发重点是先搭好可操作的玩法和机制闭环，数值采用初步默认值，后续再平衡。体素模式已接通狩猎与肉食生产、动物驯养繁殖、心情娱乐、俘虏招募、卫生清洁、火灾修理及天气联动，见[开发路线](docs/research/rimworld/05-reconstruction-roadmap.md)；研究文档中的原版数值不代表当前游戏已经完成平衡。
+
+2026-11-04动物经营更新（v29）：驯养员取来实际生粮，两次喂食后尝试驯服；家畜吃真实草、作物和食物，同种成年雌雄需要接触才能繁殖。饥饿影响成长与孕期，幼体有独立身份；宰杀、放归和兔的驯顺维护均需实际处理。列表与详情显示性别、成长、营养不良及孕期，旧档可升级。暂未实现完整围栏识别、牵引、畜产品及动物训练，孕期和成长速度为Web暂定值。见[88原版机制](docs/research/rimworld/88-animal-husbandry-mechanisms.md)、[89原版实机](docs/research/rimworld/89-native-animal-husbandry-runtime.md)、[90玩法与验证](docs/research/rimworld/90-animal-husbandry-gameplay.md)。
 
 2026-11-04环境经营更新（v28）：淋雨产生可刷新、避雨后逐渐消退的心情记忆；雨天影响户外散步，雨水冲走露天污物。地面物资按真实耐久劣化，仓储划区、有顶棚和封闭仓库提供不同保护。拆分、混堆、搬运、施工退料与交易保留物品状态，食物温度腐坏单独计算。选择物资、人物或天气入口可查看原因与状态。见[85原版机制](docs/research/rimworld/85-environment-storage-mechanisms.md)、[86原版实机](docs/research/rimworld/86-native-environment-storage-runtime.md)、[87玩法与验证](docs/research/rimworld/87-environment-storage-gameplay.md)。优先完成机制衔接，概率和节奏继续后调。
 

@@ -74,7 +74,7 @@ describe('anatomy integration with work, physical treatment and save migration',
       const s = VoxelSimulation.load(old),
         save = s.save();
       expect(old).toEqual(before);
-      expect(save.version).toBe(28);
+      expect(save.version).toBe(29);
       expect(s.tick).toBe(old.tick);
       for (const key of ['blocks', 'items', 'researchBenches', 'stats'] as const)
         expect(save[key]).toEqual(key === 'stats' ? withMedicineLedgers(old.stats) : old[key]);
@@ -99,6 +99,7 @@ describe('anatomy integration with work, physical treatment and save migration',
             ...prior.skills,
             shooting: initialSkills(i, p.faction !== 'colony').shooting,
             social: initialSkills(i, p.faction !== 'colony').social,
+            animals: initialSkills(i, p.faction !== 'colony').animals,
           } : prior[key]);
         const retained = [
           ...p.trauma.wounds,

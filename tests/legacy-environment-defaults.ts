@@ -1,6 +1,7 @@
 import { expect } from 'vitest';
 import { emptyCounts, type Resource } from '../src/voxel/types';
 import { isPerishable, validBatch } from '../src/voxel/preservation';
+import { stripHusbandryFields } from './legacy-husbandry-defaults';
 
 /** Only downgrade deliberately synthetic schema fixtures. A pre-v28 format can
  * represent full-condition ordinary inputs through its old counters, but cannot
@@ -22,6 +23,7 @@ export function stripEnvironmentFields(raw: Record<string, any>) {
       expect(job.deliveredBatches.filter((b: any) => b.resource === resource).reduce((sum: number, b: any) => sum + b.amount, 0))
         .toBe(job.delivered[resource] ?? 0);
   }
+  stripHusbandryFields(raw);
   for (const job of raw.jobs) {
     job.deliveredFood = job.deliveredBatches.filter((b: any) => isPerishable(b.resource));
     delete job.deliveredBatches;

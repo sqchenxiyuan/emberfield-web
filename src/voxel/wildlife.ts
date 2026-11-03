@@ -10,6 +10,7 @@ export const ANIMAL_DEFS: Readonly<Record<AnimalSpecies, {
   deer: { name: '鹿', health: 65, meat: 50, color: 0x936341, moveTicks: 12 },
 };
 export const ANIMAL_PHASE_NAMES: Record<WildAnimal['phase'], string> = {
+  eat: '进食', mate: '求偶', interact: '接受照料',
   roam: '游荡', graze: '觅食', rest: '休息', flee: '逃离威胁', dead: '尸体等待落地空间',
 };
 export const isAnimal = (target: unknown): target is WildAnimal =>

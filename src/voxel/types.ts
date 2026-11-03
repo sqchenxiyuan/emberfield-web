@@ -81,6 +81,7 @@ export type Resource =
   | 'apparel'
   | 'weapon';
 export type Work =
+  | 'handle'
   | 'firefight'
   | 'clean'
   | 'warden'
@@ -370,15 +371,52 @@ export interface Stove extends Pos {
   paused: boolean;
 }
 export type AnimalSpecies = 'hare' | 'deer';
+export interface GrassPatch extends Pos { growth: number }
+export interface AnimalGoal { kind: 'grass' | 'crop' | 'food' | 'mate'; id: number }
+export interface HandleTask {
+  animalId: number;
+  action: 'tame' | 'maintain' | 'feed' | 'slaughter' | 'release';
+  stage: 'fetch' | 'approach' | 'interact';
+  foodId: number | null;
+  amount: number;
+  feedings: number;
+  progress: number;
+}
+export interface HusbandryEvent {
+  tick: number;
+  kind: 'tame' | 'failed' | 'fed' | 'pregnancy' | 'birth' | 'miscarriage' | 'rewild' | 'slaughter' | 'release' | 'starved';
+  animalId: number;
+  otherId: number | null;
+  message: string;
+}
 /** Wildlife uses its own small state machine, separate from human anatomy. */
 export interface WildAnimal extends Pos {
+  faction: 'wild' | 'colony';
+  sex: 'male' | 'female';
+  ageTicks: number;
+  growth: number;
+  tame: boolean;
+  slaughter: boolean;
+  releaseMarked: boolean;
+  malnutrition: number;
+  pregnancy: { fatherId: number; progress: number } | null;
+  mateId: number | null;
+  mateProgress: number;
+  nextMateTick: number;
+  tameness: number;
+  nextTamenessDecayTick: number;
+  nextInteractionTick: number;
+  path: number[];
+  goal: AnimalGoal | null;
+  eatProgress: number;
+  reason: string;
   id: number;
   species: AnimalSpecies;
   name: string;
   health: number;
   hunger: number;
   dead: boolean;
-  phase: 'roam' | 'graze' | 'rest' | 'flee' | 'dead';
+  phase: 'roam' | 'graze' | 'rest' | 'flee' | 'dead' | 'eat' | 'mate' | 'interact';
   hunt: boolean;
   moveTick: number;
   decisionTick: number;
@@ -562,6 +600,7 @@ export interface CombatState {
   wave: number;
 }
 export interface Pawn extends Pos {
+  handleTask: HandleTask | null;
   firefightTask: FirefightTask | null;
   repairTask: RepairTask | null;
   cleanTask: CleanTask | null;
@@ -610,6 +649,7 @@ export interface Pawn extends Pos {
   path: number[];
   destination: number | null;
   phase:
+    | 'handle'
     | 'firefight'
     | 'repair'
     | 'clean'
@@ -679,6 +719,8 @@ export interface VoxelStats {
   spoiled: Counts;
 }
 export interface VoxelSnapshot {
+  grass: GrassPatch[];
+  husbandryLog: HusbandryEvent[];
   environment: EnvironmentView;
   weather: WeatherView;
   snow: SnowCover[];
@@ -752,6 +794,7 @@ export interface ChunkUpdate {
   ladders: Uint8Array;
 }
 export type VoxelCommand =
+  | { type: 'animalOrder'; animalId: number; order: 'tame' | 'slaughter' | 'release'; enabled: boolean }
   | { type: 'firefight'; pawnId: number; fireId: number }
   | { type: 'cancelFirefight'; pawnId: number }
   | { type: 'repair'; pawnId: number; damageKey: string }
@@ -818,6 +861,8 @@ export interface CommandResult {
   count?: number;
 }
 export interface VoxelSave {
+  grass: GrassPatch[];
+  husbandryLog: HusbandryEvent[];
   weather: WeatherState;
   snow: SnowCover[];
   fires: Fire[];
@@ -827,7 +872,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 28;
+  version: 29;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;

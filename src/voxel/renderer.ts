@@ -80,6 +80,7 @@ import { SMITHY_FUEL_CAPACITY } from './weaponProduction';
 import { isRangedKind } from './ranged';
 import { projectileViewPosition } from './rangedView';
 import { ANIMAL_DEFS } from './wildlife';
+import { isAnimalAdult } from './husbandry';
 import { FIRE_RULES, fireDamageCells } from './fire';
 
 /** x/y are horizontal simulation coordinates; Three uses x/z horizontally. */
@@ -157,6 +158,7 @@ type PawnVisual = {
 };
 type AnimalVisual = {
   root: Group; body: Group; head: Group; legs: Group[]; label: Sprite;
+  antlers: Group; colonyMark: Mesh; tameMark: Sprite; slaughterMark: Sprite; releaseMark: Sprite;
   selected: Mesh; huntMark: Group; from: Vector3; to: Vector3;
   start: number; duration: number; animal: WildAnimal;
 };
@@ -921,7 +923,10 @@ export class VoxelRenderer {
       const parts: Mesh[] = [];
       visual.body.traverseVisible(object => { if (object instanceof Mesh && object.geometry === this.box) parts.push(object); });
       const hit = this.ray.intersectObjects(parts, false)[0];
-      if (hit && hit.distance <= obstruction + .02) pawnHits.push({ distance: hit.distance, pos: { x: visual.animal.x, y: visual.animal.y, z: visual.animal.z } });
+      if (hit && hit.distance <= obstruction + .02) {
+        const pos = { x: visual.animal.x, y: visual.animal.y, z: visual.animal.z, animalId: visual.animal.id };
+        pawnHits.push({ distance: hit.distance, pos });
+      }
     }
     pawnHits.sort((a, b) => a.distance - b.distance);
     if (pawnHits.length) return pawnHits[0].pos;
@@ -946,7 +951,7 @@ export class VoxelRenderer {
   highlight(pos: Pos | null) {
     if (this.disposed) return;
     this.hover = pos ? { ...pos } : null;
-    this.selectedAnimalId = pos ? this.data?.animals.find(a => a.x === pos.x && a.y === pos.y && a.z === pos.z)?.id ?? null : null;
+    this.selectedAnimalId = pos ? this.data?.animals.find(a => 'animalId' in pos ? a.id === pos.animalId : a.x === pos.x && a.y === pos.y && a.z === pos.z)?.id ?? null : null;
     this.updateCursor();
   }
 
@@ -2145,6 +2150,16 @@ export class VoxelRenderer {
       color: number,
       yaw = 0,
     ) => parts.push({ cell, x: cell.x + x, z: cell.z + z, y: cell.y + y, sx, sz, sy, color, yaw });
+    // Only actual edible grass state is drawn. Consumed patches shrink to bare ground.
+    for (const patch of this.data.grass) {
+      if (patch.z !== this.level || patch.growth <= .025) continue;
+      const size = MathUtils.clamp(patch.growth, 0, 1), height = .06 + size * .23;
+      for (let n = 0; n < 3; n++) {
+        const angle = n * Math.PI * 2 / 3 + ((patch.x * 13 + patch.y * 7) % 19);
+        add(patch, .5 + Math.cos(angle) * .19, height / 2 + .025, .5 + Math.sin(angle) * .19,
+          .055, height * (n === 1 ? .8 : 1), .055, size > .45 ? 0x79934f : 0x859450, angle);
+      }
+    }
     for (const crop of this.data.crops ?? []) {
       if (crop.z !== this.level) continue;
       const growth = MathUtils.clamp(crop.growth, 0, 1),
@@ -3141,8 +3156,9 @@ export class VoxelRenderer {
   }
 
   private makeAnimal(animal: WildAnimal): AnimalVisual {
-    const root = new Group(), body = new Group(), head = new Group(), legs: Group[] = [];
+    const root = new Group(), body = new Group(), head = new Group(), antlers = new Group(), legs: Group[] = [];
     root.add(body); body.add(head);
+    head.add(antlers);
     const deer = animal.species === 'deer';
     const fur = this.keepMaterial(new MeshLambertMaterial({ color: ANIMAL_DEFS[animal.species].color }));
     const dark = this.keepMaterial(new MeshLambertMaterial({ color: 0x40372e }));
@@ -3162,8 +3178,8 @@ export class VoxelRenderer {
       const ear = part(head, fur, side * (deer ? .2 : .095), deer ? .48 : .29, deer ? .02 : .035, deer ? .2 : .07, deer ? .075 : .4, .085);
       ear.rotation.z = side * (deer ? -.3 : -.15);
       if (deer) {
-        part(head, cream, side * .08, .61, -.02, .045, .32, .045);
-        const branch = part(head, cream, side * .13, .68, -.02, .19, .035, .045); branch.rotation.z = side * .5;
+        part(antlers, cream, side * .08, .61, -.02, .045, .32, .045);
+        const branch = part(antlers, cream, side * .13, .68, -.02, .19, .035, .045); branch.rotation.z = side * .5;
       }
     }
     for (const [x, z] of [[-.15, -.25], [.15, -.25], [-.15, .25], [.15, .25]]) {
@@ -3174,6 +3190,13 @@ export class VoxelRenderer {
     }
     const selected = new Mesh(this.keepGeometry(new RingGeometry(deer ? .48 : .35, deer ? .54 : .41, 24)), this.keepMaterial(new MeshBasicMaterial({ color: 0xf2d58e, depthWrite: false })));
     selected.rotation.x = -Math.PI / 2; selected.position.y = .035; root.add(selected);
+    const colonyMark = new Mesh(this.keepGeometry(new RingGeometry(deer ? .4 : .28, deer ? .44 : .32, 24)), this.keepMaterial(new MeshBasicMaterial({ color: 0x87c4b2, transparent: true, opacity: .8, depthWrite: false })));
+    colonyMark.rotation.x = -Math.PI / 2; colonyMark.position.y = .025; root.add(colonyMark);
+    const mark = (text: string, color: number) => {
+      const sprite = new Sprite(this.keepMaterial(new SpriteMaterial({ map: nameTexture(text, color), depthTest: false, depthWrite: false })));
+      sprite.scale.set(.62, .3, 1); sprite.renderOrder = 12; root.add(sprite); return sprite;
+    };
+    const tameMark = mark('驯', 0xe5d79e), slaughterMark = mark('宰', 0xe6a18e), releaseMark = mark('归', 0x9bcbbb);
     const huntMark = new Group(); huntMark.position.set(0, deer ? 1.85 : 1.2, 0);
     const red = this.keepMaterial(new MeshLambertMaterial({ color: 0xe49c80 }));
     for (const angle of [-Math.PI / 4, Math.PI / 4]) { const bar = part(huntMark, red, 0, 0, 0, .28, .045, .045); bar.rotation.z = angle; }
@@ -3181,7 +3204,7 @@ export class VoxelRenderer {
     const label = new Sprite(this.keepMaterial(new SpriteMaterial({ map: nameTexture(animal.name, 0xd3c397), depthTest: false, depthWrite: false })));
     label.position.y = deer ? 2.17 : 1.52; label.scale.set(1.35, .37, 1); label.renderOrder = 12; root.add(label);
     const pos = new Vector3(animal.x + .5, animal.z, animal.y + .5); root.position.copy(pos);
-    return { root, body, head, legs, label, selected, huntMark, from: pos.clone(), to: pos.clone(), start: performance.now(), duration: 0, animal };
+    return { root, body, head, legs, label, selected, huntMark, antlers, colonyMark, tameMark, slaughterMark, releaseMark, from: pos.clone(), to: pos.clone(), start: performance.now(), duration: 0, animal };
   }
 
   private animateAnimals(now: number) {
@@ -3190,6 +3213,9 @@ export class VoxelRenderer {
     const time = (this.data.tick + extra) / TPS;
     for (const visual of this.animalVisuals.values()) {
       const a = visual.animal, deer = a.species === 'deer';
+      const size = .45 + MathUtils.clamp(a.growth, 0, 1) * .55;
+      visual.body.scale.setScalar(size);
+      visual.antlers.visible = deer && a.sex === 'male' && isAnimalAdult(a);
       visual.root.visible = a.z <= this.level;
       const fraction = visual.duration ? MathUtils.clamp((now - visual.start) / visual.duration, 0, 1) : 1;
       visual.root.position.lerpVectors(visual.from, visual.to, fraction);
@@ -3197,13 +3223,20 @@ export class VoxelRenderer {
       if (Math.abs(dx) + Math.abs(dz) > .001) visual.root.rotation.y = Math.atan2(dx, dz);
       const moving = !a.dead && fraction < 1, resting = a.phase === 'rest', fleeing = a.phase === 'flee';
       const wave = Math.sin(time * (fleeing ? 19 : 11) + a.id);
-      visual.body.position.y = a.dead ? .1 : resting ? (deer ? -.35 : -.1) : moving ? Math.abs(wave) * (deer ? .045 : .07) : 0;
+      visual.body.position.y = (a.dead ? .1 : resting ? (deer ? -.35 : -.1) : moving ? Math.abs(wave) * (deer ? .045 : .07) : 0) * size;
       visual.body.rotation.z = a.dead ? Math.PI / 2 : 0;
-      visual.head.rotation.x = a.phase === 'graze' ? .65 + Math.sin(time * 3 + a.id) * .08 : fleeing ? -.12 : resting ? .18 : Math.sin(time * .9 + a.id) * .025;
+      visual.head.rotation.x = a.phase === 'graze' || a.phase === 'eat' ? .65 + Math.sin(time * 3 + a.id) * .08 : fleeing ? -.12 : resting ? .18 : Math.sin(time * .9 + a.id) * .025;
       visual.legs.forEach((leg, i) => { leg.visible = !resting; leg.rotation.x = moving ? wave * (i === 0 || i === 3 ? 1 : -1) * (fleeing ? .65 : .4) : 0; });
       visual.selected.visible = this.selectedAnimalId === a.id;
       visual.huntMark.visible = a.hunt && !a.dead;
-      visual.label.visible = visual.selected.visible || a.hunt;
+      visual.colonyMark.visible = a.faction === 'colony' && !a.dead;
+      visual.tameMark.visible = a.tame && !a.dead;
+      visual.slaughterMark.visible = a.slaughter && !a.dead;
+      visual.releaseMark.visible = a.releaseMarked && !a.dead;
+      const markerHeight = (deer ? 1.65 : 1) * size + .2;
+      for (const marker of [visual.huntMark, visual.tameMark, visual.slaughterMark, visual.releaseMark]) marker.position.y = markerHeight;
+      visual.label.position.y = markerHeight + .32;
+      visual.label.visible = visual.selected.visible || a.hunt || a.tame || a.slaughter || a.releaseMarked;
     }
   }
 
@@ -3796,6 +3829,9 @@ export class VoxelRenderer {
       const fireTarget = pawn.phase === 'firefight' && pawn.firefightTask ? this.data.fires.find(f => f.id === pawn.firefightTask!.fireId) : undefined;
       const repairTarget = pawn.phase === 'repair' && pawn.repairTask ? this.data.fireDamage.find(d => d.key === pawn.repairTask!.damageKey) : undefined;
       const touches = (p: Pos) => Math.abs(p.x - pawn.x) + Math.abs(p.y - pawn.y) + Math.abs(p.z - pawn.z) <= 1;
+      const handledAnimal = pawn.phase === 'handle' && pawn.handleTask?.stage === 'interact'
+        ? this.data.animals.find(a => a.id === pawn.handleTask!.animalId && !a.dead) : undefined;
+      const handling = !!handledAnimal && !moving && !mental && touches(handledAnimal);
       const firefighting = !!fireTarget && !moving && !pawn.cargo && !mental && pawn.carryingPawnId === null && touches(fireTarget);
       const repairCells = repairTarget ? fireDamageCells(repairTarget, this.data) : [];
       const repairCell = repairCells.find(touches);
@@ -3995,6 +4031,14 @@ export class VoxelRenderer {
         visual.torso.rotation.x = .1; visual.head.rotation.x = .1;
         toolArm.rotation.x = -.45 - Math.sin(beat * Math.PI) * .7;
         visual.hammer.visible = true; visual.hammer.scale.setScalar(1); visual.tool.visible = false;
+      } else if (handling && handledAnimal) {
+        const slaughtering = pawn.handleTask!.action === 'slaughter';
+        visual.root.rotation.y = Math.atan2(handledAnimal.x - pawn.x, handledAnimal.y - pawn.y);
+        visual.torso.rotation.x = .15; visual.head.rotation.x = .17;
+        toolArm.rotation.x = slaughtering ? -.8 + Math.sin(time * 7 + pawn.id) * .35 : -.75 + Math.sin(time * 3 + pawn.id) * .12;
+        (useLeftHand ? visual.rightArm : visual.leftArm).rotation.x = -.5;
+        visual.tool.visible = false; visual.hammer.visible = false;
+        if (slaughtering) visual.weapons.steelKnife.visible = true;
       } else if (cleaning) {
         visual.torso.rotation.x = .12;
         visual.head.rotation.x = .12;

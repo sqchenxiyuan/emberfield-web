@@ -1,0 +1,891 @@
+{
+  "evidence_id": "RW17-ANIMAL-HUSBANDRY-MECHANISMS",
+  "date_local": "2026-11-04",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Static derived C# and projected Core XML; native observations separate",
+  "manifest": "animal-husbandry-manifest.json",
+  "reproduction_manifest": "animal-husbandry-reproduction-manifest.json",
+  "types": "animal-husbandry-types.json",
+  "claims": [
+    {
+      "id": "AH01",
+      "finding": "Tame designation removes existing designations on the target before adding Tame. CanTame requires animal/wildman, no humanlike faction, wildness below1, not Dryad and no Scaria.",
+      "sources": [
+        {
+          "file": ".local-research/animal-husbandry/RimWorld.Designator_Tame.cs",
+          "sha256": "4cd649ec3d389bb5050dad304ad8a2231a565d96b1934cfeb5818dd2b030a04b",
+          "lines": [
+            50,
+            84
+          ]
+        },
+        {
+          "file": ".local-research/animal-husbandry/RimWorld.TameUtility.cs",
+          "sha256": "e855716d5914b812492e58321284ae2ff6dc255e906160b29e8ceedee9ae13b8",
+          "lines": [
+            1,
+            60
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "AH02",
+      "finding": "A handler must reserve the animal, meet minimum Animals skill and find it awake, not downed and casually interactible. Tame also requires its designation and a30000tick cooldown since last assigned interaction; ordinary priority does not bypass these skill/cooldown checks.",
+      "sources": [
+        {
+          "file": ".local-research/animal-husbandry/RimWorld.WorkGiver_InteractAnimal.cs",
+          "sha256": "903fed0e6c79754eb2245294d4247f38b779d8cce2f9cfe779fd019b0f38bba2",
+          "lines": [
+            43,
+            76
+          ]
+        },
+        {
+          "file": ".local-research/animal-husbandry/RimWorld.WorkGiver_Tame.cs",
+          "sha256": "c48ce634041314f456836361aaf92c5b2502325ee1a4b375d5862143e4f5cf0c",
+          "lines": [
+            23,
+            40
+          ]
+        },
+        {
+          "file": ".local-research/animal-husbandry/RimWorld.TameUtility.cs",
+          "sha256": "e855716d5914b812492e58321284ae2ff6dc255e906160b29e8ceedee9ae13b8",
+          "lines": [
+            57,
+            60
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "AH03",
+      "finding": "Taming food is carried inventory. Inventory must support two feeds; otherwise map search excludes standing plants, drugs, corpses, dispensers, forbidden and socially improper food. Tame reserves four attempts worth of nutrition and uses ceil for pickup count. Its shared training pickup helper instead uses StackCountForNutrition rounding.",
+      "sources": [
+        {
+          "file": ".local-research/animal-husbandry/RimWorld.WorkGiver_Tame.cs",
+          "sha256": "c48ce634041314f456836361aaf92c5b2502325ee1a4b375d5862143e4f5cf0c",
+          "lines": [
+            41,
+            60
+          ]
+        },
+        {
+          "file": ".local-research/animal-husbandry/RimWorld.WorkGiver_InteractAnimal.cs",
+          "sha256": "903fed0e6c79754eb2245294d4247f38b779d8cce2f9cfe779fd019b0f38bba2",
+          "lines": [
+            78,
+            119
+          ]
+        },
+        {
+          "file": ".local-research/animal-husbandry/RimWorld.JobDriver_Tame.cs",
+          "sha256": "7d8ed8c2a742d40f961914a407646402e710fc6fca82bb25994d05e5536efd08",
+          "lines": [
+            14,
+            28
+          ]
+        },
+        {
+          "file": ".local-research/food/RimWorld.FoodUtility.cs",
+          "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+          "lines": [
+            1314,
+            1322
+          ]
+        }
+      ],
+      "xml": [
+        "AX01",
+        "AX02"
+      ]
+    },
+    {
+      "id": "AH04",
+      "finding": "Shared animal interaction has three270tick chats and two feed phases; feed target nutrition is min(MaxFood*0.15,0.3). Each phase takes actual inventory food into carry, rounds portions using StackCountForNutrition, ingests on the animal and returns leftovers. Duration scales with the taken portion;270 is not a fixed total tame duration.",
+      "sources": [
+        {
+          "file": ".local-research/prisoners/RimWorld.JobDriver_InteractAnimal.cs",
+          "sha256": "840379ccc2e29a956fff8bf6c307161eb9eee2b6fef20ac2f0f27cdd2b59e7ef",
+          "lines": [
+            1,
+            166
+          ]
+        },
+        {
+          "file": ".local-research/food/RimWorld.Toils_Ingest.cs",
+          "sha256": "2e10eef89dc2f5d216681188952eb0227d1dd04d459463256a162310c30d9bb7",
+          "lines": [
+            395,
+            438
+          ]
+        },
+        {
+          "file": ".local-research/food/Verse.Thing.cs",
+          "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+          "lines": [
+            2132,
+            2204
+          ]
+        }
+      ],
+      "xml": [
+        "AX01",
+        "AX02",
+        "AX03"
+      ]
+    },
+    {
+      "id": "AH05",
+      "finding": "Ordinary tame chance is handler TameAnimalChance times a wildness curve with points(0,2),(.5,1),(1,0), with conditional bonded/venerated multipliers. The Animals skill factor is0.04+0.03*level, but capacities and stat processing also apply. Inspired_Taming guarantees this final check and is consumed; failed attempts can trigger manhunter via the species chance.",
+      "sources": [
+        {
+          "file": ".local-research/prisoners/RimWorld.InteractionWorker_RecruitAttempt.cs",
+          "sha256": "b865b4d6a8418fdb54d21ae1bdb9d02a2c44f037a52af3c4f355eff76f47d6aa",
+          "lines": [
+            29,
+            104
+          ]
+        },
+        {
+          "file": ".local-research/prisoners/Verse.AI.Pawn_MindState.cs",
+          "sha256": "b606531ba468fc6f4c1a2fbd9fbd25dd366ac45f3ef241b1a58fd298f82b7c12",
+          "lines": [
+            702,
+            716
+          ]
+        },
+        {
+          "file": ".local-research/housing/RimWorld.PawnUtility.cs",
+          "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+          "lines": [
+            1301,
+            1311
+          ]
+        }
+      ],
+      "xml": [
+        "AX01"
+      ]
+    },
+    {
+      "id": "AH06",
+      "finding": "Successful recruitment calls SetFaction: it removes designations, updates components/name and completes Tameness for player animals. Tame may subsequently request a rope-to-pen job for rope managed animals; it does not create a pen.",
+      "sources": [
+        {
+          "file": ".local-research/prisoners/RimWorld.RecruitUtility.cs",
+          "sha256": "41edbc4b1fe16c2d63e0545ec563034ac5be40dbc6703af628560e86ef7fb336",
+          "lines": [
+            1,
+            33
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.Pawn.cs",
+          "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+          "lines": [
+            2702,
+            2780
+          ]
+        },
+        {
+          "file": ".local-research/animal-husbandry/RimWorld.JobDriver_Tame.cs",
+          "sha256": "7d8ed8c2a742d40f961914a407646402e710fc6fca82bb25994d05e5536efd08",
+          "lines": [
+            27,
+            53
+          ]
+        }
+      ],
+      "xml": [
+        "AX09"
+      ]
+    },
+    {
+      "id": "AH07",
+      "finding": "Animal self-feeding searches compatible reachable food through the ordinary food job. Self-search can include plants; selected herbivores seek food below45%food, with hungry/urgent thresholds36%/18%. RawRice nutrition0.05 is inherited. This differs from the plant-excluding handler tame-food search.",
+      "sources": [
+        {
+          "file": ".local-research/food/RimWorld.JobGiver_GetFood.cs",
+          "sha256": "c648efbdd091620603979d79de4c064f5a8174e7f6cf51950b6c19619a398a04",
+          "lines": [
+            25,
+            98
+          ]
+        },
+        {
+          "file": ".local-research/food/RimWorld.FoodUtility.cs",
+          "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+          "lines": [
+            181,
+            225
+          ]
+        },
+        {
+          "file": ".local-research/food/RimWorld.FoodUtility.cs",
+          "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+          "lines": [
+            381,
+            457
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.RaceProperties.cs",
+          "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+          "lines": [
+            293,
+            305
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.Need_Food.cs",
+          "sha256": "f17cbaf82d8792108557f869db585fdd6ac26c0ebb537e8acf04173179e7c4cd",
+          "lines": [
+            21,
+            46
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.FoodTypeFlags.cs",
+          "sha256": "ec648f096a7d3baf47113cbe8cd25a0ce7595bc8e3eda5e6a070fba4a8c55229",
+          "lines": [
+            1,
+            31
+          ]
+        }
+      ],
+      "xml": [
+        "AX02",
+        "AX04",
+        "AX05"
+      ]
+    },
+    {
+      "id": "AH08",
+      "finding": "Grazing consumes actual plant nutrition. Available nutrition=growth*Nutrition; partial eating subtracts nutrition/Nutrition from growth, while exhausting the plant consumes/destroys it. Core Grass has Nutrition0.50 and growDays2.5; growth also depends on environmental plant rules, so2.5 is not unconditional elapsed regrowth time.",
+      "sources": [
+        {
+          "file": ".local-research/generation/RimWorld.Plant.cs",
+          "sha256": "4b0d69c4136423e496490a23276e7c98c8dd053e2fb27c705d282c5d2c8e3f09",
+          "lines": [
+            603,
+            620
+          ]
+        },
+        {
+          "file": ".local-research/food/Verse.Thing.cs",
+          "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+          "lines": [
+            2132,
+            2180
+          ]
+        },
+        {
+          "file": ".local-research/food/RimWorld.Toils_Ingest.cs",
+          "sha256": "2e10eef89dc2f5d216681188952eb0227d1dd04d459463256a162310c30d9bb7",
+          "lines": [
+            419,
+            438
+          ]
+        }
+      ],
+      "xml": [
+        "AX12",
+        "AX13"
+      ]
+    },
+    {
+      "id": "AH09",
+      "finding": "Training checks same faction, an assignable next trainable, interaction eligibility, inventory food and15000tick cooldown. It reuses the actual feed/talk sequence. Skill training is not automatic support for hauling or combat on every tamed species.",
+      "sources": [
+        {
+          "file": ".local-research/animal-husbandry/RimWorld.WorkGiver_Train.cs",
+          "sha256": "9e790beb9412eea174401bcb68272d5bb2836933bf7231c10e82dfb15107b21b",
+          "lines": [
+            1,
+            56
+          ]
+        },
+        {
+          "file": ".local-research/animal-husbandry/RimWorld.JobDriver_Train.cs",
+          "sha256": "3a21962cfe198d7fe22a9fe4ec5b352941dac974006175000a7c8e4ed5b1d1ac",
+          "lines": [
+            1,
+            21
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.Pawn_TrainingTracker.cs",
+          "sha256": "5ccb647830a685a0fe951d707853b0a12910f580bc4283340a987c6da311bd7d",
+          "lines": [
+            85,
+            177
+          ]
+        }
+      ],
+      "xml": [
+        "AX09"
+      ]
+    },
+    {
+      "id": "AH10",
+      "finding": "Hare and Deer use VegetarianRoughAnimal, Wildness0.75, genders and trainabilityNone. Base hunger factors are0.115/0.2 and body sizes0.2/1.2. Adult fed base consumption is1.6*baseHungerRate=0.184/0.32 nutrition/day before health, traits, bed or other modifiers; the Def factor is not nutrition/day itself.",
+      "sources": [
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.RaceProperties.cs",
+          "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+          "lines": [
+            1,
+            787
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.Need_Food.cs",
+          "sha256": "f17cbaf82d8792108557f869db585fdd6ac26c0ebb537e8acf04173179e7c4cd",
+          "lines": [
+            122,
+            159
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.Need_Food.cs",
+          "sha256": "f17cbaf82d8792108557f869db585fdd6ac26c0ebb537e8acf04173179e7c4cd",
+          "lines": [
+            215,
+            219
+          ]
+        }
+      ],
+      "xml": [
+        "AX04",
+        "AX05",
+        "AX06"
+      ]
+    },
+    {
+      "id": "AH11",
+      "finding": "Deer roamMtbDays2 implies Roamer/FenceBlocked and rope/pen management. Hare has no roamMtbDays in the selected Core chain and uses allowed areas rather than fence containment. Area restrictions are not physical walls.",
+      "sources": [
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.RaceProperties.cs",
+          "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+          "lines": [
+            1,
+            787
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.AnimalPenUtility.cs",
+          "sha256": "fbc92dcf75908d45f445f835fc83d0f9251cdd3c7d84482a27fdcd91d524b3f9",
+          "lines": [
+            1,
+            443
+          ]
+        }
+      ],
+      "xml": [
+        "AX04",
+        "AX05",
+        "AX06"
+      ]
+    },
+    {
+      "id": "AH12",
+      "finding": "One biological year is3600000ticks=60days. Age continues advancing, while animal life stage derives from separately persisted hunger-modulated growth. Both juvenile thresholds are0.1years; fed adulthood is0.2222years forHare and0.3333 forDeer. Starvation delays stage maturation rather than freezing biological age.",
+      "sources": [
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.Pawn_AgeTracker.cs",
+          "sha256": "b71a11d960cd5efae59595cf2a0298305a13bef9e9e095ee58cea3cb828d39ec",
+          "lines": [
+            97,
+            102
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.Pawn_AgeTracker.cs",
+          "sha256": "b71a11d960cd5efae59595cf2a0298305a13bef9e9e095ee58cea3cb828d39ec",
+          "lines": [
+            417,
+            459
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.Pawn_AgeTracker.cs",
+          "sha256": "b71a11d960cd5efae59595cf2a0298305a13bef9e9e095ee58cea3cb828d39ec",
+          "lines": [
+            525,
+            574
+          ]
+        }
+      ],
+      "xml": [
+        "AX04",
+        "AX05"
+      ]
+    },
+    {
+      "id": "AH13",
+      "finding": "Animal baby factors body/foodMax/health/hunger are0.2/3/0.25/0.4; juvenile0.5/1.5/0.6/0.75; adult defaults1. Only AnimalAdult is reproductive in the selected Core life stages.",
+      "sources": [
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.LifeStageDef.cs",
+          "sha256": "93a5a86d46d9b6d954630d71044634ec69faddd67c473d1fed730e474c0034bd",
+          "lines": [
+            1,
+            89
+          ]
+        }
+      ],
+      "xml": [
+        "AX07"
+      ]
+    },
+    {
+      "id": "AH14",
+      "finding": "The Animal think tree places mating inside HasFaction. A nonsterile male seeks a fertile female of the same faction and species or explicit crossbreed within30 reachable cells, not downed/forbidden and casually interactible. Sterile rejects nonreproductive stages and pregnancy-preventing hediffs, including existing pregnancy.",
+      "sources": [
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.JobGiver_Mate.cs",
+          "sha256": "93697635707661ac2b2316a7b8d327a455b80190b0ee184c3e8dcedd34dd999f",
+          "lines": [
+            1,
+            43
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.Pawn.cs",
+          "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+          "lines": [
+            3836,
+            3881
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.PawnUtility.cs",
+          "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+          "lines": [
+            346,
+            358
+          ]
+        }
+      ],
+      "xml": [
+        "AX08",
+        "AX11"
+      ]
+    },
+    {
+      "id": "AH15",
+      "finding": "Hare mateMtbHours8 and Deer inherits12. The chance-per-hour node uses that value; actual mating walks to touch and waits500ticks. Mammals conceive on Rand.Value<0.5. MTB is not a guaranteed conception countdown.",
+      "sources": [
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.RaceProperties.cs",
+          "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+          "lines": [
+            160,
+            174
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.AI.ThinkNode_ChancePerHour_Mate.cs",
+          "sha256": "a6f7036698557610400ff043ca57a1b7863b56d670eccd568020ee1205d77bfc",
+          "lines": [
+            1,
+            9
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.JobDriver_Mate.cs",
+          "sha256": "1fe2232d072c3c7252d4754cad2a1e3ffc14fe405d4bdb9f34272b85f34cb59a",
+          "lines": [
+            1,
+            46
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.PawnUtility.cs",
+          "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+          "lines": [
+            360,
+            377
+          ]
+        }
+      ],
+      "xml": [
+        "AX04",
+        "AX05"
+      ]
+    },
+    {
+      "id": "AH16",
+      "finding": "Both gestationPeriodDays5.661. Pregnancy severity starts0.001; progress addsHungerMultiplier*delta/(days*60000). Fed/hungry/urgent/starving multipliers1/0.5/0.25/0 affect gestation and immature growth, not biological age.",
+      "sources": [
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.Hediff_Pregnant.cs",
+          "sha256": "c8d706382ad523ccb43f496a31ad0de5d0a9b1c8d3fc20b73c52737e2a3b3d87",
+          "lines": [
+            84,
+            139
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.PawnUtility.cs",
+          "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+          "lines": [
+            341,
+            344
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.HungerLevelUtility.cs",
+          "sha256": "be023007bc1de7d662c5e526f48e50ddd516b9a68d9347c3b1c69c30c8726bef",
+          "lines": [
+            1,
+            35
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.Pawn_AgeTracker.cs",
+          "sha256": "b71a11d960cd5efae59595cf2a0298305a13bef9e9e095ee58cea3cb828d39ec",
+          "lines": [
+            525,
+            536
+          ]
+        }
+      ],
+      "xml": [
+        "AX04",
+        "AX05",
+        "AX11"
+      ]
+    },
+    {
+      "id": "AH17",
+      "finding": "At progress>=1 animals directly spawn offspring without human labor. Mother kind/faction, age0, inherited allowed area and parent relations are used. Hare litter curve rounds to1or2; Deer null curve defaults1. Ordinary generator chooses sex and initializes player-animal Tameness.",
+      "sources": [
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.Hediff_Pregnant.cs",
+          "sha256": "c8d706382ad523ccb43f496a31ad0de5d0a9b1c8d3fc20b73c52737e2a3b3d87",
+          "lines": [
+            118,
+            204
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.PawnGenerator.cs",
+          "sha256": "96e7447c568916a4eb9aa4d334723567d9b09dc939636f5dcdfee484dcc42180",
+          "lines": [
+            745,
+            769
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.PawnGenerator.cs",
+          "sha256": "96e7447c568916a4eb9aa4d334723567d9b09dc939636f5dcdfee484dcc42180",
+          "lines": [
+            828,
+            845
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.RaceProperties.cs",
+          "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+          "lines": [
+            160,
+            174
+          ]
+        }
+      ],
+      "xml": [
+        "AX04",
+        "AX05",
+        "AX06"
+      ]
+    },
+    {
+      "id": "AH18",
+      "finding": "Pregnancy checks every1000ticks: starvation plusMalnutrition>0.1 hasMTB2days miscarriage hazard; severe wounds above38*baseHealthScale separately haveMTB2days hazard. Miscarry removes pregnancy; neither is a fixed2day timer.",
+      "sources": [
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.Hediff_Pregnant.cs",
+          "sha256": "c8d706382ad523ccb43f496a31ad0de5d0a9b1c8d3fc20b73c52737e2a3b3d87",
+          "lines": [
+            14,
+            56
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/Verse.Hediff_Pregnant.cs",
+          "sha256": "c8d706382ad523ccb43f496a31ad0de5d0a9b1c8d3fc20b73c52737e2a3b3d87",
+          "lines": [
+            84,
+            155
+          ]
+        }
+      ],
+      "xml": [
+        "AX11"
+      ]
+    },
+    {
+      "id": "AH19",
+      "finding": "Food zero increases Malnutrition, eating allows gradual recovery. Per150tick need interval magnitude0.0011325 times a fixed seeded individual factor0.8..1.2, base0.453/day. Malnutrition severity0.8 caps consciousness0.1 and severity1 is lethal.",
+      "sources": [
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.Need_Food.cs",
+          "sha256": "f17cbaf82d8792108557f869db585fdd6ac26c0ebb537e8acf04173179e7c4cd",
+          "lines": [
+            81,
+            87
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.Need_Food.cs",
+          "sha256": "f17cbaf82d8792108557f869db585fdd6ac26c0ebb537e8acf04173179e7c4cd",
+          "lines": [
+            161,
+            181
+          ]
+        }
+      ],
+      "xml": [
+        "AX10"
+      ]
+    },
+    {
+      "id": "AH20",
+      "finding": "Tameness has5steps. Degradation interval curve wildness0->12days,1->6days yields7.5days at0.75. Each eligible decay reduces one learned leaf trainable step. Tameness0 returns a player animal to null faction. FenceBlocked skips tameness decay: ordinaryHare needs maintenance, Deer does not.",
+      "sources": [
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.TrainableUtility.cs",
+          "sha256": "bab3408df77f5a362068e6ee50652dce6c149ec90f4cffe82efe1cefe0b21602",
+          "lines": [
+            13,
+            20
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.TrainableUtility.cs",
+          "sha256": "bab3408df77f5a362068e6ee50652dce6c149ec90f4cffe82efe1cefe0b21602",
+          "lines": [
+            169,
+            204
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.Pawn_TrainingTracker.cs",
+          "sha256": "5ccb647830a685a0fe951d707853b0a12910f580bc4283340a987c6da311bd7d",
+          "lines": [
+            219,
+            270
+          ]
+        }
+      ],
+      "xml": [
+        "AX09"
+      ]
+    },
+    {
+      "id": "AH21",
+      "finding": "Minimum handling curve(0,0),(.15,1),(.98,10),(.99,14) is rounded. Wildness0.75 requiresAnimals8. TrainabilityNone still allows Tameness; selected normalHare/Deer cannot learn obedience/hauling/combat from that base category.",
+      "sources": [
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.StatWorker_MinimumHandlingSkill.cs",
+          "sha256": "7e724f9d36c362b1a3e17dcdc3ae48c774407d360bc54ab8b87a2479de966a69",
+          "lines": [
+            1,
+            42
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.TrainableUtility.cs",
+          "sha256": "bab3408df77f5a362068e6ee50652dce6c149ec90f4cffe82efe1cefe0b21602",
+          "lines": [
+            66,
+            69
+          ]
+        },
+        {
+          "file": ".local-research/husbandry-reproduction/RimWorld.Pawn_TrainingTracker.cs",
+          "sha256": "5ccb647830a685a0fe951d707853b0a12910f580bc4283340a987c6da311bd7d",
+          "lines": [
+            106,
+            164
+          ]
+        }
+      ],
+      "xml": [
+        "AX04",
+        "AX05",
+        "AX06",
+        "AX09"
+      ]
+    }
+  ],
+  "xml": [
+    {
+      "id": "AX01",
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_Social.xml",
+      "source_sha256": "a3db914be034226f29b2b511f63561edc5df8b0a20b9ae79e18dd2fb75c8b026",
+      "xpath": "/Defs/StatDef[defName=\"TameAnimalChance\" or defName=\"TrainAnimalChance\"]",
+      "projection": "Original element attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<StatDef><defName>TameAnimalChance</defName><defaultBaseValue>1</defaultBaseValue><minValue>0.01</minValue><skillNeedFactors><li Class=\"SkillNeed_BaseBonus\"><skill>Animals</skill><baseValue>0.04</baseValue><bonusPerLevel>0.03</bonusPerLevel></li></skillNeedFactors><capacityFactors><li><capacity>Talking</capacity><weight>0.9</weight><allowedDefect>0.20</allowedDefect><max>1</max></li><li><capacity>Hearing</capacity><weight>0.3</weight><allowedDefect>0.05</allowedDefect><max>1</max></li><li><capacity>Manipulation</capacity><weight>0.5</weight><allowedDefect>0.20</allowedDefect><max>1</max></li></capacityFactors></StatDef>",
+        "<StatDef><defName>TrainAnimalChance</defName><defaultBaseValue>1.0</defaultBaseValue><minValue>0.01</minValue><skillNeedFactors><li Class=\"SkillNeed_BaseBonus\"><skill>Animals</skill><baseValue>0.10</baseValue><bonusPerLevel>0.05</bonusPerLevel></li></skillNeedFactors><capacityFactors><li><capacity>Talking</capacity><weight>0.7</weight><allowedDefect>0.20</allowedDefect><max>1</max></li><li><capacity>Hearing</capacity><weight>0.3</weight><allowedDefect>0.05</allowedDefect><max>1</max></li><li><capacity>Manipulation</capacity><weight>0.5</weight><allowedDefect>0.20</allowedDefect><max>1</max></li></capacityFactors></StatDef>"
+      ]
+    },
+    {
+      "id": "AX02",
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+      "source_sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c",
+      "xpath": "/Defs/ThingDef[@Name=\"PlantFoodRawBase\" or defName=\"RawRice\" or defName=\"Hay\"]",
+      "projection": "Original element attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<ThingDef Abstract=\"True\" Name=\"PlantFoodRawBase\" ParentName=\"OrganicProductBase\"><ingestible><preferability>RawBad</preferability></ingestible><statBases><Nutrition>0.05</Nutrition></statBases></ThingDef>",
+        "<ThingDef ParentName=\"PlantFoodRawBase\"><defName>RawRice</defName><statBases></statBases><ingestible><foodType>Seed</foodType></ingestible></ThingDef>",
+        "<ThingDef ParentName=\"RoughPlantBase\"><defName>Hay</defName><stackLimit>200</stackLimit><statBases></statBases><ingestible></ingestible></ThingDef>"
+      ]
+    },
+    {
+      "id": "AX03",
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_General.xml",
+      "source_sha256": "ec1df1afb1f24c3d812b3224f803354b613a226e3934ea1e235c9b195181f507",
+      "xpath": "/Defs/StatDef[defName=\"MaxNutrition\" or defName=\"MinimumHandlingSkill\"]",
+      "projection": "Original element attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<StatDef><defName>MinimumHandlingSkill</defName><workerClass>StatWorker_MinimumHandlingSkill</workerClass><defaultBaseValue>0</defaultBaseValue><minValue>0</minValue><parts><li Class=\"StatPart_WildManOffset\"><offset>7</offset></li></parts></StatDef>",
+        "<StatDef><defName>MaxNutrition</defName><defaultBaseValue>1</defaultBaseValue><minValue>0.01</minValue><parts><li Class=\"StatPart_BodySize\" /><li Class=\"StatPart_LifeStageMaxFood\" /></parts></StatDef>"
+      ]
+    },
+    {
+      "id": "AX04",
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Hares.xml",
+      "source_sha256": "bda7f200ded2c9f8ee4b29dc8d9ea2e8d6977f20782797c51352af20aa6d835e",
+      "xpath": "/Defs/ThingDef[@Name=\"BaseHare\" or defName=\"Hare\"]",
+      "projection": "Original element attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<ThingDef Abstract=\"True\" ParentName=\"AnimalThingBase\" Name=\"BaseHare\"><statBases><Wildness>0.75</Wildness></statBases><race><baseBodySize>0.2</baseBodySize><baseHungerRate>0.115</baseHungerRate><baseHealthScale>0.4</baseHealthScale><foodType>VegetarianRoughAnimal</foodType><trainability>None</trainability><mateMtbHours>8</mateMtbHours><gestationPeriodDays>5.661</gestationPeriodDays><litterSizeCurve><points><li>(1.0, 0)</li><li>(1.5, 1)</li><li>(2.0, 1)</li><li>(2.5, 0)</li></points></litterSizeCurve><lifeExpectancy>8</lifeExpectancy><lifeStageAges><li><def>AnimalBaby</def><minAge>0</minAge></li><li><def>AnimalJuvenile</def><minAge>0.1</minAge></li><li><def>AnimalAdult</def><minAge>0.2222</minAge></li></lifeStageAges></race></ThingDef>",
+        "<ThingDef ParentName=\"BaseHare\"><defName>Hare</defName><race></race></ThingDef>"
+      ]
+    },
+    {
+      "id": "AX05",
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_PigGroup.xml",
+      "source_sha256": "87d3d069440e7ad2a3e66f3bb0778e5210c38429c5eb7788b23b87cc64df4ab1",
+      "xpath": "/Defs/ThingDef[defName=\"Deer\"]",
+      "projection": "Original element attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<ThingDef ParentName=\"AnimalThingBase\"><defName>Deer</defName><statBases><Wildness>0.75</Wildness></statBases><race><baseBodySize>1.2</baseBodySize><baseHealthScale>0.9</baseHealthScale><baseHungerRate>0.2</baseHungerRate><foodType>VegetarianRoughAnimal</foodType><roamMtbDays>2</roamMtbDays><gestationPeriodDays>5.661</gestationPeriodDays><lifeExpectancy>15</lifeExpectancy><lifeStageAges><li><def>AnimalBaby</def><minAge>0</minAge></li><li><def>AnimalJuvenile</def><minAge>0.1</minAge></li><li><def>AnimalAdult</def><minAge>0.3333</minAge></li></lifeStageAges></race></ThingDef>"
+      ]
+    },
+    {
+      "id": "AX06",
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+      "source_sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4",
+      "xpath": "/Defs/ThingDef[@Name=\"AnimalThingBase\" or @Name=\"BasePawn\"]",
+      "projection": "Original element attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<ThingDef Name=\"BasePawn\" Abstract=\"True\"><statBases></statBases><race></race></ThingDef>",
+        "<ThingDef ParentName=\"BasePawn\" Name=\"AnimalThingBase\" Abstract=\"True\"><statBases></statBases><race><hasGenders>true</hasGenders><trainability>None</trainability></race></ThingDef>"
+      ]
+    },
+    {
+      "id": "AX07",
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "source_sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalBaby\" or defName=\"AnimalJuvenile\" or defName=\"AnimalAdult\"]",
+      "projection": "Original element attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<LifeStageDef Name=\"AnimalBaby\"><defName>AnimalBaby</defName><bodySizeFactor>0.2</bodySizeFactor><foodMaxFactor>3</foodMaxFactor><healthScaleFactor>0.25</healthScaleFactor><hungerRateFactor>0.4</hungerRateFactor></LifeStageDef>",
+        "<LifeStageDef><defName>AnimalJuvenile</defName><bodySizeFactor>0.5</bodySizeFactor><foodMaxFactor>1.5</foodMaxFactor><healthScaleFactor>0.6</healthScaleFactor><hungerRateFactor>0.75</hungerRateFactor></LifeStageDef>",
+        "<LifeStageDef><defName>AnimalAdult</defName><reproductive>true</reproductive></LifeStageDef>"
+      ]
+    },
+    {
+      "id": "AX08",
+      "file": "Data/Core/Defs/ThinkTreeDefs/Animal.xml",
+      "source_sha256": "d857fb17533f17f90da48fae355d5014f7a4f78ab3dcc6ee755a881bda732121",
+      "xpath": "/Defs/ThinkTreeDef[defName=\"Animal\"]//li[@Class=\"ThinkNode_ConditionalHasFaction\"]/subNodes/li[@Class=\"ThinkNode_ChancePerHour_Mate\"]",
+      "projection": "Original element attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<li Class=\"ThinkNode_ChancePerHour_Mate\"><subNodes><li Class=\"ThinkNode_Tagger\"><tagToGive>SatisfyingNeeds</tagToGive><subNodes><li Class=\"JobGiver_Mate\" /></subNodes></li></subNodes></li>"
+      ]
+    },
+    {
+      "id": "AX09",
+      "file": "Data/Core/Defs/TrainableDefs/Trainables.xml",
+      "source_sha256": "f3f111813e116a8dd7739f991d9c41fd1ccddbb76bbcc5718d95dac77438c488",
+      "xpath": "/Defs/TrainableDef[defName=\"Tameness\" or defName=\"Obedience\" or defName=\"Release\" or defName=\"Haul\" or defName=\"Rescue\"]",
+      "projection": "Original element attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<TrainableDef><defName>Obedience</defName><requiredTrainability>Intermediate</requiredTrainability><steps>3</steps><prerequisites><li>Tameness</li></prerequisites></TrainableDef>",
+        "<TrainableDef><defName>Release</defName><requiredTrainability>Intermediate</requiredTrainability><steps>2</steps><prerequisites><li>Obedience</li></prerequisites></TrainableDef>",
+        "<TrainableDef><defName>Rescue</defName><requiredTrainability>Advanced</requiredTrainability><steps>2</steps><prerequisites><li>Obedience</li></prerequisites></TrainableDef>",
+        "<TrainableDef><defName>Haul</defName><requiredTrainability>Advanced</requiredTrainability><steps>7</steps><prerequisites><li>Obedience</li></prerequisites></TrainableDef>",
+        "<TrainableDef><defName>Tameness</defName><requiredTrainability>None</requiredTrainability><steps>5</steps></TrainableDef>"
+      ]
+    },
+    {
+      "id": "AX10",
+      "file": "Data/Core/Defs/HediffDefs/Hediffs_Global_Needs.xml",
+      "source_sha256": "6dfa56f30ab51b2e107675d82be2dd17819f41df47afa1d9a1c6e5c91710b5a6",
+      "xpath": "/Defs/HediffDef[defName=\"Malnutrition\"]",
+      "projection": "Original element attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<HediffDef><defName>Malnutrition</defName><lethalSeverity>1</lethalSeverity><stages><li><label>trivial</label><socialFightChanceFactor>1.5</socialFightChanceFactor><hungerRateFactorOffset>0.5</hungerRateFactorOffset><capMods><li><capacity>Consciousness</capacity><offset>-0.05</offset></li></capMods></li><li><minSeverity>0.2</minSeverity><label>minor</label><socialFightChanceFactor>2</socialFightChanceFactor><hungerRateFactorOffset>0.6</hungerRateFactorOffset><capMods><li><capacity>Consciousness</capacity><offset>-0.10</offset></li></capMods></li><li><minSeverity>0.4</minSeverity><label>moderate</label><socialFightChanceFactor>2.5</socialFightChanceFactor><hungerRateFactorOffset>0.6</hungerRateFactorOffset><capMods><li><capacity>Consciousness</capacity><offset>-0.20</offset></li></capMods></li><li><minSeverity>0.6</minSeverity><label>severe</label><socialFightChanceFactor>3</socialFightChanceFactor><hungerRateFactorOffset>0.6</hungerRateFactorOffset><capMods><li><capacity>Consciousness</capacity><offset>-0.30</offset></li></capMods></li><li><minSeverity>0.8</minSeverity><label>extreme</label><lifeThreatening>true</lifeThreatening><hungerRateFactorOffset>0.6</hungerRateFactorOffset><capMods><li><capacity>Consciousness</capacity><setMax>0.1</setMax></li></capMods></li></stages></HediffDef>"
+      ]
+    },
+    {
+      "id": "AX11",
+      "file": "Data/Core/Defs/HediffDefs/Hediffs_Global_Misc.xml",
+      "source_sha256": "d3d38552d52b19273eef855e2d62e3155267b8176f640e6018c7d9a04c919d57",
+      "xpath": "/Defs/HediffDef[defName=\"Pregnant\"]",
+      "projection": "Original element attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<HediffDef><defName>Pregnant</defName><hediffClass>Hediff_Pregnant</hediffClass><initialSeverity>0.001</initialSeverity><preventsPregnancy>true</preventsPregnancy><pregnant>true</pregnant><stages><li><label>early-stage</label><vomitMtbDays>2.5</vomitMtbDays></li><li><label>middle-stage</label><minSeverity>0.333</minSeverity><capMods><li><capacity>Moving</capacity><offset>-0.15</offset></li></capMods></li><li><label>late-stage</label><minSeverity>0.666</minSeverity><vomitMtbDays>2</vomitMtbDays><capMods><li><capacity>Moving</capacity><offset>-0.30</offset></li></capMods></li></stages></HediffDef>"
+      ]
+    },
+    {
+      "id": "AX12",
+      "file": "Data/Core/Defs/ThingDefs_Plants/Plants_Wild_General.xml",
+      "source_sha256": "3349380779d25788ee83120a210bb4a0f8140fcb97ab87e04ecf472d80066d09",
+      "xpath": "/Defs/ThingDef[defName=\"Plant_Grass\"]",
+      "projection": "Original element attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<ThingDef ParentName=\"PlantBase\"><defName>Plant_Grass</defName><statBases><Nutrition>0.50</Nutrition></statBases><ingestible /><plant><fertilityMin>0.05</fertilityMin><fertilitySensitivity>0.3</fertilitySensitivity><growDays>2.5</growDays><maxGrowthTemperature>75</maxGrowthTemperature></plant></ThingDef>"
+      ]
+    },
+    {
+      "id": "AX13",
+      "file": "Data/Core/Defs/ThingDefs_Plants/Plants_Bases.xml",
+      "source_sha256": "aa535af18f42a84f193e838b382ae4c438387495de26545665ce945990f7eaec",
+      "xpath": "/Defs/ThingDef[@Name=\"PlantBase\" or @Name=\"PlantBaseNonEdible\"]",
+      "projection": "Original element attributes and selected gameplay children only; not the complete selected node",
+      "nodes": [
+        "<ThingDef Name=\"PlantBaseNonEdible\" Abstract=\"True\"><statBases></statBases><plant><fertilityMin>0.7</fertilityMin><fertilitySensitivity>1.0</fertilitySensitivity></plant></ThingDef>",
+        "<ThingDef ParentName=\"PlantBaseNonEdible\" Name=\"PlantBase\" Abstract=\"True\"><ingestible><foodType>Plant</foodType><preferability>RawBad</preferability></ingestible></ThingDef>"
+      ]
+    }
+  ],
+  "rea_members": {
+    "source_file": ".local-research/husbandry-reproduction/rea-members-summary.json",
+    "sha256": "66427c4d04e6914ff6bb0fac9db74298abf00bd55e00c75ac765042ca21e40c8",
+    "evidence_id": "ev_69dd93b13c6a61b745e389803b4f0df51ea1529b0acda8bce3ce328ac99356a9",
+    "parent_evidence_id": "ev_1394217e2f4381602cdb14a099b269b54074ae46cf73bb12d9adbbc7a30bb0b8",
+    "status": "unavailable",
+    "reason": "Managed metadata exceeds the67108864byte representation budget; zero returned members is not absence evidence"
+  },
+  "native_runtime_report": "../89-native-animal-husbandry-runtime.md",
+  "limitations": [
+    "Derived C# is not original source.",
+    "Core XML inheritance and C# defaults are interpreted for selected ordinaryHare/Deer; no full effective modded Def database resolution.",
+    "27 retained type records across two extraction sets include duplicate TrainableUtility, hence26 distinct type names; reused earlier groups provide additional source pointers.",
+    "REA artifact identity succeeded; selected managed member view was unavailable. ILSpy fallback is the source of mechanism reconstruction.",
+    "Only native tame success using developer-granted Inspired_Taming is observed. Feeding/grazing, breeding, birth, failure, revenge and maintenance mechanisms remain static evidence.",
+    "No statistical calibration; Web shortened durations or simplified rules must be labeled provisional adaptations."
+  ]
+}

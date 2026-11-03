@@ -286,14 +286,15 @@ describe('physical medical care, agriculture and v18 migration', () => {
       const old = JSON.parse(bytes.toString()),
         save = VoxelSimulation.load(old).save();
       expect(old.version).toBe(18);
-      expect(save.version).toBe(28);
+      expect(save.version).toBe(29);
       expect(save.items).toEqual(old.items);
       expect(save.research).toEqual(old.research);
       expectWildlifeIds(old.nextId, save);
       expect(save.tick).toBe(old.tick);
       for (const [i, p] of save.pawns.entries()) {
         expect(p.trauma).toEqual(old.pawns[i].trauma);
-        expect(p.skills).toEqual({ ...old.pawns[i].skills, social: initialSkills(i, p.faction !== 'colony').social });
+        expect(p.skills).toEqual({ ...old.pawns[i].skills, social: initialSkills(i, p.faction !== 'colony').social,
+          animals: initialSkills(i, p.faction !== 'colony').animals });
         expect(p.medical.infections).toEqual([]);
         expect(p.medical.immunity).toBe(0);
         expect(p.medical.risks.every((r) => r.state === 'legacy')).toBe(true);

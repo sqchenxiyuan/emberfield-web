@@ -82,7 +82,10 @@
     "test:voxel:weather:browser": "node scripts/voxel-weather-browser-verify.mjs",
     "research:environment": "node scripts/research/verify-environment-storage-evidence.mjs",
     "test:voxel:environment": "node scripts/voxel-environment-campaign-verify.mjs",
-    "test:voxel:environment:browser": "node scripts/voxel-environment-browser-verify.mjs"
+    "test:voxel:environment:browser": "node scripts/voxel-environment-browser-verify.mjs",
+    "research:husbandry": "node scripts/research/verify-animal-husbandry-evidence.mjs",
+    "test:voxel:husbandry": "node scripts/voxel-husbandry-campaign-verify.mjs",
+    "test:voxel:husbandry:browser": "node scripts/voxel-husbandry-browser-verify.mjs"
   },
   "dependencies": {
     "pixi.js": "8.22.0",

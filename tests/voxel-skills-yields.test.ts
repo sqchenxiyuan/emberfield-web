@@ -40,7 +40,7 @@ function fixture(configure: (s: VoxelSimulation) => void = () => {}) {
     Object.assign(p, pos(11, 11 + i));
     p.schedule.fill('work');
     p.priorities = {
-      firefight: 0, clean: 0,
+      handle: 0, firefight: 0, clean: 0,
       warden: 0,
       hunt: 0,
       dig: 0,
