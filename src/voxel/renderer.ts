@@ -137,6 +137,9 @@ type PawnVisual = {
   label: Sprite;
   sleepSymbol: Sprite;
   healthMarker: Group;
+  recreationMarker: Sprite;
+  mentalMarker: Sprite;
+  horseshoe: Group;
   apparel: { hat: Group; coat: Mesh; sleeves: Mesh[]; shirt: Mesh[]; pants: Mesh[] };
   shadow: Mesh;
   from: Vector3;
@@ -1398,6 +1401,7 @@ export class VoxelRenderer {
     this.finish(storage);
     this.updateHomeArea();
     this.updateWildlifeObjects();
+    this.updateRecreationObjects();
     this.updateFarming();
     this.updateStonecutters();
     this.updateTailors();
@@ -1407,6 +1411,26 @@ export class VoxelRenderer {
     this.updateHousing();
     this.updatePower();
     this.updateJobLines();
+  }
+
+  private updateRecreationObjects() {
+    if (!this.data) return;
+    const pins = this.data.horseshoePins.filter(p => p.z <= this.level);
+    const parts: ModelPart[] = [
+      [0, .025, 0, .9, .04, .9, 0x9a8764],
+      [0, .34, 0, .11, .66, .11, 0x8b6540],
+      [0, .68, 0, .15, .06, .15, 0xd8c698],
+      [-.18, .075, .16, .055, .055, .26, 0xbac8bf],
+      [.04, .075, .16, .055, .055, .26, 0xbac8bf],
+      [-.07, .075, .04, .26, .055, .055, 0xbac8bf],
+      [-.38, .052, -.38, .12, .03, .12, 0xd2c39a],
+      [.38, .052, .38, .12, .03, .12, 0xd2c39a],
+    ];
+    const mesh = this.batch('horseshoe-pins', pins.length * parts.length, this.box, this.batchMaterial('horseshoe-pins'));
+    this.inspectBatches.set(mesh, { cells: pins, instancesPerCell: parts.length });
+    pins.forEach((pin, i) => parts.forEach(([x, y, z, sx, sy, sz, color], n) =>
+      this.instance(mesh, i * parts.length + n, pin.x + .5 + x, pin.z + y, pin.y + .5 + z, sx, sy, sz, color)));
+    this.finish(mesh);
   }
 
   private updateWildlifeObjects() {
@@ -3233,6 +3257,17 @@ export class VoxelRenderer {
     healthMarker.position.set(-0.38, 1.4, 0);
     healthMarker.visible = false;
     root.add(healthMarker);
+    const activityMarker = (name: string, color: number) => {
+      const marker = new Sprite(this.keepMaterial(new SpriteMaterial({ map: nameTexture(name, color), depthTest: false, depthWrite: false })));
+      marker.scale.set(.9, .29, 1); marker.position.set(0, 2.3, 0); marker.visible = false; marker.renderOrder = 12; root.add(marker);
+      return marker;
+    };
+    const recreationMarker = activityMarker('娱乐', 0xb9d59b), mentalMarker = activityMarker('悲伤', 0xe1a17d);
+    const horseshoe = new Group(), iron = this.keepMaterial(new MeshLambertMaterial({ color: 0xc4d1c7 }));
+    part(horseshoe, iron, -.105, 0, 0, .055, .055, .26);
+    part(horseshoe, iron, .105, 0, 0, .055, .055, .26);
+    part(horseshoe, iron, 0, 0, -.12, .26, .055, .055);
+    horseshoe.visible = false; root.add(horseshoe);
     const pos = new Vector3(pawn.x + 0.5, pawn.z, pawn.y + 0.5);
     root.position.copy(pos);
     return {
@@ -3257,6 +3292,9 @@ export class VoxelRenderer {
       label,
       sleepSymbol,
       healthMarker,
+      recreationMarker,
+      mentalMarker,
+      horseshoe,
       apparel: { hat, coat, sleeves, shirt, pants },
       shadow,
       from: pos.clone(),
@@ -3504,6 +3542,12 @@ export class VoxelRenderer {
     const workingWeaponBenches = new Set<number>();
     for (const visual of this.pawnVisuals.values()) {
       const pawn = visual.pawn;
+      const mental = !pawn.dead && !pawn.downed && pawn.psyche.breakUntil > this.data.tick;
+      const recreation = !pawn.dead && !pawn.downed && !mental && pawn.phase === 'recreation' ? pawn.psyche.recreation : null;
+      visual.recreationMarker.visible = !!recreation;
+      visual.mentalMarker.visible = mental;
+      visual.horseshoe.visible = false;
+      visual.head.rotation.set(0, 0, 0);
       visual.head.visible = !isPartMissing(pawn.trauma, 'head');
       visual.leftArm.visible = !isPartMissing(pawn.trauma, 'leftArm');
       visual.rightArm.visible = !isPartMissing(pawn.trauma, 'rightArm');
@@ -3549,9 +3593,11 @@ export class VoxelRenderer {
       visual.healthMarker.visible =
         !pawn.dead && (pawn.downed || needsMedicalTending(pawn, this.data.tick));
       visual.healthMarker.position.set(-0.38, bed ? 1.2 : 0.9, 0.5);
-      visual.label.material.color.setHex(pawn.dead ? 0xaaaaaa : 0xffffff);
+      visual.label.material.color.setHex(pawn.dead ? 0xaaaaaa : mental ? 0xf3be9e : 0xffffff);
       visual.label.position.set(0, lying ? 1.2 : 1.91, lying ? 0.5 : 0);
       if (lying) {
+        visual.recreationMarker.visible = false;
+        visual.mentalMarker.visible = false;
         // The anchor is the head tile. Do not interpolate a lying pawn in from the doorway.
         if (bed) {
           visual.root.position.set(bed.x + 0.5, bed.z, bed.y + 0.5);
@@ -3751,6 +3797,31 @@ export class VoxelRenderer {
         const dx = visual.to.x - visual.from.x,
           dz = visual.to.z - visual.from.z;
         if (Math.abs(dx) + Math.abs(dz) > 0.001) visual.root.rotation.y = Math.atan2(dx, dz);
+      }
+      if (mental) {
+        visual.head.rotation.x = .22 + Math.sin(time * .7 + pawn.id) * .035;
+        visual.torso.rotation.x = .15;
+        visual.leftArm.rotation.x = .12; visual.rightArm.rotation.x = .12;
+        visual.leftLeg.rotation.x = moving ? swing * .26 : 0;
+        visual.rightLeg.rotation.x = moving ? -swing * .26 : 0;
+      } else if (recreation && !moving) {
+        if (recreation.kind === 'walk') {
+          visual.head.rotation.set(-.06, Math.sin(time * .65 + pawn.id) * .35, 0);
+          visual.leftArm.rotation.x = -.08; visual.rightArm.rotation.x = -.08;
+        } else {
+          const pin = this.data.horseshoePins.find(p => p.id === recreation.spotId);
+          if (pin) {
+            visual.root.rotation.y = Math.atan2(pin.x + .5 - visual.root.position.x, pin.y + .5 - visual.root.position.z);
+            const cycle = (((this.data.tick + extraTicks - recreation.startedTick) / TPS) % 2.4) / 2.4;
+            const flight = MathUtils.clamp((cycle - .28) / .58, 0, 1);
+            const dx = (pin.x + .5 - visual.root.position.x) * flight, dz = (pin.y + .5 - visual.root.position.z) * flight;
+            const angle = visual.root.rotation.y, cos = Math.cos(angle), sin = Math.sin(angle);
+            visual.horseshoe.visible = true;
+            visual.horseshoe.position.set(cos * dx - sin * dz, .85 * (1 - flight) + .12 * flight + Math.sin(Math.PI * flight) * .8, sin * dx + cos * dz + (1 - flight) * .4);
+            visual.horseshoe.rotation.set(flight * Math.PI * 4, 0, .15);
+            toolArm.rotation.x = cycle < .28 ? -.2 + cycle * 2 : -.85 + Math.min(1, (cycle - .28) * 2) * .85;
+          }
+        }
       }
       if (
         visible &&

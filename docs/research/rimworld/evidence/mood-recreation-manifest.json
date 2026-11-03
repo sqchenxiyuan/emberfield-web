@@ -1,0 +1,187 @@
+{
+  "evidence_id": "RW17-MOOD-RECREATION",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.Need_Mood",
+      "local_file": ".local-research/mood-recreation/RimWorld.Need_Mood.cs",
+      "sha256": "7506fa757d5b1f79dc50195463a3df0a3d24acfcfe2b165f38750c9372da870a",
+      "lines": 130
+    },
+    {
+      "type": "RimWorld.Need_Joy",
+      "local_file": ".local-research/mood-recreation/RimWorld.Need_Joy.cs",
+      "sha256": "f9948e86ae1d8f19ab0c373961fcbafa29e2185ac06f5ade7137ab9429359f1a",
+      "lines": 149
+    },
+    {
+      "type": "RimWorld.ThoughtHandler",
+      "local_file": ".local-research/mood-recreation/RimWorld.ThoughtHandler.cs",
+      "sha256": "80650774ab30d3402c8c0b387fb9c7f794c662557db9466de16810e408bb19aa",
+      "lines": 226
+    },
+    {
+      "type": "RimWorld.SituationalThoughtHandler",
+      "local_file": ".local-research/mood-recreation/RimWorld.SituationalThoughtHandler.cs",
+      "sha256": "1207bd472b32a245463d15ec155190f240cf3c3f095075a8a0d405a7162950aa",
+      "lines": 272
+    },
+    {
+      "type": "RimWorld.MemoryThoughtHandler",
+      "local_file": ".local-research/mood-recreation/RimWorld.MemoryThoughtHandler.cs",
+      "sha256": "e3b1bb76660ce17fe50201ff99caca07d2814a8253ad779d6670c805a40b67e0",
+      "lines": 361
+    },
+    {
+      "type": "RimWorld.Thought_Memory",
+      "local_file": ".local-research/mood-recreation/RimWorld.Thought_Memory.cs",
+      "sha256": "ea6b174514a07ca990296ce9daf5a6653f95ec80975f3db6efcbb2d6c7810c39",
+      "lines": 203
+    },
+    {
+      "type": "RimWorld.JoyToleranceSet",
+      "local_file": ".local-research/mood-recreation/RimWorld.JoyToleranceSet.cs",
+      "sha256": "14cbfdf4c43df2b92ed43b5d9d2f2e124d62984cd4c71f4cb49bc40ef6194336",
+      "lines": 118
+    },
+    {
+      "type": "RimWorld.ThinkNode_Priority_GetJoy",
+      "local_file": ".local-research/mood-recreation/RimWorld.ThinkNode_Priority_GetJoy.cs",
+      "sha256": "5b99f2c7ad0abcfe2098c0e02bc7749ad89d35d65bd9b2272c9e67864ad48521",
+      "lines": 62
+    },
+    {
+      "type": "RimWorld.JobGiver_GetJoy",
+      "local_file": ".local-research/mood-recreation/RimWorld.JobGiver_GetJoy.cs",
+      "sha256": "d82e522873cf235fbc25ffcc0ea40e30ccfef9c2361dbaf41e70138cb40597c9",
+      "lines": 83
+    },
+    {
+      "type": "RimWorld.JoyGiver",
+      "local_file": ".local-research/mood-recreation/RimWorld.JoyGiver.cs",
+      "sha256": "57c3f66ac846b086c6add127b145d775ee83f722a4ed0e2d3bcb7a9e56915acf",
+      "lines": 77
+    },
+    {
+      "type": "RimWorld.JoyGiverDef",
+      "local_file": ".local-research/mood-recreation/RimWorld.JoyGiverDef.cs",
+      "sha256": "577e93246bbea818795f49dfae2c518aad56d1c791a57ffa853b4a621175dfe5",
+      "lines": 62
+    },
+    {
+      "type": "RimWorld.JoyUtility",
+      "local_file": ".local-research/mood-recreation/RimWorld.JoyUtility.cs",
+      "sha256": "858eb27df541ace277fced2ef82d331ef209a435b9cdf47f7d87f2ddc990f2e8",
+      "lines": 317
+    },
+    {
+      "type": "RimWorld.JobDriver_PlayHorseshoes",
+      "local_file": ".local-research/mood-recreation/RimWorld.JobDriver_PlayHorseshoes.cs",
+      "sha256": "fe74d281ffe303e66e1524c808e30f3b258d1033243f9dc5144ff3c20bd281fb",
+      "lines": 18
+    },
+    {
+      "type": "Verse.AI.MentalBreaker",
+      "local_file": ".local-research/mood-recreation/Verse.AI.MentalBreaker.cs",
+      "sha256": "f2c5dfbdbc5598270c24ab120dffde09c9633390a060d5dea10896e6f588b311",
+      "lines": 447
+    },
+    {
+      "type": "Verse.AI.MentalBreakWorker",
+      "local_file": ".local-research/mood-recreation/Verse.AI.MentalBreakWorker.cs",
+      "sha256": "317c4d3d67221fbbac3f010aad2db043bc645a28fa3c3f05ec17075f7c79b246",
+      "lines": 96
+    },
+    {
+      "type": "Verse.AI.MentalStateHandler",
+      "local_file": ".local-research/mood-recreation/Verse.AI.MentalStateHandler.cs",
+      "sha256": "50a83a341866ea0337d46a085c17b99570ec603b110764dea366b2e8bd9d7761",
+      "lines": 231
+    },
+    {
+      "type": "Verse.AI.MentalState",
+      "local_file": ".local-research/mood-recreation/Verse.AI.MentalState.cs",
+      "sha256": "d2874795470ebe343a455403cd78bcdeefdcc8b994be77c22b06aef6ba89a627",
+      "lines": 162
+    },
+    {
+      "type": "Verse.AI.MentalState_WanderSad",
+      "local_file": ".local-research/mood-recreation/Verse.AI.MentalState_WanderSad.cs",
+      "sha256": "8d469c00ff30d9bc3355884f35eb9ea7c2c8543407693d6cb6f820e88ecf485e",
+      "lines": 12
+    },
+    {
+      "type": "RimWorld.Need",
+      "local_file": ".local-research/mood-recreation/RimWorld.Need.cs",
+      "sha256": "4f902dd9f45ecc0b966096a5cf035e3bd404347c335e3c41828b1f2a34f45ff1",
+      "lines": 334
+    },
+    {
+      "type": "RimWorld.ThoughtWorker_NeedJoy",
+      "local_file": ".local-research/mood-recreation/RimWorld.ThoughtWorker_NeedJoy.cs",
+      "sha256": "eae41f1a2e8adf1364a7c44fefec2066eb00cd04d85a9116f3c9ba7b2fa5c1f4",
+      "lines": 26
+    },
+    {
+      "type": "RimWorld.ThoughtWorker_NeedFood",
+      "local_file": ".local-research/mood-recreation/RimWorld.ThoughtWorker_NeedFood.cs",
+      "sha256": "fb2d015b4efa6e818c51736cb227ecbf7b87c0d1d13596360f3a705d5cdeb152",
+      "lines": 32
+    },
+    {
+      "type": "RimWorld.ThoughtWorker_NeedRest",
+      "local_file": ".local-research/mood-recreation/RimWorld.ThoughtWorker_NeedRest.cs",
+      "sha256": "33156ff93cc1f73ee441dc5671fb7474719f03c0047702b57e7a53b14ce8405d",
+      "lines": 24
+    },
+    {
+      "type": "RimWorld.JoyGiver_WatchBuilding",
+      "local_file": ".local-research/mood-recreation/RimWorld.JoyGiver_WatchBuilding.cs",
+      "sha256": "d6da4095d347f643eba521432d9281386eb288246921bb064bb87e6ee9fda37b",
+      "lines": 31
+    },
+    {
+      "type": "RimWorld.JobDriver_WatchBuilding",
+      "local_file": ".local-research/mood-recreation/RimWorld.JobDriver_WatchBuilding.cs",
+      "sha256": "a96ad71a2a8d6662f389c6a65562fd9b9010b7d1017a014bae6d3b7f5c1ab305",
+      "lines": 87
+    },
+    {
+      "type": "Verse.MentalStateDef",
+      "local_file": ".local-research/mood-recreation/Verse.MentalStateDef.cs",
+      "sha256": "35b7c61b78122db36e62350b3e32f7e7324c1195e5cb52785456ba1b0523e96c",
+      "lines": 135
+    },
+    {
+      "type": "RimWorld.ThoughtUtility",
+      "local_file": ".local-research/mood-recreation/RimWorld.ThoughtUtility.cs",
+      "sha256": "ce206c04e55a7236f1ec073e4d9f750b778ec7ac012e3ec881a4183dd3b69e97",
+      "lines": 420
+    },
+    {
+      "type": "RimWorld.JoyGiver_InteractBuilding",
+      "local_file": ".local-research/mood-recreation/RimWorld.JoyGiver_InteractBuilding.cs",
+      "sha256": "140a61ce31e6f7559f31b15b5fe91e78cecfa0fbf45b313f864b910f422a1d08",
+      "lines": 113
+    },
+    {
+      "type": "RimWorld.ThoughtWorker",
+      "local_file": ".local-research/mood-recreation/RimWorld.ThoughtWorker.cs",
+      "sha256": "d8d0ffb641e11620650533e0fa9c05acc0babe8010d2bf86595500e33ad395a6",
+      "lines": 63
+    }
+  ]
+}

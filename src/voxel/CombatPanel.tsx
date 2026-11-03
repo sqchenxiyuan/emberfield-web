@@ -191,6 +191,7 @@ export function CombatPanel({
         <>
           <button
             aria-pressed={pawn.drafted}
+            disabled={pawn.psyche.breakUntil > snapshot.tick}
             onClick={() => command({ type: 'draft', pawnId: pawn.id, drafted: !pawn.drafted })}
           >
             {pawn.drafted ? '解除征召' : '征召'}
@@ -221,7 +222,7 @@ export function CombatPanel({
                 <small className="danger">强制攻击同伴会造成实际伤害。</small>
               )}
               <button
-                disabled={!target}
+                disabled={!target || pawn.psyche.breakUntil > snapshot.tick}
                 onClick={() =>
                   target && command({ type: 'attack', pawnId: pawn.id, targetId: target.id })
                 }

@@ -66,7 +66,9 @@
     "test:voxel:trade": "node scripts/voxel-trade-campaign-verify.mjs --run",
     "test:voxel:trade:browser": "node scripts/voxel-trade-browser-verify.mjs",
     "test:voxel:wildlife": "node scripts/voxel-wildlife-campaign-verify.mjs",
-    "test:voxel:wildlife:browser": "node scripts/voxel-wildlife-browser-verify.mjs"
+    "test:voxel:wildlife:browser": "node scripts/voxel-wildlife-browser-verify.mjs",
+    "test:voxel:mood": "node scripts/voxel-mood-campaign-verify.mjs",
+    "test:voxel:mood:browser": "node scripts/voxel-mood-browser-verify.mjs"
   },
   "dependencies": {
     "pixi.js": "8.22.0",

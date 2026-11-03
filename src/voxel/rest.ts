@@ -12,6 +12,7 @@ export const restGain = (inBed: boolean) => (228.57144 / DAY) * (inBed ? 1 : 0.8
 export const wantsSleep = (rest: number, assignment: Assignment) =>
   rest < 1 || (assignment === 'sleep' ? rest < 75 : assignment === 'anything' && rest < 30);
 export const ASSIGNMENT_NAMES: Record<Assignment, string> = {
+  recreation: '娱乐',
   anything: '自由',
   work: '工作',
   sleep: '睡眠',

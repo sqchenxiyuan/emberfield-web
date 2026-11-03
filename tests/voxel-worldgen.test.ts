@@ -298,7 +298,7 @@ describe('v8 world persistence and validation', () => {
       s = VoxelSimulation.load(raw),
       saved = s.save();
     expect(raw).toEqual(original);
-    expect(saved.version).toBe(22);
+    expect(saved.version).toBe(23);
     expect(saved.generator).toBe(1);
     expect(saved.blocks).toEqual(raw.blocks);
     expect(saved.ladders).toEqual(raw.ladders);

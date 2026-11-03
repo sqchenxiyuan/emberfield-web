@@ -26,6 +26,7 @@ import { WEAPON_BENCH_NAMES } from './weaponProduction';
 import { APPAREL_NAMES } from './apparel';
 import { ANIMAL_DEFS, ANIMAL_PHASE_NAMES } from './wildlife';
 import { isRangedKind } from './ranged';
+import { moodView, RECREATION_NAMES } from './mood';
 import {
   BLOCK_NAMES,
   JOB_NAMES,
@@ -49,6 +50,7 @@ import {
   type Cargo,
   type Stockpile,
   type TreeSpecies,
+  type Pawn,
 } from './types';
 import './style.css';
 const client = new VoxelClient();
@@ -74,6 +76,7 @@ const tools: Tool[] = [
   'machining',
   'researchBench',
   'bed',
+  'horseshoePin',
   'door',
   'generator',
   'solar',
@@ -107,6 +110,7 @@ const icons = [
   '⚙',
   '▤',
   '▰',
+  '∩',
   '▯',
   '⚙',
   '☀',
@@ -119,6 +123,7 @@ const icons = [
   '×',
 ];
 const hints: Record<Tool, string> = {
+  horseshoePin: '20 木材建造一格马蹄铁桩。沿直线留出两格空地和通路，殖民者会站在两格外投掷；可在作息中安排娱乐，或在人物面板手动安排。',
   butcherSpot: '划定一格屠宰点，开启烹饪分工后自动加工可达尸体。点击点位可暂停或恢复；生肉可直接食用，也可与谷物混合做简餐。',
   craftingSpot: '一格制作点，无需建材。可制作木棒、钢匕首和短弓，加工速度为锻造台的一半。',
   smithy:
@@ -196,6 +201,42 @@ const foodName = (batch: Cargo) =>
       : batch.resource === 'grain' && batch.crop
         ? CROPS[batch.crop].name
         : RESOURCE_NAMES[batch.resource];
+function MoodPanel({ pawn, tick, temperature, pin, focus }: { pawn: Pawn; tick: number; temperature: number; pin?: Pos; focus: (p: Pos) => void }) {
+  const view = moodView(pawn, tick, temperature), psyche = pawn.psyche, activity = psyche.recreation;
+  const breaking = view.risk === 'break', unavailable = pawn.dead || pawn.downed || pawn.drafted || breaking;
+  const remaining = (ticks: number) => `${Math.max(1, Math.ceil(ticks / DAY * 24 * 60))} 游戏分钟`;
+  return <section className={`voxel-mood-panel mood-${view.risk}`} data-testid="mood-panel" data-risk={view.risk}>
+    <div className="voxel-info-row"><b>心情与娱乐</b><span>{breaking ? '精神崩溃' : view.risk === 'low' ? '情绪低落' : '情绪稳定'}</span></div>
+    <div className="voxel-mood-meters">
+      <label>心情 {Math.round(psyche.level)}%<progress aria-label={`${pawn.name} 心情`} value={psyche.level} max={100} /></label>
+      <label>娱乐 {Math.round(psyche.joy)}%<progress aria-label={`${pawn.name} 娱乐`} value={psyche.joy} max={100} /></label>
+    </div>
+    {breaking ? <p className="voxel-mood-warning" data-testid="mental-break-status">正在悲伤游荡，预计 {remaining(view.breakRemaining)}后恢复。期间暂不接受征召和手动工作，不能直接取消。</p>
+      : view.risk === 'low' ? <p className="voxel-mood-warning">低心情持续过久可能引发精神崩溃。先检查饥饿、疲劳、疼痛与娱乐不足的原因。</p>
+        : <small>心情会逐渐趋向当前环境与需求形成的目标，不会因一次操作立即回满。</small>}
+    {activity && <div className="voxel-recreation-status" data-testid="recreation-status">
+      <b>{pawn.path.length ? '前往' : '正在'}{RECREATION_NAMES[activity.kind]}</b>
+      <small>{pawn.reason} · 目标 {activity.target.x}, {activity.target.y} · Z {activity.target.z}</small>
+      <progress aria-label="本次娱乐进度" value={Math.max(0, tick - activity.startedTick)} max={Math.max(1, activity.endTick - activity.startedTick)} />
+    </div>}
+    <details className="voxel-mood-thoughts"><summary>心情原因 · 当前目标 {Math.round(view.target)}%</summary>
+      <ul>{view.thoughts.map((thought, i) => <li key={`${thought.label}-${i}`}><span>{thought.label}</span><b className={thought.value < 0 ? 'negative' : 'positive'}>{thought.value > 0 ? '+' : ''}{Number(thought.value.toFixed(1))}</b></li>)}</ul>
+      <small>这些影响共同决定目标心情。吃饭、休息、处理疼痛和安排娱乐会改变实际原因。</small>
+    </details>
+    <details className="voxel-recreation-tolerance"><summary>活动耐受与恢复</summary>
+      {(Object.keys(RECREATION_NAMES) as (keyof typeof RECREATION_NAMES)[]).map(kind => <label key={kind}>{RECREATION_NAMES[kind]} · 耐受 {Math.round(psyche.tolerance[kind] * 100)}%<progress aria-label={`${RECREATION_NAMES[kind]}耐受`} value={psyche.tolerance[kind]} max={1} /></label>)}
+      <small>反复进行同一种活动，娱乐收益会减少；换种活动并等待一段时间，耐受会逐渐消退。</small>
+      {!breaking && psyche.cooldownUntil > tick && <small>情绪恢复期：剩余 {remaining(psyche.cooldownUntil - tick)}。</small>}
+    </details>
+    <div className="voxel-mood-actions">
+      {activity ? <button disabled={unavailable} onClick={() => void client.command({ type: 'cancelRecreation', pawnId: pawn.id })}>结束本次娱乐</button>
+        : <button disabled={unavailable} onClick={() => void client.command({ type: 'recreate', pawnId: pawn.id })}>现在去娱乐</button>}
+      <button onClick={() => pin ? focus(pin) : client.choose('horseshoePin')}>{pin ? '定位马蹄铁桩' : '建造马蹄铁桩'}</button>
+    </div>
+    {pawn.drafted && <small>解除征召后才能安排娱乐。</small>}
+  </section>;
+}
+
 function FoodCondition({ batch, temperature }: { batch: Cargo; temperature: number }) {
   const days = remainingRotDays(batch),
     limit = rotLimit(batch);
@@ -356,6 +397,7 @@ function App() {
   const crop = p ? s?.crops.find((v) => equal(v, p)) : null;
   const stove = p ? s?.stoves.find((v) => equal(v, p)) : null;
   const butcherSpot = p ? s?.butcherSpots.find(v => equal(v, p)) : null;
+  const horseshoePin = p ? s?.horseshoePins.find(v => equal(v, p)) : null;
   const sandbag = p ? s?.sandbags.find((v) => equal(v, p)) : null;
   const stonecutter = p
     ? s?.stonecutters.find((v) => stonecutterCells(v).some((q) => equal(q, p)))
@@ -403,7 +445,7 @@ function App() {
       ) ?? [])
     : [];
   const pawn = animal ? undefined : people.find((v) => v.faction === 'trader') ?? s?.pawns.find((v) => v.id === selectedPawn) ?? people[0];
-  const hunters = s?.pawns.filter(v => v.faction === 'colony' && !v.dead && !v.downed && !v.drafted && v.priorities.hunt > 0 && v.weapon && isRangedKind(v.weapon.kind)) ?? [];
+  const hunters = s?.pawns.filter(v => v.faction === 'colony' && !v.dead && !v.downed && !v.drafted && v.psyche.breakUntil <= s.tick && v.priorities.hunt > 0 && v.weapon && isRangedKind(v.weapon.kind)) ?? [];
   const assignedHunter = animal ? s?.pawns.find(v => v.phase === 'hunt' && v.attackTargetId === animal.id) : undefined;
   const carers =
     s?.pawns.filter(
@@ -412,6 +454,7 @@ function App() {
         !v.drafted &&
         !v.dead &&
         !v.downed &&
+        v.psyche.breakUntil <= (s?.tick ?? 0) &&
         v.id !== pawn?.id &&
         healthSummary(v).manipulation > 0,
     ) ?? [];
@@ -425,6 +468,7 @@ function App() {
       21
     );
   };
+  const moodByPawn = new Map(s?.pawns.filter(v => v.faction === 'colony').map(v => [v.id, moodView(v, s.tick, temperatureOf(v))]));
   const updateStorage = (priority: number, accepts: Resource[]) => {
     if (storage)
       void client.command({
@@ -439,6 +483,7 @@ function App() {
   const title = p
     ? (animal?.name ?? people[0]?.name ??
       (butcherSpot ? '屠宰点' : null) ??
+      (horseshoePin ? '马蹄铁桩' : null) ??
       (device ? DEVICE_NAMES[device.kind] : null) ??
       (stonecutter ? '木制切石台' : null) ??
       (tailor ? '手工裁缝台' : null) ??
@@ -494,7 +539,9 @@ function App() {
                 className={[
                   selectedPawn === v.id ? 'selected' : '',
                   v.dead ? 'is-dead' : v.downed ? 'is-downed' : '',
+                  !v.dead && moodByPawn.get(v.id)?.risk === 'break' ? 'is-mental' : !v.dead && moodByPawn.get(v.id)?.risk === 'low' ? 'is-low-mood' : '',
                 ].join(' ')}
+                title={`${v.name} · 心情 ${Math.round(v.psyche.level)}% · 娱乐 ${Math.round(v.psyche.joy)}% · ${v.reason}`}
                 onClick={() => {
                   setSelectedPawn(v.id);
                   setSelectedAnimal(null);
@@ -504,12 +551,13 @@ function App() {
                 <i style={{ background: '#' + v.color.toString(16) }} />
                 <span>
                   {v.name}
-                  {v.dead ? ' · 已死亡' : v.downed ? ' · 倒地' : ''}
+                  {v.dead ? ' · 已死亡' : v.downed ? ' · 倒地' : moodByPawn.get(v.id)?.risk === 'break' ? ' · 崩溃' : ''}
                   <small>
                     {levelName(v.z, spawn.z)} · {v.reason}
                   </small>
                 </span>
                 <em style={{ width: `${v.rest}%` }} />
+                <em className="voxel-colonist-mood" style={{ width: `${v.psyche.level}%` }} />
               </button>
             ))}
         </div>
@@ -1170,6 +1218,12 @@ function App() {
           <button onClick={() => void client.command({ type: 'butcherBill', spotId: butcherSpot.id, paused: !butcherSpot.paused })}>{butcherSpot.paused ? '恢复屠宰' : '暂停屠宰'}</button>
           <small>暂停会取消当前加工并安全退回尸体；空间被堵时，尸体保留在任务中等待。</small>
         </section>}
+        {horseshoePin && <section className="voxel-bill" data-testid="horseshoe-detail">
+          <b>马蹄铁投掷</b>
+          <p>殖民者会走到木桩两格外投掷，中间一格需要保持畅通。可在人物面板安排娱乐，或把作息时段设为娱乐。</p>
+          <small>{s?.pawns.filter(v => v.psyche.recreation?.spotId === horseshoePin.id).map(v => `${v.name} · ${v.reason}`).join('；') || '当前无人使用。保留周围空地与通路。'}</small>
+          <small>重复同一种活动会积累耐受，减少娱乐收益；也可进行户外散步。</small>
+        </section>}
         {stonecutter && (
           <div className="voxel-bill" data-testid="stonecutting-bill">
             <p>
@@ -1324,6 +1378,9 @@ function App() {
               <b>{pawn.name}</b>
               <span>{pawn.reason}</span>
             </div>
+            {pawn.faction === 'colony' && <MoodPanel pawn={pawn} tick={s?.tick ?? 0} temperature={temperatureOf(pawn)}
+              pin={s?.horseshoePins.toSorted((a, b) => Math.abs(a.x - pawn.x) + Math.abs(a.y - pawn.y) + Math.abs(a.z - pawn.z) - Math.abs(b.x - pawn.x) - Math.abs(b.y - pawn.y) - Math.abs(b.z - pawn.z))[0]}
+              focus={focus} />}
             <SurvivalPanel
               pawn={pawn}
               pawns={s?.pawns ?? []}
@@ -1530,7 +1587,7 @@ function App() {
                   </label>
                 ))}
               </div>
-              <small>自由时困倦才睡；睡眠时段提前休息，睡满再醒；工作时段精力 ≥20% 会醒来。</small>
+              <small>自由时按需要工作、休息和娱乐；娱乐时段优先找活动，工作和睡眠时段不主动娱乐。饥饿、疲劳等急需仍会中断活动。</small>
             </details>
             <button
               disabled={
@@ -1538,6 +1595,7 @@ function App() {
                 pawn.downed ||
                 pawn.faction !== 'colony' ||
                 pawn.drafted ||
+                pawn.psyche.breakUntil > (s?.tick ?? 0) ||
                 pawn.rest >= 75 ||
                 pawn.phase === 'rest' ||
                 pawn.phase === 'sleepTravel'
@@ -1549,7 +1607,7 @@ function App() {
             {p && !equal(p, pawn) && (
               <button
                 className="voxel-primary"
-                disabled={pawn.dead || pawn.downed || pawn.faction !== 'colony'}
+                disabled={pawn.dead || pawn.downed || pawn.faction !== 'colony' || pawn.psyche.breakUntil > (s?.tick ?? 0)}
                 onClick={() => void client.command({ type: 'move', pawnId: pawn.id, target: p })}
               >
                 让 {pawn.name} 前往选中位置

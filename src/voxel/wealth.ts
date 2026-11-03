@@ -12,6 +12,7 @@ import { healthSummary } from './survival';
 import { SKILL_KEYS } from './skills';
 import type { WealthTotals } from './storytellerRules';
 import { ANIMAL_DEFS } from './wildlife';
+import { HORSESHOE_COST, HORSESHOE_WORK } from './recreation';
 
 /** Core 1.7 selected full-HP resource prices, except provisional meat=2.
  * Carcasses use their species' meat yield below; deposits/plants are not items. */
@@ -190,6 +191,7 @@ export function colonyWealthDetails(sim: VoxelSimulation): WealthDetails {
   add(sim.tailors.length, TAILOR_COST, TAILOR_WORK);
   add(sim.researchBenches.length, RESEARCH_BENCH_COST, RESEARCH_BENCH_WORK);
   add(sim.sandbags.length, SANDBAG_COST, SANDBAG_WORK);
+  add(sim.horseshoePins.length, HORSESHOE_COST, HORSESHOE_WORK);
   add(sim.wires.length, { steel: 1 }, 12);
   for (const bench of sim.weaponBenches) {
     if (bench.kind === 'smithy') add(1, SMITHY_COST, SMITHY_WORK);

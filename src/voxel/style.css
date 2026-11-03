@@ -152,6 +152,27 @@ a {
   filter: grayscale(1);
   opacity: 0.75;
 }
+.voxel-colonists button.is-low-mood { border-color: #c6a36c; }
+.voxel-colonists button.is-mental { border-color: #e5a381; background: #573b2c99; }
+.voxel-colonists em.voxel-colonist-mood { bottom: 3px; height: 2px; background: #c5bd88; }
+.voxel-colonists button.is-mental em.voxel-colonist-mood { background: #e5a381; }
+.voxel-mood-panel { display: grid; gap: 11px; margin: 12px 0; padding: 12px; border: 1px solid #b8c69b4d; background: #162b2866; border-radius: 5px; }
+.voxel-mood-panel.mood-low { border-color: #c6a36c88; }
+.voxel-mood-panel.mood-break { border-color: #e5a381aa; background: #51392a4d; }
+.voxel-mood-panel small { display: block; font-size: 11px; line-height: 1.65; color: #b7c7b5; }
+.voxel-mood-meters { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 12px; color: #d4dcb9; }
+.voxel-mood-panel progress { display: block; width: 100%; height: 6px; margin-top: 6px; accent-color: #bdca97; }
+.voxel-mood-panel.mood-break progress { accent-color: #d79b7d; }
+.voxel-mood-panel p.voxel-mood-warning { margin: 0; color: #e2ba8b; font-size: 11px; line-height: 1.7; }
+.voxel-recreation-status { padding: 9px; background: #a2c49715; border-left: 2px solid #a2c497; font-size: 12px; }
+.voxel-mood-panel summary { font-size: 11px; cursor: pointer; color: #c8d4b9; }
+.voxel-mood-thoughts ul { list-style: none; padding: 0; margin: 10px 0; display: grid; gap: 7px; }
+.voxel-mood-thoughts li { display: flex; justify-content: space-between; gap: 12px; font-size: 11px; }
+.voxel-mood-thoughts .negative { color: #e2a689; }
+.voxel-mood-thoughts .positive { color: #b7cf91; }
+.voxel-recreation-tolerance label { display: block; font-size: 11px; margin: 10px 0; }
+.voxel-mood-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.voxel-mood-actions button { font-size: 11px; padding: 7px 8px; }
 .voxel-health {
   display: grid;
   gap: 8px;

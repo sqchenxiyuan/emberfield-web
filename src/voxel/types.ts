@@ -5,6 +5,7 @@ import type { SkillSet } from './skills';
 import type { ResearchKey, ResearchState } from './research';
 import type { Difficulty, StorytellerState, StorytellerView } from './storyteller';
 import type { TradeCommand, TradeState, TradeView } from './tradeTypes';
+import type { Psyche } from './mood';
 // Voxel rules are Emberfield designs. See research/10 for source boundaries.
 export const WIDTH = 64,
   DEPTH = 64,
@@ -107,7 +108,7 @@ export interface ApparelTask {
   progress: number;
 }
 export type Axis = 'x' | 'y';
-export type Assignment = 'anything' | 'work' | 'sleep';
+export type Assignment = 'anything' | 'work' | 'sleep' | 'recreation';
 export type DeviceKind = 'generator' | 'solar' | 'battery' | 'heater' | 'cooler';
 export interface Device extends Pos {
   id: number;
@@ -241,6 +242,7 @@ export interface RoomSummary {
   maxZ: number;
 }
 export type Tool =
+  | 'horseshoePin'
   | 'butcherSpot'
   | DeviceKind
   | 'wire'
@@ -376,6 +378,7 @@ export interface ButcherSpot extends Pos {
   id: number;
   paused: boolean;
 }
+export interface HorseshoePin extends Pos { id: number }
 export interface Stonecutter extends Pos {
   id: number;
   axis: Axis;
@@ -454,6 +457,7 @@ export interface CropCondition {
   reason: string;
 }
 export type JobKind =
+  | 'horseshoePin'
   | 'butcherSpot'
   | 'butcher'
   | DeviceKind
@@ -542,6 +546,7 @@ export interface CombatState {
   wave: number;
 }
 export interface Pawn extends Pos {
+  psyche: Psyche;
   id: number;
   name: string;
   color: number;
@@ -582,6 +587,8 @@ export interface Pawn extends Pos {
   path: number[];
   destination: number | null;
   phase:
+    | 'recreation'
+    | 'mental'
     | 'hunt'
     | 'trade'
     | 'idle'
@@ -644,6 +651,7 @@ export interface VoxelStats {
   spoiled: Counts;
 }
 export interface VoxelSnapshot {
+  horseshoePins: HorseshoePin[];
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeView;
@@ -705,6 +713,8 @@ export interface ChunkUpdate {
   ladders: Uint8Array;
 }
 export type VoxelCommand =
+  | { type: 'recreate'; pawnId: number }
+  | { type: 'cancelRecreation'; pawnId: number }
   | { type: 'hunt'; animalId: number; enabled: boolean }
   | { type: 'butcherBill'; spotId: number; paused: boolean }
   | TradeCommand
@@ -759,8 +769,9 @@ export interface CommandResult {
   count?: number;
 }
 export interface VoxelSave {
+  horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 22;
+  version: 23;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;
@@ -832,6 +843,7 @@ export const RESOURCE_NAMES: Record<Resource, string> = {
   meal: '简餐',
 };
 export const JOB_NAMES: Record<JobKind, string> = {
+  horseshoePin: '建马蹄铁桩',
   butcherSpot: '划定屠宰点',
   butcher: '屠宰动物',
   generator: '造发电机',
@@ -869,6 +881,7 @@ export const JOB_NAMES: Record<JobKind, string> = {
   cook: '烹饪简餐',
 };
 export const TOOL_NAMES: Record<Tool, string> = {
+  horseshoePin: '马蹄铁桩',
   butcherSpot: '屠宰点',
   ...DEVICE_NAMES,
   wire: '电线',

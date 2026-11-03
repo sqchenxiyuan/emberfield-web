@@ -1,0 +1,651 @@
+{
+  "evidence_id": "RW17-MOOD-RECREATION-MECHANISMS",
+  "date_local": "2026-11-04",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Static derived managed-code reconstruction plus shipped Core XML; not a native runtime experiment",
+  "artifact_identity": "artifact-identity.json",
+  "manifest": "mood-recreation-manifest.json",
+  "types": "mood-recreation-types.json",
+  "scope": "Mood target/current separation; dynamic thoughts and memories; recreation scheduling, choice and physical activity; mood-caused mental break interruption and recovery. Core adult colonist path, with inherited housing/work analysis.",
+  "claims": [
+    {
+      "id": "MO01",
+      "finding": "Mood has an instantaneous target derived from grouped thoughts and difficulty; current mood moves toward it. Sleeping freezes value seeking, not the entire thought-memory lifecycle.",
+      "sources": [
+        {
+          "file": ".local-research/mood-recreation/RimWorld.Need_Mood.cs",
+          "sha256": "7506fa757d5b1f79dc50195463a3df0a3d24acfcfe2b165f38750c9372da870a",
+          "lines": [
+            20,
+            36
+          ]
+        },
+        {
+          "file": ".local-research/housing/RimWorld.Need_Seeker.cs",
+          "sha256": "ba9490ff38079453846eb04d11b6cafa57e70b3a12b17e029d836e4930301339",
+          "lines": [
+            36,
+            52
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.Need_Mood.cs",
+          "sha256": "7506fa757d5b1f79dc50195463a3df0a3d24acfcfe2b165f38750c9372da870a",
+          "lines": [
+            86,
+            92
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.Need.cs",
+          "sha256": "4f902dd9f45ecc0b966096a5cf035e3bd404347c335e3c41828b1f2a34f45ff1",
+          "lines": [
+            63,
+            84
+          ]
+        }
+      ],
+      "xml": [
+        "XML01",
+        "XML02"
+      ]
+    },
+    {
+      "id": "MO02",
+      "finding": "Situational thoughts re-evaluate conditions; memories persist with age, expiry, renewal and stack limits. Mood sums groups rather than unrestricted duplicate events.",
+      "sources": [
+        {
+          "file": ".local-research/mood-recreation/RimWorld.ThoughtHandler.cs",
+          "sha256": "80650774ab30d3402c8c0b387fb9c7f794c662557db9466de16810e408bb19aa",
+          "lines": [
+            30,
+            130
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.SituationalThoughtHandler.cs",
+          "sha256": "1207bd472b32a245463d15ec155190f240cf3c3f095075a8a0d405a7162950aa",
+          "lines": [
+            43,
+            136
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.MemoryThoughtHandler.cs",
+          "sha256": "e3b1bb76660ce17fe50201ff99caca07d2814a8253ad779d6670c805a40b67e0",
+          "lines": [
+            76,
+            98
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.MemoryThoughtHandler.cs",
+          "sha256": "e3b1bb76660ce17fe50201ff99caca07d2814a8253ad779d6670c805a40b67e0",
+          "lines": [
+            141,
+            201
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.Thought_Memory.cs",
+          "sha256": "ea6b174514a07ca990296ce9daf5a6653f95ec80975f3db6efcbb2d6c7810c39",
+          "lines": [
+            53,
+            64
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.Thought_Memory.cs",
+          "sha256": "ea6b174514a07ca990296ce9daf5a6653f95ec80975f3db6efcbb2d6c7810c39",
+          "lines": [
+            110,
+            147
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.Thought_Memory.cs",
+          "sha256": "ea6b174514a07ca990296ce9daf5a6653f95ec80975f3db6efcbb2d6c7810c39",
+          "lines": [
+            166,
+            182
+          ]
+        }
+      ],
+      "xml": [
+        "XML03",
+        "XML04"
+      ]
+    },
+    {
+      "id": "JO01",
+      "finding": "Joy is a separate need. Category drives a situational mood thought; ordinary satisfied joy contributes no NeedJoy thought. Repeated activity reduces gain per joy kind, can cause boredom, and boredom recovers with hysteresis.",
+      "sources": [
+        {
+          "file": ".local-research/mood-recreation/RimWorld.Need_Joy.cs",
+          "sha256": "f9948e86ae1d8f19ab0c373961fcbafa29e2185ac06f5ade7137ab9429359f1a",
+          "lines": [
+            15,
+            53
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.Need_Joy.cs",
+          "sha256": "f9948e86ae1d8f19ab0c373961fcbafa29e2185ac06f5ade7137ab9429359f1a",
+          "lines": [
+            81,
+            119
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.JoyToleranceSet.cs",
+          "sha256": "14cbfdf4c43df2b92ed43b5d9d2f2e124d62984cd4c71f4cb49bc40ef6194336",
+          "lines": [
+            16,
+            64
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.ThoughtWorker_NeedJoy.cs",
+          "sha256": "eae41f1a2e8adf1364a7c44fefec2066eb00cd04d85a9116f3c9ba7b2fa5c1f4",
+          "lines": [
+            8,
+            25
+          ]
+        }
+      ],
+      "xml": [
+        "XML02",
+        "XML03",
+        "XML10",
+        "XML11",
+        "XML12"
+      ]
+    },
+    {
+      "id": "JO02",
+      "finding": "A 24-hour timetable changes competing priorities. Work disallows normal recreation; Anything seeks low joy, Joy strongly prefers recreation, Sleep still allows a lower-priority recreation fallback. Exhaustion can outrank scheduled recreation.",
+      "sources": [
+        {
+          "file": ".local-research/housing/RimWorld.Pawn_TimetableTracker.cs",
+          "sha256": "906cc6949443ca3ea614bf2665da8a95a5b02db01862ccf340b41fc487dd7010",
+          "lines": [
+            13,
+            38
+          ]
+        },
+        {
+          "file": ".local-research/housing/RimWorld.TimeAssignmentDef.cs",
+          "sha256": "3b53f449b566bb48e77e4d7356f9d8140ea1f85a93960a9ca49c6463cb1340f2",
+          "lines": [
+            8,
+            14
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.ThinkNode_Priority_GetJoy.cs",
+          "sha256": "5b99f2c7ad0abcfe2098c0e02bc7749ad89d35d65bd9b2272c9e67864ad48521",
+          "lines": [
+            9,
+            61
+          ]
+        },
+        {
+          "file": ".local-research/work/RimWorld.JobGiver_Work.cs",
+          "sha256": "f8c072215d7c295b934133ca0bca6bf075706c2f8ce11bc4066ea1eb8a42e60f",
+          "lines": [
+            19,
+            46
+          ]
+        },
+        {
+          "file": ".local-research/housing/RimWorld.JobGiver_GetRest.cs",
+          "sha256": "bc323e06492bcdf067e9dec5f9f8da9bd0645d320a85ec9aeebe1531c3b08957",
+          "lines": [
+            64,
+            95
+          ]
+        }
+      ],
+      "xml": [
+        "XML05",
+        "XML06",
+        "XML07",
+        "XML08",
+        "XML18"
+      ]
+    },
+    {
+      "id": "JO03",
+      "finding": "Recreation selects eligible non-boring activities, weights by tolerance, and tries alternatives when a candidate cannot produce a job. A building activity needs eligibility, reachable target and reservable use space.",
+      "sources": [
+        {
+          "file": ".local-research/mood-recreation/RimWorld.JobGiver_GetJoy.cs",
+          "sha256": "d82e522873cf235fbc25ffcc0ea40e30ccfef9c2361dbaf41e70138cb40597c9",
+          "lines": [
+            32,
+            81
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.JoyGiver.cs",
+          "sha256": "57c3f66ac846b086c6add127b145d775ee83f722a4ed0e2d3bcb7a9e56915acf",
+          "lines": [
+            50,
+            75
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.JoyGiver_InteractBuilding.cs",
+          "sha256": "140a61ce31e6f7559f31b15b5fe91e78cecfa0fbf45b313f864b910f422a1d08",
+          "lines": [
+            48,
+            104
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.JoyGiver_WatchBuilding.cs",
+          "sha256": "d6da4095d347f643eba521432d9281386eb288246921bb064bb87e6ee9fda37b",
+          "lines": [
+            21,
+            30
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.JobDriver_WatchBuilding.cs",
+          "sha256": "a96ad71a2a8d6662f389c6a65562fd9b9010b7d1017a014bae6d3b7f5c1ab305",
+          "lines": [
+            9,
+            24
+          ]
+        }
+      ],
+      "xml": [
+        "XML13",
+        "XML14",
+        "XML15"
+      ]
+    },
+    {
+      "id": "JO04",
+      "finding": "Building recreation moves to the use cell before gaining joy. Job tick gain depends on activity and building, then tolerance. Full joy, schedule restrictions and disappeared target can end the job; some jobs also train a skill and grant a room memory.",
+      "sources": [
+        {
+          "file": ".local-research/mood-recreation/RimWorld.JobDriver_WatchBuilding.cs",
+          "sha256": "a96ad71a2a8d6662f389c6a65562fd9b9010b7d1017a014bae6d3b7f5c1ab305",
+          "lines": [
+            35,
+            76
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.JoyUtility.cs",
+          "sha256": "858eb27df541ace277fced2ef82d331ef209a435b9cdf47f7d87f2ddc990f2e8",
+          "lines": [
+            55,
+            113
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.JobDriver_PlayHorseshoes.cs",
+          "sha256": "fe74d281ffe303e66e1524c808e30f3b258d1033243f9dc5144ff3c20bd281fb",
+          "lines": [
+            7,
+            17
+          ]
+        }
+      ],
+      "xml": [
+        "XML14",
+        "XML15"
+      ]
+    },
+    {
+      "id": "ME01",
+      "finding": "Mood-caused breakdown requires sustained time below thresholds, a probabilistic interval test and current eligibility; a low value alone is not an immediate fixed countdown. Final straw is chosen from negative thoughts after a break is selected.",
+      "sources": [
+        {
+          "file": ".local-research/mood-recreation/Verse.AI.MentalBreaker.cs",
+          "sha256": "f2c5dfbdbc5598270c24ab120dffde09c9633390a060d5dea10896e6f588b311",
+          "lines": [
+            14,
+            44
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/Verse.AI.MentalBreaker.cs",
+          "sha256": "f2c5dfbdbc5598270c24ab120dffde09c9633390a060d5dea10896e6f588b311",
+          "lines": [
+            161,
+            181
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/Verse.AI.MentalBreaker.cs",
+          "sha256": "f2c5dfbdbc5598270c24ab120dffde09c9633390a060d5dea10896e6f588b311",
+          "lines": [
+            247,
+            329
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/Verse.AI.MentalBreaker.cs",
+          "sha256": "f2c5dfbdbc5598270c24ab120dffde09c9633390a060d5dea10896e6f588b311",
+          "lines": [
+            344,
+            384
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/Verse.AI.MentalBreakWorker.cs",
+          "sha256": "317c4d3d67221fbbac3f010aad2db043bc645a28fa3c3f05ec17075f7c79b246",
+          "lines": [
+            12,
+            86
+          ]
+        }
+      ],
+      "xml": [
+        "XML09",
+        "XML16"
+      ]
+    },
+    {
+      "id": "ME02",
+      "finding": "A stopping mental state undrafts, replaces ordinary behavior, stops current and queued jobs and drops carried goods. StopAll cleanup releases job reservations. This is a control transition, not a work-speed modifier.",
+      "sources": [
+        {
+          "file": ".local-research/mood-recreation/Verse.AI.MentalStateHandler.cs",
+          "sha256": "50a83a341866ea0337d46a085c17b99570ec603b110764dea366b2e8bd9d7761",
+          "lines": [
+            91,
+            173
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/Verse.MentalStateDef.cs",
+          "sha256": "35b7c61b78122db36e62350b3e32f7e7324c1195e5cb52785456ba1b0523e96c",
+          "lines": [
+            29,
+            35
+          ]
+        },
+        {
+          "file": ".local-research/work/Verse.AI.Pawn_JobTracker.cs",
+          "sha256": "7934319bfedbd8a46aa54341a2afec9561efb469cd4fe58aec5745f9236fc5c4",
+          "lines": [
+            475,
+            520
+          ]
+        },
+        {
+          "file": ".local-research/work/Verse.AI.Pawn_JobTracker.cs",
+          "sha256": "7934319bfedbd8a46aa54341a2afec9561efb469cd4fe58aec5745f9236fc5c4",
+          "lines": [
+            592,
+            599
+          ]
+        }
+      ],
+      "xml": [
+        "XML17",
+        "XML19",
+        "XML20"
+      ]
+    },
+    {
+      "id": "ME03",
+      "finding": "Recovery uses state-specific minimum/maximum time, stochastic recovery and optional sleep recovery. Mood-caused recovery may add Catharsis. A cooldown is serialized and decremented while awake; normal work is selected again after state cleanup.",
+      "sources": [
+        {
+          "file": ".local-research/mood-recreation/Verse.AI.MentalState.cs",
+          "sha256": "d2874795470ebe343a455403cd78bcdeefdcc8b994be77c22b06aef6ba89a627",
+          "lines": [
+            67,
+            117
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/Verse.AI.MentalBreaker.cs",
+          "sha256": "f2c5dfbdbc5598270c24ab120dffde09c9633390a060d5dea10896e6f588b311",
+          "lines": [
+            196,
+            202
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/Verse.AI.MentalBreaker.cs",
+          "sha256": "f2c5dfbdbc5598270c24ab120dffde09c9633390a060d5dea10896e6f588b311",
+          "lines": [
+            247,
+            253
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/Verse.AI.MentalBreaker.cs",
+          "sha256": "f2c5dfbdbc5598270c24ab120dffde09c9633390a060d5dea10896e6f588b311",
+          "lines": [
+            387,
+            390
+          ]
+        }
+      ],
+      "xml": [
+        "XML04",
+        "XML17"
+      ]
+    }
+  ],
+  "xml": [
+    {
+      "id": "XML01",
+      "file": "Data/Core/Defs/NeedDefs/Needs.xml",
+      "source_sha256": "f0abfb6e11cf85ec43f55ac2191735c8cd029e7d76bd0411f014f37be3a3249c",
+      "xpath": "/Defs/NeedDef[defName=\"Mood\"]",
+      "nodes": [
+        "<NeedDef><defName>Mood</defName><needClass>Need_Mood</needClass><label>mood</label><description>Mood represents how happy or stressed someone is. If mood gets too low, the person may suffer a mental break. Depending on how low their mood is, someone who has a mental break may have a minor breaks like hiding in their room for a day, or a major break like going on a murder spree.</description><showOnNeedList>false</showOnNeedList><minIntelligence>Humanlike</minIntelligence><baseLevel>0.32</baseLevel><seekerRisePerHour>0.12</seekerRisePerHour><seekerFallPerHour>0.08</seekerFallPerHour><listPriority>1000</listPriority><major>true</major><freezeWhileSleeping>true</freezeWhileSleeping><showForCaravanMembers>true</showForCaravanMembers><developmentalStageFilter>Baby, Child, Adult</developmentalStageFilter></NeedDef>"
+      ]
+    },
+    {
+      "id": "XML02",
+      "file": "Data/Core/Defs/NeedDefs/Needs.xml",
+      "source_sha256": "f0abfb6e11cf85ec43f55ac2191735c8cd029e7d76bd0411f014f37be3a3249c",
+      "xpath": "/Defs/NeedDef[defName=\"Joy\"]",
+      "nodes": [
+        "<NeedDef><defName>Joy</defName><needClass>Need_Joy</needClass><label>recreation</label><description>Recreation is the need to have fun. Repeating the same kind of activity makes it less fun, so variety is necessary.</description><minIntelligence>Humanlike</minIntelligence><colonistsOnly>true</colonistsOnly><neverOnPrisoner>true</neverOnPrisoner><neverOnSlave>true</neverOnSlave><listPriority>500</listPriority><major>true</major><freezeWhileSleeping>true</freezeWhileSleeping><freezeInMentalState>true</freezeInMentalState><developmentalStageFilter>Adult</developmentalStageFilter></NeedDef>"
+      ]
+    },
+    {
+      "id": "XML03",
+      "file": "Data/Core/Defs/ThoughtDefs/Thoughts_Situation_Needs.xml",
+      "source_sha256": "25b67cb74ed753f216ee55780ccf5758eeabb96d01228d52fd64757bc412ce3a",
+      "xpath": "/Defs/ThoughtDef[defName=\"NeedJoy\"]",
+      "nodes": [
+        "<ThoughtDef><defName>NeedJoy</defName><workerClass>ThoughtWorker_NeedJoy</workerClass><validWhileDespawned>true</validWhileDespawned><developmentalStageFilter>Adult</developmentalStageFilter><stages><li><label>recreation-starved</label><description>It's been so long since I did anything for fun on my own time.</description><baseMoodEffect>-20</baseMoodEffect></li><li><label>recreation-deprived</label><description>We need more variation in recreation activities, and I need time to enjoy them. This place is really dull.</description><baseMoodEffect>-10</baseMoodEffect></li><li><label>recreation unfulfilled</label><description>We need more variation in the recreation activities, and I need time to enjoy them.</description><baseMoodEffect>-5</baseMoodEffect></li><li><label>recreation satisfied</label><description>I've been having a great time doing various things I like to do.</description><baseMoodEffect>5</baseMoodEffect></li><li><label>recreation fully satisfied</label><description>I've been enjoying myself so much, I love it!</description><baseMoodEffect>10</baseMoodEffect></li></stages></ThoughtDef>"
+      ]
+    },
+    {
+      "id": "XML04",
+      "file": "Data/Core/Defs/ThoughtDefs/Thoughts_Memory_Misc.xml",
+      "source_sha256": "7b65e423087002397d1d3c26d64973f73795e73bff041eff26589c78eebb05cd",
+      "xpath": "/Defs/ThoughtDef[defName=\"Catharsis\"]",
+      "nodes": [
+        "<ThoughtDef><defName>Catharsis</defName><durationDays>3</durationDays><stackLimit>5</stackLimit><developmentalStageFilter>Baby, Child, Adult</developmentalStageFilter><stages><li><label>catharsis</label><description>It felt good to finally unbottle my feelings.</description><baseMoodEffect>40</baseMoodEffect></li></stages></ThoughtDef>"
+      ]
+    },
+    {
+      "id": "XML05",
+      "file": "Data/Core/Defs/Misc/TimeAssignmentDefs/TimeAssignments.xml",
+      "source_sha256": "6a71e2ea22bd716f57c282936966ef8ac2add222652b1cc5e46ec650c0d9202b",
+      "xpath": "/Defs/TimeAssignmentDef[defName=\"Anything\"]",
+      "nodes": [
+        "<TimeAssignmentDef><defName>Anything</defName><label>anything</label><color>(114,114,114)</color></TimeAssignmentDef>"
+      ]
+    },
+    {
+      "id": "XML06",
+      "file": "Data/Core/Defs/Misc/TimeAssignmentDefs/TimeAssignments.xml",
+      "source_sha256": "6a71e2ea22bd716f57c282936966ef8ac2add222652b1cc5e46ec650c0d9202b",
+      "xpath": "/Defs/TimeAssignmentDef[defName=\"Work\"]",
+      "nodes": [
+        "<TimeAssignmentDef><defName>Work</defName><label>work</label><color>(133, 133, 61)</color><allowRest>false</allowRest><allowJoy>false</allowJoy></TimeAssignmentDef>"
+      ]
+    },
+    {
+      "id": "XML07",
+      "file": "Data/Core/Defs/Misc/TimeAssignmentDefs/TimeAssignments.xml",
+      "source_sha256": "6a71e2ea22bd716f57c282936966ef8ac2add222652b1cc5e46ec650c0d9202b",
+      "xpath": "/Defs/TimeAssignmentDef[defName=\"Joy\"]",
+      "nodes": [
+        "<TimeAssignmentDef><defName>Joy</defName><label>recreation</label><color>(115, 74, 138)</color></TimeAssignmentDef>"
+      ]
+    },
+    {
+      "id": "XML08",
+      "file": "Data/Core/Defs/Misc/TimeAssignmentDefs/TimeAssignments.xml",
+      "source_sha256": "6a71e2ea22bd716f57c282936966ef8ac2add222652b1cc5e46ec650c0d9202b",
+      "xpath": "/Defs/TimeAssignmentDef[defName=\"Sleep\"]",
+      "nodes": [
+        "<TimeAssignmentDef><defName>Sleep</defName><label>sleep</label><color>(51,51,127)</color></TimeAssignmentDef>"
+      ]
+    },
+    {
+      "id": "XML09",
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_General.xml",
+      "source_sha256": "ec1df1afb1f24c3d812b3224f803354b613a226e3934ea1e235c9b195181f507",
+      "xpath": "/Defs/StatDef[defName=\"MentalBreakThreshold\"]",
+      "nodes": [
+        "<StatDef><defName>MentalBreakThreshold</defName><label>mental break threshold</label><description>As long as someone's mood is below this level, they are in danger of having a mental break.\\n\\nThe severity of the mental break will depend on how far below the threshold they are.</description><category>PawnResistances</category><defaultBaseValue>0.35</defaultBaseValue><minValue>0.01</minValue><maxValue>0.50</maxValue><toStringStyle>PercentZero</toStringStyle><showOnAnimals>false</showOnAnimals><showOnMechanoids>false</showOnMechanoids><showOnEntities>false</showOnEntities><showOnDrones>false</showOnDrones><displayPriorityInCategory>2000</displayPriorityInCategory><scenarioRandomizable>true</scenarioRandomizable><cacheable>true</cacheable></StatDef>"
+      ]
+    },
+    {
+      "id": "XML10",
+      "file": "Data/Core/Defs/Joy/JoyKinds.xml",
+      "source_sha256": "88e9d2ac1f9d3780e218a6309ed9f1ee167b38e689fef5180236cf3949af60c2",
+      "xpath": "/Defs/JoyKindDef[defName=\"Meditative\" or defName=\"Gaming_Dexterity\" or defName=\"Gaming_Cerebral\"]",
+      "nodes": [
+        "<JoyKindDef><defName>Meditative</defName><label>solitary relaxation</label><needsThing>false</needsThing></JoyKindDef>",
+        "<JoyKindDef><defName>Gaming_Dexterity</defName><label>dexterity play</label></JoyKindDef>",
+        "<JoyKindDef><defName>Gaming_Cerebral</defName><label>cerebral play</label></JoyKindDef>"
+      ]
+    },
+    {
+      "id": "XML11",
+      "file": "Data/Core/Defs/Misc/ExpectationDefs/Expectations.xml",
+      "source_sha256": "be8610d3bb55e53868dd6fdcbb471da9d63c25e49544569801e6a13c9d7859d4",
+      "xpath": "/Defs/ExpectationDef[defName=\"ExtremelyLow\"]",
+      "nodes": [
+        "<ExpectationDef><defName>ExtremelyLow</defName><label>extremely low</label><order>0</order><thoughtStage>5</thoughtStage><maxMapWealth>15000</maxMapWealth><joyKindsNeeded>2</joyKindsNeeded><joyToleranceDropPerDay>0.18</joyToleranceDropPerDay><ritualQualityOffset>0.5</ritualQualityOffset></ExpectationDef>"
+      ]
+    },
+    {
+      "id": "XML12",
+      "file": "Data/Core/Defs/Misc/ExpectationDefs/Expectations.xml",
+      "source_sha256": "be8610d3bb55e53868dd6fdcbb471da9d63c25e49544569801e6a13c9d7859d4",
+      "xpath": "/Defs/ExpectationDef[defName=\"High\"]",
+      "nodes": [
+        "<ExpectationDef><defName>High</defName><label>high</label><order>4</order><thoughtStage>1</thoughtStage><maxMapWealth>308000</maxMapWealth><joyKindsNeeded>5</joyKindsNeeded><joyToleranceDropPerDay>0.08</joyToleranceDropPerDay></ExpectationDef>"
+      ]
+    },
+    {
+      "id": "XML13",
+      "file": "Data/Core/Defs/Joy/JoyGivers.xml",
+      "source_sha256": "e35331b3cd709de271871bdf75400c7bb45ad7181dcad30ba8b9efc0dca1439f",
+      "xpath": "/Defs/JoyGiverDef[defName=\"Play_Horseshoes\"]",
+      "nodes": [
+        "<JoyGiverDef><defName>Play_Horseshoes</defName><giverClass>JoyGiver_WatchBuilding</giverClass><baseChance>2.5</baseChance><thingDefs><li>HorseshoesPin</li></thingDefs><jobDef>Play_Horseshoes</jobDef><desireSit>false</desireSit><joyKind>Gaming_Dexterity</joyKind><requiredCapacities><li>Manipulation</li></requiredCapacities></JoyGiverDef>"
+      ]
+    },
+    {
+      "id": "XML14",
+      "file": "Data/Core/Defs/JobDefs/Jobs_Joy.xml",
+      "source_sha256": "20fdcac408eef887747be30416a47155d4c9509193dd35af4496bb3b59e2d056",
+      "xpath": "/Defs/JobDef[defName=\"Play_Horseshoes\"]",
+      "nodes": [
+        "<JobDef><defName>Play_Horseshoes</defName><driverClass>JobDriver_PlayHorseshoes</driverClass><reportString>playing horseshoes.</reportString><joyDuration>4000</joyDuration><joyMaxParticipants>3</joyMaxParticipants><joySkill>Shooting</joySkill><joyXpPerTick>0.003</joyXpPerTick><joyKind>Gaming_Dexterity</joyKind><taleOnCompletion>PlayedGame</taleOnCompletion><allowOpportunisticPrefix>true</allowOpportunisticPrefix></JobDef>"
+      ]
+    },
+    {
+      "id": "XML15",
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Joy.xml",
+      "source_sha256": "65ed52b04b95c1c60eacde4490689b22644ba66855d78d0a6a1384934e3cb35c",
+      "xpath": "/Defs/ThingDef[defName=\"HorseshoesPin\"]/*[self::defName or self::building or self::costStuffCount or self::statBases]",
+      "nodes": [
+        "<defName>HorseshoesPin</defName>",
+        "<statBases><MaxHitPoints>75</MaxHitPoints><WorkToBuild>100</WorkToBuild><Mass>3</Mass><Flammability>1.0</Flammability><JoyGainFactor>1</JoyGainFactor></statBases>",
+        "<building><joyKind>Gaming_Dexterity</joyKind><watchBuildingStandDistanceRange>5~5</watchBuildingStandDistanceRange><watchBuildingStandRectWidth>3</watchBuildingStandRectWidth><watchBuildingInSameRoom>true</watchBuildingInSameRoom><artificialForMeditationPurposes>false</artificialForMeditationPurposes><paintable>true</paintable></building>",
+        "<costStuffCount>10</costStuffCount>"
+      ]
+    },
+    {
+      "id": "XML16",
+      "file": "Data/Core/Defs/MentalStateDefs/MentalStates_Mood.xml",
+      "source_sha256": "077ec0b16027d1f8b8e12d8752bf643edb76259bccd079938c8ccef299ab2c34",
+      "xpath": "/Defs/MentalBreakDef[defName=\"Wander_Sad\"]",
+      "nodes": [
+        "<MentalBreakDef><defName>Wander_Sad</defName><mentalState>Wander_Sad</mentalState><baseCommonality>0.5</baseCommonality><intensity>Minor</intensity></MentalBreakDef>"
+      ]
+    },
+    {
+      "id": "XML17",
+      "file": "Data/Core/Defs/MentalStateDefs/MentalStates_Mood.xml",
+      "source_sha256": "077ec0b16027d1f8b8e12d8752bf643edb76259bccd079938c8ccef299ab2c34",
+      "xpath": "/Defs/MentalStateDef[defName=\"Wander_Sad\"]",
+      "nodes": [
+        "<MentalStateDef ParentName=\"BaseMentalState\"><defName>Wander_Sad</defName><stateClass>MentalState_WanderSad</stateClass><label>sad wandering</label><category>Misc</category><colonistsOnly>true</colonistsOnly><minTicksBeforeRecovery>40000</minTicksBeforeRecovery><maxTicksBeforeRecovery>60000</maxTicksBeforeRecovery><recoveryMtbDays>0.166</recoveryMtbDays><recoverFromSleep>true</recoverFromSleep><moodRecoveryThought>Catharsis</moodRecoveryThought><blockNormalThoughts>true</blockNormalThoughts><nameColor>(0.65, 0.9, 0.93)</nameColor><recoveryMessage>{0} is no longer wandering in sadness.</recoveryMessage><beginLetterLabel>sad wander</beginLetterLabel><beginLetter>{0} has broken down and is wandering around in sadness.</beginLetter><beginLetterDef>NegativeEvent</beginLetterDef><baseInspectLine>Mental state: Sad wandering</baseInspectLine><allowBeatfire>true</allowBeatfire><inCaravanCanDo>true</inCaravanCanDo><escapingPrisonersIgnore>true</escapingPrisonersIgnore></MentalStateDef>"
+      ]
+    },
+    {
+      "id": "XML18",
+      "file": "Data/Core/Defs/ThinkTreeDefs/SubTrees_Misc.xml",
+      "source_sha256": "c287c0c2a97f151d86516cf058e2eb54b4d87f1bccf50bfa46faf8b26eba3071",
+      "xpath": "/Defs/ThinkTreeDef[defName=\"MainColonistBehaviorCore\"]",
+      "nodes": [
+        "<ThinkTreeDef><defName>MainColonistBehaviorCore</defName><thinkRoot Class=\"ThinkNode_Tagger\"><tagToGive>SatisfyingNeeds</tagToGive><!-- note that JobGiver_Work will assign its own tag --><subNodes><li Class=\"ThinkNode_PrioritySorter\"><subNodes><li Class=\"JobGiver_GetFood\" /><li Class=\"JobGiver_GetRest\" /><li Class=\"JobGiver_SatisfyChemicalNeed\" /><li Class=\"JobGiver_TakeDrugsForDrugPolicy\" /><li Class=\"JobGiver_GetAgeReversal\" /><li Class=\"JobGiver_MoveDrugsToInventory\" /><li Class=\"JobGiver_GetNeuralSupercharge\" /><li Class=\"JobGiver_GetHemogen\" MayRequire=\"Ludeon.RimWorld.Biotech\" /><li Class=\"JobGiver_MeditateInBed\" /><li Class=\"JobGiver_SatifyChemicalDependency\" MayRequire=\"Ludeon.RimWorld.Biotech\" /><li Class=\"ThinkNode_Priority_Learn\" MayRequire=\"Ludeon.RimWorld.Biotech\"><subNodes><li Class=\"JobGiver_Learn\" /></subNodes></li><li Class=\"ThinkNode_Priority_GetJoy\"><subNodes><li Class=\"JobGiver_GetJoy\" /><li Class=\"JobGiver_GetJoyInBed\" /></subNodes></li><li Class=\"JobGiver_Meditate\" /><li Class=\"JobGiver_Reload\" /><li Class=\"JobGiver_Work\" /></subNodes></li></subNodes></thinkRoot></ThinkTreeDef>"
+      ]
+    },
+    {
+      "id": "XML19",
+      "file": "Data/Core/Defs/ThinkTreeDefs/SubTrees_Misc.xml",
+      "source_sha256": "c287c0c2a97f151d86516cf058e2eb54b4d87f1bccf50bfa46faf8b26eba3071",
+      "xpath": "/Defs/ThinkTreeDef[defName=\"MentalStateNonCritical\"]//li[@Class=\"ThinkNode_ConditionalMentalStates\"][states/li=\"Wander_Sad\"]",
+      "nodes": [
+        "<li Class=\"ThinkNode_ConditionalMentalStates\"><states><li>Wander_Psychotic</li><li>Wander_Sad</li><li>WanderConfused</li><li MayRequire=\"Ludeon.RimWorld.Anomaly\">DarkVisions</li><li MayRequire=\"Ludeon.RimWorld.Anomaly\">InsaneRamblings</li></states><subNodes><li Class=\"ThinkNode_PrioritySorter\"><subNodes><li Class=\"JobGiver_GetFood\"><maxLevelPercentage>0.05</maxLevelPercentage></li><li Class=\"JobGiver_GetRest\"><maxLevelPercentage>0.15</maxLevelPercentage></li></subNodes></li><li Class=\"JobGiver_WanderAnywhere\"><maxDanger>Deadly</maxDanger></li></subNodes></li>"
+      ]
+    },
+    {
+      "id": "XML20",
+      "file": "Data/Core/Defs/ThinkTreeDefs/Humanlike.xml",
+      "source_sha256": "047fc3c5bcb60ead007adbcd0090690a25af882adeb11298df8f4b551bbbdd4e",
+      "xpath": "/Defs/ThinkTreeDef[defName=\"Humanlike\"]/thinkRoot/subNodes/li[@Class=\"ThinkNode_Subtree\"][treeDef=\"MentalStateCritical\" or treeDef=\"MentalStateNonCritical\"]",
+      "nodes": [
+        "<li Class=\"ThinkNode_Subtree\"><treeDef>MentalStateCritical</treeDef></li>",
+        "<li Class=\"ThinkNode_Subtree\"><treeDef>MentalStateNonCritical</treeDef></li>"
+      ]
+    },
+    {
+      "id": "XML21",
+      "file": "Data/Core/Defs/MentalStateDefs/MentalStates_Mood.xml",
+      "source_sha256": "077ec0b16027d1f8b8e12d8752bf643edb76259bccd079938c8ccef299ab2c34",
+      "xpath": "/Defs/MentalStateDef[@Name=\"BaseMentalState\"]",
+      "nodes": [
+        "<MentalStateDef Abstract=\"True\" Name=\"BaseMentalState\"><minTicksBeforeRecovery>10000</minTicksBeforeRecovery><recoveryMtbDays>0.3</recoveryMtbDays></MentalStateDef>"
+      ]
+    }
+  ],
+  "runtime": {
+    "new_native_experiments": 0,
+    "isolated_process_previously_exited": true,
+    "game_restarted": false,
+    "saves_written": false,
+    "current_process_pause_claim": false
+  },
+  "limitations": [
+    "C# is derived ILSpy reconstruction, not original source; dependency resolution errors are tolerated.",
+    "Packaged Core XML is retained verbatim for selected nodes; missing fields are not invented and inheritance/patches are not globally resolved.",
+    "No runtime effective Def database or current enabled-mod database was queried.",
+    "No native probability measurement, recreation timing measurement or multi-day balance validation.",
+    "No exhaustive thought, trait, social relationship, ideology, gene, drug or mental-break catalogue.",
+    "The Web gameplay contract in chapter 71 is an analyst design recommendation, not evidence that the Web implementation already behaves this way."
+  ]
+}

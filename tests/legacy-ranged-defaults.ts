@@ -1,9 +1,11 @@
 import { expect } from 'vitest';
 import { stripMedicineDefaults } from './legacy-medicine-defaults';
+import { stripMoodFields } from './legacy-mood-defaults';
 /** Older synthetic schema tests start from a current empty test world. Remove
  * newer defaults before applying that test's historical schema conversion.
  * Authentic historical fixture bytes never pass through this helper. */
 export function stripRangedDefaults(raw: Record<string, any>) {
+  stripMoodFields(raw);
   // No wildlife activity belongs to the older schemas represented by these
   // synthetic fixtures. Preserve real resource assertions before stripping defaults.
   expect(raw.animals.every((a: any) => !a.dead && !a.hunt)).toBe(true);

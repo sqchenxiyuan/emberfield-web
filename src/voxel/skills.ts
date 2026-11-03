@@ -66,6 +66,7 @@ const BUILDING_JOBS = new Set([
   'smithy',
   'machining',
   'sandbag',
+  'horseshoePin',
   'generator',
   'solar',
   'battery',
