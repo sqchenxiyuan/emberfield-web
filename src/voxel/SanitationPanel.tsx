@@ -56,7 +56,7 @@ export function SanitationDetails({ snapshot: s, pos, roomId, preferredPawnId, c
     <button onClick={() => command({ type: 'homeArea', from: pos, to: pos, enabled: !home })}>
       {home ? '将此格移出家园范围' : '将此格加入家园范围'}
     </button>
-    <small>清扫只在家园范围内进行，需要开启分工并留出通路；饥饿、疲劳和伤病可能打断工作。</small>
+    <small>清扫只在家园范围内进行，并需要可达通路。自动清扫需开启清洁分工；停用分工时仍可优先清扫。饥饿、疲劳和伤病可能打断工作。</small>
   </details>;
 }
 
@@ -85,7 +85,7 @@ export function SanitationPanel({ snapshot: s, selectedPos, focus, selectPawn, c
       {selectedPos && <small>选中 {selectedPos.x}, {selectedPos.y} · Z {selectedPos.z}{validArea ? ` · ${areaCount} 格` : ' · 请在起点同层选择终点'}</small>}
       <div><button disabled={!validArea} onClick={() => from && selectedPos && command({ type: 'homeArea', from, to: selectedPos, enabled: true })}>加入清洁家园范围</button>
         <button disabled={!validArea} onClick={() => from && selectedPos && command({ type: 'homeArea', from, to: selectedPos, enabled: false })}>移出清洁家园范围</button></div>
-      <small>这里修改的就是家园范围，也会影响家园内落地物资的贸易资格。</small>
+      <small>这里修改的就是家园范围，也用于灭火、修理和家园内落地物资的贸易资格。</small>
     </details>
     <details className="voxel-sanitation-workers"><summary>清洁分工</summary>
       {s.pawns.filter(p => p.faction === 'colony' && !p.dead).map(p => <div key={p.id}>

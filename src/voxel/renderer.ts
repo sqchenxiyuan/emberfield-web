@@ -80,6 +80,7 @@ import { SMITHY_FUEL_CAPACITY } from './weaponProduction';
 import { isRangedKind } from './ranged';
 import { projectileViewPosition } from './rangedView';
 import { ANIMAL_DEFS } from './wildlife';
+import { FIRE_RULES, fireDamageCells } from './fire';
 
 /** x/y are horizontal simulation coordinates; Three uses x/z horizontally. */
 export interface VoxelView {
@@ -143,6 +144,8 @@ type PawnVisual = {
   talkMarker: Sprite;
   cleaningMarker: Sprite;
   poisoningMarker: Sprite;
+  firefightingMarker: Sprite;
+  repairMarker: Sprite;
   horseshoe: Group;
   apparel: { hat: Group; coat: Mesh; sleeves: Mesh[]; shirt: Mesh[]; pants: Mesh[] };
   shadow: Mesh;
@@ -1410,6 +1413,7 @@ export class VoxelRenderer {
     this.finish(storage);
     this.updateHomeArea();
     this.updateFilth();
+    this.updateFireDamage();
     this.updateWildlifeObjects();
     this.updateRecreationObjects();
     this.updateFarming();
@@ -1439,6 +1443,51 @@ export class VoxelRenderer {
       }
     });
     this.finish(stains);
+  }
+
+  private updateFireDamage() {
+    if (!this.data) return;
+    const cells = this.data.fireDamage.flatMap(d => fireDamageCells(d, this.data!).map(cell => ({ ...cell, damage: d })))
+      .filter(cell => cell.z <= this.level);
+    const outline = this.batch('fire-damage-outline', cells.length * 4, this.box, this.effectMaterial('fire-damage-outline', .8));
+    this.inspectBatches.set(outline, { cells, instancesPerCell: 4 });
+    cells.forEach((cell, i) => {
+      const height = cell.z + (this.block(cell.x, cell.y, cell.z) ? cell.z === this.level ? .59 : 1.03 : .065);
+      const color = cell.damage.hitPoints / cell.damage.maxHitPoints < .35 ? 0xd8795c : 0xbd9968;
+      for (let side = 0; side < 4; side++) {
+        const alongX = side < 2, edge = side % 2 ? .96 : .04;
+        this.instance(outline, i * 4 + side, cell.x + (alongX ? .5 : edge), height,
+          cell.y + (alongX ? edge : .5), alongX ? .94 : .025, .02, alongX ? .025 : .94, color);
+      }
+    });
+    this.finish(outline);
+  }
+
+  private animateFires(time: number) {
+    if (!this.data) return;
+    const fires = this.data.fires.filter(f => f.z <= this.level);
+    const flames = this.batch('hazard-fire', fires.length * 3, this.treeCrown, this.effectMaterial('hazard-fire', 1));
+    const smoke = this.batch('hazard-smoke', fires.length * 4, this.smokeGeometry, this.effectMaterial('hazard-smoke', .23));
+    this.inspectBatches.set(flames, { cells: fires, instancesPerCell: 3 });
+    fires.forEach((fire, i) => {
+      const base = fire.z + (this.block(fire.x, fire.y, fire.z) ? fire.z === this.level ? .58 : 1.02 : .04);
+      const strength = MathUtils.clamp(fire.size / FIRE_RULES.maxSize, 0, 1), height = .25 + strength * 1.15;
+      for (let n = 0; n < 3; n++) {
+        const pulse = .85 + Math.sin(time * 8 + fire.id * .7 + n * 2) * .15;
+        const angle = fire.id * 1.71 + n * Math.PI * 2 / 3;
+        const tall = height * (n === 0 ? 1 : .72) * pulse, width = .10 + strength * .15;
+        this.instance(flames, i * 3 + n, fire.x + .5 + Math.cos(angle) * .14, base + tall * .75,
+          fire.y + .5 + Math.sin(angle) * .14, width, tall, width,
+          n === 0 ? 0xffdd83 : n === 1 ? 0xf59a43 : 0xe96a36, angle);
+      }
+      for (let n = 0; n < 4; n++) {
+        const phase = (time * .55 + n * .25 + fire.id * .17) % 1, size = (.08 + strength * .16) * (1 + phase);
+        this.instance(smoke, i * 4 + n, fire.x + .5 + Math.sin(time * .4 + n) * phase * .2,
+          base + height + phase * (1.1 + strength), fire.y + .5 + phase * .12,
+          size, size * .75, size, 0x72716a);
+      }
+    });
+    this.finish(flames); this.finish(smoke);
   }
 
   private updateRecreationObjects() {
@@ -3300,6 +3349,7 @@ export class VoxelRenderer {
     };
     const recreationMarker = activityMarker('娱乐', 0xb9d59b), mentalMarker = activityMarker('悲伤', 0xe1a17d), talkMarker = activityMarker('交谈', 0xe1c49a);
     const cleaningMarker = activityMarker('清扫', 0xc2d2ad), poisoningMarker = activityMarker('食物中毒', 0xc9c480);
+    const firefightingMarker = activityMarker('灭火', 0xf0b482), repairMarker = activityMarker('修理', 0xd9c29c);
     poisoningMarker.position.y = 2.62;
     const horseshoe = new Group(), iron = this.keepMaterial(new MeshLambertMaterial({ color: 0xc4d1c7 }));
     part(horseshoe, iron, -.105, 0, 0, .055, .055, .26);
@@ -3336,6 +3386,8 @@ export class VoxelRenderer {
       talkMarker,
       cleaningMarker,
       poisoningMarker,
+      firefightingMarker,
+      repairMarker,
       horseshoe,
       apparel: { hat, coat, sleeves, shirt, pants },
       shadow,
@@ -3593,6 +3645,8 @@ export class VoxelRenderer {
       visual.mentalMarker.visible = mental;
       visual.talkMarker.visible = !!talkPartner;
       visual.cleaningMarker.visible = false;
+      visual.firefightingMarker.visible = false;
+      visual.repairMarker.visible = false;
       visual.poisoningMarker.visible = !!pawn.foodPoisoning && !pawn.dead;
       visual.broom.visible = false;
       visual.horseshoe.visible = false;
@@ -3675,6 +3729,15 @@ export class VoxelRenderer {
         pawn.x === cleaningTarget.x && pawn.y === cleaningTarget.y && pawn.z === cleaningTarget.z;
       visual.broom.visible = cleaning;
       visual.cleaningMarker.visible = cleaning;
+      const fireTarget = pawn.phase === 'firefight' && pawn.firefightTask ? this.data.fires.find(f => f.id === pawn.firefightTask!.fireId) : undefined;
+      const repairTarget = pawn.phase === 'repair' && pawn.repairTask ? this.data.fireDamage.find(d => d.key === pawn.repairTask!.damageKey) : undefined;
+      const touches = (p: Pos) => Math.abs(p.x - pawn.x) + Math.abs(p.y - pawn.y) + Math.abs(p.z - pawn.z) <= 1;
+      const firefighting = !!fireTarget && !moving && !pawn.cargo && !mental && pawn.carryingPawnId === null && touches(fireTarget);
+      const repairCells = repairTarget ? fireDamageCells(repairTarget, this.data) : [];
+      const repairCell = repairCells.find(touches);
+      const repairing = !!repairCell && !moving && !pawn.cargo && !mental && pawn.carryingPawnId === null;
+      visual.firefightingMarker.visible = firefighting;
+      visual.repairMarker.visible = repairing;
       const working =
         pawn.phase === 'work' && pawn.path.length === 0 && !pawn.cargo && fraction >= 1;
       const job = this.data.jobs.find((candidate) => candidate.id === pawn.jobId);
@@ -3854,7 +3917,21 @@ export class VoxelRenderer {
           dz = visual.to.z - visual.from.z;
         if (Math.abs(dx) + Math.abs(dz) > 0.001) visual.root.rotation.y = Math.atan2(dx, dz);
       }
-      if (cleaning) {
+      if (firefighting && fireTarget) {
+        const beat = MathUtils.clamp((pawn.firefightTask!.progress + extraTicks) / FIRE_RULES.beatWork, 0, 1);
+        const strike = Math.sin(beat * Math.PI);
+        visual.root.rotation.y = Math.atan2(fireTarget.x + .5 - visual.root.position.x, fireTarget.y + .5 - visual.root.position.z);
+        visual.torso.rotation.x = .12 + strike * .1; visual.head.rotation.x = .16;
+        toolArm.rotation.x = -.25 - strike * 1.0;
+        (useLeftHand ? visual.rightArm : visual.leftArm).rotation.x = -.3;
+        visual.tool.visible = false; visual.hammer.visible = false;
+      } else if (repairing && repairCell) {
+        const beat = MathUtils.clamp((pawn.repairTask!.progress + extraTicks) / FIRE_RULES.repairPointWork, 0, 1);
+        visual.root.rotation.y = Math.atan2(repairCell.x + .5 - visual.root.position.x, repairCell.y + .5 - visual.root.position.z);
+        visual.torso.rotation.x = .1; visual.head.rotation.x = .1;
+        toolArm.rotation.x = -.45 - Math.sin(beat * Math.PI) * .7;
+        visual.hammer.visible = true; visual.hammer.scale.setScalar(1); visual.tool.visible = false;
+      } else if (cleaning) {
         visual.torso.rotation.x = .12;
         visual.head.rotation.x = .12;
         toolArm.rotation.x = -.1 + Math.sin(time * 5 + pawn.id) * .13;
@@ -3934,6 +4011,7 @@ export class VoxelRenderer {
     this.workMotes.instanceMatrix.needsUpdate = true;
     this.animateStoves(time, cookingCells);
     this.animateWeaponBenches(time, workingWeaponBenches);
+    this.animateFires(time);
     this.animateDevices();
     this.animateCombat(this.data.tick + extraTicks);
   }

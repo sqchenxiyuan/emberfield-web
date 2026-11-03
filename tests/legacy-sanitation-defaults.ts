@@ -1,9 +1,11 @@
 import { expect } from 'vitest';
+import { stripFireFields } from './legacy-fire-defaults';
 
 /** Only downgrade deliberately synthetic schema fixtures. Genuine historical
  * saves are immutable. New disease, tasks and polluted meals cannot be erased.
  * Incidental dirt has no representation in the historical schema. */
 export function stripSanitationFields(raw: Record<string, any>) {
+  stripFireFields(raw);
   for (const pawn of raw.pawns) {
     expect(pawn.cleanTask).toBeNull();
     expect(pawn.foodPoisoning).toBeNull();

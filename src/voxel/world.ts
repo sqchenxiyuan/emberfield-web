@@ -101,6 +101,11 @@ import { rejectLegacyPrisonerFields, migratePrisoners, validatePrisoners } from 
 import { FILTH_NAMES, SANITATION_RULES, cookingOutcome, exposeFoodPoisoning, poisoningStage, sanitationRandom,
   type Filth, type FilthKind, type RoomCleanliness } from './sanitation';
 import { rejectLegacySanitationFields, migrateSanitation, validateSanitation } from './sanitationPersistence';
+import { initialFireHazards, fireDamageCells, FIRE_RULES, FIRE_MAX_HP, fireDamageKey,
+  type Fire, type FireDamage, type FireHazards, type FireLogEntry, type BurnTargetKind } from './fire';
+import { updateFires, fireFuelAt, findFireDamageTarget, fireLog, removeFire, startFirefight, startRepair,
+  tryFirefight, tryRepair, validFirefight, validRepair, firefightTick, repairTick, touchesFire, FIRE_DIRECTIONS } from './fireWorld';
+import { rejectLegacyFireFields, migrateFire, validateFire } from './firePersistence';
 import { colonyWealth, summaryHealthPercent } from './wealth';
 import { STORY_INTERVAL, threatPoints, growAdaptation, adaptationAfterLoss } from './storytellerRules';
 import {
@@ -470,6 +475,10 @@ function decode(raw: unknown, max: number): Uint8Array<ArrayBuffer> {
 }
 
 export class VoxelSimulation {
+  fires: Fire[] = [];
+  fireDamage: FireDamage[] = [];
+  fireHazards: FireHazards;
+  fireLog: FireLogEntry[] = [];
   filth: Filth[] = [];
   private cleanlinessRevision = -1;
   private cleanlinessBase = new Map<number, { total: number; count: number }>();
@@ -563,6 +572,7 @@ export class VoxelSimulation {
     restoreOnly = false,
   ) {
     if (!Number.isSafeInteger(seed)) throw new Error('种子必须是安全整数');
+    this.fireHazards = initialFireHazards(seed);
     this.storyteller = initialStoryteller(seed);
     this.trade = initialTrade(seed);
     this.settings = sanitizeWorldSettings(settings);
@@ -599,6 +609,7 @@ export class VoxelSimulation {
         prisoner: null, wardenTask: null,
         psyche: initialPsyche(),
         priorities: {
+          firefight: 1,
           clean: 3,
           warden: 1,
           hunt: 2,
@@ -1816,6 +1827,7 @@ export class VoxelSimulation {
     if (!result.ok) this.nextId = nextId;
     else {
       this.pruneFilth();
+      this.reconcileFireState();
       for (const p of this.pawns) {
         if (p.carePhase && !this.validCare(p)) this.release(p);
         if (p.cleanTask && !this.validClean(p)) this.release(p);
@@ -1824,6 +1836,27 @@ export class VoxelSimulation {
     return result;
   }
   private applyCommand(c: VoxelCommand): CommandResult {
+    if (c.type === 'fireHazards') {
+      if (typeof c.enabled !== 'boolean') return { ok: false, message: '火灾事件设置无效' };
+      this.fireHazards.enabled = c.enabled;
+      return { ok: true, message: c.enabled ? '已开启雷击与电气火灾事件，保留既定日程' : '后续火灾事件已关闭，现有火焰继续燃烧并可扑灭' };
+    }
+    if (c.type === 'firefight' || c.type === 'cancelFirefight' || c.type === 'repair' || c.type === 'cancelRepair') {
+      const p = this.pawns.find(p => p.id === c.pawnId && p.faction === 'colony');
+      if (!p || p.dead || p.downed || p.drafted || p.carriedBy !== null || p.psyche.breakUntil > this.tick)
+        return { ok: false, message: '需要可自由行动的殖民者' };
+      if (c.type === 'cancelFirefight' || c.type === 'cancelRepair') {
+        if (c.type === 'cancelFirefight' ? !p.firefightTask : !p.repairTask)
+          return { ok: false, message: '当前没有对应的灭火或修理任务' };
+        this.release(p); p.reason = '任务已取消，等待重新安排'; return { ok: true, message: p.reason };
+      }
+      if (c.type === 'firefight') {
+        const f = this.fires.find(f => f.id === c.fireId), ok = !!f && startFirefight(this, p, f);
+        return { ok, message: ok ? p.reason : '需要家园区域内可到达并且无人预约的火焰；携带物资需有卸货位置' };
+      }
+      const damage = this.fireDamage.find(d => d.key === c.damageKey), ok = !!damage && startRepair(this, p, damage);
+      return { ok, message: ok ? p.reason : '需要家园区域内可到达、无人预约且未在燃烧的受损结构' };
+    }
     if (c.type === 'prisonerPolicy') {
       const patient = this.pawns.find(p => p.id === c.prisonerId);
       return patient ? setPrisonerPolicy(this, patient, c.policy) : { ok: false, message: '俘虏不存在' };
@@ -2255,7 +2288,7 @@ export class VoxelSimulation {
       if (
         !p ||
         p.dead ||
-        !['clean', 'warden', 'hunt', 'dig', 'build', 'cut', 'haul', 'grow', 'cook', 'craft', 'care', 'research'].includes(
+        !['firefight', 'clean', 'warden', 'hunt', 'dig', 'build', 'cut', 'haul', 'grow', 'cook', 'craft', 'care', 'research'].includes(
           c.work,
         ) ||
         !Number.isInteger(c.value) ||
@@ -3639,7 +3672,7 @@ export class VoxelSimulation {
       faction: 'raider',
       weapon,
       priorities: {
-        clean: 0, warden: 0,
+        firefight: 0, clean: 0, warden: 0,
         hunt: 0,
         dig: 0,
         build: 0,
@@ -4604,8 +4637,165 @@ export class VoxelSimulation {
     }
     p.moveTick = this.tick + 60;
   }
+  fireRelease(p: Pawn) { this.release(p); }
+  fireDropCargo(p: Pawn) { return this.dropCargo(p); }
+  fireRoute(p: Pawn, targets: Pos[]): number[] | null {
+    if (!this.standable(p)) return null;
+    this.search(p);
+    let best = -1;
+    for (const target of targets) for (const [dx, dy, dz] of [[0, 0, 0], ...FIRE_DIRECTIONS]) {
+      const q = { x: target.x + dx, y: target.y + dy, z: target.z + dz };
+      if (!inside(q) || !this.canStop(q)) continue;
+      const cell = at(q);
+      if (this.distance[cell] >= 0 && (best < 0 || this.distance[cell] < this.distance[best])) best = cell;
+    }
+    return best < 0 ? null : this.route(best);
+  }
+  private reconcileFireState() {
+    for (const f of [...this.fires]) if (!fireFuelAt(this, f).length) removeFire(this, f, '可燃物已移除，火焰熄灭');
+    this.fireDamage = this.fireDamage.filter(d => !!findFireDamageTarget(this, d));
+    for (const p of this.pawns) if ((p.firefightTask && !validFirefight(this, p)) || (p.repairTask && !validRepair(this, p))) this.release(p);
+  }
+  fireBurnGround(id: number, amount: number) {
+    const item = this.items.find(i => i.id === id);
+    if (!item) return;
+    const lost = Math.min(item.amount, amount);
+    const items = this.items.flatMap(i => i.id !== id ? [i] : i.amount > lost ? [{ ...i, amount: i.amount - lost }] : []);
+    this.tradeApplyPlacement({ items, nextId: this.nextId });
+    this.stats.destroyed[item.resource] += lost;
+    for (const p of this.pawns) if (this.craftSources.get(p.id) === id || this.storageReservations.get(p.id)?.sourceId === id) this.release(p);
+    fireLog(this, 'destroyed', item, `${lost}单位${RESOURCE_NAMES[item.resource]}被烧毁`);
+  }
+  /** Delivered inputs are still physical, unlike already consumed construction
+   * materials. Destroy their container exactly once, leaving carried inputs intact. */
+  private fireDestroyJob(j: Job) {
+    for (const p of this.pawns) if (p.jobId === j.id) this.release(p);
+    for (const r of resources) this.stats.destroyed[r] += j.delivered[r] ?? 0;
+    this.jobs = this.jobs.filter(k => k.id !== j.id);
+  }
+  fireBurnTree(id: number, damage: number) {
+    const tree = this.trees.find(t => t.id === id);
+    if (!tree) return;
+    tree.health = Math.max(0, tree.health - damage / TREE_DATA[tree.species].maxHitPoints);
+    if (tree.health > 0) return;
+    for (const j of [...this.jobs]) if (same(j, tree) && ['cut', 'remove'].includes(j.kind)) this.fireDestroyJob(j);
+    this.trees = this.trees.filter(t => t.id !== id); this.stats.treesDied++;
+    this.rebuildTrees(); this.changed(tree);
+    fireLog(this, 'destroyed', tree, '树木被烧毁，没有产出木材');
+  }
+  fireBurnCrop(id: number) {
+    const crop = this.crops.find(c => c.id === id);
+    if (!crop) return;
+    for (const j of [...this.jobs]) if (same(j, crop) && ['harvest', 'sow'].includes(j.kind)) this.fireDestroyJob(j);
+    this.crops = this.crops.filter(c => c.id !== id); this.revision++;
+    fireLog(this, 'destroyed', crop, '作物被烧毁，没有收获产物');
+  }
+  /** Gravity never searches a remote reachable region. The first legal support
+   * below is preferred; adjacent columns are considered only if it has none. */
+  private fireLanding(from: Pos): Pos | null {
+    const column = (x: number, y: number): Pos | null => {
+      for (let z = from.z; z >= 1; z--) {
+        const q = { x, y, z };
+        if (!inside(q)) return null;
+        if (this.canStop(q)) return q;
+        if (this.blocks[at(q)] !== Block.Air) break;
+      }
+      return null;
+    };
+    const straight = column(from.x, from.y);
+    if (straight) return straight;
+    for (const [dx, dy] of horizontal) {
+      const q = column(from.x + dx, from.y + dy);
+      if (q) return q;
+    }
+    return null;
+  }
+  /** Fire bypasses demolition refunds/access rollback. Only a physically
+   * impossible actor landing rejects the tentative destruction. */
+  fireDestroy(target: FireDamage, reason: string): boolean {
+    if (!findFireDamageTarget(this, target)) return true;
+    const cell = at(target), oldBlock = this.blocks[cell], oldLadder = this.ladders[cell];
+    const properties = { bed: 'beds', door: 'doors', stove: 'stoves', stonecutter: 'stonecutters', tailor: 'tailors',
+      weaponBench: 'weaponBenches', researchBench: 'researchBenches', horseshoePin: 'horseshoePins',
+      butcherSpot: 'butcherSpots', device: 'devices' } as const;
+    const originals = { beds: this.beds, doors: this.doors, stoves: this.stoves, stonecutters: this.stonecutters,
+      tailors: this.tailors, weaponBenches: this.weaponBenches, researchBenches: this.researchBenches,
+      horseshoePins: this.horseshoePins, butcherSpots: this.butcherSpots, devices: this.devices,
+      wires: this.wires, sandbags: this.sandbags, trees: this.trees };
+    if (target.kind === 'block') this.blocks[cell] = Block.Air;
+    if (target.kind === 'ladder') this.ladders[cell] = 0;
+    const support = (p: Pos) => inside(p) && p.z > 0 && p.z + 1 < HEIGHT &&
+      !!this.blocks[at(p) - WIDTH * DEPTH] && !this.blocks[at(p)] && !this.blocks[at(p) + WIDTH * DEPTH];
+    const removed: FireDamage[] = [];
+    for (const [kind, property] of Object.entries(properties) as [keyof typeof properties, typeof properties[keyof typeof properties]][]) {
+      const objects = this[property];
+      const keep = objects.filter(object => {
+        const d: FireDamage = { kind, targetId: object.id, x: object.x, y: object.y, z: object.z,
+          key: fireDamageKey(kind, object.id, object), hitPoints: FIRE_MAX_HP[kind], maxHitPoints: FIRE_MAX_HP[kind] };
+        const cells = kind === 'door' ? [object] : fireDamageCells(d, this);
+        if ((kind === target.kind && object.id === target.targetId) || cells.some(p => !support(p))) { removed.push(d); return false; }
+        return true;
+      });
+      // All collections here contain positioned entities with ids; preserve their own richer records.
+      (this[property] as typeof keep) = keep;
+    }
+    this.wires = this.wires.filter(w => !(target.kind === 'wire' && same(w, target)) &&
+      (this.blocks[at(w)] || this.blocks[at(w) - WIDTH * DEPTH] || this.ladders[at(w)]));
+    this.sandbags = this.sandbags.filter(support);
+    this.trees = this.trees.filter(t => t.z > 0 && this.blocks[at(t) - WIDTH * DEPTH] && !this.blocks[at(t)]);
+    this.stoveCells = new Set(this.stoves.map(at)); this.rebuildDevices(); this.rebuildTrees();
+    const falling = new Map<Pawn | WildAnimal, Pos>();
+    for (const actor of [...this.pawns, ...this.animals]) if (!this.standable(actor)) {
+      const landing = this.fireLanding(actor);
+      if (!landing) {
+        this.blocks[cell] = oldBlock; this.ladders[cell] = oldLadder;
+        Object.assign(this, originals); this.stoveCells = new Set(this.stoves.map(at)); this.rebuildDevices(); this.rebuildTrees();
+        return false;
+      }
+      falling.set(actor, landing);
+    }
+    if (target.kind === 'block') this.structureKinds[cell] = 0;
+    for (const d of removed) {
+      if (d.kind === 'bed') { const bed = originals.beds.find(b => b.id === d.targetId)!; this.invalidatePrisonBed(bed); }
+      for (const p of this.pawns) if (p.psyche.recreation?.spotId === d.targetId || p.repairTask?.damageKey === d.key) this.release(p);
+      const cells = new Set(fireDamageCells(d, originals).map(at));
+      for (const j of [...this.jobs]) if (cells.has(at(j))) this.fireDestroyJob(j);
+      if (d.key !== target.key) fireLog(this, 'destroyed', d, '设施失去地面支撑而损毁；没有退还建筑材料');
+    }
+    for (const tree of originals.trees) if (!this.trees.includes(tree)) {
+      this.stats.treesDied++; fireLog(this, 'destroyed', tree, '树木失去地面支撑而损毁');
+      for (const j of [...this.jobs]) if (same(j, tree)) this.fireDestroyJob(j);
+    }
+    // Release carriers first; their patients are included in the precomputed landing map.
+    for (const p of this.pawns) if (falling.has(p) || (p.carryingPawnId !== null && falling.has(this.pawns.find(q => q.id === p.carryingPawnId)!))) this.release(p);
+    for (const [actor, landing] of falling) {
+      const adjacent = actor.x !== landing.x || actor.y !== landing.y;
+      Object.assign(actor, landing);
+      if ('path' in actor) { actor.path = []; actor.destination = null; actor.reason = '支撑烧毁后落到下方地面'; }
+      fireLog(this, 'fell', landing, `${actor.name}${adjacent ? '原列无合法净空，落到相邻列' : '支撑烧毁，沿原列落下'}；已到达最近合法地面`);
+    }
+    this.stockpiles = this.stockpiles.filter(p => this.standable(p) && !this.ladders[at(p)]);
+    this.farms = this.farms.filter(support); this.treePlots = this.treePlots.filter(support);
+    for (const crop of [...this.crops]) if (!support(crop) || !this.farms.some(f => same(f, crop))) this.fireBurnCrop(crop.id);
+    for (const j of [...this.jobs]) if (!support(j) && ['sow', 'plantTree', 'harvest', 'floor'].includes(j.kind)) this.fireDestroyJob(j);
+    for (const item of [...this.items]) if (!this.groundAllowed(item)) {
+      const landing = this.fireLanding(item);
+      const base = this.items.filter(i => i.id !== item.id);
+      const plan = landing ? this.planPlacement([{ batch: item, origin: landing, cells: [landing] }], base, 0) : null;
+      this.tradeApplyPlacement(plan ?? { items: base, nextId: this.nextId });
+      if (plan) fireLog(this, 'fell', landing!, `${RESOURCE_NAMES[item.resource]}失去支撑并落到${landing!.x === item.x && landing!.y === item.y ? '原列' : '相邻列'}地面`);
+      else { this.stats.destroyed[item.resource] += item.amount; fireLog(this, 'destroyed', item, `${item.amount}单位${RESOURCE_NAMES[item.resource]}坠落后没有合法容纳位置而损毁`); }
+    }
+    this.storageReservations.clear(); this.craftSources.clear();
+    for (const p of this.pawns) if (p.phase === 'haul' || p.phase === 'fetch') this.release(p);
+    this.roomsDirty = true; this.powerDirty = true; this.changed(target); this.pruneFilth();
+    this.reconcileFireState(); this.updateRooms(); this.updatePower();
+    this.notice = reason;
+    return true;
+  }
   private release(p: Pawn) {
     releaseWarden(this, p);
+    p.firefightTask = null; p.repairTask = null;
     p.cleanTask = null;
     p.psyche.recreation = null;
     if (this.trade.session?.pawnId === p.id) this.trade.session = null;
@@ -4962,16 +5152,18 @@ export class VoxelSimulation {
     // These work types are generated from world state instead of Job objects.
     // Use the same priority ordering in the jobless branch and around regular
     // jobs; each failed option is attempted at most once in this assignment.
-    const triedExtras = new Set<Work>();
+    const triedExtras = new Set<string>();
     const tryExtras = (through: number, includeHaul: boolean, restoreSearch = false): boolean => {
-      const options = (['warden', 'hunt', 'haul', 'clean'] as const)
+      const priority = (work: Work | 'repair') => p.priorities[work === 'repair' ? 'build' : work];
+      const options = (['firefight', 'warden', 'hunt', 'haul', 'clean', 'repair'] as const)
         .filter(work => (includeHaul || work !== 'haul') && !triedExtras.has(work) &&
-          p.priorities[work] > 0 && p.priorities[work] <= through)
-        .sort((a, b) => p.priorities[a] - p.priorities[b]);
+          priority(work) > 0 && priority(work) <= through)
+        .sort((a, b) => priority(a) - priority(b));
       for (const work of options) {
         triedExtras.add(work);
         if (work === 'haul') this.search(p);
-        if (work === 'warden' ? tryWarden(this, p) : work === 'hunt' ? this.tryHunt(p) :
+        if (work === 'firefight' ? tryFirefight(this, p) : work === 'repair' ? tryRepair(this, p) :
+            work === 'warden' ? tryWarden(this, p) : work === 'hunt' ? this.tryHunt(p) :
             work === 'clean' ? this.tryClean(p) : this.tryHaul(p)) return true;
       }
       // Each helper can replace the shared BFS tree. Restore it only when the
@@ -5017,6 +5209,7 @@ export class VoxelSimulation {
         j.reason = skillFailure;
         continue;
       }
+      if (this.fires.some(f => touchesFire(f, j))) { j.reason = '工作位置起火，等待灭火'; continue; }
       if (this.waitingForFuel(j)) {
         j.reason = j.weaponBenchKind === 'machining' ? '机械加工台等待供电' : '等待补充燃料';
         continue;
@@ -6093,12 +6286,14 @@ export class VoxelSimulation {
     this.jobs = this.jobs.filter((k) => k.id !== j.id);
     this.release(p);
     this.pruneFilth();
+    this.reconcileFireState();
   }
   step(count = 1) {
     for (let n = 0; n < count; n++) {
       this.tick++;
       for (const pawn of this.pawns) if (!pawn.dead) tickSkills(pawn.skills, this.tick, DAY);
       this.updateEnvironment();
+      updateFires(this);
       this.updatePreservation();
       this.updateTrees();
       this.refreshReservations();
@@ -6118,6 +6313,8 @@ export class VoxelSimulation {
       if (this.tick % 20 === 0) this.syncProduction();
       for (const p of this.pawns) {
         if (p.dead || p.downed || p.carriedBy !== null) continue;
+        const job = this.jobs.find(j => j.id === p.jobId);
+        if (job && this.fires.some(f => touchesFire(f, job))) { this.release(p); p.reason = '工作位置起火，先处理火灾'; }
         if (p.psyche.breakUntil > this.tick) { this.mentalTick(p); continue; }
         if (p.faction === 'prisoner') { prisonerTick(this, p); this.moveAlongPath(p); continue; }
         const combatant = (p.drafted || p.faction === 'raider' || p.faction === 'trader') && p.weaponTask === null;
@@ -6237,6 +6434,8 @@ export class VoxelSimulation {
           }
         }
         if (p.path.length) { this.moveAlongPath(p); continue; }
+        if (p.phase === 'firefight') { firefightTick(this, p); continue; }
+        if (p.phase === 'repair') { repairTick(this, p); continue; }
         if (p.phase === 'clean') { this.cleanTick(p); continue; }
         if (p.phase === 'recreation') { this.recreationTick(p); continue; }
         if (combatant || p.phase === 'trade' || p.phase === 'hunt' || p.phase === 'warden') continue;
@@ -6251,6 +6450,7 @@ export class VoxelSimulation {
         )
           d.openUntil = this.tick + 37;
       this.updateAdaptation();
+      this.reconcileFireState();
       this.updateRooms();
     }
   }
@@ -6446,6 +6646,7 @@ export class VoxelSimulation {
       if (this.stockpiles.some((s) => same(s, i) && s.accepts.includes(i.resource)))
         stored[i.resource] += i.amount;
     return structuredClone({
+      fires: this.fires, fireDamage: this.fireDamage, fireHazards: this.fireHazards, fireLog: this.fireLog,
       filth: this.filth,
       roomCleanliness: this.roomCleanliness(),
       trade: { ...this.trade, quote: quoteTrade(this) },
@@ -6526,7 +6727,8 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 25,
+      version: 26,
+      fires: this.fires, fireDamage: this.fireDamage, fireHazards: this.fireHazards, fireLog: this.fireLog,
       filth: this.filth,
       trade: this.trade,
       homeArea: [...this.homeArea],
@@ -6574,11 +6776,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyFireFields(old);
     rejectLegacySanitationFields(old);
     rejectLegacyPrisonerFields(old);
     if (sourceVersion < 23 && (old.horseshoePins !== undefined || old.pawns?.some((p: any) =>
@@ -6908,7 +7111,8 @@ export class VoxelSimulation {
     }
     migratePrisoners(old, sourceVersion);
     migrateSanitation(old, sourceVersion);
-    old.version = 25;
+    migrateFire(old, sourceVersion);
+    old.version = 26;
     const d = old as VoxelSave;
     const loadHealth = (p: Pawn) =>
       oldHealth.get(p.id) ?? {
@@ -6935,6 +7139,8 @@ export class VoxelSimulation {
     )
       throw new Error('存档计时或种子无效');
     const arrays: [unknown, number][] = [
+      [d.fires, FIRE_RULES.maxFires],
+      [d.fireDamage, FIRE_RULES.maxDamage],
       [d.filth, SANITATION_RULES.maxFilth],
       [d.pawns, 64],
       [d.animals, WILDLIFE.cap],
@@ -6983,6 +7189,7 @@ export class VoxelSimulation {
     const zero = (n: number) => Number.isFinite(n) && n >= 0 && n <= 10000000;
     const ids = new Set<number>();
     for (const e of [
+      ...d.fires,
       ...d.filth,
       ...d.pawns,
       ...d.animals,
@@ -7716,6 +7923,8 @@ export class VoxelSimulation {
           'apparel',
           'combat',
           'hunt',
+          'firefight',
+          'repair',
           'clean',
           'recreation',
           'mental',
@@ -7908,9 +8117,9 @@ export class VoxelSimulation {
             p.sleepingSince < 0 ||
             p.sleepingSince > d.tick)) ||
         !p.priorities ||
-        Object.values(p.priorities).length !== 12 ||
+        Object.values(p.priorities).length !== 13 ||
         (
-          ['clean', 'warden', 'hunt', 'dig', 'cut', 'build', 'haul', 'grow', 'cook', 'craft', 'care', 'research'] as Work[]
+          ['firefight', 'clean', 'warden', 'hunt', 'dig', 'cut', 'build', 'haul', 'grow', 'cook', 'craft', 'care', 'research'] as Work[]
         ).some(
           (k) => !Number.isInteger(p.priorities[k]) || p.priorities[k] < 0 || p.priorities[k] > 4,
         ) ||
@@ -7978,7 +8187,7 @@ export class VoxelSimulation {
       !resources.every(
         (r) =>
           Number.isSafeInteger(d.stats.destroyed[r]) &&
-          (r === 'apparel' || d.stats.destroyed[r] === 0),
+          (sourceVersion >= 26 || r === 'apparel' || d.stats.destroyed[r] === 0),
       ) ||
       !['stonecut', 'tailored', 'weaponsMade', 'treesPlanted', 'treesRegrown', 'treesDied'].every(
         (key) => Number.isSafeInteger(d.stats[key as 'stonecut']),
@@ -8025,6 +8234,7 @@ export class VoxelSimulation {
       s,
       structuredClone({
         tick: d.tick,
+        fires: d.fires, fireDamage: d.fireDamage, fireHazards: d.fireHazards, fireLog: d.fireLog,
         filth: d.filth,
         combat: d.combat,
         storyteller: d.storyteller,
@@ -8061,6 +8271,7 @@ export class VoxelSimulation {
     s.rebuildTrees();
     s.stoveCells = new Set(s.stoves.map(at));
     s.rebuildDevices();
+    validateFire(d, s);
     if (s.filth.some(f => !s.filthSupported(f))) throw new Error('污物没有合法地面支撑或净空');
     if (
       [
@@ -8139,6 +8350,14 @@ export class VoxelSimulation {
     for (const p of s.pawns) {
       // Prison tasks carry explicit destinations and progress. Movement rechecks every edge.
       if (p.wardenTask || p.faction === 'prisoner') continue;
+      if (p.firefightTask || p.repairTask) {
+        const targets = p.firefightTask ? [s.fires.find(f => f.id === p.firefightTask!.fireId)!] :
+          fireDamageCells(s.fireDamage.find(d => d.key === p.repairTask!.damageKey)!, s);
+        const route = s.fireRoute(p, targets);
+        if (route === null || (p.firefightTask ? !validFirefight(s, p) : !validRepair(s, p))) s.release(p);
+        else { p.path = route; p.destination = route.at(-1) ?? null; }
+        continue;
+      }
       if (p.cleanTask) {
         const target = s.filth.find(f => f.id === p.cleanTask!.filthId)!;
         const route = s.path(p, target);

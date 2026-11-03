@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { initialTrade } from '../src/voxel/trade';
+import { initialFireHazards } from '../src/voxel/fire';
 import {
   STONECUTTER_COST,
   STONECUTTER_WORK,
@@ -72,7 +73,7 @@ function fixture(setup: (s: VoxelSimulation) => void = () => {}) {
   s.pawns.forEach((p, n) => {
     Object.assign(p, pos(10 + n, 18));
     p.priorities = {
-      clean: 0,
+      firefight: 0, clean: 0,
       warden: 0,
       hunt: 0,
       dig: 0,
@@ -88,6 +89,7 @@ function fixture(setup: (s: VoxelSimulation) => void = () => {}) {
   });
   setup(s);
   s.trade = initialTrade(s.seed, s.tick);
+  s.fireHazards = initialFireHazards(s.seed, s.tick);
   return VoxelSimulation.load(s.save());
 }
 function ledger(s: VoxelSimulation): Counts {
@@ -507,7 +509,7 @@ describe('masonry recovery and v7 validation', () => {
       s = VoxelSimulation.load(raw);
     expect(raw.version).toBe(6);
     expect(raw).toEqual(before);
-    expect(s.save().version).toBe(25);
+    expect(s.save().version).toBe(26);
     expect(s.counts().stone).toBe(15);
     expect(s.counts().chunk).toBe(0);
     expect(s.stats.stonecut).toBe(0);

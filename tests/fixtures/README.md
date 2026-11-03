@@ -1,5 +1,12 @@
 # Persisted gameplay fixtures
 
+`voxel-v25-fire-initial.json` preserves the unmodified tick-zero v25 sanitation
+campaign checkpoint from root commit `fb009d6662f0ba4c1a7f62122a74469f5fb14bac`.
+It was produced by ordinary world creation, before v26 fire fields existed.
+SHA256: `ad14ff386e86c6b33a1df5a4d46f318126b1462535d017b62ee1b4955b2a68f7`.
+The companion provenance JSON records the executed campaign bundle and script.
+Do not regenerate these bytes from v26 or add fire state by hand.
+
 `voxel-v24-sanitation-initial.json` preserves the exact tick-zero bytes from the
 ordinary v24 prisoner campaign, root commit
 `d5da2d13515341b5221c292946657254eb6f6d60`. Its adjacent provenance JSON records

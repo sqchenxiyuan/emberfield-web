@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { initialResearch } from '../src/voxel/research';
+import { initialFireHazards } from '../src/voxel/fire';
 import { freshBatch, rotLimit } from '../src/voxel/preservation';
 import { plantRandom } from '../src/voxel/plants';
 import {
@@ -38,7 +39,7 @@ function fixture(configure: (s: VoxelSimulation) => void = () => {}) {
     Object.assign(p, pos(11, 11 + i));
     p.schedule.fill('work');
     p.priorities = {
-      clean: 0,
+      firefight: 0, clean: 0,
       warden: 0,
       hunt: 0,
       dig: 0,
@@ -93,6 +94,7 @@ function selectCropOutcomeSeed(s: VoxelSimulation, fails: boolean) {
   for (let seed = 1; seed < 10000; seed++)
     if (plantRandom(seed, j.id, id, 4702) > 0.6 === fails) {
       s.seed = seed;
+      s.fireHazards = initialFireHazards(s.seed, s.tick);
       return;
     }
   throw new Error('No deterministic crop fixture seed');
@@ -189,6 +191,7 @@ describe('skill yield and deferred learning transaction boundaries', () => {
     for (let seed = 1; seed < 10000; seed++)
       if (plantRandom(seed, cutting.id, tree.pawns[0].id, 4702) > 0.6) {
         tree.seed = seed;
+        tree.fireHazards = initialFireHazards(tree.seed, tree.tick);
         break;
       }
     priority(tree, 0, 'cut', 1);

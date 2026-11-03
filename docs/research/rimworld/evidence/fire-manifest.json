@@ -1,0 +1,133 @@
+{
+  "evidence_id": "RW17-FIRE",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.Fire",
+      "local_file": ".local-research/fire/RimWorld.Fire.cs",
+      "sha256": "3f10134af9a064a683242b3914e82db3dd40c012c70fc26e699a481673af2078",
+      "lines": 412
+    },
+    {
+      "type": "RimWorld.FireUtility",
+      "local_file": ".local-research/fire/RimWorld.FireUtility.cs",
+      "sha256": "9baec55e1a0494e05fa673292b528637ebdb2a62f4ab51da03589e28d0f9f95e",
+      "lines": 315
+    },
+    {
+      "type": "RimWorld.WorkGiver_FightFires",
+      "local_file": ".local-research/fire/RimWorld.WorkGiver_FightFires.cs",
+      "sha256": "076cc4a5f1e20b55e340b5af4691419becfbc2fe45da33c02ac27c0a88cd8743",
+      "lines": 86
+    },
+    {
+      "type": "RimWorld.JobDriver_BeatFire",
+      "local_file": ".local-research/fire/RimWorld.JobDriver_BeatFire.cs",
+      "sha256": "e1b6cadf27c0b0bec0d104a1d12bcdee505a8367ea94ff5b3078eeba44ea67bb",
+      "lines": 81
+    },
+    {
+      "type": "RimWorld.Verb_BeatFire",
+      "local_file": ".local-research/fire/RimWorld.Verb_BeatFire.cs",
+      "sha256": "8a3412e846761b4a508dbf2739a153b26c1bdf34f712a1cbdff7e44eda7a4fec",
+      "lines": 27
+    },
+    {
+      "type": "Verse.DamageWorker_Flame",
+      "local_file": ".local-research/fire/Verse.DamageWorker_Flame.cs",
+      "sha256": "8e7d6432b41449672add68d97b1b8c2d7674bdee96fa3a1629dc5b5411f598b4",
+      "lines": 44
+    },
+    {
+      "type": "Verse.DamageWorker_Extinguish",
+      "local_file": ".local-research/fire/Verse.DamageWorker_Extinguish.cs",
+      "sha256": "36e47c583ef499f4e197b06013a1125289f98a818ebcec7b33cd152c01dbf3e6",
+      "lines": 39
+    },
+    {
+      "type": "RimWorld.WorkGiver_Repair",
+      "local_file": ".local-research/fire/RimWorld.WorkGiver_Repair.cs",
+      "sha256": "ad14fa66697f226d19474dfea54d4426e62be1001da0bf1cf2ec61ba0973c138",
+      "lines": 68
+    },
+    {
+      "type": "RimWorld.JobDriver_Repair",
+      "local_file": ".local-research/fire/RimWorld.JobDriver_Repair.cs",
+      "sha256": "c902a1fbc5264b0c6fc52fccb7ae4e46ea40d03151607fc68b3aed307e15933a",
+      "lines": 81
+    },
+    {
+      "type": "RimWorld.ListerBuildingsRepairable",
+      "local_file": ".local-research/fire/RimWorld.ListerBuildingsRepairable.cs",
+      "sha256": "ebaaefc5a3fdb81fbb719796fd4c2422d0bb8643760be9afda69de68a7af23cd",
+      "lines": 118
+    },
+    {
+      "type": "RimWorld.RepairUtility",
+      "local_file": ".local-research/fire/RimWorld.RepairUtility.cs",
+      "sha256": "e5e37580ecd626cd0b5e737f3e6ae359ddba02ec241a8012a0c4bcee82c2026c",
+      "lines": 45
+    },
+    {
+      "type": "RimWorld.Pawn_NativeVerbs",
+      "local_file": ".local-research/fire/RimWorld.Pawn_NativeVerbs.cs",
+      "sha256": "a5eaf2cc50c09be51f6fe8bde2f142d08b312a162d76d99d92b44418a8b7513e",
+      "lines": 129
+    },
+    {
+      "type": "RimWorld.NativeVerbPropertiesDatabase",
+      "local_file": ".local-research/fire/RimWorld.NativeVerbPropertiesDatabase.cs",
+      "sha256": "fb9df00a9327ce87e943205edc2c4f32c5e9a315b7582a3cc78e882d3ba51fc8",
+      "lines": 26
+    },
+    {
+      "type": "RimWorld.VerbDefsHardcodedNative",
+      "local_file": ".local-research/fire/RimWorld.VerbDefsHardcodedNative.cs",
+      "sha256": "98a82e88d6b4e8d737faa64b7c4beb5abfec3070ec5bb36228d3e3f59efde622",
+      "lines": 38
+    },
+    {
+      "type": "Verse.DebugToolsMisc",
+      "local_file": ".local-research/fire/Verse.DebugToolsMisc.cs",
+      "sha256": "b35673cf9bbddf55f686f85c13ea451cc59069a0a3495ae5b0d66c27269a5862",
+      "lines": 497
+    },
+    {
+      "type": "RimWorld.ShortCircuitUtility",
+      "local_file": ".local-research/fire/RimWorld.ShortCircuitUtility.cs",
+      "sha256": "339e2075f62c29affc2e7df1a49c3cc4ff1214986b592b3464dd27b47ef7c129",
+      "lines": 149
+    },
+    {
+      "type": "RimWorld.IncidentWorker_ShortCircuit",
+      "local_file": ".local-research/fire/RimWorld.IncidentWorker_ShortCircuit.cs",
+      "sha256": "5d4abbbbfcf2f29d9c30a78334d67c5e5c5997aa8834c688cbdbc054d262a494",
+      "lines": 23
+    },
+    {
+      "type": "RimWorld.JobDriver_ExtinguishFiresNearby",
+      "local_file": ".local-research/fire/RimWorld.JobDriver_ExtinguishFiresNearby.cs",
+      "sha256": "4288aa1061a7aa2bbe319a20b6c278feb2596937ec7d5977685c64d2e0a1fc96",
+      "lines": 132
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_ExtinguishFires",
+      "local_file": ".local-research/fire/RimWorld.FloatMenuOptionProvider_ExtinguishFires.cs",
+      "sha256": "e3d28b20d51f30fb2322824fabe661bf47b3a3e6bd44006d80dd0c8460abab15",
+      "lines": 71
+    }
+  ]
+}

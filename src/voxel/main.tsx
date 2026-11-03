@@ -11,6 +11,7 @@ import { stackLimit, carryLimit } from './logistics';
 import { STONE_CONSTRUCTION } from './crafting';
 import { SurvivalPanel } from './SurvivalPanel';
 import { SanitationPanel, SanitationDetails, CleaningStatus } from './SanitationPanel';
+import { FirePanel, FireDetails, FireDamageDetails, FireWorkStatus } from './FirePanel';
 import { needsMedicalTending } from './medicine';
 import { healthSummary } from './survival';
 import { SkillPanel, WorkSkill } from './SkillPanel';
@@ -317,6 +318,7 @@ function App() {
     [wildlifeOpen, setWildlifeOpen] = useState(false),
     [prisonOpen, setPrisonOpen] = useState(false),
     [sanitationOpen, setSanitationOpen] = useState(false),
+    [fireOpen, setFireOpen] = useState(false),
     [busy, setBusy] = useState(false),
     [selectedPawn, setSelectedPawn] = useState<number | null>(null),
     [selectedAnimal, setSelectedAnimal] = useState<number | null>(null),
@@ -341,6 +343,7 @@ function App() {
     setWildlifeOpen(false);
     setPrisonOpen(false);
     setSanitationOpen(false);
+    setFireOpen(false);
     setMenu(false);
   }, [s?.trade.session?.id, s?.trade.session?.stage, !!s?.trade.quote, s?.speed]);
   useEffect(() => {
@@ -579,14 +582,18 @@ function App() {
             ))}
         </div>
         <div className="voxel-header-actions">
+          <button aria-label="火灾与修理" aria-expanded={fireOpen} data-testid="fire-alert" data-active-fires={s?.fires.length ?? 0}
+            title={s?.fires.length ? `${s.fires.length} 处正在燃烧，点击查看火情与安排灭火` : '查看火情、灭火与修理分工'} className={s?.fires.length ? 'voxel-fire-alarm' : ''} onClick={() => {
+            setFireOpen(v => !v); setSanitationOpen(false); setPrisonOpen(false); setWildlifeOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
+          }}>火灾{s?.fires.length ? ` · ${s.fires.length}` : ''}</button>
           <button aria-label="卫生与清洁" aria-expanded={sanitationOpen} onClick={() => {
-            setSanitationOpen(v => !v); setPrisonOpen(false); setWildlifeOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
+            setSanitationOpen(v => !v); setFireOpen(false); setPrisonOpen(false); setWildlifeOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
           }}>卫生</button>
           <button aria-label="囚犯与招募" aria-expanded={prisonOpen} onClick={() => {
-            setPrisonOpen(v => !v); setSanitationOpen(false); setWildlifeOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
+            setPrisonOpen(v => !v); setSanitationOpen(false); setFireOpen(false); setWildlifeOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
           }}>囚犯{prisoners.length ? ` · ${prisoners.length}` : ''}</button>
           <button aria-label="野生动物与狩猎" aria-expanded={wildlifeOpen} onClick={() => {
-            setWildlifeOpen(v => !v); setPrisonOpen(false); setSanitationOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
+            setWildlifeOpen(v => !v); setPrisonOpen(false); setSanitationOpen(false); setFireOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
           }}>野生动物{s?.animals.filter(a => a.hunt && !a.dead).length ? ` · ${s.animals.filter(a => a.hunt && !a.dead).length}` : ''}</button>
           <button
             aria-label="商队与家园"
@@ -597,6 +604,7 @@ function App() {
               setWildlifeOpen(false);
               setPrisonOpen(false);
               setSanitationOpen(false);
+              setFireOpen(false);
               client.choose('inspect');
             }}
           >
@@ -605,7 +613,7 @@ function App() {
           <button
             aria-label="研究科技"
             aria-expanded={researchOpen}
-            onClick={() => { setResearchOpen((v) => !v); setTradeOpen(false); setWildlifeOpen(false); setPrisonOpen(false); setSanitationOpen(false); }}
+            onClick={() => { setResearchOpen((v) => !v); setTradeOpen(false); setWildlifeOpen(false); setPrisonOpen(false); setSanitationOpen(false); setFireOpen(false); }}
             title={
               s?.research.current
                 ? `正在研究：${RESEARCH_DEFS[s.research.current].name}`
@@ -717,7 +725,7 @@ function App() {
           ↷
         </button>
       </div>
-      {help && !researchOpen && !wildlifeOpen && !prisonOpen && !tradeOpen && !sanitationOpen && (
+      {help && !researchOpen && !wildlifeOpen && !prisonOpen && !tradeOpen && !sanitationOpen && !fireOpen && (
         <aside className="voxel-guide">
           <div className="voxel-panel-title">
             <span className="voxel-kicker">从地表到地下</span>
@@ -920,6 +928,8 @@ function App() {
             <small>按实际六向空气连通判断；视图切层不改变房间。</small>
           </div>
         )}
+        {p && s && <FireDetails snapshot={s} pos={p} preferredPawnId={selectedPawn} temperature={temperatureOf(p)} command={c => void client.command(c)} />}
+        {p && s && <FireDamageDetails snapshot={s} pos={p} preferredPawnId={selectedPawn} command={c => void client.command(c)} />}
         {p && s && <SanitationDetails snapshot={s} pos={p} roomId={room?.id} preferredPawnId={selectedPawn}
           command={c => void client.command(c)} />}
         {sandbag && (
@@ -1321,7 +1331,7 @@ function App() {
           <ResearchBenchPanel
             bench={researchBench}
             snapshot={s}
-            openResearch={() => { setResearchOpen(true); setSanitationOpen(false); }}
+            openResearch={() => { setResearchOpen(true); setSanitationOpen(false); setFireOpen(false); }}
           />
         )}
         {weaponBench && s && (
@@ -1404,7 +1414,7 @@ function App() {
           </div>
         ))}
         {pawn?.faction === 'trader' && (
-          <TraderInspector pawn={pawn} openTrade={() => { setTradeOpen(true); setResearchOpen(false); setPrisonOpen(false); setSanitationOpen(false); client.choose('inspect'); }} />
+          <TraderInspector pawn={pawn} openTrade={() => { setTradeOpen(true); setResearchOpen(false); setPrisonOpen(false); setSanitationOpen(false); setFireOpen(false); client.choose('inspect'); }} />
         )}
         {pawn && pawn.faction !== 'trader' && (
           <div className="voxel-pawn-detail">
@@ -1442,6 +1452,7 @@ function App() {
               pin={s?.horseshoePins.toSorted((a, b) => Math.abs(a.x - pawn.x) + Math.abs(a.y - pawn.y) + Math.abs(a.z - pawn.z) - Math.abs(b.x - pawn.x) - Math.abs(b.y - pawn.y) - Math.abs(b.z - pawn.z))[0]}
               focus={focus} />}
             {s && <CleaningStatus pawn={pawn} snapshot={s} command={c => void client.command(c)} />}
+            {s && <FireWorkStatus pawn={pawn} snapshot={s} command={c => void client.command(c)} />}
             <SurvivalPanel
               pawn={pawn}
               pawns={s?.pawns ?? []}
@@ -1582,6 +1593,7 @@ function App() {
             <div className="voxel-priorities">
               {(
                 [
+                  'firefight',
                   'care',
                   'warden',
                   'dig',
@@ -1597,7 +1609,7 @@ function App() {
                 ] as Work[]
               ).map((w, i) => (
                 <label key={w}>
-                  {['医护', '狱卒', '挖掘', '伐木', '施工', '搬运', '清洁', '种植', '烹饪', '狩猎', '加工', '研究'][i]}
+                  {['灭火', '医护', '狱卒', '挖掘', '伐木', '施工', '搬运', '清洁', '种植', '烹饪', '狩猎', '加工', '研究'][i]}
                   <WorkSkill pawn={pawn} work={w} />
                   <select
                     aria-label={`${pawn.name} ${w}优先级`}
@@ -1829,6 +1841,10 @@ function App() {
         focus={target => { setSelectedAnimal(null); setSelectedPawn(null); focus(target); }}
         selectPawn={person => { setSelectedAnimal(null); setSelectedPawn(person.id); focus(person); }}
         command={c => void client.command(c)} close={() => setSanitationOpen(false)} />}
+      {fireOpen && s && <FirePanel snapshot={s} selectedPos={state.selected}
+        focus={target => { setSelectedAnimal(null); setSelectedPawn(null); focus(target); }}
+        selectPawn={person => { setSelectedAnimal(null); setSelectedPawn(person.id); focus(person); }}
+        command={c => void client.command(c)} close={() => setFireOpen(false)} />}
       {prisonOpen && s && <aside className="voxel-prison-drawer" aria-label="囚犯与招募" data-testid="prison-panel">
         <div className="voxel-prison-heading"><h2>囚犯与招募</h2><button aria-label="关闭囚犯面板" onClick={() => setPrisonOpen(false)}>×</button></div>
         <p>{prisoners.length} 名囚犯 · {prisonBeds.length} 张囚犯床 · {captors.filter(v => v.priorities.warden > 0).length} 位可用狱卒</p>

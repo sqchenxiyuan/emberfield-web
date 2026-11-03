@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { initialStoryteller } from '../src/voxel/storyteller';
 import { initialTrade } from '../src/voxel/trade';
+import { initialFireHazards } from '../src/voxel/fire';
 import {
   WORLD_PRESETS,
   generateWorld,
@@ -67,7 +68,7 @@ function plotWorld(soil: number, meanTemperature = 20) {
   s.pawns.forEach((p, i) => {
     Object.assign(p, point(10 + i, 12));
     p.priorities = {
-      clean: 0,
+      firefight: 0, clean: 0,
       warden: 0,
       hunt: 0,
       dig: 1,
@@ -300,7 +301,7 @@ describe('v8 world persistence and validation', () => {
       s = VoxelSimulation.load(raw),
       saved = s.save();
     expect(raw).toEqual(original);
-    expect(saved.version).toBe(25);
+    expect(saved.version).toBe(26);
     expect(saved.generator).toBe(1);
     expect(saved.blocks).toEqual(raw.blocks);
     expect(saved.ladders).toEqual(raw.ladders);
@@ -309,6 +310,7 @@ describe('v8 world persistence and validation', () => {
       s.tick = tick;
       s.storyteller = initialStoryteller(s.seed, tick);
       s.trade = initialTrade(s.seed, tick);
+      s.fireHazards = initialFireHazards(s.seed, tick);
       expect(s.outdoorTemperature()).toBe(temperatureAt(tick));
     }
     expect(VoxelSimulation.load(s.save()).outdoorTemperature()).toBe(temperatureAt(s.tick));

@@ -30,7 +30,7 @@ function fixture() {
     Object.assign(p, pos(11, 11 + i));
     p.schedule.fill('work');
     p.priorities = {
-      clean: 0,
+      firefight: 0, clean: 0,
       warden: 0,
       hunt: 0,
       dig: 0,
@@ -83,7 +83,7 @@ describe('skills in real simulation tasks and saves', () => {
     expect(old.pawns[0].skills).toBeUndefined();
     const s = VoxelSimulation.load(old),
       saved = s.save();
-    expect(saved.version).toBe(25);
+    expect(saved.version).toBe(26);
     expect(saved.items).toEqual(old.items);
     expect(saved.blocks).toEqual(old.blocks);
     expect(saved.pawns.map((p) => [p.food, p.rest, p.worn, p.weapon, p.health])).toEqual(

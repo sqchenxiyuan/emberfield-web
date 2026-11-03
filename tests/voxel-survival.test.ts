@@ -61,7 +61,7 @@ function fixture(upper = false) {
   s.pawns.forEach((p, i) => {
     Object.assign(p, pos(11, 11 + i));
     p.priorities = {
-      clean: 0,
+      firefight: 0, clean: 0,
       warden: 0,
       hunt: 0,
       dig: 0,
@@ -390,7 +390,7 @@ describe('voxel incapacitation and physical care', () => {
     );
     const old = JSON.parse(bytes.toString()),
       s = VoxelSimulation.load(old);
-    expect(s.save().version).toBe(25);
+    expect(s.save().version).toBe(26);
     expect(s.items).toEqual(old.items);
     expect(
       s.pawns.every(

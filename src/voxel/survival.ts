@@ -45,6 +45,8 @@ export function initialSurvival(
   id: number,
 ): Pick<
   Pawn,
+  | 'firefightTask'
+  | 'repairTask'
   | 'cleanTask'
   | 'dirtCarry'
   | 'foodPoisoning'
@@ -78,6 +80,7 @@ export function initialSurvival(
   let hash = Math.imul(seed ^ id, 0x45d9f3b);
   hash = Math.imul(hash ^ (hash >>> 16), 0x45d9f3b);
   return {
+    firefightTask: null, repairTask: null,
     cleanTask: null, dirtCarry: 0, foodPoisoning: null,
     trauma: initialTrauma(),
     medical: initialMedical(),

@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { initialStoryteller } from '../src/voxel/storyteller';
 import { initialTrade } from '../src/voxel/trade';
+import { initialFireHazards } from '../src/voxel/fire';
 import { VoxelThermal } from '../src/voxel/thermal';
 import { temperatureAt } from '../src/voxel/farming';
 import {
@@ -70,7 +71,7 @@ function fixture(configure: (sim: VoxelSimulation) => void = () => {}) {
   for (let i = 0; i < source.pawns.length; i++) {
     Object.assign(source.pawns[i], pos(45 + i, 46));
     source.pawns[i].priorities = {
-      clean: 0,
+      firefight: 0, clean: 0,
       warden: 0,
       hunt: 0,
       dig: 0,
@@ -334,6 +335,7 @@ describe('solar sky visibility through the world integration', () => {
       source.tick = tick;
       source.storyteller = initialStoryteller(source.seed, tick);
       source.trade = initialTrade(source.seed, tick);
+      source.fireHazards = initialFireHazards(source.seed, tick);
       carve(source, pos(10, 10), pos(13, 13, HEIGHT - 1));
       const solar = addDevice(source, 'solar', pos(10, 10));
       for (const p of deviceCells(solar).slice(0, shaded)) {
@@ -605,7 +607,7 @@ describe('v4 energy persistence and malformed-input rejection', () => {
     const original = savedWorld(),
       saved = original.save(),
       restored = VoxelSimulation.load(saved);
-    expect(saved.version).toBe(25);
+    expect(saved.version).toBe(26);
     expect(restored.devices.map((d) => [d.fuel, d.energy, d.target])).toEqual(
       original.devices.map((d) => [d.fuel, d.energy, d.target]),
     );
@@ -702,7 +704,7 @@ describe('v4 energy persistence and malformed-input rejection', () => {
     delete old.wires;
     delete old.thermal;
     const restored = VoxelSimulation.load(old);
-    expect(restored.save().version).toBe(25);
+    expect(restored.save().version).toBe(26);
     expect(restored.devices).toEqual([]);
     expect(restored.wires).toEqual([]);
     expect(restored.blocks).toEqual(sim.blocks);

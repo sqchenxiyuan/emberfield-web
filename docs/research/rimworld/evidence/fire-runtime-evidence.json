@@ -1,0 +1,738 @@
+{
+  "evidence_id": "RW17-NATIVE-FIREFIGHTING",
+  "date_local": "2026-11-04",
+  "version": "1.7.4980 rev60",
+  "kind": "Native UI developer preparation of one fire followed by ordinary pawn commands; original unedited saves; no injected game code",
+  "launch": {
+    "started_utc": "2026-11-03T18:03:19.47715Z",
+    "pid": 17224,
+    "launch_record": ".local-research/runtime/fire-launch.json",
+    "launch_record_sha256": "0c7be6def38be6ab32e920754b47a0cd46b1a8848ee30a919faa3802bde4a913",
+    "profile": ".local-research/runtime/profile-fire-20261104",
+    "mods_config_sha256": "41595349c9d4e0815c74d5fa89fa6dad2dd3af494f547c5734b028918f2151ff",
+    "baseline_source_sha256": "ce0620ce2809fa582014cbbbe2302703d828585ebdb97f6260958fc65d88dc0d",
+    "baseline_copy_sha256": "ce0620ce2809fa582014cbbbe2302703d828585ebdb97f6260958fc65d88dc0d",
+    "active_mods": [
+      "ludeon.rimworld",
+      "ludeon.rimworld.odyssey"
+    ]
+  },
+  "preparation": {
+    "method": "Developer Actions: T: Attach Fire, then click existing wooden wall",
+    "developer_action": true,
+    "menu_click": [
+      100,
+      124
+    ],
+    "map_click": [
+      1655,
+      1180
+    ],
+    "no_spontaneous_ignition_claim": true
+  },
+  "target": {
+    "pawn_id": "Human961",
+    "fire_id": "Fire186400",
+    "wall_id": "Wall41899",
+    "position": "(104, 0, 126)",
+    "fire_size_before": 1.75
+  },
+  "saves": [
+    {
+      "file": ".local-research/runtime/profile-fire-20261104/Saves/fire-baseline.rws",
+      "sha256": "ce0620ce2809fa582014cbbbe2302703d828585ebdb97f6260958fc65d88dc0d",
+      "ticks_game": 203135,
+      "total_fire_count": 0,
+      "selected_fire": null,
+      "wall": {
+        "id": "Wall41899",
+        "position": "(104, 0, 126)",
+        "stuff": "WoodLog",
+        "hit_points": 195,
+        "xml": "<thing Class=\"Building\"><def>Wall</def><id>Wall41899</id><map>0</map><pos>(104, 0, 126)</pos><health>195</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>1918</spawnedTick><despawnedTick>-1</despawnedTick><lastUser>null</lastUser></thing>"
+      },
+      "pawn": {
+        "id": "Human961",
+        "position": "(112, 0, 122)",
+        "job_def": "GotoWander",
+        "job_target": "(113, 0, 131)",
+        "player_forced": null,
+        "job_start_tick": "203094",
+        "job_xml": "<curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>GotoWander</def><loadID>117037</loadID><targetA>(113, 0, 131)</targetA><targetQueueA IsNull=\"True\" /><targetQueueB IsNull=\"True\" /><countQueue IsNull=\"True\" /><startTick>203094</startTick><checkOverrideOnExpire>True</checkOverrideOnExpire><placedThings IsNull=\"True\" /><locomotionUrgency>Walk</locomotionUrgency><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>-923340957</lastJobGiverKey></curJob>",
+        "driver_xml": "<curDriver Class=\"JobDriver_Goto\"><curToilIndex>0</curToilIndex><ticksLeftThisToil>-41</ticksLeftThisToil><startTick>203094</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver>"
+      }
+    },
+    {
+      "file": ".local-research/runtime/profile-fire-20261104/Saves/New Arrivals1.rws",
+      "sha256": "652beeb922f4c3e1c1aabf25ab8bed9ecaf51e75e7626311064689afa20dedf5",
+      "ticks_game": 208028,
+      "total_fire_count": 1,
+      "selected_fire": {
+        "id": "Fire186400",
+        "position": "(104, 0, 126)",
+        "size": 1.75,
+        "parent": "null",
+        "spawned_tick": 208028,
+        "xml": "<thing Class=\"Fire\"><def>Fire</def><id>Fire186400</id><map>0</map><pos>(104, 0, 126)</pos><questTags IsNull=\"True\" /><spawnedTick>208028</spawnedTick><despawnedTick>-1</despawnedTick><glowOn>True</glowOn><parent>null</parent><fireSize>1.75</fireSize><instigator>null</instigator></thing>"
+      },
+      "wall": {
+        "id": "Wall41899",
+        "position": "(104, 0, 126)",
+        "stuff": "WoodLog",
+        "hit_points": 195,
+        "xml": "<thing Class=\"Building\"><def>Wall</def><id>Wall41899</id><map>0</map><pos>(104, 0, 126)</pos><health>195</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>1918</spawnedTick><despawnedTick>-1</despawnedTick><lastUser>null</lastUser></thing>"
+      },
+      "pawn": {
+        "id": "Human961",
+        "position": "(97, 0, 126)",
+        "job_def": "ExtinguishFiresNearby",
+        "job_target": "Thing_Fire186400",
+        "player_forced": "True",
+        "job_start_tick": "208028",
+        "job_xml": "<curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>ExtinguishFiresNearby</def><loadID>118457</loadID><targetA>Thing_Fire186400</targetA><targetQueueA /><targetQueueB IsNull=\"True\" /><countQueue IsNull=\"True\" /><ignoreForbidden>True</ignoreForbidden><startTick>208028</startTick><playerForced>True</playerForced><placedThings IsNull=\"True\" /><ignoreDesignations>True</ignoreDesignations><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>403910827</lastJobGiverKey></curJob>",
+        "driver_xml": "<curDriver Class=\"JobDriver_ExtinguishFiresNearby\"><curToilIndex>4</curToilIndex><startTick>208028</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver>"
+      }
+    },
+    {
+      "file": ".local-research/runtime/profile-fire-20261104/Saves/New Arrivals2.rws",
+      "sha256": "86180ca6ee8d5e70e6bb20dfe68c9fdc83a970dff1be756b4aa7894502263e72",
+      "ticks_game": 208934,
+      "total_fire_count": 0,
+      "selected_fire": null,
+      "wall": {
+        "id": "Wall41899",
+        "position": "(104, 0, 126)",
+        "stuff": "WoodLog",
+        "hit_points": 188,
+        "xml": "<thing Class=\"Building\"><def>Wall</def><id>Wall41899</id><map>0</map><pos>(104, 0, 126)</pos><health>188</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>1918</spawnedTick><despawnedTick>-1</despawnedTick><lastUser>null</lastUser></thing>"
+      },
+      "pawn": {
+        "id": "Human961",
+        "position": "(101, 0, 128)",
+        "job_def": "Skygaze",
+        "job_target": "(101, 0, 128)",
+        "player_forced": null,
+        "job_start_tick": "208527",
+        "job_xml": "<curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>Skygaze</def><loadID>118599</loadID><targetA>(101, 0, 128)</targetA><targetQueueA IsNull=\"True\" /><targetQueueB IsNull=\"True\" /><countQueue IsNull=\"True\" /><startTick>208527</startTick><placedThings IsNull=\"True\" /><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>683411381</lastJobGiverKey></curJob>",
+        "driver_xml": "<curDriver Class=\"JobDriver_Skygaze\"><curToilIndex>1</curToilIndex><ticksLeftThisToil>3638</ticksLeftThisToil><startTick>208527</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver>"
+      }
+    },
+    {
+      "file": ".local-research/runtime/profile-fire-20261104/Saves/New Arrivals3.rws",
+      "sha256": "0b6f78042bfb0499141c16b12cd5fa5dd87d4b063ea8435e4131e4d191b42fa5",
+      "ticks_game": 208934,
+      "total_fire_count": 0,
+      "selected_fire": null,
+      "wall": {
+        "id": "Wall41899",
+        "position": "(104, 0, 126)",
+        "stuff": "WoodLog",
+        "hit_points": 188,
+        "xml": "<thing Class=\"Building\"><def>Wall</def><id>Wall41899</id><map>0</map><pos>(104, 0, 126)</pos><health>188</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>1918</spawnedTick><despawnedTick>-1</despawnedTick><lastUser>null</lastUser></thing>"
+      },
+      "pawn": {
+        "id": "Human961",
+        "position": "(101, 0, 128)",
+        "job_def": "Skygaze",
+        "job_target": "(101, 0, 128)",
+        "player_forced": null,
+        "job_start_tick": "208527",
+        "job_xml": "<curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>Skygaze</def><loadID>118599</loadID><targetA>(101, 0, 128)</targetA><targetQueueA IsNull=\"True\" /><targetQueueB IsNull=\"True\" /><countQueue IsNull=\"True\" /><startTick>208527</startTick><placedThings IsNull=\"True\" /><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>683411381</lastJobGiverKey></curJob>",
+        "driver_xml": "<curDriver Class=\"JobDriver_Skygaze\"><curToilIndex>1</curToilIndex><ticksLeftThisToil>3638</ticksLeftThisToil><startTick>208527</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver>"
+      }
+    }
+  ],
+  "timing": {
+    "baseline_to_pre_fire_ticks": 4893,
+    "observed_extinguishing_window_ticks": 906,
+    "after_save_pair_equal_ticks": true,
+    "exact_extinguishing_duration_measured": false
+  },
+  "observations": [
+    {
+      "id": "FIR01",
+      "finding": "Developer Attach Fire prepares one ground fire size1.75 at the wooden wall. Menu screenshot includes Destroy fire but the recorded click selects the separate Attach Fire row.",
+      "evidence": [
+        "FIR01",
+        "FIR02",
+        "actions",
+        "saves"
+      ]
+    },
+    {
+      "id": "FIR02",
+      "finding": "Ordinary right click offers Prioritize extinguishing fires; Squint native save records playerForced ExtinguishFiresNearby, not the automatic BeatFire job.",
+      "evidence": [
+        "FIR03",
+        "saves"
+      ]
+    },
+    {
+      "id": "FIR03",
+      "finding": "After one bounded run, Fire186400 and all other fire entities are absent in two same-tick native saves; Squint has moved on to Skygaze.",
+      "evidence": [
+        "FIR04",
+        "saves"
+      ]
+    },
+    {
+      "id": "FIR04",
+      "finding": "Target wall remains and HP changes195 to188. A nearby pawn already had a tantrum, so this observation does not isolate all damage to fire.",
+      "evidence": [
+        "saves"
+      ]
+    }
+  ],
+  "images": [
+    {
+      "id": "FIR01",
+      "source_file": ".local-research/runtime/fire-009-search-commit.png",
+      "source_sha256": "6685b3ac74b1cb875746240cd9b3d795871a27fcbd72555387215b0860d876fd",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        0,
+        0,
+        450,
+        150
+      ],
+      "file": "fire-runtime/developer-preparation-menu.png",
+      "sha256": "516b79dc20efe42e067f1e551d95e95cf621eba804c5e4d3e6d0a8236453d0f2"
+    },
+    {
+      "id": "FIR02",
+      "source_file": ".local-research/runtime/fire-011-prepared.png",
+      "source_sha256": "6d5a1c52cddba51d128b4bc017470aba3bac604f1d5f07f7444245e3dfdd608e",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        1420,
+        1070,
+        650,
+        220
+      ],
+      "file": "fire-runtime/prepared-fire.png",
+      "sha256": "2ed8c89fb591d1b5731fe8124be24020ae1ae19bd1db25b90fe1cf34f55ed4e0"
+    },
+    {
+      "id": "FIR03",
+      "source_file": ".local-research/runtime/fire-017-prioritize.png",
+      "source_sha256": "f26929d70c3111990bb0915dc50c1500f8185fcfe36a0e9acfb39065ef6e83eb",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        1420,
+        1070,
+        650,
+        220
+      ],
+      "file": "fire-runtime/prioritize-extinguishing.png",
+      "sha256": "15220139ad91275e125a85d386314d1b5f8a09bff9aed2669d562ba5b6c64173"
+    },
+    {
+      "id": "FIR04",
+      "source_file": ".local-research/runtime/fire-024-extinguish-run.png",
+      "source_sha256": "86d05c661ec312b64fd26feb4ea602dfbf390993c15a57d1ab0a65182cab50f9",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        1420,
+        1070,
+        650,
+        220
+      ],
+      "file": "fire-runtime/after-extinguishing.png",
+      "sha256": "a3efac1418b1c760d7fb05cbd096d536b0473b53fc887bd48c0934ddd851b868"
+    }
+  ],
+  "actions": [
+    {
+      "source_file": ".local-research/runtime/fire-001-launch.png.actions.jsonl",
+      "source_sha256": "65d14232344278d3afaaf8ff53346f873106157a44c6309cf948001dfccc6ec8",
+      "started_utc": "2026-11-03T18:04:00.7454046Z",
+      "finished_utc": "2026-11-03T18:04:06.3754077Z",
+      "action": "capture",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 5000,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-001-launch.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-002-load-menu.png.actions.jsonl",
+      "source_sha256": "7d65646e961fa101748162ce3fede9800366e996bbc3739b624c65a11500a651",
+      "started_utc": "2026-11-03T18:04:45.7090427Z",
+      "finished_utc": "2026-11-03T18:04:46.9981241Z",
+      "action": "click",
+      "x": 2165,
+      "y": 691,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-002-load-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-003-loaded.png.actions.jsonl",
+      "source_sha256": "19c5984127e2429e3140ec5918ac68c798c121a418b00968363aa973cee8425b",
+      "started_utc": "2026-11-03T18:05:29.7277745Z",
+      "finished_utc": "2026-11-03T18:05:40.7306306Z",
+      "action": "click",
+      "x": 1470,
+      "y": 441,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 10000,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-003-loaded.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-004-paused.png.actions.jsonl",
+      "source_sha256": "8a47250c80d1b0e9dd000731d86dc3740cbaf6511a66e2f11c7d9b621bf2c660",
+      "started_utc": "2026-11-03T18:06:59.8537944Z",
+      "finished_utc": "2026-11-03T18:07:01.8151162Z",
+      "action": "clickpause",
+      "x": 1100,
+      "y": 750,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-004-paused.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-005-dev-menu.png.actions.jsonl",
+      "source_sha256": "6827cfaafc67e0d9360c5cb8598be84edce47cdbdb56c01ef92b3dbb2532e30b",
+      "started_utc": "2026-11-03T18:07:02.1173493Z",
+      "finished_utc": "2026-11-03T18:07:03.0056522Z",
+      "action": "click",
+      "x": 1240,
+      "y": 13,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-005-dev-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-006-spawn-menu.png.actions.jsonl",
+      "source_sha256": "895040298da1ebd3805718c72322f2e5b81e279ac493ca4a229793860d08ba7c",
+      "started_utc": "2026-11-03T18:08:18.13841Z",
+      "finished_utc": "2026-11-03T18:08:19.2045171Z",
+      "action": "click",
+      "x": 735,
+      "y": 433,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-006-spawn-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-007-search-focus.png.actions.jsonl",
+      "source_sha256": "b6108c3973ed499f4d7ab488725ea18d1aa8faf378198176caeb41579becd9a3",
+      "started_utc": "2026-11-03T18:08:57.6586737Z",
+      "finished_utc": "2026-11-03T18:08:58.7377819Z",
+      "action": "click",
+      "x": 90,
+      "y": 32,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-007-search-focus.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-008-search.png.actions.jsonl",
+      "source_sha256": "43a836f4b4d57955294530d9f19ae8bc8b2b361d053fc9379217220c18234535",
+      "started_utc": "2026-11-03T18:08:59.0542697Z",
+      "finished_utc": "2026-11-03T18:09:00.0726048Z",
+      "action": "text",
+      "x": 1280,
+      "y": 720,
+      "text": "Fire",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-008-search.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-009-search-commit.png.actions.jsonl",
+      "source_sha256": "b6155dddb17b271a8234fc5556fabe4cde17f68a5bdd4786be3d89f1f4847d80",
+      "started_utc": "2026-11-03T18:11:39.9198052Z",
+      "finished_utc": "2026-11-03T18:11:40.7648659Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 13,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-009-search-commit.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-010-attach-tool.png.actions.jsonl",
+      "source_sha256": "4d1df05cd6fb78e22a4f703d0abe87a0acf0ce65eb436de968d4c0cd811150e0",
+      "started_utc": "2026-11-03T18:13:42.5954602Z",
+      "finished_utc": "2026-11-03T18:13:43.7828575Z",
+      "action": "click",
+      "x": 100,
+      "y": 124,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-010-attach-tool.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-011-prepared.png.actions.jsonl",
+      "source_sha256": "2fe92ad776e316a548da22dd0599ca46a26398fa71f76d97a9759b590f447ef5",
+      "started_utc": "2026-11-03T18:15:30.1823425Z",
+      "finished_utc": "2026-11-03T18:15:31.343287Z",
+      "action": "click",
+      "x": 1655,
+      "y": 1180,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1655,
+      "park_y": 1180,
+      "image_name": "fire-011-prepared.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-012-tool-exit.png.actions.jsonl",
+      "source_sha256": "98271443c383366e34cfa82ea51d2852efd13152515dbc2f9863d5b12a7e7e37",
+      "started_utc": "2026-11-03T18:15:31.6540057Z",
+      "finished_utc": "2026-11-03T18:15:32.4234368Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-012-tool-exit.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-013-squint.png.actions.jsonl",
+      "source_sha256": "5291ffd84bc3912737085228c45e099d89446c427a071d7705be81fa250e64a4",
+      "started_utc": "2026-11-03T18:15:32.7159495Z",
+      "finished_utc": "2026-11-03T18:15:33.7202074Z",
+      "action": "click",
+      "x": 1265,
+      "y": 40,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-013-squint.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-014-fire-menu.png.actions.jsonl",
+      "source_sha256": "1f8f52c0b007dc2cd13a0c5ba2bd4617be61d10bf5122b33706f8909703f0a7f",
+      "started_utc": "2026-11-03T18:15:34.0319275Z",
+      "finished_utc": "2026-11-03T18:15:35.6006537Z",
+      "action": "rightclick",
+      "x": 1655,
+      "y": 1180,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 800,
+      "park_x": 1655,
+      "park_y": 1180,
+      "image_name": "fire-014-fire-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-015-close-menu.png.actions.jsonl",
+      "source_sha256": "b6c8c5ac0ebb7311feddc384db02bbbc653756d217a28ed8761209ad4b47f568",
+      "started_utc": "2026-11-03T18:16:53.3468603Z",
+      "finished_utc": "2026-11-03T18:16:54.3232406Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-015-close-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-016-squint.png.actions.jsonl",
+      "source_sha256": "fb60c0110dc3ff59aa284a854c6268749e87946f38d49eca439fe1d22c4c4118",
+      "started_utc": "2026-11-03T18:16:54.640062Z",
+      "finished_utc": "2026-11-03T18:16:55.6727299Z",
+      "action": "click",
+      "x": 1265,
+      "y": 40,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-016-squint.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-017-prioritize.png.actions.jsonl",
+      "source_sha256": "371a05500ceeeb5136f66196fded1182be08344bf3bf0e8b97dd3a259646233d",
+      "started_utc": "2026-11-03T18:16:55.9814942Z",
+      "finished_utc": "2026-11-03T18:16:57.5773612Z",
+      "action": "rightclick",
+      "x": 1655,
+      "y": 1180,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 800,
+      "park_x": 1655,
+      "park_y": 1180,
+      "image_name": "fire-017-prioritize.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-018-ordered.png.actions.jsonl",
+      "source_sha256": "80d8e567ac59a6aa9ef2f2f7ce7c4922b79fba81476e75440202565f52263e8d",
+      "started_utc": "2026-11-03T18:19:02.9901868Z",
+      "finished_utc": "2026-11-03T18:19:04.1843549Z",
+      "action": "click",
+      "x": 1770,
+      "y": 1196,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1770,
+      "park_y": 1196,
+      "image_name": "fire-018-ordered.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-019-clear.png.actions.jsonl",
+      "source_sha256": "0d73497bf69c3d45b9ea25a27022269bbc3cef36d3a0c3898b8621946321edc6",
+      "started_utc": "2026-11-03T18:19:04.4971757Z",
+      "finished_utc": "2026-11-03T18:19:05.5476275Z",
+      "action": "click",
+      "x": 1100,
+      "y": 750,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-019-clear.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-020-menu.png.actions.jsonl",
+      "source_sha256": "e70de5693e6595a2251eda67ebd9fe4d5b60521f5aba48345441db2ae3fb845d",
+      "started_utc": "2026-11-03T18:19:05.8805161Z",
+      "finished_utc": "2026-11-03T18:19:06.6978143Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-020-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-021-save-dialog.png.actions.jsonl",
+      "source_sha256": "620fa19602e42fa7bdfedabe48daf298daca3d3b3974176c4f15bfbf0f2f5f0b",
+      "started_utc": "2026-11-03T18:19:06.9987004Z",
+      "finished_utc": "2026-11-03T18:19:08.0142558Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-021-save-dialog.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-022-before-saved.png.actions.jsonl",
+      "source_sha256": "487f79627be9583d7dd41859febb3c66eca840925d126c0f8f782686ab526402",
+      "started_utc": "2026-11-03T18:19:08.3113529Z",
+      "finished_utc": "2026-11-03T18:19:10.0183459Z",
+      "action": "click",
+      "x": 1490,
+      "y": 976,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 1000,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-022-before-saved.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-023-close-menu.png.actions.jsonl",
+      "source_sha256": "70845ac96f619b40c9855fe2a60de6b939bea2fe3f722004d1a02adeab24496a",
+      "started_utc": "2026-11-03T18:19:53.9596273Z",
+      "finished_utc": "2026-11-03T18:19:54.9384392Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-023-close-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-024-extinguish-run.png.actions.jsonl",
+      "source_sha256": "5ceed11e9788136211d608a80986f257ddf7a47085dc1a00fb5f73da228a16eb",
+      "started_utc": "2026-11-03T18:19:55.253697Z",
+      "finished_utc": "2026-11-03T18:19:58.570377Z",
+      "action": "pulse",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 51,
+      "duration_ms": 2400,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-024-extinguish-run.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-025-menu.png.actions.jsonl",
+      "source_sha256": "f1eb031dcbde9ad83e898ca0505872864ccac3be72b67a7cc98970eb75d1bf52",
+      "started_utc": "2026-11-03T18:24:02.8988354Z",
+      "finished_utc": "2026-11-03T18:24:03.8476482Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-025-menu.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-026-save-dialog.png.actions.jsonl",
+      "source_sha256": "df2b35445b1bffb2414509b33af7e4878cbdced6a98deab39ae3088a0b7fc827",
+      "started_utc": "2026-11-03T18:24:14.3171093Z",
+      "finished_utc": "2026-11-03T18:24:15.4804409Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-026-save-dialog.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-027-saved-after.png.actions.jsonl",
+      "source_sha256": "d435f928d241253b5dc779109b7f072cf45fd1ce0878b036767967e79469fbc2",
+      "started_utc": "2026-11-03T18:24:31.0142724Z",
+      "finished_utc": "2026-11-03T18:24:32.9798935Z",
+      "action": "click",
+      "x": 1490,
+      "y": 976,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 1000,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-027-saved-after.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-028-save-dialog.png.actions.jsonl",
+      "source_sha256": "3b084419346a59a6b99122e1d7e1d9a8191009656a4f40838764671a6e5a06bb",
+      "started_utc": "2026-11-03T18:24:44.775414Z",
+      "finished_utc": "2026-11-03T18:24:45.9149661Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-028-save-dialog.png"
+    },
+    {
+      "source_file": ".local-research/runtime/fire-029-saved-check.png.actions.jsonl",
+      "source_sha256": "42b7326c19f5ca858dd0b59bf59266c4791b3769fd597ffe6587884bbd636a0f",
+      "started_utc": "2026-11-03T18:24:57.610482Z",
+      "finished_utc": "2026-11-03T18:24:59.6904831Z",
+      "action": "click",
+      "x": 1490,
+      "y": 976,
+      "text": "",
+      "virtual_key": 27,
+      "duration_ms": 80,
+      "wait_ms": 1000,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "fire-029-saved-check.png"
+    }
+  ],
+  "shutdown": {
+    "method": "Ordinary Quit to OS clicked at (2215,1315) after the second post-fire save",
+    "attempted_capture": "fire-030-quit.png",
+    "capture_result": "Foreground guard rejected capture after native exit; no exit screenshot or successful action-log entry claimed",
+    "observed_utc": "2026-11-03T18:27:48.2912476Z",
+    "rimworld_processes_after_exit": []
+  },
+  "limitations": [
+    "Game advanced between load and confirmed pause; baseline delta4893 ticks is not firefighting time.",
+    "The906-tick window includes walking, extinguishing and subsequent leisure, so it is not exact beat time.",
+    "Developer preparation is explicit; no natural ignition or short-circuit probability was measured.",
+    "No outside-Home order experiment: the manual-vs-automatic distinction comes from static call paths.",
+    "Preexisting tantrum and other colony activity continued; do not attribute every building HP loss to flame.",
+    "No native repair, spread-frequency, rain, battery explosion or building-wealth experiment.",
+    "Only small diagnostic crops and selected save fields are committed; full screenshots and raw saves stay local."
+  ]
+}

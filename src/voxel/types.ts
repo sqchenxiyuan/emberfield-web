@@ -8,6 +8,7 @@ import type { TradeCommand, TradeState, TradeView } from './tradeTypes';
 import type { Psyche } from './mood';
 import type { PrisonerState, PrisonerPolicy, WardenTask } from './prisoners';
 import type { Filth, CleanTask, FoodPoisoning, RoomCleanliness, CookingOutcome } from './sanitation';
+import type { Fire, FireDamage, FireHazards, FireLogEntry, FirefightTask, RepairTask } from './fire';
 // Voxel rules are Emberfield designs. See research/10 for source boundaries.
 export const WIDTH = 64,
   DEPTH = 64,
@@ -78,6 +79,7 @@ export type Resource =
   | 'apparel'
   | 'weapon';
 export type Work =
+  | 'firefight'
   | 'clean'
   | 'warden'
   | 'hunt'
@@ -554,6 +556,8 @@ export interface CombatState {
   wave: number;
 }
 export interface Pawn extends Pos {
+  firefightTask: FirefightTask | null;
+  repairTask: RepairTask | null;
   cleanTask: CleanTask | null;
   dirtCarry: number;
   foodPoisoning: FoodPoisoning | null;
@@ -600,6 +604,8 @@ export interface Pawn extends Pos {
   path: number[];
   destination: number | null;
   phase:
+    | 'firefight'
+    | 'repair'
     | 'clean'
     | 'warden'
     | 'prisoner'
@@ -667,6 +673,10 @@ export interface VoxelStats {
   spoiled: Counts;
 }
 export interface VoxelSnapshot {
+  fires: Fire[];
+  fireDamage: FireDamage[];
+  fireHazards: FireHazards;
+  fireLog: FireLogEntry[];
   filth: Filth[];
   roomCleanliness: RoomCleanliness[];
   horseshoePins: HorseshoePin[];
@@ -731,6 +741,11 @@ export interface ChunkUpdate {
   ladders: Uint8Array;
 }
 export type VoxelCommand =
+  | { type: 'firefight'; pawnId: number; fireId: number }
+  | { type: 'cancelFirefight'; pawnId: number }
+  | { type: 'repair'; pawnId: number; damageKey: string }
+  | { type: 'cancelRepair'; pawnId: number }
+  | { type: 'fireHazards'; enabled: boolean }
   | { type: 'clean'; pawnId: number; filthId: number }
   | { type: 'cancelClean'; pawnId: number }
   | { type: 'bedPrisoner'; bedId: number; prisoner: boolean }
@@ -792,10 +807,14 @@ export interface CommandResult {
   count?: number;
 }
 export interface VoxelSave {
+  fires: Fire[];
+  fireDamage: FireDamage[];
+  fireHazards: FireHazards;
+  fireLog: FireLogEntry[];
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 25;
+  version: 26;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;

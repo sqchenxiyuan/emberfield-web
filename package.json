@@ -73,7 +73,10 @@
     "test:voxel:prisoners:browser": "node scripts/voxel-prisoners-browser-verify.mjs",
     "research:sanitation": "node scripts/research/verify-sanitation-evidence.mjs",
     "test:voxel:sanitation": "node scripts/voxel-sanitation-campaign-verify.mjs",
-    "test:voxel:sanitation:browser": "node scripts/voxel-sanitation-browser-verify.mjs"
+    "test:voxel:sanitation:browser": "node scripts/voxel-sanitation-browser-verify.mjs",
+    "research:fire": "node scripts/research/verify-fire-evidence.mjs",
+    "test:voxel:fire": "node scripts/voxel-fire-campaign-verify.mjs",
+    "test:voxel:fire:browser": "node scripts/voxel-fire-browser-verify.mjs"
   },
   "dependencies": {
     "pixi.js": "8.22.0",

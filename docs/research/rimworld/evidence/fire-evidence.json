@@ -1,0 +1,406 @@
+{
+  "evidence_id": "RW17-FIRE-FIREFIGHTING-REPAIR",
+  "date_local": "2026-11-04",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Static derived managed-code reconstruction and selected packaged XML; original-game experiment reported separately",
+  "artifact_identity": "artifact-identity.json",
+  "manifest": "fire-manifest.json",
+  "types": "fire-types.json",
+  "claims": [
+    {
+      "id": "FI01",
+      "finding": "Fire is an independent entity, static or pawn-attached, with size and age. Fuel availability and maximum flammability govern persistence and growth; damage selects one eligible target per complex calculation.",
+      "sources": [
+        {
+          "file": ".local-research/fire/RimWorld.Fire.cs",
+          "sha256": "3f10134af9a064a683242b3914e82db3dd40c012c70fc26e699a481673af2078",
+          "lines": [
+            8,
+            212
+          ]
+        },
+        {
+          "file": ".local-research/fire/RimWorld.Fire.cs",
+          "sha256": "3f10134af9a064a683242b3914e82db3dd40c012c70fc26e699a481673af2078",
+          "lines": [
+            238,
+            334
+          ]
+        }
+      ],
+      "xml": [
+        "XML01",
+        "XML02"
+      ]
+    },
+    {
+      "id": "FI02",
+      "finding": "Ignition rejects existing fire, blocked multi-cell interiors and fire-blocking filth. Terrain uses top and foundation flammability; TryStartFireIn tests positive eligibility without its own random roll.",
+      "sources": [
+        {
+          "file": ".local-research/fire/RimWorld.FireUtility.cs",
+          "sha256": "9baec55e1a0494e05fa673292b528637ebdb2a62f4ab51da03589e28d0f9f95e",
+          "lines": [
+            19,
+            127
+          ]
+        },
+        {
+          "file": ".local-research/fire/RimWorld.FireUtility.cs",
+          "sha256": "9baec55e1a0494e05fa673292b528637ebdb2a62f4ab51da03589e28d0f9f95e",
+          "lines": [
+            206,
+            244
+          ]
+        },
+        {
+          "file": ".local-research/food/Verse.Thing.cs",
+          "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+          "lines": [
+            152,
+            178
+          ]
+        }
+      ],
+      "xml": [
+        "XML02",
+        "XML08"
+      ]
+    },
+    {
+      "id": "FI03",
+      "finding": "Size above 1 enables individual short or long spread attempts; flame damage, heat, rain exposure and vacuum interact. Rain interval code compares Rand.Value <6, not a 4 percent roll per interval.",
+      "sources": [
+        {
+          "file": ".local-research/fire/RimWorld.Fire.cs",
+          "sha256": "3f10134af9a064a683242b3914e82db3dd40c012c70fc26e699a481673af2078",
+          "lines": [
+            238,
+            411
+          ]
+        },
+        {
+          "file": ".local-research/fire/Verse.DamageWorker_Flame.cs",
+          "sha256": "8e7d6432b41449672add68d97b1b8c2d7674bdee96fa3a1629dc5b5411f598b4",
+          "lines": [
+            1,
+            43
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "FI04",
+      "finding": "Automatic WorkGiver_FightFires requires Home for static fires even when its forced parameter is true; nearby compatible pawns on fire have a separate outside-Home branch.",
+      "sources": [
+        {
+          "file": ".local-research/fire/RimWorld.WorkGiver_FightFires.cs",
+          "sha256": "076cc4a5f1e20b55e340b5af4691419becfbc2fe45da33c02ac27c0a88cd8743",
+          "lines": [
+            1,
+            85
+          ]
+        },
+        {
+          "file": ".local-research/fire/RimWorld.JobDriver_BeatFire.cs",
+          "sha256": "e1b6cadf27c0b0bec0d104a1d12bcdee505a8367ea94ff5b3078eeba44ea67bb",
+          "lines": [
+            1,
+            80
+          ]
+        }
+      ],
+      "xml": [
+        "XML03",
+        "XML04"
+      ]
+    },
+    {
+      "id": "FI05",
+      "finding": "The actual 1.7 right-click path is FloatMenuOptionProvider_ExtinguishFires to ExtinguishFiresNearby: manipulation, firefighting capability, reachability and Allowed area are checked; no Home test. It queues nearby fires and can continue to other reachable reservable fires.",
+      "sources": [
+        {
+          "file": ".local-research/fire/RimWorld.FloatMenuOptionProvider_ExtinguishFires.cs",
+          "sha256": "e3d28b20d51f30fb2322824fabe661bf47b3a3e6bd44006d80dd0c8460abab15",
+          "lines": [
+            1,
+            70
+          ]
+        },
+        {
+          "file": ".local-research/fire/RimWorld.JobDriver_ExtinguishFiresNearby.cs",
+          "sha256": "4288aa1061a7aa2bbe319a20b6c278feb2596937ec7d5977685c64d2e0a1fc96",
+          "lines": [
+            1,
+            131
+          ]
+        },
+        {
+          "file": ".local-research/fire/RimWorld.FireUtility.cs",
+          "sha256": "9baec55e1a0494e05fa673292b528637ebdb2a62f4ab51da03589e28d0f9f95e",
+          "lines": [
+            246,
+            283
+          ]
+        }
+      ],
+      "xml": [
+        "XML04"
+      ]
+    },
+    {
+      "id": "FI06",
+      "finding": "Both firefighting drivers repeatedly use native beat-fire verbs. Nominal extinguish damage32 reduces fire size by .32; size below .1 destroys fire; nominal cooldown1.1 seconds is not an observed completion time.",
+      "sources": [
+        {
+          "file": ".local-research/fire/RimWorld.Verb_BeatFire.cs",
+          "sha256": "8a3412e846761b4a508dbf2739a153b26c1bdf34f712a1cbdff7e44eda7a4fec",
+          "lines": [
+            1,
+            26
+          ]
+        },
+        {
+          "file": ".local-research/fire/Verse.DamageWorker_Extinguish.cs",
+          "sha256": "36e47c583ef499f4e197b06013a1125289f98a818ebcec7b33cd152c01dbf3e6",
+          "lines": [
+            1,
+            38
+          ]
+        },
+        {
+          "file": ".local-research/fire/RimWorld.Pawn_NativeVerbs.cs",
+          "sha256": "a5eaf2cc50c09be51f6fe8bde2f142d08b312a162d76d99d92b44418a8b7513e",
+          "lines": [
+            1,
+            128
+          ]
+        },
+        {
+          "file": ".local-research/fire/RimWorld.VerbDefsHardcodedNative.cs",
+          "sha256": "98a82e88d6b4e8d737faa64b7c4beb5abfec3070ec5bb36228d3e3f59efde622",
+          "lines": [
+            1,
+            37
+          ]
+        }
+      ],
+      "xml": [
+        "XML04"
+      ]
+    },
+    {
+      "id": "FI07",
+      "finding": "Ordinary HP repair uses same-faction damaged repairable buildings, Home, reservations and no demolition/mining designation; burning targets are rejected at job selection. The repair driver spends construction work to restore HP without ingredient hauling or consumption.",
+      "sources": [
+        {
+          "file": ".local-research/fire/RimWorld.RepairUtility.cs",
+          "sha256": "e5e37580ecd626cd0b5e737f3e6ae359ddba02ec241a8012a0c4bcee82c2026c",
+          "lines": [
+            1,
+            44
+          ]
+        },
+        {
+          "file": ".local-research/fire/RimWorld.ListerBuildingsRepairable.cs",
+          "sha256": "ebaaefc5a3fdb81fbb719796fd4c2422d0bb8643760be9afda69de68a7af23cd",
+          "lines": [
+            1,
+            117
+          ]
+        },
+        {
+          "file": ".local-research/fire/RimWorld.WorkGiver_Repair.cs",
+          "sha256": "ad14fa66697f226d19474dfea54d4426e62be1001da0bf1cf2ec61ba0973c138",
+          "lines": [
+            1,
+            67
+          ]
+        },
+        {
+          "file": ".local-research/fire/RimWorld.JobDriver_Repair.cs",
+          "sha256": "c902a1fbc5264b0c6fc52fccb7ae4e46ea40d03151607fc68b3aed307e15933a",
+          "lines": [
+            1,
+            80
+          ]
+        }
+      ],
+      "xml": [
+        "XML03",
+        "XML05"
+      ]
+    },
+    {
+      "id": "FI08",
+      "finding": "Electrical incident selects ordinary PowerConduit on networks with active power sources. Stored battery energy chooses an energy-draining explosion branch; otherwise a nearby eligible visible cell may ignite. Rain short circuit is separate and its caller exposure checks are not traced here.",
+      "sources": [
+        {
+          "file": ".local-research/fire/RimWorld.IncidentWorker_ShortCircuit.cs",
+          "sha256": "5d4abbbbfcf2f29d9c30a78334d67c5e5c5997aa8834c688cbdbc054d262a494",
+          "lines": [
+            1,
+            22
+          ]
+        },
+        {
+          "file": ".local-research/fire/RimWorld.ShortCircuitUtility.cs",
+          "sha256": "339e2075f62c29affc2e7df1a49c3cc4ff1214986b592b3464dd27b47ef7c129",
+          "lines": [
+            1,
+            148
+          ]
+        }
+      ],
+      "xml": [
+        "XML06",
+        "XML07"
+      ]
+    },
+    {
+      "id": "FI09",
+      "finding": "Developer Attach Fire was used only for controlled preparation; for the selected wall it calls TryStartFireIn at size1.75, not a spontaneous incident. Subsequent player-ordered firefighting is recorded separately.",
+      "sources": [
+        {
+          "file": ".local-research/fire/Verse.DebugToolsMisc.cs",
+          "sha256": "b35673cf9bbddf55f686f85c13ea451cc59069a0a3495ae5b0d66c27269a5862",
+          "lines": [
+            17,
+            33
+          ]
+        }
+      ],
+      "xml": [
+        "XML01"
+      ]
+    },
+    {
+      "id": "FI10",
+      "finding": "Player artificial building wealth uses MarketValueIgnoreHp, while regular MarketValue has a health curve. HP loss alone therefore must not be treated as native building-wealth depreciation.",
+      "sources": [
+        {
+          "file": ".local-research/economy/RimWorld.WealthWatcher.cs",
+          "sha256": "273dce0c7b6c6e598d68e60164f1cdb9e8d82fb3108f498e9b14330a529bfa33",
+          "lines": [
+            122,
+            138
+          ]
+        }
+      ],
+      "xml": [
+        "XML09"
+      ]
+    }
+  ],
+  "xml": [
+    {
+      "id": "XML01",
+      "file": "Data/Core/Defs/ThingDefs_Misc/Things_Special.xml",
+      "source_sha256": "a37b7e278c9c33a8fbb436b2095e21c87dd314f6c25ccdafe7c1c0b87769ca4f",
+      "xpath": "/Defs/ThingDef[defName=\"Fire\"]",
+      "nodes": [
+        "<ThingDef><defName>Fire</defName><label>fire</label><thingClass>Fire</thingClass><category>Attachment</category><tickerType>Normal</tickerType><pathfinderDangerous>true</pathfinderDangerous><forceDebugSpawnable>true</forceDebugSpawnable><canInteractThroughCorners>true</canInteractThroughCorners><graphicData><texPath>Things/Special/Fire</texPath><graphicClass>Graphic_Flicker</graphicClass><shaderType>TransparentPostLight</shaderType></graphicData><altitudeLayer>PawnState</altitudeLayer><useHitPoints>false</useHitPoints><comps><li Class=\"CompProperties_Glower\"><glowRadius>4</glowRadius><glowColor>(184,136,83,0)</glowColor></li></comps></ThingDef>"
+      ]
+    },
+    {
+      "id": "XML02",
+      "file": "Data/Core/Defs/Stats/Stats_Basics_General.xml",
+      "source_sha256": "c4d702421c19796993483ddd43f9869c54bb7afa1414232a568829ced5218d87",
+      "xpath": "/Defs/StatDef[defName=\"Flammability\"]",
+      "nodes": [
+        "<StatDef><defName>Flammability</defName><label>flammability</label><description>How easily an object catches fire and how quickly a fire will grow as it burns.</description><category>Basics</category><defaultBaseValue>0</defaultBaseValue><minValue>0</minValue><!-- Normalize to: 1 is wood, 0 is stone, 2 is like dry wispy paper or volatile fuel.--><maxValue>2</maxValue><toStringStyle>PercentZero</toStringStyle><scenarioRandomizable>true</scenarioRandomizable><displayPriorityInCategory>3000</displayPriorityInCategory><minifiedThingInherits>true</minifiedThingInherits></StatDef>"
+      ]
+    },
+    {
+      "id": "XML03",
+      "file": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+      "source_sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c",
+      "xpath": "/Defs/WorkGiverDef[defName=\"FightFires\" or defName=\"Repair\"]",
+      "nodes": [
+        "<WorkGiverDef><defName>FightFires</defName><label>fight fires</label><giverClass>WorkGiver_FightFires</giverClass><workType>Firefighter</workType><emergency>true</emergency><verb>extinguish</verb><gerund>extinguishing</gerund><canBeDoneWhileDrafted>true</canBeDoneWhileDrafted><autoTakeablePriorityDrafted>20</autoTakeablePriorityDrafted><forceFleck>FeedbackExtinguish</forceFleck><directOrderable>false</directOrderable></WorkGiverDef>",
+        "<WorkGiverDef><defName>Repair</defName><label>repair damaged things</label><giverClass>WorkGiver_Repair</giverClass><workType>Construction</workType><priorityInType>40</priorityInType><verb>repair</verb><gerund>repairing</gerund><requiredCapacities><li>Manipulation</li></requiredCapacities><nonColonistsCanDo>true</nonColonistsCanDo><canBeDoneByMechs>true</canBeDoneByMechs></WorkGiverDef>"
+      ]
+    },
+    {
+      "id": "XML04",
+      "file": "Data/Core/Defs/JobDefs/Jobs_Misc.xml",
+      "source_sha256": "537728d9066def61890253439953631e86afb7f2d5f08501a2a70172bcf5d714",
+      "xpath": "/Defs/JobDef[defName=\"BeatFire\" or defName=\"ExtinguishFiresNearby\"]",
+      "nodes": [
+        "<JobDef><defName>BeatFire</defName><driverClass>JobDriver_BeatFire</driverClass><reportString>beating fire out.</reportString><neverShowWeapon>true</neverShowWeapon><casualInterruptible>false</casualInterruptible></JobDef>",
+        "<JobDef><defName>ExtinguishFiresNearby</defName><driverClass>JobDriver_ExtinguishFiresNearby</driverClass><reportString>extinguishing fires nearby.</reportString><neverShowWeapon>true</neverShowWeapon><casualInterruptible>false</casualInterruptible></JobDef>"
+      ]
+    },
+    {
+      "id": "XML05",
+      "file": "Data/Core/Defs/JobDefs/Jobs_Work.xml",
+      "source_sha256": "0c2cc583de4ad306681c1dcd65763539461adedf33a5360fe716a36deddef2a1",
+      "xpath": "/Defs/JobDef[defName=\"Repair\"]",
+      "nodes": [
+        "<JobDef><defName>Repair</defName><driverClass>JobDriver_Repair</driverClass><reportString>repairing TargetA.</reportString><allowOpportunisticPrefix>true</allowOpportunisticPrefix></JobDef>"
+      ]
+    },
+    {
+      "id": "XML06",
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Power.xml",
+      "source_sha256": "f9213d01681e0d9082447c75a3d31113ba8e6b52f7595ef951d29ca624d0aaba",
+      "xpath": "/Defs/ThingDef[defName=\"PowerConduit\" or defName=\"HiddenConduit\" or defName=\"Battery\" or defName=\"WoodFiredGenerator\" or defName=\"PowerSwitch\"]/defName | /Defs/ThingDef[defName=\"PowerConduit\" or defName=\"HiddenConduit\" or defName=\"Battery\" or defName=\"WoodFiredGenerator\" or defName=\"PowerSwitch\"]/statBases/Flammability",
+      "nodes": [
+        "<defName>PowerConduit</defName>",
+        "<Flammability>0.7</Flammability>",
+        "<defName>HiddenConduit</defName>",
+        "<Flammability>0</Flammability>",
+        "<defName>PowerSwitch</defName>",
+        "<Flammability>0.5</Flammability>",
+        "<defName>WoodFiredGenerator</defName>",
+        "<Flammability>1.0</Flammability>",
+        "<defName>Battery</defName>",
+        "<Flammability>1.0</Flammability>"
+      ]
+    },
+    {
+      "id": "XML07",
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Temperature.xml",
+      "source_sha256": "5a52378b24103968881042728e9a40639f010664ef46a37df20596c01bd4b1ec",
+      "xpath": "/Defs/ThingDef[defName=\"Heater\" or defName=\"Cooler\"]/defName | /Defs/ThingDef[defName=\"Heater\" or defName=\"Cooler\"]/statBases/Flammability | /Defs/ThingDef[defName=\"Heater\" or defName=\"Cooler\"]/comps/li[@Class=\"CompProperties_Power\"]",
+      "nodes": [
+        "<defName>Heater</defName>",
+        "<Flammability>0.5</Flammability>",
+        "<li Class=\"CompProperties_Power\"><compClass>CompPowerTrader</compClass><basePowerConsumption>175</basePowerConsumption><shortCircuitInRain>true</shortCircuitInRain></li>",
+        "<defName>Cooler</defName>",
+        "<Flammability>0.7</Flammability>",
+        "<li Class=\"CompProperties_Power\"><compClass>CompPowerTrader</compClass><basePowerConsumption>200</basePowerConsumption></li>"
+      ]
+    },
+    {
+      "id": "XML08",
+      "file": "Data/Core/Defs/ThingDefs_Misc/Filth_Various.xml",
+      "source_sha256": "3009403c4d02d0a057c88490d107d7b396f756c5979e129df96fbcd8e2f5c1f2",
+      "xpath": "/Defs/ThingDef[defName=\"Filth_FireFoam\"]/defName | /Defs/ThingDef[defName=\"Filth_FireFoam\"]/filth",
+      "nodes": [
+        "<defName>Filth_FireFoam</defName>",
+        "<filth><ignoreFilthMultiplierStat>true</ignoreFilthMultiplierStat><disappearsInDays>5~10</disappearsInDays><rainWashes>true</rainWashes><cleaningWorkToReduceThickness>100</cleaningWorkToReduceThickness><canFilthAttach>true</canFilthAttach><allowsFire>false</allowsFire><cleaningSound>Interact_CleanFilth_Fluid</cleaningSound></filth>"
+      ]
+    },
+    {
+      "id": "XML09",
+      "file": "Data/Core/Defs/Stats/Stats_Basics_General.xml",
+      "source_sha256": "c4d702421c19796993483ddd43f9869c54bb7afa1414232a568829ced5218d87",
+      "xpath": "/Defs/StatDef[defName=\"MarketValue\" or defName=\"MarketValueIgnoreHp\"]",
+      "nodes": [
+        "<StatDef ParentName=\"MarketValueBase\"><defName>MarketValue</defName><label>market value</label><description>The market value of an object.\\n\\nThe actual trade price will be adjusted by negotiation skill, relationship status, and other contextual factors.</description><parts><li Class=\"StatPart_Health\"><curve><points><li>(0.0, 0.0)</li><li>(0.5, 0.1)</li><li>(0.6, 0.5)</li><li>(0.9, 1.0)</li></points></curve></li><li Class=\"StatPart_Age\" MayRequire=\"Ludeon.RimWorld.Biotech\"><useBiologicalYears>true</useBiologicalYears><humanlikeOnly>true</humanlikeOnly><curve><points><li>(3,0.5)</li><li>(13,0.9)</li><li>(18,1)</li></points></curve></li></parts></StatDef>",
+        "<StatDef ParentName=\"MarketValueBase\"><defName>MarketValueIgnoreHp</defName><label>market value ignoring hitpoints</label><alwaysHide>true</alwaysHide></StatDef>"
+      ]
+    }
+  ],
+  "native_runtime_report": "../80-native-firefighting-runtime.md",
+  "limitations": [
+    "Derived C# is not original source.",
+    "Packaged XML selections do not resolve every inheritance or mod patch.",
+    "Manual firefighting and automatic WorkGiver forced parameters are different paths.",
+    "The native experiment prepared one fire with developer UI; it does not establish incident frequency, exact beat timing or spread probability.",
+    "Ordinary repair, battery explosions, rain exposure and building wealth were not measured in the native run."
+  ]
+}

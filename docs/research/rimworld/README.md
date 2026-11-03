@@ -84,6 +84,9 @@
 | [76 卫生与食物中毒机制](76-sanitation-food-poisoning-mechanisms.md) | 污物、房间卫生、烹饪污染、食物批次与中毒病程怎样连接？ |
 | [77 原版卫生实机](77-native-sanitation-runtime.md) | 原版家园范围与血迹清扫实际观察到什么？哪些仍仅有静态证据？ |
 | [78 体素卫生玩法](78-sanitation-gameplay.md) | 玩家怎样安排清洁，餐食污染如何保留，病程、中断与存档如何验证？ |
+| [79 火灾、灭火与修理机制](79-fire-firefighting-mechanisms.md) | 独立火焰、燃料损失、家园灭火、拍打与建筑修理怎样衔接？ |
+| [80 原版灭火实机](80-native-firefighting-runtime.md) | 单处受控火灾后的普通操作观察到什么？哪些分支仍只有静态证据？ |
+| [81 体素火灾玩法](81-fire-gameplay.md) | 玩家怎样处理真实火灾、损伤与修理，多层支撑破坏如何处理？ |
 
 每篇均含具体来源与未决问题。先读感兴趣的系统，再查其 `evidence/*-claims.json` 和 `*-manifest.json`，不要把“已抽取一个类型”当成“这个类型涉及的全部机制已经理解”。
 

@@ -1,0 +1,10 @@
+{
+  "version": 25,
+  "source": "test-results/voxel-sanitation/initial.json",
+  "sourceCommit": "fb009d6662f0ba4c1a7f62122a74469f5fb14bac",
+  "sha256": "ad14ff386e86c6b33a1df5a4d46f318126b1462535d017b62ee1b4955b2a68f7",
+  "scope": "Fresh world; public commands, elapsed ticks and save/load only. Spatial and disease state reads are observations. No injected filth, illness, food, skills, terrain, positions, clocks or RNG; this is a deterministic gameplay example, not a probability calibration.",
+  "tick": 0,
+  "campaignBundleSha256": "858bd6ba768a1ec9420e00ffbebdb61cb9e98de3478ba58708ec3575cd08e0ff",
+  "campaignScriptSha256": "d7327233a8e2e761499b78751233d5021134e8efeee2d2b415b30cba63a1bdce"
+}

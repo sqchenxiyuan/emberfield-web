@@ -1,0 +1,21 @@
+[
+  "RimWorld.Fire",
+  "RimWorld.FireUtility",
+  "RimWorld.WorkGiver_FightFires",
+  "RimWorld.JobDriver_BeatFire",
+  "RimWorld.Verb_BeatFire",
+  "Verse.DamageWorker_Flame",
+  "Verse.DamageWorker_Extinguish",
+  "RimWorld.WorkGiver_Repair",
+  "RimWorld.JobDriver_Repair",
+  "RimWorld.ListerBuildingsRepairable",
+  "RimWorld.RepairUtility",
+  "RimWorld.Pawn_NativeVerbs",
+  "RimWorld.NativeVerbPropertiesDatabase",
+  "RimWorld.VerbDefsHardcodedNative",
+  "Verse.DebugToolsMisc",
+  "RimWorld.ShortCircuitUtility",
+  "RimWorld.IncidentWorker_ShortCircuit",
+  "RimWorld.JobDriver_ExtinguishFiresNearby",
+  "RimWorld.FloatMenuOptionProvider_ExtinguishFires"
+]
