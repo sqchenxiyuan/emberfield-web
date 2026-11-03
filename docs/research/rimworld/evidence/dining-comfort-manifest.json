@@ -1,0 +1,37 @@
+{
+  "evidence_id": "RW17-DINING-COMFORT",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.ThoughtWorker_NeedComfort",
+      "local_file": ".local-research/dining-comfort/RimWorld.ThoughtWorker_NeedComfort.cs",
+      "sha256": "ceb00527806eefb8b88926d407e4279c3c25f65e46558761589c896676c69526",
+      "lines": 26
+    },
+    {
+      "type": "RimWorld.RCellFinder",
+      "local_file": ".local-research/dining-comfort/RimWorld.RCellFinder.cs",
+      "sha256": "0e83eda4be1562dd2c2670f951bea3fad86125391416226783464d617e9f95c9",
+      "lines": 1807
+    },
+    {
+      "type": "Verse.AI.ReservationUtility",
+      "local_file": ".local-research/dining-comfort/Verse.AI.ReservationUtility.cs",
+      "sha256": "7cf1c88ad1ccd1baff46192348b69e5ca3d02f5580b165d6e215c0ff81373123",
+      "lines": 175
+    }
+  ]
+}

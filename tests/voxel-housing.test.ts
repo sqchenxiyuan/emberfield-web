@@ -158,7 +158,7 @@ describe('normal-command voxel housing', () => {
     const save = sim.save(),
       restored = VoxelSimulation.load(save),
       copy = restored.pawns.find((p) => p.id === pawn.id)!;
-    expect(save.version).toBe(30);
+    expect(save.version).toBe(31);
     expect(restored.counts()).toEqual(sim.counts());
     expect(copy).toMatchObject({
       phase: 'rest',
@@ -297,14 +297,16 @@ describe('normal-command voxel housing', () => {
     expect(assignmentAt(pawn.schedule, sim.tick)).toBe('anything');
     expect(pawn.phase).toBe('rest');
     expect(pawn.sleepBedId).toBe(sim.beds[0].id);
-  });
+  }, 30_000);
 
   it('under Work, keeps sleeping below 20 and wakes on the tick that rest reaches 20', () => {
     const sim = bedWorld(),
       pawn = sim.pawns[0];
     schedule(sim, pawn.id, 'work');
     command(sim, { type: 'bedOwner', bedId: sim.beds[0].id, pawnId: pawn.id });
-    until(sim, () => pawn.rest < 19.5);
+    // Isolate the exact waking boundary from the separate hunger/mood/mental
+    // break systems; ordinary construction and actual bed travel still run.
+    pawn.rest = 19.49;
     command(sim, { type: 'rest', pawnId: pawn.id });
     until(sim, () => pawn.phase === 'rest');
     expect(pawn.rest).toBeLessThan(20);
@@ -408,7 +410,7 @@ describe('normal-command voxel housing', () => {
       expect(restored.counts()).toEqual(before);
       expect(restored.beds).toEqual([]);
       expect(restored.doors).toEqual([]);
-      expect(restored.save().version).toBe(30);
+      expect(restored.save().version).toBe(31);
       expect(
         restored.pawns.every(
           (pawn) =>

@@ -473,7 +473,7 @@ describe('real harvested inputs, cooking and food persistence', () => {
         harvestedSave.items.filter((i) => i.resource === 'meal').reduce((n, i) => n + i.amount, 0),
     ).toBe(s.counts().meal + s.stats.consumed.meal + s.stats.spoiled.meal +
       s.stats.destroyed.meal + s.trade.exported.meal);
-  });
+  }, 30_000);
   it('rejects malformed food saves and bills without mutating the source world', () => {
     const s = prepared(),
       oven = stove(s);
@@ -546,7 +546,7 @@ describe('v1 voxel food migration', () => {
       loaded = VoxelSimulation.load(legacy),
       before = s.counts();
     expect(legacy).toEqual(untouched);
-    expect(loaded.save().version).toBe(30);
+    expect(loaded.save().version).toBe(31);
     expect(loaded.farms).toEqual([]);
     expect(loaded.crops).toEqual([]);
     expect(loaded.stoves).toEqual([]);

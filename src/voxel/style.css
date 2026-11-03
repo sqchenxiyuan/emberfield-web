@@ -178,6 +178,19 @@ a {
 .voxel-recreation-tolerance label { display: block; font-size: 11px; margin: 10px 0; }
 .voxel-mood-actions { display: flex; flex-wrap: wrap; gap: 6px; }
 .voxel-mood-actions button { font-size: 11px; padding: 7px 8px; }
+.voxel-living-panel, .voxel-room-living { display: grid; gap: 10px; margin: 12px 0; padding: 12px; border: 1px solid #bfa98155; border-radius: 5px; background: #342e2266; font-size: 12px; }
+.voxel-living-panel small, .voxel-room-living small { display: block; color: #c0c4af; font-size: 11px; line-height: 1.65; }
+.voxel-living-panel progress { width: 100%; height: 6px; accent-color: #d2b485; }
+.voxel-living-panel button { font-size: 11px; padding: 7px 8px; }
+.voxel-living-panel p { margin: 0; line-height: 1.7; }
+.voxel-living-memories { display: grid; gap: 8px; }
+.voxel-living-memories > div { display: grid; grid-template-columns: 1fr auto; gap: 4px 8px; }
+.voxel-living-memories small { grid-column: 1 / -1; }
+.voxel-living-memories .negative { color: #e2a689; }
+.voxel-living-memories .positive { color: #b7cf91; }
+.voxel-room-living dl { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 15px; margin: 0; }
+.voxel-room-living dl > div { display: flex; justify-content: space-between; gap: 8px; }
+.voxel-room-living dd { margin: 0; }
 .voxel-health {
   display: grid;
   gap: 8px;

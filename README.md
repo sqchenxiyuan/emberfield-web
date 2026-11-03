@@ -8,6 +8,8 @@
 
 当前开发重点是先搭好可操作的玩法和机制闭环，数值采用初步默认值，后续再平衡。体素模式已接通狩猎与肉食生产、动物驯养繁殖与圈养管理、心情娱乐、俘虏招募、卫生清洁、火灾修理及天气联动，见[开发路线](docs/research/rimworld/05-reconstruction-roadmap.md)；研究文档中的原版数值不代表当前游戏已经完成平衡。
 
+2026-11-04房间生活更新（v31）：新增实体木餐桌和餐椅，居民取走实际餐食后预约座位、步行就座并持续吃饭，完成才恢复饱食度。舒适、无桌记忆、房间评价与卧室/宿舍体验接入人物状态，支持中断、火灾和旧档延续。先打通玩法，家具成本与行为节奏仍采用暂定参数，见[94原版机制](docs/research/rimworld/94-dining-comfort-mechanisms.md)、[95实机对照](docs/research/rimworld/95-native-dining-runtime.md)、[96玩法与验证](docs/research/rimworld/96-living-dining-gameplay.md)。
+
 2026-11-04圈养管理更新（v30）：围栏可拖动连续施工，栏门和圈地标记形成真实三维圈地；饲养员挂绳后带鹿实际穿门，动物进入后才解绳。兔使用可绘制的活动范围并步行返回。界面支持圈地筛选、命名、暂停/指定牵引和范围管理；中断、火灾破圈与途中存档相互衔接。参数保持集中可调，见[91原版机制](docs/research/rimworld/91-animal-pens-mechanisms.md)、[92原版实机](docs/research/rimworld/92-native-animal-pens-runtime.md)及[93圈养管理](docs/research/rimworld/93-animal-pens-gameplay.md)。
 
 2026-11-04动物经营更新（v29）：驯养员取来实际生粮，两次喂食后尝试驯服；家畜吃真实草、作物和食物，同种成年雌雄需要接触才能繁殖。饥饿影响成长与孕期，幼体有独立身份；宰杀、放归和兔的驯顺维护均需实际处理。列表与详情显示性别、成长、营养不良及孕期，旧档可升级。暂未实现完整围栏识别、牵引、畜产品及动物训练，孕期和成长速度为Web暂定值。见[88原版机制](docs/research/rimworld/88-animal-husbandry-mechanisms.md)、[89原版实机](docs/research/rimworld/89-native-animal-husbandry-runtime.md)、[90玩法与验证](docs/research/rimworld/90-animal-husbandry-gameplay.md)。

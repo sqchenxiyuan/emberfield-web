@@ -6,6 +6,7 @@ import type { ResearchKey, ResearchState } from './research';
 import type { Difficulty, StorytellerState, StorytellerView } from './storyteller';
 import type { TradeCommand, TradeState, TradeView } from './tradeTypes';
 import type { Psyche } from './mood';
+import type { DiningTable, DiningChair, LivingState, RoomLivingSummary } from './living';
 import type { PrisonerState, PrisonerPolicy, WardenTask } from './prisoners';
 import type { Filth, CleanTask, FoodPoisoning, RoomCleanliness, CookingOutcome } from './sanitation';
 import type { Fire, FireDamage, FireHazards, FireLogEntry, FirefightTask, RepairTask } from './fire';
@@ -253,6 +254,8 @@ export interface RoomSummary {
   maxZ: number;
 }
 export type Tool =
+  | 'table'
+  | 'chair'
   | 'fence'
   | 'fenceGate'
   | 'penMarker'
@@ -519,6 +522,8 @@ export interface CropCondition {
   reason: string;
 }
 export type JobKind =
+  | 'table'
+  | 'chair'
   | 'fence'
   | 'fenceGate'
   | 'penMarker'
@@ -612,6 +617,7 @@ export interface CombatState {
   wave: number;
 }
 export interface Pawn extends Pos {
+  living: LivingState;
   ropeTask: RopeTask | null;
   handleTask: HandleTask | null;
   firefightTask: FirefightTask | null;
@@ -662,6 +668,7 @@ export interface Pawn extends Pos {
   path: number[];
   destination: number | null;
   phase:
+    | 'dine'
     | 'rope'
     | 'handle'
     | 'firefight'
@@ -733,6 +740,9 @@ export interface VoxelStats {
   spoiled: Counts;
 }
 export interface VoxelSnapshot {
+  tables: DiningTable[];
+  chairs: DiningChair[];
+  roomLiving: RoomLivingSummary[];
   fences: Fence[];
   fenceGates: FenceGate[];
   penMarkers: PenMarker[];
@@ -890,6 +900,8 @@ export interface CommandResult {
   count?: number;
 }
 export interface VoxelSave {
+  tables: DiningTable[];
+  chairs: DiningChair[];
   fences: Fence[];
   fenceGates: FenceGate[];
   penMarkers: PenMarker[];
@@ -905,7 +917,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 30;
+  version: 31;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;
@@ -977,6 +989,7 @@ export const RESOURCE_NAMES: Record<Resource, string> = {
   meal: '简餐',
 };
 export const JOB_NAMES: Record<JobKind, string> = {
+  table: '造餐桌', chair: '造餐椅',
   fence: '建围栏', fenceGate: '建栏门', penMarker: '建圈地标记',
   horseshoePin: '建马蹄铁桩',
   butcherSpot: '划定屠宰点',
@@ -1016,6 +1029,7 @@ export const JOB_NAMES: Record<JobKind, string> = {
   cook: '烹饪简餐',
 };
 export const TOOL_NAMES: Record<Tool, string> = {
+  table: '餐桌', chair: '餐椅',
   fence: '围栏', fenceGate: '栏门', penMarker: '圈地标记', animalArea: '动物活动范围',
   horseshoePin: '马蹄铁桩',
   butcherSpot: '屠宰点',

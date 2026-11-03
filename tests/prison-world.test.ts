@@ -1,3 +1,4 @@
+import { initialLiving } from '../src/voxel/living';
 import { describe, expect, it } from 'vitest';
 import { at, position, type Bed, type Cargo, type Pawn, type Pos } from '../src/voxel/types';
 import { initialSurvival } from '../src/voxel/survival';
@@ -12,7 +13,7 @@ import { prisonerTick, releaseWarden, setPrisonerPolicy, startCapture, tryWarden
 const pos = (x: number, y = 10): Pos => ({ x, y, z: 8 });
 function person(id: number, extra: Partial<Pawn> = {}): Pawn {
   return { ...initialSurvival(19, id), ...pos(10 + id), id, name: `人员${id}`, color: 0,
-    food: 80, rest: 80, skills: initialSkills(id), psyche: initialPsyche(),
+    food: 80, rest: 80, skills: initialSkills(id), living: initialLiving(), psyche: initialPsyche(),
     worn: [], apparelTask: null, apparelWearTicks: 0, jobId: null, phase: 'idle', path: [],
     destination: null, cargo: null, eating: null, reason: '', moveTick: 0, workTarget: null,
     sleepingSince: null, sleepBedId: null, schedule: Array(24).fill('work'),

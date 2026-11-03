@@ -15,6 +15,8 @@ import { FirePanel, FireDetails, FireDamageDetails, FireWorkStatus } from './Fir
 import { WeatherPanel, WeatherCellDetails } from './WeatherPanel';
 import { AnimalPanel, AnimalDetails } from './AnimalPanel';
 import { FenceGateDetails, PenDetails, type PenControls } from './PenPanel';
+import { LivingPanel, RoomLivingDetails, DiningFurnitureDetails } from './LivingPanel';
+import { tableCells, LIVING_BUILDINGS } from './living';
 import { BatchDurability, ItemCondition } from './ItemCondition';
 import type { EnvironmentView } from './environment';
 import { WEATHER_NAMES } from './weather';
@@ -84,6 +86,8 @@ const tools: Tool[] = [
   'machining',
   'researchBench',
   'bed',
+  'table',
+  'chair',
   'horseshoePin',
   'door',
   'fence',
@@ -121,6 +125,8 @@ const icons = [
   '⚙',
   '▤',
   '▰',
+  '⊤',
+  '▙',
   '∩',
   '▯',
   '╫',
@@ -176,6 +182,8 @@ const hints: Record<Tool, string> = {
     '3×1 木制切石台，75 木材 + 30 钢材。R 旋转，留出标记的操作位；1 岩块加工为 20 石砖。',
   tailor: '3×1 手工裁缝台，75 木材。R 旋转并留出操作位；种棉获得布料，再设置各类衣物的制作目标。',
   bed: '两格木床，45 木材。R 旋转朝向；点击设置主人、医疗或囚犯用途。同一封闭房间的床会一起切换囚犯用途；医疗用途可同时启用。',
+  table: `两格木制餐桌，${LIVING_BUILDINGS.table.cost.wood} 木材，R 旋转。紧贴桌边放置餐椅并留出通路；殖民者会带餐前往空座。餐桌不能通行或堆放物资。`,
+  chair: `一格木制餐椅，${LIVING_BUILDINGS.chair.cost.wood} 木材，R 旋转外观。餐椅与餐桌同层四向相邻即可用餐；可以穿行，前往就座时会预约位置。`,
   door: '点击放置木门，25 木材。R 旋转朝向；自动开关、保持敞开或锁定。门仍分隔两侧房间。',
   clearZone: '拖动擦除种植区、林地区和仓储；农作物会清理且没有收成，树木和已建成设施保留。',
   remove: '拆除墙、楼板、设施或梯子，回收部分材料。正在支撑人物的结构会等待人物移开。',
@@ -463,6 +471,8 @@ function App() {
     ? s?.weaponBenches.find((b) => weaponBenchCells(b).some((q) => equal(q, p)))
     : null;
   const bed = p ? s?.beds.find((v) => bedCells(v).some((q) => equal(q, p))) : null;
+  const table = p ? s?.tables.find(v => tableCells(v).some(q => equal(q, p))) : null;
+  const chair = p ? s?.chairs.find(v => equal(v, p)) : null;
   const door = p ? s?.doors.find((v) => equal(v, p)) : null;
   const fence = p ? s?.fences.find(v => equal(v, p)) : null;
   const fenceGate = p ? s?.fenceGates.find(v => equal(v, p)) : null;
@@ -496,6 +506,7 @@ function App() {
               s?.researchBenches.find((b) => equal(b, v)) ?? { ...v, axis: v.axis ?? 'x' },
             ).some((q) => equal(q, p))) ||
           (v.kind === 'bed' && bedCells({ ...v, axis: v.axis ?? 'x' }).some((q) => equal(q, p))) ||
+          (v.kind === 'table' && tableCells({ ...v, axis: v.axis ?? 'x' }).some(q => equal(q, p))) ||
           (isDeviceKind(v.kind) &&
             deviceCells({ ...v, kind: v.kind, axis: v.axis ?? 'x' }).some((q) => equal(q, p))),
       ) ?? [])
@@ -552,6 +563,7 @@ function App() {
       (researchBench ? '简易科研台' : null) ??
       (weaponBench ? WEAPON_BENCH_NAMES[weaponBench.kind] : null) ??
       (sandbag ? '布制沙袋' : null) ??
+      (table ? '木制餐桌' : null) ?? (chair ? '木制餐椅' : null) ??
       (bed
         ? '木床'
         : door
@@ -979,6 +991,7 @@ function App() {
             <small>按实际六向空气连通判断；视图切层不改变房间。</small>
           </div>
         )}
+        {room && s && <RoomLivingDetails room={s.roomLiving.find(r => r.id === room.id)} />}
         {p && s && !weatherOpen && <WeatherCellDetails snapshot={s} pos={p} indoors={room?.outdoor === false} />}
         {p && s && <FireDetails snapshot={s} pos={p} preferredPawnId={selectedPawn} temperature={temperatureOf(p)} command={c => void client.command(c)} />}
         {p && s && <FireDamageDetails snapshot={s} pos={p} preferredPawnId={selectedPawn} command={c => void client.command(c)} />}
@@ -1154,6 +1167,8 @@ function App() {
             </small>
           </div>
         )}
+        {s && (table || chair) && <DiningFurnitureDetails table={table ?? undefined} chair={chair ?? undefined} snapshot={s}
+          focus={focus} command={c => void client.command(c)} />}
         {bed && (
           <div className="voxel-bill" data-testid="bed-detail">
             <label className="voxel-check">
@@ -1506,6 +1521,7 @@ function App() {
               environment={s!.environment}
               pin={s?.horseshoePins.toSorted((a, b) => Math.abs(a.x - pawn.x) + Math.abs(a.y - pawn.y) + Math.abs(a.z - pawn.z) - Math.abs(b.x - pawn.x) - Math.abs(b.y - pawn.y) - Math.abs(b.z - pawn.z))[0]}
               focus={focus} />}
+            {pawn.faction === 'colony' && s && <LivingPanel pawn={pawn} snapshot={s} focus={focus} />}
             {s && <CleaningStatus pawn={pawn} snapshot={s} command={c => void client.command(c)} />}
             {s && <FireWorkStatus pawn={pawn} snapshot={s} command={c => void client.command(c)} />}
             <SurvivalPanel
@@ -1790,6 +1806,8 @@ function App() {
             {TOOL_NAMES[state.tool]}
             {([
               'bed',
+              'table',
+              'chair',
               'door',
               'fenceGate',
               'stonecutter',
@@ -1846,7 +1864,7 @@ function App() {
               <button onClick={() => client.choose('inspect')}>结束</button>
             </span>}
             {state.placementPreview && <small data-testid="placement-preview-info">
-              {state.placementPreview.tool === 'animalArea' ? state.animalAreaErase ? '擦除' : '涂绘' : '规划'} · {(Math.abs(state.placementPreview.to.x - state.placementPreview.from.x) + 1) * (Math.abs(state.placementPreview.to.y - state.placementPreview.from.y) + 1)} 格
+              {state.placementPreview.tool === 'animalArea' ? state.animalAreaErase ? '擦除' : '涂绘' : '规划'} · {state.placementPreview.tool === 'table' ? 2 : (Math.abs(state.placementPreview.to.x - state.placementPreview.from.x) + 1) * (Math.abs(state.placementPreview.to.y - state.placementPreview.from.y) + 1)} 格
             </small>}
           </span>
           <p>

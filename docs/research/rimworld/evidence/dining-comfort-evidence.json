@@ -1,0 +1,473 @@
+{
+  "evidence_id": "RW17-DINING-COMFORT-MECHANISMS",
+  "date_local": "2026-11-04",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Static ILSpy-derived C# and selected Core XML; native observations documented separately",
+  "manifest": "dining-comfort-manifest.json",
+  "types": "dining-comfort-types.json",
+  "claims": [
+    {
+      "id": "DC01",
+      "finding": "Ingest is prepare -> chew -> finalize. Food must remain ingestible and reachable/carried; food pickup enters carry and changes targetA. Nutrition and item consumption occur at FinalizeIngest/Thing.Ingested, not when selecting a seat.",
+      "sources": [
+        {
+          "file": ".local-research/food/RimWorld.JobDriver_Ingest.cs",
+          "sha256": "278d66fed21ad28e41fb21c8af49f224a73c4163a26067431fe6eee0768ec3c6",
+          "lines": [
+            91,
+            173
+          ]
+        },
+        {
+          "file": ".local-research/food/RimWorld.Toils_Ingest.cs",
+          "sha256": "2e10eef89dc2f5d216681188952eb0227d1dd04d459463256a162310c30d9bb7",
+          "lines": [
+            43,
+            69
+          ]
+        },
+        {
+          "file": ".local-research/food/RimWorld.Toils_Ingest.cs",
+          "sha256": "2e10eef89dc2f5d216681188952eb0227d1dd04d459463256a162310c30d9bb7",
+          "lines": [
+            395,
+            438
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "DC02",
+      "finding": "Tool users take food from inventory or walk to food and pick it up. Non-manipulating pawns and non-tool-users use distinct paths. Drafted tool users skip CarryIngestibleToChewSpot; this is not a universal always-go-to-table rule.",
+      "sources": [
+        {
+          "file": ".local-research/food/RimWorld.JobDriver_Ingest.cs",
+          "sha256": "278d66fed21ad28e41fb21c8af49f224a73c4163a26067431fe6eee0768ec3c6",
+          "lines": [
+            120,
+            173
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "DC03",
+      "finding": "Seat search uses food chairSearchRadius. It first finds a reachable safe sittable with a free cell, same faction for player pawns, not forbidden/fogged/burning/hostile and socially proper. The seat cell must have a cardinally adjacent Eat surface. A standalone chair is not a normal dining-seat candidate.",
+      "sources": [
+        {
+          "file": ".local-research/food/RimWorld.Toils_Ingest.cs",
+          "sha256": "2e10eef89dc2f5d216681188952eb0227d1dd04d459463256a162310c30d9bb7",
+          "lines": [
+            94,
+            196
+          ]
+        }
+      ],
+      "xml": [
+        "DX01",
+        "DX02"
+      ]
+    },
+    {
+      "id": "DC04",
+      "finding": "A chosen seat/standing cell is reserved plus a destination reservation, then reached by path. CanReserveSittableOrSpot checks forbidden/impassable cells and conflicting nearby interaction cells; multi-sittable furniture reserves its specific cell, ordinary chairs reserve the building.",
+      "sources": [
+        {
+          "file": ".local-research/food/RimWorld.Toils_Ingest.cs",
+          "sha256": "2e10eef89dc2f5d216681188952eb0227d1dd04d459463256a162310c30d9bb7",
+          "lines": [
+            71,
+            92
+          ]
+        },
+        {
+          "file": ".local-research/dining-comfort/Verse.AI.ReservationUtility.cs",
+          "sha256": "7cf1c88ad1ccd1baff46192348b69e5ca3d02f5580b165d6e215c0ff81373123",
+          "lines": [
+            9,
+            61
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "DC05",
+      "finding": "No safe eligible chair falls back to a standing chewing spot. Dangerous standing candidates can trigger a second chair search no more dangerous than that spot. Complete failure starts a path to the current cell and logs a warning, rather than making all eating impossible.",
+      "sources": [
+        {
+          "file": ".local-research/food/RimWorld.Toils_Ingest.cs",
+          "sha256": "2e10eef89dc2f5d216681188952eb0227d1dd04d459463256a162310c30d9bb7",
+          "lines": [
+            71,
+            134
+          ]
+        },
+        {
+          "file": ".local-research/dining-comfort/RimWorld.RCellFinder.cs",
+          "sha256": "0e83eda4be1562dd2c2670f951bea3fad86125391416226783464d617e9f95c9",
+          "lines": [
+            1018,
+            1138
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "DC06",
+      "finding": "FindAdjacentEatSurface picks a cardinally adjacent Eat surface and faces it. Carried food can be rendered over that surface while the pawn is stationary; this draw position is not a drop, ground stack or table inventory transaction.",
+      "sources": [
+        {
+          "file": ".local-research/food/RimWorld.Toils_Ingest.cs",
+          "sha256": "2e10eef89dc2f5d216681188952eb0227d1dd04d459463256a162310c30d9bb7",
+          "lines": [
+            227,
+            291
+          ]
+        },
+        {
+          "file": ".local-research/food/RimWorld.JobDriver_Ingest.cs",
+          "sha256": "278d66fed21ad28e41fb21c8af49f224a73c4163a26067431fe6eee0768ec3c6",
+          "lines": [
+            238,
+            263
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "DC07",
+      "finding": "Chewing duration is rounded baseIngestTicks times duration multiplier; multiplier is reciprocal EatingSpeed unless useEatingSpeedStat=false. Chewing stops movement, uses a physical interaction reservation for spawned food, releases that reservation on finish, and calls GainComfortFromCellIfPossible every tick interval.",
+      "sources": [
+        {
+          "file": ".local-research/food/RimWorld.JobDriver_Ingest.cs",
+          "sha256": "278d66fed21ad28e41fb21c8af49f224a73c4163a26067431fe6eee0768ec3c6",
+          "lines": [
+            41,
+            53
+          ]
+        },
+        {
+          "file": ".local-research/food/RimWorld.Toils_Ingest.cs",
+          "sha256": "2e10eef89dc2f5d216681188952eb0227d1dd04d459463256a162310c30d9bb7",
+          "lines": [
+            294,
+            353
+          ]
+        }
+      ],
+      "xml": [
+        "DX02"
+      ]
+    },
+    {
+      "id": "DC08",
+      "finding": "Dining memories require mood, nutrition-giving food, and chairSearchRadius>10. AteWithoutTable additionally needs Standing, not WildMan, tableDesired, and no Eat surface immediately in front. Missing chair alone does not establish this memory; present tables elsewhere do not prevent it.",
+      "sources": [
+        {
+          "file": ".local-research/food/RimWorld.Toils_Ingest.cs",
+          "sha256": "2e10eef89dc2f5d216681188952eb0227d1dd04d459463256a162310c30d9bb7",
+          "lines": [
+            395,
+            417
+          ]
+        }
+      ],
+      "xml": [
+        "DX02",
+        "DX03"
+      ]
+    },
+    {
+      "id": "DC09",
+      "finding": "AteWithoutTable lasts1day, stackLimit1, mood-3; Ascetic and the indicated Ideology precept nullify it. FinalizeIngest has no branch clearing an existing memory after later table use; memory age/refresh must be distinguished from mere presence in a save.",
+      "sources": [
+        {
+          "file": ".local-research/food/RimWorld.Toils_Ingest.cs",
+          "sha256": "2e10eef89dc2f5d216681188952eb0227d1dd04d459463256a162310c30d9bb7",
+          "lines": [
+            395,
+            438
+          ]
+        }
+      ],
+      "xml": [
+        "DX03"
+      ]
+    },
+    {
+      "id": "DC10",
+      "finding": "Dining-room memory uses current room Impressiveness score stage and a non-null thought stage; this call does not test RoomRole DiningRoom, require a table/chair, or explicitly reject outdoor rooms. Stages0..2 are null; stages3..9 give+2..+8,1day,stackLimit1.",
+      "sources": [
+        {
+          "file": ".local-research/food/RimWorld.Toils_Ingest.cs",
+          "sha256": "2e10eef89dc2f5d216681188952eb0227d1dd04d459463256a162310c30d9bb7",
+          "lines": [
+            407,
+            417
+          ]
+        }
+      ],
+      "xml": [
+        "DX04"
+      ]
+    },
+    {
+      "id": "DC11",
+      "finding": "Comfort is a seeker need, not an instant chair bonus. CurInstantLevel uses clamped lastComfortUsed only while lastComfortUseTick>=TicksGame-15, otherwise0; category thresholds are0.1,0.6,0.7,0.8,0.9.",
+      "sources": [
+        {
+          "file": ".local-research/housing/RimWorld.Need_Comfort.cs",
+          "sha256": "94539efb01eda893d840c69635e3c7e03256de7d13b99b58f4b2df21397990bd",
+          "lines": [
+            1,
+            81
+          ]
+        }
+      ],
+      "xml": [
+        "DX05"
+      ]
+    },
+    {
+      "id": "DC12",
+      "finding": "GainComfortFromCell samples the building under the pawn on its15tick hash interval; acceptable nonnegative Comfort stats call ComfortUsed. Chewing uses this without chairsOnly. Furniture elsewhere in the room does not feed this method.",
+      "sources": [
+        {
+          "file": ".local-research/housing/RimWorld.PawnUtility.cs",
+          "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+          "lines": [
+            317,
+            339
+          ]
+        },
+        {
+          "file": ".local-research/food/RimWorld.Toils_Ingest.cs",
+          "sha256": "2e10eef89dc2f5d216681188952eb0227d1dd04d459463256a162310c30d9bb7",
+          "lines": [
+            313,
+            334
+          ]
+        }
+      ],
+      "xml": [
+        "DX01",
+        "DX06"
+      ]
+    },
+    {
+      "id": "DC13",
+      "finding": "Need_Seeker moves toward its instant target by seekerRisePerHour*0.06 or seekerFallPerHour*0.06 per NeedInterval and clamps to the target; Comfort defines0.60/hour rise and0.04/hour fall. This does not fill comfort in one meal.",
+      "sources": [
+        {
+          "file": ".local-research/housing/RimWorld.Need_Seeker.cs",
+          "sha256": "ba9490ff38079453846eb04d11b6cafa57e70b3a12b17e029d836e4930301339",
+          "lines": [
+            1,
+            53
+          ]
+        }
+      ],
+      "xml": [
+        "DX05"
+      ]
+    },
+    {
+      "id": "DC14",
+      "finding": "NeedComfort is a situation thought: Uncomfortable gives-3; Normal is inactive; higher categories give+4,+6,+8,+10. It is distinct from the time-limited AteWithoutTable and AteInImpressiveDiningRoom memories.",
+      "sources": [
+        {
+          "file": ".local-research/dining-comfort/RimWorld.ThoughtWorker_NeedComfort.cs",
+          "sha256": "ceb00527806eefb8b88926d407e4279c3c25f65e46558761589c896676c69526",
+          "lines": [
+            1,
+            25
+          ]
+        },
+        {
+          "file": ".local-research/housing/RimWorld.Need_Comfort.cs",
+          "sha256": "94539efb01eda893d840c69635e3c7e03256de7d13b99b58f4b2df21397990bd",
+          "lines": [
+            1,
+            81
+          ]
+        }
+      ],
+      "xml": [
+        "DX07"
+      ]
+    },
+    {
+      "id": "DC15",
+      "finding": "Selected base furniture: Stool comfort0.5/stuff25/work450; DiningChair0.70/45/8000; Armchair0.8/110/14000; Table1x2c stuff28/work750 inherits Eat surface. Quality factors for Comfort are0.76/0.88/1/1.12/1.24/1.45/1.7. Material/quality/effective modded values are separate.",
+      "sources": [
+        {
+          "file": ".local-research/housing/RimWorld.PawnUtility.cs",
+          "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+          "lines": [
+            329,
+            339
+          ]
+        }
+      ],
+      "xml": [
+        "DX01",
+        "DX06"
+      ]
+    },
+    {
+      "id": "DC16",
+      "finding": "IngestibleProperties defaults: baseIngestTicks500,chairSearchRadius32,useEatingSpeedStat=true,ingestHoldUsesTable=true,tableDesired=true. XML children can override these; the selected meals and their parent chain are retained separately.",
+      "sources": [
+        {
+          "file": ".local-research/survival/RimWorld.IngestibleProperties.cs",
+          "sha256": "12330427e18b72374f1e0020c92a0cb94aa16a47fc61476375e1f9083f61cbfe",
+          "lines": [
+            7,
+            61
+          ]
+        }
+      ],
+      "xml": [
+        "DX02"
+      ]
+    },
+    {
+      "id": "DC17",
+      "finding": "Interruption before FinalizeIngest does not execute its nutrition/memory settlement. Ordinary EndCurrentJob cleanup releases job reservations and runs driver cleanup; carried objects are dropped near the pawn unless carryThingAfterJob or a transition override preserves them. Suspension/queued-job branches can retain reservations and must not be conflated with a finished job.",
+      "sources": [
+        {
+          "file": ".local-research/work/Verse.AI.Pawn_JobTracker.cs",
+          "sha256": "7934319bfedbd8a46aa54341a2afec9561efb469cd4fe58aec5745f9236fc5c4",
+          "lines": [
+            402,
+            522
+          ]
+        },
+        {
+          "file": ".local-research/food/RimWorld.Toils_Ingest.cs",
+          "sha256": "2e10eef89dc2f5d216681188952eb0227d1dd04d459463256a162310c30d9bb7",
+          "lines": [
+            338,
+            351
+          ]
+        },
+        {
+          "file": ".local-research/food/RimWorld.Toils_Ingest.cs",
+          "sha256": "2e10eef89dc2f5d216681188952eb0227d1dd04d459463256a162310c30d9bb7",
+          "lines": [
+            395,
+            438
+          ]
+        }
+      ],
+      "xml": []
+    }
+  ],
+  "xml": [
+    {
+      "id": "DX01",
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+      "source_sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55",
+      "xpath": "/Defs/ThingDef[@Name=\"FurnitureBase\" or @Name=\"FurnitureWithQualityBase\" or @Name=\"ArtableFurnitureBase\" or @Name=\"TableBase\" or @Name=\"TableGatherSpotBase\" or defName=\"Stool\" or defName=\"DiningChair\" or defName=\"Armchair\" or defName=\"Table1x2c\"]",
+      "projection": "Original attributes and selected gameplay children only; stages retain null markers and mood values, not descriptive text",
+      "nodes": [
+        "<ThingDef Name=\"FurnitureBase\" ParentName=\"BuildingBase\" Abstract=\"True\"></ThingDef>",
+        "<ThingDef Name=\"FurnitureWithQualityBase\" ParentName=\"FurnitureBase\" Abstract=\"True\"></ThingDef>",
+        "<ThingDef Name=\"ArtableFurnitureBase\" ParentName=\"FurnitureWithQualityBase\" Abstract=\"True\"></ThingDef>",
+        "<ThingDef ParentName=\"FurnitureWithQualityBase\"><defName>Stool</defName><statBases><MaxHitPoints>75</MaxHitPoints><WorkToBuild>450</WorkToBuild><Beauty>0</Beauty><Comfort>0.5</Comfort></statBases><stuffCategories><li>Metallic</li><li>Woody</li><li>Stony</li></stuffCategories><costStuffCount>25</costStuffCount><pathCost>30</pathCost><fillPercent>0.20</fillPercent><building><isSittable>true</isSittable></building></ThingDef>",
+        "<ThingDef ParentName=\"ArtableFurnitureBase\"><defName>DiningChair</defName><statBases><MaxHitPoints>100</MaxHitPoints><WorkToBuild>8000</WorkToBuild><Beauty>8</Beauty><Comfort>0.70</Comfort></statBases><stuffCategories><li>Metallic</li><li>Woody</li></stuffCategories><costStuffCount>45</costStuffCount><pathCost>30</pathCost><fillPercent>0.35</fillPercent><building><isSittable>true</isSittable></building></ThingDef>",
+        "<ThingDef ParentName=\"FurnitureWithQualityBase\"><defName>Armchair</defName><statBases><MaxHitPoints>120</MaxHitPoints><WorkToBuild>14000</WorkToBuild><Beauty>4</Beauty><Comfort>0.8</Comfort></statBases><stuffCategories><li>Fabric</li><li>Leathery</li></stuffCategories><costStuffCount>110</costStuffCount><pathCost>30</pathCost><fillPercent>0.40</fillPercent><building><isSittable>true</isSittable></building></ThingDef>",
+        "<ThingDef Abstract=\"True\" ParentName=\"FurnitureWithQualityBase\" Name=\"TableBase\"><thingClass>Building</thingClass><passability>PassThroughOnly</passability><pathCost>42</pathCost><fillPercent>0.4</fillPercent><stuffCategories><li>Metallic</li><li>Woody</li><li>Stony</li></stuffCategories><surfaceType>Eat</surfaceType><building></building></ThingDef>",
+        "<ThingDef Abstract=\"True\" ParentName=\"TableBase\" Name=\"TableGatherSpotBase\"><building></building></ThingDef>",
+        "<ThingDef ParentName=\"TableGatherSpotBase\"><defName>Table1x2c</defName><statBases><MaxHitPoints>75</MaxHitPoints><WorkToBuild>750</WorkToBuild><Beauty>0.5</Beauty></statBases><size>(1,2)</size><costStuffCount>28</costStuffCount></ThingDef>"
+      ]
+    },
+    {
+      "id": "DX02",
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+      "source_sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+      "xpath": "/Defs/ThingDef[@Name=\"MealBaseIngredientless\" or @Name=\"MealBase\" or @Name=\"MealCookedIngredientless\" or @Name=\"MealCooked\" or defName=\"MealSimple\" or defName=\"MealSurvivalPack\"]",
+      "projection": "Original attributes and selected gameplay children only; stages retain null markers and mood values, not descriptive text",
+      "nodes": [
+        "<ThingDef Name=\"MealBaseIngredientless\" Abstract=\"True\"><thingClass>ThingWithComps</thingClass><category>Item</category><statBases><MaxHitPoints>50</MaxHitPoints><Beauty>0</Beauty></statBases><stackLimit>10</stackLimit><pathCost>14</pathCost><ingestible><foodType>Meal</foodType><maxNumToIngestAtOnce>1</maxNumToIngestAtOnce></ingestible></ThingDef>",
+        "<ThingDef Name=\"MealBase\" ParentName=\"MealBaseIngredientless\" Abstract=\"True\"><ingestible></ingestible></ThingDef>",
+        "<ThingDef ParentName=\"MealBase\"><defName>MealSurvivalPack</defName><statBases><Nutrition>0.9</Nutrition></statBases><ingestible><preferability>MealSimple</preferability></ingestible></ThingDef>",
+        "<ThingDef ParentName=\"MealBaseIngredientless\" Name=\"MealCookedIngredientless\" Abstract=\"True\"></ThingDef>",
+        "<ThingDef ParentName=\"MealCookedIngredientless\" Name=\"MealCooked\" Abstract=\"True\"></ThingDef>",
+        "<ThingDef ParentName=\"MealCooked\"><defName>MealSimple</defName><statBases><Nutrition>0.9</Nutrition></statBases><ingestible><preferability>MealSimple</preferability></ingestible></ThingDef>"
+      ]
+    },
+    {
+      "id": "DX03",
+      "file": "Data/Core/Defs/ThoughtDefs/Thoughts_Memory_Misc.xml",
+      "source_sha256": "7b65e423087002397d1d3c26d64973f73795e73bff041eff26589c78eebb05cd",
+      "xpath": "/Defs/ThoughtDef[defName=\"AteWithoutTable\"]",
+      "projection": "Original attributes and selected gameplay children only; stages retain null markers and mood values, not descriptive text",
+      "nodes": [
+        "<ThoughtDef><defName>AteWithoutTable</defName><durationDays>1</durationDays><stackLimit>1</stackLimit><nullifyingTraits><li>Ascetic</li></nullifyingTraits><nullifyingPrecepts><li MayRequire=\"Ludeon.RimWorld.Ideology\">RoughLiving_Welcomed</li></nullifyingPrecepts><stages><li><baseMoodEffect>-3</baseMoodEffect></li></stages></ThoughtDef>"
+      ]
+    },
+    {
+      "id": "DX04",
+      "file": "Data/Core/Defs/ThoughtDefs/Thoughts_Memory_RoomStats.xml",
+      "source_sha256": "6aefed8a4414b899fed0f6799944031c7285e086bce587f9a0d93bc3aa857e8e",
+      "xpath": "/Defs/ThoughtDef[defName=\"AteInImpressiveDiningRoom\"]",
+      "projection": "Original attributes and selected gameplay children only; stages retain null markers and mood values, not descriptive text",
+      "nodes": [
+        "<ThoughtDef><defName>AteInImpressiveDiningRoom</defName><durationDays>1</durationDays><stackLimit>1</stackLimit><stages><li IsNull=\"True\" /><li IsNull=\"True\" /><li IsNull=\"True\" /><li><baseMoodEffect>2</baseMoodEffect></li><li><baseMoodEffect>3</baseMoodEffect></li><li><baseMoodEffect>4</baseMoodEffect></li><li><baseMoodEffect>5</baseMoodEffect></li><li><baseMoodEffect>6</baseMoodEffect></li><li><baseMoodEffect>7</baseMoodEffect></li><li><baseMoodEffect>8</baseMoodEffect></li></stages></ThoughtDef>"
+      ]
+    },
+    {
+      "id": "DX05",
+      "file": "Data/Core/Defs/NeedDefs/Needs.xml",
+      "source_sha256": "f0abfb6e11cf85ec43f55ac2191735c8cd029e7d76bd0411f014f37be3a3249c",
+      "xpath": "/Defs/NeedDef[defName=\"Comfort\"]",
+      "projection": "Original attributes and selected gameplay children only; stages retain null markers and mood values, not descriptive text",
+      "nodes": [
+        "<NeedDef><defName>Comfort</defName><needClass>Need_Comfort</needClass><minIntelligence>Humanlike</minIntelligence><colonistAndPrisonersOnly>true</colonistAndPrisonersOnly><seekerRisePerHour>0.60</seekerRisePerHour><seekerFallPerHour>0.04</seekerFallPerHour><nullifyingPrecepts><li MayRequire=\"Ludeon.RimWorld.Ideology\">Comfort_Ignored</li></nullifyingPrecepts></NeedDef>"
+      ]
+    },
+    {
+      "id": "DX06",
+      "file": "Data/Core/Defs/Stats/Stats_Basics_General.xml",
+      "source_sha256": "c4d702421c19796993483ddd43f9869c54bb7afa1414232a568829ced5218d87",
+      "xpath": "/Defs/StatDef[defName=\"Comfort\"]",
+      "projection": "Original attributes and selected gameplay children only; stages retain null markers and mood values, not descriptive text",
+      "nodes": [
+        "<StatDef><defName>Comfort</defName><category>BasicsNonPawn</category><defaultBaseValue>0</defaultBaseValue><maxValue>1000</maxValue><minValue>-1000</minValue><parts><li Class=\"StatPart_Quality\"><factorAwful>0.76</factorAwful><factorPoor>0.88</factorPoor><factorNormal>1</factorNormal><factorGood>1.12</factorGood><factorExcellent>1.24</factorExcellent><factorMasterwork>1.45</factorMasterwork><factorLegendary>1.7</factorLegendary></li></parts></StatDef>"
+      ]
+    },
+    {
+      "id": "DX07",
+      "file": "Data/Core/Defs/ThoughtDefs/Thoughts_Situation_Needs.xml",
+      "source_sha256": "25b67cb74ed753f216ee55780ccf5758eeabb96d01228d52fd64757bc412ce3a",
+      "xpath": "/Defs/ThoughtDef[defName=\"NeedComfort\"]",
+      "projection": "Original attributes and selected gameplay children only; stages retain null markers and mood values, not descriptive text",
+      "nodes": [
+        "<ThoughtDef><defName>NeedComfort</defName><workerClass>ThoughtWorker_NeedComfort</workerClass><validWhileDespawned>true</validWhileDespawned><developmentalStageFilter>Baby, Child, Adult</developmentalStageFilter><stages><li><baseMoodEffect>-3</baseMoodEffect></li><li><baseMoodEffect>4</baseMoodEffect></li><li><baseMoodEffect>6</baseMoodEffect></li><li><baseMoodEffect>8</baseMoodEffect></li><li><baseMoodEffect>10</baseMoodEffect></li></stages></ThoughtDef>"
+      ]
+    }
+  ],
+  "rea_members": {
+    "source_file": ".local-research/husbandry-reproduction/rea-members-summary.json",
+    "sha256": "66427c4d04e6914ff6bb0fac9db74298abf00bd55e00c75ac765042ca21e40c8",
+    "evidence_id": "ev_69dd93b13c6a61b745e389803b4f0df51ea1529b0acda8bce3ce328ac99356a9",
+    "parent_evidence_id": "ev_1394217e2f4381602cdb14a099b269b54074ae46cf73bb12d9adbbc7a30bb0b8",
+    "status": "unavailable",
+    "reason": "Managed metadata exceeds the67108864byte representation budget; zero returned members is not absence evidence"
+  },
+  "native_runtime_report": "../95-native-dining-runtime.md",
+  "limitations": [
+    "Derived C# is not original source; unresolved dependencies were tolerated.",
+    "Existing matching reconstruction is reused; only3 missing types were newly extracted.",
+    "REA67108864byte member budget failure was not blindly repeated; unavailable members are not absence evidence.",
+    "Selected Core XML is not the fully patched active Def database.",
+    "Native runs distinguish developer preparation and ordinary consumption; cost/time/quality/probability are not calibrated."
+  ]
+}

@@ -1,5 +1,6 @@
 import { DAY, inside, type Assignment, type Pawn, type Pos } from './types';
 import { healthSummary } from './survival';
+import { livingThoughts } from './living';
 
 export type MemoryKind = 'ateRaw' | 'sleptGround' | 'catharsis' | 'wet';
 export type RecreationKind = 'walk' | 'horseshoes';
@@ -100,6 +101,7 @@ export function moodView(p: Pawn, tick: number, temperature: number): {
   else if (q.joy > MOOD_RULES.joyHighAbove) add('娱乐充足', MOOD_RULES.joyHighBonus);
   for (const memory of q.memories) if (memory.expires > tick)
     add(MEMORY_NAMES[memory.kind], MOOD_RULES.memoryValue[memory.kind]);
+  for (const thought of livingThoughts(p.living, tick)) add(thought.label, thought.value);
   const breakRemaining = Math.max(0, q.breakUntil - tick);
   return { target: clamp(thoughts.reduce((sum, t) => sum + t.value, 0)), thoughts,
     risk: breakRemaining > 0 ? 'break' : q.level < MOOD_RULES.lowThreshold ? 'low' : 'stable',

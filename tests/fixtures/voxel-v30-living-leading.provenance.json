@@ -1,0 +1,11 @@
+{
+  "version": 30,
+  "source": "test-results/voxel-pens/leading.json",
+  "sha256": "110fa3b3d2e8f0a4458671d7760f07814462ef28ba2e46b0c56889d5e4d7a2bf",
+  "tick": 132669,
+  "campaignExecution": {
+    "bundleSha256": "6833990a9954416c205eb4a6432dd22be972be1f965d6816711ed09ba53786d2",
+    "scriptSha256": "20843d01b7fd0b79184b15373ffaeaa0198c1cfc99e71489e1ae2518c8229a42"
+  },
+  "scope": "Unmodified bytes from the completed v30 ordinary-player pen campaign; no version relabelling or generated present-day state."
+}

@@ -1,6 +1,8 @@
 import { expect } from 'vitest';
+import { stripLivingFields } from './legacy-living-defaults';
 /** Synthetic fixtures only. Genuine historical save bytes stay unchanged. */
 export function stripPensFields(raw: Record<string, any>) {
+  stripLivingFields(raw);
   for(const key of ['fences','fenceGates','penMarkers','animalAreas']) {
     expect(raw[key] ?? []).toEqual([]);delete raw[key];
   }

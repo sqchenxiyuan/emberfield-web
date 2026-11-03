@@ -1,0 +1,526 @@
+{
+  "version": 31,
+  "recordedAt": "2026-11-03T23:19:54.427Z",
+  "scope": "Local Web validation. Native developer-prepared observations are separate in chapter 95. The ordinary campaign uses public player commands and ticks; browser tests use its checkpoints and visible controls. Controlled unit tests do not establish ordinary play.",
+  "unit": {
+    "file": "test-results/v31-unit-final.json",
+    "sha256": "21175d0e79de976a2f5884cbcf0281716885c05ada251fcd299c710a69e57ee6",
+    "tests": 1041,
+    "passed": 1041,
+    "failed": 0,
+    "pending": 0,
+    "files": 76
+  },
+  "build": {
+    "file": "test-results/v31-build.log",
+    "sha256": "58f1fcc58f6e535a92f5764299f7ee4e463ac153648de25bacdbe6b108e69a60",
+    "processExitCode": 0
+  },
+  "campaign": {
+    "file": "test-results/voxel-living-final/report.json",
+    "sha256": "4e1232de54e4a471ca01fb2ef661131db142b18ebaabc612ed23a87d82f9b4f3",
+    "scope": "Fresh seed 73129. Only public player commands, ordinary ticks and exact save/load mutate the colony. Terrain, paths and simulation state are read to choose construction sites and record outcomes. Real timber, crafted hunting bow, hunted carcasses, butchered meat and cooked meals. No food, need, comfort, thought, terrain, pawn-position, clock or RNG injection. Bounded deterministic play, not numerical calibration.",
+    "execution": {
+      "bundleSha256": "ea3efd80e5f4af85f451a589b206e24fb381b4dc9def5ed92d2dd54d8b6689b5",
+      "scriptSha256": "a2f7b238a134dcb5aba9ac76df39363728ad0fb7f63f0d6009fa2dab2496d1e6",
+      "sourceManifestSha256": "87fc7b6b41aa5b67012b8ee0f47dffd8cbe856d0f108318381c3023f9c0cc830"
+    },
+    "checks": [
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 507,
+        "elapsedTicks": 507
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 670,
+        "elapsedTicks": 163
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 880,
+        "elapsedTicks": 210
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 1118,
+        "elapsedTicks": 238
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 1635,
+        "elapsedTicks": 517
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 1967,
+        "elapsedTicks": 332
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 2135,
+        "elapsedTicks": 168
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 2679,
+        "elapsedTicks": 544
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 3219,
+        "elapsedTicks": 540
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 3459,
+        "elapsedTicks": 240
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 4003,
+        "elapsedTicks": 544
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 4200,
+        "elapsedTicks": 197
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 4747,
+        "elapsedTicks": 547
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 4903,
+        "elapsedTicks": 156
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 5497,
+        "elapsedTicks": 594
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 5772,
+        "elapsedTicks": 275
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 6348,
+        "elapsedTicks": 576
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 6624,
+        "elapsedTicks": 276
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 6809,
+        "elapsedTicks": 185
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 10894,
+        "elapsedTicks": 4085
+      },
+      {
+        "name": "ordinary hunger starts sustained no-table eating",
+        "tick": 16048,
+        "elapsedTicks": 5154
+      },
+      {
+        "name": "finished meal creates or refreshes the actual no-table memory",
+        "tick": 16148,
+        "elapsedTicks": 100
+      },
+      {
+        "name": "normal workers excavate the shaft",
+        "tick": 16999,
+        "elapsedTicks": 851
+      },
+      {
+        "name": "normal workers open the doorway",
+        "tick": 17118,
+        "elapsedTicks": 119
+      },
+      {
+        "name": "normal workers excavate the room",
+        "tick": 18249,
+        "elapsedTicks": 1131
+      },
+      {
+        "name": "door encloses the naturally roofed chamber",
+        "tick": 18581,
+        "elapsedTicks": 332
+      },
+      {
+        "name": "physical room is enclosed and roofed",
+        "tick": 18581,
+        "room": {
+          "id": 0,
+          "outdoor": false,
+          "volume": 50,
+          "floorCells": 25,
+          "minZ": 4,
+          "maxZ": 5
+        }
+      },
+      {
+        "name": "delivered wood becomes a table three chairs and beds",
+        "tick": 23994,
+        "elapsedTicks": 5413
+      },
+      {
+        "name": "ordinary crafter completes a physical hunting bow",
+        "tick": 25864,
+        "elapsedTicks": 1870
+      },
+      {
+        "name": "hunter fetches and equips bow",
+        "tick": 25865,
+        "elapsedTicks": 1
+      },
+      {
+        "name": "ordinary builders complete the stove",
+        "tick": 25865,
+        "elapsedTicks": 0
+      },
+      {
+        "name": "hunting butchery and cooking produce real meals",
+        "tick": 27664,
+        "elapsedTicks": 1799
+      },
+      {
+        "name": "colonist physically carries a cooked meal toward a reserved seat",
+        "tick": 28834,
+        "elapsedTicks": 1170
+      },
+      {
+        "name": "diner arrives at chair with the same physical meal",
+        "tick": 28911,
+        "elapsedTicks": 77
+      },
+      {
+        "name": "sustained seated eating advances before consumption",
+        "tick": 28941,
+        "elapsedTicks": 30
+      },
+      {
+        "name": "meal is consumed only after the chewing interval",
+        "tick": 29010,
+        "elapsedTicks": 69
+      },
+      {
+        "name": "normal sleep creates a bedroom or barracks memory",
+        "tick": 31576,
+        "elapsedTicks": 2566
+      },
+      {
+        "name": "room role and experience derive from built furniture and actual sleep",
+        "tick": 31576
+      },
+      {
+        "name": "another actual seat reservation is available for dismantling",
+        "tick": 34384,
+        "elapsedTicks": 2808
+      },
+      {
+        "name": "ordinary worker dismantles the reserved chair",
+        "tick": 34439,
+        "elapsedTicks": 55
+      },
+      {
+        "name": "removed chair leaves no stale seat ownership and preserves physical inventory",
+        "tick": 34439
+      }
+    ],
+    "finalTick": 34439,
+    "fixtures": {
+      "initial": {
+        "file": "test-results/voxel-living-final/initial.json",
+        "tick": 0,
+        "sha256": "f8d16da4c7551ea66e8e71f7f81404d66a7c7cae5b2c9009422dedf94e131d2c"
+      },
+      "no-table-chewing": {
+        "file": "test-results/voxel-living-final/no-table-chewing.json",
+        "tick": 16048,
+        "sha256": "c8934bee355a116d9bfd51b3fb1c348d609fb971510f2fe29b189f3d56c445a1"
+      },
+      "without-table": {
+        "file": "test-results/voxel-living-final/without-table.json",
+        "tick": 16148,
+        "sha256": "0b095e0546f8587282e2f40308b05792229df041df60250d44ed29ad9c0a4e78"
+      },
+      "ready": {
+        "file": "test-results/voxel-living-final/ready.json",
+        "tick": 18581,
+        "sha256": "5db137b0edfc715fcd3ac2d2d6100fe2042012d064e82d8b688074c329bd32f1"
+      },
+      "furnished": {
+        "file": "test-results/voxel-living-final/furnished.json",
+        "tick": 23994,
+        "sha256": "7d4d3907ef91a147b0a214fd9fb7659128291e23d09f492a5bcfae0875d5fe78"
+      },
+      "carrying-meal": {
+        "file": "test-results/voxel-living-final/carrying-meal.json",
+        "tick": 28834,
+        "sha256": "c49d2a6d1a6d14c884abe5c5c799b6ff06644081154a0f7728b82e84ba0276da"
+      },
+      "seated-meal": {
+        "file": "test-results/voxel-living-final/seated-meal.json",
+        "tick": 28911,
+        "sha256": "f8e7a38e4860fb806b524c8d2429ad0811e32e41cdf73248539e77c273fbf01b"
+      },
+      "after-meal": {
+        "file": "test-results/voxel-living-final/after-meal.json",
+        "tick": 29010,
+        "sha256": "1a241e99f1fa45a3f23135e51a6cb5eb570f57c38a33eeefe9e5f19825f914b3"
+      },
+      "sleep-memory": {
+        "file": "test-results/voxel-living-final/sleep-memory.json",
+        "tick": 31576,
+        "sha256": "9fd83860ad826c80aac3a113e360ccc2246394961de808a6476476bca0b0c464"
+      },
+      "before-removal": {
+        "file": "test-results/voxel-living-final/before-removal.json",
+        "tick": 34384,
+        "sha256": "ac764732f9f87f35520aada4b417982ad186fbfb9f41985ce597f70fcbef5ea8"
+      },
+      "final": {
+        "file": "test-results/voxel-living-final/final.json",
+        "tick": 34439,
+        "sha256": "4fd242f90994a35cc50c205e48e884ee279b717fcdfb1e3db3d3f320eb4a8478"
+      }
+    }
+  },
+  "browser": {
+    "file": "test-results/voxel-living-browser-final2/report.json",
+    "sha256": "f9cf54eb0634c8d49c75a674815e00fc6cf847fc55e3f00afa783b98329b86d5",
+    "scope": "Worker and main renderer evidence from SHA-verified v31 ordinary-play saves. Mutations use visible controls, actual canvas pointers and file chooser import/export. snapshot/project/exportSave are read-only. Checks furniture meshes, rotated two-cell previews, actual construction and picking, physical food, seated chewing, comfort, memories, room details, removal and 900px layout. No state injection.",
+    "scriptSha256": "9ab3831eb389ac9eee9ae5150d7b72a4afbc4d069aa871adb97d6eeffe56f22b",
+    "campaign": {
+      "file": "test-results/voxel-living-final/report.json",
+      "sha256": "4e1232de54e4a471ca01fb2ef661131db142b18ebaabc612ed23a87d82f9b4f3",
+      "sourceManifestSha256": "87fc7b6b41aa5b67012b8ee0f47dffd8cbe856d0f108318381c3023f9c0cc830"
+    },
+    "modes": [
+      {
+        "mode": "worker",
+        "checks": [
+          {
+            "name": "requested renderer is active"
+          },
+          {
+            "name": "actual no-table memory and comfort are visible"
+          },
+          {
+            "name": "both table cells pick the actual multi-part furniture and show authoritative room details"
+          },
+          {
+            "name": "rotated two-cell preview commits a normal construction and far cell selects it"
+          },
+          {
+            "name": "chair preview rotation construction picking and dismantling are physical"
+          },
+          {
+            "name": "visible dismantle action removes the actual table"
+          },
+          {
+            "name": "actual meal cargo and reserved travel appear in the UI"
+          },
+          {
+            "name": "actual occupied seat table meal and chewing progress survive visible export and import"
+          },
+          {
+            "name": "real time advances eating motion and chair comfort before food disappears"
+          },
+          {
+            "name": "completed chewing consumes food and ends the dining pose"
+          },
+          {
+            "name": "ordinary sleep produces visible room experience and comfort"
+          },
+          {
+            "name": "900 pixel layout preserves readable life controls",
+            "bounds": {
+              "x": 31,
+              "y": 303.78125,
+              "width": 197,
+              "height": 238.703125
+            }
+          },
+          {
+            "name": "served JS and CSS match frozen local build by SHA"
+          },
+          {
+            "name": "no page or console errors"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:4178/assets/index-VwnQSe7o.js",
+            "status": 200,
+            "sha256": "cb0b0e454aa6ba3324c0b896a3b797401f1e25588a6af4bf4f4405c843901d4e",
+            "bytes": 2356,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/main-DAgI8mmw.css",
+            "status": 200,
+            "sha256": "b2aa64e30fc2b13160e00f48d0dc356bcceeb21fe2a483dc571627dead878d71",
+            "bytes": 41213,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "bytes": 221699,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/main-CKaH5A3e.js",
+            "status": 200,
+            "sha256": "ddcc96d82fbb272fb9a20544ac70daaaa459d893871acc804f54cbb3f3046f0a",
+            "bytes": 844991,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/sim.worker-Bshety9Q.js",
+            "status": 200,
+            "sha256": "1c0debeb9164602c3e4a9531c4d3ead85c69dd86acf1475bd41e3ac3abb1215f",
+            "bytes": 480378,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/render.worker-CuqVDF6f.js",
+            "status": 200,
+            "sha256": "7bf3fced4d9825e981a6b2508d765d8e9ec247bdf7817a4c0bb2627c98c8a9d2",
+            "bytes": 613478,
+            "matchesLocalBuild": true
+          }
+        ]
+      },
+      {
+        "mode": "main",
+        "checks": [
+          {
+            "name": "requested renderer is active"
+          },
+          {
+            "name": "actual no-table memory and comfort are visible"
+          },
+          {
+            "name": "both table cells pick the actual multi-part furniture and show authoritative room details"
+          },
+          {
+            "name": "rotated two-cell preview commits a normal construction and far cell selects it"
+          },
+          {
+            "name": "chair preview rotation construction picking and dismantling are physical"
+          },
+          {
+            "name": "visible dismantle action removes the actual table"
+          },
+          {
+            "name": "actual meal cargo and reserved travel appear in the UI"
+          },
+          {
+            "name": "actual occupied seat table meal and chewing progress survive visible export and import"
+          },
+          {
+            "name": "real time advances eating motion and chair comfort before food disappears"
+          },
+          {
+            "name": "completed chewing consumes food and ends the dining pose"
+          },
+          {
+            "name": "ordinary sleep produces visible room experience and comfort"
+          },
+          {
+            "name": "900 pixel layout preserves readable life controls",
+            "bounds": {
+              "x": 31,
+              "y": 303.78125,
+              "width": 197,
+              "height": 238.703125
+            }
+          },
+          {
+            "name": "served JS and CSS match frozen local build by SHA"
+          },
+          {
+            "name": "no page or console errors"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:4178/assets/index-VwnQSe7o.js",
+            "status": 200,
+            "sha256": "cb0b0e454aa6ba3324c0b896a3b797401f1e25588a6af4bf4f4405c843901d4e",
+            "bytes": 2356,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/main-DAgI8mmw.css",
+            "status": 200,
+            "sha256": "b2aa64e30fc2b13160e00f48d0dc356bcceeb21fe2a483dc571627dead878d71",
+            "bytes": 41213,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "bytes": 221699,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/main-CKaH5A3e.js",
+            "status": 200,
+            "sha256": "ddcc96d82fbb272fb9a20544ac70daaaa459d893871acc804f54cbb3f3046f0a",
+            "bytes": 844991,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4178/assets/sim.worker-Bshety9Q.js",
+            "status": 200,
+            "sha256": "1c0debeb9164602c3e4a9531c4d3ead85c69dd86acf1475bd41e3ac3abb1215f",
+            "bytes": 480378,
+            "matchesLocalBuild": true
+          }
+        ]
+      }
+    ]
+  },
+  "screenshots": [
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-living-furniture-room.png",
+      "sha256": "bdfbef0dc06c99b0086f32b50970bd8dc75293ba429778c2859487a625b41661"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-living-seated-meal.png",
+      "sha256": "541adb39a2b9e7094775afae589e28b3faeb8d07bb527a67f1a3d79bcbe1ea29"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-living-sleep-room-memory.png",
+      "sha256": "5dc231e14a5c391d7f31e3704b8f78a3dd7fb1ad2a35cdb0c32c610619229740"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-living-narrow-living.png",
+      "sha256": "5850948d47f426dc218ef2e68e0b2ab3fcb77a1f5766980993a5f66538659ac0"
+    }
+  ],
+  "limitations": [
+    "Mechanisms first; furniture costs, durations and balance remain provisional",
+    "Wood table/chair subset; no furniture quality, decorations, family bedrooms or comprehensive room statistics",
+    "Autonomous colony meals use the new task; medical feeding, prisoner supply and visitors retain their own subsystems",
+    "Native scenes include explicitly documented developer preparation",
+    "Tests run locally; Pages CI only installs, type-checks, builds and deploys"
+  ]
+}

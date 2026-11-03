@@ -300,14 +300,14 @@ export class VoxelClient {
       downX = 0,
       downY = 0;
     let dragTool: Tool | null = null, dragSequence = 0, previewSequence = 0;
-    const previews = (tool: Tool) => ['fence', 'fenceGate', 'penMarker', 'animalArea'].includes(tool);
+    const previews = (tool: Tool) => ['table', 'chair', 'fence', 'fenceGate', 'penMarker', 'animalArea'].includes(tool);
     const preview = (from: Pos, target: Pos, tool: Tool) => {
       const to = { ...target, z: from.z };
       if (tool === 'fence') {
         if (Math.abs(to.x - from.x) >= Math.abs(to.y - from.y)) to.y = from.y;
         else to.x = from.x;
       }
-      if (tool === 'fenceGate' || tool === 'penMarker') Object.assign(to, from);
+      if (['table', 'chair', 'fenceGate', 'penMarker'].includes(tool)) Object.assign(to, from);
       this.view({ placementPreview: { tool: tool as PlacementPreview['tool'], from, to, axis: this.state.axis,
         erase: tool === 'animalArea' && this.state.animalAreaErase } });
     };
@@ -399,6 +399,8 @@ export class VoxelClient {
             'up',
             'ladder',
             'bed',
+            'table',
+            'chair',
             'door',
             'stonecutter',
             'tailor',

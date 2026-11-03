@@ -1,0 +1,2124 @@
+{
+  "evidence_id": "RW17-NATIVE-DINING-COMFORT",
+  "date_local": "2026-11-04",
+  "version": "1.7.4980 rev60",
+  "kind": "Ordinary consumption in two save branches; second branch has developer-built table/chair; UI input, original saves and crops, no injection/save editing",
+  "launch": {
+    "pid": 16708,
+    "executable": "F:/SteamLibrary/steamapps/common/RimWorld/RimWorld.exe",
+    "profile": ".local-research/runtime/profile-dining-20261104",
+    "baseline_source": ".local-research/runtime/profile-animal-husbandry-20261104/Saves/New Arrivals3.rws",
+    "baseline_source_sha256": "651abba413f1aa854754fa752ca01bba16e23e200fc65ab62b519ea6668ea70f",
+    "baseline_copy_sha256": "651abba413f1aa854754fa752ca01bba16e23e200fc65ab62b519ea6668ea70f",
+    "active_mods": [
+      "ludeon.rimworld",
+      "ludeon.rimworld.odyssey"
+    ],
+    "mods_config_sha256": "41595349c9d4e0815c74d5fa89fa6dad2dd3af494f547c5734b028918f2151ff",
+    "configuration_change": "Copied prior isolated Config; pauseOnLoad False -> True in this profile before launch",
+    "launch_record_limit": "Launch command is retained in task tool history; no separate contemporaneous launch-record JSON or prelaunch Prefs digest was captured."
+  },
+  "preparation": {
+    "developer_action": true,
+    "method": "Ordinary reload of dining-baseline, then God-mode wooden Table1x2c and DiningChair placement at75813; God mode disabled before ordinary Consume. Food and pawn reused from baseline.",
+    "edited_saves": false,
+    "no_statistical_calibration": true,
+    "load_to_preparation_ticks": 1
+  },
+  "targets": {
+    "pawn": "Human958",
+    "table": "Table1x2c149544",
+    "chair": "DiningChair149545",
+    "source_meal_stack": "MealSurvivalPack41855",
+    "player_faction": "Faction_12"
+  },
+  "branches": {
+    "without_table": [
+      0,
+      1,
+      2
+    ],
+    "reload_action": 22,
+    "reload_source_save": 0,
+    "with_table": [
+      0,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "reason": "Same baseline ordinary reload controls prior memory; chronological action order includes a tick rollback and different object ids. No probability inference."
+  },
+  "saves": [
+    {
+      "file": ".local-research/runtime/profile-dining-20261104/Saves/dining-baseline.rws",
+      "sha256": "651abba413f1aa854754fa752ca01bba16e23e200fc65ab62b519ea6668ea70f",
+      "ticks_game": 75812,
+      "pawn": {
+        "id": "Human958",
+        "position": "(114, 0, 132)",
+        "job": "Tame",
+        "job_target_a": "Thing_Hare113769",
+        "job_target_b": "",
+        "player_forced": true,
+        "toil": 32,
+        "ticks_left": 108,
+        "path_destination": "",
+        "food": 0.516001105,
+        "comfort": 0.0,
+        "without_table_age": 9600,
+        "carry": []
+      },
+      "reservations": [
+        "Thing_Hare113769"
+      ],
+      "destination_reservations": [],
+      "nodes": [
+        {
+          "role": "pawn",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]",
+          "xml": "<thing Class=\"Pawn\"><def>Human</def><id>Human958</id><pos>(114, 0, 132)</pos><faction>Faction_12</faction><jobs><curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>Tame</def><loadID>43548</loadID><targetA>Thing_Hare113769</targetA><targetC>Thing_RawRice113770</targetC><targetQueueA IsNull=\"True\" /><targetQueueB IsNull=\"True\" /><count>5</count><countQueue IsNull=\"True\" /><ignoreForbidden>True</ignoreForbidden><startTick>72541</startTick><playerForced>True</playerForced><placedThings IsNull=\"True\" /><ignoreDesignations>True</ignoreDesignations><workGiverDef>Tame</workGiverDef><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>403910827</lastJobGiverKey></curJob><curDriver Class=\"JobDriver_Tame\"><curToilIndex>32</curToilIndex><ticksLeftThisToil>108</ticksLeftThisToil><startTick>72541</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver><jobQueue><jobs /></jobQueue><formingCaravanTick>-1</formingCaravanTick></jobs><pather><moving>False</moving><nextCell>(114, 0, 132)</nextCell><nextCellCostInitial>1</nextCellCostInitial><peMode>Touch</peMode><cellsUntilClamor>4</cellsUntilClamor><lastEnteredCellTick>75121</lastEnteredCellTick><lastMovedTick>75121</lastMovedTick></pather><carryTracker><innerContainer><maxStacks>1</maxStacks><innerList /></innerContainer></carryTracker><drafter><autoUndrafter /></drafter></thing>"
+        },
+        {
+          "role": "food",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Food\"]",
+          "xml": "<li Class=\"Need_Food\"><def>Food</def><curLevel>0.516001105</curLevel><lastNonStarvingTick>75781</lastNonStarvingTick></li>"
+        },
+        {
+          "role": "comfort",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Comfort\"]",
+          "xml": "<li Class=\"Need_Comfort\"><def>Comfort</def></li>"
+        },
+        {
+          "role": "without_table",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[def=\"AteWithoutTable\"]",
+          "xml": "<li><def>AteWithoutTable</def><sourcePrecept>null</sourcePrecept><otherPawn>null</otherPawn><age>9600</age></li>"
+        },
+        {
+          "role": "MealSurvivalPack41855",
+          "xpath": "//maps/li/things/thing[id=\"MealSurvivalPack41855\"]",
+          "xml": "<thing Class=\"ThingWithComps\"><def>MealSurvivalPack</def><id>MealSurvivalPack41855</id><map>0</map><pos>(105, 0, 123)</pos><health>50</health><stackCount>6</stackCount><questTags IsNull=\"True\" /><spawnedTick>271</spawnedTick><despawnedTick>-1</despawnedTick><ingredients /></thing>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\"])[1]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_43548</job><target>Thing_Hare113769</target><maxPawns>1</maxPawns><stackCount>-1</stackCount></li>"
+        }
+      ]
+    },
+    {
+      "file": ".local-research/runtime/profile-dining-20261104/Saves/New Arrivals1.rws",
+      "sha256": "c5ef8c7b529086d4a7237a8ff42913dcf5fa72cb68b6b1c4b768b59723e35f60",
+      "ticks_game": 76627,
+      "pawn": {
+        "id": "Human958",
+        "position": "(104, 0, 123)",
+        "job": "Ingest",
+        "job_target_a": "Thing_MealSurvivalPack149545",
+        "job_target_b": "",
+        "player_forced": true,
+        "toil": 8,
+        "ticks_left": 30,
+        "path_destination": "",
+        "food": 0.486001104,
+        "comfort": 0.0,
+        "without_table_age": 10350,
+        "carry": [
+          {
+            "id": "MealSurvivalPack149545",
+            "def": "MealSurvivalPack",
+            "count": 1
+          }
+        ]
+      },
+      "reservations": [
+        "Thing_MealSurvivalPack149545",
+        "(104, 0, 123)"
+      ],
+      "destination_reservations": [
+        "(104, 0, 123)"
+      ],
+      "nodes": [
+        {
+          "role": "pawn",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]",
+          "xml": "<thing Class=\"Pawn\"><def>Human</def><id>Human958</id><pos>(104, 0, 123)</pos><rot>3</rot><faction>Faction_12</faction><jobs><curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>Ingest</def><loadID>48525</loadID><targetA>Thing_MealSurvivalPack149545</targetA><targetQueueA IsNull=\"True\" /><targetQueueB IsNull=\"True\" /><count>1</count><countQueue IsNull=\"True\" /><ignoreForbidden>True</ignoreForbidden><startTick>75813</startTick><playerForced>True</playerForced><placedThings IsNull=\"True\" /><ignoreDesignations>True</ignoreDesignations><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>403910827</lastJobGiverKey></curJob><curDriver Class=\"JobDriver_Ingest\"><curToilIndex>8</curToilIndex><ticksLeftThisToil>30</ticksLeftThisToil><startTick>75813</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver><jobQueue><jobs /></jobQueue><formingCaravanTick>-1</formingCaravanTick></jobs><pather><moving>False</moving><nextCell>(104, 0, 123)</nextCell><nextCellCostInitial>1</nextCellCostInitial><peMode>OnCell</peMode><cellsUntilClamor>12</cellsUntilClamor><lastEnteredCellTick>76125</lastEnteredCellTick><lastMovedTick>76125</lastMovedTick></pather><carryTracker><innerContainer><maxStacks>1</maxStacks><innerList><li Class=\"ThingWithComps\"><def>MealSurvivalPack</def><id>MealSurvivalPack149545</id><health>50</health><stackCount>1</stackCount><questTags IsNull=\"True\" /><despawnedTick>-1</despawnedTick><ingredients /></li></innerList></innerContainer></carryTracker><drafter><autoUndrafter /></drafter></thing>"
+        },
+        {
+          "role": "food",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Food\"]",
+          "xml": "<li Class=\"Need_Food\"><def>Food</def><curLevel>0.486001104</curLevel><lastNonStarvingTick>76531</lastNonStarvingTick></li>"
+        },
+        {
+          "role": "comfort",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Comfort\"]",
+          "xml": "<li Class=\"Need_Comfort\"><def>Comfort</def></li>"
+        },
+        {
+          "role": "without_table",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[def=\"AteWithoutTable\"]",
+          "xml": "<li><def>AteWithoutTable</def><sourcePrecept>null</sourcePrecept><otherPawn>null</otherPawn><age>10350</age></li>"
+        },
+        {
+          "role": "MealSurvivalPack41855",
+          "xpath": "//maps/li/things/thing[id=\"MealSurvivalPack41855\"]",
+          "xml": "<thing Class=\"ThingWithComps\"><def>MealSurvivalPack</def><id>MealSurvivalPack41855</id><map>0</map><pos>(105, 0, 123)</pos><health>50</health><stackCount>5</stackCount><questTags IsNull=\"True\" /><spawnedTick>271</spawnedTick><despawnedTick>-1</despawnedTick><ingredients /></thing>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\"])[1]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_48525</job><target>Thing_MealSurvivalPack149545</target><maxPawns>1</maxPawns><stackCount>-1</stackCount></li>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\"])[2]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_48525</job><target>(104, 0, 123)</target><maxPawns>1</maxPawns><stackCount>-1</stackCount></li>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/pawnDestinationReservationManager/reservedDestinations/values/li/list/li[claimant=\"Thing_Human958\"])[1]",
+          "xml": "<li><target>(104, 0, 123)</target><claimant>Thing_Human958</claimant><job>Job_48525</job></li>"
+        }
+      ]
+    },
+    {
+      "file": ".local-research/runtime/profile-dining-20261104/Saves/New Arrivals2.rws",
+      "sha256": "e804fb7b1f7f1a7f7ce902b0b8e296f89abd436c63f3dff0a463a8f09021fe37",
+      "ticks_game": 76724,
+      "pawn": {
+        "id": "Human958",
+        "position": "(106, 0, 124)",
+        "job": "FeedPatient",
+        "job_target_a": "Thing_MealSurvivalPack149553",
+        "job_target_b": "Thing_Human965",
+        "player_forced": false,
+        "toil": 13,
+        "ticks_left": -36,
+        "path_destination": "Thing_Human965",
+        "food": 0.994000018,
+        "comfort": 0.0,
+        "without_table_age": 150,
+        "carry": [
+          {
+            "id": "MealSurvivalPack149553",
+            "def": "MealSurvivalPack",
+            "count": 1
+          }
+        ]
+      },
+      "reservations": [
+        "Thing_Human965",
+        "Thing_MealSurvivalPack149553"
+      ],
+      "destination_reservations": [],
+      "nodes": [
+        {
+          "role": "pawn",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]",
+          "xml": "<thing Class=\"Pawn\"><def>Human</def><id>Human958</id><pos>(106, 0, 124)</pos><rot>1</rot><faction>Faction_12</faction><jobs><curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>FeedPatient</def><loadID>48681</loadID><targetA>Thing_MealSurvivalPack149553</targetA><targetB>Thing_Human965</targetB><targetQueueA IsNull=\"True\" /><targetQueueB IsNull=\"True\" /><count>1</count><countQueue IsNull=\"True\" /><startTick>76660</startTick><placedThings IsNull=\"True\" /><workGiverDef>DoctorFeedHumanlikes</workGiverDef><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>-1340642732</lastJobGiverKey></curJob><curDriver Class=\"JobDriver_FoodFeedPatient\"><curToilIndex>13</curToilIndex><ticksLeftThisToil>-36</ticksLeftThisToil><startTick>76660</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver><jobQueue><jobs /></jobQueue><formingCaravanTick>-1</formingCaravanTick></jobs><pather><nextCell>(107, 0, 124)</nextCell><nextCellCostLeft>7.14704704</nextCellCostLeft><nextCellCostInitial>17.7299767</nextCellCostInitial><peMode>Touch</peMode><cellsUntilClamor>10</cellsUntilClamor><lastEnteredCellTick>76714</lastEnteredCellTick><lastMovedTick>76724</lastMovedTick><destination>Thing_Human965</destination></pather><carryTracker><innerContainer><maxStacks>1</maxStacks><innerList><li Class=\"ThingWithComps\"><def>MealSurvivalPack</def><id>MealSurvivalPack149553</id><health>50</health><stackCount>1</stackCount><questTags IsNull=\"True\" /><despawnedTick>-1</despawnedTick><ingredients /></li></innerList></innerContainer></carryTracker><drafter><autoUndrafter /></drafter></thing>"
+        },
+        {
+          "role": "food",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Food\"]",
+          "xml": "<li Class=\"Need_Food\"><def>Food</def><curLevel>0.994000018</curLevel><lastNonStarvingTick>76681</lastNonStarvingTick></li>"
+        },
+        {
+          "role": "comfort",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Comfort\"]",
+          "xml": "<li Class=\"Need_Comfort\"><def>Comfort</def></li>"
+        },
+        {
+          "role": "without_table",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[def=\"AteWithoutTable\"]",
+          "xml": "<li><def>AteWithoutTable</def><sourcePrecept>null</sourcePrecept><otherPawn>null</otherPawn><age>150</age></li>"
+        },
+        {
+          "role": "MealSurvivalPack41855",
+          "xpath": "//maps/li/things/thing[id=\"MealSurvivalPack41855\"]",
+          "xml": "<thing Class=\"ThingWithComps\"><def>MealSurvivalPack</def><id>MealSurvivalPack41855</id><map>0</map><pos>(105, 0, 123)</pos><health>50</health><stackCount>4</stackCount><questTags IsNull=\"True\" /><spawnedTick>271</spawnedTick><despawnedTick>-1</despawnedTick><ingredients /></thing>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\"])[1]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_48681</job><target>Thing_Human965</target><maxPawns>1</maxPawns><stackCount>-1</stackCount></li>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\"])[2]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_48681</job><target>Thing_MealSurvivalPack149553</target><maxPawns>1</maxPawns><stackCount>-1</stackCount></li>"
+        }
+      ]
+    },
+    {
+      "file": ".local-research/runtime/profile-dining-20261104/Saves/New Arrivals3.rws",
+      "sha256": "3ef4255011138fb3d0f4dee89bc0698c1927c7d13e503c3bd3794f9c546be523",
+      "ticks_game": 75813,
+      "pawn": {
+        "id": "Human958",
+        "position": "(114, 0, 132)",
+        "job": "Tame",
+        "job_target_a": "Thing_Hare113769",
+        "job_target_b": "",
+        "player_forced": true,
+        "toil": 32,
+        "ticks_left": 107,
+        "path_destination": "",
+        "food": 0.516001105,
+        "comfort": 0.0,
+        "without_table_age": 9600,
+        "carry": []
+      },
+      "reservations": [
+        "Thing_Hare113769"
+      ],
+      "destination_reservations": [],
+      "nodes": [
+        {
+          "role": "pawn",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]",
+          "xml": "<thing Class=\"Pawn\"><def>Human</def><id>Human958</id><pos>(114, 0, 132)</pos><faction>Faction_12</faction><jobs><curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>Tame</def><loadID>43548</loadID><targetA>Thing_Hare113769</targetA><targetC>Thing_RawRice113770</targetC><targetQueueA IsNull=\"True\" /><targetQueueB IsNull=\"True\" /><count>5</count><countQueue IsNull=\"True\" /><ignoreForbidden>True</ignoreForbidden><startTick>72541</startTick><playerForced>True</playerForced><placedThings IsNull=\"True\" /><ignoreDesignations>True</ignoreDesignations><workGiverDef>Tame</workGiverDef><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>403910827</lastJobGiverKey></curJob><curDriver Class=\"JobDriver_Tame\"><curToilIndex>32</curToilIndex><ticksLeftThisToil>107</ticksLeftThisToil><startTick>72541</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver><jobQueue><jobs /></jobQueue><formingCaravanTick>-1</formingCaravanTick></jobs><pather><moving>False</moving><nextCell>(114, 0, 132)</nextCell><nextCellCostInitial>1</nextCellCostInitial><peMode>Touch</peMode><cellsUntilClamor>4</cellsUntilClamor><lastEnteredCellTick>75121</lastEnteredCellTick><lastMovedTick>75121</lastMovedTick></pather><carryTracker><innerContainer><maxStacks>1</maxStacks><innerList /></innerContainer></carryTracker><drafter><autoUndrafter /></drafter></thing>"
+        },
+        {
+          "role": "food",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Food\"]",
+          "xml": "<li Class=\"Need_Food\"><def>Food</def><curLevel>0.516001105</curLevel><lastNonStarvingTick>75781</lastNonStarvingTick></li>"
+        },
+        {
+          "role": "comfort",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Comfort\"]",
+          "xml": "<li Class=\"Need_Comfort\"><def>Comfort</def></li>"
+        },
+        {
+          "role": "without_table",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[def=\"AteWithoutTable\"]",
+          "xml": "<li><def>AteWithoutTable</def><sourcePrecept>null</sourcePrecept><otherPawn>null</otherPawn><age>9600</age></li>"
+        },
+        {
+          "role": "Table1x2c149544",
+          "xpath": "//maps/li/things/thing[id=\"Table1x2c149544\"]",
+          "xml": "<thing Class=\"Building\"><def>Table1x2c</def><id>Table1x2c149544</id><map>0</map><pos>(119, 0, 132)</pos><health>49</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><active>True</active><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "DiningChair149545",
+          "xpath": "//maps/li/things/thing[id=\"DiningChair149545\"]",
+          "xml": "<thing Class=\"Building\"><def>DiningChair</def><id>DiningChair149545</id><map>0</map><pos>(119, 0, 131)</pos><rot>2</rot><health>65</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><taleRef IsNull=\"True\" /><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "MealSurvivalPack41855",
+          "xpath": "//maps/li/things/thing[id=\"MealSurvivalPack41855\"]",
+          "xml": "<thing Class=\"ThingWithComps\"><def>MealSurvivalPack</def><id>MealSurvivalPack41855</id><map>0</map><pos>(105, 0, 123)</pos><health>50</health><stackCount>6</stackCount><questTags IsNull=\"True\" /><spawnedTick>271</spawnedTick><despawnedTick>-1</despawnedTick><ingredients /></thing>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\"])[1]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_43548</job><target>Thing_Hare113769</target><maxPawns>1</maxPawns><stackCount>-1</stackCount></li>"
+        }
+      ]
+    },
+    {
+      "file": ".local-research/runtime/profile-dining-20261104/Saves/New Arrivals4.rws",
+      "sha256": "bb59ed9d064f031170632e52649a2a9a8a854f08124f88feeea40c0c714746c4",
+      "ticks_game": 76253,
+      "pawn": {
+        "id": "Human958",
+        "position": "(112, 0, 125)",
+        "job": "Ingest",
+        "job_target_a": "Thing_MealSurvivalPack149549",
+        "job_target_b": "",
+        "player_forced": true,
+        "toil": 6,
+        "ticks_left": -148,
+        "path_destination": "(119, 0, 131)",
+        "food": 0.498001128,
+        "comfort": 0.0,
+        "without_table_age": 10050,
+        "carry": [
+          {
+            "id": "MealSurvivalPack149549",
+            "def": "MealSurvivalPack",
+            "count": 1
+          }
+        ]
+      },
+      "reservations": [
+        "Thing_MealSurvivalPack149549",
+        "Thing_DiningChair149545"
+      ],
+      "destination_reservations": [
+        "(119, 0, 131)"
+      ],
+      "nodes": [
+        {
+          "role": "pawn",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]",
+          "xml": "<thing Class=\"Pawn\"><def>Human</def><id>Human958</id><pos>(112, 0, 125)</pos><rot>1</rot><faction>Faction_12</faction><jobs><curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>Ingest</def><loadID>48525</loadID><targetA>Thing_MealSurvivalPack149549</targetA><targetQueueA IsNull=\"True\" /><targetQueueB IsNull=\"True\" /><count>1</count><countQueue IsNull=\"True\" /><ignoreForbidden>True</ignoreForbidden><startTick>75813</startTick><playerForced>True</playerForced><placedThings IsNull=\"True\" /><ignoreDesignations>True</ignoreDesignations><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>403910827</lastJobGiverKey></curJob><curDriver Class=\"JobDriver_Ingest\"><curToilIndex>6</curToilIndex><ticksLeftThisToil>-148</ticksLeftThisToil><startTick>75813</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver><jobQueue><jobs /></jobQueue><formingCaravanTick>-1</formingCaravanTick></jobs><pather><nextCell>(113, 0, 125)</nextCell><nextCellCostLeft>5.2140007</nextCellCostLeft><nextCellCostInitial>17.7299767</nextCellCostInitial><peMode>OnCell</peMode><cellsUntilClamor>6</cellsUntilClamor><lastEnteredCellTick>76241</lastEnteredCellTick><lastMovedTick>76253</lastMovedTick><destination>(119, 0, 131)</destination></pather><carryTracker><innerContainer><maxStacks>1</maxStacks><innerList><li Class=\"ThingWithComps\"><def>MealSurvivalPack</def><id>MealSurvivalPack149549</id><health>50</health><stackCount>1</stackCount><questTags IsNull=\"True\" /><despawnedTick>-1</despawnedTick><ingredients /></li></innerList></innerContainer></carryTracker><drafter><autoUndrafter /></drafter></thing>"
+        },
+        {
+          "role": "food",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Food\"]",
+          "xml": "<li Class=\"Need_Food\"><def>Food</def><curLevel>0.498001128</curLevel><lastNonStarvingTick>76231</lastNonStarvingTick></li>"
+        },
+        {
+          "role": "comfort",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Comfort\"]",
+          "xml": "<li Class=\"Need_Comfort\"><def>Comfort</def></li>"
+        },
+        {
+          "role": "without_table",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[def=\"AteWithoutTable\"]",
+          "xml": "<li><def>AteWithoutTable</def><sourcePrecept>null</sourcePrecept><otherPawn>null</otherPawn><age>10050</age></li>"
+        },
+        {
+          "role": "Table1x2c149544",
+          "xpath": "//maps/li/things/thing[id=\"Table1x2c149544\"]",
+          "xml": "<thing Class=\"Building\"><def>Table1x2c</def><id>Table1x2c149544</id><map>0</map><pos>(119, 0, 132)</pos><health>49</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><active>True</active><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "DiningChair149545",
+          "xpath": "//maps/li/things/thing[id=\"DiningChair149545\"]",
+          "xml": "<thing Class=\"Building\"><def>DiningChair</def><id>DiningChair149545</id><map>0</map><pos>(119, 0, 131)</pos><rot>2</rot><health>65</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><taleRef IsNull=\"True\" /><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "MealSurvivalPack41855",
+          "xpath": "//maps/li/things/thing[id=\"MealSurvivalPack41855\"]",
+          "xml": "<thing Class=\"ThingWithComps\"><def>MealSurvivalPack</def><id>MealSurvivalPack41855</id><map>0</map><pos>(105, 0, 123)</pos><health>50</health><stackCount>5</stackCount><questTags IsNull=\"True\" /><spawnedTick>271</spawnedTick><despawnedTick>-1</despawnedTick><ingredients /></thing>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\"])[1]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_48525</job><target>Thing_MealSurvivalPack149549</target><maxPawns>1</maxPawns><stackCount>-1</stackCount></li>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\"])[2]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_48525</job><target>Thing_DiningChair149545</target><maxPawns>1</maxPawns><stackCount>-1</stackCount></li>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/pawnDestinationReservationManager/reservedDestinations/values/li/list/li[claimant=\"Thing_Human958\"])[1]",
+          "xml": "<li><target>(119, 0, 131)</target><claimant>Thing_Human958</claimant><job>Job_48525</job></li>"
+        }
+      ]
+    },
+    {
+      "file": ".local-research/runtime/profile-dining-20261104/Saves/New Arrivals5.rws",
+      "sha256": "84f059f01e1ec6dd34948381a60e2598c5444b3e10d3a71df42ab6c94649064b",
+      "ticks_game": 76670,
+      "pawn": {
+        "id": "Human958",
+        "position": "(119, 0, 131)",
+        "job": "Ingest",
+        "job_target_a": "Thing_MealSurvivalPack149549",
+        "job_target_b": "(119, 0, 132)",
+        "player_forced": true,
+        "toil": 8,
+        "ticks_left": 307,
+        "path_destination": "",
+        "food": 0.486001104,
+        "comfort": 0.0360000022,
+        "without_table_age": 10350,
+        "carry": [
+          {
+            "id": "MealSurvivalPack149549",
+            "def": "MealSurvivalPack",
+            "count": 1
+          }
+        ]
+      },
+      "reservations": [
+        "Thing_MealSurvivalPack149549",
+        "Thing_DiningChair149545"
+      ],
+      "destination_reservations": [
+        "(119, 0, 131)"
+      ],
+      "nodes": [
+        {
+          "role": "pawn",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]",
+          "xml": "<thing Class=\"Pawn\"><def>Human</def><id>Human958</id><pos>(119, 0, 131)</pos><faction>Faction_12</faction><jobs><curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>Ingest</def><loadID>48525</loadID><targetA>Thing_MealSurvivalPack149549</targetA><targetB>(119, 0, 132)</targetB><targetQueueA IsNull=\"True\" /><targetQueueB IsNull=\"True\" /><count>1</count><countQueue IsNull=\"True\" /><ignoreForbidden>True</ignoreForbidden><startTick>75813</startTick><playerForced>True</playerForced><placedThings IsNull=\"True\" /><ignoreDesignations>True</ignoreDesignations><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>403910827</lastJobGiverKey></curJob><curDriver Class=\"JobDriver_Ingest\"><curToilIndex>8</curToilIndex><ticksLeftThisToil>307</ticksLeftThisToil><startTick>75813</startTick><rotateToFace>B</rotateToFace><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver><jobQueue><jobs /></jobQueue><formingCaravanTick>-1</formingCaravanTick></jobs><pather><moving>False</moving><nextCell>(119, 0, 131)</nextCell><nextCellCostInitial>1</nextCellCostInitial><peMode>OnCell</peMode><cellsUntilClamor>9</cellsUntilClamor><lastEnteredCellTick>76445</lastEnteredCellTick><lastMovedTick>76445</lastMovedTick></pather><carryTracker><innerContainer><maxStacks>1</maxStacks><innerList><li Class=\"ThingWithComps\"><def>MealSurvivalPack</def><id>MealSurvivalPack149549</id><health>50</health><stackCount>1</stackCount><questTags IsNull=\"True\" /><despawnedTick>-1</despawnedTick><ingredients /></li></innerList></innerContainer></carryTracker><drafter><autoUndrafter /></drafter></thing>"
+        },
+        {
+          "role": "food",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Food\"]",
+          "xml": "<li Class=\"Need_Food\"><def>Food</def><curLevel>0.486001104</curLevel><lastNonStarvingTick>76531</lastNonStarvingTick></li>"
+        },
+        {
+          "role": "comfort",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Comfort\"]",
+          "xml": "<li Class=\"Need_Comfort\"><def>Comfort</def><curLevel>0.0360000022</curLevel></li>"
+        },
+        {
+          "role": "without_table",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[def=\"AteWithoutTable\"]",
+          "xml": "<li><def>AteWithoutTable</def><sourcePrecept>null</sourcePrecept><otherPawn>null</otherPawn><age>10350</age></li>"
+        },
+        {
+          "role": "Table1x2c149544",
+          "xpath": "//maps/li/things/thing[id=\"Table1x2c149544\"]",
+          "xml": "<thing Class=\"Building\"><def>Table1x2c</def><id>Table1x2c149544</id><map>0</map><pos>(119, 0, 132)</pos><health>49</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><active>True</active><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "DiningChair149545",
+          "xpath": "//maps/li/things/thing[id=\"DiningChair149545\"]",
+          "xml": "<thing Class=\"Building\"><def>DiningChair</def><id>DiningChair149545</id><map>0</map><pos>(119, 0, 131)</pos><rot>2</rot><health>65</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><taleRef IsNull=\"True\" /><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "MealSurvivalPack41855",
+          "xpath": "//maps/li/things/thing[id=\"MealSurvivalPack41855\"]",
+          "xml": "<thing Class=\"ThingWithComps\"><def>MealSurvivalPack</def><id>MealSurvivalPack41855</id><map>0</map><pos>(105, 0, 123)</pos><health>50</health><stackCount>5</stackCount><questTags IsNull=\"True\" /><spawnedTick>271</spawnedTick><despawnedTick>-1</despawnedTick><ingredients /></thing>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\"])[1]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_48525</job><target>Thing_MealSurvivalPack149549</target><maxPawns>1</maxPawns><stackCount>-1</stackCount></li>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\"])[2]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_48525</job><target>Thing_DiningChair149545</target><maxPawns>1</maxPawns><stackCount>-1</stackCount></li>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/pawnDestinationReservationManager/reservedDestinations/values/li/list/li[claimant=\"Thing_Human958\"])[1]",
+          "xml": "<li><target>(119, 0, 131)</target><claimant>Thing_Human958</claimant><job>Job_48525</job></li>"
+        }
+      ]
+    },
+    {
+      "file": ".local-research/runtime/profile-dining-20261104/Saves/New Arrivals6.rws",
+      "sha256": "d8664eddc2c57ec6757be0caa7710102b64856490f66a4e3d65f8a13ede922c0",
+      "ticks_game": 77073,
+      "pawn": {
+        "id": "Human958",
+        "position": "(115, 0, 127)",
+        "job": "FeedPatient",
+        "job_target_a": "Thing_MealSurvivalPack41855",
+        "job_target_b": "Thing_Human965",
+        "player_forced": false,
+        "toil": 3,
+        "ticks_left": -95,
+        "path_destination": "Thing_MealSurvivalPack41855",
+        "food": 0.994000018,
+        "comfort": 0.144000009,
+        "without_table_age": 10800,
+        "carry": []
+      },
+      "reservations": [
+        "Thing_Human965",
+        "Thing_MealSurvivalPack41855"
+      ],
+      "destination_reservations": [],
+      "nodes": [
+        {
+          "role": "pawn",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]",
+          "xml": "<thing Class=\"Pawn\"><def>Human</def><id>Human958</id><pos>(115, 0, 127)</pos><rot>2</rot><faction>Faction_12</faction><jobs><curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>FeedPatient</def><loadID>48749</loadID><targetA>Thing_MealSurvivalPack41855</targetA><targetB>Thing_Human965</targetB><targetQueueA IsNull=\"True\" /><targetQueueB IsNull=\"True\" /><count>1</count><countQueue IsNull=\"True\" /><startTick>76978</startTick><placedThings IsNull=\"True\" /><workGiverDef>DoctorFeedHumanlikes</workGiverDef><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>-1340642732</lastJobGiverKey></curJob><curDriver Class=\"JobDriver_FoodFeedPatient\"><curToilIndex>3</curToilIndex><ticksLeftThisToil>-95</ticksLeftThisToil><startTick>76978</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver><jobQueue><jobs /></jobQueue><formingCaravanTick>-1</formingCaravanTick></jobs><pather><nextCell>(115, 0, 126)</nextCell><nextCellCostLeft>13.3982582</nextCellCostLeft><nextCellCostInitial>17.7299767</nextCellCostInitial><peMode>OnCell</peMode><cellsUntilClamor>5</cellsUntilClamor><lastEnteredCellTick>77069</lastEnteredCellTick><lastMovedTick>77073</lastMovedTick><destination>Thing_MealSurvivalPack41855</destination></pather><carryTracker><innerContainer><maxStacks>1</maxStacks><innerList /></innerContainer></carryTracker><drafter><autoUndrafter /></drafter></thing>"
+        },
+        {
+          "role": "food",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Food\"]",
+          "xml": "<li Class=\"Need_Food\"><def>Food</def><curLevel>0.994000018</curLevel><lastNonStarvingTick>76981</lastNonStarvingTick></li>"
+        },
+        {
+          "role": "comfort",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Comfort\"]",
+          "xml": "<li Class=\"Need_Comfort\"><def>Comfort</def><curLevel>0.144000009</curLevel></li>"
+        },
+        {
+          "role": "without_table",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[def=\"AteWithoutTable\"]",
+          "xml": "<li><def>AteWithoutTable</def><sourcePrecept>null</sourcePrecept><otherPawn>null</otherPawn><age>10800</age></li>"
+        },
+        {
+          "role": "Table1x2c149544",
+          "xpath": "//maps/li/things/thing[id=\"Table1x2c149544\"]",
+          "xml": "<thing Class=\"Building\"><def>Table1x2c</def><id>Table1x2c149544</id><map>0</map><pos>(119, 0, 132)</pos><health>49</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><active>True</active><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "DiningChair149545",
+          "xpath": "//maps/li/things/thing[id=\"DiningChair149545\"]",
+          "xml": "<thing Class=\"Building\"><def>DiningChair</def><id>DiningChair149545</id><map>0</map><pos>(119, 0, 131)</pos><rot>2</rot><health>65</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><taleRef IsNull=\"True\" /><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "MealSurvivalPack41855",
+          "xpath": "//maps/li/things/thing[id=\"MealSurvivalPack41855\"]",
+          "xml": "<thing Class=\"ThingWithComps\"><def>MealSurvivalPack</def><id>MealSurvivalPack41855</id><map>0</map><pos>(105, 0, 123)</pos><health>50</health><stackCount>5</stackCount><questTags IsNull=\"True\" /><spawnedTick>271</spawnedTick><despawnedTick>-1</despawnedTick><ingredients /></thing>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\"])[1]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_48749</job><target>Thing_Human965</target><maxPawns>1</maxPawns><stackCount>-1</stackCount></li>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\"])[2]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_48749</job><target>Thing_MealSurvivalPack41855</target><maxPawns>10</maxPawns><stackCount>1</stackCount></li>"
+        }
+      ]
+    },
+    {
+      "file": ".local-research/runtime/profile-dining-20261104/Saves/New Arrivals7.rws",
+      "sha256": "3fa11ef70c63bb35453b2044dcda3e6e9a41c50b1c90c017e48e95baad7ad25b",
+      "ticks_game": 77073,
+      "pawn": {
+        "id": "Human958",
+        "position": "(115, 0, 127)",
+        "job": "FeedPatient",
+        "job_target_a": "Thing_MealSurvivalPack41855",
+        "job_target_b": "Thing_Human965",
+        "player_forced": false,
+        "toil": 3,
+        "ticks_left": -95,
+        "path_destination": "Thing_MealSurvivalPack41855",
+        "food": 0.994000018,
+        "comfort": 0.144000009,
+        "without_table_age": 10800,
+        "carry": []
+      },
+      "reservations": [
+        "Thing_Human965",
+        "Thing_MealSurvivalPack41855"
+      ],
+      "destination_reservations": [],
+      "nodes": [
+        {
+          "role": "pawn",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]",
+          "xml": "<thing Class=\"Pawn\"><def>Human</def><id>Human958</id><pos>(115, 0, 127)</pos><rot>2</rot><faction>Faction_12</faction><jobs><curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>FeedPatient</def><loadID>48749</loadID><targetA>Thing_MealSurvivalPack41855</targetA><targetB>Thing_Human965</targetB><targetQueueA IsNull=\"True\" /><targetQueueB IsNull=\"True\" /><count>1</count><countQueue IsNull=\"True\" /><startTick>76978</startTick><placedThings IsNull=\"True\" /><workGiverDef>DoctorFeedHumanlikes</workGiverDef><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>-1340642732</lastJobGiverKey></curJob><curDriver Class=\"JobDriver_FoodFeedPatient\"><curToilIndex>3</curToilIndex><ticksLeftThisToil>-95</ticksLeftThisToil><startTick>76978</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver><jobQueue><jobs /></jobQueue><formingCaravanTick>-1</formingCaravanTick></jobs><pather><nextCell>(115, 0, 126)</nextCell><nextCellCostLeft>13.3982582</nextCellCostLeft><nextCellCostInitial>17.7299767</nextCellCostInitial><peMode>OnCell</peMode><cellsUntilClamor>5</cellsUntilClamor><lastEnteredCellTick>77069</lastEnteredCellTick><lastMovedTick>77073</lastMovedTick><destination>Thing_MealSurvivalPack41855</destination></pather><carryTracker><innerContainer><maxStacks>1</maxStacks><innerList /></innerContainer></carryTracker><drafter><autoUndrafter /></drafter></thing>"
+        },
+        {
+          "role": "food",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Food\"]",
+          "xml": "<li Class=\"Need_Food\"><def>Food</def><curLevel>0.994000018</curLevel><lastNonStarvingTick>76981</lastNonStarvingTick></li>"
+        },
+        {
+          "role": "comfort",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Comfort\"]",
+          "xml": "<li Class=\"Need_Comfort\"><def>Comfort</def><curLevel>0.144000009</curLevel></li>"
+        },
+        {
+          "role": "without_table",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[def=\"AteWithoutTable\"]",
+          "xml": "<li><def>AteWithoutTable</def><sourcePrecept>null</sourcePrecept><otherPawn>null</otherPawn><age>10800</age></li>"
+        },
+        {
+          "role": "Table1x2c149544",
+          "xpath": "//maps/li/things/thing[id=\"Table1x2c149544\"]",
+          "xml": "<thing Class=\"Building\"><def>Table1x2c</def><id>Table1x2c149544</id><map>0</map><pos>(119, 0, 132)</pos><health>49</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><active>True</active><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "DiningChair149545",
+          "xpath": "//maps/li/things/thing[id=\"DiningChair149545\"]",
+          "xml": "<thing Class=\"Building\"><def>DiningChair</def><id>DiningChair149545</id><map>0</map><pos>(119, 0, 131)</pos><rot>2</rot><health>65</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><taleRef IsNull=\"True\" /><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "MealSurvivalPack41855",
+          "xpath": "//maps/li/things/thing[id=\"MealSurvivalPack41855\"]",
+          "xml": "<thing Class=\"ThingWithComps\"><def>MealSurvivalPack</def><id>MealSurvivalPack41855</id><map>0</map><pos>(105, 0, 123)</pos><health>50</health><stackCount>5</stackCount><questTags IsNull=\"True\" /><spawnedTick>271</spawnedTick><despawnedTick>-1</despawnedTick><ingredients /></thing>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\"])[1]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_48749</job><target>Thing_Human965</target><maxPawns>1</maxPawns><stackCount>-1</stackCount></li>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\"])[2]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_48749</job><target>Thing_MealSurvivalPack41855</target><maxPawns>10</maxPawns><stackCount>1</stackCount></li>"
+        }
+      ]
+    }
+  ],
+  "images": [
+    {
+      "id": "DR01",
+      "source_file": ".local-research/runtime/dining-20261104/009-meal-menu.png",
+      "source_sha256": "31d34d8757d65211a0b4f356b71e1cdb9e8b10709e8315080758745d911cf1ef",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        1170,
+        1020,
+        340,
+        130
+      ],
+      "file": "dining-runtime/ordinary-consume-order.png",
+      "sha256": "028ff8d747f4edbc4e60d124c85238287b44d1c3b0ce124add12f9ba8d916995"
+    },
+    {
+      "id": "DR02",
+      "source_file": ".local-research/runtime/dining-20261104/011-walk-without-table.png",
+      "source_sha256": "b37696ecded0c05837a97dad6af516064890aa46ccbd79aa3d2961696309b530",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        1000,
+        990,
+        290,
+        155
+      ],
+      "file": "dining-runtime/no-table-chewing.png",
+      "sha256": "2e4e57edbd0595cb20eae62250e8d8872847f21b83289d837c4471e3f6d0dadb"
+    },
+    {
+      "id": "DR03",
+      "source_file": ".local-research/runtime/dining-20261104/017-without-table-needs.png",
+      "source_sha256": "8f56abd62dfe53aaa3fd614f411479807908285c78a736d806beb70ac79adeba",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        0,
+        690,
+        580,
+        525
+      ],
+      "file": "dining-runtime/no-table-needs.png",
+      "sha256": "863a1151f869a7ffd7149c371a3d9cb2018e19700943ea46da8c21f45bd275e6"
+    },
+    {
+      "id": "DR04",
+      "source_file": ".local-research/runtime/dining-20261104/030-place-chair.png",
+      "source_sha256": "8da2cadf3099355dcd1b1dcab4988c611931021d3fa961a988374d67d00d5301",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        1460,
+        800,
+        310,
+        190
+      ],
+      "file": "dining-runtime/developer-furniture-preparation.png",
+      "sha256": "30d71b2ab1ebe9f7e38f079910cf5f06df95776c9867daee6a176596f9721182"
+    },
+    {
+      "id": "DR05",
+      "source_file": ".local-research/runtime/dining-20261104/041-carry-to-table.png",
+      "source_sha256": "97f7f88fcc927b65bc6dff605808bb4490ead01b31e27c228b2a83e99f6aed4e",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        1340,
+        930,
+        340,
+        340
+      ],
+      "file": "dining-runtime/carrying-to-reserved-seat.png",
+      "sha256": "baea1483c096e4678ce3f18261c2e6c50a0fe7a0ea7bfad947a7db71a4926600"
+    },
+    {
+      "id": "DR06",
+      "source_file": ".local-research/runtime/dining-20261104/047-chew-needs.png",
+      "source_sha256": "2de29908db88538e0423ba1e4f04bd4cab6b6197844333dea53427d34d0fab0f",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        1500,
+        925,
+        240,
+        170
+      ],
+      "file": "dining-runtime/table-chewing.png",
+      "sha256": "6f63966b24b0823d55e9ae14a3a67c693305885d7056a29be207e301ebe4300b"
+    },
+    {
+      "id": "DR07",
+      "source_file": ".local-research/runtime/dining-20261104/047-chew-needs.png",
+      "source_sha256": "2de29908db88538e0423ba1e4f04bd4cab6b6197844333dea53427d34d0fab0f",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        0,
+        690,
+        580,
+        525
+      ],
+      "file": "dining-runtime/comfort-rising-during-chew.png",
+      "sha256": "2443fcb2af694e5bff0624360ab39166a6244b5ee0a6c7d1a96371baf629132f"
+    },
+    {
+      "id": "DR08",
+      "source_file": ".local-research/runtime/dining-20261104/058-finished-needs.png",
+      "source_sha256": "2a3eef169f7599b910c579cc6938dab1747ab573a8ba573db15fe5d100a07e80",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        0,
+        690,
+        580,
+        525
+      ],
+      "file": "dining-runtime/comfort-after-meal.png",
+      "sha256": "ca917c8f83eaac63d845636edf160a10297ac79ec967101c71845ca9f6059635"
+    }
+  ],
+  "actions": [
+    {
+      "source_file": ".local-research/runtime/dining-20261104/001-menu.png.actions.jsonl",
+      "source_sha256": "6637043bfc52a1324a7775ee8fc555b7b3b5fad955ccbb36e993dc167a81f94c",
+      "started_utc": "2026-11-03T22:55:42.0189002Z",
+      "finished_utc": "2026-11-03T22:55:42.9326101Z",
+      "action": "capture",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "001-menu.png",
+      "image_sha256": "782d7b5244d6a70d5d5eac7b15ef9a5e0f6946ac8ecd02d57efd06b60830d9f7"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/002-menu.png.actions.jsonl",
+      "source_sha256": "8ecac2ce3716f78acc89911f639ce52a1a2592084dd11e5d860d3a36cd1e4080",
+      "started_utc": "2026-11-03T22:56:05.7328907Z",
+      "finished_utc": "2026-11-03T22:56:06.562669Z",
+      "action": "capture",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "002-menu.png",
+      "image_sha256": "1b2603d0f899018553531353279435edecdd48571fdc460bb9fefa34f69236e3"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/003-load.png.actions.jsonl",
+      "source_sha256": "c4392fd87cd077d0bf7cc76dab05f26672205dba48408e72a2511d7e7631e53e",
+      "started_utc": "2026-11-03T22:56:18.5541802Z",
+      "finished_utc": "2026-11-03T22:56:19.7682289Z",
+      "action": "click",
+      "x": 2164,
+      "y": 690,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "003-load.png",
+      "image_sha256": "0957bd36a10ea461544f3177dc30276890c1683d46db1d8c423c9b342b92f22e"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/004-baseline.png.actions.jsonl",
+      "source_sha256": "e5bd876748a62184070ebfe6e40694c057c3f4dcbf27710d5226ebad098b6bac",
+      "started_utc": "2026-11-03T22:56:35.1622185Z",
+      "finished_utc": "2026-11-03T22:56:44.2355819Z",
+      "action": "click",
+      "x": 1469,
+      "y": 441,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 8000,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "004-baseline.png",
+      "image_sha256": "a8d03dff9850ef4960b9c01e7dcc0b0209b99ab64faf1a0b903cf51fae42ef50"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/005-map.png.actions.jsonl",
+      "source_sha256": "fad601d2736d2281644f60b82ceb0c65a5c130eba6058139dec4f97d3642fc92",
+      "started_utc": "2026-11-03T22:58:26.7598667Z",
+      "finished_utc": "2026-11-03T22:58:27.6150944Z",
+      "action": "capture",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "005-map.png",
+      "image_sha256": "9b0be8cc15dde58df425661c15cf44ac9f62a1a66a5163e1a06be5d00caad200"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/006-select.png.actions.jsonl",
+      "source_sha256": "19c8d3a98dd7752531f04c4f54980a1fb41c90935f92ee77edb12df9a547f53d",
+      "started_utc": "2026-11-03T22:58:49.0427049Z",
+      "finished_utc": "2026-11-03T22:58:50.2273261Z",
+      "action": "click",
+      "x": 1195,
+      "y": 42,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "006-select.png",
+      "image_sha256": "53e5c21fc0802ab8266c1d1c5306b336f10054df965bdfe0105c42d138d63f5c"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/007-consume-menu.png.actions.jsonl",
+      "source_sha256": "1cd58d9f42ea20ab9fb783d88d435bc27f48a33614c161d04d9808e0d10a46ba",
+      "started_utc": "2026-11-03T22:59:18.877115Z",
+      "finished_utc": "2026-11-03T22:59:20.0993067Z",
+      "action": "rightclick",
+      "x": 1160,
+      "y": 635,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1180,
+      "park_y": 645,
+      "image_name": "007-consume-menu.png",
+      "image_sha256": "5a92b525992239b38b9afd0dbfda176a281bcc5ace4de103a622b93a4ca4bb11"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/008-close-menu.png.actions.jsonl",
+      "source_sha256": "ffce37d482c3f54cdef38644bbc6bf90264569c54118f2f747130de4015d41f1",
+      "started_utc": "2026-11-03T22:59:43.4648843Z",
+      "finished_utc": "2026-11-03T22:59:44.4115166Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "008-close-menu.png",
+      "image_sha256": "53e5c21fc0802ab8266c1d1c5306b336f10054df965bdfe0105c42d138d63f5c"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/009-meal-menu.png.actions.jsonl",
+      "source_sha256": "5fa2122a7029b36389852664eb379f54a86d6319d1f40d0cddc1da2feb616d41",
+      "started_utc": "2026-11-03T22:59:46.72306Z",
+      "finished_utc": "2026-11-03T22:59:47.8979969Z",
+      "action": "rightclick",
+      "x": 1189,
+      "y": 1049,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1200,
+      "park_y": 1060,
+      "image_name": "009-meal-menu.png",
+      "image_sha256": "31d34d8757d65211a0b4f356b71e1cdb9e8b10709e8315080758745d911cf1ef"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/010-order-without-table.png.actions.jsonl",
+      "source_sha256": "46b522ac1fe69a33fd6842ffd00b5b127ccf34fe032ea89710ed3988e9cfcf2f",
+      "started_utc": "2026-11-03T23:00:10.5647566Z",
+      "finished_utc": "2026-11-03T23:00:11.7522033Z",
+      "action": "click",
+      "x": 1315,
+      "y": 1063,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "010-order-without-table.png",
+      "image_sha256": "6e2a8b4adda1dbdab7ce0a5ff226e453097ce12260eb5b509c8692a5a05dad49"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/011-walk-without-table.png.actions.jsonl",
+      "source_sha256": "c4d3b1c830e5d584f762a71d39a5c31adb941b13e6c6d892c7c8673582f27018",
+      "started_utc": "2026-11-03T23:00:14.1191942Z",
+      "finished_utc": "2026-11-03T23:00:17.4224647Z",
+      "action": "pulse",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 51,
+      "control": false,
+      "duration_ms": 2200,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "011-walk-without-table.png",
+      "image_sha256": "b37696ecded0c05837a97dad6af516064890aa46ccbd79aa3d2961696309b530"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/012-save-menu.png.actions.jsonl",
+      "source_sha256": "252d35fc7b0dd31cf07024626d6daf9768054befad24bbaf82c367f25303a829",
+      "started_utc": "2026-11-03T23:00:46.284806Z",
+      "finished_utc": "2026-11-03T23:00:47.4823144Z",
+      "action": "click",
+      "x": 2505,
+      "y": 1422,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "012-save-menu.png",
+      "image_sha256": "a844e250cc6de8f842e9eccf5ed389a8517effbb6a83dcf0f6b147027d9f29f2"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/013-save-dialog.png.actions.jsonl",
+      "source_sha256": "699b5e4860164bd13a51686cd86c5f6bbf2b11b5178b154f3635a70c833dec1c",
+      "started_utc": "2026-11-03T23:00:49.8884159Z",
+      "finished_utc": "2026-11-03T23:00:51.0712261Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "013-save-dialog.png",
+      "image_sha256": "eca23c087b5b381fce0553245aeabe03ae0dd7c735c28eb5469749d1b34a5802"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/014-save-without-table-chew.png.actions.jsonl",
+      "source_sha256": "7c4e66d690d8f617a4de42de9f56f2b088e5ce123cd544424667c03bf263648e",
+      "started_utc": "2026-11-03T23:00:53.6739014Z",
+      "finished_utc": "2026-11-03T23:00:55.2286916Z",
+      "action": "click",
+      "x": 1490,
+      "y": 977,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 500,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "014-save-without-table-chew.png",
+      "image_sha256": "7b90885dd303980bb487d31e0c07bc913341b9d56d3957c0e27f66ffe076448a"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/015-close-save.png.actions.jsonl",
+      "source_sha256": "3495cf1758d7381404e7c1e8b2ba1cafbb09d72581001fcd567ae2d90d35c1fe",
+      "started_utc": "2026-11-03T23:01:31.7120095Z",
+      "finished_utc": "2026-11-03T23:01:32.693821Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "015-close-save.png",
+      "image_sha256": "b37696ecded0c05837a97dad6af516064890aa46ccbd79aa3d2961696309b530"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/016-finish-without-table.png.actions.jsonl",
+      "source_sha256": "0fc6456426982c976af3d71006c897955d491fc6908ca2f3d139102cd1a74ea8",
+      "started_utc": "2026-11-03T23:01:35.27719Z",
+      "finished_utc": "2026-11-03T23:01:37.9538321Z",
+      "action": "pulse",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 49,
+      "control": false,
+      "duration_ms": 1500,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "016-finish-without-table.png",
+      "image_sha256": "37465992f5ee5e0b543406e5a3d566a1bffd5755df9bd79578f174f971ebf983"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/017-without-table-needs.png.actions.jsonl",
+      "source_sha256": "e952dd9b5e1b8560e5aae2a33af72ffc5d072daa18b3075fb37e3b8704818c43",
+      "started_utc": "2026-11-03T23:01:40.700921Z",
+      "finished_utc": "2026-11-03T23:01:42.0043889Z",
+      "action": "click",
+      "x": 325,
+      "y": 1225,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "017-without-table-needs.png",
+      "image_sha256": "8f56abd62dfe53aaa3fd614f411479807908285c78a736d806beb70ac79adeba"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/018-after-menu.png.actions.jsonl",
+      "source_sha256": "62504934b6c878a99f35de43d83d11657b7fab6168643663abbeede56946a82a",
+      "started_utc": "2026-11-03T23:01:45.6110504Z",
+      "finished_utc": "2026-11-03T23:01:46.9004939Z",
+      "action": "click",
+      "x": 2505,
+      "y": 1422,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "018-after-menu.png",
+      "image_sha256": "b34d062ebf38ee99f6e2a2f364945e6c307390ba96fada28680076e4d433e03f"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/019-after-save-dialog.png.actions.jsonl",
+      "source_sha256": "d8cc8675a98096b63dc9e75ddcaed2f53bf3c87ad259cb6d17573e6879b37d10",
+      "started_utc": "2026-11-03T23:01:50.1302632Z",
+      "finished_utc": "2026-11-03T23:01:51.3651295Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "019-after-save-dialog.png",
+      "image_sha256": "19378542344d2387b0f8128796e56f8430075d7234d9668c1ee8dfe284812bdc"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/020-after-save.png.actions.jsonl",
+      "source_sha256": "87d767130f2b9695429d99c036180d15bdd3917a6ab2ca5eff91b0704b5f3572",
+      "started_utc": "2026-11-03T23:01:54.168549Z",
+      "finished_utc": "2026-11-03T23:01:55.6150079Z",
+      "action": "click",
+      "x": 1490,
+      "y": 977,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 500,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "020-after-save.png",
+      "image_sha256": "bae363381bed2449b93c2eac771a59bb4b70cee683d2bcb462730c9981313f4f"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/021-reload-menu.png.actions.jsonl",
+      "source_sha256": "642d18bf60ca9d5222f02794a0b238c12298fed589f494339d366c7c5622751d",
+      "started_utc": "2026-11-03T23:02:27.2334949Z",
+      "finished_utc": "2026-11-03T23:02:28.4470888Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1108,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "021-reload-menu.png",
+      "image_sha256": "a40dbd90a6a4f248b8b0ff4150a2b7d63f464b44dc9c02aab83cd9af0a115fc7"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/022-reload-baseline.png.actions.jsonl",
+      "source_sha256": "98209187fcf2795f9c295dc10beeeeb41b7b200d6e6e72a526d36a60411d1a4c",
+      "started_utc": "2026-11-03T23:02:54.6794374Z",
+      "finished_utc": "2026-11-03T23:03:03.7934715Z",
+      "action": "click",
+      "x": 1469,
+      "y": 521,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 8000,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "022-reload-baseline.png",
+      "image_sha256": "6d99a46ec39d972cd3e13fdd047420c1fff68366e6584ccf740b71cb44354c26"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/023-god-preparation.png.actions.jsonl",
+      "source_sha256": "0956f09a8375811f0d410c2cc6872f04fa03a6d955126046c41dc5cf36b79559",
+      "started_utc": "2026-11-03T23:04:14.1367292Z",
+      "finished_utc": "2026-11-03T23:04:15.4050899Z",
+      "action": "click",
+      "x": 1365,
+      "y": 15,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "023-god-preparation.png",
+      "image_sha256": "c80e6f18288f6c491efb057bf7dabe514b5fb268900136b218ae228d6dc9a208"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/024-architect-preparation.png.actions.jsonl",
+      "source_sha256": "cd1d37e0622bdaaaf5ca0e59c15ecc3920f5f77215c39df6e900a6172844ba16",
+      "started_utc": "2026-11-03T23:04:18.5932231Z",
+      "finished_utc": "2026-11-03T23:04:19.80902Z",
+      "action": "click",
+      "x": 70,
+      "y": 1422,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "024-architect-preparation.png",
+      "image_sha256": "51100b16e0e0560d1d7c385c882ecee08ede9403030016683858b8276b020234"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/025-furniture.png.actions.jsonl",
+      "source_sha256": "d146e7e779840deb7a4f986a96a616ed561fba20da72d2b996cc94a6fbac3b97",
+      "started_utc": "2026-11-03T23:04:48.8005124Z",
+      "finished_utc": "2026-11-03T23:04:50.0630383Z",
+      "action": "click",
+      "x": 45,
+      "y": 1234,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "025-furniture.png",
+      "image_sha256": "040426b19cc65c4f5cf5cb0844f587c316ddd3f8b498260046e8367bc2936e92"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/026-table-select.png.actions.jsonl",
+      "source_sha256": "b8d90a8bd789d529097208a423bb044a497efad52c2d90a9afb21cd432af5da3",
+      "started_utc": "2026-11-03T23:05:23.9248142Z",
+      "finished_utc": "2026-11-03T23:05:25.2163141Z",
+      "action": "click",
+      "x": 1846,
+      "y": 1356,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "026-table-select.png",
+      "image_sha256": "ac9ff2c46c7038eb2fc654bc219b0ba2ea07b6fea35ac64ad2f2f19e3f2d9246"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/027-place-table.png.actions.jsonl",
+      "source_sha256": "88f87b31b8220a6503b11f35d06e4a2252a9096baf4737148a4b095e3a60a500",
+      "started_utc": "2026-11-03T23:06:01.6075898Z",
+      "finished_utc": "2026-11-03T23:06:02.9421813Z",
+      "action": "click",
+      "x": 1609,
+      "y": 889,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "027-place-table.png",
+      "image_sha256": "90626b922243ebdf9a2cf88a828513c0504b217949a6c99fa91bcb54ffd6caed"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/028-cancel-table-tool.png.actions.jsonl",
+      "source_sha256": "b7b0696fba07be95b5f5de65105bc374481c01afc0df8ebd7d0405a3a2227713",
+      "started_utc": "2026-11-03T23:06:06.5009341Z",
+      "finished_utc": "2026-11-03T23:06:07.8783425Z",
+      "action": "rightclick",
+      "x": 1640,
+      "y": 920,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "028-cancel-table-tool.png",
+      "image_sha256": "da7c424d32539def7d64782090f2089c5b42eae62be9f007842c2c637537b4ea"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/029-chair-select.png.actions.jsonl",
+      "source_sha256": "c15ae8900faf73e65b050563efd4c2a3f63bb741c5028dd45457b13a37c0c50e",
+      "started_utc": "2026-11-03T23:06:11.4373519Z",
+      "finished_utc": "2026-11-03T23:06:12.7413421Z",
+      "action": "click",
+      "x": 2247,
+      "y": 1354,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "029-chair-select.png",
+      "image_sha256": "44eafa52a974544c4f8d93bd0a1621d22263918f9c218fb54ba03471915e4a44"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/030-place-chair.png.actions.jsonl",
+      "source_sha256": "90de1b40771fdb94c9a123b8def066f5733655f8a00775cd692f17a98f7ad8bc",
+      "started_utc": "2026-11-03T23:06:16.2409894Z",
+      "finished_utc": "2026-11-03T23:06:17.7084568Z",
+      "action": "click",
+      "x": 1609,
+      "y": 919,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "030-place-chair.png",
+      "image_sha256": "8da2cadf3099355dcd1b1dcab4988c611931021d3fa961a988374d67d00d5301"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/031-cancel-chair-tool.png.actions.jsonl",
+      "source_sha256": "cb41df72c164c7dbcab90561471deece22fb0cf054a4621e802dbd13b8934b41",
+      "started_utc": "2026-11-03T23:06:21.9502958Z",
+      "finished_utc": "2026-11-03T23:06:23.2963427Z",
+      "action": "rightclick",
+      "x": 1640,
+      "y": 920,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "031-cancel-chair-tool.png",
+      "image_sha256": "b28ef56a40b86968105f6f55f596d7b446e584a37e4f6b3c3c49481b000659cc"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/032-close-architect.png.actions.jsonl",
+      "source_sha256": "255acb00a147557a19ce8fd98ea11f2812879e639bf5cf2e9c534c963998c379",
+      "started_utc": "2026-11-03T23:07:03.6141004Z",
+      "finished_utc": "2026-11-03T23:07:04.7159515Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "032-close-architect.png",
+      "image_sha256": "3859742e83e75d06c7af90568c330998a200cfb2af484d670362b23bfe06efc8"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/033-god-off.png.actions.jsonl",
+      "source_sha256": "0ba16877387362c826e9b2e211fde513b7924be4c9c0a6d263e67321f18bca7a",
+      "started_utc": "2026-11-03T23:07:07.6306495Z",
+      "finished_utc": "2026-11-03T23:07:08.821441Z",
+      "action": "click",
+      "x": 1365,
+      "y": 15,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "033-god-off.png",
+      "image_sha256": "baf8c40c4e3f01f4c714b81741decce64f6a804065adf30fc34ccf7cf5022278"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/034-prepared-menu.png.actions.jsonl",
+      "source_sha256": "91c795cf22d8eec72cf510d8a86535971ba9ed69d458637f8fec225df988fe36",
+      "started_utc": "2026-11-03T23:07:11.3231983Z",
+      "finished_utc": "2026-11-03T23:07:12.5132045Z",
+      "action": "click",
+      "x": 2505,
+      "y": 1422,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "034-prepared-menu.png",
+      "image_sha256": "b65099cf3e8baa67be00d9a80867b20d4ad0f9d4339b95ebc16b079d11ca6633"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/035-prepared-save-dialog.png.actions.jsonl",
+      "source_sha256": "8197ebe2a4aa850a609539e99c7a59c513d86cf2295011f9668b2252a36375c3",
+      "started_utc": "2026-11-03T23:07:14.9805609Z",
+      "finished_utc": "2026-11-03T23:07:16.139099Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "035-prepared-save-dialog.png",
+      "image_sha256": "661de5eab3017350936b58af5f4ddd8f57072d37e320f7c2f715ec11e132d49e"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/036-prepared-save.png.actions.jsonl",
+      "source_sha256": "f01b00840df758b8c921506266880dc5878c2020603906d44f17055beb20ae20",
+      "started_utc": "2026-11-03T23:07:18.9062695Z",
+      "finished_utc": "2026-11-03T23:07:20.3735821Z",
+      "action": "click",
+      "x": 1490,
+      "y": 977,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 500,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "036-prepared-save.png",
+      "image_sha256": "83755223b47ba5a16ca59138c38d2ad6694fd994b20bcf0cf908a0d494373044"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/037-close-prepared-save.png.actions.jsonl",
+      "source_sha256": "18ed41fe38965e9cbe8b46d58dbdbe0fea8746d4d0879815ff18a84791bc5905",
+      "started_utc": "2026-11-03T23:07:22.9416984Z",
+      "finished_utc": "2026-11-03T23:07:23.8879787Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "037-close-prepared-save.png",
+      "image_sha256": "b7d830322b66c07ea8e8320ae96437256c9e721616c9af3cdd226a1971c56e3f"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/038-select-with-table.png.actions.jsonl",
+      "source_sha256": "69d274d35c3a7660693d4c84bc0e2f8a10be81ae0a45bcd133ff21f926f99894",
+      "started_utc": "2026-11-03T23:08:01.317994Z",
+      "finished_utc": "2026-11-03T23:08:02.5145228Z",
+      "action": "click",
+      "x": 1195,
+      "y": 42,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "038-select-with-table.png",
+      "image_sha256": "d58c9162e4e6b8bd1882b4945a6b1e35cf6cc2b5eec8a85b25da1c793cf21309"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/039-with-table-menu.png.actions.jsonl",
+      "source_sha256": "ccb0290761b31097ee23c2ba4648451ced6a923d53be82b41947dd68fb31b076",
+      "started_utc": "2026-11-03T23:08:05.0393548Z",
+      "finished_utc": "2026-11-03T23:08:06.2068311Z",
+      "action": "rightclick",
+      "x": 1189,
+      "y": 1275,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1200,
+      "park_y": 1280,
+      "image_name": "039-with-table-menu.png",
+      "image_sha256": "43cb4559183692b3b66e936686af5962725d25a891f7dec4c756e370b6bba20d"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/040-order-with-table.png.actions.jsonl",
+      "source_sha256": "117117bb550c68386343193ca3c89a63105b9a1445c6e089e0d10320ba1ed203",
+      "started_utc": "2026-11-03T23:08:49.386154Z",
+      "finished_utc": "2026-11-03T23:08:50.5723889Z",
+      "action": "click",
+      "x": 1315,
+      "y": 1289,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "040-order-with-table.png",
+      "image_sha256": "d516d04547072e6097c0beb0a8aad107b8d31dc65a9d24980d6fce7adc905a6b"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/041-carry-to-table.png.actions.jsonl",
+      "source_sha256": "bf30945f0645a4e88c1974d1c899d91f32b03ebbbf9123598155615b1e0d69c8",
+      "started_utc": "2026-11-03T23:08:53.0435942Z",
+      "finished_utc": "2026-11-03T23:08:55.2572245Z",
+      "action": "pulse",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 51,
+      "control": false,
+      "duration_ms": 1100,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "041-carry-to-table.png",
+      "image_sha256": "97f7f88fcc927b65bc6dff605808bb4490ead01b31e27c228b2a83e99f6aed4e"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/042-carry-save-menu.png.actions.jsonl",
+      "source_sha256": "cdb14b6d28417ccf16ebf9df3c415c504e77baece2fcb02468b69dc3962fe3b4",
+      "started_utc": "2026-11-03T23:08:59.2872076Z",
+      "finished_utc": "2026-11-03T23:09:00.4759195Z",
+      "action": "click",
+      "x": 2505,
+      "y": 1422,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "042-carry-save-menu.png",
+      "image_sha256": "a3b3c84c8043532a125f263b382295c11ecb37fc464a04c0e6049ef961151202"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/043-carry-save-dialog.png.actions.jsonl",
+      "source_sha256": "f98976cfe116a46f5755f9c24c00c1bd4400ec0d4d027ee62ef7b3db451b42d3",
+      "started_utc": "2026-11-03T23:09:02.9161173Z",
+      "finished_utc": "2026-11-03T23:09:04.0706446Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "043-carry-save-dialog.png",
+      "image_sha256": "911993dd82f6b65a011121011de9a84526887d38389650875b24aecdb2ed8634"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/044-carry-save.png.actions.jsonl",
+      "source_sha256": "f62ca31dd8af567afab2a56bcb08221bde29f6c48941bc390db1380043ffefdd",
+      "started_utc": "2026-11-03T23:09:06.5386857Z",
+      "finished_utc": "2026-11-03T23:09:08.033296Z",
+      "action": "click",
+      "x": 1490,
+      "y": 977,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 500,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "044-carry-save.png",
+      "image_sha256": "9c59ae597ce07e0ba3f6eee3210d0b543a753b6dacb2e77707f5ee0ef2da710c"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/045-close-carry-save.png.actions.jsonl",
+      "source_sha256": "41ec505f3d8ea5369650a77aea4095e4032e485d229434f98f2622757d74c75b",
+      "started_utc": "2026-11-03T23:10:01.7042236Z",
+      "finished_utc": "2026-11-03T23:10:02.753471Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "045-close-carry-save.png",
+      "image_sha256": "97f7f88fcc927b65bc6dff605808bb4490ead01b31e27c228b2a83e99f6aed4e"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/046-chew-at-table.png.actions.jsonl",
+      "source_sha256": "503253b1cf50b170a239c3a52f59d0d8aef6c3f29996318f3144942ecd3b7721",
+      "started_utc": "2026-11-03T23:10:06.084222Z",
+      "finished_utc": "2026-11-03T23:10:08.3720319Z",
+      "action": "pulse",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 51,
+      "control": false,
+      "duration_ms": 1000,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "046-chew-at-table.png",
+      "image_sha256": "86f18e39f6b9dd2a6276adce37e328d8c268316f3961b053322a6ed45c417a39"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/047-chew-needs.png.actions.jsonl",
+      "source_sha256": "56b02c4bbb60dcf52e398cb2b995711e3c0f23dbeae5f36428cd44d8d115f818",
+      "started_utc": "2026-11-03T23:10:11.6378479Z",
+      "finished_utc": "2026-11-03T23:10:12.9867662Z",
+      "action": "click",
+      "x": 325,
+      "y": 1225,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "047-chew-needs.png",
+      "image_sha256": "2de29908db88538e0423ba1e4f04bd4cab6b6197844333dea53427d34d0fab0f"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/048-chew-menu.png.actions.jsonl",
+      "source_sha256": "fcbd735de7e767337310864f01f8bf2a7b60e7ae3a83e7684521c23739523377",
+      "started_utc": "2026-11-03T23:10:16.2190846Z",
+      "finished_utc": "2026-11-03T23:10:17.4593984Z",
+      "action": "click",
+      "x": 2505,
+      "y": 1422,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "048-chew-menu.png",
+      "image_sha256": "1ac9119718cd5851fd68125e564e8e7fbccf3b64e902ab26da8927c054f051a4"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/049-chew-save-dialog.png.actions.jsonl",
+      "source_sha256": "33860294c2f81931c0ac0f6b1a57ff086ad8cc2cf3077ce361270b90023b4eb4",
+      "started_utc": "2026-11-03T23:10:20.2556802Z",
+      "finished_utc": "2026-11-03T23:10:21.4719897Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "049-chew-save-dialog.png",
+      "image_sha256": "50185bc4396e3aa99b46f1be3ca82e6a994346a98a0973191efc750d0d327daf"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/050-chew-save.png.actions.jsonl",
+      "source_sha256": "4141409c49fcb7975ab14dbfbbae251dc6549a8dcbae2148653558a74cd2a075",
+      "started_utc": "2026-11-03T23:10:24.1196959Z",
+      "finished_utc": "2026-11-03T23:10:25.5100945Z",
+      "action": "click",
+      "x": 1490,
+      "y": 977,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 500,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "050-chew-save.png",
+      "image_sha256": "a655c9771934ee4ce591d6a85b1e95721a1964458484465cf9807d2ee2302f13"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/051-close-chew-save.png.actions.jsonl",
+      "source_sha256": "21c32487e71be060b415fe48506064454dd1e23a651d22adb33ed804b1ca2e55",
+      "started_utc": "2026-11-03T23:11:18.6336694Z",
+      "finished_utc": "2026-11-03T23:11:19.6188618Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "051-close-chew-save.png",
+      "image_sha256": "2de29908db88538e0423ba1e4f04bd4cab6b6197844333dea53427d34d0fab0f"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/052-chew-detail.png.actions.jsonl",
+      "source_sha256": "42a78c57a741568269d8e70fb1a384398b0855e352ef9a8e1e94134296964bc2",
+      "started_utc": "2026-11-03T23:11:22.6075235Z",
+      "finished_utc": "2026-11-03T23:11:23.5500663Z",
+      "action": "scroll",
+      "x": 1609,
+      "y": 1025,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 480,
+      "wait_ms": 250,
+      "park_x": 1620,
+      "park_y": 1060,
+      "image_name": "052-chew-detail.png",
+      "image_sha256": "6e82429196bdc9b7a9687554b69a951747a1b157d873e6365a9ddcdf3d2538c8"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/053-finish-at-table.png.actions.jsonl",
+      "source_sha256": "25bb969c7ade90890fc1666362859c24cc3ac3076d3dcdca3391ddfff335424b",
+      "started_utc": "2026-11-03T23:11:26.5930221Z",
+      "finished_utc": "2026-11-03T23:11:28.7251329Z",
+      "action": "pulse",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 51,
+      "control": false,
+      "duration_ms": 1000,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "053-finish-at-table.png",
+      "image_sha256": "0bc6fbd2a7890a10ffe7e3ab4545a7d1627a8b31de76568f0eb6325fabed7a4f"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/054-table-finished-menu.png.actions.jsonl",
+      "source_sha256": "0059568c5714bd4c87a8bebf4190c237d7590956758c47af0eec78bddc555fc5",
+      "started_utc": "2026-11-03T23:11:31.6456569Z",
+      "finished_utc": "2026-11-03T23:11:32.9987711Z",
+      "action": "click",
+      "x": 2505,
+      "y": 1422,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "054-table-finished-menu.png",
+      "image_sha256": "cb2a89c69f6a2587a293f320076a2485d9c5f08080c9cec66f2800be3b2d34e9"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/055-table-finished-dialog.png.actions.jsonl",
+      "source_sha256": "e2d0f6f7117f2519d5174c83628fed871dc166a48e585f4ed7dd6a550e1834d0",
+      "started_utc": "2026-11-03T23:11:35.9487529Z",
+      "finished_utc": "2026-11-03T23:11:37.1772744Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "055-table-finished-dialog.png",
+      "image_sha256": "509cd7e358ed71d0ce2838988751c3d15e3eb7fc012f122460a812704531b0c6"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/056-table-finished-save.png.actions.jsonl",
+      "source_sha256": "3740e0421004cee2d3e635a2562168192cd48a23032a76ed837227157f7881a9",
+      "started_utc": "2026-11-03T23:11:40.0921507Z",
+      "finished_utc": "2026-11-03T23:11:41.6277523Z",
+      "action": "click",
+      "x": 1490,
+      "y": 977,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 500,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "056-table-finished-save.png",
+      "image_sha256": "c5ccb10636e80dc1e464574e73e9d3239014e2dd6e2faeb3d10e13db9eb109fc"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/057-close-finished-save.png.actions.jsonl",
+      "source_sha256": "56f2753daf814deb79125640cd87155dcc0a4ff9a058d7ffe2c880f641a18318",
+      "started_utc": "2026-11-03T23:12:35.0728027Z",
+      "finished_utc": "2026-11-03T23:12:36.109782Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 800,
+      "park_y": 100,
+      "image_name": "057-close-finished-save.png",
+      "image_sha256": "2a3eef169f7599b910c579cc6938dab1747ab573a8ba573db15fe5d100a07e80"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/058-finished-needs.png.actions.jsonl",
+      "source_sha256": "b3399abc6b6d9f04e94e35ddb67c0f8837e85d7357944fb002d96a5ec4915c4a",
+      "started_utc": "2026-11-03T23:12:39.189682Z",
+      "finished_utc": "2026-11-03T23:12:40.136823Z",
+      "action": "capture",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 800,
+      "park_y": 100,
+      "image_name": "058-finished-needs.png",
+      "image_sha256": "2a3eef169f7599b910c579cc6938dab1747ab573a8ba573db15fe5d100a07e80"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/059-repeat-menu.png.actions.jsonl",
+      "source_sha256": "e93ae35b2e1327fde5bc4c6d42c17665446bfe29b6f526af6745344c77d07d4a",
+      "started_utc": "2026-11-03T23:12:43.344348Z",
+      "finished_utc": "2026-11-03T23:12:44.59544Z",
+      "action": "click",
+      "x": 2505,
+      "y": 1422,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "059-repeat-menu.png",
+      "image_sha256": "b6b0063ad00074f964c125cd3ad44c14c79fc4b8ff93a49d3d38075478594b66"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/060-repeat-dialog.png.actions.jsonl",
+      "source_sha256": "ca471d8886562d3ddab176651016257cdf846a43510058a8605f55dc9f261f7b",
+      "started_utc": "2026-11-03T23:12:47.558302Z",
+      "finished_utc": "2026-11-03T23:12:48.8549159Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "060-repeat-dialog.png",
+      "image_sha256": "ed602b55287133bf96eee559f5447aa127cc44ab742141fa9c19a81646e2479e"
+    },
+    {
+      "source_file": ".local-research/runtime/dining-20261104/061-repeat-save.png.actions.jsonl",
+      "source_sha256": "aa4491f8954ad0c431c8a632c8340afb8297e22213cb70b7fec4fc2170d8e235",
+      "started_utc": "2026-11-03T23:12:52.0221367Z",
+      "finished_utc": "2026-11-03T23:12:53.7470428Z",
+      "action": "click",
+      "x": 1490,
+      "y": 977,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 500,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "061-repeat-save.png",
+      "image_sha256": "515bdcb83583b516808706e8ca9ed7373285e82b284a1a81c321f3bd38967e96"
+    }
+  ],
+  "observations": [
+    {
+      "id": "DR-OBS01",
+      "finding": "Ordinary context menu offered Consume packaged survival meal. First branch Ingest is playerForced; at76627 carry has one meal, chewing has30ticks remaining, food0.486 and prior memory age10350.",
+      "evidence": [
+        "DR01",
+        "DR02",
+        "saves"
+      ]
+    },
+    {
+      "id": "DR-OBS02",
+      "finding": "No-table completion at76724 has food0.994, job FeedPatient and memory age150, establishing refresh versus the older baseline9600/chewing10350. Comfort stays0.",
+      "evidence": [
+        "DR03",
+        "saves"
+      ]
+    },
+    {
+      "id": "DR-OBS03",
+      "finding": "After ordinary baseline reload, developer placement yields wooden normal-quality table119,132 and chair119,131 at75813; food is reused, not spawned. The base branch has no such furniture.",
+      "evidence": [
+        "DR04",
+        "saves"
+      ]
+    },
+    {
+      "id": "DR-OBS04",
+      "finding": "At76253 the pawn carries MealSurvivalPack149549 while walking from112,125 toward119,131; both chair and destination cell reservations belong to its Ingest job. At76670 pawn actually occupies the chair, targetB is the table cell, and the same meal remains carried during chewing.",
+      "evidence": [
+        "DR05",
+        "DR06",
+        "saves"
+      ]
+    },
+    {
+      "id": "DR-OBS05",
+      "finding": "Comfort changes0 ->0.036 during table chewing ->0.144 after completion. Food remains0.486 while chewing, then0.994 after. Old AteWithoutTable ages to10800 rather than refreshing; it stays visible. Uncomfortable disappears when Comfort passes0.1, independently of the old memory.",
+      "evidence": [
+        "DR07",
+        "DR08",
+        "saves"
+      ]
+    },
+    {
+      "id": "DR-OBS06",
+      "finding": "Final two ordinary saves retain identical selected pawn/node/reservation state at77073. Ordinary Quit to OS followed; fresh CIM sees no RimWorld process.",
+      "evidence": [
+        "saves"
+      ]
+    }
+  ],
+  "shutdown": {
+    "method": "Ordinary Quit to OS at(2215,1315) after repeat save",
+    "attempted_capture": "062-quit.png",
+    "capture_result": "Exit click sent; post-exit screenshot foreground guard failed. No successful action62 or exit screenshot was fabricated.",
+    "observed_utc": "2026-11-03T23:21:01.5059240Z",
+    "rimworld_processes_after_exit": []
+  },
+  "limitations": [
+    "Baseline has an existing AteWithoutTable memory; age refresh is the decisive comparison, not presence/absence.",
+    "Need/memory updates are sampled and may occur in batches; displayed ages are saved values, not a fitted per-tick timeline.",
+    "Food0.994 after sampling includes time since eating; it is not an exact immediate nutrition increment or meal-size calibration.",
+    "Developer instant furniture placement does not measure construction work/cost/quality generation.",
+    "No simultaneous diners, blocked/forbidden/burning chair, no-chair table-only branch, interruption, drafted eating, distant-seat boundary or dining-room mood bonus was exercised. Those remain static conclusions or untested.",
+    "Only selected nodes/crops/hashes are public; raw saves/screenshots remain local.",
+    "The initial click inspected rice but no rice-consume order was sent. Zoom screenshot52 contains a beauty tooltip; clean earlier screenshot47 is used for table evidence.",
+    "Two branches explicitly roll back ticks. Final duplicate save checks selected state only, not byte-identical complete saves."
+  ]
+}

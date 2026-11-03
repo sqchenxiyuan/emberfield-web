@@ -1,3 +1,4 @@
+import { LIVING_BUILDINGS } from './living';
 import { PEN_BUILDINGS } from './pens';
 import type { VoxelSimulation } from './world';
 import { Block, type ApparelPiece, type Cargo, type Counts, type Pawn, type Resource } from './types';
@@ -186,6 +187,8 @@ export function colonyWealthDetails(sim: VoxelSimulation): WealthDetails {
   const add = (count: number, cost: Readonly<Partial<Counts>>, work: number) => {
     buildingSources.facilities += count * constructedMarketValue(cost, work);
   };
+  add(sim.tables.length, LIVING_BUILDINGS.table.cost, LIVING_BUILDINGS.table.work);
+  add(sim.chairs.length, LIVING_BUILDINGS.chair.cost, LIVING_BUILDINGS.chair.work);
   add(sim.beds.length, { wood: 45 }, 187);
   add(sim.doors.length, { wood: 25 }, 199);
   add(sim.stoves.length, { wood: 20 }, 120);

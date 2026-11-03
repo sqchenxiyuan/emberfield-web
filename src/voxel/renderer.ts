@@ -83,6 +83,7 @@ import { projectileViewPosition } from './rangedView';
 import { ANIMAL_DEFS } from './wildlife';
 import { isAnimalAdult } from './husbandry';
 import { FIRE_RULES, fireDamageCells } from './fire';
+import { tableCells } from './living';
 
 /** x/y are horizontal simulation coordinates; Three uses x/z horizontally. */
 export interface VoxelView {
@@ -97,7 +98,7 @@ export interface VoxelView {
 }
 
 export interface PlacementPreview {
-  tool: 'fence' | 'fenceGate' | 'penMarker' | 'animalArea';
+  tool: 'table' | 'chair' | 'fence' | 'fenceGate' | 'penMarker' | 'animalArea';
   from: Pos;
   to: Pos;
   axis: Axis;
@@ -148,6 +149,7 @@ type PawnVisual = {
   cargoHerb: Group;
   cargoCarcasses: Record<AnimalSpecies, Group>;
   cargo: Mesh;
+  diningDish: Group;
   torso: Mesh;
   label: Sprite;
   sleepSymbol: Sprite;
@@ -1710,7 +1712,17 @@ export class VoxelRenderer {
 
   private updatePlacementPreview() {
     const preview = this.placementPreview, parts: DevicePart[] = [];
-    if (preview && preview.from.z === this.level) {
+    const furniture = preview?.tool === 'table' || preview?.tool === 'chair';
+    const furnitureParts: DevicePart[] = [];
+    if (preview && furniture && preview.from.z === this.level) {
+      const kind = preview.tool as 'table' | 'chair', item = { ...preview.from, axis: preview.axis };
+      furnitureParts.push(...this.diningFurnitureParts(kind, item).map(p => ({ ...p, color: 0x9be0df })));
+      for (const cell of kind === 'table' ? tableCells(item) : [item]) furnitureParts.push({
+        cell: item, x: cell.x + .5, y: cell.y + .5, z: cell.z + .04, sx: .94, sy: .94, sz: .035, color: 0x9be0df,
+      });
+    }
+    this.deviceBatch('living-placement-preview', furnitureParts, this.box, true, .5, false);
+    if (preview && !furniture && preview.from.z === this.level) {
       const color = preview.erase ? 0xf2a186 : preview.tool === 'animalArea' ? 0x9dd59d : 0x9be0df;
       for (let y = Math.max(0, Math.min(preview.from.y, preview.to.y)); y <= Math.min(DEPTH - 1, Math.max(preview.from.y, preview.to.y)); y++) {
         for (let x = Math.max(0, Math.min(preview.from.x, preview.to.x)); x <= Math.min(WIDTH - 1, Math.max(preview.from.x, preview.to.x)); x++) {
@@ -1737,7 +1749,7 @@ export class VoxelRenderer {
 
   /** Local device x/y follow the footprint contract; axis y exchanges those axes. */
   private devicePart(
-    device: Device,
+    device: Pos & { axis: Axis },
     x: number,
     y: number,
     z: number,
@@ -2041,8 +2053,31 @@ export class VoxelRenderer {
     this.deviceBatch('cooler-air', air, this.smokeGeometry, true, 0.5, false);
   }
 
+  private diningFurnitureParts(kind: 'table' | 'chair', item: Pos & { axis: Axis }): DevicePart[] {
+    const parts: DevicePart[] = [];
+    const put = (x: number, y: number, z: number, sx: number, sy: number, sz: number, color = 0xa67a4e) =>
+      parts.push(this.devicePart(item, x, y, z, sx, sy, sz, color));
+    if (kind === 'table') {
+      put(1, .5, .88, 1.92, .92, .12, 0xbd905c);
+      put(1, .5, .74, 1.66, .66, .14, 0x916b45);
+      for (const x of [.18, 1.82]) for (const y of [.17, .83]) put(x, y, .4, .13, .13, .8, 0x805b3d);
+      put(1, .5, .948, .018, .86, .012, 0x906c48);
+    } else {
+      put(.5, .5, .49, .67, .67, .12, 0xbd905c);
+      for (const x of [.23, .77]) for (const y of [.23, .77]) put(x, y, .23, .1, .1, .46, 0x805b3d);
+      for (const x of [.21, .79]) put(x, .18, .77, .1, .1, .54, 0x916b45);
+      put(.5, .18, .94, .65, .1, .15, 0xbd905c);
+      put(.5, .18, .73, .54, .08, .1, 0xa67a4e);
+    }
+    return parts;
+  }
+
   private updateHousing() {
     if (!this.data) return;
+    this.deviceBatch('dining-tables', (this.data.tables ?? []).filter(t => t.z <= this.level)
+      .flatMap(t => this.diningFurnitureParts('table', t)));
+    this.deviceBatch('dining-chairs', (this.data.chairs ?? []).filter(c => c.z <= this.level)
+      .flatMap(c => this.diningFurnitureParts('chair', c)));
     const beds = (this.data.beds ?? []).filter((bed) => bed.z <= this.level);
     const bedParts = this.batch(
       'bed-body',
@@ -3182,7 +3217,10 @@ export class VoxelRenderer {
       const researchBench = this.data?.researchBenches.find(
         (b) => b.x === job.x && b.y === job.y && b.z === job.z,
       );
-      const footprint = weaponBenchKind
+      const removedTable = job.kind === 'remove' ? this.data?.tables.find(t => t.x === job.x && t.y === job.y && t.z === job.z) : undefined;
+      const footprint = job.kind === 'table' || removedTable
+        ? tableCells({ ...job, axis: removedTable?.axis ?? job.axis ?? 'x' })
+        : weaponBenchKind
         ? weaponBenchCells({
             ...job,
             kind: weaponBenchKind,
@@ -3213,6 +3251,8 @@ export class VoxelRenderer {
               ? { generator: 1.85, solar: 1.6, battery: 1.2, heater: 0.8, cooler: 2 }[deviceKind]
               : planting
                 ? 0.14
+                : job.kind === 'table' || job.kind === 'chair'
+                  ? .95
                 : job.kind === 'bed'
                   ? 0.5
                   : job.kind === 'door'
@@ -3523,6 +3563,13 @@ export class VoxelRenderer {
     }
     const cargoMaterial = this.keepMaterial(new MeshLambertMaterial({ color: 0xc69b60 }));
     const cargo = part(body, cargoMaterial, 0, 0.72, 0.39, 0.43, 0.31, 0.33);
+    const diningDish = new Group();
+    const ceramic = this.keepMaterial(new MeshLambertMaterial({ color: 0xe6dcc4 }));
+    const cookedFood = this.keepMaterial(new MeshLambertMaterial({ color: 0xc28c56 }));
+    part(diningDish, ceramic, 0, 0, 0, .42, .045, .34);
+    part(diningDish, cookedFood, -.07, .06, 0, .16, .09, .18);
+    part(diningDish, this.keepMaterial(new MeshLambertMaterial({ color: 0x8eaf66 })), .11, .045, .03, .11, .06, .15);
+    diningDish.visible = false; root.add(diningDish);
     cargo.visible = false;
     if (pawn.faction === 'trader') {
       const satchel = this.keepMaterial(new MeshLambertMaterial({ color: 0xa67d48 }));
@@ -3612,6 +3659,7 @@ export class VoxelRenderer {
       cargoHerb,
       cargoCarcasses,
       cargo,
+      diningDish,
       label,
       sleepSymbol,
       healthMarker,
@@ -3884,6 +3932,8 @@ export class VoxelRenderer {
       visual.poisoningMarker.visible = !!pawn.foodPoisoning && !pawn.dead;
       visual.broom.visible = false;
       visual.horseshoe.visible = false;
+      visual.diningDish.visible = false;
+      visual.root.userData.dining = null;
       visual.head.rotation.set(0, 0, 0);
       visual.head.visible = !isPartMissing(pawn.trauma, 'head');
       visual.leftArm.visible = !isPartMissing(pawn.trauma, 'leftArm');
@@ -4156,7 +4206,25 @@ export class VoxelRenderer {
           dz = visual.to.z - visual.from.z;
         if (Math.abs(dx) + Math.abs(dz) > 0.001) visual.root.rotation.y = Math.atan2(dx, dz);
       }
-      if (firefighting && fireTarget) {
+      const meal = pawn.phase === 'dine' ? pawn.living?.mealTask : null;
+      const mealSource = meal?.sourceId != null ? this.data.items.find(i => i.id === meal.sourceId && i.x === pawn.x && i.y === pawn.y && i.z === pawn.z && i.resource === pawn.eating) : pawn.cargo?.resource === pawn.eating ? pawn.cargo : null;
+      const eating = !!meal && meal.stage === 'chew' && !moving && !mental && !!mealSource &&
+        pawn.x === meal.target.x && pawn.y === meal.target.y && pawn.z === meal.target.z;
+      const diningChair = eating && meal.chairId !== null ? this.data.chairs.find(c => c.id === meal.chairId && c.x === pawn.x && c.y === pawn.y && c.z === pawn.z) : undefined;
+      const diningTable = eating && meal?.tableId !== null ? this.data.tables.find(t => t.id === meal!.tableId) : undefined;
+      if (eating && meal) {
+        const nearest = diningTable ? tableCells(diningTable).sort((a, b) => Math.abs(a.x - pawn.x) + Math.abs(a.y - pawn.y) - Math.abs(b.x - pawn.x) - Math.abs(b.y - pawn.y))[0] : undefined;
+        if (nearest) visual.root.rotation.y = Math.atan2(nearest.x - pawn.x, nearest.y - pawn.y);
+        visual.body.position.y = diningChair ? -.04 : 0;
+        visual.leftLeg.rotation.x = visual.rightLeg.rotation.x = diningChair ? -1.25 : 0;
+        visual.torso.rotation.x = .06; visual.head.rotation.x = .08 + Math.sin(time * 3 + pawn.id) * .025;
+        visual.leftArm.rotation.x = -.95;
+        visual.rightArm.rotation.x = -1.15 + Math.sin(time * 4 + pawn.id) * .3;
+        visual.cargo.visible = meal.sourceId !== null && !!pawn.cargo; visual.tool.visible = false; visual.hammer.visible = false;
+        visual.diningDish.visible = true;
+        visual.diningDish.position.set(0, diningTable ? .97 : .88, diningTable ? .73 : .4);
+        visual.root.userData.dining = { pawnId: pawn.id, seated: !!diningChair, chairId: diningChair?.id ?? null, tableId: diningTable?.id ?? null, progress: meal.progress };
+      } else if (firefighting && fireTarget) {
         const beat = MathUtils.clamp((pawn.firefightTask!.progress + extraTicks) / FIRE_RULES.beatWork, 0, 1);
         const strike = Math.sin(beat * Math.PI);
         visual.root.rotation.y = Math.atan2(fireTarget.x + .5 - visual.root.position.x, fireTarget.y + .5 - visual.root.position.z);
@@ -4331,6 +4399,12 @@ export class VoxelRenderer {
         overlayCells: this.batches.get('pen-overlay-fill')?.mesh.count ?? 0,
         previewParts: this.batches.get('pen-placement-preview')?.mesh.count ?? 0,
         selectedPenId: this.selectedPenId, selectedAreaId: this.selectedAnimalAreaId,
+      },
+      living: {
+        tableParts: this.batches.get('dining-tables')?.mesh.count ?? 0,
+        chairParts: this.batches.get('dining-chairs')?.mesh.count ?? 0,
+        previewParts: this.batches.get('living-placement-preview')?.mesh.count ?? 0,
+        diners: [...this.pawnVisuals.values()].filter(v => v.root.visible && v.diningDish.visible).map(v => ({ ...v.root.userData.dining, arm: v.rightArm.rotation.x })),
       },
     };
   }

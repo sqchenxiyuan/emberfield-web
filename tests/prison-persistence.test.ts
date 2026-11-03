@@ -1,3 +1,4 @@
+import { initialLiving } from '../src/voxel/living';
 import { describe, expect, it } from 'vitest';
 import { initialPrisoner } from '../src/voxel/prisoners';
 import { migratePrisoners, rejectLegacyPrisonerFields, validatePrisoners } from '../src/voxel/prisonPersistence';
@@ -8,7 +9,7 @@ import { type Pawn, type VoxelSave } from '../src/voxel/types';
 
 function pawn(id: number, extra: Partial<Pawn> = {}): Pawn {
   return { ...initialSurvival(20, id), id, name: `人物${id}`, x: 19, y: 10, z: 8, color: 0,
-    food: 80, rest: 80, skills: initialSkills(id), psyche: initialPsyche(),
+    food: 80, rest: 80, skills: initialSkills(id), living: initialLiving(), psyche: initialPsyche(),
     worn: [], apparelTask: null, apparelWearTicks: 0, jobId: null, phase: 'idle', path: [],
     destination: null, cargo: null, eating: null, reason: '', moveTick: 0, workTarget: null,
     sleepingSince: null, sleepBedId: null, schedule: Array(24).fill('work'),

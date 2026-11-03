@@ -25,7 +25,7 @@ function historical(name: keyof typeof HASHES) {
 describe('authentic v29 pen migration', () => {
   it.each(['carrying-feed', 'pregnant', 'newborn'] as const)('preserves real %s state and adds only v30 defaults', name => {
     const old = historical(name), before = structuredClone(old), s = VoxelSimulation.load(old), saved = s.save();
-    expect(old).toEqual(before); expect(saved.version).toBe(30);
+    expect(old).toEqual(before); expect(saved.version).toBe(31);
     expect(saved.tick).toBe(old.tick); expect(saved.nextId).toBe(old.nextId);
     for (const key of ['fences', 'fenceGates', 'penMarkers', 'animalAreas'] as const) expect(saved[key]).toEqual([]);
     expect(saved.animals).toEqual(old.animals.map((a: any) => ({ ...a, ...initialAnimalPenState(old.tick) })));

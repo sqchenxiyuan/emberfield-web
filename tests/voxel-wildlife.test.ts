@@ -163,7 +163,7 @@ describe('wildlife, actual hunting and physical food chain', () => {
     const old = JSON.parse(readFileSync('tests/fixtures/voxel-v21-wildlife-initial.json', 'utf8'));
     expect(old.version).toBe(21); expect(old.animals).toBeUndefined();
     const s = VoxelSimulation.load(old);
-    expect(s.items).toEqual(old.items); expect(s.animals).toHaveLength(8); expect(s.save().version).toBe(30);
+    expect(s.items).toEqual(old.items); expect(s.animals).toHaveLength(8); expect(s.save().version).toBe(31);
     expect(VoxelSimulation.load(s.save()).animals).toEqual(s.animals);
   });
 });

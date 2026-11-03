@@ -1,3 +1,4 @@
+import { initialLiving } from '../src/voxel/living';
 import { describe, expect, it } from 'vitest';
 import { advancePsyche, initialPsyche, moodView, MOOD_RULES, recreationGain,
   remember, shouldRecreate, validatePsyche, type Psyche } from '../src/voxel/mood';
@@ -9,7 +10,7 @@ import { makeApparel } from '../src/voxel/apparel';
 // Pure-rule fixture: no world, scheduling, physical jobs or resource simulation.
 function person(extra: Partial<Pawn> = {}): Pawn {
   return { ...initialSurvival(73129, 1), id: 1, name: '测试殖民者', x: 10, y: 10, z: 8,
-    food: 80, rest: 80, worn: [], psyche: initialPsyche(), phase: 'idle', sleepingSince: null,
+    food: 80, rest: 80, worn: [], living: initialLiving(), psyche: initialPsyche(), phase: 'idle', sleepingSince: null,
     sleepBedId: null, jobId: null, cargo: null, eating: null, ...extra } as Pawn;
 }
 const session = (kind: 'walk' | 'horseshoes' = 'walk'): NonNullable<Psyche['recreation']> => ({
