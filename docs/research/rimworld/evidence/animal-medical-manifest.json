@@ -1,0 +1,374 @@
+{
+  "evidence_id": "RW17-ANIMAL-MEDICAL",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes.",
+    "No game, browser, preview, GUI input or screenshot capture was launched."
+  ],
+  "types": [
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "local_file": ".local-research/animal-medical/Verse.Pawn_HealthTracker.cs",
+      "sha256": "13931efb22fe8cb3d9f274529d6558a20e144e96230a718df1e24e122a88c926",
+      "lines": 1400
+    },
+    {
+      "type": "Verse.HealthTuning",
+      "local_file": ".local-research/animal-medical/Verse.HealthTuning.cs",
+      "sha256": "535fd90c360ae9778fe052f97ab10d9787e2f13debe2fd5369d37d90e4beeeef",
+      "lines": 150
+    },
+    {
+      "type": "Verse.Hediff_Injury",
+      "local_file": ".local-research/animal-medical/Verse.Hediff_Injury.cs",
+      "sha256": "757a36eda375abd98969faa765466478482c4d07b223b154d3fc72b5b261df8a",
+      "lines": 251
+    },
+    {
+      "type": "Verse.HediffSet",
+      "local_file": ".local-research/animal-medical/Verse.HediffSet.cs",
+      "sha256": "8827fe0cf7ca719644ce2879d091d51ea97809f4806760a72f5f2e29de3a3a83",
+      "lines": 1392
+    },
+    {
+      "type": "Verse.Hediff",
+      "local_file": ".local-research/animal-medical/Verse.Hediff.cs",
+      "sha256": "b370c42a21c8e21655b047d8f569002efde73dea3d4f9ed8d3bbe71f5736fad3",
+      "lines": 869
+    },
+    {
+      "type": "Verse.HediffComp_TendDuration",
+      "local_file": ".local-research/animal-medical/Verse.HediffComp_TendDuration.cs",
+      "sha256": "30120abcbe9e1f3bc8b83d04d22f04f77264cbd86877d952e596361d35762950",
+      "lines": 225
+    },
+    {
+      "type": "Verse.HediffCompProperties_TendDuration",
+      "local_file": ".local-research/animal-medical/Verse.HediffCompProperties_TendDuration.cs",
+      "sha256": "3a9a7175c70c2b6acf4d68291b5d21c5a2c6efe6ac3c0c26dcd35d45e9a2db58",
+      "lines": 71
+    },
+    {
+      "type": "Verse.HediffWithComps",
+      "local_file": ".local-research/animal-medical/Verse.HediffWithComps.cs",
+      "sha256": "3057fc7c941abbf496183bc70a7edc28535a12089f4be5668c6efa447001f44c",
+      "lines": 451
+    },
+    {
+      "type": "RimWorld.RestUtility",
+      "local_file": ".local-research/animal-medical/RimWorld.RestUtility.cs",
+      "sha256": "e0f84f3a9d891e7c6130159b9dfd6751063147eb3e090effe854661171e3f73e",
+      "lines": 612
+    },
+    {
+      "type": "RimWorld.Building_Bed",
+      "local_file": ".local-research/animal-medical/RimWorld.Building_Bed.cs",
+      "sha256": "2ee2bf86f55b05d4106ea896a26c8aa0c3442e4fa3aea917f9afb39071aada6c",
+      "lines": 847
+    },
+    {
+      "type": "RimWorld.CompAssignableToPawn_Bed",
+      "local_file": ".local-research/animal-medical/RimWorld.CompAssignableToPawn_Bed.cs",
+      "sha256": "88cf175d8d8d1f2340a08cd5af53355f88850d14cede3e9ab177da7b65a000c1",
+      "lines": 138
+    },
+    {
+      "type": "RimWorld.WorkGiver_RescueDowned",
+      "local_file": ".local-research/animal-medical/RimWorld.WorkGiver_RescueDowned.cs",
+      "sha256": "4ac16f4cb484e608dec6393460de252e41b38597f2134eaa23fc36d290efbb47",
+      "lines": 76
+    },
+    {
+      "type": "RimWorld.WorkGiver_TakeToBed",
+      "local_file": ".local-research/animal-medical/RimWorld.WorkGiver_TakeToBed.cs",
+      "sha256": "c642cfa6829bf2071e418d91552e4f5dc9775658451768a30b7aed5549dfa0f4",
+      "lines": 12
+    },
+    {
+      "type": "RimWorld.HealthAIUtility",
+      "local_file": ".local-research/animal-medical/RimWorld.HealthAIUtility.cs",
+      "sha256": "3bd707b58f5232459e9843a60ceeb9cc7a7a88c8d64f639726b6a4b216c68558",
+      "lines": 207
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_RescuePawn",
+      "local_file": ".local-research/animal-medical/RimWorld.FloatMenuOptionProvider_RescuePawn.cs",
+      "sha256": "82a520a896c4a52ab2925e237764c73b8828d6d54c9ea314b1f1a055aa42f6a5",
+      "lines": 71
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_DraftedTend",
+      "local_file": ".local-research/animal-medical/RimWorld.FloatMenuOptionProvider_DraftedTend.cs",
+      "sha256": "07fd52fa86496b048729e206363e6f2a2f5de8e7bf93672b789615bd0afec264",
+      "lines": 152
+    },
+    {
+      "type": "RimWorld.JobDriver_TakeToBed",
+      "local_file": ".local-research/animal-medical/RimWorld.JobDriver_TakeToBed.cs",
+      "sha256": "152297f764d3217f164d6d8bab92f228709beed0cd5130b2c0a6bce3f7689aca",
+      "lines": 190
+    },
+    {
+      "type": "RimWorld.Toils_Bed",
+      "local_file": ".local-research/animal-medical/RimWorld.Toils_Bed.cs",
+      "sha256": "afe91fc545ea1cbdb3fdcdc8451f2fcc747fc0975adf817ccf336d78f5cd211f",
+      "lines": 132
+    },
+    {
+      "type": "RimWorld.WorkGiver_Tend",
+      "local_file": ".local-research/animal-medical/RimWorld.WorkGiver_Tend.cs",
+      "sha256": "56f516a61965421554032f9365e9d8240036c6d6c36ef7970d46ead04f6c0782",
+      "lines": 60
+    },
+    {
+      "type": "RimWorld.WorkGiver_TendOther",
+      "local_file": ".local-research/animal-medical/RimWorld.WorkGiver_TendOther.cs",
+      "sha256": "4636494eb1fc2bd4790b6f55814d73d0950425dd4ad803df4610b65d5d94dda0",
+      "lines": 16
+    },
+    {
+      "type": "RimWorld.WorkGiver_TendOther_Animal",
+      "local_file": ".local-research/animal-medical/RimWorld.WorkGiver_TendOther_Animal.cs",
+      "sha256": "b16ecb40cb90e3d21c91a7d26a015796fcc444dcbda3930dff6aafabc6ee2cc0",
+      "lines": 22
+    },
+    {
+      "type": "RimWorld.WorkGiver_FeedPatient",
+      "local_file": ".local-research/animal-medical/RimWorld.WorkGiver_FeedPatient.cs",
+      "sha256": "6f13f28fcc39b939b62beb73bbe3cecb7cfc3af261657c3f900e3cee8e97f26e",
+      "lines": 103
+    },
+    {
+      "type": "RimWorld.FeedPatientUtility",
+      "local_file": ".local-research/animal-medical/RimWorld.FeedPatientUtility.cs",
+      "sha256": "6d67a449a99aa8afa890a7273f810f1c160719c159ecef07982a9be706b3500f",
+      "lines": 67
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodFeedPatient",
+      "local_file": ".local-research/animal-medical/RimWorld.JobDriver_FoodFeedPatient.cs",
+      "sha256": "abb8b8a547af43ca8b7c6a55b33b04ed1f09293c1fff3cb8f203847e4951015e",
+      "lines": 92
+    },
+    {
+      "type": "RimWorld.JobDriver_TendPatient",
+      "local_file": ".local-research/animal-medical/RimWorld.JobDriver_TendPatient.cs",
+      "sha256": "630cce411adf6bd7cb40b6dafd5113c7b476d1ac896e2f65961771f245503ab4",
+      "lines": 208
+    },
+    {
+      "type": "RimWorld.Toils_Tend",
+      "local_file": ".local-research/animal-medical/RimWorld.Toils_Tend.cs",
+      "sha256": "8fb249325b6eaf57452b332f9a5c718a75865136484d8b0effc06d7af89850f5",
+      "lines": 86
+    },
+    {
+      "type": "RimWorld.TendUtility",
+      "local_file": ".local-research/animal-medical/RimWorld.TendUtility.cs",
+      "sha256": "2b9ee74d83e14b10438f49e45654152fee2f5fe8c5923244f2a48169a2f456f5",
+      "lines": 184
+    },
+    {
+      "type": "RimWorld.MedicalCareUtility",
+      "local_file": ".local-research/animal-medical/RimWorld.MedicalCareUtility.cs",
+      "sha256": "6d4e0a362edd2ae780e059508f2b7b607674aa9c4f5fcee3fb9e411a2f1a4a90",
+      "lines": 132
+    },
+    {
+      "type": "RimWorld.MedicalCareCategory",
+      "local_file": ".local-research/animal-medical/RimWorld.MedicalCareCategory.cs",
+      "sha256": "e7ed98c74d75e63ef01d2226f17279f8b4f56d9f8a8d0e676fd43c3deb4d5eb6",
+      "lines": 11
+    },
+    {
+      "type": "RimWorld.Medicine",
+      "local_file": ".local-research/animal-medical/RimWorld.Medicine.cs",
+      "sha256": "3768af210514f133e54b343229abc7818c011e0ce1004305b336ec9b087a8885",
+      "lines": 51
+    },
+    {
+      "type": "Verse.AI.Toils_Haul",
+      "local_file": ".local-research/animal-medical/Verse.AI.Toils_Haul.cs",
+      "sha256": "a2359a7c55a648b4304bd34fc2fccb59dcab10a50498f3e57b5d8b9894d2ea05",
+      "lines": 637
+    },
+    {
+      "type": "Verse.Pawn_CarryTracker",
+      "local_file": ".local-research/animal-medical/Verse.Pawn_CarryTracker.cs",
+      "sha256": "b53d3466fbaf47c9b4bfd8c044b7632943a00c93749c1873b9267c69a6ce1df6",
+      "lines": 222
+    },
+    {
+      "type": "Verse.Pawn",
+      "local_file": ".local-research/animal-medical/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "lines": 4791
+    },
+    {
+      "type": "Verse.RaceProperties",
+      "local_file": ".local-research/animal-medical/Verse.RaceProperties.cs",
+      "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+      "lines": 788
+    },
+    {
+      "type": "RimWorld.BuildingProperties",
+      "local_file": ".local-research/animal-medical/RimWorld.BuildingProperties.cs",
+      "sha256": "fe0e1c9905ef65e9600941b247f8827d14d90a4575594e3a6c1fa45839969a16",
+      "lines": 682
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "local_file": ".local-research/animal-medical/RimWorld.Pawn_PlayerSettings.cs",
+      "sha256": "c23d3b5de6c9a96cad59170531efc71f3964d8d99d07b582eda580bfbdd00494",
+      "lines": 423
+    },
+    {
+      "type": "RimWorld.Pawn_Ownership",
+      "local_file": ".local-research/animal-medical/RimWorld.Pawn_Ownership.cs",
+      "sha256": "89e96b3ef430c3e395e7142bab4ec7b98602d6e80bfea55cb31fa850a0aacccc",
+      "lines": 306
+    },
+    {
+      "type": "RimWorld.Pawn_GuestTracker",
+      "local_file": ".local-research/animal-medical/RimWorld.Pawn_GuestTracker.cs",
+      "sha256": "0d37d2c0a1210dad405e31097fae6d41cd5838675927d6e36752c044a395414f",
+      "lines": 638
+    },
+    {
+      "type": "RimWorld.JobGiver_PatientGoToBed",
+      "local_file": ".local-research/animal-medical/RimWorld.JobGiver_PatientGoToBed.cs",
+      "sha256": "d74cc5497d7572d526a95de496c2df13ea06d272042c3ad6f8319106a36a96a9",
+      "lines": 57
+    },
+    {
+      "type": "RimWorld.PawnCapacityWorker_Moving",
+      "local_file": ".local-research/animal-medical/RimWorld.PawnCapacityWorker_Moving.cs",
+      "sha256": "fd137c64f230f745fa856e19d81484a693f8772a7e469b5f0f8d0c7d990b7bae",
+      "lines": 39
+    },
+    {
+      "type": "RimWorld.PawnCapacityWorker_Consciousness",
+      "local_file": ".local-research/animal-medical/RimWorld.PawnCapacityWorker_Consciousness.cs",
+      "sha256": "ef161417050ffbd4fc8f5817e83ecf7ab3d650fd41506765a5aeb455eb2ff05b",
+      "lines": 28
+    },
+    {
+      "type": "Verse.PawnCapacitiesHandler",
+      "local_file": ".local-research/animal-medical/Verse.PawnCapacitiesHandler.cs",
+      "sha256": "5b327ef3d06bbcd52b3512c44969d2fda9d5f167775521446a23941c1d0fc928",
+      "lines": 95
+    },
+    {
+      "type": "Verse.BodyDef",
+      "local_file": ".local-research/animal-medical/Verse.BodyDef.cs",
+      "sha256": "11d943d4b351b740abd8de2802c4d848d20e06b8fb3c5bd034025d580d50aab5",
+      "lines": 213
+    },
+    {
+      "type": "Verse.BodyPartDef",
+      "local_file": ".local-research/animal-medical/Verse.BodyPartDef.cs",
+      "sha256": "f2802bc09f833da4ea7a742f7ce8ebc4cc78fb2b4687154a236ad5053d76b8bb",
+      "lines": 160
+    },
+    {
+      "type": "Verse.BodyPartRecord",
+      "local_file": ".local-research/animal-medical/Verse.BodyPartRecord.cs",
+      "sha256": "2abff52c224b98d81795a237e81ebc6bacfd00d9c74370e007354c32afd3b4f4",
+      "lines": 169
+    },
+    {
+      "type": "RimWorld.LifeStageDef",
+      "local_file": ".local-research/animal-medical/RimWorld.LifeStageDef.cs",
+      "sha256": "93a5a86d46d9b6d954630d71044634ec69faddd67c473d1fed730e474c0034bd",
+      "lines": 132
+    },
+    {
+      "type": "Verse.Pawn_AgeTracker",
+      "local_file": ".local-research/animal-medical/Verse.Pawn_AgeTracker.cs",
+      "sha256": "b71a11d960cd5efae59595cf2a0298305a13bef9e9e095ee58cea3cb828d39ec",
+      "lines": 823
+    },
+    {
+      "type": "Verse.ImmunityHandler",
+      "local_file": ".local-research/animal-medical/Verse.ImmunityHandler.cs",
+      "sha256": "11551177a8917d92cfd1b3891708a4fbf49284f82af6a7bb98145737a58a183b",
+      "lines": 238
+    },
+    {
+      "type": "RimWorld.StatPart_Resting",
+      "local_file": ".local-research/animal-medical/RimWorld.StatPart_Resting.cs",
+      "sha256": "b1d571a59bd90c7ba1bcfe8447174554f7586254fde35124a70adcd2b65141fe",
+      "lines": 36
+    },
+    {
+      "type": "RimWorld.StatPart_BedStat",
+      "local_file": ".local-research/animal-medical/RimWorld.StatPart_BedStat.cs",
+      "sha256": "d4f3bb4604aca0cdc892fed1a43210f35e18adc1364dd6de4fee3de0983cd563",
+      "lines": 40
+    },
+    {
+      "type": "RimWorld.RelationsUtility",
+      "local_file": ".local-research/animal-medical/RimWorld.RelationsUtility.cs",
+      "sha256": "44381028d0956d5033e21bb0ab60426741b971c97ae45b8ff0781aa95c31ce1f",
+      "lines": 410
+    },
+    {
+      "type": "RimWorld.InteractionWorker_RecruitAttempt",
+      "local_file": ".local-research/animal-medical/RimWorld.InteractionWorker_RecruitAttempt.cs",
+      "sha256": "b865b4d6a8418fdb54d21ae1bdb9d02a2c44f037a52af3c4f355eff76f47d6aa",
+      "lines": 236
+    },
+    {
+      "type": "Verse.AI.Group.Lord",
+      "local_file": ".local-research/animal-medical/Verse.AI.Group.Lord.cs",
+      "sha256": "a4c592766e356bb857de4d8b4ef0e59b03e2140d31c198fa033429cf5857e3e4",
+      "lines": 1031
+    },
+    {
+      "type": "Verse.AI.Group.LordJob",
+      "local_file": ".local-research/animal-medical/Verse.AI.Group.LordJob.cs",
+      "sha256": "846b2d02f2279ce4aa8edc8b6aba6dbf19a00252d5d165e6f5efabf018e23a64",
+      "lines": 201
+    },
+    {
+      "type": "RimWorld.LordJob_TradeWithColony",
+      "local_file": ".local-research/animal-medical/RimWorld.LordJob_TradeWithColony.cs",
+      "sha256": "a6598fd4892ed55b9be03c20aae8a6fbbde830af360c336d89fca731f7438866",
+      "lines": 137
+    },
+    {
+      "type": "RimWorld.TrainableUtility",
+      "local_file": ".local-research/animal-medical/RimWorld.TrainableUtility.cs",
+      "sha256": "bab3408df77f5a362068e6ee50652dce6c149ec90f4cffe82efe1cefe0b21602",
+      "lines": 249
+    },
+    {
+      "type": "RimWorld.RecruitUtility",
+      "local_file": ".local-research/animal-medical/RimWorld.RecruitUtility.cs",
+      "sha256": "41edbc4b1fe16c2d63e0545ec563034ac5be40dbc6703af628560e86ef7fb336",
+      "lines": 34
+    },
+    {
+      "type": "Verse.PawnCapacityDef",
+      "local_file": ".local-research/animal-medical/Verse.PawnCapacityDef.cs",
+      "sha256": "2850efb006139853d9cfb61d17fbcf189df240733241ee3ab98a260216949efe",
+      "lines": 111
+    },
+    {
+      "type": "RimWorld.PlaySettings",
+      "local_file": ".local-research/animal-medical/RimWorld.PlaySettings.cs",
+      "sha256": "56e999d92d5468c598d918a20d8d1f6561d1d003b8c800598b41f48b1d6dca73",
+      "lines": 224
+    }
+  ]
+}

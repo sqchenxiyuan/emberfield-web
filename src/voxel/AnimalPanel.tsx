@@ -10,6 +10,7 @@ import { AutoSlaughterPanel } from './AutoSlaughterPanel';
 import { MILK_RULES, milkActive, milkReady } from './animalMilk';
 import { WOOL_RULES, woolActive, woolReady } from './animalWool';
 import { EGG_RULES, eggLayerActive } from './animalEggs';
+import { AnimalMedicalDetails, AnimalMedicalFacts, AnimalMedicalPanel, AnimalCareStatus } from './AnimalMedicalPanel';
 
 type Command = PenCommand;
 const availableHunters = (s: VoxelSnapshot) => s.pawns.filter(p => p.faction === 'colony' &&
@@ -167,6 +168,7 @@ export function AnimalTradeDetails({ animal: a }: { animal: WildAnimal }) {
   return <div className="voxel-animal-trade-facts" data-testid="animal-trade-facts" data-animal-id={a.id} style={{ display: 'grid', gap: 3 }}>
     <small>健康 {Math.ceil(a.health)} / {ANIMAL_DEFS[a.species].health}</small>
     <AnimalFacts animal={a} compact /><AnimalProductFacts animal={a} />
+    <AnimalMedicalFacts animal={a} />
   </div>;
 }
 
@@ -176,6 +178,7 @@ function AnimalStatus({ animal: a, snapshot: s }: { animal: WildAnimal; snapshot
     return <div className="voxel-animal-status" data-testid="animal-status" data-owner="trader">
       <p>{a.reason}</p><small>归属：{caravan?.name ?? '来访商队'} · 购买后才能安排饲养、圈地、待宰和放归。</small>
       <AnimalProductFacts animal={a} />
+      <AnimalCareStatus animal={a} snapshot={s} />
     </div>;
   }
   const handler = s.pawns.find(p => p.handleTask?.animalId === a.id), task = handler?.handleTask;
@@ -194,6 +197,7 @@ function AnimalStatus({ animal: a, snapshot: s }: { animal: WildAnimal; snapshot
     <AnimalMilkStatus animal={a} snapshot={s} />
     <AnimalWoolStatus animal={a} snapshot={s} />
     <AnimalEggStatus animal={a} />
+    <AnimalCareStatus animal={a} snapshot={s} />
   </div>;
 }
 
@@ -226,6 +230,7 @@ export function AnimalDetails({ animal, snapshot: s, command, focus, penControls
     <small>{animal.name} · #{animal.id}</small>
     <label>健康 {Math.ceil(animal.health)} / {ANIMAL_DEFS[animal.species].health}<progress aria-label="动物健康" value={animal.health} max={ANIMAL_DEFS[animal.species].health} /></label>
     <AnimalFacts animal={animal} />
+    <AnimalMedicalDetails animal={animal} snapshot={s} command={command} />
     <small>位置 {animal.x}, {animal.y} · Z {animal.z}</small>
     {animal.dead ? <><p>等待附近空位放下尸体；尸体需要搬到屠宰点加工。</p>
       <ItemCondition condition={s.environment.items.find(item => item.entity === 'carcass' && item.id === animal.id)} name={`${ANIMAL_DEFS[animal.species].name}尸体`} />
@@ -243,7 +248,7 @@ export function AnimalPanel({ snapshot: s, selectedAnimalId, baseLevel, command,
   choose: (tool: Tool) => void; focus: (pos: Pos) => void; selectAnimal: (animal: WildAnimal) => void;
   selectPawn: (pawn: Pawn) => void; close: () => void; penControls: PenControls;
 }) {
-  const [tab, setTab] = useState<'animals' | 'pens' | 'autoSlaughter'>('animals');
+  const [tab, setTab] = useState<'animals' | 'pens' | 'autoSlaughter' | 'medical'>('animals');
   const hunters = availableHunters(s), craftingSpot = s.weaponBenches.find(b => b.kind === 'craftingSpot');
   const domestic = s.animals.filter(a => !a.dead && a.faction === 'colony'), wild = s.animals.filter(a => !a.dead && a.faction === 'wild');
   const visitors = s.animals.filter(a => !a.dead && a.faction === 'trader');
@@ -253,9 +258,10 @@ export function AnimalPanel({ snapshot: s, selectedAnimalId, baseLevel, command,
     <div className="voxel-animal-tabs" role="tablist" aria-label="动物管理分类">
       <button role="tab" aria-selected={tab === 'animals'} aria-controls="animal-management-tab" onClick={() => setTab('animals')}>动物</button>
       <button role="tab" aria-selected={tab === 'pens'} aria-controls="pen-management-tab" onClick={() => setTab('pens')}>圈地与范围</button>
+      <button role="tab" aria-selected={tab === 'medical'} aria-controls="animal-medical-tab" onClick={() => setTab('medical')}>动物医疗</button>
       <button role="tab" aria-selected={tab === 'autoSlaughter'} aria-controls="auto-slaughter-tab" onClick={() => setTab('autoSlaughter')}>自动宰杀</button>
     </div>
-    {tab === 'autoSlaughter' ? <div id="auto-slaughter-tab" role="tabpanel"><AutoSlaughterPanel snapshot={s} command={command} selectAnimal={selectAnimal} /></div> : tab === 'pens' ? <div id="pen-management-tab" role="tabpanel"><PenPanel snapshot={s} command={command} choose={choose} focus={focus} controls={penControls} /></div> : <div id="animal-management-tab" role="tabpanel">
+    {tab === 'medical' ? <div id="animal-medical-tab" role="tabpanel"><AnimalMedicalPanel snapshot={s} command={command} choose={choose} focus={focus} selectAnimal={selectAnimal} /></div> : tab === 'autoSlaughter' ? <div id="auto-slaughter-tab" role="tabpanel"><AutoSlaughterPanel snapshot={s} command={command} selectAnimal={selectAnimal} /></div> : tab === 'pens' ? <div id="pen-management-tab" role="tabpanel"><PenPanel snapshot={s} command={command} choose={choose} focus={focus} controls={penControls} /></div> : <div id="animal-management-tab" role="tabpanel">
     <p>{domestic.length} 只殖民地动物 · {visitors.length} 只商队动物 · {wild.length} 只野生动物 · {hunters.length} 位可用远程猎人</p>
     <details className="voxel-wildlife-guide"><summary>驯服、饲养与繁殖</summary>
       <ol><li>种植稻谷并等候收获。开启人物的饲养分工，安排动物技能达标的殖民者。</li><li>标记野生动物驯服；饲养员携食物接近并互动，失败后会等候下次尝试。</li><li>动物寻找实际的草、作物和地面食物；可用仓储区集中投放谷物。草被吃掉后需要重新生长。</li><li>饱食的成年同种雌雄动物靠近后可自然交配。饥饿拖慢成长和孕期，严重营养不良可能流产。</li></ol>
@@ -287,6 +293,7 @@ export function AnimalPanel({ snapshot: s, selectedAnimalId, baseLevel, command,
           <div><b>{animal.name} · #{animal.id}</b><span>{ANIMAL_PHASE_NAMES[animal.phase]}</span></div>
           <small>{ANIMAL_DEFS[animal.species].name} · 健康 {Math.ceil(animal.health)} / {ANIMAL_DEFS[animal.species].health} · {levelName(animal.z, baseLevel)}</small>
           <AnimalFacts animal={animal} /><AnimalStatus animal={animal} snapshot={s} />
+          {(animal.medical.downed || animal.medical.wounds.length > 0 || animal.medical.bloodLoss > 0) && <AnimalMedicalFacts animal={animal} />}
           <AnimalPenControls animal={animal} snapshot={s} command={command} controls={penControls} />
           <div className="voxel-animal-row-actions"><button aria-label={`定位 ${animal.name}`} onClick={() => selectAnimal(animal)}>定位</button><AnimalOrders animal={animal} command={command} /></div>
         </section>)}

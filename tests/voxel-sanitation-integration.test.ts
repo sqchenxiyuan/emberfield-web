@@ -53,7 +53,7 @@ describe('sanitation integration and interrupted physical actions', () => {
     const provenance = JSON.parse(readFileSync(new URL('./fixtures/voxel-v24-sanitation-initial.provenance.json', import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(provenance.sha256);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old);
-    expect(old.version).toBe(24); expect(s.save().version).toBe(53);
+    expect(old.version).toBe(24); expect(s.save().version).toBe(54);
     expect(s.filth).toEqual([]); expect(s.items).toEqual(old.items);
     expect(s.pawns.map(p => p.id)).toEqual(old.pawns.map((p: Pawn) => p.id));
     expect(s.pawns.every(p => p.foodPoisoning === null && p.cleanTask === null)).toBe(true);

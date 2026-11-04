@@ -1,0 +1,4307 @@
+{
+  "evidence_id": "RW17-ANIMAL-MEDICAL-STATIC",
+  "version": "1.7.4980 rev60",
+  "assemblySha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "reaEvidenceId": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+  "reaParentId": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+  "reaFile": "docs/research/rimworld/evidence/production-bills-rea-managed.json",
+  "reaSha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+  "manifestFile": "docs/research/rimworld/evidence/animal-medical-manifest.json",
+  "manifestSha256": "e5773b3d5c0afdd2fa4180985b9ae8a091ce54463bc7061f19308314bd28141e",
+  "rules": [
+    {
+      "type": "RimWorld.BuildingProperties",
+      "file": ".local-research/animal-medical/RimWorld.BuildingProperties.cs",
+      "sha256": "fe0e1c9905ef65e9600941b247f8827d14d90a4575594e3a6c1fa45839969a16",
+      "anchor": "public float bed_maxBodySize = 9999f;",
+      "hits": [
+        {
+          "line": 178,
+          "text": "public float bed_maxBodySize = 9999f;"
+        }
+      ],
+      "interpretation": "Bed class default body-size cap; animal box overrides this."
+    },
+    {
+      "type": "RimWorld.BuildingProperties",
+      "file": ".local-research/animal-medical/RimWorld.BuildingProperties.cs",
+      "sha256": "fe0e1c9905ef65e9600941b247f8827d14d90a4575594e3a6c1fa45839969a16",
+      "anchor": "public bool bed_canBeMedical = true;",
+      "hits": [
+        {
+          "line": 188,
+          "text": "public bool bed_canBeMedical = true;"
+        }
+      ],
+      "interpretation": "Beds can be marked medical by default."
+    },
+    {
+      "type": "RimWorld.RestUtility",
+      "file": ".local-research/animal-medical/RimWorld.RestUtility.cs",
+      "sha256": "e0f84f3a9d891e7c6130159b9dfd6751063147eb3e090effe854661171e3f73e",
+      "anchor": "p.BodySize > bedDef.building.bed_maxBodySize",
+      "hits": [
+        {
+          "line": 423,
+          "text": "if (p.BodySize > bedDef.building.bed_maxBodySize)"
+        }
+      ],
+      "interpretation": "Fit uses current life-stage-adjusted body size."
+    },
+    {
+      "type": "RimWorld.RestUtility",
+      "file": ".local-research/animal-medical/RimWorld.RestUtility.cs",
+      "sha256": "e0f84f3a9d891e7c6130159b9dfd6751063147eb3e090effe854661171e3f73e",
+      "anchor": "p.RaceProps.Humanlike != bedDef.building.bed_humanlike",
+      "hits": [
+        {
+          "line": 427,
+          "text": "if (p.RaceProps.Humanlike != bedDef.building.bed_humanlike)"
+        }
+      ],
+      "interpretation": "Animal and human bed compatibility differ."
+    },
+    {
+      "type": "RimWorld.Building_Bed",
+      "file": ".local-research/animal-medical/RimWorld.Building_Bed.cs",
+      "sha256": "2ee2bf86f55b05d4106ea896a26c8aa0c3442e4fa3aea917f9afb39071aada6c",
+      "anchor": "if (value != medicalInt && (!value || def.building.bed_canBeMedical))",
+      "hits": [
+        {
+          "line": 118,
+          "text": "if (value != medicalInt && (!value || def.building.bed_canBeMedical))"
+        }
+      ],
+      "interpretation": "Medical mode setter checks permission."
+    },
+    {
+      "type": "RimWorld.Pawn_Ownership",
+      "file": ".local-research/animal-medical/RimWorld.Pawn_Ownership.cs",
+      "sha256": "89e96b3ef430c3e395e7142bab4ec7b98602d6e80bfea55cb31fa850a0aacccc",
+      "anchor": "if (newBed.IsOwner(pawn) || newBed.Medical)",
+      "hits": [
+        {
+          "line": 127,
+          "text": "if (newBed.IsOwner(pawn) || newBed.Medical)"
+        }
+      ],
+      "interpretation": "Medical beds are not claimed as personal beds."
+    },
+    {
+      "type": "RimWorld.Pawn_Ownership",
+      "file": ".local-research/animal-medical/RimWorld.Pawn_Ownership.cs",
+      "sha256": "89e96b3ef430c3e395e7142bab4ec7b98602d6e80bfea55cb31fa850a0aacccc",
+      "anchor": "newBed.CompAssignableToPawn.ForceAddPawn(pawn);",
+      "hits": [
+        {
+          "line": 134,
+          "text": "newBed.CompAssignableToPawn.ForceAddPawn(pawn);"
+        },
+        {
+          "line": 143,
+          "text": "newBed.CompAssignableToPawn.ForceAddPawn(pawn);"
+        }
+      ],
+      "interpretation": "Ordinary bed claim assigns the same pawn reference."
+    },
+    {
+      "type": "RimWorld.HealthAIUtility",
+      "file": ".local-research/animal-medical/RimWorld.HealthAIUtility.cs",
+      "sha256": "3bd707b58f5232459e9843a60ceeb9cc7a7a88c8d64f639726b6a4b216c68558",
+      "anchor": "if (!forced && patient.Faction != rescuer.Faction)",
+      "hits": [
+        {
+          "line": 124,
+          "text": "if (!forced && patient.Faction != rescuer.Faction)"
+        }
+      ],
+      "interpretation": "Automatic rescue requires same faction; forced rescue bypasses this gate."
+    },
+    {
+      "type": "RimWorld.HealthAIUtility",
+      "file": ".local-research/animal-medical/RimWorld.HealthAIUtility.cs",
+      "sha256": "3bd707b58f5232459e9843a60ceeb9cc7a7a88c8d64f639726b6a4b216c68558",
+      "anchor": "if (!pawn.Downed)",
+      "hits": [
+        {
+          "line": 83,
+          "text": "if (!pawn.Downed)"
+        }
+      ],
+      "interpretation": "WantsToBeRescued requires downed state."
+    },
+    {
+      "type": "RimWorld.HealthAIUtility",
+      "file": ".local-research/animal-medical/RimWorld.HealthAIUtility.cs",
+      "sha256": "3bd707b58f5232459e9843a60ceeb9cc7a7a88c8d64f639726b6a4b216c68558",
+      "anchor": "if (pawn.InBed() || pawn.IsCharging())",
+      "hits": [
+        {
+          "line": 87,
+          "text": "if (pawn.InBed() || pawn.IsCharging())"
+        }
+      ],
+      "interpretation": "A patient already in bed is not a rescue target."
+    },
+    {
+      "type": "RimWorld.HealthAIUtility",
+      "file": ".local-research/animal-medical/RimWorld.HealthAIUtility.cs",
+      "sha256": "3bd707b58f5232459e9843a60ceeb9cc7a7a88c8d64f639726b6a4b216c68558",
+      "anchor": "CaravanFormingUtility.IsFormingCaravanOrDownedPawnToBeTakenByCaravan(pawn)",
+      "hits": [
+        {
+          "line": 95,
+          "text": "if (CaravanFormingUtility.IsFormingCaravanOrDownedPawnToBeTakenByCaravan(pawn))"
+        }
+      ],
+      "interpretation": "A separate caravan pickup workflow can exclude rescue."
+    },
+    {
+      "type": "RimWorld.HealthAIUtility",
+      "file": ".local-research/animal-medical/RimWorld.HealthAIUtility.cs",
+      "sha256": "3bd707b58f5232459e9843a60ceeb9cc7a7a88c8d64f639726b6a4b216c68558",
+      "anchor": "if (pawn.ShouldBeSlaughtered())",
+      "hits": [
+        {
+          "line": 65,
+          "text": "if (pawn.ShouldBeSlaughtered())"
+        },
+        {
+          "line": 107,
+          "text": "if (pawn.ShouldBeSlaughtered())"
+        }
+      ],
+      "interpretation": "Slaughter designation excludes routine care and rescue."
+    },
+    {
+      "type": "RimWorld.HealthAIUtility",
+      "file": ".local-research/animal-medical/RimWorld.HealthAIUtility.cs",
+      "sha256": "3bd707b58f5232459e9843a60ceeb9cc7a7a88c8d64f639726b6a4b216c68558",
+      "anchor": "if (!forced && GenAI.EnemyIsNear(patient, 25f))",
+      "hits": [
+        {
+          "line": 136,
+          "text": "if (!forced && GenAI.EnemyIsNear(patient, 25f))"
+        }
+      ],
+      "interpretation": "Automatic rescue checks nearby danger."
+    },
+    {
+      "type": "RimWorld.HealthAIUtility",
+      "file": ".local-research/animal-medical/RimWorld.HealthAIUtility.cs",
+      "sha256": "3bd707b58f5232459e9843a60ceeb9cc7a7a88c8d64f639726b6a4b216c68558",
+      "anchor": "rescuer.CanReserveAndReach(patient, PathEndMode.OnCell, Danger.Deadly",
+      "hits": [
+        {
+          "line": 140,
+          "text": "if (!rescuer.CanReserveAndReach(patient, PathEndMode.OnCell, Danger.Deadly, 1, -1, null, forced))"
+        }
+      ],
+      "interpretation": "Rescue requires actual reservation and reachability."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_RescuePawn",
+      "file": ".local-research/animal-medical/RimWorld.FloatMenuOptionProvider_RescuePawn.cs",
+      "sha256": "82a520a896c4a52ab2925e237764c73b8828d6d54c9ea314b1f1a055aa42f6a5",
+      "anchor": "HealthAIUtility.CanRescueNow(context.FirstSelectedPawn, clickedPawn, forced: true)",
+      "hits": [
+        {
+          "line": 18,
+          "text": "if (!HealthAIUtility.CanRescueNow(context.FirstSelectedPawn, clickedPawn, forced: true))"
+        }
+      ],
+      "interpretation": "Manual rescue uses the forced eligibility path."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_RescuePawn",
+      "file": ".local-research/animal-medical/RimWorld.FloatMenuOptionProvider_RescuePawn.cs",
+      "sha256": "82a520a896c4a52ab2925e237764c73b8828d6d54c9ea314b1f1a055aa42f6a5",
+      "anchor": "clickedPawn.Faction != null && clickedPawn.Faction.HostileTo(Faction.OfPlayer)",
+      "hits": [
+        {
+          "line": 30,
+          "text": "if (clickedPawn.Faction != null && clickedPawn.Faction.HostileTo(Faction.OfPlayer))"
+        }
+      ],
+      "interpretation": "Manual rescue excludes hostile-faction patients."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_RescuePawn",
+      "file": ".local-research/animal-medical/RimWorld.FloatMenuOptionProvider_RescuePawn.cs",
+      "sha256": "82a520a896c4a52ab2925e237764c73b8828d6d54c9ea314b1f1a055aa42f6a5",
+      "anchor": "playerSettings.medCare == MedicalCareCategory.NoCare",
+      "hits": [
+        {
+          "line": 41,
+          "text": "if (playerSettings != null && playerSettings.medCare == MedicalCareCategory.NoCare)"
+        }
+      ],
+      "interpretation": "No-care policy disables the rescue menu."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_RescuePawn",
+      "file": ".local-research/animal-medical/RimWorld.FloatMenuOptionProvider_RescuePawn.cs",
+      "sha256": "82a520a896c4a52ab2925e237764c73b8828d6d54c9ea314b1f1a055aa42f6a5",
+      "anchor": "\"NoAnimalBed\"",
+      "hits": [
+        {
+          "line": 54,
+          "text": "string text = ((!clickedPawn.RaceProps.Animal) ? ((string)\"NoNonPrisonerBed\".Translate()) : ((string)\"NoAnimalBed\".Translate()));"
+        },
+        {
+          "line": 65,
+          "text": "string key = (clickedPawn.RaceProps.Animal ? \"NoAnimalBed\" : \"NoNonPrisonerBed\");"
+        }
+      ],
+      "interpretation": "Missing suitable animal bed produces a visible rejection."
+    },
+    {
+      "type": "RimWorld.JobDriver_TakeToBed",
+      "file": ".local-research/animal-medical/RimWorld.JobDriver_TakeToBed.cs",
+      "sha256": "152297f764d3217f164d6d8bab92f228709beed0cd5130b2c0a6bce3f7689aca",
+      "anchor": "pawn.Reserve(DropBed, job, DropBed.SleepingSlotsCount",
+      "hits": [
+        {
+          "line": 48,
+          "text": "return pawn.Reserve(DropBed, job, DropBed.SleepingSlotsCount, 0, null, errorOnFailed);"
+        }
+      ],
+      "interpretation": "Bed capacity is reserved as well as patient."
+    },
+    {
+      "type": "RimWorld.JobDriver_TakeToBed",
+      "file": ".local-research/animal-medical/RimWorld.JobDriver_TakeToBed.cs",
+      "sha256": "152297f764d3217f164d6d8bab92f228709beed0cd5130b2c0a6bce3f7689aca",
+      "anchor": "Toils_Bed.ClaimBedIfNonMedical(TargetIndex.B, TargetIndex.A)",
+      "hits": [
+        {
+          "line": 73,
+          "text": "yield return Toils_Bed.ClaimBedIfNonMedical(TargetIndex.B, TargetIndex.A);"
+        }
+      ],
+      "interpretation": "An ordinary destination bed can be claimed by its patient."
+    },
+    {
+      "type": "RimWorld.JobDriver_TakeToBed",
+      "file": ".local-research/animal-medical/RimWorld.JobDriver_TakeToBed.cs",
+      "sha256": "152297f764d3217f164d6d8bab92f228709beed0cd5130b2c0a6bce3f7689aca",
+      "anchor": "Toils_Haul.StartCarryThing(TargetIndex.A)",
+      "hits": [
+        {
+          "line": 121,
+          "text": "Toil startCarrying = Toils_Haul.StartCarryThing(TargetIndex.A);"
+        }
+      ],
+      "interpretation": "Rescue physically carries the target pawn."
+    },
+    {
+      "type": "RimWorld.JobDriver_TakeToBed",
+      "file": ".local-research/animal-medical/RimWorld.JobDriver_TakeToBed.cs",
+      "sha256": "152297f764d3217f164d6d8bab92f228709beed0cd5130b2c0a6bce3f7689aca",
+      "anchor": "FailOn(() => !pawn.IsCarryingPawn(Takee))",
+      "hits": [
+        {
+          "line": 131,
+          "text": "Toil goToBed = Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.Touch).FailOn(() => !pawn.IsCarryingPawn(Takee));"
+        }
+      ],
+      "interpretation": "Travel to bed requires carrying that exact patient."
+    },
+    {
+      "type": "RimWorld.JobDriver_TakeToBed",
+      "file": ".local-research/animal-medical/RimWorld.JobDriver_TakeToBed.cs",
+      "sha256": "152297f764d3217f164d6d8bab92f228709beed0cd5130b2c0a6bce3f7689aca",
+      "anchor": "pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Direct",
+      "hits": [
+        {
+          "line": 82,
+          "text": "pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Direct, out var _);"
+        }
+      ],
+      "interpretation": "Interrupted hauling drops the carried object at the rescuer location."
+    },
+    {
+      "type": "RimWorld.JobDriver_TakeToBed",
+      "file": ".local-research/animal-medical/RimWorld.JobDriver_TakeToBed.cs",
+      "sha256": "152297f764d3217f164d6d8bab92f228709beed0cd5130b2c0a6bce3f7689aca",
+      "anchor": "Takee.playerSettings = new Pawn_PlayerSettings(Takee);",
+      "hits": [
+        {
+          "line": 142,
+          "text": "Takee.playerSettings = new Pawn_PlayerSettings(Takee);"
+        }
+      ],
+      "interpretation": "Rescue creates missing player care settings on the same animal."
+    },
+    {
+      "type": "RimWorld.JobDriver_TakeToBed",
+      "file": ".local-research/animal-medical/RimWorld.JobDriver_TakeToBed.cs",
+      "sha256": "152297f764d3217f164d6d8bab92f228709beed0cd5130b2c0a6bce3f7689aca",
+      "anchor": "Toils_Bed.TuckIntoBed(DropBed, pawn, Takee, TakeeRescued)",
+      "hits": [
+        {
+          "line": 147,
+          "text": "yield return Toils_Bed.TuckIntoBed(DropBed, pawn, Takee, TakeeRescued);"
+        }
+      ],
+      "interpretation": "Final placement retains patient identity."
+    },
+    {
+      "type": "RimWorld.JobDriver_TakeToBed",
+      "file": ".local-research/animal-medical/RimWorld.JobDriver_TakeToBed.cs",
+      "sha256": "152297f764d3217f164d6d8bab92f228709beed0cd5130b2c0a6bce3f7689aca",
+      "anchor": "Takee.RaceProps.Humanlike && job.def != JobDefOf.Arrest",
+      "hits": [
+        {
+          "line": 22,
+          "text": "if (Takee.RaceProps.Humanlike && job.def != JobDefOf.Arrest && !Takee.IsPrisonerOfColony)"
+        }
+      ],
+      "interpretation": "The rescued social-notification flag is humanlike-specific."
+    },
+    {
+      "type": "RimWorld.HealthAIUtility",
+      "file": ".local-research/animal-medical/RimWorld.HealthAIUtility.cs",
+      "sha256": "3bd707b58f5232459e9843a60ceeb9cc7a7a88c8d64f639726b6a4b216c68558",
+      "anchor": "if (pawn.playerSettings == null)",
+      "hits": [
+        {
+          "line": 43,
+          "text": "if (pawn.playerSettings == null)"
+        }
+      ],
+      "interpretation": "Automatic tending requires a patient with player care settings."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Tend",
+      "file": ".local-research/animal-medical/RimWorld.WorkGiver_Tend.cs",
+      "sha256": "56f516a61965421554032f9365e9d8240036c6d6c36ef7970d46ead04f6c0782",
+      "anchor": "return patient.GetPosture() != PawnPosture.Standing;",
+      "hits": [
+        {
+          "line": 42,
+          "text": "return patient.GetPosture() != PawnPosture.Standing;"
+        }
+      ],
+      "interpretation": "Nonhumanlike treatment requires lying posture, not necessarily a bed."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Tend",
+      "file": ".local-research/animal-medical/RimWorld.WorkGiver_Tend.cs",
+      "sha256": "56f516a61965421554032f9365e9d8240036c6d6c36ef7970d46ead04f6c0782",
+      "anchor": "return patient.InBed();",
+      "hits": [
+        {
+          "line": 40,
+          "text": "return patient.InBed();"
+        }
+      ],
+      "interpretation": "Humanlike non-self treatment uses a different bed requirement."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Tend",
+      "file": ".local-research/animal-medical/RimWorld.WorkGiver_Tend.cs",
+      "sha256": "56f516a61965421554032f9365e9d8240036c6d6c36ef7970d46ead04f6c0782",
+      "anchor": "return JobMaker.MakeJob(JobDefOf.TendPatient, pawn2);",
+      "hits": [
+        {
+          "line": 57,
+          "text": "return JobMaker.MakeJob(JobDefOf.TendPatient, pawn2);"
+        }
+      ],
+      "interpretation": "Automatic tending can proceed without medicine."
+    },
+    {
+      "type": "RimWorld.JobDriver_TendPatient",
+      "file": ".local-research/animal-medical/RimWorld.JobDriver_TendPatient.cs",
+      "sha256": "630cce411adf6bd7cb40b6dafd5113c7b476d1ac896e2f65961771f245503ab4",
+      "anchor": "int ticks = (int)(1f / pawn.GetStatValue(StatDefOf.MedicalTendSpeed) * 600f);",
+      "hits": [
+        {
+          "line": 117,
+          "text": "int ticks = (int)(1f / pawn.GetStatValue(StatDefOf.MedicalTendSpeed) * 600f);"
+        }
+      ],
+      "interpretation": "Treatment duration is work scaled by medical speed."
+    },
+    {
+      "type": "RimWorld.Toils_Tend",
+      "file": ".local-research/animal-medical/RimWorld.Toils_Tend.cs",
+      "sha256": "8fb249325b6eaf57452b332f9a5c718a75865136484d8b0effc06d7af89850f5",
+      "anchor": "actor.skills.Learn(SkillDefOf.Medicine, num * num2);",
+      "hits": [
+        {
+          "line": 70,
+          "text": "actor.skills.Learn(SkillDefOf.Medicine, num * num2);"
+        }
+      ],
+      "interpretation": "Animal treatment trains Medicine skill, not Animals."
+    },
+    {
+      "type": "RimWorld.Toils_Tend",
+      "file": ".local-research/animal-medical/RimWorld.Toils_Tend.cs",
+      "sha256": "8fb249325b6eaf57452b332f9a5c718a75865136484d8b0effc06d7af89850f5",
+      "anchor": "actor.carryTracker.TryStartCarry(thing, num2);",
+      "hits": [
+        {
+          "line": 46,
+          "text": "actor.carryTracker.TryStartCarry(thing, num2);"
+        }
+      ],
+      "interpretation": "Medicine pickup moves actual inventory units."
+    },
+    {
+      "type": "RimWorld.TendUtility",
+      "file": ".local-research/animal-medical/RimWorld.TendUtility.cs",
+      "sha256": "2b9ee74d83e14b10438f49e45654152fee2f5fe8c5923244f2a48169a2f456f5",
+      "anchor": "tmpHediffsToTend[i].Tended(quality, maxQuality, i);",
+      "hits": [
+        {
+          "line": 42,
+          "text": "tmpHediffsToTend[i].Tended(quality, maxQuality, i);"
+        }
+      ],
+      "interpretation": "Treatment marks selected hediffs; recovery is separate."
+    },
+    {
+      "type": "RimWorld.TendUtility",
+      "file": ".local-research/animal-medical/RimWorld.TendUtility.cs",
+      "sha256": "2b9ee74d83e14b10438f49e45654152fee2f5fe8c5923244f2a48169a2f456f5",
+      "anchor": "medicine.stackCount--;",
+      "hits": [
+        {
+          "line": 66,
+          "text": "medicine.stackCount--;"
+        }
+      ],
+      "interpretation": "A completed treatment consumes one medicine unit when a stack remains."
+    },
+    {
+      "type": "RimWorld.TendUtility",
+      "file": ".local-research/animal-medical/RimWorld.TendUtility.cs",
+      "sha256": "2b9ee74d83e14b10438f49e45654152fee2f5fe8c5923244f2a48169a2f456f5",
+      "anchor": "medicine.Destroy();",
+      "hits": [
+        {
+          "line": 70,
+          "text": "medicine.Destroy();"
+        }
+      ],
+      "interpretation": "The final medicine unit is destroyed after use."
+    },
+    {
+      "type": "RimWorld.TendUtility",
+      "file": ".local-research/animal-medical/RimWorld.TendUtility.cs",
+      "sha256": "2b9ee74d83e14b10438f49e45654152fee2f5fe8c5923244f2a48169a2f456f5",
+      "anchor": "num + severity <= 20f",
+      "hits": [
+        {
+          "line": 155,
+          "text": "if (tmpHediffs[k] != hediff && tmpHediffs[k] is Hediff_Injury { Severity: var severity } hediff_Injury && num + severity <= 20f)"
+        }
+      ],
+      "interpretation": "Medicine can batch injury severity within a limit."
+    },
+    {
+      "type": "RimWorld.TendUtility",
+      "file": ".local-research/animal-medical/RimWorld.TendUtility.cs",
+      "sha256": "2b9ee74d83e14b10438f49e45654152fee2f5fe8c5923244f2a48169a2f456f5",
+      "anchor": "else if ((hediff is Hediff_Injury) & usingMedicine)",
+      "hits": [
+        {
+          "line": 150,
+          "text": "else if ((hediff is Hediff_Injury) & usingMedicine)"
+        }
+      ],
+      "interpretation": "Ordinary injury batching requires medicine."
+    },
+    {
+      "type": "RimWorld.TendUtility",
+      "file": ".local-research/animal-medical/RimWorld.TendUtility.cs",
+      "sha256": "2b9ee74d83e14b10438f49e45654152fee2f5fe8c5923244f2a48169a2f456f5",
+      "anchor": "hediffCompProperties_TendDuration.tendAllAtOnce",
+      "hits": [
+        {
+          "line": 140,
+          "text": "if (hediffCompProperties_TendDuration != null && hediffCompProperties_TendDuration.tendAllAtOnce)"
+        }
+      ],
+      "interpretation": "Some disease definitions have a separate same-def batch rule."
+    },
+    {
+      "type": "RimWorld.TendUtility",
+      "file": ".local-research/animal-medical/RimWorld.TendUtility.cs",
+      "sha256": "2b9ee74d83e14b10438f49e45654152fee2f5fe8c5923244f2a48169a2f456f5",
+      "anchor": "num *= medicinePotency;",
+      "hits": [
+        {
+          "line": 100,
+          "text": "num *= medicinePotency;"
+        }
+      ],
+      "interpretation": "Drug potency scales doctor treatment quality."
+    },
+    {
+      "type": "RimWorld.TendUtility",
+      "file": ".local-research/animal-medical/RimWorld.TendUtility.cs",
+      "sha256": "2b9ee74d83e14b10438f49e45654152fee2f5fe8c5923244f2a48169a2f456f5",
+      "anchor": "num += building_Bed.GetStatValue(StatDefOf.MedicalTendQualityOffset);",
+      "hits": [
+        {
+          "line": 104,
+          "text": "num += building_Bed.GetStatValue(StatDefOf.MedicalTendQualityOffset);"
+        }
+      ],
+      "interpretation": "Current bed can improve treatment quality."
+    },
+    {
+      "type": "RimWorld.TendUtility",
+      "file": ".local-research/animal-medical/RimWorld.TendUtility.cs",
+      "sha256": "2b9ee74d83e14b10438f49e45654152fee2f5fe8c5923244f2a48169a2f456f5",
+      "anchor": "return Mathf.Clamp(num, 0f, medicineQualityMax);",
+      "hits": [
+        {
+          "line": 110,
+          "text": "return Mathf.Clamp(num, 0f, medicineQualityMax);"
+        }
+      ],
+      "interpretation": "Drug tier caps treatment quality."
+    },
+    {
+      "type": "RimWorld.TendUtility",
+      "file": ".local-research/animal-medical/RimWorld.TendUtility.cs",
+      "sha256": "2b9ee74d83e14b10438f49e45654152fee2f5fe8c5923244f2a48169a2f456f5",
+      "anchor": "public const float NoMedicinePotency = 0.3f;",
+      "hits": [
+        {
+          "line": 10,
+          "text": "public const float NoMedicinePotency = 0.3f;"
+        }
+      ],
+      "interpretation": "No medicine still has a low treatment potency."
+    },
+    {
+      "type": "RimWorld.TendUtility",
+      "file": ".local-research/animal-medical/RimWorld.TendUtility.cs",
+      "sha256": "2b9ee74d83e14b10438f49e45654152fee2f5fe8c5923244f2a48169a2f456f5",
+      "anchor": "public const float NoMedicineQualityMax = 0.7f;",
+      "hits": [
+        {
+          "line": 12,
+          "text": "public const float NoMedicineQualityMax = 0.7f;"
+        }
+      ],
+      "interpretation": "No-medicine treatment has its own quality ceiling."
+    },
+    {
+      "type": "RimWorld.MedicalCareUtility",
+      "file": ".local-research/animal-medical/RimWorld.MedicalCareUtility.cs",
+      "sha256": "6d4e0a362edd2ae780e059508f2b7b607674aa9c4f5fcee3fb9e411a2f1a4a90",
+      "anchor": "MedicalCareCategory.NoMeds => false",
+      "hits": [
+        {
+          "line": 78,
+          "text": "MedicalCareCategory.NoMeds => false,"
+        }
+      ],
+      "interpretation": "No-medicine care is different from no care."
+    },
+    {
+      "type": "RimWorld.MedicalCareUtility",
+      "file": ".local-research/animal-medical/RimWorld.MedicalCareUtility.cs",
+      "sha256": "6d4e0a362edd2ae780e059508f2b7b607674aa9c4f5fcee3fb9e411a2f1a4a90",
+      "anchor": "MedicalCareCategory.HerbalOrWorse => meds.GetStatValueAbstract",
+      "hits": [
+        {
+          "line": 79,
+          "text": "MedicalCareCategory.HerbalOrWorse => meds.GetStatValueAbstract(StatDefOf.MedicalPotency) <= ThingDefOf.MedicineHerbal.GetStatValueAbstract(StatDefOf.MedicalPotency),"
+        }
+      ],
+      "interpretation": "Drug policies compare medical potency limits."
+    },
+    {
+      "type": "RimWorld.FeedPatientUtility",
+      "file": ".local-research/animal-medical/RimWorld.FeedPatientUtility.cs",
+      "sha256": "6d67a449a99aa8afa890a7273f810f1c160719c159ecef07982a9be706b3500f",
+      "anchor": "building_Bed == null || building_Bed.Faction != Faction.OfPlayer",
+      "hits": [
+        {
+          "line": 16,
+          "text": "if (building_Bed == null || building_Bed.Faction != Faction.OfPlayer)"
+        }
+      ],
+      "interpretation": "Nonhumanlike feeding needs a player-owned bed, not player-owned patient."
+    },
+    {
+      "type": "RimWorld.FeedPatientUtility",
+      "file": ".local-research/animal-medical/RimWorld.FeedPatientUtility.cs",
+      "sha256": "6d67a449a99aa8afa890a7273f810f1c160719c159ecef07982a9be706b3500f",
+      "anchor": "if (!HealthAIUtility.ShouldSeekMedicalRest(p))",
+      "hits": [
+        {
+          "line": 40,
+          "text": "if (!HealthAIUtility.ShouldSeekMedicalRest(p))"
+        }
+      ],
+      "interpretation": "Routine patient feeding requires medical-rest need."
+    },
+    {
+      "type": "RimWorld.FeedPatientUtility",
+      "file": ".local-research/animal-medical/RimWorld.FeedPatientUtility.cs",
+      "sha256": "6d67a449a99aa8afa890a7273f810f1c160719c159ecef07982a9be706b3500f",
+      "anchor": "p.needs.food.PercentageThreshHungry + 0.02f",
+      "hits": [
+        {
+          "line": 62,
+          "text": "return p.needs.food.CurLevelPercentage <= p.needs.food.PercentageThreshHungry + 0.02f;"
+        }
+      ],
+      "interpretation": "Patient feeding is hunger gated."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodFeedPatient",
+      "file": ".local-research/animal-medical/RimWorld.JobDriver_FoodFeedPatient.cs",
+      "sha256": "abb8b8a547af43ca8b7c6a55b33b04ed1f09293c1fff3cb8f203847e4951015e",
+      "anchor": "Toils_Ingest.PickupIngestible(TargetIndex.A, Deliveree)",
+      "hits": [
+        {
+          "line": 67,
+          "text": "yield return Toils_Ingest.PickupIngestible(TargetIndex.A, Deliveree);"
+        }
+      ],
+      "interpretation": "Patient feeding starts from actual food pickup."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodFeedPatient",
+      "file": ".local-research/animal-medical/RimWorld.JobDriver_FoodFeedPatient.cs",
+      "sha256": "abb8b8a547af43ca8b7c6a55b33b04ed1f09293c1fff3cb8f203847e4951015e",
+      "anchor": "Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.Touch)",
+      "hits": [
+        {
+          "line": 62,
+          "text": "Toil carryFoodToPatient = Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.Touch);"
+        }
+      ],
+      "interpretation": "Food is carried to physical contact with the patient."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodFeedPatient",
+      "file": ".local-research/animal-medical/RimWorld.JobDriver_FoodFeedPatient.cs",
+      "sha256": "abb8b8a547af43ca8b7c6a55b33b04ed1f09293c1fff3cb8f203847e4951015e",
+      "anchor": "Toils_Ingest.ChewIngestible(Deliveree, 1.5f, TargetIndex.A)",
+      "hits": [
+        {
+          "line": 77,
+          "text": "yield return Toils_Ingest.ChewIngestible(Deliveree, 1.5f, TargetIndex.A).FailOnCannotTouch(TargetIndex.B, PathEndMode.Touch);"
+        }
+      ],
+      "interpretation": "Assisted feeding has an explicit eating work phase."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodFeedPatient",
+      "file": ".local-research/animal-medical/RimWorld.JobDriver_FoodFeedPatient.cs",
+      "sha256": "abb8b8a547af43ca8b7c6a55b33b04ed1f09293c1fff3cb8f203847e4951015e",
+      "anchor": "Toils_Ingest.FinalizeIngest(Deliveree, TargetIndex.A)",
+      "hits": [
+        {
+          "line": 78,
+          "text": "Toil toil = Toils_Ingest.FinalizeIngest(Deliveree, TargetIndex.A);"
+        }
+      ],
+      "interpretation": "Actual ingestion settles the food and nutrition."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/animal-medical/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "ageTracker.CurLifeStage.bodySizeFactor * RaceProps.baseBodySize",
+      "hits": [
+        {
+          "line": 1249,
+          "text": "public float BodySize => ageTracker.CurLifeStage.bodySizeFactor * RaceProps.baseBodySize;"
+        }
+      ],
+      "interpretation": "Body size combines race and current life stage."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/animal-medical/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "ageTracker.CurLifeStage.healthScaleFactor * RaceProps.baseHealthScale",
+      "hits": [
+        {
+          "line": 1251,
+          "text": "public float HealthScale => ageTracker.CurLifeStage.healthScaleFactor * RaceProps.baseHealthScale;"
+        }
+      ],
+      "interpretation": "Health scale combines race and life stage independently of body size."
+    },
+    {
+      "type": "Verse.BodyPartDef",
+      "file": ".local-research/animal-medical/Verse.BodyPartDef.cs",
+      "sha256": "f2802bc09f833da4ea7a742f7ce8ebc4cc78fb2b4687154a236ad5053d76b8bb",
+      "anchor": "Mathf.CeilToInt((float)hitPoints * pawn.HealthScale)",
+      "hits": [
+        {
+          "line": 140,
+          "text": "return Mathf.CeilToInt((float)hitPoints * pawn.HealthScale);"
+        }
+      ],
+      "interpretation": "Each anatomical part HP is scaled and rounded up."
+    },
+    {
+      "type": "Verse.BodyPartDef",
+      "file": ".local-research/animal-medical/Verse.BodyPartDef.cs",
+      "sha256": "f2802bc09f833da4ea7a742f7ce8ebc4cc78fb2b4687154a236ad5053d76b8bb",
+      "anchor": "public int hitPoints = 10;",
+      "hits": [
+        {
+          "line": 14,
+          "text": "public int hitPoints = 10;"
+        }
+      ],
+      "interpretation": "Unspecified part HP uses class default ten."
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "file": ".local-research/animal-medical/Verse.Pawn_HealthTracker.cs",
+      "sha256": "13931efb22fe8cb3d9f274529d6558a20e144e96230a718df1e24e122a88c926",
+      "anchor": "hediffSet.PainTotal >= pawn.GetStatValue(StatDefOf.PainShockThreshold)",
+      "hits": [
+        {
+          "line": 101,
+          "text": "return hediffSet.PainTotal >= pawn.GetStatValue(StatDefOf.PainShockThreshold);"
+        }
+      ],
+      "interpretation": "Pain shock is not a global HP-percentage test."
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "file": ".local-research/animal-medical/Verse.Pawn_HealthTracker.cs",
+      "sha256": "13931efb22fe8cb3d9f274529d6558a20e144e96230a718df1e24e122a88c926",
+      "anchor": "!InPainShock && capacities.CanBeAwake && (capacities.CapableOf(PawnCapacityDefOf.Moving)",
+      "hits": [
+        {
+          "line": 644,
+          "text": "if (!InPainShock && capacities.CanBeAwake && (capacities.CapableOf(PawnCapacityDefOf.Moving) || pawn.RaceProps.doesntMove))"
+        }
+      ],
+      "interpretation": "Downing also depends on consciousness and moving capacity."
+    },
+    {
+      "type": "Verse.PawnCapacitiesHandler",
+      "file": ".local-research/animal-medical/Verse.PawnCapacitiesHandler.cs",
+      "sha256": "5b327ef3d06bbcd52b3512c44969d2fda9d5f167775521446a23941c1d0fc928",
+      "anchor": "GetLevel(PawnCapacityDefOf.Consciousness) >= 0.3f",
+      "hits": [
+        {
+          "line": 29,
+          "text": "if (pawn.RaceProps.alwaysAwake || GetLevel(PawnCapacityDefOf.Consciousness) >= 0.3f)"
+        }
+      ],
+      "interpretation": "Wakefulness consciousness threshold is separate from lethal capacity threshold."
+    },
+    {
+      "type": "Verse.PawnCapacitiesHandler",
+      "file": ".local-research/animal-medical/Verse.PawnCapacitiesHandler.cs",
+      "sha256": "5b327ef3d06bbcd52b3512c44969d2fda9d5f167775521446a23941c1d0fc928",
+      "anchor": "return GetLevel(capacity) > capacity.minForCapable;",
+      "hits": [
+        {
+          "line": 80,
+          "text": "return GetLevel(capacity) > capacity.minForCapable;"
+        }
+      ],
+      "interpretation": "Capability threshold comparison is strict greater-than."
+    },
+    {
+      "type": "RimWorld.PawnCapacityWorker_Moving",
+      "file": ".local-research/animal-medical/RimWorld.PawnCapacityWorker_Moving.cs",
+      "sha256": "fd137c64f230f745fa856e19d81484a693f8772a7e469b5f0f8d0c7d990b7bae",
+      "anchor": "if (functionalPercentage < 0.4999f)",
+      "hits": [
+        {
+          "line": 17,
+          "text": "if (functionalPercentage < 0.4999f)"
+        }
+      ],
+      "interpretation": "Movement calculation includes functional limb fraction."
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "file": ".local-research/animal-medical/Verse.Pawn_HealthTracker.cs",
+      "sha256": "13931efb22fe8cb3d9f274529d6558a20e144e96230a718df1e24e122a88c926",
+      "anchor": "public float LethalDamageThreshold => 150f * pawn.HealthScale;",
+      "hits": [
+        {
+          "line": 73,
+          "text": "public float LethalDamageThreshold => 150f * pawn.HealthScale;"
+        }
+      ],
+      "interpretation": "Total injury death threshold is distinct from part HP."
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "file": ".local-research/animal-medical/Verse.Pawn_HealthTracker.cs",
+      "sha256": "13931efb22fe8cb3d9f274529d6558a20e144e96230a718df1e24e122a88c926",
+      "anchor": "num += hediffSet.hediffs[i].Severity;",
+      "hits": [
+        {
+          "line": 712,
+          "text": "num += hediffSet.hediffs[i].Severity;"
+        }
+      ],
+      "interpretation": "Lethal damage threshold sums actual injury severity."
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "file": ".local-research/animal-medical/Verse.Pawn_HealthTracker.cs",
+      "sha256": "13931efb22fe8cb3d9f274529d6558a20e144e96230a718df1e24e122a88c926",
+      "anchor": "num = 0.5f;",
+      "hits": [
+        {
+          "line": 553,
+          "text": "num = 0.5f;"
+        }
+      ],
+      "interpretation": "Nonplayer nonhost animal downing from eligible external damage can have an additional death roll; see enclosing branch."
+    },
+    {
+      "type": "Verse.Hediff_Injury",
+      "file": ".local-research/animal-medical/Verse.Hediff_Injury.cs",
+      "sha256": "757a36eda375abd98969faa765466478482c4d07b223b154d3fc72b5b261df8a",
+      "anchor": "this.IsTended() || this.IsPermanent()",
+      "hits": [
+        {
+          "line": 158,
+          "text": "if ((Part != null && Part.def.IsSolid(Part, pawn.health.hediffSet.hediffs)) || this.IsTended() || this.IsPermanent())"
+        },
+        {
+          "line": 216,
+          "text": "if (!(other is Hediff_Injury hediff_Injury) || hediff_Injury.def != def || hediff_Injury.Part != Part || hediff_Injury.IsTended() || hediff_Injury.IsPermanent() || this.IsTended() || this.IsPermanent() || !def.injuryProps.canMerge)"
+        }
+      ],
+      "interpretation": "Tended injury no longer bleeds through the ordinary injury bleed-rate path."
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "file": ".local-research/animal-medical/Verse.Pawn_HealthTracker.cs",
+      "sha256": "13931efb22fe8cb3d9f274529d6558a20e144e96230a718df1e24e122a88c926",
+      "anchor": "pawn.IsHashIntervalTick(600, delta) && (pawn.needs.food == null || !pawn.needs.food.Starving)",
+      "hits": [
+        {
+          "line": 1151,
+          "text": "if ((pawn.RaceProps.IsFlesh || pawn.RaceProps.IsAnomalyEntity) && pawn.IsHashIntervalTick(600, delta) && (pawn.needs.food == null || !pawn.needs.food.Starving))"
+        }
+      ],
+      "interpretation": "Ordinary natural and tended recovery is periodic and requires not starving."
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "file": ".local-research/animal-medical/Verse.Pawn_HealthTracker.cs",
+      "sha256": "13931efb22fe8cb3d9f274529d6558a20e144e96230a718df1e24e122a88c926",
+      "anchor": "num2 += building_Bed.def.building.bed_healPerDay;",
+      "hits": [
+        {
+          "line": 1163,
+          "text": "num2 += building_Bed.def.building.bed_healPerDay;"
+        }
+      ],
+      "interpretation": "Resting in bed can add to natural healing."
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "file": ".local-research/animal-medical/Verse.Pawn_HealthTracker.cs",
+      "sha256": "13931efb22fe8cb3d9f274529d6558a20e144e96230a718df1e24e122a88c926",
+      "anchor": "tmpHediffInjuries.RandomElement().Heal(num2 * pawn.HealthScale * 0.01f",
+      "hits": [
+        {
+          "line": 1175,
+          "text": "tmpHediffInjuries.RandomElement().Heal(num2 * pawn.HealthScale * 0.01f * pawn.GetStatValue(StatDefOf.InjuryHealingFactor));"
+        }
+      ],
+      "interpretation": "Natural recovery selects one eligible injury per interval."
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "file": ".local-research/animal-medical/Verse.Pawn_HealthTracker.cs",
+      "sha256": "13931efb22fe8cb3d9f274529d6558a20e144e96230a718df1e24e122a88c926",
+      "anchor": "GenMath.LerpDouble(0f, 1f, 0.5f, 1.5f, Mathf.Clamp01(tendQuality))",
+      "hits": [
+        {
+          "line": 1186,
+          "text": "float num3 = GenMath.LerpDouble(0f, 1f, 0.5f, 1.5f, Mathf.Clamp01(tendQuality));"
+        }
+      ],
+      "interpretation": "Tended recovery additionally depends on treatment quality."
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "file": ".local-research/animal-medical/Verse.Pawn_HealthTracker.cs",
+      "sha256": "13931efb22fe8cb3d9f274529d6558a20e144e96230a718df1e24e122a88c926",
+      "anchor": "healthState = PawnHealthState.Mobile;",
+      "hits": [
+        {
+          "line": 22,
+          "text": "private PawnHealthState healthState = PawnHealthState.Mobile;"
+        },
+        {
+          "line": 188,
+          "text": "healthState = PawnHealthState.Mobile;"
+        },
+        {
+          "line": 920,
+          "text": "healthState = PawnHealthState.Mobile;"
+        },
+        {
+          "line": 1003,
+          "text": "healthState = PawnHealthState.Mobile;"
+        }
+      ],
+      "interpretation": "Recovery exits downed state without creating a new pawn."
+    },
+    {
+      "type": "RimWorld.LifeStageDef",
+      "file": ".local-research/animal-medical/RimWorld.LifeStageDef.cs",
+      "sha256": "93a5a86d46d9b6d954630d71044634ec69faddd67c473d1fed730e474c0034bd",
+      "anchor": "public float bodySizeFactor = 1f;",
+      "hits": [
+        {
+          "line": 70,
+          "text": "public float bodySizeFactor = 1f;"
+        }
+      ],
+      "interpretation": "Life-stage body-size default is one."
+    },
+    {
+      "type": "RimWorld.LifeStageDef",
+      "file": ".local-research/animal-medical/RimWorld.LifeStageDef.cs",
+      "sha256": "93a5a86d46d9b6d954630d71044634ec69faddd67c473d1fed730e474c0034bd",
+      "anchor": "public float healthScaleFactor = 1f;",
+      "hits": [
+        {
+          "line": 72,
+          "text": "public float healthScaleFactor = 1f;"
+        }
+      ],
+      "interpretation": "Life-stage health-scale default is one."
+    },
+    {
+      "type": "Verse.PawnCapacityDef",
+      "file": ".local-research/animal-medical/Verse.PawnCapacityDef.cs",
+      "sha256": "2850efb006139853d9cfb61d17fbcf189df240733241ee3ab98a260216949efe",
+      "anchor": "public float minForCapable;",
+      "hits": [
+        {
+          "line": 37,
+          "text": "public float minForCapable;"
+        }
+      ],
+      "interpretation": "Unspecified capacity threshold defaults to zero."
+    },
+    {
+      "type": "RimWorld.TendUtility",
+      "file": ".local-research/animal-medical/RimWorld.TendUtility.cs",
+      "sha256": "2b9ee74d83e14b10438f49e45654152fee2f5fe8c5923244f2a48169a2f456f5",
+      "anchor": "RelationsUtility.TryDevelopBondRelation(doctor, patient, 0.004f)",
+      "hits": [
+        {
+          "line": 48,
+          "text": "if (doctor != null && doctor.RaceProps.Humanlike && patient.RaceProps.Animal && patient.RaceProps.playerCanChangeMaster && RelationsUtility.TryDevelopBondRelation(doctor, patient, 0.004f) && doctor.Faction != null && doctor.Faction != patient.Faction)"
+        }
+      ],
+      "interpretation": "Treatment has a gated bonding attempt distinct from rescue."
+    },
+    {
+      "type": "RimWorld.RelationsUtility",
+      "file": ".local-research/animal-medical/RimWorld.RelationsUtility.cs",
+      "sha256": "44381028d0956d5033e21bb0ab60426741b971c97ae45b8ff0781aa95c31ce1f",
+      "anchor": "trainability.intelligenceOrder < TrainabilityDefOf.Intermediate.intelligenceOrder",
+      "hits": [
+        {
+          "line": 72,
+          "text": "if (trainability == null || trainability.intelligenceOrder < TrainabilityDefOf.Intermediate.intelligenceOrder)"
+        }
+      ],
+      "interpretation": "Bonding requires at least Intermediate effective trainability."
+    },
+    {
+      "type": "RimWorld.TendUtility",
+      "file": ".local-research/animal-medical/RimWorld.TendUtility.cs",
+      "sha256": "2b9ee74d83e14b10438f49e45654152fee2f5fe8c5923244f2a48169a2f456f5",
+      "anchor": "InteractionWorker_RecruitAttempt.DoRecruit(doctor, patient, useAudiovisualEffects: false);",
+      "hits": [
+        {
+          "line": 50,
+          "text": "InteractionWorker_RecruitAttempt.DoRecruit(doctor, patient, useAudiovisualEffects: false);"
+        }
+      ],
+      "interpretation": "Successful cross-faction bonding can separately recruit the animal."
+    },
+    {
+      "type": "RimWorld.TrainableUtility",
+      "file": ".local-research/animal-medical/RimWorld.TrainableUtility.cs",
+      "sha256": "bab3408df77f5a362068e6ee50652dce6c149ec90f4cffe82efe1cefe0b21602",
+      "anchor": "return pawn.RaceProps.trainability;",
+      "hits": [
+        {
+          "line": 229,
+          "text": "return pawn.RaceProps.trainability;"
+        }
+      ],
+      "interpretation": "Ordinary trainability comes from the race definition."
+    },
+    {
+      "type": "RimWorld.TrainableUtility",
+      "file": ".local-research/animal-medical/RimWorld.TrainableUtility.cs",
+      "sha256": "bab3408df77f5a362068e6ee50652dce6c149ec90f4cffe82efe1cefe0b21602",
+      "anchor": "ModsConfig.OdysseyActive && pawn.health.hediffSet.HasHediff(HediffDefOf.SentienceCatalyst)",
+      "hits": [
+        {
+          "line": 225,
+          "text": "if (ModsConfig.OdysseyActive && pawn.health.hediffSet.HasHediff(HediffDefOf.SentienceCatalyst))"
+        }
+      ],
+      "interpretation": "Odyssey sentience is an explicit exception to base trainability."
+    },
+    {
+      "type": "RimWorld.RecruitUtility",
+      "file": ".local-research/animal-medical/RimWorld.RecruitUtility.cs",
+      "sha256": "41edbc4b1fe16c2d63e0545ec563034ac5be40dbc6703af628560e86ef7fb336",
+      "anchor": "pawn.SetFaction(faction, recruiter);",
+      "hits": [
+        {
+          "line": 26,
+          "text": "pawn.SetFaction(faction, recruiter);"
+        }
+      ],
+      "interpretation": "The separate recruitment path can transfer faction."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_DraftedTend",
+      "file": ".local-research/animal-medical/RimWorld.FloatMenuOptionProvider_DraftedTend.cs",
+      "sha256": "07fd52fa86496b048729e206363e6f2a2f5de8e7bf93672b789615bd0afec264",
+      "anchor": "onlyUseInventory: true",
+      "hits": [
+        {
+          "line": 64,
+          "text": "Thing medicine = HealthAIUtility.FindBestMedicine(context.FirstSelectedPawn, clickedPawn, onlyUseInventory: true);"
+        }
+      ],
+      "interpretation": "Drafted field tending initially searches the doctor inventory."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_DraftedTend",
+      "file": ".local-research/animal-medical/RimWorld.FloatMenuOptionProvider_DraftedTend.cs",
+      "sha256": "07fd52fa86496b048729e206363e6f2a2f5de8e7bf93672b789615bd0afec264",
+      "anchor": "job.draftedTend = true;",
+      "hits": [
+        {
+          "line": 77,
+          "text": "job.draftedTend = true;"
+        },
+        {
+          "line": 85,
+          "text": "job.draftedTend = true;"
+        },
+        {
+          "line": 147,
+          "text": "job.draftedTend = true;"
+        }
+      ],
+      "interpretation": "Field treatment is explicitly marked as drafted tending."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_DraftedTend",
+      "file": ".local-research/animal-medical/RimWorld.FloatMenuOptionProvider_DraftedTend.cs",
+      "sha256": "07fd52fa86496b048729e206363e6f2a2f5de8e7bf93672b789615bd0afec264",
+      "anchor": "WorkTypeIsDisabled(WorkTypeDefOf.Doctor)",
+      "hits": [
+        {
+          "line": 44,
+          "text": "if (context.FirstSelectedPawn.WorkTypeIsDisabled(WorkTypeDefOf.Doctor))"
+        },
+        {
+          "line": 131,
+          "text": "if (context.FirstSelectedPawn.WorkTypeIsDisabled(WorkTypeDefOf.Doctor))"
+        }
+      ],
+      "interpretation": "Field tending still checks disabled Doctor work."
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "file": ".local-research/animal-medical/Verse.Pawn_HealthTracker.cs",
+      "sha256": "13931efb22fe8cb3d9f274529d6558a20e144e96230a718df1e24e122a88c926",
+      "anchor": "pawn.GetLord()?.Notify_PawnLost(pawn, PawnLostCondition.Incapped, dinfo);",
+      "hits": [
+        {
+          "line": 867,
+          "text": "pawn.GetLord()?.Notify_PawnLost(pawn, PawnLostCondition.Incapped, dinfo);"
+        }
+      ],
+      "interpretation": "Downing notifies group membership before later rescue."
+    },
+    {
+      "type": "Verse.AI.Group.Lord",
+      "file": ".local-research/animal-medical/Verse.AI.Group.Lord.cs",
+      "sha256": "a4c592766e356bb857de4d8b4ef0e59b03e2140d31c198fa033429cf5857e3e4",
+      "anchor": "if (!curJob.ShouldRemovePawn(pawn, cond))",
+      "hits": [
+        {
+          "line": 687,
+          "text": "if (!curJob.ShouldRemovePawn(pawn, cond))"
+        }
+      ],
+      "interpretation": "Group removal is controlled by the LordJob policy."
+    },
+    {
+      "type": "Verse.AI.Group.Lord",
+      "file": ".local-research/animal-medical/Verse.AI.Group.Lord.cs",
+      "sha256": "a4c592766e356bb857de4d8b4ef0e59b03e2140d31c198fa033429cf5857e3e4",
+      "anchor": "RemovePawn(pawn);",
+      "hits": [
+        {
+          "line": 517,
+          "text": "RemovePawn(pawn);"
+        },
+        {
+          "line": 693,
+          "text": "RemovePawn(pawn);"
+        }
+      ],
+      "interpretation": "Eligible lost-pawn notifications remove group membership."
+    },
+    {
+      "type": "RimWorld.LordJob_TradeWithColony",
+      "file": ".local-research/animal-medical/RimWorld.LordJob_TradeWithColony.cs",
+      "sha256": "a6598fd4892ed55b9be03c20aae8a6fbbde830af360c336d89fca731f7438866",
+      "anchor": "public class LordJob_TradeWithColony : LordJob",
+      "hits": [
+        {
+          "line": 7,
+          "text": "public class LordJob_TradeWithColony : LordJob"
+        }
+      ],
+      "interpretation": "Standard trading caravan uses the base LordJob removal policy unless overridden."
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "file": ".local-research/animal-medical/RimWorld.Pawn_PlayerSettings.cs",
+      "sha256": "c23d3b5de6c9a96cad59170531efc71f3964d8d99d07b582eda580bfbdd00494",
+      "anchor": "medCare = Find.PlaySettings.defaultCareForWildlife;",
+      "hits": [
+        {
+          "line": 377,
+          "text": "medCare = Find.PlaySettings.defaultCareForWildlife;"
+        }
+      ],
+      "interpretation": "Medical defaults distinguish wildlife."
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "file": ".local-research/animal-medical/RimWorld.Pawn_PlayerSettings.cs",
+      "sha256": "c23d3b5de6c9a96cad59170531efc71f3964d8d99d07b582eda580bfbdd00494",
+      "anchor": "medCare = Find.PlaySettings.defaultCareForTamedAnimal;",
+      "hits": [
+        {
+          "line": 364,
+          "text": "medCare = Find.PlaySettings.defaultCareForTamedAnimal;"
+        }
+      ],
+      "interpretation": "Medical defaults distinguish colony animals."
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "file": ".local-research/animal-medical/RimWorld.Pawn_PlayerSettings.cs",
+      "sha256": "c23d3b5de6c9a96cad59170531efc71f3964d8d99d07b582eda580bfbdd00494",
+      "anchor": "ResetMedicalCare();",
+      "hits": [
+        {
+          "line": 338,
+          "text": "ResetMedicalCare();"
+        }
+      ],
+      "interpretation": "Faction-change notification initializes/reset medical policy."
+    },
+    {
+      "type": "RimWorld.PlaySettings",
+      "file": ".local-research/animal-medical/RimWorld.PlaySettings.cs",
+      "sha256": "56e999d92d5468c598d918a20d8d1f6561d1d003b8c800598b41f48b1d6dca73",
+      "anchor": "public MedicalCareCategory defaultCareForWildlife = MedicalCareCategory.HerbalOrWorse;",
+      "hits": [
+        {
+          "line": 66,
+          "text": "public MedicalCareCategory defaultCareForWildlife = MedicalCareCategory.HerbalOrWorse;"
+        }
+      ],
+      "interpretation": "New game wildlife care default allows herbal medicine."
+    },
+    {
+      "type": "RimWorld.PlaySettings",
+      "file": ".local-research/animal-medical/RimWorld.PlaySettings.cs",
+      "sha256": "56e999d92d5468c598d918a20d8d1f6561d1d003b8c800598b41f48b1d6dca73",
+      "anchor": "public MedicalCareCategory defaultCareForTamedAnimal = MedicalCareCategory.HerbalOrWorse;",
+      "hits": [
+        {
+          "line": 56,
+          "text": "public MedicalCareCategory defaultCareForTamedAnimal = MedicalCareCategory.HerbalOrWorse;"
+        }
+      ],
+      "interpretation": "New game tamed animal care default allows herbal medicine."
+    },
+    {
+      "type": "RimWorld.PlaySettings",
+      "file": ".local-research/animal-medical/RimWorld.PlaySettings.cs",
+      "sha256": "56e999d92d5468c598d918a20d8d1f6561d1d003b8c800598b41f48b1d6dca73",
+      "anchor": "public MedicalCareCategory defaultCareForNeutralFaction = MedicalCareCategory.HerbalOrWorse;",
+      "hits": [
+        {
+          "line": 60,
+          "text": "public MedicalCareCategory defaultCareForNeutralFaction = MedicalCareCategory.HerbalOrWorse;"
+        }
+      ],
+      "interpretation": "New game neutral faction care default allows herbal medicine."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/animal-medical/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "Scribe_Deep.Look(ref health, \"healthTracker\", this);",
+      "hits": [
+        {
+          "line": 4636,
+          "text": "Scribe_Deep.Look(ref health, \"healthTracker\", this);"
+        }
+      ],
+      "interpretation": "Health persists on the individual pawn."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/animal-medical/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "Scribe_Deep.Look(ref ageTracker, \"ageTracker\", this);",
+      "hits": [
+        {
+          "line": 4635,
+          "text": "Scribe_Deep.Look(ref ageTracker, \"ageTracker\", this);"
+        }
+      ],
+      "interpretation": "Age is retained as individual pawn state."
+    }
+  ],
+  "boundedChecks": [
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_RescuePawn",
+      "start": "protected override FloatMenuOption GetSingleOptionFor",
+      "end": "",
+      "lineStart": 16,
+      "lineEnd": 71,
+      "sha256": "e7bfa23213c3fbcf98f04c2563ad990e2c8230a9a85a76ca391b194407b0b6df",
+      "absent": [
+        "SetFaction",
+        "GeneratePawn",
+        "DoRecruit"
+      ],
+      "present": [
+        "JobDefOf.Rescue"
+      ],
+      "interpretation": "Manual rescue schedules hauling, not recruitment."
+    },
+    {
+      "type": "RimWorld.JobDriver_TakeToBed",
+      "start": "private void CheckMakeTakeeGuest()",
+      "end": "",
+      "lineStart": 181,
+      "lineEnd": 190,
+      "sha256": "29aadac7042acebd948d391af7bba95753ebca9a8cec1a0d1449a317572147c4",
+      "absent": [
+        "SetFaction",
+        "GeneratePawn"
+      ],
+      "present": [
+        "Takee.guest != null",
+        "SetGuestStatus"
+      ],
+      "interpretation": "Guest notification is conditional and not direct faction transfer."
+    },
+    {
+      "type": "RimWorld.TendUtility",
+      "start": "public static void DoTend",
+      "end": "public static float CalculateBaseTendQuality",
+      "lineStart": 26,
+      "lineEnd": 90,
+      "sha256": "be699d0c09ef5c2895f1da97fe66d7eb9bdb7d5b2fa116a7ac10176c85e008b9",
+      "absent": [
+        ".Heal(",
+        "GeneratePawn"
+      ],
+      "present": [
+        ".Tended(",
+        "DoRecruit"
+      ],
+      "interpretation": "Treatment is separate from injury healing; rare bond recruitment is retained as an exception."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodFeedPatient",
+      "start": "protected override IEnumerable<Toil> MakeNewToils",
+      "end": "",
+      "lineStart": 55,
+      "lineEnd": 92,
+      "sha256": "419c73afbd9722b7c11089f2d9f3aa778b8aa88d41f68c807ca110fbbf6d71d4",
+      "absent": [
+        "SetFaction",
+        "GeneratePawn",
+        "DoRecruit"
+      ],
+      "present": [
+        "FinalizeIngest"
+      ],
+      "interpretation": "Patient feeding preserves faction and identity in this reviewed method."
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "start": "private void MakeUndowned",
+      "end": "public void NotifyPlayerOfKilled",
+      "lineStart": 911,
+      "lineEnd": 934,
+      "sha256": "7722d84e64aac8dbd75e91e426b406e0081b757d7c5182bb5c4fc51948fa7f66",
+      "absent": [
+        "SetFaction",
+        "GeneratePawn"
+      ],
+      "present": [
+        "PawnHealthState.Mobile"
+      ],
+      "interpretation": "Standing recovery changes state, not ownership."
+    },
+    {
+      "type": "Verse.AI.Group.LordJob",
+      "start": "public virtual bool ShouldRemovePawn",
+      "end": "public virtual IEnumerable<Gizmo>",
+      "lineStart": 142,
+      "lineEnd": 147,
+      "sha256": "5dc34b492b5ee9d5f308c1cfc3d10bf20e7ef162921bef889cd413ae30bce7ad",
+      "absent": [],
+      "present": [
+        "return true;"
+      ],
+      "interpretation": "Default LordJob removes lost pawns."
+    },
+    {
+      "type": "RimWorld.LordJob_TradeWithColony",
+      "start": "public class LordJob_TradeWithColony",
+      "end": "",
+      "lineStart": 7,
+      "lineEnd": 137,
+      "sha256": "3519a9e5e038f69d6e21371c34c1c75c367d628261f45a7758ecbc08860a8c7c",
+      "absent": [
+        "ShouldRemovePawn"
+      ],
+      "present": [
+        ": LordJob"
+      ],
+      "interpretation": "The ordinary trade Lord does not override base removal policy."
+    },
+    {
+      "type": "Verse.Pawn",
+      "start": "public override void DeSpawn",
+      "end": "public override void Discard",
+      "lineStart": 2408,
+      "lineEnd": 2442,
+      "sha256": "df4350e91ed71bb4bbfb1da10536fa2cfe89ecb7d72a2599925fcc64034dd66b",
+      "absent": [
+        "SetFaction",
+        "GeneratePawn",
+        "Notify_PawnLost"
+      ],
+      "present": [
+        "base.DeSpawn(mode)"
+      ],
+      "interpretation": "Map despawning itself does not directly transfer faction or issue group removal here; downing has a separate notification."
+    },
+    {
+      "type": "RimWorld.RestUtility",
+      "start": "public static bool CanUseBedEver",
+      "end": "public static bool TimetablePreventsLayDown",
+      "lineStart": 417,
+      "lineEnd": 438,
+      "sha256": "cc9d3e4b1a4c4733cdce1a7909ecffa39d6135824147432dcb35a1e2dab9e10d",
+      "absent": [
+        "Faction",
+        "Medical"
+      ],
+      "present": [
+        "p.BodySize",
+        "bed_humanlike"
+      ],
+      "interpretation": "Physical bed compatibility is separate from ownership, reservation and medical policy checks."
+    },
+    {
+      "type": "RimWorld.RestUtility",
+      "start": "public static Building_Bed FindBedFor(Pawn sleeper",
+      "end": "public static Building_Bed FindPatientBedFor",
+      "lineStart": 235,
+      "lineEnd": 328,
+      "sha256": "16cc7348aeac924b553503764e3c49a2970fdc9756ed5b894438e8937406b1b9",
+      "absent": [],
+      "present": [
+        "HealthAIUtility.ShouldSeekMedicalRest(sleeper)",
+        "((Building_Bed)b).Medical",
+        "!((Building_Bed)b).Medical"
+      ],
+      "interpretation": "Bed search prioritizes medical beds but retains ordinary-bed fallback."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_DraftedTend",
+      "start": "private bool IsValidTendTarget",
+      "end": "protected override FloatMenuOption GetSingleOptionFor",
+      "lineStart": 90,
+      "lineEnd": 115,
+      "sha256": "52884db996f089611b5f17cd33501f8ed01456291671c20afdd7f1d63c7091ca",
+      "absent": [
+        "InBed"
+      ],
+      "present": [
+        "if (patient.Downed)",
+        "return true;",
+        "patient.HostileTo"
+      ],
+      "interpretation": "Field target check accepts downed before the later hostility gate; additional menu and job checks still apply."
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "start": "public Pawn_PlayerSettings(Pawn pawn)",
+      "end": "public void ExposeData",
+      "lineStart": 185,
+      "lineEnd": 199,
+      "sha256": "bcfb9de46d0c7d46cc5331a370481520cfbe25edd03f7f80e3eea8435fe1ca85",
+      "absent": [],
+      "present": [
+        "Notify_FactionChanged();"
+      ],
+      "interpretation": "Constructing rescue care settings initializes the faction-specific policy."
+    },
+    {
+      "type": "RimWorld.Building_Bed",
+      "start": "public bool Medical",
+      "end": "public bool AnyUnownedSleepingSlot",
+      "lineStart": 110,
+      "lineEnd": 133,
+      "sha256": "58170664ecfb763d76e66e4ff466256f1422109886119243054763cf4d76f002",
+      "absent": [],
+      "present": [
+        "RemoveAllOwners();",
+        "medicalInt = value;"
+      ],
+      "interpretation": "Changing medical mode removes permanent bed assignments."
+    }
+  ],
+  "packagedXml": [
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Base.xml",
+      "sha256": "b16e3a7934febd9ffb7883f18392d524ba376c9657da4c788d1951552f86d142",
+      "xpath": "/Defs/ThingDef[@Name=\"BuildingBase\"]",
+      "nameAttribute": "BuildingBase",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "costList",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "costStuffCount",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "building/bed_maxBodySize",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "building/bed_healPerDay",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "building/bed_canBeMedical",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Root building inheritance contributes no animal bed limit."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+      "sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55",
+      "xpath": "/Defs/ThingDef[@Name=\"FurnitureBase\"]",
+      "nameAttribute": "FurnitureBase",
+      "parentName": "BuildingBase",
+      "fields": [
+        {
+          "xpath": "costList",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "costStuffCount",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "building/bed_maxBodySize",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "building/bed_healPerDay",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "building/bed_canBeMedical",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Furniture parent bed-field projection."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+      "sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55",
+      "xpath": "/Defs/ThingDef[@Name=\"FurnitureWithQualityBase\"]",
+      "nameAttribute": "FurnitureWithQualityBase",
+      "parentName": "FurnitureBase",
+      "fields": [
+        {
+          "xpath": "costList",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "costStuffCount",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "building/bed_maxBodySize",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "building/bed_healPerDay",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "building/bed_canBeMedical",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Quality furniture parent bed-field projection."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+      "sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55",
+      "xpath": "/Defs/ThingDef[defName=\"AnimalSleepingSpot\"]",
+      "nameAttribute": "",
+      "parentName": "BuildingBase",
+      "fields": [
+        {
+          "xpath": "thingClass",
+          "count": 1,
+          "xml": [
+            "<thingClass>Building_Bed</thingClass>"
+          ]
+        },
+        {
+          "xpath": "size",
+          "count": 1,
+          "xml": [
+            "<size>(1,1)</size>"
+          ]
+        },
+        {
+          "xpath": "passability",
+          "count": 1,
+          "xml": [
+            "<passability>Standable</passability>"
+          ]
+        },
+        {
+          "xpath": "useHitPoints",
+          "count": 1,
+          "xml": [
+            "<useHitPoints>False</useHitPoints>"
+          ]
+        },
+        {
+          "xpath": "costList",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "costStuffCount",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><WorkToBuild>0</WorkToBuild><SurgerySuccessChanceFactor>0.7</SurgerySuccessChanceFactor></statBases>"
+          ]
+        },
+        {
+          "xpath": "building/bed_humanlike",
+          "count": 1,
+          "xml": [
+            "<bed_humanlike>false</bed_humanlike>"
+          ]
+        },
+        {
+          "xpath": "building/bed_healPerDay",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Free ground spot is a real animal Building_Bed."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+      "sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55",
+      "xpath": "/Defs/ThingDef[@Name=\"AnimalBedFurnitureBase\"]",
+      "nameAttribute": "AnimalBedFurnitureBase",
+      "parentName": "FurnitureWithQualityBase",
+      "fields": [
+        {
+          "xpath": "thingClass",
+          "count": 1,
+          "xml": [
+            "<thingClass>Building_Bed</thingClass>"
+          ]
+        },
+        {
+          "xpath": "building/bed_humanlike",
+          "count": 1,
+          "xml": [
+            "<bed_humanlike>false</bed_humanlike>"
+          ]
+        },
+        {
+          "xpath": "building/bed_healPerDay",
+          "count": 1,
+          "xml": [
+            "<bed_healPerDay>4</bed_healPerDay>"
+          ]
+        }
+      ],
+      "interpretation": "Furniture animal beds add four natural-heal units per day."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+      "sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55",
+      "xpath": "/Defs/ThingDef[defName=\"AnimalSleepingBox\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalBedFurnitureBase",
+      "fields": [
+        {
+          "xpath": "costStuffCount",
+          "count": 1,
+          "xml": [
+            "<costStuffCount>25</costStuffCount>"
+          ]
+        },
+        {
+          "xpath": "stuffCategories",
+          "count": 1,
+          "xml": [
+            "<stuffCategories><li>Metallic</li><li>Woody</li><li>Stony</li></stuffCategories>"
+          ]
+        },
+        {
+          "xpath": "building/bed_maxBodySize",
+          "count": 1,
+          "xml": [
+            "<bed_maxBodySize>0.55</bed_maxBodySize>"
+          ]
+        },
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MaxHitPoints>75</MaxHitPoints><Flammability>1.0</Flammability><WorkToBuild>180</WorkToBuild><Mass>3</Mass><BedRestEffectiveness>0.93</BedRestEffectiveness><Comfort>0.60</Comfort><ImmunityGainSpeedFactor>1.05</ImmunityGainSpeedFactor><SurgerySuccessChanceFactor>1</SurgerySuccessChanceFactor></statBases>"
+          ]
+        }
+      ],
+      "interpretation": "Small-animal box body cap is .55."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+      "sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55",
+      "xpath": "/Defs/ThingDef[defName=\"AnimalBed\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalBedFurnitureBase",
+      "fields": [
+        {
+          "xpath": "costStuffCount",
+          "count": 1,
+          "xml": [
+            "<costStuffCount>40</costStuffCount>"
+          ]
+        },
+        {
+          "xpath": "stuffCategories",
+          "count": 1,
+          "xml": [
+            "<stuffCategories><li>Fabric</li><li>Leathery</li></stuffCategories>"
+          ]
+        },
+        {
+          "xpath": "building/bed_maxBodySize",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MaxHitPoints>140</MaxHitPoints><Flammability>1.0</Flammability><WorkToBuild>400</WorkToBuild><Mass>5</Mass><BedRestEffectiveness>1</BedRestEffectiveness><Comfort>0.75</Comfort><ImmunityGainSpeedFactor>1.07</ImmunityGainSpeedFactor><SurgerySuccessChanceFactor>1</SurgerySuccessChanceFactor></statBases>"
+          ]
+        }
+      ],
+      "interpretation": "Soft bed inherits the class default body-size cap."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Hares.xml",
+      "sha256": "bda7f200ded2c9f8ee4b29dc8d9ea2e8d6977f20782797c51352af20aa6d835e",
+      "xpath": "/Defs/ThingDef[@Name=\"BaseHare\"]",
+      "nameAttribute": "BaseHare",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "statBases/PainShockThreshold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/body",
+          "count": 1,
+          "xml": [
+            "<body>QuadrupedAnimalWithPawsAndTail</body>"
+          ]
+        },
+        {
+          "xpath": "race/baseBodySize",
+          "count": 1,
+          "xml": [
+            "<baseBodySize>0.2</baseBodySize>"
+          ]
+        },
+        {
+          "xpath": "race/baseHealthScale",
+          "count": 1,
+          "xml": [
+            "<baseHealthScale>0.4</baseHealthScale>"
+          ]
+        },
+        {
+          "xpath": "race/trainability",
+          "count": 1,
+          "xml": [
+            "<trainability>None</trainability>"
+          ]
+        },
+        {
+          "xpath": "race/playerCanChangeMaster",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 1,
+          "xml": [
+            "<lifeStageAges><li><def>AnimalBaby</def><minAge>0</minAge></li><li><def>AnimalJuvenile</def><minAge>0.1</minAge></li><li><def>AnimalAdult</def><minAge>0.2222</minAge><soundWounded>Pawn_Hare_Wounded</soundWounded><soundDeath>Pawn_Hare_Death</soundDeath><soundCall>Pawn_Hare_Call</soundCall><soundAngry>Pawn_Hare_Angry</soundAngry></li></lifeStageAges>"
+          ]
+        }
+      ],
+      "interpretation": "Hare physical and health template."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Hares.xml",
+      "sha256": "bda7f200ded2c9f8ee4b29dc8d9ea2e8d6977f20782797c51352af20aa6d835e",
+      "xpath": "/Defs/ThingDef[defName=\"Hare\"]",
+      "nameAttribute": "",
+      "parentName": "BaseHare",
+      "fields": [
+        {
+          "xpath": "statBases/PainShockThreshold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/body",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/baseBodySize",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/baseHealthScale",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/trainability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/playerCanChangeMaster",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Concrete hare inherits BaseHare."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_PigGroup.xml",
+      "sha256": "87d3d069440e7ad2a3e66f3bb0778e5210c38429c5eb7788b23b87cc64df4ab1",
+      "xpath": "/Defs/ThingDef[defName=\"Deer\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "statBases/PainShockThreshold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/body",
+          "count": 1,
+          "xml": [
+            "<body>QuadrupedAnimalWithHooves</body>"
+          ]
+        },
+        {
+          "xpath": "race/baseBodySize",
+          "count": 1,
+          "xml": [
+            "<baseBodySize>1.2</baseBodySize>"
+          ]
+        },
+        {
+          "xpath": "race/baseHealthScale",
+          "count": 1,
+          "xml": [
+            "<baseHealthScale>0.9</baseHealthScale>"
+          ]
+        },
+        {
+          "xpath": "race/trainability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/playerCanChangeMaster",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 1,
+          "xml": [
+            "<lifeStageAges><li><def>AnimalBaby</def><minAge>0</minAge></li><li><def>AnimalJuvenile</def><minAge>0.1</minAge></li><li><def>AnimalAdult</def><minAge>0.3333</minAge><soundWounded>Pawn_Deer_Wounded</soundWounded><soundDeath>Pawn_Deer_Death</soundDeath><soundCall>Pawn_Deer_Call</soundCall><soundAngry>Pawn_Deer_Angry</soundAngry></li></lifeStageAges>"
+          ]
+        }
+      ],
+      "interpretation": "Deer uses hoof quadruped body."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_SheepGroup.xml",
+      "sha256": "92475fbf8ed1ac470d9be9068e7bfd915e8befa66303eee32c829723700ded54",
+      "xpath": "/Defs/ThingDef[defName=\"Alpaca\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "statBases/PainShockThreshold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/body",
+          "count": 1,
+          "xml": [
+            "<body>QuadrupedAnimalWithHooves</body>"
+          ]
+        },
+        {
+          "xpath": "race/baseBodySize",
+          "count": 1,
+          "xml": [
+            "<baseBodySize>1.0</baseBodySize>"
+          ]
+        },
+        {
+          "xpath": "race/baseHealthScale",
+          "count": 1,
+          "xml": [
+            "<baseHealthScale>1.0</baseHealthScale>"
+          ]
+        },
+        {
+          "xpath": "race/trainability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/playerCanChangeMaster",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 1,
+          "xml": [
+            "<lifeStageAges><li><def>AnimalBaby</def><minAge>0</minAge></li><li><def>AnimalJuvenile</def><minAge>0.2</minAge></li><li><def>AnimalAdult</def><minAge>0.3333</minAge><soundWounded>Pawn_Elk_Wounded</soundWounded><soundDeath>Pawn_Elk_Death</soundDeath><soundCall>Pawn_Elk_Call</soundCall><soundAngry>Pawn_Elk_Angry</soundAngry></li></lifeStageAges>"
+          ]
+        }
+      ],
+      "interpretation": "Alpaca uses hoof quadruped body."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_CowGroup.xml",
+      "sha256": "4dfaa77da9175d9cbc802ca4b6d5fc321fbf646ea5f39d22cf38190c77294b7a",
+      "xpath": "/Defs/ThingDef[defName=\"Dromedary\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "statBases/PainShockThreshold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/body",
+          "count": 1,
+          "xml": [
+            "<body>QuadrupedAnimalWithHoovesAndHump</body>"
+          ]
+        },
+        {
+          "xpath": "race/baseBodySize",
+          "count": 1,
+          "xml": [
+            "<baseBodySize>2.1</baseBodySize>"
+          ]
+        },
+        {
+          "xpath": "race/baseHealthScale",
+          "count": 1,
+          "xml": [
+            "<baseHealthScale>1.6</baseHealthScale>"
+          ]
+        },
+        {
+          "xpath": "race/trainability",
+          "count": 1,
+          "xml": [
+            "<trainability>None</trainability>"
+          ]
+        },
+        {
+          "xpath": "race/playerCanChangeMaster",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 1,
+          "xml": [
+            "<lifeStageAges><li><def>AnimalBaby</def><minAge>0</minAge></li><li><def>AnimalJuvenile</def><minAge>0.25</minAge></li><li><def>AnimalAdult</def><minAge>0.3333</minAge><soundWounded>Pawn_Dromedary_Wounded</soundWounded><soundDeath>Pawn_Dromedary_Death</soundDeath><soundCall>Pawn_Dromedary_Call</soundCall><soundAngry>Pawn_Dromedary_Angry</soundAngry></li></lifeStageAges>"
+          ]
+        }
+      ],
+      "interpretation": "Dromedary adds a hump body part."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_ChickenGroup.xml",
+      "sha256": "019dd2851d79a0795e021f26327b96dda8d7d7481e887acf082169475fe06705",
+      "xpath": "/Defs/ThingDef[defName=\"Chicken\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "statBases/PainShockThreshold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/body",
+          "count": 1,
+          "xml": [
+            "<body>Bird</body>"
+          ]
+        },
+        {
+          "xpath": "race/baseBodySize",
+          "count": 1,
+          "xml": [
+            "<baseBodySize>0.3</baseBodySize>"
+          ]
+        },
+        {
+          "xpath": "race/baseHealthScale",
+          "count": 1,
+          "xml": [
+            "<baseHealthScale>0.35</baseHealthScale>"
+          ]
+        },
+        {
+          "xpath": "race/trainability",
+          "count": 1,
+          "xml": [
+            "<trainability>None</trainability>"
+          ]
+        },
+        {
+          "xpath": "race/playerCanChangeMaster",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 1,
+          "xml": [
+            "<lifeStageAges><li><def>AnimalBabyTiny</def><minAge>0</minAge><soundWounded>Pawn_Chick_Call</soundWounded><soundDeath>Pawn_Chick_Call</soundDeath><soundCall>Pawn_Chick_Call</soundCall><soundAngry>Pawn_Chick_Call</soundAngry></li><li><def>AnimalJuvenile</def><minAge>0.12</minAge></li><li><def>AnimalAdult</def><minAge>0.2</minAge><soundWounded>Pawn_Chicken_Wounded</soundWounded><soundDeath>Pawn_Chicken_Death</soundDeath><soundCall>Pawn_Chicken_Call</soundCall><soundAngry>Pawn_Chicken_Angry</soundAngry></li></lifeStageAges>"
+          ]
+        }
+      ],
+      "interpretation": "Chicken has Bird anatomy and tiny baby life stage."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+      "sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4",
+      "xpath": "/Defs/ThingDef[@Name=\"BasePawn\"]",
+      "nameAttribute": "BasePawn",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "statBases/PainShockThreshold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/body",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/baseBodySize",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/baseHealthScale",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/trainability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/playerCanChangeMaster",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Base pawn does not override pain threshold."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+      "sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4",
+      "xpath": "/Defs/ThingDef[@Name=\"AnimalThingBase\"]",
+      "nameAttribute": "AnimalThingBase",
+      "parentName": "BasePawn",
+      "fields": [
+        {
+          "xpath": "statBases/PainShockThreshold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/body",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/baseBodySize",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/baseHealthScale",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/trainability",
+          "count": 1,
+          "xml": [
+            "<trainability>None</trainability>"
+          ]
+        },
+        {
+          "xpath": "race/playerCanChangeMaster",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Base animal trainability is None."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_General.xml",
+      "sha256": "ec1df1afb1f24c3d812b3224f803354b613a226e3934ea1e235c9b195181f507",
+      "xpath": "/Defs/StatDef[defName=\"PainShockThreshold\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "minValue",
+          "count": 1,
+          "xml": [
+            "<minValue>0.01</minValue>"
+          ]
+        },
+        {
+          "xpath": "maxValue",
+          "count": 1,
+          "xml": [
+            "<maxValue>0.99</maxValue>"
+          ]
+        },
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>0.8</defaultBaseValue>"
+          ]
+        }
+      ],
+      "interpretation": "Pain shock default is .8, not remaining HP .2."
+    },
+    {
+      "file": "Data/Core/Defs/PawnCapacityDefs/PawnCapacity.xml",
+      "sha256": "327744af11a5fb775139c5460e408a9f86eab0d7e0bce838244b73d3c92f94f7",
+      "xpath": "/Defs/PawnCapacityDef[defName=\"Moving\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "workerClass",
+          "count": 1,
+          "xml": [
+            "<workerClass>PawnCapacityWorker_Moving</workerClass>"
+          ]
+        },
+        {
+          "xpath": "minForCapable",
+          "count": 1,
+          "xml": [
+            "<minForCapable>0.15</minForCapable>"
+          ]
+        },
+        {
+          "xpath": "zeroIfCannotBeAwake",
+          "count": 1,
+          "xml": [
+            "<zeroIfCannotBeAwake>true</zeroIfCannotBeAwake>"
+          ]
+        }
+      ],
+      "interpretation": "Moving must exceed .15 to remain capable."
+    },
+    {
+      "file": "Data/Core/Defs/PawnCapacityDefs/PawnCapacity.xml",
+      "sha256": "327744af11a5fb775139c5460e408a9f86eab0d7e0bce838244b73d3c92f94f7",
+      "xpath": "/Defs/PawnCapacityDef[defName=\"Consciousness\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "workerClass",
+          "count": 1,
+          "xml": [
+            "<workerClass>PawnCapacityWorker_Consciousness</workerClass>"
+          ]
+        },
+        {
+          "xpath": "minForCapable",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "lethalFlesh",
+          "count": 1,
+          "xml": [
+            "<lethalFlesh>true</lethalFlesh>"
+          ]
+        }
+      ],
+      "interpretation": "Lethal consciousness capability differs from .3 wakefulness."
+    },
+    {
+      "file": "Data/Core/Defs/ThinkTreeDefs/Animal.xml",
+      "sha256": "d857fb17533f17f90da48fae355d5014f7a4f78ab3dcc6ee755a881bda732121",
+      "xpath": "/Defs/ThinkTreeDef[defName=\"Animal\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": ".//li[@Class=\"JobGiver_PatientGoToBed\"]",
+          "count": 2,
+          "xml": [
+            "<li Class=\"JobGiver_PatientGoToBed\" />",
+            "<li Class=\"JobGiver_PatientGoToBed\" />"
+          ]
+        }
+      ],
+      "interpretation": "Two bed-seeking nodes; ancestor paths retained separately below."
+    },
+    {
+      "file": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+      "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c",
+      "xpath": "/Defs/WorkGiverDef[defName=\"DoctorRescue\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "giverClass",
+          "count": 1,
+          "xml": [
+            "<giverClass>WorkGiver_RescueDowned</giverClass>"
+          ]
+        },
+        {
+          "xpath": "workType",
+          "count": 1,
+          "xml": [
+            "<workType>Doctor</workType>"
+          ]
+        },
+        {
+          "xpath": "priorityInType",
+          "count": 1,
+          "xml": [
+            "<priorityInType>60</priorityInType>"
+          ]
+        },
+        {
+          "xpath": "directOrderable",
+          "count": 1,
+          "xml": [
+            "<directOrderable>false</directOrderable>"
+          ]
+        },
+        {
+          "xpath": "requiredCapacities",
+          "count": 1,
+          "xml": [
+            "<requiredCapacities><li>Manipulation</li></requiredCapacities>"
+          ]
+        },
+        {
+          "xpath": "feedAnimalsOnly",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "equivalenceGroup",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Work assignment and inherited feeding equivalence group."
+    },
+    {
+      "file": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+      "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c",
+      "xpath": "/Defs/WorkGiverDef[defName=\"DoctorTendToAnimals\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "giverClass",
+          "count": 1,
+          "xml": [
+            "<giverClass>WorkGiver_TendOther_Animal</giverClass>"
+          ]
+        },
+        {
+          "xpath": "workType",
+          "count": 1,
+          "xml": [
+            "<workType>Doctor</workType>"
+          ]
+        },
+        {
+          "xpath": "priorityInType",
+          "count": 1,
+          "xml": [
+            "<priorityInType>50</priorityInType>"
+          ]
+        },
+        {
+          "xpath": "directOrderable",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "requiredCapacities",
+          "count": 1,
+          "xml": [
+            "<requiredCapacities><li>Manipulation</li></requiredCapacities>"
+          ]
+        },
+        {
+          "xpath": "feedAnimalsOnly",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "equivalenceGroup",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Work assignment and inherited feeding equivalence group."
+    },
+    {
+      "file": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+      "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c",
+      "xpath": "/Defs/WorkGiverDef[defName=\"DoctorFeedAnimals\"]",
+      "nameAttribute": "FeedAnimals",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "giverClass",
+          "count": 1,
+          "xml": [
+            "<giverClass>WorkGiver_FeedPatient</giverClass>"
+          ]
+        },
+        {
+          "xpath": "workType",
+          "count": 1,
+          "xml": [
+            "<workType>Doctor</workType>"
+          ]
+        },
+        {
+          "xpath": "priorityInType",
+          "count": 1,
+          "xml": [
+            "<priorityInType>40</priorityInType>"
+          ]
+        },
+        {
+          "xpath": "directOrderable",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "requiredCapacities",
+          "count": 1,
+          "xml": [
+            "<requiredCapacities><li>Manipulation</li></requiredCapacities>"
+          ]
+        },
+        {
+          "xpath": "feedAnimalsOnly",
+          "count": 1,
+          "xml": [
+            "<feedAnimalsOnly>true</feedAnimalsOnly>"
+          ]
+        },
+        {
+          "xpath": "equivalenceGroup",
+          "count": 1,
+          "xml": [
+            "<equivalenceGroup>FeedPatientAnimals</equivalenceGroup>"
+          ]
+        }
+      ],
+      "interpretation": "Work assignment and inherited feeding equivalence group."
+    },
+    {
+      "file": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+      "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c",
+      "xpath": "/Defs/WorkGiverDef[defName=\"HandlingFeedPatientAnimals\"]",
+      "nameAttribute": "",
+      "parentName": "FeedAnimals",
+      "fields": [
+        {
+          "xpath": "giverClass",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "workType",
+          "count": 1,
+          "xml": [
+            "<workType>Handling</workType>"
+          ]
+        },
+        {
+          "xpath": "priorityInType",
+          "count": 1,
+          "xml": [
+            "<priorityInType>150</priorityInType>"
+          ]
+        },
+        {
+          "xpath": "directOrderable",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "requiredCapacities",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "feedAnimalsOnly",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "equivalenceGroup",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Work assignment and inherited feeding equivalence group."
+    },
+    {
+      "file": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+      "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c",
+      "xpath": "/Defs/WorkGiverDef[defName=\"DoBillsMedicalAnimalOperation\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "giverClass",
+          "count": 1,
+          "xml": [
+            "<giverClass>WorkGiver_DoBill</giverClass>"
+          ]
+        },
+        {
+          "xpath": "workType",
+          "count": 1,
+          "xml": [
+            "<workType>Doctor</workType>"
+          ]
+        },
+        {
+          "xpath": "priorityInType",
+          "count": 1,
+          "xml": [
+            "<priorityInType>30</priorityInType>"
+          ]
+        },
+        {
+          "xpath": "directOrderable",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "requiredCapacities",
+          "count": 1,
+          "xml": [
+            "<requiredCapacities><li>Manipulation</li></requiredCapacities>"
+          ]
+        },
+        {
+          "xpath": "feedAnimalsOnly",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "equivalenceGroup",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Work assignment and inherited feeding equivalence group."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalBaby\"]",
+      "nameAttribute": "AnimalBaby",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "bodySizeFactor",
+          "count": 1,
+          "xml": [
+            "<bodySizeFactor>0.2</bodySizeFactor>"
+          ]
+        },
+        {
+          "xpath": "healthScaleFactor",
+          "count": 1,
+          "xml": [
+            "<healthScaleFactor>0.25</healthScaleFactor>"
+          ]
+        },
+        {
+          "xpath": "alwaysDowned",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Life-stage scaling; missing fields inherit XML or class defaults."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalBabyTiny\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalBaby",
+      "fields": [
+        {
+          "xpath": "bodySizeFactor",
+          "count": 1,
+          "xml": [
+            "<bodySizeFactor>0.1</bodySizeFactor>"
+          ]
+        },
+        {
+          "xpath": "healthScaleFactor",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "alwaysDowned",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Life-stage scaling; missing fields inherit XML or class defaults."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalJuvenile\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "bodySizeFactor",
+          "count": 1,
+          "xml": [
+            "<bodySizeFactor>0.5</bodySizeFactor>"
+          ]
+        },
+        {
+          "xpath": "healthScaleFactor",
+          "count": 1,
+          "xml": [
+            "<healthScaleFactor>0.6</healthScaleFactor>"
+          ]
+        },
+        {
+          "xpath": "alwaysDowned",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Life-stage scaling; missing fields inherit XML or class defaults."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalAdult\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "bodySizeFactor",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "healthScaleFactor",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "alwaysDowned",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Life-stage scaling; missing fields inherit XML or class defaults."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Manufactured.xml",
+      "sha256": "a13061a6b2ddf7d22e29583903a359fbe1a74c4a6b27ec634c4f054ed66a7f7a",
+      "xpath": "/Defs/ThingDef[defName=\"MedicineHerbal\"]",
+      "nameAttribute": "",
+      "parentName": "MedicineBase",
+      "fields": [
+        {
+          "xpath": "thingClass",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/MedicalPotency",
+          "count": 1,
+          "xml": [
+            "<MedicalPotency>0.60</MedicalPotency>"
+          ]
+        },
+        {
+          "xpath": "statBases/MedicalQualityMax",
+          "count": 1,
+          "xml": [
+            "<MedicalQualityMax>0.70</MedicalQualityMax>"
+          ]
+        }
+      ],
+      "interpretation": "Medicine potency and quality ceiling are separate."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Manufactured.xml",
+      "sha256": "a13061a6b2ddf7d22e29583903a359fbe1a74c4a6b27ec634c4f054ed66a7f7a",
+      "xpath": "/Defs/ThingDef[defName=\"MedicineIndustrial\"]",
+      "nameAttribute": "",
+      "parentName": "MedicineBase",
+      "fields": [
+        {
+          "xpath": "thingClass",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/MedicalPotency",
+          "count": 1,
+          "xml": [
+            "<MedicalPotency>1.00</MedicalPotency>"
+          ]
+        },
+        {
+          "xpath": "statBases/MedicalQualityMax",
+          "count": 1,
+          "xml": [
+            "<MedicalQualityMax>1.00</MedicalQualityMax>"
+          ]
+        }
+      ],
+      "interpretation": "Medicine potency and quality ceiling are separate."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Manufactured.xml",
+      "sha256": "a13061a6b2ddf7d22e29583903a359fbe1a74c4a6b27ec634c4f054ed66a7f7a",
+      "xpath": "/Defs/ThingDef[defName=\"MedicineUltratech\"]",
+      "nameAttribute": "",
+      "parentName": "MedicineBase",
+      "fields": [
+        {
+          "xpath": "thingClass",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/MedicalPotency",
+          "count": 1,
+          "xml": [
+            "<MedicalPotency>1.60</MedicalPotency>"
+          ]
+        },
+        {
+          "xpath": "statBases/MedicalQualityMax",
+          "count": 1,
+          "xml": [
+            "<MedicalQualityMax>1.30</MedicalQualityMax>"
+          ]
+        }
+      ],
+      "interpretation": "Medicine potency and quality ceiling are separate."
+    }
+  ],
+  "bodyProfiles": [
+    {
+      "defName": "QuadrupedAnimalWithPawsAndTail",
+      "file": "Data/Core/Defs/Bodies/Bodies_Animal_Quadruped.xml",
+      "sha256": "87b74a404e4ec383b51f4f603080eeef604778c6c2c118b36561480659400ba2",
+      "xpath": "/Defs/BodyDef[defName=\"QuadrupedAnimalWithPawsAndTail\"]",
+      "parts": [
+        {
+          "path": "corePart",
+          "fields": {
+            "def": "Body",
+            "customLabel": null,
+            "coverage": null,
+            "height": "Middle",
+            "depth": "Outside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[1]",
+          "fields": {
+            "def": "Tail",
+            "customLabel": null,
+            "coverage": "0.07",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[2]",
+          "fields": {
+            "def": "Spine",
+            "customLabel": null,
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[3]",
+          "fields": {
+            "def": "Stomach",
+            "customLabel": null,
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[4]",
+          "fields": {
+            "def": "Heart",
+            "customLabel": null,
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[5]",
+          "fields": {
+            "def": "Lung",
+            "customLabel": "left lung",
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[6]",
+          "fields": {
+            "def": "Lung",
+            "customLabel": "right lung",
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[7]",
+          "fields": {
+            "def": "Kidney",
+            "customLabel": "left kidney",
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[8]",
+          "fields": {
+            "def": "Kidney",
+            "customLabel": "right kidney",
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[9]",
+          "fields": {
+            "def": "Liver",
+            "customLabel": null,
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]",
+          "fields": {
+            "def": "Neck",
+            "customLabel": null,
+            "coverage": "0.20",
+            "height": "Top",
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]",
+          "fields": {
+            "def": "Head",
+            "customLabel": null,
+            "coverage": "0.75",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[1]",
+          "fields": {
+            "def": "Skull",
+            "customLabel": null,
+            "coverage": "0.25",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[1]/parts/li[1]",
+          "fields": {
+            "def": "Brain",
+            "customLabel": null,
+            "coverage": "0.7",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[2]",
+          "fields": {
+            "def": "Eye",
+            "customLabel": "left eye",
+            "coverage": "0.12",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[3]",
+          "fields": {
+            "def": "Eye",
+            "customLabel": "right eye",
+            "coverage": "0.12",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[4]",
+          "fields": {
+            "def": "Ear",
+            "customLabel": "left ear",
+            "coverage": "0.08",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[5]",
+          "fields": {
+            "def": "Ear",
+            "customLabel": "right ear",
+            "coverage": "0.08",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[6]",
+          "fields": {
+            "def": "Nose",
+            "customLabel": null,
+            "coverage": "0.1",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[7]",
+          "fields": {
+            "def": "AnimalJaw",
+            "customLabel": null,
+            "coverage": "0.1",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[11]",
+          "fields": {
+            "def": "Leg",
+            "customLabel": "front left leg",
+            "coverage": "0.07",
+            "height": "Bottom",
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[11]/parts/li[1]",
+          "fields": {
+            "def": "Paw",
+            "customLabel": "front left paw",
+            "coverage": "0.15",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[12]",
+          "fields": {
+            "def": "Leg",
+            "customLabel": "front right leg",
+            "coverage": "0.07",
+            "height": "Bottom",
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[12]/parts/li[1]",
+          "fields": {
+            "def": "Paw",
+            "customLabel": "front right paw",
+            "coverage": "0.15",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[13]",
+          "fields": {
+            "def": "Leg",
+            "customLabel": "rear left leg",
+            "coverage": "0.07",
+            "height": "Bottom",
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[13]/parts/li[1]",
+          "fields": {
+            "def": "Paw",
+            "customLabel": "rear left paw",
+            "coverage": "0.15",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[14]",
+          "fields": {
+            "def": "Leg",
+            "customLabel": "rear right leg",
+            "coverage": "0.07",
+            "height": "Bottom",
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[14]/parts/li[1]",
+          "fields": {
+            "def": "Paw",
+            "customLabel": "rear right paw",
+            "coverage": "0.15",
+            "height": null,
+            "depth": null
+          }
+        }
+      ]
+    },
+    {
+      "defName": "QuadrupedAnimalWithHooves",
+      "file": "Data/Core/Defs/Bodies/Bodies_Animal_Quadruped.xml",
+      "sha256": "87b74a404e4ec383b51f4f603080eeef604778c6c2c118b36561480659400ba2",
+      "xpath": "/Defs/BodyDef[defName=\"QuadrupedAnimalWithHooves\"]",
+      "parts": [
+        {
+          "path": "corePart",
+          "fields": {
+            "def": "Body",
+            "customLabel": null,
+            "coverage": null,
+            "height": "Middle",
+            "depth": "Outside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[1]",
+          "fields": {
+            "def": "Spine",
+            "customLabel": null,
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[2]",
+          "fields": {
+            "def": "Stomach",
+            "customLabel": null,
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[3]",
+          "fields": {
+            "def": "Heart",
+            "customLabel": null,
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[4]",
+          "fields": {
+            "def": "Lung",
+            "customLabel": "left lung",
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[5]",
+          "fields": {
+            "def": "Lung",
+            "customLabel": "right lung",
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[6]",
+          "fields": {
+            "def": "Kidney",
+            "customLabel": "left kidney",
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[7]",
+          "fields": {
+            "def": "Kidney",
+            "customLabel": "right kidney",
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[8]",
+          "fields": {
+            "def": "Liver",
+            "customLabel": null,
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[9]",
+          "fields": {
+            "def": "Neck",
+            "customLabel": null,
+            "coverage": "0.22",
+            "height": "Top",
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[9]/parts/li[1]",
+          "fields": {
+            "def": "Head",
+            "customLabel": null,
+            "coverage": "0.75",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[9]/parts/li[1]/parts/li[1]",
+          "fields": {
+            "def": "Skull",
+            "customLabel": null,
+            "coverage": "0.25",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[9]/parts/li[1]/parts/li[1]/parts/li[1]",
+          "fields": {
+            "def": "Brain",
+            "customLabel": null,
+            "coverage": "0.7",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[9]/parts/li[1]/parts/li[2]",
+          "fields": {
+            "def": "Eye",
+            "customLabel": "left eye",
+            "coverage": "0.12",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[9]/parts/li[1]/parts/li[3]",
+          "fields": {
+            "def": "Eye",
+            "customLabel": "right eye",
+            "coverage": "0.12",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[9]/parts/li[1]/parts/li[4]",
+          "fields": {
+            "def": "Ear",
+            "customLabel": "left ear",
+            "coverage": "0.08",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[9]/parts/li[1]/parts/li[5]",
+          "fields": {
+            "def": "Ear",
+            "customLabel": "right ear",
+            "coverage": "0.08",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[9]/parts/li[1]/parts/li[6]",
+          "fields": {
+            "def": "Nose",
+            "customLabel": null,
+            "coverage": "0.1",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[9]/parts/li[1]/parts/li[7]",
+          "fields": {
+            "def": "AnimalJaw",
+            "customLabel": null,
+            "coverage": "0.1",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]",
+          "fields": {
+            "def": "Leg",
+            "customLabel": "front left leg",
+            "coverage": "0.07",
+            "height": "Bottom",
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]",
+          "fields": {
+            "def": "Hoof",
+            "customLabel": "front left hoof",
+            "coverage": "0.15",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[11]",
+          "fields": {
+            "def": "Leg",
+            "customLabel": "front right leg",
+            "coverage": "0.07",
+            "height": "Bottom",
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[11]/parts/li[1]",
+          "fields": {
+            "def": "Hoof",
+            "customLabel": "front right hoof",
+            "coverage": "0.15",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[12]",
+          "fields": {
+            "def": "Leg",
+            "customLabel": "rear left leg",
+            "coverage": "0.07",
+            "height": "Bottom",
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[12]/parts/li[1]",
+          "fields": {
+            "def": "Hoof",
+            "customLabel": "rear left hoof",
+            "coverage": "0.15",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[13]",
+          "fields": {
+            "def": "Leg",
+            "customLabel": "rear right leg",
+            "coverage": "0.07",
+            "height": "Bottom",
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[13]/parts/li[1]",
+          "fields": {
+            "def": "Hoof",
+            "customLabel": "rear right hoof",
+            "coverage": "0.15",
+            "height": null,
+            "depth": null
+          }
+        }
+      ]
+    },
+    {
+      "defName": "QuadrupedAnimalWithHoovesAndHump",
+      "file": "Data/Core/Defs/Bodies/Bodies_Animal_Quadruped.xml",
+      "sha256": "87b74a404e4ec383b51f4f603080eeef604778c6c2c118b36561480659400ba2",
+      "xpath": "/Defs/BodyDef[defName=\"QuadrupedAnimalWithHoovesAndHump\"]",
+      "parts": [
+        {
+          "path": "corePart",
+          "fields": {
+            "def": "Body",
+            "customLabel": null,
+            "coverage": null,
+            "height": "Middle",
+            "depth": "Outside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[1]",
+          "fields": {
+            "def": "Spine",
+            "customLabel": null,
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[2]",
+          "fields": {
+            "def": "Stomach",
+            "customLabel": null,
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[3]",
+          "fields": {
+            "def": "Heart",
+            "customLabel": null,
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[4]",
+          "fields": {
+            "def": "Lung",
+            "customLabel": "left lung",
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[5]",
+          "fields": {
+            "def": "Lung",
+            "customLabel": "right lung",
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[6]",
+          "fields": {
+            "def": "Kidney",
+            "customLabel": "left kidney",
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[7]",
+          "fields": {
+            "def": "Kidney",
+            "customLabel": "right kidney",
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[8]",
+          "fields": {
+            "def": "Liver",
+            "customLabel": null,
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[9]",
+          "fields": {
+            "def": "Hump",
+            "customLabel": null,
+            "coverage": "0.10",
+            "height": "Top",
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]",
+          "fields": {
+            "def": "Neck",
+            "customLabel": null,
+            "coverage": "0.18",
+            "height": "Top",
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]",
+          "fields": {
+            "def": "Head",
+            "customLabel": null,
+            "coverage": "0.75",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[1]",
+          "fields": {
+            "def": "Skull",
+            "customLabel": null,
+            "coverage": "0.25",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[1]/parts/li[1]",
+          "fields": {
+            "def": "Brain",
+            "customLabel": null,
+            "coverage": "0.7",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[2]",
+          "fields": {
+            "def": "Eye",
+            "customLabel": "left eye",
+            "coverage": "0.12",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[3]",
+          "fields": {
+            "def": "Eye",
+            "customLabel": "right eye",
+            "coverage": "0.12",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[4]",
+          "fields": {
+            "def": "Ear",
+            "customLabel": "left ear",
+            "coverage": "0.08",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[5]",
+          "fields": {
+            "def": "Ear",
+            "customLabel": "right ear",
+            "coverage": "0.08",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[6]",
+          "fields": {
+            "def": "Nose",
+            "customLabel": null,
+            "coverage": "0.1",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[7]",
+          "fields": {
+            "def": "AnimalJaw",
+            "customLabel": null,
+            "coverage": "0.1",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[11]",
+          "fields": {
+            "def": "Leg",
+            "customLabel": "front left leg",
+            "coverage": "0.065",
+            "height": "Bottom",
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[11]/parts/li[1]",
+          "fields": {
+            "def": "Hoof",
+            "customLabel": "front left hoof",
+            "coverage": "0.15",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[12]",
+          "fields": {
+            "def": "Leg",
+            "customLabel": "front right leg",
+            "coverage": "0.065",
+            "height": "Bottom",
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[12]/parts/li[1]",
+          "fields": {
+            "def": "Hoof",
+            "customLabel": "front right hoof",
+            "coverage": "0.15",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[13]",
+          "fields": {
+            "def": "Leg",
+            "customLabel": "rear left leg",
+            "coverage": "0.065",
+            "height": "Bottom",
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[13]/parts/li[1]",
+          "fields": {
+            "def": "Hoof",
+            "customLabel": "rear left hoof",
+            "coverage": "0.15",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[14]",
+          "fields": {
+            "def": "Leg",
+            "customLabel": "rear right leg",
+            "coverage": "0.065",
+            "height": "Bottom",
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[14]/parts/li[1]",
+          "fields": {
+            "def": "Hoof",
+            "customLabel": "rear right hoof",
+            "coverage": "0.15",
+            "height": null,
+            "depth": null
+          }
+        }
+      ]
+    },
+    {
+      "defName": "Bird",
+      "file": "Data/Core/Defs/Bodies/Bodies_Animal_Bird.xml",
+      "sha256": "049780b7597744d216179665b54dbf9ef65a624b3cf15ce06cc671b22ea32a6d",
+      "xpath": "/Defs/BodyDef[defName=\"Bird\"]",
+      "parts": [
+        {
+          "path": "corePart",
+          "fields": {
+            "def": "Body",
+            "customLabel": null,
+            "coverage": null,
+            "height": "Middle",
+            "depth": "Outside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[1]",
+          "fields": {
+            "def": "Tail",
+            "customLabel": null,
+            "coverage": "0.10",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[2]",
+          "fields": {
+            "def": "Spine",
+            "customLabel": null,
+            "coverage": "0.05",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[3]",
+          "fields": {
+            "def": "Stomach",
+            "customLabel": null,
+            "coverage": "0.04",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[4]",
+          "fields": {
+            "def": "Heart",
+            "customLabel": null,
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[5]",
+          "fields": {
+            "def": "Lung",
+            "customLabel": "left lung",
+            "coverage": "0.04",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[6]",
+          "fields": {
+            "def": "Lung",
+            "customLabel": "right lung",
+            "coverage": "0.04",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[7]",
+          "fields": {
+            "def": "Kidney",
+            "customLabel": "left kidney",
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[8]",
+          "fields": {
+            "def": "Kidney",
+            "customLabel": "right kidney",
+            "coverage": "0.03",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[9]",
+          "fields": {
+            "def": "Liver",
+            "customLabel": null,
+            "coverage": "0.05",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]",
+          "fields": {
+            "def": "Neck",
+            "customLabel": null,
+            "coverage": "0.2",
+            "height": "Top",
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]",
+          "fields": {
+            "def": "HeadWithEarHoles",
+            "customLabel": null,
+            "coverage": "0.75",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[1]",
+          "fields": {
+            "def": "Skull",
+            "customLabel": null,
+            "coverage": "0.30",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[1]/parts/li[1]",
+          "fields": {
+            "def": "Brain",
+            "customLabel": null,
+            "coverage": "0.60",
+            "height": null,
+            "depth": "Inside"
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[2]",
+          "fields": {
+            "def": "Eye",
+            "customLabel": "left eye",
+            "coverage": "0.12",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[3]",
+          "fields": {
+            "def": "Eye",
+            "customLabel": "right eye",
+            "coverage": "0.12",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[10]/parts/li[1]/parts/li[4]",
+          "fields": {
+            "def": "Beak",
+            "customLabel": null,
+            "coverage": "0.25",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[11]",
+          "fields": {
+            "def": "Leg",
+            "customLabel": "left leg",
+            "coverage": "0.10",
+            "height": "Bottom",
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[11]/parts/li[1]",
+          "fields": {
+            "def": "Foot",
+            "customLabel": "left foot",
+            "coverage": "0.5",
+            "height": null,
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[12]",
+          "fields": {
+            "def": "Leg",
+            "customLabel": "right leg",
+            "coverage": "0.10",
+            "height": "Bottom",
+            "depth": null
+          }
+        },
+        {
+          "path": "corePart/parts/li[12]/parts/li[1]",
+          "fields": {
+            "def": "Foot",
+            "customLabel": "right foot",
+            "coverage": "0.5",
+            "height": null,
+            "depth": null
+          }
+        }
+      ]
+    }
+  ],
+  "bodyPartDefs": [
+    {
+      "defName": "AnimalJaw",
+      "file": "Data/Core/Defs/Bodies/BodyParts_Animal.xml",
+      "sha256": "c069f5ebca38bd40b5a4a6f917ce5b97e12965eb413a64ae9875ffc42257b86d",
+      "xpath": "/Defs/BodyPartDef[defName=\"AnimalJaw\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>10</hitPoints>",
+        "tags": "<tags><li>EatingSource</li><li>ManipulationLimbCore</li></tags>",
+        "bleedRate": "<bleedRate>0</bleedRate>",
+        "solid": "<solid>true</solid>",
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Beak",
+      "file": "Data/Core/Defs/Bodies/BodyParts_Animal.xml",
+      "sha256": "c069f5ebca38bd40b5a4a6f917ce5b97e12965eb413a64ae9875ffc42257b86d",
+      "xpath": "/Defs/BodyPartDef[defName=\"Beak\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>20</hitPoints>",
+        "tags": "<tags><li>EatingSource</li><li>TalkingSource</li><li>ManipulationLimbCore</li></tags>",
+        "bleedRate": "<bleedRate>0</bleedRate>",
+        "solid": "<solid>true</solid>",
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Body",
+      "file": "Data/Core/Defs/Bodies/BodyParts_Animal.xml",
+      "sha256": "c069f5ebca38bd40b5a4a6f917ce5b97e12965eb413a64ae9875ffc42257b86d",
+      "xpath": "/Defs/BodyPartDef[defName=\"Body\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>40</hitPoints>",
+        "tags": null,
+        "bleedRate": null,
+        "solid": null,
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Brain",
+      "file": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+      "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32",
+      "xpath": "/Defs/BodyPartDef[defName=\"Brain\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>10</hitPoints>",
+        "tags": "<tags><li>ConsciousnessSource</li></tags>",
+        "bleedRate": null,
+        "solid": null,
+        "delicate": "<delicate>true</delicate>",
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Ear",
+      "file": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+      "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32",
+      "xpath": "/Defs/BodyPartDef[defName=\"Ear\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>12</hitPoints>",
+        "tags": "<tags><li>HearingSource</li></tags>",
+        "bleedRate": null,
+        "solid": null,
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Eye",
+      "file": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+      "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32",
+      "xpath": "/Defs/BodyPartDef[defName=\"Eye\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>10</hitPoints>",
+        "tags": "<tags><li>SightSource</li></tags>",
+        "bleedRate": null,
+        "solid": null,
+        "delicate": "<delicate>true</delicate>",
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Foot",
+      "file": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+      "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32",
+      "xpath": "/Defs/BodyPartDef[defName=\"Foot\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>25</hitPoints>",
+        "tags": "<tags><li>MovingLimbSegment</li></tags>",
+        "bleedRate": null,
+        "solid": null,
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Head",
+      "file": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+      "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32",
+      "xpath": "/Defs/BodyPartDef[defName=\"Head\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>25</hitPoints>",
+        "tags": null,
+        "bleedRate": "<bleedRate>2</bleedRate>",
+        "solid": null,
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "HeadWithEarHoles",
+      "file": "Data/Core/Defs/Bodies/BodyParts_Animal.xml",
+      "sha256": "c069f5ebca38bd40b5a4a6f917ce5b97e12965eb413a64ae9875ffc42257b86d",
+      "xpath": "/Defs/BodyPartDef[defName=\"HeadWithEarHoles\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>25</hitPoints>",
+        "tags": "<tags><li>HearingSource</li></tags>",
+        "bleedRate": "<bleedRate>2</bleedRate>",
+        "solid": null,
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Heart",
+      "file": "Data/Core/Defs/Bodies/BodyParts_Organs.xml",
+      "sha256": "eeeb6f166bde4804b5d91933a3734954f84239e1abad3b3e000fcbe8609e5f80",
+      "xpath": "/Defs/BodyPartDef[defName=\"Heart\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>15</hitPoints>",
+        "tags": "<tags><li>BloodPumpingSource</li></tags>",
+        "bleedRate": "<bleedRate>5</bleedRate>",
+        "solid": null,
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Hoof",
+      "file": "Data/Core/Defs/Bodies/BodyParts_Animal.xml",
+      "sha256": "c069f5ebca38bd40b5a4a6f917ce5b97e12965eb413a64ae9875ffc42257b86d",
+      "xpath": "/Defs/BodyPartDef[defName=\"Hoof\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>10</hitPoints>",
+        "tags": "<tags><li>MovingLimbSegment</li></tags>",
+        "bleedRate": "<bleedRate>0</bleedRate>",
+        "solid": "<solid>true</solid>",
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Hump",
+      "file": "Data/Core/Defs/Bodies/BodyParts_Animal.xml",
+      "sha256": "c069f5ebca38bd40b5a4a6f917ce5b97e12965eb413a64ae9875ffc42257b86d",
+      "xpath": "/Defs/BodyPartDef[defName=\"Hump\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>20</hitPoints>",
+        "tags": null,
+        "bleedRate": null,
+        "solid": "<solid>false</solid>",
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Kidney",
+      "file": "Data/Core/Defs/Bodies/BodyParts_Organs.xml",
+      "sha256": "eeeb6f166bde4804b5d91933a3734954f84239e1abad3b3e000fcbe8609e5f80",
+      "xpath": "/Defs/BodyPartDef[defName=\"Kidney\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>15</hitPoints>",
+        "tags": "<tags><li>BloodFiltrationKidney</li></tags>",
+        "bleedRate": null,
+        "solid": null,
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Leg",
+      "file": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+      "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32",
+      "xpath": "/Defs/BodyPartDef[defName=\"Leg\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>30</hitPoints>",
+        "tags": "<tags><li>MovingLimbCore</li></tags>",
+        "bleedRate": null,
+        "solid": null,
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Liver",
+      "file": "Data/Core/Defs/Bodies/BodyParts_Organs.xml",
+      "sha256": "eeeb6f166bde4804b5d91933a3734954f84239e1abad3b3e000fcbe8609e5f80",
+      "xpath": "/Defs/BodyPartDef[defName=\"Liver\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>20</hitPoints>",
+        "tags": "<tags><li>BloodFiltrationLiver</li><li>MetabolismSource</li></tags>",
+        "bleedRate": null,
+        "solid": null,
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Lung",
+      "file": "Data/Core/Defs/Bodies/BodyParts_Organs.xml",
+      "sha256": "eeeb6f166bde4804b5d91933a3734954f84239e1abad3b3e000fcbe8609e5f80",
+      "xpath": "/Defs/BodyPartDef[defName=\"Lung\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>15</hitPoints>",
+        "tags": "<tags><li>BreathingSource</li></tags>",
+        "bleedRate": null,
+        "solid": null,
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Neck",
+      "file": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+      "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32",
+      "xpath": "/Defs/BodyPartDef[defName=\"Neck\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>25</hitPoints>",
+        "tags": "<tags><li>BreathingPathway</li><li>EatingPathway</li><li>TalkingPathway</li></tags>",
+        "bleedRate": "<bleedRate>4</bleedRate>",
+        "solid": null,
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Nose",
+      "file": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+      "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32",
+      "xpath": "/Defs/BodyPartDef[defName=\"Nose\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>10</hitPoints>",
+        "tags": null,
+        "bleedRate": "<bleedRate>0</bleedRate>",
+        "solid": "<solid>true</solid>",
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Paw",
+      "file": "Data/Core/Defs/Bodies/BodyParts_Animal.xml",
+      "sha256": "c069f5ebca38bd40b5a4a6f917ce5b97e12965eb413a64ae9875ffc42257b86d",
+      "xpath": "/Defs/BodyPartDef[defName=\"Paw\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>10</hitPoints>",
+        "tags": "<tags><li>MovingLimbSegment</li></tags>",
+        "bleedRate": null,
+        "solid": null,
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Skull",
+      "file": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+      "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32",
+      "xpath": "/Defs/BodyPartDef[defName=\"Skull\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>25</hitPoints>",
+        "tags": null,
+        "bleedRate": "<bleedRate>0</bleedRate>",
+        "solid": "<solid>true</solid>",
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Spine",
+      "file": "Data/Core/Defs/Bodies/BodyParts_General.xml",
+      "sha256": "c3546b23f5d97d5a9f496ec6eb1e52149e3ef8de2227e71ed0fefccbc0f88d32",
+      "xpath": "/Defs/BodyPartDef[defName=\"Spine\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>25</hitPoints>",
+        "tags": "<tags><li>Spine</li></tags>",
+        "bleedRate": "<bleedRate>0</bleedRate>",
+        "solid": "<solid>true</solid>",
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Stomach",
+      "file": "Data/Core/Defs/Bodies/BodyParts_Organs.xml",
+      "sha256": "eeeb6f166bde4804b5d91933a3734954f84239e1abad3b3e000fcbe8609e5f80",
+      "xpath": "/Defs/BodyPartDef[defName=\"Stomach\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>20</hitPoints>",
+        "tags": "<tags><li>MetabolismSource</li></tags>",
+        "bleedRate": null,
+        "solid": null,
+        "delicate": null,
+        "conceptual": null
+      }
+    },
+    {
+      "defName": "Tail",
+      "file": "Data/Core/Defs/Bodies/BodyParts_Animal.xml",
+      "sha256": "c069f5ebca38bd40b5a4a6f917ce5b97e12965eb413a64ae9875ffc42257b86d",
+      "xpath": "/Defs/BodyPartDef[defName=\"Tail\"]",
+      "parentName": "",
+      "fields": {
+        "hitPoints": "<hitPoints>10</hitPoints>",
+        "tags": null,
+        "bleedRate": null,
+        "solid": null,
+        "delicate": null,
+        "conceptual": null
+      }
+    }
+  ],
+  "patientThinkTreeNodes": [
+    {
+      "class": "JobGiver_PatientGoToBed",
+      "ancestorsNearestFirst": [
+        {
+          "class": "ThinkNode_Tagger",
+          "invert": null
+        },
+        {
+          "class": "ThinkNode_ConditionalOfPlayerFaction",
+          "invert": null
+        },
+        {
+          "class": "ThinkNode_Priority",
+          "invert": null
+        }
+      ]
+    },
+    {
+      "class": "JobGiver_PatientGoToBed",
+      "ancestorsNearestFirst": [
+        {
+          "class": "ThinkNode_Tagger",
+          "invert": null
+        },
+        {
+          "class": "ThinkNode_ConditionalNonPlayerNonHostileFaction",
+          "invert": null
+        },
+        {
+          "class": "ThinkNode_Priority",
+          "invert": null
+        }
+      ]
+    }
+  ],
+  "nativeReference": {
+    "careWorkType": "Doctor",
+    "patientFeedingWorkTypes": [
+      "Doctor",
+      "Handling"
+    ],
+    "automaticRescueSameFaction": true,
+    "manualRescueAllowsNonhostileForeignAnimals": true,
+    "rescueChangesAnimalFactionDirectly": false,
+    "animalTendRequiresBed": false,
+    "animalTendRequiresLying": true,
+    "animalPatientFeedRequiresPlayerBed": true,
+    "carePolicies": [
+      "NoCare",
+      "NoMeds",
+      "HerbalOrWorse",
+      "NormalOrWorse",
+      "Best"
+    ],
+    "treatmentIsInstantFullHeal": false,
+    "bodySizeCapDefault": 9999,
+    "animalSleepingBoxBodySizeCap": 0.55,
+    "animalFurnitureHealPerDay": 4,
+    "painShockDefault": 0.8,
+    "consciousnessAwakeMinimum": 0.3,
+    "movingCapableStrictMinimum": 0.15,
+    "lethalInjurySeverityPerHealthScale": 150,
+    "tendWorkTicks": 600,
+    "healingIntervalTicks": 600,
+    "noMedicinePotency": 0.3,
+    "noMedicineQualityMax": 0.7,
+    "medicineInjuryBatchSeverity": 20,
+    "medicineUnitsPerSuccessfulTreatment": 1,
+    "naturalHealBasePerDay": 8,
+    "lyingNaturalHealBonusPerDay": 4,
+    "tendedHealBasePerDay": 8,
+    "treatmentBondBaseChance": 0.004,
+    "treatmentBondMinimumTrainability": "Intermediate",
+    "fiveCoreSpeciesTrainability": "None",
+    "standardTradeLordRemovesDownedPawns": true,
+    "species": [
+      {
+        "def": "Hare",
+        "body": "QuadrupedAnimalWithPawsAndTail",
+        "baseBodySize": 0.2,
+        "baseHealthScale": 0.4
+      },
+      {
+        "def": "Deer",
+        "body": "QuadrupedAnimalWithHooves",
+        "baseBodySize": 1.2,
+        "baseHealthScale": 0.9
+      },
+      {
+        "def": "Alpaca",
+        "body": "QuadrupedAnimalWithHooves",
+        "baseBodySize": 1,
+        "baseHealthScale": 1
+      },
+      {
+        "def": "Dromedary",
+        "body": "QuadrupedAnimalWithHoovesAndHump",
+        "baseBodySize": 2.1,
+        "baseHealthScale": 1.6
+      },
+      {
+        "def": "Chicken",
+        "body": "Bird",
+        "baseBodySize": 0.3,
+        "baseHealthScale": 0.35
+      }
+    ]
+  },
+  "webDesignChoices": [
+    "Build rescue, carry, treat, feed and recovery state machines before balancing.",
+    "A compact species-specific anatomy model can omit detailed organs if labeled as simplification.",
+    "Retaining merchantId through incapacitation is a Web continuity choice, not native Lord membership equivalence.",
+    "Omitting random death-on-downed and rare bond recruitment is an explicit prototype rule.",
+    "Use original values as reference constants, not proof of Web runtime parity."
+  ],
+  "limits": [
+    "Static derived C# and packaged Core XML are not original source or runtime proof.",
+    "REA metadata is reused for exact assembly identity only; ILSpy reconstructs the separately hashed C# types.",
+    "No game, browser, preview, GUI or screenshot was launched.",
+    "The XML projections are selected packaged nodes, not the mod-patched effective Def database.",
+    "Literal anchors and bounded absence checks support only their recorded methods; indirect callbacks can do additional work.",
+    "Pain, death and capacities have other modifiers and DLC paths; .8 pain threshold is a default, not universal.",
+    "No surgery, disease catalog, infection probability or trader recovery-exit integration completeness is claimed.",
+    "Full derived C#, assemblies and game assets stay outside the published evidence."
+  ],
+  "collectorSha256": "636d2bc082806541050bb8f4363a66bbb9c55ac3c16be16c5632460067fcc77d"
+}

@@ -13,6 +13,7 @@ export const ANIMAL_DEFS: Readonly<Record<AnimalSpecies, {
   chicken: { name: '鸡', health: 20, meat: 12, color: 0xe7ddc0, moveTicks: 10 },
 };
 export const ANIMAL_PHASE_NAMES: Record<WildAnimal['phase'], string> = {
+  downed: '倒地', medicalRest: '医疗休养', carried: '救助搬运中',
   layEgg: '产蛋',
   rope: '牵引中',
   eat: '进食', mate: '求偶', interact: '接受照料',

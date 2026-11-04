@@ -1797,6 +1797,19 @@ a {
 .voxel-wildlife-list .voxel-animal-facts, .voxel-wildlife-list .voxel-animal-status { display: grid; justify-content: stretch; gap: 3px; }
 .voxel-animal-facts label { display: grid; gap: 4px; color: #c3d1bc; font-size: 11px; }
 .voxel-animal-facts progress { width: 100%; height: 5px; accent-color: #aec584; }
+.voxel-animal-medical, .voxel-animal-bed, .voxel-animal-medical-panel > section { margin: 10px 0; padding: 10px; border: 1px solid #81bdc455; background: #14202166; }
+.voxel-animal-medical h3, .voxel-animal-medical-panel h3 { margin: 0 0 8px; color: #9ed0d3; font-size: 13px; }
+.voxel-animal-medical-facts, .voxel-animal-care-status, .voxel-animal-care-worker, .voxel-wildlife-list .voxel-animal-medical-facts { display: grid; gap: 4px; }
+.voxel-animal-medical-facts small, .voxel-animal-medical small, .voxel-animal-bed small, .voxel-animal-medical-panel small { display: block; font-size: 11px; line-height: 1.6; color: #bdc9bc; }
+.voxel-animal-medical-facts b, .voxel-animal-care-status b { font-size: 11px; color: #d6e0d9; }
+.voxel-animal-medical label, .voxel-animal-care-status label { display: grid; gap: 4px; font-size: 11px; margin: 8px 0; }
+.voxel-animal-medical progress, .voxel-animal-care-status progress { width: 100%; height: 6px; accent-color: #81bdc4; }
+.voxel-animal-care-status { margin: 8px 0; padding: 8px; background: #81bdc410; }
+.voxel-animal-medical details { margin: 10px 0; }
+.voxel-animal-medical details > div { margin: 8px 0; }
+.voxel-animal-care-worker > div { display: flex; gap: 5px; flex-wrap: wrap; }
+.voxel-animal-care-worker button { font-size: 11px; padding: 5px; }
+.voxel-animal-tabs { flex-wrap: wrap; }
 .voxel-animal-portrait { display: block; width: 70px; height: 54px; margin-bottom: 7px; border: 1px solid #bdc9bc33; border-radius: 5px; }
 .voxel-animal-milk, .voxel-animal-wool, .voxel-animal-eggs, .voxel-egg-details { display: grid; gap: 6px; margin-top: 8px; padding: 9px; border: 1px solid #d8dbbc35; background: #d8dbbc08; }
 .voxel-animal-milk b, .voxel-animal-wool b, .voxel-animal-eggs b, .voxel-egg-details b { color: #e4dfc7; font-size: 12px; }

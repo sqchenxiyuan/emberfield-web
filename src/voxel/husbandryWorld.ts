@@ -17,6 +17,7 @@ import { HUSBANDRY_RULES, ANIMAL_HUSBANDRY, initialAnimalState, isAnimalAdult,
   animalNutritionCapacity, animalFeedAmount, tameChance, advanceAnimalNeeds } from './husbandry';
 
 export interface HusbandryHost extends PensHost {
+  animalMedicalTravel?(animal: WildAnimal): boolean;
   animalTradeTravel?(animal: WildAnimal): boolean;
   animalTradeBirth?(mother: WildAnimal, child: WildAnimal): void;
   autoSlaughter?: AutoSlaughterSettings;
@@ -274,6 +275,7 @@ export function updateHusbandry(s:HusbandryHost) {
         event(s,'rewild',a,`${a.name}长期缺少维护，重新变为野生动物`);}
     }
     birth(s,a);
+    if(s.animalMedicalTravel?.(a))continue;
     const threat=s.pawns.find(p=>p.id===a.threatId&&!p.dead);
     if(a.fleeUntil>s.tick&&threat){
       cancelAnimalRopes(s,a.id);clearAnimal(a);a.phase='flee';a.reason='逃离威胁';
@@ -344,7 +346,7 @@ function handlerRoute(p:Pawn,path:number[]){p.path=path;p.destination=path.at(-1
 export function tryHandle(s:HusbandryHost,p:Pawn):boolean {
   if(!canHandle(p)||p.cargo||p.food<30||p.rest<20)return false;
   const automatic=new Set(autoSlaughterTargets(s));
-  for(const a of s.animals.filter(a=>!a.dead&&pawnAllowed(s,p,a)&&!s.pawns.some(p=>p.ropeTask?.animalId===a.id)&&s.tick>=a.retryTick&&a.phase!=='flee'&&
+  for(const a of s.animals.filter(a=>!a.dead&&!a.medical.downed&&a.medical.carriedBy===null&&a.medical.bedId===null&&!s.pawns.some(p=>p.animalCareTask?.animalId===a.id)&&pawnAllowed(s,p,a)&&!s.pawns.some(p=>p.ropeTask?.animalId===a.id)&&s.tick>=a.retryTick&&a.phase!=='flee'&&
     !s.pawns.some(q=>q.handleTask?.animalId===a.id)).sort((a,b)=>a.hunger-b.hunger)){
     const action=actionFor(a,automatic);if(!action)continue;
     if(['milk','shear'].includes(action)&&s.tick<a.nextInteractionTick)continue;
@@ -374,7 +376,7 @@ export function handleTick(s:HusbandryHost,p:Pawn) {
   const task=p.handleTask;if(!task)return;
   const a=s.animals.find(a=>a.id===task.animalId);
   const cancel=(message:string)=>{s.prisonRelease(p);p.reason=message;};
-  if(!a||a.dead||!canHandle(p)||p.food<12||p.rest<1||a.phase==='flee'||
+  if(!a||a.dead||a.medical.downed||a.medical.carriedBy!==null||s.pawns.some(q=>q.animalCareTask?.animalId===a.id)||!canHandle(p)||p.food<12||p.rest<1||a.phase==='flee'||
     (task.action==='tame'?a.faction!=='wild'||!a.tame: a.faction!=='colony')||
     (task.action==='slaughter'&&!a.slaughter)||(task.action==='release'&&!a.releaseMarked)||
     (task.action==='autoSlaughter'&&!autoSlaughterTargets(s).includes(a.id))||

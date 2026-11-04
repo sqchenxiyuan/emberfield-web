@@ -50,7 +50,8 @@ export function validateAnimalHusbandryShape(a: WildAnimal, nextId: number): voi
       !['grass', 'crop', 'food', 'mate', 'area', 'exit', 'layEgg', 'layEggBox', 'caravan'].includes(a.goal.kind) ||
       (['grass', 'exit', 'layEgg'].includes(a.goal.kind) ? !integer(a.goal.id, 0, CELLS - 1) : !id(a.goal.id))))
     fail('动物目标无效');
-  if (a.path.length && a.goal === null) fail('动物路径缺少目标');
+  if (a.path.length && a.goal === null && !(a.phase === 'medicalRest' && a.medical?.bedId !== null && a.medical?.bedId !== undefined))
+    fail('动物路径缺少目标');
 }
 
 /** Must inspect the original source before older migrations add current defaults. */

@@ -1,4 +1,5 @@
 import type { EggBox, EggBoxTask } from './eggBoxes';
+import type { AnimalMedicalState, AnimalCareTask, AnimalBed } from './animalMedical';
 import type { Trauma } from './injuries';
 import type { MedicalState, MedicalPolicy } from './medicine';
 import type { WeaponPiece, WeaponKind, WeaponBenchKind } from './weapons';
@@ -277,6 +278,7 @@ export interface RoomSummary {
   maxZ: number;
 }
 export type Tool =
+  | 'animalBed'
   | 'forbidItems'
   | 'allowItems'
   | 'bridge'
@@ -449,6 +451,7 @@ export interface HusbandryEvent {
 }
 /** Wildlife uses its own small state machine, separate from human anatomy. */
 export interface WildAnimal extends Pos {
+  medical: AnimalMedicalState;
   allowedAreaId: number | null;
   ropePaused: boolean;
   requestedPenId: number | null;
@@ -484,7 +487,7 @@ export interface WildAnimal extends Pos {
   health: number;
   hunger: number;
   dead: boolean;
-  phase: 'roam' | 'graze' | 'rest' | 'flee' | 'dead' | 'eat' | 'mate' | 'interact' | 'rope' | 'layEgg';
+  phase: 'roam' | 'graze' | 'rest' | 'flee' | 'dead' | 'eat' | 'mate' | 'interact' | 'rope' | 'layEgg' | 'downed' | 'medicalRest' | 'carried';
   hunt: boolean;
   moveTick: number;
   decisionTick: number;
@@ -691,6 +694,7 @@ export interface CombatState {
   wave: number;
 }
 export interface Pawn extends Pos {
+  animalCareTask?: AnimalCareTask;
   eggBoxTask?: EggBoxTask;
   allowedAreaId: number | null;
   productionDelivery?: import('./productionOutput').ProductionDelivery;
@@ -746,6 +750,7 @@ export interface Pawn extends Pos {
   path: number[];
   destination: number | null;
   phase:
+    | 'animalCare'
     | 'eggBox'
     | 'dine'
     | 'rope'
@@ -825,6 +830,7 @@ export interface VoxelStats {
   spoiled: Counts;
 }
 export interface VoxelSnapshot {
+  animalBeds: AnimalBed[];
   autoSlaughter: import('./autoSlaughter').AutoSlaughterSettings;
   autoSlaughterStatus: import('./autoSlaughter').AutoSlaughterStatus;
   /** Derived geometry for damaged typed walls; no dense world array in snapshots. */
@@ -926,6 +932,10 @@ export interface ChunkUpdate {
   explored: Uint8Array;
 }
 export type VoxelCommand =
+  | { type: 'animalMedicalPolicy'; animalId: number; policy: MedicalPolicy }
+  | { type: 'animalRescue'; animalId: number; enabled: boolean }
+  | { type: 'animalCare'; pawnId: number; animalId: number; action: 'rescue' | 'tend' | 'feed' }
+  | { type: 'animalBedRemove'; bedId: number }
   | { type: 'eggBoxEmpty'; boxId: number; enabled: boolean }
   | { type: 'eggBoxForbid'; boxId: number; forbidden: boolean }
   | { type: 'itemForbidden'; itemId: number; forbidden: boolean }
@@ -1030,6 +1040,7 @@ export interface CommandResult {
   count?: number;
 }
 export interface VoxelSave {
+  animalBeds: AnimalBed[];
   stockpileZones: import('./stockpileZones').StockpileZone[];
   productionQueues: import('./productionBills').ProductionQueue[];
   shelves: Shelf[];
@@ -1056,7 +1067,7 @@ export interface VoxelSave {
   eggBoxes: EggBox[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 53;
+  version: 54;
   autoSlaughter: import('./autoSlaughter').AutoSlaughterSettings;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
@@ -1183,6 +1194,7 @@ export const JOB_NAMES: Record<JobKind, string> = {
   cook: '烹饪简餐',
 };
 export const TOOL_NAMES: Record<Tool, string> = {
+  animalBed: '动物医疗睡眠点',
   forbidItems: '禁止物品', allowItems: '允许物品',
   bridge: '木桥',
   shelf: '货架', smallShelf: '小货架',

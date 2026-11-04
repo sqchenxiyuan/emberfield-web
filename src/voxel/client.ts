@@ -363,7 +363,7 @@ export class VoxelClient {
       downX = 0,
       downY = 0;
     let dragTool: Tool | null = null, dragSequence = 0, previewSequence = 0;
-    const previews = (tool: Tool) => !!this.state.furniturePlacement || ['bridge', 'eggBox', 'shelf', 'smallShelf', 'bed', 'table', 'chair', 'fence', 'fenceGate', 'penMarker', 'animalArea', 'forbidItems', 'allowItems'].includes(tool);
+    const previews = (tool: Tool) => !!this.state.furniturePlacement || ['bridge', 'eggBox', 'animalBed', 'shelf', 'smallShelf', 'bed', 'table', 'chair', 'fence', 'fenceGate', 'penMarker', 'animalArea', 'forbidItems', 'allowItems'].includes(tool);
     const preview = (from: Pos, target: Pos, tool: Tool) => {
       const furniture = this.state.furniturePlacement;
       if (furniture) {

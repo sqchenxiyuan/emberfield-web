@@ -4,6 +4,7 @@ import { validateWildlife } from './wildlifePersistence';
 import { validateMilk } from './animalMilkPersistence';
 import { validateWool } from './animalWoolPersistence';
 import { validateEggs } from './animalEggPersistence';
+import { validateAnimalMedicalState } from './animalMedicalPersistence';
 import { eggLayerActive } from './animalEggs';
 import { isPenMapEdge } from './pens';
 import { HEIGHT, inside, position, type AnimalSpecies, type VoxelSave, type WildAnimal } from './types';
@@ -48,7 +49,7 @@ const snapshotFields = ['x', 'y', 'z', 'allowedAreaId', 'ropePaused', 'requested
   'woolGrowth', 'eggProgress', 'fertilizationCount', 'eggFatherId', 'layProgress', 'pregnancy', 'mateId',
   'mateProgress', 'nextMateTick', 'tameness', 'nextTamenessDecayTick', 'nextInteractionTick', 'path', 'goal',
   'eatProgress', 'reason', 'id', 'species', 'name', 'health', 'hunger', 'dead', 'phase', 'hunt', 'moveTick',
-  'decisionTick', 'fleeUntil', 'threatId', 'retryTick', 'rotProgress'] as const;
+  'decisionTick', 'fleeUntil', 'threatId', 'retryTick', 'rotProgress', 'medical'] as const;
 
 function traderDirectives(a: WildAnimal): void {
   if (a.dead || a.allowedAreaId !== null || a.requestedPenId !== null || a.ropePaused !== false ||
@@ -67,6 +68,7 @@ function validateSnapshot(a: WildAnimal, side: 'colony' | 'trader', receipt: Tra
       (a.requestedPenId !== null && (!id(a.requestedPenId) || a.faction !== 'colony' || !ANIMAL_HUSBANDRY[a.species]?.penAnimal)))
     fail('回执活体快照字段、位置或归属无效');
   validateAnimalHusbandryShape(a, nextId);
+  validateAnimalMedicalState(a, nextId, receipt.tick);
   // Reuse the existing biological validators with no live-world references.
   // This context deliberately contains no current animal, handler or building.
   const context = { nextId, animals: [a], pawns: [], items: [], jobs: [], butcherSpots: [] } as unknown as VoxelSave;

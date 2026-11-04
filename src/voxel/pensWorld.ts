@@ -62,7 +62,8 @@ export function penSummaries(s: PensHost): PenSummary[] {
 function resetAnimal(a: WildAnimal) {
   a.path = []; a.goal = null; a.mateId = null; a.mateProgress = 0; a.eatProgress = 0;
   a.layProgress = 0;
-  if (!a.dead) a.phase = 'roam';
+  // Area/pen edits invalidate navigation, not a patient's care relationship.
+  if (!a.dead) a.phase = a.medical.carriedBy!==null?'carried':a.medical.downed?'downed':a.phase==='medicalRest'?'medicalRest':'roam';
 }
 export function cancelAnimalRopes(s: PensHost, animalId?: number, markerId?: number) {
   for (const p of s.pawns) if (p.ropeTask && (animalId === undefined || p.ropeTask.animalId === animalId) &&
@@ -170,7 +171,7 @@ function ropeEndAllowed(s: PensHost, p: Pawn, animal: Pos, handler: Pos, path: n
 export function tryRope(s: PensHost,p: Pawn): boolean {
   if (!canRope(p)) return false;
   for (const a of s.animals) {
-    if (a.dead || a.faction!=='colony' || !ANIMAL_HUSBANDRY[a.species].penAnimal || a.ropePaused || a.slaughter || a.releaseMarked ||
+    if (a.dead || a.medical.downed || a.medical.carriedBy!==null || a.medical.bedId!==null || s.pawns.some(p=>p.animalCareTask?.animalId===a.id) || a.faction!=='colony' || !ANIMAL_HUSBANDRY[a.species].penAnimal || a.ropePaused || a.slaughter || a.releaseMarked ||
         a.fleeUntil>s.tick || a.retryTick>s.tick || s.pawns.some(q=>q.ropeTask?.animalId===a.id||q.handleTask?.animalId===a.id) || isHoused(s,a)) continue;
     if (!pawnAllowed(s,p,a)) continue;
     const availablePens=eligiblePens(s,a);
@@ -199,7 +200,7 @@ export function ropeTick(s:PensHost,p:Pawn) {
   const a=s.animals.find(a=>a.id===task.animalId), marker=s.penMarkers.find(m=>m.id===task.penId);
   const cells=marker?penCells(s,marker.id):null;
   const cancel=(reason:string,retry=true)=>{if(a){if(retry)a.retryTick=s.tick+PEN_RULES.ropeRetryTicks;a.reason=reason;}s.prisonRelease(p);p.reason=reason;};
-  if(!a||!marker||!cells||!penAcceptsAnimal(marker,a)||a.dead||a.ropePaused||a.slaughter||a.releaseMarked||
+  if(!a||!marker||!cells||!penAcceptsAnimal(marker,a)||a.dead||a.medical.downed||a.medical.carriedBy!==null||a.ropePaused||a.slaughter||a.releaseMarked||
       a.fleeUntil>s.tick||!canRope(p)||(a.requestedPenId!==null&&a.requestedPenId!==marker.id)) {cancel('牵引条件改变，已解绳并保留当前位置');return;}
   if(((task.stage==='approach'||task.stage==='attach')&&!pawnAllowed(s,p,a))||
       ((task.stage==='lead'||task.stage==='detach')&&!ropeEndAllowed(s,p,a,p,task.path))) {

@@ -87,6 +87,7 @@ import { MILK_RULES } from './animalMilk';
 import { WOOL_RULES } from './animalWool';
 import { EGG_RULES } from './animalEggs';
 import { EGG_BOX_RULES } from './eggBoxes';
+import { ANIMAL_MEDICAL_RULES, animalMedicalSummary } from './animalMedical';
 import { FIRE_RULES, fireDamageCells } from './fire';
 import { tableCells } from './living';
 import { isShelfKind, shelfCells, type RelocatableKind, type ShelfKind } from './shelves';
@@ -106,7 +107,7 @@ export interface VoxelView {
 }
 
 export interface PlacementPreview {
-  tool: 'bridge' | 'shelf' | 'smallShelf' | 'bed' | 'table' | 'chair' | 'fence' | 'fenceGate' | 'penMarker' | 'eggBox' | 'animalArea' | 'forbidItems' | 'allowItems';
+  tool: 'bridge' | 'shelf' | 'smallShelf' | 'bed' | 'table' | 'chair' | 'fence' | 'fenceGate' | 'penMarker' | 'eggBox' | 'animalBed' | 'animalArea' | 'forbidItems' | 'allowItems';
   from: Pos;
   to: Pos;
   axis: Axis;
@@ -191,7 +192,7 @@ type AnimalVisual = {
   fleece: Group | null;
   wings: Group[]; comb: Group | null; feathers: MeshLambertMaterial | null;
   antlers: Group; colonyMark: Mesh; tameMark: Sprite; slaughterMark: Sprite; releaseMark: Sprite;
-  selected: Mesh; huntMark: Group; from: Vector3; to: Vector3;
+  selected: Mesh; huntMark: Group; medicalMark: Group; from: Vector3; to: Vector3;
   start: number; duration: number; animal: WildAnimal;
 };
 type DevicePart = {
@@ -1090,7 +1091,7 @@ export class VoxelRenderer {
         const marker = this.data?.penMarkers.find(m => m.x === cell.x && m.y === cell.y && m.z === cell.z);
         const gate = this.data?.fenceGates.find(g => g.x === cell.x && g.y === cell.y && g.z === cell.z);
         const eggBox = this.data?.eggBoxes.find(b => b.x === cell.x && b.y === cell.y && b.z === cell.z);
-        return { x: cell.x, y: cell.y, z: cell.z, ...('furnitureId' in cell ? { furnitureId: cell.furnitureId } : {}), ...(marker ? { penMarkerId: marker.id } : {}), ...(gate ? { fenceGateId: gate.id } : {}), ...(eggBox ? { eggBoxId: eggBox.id } : {}) };
+        return { x: cell.x, y: cell.y, z: cell.z, ...('furnitureId' in cell ? { furnitureId: cell.furnitureId } : {}), ...('animalBedId' in cell ? { animalBedId: cell.animalBedId } : {}), ...(marker ? { penMarkerId: marker.id } : {}), ...(gate ? { fenceGateId: gate.id } : {}), ...(eggBox ? { eggBoxId: eggBox.id } : {}) };
       }
     }
     return fallback;
@@ -1107,7 +1108,7 @@ export class VoxelRenderer {
   highlight(pos: Pos | null) {
     if (this.disposed) return;
     this.hover = pos ? { ...pos } : null;
-    this.selectedAnimalId = pos && !('penMarkerId' in pos) && !('fenceGateId' in pos) && !('furnitureId' in pos) && !('eggBoxId' in pos) ? this.data?.animals.find(a => 'animalId' in pos ? a.id === pos.animalId : a.x === pos.x && a.y === pos.y && a.z === pos.z)?.id ?? null : null;
+    this.selectedAnimalId = pos && !('penMarkerId' in pos) && !('fenceGateId' in pos) && !('furnitureId' in pos) && !('eggBoxId' in pos) && !('animalBedId' in pos) ? this.data?.animals.find(a => 'animalId' in pos ? a.id === pos.animalId : a.x === pos.x && a.y === pos.y && a.z === pos.z)?.id ?? null : null;
     this.updateCursor();
   }
 
@@ -1653,6 +1654,7 @@ export class VoxelRenderer {
     this.updateHousing();
     this.updatePens();
     this.updateEggBoxes();
+    this.updateAnimalBeds();
     this.updatePenOverlay();
     this.updatePlacementPreview();
     this.updatePower();
@@ -1848,6 +1850,22 @@ export class VoxelRenderer {
     this.finish(borders);
   }
 
+  private animalBedParts(bed: Pos): DevicePart[] {
+    const parts: DevicePart[] = [];
+    const put = (x: number, y: number, z: number, sx: number, sy: number, sz: number, color: number) =>
+      parts.push({ cell: bed, x: bed.x + x, y: bed.y + y, z: bed.z + z, sx, sy, sz, color });
+    put(.5, .5, .025, .88, .88, .035, 0x304a49);
+    for (const edge of [.07, .93]) { put(edge, .5, .055, .035, .88, .035, 0x91c9c7); put(.5, edge, .055, .88, .035, .035, 0x91c9c7); }
+    put(.5, .5, .064, .12, .40, .025, 0xb8ded5); put(.5, .5, .064, .40, .12, .025, 0xb8ded5);
+    return parts;
+  }
+
+  private updateAnimalBeds() {
+    if (!this.data) return;
+    this.deviceBatch('animal-medical-beds', this.data.animalBeds.filter(b => b.z <= this.level && this.explored(b))
+      .flatMap(b => this.animalBedParts({ ...b, animalBedId: b.id } as Pos)));
+  }
+
   private eggBoxParts(box: Pos): DevicePart[] {
     const parts: DevicePart[] = [];
     const put = (x: number, y: number, z: number, sx: number, sy: number, sz: number, color: number) =>
@@ -1982,6 +2000,8 @@ export class VoxelRenderer {
             put(.5, .5, .5, .1, .1, 1); put(.5, .5, .9, .67, .12, .36);
           } else if (preview.tool === 'eggBox') {
             parts.push(...this.eggBoxParts(p).map(part => ({ ...part, color })));
+          } else if (preview.tool === 'animalBed') {
+            parts.push(...this.animalBedParts(p).map(part => ({ ...part, color })));
           }
         }
       }
@@ -3650,10 +3670,15 @@ export class VoxelRenderer {
     const red = this.keepMaterial(new MeshLambertMaterial({ color: 0xe49c80 }));
     for (const angle of [-Math.PI / 4, Math.PI / 4]) { const bar = part(huntMark, red, 0, 0, 0, .28, .045, .045); bar.rotation.z = angle; }
     root.add(huntMark);
+    const medicalMark = new Group(); medicalMark.name = 'animal-medical-marker';
+    const medicalColor = this.keepMaterial(new MeshLambertMaterial({ color: 0x9edbd4 }));
+    part(medicalMark, medicalColor, 0, 0, 0, .23, .065, .065);
+    part(medicalMark, medicalColor, 0, 0, 0, .065, .23, .065);
+    root.add(medicalMark);
     const label = new Sprite(this.keepMaterial(new SpriteMaterial({ map: nameTexture(animal.name, 0xd3c397), depthTest: false, depthWrite: false })));
     label.position.y = camel ? 2.52 : deer || alpaca ? 2.17 : 1.52; label.scale.set(1.35, .37, 1); label.renderOrder = 12; root.add(label);
     const pos = new Vector3(animal.x + .5, animal.z, animal.y + .5); root.position.copy(pos);
-    return { root, body, head, legs, fleece, wings, comb, feathers: chicken ? fur : null, label, selected, huntMark, antlers, colonyMark, tameMark, slaughterMark, releaseMark, from: pos.clone(), to: pos.clone(), start: performance.now(), duration: 0, animal };
+    return { root, body, head, legs, fleece, wings, comb, feathers: chicken ? fur : null, label, selected, huntMark, medicalMark, antlers, colonyMark, tameMark, slaughterMark, releaseMark, from: pos.clone(), to: pos.clone(), start: performance.now(), duration: 0, animal };
   }
 
   private animateAnimals(now: number) {
@@ -3676,13 +3701,26 @@ export class VoxelRenderer {
       visual.root.position.lerpVectors(visual.from, visual.to, fraction);
       const dx = visual.to.x - visual.from.x, dz = visual.to.z - visual.from.z;
       if (Math.abs(dx) + Math.abs(dz) > .001) visual.root.rotation.y = Math.atan2(dx, dz);
-      const moving = !a.dead && fraction < 1, resting = a.phase === 'rest', fleeing = a.phase === 'flee';
+      const carrier = a.medical.carriedBy !== null ? this.pawnVisuals.get(a.medical.carriedBy) : undefined;
+      const carried = !!carrier && !a.dead && !carrier.pawn.dead && !carrier.pawn.downed && carrier.pawn.phase === 'animalCare' &&
+        carrier.pawn.animalCareTask?.stage === 'carry' && carrier.pawn.animalCareTask.animalId === a.id;
+      const medicalResting = a.phase === 'medicalRest' && !a.path.length && fraction >= 1;
+      const medicalLying = !a.dead && (a.medical.downed || medicalResting || carried);
+      const moving = !a.dead && !medicalLying && fraction < 1, resting = a.phase === 'rest' || medicalResting, fleeing = a.phase === 'flee';
+      if (carried) {
+        carrier.root.updateMatrixWorld(true);
+        visual.root.position.copy(carrier.root.localToWorld(new Vector3(0, .85, .48)));
+        visual.root.rotation.y = carrier.root.rotation.y + Math.PI / 2;
+        visual.root.visible = carrier.root.visible;
+      } else if (medicalLying) visual.root.position.set(a.x + .5, a.z, a.y + .5);
+      visual.root.userData.animalMedical = { downed: a.medical.downed, bedId: a.medical.bedId, carriedBy: carried ? a.medical.carriedBy : null };
       const wave = Math.sin(time * (fleeing ? 19 : 11) + a.id);
-      visual.body.position.y = (a.dead ? .1 : resting ? (camel ? -.48 : deer || alpaca ? -.35 : -.1) : moving ? Math.abs(wave) * (camel ? .035 : deer || alpaca ? .045 : .07) : 0) * size;
-      visual.body.rotation.z = a.dead ? Math.PI / 2 : 0;
-      visual.head.rotation.x = a.phase === 'graze' || a.phase === 'eat' ? .65 + Math.sin(time * 3 + a.id) * .08 : fleeing ? -.12 : resting ? .18 : Math.sin(time * .9 + a.id) * .025;
-      visual.legs.forEach((leg, i) => { leg.visible = !resting; leg.rotation.x = moving ? wave * (i === 0 || i === 3 ? 1 : -1) * (fleeing ? .65 : .4) : 0; });
-      const laying = chicken && !a.dead && a.phase === 'layEgg' && !a.path.length && !moving;
+      visual.body.position.x = medicalLying ? (camel ? .85 : deer || alpaca ? .62 : .26) * size : 0;
+      visual.body.position.y = (medicalLying ? (camel ? .34 : deer || alpaca ? .28 : .20) : a.dead ? .1 : resting ? (camel ? -.48 : deer || alpaca ? -.35 : -.1) : moving ? Math.abs(wave) * (camel ? .035 : deer || alpaca ? .045 : .07) : 0) * size;
+      visual.body.rotation.z = a.dead || medicalLying ? Math.PI / 2 : 0;
+      visual.head.rotation.x = medicalLying ? .12 : a.phase === 'graze' || a.phase === 'eat' ? .65 + Math.sin(time * 3 + a.id) * .08 : fleeing ? -.12 : resting ? .18 : Math.sin(time * .9 + a.id) * .025;
+      visual.legs.forEach((leg, i) => { leg.visible = !resting && !carried; leg.rotation.x = medicalLying ? -.35 : moving ? wave * (i === 0 || i === 3 ? 1 : -1) * (fleeing ? .65 : .4) : 0; });
+      const laying = chicken && !a.dead && !medicalLying && a.phase === 'layEgg' && !a.path.length && !moving;
       const layWave = laying && a.layProgress < EGG_RULES.layWork ? Math.sin(a.layProgress * .16) : 0;
       visual.root.userData.eggLaying = laying ? { progress: a.layProgress, waitingForSpace: a.layProgress >= EGG_RULES.layWork } : null;
       visual.wings.forEach((wing, i) => { wing.rotation.z = (i ? -1 : 1) * (laying ? .20 + layWave * .08 : moving ? .10 : 0); });
@@ -3694,14 +3732,16 @@ export class VoxelRenderer {
       } else visual.body.rotation.x = 0;
       visual.selected.visible = this.selectedAnimalId === a.id;
       visual.huntMark.visible = a.hunt && !a.dead;
-      visual.colonyMark.visible = a.faction === 'colony' && !a.dead;
+      visual.colonyMark.visible = a.faction === 'colony' && !a.dead && !carried;
       visual.tameMark.visible = a.tame && !a.dead;
       visual.slaughterMark.visible = a.slaughter && !a.dead;
       visual.releaseMark.visible = a.releaseMarked && !a.dead;
       const markerHeight = (camel ? 2 : alpaca ? 1.75 : deer ? 1.65 : 1) * size + .2;
       for (const marker of [visual.huntMark, visual.tameMark, visual.slaughterMark, visual.releaseMark]) marker.position.y = markerHeight;
+      visual.medicalMark.visible = !a.dead && (a.medical.downed || a.medical.carriedBy !== null || animalMedicalSummary(a).injured);
+      visual.medicalMark.position.set(.32, medicalLying ? .72 : markerHeight, 0);
       visual.label.position.y = markerHeight + .32;
-      visual.label.visible = visual.selected.visible || a.hunt || a.tame || a.slaughter || a.releaseMarked;
+      visual.label.visible = visual.selected.visible || visual.medicalMark.visible || a.hunt || a.tame || a.slaughter || a.releaseMarked;
     }
     this.animateRopes();
   }
@@ -4324,6 +4364,7 @@ export class VoxelRenderer {
       visual.root.userData.milking = null;
       visual.root.userData.shearing = null;
       visual.root.userData.eggBoxCollecting = null;
+      visual.root.userData.animalCare = null;
       visual.root.userData.dining = null;
       visual.root.userData.socialRelax = null;
       visual.head.rotation.set(0, 0, 0);
@@ -4419,6 +4460,11 @@ export class VoxelRenderer {
       const fireTarget = pawn.phase === 'firefight' && pawn.firefightTask ? this.data.fires.find(f => f.id === pawn.firefightTask!.fireId) : undefined;
       const repairTarget = pawn.phase === 'repair' && pawn.repairTask ? this.data.fireDamage.find(d => d.key === pawn.repairTask!.damageKey) : undefined;
       const touches = (p: Pos) => Math.abs(p.x - pawn.x) + Math.abs(p.y - pawn.y) + Math.abs(p.z - pawn.z) <= 1;
+      const animalCareTask = !mental && !pawn.drafted && pawn.phase === 'animalCare' ? pawn.animalCareTask : undefined;
+      const animalPatient = animalCareTask ? this.data.animals.find(a => a.id === animalCareTask.animalId && !a.dead) : undefined;
+      const carryingAnimal = !!animalPatient && animalCareTask?.stage === 'carry' && animalPatient.medical.carriedBy === pawn.id;
+      const treatingAnimal = !!animalPatient && animalCareTask?.stage === 'work' && !moving && touches(animalPatient) &&
+        animalPatient.medical.carriedBy === null && (animalCareTask.action === 'feed' || animalCareTask.action === 'tend' && animalPatient.medical.policy !== 'none');
       const eggBox = pawn.phase === 'eggBox' && pawn.eggBoxTask
         ? this.data.eggBoxes.find(box => box.id === pawn.eggBoxTask!.boxId && !box.forbidden && box.eggs && box.eggs.amount > 0) : undefined;
       const collectingEggs = !!eggBox && !moving && !pawn.cargo && !mental && pawn.carryingPawnId === null && touches(eggBox);
@@ -4502,7 +4548,7 @@ export class VoxelRenderer {
         ? this.data.pawns.find((p) => p.id === pawn.shooting!.targetId) ?? this.data.animals.find(a => a.id === pawn.shooting!.targetId)
         : undefined;
       const aiming = !!shootingTarget && !!pawn.weapon && isRangedKind(pawn.weapon.kind) && !moving;
-      const carryingPatient = pawn.carryingPawnId !== null;
+      const carryingPatient = pawn.carryingPawnId !== null || carryingAnimal;
       const holdingWeapon =
         !!pawn.weapon &&
         !pawn.weaponDropPending &&
@@ -4644,6 +4690,19 @@ export class VoxelRenderer {
         visual.torso.rotation.x = .1; visual.head.rotation.x = .1;
         toolArm.rotation.x = -.45 - Math.sin(beat * Math.PI) * .7;
         visual.hammer.visible = true; visual.hammer.scale.setScalar(1); visual.tool.visible = false;
+      } else if (carryingAnimal && animalPatient && animalCareTask) {
+        visual.leftArm.rotation.x = visual.rightArm.rotation.x = -.95;
+        visual.torso.rotation.x = .05; visual.head.rotation.x = .12;
+        visual.tool.visible = false; visual.hammer.visible = false;
+        visual.root.userData.animalCare = { animalId: animalPatient.id, action: animalCareTask.action, stage: 'carry', progress: animalCareTask.progress };
+      } else if (treatingAnimal && animalPatient && animalCareTask) {
+        const total = animalCareTask.action === 'feed' ? ANIMAL_MEDICAL_RULES.feedWork : ANIMAL_MEDICAL_RULES.work;
+        const beat = animalCareTask.progress < total ? Math.sin(animalCareTask.progress * .13) : 0;
+        visual.root.rotation.y = Math.atan2(animalPatient.x - pawn.x, animalPatient.y - pawn.y);
+        visual.torso.rotation.x = .25; visual.head.rotation.x = .23;
+        visual.leftArm.rotation.x = -.78 - beat * .13; visual.rightArm.rotation.x = -.78 + beat * .13;
+        visual.tool.visible = false; visual.hammer.visible = false;
+        visual.root.userData.animalCare = { animalId: animalPatient.id, action: animalCareTask.action, stage: 'work', progress: animalCareTask.progress };
       } else if (collectingEggs && eggBox && pawn.eggBoxTask) {
         const progress = pawn.eggBoxTask.progress;
         const lift = progress < EGG_BOX_RULES.emptyWork ? Math.sin(MathUtils.clamp(progress / EGG_BOX_RULES.emptyWork, 0, 1) * Math.PI) : 0;

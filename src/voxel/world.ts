@@ -111,6 +111,9 @@ import { migrateWildlife, validateWildlife } from './wildlifePersistence';
 import { initialAnimalState, HUSBANDRY_RULES, ANIMAL_HUSBANDRY } from './husbandry';
 import { rejectLegacyHusbandryFields, migrateHusbandry, validateHusbandry } from './husbandryPersistence';
 import { seedGrass, updateHusbandry, tryHandle, handleTick, animalOrder, releaseAnimalHandlers, reconcileAutoSlaughter } from './husbandryWorld';
+import { ANIMAL_MEDICAL_RULES, animalMedicalSummary, injureAnimal, type AnimalBed } from './animalMedical';
+import { animalMedicalTick, animalCareTick, tryAnimalCare, startAnimalCare, releaseAnimalCare, cancelAnimalMedical } from './animalMedicalWorld';
+import { rejectLegacyAnimalMedical, migrateAnimalMedical, validateAnimalMedical } from './animalMedicalPersistence';
 import { defaultAutoSlaughter, autoSlaughterSelection, validAutoSlaughterPolicy, AUTO_SLAUGHTER_SPECIES } from './autoSlaughter';
 import { migrateAutoSlaughter, validateAutoSlaughter } from './autoSlaughterPersistence';
 import { PEN_RULES, PEN_BUILDINGS, initialPenFilter, isAnimalGroundStep, type Fence, type FenceGate, type PenMarker, type AnimalArea } from './pens';
@@ -600,6 +603,12 @@ export class VoxelSimulation {
     if (p.living.mealTask) targets.push(p.living.mealTask.target);
     if (p.psyche.recreation) targets.push(p.psyche.recreation.target);
     if (p.eggBoxTask) targets.push(this.eggBoxes.find(b=>b.id===p.eggBoxTask!.boxId));
+    if (p.animalCareTask) {
+      const t=p.animalCareTask;
+      if(t.stage!=='carry')targets.push(this.animals.find(a=>a.id===t.animalId));
+      targets.push(this.animalBeds.find(b=>b.id===t.bedId));
+      if(t.sourceId!==null)targets.push(this.items.find(i=>i.id===t.sourceId));
+    }
     if (p.cleanTask) targets.push(this.filth.find(f => f.id === p.cleanTask!.filthId));
     if (p.carePhase) {
       if (p.carePhase !== 'rescueCarry') targets.push(this.pawns.find(q => q.id === p.patientId));
@@ -657,6 +666,7 @@ export class VoxelSimulation {
   private livingFloors = new Map<number, {wealth:number; beauty:number}>();
   eggBoxes: EggBox[] = [];
   horseshoePins: HorseshoePin[] = [];
+  animalBeds: AnimalBed[] = [];
   trade: TradeState;
   homeArea = new Set<number>();
   combat = { enabled: false, nextRaid: 0, wave: 0 };
@@ -897,6 +907,7 @@ export class VoxelSimulation {
     }
   }
   private updateWildlife() {
+    this.animalBeds=this.animalBeds.filter(b=>this.standable(b)&&!this.ladders[at(b)]&&!this.furnitureAt(b));
     updateHusbandry(this);
     for (const a of [...this.animals]) {
       if (a.dead) {
@@ -922,17 +933,19 @@ export class VoxelSimulation {
   private damageAnimal(shot: Projectile, animal: WildAnimal) {
     const attacker=this.pawns.find(p=>p.id===shot.shooterId);
     if(attacker&&animal.faction==='trader')tradeHarmed(this,attacker,{faction:'trader'},this.pawns.find(p=>p.id===shot.targetId),shot.damage);
-    animal.health = Math.max(0, animal.health - shot.damage);
+    injureAnimal(animal, shot.damage, 'cut', plantRandom(this.seed, animal.id, this.tick, 1454));
     animal.threatId = shot.shooterId;
     animal.fleeUntil = this.tick + 200;
     cancelAnimalRopes(this,animal.id);
-    animal.phase = 'flee';
+    animal.phase = animal.medical.downed ? 'downed' : 'flee';
     this.combatEvent(animal, shot.shooterId, animal.id, 'hit', shot.damage, `击中${animal.name}`);
     if (animal.health > 0) return;
     this.killAnimal(animal, '狩猎或流弹');
   }
   killAnimal(animal: WildAnimal, reason: string) {
     if (animal.dead) return;
+    cancelAnimalMedical(this, animal);
+    animal.medical.downed = false; animal.medical.rescue = false;
     if(animal.faction==='trader') {
       for(const c of this.trade.caravans)c.animalIds=c.animalIds.filter(id=>id!==animal.id);
       animal.faction='wild';animal.tameness=0;
@@ -1144,7 +1157,7 @@ export class VoxelSimulation {
     return this.searchOrigin ? this.travelRoute(this.searchOrigin, target, this.searchAllowed) ?? [] : [];
   }
   private pawnBaseMoveTicks(p?: Pawn) {
-    return p ? (p.cargo || p.carryingPawnId !== null ? 6 : 4) /
+    return p ? (p.cargo || p.carryingPawnId !== null || p.animalCareTask?.stage === 'carry' ? 6 : 4) /
       (apparelMoveFactor(p.worn, healthSummary(p).moving) * (p.staggerUntil > this.tick ? .17 : 1)) : 4;
   }
   private crossingTicks(from: Pos, to: Pos) {
@@ -2859,11 +2872,44 @@ export class VoxelSimulation {
       reconcileAutoSlaughter(this); this.revision++;
       return { ok: true, message: '自动宰杀配额已应用，超额动物等待驯养员现场处理' };
     }
-    if (c.type === 'animalOrder') return animalOrder(this, c.animalId, c.order, c.enabled);
+    if (c.type === 'animalBedRemove') {
+      const bed=this.animalBeds.find(b=>b.id===c.bedId&&this.exploredAt(b));
+      if(!bed)return {ok:false,message:'动物睡眠点不存在'};
+      for(const a of this.animals)if(a.medical.bedId===bed.id||this.pawns.some(p=>p.animalCareTask?.animalId===a.id&&p.animalCareTask.bedId===bed.id))cancelAnimalMedical(this,a);
+      this.animalBeds=this.animalBeds.filter(b=>b!==bed);this.revision++;
+      return {ok:true,message:'已撤销动物睡眠点，动物与携带物保留原位'};
+    }
+    if(c.type==='animalMedicalPolicy'||c.type==='animalRescue'||c.type==='animalCare') {
+      const a=this.animals.find(a=>a.id===c.animalId&&!a.dead&&this.exploredAt(a));
+      if(!a)return {ok:false,message:'请选择已发现的存活动物'};
+      if(c.type==='animalMedicalPolicy') {
+        if(!['none','noMedicine','herbal'].includes(c.policy))return {ok:false,message:'动物医疗政策无效'};
+        a.medical.policy=c.policy;
+        for(const p of this.pawns)if(p.animalCareTask?.animalId===a.id&&p.animalCareTask.action==='tend')this.release(p);
+        return {ok:true,message:'已更新医疗政策；现有草药与伤口状态保留'};
+      }
+      if(c.type==='animalRescue') {
+        if(typeof c.enabled!=='boolean')return {ok:false,message:'救助标记无效'};
+        a.medical.rescue=c.enabled;
+        if(c.enabled){a.hunt=false;a.tame=false;a.slaughter=false;a.releaseMarked=false;releaseAnimalHandlers(this,a);}
+        else cancelAnimalMedical(this,a);
+        return {ok:true,message:c.enabled?'已请求救助；需要医护或饲养员及可达的动物睡眠点':'已取消救助请求'};
+      }
+      const p=this.pawns.find(p=>p.id===c.pawnId);
+      const ok=!!p&&startAnimalCare(this,p,a,c.action,true);
+      return {ok,message:ok?p!.reason:'无法执行：检查分工、伤口、医疗政策、药食、空闲睡眠点与通路'};
+    }
+    if (c.type === 'animalOrder') {
+      const result=animalOrder(this, c.animalId, c.order, c.enabled);
+      const a=this.animals.find(a=>a.id===c.animalId);
+      if(result.ok&&c.enabled&&a){cancelAnimalMedical(this,a);a.medical.rescue=false;}
+      return result;
+    }
     if (c.type === 'hunt') {
       const animal = this.animals.find(a => a.id === c.animalId && !a.dead && a.faction === 'wild');
       if (!animal || typeof c.enabled !== 'boolean') return { ok: false, message: '请选择存活的野生动物' };
       animal.hunt = c.enabled;
+      if(c.enabled){cancelAnimalMedical(this,animal);animal.medical.rescue=false;}
       if (c.enabled) { animal.tame = false; releaseAnimalHandlers(this, animal); }
       animal.retryTick = 0;
       if (!c.enabled) for (const p of this.pawns) if (p.attackTargetId === animal.id) this.release(p);
@@ -3373,6 +3419,13 @@ export class VoxelSimulation {
     if (c.tool === 'inspect') return { ok: true, message: '选择查看' };
     if (!['mine', 'cancel'].includes(c.tool) && positions.some(p => !this.exploredAt(p)))
       return { ok: false, message: '目标区域尚未探索' };
+    if(c.tool==='animalBed') {
+      if(this.animalBeds.length+positions.length>ANIMAL_MEDICAL_RULES.maxBeds)return {ok:false,message:'动物睡眠点数量已达上限'};
+      if(positions.some(p=>!this.standable(p)||this.ladders[at(p)]||this.furnitureAt(p)||this.animalBeds.some(b=>same(b,p))||this.jobs.some(j=>!j.cancelled&&this.footprint(j).some(q=>same(q,p)))))
+        return {ok:false,message:'动物睡眠点需要有支撑的空地，不能与梯子、设施或施工计划重叠'};
+      for(const p of positions)this.animalBeds.push({...p,id:this.id()});this.revision++;
+      return {ok:true,message:`已设置 ${positions.length} 个动物医疗睡眠点`};
+    }
     if (c.tool === 'clearZone') {
       for (const pos of positions) {
         this.farms = this.farms.filter((f) => !same(f, pos));
@@ -3836,6 +3889,7 @@ export class VoxelSimulation {
         : !this.standable(p) && !this.solid(p) && !this.deviceAt(p) && !this.furnitureAt(p)
           ? '电线需要地面、墙体或梯井支撑'
           : '';
+    if (kind !== 'remove' && this.footprint({ ...p, kind, axis }).some(q=>this.animalBeds.some(b=>same(b,q))))return '请先撤销此处的动物睡眠点';
     if (kind !== 'remove' && this.footprint({ ...p, kind, axis }).some((q) => this.furnitureAt(q)))
       return '这里已有床或门，请先拆除';
     if (
@@ -3946,6 +4000,7 @@ export class VoxelSimulation {
     for (const p of this.pawns) if (p.id !== ignorePawnId) {
       if (p.careFoodId === item.id || p.careMedicineId === item.id) available -= p.careAmount;
       if (p.handleTask?.stage === 'fetch' && p.handleTask.foodId === item.id) available -= p.handleTask.amount;
+      if (p.animalCareTask?.stage === 'fetch' && p.animalCareTask.sourceId === item.id) available -= p.animalCareTask.amount;
       if (p.living.mealTask?.sourceId === item.id) available -= p.living.mealTask.amount;
       const fetch = this.fetchReservations.get(p.id), haul = this.storageReservations.get(p.id);
       if (fetch?.sourceId === item.id) available -= fetch.amount;
@@ -6159,6 +6214,7 @@ export class VoxelSimulation {
     return true;
   }
   private release(p: Pawn) {
+    releaseAnimalCare(this, p);
     delete p.eggBoxTask;
     delete p.productionDelivery;
     if (p.phase === 'rest' && p.sleepingSince !== null && this.tick - p.sleepingSince >= LIVING_RULES.sleepThoughtDelay &&
@@ -6213,12 +6269,13 @@ export class VoxelSimulation {
     }
   }
   prisonRelease(p: Pawn) { this.release(p); }
+  animalMedicalTravel(a: WildAnimal) { return animalMedicalTick(this, a); }
   animalAvailable(item: Stack, pawnId?: number) { return this.availableStack(item, pawnId); }
   animalTake(p: Pawn, id: number, amount: number) { return this.take(p, undefined, amount, id); }
   animalCanStop(p: Pos) { return this.canStop(p); }
   animalMoveTicks(a: WildAnimal, from: Pos, to: Pos = a) {
     return this.weatherMoveTicks(from, ANIMAL_DEFS[a.species].moveTicks * (a.phase === 'flee' ? .65 : 1) *
-      (1 + a.malnutrition), to, (this.fenceAt(to) && !this.fenceAt(from)) || this.shelfAt(to) ? 14 : this.eggBoxes.some(b=>same(b,to)) ? Math.ceil(EGG_BOX_RULES.pathCost/3) : 0);
+      (1 + a.malnutrition) / animalMedicalSummary(a).moving, to, (this.fenceAt(to) && !this.fenceAt(from)) || this.shelfAt(to) ? 14 : this.eggBoxes.some(b=>same(b,to)) ? Math.ceil(EGG_BOX_RULES.pathCost/3) : 0);
   }
   animalRoute(a: WildAnimal, targets: Set<number>): number[] | null {
     if (!targets.size) return null;
@@ -6340,6 +6397,10 @@ export class VoxelSimulation {
       const patient = this.pawns.find(q => q.id === p.carryingPawnId);
       if (patient) Object.assign(patient, { x: p.x, y: p.y, z: p.z });
     }
+    if(p.animalCareTask?.stage==='carry') {
+      const a=this.animals.find(a=>a.id===p.animalCareTask!.animalId&&a.medical.carriedBy===p.id);
+      if(a)Object.assign(a,{x:p.x,y:p.y,z:p.z});
+    }
   }
   tradeRelease(p: Pawn) { this.release(p); }
   penMoveHandler(p: Pawn, next: number): boolean {
@@ -6372,6 +6433,7 @@ export class VoxelSimulation {
       (p.careFoodId !== null && changed.has(p.careFoodId)) ||
       (p.careMedicineId !== null && changed.has(p.careMedicineId)) ||
       (p.handleTask?.stage === 'fetch' && p.handleTask.foodId !== null && changed.has(p.handleTask.foodId)) ||
+      (p.animalCareTask?.stage === 'fetch' && p.animalCareTask.sourceId !== null && changed.has(p.animalCareTask.sourceId)) ||
       (p.weaponTask?.stage === 'fetch' && stacks.some(i => i.weapon?.id === p.weaponTask!.weaponId)) ||
       (p.apparelTask?.stage === 'fetch' && stacks.some(i => i.apparel?.id === p.apparelTask!.apparelId))
     ) { this.release(p); p.reason = reason; }
@@ -6452,7 +6514,7 @@ export class VoxelSimulation {
         phase: 'idle', cargo: null, reason: '商队前往营地', moveTick: this.tick, workTarget: null,
         eating: null, sleepBedId: null, sleepingSince: null, schedule: defaultSchedule() };
       // A copied colonist is only the body template, never a live work order.
-      delete p.eggBoxTask; delete p.productionDelivery; p.allowedAreaId=null;
+      delete p.eggBoxTask; delete p.productionDelivery; delete p.animalCareTask; p.allowedAreaId=null;
       this.pawns.push(p); pawnIds.push(id);
     }
     const traderId = pawnIds[0];
@@ -6629,6 +6691,7 @@ export class VoxelSimulation {
     if (p.food < 30 && this.tryFood(p)) return;
     if (this.startMedicalRest(p)) return;
     if (p.priorities.care > 0 && this.tryCare(p)) return;
+    if (tryAnimalCare(this,p)) return;
     if (wantsSleep(p.rest, assignmentAt(p.schedule, this.tick))) {
       this.startSleep(p);
       return;
@@ -8174,6 +8237,7 @@ export class VoxelSimulation {
         else if (p.phase === 'hunt') this.huntTick(p);
         else if (p.phase === 'handle') handleTick(this, p);
         else if (p.phase === 'rope') ropeTick(this,p);
+        else if (p.phase === 'animalCare') animalCareTick(this,p);
         else if (p.phase === 'warden') wardenTick(this, p);
         if (
           !combatant &&
@@ -8189,7 +8253,7 @@ export class VoxelSimulation {
           p.reason = '护理条件改变，重新安排';
         }
         if (
-          p.phase !== 'care' &&
+          p.phase !== 'care' && p.phase !== 'animalCare' &&
           !combatant &&
           !p.drafted &&
           p.phase !== 'travel' &&
@@ -8199,7 +8263,7 @@ export class VoxelSimulation {
           p.priorities.care > 0 &&
           !medicalNeedsRest(p) &&
           (this.tick + p.id) % 20 === 0 &&
-          this.tryCare(p)
+          (this.tryCare(p) || tryAnimalCare(this,p))
         )
           continue;
         if (
@@ -8305,7 +8369,7 @@ export class VoxelSimulation {
         if (p.phase === 'repair') { repairTick(this, p); continue; }
         if (p.phase === 'clean') { this.cleanTick(p); continue; }
         if (p.phase === 'recreation') { this.recreationTick(p); continue; }
-        if (combatant || p.phase === 'trade' || p.phase === 'hunt' || p.phase === 'warden' || p.phase === 'handle' || p.phase === 'rope') continue;
+        if (combatant || p.phase === 'trade' || p.phase === 'hunt' || p.phase === 'warden' || p.phase === 'handle' || p.phase === 'rope' || p.phase === 'animalCare') continue;
         if (p.phase === 'idle') {
           if ((this.tick + p.id) % 20 === 0) this.assign(p);
         } else this.arrive(p);
@@ -8825,6 +8889,7 @@ export class VoxelSimulation {
       tables: this.tables.filter(visible), chairs: this.chairs.filter(visible),
       eggBoxes: this.eggBoxes.filter(visible),
       horseshoePins: this.horseshoePins.filter(visible),
+      animalBeds: this.animalBeds.filter(visible),
       seed: this.seed,
       generator: this.generator,
       exploration: { known: this.exploredCount, total: CELLS },
@@ -8898,7 +8963,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 53,
+      version: 54,
       autoSlaughter: this.autoSlaughter,
       stockpileZones: this.stockpileZones,
       productionQueues: this.productionQueues.filter(q => this.productionBenches().some(b => b.id === q.benchId)),
@@ -8921,6 +8986,7 @@ export class VoxelSimulation {
       tables: this.tables, chairs: this.chairs,
       eggBoxes: this.eggBoxes,
       horseshoePins: this.horseshoePins,
+      animalBeds: this.animalBeds,
       generator: this.generator,
       worldSite: this.worldSite,
       settings: this.settings,
@@ -8961,11 +9027,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : old.version < 43 ? [1, 2, 3] : [1, 2, 3, 4]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyAnimalMedical(old,sourceVersion);
     rejectLegacyAnimalTrade(old,sourceVersion);
     rejectLegacyEggBoxes(old,sourceVersion);
     rejectLegacyEggs(old,sourceVersion);
@@ -9401,7 +9468,8 @@ export class VoxelSimulation {
     migrateEggs(old, sourceVersion);
     if (sourceVersion < 52) old.eggBoxes = [];
     migrateAnimalTrade(old,sourceVersion);
-    old.version = 53;
+    migrateAnimalMedical(old,sourceVersion);
+    old.version = 54;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -9440,6 +9508,7 @@ export class VoxelSimulation {
       [d.tables, 128], [d.chairs, 256],
       [d.shelves, 256], [d.storageSpills, 4096],
       [d.eggBoxes, EGG_BOX_RULES.maxBoxes],
+      [d.animalBeds, ANIMAL_MEDICAL_RULES.maxBeds],
       [d.horseshoePins, 128],
       [d.items, 10000],
       [d.trees, 4096],
@@ -9492,6 +9561,7 @@ export class VoxelSimulation {
       ...d.butcherSpots,
       ...d.tables, ...d.chairs, ...d.shelves,
       ...d.eggBoxes,
+      ...d.animalBeds,
       ...d.horseshoePins,
       ...d.items,
       ...d.trees,
@@ -9573,6 +9643,7 @@ export class VoxelSimulation {
         d.stoves,
         d.butcherSpots,
         d.eggBoxes,
+        d.animalBeds,
         d.horseshoePins,
         d.stonecutters,
         d.tailors,
@@ -10230,7 +10301,7 @@ export class VoxelSimulation {
           'apparel',
           'combat',
           'hunt',
-          'handle', 'rope', 'eggBox',
+          'handle', 'rope', 'eggBox', 'animalCare',
           'firefight',
           'repair',
           'clean',
@@ -10513,6 +10584,7 @@ export class VoxelSimulation {
     validateWildlife(d, ids, new Set([...apparelIds, ...weaponIds]));
     validateHusbandry(d);
     validateAnimalTrade(d);
+    validateAnimalMedical(d);
     validateMilk(d);
     validateWool(d);
     validateEggs(d);
@@ -10625,6 +10697,7 @@ export class VoxelSimulation {
         butcherSpots: d.butcherSpots,
         tables: d.tables, chairs: d.chairs,
         eggBoxes: d.eggBoxes,
+        animalBeds: d.animalBeds,
         horseshoePins: d.horseshoePins,
         nextId: d.nextId,
         pawns: d.pawns,
@@ -10654,6 +10727,8 @@ export class VoxelSimulation {
     s.rebuildTrees();
     s.stoveCells = new Set(s.stoves.map(at));
     s.rebuildDevices();
+    if (s.animalBeds.some(b => !s.standable(b) || s.ladders[at(b)] || s.furnitureAt(b)))
+      throw new Error('动物睡眠点没有合法地面、净空或与家具重叠');
     validateWeather(d, s.blocks, s.water);
     s.pruneSnow();
     validateFire(d, s, sourceVersion);
@@ -10745,6 +10820,9 @@ export class VoxelSimulation {
     }
     for (const p of s.pawns) {
       // Prison tasks carry explicit destinations and progress. Movement rechecks every edge.
+      // Animal care retains real cargo, carrier links and exact in-flight progress.
+      // The normal tick safely replans or cancels a route if the world changes.
+      if (p.animalCareTask) continue;
       if (p.productionDelivery) { s.continueProductionDelivery(p); continue; }
       if (p.ropeTask) {
         const task=p.ropeTask, a=s.animals.find(a=>a.id===task.animalId)!;

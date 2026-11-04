@@ -22,7 +22,7 @@ export function animalMarketValue(a: WildAnimal): number {
     Math.max(.1, a.health / ANIMAL_DEFS[a.species].health) * (1 - .5 * a.malnutrition);
 }
 export function animalCanTrade(a: WildAnimal, temperature: number): boolean {
-  return !a.dead && a.health / ANIMAL_DEFS[a.species].health > LIVE_ANIMAL_TRADE.minimumSaleHealth &&
+  return !a.dead && !a.medical.downed && a.medical.carriedBy===null && a.health / ANIMAL_DEFS[a.species].health > LIVE_ANIMAL_TRADE.minimumSaleHealth &&
     a.malnutrition < .8 && a.phase !== 'flee' &&
     temperature >= LIVE_ANIMAL_TRADE.minimumTemperature && temperature <= LIVE_ANIMAL_TRADE.maximumTemperature;
 }
@@ -38,12 +38,14 @@ type AnimalTradeHost = HusbandryHost & { trade: { caravans: TraderCaravan[] }; r
  * but never regenerate its age, health, hunger or biological progress. */
 export function transferAnimal(s: AnimalTradeHost, a: WildAnimal, faction: 'colony'|'trader', caravan: TraderCaravan) {
   for (const p of s.pawns) if (p.handleTask?.animalId === a.id || p.ropeTask?.animalId === a.id ||
+      p.animalCareTask?.animalId===a.id ||
       p.attackTargetId === a.id || p.shooting?.targetId === a.id) s.prisonRelease(p);
   for (const b of s.animals) if (b.mateId === a.id) {
     b.mateId = null; b.mateProgress = 0; b.goal = null; b.path = []; b.phase = 'roam';
   }
   for (const c of s.trade.caravans) c.animalIds = c.animalIds.filter(id => id !== a.id);
   if (faction === 'trader') caravan.animalIds.push(a.id);
+  a.medical.bedId=null;a.medical.carriedBy=null;a.medical.rescue=false;
   Object.assign(a, initialAnimalPenState(s.tick), { faction, tameness: HUSBANDRY_RULES.tamenessMax,
     tame: false, hunt: false, slaughter: false, releaseMarked: false, mateId: null, mateProgress: 0,
     path: [], goal: null, eatProgress: 0, layProgress: 0, phase: 'roam', threatId: null, fleeUntil: 0,
