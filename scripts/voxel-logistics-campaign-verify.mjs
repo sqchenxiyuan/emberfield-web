@@ -7,25 +7,17 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 const OUT = process.env.VOXEL_LOGISTICS_OUT ?? 'test-results/voxel-logistics-campaign';
 await mkdir(OUT, { recursive: true });
 const bundle = await build({
-  entryPoints: ['src/voxel/world.ts'],
+  stdin: { contents: `export { VoxelSimulation } from './src/voxel/world.ts';
+    export { validBatch } from './src/voxel/preservation.ts';
+    export { STACK_LIMITS } from './src/voxel/logistics.ts';`, resolveDir: process.cwd(), loader: 'ts' },
   bundle: true,
   platform: 'node',
   format: 'esm',
   write: false,
 });
-const { VoxelSimulation } = await import(
+const { VoxelSimulation, validBatch, STACK_LIMITS: limits } = await import(
   `data:text/javascript;base64,${Buffer.from(bundle.outputFiles[0].text).toString('base64')}`
 );
-const limits = {
-  wood: 75,
-  stone: 75,
-  chunk: 1,
-  steel: 75,
-  components: 50,
-  food: 10,
-  grain: 75,
-  meal: 10,
-};
 const p = (x, y, z = 8) => ({ x, y, z });
 const key = (p) => `${p.x}/${p.y}/${p.z}`;
 const same = (a, b) => key(a) === key(b);
@@ -46,7 +38,7 @@ function audit(world = sim, initialCounts = initial) {
   const counts = world.counts();
   for (const r of Object.keys(initialCounts))
     assert.equal(
-      counts[r] + world.stats.consumed[r] + world.stats.spoiled[r],
+      counts[r] + world.stats.consumed[r] + world.stats.spoiled[r] + world.stats.destroyed[r],
       initialCounts[r] + world.stats.produced[r],
       `${r} ledger at ${world.tick}`,
     );
@@ -58,13 +50,14 @@ function audit(world = sim, initialCounts = initial) {
   for (const item of world.items) {
     assert(
       Object.keys(item).every((k) =>
-        ['id', 'resource', 'amount', 'crop', 'rotProgress', 'x', 'y', 'z'].includes(k),
+        ['id', 'resource', 'amount', 'crop', 'rotProgress', 'hitPoints', 'poisonChance', 'x', 'y', 'z'].includes(k),
       ),
       'ground stacks contain only item data, never copied pawn state',
     );
     assert(
       Number.isSafeInteger(item.amount) && item.amount > 0 && item.amount <= limits[item.resource],
     );
+    assert(validBatch(item), 'canonical batch age, damage and contamination remain valid');
     assert(world.standable(item), 'item rests on supported reachable-height ground');
   }
   for (const pawn of world.pawns) {
@@ -251,7 +244,8 @@ try {
   }
   const migrated = VoxelSimulation.load(legacy),
     newSave = migrated.save();
-  assert.equal(newSave.version, 21);
+  assert.equal(newSave.version, sim.save().version, 'legacy import uses the current simulation schema');
+  assert(newSave.version > legacy.version, 'legacy input was migrated');
   const oldAges = foodAges(legacy),
     newAges = foodAges(newSave);
   assert.deepEqual(Object.keys(newAges).sort(), Object.keys(oldAges).sort());
@@ -276,7 +270,7 @@ try {
       r,
       legacyCounts[r] +
         (legacy.stats.consumed[r] ?? 0) +
-        (legacy.stats.spoiled[r] ?? 0) -
+        (legacy.stats.spoiled[r] ?? 0) + (legacy.stats.destroyed?.[r] ?? 0) -
         (legacy.stats.produced[r] ?? 0),
     ]),
   );

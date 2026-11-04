@@ -357,7 +357,10 @@ describe('safe natural renewal, aging and deterministic continuation', () => {
     expect(s.stats.treesRegrown).toBe(restored.stats.treesRegrown);
     expect(s.trees.every((t) => !t.planted && t.growth >= NATURAL_GROWTH)).toBe(true);
     expect(s.pawns.every((pawn) => s.standable(pawn))).toBe(true);
-  }, 30000);
+    // Two complete five-day simulations (120,000 ticks) also progress weather,
+    // needs and all other colony systems. The published baseline takes ~31 s
+    // locally; allow scheduling headroom without reducing ticks or assertions.
+  }, 60000);
   it('lets cold trees stop growing, lets useful daylight reset shade age, and removes dead trees without wood', () => {
     let s = fixture((s) => {
       tree(s, p(15, 15), { growth: 0.3, age: 100, unlitTicks: 100 });

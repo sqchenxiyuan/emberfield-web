@@ -234,7 +234,7 @@ import {
   portion,
   validBatch,
 } from './preservation';
-import { carryLimit, stackLimit, stackSpace, DROP_DISTANCE, MIGRATION_DISTANCE } from './logistics';
+import { carryLimit, stackLimit, cellSpaceAfterReservations, planCellInsertion, DROP_DISTANCE, MIGRATION_DISTANCE, type BatchKind } from './logistics';
 import {
   STONECUTTER_COST,
   STONECUTTER_WORK,
@@ -620,7 +620,9 @@ export class VoxelSimulation {
     number,
     { cell: number; batch: Cargo; sourceId: number | null }
   >();
-  private craftSources = new Map<number, number>();
+  /** Transient fetch plans are rebuilt after load. Both cooking/building inputs
+   * and meals reserve a specific physical batch and quantity before walking. */
+  private fetchReservations = new Map<number, { sourceId: number; amount: number }>();
   private ecologySurface: Pos[] = [];
   private ecologyRevision = -1;
   private treeRouteSeen = new Uint8Array(CELLS);
@@ -1125,22 +1127,24 @@ export class VoxelSimulation {
     }
     return cells.map(position);
   }
-  private reservedSpace(
-    cell: number,
-    batch: Pick<Cargo, 'resource' | 'crop'>,
-    items: Stack[],
-    ignorePawnId?: number,
-  ): number {
-    let remaining = stackSpace(
-      items.find((i) => at(i) === cell),
-      batch,
-    );
-    for (const [id, reservation] of this.storageReservations)
-      if (id !== ignorePawnId && reservation.cell === cell) {
-        if (!compatibleBatches(reservation.batch, { ...batch, amount: 1 })) return 0;
-        remaining -= reservation.batch.amount;
-      }
-    return Math.max(0, remaining);
+  /** Operation-local indexes: item mutations elsewhere cannot leave a cached
+   * capacity behind. A placement trial updates its own indexed copies. */
+  private storageContext(items = this.items, ignorePawnId?: number) {
+    const stacks = new Map<number, Stack[]>(), reservations = new Map<number, Cargo[]>();
+    for (const item of items) {
+      const cell = at(item), group = stacks.get(cell);
+      if (group) group.push(item);
+      else stacks.set(cell, [item]);
+    }
+    for (const [id, r] of this.storageReservations) if (id !== ignorePawnId) {
+      const group = reservations.get(r.cell);
+      if (group) group.push(r.batch);
+      else reservations.set(r.cell, [r.batch]);
+    }
+    return { stacks, reservations };
+  }
+  private reservedSpace(cell: number, batch: BatchKind, context: ReturnType<VoxelSimulation['storageContext']>): number {
+    return cellSpaceAfterReservations(context.stacks.get(cell) ?? [], context.reservations.get(cell) ?? [], batch, 1);
   }
   /** Trial placement is atomic: no ids, amounts, ages or containers mutate on failure. */
   private planPlacement(
@@ -1150,18 +1154,23 @@ export class VoxelSimulation {
     forbidden = new Set<number>(),
     ignorePawnId?: number,
   ) {
-    const items = base.map((i) => ({ ...i }));
+    const items = base.map((i) => ({ ...i })), context = this.storageContext(items, ignorePawnId);
     let nextId = this.nextId;
     for (const { batch, origin, cells } of entries) {
       let left = batch.amount;
       for (const p of cells ?? this.nearby(origin, distance)) {
-        if (forbidden.has(at(p)) || !this.groundAllowed(p)) continue;
-        const n = Math.min(left, this.reservedSpace(at(p), batch, items, ignorePawnId));
+        const cell = at(p);
+        if (forbidden.has(cell) || !this.groundAllowed(p)) continue;
+        const n = Math.min(left, this.reservedSpace(cell, batch, context));
         if (!n) continue;
-        const target = items.find((i) => same(i, p));
-        if (target) mergeBatch(target, portion(batch, n));
-        else items.push({ ...portion(batch, n), x: p.x, y: p.y, z: p.z, id: nextId++ });
-        left -= n;
+        const stacks = context.stacks.get(cell) ?? [], placed = planCellInsertion(stacks, { ...batch, amount: n }, 1);
+        for (const merge of placed.merges) mergeBatch(stacks[merge.index], portion(batch, merge.amount));
+        for (const amount of placed.additions) {
+          const added = { ...portion(batch, amount), x: p.x, y: p.y, z: p.z, id: nextId++ };
+          stacks.push(added); items.push(added);
+        }
+        context.stacks.set(cell, stacks);
+        left -= placed.accepted;
         if (!left) break;
       }
       if (left) return null;
@@ -1219,24 +1228,25 @@ export class VoxelSimulation {
       -1
     );
   }
-  storageSpace(p: Pos, batch: Pick<Cargo, 'resource' | 'crop'>, ignorePawnId?: number): number {
+  storageSpace(p: Pos, batch: BatchKind, ignorePawnId?: number, context = this.storageContext(this.items, ignorePawnId)): number {
     const stock = this.stockpiles.find((s) => same(s, p));
     return stock?.accepts.includes(batch.resource) && this.groundAllowed(p)
-      ? this.reservedSpace(at(p), batch, this.items, ignorePawnId)
+      ? this.reservedSpace(at(p), batch, context)
       : 0;
   }
   storageCapacity(): StorageCapacity[] {
+    const context = this.storageContext();
     return this.stockpiles.map((p) => {
-      const item = this.items.find((i) => same(i, p)),
+      const item = context.stacks.get(at(p))?.[0],
         available = emptyCounts();
       const availableGrain = { rice: 0, potato: 0, corn: 0 };
       for (const crop of ['rice', 'potato', 'corn'] as const)
-        availableGrain[crop] = this.storageSpace(p, { resource: 'grain', crop });
+        availableGrain[crop] = this.storageSpace(p, { resource: 'grain', crop }, undefined, context);
       for (const resource of resources)
         available[resource] =
           resource === 'grain'
             ? Math.max(...Object.values(availableGrain))
-            : this.storageSpace(p, { resource });
+            : this.storageSpace(p, { resource }, undefined, context);
       return {
         x: p.x,
         y: p.y,
@@ -1246,9 +1256,7 @@ export class VoxelSimulation {
         crop: item?.crop ?? null,
         amount: item?.amount ?? 0,
         limit: item ? stackLimit(item.resource) : 0,
-        reserved: [...this.storageReservations.values()]
-          .filter((r) => r.cell === at(p))
-          .reduce((n, r) => n + r.batch.amount, 0),
+        reserved: (context.reservations.get(at(p)) ?? []).reduce((n, batch) => n + batch.amount, 0),
         available,
         availableGrain,
       };
@@ -1260,11 +1268,12 @@ export class VoxelSimulation {
     minimumPriority = -1,
     ignorePawnId?: number,
   ): Stockpile | undefined {
+    const context = this.storageContext(this.items, ignorePawnId);
     let best: Stockpile | undefined;
     for (const s of this.stockpiles) {
       if (
         s.priority <= minimumPriority ||
-        this.storageSpace(s, batch, ignorePawnId) <= 0 ||
+        this.storageSpace(s, batch, ignorePawnId, context) <= 0 ||
         this.distance[at(s)] < 0
       )
         continue;
@@ -1278,8 +1287,8 @@ export class VoxelSimulation {
     return best;
   }
   private canImproveStorage(item: Stack): boolean {
-    const priority = this.storagePriority(item);
-    return this.stockpiles.some((s) => s.priority > priority && this.storageSpace(s, item) > 0);
+    const priority = this.storagePriority(item), context = this.storageContext();
+    return this.stockpiles.some((s) => s.priority > priority && this.storageSpace(s, item, undefined, context) > 0);
   }
   private reserveStorage(
     p: Pawn,
@@ -1287,27 +1296,33 @@ export class VoxelSimulation {
     target: Stockpile,
     sourceId: number | null,
   ): number {
+    const source = sourceId === null ? null : this.items.find(i => i.id === sourceId);
+    if (sourceId !== null && !source) { this.storageReservations.delete(p.id); return 0; }
     const n = Math.min(
       batch.amount,
       carryLimit(batch.resource),
       this.storageSpace(target, batch, p.id),
+      source ? this.availableStack(source, p.id) : batch.amount,
     );
     if (n > 0)
       this.storageReservations.set(p.id, { cell: at(target), batch: portion(batch, n), sourceId });
+    else this.storageReservations.delete(p.id);
     return n;
   }
   private refreshReservations() {
-    for (const [id, r] of this.storageReservations) {
+    if (!this.storageReservations.size) return;
+    // Re-admit reservations once in stable order. Testing each one against all
+    // the others can evict both when one slot was lost or a filter changed.
+    const previous = [...this.storageReservations].sort(([a], [b]) => a - b);
+    this.storageReservations.clear();
+    for (const [id, r] of previous) {
       const pawn = this.pawns.find((p) => p.id === id);
-      if (
-        !pawn ||
-        pawn.phase !== 'haul' ||
-        this.storageSpace(position(r.cell), r.batch, id) < r.batch.amount ||
-        (r.sourceId === null
-          ? !pawn.cargo || !compatibleBatches(pawn.cargo, r.batch)
-          : !this.items.some((i) => i.id === r.sourceId && compatibleBatches(i, r.batch)))
-      )
-        this.storageReservations.delete(id);
+      const source = r.sourceId === null ? pawn?.cargo : this.items.find(i => i.id === r.sourceId);
+      if (!pawn || pawn.phase !== 'haul' || !source || !compatibleBatches(source, r.batch)) continue;
+      const amount = Math.min(r.batch.amount, source.amount,
+        r.sourceId === null ? source.amount : this.availableStack(source as Stack, id),
+        this.storageSpace(position(r.cell), source, id));
+      if (amount > 0) this.storageReservations.set(id, { ...r, batch: portion(source, amount) });
     }
   }
   private acceptsJobCargo(j: Job, cargo: Cargo): boolean {
@@ -1342,7 +1357,7 @@ export class VoxelSimulation {
       return true;
     return (
       (item.resource === 'chunk' || item.resource === 'carcass' || item.resource === 'furniture') &&
-      ([...this.craftSources].some(([id, source]) => id !== pawnId && source === item.id) ||
+      ([...this.fetchReservations].some(([id, source]) => id !== pawnId && source.sourceId === item.id) ||
         [...this.storageReservations].some(([id, r]) => id !== pawnId && r.sourceId === item.id))
     );
   }
@@ -3134,19 +3149,16 @@ export class VoxelSimulation {
   }
   /** Reservations reference physical stacks; no shadow food inventory exists. */
   private availableStack(item: Stack, ignorePawnId?: number): number {
-    return Math.max(
-      0,
-      item.amount -
-        this.pawns.reduce(
-          (n, p) =>
-            n +
-            (p.id !== ignorePawnId && (p.careFoodId === item.id || p.careMedicineId === item.id)
-              ? p.careAmount
-              : 0) + (p.id !== ignorePawnId && p.handleTask?.stage === 'fetch' && p.handleTask.foodId === item.id
-                ? p.handleTask.amount : 0) + (p.id !== ignorePawnId && p.living.mealTask?.sourceId === item.id ? p.living.mealTask.amount : 0),
-          0,
-        ),
-    );
+    let available = item.amount;
+    for (const p of this.pawns) if (p.id !== ignorePawnId) {
+      if (p.careFoodId === item.id || p.careMedicineId === item.id) available -= p.careAmount;
+      if (p.handleTask?.stage === 'fetch' && p.handleTask.foodId === item.id) available -= p.handleTask.amount;
+      if (p.living.mealTask?.sourceId === item.id) available -= p.living.mealTask.amount;
+      const fetch = this.fetchReservations.get(p.id), haul = this.storageReservations.get(p.id);
+      if (fetch?.sourceId === item.id) available -= fetch.amount;
+      if (haul?.sourceId === item.id) available -= haul.batch.amount;
+    }
+    return Math.max(0, available);
   }
   private releaseCare(p: Pawn) {
     if (p.carryingPawnId !== null) {
@@ -4976,7 +4988,6 @@ export class VoxelSimulation {
     const items = this.items.flatMap(i => i.id !== id ? [i] : i.amount > lost ? [{ ...i, amount: i.amount - lost }] : []);
     this.tradeApplyPlacement({ items, nextId: this.nextId }, '预留物品已烧毁，重新安排任务');
     this.stats.destroyed[item.resource] += lost;
-    for (const p of this.pawns) if (this.craftSources.get(p.id) === id || this.storageReservations.get(p.id)?.sourceId === id) this.release(p);
     fireLog(this, 'destroyed', item, `${lost}单位${RESOURCE_NAMES[item.resource]}被烧毁`);
   }
   fireBurnFurniture(id: number, damage: number) {
@@ -5141,7 +5152,7 @@ export class VoxelSimulation {
       if (plan) fireLog(this, 'fell', landing!, `${RESOURCE_NAMES[item.resource]}失去支撑并落到${landing!.x === item.x && landing!.y === item.y ? '原列' : '相邻列'}地面`);
       else { this.stats.destroyed[item.resource] += item.amount; fireLog(this, 'destroyed', item, `${item.amount}单位${RESOURCE_NAMES[item.resource]}坠落后没有合法容纳位置而损毁`); }
     }
-    this.storageReservations.clear(); this.craftSources.clear();
+    this.storageReservations.clear(); this.fetchReservations.clear();
     for (const p of this.pawns) if (p.phase === 'haul' || p.phase === 'fetch') this.release(p);
     this.roomsDirty = true; this.powerDirty = true; this.changed(target); this.pruneFilth();
     this.reconcileRelocationJobs();
@@ -5170,7 +5181,7 @@ export class VoxelSimulation {
     this.releaseCare(p);
     p.apparelTask = null;
     p.weaponTask = null;
-    this.craftSources.delete(p.id);
+    this.fetchReservations.delete(p.id);
     this.storageReservations.delete(p.id);
     const j = this.jobs.find((j) => j.id === p.jobId);
     if (j?.owner === p.id) j.owner = null;
@@ -5330,19 +5341,26 @@ export class VoxelSimulation {
   tradeApplyPlacement(plan: Placement, reason = '预留物品已交易，重新安排任务') {
     // Selling a reserved stack invalidates its consumers in the same atomic
     // operation, before a snapshot can preserve a dangling fetch reference.
-    const changed = new Set(this.items.filter(item => {
-      const remaining = plan.items.find(i => i.id === item.id);
-      return !remaining || remaining.amount < item.amount;
-    }).map(item => item.id));
-    const gear = this.items.filter(item => changed.has(item.id));
+    const remainingItems = new Map(plan.items.map(item => [item.id, item]));
+    const changed = this.items.filter(item => {
+      const remaining = remainingItems.get(item.id);
+      return !remaining || remaining.amount < item.amount || !same(remaining, item);
+    });
     this.commitPlacement(plan);
+    this.invalidateStackPlans(changed, reason);
+  }
+  private invalidateStackPlans(stacks: Stack[], reason: string) {
+    if (!stacks.length) return;
+    const changed = new Set(stacks.map(item => item.id));
     for (const p of this.pawns) if (
+      changed.has(this.fetchReservations.get(p.id)?.sourceId ?? -1) ||
+      changed.has(this.storageReservations.get(p.id)?.sourceId ?? -1) ||
       (p.living.mealTask !== null && !this.validDining(p)) ||
       (p.careFoodId !== null && changed.has(p.careFoodId)) ||
       (p.careMedicineId !== null && changed.has(p.careMedicineId)) ||
       (p.handleTask?.stage === 'fetch' && p.handleTask.foodId !== null && changed.has(p.handleTask.foodId)) ||
-      (p.weaponTask?.stage === 'fetch' && gear.some(i => i.weapon?.id === p.weaponTask!.weaponId)) ||
-      (p.apparelTask?.stage === 'fetch' && gear.some(i => i.apparel?.id === p.apparelTask!.apparelId))
+      (p.weaponTask?.stage === 'fetch' && stacks.some(i => i.weapon?.id === p.weaponTask!.weaponId)) ||
+      (p.apparelTask?.stage === 'fetch' && stacks.some(i => i.apparel?.id === p.apparelTask!.apparelId))
     ) { this.release(p); p.reason = reason; }
   }
   tradeTemperature(pawn: Pawn) { return this.temperature(pawn); }
@@ -5670,7 +5688,7 @@ export class VoxelSimulation {
       let best: Stack | undefined;
       let priority = -1;
       for (const i of this.items)
-        if (this.distance[at(i)] >= 0 && !this.chunkReserved(i, p.id)) {
+        if (this.distance[at(i)] >= 0 && this.availableStack(i, p.id) > 0 && !this.chunkReserved(i, p.id)) {
           const destination = this.storageDestination(i, this.storagePriority(i), p.id);
           if (
             destination &&
@@ -5684,7 +5702,7 @@ export class VoxelSimulation {
         }
       if (best) {
         const target = this.storageDestination(best, this.storagePriority(best), p.id)!;
-        this.reserveStorage(p, best, target, best.id);
+        if (!this.reserveStorage(p, best, target, best.id)) return false;
         this.go(p, at(best), 'haul');
         p.reason = '收集散落物资';
         return true;
@@ -5800,7 +5818,9 @@ export class VoxelSimulation {
         return;
       }
       this.go(p, at(stack), 'fetch');
-      if (stack.resource === 'chunk' || stack.resource === 'carcass' || stack.resource === 'furniture') this.craftSources.set(p.id, stack.id);
+      this.fetchReservations.set(p.id, { sourceId: stack.id, amount: Math.min(
+        this.availableStack(stack, p.id), carryLimit(stack.resource), (j.cost[needed] ?? 0) - (j.delivered[needed] ?? 0),
+      ) });
       p.reason = `搬运${RESOURCE_NAMES[needed]}`;
       return;
     }
@@ -5872,18 +5892,18 @@ export class VoxelSimulation {
     this.go(p, at(best), 'haul');
     p.reason = '运往仓储';
   }
-  private take(p: Pawn, resource: Resource | undefined, amount: number, stackId?: number) {
+  private take(p: Pawn, resource: Resource | undefined, amount: number, stackId: number) {
     const item = this.items.find(
       (i) =>
         same(i, p) &&
         (!resource || i.resource === resource) &&
-        (stackId === undefined || i.id === stackId),
+        i.id === stackId,
     );
     if (!item || amount <= 0 || p.cargo || this.chunkReserved(item, p.id)) return false;
     const n = Math.min(amount, this.availableStack(item, p.id), carryLimit(item.resource));
     if (n <= 0) return false;
     p.cargo = portion(item, n);
-    this.craftSources.delete(p.id);
+    this.fetchReservations.delete(p.id);
     item.amount -= n;
     this.items = this.items.filter((i) => i.amount > 0);
     return true;
@@ -5925,6 +5945,7 @@ export class VoxelSimulation {
     // Drop planning uses bounded navigation; restore the path tree to the food.
     this.search(p);
     p.eating = food.resource;
+    this.fetchReservations.set(p.id, { sourceId: food.id, amount: Math.min(this.mealAmount(p, food), this.availableStack(food, p.id)) });
     this.go(p, at(food), 'fetch');
     p.reason = `${retainedCargo ? '无卸货空间，保留随身物资；' : ''}寻找${RESOURCE_NAMES[food.resource]}`;
     return true;
@@ -5957,6 +5978,7 @@ export class VoxelSimulation {
     const target = chair ? {x:chair.x,y:chair.y,z:chair.z} : {x:p.x,y:p.y,z:p.z};
     const amount = Math.min(this.mealAmount(p, batch), ground ? this.availableStack(ground, p.id) : batch.amount);
     if (amount <= 0) { this.release(p); return; }
+    this.fetchReservations.delete(p.id);
     p.living.mealTask = { stage: same(p,target) ? 'chew' : 'travel', chairId: chair?.id ?? null,
       tableId:table?.id ?? null, target, progress:0, sourceId:ground?.id ?? null, amount };
     p.eating = batch.resource;
@@ -6029,8 +6051,9 @@ export class VoxelSimulation {
       return;
     }
     if (p.phase === 'fetch') {
+      const reserved = this.fetchReservations.get(p.id);
       if (!j) {
-        const food = this.items.find((i) => same(i, p) && i.resource === p.eating);
+        const food = this.items.find((i) => i.id === reserved?.sourceId && same(i, p) && i.resource === p.eating);
         if (!food || this.availableStack(food, p.id) <= 0) { this.release(p); return; }
         if (p.cargo && !this.dropCargo(p)) { this.startDining(p,food); return; }
         if (!this.take(p, food.resource, this.mealAmount(p, food), food.id)) { this.release(p); return; }
@@ -6038,7 +6061,7 @@ export class VoxelSimulation {
         return;
       }
       const needed = missing(j);
-      if (needed && this.take(p, needed, (j.cost[needed] ?? 0) - (j.delivered[needed] ?? 0), this.craftSources.get(p.id)))
+      if (needed && reserved && this.take(p, needed, Math.min(reserved.amount, (j.cost[needed] ?? 0) - (j.delivered[needed] ?? 0)), reserved.sourceId))
         this.deliverCargo(p);
       else this.continueJob(p, j);
       return;
@@ -6075,7 +6098,7 @@ export class VoxelSimulation {
         this.search(p);
         const reservation = this.storageReservations.get(p.id);
         const item = this.items.find(
-          (i) => same(i, p) && (!reservation || reservation.sourceId === i.id),
+          (i) => same(i, p) && reservation?.sourceId === i.id,
         );
         const target = item && this.storageDestination(item, this.storagePriority(item), p.id);
         const n = item && target ? this.reserveStorage(p, item, target, item.id) : 0;
@@ -7205,10 +7228,6 @@ export class VoxelSimulation {
       this.tradeApplyPlacement({ items: this.items.filter(i => i.id !== item.id), nextId: this.nextId },
         '预留物品已劣化损毁，重新安排任务');
       this.stats.destroyed[item.resource] += item.amount;
-      for (const p of this.pawns)
-        if (this.craftSources.get(p.id) === item.id || this.storageReservations.get(p.id)?.sourceId === item.id) {
-          this.release(p); p.reason = '预留物品已劣化损毁，重新安排任务';
-        }
       this.notice = `${item.amount}单位${RESOURCE_NAMES[item.resource]}因环境劣化损毁。屋顶和封闭仓库可以保护物资。`;
     }
     for (const animal of [...this.animals]) if (animal.dead) {
@@ -7369,12 +7388,15 @@ export class VoxelSimulation {
     // containers. Their current cell determines temperature; moving is not a
     // freshness reset. Food expires before the tick's eating/cooking actions.
     let removed = false;
+    const spoiled: Stack[] = [];
     this.items = this.items.filter((item) => {
       if (!isPerishable(item.resource) || !advanceRot(item, this.temperature(item))) return true;
       this.stats.spoiled[item.resource] += item.amount;
+      spoiled.push(item);
       removed = true;
       return false;
     });
+    this.invalidateStackPlans(spoiled, '预留物品已腐坏，重新安排任务');
     for (const pawn of this.pawns)
       if (
         pawn.cargo &&

@@ -277,7 +277,7 @@ async function modeRun(mode) {
       'a changed filter cannot overwrite incompatible material when evacuation space is insufficient',
     );
     const beforeSave = await page.evaluate(() => window.voxel.exportSave());
-    assert.equal(beforeSave.version, 21);
+    assert.equal(beforeSave.version, fixtures['before-single'].save.version);
     await control('菜单与存档');
     await control('保存营地');
     await page.getByText('手动保存成功', { exact: true }).waitFor();
@@ -293,7 +293,8 @@ async function modeRun(mode) {
 
     await load('legacy-v5');
     const migrated = await page.evaluate(() => window.voxel.exportSave());
-    assert.equal(migrated.version, 21);
+    assert.equal(migrated.version, beforeSave.version, 'legacy import uses the same current schema');
+    assert(migrated.version > fixtures['legacy-v5'].save.version);
     for (const resource of ['grain', 'meal']) {
       const old = fixtures['legacy-v5'].save.items.filter((i) => i.resource === resource),
         current = migrated.items.filter((i) => i.resource === resource);

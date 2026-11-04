@@ -174,6 +174,98 @@ function fillTiny(s: VoxelSimulation, exceptions: Pos[] = []) {
 }
 
 describe('bounded physical stacks and hauling reservations', () => {
+  it('does not send several workers to fetch the same scarce construction input', () => {
+    const s = fixture(s => {
+      s.pawns.forEach(p => { p.schedule.fill('work'); p.priorities.build = 1; p.priorities.haul = 1; });
+      add(s, pos(18, 12), 'wood', 6);
+      stock(s, pos(21, 17), ['wood']);
+    });
+    command(s, { type: 'designate', tool: 'wall', from: pos(19, 15) });
+    command(s, { type: 'designate', tool: 'wall', from: pos(20, 15) });
+    until(s, () => s.pawns.some(p => p.phase === 'fetch'));
+    expect(s.pawns.filter(p => p.destination === at(pos(18, 12)))).toHaveLength(1);
+    until(s, () => s.stats.consumed.wood === 6);
+    expect(s.items.filter(i => i.resource === 'wood')).toHaveLength(0);
+    expect(s.pawns.filter(p => p.cargo?.resource === 'wood')).toHaveLength(0);
+    expect(s.jobs.some(j => j.kind === 'wall' && j.delivered.wood === undefined)).toBe(true);
+    expect(() => VoxelSimulation.load(s.save())).not.toThrow();
+  });
+
+  it.each(['construction', 'food', 'haul'] as const)('a sale cancels the %s source plan before a same-cell replacement can be taken', kind => {
+    const s = fixture(s => {
+      const p = s.pawns[0]; p.schedule.fill('work');
+      p.priorities.build = kind === 'construction' ? 1 : 0;
+      p.priorities.haul = kind === 'haul' ? 1 : 0;
+      if (kind === 'food') p.food = 20;
+      add(s, pos(18, 12), kind === 'food' ? 'meal' : 'wood', kind === 'food' ? 2 : 6);
+      if (kind === 'haul') stock(s, pos(21, 17), ['wood']);
+    });
+    if (kind === 'construction') command(s, { type: 'designate', tool: 'wall', from: pos(20, 15) });
+    until(s, () => s.pawns[0].destination === at(pos(18, 12)));
+    const original = s.items[0], replacement = { ...original, id: s.nextId++ };
+    // Commit the same atomic replacement used by trading; the fresh stack at
+    // the old position must not inherit another physical batch's reservations.
+    s.tradeApplyPlacement({ items: [replacement], nextId: s.nextId });
+    expect(s.pawns[0].destination).toBeNull();
+    expect(s.pawns[0].phase).toBe('idle');
+    expect(s.pawns[0].cargo).toBeNull();
+    expect(s.items).toEqual([replacement]);
+    expect(s.storageCapacity().every(c => c.reserved === 0)).toBe(true);
+    expect(() => VoxelSimulation.load(s.save())).not.toThrow();
+  });
+
+  it('shares one stack by quantity and releases a drafted worker\'s portion for another builder', () => {
+    const s = fixture(s => {
+      s.pawns.forEach(p => { p.schedule.fill('work'); p.priorities.build = 1; });
+      add(s, pos(18, 12), 'wood', 12);
+    });
+    for (const x of [18, 19, 20]) command(s, { type: 'designate', tool: 'wall', from: pos(x, 15) });
+    until(s, () => s.pawns.filter(p => p.phase === 'fetch').length === 2);
+    const builders = s.pawns.filter(p => p.phase === 'fetch'), waiting = s.pawns.find(p => p.phase !== 'fetch')!;
+    expect(s.animalAvailable(s.items[0])).toBe(0);
+    command(s, { type: 'draft', pawnId: builders[0].id, drafted: true });
+    expect(s.animalAvailable(s.items[0])).toBe(6);
+    until(s, () => waiting.phase === 'fetch');
+    expect(s.animalAvailable(s.items[0])).toBe(0);
+    until(s, () => s.stats.consumed.wood === 12);
+    expect(ledger(s).wood).toBe(12);
+    expect(() => VoxelSimulation.load(s.save())).not.toThrow();
+  });
+
+  it('reserves scarce meals individually so all hungry pawns do not chase one serving', () => {
+    const s = fixture(s => {
+      s.pawns.forEach(p => { p.food = 20; p.schedule.fill('work'); });
+      add(s, pos(18, 12), 'meal', 1);
+      add(s, pos(20, 12), 'food', 2);
+    });
+    until(s, () => s.pawns.every(p => p.phase === 'fetch'));
+    expect(s.pawns.filter(p => p.destination === at(pos(18, 12)))).toHaveLength(1);
+    expect(s.pawns.filter(p => p.destination === at(pos(20, 12)))).toHaveLength(2);
+    expect(s.items.every(i => s.animalAvailable(i) === 0)).toBe(true);
+    until(s, () => s.stats.consumed.meal === 1 && s.stats.consumed.food === 2);
+    expect(s.pawns.every(p => p.food > 60)).toBe(true);
+    expect(() => VoxelSimulation.load(s.save())).not.toThrow();
+  });
+
+  it.each(['fetch', 'haul'] as const)('a rotting source immediately releases its %s route and physical reservation', phase => {
+    const s = fixture(s => {
+      const p = s.pawns[0]; p.schedule.fill('work');
+      if (phase === 'fetch') p.food = 20;
+      else { p.priorities.haul = 1; stock(s, pos(21, 17), ['meal']); }
+      add(s, pos(18, 12), 'meal', 2);
+    });
+    until(s, () => s.pawns[0].phase === phase);
+    const source = s.items[0];
+    // Explicit boundary fixture: the already reserved batch expires next tick.
+    source.rotProgress = rotLimit(source)! - 0.01;
+    s.step();
+    expect(s.stats.spoiled.meal).toBe(2);
+    expect(s.pawns[0].destination).not.toBe(at(source));
+    expect(s.pawns[0].cargo).toBeNull();
+    expect(s.storageCapacity().every(c => c.reserved === 0)).toBe(true);
+    expect(() => VoxelSimulation.load(s.save())).not.toThrow();
+  });
+
   it('keeps all initial 90 wood and 60 packaged meals as two and six legal stacks', () => {
     const s = legacySimulation();
     invariants(s);
