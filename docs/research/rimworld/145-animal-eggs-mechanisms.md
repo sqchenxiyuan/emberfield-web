@@ -118,7 +118,7 @@ CompRottable.Active 在存在未 TemperatureDamaged 的 Hatcher 且 disableIfHat
 
 Verse.Thing.DoTick 对普通 IThingHolder 递归访问其直接内容；Pawn.GetChildHolders 包含 inventory 和 carryTracker，ThingOwner.DoTick 再调用内容物 DoTick。所以普通地图上的**地面、手持、库存**受精蛋都能推进孵化与温损。蛋箱 CompThingContainer.CompTick 也调用 innerContainer.DoTick。
 
-Thing.AmbientTemperature 优先使用自身地图格温；未生成物品先查持有链提供的固定温度，再使用 held 格温，之后是世界 tile 温度，最后才是 21°C 兜底。把蛋搬到室内、地下或加热区的意义在于真正改变物品所在位置的温度；库存不能无条件成为恒温保险箱。
+Thing.AmbientTemperature 优先使用自身地图格温；未生成物品先查持有链提供的固定温度，再使用 held 格温，之后是世界 tile 温度，最后才是 21°C 兜底。后续展开 `ThingOwnerUtility.TryGetFixedTemperature` 后确认：**带 Hatcher 的蛋在 Pawn_InventoryTracker 库存中有 14°C 固定温度覆盖**；Pawn_CarryTracker 手持物和普通地图蛋箱没有这一覆盖，仍随所在格温变化。不能把「所有容器都采用所在地温度」当作原版规则。运输舱、飞行运输器与部分交易持有者也有固定温度分支，范围及独立新证据见 [147 蛋箱机制](147-egg-box-mechanisms.md)。当前 Web 只有手持 cargo，没有独立背包库存，不把原版背包例外套到手持 cargo。
 
 ContentsSuspended、IThingHolderTickable.ShouldTickContents、ThingOwner.dontTickContents 可以阻止普通内容 ticking。这里核对的是普通地图持有链和孵出函数的世界分支，没有完整运行验证所有世界/远行队调度器、冷冻容器或 DLC 特例。
 

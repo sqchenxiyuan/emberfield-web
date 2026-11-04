@@ -7,7 +7,7 @@ const SUCCESS = [.75,.8,.85,.875,.9,.925,.95,.975,1,1.01,1.02,1.03,1.04,1.05,1.0
 const BUILDINGS = new Set(['shelf','smallShelf','table','chair','bed','door','stove',
   'stonecutter','tailor','smithy','machining','researchBench','horseshoePin',
   'generator','solar','battery','heater','cooler','wire','wall','ladder',
-  'fence','fenceGate','penMarker','sandbag','floor','bridge']);
+  'fence','fenceGate','penMarker','eggBox','sandbag','floor','bridge']);
 
 /** Whole-project survival at unchanged worker capability, before the small
  * final-step overshoot. Higher skill can compensate for impaired capacities. */

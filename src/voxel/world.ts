@@ -1,3 +1,4 @@
+import { eggBoxCanEmpty, eggBoxInsert, rejectLegacyEggBoxes, validateEggBoxes, EGG_BOX_RULES, type EggBox } from './eggBoxes';
 import { rejectLegacyWool, migrateWool, validateWool } from './animalWoolPersistence';
 import { rejectLegacyEggs, migrateEggs, validateEggs } from './animalEggPersistence';
 import { advanceHatcher } from './animalEggs';
@@ -362,6 +363,7 @@ const costOf = (
   weaponKind?: WeaponKind,
   weaponBenchKind?: WeaponBenchKind,
 ): Partial<Counts> =>
+  kind === 'eggBox' ? { ...EGG_BOX_RULES.cost } :
   kind === 'bridge' ? { wood: WATER_RULES.bridgeWood } :
   kind === 'install' ? { furniture: 1 } :
   isShelfKind(kind) ? { ...SHELF_DEFS[kind].cost } :
@@ -428,6 +430,7 @@ const workOf = (
   weaponBenchKind?: WeaponBenchKind,
   cropKind: CropKind = 'rice',
 ) =>
+  kind === 'eggBox' ? EGG_BOX_RULES.work :
   kind === 'bridge' ? WATER_RULES.bridgeWork :
   kind === 'uninstall' ? RELOCATION_RULES.uninstallWork : kind === 'install' ? RELOCATION_RULES.installWork :
   kind === 'fence' || kind === 'fenceGate' || kind === 'penMarker' ? PEN_BUILDINGS[kind].work : kind === 'machining'
@@ -594,6 +597,7 @@ export class VoxelSimulation {
     if (p.phase === 'travel' && p.destination !== null) targets.push(position(p.destination));
     if (p.living.mealTask) targets.push(p.living.mealTask.target);
     if (p.psyche.recreation) targets.push(p.psyche.recreation.target);
+    if (p.eggBoxTask) targets.push(this.eggBoxes.find(b=>b.id===p.eggBoxTask!.boxId));
     if (p.cleanTask) targets.push(this.filth.find(f => f.id === p.cleanTask!.filthId));
     if (p.carePhase) {
       if (p.carePhase !== 'rescueCarry') targets.push(this.pawns.find(q => q.id === p.patientId));
@@ -649,6 +653,7 @@ export class VoxelSimulation {
   chairs: DiningChair[] = [];
   private livingFloorRevision = -1;
   private livingFloors = new Map<number, {wealth:number; beauty:number}>();
+  eggBoxes: EggBox[] = [];
   horseshoePins: HorseshoePin[] = [];
   trade: TradeState;
   homeArea = new Set<number>();
@@ -1074,7 +1079,7 @@ export class VoxelSimulation {
   private markerAt(p: Pos) { this.refreshPens(); return this.markerLookup.get(at(p)); }
   penStandable(p: Pos): boolean {
     return this.standable(p) && !!this.blocks[at(p) - WIDTH * DEPTH] && !this.ladders[at(p)] &&
-      !this.fenceAt(p) && (!this.furnitureAt(p) || !!this.markerAt(p) || !!this.gateAt(p) || this.doors.some(d => same(d,p)));
+      !this.fenceAt(p) && (!this.furnitureAt(p) || this.eggBoxes.some(b=>same(b,p)) || !!this.markerAt(p) || !!this.gateAt(p) || this.doors.some(d => same(d,p)));
   }
   penNeighbors(p: Pos, mode: 'enclosure' | 'rope'): number[] {
     const pass = (q: Pos) => {
@@ -1137,7 +1142,7 @@ export class VoxelSimulation {
   private crossingTicks(from: Pos, to: Pos) {
     return (this.fenceAt(to) && !this.fenceAt(from)) ||
       (this.sandbags.some(b => same(b,to)) && !this.sandbags.some(b => same(b,from))) ||
-      this.shelfAt(to) ? 14 : 0;
+      this.shelfAt(to) ? 14 : this.eggBoxes.some(b=>same(b,to)) ? Math.ceil(EGG_BOX_RULES.pathCost/3) : 0;
   }
   private doorWaitTicks(to: Pos) {
     const door = this.gateAt(to) ?? this.doors.find(d => same(d,to));
@@ -1401,6 +1406,69 @@ export class VoxelSimulation {
     return true;
   }
   animalEggRoom(p: Pos): number { this.updateEnvironment(); return this.rooms.roomIds[at(p)]; }
+  animalEggBoxPlace(a: WildAnimal, batch: Cargo, boxId: number, commit: boolean): boolean {
+    const box=this.eggBoxes.find(b=>b.id===boxId);
+    if(!box||!same(a,box)||a.faction!=='colony'||a.goal?.kind!=='layEggBox'||a.goal.id!==box.id||
+      this.pawns.some(p=>p.eggBoxTask?.boxId===box.id)||
+      this.animals.some(other=>other!==a&&other.goal?.kind==='layEggBox'&&other.goal.id===box.id)||
+      !eggBoxInsert(box,batch,commit)) return false;
+    if(commit){this.stats.produced[batch.resource]+=batch.amount;this.revision++;}
+    return true;
+  }
+  private releaseEggBoxUsers(boxId: number) {
+    for(const p of this.pawns) if(p.eggBoxTask?.boxId===boxId) this.release(p);
+    for(const a of this.animals) if(a.goal?.kind==='layEggBox'&&a.goal.id===boxId){
+      a.goal=null;a.path=[];a.layProgress=0;a.phase=a.dead?'dead':'roam';a.decisionTick=this.tick;
+    }
+  }
+  private validEggBoxTask(p: Pawn): boolean {
+    const box=this.eggBoxes.find(b=>b.id===p.eggBoxTask?.boxId);
+    return !!box&&eggBoxCanEmpty(box)&&!p.dead&&!p.downed&&!p.drafted&&p.faction==='colony'&&
+      p.priorities.haul>0&&healthSummary(p).manipulation>0&&!p.cargo&&p.jobId===null&&this.pawnAllowed(p,box)&&
+      !this.fires.some(f=>touchesFire(f,box))&&
+      !this.pawns.some(q=>q!==p&&q.eggBoxTask?.boxId===box.id)&&
+      !this.animals.some(a=>a.goal?.kind==='layEggBox'&&a.goal.id===box.id);
+  }
+  private tryEmptyEggBox(p: Pawn): boolean {
+    if(!this.eggBoxes.length||p.priorities.haul<=0||p.cargo||healthSummary(p).manipulation<=0) return false;
+    for(const box of this.eggBoxes) {
+      if(!eggBoxCanEmpty(box)||!this.pawnAllowed(p,box)||this.fires.some(f=>touchesFire(f,box))||
+        this.pawns.some(q=>q.eggBoxTask?.boxId===box.id)||
+        this.animals.some(a=>a.goal?.kind==='layEggBox'&&a.goal.id===box.id))continue;
+      const stand=this.reachableItemStand(box);
+      if(stand<0)continue;
+      const target=this.storageDestination(box.eggs!,-1,p.id);
+      if(!target)continue;
+      this.release(p);
+      if(!this.reserveStorage(p,box.eggs!,target,null))continue;
+      p.eggBoxTask={boxId:box.id,progress:0};p.workTarget={x:box.x,y:box.y,z:box.z};
+      this.go(p,stand,'eggBox');p.reason='前往蛋箱收蛋';return true;
+    }
+    return false;
+  }
+  private eggBoxTick(p: Pawn) {
+    if(!this.validEggBoxTask(p)){this.release(p);return;}
+    const box=this.eggBoxes.find(b=>b.id===p.eggBoxTask!.boxId)!;
+    this.search(p);
+    const target=this.storageDestination(box.eggs!,-1,p.id);
+    if(!target||!this.reserveStorage(p,box.eggs!,target,null)) {
+      this.release(p);p.reason='没有可达仓位，鸡蛋保留在蛋箱内';return;
+    }
+    if(!this.itemTouch(p,box)) {
+      const stand=this.reachableItemStand(box);
+      if(stand<0){this.release(p);return;}
+      p.eggBoxTask!.progress=0;this.go(p,stand,'eggBox');return;
+    }
+    p.reason='正在从蛋箱取蛋';
+    if(++p.eggBoxTask!.progress<EGG_BOX_RULES.emptyWork)return;
+    const amount=this.storageReservations.get(p.id)!.batch.amount;
+    // Atomic container-to-hand extraction: preserve every batch field and leave
+    // any unreserved remainder in the box. Storage is reached by normal walking.
+    p.cargo=portion(box.eggs!,amount);box.eggs!.amount-=amount;
+    if(!box.eggs!.amount){box.eggs=null;box.emptyRequested=false;}
+    delete p.eggBoxTask;p.workTarget=null;this.go(p,target.stand,'haul');
+    p.reason='携带鸡蛋前往仓库';this.revision++;
+  }
   animalEggPlace(a: WildAnimal, batch: Cargo, commit: boolean): boolean {
     const plan=this.planPlacement([{batch,origin:a}]);
     if(!plan)return false;
@@ -1599,8 +1667,8 @@ export class VoxelSimulation {
     this.storageReservations.clear();
     for (const [id, r] of previous) {
       const pawn = this.pawns.find((p) => p.id === id);
-      const source = r.sourceId === null ? pawn?.cargo : this.items.find(i => i.id === r.sourceId);
-      if (!pawn || pawn.phase !== 'haul' || !source || !compatibleBatches(source, r.batch) || !this.pawnAllowed(pawn,position(r.cell)) || (r.sourceId !== null && !this.pawnAllowed(pawn,source as Stack))) continue;
+      const source = r.sourceId === null ? (pawn?.cargo ?? this.eggBoxes.find(b=>b.id===pawn?.eggBoxTask?.boxId)?.eggs) : this.items.find(i => i.id === r.sourceId);
+      if (!pawn || (pawn.phase !== 'haul' && pawn.phase !== 'eggBox') || !source || !compatibleBatches(source, r.batch) || !this.pawnAllowed(pawn,position(r.cell)) || (r.sourceId !== null && !this.pawnAllowed(pawn,source as Stack))) continue;
       const amount = Math.min(r.batch.amount, source.amount,
         r.sourceId === null ? source.amount : this.availableStack(source as Stack, id),
         this.storageSpace(position(r.cell), source, id));
@@ -1758,6 +1826,7 @@ export class VoxelSimulation {
       this.shelfAt(p) || this.shelfAt({ ...p, z:p.z-1 }) ||
       this.fenceAt(p) || this.gateAt(p) || this.markerAt(p) ||
       this.tableAt(p) || this.chairs.find(c => c.x === p.x && c.y === p.y && (c.z === p.z || c.z + 1 === p.z)) ||
+      this.eggBoxes.find(b => same(b,p)) ||
       this.horseshoePins.find(b => same(b, p)) ||
       this.butcherSpots.find(b => same(b, p)) ||
       this.sandbags.find((b) => same(b, p)) ||
@@ -2591,6 +2660,16 @@ export class VoxelSimulation {
   }
   private dispatchCommand(c: VoxelCommand): CommandResult {
     if (!c || typeof c !== 'object') return { ok: false, message: '命令格式无效' };
+    if(c.type==='eggBoxEmpty'||c.type==='eggBoxForbid') {
+      const box=this.eggBoxes.find(b=>b.id===c.boxId&&this.exploredAt(b));
+      if(!box||(c.type==='eggBoxEmpty'?typeof c.enabled:typeof c.forbidden)!=='boolean') return {ok:false,message:'蛋箱或指令无效'};
+      if(c.type==='eggBoxEmpty') {
+        if(!box.eggs)return {ok:false,message:'蛋箱内没有鸡蛋'};
+        box.emptyRequested=c.enabled;
+      } else box.forbidden=c.forbidden;
+      this.releaseEggBoxUsers(box.id);this.revision++;
+      return {ok:true,message:c.type==='eggBoxEmpty'?(c.enabled?'已请求搬运工提前清空蛋箱':'已取消提前清空'):(c.forbidden?'已禁止使用蛋箱':'已允许使用蛋箱')};
+    }
     if (c.type === 'itemForbidden' || c.type === 'itemForbiddenArea') {
       if (typeof c.forbidden !== 'boolean') return { ok:false, message:'物品禁止状态无效' };
       let items: Stack[];
@@ -3407,7 +3486,7 @@ export class VoxelSimulation {
             this.jobs.some(
               (j) =>
                 ([
-                  'shelf', 'smallShelf', 'table', 'chair', 'install',
+                  'eggBox', 'shelf', 'smallShelf', 'table', 'chair', 'install',
                   'bed',
                   'door',
                   'stove',
@@ -3587,6 +3666,7 @@ export class VoxelSimulation {
       this.shelves.length + this.packedFurnitureCount('shelf') + this.packedFurnitureCount('smallShelf') + [...this.jobs,...plans].filter(j=>isShelfKind(j.kind)&&!j.cancelled).length > 256 ||
       this.tables.length + this.packedFurnitureCount('table') + [...this.jobs, ...plans].filter(j => j.kind === 'table').length > 128 ||
       this.chairs.length + this.packedFurnitureCount('chair') + [...this.jobs, ...plans].filter(j => j.kind === 'chair').length > 256 ||
+      this.eggBoxes.length + [...this.jobs,...plans].filter(j=>j.kind==='eggBox').length > EGG_BOX_RULES.maxBoxes ||
       this.horseshoePins.length + [...this.jobs, ...plans].filter(j => j.kind === 'horseshoePin').length > 128 ||
       this.researchBenches.length +
         [...this.jobs, ...plans].filter((j) => j.kind === 'researchBench').length >
@@ -3728,7 +3808,7 @@ export class VoxelSimulation {
         ? '科研台需要3×2空地、完整支撑与两格净空，不能重叠区域或设施'
         : '';
     }
-    if (kind === 'craftingSpot' || kind === 'sandbag' || kind === 'butcherSpot' || kind === 'horseshoePin')
+    if (kind === 'eggBox' || kind === 'craftingSpot' || kind === 'sandbag' || kind === 'butcherSpot' || kind === 'horseshoePin')
       return !this.standable(p) ||
         this.ladders[at(p)] ||
         this.furnitureAt(p) ||
@@ -5840,7 +5920,7 @@ export class VoxelSimulation {
       const kind = frameBuildingKind(job);
       const properties = { shelf:'shelves', smallShelf:'shelves', table:'tables', chair:'chairs', bed:'beds', door:'doors',
         stove:'stoves', stonecutter:'stonecutters', tailor:'tailors', weaponBench:'weaponBenches', researchBench:'researchBenches',
-        horseshoePin:'horseshoePins', butcherSpot:'butcherSpots', device:'devices', fence:'fences', fenceGate:'fenceGates', penMarker:'penMarkers' } as const;
+        eggBox:'eggBoxes', horseshoePin:'horseshoePins', butcherSpot:'butcherSpots', device:'devices', fence:'fences', fenceGate:'fenceGates', penMarker:'penMarkers' } as const;
       const property = properties[kind as keyof typeof properties];
       const id = property ? this[property].find(o => same(o,job))?.id : null;
       if (id !== undefined) {
@@ -5916,11 +5996,11 @@ export class VoxelSimulation {
       wallBase !== null ? { ...position(wallBase), kind:'wall' as const, material:(oldBlock === Block.Masonry ? 'stone' : 'wood') as ConstructionMaterial } :
       target.kind === 'block' && this.bridges[cell] ? { ...target, z:target.z+1, kind:'bridge' as const } : null;
     const properties = { table: 'tables', chair: 'chairs', bed: 'beds', door: 'doors', stove: 'stoves', stonecutter: 'stonecutters', tailor: 'tailors',
-      weaponBench: 'weaponBenches', researchBench: 'researchBenches', horseshoePin: 'horseshoePins',
+      weaponBench: 'weaponBenches', researchBench: 'researchBenches', eggBox: 'eggBoxes', horseshoePin: 'horseshoePins',
       butcherSpot: 'butcherSpots', device: 'devices', fence:'fences', fenceGate:'fenceGates', penMarker:'penMarkers' } as const;
     const originals = { shelves: this.shelves, tables: this.tables, chairs: this.chairs, beds: this.beds, doors: this.doors, stoves: this.stoves, stonecutters: this.stonecutters,
       tailors: this.tailors, weaponBenches: this.weaponBenches, researchBenches: this.researchBenches,
-      horseshoePins: this.horseshoePins, butcherSpots: this.butcherSpots, devices: this.devices,
+      eggBoxes: this.eggBoxes, horseshoePins: this.horseshoePins, butcherSpots: this.butcherSpots, devices: this.devices,
       wires: this.wires, sandbags: this.sandbags, trees: this.trees,
       fences:this.fences,fenceGates:this.fenceGates,penMarkers:this.penMarkers };
     if (target.kind === 'block') this.blocks[cell] = Block.Air;
@@ -5972,6 +6052,15 @@ export class VoxelSimulation {
       this.changed(q);
     }
     for (const d of removed) {
+      if(d.kind==='eggBox') {
+        const box=originals.eggBoxes.find(b=>b.id===d.targetId)!;this.releaseEggBoxUsers(box.id);
+        if(box.eggs){
+          const landing=this.fireLanding(box);
+          const plan=landing?this.planPlacement([{batch:box.eggs,origin:landing}]):null;
+          if(plan)this.commitPlacement(plan);else this.stats.destroyed[box.eggs.resource]+=box.eggs.amount;
+          box.eggs=null;
+        }
+      }
       if (d.kind === 'penMarker') removePenMarker(this,d.targetId!);
       if (d.kind === 'bed') { const bed = originals.beds.find(b => b.id === d.targetId)!; this.invalidatePrisonBed(bed); }
       for (const p of this.pawns) if (p.psyche.recreation?.spotId === d.targetId || p.repairTask?.damageKey === d.key ||
@@ -6062,6 +6151,7 @@ export class VoxelSimulation {
     return true;
   }
   private release(p: Pawn) {
+    delete p.eggBoxTask;
     delete p.productionDelivery;
     if (p.phase === 'rest' && p.sleepingSince !== null && this.tick - p.sleepingSince >= LIVING_RULES.sleepThoughtDelay &&
         !p.dead && !p.downed && this.beds.some(b => b.id === p.sleepBedId && b.owner === p.id && !b.medical && !b.prisoner))
@@ -6120,7 +6210,7 @@ export class VoxelSimulation {
   animalCanStop(p: Pos) { return this.canStop(p); }
   animalMoveTicks(a: WildAnimal, from: Pos, to: Pos = a) {
     return this.weatherMoveTicks(from, ANIMAL_DEFS[a.species].moveTicks * (a.phase === 'flee' ? .65 : 1) *
-      (1 + a.malnutrition), to, (this.fenceAt(to) && !this.fenceAt(from)) || this.shelfAt(to) ? 14 : 0);
+      (1 + a.malnutrition), to, (this.fenceAt(to) && !this.fenceAt(from)) || this.shelfAt(to) ? 14 : this.eggBoxes.some(b=>same(b,to)) ? Math.ceil(EGG_BOX_RULES.pathCost/3) : 0);
   }
   animalRoute(a: WildAnimal, targets: Set<number>): number[] | null {
     if (!targets.size) return null;
@@ -6133,7 +6223,7 @@ export class VoxelSimulation {
       const door = this.gateAt(target) ?? this.doors.find(d => same(d, target));
       const fence = this.fenceAt(target);
       if (!isAnimalGroundStep(p,target) || this.ladders[n] || (fence && ANIMAL_HUSBANDRY[a.species].penAnimal) ||
-          (!door && !fence && !this.markerAt(target) && !this.shelfAt(target) && this.furnitureAt(target)) || this.fires.some(f => same(f, target))) return false;
+          (!door && !fence && !this.markerAt(target) && !this.eggBoxes.some(b=>same(b,target)) && !this.shelfAt(target) && this.furnitureAt(target)) || this.fires.some(f => same(f, target))) return false;
       return !door || door.mode === 'open' || door.openUntil > this.tick ||
         (a.faction === 'colony' && a.species === 'hare' && door.mode !== 'locked');
     });
@@ -6402,7 +6492,7 @@ export class VoxelSimulation {
     if (j.kind === 'uninstall') return !!this.installedFurniture(j.furnitureKind!,j.furnitureId!);
     if (j.kind === 'install') return !this.placementReason(j.furnitureKind!,j,j.axis);
     if (isShelfKind(j.kind) || j.kind === 'table' || j.kind === 'chair') return !this.placementReason(j.kind,j,j.axis);
-    if (j.kind === 'fence' || j.kind === 'fenceGate' || j.kind === 'penMarker') return !this.placementReason(j.kind,j,j.axis);
+    if (j.kind === 'eggBox' || j.kind === 'fence' || j.kind === 'fenceGate' || j.kind === 'penMarker') return !this.placementReason(j.kind,j,j.axis);
     if (j.kind === 'butcher') return this.butcherSpots.some(b => same(b, j) && !b.paused);
     if (j.kind === 'research')
       return (
@@ -6530,7 +6620,7 @@ export class VoxelSimulation {
     const loose =
       p.priorities.haul > 0 &&
       (this.stockpiles.length > 0 || this.shelves.length > 0) &&
-      this.items.some((i) => this.canImproveStorage(i));
+      (this.items.some((i) => this.canImproveStorage(i)) || this.eggBoxes.some(eggBoxCanEmpty));
     // These work types are generated from world state instead of Job objects.
     // Use the same priority ordering in the jobless branch and around regular
     // jobs; each failed option is attempted at most once in this assignment.
@@ -6652,6 +6742,7 @@ export class VoxelSimulation {
   }
   /** Uses the current navigation search; shared by idle and research preemption. */
   private tryHaul(p: Pawn): boolean {
+    if (this.tryEmptyEggBox(p)) return true;
     if (p.priorities.haul > 0 && healthSummary(p).manipulation > 0) {
       let best: Stack | undefined;
       let priority = -1;
@@ -7498,6 +7589,8 @@ export class VoxelSimulation {
         yields.wood = Math.floor(LIVING_BUILDINGS.table.cost.wood / 2);
       } else if (this.chairs.some(c => same(c, j))) {
         yields.wood = Math.floor(LIVING_BUILDINGS.chair.cost.wood / 2);
+      } else if (this.eggBoxes.some(b=>same(b,j))) {
+        yields.wood=Math.floor(EGG_BOX_RULES.cost.wood/2);
       } else if (this.horseshoePins.some(b => same(b, j))) {
         yields.wood = Math.floor(HORSESHOE_COST.wood / 2);
       } else if (this.sandbags.some((b) => same(b, j))) {
@@ -7600,7 +7693,7 @@ export class VoxelSimulation {
     if (
       [...this.pawns, ...this.animals].some((p) => !this.standable(p)) ||
       this.stockpiles.some((s) => !this.standable(s) || this.ladders[at(s)]) ||
-      [...this.stoves, ...this.horseshoePins, ...this.butcherSpots, ...this.weaponBenches.filter((b) => b.kind === 'craftingSpot')].some(
+      [...this.stoves, ...this.eggBoxes, ...this.horseshoePins, ...this.butcherSpots, ...this.weaponBenches.filter((b) => b.kind === 'craftingSpot')].some(
         (s) =>
           !this.blocks[at(s) - WIDTH * DEPTH] ||
           this.blocks[at(s)] ||
@@ -7683,7 +7776,9 @@ export class VoxelSimulation {
     const baseItems = this.items.filter(i => !displacedIds.has(i.id) && (j.unfinishedId === undefined || i.unfinished?.id !== j.unfinishedId));
     const completedProductionBill = this.productionBillFor(j);
     let productionDelivery: { batch: Cargo; task: ProductionDelivery } | undefined;
-    const floorOutput = output.map(entry => ({...entry, batch:entry.batch as Cargo}));
+    const floorOutput: {batch:Cargo;origin:Pos}[] = output.map(entry => ({...entry, batch:entry.batch as Cargo}));
+    const removedEggBox=j.kind==='remove'?this.eggBoxes.find(b=>same(b,j)):undefined;
+    if(removedEggBox?.eggs)floorOutput.push({batch:portion(removedEggBox.eggs,removedEggBox.eggs.amount),origin:removedEggBox});
     if (completedProductionBill && completedProductionBill.output.mode !== 'drop' && floorOutput.length && !p.cargo) {
       const option = completedProductionBill.output, first = floorOutput[0];
       const allowed = option.mode === 'specific' ? new Set(productionOutputTargetCells(this, option.target!)) : undefined;
@@ -7939,6 +8034,12 @@ export class VoxelSimulation {
         (pawn.psyche.recreation?.kind === 'social' && (pawn.psyche.recreation.spotId === target.id || same(pawn.psyche.recreation.target,target)))) this.release(pawn);
       this.tables = this.tables.filter(t => t.id !== target.id); this.chairs = this.chairs.filter(c => c.id !== target.id);
       this.rebuildDevices(); this.revision++;
+    } else if (j.kind === 'eggBox') {
+      this.eggBoxes.push({id:this.id(),x:j.x,y:j.y,z:j.z,eggs:null,emptyRequested:false,forbidden:false});
+      this.revision++;
+    } else if (j.kind==='remove'&&this.eggBoxes.some(b=>same(b,j))) {
+      const box=this.eggBoxes.find(b=>same(b,j))!;
+      this.releaseEggBoxUsers(box.id);this.eggBoxes=this.eggBoxes.filter(b=>b!==box);this.revision++;
     } else if (j.kind === 'horseshoePin') {
       this.horseshoePins.push({ id: this.id(), x: j.x, y: j.y, z: j.z });
       this.revision++;
@@ -8141,12 +8242,14 @@ export class VoxelSimulation {
             const hauling =
               p.priorities.haul > 0 &&
               p.priorities.haul <= p.priorities.research &&
-              this.items.some(
+              (this.eggBoxes.some(b=>eggBoxCanEmpty(b)&&this.pawnAllowed(p,b)&&this.reachableItemStand(b)>=0&&
+                !this.pawns.some(q=>q.eggBoxTask?.boxId===b.id)&&!this.animals.some(a=>a.goal?.kind==='layEggBox'&&a.goal.id===b.id)&&
+                !!this.storageDestination(b.eggs!,-1,p.id)) || this.items.some(
                 (i) =>
                   this.pawnAllowed(p,i) && this.distance[at(i)] >= 0 &&
                   !this.chunkReserved(i, p.id) &&
                   !!this.storageDestination(i, this.storagePriority(i), p.id),
-              );
+              ));
             if (higher || hauling) {
               this.release(p);
               this.assign(p);
@@ -8154,8 +8257,10 @@ export class VoxelSimulation {
             }
           }
         }
+        if (p.eggBoxTask && !this.validEggBoxTask(p)) { this.release(p); p.reason='收蛋条件改变，鸡蛋留在箱内'; }
         if (p.phase === 'dine' && !this.validDining(p)) { this.release(p); p.reason = '用餐位置或食物改变，保留携带物重新安排'; continue; }
         if (p.path.length) { this.moveAlongPath(p); continue; }
+        if (p.phase === 'eggBox') { this.eggBoxTick(p); continue; }
         if (p.phase === 'dine') { this.diningTick(p); continue; }
         if (p.phase === 'firefight') { firefightTick(this, p); continue; }
         if (p.phase === 'repair') { repairTick(this, p); continue; }
@@ -8528,6 +8633,10 @@ export class VoxelSimulation {
       }
       return {changed:before!==batch.amount,converted:0};
     };
+    for(const box of this.eggBoxes) if(box.eggs?.resource==='eggFertilized'&&processEgg(box.eggs,box,true).changed) {
+      if(!box.eggs.amount){box.eggs=null;box.emptyRequested=false;}
+      this.releaseEggBoxUsers(box.id);
+    }
     const changedGround:Stack[]=[];
     for(const item of this.items)if(item.resource==='eggFertilized'&&processEgg(item,item,true).changed)changedGround.push(item);
     this.items=this.items.filter(i=>i.amount>0);
@@ -8567,6 +8676,10 @@ export class VoxelSimulation {
     // freshness reset. Food expires before the tick's eating/cooking actions.
     let removed = false;
     const spoiled: Stack[] = [];
+    for(const box of this.eggBoxes) if(box.eggs&&advanceRot(box.eggs,this.temperature(box))) {
+      this.stats.spoiled[box.eggs.resource]+=box.eggs.amount;box.eggs=null;box.emptyRequested=false;
+      this.releaseEggBoxUsers(box.id);removed=true;
+    }
     this.items = this.items.filter((item) => {
       if (!isPerishable(item.resource) || !advanceRot(item, this.temperature(item))) return true;
       this.stats.spoiled[item.resource] += item.amount;
@@ -8612,6 +8725,7 @@ export class VoxelSimulation {
       out[batch.resource] += batch.amount;
       if (batch.unfinished) for (const material of batch.unfinished.ingredients) out[material.resource] += material.amount;
     };
+    for (const box of this.eggBoxes) if (box.eggs&&(!visibleOnly||this.exploredAt(box))) countCargo(box.eggs);
     for (const i of this.items) if (!visibleOnly || this.exploredAt(i)) countCargo(i);
     for (const p of this.pawns) {
       if (p.faction !== 'colony' || (visibleOnly && !this.exploredAt(p))) continue;
@@ -8670,6 +8784,7 @@ export class VoxelSimulation {
       fences: this.fences.filter(visible), fenceGates: this.fenceGates.filter(visible), penMarkers: this.penMarkers.filter(visible), animalAreas: this.animalAreas.map(a => ({ ...a, cells: [...a.cells] })),
       butcherSpots: this.butcherSpots.filter(visible),
       tables: this.tables.filter(visible), chairs: this.chairs.filter(visible),
+      eggBoxes: this.eggBoxes.filter(visible),
       horseshoePins: this.horseshoePins.filter(visible),
       seed: this.seed,
       generator: this.generator,
@@ -8744,7 +8859,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 51,
+      version: 52,
       autoSlaughter: this.autoSlaughter,
       stockpileZones: this.stockpileZones,
       productionQueues: this.productionQueues.filter(q => this.productionBenches().some(b => b.id === q.benchId)),
@@ -8765,6 +8880,7 @@ export class VoxelSimulation {
       fences: this.fences, fenceGates: this.fenceGates, penMarkers: this.penMarkers, animalAreas: this.animalAreas,
       butcherSpots: this.butcherSpots,
       tables: this.tables, chairs: this.chairs,
+      eggBoxes: this.eggBoxes,
       horseshoePins: this.horseshoePins,
       generator: this.generator,
       worldSite: this.worldSite,
@@ -8806,11 +8922,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : old.version < 43 ? [1, 2, 3] : [1, 2, 3, 4]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyEggBoxes(old,sourceVersion);
     rejectLegacyEggs(old,sourceVersion);
     rejectLegacyWool(old,sourceVersion);
     rejectLegacyMilk(old,sourceVersion);
@@ -9242,7 +9359,8 @@ export class VoxelSimulation {
     migrateMilk(old, sourceVersion);
     migrateWool(old, sourceVersion);
     migrateEggs(old, sourceVersion);
-    old.version = 51;
+    if (sourceVersion < 52) old.eggBoxes = [];
+    old.version = 52;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -9280,6 +9398,7 @@ export class VoxelSimulation {
       [d.butcherSpots, 128],
       [d.tables, 128], [d.chairs, 256],
       [d.shelves, 256], [d.storageSpills, 4096],
+      [d.eggBoxes, EGG_BOX_RULES.maxBoxes],
       [d.horseshoePins, 128],
       [d.items, 10000],
       [d.trees, 4096],
@@ -9331,6 +9450,7 @@ export class VoxelSimulation {
       ...d.animals,
       ...d.butcherSpots,
       ...d.tables, ...d.chairs, ...d.shelves,
+      ...d.eggBoxes,
       ...d.horseshoePins,
       ...d.items,
       ...d.trees,
@@ -9411,6 +9531,7 @@ export class VoxelSimulation {
         d.crops,
         d.stoves,
         d.butcherSpots,
+        d.eggBoxes,
         d.horseshoePins,
         d.stonecutters,
         d.tailors,
@@ -9623,6 +9744,7 @@ export class VoxelSimulation {
     const furniture = [
       ...d.butcherSpots,
       ...d.tables.flatMap(tableCells), ...d.chairs, ...d.shelves.flatMap(shelfCells),
+      ...d.eggBoxes,
       ...d.horseshoePins,
       ...d.sandbags,
       ...d.beds.flatMap(bedCells),
@@ -10067,7 +10189,7 @@ export class VoxelSimulation {
           'apparel',
           'combat',
           'hunt',
-          'handle', 'rope',
+          'handle', 'rope', 'eggBox',
           'firefight',
           'repair',
           'clean',
@@ -10352,6 +10474,7 @@ export class VoxelSimulation {
     validateMilk(d);
     validateWool(d);
     validateEggs(d);
+    validateEggBoxes(d);
     validateAutoSlaughter(d);
     validatePens(d);
     validatePawnAreas(d);
@@ -10437,6 +10560,7 @@ export class VoxelSimulation {
       throw new Error('存档建筑超过木桥的轻型承载');
     for (let cell=0; cell<CELLS-WIDTH*DEPTH; cell++) if(s.bridges[cell] && s.blocks[cell+WIDTH*DEPTH] === Block.Masonry)
       throw new Error('木桥不能支撑石砌墙体');
+    if(d.eggBoxes.some(b=>s.ladders[at(b)]))throw new Error('蛋箱不能与梯子重叠');
     validateStoryteller(d, s.blocks, s.structureKinds);
     Object.assign(
       s,
@@ -10458,6 +10582,7 @@ export class VoxelSimulation {
         fences: d.fences, fenceGates: d.fenceGates, penMarkers: d.penMarkers, animalAreas: d.animalAreas,
         butcherSpots: d.butcherSpots,
         tables: d.tables, chairs: d.chairs,
+        eggBoxes: d.eggBoxes,
         horseshoePins: d.horseshoePins,
         nextId: d.nextId,
         pawns: d.pawns,
@@ -10514,7 +10639,7 @@ export class VoxelSimulation {
     )
       throw new Error('床或门没有合法支撑或净空');
     if (
-      [...s.stoves, ...s.horseshoePins, ...s.butcherSpots, ...s.weaponBenches.filter((b) => b.kind === 'craftingSpot')].some(
+      [...s.stoves, ...s.eggBoxes, ...s.horseshoePins, ...s.butcherSpots, ...s.weaponBenches.filter((b) => b.kind === 'craftingSpot')].some(
         (p) =>
           s.blocks[at(p)] ||
           s.blocks[at(p) + WIDTH * DEPTH] ||
@@ -10592,6 +10717,14 @@ export class VoxelSimulation {
           }
         }
         if(!valid)s.release(p);
+        continue;
+      }
+      if (p.eggBoxTask) {
+        s.search(p);const box=s.eggBoxes.find(b=>b.id===p.eggBoxTask!.boxId)!;
+        const stand=s.reachableItemStand(box);
+        const target=s.validEggBoxTask(p)?s.storageDestination(box.eggs!,-1,p.id):undefined;
+        if (!target||stand<0||!s.reserveStorage(p,box.eggs!,target,null)) s.release(p);
+        else if (!s.itemTouch(p,box)) s.go(p,stand,'eggBox');
         continue;
       }
       if (p.wardenTask || p.handleTask || p.ropeTask || p.faction === 'prisoner') continue;

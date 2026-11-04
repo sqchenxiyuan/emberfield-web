@@ -1,0 +1,1925 @@
+{
+  "milestone": "v52 egg boxes, physical collection and storage hauling",
+  "nativeGameplay": false,
+  "browserInteraction": false,
+  "scope": "Native static evidence; controlled model fixtures, React SSR and CPU geometry/raycast checks. Authentic v51 cooking/cloth continuation. No browser, GPU rendering or natural new-colony egg-box campaign acceptance.",
+  "sources": [
+    {
+      "file": "src/audio.ts",
+      "sha256": "b5bc4efe4a1bb7d2bf17d89ab2f5d8f5d3ff14667244a3487925472a70c7ac8c",
+      "bytes": 1495
+    },
+    {
+      "file": "src/client.ts",
+      "sha256": "6665bf09a59511d7007b3d80f65a5a6e946e2aede82638873b96de3e2f2abf0e",
+      "bytes": 13280
+    },
+    {
+      "file": "src/entry.ts",
+      "sha256": "948a579347dd85a7827c2bb349bfbf1c694c46fd13d0ec81eba6b631bee664e4",
+      "bytes": 136
+    },
+    {
+      "file": "src/layout.css",
+      "sha256": "440209ba4898936fb5eac6f1fbc9c1b75240e2384b3aec6f8689834e82b77502",
+      "bytes": 14357
+    },
+    {
+      "file": "src/main.tsx",
+      "sha256": "dd495faf455c45378784aec821ae4c4fb1f63cb6b05be4ef14d2ed7a483eca40",
+      "bytes": 56255
+    },
+    {
+      "file": "src/protocol.ts",
+      "sha256": "36a69d8555b924ad256baa9fc4ac9f13a3138254bd3a9ca6aea0c6e7720626ad",
+      "bytes": 1128
+    },
+    {
+      "file": "src/render.worker.ts",
+      "sha256": "5f847dd501f4d3980bceb3ce64728a67f7e97f56c8b127680b02a538b36c0797",
+      "bytes": 822
+    },
+    {
+      "file": "src/renderer.ts",
+      "sha256": "a6e463ff5779a4ad0a48b540546dbff7a94114f9a3eab0f47f27611891d26d64",
+      "bytes": 34214
+    },
+    {
+      "file": "src/sim.worker.ts",
+      "sha256": "80cd20bb4fd76e315a3b98d4c9f817e22f8342d345b72b64c328fea1058e7f7a",
+      "bytes": 9849
+    },
+    {
+      "file": "src/sim/activity.ts",
+      "sha256": "f998a95408c38e311e7ca50faf478008b8ebe5ed23d362eedd434f3356d9f59f",
+      "bytes": 1204
+    },
+    {
+      "file": "src/sim/defs.ts",
+      "sha256": "19d1472ecb13eb44a301b520e1705851ed063d6b57946c8873dadba24a61761a",
+      "bytes": 6607
+    },
+    {
+      "file": "src/sim/path.ts",
+      "sha256": "bc929aa62e72894530a3658658b21b45f4204d6d0e7ab39e4d456089aa82e0d2",
+      "bytes": 3861
+    },
+    {
+      "file": "src/sim/placement.ts",
+      "sha256": "3a95d7d5476ae757cf4343d40b77c49cbecd70a5ce9044ce79eeadbf06366ce0",
+      "bytes": 4387
+    },
+    {
+      "file": "src/sim/save.ts",
+      "sha256": "b79fe616886283618defa6564ced9db9e1068649d1a8708999c55a8288a18037",
+      "bytes": 7151
+    },
+    {
+      "file": "src/sim/types.ts",
+      "sha256": "2b179975dfb26e94d4da72539c1a27216fbe5a3334a9791a112b8826edc2981a",
+      "bytes": 5509
+    },
+    {
+      "file": "src/sim/world.ts",
+      "sha256": "dda00e071ec07fb5852adafca98e6f184ee39e7f3e50a45b759144162bd3e428",
+      "bytes": 53119
+    },
+    {
+      "file": "src/style.css",
+      "sha256": "faec3ea5d04e6ae8b5d2adf5ddb5b187517670b1ecf14198d2bee363a63508c1",
+      "bytes": 30853
+    },
+    {
+      "file": "src/voxel/AllowedAreaPanel.tsx",
+      "sha256": "40f4a554a28ea26a59b71fec0095914c5a0cb59594526ef1c030c57e9434ada9",
+      "bytes": 7563
+    },
+    {
+      "file": "src/voxel/AnimalPanel.tsx",
+      "sha256": "481c585b299ea2b1e9a5e33b8ab0d73adf8c58d6e019293c64380a716fbab7bb",
+      "bytes": 26248
+    },
+    {
+      "file": "src/voxel/ApparelPanel.tsx",
+      "sha256": "924baa69ff7f5c5d7f33bbe86aa5565e549c1ff52def2b376c0fe6e193b72c5d",
+      "bytes": 4559
+    },
+    {
+      "file": "src/voxel/ArmorPanel.tsx",
+      "sha256": "86baf921c3c9efeac0640030b1d34b6d701639a8f40e237123ec06aa45a90787",
+      "bytes": 3158
+    },
+    {
+      "file": "src/voxel/AutoSlaughterPanel.tsx",
+      "sha256": "2ba8c22e60508c6f313ec7bd27d9dba2d18211734a977c36217bb6e0000a8727",
+      "bytes": 8055
+    },
+    {
+      "file": "src/voxel/CombatPanel.tsx",
+      "sha256": "a89870e23cca22b7638f3ccb5b40eef85d6398c31dead8c4e7873f51ee708b2a",
+      "bytes": 14258
+    },
+    {
+      "file": "src/voxel/EggBoxPanel.tsx",
+      "sha256": "28b5a6689a42ba83451912ae619f98d7102acb23885bce1c45b62404ee258be1",
+      "bytes": 4998
+    },
+    {
+      "file": "src/voxel/FirePanel.tsx",
+      "sha256": "968ed9f7be0da76438cf91785e976dea22fcdf39148c2449d98ab7607629cd0a",
+      "bytes": 15270
+    },
+    {
+      "file": "src/voxel/FurniturePanel.tsx",
+      "sha256": "d0dcb969b8a51b4b2ebf64d62118b4f93389a432d57c89b272fe212ac6e685ad",
+      "bytes": 8281
+    },
+    {
+      "file": "src/voxel/ItemAccessPanel.tsx",
+      "sha256": "f25aa0c5bca966d77efc1ca6b6ef23cfbe24deba9f9eae85f02f210d5315273e",
+      "bytes": 1272
+    },
+    {
+      "file": "src/voxel/ItemCondition.tsx",
+      "sha256": "611b42a857f615e368a26a294f0c8a0b00bf3a29d7b450f78d10e801b9a8ebb7",
+      "bytes": 2737
+    },
+    {
+      "file": "src/voxel/LivingPanel.tsx",
+      "sha256": "9e0eb4c446726d0b648fca68d951f894d7bc8a40f4e41eb7c5f219b424dd11f2",
+      "bytes": 6745
+    },
+    {
+      "file": "src/voxel/MedicinePanel.tsx",
+      "sha256": "9f5ebe3569e341dd1be7472dde6e2f89174fd1e8acaff2f03b4a271a5f5a0173",
+      "bytes": 7749
+    },
+    {
+      "file": "src/voxel/PenPanel.tsx",
+      "sha256": "d3578aa8357e5f1ed28de686f6025a784b714af678511cb1dcdf9888dfff6281",
+      "bytes": 11862
+    },
+    {
+      "file": "src/voxel/ProductionBillsPanel.tsx",
+      "sha256": "c0e28ee9cfef25a27cd17d854f52dde31c4a12315259f8634ae880d52860cdc6",
+      "bytes": 26310
+    },
+    {
+      "file": "src/voxel/ProductionOutputPanel.tsx",
+      "sha256": "e9650d5cedd912c4dba9ecd09e190f658b93ed8c5c27b232fd9cbdeeec633573",
+      "bytes": 8163
+    },
+    {
+      "file": "src/voxel/RegionMap.tsx",
+      "sha256": "23c6598043dd03a48c6d30e7f0b68f6b29d9071563ddcd5fc8d1dd111a8e73f8",
+      "bytes": 5760
+    },
+    {
+      "file": "src/voxel/ResearchPanel.tsx",
+      "sha256": "4e66974943a44217ce1b6245afa4dfcba0da4a7ffd10674731cb4f95597c09d8",
+      "bytes": 5837
+    },
+    {
+      "file": "src/voxel/SanitationPanel.tsx",
+      "sha256": "c26c4e842adfce1d94ed191512796c36dfc8e3b479afc7c0faaafeb45a3eb3ac",
+      "bytes": 10366
+    },
+    {
+      "file": "src/voxel/ShelfPanel.tsx",
+      "sha256": "23336ef3b75bdad6788b699900068b24e04f57c4003c754ff710e851dc7c03d5",
+      "bytes": 11218
+    },
+    {
+      "file": "src/voxel/SkillPanel.tsx",
+      "sha256": "8b2ddc320e728dddbef65629dfc4b327c434ee387b0beda63fa1b4017ca11076",
+      "bytes": 5274
+    },
+    {
+      "file": "src/voxel/SocialPanel.tsx",
+      "sha256": "989e21be1910595a11eb38d2d01225a872886edc88b27e8d48fd9cebec8c2f33",
+      "bytes": 4706
+    },
+    {
+      "file": "src/voxel/StockpileZonePanel.tsx",
+      "sha256": "2ea5964a8ac83e46fbe4e1f19ed53a29689f6af6e4bb87fffb04b72d21cafc9f",
+      "bytes": 1641
+    },
+    {
+      "file": "src/voxel/SurvivalPanel.tsx",
+      "sha256": "a08dd658e3e90b301275e359e7e291f2ba9a36d1a0668e071ce23a515574b735",
+      "bytes": 10153
+    },
+    {
+      "file": "src/voxel/TailorPanel.tsx",
+      "sha256": "04abf8bf7cbb211573c73e48031e0431306088fb99d7796fb90103fa4dae9c61",
+      "bytes": 2920
+    },
+    {
+      "file": "src/voxel/TradePanel.tsx",
+      "sha256": "f4183db0d8d8dc72eb4a1f983aeeb27c81ad85105e3c8cbe02bb2b840221dabf",
+      "bytes": 16936
+    },
+    {
+      "file": "src/voxel/UnfinishedPanel.tsx",
+      "sha256": "a9b54b4d1e72addbc518fcb10de37f556f275a664c6e7534a2c7173ff96d8912",
+      "bytes": 4580
+    },
+    {
+      "file": "src/voxel/WeaponPanel.tsx",
+      "sha256": "0576adea4a19b82477480b427787c90bdd65c04ade6c83aab7fd21791262eee2",
+      "bytes": 10078
+    },
+    {
+      "file": "src/voxel/WeatherPanel.tsx",
+      "sha256": "4be2e8c3438225386371e742b22c22f55c4379251ae8bec18518357b70c06481",
+      "bytes": 6695
+    },
+    {
+      "file": "src/voxel/WorldSetup.tsx",
+      "sha256": "9b03d32ece22bf9879a766ce5b7d49c182bf17b9d120aa2071b66763ec44fe9a",
+      "bytes": 16619
+    },
+    {
+      "file": "src/voxel/allowedAreas.ts",
+      "sha256": "f9e0dae0f99fd0752de9f32fa02f1c66a19943a795a9befdafceaa970d9daee4",
+      "bytes": 1822
+    },
+    {
+      "file": "src/voxel/anatomy.ts",
+      "sha256": "1f30b19d6ad8c1562cca38e86e54e17c9226f4ea6f288a326743f348e5bd7095",
+      "bytes": 42971
+    },
+    {
+      "file": "src/voxel/animalEggPersistence.ts",
+      "sha256": "85b7a34e20d431e92b78357435bde2233009e77601018b5b165c9063eb01f82c",
+      "bytes": 5080
+    },
+    {
+      "file": "src/voxel/animalEggs.ts",
+      "sha256": "7f89ae0639772ea2ad3300379dee983bcd30b50d4786fe46676a41c6f67a93b6",
+      "bytes": 2808
+    },
+    {
+      "file": "src/voxel/animalMilk.ts",
+      "sha256": "30f9f10f3bf81cd864e3e6b7145f26269bc88c691a7a1d96f28a03d986ba9d9c",
+      "bytes": 1928
+    },
+    {
+      "file": "src/voxel/animalMilkPersistence.ts",
+      "sha256": "fa5e9ec0c1f63bdde28134186b3133dca267b069d17956600bc98c7fb3ba3a2a",
+      "bytes": 2001
+    },
+    {
+      "file": "src/voxel/animalWool.ts",
+      "sha256": "ad3014de4249549da2643d6c04b5d1b60a1ea38f5c96d1ad674f0888dd9af8d7",
+      "bytes": 886
+    },
+    {
+      "file": "src/voxel/animalWoolPersistence.ts",
+      "sha256": "2913d1786b89746cd191faf730dfa5d82f3e06c7e77c6bed760dfeb8be959b2d",
+      "bytes": 3424
+    },
+    {
+      "file": "src/voxel/apparel.ts",
+      "sha256": "5ac9c5262bd07de77a2cd72d29744858565c752c0f0846cd31066d1dc54df41d",
+      "bytes": 12131
+    },
+    {
+      "file": "src/voxel/armor.ts",
+      "sha256": "756771ef962f4fde2cd321a29880f11077ada081b724ebc63e5d781d12bff62e",
+      "bytes": 5723
+    },
+    {
+      "file": "src/voxel/autoSlaughter.ts",
+      "sha256": "576670067dd075bd4afaac6b1051ddfefff8f143f2adc057707ef149d1eeae55",
+      "bytes": 4551
+    },
+    {
+      "file": "src/voxel/autoSlaughterPersistence.ts",
+      "sha256": "35b65194f76c3493280018e5aa3f5af2e802b5ef37716930d0ad3f7df679e0d8",
+      "bytes": 1533
+    },
+    {
+      "file": "src/voxel/caves.ts",
+      "sha256": "434ed06e1e9cc6ebd6407f326eb367ece11cf5d29421280a30de202cad0870f2",
+      "bytes": 3882
+    },
+    {
+      "file": "src/voxel/client.ts",
+      "sha256": "82127655fdf192ad3f18908103c57858ac1a301e039d0f4f0eca4ba9c7c6c80b",
+      "bytes": 23873
+    },
+    {
+      "file": "src/voxel/climate.ts",
+      "sha256": "5676fe5d95344b55a44571f44129c42c96a86c673a8dfe8fc55ba22df3ddc231",
+      "bytes": 1616
+    },
+    {
+      "file": "src/voxel/construction.ts",
+      "sha256": "598875f56c491121e6cd0bede06efea18bc4feecfde1919dd8afdb9e032e1e30",
+      "bytes": 4618
+    },
+    {
+      "file": "src/voxel/constructionFrames.ts",
+      "sha256": "dad5e1315765e0aa47f65b89e0f1b23bfc873870c6a5884d59ea2adab0050de0",
+      "bytes": 2372
+    },
+    {
+      "file": "src/voxel/crafting.ts",
+      "sha256": "9ff99d07c56040b1bc91acc9bd6521c00550389068f669459516f730887fcadb",
+      "bytes": 1421
+    },
+    {
+      "file": "src/voxel/deterioration.ts",
+      "sha256": "51eb42387ac9c7b10a42ddead14ad67319bb0bf694015eea18e4c9f011ac16bb",
+      "bytes": 7984
+    },
+    {
+      "file": "src/voxel/eggBoxRules.ts",
+      "sha256": "8bed1d199f3cfb60896de36531b6fc61722689607a0352afec4f37f39fb00cff",
+      "bytes": 330
+    },
+    {
+      "file": "src/voxel/eggBoxes.ts",
+      "sha256": "2f8648cb52c2fa8d9d6e605b2d1cf1a97781a3d99354e4dd15f77df74cb611f5",
+      "bytes": 4987
+    },
+    {
+      "file": "src/voxel/environment.ts",
+      "sha256": "9493ada3c8b9a2dc9a4c2cf45452da156d3d7153a76e0b429928c27f1d5abc50",
+      "bytes": 2552
+    },
+    {
+      "file": "src/voxel/environmentPersistence.ts",
+      "sha256": "fac143e8467a64e1518e1b846bbcd831da1e1661e058cbf8816c601cc3670656",
+      "bytes": 3181
+    },
+    {
+      "file": "src/voxel/exploration.ts",
+      "sha256": "07f8700c3a295a620a7cada1636163f0af0ed40c91b2bcf547f0737888695756",
+      "bytes": 3164
+    },
+    {
+      "file": "src/voxel/farming.ts",
+      "sha256": "1b580cb401d52779b05290d3bd5dbeb5ec00f17d53fe1438ce0d8a7026824dca",
+      "bytes": 5119
+    },
+    {
+      "file": "src/voxel/fire.ts",
+      "sha256": "7fe551e3c085fba07459b78124ed2840cbeac864ec4dc42c2e3ba8f997188f5e",
+      "bytes": 7545
+    },
+    {
+      "file": "src/voxel/firePersistence.ts",
+      "sha256": "422b39a829b230b4727abd7ef32ced68407ec2166f39356139a57ff7c78ab839",
+      "bytes": 9565
+    },
+    {
+      "file": "src/voxel/fireWorld.ts",
+      "sha256": "d6d03de6f46fa8357ac05d552a81d277a8e135d9992daac5903792875428bfcf",
+      "bytes": 21920
+    },
+    {
+      "file": "src/voxel/furniture.ts",
+      "sha256": "a6412af96de6584138f05545be381de9d4876134dcdb04ce963dd2c29915bba8",
+      "bytes": 2394
+    },
+    {
+      "file": "src/voxel/furniturePersistence.ts",
+      "sha256": "6bde3e701115a7126e2daeef9798495afd5828e027c1ca437f0d8129d2477504",
+      "bytes": 1837
+    },
+    {
+      "file": "src/voxel/husbandry.ts",
+      "sha256": "f4c4f5a03b84a444835b2c3f987b7d92dab05d1a7fc6316711ec688a41662eb7",
+      "bytes": 8070
+    },
+    {
+      "file": "src/voxel/husbandryPersistence.ts",
+      "sha256": "7c1da0a6c42469e2ea9b7c408573bf5766919bf7a48904fcc203fd69f10cdba7",
+      "bytes": 13011
+    },
+    {
+      "file": "src/voxel/husbandryWorld.ts",
+      "sha256": "795603f162d6604b959b8bfeda2608a9a2d86bd251b28c8971203849b6d06e26",
+      "bytes": 29335
+    },
+    {
+      "file": "src/voxel/injuries.ts",
+      "sha256": "cfd1dcad2a553d0681239e2ab0638fb8a752da35a26cd1800301aa12aaf9a8e4",
+      "bytes": 25989
+    },
+    {
+      "file": "src/voxel/itemAccess.ts",
+      "sha256": "dd9f558cb822365442fd22e3b82b2deba8aef02ddece3f7d891def2022eadc0f",
+      "bytes": 1513
+    },
+    {
+      "file": "src/voxel/living.ts",
+      "sha256": "f101d6b98ef949bd83ccdc11117cb3014bc3d351d7888bc06c300158fc57c6fa",
+      "bytes": 10328
+    },
+    {
+      "file": "src/voxel/livingPersistence.ts",
+      "sha256": "e9e6ae9f30fd643afe7da827b7bfd2ae4ad383745747451c286ce27ee7562f33",
+      "bytes": 9450
+    },
+    {
+      "file": "src/voxel/logistics.ts",
+      "sha256": "024e1f89f6bf230f3dd9b910e5de8f96d99074b79594a7a4312552f98c95fc70",
+      "bytes": 5136
+    },
+    {
+      "file": "src/voxel/main.tsx",
+      "sha256": "e2a2976999aea54a093ce7558139b0c0ea1cf1b10fda7674684b59e57464d6e4",
+      "bytes": 119777
+    },
+    {
+      "file": "src/voxel/medicine.ts",
+      "sha256": "064f9c2fe26b99f59f44e58ed7294e3b7dfea416b3fa0688c7976b52a1c7b912",
+      "bytes": 10850
+    },
+    {
+      "file": "src/voxel/medicinePersistence.ts",
+      "sha256": "306fa3b01e62229efcae3654230f35b8288ba945c0f3c22859af09203899c750",
+      "bytes": 6545
+    },
+    {
+      "file": "src/voxel/mood.ts",
+      "sha256": "79dd6a2dcd82ae7f8f375bb0a5e2ff2913b86b6a70fdcefdd0d84a8fc3d24db5",
+      "bytes": 10607
+    },
+    {
+      "file": "src/voxel/navigation.ts",
+      "sha256": "5eb6ccdf91d7d5a3211deae7fca8cc38ea0329caa6642e5a13bfe65705399c60",
+      "bytes": 3793
+    },
+    {
+      "file": "src/voxel/pens.ts",
+      "sha256": "3796a54846d9947450778aa5b0eb00014ed4124152eacdcc46a7501f82c98dc4",
+      "bytes": 8766
+    },
+    {
+      "file": "src/voxel/pensPersistence.ts",
+      "sha256": "17142bd7a90abed0fdc8e3cd4a904ad6067771bbe749e3a8206541e64021603a",
+      "bytes": 9290
+    },
+    {
+      "file": "src/voxel/pensWorld.ts",
+      "sha256": "f6389b31da887dcaaf929c3788044ef636bc760ae77e924801b7d59127ae8bb6",
+      "bytes": 19090
+    },
+    {
+      "file": "src/voxel/plants.ts",
+      "sha256": "baa7f01b82c047536c8d0a2ee3097e15bce8466418e4442e39155d6be6400195",
+      "bytes": 4409
+    },
+    {
+      "file": "src/voxel/power.ts",
+      "sha256": "dbbf47b4558b8935960d20abceb94c545f686e6ab5f6ca26f075429ded89fec1",
+      "bytes": 10378
+    },
+    {
+      "file": "src/voxel/preservation.ts",
+      "sha256": "3eb5355776c76f32371c0101638847e7ea5a4bfafdcd2ddec7633ad162c3d68c",
+      "bytes": 10499
+    },
+    {
+      "file": "src/voxel/prisonPersistence.ts",
+      "sha256": "aa23dc10fd8152e6f338e26b118e385fa7c5d385e86d10688e9298ae26a502de",
+      "bytes": 8051
+    },
+    {
+      "file": "src/voxel/prisonWorld.ts",
+      "sha256": "9072d5902463cc136816809d5148f541a2c88c848dec3945e5bf65d4a3107d87",
+      "bytes": 18952
+    },
+    {
+      "file": "src/voxel/prisoners.ts",
+      "sha256": "6327f6d6d65f107a35e70fa94e2260b79d8593d070aaf5c42368de05782a55b2",
+      "bytes": 6187
+    },
+    {
+      "file": "src/voxel/productionBills.ts",
+      "sha256": "a115e116d7d0275d8e473367f94207bd4ae720ebbbacff1dd38f2681fabbde07",
+      "bytes": 11700
+    },
+    {
+      "file": "src/voxel/productionOutput.ts",
+      "sha256": "dfccd10a9e5a924a22b5ccb01176df82a9371ab55b54fc1fb24324b6c8aabde2",
+      "bytes": 8136
+    },
+    {
+      "file": "src/voxel/productionPolicies.ts",
+      "sha256": "257ac74fe1841400214e55195ca40c318a6bf3ca63b31415671969f03d17e7e2",
+      "bytes": 4568
+    },
+    {
+      "file": "src/voxel/ranged.ts",
+      "sha256": "5b42c45c404289833cfe496fc4b1cc34d253d57c8afb6045afe8f2c34436920a",
+      "bytes": 24993
+    },
+    {
+      "file": "src/voxel/rangedPersistence.ts",
+      "sha256": "19644559ae86bcb1e879dcd8d7d115e2e05d40177905c7a900864c25071a057a",
+      "bytes": 7603
+    },
+    {
+      "file": "src/voxel/rangedView.ts",
+      "sha256": "13b4b9353de569382a90d0d5b1b5c0aa9bc48e05a0b918e7327e17b8537c0533",
+      "bytes": 2491
+    },
+    {
+      "file": "src/voxel/recreation.ts",
+      "sha256": "f55022026c42781e5653a7b35f3272280348123e5930b627072f47a00f3e8051",
+      "bytes": 166
+    },
+    {
+      "file": "src/voxel/regionPersistence.ts",
+      "sha256": "42a2d237053d5455f4db90d083a6d3e9aa540c9b4e7e1ca708690eb79a4cf24c",
+      "bytes": 1385
+    },
+    {
+      "file": "src/voxel/regions.ts",
+      "sha256": "13a232f49db8fda4ee23367a792a55eb788e9849333fffef2e6b81f9cd2539b7",
+      "bytes": 13186
+    },
+    {
+      "file": "src/voxel/relocation.ts",
+      "sha256": "54054e7757e37cb30ec8ac0112db9ef52de436e8f9ef382044bdc13da9267028",
+      "bytes": 4379
+    },
+    {
+      "file": "src/voxel/relocationPersistence.ts",
+      "sha256": "c6c38ff9267518f454ee2a313a292a1ffe95dabe8340506498019d18ba3a9cb1",
+      "bytes": 8886
+    },
+    {
+      "file": "src/voxel/render.worker.ts",
+      "sha256": "719fd71f3d46ea9048711e0d07a3147ebc13d31f7a52a07914a9796c450af4ce",
+      "bytes": 1573
+    },
+    {
+      "file": "src/voxel/renderer.ts",
+      "sha256": "7f70481688b5b82443d9fa4cbc44003803af4024d3b64026c965ade071ad84e0",
+      "bytes": 205694
+    },
+    {
+      "file": "src/voxel/research.ts",
+      "sha256": "8abddc0dca6e520f84e10db6ce739d046a101d2200f5ca67578260e095866ee4",
+      "bytes": 8394
+    },
+    {
+      "file": "src/voxel/rest.ts",
+      "sha256": "52c641ae3307af786d15380824ce7b0082d3d14935432d3baebf66b047981eff",
+      "bytes": 955
+    },
+    {
+      "file": "src/voxel/rivers.ts",
+      "sha256": "3b8ea85fde9adaf8335645148ef30324c8caab6bd7c4821aeaca0efff6849ea9",
+      "bytes": 7196
+    },
+    {
+      "file": "src/voxel/rooms.ts",
+      "sha256": "67457f7cd217f5746b9562ea2e3ca059af1f424165368d28d511e8a374090b9d",
+      "bytes": 5869
+    },
+    {
+      "file": "src/voxel/sanitation.ts",
+      "sha256": "7794390e2678b62b3edd8e9e6eeff1f6c0bbcebc41c59ceea0bef6bfedbdf223",
+      "bytes": 5014
+    },
+    {
+      "file": "src/voxel/sanitationPersistence.ts",
+      "sha256": "2c496b93e0123f93b64a0f30e94d34477d23e445411013bc1fca9e7a8e98f16f",
+      "bytes": 5753
+    },
+    {
+      "file": "src/voxel/shelves.ts",
+      "sha256": "940a4d42881c288e39417f83b2330cfab4ea66b0ae9a65b1ff3025e43003088f",
+      "bytes": 3220
+    },
+    {
+      "file": "src/voxel/shelvesPersistence.ts",
+      "sha256": "8357b9689bcac806f5a6e76bfbc5442b845ba46b501ed7169a2e31d0545be461",
+      "bytes": 3456
+    },
+    {
+      "file": "src/voxel/sim.worker.ts",
+      "sha256": "c59324d84cab97ac9001d64b17c7fc2c31d674d7091144dac7774109da445a90",
+      "bytes": 3837
+    },
+    {
+      "file": "src/voxel/skills.ts",
+      "sha256": "6995b37494b950a75789a249a5c45e7d86e4afa52cb398aa38c478d6fbac9a93",
+      "bytes": 12500
+    },
+    {
+      "file": "src/voxel/social.ts",
+      "sha256": "1c1438d51a4c24fcf1c710456e9c681d50dde6471ac6be3cc001b53b7e574435",
+      "bytes": 16377
+    },
+    {
+      "file": "src/voxel/socialPersistence.ts",
+      "sha256": "38e372571c4bc6ea255a407c480f3783512487f2befd9ed2357a6486bd676c4e",
+      "bytes": 7798
+    },
+    {
+      "file": "src/voxel/socialWorld.ts",
+      "sha256": "a62b8a8e1995f93c394a2dc60f54992b2d9685b88ab1a07e5d4f21d0397bba50",
+      "bytes": 4307
+    },
+    {
+      "file": "src/voxel/stockpileZones.ts",
+      "sha256": "2936a26a4a9583eea65ff72e6073aadc57f5edb17fd63cd66d2dda65046bc90d",
+      "bytes": 10992
+    },
+    {
+      "file": "src/voxel/storageGroups.ts",
+      "sha256": "28a590eb591984a9d152afb17d6568df271fe4cf7b7b53a584cc1aa36b3d15e6",
+      "bytes": 7142
+    },
+    {
+      "file": "src/voxel/storyteller.ts",
+      "sha256": "5ad1b8204feac0ef182a23426196a6221c62f963c819104d7222b4337ad06677",
+      "bytes": 8329
+    },
+    {
+      "file": "src/voxel/storytellerPersistence.ts",
+      "sha256": "bcc312777461238d9c8e6ef18e374ae860e15dd08aeb94529d10894766cb8564",
+      "bytes": 4916
+    },
+    {
+      "file": "src/voxel/storytellerRules.ts",
+      "sha256": "4b11042097f3e7534efab8e75057d4f33b4518ebe4e1c364390a45e3bc9bfb55",
+      "bytes": 6418
+    },
+    {
+      "file": "src/voxel/style.css",
+      "sha256": "5a454f58e689a28f2e3fe06831558fe458b9896122f368772d3f415f62ed3434",
+      "bytes": 71920
+    },
+    {
+      "file": "src/voxel/survival.ts",
+      "sha256": "0106c5dac284ccc60e715084811d570d4ed4b8e5e5f3037a887e61245b6701e1",
+      "bytes": 14281
+    },
+    {
+      "file": "src/voxel/thermal.ts",
+      "sha256": "40c614996ba9c8843bc52fbd343a2a625c0fd77c788b1133ae2ba50b6494b127",
+      "bytes": 19307
+    },
+    {
+      "file": "src/voxel/trade.ts",
+      "sha256": "cdb4041f1b843dcfbdc84fc6108801d57768219d5cd2521a349e44167b886a93",
+      "bytes": 11877
+    },
+    {
+      "file": "src/voxel/tradePersistence.ts",
+      "sha256": "872dc5963d0fee654295125abceaa29fbc35f8bf34c70ad6947481790ae32329",
+      "bytes": 7598
+    },
+    {
+      "file": "src/voxel/tradeRules.ts",
+      "sha256": "ef63fa71de8723b14c67213c68c310ce82db2b89cff550eba3cffde7f85fdfae",
+      "bytes": 5911
+    },
+    {
+      "file": "src/voxel/tradeTypes.ts",
+      "sha256": "a3dec04c1394626704b6127b71208d2a8c812674d8cde9d27dec2045ba812903",
+      "bytes": 2381
+    },
+    {
+      "file": "src/voxel/tradeWorld.ts",
+      "sha256": "05a35da874360d0b78d6fabf57dec2326b4408cef9a3b331f572aa1cdea1444a",
+      "bytes": 15610
+    },
+    {
+      "file": "src/voxel/types.ts",
+      "sha256": "97526743cdb2953e51f300eed441bf53229c0285892a73485bd7e84ecd5aafd1",
+      "bytes": 37213
+    },
+    {
+      "file": "src/voxel/unfinishedProduction.ts",
+      "sha256": "6f27664789ea3a39730ae4a1c34df243d97d0b949a62a5664c2c0e5e52b984a2",
+      "bytes": 13321
+    },
+    {
+      "file": "src/voxel/unfinishedView.ts",
+      "sha256": "12bf4be6a3ffafd72d826a6bc3e8be4f5119e863ee33ba626600cdf11f0ffa64",
+      "bytes": 3006
+    },
+    {
+      "file": "src/voxel/water.ts",
+      "sha256": "853f54618809b4dbeaa124665c239587ffd3b2b1a8c881ae3543f3950d5ced58",
+      "bytes": 1973
+    },
+    {
+      "file": "src/voxel/wealth.ts",
+      "sha256": "9369b0d61b57f2ebe267f8ea0f3aa193a36e4948a34c4d782e931a4bd68918e7",
+      "bytes": 17357
+    },
+    {
+      "file": "src/voxel/weaponProduction.ts",
+      "sha256": "8d23ccdf273b763383a098a1e37968278558e33c07fabc4641d2917e878dc2b0",
+      "bytes": 2589
+    },
+    {
+      "file": "src/voxel/weapons.ts",
+      "sha256": "43fdd4aa3e89c7743da31a571d313604fa88bd8383f94637c1ab6d0b80dd7c6c",
+      "bytes": 15192
+    },
+    {
+      "file": "src/voxel/weather.ts",
+      "sha256": "216b5b06f6de8f1e37930ce1094e51de68f055489453affbc14de685da13690b",
+      "bytes": 9433
+    },
+    {
+      "file": "src/voxel/weatherPersistence.ts",
+      "sha256": "33538a8888cecd5a2c2fb20f13af47f62a667d19d3d7367e7e722b1e0eb7c525",
+      "bytes": 3548
+    },
+    {
+      "file": "src/voxel/wildlife.ts",
+      "sha256": "6fca63e10fd56393ed7e3196e0a3625c9eaca479e886094c44e54d32c5d6c67a",
+      "bytes": 1293
+    },
+    {
+      "file": "src/voxel/wildlifePersistence.ts",
+      "sha256": "f2c74189ae4bd0c0cdeeb00375c664530bb070f149754188a7ab3e3fde567d1f",
+      "bytes": 3618
+    },
+    {
+      "file": "src/voxel/world.ts",
+      "sha256": "691d5d79a8f865c15128c23c78928a4e8c00ace0b873c4ba8d929ca3a0c821de",
+      "bytes": 505235
+    },
+    {
+      "file": "src/voxel/worldgen.ts",
+      "sha256": "8d109cbc347b8e63a2d545b200d46b9bb5a2683679b3dab140452dadc75292c5",
+      "bytes": 14198
+    }
+  ],
+  "regression": {
+    "files": 136,
+    "tests": 1802,
+    "attempts": [
+      {
+        "file": "test-results/egg-box-ui-tests.json",
+        "sha256": "9b54a987f3cfc3cdf14039f531265389d5e6d559530f6ae827a73ce9640b53c5",
+        "bytes": 3642,
+        "passed": 8,
+        "failed": 0,
+        "pending": 0
+      },
+      {
+        "file": "test-results/egg-box-focused.json",
+        "sha256": "d5e79221454febb6d002170c4efed085fc279654370c7516a0e8fbda89d45a17",
+        "bytes": 41750,
+        "passed": 41,
+        "failed": 12,
+        "pending": 0
+      },
+      {
+        "file": "test-results/egg-box-core-rerun.json",
+        "sha256": "5021f1976e0b145b2ae687a563659658c70350dc4a67982dc5958be790da8cf4",
+        "bytes": 6848,
+        "passed": 19,
+        "failed": 0,
+        "pending": 0
+      },
+      {
+        "file": "test-results/egg-box-regression.json",
+        "sha256": "690b168a988611d7abe6e91ef525f582ad65de9a2c175731404cff184591db8b",
+        "bytes": 712988,
+        "passed": 1797,
+        "failed": 5,
+        "pending": 0
+      },
+      {
+        "file": "test-results/egg-box-final-core.json",
+        "sha256": "ebc5151ec7faf136d6dd3aa22eade28a3ebb06e50adc29dfa0aefcb095e32432",
+        "bytes": 26682,
+        "passed": 66,
+        "failed": 1,
+        "pending": 0
+      },
+      {
+        "file": "test-results/egg-box-final-tests.json",
+        "sha256": "29b067d453eeb4013fa0f5b34fb7160b2f846c8a0f2f3754ce8b372d4bdb2e05",
+        "bytes": 7449,
+        "passed": 21,
+        "failed": 0,
+        "pending": 0
+      },
+      {
+        "file": "test-results/egg-box-regression-rerun.json",
+        "sha256": "c4f5c284755c13506ca86bb249d11cc4725608e9d055996db68b5ad82d770d13",
+        "bytes": 6037,
+        "passed": 15,
+        "failed": 0,
+        "pending": 0
+      }
+    ],
+    "coverage": [
+      {
+        "file": "tests/interactions.test.ts",
+        "sha256": "8334937340900522c68de0f9bb46a70603531a23be6960867818eb887935988b",
+        "bytes": 9170,
+        "tests": 14
+      },
+      {
+        "file": "tests/mood.test.ts",
+        "sha256": "7449f6f88a5f2f68356be5404fceeb9f7b35a7cd1b32f24f708df832a454fb15",
+        "bytes": 9811,
+        "tests": 10
+      },
+      {
+        "file": "tests/prison-persistence.test.ts",
+        "sha256": "6082bc7ba40bfc21b06e3b64320ef2f6b9839f059ed4bf504c291bebd44777db",
+        "bytes": 7139,
+        "tests": 7
+      },
+      {
+        "file": "tests/prison-world.test.ts",
+        "sha256": "f26ac804fb40f95d251d74efb5b7dbabcef59d992925399a385e7b39c85cfe2c",
+        "bytes": 11981,
+        "tests": 8
+      },
+      {
+        "file": "tests/prisoners.test.ts",
+        "sha256": "831bfe44f3b464d0a27bc141b9a19fd12c82984d491473b00cafefc430793fe5",
+        "bytes": 3291,
+        "tests": 4
+      },
+      {
+        "file": "tests/sanitation.test.ts",
+        "sha256": "f06561076830a70e880cd4e8157022467e4f83fcdbf6f4a40fc1e1e01b7c7ead",
+        "bytes": 4318,
+        "tests": 6
+      },
+      {
+        "file": "tests/simulation.test.ts",
+        "sha256": "235885c41233f64bc6a7aca291a64518bad280bfbf606083b959973b4d4c2a69",
+        "bytes": 13225,
+        "tests": 22
+      },
+      {
+        "file": "tests/voxel-allowed-area-hosts.test.ts",
+        "sha256": "535ce2480b87bb208f3aec6516e2733dd0d7c7c61e6dd7af2eeb118796c3bef3",
+        "bytes": 14736,
+        "tests": 15
+      },
+      {
+        "file": "tests/voxel-allowed-area-production.test.ts",
+        "sha256": "bf477b7fde3e454930bb11b4b2eb5b877aac9adf90da32cd234dee2182940d39",
+        "bytes": 5621,
+        "tests": 2
+      },
+      {
+        "file": "tests/voxel-allowed-area.test.ts",
+        "sha256": "f319698179ff5e2daad814f1bc545a096bd2ec13ff638ce35aacca5130170689",
+        "bytes": 9751,
+        "tests": 12
+      },
+      {
+        "file": "tests/voxel-anatomy-integration.test.ts",
+        "sha256": "cd86437d3321156201de78192369663bbec6675a582a26f1f3a84bcb315f8625",
+        "bytes": 13607,
+        "tests": 11
+      },
+      {
+        "file": "tests/voxel-anatomy-rules.test.ts",
+        "sha256": "6e16e4588561f94137fd5492d840bb8bb69147e6d261f992e42945c670f2a082",
+        "bytes": 18958,
+        "tests": 22
+      },
+      {
+        "file": "tests/voxel-animal-eggs-ui.test.tsx",
+        "sha256": "1eb7d548996250c0705066b2c2eeff48703e0425d738155876034c7dbd8c3de3",
+        "bytes": 13173,
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-animal-eggs.test.ts",
+        "sha256": "7cb73f0cbc7a779fd0f144aaf450c33716715e186716160870f6f95e90941cc4",
+        "bytes": 14835,
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-animal-milk-ui.test.tsx",
+        "sha256": "b0769814a63970b358292cc22a7029c71c7dcd58c4c67cfe3ef2fe1b77417376",
+        "bytes": 10231,
+        "tests": 7
+      },
+      {
+        "file": "tests/voxel-animal-milk.test.ts",
+        "sha256": "e42ffcabeff68617c12fe259329d050c1d0eb2c682f215c0a6cfe8de004f7af2",
+        "bytes": 13152,
+        "tests": 16
+      },
+      {
+        "file": "tests/voxel-animal-wool-ui.test.tsx",
+        "sha256": "6300ec919e62e2a0e92fbd88aa33969f3bd1751289c143a8e8157b4b512e788a",
+        "bytes": 11895,
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-animal-wool.test.ts",
+        "sha256": "36ebe9226042e17175ff5ecef01d2d9ba48c1e8c2fbd9789823ead66c42e005f",
+        "bytes": 12613,
+        "tests": 10
+      },
+      {
+        "file": "tests/voxel-apparel.test.ts",
+        "sha256": "cfc139d05563f97959211486a599b0d22181d2744a25b7e6ee7037ff8c9930f9",
+        "bytes": 21278,
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-armor-integration.test.ts",
+        "sha256": "56ddc9b429ef16db98298e7e1679cc63cc3faaa16ac869f4f754b300083a8bd2",
+        "bytes": 20813,
+        "tests": 11
+      },
+      {
+        "file": "tests/voxel-armor-rules.test.ts",
+        "sha256": "793e3a2f2acce084e0070a56e0b727e996a3758b0337508c9bead35b048f2c62",
+        "bytes": 17111,
+        "tests": 23
+      },
+      {
+        "file": "tests/voxel-auto-rebuild-support.test.ts",
+        "sha256": "27cc973b3b9e8374f53693ef9d8dcada4a580963d3d9ee13f0cc49030f9d4245",
+        "bytes": 9331,
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-auto-rebuild.test.ts",
+        "sha256": "0ef19d9975409438175d00d5ffa5b5a5020b71ac12fcff9eff7d22444b1fddad",
+        "bytes": 35953,
+        "tests": 34
+      },
+      {
+        "file": "tests/voxel-auto-slaughter-ui.test.tsx",
+        "sha256": "c6890763cd1011ad2e84c60cd205fc4f41be0f8e301db077e5bd2f4d4cfedd89",
+        "bytes": 6353,
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-auto-slaughter.test.ts",
+        "sha256": "270f332ad449d1e7a98b52f267bd1e925b3696362222320a547b4a3fb51df76b",
+        "bytes": 14023,
+        "tests": 19
+      },
+      {
+        "file": "tests/voxel-capacity-stats.test.ts",
+        "sha256": "3d8b21b4d1ef2c2798ca95674d923250aa4138fcfbf4e4492d11fcb3bae5e05c",
+        "bytes": 2591,
+        "tests": 3
+      },
+      {
+        "file": "tests/voxel-caves.test.ts",
+        "sha256": "e73580b771af603b9cd91f7552ef5f75e2905f3a4102a22a90dcffb2eba128c2",
+        "bytes": 4532,
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-combat.test.ts",
+        "sha256": "a2807738b6f0dcee1b06747c44f2b499efd64931fad127e61c3b49300127aff1",
+        "bytes": 12122,
+        "tests": 14
+      },
+      {
+        "file": "tests/voxel-construction-failure.test.ts",
+        "sha256": "e7a941baf2879e230b0d7f4a4117fe1ac5b3f7fe8315825a260c36ff6d8d3520",
+        "bytes": 22544,
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-crafting.test.ts",
+        "sha256": "5c8d7b69839ac27ba7864a014786abb872433855842c5eab7e1e6a5c746a7f1f",
+        "bytes": 23113,
+        "tests": 26
+      },
+      {
+        "file": "tests/voxel-deterioration.test.ts",
+        "sha256": "201c60184a97afa40a8f94ac46356ca0e0f1b97f8e45046b3b3e2b7eb37b5d13",
+        "bytes": 11527,
+        "tests": 14
+      },
+      {
+        "file": "tests/voxel-egg-box-support.test.ts",
+        "sha256": "1e7c3e007740189569be11b63556a2944d9b417475d3fdbb868022607678bdd0",
+        "bytes": 8283,
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-egg-box-ui.test.tsx",
+        "sha256": "fb83721f5ceb31b6d101fd8b239cea8788756d344670335bf2f72adcbcc5f6f4",
+        "bytes": 12285,
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-egg-box.test.ts",
+        "sha256": "fc5636dc7c1b96c5f3cae2483f7bcdb7416d5eadb58848ac63fa14ada33790b0",
+        "bytes": 14325,
+        "tests": 21
+      },
+      {
+        "file": "tests/voxel-egg-food.test.ts",
+        "sha256": "d10df776c98513403a5da1430850e1d0fa2e8e93048efb50eb159097501abfe2",
+        "bytes": 13441,
+        "tests": 14
+      },
+      {
+        "file": "tests/voxel-energy-integration.test.ts",
+        "sha256": "559e3a5f06feb7d70fb291175939bffdf53234fe259193c864b65a6775dca0eb",
+        "bytes": 27506,
+        "tests": 27
+      },
+      {
+        "file": "tests/voxel-environment-boundaries.test.ts",
+        "sha256": "b10f96d64c939691c6e286994e2b484871688cc3dea71d127b55bde1e53fb883",
+        "bytes": 9024,
+        "tests": 3
+      },
+      {
+        "file": "tests/voxel-environment-integration.test.ts",
+        "sha256": "17ee523714d6953a5139ff7a721624f924b1695a5dd0461b9ca3a7b8d9d5b6f9",
+        "bytes": 8878,
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-environment-persistence.test.ts",
+        "sha256": "ae8769e84c33acbc913a310da61719a0a8aeaa48705bbdee815d627d7274fb5e",
+        "bytes": 12081,
+        "tests": 11
+      },
+      {
+        "file": "tests/voxel-exploration-persistence.test.ts",
+        "sha256": "6b8933dca8bed378135714754683562a882a7c549af5b20ef9754e469edfcf57",
+        "bytes": 4948,
+        "tests": 20
+      },
+      {
+        "file": "tests/voxel-exploration-renderer.test.ts",
+        "sha256": "a5708e2769a58e7d13185846f0a49531c9babeaac064e227b478886deefa3dfc",
+        "bytes": 4952,
+        "tests": 4
+      },
+      {
+        "file": "tests/voxel-exploration-worker.test.ts",
+        "sha256": "400f014b94d59d4c9771f643bfb2481faeb0f9f41b489eb35e88676006a71957",
+        "bytes": 3155,
+        "tests": 3
+      },
+      {
+        "file": "tests/voxel-exploration.test.ts",
+        "sha256": "4628d0ecc11ac736f295504da8cd772172cb93105ebf5200a742280065bbc7ca",
+        "bytes": 7767,
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-fire-boundaries.test.ts",
+        "sha256": "3d46c6f9e5e685e1c497a7e5a14fa416cb9952e66d3d9ac1df98a4b1ac90bc0f",
+        "bytes": 12922,
+        "tests": 27
+      },
+      {
+        "file": "tests/voxel-fire-integration.test.ts",
+        "sha256": "e9457d2c60f86991af1dcd514ae69191f2e6664150b8ddfcc27c3003b8f4f94b",
+        "bytes": 11451,
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-food.test.ts",
+        "sha256": "7521e94eabca9c6ef62a58bdb99380f6301a58f96f14758e6a09aebe9fc17f94",
+        "bytes": 21507,
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-furniture-fire-wealth.test.ts",
+        "sha256": "751a7915dddc900f6ead4fa265452a2f87632d422ba8c4a73e2f8baf54a9c77b",
+        "bytes": 4571,
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-furniture-integration.test.ts",
+        "sha256": "8a20cf9ac9b0bfa32c9688067507385d463fcb014394ea28d5d95ad8ec0f3821",
+        "bytes": 7583,
+        "tests": 7
+      },
+      {
+        "file": "tests/voxel-furniture-migration.test.ts",
+        "sha256": "0e584c457d3d1d1b175573879253504ee6e6aa41750a2138a42a22fffc498e49",
+        "bytes": 2144,
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-furniture-model.test.ts",
+        "sha256": "4f69c1785c1b5ad1a6f2d7fd66cd2cb91387917d32d255574a22cdcce6692b7c",
+        "bytes": 3989,
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-furniture-persistence.test.ts",
+        "sha256": "d2c41514479f7a2295345006df44ee63b6a4b90cfb6c2ab7ccb32214d06b2335",
+        "bytes": 2417,
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-housing.test.ts",
+        "sha256": "998c0c1913e0ec9bcfb829178c0fbd8d80897181ab5bb8510d2054fcc808940a",
+        "bytes": 21043,
+        "tests": 23
+      },
+      {
+        "file": "tests/voxel-husbandry-integration.test.ts",
+        "sha256": "a5400c345b275fa1cceca7e7522ad95fd3f9f785f23dc17ad7e9ff2a95865322",
+        "bytes": 9894,
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-husbandry-migration.test.ts",
+        "sha256": "f465b60d8185f02518478fca0fb67dd9e1a8cdcbfeac0bdf1b5265aa34787999",
+        "bytes": 12181,
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-husbandry-model.test.ts",
+        "sha256": "f0a86bc912d744e0a35bab3f12de4cf93d4628c3b1386aba94bac38a92be1420",
+        "bytes": 6851,
+        "tests": 10
+      },
+      {
+        "file": "tests/voxel-husbandry-persistence.test.ts",
+        "sha256": "96f8497bb960eb8737601e7d575cc2e20338d2f231154f687984edd20993652c",
+        "bytes": 13800,
+        "tests": 12
+      },
+      {
+        "file": "tests/voxel-injuries-rules.test.ts",
+        "sha256": "b209798d53c0274d655fd675df04959b21cfdd58a1167f87e47d7462873a8860",
+        "bytes": 9466,
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-item-forbidden-hosts.test.ts",
+        "sha256": "32f77f2e2e9660ad6cb3f8bbfc3e0a42f246cc726d3d7ab4767eae7f28416295",
+        "bytes": 14295,
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-item-forbidden.test.ts",
+        "sha256": "65193f07542f5c9e62e2375a3941fe43b44f41da25538abaaeb5f475229aa08f",
+        "bytes": 15308,
+        "tests": 14
+      },
+      {
+        "file": "tests/voxel-living-boundaries.test.ts",
+        "sha256": "fc6cbc07042846b12cde87f5ad281f5c5d7081202ff2a28bb270ebda73126161",
+        "bytes": 4567,
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-living-integration.test.ts",
+        "sha256": "9a9fff023149e571af45e38504a9ecb9ab59e1126dc230d4d2e536a4d30743f7",
+        "bytes": 7554,
+        "tests": 7
+      },
+      {
+        "file": "tests/voxel-living-migration.test.ts",
+        "sha256": "fa7c892ec6791768a8c79713d2710ce688647e5a169b0268f8a82e1cdadda875",
+        "bytes": 3272,
+        "tests": 4
+      },
+      {
+        "file": "tests/voxel-living-model.test.ts",
+        "sha256": "af605e44b919835c1b077fd036a4beb6b1124c6d461853bd6aa61180657249af",
+        "bytes": 4841,
+        "tests": 7
+      },
+      {
+        "file": "tests/voxel-living-persistence.test.ts",
+        "sha256": "db7085948fa89921231c459202fbbb05b84acc41114e6126c7e28bfd8e81d815",
+        "bytes": 7440,
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-logistics.test.ts",
+        "sha256": "b91e21b56cc00ea64a693ead4973db2ff3b5b34a21096bb46c512d67fb5b5b66",
+        "bytes": 28778,
+        "tests": 48
+      },
+      {
+        "file": "tests/voxel-medicine-integration.test.ts",
+        "sha256": "5b5292ef7b99ddca1bfbc185df7f3da4b78ac46343e388c47408fb61a2034fa2",
+        "bytes": 14524,
+        "tests": 14
+      },
+      {
+        "file": "tests/voxel-medicine-rules.test.ts",
+        "sha256": "eb093e39b7b88b3b0bd83df485d700ab4f545ceb5d02e30273cc1fea9e154cfa",
+        "bytes": 10901,
+        "tests": 19
+      },
+      {
+        "file": "tests/voxel-milk-resources.test.ts",
+        "sha256": "d04f62f85e76a5e6a4565596b379c6bfeeebb26b4688256f3eaadc4ed7d1032e",
+        "bytes": 8252,
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-mood-edge.test.ts",
+        "sha256": "f01db2cf1829b3e0a9262246d680c4673136bd4d2d530af80e14800ac6674459",
+        "bytes": 5334,
+        "tests": 7
+      },
+      {
+        "file": "tests/voxel-mood.test.ts",
+        "sha256": "8ddeebcd1d210f7d1f28eacc911661624bb0689f02626a22b05afd1d768ad010",
+        "bytes": 7244,
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-navigation.test.ts",
+        "sha256": "b96d2319c473addefd80d7f453fad7e3fcdfbf2c125fc6b1475f8c0fe346d214",
+        "bytes": 7587,
+        "tests": 12
+      },
+      {
+        "file": "tests/voxel-pens-integration.test.ts",
+        "sha256": "49e27f1cf56afe3e43ba396d237f7b801ba02069e2e6a6ee57924802841f1fef",
+        "bytes": 13789,
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-pens-migration.test.ts",
+        "sha256": "9b193ed816b1403d9da2acc93e68bc1986b42a53d02f5fa207bebddbb7e955c1",
+        "bytes": 5877,
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-pens-model.test.ts",
+        "sha256": "d1fc15ad2ad57e590118cde9182e7e678f5c9dee5f53a8cab9b85349250c38c1",
+        "bytes": 6684,
+        "tests": 11
+      },
+      {
+        "file": "tests/voxel-pens-persistence.test.ts",
+        "sha256": "ad311cebaaf86ef656c8011d0c67530a7b7ab6372016468d9244f34448e14c9c",
+        "bytes": 8586,
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-plants.test.ts",
+        "sha256": "3ad4f48bf8afbb639ba5c950d2bc5613ea12dae1b9eb5b498f9f2d6374174801",
+        "bytes": 18157,
+        "tests": 23
+      },
+      {
+        "file": "tests/voxel-power.test.ts",
+        "sha256": "ae5c0499a8ed76cacc4fd498f76ed4dca7bb3bb1b702de7c7c058808757aaeb0",
+        "bytes": 17489,
+        "tests": 28
+      },
+      {
+        "file": "tests/voxel-preservation-integration.test.ts",
+        "sha256": "95df663fa8cbd860c4b696bdb9088017012219b371b3e7f2c72da53449bb3012",
+        "bytes": 20075,
+        "tests": 15
+      },
+      {
+        "file": "tests/voxel-preservation.test.ts",
+        "sha256": "f13d0400ca71a7a64e001c9080c9250273bdec1bf6ed7860882981d12d66e108",
+        "bytes": 3523,
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-prison-integration.test.ts",
+        "sha256": "c1c57fb4e4a449cf9bc5515655fae19fd3864ca4212c54bf0cbcf876ce41b22c",
+        "bytes": 19572,
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-production-bills-integration.test.ts",
+        "sha256": "896d3e7e3214d79446a6f9b09a5f5b42cd999a211a4941de90a59d66c7d65da6",
+        "bytes": 21682,
+        "tests": 15
+      },
+      {
+        "file": "tests/voxel-production-bills-model.test.ts",
+        "sha256": "621b2eddd172ba92b3c29b10b782569e1a0a1fb5aebcdb2f8a4f882f737323b7",
+        "bytes": 13593,
+        "tests": 25
+      },
+      {
+        "file": "tests/voxel-production-output-integration.test.ts",
+        "sha256": "572f5df5356514ac0db64ef7034c6aa54f92ae4890a9d5631187ed628d782248",
+        "bytes": 17358,
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-production-policies-integration.test.ts",
+        "sha256": "79eb68613e6c922180676173265d0e0cda94e4ace4c94b82c3cdbe9e9bb1e92f",
+        "bytes": 23846,
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-production-policies-model.test.ts",
+        "sha256": "0e4d0ed8ac636ae41210ccedddbc190cfe14810c44bfc6d5fdbc4f12bdab3f5d",
+        "bytes": 10525,
+        "tests": 11
+      },
+      {
+        "file": "tests/voxel-ranged-integration.test.ts",
+        "sha256": "f25ac64f097edcd8b136945533c5a05f59a1a387ddc04426ec8d6b4bc92d7937",
+        "bytes": 23460,
+        "tests": 35
+      },
+      {
+        "file": "tests/voxel-ranged-production.test.ts",
+        "sha256": "e2a46501a95a711f96985865beebe3406171919622a321ebf1eecbcb9f72893f",
+        "bytes": 12260,
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-ranged-rules.test.ts",
+        "sha256": "ad93102d42641ea856a8a7e20c9ff9a5d7cd1a1371027adf13fa4a85002a749a",
+        "bytes": 19687,
+        "tests": 25
+      },
+      {
+        "file": "tests/voxel-ranged-view.test.ts",
+        "sha256": "041bd5798dde66049e93a628b51bfc0f0d54fdf8a7d0cb7b09d70e604b696c59",
+        "bytes": 4069,
+        "tests": 4
+      },
+      {
+        "file": "tests/voxel-region-persistence.test.ts",
+        "sha256": "28c9d535df613c80c2dd3df38e0f5b4d49555453a623d18007578438aba0ffee",
+        "bytes": 8808,
+        "tests": 31
+      },
+      {
+        "file": "tests/voxel-region-worker.test.ts",
+        "sha256": "ea35d07ac2c78b81a81ec1cf30279c87354ff92f994439fcde44b7cd68e81dd0",
+        "bytes": 4753,
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-regions.test.ts",
+        "sha256": "0c46ec020d38329ab35bdc051aa71cdcbf400438dacdc05dc3ff82dfee76a625",
+        "bytes": 6820,
+        "tests": 12
+      },
+      {
+        "file": "tests/voxel-relocation-integration.test.ts",
+        "sha256": "4edf93d08256fd57d8f867480a423fcf02ada786e53b2eb57e2f44d7237e57a9",
+        "bytes": 11311,
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-relocation-migration.test.ts",
+        "sha256": "ea45cf6d9b00661441b478da41d180e9cc4c8a71f660ba34bbef5341ed40ffe6",
+        "bytes": 2179,
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-relocation-model.test.ts",
+        "sha256": "b4a4c3fbc5ee3379d033150b3832bdcaabbf7ce01822db7aed54575432a44ae7",
+        "bytes": 4607,
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-relocation-persistence.test.ts",
+        "sha256": "f3973fcbec4b7be0598b4f9c70264b6f928d70d0548a3bfd4ceb76c9819faa6d",
+        "bytes": 7299,
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-relocation-wealth.test.ts",
+        "sha256": "89e58c3b1ec144f660f57552c7572b451f6599f21344558b5a24302baf19e754",
+        "bytes": 2548,
+        "tests": 3
+      },
+      {
+        "file": "tests/voxel-research.test.ts",
+        "sha256": "1591751b4bd6f4eccba3a31d6c8a403e48b785076f4e7142e768662f7e26c972",
+        "bytes": 16040,
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-rivers-generation.test.ts",
+        "sha256": "4fd3dfb6b2f5b3bae1367909c9d6e847c9834810fedb3b42f2bd2f75422b38ac",
+        "bytes": 12913,
+        "tests": 42
+      },
+      {
+        "file": "tests/voxel-rooms.test.ts",
+        "sha256": "7d22b234b07c57f6b531d0fb4c54e26140b5e6946753ad26e01be60b5b69d470",
+        "bytes": 9956,
+        "tests": 19
+      },
+      {
+        "file": "tests/voxel-sanitation-boundaries.test.ts",
+        "sha256": "c987bd2e5d5974b5802e67ef979178d5a531448810ee9f1182040c68ffbb71fb",
+        "bytes": 9163,
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-sanitation-integration.test.ts",
+        "sha256": "a41a7675c823e0f0f96e0c0359091e52b98539982129b4ff351964b2661a8444",
+        "bytes": 11076,
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-shelves.test.ts",
+        "sha256": "fb73f3bd7ffcb8822f524215d5416834d7e91b9e582dcb84e0ba83bf15cd5c90",
+        "bytes": 15103,
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-skills-integration.test.ts",
+        "sha256": "5618e9a4466c4a65dd07a646fcc5999a7f6f3e258c340a4ea44f00ac118bff74",
+        "bytes": 10532,
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-skills-rules.test.ts",
+        "sha256": "64a4e1c25ed258d69cfe00eb397de8eab8bf11888c5b7887f64dfefb9bcc7907",
+        "bytes": 12785,
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-skills-yields.test.ts",
+        "sha256": "777503835d98f4a173686bcf2d62ec3592a3ac9db1b9c95559690858b1efc671",
+        "bytes": 14176,
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-social-integration.test.ts",
+        "sha256": "45ed88a1e6c60308a57fce7725e28290b43c5cf28febc8c2c06d0efd2f30a02e",
+        "bytes": 9400,
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-social-migration.test.ts",
+        "sha256": "3d10a6a1c2569a943b3acf0eab16c5f722d3fb9d2e4f93d7ef3f52713728ac03",
+        "bytes": 3354,
+        "tests": 4
+      },
+      {
+        "file": "tests/voxel-social-model.test.ts",
+        "sha256": "5af29e8d374c0ccab683fe0fe1bbc4407f5fcc60163c164cecc16f342834e139",
+        "bytes": 9385,
+        "tests": 12
+      },
+      {
+        "file": "tests/voxel-social-persistence.test.ts",
+        "sha256": "1d80116e1c4d4a4db26373e288794178fc5d723bc5aacfcd507692cd9b23af65",
+        "bytes": 9842,
+        "tests": 10
+      },
+      {
+        "file": "tests/voxel-social-reload.test.ts",
+        "sha256": "dce7144ae733fed0786c7eda1cf14b7d98cb510e86b45f0d41d566e6c0dbf26a",
+        "bytes": 4132,
+        "tests": 2
+      },
+      {
+        "file": "tests/voxel-stockpile-zones.test.ts",
+        "sha256": "0e57520964e8dba1d5cb07f66815d457a81e8aba6cec114494b0e8cfc3605766",
+        "bytes": 9351,
+        "tests": 28
+      },
+      {
+        "file": "tests/voxel-storage-cells.test.ts",
+        "sha256": "3d4ee204e07a0fc8956cc72d562d69249e9bf21812b6e10d3cc181cc29276c64",
+        "bytes": 3751,
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-storage-groups.test.ts",
+        "sha256": "459d96bcec125293122dd96e7806913541d04691d8afe45f5feded4f585bea5f",
+        "bytes": 18674,
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-storyteller-integration.test.ts",
+        "sha256": "2172035402c1978ac7ca189b49f64a27090ac222921bcd73dba20709793f2207",
+        "bytes": 10894,
+        "tests": 16
+      },
+      {
+        "file": "tests/voxel-storyteller-rules.test.ts",
+        "sha256": "eeb3bdd8de77726a2a2c39cd04717ab2eb013ec58ef50e71edbaf9b303483fc6",
+        "bytes": 3146,
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-survival.test.ts",
+        "sha256": "b9e5ce9cf52f4a8dfaf31234fabfe167c45555b38068631e8c039aa8500370da",
+        "bytes": 17305,
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-thermal.test.ts",
+        "sha256": "7f26893eb105f656bf2ed1ba949449bc94f663b9fe80e7e7de613766a0e70827",
+        "bytes": 20952,
+        "tests": 26
+      },
+      {
+        "file": "tests/voxel-trade-boundaries.test.ts",
+        "sha256": "81c016ad3daf53aca5be83ca265f61713d2ef941907c1485c602d2f4da195a81",
+        "bytes": 14702,
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-trade-integration.test.ts",
+        "sha256": "920054eb1b4e773162dc899a12478bf9b0b34526b8459dbc8c653beb4455e47c",
+        "bytes": 5757,
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-trade-rules.test.ts",
+        "sha256": "8abd21074d429aecd4266d850afd63a9e85f88efbfbda5f8a420cabf42747fa9",
+        "bytes": 4264,
+        "tests": 7
+      },
+      {
+        "file": "tests/voxel-unfinished-production-integration.test.ts",
+        "sha256": "60409ab0b3d0daad020da99c9d3aa71fbecaa9e318733e73cd9e52dcd3092930",
+        "bytes": 11694,
+        "tests": 12
+      },
+      {
+        "file": "tests/voxel-unfinished-production-model.test.ts",
+        "sha256": "f0785481f304c0ae7ddd53839ca00e46eb38344bb4d092102ce908a5f02e5a3f",
+        "bytes": 13458,
+        "tests": 25
+      },
+      {
+        "file": "tests/voxel-water-bridge-integration.test.ts",
+        "sha256": "9d1aa21febf0561b63ed1fc8ea2323588e1c3a65e953d83b5eee483ffe01f873",
+        "bytes": 7671,
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-water-bridge-save.test.ts",
+        "sha256": "edf32e4483f498a48c9bdf57ef803b70014ff49d1a1624aa91ed57b09e74cc3b",
+        "bytes": 12177,
+        "tests": 16
+      },
+      {
+        "file": "tests/voxel-wealth.test.ts",
+        "sha256": "78e98200a7c487b6a1ead2169452e1ee45ea0c763e719dfd6d1241eb9a5e46cf",
+        "bytes": 7898,
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-weapon-production.test.ts",
+        "sha256": "4797a6f222e62358197db68acb6144777f315786f8764d23ef842a4fc8d313e4",
+        "bytes": 12363,
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-weapon-transport.test.ts",
+        "sha256": "470e3384ffdcdc4cc511cd3641f608bb63d9ad4303aff765e1eb82dee4c41d40",
+        "bytes": 19018,
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-weapons-rules.test.ts",
+        "sha256": "6985e8832011c0c789067efa9ed61cd48e4ee99c0e7d136e5176ada366480233",
+        "bytes": 11041,
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-weather-integration.test.ts",
+        "sha256": "4cf87ab142f475da751885dc4cc66bc60c3c369a33f6fa574c31eac6eddfcea4",
+        "bytes": 16124,
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-weather.test.ts",
+        "sha256": "04f2a646271d952e1c1919e3d4b1b7cfe866352ab379a6fbaa3d70305ca41489",
+        "bytes": 11177,
+        "tests": 34
+      },
+      {
+        "file": "tests/voxel-wildlife.test.ts",
+        "sha256": "a91e8ded560165fc3474698dc9b582b1b479fab241cc28965d033441daaa1665",
+        "bytes": 10593,
+        "tests": 10
+      },
+      {
+        "file": "tests/voxel-wool-materials.test.ts",
+        "sha256": "e402079a4bd5dcae441b0de65b2c917170ca09c4e7df2ef7aaace2d66c258159",
+        "bytes": 12894,
+        "tests": 15
+      },
+      {
+        "file": "tests/voxel-worldgen.test.ts",
+        "sha256": "07727b6dd07a715fa68584288c313216cd3429de8a62a10c31be0874f929797c",
+        "bytes": 15756,
+        "tests": 27
+      },
+      {
+        "file": "tests/voxel.test.ts",
+        "sha256": "e377682706e4837d66d4f0ccf43d6305c3a09b71f8a0037cd66c058431581f68",
+        "bytes": 15958,
+        "tests": 15
+      },
+      {
+        "file": "tests/wildlife-food.test.ts",
+        "sha256": "42d8c808285c5d5803bfca668c10cd2bdd59c13e78fda3a432f3276339554b4e",
+        "bytes": 5247,
+        "tests": 6
+      }
+    ]
+  },
+  "build": {
+    "log": {
+      "file": "test-results/egg-box-build.log",
+      "sha256": "e4d83611b8c2255f5e2175ed712a3b567a703105b6399e103a21554cb57b9f66",
+      "bytes": 2436
+    },
+    "assets": [
+      {
+        "file": "dist/assets/CanvasRenderer-B6Mdl2XH.js",
+        "sha256": "10062f733eb334b62322dc9a5c349144757377db9c8f83700bdebc1631dc4c33",
+        "bytes": 17856
+      },
+      {
+        "file": "dist/assets/CanvasRenderer-CPDWMEOH.js",
+        "sha256": "4449e37fe6e95bdaff4f5830d1901028d004478cde4ad7749f535932f49a1a08",
+        "bytes": 17935
+      },
+      {
+        "file": "dist/assets/Filter-3Gl5Xq8e.js",
+        "sha256": "ff7d610e3f8192440593d21cd136f96e4becc82a23699aa498414c5990d20521",
+        "bytes": 912
+      },
+      {
+        "file": "dist/assets/Filter-CYicu1qF.js",
+        "sha256": "3c9cf0a9f00ac53a85a96b50a7317d08cb1c33bf5e2bd49498d2b530ff15a2cb",
+        "bytes": 907
+      },
+      {
+        "file": "dist/assets/RenderTargetSystem-10VWBYJN.js",
+        "sha256": "15a4d6d93c6085a7dd593141cb9efbe26da8807881658b4798f40b2e03174394",
+        "bytes": 53483
+      },
+      {
+        "file": "dist/assets/RenderTargetSystem-DjD0ReZk.js",
+        "sha256": "053bbb690651346b12a44e22857e5c18440bb401c5c864866dc3e7fa82715d64",
+        "bytes": 53478
+      },
+      {
+        "file": "dist/assets/WebGLRenderer-BOop3V_f.js",
+        "sha256": "bc33a461adc7aad937c65dd40a117b526eda37adfe794cfa834214dd5d122484",
+        "bytes": 73638
+      },
+      {
+        "file": "dist/assets/WebGLRenderer-C7Nx25f8.js",
+        "sha256": "343ac467e82587de9fb8eb5da32481c1fa168bad66db05b515af78b975db87ba",
+        "bytes": 73717
+      },
+      {
+        "file": "dist/assets/WebGPURenderer-QTtzG08o.js",
+        "sha256": "98fd1751fc9874402ab0ad4c4168ce4e1337736707368684892d967e3a357d01",
+        "bytes": 55946
+      },
+      {
+        "file": "dist/assets/WebGPURenderer-zMFGatTH.js",
+        "sha256": "d094ebc94dc94a8338c5c0ca7bd6b1909447156a2302247416b321c8ae974126",
+        "bytes": 55867
+      },
+      {
+        "file": "dist/assets/browserAll-CMSfAGt_.js",
+        "sha256": "9e05262a3d38b9d8f5f29567046a4e65eacc9224a9f19584593b5ad29ba1ef4b",
+        "bytes": 44015
+      },
+      {
+        "file": "dist/assets/browserAll-DcLNF0vk.js",
+        "sha256": "c0b603ca84267894b381ec6cfae9636912e71499c9135b3cbc18aa453c8eef66",
+        "bytes": 43936
+      },
+      {
+        "file": "dist/assets/client-CrowJ5J7.js",
+        "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+        "bytes": 221699
+      },
+      {
+        "file": "dist/assets/getTexelRangeRects-Dy8HUIoI.js",
+        "sha256": "8bbb0d808ef79bbde316b91d4311ad257e0676d7cef252b4d4b335c890e13d70",
+        "bytes": 11406
+      },
+      {
+        "file": "dist/assets/getTexelRangeRects-PpjiOnWN.js",
+        "sha256": "ce5b274b34648f47cb7dfe2b61bb0982b10766b58ae801edc294d67463753f3d",
+        "bytes": 11401
+      },
+      {
+        "file": "dist/assets/index-DfwV6rNc.js",
+        "sha256": "1be1355093b755419ea0416704a6a8aea6d045f3fab1bb0b265341cc328f4042",
+        "bytes": 2356
+      },
+      {
+        "file": "dist/assets/main-BW-0agk_.css",
+        "sha256": "95af0c0b4b4ccaa89639521c28987241bc9747b2f185ba80d9a73ed6fcd5b40b",
+        "bytes": 61180
+      },
+      {
+        "file": "dist/assets/main-Bd4OPQD3.css",
+        "sha256": "dc5627827651affe81bedfa46cbf7057ef1e88932911b4ea18396538b97e69fa",
+        "bytes": 35409
+      },
+      {
+        "file": "dist/assets/main-DMhnMsFl.js",
+        "sha256": "9232c30c584b431d6538c8d806594a781b9ce6dfbbc681988a3f2e99601d36fb",
+        "bytes": 978399
+      },
+      {
+        "file": "dist/assets/main-DweG-GLd.js",
+        "sha256": "8dfa987c265bb23a4c5824e3333df0db4b7c7d65ee100753776e8a23994d9d1d",
+        "bytes": 47832
+      },
+      {
+        "file": "dist/assets/render.worker-DSNcKIh7.js",
+        "sha256": "d20eee6ca33b28ab9af0145994a83d57538f915cded4c5c52b0f5ce649a11a58",
+        "bytes": 371089
+      },
+      {
+        "file": "dist/assets/render.worker-LzEY9T4r.js",
+        "sha256": "5c963970d34f550f5f30293fd71acb1f2555c6bdd1392f546a63ae1174375f7d",
+        "bytes": 636092
+      },
+      {
+        "file": "dist/assets/renderer-CunVhGMe.js",
+        "sha256": "58370b641915e6db96b172919119cb6093489ac77ed2ce0f8e8e69872eb10068",
+        "bytes": 304115
+      },
+      {
+        "file": "dist/assets/sim.worker-TVFgUzzb.js",
+        "sha256": "660607d5f3448266fb3aa9d9c6ac5e433a3524c096ab3f5d266cff8590dd8d36",
+        "bytes": 48496
+      },
+      {
+        "file": "dist/assets/sim.worker-mVJ3ifxZ.js",
+        "sha256": "237c7ccb6b746548d653c9ce39e76bbeb0f35519403dd404adb0cf63f0053a49",
+        "bytes": 666216
+      },
+      {
+        "file": "dist/assets/webworkerAll-0b5Tygjj.js",
+        "sha256": "ae2ba31eb7d7b32069b781ede54a2cdf24eb4a5e0b0cd6ad27e0498ed5b47a95",
+        "bytes": 15028
+      },
+      {
+        "file": "dist/assets/webworkerAll-BOewEmuM.js",
+        "sha256": "4046cb2a2724fbbfda4896c2001779982aca177f0681b923efd47090542680a8",
+        "bytes": 15107
+      },
+      {
+        "file": "dist/index.html",
+        "sha256": "ed7831d93b1e0aa9364d99d0d53d4bebb4ccc6fe256d8a0a61f9ee72ada1501d",
+        "bytes": 652
+      }
+    ]
+  },
+  "original": {
+    "staticTypes": 36,
+    "anchors": 101,
+    "boundedChecks": 9,
+    "xmlProjections": 16,
+    "manifest": {
+      "file": "docs/research/rimworld/evidence/egg-box-manifest.json",
+      "sha256": "7ae4483b5c195c3890584ab7a20853f9277cd860519c7c6197580404711d4065",
+      "bytes": 9109
+    },
+    "mechanisms": {
+      "file": "docs/research/rimworld/evidence/egg-box-mechanisms.json",
+      "sha256": "5e07bd1ee3a22209142ce50b592f5252e574ed6cf31bb76b2ec48e9ef4628637",
+      "bytes": 79044
+    },
+    "logs": [
+      {
+        "file": "test-results/egg-box-extract-check.log",
+        "sha256": "332d6e502a8623108f8e07f93f3f3d6a9b611b1608a6556b43e276d6ab1500cb",
+        "bytes": 43
+      },
+      {
+        "file": "test-results/egg-box-mechanisms-check.log",
+        "sha256": "c5be926b05e98364b4196ee80088a06df63ce2486db7930ec10ad9ed30149565",
+        "bytes": 77
+      }
+    ]
+  },
+  "legacyV51": {
+    "report": {
+      "file": "test-results/egg-box-v51-baseline/report.json",
+      "sha256": "f3c8c7b594d691efb88af5a8584c5770a4197828a676479b60e9b029536f5cb1",
+      "bytes": 24460
+    },
+    "auditedTicks": 750,
+    "outputs": {
+      "meals": 1,
+      "apparel": 1,
+      "material": "cloth",
+      "eggs": 0
+    },
+    "reloads": [
+      {
+        "tick": 301422,
+        "name": "migrated-active-cook-and-cloth",
+        "cookProgress": 20.520000000000007,
+        "unfinishedProgress": 165
+      },
+      {
+        "tick": 301477,
+        "name": "mid-cook",
+        "cookProgress": 50.15999999999998,
+        "unfinishedProgress": 205
+      },
+      {
+        "tick": 301557,
+        "name": "mid-cloth",
+        "cookProgress": null,
+        "unfinishedProgress": 265
+      },
+      {
+        "tick": 302112,
+        "name": "completed-cook-and-cloth",
+        "cookProgress": null,
+        "unfinishedProgress": null
+      },
+      {
+        "tick": 302172,
+        "name": "final",
+        "cookProgress": null,
+        "unfinishedProgress": null
+      }
+    ],
+    "provenance": {
+      "file": "test-results/egg-box-v51-baseline/provenance.json",
+      "sha256": "e98e82c940901c4b345e4f9ac3668660d4b1cc2846b56bae4f252887306d6eca",
+      "bytes": 16930
+    },
+    "baseline": {
+      "file": "test-results/animal-eggs-v50-baseline/migrated-active-cook-and-cloth.json",
+      "sha256": "a6cc54b90baaff1ce7ecd6a7d477d5a2e34e5515fd75462c418adbaa43423c9c",
+      "bytes": 234372
+    },
+    "script": {
+      "file": "scripts/voxel-egg-box-legacy-verify.mjs",
+      "sha256": "341bb88b88bcb363c3e3bc6670b51e7e0ecdedd1e565b341d1f236c465e10e3f",
+      "bytes": 16714
+    },
+    "checkpoints": [
+      {
+        "file": "test-results/egg-box-v51-baseline/migrated-active-cook-and-cloth.json",
+        "sha256": "e0861fdd6fe7ec605b6352e47c73d11f117cc42c6e7e4a293eeab6f3aa3cd31d",
+        "bytes": 234386
+      },
+      {
+        "file": "test-results/egg-box-v51-baseline/mid-cook.json",
+        "sha256": "b9db3ddde2c6c2918cb06866fc98abbdb528ced2f2ff83109cef8fb271b771ba",
+        "bytes": 234393
+      },
+      {
+        "file": "test-results/egg-box-v51-baseline/mid-cloth.json",
+        "sha256": "eff45ba1078c15f50748e30a84eb2d51a3fe0fdc4b36df6010e3e9a74081c50a",
+        "bytes": 233763
+      },
+      {
+        "file": "test-results/egg-box-v51-baseline/completed-cook-and-cloth.json",
+        "sha256": "fa8110e7a0b7766a70b960452d6777b5913b6163a0a32944cd21b29cd2dff6fc",
+        "bytes": 232881
+      },
+      {
+        "file": "test-results/egg-box-v51-baseline/final.json",
+        "sha256": "4b7672e2471fb928d31e1f9b1660d1398673514374b8067b8a67da80ac8c9dbd",
+        "bytes": 232887
+      }
+    ]
+  },
+  "scripts": [
+    {
+      "file": "scripts/research/extract-egg-box.ps1",
+      "sha256": "6988de39c74d136dad8b48cd986d0c1ee9bc792bedec81bea580d51066e8c118",
+      "bytes": 3901
+    },
+    {
+      "file": "scripts/research/collect-egg-box-evidence.ps1",
+      "sha256": "5e7444680266da311b7558714a162b2600d6ecd21ce2091044aebb71cf4c7c90",
+      "bytes": 27789
+    },
+    {
+      "file": "scripts/research/verify-voxel-egg-box-validation.mjs",
+      "sha256": "77c388cbe1325d8d7974f714083ddecd02e6b36e9b1876b403db040117eb2228",
+      "bytes": 5739
+    }
+  ]
+}

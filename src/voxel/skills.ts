@@ -71,6 +71,7 @@ const BUILDING_JOBS = new Set([
   'fence',
   'fenceGate',
   'penMarker',
+  'eggBox',
   'door',
   'stonecutter',
   'tailor',

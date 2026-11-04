@@ -1,5 +1,7 @@
 # 余烬边境 · Emberfield
 
+v52接通蛋箱：真实搬料建造 → 母鸡集中产蛋 → 箱内孵化/保鲜 → 搬运工到场取蛋 → 实际入库。支持提前清空、禁止、仓位预约、工作中断、拆除/火灾和存读续行；玩法机制优先，数值后调。见[147原版静态机制](docs/research/rimworld/147-egg-box-mechanisms.md)、[148玩法与验证](docs/research/rimworld/148-egg-box-gameplay.md)。本轮未操作原版或浏览器，下文版本段落记录当时边界。
+
 v51接通鸡蛋与孵化：商队受精蛋取得（Web适配）→ 适温孵化 → 幼鸡成长圈养 → 实际配种与自行产蛋 → 按营养烹饪或继续繁殖。搬运、堆叠、温损转换、存读和旧账单选择相互衔接；机制优先、数值后调。见[145原版静态机制](docs/research/rimworld/145-animal-eggs-mechanisms.md)、[146玩法与验证](docs/research/rimworld/146-animal-eggs-gameplay.md)。蛋箱和活畜贸易继续待补，本轮未操作原版或浏览器。
 
 v50接通剪毛与材质衣物：温带羊驼 → 驯服圈养 → 公母成年长毛 → 到场剪毛 → 实物羊毛 → 裁缝单材选料 → 未完成品 → 穿衣御寒。旧存档保留原材料与筛选，玩法机制优先，数值后调。见[143原版静态机制](docs/research/rimworld/143-animal-wool-mechanisms.md)、[144玩法与验证](docs/research/rimworld/144-animal-wool-gameplay.md)。当前继续暂停原版与浏览器交互。

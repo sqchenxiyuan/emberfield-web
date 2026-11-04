@@ -3,6 +3,7 @@ import { initialAnimalPenState } from './pens';
 import { autoSlaughterSelection, type AutoSlaughterSettings } from './autoSlaughter';
 import { advanceWool, woolReady, woolGatherSpeed, woolGatherChance, WOOL_RULES } from './animalWool';
 import { advanceEggLayer, eggLayerActive, EGG_RULES, freshFertilizedEggs } from './animalEggs';
+import { eggBoxAccepts, type EggBox } from './eggBoxes';
 import { freshBatch } from './preservation';
 import { advanceMilk, milkReady, milkGatherSpeed, milkGatherChance, MILK_RULES } from './animalMilk';
 import { at, CELLS, DAY, position, type Cargo, type Crop, type GrassPatch, type HandleTask,
@@ -17,6 +18,8 @@ import { HUSBANDRY_RULES, ANIMAL_HUSBANDRY, initialAnimalState, isAnimalAdult,
 
 export interface HusbandryHost extends PensHost {
   autoSlaughter?: AutoSlaughterSettings;
+  eggBoxes?: EggBox[];
+  animalEggBoxPlace?(a: WildAnimal, batch: Cargo, boxId: number, commit: boolean): boolean;
   seed: number; tick: number; nextId: number; notice: string;
   animals: WildAnimal[]; pawns: Pawn[]; items: Stack[]; crops: Crop[];
   grass: GrassPatch[]; husbandryLog: HusbandryEvent[];
@@ -174,13 +177,17 @@ function mateTick(s:HusbandryHost,a:WildAnimal):boolean {
   }
   return true;
 }
-/** An animal walks to a laying site and waits there. Egg boxes are not present
- * in this Web tier: reuse a same-room egg pile, then a reachable nearby cell. */
+/** Colony hens first reserve a reachable box. Ground laying remains the fallback. */
+function boxAvailable(s:HusbandryHost,a:WildAnimal,box:EggBox):boolean {
+  return a.faction==='colony' && eggBoxAccepts(box,a.fertilizationCount>0?'eggFertilized':'eggUnfertilized') &&
+    !s.pawns.some(p=>p.eggBoxTask?.boxId===box.id) &&
+    !s.animals.some(other=>other!==a&&other.goal?.kind==='layEggBox'&&other.goal.id===box.id);
+}
 function layEggTick(s:HusbandryHost,a:WildAnimal):boolean {
   if(!eggLayerActive(a)||a.eggProgress<1||a.slaughter||a.releaseMarked||a.hunt){
-    if(a.goal?.kind==='layEgg')clearAnimal(a);return false;
+    if(a.goal?.kind==='layEgg'||a.goal?.kind==='layEggBox')clearAnimal(a);return false;
   }
-  if(a.goal?.kind!=='layEgg') {
+  if(a.goal?.kind!=='layEgg'&&a.goal?.kind!=='layEggBox') {
     if(s.tick<a.decisionTick)return false;
     clearAnimal(a);
     const eggType=a.fertilizationCount>0?'eggFertilized':'eggUnfertilized';
@@ -188,7 +195,14 @@ function layEggTick(s:HusbandryHost,a:WildAnimal):boolean {
       Math.hypot(i.x-a.x,i.y-a.y,i.z-a.z)<=30&&s.animalEggRoom?.(i)===s.animalEggRoom?.(a))
       .sort((x,y)=>Math.hypot(x.x-a.x,x.y-a.y,x.z-a.z)-Math.hypot(y.x-a.x,y.y-a.y,y.z-a.z)||x.id-y.id);
     let result:ReturnType<typeof route>=null;
-    for(const egg of candidates){
+    // The Web graph has no native region BFS. Search within the source radius,
+    // preferring fuller compatible boxes, then geometric distance and identity.
+    const distance=(b:Pos)=>Math.hypot(b.x-a.x,b.y-a.y,b.z-a.z);
+    for(const box of [...(s.eggBoxes??[])].filter(b=>distance(b)<=30&&boxAvailable(s,a,b)&&
+      s.animalCanStop(b)&&animalAllowed(s,a,b)).sort((x,y)=>(y.eggs?.amount??0)-(x.eggs?.amount??0)||distance(x)-distance(y)||x.id-y.id)) {
+      result=route(s,a,new Map([[at(box),{kind:'layEggBox',id:box.id}]]));if(result)break;
+    }
+    for(const egg of result?[]:candidates){
       const targets=new Map([egg,...s.itemStands(egg)].filter(p=>s.animalCanStop(p)&&animalAllowed(s,a,p))
         .map(p=>[at(p),{kind:'layEgg' as const,id:at(p)}]));
       result=route(s,a,targets);if(result)break;
@@ -204,18 +218,20 @@ function layEggTick(s:HusbandryHost,a:WildAnimal):boolean {
     if(!result){a.reason='准备产蛋，找不到可达位置';a.decisionTick=s.tick+80;return true;}
     a.path=result.path;a.goal=result.goal;a.layProgress=0;
   }
-  const target=position(a.goal!.id);
-  if(!s.animalCanStop(target)||!animalAllowed(s,a,target)){clearAnimal(a);a.decisionTick=s.tick+80;return true;}
+  const box=a.goal!.kind==='layEggBox'?s.eggBoxes?.find(b=>b.id===a.goal!.id):undefined;
+  const target=box??position(a.goal!.id);
+  if((a.goal!.kind==='layEggBox'&&(!box||!boxAvailable(s,a,box)))||!s.animalCanStop(target)||!animalAllowed(s,a,target)){clearAnimal(a);a.decisionTick=s.tick+80;return true;}
   a.phase='layEgg';a.reason='前往产蛋位置';
   if(move(s,a))return true;
-  if(a.goal?.kind!=='layEgg'||at(a)!==at(target))return true;
+  if(!a.goal||at(a)!==at(target))return true;
   a.phase='layEgg';a.reason='正在产蛋';
   a.layProgress=Math.min(EGG_RULES.layWork,a.layProgress+1);
   if(a.layProgress<EGG_RULES.layWork)return true;
   const fertile=a.fertilizationCount>0;
   const batch=fertile?freshFertilizedEggs(1,a.faction,a.id,a.eggFatherId):freshBatch('eggUnfertilized',1);
-  if(!s.animalEggPlace?.(a,batch,false)){a.reason='产蛋完成，等待地面空间';return true;}
-  if(!s.animalEggPlace(a,batch,true))throw new Error('产蛋放置计划在同一模拟步内失效');
+  const place=(commit:boolean)=>box?s.animalEggBoxPlace?.(a,batch,box.id,commit):s.animalEggPlace?.(a,batch,commit);
+  if(!place(false)){a.reason='产蛋完成，等待可用空间';return true;}
+  if(!place(true))throw new Error('产蛋放置计划在同一模拟步内失效');
   a.eggProgress=0;
   if(fertile)a.fertilizationCount--;
   if(!a.fertilizationCount)a.eggFatherId=null;

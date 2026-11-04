@@ -71,7 +71,7 @@ export function validateEggs(d: VoxelSave): void {
       if(!eggLayerActive(a)||a.eggProgress!==1||a.mateId!==null||a.eatProgress!==0||a.phase!=='layEgg'||
         !Number.isInteger(a.goal.id)||a.goal.id<0||a.goal.id>=CELLS||
         (a.layProgress>0&&(a.path.length!==0||at(a)!==a.goal.id)))throw new Error('产蛋任务状态无效');
-    } else if(a.layProgress!==0||a.phase==='layEgg')throw new Error('产蛋工作缺少目标');
+    } else if(a.goal?.kind!=='layEggBox'&&(a.layProgress!==0||a.phase==='layEgg'))throw new Error('产蛋工作缺少目标');
   }
   const visit=(node:any):void=>{
     if(!node||typeof node!=='object')return;

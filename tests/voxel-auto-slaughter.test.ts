@@ -170,7 +170,7 @@ describe('physical automatic slaughter integration and save safety', () => {
     const s = fixture(); add(s, { slaughter: true });
     const old = s.save() as any; stripAnimalMilkFields(old); old.version = 47; delete old.autoSlaughter; const before = structuredClone(old);
     const migrated = VoxelSimulation.load(old).save(); expect(old).toEqual(before);
-    expect(migrated.version).toBe(51); expect(migrated.autoSlaughter).toEqual(defaultAutoSlaughter());
+    expect(migrated.version).toBe(52); expect(migrated.autoSlaughter).toEqual(defaultAutoSlaughter());
     expect(migrated.animals).toEqual(milkExpectedField('animals', old.animals)); expect(migrated.stats).toEqual(milkExpectedField('stats', old.stats));
   });
   it('rejects new state hidden behind old schemas and malformed current configuration', () => {

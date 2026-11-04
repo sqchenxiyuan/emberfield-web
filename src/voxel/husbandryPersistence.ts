@@ -100,7 +100,7 @@ export function validateHusbandry(d: VoxelSave): void {
       const father = animalById.get(a.pregnancy.fatherId);
       if (father && (father.sex !== 'male' || father.species !== a.species)) fail('父代身份不符');
     }
-    if (a.goal !== null && (!exact(a.goal, ['kind', 'id']) || !['grass', 'crop', 'food', 'mate', 'area', 'exit', 'layEgg'].includes(a.goal.kind) ||
+    if (a.goal !== null && (!exact(a.goal, ['kind', 'id']) || !['grass', 'crop', 'food', 'mate', 'area', 'exit', 'layEgg', 'layEggBox'].includes(a.goal.kind) ||
         (['grass','exit','layEgg'].includes(a.goal.kind) ? !integer(a.goal.id, 0, CELLS - 1) : !id(a.goal.id)))) fail('动物目标无效');
     if (a.path.length && a.goal === null) fail('动物路径缺少目标');
     if (a.mateId !== null) {

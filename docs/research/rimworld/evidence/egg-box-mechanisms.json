@@ -1,0 +1,2156 @@
+{
+  "evidence_id": "RW17-EGG-BOX-STATIC",
+  "version": "1.7.4980 rev60",
+  "assemblySha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "reaEvidenceId": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+  "reaParentId": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+  "reaFile": "docs/research/rimworld/evidence/production-bills-rea-managed.json",
+  "reaSha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+  "manifestFile": "docs/research/rimworld/evidence/egg-box-manifest.json",
+  "manifestSha256": "7ae4483b5c195c3890584ab7a20853f9277cd860519c7c6197580404711d4065",
+  "rules": [
+    {
+      "type": "Verse.BuildableDef",
+      "file": ".local-research/egg-box/Verse.BuildableDef.cs",
+      "sha256": "4ab5cdce8c360a9401aff680543e70858de0d653702abcef524306ff83619c53",
+      "anchor": "public Traversability passability;",
+      "hits": [
+        {
+          "line": 13,
+          "text": "public Traversability passability;"
+        }
+      ],
+      "interpretation": "The field keeps enum zero unless a Def overrides it."
+    },
+    {
+      "type": "Verse.Traversability",
+      "file": ".local-research/egg-box/Verse.Traversability.cs",
+      "sha256": "579f5e133836048364f91c5d1a3563947584004ae1654635b1f1f58cc7f1c9d4",
+      "anchor": "Standable,",
+      "hits": [
+        {
+          "line": 5,
+          "text": "Standable,"
+        }
+      ],
+      "interpretation": "The first enum member is zero: ordinary egg boxes are standable."
+    },
+    {
+      "type": "Verse.ThingDef",
+      "file": ".local-research/egg-box/Verse.ThingDef.cs",
+      "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+      "anchor": "public IntVec2 size = IntVec2.One;",
+      "hits": [
+        {
+          "line": 21,
+          "text": "public IntVec2 size = IntVec2.One;"
+        }
+      ],
+      "interpretation": "EggBox inherits a one-cell footprint when size is absent."
+    },
+    {
+      "type": "Verse.ThingDef",
+      "file": ".local-research/egg-box/Verse.ThingDef.cs",
+      "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+      "anchor": "public bool blockLight;",
+      "hits": [
+        {
+          "line": 318,
+          "text": "public bool blockLight;"
+        }
+      ],
+      "interpretation": "Light blocking defaults to false."
+    },
+    {
+      "type": "Verse.ThingDef",
+      "file": ".local-research/egg-box/Verse.ThingDef.cs",
+      "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+      "anchor": "public bool blockWind;",
+      "hits": [
+        {
+          "line": 320,
+          "text": "public bool blockWind;"
+        }
+      ],
+      "interpretation": "Wind blocking defaults to false."
+    },
+    {
+      "type": "Verse.ThingDef",
+      "file": ".local-research/egg-box/Verse.ThingDef.cs",
+      "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+      "anchor": "public bool hasInteractionCell;",
+      "hits": [
+        {
+          "line": 82,
+          "text": "public bool hasInteractionCell;"
+        }
+      ],
+      "interpretation": "Without an interaction cell, extraction uses Touch."
+    },
+    {
+      "type": "Verse.ThingDef",
+      "file": ".local-research/egg-box/Verse.ThingDef.cs",
+      "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+      "anchor": "public bool canDeteriorateUnspawned;",
+      "hits": [
+        {
+          "line": 123,
+          "text": "public bool canDeteriorateUnspawned;"
+        }
+      ],
+      "interpretation": "Egg items inherit false unless explicitly overridden."
+    },
+    {
+      "type": "Verse.ThingDef",
+      "file": ".local-research/egg-box/Verse.ThingDef.cs",
+      "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+      "anchor": "if (passability != Traversability.Impassable && !IsDoor)",
+      "hits": [
+        {
+          "line": 762,
+          "text": "if (passability != Traversability.Impassable && !IsDoor)"
+        }
+      ],
+      "interpretation": "Region blocking is tied to impassable buildings, doors or fences; EggBox declares none of these."
+    },
+    {
+      "type": "RimWorld.StatWorker",
+      "file": ".local-research/egg-box/RimWorld.StatWorker.cs",
+      "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+      "anchor": "num *= req.StuffDef.stuffProps.statFactors.GetStatFactorFromList(stat);",
+      "hits": [
+        {
+          "line": 303,
+          "text": "num *= req.StuffDef.stuffProps.statFactors.GetStatFactorFromList(stat);"
+        }
+      ],
+      "interpretation": "Building statBases are modified by selected material factors."
+    },
+    {
+      "type": "RimWorld.StatWorker",
+      "file": ".local-research/egg-box/RimWorld.StatWorker.cs",
+      "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+      "anchor": "num += req.StuffDef.stuffProps.statOffsets.GetStatOffsetFromList(stat);",
+      "hits": [
+        {
+          "line": 309,
+          "text": "num += req.StuffDef.stuffProps.statOffsets.GetStatOffsetFromList(stat);"
+        }
+      ],
+      "interpretation": "Material offsets also affect effective stats."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "compEggLayer == null || !compEggLayer.CanLayNow",
+      "hits": [
+        {
+          "line": 17,
+          "text": "if (compEggLayer == null || !compEggLayer.CanLayNow)"
+        }
+      ],
+      "interpretation": "A ready egg layer is required before selecting a site."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "ThingDef singleDef = compEggLayer.NextEggType();",
+      "hits": [
+        {
+          "line": 21,
+          "text": "ThingDef singleDef = compEggLayer.NextEggType();"
+        }
+      ],
+      "interpretation": "Fallback search matches the next actual fertile/unfertile type."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "PathEndMode peMode = PathEndMode.OnCell;",
+      "hits": [
+        {
+          "line": 22,
+          "text": "PathEndMode peMode = PathEndMode.OnCell;"
+        }
+      ],
+      "interpretation": "The animal stands on the laying destination, including the box."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "TraverseParms.For(pawn, Danger.Some)",
+      "hits": [
+        {
+          "line": 23,
+          "text": "TraverseParms traverseParms = TraverseParms.For(pawn, Danger.Some);"
+        }
+      ],
+      "interpretation": "Search uses the animal traverse parameters and Danger.Some."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "if (pawn.Faction == Faction.OfPlayer)",
+      "hits": [
+        {
+          "line": 24,
+          "text": "if (pawn.Faction == Faction.OfPlayer)"
+        }
+      ],
+      "interpretation": "Only player-faction animals enter the egg-box preference branch."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "return JobMaker.MakeJob(JobDefOf.LayEgg, bestEggBox);",
+      "hits": [
+        {
+          "line": 29,
+          "text": "return JobMaker.MakeJob(JobDefOf.LayEgg, bestEggBox);"
+        }
+      ],
+      "interpretation": "A usable preferred box wins before the floor-egg fallback."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "pawn.GetRoom() == null || x.GetRoom() == pawn.GetRoom()",
+      "hits": [
+        {
+          "line": 32,
+          "text": "Thing thing = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(singleDef), peMode, traverseParms, 30f, (Thing x) => pawn.GetRoom() == null || x.GetRoom() == pawn.GetRoom());"
+        }
+      ],
+      "interpretation": "Same-room restriction belongs to the floor-egg fallback."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "RCellFinder.RandomWanderDestFor(pawn, pawn.Position, 5f, null, Danger.Some)",
+      "hits": [
+        {
+          "line": 33,
+          "text": "return JobMaker.MakeJob(JobDefOf.LayEgg, thing?.Position ?? RCellFinder.RandomWanderDestFor(pawn, pawn.Position, 5f, null, Danger.Some));"
+        }
+      ],
+      "interpretation": "Without a reachable box or same-type floor egg, use a nearby wander cell."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "ThingRequest.ForDef(ThingDefOf.EggBox), peMode, tp, 30f, IsUsableBox, GetScore, 10",
+      "hits": [
+        {
+          "line": 39,
+          "text": "return GenClosest.ClosestThing_Regionwise_ReachablePrioritized(pawn.Position, pawn.Map, ThingRequest.ForDef(ThingDefOf.EggBox), peMode, tp, 30f, IsUsableBox, GetScore, 10);"
+        }
+      ],
+      "interpretation": "Boxes use a 30-cell prioritized regional search with minimum ten regions."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "compEggContainer == null || compEggContainer.Full",
+      "hits": [
+        {
+          "line": 43,
+          "text": "if (compEggContainer == null || compEggContainer.Full)"
+        }
+      ],
+      "interpretation": "Full boxes score zero and also fail acceptance."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "compEggContainer.ContainedThing?.stackCount * 5f) ?? 0.5f",
+      "hits": [
+        {
+          "line": 47,
+          "text": "return ((float?)compEggContainer.ContainedThing?.stackCount * 5f) ?? 0.5f;"
+        }
+      ],
+      "interpretation": "Nonempty boxes score first-stack count times five; empty boxes score one half."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "if (!thing.Spawned)",
+      "hits": [
+        {
+          "line": 51,
+          "text": "if (!thing.Spawned)"
+        }
+      ],
+      "interpretation": "Candidates must be spawned."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "thing.IsForbidden(pawn) || !pawn.CanReserve(thing) || !pawn.Position.InHorDistOf(thing.Position, 30f)",
+      "hits": [
+        {
+          "line": 55,
+          "text": "if (thing.IsForbidden(pawn) || !pawn.CanReserve(thing) || !pawn.Position.InHorDistOf(thing.Position, 30f))"
+        }
+      ],
+      "interpretation": "Forbidden, reservation and horizontal-distance checks gate the candidate."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "compEggContainer == null || !compEggContainer.Accepts(eggDef)",
+      "hits": [
+        {
+          "line": 60,
+          "text": "if (compEggContainer == null || !compEggContainer.Accepts(eggDef))"
+        }
+      ],
+      "interpretation": "A box must accept the next egg Def."
+    },
+    {
+      "type": "Verse.GenClosest",
+      "file": ".local-research/egg-box/Verse.GenClosest.cs",
+      "sha256": "7ad8cb89e219270db6b6a345d722b3b2b17a5f77508c31dab83a4720c8c5a874",
+      "anchor": "int minRegions = 24, int maxRegions = 30, bool lookInHaulSources = false)",
+      "hits": [
+        {
+          "line": 88,
+          "text": "public static Thing ClosestThing_Regionwise_ReachablePrioritized(IntVec3 root, Map map, ThingRequest thingReq, PathEndMode peMode, TraverseParms traverseParams, float maxDistance = 9999f, Predicate<Thing> validator = null, Func<Thing, float> priorityGetter = null, int minRegions = 24, int maxRegions = 30, bool lookInHaulSources = false)"
+        }
+      ],
+      "interpretation": "The caller leaves maximum scanned regions at thirty."
+    },
+    {
+      "type": "Verse.RegionProcessorClosestThingReachable",
+      "file": ".local-research/egg-box/Verse.RegionProcessorClosestThingReachable.cs",
+      "sha256": "e42f58d73c44b2f0912609cd0dc89389df4578ff4a7e6a438f62eb5906d4af07",
+      "anchor": "if (regionsSeenScan >= minRegions)",
+      "hits": [
+        {
+          "line": 113,
+          "text": "if (regionsSeenScan >= minRegions)"
+        }
+      ],
+      "interpretation": "The region traversal may stop after the minimum when a candidate exists."
+    },
+    {
+      "type": "Verse.RegionProcessorClosestThingReachable",
+      "file": ".local-research/egg-box/Verse.RegionProcessorClosestThingReachable.cs",
+      "sha256": "e42f58d73c44b2f0912609cd0dc89389df4578ff4a7e6a438f62eb5906d4af07",
+      "anchor": "return closestThing != null;",
+      "hits": [
+        {
+          "line": 115,
+          "text": "return closestThing != null;"
+        }
+      ],
+      "interpretation": "Finding a candidate after minimum regions terminates this processor."
+    },
+    {
+      "type": "Verse.RegionProcessorClosestThingReachable",
+      "file": ".local-research/egg-box/Verse.RegionProcessorClosestThingReachable.cs",
+      "sha256": "e42f58d73c44b2f0912609cd0dc89389df4578ff4a7e6a438f62eb5906d4af07",
+      "anchor": "(num > bestPrio || num2 < closestDistSquared) && num2 < maxDistSquared",
+      "hits": [
+        {
+          "line": 130,
+          "text": "if ((num > bestPrio || num2 < closestDistSquared) && num2 < maxDistSquared && (validator == null || validator(t)))"
+        }
+      ],
+      "interpretation": "Within visited candidates, priority wins; equal priority uses nearer squared distance. Radius comparison is strict here."
+    },
+    {
+      "type": "RimWorld.JobDriver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobDriver_LayEgg.cs",
+      "sha256": "ff86597e99fd8bf40c6b1d256d57da035ece5c3b17a3fd619932e31c3caa59b4",
+      "anchor": "yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell);",
+      "hits": [
+        {
+          "line": 22,
+          "text": "yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell);"
+        }
+      ],
+      "interpretation": "The animal walks to the selected box or cell."
+    },
+    {
+      "type": "RimWorld.JobDriver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobDriver_LayEgg.cs",
+      "sha256": "ff86597e99fd8bf40c6b1d256d57da035ece5c3b17a3fd619932e31c3caa59b4",
+      "anchor": "yield return Toils_General.Wait(500);",
+      "hits": [
+        {
+          "line": 23,
+          "text": "yield return Toils_General.Wait(500);"
+        }
+      ],
+      "interpretation": "Laying waits five hundred native ticks before producing the egg."
+    },
+    {
+      "type": "RimWorld.JobDriver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobDriver_LayEgg.cs",
+      "sha256": "ff86597e99fd8bf40c6b1d256d57da035ece5c3b17a3fd619932e31c3caa59b4",
+      "anchor": "Thing thing = pawn.GetComp<CompEggLayer>().ProduceEgg();",
+      "hits": [
+        {
+          "line": 26,
+          "text": "Thing thing = pawn.GetComp<CompEggLayer>().ProduceEgg();"
+        }
+      ],
+      "interpretation": "The final action produces the actual item."
+    },
+    {
+      "type": "RimWorld.JobDriver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobDriver_LayEgg.cs",
+      "sha256": "ff86597e99fd8bf40c6b1d256d57da035ece5c3b17a3fd619932e31c3caa59b4",
+      "anchor": "job.GetTarget(TargetIndex.A).HasThing && EggBoxComp.Accepts(thing.def)",
+      "hits": [
+        {
+          "line": 27,
+          "text": "if (job.GetTarget(TargetIndex.A).HasThing && EggBoxComp.Accepts(thing.def))"
+        }
+      ],
+      "interpretation": "At completion, acceptance is rechecked against the egg actually produced."
+    },
+    {
+      "type": "RimWorld.JobDriver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobDriver_LayEgg.cs",
+      "sha256": "ff86597e99fd8bf40c6b1d256d57da035ece5c3b17a3fd619932e31c3caa59b4",
+      "anchor": "EggBoxComp.innerContainer.TryAdd(thing);",
+      "hits": [
+        {
+          "line": 29,
+          "text": "EggBoxComp.innerContainer.TryAdd(thing);"
+        }
+      ],
+      "interpretation": "Accepted eggs enter the physical container."
+    },
+    {
+      "type": "RimWorld.JobDriver_LayEgg",
+      "file": ".local-research/egg-box/RimWorld.JobDriver_LayEgg.cs",
+      "sha256": "ff86597e99fd8bf40c6b1d256d57da035ece5c3b17a3fd619932e31c3caa59b4",
+      "anchor": "GenPlace.TryPlaceThing(thing, pawn.Position, pawn.Map, ThingPlaceMode.Near",
+      "hits": [
+        {
+          "line": 33,
+          "text": "GenPlace.TryPlaceThing(thing, pawn.Position, pawn.Map, ThingPlaceMode.Near, (Thing t, int i) =>"
+        }
+      ],
+      "interpretation": "A box no longer accepting the egg falls back to nearby floor placement."
+    },
+    {
+      "type": "RimWorld.CompThingContainer",
+      "file": ".local-research/egg-box/RimWorld.CompThingContainer.cs",
+      "sha256": "9f349290f541d26e5b593c97839ec935ef6938624753b9b3d9afc84caee13a78",
+      "anchor": "innerContainer = new ThingOwner<Thing>(this);",
+      "hits": [
+        {
+          "line": 66,
+          "text": "innerContainer = new ThingOwner<Thing>(this);"
+        }
+      ],
+      "interpretation": "The box owns real Thing entries, not a numeric stock ledger."
+    },
+    {
+      "type": "RimWorld.CompThingContainer",
+      "file": ".local-research/egg-box/RimWorld.CompThingContainer.cs",
+      "sha256": "9f349290f541d26e5b593c97839ec935ef6938624753b9b3d9afc84caee13a78",
+      "anchor": "return innerContainer[0];",
+      "hits": [
+        {
+          "line": 20,
+          "text": "return innerContainer[0];"
+        }
+      ],
+      "interpretation": "ContainedThing refers to the first stack."
+    },
+    {
+      "type": "RimWorld.CompThingContainer",
+      "file": ".local-research/egg-box/RimWorld.CompThingContainer.cs",
+      "sha256": "9f349290f541d26e5b593c97839ec935ef6938624753b9b3d9afc84caee13a78",
+      "anchor": "return innerContainer.TotalStackCountOfDef(innerContainer[0].def);",
+      "hits": [
+        {
+          "line": 32,
+          "text": "return innerContainer.TotalStackCountOfDef(innerContainer[0].def);"
+        }
+      ],
+      "interpretation": "TotalStackCount totals the first stack Def across physical entries."
+    },
+    {
+      "type": "RimWorld.CompThingContainer",
+      "file": ".local-research/egg-box/RimWorld.CompThingContainer.cs",
+      "sha256": "9f349290f541d26e5b593c97839ec935ef6938624753b9b3d9afc84caee13a78",
+      "anchor": "return TotalStackCount >= Props.stackLimit;",
+      "hits": [
+        {
+          "line": 44,
+          "text": "return TotalStackCount >= Props.stackLimit;"
+        }
+      ],
+      "interpretation": "Full uses the declared container count limit."
+    },
+    {
+      "type": "RimWorld.CompThingContainer",
+      "file": ".local-research/egg-box/RimWorld.CompThingContainer.cs",
+      "sha256": "9f349290f541d26e5b593c97839ec935ef6938624753b9b3d9afc84caee13a78",
+      "anchor": "if (TotalStackCount < Props.stackLimit)",
+      "hits": [
+        {
+          "line": 73,
+          "text": "if (TotalStackCount < Props.stackLimit)"
+        }
+      ],
+      "interpretation": "Existing contents permit more only below the declared capacity."
+    },
+    {
+      "type": "RimWorld.CompThingContainer",
+      "file": ".local-research/egg-box/RimWorld.CompThingContainer.cs",
+      "sha256": "9f349290f541d26e5b593c97839ec935ef6938624753b9b3d9afc84caee13a78",
+      "anchor": "return thingDef == ContainedThing.def;",
+      "hits": [
+        {
+          "line": 75,
+          "text": "return thingDef == ContainedThing.def;"
+        }
+      ],
+      "interpretation": "A nonempty box only accepts the same exact ThingDef."
+    },
+    {
+      "type": "Verse.ThingOwner",
+      "file": ".local-research/egg-box/Verse.ThingOwner.cs",
+      "sha256": "2399af99d650359b9f5a272ccf118cad781b7bcbc9393c0478002efc8f815331",
+      "anchor": "protected int maxStacks = 999999;",
+      "hits": [
+        {
+          "line": 14,
+          "text": "protected int maxStacks = 999999;"
+        }
+      ],
+      "interpretation": "The generic owner is not itself the declared twenty-five-egg capacity clamp."
+    },
+    {
+      "type": "Verse.ThingOwner",
+      "file": ".local-research/egg-box/Verse.ThingOwner.cs",
+      "sha256": "2399af99d650359b9f5a272ccf118cad781b7bcbc9393c0478002efc8f815331",
+      "anchor": "if (maxStacks == 999999)",
+      "hits": [
+        {
+          "line": 168,
+          "text": "if (maxStacks == 999999)"
+        }
+      ],
+      "interpretation": "Default generic acceptance can accept the whole incoming stack."
+    },
+    {
+      "type": "Verse.ThingOwner`1",
+      "file": ".local-research/egg-box/Verse.ThingOwner`1.cs",
+      "sha256": "3383d840c8df5c45446796087e4ae60e0b8f5d3cada53389862936b9d43e6e61",
+      "anchor": "val.TryAbsorbStack(other, respectStackLimit: true);",
+      "hits": [
+        {
+          "line": 176,
+          "text": "val.TryAbsorbStack(other, respectStackLimit: true);"
+        }
+      ],
+      "interpretation": "Container insertion merges compatible item stacks using ordinary item absorption."
+    },
+    {
+      "type": "RimWorld.CompEggContainer",
+      "file": ".local-research/egg-box/RimWorld.CompEggContainer.cs",
+      "sha256": "d4f117c823f0dbaef339546bb05fd9b178cc02608068a4617bb9038b4f80363b",
+      "anchor": "ContainedThing != null && EggsRuined",
+      "hits": [
+        {
+          "line": 48,
+          "text": "if (ContainedThing != null && EggsRuined)"
+        }
+      ],
+      "interpretation": "A currently ruined first egg stack makes the box refuse more eggs."
+    },
+    {
+      "type": "RimWorld.CompEggContainer",
+      "file": ".local-research/egg-box/RimWorld.CompEggContainer.cs",
+      "sha256": "d4f117c823f0dbaef339546bb05fd9b178cc02608068a4617bb9038b4f80363b",
+      "anchor": "thingDef.thingCategories.Contains(ThingCategoryDefOf.EggsFertilized) || thingDef.thingCategories.Contains(ThingCategoryDefOf.EggsUnfertilized)",
+      "hits": [
+        {
+          "line": 52,
+          "text": "if (thingDef.thingCategories != null && (thingDef.thingCategories.Contains(ThingCategoryDefOf.EggsFertilized) || thingDef.thingCategories.Contains(ThingCategoryDefOf.EggsUnfertilized)))"
+        }
+      ],
+      "interpretation": "Only explicit fertilized/unfertilized egg categories pass the specialized acceptance check."
+    },
+    {
+      "type": "RimWorld.CompEggContainer",
+      "file": ".local-research/egg-box/RimWorld.CompEggContainer.cs",
+      "sha256": "d4f117c823f0dbaef339546bb05fd9b178cc02608068a4617bb9038b4f80363b",
+      "anchor": "return ContainedThing.stackCount >= Props.minCountToEmpty;",
+      "hits": [
+        {
+          "line": 20,
+          "text": "return ContainedThing.stackCount >= Props.minCountToEmpty;"
+        }
+      ],
+      "interpretation": "Ordinary automatic emptying uses the first stack count threshold, not Full."
+    },
+    {
+      "type": "RimWorld.CompEggContainer",
+      "file": ".local-research/egg-box/RimWorld.CompEggContainer.cs",
+      "sha256": "d4f117c823f0dbaef339546bb05fd9b178cc02608068a4617bb9038b4f80363b",
+      "anchor": "if (EggsRuined)",
+      "hits": [
+        {
+          "line": 16,
+          "text": "if (EggsRuined)"
+        }
+      ],
+      "interpretation": "Ruined eggs also permit automatic emptying before the count threshold."
+    },
+    {
+      "type": "RimWorld.CompEggContainer",
+      "file": ".local-research/egg-box/RimWorld.CompEggContainer.cs",
+      "sha256": "d4f117c823f0dbaef339546bb05fd9b178cc02608068a4617bb9038b4f80363b",
+      "anchor": "compTemperatureRuinable != null && compTemperatureRuinable.Ruined",
+      "hits": [
+        {
+          "line": 33,
+          "text": "if (compTemperatureRuinable != null && compTemperatureRuinable.Ruined)"
+        }
+      ],
+      "interpretation": "Thermal ruin is one ruined-egg signal."
+    },
+    {
+      "type": "RimWorld.CompEggContainer",
+      "file": ".local-research/egg-box/RimWorld.CompEggContainer.cs",
+      "sha256": "d4f117c823f0dbaef339546bb05fd9b178cc02608068a4617bb9038b4f80363b",
+      "anchor": "compHatcher != null && compHatcher.TemperatureDamaged",
+      "hits": [
+        {
+          "line": 38,
+          "text": "if (compHatcher != null && compHatcher.TemperatureDamaged)"
+        }
+      ],
+      "interpretation": "A damaged hatcher is the other ruined-egg signal."
+    },
+    {
+      "type": "RimWorld.CompThingContainer",
+      "file": ".local-research/egg-box/RimWorld.CompThingContainer.cs",
+      "sha256": "9f349290f541d26e5b593c97839ec935ef6938624753b9b3d9afc84caee13a78",
+      "anchor": "innerContainer.DoTick();",
+      "hits": [
+        {
+          "line": 89,
+          "text": "innerContainer.DoTick();"
+        }
+      ],
+      "interpretation": "The container ticks its contents from CompTick."
+    },
+    {
+      "type": "Verse.ThingOwner",
+      "file": ".local-research/egg-box/Verse.ThingOwner.cs",
+      "sha256": "2399af99d650359b9f5a272ccf118cad781b7bcbc9393c0478002efc8f815331",
+      "anchor": "if (dontTickContents)",
+      "hits": [
+        {
+          "line": 108,
+          "text": "if (dontTickContents)"
+        }
+      ],
+      "interpretation": "Generic ThingOwner can explicitly suspend content ticking; egg boxes do not set this in the inspected code."
+    },
+    {
+      "type": "Verse.ThingOwner",
+      "file": ".local-research/egg-box/Verse.ThingOwner.cs",
+      "sha256": "2399af99d650359b9f5a272ccf118cad781b7bcbc9393c0478002efc8f815331",
+      "anchor": "at.DoTick();",
+      "hits": [
+        {
+          "line": 115,
+          "text": "at.DoTick();"
+        }
+      ],
+      "interpretation": "Each held Thing uses its own ticker behavior."
+    },
+    {
+      "type": "Verse.ThingOwner",
+      "file": ".local-research/egg-box/Verse.ThingOwner.cs",
+      "sha256": "2399af99d650359b9f5a272ccf118cad781b7bcbc9393c0478002efc8f815331",
+      "anchor": "if (at.Destroyed && removeContentsIfDestroyed)",
+      "hits": [
+        {
+          "line": 116,
+          "text": "if (at.Destroyed && removeContentsIfDestroyed)"
+        }
+      ],
+      "interpretation": "Destroyed contents are removed after their tick."
+    },
+    {
+      "type": "Verse.ThingWithComps",
+      "file": ".local-research/egg-box/Verse.ThingWithComps.cs",
+      "sha256": "9ae0bf1c6884b0fd48213cf5bb2cfda7d0ee63eb43cbe97689f90e4287c2ed6b",
+      "anchor": "comps[i].CompTick();",
+      "hits": [
+        {
+          "line": 369,
+          "text": "comps[i].CompTick();"
+        }
+      ],
+      "interpretation": "A normal-tick building dispatches component ticks."
+    },
+    {
+      "type": "Verse.Thing",
+      "file": ".local-research/egg-box/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "anchor": "cachedHolder = this as IThingHolder;",
+      "hits": [
+        {
+          "line": 709,
+          "text": "cachedHolder = this as IThingHolder;"
+        }
+      ],
+      "interpretation": "Generic recursive holder ticking tests the Thing itself; ordinary Building is not the CompThingContainer holder."
+    },
+    {
+      "type": "Verse.Building",
+      "file": ".local-research/egg-box/Verse.Building.cs",
+      "sha256": "b9809c33c917ba20ffd1f8810deb91f306d31ffa3107938caea87b524f466f59",
+      "anchor": "public class Building : ThingWithComps",
+      "hits": [
+        {
+          "line": 11,
+          "text": "public class Building : ThingWithComps"
+        }
+      ],
+      "interpretation": "EggBox uses ordinary Building, so component ticking is its container path."
+    },
+    {
+      "type": "Verse.Thing",
+      "file": ".local-research/egg-box/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "anchor": "ThingOwnerUtility.TryGetFixedTemperature(parentHolder, this, out var temperature)",
+      "hits": [
+        {
+          "line": 518,
+          "text": "if (ThingOwnerUtility.TryGetFixedTemperature(parentHolder, this, out var temperature))"
+        }
+      ],
+      "interpretation": "Held temperature consults fixed-temperature overrides first."
+    },
+    {
+      "type": "Verse.Thing",
+      "file": ".local-research/egg-box/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "anchor": "return GenTemperature.GetTemperatureForCell(PositionHeld, MapHeld);",
+      "hits": [
+        {
+          "line": 526,
+          "text": "return GenTemperature.GetTemperatureForCell(PositionHeld, MapHeld);"
+        }
+      ],
+      "interpretation": "An ordinary spawned egg box falls through to its held map-cell temperature."
+    },
+    {
+      "type": "Verse.ThingOwnerUtility",
+      "file": ".local-research/egg-box/Verse.ThingOwnerUtility.cs",
+      "sha256": "e2136e956dbeb27afd6f30b4bbdf83c3d88971bdc7b505cbccc7d0266ea539c9",
+      "anchor": "holder is Pawn_InventoryTracker && forThing.TryGetComp<CompHatcher>() != null",
+      "hits": [
+        {
+          "line": 388,
+          "text": "if (holder is Pawn_InventoryTracker && forThing.TryGetComp<CompHatcher>() != null)"
+        }
+      ],
+      "interpretation": "Fertile eggs in pawn inventory have a special fixed-temperature branch."
+    },
+    {
+      "type": "Verse.ThingOwnerUtility",
+      "file": ".local-research/egg-box/Verse.ThingOwnerUtility.cs",
+      "sha256": "e2136e956dbeb27afd6f30b4bbdf83c3d88971bdc7b505cbccc7d0266ea539c9",
+      "anchor": "temperature = 14f;",
+      "hits": [
+        {
+          "line": 390,
+          "text": "temperature = 14f;"
+        },
+        {
+          "line": 395,
+          "text": "temperature = 14f;"
+        },
+        {
+          "line": 400,
+          "text": "temperature = 14f;"
+        },
+        {
+          "line": 405,
+          "text": "temperature = 14f;"
+        }
+      ],
+      "interpretation": "Pawn inventory hatchers and listed transport/trade holders use fourteen degrees."
+    },
+    {
+      "type": "RimWorld.CompTemperatureRuinable",
+      "file": ".local-research/egg-box/RimWorld.CompTemperatureRuinable.cs",
+      "sha256": "120b5e3a10f008391d4912eabda9fe0beb776d40eb55d119721f6937cb3db273",
+      "anchor": "float ambientTemperature = parent.AmbientTemperature;",
+      "hits": [
+        {
+          "line": 35,
+          "text": "float ambientTemperature = parent.AmbientTemperature;"
+        },
+        {
+          "line": 82,
+          "text": "float ambientTemperature = parent.AmbientTemperature;"
+        }
+      ],
+      "interpretation": "Thermal damage uses the held egg ambient temperature."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/egg-box/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "gestateProgress += num;",
+      "hits": [
+        {
+          "line": 47,
+          "text": "gestateProgress += num;"
+        }
+      ],
+      "interpretation": "Viable held eggs continue incubation without a brooding animal."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/egg-box/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "parent.ParentHolder is CompEggContainer compEggContainer",
+      "hits": [
+        {
+          "line": 61,
+          "text": "if (parent.ParentHolder is CompEggContainer compEggContainer)"
+        }
+      ],
+      "interpretation": "Thermal ruin has a dedicated egg-box conversion branch."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/egg-box/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "compEggContainer.innerContainer.Remove(parent);",
+      "hits": [
+        {
+          "line": 64,
+          "text": "compEggContainer.innerContainer.Remove(parent);"
+        }
+      ],
+      "interpretation": "Conversion removes the old fertile instance from the box."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/egg-box/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "Thing thing = ThingMaker.MakeThing(compProperties_EggLayer.eggUnfertilizedDef);",
+      "hits": [
+        {
+          "line": 66,
+          "text": "Thing thing = ThingMaker.MakeThing(compProperties_EggLayer.eggUnfertilizedDef);"
+        }
+      ],
+      "interpretation": "Conversion creates a fresh unfertilized egg instance."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/egg-box/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "compEggContainer.innerContainer.TryAdd(thing);",
+      "hits": [
+        {
+          "line": 68,
+          "text": "compEggContainer.innerContainer.TryAdd(thing);"
+        }
+      ],
+      "interpretation": "The replacement remains inside the same box."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/egg-box/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "for (int i = 0; i < parent.stackCount; i++)",
+      "hits": [
+        {
+          "line": 90,
+          "text": "for (int i = 0; i < parent.stackCount; i++)"
+        }
+      ],
+      "interpretation": "Hatching generates one pawn per egg, including box contents."
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "file": ".local-research/egg-box/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "anchor": "return GenSpawn.Spawn(pawn, positionOverride ?? motherOrEgg.PositionHeld, motherOrEgg.MapHeld) != null;",
+      "hits": [
+        {
+          "line": 400,
+          "text": "return GenSpawn.Spawn(pawn, positionOverride ?? motherOrEgg.PositionHeld, motherOrEgg.MapHeld) != null;"
+        }
+      ],
+      "interpretation": "On-map box hatchlings spawn at the held egg position."
+    },
+    {
+      "type": "RimWorld.CompRottable",
+      "file": ".local-research/egg-box/RimWorld.CompRottable.cs",
+      "sha256": "0cd95cf8477c6c009d0187ce1d606f872ab9e36f0f977e5f09ced39fb4c50578",
+      "anchor": "compHatcher != null && !compHatcher.TemperatureDamaged",
+      "hits": [
+        {
+          "line": 68,
+          "text": "if (compHatcher != null && !compHatcher.TemperatureDamaged)"
+        }
+      ],
+      "interpretation": "Viable hatchers disable ordinary egg rot."
+    },
+    {
+      "type": "RimWorld.CompRottable",
+      "file": ".local-research/egg-box/RimWorld.CompRottable.cs",
+      "sha256": "0cd95cf8477c6c009d0187ce1d606f872ab9e36f0f977e5f09ced39fb4c50578",
+      "anchor": "GenTemperature.RotRateAtTemperature(parent.AmbientTemperature)",
+      "hits": [
+        {
+          "line": 101,
+          "text": "float num = GenTemperature.RotRateAtTemperature(parent.AmbientTemperature);"
+        }
+      ],
+      "interpretation": "Unfertilized held eggs still rot according to temperature."
+    },
+    {
+      "type": "RimWorld.SteadyEnvironmentEffects",
+      "file": ".local-research/egg-box/RimWorld.SteadyEnvironmentEffects.cs",
+      "sha256": "a280b83a6bedc914f47c3b75010733ba94c659dc63c34dcae062986d3548f119",
+      "anchor": "t.SpawnedOrAnyParentSpawned && !t.def.canDeteriorateUnspawned",
+      "hits": [
+        {
+          "line": 261,
+          "text": "if (t.SpawnedOrAnyParentSpawned && !t.def.canDeteriorateUnspawned)"
+        }
+      ],
+      "interpretation": "Held eggs default to zero ordinary outdoor deterioration."
+    },
+    {
+      "type": "RimWorld.ForbidUtility",
+      "file": ".local-research/egg-box/RimWorld.ForbidUtility.cs",
+      "sha256": "e36190372ca2bc9540ef40d3d6a3ee836f30c3da7ee6842dffa79c0da78fbf48",
+      "anchor": "if (!c.InAllowedArea(pawn))",
+      "hits": [
+        {
+          "line": 163,
+          "text": "if (!c.InAllowedArea(pawn))"
+        }
+      ],
+      "interpretation": "IsForbidden(pawn) includes allowed-area restrictions, not only item flags."
+    },
+    {
+      "type": "RimWorld.JobGiver_Work",
+      "file": ".local-research/egg-box/RimWorld.JobGiver_Work.cs",
+      "sha256": "f8c072215d7c295b934133ca0bca6bf075706c2f8ce11bc4066ea1eb8a42e60f",
+      "anchor": "if (!t.IsForbidden(pawn))",
+      "hits": [
+        {
+          "line": 221,
+          "text": "if (!t.IsForbidden(pawn))"
+        }
+      ],
+      "interpretation": "The ordinary work scanner checks forbidden before asking HasJobOnThing."
+    },
+    {
+      "type": "RimWorld.WorkGiver_EmptyEggBox",
+      "file": ".local-research/egg-box/RimWorld.WorkGiver_EmptyEggBox.cs",
+      "sha256": "252d786fcc519d415a62ad9b4477dd91ef79123271a8cc5d585b07f1d1b4898f",
+      "anchor": "ThingRequest.ForDef(ThingDefOf.EggBox)",
+      "hits": [
+        {
+          "line": 8,
+          "text": "public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForDef(ThingDefOf.EggBox);"
+        }
+      ],
+      "interpretation": "The work giver scans actual egg-box buildings."
+    },
+    {
+      "type": "RimWorld.WorkGiver_EmptyEggBox",
+      "file": ".local-research/egg-box/RimWorld.WorkGiver_EmptyEggBox.cs",
+      "sha256": "252d786fcc519d415a62ad9b4477dd91ef79123271a8cc5d585b07f1d1b4898f",
+      "anchor": "pawn.CanReserve(t, 1, -1, null, forced)",
+      "hits": [
+        {
+          "line": 16,
+          "text": "if (!pawn.CanReserve(t, 1, -1, null, forced))"
+        }
+      ],
+      "interpretation": "The forced flag is passed to reservation availability; it does not skip the call."
+    },
+    {
+      "type": "RimWorld.WorkGiver_EmptyEggBox",
+      "file": ".local-research/egg-box/RimWorld.WorkGiver_EmptyEggBox.cs",
+      "sha256": "252d786fcc519d415a62ad9b4477dd91ef79123271a8cc5d585b07f1d1b4898f",
+      "anchor": "compEggContainer?.ContainedThing == null",
+      "hits": [
+        {
+          "line": 21,
+          "text": "if (compEggContainer?.ContainedThing == null)"
+        },
+        {
+          "line": 40,
+          "text": "if (compEggContainer?.ContainedThing == null)"
+        }
+      ],
+      "interpretation": "An empty box cannot provide an extraction job."
+    },
+    {
+      "type": "RimWorld.WorkGiver_EmptyEggBox",
+      "file": ".local-research/egg-box/RimWorld.WorkGiver_EmptyEggBox.cs",
+      "sha256": "252d786fcc519d415a62ad9b4477dd91ef79123271a8cc5d585b07f1d1b4898f",
+      "anchor": "if (!compEggContainer.CanEmpty && !forced)",
+      "hits": [
+        {
+          "line": 25,
+          "text": "if (!compEggContainer.CanEmpty && !forced)"
+        },
+        {
+          "line": 44,
+          "text": "if (!compEggContainer.CanEmpty && !forced)"
+        }
+      ],
+      "interpretation": "Forced work can bypass the automatic count/damage trigger."
+    },
+    {
+      "type": "RimWorld.WorkGiver_EmptyEggBox",
+      "file": ".local-research/egg-box/RimWorld.WorkGiver_EmptyEggBox.cs",
+      "sha256": "252d786fcc519d415a62ad9b4477dd91ef79123271a8cc5d585b07f1d1b4898f",
+      "anchor": "StoragePriority.Unstored, pawn.Faction",
+      "hits": [
+        {
+          "line": 29,
+          "text": "if (!StoreUtility.TryFindBestBetterStorageFor(compEggContainer.ContainedThing, pawn, pawn.Map, StoragePriority.Unstored, pawn.Faction, out var _, out var _, needAccurateResult: false))"
+        },
+        {
+          "line": 48,
+          "text": "if (!StoreUtility.TryFindBestBetterStorageFor(compEggContainer.ContainedThing, pawn, pawn.Map, StoragePriority.Unstored, pawn.Faction, out var foundCell, out var _))"
+        }
+      ],
+      "interpretation": "Both automatic and forced work still require better accepted storage."
+    },
+    {
+      "type": "RimWorld.WorkGiver_EmptyEggBox",
+      "file": ".local-research/egg-box/RimWorld.WorkGiver_EmptyEggBox.cs",
+      "sha256": "252d786fcc519d415a62ad9b4477dd91ef79123271a8cc5d585b07f1d1b4898f",
+      "anchor": "JobMaker.MakeJob(JobDefOf.EmptyThingContainer, t, compEggContainer.ContainedThing, foundCell)",
+      "hits": [
+        {
+          "line": 53,
+          "text": "Job job = JobMaker.MakeJob(JobDefOf.EmptyThingContainer, t, compEggContainer.ContainedThing, foundCell);"
+        }
+      ],
+      "interpretation": "A job retains box, actual content object and destination cell."
+    },
+    {
+      "type": "RimWorld.WorkGiver_EmptyEggBox",
+      "file": ".local-research/egg-box/RimWorld.WorkGiver_EmptyEggBox.cs",
+      "sha256": "252d786fcc519d415a62ad9b4477dd91ef79123271a8cc5d585b07f1d1b4898f",
+      "anchor": "job.count = compEggContainer.ContainedThing.stackCount;",
+      "hits": [
+        {
+          "line": 54,
+          "text": "job.count = compEggContainer.ContainedThing.stackCount;"
+        }
+      ],
+      "interpretation": "Assigned count is the current physical first-stack count."
+    },
+    {
+      "type": "RimWorld.JobDriver_EmptyThingContainer",
+      "file": ".local-research/egg-box/RimWorld.JobDriver_EmptyThingContainer.cs",
+      "sha256": "7e5f09bc31b62822f89167ee31607ee33934c59acd7f439e87eee663e03d0fda",
+      "anchor": "return PathEndMode.Touch;",
+      "hits": [
+        {
+          "line": 23,
+          "text": "return PathEndMode.Touch;"
+        }
+      ],
+      "interpretation": "A box without an interaction cell is approached by touch."
+    },
+    {
+      "type": "RimWorld.JobDriver_EmptyThingContainer",
+      "file": ".local-research/egg-box/RimWorld.JobDriver_EmptyThingContainer.cs",
+      "sha256": "7e5f09bc31b62822f89167ee31607ee33934c59acd7f439e87eee663e03d0fda",
+      "anchor": "base.job.def.containerReservationLayer",
+      "hits": [
+        {
+          "line": 35,
+          "text": "if (p.Reserve(target, job, 1, -1, base.job.def.containerReservationLayer, errorOnFailed2))"
+        }
+      ],
+      "interpretation": "The driver reserves the container on the job-defined reservation layer."
+    },
+    {
+      "type": "RimWorld.JobDriver_EmptyThingContainer",
+      "file": ".local-research/egg-box/RimWorld.JobDriver_EmptyThingContainer.cs",
+      "sha256": "7e5f09bc31b62822f89167ee31607ee33934c59acd7f439e87eee663e03d0fda",
+      "anchor": "return pawn.Reserve(base.job.GetTarget(TargetIndex.C), base.job, 1, -1, null, errorOnFailed);",
+      "hits": [
+        {
+          "line": 37,
+          "text": "return pawn.Reserve(base.job.GetTarget(TargetIndex.C), base.job, 1, -1, null, errorOnFailed);"
+        }
+      ],
+      "interpretation": "Destination reservation must also succeed."
+    },
+    {
+      "type": "RimWorld.JobDriver_EmptyThingContainer",
+      "file": ".local-research/egg-box/RimWorld.JobDriver_EmptyThingContainer.cs",
+      "sha256": "7e5f09bc31b62822f89167ee31607ee33934c59acd7f439e87eee663e03d0fda",
+      "anchor": "FailOnDespawnedNullOrForbidden(TargetIndex.A)",
+      "hits": [
+        {
+          "line": 44,
+          "text": "yield return Toils_Goto.GotoThing(TargetIndex.A, ContainerPathEndMode).FailOnDespawnedNullOrForbidden(TargetIndex.A).FailOnSomeonePhysicallyInteracting(TargetIndex.A)"
+        }
+      ],
+      "interpretation": "Approach fails if the box disappears or becomes forbidden."
+    },
+    {
+      "type": "RimWorld.JobDriver_EmptyThingContainer",
+      "file": ".local-research/egg-box/RimWorld.JobDriver_EmptyThingContainer.cs",
+      "sha256": "7e5f09bc31b62822f89167ee31607ee33934c59acd7f439e87eee663e03d0fda",
+      "anchor": "comp.Empty);",
+      "hits": [
+        {
+          "line": 45,
+          "text": ".FailOn(() => job.GetTarget(TargetIndex.A).Thing.TryGetComp(out CompThingContainer comp) && comp.Empty);"
+        }
+      ],
+      "interpretation": "Approach also fails when contents disappeared."
+    },
+    {
+      "type": "RimWorld.JobDriver_EmptyThingContainer",
+      "file": ".local-research/egg-box/RimWorld.JobDriver_EmptyThingContainer.cs",
+      "sha256": "7e5f09bc31b62822f89167ee31607ee33934c59acd7f439e87eee663e03d0fda",
+      "anchor": "WaitWhileExtractingContents(TargetIndex.A, TargetIndex.B, 120)",
+      "hits": [
+        {
+          "line": 46,
+          "text": "yield return Toils_General.WaitWhileExtractingContents(TargetIndex.A, TargetIndex.B, 120);"
+        }
+      ],
+      "interpretation": "Extraction is an actual wait of one hundred twenty native ticks."
+    },
+    {
+      "type": "Verse.AI.Toils_General",
+      "file": ".local-research/egg-box/Verse.AI.Toils_General.cs",
+      "sha256": "0a5e1a21ff2bbf65e3069c75043f19e9885fd539682ac5f9065ebd38444c03b4",
+      "anchor": "Wait(openTicks, containerInd).WithProgressBarToilDelay(containerInd).FailOnDespawnedOrNull(containerInd)",
+      "hits": [
+        {
+          "line": 154,
+          "text": "Toil extract = Wait(openTicks, containerInd).WithProgressBarToilDelay(containerInd).FailOnDespawnedOrNull(containerInd);"
+        }
+      ],
+      "interpretation": "The extraction wait displays progress and fails when its container despawns."
+    },
+    {
+      "type": "RimWorld.JobDriver_EmptyThingContainer",
+      "file": ".local-research/egg-box/RimWorld.JobDriver_EmptyThingContainer.cs",
+      "sha256": "7e5f09bc31b62822f89167ee31607ee33934c59acd7f439e87eee663e03d0fda",
+      "anchor": "TryDropAll(pawn.Position, pawn.Map, ThingPlaceMode.Near)",
+      "hits": [
+        {
+          "line": 49,
+          "text": "if (TargetThingA.TryGetInnerInteractableThingOwner().TryDropAll(pawn.Position, pawn.Map, ThingPlaceMode.Near))"
+        }
+      ],
+      "interpretation": "Contents first leave the box and become ground items near the worker."
+    },
+    {
+      "type": "RimWorld.JobDriver_EmptyThingContainer",
+      "file": ".local-research/egg-box/RimWorld.JobDriver_EmptyThingContainer.cs",
+      "sha256": "7e5f09bc31b62822f89167ee31607ee33934c59acd7f439e87eee663e03d0fda",
+      "anchor": "yield return Toils_Reserve.Reserve(TargetIndex.B);",
+      "hits": [
+        {
+          "line": 54,
+          "text": "yield return Toils_Reserve.Reserve(TargetIndex.B);"
+        }
+      ],
+      "interpretation": "The newly dropped actual item is then reserved."
+    },
+    {
+      "type": "RimWorld.JobDriver_EmptyThingContainer",
+      "file": ".local-research/egg-box/RimWorld.JobDriver_EmptyThingContainer.cs",
+      "sha256": "7e5f09bc31b62822f89167ee31607ee33934c59acd7f439e87eee663e03d0fda",
+      "anchor": "Toils_Haul.StartCarryThing(TargetIndex.B, putRemainderInQueue: false, subtractNumTakenFromJobCount: true)",
+      "hits": [
+        {
+          "line": 56,
+          "text": "yield return Toils_Haul.StartCarryThing(TargetIndex.B, putRemainderInQueue: false, subtractNumTakenFromJobCount: true);"
+        }
+      ],
+      "interpretation": "The worker physically picks up contents, subject to ordinary carrying behavior."
+    },
+    {
+      "type": "RimWorld.JobDriver_EmptyThingContainer",
+      "file": ".local-research/egg-box/RimWorld.JobDriver_EmptyThingContainer.cs",
+      "sha256": "7e5f09bc31b62822f89167ee31607ee33934c59acd7f439e87eee663e03d0fda",
+      "anchor": "Toils_Haul.CarryHauledThingToCell(TargetIndex.C)",
+      "hits": [
+        {
+          "line": 57,
+          "text": "yield return Toils_Haul.CarryHauledThingToCell(TargetIndex.C);"
+        }
+      ],
+      "interpretation": "The worker then walks to storage carrying the eggs."
+    },
+    {
+      "type": "RimWorld.JobDriver_EmptyThingContainer",
+      "file": ".local-research/egg-box/RimWorld.JobDriver_EmptyThingContainer.cs",
+      "sha256": "7e5f09bc31b62822f89167ee31607ee33934c59acd7f439e87eee663e03d0fda",
+      "anchor": "storageMode: true, tryStoreInSameStorageIfSpotCantHoldWholeStack: true",
+      "hits": [
+        {
+          "line": 58,
+          "text": "yield return Toils_Haul.PlaceHauledThingInCell(TargetIndex.C, null, storageMode: true, tryStoreInSameStorageIfSpotCantHoldWholeStack: true);"
+        }
+      ],
+      "interpretation": "Final placement uses storage-mode handling, including same-storage remainder handling."
+    },
+    {
+      "type": "RimWorld.CompThingContainer",
+      "file": ".local-research/egg-box/RimWorld.CompThingContainer.cs",
+      "sha256": "9f349290f541d26e5b593c97839ec935ef6938624753b9b3d9afc84caee13a78",
+      "anchor": "if (mode != DestroyMode.WillReplace)",
+      "hits": [
+        {
+          "line": 110,
+          "text": "if (mode != DestroyMode.WillReplace)"
+        }
+      ],
+      "interpretation": "Normal despawn drops contents; replacement mode explicitly skips this."
+    },
+    {
+      "type": "RimWorld.CompThingContainer",
+      "file": ".local-research/egg-box/RimWorld.CompThingContainer.cs",
+      "sha256": "9f349290f541d26e5b593c97839ec935ef6938624753b9b3d9afc84caee13a78",
+      "anchor": "innerContainer.TryDropAll(parent.Position, map, ThingPlaceMode.Near);",
+      "hits": [
+        {
+          "line": 112,
+          "text": "innerContainer.TryDropAll(parent.Position, map, ThingPlaceMode.Near);"
+        }
+      ],
+      "interpretation": "Destroyed or removed on-map boxes attempt nearby physical ejection."
+    },
+    {
+      "type": "Verse.ThingWithComps",
+      "file": ".local-research/egg-box/Verse.ThingWithComps.cs",
+      "sha256": "9ae0bf1c6884b0fd48213cf5bb2cfda7d0ee63eb43cbe97689f90e4287c2ed6b",
+      "anchor": "comps[i].PostDeSpawn(map, mode);",
+      "hits": [
+        {
+          "line": 318,
+          "text": "comps[i].PostDeSpawn(map, mode);"
+        }
+      ],
+      "interpretation": "The destruction/despawn chain notifies the container component."
+    },
+    {
+      "type": "Verse.Thing",
+      "file": ".local-research/egg-box/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "anchor": "DeSpawn(mode);",
+      "hits": [
+        {
+          "line": 935,
+          "text": "DeSpawn(mode);"
+        },
+        {
+          "line": 1063,
+          "text": "DeSpawn(mode);"
+        }
+      ],
+      "interpretation": "A spawned Thing first despawns as part of destruction."
+    },
+    {
+      "type": "Verse.ThingOwner",
+      "file": ".local-research/egg-box/Verse.ThingOwner.cs",
+      "sha256": "2399af99d650359b9f5a272ccf118cad781b7bcbc9393c0478002efc8f815331",
+      "anchor": "if (GenDrop.TryDropSpawn(thing, dropLoc, map, mode, out lastResultingThing",
+      "hits": [
+        {
+          "line": 485,
+          "text": "if (GenDrop.TryDropSpawn(thing, dropLoc, map, mode, out lastResultingThing, placedAction, nearPlaceValidator, playDropSound))"
+        }
+      ],
+      "interpretation": "An item is only removed from its owner after successful drop spawning."
+    },
+    {
+      "type": "Verse.ThingOwner",
+      "file": ".local-research/egg-box/Verse.ThingOwner.cs",
+      "sha256": "2399af99d650359b9f5a272ccf118cad781b7bcbc9393c0478002efc8f815331",
+      "anchor": "if (!TryDrop(GetAt(num), dropLoc, map, mode, out var _",
+      "hits": [
+        {
+          "line": 498,
+          "text": "if (!TryDrop(GetAt(num), dropLoc, map, mode, out var _, placeAction, nearPlaceValidator, playDropSound))"
+        }
+      ],
+      "interpretation": "TryDropAll reports failure if any entry cannot be placed."
+    },
+    {
+      "type": "RimWorld.CompThingContainer",
+      "file": ".local-research/egg-box/RimWorld.CompThingContainer.cs",
+      "sha256": "9f349290f541d26e5b593c97839ec935ef6938624753b9b3d9afc84caee13a78",
+      "anchor": "Scribe_Deep.Look(ref innerContainer, \"innerContainer\", this);",
+      "hits": [
+        {
+          "line": 142,
+          "text": "Scribe_Deep.Look(ref innerContainer, \"innerContainer\", this);"
+        }
+      ],
+      "interpretation": "Container contents are saved deeply, preserving physical item state."
+    },
+    {
+      "type": "RimWorld.CompThingContainer",
+      "file": ".local-research/egg-box/RimWorld.CompThingContainer.cs",
+      "sha256": "9f349290f541d26e5b593c97839ec935ef6938624753b9b3d9afc84caee13a78",
+      "anchor": "Building.SelectContainedItemGizmo(parent, item)",
+      "hits": [
+        {
+          "line": 149,
+          "text": "Gizmo gizmo = Building.SelectContainedItemGizmo(parent, item);"
+        }
+      ],
+      "interpretation": "Contained entries can be selected through building gizmos."
+    },
+    {
+      "type": "RimWorld.CompEggContainer",
+      "file": ".local-research/egg-box/RimWorld.CompEggContainer.cs",
+      "sha256": "d4f117c823f0dbaef339546bb05fd9b178cc02608068a4617bb9038b4f80363b",
+      "anchor": "string text2 = compHatcher.CompInspectStringExtra();",
+      "hits": [
+        {
+          "line": 67,
+          "text": "string text2 = compHatcher.CompInspectStringExtra();"
+        }
+      ],
+      "interpretation": "Box inspection includes fertile egg progress when not ruined."
+    }
+  ],
+  "boundedChecks": [
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "start": "private Thing GetBestEggBox",
+      "end": "",
+      "lineStart": 36,
+      "lineEnd": 68,
+      "sha256": "13464279c2a49435dfb047f2bd1b5872218d8f8dacb2fbfd92867a790d07b8b4",
+      "absent": [
+        "GetRoom(",
+        ".Faction",
+        "minCountToEmpty",
+        "CompPower",
+        "CompFlickable"
+      ],
+      "interpretation": "The specialized box selector has no room, box-faction, autoempty-threshold or power/switch test."
+    },
+    {
+      "type": "RimWorld.JobDriver_LayEgg",
+      "start": "public override bool TryMakePreToilReservations",
+      "end": "protected override IEnumerable<Toil>",
+      "lineStart": 15,
+      "lineEnd": 20,
+      "sha256": "199baafbb4279e3977242ce55b5f5b5c4c0df8d44fc21056caa6ca0d47992686",
+      "absent": [
+        "pawn.Reserve",
+        "Reserve("
+      ],
+      "interpretation": "The lay driver returns true without acquiring a reservation."
+    },
+    {
+      "type": "RimWorld.CompThingContainer",
+      "start": "public override void CompTick()",
+      "end": "public override void PostDraw()",
+      "lineStart": 87,
+      "lineEnd": 92,
+      "sha256": "671edc48e8a1aaf1132348eee29e1ce7344d393aea338831d36eaf084cdd60b0",
+      "absent": [
+        "Forbidden",
+        "Power",
+        "Flick",
+        "dontTickContents"
+      ],
+      "interpretation": "Normal egg-box ticking is not gated by forbidden, power or a switch."
+    },
+    {
+      "type": "Verse.ThingOwnerUtility",
+      "start": "public static bool TryGetFixedTemperature",
+      "end": "",
+      "lineStart": 386,
+      "lineEnd": 412,
+      "sha256": "206e8408ce496e0d4a2908b02e9de549c42b7a16dccb8282f063a78a69222dac",
+      "absent": [
+        "CompEggContainer",
+        "Pawn_CarryTracker"
+      ],
+      "interpretation": "Neither egg boxes nor hand carrying have a fixed-temperature override in this method."
+    },
+    {
+      "type": "RimWorld.WorkGiver_EmptyEggBox",
+      "start": "public override bool HasJobOnThing",
+      "end": "public override Job JobOnThing",
+      "lineStart": 10,
+      "lineEnd": 37,
+      "sha256": "19590dcb453f28895ff3042535c532249b59af8d713ea357f4ad02812611cb4e",
+      "absent": [
+        "t.Faction",
+        "t.IsForbidden",
+        "ContainedThing.IsForbidden"
+      ],
+      "interpretation": "This method leaves general forbidden checks to caller/job flow and adds no box-faction comparison."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "start": "if (parent.ParentHolder is CompEggContainer",
+      "end": "public void Hatch()",
+      "lineStart": 61,
+      "lineEnd": 81,
+      "sha256": "94021436775582f7ba786feb1636de69c9104cb823139acd12b7edaeedf78cb9",
+      "absent": [
+        "RotProgress",
+        "rotProgress",
+        "HitPoints",
+        "SetForbidden",
+        "hatcheeFaction"
+      ],
+      "interpretation": "Thermal replacement explicitly preserves count, not former condition/forbid/hatcher identity."
+    },
+    {
+      "type": "RimWorld.CompThingContainer",
+      "start": "public override void PostDeSpawn",
+      "end": "public override string CompInspectStringExtra",
+      "lineStart": 108,
+      "lineEnd": 116,
+      "sha256": "b68cec90f8477abe15d7bef24ee4c8b29be5cd8120582c6052039aab0216109c",
+      "absent": [
+        "if (innerContainer.TryDropAll",
+        "throw",
+        "ClearAndDestroyContents"
+      ],
+      "interpretation": "The despawn component does not branch on failed ejection or explicitly destroy remaining contents."
+    },
+    {
+      "type": "RimWorld.CompEggContainer",
+      "start": "public override IEnumerable<Gizmo> CompGetGizmosExtra",
+      "end": "",
+      "lineStart": 77,
+      "lineEnd": 98,
+      "sha256": "9950ed53bae855dd0c63cac8ea3dd9e23c839fadb3656b4e7c1803ae62f732b9",
+      "absent": [
+        "emptyRequested",
+        "EmptyThingContainer",
+        "CanEmpty"
+      ],
+      "interpretation": "The shown component gizmos provide no persisted player empty-request flag; such a Web flag is a design choice."
+    },
+    {
+      "type": "RimWorld.JobDriver_LayEgg",
+      "start": "protected override IEnumerable<Toil> MakeNewToils()",
+      "end": "",
+      "lineStart": 20,
+      "lineEnd": 44,
+      "sha256": "17bed25af6eb28a84de5043449ddec7eedfca29c6b12cc6442a85c32aa2be925",
+      "absent": [
+        "if (EggBoxComp.innerContainer.TryAdd",
+        "if (GenPlace.TryPlaceThing"
+      ],
+      "interpretation": "Native laying does not guard final consumption by checking insertion/placement success."
+    }
+  ],
+  "packagedXml": [
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Misc.xml",
+      "sha256": "3ee922aa81ded536f0a1e887ae49e7755f0d0deb07a1337c9baf03fca8e4247a",
+      "xpath": "/Defs/ThingDef[defName=\"EggBox\"]",
+      "nameAttribute": "",
+      "parentName": "BuildingBase",
+      "fields": [
+        {
+          "xpath": "description",
+          "count": 1,
+          "xml": [
+            "<description>A box with soft material made to hold eggs. Egg-laying animals will lay eggs in egg boxes if they can. Your haulers will take all the eggs out only when the box is full, to save time. The box also protects eggs from deteriorating outdoors, though it does not protect from temperature damage.</description>"
+          ]
+        },
+        {
+          "xpath": "size",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "passability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "fillPercent",
+          "count": 1,
+          "xml": [
+            "<fillPercent>0.3</fillPercent>"
+          ]
+        },
+        {
+          "xpath": "blockLight",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "blockWind",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "hasInteractionCell",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "tickerType",
+          "count": 1,
+          "xml": [
+            "<tickerType>Normal</tickerType>"
+          ]
+        },
+        {
+          "xpath": "containedItemsSelectable",
+          "count": 1,
+          "xml": [
+            "<containedItemsSelectable>true</containedItemsSelectable>"
+          ]
+        },
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MaxHitPoints>50</MaxHitPoints><WorkToBuild>2000</WorkToBuild><Flammability>1</Flammability><Mass>3</Mass></statBases>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_ThingContainer\"><compClass>CompEggContainer</compClass><stackLimit>25</stackLimit><minCountToEmpty>20</minCountToEmpty><drawStackLabel>true</drawStackLabel></li></comps>"
+          ]
+        },
+        {
+          "xpath": "stuffCategories",
+          "count": 1,
+          "xml": [
+            "<stuffCategories><li>Metallic</li><li>Woody</li></stuffCategories>"
+          ]
+        },
+        {
+          "xpath": "costStuffCount",
+          "count": 1,
+          "xml": [
+            "<costStuffCount>20</costStuffCount>"
+          ]
+        },
+        {
+          "xpath": "pathCost",
+          "count": 1,
+          "xml": [
+            "<pathCost>10</pathCost>"
+          ]
+        },
+        {
+          "xpath": "designationCategory",
+          "count": 1,
+          "xml": [
+            "<designationCategory>Misc</designationCategory>"
+          ]
+        },
+        {
+          "xpath": "rotatable",
+          "count": 1,
+          "xml": [
+            "<rotatable>false</rotatable>"
+          ]
+        },
+        {
+          "xpath": "minifiedDef",
+          "count": 1,
+          "xml": [
+            "<minifiedDef>MinifiedThing</minifiedDef>"
+          ]
+        },
+        {
+          "xpath": "building",
+          "count": 1,
+          "xml": [
+            "<building><paintable>true</paintable></building>"
+          ]
+        },
+        {
+          "xpath": "researchPrerequisites",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "EggBox declaration, geometry defaults, build inputs and container settings."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Base.xml",
+      "sha256": "b16e3a7934febd9ffb7883f18392d524ba376c9657da4c788d1951552f86d142",
+      "xpath": "/Defs/ThingDef[@Name=\"BuildingBase\"]",
+      "nameAttribute": "BuildingBase",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "category",
+          "count": 1,
+          "xml": [
+            "<category>Building</category>"
+          ]
+        },
+        {
+          "xpath": "thingClass",
+          "count": 1,
+          "xml": [
+            "<thingClass>Building</thingClass>"
+          ]
+        },
+        {
+          "xpath": "size",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "passability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "terrainAffordanceNeeded",
+          "count": 1,
+          "xml": [
+            "<terrainAffordanceNeeded>Light</terrainAffordanceNeeded>"
+          ]
+        },
+        {
+          "xpath": "leaveResourcesWhenKilled",
+          "count": 1,
+          "xml": [
+            "<leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><SellPriceFactor>0.70</SellPriceFactor></statBases>"
+          ]
+        }
+      ],
+      "interpretation": "EggBox parent is an ordinary selectable building; default terrain requirement is Light."
+    },
+    {
+      "file": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+      "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c",
+      "xpath": "/Defs/WorkGiverDef[defName=\"EmptyEggBox\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "giverClass",
+          "count": 1,
+          "xml": [
+            "<giverClass>WorkGiver_EmptyEggBox</giverClass>"
+          ]
+        },
+        {
+          "xpath": "workType",
+          "count": 1,
+          "xml": [
+            "<workType>Hauling</workType>"
+          ]
+        },
+        {
+          "xpath": "priorityInType",
+          "count": 1,
+          "xml": [
+            "<priorityInType>20</priorityInType>"
+          ]
+        },
+        {
+          "xpath": "requiredCapacities",
+          "count": 1,
+          "xml": [
+            "<requiredCapacities><li>Manipulation</li></requiredCapacities>"
+          ]
+        }
+      ],
+      "interpretation": "Egg extraction belongs to hauling with Manipulation capability."
+    },
+    {
+      "file": "Data/Core/Defs/JobDefs/Jobs_Misc.xml",
+      "sha256": "537728d9066def61890253439953631e86afb7f2d5f08501a2a70172bcf5d714",
+      "xpath": "/Defs/JobDef[defName=\"EmptyThingContainer\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "driverClass",
+          "count": 1,
+          "xml": [
+            "<driverClass>JobDriver_EmptyThingContainer</driverClass>"
+          ]
+        },
+        {
+          "xpath": "containerReservationLayer",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "reportString",
+          "count": 1,
+          "xml": [
+            "<reportString>emptying TargetA.</reportString>"
+          ]
+        }
+      ],
+      "interpretation": "Extraction job driver and its unspecialized reservation declaration."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml",
+      "sha256": "271298b153e8a9b86c62f70d0d334d91c8182e4c34525190753a05e5afcff71d",
+      "xpath": "/Defs/ThingDef[@Name=\"EggBase\"]",
+      "nameAttribute": "EggBase",
+      "parentName": "OrganicProductBase",
+      "fields": [
+        {
+          "xpath": "tickerType",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><Mass>0.15</Mass><MaxHitPoints>20</MaxHitPoints><DeteriorationRate>2</DeteriorationRate><Flammability>0.7</Flammability><Nutrition>0.25</Nutrition><FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman></statBases>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_Rottable\"><daysToRotStart>15</daysToRotStart><rotDestroys>true</rotDestroys><disableIfHatcher>true</disableIfHatcher></li></comps>"
+          ]
+        },
+        {
+          "xpath": "canDeteriorateUnspawned",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Common egg rot and deterioration settings."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml",
+      "sha256": "271298b153e8a9b86c62f70d0d334d91c8182e4c34525190753a05e5afcff71d",
+      "xpath": "/Defs/ThingDef[@Name=\"EggFertBase\"]",
+      "nameAttribute": "EggFertBase",
+      "parentName": "EggBase",
+      "fields": [
+        {
+          "xpath": "tickerType",
+          "count": 1,
+          "xml": [
+            "<tickerType>Normal</tickerType>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_TemperatureRuinable\"><minSafeTemperature>0</minSafeTemperature><maxSafeTemperature>50</maxSafeTemperature><progressPerDegreePerTick>0.00003</progressPerDegreePerTick></li></comps>"
+          ]
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 1,
+          "xml": [
+            "<thingCategories><li>EggsFertilized</li></thingCategories>"
+          ]
+        },
+        {
+          "xpath": "canDeteriorateUnspawned",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Fertile eggs use normal ticks and 0..50 degree thermal limits."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml",
+      "sha256": "271298b153e8a9b86c62f70d0d334d91c8182e4c34525190753a05e5afcff71d",
+      "xpath": "/Defs/ThingDef[@Name=\"EggUnfertBase\"]",
+      "nameAttribute": "EggUnfertBase",
+      "parentName": "EggBase",
+      "fields": [
+        {
+          "xpath": "thingCategories",
+          "count": 1,
+          "xml": [
+            "<thingCategories><li>EggsUnfertilized</li></thingCategories>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "canDeteriorateUnspawned",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Unfertilized replacement loses hatcher/thermal components."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml",
+      "sha256": "271298b153e8a9b86c62f70d0d334d91c8182e4c34525190753a05e5afcff71d",
+      "xpath": "/Defs/ThingDef[defName=\"EggChickenFertilized\"]",
+      "nameAttribute": "",
+      "parentName": "EggFertBase",
+      "fields": [
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_Hatcher\"><hatcherDaystoHatch>3.5</hatcherDaystoHatch><hatcherPawn>Chicken</hatcherPawn></li></comps>"
+          ]
+        },
+        {
+          "xpath": "canDeteriorateUnspawned",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Chicken hatcher duration and output species."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml",
+      "sha256": "271298b153e8a9b86c62f70d0d334d91c8182e4c34525190753a05e5afcff71d",
+      "xpath": "/Defs/ThingDef[defName=\"EggChickenUnfertilized\"]",
+      "nameAttribute": "",
+      "parentName": "EggUnfertBase",
+      "fields": [
+        {
+          "xpath": "comps",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "canDeteriorateUnspawned",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Chicken unfertilized egg adds no hatcher."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+      "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c",
+      "xpath": "/Defs/ThingDef[@Name=\"OrganicProductBase\"]",
+      "nameAttribute": "OrganicProductBase",
+      "parentName": "ResourceBase",
+      "fields": [
+        {
+          "xpath": "tickerType",
+          "count": 1,
+          "xml": [
+            "<tickerType>Rare</tickerType>"
+          ]
+        },
+        {
+          "xpath": "canDeteriorateUnspawned",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Organic products inherit ordinary rare ticks."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Base.xml",
+      "sha256": "20595ae43a7e758f54c71dc98579cc95ac8638f21213896c7f1d6a2d61fd744a",
+      "xpath": "/Defs/ThingDef[@Name=\"ResourceBase\"]",
+      "nameAttribute": "ResourceBase",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "stackLimit",
+          "count": 1,
+          "xml": [
+            "<stackLimit>75</stackLimit>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_Forbiddable\" /></comps>"
+          ]
+        },
+        {
+          "xpath": "canDeteriorateUnspawned",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Resource stack limit and common item components."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Stuff.xml",
+      "sha256": "8cdc15befea94055a946a1131c7724acc0cf999b866a5fad474a0816731c9088",
+      "xpath": "/Defs/ThingDef[defName=\"WoodLog\"]",
+      "nameAttribute": "",
+      "parentName": "ResourceVerbBase",
+      "fields": [
+        {
+          "xpath": "stuffProps/categories",
+          "count": 1,
+          "xml": [
+            "<categories><li>Woody</li></categories>"
+          ]
+        },
+        {
+          "xpath": "stuffProps/statFactors",
+          "count": 1,
+          "xml": [
+            "<statFactors><MaxHitPoints>0.65</MaxHitPoints><Beauty>1</Beauty><Flammability>1</Flammability><WorkToMake>0.7</WorkToMake><WorkToBuild>0.7</WorkToBuild><DoorOpenSpeed>1.2</DoorOpenSpeed></statFactors>"
+          ]
+        },
+        {
+          "xpath": "stuffProps/statOffsets",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Wood material modifiers are separate from EggBox statBases."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Stuff.xml",
+      "sha256": "8cdc15befea94055a946a1131c7724acc0cf999b866a5fad474a0816731c9088",
+      "xpath": "/Defs/ThingDef[defName=\"Steel\"]",
+      "nameAttribute": "",
+      "parentName": "ResourceBase",
+      "fields": [
+        {
+          "xpath": "stuffProps/categories",
+          "count": 1,
+          "xml": [
+            "<categories><li>Metallic</li></categories>"
+          ]
+        },
+        {
+          "xpath": "stuffProps/statFactors",
+          "count": 1,
+          "xml": [
+            "<statFactors><MaxHitPoints>1</MaxHitPoints><Beauty>1</Beauty><Flammability>0.4</Flammability></statFactors>"
+          ]
+        },
+        {
+          "xpath": "stuffProps/statOffsets",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Steel material modifiers are separate from EggBox statBases."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Building_Special.xml",
+      "sha256": "e57298ad955777e288239b2e7804def1b1f0d3cf7290bba5b723fff684c7d1ce",
+      "xpath": "/Defs/StatDef[defName=\"WorkToBuild\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>1</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "minValue",
+          "count": 1,
+          "xml": [
+            "<minValue>0</minValue>"
+          ]
+        },
+        {
+          "xpath": "toStringStyle",
+          "count": 1,
+          "xml": [
+            "<toStringStyle>WorkAmount</toStringStyle>"
+          ]
+        },
+        {
+          "xpath": "roundToFiveOver",
+          "count": 1,
+          "xml": [
+            "<roundToFiveOver>300</roundToFiveOver>"
+          ]
+        }
+      ],
+      "interpretation": "WorkToBuild denotes work amount, not an unconditional wall-clock duration."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Basics_General.xml",
+      "sha256": "c4d702421c19796993483ddd43f9869c54bb7afa1414232a568829ced5218d87",
+      "xpath": "/Defs/StatDef[defName=\"MaxHitPoints\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>100</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "minValue",
+          "count": 1,
+          "xml": [
+            "<minValue>1</minValue>"
+          ]
+        },
+        {
+          "xpath": "roundValue",
+          "count": 1,
+          "xml": [
+            "<roundValue>true</roundValue>"
+          ]
+        },
+        {
+          "xpath": "roundToFiveOver",
+          "count": 1,
+          "xml": [
+            "<roundToFiveOver>200</roundToFiveOver>"
+          ]
+        }
+      ],
+      "interpretation": "Effective maximum HP is finalized and rounded."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Basics_General.xml",
+      "sha256": "c4d702421c19796993483ddd43f9869c54bb7afa1414232a568829ced5218d87",
+      "xpath": "/Defs/StatDef[defName=\"Flammability\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>0</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "minValue",
+          "count": 1,
+          "xml": [
+            "<minValue>0</minValue>"
+          ]
+        },
+        {
+          "xpath": "maxValue",
+          "count": 1,
+          "xml": [
+            "<maxValue>2</maxValue>"
+          ]
+        }
+      ],
+      "interpretation": "Flammability is a stat with material modifications and bounds."
+    }
+  ],
+  "nativeReference": {
+    "size": [
+      1,
+      1
+    ],
+    "passability": "Standable",
+    "fillPercent": 0.3,
+    "pathCost": 10,
+    "blockLight": false,
+    "blockWind": false,
+    "interactionCell": false,
+    "terrainAffordance": "Light",
+    "costStuffCount": 20,
+    "stuffCategories": [
+      "Metallic",
+      "Woody"
+    ],
+    "baseWorkToBuild": 2000,
+    "baseMaxHitPoints": 50,
+    "baseFlammability": 1,
+    "baseMass": 3,
+    "stackLimit": 25,
+    "minCountToEmpty": 20,
+    "nextEggTypeMustMatch": true,
+    "boxSearchRadius": 30,
+    "boxSearchMinRegions": 10,
+    "boxSearchMaxRegions": 30,
+    "nonemptyScorePerEgg": 5,
+    "emptyScore": 0.5,
+    "boxRequiresSameRoom": false,
+    "floorEggRequiresSameRoomWhenKnown": true,
+    "fallbackWanderRadius": 5,
+    "layWaitTicks": 500,
+    "extractionWaitTicks": 120,
+    "haulingPriorityInType": 20,
+    "heldEggTemperature": "Map-held cell for ordinary egg box; not a fixed-temperature holder",
+    "pawnInventoryHatcherFixedTemperature": 14,
+    "forcedStillNeedsStorage": true,
+    "destroyDropMode": "Near, except WillReplace",
+    "declaredCostAndStatsAreNotFinalMaterialStats": true
+  },
+  "limits": [
+    "Static derived C# and packaged XML are not original source or runtime gameplay proof.",
+    "Existing REA metadata is reused for exact assembly identity only; new types are independently re-extracted.",
+    "No game, browser, preview, GUI input or screenshot was launched.",
+    "Selected XML inheritance nodes are not a complete mod-patched effective Def database.",
+    "Native region-limited prioritized search is not an exhaustive global best-box search.",
+    "General forbidden and reservation behavior depends on caller, pawn state and job stage.",
+    "Drop failure returns false; native despawn does not demonstrate guaranteed recovery after the building is destroyed.",
+    "One Cargo per Web box, persistent empty requests, exhaustive local search and capacity-preflight retry are Web implementation choices.",
+    "No game assets, assemblies or complete derived C# is published."
+  ],
+  "collectorSha256": "5e7444680266da311b7558714a162b2600d6ecd21ce2091044aebb71cf4c7c90"
+}

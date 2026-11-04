@@ -19,6 +19,7 @@ import { batchHpFraction } from './deterioration';
 import { isFurnitureKind, isFurnitureQuality, type FurnitureKind } from './furniture';
 import type { ApparelQuality } from './types';
 import { SHELF_DEFS, type ShelfKind } from './shelves';
+import { EGG_BOX_RULES } from './eggBoxRules';
 
 /** Core 1.7 selected full-HP resource prices, except provisional meat=2.
  * Carcasses use their species' meat yield below; deposits/plants are not items. */
@@ -169,7 +170,7 @@ export function structureMarketValue(material: 'wood' | 'stone', kind: 'floor' |
 export interface WealthDetails extends WealthTotals {
   total: number;
   storyteller: number;
-  itemSources: { ground: number; cargo: number; equipment: number; delivered: number };
+  itemSources: { ground: number; cargo: number; equipment: number; delivered: number; containers: number };
   buildingSources: { structures: number; facilities: number; ladders: number };
   legacyStructureCells: number;
   unvaluedCorpses: number;
@@ -183,8 +184,12 @@ export interface WealthDetails extends WealthTotals {
  * remains 0; former-colony gear remains a physical item asset. Animal carcasses
  * are separate physical cargo, valued from their provisional meat yield. */
 export function colonyWealthDetails(sim: VoxelSimulation): WealthDetails {
-  const itemSources = { ground: 0, cargo: 0, equipment: 0, delivered: 0 };
+  const itemSources = { ground: 0, cargo: 0, equipment: 0, delivered: 0, containers: 0 };
   for (const item of sim.items.filter(p => sim.exploredAt(p))) itemSources.ground += cargoMarketValue(item);
+  // Nest contents are physical colony items even while inaccessible to a bill
+  // or waiting for emptying. Their value is separate from the egg box building.
+  for (const box of sim.eggBoxes) if (box.eggs && sim.exploredAt(box))
+    itemSources.containers += cargoMarketValue(box.eggs);
   for (const animal of sim.animals) if (animal.dead && sim.exploredAt(animal))
     itemSources.ground += cargoMarketValue({ resource: 'carcass', amount: 1,
       carcass: { animalId: animal.id, species: animal.species },
@@ -233,6 +238,7 @@ export function colonyWealthDetails(sim: VoxelSimulation): WealthDetails {
   add(sim.fences.filter(p => sim.exploredAt(p)).length,PEN_BUILDINGS.fence.cost,PEN_BUILDINGS.fence.work);
   add(sim.fenceGates.filter(p => sim.exploredAt(p)).length,PEN_BUILDINGS.fenceGate.cost,PEN_BUILDINGS.fenceGate.work);
   add(sim.penMarkers.filter(p => sim.exploredAt(p)).length,PEN_BUILDINGS.penMarker.cost,PEN_BUILDINGS.penMarker.work);
+  add(sim.eggBoxes.filter(p => sim.exploredAt(p)).length, EGG_BOX_RULES.cost, EGG_BOX_RULES.work);
   for (const bench of sim.weaponBenches.filter(p => sim.exploredAt(p))) {
     if (bench.kind === 'smithy') add(1, SMITHY_COST, SMITHY_WORK);
     else if (bench.kind === 'machining') add(1, MACHINING_COST, MACHINING_WORK);

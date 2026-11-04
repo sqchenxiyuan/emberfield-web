@@ -20,6 +20,8 @@ import { SanitationPanel, SanitationDetails, CleaningStatus } from './Sanitation
 import { FirePanel, FireDetails, FireDamageDetails, FireWorkStatus } from './FirePanel';
 import { WeatherPanel, WeatherCellDetails } from './WeatherPanel';
 import { AnimalPanel, AnimalDetails, EggDetails } from './AnimalPanel';
+import { EggBoxPanel } from './EggBoxPanel';
+import { EGG_BOX_RULES } from './eggBoxes';
 import { AllowedAreaPanel, PawnAllowedArea } from './AllowedAreaPanel';
 import { FenceGateDetails, PenDetails, type PenControls } from './PenPanel';
 import { LivingPanel, RoomLivingDetails, DiningFurnitureDetails } from './LivingPanel';
@@ -111,6 +113,7 @@ const tools: Tool[] = [
   'fence',
   'fenceGate',
   'penMarker',
+  'eggBox',
   'generator',
   'solar',
   'battery',
@@ -155,6 +158,7 @@ const icons = [
   '╫',
   '⊓',
   '⚑',
+  '◒',
   '⚙',
   '☀',
   '▣',
@@ -173,6 +177,7 @@ const hints: Record<Tool, string> = {
   fence: '左键拖动建造直线围栏，留下栏门的位置。完工后拦住鹿，人和兔可缓慢跨越；圈地不需要屋顶。',
   fenceGate: '点击建造木制栏门，R 旋转。饲养员经栏门牵入鹿、单峰驼和羊驼；自动开关保持圈地有效，保持敞开会打开边界。',
   penMarker: '在已围起的区域内建造圈地标记，点击查看是否封闭、现有草料和接纳筛选。标记自身不能拦住动物。',
+  eggBox: `一格木制蛋箱，${EGG_BOX_RULES.cost.wood} 木材。母鸡可到箱内下蛋；容量 ${EGG_BOX_RULES.capacity} 枚，达到 ${EGG_BOX_RULES.emptyAt} 枚自动安排搬运，也可点击请求提前清空。`,
   animalArea: '左键拖动涂绘当前楼层，可切层继续。把工作目标、材料、食物和床包含在内；区域只筛选目标，行走可能途经区外。空区域不限制，右键结束。',
   horseshoePin: '20 木材建造一格马蹄铁桩。沿直线留出两格空地和通路，殖民者会站在两格外投掷；可在作息中安排娱乐，或在人物面板手动安排。',
   butcherSpot: '划定一格屠宰点，开启烹饪分工后自动加工可达尸体。点击点位可暂停或恢复；生肉可直接食用，也可与谷物混合做简餐。',
@@ -425,7 +430,7 @@ function App() {
     const selected = state.selected;
     const animals = client.snapshot().snapshot?.animals ?? [];
     const person = selected && client.snapshot().snapshot?.pawns.find(v => equal(v, selected) && (v.faction === 'prisoner' || (v.faction === 'raider' && v.downed && !v.dead)));
-    const structure = selected && ('penMarkerId' in selected || 'fenceGateId' in selected || 'furnitureId' in selected);
+    const structure = selected && ('penMarkerId' in selected || 'fenceGateId' in selected || 'furnitureId' in selected || 'eggBoxId' in selected);
     const animal = selected && !structure ? animals.find(v => 'animalId' in selected ? v.id === selected.animalId : equal(v, selected)) : undefined;
     setSelectedAnimal(current => selected && !structure && !('animalId' in selected) && animals.some(v => v.id === current && equal(v, selected)) ? current : animal?.id ?? null);
     if (animal) setSelectedPawn(null);
@@ -478,7 +483,7 @@ function App() {
     }
   };
   const animal = s?.animals.find(v => v.id === selectedAnimal) ??
-    (state.selected && !('penMarkerId' in state.selected) && !('fenceGateId' in state.selected) && !('furnitureId' in state.selected) ? s?.animals.find(v => equal(v, state.selected!)) : undefined);
+    (state.selected && !('penMarkerId' in state.selected) && !('fenceGateId' in state.selected) && !('furnitureId' in state.selected) && !('eggBoxId' in state.selected) ? s?.animals.find(v => equal(v, state.selected!)) : undefined);
   const p = animal ?? state.selected;
   const unknown = !!p && !client.exploredAt(p);
   const waterCell = p ? client.waterAt(p) ? p : { ...p, z: p.z - 1 } : null;
@@ -530,6 +535,7 @@ function App() {
   const fence = p ? s?.fences.find(v => equal(v, p)) : null;
   const fenceGate = p ? s?.fenceGates.find(v => equal(v, p)) : null;
   const penMarker = p ? s?.penMarkers.find(v => equal(v, p)) : null;
+  const eggBox = p ? s?.eggBoxes.find(v => equal(v, p)) : null;
   const device = p
     ? s?.devices.find((d) =>
         deviceCells(d).some((q) => q.x === p.x && q.y === p.y && (q.z === p.z || q.z + 1 === p.z)),
@@ -609,7 +615,7 @@ function App() {
   const block = p && !unknown ? client.blockAt(p) : 0;
   const title = unknown ? '未探索区域' : p
     ? (animal?.name ?? people[0]?.name ??
-      penMarker?.name ?? (fenceGate ? '木制栏门' : null) ?? (fence ? '木制围栏' : null) ??
+      penMarker?.name ?? (eggBox ? '木制蛋箱' : null) ?? (fenceGate ? '木制栏门' : null) ?? (fence ? '木制围栏' : null) ??
       (butcherSpot ? '屠宰点' : null) ??
       (horseshoePin ? '马蹄铁桩' : null) ??
       (device ? DEVICE_NAMES[device.kind] : null) ??
@@ -651,7 +657,8 @@ function App() {
     }
     client.focusOn(target);
     const selection = 'species' in target && 'id' in target ? { ...target, animalId: target.id }
-      : 'filter' in target && 'id' in target ? { ...target, penMarkerId: target.id } : target;
+      : 'filter' in target && 'id' in target ? { ...target, penMarkerId: target.id }
+        : 'eggs' in target && 'id' in target ? { ...target, eggBoxId: target.id } : target;
     client.select(selection);
   };
   const penControls: PenControls = {
@@ -1010,6 +1017,7 @@ function App() {
         </section>}
         {animal && s && <AnimalDetails animal={animal} snapshot={s} command={client.command} focus={focus} penControls={penControls} />}
         {penMarker && s && <PenDetails marker={penMarker} snapshot={s} command={client.command} focus={focus} controls={penControls} />}
+        {eggBox && s && <EggBoxPanel box={eggBox} snapshot={s} temperature={temperatureOf(eggBox)} command={c => void client.command(c)} focus={focus} />}
         {fenceGate && s && <FenceGateDetails gate={fenceGate} tick={s.tick} command={client.command} />}
         {fence && <p data-testid="fence-detail">围栏可拦住鹿。人和兔可缓慢跨越；完整圈地需要连接围栏、栏门和内部标记。使用拆除工具可移除这段围栏。</p>}
         {grass && <section className="voxel-animal-detail" data-testid="grass-detail" data-growth={grass.growth}>

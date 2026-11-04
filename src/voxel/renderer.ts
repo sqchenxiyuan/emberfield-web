@@ -86,6 +86,7 @@ import { isAnimalAdult } from './husbandry';
 import { MILK_RULES } from './animalMilk';
 import { WOOL_RULES } from './animalWool';
 import { EGG_RULES } from './animalEggs';
+import { EGG_BOX_RULES } from './eggBoxes';
 import { FIRE_RULES, fireDamageCells } from './fire';
 import { tableCells } from './living';
 import { isShelfKind, shelfCells, type RelocatableKind, type ShelfKind } from './shelves';
@@ -105,7 +106,7 @@ export interface VoxelView {
 }
 
 export interface PlacementPreview {
-  tool: 'bridge' | 'shelf' | 'smallShelf' | 'bed' | 'table' | 'chair' | 'fence' | 'fenceGate' | 'penMarker' | 'animalArea' | 'forbidItems' | 'allowItems';
+  tool: 'bridge' | 'shelf' | 'smallShelf' | 'bed' | 'table' | 'chair' | 'fence' | 'fenceGate' | 'penMarker' | 'eggBox' | 'animalArea' | 'forbidItems' | 'allowItems';
   from: Pos;
   to: Pos;
   axis: Axis;
@@ -1088,7 +1089,8 @@ export class VoxelRenderer {
       if (cell && this.explored(cell)) {
         const marker = this.data?.penMarkers.find(m => m.x === cell.x && m.y === cell.y && m.z === cell.z);
         const gate = this.data?.fenceGates.find(g => g.x === cell.x && g.y === cell.y && g.z === cell.z);
-        return { x: cell.x, y: cell.y, z: cell.z, ...('furnitureId' in cell ? { furnitureId: cell.furnitureId } : {}), ...(marker ? { penMarkerId: marker.id } : {}), ...(gate ? { fenceGateId: gate.id } : {}) };
+        const eggBox = this.data?.eggBoxes.find(b => b.x === cell.x && b.y === cell.y && b.z === cell.z);
+        return { x: cell.x, y: cell.y, z: cell.z, ...('furnitureId' in cell ? { furnitureId: cell.furnitureId } : {}), ...(marker ? { penMarkerId: marker.id } : {}), ...(gate ? { fenceGateId: gate.id } : {}), ...(eggBox ? { eggBoxId: eggBox.id } : {}) };
       }
     }
     return fallback;
@@ -1105,7 +1107,7 @@ export class VoxelRenderer {
   highlight(pos: Pos | null) {
     if (this.disposed) return;
     this.hover = pos ? { ...pos } : null;
-    this.selectedAnimalId = pos && !('penMarkerId' in pos) && !('fenceGateId' in pos) && !('furnitureId' in pos) ? this.data?.animals.find(a => 'animalId' in pos ? a.id === pos.animalId : a.x === pos.x && a.y === pos.y && a.z === pos.z)?.id ?? null : null;
+    this.selectedAnimalId = pos && !('penMarkerId' in pos) && !('fenceGateId' in pos) && !('furnitureId' in pos) && !('eggBoxId' in pos) ? this.data?.animals.find(a => 'animalId' in pos ? a.id === pos.animalId : a.x === pos.x && a.y === pos.y && a.z === pos.z)?.id ?? null : null;
     this.updateCursor();
   }
 
@@ -1650,6 +1652,7 @@ export class VoxelRenderer {
     this.updateSandbags();
     this.updateHousing();
     this.updatePens();
+    this.updateEggBoxes();
     this.updatePenOverlay();
     this.updatePlacementPreview();
     this.updatePower();
@@ -1845,6 +1848,44 @@ export class VoxelRenderer {
     this.finish(borders);
   }
 
+  private eggBoxParts(box: Pos): DevicePart[] {
+    const parts: DevicePart[] = [];
+    const put = (x: number, y: number, z: number, sx: number, sy: number, sz: number, color: number) =>
+      parts.push({ cell: box, x: box.x + x, y: box.y + y, z: box.z + z, sx, sy, sz, color });
+    put(.5, .5, .08, .86, .86, .12, 0x92704c);
+    for (const side of [.10, .90]) {
+      put(side, .5, .25, .09, .89, .29, 0xb08b59);
+      put(.5, side, side === .10 ? .18 : .25, .75, .09, side === .10 ? .15 : .29, 0xc19a68);
+    }
+    for (let n = 0; n < 5; n++) put(.24 + n * .13, .5, .16, .07, .64, .04, n % 2 ? 0xd7bc76 : 0xb69a58);
+    return parts;
+  }
+
+  private updateEggBoxes() {
+    if (!this.data) return;
+    const boxes = this.data.eggBoxes.filter(box => box.z <= this.level && this.explored(box));
+    this.deviceBatch('egg-boxes', boxes.flatMap(box => this.eggBoxParts(box)));
+    const eggs = this.batch('egg-box-eggs', boxes.length * EGG_BOX_RULES.capacity, this.eggShape(), this.batchMaterial('egg-box-eggs'));
+    const spots = this.batch('egg-box-fertile-spots', boxes.length * EGG_BOX_RULES.capacity, this.box, this.batchMaterial('egg-box-fertile-spots'));
+    this.inspectBatches.set(eggs, { cells: boxes, instancesPerCell: EGG_BOX_RULES.capacity });
+    this.inspectBatches.set(spots, { cells: boxes, instancesPerCell: EGG_BOX_RULES.capacity });
+    const forbidden: DevicePart[] = [];
+    boxes.forEach((box, i) => {
+      for (let n = 0; n < EGG_BOX_RULES.capacity; n++) {
+        const present = n < (box.eggs?.amount ?? 0), fertile = present && box.eggs?.resource === 'eggFertilized';
+        const x = box.x + .24 + (n % 5) * .13, y = box.y + .24 + Math.floor(n / 5) * .13, z = box.z + .25;
+        this.instance(eggs, i * EGG_BOX_RULES.capacity + n, x, z, y,
+          present ? .055 : 0, present ? .08 : 0, present ? .055 : 0, RESOURCE_COLORS[box.eggs?.resource ?? 'eggUnfertilized']);
+        this.instance(spots, i * EGG_BOX_RULES.capacity + n, x, z + .045, y + .04,
+          fertile ? .026 : 0, fertile ? .025 : 0, fertile ? .018 : 0, 0x805c34);
+      }
+      if (box.forbidden) for (const roll of [-Math.PI / 4, Math.PI / 4]) forbidden.push({
+        cell: box, x: box.x + .5, y: box.y + .043, z: box.z + .26, sx: .23, sy: .04, sz: .035, color: 0xf18070, roll,
+      });
+    });
+    this.finish(eggs); this.finish(spots); this.deviceBatch('egg-box-forbidden', forbidden);
+  }
+
   private updatePens() {
     if (!this.data) return;
     const parts: DevicePart[] = [];
@@ -1939,6 +1980,8 @@ export class VoxelRenderer {
             for (const h of [.25, .61]) put(.5, .5, h, alongX ? .7 : .08, alongX ? .08 : .7, .09);
           } else if (preview.tool === 'penMarker') {
             put(.5, .5, .5, .1, .1, 1); put(.5, .5, .9, .67, .12, .36);
+          } else if (preview.tool === 'eggBox') {
+            parts.push(...this.eggBoxParts(p).map(part => ({ ...part, color })));
           }
         }
       }
@@ -3445,6 +3488,8 @@ export class VoxelRenderer {
                       ? .8
                     : job.kind === 'penMarker'
                       ? 1.1
+                    : job.kind === 'eggBox'
+                      ? .42
                     : job.kind === 'wall'
                       ? 0.57
                       : 0.9;
@@ -3471,7 +3516,7 @@ export class VoxelRenderer {
             ? 0xe6bf6d
             : job.kind === 'cut' || planting
               ? 0xa4cc83
-              : ['fence', 'fenceGate', 'penMarker'].includes(job.kind) ? 0xbcd89d : 0x82c4cb,
+              : ['fence', 'fenceGate', 'penMarker', 'eggBox'].includes(job.kind) ? 0xbcd89d : 0x82c4cb,
       );
       for (const [a, b] of edges) {
         positions.push(...corners[a], ...corners[b]);
@@ -3637,7 +3682,7 @@ export class VoxelRenderer {
       visual.body.rotation.z = a.dead ? Math.PI / 2 : 0;
       visual.head.rotation.x = a.phase === 'graze' || a.phase === 'eat' ? .65 + Math.sin(time * 3 + a.id) * .08 : fleeing ? -.12 : resting ? .18 : Math.sin(time * .9 + a.id) * .025;
       visual.legs.forEach((leg, i) => { leg.visible = !resting; leg.rotation.x = moving ? wave * (i === 0 || i === 3 ? 1 : -1) * (fleeing ? .65 : .4) : 0; });
-      const laying = chicken && !a.dead && a.phase === 'layEgg';
+      const laying = chicken && !a.dead && a.phase === 'layEgg' && !a.path.length && !moving;
       const layWave = laying && a.layProgress < EGG_RULES.layWork ? Math.sin(a.layProgress * .16) : 0;
       visual.root.userData.eggLaying = laying ? { progress: a.layProgress, waitingForSpace: a.layProgress >= EGG_RULES.layWork } : null;
       visual.wings.forEach((wing, i) => { wing.rotation.z = (i ? -1 : 1) * (laying ? .20 + layWave * .08 : moving ? .10 : 0); });
@@ -4278,6 +4323,7 @@ export class VoxelRenderer {
       visual.shears.visible = false;
       visual.root.userData.milking = null;
       visual.root.userData.shearing = null;
+      visual.root.userData.eggBoxCollecting = null;
       visual.root.userData.dining = null;
       visual.root.userData.socialRelax = null;
       visual.head.rotation.set(0, 0, 0);
@@ -4373,6 +4419,9 @@ export class VoxelRenderer {
       const fireTarget = pawn.phase === 'firefight' && pawn.firefightTask ? this.data.fires.find(f => f.id === pawn.firefightTask!.fireId) : undefined;
       const repairTarget = pawn.phase === 'repair' && pawn.repairTask ? this.data.fireDamage.find(d => d.key === pawn.repairTask!.damageKey) : undefined;
       const touches = (p: Pos) => Math.abs(p.x - pawn.x) + Math.abs(p.y - pawn.y) + Math.abs(p.z - pawn.z) <= 1;
+      const eggBox = pawn.phase === 'eggBox' && pawn.eggBoxTask
+        ? this.data.eggBoxes.find(box => box.id === pawn.eggBoxTask!.boxId && !box.forbidden && box.eggs && box.eggs.amount > 0) : undefined;
+      const collectingEggs = !!eggBox && !moving && !pawn.cargo && !mental && pawn.carryingPawnId === null && touches(eggBox);
       const handledAnimal = pawn.phase === 'handle' && pawn.handleTask?.stage === 'interact'
         ? this.data.animals.find(a => a.id === pawn.handleTask!.animalId && !a.dead) : undefined;
       const handling = !!handledAnimal && !moving && !mental && touches(handledAnimal);
@@ -4595,6 +4644,14 @@ export class VoxelRenderer {
         visual.torso.rotation.x = .1; visual.head.rotation.x = .1;
         toolArm.rotation.x = -.45 - Math.sin(beat * Math.PI) * .7;
         visual.hammer.visible = true; visual.hammer.scale.setScalar(1); visual.tool.visible = false;
+      } else if (collectingEggs && eggBox && pawn.eggBoxTask) {
+        const progress = pawn.eggBoxTask.progress;
+        const lift = progress < EGG_BOX_RULES.emptyWork ? Math.sin(MathUtils.clamp(progress / EGG_BOX_RULES.emptyWork, 0, 1) * Math.PI) : 0;
+        if (eggBox.x !== pawn.x || eggBox.y !== pawn.y) visual.root.rotation.y = Math.atan2(eggBox.x - pawn.x, eggBox.y - pawn.y);
+        visual.torso.rotation.x = .25 - lift * .08; visual.head.rotation.x = .25;
+        visual.leftArm.rotation.x = -.65 - lift * .3; visual.rightArm.rotation.x = -.65 - lift * .3;
+        visual.tool.visible = false; visual.hammer.visible = false;
+        visual.root.userData.eggBoxCollecting = { boxId: eggBox.id, progress, waiting: progress >= EGG_BOX_RULES.emptyWork };
       } else if (ropeAnimal && pawn.ropeTask && !mental && pawn.ropeTask.stage !== 'approach') {
         const leading = pawn.ropeTask.stage === 'lead';
         if (!leading) visual.root.rotation.y = Math.atan2(ropeAnimal.x - pawn.x, ropeAnimal.y - pawn.y);

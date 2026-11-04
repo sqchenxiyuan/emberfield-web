@@ -45,7 +45,16 @@ export function milkExpectedField(key: string, value: any): any {
 /** Synthetic old-schema inputs only. Validate everything before removing empty
  * additions; real chickens, eggs, incubation, product history or filter choices
  * are evidence, not defaults that a downgrade fixture may erase. */
+export function stripEggBoxFields(raw: Record<string, any>) {
+  if (Object.hasOwn(raw,'eggBoxes')) expect(raw.eggBoxes).toEqual([]);
+  for (const p of raw.pawns ?? []) { expect(Object.hasOwn(p,'eggBoxTask')).toBe(false);expect(p.phase).not.toBe('eggBox'); }
+  expect(raw.animals?.some((a:any)=>a.goal?.kind==='layEggBox')).not.toBe(true);
+  expect(raw.jobs?.some((j:any)=>j.kind==='eggBox')).not.toBe(true);
+  expect(raw.fireDamage?.some((d:any)=>d.kind==='eggBox')).not.toBe(true);
+  delete raw.eggBoxes;
+}
 export function stripAnimalEggFields(raw: Record<string, any>) {
+  stripEggBoxFields(raw);
   const eggResources = ['eggUnfertilized', 'eggFertilized'];
   const policy = { total: null, male: null, female: null, youngMale: null, youngFemale: null, allowPregnant: false };
   const preflight = (node: any): void => {

@@ -1,3 +1,4 @@
+import type { EggBox, EggBoxTask } from './eggBoxes';
 import type { Trauma } from './injuries';
 import type { MedicalState, MedicalPolicy } from './medicine';
 import type { WeaponPiece, WeaponKind, WeaponBenchKind } from './weapons';
@@ -286,6 +287,7 @@ export type Tool =
   | 'fenceGate'
   | 'penMarker'
   | 'animalArea'
+  | 'eggBox'
   | 'horseshoePin'
   | 'butcherSpot'
   | DeviceKind
@@ -428,7 +430,7 @@ export interface Stove extends Pos {
 }
 export type AnimalSpecies = 'hare' | 'deer' | 'dromedary' | 'alpaca' | 'chicken';
 export interface GrassPatch extends Pos { growth: number }
-export interface AnimalGoal { kind: 'grass' | 'crop' | 'food' | 'mate' | 'area' | 'exit' | 'layEgg'; id: number }
+export interface AnimalGoal { kind: 'grass' | 'crop' | 'food' | 'mate' | 'area' | 'exit' | 'layEgg' | 'layEggBox'; id: number }
 export interface HandleTask {
   animalId: number;
   action: 'tame' | 'maintain' | 'feed' | 'slaughter' | 'autoSlaughter' | 'release' | 'milk' | 'shear';
@@ -585,6 +587,7 @@ export type JobKind =
   | 'fence'
   | 'fenceGate'
   | 'penMarker'
+  | 'eggBox'
   | 'horseshoePin'
   | 'butcherSpot'
   | 'butcher'
@@ -688,6 +691,7 @@ export interface CombatState {
   wave: number;
 }
 export interface Pawn extends Pos {
+  eggBoxTask?: EggBoxTask;
   allowedAreaId: number | null;
   productionDelivery?: import('./productionOutput').ProductionDelivery;
   social: SocialState;
@@ -742,6 +746,7 @@ export interface Pawn extends Pos {
   path: number[];
   destination: number | null;
   phase:
+    | 'eggBox'
     | 'dine'
     | 'rope'
     | 'handle'
@@ -850,6 +855,7 @@ export interface VoxelSnapshot {
   fireLog: FireLogEntry[];
   filth: Filth[];
   roomCleanliness: RoomCleanliness[];
+  eggBoxes: EggBox[];
   horseshoePins: HorseshoePin[];
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
@@ -920,6 +926,8 @@ export interface ChunkUpdate {
   explored: Uint8Array;
 }
 export type VoxelCommand =
+  | { type: 'eggBoxEmpty'; boxId: number; enabled: boolean }
+  | { type: 'eggBoxForbid'; boxId: number; forbidden: boolean }
   | { type: 'itemForbidden'; itemId: number; forbidden: boolean }
   | { type: 'itemForbiddenArea'; from: Pos; to?: Pos; forbidden: boolean }
   | { type: 'productionBillAdd'; benchId: number; recipe: import('./productionBills').ProductionRecipe }
@@ -1045,9 +1053,10 @@ export interface VoxelSave {
   autoRebuild: boolean;
   fireLog: FireLogEntry[];
   filth: Filth[];
+  eggBoxes: EggBox[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 51;
+  version: 52;
   autoSlaughter: import('./autoSlaughter').AutoSlaughterSettings;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
@@ -1135,6 +1144,7 @@ export const JOB_NAMES: Record<JobKind, string> = {
   uninstall: '卸下家具', install: '重装家具',
   table: '造餐桌', chair: '造餐椅',
   fence: '建围栏', fenceGate: '建栏门', penMarker: '建圈地标记',
+  eggBox: '建蛋箱',
   horseshoePin: '建马蹄铁桩',
   butcherSpot: '划定屠宰点',
   butcher: '屠宰动物',
@@ -1178,6 +1188,7 @@ export const TOOL_NAMES: Record<Tool, string> = {
   shelf: '货架', smallShelf: '小货架',
   table: '餐桌', chair: '餐椅',
   fence: '围栏', fenceGate: '栏门', penMarker: '圈地标记', animalArea: '允许区域',
+  eggBox: '蛋箱',
   horseshoePin: '马蹄铁桩',
   butcherSpot: '屠宰点',
   ...DEVICE_NAMES,

@@ -14,7 +14,7 @@ import { FIRE_RULES, FIRE_MAX_HP, FIRE_TARGET_NAMES, fireRandom, fireDamageKey, 
   type Fire, type FireDamage, type FireHazards, type FireLogEntry, type BurnTargetKind, type FireSource } from './fire';
 
 export interface FireHost extends Pick<VoxelSave, 'shelves' | 'jobs' | 'tables' | 'chairs' | 'pawns' | 'items' | 'trees' | 'crops' | 'beds' | 'doors' | 'stoves' |
-  'stonecutters' | 'tailors' | 'weaponBenches' | 'researchBenches' | 'horseshoePins' | 'butcherSpots' | 'devices' | 'wires' | 'fences' | 'fenceGates' | 'penMarkers'> {
+  'stonecutters' | 'tailors' | 'weaponBenches' | 'researchBenches' | 'horseshoePins' | 'butcherSpots' | 'devices' | 'wires' | 'fences' | 'fenceGates' | 'penMarkers' | 'eggBoxes'> {
   seed: number; tick: number; nextId: number; revision: number; notice: string;
   blocks: Uint8Array; ladders: Uint8Array; homeArea: Set<number>;
   structureKinds?: Uint8Array;
@@ -78,7 +78,7 @@ export function findFireDamageTarget(s: FireHost, d: FireDamage): FireDamage | u
   if (d.kind === 'wire') return s.wires.some(p => same(p, d)) ? damageTarget('wire', d, null) : undefined;
   const property = { table: 'tables', chair: 'chairs', bed: 'beds', door: 'doors', stove: 'stoves', stonecutter: 'stonecutters', tailor: 'tailors',
     weaponBench: 'weaponBenches', researchBench: 'researchBenches', horseshoePin: 'horseshoePins',
-    butcherSpot: 'butcherSpots', device: 'devices', fence:'fences', fenceGate:'fenceGates', penMarker:'penMarkers' } as const;
+    butcherSpot: 'butcherSpots', device: 'devices', fence:'fences', fenceGate:'fenceGates', penMarker:'penMarkers', eggBox:'eggBoxes' } as const;
   const object = s[property[d.kind]].find(q => q.id === d.targetId);
   return object ? damageTarget(d.kind, object, object.id) : undefined;
 }
@@ -101,7 +101,7 @@ export function fireFuelAt(s: FireHost, p: Pos): FuelTarget[] {
   if (s.ladders[cell]) out.push({ kind: 'structure', id: cell, flammability: 1, damage: damageTarget('ladder', p, null) });
   const entries = [
     ['shelf',s.shelves.filter(s => s.kind === 'shelf')], ['smallShelf',s.shelves.filter(s => s.kind === 'smallShelf')],
-    ['table', s.tables], ['chair', s.chairs],
+    ['table', s.tables], ['chair', s.chairs], ['eggBox', s.eggBoxes],
     ['fence',s.fences], ['fenceGate',s.fenceGates], ['penMarker',s.penMarkers], ['bed', s.beds], ['door', s.doors], ['stove', s.stoves], ['stonecutter', s.stonecutters],
     ['tailor', s.tailors], ['weaponBench', s.weaponBenches], ['researchBench', s.researchBenches],
     ['horseshoePin', s.horseshoePins], ['butcherSpot', s.butcherSpots], ['device', s.devices],

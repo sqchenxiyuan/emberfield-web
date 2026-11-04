@@ -11,7 +11,7 @@ export function isConstructionFrame(job: Job): boolean {
   return !job.cancelled && !job.constructionFailure && ['shelf', 'smallShelf', 'table', 'chair', 'bed', 'door', 'stove',
     'stonecutter', 'tailor', 'smithy', 'machining', 'researchBench', 'horseshoePin',
     'generator', 'solar', 'battery', 'heater', 'cooler', 'wire', 'wall', 'ladder',
-    'fence', 'fenceGate', 'penMarker', 'sandbag'].includes(job.kind) &&
+    'fence', 'fenceGate', 'penMarker', 'eggBox', 'sandbag'].includes(job.kind) &&
     Object.values(job.delivered).some(amount => amount !== undefined && amount > 0);
 }
 export function frameBuildingKind(job: Job): Exclude<BurnTargetKind, 'frame'> {

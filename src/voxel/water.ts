@@ -11,7 +11,7 @@ export function waterBelow(water: Uint8Array, blocks: Uint8Array, p: Pos): numbe
 /** Wood bridges provide light support. This list covers the currently available
  * building catalogue, not arbitrary future buildings or a mass simulation. */
 export function bridgeSupports(kind: JobKind, material: ConstructionMaterial = 'wood'): boolean {
-  return ['bed', 'table', 'chair', 'shelf', 'smallShelf', 'door', 'fence', 'fenceGate',
+  return ['eggBox', 'bed', 'table', 'chair', 'shelf', 'smallShelf', 'door', 'fence', 'fenceGate',
     'penMarker', 'horseshoePin', 'heater', 'sandbag', 'craftingSpot', 'butcherSpot', 'wire', 'ladder', 'install', 'uninstall', 'remove'].includes(kind) ||
     (kind === 'wall' && material === 'wood');
 }
