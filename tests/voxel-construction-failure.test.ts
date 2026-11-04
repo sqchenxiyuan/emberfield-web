@@ -1,3 +1,4 @@
+import { stripAutoSlaughterFields } from './legacy-auto-rebuild-defaults';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { Block, at, index, type Job, type Pawn, type Pos, type Resource, type VoxelCommand } from '../src/voxel/types';
@@ -257,7 +258,7 @@ describe('physical construction failure and ordinary retry', () => {
       const invalid = structuredClone(valid); mutate(invalid); const before = structuredClone(invalid);
       expect(() => VoxelSimulation.load(invalid)).toThrow(); expect(invalid).toEqual(before);
     }
-    const old = { ...structuredClone(valid), version: 46 }; expect(() => VoxelSimulation.load(old)).toThrow();
+    const old = { ...structuredClone(valid), version: 46 }; stripAutoSlaughterFields(old); expect(() => VoxelSimulation.load(old)).toThrow();
     expect(VoxelSimulation.load(valid).jobs[0].constructionFailure).toEqual(valid.jobs[0].constructionFailure);
   });
 

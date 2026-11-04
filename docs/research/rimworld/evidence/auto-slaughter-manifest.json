@@ -1,0 +1,128 @@
+{
+  "evidence_id": "RW17-AUTO-SLAUGHTER",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes.",
+    "No native game, browser, preview, GUI input, or screenshot capture was launched for this milestone."
+  ],
+  "types": [
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "local_file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "lines": 270
+    },
+    {
+      "type": "Verse.AutoSlaughterConfig",
+      "local_file": ".local-research/auto-slaughter/Verse.AutoSlaughterConfig.cs",
+      "sha256": "5999bcff452c36d88588802213f59e6f5c03e1dbd1c1d98a1514f3d0bebe2b85",
+      "lines": 57
+    },
+    {
+      "type": "RimWorld.Dialog_AutoSlaughter",
+      "local_file": ".local-research/auto-slaughter/RimWorld.Dialog_AutoSlaughter.cs",
+      "sha256": "566849d984e991b8a2dd6cddbd33fbef8e93f56e0bdac4e09e5fb4f7ae7f2822",
+      "lines": 418
+    },
+    {
+      "type": "RimWorld.WorkGiver_Slaughter",
+      "local_file": ".local-research/auto-slaughter/RimWorld.WorkGiver_Slaughter.cs",
+      "sha256": "8c452d49995e79fe6cc83c85cd3b04f34b793ddf88fa10dcbd4c65638037d55c",
+      "lines": 79
+    },
+    {
+      "type": "RimWorld.JobDriver_Slaughter",
+      "local_file": ".local-research/auto-slaughter/RimWorld.JobDriver_Slaughter.cs",
+      "sha256": "d8eb31746a96024315cc9627803738b5872fcedc391afbc267bf6fd7dc6cdafa",
+      "lines": 35
+    },
+    {
+      "type": "Verse.Pawn_AgeTracker",
+      "local_file": ".local-research/auto-slaughter/Verse.Pawn_AgeTracker.cs",
+      "sha256": "b71a11d960cd5efae59595cf2a0298305a13bef9e9e095ee58cea3cb828d39ec",
+      "lines": 823
+    },
+    {
+      "type": "Verse.Hediff_Pregnant",
+      "local_file": ".local-research/auto-slaughter/Verse.Hediff_Pregnant.cs",
+      "sha256": "c8d706382ad523ccb43f496a31ad0de5d0a9b1c8d3fc20b73c52737e2a3b3d87",
+      "lines": 298
+    },
+    {
+      "type": "RimWorld.Pawn_RelationsTracker",
+      "local_file": ".local-research/auto-slaughter/RimWorld.Pawn_RelationsTracker.cs",
+      "sha256": "d4a48e91a534b63b22f5597b3d2bc0cc322389852d30ce16c25dc197fa8dd02e",
+      "lines": 1179
+    },
+    {
+      "type": "Verse.MapPawns",
+      "local_file": ".local-research/auto-slaughter/Verse.MapPawns.cs",
+      "sha256": "682a13f793f29b6e38939f61e23a7fbf20e117f8a40f700012ff58566f289c15",
+      "lines": 973
+    },
+    {
+      "type": "Verse.Pawn",
+      "local_file": ".local-research/auto-slaughter/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "lines": 4791
+    },
+    {
+      "type": "Verse.AI.JobDriver",
+      "local_file": ".local-research/auto-slaughter/Verse.AI.JobDriver.cs",
+      "sha256": "170325ed15a349e588ae3182e88fad887568794256edfd237975bc47e926a6c6",
+      "lines": 700
+    },
+    {
+      "type": "RimWorld.PawnColumnWorker_Slaughter",
+      "local_file": ".local-research/auto-slaughter/RimWorld.PawnColumnWorker_Slaughter.cs",
+      "sha256": "1d99d78c26e4776523092ab53332fc249b7d15db459110ae958b43ae06dca1fa",
+      "lines": 38
+    },
+    {
+      "type": "RimWorld.SlaughterDesignatorUtility",
+      "local_file": ".local-research/auto-slaughter/RimWorld.SlaughterDesignatorUtility.cs",
+      "sha256": "e788f61cc2fb6bbbb339272940ead41d294ee6cd74c4f59c38d9787606ffaeeb",
+      "lines": 45
+    },
+    {
+      "type": "RimWorld.Designator_Slaughter",
+      "local_file": ".local-research/auto-slaughter/RimWorld.Designator_Slaughter.cs",
+      "sha256": "c2be0e8daf9848c23d717a0ca98ac1de52393b91a3af6a6e4fed04659a5d11af",
+      "lines": 101
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "local_file": ".local-research/auto-slaughter/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "lines": 1655
+    },
+    {
+      "type": "Verse.GenCollection",
+      "local_file": ".local-research/auto-slaughter/Verse.GenCollection.cs",
+      "sha256": "8a0038b28f44696b68018f464616b068d18380dd1b409270863edddc4cb53ae3",
+      "lines": 1720
+    },
+    {
+      "type": "Verse.AI.Toils_General",
+      "local_file": ".local-research/auto-slaughter/Verse.AI.Toils_General.cs",
+      "sha256": "0a5e1a21ff2bbf65e3069c75043f19e9885fd539682ac5f9065ebd38444c03b4",
+      "lines": 164
+    },
+    {
+      "type": "Verse.AI.Job",
+      "local_file": ".local-research/auto-slaughter/Verse.AI.Job.cs",
+      "sha256": "82e9e8d733ec292d56f7ce0457c2f84043d694cc67a1e14ce06b35295cc90313",
+      "lines": 769
+    }
+  ]
+}

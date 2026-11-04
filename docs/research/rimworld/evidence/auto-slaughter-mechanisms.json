@@ -1,0 +1,1262 @@
+{
+  "evidence_id": "RW17-AUTO-SLAUGHTER-STATIC",
+  "version": "1.7.4980 rev60",
+  "assemblySha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "reaEvidenceId": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+  "reaParentId": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+  "reaFile": "docs/research/rimworld/evidence/production-bills-rea-managed.json",
+  "reaSha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+  "manifestFile": "docs/research/rimworld/evidence/auto-slaughter-manifest.json",
+  "manifestSha256": "f262e24f24e73ac4f972466aee7b467fec53dd633d5d0361057f80598302e26f",
+  "rules": [
+    {
+      "type": "Verse.AutoSlaughterConfig",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterConfig.cs",
+      "sha256": "5999bcff452c36d88588802213f59e6f5c03e1dbd1c1d98a1514f3d0bebe2b85",
+      "anchor": "public int maxTotal = -1",
+      "hits": [
+        {
+          "line": 7,
+          "text": "public int maxTotal = -1;"
+        }
+      ],
+      "interpretation": "Total, male/female reproductive and male/female young quotas default to unlimited (-1)."
+    },
+    {
+      "type": "Verse.AutoSlaughterConfig",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterConfig.cs",
+      "sha256": "5999bcff452c36d88588802213f59e6f5c03e1dbd1c1d98a1514f3d0bebe2b85",
+      "anchor": "Scribe_Values.Look(ref allowSlaughterPregnant, \"allowSlaughterPregnant\", defaultValue: false)",
+      "hits": [
+        {
+          "line": 53,
+          "text": "Scribe_Values.Look(ref allowSlaughterPregnant, \"allowSlaughterPregnant\", defaultValue: false);"
+        }
+      ],
+      "interpretation": "Pregnancy permission defaults false and is saved."
+    },
+    {
+      "type": "Verse.AutoSlaughterConfig",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterConfig.cs",
+      "sha256": "5999bcff452c36d88588802213f59e6f5c03e1dbd1c1d98a1514f3d0bebe2b85",
+      "anchor": "Scribe_Values.Look(ref allowSlaughterBonded, \"allowSlaughterBonded\", defaultValue: false)",
+      "hits": [
+        {
+          "line": 54,
+          "text": "Scribe_Values.Look(ref allowSlaughterBonded, \"allowSlaughterBonded\", defaultValue: false);"
+        }
+      ],
+      "interpretation": "Bond permission defaults false and is saved."
+    },
+    {
+      "type": "Verse.AutoSlaughterConfig",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterConfig.cs",
+      "sha256": "5999bcff452c36d88588802213f59e6f5c03e1dbd1c1d98a1514f3d0bebe2b85",
+      "anchor": "maxTotal == -1 && maxMales == -1 && maxFemales == -1 && maxMalesYoung == -1 && maxFemalesYoung == -1 && allowSlaughterPregnant",
+      "hits": [
+        {
+          "line": 37,
+          "text": "if (maxTotal == -1 && maxMales == -1 && maxFemales == -1 && maxMalesYoung == -1 && maxFemalesYoung == -1 && allowSlaughterPregnant)"
+        }
+      ],
+      "interpretation": "AnyLimit is not a plain five-quota test: protection toggles keep processing enabled. Unlimited quotas still select no animals."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "foreach (Pawn spawnedColonyAnimal in map.mapPawns.SpawnedColonyAnimals)",
+      "hits": [
+        {
+          "line": 51,
+          "text": "foreach (Pawn spawnedColonyAnimal in map.mapPawns.SpawnedColonyAnimals)"
+        }
+      ],
+      "interpretation": "Candidate universe is spawned player-faction animals on this map."
+    },
+    {
+      "type": "Verse.MapPawns",
+      "file": ".local-research/auto-slaughter/Verse.MapPawns.cs",
+      "sha256": "682a13f793f29b6e38939f61e23a7fbf20e117f8a40f700012ff58566f289c15",
+      "anchor": "List<Pawn> list = SpawnedPawnsInFaction(Faction.OfPlayer)",
+      "hits": [
+        {
+          "line": 483,
+          "text": "List<Pawn> list = SpawnedPawnsInFaction(Faction.OfPlayer);"
+        },
+        {
+          "line": 500,
+          "text": "List<Pawn> list = SpawnedPawnsInFaction(Faction.OfPlayer);"
+        },
+        {
+          "line": 534,
+          "text": "List<Pawn> list = SpawnedPawnsInFaction(Faction.OfPlayer);"
+        },
+        {
+          "line": 612,
+          "text": "List<Pawn> list = SpawnedPawnsInFaction(Faction.OfPlayer);"
+        },
+        {
+          "line": 665,
+          "text": "List<Pawn> list = SpawnedPawnsInFaction(Faction.OfPlayer);"
+        },
+        {
+          "line": 681,
+          "text": "List<Pawn> list = SpawnedPawnsInFaction(Faction.OfPlayer);"
+        }
+      ],
+      "interpretation": "SpawnedColonyAnimals starts from spawned player-faction pawns and filters IsAnimal."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "spawnedColonyAnimal.def != config.animal || !CanAutoSlaughterNow(spawnedColonyAnimal)",
+      "hits": [
+        {
+          "line": 53,
+          "text": "if (spawnedColonyAnimal.def != config.animal || !CanAutoSlaughterNow(spawnedColonyAnimal) || (!config.allowSlaughterBonded && spawnedColonyAnimal.relations.GetDirectRelationsCount(PawnRelationDefOf.Bond) > 0))"
+        }
+      ],
+      "interpretation": "Each species filters transient auto-slaughter eligibility before quota counting."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "!config.allowSlaughterBonded && spawnedColonyAnimal.relations.GetDirectRelationsCount(PawnRelationDefOf.Bond) > 0",
+      "hits": [
+        {
+          "line": 53,
+          "text": "if (spawnedColonyAnimal.def != config.animal || !CanAutoSlaughterNow(spawnedColonyAnimal) || (!config.allowSlaughterBonded && spawnedColonyAnimal.relations.GetDirectRelationsCount(PawnRelationDefOf.Bond) > 0))"
+        }
+      ],
+      "interpretation": "Protected bonded animals are excluded from candidates and quota counts, irrespective of whether the bonded pawn is alive."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "spawnedColonyAnimal.ageTracker.CurLifeStage.reproductive",
+      "hits": [
+        {
+          "line": 59,
+          "text": "if (spawnedColonyAnimal.ageTracker.CurLifeStage.reproductive)"
+        },
+        {
+          "line": 71,
+          "text": "if (spawnedColonyAnimal.ageTracker.CurLifeStage.reproductive)"
+        }
+      ],
+      "interpretation": "Reproductive life-stage membership determines adult versus young, rather than body size or a universal age."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "!spawnedColonyAnimal.health.hediffSet.HasHediff(HediffDefOf.Pregnant)",
+      "hits": [
+        {
+          "line": 73,
+          "text": "if (!spawnedColonyAnimal.health.hediffSet.HasHediff(HediffDefOf.Pregnant))"
+        }
+      ],
+      "interpretation": "Any ordinary pregnancy is protected by default; this execution branch does not require Visible."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "else if (config.allowSlaughterPregnant)",
+      "hits": [
+        {
+          "line": 78,
+          "text": "else if (config.allowSlaughterPregnant)"
+        }
+      ],
+      "interpretation": "Allowed pregnant reproductive females enter a separate temporary pool; protected ones enter neither female nor total pool."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "tmpAnimals.SortByDescending((Pawn a) => a.ageTracker.AgeBiologicalTicks)",
+      "hits": [
+        {
+          "line": 94,
+          "text": "tmpAnimals.SortByDescending((Pawn a) => a.ageTracker.AgeBiologicalTicks);"
+        }
+      ],
+      "interpretation": "Ordinary total candidates are ordered oldest first by biological ticks."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "tmpAnimalsFemaleYoung.SortByDescending((Pawn a) => a.ageTracker.AgeBiologicalTicks)",
+      "hits": [
+        {
+          "line": 98,
+          "text": "tmpAnimalsFemaleYoung.SortByDescending((Pawn a) => a.ageTracker.AgeBiologicalTicks);"
+        }
+      ],
+      "interpretation": "Each of the four sex/age pools is independently ordered oldest first."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "tmpAnimalsPregnant.SortByDescending((Pawn a) => a.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.Pregnant).Severity)",
+      "hits": [
+        {
+          "line": 101,
+          "text": "tmpAnimalsPregnant.SortByDescending((Pawn a) => a.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.Pregnant).Severity);"
+        }
+      ],
+      "interpretation": "Pregnancy pool uses descending severity, not biological age or most-recent-conception order."
+    },
+    {
+      "type": "Verse.Hediff_Pregnant",
+      "file": ".local-research/auto-slaughter/Verse.Hediff_Pregnant.cs",
+      "sha256": "c8d706382ad523ccb43f496a31ad0de5d0a9b1c8d3fc20b73c52737e2a3b3d87",
+      "anchor": "return Severity",
+      "hits": [
+        {
+          "line": 26,
+          "text": "return Severity;"
+        }
+      ],
+      "interpretation": "GestationProgress reads pregnancy severity; the higher-severity pregnancy is further progressed."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "tmpAnimalsFemale.AddRange(tmpAnimalsPregnant)",
+      "hits": [
+        {
+          "line": 102,
+          "text": "tmpAnimalsFemale.AddRange(tmpAnimalsPregnant);"
+        }
+      ],
+      "interpretation": "Allowed pregnant animals are appended after ordinary adult females."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "tmpAnimals.AddRange(tmpAnimalsPregnant)",
+      "hits": [
+        {
+          "line": 103,
+          "text": "tmpAnimals.AddRange(tmpAnimalsPregnant);"
+        }
+      ],
+      "interpretation": "Allowed pregnant animals are appended after all ordinary total candidates."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "while (tmpAnimalsFemale.Count > config.maxFemales)",
+      "hits": [
+        {
+          "line": 107,
+          "text": "while (tmpAnimalsFemale.Count > config.maxFemales)"
+        }
+      ],
+      "interpretation": "Adult female limit is enforced first."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "while (tmpAnimalsFemaleYoung.Count > config.maxFemalesYoung)",
+      "hits": [
+        {
+          "line": 116,
+          "text": "while (tmpAnimalsFemaleYoung.Count > config.maxFemalesYoung)"
+        }
+      ],
+      "interpretation": "Young female limit is enforced second."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "while (tmpAnimalsMale.Count > config.maxMales)",
+      "hits": [
+        {
+          "line": 125,
+          "text": "while (tmpAnimalsMale.Count > config.maxMales)"
+        }
+      ],
+      "interpretation": "Adult male limit is enforced third."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "while (tmpAnimalsMaleYoung.Count > config.maxMalesYoung)",
+      "hits": [
+        {
+          "line": 134,
+          "text": "while (tmpAnimalsMaleYoung.Count > config.maxMalesYoung)"
+        }
+      ],
+      "interpretation": "Young male limit is enforced fourth."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "while (tmpAnimals.Count > config.maxTotal)",
+      "hits": [
+        {
+          "line": 145,
+          "text": "while (tmpAnimals.Count > config.maxTotal)"
+        }
+      ],
+      "interpretation": "Total limit is enforced last, after removing candidates already selected by category limits."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "tmpAnimals.Remove(item)",
+      "hits": [
+        {
+          "line": 110,
+          "text": "tmpAnimals.Remove(item);"
+        }
+      ],
+      "interpretation": "The category-selected candidate is removed from the total pool, preventing duplicate selection or over-reduction by total quota."
+    },
+    {
+      "type": "Verse.GenCollection",
+      "file": ".local-research/auto-slaughter/Verse.GenCollection.cs",
+      "sha256": "8a0038b28f44696b68018f464616b068d18380dd1b409270863edddc4cb53ae3",
+      "anchor": "list.Sort((T a, T b) => selector(b).CompareTo(selector(a)))",
+      "hits": [
+        {
+          "line": 873,
+          "text": "list.Sort((T a, T b) => selector(b).CompareTo(selector(a)));"
+        }
+      ],
+      "interpretation": "The one-key descending helper specifies no stable ID tiebreaker."
+    },
+    {
+      "type": "Verse.GenCollection",
+      "file": ".local-research/auto-slaughter/Verse.GenCollection.cs",
+      "sha256": "8a0038b28f44696b68018f464616b068d18380dd1b409270863edddc4cb53ae3",
+      "anchor": "T result = list[0]",
+      "hits": [
+        {
+          "line": 1027,
+          "text": "T result = list[0];"
+        }
+      ],
+      "interpretation": "PopFront selects the first entry and removes index zero."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "if (animal.HomeFaction == Faction.OfPlayer)",
+      "hits": [
+        {
+          "line": 191,
+          "text": "if (animal.HomeFaction == Faction.OfPlayer)"
+        }
+      ],
+      "interpretation": "Auto-slaughter requires player HomeFaction, distinct from current faction."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "return !animal.RaceProps.Dryad",
+      "hits": [
+        {
+          "line": 193,
+          "text": "return !animal.RaceProps.Dryad;"
+        }
+      ],
+      "interpretation": "Dryads are excluded from auto-slaughter eligibility."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "if (animal.GetLord() != null)",
+      "hits": [
+        {
+          "line": 204,
+          "text": "if (animal.GetLord() != null)"
+        }
+      ],
+      "interpretation": "Animals attached to any Lord are temporarily excluded."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "animal.inventory != null && animal.inventory.UnloadEverything",
+      "hits": [
+        {
+          "line": 208,
+          "text": "if (animal.inventory != null && animal.inventory.UnloadEverything)"
+        }
+      ],
+      "interpretation": "Animals currently unloading inventory are temporarily excluded."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "if (cacheDirty)",
+      "hits": [
+        {
+          "line": 34,
+          "text": "if (cacheDirty)"
+        }
+      ],
+      "interpretation": "Selection is lazily recomputed only when this manager is dirty and AnimalsToSlaughter is read."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "cacheDirty = false",
+      "hits": [
+        {
+          "line": 173,
+          "text": "cacheDirty = false;"
+        }
+      ],
+      "interpretation": "A completed recomputation clears the dirty state."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "cacheDirty = true",
+      "hits": [
+        {
+          "line": 223,
+          "text": "cacheDirty = true;"
+        },
+        {
+          "line": 228,
+          "text": "cacheDirty = true;"
+        },
+        {
+          "line": 233,
+          "text": "cacheDirty = true;"
+        },
+        {
+          "line": 238,
+          "text": "cacheDirty = true;"
+        }
+      ],
+      "interpretation": "Exactly four methods in this type dirty the cache: spawn, despawn, faction and config notifications."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/auto-slaughter/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "Map.autoSlaughterManager.Notify_PawnSpawned()",
+      "hits": [
+        {
+          "line": 1408,
+          "text": "Map.autoSlaughterManager.Notify_PawnSpawned();"
+        }
+      ],
+      "interpretation": "SpawnSetup notifies the manager, including post-load spawn setup."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/auto-slaughter/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "map.autoSlaughterManager.Notify_PawnDespawned()",
+      "hits": [
+        {
+          "line": 2427,
+          "text": "map.autoSlaughterManager.Notify_PawnDespawned();"
+        }
+      ],
+      "interpretation": "DeSpawn notifies the old map manager when the map exists."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/auto-slaughter/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "Map.autoSlaughterManager.Notify_PawnChangedFaction()",
+      "hits": [
+        {
+          "line": 2716,
+          "text": "Map.autoSlaughterManager.Notify_PawnChangedFaction();"
+        }
+      ],
+      "interpretation": "SetFaction notifies when the pawn is spawned."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "Scribe_Collections.Look(ref configs, \"configs\", LookMode.Deep)",
+      "hits": [
+        {
+          "line": 243,
+          "text": "Scribe_Collections.Look(ref configs, \"configs\", LookMode.Deep);"
+        }
+      ],
+      "interpretation": "Configuration is persisted; the derived selected-pawn list is not serialized here."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "file": ".local-research/auto-slaughter/Verse.AutoSlaughterManager.cs",
+      "sha256": "7f4e869985b6c82f6167f78da361eb4f6f8f94613f7997ab19cf5f9459e3422e",
+      "anchor": "allDef.GetStatValueAbstract(StatDefOf.Wildness) < 1f",
+      "hits": [
+        {
+          "line": 260,
+          "text": "if (allDef.race != null && allDef.race.Animal && allDef.GetStatValueAbstract(StatDefOf.Wildness) < 1f && !allDef.race.Dryad && !allDef.IsCorpse && !hashSet.Contains(allDef))"
+        }
+      ],
+      "interpretation": "Configuration rows are populated for tameable animal definitions, excluding dryads and corpses."
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "file": ".local-research/auto-slaughter/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "anchor": "!pawn.Spawned || !pawn.IsAnimal",
+      "hits": [
+        {
+          "line": 1515,
+          "text": "if (!pawn.Spawned || !pawn.IsAnimal)"
+        }
+      ],
+      "interpretation": "ShouldBeSlaughtered requires a spawned animal before either designation route."
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "file": ".local-research/auto-slaughter/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "anchor": "pawn.Map.designationManager.DesignationOn(pawn, DesignationDefOf.Slaughter) != null || pawn.Map.autoSlaughterManager.AnimalsToSlaughter.Contains(pawn)",
+      "hits": [
+        {
+          "line": 1519,
+          "text": "if (pawn.Map.designationManager.DesignationOn(pawn, DesignationDefOf.Slaughter) != null || pawn.Map.autoSlaughterManager.AnimalsToSlaughter.Contains(pawn))"
+        }
+      ],
+      "interpretation": "A manual designation OR derived automatic selection enters the final release-designation gate; clearing one route need not clear the other."
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "file": ".local-research/auto-slaughter/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "anchor": "return pawn.Map.designationManager.DesignationOn(pawn, DesignationDefOf.ReleaseAnimalToWild) == null",
+      "hits": [
+        {
+          "line": 1521,
+          "text": "return pawn.Map.designationManager.DesignationOn(pawn, DesignationDefOf.ReleaseAnimalToWild) == null;"
+        }
+      ],
+      "interpretation": "Release-to-wild vetoes both manual and automatic slaughter. Manager candidates still count/select that animal until a separate lifecycle invalidation."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Slaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.WorkGiver_Slaughter.cs",
+      "sha256": "8c452d49995e79fe6cc83c85cd3b04f34b793ddf88fa10dcbd4c65638037d55c",
+      "anchor": "SpawnedDesignationsOfDef(DesignationDefOf.Slaughter)",
+      "hits": [
+        {
+          "line": 13,
+          "text": "foreach (Designation item in pawn.Map.designationManager.SpawnedDesignationsOfDef(DesignationDefOf.Slaughter))"
+        }
+      ],
+      "interpretation": "PotentialWorkThingsGlobal yields manual designated animals before the automatic list; this does not prove global execution priority."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Slaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.WorkGiver_Slaughter.cs",
+      "sha256": "8c452d49995e79fe6cc83c85cd3b04f34b793ddf88fa10dcbd4c65638037d55c",
+      "anchor": "foreach (Pawn item2 in pawn.Map.autoSlaughterManager.AnimalsToSlaughter)",
+      "hits": [
+        {
+          "line": 17,
+          "text": "foreach (Pawn item2 in pawn.Map.autoSlaughterManager.AnimalsToSlaughter)"
+        }
+      ],
+      "interpretation": "The same work giver also yields automatic candidates."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Slaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.WorkGiver_Slaughter.cs",
+      "sha256": "8c452d49995e79fe6cc83c85cd3b04f34b793ddf88fa10dcbd4c65638037d55c",
+      "anchor": "if (pawn.Faction != t.Faction)",
+      "hits": [
+        {
+          "line": 42,
+          "text": "if (pawn.Faction != t.Faction)"
+        }
+      ],
+      "interpretation": "Work assignment requires same current faction."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Slaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.WorkGiver_Slaughter.cs",
+      "sha256": "8c452d49995e79fe6cc83c85cd3b04f34b793ddf88fa10dcbd4c65638037d55c",
+      "anchor": "if (pawn2.InAggroMentalState)",
+      "hits": [
+        {
+          "line": 46,
+          "text": "if (pawn2.InAggroMentalState)"
+        }
+      ],
+      "interpretation": "Aggressive mental states reject the slaughter job."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Slaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.WorkGiver_Slaughter.cs",
+      "sha256": "8c452d49995e79fe6cc83c85cd3b04f34b793ddf88fa10dcbd4c65638037d55c",
+      "anchor": "!pawn.CanReserve(t, 1, -1, null, forced)",
+      "hits": [
+        {
+          "line": 50,
+          "text": "if (!pawn.CanReserve(t, 1, -1, null, forced))"
+        }
+      ],
+      "interpretation": "Each animal needs a reservation; quotas do not bypass ordinary job allocation."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Slaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.WorkGiver_Slaughter.cs",
+      "sha256": "8c452d49995e79fe6cc83c85cd3b04f34b793ddf88fa10dcbd4c65638037d55c",
+      "anchor": "pawn.WorkTagIsDisabled(WorkTags.Violent)",
+      "hits": [
+        {
+          "line": 54,
+          "text": "if (pawn.WorkTagIsDisabled(WorkTags.Violent))"
+        }
+      ],
+      "interpretation": "A violence-incapable handler cannot take the ordinary job."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Slaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.WorkGiver_Slaughter.cs",
+      "sha256": "8c452d49995e79fe6cc83c85cd3b04f34b793ddf88fa10dcbd4c65638037d55c",
+      "anchor": "HistoryEventDefOf.SlaughteredVeneratedAnimal",
+      "hits": [
+        {
+          "line": 67,
+          "text": "if (pawn.Ideo != null && pawn.Ideo.IsVeneratedAnimal(pawn2) && !new HistoryEvent(HistoryEventDefOf.SlaughteredVeneratedAnimal, pawn.Named(HistoryEventArgsNames.Doer)).Notify_PawnAboutToDo_Job())"
+        }
+      ],
+      "interpretation": "Ideology and innocent/venerated-animal history checks can reject work independently of selection."
+    },
+    {
+      "type": "RimWorld.JobDriver_Slaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.JobDriver_Slaughter.cs",
+      "sha256": "d8eb31746a96024315cc9627803738b5872fcedc391afbc267bf6fd7dc6cdafa",
+      "anchor": "this.FailOn(() => !job.ignoreDesignations && !Victim.ShouldBeSlaughtered())",
+      "hits": [
+        {
+          "line": 21,
+          "text": "this.FailOn(() => !job.ignoreDesignations && !Victim.ShouldBeSlaughtered());"
+        }
+      ],
+      "interpretation": "Ordinary active jobs fail when neither manual nor cached-auto eligibility remains; ignoreDesignations explicitly bypasses that condition."
+    },
+    {
+      "type": "RimWorld.JobDriver_Slaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.JobDriver_Slaughter.cs",
+      "sha256": "d8eb31746a96024315cc9627803738b5872fcedc391afbc267bf6fd7dc6cdafa",
+      "anchor": "this.FailOnAggroMentalState(TargetIndex.A)",
+      "hits": [
+        {
+          "line": 20,
+          "text": "this.FailOnAggroMentalState(TargetIndex.A);"
+        }
+      ],
+      "interpretation": "The job also fails if its animal becomes aggressive."
+    },
+    {
+      "type": "RimWorld.JobDriver_Slaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.JobDriver_Slaughter.cs",
+      "sha256": "d8eb31746a96024315cc9627803738b5872fcedc391afbc267bf6fd7dc6cdafa",
+      "anchor": "Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch)",
+      "hits": [
+        {
+          "line": 22,
+          "text": "yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);"
+        }
+      ],
+      "interpretation": "Worker must reach touching distance."
+    },
+    {
+      "type": "RimWorld.JobDriver_Slaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.JobDriver_Slaughter.cs",
+      "sha256": "d8eb31746a96024315cc9627803738b5872fcedc391afbc267bf6fd7dc6cdafa",
+      "anchor": "Toils_General.WaitWith(TargetIndex.A, 180, useProgressBar: true)",
+      "hits": [
+        {
+          "line": 23,
+          "text": "yield return Toils_General.WaitWith(TargetIndex.A, 180, useProgressBar: true);"
+        }
+      ],
+      "interpretation": "The native slaughter wait is 180 logical ticks; this is not a Web balance requirement."
+    },
+    {
+      "type": "Verse.AI.Toils_General",
+      "file": ".local-research/auto-slaughter/Verse.AI.Toils_General.cs",
+      "sha256": "0a5e1a21ff2bbf65e3069c75043f19e9885fd539682ac5f9065ebd38444c03b4",
+      "anchor": "PawnUtility.ForceWait(pawn, ticks, null, maintainPosture, maintainSleep)",
+      "hits": [
+        {
+          "line": 53,
+          "text": "PawnUtility.ForceWait(pawn, ticks, null, maintainPosture, maintainSleep);"
+        }
+      ],
+      "interpretation": "WaitWith forces the target pawn to wait while the worker acts."
+    },
+    {
+      "type": "Verse.AI.Toils_General",
+      "file": ".local-research/auto-slaughter/Verse.AI.Toils_General.cs",
+      "sha256": "0a5e1a21ff2bbf65e3069c75043f19e9885fd539682ac5f9065ebd38444c03b4",
+      "anchor": "toil.FailOnCannotTouch(targetInd, pathEndMode)",
+      "hits": [
+        {
+          "line": 58,
+          "text": "toil.FailOnCannotTouch(targetInd, pathEndMode);"
+        }
+      ],
+      "interpretation": "WaitWith fails if contact is lost; it separately checks despawn/null."
+    },
+    {
+      "type": "RimWorld.JobDriver_Slaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.JobDriver_Slaughter.cs",
+      "sha256": "d8eb31746a96024315cc9627803738b5872fcedc391afbc267bf6fd7dc6cdafa",
+      "anchor": "ExecutionUtility.DoExecutionByCut(pawn, Victim)",
+      "hits": [
+        {
+          "line": 26,
+          "text": "ExecutionUtility.DoExecutionByCut(pawn, Victim);"
+        }
+      ],
+      "interpretation": "After work, ordinary execution handles death; automatic quota selection itself does not generate meat."
+    },
+    {
+      "type": "Verse.AI.JobDriver",
+      "file": ".local-research/auto-slaughter/Verse.AI.JobDriver.cs",
+      "sha256": "170325ed15a349e588ae3182e88fad887568794256edfd237975bc47e926a6c6",
+      "anchor": "if (CheckCurrentToilEndOrFail())",
+      "hits": [
+        {
+          "line": 359,
+          "text": "if (CheckCurrentToilEndOrFail())"
+        },
+        {
+          "line": 506,
+          "text": "if (CheckCurrentToilEndOrFail())"
+        }
+      ],
+      "interpretation": "Global fail conditions are checked during driver updates and before toil init."
+    },
+    {
+      "type": "Verse.AI.JobDriver",
+      "file": ".local-research/auto-slaughter/Verse.AI.JobDriver.cs",
+      "sha256": "170325ed15a349e588ae3182e88fad887568794256edfd237975bc47e926a6c6",
+      "anchor": "JobCondition jobCondition = globalFailConditions[i]()",
+      "hits": [
+        {
+          "line": 574,
+          "text": "JobCondition jobCondition = globalFailConditions[i]();"
+        }
+      ],
+      "interpretation": "The active driver evaluates the fail callbacks rather than treating eligibility as a one-time assignment check."
+    },
+    {
+      "type": "Verse.AI.JobDriver",
+      "file": ".local-research/auto-slaughter/Verse.AI.JobDriver.cs",
+      "sha256": "170325ed15a349e588ae3182e88fad887568794256edfd237975bc47e926a6c6",
+      "anchor": "JobCondition.Incompletable",
+      "hits": [
+        {
+          "line": 668,
+          "text": "globalFailConditions.Add(() => (!newFailCondition()) ? JobCondition.Ongoing : JobCondition.Incompletable);"
+        }
+      ],
+      "interpretation": "A true AddFailCondition ends the job as incompletable, distinct from killing the animal."
+    },
+    {
+      "type": "RimWorld.Dialog_AutoSlaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.Dialog_AutoSlaughter.cs",
+      "sha256": "566849d984e991b8a2dd6cddbd33fbef8e93f56e0bdac4e09e5fb4f7ae7f2822",
+      "anchor": "forcePause = true",
+      "hits": [
+        {
+          "line": 61,
+          "text": "forcePause = true;"
+        }
+      ],
+      "interpretation": "The native quota dialog pauses the simulation."
+    },
+    {
+      "type": "RimWorld.Dialog_AutoSlaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.Dialog_AutoSlaughter.cs",
+      "sha256": "566849d984e991b8a2dd6cddbd33fbef8e93f56e0bdac4e09e5fb4f7ae7f2822",
+      "anchor": "!AutoSlaughterManager.CanEverAutoSlaughter(spawnedColonyAnimal)",
+      "hits": [
+        {
+          "line": 144,
+          "text": "if (spawnedColonyAnimal.def != animal || !AutoSlaughterManager.CanEverAutoSlaughter(spawnedColonyAnimal))"
+        }
+      ],
+      "interpretation": "UI counts use permanent eligibility, while execution candidates also exclude Lord and unloading states."
+    },
+    {
+      "type": "RimWorld.Dialog_AutoSlaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.Dialog_AutoSlaughter.cs",
+      "sha256": "566849d984e991b8a2dd6cddbd33fbef8e93f56e0bdac4e09e5fb4f7ae7f2822",
+      "anchor": "firstHediffOfDef != null && firstHediffOfDef.Visible",
+      "hits": [
+        {
+          "line": 172,
+          "text": "if (firstHediffOfDef != null && firstHediffOfDef.Visible)"
+        }
+      ],
+      "interpretation": "The UI pregnancy count/protection requires visible pregnancy; the automatic selection algorithm does not."
+    },
+    {
+      "type": "RimWorld.Dialog_AutoSlaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.Dialog_AutoSlaughter.cs",
+      "sha256": "566849d984e991b8a2dd6cddbd33fbef8e93f56e0bdac4e09e5fb4f7ae7f2822",
+      "anchor": "val = current",
+      "hits": [
+        {
+          "line": 212,
+          "text": "val = current;"
+        }
+      ],
+      "interpretation": "Clicking an unlimited quota sets it to the displayed current count."
+    },
+    {
+      "type": "RimWorld.Dialog_AutoSlaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.Dialog_AutoSlaughter.cs",
+      "sha256": "566849d984e991b8a2dd6cddbd33fbef8e93f56e0bdac4e09e5fb4f7ae7f2822",
+      "anchor": "val = Mathf.Max(0, val)",
+      "hits": [
+        {
+          "line": 221,
+          "text": "val = Mathf.Max(0, val);"
+        }
+      ],
+      "interpretation": "Numeric quotas are clamped to zero or greater in the dialog."
+    },
+    {
+      "type": "RimWorld.Dialog_AutoSlaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.Dialog_AutoSlaughter.cs",
+      "sha256": "566849d984e991b8a2dd6cddbd33fbef8e93f56e0bdac4e09e5fb4f7ae7f2822",
+      "anchor": "map.autoSlaughterManager.Notify_ConfigChanged()",
+      "hits": [
+        {
+          "line": 233,
+          "text": "map.autoSlaughterManager.Notify_ConfigChanged();"
+        }
+      ],
+      "interpretation": "Changing a numeric quota dirties the automatic candidate cache."
+    },
+    {
+      "type": "RimWorld.Dialog_AutoSlaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.Dialog_AutoSlaughter.cs",
+      "sha256": "566849d984e991b8a2dd6cddbd33fbef8e93f56e0bdac4e09e5fb4f7ae7f2822",
+      "anchor": "if (allowSlaughterPregnant != config.allowSlaughterPregnant)",
+      "hits": [
+        {
+          "line": 362,
+          "text": "if (allowSlaughterPregnant != config.allowSlaughterPregnant)"
+        }
+      ],
+      "interpretation": "Pregnancy checkbox change calls RecalculateAnimals (UI counts); the reviewed handler does not notify the candidate manager."
+    },
+    {
+      "type": "RimWorld.Dialog_AutoSlaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.Dialog_AutoSlaughter.cs",
+      "sha256": "566849d984e991b8a2dd6cddbd33fbef8e93f56e0bdac4e09e5fb4f7ae7f2822",
+      "anchor": "if (allowSlaughterBonded != config.allowSlaughterBonded)",
+      "hits": [
+        {
+          "line": 373,
+          "text": "if (allowSlaughterBonded != config.allowSlaughterBonded)"
+        }
+      ],
+      "interpretation": "Bond checkbox change likewise recalculates UI counts."
+    },
+    {
+      "type": "RimWorld.Designator_Slaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.Designator_Slaughter.cs",
+      "sha256": "c2be0e8daf9848c23d717a0ca98ac1de52393b91a3af6a6e4fed04659a5d11af",
+      "anchor": "Map.designationManager.AddDesignation(new Designation(t, Designation))",
+      "hits": [
+        {
+          "line": 60,
+          "text": "Map.designationManager.AddDesignation(new Designation(t, Designation));"
+        }
+      ],
+      "interpretation": "Manual slaughter explicitly writes a designation; manager selection does not."
+    },
+    {
+      "type": "RimWorld.Designator_Slaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.Designator_Slaughter.cs",
+      "sha256": "c2be0e8daf9848c23d717a0ca98ac1de52393b91a3af6a6e4fed04659a5d11af",
+      "anchor": "Map.designationManager.RemoveDesignation(designation)",
+      "hits": [
+        {
+          "line": 65,
+          "text": "Map.designationManager.RemoveDesignation(designation);"
+        }
+      ],
+      "interpretation": "Manual slaughter removes an existing release-to-wild designation."
+    },
+    {
+      "type": "RimWorld.SlaughterDesignatorUtility",
+      "file": ".local-research/auto-slaughter/RimWorld.SlaughterDesignatorUtility.cs",
+      "sha256": "e788f61cc2fb6bbbb339272940ead41d294ee6cd74c4f59c38d9787606ffaeeb",
+      "anchor": "PawnRelationDefOf.Bond, (Pawn x) => !x.Dead",
+      "hits": [
+        {
+          "line": 11,
+          "text": "Pawn firstDirectRelationPawn = designated.relations.GetFirstDirectRelationPawn(PawnRelationDefOf.Bond, (Pawn x) => !x.Dead);"
+        }
+      ],
+      "interpretation": "Manual bond warning looks for a living bonded pawn, unlike the auto-protection count."
+    },
+    {
+      "type": "RimWorld.PawnColumnWorker_Slaughter",
+      "file": ".local-research/auto-slaughter/RimWorld.PawnColumnWorker_Slaughter.cs",
+      "sha256": "1d99d78c26e4776523092ab53332fc249b7d15db459110ae958b43ae06dca1fa",
+      "anchor": "SlaughterDesignatorUtility.CheckWarnAboutBondedAnimal(pawn)",
+      "hits": [
+        {
+          "line": 25,
+          "text": "SlaughterDesignatorUtility.CheckWarnAboutBondedAnimal(pawn);"
+        }
+      ],
+      "interpretation": "Animal-table manual designation warns about bonds; it is not vetoed by auto-slaughter protection."
+    }
+  ],
+  "boundedChecks": [
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "start": "public List<Pawn> AnimalsToSlaughter",
+      "end": "public static bool CanEverAutoSlaughter",
+      "startLine": 30,
+      "endLine": 189,
+      "sliceSha256": "5c1a812f78dcfc3571a8a7dff71ae6f159de49b0e3209b780087130a2d1d52ed",
+      "absentTokens": [
+        "Designation",
+        "Visible",
+        "thingID",
+        "loadID",
+        "Rand.",
+        "HitPoints",
+        "CanReach",
+        "CanReserve"
+      ],
+      "interpretation": "Candidate derivation neither creates/reads manual designations, requires visible pregnancy, reserves/reaches a victim nor has an explicit ID tie or random choice."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "start": "public void ExposeData()",
+      "end": "private void TryPopulateMissingAnimals()",
+      "startLine": 241,
+      "endLine": 254,
+      "sliceSha256": "45c6b63e26616809f86da5044d00294c9061f94e602d6dba3c3a2064b1f726da",
+      "absentTokens": [
+        "animalsToSlaughterCached",
+        "cacheDirty",
+        "Notify_"
+      ],
+      "interpretation": "Manager serialization stores configuration but neither cached candidates nor dirty state, and has no explicit reload invalidation in this method. Spawn callbacks provide observed invalidation."
+    },
+    {
+      "type": "Verse.AutoSlaughterManager",
+      "start": "public sealed class AutoSlaughterManager",
+      "end": "",
+      "startLine": 8,
+      "endLine": 270,
+      "sliceSha256": "2bd95e5cae20caa1d07f2347b11c57c876a2f35abafddd6786d95b239d093924",
+      "absentTokens": [
+        "Tick(",
+        "TickInterval(",
+        "TicksGame",
+        "IsHashIntervalTick"
+      ],
+      "interpretation": "The reviewed manager type has no periodic tick-based recount. This is not a whole-program absence proof."
+    },
+    {
+      "type": "Verse.Pawn_AgeTracker",
+      "start": "public class Pawn_AgeTracker",
+      "end": "",
+      "startLine": 10,
+      "endLine": 823,
+      "sliceSha256": "dd613e1edf3c150b0da968b4c1e225e0ed3d8f1d85bdd43f52fffaf301625f0b",
+      "absentTokens": [
+        "autoSlaughter",
+        "AutoSlaughter"
+      ],
+      "interpretation": "No direct auto-slaughter reference appears in the reviewed age tracker; indirect callbacks are not exhausted."
+    },
+    {
+      "type": "Verse.Hediff_Pregnant",
+      "start": "public class Hediff_Pregnant",
+      "end": "",
+      "startLine": 10,
+      "endLine": 298,
+      "sliceSha256": "6c11c674087b6f4c29fa6c2498ccff6427ea964a458891bdf7aa1e5090d9d280",
+      "absentTokens": [
+        "autoSlaughter",
+        "AutoSlaughter"
+      ],
+      "interpretation": "No direct auto-slaughter reference appears in the reviewed pregnancy class; birth spawn follows ordinary pawn notification."
+    },
+    {
+      "type": "RimWorld.Pawn_RelationsTracker",
+      "start": "public class Pawn_RelationsTracker",
+      "end": "",
+      "startLine": 10,
+      "endLine": 1179,
+      "sliceSha256": "005a7ec03d02e27983a9b0d15abd79339cafc1433811eec06e980021fc51d465",
+      "absentTokens": [
+        "autoSlaughter",
+        "AutoSlaughter"
+      ],
+      "interpretation": "No direct auto-slaughter reference appears in this relation tracker; indirect callbacks are not exhausted."
+    },
+    {
+      "type": "RimWorld.Dialog_AutoSlaughter",
+      "start": "private void RecalculateAnimals()",
+      "end": "public override void DoWindowContents",
+      "startLine": 74,
+      "endLine": 88,
+      "sliceSha256": "124315fe531154f408123661074d99b760b7527ca848db7fd1249022a93bfb5e",
+      "absentTokens": [
+        "Notify_ConfigChanged",
+        "cacheDirty"
+      ],
+      "interpretation": "RecalculateAnimals only refreshes dialog counts/order, not the candidate manager."
+    },
+    {
+      "type": "RimWorld.Dialog_AutoSlaughter",
+      "start": "private void DoAnimalRow",
+      "end": "",
+      "startLine": 330,
+      "endLine": 418,
+      "sliceSha256": "57696bd7119b552b0f2f5fed8b547e05066a6d24c1f88786a8305a5f91199028",
+      "absentTokens": [
+        "Notify_ConfigChanged",
+        "cacheDirty"
+      ],
+      "interpretation": "The reviewed checkbox handlers do not explicitly dirty the candidate manager. Immediate candidate refresh on checkbox-only changes is unproven."
+    },
+    {
+      "type": "RimWorld.JobDriver_Slaughter",
+      "start": "protected override IEnumerable<Toil> MakeNewToils",
+      "end": "",
+      "startLine": 18,
+      "endLine": 35,
+      "sliceSha256": "99d6eaa18cf34b05294f3d2101c8d4a7daa33cd6c8653d7514add52639e29d6c",
+      "absentTokens": [
+        "Learn(",
+        "Skill",
+        "Notify_ConfigChanged",
+        "allowSlaughterPregnant",
+        "CanAutoSlaughterNow",
+        "AddFinishAction",
+        "RemoveDesignation"
+      ],
+      "interpretation": "This driver does not independently recalculate pregnancy eligibility, learn an animal skill, or remove manual designation on mere work interruption."
+    },
+    {
+      "type": "RimWorld.Designator_Slaughter",
+      "start": "public override AcceptanceReport CanDesignateThing",
+      "end": "public override void DesignateThing",
+      "startLine": 49,
+      "endLine": 58,
+      "sliceSha256": "eabd271dfcabfd6c2f182477266d88afe2da2a42f3dcbdbb4df2867b79370d0c",
+      "absentTokens": [
+        "Pregnant",
+        "Bond",
+        "CanEverAutoSlaughter",
+        "CanAutoSlaughterNow"
+      ],
+      "interpretation": "Ordinary manual designation eligibility does not inherit automatic pregnancy/bond protections."
+    }
+  ],
+  "packagedXml": [
+    {
+      "file": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+      "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c",
+      "xpath": "/Defs/WorkGiverDef[defName=\"Slaughter\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "giverClass",
+          "count": 1,
+          "xml": [
+            "<giverClass>WorkGiver_Slaughter</giverClass>"
+          ]
+        },
+        {
+          "xpath": "workType",
+          "count": 1,
+          "xml": [
+            "<workType>Handling</workType>"
+          ]
+        },
+        {
+          "xpath": "priorityInType",
+          "count": 1,
+          "xml": [
+            "<priorityInType>100</priorityInType>"
+          ]
+        },
+        {
+          "xpath": "requiredCapacities",
+          "count": 1,
+          "xml": [
+            "<requiredCapacities><li>Manipulation</li></requiredCapacities>"
+          ]
+        }
+      ],
+      "interpretation": "Ordinary slaughter is Handling work and has capacity requirements."
+    },
+    {
+      "file": "Data/Core/Defs/JobDefs/Jobs_Work.xml",
+      "sha256": "0c2cc583de4ad306681c1dcd65763539461adedf33a5360fe716a36deddef2a1",
+      "xpath": "/Defs/JobDef[defName=\"Slaughter\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "driverClass",
+          "count": 1,
+          "xml": [
+            "<driverClass>JobDriver_Slaughter</driverClass>"
+          ]
+        },
+        {
+          "xpath": "allowOpportunisticPrefix",
+          "count": 1,
+          "xml": [
+            "<allowOpportunisticPrefix>true</allowOpportunisticPrefix>"
+          ]
+        }
+      ],
+      "interpretation": "The ordinary Slaughter job uses the reviewed driver."
+    },
+    {
+      "file": "Data/Core/Defs/HediffDefs/Hediffs_Global_Misc.xml",
+      "sha256": "d3d38552d52b19273eef855e2d62e3155267b8176f640e6018c7d9a04c919d57",
+      "xpath": "/Defs/HediffDef[defName=\"Pregnant\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "hediffClass",
+          "count": 1,
+          "xml": [
+            "<hediffClass>Hediff_Pregnant</hediffClass>"
+          ]
+        },
+        {
+          "xpath": "stages",
+          "count": 1,
+          "xml": [
+            "<stages><li><label>early-stage</label><vomitMtbDays>2.5</vomitMtbDays></li><li><label>middle-stage</label><minSeverity>0.333</minSeverity><capMods><li><capacity>Moving</capacity><offset>-0.15</offset></li></capMods></li><li><label>late-stage</label><minSeverity>0.666</minSeverity><vomitMtbDays>2</vomitMtbDays><capMods><li><capacity>Moving</capacity><offset>-0.30</offset></li></capMods></li></stages>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"HediffCompProperties_MessageAfterTicks\"><ticks>600</ticks><message>{0} is pregnant!</message><messageType>PositiveEvent</messageType></li></comps>"
+          ]
+        }
+      ],
+      "interpretation": "Ordinary animal pregnancy definition; projection does not resolve the final modded Def database."
+    },
+    {
+      "file": "Data/Core/Languages/English/Keyed/Dialogs_Various.xml",
+      "sha256": "788bcaba0c677223b75adca628ca9cbace579d36c58bdab9ab04cd03c032647e",
+      "xpath": "/LanguageData",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "AutoSlaugtherTip",
+          "count": 1,
+          "xml": [
+            "<AutoSlaugtherTip>Colonists first slaughter non-pregnant animals in order from oldest to youngest, then pregnant animals from most recent to least recent pregnancy.</AutoSlaugtherTip>"
+          ]
+        },
+        {
+          "xpath": "AutoSlaugtherHeaderTooltipCurrentMales",
+          "count": 1,
+          "xml": [
+            "<AutoSlaugtherHeaderTooltipCurrentMales>The current number of males of breeding age in the colony.</AutoSlaugtherHeaderTooltipCurrentMales>"
+          ]
+        },
+        {
+          "xpath": "AutoSlaughterHeaderTooltipCurrentMalesYoung",
+          "count": 1,
+          "xml": [
+            "<AutoSlaughterHeaderTooltipCurrentMalesYoung>The current number of baby and juvenile males in the colony.</AutoSlaughterHeaderTooltipCurrentMalesYoung>"
+          ]
+        },
+        {
+          "xpath": "AutoSlaughterHeaderTooltipAllowSlaughterPregnant",
+          "count": 1,
+          "xml": [
+            "<AutoSlaughterHeaderTooltipAllowSlaughterPregnant>Allow pregnant animals to be slaughtered along with other females of the same species.</AutoSlaughterHeaderTooltipAllowSlaughterPregnant>"
+          ]
+        },
+        {
+          "xpath": "AutoSlaughterHeaderTooltipAllowSlaughterBonded",
+          "count": 1,
+          "xml": [
+            "<AutoSlaughterHeaderTooltipAllowSlaughterBonded>Allow bonded animals to be slaughtered.</AutoSlaughterHeaderTooltipAllowSlaughterBonded>"
+          ]
+        }
+      ],
+      "interpretation": "English tooltip says most recent pregnancy first; this conflicts with the reviewed descending severity code."
+    }
+  ],
+  "quotaOrder": [
+    "maxFemales",
+    "maxFemalesYoung",
+    "maxMales",
+    "maxMalesYoung",
+    "maxTotal"
+  ],
+  "unlimitedNativeValue": -1,
+  "slaughterWaitNativeTicks": 180,
+  "dirtyNotificationCount": 4,
+  "limits": [
+    "Static derived C# and packaged XML are not original source or runtime gameplay proof.",
+    "Matching retained REA metadata is reused for artifact identity only.",
+    "No native game, browser, preview, GUI input or screenshot was run.",
+    "Cache-invalidation absence checks are explicitly bounded to reviewed types/methods, not a complete assembly call graph.",
+    "Dialog checkbox-only changes, pregnancy/age/bond transitions and arbitrary Lord/inventory transitions were not runtime-tested for cache freshness.",
+    "The packaged English pregnancy-order tooltip conflicts with the reviewed descending-severity algorithm; retain both facts without inventing a runtime result.",
+    "Ordinary shared slaughter job is covered, not every mental-state execution path, DLC rule or mod override.",
+    "Tie ordering has no explicit native ID tiebreaker; do not claim exact replay of equal-age ordering.",
+    "Web immediate recomputation, stable ID ties, voxel reachability, null-as-unlimited, save validation and separate manual/automatic task labels are adaptations.",
+    "Bond protection requires an actual animal bond model; a Web toggle without that model would misrepresent functionality.",
+    "Native numeric constants are recorded evidence, while Web tuning remains provisional and separate from mechanism fidelity."
+  ],
+  "collectorSha256": "c7d5919e5b806bef5d10d58ed6cd2db5ba521f497cfddccc1842fe9723b662e3"
+}

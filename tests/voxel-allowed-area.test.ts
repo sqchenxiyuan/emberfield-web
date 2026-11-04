@@ -1,3 +1,4 @@
+import { stripAutoSlaughterFields } from './legacy-auto-rebuild-defaults';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { Block, at, index, position, type Pawn, type Pos, type VoxelCommand } from '../src/voxel/types';
@@ -114,10 +115,10 @@ describe('colonist allowed areas',()=>{
   });
   it('validates identity, migrates old assignments to unrestricted, and does not mutate caller saves',()=>{
     const s=fixture(),p=s.pawns[0],id=area(s,p,pos(20)),raw=s.save();
-    expect(raw.version).toBe(47);expect(VoxelSimulation.load(raw).pawns[0].allowedAreaId).toBe(id);
+    expect(raw.version).toBe(48);expect(VoxelSimulation.load(raw).pawns[0].allowedAreaId).toBe(id);
     const bad=structuredClone(raw);bad.pawns[0].allowedAreaId=999999;expect(()=>VoxelSimulation.load(bad)).toThrow('允许区域');
     const missing:any=structuredClone(raw);delete missing.pawns[0].allowedAreaId;expect(()=>VoxelSimulation.load(missing)).toThrow('允许区域');
-    const old:any=structuredClone(raw);old.version=43;expect(()=>VoxelSimulation.load(old)).toThrow('混入');
+    const old:any=structuredClone(raw);stripAutoSlaughterFields(old);old.version=43;expect(()=>VoxelSimulation.load(old)).toThrow('混入');
     for(const q of old.pawns)delete q.allowedAreaId;
     expect(old.autoRebuild).toBe(false); delete old.autoRebuild;
     const before=structuredClone(old),loaded=VoxelSimulation.load(old);

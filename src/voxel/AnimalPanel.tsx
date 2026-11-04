@@ -6,6 +6,7 @@ import { isRangedKind } from './ranged';
 import { weaponName } from './weapons';
 import { ItemCondition } from './ItemCondition';
 import { AnimalPenControls, PenPanel, type PenCommand, type PenControls } from './PenPanel';
+import { AutoSlaughterPanel } from './AutoSlaughterPanel';
 
 type Command = PenCommand;
 const availableHunters = (s: VoxelSnapshot) => s.pawns.filter(p => p.faction === 'colony' &&
@@ -13,7 +14,7 @@ const availableHunters = (s: VoxelSnapshot) => s.pawns.filter(p => p.faction ===
   p.priorities.hunt > 0 && p.weapon && isRangedKind(p.weapon.kind));
 const levelName = (z: number, base: number) => z === base ? '营地基准层' : z < base ? `基准层下 ${base - z}` : `基准层上 +${z - base}`;
 const lifeNames = { baby: '幼崽', juvenile: '幼年', adult: '成年' };
-const actionNames: Record<HandleTask['action'], string> = { tame: '尝试驯服', maintain: '维持温顺', feed: '喂食', slaughter: '宰杀', release: '放归' };
+const actionNames: Record<HandleTask['action'], string> = { tame: '尝试驯服', maintain: '维持温顺', feed: '喂食', slaughter: '手动宰杀', autoSlaughter: '自动宰杀', release: '放归' };
 const stageNames: Record<HandleTask['stage'], string> = { fetch: '取食物', approach: '接近动物', interact: '本次互动' };
 const percent = (value: number) => `${Math.round(value * 100)}%`;
 
@@ -35,10 +36,13 @@ function AnimalStatus({ animal: a, snapshot: s }: { animal: WildAnimal; snapshot
   const roper = s.pawns.find(p => p.ropeTask?.animalId === a.id), rope = roper?.ropeTask;
   const ropeStages = { approach: '接近动物', attach: '套绳', lead: '牵往圈地', detach: '解绳' };
   const hunter = s.pawns.find(p => p.phase === 'hunt' && p.attackTargetId === a.id);
+  const autoSlaughter = !a.dead && s.autoSlaughterStatus.targets.includes(a.id);
   return <div className="voxel-animal-status" data-testid="animal-status" data-handler-id={roper?.id ?? handler?.id ?? 'none'} data-stage={rope?.stage ?? task?.stage ?? 'none'}>
     <p>{rope && roper ? `${roper.name} · ${ropeStages[rope.stage]} · ${s.penMarkers.find(p => p.id === rope.penId)?.name ?? '圈地'}` : task && handler ? `${handler.name} · ${actionNames[task.action]} · ${stageNames[task.stage]}` : hunter ? `${hunter.name} · ${hunter.reason}` : a.reason}</p>
     {rope && roper && <small>{roper.reason}</small>}
     {task && handler && <small>{handler.reason}</small>}
+    {autoSlaughter && <small className="voxel-auto-slaughter-warning" data-testid="animal-auto-slaughter">自动待宰 · 超过已生效配额</small>}
+    {!a.dead && a.slaughter && <small>手动待宰标记已开启</small>}
     {a.tame && !a.dead && <small>需要动物技能 {ANIMAL_HUSBANDRY[a.species].minSkill}；每次互动独立尝试，可能失败。</small>}
     {a.tame && !task && a.nextInteractionTick > s.tick && <small>下次可互动：约 {Math.max(1, Math.ceil((a.nextInteractionTick - s.tick) / DAY * 24 * 60))} 游戏分钟后</small>}
   </div>;
@@ -86,7 +90,7 @@ export function AnimalPanel({ snapshot: s, selectedAnimalId, baseLevel, command,
   choose: (tool: Tool) => void; focus: (pos: Pos) => void; selectAnimal: (animal: WildAnimal) => void;
   selectPawn: (pawn: Pawn) => void; close: () => void; penControls: PenControls;
 }) {
-  const [tab, setTab] = useState<'animals' | 'pens'>('animals');
+  const [tab, setTab] = useState<'animals' | 'pens' | 'autoSlaughter'>('animals');
   const hunters = availableHunters(s), craftingSpot = s.weaponBenches.find(b => b.kind === 'craftingSpot');
   const domestic = s.animals.filter(a => !a.dead && a.faction === 'colony'), wild = s.animals.filter(a => !a.dead && a.faction === 'wild');
   const groups = [{ name: '殖民地动物', animals: domestic, key: 'colony' }, { name: '野生动物', animals: wild, key: 'wild' }, { name: '尸体等待落地', animals: s.animals.filter(a => a.dead), key: 'dead' }];
@@ -95,8 +99,9 @@ export function AnimalPanel({ snapshot: s, selectedAnimalId, baseLevel, command,
     <div className="voxel-animal-tabs" role="tablist" aria-label="动物管理分类">
       <button role="tab" aria-selected={tab === 'animals'} aria-controls="animal-management-tab" onClick={() => setTab('animals')}>动物</button>
       <button role="tab" aria-selected={tab === 'pens'} aria-controls="pen-management-tab" onClick={() => setTab('pens')}>圈地与范围</button>
+      <button role="tab" aria-selected={tab === 'autoSlaughter'} aria-controls="auto-slaughter-tab" onClick={() => setTab('autoSlaughter')}>自动宰杀</button>
     </div>
-    {tab === 'pens' ? <div id="pen-management-tab" role="tabpanel"><PenPanel snapshot={s} command={command} choose={choose} focus={focus} controls={penControls} /></div> : <div id="animal-management-tab" role="tabpanel">
+    {tab === 'autoSlaughter' ? <div id="auto-slaughter-tab" role="tabpanel"><AutoSlaughterPanel snapshot={s} command={command} selectAnimal={selectAnimal} /></div> : tab === 'pens' ? <div id="pen-management-tab" role="tabpanel"><PenPanel snapshot={s} command={command} choose={choose} focus={focus} controls={penControls} /></div> : <div id="animal-management-tab" role="tabpanel">
     <p>{domestic.length} 只殖民地动物 · {wild.length} 只野生动物 · {hunters.length} 位可用远程猎人</p>
     <details className="voxel-wildlife-guide"><summary>驯服、饲养与繁殖</summary>
       <ol><li>种植稻谷并等候收获。开启人物的饲养分工，安排动物技能达标的殖民者。</li><li>标记野生动物驯服；饲养员携食物接近并互动，失败后会等候下次尝试。</li><li>动物寻找实际的草、作物和地面食物；可用仓储区集中投放谷物。草被吃掉后需要重新生长。</li><li>饱食的成年同种雌雄动物靠近后可自然交配。饥饿拖慢成长和孕期，严重营养不良可能流产。</li></ol>

@@ -4402,7 +4402,7 @@ export class VoxelRenderer {
         if (!leading) (useLeftHand ? visual.rightArm : visual.leftArm).rotation.x = -.5;
         visual.tool.visible = false; visual.hammer.visible = false;
       } else if (handling && handledAnimal) {
-        const slaughtering = pawn.handleTask!.action === 'slaughter';
+        const slaughtering = pawn.handleTask!.action === 'slaughter' || pawn.handleTask!.action === 'autoSlaughter';
         visual.root.rotation.y = Math.atan2(handledAnimal.x - pawn.x, handledAnimal.y - pawn.y);
         visual.torso.rotation.x = .15; visual.head.rotation.x = .17;
         toolArm.rotation.x = slaughtering ? -.8 + Math.sin(time * 7 + pawn.id) * .35 : -.75 + Math.sin(time * 3 + pawn.id) * .12;

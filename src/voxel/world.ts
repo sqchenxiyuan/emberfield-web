@@ -104,7 +104,9 @@ import { ANIMAL_DEFS, WILDLIFE, isAnimal } from './wildlife';
 import { migrateWildlife, validateWildlife } from './wildlifePersistence';
 import { initialAnimalState, HUSBANDRY_RULES } from './husbandry';
 import { rejectLegacyHusbandryFields, migrateHusbandry, validateHusbandry } from './husbandryPersistence';
-import { seedGrass, updateHusbandry, tryHandle, handleTick, animalOrder, releaseAnimalHandlers } from './husbandryWorld';
+import { seedGrass, updateHusbandry, tryHandle, handleTick, animalOrder, releaseAnimalHandlers, reconcileAutoSlaughter } from './husbandryWorld';
+import { defaultAutoSlaughter, autoSlaughterSelection, validAutoSlaughterPolicy, AUTO_SLAUGHTER_SPECIES } from './autoSlaughter';
+import { migrateAutoSlaughter, validateAutoSlaughter } from './autoSlaughterPersistence';
 import { PEN_RULES, PEN_BUILDINGS, initialPenFilter, isAnimalGroundStep, type Fence, type FenceGate, type PenMarker, type AnimalArea } from './pens';
 import { pensCommand, penSummaries, penCells, tryRope, ropeTick, cancelAnimalRopes, removePenMarker } from './pensWorld';
 import { rejectLegacyPensFields, migratePens, validatePens } from './pensPersistence';
@@ -629,6 +631,7 @@ export class VoxelSimulation {
   private markerLookup = new Map<number, PenMarker>();
   grass: GrassPatch[] = [];
   husbandryLog: HusbandryEvent[] = [];
+  autoSlaughter = defaultAutoSlaughter();
   butcherSpots: ButcherSpot[] = [];
   tables: DiningTable[] = [];
   chairs: DiningChair[] = [];
@@ -2700,6 +2703,13 @@ export class VoxelSimulation {
       return { ok, message: ok ? p.reason : c.kind === 'social'
         ? '没有允许聚会、可达且舒适的空闲桌边位置'
         : '暂无所选活动的可达空位；检查天气、温度、设施和预约' };
+    }
+    if (c.type === 'autoSlaughter') {
+      if (!AUTO_SLAUGHTER_SPECIES.includes(c.species) || !validAutoSlaughterPolicy(c.policy))
+        return { ok: false, message: '自动宰杀配额无效：空白表示不限，数量必须为 0～128 的整数' };
+      this.autoSlaughter[c.species] = { ...c.policy };
+      reconcileAutoSlaughter(this); this.revision++;
+      return { ok: true, message: '自动宰杀配额已应用，超额动物等待驯养员现场处理' };
     }
     if (c.type === 'animalOrder') return animalOrder(this, c.animalId, c.order, c.enabled);
     if (c.type === 'hunt') {
@@ -7939,6 +7949,7 @@ export class VoxelSimulation {
       this.updatePsychology();
       this.updateProjectiles();
       this.updateWildlife();
+      reconcileAutoSlaughter(this);
       updateTrade(this);
       for (const pawn of this.pawns) if (pawn.weaponDropPending) this.dropPrimary(pawn, true);
       this.updateRaids();
@@ -8527,6 +8538,7 @@ export class VoxelSimulation {
       combatEvents: this.combatEvents.filter(visible),
       sandbags: this.sandbags.filter(visible),
       animals: this.animals.filter(visible),
+      autoSlaughter: structuredClone(this.autoSlaughter), autoSlaughterStatus: autoSlaughterSelection(this.autoSlaughter, this.animals),
       grass: this.grass.filter(visible), husbandryLog: this.husbandryLog,
       fences: this.fences.filter(visible), fenceGates: this.fenceGates.filter(visible), penMarkers: this.penMarkers.filter(visible), animalAreas: this.animalAreas.map(a => ({ ...a, cells: [...a.cells] })),
       butcherSpots: this.butcherSpots.filter(visible),
@@ -8605,7 +8617,8 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 47,
+      version: 48,
+      autoSlaughter: this.autoSlaughter,
       stockpileZones: this.stockpileZones,
       productionQueues: this.productionQueues.filter(q => this.productionBenches().some(b => b.id === q.benchId)),
       socialHistory: this.socialHistory, socialLog: this.socialLog,
@@ -8666,11 +8679,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : old.version < 43 ? [1, 2, 3] : [1, 2, 3, 4]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    migrateAutoSlaughter(old, sourceVersion);
     if (sourceVersion < 47 && old.jobs?.some((j:any) => Object.hasOwn(j,'constructionFailure')))
       throw new Error('旧版本存档混入施工失败记录');
     if (sourceVersion < 46) {
@@ -9093,7 +9107,7 @@ export class VoxelSimulation {
     }
     if (sourceVersion < 43) { old.water = [0, CELLS]; old.bridges = [0, CELLS]; }
     if (sourceVersion < 44) for (const p of old.pawns ?? []) p.allowedAreaId = null;
-    old.version = 47;
+    old.version = 48;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -10199,6 +10213,7 @@ export class VoxelSimulation {
     validateTrade(d, ids, apparelIds, weaponIds);
     validateWildlife(d, ids, new Set([...apparelIds, ...weaponIds]));
     validateHusbandry(d);
+    validateAutoSlaughter(d);
     validatePens(d);
     validatePawnAreas(d);
     validateLiving(d);
@@ -10299,7 +10314,7 @@ export class VoxelSimulation {
         projectiles: d.projectiles,
         combatEvents: d.combatEvents,
         sandbags: d.sandbags,
-        animals: d.animals,
+        animals: d.animals, autoSlaughter: d.autoSlaughter,
         grass: d.grass, husbandryLog: d.husbandryLog,
         fences: d.fences, fenceGates: d.fenceGates, penMarkers: d.penMarkers, animalAreas: d.animalAreas,
         butcherSpots: d.butcherSpots,
@@ -10661,6 +10676,7 @@ export class VoxelSimulation {
       s.continueJob(p, j);
     }
     for (const p of s.pawns) s.reconcilePawnArea(p);
+    reconcileAutoSlaughter(s);
     return s;
   }
 }

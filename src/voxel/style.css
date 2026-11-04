@@ -1806,6 +1806,25 @@ a {
 .voxel-animal-handler select { min-width: 76px; }
 .voxel-animal-tabs { display: flex; gap: 6px; margin: 14px 0; padding-bottom: 10px; border-bottom: 1px solid #bdc9bc2e; }
 .voxel-animal-tabs button { flex: 1; }
+.voxel-auto-slaughter-card { margin: 14px 0; padding: 12px; border: 1px solid #bdc9bc44; background: #14202188; }
+.voxel-auto-slaughter-card fieldset { display: grid; gap: 9px; padding: 0; margin: 0; border: 0; min-width: 0; }
+.voxel-auto-slaughter-card legend { margin-bottom: 9px; padding: 0; color: #d9dfbc; font-size: 14px; font-weight: 700; }
+.voxel-auto-slaughter-card p { margin: 0; }
+.voxel-auto-slaughter-quotas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) 60px; gap: 7px 6px; align-items: center; color: #c3d1bc; font-size: 11px; }
+.voxel-auto-slaughter-quota { display: contents; }
+.voxel-auto-slaughter-quota output { font-variant-numeric: tabular-nums; color: #dfdcbb; }
+.voxel-auto-slaughter-quota input { min-width: 0; width: 100%; padding: 6px; text-align: right; }
+.voxel-auto-slaughter-quota input[aria-invalid='true'] { border-color: #df9a79; }
+.voxel-auto-slaughter-pregnancy { display: flex; gap: 6px; align-items: center; color: #c9d1bf; font-size: 11px; }
+.voxel-auto-slaughter-pregnancy input { width: auto; accent-color: #b9c68b; }
+.voxel-auto-slaughter-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.voxel-auto-slaughter-actions button { font-size: 11px; padding: 7px 8px; }
+.voxel-auto-slaughter-warning { color: #ecb497 !important; }
+.voxel-auto-slaughter-targets { margin-top: 10px; }
+.voxel-auto-slaughter-targets summary { font-size: 11px; }
+.voxel-auto-slaughter-targets ul { padding: 0; margin: 8px 0; list-style: none; }
+.voxel-auto-slaughter-targets li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 5px 0; }
+.voxel-auto-slaughter-targets button { padding: 4px 7px; font-size: 11px; }
 .voxel-animal-tabs button[aria-selected='true'], .voxel-pen-actions button[aria-pressed='true'], .voxel-area-toolbar button[aria-pressed='true'] { color: #e7d6a2; border-color: #d6c28a99; background: #cab27422; }
 .voxel-pen-panel h3 { margin: 18px 0 10px; font-size: 14px; color: #d9dfbc; }
 .voxel-pen-card { display: grid; gap: 9px; margin: 12px 0; padding: 12px; border: 1px solid #bdc9bc44; background: #14202188; }

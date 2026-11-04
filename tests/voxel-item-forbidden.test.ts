@@ -1,3 +1,4 @@
+import { stripAutoSlaughterFields } from './legacy-auto-rebuild-defaults';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { Block, at, index, type Cargo, type Pawn, type Pos, type Resource, type VoxelCommand } from '../src/voxel/types';
@@ -40,10 +41,10 @@ describe('physical item prohibition',()=>{
     const before=s.counts(),wealth=s.snapshot().storyteller.threat.wealth;expect(wealth.items).toBeGreaterThan(0);
     for(const item of goods)cmd(s,{type:'itemForbidden',itemId:item.id,forbidden:true});
     expect(s.counts()).toEqual(before);expect(s.snapshot().storyteller.threat.wealth).toEqual(wealth);
-    const saved=s.save();expect(saved.version).toBe(47);
+    const saved=s.save();expect(saved.version).toBe(48);
     const restored=VoxelSimulation.load(saved);expect(restored.items).toEqual(s.items);
     expect(restored.snapshot().items.every(i=>i.forbidden)).toBe(true);
-    const old:Record<string,any>={...saved,version:44}; delete old.autoRebuild;
+    const old:Record<string,any>={...saved,version:44}; stripAutoSlaughterFields(old); delete old.autoRebuild;
     expect(()=>VoxelSimulation.load(old)).toThrow(/通用物品禁止/);
     const bad=structuredClone(saved);bad.items[0].forbidden='yes' as unknown as boolean;
     expect(()=>VoxelSimulation.load(bad)).toThrow();
@@ -184,9 +185,9 @@ describe('physical item prohibition',()=>{
   it('migrates v44-compatible state without adding flags or changing existing weapon settings',()=>{
     const s=fixture();stack(s,'wood',12);const id=s.nextId++;
     s.items.push({id:s.nextId++,...pos(25),resource:'weapon',amount:1,weapon:makeWeapon(id,'woodClub'),forbidden:true});
-    const raw:Record<string,any>={...s.save(),version:44}; expect(raw.autoRebuild).toBe(false); delete raw.autoRebuild;
+    const raw:Record<string,any>={...s.save(),version:44}; stripAutoSlaughterFields(raw); expect(raw.autoRebuild).toBe(false); delete raw.autoRebuild;
     const before=structuredClone(raw),loaded=VoxelSimulation.load(raw);
-    expect(raw).toEqual(before);expect(loaded.save().version).toBe(47);expect(loaded.items).toEqual(raw.items);
+    expect(raw).toEqual(before);expect(loaded.save().version).toBe(48);expect(loaded.items).toEqual(raw.items);
     expect(loaded.save().blocks).toEqual(raw.blocks);
     expect(validBatch({...freshBatch('herb',2),forbidden:true})).toBe(true);
   });

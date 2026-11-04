@@ -425,7 +425,7 @@ export interface GrassPatch extends Pos { growth: number }
 export interface AnimalGoal { kind: 'grass' | 'crop' | 'food' | 'mate' | 'area' | 'exit'; id: number }
 export interface HandleTask {
   animalId: number;
-  action: 'tame' | 'maintain' | 'feed' | 'slaughter' | 'release';
+  action: 'tame' | 'maintain' | 'feed' | 'slaughter' | 'autoSlaughter' | 'release';
   stage: 'fetch' | 'approach' | 'interact';
   foodId: number | null;
   amount: number;
@@ -804,6 +804,8 @@ export interface VoxelStats {
   spoiled: Counts;
 }
 export interface VoxelSnapshot {
+  autoSlaughter: import('./autoSlaughter').AutoSlaughterSettings;
+  autoSlaughterStatus: import('./autoSlaughter').AutoSlaughterStatus;
   /** Derived geometry for damaged typed walls; no dense world array in snapshots. */
   wallDamageKeys: string[];
   stockpileZones: import('./stockpileZones').StockpileZone[];
@@ -934,6 +936,7 @@ export type VoxelCommand =
   | { type: 'animalAreaPaint'; areaId: number; from: Pos; to?: Pos; erase: boolean }
   | { type: 'animalAreaAssign'; animalId: number; areaId: number | null }
   | { type: 'animalOrder'; animalId: number; order: 'tame' | 'slaughter' | 'release'; enabled: boolean }
+  | { type: 'autoSlaughter'; species: AnimalSpecies; policy: import('./autoSlaughter').AutoSlaughterPolicy }
   | { type: 'firefight'; pawnId: number; fireId: number }
   | { type: 'cancelFirefight'; pawnId: number }
   | { type: 'repair'; pawnId: number; damageKey: string }
@@ -1028,7 +1031,8 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 47;
+  version: 48;
+  autoSlaughter: import('./autoSlaughter').AutoSlaughterSettings;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;

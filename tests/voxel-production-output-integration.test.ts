@@ -1,3 +1,4 @@
+import { stripAutoSlaughterFields } from './legacy-auto-rebuild-defaults';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { Block, at, index, type Pawn, type Pos, type Resource, type VoxelCommand } from '../src/voxel/types';
@@ -231,7 +232,7 @@ describe('production output destinations', () => {
       raw => { raw.productionQueues[0].bills[0].output = { mode: 'specific', target: { kind: 'stockpile', id: 'zone:9999999' } }; },
     ];
     for (const mutate of corrupt) { const raw = structuredClone(saved); mutate(raw); expect(() => VoxelSimulation.load(raw)).toThrow(); }
-    const old = structuredClone(saved) as any; old.version = 41;
+    const old = structuredClone(saved) as any; stripAutoSlaughterFields(old); old.version = 41;
     expect(() => VoxelSimulation.load(old)).toThrow();
     expect(s.pawns[0].productionDelivery).toBeDefined(); expect(s.counts().weapon).toBe(1);
   });

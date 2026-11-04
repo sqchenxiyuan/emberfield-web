@@ -1,3 +1,4 @@
+import { stripAutoSlaughterFields } from './legacy-auto-rebuild-defaults';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { Block, at, index, position, type Pawn, type Pos, type Projectile, type Resource, type VoxelCommand } from '../src/voxel/types';
@@ -81,15 +82,15 @@ describe('automatic rebuilding after destruction', () => {
   it('migrates a synthetic v45-compatible save with auto-rebuild disabled without changing physical state', () => {
     const s = fixture(), old = s.save();
     const synthetic = structuredClone(old) as Omit<typeof old, 'version' | 'autoRebuild'> & { version: number; autoRebuild?: boolean };
-    synthetic.version = 45; delete synthetic.autoRebuild;
+    synthetic.version = 45; stripAutoSlaughterFields(synthetic); delete synthetic.autoRebuild;
     const before = structuredClone(synthetic), loaded = VoxelSimulation.load(synthetic);
-    expect(loaded.save().version).toBe(47); expect(loaded.autoRebuild).toBe(false); expect(synthetic).toEqual(before);
+    expect(loaded.save().version).toBe(48); expect(loaded.autoRebuild).toBe(false); expect(synthetic).toEqual(before);
     for (const key of ['blocks', 'items', 'stats', 'tick', 'chairs', 'homeArea'] as const) expect(loaded.save()[key]).toEqual(old[key]);
     // The separately frozen v45 implementation samples are checked by the release verifier.
   });
 
   it('rejects missing or non-boolean current settings and refuses v45 saves carrying the new flag', () => {
-    const saved = fixture().save(); expect(saved.version).toBe(47);
+    const saved = fixture().save(); expect(saved.version).toBe(48);
     const missing: Partial<typeof saved> = structuredClone(saved); delete missing.autoRebuild;
     expect(() => VoxelSimulation.load(missing)).toThrow(/自动重建设置无效/);
     for (const value of [undefined, null, 0, 1, 'true', {}, []]) {
@@ -97,7 +98,7 @@ describe('automatic rebuilding after destruction', () => {
       expect(() => VoxelSimulation.load(malformed), `malformed autoRebuild ${JSON.stringify(value)}`).toThrow(/自动重建设置无效/);
     }
     for (const enabled of [true, false]) {
-      const downgraded = { ...saved, version: 45, autoRebuild: enabled }, before = structuredClone(downgraded);
+      const downgraded = { ...saved, version: 45, autoRebuild: enabled }; stripAutoSlaughterFields(downgraded); const before = structuredClone(downgraded);
       expect(() => VoxelSimulation.load(downgraded)).toThrow(/旧版本存档混入自动重建/); expect(downgraded).toEqual(before);
     }
   });
@@ -364,7 +365,7 @@ describe('automatic rebuilding after destruction', () => {
     const forged = structuredClone(saved); forged.fireDamage[0].maxHitPoints *= 2;
     expect(() => VoxelSimulation.load(forged)).toThrow(/火灾存档/);
     const downgraded = structuredClone(saved) as Omit<typeof saved, 'version' | 'autoRebuild'> & { version: number; autoRebuild?: boolean };
-    downgraded.version = 45; delete downgraded.autoRebuild;
+    downgraded.version = 45; stripAutoSlaughterFields(downgraded); delete downgraded.autoRebuild;
     const before = structuredClone(downgraded);
     expect(() => VoxelSimulation.load(downgraded)).toThrow(/旧版本存档混入自动重建或施工框架损伤/);
     expect(downgraded).toEqual(before);
@@ -464,7 +465,7 @@ describe('automatic rebuilding after destruction', () => {
     // This is an intentional historical-shape fixture, not one of the separately
     // frozen unmodified v45 implementation samples.
     const old = s.save() as Omit<ReturnType<typeof s.save>, 'version' | 'autoRebuild'> & { version: number; autoRebuild?: boolean };
-    old.version = 45; delete old.autoRebuild;
+    old.version = 45; stripAutoSlaughterFields(old); delete old.autoRebuild;
     const before = structuredClone(old), restored = VoxelSimulation.load(old), key = fireDamageKey('block', null, base);
     expect(old).toEqual(before); expect(restored.autoRebuild).toBe(false);
     expect(restored.fireDamage).toEqual([{ ...base, kind: 'block', targetId: null, key, hitPoints: 50, maxHitPoints: FIRE_MAX_HP.block }]);

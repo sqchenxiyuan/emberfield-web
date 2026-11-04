@@ -1,5 +1,6 @@
 import { animalAllowed, animalManagementTick, inheritAnimalArea, cancelAnimalRopes, type PensHost } from './pensWorld';
 import { initialAnimalPenState } from './pens';
+import { autoSlaughterSelection, type AutoSlaughterSettings } from './autoSlaughter';
 import { at, CELLS, DAY, position, type Cargo, type Crop, type GrassPatch, type HandleTask,
   type HusbandryEvent, type Pawn, type Pos, type Stack, type WildAnimal, type CommandResult } from './types';
 import { ANIMAL_DEFS } from './wildlife';
@@ -11,6 +12,7 @@ import { HUSBANDRY_RULES, ANIMAL_HUSBANDRY, initialAnimalState, isAnimalAdult,
   animalNutritionCapacity, animalFeedAmount, tameChance, advanceAnimalNeeds } from './husbandry';
 
 export interface HusbandryHost extends PensHost {
+  autoSlaughter?: AutoSlaughterSettings;
   seed: number; tick: number; nextId: number; notice: string;
   animals: WildAnimal[]; pawns: Pawn[]; items: Stack[]; crops: Crop[];
   grass: GrassPatch[]; husbandryLog: HusbandryEvent[];
@@ -65,6 +67,7 @@ export function animalOrder(s: HusbandryHost, id: number, order: string, enabled
   else if(order==='slaughter')a.slaughter=enabled;
   else a.releaseMarked=enabled;
   a.retryTick=0;
+  reconcileAutoSlaughter(s);
   return {ok:true,message:enabled?'已标记，等待开启驯养分工的殖民者':'已取消动物指令'};
 }
 
@@ -228,16 +231,29 @@ export function updateHusbandry(s:HusbandryHost) {
 }
 
 function canHandle(p:Pawn){const h=healthSummary(p);return p.faction==='colony'&&!p.dead&&!p.downed&&!p.drafted&&p.carriedBy===null&&p.priorities.handle>0&&h.manipulation>0&&h.moving>.15;}
-function actionFor(a:WildAnimal):HandleTask['action']|null {
+export function autoSlaughterTargets(s: Pick<HusbandryHost, 'autoSlaughter' | 'animals'>): number[] {
+  return s.autoSlaughter ? autoSlaughterSelection(s.autoSlaughter, s.animals).targets : [];
+}
+/** Policies and population changes can revoke only automatic jobs. Manual
+ * slaughter remains an explicit player instruction, independent of quotas. */
+export function reconcileAutoSlaughter(s:HusbandryHost) {
+  if(!s.pawns.some(p=>p.handleTask?.action==='autoSlaughter'))return;
+  const selected=new Set(autoSlaughterTargets(s));
+  for(const p of s.pawns) if(p.handleTask?.action==='autoSlaughter'&&!selected.has(p.handleTask.animalId)) {
+    s.prisonRelease(p);p.reason='自动宰杀资格已改变，停止处理';
+  }
+}
+function actionFor(a:WildAnimal,automatic:Set<number>):HandleTask['action']|null {
   if(a.faction==='wild')return a.tame?'tame':null;
-  return a.slaughter?'slaughter':a.releaseMarked?'release':a.hunger<30?'feed':a.species==='hare'&&a.tameness<5?'maintain':null;
+  return a.slaughter?'slaughter':a.releaseMarked?'release':automatic.has(a.id)?'autoSlaughter':a.hunger<30?'feed':a.species==='hare'&&a.tameness<5?'maintain':null;
 }
 function handlerRoute(p:Pawn,path:number[]){p.path=path;p.destination=path.at(-1)??null;p.phase='handle';}
 export function tryHandle(s:HusbandryHost,p:Pawn):boolean {
   if(!canHandle(p)||p.cargo||p.food<30||p.rest<20)return false;
+  const automatic=new Set(autoSlaughterTargets(s));
   for(const a of s.animals.filter(a=>!a.dead&&pawnAllowed(s,p,a)&&!s.pawns.some(p=>p.ropeTask?.animalId===a.id)&&s.tick>=a.retryTick&&a.phase!=='flee'&&
     !s.pawns.some(q=>q.handleTask?.animalId===a.id)).sort((a,b)=>a.hunger-b.hunger)){
-    const action=actionFor(a);if(!action)continue;
+    const action=actionFor(a,automatic);if(!action)continue;
     if(['tame','maintain'].includes(action)&&(s.tick<a.nextInteractionTick||p.skills.animals.level<ANIMAL_HUSBANDRY[a.species].minSkill||a.phase==='rest'))continue;
     // Area filtering occurs before pathfinding, so rejecting a restricted worker
     // never puts the animal on the shared physical-unreachability retry timer.
@@ -255,7 +271,7 @@ export function tryHandle(s:HusbandryHost,p:Pawn):boolean {
     }
     s.prisonRelease(p);
     p.handleTask={animalId:a.id,action,stage:source?'fetch':'approach',foodId:source?.id??null,amount,feedings:0,progress:0};
-    handlerRoute(p,foodPath??path);p.reason=source?'取食物照料'+a.name:action==='slaughter'?'前往宰杀'+a.name:'前往放归'+a.name;
+    handlerRoute(p,foodPath??path);p.reason=source?'取食物照料'+a.name:['slaughter','autoSlaughter'].includes(action)?'前往宰杀'+a.name:'前往放归'+a.name;
     return true;
   }
   return false;
@@ -267,6 +283,7 @@ export function handleTick(s:HusbandryHost,p:Pawn) {
   if(!a||a.dead||!canHandle(p)||p.food<12||p.rest<1||a.phase==='flee'||
     (task.action==='tame'?a.faction!=='wild'||!a.tame: a.faction!=='colony')||
     (task.action==='slaughter'&&!a.slaughter)||(task.action==='release'&&!a.releaseMarked)||
+    (task.action==='autoSlaughter'&&!autoSlaughterTargets(s).includes(a.id))||
     (['tame','maintain'].includes(task.action)&&p.skills.animals.level<ANIMAL_HUSBANDRY[a.species].minSkill)){
     cancel('动物照料中断，保留未用食物');return;
   }
@@ -311,9 +328,9 @@ export function handleTick(s:HusbandryHost,p:Pawn) {
     }else event(s,'failed',a,`${p.name}的${task.action==='tame'?'驯服':'驯顺维护'}尝试失败，稍后可再次尝试`,p.id);
     cancel(success?'动物互动成功':'动物互动失败');return;
   }
-  p.reason=(task.action==='slaughter'?'正在宰杀':'正在放归')+a.name;
+  p.reason=(task.action==='slaughter'?'正在宰杀':task.action==='autoSlaughter'?'按配额宰杀':'正在放归')+a.name;
   if(++task.progress<HUSBANDRY_RULES.slaughterWork)return;
-  if(task.action==='slaughter'){event(s,'slaughter',a,`${p.name}宰杀了${a.name}`,p.id);s.killAnimal(a,'宰杀');}
+  if(task.action==='slaughter'||task.action==='autoSlaughter'){event(s,'slaughter',a,`${p.name}${task.action==='autoSlaughter'?'按配额':''}宰杀了${a.name}`,p.id);s.killAnimal(a,'宰杀');}
   else{a.faction='wild';Object.assign(a,initialAnimalPenState(s.tick));a.releaseMarked=false;a.slaughter=false;a.tame=false;a.tameness=0;clearAnimal(a);event(s,'release',a,`${p.name}将${a.name}放归野外`,p.id);}
   cancel('动物管理完成');
 }

@@ -133,10 +133,10 @@ export function validateHusbandry(d: VoxelSave): void {
     const t = p.handleTask;
     if (t === null) continue;
     if (!exact(t, ['animalId', 'action', 'stage', 'foodId', 'amount', 'feedings', 'progress']) ||
-        !id(t.animalId) || !['tame', 'maintain', 'feed', 'slaughter', 'release'].includes(t.action) ||
+        !id(t.animalId) || !['tame', 'maintain', 'feed', 'slaughter', 'autoSlaughter', 'release'].includes(t.action) ||
         !['fetch', 'approach', 'interact'].includes(t.stage) || !integer(t.amount, 0, 100) ||
         !integer(t.feedings, 0, HUSBANDRY_RULES.feedings - 1) ||
-        !integer(t.progress, 0, (['slaughter', 'release'].includes(t.action) ? HUSBANDRY_RULES.slaughterWork : HUSBANDRY_RULES.handleWork) - 1) ||
+        !integer(t.progress, 0, (['slaughter', 'autoSlaughter', 'release'].includes(t.action) ? HUSBANDRY_RULES.slaughterWork : HUSBANDRY_RULES.handleWork) - 1) ||
         (t.stage !== 'interact' && t.progress !== 0) ||
         p.faction !== 'colony' || p.dead || p.downed || p.drafted || !p.priorities.handle ||
         p.carriedBy !== null || p.carryingPawnId !== null || p.jobId !== null || p.carePhase !== null || p.patientId !== null ||

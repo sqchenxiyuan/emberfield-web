@@ -1,3 +1,4 @@
+import { stripAutoSlaughterFields } from './legacy-auto-rebuild-defaults';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { Block, CELLS, at, index, type Pawn, type Pos, type VoxelCommand } from '../src/voxel/types';
@@ -120,9 +121,9 @@ describe('real water and bridge gameplay',()=>{
     s.bridges[index(16,16,7)]=1;
     expect(()=>validateWater(s.water,s.bridges,s.blocks,s.ladders)).toThrow();
     const old:any=new VoxelSimulation(73129,undefined,false,3).save();
-    delete old.water;delete old.bridges;old.version=42;for(const p of old.pawns)delete p.allowedAreaId;
+    stripAutoSlaughterFields(old);delete old.water;delete old.bridges;old.version=42;for(const p of old.pawns)delete p.allowedAreaId;
     expect(old.autoRebuild).toBe(false); delete old.autoRebuild;
     const loaded=VoxelSimulation.load(old);expect(loaded.water).toEqual(new Uint8Array(CELLS));
-    expect(loaded.save().blocks).toEqual(old.blocks);expect(loaded.save().version).toBe(47);
+    expect(loaded.save().blocks).toEqual(old.blocks);expect(loaded.save().version).toBe(48);
   });
 });
