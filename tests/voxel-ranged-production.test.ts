@@ -1,4 +1,5 @@
 import { withMedicineLedgers } from './legacy-medicine-defaults';
+import { eggsExpectedField } from './legacy-auto-rebuild-defaults';
 import { expectWildlifeIds } from './legacy-wildlife-defaults';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
@@ -90,7 +91,7 @@ describe('v18 ranged migration and powered physical production', () => {
         s = VoxelSimulation.load(old),
         save = s.save();
       expect(old).toEqual(before);
-      expect(save.version).toBe(50);
+      expect(save.version).toBe(51);
       expectWildlifeIds(old.nextId, save);
       for (const key of [
         'tick',
@@ -104,7 +105,7 @@ describe('v18 ranged migration and powered physical production', () => {
         'devices',
         'wires',
       ] as const)
-        expect(save[key]).toEqual(key === 'stats' ? withMedicineLedgers(old.stats) : old[key]);
+        expect(save[key]).toEqual(key === 'stats' ? eggsExpectedField('stats', withMedicineLedgers(old.stats)) : old[key]);
       expect(save.projectiles).toEqual([]);
       expect(save.combatEvents).toEqual([]);
       expect(save.sandbags).toEqual([]);

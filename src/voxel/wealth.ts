@@ -25,7 +25,8 @@ import { SHELF_DEFS, type ShelfKind } from './shelves';
 export const RESOURCE_MARKET_VALUE: Readonly<Record<Exclude<Resource, 'apparel' | 'weapon' | 'furniture'>, number>> = {
   silver: 1,
   wood: 1.2, stone: .9, steel: 1.9, components: 32, food: 24,
-  grain: 1.1, meat: 2, milk: 1.9, carcass: 0, meal: 15, chunk: 0, cloth: 1.5, alpacaWool: 3.8, herb: 10, unfinished: 0,
+  grain: 1.1, meat: 2, milk: 1.9, eggUnfertilized: 7, eggFertilized: 7,
+  carcass: 0, meal: 15, chunk: 0, cloth: 1.5, alpacaWool: 3.8, herb: 10, unfinished: 0,
 };
 const QUALITY = [.5, .75, 1, 1.25, 1.5, 2.5, 5] as const;
 const QUALITY_GAIN = [9999999, 9999999, 9999999, 500, 1000, 2000, 3000] as const;
@@ -85,9 +86,10 @@ export function cargoMarketValue(cargo: Cargo): number {
   // Reference asset value only. Animal carcass trading is not supported.
   if (cargo.resource === 'carcass') return cargo.carcass && Object.hasOwn(ANIMAL_DEFS, cargo.carcass.species)
     ? itemMarketValue(ANIMAL_DEFS[cargo.carcass.species].meat * RESOURCE_MARKET_VALUE.meat, 2, batchHpFraction(cargo)) * cargo.amount : 0;
-  // Milk and wool have healthAffectsPrice=false. Both retain physical HP and
-  // deteriorate; their sale/wealth value ignores surviving HP.
-  if (cargo.resource === 'milk' || cargo.resource === 'alpacaWool') return RESOURCE_MARKET_VALUE[cargo.resource] * cargo.amount;
+  // Milk and eggs inherit OrganicProductBase.healthAffectsPrice=false; wool
+  // also disables it. Physical damage remains, but surviving HP does not price them.
+  if (cargo.resource === 'milk' || cargo.resource === 'alpacaWool' || cargo.resource === 'eggUnfertilized' || cargo.resource === 'eggFertilized')
+    return RESOURCE_MARKET_VALUE[cargo.resource] * cargo.amount;
   return itemMarketValue(RESOURCE_MARKET_VALUE[cargo.resource], 2, batchHpFraction(cargo)) * cargo.amount;
 }
 

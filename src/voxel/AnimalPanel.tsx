@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DAY, type HandleTask, type Pawn, type Pos, type Tool, type VoxelSnapshot, type WildAnimal } from './types';
+import { DAY, type Cargo, type HandleTask, type Pawn, type Pos, type Tool, type VoxelSnapshot, type WildAnimal } from './types';
 import { ANIMAL_DEFS, ANIMAL_PHASE_NAMES } from './wildlife';
 import { ANIMAL_HUSBANDRY, HUSBANDRY_RULES, animalLifeStage } from './husbandry';
 import { isRangedKind } from './ranged';
@@ -9,6 +9,7 @@ import { AnimalPenControls, PenPanel, type PenCommand, type PenControls } from '
 import { AutoSlaughterPanel } from './AutoSlaughterPanel';
 import { MILK_RULES, milkActive, milkReady } from './animalMilk';
 import { WOOL_RULES, woolActive, woolReady } from './animalWool';
+import { EGG_RULES, eggLayerActive } from './animalEggs';
 
 type Command = PenCommand;
 const availableHunters = (s: VoxelSnapshot) => s.pawns.filter(p => p.faction === 'colony' &&
@@ -19,6 +20,58 @@ const lifeNames = { baby: '幼崽', juvenile: '幼年', adult: '成年' };
 const actionNames: Record<HandleTask['action'], string> = { tame: '尝试驯服', maintain: '维持温顺', feed: '喂食', slaughter: '手动宰杀', autoSlaughter: '自动宰杀', release: '放归', milk: '挤奶', shear: '剪毛' };
 const stageNames: Record<HandleTask['stage'], string> = { fetch: '取食物', approach: '接近动物', interact: '本次互动' };
 const percent = (value: number) => `${Math.round(value * 100)}%`;
+
+function ChickenPortrait() {
+  return <svg className="voxel-animal-portrait" viewBox="0 0 88 68" role="img" aria-label="鸡肖像">
+    <rect x="1" y="1" width="86" height="66" rx="5" fill="#243434" />
+    <path d="m18 36-9-14 16 8 7-5 20 3 5-13 12-3 8 7-2 17-7 13-14 5H32L21 47Z" fill="#e9dec5" />
+    <path d="m59 15-2-8 6 2 3-6 5 7 5-1-1 9Z" fill="#bb4c43" />
+    <path d="m73 22 10 5-10 4M36 53v8m-6 0h12m12-8v8m-6 0h12" fill="none" stroke="#dca34d" strokeWidth="3" />
+    <path d="m29 34 24 1-4 12-15-2Z" fill="#c4b59b" /><circle cx="68" cy="23" r="2" fill="#352e26" />
+  </svg>;
+}
+
+function AnimalEggStatus({ animal: a }: { animal: WildAnimal }) {
+  if (a.species !== 'chicken' || a.dead) return null;
+  const active = eggLayerActive(a);
+  const condition = a.sex !== 'female' ? '公鸡不产蛋；成年后可与母鸡交配，使之后的蛋受精。'
+    : a.growth < 1 ? '母雏鸡成年后开始产蛋。' : '健康状态不允许产蛋。';
+  return <div className="voxel-animal-eggs" data-testid="animal-eggs" data-active={active} data-progress={a.eggProgress}>
+    <b>产物 · 鸡蛋</b>
+    {active ? <>
+      <label>产蛋进度 {percent(a.eggProgress)}<progress aria-label="动物产蛋进度" value={a.eggProgress} max={1} /></label>
+      <small>饱食时约 {EGG_RULES.intervalTicks / DAY} 天产一轮蛋；母鸡自行下蛋，不需要饲养员。野生母鸡也会产蛋。</small>
+      <small data-testid="egg-fertilization">受精余量 {a.fertilizationCount} 枚 · {a.fertilizationCount > 0 ? '下一枚为受精蛋，可孵出雏鸡。' : '下一枚为未受精蛋，可作食物；与成年公鸡交配后可产受精蛋。'}</small>
+      {a.phase === 'layEgg' ? <>
+        <small>{a.layProgress >= EGG_RULES.layWork ? '下蛋完成，等待放置空间' : '正在下蛋'}</small>
+        <label>本次下蛋 {percent(a.layProgress / EGG_RULES.layWork)}<progress aria-label="本次下蛋工作进度" value={a.layProgress} max={EGG_RULES.layWork} /></label>
+      </> : <small>{a.hunger <= 0 ? '饥饿使产蛋暂停；先提供食物。' : a.eggProgress >= 1 ? '已准备好下蛋，等待动物当前行动结束。' : '饥饿会减慢或暂停产蛋。'}</small>}
+      <small>受精蛋请搬至室内适温区域孵化，避免放进冷冻库；烹饪账单默认不使用受精蛋。</small>
+    </> : <small>{condition}</small>}
+  </div>;
+}
+
+/** Shared by loose, carried and delivered item details without requiring a browser. */
+export function EggDetails({ batch, temperature }: { batch: Cargo; temperature: number }) {
+  if (batch.resource !== 'eggFertilized' && batch.resource !== 'eggUnfertilized') return null;
+  if (batch.resource === 'eggUnfertilized') return <div className="voxel-egg-details" data-testid="egg-details" data-fertilized="false">
+    <b>未受精蛋 · 食物</b><small>不能孵化，可直接食用或烹饪简餐；及时使用或冷藏保存。</small>
+  </div>;
+  const hatch = batch.hatcher;
+  const unsafe = temperature < EGG_RULES.minimumTemperature || temperature > EGG_RULES.maximumTemperature;
+  return <div className="voxel-egg-details" data-testid="egg-details" data-fertilized="true" data-unsafe-temperature={unsafe}>
+    <b>受精蛋 · 孵化</b>
+    {hatch && <>
+      <label>孵化 {percent(hatch.progress)}<progress aria-label="受精蛋孵化进度" value={hatch.progress} max={1} /></label>
+      <label>温度损伤 {percent(hatch.temperatureDamage)}<progress aria-label="受精蛋温度损伤" value={hatch.temperatureDamage} max={1} /></label>
+      {hatch.progress >= 1 && <small data-testid="egg-hatch-waiting">孵化完成，等待附近空位或动物容量。</small>}
+      <small>孵化后：{hatch.faction === 'colony' ? '殖民地雏鸡' : '野生雏鸡'}{hatch.motherId !== null ? ` · 母鸡 #${hatch.motherId}` : ''}{hatch.fatherId !== null ? ` · 公鸡 #${hatch.fatherId}` : ''}</small>
+    </>}
+    <small className={unsafe ? 'voxel-pen-warning' : undefined}>{temperature.toFixed(1)}°C · {unsafe ? '温度不安全，正在损伤受精蛋。' : '温度适合孵化。'}安全温度 {EGG_RULES.minimumTemperature}～{EGG_RULES.maximumTemperature}°C；约 {EGG_RULES.hatchTicks / DAY} 天孵化。</small>
+    <small>可孵化的受精蛋不会腐败；过冷或过热造成的温度损伤不会自行恢复。</small>
+    <small>搬至室内适温区域，避免冷冻；损伤达到 100% 后失去孵化能力，转为可食用的未受精蛋。烹饪账单默认排除受精蛋，勾选使用会消耗它。</small>
+  </div>;
+}
 
 function DromedaryPortrait() {
   return <svg className="voxel-animal-portrait" viewBox="0 0 88 68" role="img" aria-label="单峰驼肖像">
@@ -113,6 +166,7 @@ function AnimalStatus({ animal: a, snapshot: s }: { animal: WildAnimal; snapshot
     {a.tame && !task && a.nextInteractionTick > s.tick && <small>下次可互动：约 {Math.max(1, Math.ceil((a.nextInteractionTick - s.tick) / DAY * 24 * 60))} 游戏分钟后</small>}
     <AnimalMilkStatus animal={a} snapshot={s} />
     <AnimalWoolStatus animal={a} snapshot={s} />
+    <AnimalEggStatus animal={a} />
   </div>;
 }
 
@@ -140,6 +194,7 @@ export function AnimalDetails({ animal, snapshot: s, command, focus, penControls
   return <section className="voxel-animal-detail" data-testid="animal-detail" data-animal-id={animal.id}>
     {animal.species === 'dromedary' && <DromedaryPortrait />}
     {animal.species === 'alpaca' && <AlpacaPortrait />}
+    {animal.species === 'chicken' && <ChickenPortrait />}
     <div className="voxel-info-row"><b>{ANIMAL_DEFS[animal.species].name} · {animal.faction === 'colony' ? '殖民地动物' : '野生'}</b><span>{ANIMAL_PHASE_NAMES[animal.phase]}</span></div>
     <label>健康 {Math.ceil(animal.health)} / {ANIMAL_DEFS[animal.species].health}<progress aria-label="动物健康" value={animal.health} max={ANIMAL_DEFS[animal.species].health} /></label>
     <AnimalFacts animal={animal} />
@@ -175,9 +230,11 @@ export function AnimalPanel({ snapshot: s, selectedAnimalId, baseLevel, command,
     <p>{domestic.length} 只殖民地动物 · {wild.length} 只野生动物 · {hunters.length} 位可用远程猎人</p>
     <details className="voxel-wildlife-guide"><summary>驯服、饲养与繁殖</summary>
       <ol><li>种植稻谷并等候收获。开启人物的饲养分工，安排动物技能达标的殖民者。</li><li>标记野生动物驯服；饲养员携食物接近并互动，失败后会等候下次尝试。</li><li>动物寻找实际的草、作物和地面食物；可用仓储区集中投放谷物。草被吃掉后需要重新生长。</li><li>饱食的成年同种雌雄动物靠近后可自然交配。饥饿拖慢成长和孕期，严重营养不良可能流产。</li></ol>
-      <small>兔需要维持温顺，可跨围栏、穿未锁的门，并可分配活动范围；鹿、单峰驼和羊驼需要围栏圈养，由饲养员经栏门牵入。动物不能爬梯，请保留地面通路和足够食物。</small>
+      <small>兔需要维持温顺，可跨围栏、穿未锁的门，并可分配活动范围；鹿、单峰驼、羊驼和鸡需要围栏圈养，由饲养员经栏门牵入。动物不能爬梯，请保留地面通路和足够食物。</small>
       <small>成年雌性单峰驼可产奶；开启「饲养」分工，蓄奶满后自动安排挤奶。奶可直接饮用或用于简餐，及时冷藏。</small>
       <small>成年雌雄羊驼都可产毛；开启「饲养」分工，毛长满后自动安排剪毛。把羊驼毛运到仓储，并在裁缝账单允许此材料，即可制作羊毛衣物。</small>
+      <small>成年母鸡会自行产蛋；公鸡交配后可使蛋受精。把受精蛋放在 0～50°C 的室内区域孵化，未受精蛋可冷藏或烹饪；烹饪账单默认保留受精蛋。</small>
+      <small>可从散装货物商队购入受精蛋开始养鸡。建好围栏、栏门和接纳鸡的圈地标记，安排饲养员把雏鸡牵入，并备好食物。</small>
       <div><button onClick={() => choose('farm')}>规划农田</button><button onClick={() => choose('stock')}>规划食物仓储</button></div>
     </details>
     <details className="voxel-wildlife-workers" data-testid="animal-handlers"><summary>饲养分工与动物技能</summary>
@@ -197,6 +254,7 @@ export function AnimalPanel({ snapshot: s, selectedAnimalId, baseLevel, command,
         {group.animals.map(animal => <section role="listitem" key={animal.id} className={selectedAnimalId === animal.id ? 'selected' : ''} data-animal-id={animal.id} data-faction={animal.faction}>
           {animal.species === 'dromedary' && <DromedaryPortrait />}
           {animal.species === 'alpaca' && <AlpacaPortrait />}
+          {animal.species === 'chicken' && <ChickenPortrait />}
           <div><b>{animal.name}</b><span>{ANIMAL_PHASE_NAMES[animal.phase]}</span></div>
           <small>{ANIMAL_DEFS[animal.species].name} · 健康 {Math.ceil(animal.health)} / {ANIMAL_DEFS[animal.species].health} · {levelName(animal.z, baseLevel)}</small>
           <AnimalFacts animal={animal} /><AnimalStatus animal={animal} snapshot={s} />

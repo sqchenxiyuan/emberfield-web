@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import { VoxelSimulation } from '../src/voxel/world';
 import { initialAnimalPenState } from '../src/voxel/pens';
 import { relocationExpectedField } from './legacy-relocation-defaults';
+import { eggsExpectedField } from './legacy-auto-rebuild-defaults';
 
 const HASHES = {
   'carrying-feed': 'd9fc04f3ec710c41b9104044f246d0348b9026f1c1d3b2ca183113b4fe7993a0',
@@ -26,10 +27,10 @@ function historical(name: keyof typeof HASHES) {
 describe('authentic v29 pen migration', () => {
   it.each(['carrying-feed', 'pregnant', 'newborn'] as const)('preserves real %s state and adds only v30 defaults', name => {
     const old = historical(name), before = structuredClone(old), s = VoxelSimulation.load(old), saved = s.save();
-    expect(old).toEqual(before); expect(saved.version).toBe(50);
+    expect(old).toEqual(before); expect(saved.version).toBe(51);
     expect(saved.tick).toBe(old.tick); expect(saved.nextId).toBe(old.nextId);
     for (const key of ['fences', 'fenceGates', 'penMarkers', 'animalAreas'] as const) expect(saved[key]).toEqual([]);
-    expect(saved.animals).toEqual(old.animals.map((a: any) => ({ ...a, ...initialAnimalPenState(old.tick), milkFullness: 0, woolGrowth: 0 })));
+    expect(saved.animals).toEqual(eggsExpectedField('animals', old.animals.map((a: any) => ({ ...a, ...initialAnimalPenState(old.tick), milkFullness: 0, woolGrowth: 0 }))));
     for (const previous of old.pawns) {
       const p = saved.pawns.find(p => p.id === previous.id)!;
       expect(p.ropeTask).toBeNull();

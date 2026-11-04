@@ -6,6 +6,7 @@ import { freshBatch } from './preservation';
 import { makeApparel } from './apparel';
 import { makeWeapon, WEAPON_DEFS, type WeaponKind, type WeaponPiece } from './weapons';
 import type { TradeState, TraderKind, TraderStock } from './tradeTypes';
+import { freshFertilizedEggs } from './animalEggs';
 
 export const TRADER_NAMES: Record<TraderKind, string> = { bulk: '大宗商品商队', combat: '军火商队' };
 export const TRADE_START_INTERVAL = 300, TRADE_CYCLE_INTERVALS = 3600;
@@ -63,8 +64,9 @@ export function traderAccepts(kind: TraderKind, batch: Cargo): boolean {
   if (batch.resource === 'carcass' || batch.resource === 'furniture' || batch.resource === 'unfinished') return false;
   if (batch.resource === 'silver') return true;
   if (['wood', 'stone', 'chunk', 'meal', 'herb'].includes(batch.resource)) return false;
-  // The supported FoodRaw subset includes animal milk as well as meat/grain.
-  if (kind === 'bulk') return ['steel', 'components', 'cloth', 'alpacaWool', 'grain', 'meat', 'milk', 'food', 'apparel'].includes(batch.resource);
+  // FoodRaw includes unfertilized eggs. Fertilized eggs are an explicit Web
+  // adaptation: native bulk goods excludes them; the Web has no live-animal trade yet.
+  if (kind === 'bulk') return ['steel', 'components', 'cloth', 'alpacaWool', 'grain', 'meat', 'milk', 'eggUnfertilized', 'eggFertilized', 'food', 'apparel'].includes(batch.resource);
   return ['components', 'food', 'weapon'].includes(batch.resource) ||
     (batch.resource === 'apparel' && !!batch.apparel && ['simpleHelmet', 'plateArmor'].includes(batch.apparel.kind));
 }
@@ -88,9 +90,9 @@ function merchantQuality(random: () => number): 2 | 3 | 4 | 5 {
   const gaussian = Math.sqrt(-2 * Math.log(Math.max(Number.MIN_VALUE, random()))) * Math.cos(2 * Math.PI * random());
   return Math.floor(Math.max(2, Math.min(5, 2.5 + gaussian))) as 2 | 3 | 4 | 5;
 }
-/** Native quantity ranges; missing industrial medicine, animals, drugs, textiles
- * and weapons are omitted rather than replaced with a different resource.
- * Catalogue weights are renormalized over the supported Defs. */
+/** Native quantity ranges for the supported catalogue; missing industrial
+ * medicine, live animals, drugs, textiles and weapons are omitted. Catalogue
+ * weights are renormalized. Four fertilized eggs are a separate Web addition. */
 export function makeTraderStock(kind: TraderKind, carrierId: number, id: () => number, random: () => number): TraderStock[] {
   const stock: TraderStock[] = [];
   const apparelBase: Record<ApparelKind, number> = { tuque: 44.32, parka: 188.8, duster: 196,
@@ -124,6 +126,10 @@ export function makeTraderStock(kind: TraderKind, carrierId: number, id: () => n
       add(freshBatch('grain', unityRound((150 + random() * 450) / 1.1), crop));
     for (let i = 0; i < 7; i++) garment(['tuque', 'shirt', 'pants', 'parka', 'duster']);
     for (let i = 0; i < 3; i++) garment(['tuque', 'shirt', 'pants', 'parka', 'duster', 'simpleHelmet', 'plateArmor']);
+    // Web entry into chicken husbandry while live-animal trading is absent.
+    // Append after all existing stock without consuming RNG, so old selections
+    // and their generated identities stay stable. This is not native bulk stock.
+    add(freshFertilizedEggs(4));
   } else {
     for (let i = 0; i < 5; i++) weapon(['shortBow', 'revolver', 'machinePistol']);
     const melee: WeaponKind[] = ['woodClub', 'steelKnife', 'steelLongsword'];

@@ -3,13 +3,14 @@ import type { ProductionRecipe } from './productionBills';
 import { jobSkill, SKILL_NAMES } from './skills';
 import { ANIMAL_DEFS } from './wildlife';
 import { TEXTILE_MATERIALS, type TextileMaterial } from './apparel';
+import { FOOD_INGREDIENTS, isFoodIngredient, type FoodIngredient } from './farming';
 
 export interface ProductionPolicy {
   workerId: number | null;
   skillMin: number;
   skillMax: number;
   ingredientRadius: number | null;
-  allowedFood: Array<'grain' | 'meat' | 'milk'>;
+  allowedFood: FoodIngredient[];
   allowedCarcasses: AnimalSpecies[];
   allowedTextiles: TextileMaterial[];
 }
@@ -23,7 +24,7 @@ const integer = (value: unknown, min: number, max: number): value is number =>
 export function defaultProductionPolicy(): ProductionPolicy {
   return {
     workerId: null, skillMin: 0, skillMax: 20, ingredientRadius: null,
-    allowedFood: ['grain', 'meat', 'milk'], allowedCarcasses: [...animalSpecies],
+    allowedFood: ['grain', 'meat', 'milk', 'eggUnfertilized'], allowedCarcasses: [...animalSpecies],
     allowedTextiles: [...TEXTILE_MATERIALS],
   };
 }
@@ -40,7 +41,7 @@ export function validProductionPolicy(value: unknown): value is ProductionPolicy
   return (p.workerId === null || integer(p.workerId, 1, Number.MAX_SAFE_INTEGER)) &&
     integer(p.skillMin, 0, 20) && integer(p.skillMax, 0, 20) && p.skillMin <= p.skillMax &&
     (p.ingredientRadius === null || integer(p.ingredientRadius, 3, 100)) &&
-    subset(p.allowedFood, ['grain', 'meat', 'milk']) && subset(p.allowedCarcasses, animalSpecies) &&
+    subset(p.allowedFood, FOOD_INGREDIENTS) && subset(p.allowedCarcasses, animalSpecies) &&
     subset(p.allowedTextiles, TEXTILE_MATERIALS);
 }
 
@@ -72,7 +73,7 @@ export function productionPolicyAllowsIngredient(
     const squared = (source.x - bench.x) ** 2 + (source.y - bench.y) ** 2 + (source.z - bench.z) ** 2;
     if (!(squared < policy.ingredientRadius ** 2)) return false;
   }
-  if (recipe === 'cook' && (cargo.resource === 'grain' || cargo.resource === 'meat' || cargo.resource === 'milk'))
+  if (recipe === 'cook' && isFoodIngredient(cargo.resource))
     return policy.allowedFood.includes(cargo.resource);
   if (recipe === 'butcher' && cargo.resource === 'carcass')
     return !!cargo.carcass && policy.allowedCarcasses.includes(cargo.carcass.species);

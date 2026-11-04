@@ -1798,10 +1798,10 @@ a {
 .voxel-animal-facts label { display: grid; gap: 4px; color: #c3d1bc; font-size: 11px; }
 .voxel-animal-facts progress { width: 100%; height: 5px; accent-color: #aec584; }
 .voxel-animal-portrait { display: block; width: 70px; height: 54px; margin-bottom: 7px; border: 1px solid #bdc9bc33; border-radius: 5px; }
-.voxel-animal-milk, .voxel-animal-wool { display: grid; gap: 6px; margin-top: 8px; padding: 9px; border: 1px solid #d8dbbc35; background: #d8dbbc08; }
-.voxel-animal-milk b, .voxel-animal-wool b { color: #e4dfc7; font-size: 12px; }
-.voxel-animal-milk label, .voxel-animal-wool label { display: grid; gap: 4px; color: #cfd4c0; font-size: 11px; }
-.voxel-animal-milk progress, .voxel-animal-wool progress { width: 100%; height: 5px; accent-color: #e4dfc7; }
+.voxel-animal-milk, .voxel-animal-wool, .voxel-animal-eggs, .voxel-egg-details { display: grid; gap: 6px; margin-top: 8px; padding: 9px; border: 1px solid #d8dbbc35; background: #d8dbbc08; }
+.voxel-animal-milk b, .voxel-animal-wool b, .voxel-animal-eggs b, .voxel-egg-details b { color: #e4dfc7; font-size: 12px; }
+.voxel-animal-milk label, .voxel-animal-wool label, .voxel-animal-eggs label, .voxel-egg-details label { display: grid; gap: 4px; color: #cfd4c0; font-size: 11px; }
+.voxel-animal-milk progress, .voxel-animal-wool progress, .voxel-animal-eggs progress, .voxel-egg-details progress { width: 100%; height: 5px; accent-color: #e4dfc7; }
 .voxel-animal-status p { margin: 5px 0; }
 .voxel-animal-orders, .voxel-animal-row-actions { display: flex; flex-wrap: wrap; gap: 5px; }
 .voxel-wildlife-list section > .voxel-animal-row-actions { justify-content: flex-start; margin-top: 9px; }

@@ -6,12 +6,13 @@ import { WILDLIFE } from './wildlife';
 import { batchHitPoints, setBatchHitPoints, validBatchHitPoints } from './deterioration';
 import { validateUnfinishedPiece } from './unfinishedProduction';
 import { ANIMAL_HUSBANDRY } from './husbandry';
+import { EGG_RULES, validHatcher } from './animalEggs';
 
 // RimWorld 1.7 source/Defs: 60000 original ticks/day, rate * elapsed ticks.
 // We preserve days, using this simulation's DAY=12000 instead. Unlike the native
 // rare-tick scheduler, world containers advance once per simulation tick.
 export const ROT_DAYS = Object.freeze({ rice: 40, potato: 30, corn: 60, meal: 4, herb: 150, milk: 14 });
-export const isPerishable = (resource: Resource) => ['grain', 'meat', 'carcass', 'meal', 'herb', 'milk'].includes(resource);
+export const isPerishable = (resource: Resource) => ['grain', 'meat', 'carcass', 'meal', 'herb', 'milk', 'eggUnfertilized'].includes(resource);
 export function rotRateAtTemperature(temperature: number): number {
   if (!Number.isFinite(temperature)) throw new RangeError('Temperature must be finite');
   return temperature <= 0 ? 0 : temperature >= 10 ? 1 : temperature / 10;
@@ -23,6 +24,8 @@ export function rotLimit(batch: Pick<Cargo, 'resource' | 'crop'>): number | null
   if (batch.resource === 'meal') return ROT_DAYS.meal * DAY;
   if (batch.resource === 'herb') return ROT_DAYS.herb * DAY;
   if (batch.resource === 'milk') return ROT_DAYS.milk * DAY;
+  // An active hatcher disables rotting. Thermal ruin creates a fresh edible egg.
+  if (batch.resource === 'eggUnfertilized') return EGG_RULES.rotDays * DAY;
   if (batch.resource === 'grain' && batch.crop && Object.hasOwn(ROT_DAYS, batch.crop))
     return ROT_DAYS[batch.crop] * DAY;
   return null;
@@ -33,6 +36,7 @@ export function remainingRotDays(batch: Cargo): number | null {
   return limit === null ? null : Math.max(0, (limit - (batch.rotProgress ?? 0)) / DAY);
 }
 export function freshBatch(resource: Resource, amount: number, crop?: FoodCropKind): Cargo {
+  if (resource === 'eggFertilized') throw new Error('受精蛋需要孵化身份信息');
   if (resource === 'apparel' || resource === 'weapon' || resource === 'furniture' || resource === 'unfinished') throw new Error('装备、家具和未完成品需要独立实例信息');
   if (resource === 'carcass') throw new Error('动物尸体需要独立动物身份信息');
   return {
@@ -63,6 +67,7 @@ export function portion(batch: Cargo, amount: number): Cargo {
       : { ...batch.furniture } } : {}),
     ...(batch.unfinished !== undefined ? { unfinished: structuredClone(batch.unfinished) } : {}),
     ...(batch.carcass !== undefined ? { carcass: { ...batch.carcass } } : {}),
+    ...(batch.hatcher !== undefined ? { hatcher: { ...batch.hatcher } } : {}),
     ...(batch.forbidden !== undefined ? { forbidden: batch.forbidden } : {}),
     ...(batch.rotProgress !== undefined ? { rotProgress: batch.rotProgress } : {}),
     ...(batch.poisonChance !== undefined ? { poisonChance: batch.poisonChance } : {}),
@@ -90,6 +95,15 @@ export function mergeBatch(target: Cargo, incoming: Cargo): void {
   if (!compatibleBatches(target, incoming) || incoming.amount <= 0 || target.amount <= 0)
     throw new Error('Only positive compatible batches can merge');
   const hitPoints = batchHitPoints(target), incomingHitPoints = batchHitPoints(incoming);
+  if (target.resource === 'eggFertilized') {
+    if (!validHatcher(target.hatcher) || !validHatcher(incoming.hatcher)) throw new Error('受精蛋孵化信息缺失');
+    const total = target.amount + incoming.amount;
+    // Native receiving stack keeps its own parents and faction.
+    // Replace the nested value: placement dry-runs shallow-copy stack wrappers.
+    target.hatcher = { ...target.hatcher,
+      progress: (target.hatcher.progress * target.amount + incoming.hatcher.progress * incoming.amount) / total,
+      temperatureDamage: (target.hatcher.temperatureDamage * target.amount + incoming.hatcher.temperatureDamage * incoming.amount) / total };
+  }
   if (hitPoints !== null && incomingHitPoints !== null)
     // Native Thing.TryAbsorbStack weights only the actual transferred amount,
     // then rounds upward. Repeated splitting/merging may regain fractional HP.
@@ -132,6 +146,8 @@ export function validBatch(batch: unknown): batch is Cargo {
       'grain',
       'meat',
       'milk',
+      'eggUnfertilized',
+      'eggFertilized',
       'carcass',
       'meal',
       'cloth',
@@ -148,6 +164,7 @@ export function validBatch(batch: unknown): batch is Cargo {
   )
     return false;
   if (!validBatchHitPoints(b)) return false;
+  if (b.resource === 'eggFertilized' ? !validHatcher(b.hatcher) : b.hatcher !== undefined) return false;
   if (b.resource === 'furniture' ? b.amount !== 1 || !validFurniturePiece(b.furniture) : b.furniture !== undefined)
     return false;
   if (b.resource === 'unfinished' ? b.amount !== 1 || !validateUnfinishedPiece(b.unfinished) : b.unfinished !== undefined)

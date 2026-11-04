@@ -1,0 +1,2636 @@
+{
+  "evidence_id": "RW17-ANIMAL-EGGS-STATIC",
+  "version": "1.7.4980 rev60",
+  "assemblySha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "reaEvidenceId": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+  "reaParentId": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+  "reaFile": "docs/research/rimworld/evidence/production-bills-rea-managed.json",
+  "reaSha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+  "manifestFile": "docs/research/rimworld/evidence/animal-eggs-manifest.json",
+  "manifestSha256": "f3de9c632abc03450e410b46394bdb4ca2149099912acc0b469e16c2289e93f2",
+  "rules": [
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "Props.eggLayFemaleOnly && pawn != null && pawn.gender != Gender.Female",
+      "hits": [
+        {
+          "line": 22,
+          "text": "if (Props.eggLayFemaleOnly && pawn != null && pawn.gender != Gender.Female)"
+        }
+      ],
+      "interpretation": "Ordinary egg laying is female-only when the component default is retained."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "pawn != null && !pawn.ageTracker.CurLifeStage.milkable",
+      "hits": [
+        {
+          "line": 26,
+          "text": "if (pawn != null && !pawn.ageTracker.CurLifeStage.milkable)"
+        }
+      ],
+      "interpretation": "The egg layer checks the milkable life-stage flag, not shearable."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "if (pawn.Sterile())",
+      "hits": [
+        {
+          "line": 30,
+          "text": "if (pawn.Sterile())"
+        }
+      ],
+      "interpretation": "Sterile animals cannot grow or normally lay eggs."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "ModsConfig.AnomalyActive && pawn.IsShambler",
+      "hits": [
+        {
+          "line": 34,
+          "text": "if (ModsConfig.AnomalyActive && pawn.IsShambler)"
+        }
+      ],
+      "interpretation": "Anomaly shamblers are excluded."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/animal-eggs/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "if (!ageTracker.CurLifeStage.reproductive)",
+      "hits": [
+        {
+          "line": 3838,
+          "text": "if (!ageTracker.CurLifeStage.reproductive)"
+        }
+      ],
+      "interpretation": "Sterile includes nonreproductive life stages."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/animal-eggs/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "health.hediffSet.HasHediffPreventsPregnancy()",
+      "hits": [
+        {
+          "line": 3853,
+          "text": "if (health.hediffSet.HasHediffPreventsPregnancy())"
+        }
+      ],
+      "interpretation": "Sterility also respects pregnancy-preventing health conditions."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/animal-eggs/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "if (this.SterileGenes())",
+      "hits": [
+        {
+          "line": 3857,
+          "text": "if (this.SterileGenes())"
+        }
+      ],
+      "interpretation": "Sterility also respects applicable gene rules."
+    },
+    {
+      "type": "RimWorld.CompProperties_EggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompProperties_EggLayer.cs",
+      "sha256": "fb9d60f6d6fc008a72febb994aa836ddac04d4111da0954843a3ccee9a4a1279",
+      "anchor": "public bool eggLayFemaleOnly = true",
+      "hits": [
+        {
+          "line": 18,
+          "text": "public bool eggLayFemaleOnly = true;"
+        }
+      ],
+      "interpretation": "Female-only is the component default."
+    },
+    {
+      "type": "RimWorld.CompProperties_EggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompProperties_EggLayer.cs",
+      "sha256": "fb9d60f6d6fc008a72febb994aa836ddac04d4111da0954843a3ccee9a4a1279",
+      "anchor": "public float eggProgressUnfertilizedMax = 1f",
+      "hits": [
+        {
+          "line": 20,
+          "text": "public float eggProgressUnfertilizedMax = 1f;"
+        }
+      ],
+      "interpretation": "Unfertilized eggs can mature fully unless a species overrides the default."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "Scribe_Values.Look(ref eggProgress, \"eggProgress\", 0f)",
+      "hits": [
+        {
+          "line": 73,
+          "text": "Scribe_Values.Look(ref eggProgress, \"eggProgress\", 0f);"
+        }
+      ],
+      "interpretation": "Egg progress is persisted independently from fertilization."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "Scribe_Values.Look(ref fertilizationCount, \"fertilizationCount\", 0)",
+      "hits": [
+        {
+          "line": 74,
+          "text": "Scribe_Values.Look(ref fertilizationCount, \"fertilizationCount\", 0);"
+        }
+      ],
+      "interpretation": "Remaining fertilized egg count is persisted."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "Scribe_References.Look(ref fertilizedBy, \"fertilizedBy\")",
+      "hits": [
+        {
+          "line": 75,
+          "text": "Scribe_References.Look(ref fertilizedBy, \"fertilizedBy\");"
+        }
+      ],
+      "interpretation": "The remembered male parent is persisted."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "parent.IsHashIntervalTick(2500) && Active",
+      "hits": [
+        {
+          "line": 80,
+          "text": "if (parent.IsHashIntervalTick(2500) && Active)"
+        }
+      ],
+      "interpretation": "Egg growth is checked on the animal hash every 2500 native ticks."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "float num = 2500f / (Props.eggLayIntervalDays * 60000f)",
+      "hits": [
+        {
+          "line": 82,
+          "text": "float num = 2500f / (Props.eggLayIntervalDays * 60000f);"
+        }
+      ],
+      "interpretation": "Growth increment converts the species interval from days."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "num *= PawnUtility.BodyResourceGrowthSpeed(pawn)",
+      "hits": [
+        {
+          "line": 85,
+          "text": "num *= PawnUtility.BodyResourceGrowthSpeed(pawn);"
+        }
+      ],
+      "interpretation": "Growth shares the food-category multiplier with milk and wool."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "eggProgress = 1f",
+      "hits": [
+        {
+          "line": 90,
+          "text": "eggProgress = 1f;"
+        },
+        {
+          "line": 180,
+          "text": "eggProgress = 1f;"
+        }
+      ],
+      "interpretation": "Growth caps at a single pending cycle."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "eggProgress = Props.eggProgressUnfertilizedMax",
+      "hits": [
+        {
+          "line": 94,
+          "text": "eggProgress = Props.eggProgressUnfertilizedMax;"
+        }
+      ],
+      "interpretation": "Species with a partial unfertilized cap stop at that cap; chicken retains the default one."
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "file": ".local-research/animal-eggs/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "anchor": "return pawn.needs?.food?.CurCategory.HungerMultiplier() ?? 1f",
+      "hits": [
+        {
+          "line": 343,
+          "text": "return pawn.needs?.food?.CurCategory.HungerMultiplier() ?? 1f;"
+        }
+      ],
+      "interpretation": "Missing food need defaults to growth multiplier one."
+    },
+    {
+      "type": "RimWorld.HungerLevelUtility",
+      "file": ".local-research/animal-eggs/RimWorld.HungerLevelUtility.cs",
+      "sha256": "be023007bc1de7d662c5e526f48e50ddd516b9a68d9347c3b1c69c30c8726bef",
+      "anchor": "HungerCategory.Fed => 1f",
+      "hits": [
+        {
+          "line": 28,
+          "text": "HungerCategory.Fed => 1f,"
+        }
+      ],
+      "interpretation": "Fed multiplier is one."
+    },
+    {
+      "type": "RimWorld.HungerLevelUtility",
+      "file": ".local-research/animal-eggs/RimWorld.HungerLevelUtility.cs",
+      "sha256": "be023007bc1de7d662c5e526f48e50ddd516b9a68d9347c3b1c69c30c8726bef",
+      "anchor": "HungerCategory.Hungry => 0.5f",
+      "hits": [
+        {
+          "line": 29,
+          "text": "HungerCategory.Hungry => 0.5f,"
+        }
+      ],
+      "interpretation": "Hungry multiplier is one half."
+    },
+    {
+      "type": "RimWorld.HungerLevelUtility",
+      "file": ".local-research/animal-eggs/RimWorld.HungerLevelUtility.cs",
+      "sha256": "be023007bc1de7d662c5e526f48e50ddd516b9a68d9347c3b1c69c30c8726bef",
+      "anchor": "HungerCategory.UrgentlyHungry => 0.25f",
+      "hits": [
+        {
+          "line": 30,
+          "text": "HungerCategory.UrgentlyHungry => 0.25f,"
+        }
+      ],
+      "interpretation": "Urgently hungry multiplier is one quarter."
+    },
+    {
+      "type": "RimWorld.HungerLevelUtility",
+      "file": ".local-research/animal-eggs/RimWorld.HungerLevelUtility.cs",
+      "sha256": "be023007bc1de7d662c5e526f48e50ddd516b9a68d9347c3b1c69c30c8726bef",
+      "anchor": "HungerCategory.Starving => 0f",
+      "hits": [
+        {
+          "line": 31,
+          "text": "HungerCategory.Starving => 0f,"
+        }
+      ],
+      "interpretation": "Starvation stops new egg progress."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "public bool FullyFertilized => fertilizationCount >= Props.eggFertilizationCountMax",
+      "hits": [
+        {
+          "line": 54,
+          "text": "public bool FullyFertilized => fertilizationCount >= Props.eggFertilizationCountMax;"
+        }
+      ],
+      "interpretation": "Mate eligibility uses remaining capacity, not egg progress."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "fertilizationCount = Props.eggFertilizationCountMax",
+      "hits": [
+        {
+          "line": 101,
+          "text": "fertilizationCount = Props.eggFertilizationCountMax;"
+        }
+      ],
+      "interpretation": "Successful fertilization replaces the remaining quota with the maximum; it does not add beyond it."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "fertilizedBy = male",
+      "hits": [
+        {
+          "line": 102,
+          "text": "fertilizedBy = male;"
+        }
+      ],
+      "interpretation": "Fertilization retains the male reference."
+    },
+    {
+      "type": "RimWorld.JobGiver_Mate",
+      "file": ".local-research/animal-eggs/RimWorld.JobGiver_Mate.cs",
+      "sha256": "93697635707661ac2b2316a7b8d327a455b80190b0ee184c3e8dcedd34dd999f",
+      "anchor": "pawn.gender != Gender.Male || pawn.Sterile() || pawn.RaceProps.disableMating",
+      "hits": [
+        {
+          "line": 12,
+          "text": "if (pawn.gender != Gender.Male || pawn.Sterile() || pawn.RaceProps.disableMating)"
+        }
+      ],
+      "interpretation": "Only eligible males initiate the ordinary mate job."
+    },
+    {
+      "type": "RimWorld.JobGiver_Mate",
+      "file": ".local-research/animal-eggs/RimWorld.JobGiver_Mate.cs",
+      "sha256": "93697635707661ac2b2316a7b8d327a455b80190b0ee184c3e8dcedd34dd999f",
+      "anchor": "if (pawn3.Faction != pawn.Faction)",
+      "hits": [
+        {
+          "line": 27,
+          "text": "if (pawn3.Faction != pawn.Faction)"
+        }
+      ],
+      "interpretation": "Mate assignment requires the same faction."
+    },
+    {
+      "type": "RimWorld.JobGiver_Mate",
+      "file": ".local-research/animal-eggs/RimWorld.JobGiver_Mate.cs",
+      "sha256": "93697635707661ac2b2316a7b8d327a455b80190b0ee184c3e8dcedd34dd999f",
+      "anchor": "!pawn3.CanCasuallyInteractNow() || pawn3.IsForbidden(pawn)",
+      "hits": [
+        {
+          "line": 23,
+          "text": "if (!pawn3.CanCasuallyInteractNow() || pawn3.IsForbidden(pawn))"
+        }
+      ],
+      "interpretation": "Female mate must be casually interactible and not forbidden to the male."
+    },
+    {
+      "type": "RimWorld.JobGiver_Mate",
+      "file": ".local-research/animal-eggs/RimWorld.JobGiver_Mate.cs",
+      "sha256": "93697635707661ac2b2316a7b8d327a455b80190b0ee184c3e8dcedd34dd999f",
+      "anchor": "PathEndMode.Touch, TraverseParms.For(pawn), 30f, validator",
+      "hits": [
+        {
+          "line": 35,
+          "text": "Pawn pawn2 = (Pawn)GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(item), PathEndMode.Touch, TraverseParms.For(pawn), 30f, validator);"
+        }
+      ],
+      "interpretation": "Mate search requires a reachable contact destination within 30 cells."
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "file": ".local-research/animal-eggs/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "anchor": "return !compEggLayer.FullyFertilized",
+      "hits": [
+        {
+          "line": 355,
+          "text": "return !compEggLayer.FullyFertilized;"
+        }
+      ],
+      "interpretation": "Egg-layer mate targets must have remaining fertilization capacity."
+    },
+    {
+      "type": "Verse.AI.ThinkNode_ChancePerHour",
+      "file": ".local-research/animal-eggs/Verse.AI.ThinkNode_ChancePerHour.cs",
+      "sha256": "d1553e2d6f464fb6eccf6150a14d7c14bc186261166062c0a11a24846db64bec",
+      "anchor": "GetLastTryTick(pawn) + 2500",
+      "hits": [
+        {
+          "line": 7,
+          "text": "if (Find.TickManager.TicksGame < GetLastTryTick(pawn) + 2500)"
+        }
+      ],
+      "interpretation": "The chance node checks no more often than once per native hour."
+    },
+    {
+      "type": "Verse.AI.ThinkNode_ChancePerHour",
+      "file": ".local-research/animal-eggs/Verse.AI.ThinkNode_ChancePerHour.cs",
+      "sha256": "d1553e2d6f464fb6eccf6150a14d7c14bc186261166062c0a11a24846db64bec",
+      "anchor": "Rand.MTBEventOccurs(num, 2500f, 2500f)",
+      "hits": [
+        {
+          "line": 20,
+          "text": "bool flag = Rand.MTBEventOccurs(num, 2500f, 2500f);"
+        }
+      ],
+      "interpretation": "The species interval is an MTB chance parameter, not a fixed recurring deadline."
+    },
+    {
+      "type": "Verse.AI.ThinkNode_ChancePerHour_Mate",
+      "file": ".local-research/animal-eggs/Verse.AI.ThinkNode_ChancePerHour_Mate.cs",
+      "sha256": "a6f7036698557610400ff043ca57a1b7863b56d670eccd568020ee1205d77bfc",
+      "anchor": "return pawn.RaceProps.mateMtbHours",
+      "hits": [
+        {
+          "line": 7,
+          "text": "return pawn.RaceProps.mateMtbHours;"
+        }
+      ],
+      "interpretation": "Mate frequency reads the species mateMtbHours."
+    },
+    {
+      "type": "RimWorld.JobDriver_Mate",
+      "file": ".local-research/animal-eggs/RimWorld.JobDriver_Mate.cs",
+      "sha256": "1fe2232d072c3c7252d4754cad2a1e3ffc14fe405d4bdb9f34272b85f34cb59a",
+      "anchor": "Toils_General.WaitWith(TargetIndex.A, 500)",
+      "hits": [
+        {
+          "line": 28,
+          "text": "Toil toil = Toils_General.WaitWith(TargetIndex.A, 500);"
+        }
+      ],
+      "interpretation": "Mating needs an actual contact wait of 500 native ticks."
+    },
+    {
+      "type": "RimWorld.JobDriver_Mate",
+      "file": ".local-research/animal-eggs/RimWorld.JobDriver_Mate.cs",
+      "sha256": "1fe2232d072c3c7252d4754cad2a1e3ffc14fe405d4bdb9f34272b85f34cb59a",
+      "anchor": "PawnUtility.Mated(pawn, Female)",
+      "hits": [
+        {
+          "line": 43,
+          "text": "PawnUtility.Mated(pawn, Female);"
+        }
+      ],
+      "interpretation": "Fertilization occurs only after the job reaches its final action."
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "file": ".local-research/animal-eggs/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "anchor": "compEggLayer.Fertilize(male)",
+      "hits": [
+        {
+          "line": 367,
+          "text": "compEggLayer.Fertilize(male);"
+        }
+      ],
+      "interpretation": "Egg layers are fertilized directly; the following random pregnancy branch is for non-egg layers."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "fertilizationCount = Mathf.Max(0, fertilizationCount - randomInRange)",
+      "hits": [
+        {
+          "line": 130,
+          "text": "fertilizationCount = Mathf.Max(0, fertilizationCount - randomInRange);"
+        }
+      ],
+      "interpretation": "Fertilized production spends the laid egg count, clamped at zero."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "compHatcher.hatcheeFaction = parent.Faction",
+      "hits": [
+        {
+          "line": 140,
+          "text": "compHatcher.hatcheeFaction = parent.Faction;"
+        }
+      ],
+      "interpretation": "A freshly laid fertile stack remembers the laying animal faction."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "compHatcher.hatcheeParent = hatcheeParent",
+      "hits": [
+        {
+          "line": 143,
+          "text": "compHatcher.hatcheeParent = hatcheeParent;"
+        }
+      ],
+      "interpretation": "The laying animal becomes one parent of the stack."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "compHatcher.otherParent = fertilizedBy",
+      "hits": [
+        {
+          "line": 147,
+          "text": "compHatcher.otherParent = fertilizedBy;"
+        }
+      ],
+      "interpretation": "The remembered mate becomes the other parent of the stack."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/animal-eggs/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "compEggLayer == null || !compEggLayer.CanLayNow",
+      "hits": [
+        {
+          "line": 17,
+          "text": "if (compEggLayer == null || !compEggLayer.CanLayNow)"
+        }
+      ],
+      "interpretation": "Ordinary laying requires an active full component."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/animal-eggs/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "if (pawn.Faction == Faction.OfPlayer)",
+      "hits": [
+        {
+          "line": 24,
+          "text": "if (pawn.Faction == Faction.OfPlayer)"
+        }
+      ],
+      "interpretation": "Only the player-faction branch prefers an egg box."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/animal-eggs/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "pawn.GetRoom() == null || x.GetRoom() == pawn.GetRoom()",
+      "hits": [
+        {
+          "line": 32,
+          "text": "Thing thing = GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(singleDef), peMode, traverseParms, 30f, (Thing x) => pawn.GetRoom() == null || x.GetRoom() == pawn.GetRoom());"
+        }
+      ],
+      "interpretation": "Fallback existing same-type egg search prefers the same room, except a null current room."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/animal-eggs/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "RCellFinder.RandomWanderDestFor(pawn, pawn.Position, 5f, null, Danger.Some)",
+      "hits": [
+        {
+          "line": 33,
+          "text": "return JobMaker.MakeJob(JobDefOf.LayEgg, thing?.Position ?? RCellFinder.RandomWanderDestFor(pawn, pawn.Position, 5f, null, Danger.Some));"
+        }
+      ],
+      "interpretation": "Without a nearby egg stack, the animal chooses a nearby wander cell."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/animal-eggs/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "thing.IsForbidden(pawn) || !pawn.CanReserve(thing) || !pawn.Position.InHorDistOf(thing.Position, 30f)",
+      "hits": [
+        {
+          "line": 55,
+          "text": "if (thing.IsForbidden(pawn) || !pawn.CanReserve(thing) || !pawn.Position.InHorDistOf(thing.Position, 30f))"
+        }
+      ],
+      "interpretation": "Egg-box candidate checks forbidden status, reservability and a 30-cell bound."
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "file": ".local-research/animal-eggs/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "anchor": "((float?)compEggContainer.ContainedThing?.stackCount * 5f) ?? 0.5f",
+      "hits": [
+        {
+          "line": 47,
+          "text": "return ((float?)compEggContainer.ContainedThing?.stackCount * 5f) ?? 0.5f;"
+        }
+      ],
+      "interpretation": "Nonfull existing egg contents score above an empty box."
+    },
+    {
+      "type": "RimWorld.JobDriver_LayEgg",
+      "file": ".local-research/animal-eggs/RimWorld.JobDriver_LayEgg.cs",
+      "sha256": "ff86597e99fd8bf40c6b1d256d57da035ece5c3b17a3fd619932e31c3caa59b4",
+      "anchor": "Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell)",
+      "hits": [
+        {
+          "line": 22,
+          "text": "yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell);"
+        }
+      ],
+      "interpretation": "The laying animal moves onto the target cell."
+    },
+    {
+      "type": "RimWorld.JobDriver_LayEgg",
+      "file": ".local-research/animal-eggs/RimWorld.JobDriver_LayEgg.cs",
+      "sha256": "ff86597e99fd8bf40c6b1d256d57da035ece5c3b17a3fd619932e31c3caa59b4",
+      "anchor": "Toils_General.Wait(500)",
+      "hits": [
+        {
+          "line": 23,
+          "text": "yield return Toils_General.Wait(500);"
+        }
+      ],
+      "interpretation": "Laying waits 500 ticks and does not consume colonist Handling labor."
+    },
+    {
+      "type": "RimWorld.JobDriver_LayEgg",
+      "file": ".local-research/animal-eggs/RimWorld.JobDriver_LayEgg.cs",
+      "sha256": "ff86597e99fd8bf40c6b1d256d57da035ece5c3b17a3fd619932e31c3caa59b4",
+      "anchor": "Thing thing = pawn.GetComp<CompEggLayer>().ProduceEgg()",
+      "hits": [
+        {
+          "line": 26,
+          "text": "Thing thing = pawn.GetComp<CompEggLayer>().ProduceEgg();"
+        }
+      ],
+      "interpretation": "Production happens after the movement and wait."
+    },
+    {
+      "type": "RimWorld.JobDriver_LayEgg",
+      "file": ".local-research/animal-eggs/RimWorld.JobDriver_LayEgg.cs",
+      "sha256": "ff86597e99fd8bf40c6b1d256d57da035ece5c3b17a3fd619932e31c3caa59b4",
+      "anchor": "EggBoxComp.innerContainer.TryAdd(thing)",
+      "hits": [
+        {
+          "line": 29,
+          "text": "EggBoxComp.innerContainer.TryAdd(thing);"
+        }
+      ],
+      "interpretation": "An accepting targeted egg box receives the product; this call does not inspect the insertion result."
+    },
+    {
+      "type": "RimWorld.JobDriver_LayEgg",
+      "file": ".local-research/animal-eggs/RimWorld.JobDriver_LayEgg.cs",
+      "sha256": "ff86597e99fd8bf40c6b1d256d57da035ece5c3b17a3fd619932e31c3caa59b4",
+      "anchor": "t.SetForbidden(value: true)",
+      "hits": [
+        {
+          "line": 37,
+          "text": "t.SetForbidden(value: true);"
+        }
+      ],
+      "interpretation": "Non-player laid ground eggs are marked forbidden in the placement callback."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "Scribe_Values.Look(ref gestateProgress, \"gestateProgress\", 0f)",
+      "hits": [
+        {
+          "line": 36,
+          "text": "Scribe_Values.Look(ref gestateProgress, \"gestateProgress\", 0f);"
+        }
+      ],
+      "interpretation": "Incubation progress is per stack and persisted."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "Scribe_References.Look(ref hatcheeFaction, \"hatcheeFaction\")",
+      "hits": [
+        {
+          "line": 39,
+          "text": "Scribe_References.Look(ref hatcheeFaction, \"hatcheeFaction\");"
+        }
+      ],
+      "interpretation": "The hatch faction is persisted independently from the egg item faction."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "if (!TemperatureDamaged)",
+      "hits": [
+        {
+          "line": 44,
+          "text": "if (!TemperatureDamaged)"
+        },
+        {
+          "line": 178,
+          "text": "if (!TemperatureDamaged)"
+        }
+      ],
+      "interpretation": "Incubation advances until full temperature ruin, not only while current temperature is safe."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "float num = 1f / (Props.hatcherDaystoHatch * 60000f)",
+      "hits": [
+        {
+          "line": 46,
+          "text": "float num = 1f / (Props.hatcherDaystoHatch * 60000f);"
+        }
+      ],
+      "interpretation": "Incubation uses a per-tick fraction of the declared duration."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "if (gestateProgress > 1f)",
+      "hits": [
+        {
+          "line": 48,
+          "text": "if (gestateProgress > 1f)"
+        }
+      ],
+      "interpretation": "Native completion condition is strictly greater than one."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "Thing thing = ThingMaker.MakeThing(compProperties_EggLayer.eggUnfertilizedDef)",
+      "hits": [
+        {
+          "line": 66,
+          "text": "Thing thing = ThingMaker.MakeThing(compProperties_EggLayer.eggUnfertilizedDef);"
+        }
+      ],
+      "interpretation": "Temperature-ruined eggs inside an egg box become newly created unfertilized eggs."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "GenSpawn.Spawn(compProperties_EggLayer.eggUnfertilizedDef, positionHeld, mapHeld).stackCount = stackCount2",
+      "hits": [
+        {
+          "line": 76,
+          "text": "GenSpawn.Spawn(compProperties_EggLayer.eggUnfertilizedDef, positionHeld, mapHeld).stackCount = stackCount2;"
+        }
+      ],
+      "interpretation": "Other temperature-ruined egg holders use a newly spawned unfertilized stack and retain its count."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "DevelopmentalStage.Newborn",
+      "hits": [
+        {
+          "line": 85,
+          "text": "PawnGenerationRequest request = new PawnGenerationRequest(Props.hatcherPawn, hatcheeFaction, PawnGenerationContext.NonPlayer, null, forceGenerateNewPawn: false, allowDead: false, allowDowned: false, canGeneratePawnRelations: true, mustBeCapableOfViolence: false, 1f, forceAddFreeWarmLayerIfNeeded: false, allowGay: true, allowPregnant: false, allowFood: true, allowAddictions: true, inhabitant: false, certainlyBeenInCryptosleep: false, forceRedressWorldPawnIfFormerColonist: false, worldPawnFactionDoesntMatter: false, 0f, 0f, null, 1f, null, null, null, null, null, null, null, null, null, null, null, null, forceNoIdeo: false, forceNoBackstory: false, forbidAnyTitle: false, forceDead: false, null, null, null, null, null, 0f, DevelopmentalStage.Newborn);"
+        }
+      ],
+      "interpretation": "Hatching requests newborn pawns; the common generator handles newborn ages and needs."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "for (int i = 0; i < parent.stackCount; i++)",
+      "hits": [
+        {
+          "line": 90,
+          "text": "for (int i = 0; i < parent.stackCount; i++)"
+        }
+      ],
+      "interpretation": "One newborn pawn is generated per unit of the egg stack."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "Pawn pawn = PawnGenerator.GeneratePawn(request)",
+      "hits": [
+        {
+          "line": 92,
+          "text": "Pawn pawn = PawnGenerator.GeneratePawn(request);"
+        }
+      ],
+      "interpretation": "Each iteration generates a new pawn through the common generator."
+    },
+    {
+      "type": "Verse.PawnGenerator",
+      "file": ".local-research/animal-eggs/Verse.PawnGenerator.cs",
+      "sha256": "96e7447c568916a4eb9aa4d334723567d9b09dc939636f5dcdfee484dcc42180",
+      "anchor": "!DevelopmentalStageExtensions.Newborn(request.AllowedDevelopmentalStages) && !request.ForceGenerateNewPawn",
+      "hits": [
+        {
+          "line": 202,
+          "text": "if (!DevelopmentalStageExtensions.Newborn(request.AllowedDevelopmentalStages) && !request.ForceGenerateNewPawn)"
+        }
+      ],
+      "interpretation": "The newborn request bypasses the ordinary world-pawn reuse path."
+    },
+    {
+      "type": "Verse.PawnGenerator",
+      "file": ".local-research/animal-eggs/Verse.PawnGenerator.cs",
+      "sha256": "96e7447c568916a4eb9aa4d334723567d9b09dc939636f5dcdfee484dcc42180",
+      "anchor": "pawn.ageTracker.AgeBiologicalTicks = 0L",
+      "hits": [
+        {
+          "line": 1325,
+          "text": "pawn.ageTracker.AgeBiologicalTicks = 0L;"
+        }
+      ],
+      "interpretation": "Newborn generation sets biological age to zero."
+    },
+    {
+      "type": "Verse.PawnGenerator",
+      "file": ".local-research/animal-eggs/Verse.PawnGenerator.cs",
+      "sha256": "96e7447c568916a4eb9aa4d334723567d9b09dc939636f5dcdfee484dcc42180",
+      "anchor": "pawn.ageTracker.AgeChronologicalTicks = 0L",
+      "hits": [
+        {
+          "line": 1366,
+          "text": "pawn.ageTracker.AgeChronologicalTicks = 0L;"
+        }
+      ],
+      "interpretation": "Newborn generation sets chronological age to zero."
+    },
+    {
+      "type": "Verse.PawnGenerator",
+      "file": ".local-research/animal-eggs/Verse.PawnGenerator.cs",
+      "sha256": "96e7447c568916a4eb9aa4d334723567d9b09dc939636f5dcdfee484dcc42180",
+      "anchor": "else if (Rand.Value < 0.5f)",
+      "hits": [
+        {
+          "line": 755,
+          "text": "else if (Rand.Value < 0.5f)"
+        }
+      ],
+      "interpretation": "The ordinary species gender branch uses a half-probability male choice when no fixed or forced gender applies."
+    },
+    {
+      "type": "Verse.PawnGenerator",
+      "file": ".local-research/animal-eggs/Verse.PawnGenerator.cs",
+      "sha256": "96e7447c568916a4eb9aa4d334723567d9b09dc939636f5dcdfee484dcc42180",
+      "anchor": "pawn.needs.food.CurLevelPercentage = Mathf.Lerp(pawn.needs.food.PercentageThreshHungry, pawn.needs.food.PercentageThreshUrgentlyHungry, 0.5f)",
+      "hits": [
+        {
+          "line": 774,
+          "text": "pawn.needs.food.CurLevelPercentage = Mathf.Lerp(pawn.needs.food.PercentageThreshHungry, pawn.needs.food.PercentageThreshUrgentlyHungry, 0.5f);"
+        }
+      ],
+      "interpretation": "Newborn food starts between the hungry and urgently-hungry thresholds; chicks are not created fully fed."
+    },
+    {
+      "type": "Verse.ThingDef",
+      "file": ".local-research/animal-eggs/Verse.ThingDef.cs",
+      "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+      "anchor": "public FloatRange startingHpRange = FloatRange.One",
+      "hits": [
+        {
+          "line": 110,
+          "text": "public FloatRange startingHpRange = FloatRange.One;"
+        }
+      ],
+      "interpretation": "Fresh ordinary items default to their full starting HP fraction unless definitions override it."
+    },
+    {
+      "type": "Verse.Thing",
+      "file": ".local-research/animal-eggs/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "anchor": "HitPoints = Mathf.RoundToInt((float)MaxHitPoints * Mathf.Clamp01(def.startingHpRange.RandomInRange))",
+      "hits": [
+        {
+          "line": 782,
+          "text": "HitPoints = Mathf.RoundToInt((float)MaxHitPoints * Mathf.Clamp01(def.startingHpRange.RandomInRange));"
+        }
+      ],
+      "interpretation": "Fresh item initialization reads its own definition starting HP range, not the destroyed source item HP."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "PawnUtility.TrySpawnHatchedOrBornPawn(pawn, parent)",
+      "hits": [
+        {
+          "line": 93,
+          "text": "if (PawnUtility.TrySpawnHatchedOrBornPawn(pawn, parent))"
+        }
+      ],
+      "interpretation": "Spawn handling supports map-held eggs and selected caravan/world inventories."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "hatcheeParent.Faction == hatcheeFaction",
+      "hits": [
+        {
+          "line": 99,
+          "text": "if (pawn.playerSettings != null && hatcheeParent.playerSettings != null && hatcheeParent.Faction == hatcheeFaction)"
+        }
+      ],
+      "interpretation": "Inherited area restriction requires mother and hatch faction to agree."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, hatcheeParent)",
+      "hits": [
+        {
+          "line": 105,
+          "text": "pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, hatcheeParent);"
+        }
+      ],
+      "interpretation": "Flesh newborns record the laying parent."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, otherParent)",
+      "hits": [
+        {
+          "line": 110,
+          "text": "pawn.relations.AddDirectRelation(PawnRelationDefOf.Parent, otherParent);"
+        }
+      ],
+      "interpretation": "An eligible distinct-sex other parent is recorded too."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "Find.WorldPawns.PassToWorld(pawn, PawnDiscardDecideMode.Discard)",
+      "hits": [
+        {
+          "line": 120,
+          "text": "Find.WorldPawns.PassToWorld(pawn, PawnDiscardDecideMode.Discard);"
+        }
+      ],
+      "interpretation": "Failed placement sends the generated pawn to the discard path rather than retaining an unhatched unit."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "TemperatureDamaged != comp.TemperatureDamaged",
+      "hits": [
+        {
+          "line": 133,
+          "text": "if (TemperatureDamaged != comp.TemperatureDamaged)"
+        }
+      ],
+      "interpretation": "Hatcher stacking excludes stacks with differing fully ruined state."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "gestateProgress = Mathf.Lerp(gestateProgress, b, t)",
+      "hits": [
+        {
+          "line": 144,
+          "text": "gestateProgress = Mathf.Lerp(gestateProgress, b, t);"
+        }
+      ],
+      "interpretation": "Stack absorption averages incubation progress weighted by counts; it does not retain each unit clock."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "comp.hatcheeParent = hatcheeParent",
+      "hits": [
+        {
+          "line": 151,
+          "text": "comp.hatcheeParent = hatcheeParent;"
+        }
+      ],
+      "interpretation": "Splitting copies the receiving new stack parent identity."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "comp.hatcheeFaction = hatcheeFaction",
+      "hits": [
+        {
+          "line": 153,
+          "text": "comp.hatcheeFaction = hatcheeFaction;"
+        }
+      ],
+      "interpretation": "Splitting copies the hatch faction."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "hatcheeFaction = Faction.OfPlayer",
+      "hits": [
+        {
+          "line": 162,
+          "text": "hatcheeFaction = Faction.OfPlayer;"
+        }
+      ],
+      "interpretation": "Buying sets the resulting hatch faction to the player."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "hatcheeFaction = trader.Faction",
+      "hits": [
+        {
+          "line": 165,
+          "text": "hatcheeFaction = trader.Faction;"
+        }
+      ],
+      "interpretation": "Selling sets the hatch faction to the trader faction."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "hatcheeFaction = forFaction",
+      "hits": [
+        {
+          "line": 173,
+          "text": "hatcheeFaction = forFaction;"
+        }
+      ],
+      "interpretation": "Trader generation initializes the hatch faction from the supplied faction."
+    },
+    {
+      "type": "RimWorld.CompTemperatureRuinable",
+      "file": ".local-research/animal-eggs/RimWorld.CompTemperatureRuinable.cs",
+      "sha256": "120b5e3a10f008391d4912eabda9fe0beb776d40eb55d119721f6937cb3db273",
+      "anchor": "public bool Ruined => ruinedPercent >= 1f",
+      "hits": [
+        {
+          "line": 14,
+          "text": "public bool Ruined => ruinedPercent >= 1f;"
+        }
+      ],
+      "interpretation": "Full damage is a one-way ruin threshold unless another caller explicitly resets it."
+    },
+    {
+      "type": "RimWorld.CompTemperatureRuinable",
+      "file": ".local-research/animal-eggs/RimWorld.CompTemperatureRuinable.cs",
+      "sha256": "120b5e3a10f008391d4912eabda9fe0beb776d40eb55d119721f6937cb3db273",
+      "anchor": "Scribe_Values.Look(ref ruinedPercent, \"ruinedPercent\", 0f)",
+      "hits": [
+        {
+          "line": 18,
+          "text": "Scribe_Values.Look(ref ruinedPercent, \"ruinedPercent\", 0f);"
+        }
+      ],
+      "interpretation": "Thermal damage is persistent."
+    },
+    {
+      "type": "RimWorld.CompTemperatureRuinable",
+      "file": ".local-research/animal-eggs/RimWorld.CompTemperatureRuinable.cs",
+      "sha256": "120b5e3a10f008391d4912eabda9fe0beb776d40eb55d119721f6937cb3db273",
+      "anchor": "ruinedPercent += (ambientTemperature - Props.maxSafeTemperature) * Props.progressPerDegreePerTick",
+      "hits": [
+        {
+          "line": 38,
+          "text": "ruinedPercent += (ambientTemperature - Props.maxSafeTemperature) * Props.progressPerDegreePerTick;"
+        }
+      ],
+      "interpretation": "Overheating accumulates positive damage per excess degree."
+    },
+    {
+      "type": "RimWorld.CompTemperatureRuinable",
+      "file": ".local-research/animal-eggs/RimWorld.CompTemperatureRuinable.cs",
+      "sha256": "120b5e3a10f008391d4912eabda9fe0beb776d40eb55d119721f6937cb3db273",
+      "anchor": "ruinedPercent -= (ambientTemperature - Props.minSafeTemperature) * Props.progressPerDegreePerTick",
+      "hits": [
+        {
+          "line": 42,
+          "text": "ruinedPercent -= (ambientTemperature - Props.minSafeTemperature) * Props.progressPerDegreePerTick;"
+        }
+      ],
+      "interpretation": "Freezing accumulates positive damage per degree below the minimum."
+    },
+    {
+      "type": "RimWorld.CompTemperatureRuinable",
+      "file": ".local-research/animal-eggs/RimWorld.CompTemperatureRuinable.cs",
+      "sha256": "120b5e3a10f008391d4912eabda9fe0beb776d40eb55d119721f6937cb3db273",
+      "anchor": "ruinedPercent = Mathf.Lerp(ruinedPercent, comp.ruinedPercent, t)",
+      "hits": [
+        {
+          "line": 60,
+          "text": "ruinedPercent = Mathf.Lerp(ruinedPercent, comp.ruinedPercent, t);"
+        }
+      ],
+      "interpretation": "Stack absorption averages thermal damage by actual absorbed count."
+    },
+    {
+      "type": "RimWorld.CompTemperatureRuinable",
+      "file": ".local-research/animal-eggs/RimWorld.CompTemperatureRuinable.cs",
+      "sha256": "120b5e3a10f008391d4912eabda9fe0beb776d40eb55d119721f6937cb3db273",
+      "anchor": "return Ruined == comp.Ruined",
+      "hits": [
+        {
+          "line": 66,
+          "text": "return Ruined == comp.Ruined;"
+        }
+      ],
+      "interpretation": "Thermal ruin status must agree to stack."
+    },
+    {
+      "type": "RimWorld.CompTemperatureRuinable",
+      "file": ".local-research/animal-eggs/RimWorld.CompTemperatureRuinable.cs",
+      "sha256": "120b5e3a10f008391d4912eabda9fe0beb776d40eb55d119721f6937cb3db273",
+      "anchor": "GetComp<CompTemperatureRuinable>().ruinedPercent = ruinedPercent",
+      "hits": [
+        {
+          "line": 71,
+          "text": "((ThingWithComps)piece).GetComp<CompTemperatureRuinable>().ruinedPercent = ruinedPercent;"
+        }
+      ],
+      "interpretation": "Splits preserve thermal damage."
+    },
+    {
+      "type": "RimWorld.CompRottable",
+      "file": ".local-research/animal-eggs/RimWorld.CompRottable.cs",
+      "sha256": "0cd95cf8477c6c009d0187ce1d606f872ab9e36f0f977e5f09ced39fb4c50578",
+      "anchor": "compHatcher != null && !compHatcher.TemperatureDamaged",
+      "hits": [
+        {
+          "line": 68,
+          "text": "if (compHatcher != null && !compHatcher.TemperatureDamaged)"
+        }
+      ],
+      "interpretation": "disableIfHatcher stops rot while a viable hatcher exists."
+    },
+    {
+      "type": "RimWorld.CompRottable",
+      "file": ".local-research/animal-eggs/RimWorld.CompRottable.cs",
+      "sha256": "0cd95cf8477c6c009d0187ce1d606f872ab9e36f0f977e5f09ced39fb4c50578",
+      "anchor": "GenTemperature.RotRateAtTemperature(parent.AmbientTemperature)",
+      "hits": [
+        {
+          "line": 101,
+          "text": "float num = GenTemperature.RotRateAtTemperature(parent.AmbientTemperature);"
+        }
+      ],
+      "interpretation": "Ordinary egg spoilage uses the ambient-temperature rate."
+    },
+    {
+      "type": "RimWorld.CompRottable",
+      "file": ".local-research/animal-eggs/RimWorld.CompRottable.cs",
+      "sha256": "0cd95cf8477c6c009d0187ce1d606f872ab9e36f0f977e5f09ced39fb4c50578",
+      "anchor": "Stage == RotStage.Rotting && PropsRot.rotDestroys",
+      "hits": [
+        {
+          "line": 103,
+          "text": "if (Stage == RotStage.Rotting && PropsRot.rotDestroys)"
+        }
+      ],
+      "interpretation": "Spoiled eggs with rotDestroys are destroyed."
+    },
+    {
+      "type": "Verse.Thing",
+      "file": ".local-research/animal-eggs/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "anchor": "return GenTemperature.GetTemperatureForCell(PositionHeld, MapHeld)",
+      "hits": [
+        {
+          "line": 526,
+          "text": "return GenTemperature.GetTemperatureForCell(PositionHeld, MapHeld);"
+        }
+      ],
+      "interpretation": "Held eggs use the holder position temperature when no earlier fixed-temperature override applies."
+    },
+    {
+      "type": "Verse.Thing",
+      "file": ".local-research/animal-eggs/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "anchor": "ThingOwnerUtility.TryGetFixedTemperature(parentHolder, this, out var temperature)",
+      "hits": [
+        {
+          "line": 518,
+          "text": "if (ThingOwnerUtility.TryGetFixedTemperature(parentHolder, this, out var temperature))"
+        }
+      ],
+      "interpretation": "Holder-defined fixed temperature can override ambient map temperature."
+    },
+    {
+      "type": "Verse.Thing",
+      "file": ".local-research/animal-eggs/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "anchor": "ThingOwnerUtility.ContentsSuspended(cachedHolder)",
+      "hits": [
+        {
+          "line": 752,
+          "text": "if (Destroyed || !cachedIsHolder || (cachedTickable != null && !cachedTickable.ShouldTickContents) || ThingOwnerUtility.ContentsSuspended(cachedHolder))"
+        }
+      ],
+      "interpretation": "Suspended holder contents skip normal recursive ticking."
+    },
+    {
+      "type": "Verse.Thing",
+      "file": ".local-research/animal-eggs/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "anchor": "directlyHeldThings.DoTick()",
+      "hits": [
+        {
+          "line": 767,
+          "text": "directlyHeldThings.DoTick();"
+        }
+      ],
+      "interpretation": "Normal item ticking reaches contained inventories."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/animal-eggs/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "outChildren.Add(inventory)",
+      "hits": [
+        {
+          "line": 4741,
+          "text": "outChildren.Add(inventory);"
+        }
+      ],
+      "interpretation": "Pawn inventory participates in the held-container chain."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/animal-eggs/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "outChildren.Add(carryTracker)",
+      "hits": [
+        {
+          "line": 4745,
+          "text": "outChildren.Add(carryTracker);"
+        }
+      ],
+      "interpretation": "Hands participate in the held-container chain."
+    },
+    {
+      "type": "Verse.ThingOwner",
+      "file": ".local-research/animal-eggs/Verse.ThingOwner.cs",
+      "sha256": "2399af99d650359b9f5a272ccf118cad781b7bcbc9393c0478002efc8f815331",
+      "anchor": "if (dontTickContents)",
+      "hits": [
+        {
+          "line": 108,
+          "text": "if (dontTickContents)"
+        }
+      ],
+      "interpretation": "A holder can explicitly disable content ticking."
+    },
+    {
+      "type": "RimWorld.CompThingContainer",
+      "file": ".local-research/animal-eggs/RimWorld.CompThingContainer.cs",
+      "sha256": "9f349290f541d26e5b593c97839ec935ef6938624753b9b3d9afc84caee13a78",
+      "anchor": "innerContainer.DoTick()",
+      "hits": [
+        {
+          "line": 89,
+          "text": "innerContainer.DoTick();"
+        }
+      ],
+      "interpretation": "Egg-box contents receive ordinary ticks."
+    },
+    {
+      "type": "RimWorld.CompEggContainer",
+      "file": ".local-research/animal-eggs/RimWorld.CompEggContainer.cs",
+      "sha256": "d4f117c823f0dbaef339546bb05fd9b178cc02608068a4617bb9038b4f80363b",
+      "anchor": "return ContainedThing.stackCount >= Props.minCountToEmpty",
+      "hits": [
+        {
+          "line": 20,
+          "text": "return ContainedThing.stackCount >= Props.minCountToEmpty;"
+        }
+      ],
+      "interpretation": "Automatic extraction uses its threshold, not the box capacity."
+    },
+    {
+      "type": "RimWorld.WorkGiver_EmptyEggBox",
+      "file": ".local-research/animal-eggs/RimWorld.WorkGiver_EmptyEggBox.cs",
+      "sha256": "252d786fcc519d415a62ad9b4477dd91ef79123271a8cc5d585b07f1d1b4898f",
+      "anchor": "if (!compEggContainer.CanEmpty && !forced)",
+      "hits": [
+        {
+          "line": 25,
+          "text": "if (!compEggContainer.CanEmpty && !forced)"
+        },
+        {
+          "line": 44,
+          "text": "if (!compEggContainer.CanEmpty && !forced)"
+        }
+      ],
+      "interpretation": "Forced emptying can bypass the ordinary count threshold."
+    },
+    {
+      "type": "RimWorld.JobDriver_EmptyThingContainer",
+      "file": ".local-research/animal-eggs/RimWorld.JobDriver_EmptyThingContainer.cs",
+      "sha256": "7e5f09bc31b62822f89167ee31607ee33934c59acd7f439e87eee663e03d0fda",
+      "anchor": "WaitWhileExtractingContents(TargetIndex.A, TargetIndex.B, 120)",
+      "hits": [
+        {
+          "line": 46,
+          "text": "yield return Toils_General.WaitWhileExtractingContents(TargetIndex.A, TargetIndex.B, 120);"
+        }
+      ],
+      "interpretation": "Egg-box emptying takes an actual 120-tick extraction wait before hauling."
+    },
+    {
+      "type": "RimWorld.StatPart_BodySize",
+      "file": ".local-research/animal-eggs/RimWorld.StatPart_BodySize.cs",
+      "sha256": "260c7a242db52e042aae7e23e567765f123050f4ab8d21c8583fe1ede5bb6b01",
+      "anchor": "val *= bodySize",
+      "hits": [
+        {
+          "line": 11,
+          "text": "val *= bodySize;"
+        }
+      ],
+      "interpretation": "MaxNutrition includes body size."
+    },
+    {
+      "type": "RimWorld.StatPart_LifeStageMaxFood",
+      "file": ".local-research/animal-eggs/RimWorld.StatPart_LifeStageMaxFood.cs",
+      "sha256": "e8170caab5719186380cb1e7b2360f4204795601e5abf4a98e4e694aeffe3233",
+      "anchor": "val *= pawn.ageTracker.CurLifeStage.foodMaxFactor",
+      "hits": [
+        {
+          "line": 11,
+          "text": "val *= pawn.ageTracker.CurLifeStage.foodMaxFactor;"
+        }
+      ],
+      "interpretation": "MaxNutrition includes the current life-stage multiplier."
+    },
+    {
+      "type": "RimWorld.Need_Food",
+      "file": ".local-research/animal-eggs/RimWorld.Need_Food.cs",
+      "sha256": "f17cbaf82d8792108557f869db585fdd6ac26c0ebb537e8acf04173179e7c4cd",
+      "anchor": "return lifeStage.hungerRateFactor * pawnDef.race.baseHungerRate * 2.6666667E-05f",
+      "hits": [
+        {
+          "line": 218,
+          "text": "return lifeStage.hungerRateFactor * pawnDef.race.baseHungerRate * 2.6666667E-05f;"
+        }
+      ],
+      "interpretation": "Base hunger rate needs native tick/day conversion; it is not directly nutrition per day."
+    },
+    {
+      "type": "RimWorld.Need_Food",
+      "file": ".local-research/animal-eggs/RimWorld.Need_Food.cs",
+      "sha256": "f17cbaf82d8792108557f869db585fdd6ac26c0ebb537e8acf04173179e7c4cd",
+      "anchor": "if (CurLevelPercentage <= 0f)",
+      "hits": [
+        {
+          "line": 33,
+          "text": "if (CurLevelPercentage <= 0f)"
+        }
+      ],
+      "interpretation": "The ordinary Starving category begins at zero food, not the UrgentlyHungry threshold."
+    },
+    {
+      "type": "RimWorld.JobGiver_GetFood",
+      "file": ".local-research/animal-eggs/RimWorld.JobGiver_GetFood.cs",
+      "sha256": "c648efbdd091620603979d79de4c064f5a8174e7f6cf51950b6c19619a398a04",
+      "anchor": "bool flag2 = pawn.needs.food.CurCategory == HungerCategory.Starving",
+      "hits": [
+        {
+          "line": 74,
+          "text": "bool flag2 = pawn.needs.food.CurCategory == HungerCategory.Starving;"
+        }
+      ],
+      "interpretation": "The ordinary GetFood caller passes desperate only when Starving."
+    },
+    {
+      "type": "RimWorld.JobGiver_GetFood",
+      "file": ".local-research/animal-eggs/RimWorld.JobGiver_GetFood.cs",
+      "sha256": "c648efbdd091620603979d79de4c064f5a8174e7f6cf51950b6c19619a398a04",
+      "anchor": "foodPreferability = FoodPreferability.DesperateOnly",
+      "hits": [
+        {
+          "line": 72,
+          "text": "foodPreferability = FoodPreferability.DesperateOnly;"
+        }
+      ],
+      "interpretation": "A mutant allowed to eat corpses can override minimum preference without ordinary starvation."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "file": ".local-research/animal-eggs/RimWorld.FoodUtility.cs",
+      "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+      "anchor": "minPref = FoodPreferability.DesperateOnly",
+      "hits": [
+        {
+          "line": 399,
+          "text": "minPref = FoodPreferability.DesperateOnly;"
+        }
+      ],
+      "interpretation": "The map-food search permits DesperateOnly for its desperate caller branch."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "file": ".local-research/animal-eggs/RimWorld.FoodUtility.cs",
+      "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+      "anchor": "minPref = (((int)eater.needs.food.CurCategory >= 2) ? FoodPreferability.RawBad : FoodPreferability.MealAwful)",
+      "hits": [
+        {
+          "line": 403,
+          "text": "minPref = (((int)eater.needs.food.CurCategory >= 2) ? FoodPreferability.RawBad : FoodPreferability.MealAwful);"
+        }
+      ],
+      "interpretation": "Ordinary non-desperate humans at UrgentlyHungry can use RawBad, not DesperateOnly."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "file": ".local-research/animal-eggs/RimWorld.FoodUtility.cs",
+      "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+      "anchor": "if (canUseInventory & canManipulateTools)",
+      "hits": [
+        {
+          "line": 265,
+          "text": "if (canUseInventory & canManipulateTools)"
+        }
+      ],
+      "interpretation": "When higher-quality food fails, a tool-using eater can reach a separate inventory fallback."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "file": ".local-research/animal-eggs/RimWorld.FoodUtility.cs",
+      "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+      "anchor": "thing = BestFoodInInventory(getter, eater, FoodPreferability.DesperateOnly, FoodPreferability.MealLavish, 0f, flag)",
+      "hits": [
+        {
+          "line": 267,
+          "text": "thing = BestFoodInInventory(getter, eater, FoodPreferability.DesperateOnly, FoodPreferability.MealLavish, 0f, flag);"
+        }
+      ],
+      "interpretation": "The inventory fallback explicitly lowers minimum preference to DesperateOnly."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "file": ".local-research/animal-eggs/RimWorld.FoodUtility.cs",
+      "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+      "anchor": "thing = FirstFoodInClosestPackAnimalInventory(FoodPreferability.DesperateOnly)",
+      "hits": [
+        {
+          "line": 270,
+          "text": "thing = FirstFoodInClosestPackAnimalInventory(FoodPreferability.DesperateOnly);"
+        }
+      ],
+      "interpretation": "The same fallback may consult eligible colony pack inventories."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "file": ".local-research/animal-eggs/RimWorld.FoodUtility.cs",
+      "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+      "anchor": "(int)thing.def.ingestible.preferability >= (int)minFoodPref",
+      "hits": [
+        {
+          "line": 343,
+          "text": "if (thing.def.IsNutritionGivingIngestible && thing.IngestibleNow && eater.WillEat(thing, holder, careIfNotAcceptableForTitle: true, allowVenerated) && (int)thing.def.ingestible.preferability >= (int)minFoodPref && (int)thing.def.ingestible.preferability <= (int)maxFoodPref && (allowDrug || !thing.def.IsDrug) && NutritionForEater(eater, thing) * (float)thing.stackCount >= minStackNutrition)"
+        }
+      ],
+      "interpretation": "Inventory selection applies its passed preference range and WillEat, not a separate built-in starvation requirement."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "file": ".local-research/animal-eggs/RimWorld.FoodUtility.cs",
+      "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+      "anchor": "case FoodPreferability.DesperateOnly:",
+      "hits": [
+        {
+          "line": 582,
+          "text": "case FoodPreferability.DesperateOnly:"
+        }
+      ],
+      "interpretation": "Even eligible DesperateOnly food receives an optimality penalty in FoodOptimality."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "file": ".local-research/animal-eggs/RimWorld.FoodUtility.cs",
+      "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+      "anchor": "num -= 150f",
+      "hits": [
+        {
+          "line": 583,
+          "text": "num -= 150f;"
+        },
+        {
+          "line": 588,
+          "text": "num -= 150f;"
+        }
+      ],
+      "interpretation": "DesperateOnly optimality penalty is 150; this is a ranking term separate from eligibility."
+    }
+  ],
+  "boundedChecks": [
+    {
+      "type": "RimWorld.CompEggLayer",
+      "start": "private bool Active",
+      "end": "public bool CanLayNow",
+      "startLine": 17,
+      "endLine": 42,
+      "sliceSha256": "b945ec3fc604fa1b78ec7cbbb9b0b1165e28afe53338b63a596603961769c9d0",
+      "absentTokens": [
+        "Faction",
+        "Temperature",
+        "Suspended",
+        "Downed",
+        "Awake"
+      ],
+      "interpretation": "Egg activity itself has no faction or current-temperature gate; outer ticking and job eligibility remain separate."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "start": "public override void CompTick()",
+      "end": "public void Fertilize",
+      "startLine": 78,
+      "endLine": 99,
+      "sliceSha256": "032252d5a39b67a79e9587db6fa905e360dcf6d52d25320a0097ce4c130199cc",
+      "absentTokens": [
+        "eggProgress = 0",
+        "fertilizationCount =",
+        "Nutrition",
+        "GetStatValue"
+      ],
+      "interpretation": "Inactive growth retains progress and fertilization; there is no separate production nutrition debit."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "start": "public override bool AllowStackWith",
+      "end": "public override void PostSplitOff",
+      "startLine": 130,
+      "endLine": 147,
+      "sliceSha256": "8b031e1c0b86913c8cb2334da535c3862400ffbef27b469c18d405dbbed7eeb5",
+      "absentTokens": [
+        "hatcheeParent",
+        "otherParent",
+        "hatcheeFaction"
+      ],
+      "interpretation": "Hatcher stack acceptance and absorption do not compare or replace parent/faction fields; the receiver retains them."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "start": "CompProperties_EggLayer compProperties_EggLayer =",
+      "end": "public void Hatch()",
+      "startLine": 54,
+      "endLine": 81,
+      "sliceSha256": "e0a03ab05d4253d45c805c26876a227247f9843c9fc34b2953a8b61e6e6882c4",
+      "absentTokens": [
+        "RotProgress",
+        "rotProgress",
+        "HitPoints",
+        "Quality",
+        "SetForbidden",
+        "hatcheeFaction"
+      ],
+      "interpretation": "Thermal conversion only explicitly carries stack count, not condition, forbidden state, rot, quality or hatcher identity."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "start": "public override void CompTick()",
+      "end": "CompProperties_EggLayer compProperties_EggLayer =",
+      "startLine": 42,
+      "endLine": 54,
+      "sliceSha256": "86d265bf83efeb7bd4bd4980e0e670db0f8589abcce2af7671a0b5e53920643f",
+      "absentTokens": [
+        "minSafeTemperature",
+        "maxSafeTemperature",
+        "room",
+        "Power",
+        "Food",
+        "brood",
+        "hatcheeParent"
+      ],
+      "interpretation": "Viable incubation does not require a brooding parent, powered incubator, safe-current-temperature test or food debit in this component."
+    },
+    {
+      "type": "RimWorld.CompTemperatureRuinable",
+      "start": "public override void CompTick()",
+      "end": "public override void PreAbsorbStack",
+      "startLine": 31,
+      "endLine": 56,
+      "sliceSha256": "f7495f007c2b0b581d3c78485299edc7962ef58d358641e3cba0622c2999e44d",
+      "absentTokens": [
+        "ruinedPercent -= Props",
+        "Mathf.MoveTowards",
+        "Reset()"
+      ],
+      "interpretation": "Safe-temperature branch supplies no gradual damage recovery; Reset is a separate callable method."
+    },
+    {
+      "type": "RimWorld.JobDriver_LayEgg",
+      "start": "protected override IEnumerable<Toil> MakeNewToils()",
+      "end": "",
+      "startLine": 20,
+      "endLine": 44,
+      "sliceSha256": "17bed25af6eb28a84de5043449ddec7eedfca29c6b12cc6442a85c32aa2be925",
+      "absentTokens": [
+        "Rand.Chance",
+        "AnimalGatherYield",
+        "AnimalGatherSpeed",
+        "Learn(",
+        "if (GenPlace.TryPlaceThing",
+        "if (EggBoxComp.innerContainer.TryAdd"
+      ],
+      "interpretation": "Laying has no gather skill roll or handler XP and does not check final placement success for retry."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "start": "public override void PrePreTraded",
+      "end": "public override string CompInspectStringExtra",
+      "startLine": 156,
+      "endLine": 176,
+      "sliceSha256": "4d278188a292e3fbe86fe5969a6d9c6dd83f64c5991213151968170f2b0c097d",
+      "absentTokens": [
+        "gestateProgress =",
+        "hatcheeParent =",
+        "otherParent =",
+        "ruinedPercent"
+      ],
+      "interpretation": "Trade changes hatch faction without resetting incubation, damage or parent references."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "start": "if (canUseInventory & canManipulateTools)",
+      "end": "if (thing2 == null && getter == eater",
+      "startLine": 265,
+      "endLine": 279,
+      "sliceSha256": "fdb3a58d0601109942c49df0ed61d10bac51887b4dc2c65e10b4e6892956ccc5",
+      "absentTokens": [
+        "desperate",
+        "CurCategory",
+        "Starving",
+        "UrgentlyHungry"
+      ],
+      "interpretation": "The final own/pack inventory fallback has no additional hunger-category gate."
+    }
+  ],
+  "packagedXml": [
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_ChickenGroup.xml",
+      "sha256": "019dd2851d79a0795e021f26327b96dda8d7d7481e887acf082169475fe06705",
+      "xpath": "/Defs/ThingDef[defName=\"Chicken\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MoveSpeed>2.1</MoveSpeed><MarketValue>50</MarketValue><LeatherAmount>0</LeatherAmount><ComfyTemperatureMin>-10</ComfyTemperatureMin><FilthRate>4</FilthRate><MaxFlightTime>3</MaxFlightTime><FlightCooldown>10</FlightCooldown><Wildness>0</Wildness></statBases>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_EggLayer\"><eggUnfertilizedDef>EggChickenUnfertilized</eggUnfertilizedDef><eggFertilizedDef>EggChickenFertilized</eggFertilizedDef><eggFertilizationCountMax>1</eggFertilizationCountMax><eggLayIntervalDays>1</eggLayIntervalDays><eggCountRange>1</eggCountRange></li></comps>"
+          ]
+        },
+        {
+          "xpath": "race/baseBodySize",
+          "count": 1,
+          "xml": [
+            "<baseBodySize>0.3</baseBodySize>"
+          ]
+        },
+        {
+          "xpath": "race/baseHealthScale",
+          "count": 1,
+          "xml": [
+            "<baseHealthScale>0.35</baseHealthScale>"
+          ]
+        },
+        {
+          "xpath": "race/baseHungerRate",
+          "count": 1,
+          "xml": [
+            "<baseHungerRate>0.14</baseHungerRate>"
+          ]
+        },
+        {
+          "xpath": "race/foodType",
+          "count": 1,
+          "xml": [
+            "<foodType>VegetarianRoughAnimal</foodType>"
+          ]
+        },
+        {
+          "xpath": "race/trainability",
+          "count": 1,
+          "xml": [
+            "<trainability>None</trainability>"
+          ]
+        },
+        {
+          "xpath": "race/roamMtbDays",
+          "count": 1,
+          "xml": [
+            "<roamMtbDays>7</roamMtbDays>"
+          ]
+        },
+        {
+          "xpath": "race/mateMtbHours",
+          "count": 1,
+          "xml": [
+            "<mateMtbHours>8</mateMtbHours>"
+          ]
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 1,
+          "xml": [
+            "<lifeStageAges><li><def>AnimalBabyTiny</def><minAge>0</minAge><soundWounded>Pawn_Chick_Call</soundWounded><soundDeath>Pawn_Chick_Call</soundDeath><soundCall>Pawn_Chick_Call</soundCall><soundAngry>Pawn_Chick_Call</soundAngry></li><li><def>AnimalJuvenile</def><minAge>0.12</minAge></li><li><def>AnimalAdult</def><minAge>0.2</minAge><soundWounded>Pawn_Chicken_Wounded</soundWounded><soundDeath>Pawn_Chicken_Death</soundDeath><soundCall>Pawn_Chicken_Call</soundCall><soundAngry>Pawn_Chicken_Angry</soundAngry></li></lifeStageAges>"
+          ]
+        },
+        {
+          "xpath": "tradeTags",
+          "count": 1,
+          "xml": [
+            "<tradeTags><li>AnimalCommon</li><li>AnimalFarm</li></tradeTags>"
+          ]
+        }
+      ],
+      "interpretation": "Chicken species and production declarations."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_ChickenGroup.xml",
+      "sha256": "019dd2851d79a0795e021f26327b96dda8d7d7481e887acf082169475fe06705",
+      "xpath": "/Defs/PawnKindDef[defName=\"Chicken\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalKindBase",
+      "fields": [
+        {
+          "xpath": "race",
+          "count": 1,
+          "xml": [
+            "<race>Chicken</race>"
+          ]
+        },
+        {
+          "xpath": "labelMale",
+          "count": 1,
+          "xml": [
+            "<labelMale>rooster</labelMale>"
+          ]
+        },
+        {
+          "xpath": "labelFemale",
+          "count": 1,
+          "xml": [
+            "<labelFemale>hen</labelFemale>"
+          ]
+        },
+        {
+          "xpath": "lifeStages/li/label",
+          "count": 1,
+          "xml": [
+            "<label>chick</label>"
+          ]
+        },
+        {
+          "xpath": "lifeStages/li/labelMale",
+          "count": 1,
+          "xml": [
+            "<labelMale>cockerel</labelMale>"
+          ]
+        }
+      ],
+      "interpretation": "Chicken life-stage and gender labels."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+      "sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4",
+      "xpath": "/Defs/ThingDef[@Name=\"AnimalThingBase\"]",
+      "nameAttribute": "AnimalThingBase",
+      "parentName": "BasePawn",
+      "fields": [
+        {
+          "xpath": "race/thinkTreeMain",
+          "count": 1,
+          "xml": [
+            "<thinkTreeMain>Animal</thinkTreeMain>"
+          ]
+        },
+        {
+          "xpath": "race/hasGenders",
+          "count": 1,
+          "xml": [
+            "<hasGenders>true</hasGenders>"
+          ]
+        },
+        {
+          "xpath": "race/trainability",
+          "count": 1,
+          "xml": [
+            "<trainability>None</trainability>"
+          ]
+        }
+      ],
+      "interpretation": "Animal inheritance defaults."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalBaby\"]",
+      "nameAttribute": "AnimalBaby",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "reproductive",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "milkable",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "bodySizeFactor",
+          "count": 1,
+          "xml": [
+            "<bodySizeFactor>0.2</bodySizeFactor>"
+          ]
+        },
+        {
+          "xpath": "foodMaxFactor",
+          "count": 1,
+          "xml": [
+            "<foodMaxFactor>3</foodMaxFactor>"
+          ]
+        },
+        {
+          "xpath": "hungerRateFactor",
+          "count": 1,
+          "xml": [
+            "<hungerRateFactor>0.4</hungerRateFactor>"
+          ]
+        }
+      ],
+      "interpretation": "Baby nutrition and reproduction eligibility."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalBabyTiny\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalBaby",
+      "fields": [
+        {
+          "xpath": "reproductive",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "milkable",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "bodySizeFactor",
+          "count": 1,
+          "xml": [
+            "<bodySizeFactor>0.1</bodySizeFactor>"
+          ]
+        },
+        {
+          "xpath": "foodMaxFactor",
+          "count": 1,
+          "xml": [
+            "<foodMaxFactor>6</foodMaxFactor>"
+          ]
+        },
+        {
+          "xpath": "hungerRateFactor",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Chick inherits AnimalBaby but changes size and capacity factor."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalJuvenile\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "reproductive",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "milkable",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "bodySizeFactor",
+          "count": 1,
+          "xml": [
+            "<bodySizeFactor>0.5</bodySizeFactor>"
+          ]
+        },
+        {
+          "xpath": "foodMaxFactor",
+          "count": 1,
+          "xml": [
+            "<foodMaxFactor>1.5</foodMaxFactor>"
+          ]
+        },
+        {
+          "xpath": "hungerRateFactor",
+          "count": 1,
+          "xml": [
+            "<hungerRateFactor>0.75</hungerRateFactor>"
+          ]
+        }
+      ],
+      "interpretation": "Juvenile defaults to ineligible for laying and mating."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalAdult\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "reproductive",
+          "count": 1,
+          "xml": [
+            "<reproductive>true</reproductive>"
+          ]
+        },
+        {
+          "xpath": "milkable",
+          "count": 1,
+          "xml": [
+            "<milkable>true</milkable>"
+          ]
+        },
+        {
+          "xpath": "bodySizeFactor",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "foodMaxFactor",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "hungerRateFactor",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Adult explicit reproductive and milkable flags; numeric defaults are one."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml",
+      "sha256": "271298b153e8a9b86c62f70d0d334d91c8182e4c34525190753a05e5afcff71d",
+      "xpath": "/Defs/ThingDef[@Name=\"EggBase\"]",
+      "nameAttribute": "EggBase",
+      "parentName": "OrganicProductBase",
+      "fields": [
+        {
+          "xpath": "ingestible",
+          "count": 1,
+          "xml": [
+            "<ingestible><foodType>AnimalProduct</foodType><ingestEffect>EatMeat</ingestEffect><ingestSound>RawMeat_Eat</ingestSound><tasteThought>AteRawFood</tasteThought></ingestible>"
+          ]
+        },
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><Mass>0.15</Mass><MaxHitPoints>20</MaxHitPoints><DeteriorationRate>2</DeteriorationRate><Flammability>0.7</Flammability><Nutrition>0.25</Nutrition><FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman></statBases>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_Rottable\"><daysToRotStart>15</daysToRotStart><rotDestroys>true</rotDestroys><disableIfHatcher>true</disableIfHatcher></li></comps>"
+          ]
+        },
+        {
+          "xpath": "stackLimit",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Shared egg nutrition, durability, taste and rot settings."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml",
+      "sha256": "271298b153e8a9b86c62f70d0d334d91c8182e4c34525190753a05e5afcff71d",
+      "xpath": "/Defs/ThingDef[@Name=\"EggUnfertBase\"]",
+      "nameAttribute": "EggUnfertBase",
+      "parentName": "EggBase",
+      "fields": [
+        {
+          "xpath": "ingestible",
+          "count": 1,
+          "xml": [
+            "<ingestible><preferability>RawBad</preferability></ingestible>"
+          ]
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 1,
+          "xml": [
+            "<thingCategories><li>EggsUnfertilized</li></thingCategories>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Unfertilized eggs are RawBad."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml",
+      "sha256": "271298b153e8a9b86c62f70d0d334d91c8182e4c34525190753a05e5afcff71d",
+      "xpath": "/Defs/ThingDef[@Name=\"EggFertBase\"]",
+      "nameAttribute": "EggFertBase",
+      "parentName": "EggBase",
+      "fields": [
+        {
+          "xpath": "tickerType",
+          "count": 1,
+          "xml": [
+            "<tickerType>Normal</tickerType>"
+          ]
+        },
+        {
+          "xpath": "ingestible",
+          "count": 1,
+          "xml": [
+            "<ingestible><preferability>DesperateOnly</preferability></ingestible>"
+          ]
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 1,
+          "xml": [
+            "<thingCategories><li>EggsFertilized</li></thingCategories>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_TemperatureRuinable\"><minSafeTemperature>0</minSafeTemperature><maxSafeTemperature>50</maxSafeTemperature><progressPerDegreePerTick>0.00003</progressPerDegreePerTick></li></comps>"
+          ]
+        }
+      ],
+      "interpretation": "Fertilized eggs are DesperateOnly and carry thermal ruin."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml",
+      "sha256": "271298b153e8a9b86c62f70d0d334d91c8182e4c34525190753a05e5afcff71d",
+      "xpath": "/Defs/ThingDef[defName=\"EggChickenUnfertilized\"]",
+      "nameAttribute": "",
+      "parentName": "EggUnfertBase",
+      "fields": [
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MarketValue>7.0</MarketValue></statBases>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Unfertilized chicken egg overrides value only."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml",
+      "sha256": "271298b153e8a9b86c62f70d0d334d91c8182e4c34525190753a05e5afcff71d",
+      "xpath": "/Defs/ThingDef[defName=\"EggChickenFertilized\"]",
+      "nameAttribute": "",
+      "parentName": "EggFertBase",
+      "fields": [
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MarketValue>7.0</MarketValue></statBases>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_Hatcher\"><hatcherDaystoHatch>3.5</hatcherDaystoHatch><hatcherPawn>Chicken</hatcherPawn></li></comps>"
+          ]
+        }
+      ],
+      "interpretation": "Fertile chicken eggs hatch Chicken in 3.5 days."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+      "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c",
+      "xpath": "/Defs/ThingDef[@Name=\"OrganicProductBase\"]",
+      "nameAttribute": "OrganicProductBase",
+      "parentName": "ResourceBase",
+      "fields": [
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MaxHitPoints>60</MaxHitPoints><Flammability>1.0</Flammability><DeteriorationRate>6</DeteriorationRate><Mass>0.03</Mass></statBases>"
+          ]
+        },
+        {
+          "xpath": "tickerType",
+          "count": 1,
+          "xml": [
+            "<tickerType>Rare</tickerType>"
+          ]
+        },
+        {
+          "xpath": "healthAffectsPrice",
+          "count": 1,
+          "xml": [
+            "<healthAffectsPrice>false</healthAffectsPrice>"
+          ]
+        }
+      ],
+      "interpretation": "Eggs inherit healthAffectsPrice false."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Base.xml",
+      "sha256": "20595ae43a7e758f54c71dc98579cc95ac8638f21213896c7f1d6a2d61fd744a",
+      "xpath": "/Defs/ThingDef[@Name=\"ResourceBase\"]",
+      "nameAttribute": "ResourceBase",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "stackLimit",
+          "count": 1,
+          "xml": [
+            "<stackLimit>75</stackLimit>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_Forbiddable\" /></comps>"
+          ]
+        },
+        {
+          "xpath": "alwaysHaulable",
+          "count": 1,
+          "xml": [
+            "<alwaysHaulable>true</alwaysHaulable>"
+          ]
+        },
+        {
+          "xpath": "useHitPoints",
+          "count": 1,
+          "xml": [
+            "<useHitPoints>true</useHitPoints>"
+          ]
+        },
+        {
+          "xpath": "selectable",
+          "count": 1,
+          "xml": [
+            "<selectable>true</selectable>"
+          ]
+        }
+      ],
+      "interpretation": "Egg stack limit 75 and ordinary item interaction."
+    },
+    {
+      "file": "Data/Core/Defs/ThingCategoryDefs/ThingCategories.xml",
+      "sha256": "fd15be5d01eb7b6754bda797ff920d6fc7872cdfd1b611b1eb1efead7e5c6126",
+      "xpath": "/Defs/ThingCategoryDef[defName=\"EggsUnfertilized\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "parent",
+          "count": 1,
+          "xml": [
+            "<parent>AnimalProductRaw</parent>"
+          ]
+        }
+      ],
+      "interpretation": "Unfertilized egg category ancestry."
+    },
+    {
+      "file": "Data/Core/Defs/ThingCategoryDefs/ThingCategories.xml",
+      "sha256": "fd15be5d01eb7b6754bda797ff920d6fc7872cdfd1b611b1eb1efead7e5c6126",
+      "xpath": "/Defs/ThingCategoryDef[defName=\"EggsFertilized\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "parent",
+          "count": 1,
+          "xml": [
+            "<parent>AnimalProductRaw</parent>"
+          ]
+        }
+      ],
+      "interpretation": "Fertilized egg category ancestry."
+    },
+    {
+      "file": "Data/Core/Defs/ThingCategoryDefs/ThingCategories.xml",
+      "sha256": "fd15be5d01eb7b6754bda797ff920d6fc7872cdfd1b611b1eb1efead7e5c6126",
+      "xpath": "/Defs/ThingCategoryDef[defName=\"AnimalProductRaw\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "parent",
+          "count": 1,
+          "xml": [
+            "<parent>FoodRaw</parent>"
+          ]
+        }
+      ],
+      "interpretation": "Animal products are FoodRaw rather than MeatRaw."
+    },
+    {
+      "file": "Data/Core/Defs/RecipeDefs/Recipes_Meals.xml",
+      "sha256": "ecb025e0b521b2e174f3d8cecb7d0263a1c7310b957cf6d849d414361b566789",
+      "xpath": "/Defs/RecipeDef[@Name=\"CookMealBase\"]",
+      "nameAttribute": "CookMealBase",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "fixedIngredientFilter",
+          "count": 1,
+          "xml": [
+            "<fixedIngredientFilter><categories><li>FoodRaw</li></categories><specialFiltersToDisallow><li>AllowPlantFood</li></specialFiltersToDisallow></fixedIngredientFilter>"
+          ]
+        },
+        {
+          "xpath": "defaultIngredientFilter",
+          "count": 1,
+          "xml": [
+            "<defaultIngredientFilter><categories><li>FoodRaw</li></categories><disallowedCategories><li>EggsFertilized</li></disallowedCategories><disallowedThingDefs><li>Meat_Human</li><li>Meat_Megaspider</li><li>InsectJelly</li><li MayRequire=\"Ludeon.RimWorld.Anomaly\">Meat_Twisted</li></disallowedThingDefs></defaultIngredientFilter>"
+          ]
+        }
+      ],
+      "interpretation": "Fertile eggs are allowed by fixed raw-food domain but disabled by default bill choices."
+    },
+    {
+      "file": "Data/Core/Defs/RecipeDefs/Recipes_Meals.xml",
+      "sha256": "ecb025e0b521b2e174f3d8cecb7d0263a1c7310b957cf6d849d414361b566789",
+      "xpath": "/Defs/RecipeDef[defName=\"CookMealSimple\"]",
+      "nameAttribute": "",
+      "parentName": "CookMealBase",
+      "fields": [
+        {
+          "xpath": "allowMixingIngredients",
+          "count": 1,
+          "xml": [
+            "<allowMixingIngredients>true</allowMixingIngredients>"
+          ]
+        },
+        {
+          "xpath": "ingredientValueGetterClass",
+          "count": 1,
+          "xml": [
+            "<ingredientValueGetterClass>IngredientValueGetter_Nutrition</ingredientValueGetterClass>"
+          ]
+        },
+        {
+          "xpath": "ingredients",
+          "count": 1,
+          "xml": [
+            "<ingredients><li><filter><categories><li>FoodRaw</li></categories></filter><count>0.5</count></li></ingredients>"
+          ]
+        },
+        {
+          "xpath": "products",
+          "count": 1,
+          "xml": [
+            "<products><MealSimple>1</MealSimple></products>"
+          ]
+        }
+      ],
+      "interpretation": "Simple meals use nutrition rather than equal units of meat and eggs."
+    },
+    {
+      "file": "Data/Core/Defs/RecipeDefs/Recipes_Meals.xml",
+      "sha256": "ecb025e0b521b2e174f3d8cecb7d0263a1c7310b957cf6d849d414361b566789",
+      "xpath": "/Defs/RecipeDef[defName=\"CookMealFine\"]",
+      "nameAttribute": "",
+      "parentName": "CookMealFineBase",
+      "fields": [
+        {
+          "xpath": "ingredients",
+          "count": 1,
+          "xml": [
+            "<ingredients><li><filter><customSummary>protein</customSummary><categories><li>MeatRaw</li><li>AnimalProductRaw</li></categories></filter><count>0.25</count></li><li><filter><categories><li>PlantFoodRaw</li></categories></filter><count>0.25</count></li></ingredients>"
+          ]
+        }
+      ],
+      "interpretation": "Fine meal nonvegetable component accepts animal products."
+    },
+    {
+      "file": "Data/Core/Defs/ThinkTreeDefs/Animal.xml",
+      "sha256": "d857fb17533f17f90da48fae355d5014f7a4f78ab3dcc6ee755a881bda732121",
+      "xpath": "/Defs/ThinkTreeDef[defName=\"Animal\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": ".//li[@Class=\"JobGiver_LayEgg\"]",
+          "count": 1,
+          "xml": [
+            "<li Class=\"JobGiver_LayEgg\" />"
+          ]
+        },
+        {
+          "xpath": ".//li[@Class=\"ThinkNode_ConditionalHasFaction\"]/subNodes/li[@Class=\"ThinkNode_ChancePerHour_Mate\"]",
+          "count": 1,
+          "xml": [
+            "<li Class=\"ThinkNode_ChancePerHour_Mate\"><subNodes><li Class=\"ThinkNode_Tagger\"><tagToGive>SatisfyingNeeds</tagToGive><subNodes><li Class=\"JobGiver_Mate\" /></subNodes></li></subNodes></li>"
+          ]
+        }
+      ],
+      "interpretation": "Egg laying is not under the mating faction branch; ordinary mating is faction-gated."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Misc.xml",
+      "sha256": "3ee922aa81ded536f0a1e887ae49e7755f0d0deb07a1337c9baf03fca8e4247a",
+      "xpath": "/Defs/ThingDef[defName=\"EggBox\"]",
+      "nameAttribute": "",
+      "parentName": "BuildingBase",
+      "fields": [
+        {
+          "xpath": "description",
+          "count": 1,
+          "xml": [
+            "<description>A box with soft material made to hold eggs. Egg-laying animals will lay eggs in egg boxes if they can. Your haulers will take all the eggs out only when the box is full, to save time. The box also protects eggs from deteriorating outdoors, though it does not protect from temperature damage.</description>"
+          ]
+        },
+        {
+          "xpath": "tickerType",
+          "count": 1,
+          "xml": [
+            "<tickerType>Normal</tickerType>"
+          ]
+        },
+        {
+          "xpath": "containedItemsSelectable",
+          "count": 1,
+          "xml": [
+            "<containedItemsSelectable>true</containedItemsSelectable>"
+          ]
+        },
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MaxHitPoints>50</MaxHitPoints><WorkToBuild>2000</WorkToBuild><Flammability>1</Flammability><Mass>3</Mass></statBases>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_ThingContainer\"><compClass>CompEggContainer</compClass><stackLimit>25</stackLimit><minCountToEmpty>20</minCountToEmpty><drawStackLabel>true</drawStackLabel></li></comps>"
+          ]
+        },
+        {
+          "xpath": "stuffCategories",
+          "count": 1,
+          "xml": [
+            "<stuffCategories><li>Metallic</li><li>Woody</li></stuffCategories>"
+          ]
+        },
+        {
+          "xpath": "costStuffCount",
+          "count": 1,
+          "xml": [
+            "<costStuffCount>20</costStuffCount>"
+          ]
+        },
+        {
+          "xpath": "pathCost",
+          "count": 1,
+          "xml": [
+            "<pathCost>10</pathCost>"
+          ]
+        },
+        {
+          "xpath": "building",
+          "count": 1,
+          "xml": [
+            "<building><paintable>true</paintable></building>"
+          ]
+        }
+      ],
+      "interpretation": "Egg box capacity 25 but automatic empty threshold 20; description alone says full."
+    },
+    {
+      "file": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+      "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c",
+      "xpath": "/Defs/WorkGiverDef[defName=\"EmptyEggBox\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "giverClass",
+          "count": 1,
+          "xml": [
+            "<giverClass>WorkGiver_EmptyEggBox</giverClass>"
+          ]
+        },
+        {
+          "xpath": "workType",
+          "count": 1,
+          "xml": [
+            "<workType>Hauling</workType>"
+          ]
+        },
+        {
+          "xpath": "priorityInType",
+          "count": 1,
+          "xml": [
+            "<priorityInType>20</priorityInType>"
+          ]
+        },
+        {
+          "xpath": "requiredCapacities",
+          "count": 1,
+          "xml": [
+            "<requiredCapacities><li>Manipulation</li></requiredCapacities>"
+          ]
+        }
+      ],
+      "interpretation": "Emptying is a hauling job."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_General.xml",
+      "sha256": "ec1df1afb1f24c3d812b3224f803354b613a226e3934ea1e235c9b195181f507",
+      "xpath": "/Defs/StatDef[defName=\"MaxNutrition\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>1</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "minValue",
+          "count": 1,
+          "xml": [
+            "<minValue>0.01</minValue>"
+          ]
+        },
+        {
+          "xpath": "parts",
+          "count": 1,
+          "xml": [
+            "<parts><li Class=\"StatPart_BodySize\" /><li Class=\"StatPart_LifeStageMaxFood\" /></parts>"
+          ]
+        }
+      ],
+      "interpretation": "Nutrition capacity is body size times life-stage capacity."
+    },
+    {
+      "file": "Data/Core/Defs/TraderKindDefs/TraderKinds_Caravan_Outlander.xml",
+      "sha256": "30f711f04490fc136c142a5744852fed2339d0d806227ce8bebad57a97ab5936",
+      "xpath": "/Defs/TraderKindDef[defName=\"Caravan_Outlander_BulkGoods\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "stockGenerators/li[@Class=\"StockGenerator_Category\"][categoryDef=\"FoodRaw\"]",
+          "count": 1,
+          "xml": [
+            "<li Class=\"StockGenerator_Category\"><categoryDef>FoodRaw</categoryDef><thingDefCountRange>3~3</thingDefCountRange><totalPriceRange>150~600</totalPriceRange><excludedCategories><li>EggsFertilized</li></excludedCategories></li>"
+          ]
+        },
+        {
+          "xpath": "stockGenerators/li[@Class=\"StockGenerator_Animals\"]",
+          "count": 1,
+          "xml": [
+            "<li Class=\"StockGenerator_Animals\"><maxWildness>0.70</maxWildness><tradeTagsSell><li>AnimalFarm</li></tradeTagsSell><tradeTagsBuy><li>AnimalExotic</li></tradeTagsBuy><kindCountRange>1</kindCountRange><countRange>3~4</countRange><createMatingPair><li>AnimalFarm</li></createMatingPair></li>"
+          ]
+        }
+      ],
+      "interpretation": "Core bulk caravan excludes fertile eggs from raw-food stock; farm animals use AnimalFarm stock tags."
+    }
+  ],
+  "coreBiomeAbsence": [
+    {
+      "file": "Data/Core/Defs/BiomeDefs/Biomes_Cold.xml",
+      "sha256": "2045aaa108fa37ec0b60c7ffb1f39aede75ae0345fa2d1bed158e70914c29b3b",
+      "xpath": "/Defs/BiomeDef/wildAnimals/Chicken",
+      "count": 0
+    },
+    {
+      "file": "Data/Core/Defs/BiomeDefs/Biomes_Misc.xml",
+      "sha256": "08932a6d503960480f5f884a9b9a05e72dfb539c707cac4f6c67d851ca546a6a",
+      "xpath": "/Defs/BiomeDef/wildAnimals/Chicken",
+      "count": 0
+    },
+    {
+      "file": "Data/Core/Defs/BiomeDefs/Biomes_Temperate.xml",
+      "sha256": "4d6a48e5f6f0b5eed5f239077a1af78cadd8924785d76bdde2329da137dbc7ae",
+      "xpath": "/Defs/BiomeDef/wildAnimals/Chicken",
+      "count": 0
+    },
+    {
+      "file": "Data/Core/Defs/BiomeDefs/Biomes_Warm.xml",
+      "sha256": "4d3f348d1b0519f78409e78d9921719070b6a0a24c1af0ae58c1ba3339b42680",
+      "xpath": "/Defs/BiomeDef/wildAnimals/Chicken",
+      "count": 0
+    },
+    {
+      "file": "Data/Core/Defs/BiomeDefs/Biomes_WarmArid.xml",
+      "sha256": "12de99466330bdd17686c5c80205aa979b18864f4e96bfd16495644c4a5a1985",
+      "xpath": "/Defs/BiomeDef/wildAnimals/Chicken",
+      "count": 0
+    },
+    {
+      "file": "Data/Core/Defs/BiomeDefs/Biomes_Water.xml",
+      "sha256": "2150e176e929f835da07124ff2576029a026766a9e3465d44081429951f2749e",
+      "xpath": "/Defs/BiomeDef/wildAnimals/Chicken",
+      "count": 0
+    }
+  ],
+  "nativeReference": {
+    "species": "Chicken",
+    "juvenileMinAgeYears": 0.12,
+    "adultMinAgeYears": 0.2,
+    "bodySize": 0.3,
+    "baseHungerRate": 0.14,
+    "adultNutritionCapacity": 0.3,
+    "adultFedNutritionPerDayApprox": 0.22400000280000001,
+    "foodType": "VegetarianRoughAnimal",
+    "wildness": 0,
+    "mateMtbHours": 8,
+    "mateDuration": 500,
+    "layDuration": 500,
+    "eggTickInterval": 2500,
+    "layIntervalDays": 1,
+    "eggCount": 1,
+    "fertilizationCountMax": 1,
+    "unfertilizedProgressCap": 1,
+    "eggNutrition": 0.25,
+    "eggStackLimit": 75,
+    "eggHP": 20,
+    "eggDeteriorationPerDay": 2,
+    "eggMarketValue": 7,
+    "eggMass": 0.15,
+    "eggFlammability": 0.7,
+    "eggHealthAffectsPrice": false,
+    "eggFoodPoisonChanceFixedHuman": 0.02,
+    "eggRawThought": "AteRawFood",
+    "unfertilizedPreferability": "RawBad",
+    "fertilizedPreferability": "DesperateOnly",
+    "ordinaryHumanGroundEggMinimumFoodFraction": 0,
+    "inventoryFallbackRechecksStarvation": false,
+    "unfertilizedDaysToRot": 15,
+    "fertilizedRotDisabledWhileViable": true,
+    "hatcherDays": 3.5,
+    "minSafeTemperature": 0,
+    "maxSafeTemperature": 50,
+    "thermalDamagePerDegreePerTick": 3E-05,
+    "thermalDamageRecoversAtSafeTemperature": false,
+    "temperatureRuinConvertsToUnfertilized": true,
+    "eggBoxCapacity": 25,
+    "eggBoxAutoEmptyThreshold": 20,
+    "eggBoxExtractionTicks": 120,
+    "perUnitIncubationIdentity": false,
+    "stackIdentity": "receiver parents and hatch faction; weighted incubation and thermal damage",
+    "tradeBuysChangeHatchFaction": "player",
+    "tradeSellsChangeHatchFaction": "trader"
+  },
+  "limits": [
+    "Static derived C# and packaged XML are not original source or runtime gameplay proof.",
+    "Matching retained REA metadata is reused for assembly identity only.",
+    "No native game, browser, preview, GUI input or screenshot was launched.",
+    "Selected XML inheritance nodes are not a complete mod-patched effective Def database.",
+    "Biome absence is limited to direct Core BiomeDef wildAnimals Chicken entries in the enumerated files.",
+    "Per-stack hatcher identity does not preserve each egg parentage after a merge; every hatched unit nevertheless gets a distinct generated pawn.",
+    "Core bulk-trader exclusion does not prove no event, mod or other stock generator can ever offer fertile eggs.",
+    "Held-item ticking is established for ordinary on-map recursive holders; world/caravan scheduler coverage and all suspended-holder special cases are not runtime verified.",
+    "Checked placement retry, guaranteed merchant fertile-egg stock, cohort splitting and tuning changes are Web adaptations when implemented.",
+    "No native artwork, audio, assemblies or complete derived C# is published."
+  ],
+  "collectorSha256": "5c00ec121d704aae0a96191074e89cc9cc96199148b3d83f85ae1f19be18483f"
+}

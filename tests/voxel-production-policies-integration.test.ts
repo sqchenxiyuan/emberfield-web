@@ -321,7 +321,7 @@ describe('production policy command isolation and save migration', () => {
     const provenance = JSON.parse(readFileSync(new URL('./fixtures/voxel-v39-mid-production-before-policies.provenance.json', import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(provenance.sha256);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old), saved = s.save();
-    expect(old.version).toBe(39); expect(saved.version).toBe(50);
+    expect(old.version).toBe(39); expect(saved.version).toBe(51);
     expect(old.jobs.some((job: any) => job.kind === 'smith' && job.progress > 0 && job.delivered.wood === 40)).toBe(true);
     for (const key of ['items', 'nextId', 'blocks', 'stoves', 'stonecutters', 'tailors', 'weaponBenches', 'butcherSpots'] as const)
       expect(saved[key], key).toEqual(old[key]);
@@ -330,22 +330,26 @@ describe('production policy command isolation and save migration', () => {
       expect(stats[key].unfinished).toBe(0);
       expect(stats[key].milk).toBe(0);
       expect(stats[key].alpacaWool).toBe(0);
+      expect(stats[key].eggUnfertilized).toBe(0); expect(stats[key].eggFertilized).toBe(0);
       delete (stats[key] as Partial<typeof stats[typeof key]>).unfinished;
       delete (stats[key] as Partial<typeof stats[typeof key]>).milk;
       delete (stats[key] as Partial<typeof stats[typeof key]>).alpacaWool;
+      delete (stats[key] as Partial<typeof stats[typeof key]>).eggUnfertilized;
+      delete (stats[key] as Partial<typeof stats[typeof key]>).eggFertilized;
     }
     expect(stats).toEqual(old.stats);
     expect(saved.productionQueues.map(queue => ({ ...queue, bills: queue.bills.map(({ policy: _policy, ...bill }) => bill) })))
       .toEqual(old.productionQueues.map((queue: any) => ({ ...queue,
         bills: queue.bills.map((bill: any) => ({ ...bill, output: { mode: 'drop', target: null } })) })));
-    expect(saved.productionQueues.every(queue => queue.bills.every(bill => JSON.stringify(bill.policy) === JSON.stringify(policy({allowedTextiles:['cloth']}))))).toBe(true);
+    const historicalPolicy = policy({ allowedFood: ['grain', 'meat', 'milk'], allowedCarcasses: ['hare', 'deer', 'alpaca', 'dromedary'], allowedTextiles: ['cloth'] });
+    expect(saved.productionQueues.every(queue => queue.bills.every(bill => JSON.stringify(bill.policy) === JSON.stringify(historicalPolicy)))).toBe(true);
     const pawnState = (pawn: Pawn) => ({ id: pawn.id, x: pawn.x, y: pawn.y, z: pawn.z, food: pawn.food, rest: pawn.rest,
       health: pawn.health, skills: pawn.skills, cargo: pawn.cargo, worn: pawn.worn, weapon: pawn.weapon, trauma: pawn.trauma });
     expect(saved.pawns.map(pawnState)).toEqual(old.pawns.map(pawnState));
     const previous = old.jobs.find((job: any) => job.kind === 'smith' && job.progress > 0), current = saved.jobs.find(job => job.id === previous.id)!;
     for (const key of ['id', 'kind', 'billId', 'progress', 'work', 'workTicks', 'cost', 'delivered', 'deliveredBatches'] as const)
       expect(current[key], key).toEqual(previous[key]);
-    expect(current.productionPolicy).toEqual(policy({allowedTextiles:['cloth']}));
+    expect(current.productionPolicy).toEqual(historicalPolicy);
     const remaining = getBill(s, previous.billId).remaining, consumed = s.stats.consumed.wood;
     until(s, () => s.stats.weaponsMade === old.stats.weaponsMade + 1);
     expect(getBill(s, previous.billId).remaining).toBe(remaining - 1);

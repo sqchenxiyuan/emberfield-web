@@ -1,0 +1,278 @@
+{
+  "evidence_id": "RW17-ANIMAL-EGGS",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes.",
+    "No native game, browser, preview, GUI input, or screenshot capture was launched for this milestone."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.CompEggLayer",
+      "local_file": ".local-research/animal-eggs/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "lines": 186
+    },
+    {
+      "type": "RimWorld.CompProperties_EggLayer",
+      "local_file": ".local-research/animal-eggs/RimWorld.CompProperties_EggLayer.cs",
+      "sha256": "fb9d60f6d6fc008a72febb994aa836ddac04d4111da0954843a3ccee9a4a1279",
+      "lines": 43
+    },
+    {
+      "type": "RimWorld.JobGiver_LayEgg",
+      "local_file": ".local-research/animal-eggs/RimWorld.JobGiver_LayEgg.cs",
+      "sha256": "58618fa5d11e5d99692fce14f9609be74e769c9723245e9ca183776e6184b82f",
+      "lines": 68
+    },
+    {
+      "type": "RimWorld.JobDriver_LayEgg",
+      "local_file": ".local-research/animal-eggs/RimWorld.JobDriver_LayEgg.cs",
+      "sha256": "ff86597e99fd8bf40c6b1d256d57da035ece5c3b17a3fd619932e31c3caa59b4",
+      "lines": 44
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "local_file": ".local-research/animal-eggs/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "lines": 185
+    },
+    {
+      "type": "RimWorld.CompProperties_Hatcher",
+      "local_file": ".local-research/animal-eggs/RimWorld.CompProperties_Hatcher.cs",
+      "sha256": "a00ed1f1322a863cca429417fd9d5d5f334291cd65bfb51ee086e3e53270fe04",
+      "lines": 16
+    },
+    {
+      "type": "RimWorld.CompTemperatureRuinable",
+      "local_file": ".local-research/animal-eggs/RimWorld.CompTemperatureRuinable.cs",
+      "sha256": "120b5e3a10f008391d4912eabda9fe0beb776d40eb55d119721f6937cb3db273",
+      "lines": 101
+    },
+    {
+      "type": "RimWorld.CompProperties_TemperatureRuinable",
+      "local_file": ".local-research/animal-eggs/RimWorld.CompProperties_TemperatureRuinable.cs",
+      "sha256": "2145dffa8745ee3234df9ebca8cd00aa51086cd5524c1e41e3be0a9cc6e61e50",
+      "lines": 18
+    },
+    {
+      "type": "RimWorld.CompRottable",
+      "local_file": ".local-research/animal-eggs/RimWorld.CompRottable.cs",
+      "sha256": "0cd95cf8477c6c009d0187ce1d606f872ab9e36f0f977e5f09ced39fb4c50578",
+      "lines": 247
+    },
+    {
+      "type": "RimWorld.CompProperties_Rottable",
+      "local_file": ".local-research/animal-eggs/RimWorld.CompProperties_Rottable.cs",
+      "sha256": "257e33df5bf76380a3e6042a752db9ad82ebf84a895c9d3a6619beac32835805",
+      "lines": 47
+    },
+    {
+      "type": "RimWorld.JobGiver_Mate",
+      "local_file": ".local-research/animal-eggs/RimWorld.JobGiver_Mate.cs",
+      "sha256": "93697635707661ac2b2316a7b8d327a455b80190b0ee184c3e8dcedd34dd999f",
+      "lines": 44
+    },
+    {
+      "type": "RimWorld.JobDriver_Mate",
+      "local_file": ".local-research/animal-eggs/RimWorld.JobDriver_Mate.cs",
+      "sha256": "1fe2232d072c3c7252d4754cad2a1e3ffc14fe405d4bdb9f34272b85f34cb59a",
+      "lines": 47
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "local_file": ".local-research/animal-eggs/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "lines": 1655
+    },
+    {
+      "type": "Verse.AI.ThinkNode_ChancePerHour_Mate",
+      "local_file": ".local-research/animal-eggs/Verse.AI.ThinkNode_ChancePerHour_Mate.cs",
+      "sha256": "a6f7036698557610400ff043ca57a1b7863b56d670eccd568020ee1205d77bfc",
+      "lines": 10
+    },
+    {
+      "type": "RimWorld.HungerLevelUtility",
+      "local_file": ".local-research/animal-eggs/RimWorld.HungerLevelUtility.cs",
+      "sha256": "be023007bc1de7d662c5e526f48e50ddd516b9a68d9347c3b1c69c30c8726bef",
+      "lines": 36
+    },
+    {
+      "type": "RimWorld.LifeStageDef",
+      "local_file": ".local-research/animal-eggs/RimWorld.LifeStageDef.cs",
+      "sha256": "93a5a86d46d9b6d954630d71044634ec69faddd67c473d1fed730e474c0034bd",
+      "lines": 132
+    },
+    {
+      "type": "Verse.Thing",
+      "local_file": ".local-research/animal-eggs/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "lines": 2235
+    },
+    {
+      "type": "Verse.ThingWithComps",
+      "local_file": ".local-research/animal-eggs/Verse.ThingWithComps.cs",
+      "sha256": "9ae0bf1c6884b0fd48213cf5bb2cfda7d0ee63eb43cbe97689f90e4287c2ed6b",
+      "lines": 1040
+    },
+    {
+      "type": "Verse.ThingDef",
+      "local_file": ".local-research/animal-eggs/Verse.ThingDef.cs",
+      "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+      "lines": 2447
+    },
+    {
+      "type": "Verse.GenSpawn",
+      "local_file": ".local-research/animal-eggs/Verse.GenSpawn.cs",
+      "sha256": "ae87c3214cc7c5e469e33564803c8c9936cfb99c00b2d56f420121bf61fdd110",
+      "lines": 520
+    },
+    {
+      "type": "Verse.PawnGenerationRequest",
+      "local_file": ".local-research/animal-eggs/Verse.PawnGenerationRequest.cs",
+      "sha256": "c426f88f21c7458dfcaf36200bff741f3fc9f74e41d7e8064d9c211e5b0a4db7",
+      "lines": 360
+    },
+    {
+      "type": "Verse.PawnGenerator",
+      "local_file": ".local-research/animal-eggs/Verse.PawnGenerator.cs",
+      "sha256": "96e7447c568916a4eb9aa4d334723567d9b09dc939636f5dcdfee484dcc42180",
+      "lines": 2173
+    },
+    {
+      "type": "RimWorld.PawnRelationDefOf",
+      "local_file": ".local-research/animal-eggs/RimWorld.PawnRelationDefOf.cs",
+      "sha256": "c25502380a46f9f51d430ba0999fd7cbf804d8e817042ffae0690ead132a0ae4",
+      "lines": 55
+    },
+    {
+      "type": "RimWorld.StatWorker_MinimumHandlingSkill",
+      "local_file": ".local-research/animal-eggs/RimWorld.StatWorker_MinimumHandlingSkill.cs",
+      "sha256": "7e724f9d36c362b1a3e17dcdc3ae48c774407d360bc54ab8b87a2479de966a69",
+      "lines": 43
+    },
+    {
+      "type": "RimWorld.Need_Food",
+      "local_file": ".local-research/animal-eggs/RimWorld.Need_Food.cs",
+      "sha256": "f17cbaf82d8792108557f869db585fdd6ac26c0ebb537e8acf04173179e7c4cd",
+      "lines": 227
+    },
+    {
+      "type": "Verse.RaceProperties",
+      "local_file": ".local-research/animal-eggs/Verse.RaceProperties.cs",
+      "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+      "lines": 788
+    },
+    {
+      "type": "Verse.Pawn",
+      "local_file": ".local-research/animal-eggs/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "lines": 4791
+    },
+    {
+      "type": "Verse.AI.ThinkNode_ChancePerHour",
+      "local_file": ".local-research/animal-eggs/Verse.AI.ThinkNode_ChancePerHour.cs",
+      "sha256": "d1553e2d6f464fb6eccf6150a14d7c14bc186261166062c0a11a24846db64bec",
+      "lines": 45
+    },
+    {
+      "type": "RimWorld.CompEggContainer",
+      "local_file": ".local-research/animal-eggs/RimWorld.CompEggContainer.cs",
+      "sha256": "d4f117c823f0dbaef339546bb05fd9b178cc02608068a4617bb9038b4f80363b",
+      "lines": 98
+    },
+    {
+      "type": "RimWorld.CompThingContainer",
+      "local_file": ".local-research/animal-eggs/RimWorld.CompThingContainer.cs",
+      "sha256": "9f349290f541d26e5b593c97839ec935ef6938624753b9b3d9afc84caee13a78",
+      "lines": 157
+    },
+    {
+      "type": "RimWorld.CompProperties_ThingContainer",
+      "local_file": ".local-research/animal-eggs/RimWorld.CompProperties_ThingContainer.cs",
+      "sha256": "3367df6192402629652d10035733408bb8e6f14fc44613583739a8deb76be17e",
+      "lines": 19
+    },
+    {
+      "type": "RimWorld.WorkGiver_EmptyEggBox",
+      "local_file": ".local-research/animal-eggs/RimWorld.WorkGiver_EmptyEggBox.cs",
+      "sha256": "252d786fcc519d415a62ad9b4477dd91ef79123271a8cc5d585b07f1d1b4898f",
+      "lines": 58
+    },
+    {
+      "type": "RimWorld.JobDriver_EmptyThingContainer",
+      "local_file": ".local-research/animal-eggs/RimWorld.JobDriver_EmptyThingContainer.cs",
+      "sha256": "7e5f09bc31b62822f89167ee31607ee33934c59acd7f439e87eee663e03d0fda",
+      "lines": 61
+    },
+    {
+      "type": "Verse.GenTemperature",
+      "local_file": ".local-research/animal-eggs/Verse.GenTemperature.cs",
+      "sha256": "4d8eca83fcc99ebeeeace9696c7be0761a078aa6578a2cc5033cca0fd24b0fc1",
+      "lines": 534
+    },
+    {
+      "type": "Verse.Pawn_CarryTracker",
+      "local_file": ".local-research/animal-eggs/Verse.Pawn_CarryTracker.cs",
+      "sha256": "b53d3466fbaf47c9b4bfd8c044b7632943a00c93749c1873b9267c69a6ce1df6",
+      "lines": 222
+    },
+    {
+      "type": "Verse.Pawn_InventoryTracker",
+      "local_file": ".local-research/animal-eggs/Verse.Pawn_InventoryTracker.cs",
+      "sha256": "51147ea67791b7447510f09fe085ac1a0d69206db16496379b7276fcce67be45",
+      "lines": 477
+    },
+    {
+      "type": "Verse.ThingOwner",
+      "local_file": ".local-research/animal-eggs/Verse.ThingOwner.cs",
+      "sha256": "2399af99d650359b9f5a272ccf118cad781b7bcbc9393c0478002efc8f815331",
+      "lines": 673
+    },
+    {
+      "type": "RimWorld.StatPart_BodySize",
+      "local_file": ".local-research/animal-eggs/RimWorld.StatPart_BodySize.cs",
+      "sha256": "260c7a242db52e042aae7e23e567765f123050f4ab8d21c8583fe1ede5bb6b01",
+      "lines": 29
+    },
+    {
+      "type": "RimWorld.StatPart_LifeStageMaxFood",
+      "local_file": ".local-research/animal-eggs/RimWorld.StatPart_LifeStageMaxFood.cs",
+      "sha256": "e8170caab5719186380cb1e7b2360f4204795601e5abf4a98e4e694aeffe3233",
+      "lines": 24
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "local_file": ".local-research/animal-eggs/RimWorld.FoodUtility.cs",
+      "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+      "lines": 1686
+    },
+    {
+      "type": "RimWorld.JobGiver_GetFood",
+      "local_file": ".local-research/animal-eggs/RimWorld.JobGiver_GetFood.cs",
+      "sha256": "c648efbdd091620603979d79de4c064f5a8174e7f6cf51950b6c19619a398a04",
+      "lines": 186
+    },
+    {
+      "type": "RimWorld.HungerCategory",
+      "local_file": ".local-research/animal-eggs/RimWorld.HungerCategory.cs",
+      "sha256": "268510e02576b007ed387461061ba5563946cf9569c9f04fd69d8825e19b2df1",
+      "lines": 10
+    },
+    {
+      "type": "RimWorld.FoodPreferability",
+      "local_file": ".local-research/animal-eggs/RimWorld.FoodPreferability.cs",
+      "sha256": "8f8b57f654dfc634b74d70844ce8e0e2886ea0111ad27daa94dec31601ab429f",
+      "lines": 17
+    }
+  ]
+}

@@ -30,12 +30,14 @@ export const ANIMAL_HUSBANDRY: Readonly<Record<AnimalSpecies, {
     bodySize: 1, penAnimal: true, tamenessDecays: false, litterMin: 1, litterMax: 1 }),
   dromedary: Object.freeze({ wildness: .25, minSkill: 2, nutritionCapacity: 2.1, nutritionPerDay: .856,
     bodySize: 2.1, penAnimal: true, tamenessDecays: false, litterMin: 1, litterMax: 1 }),
+  chicken: Object.freeze({ wildness: 0, minSkill: 0, nutritionCapacity: .3, nutritionPerDay: .224,
+    bodySize: .3, penAnimal: true, tamenessDecays: false, litterMin: 1, litterMax: 1 }),
 });
 export type AnimalLifeStage = 'baby' | 'juvenile' | 'adult';
 export type AnimalHusbandryState = Pick<WildAnimal,
   'allowedAreaId' | 'ropePaused' | 'requestedPenId' | 'nextRoamTick' |
   'faction' | 'sex' | 'ageTicks' | 'growth' | 'tame' | 'slaughter' | 'releaseMarked' |
-  'malnutrition' | 'milkFullness' | 'woolGrowth' | 'pregnancy' | 'mateId' | 'mateProgress' | 'nextMateTick' | 'tameness' |
+  'malnutrition' | 'milkFullness' | 'woolGrowth' | 'eggProgress' | 'fertilizationCount' | 'eggFatherId' | 'layProgress' | 'pregnancy' | 'mateId' | 'mateProgress' | 'nextMateTick' | 'tameness' |
   'nextTamenessDecayTick' | 'nextInteractionTick' | 'path' | 'goal' | 'eatProgress' | 'reason'>;
 
 /** Existing and newly immigrating wildlife are adults. Birth explicitly sets
@@ -47,7 +49,7 @@ export function initialAnimalState(id: number, species: AnimalSpecies, tick: num
   return { ...initialAnimalPenState(tick),
     faction: 'wild', sex: Math.floor(id / 2) % 2 ? 'male' : 'female',
     ageTicks: HUSBANDRY_RULES.adultTicks, growth: 1, tame: false, slaughter: false, releaseMarked: false,
-    malnutrition: 0, milkFullness: 0, woolGrowth: 0, pregnancy: null, mateId: null, mateProgress: 0,
+    malnutrition: 0, milkFullness: 0, woolGrowth: 0, eggProgress: 0, fertilizationCount: 0, eggFatherId: null, layProgress: 0, pregnancy: null, mateId: null, mateProgress: 0,
     nextMateTick: tick + HUSBANDRY_RULES.mateInterval,
     tameness: 0, nextTamenessDecayTick: tick + HUSBANDRY_RULES.tamenessDecayTicks,
     nextInteractionTick: tick, path: [], goal: null, eatProgress: 0, reason: '野生动物' };

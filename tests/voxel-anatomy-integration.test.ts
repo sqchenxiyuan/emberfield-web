@@ -1,4 +1,5 @@
 import { withMedicineLedgers } from './legacy-medicine-defaults';
+import { eggsExpectedField } from './legacy-auto-rebuild-defaults';
 import { stripRangedDefaults } from './legacy-ranged-defaults';
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -74,10 +75,10 @@ describe('anatomy integration with work, physical treatment and save migration',
       const s = VoxelSimulation.load(old),
         save = s.save();
       expect(old).toEqual(before);
-      expect(save.version).toBe(50);
+      expect(save.version).toBe(51);
       expect(s.tick).toBe(old.tick);
       for (const key of ['blocks', 'items', 'researchBenches', 'stats'] as const)
-        expect(save[key]).toEqual(key === 'stats' ? withMedicineLedgers(old.stats) : old[key]);
+        expect(save[key]).toEqual(key === 'stats' ? eggsExpectedField('stats', withMedicineLedgers(old.stats)) : old[key]);
       expect(save.research).toEqual({
         ...old.research,
         progress: { ...old.research.progress, PlateArmor: 0, Machining: 0, Gunsmithing: 0, BlowbackOperation: 0 },

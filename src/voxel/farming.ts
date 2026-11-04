@@ -73,8 +73,45 @@ export const CROPS: Record<
     minSkill: 8,
   },
 };
-export const SIMPLE_MEAL = { ingredients: 10, wood: 1, output: 1, work: 100 };
-export const NUTRITION: Partial<Record<Resource, number>> = { meal: 0.9, food: 0.9, grain: 0.05, meat: 0.05, milk: 0.05 };
+export const SIMPLE_MEAL = { ingredients: 10, nutrition: 0.5, wood: 1, output: 1, work: 100 };
+export const FOOD_INGREDIENTS = ['grain', 'meat', 'milk', 'eggUnfertilized', 'eggFertilized'] as const;
+export type FoodIngredient = typeof FOOD_INGREDIENTS[number];
+export const FOOD_PREFERENCE: readonly Resource[] = ['meal', 'food', 'milk', 'eggUnfertilized', 'grain', 'meat', 'eggFertilized'];
+export const NUTRITION: Partial<Record<Resource, number>> = {
+  meal: 0.9, food: 0.9, grain: 0.05, meat: 0.05, milk: 0.05, eggUnfertilized: 0.25, eggFertilized: 0.25,
+};
+export function isFoodIngredient(resource: Resource): resource is FoodIngredient {
+  return (FOOD_INGREDIENTS as readonly Resource[]).includes(resource);
+}
+/** Native normal human ground-food search allows DesperateOnly at Starving,
+ * whose food level is zero. Native inventory fallback may select it earlier;
+ * Web carried-food handling deliberately stays separate from ground search. */
+export function canSelectGroundFood(resource: Resource, food: number): boolean {
+  return !!NUTRITION[resource] && (resource !== 'eggFertilized' || food <= 0);
+}
+/** Real stack units are indivisible. Subtract a numerical tolerance before
+ * ceil so mixed .05/.25 inputs cannot request a spurious extra item. */
+export function foodUnitsForNutrition(resource: FoodIngredient, nutrition: number): number {
+  return Math.max(0, Math.ceil((nutrition - 1e-9) / NUTRITION[resource]!));
+}
+export function foodUnitsForHunger(resource: Resource, food: number): number {
+  if (!NUTRITION[resource]) return 0;
+  return isFoodIngredient(resource) ? foodUnitsForNutrition(resource, (100 - food) / 100) : 1;
+}
+/** A final indivisible ingredient may overshoot the target by less than its
+ * nutrition. Reject batches that still reach the target after removing their
+ * largest ingredient unit. Integer hundredths keep save validation stable. */
+export function validSimpleMealIngredients(cost: Partial<Record<Resource, number>>): boolean {
+  let units = 0, largest = 0;
+  for (const resource of FOOD_INGREDIENTS) {
+    const amount = cost[resource] ?? 0, nutrition = Math.round(NUTRITION[resource]! * 100);
+    if (!Number.isSafeInteger(amount) || amount < 0) return false;
+    units += amount * nutrition;
+    if (amount) largest = Math.max(largest, nutrition);
+  }
+  const target = Math.round(SIMPLE_MEAL.nutrition * 100);
+  return units >= target && units - largest < target;
+}
 export const FOOD_FALL_PER_TICK = (1.6 * 100) / DAY;
 export const hourAt = (tick: number) => (8 + (tick / DAY) * 24) % 24;
 export const temperatureAt = (tick: number) =>

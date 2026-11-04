@@ -18,8 +18,8 @@ import {
 } from './types';
 
 type BillPatch = Partial<Pick<ProductionBill, 'mode' | 'remaining' | 'target' | 'suspended' | 'pauseWhenSatisfied' | 'resumeBelow' | 'policy' | 'output'>>;
-const FOOD_TYPES = ['grain', 'meat', 'milk'] as const;
-const FOOD_NAMES = { grain: '谷物', meat: '生肉', milk: '奶' };
+const FOOD_TYPES = ['grain', 'meat', 'milk', 'eggUnfertilized', 'eggFertilized'] as const;
+const FOOD_NAMES = { grain: '谷物', meat: '生肉', milk: '奶', eggUnfertilized: '未受精蛋', eggFertilized: '受精蛋' };
 const CARCASS_SPECIES = Object.keys(ANIMAL_DEFS) as AnimalSpecies[];
 const same = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
 const materials = (cost: Readonly<Partial<Counts>>) => Object.entries(cost)
@@ -30,8 +30,8 @@ const emptyIngredientFilter = (bill: ProductionBill) => bill.recipe === 'cook' &
 
 function recipeDetails(recipe: ProductionRecipe, snapshot: VoxelSnapshot) {
   if (recipe === 'cook') return { name: '烹饪简餐', unit: '份',
-    description: `${SIMPLE_MEAL.ingredients} 生肉、奶或谷物 + ${SIMPLE_MEAL.wood} 木材 → ${SIMPLE_MEAL.output} 简餐`,
-    note: '按允许食材优先使用肉，再用奶和谷物；可混合备料。', research: null };
+    description: `${SIMPLE_MEAL.ingredients} 份允许食材 + ${SIMPLE_MEAL.wood} 木材 → ${SIMPLE_MEAL.output} 简餐`,
+    note: '可使用生肉、奶或谷物，也可使用允许的鸡蛋；可混合备料。受精蛋需在食材中明确勾选。', research: null };
   if (recipe === 'butcher') return { name: '屠宰动物', unit: '份生肉',
     description: '1 具完整动物尸体 → 生肉', note: '每次处理一具尸体，产肉量随动物和加工者变化。', research: null };
   if (recipe === 'stonecut') return { name: '切割花岗岩砖', unit: '块',
@@ -120,6 +120,7 @@ function BillPolicy({ bill, snapshot, update }: {
           }} />{FOOD_NAMES[resource]}</label>)}
         <small>木材是配方必需原料，不受食材勾选影响；取料半径仍适用。</small>
         <small>奶可直接饮用，也可在此勾选用于简餐；未冷藏会腐坏。</small>
+        <small data-testid="bill-egg-note">新账单默认允许未受精蛋、排除受精蛋；勾选受精蛋会消耗可孵化的蛋。育雏时请保留它们。</small>
       </fieldset> : bill.recipe === 'butcher' ? <fieldset data-testid="bill-carcass-filter"><legend>允许的动物尸体</legend>
         {CARCASS_SPECIES.map(species => <label key={species} className="voxel-production-check"><input type="checkbox"
           aria-label={`允许${ANIMAL_DEFS[species].name}尸体`} checked={policy.allowedCarcasses.includes(species)} onChange={event => {

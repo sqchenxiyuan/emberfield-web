@@ -62,8 +62,8 @@ export function validatePens(d: VoxelSave): void {
   const validName = (v: unknown) => typeof v === 'string' && v.trim().length > 0 && v.length <= PEN_RULES.maxNameLength;
   for (const m of d.penMarkers) {
     claim(m, ['id', 'x', 'y', 'z', 'name', 'filter'], true);
-    if (!validName(m.name) || !exact(m.filter, ['deer', 'dromedary', 'alpaca', 'male', 'female']) ||
-        ![m.filter.deer, m.filter.dromedary, m.filter.alpaca, m.filter.male, m.filter.female].every(v => typeof v === 'boolean')) fail('圈地名称或过滤器无效');
+    if (!validName(m.name) || !exact(m.filter, ['deer', 'dromedary', 'alpaca', 'chicken', 'male', 'female']) ||
+        ![m.filter.deer, m.filter.dromedary, m.filter.alpaca, m.filter.chicken, m.filter.male, m.filter.female].every(v => typeof v === 'boolean')) fail('圈地名称或过滤器无效');
   }
   for (const a of d.animalAreas) {
     claim(a, ['id', 'name', 'color', 'cells'], false);

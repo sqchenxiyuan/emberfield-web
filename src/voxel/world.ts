@@ -1,4 +1,6 @@
 import { rejectLegacyWool, migrateWool, validateWool } from './animalWoolPersistence';
+import { rejectLegacyEggs, migrateEggs, validateEggs } from './animalEggPersistence';
+import { advanceHatcher } from './animalEggs';
 import { rejectLegacyMilk, migrateMilk, validateMilk } from './animalMilkPersistence';
 import { WeightedNavigation } from './navigation';
 import { isConstructionFrame, constructionFrameCells, frameBuildingKind } from './constructionFrames';
@@ -284,6 +286,13 @@ import {
   CROPS,
   SIMPLE_MEAL,
   NUTRITION,
+  FOOD_PREFERENCE,
+  FOOD_INGREDIENTS,
+  canSelectGroundFood,
+  foodUnitsForNutrition,
+  foodUnitsForHunger,
+  isFoodIngredient,
+  validSimpleMealIngredients,
   FOOD_FALL_PER_TICK,
   hourAt,
   fertilityOf,
@@ -922,7 +931,7 @@ export class VoxelSimulation {
     animal.threatId = null;
     animal.tame = false; animal.slaughter = false; animal.releaseMarked = false;
     animal.pregnancy = null; animal.path = []; animal.goal = null; animal.mateId = null; animal.mateProgress = 0;
-    animal.eatProgress = 0; animal.reason = reason;
+    animal.eatProgress = 0; animal.layProgress = 0; animal.reason = reason;
     animal.allowedAreaId = null; animal.requestedPenId = null; animal.ropePaused = false;
     releaseAnimalHandlers(this, animal);
     for (const other of this.animals) if (other.mateId === animal.id) {
@@ -1389,6 +1398,13 @@ export class VoxelSimulation {
     const plan = this.planPlacement([{batch:freshBatch('alpacaWool',amount),origin:p}],this.items,DROP_DISTANCE,new Set(),p.id);
     if (!plan) return false;
     if (commit) { this.commitPlacement(plan); this.stats.produced.alpacaWool += amount; }
+    return true;
+  }
+  animalEggRoom(p: Pos): number { this.updateEnvironment(); return this.rooms.roomIds[at(p)]; }
+  animalEggPlace(a: WildAnimal, batch: Cargo, commit: boolean): boolean {
+    const plan=this.planPlacement([{batch,origin:a}]);
+    if(!plan)return false;
+    if(commit){this.commitPlacement(plan);this.stats.produced[batch.resource]+=batch.amount;}
     return true;
   }
   animalMilkPlace(p: Pawn, amount: number, commit: boolean): boolean {
@@ -2046,8 +2062,8 @@ export class VoxelSimulation {
     // Lock real ingredients; delivered batches retain their identity and age.
     const policy = this.productionPolicyFor(job);
     const cost: Partial<Counts> = { wood: SIMPLE_MEAL.wood };
-    let remaining = SIMPLE_MEAL.ingredients;
-    const order = (['meat', 'milk', 'grain'] as const).filter(r => policy.allowedFood.includes(r));
+    let remaining = SIMPLE_MEAL.nutrition;
+    const order = (['meat', 'milk', 'eggUnfertilized', 'grain', 'eggFertilized'] as const).filter(r => policy.allowedFood.includes(r));
     for (const resource of order) {
       const reserved = this.jobs.filter(j => j !== job && !j.cancelled && j.owner !== null).reduce((n,j) => {
         const owner = this.pawns.find(p => p.id === j.owner);
@@ -2057,13 +2073,13 @@ export class VoxelSimulation {
       const available = this.items.filter(i => i.resource === resource && !i.forbidden && this.exploredAt(i) &&
         this.acceptsJobCargo(job,i,i) && (!worker || this.pawnAllowed(worker,i) && this.reachableItemStand(i) >= 0))
         .reduce((n,i) => n + (worker ? this.availableStack(i,worker.id) : i.amount),0);
-      const amount = Math.min(remaining, Math.max(0, available-reserved));
-      if (amount) { cost[resource] = amount; remaining -= amount; }
+      const amount = Math.min(foodUnitsForNutrition(resource, remaining), Math.max(0, available-reserved));
+      if (amount) { cost[resource] = amount; remaining -= amount * NUTRITION[resource]!; }
     }
     // Keep an unmet cost, so an incomplete bill waits for a permitted resource.
     // No-filter bills cannot find an accepted ingredient and never consume it.
     const missing = order.at(-1) ?? 'grain';
-    if (remaining) cost[missing] = (cost[missing] ?? 0) + remaining;
+    if (remaining > 1e-9) cost[missing] = (cost[missing] ?? 0) + foodUnitsForNutrition(missing, remaining);
     job.cost = cost;
   }
   /** A garment is made from one textile. Only unclaimed batches can select a
@@ -2502,7 +2518,7 @@ export class VoxelSimulation {
         this.cancel(j);
       if (j.kind === 'cut' && !this.trees.some((t) => same(t, j))) this.cancel(j);
       if (productionJobRecipe(j) && !this.supported(j)) this.cancel(j);
-      if (j.kind === 'cook' && !j.cancelled && j.owner === null && !j.productionPolicy && !(j.delivered.grain || j.delivered.meat || j.delivered.milk))
+      if (j.kind === 'cook' && !j.cancelled && j.owner === null && !j.productionPolicy && !FOOD_INGREDIENTS.some(r => j.delivered[r]))
         this.chooseMealIngredients(j);
       if (
         j.kind === 'refuel' &&
@@ -4191,7 +4207,7 @@ export class VoxelSimulation {
         : undefined;
     const food =
       action === 'feed' && !carriedFood
-        ? (['meal', 'food', 'milk', 'grain', 'meat'] as Resource[]).map((r) => this.pileFor(p, r)).find(Boolean)
+        ? FOOD_PREFERENCE.filter(r => canSelectGroundFood(r, patient.food)).map((r) => this.pileFor(p, r)).find(Boolean)
         : undefined;
     if (action === 'feed' && !carriedFood && !food) return false;
     // A full ground never destroys existing cargo to make room for a rescue.
@@ -4241,7 +4257,7 @@ export class VoxelSimulation {
       p.careFoodId = food!.id;
       p.careAmount = Math.min(
         this.availableStack(food!, p.id),
-        ['grain', 'meat', 'milk'].includes(food!.resource) ? Math.ceil((100 - patient.food) / (100 * NUTRITION.grain!)) : 1,
+        foodUnitsForHunger(food!.resource, patient.food),
       );
       p.carePhase = 'feedFetch';
       this.go(p, this.reachableItemStand(food!), 'care');
@@ -6162,10 +6178,10 @@ export class VoxelSimulation {
     return cells;
   }
   prisonTakeFood(p: Pawn, allowed: Set<number>): boolean {
-    const foods = this.items.filter(i => NUTRITION[i.resource] && allowed.has(at(i)) && this.availableStack(i) > 0);
+    const foods = this.items.filter(i => canSelectGroundFood(i.resource, p.food) && allowed.has(at(i)) && this.availableStack(i) > 0);
     if (!foods.length) return false;
     this.search(p, allowed);
-    const order = ['meal', 'food', 'milk', 'grain', 'meat'];
+    const order = FOOD_PREFERENCE;
     const food = foods.filter(i => this.reachableItemStand(i) >= 0).sort((a, b) =>
       order.indexOf(a.resource) - order.indexOf(b.resource) || this.distance[this.reachableItemStand(a)] - this.distance[this.reachableItemStand(b)] || a.id - b.id)[0];
     if (!food) return false;
@@ -6893,15 +6909,14 @@ export class VoxelSimulation {
     const resource = batch.resource;
     const nutrition = NUTRITION[resource];
     if (!nutrition) return 0;
-    const amount =
-      (resource === 'grain' || resource === 'meat' || resource === 'milk')
-        ? Math.min(available, Math.ceil((100 - p.food) / (nutrition * 100)))
-        : Math.min(1, available);
+    const amount = Math.min(available, foodUnitsForHunger(resource, p.food));
     p.food = Math.min(100, p.food + amount * nutrition * 100);
     this.stats.consumed[resource] += amount;
     this.stats.eaten += amount;
-    if (amount > 0 && (resource === 'grain' || resource === 'meat')) remember(p.psyche, 'ateRaw', this.tick);
-    const poisonChance = resource === 'milk' ? .02 : resource === 'meal' ? batch.poisonChance ?? 0 : 0;
+    if (amount > 0 && (resource === 'grain' || resource === 'meat' || resource === 'eggUnfertilized' || resource === 'eggFertilized'))
+      remember(p.psyche, 'ateRaw', this.tick);
+    const poisonChance = resource === 'milk' || resource === 'eggUnfertilized' || resource === 'eggFertilized'
+      ? .02 : resource === 'meal' ? batch.poisonChance ?? 0 : 0;
     if (amount > 0 && poisonChance > 0 &&
         sanitationRandom(this.seed, p.id, this.tick, 26) < poisonChance) {
       p.foodPoisoning = exposeFoodPoisoning(p.foodPoisoning, this.tick);
@@ -6918,7 +6933,7 @@ export class VoxelSimulation {
     }
     if (!this.items.some((i) => NUTRITION[i.resource])) return false;
     this.search(p);
-    const food = (['meal', 'food', 'milk', 'grain', 'meat'] as Resource[])
+    const food = FOOD_PREFERENCE.filter(r => canSelectGroundFood(r, p.food))
       .map((r) => this.pileFor(p, r))
       .find(Boolean);
     if (!food) return false;
@@ -6933,8 +6948,7 @@ export class VoxelSimulation {
     return true;
   }
   private mealAmount(p: Pawn, batch: Cargo) {
-    return Math.min(batch.amount, batch.resource === 'grain' || batch.resource === 'meat' || batch.resource === 'milk'
-      ? Math.max(1, Math.ceil((100 - p.food) / (NUTRITION[batch.resource]! * 100))) : 1);
+    return Math.min(batch.amount, Math.max(1, foodUnitsForHunger(batch.resource, p.food)));
   }
   private adjacentDiningTable(pos: Pos) {
     return this.tables.find(t => tableCells(t).some(q => q.z === pos.z && Math.abs(q.x - pos.x) + Math.abs(q.y - pos.y) === 1));
@@ -7984,6 +7998,7 @@ export class VoxelSimulation {
       if (this.tick % 100 === 0) this.updateSnow();
       if (this.tick % ENVIRONMENT_RULES.interval === 0) this.updateEnvironmentalEffects();
       updateFires(this);
+      this.updateEggs();
       this.updatePreservation();
       this.reconcileRelocationJobs();
       this.updateTrees();
@@ -8480,6 +8495,72 @@ export class VoxelSimulation {
     }
     this.thermal.step(1 / TPS, this.outdoorTemperature(), this.doors, this.tick);
   }
+  /** Incubation follows ground, carried, delivered and trader containers. */
+  private updateEggs() {
+    const processEgg = (batch: Cargo, origin: Pos, colonyLedger: boolean): { changed: boolean; converted: number } => {
+      const state=advanceHatcher(batch,this.temperature(origin));
+      if(state==='none')return {changed:false,converted:0};
+      const before=batch.amount;
+      if(state==='ruined'){
+        batch.resource='eggUnfertilized';delete batch.hatcher;delete batch.hitPoints;batch.rotProgress=0;
+        if(colonyLedger){this.stats.consumed.eggFertilized+=before;this.stats.produced.eggUnfertilized+=before;}
+        this.revision++;return {changed:true,converted:before};
+      }
+      const h=batch.hatcher!;
+      while(batch.amount>0&&this.animals.length<HUSBANDRY_RULES.maxAnimals){
+        const child:WildAnimal={x:origin.x,y:origin.y,z:origin.z,...initialAnimalState(this.nextId,'chicken',this.tick),
+          id:this.nextId,species:'chicken',name:ANIMAL_DEFS.chicken.name,health:ANIMAL_DEFS.chicken.health,
+          hunger:(HUSBANDRY_RULES.hungry+HUSBANDRY_RULES.urgentlyHungry)/2,dead:false,phase:'roam',hunt:false,moveTick:this.tick+20,decisionTick:this.tick,
+          fleeUntil:0,threatId:null,retryTick:0,rotProgress:0,faction:h.faction,tameness:h.faction==='colony'?5:0,
+          ageTicks:0,growth:0,sex:plantRandom(this.seed,this.nextId,this.tick,1511)<.5?'female':'male'};
+        const cell=[at(origin),...this.animalNeighbors(child,origin)].find(n=>{
+          const p=position(n);return this.animalCanStop(p)&&!this.fires.some(f=>same(f,p))&&
+            !this.animals.some(a=>at(a)===n)&&!this.pawns.some(pawn=>at(pawn)===n);
+        });
+        if(cell===undefined)break;
+        Object.assign(child,position(cell));
+        const mother=this.animals.find(a=>a.id===h.motherId);
+        if(mother&&mother.faction===child.faction)child.allowedAreaId=mother.allowedAreaId;
+        this.nextId++;this.animals.push(child);batch.amount--;
+        if(colonyLedger)this.stats.consumed.eggFertilized++;
+        this.husbandryLog.push({tick:this.tick,kind:'hatched',animalId:child.id,otherId:h.motherId,message:'一枚受精鸡蛋孵化出雏鸡'});
+        this.husbandryLog=this.husbandryLog.slice(-HUSBANDRY_RULES.maxLog);this.revision++;
+      }
+      return {changed:before!==batch.amount,converted:0};
+    };
+    const changedGround:Stack[]=[];
+    for(const item of this.items)if(item.resource==='eggFertilized'&&processEgg(item,item,true).changed)changedGround.push(item);
+    this.items=this.items.filter(i=>i.amount>0);
+    this.invalidateStackPlans(changedGround,'鸡蛋已孵化或因温度改变，重新安排取物');
+    for(const p of this.pawns)if(p.cargo?.resource==='eggFertilized'&&processEgg(p.cargo,p,true).changed){
+      if(p.cargo.amount===0)p.cargo=null;
+      this.release(p);p.reason='携带的鸡蛋已孵化或发生温度损坏';
+    }
+    for(const j of [...this.jobs]){
+      let changed=false,converted=0;
+      for(const b of j.deliveredBatches)if(b.resource==='eggFertilized'){
+        const result=processEgg(b,j,true);changed ||= result.changed;converted+=result.converted;
+      }
+      if(!changed)continue;
+      const batches:Cargo[]=[];
+      for(const b of j.deliveredBatches.filter(b=>b.amount>0)){
+        const target=batches.find(a=>compatibleBatches(a,b));if(target)mergeBatch(target,b);else batches.push(b);
+      }
+      j.deliveredBatches=batches;j.delivered={};
+      for(const b of batches)j.delivered[b.resource]=(j.delivered[b.resource]??0)+b.amount;
+      // Equal-nutrition conversion cannot fulfill a fertile-only ingredient.
+      // Cancel with the real converted goods, retaining refunds on full floors.
+      if(converted){j.cost.eggFertilized=(j.cost.eggFertilized??0)-converted;
+        j.cost.eggUnfertilized=(j.cost.eggUnfertilized??0)+converted;}
+      j.progress=0;j.workTicks=0;j.cookTraining=[];delete j.cookingOutcome;
+      this.cancel(j);
+    }
+    for(const c of this.trade.caravans){
+      for(const b of c.stock){const p=this.pawns.find(p=>p.id===b.carrierId);
+        if(p&&b.resource==='eggFertilized')processEgg(b,p,false);}
+      c.stock=c.stock.filter(b=>b.amount>0);
+    }
+  }
   private updatePreservation() {
     // Ground stacks, carried food, and delivered recipe inputs are all physical
     // containers. Their current cell determines temperature; moving is not a
@@ -8663,7 +8744,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 50,
+      version: 51,
       autoSlaughter: this.autoSlaughter,
       stockpileZones: this.stockpileZones,
       productionQueues: this.productionQueues.filter(q => this.productionBenches().some(b => b.id === q.benchId)),
@@ -8725,11 +8806,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : old.version < 43 ? [1, 2, 3] : [1, 2, 3, 4]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyEggs(old,sourceVersion);
     rejectLegacyWool(old,sourceVersion);
     rejectLegacyMilk(old,sourceVersion);
     migrateAutoSlaughter(old, sourceVersion);
@@ -8864,7 +8946,9 @@ export class VoxelSimulation {
         ...s,
         priority: 1,
         accepts: resources.filter(
-          (r) => !['silver', 'chunk', 'cloth', 'apparel', 'weapon', 'herb', 'furniture', 'unfinished'].includes(r),
+          // Keep the pre-egg default: later historical migrations also inspect
+          // this filter, before the v51 migration can run.
+          (r) => !['silver', 'chunk', 'cloth', 'apparel', 'weapon', 'herb', 'furniture', 'unfinished', 'eggUnfertilized', 'eggFertilized'].includes(r),
         ),
       }));
       old.stats.spoiled = emptyCounts();
@@ -9157,7 +9241,8 @@ export class VoxelSimulation {
     if (sourceVersion < 44) for (const p of old.pawns ?? []) p.allowedAreaId = null;
     migrateMilk(old, sourceVersion);
     migrateWool(old, sourceVersion);
-    old.version = 50;
+    migrateEggs(old, sourceVersion);
+    old.version = 51;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -9288,6 +9373,7 @@ export class VoxelSimulation {
                 'hitPoints',
                 'furniture',
                 'unfinished',
+                'hatcher',
                 'x',
                 'y',
                 'z',
@@ -9579,7 +9665,7 @@ export class VoxelSimulation {
     const plainCargo = (batch: Cargo) =>
       validBatch(batch) &&
       Object.keys(batch).every((key) =>
-        ['resource', 'amount', 'crop', 'rotProgress', 'apparel', 'weapon', 'forbidden', 'carcass', 'poisonChance', 'hitPoints', 'furniture', 'unfinished'].includes(
+        ['resource', 'amount', 'crop', 'rotProgress', 'apparel', 'weapon', 'forbidden', 'carcass', 'poisonChance', 'hitPoints', 'furniture', 'unfinished', 'hatcher'].includes(
           key,
         ),
       );
@@ -9767,11 +9853,11 @@ export class VoxelSimulation {
               deviceCells({ ...j, kind: j.kind, axis: j.axis! }).some((p) => !inside(p))))) ||
         !materialMap(j.cost) ||
         !materialMap(j.delivered) ||
-        (j.kind === 'cook' && (j.cost.grain ?? 0) + (j.cost.meat ?? 0) + (j.cost.milk ?? 0) !== SIMPLE_MEAL.ingredients) ||
+        (j.kind === 'cook' && !validSimpleMealIngredients(j.cost)) ||
         resources.some(
           (r) =>
             (j.cost[r] ?? 0) !==
-              (j.kind === 'cook' && (r === 'grain' || r === 'meat' || r === 'milk') ? (j.cost[r] ?? 0) : j.kind === 'refuel'
+              (j.kind === 'cook' && isFoodIngredient(r) ? (j.cost[r] ?? 0) : j.kind === 'refuel'
                 ? r === 'wood'
                   ? j.cost.wood
                   : 0
@@ -10265,6 +10351,7 @@ export class VoxelSimulation {
     validateHusbandry(d);
     validateMilk(d);
     validateWool(d);
+    validateEggs(d);
     validateAutoSlaughter(d);
     validatePens(d);
     validatePawnAreas(d);

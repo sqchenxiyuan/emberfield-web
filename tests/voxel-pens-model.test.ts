@@ -95,7 +95,7 @@ describe('animal policy is distinct from physical barriers', () => {
     expect(penAcceptsAnimal(m, { ...deer, sex: 'female', faction: 'wild' })).toBe(false);
     expect(penAcceptsAnimal(m, { ...deer, sex: 'female', species: 'hare' })).toBe(false);
     expect(penAcceptsAnimal(m, { ...deer, sex: 'female', dead: true })).toBe(false);
-    expect(Object.keys(m.filter).sort()).toEqual(['alpaca', 'deer', 'dromedary', 'female', 'male']);
+    expect(Object.keys(m.filter).sort()).toEqual(['alpaca', 'chicken', 'deer', 'dromedary', 'female', 'male']);
   });
   it('uses an independent initial roaming clock and rejects unsafe time arithmetic', () => {
     expect(initialAnimalPenState(100)).toEqual({ allowedAreaId: null, requestedPenId: null, ropePaused: false, nextRoamTick: 100 + DAY });

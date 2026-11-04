@@ -19,7 +19,7 @@ import { SurvivalPanel } from './SurvivalPanel';
 import { SanitationPanel, SanitationDetails, CleaningStatus } from './SanitationPanel';
 import { FirePanel, FireDetails, FireDamageDetails, FireWorkStatus } from './FirePanel';
 import { WeatherPanel, WeatherCellDetails } from './WeatherPanel';
-import { AnimalPanel, AnimalDetails } from './AnimalPanel';
+import { AnimalPanel, AnimalDetails, EggDetails } from './AnimalPanel';
 import { AllowedAreaPanel, PawnAllowedArea } from './AllowedAreaPanel';
 import { FenceGateDetails, PenDetails, type PenControls } from './PenPanel';
 import { LivingPanel, RoomLivingDetails, DiningFurnitureDetails } from './LivingPanel';
@@ -221,7 +221,7 @@ const equal = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
 const levelName = (z: number, base = 8) =>
   z === base ? '营地基准层' : z < base ? `基准层下 ${base - z}` : `基准层上 +${z - base}`;
 const STORAGE_RESOURCES = Object.keys(RESOURCE_NAMES) as Resource[];
-const FOOD_RESOURCES: Resource[] = ['food', 'grain', 'meat', 'milk', 'meal'];
+const FOOD_RESOURCES: Resource[] = ['food', 'grain', 'meat', 'milk', 'eggUnfertilized', 'meal'];
 const BUILDING_RESOURCES: Resource[] = ['wood', 'stone', 'steel', 'components', 'chunk'];
 function connectedStorage(stockpiles: Stockpile[], start: Stockpile): Stockpile[] {
   const key = (p: Pos) => `${p.x}/${p.y}/${p.z}`;
@@ -313,10 +313,11 @@ function FoodCondition({ batch, temperature }: { batch: Cargo; temperature: numb
   if (days === null || limit === null)
     return batch.resource === 'food' ? (
       <small className="voxel-food-condition">包装生存口粮 · 不腐坏</small>
-    ) : null;
+    ) : <EggDetails batch={batch} temperature={temperature} />;
   const rate = rotRateAtTemperature(temperature);
   return (
     <div className="voxel-food-condition" data-testid="food-condition">
+      <EggDetails batch={batch} temperature={temperature} />
       {batch.resource === 'herb' && (
         <small data-testid="herb-use">草药用于医疗护理，不能食用；冷藏可延缓腐坏。</small>
       )}
@@ -951,8 +952,8 @@ function App() {
         {!p && <p>点击地图查看物资、人物与施工进度。先规划，再让殖民者工作。</p>}
         {!p && s && (
           <p>
-            累计腐坏：谷物 {s.stats.spoiled.grain} · 生肉 {s.stats.spoiled.meat} · 奶 {s.stats.spoiled.milk} · 尸体 {s.stats.spoiled.carcass} · 简餐 {s.stats.spoiled.meal}
-            。食品需搬入有供电、温度达标的封闭冷库。
+            累计腐坏：谷物 {s.stats.spoiled.grain} · 生肉 {s.stats.spoiled.meat} · 奶 {s.stats.spoiled.milk} · 食用蛋 {s.stats.spoiled.eggUnfertilized} · 尸体 {s.stats.spoiled.carcass} · 简餐 {s.stats.spoiled.meal}
+            。易腐食品需搬入有供电、温度达标的封闭冷库；孵化中的受精蛋请另存适温区域。
           </p>
         )}
         {!p && s?.settings && (
@@ -1232,11 +1233,14 @@ function App() {
               </button>
               <button onClick={() => updateStorage(storage.priority, ['herb'])}>仅收草药</button>
               <button onClick={() => updateStorage(storage.priority, ['milk'])}>仅收奶</button>
+              <button onClick={() => updateStorage(storage.priority, ['eggFertilized'])}>仅收孵化蛋</button>
+              <button onClick={() => updateStorage(storage.priority, ['eggUnfertilized'])}>仅收食用蛋</button>
               <button onClick={() => updateStorage(storage.priority, ['unfinished'])}>仅收未完成品</button>
               <button onClick={() => updateStorage(storage.priority, ['meat', 'carcass'])}>肉类与尸体</button>
               <button onClick={() => updateStorage(storage.priority, [])}>停止收纳</button>
             </div>
             <div className="voxel-storage-filters">
+              <small>「仅收食物」排除受精蛋；孵化蛋请另设 0～50°C 的适温仓储，避免误入冷冻库。</small>
               {STORAGE_RESOURCES.map((resource) => (
                 <label className="voxel-check" key={resource}>
                   <input

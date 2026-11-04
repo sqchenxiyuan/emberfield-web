@@ -25,15 +25,15 @@ describe('production policy worker and input rules', () => {
   it('defaults to unrestricted workers, skills and inputs without sharing mutable lists', () => {
     const a = defaultProductionPolicy(), b = defaultProductionPolicy();
     expect(a).toEqual({ workerId: null, skillMin: 0, skillMax: 20, ingredientRadius: null,
-      allowedFood: ['grain', 'meat', 'milk'], allowedCarcasses: ['hare', 'deer', 'alpaca', 'dromedary'],
+      allowedFood: ['grain', 'meat', 'milk', 'eggUnfertilized'], allowedCarcasses: ['hare', 'deer', 'alpaca', 'dromedary', 'chicken'],
       allowedTextiles: ['cloth', 'alpacaWool'] });
     expect(validProductionPolicy(a)).toBe(true);
     a.allowedFood.length = 0; a.allowedCarcasses.length = 0; a.allowedTextiles.length = 0;
-    expect(b.allowedFood).toHaveLength(3); expect(b.allowedCarcasses).toHaveLength(4);
+    expect(b.allowedFood).toHaveLength(4); expect(b.allowedCarcasses).toHaveLength(5);
     expect(b.allowedTextiles).toEqual(['cloth', 'alpacaWool']);
     const first = makeProductionBill('bill:20', 'cook'), second = makeProductionBill('bill:21', 'cook');
     first.policy.allowedFood.length = 0;
-    expect(second.policy.allowedFood).toEqual(['grain', 'meat', 'milk']);
+    expect(second.policy.allowedFood).toEqual(['grain', 'meat', 'milk', 'eggUnfertilized']);
   });
 
   it('uses the recipe main skill and accepts both ends of the player interval', () => {

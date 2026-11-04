@@ -83,6 +83,8 @@ export type Resource =
   | 'grain'
   | 'meat'
   | 'milk'
+  | 'eggUnfertilized'
+  | 'eggFertilized'
   | 'carcass'
   | 'meal'
   | 'chunk'
@@ -367,6 +369,8 @@ export interface Cargo {
   furniture?: FurniturePiece;
   unfinished?: UnfinishedPiece;
   carcass?: { animalId: number; species: AnimalSpecies; bodySize?: number };
+  /** One fertilized stack shares its incubation state; physical splits copy it. */
+  hatcher?: { progress: number; temperatureDamage: number; motherId: number | null; fatherId: number | null; faction: 'wild' | 'colony' };
   /** Player prohibition for physical items; specific direct orders may allow them. */
   forbidden?: boolean;
   /** Equivalent unfrozen age in our simulation ticks; required for grain/meal. */
@@ -422,9 +426,9 @@ export interface Stove extends Pos {
   target: number;
   paused: boolean;
 }
-export type AnimalSpecies = 'hare' | 'deer' | 'dromedary' | 'alpaca';
+export type AnimalSpecies = 'hare' | 'deer' | 'dromedary' | 'alpaca' | 'chicken';
 export interface GrassPatch extends Pos { growth: number }
-export interface AnimalGoal { kind: 'grass' | 'crop' | 'food' | 'mate' | 'area' | 'exit'; id: number }
+export interface AnimalGoal { kind: 'grass' | 'crop' | 'food' | 'mate' | 'area' | 'exit' | 'layEgg'; id: number }
 export interface HandleTask {
   animalId: number;
   action: 'tame' | 'maintain' | 'feed' | 'slaughter' | 'autoSlaughter' | 'release' | 'milk' | 'shear';
@@ -436,7 +440,7 @@ export interface HandleTask {
 }
 export interface HusbandryEvent {
   tick: number;
-  kind: 'tame' | 'failed' | 'fed' | 'pregnancy' | 'birth' | 'miscarriage' | 'rewild' | 'slaughter' | 'release' | 'starved' | 'escaped' | 'milked' | 'milkFailed' | 'sheared' | 'shearFailed';
+  kind: 'tame' | 'failed' | 'fed' | 'pregnancy' | 'birth' | 'miscarriage' | 'rewild' | 'slaughter' | 'release' | 'starved' | 'escaped' | 'milked' | 'milkFailed' | 'sheared' | 'shearFailed' | 'fertilized' | 'laidEgg' | 'hatched';
   animalId: number;
   otherId: number | null;
   message: string;
@@ -457,6 +461,10 @@ export interface WildAnimal extends Pos {
   malnutrition: number;
   milkFullness: number;
   woolGrowth: number;
+  eggProgress: number;
+  fertilizationCount: number;
+  eggFatherId: number | null;
+  layProgress: number;
   pregnancy: { fatherId: number; progress: number } | null;
   mateId: number | null;
   mateProgress: number;
@@ -474,7 +482,7 @@ export interface WildAnimal extends Pos {
   health: number;
   hunger: number;
   dead: boolean;
-  phase: 'roam' | 'graze' | 'rest' | 'flee' | 'dead' | 'eat' | 'mate' | 'interact' | 'rope';
+  phase: 'roam' | 'graze' | 'rest' | 'flee' | 'dead' | 'eat' | 'mate' | 'interact' | 'rope' | 'layEgg';
   hunt: boolean;
   moveTick: number;
   decisionTick: number;
@@ -778,6 +786,8 @@ export interface Counts {
   grain: number;
   meat: number;
   milk: number;
+  eggUnfertilized: number;
+  eggFertilized: number;
   carcass: number;
   meal: number;
   chunk: number;
@@ -1037,7 +1047,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 50;
+  version: 51;
   autoSlaughter: import('./autoSlaughter').AutoSlaughterSettings;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
@@ -1114,6 +1124,8 @@ export const RESOURCE_NAMES: Record<Resource, string> = {
   grain: '生食材',
   meat: '生肉',
   milk: '奶',
+  eggUnfertilized: '鸡蛋（未受精）',
+  eggFertilized: '鸡蛋（受精）',
   carcass: '动物尸体',
   meal: '简餐',
 };
@@ -1205,6 +1217,8 @@ export const emptyCounts = (): Counts => ({
   grain: 0,
   meat: 0,
   milk: 0,
+  eggUnfertilized: 0,
+  eggFertilized: 0,
   carcass: 0,
   meal: 0,
   chunk: 0,

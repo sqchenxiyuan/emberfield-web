@@ -286,7 +286,7 @@ describe('physical medical care, agriculture and v18 migration', () => {
       const old = JSON.parse(bytes.toString()),
         save = VoxelSimulation.load(old).save();
       expect(old.version).toBe(18);
-      expect(save.version).toBe(50);
+      expect(save.version).toBe(51);
       expect(save.items).toEqual(old.items);
       expect(save.research).toEqual(old.research);
       expectWildlifeIds(old.nextId, save);
@@ -300,7 +300,7 @@ describe('physical medical care, agriculture and v18 migration', () => {
         expect(p.medical.risks.every((r) => r.state === 'legacy')).toBe(true);
       }
       for (const key of ['produced', 'consumed', 'spoiled', 'destroyed'] as const)
-        expect(save.stats[key]).toEqual({ ...old.stats[key], herb: 0, silver: 0, meat: 0, milk: 0, alpacaWool: 0, carcass: 0, furniture: 0, unfinished: 0 });
+        expect(save.stats[key]).toEqual({ ...old.stats[key], herb: 0, silver: 0, meat: 0, milk: 0, alpacaWool: 0, eggUnfertilized: 0, eggFertilized: 0, carcass: 0, furniture: 0, unfinished: 0 });
       const contaminated = structuredClone(old);
       contaminated.pawns[0].medical = initialMedical();
       expect(() => VoxelSimulation.load(contaminated)).toThrow('旧存档');

@@ -2,6 +2,8 @@ import { animalAllowed, animalManagementTick, inheritAnimalArea, cancelAnimalRop
 import { initialAnimalPenState } from './pens';
 import { autoSlaughterSelection, type AutoSlaughterSettings } from './autoSlaughter';
 import { advanceWool, woolReady, woolGatherSpeed, woolGatherChance, WOOL_RULES } from './animalWool';
+import { advanceEggLayer, eggLayerActive, EGG_RULES, freshFertilizedEggs } from './animalEggs';
+import { freshBatch } from './preservation';
 import { advanceMilk, milkReady, milkGatherSpeed, milkGatherChance, MILK_RULES } from './animalMilk';
 import { at, CELLS, DAY, position, type Cargo, type Crop, type GrassPatch, type HandleTask,
   type HusbandryEvent, type Pawn, type Pos, type Stack, type WildAnimal, type CommandResult } from './types';
@@ -39,6 +41,8 @@ export interface HusbandryHost extends PensHost {
   /** Dry-run must have no side effects; commit places the whole batch and books production. */
   animalWoolPlace?(p: Pawn, amount: number, commit: boolean): boolean;
   animalMilkPlace?(p: Pawn, amount: number, commit: boolean): boolean;
+  animalEggPlace?(a: WildAnimal, batch: Cargo, commit: boolean): boolean;
+  animalEggRoom?(p: Pos): number;
 }
 const adjacent = (a: Pos, b: Pos) => a.z === b.z && Math.abs(a.x-b.x)+Math.abs(a.y-b.y) === 1;
 const edible = (b: Cargo) => ['grain', 'food', 'meal'].includes(b.resource);
@@ -55,6 +59,7 @@ function event(s: HusbandryHost, kind: HusbandryEvent['kind'], a: WildAnimal, me
 }
 function clearAnimal(a: WildAnimal) {
   a.path=[]; a.goal=null; a.eatProgress=0; a.mateId=null; a.mateProgress=0;
+  a.layProgress=0;
   if (!a.dead) a.phase='roam';
 }
 export function releaseAnimalHandlers(s: HusbandryHost, a: WildAnimal) {
@@ -143,6 +148,7 @@ function eat(s:HusbandryHost,a:WildAnimal) {
 function compatibleMate(a:WildAnimal,b:WildAnimal) {
   return a!==b&&!a.dead&&!b.dead&&a.faction==='colony'&&b.faction==='colony'&&a.species===b.species&&
     a.sex==='male'&&b.sex==='female'&&isAnimalAdult(a)&&isAnimalAdult(b)&&!b.pregnancy&&
+    (b.species!=='chicken'||b.fertilizationCount<EGG_RULES.fertilizationMax)&&
     a.hunger>30&&b.hunger>30&&a.malnutrition<.1&&b.malnutrition<.1&&!a.slaughter&&!b.slaughter&&!a.releaseMarked&&!b.releaseMarked;
 }
 function mateTick(s:HusbandryHost,a:WildAnimal):boolean {
@@ -160,10 +166,61 @@ function mateTick(s:HusbandryHost,a:WildAnimal):boolean {
   }
   a.path=[];a.goal={kind:'mate',id:b.id};a.reason='正在交配';
   if(++a.mateProgress>=HUSBANDRY_RULES.mateWork){
-    if(random(s,a,1101)<HUSBANDRY_RULES.mateChance){b.pregnancy={fatherId:a.id,progress:0};event(s,'pregnancy',b,`${b.name}已经怀孕`,a.id);}
+    if(b.species==='chicken'){
+      b.fertilizationCount=EGG_RULES.fertilizationMax;b.eggFatherId=a.id;
+      event(s,'fertilized',b,`${b.name}下一枚蛋已受精`,a.id);
+    } else if(random(s,a,1101)<HUSBANDRY_RULES.mateChance){b.pregnancy={fatherId:a.id,progress:0};event(s,'pregnancy',b,`${b.name}已经怀孕`,a.id);}
     a.nextMateTick=s.tick+HUSBANDRY_RULES.mateInterval;clearAnimal(a);
   }
   return true;
+}
+/** An animal walks to a laying site and waits there. Egg boxes are not present
+ * in this Web tier: reuse a same-room egg pile, then a reachable nearby cell. */
+function layEggTick(s:HusbandryHost,a:WildAnimal):boolean {
+  if(!eggLayerActive(a)||a.eggProgress<1||a.slaughter||a.releaseMarked||a.hunt){
+    if(a.goal?.kind==='layEgg')clearAnimal(a);return false;
+  }
+  if(a.goal?.kind!=='layEgg') {
+    if(s.tick<a.decisionTick)return false;
+    clearAnimal(a);
+    const eggType=a.fertilizationCount>0?'eggFertilized':'eggUnfertilized';
+    const candidates=s.items.filter(i=>i.resource===eggType&&
+      Math.hypot(i.x-a.x,i.y-a.y,i.z-a.z)<=30&&s.animalEggRoom?.(i)===s.animalEggRoom?.(a))
+      .sort((x,y)=>Math.hypot(x.x-a.x,x.y-a.y,x.z-a.z)-Math.hypot(y.x-a.x,y.y-a.y,y.z-a.z)||x.id-y.id);
+    let result:ReturnType<typeof route>=null;
+    for(const egg of candidates){
+      const targets=new Map([egg,...s.itemStands(egg)].filter(p=>s.animalCanStop(p)&&animalAllowed(s,a,p))
+        .map(p=>[at(p),{kind:'layEgg' as const,id:at(p)}]));
+      result=route(s,a,targets);if(result)break;
+    }
+    if(!result){
+      const targets=new Map<number,NonNullable<WildAnimal['goal']>>();
+      for(let dx=-5;dx<=5;dx++)for(let dy=-5;dy<=5;dy++){
+        const p={x:a.x+dx,y:a.y+dy,z:a.z};
+        if(Math.abs(dx)+Math.abs(dy)<=5&&s.animalCanStop(p)&&animalAllowed(s,a,p))targets.set(at(p),{kind:'layEgg',id:at(p)});
+      }
+      result=route(s,a,targets);
+    }
+    if(!result){a.reason='准备产蛋，找不到可达位置';a.decisionTick=s.tick+80;return true;}
+    a.path=result.path;a.goal=result.goal;a.layProgress=0;
+  }
+  const target=position(a.goal!.id);
+  if(!s.animalCanStop(target)||!animalAllowed(s,a,target)){clearAnimal(a);a.decisionTick=s.tick+80;return true;}
+  a.phase='layEgg';a.reason='前往产蛋位置';
+  if(move(s,a))return true;
+  if(a.goal?.kind!=='layEgg'||at(a)!==at(target))return true;
+  a.phase='layEgg';a.reason='正在产蛋';
+  a.layProgress=Math.min(EGG_RULES.layWork,a.layProgress+1);
+  if(a.layProgress<EGG_RULES.layWork)return true;
+  const fertile=a.fertilizationCount>0;
+  const batch=fertile?freshFertilizedEggs(1,a.faction,a.id,a.eggFatherId):freshBatch('eggUnfertilized',1);
+  if(!s.animalEggPlace?.(a,batch,false)){a.reason='产蛋完成，等待地面空间';return true;}
+  if(!s.animalEggPlace(a,batch,true))throw new Error('产蛋放置计划在同一模拟步内失效');
+  a.eggProgress=0;
+  if(fertile)a.fertilizationCount--;
+  if(!a.fertilizationCount)a.eggFatherId=null;
+  event(s,'laidEgg',a,`${a.name}产下一枚${fertile?'受精':'未受精'}鸡蛋`);
+  clearAnimal(a);a.decisionTick=s.tick+80;return true;
 }
 function birth(s:HusbandryHost,a:WildAnimal) {
   if(!a.pregnancy||a.pregnancy.progress<1)return;
@@ -184,6 +241,7 @@ export function updateHusbandry(s:HusbandryHost) {
     const pregnant=!!a.pregnancy;
     advanceMilk(a);
     advanceWool(a);
+    advanceEggLayer(a);
     advanceAnimalNeeds(a);
     if(pregnant&&!a.pregnancy)event(s,'miscarriage',a,`${a.name}因营养不良流产`);
     if(a.malnutrition>=1){event(s,'starved',a,`${a.name}因长期饥饿死亡`);s.killAnimal(a,'长期饥饿');continue;}
@@ -204,6 +262,9 @@ export function updateHusbandry(s:HusbandryHost) {
     const handler=s.pawns.find(p=>p.handleTask?.animalId===a.id&&p.handleTask.stage==='interact');
     if(handler){clearAnimal(a);a.phase='interact';a.reason=handler.reason;continue;}
     if(animalManagementTick(s,a))continue;
+    // Danger, ropes and handlers interrupt work, preserving biological fullness.
+    // A full egg may still be laid while starving; hunger only slows formation.
+    if(layEggTick(s,a))continue;
     const suitor=s.animals.find(b=>b.mateId===a.id&&compatibleMate(b,a));
     if(suitor&&a.hunger>30){clearAnimal(a);a.phase='mate';a.reason='等待配偶靠近';continue;}
     if(mateTick(s,a))continue;

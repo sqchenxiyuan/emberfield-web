@@ -1,7 +1,19 @@
 import { expect } from 'vitest';
+/** Egg schema additions never broaden historical food, carcass or storage filters. */
+export function eggsExpectedField(key: string, value: any): any {
+  const copy = structuredClone(value), eggs = { eggUnfertilized: 0, eggFertilized: 0 };
+  if (key === 'stats') return { ...copy, ...Object.fromEntries(
+    ['produced', 'consumed', 'spoiled', 'destroyed'].map(k => [k, { ...copy[k], ...eggs }])) };
+  if (key === 'trade') return { ...copy, imported: { ...copy.imported, ...eggs }, exported: { ...copy.exported, ...eggs } };
+  if (key === 'animals') return copy.map((a: any) => ({ ...a, eggProgress: 0, fertilizationCount: 0, eggFatherId: null, layProgress: 0 }));
+  if (key === 'penMarkers') return copy.map((p: any) => ({ ...p, filter: { ...p.filter, chicken: false } }));
+  if (key === 'autoSlaughter') return { ...copy,
+    chicken: { total: null, male: null, female: null, youngMale: null, youngFemale: null, allowPregnant: false } };
+  return copy;
+}
 /** Add schema defaults to a copy; historical material/filter choices stay exact. */
 export function woolExpectedField(key: string, value: any): any {
-  const copy = structuredClone(value);
+  const copy = eggsExpectedField(key, value);
   const visit = (node: any): void => {
     if (!node || typeof node !== 'object') return;
     if (!Array.isArray(node) && Object.hasOwn(node, 'allowedFood') && Object.hasOwn(node, 'allowedCarcasses'))
@@ -30,8 +42,71 @@ export function milkExpectedField(key: string, value: any): any {
     dromedary: { total: null, male: null, female: null, youngMale: null, youngFemale: null, allowPregnant: false } };
   return value;
 }
+/** Synthetic old-schema inputs only. Validate everything before removing empty
+ * additions; real chickens, eggs, incubation, product history or filter choices
+ * are evidence, not defaults that a downgrade fixture may erase. */
+export function stripAnimalEggFields(raw: Record<string, any>) {
+  const eggResources = ['eggUnfertilized', 'eggFertilized'];
+  const policy = { total: null, male: null, female: null, youngMale: null, youngFemale: null, allowPregnant: false };
+  const preflight = (node: any): void => {
+    if (!node || typeof node !== 'object') return;
+    expect(node.species).not.toBe('chicken');
+    expect(eggResources).not.toContain(node.resource);
+    expect(Object.hasOwn(node, 'hatcher')).toBe(false);
+    expect(node.phase).not.toBe('layEgg');
+    expect(['layEgg', 'fertilized', 'laidEgg', 'hatched']).not.toContain(node.kind);
+    Object.values(node).forEach(preflight);
+  };
+  preflight(raw);
+  const animalDefaults = { eggProgress: 0, fertilizationCount: 0, eggFatherId: null, layProgress: 0 };
+  for (const animal of raw.animals ?? []) for (const [key, expected] of Object.entries(animalDefaults))
+    if (Object.hasOwn(animal, key)) expect(animal[key]).toBe(expected);
+  const ledgers = ['produced', 'consumed', 'spoiled', 'destroyed'].map(k => raw.stats?.[k])
+    .concat([raw.trade?.imported, raw.trade?.exported]).filter(Boolean);
+  for (const ledger of ledgers) for (const key of eggResources) if (Object.hasOwn(ledger, key)) expect(ledger[key]).toBe(0);
+  if (raw.autoSlaughter && Object.hasOwn(raw.autoSlaughter, 'chicken')) expect(raw.autoSlaughter.chicken).toEqual(policy);
+  for (const pen of raw.penMarkers ?? []) if (Object.hasOwn(pen.filter, 'chicken')) expect([true, false]).toContain(pen.filter.chicken);
+  for (const job of raw.jobs ?? []) for (const key of eggResources) {
+    expect(Object.hasOwn(job.cost ?? {}, key)).toBe(false); expect(Object.hasOwn(job.delivered ?? {}, key)).toBe(false);
+  }
+  const batches = [...(raw.items ?? []), ...(raw.pawns ?? []).map((p: any) => p.cargo),
+    ...(raw.jobs ?? []).flatMap((j: any) => j.deliveredBatches ?? []),
+    ...(raw.trade?.caravans ?? []).flatMap((c: any) => c.stock ?? []),
+    ...(raw.trade?.receipts ?? []).flatMap((r: any) => (r.transferred ?? []).map((t: any) => t.batch))].filter(Boolean);
+  const settings = [...(raw.stockpiles ?? []), ...(raw.shelves ?? []).map((s: any) => s.settings),
+    ...(raw.storageGroups ?? []).map((g: any) => g.settings), ...(raw.jobs ?? []).map((j: any) => j.storageSettings),
+    ...batches.map((b: any) => b.furniture?.settings)].filter(Boolean);
+  const all = ['silver', 'wood', 'stone', 'steel', 'components', 'food', 'grain', 'meat', 'milk', 'eggUnfertilized', 'eggFertilized', 'carcass', 'meal', 'chunk', 'cloth', 'alpacaWool', 'herb', 'apparel', 'weapon', 'furniture', 'unfinished'];
+  for (const setting of settings) if (setting.accepts.some((r: string) => eggResources.includes(r))) {
+    expect([all.slice().sort(), all.filter(r => !['chunk', 'furniture', 'carcass'].includes(r)).sort()])
+      .toContainEqual([...setting.accepts].sort());
+  }
+  const policies: any[] = [];
+  const collectPolicies = (node: any): void => {
+    if (!node || typeof node !== 'object') return;
+    if (Object.hasOwn(node, 'allowedFood') && Object.hasOwn(node, 'allowedCarcasses')) {
+      expect(node.allowedFood).not.toContain('eggFertilized');
+      if (node.allowedFood.includes('eggUnfertilized')) expect(node.allowedFood).toEqual(['grain', 'meat', 'milk', 'eggUnfertilized']);
+      if (node.allowedCarcasses.includes('chicken')) expect([...node.allowedCarcasses].sort()).toEqual(['alpaca', 'chicken', 'deer', 'dromedary', 'hare']);
+      policies.push(node);
+    }
+    Object.values(node).forEach(collectPolicies);
+  };
+  collectPolicies(raw);
+  // Mutation starts only after all real-state and explicit-filter guards passed.
+  for (const animal of raw.animals ?? []) for (const key of Object.keys(animalDefaults)) delete animal[key];
+  for (const ledger of ledgers) for (const key of eggResources) delete ledger[key];
+  if (raw.autoSlaughter) delete raw.autoSlaughter.chicken;
+  for (const pen of raw.penMarkers ?? []) delete pen.filter.chicken;
+  for (const setting of settings) setting.accepts = setting.accepts.filter((r: string) => !eggResources.includes(r));
+  for (const p of policies) {
+    p.allowedFood = p.allowedFood.filter((r: string) => r !== 'eggUnfertilized');
+    p.allowedCarcasses = p.allowedCarcasses.filter((species: string) => species !== 'chicken');
+  }
+}
 /** Synthetic old-schema inputs only. Actual wool/animals/work cannot be erased. */
 export function stripAnimalWoolFields(raw: Record<string, any>) {
+  stripAnimalEggFields(raw);
   const preflight = (node: any): void => {
     if (!node || typeof node !== 'object') return;
     expect(node.species).not.toBe('alpaca');

@@ -136,6 +136,7 @@ export function applyTradeCommand(s: TradeHost, c: TradeCommand): CommandResult 
     const list = row.side === 'colony' ? items : stock;
     const item = list.find(i => i.id === row.stockId)!;
     item.amount -= row.batch.amount;
+    if(row.batch.hatcher)row.batch.hatcher.faction=row.side==='trader'?'colony':'wild';
     (row.side === 'colony' ? exported : imported).push(row.batch);
   }
   const takeSilver = (side: 'colony' | 'trader', amount: number) => {

@@ -12,6 +12,8 @@ export const STACK_LIMITS: Readonly<Record<Resource, number>> = Object.freeze({
   grain: 75,
   meat: 75,
   milk: 75,
+  eggUnfertilized: 75,
+  eggFertilized: 75,
   carcass: 1,
   meal: 10,
   chunk: 1,
@@ -26,7 +28,7 @@ export const STACK_LIMITS: Readonly<Record<Resource, number>> = Object.freeze({
 export const stackLimit = (resource: Resource) => STACK_LIMITS[resource];
 /** Healthy adult ordinary hauling: one stack, at most 75 units. */
 export const carryLimit = (resource: Resource) => Math.min(75, stackLimit(resource));
-export type BatchKind = Pick<Cargo, 'resource' | 'crop' | 'apparel' | 'weapon' | 'carcass' | 'furniture' | 'unfinished'>;
+export type BatchKind = Pick<Cargo, 'resource' | 'crop' | 'apparel' | 'weapon' | 'carcass' | 'furniture' | 'unfinished' | 'hatcher'>;
 export interface CellInsertion {
   accepted: number;
   /** Existing stack indexes, in stable input order; their identities stay intact. */

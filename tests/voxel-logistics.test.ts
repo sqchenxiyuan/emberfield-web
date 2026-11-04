@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { carryLimit, STACK_LIMITS, stackLimit } from '../src/voxel/logistics';
 import { freshBatch, rotLimit, validBatch } from '../src/voxel/preservation';
+import { freshFertilizedEggs } from '../src/voxel/animalEggs';
 import { makeApparel, validApparel } from '../src/voxel/apparel';
 import { makeWeapon, validWeapon } from '../src/voxel/weapons';
 import { makeFurniturePiece, validFurniturePiece } from '../src/voxel/relocation';
@@ -53,7 +54,7 @@ function add(
                 workTotal: unfinishedRecipeWorkTotals('smith:woodClub')[0], progress: 0, workTicks: 0,
                 ingredients: [freshBatch('wood', 40)], policy: defaultProductionPolicy(),
               } }
-              : freshBatch(resource, amount)),
+              : resource === 'eggFertilized' ? freshFertilizedEggs(amount) : freshBatch(resource, amount)),
     ...extra,
     x: p.x,
     y: p.y,
@@ -136,6 +137,7 @@ function invariants(s: VoxelSimulation) {
           'furniture',
           'unfinished',
           'carcass',
+          'hatcher',
           'forbidden',
           'poisonChance',
           'hitPoints',
@@ -284,7 +286,7 @@ describe('bounded physical stacks and hauling reservations', () => {
     expect(s.items.filter((i) => i.resource === 'food').map((i) => i.amount)).toEqual([
       10, 10, 10, 10, 10, 10,
     ]);
-    expect(s.save().version).toBe(50);
+    expect(s.save().version).toBe(51);
     expect(VoxelSimulation.load(s.save()).counts()).toEqual(s.counts());
   });
   it.each(resources)('carries and stores %s only within its native one-stack limit', (resource) => {

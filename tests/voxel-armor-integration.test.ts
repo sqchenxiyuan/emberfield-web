@@ -1,4 +1,5 @@
 import { withMedicineLedgers } from './legacy-medicine-defaults';
+import { eggsExpectedField } from './legacy-auto-rebuild-defaults';
 import { expectWildlifeIds } from './legacy-wildlife-defaults';
 import { initialSkills } from '../src/voxel/skills';
 import { initialTrade } from '../src/voxel/trade';
@@ -127,10 +128,10 @@ describe('armor save migration and strict physical schemas', () => {
       const s = VoxelSimulation.load(old),
         saved = s.save();
       expect(old).toEqual(before);
-      expect(saved.version).toBe(50);
+      expect(saved.version).toBe(51);
       expectWildlifeIds(old.nextId, saved);
       for (const key of ['tick', 'blocks', 'items', 'stats', 'researchBenches'] as const)
-        expect(saved[key]).toEqual(key === 'stats' ? withMedicineLedgers(old.stats) : old[key]);
+        expect(saved[key]).toEqual(key === 'stats' ? eggsExpectedField('stats', withMedicineLedgers(old.stats)) : old[key]);
       expect(saved.research).toEqual({
         ...old.research,
         progress: { ...old.research.progress, PlateArmor: 0, Machining: 0, Gunsmithing: 0, BlowbackOperation: 0 },

@@ -61,6 +61,7 @@ export function penSummaries(s: PensHost): PenSummary[] {
 }
 function resetAnimal(a: WildAnimal) {
   a.path = []; a.goal = null; a.mateId = null; a.mateProgress = 0; a.eatProgress = 0;
+  a.layProgress = 0;
   if (!a.dead) a.phase = 'roam';
 }
 export function cancelAnimalRopes(s: PensHost, animalId?: number, markerId?: number) {
@@ -99,7 +100,7 @@ export function pensCommand(s: PensHost, c: VoxelCommand): CommandResult | null 
       if (!validName(c.name)) return { ok:false,message:'圈地名称需要1到40个字符' };
       marker.name = c.name.trim();
     } else {
-      if (!c.filter || Object.keys(c.filter).length !== 5 || !['deer','dromedary','alpaca','male','female'].every(k =>
+      if (!c.filter || Object.keys(c.filter).length !== 6 || !['deer','dromedary','alpaca','chicken','male','female'].every(k =>
         typeof c.filter[k as keyof typeof c.filter] === 'boolean')) return { ok:false,message:'圈地筛选无效' };
       marker.filter = {...c.filter}; cancelAnimalRopes(s, undefined, marker.id);
       for (const a of s.animals) if (ANIMAL_HUSBANDRY[a.species].penAnimal) a.retryTick = 0;
