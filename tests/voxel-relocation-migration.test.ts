@@ -7,7 +7,7 @@ import { stripUnfinishedFields } from './legacy-unfinished-defaults';
 describe('published v33 furniture relocation compatibility', () => {
   it.each(['furnished', 'sleeping', 'during-meal'] as const)('keeps the actual %s checkpoint identities, quality, HP and ongoing activity', name => {
     const old = relocationV33(name), before = structuredClone(old), s = VoxelSimulation.load(old), saved = s.save();
-    expect(old).toEqual(before); expect(saved.version).toBe(49);
+    expect(old).toEqual(before); expect(saved.version).toBe(50);
     for (const key of ['tick', 'nextId', 'beds', 'tables', 'chairs', 'fireDamage', 'items', 'stats', 'trade', 'stockpiles'] as const)
       expect(saved[key], key).toEqual(relocationExpectedField(key, old[key]));
     for (const previous of old.pawns) {

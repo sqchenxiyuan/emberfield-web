@@ -36,7 +36,7 @@ function synthetic() {
 describe('authentic v27 environment migration', () => {
   it.each(['delivered', 'snow'] as const)('preserves genuine %s bytes, calendars, physical goods and prior progress', name => {
     const old = historical(name), before = JSON.stringify(old), s = VoxelSimulation.load(old);
-    expect(old.version).toBe(27); expect(s.save().version).toBe(49); expect(s.tick).toBe(old.tick);
+    expect(old.version).toBe(27); expect(s.save().version).toBe(50); expect(s.tick).toBe(old.tick);
     expect(JSON.stringify(old)).toBe(before);
     for (const key of ['weather', 'snow', 'items', 'stats', 'fires', 'fireDamage', 'fireHazards', 'fireLog', 'trade', 'filth'] as const)
       expect(s[key], key).toEqual(relocationExpectedField(key, old[key]));
@@ -182,7 +182,7 @@ describe('synthetic legacy downgrade guard', () => {
     }
   });
   it('removes environment defaults before the weather helper downgrades a synthetic empty world', () => {
-    const s = new VoxelSimulation(73129), raw = s.save() as unknown as Record<string, any>;
+    const s = new VoxelSimulation(73129, { biome: 'boreal' }), raw = s.save() as unknown as Record<string, any>;
     stripWeatherFields(raw);
     expect(raw).not.toHaveProperty('weather'); expect(raw).not.toHaveProperty('snow');
     expect(() => rejectLegacyEnvironmentFields({ ...raw, version: 26 })).not.toThrow();

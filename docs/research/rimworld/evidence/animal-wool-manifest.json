@@ -1,0 +1,224 @@
+{
+  "evidence_id": "RW17-ANIMAL-WOOL",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes.",
+    "No native game, browser, preview, GUI input, or screenshot capture was launched for this milestone."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.CompShearable",
+      "local_file": ".local-research/animal-wool/RimWorld.CompShearable.cs",
+      "sha256": "6df9f5e77e24a96a17cd2cea758ad94e044094dac1fca27c9c7041910003f9bf",
+      "lines": 47
+    },
+    {
+      "type": "RimWorld.CompProperties_Shearable",
+      "local_file": ".local-research/animal-wool/RimWorld.CompProperties_Shearable.cs",
+      "sha256": "9b099edbd1d2a9812cea4a37fb8824dc38902d9ef550d4a492a6e45d97039dc4",
+      "lines": 18
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "local_file": ".local-research/animal-wool/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "lines": 96
+    },
+    {
+      "type": "RimWorld.WorkGiver_Shear",
+      "local_file": ".local-research/animal-wool/RimWorld.WorkGiver_Shear.cs",
+      "sha256": "422a617a946ad7aa7249e80ebe11c842ef6a0a2b0fc123ef35cbf9dcac8767b6",
+      "lines": 14
+    },
+    {
+      "type": "RimWorld.WorkGiver_GatherAnimalBodyResources",
+      "local_file": ".local-research/animal-wool/RimWorld.WorkGiver_GatherAnimalBodyResources.cs",
+      "sha256": "2b563614689cd7a915997c332e8f752dc2d459623b7ec11e54506794bba713f0",
+      "lines": 56
+    },
+    {
+      "type": "RimWorld.JobDriver_Shear",
+      "local_file": ".local-research/animal-wool/RimWorld.JobDriver_Shear.cs",
+      "sha256": "2927a84c81fdf95e1838af9113b5b0d4ac50e1ad0cc9fa58a171309177a65918",
+      "lines": 14
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "local_file": ".local-research/animal-wool/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "lines": 70
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "local_file": ".local-research/animal-wool/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "lines": 1655
+    },
+    {
+      "type": "RimWorld.HungerLevelUtility",
+      "local_file": ".local-research/animal-wool/RimWorld.HungerLevelUtility.cs",
+      "sha256": "be023007bc1de7d662c5e526f48e50ddd516b9a68d9347c3b1c69c30c8726bef",
+      "lines": 36
+    },
+    {
+      "type": "Verse.StuffProperties",
+      "local_file": ".local-research/animal-wool/Verse.StuffProperties.cs",
+      "sha256": "210ddf8b991a8b14219d9605bc0d1e6700958fe7db79787d01778220a9a05cff",
+      "lines": 129
+    },
+    {
+      "type": "Verse.Thing",
+      "local_file": ".local-research/animal-wool/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "lines": 2235
+    },
+    {
+      "type": "Verse.ThingDef",
+      "local_file": ".local-research/animal-wool/Verse.ThingDef.cs",
+      "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+      "lines": 2447
+    },
+    {
+      "type": "Verse.RecipeDef",
+      "local_file": ".local-research/animal-wool/Verse.RecipeDef.cs",
+      "sha256": "9a12df678ba67743d3574e9ebfb866d07c2f918cfdd1f42c75d15ae8b5727132",
+      "lines": 691
+    },
+    {
+      "type": "Verse.GenRecipe",
+      "local_file": ".local-research/animal-wool/Verse.GenRecipe.cs",
+      "sha256": "41cb19d602f388137484b15bc4126fbcdebad63013c34f8432cabff5b28337e3",
+      "lines": 128
+    },
+    {
+      "type": "Verse.AI.Toils_Recipe",
+      "local_file": ".local-research/animal-wool/Verse.AI.Toils_Recipe.cs",
+      "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+      "lines": 391
+    },
+    {
+      "type": "RimWorld.WorkGiver_DoBill",
+      "local_file": ".local-research/animal-wool/RimWorld.WorkGiver_DoBill.cs",
+      "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+      "lines": 730
+    },
+    {
+      "type": "RimWorld.StatDef",
+      "local_file": ".local-research/animal-wool/RimWorld.StatDef.cs",
+      "sha256": "edbe8b7b96b6fbcbc2828c538f55959e19be84d3dd3ce16e3491cc046d61fe4e",
+      "lines": 453
+    },
+    {
+      "type": "RimWorld.StatPart",
+      "local_file": ".local-research/animal-wool/RimWorld.StatPart.cs",
+      "sha256": "0c461a78d1d3ae0dd9132e7f9809e0d6af0b53d8704854a800fd44bef7e43de5",
+      "lines": 33
+    },
+    {
+      "type": "RimWorld.StatUtility",
+      "local_file": ".local-research/animal-wool/RimWorld.StatUtility.cs",
+      "sha256": "006c1491c5c8a35aa434db2c2ed0d6d53ce75718928d9009284ab4881232aa98",
+      "lines": 132
+    },
+    {
+      "type": "RimWorld.Need_Food",
+      "local_file": ".local-research/animal-wool/RimWorld.Need_Food.cs",
+      "sha256": "f17cbaf82d8792108557f869db585fdd6ac26c0ebb537e8acf04173179e7c4cd",
+      "lines": 227
+    },
+    {
+      "type": "RimWorld.StatWorker_MinimumHandlingSkill",
+      "local_file": ".local-research/animal-wool/RimWorld.StatWorker_MinimumHandlingSkill.cs",
+      "sha256": "7e724f9d36c362b1a3e17dcdc3ae48c774407d360bc54ab8b87a2479de966a69",
+      "lines": 43
+    },
+    {
+      "type": "RimWorld.StatWorker",
+      "local_file": ".local-research/animal-wool/RimWorld.StatWorker.cs",
+      "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+      "lines": 1392
+    },
+    {
+      "type": "RimWorld.StatPart_Quality",
+      "local_file": ".local-research/animal-wool/RimWorld.StatPart_Quality.cs",
+      "sha256": "3b80ea8e8f92ffce05a05631972d7f948e0acaa03c3ceeb4d484ecfab72339e0",
+      "lines": 98
+    },
+    {
+      "type": "RimWorld.StatPart_Stuff",
+      "local_file": ".local-research/animal-wool/RimWorld.StatPart_Stuff.cs",
+      "sha256": "e5f3e99d67b19d386c0e48080cc2d6cb2e06034f79608590aee91209641d7633",
+      "lines": 51
+    },
+    {
+      "type": "RimWorld.StatWorker_MarketValue",
+      "local_file": ".local-research/animal-wool/RimWorld.StatWorker_MarketValue.cs",
+      "sha256": "e47a2c46fa51be66ebe01e9b287f90416557bbedad6b139d7a7c97fa35dd7902",
+      "lines": 151
+    },
+    {
+      "type": "RimWorld.StatPart_Health",
+      "local_file": ".local-research/animal-wool/RimWorld.StatPart_Health.cs",
+      "sha256": "08d4ff196049da78baa56170a2f90cb65bb371c6931f408910163910d72255cf",
+      "lines": 26
+    },
+    {
+      "type": "Verse.BuildableDef",
+      "local_file": ".local-research/animal-wool/Verse.BuildableDef.cs",
+      "sha256": "4ab5cdce8c360a9401aff680543e70858de0d653702abcef524306ff83619c53",
+      "lines": 389
+    },
+    {
+      "type": "RimWorld.LifeStageDef",
+      "local_file": ".local-research/animal-wool/RimWorld.LifeStageDef.cs",
+      "sha256": "93a5a86d46d9b6d954630d71044634ec69faddd67c473d1fed730e474c0034bd",
+      "lines": 132
+    },
+    {
+      "type": "RimWorld.RecipeDefGenerator",
+      "local_file": ".local-research/animal-wool/RimWorld.RecipeDefGenerator.cs",
+      "sha256": "bf8ff9929fbbd1beb92721f21ff3c10e91b4f5531764b7bc56f8c86befe1c3ef",
+      "lines": 156
+    },
+    {
+      "type": "Verse.ThingMaker",
+      "local_file": ".local-research/animal-wool/Verse.ThingMaker.cs",
+      "sha256": "8a12abe8fd8ffd9b5f2b0a0acf036d8cba756e03738d00afc8a937d67af307dd",
+      "lines": 33
+    },
+    {
+      "type": "RimWorld.Bill_Production",
+      "local_file": ".local-research/animal-wool/RimWorld.Bill_Production.cs",
+      "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+      "lines": 469
+    },
+    {
+      "type": "Verse.RaceProperties",
+      "local_file": ".local-research/animal-wool/Verse.RaceProperties.cs",
+      "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+      "lines": 788
+    },
+    {
+      "type": "Verse.AnimalPenUtility",
+      "local_file": ".local-research/animal-wool/Verse.AnimalPenUtility.cs",
+      "sha256": "fbc92dcf75908d45f445f835fc83d0f9251cdd3c7d84482a27fdcd91d524b3f9",
+      "lines": 444
+    },
+    {
+      "type": "RimWorld.WildAnimalSpawner",
+      "local_file": ".local-research/animal-wool/RimWorld.WildAnimalSpawner.cs",
+      "sha256": "a5aeaa387c91716c53c69e4abc7c46be1c1b3f9a096acfb7556679bc00e3aae7",
+      "lines": 189
+    }
+  ]
+}

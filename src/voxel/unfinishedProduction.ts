@@ -1,6 +1,6 @@
-import { APPAREL_DEFS, ARMOR_KINDS, TAILOR_KINDS } from './apparel';
+import { APPAREL_DEFS, ARMOR_KINDS, TAILOR_KINDS, apparelCost, type TextileMaterial } from './apparel';
 import { WEAPON_DEFS, WEAPON_KINDS, weaponWork, type WeaponKind } from './weapons';
-import { emptyCounts, type ApparelKind, type Cargo, type Counts, type UnfinishedPiece, type VoxelSave } from './types';
+import { emptyCounts, type ApparelKind, type ApparelPiece, type Cargo, type Counts, type UnfinishedPiece, type VoxelSave } from './types';
 import { productionJobRecipe, productionQueues, type ProductionRecipe } from './productionBills';
 import { validProductionPolicy } from './productionPolicies';
 import { validBatch } from './preservation';
@@ -10,7 +10,7 @@ const recipes = new Set<string>([
   ...WEAPON_KINDS.map(kind => `smith:${kind}`),
   ...ARMOR_KINDS.map(kind => `armorsmith:${kind}`),
 ]);
-const materials = ['wood', 'steel', 'components', 'cloth'] as const;
+const materials = ['wood', 'steel', 'components', 'cloth', 'alpacaWool'] as const;
 const fields = ['id', 'recipe', 'creatorId', 'creatorName', 'boundBillId', 'workTotal', 'progress', 'workTicks', 'ingredients', 'policy'];
 const record = (value: unknown): value is Record<string, any> => !!value && typeof value === 'object' && !Array.isArray(value);
 const integer = (value: unknown, min = 0, max = Number.MAX_SAFE_INTEGER): value is number =>
@@ -25,10 +25,23 @@ export function recipeUsesUnfinished(recipe: unknown): recipe is ProductionRecip
 }
 
 /** A defensive copy: callers must not mutate global recipe definitions. */
-export function unfinishedRecipeCost(recipe: ProductionRecipe): Partial<Counts> | null {
+export function unfinishedRecipeCost(recipe: ProductionRecipe, material?: ApparelPiece['material']): Partial<Counts> | null {
   if (!recipeUsesUnfinished(recipe)) return null;
   return { ...(recipe.startsWith('smith:') ? WEAPON_DEFS[recipe.slice(6) as WeaponKind].cost
-    : APPAREL_DEFS[recipe.slice(recipe.indexOf(':') + 1) as ApparelKind].cost) };
+    : apparelCost(recipe.slice(recipe.indexOf(':') + 1) as ApparelKind, material)) };
+}
+
+/** Material identity comes from the physical inputs enclosed by this UFT.
+ * Split batches of one material are valid; cloth/wool mixtures are not. Smith
+ * recipes have fixed materials and intentionally return null from this helper. */
+export function unfinishedApparelMaterial(piece: Pick<UnfinishedPiece, 'recipe' | 'ingredients'>): ApparelPiece['material'] | null {
+  if (!recipeUsesUnfinished(piece.recipe) || piece.recipe.startsWith('smith:') ||
+      !Array.isArray(piece.ingredients) || !piece.ingredients.length) return null;
+  if (piece.recipe.startsWith('armorsmith:'))
+    return piece.ingredients.every(batch => batch?.resource === 'steel') ? 'steel' : null;
+  const material = piece.ingredients[0]?.resource;
+  return (material === 'cloth' || material === 'alpacaWool') && piece.ingredients.every(batch => batch?.resource === material)
+    ? material as TextileMaterial : null;
 }
 
 /** Existing weapon recipes include the selected worktable's speed in their
@@ -64,7 +77,10 @@ export function validateUnfinishedPiece(value: unknown): value is UnfinishedPiec
   // inputs. Check the resource before validBatch so recursive UFTs cannot recurse.
   if (value.ingredients.some((batch: unknown) => !record(batch) || !materials.includes(batch.resource) ||
       Object.keys(batch).some(key => !['resource', 'amount', 'hitPoints', 'forbidden'].includes(key)) || !validBatch(batch))) return false;
-  const actual = unfinishedMaterialCounts(value as UnfinishedPiece), expected = unfinishedRecipeCost(value.recipe)!;
+  const material = unfinishedApparelMaterial(value as UnfinishedPiece);
+  if (!value.recipe.startsWith('smith:') && material === null) return false;
+  if (value.recipe.startsWith('tailoring:') && !value.policy.allowedTextiles.includes(material as TextileMaterial)) return false;
+  const actual = unfinishedMaterialCounts(value as UnfinishedPiece), expected = unfinishedRecipeCost(value.recipe, material ?? undefined)!;
   if (materials.some(resource => actual[resource] !== (expected[resource] ?? 0))) return false;
   if (owns(value, 'productQuality')) {
     const quality = value.productQuality;
@@ -77,17 +93,19 @@ export function validateUnfinishedPiece(value: unknown): value is UnfinishedPiec
   return true;
 }
 
-/** Native unfinished guns explicitly use .5. Other materials use the current
- * Web fire material rules; full native Stuff-derived flammability is not modeled. */
+/** Native unfinished guns explicitly use .5. UnfinishedApparel has no
+ * Flammability override: stat default 0 stays zero regardless of textile Stuff.
+ * Other recipes retain the existing Web fire material adaptation. */
 export function unfinishedFlammability(piece: Pick<UnfinishedPiece, 'recipe' | 'ingredients'>): number {
   if (piece.recipe === 'smith:revolver' || piece.recipe === 'smith:machinePistol') return .5;
+  if (piece.recipe.startsWith('tailoring:')) return 0;
   return piece.ingredients.some(batch => ['wood', 'cloth', 'components'].includes(batch.resource)) ? 1 : 0;
 }
 
 const list = (value: unknown): any[] => Array.isArray(value) ? value : [];
 function fail(reason: string): never { throw new Error('未完成品存档无效：' + reason); }
 const policyKey = (policy: UnfinishedPiece['policy']) => JSON.stringify([
-  policy.workerId, policy.skillMin, policy.skillMax, policy.ingredientRadius, policy.allowedFood, policy.allowedCarcasses,
+  policy.workerId, policy.skillMin, policy.skillMax, policy.ingredientRadius, policy.allowedFood, policy.allowedCarcasses, policy.allowedTextiles,
 ]);
 const qualityKey = (quality: UnfinishedPiece['productQuality']) => quality
   ? JSON.stringify([quality.value, quality.skill, quality.workerId]) : null;
@@ -161,7 +179,7 @@ export function validateUnfinishedProduction(d: VoxelSave): void {
         qualityKey(job.productQuality) !== qualityKey(piece.productQuality) ||
         (job.owner !== null && job.owner !== piece.creatorId) ||
         (carrier && job.owner !== null && (job.owner !== carrier.id || carrier.jobId !== job.id))) fail('作业引用、作者或进度副本不一致');
-    const expected = unfinishedRecipeCost(piece.recipe)!;
+    const expected = unfinishedRecipeCost(piece.recipe, unfinishedApparelMaterial(piece) ?? undefined)!;
     if (Object.keys(job.cost).length !== Object.keys(expected).length ||
         Object.entries(expected).some(([resource, amount]) => job.cost[resource as keyof Counts] !== amount))
       fail('作业原配方成本不一致');

@@ -33,7 +33,7 @@ function historical(name: keyof typeof HASHES) {
 describe('authentic v28 husbandry migration', () => {
   it.each(['initial', 'protected', 'final'] as const)('retains genuine %s checkpoint state and seeds grass without allocating identities', name => {
     const old = historical(name), before = structuredClone(old), s = VoxelSimulation.load(old), saved = s.save();
-    expect(old).toEqual(before); expect(saved.version).toBe(49);
+    expect(old).toEqual(before); expect(saved.version).toBe(50);
     expect(saved.tick).toBe(old.tick); expect(saved.nextId).toBe(old.nextId);
     expect(saved.animals).toHaveLength(old.animals.length);
     for (const previous of old.animals) {
@@ -87,7 +87,7 @@ describe('authentic v28 husbandry migration', () => {
       d => { d.pawns[0].skills.animals = initialSkills(0).animals; }, d => { d.pawns[0].phase = 'handle'; },
       ...['eat', 'mate', 'interact'].map(phase => (d: any) => { d.animals[0].phase = phase; }),
       ...Object.entries(initialAnimalState(baseline.animals[0].id, baseline.animals[0].species, baseline.tick))
-        .filter(([key])=>key !== 'milkFullness' && !Object.hasOwn(initialAnimalPenState(0),key))
+        .filter(([key])=>!['milkFullness', 'woolGrowth'].includes(key) && !Object.hasOwn(initialAnimalPenState(0),key))
         .map(([key, value]) => (d: any) => { d.animals[0][key] = value; })];
     for (const mutate of variants) {
       const old = structuredClone(baseline); mutate(old); const before = structuredClone(old);

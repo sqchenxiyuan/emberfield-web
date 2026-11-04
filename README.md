@@ -1,5 +1,7 @@
 # 余烬边境 · Emberfield
 
+v50接通剪毛与材质衣物：温带羊驼 → 驯服圈养 → 公母成年长毛 → 到场剪毛 → 实物羊毛 → 裁缝单材选料 → 未完成品 → 穿衣御寒。旧存档保留原材料与筛选，玩法机制优先，数值后调。见[143原版静态机制](docs/research/rimworld/143-animal-wool-mechanisms.md)、[144玩法与验证](docs/research/rimworld/144-animal-wool-gameplay.md)。当前继续暂停原版与浏览器交互。
+
 v49接通单峰驼产奶：荒漠野生动物 → 实际驯服与圈养 → 成年雌性积奶 → 饲养员到场挤奶 → 实物储存、食用、烹饪和交易。支持工作打断、存读续行、拥堵等待和原有自动宰杀；机制优先，数值后调。见[141原版静态机制](docs/research/rimworld/141-animal-milk-mechanisms.md)、[142玩法与验证](docs/research/rimworld/142-animal-milk-gameplay.md)。本轮只有静态分析及无界面验证，未操作原版或浏览器。
 
 v48接通自动宰杀：按物种设置成年、幼年和总数上限 → 保护孕兽并筛选超额个体 → 饲养员实际前往处理 → 唯一尸体进入屠宰加工。支持修改配额取消任务、中途保存继续，手动指令独立保留；旧档默认全部不限。机制优先，数值后调。见[139原版静态机制](docs/research/rimworld/139-auto-slaughter-mechanisms.md)、[140玩法与验证](docs/research/rimworld/140-auto-slaughter-gameplay.md)。本轮仅静态分析和无界面验证，未操作原版或浏览器。

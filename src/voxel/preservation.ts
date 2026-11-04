@@ -135,6 +135,7 @@ export function validBatch(batch: unknown): batch is Cargo {
       'carcass',
       'meal',
       'cloth',
+      'alpacaWool',
       'herb',
       'apparel',
       'weapon',

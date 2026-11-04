@@ -29,6 +29,6 @@ export function withMedicineLedgers(stats: Record<string, any>) {
   // Extend historical ledgers while comparing every recorded field unchanged.
   const result = structuredClone(stats);
   for (const k of ['produced', 'consumed', 'spoiled', 'destroyed'])
-    result[k] = { ...result[k], herb: 0, silver: 0, meat: 0, milk: 0, carcass: 0, furniture: 0, unfinished: 0 };
+    result[k] = { ...result[k], herb: 0, silver: 0, meat: 0, milk: 0, alpacaWool: 0, carcass: 0, furniture: 0, unfinished: 0 };
   return result;
 }

@@ -64,7 +64,7 @@ export function traderAccepts(kind: TraderKind, batch: Cargo): boolean {
   if (batch.resource === 'silver') return true;
   if (['wood', 'stone', 'chunk', 'meal', 'herb'].includes(batch.resource)) return false;
   // The supported FoodRaw subset includes animal milk as well as meat/grain.
-  if (kind === 'bulk') return ['steel', 'components', 'cloth', 'grain', 'meat', 'milk', 'food', 'apparel'].includes(batch.resource);
+  if (kind === 'bulk') return ['steel', 'components', 'cloth', 'alpacaWool', 'grain', 'meat', 'milk', 'food', 'apparel'].includes(batch.resource);
   return ['components', 'food', 'weapon'].includes(batch.resource) ||
     (batch.resource === 'apparel' && !!batch.apparel && ['simpleHelmet', 'plateArmor'].includes(batch.apparel.kind));
 }

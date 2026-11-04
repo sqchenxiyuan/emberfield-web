@@ -21,7 +21,7 @@ function identityFor(batch: Cargo, hit: boolean, env = rain) {
 
 describe('physical item HP and source-derived deterioration rules', () => {
   it('keeps the selected resource HP and rates instead of treating every resource alike', () => {
-    const expected = { wood: [150, .5], cloth: [80, 4], components: [70, 2], food: [50, .25],
+    const expected = { wood: [150, .5], cloth: [80, 4], alpacaWool: [90, 3.4], components: [70, 2], food: [50, .25],
       grain: [60, 6], meat: [60, 6], milk: [60, 6], meal: [50, 10], herb: [60, 6], carcass: [100, 1], chunk: [300, 0], unfinished: [50, 2] };
     for (const [resource, [maximum, rate]] of Object.entries(expected)) {
       const batch = { resource, amount: 1 } as Cargo;
@@ -29,7 +29,7 @@ describe('physical item HP and source-derived deterioration rules', () => {
       expect(batchHitPoints(batch), resource).toBe(maximum);
       expect(deteriorationRate(batch, dry), resource).toBe(rate);
     }
-    expect(Object.keys(RESOURCE_CONDITION_DEFS)).toHaveLength(15);
+    expect(Object.keys(RESOURCE_CONDITION_DEFS)).toHaveLength(16);
   });
   it('keeps silver, steel and stone blocks free of HP and leaves chunks immune to environmental damage', () => {
     for (const resource of ['silver', 'steel', 'stone'] as const) {

@@ -1,0 +1,1920 @@
+{
+  "evidence_id": "RW17-ANIMAL-WOOL-STATIC",
+  "version": "1.7.4980 rev60",
+  "assemblySha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "reaEvidenceId": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+  "reaParentId": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+  "reaFile": "docs/research/rimworld/evidence/production-bills-rea-managed.json",
+  "reaSha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+  "manifestFile": "docs/research/rimworld/evidence/animal-wool-manifest.json",
+  "manifestSha256": "24d7768ff1e1bd95aea61a0c5d692d5d5536a8540b9d4ed871890feee1f9589b",
+  "rules": [
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-wool/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "if (parent.Faction == null)",
+      "hits": [
+        {
+          "line": 24,
+          "text": "if (parent.Faction == null)"
+        }
+      ],
+      "interpretation": "The base component rejects factionless animals, not only animals outside the player faction."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-wool/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "if (parent.Suspended)",
+      "hits": [
+        {
+          "line": 28,
+          "text": "if (parent.Suspended)"
+        }
+      ],
+      "interpretation": "Suspended parents do not produce resources."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-wool/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "return fullness >= 1f",
+      "hits": [
+        {
+          "line": 44,
+          "text": "return fullness >= 1f;"
+        }
+      ],
+      "interpretation": "Assignment uses ActiveAndFull; partially filled animals do not offer ordinary gathering jobs."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-wool/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "Scribe_Values.Look(ref fullness, SaveKey, 0f)",
+      "hits": [
+        {
+          "line": 51,
+          "text": "Scribe_Values.Look(ref fullness, SaveKey, 0f);"
+        }
+      ],
+      "interpretation": "Fullness persists on the animal and defaults to zero."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-wool/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "float num = 1f / (float)(GatherResourcesIntervalDays * 60000)",
+      "hits": [
+        {
+          "line": 58,
+          "text": "float num = 1f / (float)(GatherResourcesIntervalDays * 60000);"
+        }
+      ],
+      "interpretation": "Fullness grows per active component tick using the species interval in native days."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-wool/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "num *= PawnUtility.BodyResourceGrowthSpeed(pawn)",
+      "hits": [
+        {
+          "line": 61,
+          "text": "num *= PawnUtility.BodyResourceGrowthSpeed(pawn);"
+        }
+      ],
+      "interpretation": "Hunger changes the accumulation speed rather than directly reducing the eventual batch amount."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-wool/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "fullness = 1f",
+      "hits": [
+        {
+          "line": 66,
+          "text": "fullness = 1f;"
+        }
+      ],
+      "interpretation": "Fullness is capped at one cycle; missed gathering does not bank unlimited cycles."
+    },
+    {
+      "type": "RimWorld.HungerLevelUtility",
+      "file": ".local-research/animal-wool/RimWorld.HungerLevelUtility.cs",
+      "sha256": "be023007bc1de7d662c5e526f48e50ddd516b9a68d9347c3b1c69c30c8726bef",
+      "anchor": "HungerCategory.Fed => 1f",
+      "hits": [
+        {
+          "line": 28,
+          "text": "HungerCategory.Fed => 1f,"
+        }
+      ],
+      "interpretation": "Fed growth multiplier is one."
+    },
+    {
+      "type": "RimWorld.HungerLevelUtility",
+      "file": ".local-research/animal-wool/RimWorld.HungerLevelUtility.cs",
+      "sha256": "be023007bc1de7d662c5e526f48e50ddd516b9a68d9347c3b1c69c30c8726bef",
+      "anchor": "HungerCategory.Hungry => 0.5f",
+      "hits": [
+        {
+          "line": 29,
+          "text": "HungerCategory.Hungry => 0.5f,"
+        }
+      ],
+      "interpretation": "Hungry growth multiplier is one half."
+    },
+    {
+      "type": "RimWorld.HungerLevelUtility",
+      "file": ".local-research/animal-wool/RimWorld.HungerLevelUtility.cs",
+      "sha256": "be023007bc1de7d662c5e526f48e50ddd516b9a68d9347c3b1c69c30c8726bef",
+      "anchor": "HungerCategory.UrgentlyHungry => 0.25f",
+      "hits": [
+        {
+          "line": 30,
+          "text": "HungerCategory.UrgentlyHungry => 0.25f,"
+        }
+      ],
+      "interpretation": "Urgently hungry growth multiplier is one quarter."
+    },
+    {
+      "type": "RimWorld.HungerLevelUtility",
+      "file": ".local-research/animal-wool/RimWorld.HungerLevelUtility.cs",
+      "sha256": "be023007bc1de7d662c5e526f48e50ddd516b9a68d9347c3b1c69c30c8726bef",
+      "anchor": "HungerCategory.Starving => 0f",
+      "hits": [
+        {
+          "line": 31,
+          "text": "HungerCategory.Starving => 0f,"
+        }
+      ],
+      "interpretation": "Starving stops new wool accumulation."
+    },
+    {
+      "type": "RimWorld.WorkGiver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-wool/RimWorld.WorkGiver_GatherAnimalBodyResources.cs",
+      "sha256": "2b563614689cd7a915997c332e8f752dc2d459623b7ec11e54506794bba713f0",
+      "anchor": "return pawn.Map.mapPawns.SpawnedPawnsInFaction(pawn.Faction)",
+      "hits": [
+        {
+          "line": 17,
+          "text": "return pawn.Map.mapPawns.SpawnedPawnsInFaction(pawn.Faction);"
+        }
+      ],
+      "interpretation": "Ordinary scanning searches spawned pawns of the worker faction."
+    },
+    {
+      "type": "RimWorld.WorkGiver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-wool/RimWorld.WorkGiver_GatherAnimalBodyResources.cs",
+      "sha256": "2b563614689cd7a915997c332e8f752dc2d459623b7ec11e54506794bba713f0",
+      "anchor": "comp == null || !comp.ActiveAndFull || pawn2.Downed",
+      "hits": [
+        {
+          "line": 44,
+          "text": "if (comp == null || !comp.ActiveAndFull || pawn2.Downed || (pawn2.roping != null && pawn2.roping.IsRopedByPawn) || !pawn2.CanCasuallyInteractNow() || !pawn.CanReserve(pawn2, 1, -1, null, forced))"
+        }
+      ],
+      "interpretation": "Gather assignment requires full active resource and an animal that is not downed."
+    },
+    {
+      "type": "RimWorld.WorkGiver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-wool/RimWorld.WorkGiver_GatherAnimalBodyResources.cs",
+      "sha256": "2b563614689cd7a915997c332e8f752dc2d459623b7ec11e54506794bba713f0",
+      "anchor": "pawn2.roping != null && pawn2.roping.IsRopedByPawn",
+      "hits": [
+        {
+          "line": 44,
+          "text": "if (comp == null || !comp.ActiveAndFull || pawn2.Downed || (pawn2.roping != null && pawn2.roping.IsRopedByPawn) || !pawn2.CanCasuallyInteractNow() || !pawn.CanReserve(pawn2, 1, -1, null, forced))"
+        }
+      ],
+      "interpretation": "Assignment excludes animals currently roped by a pawn."
+    },
+    {
+      "type": "RimWorld.WorkGiver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-wool/RimWorld.WorkGiver_GatherAnimalBodyResources.cs",
+      "sha256": "2b563614689cd7a915997c332e8f752dc2d459623b7ec11e54506794bba713f0",
+      "anchor": "!pawn2.CanCasuallyInteractNow() || !pawn.CanReserve(pawn2, 1, -1, null, forced)",
+      "hits": [
+        {
+          "line": 44,
+          "text": "if (comp == null || !comp.ActiveAndFull || pawn2.Downed || (pawn2.roping != null && pawn2.roping.IsRopedByPawn) || !pawn2.CanCasuallyInteractNow() || !pawn.CanReserve(pawn2, 1, -1, null, forced))"
+        }
+      ],
+      "interpretation": "Assignment needs casual-interaction eligibility and an ordinary reservation."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-wool/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "Scribe_Values.Look(ref gatherProgress, \"gatherProgress\", 0f)",
+      "hits": [
+        {
+          "line": 20,
+          "text": "Scribe_Values.Look(ref gatherProgress, \"gatherProgress\", 0f);"
+        }
+      ],
+      "interpretation": "Work progress is saved on the driver, separately from animal fullness."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-wool/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "return pawn.Reserve(job.GetTarget(TargetIndex.A), job, 1, -1, null, errorOnFailed)",
+      "hits": [
+        {
+          "line": 25,
+          "text": "return pawn.Reserve(job.GetTarget(TargetIndex.A), job, 1, -1, null, errorOnFailed);"
+        }
+      ],
+      "interpretation": "The job reserves its target to prevent simultaneous handlers."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-wool/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "this.FailOnDespawnedNullOrForbidden(TargetIndex.A)",
+      "hits": [
+        {
+          "line": 30,
+          "text": "this.FailOnDespawnedNullOrForbidden(TargetIndex.A);"
+        }
+      ],
+      "interpretation": "Target disappearance or forbidden status interrupts the driver."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-wool/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "this.FailOnDowned(TargetIndex.A)",
+      "hits": [
+        {
+          "line": 31,
+          "text": "this.FailOnDowned(TargetIndex.A);"
+        }
+      ],
+      "interpretation": "Target downing interrupts work."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-wool/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "this.FailOnNotCasualInterruptible(TargetIndex.A)",
+      "hits": [
+        {
+          "line": 32,
+          "text": "this.FailOnNotCasualInterruptible(TargetIndex.A);"
+        }
+      ],
+      "interpretation": "The driver also rejects loss of casual interruptibility."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-wool/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch)",
+      "hits": [
+        {
+          "line": 33,
+          "text": "yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);"
+        }
+      ],
+      "interpretation": "Wooling requires reaching contact with the animal."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-wool/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "PawnUtility.ForceWait(pawn, 15000, null, maintainPosture: true)",
+      "hits": [
+        {
+          "line": 40,
+          "text": "PawnUtility.ForceWait(pawn, 15000, null, maintainPosture: true);"
+        }
+      ],
+      "interpretation": "Starting work asks the animal to wait and preserves posture."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-wool/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "actor.skills.Learn(SkillDefOf.Animals, 0.13f * (float)delta)",
+      "hits": [
+        {
+          "line": 45,
+          "text": "actor.skills.Learn(SkillDefOf.Animals, 0.13f * (float)delta);"
+        }
+      ],
+      "interpretation": "Actual gathering intervals grant Animals experience before reading speed."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-wool/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "gatherProgress += actor.GetStatValue(StatDefOf.AnimalGatherSpeed) * (float)delta",
+      "hits": [
+        {
+          "line": 46,
+          "text": "gatherProgress += actor.GetStatValue(StatDefOf.AnimalGatherSpeed) * (float)delta;"
+        }
+      ],
+      "interpretation": "Progress scales with AnimalGatherSpeed and elapsed simulation ticks."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-wool/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "GetComp((Pawn)(Thing)job.GetTarget(TargetIndex.A)).Gathered(pawn)",
+      "hits": [
+        {
+          "line": 49,
+          "text": "GetComp((Pawn)(Thing)job.GetTarget(TargetIndex.A)).Gathered(pawn);"
+        }
+      ],
+      "interpretation": "The normal driver invokes Gathered only after work reaches its total."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-wool/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "pawn.CurJobDef == JobDefOf.Wait_MaintainPosture",
+      "hits": [
+        {
+          "line": 56,
+          "text": "if (pawn != null && pawn.CurJobDef == JobDefOf.Wait_MaintainPosture)"
+        }
+      ],
+      "interpretation": "Finish action releases the animal only when it is still in the imposed maintain-posture wait."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-wool/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "wait.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch)",
+      "hits": [
+        {
+          "line": 62,
+          "text": "wait.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);"
+        }
+      ],
+      "interpretation": "Contact loss interrupts the work toil."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-wool/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "ActiveAndFull ? JobCondition.Ongoing : JobCondition.Incompletable",
+      "hits": [
+        {
+          "line": 63,
+          "text": "wait.AddEndCondition(() => GetComp((Pawn)(Thing)job.GetTarget(TargetIndex.A)).ActiveAndFull ? JobCondition.Ongoing : JobCondition.Incompletable);"
+        }
+      ],
+      "interpretation": "The work toil rechecks active full resource during work, including after load."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-wool/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "!Rand.Chance(doer.GetStatValue(StatDefOf.AnimalGatherYield))",
+      "hits": [
+        {
+          "line": 77,
+          "text": "if (!Rand.Chance(doer.GetStatValue(StatDefOf.AnimalGatherYield)))"
+        }
+      ],
+      "interpretation": "Yield stat is a single all-or-nothing success roll, not an amount multiplier."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-wool/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "\"TextMote_ProductWasted\".Translate()",
+      "hits": [
+        {
+          "line": 79,
+          "text": "MoteMaker.ThrowText((doer.DrawPos + parent.DrawPos) / 2f, parent.Map, \"TextMote_ProductWasted\".Translate(), 3.65f);"
+        }
+      ],
+      "interpretation": "Failed gathering produces a wasted-product feedback branch without spawning wool."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-wool/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "GenMath.RoundRandom((float)ResourceAmount * fullness)",
+      "hits": [
+        {
+          "line": 83,
+          "text": "int num = GenMath.RoundRandom((float)ResourceAmount * fullness);"
+        }
+      ],
+      "interpretation": "On success, output amount is stochastically rounded species amount times actual fullness."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-wool/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "Mathf.Clamp(num, 1, ResourceDef.stackLimit)",
+      "hits": [
+        {
+          "line": 86,
+          "text": "int num2 = Mathf.Clamp(num, 1, ResourceDef.stackLimit);"
+        }
+      ],
+      "interpretation": "Successful output is split into real stacks bounded by the resource stack limit."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-wool/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "GenPlace.TryPlaceThing(thing, doer.Position, doer.Map, ThingPlaceMode.Near)",
+      "hits": [
+        {
+          "line": 90,
+          "text": "GenPlace.TryPlaceThing(thing, doer.Position, doer.Map, ThingPlaceMode.Near);"
+        }
+      ],
+      "interpretation": "Each output stack is placed near the worker, not remotely credited to colony stock; the return value is ignored here."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-wool/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "fullness = 0f",
+      "hits": [
+        {
+          "line": 93,
+          "text": "fullness = 0f;"
+        }
+      ],
+      "interpretation": "Fullness resets after success, product waste or placement failure."
+    },
+    {
+      "type": "RimWorld.CompShearable",
+      "file": ".local-research/animal-wool/RimWorld.CompShearable.cs",
+      "sha256": "6df9f5e77e24a96a17cd2cea758ad94e044094dac1fca27c9c7041910003f9bf",
+      "anchor": "protected override string SaveKey => \"woolGrowth\"",
+      "hits": [
+        {
+          "line": 13,
+          "text": "protected override string SaveKey => \"woolGrowth\";"
+        }
+      ],
+      "interpretation": "Wool fullness is saved on the animal, separately from driver progress."
+    },
+    {
+      "type": "RimWorld.CompShearable",
+      "file": ".local-research/animal-wool/RimWorld.CompShearable.cs",
+      "sha256": "6df9f5e77e24a96a17cd2cea758ad94e044094dac1fca27c9c7041910003f9bf",
+      "anchor": "pawn != null && !pawn.ageTracker.CurLifeStage.shearable",
+      "hits": [
+        {
+          "line": 26,
+          "text": "if (pawn != null && !pawn.ageTracker.CurLifeStage.shearable)"
+        }
+      ],
+      "interpretation": "The current life stage must permit shearing."
+    },
+    {
+      "type": "RimWorld.CompShearable",
+      "file": ".local-research/animal-wool/RimWorld.CompShearable.cs",
+      "sha256": "6df9f5e77e24a96a17cd2cea758ad94e044094dac1fca27c9c7041910003f9bf",
+      "anchor": "ModsConfig.AnomalyActive && pawn.IsShambler",
+      "hits": [
+        {
+          "line": 30,
+          "text": "if (ModsConfig.AnomalyActive && pawn.IsShambler)"
+        }
+      ],
+      "interpretation": "Anomaly shambler animals cannot grow wool."
+    },
+    {
+      "type": "RimWorld.LifeStageDef",
+      "file": ".local-research/animal-wool/RimWorld.LifeStageDef.cs",
+      "sha256": "93a5a86d46d9b6d954630d71044634ec69faddd67c473d1fed730e474c0034bd",
+      "anchor": "public bool shearable;",
+      "hits": [
+        {
+          "line": 19,
+          "text": "public bool shearable;"
+        }
+      ],
+      "interpretation": "The life-stage flag defaults false."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Shear",
+      "file": ".local-research/animal-wool/RimWorld.WorkGiver_Shear.cs",
+      "sha256": "422a617a946ad7aa7249e80ebe11c842ef6a0a2b0fc123ef35cbf9dcac8767b6",
+      "anchor": "return animal.TryGetComp<CompShearable>()",
+      "hits": [
+        {
+          "line": 11,
+          "text": "return animal.TryGetComp<CompShearable>();"
+        }
+      ],
+      "interpretation": "The worker requires the species shearable component."
+    },
+    {
+      "type": "RimWorld.JobDriver_Shear",
+      "file": ".local-research/animal-wool/RimWorld.JobDriver_Shear.cs",
+      "sha256": "2927a84c81fdf95e1838af9113b5b0d4ac50e1ad0cc9fa58a171309177a65918",
+      "anchor": "protected override float WorkTotal => 1700f",
+      "hits": [
+        {
+          "line": 7,
+          "text": "protected override float WorkTotal => 1700f;"
+        }
+      ],
+      "interpretation": "Shearing requires 1700 work, not fixed ticks."
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "file": ".local-research/animal-wool/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "anchor": "return pawn.needs?.food?.CurCategory.HungerMultiplier() ?? 1f",
+      "hits": [
+        {
+          "line": 343,
+          "text": "return pawn.needs?.food?.CurCategory.HungerMultiplier() ?? 1f;"
+        }
+      ],
+      "interpretation": "Hunger affects accumulation speed."
+    },
+    {
+      "type": "RimWorld.Need_Food",
+      "file": ".local-research/animal-wool/RimWorld.Need_Food.cs",
+      "sha256": "f17cbaf82d8792108557f869db585fdd6ac26c0ebb537e8acf04173179e7c4cd",
+      "anchor": "return lifeStage.hungerRateFactor * pawnDef.race.baseHungerRate * 2.6666667E-05f",
+      "hits": [
+        {
+          "line": 218,
+          "text": "return lifeStage.hungerRateFactor * pawnDef.race.baseHungerRate * 2.6666667E-05f;"
+        }
+      ],
+      "interpretation": "XML hunger base is converted to per-tick nutrition before additional modifiers."
+    },
+    {
+      "type": "Verse.StuffProperties",
+      "file": ".local-research/animal-wool/Verse.StuffProperties.cs",
+      "sha256": "210ddf8b991a8b14219d9605bc0d1e6700958fe7db79787d01778220a9a05cff",
+      "anchor": "if (t.stuffCategories[i] == categories[j])",
+      "hits": [
+        {
+          "line": 112,
+          "text": "if (t.stuffCategories[i] == categories[j])"
+        }
+      ],
+      "interpretation": "Material compatibility requires overlapping stuff categories."
+    },
+    {
+      "type": "RimWorld.RecipeDefGenerator",
+      "file": ".local-research/animal-wool/RimWorld.RecipeDefGenerator.cs",
+      "sha256": "bf8ff9929fbbd1beb92721f21ff3c10e91b4f5531764b7bc56f8c86befe1c3ef",
+      "anchor": "r.productHasIngredientStuff = true",
+      "hits": [
+        {
+          "line": 103,
+          "text": "r.productHasIngredientStuff = true;"
+        }
+      ],
+      "interpretation": "Generated apparel recipes retain actual material identity."
+    },
+    {
+      "type": "RimWorld.RecipeDefGenerator",
+      "file": ".local-research/animal-wool/RimWorld.RecipeDefGenerator.cs",
+      "sha256": "bf8ff9929fbbd1beb92721f21ff3c10e91b4f5531764b7bc56f8c86befe1c3ef",
+      "anchor": "ingredientCount.filter.SetAllowAllWhoCanMake(def)",
+      "hits": [
+        {
+          "line": 99,
+          "text": "ingredientCount.filter.SetAllowAllWhoCanMake(def);"
+        }
+      ],
+      "interpretation": "Material filters follow the target item stuff compatibility."
+    },
+    {
+      "type": "Verse.RecipeDef",
+      "file": ".local-research/animal-wool/Verse.RecipeDef.cs",
+      "sha256": "9a12df678ba67743d3574e9ebfb866d07c2f918cfdd1f42c75d15ae8b5727132",
+      "anchor": "public bool allowMixingIngredients;",
+      "hits": [
+        {
+          "line": 37,
+          "text": "public bool allowMixingIngredients;"
+        }
+      ],
+      "interpretation": "Ingredient mixing defaults false."
+    },
+    {
+      "type": "RimWorld.WorkGiver_DoBill",
+      "file": ".local-research/animal-wool/RimWorld.WorkGiver_DoBill.cs",
+      "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+      "anchor": "if (availableThings[num4].def != availableCounts.GetDef(num2))",
+      "hits": [
+        {
+          "line": 644,
+          "text": "if (availableThings[num4].def != availableCounts.GetDef(num2))"
+        }
+      ],
+      "interpretation": "No-mix bill selection combines only stacks of the same resource for one requirement."
+    },
+    {
+      "type": "Verse.AI.Toils_Recipe",
+      "file": ".local-research/animal-wool/Verse.AI.Toils_Recipe.cs",
+      "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+      "anchor": "ThingDef stuff = (curJob.RecipeDef.unfinishedThingDef.MadeFromStuff ? thing.def : null)",
+      "hits": [
+        {
+          "line": 28,
+          "text": "ThingDef stuff = (curJob.RecipeDef.unfinishedThingDef.MadeFromStuff ? thing.def : null);"
+        }
+      ],
+      "interpretation": "Unfinished clothing retains its chosen material."
+    },
+    {
+      "type": "Verse.AI.Toils_Recipe",
+      "file": ".local-research/animal-wool/Verse.AI.Toils_Recipe.cs",
+      "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+      "anchor": "return uft.ingredients.First((Thing ing) => ing.def == uft.Stuff)",
+      "hits": [
+        {
+          "line": 352,
+          "text": "return uft.ingredients.First((Thing ing) => ing.def == uft.Stuff);"
+        }
+      ],
+      "interpretation": "Resumption uses the unfinished item existing stuff."
+    },
+    {
+      "type": "Verse.GenRecipe",
+      "file": ".local-research/animal-wool/Verse.GenRecipe.cs",
+      "sha256": "41cb19d602f388137484b15bc4126fbcdebad63013c34f8432cabff5b28337e3",
+      "anchor": "ThingDef stuff = (thingDefCountClass.thingDef.MadeFromStuff ? dominantIngredient.def : null)",
+      "hits": [
+        {
+          "line": 21,
+          "text": "ThingDef stuff = (thingDefCountClass.thingDef.MadeFromStuff ? dominantIngredient.def : null);"
+        }
+      ],
+      "interpretation": "The finished product receives actual stuff identity."
+    },
+    {
+      "type": "Verse.Thing",
+      "file": ".local-research/animal-wool/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "anchor": "Scribe_Defs.Look(ref stuffInt, \"stuff\")",
+      "hits": [
+        {
+          "line": 1249,
+          "text": "Scribe_Defs.Look(ref stuffInt, \"stuff\");"
+        }
+      ],
+      "interpretation": "The material identity is persisted."
+    },
+    {
+      "type": "RimWorld.StatWorker",
+      "file": ".local-research/animal-wool/RimWorld.StatWorker.cs",
+      "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+      "anchor": "num *= req.StuffDef.stuffProps.statFactors.GetStatFactorFromList(stat)",
+      "hits": [
+        {
+          "line": 303,
+          "text": "num *= req.StuffDef.stuffProps.statFactors.GetStatFactorFromList(stat);"
+        }
+      ],
+      "interpretation": "Item stats use stuff factors, not the resource own stat bases."
+    },
+    {
+      "type": "RimWorld.StatUtility",
+      "file": ".local-research/animal-wool/RimWorld.StatUtility.cs",
+      "sha256": "006c1491c5c8a35aa434db2c2ed0d6d53ce75718928d9009284ab4881232aa98",
+      "anchor": "return modList.GetStatValueFromList(stat, 1f)",
+      "hits": [
+        {
+          "line": 31,
+          "text": "return modList.GetStatValueFromList(stat, 1f);"
+        }
+      ],
+      "interpretation": "Missing stuff factors default one."
+    },
+    {
+      "type": "RimWorld.StatPart_Stuff",
+      "file": ".local-research/animal-wool/RimWorld.StatPart_Stuff.cs",
+      "sha256": "e5f3e99d67b19d386c0e48080cc2d6cb2e06034f79608590aee91209641d7633",
+      "anchor": "value += GetMultiplier(req) * num",
+      "hits": [
+        {
+          "line": 31,
+          "text": "value += GetMultiplier(req) * num;"
+        }
+      ],
+      "interpretation": "Material power contributes garment multiplier times material power."
+    },
+    {
+      "type": "RimWorld.StatDef",
+      "file": ".local-research/animal-wool/RimWorld.StatDef.cs",
+      "sha256": "edbe8b7b96b6fbcbc2828c538f55959e19be84d3dd3ce16e3491cc046d61fe4e",
+      "anchor": "parts.SortBy((StatPart x) => 0f - x.priority",
+      "hits": [
+        {
+          "line": 243,
+          "text": "parts.SortBy((StatPart x) => 0f - x.priority, (StatPart x) => partsCopy.IndexOf(x));"
+        }
+      ],
+      "interpretation": "Higher-priority material parts run before default-priority quality parts."
+    },
+    {
+      "type": "RimWorld.StatPart",
+      "file": ".local-research/animal-wool/RimWorld.StatPart.cs",
+      "sha256": "0c461a78d1d3ae0dd9132e7f9809e0d6af0b53d8704854a800fd44bef7e43de5",
+      "anchor": "public float priority;",
+      "hits": [
+        {
+          "line": 9,
+          "text": "public float priority;"
+        }
+      ],
+      "interpretation": "Part priority defaults zero."
+    },
+    {
+      "type": "RimWorld.StatPart_Quality",
+      "file": ".local-research/animal-wool/RimWorld.StatPart_Quality.cs",
+      "sha256": "3b80ea8e8f92ffce05a05631972d7f948e0acaa03c3ceeb4d484ecfab72339e0",
+      "anchor": "float a = val * QualityMultiplier(req.QualityCategory) - val",
+      "hits": [
+        {
+          "line": 43,
+          "text": "float a = val * QualityMultiplier(req.QualityCategory) - val;"
+        }
+      ],
+      "interpretation": "Quality multiplies accumulated material-aware value, subject to configured gain caps."
+    },
+    {
+      "type": "RimWorld.StatWorker_MarketValue",
+      "file": ".local-research/animal-wool/RimWorld.StatWorker_MarketValue.cs",
+      "sha256": "e47a2c46fa51be66ebe01e9b287f90416557bbedad6b139d7a7c97fa35dd7902",
+      "anchor": "def.CostStuffCount / stuffDef.VolumePerUnit * stuffDef.GetStatValueAbstract(StatDefOf.MarketValue)",
+      "hits": [
+        {
+          "line": 89,
+          "text": "num = ((stuffDef == null) ? (num + (float)def.CostStuffCount * 2f) : (num + (float)def.CostStuffCount / stuffDef.VolumePerUnit * stuffDef.GetStatValueAbstract(StatDefOf.MarketValue)));"
+        }
+      ],
+      "interpretation": "Computed item base value includes its actual material value."
+    },
+    {
+      "type": "RimWorld.StatWorker_MarketValue",
+      "file": ".local-research/animal-wool/RimWorld.StatWorker_MarketValue.cs",
+      "sha256": "e47a2c46fa51be66ebe01e9b287f90416557bbedad6b139d7a7c97fa35dd7902",
+      "anchor": "num += num2 * 0.0036f",
+      "hits": [
+        {
+          "line": 94,
+          "text": "num += num2 * 0.0036f;"
+        }
+      ],
+      "interpretation": "Computed base value adds work times 0.0036 when work exceeds two."
+    },
+    {
+      "type": "RimWorld.StatPart_Health",
+      "file": ".local-research/animal-wool/RimWorld.StatPart_Health.cs",
+      "sha256": "08d4ff196049da78baa56170a2f90cb65bb371c6931f408910163910d72255cf",
+      "anchor": "return req.Thing.def.healthAffectsPrice",
+      "hits": [
+        {
+          "line": 11,
+          "text": "return req.Thing.def.healthAffectsPrice;"
+        }
+      ],
+      "interpretation": "The HP market-value curve respects the item definition healthAffectsPrice flag."
+    }
+  ],
+  "boundedChecks": [
+    {
+      "type": "RimWorld.CompShearable",
+      "start": "protected override bool Active",
+      "end": "public override string CompInspectStringExtra",
+      "startLine": 17,
+      "endLine": 38,
+      "sliceSha256": "8922c2ab54bd7922fb6c944360d9c7d27964c484cfca530a133e001b8defd63c",
+      "absentTokens": [
+        "Gender",
+        "Pregnant",
+        "Lactating",
+        "Downed",
+        "Awake",
+        "BodySize",
+        "Temperature"
+      ],
+      "interpretation": "Wool-specific activity has no sex or pregnancy gate."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "start": "public override void CompTick",
+      "end": "public void Gathered",
+      "startLine": 54,
+      "endLine": 71,
+      "sliceSha256": "6db6d177e0577290b758b28df057e86820da173e9d28a0d736705cc63c5efbcb",
+      "absentTokens": [
+        "fullness = 0",
+        "Nutrition",
+        "GetStatValue"
+      ],
+      "interpretation": "Inactive accumulation preserves existing fullness; no separate feed debit."
+    },
+    {
+      "type": "RimWorld.WorkGiver_GatherAnimalBodyResources",
+      "start": "public override bool HasJobOnThing",
+      "end": "public override Job JobOnThing",
+      "startLine": 37,
+      "endLine": 51,
+      "sliceSha256": "97099a54afd434848040250df4a3ffef48683ba40db79ba4bb1be6a0ee6f13a3",
+      "absentTokens": [
+        "MinimumHandlingSkill",
+        "SkillDefOf.Animals"
+      ],
+      "interpretation": "No taming minimum-skill gate is imposed by this gathering work giver."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "start": "wait.AddFinishAction",
+      "end": "wait.FailOnDespawnedOrNull",
+      "startLine": 53,
+      "endLine": 61,
+      "sliceSha256": "1efe9e76311e1312df9cf5d148240471a6a1727ae9d1874318a522468caf5ef7",
+      "absentTokens": [
+        "Gathered",
+        "fullness",
+        "ThingMaker"
+      ],
+      "interpretation": "Interruption does not gather or empty the resource."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "start": "public void Gathered",
+      "end": "",
+      "startLine": 71,
+      "endLine": 96,
+      "sliceSha256": "6d2cd3f0e57c8c9ae7ad792c3d7a09864e750971f68eb02bc56b86364b0bcd9b",
+      "absentTokens": [
+        "if (GenPlace.TryPlaceThing",
+        "holdingOwner",
+        "retry"
+      ],
+      "interpretation": "Native gathering has no checked placement retry owner."
+    },
+    {
+      "type": "RimWorld.RecipeDefGenerator",
+      "start": "private static RecipeDef CreateRecipeDefFromMaker",
+      "end": "public static void SetIngredients",
+      "startLine": 29,
+      "endLine": 91,
+      "sliceSha256": "ce14f8c3ca1f543c5c212353db5237e8e27f7382365f4314a55ed93bb486b6ff",
+      "absentTokens": [
+        "allowMixingIngredients ="
+      ],
+      "interpretation": "Generated clothing recipes do not enable mixed material requirements."
+    }
+  ],
+  "packagedXml": [
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_SheepGroup.xml",
+      "sha256": "92475fbf8ed1ac470d9be9068e7bfd915e8befa66303eee32c829723700ded54",
+      "xpath": "/Defs/ThingDef[defName=\"Alpaca\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MoveSpeed>4.1</MoveSpeed><ComfyTemperatureMin>-20</ComfyTemperatureMin><MarketValue>350</MarketValue><ComfyTemperatureMax>45</ComfyTemperatureMax><FilthRate>16</FilthRate><Wildness>0.25</Wildness></statBases>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_Shearable\"><woolDef>WoolAlpaca</woolDef><shearIntervalDays>10</shearIntervalDays><woolAmount>45</woolAmount></li></comps>"
+          ]
+        },
+        {
+          "xpath": "race/baseBodySize",
+          "count": 1,
+          "xml": [
+            "<baseBodySize>1.0</baseBodySize>"
+          ]
+        },
+        {
+          "xpath": "race/baseHungerRate",
+          "count": 1,
+          "xml": [
+            "<baseHungerRate>0.275</baseHungerRate>"
+          ]
+        },
+        {
+          "xpath": "race/foodType",
+          "count": 1,
+          "xml": [
+            "<foodType>VegetarianRoughAnimal</foodType>"
+          ]
+        },
+        {
+          "xpath": "race/roamMtbDays",
+          "count": 1,
+          "xml": [
+            "<roamMtbDays>3</roamMtbDays>"
+          ]
+        },
+        {
+          "xpath": "race/trainability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/gestationPeriodDays",
+          "count": 1,
+          "xml": [
+            "<gestationPeriodDays>6.66</gestationPeriodDays>"
+          ]
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 1,
+          "xml": [
+            "<lifeStageAges><li><def>AnimalBaby</def><minAge>0</minAge></li><li><def>AnimalJuvenile</def><minAge>0.2</minAge></li><li><def>AnimalAdult</def><minAge>0.3333</minAge><soundWounded>Pawn_Elk_Wounded</soundWounded><soundDeath>Pawn_Elk_Death</soundDeath><soundCall>Pawn_Elk_Call</soundCall><soundAngry>Pawn_Elk_Angry</soundAngry></li></lifeStageAges>"
+          ]
+        }
+      ],
+      "interpretation": "Alpaca lifecycle, food and wool declarations."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_SheepGroup.xml",
+      "sha256": "92475fbf8ed1ac470d9be9068e7bfd915e8befa66303eee32c829723700ded54",
+      "xpath": "/Defs/PawnKindDef[defName=\"Alpaca\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalKindBase",
+      "fields": [
+        {
+          "xpath": "race",
+          "count": 1,
+          "xml": [
+            "<race>Alpaca</race>"
+          ]
+        },
+        {
+          "xpath": "wildGroupSize",
+          "count": 1,
+          "xml": [
+            "<wildGroupSize>2~5</wildGroupSize>"
+          ]
+        }
+      ],
+      "interpretation": "Wild group size."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+      "sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4",
+      "xpath": "/Defs/ThingDef[@Name=\"AnimalThingBase\"]",
+      "nameAttribute": "AnimalThingBase",
+      "parentName": "BasePawn",
+      "fields": [
+        {
+          "xpath": "race/trainability",
+          "count": 1,
+          "xml": [
+            "<trainability>None</trainability>"
+          ]
+        },
+        {
+          "xpath": "race/hasGenders",
+          "count": 1,
+          "xml": [
+            "<hasGenders>true</hasGenders>"
+          ]
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 1,
+          "xml": [
+            "<thingCategories><li>Animals</li></thingCategories>"
+          ]
+        }
+      ],
+      "interpretation": "Inherited animal defaults."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalBaby\"]",
+      "nameAttribute": "AnimalBaby",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "shearable",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "AnimalBaby eligibility."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalJuvenile\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "shearable",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "AnimalJuvenile eligibility."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalAdult\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "shearable",
+          "count": 1,
+          "xml": [
+            "<shearable>true</shearable>"
+          ]
+        }
+      ],
+      "interpretation": "AnimalAdult eligibility."
+    },
+    {
+      "file": "Data/Core/Defs/BiomeDefs/Biomes_Temperate.xml",
+      "sha256": "4d6a48e5f6f0b5eed5f239077a1af78cadd8924785d76bdde2329da137dbc7ae",
+      "xpath": "/Defs/BiomeDef[defName=\"TemperateForest\"]",
+      "nameAttribute": "TemperateForest",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "wildAnimals/Alpaca",
+          "count": 1,
+          "xml": [
+            "<Alpaca>0.5</Alpaca>"
+          ]
+        }
+      ],
+      "interpretation": "Relative commonality, not a percentage."
+    },
+    {
+      "file": "Data/Core/Defs/BiomeDefs/Biomes_Temperate.xml",
+      "sha256": "4d6a48e5f6f0b5eed5f239077a1af78cadd8924785d76bdde2329da137dbc7ae",
+      "xpath": "/Defs/BiomeDef[defName=\"TemperateSwamp\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "wildAnimals/Alpaca",
+          "count": 1,
+          "xml": [
+            "<Alpaca>0.5</Alpaca>"
+          ]
+        }
+      ],
+      "interpretation": "Relative commonality, not a percentage."
+    },
+    {
+      "file": "Data/Core/Defs/BiomeDefs/Biomes_Warm.xml",
+      "sha256": "4d3f348d1b0519f78409e78d9921719070b6a0a24c1af0ae58c1ba3339b42680",
+      "xpath": "/Defs/BiomeDef[defName=\"TropicalRainforest\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "wildAnimals/Alpaca",
+          "count": 1,
+          "xml": [
+            "<Alpaca>0.5</Alpaca>"
+          ]
+        }
+      ],
+      "interpretation": "Relative commonality, not a percentage."
+    },
+    {
+      "file": "Data/Core/Defs/BiomeDefs/Biomes_Warm.xml",
+      "sha256": "4d3f348d1b0519f78409e78d9921719070b6a0a24c1af0ae58c1ba3339b42680",
+      "xpath": "/Defs/BiomeDef[defName=\"TropicalSwamp\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "wildAnimals/Alpaca",
+          "count": 1,
+          "xml": [
+            "<Alpaca>0.5</Alpaca>"
+          ]
+        }
+      ],
+      "interpretation": "Relative commonality, not a percentage."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_CowGroup.xml",
+      "sha256": "4dfaa77da9175d9cbc802ca4b6d5fc321fbf646ea5f39d22cf38190c77294b7a",
+      "xpath": "/Defs/ThingDef[defName=\"Dromedary\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "comps/li[@Class=\"CompProperties_Shearable\"]",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "No native dromedary shearing component in this node."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Stuff.xml",
+      "sha256": "8cdc15befea94055a946a1131c7724acc0cf999b866a5fad474a0816731c9088",
+      "xpath": "/Defs/ThingDef[defName=\"WoolAlpaca\"]",
+      "nameAttribute": "",
+      "parentName": "WoolBase",
+      "fields": [
+        {
+          "xpath": "stackLimit",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MarketValue>3.8</MarketValue><StuffPower_Insulation_Cold>30</StuffPower_Insulation_Cold><StuffPower_Insulation_Heat>16</StuffPower_Insulation_Heat></statBases>"
+          ]
+        },
+        {
+          "xpath": "stuffProps",
+          "count": 1,
+          "xml": [
+            "<stuffProps><color>(180,148,109)</color></stuffProps>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "ingestible",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "healthAffectsPrice",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Alpaca wool"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Stuff.xml",
+      "sha256": "8cdc15befea94055a946a1131c7724acc0cf999b866a5fad474a0816731c9088",
+      "xpath": "/Defs/ThingDef[@Name=\"WoolBase\"]",
+      "nameAttribute": "WoolBase",
+      "parentName": "ResourceBase",
+      "fields": [
+        {
+          "xpath": "stackLimit",
+          "count": 1,
+          "xml": [
+            "<stackLimit>100</stackLimit>"
+          ]
+        },
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MaxHitPoints>90</MaxHitPoints><MarketValue>2.7</MarketValue><Mass>0.028</Mass><Flammability>0.4</Flammability><DeteriorationRate>3.4</DeteriorationRate><StuffPower_Armor_Sharp>0.36</StuffPower_Armor_Sharp><StuffPower_Armor_Blunt>0.00</StuffPower_Armor_Blunt><StuffPower_Armor_Heat>1.10</StuffPower_Armor_Heat></statBases>"
+          ]
+        },
+        {
+          "xpath": "stuffProps",
+          "count": 1,
+          "xml": [
+            "<stuffProps><commonality>0.12</commonality><statFactors><Flammability>1.7</Flammability><Beauty>1.5</Beauty></statFactors><categories><li>Fabric</li></categories><canSuggestUseDefaultStuff>true</canSuggestUseDefaultStuff></stuffProps>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "ingestible",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "healthAffectsPrice",
+          "count": 1,
+          "xml": [
+            "<healthAffectsPrice>false</healthAffectsPrice>"
+          ]
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 1,
+          "xml": [
+            "<thingCategories><li>Wools</li></thingCategories>"
+          ]
+        }
+      ],
+      "interpretation": "Wool parent"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Stuff.xml",
+      "sha256": "8cdc15befea94055a946a1131c7724acc0cf999b866a5fad474a0816731c9088",
+      "xpath": "/Defs/ThingDef[defName=\"Cloth\"]",
+      "nameAttribute": "",
+      "parentName": "ResourceBase",
+      "fields": [
+        {
+          "xpath": "stackLimit",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><StuffPower_Armor_Sharp>0.36</StuffPower_Armor_Sharp><StuffPower_Armor_Blunt>0</StuffPower_Armor_Blunt><StuffPower_Armor_Heat>0.18</StuffPower_Armor_Heat><StuffPower_Insulation_Cold>18</StuffPower_Insulation_Cold><StuffPower_Insulation_Heat>18</StuffPower_Insulation_Heat><MaxHitPoints>80</MaxHitPoints><MarketValue>1.5</MarketValue><Mass>0.026</Mass><Flammability>1.2</Flammability><DeteriorationRate>4</DeteriorationRate></statBases>"
+          ]
+        },
+        {
+          "xpath": "stuffProps",
+          "count": 1,
+          "xml": [
+            "<stuffProps><statFactors><Flammability>1.2</Flammability><Beauty>1</Beauty></statFactors><categories><li>Fabric</li></categories><color>(162,157,152)</color><commonality>1.4</commonality><allowColorGenerators>true</allowColorGenerators><canSuggestUseDefaultStuff>true</canSuggestUseDefaultStuff></stuffProps>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li><compClass>CompColorable</compClass></li></comps>"
+          ]
+        },
+        {
+          "xpath": "ingestible",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "healthAffectsPrice",
+          "count": 1,
+          "xml": [
+            "<healthAffectsPrice>false</healthAffectsPrice>"
+          ]
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 1,
+          "xml": [
+            "<thingCategories><li>Textiles</li></thingCategories>"
+          ]
+        }
+      ],
+      "interpretation": "Cloth comparison"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Base.xml",
+      "sha256": "20595ae43a7e758f54c71dc98579cc95ac8638f21213896c7f1d6a2d61fd744a",
+      "xpath": "/Defs/ThingDef[@Name=\"ResourceBase\"]",
+      "nameAttribute": "ResourceBase",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><Beauty>-4</Beauty></statBases>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_Forbiddable\" /></comps>"
+          ]
+        },
+        {
+          "xpath": "ingestible",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "alwaysHaulable",
+          "count": 1,
+          "xml": [
+            "<alwaysHaulable>true</alwaysHaulable>"
+          ]
+        }
+      ],
+      "interpretation": "Resource ancestor; no rot or ingestion path."
+    },
+    {
+      "file": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+      "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c",
+      "xpath": "/Defs/WorkGiverDef[defName=\"Shear\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "giverClass",
+          "count": 1,
+          "xml": [
+            "<giverClass>WorkGiver_Shear</giverClass>"
+          ]
+        },
+        {
+          "xpath": "workType",
+          "count": 1,
+          "xml": [
+            "<workType>Handling</workType>"
+          ]
+        },
+        {
+          "xpath": "priorityInType",
+          "count": 1,
+          "xml": [
+            "<priorityInType>85</priorityInType>"
+          ]
+        },
+        {
+          "xpath": "requiredCapacities",
+          "count": 1,
+          "xml": [
+            "<requiredCapacities><li>Manipulation</li></requiredCapacities>"
+          ]
+        }
+      ],
+      "interpretation": "Native Handling job priority 85."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_WorkGeneral.xml",
+      "sha256": "ce98d3d43f86691f47a069ecaf15658f7d12d2f1ad0f1fe32d039231b3cc23a7",
+      "xpath": "/Defs/StatDef[defName=\"AnimalGatherSpeed\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>1</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "minValue",
+          "count": 1,
+          "xml": [
+            "<minValue>0.1</minValue>"
+          ]
+        },
+        {
+          "xpath": "statFactors",
+          "count": 1,
+          "xml": [
+            "<statFactors><li>WorkSpeedGlobal</li></statFactors>"
+          ]
+        },
+        {
+          "xpath": "skillNeedFactors",
+          "count": 1,
+          "xml": [
+            "<skillNeedFactors><li Class=\"SkillNeed_BaseBonus\"><skill>Animals</skill><baseValue>0.04</baseValue><bonusPerLevel>0.12</bonusPerLevel></li></skillNeedFactors>"
+          ]
+        },
+        {
+          "xpath": "capacityFactors",
+          "count": 1,
+          "xml": [
+            "<capacityFactors><li><capacity>Manipulation</capacity><weight>1</weight></li><li><capacity>Sight</capacity><weight>0.5</weight><max>1</max></li></capacityFactors>"
+          ]
+        }
+      ],
+      "interpretation": "AnimalGatherSpeed"
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_WorkGeneral.xml",
+      "sha256": "ce98d3d43f86691f47a069ecaf15658f7d12d2f1ad0f1fe32d039231b3cc23a7",
+      "xpath": "/Defs/StatDef[defName=\"AnimalGatherYield\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>1</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "minValue",
+          "count": 1,
+          "xml": [
+            "<minValue>0</minValue>"
+          ]
+        },
+        {
+          "xpath": "statFactors",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "skillNeedFactors",
+          "count": 1,
+          "xml": [
+            "<skillNeedFactors><li Class=\"SkillNeed_Direct\"><skill>Animals</skill><valuesPerLevel><li>0.6</li><li>0.7</li><li>0.75</li><li>0.8</li><li>0.85</li><li>0.90</li><li>0.95</li><li>0.975</li><li>1</li><li>1.01</li><li>1.02</li><li>1.03</li><li>1.04</li><li>1.05</li><li>1.06</li><li>1.07</li><li>1.08</li><li>1.09</li><li>1.10</li><li>1.12</li><li>1.13</li></valuesPerLevel></li></skillNeedFactors>"
+          ]
+        },
+        {
+          "xpath": "capacityFactors",
+          "count": 1,
+          "xml": [
+            "<capacityFactors><li><capacity>Manipulation</capacity><weight>0.3</weight></li><li><capacity>Sight</capacity><weight>0.2</weight><max>1</max></li></capacityFactors>"
+          ]
+        }
+      ],
+      "interpretation": "AnimalGatherYield"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+      "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+      "xpath": "/Defs/ThingDef[@Name=\"ApparelNoQualityBase\"]",
+      "nameAttribute": "ApparelNoQualityBase",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MaxHitPoints>100</MaxHitPoints><Flammability>1.0</Flammability><DeteriorationRate>2</DeteriorationRate><Beauty>-3</Beauty></statBases>"
+          ]
+        }
+      ],
+      "interpretation": "Apparel base flammability 1."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+      "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+      "xpath": "/Defs/ThingDef[@Name=\"ApparelMakeableBase\"]",
+      "nameAttribute": "ApparelMakeableBase",
+      "parentName": "ApparelBase",
+      "fields": [
+        {
+          "xpath": "recipeMaker",
+          "count": 1,
+          "xml": [
+            "<recipeMaker><workSpeedStat>GeneralLaborSpeed</workSpeedStat><workSkill>Crafting</workSkill><effectWorking>Tailor</effectWorking><soundWorking>Recipe_Tailor</soundWorking><recipeUsers><li>ElectricTailoringBench</li><li>HandTailoringBench</li></recipeUsers><unfinishedThingDef>UnfinishedApparel</unfinishedThingDef><defaultIngredientFilter><categories><li>Root</li></categories><disallowedThingDefs><li>Gold</li><li>Silver</li><li>Plasteel</li><li>Jade</li><li>Uranium</li><li MayRequire=\"Ludeon.RimWorld.Anomaly\">Bioferrite</li><li MayRequire=\"Ludeon.RimWorld.Odyssey\">Obsidian</li></disallowedThingDefs></defaultIngredientFilter></recipeMaker>"
+          ]
+        }
+      ],
+      "interpretation": "Tailoring and unfinished apparel."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+      "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+      "xpath": "/Defs/ThingDef[defName=\"Apparel_BasicShirt\"]",
+      "nameAttribute": "",
+      "parentName": "ApparelMakeableBase",
+      "fields": [
+        {
+          "xpath": "stuffCategories",
+          "count": 1,
+          "xml": [
+            "<stuffCategories><li>Fabric</li><li>Leathery</li></stuffCategories>"
+          ]
+        },
+        {
+          "xpath": "costStuffCount",
+          "count": 1,
+          "xml": [
+            "<costStuffCount>40</costStuffCount>"
+          ]
+        },
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MaxHitPoints>100</MaxHitPoints><WorkToMake>1600</WorkToMake><Mass>0.25</Mass><StuffEffectMultiplierArmor>0.2</StuffEffectMultiplierArmor><StuffEffectMultiplierInsulation_Cold>0.22</StuffEffectMultiplierInsulation_Cold><StuffEffectMultiplierInsulation_Heat>0.10</StuffEffectMultiplierInsulation_Heat><EquipDelay>1.5</EquipDelay></statBases>"
+          ]
+        }
+      ],
+      "interpretation": "Apparel_BasicShirt material compatibility."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+      "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+      "xpath": "/Defs/ThingDef[defName=\"Apparel_Pants\"]",
+      "nameAttribute": "",
+      "parentName": "ApparelMakeableBase",
+      "fields": [
+        {
+          "xpath": "stuffCategories",
+          "count": 1,
+          "xml": [
+            "<stuffCategories><li>Fabric</li><li>Leathery</li></stuffCategories>"
+          ]
+        },
+        {
+          "xpath": "costStuffCount",
+          "count": 1,
+          "xml": [
+            "<costStuffCount>40</costStuffCount>"
+          ]
+        },
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MaxHitPoints>100</MaxHitPoints><WorkToMake>1600</WorkToMake><Mass>0.5</Mass><StuffEffectMultiplierArmor>0.2</StuffEffectMultiplierArmor><StuffEffectMultiplierInsulation_Cold>0.20</StuffEffectMultiplierInsulation_Cold><StuffEffectMultiplierInsulation_Heat>0.08</StuffEffectMultiplierInsulation_Heat><EquipDelay>2</EquipDelay></statBases>"
+          ]
+        }
+      ],
+      "interpretation": "Apparel_Pants material compatibility."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+      "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+      "xpath": "/Defs/ThingDef[defName=\"Apparel_Parka\"]",
+      "nameAttribute": "",
+      "parentName": "ApparelMakeableBase",
+      "fields": [
+        {
+          "xpath": "stuffCategories",
+          "count": 1,
+          "xml": [
+            "<stuffCategories><li>Fabric</li><li>Leathery</li></stuffCategories>"
+          ]
+        },
+        {
+          "xpath": "costStuffCount",
+          "count": 1,
+          "xml": [
+            "<costStuffCount>80</costStuffCount>"
+          ]
+        },
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MaxHitPoints>180</MaxHitPoints><WorkToMake>8000</WorkToMake><Mass>2</Mass><StuffEffectMultiplierArmor>0.2</StuffEffectMultiplierArmor><StuffEffectMultiplierInsulation_Cold>2.00</StuffEffectMultiplierInsulation_Cold><StuffEffectMultiplierInsulation_Heat>0.00</StuffEffectMultiplierInsulation_Heat><EquipDelay>3</EquipDelay></statBases>"
+          ]
+        }
+      ],
+      "interpretation": "Apparel_Parka material compatibility."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+      "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+      "xpath": "/Defs/ThingDef[defName=\"Apparel_Duster\"]",
+      "nameAttribute": "",
+      "parentName": "ApparelMakeableBase",
+      "fields": [
+        {
+          "xpath": "stuffCategories",
+          "count": 1,
+          "xml": [
+            "<stuffCategories><li>Fabric</li><li>Leathery</li></stuffCategories>"
+          ]
+        },
+        {
+          "xpath": "costStuffCount",
+          "count": 1,
+          "xml": [
+            "<costStuffCount>80</costStuffCount>"
+          ]
+        },
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MaxHitPoints>200</MaxHitPoints><WorkToMake>10000</WorkToMake><Mass>2</Mass><StuffEffectMultiplierArmor>0.3</StuffEffectMultiplierArmor><StuffEffectMultiplierInsulation_Cold>0.60</StuffEffectMultiplierInsulation_Cold><StuffEffectMultiplierInsulation_Heat>0.85</StuffEffectMultiplierInsulation_Heat><EquipDelay>3</EquipDelay></statBases>"
+          ]
+        }
+      ],
+      "interpretation": "Apparel_Duster material compatibility."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Apparel.xml",
+      "sha256": "134a3d02447dd7ec0adc6ee2609989b08fc26065f96d080885f81965507810a6",
+      "xpath": "/Defs/StatDef[@Name=\"ArmorRatingBase\"]",
+      "nameAttribute": "ArmorRatingBase",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>0</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "parts",
+          "count": 1,
+          "xml": [
+            "<parts><li Class=\"StatPart_Quality\"><factorAwful>0.60</factorAwful><factorPoor>0.80</factorPoor><factorNormal>1.00</factorNormal><factorGood>1.15</factorGood><factorExcellent>1.30</factorExcellent><factorMasterwork>1.45</factorMasterwork><factorLegendary>1.80</factorLegendary></li></parts>"
+          ]
+        }
+      ],
+      "interpretation": "ArmorRatingBase quality factors."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Apparel.xml",
+      "sha256": "134a3d02447dd7ec0adc6ee2609989b08fc26065f96d080885f81965507810a6",
+      "xpath": "/Defs/StatDef[@Name=\"InsulationBase\"]",
+      "nameAttribute": "InsulationBase",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>0</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "parts",
+          "count": 1,
+          "xml": [
+            "<parts><li Class=\"StatPart_Quality\"><factorAwful>0.8</factorAwful><factorPoor>0.9</factorPoor><factorNormal>1</factorNormal><factorGood>1.1</factorGood><factorExcellent>1.2</factorExcellent><factorMasterwork>1.5</factorMasterwork><factorLegendary>1.8</factorLegendary><applyToNegativeValues>true</applyToNegativeValues></li></parts>"
+          ]
+        }
+      ],
+      "interpretation": "InsulationBase quality factors."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Apparel.xml",
+      "sha256": "134a3d02447dd7ec0adc6ee2609989b08fc26065f96d080885f81965507810a6",
+      "xpath": "/Defs/StatDef[defName=\"ArmorRating_Sharp\"]",
+      "nameAttribute": "",
+      "parentName": "ArmorRatingBase",
+      "fields": [
+        {
+          "xpath": "parts",
+          "count": 1,
+          "xml": [
+            "<parts><li Class=\"StatPart_Stuff\"><priority>100</priority><stuffPowerStat>StuffPower_Armor_Sharp</stuffPowerStat><multiplierStat>StuffEffectMultiplierArmor</multiplierStat></li></parts>"
+          ]
+        }
+      ],
+      "interpretation": "ArmorRating_Sharp material power and priority."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Apparel.xml",
+      "sha256": "134a3d02447dd7ec0adc6ee2609989b08fc26065f96d080885f81965507810a6",
+      "xpath": "/Defs/StatDef[defName=\"ArmorRating_Blunt\"]",
+      "nameAttribute": "",
+      "parentName": "ArmorRatingBase",
+      "fields": [
+        {
+          "xpath": "parts",
+          "count": 1,
+          "xml": [
+            "<parts><li Class=\"StatPart_Stuff\"><priority>100</priority><stuffPowerStat>StuffPower_Armor_Blunt</stuffPowerStat><multiplierStat>StuffEffectMultiplierArmor</multiplierStat></li></parts>"
+          ]
+        }
+      ],
+      "interpretation": "ArmorRating_Blunt material power and priority."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Apparel.xml",
+      "sha256": "134a3d02447dd7ec0adc6ee2609989b08fc26065f96d080885f81965507810a6",
+      "xpath": "/Defs/StatDef[defName=\"ArmorRating_Heat\"]",
+      "nameAttribute": "",
+      "parentName": "ArmorRatingBase",
+      "fields": [
+        {
+          "xpath": "parts",
+          "count": 1,
+          "xml": [
+            "<parts><li Class=\"StatPart_Stuff\"><priority>100</priority><stuffPowerStat>StuffPower_Armor_Heat</stuffPowerStat><multiplierStat>StuffEffectMultiplierArmor</multiplierStat></li></parts>"
+          ]
+        }
+      ],
+      "interpretation": "ArmorRating_Heat material power and priority."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Apparel.xml",
+      "sha256": "134a3d02447dd7ec0adc6ee2609989b08fc26065f96d080885f81965507810a6",
+      "xpath": "/Defs/StatDef[defName=\"Insulation_Cold\"]",
+      "nameAttribute": "",
+      "parentName": "InsulationBase",
+      "fields": [
+        {
+          "xpath": "parts",
+          "count": 1,
+          "xml": [
+            "<parts><li Class=\"StatPart_Stuff\"><priority>100</priority><stuffPowerStat>StuffPower_Insulation_Cold</stuffPowerStat><multiplierStat>StuffEffectMultiplierInsulation_Cold</multiplierStat></li></parts>"
+          ]
+        }
+      ],
+      "interpretation": "Insulation_Cold material power and priority."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Apparel.xml",
+      "sha256": "134a3d02447dd7ec0adc6ee2609989b08fc26065f96d080885f81965507810a6",
+      "xpath": "/Defs/StatDef[defName=\"Insulation_Heat\"]",
+      "nameAttribute": "",
+      "parentName": "InsulationBase",
+      "fields": [
+        {
+          "xpath": "parts",
+          "count": 1,
+          "xml": [
+            "<parts><li Class=\"StatPart_Stuff\"><priority>100</priority><stuffPowerStat>StuffPower_Insulation_Heat</stuffPowerStat><multiplierStat>StuffEffectMultiplierInsulation_Heat</multiplierStat></li></parts>"
+          ]
+        }
+      ],
+      "interpretation": "Insulation_Heat material power and priority."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Basics_General.xml",
+      "sha256": "c4d702421c19796993483ddd43f9869c54bb7afa1414232a568829ced5218d87",
+      "xpath": "/Defs/StatDef[defName=\"MaxHitPoints\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>100</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "parts",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "MaxHitPoints defaults and modifiers."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Basics_General.xml",
+      "sha256": "c4d702421c19796993483ddd43f9869c54bb7afa1414232a568829ced5218d87",
+      "xpath": "/Defs/StatDef[defName=\"Flammability\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>0</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "parts",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Flammability defaults and modifiers."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Basics_General.xml",
+      "sha256": "c4d702421c19796993483ddd43f9869c54bb7afa1414232a568829ced5218d87",
+      "xpath": "/Defs/StatDef[defName=\"MarketValue\"]",
+      "nameAttribute": "",
+      "parentName": "MarketValueBase",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "parts",
+          "count": 1,
+          "xml": [
+            "<parts><li Class=\"StatPart_Health\"><curve><points><li>(0.0, 0.0)</li><li>(0.5, 0.1)</li><li>(0.6, 0.5)</li><li>(0.9, 1.0)</li></points></curve></li><li Class=\"StatPart_Age\" MayRequire=\"Ludeon.RimWorld.Biotech\"><useBiologicalYears>true</useBiologicalYears><humanlikeOnly>true</humanlikeOnly><curve><points><li>(3,0.5)</li><li>(13,0.9)</li><li>(18,1)</li></points></curve></li></parts>"
+          ]
+        }
+      ],
+      "interpretation": "MarketValue defaults and modifiers."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Basics_General.xml",
+      "sha256": "c4d702421c19796993483ddd43f9869c54bb7afa1414232a568829ced5218d87",
+      "xpath": "/Defs/StatDef[@Name=\"MarketValueBase\"]",
+      "nameAttribute": "MarketValueBase",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "workerClass",
+          "count": 1,
+          "xml": [
+            "<workerClass>StatWorker_MarketValue</workerClass>"
+          ]
+        },
+        {
+          "xpath": "parts",
+          "count": 1,
+          "xml": [
+            "<parts><li Class=\"StatPart_Quality\"><factorAwful>0.5</factorAwful><factorPoor>0.75</factorPoor><factorNormal>1</factorNormal><factorGood>1.25</factorGood><maxGainGood>500</maxGainGood><factorExcellent>1.5</factorExcellent><maxGainExcellent>1000</maxGainExcellent><factorMasterwork>2.5</factorMasterwork><maxGainMasterwork>2000</maxGainMasterwork><factorLegendary>5</factorLegendary><maxGainLegendary>3000</maxGainLegendary></li><li Class=\"StatPart_WornByCorpse\" /><li Class=\"StatPart_IsCorpseFresh\" /><li Class=\"StatPart_WeaponTraitsMarketValueOffset\" /><li Class=\"StatPart_Biocoded\" /><li Class=\"StatPart_ReloadMarketValue\" /><li MayRequire=\"Ludeon.RimWorld.Biotech\" Class=\"StatPart_Genes\" /></parts>"
+          ]
+        }
+      ],
+      "interpretation": "Quality and other item value modifiers."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Unfinished.xml",
+      "sha256": "e095396dad8a83421ff04e47010701cf56df67e4e00c0d25c1704a51fb8e3130",
+      "xpath": "/Defs/ThingDef[@Name=\"UnfinishedBase\"]",
+      "nameAttribute": "UnfinishedBase",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MaxHitPoints>50</MaxHitPoints><DeteriorationRate>2.0</DeteriorationRate><Beauty>-8</Beauty><Mass>1</Mass><!-- ingredients are added to this value --></statBases>"
+          ]
+        }
+      ],
+      "interpretation": "No UFT base flammability."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Unfinished.xml",
+      "sha256": "e095396dad8a83421ff04e47010701cf56df67e4e00c0d25c1704a51fb8e3130",
+      "xpath": "/Defs/ThingDef[defName=\"UnfinishedApparel\"]",
+      "nameAttribute": "",
+      "parentName": "UnfinishedBase",
+      "fields": [
+        {
+          "xpath": "statBases",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "stuffCategories",
+          "count": 1,
+          "xml": [
+            "<stuffCategories><li>Fabric</li><li>Leathery</li><li>Metallic</li></stuffCategories>"
+          ]
+        }
+      ],
+      "interpretation": "No unfinished apparel flammability override."
+    }
+  ],
+  "nativeReference": {
+    "species": "Alpaca",
+    "product": "WoolAlpaca",
+    "saveKey": "woolGrowth",
+    "sexRestricted": false,
+    "lifeStage": "AnimalAdult",
+    "intervalDays": 10,
+    "amount": 45,
+    "workTotal": 1700,
+    "xpPerWorkTick": 0.13,
+    "priority": 85,
+    "wildness": 0.25,
+    "bodySize": 1,
+    "baseHungerRate": 0.275,
+    "adultFedNutritionPerDayApprox": 0.4400000055,
+    "stackLimit": 100,
+    "resourceHP": 90,
+    "deteriorationPerDay": 3.4,
+    "marketValue": 3.8,
+    "rawFlammability": 0.4,
+    "coldPower": 30,
+    "heatPower": 16,
+    "sharpPower": 0.36,
+    "bluntPower": 0,
+    "heatArmorPower": 1.1,
+    "apparelHpFactor": 1,
+    "apparelWorkFactor": 1,
+    "stuffFlammability": 1.7,
+    "ordinaryApparelBaseFlammability": 1,
+    "unfinishedApparelBaseFlammability": 0
+  },
+  "limits": [
+    "Static derived C# and packaged XML are not original source or runtime gameplay proof.",
+    "Matching REA metadata is reused for identity only.",
+    "No game, browser, preview, GUI or screenshot was launched.",
+    "Selected XML inheritance nodes are not a complete mod-patched effective Def database.",
+    "Apparel effects cover ordinary material-aware clothing, not every scenario, style, hediff or mod rule.",
+    "Protected output retries, changed timings, wildlife selection and combustible unfinished apparel are Web adaptations.",
+    "No native artwork, audio, assemblies or complete derived code is published."
+  ],
+  "collectorSha256": "26d543481815c0f9b2a8f43743a75b31752db4599d6fde7b4d5778bea91a87bb"
+}

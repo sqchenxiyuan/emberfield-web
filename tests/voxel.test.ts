@@ -92,6 +92,7 @@ describe('voxel generation and chunk delivery', () => {
       chunk: 0,
       herb: 0,
       cloth: 0,
+      alpacaWool: 0,
       apparel: 6,
       weapon: 0,
       furniture: 0,

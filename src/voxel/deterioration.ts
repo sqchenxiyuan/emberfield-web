@@ -1,5 +1,5 @@
 import { DAY, type Cargo, type Resource } from './types';
-import { APPAREL_DEFS } from './apparel';
+import { APPAREL_DEFS, apparelStats } from './apparel';
 import { WEAPON_DEFS } from './weapons';
 import { relocationMaxHP } from './relocation';
 
@@ -31,6 +31,7 @@ export const RESOURCE_CONDITION_DEFS: Readonly<Record<Exclude<Resource, 'apparel
   meal: { maxHitPoints: 50, ratePerDay: 10 },
   chunk: { maxHitPoints: 300, ratePerDay: 0 },
   cloth: { maxHitPoints: 80, ratePerDay: 4 },
+  alpacaWool: { maxHitPoints: 90, ratePerDay: 3.4 },
   herb: { maxHitPoints: 60, ratePerDay: 6 },
   // Core UnfinishedBase is 50 HP / 2 per day. Web currently uses that base for
   // every UFT; material-specific native HP factors (e.g. wood) are not modeled.
@@ -40,7 +41,8 @@ export const DETERIORATION_QUALITY = [2, 1.5, 1, .8, .6, .3, .1] as const;
 export const DETERIORATION_RULES = Object.freeze({ interval: 100, equipmentRatePerDay: 2 });
 
 export function batchMaxHitPoints(batch: Cargo): number | null {
-  if (batch.resource === 'apparel') return batch.apparel ? APPAREL_DEFS[batch.apparel.kind]?.maxHitPoints ?? null : null;
+  if (batch.resource === 'apparel') return batch.apparel && Object.hasOwn(APPAREL_DEFS, batch.apparel.kind)
+    ? apparelStats(batch.apparel).maxHitPoints : null;
   if (batch.resource === 'weapon') return batch.weapon ? WEAPON_DEFS[batch.weapon.kind]?.maxHitPoints ?? null : null;
   if (batch.resource === 'furniture') return batch.furniture ? relocationMaxHP(batch.furniture.kind) : null;
   return RESOURCE_CONDITION_DEFS[batch.resource]?.maxHitPoints ?? null;

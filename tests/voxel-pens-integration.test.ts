@@ -95,7 +95,7 @@ describe('physical pens, roping and allowed areas',()=>{
       const s=fixture(),{marker}=pen(s),a=animal(s),p=s.pawns[0];until(s,()=>p.ropeTask?.stage==='lead');
       const before=[at(a),at(p)];
       if(action==='pause')command(s,{type:'ropeAnimal',animalId:a.id,penId:null,paused:true});
-      if(action==='filter')command(s,{type:'penFilter',markerId:marker.id,filter:{deer:false,dromedary:false,male:true,female:true}});
+      if(action==='filter')command(s,{type:'penFilter',markerId:marker.id,filter:{deer:false,dromedary:false,alpaca:false,male:true,female:true}});
       if(action==='draft')command(s,{type:'draft',pawnId:p.id,drafted:true});
       if(action==='death')s.killAnimal(a,'test');
       expect(p.ropeTask).toBeNull();expect([at(a),at(p)]).toEqual(before);expect(a.phase).not.toBe('rope');

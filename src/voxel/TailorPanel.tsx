@@ -38,7 +38,7 @@ export function TailorPanel({
         </select>
       </label>
       <p>
-        每件 {recipe.cloth} 布料 · 全营地已有 {count} 件（含穿戴与携带）
+        每件 {recipe.cloth} 同一种布料或羊驼毛 · 全营地已有 {count} 件（含穿戴与携带）
       </p>
       <label>
         制作到目标数量
@@ -60,7 +60,7 @@ export function TailorPanel({
         {bill.paused ? '恢复此配方' : '暂停此配方'}
       </button>
       <small>
-        需要「加工」分工，实际运来布料后开工。操作位 {stand.x}, {stand.y} · Z {stand.z}。
+        需要「加工」分工，实际运来账单允许的同一种纺织材料后开工。操作位 {stand.x}, {stand.y} · Z {stand.z}。
       </small>
       <small>
         降低目标不打断当前衣物，暂停此配方才中止并退料。工艺等级影响成品品质；操作能力影响制作速度。

@@ -308,15 +308,17 @@ describe('production bill command and physical lifecycle integration', () => {
     const provenance = JSON.parse(readFileSync(new URL('./fixtures/voxel-v38-before-production-bills.provenance.json', import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(provenance.sha256);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old), current = s.save();
-    expect(old.version).toBe(38); expect(current.version).toBe(49); expect(current.productionQueues).toEqual([]);
+    expect(old.version).toBe(38); expect(current.version).toBe(50); expect(current.productionQueues).toEqual([]);
     for (const field of ['items', 'jobs', 'stoves', 'stonecutters', 'tailors', 'weaponBenches', 'butcherSpots', 'nextId', 'blocks'] as const)
       expect(current[field], field).toEqual(old[field]);
     const stats = structuredClone(current.stats);
     for (const key of ['produced', 'consumed', 'destroyed', 'spoiled'] as const) {
       expect(stats[key].unfinished).toBe(0);
       expect(stats[key].milk).toBe(0);
+      expect(stats[key].alpacaWool).toBe(0);
       delete (stats[key] as Partial<typeof stats[typeof key]>).unfinished;
       delete (stats[key] as Partial<typeof stats[typeof key]>).milk;
+      delete (stats[key] as Partial<typeof stats[typeof key]>).alpacaWool;
     }
     expect(stats).toEqual(old.stats);
     // v44 adds an unrestricted area assignment; the existing v38 loader also

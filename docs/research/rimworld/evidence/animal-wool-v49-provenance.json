@@ -1,0 +1,622 @@
+{
+  "status": "captured",
+  "capturedAt": "2026-11-04T18:38:23.336Z",
+  "head": "2b50bcae1bbcb9ffb0890630de609c74da460547",
+  "subtree": "91aae567053c15635b7477745f165cbffa7ad686",
+  "esbuildVersion": "0.28.2",
+  "sourceBundle": "world-v49.mjs",
+  "sourceBundleSha256": "68635d6820d6eb2d9b0a8a94a44ad2e48941b4156a850b4473382c3b5670812d",
+  "sourceCount": 89,
+  "worldSha256": "d631cce36aca62f3669ab52877696053e6078b269f962ebe608fe6dfae5ec237",
+  "sources": {
+    "src/voxel/allowedAreas.ts": "f9e0dae0f99fd0752de9f32fa02f1c66a19943a795a9befdafceaa970d9daee4",
+    "src/voxel/anatomy.ts": "1f30b19d6ad8c1562cca38e86e54e17c9226f4ea6f288a326743f348e5bd7095",
+    "src/voxel/animalMilk.ts": "30f9f10f3bf81cd864e3e6b7145f26269bc88c691a7a1d96f28a03d986ba9d9c",
+    "src/voxel/animalMilkPersistence.ts": "fa5e9ec0c1f63bdde28134186b3133dca267b069d17956600bc98c7fb3ba3a2a",
+    "src/voxel/apparel.ts": "88954cc42098d2bf1f02c294e5c2f813c9271a95e01f6bfb9346c4a31d2211e8",
+    "src/voxel/armor.ts": "756771ef962f4fde2cd321a29880f11077ada081b724ebc63e5d781d12bff62e",
+    "src/voxel/autoSlaughter.ts": "587cad3c1c7c733f0f078519f22f3aea8fcd0638df2abc2aaa00f5582da3a019",
+    "src/voxel/autoSlaughterPersistence.ts": "af77655a21020f4d47a434c1f83e1016aa6ba2d233e0e14f713d84caba1815eb",
+    "src/voxel/caves.ts": "434ed06e1e9cc6ebd6407f326eb367ece11cf5d29421280a30de202cad0870f2",
+    "src/voxel/climate.ts": "5676fe5d95344b55a44571f44129c42c96a86c673a8dfe8fc55ba22df3ddc231",
+    "src/voxel/construction.ts": "09269debc4e2862682a0e531498d27faed9305e731535d7c51c92ce9c648ebb2",
+    "src/voxel/constructionFrames.ts": "1b3f6c6767b06b0e8fb0b6905b541e0d0be3a62719ffb117a44ac06d84da138e",
+    "src/voxel/crafting.ts": "9ff99d07c56040b1bc91acc9bd6521c00550389068f669459516f730887fcadb",
+    "src/voxel/deterioration.ts": "2969d08d3bac837e0cf5b85c454ccc748d549676cddb4f2f4eb1f7ca90252c81",
+    "src/voxel/environment.ts": "9493ada3c8b9a2dc9a4c2cf45452da156d3d7153a76e0b429928c27f1d5abc50",
+    "src/voxel/environmentPersistence.ts": "fac143e8467a64e1518e1b846bbcd831da1e1661e058cbf8816c601cc3670656",
+    "src/voxel/exploration.ts": "07f8700c3a295a620a7cada1636163f0af0ed40c91b2bcf547f0737888695756",
+    "src/voxel/farming.ts": "43b8f46b3a2d29685f083252c3f685a437a36883c0cf51c7fed43645a6b49ffa",
+    "src/voxel/fire.ts": "e268ae29696b7f8b71a68dfac7c8ac77484429aaf2cfe75f96fc544b04ddc4d3",
+    "src/voxel/firePersistence.ts": "422b39a829b230b4727abd7ef32ced68407ec2166f39356139a57ff7c78ab839",
+    "src/voxel/fireWorld.ts": "1e5b046601a1e8641f712a4cf678a28aecb13377d93698eab7a71217ef20e8ca",
+    "src/voxel/furniture.ts": "a6412af96de6584138f05545be381de9d4876134dcdb04ce963dd2c29915bba8",
+    "src/voxel/furniturePersistence.ts": "6bde3e701115a7126e2daeef9798495afd5828e027c1ca437f0d8129d2477504",
+    "src/voxel/husbandry.ts": "08fae5537b0dd0fbbd464aedef87583de72b57b9869dc3a653932ceb316c0b82",
+    "src/voxel/husbandryPersistence.ts": "19af18b5f2e13e32bfa250de00222ad7df241ec5199d937d224fefc6af90da0e",
+    "src/voxel/husbandryWorld.ts": "fdf92cb39fcbac1d61be9b7bf535f883def9e2e027e00fd6de12e8af9f32e775",
+    "src/voxel/injuries.ts": "cfd1dcad2a553d0681239e2ab0638fb8a752da35a26cd1800301aa12aaf9a8e4",
+    "src/voxel/itemAccess.ts": "dd9f558cb822365442fd22e3b82b2deba8aef02ddece3f7d891def2022eadc0f",
+    "src/voxel/living.ts": "f101d6b98ef949bd83ccdc11117cb3014bc3d351d7888bc06c300158fc57c6fa",
+    "src/voxel/livingPersistence.ts": "e9e6ae9f30fd643afe7da827b7bfd2ae4ad383745747451c286ce27ee7562f33",
+    "src/voxel/logistics.ts": "685010e07b4ff894bc53a07e6b864ce77b0f4b48b7374820bd8476d7f0f28b96",
+    "src/voxel/medicine.ts": "064f9c2fe26b99f59f44e58ed7294e3b7dfea416b3fa0688c7976b52a1c7b912",
+    "src/voxel/medicinePersistence.ts": "306fa3b01e62229efcae3654230f35b8288ba945c0f3c22859af09203899c750",
+    "src/voxel/mood.ts": "79dd6a2dcd82ae7f8f375bb0a5e2ff2913b86b6a70fdcefdd0d84a8fc3d24db5",
+    "src/voxel/navigation.ts": "5eb6ccdf91d7d5a3211deae7fca8cc38ea0329caa6642e5a13bfe65705399c60",
+    "src/voxel/pens.ts": "a2e3628b4d764bc872c94570965815ca7aec6d3ed4d05b9d0184bc6366f47f20",
+    "src/voxel/pensPersistence.ts": "4d4ce8511491300425560a9f21de70a2ef3f19a3be0209c52e441c55e615842f",
+    "src/voxel/pensWorld.ts": "1ca467aa5f82987df51378b62df5d5830adf18127542fe8aaa3bcb551327ba81",
+    "src/voxel/plants.ts": "baa7f01b82c047536c8d0a2ee3097e15bce8466418e4442e39155d6be6400195",
+    "src/voxel/power.ts": "dbbf47b4558b8935960d20abceb94c545f686e6ab5f6ca26f075429ded89fec1",
+    "src/voxel/preservation.ts": "be718836d14f4b2f3e3a22efaca943ef22036aa6a8dd1a79264a1bfb48054b4a",
+    "src/voxel/prisoners.ts": "6327f6d6d65f107a35e70fa94e2260b79d8593d070aaf5c42368de05782a55b2",
+    "src/voxel/prisonPersistence.ts": "aa23dc10fd8152e6f338e26b118e385fa7c5d385e86d10688e9298ae26a502de",
+    "src/voxel/prisonWorld.ts": "9072d5902463cc136816809d5148f541a2c88c848dec3945e5bf65d4a3107d87",
+    "src/voxel/productionBills.ts": "a115e116d7d0275d8e473367f94207bd4ae720ebbbacff1dd38f2681fabbde07",
+    "src/voxel/productionOutput.ts": "dfccd10a9e5a924a22b5ccb01176df82a9371ab55b54fc1fb24324b6c8aabde2",
+    "src/voxel/productionPolicies.ts": "b96ed3f7f84826d451c893469259faf2e140d802db2e05f0fd295f9cf10dac5a",
+    "src/voxel/ranged.ts": "5b42c45c404289833cfe496fc4b1cc34d253d57c8afb6045afe8f2c34436920a",
+    "src/voxel/rangedPersistence.ts": "19644559ae86bcb1e879dcd8d7d115e2e05d40177905c7a900864c25071a057a",
+    "src/voxel/recreation.ts": "f55022026c42781e5653a7b35f3272280348123e5930b627072f47a00f3e8051",
+    "src/voxel/regionPersistence.ts": "42a2d237053d5455f4db90d083a6d3e9aa540c9b4e7e1ca708690eb79a4cf24c",
+    "src/voxel/regions.ts": "13a232f49db8fda4ee23367a792a55eb788e9849333fffef2e6b81f9cd2539b7",
+    "src/voxel/relocation.ts": "54054e7757e37cb30ec8ac0112db9ef52de436e8f9ef382044bdc13da9267028",
+    "src/voxel/relocationPersistence.ts": "c6c38ff9267518f454ee2a313a292a1ffe95dabe8340506498019d18ba3a9cb1",
+    "src/voxel/research.ts": "8abddc0dca6e520f84e10db6ce739d046a101d2200f5ca67578260e095866ee4",
+    "src/voxel/rest.ts": "52c641ae3307af786d15380824ce7b0082d3d14935432d3baebf66b047981eff",
+    "src/voxel/rivers.ts": "3b8ea85fde9adaf8335645148ef30324c8caab6bd7c4821aeaca0efff6849ea9",
+    "src/voxel/rooms.ts": "67457f7cd217f5746b9562ea2e3ca059af1f424165368d28d511e8a374090b9d",
+    "src/voxel/sanitation.ts": "7794390e2678b62b3edd8e9e6eeff1f6c0bbcebc41c59ceea0bef6bfedbdf223",
+    "src/voxel/sanitationPersistence.ts": "2c496b93e0123f93b64a0f30e94d34477d23e445411013bc1fca9e7a8e98f16f",
+    "src/voxel/shelves.ts": "940a4d42881c288e39417f83b2330cfab4ea66b0ae9a65b1ff3025e43003088f",
+    "src/voxel/shelvesPersistence.ts": "8357b9689bcac806f5a6e76bfbc5442b845ba46b501ed7169a2e31d0545be461",
+    "src/voxel/skills.ts": "d9da34a8152cecf3f95a9fe9ebbcb9274bbcbe8c8b8fbd3da29bc340b86aaf8b",
+    "src/voxel/social.ts": "1c1438d51a4c24fcf1c710456e9c681d50dde6471ac6be3cc001b53b7e574435",
+    "src/voxel/socialPersistence.ts": "38e372571c4bc6ea255a407c480f3783512487f2befd9ed2357a6486bd676c4e",
+    "src/voxel/socialWorld.ts": "a62b8a8e1995f93c394a2dc60f54992b2d9685b88ab1a07e5d4f21d0397bba50",
+    "src/voxel/stockpileZones.ts": "2936a26a4a9583eea65ff72e6073aadc57f5edb17fd63cd66d2dda65046bc90d",
+    "src/voxel/storageGroups.ts": "28a590eb591984a9d152afb17d6568df271fe4cf7b7b53a584cc1aa36b3d15e6",
+    "src/voxel/storyteller.ts": "5ad1b8204feac0ef182a23426196a6221c62f963c819104d7222b4337ad06677",
+    "src/voxel/storytellerPersistence.ts": "bcc312777461238d9c8e6ef18e374ae860e15dd08aeb94529d10894766cb8564",
+    "src/voxel/storytellerRules.ts": "4b11042097f3e7534efab8e75057d4f33b4518ebe4e1c364390a45e3bc9bfb55",
+    "src/voxel/survival.ts": "0106c5dac284ccc60e715084811d570d4ed4b8e5e5f3037a887e61245b6701e1",
+    "src/voxel/thermal.ts": "40c614996ba9c8843bc52fbd343a2a625c0fd77c788b1133ae2ba50b6494b127",
+    "src/voxel/trade.ts": "17c4eea3c9a5995cb7656f14c88b3e5b4b1938566558c4680674b3400e4f394b",
+    "src/voxel/tradePersistence.ts": "872dc5963d0fee654295125abceaa29fbc35f8bf34c70ad6947481790ae32329",
+    "src/voxel/tradeRules.ts": "ef63fa71de8723b14c67213c68c310ce82db2b89cff550eba3cffde7f85fdfae",
+    "src/voxel/tradeWorld.ts": "8f58ace07b818cb78ad09de857bbc857d8520a62e43cec9faee05e57955c2db9",
+    "src/voxel/types.ts": "18378939a45dec53def198707f628eb5668c31d81c1db053e82777e88cbd6f36",
+    "src/voxel/unfinishedProduction.ts": "82550f62422518ac1ff36e27c8671cbfa65ead417b6ade286613fb82139e7a65",
+    "src/voxel/water.ts": "88966e7ac82cd415601b597c24bf5f192a699882def98415d96cb1aeaeba0298",
+    "src/voxel/wealth.ts": "39b9ac303e56224676bd257b607d415ecf384bb9df28d04e155e0ac359199e7c",
+    "src/voxel/weaponProduction.ts": "8d23ccdf273b763383a098a1e37968278558e33c07fabc4641d2917e878dc2b0",
+    "src/voxel/weapons.ts": "43fdd4aa3e89c7743da31a571d313604fa88bd8383f94637c1ab6d0b80dd7c6c",
+    "src/voxel/weather.ts": "216b5b06f6de8f1e37930ce1094e51de68f055489453affbc14de685da13690b",
+    "src/voxel/weatherPersistence.ts": "33538a8888cecd5a2c2fb20f13af47f62a667d19d3d7367e7e722b1e0eb7c525",
+    "src/voxel/wildlife.ts": "70f0163bc3ae61671839d47accae54e80e34392260cec6be177b790579568765",
+    "src/voxel/wildlifePersistence.ts": "f2c74189ae4bd0c0cdeeb00375c664530bb070f149754188a7ab3e3fde567d1f",
+    "src/voxel/world.ts": "d631cce36aca62f3669ab52877696053e6078b269f962ebe608fe6dfae5ec237",
+    "src/voxel/worldgen.ts": "8d109cbc347b8e63a2d545b200d46b9bb5a2683679b3dab140452dadc75292c5"
+  },
+  "script": "test-results/animal-wool-v49-baseline/capture.mjs",
+  "scriptSha256": "270f368f8bf36c00fdce76c7205b17da4955342210e1d6c6cb927d469ab9cc70",
+  "nativeGameplay": false,
+  "browserInteraction": false,
+  "scope": "Exact committed v49 model and byte-identical natural milk-campaign sources continue a genuine active milking checkpoint for 25 ordinary ticks. No public commands or physical/schema edits are applied. This is a continuation of the existing fresh-generated v49 desert campaign, not new human/native/browser gameplay or a fresh generation during capture. Existing cloth apparel and explicit cooking/storage selections are retained; no tailoring job is active in this checkpoint.",
+  "origin": {
+    "file": "test-results/animal-milk-campaign/resumed-milk-work.json",
+    "name": "resumed-milk-work",
+    "sha256": "31de65f460b3bc73353a7c81f6da125d6c1c474eebcfd3eacc2a7d7b1497b9fc",
+    "byteLength": 203649,
+    "retainedCopy": "origin-milk-checkpoint.json",
+    "version": 49,
+    "tick": 125340,
+    "handlerId": 61,
+    "animalId": 85,
+    "handleTask": {
+      "animalId": 85,
+      "action": "milk",
+      "stage": "interact",
+      "foodId": null,
+      "amount": 0,
+      "feedings": 0,
+      "progress": 100
+    },
+    "reportPath": "test-results/animal-milk-campaign.json",
+    "reportSha256": "d9e28b8c519661729aa0c68e82fcab8311739bf8f5dff451c90feaa0fab245f8",
+    "frozenPath": "docs/research/rimworld/evidence/animal-milk-voxel-validation.json",
+    "frozenSha256": "6427774cff37834c7b9ac9f45e9e81dfa0f192e8af881f578662a28f276aed48",
+    "campaignExecution": {
+      "version": 49,
+      "esbuildVersion": "0.28.2",
+      "bundleSha256": "68635d6820d6eb2d9b0a8a94a44ad2e48941b4156a850b4473382c3b5670812d",
+      "sourceCount": 89,
+      "sources": {
+        "src/voxel/allowedAreas.ts": "f9e0dae0f99fd0752de9f32fa02f1c66a19943a795a9befdafceaa970d9daee4",
+        "src/voxel/anatomy.ts": "1f30b19d6ad8c1562cca38e86e54e17c9226f4ea6f288a326743f348e5bd7095",
+        "src/voxel/animalMilk.ts": "30f9f10f3bf81cd864e3e6b7145f26269bc88c691a7a1d96f28a03d986ba9d9c",
+        "src/voxel/animalMilkPersistence.ts": "fa5e9ec0c1f63bdde28134186b3133dca267b069d17956600bc98c7fb3ba3a2a",
+        "src/voxel/apparel.ts": "88954cc42098d2bf1f02c294e5c2f813c9271a95e01f6bfb9346c4a31d2211e8",
+        "src/voxel/armor.ts": "756771ef962f4fde2cd321a29880f11077ada081b724ebc63e5d781d12bff62e",
+        "src/voxel/autoSlaughter.ts": "587cad3c1c7c733f0f078519f22f3aea8fcd0638df2abc2aaa00f5582da3a019",
+        "src/voxel/autoSlaughterPersistence.ts": "af77655a21020f4d47a434c1f83e1016aa6ba2d233e0e14f713d84caba1815eb",
+        "src/voxel/caves.ts": "434ed06e1e9cc6ebd6407f326eb367ece11cf5d29421280a30de202cad0870f2",
+        "src/voxel/climate.ts": "5676fe5d95344b55a44571f44129c42c96a86c673a8dfe8fc55ba22df3ddc231",
+        "src/voxel/construction.ts": "09269debc4e2862682a0e531498d27faed9305e731535d7c51c92ce9c648ebb2",
+        "src/voxel/constructionFrames.ts": "1b3f6c6767b06b0e8fb0b6905b541e0d0be3a62719ffb117a44ac06d84da138e",
+        "src/voxel/crafting.ts": "9ff99d07c56040b1bc91acc9bd6521c00550389068f669459516f730887fcadb",
+        "src/voxel/deterioration.ts": "2969d08d3bac837e0cf5b85c454ccc748d549676cddb4f2f4eb1f7ca90252c81",
+        "src/voxel/environment.ts": "9493ada3c8b9a2dc9a4c2cf45452da156d3d7153a76e0b429928c27f1d5abc50",
+        "src/voxel/environmentPersistence.ts": "fac143e8467a64e1518e1b846bbcd831da1e1661e058cbf8816c601cc3670656",
+        "src/voxel/exploration.ts": "07f8700c3a295a620a7cada1636163f0af0ed40c91b2bcf547f0737888695756",
+        "src/voxel/farming.ts": "43b8f46b3a2d29685f083252c3f685a437a36883c0cf51c7fed43645a6b49ffa",
+        "src/voxel/fire.ts": "e268ae29696b7f8b71a68dfac7c8ac77484429aaf2cfe75f96fc544b04ddc4d3",
+        "src/voxel/firePersistence.ts": "422b39a829b230b4727abd7ef32ced68407ec2166f39356139a57ff7c78ab839",
+        "src/voxel/fireWorld.ts": "1e5b046601a1e8641f712a4cf678a28aecb13377d93698eab7a71217ef20e8ca",
+        "src/voxel/furniture.ts": "a6412af96de6584138f05545be381de9d4876134dcdb04ce963dd2c29915bba8",
+        "src/voxel/furniturePersistence.ts": "6bde3e701115a7126e2daeef9798495afd5828e027c1ca437f0d8129d2477504",
+        "src/voxel/husbandry.ts": "08fae5537b0dd0fbbd464aedef87583de72b57b9869dc3a653932ceb316c0b82",
+        "src/voxel/husbandryPersistence.ts": "19af18b5f2e13e32bfa250de00222ad7df241ec5199d937d224fefc6af90da0e",
+        "src/voxel/husbandryWorld.ts": "fdf92cb39fcbac1d61be9b7bf535f883def9e2e027e00fd6de12e8af9f32e775",
+        "src/voxel/injuries.ts": "cfd1dcad2a553d0681239e2ab0638fb8a752da35a26cd1800301aa12aaf9a8e4",
+        "src/voxel/itemAccess.ts": "dd9f558cb822365442fd22e3b82b2deba8aef02ddece3f7d891def2022eadc0f",
+        "src/voxel/living.ts": "f101d6b98ef949bd83ccdc11117cb3014bc3d351d7888bc06c300158fc57c6fa",
+        "src/voxel/livingPersistence.ts": "e9e6ae9f30fd643afe7da827b7bfd2ae4ad383745747451c286ce27ee7562f33",
+        "src/voxel/logistics.ts": "685010e07b4ff894bc53a07e6b864ce77b0f4b48b7374820bd8476d7f0f28b96",
+        "src/voxel/medicine.ts": "064f9c2fe26b99f59f44e58ed7294e3b7dfea416b3fa0688c7976b52a1c7b912",
+        "src/voxel/medicinePersistence.ts": "306fa3b01e62229efcae3654230f35b8288ba945c0f3c22859af09203899c750",
+        "src/voxel/mood.ts": "79dd6a2dcd82ae7f8f375bb0a5e2ff2913b86b6a70fdcefdd0d84a8fc3d24db5",
+        "src/voxel/navigation.ts": "5eb6ccdf91d7d5a3211deae7fca8cc38ea0329caa6642e5a13bfe65705399c60",
+        "src/voxel/pens.ts": "a2e3628b4d764bc872c94570965815ca7aec6d3ed4d05b9d0184bc6366f47f20",
+        "src/voxel/pensPersistence.ts": "4d4ce8511491300425560a9f21de70a2ef3f19a3be0209c52e441c55e615842f",
+        "src/voxel/pensWorld.ts": "1ca467aa5f82987df51378b62df5d5830adf18127542fe8aaa3bcb551327ba81",
+        "src/voxel/plants.ts": "baa7f01b82c047536c8d0a2ee3097e15bce8466418e4442e39155d6be6400195",
+        "src/voxel/power.ts": "dbbf47b4558b8935960d20abceb94c545f686e6ab5f6ca26f075429ded89fec1",
+        "src/voxel/preservation.ts": "be718836d14f4b2f3e3a22efaca943ef22036aa6a8dd1a79264a1bfb48054b4a",
+        "src/voxel/prisoners.ts": "6327f6d6d65f107a35e70fa94e2260b79d8593d070aaf5c42368de05782a55b2",
+        "src/voxel/prisonPersistence.ts": "aa23dc10fd8152e6f338e26b118e385fa7c5d385e86d10688e9298ae26a502de",
+        "src/voxel/prisonWorld.ts": "9072d5902463cc136816809d5148f541a2c88c848dec3945e5bf65d4a3107d87",
+        "src/voxel/productionBills.ts": "a115e116d7d0275d8e473367f94207bd4ae720ebbbacff1dd38f2681fabbde07",
+        "src/voxel/productionOutput.ts": "dfccd10a9e5a924a22b5ccb01176df82a9371ab55b54fc1fb24324b6c8aabde2",
+        "src/voxel/productionPolicies.ts": "b96ed3f7f84826d451c893469259faf2e140d802db2e05f0fd295f9cf10dac5a",
+        "src/voxel/ranged.ts": "5b42c45c404289833cfe496fc4b1cc34d253d57c8afb6045afe8f2c34436920a",
+        "src/voxel/rangedPersistence.ts": "19644559ae86bcb1e879dcd8d7d115e2e05d40177905c7a900864c25071a057a",
+        "src/voxel/recreation.ts": "f55022026c42781e5653a7b35f3272280348123e5930b627072f47a00f3e8051",
+        "src/voxel/regionPersistence.ts": "42a2d237053d5455f4db90d083a6d3e9aa540c9b4e7e1ca708690eb79a4cf24c",
+        "src/voxel/regions.ts": "13a232f49db8fda4ee23367a792a55eb788e9849333fffef2e6b81f9cd2539b7",
+        "src/voxel/relocation.ts": "54054e7757e37cb30ec8ac0112db9ef52de436e8f9ef382044bdc13da9267028",
+        "src/voxel/relocationPersistence.ts": "c6c38ff9267518f454ee2a313a292a1ffe95dabe8340506498019d18ba3a9cb1",
+        "src/voxel/research.ts": "8abddc0dca6e520f84e10db6ce739d046a101d2200f5ca67578260e095866ee4",
+        "src/voxel/rest.ts": "52c641ae3307af786d15380824ce7b0082d3d14935432d3baebf66b047981eff",
+        "src/voxel/rivers.ts": "3b8ea85fde9adaf8335645148ef30324c8caab6bd7c4821aeaca0efff6849ea9",
+        "src/voxel/rooms.ts": "67457f7cd217f5746b9562ea2e3ca059af1f424165368d28d511e8a374090b9d",
+        "src/voxel/sanitation.ts": "7794390e2678b62b3edd8e9e6eeff1f6c0bbcebc41c59ceea0bef6bfedbdf223",
+        "src/voxel/sanitationPersistence.ts": "2c496b93e0123f93b64a0f30e94d34477d23e445411013bc1fca9e7a8e98f16f",
+        "src/voxel/shelves.ts": "940a4d42881c288e39417f83b2330cfab4ea66b0ae9a65b1ff3025e43003088f",
+        "src/voxel/shelvesPersistence.ts": "8357b9689bcac806f5a6e76bfbc5442b845ba46b501ed7169a2e31d0545be461",
+        "src/voxel/skills.ts": "d9da34a8152cecf3f95a9fe9ebbcb9274bbcbe8c8b8fbd3da29bc340b86aaf8b",
+        "src/voxel/social.ts": "1c1438d51a4c24fcf1c710456e9c681d50dde6471ac6be3cc001b53b7e574435",
+        "src/voxel/socialPersistence.ts": "38e372571c4bc6ea255a407c480f3783512487f2befd9ed2357a6486bd676c4e",
+        "src/voxel/socialWorld.ts": "a62b8a8e1995f93c394a2dc60f54992b2d9685b88ab1a07e5d4f21d0397bba50",
+        "src/voxel/stockpileZones.ts": "2936a26a4a9583eea65ff72e6073aadc57f5edb17fd63cd66d2dda65046bc90d",
+        "src/voxel/storageGroups.ts": "28a590eb591984a9d152afb17d6568df271fe4cf7b7b53a584cc1aa36b3d15e6",
+        "src/voxel/storyteller.ts": "5ad1b8204feac0ef182a23426196a6221c62f963c819104d7222b4337ad06677",
+        "src/voxel/storytellerPersistence.ts": "bcc312777461238d9c8e6ef18e374ae860e15dd08aeb94529d10894766cb8564",
+        "src/voxel/storytellerRules.ts": "4b11042097f3e7534efab8e75057d4f33b4518ebe4e1c364390a45e3bc9bfb55",
+        "src/voxel/survival.ts": "0106c5dac284ccc60e715084811d570d4ed4b8e5e5f3037a887e61245b6701e1",
+        "src/voxel/thermal.ts": "40c614996ba9c8843bc52fbd343a2a625c0fd77c788b1133ae2ba50b6494b127",
+        "src/voxel/trade.ts": "17c4eea3c9a5995cb7656f14c88b3e5b4b1938566558c4680674b3400e4f394b",
+        "src/voxel/tradePersistence.ts": "872dc5963d0fee654295125abceaa29fbc35f8bf34c70ad6947481790ae32329",
+        "src/voxel/tradeRules.ts": "ef63fa71de8723b14c67213c68c310ce82db2b89cff550eba3cffde7f85fdfae",
+        "src/voxel/tradeWorld.ts": "8f58ace07b818cb78ad09de857bbc857d8520a62e43cec9faee05e57955c2db9",
+        "src/voxel/types.ts": "18378939a45dec53def198707f628eb5668c31d81c1db053e82777e88cbd6f36",
+        "src/voxel/unfinishedProduction.ts": "82550f62422518ac1ff36e27c8671cbfa65ead417b6ade286613fb82139e7a65",
+        "src/voxel/water.ts": "88966e7ac82cd415601b597c24bf5f192a699882def98415d96cb1aeaeba0298",
+        "src/voxel/wealth.ts": "39b9ac303e56224676bd257b607d415ecf384bb9df28d04e155e0ac359199e7c",
+        "src/voxel/weaponProduction.ts": "8d23ccdf273b763383a098a1e37968278558e33c07fabc4641d2917e878dc2b0",
+        "src/voxel/weapons.ts": "43fdd4aa3e89c7743da31a571d313604fa88bd8383f94637c1ab6d0b80dd7c6c",
+        "src/voxel/weather.ts": "216b5b06f6de8f1e37930ce1094e51de68f055489453affbc14de685da13690b",
+        "src/voxel/weatherPersistence.ts": "33538a8888cecd5a2c2fb20f13af47f62a667d19d3d7367e7e722b1e0eb7c525",
+        "src/voxel/wildlife.ts": "70f0163bc3ae61671839d47accae54e80e34392260cec6be177b790579568765",
+        "src/voxel/wildlifePersistence.ts": "f2c74189ae4bd0c0cdeeb00375c664530bb070f149754188a7ab3e3fde567d1f",
+        "src/voxel/world.ts": "d631cce36aca62f3669ab52877696053e6078b269f962ebe608fe6dfae5ec237",
+        "src/voxel/worldgen.ts": "8d109cbc347b8e63a2d545b200d46b9bb5a2683679b3dab140452dadc75292c5"
+      },
+      "script": "scripts/voxel-animal-milk-campaign-verify.mjs",
+      "scriptSha256": "44ed727c65cc131e26a72f01ba154662570658e859735a283a147bb705a68d8a"
+    }
+  },
+  "commands": [],
+  "auditedTicks": 25,
+  "workContinuity": [
+    {
+      "tick": 125341,
+      "progress": 101
+    },
+    {
+      "tick": 125342,
+      "progress": 102
+    },
+    {
+      "tick": 125343,
+      "progress": 103
+    },
+    {
+      "tick": 125344,
+      "progress": 104
+    },
+    {
+      "tick": 125345,
+      "progress": 105
+    },
+    {
+      "tick": 125346,
+      "progress": 106
+    },
+    {
+      "tick": 125347,
+      "progress": 107
+    },
+    {
+      "tick": 125348,
+      "progress": 108
+    },
+    {
+      "tick": 125349,
+      "progress": 109
+    },
+    {
+      "tick": 125350,
+      "progress": 110
+    },
+    {
+      "tick": 125351,
+      "progress": 111
+    },
+    {
+      "tick": 125352,
+      "progress": 112
+    },
+    {
+      "tick": 125353,
+      "progress": 113
+    },
+    {
+      "tick": 125354,
+      "progress": 114
+    },
+    {
+      "tick": 125355,
+      "progress": 115
+    },
+    {
+      "tick": 125356,
+      "progress": 116
+    },
+    {
+      "tick": 125357,
+      "progress": 117
+    },
+    {
+      "tick": 125358,
+      "progress": 118
+    },
+    {
+      "tick": 125359,
+      "progress": 119
+    },
+    {
+      "tick": 125360,
+      "progress": 120
+    },
+    {
+      "tick": 125361,
+      "progress": 121
+    },
+    {
+      "tick": 125362,
+      "progress": 122
+    },
+    {
+      "tick": 125363,
+      "progress": 123
+    },
+    {
+      "tick": 125364,
+      "progress": 124
+    },
+    {
+      "tick": 125365,
+      "progress": 125
+    }
+  ],
+  "resourceBalances": {
+    "silver": 800,
+    "wood": 90,
+    "stone": 0,
+    "steel": 0,
+    "components": 0,
+    "food": 60,
+    "grain": 0,
+    "meat": 0,
+    "milk": 0,
+    "carcass": 0,
+    "meal": 0,
+    "chunk": 0,
+    "cloth": 0,
+    "herb": 0,
+    "apparel": 6,
+    "weapon": 0,
+    "furniture": 0,
+    "unfinished": 0
+  },
+  "samples": [
+    {
+      "file": "working-milk.json",
+      "sha256": "3009190185ca5287487ad1a24b0fff86d89be6e61ebc0ad9ed5565bde3650346",
+      "byteLength": 203654,
+      "version": 49,
+      "tick": 125365,
+      "sourceTick": 125340,
+      "auditedTicks": 25,
+      "handlerId": 61,
+      "animalId": 85,
+      "handleTask": {
+        "animalId": 85,
+        "action": "milk",
+        "stage": "interact",
+        "foodId": null,
+        "amount": 0,
+        "feedings": 0,
+        "progress": 125
+      },
+      "counts": {
+        "silver": 800,
+        "wood": 55,
+        "stone": 0,
+        "steel": 0,
+        "components": 0,
+        "food": 2,
+        "grain": 283,
+        "meat": 0,
+        "milk": 0,
+        "carcass": 0,
+        "meal": 8,
+        "chunk": 0,
+        "cloth": 0,
+        "herb": 0,
+        "apparel": 6,
+        "weapon": 0,
+        "furniture": 0,
+        "unfinished": 0
+      },
+      "stats": {
+        "mined": 0,
+        "cut": 16,
+        "built": 34,
+        "hauled": 913,
+        "sown": 368,
+        "harvested": 97,
+        "cooked": 16,
+        "stonecut": 0,
+        "tailored": 0,
+        "weaponsMade": 0,
+        "destroyed": {
+          "silver": 0,
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meat": 0,
+          "milk": 0,
+          "carcass": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "herb": 0,
+          "apparel": 0,
+          "weapon": 0,
+          "furniture": 0,
+          "unfinished": 0
+        },
+        "treesPlanted": 0,
+        "treesRegrown": 4,
+        "treesDied": 4,
+        "eaten": 68,
+        "consumed": {
+          "silver": 0,
+          "wood": 273,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 58,
+          "grain": 227,
+          "meat": 0,
+          "milk": 0,
+          "carcass": 0,
+          "meal": 8,
+          "chunk": 0,
+          "cloth": 0,
+          "herb": 0,
+          "apparel": 0,
+          "weapon": 0,
+          "furniture": 0,
+          "unfinished": 0
+        },
+        "produced": {
+          "silver": 0,
+          "wood": 238,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 510,
+          "meat": 0,
+          "milk": 0,
+          "carcass": 0,
+          "meal": 16,
+          "chunk": 0,
+          "cloth": 0,
+          "herb": 0,
+          "apparel": 0,
+          "weapon": 0,
+          "furniture": 0,
+          "unfinished": 0
+        },
+        "spoiled": {
+          "silver": 0,
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meat": 0,
+          "milk": 0,
+          "carcass": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "herb": 0,
+          "apparel": 0,
+          "weapon": 0,
+          "furniture": 0,
+          "unfinished": 0
+        }
+      },
+      "animalsSha256": "90abc3468139bbfa4ca0b7d26eb6faface5364402564e1a97c6b3308eca878f0",
+      "apparel": [
+        {
+          "pawnId": 60,
+          "worn": [
+            {
+              "id": 63,
+              "kind": "shirt",
+              "material": "cloth",
+              "quality": 2,
+              "hitPoints": 97,
+              "wearTicks": 125365
+            },
+            {
+              "id": 64,
+              "kind": "pants",
+              "material": "cloth",
+              "quality": 2,
+              "hitPoints": 96,
+              "wearTicks": 125365
+            }
+          ]
+        },
+        {
+          "pawnId": 61,
+          "worn": [
+            {
+              "id": 65,
+              "kind": "shirt",
+              "material": "cloth",
+              "quality": 2,
+              "hitPoints": 96,
+              "wearTicks": 125365
+            },
+            {
+              "id": 66,
+              "kind": "pants",
+              "material": "cloth",
+              "quality": 2,
+              "hitPoints": 93,
+              "wearTicks": 125365
+            }
+          ]
+        },
+        {
+          "pawnId": 62,
+          "worn": [
+            {
+              "id": 67,
+              "kind": "shirt",
+              "material": "cloth",
+              "quality": 2,
+              "hitPoints": 98,
+              "wearTicks": 125365
+            },
+            {
+              "id": 68,
+              "kind": "pants",
+              "material": "cloth",
+              "quality": 2,
+              "hitPoints": 96,
+              "wearTicks": 125365
+            }
+          ]
+        }
+      ],
+      "productionQueues": [
+        {
+          "benchId": 344,
+          "bills": [
+            {
+              "id": "legacy:344:cook",
+              "recipe": "cook",
+              "mode": "target",
+              "remaining": 1,
+              "target": 8,
+              "suspended": false,
+              "pauseWhenSatisfied": false,
+              "resumeBelow": 5,
+              "waiting": false,
+              "policy": {
+                "workerId": null,
+                "skillMin": 0,
+                "skillMax": 20,
+                "ingredientRadius": null,
+                "allowedFood": [
+                  "grain",
+                  "meat"
+                ],
+                "allowedCarcasses": [
+                  "hare",
+                  "deer",
+                  "dromedary"
+                ]
+              },
+              "output": {
+                "mode": "drop",
+                "target": null
+              }
+            }
+          ]
+        }
+      ],
+      "storageSha256": "421223a5b49a3f4de2184ff09131fff2e94d80856c9070d408b2749aeb687213",
+      "autoSlaughter": {
+        "hare": {
+          "total": null,
+          "male": null,
+          "female": null,
+          "youngMale": null,
+          "youngFemale": null,
+          "allowPregnant": false
+        },
+        "deer": {
+          "total": null,
+          "male": null,
+          "female": null,
+          "youngMale": null,
+          "youngFemale": null,
+          "allowPregnant": false
+        },
+        "dromedary": {
+          "total": null,
+          "male": null,
+          "female": null,
+          "youngMale": null,
+          "youngFemale": null,
+          "allowPregnant": false
+        }
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 import { useRef, useState, type KeyboardEvent } from 'react';
 import { DAY, RESOURCE_NAMES, type Cargo, type CommandResult, type Pawn, type Pos, type VoxelSnapshot } from './types';
-import { APPAREL_NAMES, QUALITY_NAMES, apparelStats } from './apparel';
+import { APPAREL_NAMES, APPAREL_MATERIAL_NAMES, QUALITY_NAMES, apparelStats } from './apparel';
 import { CROPS } from './farming';
 import { remainingRotDays } from './preservation';
 import { healthSummary } from './survival';
@@ -14,7 +14,7 @@ const offerKey = (offer: TradeOffer) => `${offer.side}:${offer.stockId}`;
 const stageName = { arriving: '正在入场', visiting: '停留交易', leaving: '正在离开' };
 export function tradeItemName(batch: Cargo): string {
   if (batch.weapon) return weaponName(batch.weapon);
-  if (batch.apparel) return `${batch.apparel.material === 'steel' ? '钢制' : '布制'}${APPAREL_NAMES[batch.apparel.kind]}（${QUALITY_NAMES[batch.apparel.quality]}）`;
+  if (batch.apparel) return `${APPAREL_MATERIAL_NAMES[batch.apparel.material]}${APPAREL_NAMES[batch.apparel.kind]}（${QUALITY_NAMES[batch.apparel.quality]}）`;
   if (batch.resource === 'grain' && batch.crop) return CROPS[batch.crop].name;
   return RESOURCE_NAMES[batch.resource];
 }

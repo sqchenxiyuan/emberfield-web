@@ -23,6 +23,15 @@ export const APPAREL_NAMES: Record<ApparelKind, string> = {
 export const APPAREL_KINDS = Object.keys(APPAREL_NAMES) as ApparelKind[];
 export const TAILOR_KINDS: readonly ApparelKind[] = ['tuque', 'parka', 'duster', 'shirt', 'pants'];
 export const ARMOR_KINDS: readonly ArmorKind[] = ['simpleHelmet', 'plateArmor'];
+export const TEXTILE_MATERIALS = ['cloth', 'alpacaWool'] as const;
+export type TextileMaterial = typeof TEXTILE_MATERIALS[number];
+export const APPAREL_MATERIAL_NAMES = { cloth: '布料', alpacaWool: '羊驼毛', steel: '钢铁' } as const;
+/** Core Fabric Stuff powers. Garment shape supplies the effect multiplier;
+ * quality is applied afterwards. Raw textile HP is not an apparel HP factor. */
+export const TEXTILE_STUFF = Object.freeze({
+  cloth: Object.freeze({ cold: 18, heat: 18, armorSharp: .36, armorBlunt: 0, armorHeat: .18 }),
+  alpacaWool: Object.freeze({ cold: 30, heat: 16, armorSharp: .36, armorBlunt: 0, armorHeat: 1.10 }),
+});
 export const QUALITY_NAMES = ['极差', '较差', '普通', '良好', '优秀', '大师', '传奇'] as const;
 export const INSULATION_QUALITY = [0.8, 0.9, 1, 1.1, 1.2, 1.5, 1.8] as const;
 export const ARMOR_QUALITY = [0.6, 0.8, 1, 1.15, 1.3, 1.45, 1.8] as const;
@@ -194,20 +203,44 @@ export const APPAREL_DEFS: Record<
     moveSpeedOffset: -0.8,
   },
 };
-export function apparelStats(piece: Pick<ApparelPiece, 'kind' | 'quality'>) {
+export function validApparelMaterial(kind: ApparelKind, material: unknown): material is ApparelPiece['material'] {
+  return Object.hasOwn(APPAREL_DEFS, kind) && (TAILOR_KINDS.includes(kind)
+    ? TEXTILE_MATERIALS.includes(material as TextileMaterial) : material === 'steel');
+}
+/** One garment uses one textile type. Never mutate the shared default cost. */
+export function apparelCost(kind: ApparelKind, material: ApparelPiece['material'] = APPAREL_DEFS[kind].material): Partial<Counts> {
+  if (!validApparelMaterial(kind, material)) throw new RangeError('服装材料无效');
+  return TAILOR_KINDS.includes(kind) ? { [material]: APPAREL_DEFS[kind].cloth } : { ...APPAREL_DEFS[kind].cost };
+}
+/** Textile garments use native base 1 times the actual Stuff factor. The
+ * existing fixed-steel armor fire adaptation is outside this textile change. */
+export function apparelFlammability(piece: Pick<ApparelPiece, 'kind'> & Partial<Pick<ApparelPiece, 'material'>>): number {
+  const material = piece.material ?? APPAREL_DEFS[piece.kind].material;
+  if (!validApparelMaterial(piece.kind, material)) throw new RangeError('服装材料无效');
+  return material === 'alpacaWool' ? 1.7 : material === 'cloth' ? 1.2 : 1;
+}
+export function apparelStats(piece: Pick<ApparelPiece, 'kind' | 'quality'> & Partial<Pick<ApparelPiece, 'material'>>) {
   const def = APPAREL_DEFS[piece.kind],
     factor = INSULATION_QUALITY[piece.quality],
     armorFactor = ARMOR_QUALITY[piece.quality];
+  const material = piece.material ?? def.material;
+  if (!validApparelMaterial(piece.kind, material)) throw new RangeError('服装材料无效');
+  const stuff = material === 'alpacaWool' ? TEXTILE_STUFF.alpacaWool : TEXTILE_STUFF.cloth;
+  // Existing garment values are the source-derived cloth or steel result.
+  // Wool replaces the cloth Stuff powers while retaining garment multipliers.
+  const cold = def.cold * (stuff.cold / TEXTILE_STUFF.cloth.cold);
+  const heat = def.heat * (stuff.heat / TEXTILE_STUFF.cloth.heat);
+  const armorHeat = def.armorHeat * (stuff.armorHeat / TEXTILE_STUFF.cloth.armorHeat);
   return {
-    cold: def.cold * factor,
-    heat: def.heat * factor,
+    cold: cold * factor,
+    heat: heat * factor,
     maxHitPoints: def.maxHitPoints,
     qualityName: QUALITY_NAMES[piece.quality],
     name: APPAREL_NAMES[piece.kind],
     // Native armor has quality, but neither remaining-HP scaling nor quality-scaled maxHP.
     armorSharp: Math.min(2, Math.max(0, def.armorSharp * armorFactor)),
     armorBlunt: Math.min(2, Math.max(0, def.armorBlunt * armorFactor)),
-    armorHeat: Math.min(2, Math.max(0, def.armorHeat * armorFactor)),
+    armorHeat: Math.min(2, Math.max(0, armorHeat * armorFactor)),
     moveSpeedOffset: def.moveSpeedOffset,
   };
 }
@@ -215,13 +248,14 @@ export function makeApparel(
   id: number,
   kind: ApparelKind,
   quality: ApparelQuality = 2,
+  material: ApparelPiece['material'] = APPAREL_DEFS[kind].material,
 ): ApparelPiece {
   return {
     id,
     kind,
-    material: APPAREL_DEFS[kind].material,
+    material,
     quality,
-    hitPoints: apparelStats({ kind, quality }).maxHitPoints,
+    hitPoints: apparelStats({ kind, quality, material }).maxHitPoints,
     wearTicks: 0,
   };
 }
@@ -278,7 +312,7 @@ export function validApparel(raw: unknown): raw is ApparelPiece {
     Number.isSafeInteger(a.id) &&
     a.id > 0 &&
     Object.hasOwn(APPAREL_DEFS, a.kind) &&
-    a.material === APPAREL_DEFS[a.kind].material &&
+    validApparelMaterial(a.kind, a.material) &&
     Number.isInteger(a.quality) &&
     a.quality >= 0 &&
     a.quality <= 6 &&

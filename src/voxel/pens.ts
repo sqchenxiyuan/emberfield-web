@@ -4,7 +4,7 @@ export interface Fence extends Pos { id: number }
 export interface FenceGate extends Pos {
   id: number; axis: 'x' | 'y'; mode: 'auto' | 'open' | 'locked'; openUntil: number;
 }
-export interface PenFilter { deer: boolean; dromedary: boolean; male: boolean; female: boolean }
+export interface PenFilter { deer: boolean; dromedary: boolean; alpaca: boolean; male: boolean; female: boolean }
 export interface PenMarker extends Pos { id: number; name: string; filter: PenFilter }
 export interface AnimalArea { id: number; name: string; color: number; cells: number[] }
 export type AnimalPenState = Pick<WildAnimal, 'allowedAreaId' | 'ropePaused' | 'requestedPenId' | 'nextRoamTick'>;
@@ -35,14 +35,14 @@ export const PEN_BUILDINGS = Object.freeze({
   fenceGate: Object.freeze({ cost: Object.freeze({ wood: 25 }), work: 167, maxHitPoints: 20 }),
   penMarker: Object.freeze({ cost: Object.freeze({ wood: 30 }), work: 200, maxHitPoints: 100 }),
 });
-export function initialPenFilter(): PenFilter { return { deer: true, dromedary: true, male: true, female: true }; }
+export function initialPenFilter(): PenFilter { return { deer: true, dromedary: true, alpaca: true, male: true, female: true }; }
 export function initialAnimalPenState(tick: number): AnimalPenState {
   if (!Number.isSafeInteger(tick) || tick < 0 || !Number.isSafeInteger(tick + PEN_RULES.roamCheckTicks))
     throw new RangeError('圈养时钟无效');
   return { allowedAreaId: null, ropePaused: false, requestedPenId: null, nextRoamTick: tick + PEN_RULES.roamCheckTicks };
 }
 export function penAcceptsAnimal(marker: PenMarker, animal: Pick<WildAnimal, 'species' | 'sex' | 'faction' | 'dead'>): boolean {
-  return (animal.species === 'deer' || animal.species === 'dromedary') && animal.faction === 'colony' && !animal.dead && marker.filter[animal.species] &&
+  return (animal.species === 'deer' || animal.species === 'dromedary' || animal.species === 'alpaca') && animal.faction === 'colony' && !animal.dead && marker.filter[animal.species] &&
     (animal.sex === 'male' ? marker.filter.male : marker.filter.female);
 }
 export function isAnimalGroundStep(from: Pos, to: Pos): boolean {

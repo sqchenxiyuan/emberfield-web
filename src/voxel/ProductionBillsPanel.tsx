@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { APPAREL_DEFS, APPAREL_NAMES } from './apparel';
+import { APPAREL_DEFS, APPAREL_NAMES, APPAREL_MATERIAL_NAMES, TEXTILE_MATERIALS } from './apparel';
 import { STONECUTTING } from './crafting';
 import { SIMPLE_MEAL } from './farming';
 import { armorResearchReason, toolResearchReason, weaponResearchReason } from './research';
@@ -25,7 +25,8 @@ const same = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
 const materials = (cost: Readonly<Partial<Counts>>) => Object.entries(cost)
   .map(([resource, amount]) => `${amount} ${RESOURCE_NAMES[resource as keyof Counts]}`).join(' + ');
 const emptyIngredientFilter = (bill: ProductionBill) => bill.recipe === 'cook' && bill.policy.allowedFood.length === 0
-  ? '未允许任何食材' : bill.recipe === 'butcher' && bill.policy.allowedCarcasses.length === 0 ? '未允许任何动物尸体' : null;
+  ? '未允许任何食材' : bill.recipe === 'butcher' && bill.policy.allowedCarcasses.length === 0 ? '未允许任何动物尸体'
+    : bill.recipe.startsWith('tailoring:') && bill.policy.allowedTextiles.length === 0 ? '未允许任何纺织材料' : null;
 
 function recipeDetails(recipe: ProductionRecipe, snapshot: VoxelSnapshot) {
   if (recipe === 'cook') return { name: '烹饪简餐', unit: '份',
@@ -44,8 +45,9 @@ function recipeDetails(recipe: ProductionRecipe, snapshot: VoxelSnapshot) {
   }
   const armor = recipe.startsWith('armorsmith:'), kind = recipe.slice(armor ? 11 : 10) as ApparelKind;
   const definition = APPAREL_DEFS[kind];
-  return { name: APPAREL_NAMES[kind], unit: '件', description: `${materials(definition.cost)} → 1 ${APPAREL_NAMES[kind]}`,
-    note: definition.sourceCraftingLevel ? `需要工艺 ${definition.sourceCraftingLevel} 级。` : '需要开启加工分工。',
+  return { name: APPAREL_NAMES[kind], unit: '件', description: `${armor ? materials(definition.cost) : `${definition.cloth} 同一种布料或羊驼毛`} → 1 ${APPAREL_NAMES[kind]}`,
+    note: armor ? definition.sourceCraftingLevel ? `需要工艺 ${definition.sourceCraftingLevel} 级。` : '需要开启加工分工。'
+      : '每件使用同一种允许的纺织材料，不混用布料与羊驼毛；实际材料影响成衣隔冷、隔热和热伤防护。',
     research: armor ? armorResearchReason(snapshot.research, kind as ArmorKind) : toolResearchReason(snapshot.research, 'tailor') };
 }
 
@@ -124,6 +126,13 @@ function BillPolicy({ bill, snapshot, update }: {
             const checked = event.target.checked;
             updatePolicy({ allowedCarcasses: CARCASS_SPECIES.filter(value => value === species ? checked : policy.allowedCarcasses.includes(value)) });
           }} />{ANIMAL_DEFS[species].name}尸体</label>)}
+      </fieldset> : bill.recipe.startsWith('tailoring:') ? <fieldset data-testid="bill-textile-filter"><legend>允许的纺织材料</legend>
+        {TEXTILE_MATERIALS.map(resource => <label key={resource} className="voxel-production-check"><input type="checkbox"
+          aria-label={`允许${APPAREL_MATERIAL_NAMES[resource]}`} checked={policy.allowedTextiles.includes(resource)} onChange={event => {
+            const checked = event.target.checked;
+            updatePolicy({ allowedTextiles: TEXTILE_MATERIALS.filter(value => value === resource ? checked : policy.allowedTextiles.includes(value)) });
+          }} />{APPAREL_MATERIAL_NAMES[resource]}</label>)}
+        <small>每件衣物选一种材料，不能混料凑数。新批次需要有足量的允许材料；已开工衣物与未完成品保留原材料。</small>
       </fieldset> : <small data-testid="bill-fixed-ingredients">本配方使用固定原料，不能取消其中的材料；取料半径仍适用。具体用量见「配方与要求」。</small>}
       {emptyFilter && <small className="voxel-production-policy-warning" data-testid="bill-policy-empty-ingredients">
         {emptyFilter}，后续批次会缺料等待。重新允许至少一种后才能备料。</small>}

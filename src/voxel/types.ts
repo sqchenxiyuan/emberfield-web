@@ -87,6 +87,7 @@ export type Resource =
   | 'meal'
   | 'chunk'
   | 'cloth'
+  | 'alpacaWool'
   | 'herb'
   | 'apparel'
   | 'weapon'
@@ -124,7 +125,7 @@ export type FurniturePiece = {
 export interface ApparelPiece {
   id: number;
   kind: ApparelKind;
-  material: 'cloth' | 'steel';
+  material: 'cloth' | 'alpacaWool' | 'steel';
   quality: ApparelQuality;
   hitPoints: number;
   /** Actual worn ticks; daily damage is scheduled by the pawn tracker. */
@@ -421,12 +422,12 @@ export interface Stove extends Pos {
   target: number;
   paused: boolean;
 }
-export type AnimalSpecies = 'hare' | 'deer' | 'dromedary';
+export type AnimalSpecies = 'hare' | 'deer' | 'dromedary' | 'alpaca';
 export interface GrassPatch extends Pos { growth: number }
 export interface AnimalGoal { kind: 'grass' | 'crop' | 'food' | 'mate' | 'area' | 'exit'; id: number }
 export interface HandleTask {
   animalId: number;
-  action: 'tame' | 'maintain' | 'feed' | 'slaughter' | 'autoSlaughter' | 'release' | 'milk';
+  action: 'tame' | 'maintain' | 'feed' | 'slaughter' | 'autoSlaughter' | 'release' | 'milk' | 'shear';
   stage: 'fetch' | 'approach' | 'interact';
   foodId: number | null;
   amount: number;
@@ -435,7 +436,7 @@ export interface HandleTask {
 }
 export interface HusbandryEvent {
   tick: number;
-  kind: 'tame' | 'failed' | 'fed' | 'pregnancy' | 'birth' | 'miscarriage' | 'rewild' | 'slaughter' | 'release' | 'starved' | 'escaped' | 'milked' | 'milkFailed';
+  kind: 'tame' | 'failed' | 'fed' | 'pregnancy' | 'birth' | 'miscarriage' | 'rewild' | 'slaughter' | 'release' | 'starved' | 'escaped' | 'milked' | 'milkFailed' | 'sheared' | 'shearFailed';
   animalId: number;
   otherId: number | null;
   message: string;
@@ -455,6 +456,7 @@ export interface WildAnimal extends Pos {
   releaseMarked: boolean;
   malnutrition: number;
   milkFullness: number;
+  woolGrowth: number;
   pregnancy: { fatherId: number; progress: number } | null;
   mateId: number | null;
   mateProgress: number;
@@ -780,6 +782,7 @@ export interface Counts {
   meal: number;
   chunk: number;
   cloth: number;
+  alpacaWool: number;
   herb: number;
   apparel: number;
   weapon: number;
@@ -1034,7 +1037,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 49;
+  version: 50;
   autoSlaughter: import('./autoSlaughter').AutoSlaughterSettings;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
@@ -1099,6 +1102,7 @@ export const RESOURCE_NAMES: Record<Resource, string> = {
   stone: '花岗岩砖',
   chunk: '花岗岩块',
   cloth: '布料',
+  alpacaWool: '羊驼毛',
   herb: '草药',
   apparel: '衣物',
   weapon: '武器',
@@ -1205,6 +1209,7 @@ export const emptyCounts = (): Counts => ({
   meal: 0,
   chunk: 0,
   cloth: 0,
+  alpacaWool: 0,
   herb: 0,
   apparel: 0,
   weapon: 0,

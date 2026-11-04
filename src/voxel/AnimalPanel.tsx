@@ -8,6 +8,7 @@ import { ItemCondition } from './ItemCondition';
 import { AnimalPenControls, PenPanel, type PenCommand, type PenControls } from './PenPanel';
 import { AutoSlaughterPanel } from './AutoSlaughterPanel';
 import { MILK_RULES, milkActive, milkReady } from './animalMilk';
+import { WOOL_RULES, woolActive, woolReady } from './animalWool';
 
 type Command = PenCommand;
 const availableHunters = (s: VoxelSnapshot) => s.pawns.filter(p => p.faction === 'colony' &&
@@ -15,7 +16,7 @@ const availableHunters = (s: VoxelSnapshot) => s.pawns.filter(p => p.faction ===
   p.priorities.hunt > 0 && p.weapon && isRangedKind(p.weapon.kind));
 const levelName = (z: number, base: number) => z === base ? '营地基准层' : z < base ? `基准层下 ${base - z}` : `基准层上 +${z - base}`;
 const lifeNames = { baby: '幼崽', juvenile: '幼年', adult: '成年' };
-const actionNames: Record<HandleTask['action'], string> = { tame: '尝试驯服', maintain: '维持温顺', feed: '喂食', slaughter: '手动宰杀', autoSlaughter: '自动宰杀', release: '放归', milk: '挤奶' };
+const actionNames: Record<HandleTask['action'], string> = { tame: '尝试驯服', maintain: '维持温顺', feed: '喂食', slaughter: '手动宰杀', autoSlaughter: '自动宰杀', release: '放归', milk: '挤奶', shear: '剪毛' };
 const stageNames: Record<HandleTask['stage'], string> = { fetch: '取食物', approach: '接近动物', interact: '本次互动' };
 const percent = (value: number) => `${Math.round(value * 100)}%`;
 
@@ -27,6 +28,37 @@ function DromedaryPortrait() {
     <path d="m64 10-1-6 5 5M16 35 10 44" fill="none" stroke="#c6a36b" strokeWidth="3" />
     <circle cx="73" cy="13" r="1.5" fill="#352e26" />
   </svg>;
+}
+
+function AlpacaPortrait() {
+  return <svg className="voxel-animal-portrait" viewBox="0 0 88 68" role="img" aria-label="羊驼肖像">
+    <rect x="1" y="1" width="86" height="66" rx="5" fill="#243434" />
+    <path d="M17 31 44 29 51 33 55 15 58 9 71 9 76 16 73 22 64 23 63 40 55 47 52 61 47 61 48 46 28 46 26 61 21 61 21 47 14 43 12 36Z" fill="#e4d8bb" />
+    <path d="M30 46 32 60 36 60 36 46M43 46 43 60 47 60 49 46" fill="#bca888" />
+    <path d="m59 11-2-7 4 4m7 3 2-7 2 7M15 33l-5-5" fill="none" stroke="#e4d8bb" strokeWidth="3" />
+    <circle cx="69" cy="14" r="1.6" fill="#352e26" />
+  </svg>;
+}
+
+function AnimalWoolStatus({ animal: a, snapshot: s }: { animal: WildAnimal; snapshot: VoxelSnapshot }) {
+  if (a.species !== 'alpaca' || a.dead) return null;
+  const handler = s.pawns.find(p => p.handleTask?.animalId === a.id && p.handleTask.action === 'shear'), task = handler?.handleTask;
+  const active = woolActive(a), automatic = s.autoSlaughterStatus.targets.includes(a.id);
+  const condition = a.faction !== 'colony' ? '驯服后，成年羊驼才能长毛。' : a.growth < 1 ? '幼年羊驼成年后开始长毛。' : '健康状态不允许长毛。';
+  const waiting = a.slaughter || automatic ? '已待宰，不安排剪毛。' : a.releaseMarked ? '已标记放归，不安排剪毛。'
+    : a.hunger <= 0 ? '饥饿使长毛暂停；先提供食物。' : woolReady(a) ? '羊毛已长满，等待开启「饲养」分工的殖民者前来剪毛。' : '正在长毛；饥饿会减慢或暂停长毛。';
+  return <div className="voxel-animal-wool" data-testid="animal-wool" data-active={active} data-growth={a.woolGrowth}>
+    <b>产物 · 羊驼毛</b>
+    {active ? <>
+      <label>毛量 {percent(a.woolGrowth)}<progress aria-label="动物长毛进度" value={a.woolGrowth} max={1} /></label>
+      <small>饱食时约 {WOOL_RULES.intervalTicks / DAY} 天长满一轮；成功剪毛获得 {WOOL_RULES.amount} 份羊驼毛。成年雌雄都可产毛。</small>
+      {task && handler ? <>
+        <small>{handler.name} · {task.stage === 'interact' ? task.progress >= WOOL_RULES.work ? '剪毛完成，等待放置空间' : '正在剪毛' : '前往剪毛'}</small>
+        <label>本次剪毛 {percent(task.progress / WOOL_RULES.work)}<progress aria-label="本次剪毛工作进度" value={task.progress} max={WOOL_RULES.work} /></label>
+      </> : <small>{waiting}</small>}
+      <small>剪毛速度和成功率受驯养技能与身体能力影响；失败会损失本轮毛量。羊驼毛落地后需搬运，可在裁缝账单勾选并制作衣物。</small>
+    </> : <small>{condition}</small>}
+  </div>;
 }
 
 function AnimalMilkStatus({ animal: a, snapshot: s }: { animal: WildAnimal; snapshot: VoxelSnapshot }) {
@@ -80,6 +112,7 @@ function AnimalStatus({ animal: a, snapshot: s }: { animal: WildAnimal; snapshot
     {a.tame && !a.dead && <small>需要动物技能 {ANIMAL_HUSBANDRY[a.species].minSkill}；每次互动独立尝试，可能失败。</small>}
     {a.tame && !task && a.nextInteractionTick > s.tick && <small>下次可互动：约 {Math.max(1, Math.ceil((a.nextInteractionTick - s.tick) / DAY * 24 * 60))} 游戏分钟后</small>}
     <AnimalMilkStatus animal={a} snapshot={s} />
+    <AnimalWoolStatus animal={a} snapshot={s} />
   </div>;
 }
 
@@ -106,6 +139,7 @@ export function AnimalDetails({ animal, snapshot: s, command, focus, penControls
 }) {
   return <section className="voxel-animal-detail" data-testid="animal-detail" data-animal-id={animal.id}>
     {animal.species === 'dromedary' && <DromedaryPortrait />}
+    {animal.species === 'alpaca' && <AlpacaPortrait />}
     <div className="voxel-info-row"><b>{ANIMAL_DEFS[animal.species].name} · {animal.faction === 'colony' ? '殖民地动物' : '野生'}</b><span>{ANIMAL_PHASE_NAMES[animal.phase]}</span></div>
     <label>健康 {Math.ceil(animal.health)} / {ANIMAL_DEFS[animal.species].health}<progress aria-label="动物健康" value={animal.health} max={ANIMAL_DEFS[animal.species].health} /></label>
     <AnimalFacts animal={animal} />
@@ -141,8 +175,9 @@ export function AnimalPanel({ snapshot: s, selectedAnimalId, baseLevel, command,
     <p>{domestic.length} 只殖民地动物 · {wild.length} 只野生动物 · {hunters.length} 位可用远程猎人</p>
     <details className="voxel-wildlife-guide"><summary>驯服、饲养与繁殖</summary>
       <ol><li>种植稻谷并等候收获。开启人物的饲养分工，安排动物技能达标的殖民者。</li><li>标记野生动物驯服；饲养员携食物接近并互动，失败后会等候下次尝试。</li><li>动物寻找实际的草、作物和地面食物；可用仓储区集中投放谷物。草被吃掉后需要重新生长。</li><li>饱食的成年同种雌雄动物靠近后可自然交配。饥饿拖慢成长和孕期，严重营养不良可能流产。</li></ol>
-      <small>兔需要维持温顺，可跨围栏、穿未锁的门，并可分配活动范围；鹿和单峰驼需要围栏圈养，由饲养员经栏门牵入。动物不能爬梯，请保留地面通路和足够食物。</small>
+      <small>兔需要维持温顺，可跨围栏、穿未锁的门，并可分配活动范围；鹿、单峰驼和羊驼需要围栏圈养，由饲养员经栏门牵入。动物不能爬梯，请保留地面通路和足够食物。</small>
       <small>成年雌性单峰驼可产奶；开启「饲养」分工，蓄奶满后自动安排挤奶。奶可直接饮用或用于简餐，及时冷藏。</small>
+      <small>成年雌雄羊驼都可产毛；开启「饲养」分工，毛长满后自动安排剪毛。把羊驼毛运到仓储，并在裁缝账单允许此材料，即可制作羊毛衣物。</small>
       <div><button onClick={() => choose('farm')}>规划农田</button><button onClick={() => choose('stock')}>规划食物仓储</button></div>
     </details>
     <details className="voxel-wildlife-workers" data-testid="animal-handlers"><summary>饲养分工与动物技能</summary>
@@ -161,6 +196,7 @@ export function AnimalPanel({ snapshot: s, selectedAnimalId, baseLevel, command,
         {!group.animals.length && group.key !== 'dead' && <small>{group.key === 'colony' ? '尚无殖民地动物，先标记野生动物尝试驯服。' : '地图上暂时没有野生动物。'}</small>}
         {group.animals.map(animal => <section role="listitem" key={animal.id} className={selectedAnimalId === animal.id ? 'selected' : ''} data-animal-id={animal.id} data-faction={animal.faction}>
           {animal.species === 'dromedary' && <DromedaryPortrait />}
+          {animal.species === 'alpaca' && <AlpacaPortrait />}
           <div><b>{animal.name}</b><span>{ANIMAL_PHASE_NAMES[animal.phase]}</span></div>
           <small>{ANIMAL_DEFS[animal.species].name} · 健康 {Math.ceil(animal.health)} / {ANIMAL_DEFS[animal.species].health} · {levelName(animal.z, baseLevel)}</small>
           <AnimalFacts animal={animal} /><AnimalStatus animal={animal} snapshot={s} />

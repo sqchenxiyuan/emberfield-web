@@ -1,3 +1,4 @@
+import { rejectLegacyWool, migrateWool, validateWool } from './animalWoolPersistence';
 import { rejectLegacyMilk, migrateMilk, validateMilk } from './animalMilkPersistence';
 import { WeightedNavigation } from './navigation';
 import { isConstructionFrame, constructionFrameCells, frameBuildingKind } from './constructionFrames';
@@ -37,6 +38,7 @@ import {
 } from './types';
 import {
   APPAREL_DEFS,
+  apparelCost,
   APPAREL_KINDS,
   TAILOR_KINDS,
   ARMOR_KINDS,
@@ -870,7 +872,7 @@ export class VoxelSimulation {
     }
     while (sites.length && wild < Math.min(target, WILDLIFE.cap) && this.animals.length < HUSBANDRY_RULES.maxAnimals) {
       const id = this.id(), choice = Math.floor(plantRandom(this.seed, id, this.tick, 970) * sites.length);
-      const site = sites.splice(choice, 1)[0], species = this.settings.biome === 'desert' && wild % 3 === 0 ? 'dromedary' : id % 2 ? 'hare' : 'deer';
+      const site = sites.splice(choice, 1)[0], species = this.settings.biome === 'desert' && wild % 3 === 0 ? 'dromedary' : this.settings.biome === 'temperate' && wild % 3 === 0 ? 'alpaca' : id % 2 ? 'hare' : 'deer';
       this.animals.push({ ...site, ...initialAnimalState(id, species, this.tick), id, species, name: ANIMAL_DEFS[species].name,
         health: ANIMAL_DEFS[species].health, hunger: 75, dead: false, phase: 'roam', hunt: false,
         moveTick: this.tick, decisionTick: this.tick, fleeUntil: 0, threatId: null,
@@ -1382,6 +1384,12 @@ export class VoxelSimulation {
     this.nextId = plan.nextId;
     this.pruneStorageSpills();
     this.revision++;
+  }
+  animalWoolPlace(p: Pawn, amount: number, commit: boolean): boolean {
+    const plan = this.planPlacement([{batch:freshBatch('alpacaWool',amount),origin:p}],this.items,DROP_DISTANCE,new Set(),p.id);
+    if (!plan) return false;
+    if (commit) { this.commitPlacement(plan); this.stats.produced.alpacaWool += amount; }
+    return true;
   }
   animalMilkPlace(p: Pawn, amount: number, commit: boolean): boolean {
     const plan = this.planPlacement([{batch:freshBatch('milk',amount),origin:p}],this.items,DROP_DISTANCE,new Set(),p.id);
@@ -2058,6 +2066,26 @@ export class VoxelSimulation {
     if (remaining) cost[missing] = (cost[missing] ?? 0) + remaining;
     job.cost = cost;
   }
+  /** A garment is made from one textile. Only unclaimed batches can select a
+   * material; carried inputs, frozen policies and unfinished pieces keep it. */
+  private chooseTailorIngredients(job: Job, worker?: Pawn, replacing?: Job) {
+    if (job.kind !== 'tailoring' || job.productionPolicy || job.unfinishedId !== undefined ||
+        job.owner !== null || Object.values(job.delivered).some(n => n! > 0)) return;
+    const policy = this.productionPolicyFor(job), needed = APPAREL_DEFS[job.apparelKind!].cloth;
+    const material = policy.allowedTextiles.find(resource => {
+      const reserved = this.jobs.filter(j => j !== job && j !== replacing && !j.cancelled &&
+        j.owner !== null && j.unfinishedId === undefined).reduce((n,j) => {
+        const owner = this.pawns.find(p => p.id === j.owner);
+        const carried = owner?.jobId === j.id && owner.cargo?.resource === resource ? owner.cargo.amount : 0;
+        return n + Math.max(0, (j.cost[resource] ?? 0) - (j.delivered[resource] ?? 0) - carried);
+      },0);
+      const available = this.items.filter(i => i.resource === resource && !i.forbidden && this.exploredAt(i) &&
+        this.acceptsJobCargo(job,i,i) && (!worker || this.pawnAllowed(worker,i) && this.reachableItemStand(i) >= 0))
+        .reduce((n,i) => n + (worker ? this.availableStack(i,worker.id) : i.amount),0);
+      return available - reserved >= needed;
+    }) ?? policy.allowedTextiles[0] ?? 'cloth';
+    job.cost = apparelCost(job.apparelKind!, material);
+  }
   private productionBenches() {
     return [...this.stoves, ...this.butcherSpots, ...this.stonecutters, ...this.tailors, ...this.weaponBenches];
   }
@@ -2098,6 +2126,7 @@ export class VoxelSimulation {
     // An idle batch may be resumed at another compatible workbench by its author.
     for (const old of [...this.jobs]) if (old !== j && old.unfinishedId === u.id) this.cancel(old);
     j.unfinishedId = u.id;
+    if (j.kind === 'tailoring') j.cost = apparelCost(j.apparelKind!, u.ingredients.some(b => b.resource === 'alpacaWool') ? 'alpacaWool' : 'cloth');
     u.boundBillId = j.billId ?? this.productionBillFor(j)?.id ?? null;
     j.productionPolicy = structuredClone(u.policy);
     j.work = u.workTotal; j.progress = u.progress; j.workTicks = u.workTicks;
@@ -2322,6 +2351,7 @@ export class VoxelSimulation {
     this.nextId = before; // Previews reserve neither an identity nor any materials.
     j.billId = bill.id;
     if (j.kind === 'cook') this.chooseMealIngredients(j);
+    this.chooseTailorIngredients(j);
     return j;
   }
   private productionFeasible(j: Job, replacing?: Job, worker?: Pawn): boolean {
@@ -2338,6 +2368,7 @@ export class VoxelSimulation {
           [...this.items, ...this.pawns.flatMap(q=>q.cargo?[q.cargo]:[])].some(b=>b.unfinished?.boundBillId===j.billId))) return false;
       if (j.kind === 'cook' && j.owner === null && !Object.values(j.delivered).some(n => n! > 0))
         this.chooseMealIngredients(j, p);
+      this.chooseTailorIngredients(j, p, replacing);
       return Object.entries(j.cost).every(([resource, amount]) => {
         const r = resource as Resource;
         // Waiting jobs do not reserve hypothetical stock against one another.
@@ -7622,7 +7653,7 @@ export class VoxelSimulation {
               ? {
                   resource: 'apparel' as const,
                   amount: 1,
-                  apparel: makeApparel(j.id, j.apparelKind!, j.productQuality!.value),
+                  apparel: makeApparel(j.id, j.apparelKind!, j.productQuality!.value, j.cost.alpacaWool ? 'alpacaWool' : undefined),
                 }
               : freshBatch(
                   resource as Resource,
@@ -8632,7 +8663,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 49,
+      version: 50,
       autoSlaughter: this.autoSlaughter,
       stockpileZones: this.stockpileZones,
       productionQueues: this.productionQueues.filter(q => this.productionBenches().some(b => b.id === q.benchId)),
@@ -8694,11 +8725,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : old.version < 43 ? [1, 2, 3] : [1, 2, 3, 4]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyWool(old,sourceVersion);
     rejectLegacyMilk(old,sourceVersion);
     migrateAutoSlaughter(old, sourceVersion);
     if (sourceVersion < 47 && old.jobs?.some((j:any) => Object.hasOwn(j,'constructionFailure')))
@@ -9124,7 +9156,8 @@ export class VoxelSimulation {
     if (sourceVersion < 43) { old.water = [0, CELLS]; old.bridges = [0, CELLS]; }
     if (sourceVersion < 44) for (const p of old.pawns ?? []) p.allowedAreaId = null;
     migrateMilk(old, sourceVersion);
-    old.version = 49;
+    migrateWool(old, sourceVersion);
+    old.version = 50;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -9742,7 +9775,7 @@ export class VoxelSimulation {
                 ? r === 'wood'
                   ? j.cost.wood
                   : 0
-                : (costOf(j.kind, j.material, j.apparelKind, j.weaponKind, j.weaponBenchKind)[r] ??
+                : ((j.kind === 'tailoring' ? apparelCost(j.apparelKind!, j.cost.alpacaWool ? 'alpacaWool' : 'cloth') : costOf(j.kind, j.material, j.apparelKind, j.weaponKind, j.weaponBenchKind))[r] ??
                   0)) || (j.delivered[r] ?? 0) > (j.cost[r] ?? 0),
         ) ||
         (!j.cancelled && j.kind === 'butcher' && !d.butcherSpots.some(s => same(s, j) && (j.billId !== undefined || !s.paused))) ||
@@ -10231,6 +10264,7 @@ export class VoxelSimulation {
     validateWildlife(d, ids, new Set([...apparelIds, ...weaponIds]));
     validateHusbandry(d);
     validateMilk(d);
+    validateWool(d);
     validateAutoSlaughter(d);
     validatePens(d);
     validatePawnAreas(d);

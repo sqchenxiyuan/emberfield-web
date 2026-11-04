@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import { APPAREL_DEFS, apparelStats, apparelHasPartsToWear, apparelMoveFactor } from './apparel';
+import { APPAREL_DEFS, APPAREL_MATERIAL_NAMES, apparelStats, apparelHasPartsToWear, apparelMoveFactor } from './apparel';
 import { healthSummary } from './survival';
 import { TPS, type ApparelPiece, type Pawn } from './types';
 
 export function ApparelDetails({ piece }: { piece: ApparelPiece }) {
   const stats = apparelStats(piece);
   return (
-    <div className="voxel-apparel-detail" data-testid="apparel-detail">
+    <div className="voxel-apparel-detail" data-testid="apparel-detail" data-material={piece.material}>
       <b>
-        {stats.name} · {piece.material === 'steel' ? '钢制' : '布制'}
+        {stats.name} · {APPAREL_MATERIAL_NAMES[piece.material]}
       </b>
       <span>
         {stats.qualityName} · 耐久 {piece.hitPoints} / {stats.maxHitPoints}

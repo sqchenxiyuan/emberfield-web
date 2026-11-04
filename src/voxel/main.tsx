@@ -46,7 +46,7 @@ import { TradePanel, TraderInspector } from './TradePanel';
 import { WeaponPanel, EquipWeapon } from './WeaponPanel';
 import { weaponName } from './weapons';
 import { WEAPON_BENCH_NAMES } from './weaponProduction';
-import { APPAREL_NAMES } from './apparel';
+import { APPAREL_NAMES, APPAREL_MATERIAL_NAMES } from './apparel';
 import { ANIMAL_DEFS } from './wildlife';
 import { moodView, RECREATION_NAMES, type RecreationKind } from './mood';
 import { PRISON_POLICY_NAMES, PRISON_POLICIES, PRISON_RULES, type PrisonerPolicy } from './prisoners';
@@ -171,7 +171,7 @@ const hints: Record<Tool, string> = {
   smallShelf: '一格小货架，每格可存放 3 堆物资。人物从旁边取放；可设置接纳物品与优先级。',
   shelf: '两格货架，共 6 堆物资。R 旋转；整座货架共用收纳设置，卸下后货物留在附近。',
   fence: '左键拖动建造直线围栏，留下栏门的位置。完工后拦住鹿，人和兔可缓慢跨越；圈地不需要屋顶。',
-  fenceGate: '点击建造木制栏门，R 旋转。饲养员经栏门牵入鹿和单峰驼；自动开关保持圈地有效，保持敞开会打开边界。',
+  fenceGate: '点击建造木制栏门，R 旋转。饲养员经栏门牵入鹿、单峰驼和羊驼；自动开关保持圈地有效，保持敞开会打开边界。',
   penMarker: '在已围起的区域内建造圈地标记，点击查看是否封闭、现有草料和接纳筛选。标记自身不能拦住动物。',
   animalArea: '左键拖动涂绘当前楼层，可切层继续。把工作目标、材料、食物和床包含在内；区域只筛选目标，行走可能途经区外。空区域不限制，右键结束。',
   horseshoePin: '20 木材建造一格马蹄铁桩。沿直线留出两格空地和通路，殖民者会站在两格外投掷；可在作息中安排娱乐，或在人物面板手动安排。',
@@ -208,7 +208,7 @@ const hints: Record<Tool, string> = {
   stove: '规划灶台，消耗 20 木材。每份简餐需要 10 生食材 + 1 木材；点击灶台设置库存目标。',
   stonecutter:
     '3×1 木制切石台，75 木材 + 30 钢材。R 旋转，留出标记的操作位；1 岩块加工为 20 石砖。',
-  tailor: '3×1 手工裁缝台，75 木材。R 旋转并留出操作位；种棉获得布料，再设置各类衣物的制作目标。',
+  tailor: '3×1 手工裁缝台，75 木材。R 旋转并留出操作位；种棉取得布料或饲养羊驼剪毛，在衣物账单中选择允许的纺织材料。',
   bed: '两格木床，45 木材。R 旋转朝向；点击设置主人、医疗或囚犯用途。同一封闭房间的床会一起切换囚犯用途；医疗用途可同时启用。',
   table: `两格木制餐桌，${LIVING_BUILDINGS.table.cost.wood} 木材，R 旋转。紧贴桌边放置餐椅并留出通路；殖民者会带餐前往空座。餐桌不能通行或堆放物资。`,
   chair: `一格木制餐椅，${LIVING_BUILDINGS.chair.cost.wood} 木材，R 旋转外观。餐椅与餐桌同层四向相邻即可用餐；可以穿行，前往就座时会预约位置。`,
@@ -251,7 +251,7 @@ const foodName = (batch: Cargo) =>
     : batch.weapon
     ? weaponName(batch.weapon)
     : batch.apparel
-      ? `${batch.apparel.material === 'steel' ? '钢制' : '布制'}${APPAREL_NAMES[batch.apparel.kind]}`
+      ? `${APPAREL_MATERIAL_NAMES[batch.apparel.material]}${APPAREL_NAMES[batch.apparel.kind]}`
       : batch.resource === 'grain' && batch.crop
         ? CROPS[batch.crop].name
         : RESOURCE_NAMES[batch.resource];
@@ -1227,8 +1227,8 @@ function App() {
               <button onClick={() => updateStorage(storage.priority, BUILDING_RESOURCES)}>
                 仅收建材
               </button>
-              <button onClick={() => updateStorage(storage.priority, ['cloth', 'apparel'])}>
-                布料与衣物
+              <button onClick={() => updateStorage(storage.priority, ['cloth', 'alpacaWool', 'apparel'])}>
+                纺织原料与衣物
               </button>
               <button onClick={() => updateStorage(storage.priority, ['herb'])}>仅收草药</button>
               <button onClick={() => updateStorage(storage.priority, ['milk'])}>仅收奶</button>
@@ -1406,6 +1406,7 @@ function App() {
               每堆上限 {stackLimit(i.resource)} · 剩余 {stackLimit(i.resource) - i.amount}
             </small>
             <ItemAccessPanel item={i} command={c => void client.command(c)} />
+            {i.resource === 'alpacaWool' && <small data-testid="alpaca-wool-use">剪毛获得的纺织原料，不能食用。可在裁缝账单中允许羊驼毛，每件衣物使用同一种材料；请收入仓储，避免露天损耗。</small>}
             <FoodCondition batch={i} temperature={temperatureOf(i)} />
             <ItemCondition condition={s?.environment.items.find(item => item.entity === 'stack' && item.id === i.id)} name={foodName(i)} />
             {i.unfinished && s && <UnfinishedPanel batch={i} snapshot={s} command={c => void client.command(c)} focus={focus} />}

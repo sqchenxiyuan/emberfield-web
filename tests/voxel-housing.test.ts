@@ -159,7 +159,7 @@ describe('normal-command voxel housing', () => {
     const save = sim.save(),
       restored = VoxelSimulation.load(save),
       copy = restored.pawns.find((p) => p.id === pawn.id)!;
-    expect(save.version).toBe(49);
+    expect(save.version).toBe(50);
     expect(restored.counts()).toEqual(sim.counts());
     expect(copy).toMatchObject({
       phase: 'rest',
@@ -414,7 +414,7 @@ describe('normal-command voxel housing', () => {
       expect(restored.counts()).toEqual(before);
       expect(restored.beds).toEqual([]);
       expect(restored.doors).toEqual([]);
-      expect(restored.save().version).toBe(49);
+      expect(restored.save().version).toBe(50);
       expect(
         restored.pawns.every(
           (pawn) =>
