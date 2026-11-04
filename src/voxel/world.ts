@@ -1,3 +1,4 @@
+import { WeightedNavigation } from './navigation';
 import {
   Block,
   CELLS,
@@ -621,6 +622,9 @@ export class VoxelSimulation {
   private distance = new Int32Array(CELLS);
   private parents = new Int32Array(CELLS);
   private queue = new Int32Array(CELLS);
+  private navigation = new WeightedNavigation(CELLS);
+  private searchOrigin: Pos | null = null;
+  private searchAllowed: Set<number> | undefined;
   private treeCells = new Set<number>();
   private stoveCells = new Set<number>();
   private skyCache = new Map<number, boolean>();
@@ -980,6 +984,10 @@ export class VoxelSimulation {
     return out;
   }
   private search(p: Pos, allowed?: Set<number>) {
+    // Keep hop distances for work scanning and geometric limits such as dining
+    // range. Once a destination is chosen, route() plans the actual weighted trip.
+    this.searchOrigin = p;
+    this.searchAllowed = allowed;
     this.distance.fill(-1);
     this.parents.fill(-1);
     let head = 0,
@@ -999,18 +1007,37 @@ export class VoxelSimulation {
     }
   }
   private route(target: number) {
-    const path: number[] = [];
-    let n = target;
-    while (this.parents[n] >= 0) {
-      path.push(n);
-      n = this.parents[n];
-    }
-    return path.reverse();
+    return this.searchOrigin ? this.travelRoute(this.searchOrigin, target, this.searchAllowed) ?? [] : [];
+  }
+  private pawnBaseMoveTicks(p?: Pawn) {
+    return p ? (p.cargo || p.carryingPawnId !== null ? 6 : 4) /
+      (apparelMoveFactor(p.worn, healthSummary(p).moving) * (p.staggerUntil > this.tick ? .17 : 1)) : 4;
+  }
+  private crossingTicks(from: Pos, to: Pos) {
+    return (this.fenceAt(to) && !this.fenceAt(from)) ||
+      (this.sandbags.some(b => same(b,to)) && !this.sandbags.some(b => same(b,from))) ||
+      this.shelfAt(to) ? 14 : 0;
+  }
+  private doorWaitTicks(to: Pos) {
+    const door = this.gateAt(to) ?? this.doors.find(d => same(d,to));
+    if (!door || door.mode !== 'auto') return 0;
+    return door.openUntil === 0 || door.openUntil < this.tick ? 13 : Math.max(0, door.openUntil - 37 - this.tick);
+  }
+  private travelRoute(from: Pos, target: number, allowed?: Set<number>): number[] | null {
+    const pawn = this.pawns.includes(from as Pawn) ? from as Pawn : undefined;
+    const base = this.pawnBaseMoveTicks(pawn), destination = position(target);
+    // One horizontal step may also change elevation; this lower bound supports
+    // both those steps and the vertical ladder edges without overestimating.
+    const minimum = Math.max(1, Math.floor(base));
+    return this.navigation.find(at(from), n => n === target,
+      n => this.neighbors(position(n)).filter(next => !allowed || allowed.has(next)),
+      (a,b) => this.weatherMoveTicks(position(a),base,position(b),this.crossingTicks(position(a),position(b))) +
+        this.doorWaitTicks(position(b)),
+      n => { const p = position(n); return minimum * Math.max(Math.abs(p.x-destination.x)+Math.abs(p.y-destination.y),Math.abs(p.z-destination.z)); });
   }
   path(from: Pos, to: Pos) {
     if (!inside(from) || !inside(to) || !this.standable(from) || !this.canStop(to)) return null;
-    this.search(from);
-    return this.distance[at(to)] >= 0 ? this.route(at(to)) : null;
+    return this.travelRoute(from,at(to));
   }
   private stands(j: Job): number[] {
     const shelf = j.kind === 'remove' ? this.shelfAt(j) : undefined;
@@ -5333,9 +5360,14 @@ export class VoxelSimulation {
   animalAvailable(item: Stack, pawnId?: number) { return this.availableStack(item, pawnId); }
   animalTake(p: Pawn, id: number, amount: number) { return this.take(p, undefined, amount, id); }
   animalCanStop(p: Pos) { return this.canStop(p); }
-  animalMoveTicks(a: WildAnimal, from: Pos) {
+  animalMoveTicks(a: WildAnimal, from: Pos, to: Pos = a) {
     return this.weatherMoveTicks(from, ANIMAL_DEFS[a.species].moveTicks * (a.phase === 'flee' ? .65 : 1) *
-      (1 + a.malnutrition), a, (this.fenceAt(a) && !this.fenceAt(from)) || this.shelfAt(a) ? 14 : 0);
+      (1 + a.malnutrition), to, (this.fenceAt(to) && !this.fenceAt(from)) || this.shelfAt(to) ? 14 : 0);
+  }
+  animalRoute(a: WildAnimal, targets: Set<number>): number[] | null {
+    if (!targets.size) return null;
+    return this.navigation.find(at(a), n => targets.has(n), n => this.animalNeighbors(a,position(n)),
+      (from,to) => this.animalMoveTicks(a,position(from),position(to)));
   }
   animalNeighbors(a: WildAnimal, p: Pos) {
     return this.neighbors(p).filter(n => {
@@ -5422,7 +5454,16 @@ export class VoxelSimulation {
   prisonExit(p: Pawn) { return this.tradeExit(p); }
   /** Common movement preserves doors, health/gear speed and carried-pawn coordinates. */
   private moveAlongPath(p: Pawn) {
-    if (!p.path.length || this.tick < p.moveTick) return;
+    if (!p.path.length) return;
+    // Reconsider changing snow/weather/door costs at bounded deterministic
+    // intervals. Replan blocked paths immediately while retaining the task.
+    if (p.path.length > 1 && ((this.tick + p.id) % 80 === 0 ||
+        (this.tick >= p.moveTick && !this.neighbors(p).includes(p.path[0])))) {
+      const allowed = p.faction === 'prisoner' && !p.prisoner?.releasing ? this.prisonCells(p) : undefined;
+      const route = allowed === null ? null : this.travelRoute(p,p.path[p.path.length - 1],allowed);
+      if (route) p.path = route;
+    }
+    if (this.tick < p.moveTick) return;
     const next = p.path[0];
     if (!this.neighbors(p).includes(next)) {
       this.release(p); p.reason = '通路改变，等待重新规划'; return;
@@ -5433,14 +5474,11 @@ export class VoxelSimulation {
       if (this.tick < door.openUntil - 37) { p.reason = '等待木门打开'; return; }
       door.openUntil = this.tick + 37;
     }
-    const crossingSandbags = (!!this.fenceAt(position(next)) && !this.fenceAt(p)) ||
-      (this.sandbags.some(b => same(b, position(next))) && !this.sandbags.some(b => same(b, p)));
     const previous = { x: p.x, y: p.y, z: p.z };
+    const ticks = this.weatherMoveTicks(previous,this.pawnBaseMoveTicks(p),position(next),this.crossingTicks(previous,position(next)));
     Object.assign(p, position(next)); p.path.shift();
     this.trackDirt(p, previous);
-    p.moveTick = this.tick + this.weatherMoveTicks(previous,
-      (p.cargo || p.carryingPawnId !== null ? 6 : 4) /
-      (apparelMoveFactor(p.worn, healthSummary(p).moving) * (p.staggerUntil > this.tick ? .17 : 1)), p, crossingSandbags ? 14 : this.shelfAt(p) ? 14 : 0);
+    p.moveTick = this.tick + ticks;
     if (p.carryingPawnId !== null) {
       const patient = this.pawns.find(q => q.id === p.carryingPawnId);
       if (patient) Object.assign(patient, { x: p.x, y: p.y, z: p.z });
@@ -7697,6 +7735,7 @@ export class VoxelSimulation {
         this.distance.byteLength +
         this.parents.byteLength +
         this.queue.byteLength +
+        this.navigation.byteLength +
         this.treeRouteSeen.byteLength +
         this.treeRouteQueue.byteLength,
       tickMs,
@@ -9552,6 +9591,12 @@ export class VoxelSimulation {
           }
           s.go(p, target, 'care');
         }
+        continue;
+      }
+      if (p.phase === 'travel' && p.destination !== null) {
+        const route = s.path(p,position(p.destination));
+        if (route === null) { s.release(p); p.reason = '回读后移动目标不可达，保留携带物'; }
+        else p.path = route;
         continue;
       }
       if (p.phase === 'dine') {

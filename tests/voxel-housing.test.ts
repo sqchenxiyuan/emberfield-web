@@ -330,7 +330,9 @@ describe('normal-command voxel housing', () => {
     until(sim, () => at(pawn) === at(pos(32, 32)) && pawn.phase === 'idle');
     const door = sim.doors[0];
     command(sim, { type: 'door', doorId: door.id, mode: 'auto' });
-    command(sim, { type: 'move', pawnId: pawn.id, target: pos(34, 32) });
+    // Measure opening on a required doorway entry; an optional crossing can
+    // now legitimately choose the faster open ground around this isolated door.
+    command(sim, { type: 'move', pawnId: pawn.id, target: pos(33, 32) });
     until(sim, () => pawn.reason === '等待木门打开', 100);
     const waitingAt = sim.tick;
     expect(at(pawn)).toBe(at(pos(32, 32)));
@@ -340,6 +342,7 @@ describe('normal-command voxel housing', () => {
     const before = sim.save();
     expect(sim.command({ type: 'door', doorId: door.id, mode: 'locked' }).ok).toBe(false);
     expect(sim.save()).toEqual(before);
+    command(sim, { type: 'move', pawnId: pawn.id, target: pos(34, 32) });
     until(sim, () => at(pawn) === at(pos(34, 32)) && pawn.phase === 'idle');
     command(sim, { type: 'door', doorId: door.id, mode: 'locked' });
     expect(sim.standable(door)).toBe(false);

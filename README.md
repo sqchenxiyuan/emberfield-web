@@ -6,6 +6,8 @@
 
 在线试玩：[多层体素](https://sqchenxiyuan.github.io/emberfield-web/?world=voxel) · [二维营地](https://sqchenxiyuan.github.io/emberfield-web/) · 源码：[sqchenxiyuan/emberfield-web](https://github.com/sqchenxiyuan/emberfield-web)。
 
+2026-11-04通道与寻路：人物会比较绕行与穿过货架、积雪、沙袋和自动门的通行成本；途中堵路可保留任务改走其他路线，普通移动读档也能恢复目的地。动物目标路线保留自身速度与通行限制。原版实机确认了货架两侧的一次真实绕行，Web 的多层适配、验证与未完成边界见[115 加权寻路](docs/research/rimworld/115-weighted-navigation-gameplay.md)。仍使用 v37 存档，继续优先玩法机制，数值后调。
+
 2026-11-04实体货架：小货架一格三堆、大货架两格六堆；工人按整架筛选与优先级搬入，从旁边取用。满架可卸下、散货并重装，保留原架身份、耐久和设置；空间不足时等待，火毁拥堵保留可继续搬运的散货。界面支持逐堆查看、设置和搬装预览，存档升级 v37 并兼容旧档。见[114 货架玩法与验证](docs/research/rimworld/114-shelves-gameplay.md)。玩法机制优先，成本与节奏数值后调。
 
 2026-11-04补充[111实体货架机制](docs/research/rimworld/111-shelf-storage-mechanisms.md)与[112原版实机](docs/research/rimworld/112-native-shelves-runtime.md)：正常建造后同格储存三堆，满架可直接卸下；物资留在地图上，原架的储存设置随重装和读档保留。Web 实现承接[113物资预约基础](docs/research/rimworld/113-storage-reservations-foundation.md)，原版事实与 Web 适配分别记录。继续优先玩法与机制，成本和效率数值后调。

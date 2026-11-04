@@ -20,6 +20,7 @@ export interface HusbandryHost extends PensHost {
   animalNeighbors(a: WildAnimal, p: Pos): number[];
   animalCanStop(p: Pos): boolean;
   animalMoveTicks(a: WildAnimal, from: Pos): number;
+  animalRoute(a: WildAnimal, targets: Set<number>): number[] | null;
   animalGrassSite(p: Pos): boolean;
   animalAvailable(item: Stack, pawnId?: number): number;
   animalTake(p: Pawn, id: number, amount: number): boolean;
@@ -78,15 +79,10 @@ function grassTick(s: HusbandryHost) {
   for(const g of s.grass)if(g.growth<1)g.growth=Math.min(1,g.growth+100/HUSBANDRY_RULES.grassRegrowTicks*light*temperatureGrowth(s.temperature(g)));
 }
 
-/** BFS uses animal-specific edges: no ladders, species-specific doors. */
+/** Travel costs use the animal's own pace and traversable edges. */
 function route(s: HusbandryHost,a: WildAnimal, targets: Map<number,NonNullable<WildAnimal['goal']>>): {path:number[];goal:NonNullable<WildAnimal['goal']>}|null {
-  const start=at(a), parents=new Map<number,number>([[start,-1]]), queue=[start];
-  for(let head=0;head<queue.length;head++) {
-    const cell=queue[head],goal=targets.get(cell);
-    if(goal){const path:number[]=[];let n=cell;while(n!==start){path.push(n);n=parents.get(n)!;}return {path:path.reverse(),goal};}
-    for(const n of s.animalNeighbors(a,position(cell)))if(!parents.has(n)){parents.set(n,cell);queue.push(n);}
-  }
-  return null;
+  const path=s.animalRoute(a,new Set(targets.keys()));
+  return path ? {path,goal:targets.get(path.at(-1)??at(a))!} : null;
 }
 function move(s: HusbandryHost,a:WildAnimal):boolean {
   if(!a.path.length)return false;

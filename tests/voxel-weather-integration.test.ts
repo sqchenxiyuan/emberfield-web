@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { VoxelSimulation } from '../src/voxel/world';
-import { Block, WIDTH, DEPTH, at, type Pawn, type Pos, type VoxelCommand, type WorldSettings } from '../src/voxel/types';
+import { Block, WIDTH, DEPTH, at, index, type Pawn, type Pos, type VoxelCommand, type WorldSettings } from '../src/voxel/types';
 import { initialStoryteller } from '../src/voxel/storyteller';
 import { initialTrade } from '../src/voxel/trade';
 import { initialFireHazards, makeFire } from '../src/voxel/fire';
@@ -149,6 +149,9 @@ describe('weather integrated with fire, real movement and shooting', () => {
   it('uses the larger snow/sandbag movement cost once rather than adding both penalties', () => {
     const delay = (snow: boolean, sandbag: boolean) => {
       const s = fixture(s => {
+        // Force the measured crossing: weighted routes now correctly avoid a
+        // sandbag when the open ground beside it is faster.
+        for (let y=0;y<DEPTH;y++) if (y!==16) for(let z=8;z<=9;z++) s.blocks[index(13,y,z)]=Block.Stone;
         if (snow) s.snow = [{ ...pos(13), depth: .8 }];
         if (sandbag) s.sandbags.push({ ...pos(13), id: s.nextId++, hitPoints: 300 });
       });

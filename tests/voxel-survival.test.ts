@@ -324,7 +324,7 @@ describe('voxel incapacitation and physical care', () => {
     expect(patient).toMatchObject({ x: doctor.x, y: doctor.y, z: doctor.z, phase: 'downed' });
     expect(() => VoxelSimulation.load(s.save())).not.toThrow();
   });
-  it('retains a feeding cargo if the route becomes impassable', () => {
+  it('retains a feeding cargo if all routes become impassable', () => {
     const s = fixture(),
       [doctor, patient] = s.pawns;
     down(patient);
@@ -333,9 +333,11 @@ describe('voxel incapacitation and physical care', () => {
     food(s, 'food', 1);
     command(s, { type: 'care', pawnId: doctor.id, patientId: patient.id, action: 'feed' });
     until(s, () => doctor.carePhase === 'feedApproach');
-    const origin = ledger(s),
-      next = doctor.path[0];
-    s.blocks[next] = Block.Wood;
+    const origin = ledger(s);
+    // A single blocked edge can now be rerouted while keeping the care task.
+    // Enclose the carrier to exercise actual unreachability and cargo retention.
+    for (const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]) for (const dz of [0,1])
+      s.blocks[index(doctor.x+dx,doctor.y+dy,doctor.z+dz)] = Block.Wood;
     until(s, () => doctor.carePhase === null, 10);
     expect(doctor.cargo?.amount).toBe(1);
     expect(patient.food).toBe(0);
