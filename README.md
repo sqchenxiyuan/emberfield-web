@@ -6,6 +6,8 @@
 
 在线试玩：[多层体素](https://sqchenxiyuan.github.io/emberfield-web/?world=voxel) · [二维营地](https://sqchenxiyuan.github.io/emberfield-web/) · 源码：[sqchenxiyuan/emberfield-web](https://github.com/sqchenxiyuan/emberfield-web)。
 
+2026-11-04世界选址更新（v35）：菜单新增世界地图，固定世界种子生成1,152个地区。可以点选、键盘选择和对比三个地点，再进入对应的实际营地；气候、起伏、可耕地、林木和有限矿脉影响开局取舍。地区身份随存档保留，旧营地不重新生成；仍支持自定义地图。先接选址与经营机制，世界分布参数后续再调整。海洋仅用于世界图背景，本地河流、洞穴和世界旅行尚未实现。见[106原版机制](docs/research/rimworld/106-world-site-selection-mechanisms.md)、[107玩法与验证](docs/research/rimworld/107-world-site-selection-gameplay.md)。
+
 2026-11-04家具搬装更新（v34）：床、餐桌和餐椅可以卸下、入库、跨层搬移和旋转重装。工人实际搬运指定的原家具，身份、品质与耐久保留；取消、满地面、征召或倒地、火灾和途中读档均按实体处理。新增搬装按钮、预览与阶段检查，旧仓储筛选保持原设置。先完成营地改造玩法，参数后续再调整。见[103原版机制](docs/research/rimworld/103-furniture-reinstall-mechanisms.md)、[104实机对照](docs/research/rimworld/104-native-furniture-reinstall-runtime.md)、[105玩法与验证](docs/research/rimworld/105-furniture-relocation-gameplay.md)。
 
 当前开发重点是先搭好可操作的玩法和机制闭环，数值采用初步默认值，后续再平衡。体素模式已接通狩猎与肉食生产、动物驯养繁殖与圈养管理、心情娱乐、俘虏招募、卫生清洁、火灾修理及天气联动，见[开发路线](docs/research/rimworld/05-reconstruction-roadmap.md)；研究文档中的原版数值不代表当前游戏已经完成平衡。

@@ -2,6 +2,7 @@
 import { VoxelSimulation } from './world';
 import type { VoxelCommand } from './types';
 import { previewWorld } from './worldgen';
+import { resolveWorldSite } from './regions';
 const ctx = self as unknown as DedicatedWorkerGlobalScope;
 let sim = new VoxelSimulation(),
   speed = 0,
@@ -23,6 +24,17 @@ function publish() {
 ctx.onmessage = ({ data: d }) => {
   try {
     let result: unknown;
+    if (d.type === 'previewSite' || d.type === 'newSite') {
+      if (['seed', 'settings', 'generator', 'worldSite'].some(key => Object.hasOwn(d, key)))
+        throw new Error('地区请求只接受 site，不能覆盖地图种子、气候或生成器');
+    } else if (['init', 'preview', 'new'].includes(d.type) &&
+        ['site', 'worldSite'].some(key => Object.hasOwn(d, key)))
+      throw new Error('地区开局和预览请使用专用地区接口');
+    if (d.type === 'previewSite') {
+      const resolved = resolveWorldSite(d.site);
+      ctx.postMessage({ type: 'reply', id: d.id, result: previewWorld(resolved.seed, resolved.settings) });
+      return;
+    }
     if (d.type === 'preview') {
       ctx.postMessage({ type: 'reply', id: d.id, result: previewWorld(d.seed, d.settings) });
       return;
@@ -51,6 +63,14 @@ ctx.onmessage = ({ data: d }) => {
       publishedRooms = -1;
       speed = 0;
       elapsed = 0;
+      result = true;
+    } else if (d.type === 'newSite') {
+      const next = VoxelSimulation.fromWorldSite(d.site);
+      sim = next;
+      publishedRooms = -1;
+      speed = 0;
+      elapsed = 0;
+      previous = performance.now();
       result = true;
     } else if (d.type === 'new') {
       if (!Number.isSafeInteger(d.seed)) throw new Error('种子必须是整数');

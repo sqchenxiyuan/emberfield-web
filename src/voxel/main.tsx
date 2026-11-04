@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import React, { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { createRoot } from 'react-dom/client';
 import { VoxelClient } from './client';
 import { WorldSetup, BIOME_NAMES, HILL_NAMES } from './WorldSetup';
+import { resolveWorldSite } from './regions';
 import { TREE_NAMES } from './plants';
 import { CROPS, NUTRITION, fertilityOf } from './farming';
 import { ASSIGNMENT_NAMES } from './rest';
@@ -449,6 +450,8 @@ function App() {
   const animal = s?.animals.find(v => v.id === selectedAnimal) ??
     (state.selected && !('penMarkerId' in state.selected) && !('fenceGateId' in state.selected) && !('furnitureId' in state.selected) ? s?.animals.find(v => equal(v, state.selected!)) : undefined);
   const p = animal ?? state.selected;
+  const worldRegion = useMemo(() => s?.worldSite ? resolveWorldSite(s.worldSite).tile : null,
+    [s?.worldSite?.version, s?.worldSite?.worldSeed, s?.worldSite?.tileId]);
   const spawn = s?.spawn ?? { x: 32, y: 32, z: 8 };
   const people = p ? (s?.pawns.filter((v) => equal(v, p)) ?? []) : [];
   const items = p ? (s?.items.filter((v) => equal(v, p)) ?? []) : [];
@@ -920,6 +923,9 @@ function App() {
             )}
           </p>
         )}
+        {!p && s && <p data-testid="current-world-site" data-world-seed={s.worldSite?.worldSeed} data-region-id={s.worldSite?.tileId}>
+          {s.worldSite && worldRegion ? `世界种子 ${s.worldSite.worldSeed} · 地区 #${s.worldSite.tileId} · 坐标 (${worldRegion.x}, ${worldRegion.y})` : '自定义或历史营地 · 未绑定世界地区'}
+        </p>}
         {p && (
           <p>
             {block
@@ -2126,9 +2132,10 @@ function App() {
             <WorldSetup
               client={client}
               busy={busy}
-              create={async (seed, settings) => {
+              create={async (seed, settings, site) => {
                 await action(async () => {
-                  await client.newGame(seed, settings);
+                  if (site) await client.newSiteGame(site);
+                  else await client.newGame(seed, settings);
                   setMenu(false);
                 }, '新世界已生成，时间暂停');
               }}

@@ -1,0 +1,29 @@
+{
+  "fixture": "voxel-v34-regions-active.json",
+  "sha256": "87a71ecab92734bcc6f306838699494f01bd62254b4ebfbb15b4e5e4baa36beb",
+  "version": 34,
+  "tick": 12890,
+  "sourceCommit": "e9b007e25866a775373665d8c2d06a23eae3a36a",
+  "sourcePath": "test-results/voxel-relocation-final3/bed-carrying.json",
+  "sourceSha256": "2843c08bcc33aa90994a1fd5e360a420e8799bcc99777c00edca17283a6d6d9a",
+  "worldSourceSha256": "d0e925316cf4a935a649090cf140175a367cf7afaebf4fb8fec56b1e37d59a1b",
+  "executedBundleSha256": "37b16c5eaf31f8653b5f32146b1f3dadb3af3d19f32b108c1b7428957a911ba9",
+  "terrainChangedCells": 55,
+  "activeJobs": [
+    {
+      "id": 587,
+      "kind": "install",
+      "progress": 0,
+      "delivered": {}
+    }
+  ],
+  "carried": [
+    {
+      "pawnId": 453,
+      "resource": "furniture",
+      "amount": 1,
+      "furnitureId": 565
+    }
+  ],
+  "transformation": "Existing command-only v34 relocation campaign checkpoint loaded by unchanged v34 source, advanced one ordinary simulation tick and saved. No version, terrain, task, item, actor, needs or RNG field edited."
+}

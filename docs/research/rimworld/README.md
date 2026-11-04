@@ -111,6 +111,8 @@
 | [103 家具卸下与重装机制](103-furniture-reinstall-mechanisms.md) | 包装内部原实体、品质耐久、床归属和安装配送如何衔接？ |
 | [104 原版家具搬装实机](104-native-furniture-reinstall-runtime.md) | 实际卸下与重装观察验证了哪些状态保留规则？ |
 | [105 家具搬装玩法](105-furniture-relocation-gameplay.md) | 跨层搬运、仓储、旋转、中断、灾害和旧档怎样衔接？ |
+| [106 世界地图选址机制](106-world-site-selection-mechanisms.md) | 世界种子、地区身份、气候与局部地图如何衔接，哪些地区不能落地？ |
+| [107 世界地图选址玩法](107-world-site-selection-gameplay.md) | 地区比较、实际地图预览、开局和旧营地保存怎样连接？ |
 
 每篇均含具体来源与未决问题。先读感兴趣的系统，再查其 `evidence/*-claims.json` 和 `*-manifest.json`，不要把“已抽取一个类型”当成“这个类型涉及的全部机制已经理解”。
 

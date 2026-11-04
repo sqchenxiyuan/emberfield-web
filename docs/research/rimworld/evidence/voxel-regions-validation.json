@@ -1,0 +1,745 @@
+{
+  "version": 35,
+  "validatedAt": "2026-11-04T02:38:49.724Z",
+  "scope": "Local v35 rules, persistence, fresh simulation/API campaign, and visible browser gameplay. Not native RimWorld world generation or long-term survival proof.",
+  "sourceManifest": [
+    {
+      "file": "src/audio.ts",
+      "sha256": "b5bc4efe4a1bb7d2bf17d89ab2f5d8f5d3ff14667244a3487925472a70c7ac8c"
+    },
+    {
+      "file": "src/client.ts",
+      "sha256": "6665bf09a59511d7007b3d80f65a5a6e946e2aede82638873b96de3e2f2abf0e"
+    },
+    {
+      "file": "src/entry.ts",
+      "sha256": "948a579347dd85a7827c2bb349bfbf1c694c46fd13d0ec81eba6b631bee664e4"
+    },
+    {
+      "file": "src/layout.css",
+      "sha256": "440209ba4898936fb5eac6f1fbc9c1b75240e2384b3aec6f8689834e82b77502"
+    },
+    {
+      "file": "src/main.tsx",
+      "sha256": "dd495faf455c45378784aec821ae4c4fb1f63cb6b05be4ef14d2ed7a483eca40"
+    },
+    {
+      "file": "src/protocol.ts",
+      "sha256": "36a69d8555b924ad256baa9fc4ac9f13a3138254bd3a9ca6aea0c6e7720626ad"
+    },
+    {
+      "file": "src/render.worker.ts",
+      "sha256": "5f847dd501f4d3980bceb3ce64728a67f7e97f56c8b127680b02a538b36c0797"
+    },
+    {
+      "file": "src/renderer.ts",
+      "sha256": "a6e463ff5779a4ad0a48b540546dbff7a94114f9a3eab0f47f27611891d26d64"
+    },
+    {
+      "file": "src/sim.worker.ts",
+      "sha256": "80cd20bb4fd76e315a3b98d4c9f817e22f8342d345b72b64c328fea1058e7f7a"
+    },
+    {
+      "file": "src/sim/activity.ts",
+      "sha256": "f998a95408c38e311e7ca50faf478008b8ebe5ed23d362eedd434f3356d9f59f"
+    },
+    {
+      "file": "src/sim/defs.ts",
+      "sha256": "19d1472ecb13eb44a301b520e1705851ed063d6b57946c8873dadba24a61761a"
+    },
+    {
+      "file": "src/sim/path.ts",
+      "sha256": "bc929aa62e72894530a3658658b21b45f4204d6d0e7ab39e4d456089aa82e0d2"
+    },
+    {
+      "file": "src/sim/placement.ts",
+      "sha256": "3a95d7d5476ae757cf4343d40b77c49cbecd70a5ce9044ce79eeadbf06366ce0"
+    },
+    {
+      "file": "src/sim/save.ts",
+      "sha256": "b79fe616886283618defa6564ced9db9e1068649d1a8708999c55a8288a18037"
+    },
+    {
+      "file": "src/sim/types.ts",
+      "sha256": "2b179975dfb26e94d4da72539c1a27216fbe5a3334a9791a112b8826edc2981a"
+    },
+    {
+      "file": "src/sim/world.ts",
+      "sha256": "dda00e071ec07fb5852adafca98e6f184ee39e7f3e50a45b759144162bd3e428"
+    },
+    {
+      "file": "src/style.css",
+      "sha256": "faec3ea5d04e6ae8b5d2adf5ddb5b187517670b1ecf14198d2bee363a63508c1"
+    },
+    {
+      "file": "src/voxel/AnimalPanel.tsx",
+      "sha256": "974fbfb44146ce2a2721879c9201ade85709b4c9c904988fca8002f1094eff21"
+    },
+    {
+      "file": "src/voxel/ApparelPanel.tsx",
+      "sha256": "5458057406ce8181ae84f384724b3712851a0019a875c0ecd6d2406d9c671ea2"
+    },
+    {
+      "file": "src/voxel/ArmorPanel.tsx",
+      "sha256": "86baf921c3c9efeac0640030b1d34b6d701639a8f40e237123ec06aa45a90787"
+    },
+    {
+      "file": "src/voxel/CombatPanel.tsx",
+      "sha256": "a89870e23cca22b7638f3ccb5b40eef85d6398c31dead8c4e7873f51ee708b2a"
+    },
+    {
+      "file": "src/voxel/FirePanel.tsx",
+      "sha256": "9aa50b2aec9b87b08e95c0d24b12c7d072ed7c7a4b50101b0e78a4feedfcdf90"
+    },
+    {
+      "file": "src/voxel/FurniturePanel.tsx",
+      "sha256": "f6e9d2a673714f17614740be449f40ed34636ed0c6a4c8b2529afd7b4fa896c0"
+    },
+    {
+      "file": "src/voxel/ItemCondition.tsx",
+      "sha256": "611b42a857f615e368a26a294f0c8a0b00bf3a29d7b450f78d10e801b9a8ebb7"
+    },
+    {
+      "file": "src/voxel/LivingPanel.tsx",
+      "sha256": "9e0eb4c446726d0b648fca68d951f894d7bc8a40f4e41eb7c5f219b424dd11f2"
+    },
+    {
+      "file": "src/voxel/MedicinePanel.tsx",
+      "sha256": "9f5ebe3569e341dd1be7472dde6e2f89174fd1e8acaff2f03b4a271a5f5a0173"
+    },
+    {
+      "file": "src/voxel/PenPanel.tsx",
+      "sha256": "9f89abf8635511cd32a27ff26bf8d6fe40ed54a61baecc8c7a61a7a04ba5379f"
+    },
+    {
+      "file": "src/voxel/RegionMap.tsx",
+      "sha256": "5c7f0b49f4f1fe2ec80f41323be83a8d0cbd71fddb5716471d6e932206aee097"
+    },
+    {
+      "file": "src/voxel/ResearchPanel.tsx",
+      "sha256": "4e66974943a44217ce1b6245afa4dfcba0da4a7ffd10674731cb4f95597c09d8"
+    },
+    {
+      "file": "src/voxel/SanitationPanel.tsx",
+      "sha256": "c26c4e842adfce1d94ed191512796c36dfc8e3b479afc7c0faaafeb45a3eb3ac"
+    },
+    {
+      "file": "src/voxel/SkillPanel.tsx",
+      "sha256": "f24661ce66ab231cf83073d75b5d98513df528608749455c6514e5534ea8542b"
+    },
+    {
+      "file": "src/voxel/SocialPanel.tsx",
+      "sha256": "989e21be1910595a11eb38d2d01225a872886edc88b27e8d48fd9cebec8c2f33"
+    },
+    {
+      "file": "src/voxel/SurvivalPanel.tsx",
+      "sha256": "a08dd658e3e90b301275e359e7e291f2ba9a36d1a0668e071ce23a515574b735"
+    },
+    {
+      "file": "src/voxel/TailorPanel.tsx",
+      "sha256": "f796c146ea58e5d9777b430361d49fbbdd1836ac756982b62e7f1688b74d742a"
+    },
+    {
+      "file": "src/voxel/TradePanel.tsx",
+      "sha256": "49c8f9c908e89b33fcd763010586a786abdac493a9ae78a8770873d13b8d2882"
+    },
+    {
+      "file": "src/voxel/WeaponPanel.tsx",
+      "sha256": "6721e24516cd848738d0dc12462bf79cf101f960393fa32d7e03fe82862493e2"
+    },
+    {
+      "file": "src/voxel/WeatherPanel.tsx",
+      "sha256": "4be2e8c3438225386371e742b22c22f55c4379251ae8bec18518357b70c06481"
+    },
+    {
+      "file": "src/voxel/WorldSetup.tsx",
+      "sha256": "a54741e0c37230edfeba02bdfec2cfc0d58bd751c772d0a4d7124b77d611b419"
+    },
+    {
+      "file": "src/voxel/anatomy.ts",
+      "sha256": "1f30b19d6ad8c1562cca38e86e54e17c9226f4ea6f288a326743f348e5bd7095"
+    },
+    {
+      "file": "src/voxel/apparel.ts",
+      "sha256": "88954cc42098d2bf1f02c294e5c2f813c9271a95e01f6bfb9346c4a31d2211e8"
+    },
+    {
+      "file": "src/voxel/armor.ts",
+      "sha256": "756771ef962f4fde2cd321a29880f11077ada081b724ebc63e5d781d12bff62e"
+    },
+    {
+      "file": "src/voxel/client.ts",
+      "sha256": "560fbab78ad74206ef2cc2f7bbb080df27b9f3a5c1cb7a6caf97acca814be2f1"
+    },
+    {
+      "file": "src/voxel/climate.ts",
+      "sha256": "2386d38fc2b258034516de80caee53627d62c184bd18cadb741c213cc781bf29"
+    },
+    {
+      "file": "src/voxel/crafting.ts",
+      "sha256": "9ff99d07c56040b1bc91acc9bd6521c00550389068f669459516f730887fcadb"
+    },
+    {
+      "file": "src/voxel/deterioration.ts",
+      "sha256": "09a08736ae773940c05ae633a8d630745076b993b44c6ae52aaa5743dde36816"
+    },
+    {
+      "file": "src/voxel/environment.ts",
+      "sha256": "ba9ca3d50fa17ea3fec621c40d44a820a8fcb01fc2c5394fc9339f74fbe27187"
+    },
+    {
+      "file": "src/voxel/environmentPersistence.ts",
+      "sha256": "fac143e8467a64e1518e1b846bbcd831da1e1661e058cbf8816c601cc3670656"
+    },
+    {
+      "file": "src/voxel/farming.ts",
+      "sha256": "12bcdf1ff26d4ca008d91bbde3bdc5c3f68af407979713ce2109006172c3fe5b"
+    },
+    {
+      "file": "src/voxel/fire.ts",
+      "sha256": "21a17091abe900e0fdbddd6ef99dd6cce11aac6fbb6b9ef718db3a1889dfcd6f"
+    },
+    {
+      "file": "src/voxel/firePersistence.ts",
+      "sha256": "fb6ba728c6f342f09d351a2014267c78c359a073bc36a9f704457fa929826544"
+    },
+    {
+      "file": "src/voxel/fireWorld.ts",
+      "sha256": "fab38d9afefaeaf6687a4708cff9ef58fbb09ee8774164a16fbcd6780402d175"
+    },
+    {
+      "file": "src/voxel/furniture.ts",
+      "sha256": "a6412af96de6584138f05545be381de9d4876134dcdb04ce963dd2c29915bba8"
+    },
+    {
+      "file": "src/voxel/furniturePersistence.ts",
+      "sha256": "6bde3e701115a7126e2daeef9798495afd5828e027c1ca437f0d8129d2477504"
+    },
+    {
+      "file": "src/voxel/husbandry.ts",
+      "sha256": "1c1163793259862fd0338eed68ef69cf5fa8c34c79b142f9baa90c5bb7531cfd"
+    },
+    {
+      "file": "src/voxel/husbandryPersistence.ts",
+      "sha256": "7205319c8ece09be0a51e18d79015a1e2b33e7aa38c62415a079b6e0dae002a8"
+    },
+    {
+      "file": "src/voxel/husbandryWorld.ts",
+      "sha256": "87764ee4d8aed3c64f814beab24139e573567c8c9b972777e94b704faf620859"
+    },
+    {
+      "file": "src/voxel/injuries.ts",
+      "sha256": "cfd1dcad2a553d0681239e2ab0638fb8a752da35a26cd1800301aa12aaf9a8e4"
+    },
+    {
+      "file": "src/voxel/living.ts",
+      "sha256": "f101d6b98ef949bd83ccdc11117cb3014bc3d351d7888bc06c300158fc57c6fa"
+    },
+    {
+      "file": "src/voxel/livingPersistence.ts",
+      "sha256": "e9e6ae9f30fd643afe7da827b7bfd2ae4ad383745747451c286ce27ee7562f33"
+    },
+    {
+      "file": "src/voxel/logistics.ts",
+      "sha256": "2608ab392ba17357fbe421907a6a193c7969ba3905646b375908ed197a619fa2"
+    },
+    {
+      "file": "src/voxel/main.tsx",
+      "sha256": "cc2cc562f6604318824387b747d056d87c049cde5495f1f1becbcb304573fcd1"
+    },
+    {
+      "file": "src/voxel/medicine.ts",
+      "sha256": "064f9c2fe26b99f59f44e58ed7294e3b7dfea416b3fa0688c7976b52a1c7b912"
+    },
+    {
+      "file": "src/voxel/medicinePersistence.ts",
+      "sha256": "306fa3b01e62229efcae3654230f35b8288ba945c0f3c22859af09203899c750"
+    },
+    {
+      "file": "src/voxel/mood.ts",
+      "sha256": "79dd6a2dcd82ae7f8f375bb0a5e2ff2913b86b6a70fdcefdd0d84a8fc3d24db5"
+    },
+    {
+      "file": "src/voxel/pens.ts",
+      "sha256": "82e72a6c94157f794b5601806771fd62e4442608844e0fae706958a3c8f778b3"
+    },
+    {
+      "file": "src/voxel/pensPersistence.ts",
+      "sha256": "088789d79b590f988c9ff4da3e0f3ceb5d13edc4b4bbe94a69f026271078d9cd"
+    },
+    {
+      "file": "src/voxel/pensWorld.ts",
+      "sha256": "fd447038cec664c216a3b5cc2623b4f6d40d6d83fbbd125bfea6a4fe429413d2"
+    },
+    {
+      "file": "src/voxel/plants.ts",
+      "sha256": "baa7f01b82c047536c8d0a2ee3097e15bce8466418e4442e39155d6be6400195"
+    },
+    {
+      "file": "src/voxel/power.ts",
+      "sha256": "dbbf47b4558b8935960d20abceb94c545f686e6ab5f6ca26f075429ded89fec1"
+    },
+    {
+      "file": "src/voxel/preservation.ts",
+      "sha256": "35fae3b09acc083c028309b00cfe772a1ec457273655104e3e938f60fd81defa"
+    },
+    {
+      "file": "src/voxel/prisonPersistence.ts",
+      "sha256": "aa23dc10fd8152e6f338e26b118e385fa7c5d385e86d10688e9298ae26a502de"
+    },
+    {
+      "file": "src/voxel/prisonWorld.ts",
+      "sha256": "a6ea0d30f48f4b828227a3357741c4ad716ccb31147bb86e32eba74521f405f1"
+    },
+    {
+      "file": "src/voxel/prisoners.ts",
+      "sha256": "6327f6d6d65f107a35e70fa94e2260b79d8593d070aaf5c42368de05782a55b2"
+    },
+    {
+      "file": "src/voxel/ranged.ts",
+      "sha256": "5b42c45c404289833cfe496fc4b1cc34d253d57c8afb6045afe8f2c34436920a"
+    },
+    {
+      "file": "src/voxel/rangedPersistence.ts",
+      "sha256": "19644559ae86bcb1e879dcd8d7d115e2e05d40177905c7a900864c25071a057a"
+    },
+    {
+      "file": "src/voxel/rangedView.ts",
+      "sha256": "13b4b9353de569382a90d0d5b1b5c0aa9bc48e05a0b918e7327e17b8537c0533"
+    },
+    {
+      "file": "src/voxel/recreation.ts",
+      "sha256": "f55022026c42781e5653a7b35f3272280348123e5930b627072f47a00f3e8051"
+    },
+    {
+      "file": "src/voxel/regionPersistence.ts",
+      "sha256": "bfb824ef3873ab7e34c60a1f01bc4d99876e84da5bd363a8c4cd9bfc83bf407d"
+    },
+    {
+      "file": "src/voxel/regions.ts",
+      "sha256": "a4166cfa0980e8c3f9bcd868b6dfd95bf3846496070e12e5fa586c798282cfa6"
+    },
+    {
+      "file": "src/voxel/relocation.ts",
+      "sha256": "e3bd16b7d6889fe913f4e1e2baced4035503dd596b8578446fdd5a5494359d4d"
+    },
+    {
+      "file": "src/voxel/relocationPersistence.ts",
+      "sha256": "7b0132ef7efcac2af4de26ad800313559ede436c2b444a03684efa4a170dd21b"
+    },
+    {
+      "file": "src/voxel/render.worker.ts",
+      "sha256": "191ced6c3d17b480fa11f2d3a6845b8e9df111f5f69ded8b7b2bbaf75caf22c0"
+    },
+    {
+      "file": "src/voxel/renderer.ts",
+      "sha256": "78e92459395789fdf197a3fa8ad401fcee6dd9f518b0696ae0d43738a0867a70"
+    },
+    {
+      "file": "src/voxel/research.ts",
+      "sha256": "8abddc0dca6e520f84e10db6ce739d046a101d2200f5ca67578260e095866ee4"
+    },
+    {
+      "file": "src/voxel/rest.ts",
+      "sha256": "52c641ae3307af786d15380824ce7b0082d3d14935432d3baebf66b047981eff"
+    },
+    {
+      "file": "src/voxel/rooms.ts",
+      "sha256": "67457f7cd217f5746b9562ea2e3ca059af1f424165368d28d511e8a374090b9d"
+    },
+    {
+      "file": "src/voxel/sanitation.ts",
+      "sha256": "7794390e2678b62b3edd8e9e6eeff1f6c0bbcebc41c59ceea0bef6bfedbdf223"
+    },
+    {
+      "file": "src/voxel/sanitationPersistence.ts",
+      "sha256": "2c496b93e0123f93b64a0f30e94d34477d23e445411013bc1fca9e7a8e98f16f"
+    },
+    {
+      "file": "src/voxel/sim.worker.ts",
+      "sha256": "e5c527c338ba0a8f26f236aeba9b68c332105b44c7cd7b4a534512f4ee7fdb59"
+    },
+    {
+      "file": "src/voxel/skills.ts",
+      "sha256": "997fff49220028a2b5a399e294b9df259a60a4172ebde42b41782d1449f97c9a"
+    },
+    {
+      "file": "src/voxel/social.ts",
+      "sha256": "1c1438d51a4c24fcf1c710456e9c681d50dde6471ac6be3cc001b53b7e574435"
+    },
+    {
+      "file": "src/voxel/socialPersistence.ts",
+      "sha256": "38e372571c4bc6ea255a407c480f3783512487f2befd9ed2357a6486bd676c4e"
+    },
+    {
+      "file": "src/voxel/socialWorld.ts",
+      "sha256": "a62b8a8e1995f93c394a2dc60f54992b2d9685b88ab1a07e5d4f21d0397bba50"
+    },
+    {
+      "file": "src/voxel/storyteller.ts",
+      "sha256": "5ad1b8204feac0ef182a23426196a6221c62f963c819104d7222b4337ad06677"
+    },
+    {
+      "file": "src/voxel/storytellerPersistence.ts",
+      "sha256": "bcc312777461238d9c8e6ef18e374ae860e15dd08aeb94529d10894766cb8564"
+    },
+    {
+      "file": "src/voxel/storytellerRules.ts",
+      "sha256": "4b11042097f3e7534efab8e75057d4f33b4518ebe4e1c364390a45e3bc9bfb55"
+    },
+    {
+      "file": "src/voxel/style.css",
+      "sha256": "74ac05090360d98eca4be40c954a72fa0480f0c347a067e0e92e76927ea00fa3"
+    },
+    {
+      "file": "src/voxel/survival.ts",
+      "sha256": "d5a4628a857c1ad080fb21b391ea888ca39a572341c51af8cd36792c7329cb00"
+    },
+    {
+      "file": "src/voxel/thermal.ts",
+      "sha256": "40c614996ba9c8843bc52fbd343a2a625c0fd77c788b1133ae2ba50b6494b127"
+    },
+    {
+      "file": "src/voxel/trade.ts",
+      "sha256": "375fdd15d13fe8ff5e18ee7fc039938e043d93f893a1acc6abdb0a9929cb07d0"
+    },
+    {
+      "file": "src/voxel/tradePersistence.ts",
+      "sha256": "fc64075c5e4cff7c76c72b253c80a014a5e7165eae1114baf20f918a68b4ddaa"
+    },
+    {
+      "file": "src/voxel/tradeRules.ts",
+      "sha256": "ef63fa71de8723b14c67213c68c310ce82db2b89cff550eba3cffde7f85fdfae"
+    },
+    {
+      "file": "src/voxel/tradeTypes.ts",
+      "sha256": "a3dec04c1394626704b6127b71208d2a8c812674d8cde9d27dec2045ba812903"
+    },
+    {
+      "file": "src/voxel/tradeWorld.ts",
+      "sha256": "fb2fd3b6fa4331daa7c24b45b4b50a6f812606b8dd15989909045a93b7fdb2e7"
+    },
+    {
+      "file": "src/voxel/types.ts",
+      "sha256": "fb0ea83b91aa91876957818fa5b090a449b27138f9bd3479e47a21a46ab75a84"
+    },
+    {
+      "file": "src/voxel/wealth.ts",
+      "sha256": "85058dc4c53760d06dccedb5f7d5f25832d30eb1d43cb1cbe803454bca133eb3"
+    },
+    {
+      "file": "src/voxel/weaponProduction.ts",
+      "sha256": "8d23ccdf273b763383a098a1e37968278558e33c07fabc4641d2917e878dc2b0"
+    },
+    {
+      "file": "src/voxel/weapons.ts",
+      "sha256": "43fdd4aa3e89c7743da31a571d313604fa88bd8383f94637c1ab6d0b80dd7c6c"
+    },
+    {
+      "file": "src/voxel/weather.ts",
+      "sha256": "84f72d79d3fb0895e3ecb9b28e11bb744bc4aeae55dadb777160dbea4b8dccdb"
+    },
+    {
+      "file": "src/voxel/weatherPersistence.ts",
+      "sha256": "deb0a46c44e00c5aaac8859f1a5d82bf3059d500dc074226308296dd1b32c94c"
+    },
+    {
+      "file": "src/voxel/wildlife.ts",
+      "sha256": "1959101c42151c9299f8aedcbbf7b4ad9cd7517ce23bbe2d9780ed2fdc32a7aa"
+    },
+    {
+      "file": "src/voxel/wildlifePersistence.ts",
+      "sha256": "f2c74189ae4bd0c0cdeeb00375c664530bb070f149754188a7ab3e3fde567d1f"
+    },
+    {
+      "file": "src/voxel/world.ts",
+      "sha256": "70afd6cbb498b96393ff231a4dbbf8137ed93d6d58b911827d9079697c811a3c"
+    },
+    {
+      "file": "src/voxel/worldgen.ts",
+      "sha256": "7f3acf989d9e366793be11bef8f42f352cc36523c09a75a8acb9c944af7770fb"
+    }
+  ],
+  "unit": {
+    "report": "test-results/v35-unit-all.json",
+    "sha256": "42f189f42ff15e4e1e5c9c8aacce073c33d00982e9912ee25509e42b7463a8e5",
+    "files": 94,
+    "passed": 1197,
+    "failed": 0,
+    "skipped": 0,
+    "singleFinalRun": true
+  },
+  "build": {
+    "command": "npm run build",
+    "report": "test-results/v35-build.log",
+    "sha256": "b23eaa77fac84671ccf2238650874aa2533990b8a6e2d6153a62d5203f027fe6",
+    "exitCode": 0
+  },
+  "campaign": {
+    "report": "test-results/voxel-regions/report.json",
+    "sha256": "625bedb83fcd003f7ee72331b7f247898704f9084acfdec10021c9eabc0a6aaa",
+    "scriptSha256": "ae61e08b606f1a552a0c2baf8c285fa862e6e13bc0411c0eece242c9c2caf5af",
+    "status": "passed",
+    "checks": 8,
+    "worlds": [
+      {
+        "site": {
+          "version": 1,
+          "worldSeed": 73129,
+          "tileId": 714
+        },
+        "localSeed": 3951304940,
+        "work": {
+          "treeId": 170,
+          "position": {
+            "x": 32,
+            "y": 36,
+            "z": 9
+          },
+          "expectedWood": 27,
+          "producedWood": 27,
+          "tick": 510
+        }
+      },
+      {
+        "site": {
+          "version": 1,
+          "worldSeed": 73129,
+          "tileId": 335
+        },
+        "localSeed": 1526854326,
+        "work": {
+          "treeId": 174,
+          "position": {
+            "x": 37,
+            "y": 33,
+            "z": 6
+          },
+          "expectedWood": 27,
+          "producedWood": 27,
+          "tick": 576
+        }
+      },
+      {
+        "site": {
+          "version": 1,
+          "worldSeed": 73129,
+          "tileId": 720
+        },
+        "localSeed": 2197634048,
+        "work": {
+          "treeId": 29,
+          "position": {
+            "x": 31,
+            "y": 19,
+            "z": 9
+          },
+          "expectedWood": 15,
+          "producedWood": 15,
+          "tick": 191
+        }
+      }
+    ]
+  },
+  "browser": {
+    "report": "test-results/voxel-regions-browser-final1/report.json",
+    "sha256": "3b59f23c851d6e5fd050812b03b84098d167746870762b0a6001fae9874654e4",
+    "scriptSha256": "52d50f9c06c1a64f05968299de6d67baead0735e3781483e8e7341b2b777de1e",
+    "status": "passed",
+    "modes": [
+      {
+        "mode": "worker",
+        "checks": 12,
+        "errors": [],
+        "assetsMatchLocalBuild": true,
+        "checkDetails": [
+          {
+            "name": "world map exposes 1152 cells and refuses oceans and impassable peaks with a reason"
+          },
+          {
+            "name": "keyboard selection moves and confirms without toggling colony time"
+          },
+          {
+            "name": "three candidates use real resource counts enforce cap permit replacement and repeated selection stays creatable"
+          },
+          {
+            "name": "seed edits clear comparisons and stale preview while leaving current colony and time unchanged"
+          },
+          {
+            "name": "UI-selected region creates the exact previewed local map initial items and jobs",
+            "site": {
+              "version": 1,
+              "worldSeed": 73129,
+              "tileId": 714
+            },
+            "localSeed": 3951304940
+          },
+          {
+            "name": "UI-selected region creates the exact previewed local map initial items and jobs",
+            "site": {
+              "version": 1,
+              "worldSeed": 73129,
+              "tileId": 335
+            },
+            "localSeed": 1526854326
+          },
+          {
+            "name": "UI-selected region creates the exact previewed local map initial items and jobs",
+            "site": {
+              "version": 1,
+              "worldSeed": 73129,
+              "tileId": 720
+            },
+            "localSeed": 2197634048
+          },
+          {
+            "name": "queued-regional-work",
+            "file": "test-results/voxel-regions-browser-final1/worker-queued-regional-work.json",
+            "sha256": "6211df5ea034d19c6450d56d83c38e645f8a899682dfbd72dba5d040cf083f7d",
+            "tick": 0,
+            "jobs": 1
+          },
+          {
+            "name": "actual UI-designated regional tree job survives save/load and produces physical timber",
+            "target": {
+              "x": 29,
+              "y": 27,
+              "z": 9,
+              "species": "saguaro",
+              "wood": 15,
+              "growth": 0.22942071687430143,
+              "age": 90574,
+              "health": 1,
+              "unlitTicks": 0,
+              "planted": false,
+              "id": 37,
+              "animalId": 37
+            },
+            "treeId": 37,
+            "wood": 8
+          },
+          {
+            "name": "completed-regional-work",
+            "file": "test-results/voxel-regions-browser-final1/worker-completed-regional-work.json",
+            "sha256": "57a530a35c9ed33b54258689661301314c5a07b0f9ba641f9bcd7391c4da7b73",
+            "tick": 106,
+            "jobs": 0
+          },
+          {
+            "name": "custom mode retains original controls and unbound maps while manual reload restores the regional camp"
+          },
+          {
+            "name": "regional map preview comparison and custom controls are usable at 900 by 700 without horizontal overflow"
+          }
+        ]
+      },
+      {
+        "mode": "main",
+        "checks": 12,
+        "errors": [],
+        "assetsMatchLocalBuild": true,
+        "checkDetails": [
+          {
+            "name": "world map exposes 1152 cells and refuses oceans and impassable peaks with a reason"
+          },
+          {
+            "name": "keyboard selection moves and confirms without toggling colony time"
+          },
+          {
+            "name": "three candidates use real resource counts enforce cap permit replacement and repeated selection stays creatable"
+          },
+          {
+            "name": "seed edits clear comparisons and stale preview while leaving current colony and time unchanged"
+          },
+          {
+            "name": "UI-selected region creates the exact previewed local map initial items and jobs",
+            "site": {
+              "version": 1,
+              "worldSeed": 73129,
+              "tileId": 714
+            },
+            "localSeed": 3951304940
+          },
+          {
+            "name": "UI-selected region creates the exact previewed local map initial items and jobs",
+            "site": {
+              "version": 1,
+              "worldSeed": 73129,
+              "tileId": 335
+            },
+            "localSeed": 1526854326
+          },
+          {
+            "name": "UI-selected region creates the exact previewed local map initial items and jobs",
+            "site": {
+              "version": 1,
+              "worldSeed": 73129,
+              "tileId": 720
+            },
+            "localSeed": 2197634048
+          },
+          {
+            "name": "queued-regional-work",
+            "file": "test-results/voxel-regions-browser-final1/main-queued-regional-work.json",
+            "sha256": "6211df5ea034d19c6450d56d83c38e645f8a899682dfbd72dba5d040cf083f7d",
+            "tick": 0,
+            "jobs": 1
+          },
+          {
+            "name": "actual UI-designated regional tree job survives save/load and produces physical timber",
+            "target": {
+              "x": 29,
+              "y": 27,
+              "z": 9,
+              "species": "saguaro",
+              "wood": 15,
+              "growth": 0.22942071687430143,
+              "age": 90574,
+              "health": 1,
+              "unlitTicks": 0,
+              "planted": false,
+              "id": 37,
+              "animalId": 37
+            },
+            "treeId": 37,
+            "wood": 8
+          },
+          {
+            "name": "completed-regional-work",
+            "file": "test-results/voxel-regions-browser-final1/main-completed-regional-work.json",
+            "sha256": "5de38161b549b4f3f508155fc27bbaa2f2863fcc49f29e985e0882384b0b1027",
+            "tick": 98,
+            "jobs": 0
+          },
+          {
+            "name": "custom mode retains original controls and unbound maps while manual reload restores the regional camp"
+          },
+          {
+            "name": "regional map preview comparison and custom controls are usable at 900 by 700 without horizontal overflow"
+          }
+        ]
+      }
+    ]
+  },
+  "screenshots": [
+    {
+      "file": "docs/research/rimworld/evidence/voxel/regions-world-map.png",
+      "source": "test-results/voxel-regions-browser-final1/worker-regional-world-map.png",
+      "sha256": "00c07d1a0ef532a98d48678a5dbe60dbc7d9ac3227ef1e68a449d4a77635b206",
+      "visualReview": "Root inspected full screenshot: map legend and selected region readable; candidate cards and create control readable. No layout overflow or blocking toast."
+    },
+    {
+      "file": "docs/research/rimworld/evidence/voxel/regions-site-comparison.png",
+      "source": "test-results/voxel-regions-browser-final1/worker-three-biome-comparison.png",
+      "sha256": "98e760208a5d9a03e96a387ac5029e32c51ca11f2864c5f092322e8594408922",
+      "visualReview": "Root inspected full screenshot: map legend and selected region readable; candidate cards and create control readable. No layout overflow or blocking toast."
+    }
+  ],
+  "limitations": [
+    "Native evidence reuses the earlier world-map inspection; no new native world generation run.",
+    "The first browser attempt failed only on a wrong generated JS filename assertion; its full JSON was overwritten by a started rerun, and the actual failure screenshot/stderr plus an explicit note were retained locally.",
+    "Earlier targeted persistence run excluded only reconstructed pawn.reason text from strict save equality; final full run is 1197/1197.",
+    "No caravan travel, parallel settlements, rivers, local ocean water or cave generation."
+  ],
+  "ci": "Tests local; Pages installs, type-checks/builds and deploys only."
+}

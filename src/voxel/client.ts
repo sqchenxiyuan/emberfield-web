@@ -1,6 +1,7 @@
 import { VoxelRenderer, type VoxelView, type PlacementPreview } from './renderer';
 import { isDeviceKind } from './power';
 import type { FurnitureKind } from './furniture';
+import type { WorldSite } from './regions';
 import {
   HEIGHT,
   SURFACE,
@@ -168,6 +169,14 @@ export class VoxelClient {
   };
   previewWorld = (seed: number, settings: WorldSettings): Promise<WorldPreview> =>
     this.request('preview', { seed, settings });
+  previewSite = (site: WorldSite): Promise<WorldPreview> => this.request('previewSite', { site });
+  newSiteGame = async (site: WorldSite) => {
+    await this.request('newSite', { site });
+    this.endFurniturePlacement();
+    this.view({ penId: null, animalAreaId: null });
+    this.home();
+    this.select(null);
+  };
   newGame = async (seed: number, settings?: WorldSettings) => {
     await this.request('new', { seed, settings });
     this.endFurniturePlacement();

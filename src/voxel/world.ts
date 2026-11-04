@@ -108,6 +108,8 @@ import { rejectLegacySocialFields, migrateSocial, validateSocial } from './socia
 import { furnitureStats, isFurnitureKind, type FurnitureKind } from './furniture';
 import { RELOCATION_RULES, makeFurniturePiece, furnitureFromPiece } from './relocation';
 import { rejectLegacyRelocationFields, migrateRelocation, validateRelocation } from './relocationPersistence';
+import { resolveWorldSite, type WorldSite } from './regions';
+import { rejectLegacyWorldSite, validateWorldSiteIdentity } from './regionPersistence';
 import { rejectLegacyFurnitureFields, migrateFurniture, validateFurniture } from './furniturePersistence';
 import { updateSocial } from './socialWorld';
 import { constructedMarketValue, structureMarketValue, furnitureMarketValue } from './wealth';
@@ -573,6 +575,7 @@ export class VoxelSimulation {
   private roomsDirty = true;
   stockpiles: Stockpile[] = [];
   generator: 1 | 2 = 2;
+  worldSite: WorldSite | null = null;
   settings: WorldSettings;
   spawn: Pos = { x: 32, y: 34, z: SURFACE };
   private summaryCache?: WorldSummary;
@@ -632,6 +635,14 @@ export class VoxelSimulation {
   }
   private id() {
     return this.nextId++;
+  }
+  /** A region controls all local generation inputs; callers cannot override
+   * climate or the derived local seed while retaining the region's identity. */
+  static fromWorldSite(site: unknown): VoxelSimulation {
+    const resolved = resolveWorldSite(site);
+    const next = new VoxelSimulation(resolved.seed, resolved.settings);
+    next.worldSite = structuredClone(resolved.site);
+    return next;
   }
   private generate() {
     const generated = generateWorld(this.seed, this.settings);
@@ -7390,6 +7401,7 @@ export class VoxelSimulation {
       horseshoePins: this.horseshoePins,
       seed: this.seed,
       generator: this.generator,
+      worldSite: this.worldSite,
       settings: this.settings,
       spawn: this.spawn,
       worldSummary: this.worldSummary,
@@ -7452,7 +7464,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 34,
+      version: 35,
       socialHistory: this.socialHistory, socialLog: this.socialLog,
       weather: this.weather, snow: this.snow,
       fires: this.fires, fireDamage: this.fireDamage, fireHazards: this.fireHazards, fireLog: this.fireLog,
@@ -7472,6 +7484,7 @@ export class VoxelSimulation {
       tables: this.tables, chairs: this.chairs,
       horseshoePins: this.horseshoePins,
       generator: this.generator,
+      worldSite: this.worldSite,
       settings: this.settings,
       spawn: this.spawn,
       seed: this.seed,
@@ -7506,7 +7519,7 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
@@ -7530,6 +7543,7 @@ export class VoxelSimulation {
     rejectLegacyRangedFields(old);
     rejectLegacyMedicineFields(old);
     rejectLegacyHusbandryFields(old);
+    rejectLegacyWorldSite(old, sourceVersion);
     if (old.version === 1) {
       if (!Array.isArray(old.jobs) || !Array.isArray(old.pawns) || !old.stats)
         throw new Error('旧存档数据无效');
@@ -7858,7 +7872,9 @@ export class VoxelSimulation {
     migrateSocial(old, sourceVersion);
     migrateFurniture(old, sourceVersion);
     migrateRelocation(old,sourceVersion);
-    old.version = 34;
+    if (sourceVersion < 35) old.worldSite = null;
+    old.version = 35;
+    const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
     const loadHealth = (p: Pawn) =>
       oldHealth.get(p.id) ?? {
@@ -8993,6 +9009,7 @@ export class VoxelSimulation {
     // Restore into empty state. Never rerun generation over an existing colony.
     const s = new VoxelSimulation(d.seed, d.settings, true);
     s.generator = d.generator;
+    s.worldSite = structuredClone(worldSite);
     s.spawn = structuredClone(d.spawn);
     s.blocks = decode(d.blocks, sourceVersion <= 6 ? 6 : sourceVersion === 7 ? 7 : 10);
     s.ladders = decode(d.ladders, 1);

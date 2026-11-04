@@ -1,0 +1,479 @@
+{
+  "schema_version": 1,
+  "evidence_id": "RW17-WORLD-SITE-SELECTION",
+  "date_local": "2026-11-04",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Targeted static seed/settlement audit and index of unchanged prior world/biome/native evidence",
+  "manifests": [
+    "world-site-selection",
+    "generation",
+    "biomes"
+  ],
+  "dependencies": [
+    {
+      "file": "docs/research/rimworld/06-world-generation-resources.md",
+      "sha256": "01118d37bfd04c4815de182424d4e9561e25b2756f5fb8fb3f59cdc01cc77f91"
+    },
+    {
+      "file": "docs/research/rimworld/27-biomes-terrain-generation.md",
+      "sha256": "a6db75cf1b74eaec97bf12ec7791b6cd14bb24975bf216a873e01ff49fc6e6a5"
+    },
+    {
+      "file": "docs/research/rimworld/28-native-world-generation-runtime.md",
+      "sha256": "c0e0f510a2b4c1cea39f829581099adae055078b1c5ed2b20ee93383dcc58dd9"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/generation-manifest.json",
+      "sha256": "b15f27fdbacd826fdde8e11603b728c62f5ccf1df51c91e7a40a5d476737dcda"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/generation-claims.json",
+      "sha256": "d78739fb594fe8a1412fbaaca3f293b435146cc8a2c75eb3c6994d6817c2ff54"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/generation-xml.json",
+      "sha256": "c0fcc5f7891c4f5431a9ff2dd99752999e7aa476329a969f869aae1cfa63b595"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/biomes-manifest.json",
+      "sha256": "394997e042b657f1f9d8428500a4686783294ee7e11442e9139c071ba9cc8622"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/biomes-claims.json",
+      "sha256": "1ef33dcdb06184a86865aa5f3abc14fe41391c710839149a86e9ae058c435164"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/biomes-xml.json",
+      "sha256": "7595bf7346eb342e07bdc8789d26ff3a96350f35afdaf3a3553358ecbccde09c"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/biomes-cases.json",
+      "sha256": "5eeaf84f09e54455dbba229a83c2597891bf4d11a56d8b10d417670412c046ec"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/environment-manifest.json",
+      "sha256": "a29d16192bd93d0a57a76d370a8810d045e76378cef521da4b7e0e14e9a9ae79"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/native-biomes-runtime.json",
+      "sha256": "9154dd67c63d5ea37bd6a2c3203c27193248877e9f2b42d66e544e41d24ab8d7"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/native-biomes-actions.jsonl",
+      "sha256": "f2166ffa5c48b3131b21071c9dae1a93224287d0de5ee530562342a7bcb62730"
+    },
+    {
+      "file": "scripts/research/verify-biomes-evidence.mjs",
+      "sha256": "a44e8cef39ce1ea8a512e47c7532f9f4d076c6001de4ac81338d6fb7132398a8"
+    },
+    {
+      "file": "scripts/research/verify-biomes-runtime.mjs",
+      "sha256": "f3b11e3f3403147690f3687f2cd50b6c7a6d6de58efc3a830efca63966b02601"
+    },
+    {
+      "file": "scripts/research/read-biomes-runtime-save.ps1",
+      "sha256": "a5670aaab00926a9ed7639e11f4b241a1efb62cd9b80ecce1362a36cf9a8ab41"
+    }
+  ],
+  "claims": [
+    {
+      "id": "WS01",
+      "kind": "static-derived",
+      "finding": "World generation and WorldInfo.Seed both use GenText.StableStringHash(seedString): null=>0, otherwise signed32 accumulation starting23, each UTF16 code unit multiplies by31 then adds the code unit. World seed text is stored separately from its derived integer.",
+      "sources": [
+        {
+          "group": "world-site-selection",
+          "type": "Verse.GenText",
+          "file": ".local-research/world-site-selection/Verse.GenText.cs",
+          "sha256": "56f1d304fb42787bf2c1aa351f45954aa20df410bdcd2c517e0b59dd70f894c8",
+          "lines": [
+            276,
+            289
+          ]
+        },
+        {
+          "group": "world-site-selection",
+          "type": "RimWorld.Planet.WorldInfo",
+          "file": ".local-research/world-site-selection/RimWorld.Planet.WorldInfo.cs",
+          "sha256": "86df782b607f1b09f51e627de97cdd459ddd414a77380a9fde4cbf2efadd51f3",
+          "lines": [
+            11,
+            43
+          ]
+        },
+        {
+          "group": "generation",
+          "type": "RimWorld.Planet.WorldGenerator",
+          "file": ".local-research/generation/RimWorld.Planet.WorldGenerator.cs",
+          "sha256": "0508168f1e8f66e190699425e8aaffea8be8dc914c9569c3e196d1b6dff19e5a",
+          "lines": [
+            176,
+            179
+          ]
+        }
+      ],
+      "prior": [
+        {
+          "file": "generation-claims.json",
+          "ids": [
+            "GN01"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "WS02",
+      "kind": "static-derived",
+      "finding": "PlanetTile is tileId plus layer identity. Its hash is signed32(tileId*397) XOR effectiveLayer, with effectiveLayer0 when layerId<0 or Layer.IsRootSurface, otherwise layerId. Tile ID alone is not the ordinary local-map hash input; root-surface aliases normalize. This finite hash is not a collision-free world identity.",
+      "sources": [
+        {
+          "group": "world-site-selection",
+          "type": "RimWorld.Planet.PlanetTile",
+          "file": ".local-research/world-site-selection/RimWorld.Planet.PlanetTile.cs",
+          "sha256": "bca7cbd1976a035353bf44fde8eb4b6b1e04a2c9eb42bfddaf2763a10cee45a9",
+          "lines": [
+            6,
+            78
+          ]
+        }
+      ],
+      "prior": []
+    },
+    {
+      "id": "WS03",
+      "kind": "static-derived",
+      "finding": "Ordinary GenerateMap derives HashCombineInt(world.info.Seed,parent.Tile.GetHashCode()); missing parent falls back0. Pocket-map path uses parent.ID or Rand.Int instead. HashCombineInt combines seed with value+2654435769+(seed<<6)+(seed>>2), then XOR and signed32 cast. Generation steps sort order,index and derive per-step seeds; this is not full map equivalence across versions, Defs, size or parameters.",
+      "sources": [
+        {
+          "group": "world-site-selection",
+          "type": "Verse.Gen",
+          "file": ".local-research/world-site-selection/Verse.Gen.cs",
+          "sha256": "caaa3bad1e7b4db2e1b2a14a3c441fb5e0140e1496d47eade168d3209e6b1f01",
+          "lines": [
+            198,
+            201
+          ]
+        },
+        {
+          "group": "generation",
+          "type": "Verse.MapGenerator",
+          "file": ".local-research/generation/Verse.MapGenerator.cs",
+          "sha256": "199791e7823f0033654ea5a6e4206d741357e57d5ba133c9c97cf69f8c812a3f",
+          "lines": [
+            79,
+            101
+          ]
+        },
+        {
+          "group": "generation",
+          "type": "Verse.MapGenerator",
+          "file": ".local-research/generation/Verse.MapGenerator.cs",
+          "sha256": "199791e7823f0033654ea5a6e4206d741357e57d5ba133c9c97cf69f8c812a3f",
+          "lines": [
+            289,
+            332
+          ]
+        },
+        {
+          "group": "generation",
+          "type": "Verse.MapGenerator",
+          "file": ".local-research/generation/Verse.MapGenerator.cs",
+          "sha256": "199791e7823f0033654ea5a6e4206d741357e57d5ba133c9c97cf69f8c812a3f",
+          "lines": [
+            439,
+            451
+          ]
+        }
+      ],
+      "prior": [
+        {
+          "file": "generation-claims.json",
+          "ids": [
+            "GN07"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "WS04",
+      "kind": "static-derived-reuse",
+      "finding": "World elevation, temperature, rainfall and hilliness are assigned before biome scoring. Rain and temperature are separate fields; hilliness is not solely an elevation bucket. Candidate biome requires implemented, generatesNaturally and layer permission; strict greater-than retains the earlier definition on ties. Prior27 covers four workers, not every competing biome.",
+      "sources": [
+        {
+          "group": "generation",
+          "type": "RimWorld.Planet.WorldGenStep_Terrain",
+          "file": ".local-research/generation/RimWorld.Planet.WorldGenStep_Terrain.cs",
+          "sha256": "8a255410ae0416bc036f81d8e3646ac6e93a7f4d41d2bb35525c34257ddcfeda",
+          "lines": [
+            215,
+            323
+          ]
+        }
+      ],
+      "prior": [
+        {
+          "file": "generation-claims.json",
+          "ids": [
+            "GN03",
+            "GN04"
+          ]
+        },
+        {
+          "file": "biomes-claims.json",
+          "ids": [
+            "BM01",
+            "BM02",
+            "BM13"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "WS05",
+      "kind": "static-derived-and-xml",
+      "finding": "New-game CanDoNext checks selectedTile.Valid and TileFinder.IsValidTileForNewSettlement, then tutorial permission; DoNext invokes a proximity confirmation helper. Settlement validator rejects canBuildBase=false, unimplemented biomes and Impassable hilliness, then checks existing/adjacent settlements and other map/site occupancy. Viewing a tile does not prove settlement eligibility. Core Ocean/Lake explicitly cannotBuildBase.",
+      "sources": [
+        {
+          "group": "world-site-selection",
+          "type": "RimWorld.Page_SelectStartingSite",
+          "file": ".local-research/world-site-selection/RimWorld.Page_SelectStartingSite.cs",
+          "sha256": "ec406934d8f61e60daff9a1c2f3aa8972d6ee6cca1f0ef1b030b8cc19f18fefb",
+          "lines": [
+            147,
+            158
+          ]
+        },
+        {
+          "group": "world-site-selection",
+          "type": "RimWorld.Page_SelectStartingSite",
+          "file": ".local-research/world-site-selection/RimWorld.Page_SelectStartingSite.cs",
+          "sha256": "ec406934d8f61e60daff9a1c2f3aa8972d6ee6cca1f0ef1b030b8cc19f18fefb",
+          "lines": [
+            182,
+            221
+          ]
+        },
+        {
+          "group": "world-site-selection",
+          "type": "RimWorld.Planet.TileFinder",
+          "file": ".local-research/world-site-selection/RimWorld.Planet.TileFinder.cs",
+          "sha256": "bf6120dfb03d76ea6bdab2837f82c5e05a43d8604c3816cdaefb9f0f88deeddd",
+          "lines": [
+            65,
+            144
+          ]
+        }
+      ],
+      "prior": [],
+      "xml": [
+        "WSX01"
+      ]
+    },
+    {
+      "id": "WS06",
+      "kind": "static-derived-reuse",
+      "finding": "Region conditions affect local map settings: hilliness changes the elevation generator and mineable scatter base rate; biome changes terrain/plants and can force rock types. NaturalRockTypesIn otherwise seeds its temporary RNG from tile hash and samples2..3 eligible natural rocks. This does not establish all local terrain/ore layouts or guarantee exact resource amounts.",
+      "sources": [
+        {
+          "group": "generation",
+          "type": "RimWorld.Planet.World",
+          "file": ".local-research/generation/RimWorld.Planet.World.cs",
+          "sha256": "916e1ff8af7a9d24f1a9b5831ef0885a6787b1c934849807e776c83405b42bef",
+          "lines": [
+            391,
+            429
+          ]
+        },
+        {
+          "group": "generation",
+          "type": "RimWorld.GenStep_ElevationFertility",
+          "file": ".local-research/generation/RimWorld.GenStep_ElevationFertility.cs",
+          "sha256": "fc74ce518d0d9c6ef17e7fac05f11fbe62eb573366688fcb15dd144f47d57aee",
+          "lines": [
+            57,
+            81
+          ]
+        }
+      ],
+      "prior": [
+        {
+          "file": "generation-claims.json",
+          "ids": [
+            "GN09",
+            "GN10",
+            "GN16"
+          ]
+        },
+        {
+          "file": "biomes-claims.json",
+          "ids": [
+            "BM03",
+            "BM04",
+            "BM07"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "WS07",
+      "kind": "prior-native-observation",
+      "finding": "Prior28 clicked five existing-world land tiles and read Terrain/Planet UI: Desert, Temperate forest and Boreal forest; Flat, Mountainous and Impassable. Seed whip and coverage50% agree with saved metadata. It did not create a world, confirm a starting settlement or generate a local map, and did not prove same-seed equivalence. No native process is launched for this v35 index.",
+      "sources": [],
+      "prior": [],
+      "runtime": "native-biomes-runtime.json"
+    },
+    {
+      "id": "WS08",
+      "kind": "static-derived-reuse",
+      "finding": "World average climate and displayed growing season describe site tradeoffs, not guaranteed daily or room temperature and harvests. Prior climate/growth derivation distinguishes seasonal means, local temperature and biological plant limits. The five prior UI samples are observations, not a threshold fit.",
+      "sources": [],
+      "prior": [
+        {
+          "file": "biomes-claims.json",
+          "ids": [
+            "BM13",
+            "BM15",
+            "BM16",
+            "BM17",
+            "BM18"
+          ]
+        }
+      ],
+      "runtime": "native-biomes-runtime.json"
+    },
+    {
+      "id": "WS09",
+      "kind": "project-adaptation",
+      "finding": "Web v35 uses a48x24 equirectangular regional map sampled on a sphere, three supported biomes, ocean/impassable settlement rejection and independently derived local-map seeds for existing64x64x16 maps. Rule version plus worldSeed plus region ID is persistent provenance. Region parameters are authored provisional choices, not the original globe, all-biome scoring or RNG. No rivers, local ocean simulation, travel or multiple maps is asserted.",
+      "sources": [],
+      "prior": [],
+      "adaptation": "web_scope"
+    }
+  ],
+  "xml": [
+    {
+      "id": "WSX01",
+      "file": "Data/Core/Defs/BiomeDefs/Biomes_Water.xml",
+      "source_sha256": "2150e176e929f835da07124ff2576029a026766a9e3465d44081429951f2749e",
+      "xpath": "/Defs/BiomeDef[defName=\"Ocean\" or defName=\"Lake\"]",
+      "projection": "Original attributes and selected gameplay fields; Ocean/Lake have no ParentName",
+      "nodes": [
+        "<BiomeDef><defName>Ocean</defName><workerClass>BiomeWorker_Ocean</workerClass><isWaterBiome>true</isWaterBiome><canBuildBase>false</canBuildBase><impassable>true</impassable></BiomeDef>",
+        "<BiomeDef><defName>Lake</defName><workerClass>BiomeWorker_Ocean</workerClass><isWaterBiome>true</isWaterBiome><canBuildBase>false</canBuildBase><impassable>true</impassable></BiomeDef>"
+      ]
+    }
+  ],
+  "arithmetic_cases": [
+    {
+      "id": "WSH01",
+      "seed_string": "whip",
+      "tile_id": 99363,
+      "layer_id": 0,
+      "root_surface": true,
+      "world_seed": 24889423,
+      "tile_hash": 39447111,
+      "map_seed": -23486052
+    },
+    {
+      "id": "WSH02",
+      "seed_string": "whip",
+      "tile_id": 111646,
+      "layer_id": 0,
+      "root_surface": true,
+      "world_seed": 24889423,
+      "tile_hash": 44323462,
+      "map_seed": 22485597
+    },
+    {
+      "id": "WSH03",
+      "seed_string": "whip",
+      "tile_id": 99363,
+      "layer_id": 2,
+      "root_surface": false,
+      "world_seed": 24889423,
+      "tile_hash": 39447109,
+      "map_seed": -23486050
+    },
+    {
+      "id": "WSH04",
+      "seed_string": "whip",
+      "tile_id": 99363,
+      "layer_id": -1,
+      "root_surface": false,
+      "world_seed": 24889423,
+      "tile_hash": 39447111,
+      "map_seed": -23486052
+    },
+    {
+      "id": "WSH05",
+      "seed_string": "迁徙🌲",
+      "tile_id": 282619,
+      "layer_id": 0,
+      "root_surface": true,
+      "world_seed": 1142871301,
+      "tile_hash": 112199743,
+      "map_seed": -105206404
+    }
+  ],
+  "arithmetic_scope": "Independent signed32/UTF16 formula evaluation only; not executed game methods, decoded map seeds, terrain generation or native replay",
+  "runtime_reuse": {
+    "file": "native-biomes-runtime.json",
+    "chapter": "28-native-world-generation-runtime.md",
+    "tile_ids": [
+      282619,
+      99363,
+      111646,
+      118124,
+      176455
+    ],
+    "new_native_run": false,
+    "new_world_generation": false,
+    "starting_site_confirmation": false,
+    "local_map_generated": false,
+    "same_seed_equivalence": false,
+    "prior_unintended_advanced_ticks": 83122
+  },
+  "web_scope": {
+    "region_dimensions": [
+      48,
+      24
+    ],
+    "local_dimensions": [
+      64,
+      64,
+      16
+    ],
+    "supported_biomes": [
+      "temperate",
+      "boreal",
+      "desert"
+    ],
+    "view": "sphere-sampled equirectangular regional projection",
+    "identity_fields": [
+      "version",
+      "worldSeed",
+      "tileId"
+    ],
+    "rule_version": 1,
+    "parameters": "provisional project design; lock version1 resolution for old saves",
+    "excluded": [
+      "original spherical tessellation",
+      "all original biome workers",
+      "original RNG equivalence",
+      "rivers",
+      "local ocean simulation",
+      "travel",
+      "multiple maps"
+    ]
+  },
+  "limitations": [
+    "Prior27 reviewed four biome workers; the full candidate set and all scoring functions remain outside this audit.",
+    "Prior28 is an existing-world inspection with a recorded unintended simulation advance, not a new starting-site or generation trial.",
+    "No newly captured runtime images or native run in v35. Existing eight crops/five saves are verified in place.",
+    "Only normal settlement gates are traced; proximity helper details, full occupancy helper and gravship exceptions are not fully reconstructed.",
+    "Same numeric seed does not prove identical maps under changed version, effective Defs, generator, map size, settings or random sequence.",
+    "32-bit hash outputs may collide. Preserve full region identity and rules version independently from local seed.",
+    "Full derived C# remains local. No game assembly is loaded for execution."
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "evidence_id": "RW17-WORLD-SITE-SELECTION",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "Verse.Gen",
+      "local_file": ".local-research/world-site-selection/Verse.Gen.cs",
+      "sha256": "caaa3bad1e7b4db2e1b2a14a3c441fb5e0140e1496d47eade168d3209e6b1f01",
+      "lines": 384
+    },
+    {
+      "type": "Verse.GenText",
+      "local_file": ".local-research/world-site-selection/Verse.GenText.cs",
+      "sha256": "56f1d304fb42787bf2c1aa351f45954aa20df410bdcd2c517e0b59dd70f894c8",
+      "lines": 1524
+    },
+    {
+      "type": "RimWorld.Planet.PlanetTile",
+      "local_file": ".local-research/world-site-selection/RimWorld.Planet.PlanetTile.cs",
+      "sha256": "bca7cbd1976a035353bf44fde8eb4b6b1e04a2c9eb42bfddaf2763a10cee45a9",
+      "lines": 129
+    },
+    {
+      "type": "RimWorld.Planet.WorldInfo",
+      "local_file": ".local-research/world-site-selection/RimWorld.Planet.WorldInfo.cs",
+      "sha256": "86df782b607f1b09f51e627de97cdd459ddd414a77380a9fde4cbf2efadd51f3",
+      "lines": 67
+    },
+    {
+      "type": "RimWorld.Page_SelectStartingSite",
+      "local_file": ".local-research/world-site-selection/RimWorld.Page_SelectStartingSite.cs",
+      "sha256": "ec406934d8f61e60daff9a1c2f3aa8972d6ee6cca1f0ef1b030b8cc19f18fefb",
+      "lines": 285
+    },
+    {
+      "type": "RimWorld.Planet.TileFinder",
+      "local_file": ".local-research/world-site-selection/RimWorld.Planet.TileFinder.cs",
+      "sha256": "bf6120dfb03d76ea6bdab2837f82c5e05a43d8604c3816cdaefb9f0f88deeddd",
+      "lines": 425
+    }
+  ]
+}

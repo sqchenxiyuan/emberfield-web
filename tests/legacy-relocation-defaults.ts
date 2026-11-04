@@ -1,4 +1,5 @@
 import { expect } from 'vitest';
+import { stripRegionFields } from './legacy-region-defaults';
 /** Expected additive schema fields; leaves the captured historical object alone. */
 export function relocationExpectedField(key: string, value: any): any {
   if (key === 'stats') return { ...value, ...Object.fromEntries(
@@ -8,6 +9,7 @@ export function relocationExpectedField(key: string, value: any): any {
 }
 /** Synthetic historical inputs only; never alter captured source fixtures. */
 export function stripRelocationFields(raw: Record<string, any>) {
+  stripRegionFields(raw);
   const batches = [...(raw.items ?? []), ...(raw.pawns ?? []).map((p: any) => p.cargo),
     ...(raw.jobs ?? []).flatMap((j: any) => j.deliveredBatches ?? [])];
   for (const b of batches) if (b) { expect(b.resource).not.toBe('furniture'); expect(b.furniture).toBeUndefined(); }

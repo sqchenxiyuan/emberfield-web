@@ -9,6 +9,7 @@ import type { Psyche } from './mood';
 import type { SocialState, SocialIdentity, SocialEvent } from './social';
 import type { DiningTable, DiningChair, LivingState, RoomLivingSummary } from './living';
 import type { FurnitureKind } from './furniture';
+import type { WorldSite } from './regions';
 import type { PrisonerState, PrisonerPolicy, WardenTask } from './prisoners';
 import type { Filth, CleanTask, FoodPoisoning, RoomCleanliness, CookingOutcome } from './sanitation';
 import type { Fire, FireDamage, FireHazards, FireLogEntry, FirefightTask, RepairTask } from './fire';
@@ -795,6 +796,7 @@ export interface VoxelSnapshot {
   sandbags: Sandbag[];
   seed: number;
   generator: 1 | 2;
+  worldSite: WorldSite | null;
   settings: WorldSettings;
   spawn: Pos;
   worldSummary: WorldSummary;
@@ -945,7 +947,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 34;
+  version: 35;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;
@@ -957,6 +959,7 @@ export interface VoxelSave {
   combatEvents: CombatEvent[];
   sandbags: Sandbag[];
   generator: 1 | 2;
+  worldSite: WorldSite | null;
   settings: WorldSettings;
   spawn: Pos;
   seed: number;

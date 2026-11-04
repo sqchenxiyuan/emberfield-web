@@ -100,7 +100,10 @@
     "research:furniture": "node scripts/research/verify-furniture-quality-evidence.mjs",
     "test:voxel:relocation": "node scripts/voxel-relocation-campaign-verify.mjs",
     "test:voxel:relocation:browser": "node scripts/voxel-relocation-browser-verify.mjs",
-    "research:relocation": "node scripts/research/verify-furniture-reinstall-evidence.mjs"
+    "research:relocation": "node scripts/research/verify-furniture-reinstall-evidence.mjs",
+    "research:regions": "node scripts/research/verify-world-site-selection-evidence.mjs",
+    "test:voxel:regions": "node scripts/voxel-regions-campaign-verify.mjs",
+    "test:voxel:regions:browser": "node scripts/voxel-regions-browser-verify.mjs"
   },
   "dependencies": {
     "pixi.js": "8.22.0",
