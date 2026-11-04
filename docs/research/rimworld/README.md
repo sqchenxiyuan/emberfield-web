@@ -6,6 +6,8 @@
 
 | 文档 | 回答的问题 |
 |---|---|
+| [121 生产分工与原料玩法](121-production-policies-gameplay.md) | 指定工人、技能区间、三维范围、食材筛选如何影响搬运、加工和读档？ |
+| [120 原版生产分工与原料机制](120-production-policies-mechanisms.md) | 命名工人、固定原料槽、地面与容器半径以及中途修改有哪些边界？ |
 | [119 生产账单玩法与验证](119-production-bills-gameplay.md) | 次数/持续/目标库存、同配方多单、顺序、实际加工与暂停退料如何连接？ |
 | [118 原版生产账单机制](118-production-bills-mechanisms.md) | BillStack、完成计次、库存计数、迟滞和在制品有哪些规则与边界？ |
 | [117 储存组玩法与验证](117-storage-groups-gameplay.md) | 蓝图联动、共享筛选转运、打包编辑、搬装读档与解除独立如何衔接？ |

@@ -584,6 +584,8 @@ export type JobKind =
 export interface Job extends Pos {
   /** Stable production order identity; absent only for migrated legacy jobs. */
   billId?: string;
+  /** Ingredient rules selected when this physical batch was first claimed. */
+  productionPolicy?: import('./productionPolicies').ProductionPolicy;
   /** Independent settings before construction, overridden while linked. */
   storageSettings?: StorageSettings;
   cookingOutcome?: CookingOutcome;
@@ -864,7 +866,7 @@ export interface ChunkUpdate {
 }
 export type VoxelCommand =
   | { type: 'productionBillAdd'; benchId: number; recipe: import('./productionBills').ProductionRecipe }
-  | { type: 'productionBillUpdate'; benchId: number; billId: string; patch: Partial<Pick<import('./productionBills').ProductionBill, 'mode' | 'remaining' | 'target' | 'suspended' | 'pauseWhenSatisfied' | 'resumeBelow'>> }
+  | { type: 'productionBillUpdate'; benchId: number; billId: string; patch: Partial<Pick<import('./productionBills').ProductionBill, 'mode' | 'remaining' | 'target' | 'suspended' | 'pauseWhenSatisfied' | 'resumeBelow' | 'policy'>> }
   | { type: 'productionBillMove'; benchId: number; billId: string; direction: -1 | 1 }
   | { type: 'productionBillDelete'; benchId: number; billId: string }
   | { type: 'shelfStorage'; shelfId: number; priority: number; accepts: Resource[] }
@@ -975,7 +977,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 39;
+  version: 40;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;

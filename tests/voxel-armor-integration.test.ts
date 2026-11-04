@@ -127,7 +127,7 @@ describe('armor save migration and strict physical schemas', () => {
       const s = VoxelSimulation.load(old),
         saved = s.save();
       expect(old).toEqual(before);
-      expect(saved.version).toBe(39);
+      expect(saved.version).toBe(40);
       expectWildlifeIds(old.nextId, saved);
       for (const key of ['tick', 'blocks', 'items', 'stats', 'researchBenches'] as const)
         expect(saved[key]).toEqual(key === 'stats' ? withMedicineLedgers(old.stats) : old[key]);
@@ -326,14 +326,16 @@ describe('real armorsmith delivery, production and cancellation', () => {
     expect(s.counts().apparel).toBe(0);
     expect(s.stats.consumed.steel).toBe(0);
   });
-  it('keeps in-flight cargo when paused and returns the same steel rather than consuming or duplicating it', () => {
+  it('returns carried steel to the ground when paused and consumes it only after production resumes', () => {
     let s = smithy();
     material(s, 'steel', 40);
     bill(s, 'simpleHelmet');
     until(s, () => s.pawns[0].cargo?.resource === 'steel');
     const before = conserved(s, 'steel');
     bill(s, 'simpleHelmet', true);
-    expect(s.pawns[0].cargo).toMatchObject({ resource: 'steel', amount: 40 });
+    expect(s.pawns[0].cargo).toBeNull();
+    expect(s.items.filter(item => item.resource === 'steel').reduce((n, item) => n + item.amount, 0)).toBe(40);
+    expect(conserved(s, 'steel')).toBe(before);
     s = VoxelSimulation.load(s.save());
     s.step(100);
     expect(conserved(s, 'steel')).toBe(before);

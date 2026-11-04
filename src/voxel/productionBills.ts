@@ -1,6 +1,9 @@
 import { ARMOR_KINDS, TAILOR_KINDS } from './apparel';
 import type { ApparelKind, ArmorKind, Job, VoxelSave } from './types';
 import { WEAPON_DEFS, WEAPON_KINDS, type WeaponKind } from './weapons';
+import { defaultProductionPolicy, validProductionPolicy, type ProductionPolicy } from './productionPolicies';
+export { defaultProductionPolicy, validProductionPolicy, productionPolicyWorkerReason, productionPolicyAllowsIngredient } from './productionPolicies';
+export type { ProductionPolicy } from './productionPolicies';
 
 export type ProductionRecipe =
   | 'cook'
@@ -20,9 +23,10 @@ export interface ProductionBill {
   pauseWhenSatisfied: boolean;
   resumeBelow: number;
   waiting: boolean;
+  policy: ProductionPolicy;
 }
 export interface ProductionQueue { benchId: number; bills: ProductionBill[] }
-export type ProductionHost = Pick<VoxelSave, 'stoves' | 'butcherSpots' | 'stonecutters' | 'tailors' | 'weaponBenches'>;
+export type ProductionHost = Pick<VoxelSave, 'stoves' | 'butcherSpots' | 'stonecutters' | 'tailors' | 'weaponBenches' | 'pawns'>;
 export const MAX_PRODUCTION_BILLS = 32;
 export const MAX_PRODUCTION_AMOUNT = 100000;
 
@@ -55,6 +59,7 @@ export function makeProductionBill(id: string, recipe: ProductionRecipe): Produc
   return {
     id, recipe, mode: 'count', remaining: 1, target: 10, suspended: false,
     pauseWhenSatisfied: false, resumeBelow: 5, waiting: false,
+    policy: defaultProductionPolicy(),
   };
 }
 
@@ -126,7 +131,7 @@ const exactKeys = (value: Record<string, unknown>, keys: readonly string[]): boo
 const integer = (value: unknown, min: number, max: number): value is number =>
   typeof value === 'number' && Number.isSafeInteger(value) && value >= min && value <= max;
 function fail(why: string): never { throw new Error(`生产账单存档无效：${why}`); }
-const billKeys = ['id', 'recipe', 'mode', 'remaining', 'target', 'suspended', 'pauseWhenSatisfied', 'resumeBelow', 'waiting'];
+const billKeys = ['id', 'recipe', 'mode', 'remaining', 'target', 'suspended', 'pauseWhenSatisfied', 'resumeBelow', 'waiting', 'policy'];
 
 function validId(id: unknown, nextId: number): id is string {
   if (typeof id !== 'string') return false;
@@ -136,15 +141,18 @@ function validId(id: unknown, nextId: number): id is string {
   return !!legacy && integer(Number(legacy[1]), 1, nextId - 1) && recipes.has(legacy[2]);
 }
 
-type ProductionJob = Pick<Job, 'kind' | 'apparelKind' | 'weaponKind' | 'x' | 'y' | 'z' | 'cancelled'> & { billId?: string };
+type ProductionJob = Pick<Job, 'kind' | 'apparelKind' | 'weaponKind' | 'x' | 'y' | 'z' | 'cancelled'> & {
+  billId?: string; productionPolicy?: ProductionPolicy;
+};
 
 /** Current saves are validated as written. Migration belongs to the caller and
- * must not turn malformed v39 data into valid defaults. */
+ * must not turn malformed current data into valid defaults. */
 export function validateProductionQueues(
   raw: unknown, host: ProductionHost, nextId: number, jobs: readonly ProductionJob[],
 ): asserts raw is ProductionQueue[] {
   if (!Number.isSafeInteger(nextId) || nextId < 1 || !Array.isArray(raw)) fail('列表或身份上界无效');
   const benches = allBenches(host), byBench = new Map(benches.map(bench => [bench.id, bench]));
+  const workerIds = new Set(host.pawns.map(pawn => pawn.id));
   if (raw.length > benches.length) fail('账单列表超过现有工作台数量');
   const queueIds = new Set<number>(), billIds = new Set<string>();
   for (const queue of raw) {
@@ -161,7 +169,9 @@ export function validateProductionQueues(
           !integer(value.remaining, 0, MAX_PRODUCTION_AMOUNT) || !integer(value.target, 0, MAX_PRODUCTION_AMOUNT) ||
           !integer(value.resumeBelow, 0, MAX_PRODUCTION_AMOUNT) || value.resumeBelow > value.target ||
           typeof value.suspended !== 'boolean' || typeof value.pauseWhenSatisfied !== 'boolean' ||
-          typeof value.waiting !== 'boolean' || (value.waiting && (value.mode !== 'target' || !value.pauseWhenSatisfied)))
+          typeof value.waiting !== 'boolean' || (value.waiting && (value.mode !== 'target' || !value.pauseWhenSatisfied)) ||
+          !validProductionPolicy(value.policy) ||
+          (value.policy.workerId !== null && !workerIds.has(value.policy.workerId)))
         fail('账单身份、配方、模式或数值无效');
       billIds.add(value.id);
     }
@@ -169,11 +179,13 @@ export function validateProductionQueues(
   const resolved = new Map(productionQueues(host, raw as ProductionQueue[]).map(queue => [queue.benchId, queue]));
   for (const job of jobs) {
     const hasId = Object.hasOwn(job, 'billId');
+    const hasPolicy = Object.hasOwn(job, 'productionPolicy');
     if (!productionKinds.has(job.kind)) {
-      if (hasId) fail('非生产作业包含账单身份');
+      if (hasId || hasPolicy) fail('非生产作业包含账单身份或生产策略');
       continue;
     }
     if (hasId && !validId(job.billId, nextId)) fail('作业账单身份格式无效');
+    if (hasPolicy && !validProductionPolicy(job.productionPolicy)) fail('作业生产策略字段无效');
     // Cancelled jobs only retain physical inputs until they can be refunded;
     // their bench or bill may already have been removed.
     if (job.cancelled) continue;

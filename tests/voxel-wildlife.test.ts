@@ -93,14 +93,17 @@ describe('wildlife, actual hunting and physical food chain', () => {
     until(s, () => s.stats.produced.carcass === 1, 8000);
     expect(s.stats.mined).toBeGreaterThan(0);
   });
-  it('preserves a carried carcass across pause/save and processes it exactly once after resuming', () => {
+  it('returns a carried carcass intact on pause and processes it exactly once after save and resume', () => {
     let s = fixture(); const batch = carcass(s); add(s, batch, pos(20));
     s.pawns[0].priorities.cook = 1;
     command(s, { type: 'designate', tool: 'butcherSpot', from: pos(12, 14) });
     until(s, () => !!s.pawns[0].cargo?.carcass);
+    const carried = structuredClone(s.pawns[0].cargo!);
     command(s, { type: 'butcherBill', spotId: s.butcherSpots[0].id, paused: true });
     s = VoxelSimulation.load(s.save());
-    expect(s.pawns[0].cargo?.carcass).toEqual(batch.carcass);
+    expect(s.pawns[0].cargo).toBeNull();
+    expect(s.items.find(item => item.carcass?.animalId === batch.carcass!.animalId)).toMatchObject(carried);
+    expect(s.counts().carcass).toBe(1);
     command(s, { type: 'butcherBill', spotId: s.butcherSpots[0].id, paused: false });
     until(s, () => s.stats.produced.meat === ANIMAL_DEFS.deer.meat);
     s.step(60);
@@ -163,7 +166,7 @@ describe('wildlife, actual hunting and physical food chain', () => {
     const old = JSON.parse(readFileSync('tests/fixtures/voxel-v21-wildlife-initial.json', 'utf8'));
     expect(old.version).toBe(21); expect(old.animals).toBeUndefined();
     const s = VoxelSimulation.load(old);
-    expect(s.items).toEqual(old.items); expect(s.animals).toHaveLength(8); expect(s.save().version).toBe(39);
+    expect(s.items).toEqual(old.items); expect(s.animals).toHaveLength(8); expect(s.save().version).toBe(40);
     expect(VoxelSimulation.load(s.save()).animals).toEqual(s.animals);
   });
 });

@@ -1,0 +1,36 @@
+{
+  "evidence_id": "RW17-PRODUCTION-POLICIES",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "scope_notes": [
+    "Native ingredient radius is a float slider from3 to100 with100 mapped to999; ordinary ground ingredients use horizontal squared distance strictly less than radius squared.",
+    "IHaulSource containers use horizontal InHorDistOf with an inclusive boundary; this is a distinct path, not a runtime boundary test.",
+    "Web integer3..100/null and strict3D distance are explicit reconstruction adaptations, not native facts."
+  ],
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.BillDialogUtility",
+      "local_file": ".local-research/production-policies/RimWorld.BillDialogUtility.cs",
+      "sha256": "b2fb04d2bf2f6b28a8ed6682b2fe6e9eade7a8e7bcaf23de9800542856921774",
+      "lines": 93
+    },
+    {
+      "type": "Verse.IntVec3",
+      "local_file": ".local-research/production-policies/Verse.IntVec3.cs",
+      "sha256": "54aa9a7bf31ee915aa9eaa8641f159241ca3cebb9ec3e55c2f1ffbae244d2b16",
+      "lines": 387
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "version": 39,
+  "sha256": "a6e837e1159d191971f8fe95207755bb958b132cf86f799179140af057edfdda",
+  "source": "test-results/voxel-production-bills-campaign/mid-work.json",
+  "sourceReport": "test-results/voxel-production-bills-campaign/report.json",
+  "sourceReportSha256": "814d837d89236d6b562bab1bfc9ba4198fbcdaf9a7744b65006d5db5401136fb",
+  "sourceCommit": "25b967724b628de2234188a5a6afa9e5c98c8436",
+  "tick": 1795,
+  "scope": "Unchanged ordinary-command production-bills campaign mid-work checkpoint from the preceding v39 release. Original bytes copied after matching the passed report checkpoint SHA256; no state editing."
+}

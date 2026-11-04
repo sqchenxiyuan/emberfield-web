@@ -12,6 +12,7 @@ const pos = (x: number) => ({ x, y: 12, z: 8 });
 function fixture(): ProductionHost {
   const kinds: WeaponBenchKind[] = ['craftingSpot', 'smithy', 'machining'];
   return {
+    pawns: [],
     stoves: [{ id: 1, ...pos(10), target: 12, paused: false }],
     butcherSpots: [{ id: 2, ...pos(15), paused: true }],
     stonecutters: [{ id: 3, ...pos(20), axis: 'x', target: 80, paused: false }],

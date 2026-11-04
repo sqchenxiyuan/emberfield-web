@@ -518,6 +518,7 @@ function decode(raw: unknown, max: number): Uint8Array<ArrayBuffer> {
 import { defaultProductionQueue, productionQueues, productionJobRecipe, canStartProduction,
   finishProductionBill, makeProductionBill, recipeAllowed, validateProductionQueues,
   type ProductionBill, type ProductionQueue, type ProductionRecipe } from './productionBills';
+import { defaultProductionPolicy, productionPolicyWorkerReason, productionPolicyAllowsIngredient } from './productionPolicies';
 
 export class VoxelSimulation {
   /** Sparse overrides: untouched legacy recipes retain their published defaults. */
@@ -1420,7 +1421,9 @@ export class VoxelSimulation {
       if (amount > 0) this.storageReservations.set(id, { ...r, batch: portion(source, amount) });
     }
   }
-  private acceptsJobCargo(j: Job, cargo: Cargo): boolean {
+  private acceptsJobCargo(j: Job, cargo: Cargo, source?: Pos): boolean {
+    const recipe = productionJobRecipe(j);
+    if (recipe && !productionPolicyAllowsIngredient(this.productionPolicyFor(j), recipe, cargo, source, j)) return false;
     return cargo.resource !== 'furniture' || (j.kind === 'install' && !!cargo.furniture && cargo.furniture.id === j.furnitureId && cargo.furniture.kind === j.furnitureKind);
   }
   private pileFor(p: Pawn, resource?: Resource, job?: Job) {
@@ -1429,7 +1432,7 @@ export class VoxelSimulation {
       if (
         this.availableStack(item, p.id) < 1 ||
         (resource && item.resource !== resource) ||
-        (job && !this.acceptsJobCargo(job, item)) ||
+        (job && !this.acceptsJobCargo(job, item, item)) ||
         this.chunkReserved(item, p.id)
       )
         continue;
@@ -1863,12 +1866,21 @@ export class VoxelSimulation {
                 : '温度不适';
     return { fertility, light, temperature, growthRate, reason };
   }
-  private chooseMealIngredients(job: Job) {
+  private chooseMealIngredients(job: Job, worker?: Pawn) {
+    if (job.productionPolicy) return;
     // Lock real ingredients; delivered batches retain their identity and age.
-    const reserved = this.jobs.filter(j => j !== job && !j.cancelled)
-      .reduce((n, j) => n + Math.max(0, (j.cost.meat ?? 0) - (j.delivered.meat ?? 0)), 0);
-    const meat = Math.min(SIMPLE_MEAL.ingredients, Math.max(0,
-      this.items.filter(i => i.resource === 'meat').reduce((n, i) => n + i.amount, 0) - reserved));
+    const policy = this.productionPolicyFor(job);
+    const reserved = this.jobs.filter(j => j !== job && !j.cancelled && j.owner !== null)
+      .reduce((n, j) => {
+        const owner = this.pawns.find(p => p.id === j.owner);
+        const carried = owner?.jobId === j.id && owner.cargo?.resource === 'meat' ? owner.cargo.amount : 0;
+        return n + Math.max(0, (j.cost.meat ?? 0) - (j.delivered.meat ?? 0) - carried);
+      }, 0);
+    const available = this.items.filter(i => i.resource === 'meat' && !i.forbidden && this.exploredAt(i) &&
+      this.acceptsJobCargo(job, i, i) && (!worker || this.reachableItemStand(i) >= 0))
+      .reduce((n, i) => n + (worker ? this.availableStack(i, worker.id) : i.amount), 0);
+    const meat = !policy.allowedFood.includes('meat') ? 0 : !policy.allowedFood.includes('grain') ? SIMPLE_MEAL.ingredients :
+      Math.min(SIMPLE_MEAL.ingredients, Math.max(0, available - reserved));
     job.cost = { wood: SIMPLE_MEAL.wood, ...(meat ? { meat } : {}),
       ...(meat < SIMPLE_MEAL.ingredients ? { grain: SIMPLE_MEAL.ingredients - meat } : {}) };
   }
@@ -1885,6 +1897,28 @@ export class VoxelSimulation {
     const bills = this.productionQueue(bench.id)?.bills ?? [];
     return j.billId ? bills.find(b => b.id === j.billId && b.recipe === recipe)
       : bills.find(b => b.recipe === recipe);
+  }
+  private productionPolicyFor(j: Job) {
+    return j.productionPolicy ?? this.productionBillFor(j)?.policy ?? defaultProductionPolicy();
+  }
+  /** Worker restrictions apply when a worker takes over; input rules stay with a started batch. */
+  private productionWorkerFailure(p: Pawn, j: Job): string | null {
+    const recipe = productionJobRecipe(j), bill = this.productionBillFor(j);
+    return recipe && bill ? productionPolicyWorkerReason(bill.policy, recipe, p) : null;
+  }
+  private bindProductionInputs(j: Job) {
+    if (productionJobRecipe(j) && !j.productionPolicy)
+      j.productionPolicy = structuredClone(this.productionPolicyFor(j));
+  }
+  private validateProductionWorkers() {
+    for (const queue of this.productionQueues) for (const bill of queue.bills) {
+      if (bill.policy.workerId === null) continue;
+      const pawn = this.pawns.find(p => p.id === bill.policy.workerId);
+      if (!pawn || pawn.dead || pawn.faction !== 'colony') {
+        bill.policy.workerId = null;
+        this.notice = '指定生产工人已离开营地或死亡，账单恢复为任意工人';
+      }
+    }
   }
   private productionCommand(c: Extract<VoxelCommand, { type: 'productionBillAdd' | 'productionBillUpdate' | 'productionBillMove' | 'productionBillDelete' }>): CommandResult {
     const original = this.productionQueue(c.benchId);
@@ -1905,9 +1939,11 @@ export class VoxelSimulation {
       } else {
         const patch = c.patch;
         if (!patch || typeof patch !== 'object' || Array.isArray(patch) || Object.keys(patch).some(k =>
-          !['mode', 'remaining', 'target', 'suspended', 'pauseWhenSatisfied', 'resumeBelow'].includes(k)))
+          !['mode', 'remaining', 'target', 'suspended', 'pauseWhenSatisfied', 'resumeBelow', 'policy'].includes(k)))
           return { ok: false, message: '账单设置无效' };
-        Object.assign(queue.bills[at], patch);
+        if (patch.policy?.workerId != null && !this.pawns.some(p => p.id === patch.policy!.workerId && !p.dead && p.faction === 'colony'))
+          return { ok: false, message: '只能指定仍在营地的殖民者' };
+        Object.assign(queue.bills[at], structuredClone(patch));
         if (queue.bills[at].mode !== 'target' || !queue.bills[at].pauseWhenSatisfied)
           queue.bills[at].waiting = false;
       }
@@ -1967,42 +2003,70 @@ export class VoxelSimulation {
   private productionFeasible(j: Job, replacing?: Job, worker?: Pawn): boolean {
     const eligible = (worker ? [worker] : this.pawns).filter(p => p.faction === 'colony' && !p.dead &&
       !p.downed && !p.drafted && p.carriedBy === null && p.psyche.breakUntil <= this.tick &&
-      p.priorities[workType(j.kind)] > 0 && !this.skillFailure(p, j));
+      p.priorities[workType(j.kind)] > 0 && !this.skillFailure(p, j) && !this.productionWorkerFailure(p, j));
     if (!eligible.length) return false;
-    const inputs = Object.entries(j.cost).map(([resource, amount]) => {
-      const r = resource as Resource;
-      // Waiting jobs do not reserve hypothetical stock against one another.
-      // Count only jobs actually owned by a worker, excluding inputs already carried.
-      const committed = this.jobs.filter(k => k !== j && k !== replacing && !k.cancelled && k.owner !== null)
-        .reduce((n, k) => {
-          const owner = this.pawns.find(p => p.id === k.owner);
-          const carried = owner?.jobId === k.id && owner.cargo?.resource === r ? owner.cargo.amount : 0;
-          return n + Math.max(0, (k.cost[r] ?? 0) - (k.delivered[r] ?? 0) - carried);
-        }, 0);
-      const items = this.items.filter(i => i.resource === r && !i.forbidden && this.exploredAt(i) && this.acceptsJobCargo(j, i));
-      return { amount, items, free: items.reduce((n, i) => n + i.amount, 0) - committed };
-    });
-    if (inputs.some(input => input.free < input.amount)) return false;
     return eligible.some(p => {
       // assign() already searched from this worker. Scheduler probes are independent.
       if (!worker) this.search(p);
       if (this.reachableStand(j) < 0) return false;
-      return inputs.every(input => input.items.reduce((n, i) => n +
-        (this.reachableItemStand(i) >= 0 && !this.chunkReserved(i, p.id) ? this.availableStack(i, p.id) : 0), 0) >= input.amount);
+      if (j.kind === 'cook' && j.owner === null && !Object.values(j.delivered).some(n => n! > 0))
+        this.chooseMealIngredients(j, p);
+      return Object.entries(j.cost).every(([resource, amount]) => {
+        const r = resource as Resource;
+        // Waiting jobs do not reserve hypothetical stock against one another.
+        // Count owned work only, excluding inputs already carried or delivered.
+        const committed = this.jobs.filter(k => k !== j && k !== replacing && !k.cancelled && k.owner !== null)
+          .reduce((n, k) => {
+            const owner = this.pawns.find(q => q.id === k.owner);
+            const carried = owner?.jobId === k.id && owner.cargo?.resource === r ? owner.cargo.amount : 0;
+            return n + Math.max(0, (k.cost[r] ?? 0) - (k.delivered[r] ?? 0) - carried);
+          }, 0);
+        const items = this.items.filter(i => i.resource === r && !i.forbidden && this.exploredAt(i) && this.acceptsJobCargo(j, i, i));
+        if (items.reduce((n, i) => n + i.amount, 0) - committed < amount) return false;
+        return items.reduce((n, i) => n + (this.reachableItemStand(i) >= 0 && !this.chunkReserved(i, p.id)
+          ? this.availableStack(i, p.id) : 0), 0) >= amount;
+      });
     });
+  }
+  private productionOutput(j: Job) {
+    if (j.kind === 'cook') return SIMPLE_MEAL.output;
+    if (j.kind === 'stonecut') return STONECUTTING.output;
+    if (j.kind !== 'butcher') return 1;
+    const carcass = j.deliveredBatches.find(b => b.carcass)?.carcass;
+    return carcass ? ANIMAL_DEFS[carcass.species].meat : Math.min(...Object.values(ANIMAL_DEFS).map(a => a.meat));
+  }
+  /** A waiting order for another worker must not hide a later order this worker can do. */
+  private chooseProductionForWorker(p: Pawn) {
+    const waiting = this.jobs.filter(j => productionJobRecipe(j) && !j.cancelled && j.owner === null &&
+      !j.productionPolicy && j.progress === 0 && !Object.values(j.delivered).some(n => n! > 0) &&
+      p.priorities[workType(j.kind)] > 0);
+    if (!waiting.length) return;
+    this.search(p);
+    for (const existing of waiting) {
+      if (this.productionFeasible(existing, undefined, p)) continue;
+      const bench = this.productionBenches().find(b => same(b, existing));
+      if (!bench) continue;
+      for (const bill of this.productionQueue(bench.id)!.bills) {
+        if (bill.id === existing.billId) continue;
+        const pending = this.jobs.filter(j => j !== existing && !j.cancelled && productionJobRecipe(j) === bill.recipe)
+          .reduce((n, j) => n + this.productionOutput(j), 0);
+        if (!canStartProduction(bill, this.productionCount(bill.recipe), pending)) continue;
+        const candidate = this.productionPreview(bench, bill);
+        if (!this.supported(candidate) || !this.productionFeasible(candidate, existing, p)) continue;
+        if (!this.cancel(existing)) break;
+        candidate.id = this.id();
+        this.jobs.push(candidate);
+        break;
+      }
+    }
   }
   private scheduleProduction() {
     const benches = this.productionBenches();
     const completed = new Map<ProductionRecipe, number>();
     const pending = new Map<ProductionRecipe, number>();
-    const output = (j: Job) => j.kind === 'cook' ? SIMPLE_MEAL.output : j.kind === 'stonecut' ? STONECUTTING.output :
-      j.kind === 'butcher' ? (() => {
-        const carcass = j.deliveredBatches.find(b => b.carcass)?.carcass;
-        return carcass ? ANIMAL_DEFS[carcass.species].meat : Math.min(...Object.values(ANIMAL_DEFS).map(a => a.meat));
-      })() : 1;
     const track = (j: Job, sign: number) => {
       const recipe = productionJobRecipe(j);
-      if (recipe && !j.cancelled) pending.set(recipe, (pending.get(recipe) ?? 0) + sign * output(j));
+      if (recipe && !j.cancelled) pending.set(recipe, (pending.get(recipe) ?? 0) + sign * this.productionOutput(j));
     };
     for (const j of this.jobs) track(j, 1);
     this.productionQueues = this.productionQueues.filter(q => benches.some(b => b.id === q.benchId));
@@ -2023,7 +2087,7 @@ export class VoxelSimulation {
       }
       const existing = this.jobs.find(j => same(j, bench) && j.kind !== 'refuel');
       // Never replace materials, partial work, owned jobs, or cancelled refund containers.
-      if (existing && (!productionJobRecipe(existing) || existing.cancelled || existing.owner !== null ||
+      if (existing && (!productionJobRecipe(existing) || existing.cancelled || existing.owner !== null || existing.productionPolicy ||
         existing.progress > 0 || Object.values(existing.delivered).some(n => n! > 0))) continue;
       if (existing && this.productionFeasible(existing)) continue;
       let fallback: Job | undefined, selected: Job | undefined;
@@ -2049,6 +2113,7 @@ export class VoxelSimulation {
     }
   }
   private syncProduction() {
+    this.validateProductionWorkers();
     for (const j of [...this.jobs])
       if (j.kind === 'research' && (!this.supported(j) || j.cancelled)) this.cancel(j);
     for (const j of [...this.jobs]) {
@@ -2073,7 +2138,7 @@ export class VoxelSimulation {
         this.cancel(j);
       if (j.kind === 'cut' && !this.trees.some((t) => same(t, j))) this.cancel(j);
       if (productionJobRecipe(j) && !this.supported(j)) this.cancel(j);
-      if (j.kind === 'cook' && !j.cancelled && j.owner === null && !(j.delivered.grain || j.delivered.meat))
+      if (j.kind === 'cook' && !j.cancelled && j.owner === null && !j.productionPolicy && !(j.delivered.grain || j.delivered.meat))
         this.chooseMealIngredients(j);
       if (
         j.kind === 'refuel' &&
@@ -5648,7 +5713,12 @@ export class VoxelSimulation {
     j.cancelled = true;
     if (!wasCancelled && j.furnitureId !== undefined)
       for (const other of [...this.jobs]) if (other.id !== j.id && !other.cancelled && other.furnitureId === j.furnitureId) this.cancel(other);
-    for (const p of this.pawns) if (p.jobId === j.id) this.release(p);
+    for (const p of this.pawns) if (p.jobId === j.id) {
+      this.release(p);
+      // Cancellation returns fetched inputs too, even when the bill's new
+      // filter excludes them. A full floor safely leaves the cargo on its pawn.
+      if (productionJobRecipe(j)) this.dropCargo(p);
+    }
     j.cancelled = true;
     const origin = this.dropPoint(j);
     const batches = j.deliveredBatches;
@@ -5789,6 +5859,7 @@ export class VoxelSimulation {
       return;
     }
     if (shouldRecreate(p, assignmentAt(p.schedule, this.tick)) && this.startRecreation(p)) return;
+    this.chooseProductionForWorker(p);
     const jobs = this.jobs
       .filter((j) => !j.cancelled && j.owner === null && p.priorities[workType(j.kind)] > 0)
       .sort(
@@ -5835,7 +5906,7 @@ export class VoxelSimulation {
           this.supported(j) &&
           (!missing(j) ||
             (j.kind === 'refuel' && (j.delivered.wood ?? 0) > 0) ||
-            this.items.some((i) => i.resource === missing(j) && this.acceptsJobCargo(j,i))),
+            this.items.some((i) => i.resource === missing(j) && this.acceptsJobCargo(j,i,i))),
       )
     ) {
       if (tryExtras(4, false)) return;
@@ -5860,7 +5931,7 @@ export class VoxelSimulation {
     this.search(p);
     for (const j of jobs) {
       if (tryExtras(p.priorities[workType(j.kind)], j.kind === 'research', true)) return;
-      const skillFailure = this.skillFailure(p, j);
+      const skillFailure = this.skillFailure(p, j) ?? this.productionWorkerFailure(p, j);
       if (skillFailure) {
         j.reason = skillFailure;
         continue;
@@ -5904,6 +5975,7 @@ export class VoxelSimulation {
         continue;
       }
       j.owner = p.id;
+      this.bindProductionInputs(j);
       p.jobId = j.id;
       p.workTarget = { x: j.x, y: j.y, z: j.z };
       this.continueJob(p, j);
@@ -5912,8 +5984,8 @@ export class VoxelSimulation {
     if (tryExtras(4, true)) return;
     p.phase = 'idle';
     p.reason =
-      jobs.length && jobs.every((j) => this.skillFailure(p, j))
-        ? this.skillFailure(p, jobs[0])!
+      jobs.length && jobs.every((j) => this.skillFailure(p, j) ?? this.productionWorkerFailure(p, j))
+        ? (this.skillFailure(p, jobs[0]) ?? this.productionWorkerFailure(p, jobs[0]))!
         : jobs.length
           ? '等待材料或可达通路'
           : '暂无工作';
@@ -6095,13 +6167,15 @@ export class VoxelSimulation {
           !k.cancelled &&
           k.owner === null &&
           p.priorities[workType(k.kind)] > 0 &&
+          !this.skillFailure(p, k) && !this.productionWorkerFailure(p, k) &&
           (k.cost[p.cargo!.resource] ?? 0) > (k.delivered[p.cargo!.resource] ?? 0) &&
-          this.acceptsJobCargo(k,p.cargo!) &&
+          this.acceptsJobCargo(k,p.cargo!,p) &&
           this.supported(k) &&
           this.reachableStand(k) >= 0,
       );
       if (j) {
         j.owner = p.id;
+        this.bindProductionInputs(j);
         p.jobId = j.id;
         p.workTarget = { x: j.x, y: j.y, z: j.z };
       }
@@ -6118,7 +6192,15 @@ export class VoxelSimulation {
     const best = this.storageDestination(p.cargo, -1, p.id);
     if (!best) {
       this.storageReservations.delete(p.id);
-      p.reason = '仓储已满或不可达，保留随身物资等待可用仓位';
+      // A former producer must not hold the only ingredients forever after a
+      // policy change. Return them through bounded physical placement so the
+      // newly eligible worker can collect them; full ground remains lossless.
+      const handoff = !j && this.jobs.some(k => !k.cancelled && k.productionPolicy &&
+        this.productionWorkerFailure(p, k) && this.acceptsJobCargo(k, p.cargo!) &&
+        (k.cost[p.cargo!.resource] ?? 0) > (k.delivered[p.cargo!.resource] ?? 0));
+      const dropped = handoff && this.dropCargo(p);
+      p.reason = dropped ? '生产分工已改变，放下原料供其他工人接手'
+        : '仓储已满或不可达，保留随身物资等待可用仓位';
       p.phase = 'idle';
       p.path = [];
       p.destination = null;
@@ -6297,7 +6379,9 @@ export class VoxelSimulation {
         return;
       }
       const needed = missing(j);
-      if (needed && reserved && this.take(p, needed, Math.min(reserved.amount, (j.cost[needed] ?? 0) - (j.delivered[needed] ?? 0)), reserved.sourceId))
+      const source = reserved && this.items.find(i => i.id === reserved.sourceId);
+      if (needed && reserved && source && this.acceptsJobCargo(j, source, source) &&
+        this.take(p, needed, Math.min(reserved.amount, (j.cost[needed] ?? 0) - (j.delivered[needed] ?? 0)), reserved.sourceId))
         this.deliverCargo(p);
       else this.continueJob(p, j);
       return;
@@ -7298,10 +7382,11 @@ export class VoxelSimulation {
                 p.priorities[workType(j.kind)] > 0 &&
                 p.priorities[workType(j.kind)] <= p.priorities.research &&
                 !this.skillFailure(p, j) &&
+                !this.productionWorkerFailure(p, j) &&
                 !this.waitingForFuel(j) &&
                 this.supported(j) &&
                 this.reachableStand(j) >= 0 &&
-                (!missing(j) || !!this.pileFor(p, missing(j)!)),
+                (!missing(j) || !!this.pileFor(p, missing(j)!, j)),
             );
             const hauling =
               p.priorities.haul > 0 &&
@@ -7826,11 +7911,12 @@ export class VoxelSimulation {
     });
   }
   save(): VoxelSave {
+    this.validateProductionWorkers();
     this.pruneStorageSpills();
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 39,
+      version: 40,
       productionQueues: this.productionQueues.filter(q => this.productionBenches().some(b => b.id === q.benchId)),
       socialHistory: this.socialHistory, socialLog: this.socialLog,
       weather: this.weather, snow: this.snow,
@@ -7888,7 +7974,7 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : [1, 2, 3]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
@@ -8255,7 +8341,20 @@ export class VoxelSimulation {
         throw new Error('旧版存档混入生产账单字段');
       old.productionQueues = [];
     }
-    old.version = 39;
+    if (sourceVersion < 40) {
+      if (old.jobs?.some((j: any) => Object.hasOwn(j, 'productionPolicy')) ||
+          (Array.isArray(old.productionQueues) && old.productionQueues.some((q: any) =>
+            Array.isArray(q?.bills) && q.bills.some((b: any) => b && Object.hasOwn(b, 'policy')))))
+        throw new Error('旧版存档混入生产分工与原料策略字段');
+      if (Array.isArray(old.productionQueues)) for (const queue of old.productionQueues) {
+        if (Array.isArray(queue?.bills)) for (const bill of queue.bills)
+          if (bill && typeof bill === 'object') bill.policy = defaultProductionPolicy();
+      }
+      for (const job of old.jobs ?? []) if (productionJobRecipe(job) &&
+          (job.owner !== null || job.progress > 0 || Object.values(job.delivered ?? {}).some(n => Number(n) > 0)))
+        job.productionPolicy = defaultProductionPolicy();
+    }
+    old.version = 40;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -9364,6 +9463,13 @@ export class VoxelSimulation {
     validateFurniture(d);
     validateRelocation(d);
     validateProductionQueues(d.productionQueues, d, d.nextId, d.jobs);
+    for (const job of d.jobs) {
+      if (!job.cancelled && productionJobRecipe(job) &&
+          (job.owner !== null || job.progress > 0 || Object.values(job.delivered).some(n => n! > 0)) && !job.productionPolicy)
+        throw new Error('已领取生产批次缺少原料策略');
+      if (job.productionPolicy?.workerId != null && job.productionPolicy.workerId >= d.nextId)
+        throw new Error('生产批次中的历史工人身份超出上界');
+    }
     for (const queue of d.productionQueues) for (const bill of queue.bills) {
       if (!bill.id.startsWith('bill:')) continue;
       const id = Number(bill.id.slice(5));
@@ -9535,6 +9641,14 @@ export class VoxelSimulation {
     s.updateRooms();
     s.thermal.restore(d.thermal, s.rooms, s.outdoorTemperature());
     s.updatePower();
+    // Keep the validated association of already collected production inputs.
+    // A route can leave the search radius after a legal pickup; it is not a new
+    // ingredient source. Worker eligibility is rechecked below before rebinding.
+    const carriedProduction = new Map(s.pawns.flatMap(p => {
+      const job = s.jobs.find(j => j.id === p.jobId && j.owner === p.id && !j.cancelled && j.productionPolicy);
+      return job && p.cargo && s.acceptsJobCargo(job, p.cargo) &&
+        (job.cost[p.cargo.resource] ?? 0) > (job.delivered[p.cargo.resource] ?? 0) ? [[p.id, job.id] as const] : [];
+    }));
     // Persist work progress, delivered and carried resources; rebuild transient paths and ownership.
     for (const j of s.jobs) {
       j.owner = null;
@@ -9764,6 +9878,19 @@ export class VoxelSimulation {
         : '体素存档已恢复；路径与任务预定重新建立';
     if (sourceVersion < 22) s.seedWildlife();
     if (sourceVersion < 29) seedGrass(s);
+    s.validateProductionWorkers();
+    for (const [pawnId, jobId] of carriedProduction) {
+      const p = s.pawns.find(p => p.id === pawnId)!, j = s.jobs.find(j => j.id === jobId)!;
+      if (!p.cargo || p.phase !== 'idle' || p.dead || p.downed || p.drafted || p.carriedBy !== null ||
+          p.faction !== 'colony' || p.psyche.breakUntil > s.tick || p.priorities[workType(j.kind)] <= 0 ||
+          j.owner !== null || !s.supported(j) || s.skillFailure(p, j) || s.productionWorkerFailure(p, j)) continue;
+      s.search(p);
+      if (s.reachableStand(j) < 0) continue;
+      j.owner = p.id;
+      p.jobId = j.id;
+      p.workTarget = { x: j.x, y: j.y, z: j.z };
+      s.continueJob(p, j);
+    }
     return s;
   }
 }

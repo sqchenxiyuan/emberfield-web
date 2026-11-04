@@ -1,0 +1,553 @@
+{
+  "evidence_id": "RW17-PRODUCTION-POLICIES",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction and selected Core XML; no target execution",
+  "rea": {
+    "file": "production-bills-rea-managed.json",
+    "sha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+    "evidence_id": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+    "parent_evidence_id": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+    "mvid": "8e962ecc-7ac7-42d2-8f3b-1b16cd24d2cd",
+    "metadata_coverage": "complete"
+  },
+  "manifests": [
+    {
+      "file": "food-manifest.json",
+      "sha256": "71078848fdcb154b8600e6eaef143968958c786b0544d6bab0814154d76f18d8"
+    },
+    {
+      "file": "preservation-manifest.json",
+      "sha256": "5b43549bdaa2d6edc6ace4c7100ef2b20510e36d18c0a543c0c7a431c6801f8e"
+    },
+    {
+      "file": "production-bills-manifest.json",
+      "sha256": "a00dc9a726f47fe20b27d755b2ff023948ce7b374d4b8d80e958ff3037d4a227"
+    },
+    {
+      "file": "production-policies-manifest.json",
+      "sha256": "26d5960f9ace2b29c48b5c06280f9a2c4d8c1e4eca3fd48502ccd29e2809ae8a"
+    },
+    {
+      "file": "work-manifest.json",
+      "sha256": "89523f849f7c4dca3b660faed977b00e04b87fb93d1275c9f41ba1b9af154cd2"
+    }
+  ],
+  "xml": {
+    "id": "PPLX01",
+    "file": "Data/Core/Defs/RecipeDefs/Recipes_Production.xml",
+    "source_sha256": "fc7697575fb2f716cb5be6045b02d6471aeeea9e768d08607099d54e3e114829",
+    "xpath": "/Defs/RecipeDef[@Name=\"MakeStoneBlocksBase\" or defName=\"Make_StoneBlocksAny\" or defName=\"Make_ComponentIndustrial\"]",
+    "projection": "Selected fields and immediate inheritance only; not an evaluated mod/DLC Def database",
+    "nodes": [
+      {
+        "name": "MakeStoneBlocksBase",
+        "parent": "",
+        "abstract": "True",
+        "fields": {
+          "workSkill": "Crafting",
+          "workSkillLearnFactor": "0"
+        }
+      },
+      {
+        "name": "",
+        "parent": "MakeStoneBlocksBase",
+        "abstract": "",
+        "fields": {
+          "defName": "Make_StoneBlocksAny",
+          "label": "make any stone blocks",
+          "ingredients": "<li><filter><categories><li>StoneChunks</li></categories></filter><count>1</count></li>",
+          "fixedIngredientFilter": "<categories><li>StoneChunks</li></categories>",
+          "specialProducts": "<li>StoneBlocks</li>"
+        }
+      },
+      {
+        "name": "",
+        "parent": "",
+        "abstract": "",
+        "fields": {
+          "defName": "Make_ComponentIndustrial",
+          "label": "make component",
+          "workSkill": "Crafting",
+          "ingredients": "<li><filter><thingDefs><li>Steel</li></thingDefs></filter><count>12</count></li>",
+          "fixedIngredientFilter": "<thingDefs><li>Steel</li></thingDefs>",
+          "skillRequirements": "<Crafting>8</Crafting>",
+          "unfinishedThingDef": "UnfinishedComponent"
+        }
+      }
+    ],
+    "nodes_sha256": "b370d88ac67606249fea0614bbc9eaad84346fb50fb934d4a1cc85250e4824bd"
+  },
+  "claims": [
+    {
+      "id": "PPL01",
+      "finding": "IngredientCount.IsFixedIngredient means its slot filter has exactly one allowed def. recipe.fixedIngredientFilter instead describes the recipe-level allowed universe. New Bill copies defaultIngredientFilter; RecipeDef initializes a missing default filter from fixedIngredientFilter. These are distinct roles.",
+      "sources": [
+        {
+          "group": "food",
+          "type": "Verse.IngredientCount",
+          "file": ".local-research/food/Verse.IngredientCount.cs",
+          "sha256": "7f69cb2658afcf94cc77ba0a344fdd9c51b457b74d02085fc73355dd37e172e8",
+          "lines": [
+            8,
+            17
+          ],
+          "excerpt_sha256": "b371d9be4bcd15248b0f0b5a25cb18c07eea650788410cf0141d2b9c3533e653"
+        },
+        {
+          "group": "food",
+          "type": "RimWorld.Bill",
+          "file": ".local-research/food/RimWorld.Bill.cs",
+          "sha256": "11d4a59e1feadd84d17e182e845d5feb7aae7b9da9cb86b6750409fc12a46c2c",
+          "lines": [
+            151,
+            157
+          ],
+          "excerpt_sha256": "efccf4c21be0d85d9d5ae05df03b3bdaf0120e6ee359f363144d3b9273ba5305"
+        },
+        {
+          "group": "food",
+          "type": "Verse.RecipeDef",
+          "file": ".local-research/food/Verse.RecipeDef.cs",
+          "sha256": "9a12df678ba67743d3574e9ebfb866d07c2f918cfdd1f42c75d15ae8b5727132",
+          "lines": [
+            513,
+            542
+          ],
+          "excerpt_sha256": "35c8f5facf5b2a078d28c8190a4c849a66e62f8bcf118fd1602175dafeb4b877"
+        }
+      ]
+    },
+    {
+      "id": "PPL02",
+      "finding": "Bill.IsFixedOrAllowedIngredient first accepts any matching fixed ingredient slot; otherwise both recipe.fixedIngredientFilter and bill.ingredientFilter must allow it. IsUsableIngredient additionally requires a matching recipe slot. Fixed-slot matches bypass the player filter in both NoMix and AllowMix selection; empty nonfixed player allowances do not imply defaults.",
+      "sources": [
+        {
+          "group": "food",
+          "type": "RimWorld.Bill",
+          "file": ".local-research/food/RimWorld.Bill.cs",
+          "sha256": "11d4a59e1feadd84d17e182e845d5feb7aae7b9da9cb86b6750409fc12a46c2c",
+          "lines": [
+            400,
+            432
+          ],
+          "excerpt_sha256": "237d8e1793d5bd06bf71d0cee4b95380c360e3ce12638dd8846f4713c65f14fb"
+        },
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            407,
+            420
+          ],
+          "excerpt_sha256": "0620a04716bfbda1cfd55e55379ba237b9d7ca7f3dfcad89550620bb916ad0de"
+        },
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            615,
+            727
+          ],
+          "excerpt_sha256": "ae34bfdda93d89f886b69d1446afd2bc3890ec838b3b5c5188e56c26c396d8e1"
+        }
+      ]
+    },
+    {
+      "id": "PPL03",
+      "finding": "ThingFilter.Allows(Thing) unwraps minified content and tests def, HP percentage, quality and special filters (plus Anomaly book restrictions); Allows(ThingDef) only tests def membership. Bill UI hides ingredient controls when every slot is fixed, otherwise uses the recipe fixed filter as parent. Save prunes player allowed defs outside that parent.",
+      "sources": [
+        {
+          "group": "preservation",
+          "type": "Verse.ThingFilter",
+          "file": ".local-research/preservation/Verse.ThingFilter.cs",
+          "sha256": "daf718ce140fd0c6a201fb7eada45f2069d642f1596c6bcde8a2d35fc3939ffa",
+          "lines": [
+            874,
+            910
+          ],
+          "excerpt_sha256": "f00a88ac4c84d9d72da45fb39afd699131823b800903b22fdcc0ce6533242bb2"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Dialog_BillConfig",
+          "file": ".local-research/production-bills/RimWorld.Dialog_BillConfig.cs",
+          "sha256": "b9edc70a35d57fa5abfc5494dcee784a20d2a5bcd559b3a8f92a5ac7563cba74",
+          "lines": [
+            486,
+            507
+          ],
+          "excerpt_sha256": "a856681581ecac0740d8a7f04e9dc4221cfeb6af282fa40498ab445873a8eb58"
+        },
+        {
+          "group": "food",
+          "type": "RimWorld.Bill",
+          "file": ".local-research/food/RimWorld.Bill.cs",
+          "sha256": "11d4a59e1feadd84d17e182e845d5feb7aae7b9da9cb86b6750409fc12a46c2c",
+          "lines": [
+            205,
+            231
+          ],
+          "excerpt_sha256": "458d31ca2ed694ed6368488377d751e27c177884c8b48bf1f2c5be6fd44999ff"
+        }
+      ]
+    },
+    {
+      "id": "PPL04",
+      "finding": "Ordinary spawned ground ingredients use squared horizontal X/Z Euclidean distance from billGiver.Position, strictly less than radius squared, along with spawned, recipe/filter, forbidden and reservation checks. Traversal uses passable regions and within-region reachability; radius is not worker distance, interaction-cell distance or path length. Native multi-layer simulation is not established by this path.",
+      "sources": [
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            443,
+            461
+          ],
+          "excerpt_sha256": "6fca479be90a3e49cb396df147d17820ebefb1a8bffff2c6e41588a498d69835"
+        },
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            498,
+            557
+          ],
+          "excerpt_sha256": "8fc1e21f896ff1e3bcd60d27cfe6f4f727c0e35379b397842facea00f8da9a23"
+        }
+      ]
+    },
+    {
+      "id": "PPL05",
+      "finding": "The region-search root is the building interaction cell, falling back to pawn.Position for a malformed building, or billGiver.Position for nonbuildings. NoMix sorts candidates by squared horizontal distance from that root. Search/sort root is therefore distinct from radius center.",
+      "sources": [
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            560,
+            572
+          ],
+          "excerpt_sha256": "33361b80a3cabce4905148a6102f366933d31436b5ecd9a27a6bfc8ed677023e"
+        },
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            615,
+            625
+          ],
+          "excerpt_sha256": "5bec8828620dd2a80a663fe14f74c964bb84256b6fafb4dc8fca60c5df02e545"
+        }
+      ]
+    },
+    {
+      "id": "PPL06",
+      "finding": "IHaulSource eligibility checks the spawned source container position with InHorDistOf, whose squared horizontal comparison is inclusive <=. Recursively held contents then undergo forbidden/reservation/thing checks; this is not the ordinary spawned-Thing validator. Autonomous worktables also try their own innerContainer. The ground/container boundary difference is static evidence only.",
+      "sources": [
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            472,
+            496
+          ],
+          "excerpt_sha256": "9f3c6fe5ca99155f8c3d08e1741639a88a40477604c409cc8be0a4fd3196bc6c"
+        },
+        {
+          "group": "production-policies",
+          "type": "Verse.IntVec3",
+          "file": ".local-research/production-policies/Verse.IntVec3.cs",
+          "sha256": "54aa9a7bf31ee915aa9eaa8641f159241ca3cebb9ec3e55c2f1ffbae244d2b16",
+          "lines": [
+            173,
+            178
+          ],
+          "excerpt_sha256": "fefb2846de66cdc3bd3f28bf1e1817973d8ff3caa66bdf5cf5514ceb0b2c6e97"
+        }
+      ]
+    },
+    {
+      "id": "PPL07",
+      "finding": "Native ingredient radius is float: UI slider3..100 maps >=100 to999 and displays finite values with F0. The999 sentinel disables region-distance pruning when abs(999-radius)<1 but the ordinary ground validator still applies distance<999. It is a practical unlimited label, not mathematical infinity. Integer radius and null infinity in the Web adaptation are separate design choices.",
+      "sources": [
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Dialog_BillConfig",
+          "file": ".local-research/production-bills/RimWorld.Dialog_BillConfig.cs",
+          "sha256": "b9edc70a35d57fa5abfc5494dcee784a20d2a5bcd559b3a8f92a5ac7563cba74",
+          "lines": [
+            509,
+            519
+          ],
+          "excerpt_sha256": "94d096a38bafd4056b20de1c44aa4ce8d30de7c7accc2138eeae57a6c28d1f33"
+        },
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            460,
+            461
+          ],
+          "excerpt_sha256": "0dd5b05b7624aa6b4bc15140b303c5ebf7b45bd077c135c06c8e7d882686de7a"
+        },
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            498,
+            521
+          ],
+          "excerpt_sha256": "fb2b4ed7f6d3354bd017b6a18e294bc962174432a53b283252daf0f4b8493116"
+        }
+      ]
+    },
+    {
+      "id": "PPL08",
+      "finding": "PawnAllowedToStartAnew immediately returns pawnRestriction==pawn when a named worker is present. Otherwise category restrictions and an inclusive user skill interval apply using recipe.workSkill and pawn skill or mech fixed level; mechanitor checks follow. Named-worker mode bypasses the user interval in this method. UI hides the0..20 range selector for a named worker or mechs-only mode.",
+      "sources": [
+        {
+          "group": "food",
+          "type": "RimWorld.Bill",
+          "file": ".local-research/food/RimWorld.Bill.cs",
+          "sha256": "11d4a59e1feadd84d17e182e845d5feb7aae7b9da9cb86b6750409fc12a46c2c",
+          "lines": [
+            234,
+            272
+          ],
+          "excerpt_sha256": "2f0c8ece05b8bc57260503c1f72f205ea2724c1f2e2fe8dfeda81990f4790c09"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Dialog_BillConfig",
+          "file": ".local-research/production-bills/RimWorld.Dialog_BillConfig.cs",
+          "sha256": "b9edc70a35d57fa5abfc5494dcee784a20d2a5bcd559b3a8f92a5ac7563cba74",
+          "lines": [
+            249,
+            254
+          ],
+          "excerpt_sha256": "949cb25cf4e2ef6c7a2966a637520ff09d2d37a785ad72c4643a2956e42586d9"
+        }
+      ]
+    },
+    {
+      "id": "PPL09",
+      "finding": "WorkGiver_DoBill independently evaluates recipe.FirstSkillRequirementPawnDoesntSatisfy after PawnAllowedToStartAnew. Named-worker selection therefore does not bypass hard recipe skill requirements. RecipeDef iterates the declared requirements, whereas the user interval uses workSkill. Core component recipe has a Crafting8 requirement; the stone base workSkill is Crafting with learn factor0.",
+      "xml": [
+        "PPLX01"
+      ],
+      "sources": [
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            189,
+            203
+          ],
+          "excerpt_sha256": "7fe2cf86a4fc3481a08323d9d21f59bc4d4f265ad48ea7580dd32869123f1cc6"
+        },
+        {
+          "group": "food",
+          "type": "Verse.RecipeDef",
+          "file": ".local-research/food/Verse.RecipeDef.cs",
+          "sha256": "9a12df678ba67743d3574e9ebfb866d07c2f918cfdd1f42c75d15ae8b5727132",
+          "lines": [
+            573,
+            587
+          ],
+          "excerpt_sha256": "70784bcb947d90f57cd8501c0ebfc4150a1d12ef15f6e522e4cd20b4d7f6fe7a"
+        }
+      ]
+    },
+    {
+      "id": "PPL10",
+      "finding": "Worker dropdown enumerates AllMaps_FreeColonists with an optional validator and stable ordering by label, work skill, active work and incapability. Incapable work types yield disabled options; unassigned workers may be selectable with NotAssigned label. Selecting only sets the bill restriction: it does not enable work or transport a pawn. Setters clear competing named/category modes; dead, faction-changed or kidnapped named pawns are cleared by validation.",
+      "sources": [
+        {
+          "group": "production-policies",
+          "type": "RimWorld.BillDialogUtility",
+          "file": ".local-research/production-policies/RimWorld.BillDialogUtility.cs",
+          "sha256": "b2fb04d2bf2f6b28a8ed6682b2fe6e9eade7a8e7bcaf23de9800542856921774",
+          "lines": [
+            10,
+            90
+          ],
+          "excerpt_sha256": "06f1019dec28f7d8f42f13cb1e192a129db9a00dbd83f426551c5fff393799ae"
+        },
+        {
+          "group": "food",
+          "type": "RimWorld.Bill",
+          "file": ".local-research/food/RimWorld.Bill.cs",
+          "sha256": "11d4a59e1feadd84d17e182e845d5feb7aae7b9da9cb86b6750409fc12a46c2c",
+          "lines": [
+            165,
+            203
+          ],
+          "excerpt_sha256": "56e490a477d2b539910468ae98dd3edbe77e51da9c9c16f0fb33108c7fbdb1f7"
+        },
+        {
+          "group": "food",
+          "type": "RimWorld.Bill",
+          "file": ".local-research/food/RimWorld.Bill.cs",
+          "sha256": "11d4a59e1feadd84d17e182e845d5feb7aae7b9da9cb86b6750409fc12a46c2c",
+          "lines": [
+            482,
+            491
+          ],
+          "excerpt_sha256": "d4bd3724cc7dcd1cfcdbb255bed17584adf64cbd1d96427561f198b247b6ff64"
+        }
+      ]
+    },
+    {
+      "id": "PPL11",
+      "finding": "New jobs capture ingredient targets/counts. Inspected ordinary ingredient-collection and work paths do not continuously reevaluate ingredient filter, radius, named worker or user skill interval. They retain other failure conditions including destroyed/forbidden targets, unusable/deleted bill giver and explicit suspension during work. Long UFT work can check overrides. Policy edits primarily govern subsequent dispatch; absolute uninterruptibility is not claimed.",
+      "sources": [
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            335,
+            351
+          ],
+          "excerpt_sha256": "9b8eab0b17248c62825c7b84537b5bbaf478d337d5ec2ac363d010efbb917cfc"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.JobDriver_DoBill",
+          "file": ".local-research/food/Verse.AI.JobDriver_DoBill.cs",
+          "sha256": "d3641323932ebd795266548bc23f996d74868b2ac7ade766d41604123aa3e9c9",
+          "lines": [
+            69,
+            136
+          ],
+          "excerpt_sha256": "0ce784a16af81fdb47a154269c0808ebdecc5adbb1af50df7260a9b14c4bba55"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            90,
+            165
+          ],
+          "excerpt_sha256": "727d30d1a2169ace47acdaa43231ffde0a3c449c6bdbe4a8d12e76255713d1cb"
+        }
+      ]
+    },
+    {
+      "id": "PPL12",
+      "finding": "Unbound UFT search requires same recipe, same creator, all ingredient defs currently fixed-or-allowed and reservation, searching from pawn with max9999 rather than bill ingredient radius. The bound UFT continuation branch checks bound worker/reachability/reservation/forbidden without the same ingredient re-filter. Outer named-worker and recipe hard-skill checks still precede bound continuation.",
+      "sources": [
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            162,
+            185
+          ],
+          "excerpt_sha256": "c72675e100b3b7b5036dabb6052aad0397b438cfee151f6af02c12fc86924a2f"
+        },
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            189,
+            237
+          ],
+          "excerpt_sha256": "7d60fe0e7b2e6017f2be1c568f6433168ea23626e778519d78c4254ac64ac62a"
+        }
+      ]
+    },
+    {
+      "id": "PPL13",
+      "finding": "Bill serialization retains loadID, recipe, manual suspension, float ingredient radius(default999), user skill interval, pawn references, worker categories and ingredient filter. Clone creates its own filter allowances and copies radius, categories, range and pawn restriction; copying policy does not copy assigned work.",
+      "sources": [
+        {
+          "group": "food",
+          "type": "RimWorld.Bill",
+          "file": ".local-research/food/RimWorld.Bill.cs",
+          "sha256": "11d4a59e1feadd84d17e182e845d5feb7aae7b9da9cb86b6750409fc12a46c2c",
+          "lines": [
+            205,
+            231
+          ],
+          "excerpt_sha256": "458d31ca2ed694ed6368488377d751e27c177884c8b48bf1f2c5be6fd44999ff"
+        },
+        {
+          "group": "food",
+          "type": "RimWorld.Bill",
+          "file": ".local-research/food/RimWorld.Bill.cs",
+          "sha256": "11d4a59e1feadd84d17e182e845d5feb7aae7b9da9cb86b6750409fc12a46c2c",
+          "lines": [
+            457,
+            480
+          ],
+          "excerpt_sha256": "5382e7d87aa9fcfbf5b9bc415333643ef51204c9277e8ccc1d72759dd9bfb9ac"
+        }
+      ]
+    },
+    {
+      "id": "PPL14",
+      "finding": "WorkGiver_DoBill scans ordered bills and continues after worker restriction, hard skill requirement or unavailable ingredients. A blocked first bill need not block later bills. Policy should yield a visible dispatch reason while preserving unrelated bill identity, mode and completed counts.",
+      "sources": [
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            189,
+            221
+          ],
+          "excerpt_sha256": "fd908c44ca291e77934188fa4b3a2df99937906f6051bf8314741350f4b1b5b1"
+        },
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            261,
+            296
+          ],
+          "excerpt_sha256": "3396915c00e2080d5cd7184ff7151bcbd0e103f4eaa7e3fef335461706bb9b67"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Derived C# is not original source and unresolved dependencies are tolerated.",
+    "Core XML is not an evaluated mod/DLC database; generated single-stone recipes are not asserted to be literal XML nodes.",
+    "Ground strict radius and container inclusive radius are distinct inspected paths; exact boundary runtime validation is not included.",
+    "Native radius is horizontal float with999 sentinel; Web integer3..100/null and strict3D distance are adaptations.",
+    "This collector performs no runtime observation; current-job behavior, UI availability and save/load evidence are separately scoped in native-production-policies-runtime.json.",
+    "REA target-framework metadata is literal metadata, not the actual runtime used by the game."
+  ]
+}

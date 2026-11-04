@@ -1,6 +1,6 @@
 # 余烬边境 · Emberfield
 
-v39补齐生产账单管理：同配方多张账单、次数/持续/库存目标、顺序、独立手动暂停与库存恢复线；实物完成后扣次数，缺料跳过、取消退料和在制读档相连。见[118原版机制](docs/research/rimworld/118-production-bills-mechanisms.md)、[119玩法与验证](docs/research/rimworld/119-production-bills-gameplay.md)。数值仍后调，原料筛选、指定工人与独立在制品后续扩展。
+v40接入生产分工与原料规则：每张账单可指定工人或技能区间、三维取料半径、食材及尸体种类筛选。设置驱动实际取料和加工，当前批次保留原料规则，重新接手与下批次遵守新分工；退料与旧档迁移相连。见[120原版机制](docs/research/rimworld/120-production-policies-mechanisms.md)、[121玩法与验证](docs/research/rimworld/121-production-policies-gameplay.md)。先搭机制闭环，数值后调；独立在制品和成品去向后续扩展。
 
 一个可在浏览器游玩的殖民地模拟游戏。目前主要扩展64×64×16的多层体素模式：真实地下开凿、楼层建造、跨层物流、生产、健康和殖民地经营。另保留96×96的二维营地首版，其通信信标与撤离流程属于二维入口。
 

@@ -200,7 +200,7 @@ describe('voxel capture, care, recruitment and release integration', () => {
     const bytes = readFileSync(new URL('./fixtures/voxel-v23-prison-initial.json', import.meta.url));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe('3eac88560e5bf8460e91517998c80fe501ce5be1eeac088e9c0cb3703db216b3');
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old), upgraded = s.save();
-    expect(old.version).toBe(23); expect(upgraded.version).toBe(39);
+    expect(old.version).toBe(23); expect(upgraded.version).toBe(40);
     expect(upgraded.items).toEqual(old.items); expect(upgraded.stats).toEqual(relocationExpectedField('stats', old.stats));
     expect(upgraded.nextId).toBe(old.nextId); expect(upgraded.animals).toMatchObject(old.animals);
     expect(upgraded.pawns).toHaveLength(old.pawns.length);

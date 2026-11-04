@@ -5,6 +5,7 @@ import { freshBatch } from '../src/voxel/preservation';
 import { initialPrisoner } from '../src/voxel/prisoners';
 import { initialSurvival } from '../src/voxel/survival';
 import { SANITATION_RULES } from '../src/voxel/sanitation';
+import { defaultProductionPolicy } from '../src/voxel/productionPolicies';
 
 const pos = (x: number, y = 12): Pos => ({ x, y, z: 8 });
 function command(s: VoxelSimulation, c: VoxelCommand) {
@@ -105,6 +106,8 @@ describe('sanitation physical and interrupted boundaries', () => {
       s.stoves.push(stove); fill(s, [stove]);
       command(s, { type: 'bill', stoveId: stove.id, target: 1, paused: false });
       const job = s.jobs.find(j => j.kind === 'cook')!;
+      // The fixture supplies a prepared batch, including its frozen v40 policy.
+      job.productionPolicy = defaultProductionPolicy();
       job.delivered = { wood: 1, grain: 10 }; job.deliveredBatches = [freshBatch('wood', 1), freshBatch('grain', 10)];
       job.progress = job.work - 1; s.pawns[0].priorities.cook = 1;
     });

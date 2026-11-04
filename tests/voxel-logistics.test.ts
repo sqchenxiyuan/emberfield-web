@@ -8,6 +8,7 @@ import { makeApparel, validApparel } from '../src/voxel/apparel';
 import { makeWeapon, validWeapon } from '../src/voxel/weapons';
 import { makeFurniturePiece, validFurniturePiece } from '../src/voxel/relocation';
 import { plantYield } from '../src/voxel/skills';
+import { defaultProductionPolicy } from '../src/voxel/productionPolicies';
 import {
   Block,
   DAY,
@@ -273,7 +274,7 @@ describe('bounded physical stacks and hauling reservations', () => {
     expect(s.items.filter((i) => i.resource === 'food').map((i) => i.amount)).toEqual([
       10, 10, 10, 10, 10, 10,
     ]);
-    expect(s.save().version).toBe(39);
+    expect(s.save().version).toBe(40);
     expect(VoxelSimulation.load(s.save()).counts()).toEqual(s.counts());
   });
   it.each(resources)('carries and stores %s only within its native one-stack limit', (resource) => {
@@ -447,6 +448,9 @@ describe('bounded outputs and interrupted physical containers', () => {
       s.stoves.push({ ...stove, id: s.nextId++, target: 21, paused: false });
       command(s, { type: 'bill', stoveId: s.stoves[0].id, target: 21, paused: false });
       const job = s.jobs.find((j) => j.kind === 'cook')!;
+      // This controlled fixture injects a prepared batch, including its v40
+      // input policy, rather than fetching those ingredients through assignment.
+      job.productionPolicy = defaultProductionPolicy();
       job.delivered = { wood: 1, grain: 10 };
       job.deliveredBatches = [freshBatch('wood', 1), { ...freshBatch('grain', 10, 'potato'), rotProgress: 100 }];
       job.progress = job.work - 1;

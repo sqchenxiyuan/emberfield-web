@@ -5,19 +5,25 @@ import { SIMPLE_MEAL } from './farming';
 import { armorResearchReason, toolResearchReason, weaponResearchReason } from './research';
 import {
   MAX_PRODUCTION_AMOUNT, MAX_PRODUCTION_BILLS, makeProductionBill, productionJobRecipe,
-  type ProductionBill, type ProductionQueue, type ProductionRecipe,
+  type ProductionBill, type ProductionPolicy, type ProductionQueue, type ProductionRecipe,
 } from './productionBills';
 import { SMITHY_FUEL_CAPACITY, SMITHY_REFUEL_AT, WEAPON_BENCH_NAMES } from './weaponProduction';
 import { WEAPON_DEFS, WEAPON_NAMES, type WeaponKind } from './weapons';
+import { ANIMAL_DEFS } from './wildlife';
 import {
   RESOURCE_NAMES, stonecutterInteraction, tailorInteraction, weaponBenchInteraction,
-  type ApparelKind, type ArmorKind, type Counts, type Job, type Pos, type VoxelCommand, type VoxelSnapshot,
+  type AnimalSpecies, type ApparelKind, type ArmorKind, type Counts, type Job, type Pos, type VoxelCommand, type VoxelSnapshot,
 } from './types';
 
-type BillPatch = Partial<Pick<ProductionBill, 'mode' | 'remaining' | 'target' | 'suspended' | 'pauseWhenSatisfied' | 'resumeBelow'>>;
+type BillPatch = Partial<Pick<ProductionBill, 'mode' | 'remaining' | 'target' | 'suspended' | 'pauseWhenSatisfied' | 'resumeBelow' | 'policy'>>;
+const FOOD_TYPES = ['grain', 'meat'] as const;
+const FOOD_NAMES = { grain: '谷物', meat: '生肉' };
+const CARCASS_SPECIES = Object.keys(ANIMAL_DEFS) as AnimalSpecies[];
 const same = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
 const materials = (cost: Readonly<Partial<Counts>>) => Object.entries(cost)
   .map(([resource, amount]) => `${amount} ${RESOURCE_NAMES[resource as keyof Counts]}`).join(' + ');
+const emptyIngredientFilter = (bill: ProductionBill) => bill.recipe === 'cook' && bill.policy.allowedFood.length === 0
+  ? '未允许任何食材' : bill.recipe === 'butcher' && bill.policy.allowedCarcasses.length === 0 ? '未允许任何动物尸体' : null;
 
 function recipeDetails(recipe: ProductionRecipe, snapshot: VoxelSnapshot) {
   if (recipe === 'cook') return { name: '烹饪简餐', unit: '份',
@@ -42,12 +48,12 @@ function recipeDetails(recipe: ProductionRecipe, snapshot: VoxelSnapshot) {
 }
 
 /** Commit on blur or Enter so a running snapshot cannot interrupt number entry. */
-function BillNumber({ label, value, max = MAX_PRODUCTION_AMOUNT, commit }: {
-  label: string; value: number; max?: number; commit: (value: number) => void;
+function BillNumber({ label, value, min = 0, max = MAX_PRODUCTION_AMOUNT, commit }: {
+  label: string; value: number; min?: number; max?: number; commit: (value: number) => void;
 }) {
   const [draft, setDraft] = useState(String(value)), editing = useRef(false), dirty = useRef(false);
   useEffect(() => { if (!editing.current) setDraft(String(value)); }, [value]);
-  return <input type="number" aria-label={label} min={0} max={max} step={1} inputMode="numeric" value={draft}
+  return <input type="number" aria-label={label} min={min} max={max} step={1} inputMode="numeric" value={draft}
     onFocus={() => { editing.current = true; dirty.current = false; }} onChange={event => { dirty.current = true; setDraft(event.target.value); }}
     onKeyDown={event => { if (event.key === 'Enter') { event.preventDefault(); event.currentTarget.blur(); } }}
     onBlur={event => {
@@ -55,8 +61,73 @@ function BillNumber({ label, value, max = MAX_PRODUCTION_AMOUNT, commit }: {
       if (!dirty.current) { setDraft(String(value)); return; }
       const number = Number(event.currentTarget.value);
       if (!event.currentTarget.value.trim() || !Number.isSafeInteger(number)) { setDraft(String(value)); return; }
-      const next = Math.max(0, Math.min(max, number)); setDraft(String(next)); if (next !== value) commit(next);
+      const next = Math.max(min, Math.min(max, number)); setDraft(String(next)); if (next !== value) commit(next);
     }} />;
+}
+
+function BillPolicy({ bill, snapshot, update }: {
+  bill: ProductionBill; snapshot: VoxelSnapshot; update: (patch: BillPatch) => void;
+}) {
+  const policy = bill.policy, culinary = bill.recipe === 'cook' || bill.recipe === 'butcher';
+  const skill = culinary ? 'cooking' : 'crafting', skillName = culinary ? '烹饪' : '工艺';
+  const work = culinary ? 'cook' : 'craft', workName = culinary ? '烹饪' : '加工';
+  const workers = snapshot.pawns.filter(pawn => pawn.faction === 'colony' && !pawn.dead);
+  const worker = workers.find(pawn => pawn.id === policy.workerId);
+  const missingWorker = policy.workerId !== null && !worker;
+  const updatePolicy = (patch: Partial<ProductionPolicy>) => update({ policy: { ...policy, ...patch } });
+  const emptyFilter = emptyIngredientFilter(bill);
+  return <details className="voxel-production-policy" data-testid="bill-policy">
+    <summary>分工与原料</summary>
+    <div className="voxel-production-policy-body">
+      <label className="voxel-production-policy-worker">执行工人<select aria-label="账单执行工人" value={policy.workerId ?? 'any'}
+        onChange={event => updatePolicy({ workerId: event.target.value === 'any' ? null : Number(event.target.value) })}>
+        <option value="any">任何符合条件的殖民者</option>
+        {missingWorker && <option value={policy.workerId!} disabled>原指定工人 #{policy.workerId}（不可用）</option>}
+        {workers.map(pawn => <option key={pawn.id} value={pawn.id}>
+          {pawn.name} · {skillName} {pawn.skills[skill].level} 级{pawn.priorities[work] > 0 ? '' : ` · 未开启${workName}`}
+        </option>)}
+      </select></label>
+      {policy.workerId === null ? <>
+        <div className="voxel-production-policy-skills">
+          <label>最低{skillName}<BillNumber label="最低技能等级" value={policy.skillMin} max={20}
+            commit={skillMin => updatePolicy({ skillMin, skillMax: Math.max(policy.skillMax, skillMin) })} /></label>
+          <label>最高{skillName}<BillNumber label="最高技能等级" value={policy.skillMax} max={20}
+            commit={skillMax => updatePolicy({ skillMax, skillMin: Math.min(policy.skillMin, skillMax) })} /></label>
+        </div>
+        <small>只接受{skillName} {policy.skillMin}～{policy.skillMax} 级的工人；还需开启「{workName}」分工并满足配方要求。</small>
+      </> : <small data-testid="bill-policy-worker-note" className={missingWorker || !worker?.priorities[work] ? 'voxel-production-policy-warning' : undefined}>
+        {worker ? `${worker.name} · ${skillName} ${worker.skills[skill].level} 级${worker.priorities[work] > 0 ? '' : ` · 未开启「${workName}」分工`}`
+          : '原指定工人不可用，请重新选择。'}
+        {worker && '。指定工人不受技能区间筛选，仍需满足配方的技能要求并开启对应分工。'}
+      </small>}
+      <label>取料范围<select aria-label="取料范围" value={policy.ingredientRadius === null ? 'unlimited' : 'radius'}
+        onChange={event => updatePolicy({ ingredientRadius: event.target.value === 'unlimited' ? null : policy.ingredientRadius ?? 100 })}>
+        <option value="unlimited">不限距离</option><option value="radius">限制半径</option>
+      </select></label>
+      {policy.ingredientRadius !== null && <label>搜索半径（格）<BillNumber label="原料搜索半径" value={policy.ingredientRadius} min={3} max={100}
+        commit={ingredientRadius => updatePolicy({ ingredientRadius })} /></label>}
+      <small data-testid="bill-policy-radius-note">{policy.ingredientRadius === null ? '取料不限制距离，仍需能走到原料旁。'
+        : `以工作台为中心，只从三维直线距离小于 ${policy.ingredientRadius} 格的位置取料，包含高度差；这不是行走路程。`}</small>
+      {bill.recipe === 'cook' ? <fieldset data-testid="bill-food-filter"><legend>允许的食材</legend>
+        {FOOD_TYPES.map(resource => <label key={resource} className="voxel-production-check"><input type="checkbox"
+          aria-label={`允许${FOOD_NAMES[resource]}`} checked={policy.allowedFood.includes(resource)} onChange={event => {
+            const checked = event.target.checked;
+            updatePolicy({ allowedFood: FOOD_TYPES.filter(value => value === resource ? checked : policy.allowedFood.includes(value)) });
+          }} />{FOOD_NAMES[resource]}</label>)}
+        <small>木材是配方必需原料，不受食材勾选影响；取料半径仍适用。</small>
+      </fieldset> : bill.recipe === 'butcher' ? <fieldset data-testid="bill-carcass-filter"><legend>允许的动物尸体</legend>
+        {CARCASS_SPECIES.map(species => <label key={species} className="voxel-production-check"><input type="checkbox"
+          aria-label={`允许${ANIMAL_DEFS[species].name}尸体`} checked={policy.allowedCarcasses.includes(species)} onChange={event => {
+            const checked = event.target.checked;
+            updatePolicy({ allowedCarcasses: CARCASS_SPECIES.filter(value => value === species ? checked : policy.allowedCarcasses.includes(value)) });
+          }} />{ANIMAL_DEFS[species].name}尸体</label>)}
+      </fieldset> : <small data-testid="bill-fixed-ingredients">本配方使用固定原料，不能取消其中的材料；取料半径仍适用。具体用量见「配方与要求」。</small>}
+      {emptyFilter && <small className="voxel-production-policy-warning" data-testid="bill-policy-empty-ingredients">
+        {emptyFilter}，后续批次会缺料等待。重新允许至少一种后才能备料。</small>}
+      <small className="voxel-production-policy-timing" data-testid="bill-policy-timing">
+        已领取的批次保留原取料规则，正在加工的工人继续工作。下一次接手按新的工人限制判断。</small>
+    </div>
+  </details>;
 }
 
 function BillRow({ bill, index, total, job, snapshot, update, move, remove }: {
@@ -69,6 +140,7 @@ function BillRow({ bill, index, total, job, snapshot, update, move, remove }: {
     : bill.mode === 'count' && bill.remaining === 0 ? { key: 'completed', text: '次数已完成' }
     : bill.mode === 'target' && bill.waiting ? { key: 'waiting', text: '等库存降至恢复线' }
     : recipe.research ? { key: 'research', text: '等待研究' }
+    : emptyIngredientFilter(bill) ? { key: 'ingredients', text: emptyIngredientFilter(bill)! }
     : bill.mode === 'target' ? { key: 'waiting', text: bill.target === 0 ? '目标为零，不开新批次' : '按库存目标等待' }
     : { key: 'ready', text: '等待安排生产' };
   return <li className="voxel-production-row" data-testid="bill-row" data-bill-id={bill.id} data-recipe={bill.recipe}
@@ -112,6 +184,7 @@ function BillRow({ bill, index, total, job, snapshot, update, move, remove }: {
         .map(([resource, amount]) => `${RESOURCE_NAMES[resource as keyof Counts]} ${job.delivered[resource as keyof Counts] ?? 0}/${amount}`).join(' · ')}</small>}
     </div>}
     {recipe.research && <small className="voxel-production-research" data-testid="bill-research-lock">{recipe.research}，完成后才能开工。</small>}
+    <BillPolicy bill={bill} snapshot={snapshot} update={update} />
     <details className="voxel-production-recipe"><summary>配方与要求</summary><small>{recipe.description}</small><small>{recipe.note}</small></details>
   </li>;
 }
