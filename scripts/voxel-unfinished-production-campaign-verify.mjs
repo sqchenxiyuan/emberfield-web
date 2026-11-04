@@ -12,6 +12,8 @@ await mkdir(OUT,{recursive:true});
 const bundle=await build({entryPoints:['src/voxel/world.ts'],bundle:true,platform:'node',format:'esm',write:false});
 const {VoxelSimulation}=await import('data:text/javascript;base64,'+Buffer.from(bundle.outputFiles[0].text).toString('base64'));
 let s=VoxelSimulation.load(JSON.parse(bytes));
+assert.equal(s.save().version,42);
+for(const queue of s.productionQueues)for(const bill of queue.bills)assert.deepEqual(bill.output,{mode:'drop',target:null});
 const initial=s.counts(),initialStats=structuredClone(s.stats);
 const report={status:'running',input,inputSha256:sha(bytes),inputVersion:40,inputTick:s.tick,scriptSha256:sha(await readFile(new URL(import.meta.url))),
   bundleSha256:sha(bundle.outputFiles[0].contents),scope:'Single continuous ordinary-command continuation of an unchanged SHA-verified authentic v40 save. Read-only snapshots, path and geometry inspection select targets; no terrain, inventory, skills, needs, timers, position or RNG mutation. All material ledgers audited on every command and simulation tick.',commands:[],checks:[],checkpoints:[]};

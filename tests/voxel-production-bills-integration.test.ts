@@ -6,6 +6,7 @@ import { Block, index, type Pawn, type Pos, type Resource, type VoxelCommand } f
 import { freshBatch } from '../src/voxel/preservation';
 import { initialResearch } from '../src/voxel/research';
 import { type ProductionBill, type ProductionRecipe } from '../src/voxel/productionBills';
+import { stripUnfinishedFields } from './legacy-unfinished-defaults';
 
 const pos = (x: number, y = 16): Pos => ({ x, y, z: 8 });
 const same = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
@@ -298,8 +299,8 @@ describe('production bill command and physical lifecycle integration', () => {
     expect(() => VoxelSimulation.load(collision)).toThrow();
     const missing = s.save() as any; delete missing.productionQueues;
     expect(() => VoxelSimulation.load(missing)).toThrow();
-    const oldSpoof = s.save() as any; oldSpoof.version = 38;
-    expect(() => VoxelSimulation.load(oldSpoof)).toThrow();
+    const oldSpoof = s.save() as any; stripUnfinishedFields(oldSpoof); oldSpoof.version = 38;
+    expect(() => VoxelSimulation.load(oldSpoof)).toThrow(/旧版存档混入生产账单字段/);
   });
 
   it('migrates authentic v38 bytes without adding products, changing bills or inventing a current queue', () => {
@@ -307,7 +308,7 @@ describe('production bill command and physical lifecycle integration', () => {
     const provenance = JSON.parse(readFileSync(new URL('./fixtures/voxel-v38-before-production-bills.provenance.json', import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(provenance.sha256);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old), current = s.save();
-    expect(old.version).toBe(38); expect(current.version).toBe(41); expect(current.productionQueues).toEqual([]);
+    expect(old.version).toBe(38); expect(current.version).toBe(42); expect(current.productionQueues).toEqual([]);
     for (const field of ['items', 'jobs', 'stoves', 'stonecutters', 'tailors', 'weaponBenches', 'butcherSpots', 'nextId', 'blocks'] as const)
       expect(current[field], field).toEqual(old[field]);
     const stats = structuredClone(current.stats);

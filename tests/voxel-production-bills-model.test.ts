@@ -35,7 +35,10 @@ describe('production bill defaults and recipe ownership', () => {
   it('adapts every legacy bench without losing its targets, suspension or order', () => {
     const host = fixture(), resolved = productionQueues(host, []);
     expect(resolved.map(value => value.benchId)).toEqual([1, 2, 3, 4, 5, 6, 7]);
-    expect(resolved[0].bills).toEqual([bill({ id: 'legacy:1:cook', mode: 'target', target: 12 })]);
+    expect(resolved[0].bills).toEqual([bill({ id: 'legacy:1:cook', mode: 'target', target: 12,
+      output: { mode: 'drop', target: null } })]);
+    for (const queue of resolved) for (const value of queue.bills)
+      expect(value.output).toEqual({ mode: 'drop', target: null });
     expect(resolved[1].bills[0]).toMatchObject({ id: 'legacy:2:butcher', mode: 'forever', suspended: true });
     expect(resolved[2].bills[0]).toMatchObject({ mode: 'target', target: 80 });
     expect(resolved[3].bills.map(value => value.recipe)).toEqual(TAILOR_KINDS.map(kind => `tailoring:${kind}`));

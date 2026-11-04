@@ -41,6 +41,7 @@ export interface ClientState {
   material: 'wood' | 'stone';
   selectedPenId: number | null;
   selectedAnimalAreaId: number | null;
+  stockpileZoneId: string | null;
   animalAreaErase: boolean;
   placementPreview: PlacementPreview | null;
   furniturePlacement: FurniturePlacement | null;
@@ -76,6 +77,7 @@ export class VoxelClient {
     material: 'wood',
     selectedPenId: null,
     selectedAnimalAreaId: null,
+    stockpileZoneId: null,
     animalAreaErase: false,
     placementPreview: null,
     furniturePlacement: null,
@@ -131,6 +133,8 @@ export class VoxelClient {
         this.sendRender({ type: 'chunks', chunks: d.chunks });
         this.sendRender({ type: 'snapshot', snapshot: d.snapshot });
         this.emit({ snapshot: d.snapshot });
+        if (this.state.stockpileZoneId !== null &&
+          !this.state.snapshot?.stockpileZones.some(zone => zone.id === this.state.stockpileZoneId)) this.choose('inspect');
         if (first) this.home();
       }
     };
@@ -153,6 +157,7 @@ export class VoxelClient {
   export = (): Promise<VoxelSave> => this.request('save');
   import = async (save: unknown) => {
     await this.request('load', { save });
+    if (this.state.stockpileZoneId !== null) this.choose('inspect');
     this.endFurniturePlacement();
     this.view({ penId: null, animalAreaId: null });
     this.home();
@@ -172,6 +177,7 @@ export class VoxelClient {
   previewSite = (site: WorldSite): Promise<WorldPreview> => this.request('previewSite', { site });
   newSiteGame = async (site: WorldSite) => {
     await this.request('newSite', { site });
+    if (this.state.stockpileZoneId !== null) this.choose('inspect');
     this.endFurniturePlacement();
     this.view({ penId: null, animalAreaId: null });
     this.home();
@@ -179,6 +185,7 @@ export class VoxelClient {
   };
   newGame = async (seed: number, settings?: WorldSettings) => {
     await this.request('new', { seed, settings });
+    if (this.state.stockpileZoneId !== null) this.choose('inspect');
     this.endFurniturePlacement();
     this.view({ penId: null, animalAreaId: null });
     this.home();
@@ -186,7 +193,14 @@ export class VoxelClient {
   };
   choose = (tool: Tool) => {
     this.cancelPlacement();
-    this.emit({ tool, furniturePlacement: null });
+    this.emit({ tool, furniturePlacement: null, stockpileZoneId: null });
+  };
+  beginStockpileExpansion = (zoneId: string) => {
+    const zone = this.state.snapshot?.stockpileZones.find(zone => zone.id === zoneId);
+    if (!zone) { this.notice('这个仓库区已不存在，请重新选择'); return; }
+    this.choose('stock');
+    this.emit({ stockpileZoneId: zone.id });
+    this.notice(`拖动扩展“${zone.name}”；右键或 Esc 结束扩展`);
   };
   showPen = (id: number | null) => {
     if (this.state.tool === 'animalArea') this.choose('inspect');
@@ -462,6 +476,7 @@ export class VoxelClient {
           from,
           to: single ? from : { ...to, z: from.z },
           crop: this.state.crop,
+          ...(tool === 'stock' && this.state.stockpileZoneId !== null ? { zoneId: this.state.stockpileZoneId } : {}),
           ...(tool === 'grove' ? { treeSpecies: this.state.treeSpecies } : {}),
           axis: this.state.axis,
           ...(['wall', 'floor'].includes(tool) ? { material: this.state.material } : {}),

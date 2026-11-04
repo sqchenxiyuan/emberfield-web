@@ -667,6 +667,7 @@ export interface CombatState {
   wave: number;
 }
 export interface Pawn extends Pos {
+  productionDelivery?: import('./productionOutput').ProductionDelivery;
   social: SocialState;
   living: LivingState;
   ropeTask: RopeTask | null;
@@ -793,6 +794,7 @@ export interface VoxelStats {
   spoiled: Counts;
 }
 export interface VoxelSnapshot {
+  stockpileZones: import('./stockpileZones').StockpileZone[];
   productionQueues: import('./productionBills').ProductionQueue[];
   socialHistory: SocialIdentity[];
   socialLog: SocialEvent[];
@@ -886,7 +888,8 @@ export interface ChunkUpdate {
 }
 export type VoxelCommand =
   | { type: 'productionBillAdd'; benchId: number; recipe: import('./productionBills').ProductionRecipe }
-  | { type: 'productionBillUpdate'; benchId: number; billId: string; patch: Partial<Pick<import('./productionBills').ProductionBill, 'mode' | 'remaining' | 'target' | 'suspended' | 'pauseWhenSatisfied' | 'resumeBelow' | 'policy'>> }
+  | { type: 'productionBillUpdate'; benchId: number; billId: string; patch: Partial<Pick<import('./productionBills').ProductionBill, 'mode' | 'remaining' | 'target' | 'suspended' | 'pauseWhenSatisfied' | 'resumeBelow' | 'policy' | 'output'>> }
+  | { type: 'stockpileZoneRename'; zoneId: string; name: string }
   | { type: 'productionBillMove'; benchId: number; billId: string; direction: -1 | 1 }
   | { type: 'productionBillDelete'; benchId: number; billId: string }
   | { type: 'unfinishedCancel'; unfinishedId: number }
@@ -946,6 +949,7 @@ export type VoxelCommand =
   | { type: 'device'; deviceId: number; on: boolean; target: number }
   | {
       type: 'designate';
+      zoneId?: string;
       tool: Tool;
       from: Pos;
       to?: Pos;
@@ -976,6 +980,7 @@ export interface CommandResult {
   count?: number;
 }
 export interface VoxelSave {
+  stockpileZones: import('./stockpileZones').StockpileZone[];
   productionQueues: import('./productionBills').ProductionQueue[];
   shelves: Shelf[];
   storageGroups: StorageGroup[];
@@ -999,7 +1004,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 41;
+  version: 42;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;

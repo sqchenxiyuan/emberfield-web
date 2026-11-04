@@ -521,8 +521,13 @@ import { defaultProductionQueue, productionQueues, productionJobRecipe, canStart
   type ProductionBill, type ProductionQueue, type ProductionRecipe } from './productionBills';
 import { defaultProductionPolicy, productionPolicyWorkerReason, productionPolicyAllowsIngredient } from './productionPolicies';
 import { recipeUsesUnfinished, validateUnfinishedProduction } from './unfinishedProduction';
+import { defaultProductionOutput, productionOutputTargetCells, productionOutputTargetExists, productionOutputTargetName,
+  reconcileProductionOutputs, validateProductionOutputState, type ProductionDelivery } from './productionOutput';
+import { migrateStockpileZones, reconcileStockpileZones, createStockpileZone, expandStockpileZone,
+  renameStockpileZone, stockpileZoneAt, validateStockpileZones, type StockpileZone } from './stockpileZones';
 
 export class VoxelSimulation {
+  stockpileZones: StockpileZone[] = [];
   /** Sparse overrides: untouched legacy recipes retain their published defaults. */
   productionQueues: ProductionQueue[] = [];
   weather: WeatherState;
@@ -1235,8 +1240,11 @@ export class VoxelSimulation {
     distance = DROP_DISTANCE,
     forbidden = new Set<number>(),
     ignorePawnId?: number,
+    additionalReservation?: { cell: number; batch: Cargo },
   ) {
     const items = base.map((i) => ({ ...i })), context = this.storageContext(items, ignorePawnId);
+    if (additionalReservation) context.reservations.set(additionalReservation.cell,
+      [...(context.reservations.get(additionalReservation.cell) ?? []), additionalReservation.batch]);
     let nextId = this.nextId;
     for (const { batch, origin, cells, sourceId } of entries) {
       let left = batch.amount;
@@ -1364,13 +1372,15 @@ export class VoxelSimulation {
     batch: Cargo,
     minimumPriority = -1,
     ignorePawnId?: number,
+    allowedCells?: Set<number>,
+    items = this.items,
   ): (StorageCell & { stand: number }) | undefined {
-    const context = this.storageContext(this.items, ignorePawnId);
+    const context = this.storageContext(items, ignorePawnId);
     let best: (StorageCell & { stand: number }) | undefined;
     for (const s of this.storageCells()) {
       const stand = this.reachableItemStand(s);
       if (
-        s.priority <= minimumPriority ||
+        (allowedCells && !allowedCells.has(at(s))) || s.priority <= minimumPriority ||
         this.storageSpace(s, batch, ignorePawnId, context) <= 0 ||
         stand < 0
       )
@@ -1383,6 +1393,52 @@ export class VoxelSimulation {
         best = { ...s, stand };
     }
     return best;
+  }
+  private reconcileProductionStorage() {
+    reconcileStockpileZones(this);
+    reconcileProductionOutputs(this);
+  }
+  private interruptProductionDelivery(p: Pawn) {
+    const task = p.productionDelivery;
+    this.release(p);
+    if (task && p.cargo && !p.dead && !p.downed && !p.drafted && p.faction === 'colony') {
+      p.productionDelivery = { ...task, state: 'dropping' };
+      // A caller may still hold a pending shelf-removal placement plan. Dropping
+      // here would create goods that its later commit overwrites. Keep ownership
+      // on the pawn until the transaction has ended and normal ticks can drop it.
+      p.reason = '送货目标或通路改变，保留成品等待就近放下';
+    }
+  }
+  /** A completed producer delivers its own cargo without entering the work
+   * scheduler or reusing that cargo as another job's ingredients. */
+  private continueProductionDelivery(p: Pawn) {
+    const task = p.productionDelivery;
+    if (!task || !p.cargo) { this.release(p); return; }
+    const drop = () => {
+      task.state = 'dropping';
+      this.storageReservations.delete(p.id); p.path = []; p.destination = null; p.phase = 'idle';
+      if (this.dropCargo(p)) { this.release(p); p.reason = '成品送货中断，已放在附近'; }
+      else p.reason = '附近没有落点，保留成品等待空间';
+    };
+    if (task.state === 'dropping') { drop(); return; }
+    this.search(p);
+    const target = this.storageCells().find(s => at(s) === task.cell);
+    const stand = target ? this.reachableItemStand(target) : -1;
+    if (!target || stand < 0 || this.storageSpace(target, p.cargo, p.id) < p.cargo.amount ||
+        (task.mode === 'specific' && !productionOutputTargetCells(this, task.target!).includes(task.cell))) {
+      drop(); return;
+    }
+    if (this.reserveStorage(p, p.cargo, target, null) !== p.cargo.amount) { drop(); return; }
+    if (!this.itemTouch(p, target)) {
+      this.go(p, stand, 'haul');
+      p.reason = `制作完成，送往${productionOutputTargetName(this, task.target)}`;
+      return;
+    }
+    const amount = p.cargo.amount;
+    const plan = this.planPlacement([{batch:p.cargo, origin:target, cells:[target]}], this.items, 0, new Set(), p.id);
+    if (!plan) { drop(); return; }
+    this.commitPlacement(plan); this.stats.hauled += amount; p.cargo = null;
+    this.release(p); p.reason = '成品已送入仓库';
   }
   private canImproveStorage(item: Stack): boolean {
     const priority = this.storagePriority(item), context = this.storageContext();
@@ -2093,7 +2149,7 @@ export class VoxelSimulation {
       } else {
         const patch = c.patch;
         if (!patch || typeof patch !== 'object' || Array.isArray(patch) || Object.keys(patch).some(k =>
-          !['mode', 'remaining', 'target', 'suspended', 'pauseWhenSatisfied', 'resumeBelow', 'policy'].includes(k)))
+          !['mode', 'remaining', 'target', 'suspended', 'pauseWhenSatisfied', 'resumeBelow', 'policy', 'output'].includes(k)))
           return { ok: false, message: '账单设置无效' };
         if (patch.policy?.workerId != null && !this.pawns.some(p => p.id === patch.policy!.workerId && !p.dead && p.faction === 'colony'))
           return { ok: false, message: '只能指定仍在营地的殖民者' };
@@ -2105,6 +2161,8 @@ export class VoxelSimulation {
     const overrides = [...this.productionQueues.filter(q => q.benchId !== c.benchId), queue];
     try { validateProductionQueues(overrides, this, this.nextId + (c.type === 'productionBillAdd' ? 1 : 0), []); }
     catch { return { ok: false, message: '账单数量、生产模式或恢复阈值无效' }; }
+    if (queue.bills.some(b => b.output.target && !productionOutputTargetExists(this, b.output.target)))
+      return { ok: false, message: '指定仓库已不存在，请重新选择' };
     // Bind any in-flight legacy job before the queue changes, including deletion.
     const bench = this.productionBenches().find(b => b.id === c.benchId)!;
     for (const j of this.jobs) if (same(j, bench) && productionJobRecipe(j) && !j.billId)
@@ -2270,6 +2328,7 @@ export class VoxelSimulation {
     }
   }
   private syncProduction() {
+    this.reconcileProductionStorage();
     this.validateProductionWorkers();
     this.reconcileUnfinishedBindings();
     for (const j of [...this.jobs])
@@ -2347,11 +2406,16 @@ export class VoxelSimulation {
   }
   command(c: VoxelCommand): CommandResult {
     const result=this.dispatchCommand(c);
-    if(result.ok)reconcileStorageGroups(this);
+    if(result.ok) { reconcileStorageGroups(this); this.reconcileProductionStorage(); }
     return result;
   }
   private dispatchCommand(c: VoxelCommand): CommandResult {
     if (!c || typeof c !== 'object') return { ok: false, message: '命令格式无效' };
+    if (c.type === 'stockpileZoneRename') {
+      const result = renameStockpileZone(this, c.zoneId, c.name);
+      if (result.ok) this.revision++;
+      return result;
+    }
     if (c.type === 'unfinishedCancel' || c.type === 'unfinishedForbid') return this.unfinishedCommand(c);
     const groupResult=storageGroupCommand(this,c);
     if(groupResult) {
@@ -3113,6 +3177,9 @@ export class VoxelSimulation {
       };
     }
     if (c.tool === 'stock') {
+      if (new Set(positions.map(p => p.z)).size !== 1 ||
+          (c.zoneId !== undefined && !this.stockpileZones.some(z => z.id === c.zoneId)))
+        return { ok: false, message: '仓库需要在同一楼层划定，扩展目标必须仍然存在' };
       if (
         positions.some(
           (p) =>
@@ -3148,9 +3215,17 @@ export class VoxelSimulation {
         4096
       )
         return { ok: false, message: '仓储最多 4096 格，请缩小范围' };
-      for (const p of positions)
-        if (!this.stockpiles.some((s) => same(s, p)))
-          this.stockpiles.push({ ...p, priority: 1, accepts: [...resources] });
+      this.reconcileProductionStorage();
+      const newCells = positions.filter(p => !this.stockpiles.some(s => same(s, p)));
+      const trial = {stockpiles:[...this.stockpiles, ...newCells.map(p => ({...p,priority:1,accepts:[...resources]}))],
+        stockpileZones:structuredClone(this.stockpileZones), nextId:this.nextId};
+      const zoneId = c.zoneId ?? stockpileZoneAt(this.stockpileZones, at(c.from))?.id;
+      if (newCells.length) {
+        const result = zoneId ? expandStockpileZone(trial, zoneId, newCells.map(at)) : createStockpileZone(trial, newCells.map(at));
+        if (!result.ok) return result;
+        this.stockpiles = trial.stockpiles; this.stockpileZones = trial.stockpileZones; this.nextId = trial.nextId;
+      }
+      this.revision++;
       return {
         ok: true,
         message: `划定 ${positions.length} 格仓储；可搬运的物资将送往最近仓储`,
@@ -3634,7 +3709,7 @@ export class VoxelSimulation {
     const cells = new Set(shelfCells(shelf).map(at));
     this.invalidateStackPlans(this.items.filter(i=>cells.has(at(i))),'货架已改变，重新安排取放');
     for (const [id,r] of [...this.storageReservations]) if (cells.has(r.cell)) {
-      const p = this.pawns.find(p=>p.id===id); if (p) this.release(p); else this.storageReservations.delete(id);
+      const p = this.pawns.find(p=>p.id===id); if (p) this.interruptProductionDelivery(p); else this.storageReservations.delete(id);
     }
   }
   private relocationCommand(c: Extract<VoxelCommand,{type:'uninstallFurniture'|'installFurniture'|'cancelFurnitureMove'}>): CommandResult {
@@ -5592,7 +5667,7 @@ export class VoxelSimulation {
     }
     this.pruneStorageSpills();
     this.storageReservations.clear(); this.fetchReservations.clear();
-    for (const p of this.pawns) if (p.phase === 'haul' || p.phase === 'fetch') this.release(p);
+    for (const p of this.pawns) if (p.phase === 'haul' || p.phase === 'fetch') this.interruptProductionDelivery(p);
     this.roomsDirty = true; this.powerDirty = true; this.changed(target); this.pruneFilth();
     this.reconcileRelocationJobs();
     this.reconcileFireState(); this.updateRooms(); this.updatePower();
@@ -5600,6 +5675,7 @@ export class VoxelSimulation {
     return true;
   }
   private release(p: Pawn) {
+    delete p.productionDelivery;
     if (p.phase === 'rest' && p.sleepingSince !== null && this.tick - p.sleepingSince >= LIVING_RULES.sleepThoughtDelay &&
         !p.dead && !p.downed && this.beds.some(b => b.id === p.sleepBedId && b.owner === p.id && !b.medical && !b.prisoner))
       rememberSleep(p.living, this.livingRoomAt(p), this.tick);
@@ -5761,7 +5837,7 @@ export class VoxelSimulation {
     if (this.tick < p.moveTick) return;
     const next = p.path[0];
     if (!this.neighbors(p).includes(next)) {
-      this.release(p); p.reason = '通路改变，等待重新规划'; return;
+      this.interruptProductionDelivery(p); p.reason = '通路改变，等待重新规划'; return;
     }
     const door = this.gateAt(position(next)) ?? this.doors.find(d => same(d, position(next)));
     if (door?.mode === 'auto') {
@@ -6327,6 +6403,7 @@ export class VoxelSimulation {
   }
   private deliverCargo(p: Pawn) {
     if (!p.cargo) return;
+    if (p.productionDelivery) { this.continueProductionDelivery(p); return; }
     if (p.cargo.unfinished && p.cargo.forbidden) {
       this.release(p); this.dropCargo(p); p.reason = '未完成品已禁止搬运和续作'; return;
     }
@@ -6579,6 +6656,7 @@ export class VoxelSimulation {
       return;
     }
     if (p.phase === 'haul') {
+      if (p.productionDelivery) { this.continueProductionDelivery(p); return; }
       if (p.cargo) {
         this.search(p);
         const reservation = this.storageReservations.get(p.id);
@@ -7176,11 +7254,35 @@ export class VoxelSimulation {
       }));
     for (const entry of output) if (entry.batch.resource === 'meal' && j.cookingOutcome)
       (entry.batch as Cargo).poisonChance = j.cookingOutcome.poisonChance;
+    const baseItems = this.items.filter(i => !displacedIds.has(i.id) && (j.unfinishedId === undefined || i.unfinished?.id !== j.unfinishedId));
+    const completedProductionBill = this.productionBillFor(j);
+    let productionDelivery: { batch: Cargo; task: ProductionDelivery } | undefined;
+    const floorOutput = output.map(entry => ({...entry, batch:entry.batch as Cargo}));
+    if (completedProductionBill && completedProductionBill.output.mode !== 'drop' && floorOutput.length && !p.cargo) {
+      const option = completedProductionBill.output, first = floorOutput[0];
+      const allowed = option.mode === 'specific' ? new Set(productionOutputTargetCells(this, option.target!)) : undefined;
+      this.search(p);
+      const target = this.storageDestination(first.batch, -1, p.id, allowed, baseItems);
+      if (target) {
+        const amount = Math.min(first.batch.amount, carryLimit(first.batch.resource),
+          this.storageSpace(target, first.batch, p.id, this.storageContext(baseItems, p.id)));
+        if (amount > 0) {
+          productionDelivery = { batch:portion(first.batch, amount), task:{
+            billId:completedProductionBill.id, recipe:completedProductionBill.recipe, mode:option.mode === 'specific' ? 'specific' : 'best',
+            target:structuredClone(option.target), cell:at(target), state:'carrying',
+          } };
+          floorOutput.splice(0, 1, ...(amount < first.batch.amount
+            ? [{...first,batch:portion(first.batch, first.batch.amount - amount)}] : []));
+        }
+      }
+    }
     const placement = this.planPlacement(
-      [...displaced, ...output],
-      this.items.filter((i) => !displacedIds.has(i.id) && (j.unfinishedId === undefined || i.unfinished?.id !== j.unfinishedId)),
+      [...displaced, ...floorOutput],
+      baseItems,
       DROP_DISTANCE,
       forbidden,
+      p.id,
+      productionDelivery ? {cell:productionDelivery.task.cell,batch:productionDelivery.batch} : undefined,
     );
     if (!placement) {
       rollback(
@@ -7451,6 +7553,10 @@ export class VoxelSimulation {
       this.stats.mined += changes.filter((c) => c.block === 0).length;
     this.jobs = this.jobs.filter((k) => k.id !== j.id);
     this.release(p);
+    if (productionDelivery) {
+      p.cargo = productionDelivery.batch; p.productionDelivery = productionDelivery.task;
+      this.continueProductionDelivery(p);
+    }
     this.pruneFilth();
     this.reconcileFireState();
   }
@@ -8018,6 +8124,7 @@ export class VoxelSimulation {
     return out;
   }
   snapshot(speed = 0, tickMs = 0): VoxelSnapshot {
+    this.reconcileProductionStorage();
     this.reconcileUnfinishedBindings();
     this.updateRooms();
     this.updatePower();
@@ -8084,6 +8191,7 @@ export class VoxelSimulation {
       })),
       jobs: this.jobs,
       stockpiles: this.stockpiles.filter(visible),
+      stockpileZones: this.stockpileZones.map(z => ({...z,cells:z.cells.filter(cell => visible(position(cell)))})).filter(z => z.cells.length > 0),
       shelves: this.shelves.filter(visible), storageSpills: this.storageSpills.filter(visible), storageGroups:this.storageGroups,
       storageCapacity: this.storageCapacity().filter(visible),
       farms: this.farms.filter(visible),
@@ -8127,13 +8235,15 @@ export class VoxelSimulation {
     });
   }
   save(): VoxelSave {
+    this.reconcileProductionStorage();
     this.validateProductionWorkers();
     this.reconcileUnfinishedBindings();
     this.pruneStorageSpills();
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 41,
+      version: 42,
+      stockpileZones: this.stockpileZones,
       productionQueues: this.productionQueues.filter(q => this.productionBenches().some(b => b.id === q.benchId)),
       socialHistory: this.socialHistory, socialLog: this.socialLog,
       weather: this.weather, snow: this.snow,
@@ -8191,11 +8301,15 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : [1, 2, 3]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    if (sourceVersion < 42 && (Object.hasOwn(old, 'stockpileZones') ||
+        old.pawns?.some((p:any) => Object.hasOwn(p, 'productionDelivery')) ||
+        old.productionQueues?.some((q:any) => q.bills?.some((b:any) => Object.hasOwn(b, 'output')))))
+      throw new Error('旧版存档混入成品去向或仓库区域字段');
     if (sourceVersion < 41) {
       const containers = [...(old.items ?? []), ...(old.pawns ?? []).map((p:any) => p.cargo),
         ...(old.jobs ?? []).flatMap((j:any) => j.deliveredBatches ?? []),
@@ -8593,7 +8707,12 @@ export class VoxelSimulation {
         ledger.unfinished = 0;
       }
     }
-    old.version = 41;
+    if (sourceVersion < 42) {
+      old.stockpileZones = migrateStockpileZones(old.stockpiles);
+      for (const queue of old.productionQueues ?? []) for (const bill of queue.bills ?? [])
+        bill.output = defaultProductionOutput('drop');
+    }
+    old.version = 42;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -9704,6 +9823,16 @@ export class VoxelSimulation {
     validateRelocation(d);
     validateProductionQueues(d.productionQueues, d, d.nextId, d.jobs);
     validateUnfinishedProduction(d);
+    validateStockpileZones(d.stockpileZones, d.stockpiles, d.nextId);
+    for (const zone of d.stockpileZones) if (zone.id.startsWith('zone:')) {
+      const id = Number(zone.id.slice(5));
+      if (ids.has(id) || apparelIds.has(id) || weaponIds.has(id) ||
+          [...d.items, ...d.pawns.flatMap(p => p.cargo ? [p.cargo] : []), ...d.jobs.flatMap(j => j.deliveredBatches)]
+            .some(b => b.furniture?.id === id || b.unfinished?.id === id))
+        throw new Error('仓库区域身份与其他实体重复');
+      ids.add(id);
+    }
+    validateProductionOutputState(d);
     for (const job of d.jobs) {
       if (!job.cancelled && productionJobRecipe(job) &&
           (job.owner !== null || job.progress > 0 || Object.values(job.delivered).some(n => n! > 0)) && !job.productionPolicy)
@@ -9787,6 +9916,7 @@ export class VoxelSimulation {
         treePlots: d.treePlots,
         jobs: d.jobs,
         stockpiles: d.stockpiles,
+        stockpileZones: d.stockpileZones,
         shelves: d.shelves, storageSpills: d.storageSpills, storageGroups:d.storageGroups,
         farms: d.farms,
         crops: d.crops,
@@ -9897,6 +10027,7 @@ export class VoxelSimulation {
     }
     for (const p of s.pawns) {
       // Prison tasks carry explicit destinations and progress. Movement rechecks every edge.
+      if (p.productionDelivery) { s.continueProductionDelivery(p); continue; }
       if (p.ropeTask) {
         const task=p.ropeTask, a=s.animals.find(a=>a.id===task.animalId)!;
         const cells=penCells(s,task.penId);

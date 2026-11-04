@@ -36,7 +36,7 @@ describe('worker exploration boundary',()=>{
   it('loads genuine v35 with all cells visible and leaves the exact terrain and site intact',()=>{
     const old=JSON.parse(readFileSync(new URL('./fixtures/voxel-v35-exploration-active.json',import.meta.url),'utf8'));
     expect(request('load',{save:old}).error).toBeUndefined();const next=save();
-    expect(next).toMatchObject({version: 41,generator:2,worldSite:old.worldSite,blocks:old.blocks,ladders:old.ladders});
+    expect(next).toMatchObject({version: 42,generator:2,worldSite:old.worldSite,blocks:old.blocks,ladders:old.ladders});
     expect(next.explored.every(v=>v===1)).toBe(true);
     expect(messages.findLast(m=>m.type==='state').snapshot.exploration).toEqual({known:CELLS,total:CELLS});
   });

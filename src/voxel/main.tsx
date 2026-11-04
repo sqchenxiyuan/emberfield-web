@@ -1,5 +1,6 @@
 import { isShelfKind, shelfCells } from './shelves';
 import { ShelfPanel } from './ShelfPanel';
+import { StockpileZonePanel } from './StockpileZonePanel';
 import React, { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { createRoot } from 'react-dom/client';
 import { VoxelClient } from './client';
@@ -33,6 +34,7 @@ import { ResearchPanel, ResearchBenchPanel } from './ResearchPanel';
 import { RESEARCH_DEFS, toolResearchReason } from './research';
 import { ApparelPanel, WearApparel } from './ApparelPanel';
 import { ProductionBillsPanel } from './ProductionBillsPanel';
+import { ProductionDeliveryStatus } from './ProductionOutputPanel';
 import { UnfinishedPanel } from './UnfinishedPanel';
 import { unfinishedName } from './unfinishedView';
 import { CombatPanel, ThreatControl, storyOpportunityText } from './CombatPanel';
@@ -50,6 +52,7 @@ import {
   RESOURCE_NAMES,
   TOOL_NAMES,
   DAY,
+  at,
   bedCells,
   deviceCells,
   stonecutterCells,
@@ -185,7 +188,7 @@ const hints: Record<Tool, string> = {
   wall: '选择木材或石砖，拖动连续造两格高的墙。需地板支撑，记得留出出入口。',
   ladder: '每格 2 木材。与地面或已有梯子相连后施工；角色可携带物资爬梯。',
   stock:
-    '拖动划仓储，点击设置收纳物品与优先级。工人把食物搬往更高优先级的冷库；需要地板、净空与可达通路。',
+    '拖动新建仓库区，从已有区内起拖可扩展原区。点击设置区名、收纳与优先级；搬运需要地板、净空与可达通路。',
   farm: '拖动划定土壤种植区，自动播种、收获并补种。稻米约 8 日首收，三人长期供给建议 110–128 格。',
   grove:
     '划定林地区并选择树种，工人自动种植，手动伐木后会补种。需合适土壤、露天空地和通路；请为树木留出空间。',
@@ -469,6 +472,8 @@ function App() {
   const treeCondition = tree ? s?.treeConditions.find((v) => v.id === tree.id) : null;
   const farm = p ? s?.farms.find((v) => equal(v, p)) : null;
   const storage = p ? s?.stockpiles.find((v) => equal(v, p)) : null;
+  const storageZone = storage ? s?.stockpileZones.find(zone => zone.cells.includes(at(storage))) : undefined;
+  const expandingStorageZone = state.tool === 'stock' ? s?.stockpileZones.find(zone => zone.id === state.stockpileZoneId) : undefined;
   const storageRegion =
     storage && s ? (storageConnected ? connectedStorage(s.stockpiles, storage) : [storage]) : [];
   const regionKeys = new Set(storageRegion.map((v) => `${v.x}/${v.y}/${v.z}`));
@@ -607,7 +612,7 @@ function App() {
           : items[0]
             ? foodName(items[0])
             : storage
-              ? '仓储区'
+              ? storageZone?.name ?? '仓储区'
               : wire
                 ? '电力线路'
                 : client.ladderAt(p)
@@ -1130,7 +1135,10 @@ function App() {
         )}
         {storage && (
           <div className="voxel-bill voxel-storage" data-testid="storage-settings">
-            <b>仓储设置</b>
+            {storageZone && <StockpileZonePanel key={`${storageZone.id}:${storageZone.name}`} zone={storageZone}
+              command={command => void client.command(command)} expand={client.beginStockpileExpansion} />}
+            <b>仓储收纳规则</b>
+            <small data-testid="storage-filter-scope">当前修改范围：{storageConnected ? `同层相连的 ${storageRegion.length} 格` : '当前一格'}。</small>
             <div className="voxel-storage-capacity" data-testid="storage-capacity">
               <span>
                 仓位 {occupiedSlots} / {capacity.length} 已占用
@@ -1328,15 +1336,15 @@ function App() {
             )}
           </div>
         )}
-        {stove && s && <ProductionBillsPanel key={stove.id} benchId={stove.id} snapshot={s} command={c => void client.command(c)} />}
-        {butcherSpot && s && <ProductionBillsPanel key={butcherSpot.id} benchId={butcherSpot.id} snapshot={s} command={c => void client.command(c)} />}
+        {stove && s && <ProductionBillsPanel key={stove.id} benchId={stove.id} snapshot={s} command={c => void client.command(c)} focus={focus} />}
+        {butcherSpot && s && <ProductionBillsPanel key={butcherSpot.id} benchId={butcherSpot.id} snapshot={s} command={c => void client.command(c)} focus={focus} />}
         {horseshoePin && <section className="voxel-bill" data-testid="horseshoe-detail">
           <b>马蹄铁投掷</b>
           <p>殖民者会走到木桩两格外投掷，中间一格需要保持畅通。可在人物面板安排娱乐，或把作息时段设为娱乐。</p>
           <small>{s?.pawns.filter(v => v.psyche.recreation?.spotId === horseshoePin.id).map(v => `${v.name} · ${v.reason}`).join('；') || '当前无人使用。保留周围空地与通路。'}</small>
           <small>重复同一种活动会积累耐受，减少娱乐收益；也可进行户外散步。</small>
         </section>}
-        {stonecutter && s && <ProductionBillsPanel key={stonecutter.id} benchId={stonecutter.id} snapshot={s} command={c => void client.command(c)} />}
+        {stonecutter && s && <ProductionBillsPanel key={stonecutter.id} benchId={stonecutter.id} snapshot={s} command={c => void client.command(c)} focus={focus} />}
         {tailor && s && <ProductionBillsPanel key={tailor.id} benchId={tailor.id} snapshot={s} command={c => void client.command(c)} focus={focus} />}
         {researchBench && s && (
           <ResearchBenchPanel
@@ -1434,6 +1442,7 @@ function App() {
               <b>{pawn.name}</b>
               <span>{pawn.reason}</span>
             </div>
+            {s && <ProductionDeliveryStatus pawn={pawn} snapshot={s} focus={focus} />}
             {pawn.faction === 'raider' && pawn.downed && !pawn.dead && <section className="voxel-capture-panel" data-testid="capture-controls">
               <b>俘虏倒地敌人</b>
               <p>未征召的殖民者会前来抱起伤员，送到可用囚犯床。先准备封闭房间中的囚犯床，并及时安排护理。</p>
@@ -1758,7 +1767,7 @@ function App() {
         </span>
       </div>
       <footer className="voxel-footer">
-        <div className="voxel-tool-hint">
+        <div className={`voxel-tool-hint${expandingStorageZone ? ' voxel-stockpile-expansion-hint' : ''}`}>
           <span className="voxel-kicker">
             {state.furniturePlacement ? `安装 ${FURNITURE_NAMES[state.furniturePlacement.kind]} #${state.furniturePlacement.furnitureId} · ${isShelfKind(state.furniturePlacement.kind) ? '保留收纳设置' : state.furniturePlacement.quality === undefined ? '' : furnitureStats(state.furniturePlacement.kind, state.furniturePlacement.quality).qualityName}` : TOOL_NAMES[state.tool]}
             {([
@@ -1779,6 +1788,10 @@ function App() {
               </button>
             )}
             {state.furniturePlacement && <button data-testid="furniture-placement-cancel" onClick={client.endFurniturePlacement}>退出选址 · Esc</button>}
+            {expandingStorageZone && <span className="voxel-stockpile-expansion-toolbar" data-testid="stockpile-expansion-toolbar">
+              <b>扩展：{expandingStorageZone.name}</b>
+              <button data-testid="stockpile-expansion-cancel" onClick={() => client.choose('inspect')}>结束扩展 · Esc</button>
+            </span>}
             {state.tool === 'farm' && (
               <select
                 aria-label="种植作物"
@@ -1826,7 +1839,9 @@ function App() {
             </small>}
           </span>
           <p>
-            {state.furniturePlacement ? '点击空地确认安装位置。R 旋转，[ / ] 或楼层按钮可跨层选址；工人需要可达通路。Esc 仅退出选址。' : state.tool === 'farm' && state.crop === 'healroot'
+            {state.furniturePlacement ? '点击空地确认安装位置。R 旋转，[ / ] 或楼层按钮可跨层选址；工人需要可达通路。Esc 仅退出选址。' : expandingStorageZone
+              ? `拖绘新格加入“${expandingStorageZone.name}”，已有生产去向保持不变。右键或 Esc 结束。`
+              : state.tool === 'farm' && state.crop === 'healroot'
               ? `拖动划定药根种植区。播种需要种植 ${CROPS.healroot.minSkill} 级，收获不受此等级限制；成熟产出草药，不能食用，可存入冷库。`
               : hints[state.tool]}
             {(state.tool === 'floor' || state.tool === 'wall') &&

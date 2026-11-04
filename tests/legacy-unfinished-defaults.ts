@@ -1,4 +1,5 @@
 import { expect } from 'vitest';
+import { stripProductionOutputFields } from './legacy-production-output-defaults';
 
 /** Add only the new zero ledgers when comparing untouched historical saves. */
 export function unfinishedExpectedField(key: string, value: any): any {
@@ -11,6 +12,7 @@ export function unfinishedExpectedField(key: string, value: any): any {
 
 /** Synthetic old-schema tests only. Refuse to erase actual unfinished work. */
 export function stripUnfinishedFields(raw: Record<string, any>) {
+  stripProductionOutputFields(raw);
   const batches = [...(raw.items ?? []), ...(raw.pawns ?? []).map((p: any) => p.cargo),
     ...(raw.jobs ?? []).flatMap((j: any) => j.deliveredBatches ?? []),
     ...(raw.trade?.caravans ?? []).flatMap((c: any) => c.stock ?? []),

@@ -6,6 +6,8 @@
 
 | 文档 | 回答的问题 |
 |---|---|
+| [125 成品去向与仓储](125-production-output-gameplay.md) | 就地放下、最佳／指定仓储、实际送货、中断读档与区域身份如何衔接？ |
+| [124 原版成品去向机制](124-production-output-mechanisms.md) | 完成计次与送货顺序、制作者分工、指定区域／货架／组的规则和原版观察 |
 | [123 独立未完成品玩法](123-unfinished-production-gameplay.md) | 加工中断后如何保存材料、搬运入库、由原作者续作和取消退料？ |
 | [122 原版未完成物品机制](122-unfinished-production-mechanisms.md) | UFT 的创建、材料所有权、作者、账单绑定、中断与存读档如何工作？ |
 | [121 生产分工与原料玩法](121-production-policies-gameplay.md) | 指定工人、技能区间、三维范围、食材筛选如何影响搬运、加工和读档？ |

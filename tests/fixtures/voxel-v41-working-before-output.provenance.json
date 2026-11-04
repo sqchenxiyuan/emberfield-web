@@ -1,0 +1,11 @@
+{
+  "source": "test-results/voxel-unfinished-production-campaign/working-again.json",
+  "sha256": "d2def007ddbb806981770e890c5ccb2002baeaac83a17bfc5a939ec1dde3d911",
+  "sourceVersion": 41,
+  "sourceTick": 2416,
+  "sourceRootCommit": "070367ddfdac55bb52d0aa26acc8a2206aca8ef1",
+  "sourcePublishedCommit": "d967cddc2b9dae6336665feac7249c5850f13f29",
+  "sourceScript": "scripts/voxel-unfinished-production-campaign-verify.mjs",
+  "sourceReportSha256": "ac155bb7b7a54062b60e7346b1b746796eac7635de7dc9bdb5dfc844a2c29b41",
+  "scope": "Unchanged checkpoint from the completed v41 continuous ordinary-command campaign. No values relabeled or edited."
+}

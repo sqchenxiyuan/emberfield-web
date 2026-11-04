@@ -97,7 +97,7 @@ try {
     async function load(file, checkpoint) {
       const bytes = await readFile(file), data = JSON.parse(bytes);
       if (checkpoint) { assert.equal(sha(bytes), checkpoint.sha256); assert.equal(data.tick, checkpoint.tick); }
-      assert.equal(data.version, 41);
+      assert.equal(data.version, 42);
       result.imports.push({ file, sha256: sha(bytes), version: data.version, tick: data.tick, checkpoint: checkpoint?.name ?? null });
       await page.keyboard.press('Escape'); await click('菜单与存档');
       const chooser = page.waitForEvent('filechooser'); await click('导入体素存档'); await (await chooser).setFiles(file);

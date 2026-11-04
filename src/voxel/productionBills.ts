@@ -2,6 +2,7 @@ import { ARMOR_KINDS, TAILOR_KINDS } from './apparel';
 import type { ApparelKind, ArmorKind, Job, VoxelSave } from './types';
 import { WEAPON_DEFS, WEAPON_KINDS, type WeaponKind } from './weapons';
 import { defaultProductionPolicy, validProductionPolicy, type ProductionPolicy } from './productionPolicies';
+import { defaultProductionOutput, validProductionOutput, type ProductionOutput } from './productionOutput';
 export { defaultProductionPolicy, validProductionPolicy, productionPolicyWorkerReason, productionPolicyAllowsIngredient } from './productionPolicies';
 export type { ProductionPolicy } from './productionPolicies';
 
@@ -24,6 +25,7 @@ export interface ProductionBill {
   resumeBelow: number;
   waiting: boolean;
   policy: ProductionPolicy;
+  output: ProductionOutput;
 }
 export interface ProductionQueue { benchId: number; bills: ProductionBill[] }
 export type ProductionHost = Pick<VoxelSave, 'stoves' | 'butcherSpots' | 'stonecutters' | 'tailors' | 'weaponBenches' | 'pawns'>;
@@ -60,6 +62,7 @@ export function makeProductionBill(id: string, recipe: ProductionRecipe): Produc
     id, recipe, mode: 'count', remaining: 1, target: 10, suspended: false,
     pauseWhenSatisfied: false, resumeBelow: 5, waiting: false,
     policy: defaultProductionPolicy(),
+    output: defaultProductionOutput(),
   };
 }
 
@@ -67,6 +70,7 @@ export function makeProductionBill(id: string, recipe: ProductionRecipe): Produc
 export function defaultProductionQueue(host: ProductionHost, benchId: number): ProductionQueue | undefined {
   const bill = (recipe: ProductionRecipe, target: number, suspended: boolean): ProductionBill => ({
     ...makeProductionBill(`legacy:${benchId}:${recipe}`, recipe),
+    output: defaultProductionOutput('drop'),
     mode: recipe === 'butcher' ? 'forever' : 'target', target, suspended,
     resumeBelow: Math.min(5, target),
   });
@@ -131,7 +135,7 @@ const exactKeys = (value: Record<string, unknown>, keys: readonly string[]): boo
 const integer = (value: unknown, min: number, max: number): value is number =>
   typeof value === 'number' && Number.isSafeInteger(value) && value >= min && value <= max;
 function fail(why: string): never { throw new Error(`生产账单存档无效：${why}`); }
-const billKeys = ['id', 'recipe', 'mode', 'remaining', 'target', 'suspended', 'pauseWhenSatisfied', 'resumeBelow', 'waiting', 'policy'];
+const billKeys = ['id', 'recipe', 'mode', 'remaining', 'target', 'suspended', 'pauseWhenSatisfied', 'resumeBelow', 'waiting', 'policy', 'output'];
 
 function validId(id: unknown, nextId: number): id is string {
   if (typeof id !== 'string') return false;
@@ -170,7 +174,7 @@ export function validateProductionQueues(
           !integer(value.resumeBelow, 0, MAX_PRODUCTION_AMOUNT) || value.resumeBelow > value.target ||
           typeof value.suspended !== 'boolean' || typeof value.pauseWhenSatisfied !== 'boolean' ||
           typeof value.waiting !== 'boolean' || (value.waiting && (value.mode !== 'target' || !value.pauseWhenSatisfied)) ||
-          !validProductionPolicy(value.policy) ||
+          !validProductionPolicy(value.policy) || !validProductionOutput(value.output) ||
           (value.policy.workerId !== null && !workerIds.has(value.policy.workerId)))
         fail('账单身份、配方、模式或数值无效');
       billIds.add(value.id);

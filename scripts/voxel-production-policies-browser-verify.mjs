@@ -141,7 +141,7 @@ try {
       const checkpoint = campaign.checkpoints.find(entry => entry.name === name); assert(checkpoint, name);
       scenario = scenarios[checkpoint.scenario]; assert(scenario, checkpoint.scenario);
       const data = await load(checkpoint.path, checkpoint);
-      assert.equal(data.version, 40); assert(billOf(data, scenario));
+      assert.equal(data.version, 42); assert(billOf(data, scenario));
       await selectBench(); return data;
     }
     async function selectBench() {
@@ -207,7 +207,7 @@ try {
       const file = `${OUT}/${mode}-${name}-roundtrip.json`; await (await download).saveAs(file); await click('关闭菜单');
       const bytes = await readFile(file); result.exports.push({ file, sha256: sha(bytes), tick: before.tick });
       await load(file); const after = await saved();
-      assert.equal(after.version, 40); assert.deepEqual(after.productionQueues, before.productionQueues);
+      assert.equal(after.version, 42); assert.deepEqual(after.productionQueues, before.productionQueues);
       assert.deepEqual(after.items, before.items); assert.deepEqual(after.stats, before.stats); assert.deepEqual(counts(after), counts(before));
       // Paths and ordinary worker assignments are rebuilt on load. Frozen
       // ingredient rules, delivered material and completed work are persistent.

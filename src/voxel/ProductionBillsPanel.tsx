@@ -11,12 +11,13 @@ import { SMITHY_FUEL_CAPACITY, SMITHY_REFUEL_AT, WEAPON_BENCH_NAMES } from './we
 import { WEAPON_DEFS, WEAPON_NAMES, type WeaponKind } from './weapons';
 import { ANIMAL_DEFS } from './wildlife';
 import { locatedUnfinished, unfinishedName, unfinishedPercent, unfinishedStatus, unfinishedWorkReason, type LocatedUnfinished } from './unfinishedView';
+import { ProductionDeliveryStatus, ProductionOutputPanel } from './ProductionOutputPanel';
 import {
   RESOURCE_NAMES, stonecutterInteraction, tailorInteraction, weaponBenchInteraction,
   type AnimalSpecies, type ApparelKind, type ArmorKind, type Counts, type Job, type Pos, type VoxelCommand, type VoxelSnapshot,
 } from './types';
 
-type BillPatch = Partial<Pick<ProductionBill, 'mode' | 'remaining' | 'target' | 'suspended' | 'pauseWhenSatisfied' | 'resumeBelow' | 'policy'>>;
+type BillPatch = Partial<Pick<ProductionBill, 'mode' | 'remaining' | 'target' | 'suspended' | 'pauseWhenSatisfied' | 'resumeBelow' | 'policy' | 'output'>>;
 const FOOD_TYPES = ['grain', 'meat'] as const;
 const FOOD_NAMES = { grain: '谷物', meat: '生肉' };
 const CARCASS_SPECIES = Object.keys(ANIMAL_DEFS) as AnimalSpecies[];
@@ -141,7 +142,9 @@ function BillRow({ bill, index, total, job, unfinished, snapshot, update, move, 
   const recipe = recipeDetails(bill.recipe, snapshot);
   const currentPiece = unfinished.find(entry => entry.piece.id === job?.unfinishedId);
   const workReason = unfinishedWorkReason(job, snapshot);
-  const status = bill.suspended ? { key: 'suspended', text: '手动暂停' }
+  const deliveries = snapshot.pawns.filter(pawn => pawn.productionDelivery?.billId === bill.id);
+  const status = deliveries.length ? { key: 'delivery', text: job ? '加工与配送中' : bill.suspended ? '账单暂停 · 配送成品中' : '成品配送中' }
+    : bill.suspended ? { key: 'suspended', text: '手动暂停' }
     : unfinished.length ? { key: 'unfinished', text: unfinishedStatus(currentPiece ?? unfinished[0], snapshot) }
     : job ? { key: 'active', text: job.progress > 0 ? '当前批次加工中' : '等待备料与开工' }
     : bill.mode === 'count' && bill.remaining === 0 ? { key: 'completed', text: '次数已完成' }
@@ -181,8 +184,10 @@ function BillRow({ bill, index, total, job, unfinished, snapshot, update, move, 
         <small>实物库存达到 {bill.target} 后等待，降至 {bill.resumeBelow} 或更少时再补产。</small>
       </>}
     </>}
+    <ProductionOutputPanel bill={bill} snapshot={snapshot} update={output => update({ output })} focus={focus} />
     <button data-testid="bill-suspend" aria-pressed={bill.suspended} onClick={() => update({ suspended: !bill.suspended })}>
       {bill.suspended ? '恢复账单' : '暂停账单'}</button>
+    {deliveries.map(pawn => <ProductionDeliveryStatus key={pawn.id} pawn={pawn} snapshot={snapshot} focus={focus} showWorker />)}
     {job && !currentPiece && <div className="voxel-production-progress" data-testid="bill-progress" data-job-id={job.id}>
       <div><span>当前批次</span><b>{Math.min(100, Math.floor(job.progress / Math.max(1, job.work) * 100))}%</b></div>
       <progress aria-label="账单加工进度" value={job.progress} max={Math.max(1, job.work)} />

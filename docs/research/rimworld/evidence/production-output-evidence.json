@@ -1,0 +1,735 @@
+{
+  "evidence_id": "RW17-PRODUCTION-OUTPUT",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction and bounded Core XML; no target execution or new decompilation",
+  "rea": {
+    "file": "production-bills-rea-managed.json",
+    "sha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+    "evidence_id": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+    "parent_evidence_id": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+    "mvid": "8e962ecc-7ac7-42d2-8f3b-1b16cd24d2cd",
+    "metadata_coverage": "complete"
+  },
+  "manifests": [
+    {
+      "file": "food-manifest.json",
+      "sha256": "71078848fdcb154b8600e6eaef143968958c786b0544d6bab0814154d76f18d8"
+    },
+    {
+      "file": "furniture-reinstall-manifest.json",
+      "sha256": "9961a453d2f278a3e07083aff8d3ab7e553b66a9393cb855d5a533feeb26d424"
+    },
+    {
+      "file": "logistics-manifest.json",
+      "sha256": "86d76ec8cfae55866ca033e1e80a29b7b072452726a666393abcea2246eb216f"
+    },
+    {
+      "file": "preservation-manifest.json",
+      "sha256": "5b43549bdaa2d6edc6ace4c7100ef2b20510e36d18c0a543c0c7a431c6801f8e"
+    },
+    {
+      "file": "production-bills-manifest.json",
+      "sha256": "a00dc9a726f47fe20b27d755b2ff023948ce7b374d4b8d80e958ff3037d4a227"
+    },
+    {
+      "file": "shelf-storage-manifest.json",
+      "sha256": "b624dbb0391c577d9aa279628f472d47c92f90527fbb09fbd07d42eda9d38adc"
+    },
+    {
+      "file": "stonecutting-manifest.json",
+      "sha256": "de582eeb35fb04c661dcab23ee45572abad0e590a5fb8a3cd5175dc2026b2061"
+    },
+    {
+      "file": "storage-groups-manifest.json",
+      "sha256": "abdb1d7348923939a4a1a91dcc9020f1695bcabd80a2d5883e77c40dd82fa429"
+    },
+    {
+      "file": "work-manifest.json",
+      "sha256": "89523f849f7c4dca3b660faed977b00e04b87fb93d1275c9f41ba1b9af154cd2"
+    }
+  ],
+  "xml": {
+    "file": "Data/Core/Defs/Misc/BillDefs/BillStoreModeDefs.xml",
+    "sha256": "849c747eec1a3607b50f04b55073c161c3d42755d20f09e3c8b32fed70094a73",
+    "projection": "Three literal Core BillStoreModeDef nodes; not complete loaded mod/DLC Def database",
+    "modes": [
+      {
+        "defName": "DropOnFloor",
+        "label": "drop on floor",
+        "listOrder": 0,
+        "node_sha256": "84dea0fbfbf9f0f27810e217b6c0f1da9313468d1061d892a0f53bfc90b4925b"
+      },
+      {
+        "defName": "BestStockpile",
+        "label": "take to best stockpile",
+        "listOrder": 10,
+        "node_sha256": "2c4ebfcfa34668d0c9c2612e5d3f6c6daefb96bf2b374a1a5075ab6f1bd48504"
+      },
+      {
+        "defName": "SpecificStockpile",
+        "label": "take to {0}",
+        "listOrder": 20,
+        "node_sha256": "4f68ef6b27f5091d8d6769e615faad02fc7b74bb96808869a722a0cce8571d49"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "id": "OUT01",
+      "finding": "Bill_Production defaults to BestStockpile. storeMode/storeGroup govern output; includeGroup governs counting through separate fields, accessors and setters. They do not imply an ingredient source or named-worker change.",
+      "sources": [
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.Bill_Production",
+          "file": ".local-research/stonecutting/RimWorld.Bill_Production.cs",
+          "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+          "lines": [
+            12,
+            38
+          ],
+          "excerpt_sha256": "f57ef0c0a7f032a958ce0116ca85a293888d318667afd7df6be87bef45b5cd3d"
+        },
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.Bill_Production",
+          "file": ".local-research/stonecutting/RimWorld.Bill_Production.cs",
+          "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+          "lines": [
+            177,
+            205
+          ],
+          "excerpt_sha256": "89d089e0603254ccb7f254112098947bb0d9078b34d763e69cbd84fd28f3a92a"
+        },
+        {
+          "group": "stonecutting",
+          "type": "Verse.RecipeWorkerCounter",
+          "file": ".local-research/stonecutting/Verse.RecipeWorkerCounter.cs",
+          "sha256": "dc0d44c166c2797cb39df826fa69f881519b6bc5b4d0cc300dcbafaca3bf9b39",
+          "lines": [
+            20,
+            100
+          ],
+          "excerpt_sha256": "459a67b83c5185dae5e7b0dd192e14dde02e48e9e231c9d9a91de0ade3c1276b"
+        }
+      ]
+    },
+    {
+      "id": "OUT02",
+      "finding": "FinishRecipeAndStartStoringProduct calculates ingredients, generates products, consumes ingredients, calls Notify_IterationCompleted and records completion BEFORE output selection. RepeatCount decrements here. Later shipment failure does not roll back the completed iteration or recreate ingredients/UFT.",
+      "sources": [
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            180,
+            200
+          ],
+          "excerpt_sha256": "64d64ab65df9af1055cd7678237a0dc66a5542fdfe1c9afcda4c269b43dc8446"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            346,
+            376
+          ],
+          "excerpt_sha256": "1fbec0b8583e4e27a6abee2ddef55ad69205cd9f1d123612e4d2797c2a8df8c9"
+        },
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.Bill_Production",
+          "file": ".local-research/stonecutting/RimWorld.Bill_Production.cs",
+          "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+          "lines": [
+            245,
+            259
+          ],
+          "excerpt_sha256": "195550588206be0db39e6c0042c23d8d66e5b0184f566e2bdcd8654b33b981f4"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Bill_ProductionWithUft",
+          "file": ".local-research/production-bills/RimWorld.Bill_ProductionWithUft.cs",
+          "sha256": "0a33089036c5c215241295e1b158d419b1e1574e8799b2a5a306cab785c4df05",
+          "lines": [
+            95,
+            115
+          ],
+          "excerpt_sha256": "a1431517d5750de8b16c6e0f2bb99461a37147e8283d98b83088fb953e50a7c9"
+        }
+      ]
+    },
+    {
+      "id": "OUT03",
+      "finding": "DropOnFloor attempts Near placement of EVERY generated product at the actor position and ends the job Succeeded. Zero products also ends Succeeded. Placement failures are logged; this is not a guarantee that arbitrary blocked maps accept every product.",
+      "sources": [
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            201,
+            235
+          ],
+          "excerpt_sha256": "79b9e88715082dee9859a69e52582152a0e4d5ef3e81219dd52651c9e68aebc0"
+        }
+      ]
+    },
+    {
+      "id": "OUT04",
+      "finding": "For Best/Specific only products[0] is considered for maker delivery; products[1..] are placed Near the maker. Ordinary recipe product definitions are yielded in list order; special product routines can yield multiple Things. A Thing stackCount may exceed a normal stack limit until subsequent carry/placement splitting. First product is not the most valuable or nearest product.",
+      "sources": [
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            239,
+            261
+          ],
+          "excerpt_sha256": "c9a1c6a82cf51f89811ab85274355f7c9a59a7a982de877d176d8d21d0e6f1d0"
+        },
+        {
+          "group": "food",
+          "type": "Verse.GenRecipe",
+          "file": ".local-research/food/Verse.GenRecipe.cs",
+          "sha256": "41cb19d602f388137484b15bc4126fbcdebad63013c34f8432cabff5b28337e3",
+          "lines": [
+            8,
+            72
+          ],
+          "excerpt_sha256": "21cf569d504116345ea68be00be2604b37829adce4861c7d344eeec0bc108b6f"
+        }
+      ]
+    },
+    {
+      "id": "OUT05",
+      "finding": "After a cell is found, MaxStackSpaceEver is min(def.stackLimit, rounded CarryingCapacity/VolumePerUnit). Excess from products[0] is split off and attempted Near the maker; capacity0 ends Succeeded. Otherwise TryStartCarry then direct HaulToCellStorageJob and StartJob keepCarryingThingOverride=true. This path does not consult ordinary Haul priority; dead/downed and capacity constraints still exist.",
+      "sources": [
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            262,
+            284
+          ],
+          "excerpt_sha256": "d5126bda303efcb29353867800f80cf2c7b632b2d79bb28577e2466556b511e9"
+        },
+        {
+          "group": "preservation",
+          "type": "Verse.Pawn_CarryTracker",
+          "file": ".local-research/preservation/Verse.Pawn_CarryTracker.cs",
+          "sha256": "b53d3466fbaf47c9b4bfd8c044b7632943a00c93749c1873b9267c69a6ce1df6",
+          "lines": [
+            53,
+            81
+          ],
+          "excerpt_sha256": "e9df004ca6de3ae43686251e58c3cac275469a2a8878c5c0e15a85c8b139d224"
+        }
+      ]
+    },
+    {
+      "id": "OUT06",
+      "finding": "Best calls TryFindBestBetterStoreCellFor from Unstored, scanning registered slot groups in priority order. It requires priority above current and not below a found priority, matching faction for Thing parents, and HaulDestinationEnabled. Production uses the cell/slot-group search, not the broader non-slot container search.",
+      "sources": [
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            249,
+            256
+          ],
+          "excerpt_sha256": "4915b4ee137e0afad7173809be21889f72138cb4f7a188af9e56a5c4f3e0c9d6"
+        },
+        {
+          "group": "work",
+          "type": "RimWorld.StoreUtility",
+          "file": ".local-research/work/RimWorld.StoreUtility.cs",
+          "sha256": "b8241150a63e38993de851bdb82d06a8c6fbbb3359f1fdfb92b70bec3b5b960d",
+          "lines": [
+            144,
+            205
+          ],
+          "excerpt_sha256": "24d0b2c26e4b812951f58b4f0ea840a248d401454d78ff6b37c59384e504cde2"
+        }
+      ]
+    },
+    {
+      "id": "OUT07",
+      "finding": "Specific calls TryFindBestBetterStoreCellForIn on its ISlotGroup directly, without Best outer priority/faction/enabled loop. Shared worker rejects null or actual-Thing filter mismatch, then searches CellsList. Distance is horizontal squared distance and the loop can stop after a small randomized fraction; not guaranteed global nearest or minimum path cost.",
+      "sources": [
+        {
+          "group": "work",
+          "type": "RimWorld.StoreUtility",
+          "file": ".local-research/work/RimWorld.StoreUtility.cs",
+          "sha256": "b8241150a63e38993de851bdb82d06a8c6fbbb3359f1fdfb92b70bec3b5b960d",
+          "lines": [
+            207,
+            240
+          ],
+          "excerpt_sha256": "1d9b52cf761474e4e9d5d7c94c6842189cc09a725159a1b12006690491ba3860"
+        }
+      ]
+    },
+    {
+      "id": "OUT08",
+      "finding": "Good store cells check physical capacity/stack blockers, cell forbidding, destination reservations, static fire, construction blocking and carrier reachability. An enabled UI destination is not proof of a free reachable cell for this actual product.",
+      "sources": [
+        {
+          "group": "work",
+          "type": "RimWorld.StoreUtility",
+          "file": ".local-research/work/RimWorld.StoreUtility.cs",
+          "sha256": "b8241150a63e38993de851bdb82d06a8c6fbbb3359f1fdfb92b70bec3b5b960d",
+          "lines": [
+            103,
+            142
+          ],
+          "excerpt_sha256": "814d37c240fe97fdc6e008b19455e7138a3eba3403ca22c0e884e1f4c8d058f1"
+        },
+        {
+          "group": "work",
+          "type": "RimWorld.StoreUtility",
+          "file": ".local-research/work/RimWorld.StoreUtility.cs",
+          "sha256": "b8241150a63e38993de851bdb82d06a8c6fbbb3359f1fdfb92b70bec3b5b960d",
+          "lines": [
+            327,
+            377
+          ],
+          "excerpt_sha256": "43758d3a8e2fca2de1a087230b8c30da761c99123ecba9d64c0082751baf00d9"
+        }
+      ]
+    },
+    {
+      "id": "OUT09",
+      "finding": "When initial Best/Specific search finds no cell, the first product is attempted Near the maker and production ends Succeeded. Specific has no initial automatic fallback to Best. A full/filter-blocked/unreachable but valid group does not itself invalidate the stored policy.",
+      "sources": [
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            249,
+            294
+          ],
+          "excerpt_sha256": "be1f0dc542f48b7e9eeb118daa72378b18f7b21db08d63b4f06459394bc46abe"
+        },
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.Bill_Production",
+          "file": ".local-research/stonecutting/RimWorld.Bill_Production.cs",
+          "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+          "lines": [
+            346,
+            445
+          ],
+          "excerpt_sha256": "343fce6eb77b41b7aac56d02040ba24ee5f5c2f487dd6aa6e9d5904f27ff8c18"
+        }
+      ]
+    },
+    {
+      "id": "OUT10",
+      "finding": "HaulToCellStorageJob targets the actual product and destination cell, sets ToCellStorage and opportunistic duplicates, and derives job.count from storage capacity. job.count is not necessarily the actual carried stackCount. The direct new haul job has no bill assignment; changing/deleting that bill is not a bill-link cancellation of this independent shipment.",
+      "sources": [
+        {
+          "group": "work",
+          "type": "Verse.AI.HaulAIUtility",
+          "file": ".local-research/work/Verse.AI.HaulAIUtility.cs",
+          "sha256": "6276e39bb2fd29fc5989b84bc2424fc65b26e4cfcfd74b673d3686eec7d5ae59",
+          "lines": [
+            141,
+            179
+          ],
+          "excerpt_sha256": "9807f5dfc84b7cfe33e41106c4757bbfa38de9bd72f51187cae8d02479eaad05"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            278,
+            284
+          ],
+          "excerpt_sha256": "6e1b8cf08148534a206fc2467545fba0cb7ac16b1b635618b9481203d13b84ae"
+        },
+        {
+          "group": "work",
+          "type": "Verse.AI.JobDriver_HaulToCell",
+          "file": ".local-research/work/Verse.AI.JobDriver_HaulToCell.cs",
+          "sha256": "e1511380cfa8c71d9d4d877e65cee439363a0c601de9d17b48ab58ca2dd1dcd1",
+          "lines": [
+            1,
+            156
+          ],
+          "excerpt_sha256": "f96dd95b03ec00bc4a8c8efbf176db977c6caa59476f1ef00896528eefa42924"
+        }
+      ]
+    },
+    {
+      "id": "OUT11",
+      "finding": "HaulToCell skips pickup when already carrying targetA, reserves its targets, and checks destination storage validity while carrying. Group removal, changed filter or capacity can fail an en-route job. Generic cleanup clears reservations and conditionally drops carried contents Near unless job policy/override retains them; this is distinct from initial output selection.",
+      "sources": [
+        {
+          "group": "work",
+          "type": "Verse.AI.JobDriver_HaulToCell",
+          "file": ".local-research/work/Verse.AI.JobDriver_HaulToCell.cs",
+          "sha256": "e1511380cfa8c71d9d4d877e65cee439363a0c601de9d17b48ab58ca2dd1dcd1",
+          "lines": [
+            16,
+            142
+          ],
+          "excerpt_sha256": "ae29fa6feec0666604f3b8759db155fa9ebbbea50bd16ca834fd49fa0620bb26"
+        },
+        {
+          "group": "work",
+          "type": "Verse.AI.Toils_Haul",
+          "file": ".local-research/work/Verse.AI.Toils_Haul.cs",
+          "sha256": "a2359a7c55a648b4304bd34fc2fccb59dcab10a50498f3e57b5d8b9894d2ea05",
+          "lines": [
+            254,
+            294
+          ],
+          "excerpt_sha256": "e92c7f2ab4c4734fa577cc718dfa0f59365fc786801f2c25c67f7dd81825ad58"
+        },
+        {
+          "group": "work",
+          "type": "Verse.AI.Pawn_JobTracker",
+          "file": ".local-research/work/Verse.AI.Pawn_JobTracker.cs",
+          "sha256": "7934319bfedbd8a46aa54341a2afec9561efb469cd4fe58aec5745f9236fc5c4",
+          "lines": [
+            475,
+            521
+          ],
+          "excerpt_sha256": "72fcb493df9a89b0806931e2dfbb3e400bd1392ff1ff056703b147674f0f4e58"
+        }
+      ]
+    },
+    {
+      "id": "OUT12",
+      "finding": "At-place Direct drop failure or partial placement can try another Best storage cell, then haul-aside; the default tryStoreSame=false does not constrain remainder to the original Specific group. In the extreme no-place branch the original destroys the carried item and logs a warning. Web cargo-preservation/drop-near failure handling is an adaptation, not an exact copy of this fallback tree.",
+      "sources": [
+        {
+          "group": "work",
+          "type": "Verse.AI.Toils_Haul",
+          "file": ".local-research/work/Verse.AI.Toils_Haul.cs",
+          "sha256": "a2359a7c55a648b4304bd34fc2fccb59dcab10a50498f3e57b5d8b9894d2ea05",
+          "lines": [
+            320,
+            385
+          ],
+          "excerpt_sha256": "15049aaadb3ffaf399639e45d31d982d29b023bafcff8d16b63e32bf80154292"
+        }
+      ]
+    },
+    {
+      "id": "OUT13",
+      "finding": "ValidateSettings validates storeGroup and includeGroup independently. Invalid output reference becomes null and Specific becomes DropOnFloor. Zone registration, single-building haul-group registration, and StorageGroup manager membership have different validity checks. Validation does not clear a reference solely for filter incompatibility or no free cells.",
+      "sources": [
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.Bill_Production",
+          "file": ".local-research/stonecutting/RimWorld.Bill_Production.cs",
+          "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+          "lines": [
+            346,
+            445
+          ],
+          "excerpt_sha256": "343fce6eb77b41b7aac56d02040ba24ee5f5c2f487dd6aa6e9d5904f27ff8c18"
+        }
+      ]
+    },
+    {
+      "id": "OUT14",
+      "finding": "The output menu enumerates registered slot groups; linked StorageGroups are deduplicated and ungrouped Building_Storage must implement IRenameable to appear through that branch. CanPossiblyStore checks first product Def for countable recipes, or returns true for noncountable recipes. Incompatible menu options have null actions; an already-selected incompatible group gets an incompatible label rather than deletion-style validation.",
+      "sources": [
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Dialog_BillConfig",
+          "file": ".local-research/production-bills/RimWorld.Dialog_BillConfig.cs",
+          "sha256": "b9edc70a35d57fa5abfc5494dcee784a20d2a5bcd559b3a8f92a5ac7563cba74",
+          "lines": [
+            216,
+            244
+          ],
+          "excerpt_sha256": "001b4d252bd1c5fbd9c7a65baf9a553478e2f83a6d380a4810502254a4fda3ca"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Dialog_BillConfig",
+          "file": ".local-research/production-bills/RimWorld.Dialog_BillConfig.cs",
+          "sha256": "b9edc70a35d57fa5abfc5494dcee784a20d2a5bcd559b3a8f92a5ac7563cba74",
+          "lines": [
+            423,
+            470
+          ],
+          "excerpt_sha256": "a9f554f4fce32c218ab5da9bae8bfb5ab95780dc45e8c23027b507e4de963e2a"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Dialog_BillConfig",
+          "file": ".local-research/production-bills/RimWorld.Dialog_BillConfig.cs",
+          "sha256": "b9edc70a35d57fa5abfc5494dcee784a20d2a5bcd559b3a8f92a5ac7563cba74",
+          "lines": [
+            586,
+            603
+          ],
+          "excerpt_sha256": "bb38e037197647d8034a8bd01064655db36288e8b48e151855dbef6ed78ae8e0"
+        },
+        {
+          "group": "stonecutting",
+          "type": "Verse.RecipeWorkerCounter",
+          "file": ".local-research/stonecutting/Verse.RecipeWorkerCounter.cs",
+          "sha256": "dc0d44c166c2797cb39df826fa69f881519b6bc5b4d0cc300dcbafaca3bf9b39",
+          "lines": [
+            10,
+            17
+          ],
+          "excerpt_sha256": "a9a50011449a7e402321dfd0bac9f42b16c1ae0345b101c2ad18b771090c4401"
+        },
+        {
+          "group": "stonecutting",
+          "type": "Verse.RecipeWorkerCounter",
+          "file": ".local-research/stonecutting/Verse.RecipeWorkerCounter.cs",
+          "sha256": "dc0d44c166c2797cb39df826fa69f881519b6bc5b4d0cc300dcbafaca3bf9b39",
+          "lines": [
+            156,
+            163
+          ],
+          "excerpt_sha256": "bd8494d0ed8401ec22a94d6d2aaee6078aa5a965420c8ac7ddcc640d87945bbe"
+        }
+      ]
+    },
+    {
+      "id": "OUT15",
+      "finding": "storeMode, storeGroup and includeGroup are saved independently; slot references serialize the ILoadReferenceable group or slot parent and resolve back to ISlotGroup. Missing storeMode defaults to BestStockpile. Clone copies both group references and the mode; it does not duplicate physical storage.",
+      "sources": [
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.Bill_Production",
+          "file": ".local-research/stonecutting/RimWorld.Bill_Production.cs",
+          "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+          "lines": [
+            113,
+            175
+          ],
+          "excerpt_sha256": "28ce980faa9365db408a2f729a6ec9520c249a0672061d507482721d8808a0d3"
+        },
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.Bill_Production",
+          "file": ".local-research/stonecutting/RimWorld.Bill_Production.cs",
+          "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+          "lines": [
+            448,
+            466
+          ],
+          "excerpt_sha256": "4ff7a773cc7874acc105aa3cc25127ff578f3b74f87c25ef3724c1ed0ebe0bf8"
+        }
+      ]
+    },
+    {
+      "id": "OUT16",
+      "finding": "Pawn_JobTracker saves current job, driver and queue deeply and reconnects driver pawn/job after loading. Pawn_CarryTracker independently saves its one-stack innerContainer deeply. Output mode persistence alone does not prove an active shipment roundtrip; actual job/driver/product identity must also be compared.",
+      "sources": [
+        {
+          "group": "work",
+          "type": "Verse.AI.Pawn_JobTracker",
+          "file": ".local-research/work/Verse.AI.Pawn_JobTracker.cs",
+          "sha256": "7934319bfedbd8a46aa54341a2afec9561efb469cd4fe58aec5745f9236fc5c4",
+          "lines": [
+            90,
+            110
+          ],
+          "excerpt_sha256": "b0e13b02f284e27edf390182f5d4184bd9c9b83611cfa5709504659537225100"
+        },
+        {
+          "group": "preservation",
+          "type": "Verse.Pawn_CarryTracker",
+          "file": ".local-research/preservation/Verse.Pawn_CarryTracker.cs",
+          "sha256": "b53d3466fbaf47c9b4bfd8c044b7632943a00c93749c1873b9267c69a6ce1df6",
+          "lines": [
+            10,
+            40
+          ],
+          "excerpt_sha256": "c5c1f2f587e28a02d6580b88a6ddfdd7a89b8a4b79df8c03d2330ef39719511e"
+        }
+      ]
+    },
+    {
+      "id": "OUT17",
+      "finding": "Composition of matched static paths: uninstall minifies by despawning; Thing.DeSpawn removes the haul destination and manager removes its SlotGroup. Bill validation therefore invalidates a single uninstalled shelf target. Building_Storage.DeSpawn does not remove linked-group membership (Destroy does). Its AllSlotCells is empty while unspawned. A still-registered linked group containing only packed shelves passes group validation but has no physical cells; initial product search fails/drop-near without resetting Specific solely for zero cells. Destruction/member removal can separately dissolve the group.",
+      "sources": [
+        {
+          "group": "furniture-reinstall",
+          "type": "RimWorld.MinifyUtility",
+          "file": ".local-research/furniture-reinstall/RimWorld.MinifyUtility.cs",
+          "sha256": "0373c66ee17e30e9adc84845abcc7a55f346733bc88370ab01f287895a41b02d",
+          "lines": [
+            8,
+            28
+          ],
+          "excerpt_sha256": "fe8d409e37574475ef58239e1958584f01b17021b8b10937262d3db3bbe59e65"
+        },
+        {
+          "group": "food",
+          "type": "Verse.Thing",
+          "file": ".local-research/food/Verse.Thing.cs",
+          "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+          "lines": [
+            930,
+            947
+          ],
+          "excerpt_sha256": "a10600cb03a80b1b18d1ab077769ce8fd993b081ebd10a5d8fd64b3cc8dac019"
+        },
+        {
+          "group": "food",
+          "type": "Verse.Thing",
+          "file": ".local-research/food/Verse.Thing.cs",
+          "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+          "lines": [
+            1003,
+            1018
+          ],
+          "excerpt_sha256": "f73b36a29fdc325b0484165a87ac4b00db16721743af71d7096b3f86c28f0507"
+        },
+        {
+          "group": "logistics",
+          "type": "RimWorld.HaulDestinationManager",
+          "file": ".local-research/logistics/RimWorld.HaulDestinationManager.cs",
+          "sha256": "49e963ec98d190d46c64612fd8531f1a9f84775fc81b6317a0cafa0601eaa33a",
+          "lines": [
+            87,
+            117
+          ],
+          "excerpt_sha256": "2130eeb904f658319d059f3c770dbd1ee39d9fdb1a5f25a70fbc3414e85e4598"
+        },
+        {
+          "group": "logistics",
+          "type": "RimWorld.Building_Storage",
+          "file": ".local-research/logistics/RimWorld.Building_Storage.cs",
+          "sha256": "680349a2c0e89d2a028ec586319c8781c8f722a8a1ce90f877b4c51bef7a635e",
+          "lines": [
+            83,
+            98
+          ],
+          "excerpt_sha256": "561d5468497edcae12e3ac56a35d6636abcbefd14390b218d3d26771ebe94354"
+        },
+        {
+          "group": "logistics",
+          "type": "RimWorld.Building_Storage",
+          "file": ".local-research/logistics/RimWorld.Building_Storage.cs",
+          "sha256": "680349a2c0e89d2a028ec586319c8781c8f722a8a1ce90f877b4c51bef7a635e",
+          "lines": [
+            152,
+            187
+          ],
+          "excerpt_sha256": "f15d40e60ec361a111fe8e56430cb4c85fd0259f809986de58d4cd379543b027"
+        },
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.SlotGroup",
+          "file": ".local-research/shelf-storage/RimWorld.SlotGroup.cs",
+          "sha256": "d91098a284a33408d9fba9ae5078c9d2186c92f8088c8310d016c6ebfc929a15",
+          "lines": [
+            60,
+            63
+          ],
+          "excerpt_sha256": "4a75c1cc391d36ad28b011f354ce12796f9eb6f892dbbe729b5a6b4b5a428a6f"
+        },
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.StorageGroup",
+          "file": ".local-research/shelf-storage/RimWorld.StorageGroup.cs",
+          "sha256": "9b8670c2da14baf8fb222f339fecc4c212d4a1ded908e970930d27477978a1b3",
+          "lines": [
+            71,
+            86
+          ],
+          "excerpt_sha256": "a399e5271cb41ab5c596ea4df7ab30b8fca1c39e73e016a7ba61fa7e7d17f2de"
+        },
+        {
+          "group": "storage-groups",
+          "type": "Verse.StorageGroupManager",
+          "file": ".local-research/storage-groups/Verse.StorageGroupManager.cs",
+          "sha256": "c241f24045b1258a7c262e128a67312d8ff477fb8a96c97f8d003f6ca5d42eb2",
+          "lines": [
+            28,
+            38
+          ],
+          "excerpt_sha256": "eea67b83d9906f0b8f9ea6ceb72cac017660fdef9db6952d16d9a4a39edc02c2"
+        },
+        {
+          "group": "storage-groups",
+          "type": "Verse.StorageGroupManager",
+          "file": ".local-research/storage-groups/Verse.StorageGroupManager.cs",
+          "sha256": "c241f24045b1258a7c262e128a67312d8ff477fb8a96c97f8d003f6ca5d42eb2",
+          "lines": [
+            53,
+            66
+          ],
+          "excerpt_sha256": "227f65a9275de212f9b2271406acf249dca7df8983e0eb1290019b2b7ada66fe"
+        },
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.Bill_Production",
+          "file": ".local-research/stonecutting/RimWorld.Bill_Production.cs",
+          "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+          "lines": [
+            414,
+            445
+          ],
+          "excerpt_sha256": "1062f95873aa06daccfca9adc3142a20cc437bf35765d225ea23bda101cc1b37"
+        }
+      ]
+    },
+    {
+      "id": "OUT18",
+      "finding": "Counting is a separate policy: RecipeWorkerCounter uses includeGroup, with all-map/resource/held/carried branches when appropriate, and group HeldThings for an include-group branch. Output destination does not implicitly become the count scope. List-based CountValidThings and carried counting have different increments; no blanket stack-count formula is inferred from one branch.",
+      "sources": [
+        {
+          "group": "stonecutting",
+          "type": "Verse.RecipeWorkerCounter",
+          "file": ".local-research/stonecutting/Verse.RecipeWorkerCounter.cs",
+          "sha256": "dc0d44c166c2797cb39df826fa69f881519b6bc5b4d0cc300dcbafaca3bf9b39",
+          "lines": [
+            20,
+            122
+          ],
+          "excerpt_sha256": "558322403f3875366a30674b89a431c54aa832bb38d2cc587d7345d840256f52"
+        },
+        {
+          "group": "stonecutting",
+          "type": "Verse.RecipeWorkerCounter",
+          "file": ".local-research/stonecutting/Verse.RecipeWorkerCounter.cs",
+          "sha256": "dc0d44c166c2797cb39df826fa69f881519b6bc5b4d0cc300dcbafaca3bf9b39",
+          "lines": [
+            165,
+            181
+          ],
+          "excerpt_sha256": "2d332ac19338040343687ebfa13eaf29f23934f3286c12c7aee52400120d67b3"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Derived C# is not original source and unresolved dependencies are tolerated.",
+    "Initial selection failure, en-route failure and at-place fallback are distinct branches.",
+    "Specific skips the Best outer priority/faction/enabled checks; do not merge their conditions.",
+    "Packed linked-group conclusion is composed static evidence, not a native packed-shelf trial.",
+    "Native runtime is recorded separately and covers one club under Best and Drop, plus Specific settings/deletion only.",
+    "REA framework metadata does not prove the game runtime."
+  ]
+}

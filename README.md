@@ -1,5 +1,7 @@
 # 余烬边境 · Emberfield
 
+v42接通成品去向：制作完成后就地放下、由制作者送往最佳仓库，或送往指定区域／货架／联动储存组。地面仓库支持稳定身份、命名和扩展；成品配送不依赖搬运分工，途中保存和目标失效保留实物，完成次数只结算一次。继续先搭机制闭环，数值后调。见[124原版机制](docs/research/rimworld/124-production-output-mechanisms.md)、[125玩法与验证](docs/research/rimworld/125-production-output-gameplay.md)。
+
 v41接入独立未完成品：13条裁缝、武器和护甲配方保存实物材料、作者与加工进度；暂停和删除账单保留物品，可搬运入库、跨兼容工作台由原作者续作，单独取消才退料。见[122原版机制](docs/research/rimworld/122-unfinished-production-mechanisms.md)、[123玩法与验证](docs/research/rimworld/123-unfinished-production-gameplay.md)。继续先搭玩法闭环，退料比例、耐久和工作速度等数值后续统一调整。
 
 一个可在浏览器游玩的殖民地模拟游戏。目前主要扩展64×64×16的多层体素模式：真实地下开凿、楼层建造、跨层物流、生产、健康和殖民地经营。另保留96×96的二维营地首版，其通信信标与撤离流程属于二维入口。
