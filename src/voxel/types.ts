@@ -42,6 +42,7 @@ export const Block = {
 export type Biome = 'temperate' | 'boreal' | 'desert';
 export type Hilliness = 'flat' | 'small' | 'large' | 'mountainous';
 export interface WorldSettings {
+  river?: 'none' | 'creek' | 'river';
   biome: Biome;
   hilliness: Hilliness;
   meanTemperature: number;
@@ -50,6 +51,7 @@ export interface WorldSettings {
 }
 export type TreeSpecies = 'poplar' | 'pine' | 'saguaro';
 export interface WorldSummary {
+  water?: { shallow: number; deep: number; bridgeable: number };
   elevation: { min: number; max: number };
   surfaceCounts: { soil: number; richSoil: number; sand: number; gravel: number; stone: number };
   resources: { stone: number; steel: number; components: number };
@@ -61,7 +63,8 @@ export interface WorldSummary {
   growingDays: number;
 }
 export interface WorldPreview {
-  generator: 2 | 3;
+  generator: 2 | 3 | 4;
+  waterMap: Uint8Array;
   seed: number;
   settings: WorldSettings;
   spawn: Pos;
@@ -269,6 +272,7 @@ export interface RoomSummary {
   maxZ: number;
 }
 export type Tool =
+  | 'bridge'
   | ShelfKind
   | 'table'
   | 'chair'
@@ -558,6 +562,7 @@ export interface CropCondition {
   reason: string;
 }
 export type JobKind =
+  | 'bridge'
   | ShelfKind
   | 'uninstall'
   | 'install'
@@ -830,7 +835,7 @@ export interface VoxelSnapshot {
   combatEvents: CombatEvent[];
   sandbags: Sandbag[];
   seed: number;
-  generator: 1 | 2 | 3;
+  generator: 1 | 2 | 3 | 4;
   exploration: { known: number; total: number };
   worldSite: WorldSite | null;
   settings: WorldSettings;
@@ -881,6 +886,8 @@ export interface VoxelSnapshot {
   tickMs: number;
 }
 export interface ChunkUpdate {
+  water?: Uint8Array;
+  bridges?: Uint8Array;
   id: number;
   blocks: Uint8Array;
   ladders: Uint8Array;
@@ -1004,7 +1011,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 42;
+  version: 43;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;
@@ -1015,7 +1022,7 @@ export interface VoxelSave {
   projectiles: Projectile[];
   combatEvents: CombatEvent[];
   sandbags: Sandbag[];
-  generator: 1 | 2 | 3;
+  generator: 1 | 2 | 3 | 4;
   worldSite: WorldSite | null;
   settings: WorldSettings;
   spawn: Pos;
@@ -1024,6 +1031,8 @@ export interface VoxelSave {
   nextId: number;
   // RLE pairs keep terrain compact; separate format never overwrites 2D v1 saves.
   blocks: number[];
+  water: number[];
+  bridges: number[];
   explored: number[];
   ladders: number[];
   pawns: Pawn[];
@@ -1080,6 +1089,7 @@ export const RESOURCE_NAMES: Record<Resource, string> = {
   meal: '简餐',
 };
 export const JOB_NAMES: Record<JobKind, string> = {
+  bridge: '架木桥',
   shelf: '建货架', smallShelf: '建小货架',
   uninstall: '卸下家具', install: '重装家具',
   table: '造餐桌', chair: '造餐椅',
@@ -1122,6 +1132,7 @@ export const JOB_NAMES: Record<JobKind, string> = {
   cook: '烹饪简餐',
 };
 export const TOOL_NAMES: Record<Tool, string> = {
+  bridge: '木桥',
   shelf: '货架', smallShelf: '小货架',
   table: '餐桌', chair: '餐椅',
   fence: '围栏', fenceGate: '栏门', penMarker: '圈地标记', animalArea: '动物活动范围',

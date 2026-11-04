@@ -1,0 +1,49 @@
+{
+  "evidence_id": "RW17-RIVER-BRIDGE",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.Designator_ZoneAddStockpile",
+      "local_file": ".local-research/river-bridge/RimWorld.Designator_ZoneAddStockpile.cs",
+      "sha256": "52c7ac3f2be603a69f3e9d4bb5ad6fae450fe09a5acb795ed9620e916419134b",
+      "lines": 68
+    },
+    {
+      "type": "RimWorld.Designator_ZoneAdd",
+      "local_file": ".local-research/river-bridge/RimWorld.Designator_ZoneAdd.cs",
+      "sha256": "cabb6f08e41db80b8457d7f4d00d98c3dc1490547d54fe7a7e812dfb2b5daf98",
+      "lines": 197
+    },
+    {
+      "type": "RimWorld.Designator_RemoveFoundation",
+      "local_file": ".local-research/river-bridge/RimWorld.Designator_RemoveFoundation.cs",
+      "sha256": "b94eafede1ebffee3cb60729f789f64e2319479a697fe6bb86d4f5f9794694d9",
+      "lines": 55
+    },
+    {
+      "type": "RimWorld.JobDriver_RemoveFoundation",
+      "local_file": ".local-research/river-bridge/RimWorld.JobDriver_RemoveFoundation.cs",
+      "sha256": "01c232044afcd87e29984ccd67443a66960c7cfe37e37ab75bc1ef5442f98e55",
+      "lines": 27
+    },
+    {
+      "type": "RimWorld.WorkGiver_ConstructRemoveFoundation",
+      "local_file": ".local-research/river-bridge/RimWorld.WorkGiver_ConstructRemoveFoundation.cs",
+      "sha256": "4fd2cb553d52f08bd5d607a7d137f5f37f8d833e1a074e112ae09f6c35e8e493",
+      "lines": 109
+    }
+  ]
+}

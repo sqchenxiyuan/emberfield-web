@@ -16,7 +16,7 @@ export function seasonalOffset(day: number, latitude: number): number {
 export function outdoorTemperature(
   tick: number,
   settings: WorldSettings,
-  generator: 1 | 2 | 3 = 2,
+  generator: 1 | 2 | 3 | 4 = 2,
 ): number {
   if (generator === 1) return legacyTemperatureAt(tick);
   return (

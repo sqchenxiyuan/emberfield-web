@@ -7,8 +7,8 @@ export function rejectLegacyWorldSite(raw: Record<string, any>, sourceVersion: n
     throw new Error('旧版本存档包含新版地区身份字段');
 }
 
-/** Resolve only the chosen tile; never generate a region map or local terrain
- * while checking a saved colony. null explicitly means a free-form old camp. */
+/** Historical identities evaluate one tile; v3 drainage uses a bounded cache of
+ * cheap region maps, never local voxel terrain. null means a free-form old camp. */
 export function validateWorldSiteIdentity(raw: Record<string, any>): WorldSite | null {
   if (!Object.hasOwn(raw, 'worldSite')) throw new Error('存档缺少地区身份字段');
   if (raw.worldSite === null) return null;

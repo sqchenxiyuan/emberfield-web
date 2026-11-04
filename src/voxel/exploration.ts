@@ -28,10 +28,10 @@ export function revealExploration(blocks: Uint8Array, explored: Uint8Array, open
 
 /** Exterior air enters from the sky and map sides. Enclosed underground air is
  * hidden until connected. Legacy generators retain their original full view. */
-export function initialExploration(blocks: Uint8Array, generator: 1 | 2 | 3): Uint8Array {
+export function initialExploration(blocks: Uint8Array, generator: 1 | 2 | 3 | 4): Uint8Array {
   if (blocks.length !== CELLS) throw new Error('探索地形长度无效');
   const explored = new Uint8Array(CELLS);
-  if (generator !== 3) return explored.fill(1);
+  if (generator < 3) return explored.fill(1);
   const seeds: number[] = [];
   for (let z = 0; z < HEIGHT; z++) for (let y = 0; y < DEPTH; y++) for (let x = 0; x < WIDTH; x++)
     if (z === HEIGHT - 1 || x === 0 || x === WIDTH - 1 || y === 0 || y === DEPTH - 1) {

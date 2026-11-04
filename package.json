@@ -109,7 +109,9 @@
     "test:voxel:exploration:browser": "node scripts/voxel-exploration-browser-verify.mjs",
     "test:voxel:shelves": "node scripts/voxel-shelves-campaign-verify.mjs",
     "test:voxel:shelves:browser": "node scripts/voxel-shelves-browser-verify.mjs",
-    "research:shelves": "node scripts/research/verify-shelf-storage-evidence.mjs && node scripts/research/verify-native-shelves-runtime.mjs"
+    "research:shelves": "node scripts/research/verify-shelf-storage-evidence.mjs && node scripts/research/verify-native-shelves-runtime.mjs",
+    "test:voxel:rivers": "node scripts/voxel-river-campaign-verify.mjs",
+    "test:voxel:rivers:browser": "node scripts/voxel-river-browser-verify.mjs"
   },
   "dependencies": {
     "pixi.js": "8.22.0",

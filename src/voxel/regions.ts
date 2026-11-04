@@ -1,10 +1,11 @@
 import type { Biome, Hilliness, WorldSettings } from './types';
 import { growingSeasonDays } from './climate';
+import type { RiverEdge, RiverRoute } from './rivers';
 
 /** A world selection identifies a place; the local map keeps its own independent seed. */
 export interface WorldSite {
-  /** v1 keeps generator 2; v2 uses the same regions with generator 3 caves. */
-  version: 1 | 2;
+  /** v1 keeps generator 2; v2 keeps generator 3 caves; v3 adds river drainage. */
+  version: 1 | 2 | 3;
   worldSeed: number;
   tileId: number;
 }
@@ -25,10 +26,19 @@ export interface RegionTile {
   mapSeed: number;
   settings: WorldSettings | null;
   growingDays: number;
+  river?: {
+    kind: 'creek' | 'river';
+    /** Adjacent channel tile ids, never arbitrary decorative map lines. */
+    inflow: number[];
+    outflow: number | null;
+    accumulation: number;
+    /** Spill elevation used to drain closed basins; raw land elevation is unchanged. */
+    drainageElevation: number;
+  };
 }
 
 export interface RegionMap {
-  version: 1;
+  version: 1 | 2;
   seed: number;
   width: number;
   height: number;
@@ -86,7 +96,7 @@ function noise(key: number, x: number, y: number, z: number, salt: number): numb
 }
 
 /** Evaluate only one tile: loading a save does not regenerate all world/local maps. */
-export function regionTile(worldSeed: number, tileId: number): RegionTile {
+function legacyRegionTile(worldSeed: number, tileId: number): RegionTile {
   validateSeed(worldSeed);
   if (!Number.isInteger(tileId) || tileId < 0 || tileId >= REGION_RULES.width * REGION_RULES.height)
     throw new Error('地区编号超出世界范围');
@@ -140,14 +150,96 @@ export function regionTile(worldSeed: number, tileId: number): RegionTile {
   };
 }
 
-export function generateRegions(seed: number): RegionMap {
+const drainageCache = new Map<number, RegionMap>();
+export const DRAINAGE_RULES = Object.freeze({ cacheWorlds: 4, creekAccumulation: 4.5, riverAccumulation: 13 });
+function neighboringTiles(id: number): number[] {
+  const { width, height } = REGION_RULES, x = id % width, y = Math.floor(id / width);
+  return [y > 0 ? id - width : -1, y < height - 1 ? id + width : -1,
+    y * width + (x + width - 1) % width, y * width + (x + 1) % width].filter(value => value >= 0);
+}
+/** Priority flood gives every land tile an adjacent route to ocean, including
+ * enclosed basins. Accumulated upstream runoff then selects channel edges.
+ * It is an independent Web design, not RimWorld's river worker algorithm. */
+function drainageRegions(seed: number): RegionMap {
+  const cached = drainageCache.get(seed);
+  if (cached) return cached;
+  const count = REGION_RULES.width * REGION_RULES.height,
+    tiles = Array.from({ length: count }, (_, id) => legacyRegionTile(seed, id)),
+    downstream = new Int32Array(count).fill(-1), levels = new Float64Array(count),
+    visited = new Uint8Array(count), accumulation = new Float64Array(count),
+    frontier: number[] = [], order: number[] = [];
+  for (const tile of tiles) {
+    accumulation[tile.id] = tile.biome === 'ocean' ? 0 : Math.max(0.08, tile.rainfall / 1100);
+    if (tile.biome === 'ocean') { visited[tile.id] = 1; levels[tile.id] = 0; frontier.push(tile.id); }
+  }
+  while (frontier.length) {
+    frontier.sort((a, b) => levels[b] - levels[a] || b - a);
+    const current = frontier.pop()!;
+    order.push(current);
+    for (const next of neighboringTiles(current)) if (!visited[next]) {
+      visited[next] = 1;
+      downstream[next] = current;
+      levels[next] = Math.max(levels[current], tiles[next].elevation);
+      frontier.push(next);
+    }
+  }
+  for (let i = order.length - 1; i >= 0; i--) {
+    const id = order[i];
+    if (downstream[id] >= 0) accumulation[downstream[id]] += accumulation[id];
+  }
+  for (const tile of tiles) {
+    const channel = tile.biome !== 'ocean' && accumulation[tile.id] >= DRAINAGE_RULES.creekAccumulation;
+    if (tile.settings) tile.settings.river = channel && accumulation[tile.id] >= DRAINAGE_RULES.riverAccumulation ? 'river' : channel ? 'creek' : 'none';
+    if (channel) tile.river = {
+      kind: accumulation[tile.id] >= DRAINAGE_RULES.riverAccumulation ? 'river' : 'creek',
+      inflow: [], outflow: downstream[tile.id] >= 0 ? downstream[tile.id] : null,
+      accumulation: accumulation[tile.id], drainageElevation: levels[tile.id],
+    };
+  }
+  for (const tile of tiles) if (tile.river?.outflow !== null && tile.river?.outflow !== undefined) {
+    tiles[tile.river.outflow].river?.inflow.push(tile.id);
+  }
+  const result: RegionMap = { version: 2, seed, width: REGION_RULES.width, height: REGION_RULES.height, tiles };
+  if (drainageCache.size >= DRAINAGE_RULES.cacheWorlds) drainageCache.delete(drainageCache.keys().next().value!);
+  drainageCache.set(seed, result);
+  return result;
+}
+/** Historical callers default to their original region rules. New selection UI
+ * requests v2, whose bounded cache is independent of the mutable returned tiles. */
+export function regionTile(worldSeed: number, tileId: number, version: 1 | 2 = 1): RegionTile {
+  validateSeed(worldSeed);
+  if (!Number.isInteger(tileId) || tileId < 0 || tileId >= REGION_RULES.width * REGION_RULES.height)
+    throw new Error('地区编号超出世界范围');
+  if (version === 1) return legacyRegionTile(worldSeed, tileId);
+  if (version !== 2) throw new Error('无效的地区生成版本');
+  return structuredClone(drainageRegions(worldSeed).tiles[tileId]);
+}
+export function generateRegions(seed: number, version: 1 | 2 = 1): RegionMap {
   validateSeed(seed);
+  if (version === 2) return structuredClone(drainageRegions(seed));
+  if (version !== 1) throw new Error('无效的地区生成版本');
   return {
     version: 1,
     seed,
     width: REGION_RULES.width,
     height: REGION_RULES.height,
     tiles: Array.from({ length: REGION_RULES.width * REGION_RULES.height }, (_, id) => regionTile(seed, id)),
+  };
+}
+
+function edgeToNeighbor(tile: RegionTile, neighbor: number): RiverEdge {
+  const { width } = REGION_RULES;
+  if (neighbor === tile.id - width) return 'north';
+  if (neighbor === tile.id + width) return 'south';
+  if (neighbor === tile.y * width + (tile.x + 1) % width) return 'east';
+  if (neighbor === tile.y * width + (tile.x + width - 1) % width) return 'west';
+  throw new Error('河流连接不是相邻地区');
+}
+export function riverRouteForTile(tile: RegionTile): RiverRoute | undefined {
+  if (!tile.river) return undefined;
+  return {
+    inflow: tile.river.inflow.map(id => edgeToNeighbor(tile, id)),
+    outflow: tile.river.outflow === null ? null : edgeToNeighbor(tile, tile.river.outflow),
   };
 }
 
@@ -163,20 +255,21 @@ export function recommendedRegion(map: RegionMap): RegionTile | null {
 }
 
 export function resolveWorldSite(value: unknown): {
-  site: WorldSite; seed: number; settings: WorldSettings; tile: RegionTile; generator: 2 | 3;
+  site: WorldSite; seed: number; settings: WorldSettings; tile: RegionTile; generator: 2 | 3 | 4; riverRoute?: RiverRoute;
 } {
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('无效的世界选址');
   const site = value as WorldSite;
-  if ((site.version !== 1 && site.version !== 2) || Object.keys(site).length !== 3 ||
+  if ((site.version !== 1 && site.version !== 2 && site.version !== 3) || Object.keys(site).length !== 3 ||
     !['version', 'worldSeed', 'tileId'].every((key) => Object.hasOwn(site, key)))
     throw new Error('无效的世界选址版本或字段');
-  const tile = regionTile(site.worldSeed, site.tileId);
+  const tile = regionTile(site.worldSeed, site.tileId, site.version === 3 ? 2 : 1);
   if (!tile.settleable || !tile.settings) throw new Error(tile.reason ?? '该地区不能建立营地');
   return {
     site: { version: site.version, worldSeed: site.worldSeed, tileId: site.tileId },
-    generator: site.version === 1 ? 2 : 3,
+    generator: site.version === 1 ? 2 : site.version === 2 ? 3 : 4,
     seed: tile.mapSeed,
     settings: { ...tile.settings },
     tile,
+    ...(site.version === 3 ? { riverRoute: riverRouteForTile(tile) } : {}),
   };
 }

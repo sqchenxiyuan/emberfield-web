@@ -2056,3 +2056,7 @@ a {
 .voxel-stockpile-expansion-toolbar b { min-width: 0; max-width: 300px; overflow-wrap: anywhere; letter-spacing: 0; }
 .voxel-stockpile-expansion-toolbar button { padding: 5px 8px; }
 .voxel-stockpile-expansion-hint > p { margin: 6px 0; }
+.voxel-water-detail { margin: 10px 0; padding: 10px; border: 1px solid #77bed077; border-radius: 4px; background: #21434a66; }
+.voxel-water-detail > b { color: #b3dce4; font-size: 12px; }
+.voxel-water-detail p { line-height: 1.7; font-size: 11px; }
+.voxel-water-detail button { width: 100%; margin-top: 4px; }

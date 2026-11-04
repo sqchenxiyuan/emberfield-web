@@ -25,7 +25,7 @@ describe('generator 3 enclosed caves and frozen historical terrain', () => {
     'makes sealed chambers with floors, ceilings and clearance across %s terrain and all biomes', (hilliness) => {
       for (const seed of [73129, 17, -1, 4295040425]) for (const preset of Object.values(WORLD_PRESETS)) {
         const settings = { ...preset, hilliness };
-        const w = generateWorld(seed, settings), old = generateWorld(seed, settings, 2);
+        const w = generateWorld(seed, settings, 3), old = generateWorld(seed, settings, 2);
         const explored = initialExploration(w.blocks, 3);
         expect(w.generator).toBe(3);
         expect(w.heightMap).toEqual(old.heightMap);
@@ -56,22 +56,22 @@ describe('generator 3 enclosed caves and frozen historical terrain', () => {
         expect(floors.size).toBeGreaterThan(0);
         expect(w.summary.resources.steel).toBeLessThanOrEqual(old.summary.resources.steel);
         expect(w.summary.resources.components).toBeLessThanOrEqual(old.summary.resources.components);
-        expect(sha(generateWorld(seed, settings).blocks)).toBe(sha(w.blocks));
+        expect(sha(generateWorld(seed, settings, 3).blocks)).toBe(sha(w.blocks));
       }
     }, 15000,
   );
 
   it('preview counts only discovered resource faces and shares no mutable terrain buffers', () => {
-    const w = generateWorld(73129), visible = initialExploration(w.blocks, 3);
-    const preview = previewWorld(73129);
+    const w = generateWorld(73129, undefined, 3), visible = initialExploration(w.blocks, 3);
+    const preview = previewWorld(73129, undefined, 3);
     const count = (kind: number) => w.blocks.reduce((n, b, i) => n + Number(b === kind && visible[i] === 1), 0);
     expect(preview.summary.resources).toEqual({ stone: count(Block.Stone), steel: count(Block.Steel), components: count(Block.Components) });
     expect(preview.summary.resources.stone).toBeLessThan(w.blocks.filter(b => b === Block.Stone).length);
     expect(preview.generator).toBe(3);
     expect(Object.hasOwn(preview, 'blocks')).toBe(false);
     expect(Object.hasOwn(preview, 'explored')).toBe(false);
-    expect(sha(generateWorld(73129 + 4294967296).blocks)).not.toBe(sha(w.blocks));
+    expect(sha(generateWorld(73129 + 4294967296, undefined, 3).blocks)).not.toBe(sha(w.blocks));
     w.blocks.fill(Block.Air);
-    expect(previewWorld(73129)).toEqual(preview);
+    expect(previewWorld(73129, undefined, 3)).toEqual(preview);
   });
 });

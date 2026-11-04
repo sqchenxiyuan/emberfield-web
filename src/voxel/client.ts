@@ -223,6 +223,17 @@ export class VoxelClient {
     const c = this.chunksCache.get(Math.floor(p.y / 16) * 4 + Math.floor(p.x / 16));
     return c ? c.blocks[(p.z * 16 + (p.y % 16)) * 16 + (p.x % 16)] : 0;
   };
+  /** Raw water at its occupied voxel; remains under a finished bridge. */
+  waterAt = (p: Pos): number => {
+    if (!inside(p)) return 0;
+    const c = this.chunksCache.get(Math.floor(p.y / 16) * 4 + Math.floor(p.x / 16));
+    return c?.water?.[(p.z * 16 + (p.y % 16)) * 16 + (p.x % 16)] ?? 0;
+  };
+  bridgeAt = (p: Pos): boolean => {
+    if (!inside(p)) return false;
+    const c = this.chunksCache.get(Math.floor(p.y / 16) * 4 + Math.floor(p.x / 16));
+    return c?.bridges?.[(p.z * 16 + (p.y % 16)) * 16 + (p.x % 16)] === 1;
+  };
   exploredAt = (p: Pos): boolean => {
     if (!inside(p)) return false;
     const c = this.chunksCache.get(Math.floor(p.y / 16) * 4 + Math.floor(p.x / 16));
@@ -348,7 +359,7 @@ export class VoxelClient {
       downX = 0,
       downY = 0;
     let dragTool: Tool | null = null, dragSequence = 0, previewSequence = 0;
-    const previews = (tool: Tool) => !!this.state.furniturePlacement || ['shelf', 'smallShelf', 'bed', 'table', 'chair', 'fence', 'fenceGate', 'penMarker', 'animalArea'].includes(tool);
+    const previews = (tool: Tool) => !!this.state.furniturePlacement || ['bridge', 'shelf', 'smallShelf', 'bed', 'table', 'chair', 'fence', 'fenceGate', 'penMarker', 'animalArea'].includes(tool);
     const preview = (from: Pos, target: Pos, tool: Tool) => {
       const furniture = this.state.furniturePlacement;
       if (furniture) {

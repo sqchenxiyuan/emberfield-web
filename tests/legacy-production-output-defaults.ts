@@ -1,7 +1,9 @@
 import { expect } from 'vitest';
+import { stripWaterFields } from './legacy-water-defaults';
 
 /** Synthetic old-schema tests only. Never erase an active output delivery. */
 export function stripProductionOutputFields(raw: Record<string, any>) {
+  stripWaterFields(raw);
   // Validate every pawn before mutating the snapshot, including carrying and
   // dropping tasks. Authentic historical fixture bytes never pass this helper.
   for (const pawn of raw.pawns ?? []) expect(pawn.productionDelivery).toBeUndefined();

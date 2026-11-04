@@ -20,6 +20,7 @@ import { fertilityOf, MIN_CROP_FERTILITY } from './farming';
 import { TREE_DATA, treeCover } from './plants';
 import { carveCaves } from './caves';
 import { initialExploration } from './exploration';
+import { carveRivers, type RiverRoute } from './rivers';
 export { TREE_DATA } from './plants';
 
 export const WORLD_PRESETS: Record<Biome, WorldSettings> = {
@@ -38,6 +39,7 @@ export const DEFAULT_WORLD_SETTINGS: Readonly<WorldSettings> = Object.freeze({
 });
 const BIOMES = ['temperate', 'boreal', 'desert'] as const;
 const HILLINESS = ['flat', 'small', 'large', 'mountainous'] as const;
+const RIVERS = ['none', 'creek', 'river'] as const;
 const finite = (n: unknown): n is number => typeof n === 'number' && Number.isFinite(n);
 export function sanitizeWorldSettings(input: Partial<WorldSettings> = {}): WorldSettings {
   if (!input || typeof input !== 'object') input = {};
@@ -51,6 +53,7 @@ export function sanitizeWorldSettings(input: Partial<WorldSettings> = {}): World
     meanTemperature: number('meanTemperature', -30, 45),
     rainfall: number('rainfall', 0, 4000),
     latitude: number('latitude', -90, 90),
+    ...(Object.hasOwn(input, 'river') ? { river: RIVERS.includes(input.river!) ? input.river! : 'none' as const } : {}),
   };
 }
 export function validWorldSettings(value: unknown): value is WorldSettings {
@@ -60,7 +63,7 @@ export function validWorldSettings(value: unknown): value is WorldSettings {
   return (
     Object.keys(cleaned).every(
       (key) => v[key as keyof WorldSettings] === cleaned[key as keyof WorldSettings],
-    ) && Object.keys(v).length === 5
+    ) && Object.keys(v).length === (Object.hasOwn(v, 'river') ? 6 : 5)
   );
 }
 function hash(seed: number, x: number, y: number, salt = 0): number {
@@ -85,9 +88,9 @@ function noise(seed: number, x: number, y: number, salt: number): number {
     (hash(seed, ix, iy + 1, salt) * (1 - u) + hash(seed, ix + 1, iy + 1, salt) * u) * v
   );
 }
-function surfaceMaps(blocks: Uint8Array): { heightMap: Uint8Array; surfaceMap: Uint8Array } {
+function surfaceMaps(blocks: Uint8Array, water?: Uint8Array): { heightMap: Uint8Array; surfaceMap: Uint8Array; waterMap: Uint8Array } {
   const heightMap = new Uint8Array(WIDTH * DEPTH),
-    surfaceMap = new Uint8Array(WIDTH * DEPTH);
+    surfaceMap = new Uint8Array(WIDTH * DEPTH), waterMap = new Uint8Array(WIDTH * DEPTH);
   for (let y = 0; y < DEPTH; y++)
     for (let x = 0; x < WIDTH; x++) {
       let z = HEIGHT - 1;
@@ -95,8 +98,13 @@ function surfaceMaps(blocks: Uint8Array): { heightMap: Uint8Array; surfaceMap: U
       const i = y * WIDTH + x;
       heightMap[i] = z + 1;
       surfaceMap[i] = blocks[index(x, y, z)];
+      if (water) for (let wz = HEIGHT - 1; wz > 0; wz--) if (water[index(x, y, wz)]) {
+        // A later solid bridge or roof may sit over the persistent water layer.
+        if (wz >= z) { heightMap[i] = wz + 1; waterMap[i] = water[index(x, y, wz)]; }
+        break;
+      }
     }
-  return { heightMap, surfaceMap };
+  return { heightMap, surfaceMap, waterMap };
 }
 export function summarizeWorld(
   blocks: Uint8Array,
@@ -104,8 +112,9 @@ export function summarizeWorld(
   spawn: Pos,
   settings: WorldSettings,
   explored?: Uint8Array,
+  water?: Uint8Array,
 ): WorldSummary {
-  const { heightMap, surfaceMap } = surfaceMaps(blocks);
+  const { heightMap, surfaceMap, waterMap } = surfaceMaps(blocks, water);
   const summary: WorldSummary = {
     elevation: { min: Math.min(...heightMap), max: Math.max(...heightMap) },
     surfaceCounts: { soil: 0, richSoil: 0, sand: 0, gravel: 0, stone: 0 },
@@ -115,6 +124,23 @@ export function summarizeWorld(
     reachableSurfaceCells: 0,
     growingDays: growingSeasonDays(settings),
   };
+  if (water) {
+    summary.water = { shallow: 0, deep: 0, bridgeable: 0 };
+    // Count the discovered surface area, including water beneath bridges and
+    // roofs, once per column. Deep channels occupy two water voxels, not two m².
+    for (let y = 0; y < DEPTH; y++) for (let x = 0; x < WIDTH; x++)
+      for (let z = HEIGHT - 1; z > 0; z--) {
+        const cell = index(x, y, z);
+        if (!water[cell]) continue;
+        if (!explored || explored[cell]) {
+          if (water[cell] === 1) {
+            summary.water.shallow++;
+            if (blocks[cell] === Block.Air) summary.water.bridgeable++;
+          } else summary.water.deep++;
+        }
+        break;
+      }
+  }
   const treeCells = new Set(trees.map((t) => t.y * WIDTH + t.x));
   const names: Partial<Record<number, keyof WorldSummary['surfaceCounts']>> = {
     [Block.Soil]: 'soil',
@@ -124,6 +150,7 @@ export function summarizeWorld(
     [Block.Stone]: 'stone',
   };
   for (let i = 0; i < surfaceMap.length; i++) {
+    if (waterMap[i]) continue;
     const name = names[surfaceMap[i]];
     if (name) summary.surfaceCounts[name]++;
     if (
@@ -169,6 +196,7 @@ export function summarizeWorld(
         ny >= DEPTH ||
         seen[next] ||
         treeCells.has(next) ||
+        waterMap[next] === 2 ||
         heightMap[next] >= HEIGHT - 1 ||
         Math.abs(heightMap[next] - heightMap[i]) > 1
       )
@@ -180,9 +208,9 @@ export function summarizeWorld(
   summary.reachableSurfaceCells = queue.length;
   return summary;
 }
-export function generateWorld(seed: number, input?: Partial<WorldSettings>, generator: 2 | 3 = 3) {
+export function generateWorld(seed: number, input?: Partial<WorldSettings>, generator: 2 | 3 | 4 = 4, riverRoute?: RiverRoute) {
   if (!Number.isSafeInteger(seed)) throw new Error('种子必须是安全整数');
-  if (generator !== 2 && generator !== 3) throw new Error('无效的地图生成版本');
+  if (generator !== 2 && generator !== 3 && generator !== 4) throw new Error('无效的地图生成版本');
   const settings = sanitizeWorldSettings(input),
     blocks = new Uint8Array(CELLS),
     heightMap = new Uint8Array(WIDTH * DEPTH);
@@ -255,7 +283,9 @@ export function generateWorld(seed: number, input?: Partial<WorldSettings>, gene
                   : top
                 : Block.Stone;
     }
-  if (generator === 3) carveCaves(seed, blocks, heightMap, spawn, settings);
+  const { water, clearTrees } = carveRivers(seed, blocks, heightMap, spawn,
+    generator === 4 ? settings.river ?? 'none' : 'none', riverRoute);
+  if (generator >= 3) carveCaves(seed, blocks, heightMap, spawn, settings);
   // A finite set of bounded 3D random walks, never one 2D vein repeated through every layer.
   const attempts = { flat: 20, small: 32, large: 44, mountainous: 60 }[settings.hilliness];
   for (let vein = 0; vein < attempts; vein++) {
@@ -275,7 +305,7 @@ export function generateWorld(seed: number, input?: Partial<WorldSettings>, gene
   const trees: Omit<Tree, 'id'>[] = [];
   for (let y = 0; y < DEPTH; y++)
     for (let x = 0; x < WIDTH; x++) {
-      if (Math.hypot(x - spawn.x, y - spawn.y) < 3) continue;
+      if (Math.hypot(x - spawn.x, y - spawn.y) < 3 || clearTrees[y * WIDTH + x]) continue;
       const z = heightMap[y * WIDTH + x],
         fertility = fertilityOf(blocks[index(x, y, z - 1)]);
       const species: TreeSpecies =
@@ -307,14 +337,16 @@ export function generateWorld(seed: number, input?: Partial<WorldSettings>, gene
     settings,
     spawn,
     blocks,
+    water,
     trees,
-    ...surfaceMaps(blocks),
+    ...surfaceMaps(blocks, water),
     summary: summarizeWorld(blocks, trees, spawn, settings,
-      generator === 3 ? initialExploration(blocks, generator) : undefined),
+      generator >= 3 ? initialExploration(blocks, generator) : undefined,
+      generator === 4 ? water : undefined),
   };
 }
 /** Pure fresh buffers. Preview never creates a simulation or touches its jobs/time/state. */
-export function previewWorld(seed: number, settings?: Partial<WorldSettings>, generator: 2 | 3 = 3): WorldPreview {
-  const { blocks: _blocks, ...preview } = generateWorld(seed, settings, generator);
+export function previewWorld(seed: number, settings?: Partial<WorldSettings>, generator: 2 | 3 | 4 = 4, riverRoute?: RiverRoute): WorldPreview {
+  const { blocks: _blocks, water: _water, ...preview } = generateWorld(seed, settings, generator, riverRoute);
   return preview;
 }

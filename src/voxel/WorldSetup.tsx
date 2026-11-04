@@ -24,6 +24,7 @@ export const HILL_NAMES: Record<Hilliness, string> = {
   large: '大丘陵',
   mountainous: '山地',
 };
+export const RIVER_NAMES = { none: '无河流', creek: '浅溪', river: '河流' };
 const COLORS: Record<number, [number, number, number]> = {
   [Block.Soil]: [119, 148, 83],
   [Block.RichSoil]: [72, 108, 64],
@@ -41,8 +42,9 @@ function TerrainPreview({ preview }: { preview: WorldPreview }) {
     if (!ctx) return;
     const image = ctx.createImageData(WIDTH, DEPTH);
     for (let i = 0; i < WIDTH * DEPTH; i++) {
-      const color = COLORS[preview.surfaceMap[i]] ?? [120, 130, 120];
-      const shade = 0.76 + preview.heightMap[i] / 36;
+      const water = preview.waterMap?.[i] ?? 0;
+      const color = water === 2 ? [37, 92, 131] : water === 1 ? [74, 162, 184] : COLORS[preview.surfaceMap[i]] ?? [120, 130, 120];
+      const shade = water ? 1 : 0.76 + preview.heightMap[i] / 36;
       for (let k = 0; k < 3; k++)
         image.data[i * 4 + k] = Math.min(255, Math.round(color[k] * shade));
       image.data[i * 4 + 3] = 255;
@@ -63,12 +65,13 @@ function TerrainPreview({ preview }: { preview: WorldPreview }) {
         ref={canvas}
         width={WIDTH}
         height={DEPTH}
-        aria-label="世界地形预览：白框为营地，深色为林木，颜色显示土壤和岩地"
+        aria-label="世界地形预览：白框为营地，深色为林木，浅蓝为浅水，深蓝为深水"
       />
       <figcaption>
         64 × 64 × 16 · 白框为营地
         <br />
         深绿：沃土 · 黄褐：沙地 · 灰色：岩地
+        <br />浅蓝：浅水 · 深蓝：深水
       </figcaption>
     </figure>
   );
@@ -94,13 +97,13 @@ export function WorldSetup({
   const valid = seed.trim() !== '' && Number.isSafeInteger(Number(seed));
   const regional = useMemo(() => {
     if (!valid) return { map: null, error: '' };
-    try { return { map: generateRegions(Number(seed)), error: '' }; }
+    try { return { map: generateRegions(Number(seed), 2), error: '' }; }
     catch (error) { return { map: null, error: error instanceof Error ? error.message : String(error) }; }
   }, [seed, valid]);
   useEffect(() => { setSelectedId(regional.map ? recommendedRegion(regional.map)?.id ?? null : null); }, [regional.map]);
   const selected = regional.map?.tiles.find(t => t.id === selectedId) ?? null;
   const site: WorldSite | undefined = mode === 'regions' && regional.map && selected?.settleable
-    ? { version: 2, worldSeed: regional.map.seed, tileId: selected.id } : undefined;
+    ? { version: 3, worldSeed: regional.map.seed, tileId: selected.id } : undefined;
   const signature = JSON.stringify(mode === 'regions' ? { mode, seed, site, selectedId } : { mode, seed, settings });
   const validClimate = mode === 'regions' ? !!site : validWorldSettings(settings);
   useEffect(() => {
@@ -170,7 +173,7 @@ export function WorldSetup({
             value={settings.biome}
             onChange={(e) => {
               const biome = e.target.value as Biome;
-              setSettings({ ...WORLD_PRESETS[biome], hilliness: settings.hilliness });
+              setSettings({ ...WORLD_PRESETS[biome], hilliness: settings.hilliness, river: settings.river ?? 'none' });
             }}
           >
             {Object.entries(BIOME_NAMES).map(([id, name]) => (
@@ -193,6 +196,11 @@ export function WorldSetup({
               </option>
             ))}
           </select>
+        </label>
+        <label>河流
+          <select aria-label="河流" value={settings.river ?? 'none'} onChange={e => change('river', e.target.value as WorldSettings['river'])}>
+            {Object.entries(RIVER_NAMES).map(([id, name]) => <option key={id} value={id}>{name}</option>)}
+          </select>
         </label></>}
       </div>
       {mode === 'regions' && regional.map && <>
@@ -204,6 +212,7 @@ export function WorldSetup({
             <div><dt>年均温度</dt><dd>{selected.temperature}°C</dd></div>
             <div><dt>年降雨量</dt><dd>{selected.rainfall} mm</dd></div>
             <div><dt>生长期估算</dt><dd>{selected.growingDays} / 60 日</dd></div>
+            <div><dt>河流</dt><dd>{RIVER_NAMES[selected.river?.kind ?? 'none']}</dd></div>
             <div><dt>地势</dt><dd>{selected.hilliness === 'impassable' ? '不可通行山峰' : HILL_NAMES[selected.hilliness]}</dd></div></dl>
           {!selected.settleable && <p className="voxel-world-warning">{selected.reason}</p>}
           {selected.settleable && <small>下方显示这处选址的实际营地地形与初始资源；数量包含可能需要开路才能利用的区域。</small>}
@@ -248,7 +257,7 @@ export function WorldSetup({
         </label>
       </div>
       <small>
-        切换生态会填入气候预设；你可以分别调整。降雨量影响初始植被与土壤，不会生成水体。
+        切换生态会填入气候预设；降雨量影响植被与土壤。河流单独选择，浅水可涉水或架木桥，深水不能通行。
       </small></>}
       <small>
         新营地每人有基础布衫与长裤。种棉、建裁缝台可制作保暖外衣或防热长衣；极端寒热仍需庇护与温控，建议先从温带开始。
@@ -280,6 +289,10 @@ export function WorldSetup({
                 </dd>
                 <dt>营地连通地表</dt>
                 <dd>{current.summary.reachableSurfaceCells} 格</dd>
+                <dt>河流水域</dt>
+                <dd data-testid="preview-water-summary">浅水 {current.summary.water?.shallow ?? 0} 格 · 深水 {current.summary.water?.deep ?? 0} 格</dd>
+                <dt>可架木桥</dt>
+                <dd>{current.summary.water?.bridgeable ?? 0} 格</dd>
                 <dt>可种植裸地</dt>
                 <dd>{current.summary.fertileCells} 格</dd>
                 <dt>适宜生长季估算</dt>
@@ -320,6 +333,7 @@ export function WorldSetup({
           <dl><div><dt>可种植裸地</dt><dd>{candidate.preview.summary.fertileCells} 格</dd></div>
             <div><dt>木本植物</dt><dd>{candidate.preview.summary.trees.total} 株</dd></div>
             <div><dt>木材潜力</dt><dd>{candidate.preview.summary.trees.wood}</dd></div>
+            <div><dt>河流 / 可架木桥</dt><dd>{RIVER_NAMES[candidate.tile.river?.kind ?? 'none']} · {candidate.preview.summary.water?.bridgeable ?? 0} 格</dd></div>
             <div><dt>地下矿藏</dt><dd>需要探索</dd></div></dl>
           <button onClick={() => { if (candidate.site.worldSeed === regional.map?.seed) chooseRegion(candidate.tile); }}>选中地区 #{candidate.tile.id}</button>
           <button aria-label={`移除候选地区 ${candidate.tile.id}`} onClick={() => setCandidates(all => all.filter(c => c.site.tileId !== candidate.site.tileId))}>移除</button>

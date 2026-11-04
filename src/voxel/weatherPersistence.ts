@@ -3,7 +3,7 @@ import { WEATHER_RULES, initialWeather, nextWeatherTransition, weatherAtCycle, w
   type WeatherState, type SnowCover } from './weather';
 
 interface WeatherSaveContext {
-  seed: number; tick: number; settings: WorldSettings; generator: 1 | 2 | 3;
+  seed: number; tick: number; settings: WorldSettings; generator: 1 | 2 | 3 | 4;
   weather: WeatherState; snow: SnowCover[];
 }
 const record = (v: unknown): v is Record<string, any> => !!v && typeof v === 'object' && !Array.isArray(v);
@@ -21,7 +21,7 @@ export function migrateWeather(old: Record<string, any>, sourceVersion: number):
 }
 /** Snow is a surface layer, not an actor: no head clearance or furniture
  * exclusion. Even the highest air layer can retain snow on a real support. */
-export function validateWeather(d: WeatherSaveContext, blocks: Uint8Array): void {
+export function validateWeather(d: WeatherSaveContext, blocks: Uint8Array, water?: Uint8Array): void {
   const w = d.weather;
   if (!exact(w, ['epoch', 'cycle', 'kind', 'previousKind', 'startedTick', 'nextTransitionTick', 'events']) ||
       !integer(w.epoch, 0, d.tick) || !integer(w.cycle) || !integer(w.startedTick, w.epoch, d.tick) ||
@@ -45,7 +45,7 @@ export function validateWeather(d: WeatherSaveContext, blocks: Uint8Array): void
   for (const s of d.snow) {
     if (!exact(s, ['x', 'y', 'z', 'depth']) || !inside(s) || s.z < 1 ||
         !Number.isFinite(s.depth) || s.depth <= 0 || s.depth > 1 || cells.has(at(s)) ||
-        blocks[at(s)] !== Block.Air ||
+        blocks[at(s)] !== Block.Air || water?.[at(s)] ||
         blocks[at(s) - WIDTH * DEPTH] === Block.Air) fail('积雪坐标、深度、重复或实际支撑无效');
     cells.add(at(s));
   }

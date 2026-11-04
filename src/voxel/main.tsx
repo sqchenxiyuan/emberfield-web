@@ -4,7 +4,7 @@ import { StockpileZonePanel } from './StockpileZonePanel';
 import React, { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { createRoot } from 'react-dom/client';
 import { VoxelClient } from './client';
-import { WorldSetup, BIOME_NAMES, HILL_NAMES } from './WorldSetup';
+import { WorldSetup, BIOME_NAMES, HILL_NAMES, RIVER_NAMES } from './WorldSetup';
 import { resolveWorldSite } from './regions';
 import { TREE_NAMES } from './plants';
 import { CROPS, NUTRITION, fertilityOf } from './farming';
@@ -13,6 +13,7 @@ import { isDeviceKind } from './power';
 import { rotRateAtTemperature, rotLimit, remainingRotDays } from './preservation';
 import { stackLimit, carryLimit } from './logistics';
 import { STONE_CONSTRUCTION } from './crafting';
+import { WATER_RULES } from './water';
 import { SurvivalPanel } from './SurvivalPanel';
 import { SanitationPanel, SanitationDetails, CleaningStatus } from './SanitationPanel';
 import { FirePanel, FireDetails, FireDamageDetails, FireWorkStatus } from './FirePanel';
@@ -80,6 +81,7 @@ const tools: Tool[] = [
   'shaft',
   'up',
   'floor',
+  'bridge',
   'wall',
   'sandbag',
   'ladder',
@@ -121,6 +123,7 @@ const icons = [
   '↧',
   '↥',
   '▱',
+  '≋',
   '▥',
   '▰',
   '☷',
@@ -185,6 +188,7 @@ const hints: Record<Tool, string> = {
   shaft: '在可站立地面点击一次，向下逐格开凿三格梯井。完整入口消耗 8 木材。',
   up: '在可站立地面点击一次，向上搭建三格梯子。完整通路消耗 8 木材。',
   floor: '选择木材或石砖，拖动规划楼板。从梯子旁向外延伸，等待支撑完成。',
+  bridge: `每格 ${WATER_RULES.bridgeWood} 木材。在浅水上拖动规划木桥，留出两格净空。完工后恢复正常通行，只承载轻型设施；深水不能架木桥，重型设施需要坚实地基。`,
   wall: '选择木材或石砖，拖动连续造两格高的墙。需地板支撑，记得留出出入口。',
   ladder: '每格 2 木材。与地面或已有梯子相连后施工；角色可携带物资爬梯。',
   stock:
@@ -462,6 +466,12 @@ function App() {
     (state.selected && !('penMarkerId' in state.selected) && !('fenceGateId' in state.selected) && !('furnitureId' in state.selected) ? s?.animals.find(v => equal(v, state.selected!)) : undefined);
   const p = animal ?? state.selected;
   const unknown = !!p && !client.exploredAt(p);
+  const waterCell = p ? client.waterAt(p) ? p : { ...p, z: p.z - 1 } : null;
+  const water = waterCell ? client.waterAt(waterCell) : 0;
+  const bridge = waterCell ? client.bridgeAt(waterCell) : false;
+  const waterSurface = waterCell ? { ...waterCell, z: waterCell.z + 1 } : null;
+  if (waterSurface) while (client.waterAt(waterSurface)) waterSurface.z++;
+  const waterSlice = !!p && !!waterSurface && water > 0 && p.z < waterSurface.z;
   const worldRegion = useMemo(() => s?.worldSite ? resolveWorldSite(s.worldSite).tile : null,
     [s?.worldSite?.version, s?.worldSite?.worldSeed, s?.worldSite?.tileId]);
   const spawn = s?.spawn ?? { x: 32, y: 32, z: 8 };
@@ -617,7 +627,7 @@ function App() {
                 ? '电力线路'
                 : client.ladderAt(p)
                   ? '梯井通路'
-                  : (BLOCK_NAMES[block] ?? '地形')))
+                  : bridge ? '木桥' : water ? water === 1 ? '浅水' : '深水' : (BLOCK_NAMES[block] ?? '地形')))
     : '营地概览';
   const focus = (target: Pos) => {
     if ('skills' in target && 'faction' in target && 'id' in target && typeof target.id === 'number') {
@@ -936,6 +946,7 @@ function App() {
               <>
                 {' '}
                 · 年均 {s.settings.meanTemperature}°C · 降雨 {s.settings.rainfall} mm
+                {' '}· {RIVER_NAMES[s.settings.river ?? 'none']}
               </>
             )}
           </p>
@@ -943,7 +954,7 @@ function App() {
         {!p && s && <p data-testid="current-world-site" data-world-seed={s.worldSite?.worldSeed} data-region-id={s.worldSite?.tileId}>
           {s.worldSite && worldRegion ? `世界种子 ${s.worldSite.worldSeed} · 地区 #${s.worldSite.tileId} · 坐标 (${worldRegion.x}, ${worldRegion.y})` : '自定义或历史营地 · 未绑定世界地区'}
         </p>}
-        {s?.generator === 3 && <p className="voxel-exploration-status" data-testid="exploration-status">
+        {s && s.generator >= 3 && <p className="voxel-exploration-status" data-testid="exploration-status">
           永久探索 · 深色区域尚未发现。开凿梯井或打通岩壁后，地下空间才会显露；切层只改变视图。
         </p>}
         {unknown && p && <section className="voxel-unexplored-detail" data-testid="unexplored-detail">
@@ -959,7 +970,7 @@ function App() {
           <FurnitureMoveControls kind={shelf.kind} item={shelf} snapshot={s} begin={client.beginFurniturePlacement} command={c=>void client.command(c)} focus={focus} /></>}
         {p && (
           <p>
-            {block
+            {bridge ? '木桥' : water ? water === 1 ? '浅水' : '深水' : block
               ? BLOCK_NAMES[block]
               : client.ladderAt(p)
                 ? '可携货爬行的梯子'
@@ -969,6 +980,14 @@ function App() {
             · {levelName(p.z, spawn.z)}
           </p>
         )}
+        {p && water > 0 && <section className="voxel-water-detail" data-testid="water-detail" data-water-depth={water} data-bridge={bridge}>
+          <b>{bridge ? '木桥 · 下方为浅水' : water === 1 ? '浅水 · 可以涉水' : '深水 · 无法通行'}</b>
+          <p>{bridge ? '提供正常通行和轻型承载。重型设施与石墙需要坚实地基；拆除后恢复浅水。' : water === 1 ? '涉水移动较慢，不能直接在水上建造。铺设木桥可连通两岸，再放置允许的轻型设施。' : '不能涉水，也不能建造木桥。请沿河寻找浅水或绕行。'}</p>
+          {waterSlice && <p>当前为水体剖面。请切到水面层查看通路或规划建造。</p>}
+          {waterSlice && waterSurface && <button onClick={() => { client.view({ level: waterSurface.z }); client.select(waterSurface); }}>查看水面</button>}
+          {!waterSlice && !bridge && water === 1 && <button onClick={() => client.choose('bridge')}>规划木桥</button>}
+          {!waterSlice && bridge && <button onClick={() => void client.command({ type: 'designate', tool: 'remove', from: p })}>拆除这格木桥</button>}
+        </section>}
         {animal && s && <AnimalDetails animal={animal} snapshot={s} command={client.command} focus={focus} penControls={penControls} />}
         {penMarker && s && <PenDetails marker={penMarker} snapshot={s} command={client.command} focus={focus} controls={penControls} />}
         {fenceGate && s && <FenceGateDetails gate={fenceGate} tick={s.tick} command={client.command} />}
@@ -2078,7 +2097,7 @@ function App() {
               <summary>试玩规则与性能计数</summary>
               <p>
                 64×64×16；逻辑 20 TPS，1 日 10
-                分钟。两格净空，一格高差可走；梯子可携货。种植、烹饪、床位、作息、电网、冷库保鲜、有限仓储和岩块切石已接通。新世界有三种生态和四档起伏，土壤肥力与季节气温影响生产。断粮、过冷或过热会逐渐损害健康，严重时倒地甚至死亡；同伴可以救援到医疗床并喂食。种棉获得布料，手工裁缝台制作衣物，实际穿戴后改变温度耐受；每件独立保存品质与耐久。新营地配基础布衫和长裤，旧存档保留原装备。天然岩石有机会留下岩块，切石台加工后才能用于石砖墙和楼板；切石与衣物科技暂默认解锁。采用简化天光和三维导热。近战与射击会造成部位伤口；部分伤口可能延迟感染，需要关注护理和免疫进展。药根成熟后产出草药，医生按患者政策实际取药护理；感染者可前往医疗床休养。天气变化会影响露天行走、射击、降水灭火与积雪通行；真实屋顶可遮挡降水。其他疾病、坍塌和流体尚未实现。
+                分钟。两格净空，一格高差可走；梯子可携货。种植、烹饪、床位、作息、电网、冷库保鲜、有限仓储和岩块切石已接通。新世界有三种生态和四档起伏，地区河流会延续到营地；也可自选浅溪或河流。浅水可涉水与架桥，深水需绕行，桥面只承载轻型设施。土壤肥力与季节气温影响生产。断粮、过冷或过热会逐渐损害健康，严重时倒地甚至死亡；同伴可以救援到医疗床并喂食。种棉获得布料，手工裁缝台制作衣物，实际穿戴后改变温度耐受；每件独立保存品质与耐久。新营地配基础布衫和长裤，旧存档保留原装备。天然岩石有机会留下岩块，切石台加工后才能用于石砖墙和楼板；切石与衣物科技暂默认解锁。采用简化天光和三维导热。近战与射击会造成部位伤口；部分伤口可能延迟感染，需要关注护理和免疫进展。药根成熟后产出草药，医生按患者政策实际取药护理；感染者可前往医疗床休养。天气变化会影响露天行走、射击、降水灭火与积雪通行；真实屋顶可遮挡降水。其他疾病、坍塌和动态流体尚未实现。
               </p>
               <p>
                 地形数组 {((s?.gridBytes ?? 0) / 1024).toFixed(0)} KiB；寻路数组{' '}
@@ -2109,6 +2128,8 @@ declare global {
       project: VoxelClient['project'];
       exportSave: VoxelClient['export'];
       blockAt: VoxelClient['blockAt'];
+      waterAt: VoxelClient['waterAt'];
+      bridgeAt: VoxelClient['bridgeAt'];
       ladderAt: VoxelClient['ladderAt'];
       exploredAt: VoxelClient['exploredAt'];
     };
@@ -2119,6 +2140,8 @@ window.voxel = {
   project: client.project,
   exportSave: client.export,
   blockAt: client.blockAt,
+  waterAt: client.waterAt,
+  bridgeAt: client.bridgeAt,
   ladderAt: client.ladderAt,
   exploredAt: client.exploredAt,
 };

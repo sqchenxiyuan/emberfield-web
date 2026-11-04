@@ -43,13 +43,13 @@ const clamp = (n: number, min = 0, max = 1) => Math.max(min, Math.min(max, n));
 function integer(value: number, name: string, min = 0) {
   if (!Number.isSafeInteger(value) || value < min) throw new RangeError(`天气${name}无效`);
 }
-function context(seed: number, settings: WorldSettings, tick: number, generator: 1 | 2 | 3) {
+function context(seed: number, settings: WorldSettings, tick: number, generator: 1 | 2 | 3 | 4) {
   if (!Number.isSafeInteger(seed)) throw new RangeError('天气种子无效');
   integer(tick, '计时');
   if (!settings || !Number.isFinite(settings.rainfall) || settings.rainfall < 0 || settings.rainfall > 4000 ||
       !Number.isFinite(settings.meanTemperature) || settings.meanTemperature < -30 || settings.meanTemperature > 45 ||
       !Number.isFinite(settings.latitude) || settings.latitude < -90 || settings.latitude > 90 ||
-      ![1, 2, 3].includes(generator)) throw new RangeError('天气气候参数无效');
+      ![1, 2, 3, 4].includes(generator)) throw new RangeError('天气气候参数无效');
 }
 /** Independent stream; both halves of safe-integer world seeds participate. */
 export function weatherRandom(seed: number, epoch: number, cycle: number, stream = 0): number {
@@ -73,7 +73,7 @@ export function weatherCycleAt(seed: number, epoch: number, tick: number): numbe
   const candidate = Math.floor((tick - epoch) / WEATHER_RULES.interval);
   return candidate > 0 && tick < nextWeatherTransition(seed, epoch, candidate - 1) ? candidate - 1 : candidate;
 }
-export function weatherAtCycle(seed: number, settings: WorldSettings, epoch: number, cycle: number, generator: 1 | 2 | 3 = 2): WeatherKind {
+export function weatherAtCycle(seed: number, settings: WorldSettings, epoch: number, cycle: number, generator: 1 | 2 | 3 | 4 = 2): WeatherKind {
   context(seed, settings, epoch, generator); integer(cycle, '周期');
   if (cycle === 0) return 'clear';
   // Independently sampled episodes may continue the same weather. There is no
@@ -88,14 +88,14 @@ export function weatherAtCycle(seed: number, settings: WorldSettings, epoch: num
   const fogChance = .1 + .1 * clamp(settings.rainfall / 2200);
   return roll < wetChance + fogChance ? 'fog' : 'clear';
 }
-export function initialWeather(seed: number, settings: WorldSettings, tick = 0, generator: 1 | 2 | 3 = 2): WeatherState {
+export function initialWeather(seed: number, settings: WorldSettings, tick = 0, generator: 1 | 2 | 3 | 4 = 2): WeatherState {
   context(seed, settings, tick, generator);
   return { epoch: tick, cycle: 0, kind: 'clear', previousKind: 'clear', startedTick: tick,
     nextTransitionTick: nextWeatherTransition(seed, tick, 0), events: [] };
 }
 /** Mutates only the provided weather state. Large valid time advances rebuild
  * at most 32 retained events instead of looping over years of expired episodes. */
-export function advanceWeather(state: WeatherState, seed: number, settings: WorldSettings, tick: number, generator: 1 | 2 | 3 = 2): void {
+export function advanceWeather(state: WeatherState, seed: number, settings: WorldSettings, tick: number, generator: 1 | 2 | 3 | 4 = 2): void {
   context(seed, settings, tick, generator);
   integer(state.epoch, '起点'); integer(state.cycle, '周期');
   if (tick < state.startedTick) throw new RangeError('天气不能倒退推进');

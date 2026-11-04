@@ -4,7 +4,7 @@ import type { RegionMap as RegionalWorld, RegionTile } from './regions';
 const COLORS = { ocean: '#386a7d', temperate: '#78965e', boreal: '#497b6e', desert: '#c5a66a' };
 const biomeName = { ocean: '海洋', temperate: '温带森林', boreal: '寒带森林', desert: '沙漠' };
 const hillName = { flat: '平原', small: '小丘陵', large: '大丘陵', mountainous: '山地', impassable: '不可通行山峰' };
-export const regionLabel = (tile: RegionTile) => `${biomeName[tile.biome]} · ${hillName[tile.hilliness]}`;
+export const regionLabel = (tile: RegionTile) => `${biomeName[tile.biome]} · ${hillName[tile.hilliness]}${tile.river ? ` · ${tile.river.kind === 'creek' ? '浅溪' : '河流'}` : ''}`;
 
 export function RegionMap({ map, selectedId, choose }: {
   map: RegionalWorld; selectedId: number | null; choose: (tile: RegionTile) => void;
@@ -38,17 +38,26 @@ export function RegionMap({ map, selectedId, choose }: {
           fill={tile.hilliness === 'impassable' ? 'url(#region-peaks)' : COLORS[tile.biome]}
           fillOpacity={tile.hilliness === 'mountainous' ? .72 : tile.hilliness === 'large' ? .86 : 1}
           stroke="#172b2c" strokeWidth=".35" data-testid="region-tile" data-region-id={tile.id}
-          data-settleable={tile.settleable} data-biome={tile.biome} data-hilliness={tile.hilliness}
+          data-settleable={tile.settleable} data-biome={tile.biome} data-hilliness={tile.hilliness} data-river={tile.river?.kind ?? 'none'}
           onClick={() => select(tile)}>
           <title>地区 {tile.id} · {regionLabel(tile)} · {tile.temperature}°C · {tile.rainfall} mm{tile.reason ? ` · ${tile.reason}` : ''}</title>
         </rect>)}
       </g>)}
+      <g aria-hidden="true" pointerEvents="none" data-testid="regional-rivers" fill="none" strokeLinecap="round">
+        {map.tiles.filter(tile => tile.river).map(tile => {
+          const downstream = map.tiles.find(other => other.id === tile.river!.outflow);
+          return <path key={tile.id} d={downstream
+            ? `M ${tile.x * 12 + 6} ${tile.y * 12 + 6} L ${downstream.x * 12 + 6} ${downstream.y * 12 + 6}`
+            : `M ${tile.x * 12 + 5} ${tile.y * 12 + 6} h 2`}
+            stroke={tile.river!.kind === 'river' ? '#8de3f0' : '#7ec7d7'} strokeWidth={tile.river!.kind === 'river' ? 2.6 : 1.4} />;
+        })}
+      </g>
       {map.tiles.filter(t => t.id === selectedId).map(t => <rect key={t.id} className="voxel-region-selected" x={t.x * 12 + .7} y={t.y * 12 + .7} width="10.6" height="10.6" fill="none" stroke="#fff1b6" strokeWidth="2" pointerEvents="none" />)}
       <rect className="voxel-region-cursor" x={cursor.x * 12 + 1.5} y={cursor.y * 12 + 1.5} width="9" height="9" fill="none" stroke="white" strokeWidth="1.3" strokeDasharray="2 1" pointerEvents="none" />
     </svg>
-    <div className="voxel-region-legend">{Object.entries(biomeName).map(([id, name]) => <span key={id}><i style={{ background: COLORS[id as keyof typeof COLORS] }} />{name}</span>)}<span><i className="voxel-region-peak-key"/>不可通行山峰</span></div>
+    <div className="voxel-region-legend">{Object.entries(biomeName).map(([id, name]) => <span key={id}><i style={{ background: COLORS[id as keyof typeof COLORS] }} />{name}</span>)}<span><i className="voxel-region-peak-key"/>不可通行山峰</span><span><i style={{ background: '#7ec7d7' }}/>浅溪 / 河流</span></div>
     <small id="region-keyboard-help">点选地区；键盘方向键移动光标，Enter 或空格确认。深浅表示地形起伏，白框是当前选址。</small>
     <small className="voxel-region-cursor-label" aria-live="polite">光标：地区 {cursor.id} · ({cursor.x}, {cursor.y}) · {regionLabel(cursor)}</small>
-    <small>海洋用于世界选址背景，不能建立营地；本地营地地图暂不生成海水或河流。</small>
+    <small>蓝线是地区间连通的河道；选址预览显示当地浅水与深水。海洋不能建立营地。</small>
   </div>;
 }

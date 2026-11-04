@@ -96,7 +96,7 @@ describe('voxel generation and chunk delivery', () => {
       furniture: 0,
       unfinished: 0,
     });
-    expect(a.generator).toBe(3);
+    expect(a.generator).toBe(4);
     expect(a.blocks.some(block => block === Block.Steel)).toBe(true);
     expect(a.worldSummary.resources.steel).toBe(
       a.blocks.reduce((count, block, cell) => count + Number(block === Block.Steel && a.explored[cell] === 1), 0),
@@ -410,7 +410,7 @@ describe('voxel persistence and input validation', () => {
         (d as { version: number }).version = 99;
       },
       (d) => {
-        (d as { generator: number }).generator = 4;
+        (d as { generator: number }).generator = 5;
       },
       (d) => {
         d.seed = Infinity;

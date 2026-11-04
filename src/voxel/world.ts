@@ -325,6 +325,7 @@ import type {
   ResearchBench,
 } from './types';
 
+import { WATER_RULES, waterBelow, bridgeSupports, validateWater } from './water';
 const same = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
 const resting = (p: Pawn | WildAnimal) => p.phase === 'rest' ||
   (!isAnimal(p) && p.faction === 'prisoner' && p.sleepingSince !== null);
@@ -342,6 +343,7 @@ const costOf = (
   weaponKind?: WeaponKind,
   weaponBenchKind?: WeaponBenchKind,
 ): Partial<Counts> =>
+  kind === 'bridge' ? { wood: WATER_RULES.bridgeWood } :
   kind === 'install' ? { furniture: 1 } :
   isShelfKind(kind) ? { ...SHELF_DEFS[kind].cost } :
   kind === 'table' || kind === 'chair' ? { ...LIVING_BUILDINGS[kind].cost } :
@@ -407,6 +409,7 @@ const workOf = (
   weaponBenchKind?: WeaponBenchKind,
   cropKind: CropKind = 'rice',
 ) =>
+  kind === 'bridge' ? WATER_RULES.bridgeWork :
   kind === 'uninstall' ? RELOCATION_RULES.uninstallWork : kind === 'install' ? RELOCATION_RULES.installWork :
   kind === 'fence' || kind === 'fenceGate' || kind === 'penMarker' ? PEN_BUILDINGS[kind].work : kind === 'machining'
     ? MACHINING_WORK
@@ -569,6 +572,10 @@ export class VoxelSimulation {
   combatEvents: CombatEvent[] = [];
   sandbags: Sandbag[] = [];
   blocks = new Uint8Array(CELLS);
+  water: Uint8Array = new Uint8Array(CELLS);
+  /** Water never changes during play; rebuild this dry-map fast path on creation/load. */
+  private waterPresent = false;
+  bridges = new Uint8Array(CELLS);
   explored: Uint8Array = new Uint8Array(CELLS);
   private exploredCount = 0;
   private visibleRoomsRevision = -1;
@@ -605,7 +612,7 @@ export class VoxelSimulation {
   storageGroups: StorageGroup[] = [];
   storageSpills: StorageSpill[] = [];
   private shelfLookup = new Map<number, Shelf>();
-  generator: 1 | 2 | 3 = 3;
+  generator: 1 | 2 | 3 | 4 = 4;
   worldSite: WorldSite | null = null;
   settings: WorldSettings;
   spawn: Pos = { x: 32, y: 34, z: SURFACE };
@@ -660,10 +667,10 @@ export class VoxelSimulation {
     public seed = 73129,
     settings?: Partial<WorldSettings>,
     restoreOnly = false,
-    generator: 2 | 3 = 3,
+    generator: 2 | 3 | 4 = 4,
   ) {
     if (!Number.isSafeInteger(seed)) throw new Error('种子必须是安全整数');
-    if (generator !== 2 && generator !== 3) throw new Error('地图生成器无效');
+    if (generator !== 2 && generator !== 3 && generator !== 4) throw new Error('地图生成器无效');
     this.generator = generator;
     this.fireHazards = initialFireHazards(seed);
     this.storyteller = initialStoryteller(seed);
@@ -679,13 +686,17 @@ export class VoxelSimulation {
    * climate or the derived local seed while retaining the region's identity. */
   static fromWorldSite(site: unknown): VoxelSimulation {
     const resolved = resolveWorldSite(site);
-    const next = new VoxelSimulation(resolved.seed, resolved.settings, false, resolved.generator);
+    const next = new VoxelSimulation(resolved.seed, resolved.settings, true, resolved.generator);
     next.worldSite = structuredClone(resolved.site);
+    next.generate();
     return next;
   }
   private generate() {
-    const generated = generateWorld(this.seed, this.settings, this.generator === 3 ? 3 : 2);
+    const generated = generateWorld(this.seed, this.settings, this.generator >= 3 ? this.generator as 3 | 4 : 2,
+      this.worldSite ? resolveWorldSite(this.worldSite).riverRoute : undefined);
     this.blocks = generated.blocks;
+    this.water = generated.water;
+    this.waterPresent = this.water.some(value=>value!==0);
     this.explored = initialExploration(this.blocks, this.generator);
     this.exploredCount = this.explored.reduce((n, value) => n + value, 0);
     this.spawn = generated.spawn;
@@ -878,7 +889,7 @@ export class VoxelSimulation {
     this.revision++;
     this.pruneSnow();
     this.dirtyCell(p);
-    if (this.generator === 3) {
+    if (this.generator >= 3) {
       const revealed = revealExploration(this.blocks, this.explored, [at(p)]);
       this.exploredCount += revealed.length;
       for (const cell of revealed) this.dirtyCell(position(cell));
@@ -906,7 +917,8 @@ export class VoxelSimulation {
     const out: ChunkUpdate[] = [];
     for (const id of this.dirty) {
       const blocks = new Uint8Array(CHUNK ** 3),
-        ladders = new Uint8Array(CHUNK ** 3), explored = new Uint8Array(CHUNK ** 3);
+        ladders = new Uint8Array(CHUNK ** 3), explored = new Uint8Array(CHUNK ** 3),
+        water = new Uint8Array(CHUNK ** 3), bridges = new Uint8Array(CHUNK ** 3);
       const ox = (id % 4) * CHUNK,
         oy = Math.floor(id / 4) * CHUNK;
       for (let z = 0; z < 16; z++)
@@ -917,9 +929,11 @@ export class VoxelSimulation {
             explored[dst + x] = this.explored[src + x];
             blocks[dst + x] = explored[dst + x] ? this.blocks[src + x] : Block.Stone;
             ladders[dst + x] = explored[dst + x] ? this.ladders[src + x] : 0;
+            water[dst + x] = explored[dst + x] ? this.water[src + x] : 0;
+            bridges[dst + x] = explored[dst + x] ? this.bridges[src + x] : 0;
           }
         }
-      out.push({ id, blocks, ladders, explored });
+      out.push({ id, blocks, ladders, explored, water, bridges });
     }
     this.dirty.clear();
     return out;
@@ -939,6 +953,8 @@ export class VoxelSimulation {
     return (
       this.blocks[i] === 0 &&
       this.blocks[i + WIDTH * DEPTH] === 0 &&
+      (!this.waterPresent || (!this.water[i] && !this.water[i + WIDTH * DEPTH] &&
+        !(this.water[i - WIDTH * DEPTH] === 2 && this.blocks[i - WIDTH * DEPTH] === Block.Air))) &&
       !this.treeCells.has(i) &&
       !this.treeCells.has(i + WIDTH * DEPTH) &&
       !this.stoveCells.has(i) &&
@@ -952,7 +968,7 @@ export class VoxelSimulation {
           d.y === p.y &&
           (d.z === p.z || d.z + 1 === p.z || d.z === p.z + 1),
       ) &&
-      (this.blocks[i - WIDTH * DEPTH] !== 0 || this.ladders[i] === 1)
+      (this.blocks[i - WIDTH * DEPTH] !== 0 || this.water[i - WIDTH * DEPTH] === 1 || this.ladders[i] === 1)
     );
   }
   private canStop(p: Pos) {
@@ -1130,7 +1146,7 @@ export class VoxelSimulation {
       horizontal.map(([dx, dy]) => ({ x: v.x + dx, y: v.y + dy, z: v.z })),
     );
     if (j.kind === 'wire') candidates.push(j, { ...j, z: j.z - 1 }, { ...j, z: j.z + 1 });
-    if (j.kind === 'floor' || j.kind === 'sow' || j.kind === 'harvest') candidates.push({ ...j });
+    if (j.kind === 'floor' || j.kind === 'bridge' || j.kind === 'sow' || j.kind === 'harvest') candidates.push({ ...j });
     if (j.kind === 'ladder' || j.kind === 'digLadder')
       candidates.push({ ...j, z: j.z + 1 }, { ...j, z: j.z - 1 });
     if (j.kind === 'remove' && this.ladders[at(j)])
@@ -1162,7 +1178,7 @@ export class VoxelSimulation {
   private groundAllowed(p: Pos): boolean {
     return (
       (this.canStop(p) || (!!this.shelfAt(p) && this.standable(p))) &&
-      this.blocks[at(p) - WIDTH * DEPTH] !== 0 &&
+      (this.blocks[at(p) - WIDTH * DEPTH] !== 0 || waterBelow(this.water,this.blocks,p) === 1) &&
       !this.ladders[at(p)] &&
       !this.chairs.some(c => same(c,p)) &&
       !this.bedAt(p)
@@ -1555,7 +1571,7 @@ export class VoxelSimulation {
       ]);
     if (j.kind === 'table') return tableCells({ ...j, axis: j.axis ?? 'x' }).flatMap(p => [p, { ...p, z: p.z + 1 }]);
     if (j.kind === 'bed') return bedCells({ ...j, axis: j.axis ?? 'x' });
-    if (j.kind === 'floor') return [{ ...j, z: j.z - 1 }];
+    if (j.kind === 'floor' || j.kind === 'bridge') return [{ ...j, z: j.z - 1 }];
     if (['wall', 'mine', 'door'].includes(j.kind)) return [j, { ...j, z: j.z + 1 }];
     return [j];
   }
@@ -3166,7 +3182,7 @@ export class VoxelSimulation {
       let n = 0;
       for (const p of positions)
         for (const j of [...this.jobs])
-          if (this.footprint(j).some((q) => same(q, p))) {
+          if (same(j,p) || this.footprint(j).some((q) => same(q, p))) {
             this.cancel(j);
             n++;
           }
@@ -3273,6 +3289,9 @@ export class VoxelSimulation {
         if (!this.standable(p) || this.treeCells.has(at(p)))
           return { ok: false, message: '请从有两格净空的可站立位置开设梯井' };
         const dir = c.tool === 'shaft' ? -1 : 1;
+        if ([0,1,2,3].some(n => { const q = { ...p, z:p.z+dir*n };
+          return inside(q) && (this.water[at(q)] || this.water[at(q) - WIDTH*DEPTH] || this.water[at(q) + WIDTH*DEPTH]); }))
+          return {ok:false,message:'水域和河床不能开设梯井，请选择干地入口'};
         if (p.z + dir * 3 < 1 || p.z + dir * 3 > HEIGHT - 2)
           return { ok: false, message: '三格梯井超出世界高度' };
         if (!this.ladders[at(p)]) plans.push(this.makeJob('ladder', p));
@@ -3306,7 +3325,7 @@ export class VoxelSimulation {
       } else {
         const kind = c.tool as JobKind;
         const target = kind === 'remove' ? (this.furnitureAt(p) ?? p) : p;
-        const reason = this.placementReason(kind, target, c.axis);
+        const reason = this.placementReason(kind, target, c.axis, c.material);
         if (reason) {
           errors.push(reason);
           continue;
@@ -3464,11 +3483,25 @@ export class VoxelSimulation {
       ...(weaponKind ? { weaponKind, weaponBenchKind } : {}),
     };
   }
-  private placementReason(kind: JobKind, p: Pos, axis: Axis = 'x') {
+  private placementReason(kind: JobKind, p: Pos, axis: Axis = 'x', material: ConstructionMaterial = 'wood') {
     const footprint = this.footprint({ ...p, kind, axis });
     if (kind === 'mine' && footprint.some(q => !this.exploredAt(q))) return '';
     if (kind !== 'mine' && (!this.exploredAt(p) || footprint.some(q => !this.exploredAt(q))))
       return '目标区域尚未探索';
+    if (kind === 'bridge') {
+      const foot = at(p) - WIDTH * DEPTH;
+      return !inside(p) || p.z < 2 || p.z >= HEIGHT - 1 || this.water[foot] !== 1 ||
+        this.blocks[foot] !== Block.Air || this.blocks[at(p)] || this.blocks[at(p) + WIDTH * DEPTH] ||
+        this.ladders[at(p)] || !!this.furnitureAt(p) || this.treeCells.has(at(p))
+        ? '木桥只能建在浅水上，深水不可架设；桥面需要两格净空' : '';
+    }
+    if (kind !== 'remove' && footprint.some(q => inside(q) && (this.water[at(q)] ||
+      (kind === 'mine' && this.water[at(q) + WIDTH * DEPTH]))))
+      return '水域与河床不能直接开挖或填筑，请在浅水上架木桥';
+    if (!['mine', 'cut', 'remove', 'uninstall'].includes(kind) && footprint.some(q =>
+      inside(q) && waterBelow(this.water, this.blocks, q))) return '水面不能直接建造，请先架木桥';
+    if (!bridgeSupports(kind, material) && footprint.some(q => inside(q) && q.z > 0 &&
+      this.bridges[at(q) - WIDTH * DEPTH])) return '木桥仅提供轻型承载，不能支撑该建筑';
     if (isShelfKind(kind)) return shelfCells({ ...p, kind, axis }).some(q =>
       !inside(q) || !this.standable(q) || !this.blocks[at(q)-WIDTH*DEPTH] || !!this.ladders[at(q)] ||
       !!this.furnitureAt(q) || this.farms.some(f=>same(f,q)) || this.treePlots.some(f=>same(f,q)) ||
@@ -3593,7 +3626,7 @@ export class VoxelSimulation {
         ? '灶台需要有支撑的空置地板，不能与仓储重叠'
         : '';
     if (kind === 'floor')
-      return this.blocks[index(p.x, p.y, p.z - 1)] || b || above || this.treeCells.has(at(p))
+      return this.water[index(p.x, p.y, p.z - 1)] || this.blocks[index(p.x, p.y, p.z - 1)] || b || above || this.treeCells.has(at(p))
         ? '楼板位置需为空，楼面上方保留两格净空'
         : '';
     if (kind === 'wall')
@@ -5556,6 +5589,11 @@ export class VoxelSimulation {
   fireDestroy(target: FireDamage, reason: string): boolean {
     if (!findFireDamageTarget(this, target)) return true;
     const cell = at(target), oldBlock = this.blocks[cell], oldLadder = this.ladders[cell];
+    // A wall is two physical blocks rather than a furniture entity. Destroying
+    // its bridge foundation must remove both halves in the same transaction.
+    const bridgeWalls = target.kind === 'block' && this.bridges[cell] && this.structureKinds[cell+WIDTH*DEPTH] === 2
+      ? [cell+WIDTH*DEPTH,cell+2*WIDTH*DEPTH].filter(i=>i<CELLS && this.blocks[i] === Block.Wood)
+        .map(i=>({i,block:this.blocks[i]})) : [];
     const properties = { table: 'tables', chair: 'chairs', bed: 'beds', door: 'doors', stove: 'stoves', stonecutter: 'stonecutters', tailor: 'tailors',
       weaponBench: 'weaponBenches', researchBench: 'researchBenches', horseshoePin: 'horseshoePins',
       butcherSpot: 'butcherSpots', device: 'devices', fence:'fences', fenceGate:'fenceGates', penMarker:'penMarkers' } as const;
@@ -5565,6 +5603,7 @@ export class VoxelSimulation {
       wires: this.wires, sandbags: this.sandbags, trees: this.trees,
       fences:this.fences,fenceGates:this.fenceGates,penMarkers:this.penMarkers };
     if (target.kind === 'block') this.blocks[cell] = Block.Air;
+    for (const wall of bridgeWalls) this.blocks[wall.i] = Block.Air;
     if (target.kind === 'ladder') this.ladders[cell] = 0;
     const support = (p: Pos) => inside(p) && p.z > 0 && p.z + 1 < HEIGHT &&
       !!this.blocks[at(p) - WIDTH * DEPTH] && !this.blocks[at(p)] && !this.blocks[at(p) + WIDTH * DEPTH];
@@ -5596,13 +5635,20 @@ export class VoxelSimulation {
       const landing = this.fireLanding(actor);
       if (!landing) {
         this.blocks[cell] = oldBlock; this.ladders[cell] = oldLadder;
+        for (const wall of bridgeWalls) this.blocks[wall.i] = wall.block;
         Object.assign(this, originals); this.penLookupRevision = -1; this.stoveCells = new Set(this.stoves.map(at)); this.rebuildDevices(); this.rebuildTrees();
         return false;
       }
       falling.set(actor, landing);
     }
     cancelAnimalRopes(this);
-    if (target.kind === 'block') this.structureKinds[cell] = 0;
+    if (target.kind === 'block') { this.structureKinds[cell] = 0; this.bridges[cell] = 0; }
+    for (const wall of bridgeWalls) {
+      this.structureKinds[wall.i] = 0;
+      const q=position(wall.i);
+      for (const job of [...this.jobs]) if (this.footprint(job).some(p=>at(p)===wall.i)) this.fireDestroyJob(job);
+      this.changed(q);
+    }
     for (const d of removed) {
       if (d.kind === 'penMarker') removePenMarker(this,d.targetId!);
       if (d.kind === 'bed') { const bed = originals.beds.find(b => b.id === d.targetId)!; this.invalidatePrisonBed(bed); }
@@ -5985,6 +6031,8 @@ export class VoxelSimulation {
     return undefined;
   }
   private supported(j: Job) {
+    if ((j.kind === 'mine' || j.kind === 'digLadder') && this.footprint(j).some(q => inside(q) &&
+      (this.water[at(q)] || this.water[at(q) + WIDTH*DEPTH]))) return false;
     if (productionJobRecipe(j)) {
       const bill = this.productionBillFor(j);
       return !!bill && !bill.suspended &&
@@ -6059,7 +6107,8 @@ export class VoxelSimulation {
         )
       );
     if (j.kind === 'bed' || j.kind === 'door') return !this.placementReason(j.kind, j, j.axis);
-    if (j.kind === 'wall' || j.kind === 'stove') return this.blocks[index(j.x, j.y, j.z - 1)] !== 0;
+    if (j.kind === 'bridge') return !this.placementReason(j.kind, j);
+    if (j.kind === 'wall' || j.kind === 'stove') return this.blocks[index(j.x, j.y, j.z - 1)] !== 0 && !this.placementReason(j.kind, j, j.axis, j.material);
     if (j.kind === 'cook') return this.stoves.some((s) => same(s, j) && !s.paused);
     if (j.kind === 'sow')
       return (
@@ -7035,7 +7084,7 @@ export class VoxelSimulation {
         }
       }
       if (j.kind === 'digLadder') changes.push({ pos: j, ladder: 1 });
-    } else if (j.kind === 'floor')
+    } else if (j.kind === 'floor' || j.kind === 'bridge')
       changes.push({
         pos: { ...j, z: j.z - 1 },
         block: j.material === 'stone' ? Block.Masonry : Block.Wood,
@@ -7103,7 +7152,7 @@ export class VoxelSimulation {
           if (block === Block.Wood || block === Block.Masonry) {
             changes.push({ pos: { ...j, z }, block: 0 });
             const resource = block === Block.Masonry ? 'stone' : 'wood';
-            yields[resource] = (yields[resource] ?? 0) + (resource === 'stone' ? 2 : 1);
+            yields[resource] = (yields[resource] ?? 0) + (this.bridges[index(j.x,j.y,z)] ? Math.floor(WATER_RULES.bridgeWood / 2) : resource === 'stone' ? 2 : 1);
           }
         }
       }
@@ -7296,8 +7345,10 @@ export class VoxelSimulation {
     if (j.kind === 'butcher') this.addFilth('butcher', p, SANITATION_RULES.butcherLayers);
     // Identity is committed only after all support, access and item-placement
     // checks succeed. A failed build never leaves valued phantom structures.
-    for (const c of changes) if (c.block !== undefined)
-      this.structureKinds[at(c.pos)] = !c.block ? 0 : j.kind === 'floor' ? 1 : j.kind === 'wall' ? (c.pos.z === j.z ? 2 : 3) : 0;
+    for (const c of changes) if (c.block !== undefined) {
+      this.structureKinds[at(c.pos)] = !c.block ? 0 : j.kind === 'floor' || j.kind === 'bridge' ? 1 : j.kind === 'wall' ? (c.pos.z === j.z ? 2 : 3) : 0;
+      this.bridges[at(c.pos)] = c.block && j.kind === 'bridge' ? 1 : 0;
+    }
     // Project tasks can be resumed by another cook; reward each actual worker
     // only after the physical meal exists. Cancellation and blocked retries pay nothing.
     if (j.kind === 'cook')
@@ -7930,10 +7981,11 @@ export class VoxelSimulation {
    * greater of snow or an obstacle cost. Costs are converted from native TPS. */
   weatherMoveTicks(from: Pos, baseTicks: number, to: Pos = from, obstacleTicks = 0): number {
     const factor = this.weatherExposed(from) ? weatherEffects(this.weather, this.tick).moveFactor : 1;
-    return Math.ceil(baseTicks / factor + Math.max(obstacleTicks, snowPathCost(this.snowLookup.get(at(to)) ?? 0) * TPS / 60));
+    return Math.ceil(baseTicks / factor + Math.max(obstacleTicks, this.waterPresent && waterBelow(this.water,this.blocks,to) ? WATER_RULES.shallowPathTicks : 0,
+      snowPathCost(this.snowLookup.get(at(to)) ?? 0) * TPS / 60));
   }
   private validSnowSupport(p: Pos): boolean {
-    return inside(p) && p.z > 0 && this.blocks[at(p)] === Block.Air && this.blocks[at(p) - WIDTH * DEPTH] !== Block.Air;
+    return inside(p) && p.z > 0 && !this.water[at(p)] && this.blocks[at(p)] === Block.Air && this.blocks[at(p) - WIDTH * DEPTH] !== Block.Air;
   }
   private pruneSnow() {
     this.snow = this.snow.filter(p => this.validSnowSupport(p));
@@ -7958,7 +8010,7 @@ export class VoxelSimulation {
   }
   get worldSummary(): WorldSummary {
     if (!this.summaryCache || this.summaryRevision !== this.revision) {
-      this.summaryCache = summarizeWorld(this.blocks, this.trees, this.spawn, this.settings, this.explored);
+      this.summaryCache = summarizeWorld(this.blocks, this.trees, this.spawn, this.settings, this.explored, this.water);
       this.summaryRevision = this.revision;
     }
     return this.summaryCache;
@@ -8223,7 +8275,7 @@ export class VoxelSimulation {
       stored,
       stats: this.stats,
       notice: this.notice,
-      gridBytes: this.blocks.byteLength + this.ladders.byteLength + this.structureKinds.byteLength + this.explored.byteLength,
+      gridBytes: this.blocks.byteLength + this.water.byteLength + this.bridges.byteLength + this.ladders.byteLength + this.structureKinds.byteLength + this.explored.byteLength,
       navigationBytes:
         this.distance.byteLength +
         this.parents.byteLength +
@@ -8242,7 +8294,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 42,
+      version: 43,
       stockpileZones: this.stockpileZones,
       productionQueues: this.productionQueues.filter(q => this.productionBenches().some(b => b.id === q.benchId)),
       socialHistory: this.socialHistory, socialLog: this.socialLog,
@@ -8271,6 +8323,8 @@ export class VoxelSimulation {
       tick: this.tick,
       nextId: this.nextId,
       blocks: encode(this.blocks),
+      water: encode(this.water),
+      bridges: encode(this.bridges),
       explored: Array.from(this.explored),
       ladders: encode(this.ladders),
       pawns: this.pawns,
@@ -8301,11 +8355,14 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42].includes(old.version) ||
-      (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : [1, 2, 3]).includes(old.generator))
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43].includes(old.version) ||
+      (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : old.version < 43 ? [1, 2, 3] : [1, 2, 3, 4]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    if (sourceVersion < 43 && (Object.hasOwn(old,'water') || Object.hasOwn(old,'bridges') ||
+      Object.hasOwn(old.settings ?? {},'river') || old.jobs?.some((j:any)=>j.kind==='bridge')))
+      throw new Error('旧版本存档混入水域或桥梁字段');
     if (sourceVersion < 42 && (Object.hasOwn(old, 'stockpileZones') ||
         old.pawns?.some((p:any) => Object.hasOwn(p, 'productionDelivery')) ||
         old.productionQueues?.some((q:any) => q.bills?.some((b:any) => Object.hasOwn(b, 'output')))))
@@ -8349,7 +8406,7 @@ export class VoxelSimulation {
     rejectLegacyWorldSite(old, sourceVersion);
     rejectLegacyExploration(old, sourceVersion);
     const explored = sourceVersion < 36 ? new Uint8Array(CELLS).fill(1) : loadExploration(old.explored);
-    if (old.generator !== 3 && explored.some(value => value !== 1))
+    if (old.generator < 3 && explored.some(value => value !== 1))
       throw new Error('旧地图生成器的探索记录必须全部可见');
     if (old.version === 1) {
       if (!Array.isArray(old.jobs) || !Array.isArray(old.pawns) || !old.stats)
@@ -8712,7 +8769,8 @@ export class VoxelSimulation {
       for (const queue of old.productionQueues ?? []) for (const bill of queue.bills ?? [])
         bill.output = defaultProductionOutput('drop');
     }
-    old.version = 42;
+    if (sourceVersion < 43) { old.water = [0, CELLS]; old.bridges = [0, CELLS]; }
+    old.version = 43;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -9878,15 +9936,28 @@ export class VoxelSimulation {
       }
     }
     // Restore into empty state. Never rerun generation over an existing colony.
-    const s = new VoxelSimulation(d.seed, d.settings, true, d.generator === 3 ? 3 : 2);
+    const s = new VoxelSimulation(d.seed, d.settings, true, d.generator >= 3 ? d.generator as 3 | 4 : 2);
     s.generator = d.generator;
     s.explored = explored;
     s.exploredCount = explored.reduce((n, value) => n + value, 0);
     s.worldSite = structuredClone(worldSite);
     s.spawn = structuredClone(d.spawn);
     s.blocks = decode(d.blocks, sourceVersion <= 6 ? 6 : sourceVersion === 7 ? 7 : 10);
+    s.water = decode(d.water, 2); s.bridges = decode(d.bridges, 1);
+    s.waterPresent = s.water.some(value=>value!==0);
     s.ladders = decode(d.ladders, 1);
     s.structureKinds = decode(d.structureKinds, 3);
+    validateWater(s.water, s.bridges, s.blocks, s.ladders, s.structureKinds);
+    for (const object of [
+      ...d.stoves.map(p=>({...p,kind:'stove' as const})),
+      ...d.stonecutters.map(p=>({...p,kind:'stonecutter' as const})),
+      ...d.tailors.map(p=>({...p,kind:'tailor' as const})),
+      ...d.researchBenches.map(p=>({...p,kind:'researchBench' as const})),
+      ...d.weaponBenches, ...d.devices,
+    ]) if (!bridgeSupports(object.kind) && s.footprint(object).some(q=>q.z>0 && s.bridges[at(q)-WIDTH*DEPTH]))
+      throw new Error('存档建筑超过木桥的轻型承载');
+    for (let cell=0; cell<CELLS-WIDTH*DEPTH; cell++) if(s.bridges[cell] && s.blocks[cell+WIDTH*DEPTH] === Block.Masonry)
+      throw new Error('木桥不能支撑石砌墙体');
     validateStoryteller(d, s.blocks, s.structureKinds);
     Object.assign(
       s,
@@ -9937,7 +10008,7 @@ export class VoxelSimulation {
     s.rebuildTrees();
     s.stoveCells = new Set(s.stoves.map(at));
     s.rebuildDevices();
-    validateWeather(d, s.blocks);
+    validateWeather(d, s.blocks, s.water);
     s.pruneSnow();
     validateFire(d, s);
     if (s.filth.some(f => !s.filthSupported(f))) throw new Error('污物没有合法地面支撑或净空');

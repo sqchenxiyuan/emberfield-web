@@ -205,7 +205,7 @@ describe('terrain, ecology and preview isolation', () => {
       expect(restored.blocks).toEqual(s.blocks);
       expect(restored.trees).toEqual(s.trees);
       expect(restored.settings).toEqual(s.settings);
-      expect(restored.generator).toBe(3);
+      expect(restored.generator).toBe(4);
     },
   );
 });
@@ -303,7 +303,7 @@ describe('v8 world persistence and validation', () => {
       s = VoxelSimulation.load(raw),
       saved = s.save();
     expect(raw).toEqual(original);
-    expect(saved.version).toBe(42);
+    expect(saved.version).toBe(43);
     expect(saved.generator).toBe(1);
     expect(saved.blocks).toEqual(raw.blocks);
     expect(saved.ladders).toEqual(raw.ladders);
@@ -348,7 +348,7 @@ describe('v8 world persistence and validation', () => {
         d.settings.hilliness = 'bad' as Hilliness;
       },
       (d) => {
-        d.generator = 4 as 2;
+        d.generator = 5 as 2;
       },
       (d) => {
         d.spawn.x = 64;

@@ -102,7 +102,7 @@ export interface VoxelView {
 }
 
 export interface PlacementPreview {
-  tool: 'shelf' | 'smallShelf' | 'bed' | 'table' | 'chair' | 'fence' | 'fenceGate' | 'penMarker' | 'animalArea';
+  tool: 'bridge' | 'shelf' | 'smallShelf' | 'bed' | 'table' | 'chair' | 'fence' | 'fenceGate' | 'penMarker' | 'animalArea';
   from: Pos;
   to: Pos;
   axis: Axis;
@@ -497,6 +497,8 @@ export class VoxelRenderer {
   private blockData = new Uint8Array(WIDTH * DEPTH * HEIGHT);
   private ladderData = new Uint8Array(WIDTH * DEPTH * HEIGHT);
   private exploredData = new Uint8Array(WIDTH * DEPTH * HEIGHT);
+  private waterData = new Uint8Array(WIDTH * DEPTH * HEIGHT);
+  private bridgeData = new Uint8Array(WIDTH * DEPTH * HEIGHT);
   private terrainMeshes = new Map<number, Mesh<BufferGeometry, MeshLambertMaterial>>();
   private dirty = new Set<number>();
   private loaded = new Set<number>();
@@ -701,7 +703,9 @@ export class VoxelRenderer {
         update.id >= CHUNK_COUNT ||
         update.blocks.length !== CHUNK ** 3 ||
         update.ladders.length !== CHUNK ** 3 ||
-        update.explored.length !== CHUNK ** 3
+        update.explored.length !== CHUNK ** 3 ||
+        (update.water !== undefined && update.water.length !== CHUNK ** 3) ||
+        (update.bridges !== undefined && update.bridges.length !== CHUNK ** 3)
       ) {
         throw new Error(`Invalid voxel chunk ${update.id}`);
       }
@@ -722,6 +726,8 @@ export class VoxelRenderer {
             // accidentally passes an unmasked block in a future change.
             this.blockData[dst] = update.explored[src] ? update.blocks[src] : Block.Stone;
             this.ladderData[dst] = update.explored[src] ? update.ladders[src] : 0;
+            this.waterData[dst] = update.explored[src] ? update.water?.[src] ?? 0 : 0;
+            this.bridgeData[dst] = update.explored[src] ? update.bridges?.[src] ?? 0 : 0;
           }
       this.loaded.add(update.id);
       this.dirty.add(update.id);
@@ -932,6 +938,17 @@ export class VoxelRenderer {
       [...this.terrainMeshes.values()].filter((mesh) => mesh.visible),
       false,
     )[0];
+    if (surface) {
+      // Gaps between boards can expose a deck's side face. Keep that hit on the
+      // actual bridge, rather than falling through to the current work plane.
+      const normal = surface.face?.normal;
+      const x = Math.floor(surface.point.x - (normal?.x ?? 0) * .0001),
+        y = Math.floor(surface.point.z - (normal?.z ?? 0) * .0001),
+        z = Math.floor(surface.point.y - (normal?.y ?? 0) * .0001);
+      if (x >= 0 && y >= 0 && z >= 0 && x < WIDTH && y < DEPTH && z < HEIGHT &&
+        this.waterData[index(x, y, z)] && (normal?.y === 1 || this.bridgeData[index(x, y, z)]) &&
+        !this.waterData[index(x, y, z + 1)] && z + 1 <= this.level) return { x, y, z: z + 1 };
+    }
     if (surface && surface.point.y >= this.level - 0.0001 && surface.point.y <= this.level + 0.56) {
       // A side-face hit lies on a cell boundary: step toward the owning solid.
       const normal = surface.face?.normal;
@@ -1055,6 +1072,21 @@ export class VoxelRenderer {
       indices: number[] = [];
     const cutHeight = this.level + 0.55;
     const color = new Color();
+    const rectangle = (vertices: number[][], normal: readonly number[], hex: number) => {
+      const offset = positions.length / 3; color.setHex(hex);
+      for (let v = 0; v < 4; v++) {
+        positions.push(...vertices[v]); normals.push(...normal);
+        colors.push(color.r, color.g, color.b);
+        uvs.push(v === 1 || v === 2 ? 1 : 0, v >= 2 ? 1 : 0);
+      }
+      indices.push(offset, offset + 1, offset + 2, offset, offset + 2, offset + 3);
+    };
+    const plank = (x: number, y: number, z: number, width: number, depth: number, height: number, hex: number) => {
+      for (const face of FACES) {
+        const c = new Color(hex).multiplyScalar(face.shade);
+        rectangle(face.vertices.map(v => [x + v[0] * width, z + v[1] * height, y + v[2] * depth]), face.n, c.getHex());
+      }
+    };
     for (let lz = 0; lz < CHUNK; lz++)
       for (let ly = 0; ly < CHUNK; ly++)
         for (let lx = 0; lx < CHUNK; lx++) {
@@ -1063,6 +1095,22 @@ export class VoxelRenderer {
             z = cz * CHUNK + lz;
           if (x >= WIDTH || y >= DEPTH || z >= HEIGHT || z > this.level) continue;
           const block = this.block(x, y, z);
+          const cell = index(x, y, z), water = this.waterData[cell], bridge = this.bridgeData[cell];
+          if (water && (!block || bridge)) {
+            if (z < this.level && this.waterData[index(x, y, z + 1)] && !bridge) continue;
+            const top = Math.min(z + .97, cutHeight);
+            const hex = water === 1 ? 0x4aa2b8 : 0x255c83;
+            const waterColor = new Color(hex).multiplyScalar(.95 + hash(x, y, z) * .1).getHex();
+            rectangle([[x, top, y], [x, top, y + 1], [x + 1, top, y + 1], [x + 1, top, y]], [0, 1, 0], waterColor);
+            if (bridge) {
+              // Raised, individually visible deck boards retain water in the gaps.
+              const deckTop = Math.min(z + 1, cutHeight);
+              for (let board = 0; board < 4; board++) plank(x + .015, y + board * .25 + .012, deckTop - .14, .97, .226, .14, board % 2 ? 0xb18b58 : 0xc19a65);
+            } else if (hash(x, y, z) > .68) {
+              rectangle([[x + .2, top + .002, y + .43], [x + .2, top + .002, y + .46], [x + .66, top + .002, y + .46], [x + .66, top + .002, y + .43]], [0, 1, 0], water === 1 ? 0x76bdc9 : 0x437c9f);
+            }
+            if (!block || bridge) continue;
+          }
           if (!block) continue;
           const known = this.exploredData[index(x, y, z)] === 1;
           const height = Math.min(1, cutHeight - z),
@@ -1794,7 +1842,7 @@ export class VoxelRenderer {
       });
     }
     this.deviceBatch('living-placement-preview', furnitureParts, this.box, true, .5, false);
-    if (preview && !furniture && preview.from.z === this.level) {
+    if (preview && !furniture && (preview.from.z === this.level || (preview.tool === 'bridge' && preview.from.z <= this.level))) {
       const color = preview.erase ? 0xf2a186 : preview.tool === 'animalArea' ? 0x9dd59d : 0x9be0df;
       for (let y = Math.max(0, Math.min(preview.from.y, preview.to.y)); y <= Math.min(DEPTH - 1, Math.max(preview.from.y, preview.to.y)); y++) {
         for (let x = Math.max(0, Math.min(preview.from.x, preview.to.x)); x <= Math.min(WIDTH - 1, Math.max(preview.from.x, preview.to.x)); x++) {
@@ -1802,7 +1850,9 @@ export class VoxelRenderer {
           const put = (dx: number, dy: number, dz: number, sx: number, sy: number, sz: number) =>
             parts.push({ cell: p, x: x + dx, y: y + dy, z: p.z + dz, sx, sy, sz, color });
           put(.5, .5, .09, .94, .94, .035);
-          if (preview.tool === 'fence') {
+          if (preview.tool === 'bridge') {
+            for (let board = 0; board < 4; board++) put(.5, .125 + board * .25, .08, .95, .2, .1);
+          } else if (preview.tool === 'fence') {
             put(.5, .5, .4, .12, .12, .8);
             const alongX = preview.from.y === preview.to.y;
             for (const h of [.28, .62]) put(.5, .5, h, alongX ? 1 : .06, alongX ? .06 : 1, .08);
@@ -3246,7 +3296,7 @@ export class VoxelRenderer {
       [3, 7],
     ];
     for (const job of this.data?.jobs ?? []) {
-      const floor = job.kind === 'floor';
+      const floor = job.kind === 'floor' || job.kind === 'bridge';
       const bottom = floor ? job.z - 0.06 : job.z + 0.025;
       if (job.z > this.level + 1 || job.z < this.level - 2) continue;
       const planting = job.kind === 'sow' || job.kind === 'harvest';
@@ -4291,10 +4341,10 @@ export class VoxelRenderer {
                   ? 0.08 + Math.max(0, swing) * 0.08
                   : 0;
       visual.tool.visible =
-        working && !cooking && !tending && !sewing && !weaponBench && !researchBench && job?.kind !== 'butcher';
+        working && !cooking && !tending && !sewing && !weaponBench && !researchBench && job?.kind !== 'butcher' && job?.kind !== 'bridge';
       if (working && job?.kind === 'butcher') visual.weapons.steelKnife.visible = true;
       visual.pencil.visible = researching;
-      visual.hammer.visible = weaponCrafting && !machining;
+      visual.hammer.visible = (weaponCrafting && !machining) || (working && job?.kind === 'bridge');
       visual.hammer.scale.setScalar(carving ? 0.6 : 1);
       const patient =
         feeding || bandaging

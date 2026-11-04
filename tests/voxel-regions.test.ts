@@ -78,7 +78,7 @@ describe('versioned world regions and local-map identity', () => {
       expect(() => generateRegions(seed as number)).toThrow();
       expect(() => resolveWorldSite({ ...base, worldSeed: seed })).toThrow();
     }
-    for (const site of [null, [], {}, { ...base, version: 3 }, { ...base, tileId: -1 },
+    for (const site of [null, [], {}, { ...base, version: 4 }, { ...base, tileId: -1 },
       { ...base, tileId: 1152 }, { ...base, tileId: 714.5 }, { ...base, tileId: '714' },
       { ...base, localSeed: 3951304940 }, { version: 1, tileId: 714 }]) {
       const before = structuredClone(site);

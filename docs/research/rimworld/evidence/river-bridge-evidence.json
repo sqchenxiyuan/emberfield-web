@@ -1,0 +1,919 @@
+{
+  "evidence_id": "RW17-RIVER-BRIDGE-STATIC",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Matched static derived reconstruction and bounded shipped XML; separate native runtime record",
+  "rea": {
+    "file": "production-bills-rea-managed.json",
+    "sha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8"
+  },
+  "manifests": [
+    {
+      "file": "generation-manifest.json",
+      "sha256": "b15f27fdbacd826fdde8e11603b728c62f5ccf1df51c91e7a40a5d476737dcda"
+    },
+    {
+      "file": "logistics-manifest.json",
+      "sha256": "86d76ec8cfae55866ca033e1e80a29b7b072452726a666393abcea2246eb216f"
+    },
+    {
+      "file": "preservation-manifest.json",
+      "sha256": "5b43549bdaa2d6edc6ace4c7100ef2b20510e36d18c0a543c0c7a431c6801f8e"
+    },
+    {
+      "file": "river-bridge-manifest.json",
+      "sha256": "005d37960fa737347a50a17e9f8abf6019a0cdc77c0e1b2b0a6c9f745e9ffc20"
+    },
+    {
+      "file": "skills-manifest.json",
+      "sha256": "39038cac303e7fe741e7b74d7ea70ae2914b3cd17d8f9e637145c5bffde31f32"
+    },
+    {
+      "file": "stonecutting-manifest.json",
+      "sha256": "de582eeb35fb04c661dcab23ee45572abad0e590a5fb8a3cd5175dc2026b2061"
+    },
+    {
+      "file": "weapons-manifest.json",
+      "sha256": "51a3598181cbd532dd2b60c1e7af6f816bbc395a39b13f439b57cd81e9f4bb17"
+    },
+    {
+      "file": "weather-manifest.json",
+      "sha256": "3c2f5e3409a4202fd98bab6141cc694d1372d55d58856f11046ae029e367ca4a"
+    },
+    {
+      "file": "work-manifest.json",
+      "sha256": "89523f849f7c4dca3b660faed977b00e04b87fb93d1275c9f41ba1b9af154cd2"
+    }
+  ],
+  "xml": [
+    {
+      "file": "Data/Core/Defs/TerrainDefs/Terrain_Water.xml",
+      "sha256": "8eb60384193daebf5442b18427d023e75fd9bcdf7273cee6cb4659a5ad93042b",
+      "nodes": [
+        {
+          "defName": "",
+          "name": "WaterBase",
+          "parent": "",
+          "node_sha256": "a6ed99d997c485ffac56e0c894a30e3c3225e076f89fa50d1bccf6b86e29fd3e"
+        },
+        {
+          "defName": "",
+          "name": "WaterDeepBase",
+          "parent": "WaterBase",
+          "node_sha256": "5bb31817471b05600cd9a423a36f9393cda19abf8dd02cbe480381dcffac54b5"
+        },
+        {
+          "defName": "WaterDeep",
+          "name": "",
+          "parent": "WaterDeepBase",
+          "node_sha256": "a140317324ede52c1ff03688ea3dfd5f618b553b65878922df4303c28d56f55c"
+        },
+        {
+          "defName": "WaterOceanDeep",
+          "name": "",
+          "parent": "WaterDeepBase",
+          "node_sha256": "e29d7780d24754b8db0bb73e27fc0e8fcb7b698cd891ae8c45f8430949cf076b"
+        },
+        {
+          "defName": "",
+          "name": "WaterChestDeepBase",
+          "parent": "WaterBase",
+          "node_sha256": "86c9f8e7b5305147fcfe336d2dd77d940baa87b9f4785b4753074ac1f1f00e69"
+        },
+        {
+          "defName": "WaterMovingChestDeep",
+          "name": "",
+          "parent": "WaterChestDeepBase",
+          "node_sha256": "e78bfa71621965f1dfc8cb8b726d2286392dd73a799e38741c204b31fae4e937"
+        },
+        {
+          "defName": "",
+          "name": "WaterShallowBase",
+          "parent": "WaterBase",
+          "node_sha256": "46f30a969446ee272fc0909055dcaf6cd135291ecf551444eb12872991a644b9"
+        },
+        {
+          "defName": "WaterShallow",
+          "name": "WaterShallow",
+          "parent": "WaterShallowBase",
+          "node_sha256": "98f94fa245938b23011e7c18a549254eced2e11636474a9bfb9e7b6699593555"
+        },
+        {
+          "defName": "WaterOceanShallow",
+          "name": "",
+          "parent": "WaterShallowBase",
+          "node_sha256": "fd03c0507504e5d8b1cd5d420e027d6ca40359d5c3b2fe0f7bc8f6d24e048ad5"
+        },
+        {
+          "defName": "WaterMovingShallow",
+          "name": "",
+          "parent": "WaterShallowBase",
+          "node_sha256": "5a00efdbf314d0f5fc2ad38c14370f800650d21a35f345373f2d1f8c76c4529e"
+        },
+        {
+          "defName": "Marsh",
+          "name": "MarshBase",
+          "parent": "WaterShallowBase",
+          "node_sha256": "17370c876731e09f14910477be6fd5b4106f70ff00a75cb525d030ae1e7bd553"
+        }
+      ]
+    },
+    {
+      "file": "Data/Core/Defs/TerrainDefs/Terrain_Foundation.xml",
+      "sha256": "d7943eb36290030ddf5a753e13a793ce39da06d7eb920f34968305a2957d8520",
+      "nodes": [
+        {
+          "defName": "",
+          "name": "BridgeBase",
+          "parent": "",
+          "node_sha256": "5bc2530e9c0b504ae1f3fe2d310e51befdc39e843c2310484c6024ebbfd92163"
+        },
+        {
+          "defName": "Bridge",
+          "name": "Bridge",
+          "parent": "BridgeBase",
+          "node_sha256": "93bce384bd91c3e9f7939df59a53cc89139af9407b40856e1d0a8ed657642662"
+        }
+      ]
+    },
+    {
+      "file": "Data/Odyssey/Defs/TerrainDefs/Terrain_Foundation.xml",
+      "sha256": "4633c0d5e8ce96b79fba95085bfa31906d52ff4e263f098f40b3ca8ecca61c0f",
+      "nodes": [
+        {
+          "defName": "Substructure",
+          "name": "",
+          "parent": "FloorBase",
+          "node_sha256": "e765928b3e384cd69b91f65e5875b06b74a0c200ac622ae8081b1874a6a3ceea"
+        },
+        {
+          "defName": "HeavyBridge",
+          "name": "HeavyBridge",
+          "parent": "BridgeBase",
+          "node_sha256": "b26396815a7d398ea4d7e9f5be4e0d9756b007c10e1044f8433474acbf856694"
+        },
+        {
+          "defName": "AncientHeavyBridge",
+          "name": "",
+          "parent": "HeavyBridge",
+          "node_sha256": "5d95506c3740fa360215bc262815583ef6f7e0665ca42c6bb2bef04caf9a466a"
+        }
+      ]
+    },
+    {
+      "file": "Data/Core/Defs/Misc/TerrainAffordanceDefs/TerrainAffordances.xml",
+      "sha256": "8e7bcc8401aa876ac98c84d535d7161b302a99aa6d6a79726a54c589a44bc54b",
+      "nodes": [
+        {
+          "defName": "Light",
+          "name": "",
+          "parent": "",
+          "node_sha256": "2552e7944f2b833758609852c4369e91e611d96a77b47629207e2969812b40ea"
+        },
+        {
+          "defName": "Medium",
+          "name": "",
+          "parent": "",
+          "node_sha256": "ef697816231f108a45cd3de72525c651cb50e39ea87375802895249294877808"
+        },
+        {
+          "defName": "Heavy",
+          "name": "",
+          "parent": "",
+          "node_sha256": "094752f17cf142691928006a420b29999bb5b13ce65884a8a6916eb031664a68"
+        },
+        {
+          "defName": "ShallowWater",
+          "name": "",
+          "parent": "",
+          "node_sha256": "00b64c97e282c4386481ea4210a3e79f32cb2f97c8ed1a1c2386c3ddfea4c114"
+        },
+        {
+          "defName": "MovingFluid",
+          "name": "",
+          "parent": "",
+          "node_sha256": "a432c8927030977756d21229c61ec9e1c454b23f5c8048f5d0119b6b4c385cda"
+        },
+        {
+          "defName": "Bridgeable",
+          "name": "",
+          "parent": "",
+          "node_sha256": "f1d47cf486b7aa836ee82003e5747a4eca3adb655940e751d07783388f9c7ba7"
+        },
+        {
+          "defName": "GrowSoil",
+          "name": "",
+          "parent": "",
+          "node_sha256": "ab5ecb841850bccd1fd90983cd4e965dd48a4b34397944b9cee73ac877e90f04"
+        },
+        {
+          "defName": "Diggable",
+          "name": "",
+          "parent": "",
+          "node_sha256": "452e0da17e63288ddd3321864f197bad9c9cc94834d512d94f377e692c847c52"
+        },
+        {
+          "defName": "SmoothableStone",
+          "name": "",
+          "parent": "",
+          "node_sha256": "86cf4de2b2abc5e118c9c9874669fcc63c3b8bbcf55726785e684259d4e6cc7b"
+        },
+        {
+          "defName": "Walkable",
+          "name": "",
+          "parent": "",
+          "node_sha256": "4a33b4467e63b03ea850d0052737b6f380c09858620f71e74d093bfb78cf6a6f"
+        },
+        {
+          "defName": "WaterproofConduitable",
+          "name": "",
+          "parent": "",
+          "node_sha256": "5d085b1d2b69d19074d8037781e3a52007b985ba7bd83ce46257792b3524cb9c"
+        }
+      ]
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Stuff.xml",
+      "sha256": "8cdc15befea94055a946a1131c7724acc0cf999b866a5fad474a0816731c9088",
+      "nodes": [
+        {
+          "defName": "Silver",
+          "name": "",
+          "parent": "ResourceBase",
+          "node_sha256": "6da8325b3da961a9b9e862e67bd30c5b395dbb5eefb166bae06a4ad40528c6c8"
+        },
+        {
+          "defName": "Gold",
+          "name": "",
+          "parent": "ResourceBase",
+          "node_sha256": "fd27805ddb8db5bfd9319482554e2370bfa0c81efca189057b803ae8ec4ea12b"
+        },
+        {
+          "defName": "Steel",
+          "name": "",
+          "parent": "ResourceBase",
+          "node_sha256": "5525df2e7f01f1f1649ec72578671d55132a46e42fe981006f20125d3eb7e0ca"
+        },
+        {
+          "defName": "Plasteel",
+          "name": "",
+          "parent": "ResourceBase",
+          "node_sha256": "16875db8bde1cd05b142064ffb6539ecd9e66ead166435eb3910e99a94fc575a"
+        },
+        {
+          "defName": "WoodLog",
+          "name": "",
+          "parent": "ResourceVerbBase",
+          "node_sha256": "389bcb353a56ec4e64e62bf642ff1cbd037c7147c0445040ab85e4a39a5538e9"
+        },
+        {
+          "defName": "Uranium",
+          "name": "",
+          "parent": "ResourceBase",
+          "node_sha256": "a75ae40d6a35b951df31d4ce0e1106697fe24b2aa109b3766df5bfd92ef8ab18"
+        },
+        {
+          "defName": "Jade",
+          "name": "",
+          "parent": "ResourceBase",
+          "node_sha256": "acfa233404a83d5c0aeb16db3d04bcc638bdc6e518c44e7b29052a4368c23c44"
+        },
+        {
+          "defName": "Cloth",
+          "name": "",
+          "parent": "ResourceBase",
+          "node_sha256": "f21ab51bb456603e175c8528a3b983dcb8565c8f4434147f9e7bb70cd8bf8935"
+        },
+        {
+          "defName": "Synthread",
+          "name": "",
+          "parent": "ResourceBase",
+          "node_sha256": "749d950dd0cb0a778066d774814fb535c3d3c4ba64fface3140bd66a2d3897f3"
+        },
+        {
+          "defName": "DevilstrandCloth",
+          "name": "",
+          "parent": "ResourceBase",
+          "node_sha256": "8e599a31cc508df1c97ac8488650b461c2bd542d3536e6526883be374fd98cef"
+        },
+        {
+          "defName": "Hyperweave",
+          "name": "",
+          "parent": "ResourceBase",
+          "node_sha256": "b7ca9dfc06441897a3b3ade8918c4f66a9347db6f8f04772d2eb68351e7caeaa"
+        },
+        {
+          "defName": "",
+          "name": "WoolBase",
+          "parent": "ResourceBase",
+          "node_sha256": "d57cb7fabf57f7c7fdc70e4653dcc7981c25e542955244de883efc0198fae35f"
+        },
+        {
+          "defName": "WoolSheep",
+          "name": "",
+          "parent": "WoolBase",
+          "node_sha256": "0855df5c0e6c430f78337e2c81cbd56c3f9a14a198173516af5dad576932dfbd"
+        },
+        {
+          "defName": "WoolAlpaca",
+          "name": "",
+          "parent": "WoolBase",
+          "node_sha256": "93cc81fb57053c2b32584b62b2478a46c1a314d7702a4eca653e4fcd028619ce"
+        },
+        {
+          "defName": "WoolMegasloth",
+          "name": "",
+          "parent": "WoolBase",
+          "node_sha256": "713576a4a0922f1626bb7372905fb2e1a6393ddb5fad07cf83422077cfb1187f"
+        },
+        {
+          "defName": "WoolMuffalo",
+          "name": "",
+          "parent": "WoolBase",
+          "node_sha256": "969fd76628a2baace2fc09b99f9af2700633ce90e8ab61100fc1f4f6545d9db0"
+        },
+        {
+          "defName": "WoolBison",
+          "name": "",
+          "parent": "WoolBase",
+          "node_sha256": "163d84c2851c447e5c5c12cda5854ddddd6cbe3476496beb5f93cd68de770432"
+        }
+      ]
+    }
+  ],
+  "buildingXmlFiles": [
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Ancient_Active.xml",
+      "sha256": "95dcd467f416034a34223da302807895c54050cacebf81bbc4b0cb153b1cac70"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Ancient_Indoors.xml",
+      "sha256": "c6eb08feb9e5d9d6bb7932b1efa8fbceee84d372af5ac24b06fdf371721f4495"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Ancient_Outdoors.xml",
+      "sha256": "124cce3a1b4bfa64ffd5706bbd1c95190a5d6979a56e4385e5563b46554462f3"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Ancient.xml",
+      "sha256": "512c3e8d0bf54549776457d872de7b36db7563ec0c240184fe8c18c317583892"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Art.xml",
+      "sha256": "22b85485db4e037b545cb99ad1e952fefd0b1541d7524a5fd2b57b6c340eaa87"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Base.xml",
+      "sha256": "b16e3a7934febd9ffb7883f18392d524ba376c9657da4c788d1951552f86d142"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Exotic.xml",
+      "sha256": "173e9c4c891eb6e91bb9efd580bc26610c6a6a45be57b0b108427af0acd3eb09"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+      "sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Joy.xml",
+      "sha256": "65ed52b04b95c1c60eacde4490689b22644ba66855d78d0a6a1384934e3cb35c"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Mech_Turrets.xml",
+      "sha256": "d42c9f122e3d38c84c375291423a146117290aaa869a9e3c1dfba8e40a5fde60"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Mech.xml",
+      "sha256": "2be3e989b8b1ef32788d1201d581b5741959d03df0d35ebcf56305af80b0682f"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Misc.xml",
+      "sha256": "3ee922aa81ded536f0a1e887ae49e7755f0d0deb07a1337c9baf03fca8e4247a"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_MusicalInstruments.xml",
+      "sha256": "d3abee12708b7f2dcb612f5f40f532e1b502cbba33e1800443b0a3b7a7c4d5c8"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Natural.xml",
+      "sha256": "d0c032a63781ca1a2ee12ea667b54237fe65d38738bcc81a76771653a0b6b9d6"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Power.xml",
+      "sha256": "f9213d01681e0d9082447c75a3d31113ba8e6b52f7595ef951d29ca624d0aaba"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Production.xml",
+      "sha256": "3221c30adc223498636ac7b6ca86ef9c50fce681b138be8f0919c6e652045a31"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Security_Turrets.xml",
+      "sha256": "29177f10358b6dc596337afb382b480853c31551b5ae4121ab3e6b965f8ea2ad"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Security.xml",
+      "sha256": "e8bb731699e8f8a1d26c5cfcd1e7a2f38c689920977980f13dc44f695d712783"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Ship.xml",
+      "sha256": "5be6b82e968e404513b3075babd60df69632cd14fc55d7d9cd68fb3240e97471"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Special.xml",
+      "sha256": "34f5d59735c655ff283693e7cb4e0d3c42bb7a7543f486aea7f37af01aeab964"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Structure.xml",
+      "sha256": "5e4f3958b557e14513eb1dc06fc58bb14aabf10148b96b3d69db5aa9d9d3d523"
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Temperature.xml",
+      "sha256": "5a52378b24103968881042728e9a40639f010664ef46a37df20596c01bd4b1ec"
+    }
+  ],
+  "buildingSupport": [
+    {
+      "defName": "Bed",
+      "terrainAffordanceNeeded": "Light",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "30e23704c8798767fba7e8f977f324fc830d5f0920c0cb4ed5abb7153a97029b"
+    },
+    {
+      "defName": "DiningChair",
+      "terrainAffordanceNeeded": "Light",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "58e72f596b58bc10591de3c207c42711b67077b254c09fad484dfe9e0caceec6"
+    },
+    {
+      "defName": "Table1x2c",
+      "terrainAffordanceNeeded": "Light",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "b004f1de6cc13feb9e6e7f51e55f40afb1630af31bcb71eb1cfe702e25059181"
+    },
+    {
+      "defName": "Shelf",
+      "terrainAffordanceNeeded": "Light",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "abe66714f0ed2deed4dfa84b0cc82323ae64324c4c12be6eef5a8b39fefc8445"
+    },
+    {
+      "defName": "ShelfSmall",
+      "terrainAffordanceNeeded": "Light",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "6bd252eaf70799a3e3b174f4ce28ea843f1d453741adc92711aaffe934e1e8df"
+    },
+    {
+      "defName": "HorseshoesPin",
+      "terrainAffordanceNeeded": "Light",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "994db70b1d3eeaf565145d8f03b4d84e3dfc9f5bc885c68199ee587ade54a537"
+    },
+    {
+      "defName": "Heater",
+      "terrainAffordanceNeeded": "Light",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "72f21738e1ead415160c0ecfb69847507f10bcc23248f699d491386834838643"
+    },
+    {
+      "defName": "Sandbags",
+      "terrainAffordanceNeeded": "Light",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "1396aaea36c93c134c86e8a1e91a27c43818bd59675e79383afa15f59b5b89e3"
+    },
+    {
+      "defName": "HandTailoringBench",
+      "terrainAffordanceNeeded": "Medium",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "e29cab018563f541016fcd7a2cf31031ea4f3fd49a3c135d190e9c92c011f697"
+    },
+    {
+      "defName": "SimpleResearchBench",
+      "terrainAffordanceNeeded": "Medium",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "2e513b9c4fbb535fa3f7835450d02219a9df325e02d7f0ca42f13823319a0689"
+    },
+    {
+      "defName": "WoodFiredGenerator",
+      "terrainAffordanceNeeded": "Medium",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "de327480080c65c9ecad8f4e03b1a1b96e4ac83f953e5c2196f591b1b1461623"
+    },
+    {
+      "defName": "SolarGenerator",
+      "terrainAffordanceNeeded": "Medium",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "9047e2d776b3a0882f4988a03766948cd500c536e267b046a735762375c3fb98"
+    },
+    {
+      "defName": "Battery",
+      "terrainAffordanceNeeded": "Medium",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "6395c136507d7190cb10c4c703f2b7fc8d7baec922b3cef656a347d59d22f7b1"
+    },
+    {
+      "defName": "Cooler",
+      "terrainAffordanceNeeded": "Medium",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "2ac6c8a3403ecfd4588c44b846d8ae01a41d6b025cdd69182135504cebdd42a3"
+    },
+    {
+      "defName": "ElectricSmithy",
+      "terrainAffordanceNeeded": "Medium",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "05822592adb6b9f9d18b25b85ca4a9dad258418a786ccdd17285bce3e8f36443"
+    },
+    {
+      "defName": "FueledSmithy",
+      "terrainAffordanceNeeded": "Medium",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "ff845df0997e76b111bbc583944a410a45cc88f1f017971ad6131a97b1aa3103"
+    },
+    {
+      "defName": "TableMachining",
+      "terrainAffordanceNeeded": "Medium",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "59ba97f0e169aa139f564cfaa4c25359af7598404b85aaba8636135edb4e80b2"
+    },
+    {
+      "defName": "FueledStove",
+      "terrainAffordanceNeeded": "Medium",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "0847d50ae107083791c320221c38787ab6d12609a04bd22d9eb11b2712209e24"
+    },
+    {
+      "defName": "ElectricStove",
+      "terrainAffordanceNeeded": "Medium",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "a09ce126104a169550c7b739b7c11628545ff451ee0a54bad32119e6e666a347"
+    },
+    {
+      "defName": "TableStonecutter",
+      "terrainAffordanceNeeded": "Heavy",
+      "useStuffTerrainAffordance": false,
+      "node_sha256": "740d75117ad4037c7f5d1412f75d598942f961ff668d3d84d78f4ae9852c0d16"
+    },
+    {
+      "defName": "Wall",
+      "terrainAffordanceNeeded": "Heavy",
+      "useStuffTerrainAffordance": true,
+      "node_sha256": "34ef8ac0d5511197d10fba06a333268a3cb05547035b811f5f6e39f8266496ad"
+    },
+    {
+      "defName": "Door",
+      "terrainAffordanceNeeded": "Light",
+      "useStuffTerrainAffordance": true,
+      "node_sha256": "10769dcb89284d3f5a2d76373b755824307368aa78951a6e6e56a94da2daa077"
+    },
+    {
+      "defName": "Fence",
+      "terrainAffordanceNeeded": "Light",
+      "useStuffTerrainAffordance": true,
+      "node_sha256": "db42f7ebf4da0204fc4e8a565631af2c9b9897f5453ddc95d04cbe92e568d27e"
+    },
+    {
+      "defName": "FenceGate",
+      "terrainAffordanceNeeded": "Light",
+      "useStuffTerrainAffordance": true,
+      "node_sha256": "eca51b7254b94f5db99068fd73a2461c829cc71114be3015042595675c2488ac"
+    }
+  ],
+  "claims": [
+    {
+      "id": "RIV01",
+      "finding": "World rivers derive a drainage graph from coast/elevation costs, accumulate rainfall flow, apply evaporation and tier/branch rules. Local River mutator bends/widens graphs with noise and replaces terrain; this is not proof of a general volumetric fluid solver.",
+      "sources": [
+        {
+          "group": "generation",
+          "type": "RimWorld.Planet.WorldGenStep_Rivers",
+          "file": ".local-research/generation/RimWorld.Planet.WorldGenStep_Rivers.cs",
+          "sha256": "1efc9fe02dc35cda8497551a992171c38f5d1a2382f33e6b268f233765f42149",
+          "lines": [
+            39,
+            202
+          ],
+          "excerpt_sha256": "141bf6e238f36e194fd785fe46c2a5de7ebe4432b8405ad3d8b5bcc67bac0816"
+        },
+        {
+          "group": "generation",
+          "type": "RimWorld.TileMutatorWorker_River",
+          "file": ".local-research/generation/RimWorld.TileMutatorWorker_River.cs",
+          "sha256": "2c8b581ad9bd21fa7c437bf2a1462621a16cdbdc581eb4564badb5fb61acec91",
+          "lines": [
+            14,
+            181
+          ],
+          "excerpt_sha256": "9575dd2005ab2bd9ed6c19d566e62b28c689590b970006f5c123239461f71a40"
+        },
+        {
+          "group": "generation",
+          "type": "RimWorld.TileMutatorWorker_River",
+          "file": ".local-research/generation/RimWorld.TileMutatorWorker_River.cs",
+          "sha256": "2c8b581ad9bd21fa7c437bf2a1462621a16cdbdc581eb4564badb5fb61acec91",
+          "lines": [
+            269,
+            287
+          ],
+          "excerpt_sha256": "c7bf508f3237aa07f170c1498b859bd73fd736401ef574dc6b5a27af51be65cf"
+        },
+        {
+          "group": "generation",
+          "type": "RimWorld.MapGenUtility",
+          "file": ".local-research/generation/RimWorld.MapGenUtility.cs",
+          "sha256": "88fa71df6dbfcfdd5dcd161669b958b955bf4b433c41c8a10ca28c5fc555c56d",
+          "lines": [
+            71,
+            98
+          ],
+          "excerpt_sha256": "64d630fc930c44e6d257d63a1d9ca0e4a231a5cc703779eb7b6ce147e660e56e"
+        }
+      ]
+    },
+    {
+      "id": "RIV02",
+      "finding": "Local DeepMovingWater resolves by default to WaterMovingChestDeep, which is walkable and Bridgeable. WaterDeep/WaterOceanDeep are distinct impassable unchangeable terrains without Bridgeable; WaterDeep has a flying exception. Shallow water pathCost30, chest-deep42; perceived drafted18/undrafted180 offsets affect route choice, not a direct speed multiplier.",
+      "sources": [
+        {
+          "group": "weather",
+          "type": "Verse.AI.PathGrid",
+          "file": ".local-research/weather/Verse.AI.PathGrid.cs",
+          "sha256": "3ab1db721b82280c92d5bf7253b76e65a0b9fe4d1db03dd441e720d03f4d3d48",
+          "lines": [
+            120,
+            190
+          ],
+          "excerpt_sha256": "e30cc42f76f15426a78accfff694336d2baed271ef0c9fbcc8e14db4fbd0cefa"
+        },
+        {
+          "group": "work",
+          "type": "Verse.AI.Pawn_PathFollower",
+          "file": ".local-research/work/Verse.AI.Pawn_PathFollower.cs",
+          "sha256": "3131af1e4ea4bf68b5d4142843857e72d7f69205afe42e873d414e194ce83a9c",
+          "lines": [
+            730,
+            775
+          ],
+          "excerpt_sha256": "1c16deede06d8edbc0a483a80d32ddc7dcbc71dbf757f7816dd944e2d4e50d2b"
+        },
+        {
+          "group": "generation",
+          "type": "RimWorld.MapGenUtility",
+          "file": ".local-research/generation/RimWorld.MapGenUtility.cs",
+          "sha256": "88fa71df6dbfcfdd5dcd161669b958b955bf4b433c41c8a10ca28c5fc555c56d",
+          "lines": [
+            71,
+            98
+          ],
+          "excerpt_sha256": "64d630fc930c44e6d257d63a1d9ca0e4a231a5cc703779eb7b6ce147e660e56e"
+        }
+      ]
+    },
+    {
+      "id": "RIV03",
+      "finding": "1.7 foundationGrid is separate from topGrid and underGrid. SetTerrain dispatches foundations to SetFoundation, preserving preexisting top terrain. RemoveFoundation clears foundation and exposes previous terrain; RemoveTopLayer dispatches appropriately.",
+      "sources": [
+        {
+          "group": "stonecutting",
+          "type": "Verse.TerrainGrid",
+          "file": ".local-research/stonecutting/Verse.TerrainGrid.cs",
+          "sha256": "9ec3c69688508195ac716dc84e3ce7bad9aff5a0b0afb4eac7f2b288440fccfc",
+          "lines": [
+            60,
+            106
+          ],
+          "excerpt_sha256": "9e8241cfe44980ac321b470070f05c1c3f3e46908af573a6e10d25c43d81aba8"
+        },
+        {
+          "group": "stonecutting",
+          "type": "Verse.TerrainGrid",
+          "file": ".local-research/stonecutting/Verse.TerrainGrid.cs",
+          "sha256": "9ec3c69688508195ac716dc84e3ce7bad9aff5a0b0afb4eac7f2b288440fccfc",
+          "lines": [
+            193,
+            214
+          ],
+          "excerpt_sha256": "1d7caa4eb061b946a78b3fdaff4ed9571ee662cae8c5116012f13fd1032ace66"
+        },
+        {
+          "group": "stonecutting",
+          "type": "Verse.TerrainGrid",
+          "file": ".local-research/stonecutting/Verse.TerrainGrid.cs",
+          "sha256": "9ec3c69688508195ac716dc84e3ce7bad9aff5a0b0afb4eac7f2b288440fccfc",
+          "lines": [
+            280,
+            374
+          ],
+          "excerpt_sha256": "535cf614b692ddce887bc1703d660320386ed14a5288ad665037a9f2a3d386dd"
+        }
+      ]
+    },
+    {
+      "id": "RIV04",
+      "finding": "GetAffordances uses foundation affordances when present. Construction validates occupied cells against required terrain support. Stuff changes required support only when useStuffTerrainAffordance is enabled; stone furniture is not universally Heavy. A floor placed over a wooden bridge does not upgrade its Light support.",
+      "sources": [
+        {
+          "group": "logistics",
+          "type": "Verse.GridsUtility",
+          "file": ".local-research/logistics/Verse.GridsUtility.cs",
+          "sha256": "22e66bf267ab9d4f4cbb1d8b8d227c0dde5472c6aedc8c8901530079e7b862d5",
+          "lines": [
+            126,
+            134
+          ],
+          "excerpt_sha256": "a051bf6b5356a0df7484edee4597056c8c5c06196d0520c385c87fbbdf2aadf3"
+        },
+        {
+          "group": "skills",
+          "type": "RimWorld.GenConstruct",
+          "file": ".local-research/skills/RimWorld.GenConstruct.cs",
+          "sha256": "b4895c5536662931c685958c1d22826b7f07bb4f01d970f9671f853ad4c0fe77",
+          "lines": [
+            197,
+            230
+          ],
+          "excerpt_sha256": "491a90f423fbaf4168afaa23f3dae2c3da8697ffa7bf50cad4c87e0e06b8c01d"
+        },
+        {
+          "group": "preservation",
+          "type": "Verse.ThingUtility",
+          "file": ".local-research/preservation/Verse.ThingUtility.cs",
+          "sha256": "4502e6db44ab7430a9d258da8833b7612b7b13a65e989537c42a19ceb2fb8a69",
+          "lines": [
+            190,
+            199
+          ],
+          "excerpt_sha256": "bb53c61330c495cf13b0f5f7e80efc6914fb6410dbe2b50879856d400df52f50"
+        }
+      ]
+    },
+    {
+      "id": "RIV05",
+      "finding": "Ordinary RemoveFoundation validates bounds/fog/removability and blocking edifices/buildings/blueprints/frames. Work may remove overlay floor first and reserves Floor layer. Removal uses ConstructionSpeed and calls RemoveFoundation; it is distinct from foundation destruction.",
+      "sources": [
+        {
+          "group": "river-bridge",
+          "type": "RimWorld.Designator_RemoveFoundation",
+          "file": ".local-research/river-bridge/RimWorld.Designator_RemoveFoundation.cs",
+          "sha256": "b94eafede1ebffee3cb60729f789f64e2319479a697fe6bb86d4f5f9794694d9",
+          "lines": [
+            1,
+            55
+          ],
+          "excerpt_sha256": "b94eafede1ebffee3cb60729f789f64e2319479a697fe6bb86d4f5f9794694d9"
+        },
+        {
+          "group": "river-bridge",
+          "type": "RimWorld.WorkGiver_ConstructRemoveFoundation",
+          "file": ".local-research/river-bridge/RimWorld.WorkGiver_ConstructRemoveFoundation.cs",
+          "sha256": "4fd2cb553d52f08bd5d607a7d137f5f37f8d833e1a074e112ae09f6c35e8e493",
+          "lines": [
+            1,
+            109
+          ],
+          "excerpt_sha256": "4fd2cb553d52f08bd5d607a7d137f5f37f8d833e1a074e112ae09f6c35e8e493"
+        },
+        {
+          "group": "river-bridge",
+          "type": "RimWorld.JobDriver_RemoveFoundation",
+          "file": ".local-research/river-bridge/RimWorld.JobDriver_RemoveFoundation.cs",
+          "sha256": "01c232044afcd87e29984ccd67443a66960c7cfe37e37ab75bc1ef5442f98e55",
+          "lines": [
+            1,
+            27
+          ],
+          "excerpt_sha256": "01c232044afcd87e29984ccd67443a66960c7cfe37e37ab75bc1ef5442f98e55"
+        }
+      ]
+    },
+    {
+      "id": "RIV06",
+      "finding": "Terrain changes update pathing and invalidate unsupported blueprints/frames/plants/filth; destruction can kill supported buildings when destroyBuildingsOnDestroyed. This is not a blanket deletion of every loose item on water.",
+      "sources": [
+        {
+          "group": "stonecutting",
+          "type": "Verse.TerrainGrid",
+          "file": ".local-research/stonecutting/Verse.TerrainGrid.cs",
+          "sha256": "9ec3c69688508195ac716dc84e3ce7bad9aff5a0b0afb4eac7f2b288440fccfc",
+          "lines": [
+            502,
+            565
+          ],
+          "excerpt_sha256": "3685eba68bf01cae1574abfa48579c0620524c956c680d139ebb23537ee78c89"
+        },
+        {
+          "group": "stonecutting",
+          "type": "Verse.TerrainGrid",
+          "file": ".local-research/stonecutting/Verse.TerrainGrid.cs",
+          "sha256": "9ec3c69688508195ac716dc84e3ce7bad9aff5a0b0afb4eac7f2b288440fccfc",
+          "lines": [
+            641,
+            668
+          ],
+          "excerpt_sha256": "ac7787cf83da30154028f5cf22e94ab9ba55b2fc95a7546c14bcc9763382baf1"
+        }
+      ]
+    },
+    {
+      "id": "RIV07",
+      "finding": "Stockpile zoning rejects Impassable terrain and incompatible occupants, not all water. Ordinary shallow-water zones are allowed. Near placement delegates to CanSpawnAt requiring a walkable position; Direct placement is a different path.",
+      "sources": [
+        {
+          "group": "river-bridge",
+          "type": "RimWorld.Designator_ZoneAddStockpile",
+          "file": ".local-research/river-bridge/RimWorld.Designator_ZoneAddStockpile.cs",
+          "sha256": "52c7ac3f2be603a69f3e9d4bb5ad6fae450fe09a5acb795ed9620e916419134b",
+          "lines": [
+            42,
+            58
+          ],
+          "excerpt_sha256": "cdbfe749a87ca515acda15fda40c3a176f59590df28587bdf3180a81a98b0ae7"
+        },
+        {
+          "group": "river-bridge",
+          "type": "RimWorld.Designator_ZoneAdd",
+          "file": ".local-research/river-bridge/RimWorld.Designator_ZoneAdd.cs",
+          "sha256": "cabb6f08e41db80b8457d7f4d00d98c3dc1490547d54fe7a7e812dfb2b5daf98",
+          "lines": [
+            70,
+            150
+          ],
+          "excerpt_sha256": "e4a81e5007e7442829724d84ebf4dac5dd1fdc3e79997544c2c914a024fb2a0c"
+        },
+        {
+          "group": "logistics",
+          "type": "Verse.GenSpawn",
+          "file": ".local-research/logistics/Verse.GenSpawn.cs",
+          "sha256": "ae87c3214cc7c5e469e33564803c8c9936cfb99c00b2d56f420121bf61fdd110",
+          "lines": [
+            471,
+            520
+          ],
+          "excerpt_sha256": "a4dc4e25f4f94c78d036ace4f31742082fbe465415ecc68f720a907ccd9f0390"
+        },
+        {
+          "group": "logistics",
+          "type": "Verse.GenPlace",
+          "file": ".local-research/logistics/Verse.GenPlace.cs",
+          "sha256": "72e9f795b464dd3dad6afb2b40908a23f06e9407c31fd10290fd78bee8747ecb",
+          "lines": [
+            215,
+            260
+          ],
+          "excerpt_sha256": "a829432ca5c127b885276e8abc459f6394a7a0351182661161f9032a7a77eb38"
+        }
+      ]
+    },
+    {
+      "id": "RIV08",
+      "finding": "Water extraDeteriorationFactor3 is combined with environmental exposure offsets for eligible spawned items. Unroofed rain then multiplies and protective edifices can modify it. This is not universal water damage every tick.",
+      "sources": [
+        {
+          "group": "weapons",
+          "type": "RimWorld.StatPart_EnvironmentalEffects",
+          "file": ".local-research/weapons/RimWorld.StatPart_EnvironmentalEffects.cs",
+          "sha256": "c2a82a657b5f17ca025932eae80bd1e84714126c2371683261b9dbb348da322c",
+          "lines": [
+            15,
+            44
+          ],
+          "excerpt_sha256": "449bc17bb1c0150339a80ed5688fc64910a3438d36f0231f61f46148c87fca2a"
+        },
+        {
+          "group": "weather",
+          "type": "RimWorld.SteadyEnvironmentEffects",
+          "file": ".local-research/weather/RimWorld.SteadyEnvironmentEffects.cs",
+          "sha256": "a280b83a6bedc914f47c3b75010733ba94c659dc63c34dcae062986d3548f119",
+          "lines": [
+            270,
+            330
+          ],
+          "excerpt_sha256": "82c3ad63e94f9a550d6660f9b5865c4d18c76cccc8e3f8bc96b99c80c43b9ddb"
+        }
+      ]
+    },
+    {
+      "id": "RIV09",
+      "finding": "Foundation terrain serialization uses its separate short-hash grid. Saved foundation, top and under bytes can be compared without pretending that an observed ushort is a portable definition identity.",
+      "sources": [
+        {
+          "group": "stonecutting",
+          "type": "Verse.TerrainGrid",
+          "file": ".local-research/stonecutting/Verse.TerrainGrid.cs",
+          "sha256": "9ec3c69688508195ac716dc84e3ce7bad9aff5a0b0afb4eac7f2b288440fccfc",
+          "lines": [
+            670,
+            720
+          ],
+          "excerpt_sha256": "f4046b54612a7b16657e33908e8928f0dc537701fcfe73403aeb2d8847f175b5"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Derived C# is not original source or runtime proof.",
+    "Building projection resolves scalar ParentName fields in shipped Core building XML only, not the full patched mod database.",
+    "HeavyBridge belongs to Odyssey; numbers are recorded provenance, not Web balance requirements.",
+    "Ordinary removal blocker uses buildDef.terrainAffordanceNeeded directly; do not silently substitute material-aware construction rules.",
+    "Actual native scope is documented separately in 128; support matrix, heavy bridge, flooding and erosion are not native-tested here."
+  ]
+}
