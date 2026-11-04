@@ -165,8 +165,7 @@ export function validBatch(batch: unknown): batch is Cargo {
       : b.weapon !== undefined
   )
     return false;
-  if (b.forbidden !== undefined &&
-      (!['weapon', 'unfinished'].includes(b.resource) || typeof b.forbidden !== 'boolean')) return false;
+  if (b.forbidden !== undefined && typeof b.forbidden !== 'boolean') return false;
   if (b.resource === 'carcass') {
     if (b.amount !== 1 || !b.carcass || typeof b.carcass !== 'object' || Array.isArray(b.carcass) ||
         !Number.isSafeInteger(b.carcass.animalId) || b.carcass.animalId <= 0 ||

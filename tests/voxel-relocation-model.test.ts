@@ -31,9 +31,10 @@ describe('packed furniture identity and physical condition', () => {
       { id: 0 }, { owner: -1 }, { axis: 'z' }, { medical: true }, { prisoner: false }, { maxHitPoints: 100 }])
       expect(validFurniturePiece({ ...cargo().furniture, ...patch })).toBe(false);
     for (const bad of [{ ...cargo(), amount: 2 }, { ...cargo(), hitPoints: 10 }, { ...cargo(), resource: 'wood' },
-      { resource: 'furniture', amount: 1 }, { ...cargo(), rotProgress: 1 }, { ...cargo(), forbidden: true }])
+      { resource: 'furniture', amount: 1 }, { ...cargo(), rotProgress: 1 }, { ...cargo(), forbidden: 'yes' }])
       expect(validBatch(bad)).toBe(false);
     expect(validBatch(cargo())).toBe(true);
+    expect(validBatch({ ...cargo(), forbidden: true })).toBe(true);
     expect(() => freshBatch('furniture', 1)).toThrow(/实例/);
   });
   it('uses single-item storage and copied payloads for whole-item transfer without merges', () => {

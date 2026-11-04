@@ -36,6 +36,9 @@ export interface HusbandryHost extends PensHost {
 const adjacent = (a: Pos, b: Pos) => a.z === b.z && Math.abs(a.x-b.x)+Math.abs(a.y-b.y) === 1;
 const edible = (b: Cargo) => ['grain', 'food', 'meal'].includes(b.resource);
 const rawFeed = (b: Cargo) => b.resource === 'grain';
+// Ordinary hunger uses the eater's faction. Wild animals do not obey the
+// colony's item flag; normal domestic animals do. This is not curious eating.
+const hungerFoodAllowed = (a: WildAnimal, food: Stack) => a.faction !== 'colony' || !food.forbidden;
 const pawnAllowed = (s: HusbandryHost, p: Pawn, target: Pos) => s.pawnAllowed?.(p, target) ?? true;
 const random = (s: HusbandryHost, a: WildAnimal, salt: number) => plantRandom(s.seed, a.id, s.tick, salt);
 function event(s: HusbandryHost, kind: HusbandryEvent['kind'], a: WildAnimal, message: string, otherId: number|null = null) {
@@ -97,7 +100,7 @@ function foodTargets(s:HusbandryHost,a:WildAnimal) {
   const targets=new Map<number,NonNullable<WildAnimal['goal']>>();
   for(const g of s.grass)if(g.growth>=HUSBANDRY_RULES.grassMinGrowth)targets.set(at(g),{kind:'grass',id:at(g)});
   for(const c of s.crops)if(['rice','potato','corn'].includes(c.kind)&&c.growth>=.1)targets.set(at(c),{kind:'crop',id:c.id});
-  for(const f of [...s.items].sort((a,b)=>a.id-b.id)) if(edible(f)&&s.animalAvailable(f)>0)
+  for(const f of [...s.items].sort((a,b)=>a.id-b.id)) if(hungerFoodAllowed(a,f)&&edible(f)&&s.animalAvailable(f)>0)
     for (const stand of s.itemStands(f)) if (!targets.has(at(stand))) targets.set(at(stand),{kind:'food',id:f.id});
   for (const cell of targets.keys()) if (!animalAllowed(s,a,position(cell))) targets.delete(cell);
   return targets;
@@ -106,7 +109,7 @@ function goalPosition(s:HusbandryHost,a:WildAnimal):Pos|undefined {
   const goal=a.goal;if(!goal)return;
   if(goal.kind==='grass')return s.grass.find(g=>at(g)===goal.id&&g.growth>=HUSBANDRY_RULES.grassMinGrowth&&s.animalGrassSite(g));
   if(goal.kind==='crop')return s.crops.find(c=>c.id===goal.id&&c.growth>=.1);
-  if(goal.kind==='food')return s.items.find(i=>i.id===goal.id&&edible(i)&&s.animalAvailable(i)>0);
+  if(goal.kind==='food')return s.items.find(i=>i.id===goal.id&&hungerFoodAllowed(a,i)&&edible(i)&&s.animalAvailable(i)>0);
   return goal.kind==='mate' ? s.animals.find(q=>q.id===goal.id&&!q.dead) : undefined;
 }
 function consumeNutrition(a:WildAnimal,nutrition:number) {
@@ -242,7 +245,7 @@ export function tryHandle(s:HusbandryHost,p:Pawn):boolean {
     const foodNeeded=['tame','maintain','feed'].includes(action);
     let source:Stack|undefined,foodPath:number[]|null=null,amount=0;
     if(foodNeeded){
-      for(const food of s.items.filter(f=>pawnAllowed(s,p,f)&&(action==='feed'?edible(f):rawFeed(f)))){
+      for(const food of s.items.filter(f=>!f.forbidden&&pawnAllowed(s,p,f)&&(action==='feed'?edible(f):rawFeed(f)))){
         const n=animalFeedAmount(a.species,food.resource)*(action==='feed'?1:HUSBANDRY_RULES.feedings);
         if(n<=0||s.animalAvailable(food)<n)continue;
         const route=s.itemPath(p,food);if(route===null)continue;
@@ -272,6 +275,7 @@ export function handleTick(s:HusbandryHost,p:Pawn) {
   }
   if(task.stage==='fetch'){
     const food=s.items.find(i=>i.id===task.foodId);
+    if(food?.forbidden){cancel('动物食物已被禁止，保留物品并重新安排');return;}
     if(!food||s.animalAvailable(food,p.id)<task.amount){cancel('食物已不可用，重新安排');return;}
     if(!pawnAllowed(s,p,food)){cancel('动物食物已在允许区域之外，重新安排');return;}
     if(!s.itemTouch(p,food)){

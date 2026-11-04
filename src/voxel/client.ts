@@ -309,7 +309,7 @@ export class VoxelClient {
   private async atPointer(e: PointerEvent) {
     const box = this.canvas!.getBoundingClientRect();
     return this.renderRequest(
-      this.state.tool === 'animalArea' ? 'areaPick' : !this.state.furniturePlacement && (this.state.tool === 'inspect' || this.state.tool === 'cut') ? 'inspect' : 'pick',
+      ['animalArea', 'forbidItems', 'allowItems'].includes(this.state.tool) ? 'areaPick' : !this.state.furniturePlacement && (this.state.tool === 'inspect' || this.state.tool === 'cut') ? 'inspect' : 'pick',
       { x: e.clientX - box.left, y: e.clientY - box.top },
     ) as Promise<Pos | null>;
   }
@@ -363,7 +363,7 @@ export class VoxelClient {
       downX = 0,
       downY = 0;
     let dragTool: Tool | null = null, dragSequence = 0, previewSequence = 0;
-    const previews = (tool: Tool) => !!this.state.furniturePlacement || ['bridge', 'shelf', 'smallShelf', 'bed', 'table', 'chair', 'fence', 'fenceGate', 'penMarker', 'animalArea'].includes(tool);
+    const previews = (tool: Tool) => !!this.state.furniturePlacement || ['bridge', 'shelf', 'smallShelf', 'bed', 'table', 'chair', 'fence', 'fenceGate', 'penMarker', 'animalArea', 'forbidItems', 'allowItems'].includes(tool);
     const preview = (from: Pos, target: Pos, tool: Tool) => {
       const furniture = this.state.furniturePlacement;
       if (furniture) {
@@ -465,6 +465,10 @@ export class VoxelClient {
           const areaId = this.state.selectedAnimalAreaId;
           if (areaId === null) { this.notice('先在动物面板创建或选择活动范围'); return; }
           await this.command({ type: 'allowedAreaPaint', areaId, from, to: { ...to, z: from.z }, erase: this.state.animalAreaErase });
+          return;
+        }
+        if (tool === 'forbidItems' || tool === 'allowItems') {
+          await this.command({ type: 'itemForbiddenArea', from, to: { ...to, z: from.z }, forbidden: tool === 'forbidItems' });
           return;
         }
         const single =

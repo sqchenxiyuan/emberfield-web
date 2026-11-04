@@ -1,4 +1,5 @@
 import { WeightedNavigation } from './navigation';
+import { itemForbiddenTo, rejectLegacyItemAccess } from './itemAccess';
 import { allowedAreaCells, effectivePawnArea, pawnAreaAllows, validatePawnAreas } from './allowedAreas';
 import { effectiveShelfSettings, reconcileStorageGroups, storageGroupCommand, rejectLegacyStorageGroups,
   migrateStorageGroups, validateStorageGroups, type StorageGroup } from './storageGroups';
@@ -587,11 +588,12 @@ export class VoxelSimulation {
     return targets.every(t => !t || this.pawnAllowed(p,t));
   }
   private reconcilePawnArea(p: Pawn, assignmentChanged = false) {
-    const check = assignmentChanged && p.weaponTask?.action === 'equip' ? { ...p, weaponTask:null } : p;
-    const weapon = assignmentChanged && p.weaponTask?.stage === 'fetch'
-      ? this.items.find(i => i.weapon?.id === p.weaponTask!.weaponId) : undefined;
+    const check = assignmentChanged ? { ...p, weaponTask:null, apparelTask:null } : p;
+    const equipment = assignmentChanged ? this.items.find(i =>
+      (p.weaponTask?.stage === 'fetch' && i.weapon?.id === p.weaponTask.weaponId) ||
+      (p.apparelTask?.stage === 'fetch' && i.apparel?.id === p.apparelTask.apparelId)) : undefined;
     if (p.dead || p.downed || p.carriedBy !== null ||
-        (this.pawnTaskInArea(check) && (!weapon || this.pawnAllowed(check,weapon)))) return;
+        (this.pawnTaskInArea(check) && (!equipment || this.pawnAllowed(check,equipment)))) return;
     if (p.productionDelivery) this.interruptProductionDelivery(p);
     else this.release(p);
     p.reason = '任务目标在允许区域外，保留物资并重新安排';
@@ -1315,9 +1317,9 @@ export class VoxelSimulation {
     }
     return { stacks, reservations };
   }
-  private reservedSpace(cell: number, batch: BatchKind, context: ReturnType<VoxelSimulation['storageContext']>): number {
+  private reservedSpace(cell: number, batch: BatchKind, context: ReturnType<VoxelSimulation['storageContext']>, mergeForbidden = true): number {
     return cellSpaceAfterReservations(context.stacks.get(cell) ?? [], context.reservations.get(cell) ?? [], batch,
-      this.shelfLookup.has(cell) ? SHELF_STACKS : 1);
+      this.shelfLookup.has(cell) ? SHELF_STACKS : 1, mergeForbidden);
   }
   /** Trial placement is atomic: no ids, amounts, ages or containers mutate on failure. */
   private planPlacement(
@@ -1327,6 +1329,7 @@ export class VoxelSimulation {
     forbidden = new Set<number>(),
     ignorePawnId?: number,
     additionalReservation?: { cell: number; batch: Cargo },
+    mergeForbidden = true,
   ) {
     const items = base.map((i) => ({ ...i })), context = this.storageContext(items, ignorePawnId);
     if (additionalReservation) context.reservations.set(additionalReservation.cell,
@@ -1339,9 +1342,9 @@ export class VoxelSimulation {
         if (forbidden.has(cell) || !this.groundAllowed(p)) continue;
         const shelf = this.shelfAt(p);
         if (shelf && (!shelfAllows(batch) || !this.shelfSettings(shelf).accepts.includes(batch.resource))) continue;
-        const n = Math.min(left, this.reservedSpace(cell, batch, context));
+        const n = Math.min(left, this.reservedSpace(cell, batch, context, mergeForbidden));
         if (!n) continue;
-        const stacks = context.stacks.get(cell) ?? [], placed = planCellInsertion(stacks, { ...batch, amount: n }, shelf ? SHELF_STACKS : 1);
+        const stacks = context.stacks.get(cell) ?? [], placed = planCellInsertion(stacks, { ...batch, amount: n }, shelf ? SHELF_STACKS : 1, mergeForbidden);
         for (const merge of placed.merges) mergeBatch(stacks[merge.index], portion(batch, merge.amount));
         for (const amount of placed.additions) {
           const preserve = sourceId !== undefined && amount === batch.amount && !items.some(i => i.id === sourceId);
@@ -1413,7 +1416,7 @@ export class VoxelSimulation {
   storageSpace(p: Pos, batch: BatchKind, ignorePawnId?: number, context = this.storageContext(this.items, ignorePawnId)): number {
     const shelf = this.shelfAt(p), stock = shelf ? this.shelfSettings(shelf) : this.stockpiles.find((s) => same(s, p));
     return stock?.accepts.includes(batch.resource) && (!shelf || shelfAllows(batch)) && this.groundAllowed(p)
-      ? this.reservedSpace(at(p), batch, context)
+      ? this.reservedSpace(at(p), batch, context, false)
       : 0;
   }
   storageCapacity(): StorageCapacity[] {
@@ -1423,7 +1426,7 @@ export class VoxelSimulation {
         available = emptyCounts();
       const virtual = stacks.map(i => ({ ...i }));
       for (const batch of context.reservations.get(at(p)) ?? []) {
-        const plan = planCellInsertion(virtual, batch, p.maxStacks);
+        const plan = planCellInsertion(virtual, batch, p.maxStacks, false);
         for (const m of plan.merges) virtual[m.index].amount += m.amount;
         for (const amount of plan.additions) virtual.push({ ...batch, amount } as Stack);
       }
@@ -1522,7 +1525,7 @@ export class VoxelSimulation {
       return;
     }
     const amount = p.cargo.amount;
-    const plan = this.planPlacement([{batch:p.cargo, origin:target, cells:[target]}], this.items, 0, new Set(), p.id);
+    const plan = this.planPlacement([{batch:p.cargo, origin:target, cells:[target]}], this.items, 0, new Set(), p.id, undefined, false);
     if (!plan) { drop(); return; }
     this.commitPlacement(plan); this.stats.hauled += amount; p.cargo = null;
     this.release(p); p.reason = '成品已送入仓库';
@@ -1590,6 +1593,7 @@ export class VoxelSimulation {
     return best;
   }
   private chunkReserved(item: Stack, pawnId: number): boolean {
+    if (itemForbiddenTo(this.pawns.find(p => p.id === pawnId), item, this.tick)) return true;
     if (item.unfinished && (item.forbidden || this.jobs.some(j => j.unfinishedId === item.unfinished!.id &&
       j.owner !== null && j.owner !== pawnId && !j.cancelled))) return true;
     if (item.weapon) {
@@ -2515,6 +2519,23 @@ export class VoxelSimulation {
   }
   private dispatchCommand(c: VoxelCommand): CommandResult {
     if (!c || typeof c !== 'object') return { ok: false, message: '命令格式无效' };
+    if (c.type === 'itemForbidden' || c.type === 'itemForbiddenArea') {
+      if (typeof c.forbidden !== 'boolean') return { ok:false, message:'物品禁止状态无效' };
+      let items: Stack[];
+      if (c.type === 'itemForbidden') {
+        const item=this.items.find(i => i.id === c.itemId && this.exploredAt(i));
+        if (!item) return { ok:false, message:'地面物品已不存在或尚未发现' };
+        items=[item];
+      } else {
+        const end=c.to ?? c.from;
+        if (!inside(c.from) || !inside(end) || c.from.z !== end.z)
+          return { ok:false, message:'请在同一工作层选择有效范围' };
+        items=this.items.filter(i => this.exploredAt(i) && i.z === c.from.z &&
+          i.x >= Math.min(c.from.x,end.x) && i.x <= Math.max(c.from.x,end.x) &&
+          i.y >= Math.min(c.from.y,end.y) && i.y <= Math.max(c.from.y,end.y));
+      }
+      return this.setItemsForbidden(items,c.forbidden);
+    }
     if (c.type === 'pawnAreaAssign') {
       const p = this.pawns.find(p => p.id === c.pawnId && p.faction === 'colony' && !p.dead);
       const area = this.animalAreas.find(a => a.id === c.areaId);
@@ -2768,11 +2789,8 @@ export class VoxelSimulation {
       const item = this.items.find((i) => i.weapon?.id === c.weaponId);
       if (!item || typeof c.forbidden !== 'boolean')
         return { ok: false, message: '地面武器不存在' };
-      item.forbidden = c.forbidden;
-      for (const pawn of this.pawns)
-        if (pawn.weaponTask?.weaponId === c.weaponId) this.release(pawn);
-      this.refreshReservations();
-      return { ok: true, message: c.forbidden ? '已禁止自动搬运此武器' : '已允许自动搬运此武器' };
+      if (!this.exploredAt(item)) return { ok:false, message:'地面武器尚未发现' };
+      return this.setItemsForbidden([item],c.forbidden);
     }
     if (c.type === 'difficulty') {
       if (!DIFFICULTIES.includes(c.difficulty)) return { ok: false, message: '难度设置无效' };
@@ -3749,6 +3767,7 @@ export class VoxelSimulation {
   }
   /** Reservations reference physical stacks; no shadow food inventory exists. */
   private availableStack(item: Stack, ignorePawnId?: number): number {
+    if (itemForbiddenTo(this.pawns.find(p => p.id === ignorePawnId), item, this.tick)) return 0;
     if (item.unfinished && (item.forbidden || this.jobs.some(j => j.unfinishedId === item.unfinished!.id &&
       j.owner !== null && j.owner !== ignorePawnId && !j.cancelled))) return 0;
     let available = item.amount;
@@ -5359,10 +5378,11 @@ export class VoxelSimulation {
     if (!own && !item) return false;
     const piece = own ? p.cargo!.apparel! : item!.apparel!;
     if (!apparelHasPartsToWear(piece, p.trauma)) return false;
-    if (item && (!this.pawnAllowed(p,item) || !this.itemPath(p, item))) return false;
+    if (item && !this.itemPath(p, item)) return false;
     if (!own && !this.dropCargo(p)) return false;
     this.release(p);
     p.apparelTask = { action, apparelId, stage: own ? 'work' : 'fetch', progress: 0 };
+    if (item) item.forbidden = false;
     if (own) {
       p.phase = 'apparel';
       p.reason = '穿上' + APPAREL_NAMES[p.cargo!.apparel!.kind];
@@ -6034,6 +6054,23 @@ export class VoxelSimulation {
       (p.weaponTask?.stage === 'fetch' && stacks.some(i => i.weapon?.id === p.weaponTask!.weaponId)) ||
       (p.apparelTask?.stage === 'fetch' && stacks.some(i => i.apparel?.id === p.apparelTask!.apparelId))
     ) { this.release(p); p.reason = reason; }
+  }
+  private setItemsForbidden(items: Stack[], forbidden: boolean): CommandResult {
+    for (const item of items) item.forbidden=forbidden;
+    if (forbidden) {
+      this.invalidateStackPlans(items,'物品已禁止，保留已取物资并重新安排');
+      const workpieces=new Set(items.flatMap(i => i.unfinished ? [i.unfinished.id] : []));
+      for (const p of this.pawns) {
+        const job=this.jobs.find(j => j.id === p.jobId);
+        if (job?.unfinishedId !== undefined && workpieces.has(job.unfinishedId)) {
+          this.release(p); p.reason='未完成品已禁止，保留加工进度';
+        }
+      }
+    }
+    this.refreshReservations(); this.revision++;
+    return { ok:true, count:items.length, message:items.length
+      ? `已${forbidden ? '禁止' : '允许'}${items.length}堆物品；库存与实物保留`
+      : '范围内没有已发现的地面物品' };
   }
   tradeTemperature(pawn: Pawn) { return this.temperature(pawn); }
   tradeReachable(pawn: Pawn): Set<number> {
@@ -6729,7 +6766,8 @@ export class VoxelSimulation {
     if (!task || !this.pawnAllowed(p,task.target) || p.dead || p.downed || p.drafted || p.carriedBy !== null || !this.canStop(task.target) ||
         this.fires.some(f => same(f,task.target))) return false;
     const batch = task.sourceId === null ? p.cargo : this.items.find(i => i.id === task.sourceId && this.itemTouch(p,i));
-    if (!batch || batch.resource !== p.eating || !NUTRITION[batch.resource] || batch.amount < task.amount) return false;
+    if (!batch || (task.sourceId !== null && itemForbiddenTo(p,batch,this.tick)) ||
+        batch.resource !== p.eating || !NUTRITION[batch.resource] || batch.amount < task.amount) return false;
     const table = this.tables.find(t => t.id === task.tableId);
     if (task.tableId !== null && (!table || !this.pawnAllowed(p,table) || !tableCells(table).some(q => q.z === task.target.z &&
       Math.abs(q.x-task.target.x)+Math.abs(q.y-task.target.y) === 1))) return false;
@@ -6832,6 +6870,8 @@ export class VoxelSimulation {
           0,
           new Set(),
           p.id,
+          undefined,
+          false,
         )!;
         this.commitPlacement(plan);
         this.stats.hauled += n;
@@ -8402,7 +8442,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 44,
+      version: 45,
       stockpileZones: this.stockpileZones,
       productionQueues: this.productionQueues.filter(q => this.productionBenches().some(b => b.id === q.benchId)),
       socialHistory: this.socialHistory, socialLog: this.socialLog,
@@ -8463,11 +8503,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : old.version < 43 ? [1, 2, 3] : [1, 2, 3, 4]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyItemAccess(old,sourceVersion);
     if (sourceVersion < 44 && old.pawns?.some((p:any) => Object.hasOwn(p,'allowedAreaId')))
       throw new Error('旧版本存档混入居民允许区域字段');
     if (sourceVersion < 43 && (Object.hasOwn(old,'water') || Object.hasOwn(old,'bridges') ||
@@ -8881,7 +8922,7 @@ export class VoxelSimulation {
     }
     if (sourceVersion < 43) { old.water = [0, CELLS]; old.bridges = [0, CELLS]; }
     if (sourceVersion < 44) for (const p of old.pawns ?? []) p.allowedAreaId = null;
-    old.version = 44;
+    old.version = 45;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;

@@ -38,6 +38,7 @@ import { ApparelPanel, WearApparel } from './ApparelPanel';
 import { ProductionBillsPanel } from './ProductionBillsPanel';
 import { ProductionDeliveryStatus } from './ProductionOutputPanel';
 import { UnfinishedPanel } from './UnfinishedPanel';
+import { ItemAccessPanel } from './ItemAccessPanel';
 import { unfinishedName } from './unfinishedView';
 import { CombatPanel, ThreatControl, storyOpportunityText } from './CombatPanel';
 import { TradePanel, TraderInspector } from './TradePanel';
@@ -77,6 +78,8 @@ import './style.css';
 const client = new VoxelClient();
 const tools: Tool[] = [
   'inspect',
+  'forbidItems',
+  'allowItems',
   'cut',
   'mine',
   'shaft',
@@ -119,6 +122,8 @@ const tools: Tool[] = [
 ];
 const icons = [
   '↖',
+  '⊗',
+  '✓',
   '♠',
   '⛏',
   '↧',
@@ -160,6 +165,8 @@ const icons = [
   '×',
 ];
 const hints: Record<Tool, string> = {
+  forbidItems: '拖动框选当前工作层的已探索物品，包括同格货架上的各堆物资。禁止普通搬运、进食和原料取用；物品仍计入库存与财富，也可出售。右键结束。',
+  allowItems: '拖动框选当前工作层的已探索物品，恢复普通搬运、进食和原料取用；货架同格的各堆物资一起处理。右键结束。',
   smallShelf: '一格小货架，每格可存放 3 堆物资。人物从旁边取放；可设置接纳物品与优先级。',
   shelf: '两格货架，共 6 堆物资。R 旋转；整座货架共用收纳设置，卸下后货物留在附近。',
   fence: '左键拖动建造直线围栏，留下栏门的位置。完工后拦住鹿，人和兔可缓慢跨越；圈地不需要屋顶。',
@@ -1384,7 +1391,7 @@ function App() {
         )}
         {weaponBench && s && <ProductionBillsPanel key={weaponBench.id} benchId={weaponBench.id} snapshot={s} command={c => void client.command(c)} focus={focus} />}
         {items.map((i) => (
-          <div className="voxel-item-detail" key={i.id} data-testid="item-detail">
+          <div className="voxel-item-detail" key={i.id} data-testid="item-detail" data-item-id={i.id}>
             <div className="voxel-info-row">
               <span>
                 {foodName(i)}
@@ -1395,6 +1402,7 @@ function App() {
             <small className="voxel-stack-limit" data-testid="stack-capacity">
               每堆上限 {stackLimit(i.resource)} · 剩余 {stackLimit(i.resource) - i.amount}
             </small>
+            <ItemAccessPanel item={i} command={c => void client.command(c)} />
             <FoodCondition batch={i} temperature={temperatureOf(i)} />
             <ItemCondition condition={s?.environment.items.find(item => item.entity === 'stack' && item.id === i.id)} name={foodName(i)} />
             {i.unfinished && s && <UnfinishedPanel batch={i} snapshot={s} command={c => void client.command(c)} focus={focus} />}
@@ -1866,7 +1874,7 @@ function App() {
               <button onClick={manageAllowedAreas}>管理允许区域</button>
             </span>}
             {state.placementPreview && <small data-testid="placement-preview-info">
-              {state.furniturePlacement ? '安装预览' : state.placementPreview.tool === 'animalArea' ? state.animalAreaErase ? '擦除' : '涂绘' : '规划'} · {['bed', 'table'].includes(state.placementPreview.tool) ? 2 : (Math.abs(state.placementPreview.to.x - state.placementPreview.from.x) + 1) * (Math.abs(state.placementPreview.to.y - state.placementPreview.from.y) + 1)} 格
+              {state.furniturePlacement ? '安装预览' : state.placementPreview.tool === 'animalArea' ? state.animalAreaErase ? '擦除' : '涂绘' : state.placementPreview.tool === 'forbidItems' ? '禁止物品' : state.placementPreview.tool === 'allowItems' ? '允许物品' : '规划'} · {['bed', 'table'].includes(state.placementPreview.tool) ? 2 : (Math.abs(state.placementPreview.to.x - state.placementPreview.from.x) + 1) * (Math.abs(state.placementPreview.to.y - state.placementPreview.from.y) + 1)} 格
             </small>}
           </span>
           <p>

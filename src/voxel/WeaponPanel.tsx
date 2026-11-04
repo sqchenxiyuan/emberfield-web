@@ -135,17 +135,6 @@ export function EquipWeapon({
     <div className="voxel-wear-actions" data-testid="weapon-actions">
       <WeaponDetails piece={piece} />
       <label>
-        <input
-          type="checkbox"
-          aria-label="允许搬运武器"
-          checked={!item.forbidden}
-          onChange={(e) =>
-            command({ type: 'weaponForbidden', weaponId: piece.id, forbidden: !e.target.checked })
-          }
-        />
-        允许自动搬运
-      </label>
-      <label>
         装备者
         <select
           aria-label="武器装备者"
@@ -169,7 +158,7 @@ export function EquipWeapon({
       >
         前往装备
       </button>
-      <small>明确安排装备会解除禁止；人物到达后取用，旧武器保留在附近地面。</small>
+      <small>明确安排装备会解除这件武器的禁止，并允许前往区域外取用；旧武器保留在附近地面。</small>
     </div>
   );
 }

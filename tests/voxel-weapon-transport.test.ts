@@ -418,7 +418,7 @@ describe('weapon transport, prohibition and interrupted transactions', () => {
     identities(s, [piece.id]);
   });
 
-  it('rejects duplicate equipped/cargo identities, contradictory pending drops and misplaced prohibition fields', () => {
+  it('rejects duplicate equipped/cargo identities, contradictory pending drops and invalid prohibition values', () => {
     const s = fixture();
     s.pawns[0].weapon = makeWeapon(s.nextId++, 'steelKnife');
     groundWeapon(s, 'woodClub');
@@ -440,7 +440,7 @@ describe('weapon transport, prohibition and interrupted transactions', () => {
         d.items[0].forbidden = 'yes' as unknown as boolean;
       },
       (d: ReturnType<VoxelSimulation['save']>) => {
-        d.pawns[1].cargo = { resource: 'wood', amount: 1, forbidden: true };
+        d.pawns[1].cargo = { resource: 'wood', amount: 1, forbidden: 'yes' as unknown as boolean };
       },
     ]) {
       const save = s.save();
@@ -448,5 +448,8 @@ describe('weapon transport, prohibition and interrupted transactions', () => {
       expect(() => VoxelSimulation.load(save)).toThrow();
     }
     expect(() => VoxelSimulation.load(s.save())).not.toThrow();
+    const allowed = s.save();
+    allowed.pawns[1].cargo = { resource: 'wood', amount: 1, forbidden: true };
+    expect(VoxelSimulation.load(allowed).pawns[1].cargo).toEqual(allowed.pawns[1].cargo);
   });
 });

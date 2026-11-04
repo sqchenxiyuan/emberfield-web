@@ -63,7 +63,7 @@ export function validateUnfinishedPiece(value: unknown): value is UnfinishedPiec
   // Full original condition is kept, but nested instances/containers are never
   // inputs. Check the resource before validBatch so recursive UFTs cannot recurse.
   if (value.ingredients.some((batch: unknown) => !record(batch) || !materials.includes(batch.resource) ||
-      Object.keys(batch).some(key => !['resource', 'amount', 'hitPoints'].includes(key)) || !validBatch(batch))) return false;
+      Object.keys(batch).some(key => !['resource', 'amount', 'hitPoints', 'forbidden'].includes(key)) || !validBatch(batch))) return false;
   const actual = unfinishedMaterialCounts(value as UnfinishedPiece), expected = unfinishedRecipeCost(value.recipe)!;
   if (materials.some(resource => actual[resource] !== (expected[resource] ?? 0))) return false;
   if (owns(value, 'productQuality')) {

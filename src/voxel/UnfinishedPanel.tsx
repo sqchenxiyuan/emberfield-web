@@ -41,9 +41,9 @@ export function UnfinishedPanel({ batch, snapshot, command, focus, carrier }: {
     <div className="voxel-unfinished-actions">
       {creator && !creator.dead && focus && <button onClick={() => focus(creator)} data-testid="unfinished-focus-creator">定位原作者</button>}
       {bench && focus && <button onClick={() => focus(bench)} data-testid="unfinished-focus-bench">定位工作台</button>}
-      <button data-testid="unfinished-forbid" aria-pressed={!!batch.forbidden}
+      {carrying && <button data-testid="unfinished-forbid" aria-pressed={!!batch.forbidden}
         onClick={() => command({ type: 'unfinishedForbid', unfinishedId: piece.id, forbidden: !batch.forbidden })}>
-        {batch.forbidden ? '允许搬运与续作' : '禁止搬运与续作'}</button>
+        {batch.forbidden ? '允许搬运与续作' : '禁止搬运与续作'}</button>}
     </div>
     <details className="voxel-unfinished-cancel"><summary>取消加工</summary>
       <small>拆散{unfinishedName(piece)}，丢弃已有加工进度。本版本会退回全部已投入原料。</small>

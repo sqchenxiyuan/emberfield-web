@@ -54,6 +54,8 @@ async function verify(mode) {
   });
   const state = () => page.evaluate(() => window.voxel.snapshot()),
     save = () => page.evaluate(() => window.voxel.exportSave());
+  // Ground weapons use the generic stack access panel; stack IDs and weapon IDs differ.
+  const itemAccess = stackId => page.locator(`[data-testid="item-access"][data-item-id="${stackId}"]`);
   const wait = (fn, arg, timeout = 60000) => page.waitForFunction(fn, arg, { timeout });
   const click = async (name) => {
     const b = page.getByRole('button', { name, exact: true });
@@ -170,7 +172,7 @@ async function verify(mode) {
     await inspect(knife, 0.16);
     await page.getByTestId('weapon-actions').waitFor();
     assert.match(await page.getByTestId('weapon-actions').innerText(), /钢匕首[\s\S]*耐久 100/);
-    await page.getByLabel('允许搬运武器', { exact: true }).click();
+    await itemAccess(knife.id).getByRole('button', { name: '禁止取用', exact: true }).click();
     await wait(
       (id) => window.voxel.snapshot().snapshot.items.find((i) => i.weapon?.id === id)?.forbidden,
       knife.weapon.id,
@@ -242,7 +244,7 @@ async function verify(mode) {
     await inspect(dropped, 0.16);
     await page.getByLabel('武器装备者', { exact: true }).scrollIntoViewIfNeeded();
     await shot('dropped');
-    await page.getByLabel('允许搬运武器', { exact: true }).click();
+    await itemAccess(dropped.id).getByRole('button', { name: '允许取用', exact: true }).click();
     await wait(
       (id) => !window.voxel.snapshot().snapshot.items.find((i) => i.weapon?.id === id)?.forbidden,
       sword.weapon.id,

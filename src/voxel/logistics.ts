@@ -39,6 +39,7 @@ export interface CellInsertion {
  * new stacks, but can still fill a compatible partial stack. */
 export function planCellInsertion(
   existing: readonly Cargo[], incoming: BatchKind & { amount: number }, maxStacks: number,
+  mergeForbidden = true,
 ): CellInsertion {
   if (!Number.isSafeInteger(maxStacks) || maxStacks < 0 ||
       !Number.isSafeInteger(incoming.amount) || incoming.amount < 0)
@@ -50,7 +51,7 @@ export function planCellInsertion(
     const stack = existing[index];
     // Single-instance objects must never pass through mergeBatch, even when
     // their instance IDs happen to match in a caller's speculative state.
-    if (limit === 1 || !compatibleBatches(stack, incoming)) continue;
+    if (limit === 1 || (!mergeForbidden && stack.forbidden) || !compatibleBatches(stack, incoming)) continue;
     const amount = Math.min(remaining, Math.max(0, limit - stack.amount));
     if (amount) { merges.push({ index, amount }); remaining -= amount; }
   }
@@ -77,10 +78,13 @@ export function simulateCellInsert<T extends Cargo>(
  * subtracting reserved units from a single total cannot represent either. */
 export function cellSpaceAfterReservations(
   existing: readonly Cargo[], reservations: readonly Cargo[], incoming: BatchKind, maxStacks: number,
+  mergeForbidden = true,
 ): number {
   const virtual: Cargo[] = existing.map(stack => ({ ...stack }));
   for (const batch of reservations) {
-    const plan = planCellInsertion(virtual, batch, maxStacks);
+    // Storage reservations are ordinary haul destinations, including when the
+    // incoming operation is a physical drop that may merge into a forbidden pile.
+    const plan = planCellInsertion(virtual, batch, maxStacks, false);
     if (plan.accepted !== batch.amount) return 0;
     for (const merge of plan.merges) virtual[merge.index].amount += merge.amount;
     virtual.push(...plan.additions.map(amount => ({ ...batch, amount })));
@@ -88,7 +92,7 @@ export function cellSpaceAfterReservations(
   // Capacity probes may describe an unassigned equipment slot. They need no
   // fabricated instance, age or condition, and never create physical cargo.
   const amount = stackLimit(incoming.resource) * Math.max(maxStacks, virtual.length);
-  return planCellInsertion(virtual, { ...incoming, amount }, maxStacks).accepted;
+  return planCellInsertion(virtual, { ...incoming, amount }, maxStacks, mergeForbidden).accepted;
 }
 export function stackSpace(
   existing: Cargo | undefined,

@@ -272,6 +272,8 @@ export interface RoomSummary {
   maxZ: number;
 }
 export type Tool =
+  | 'forbidItems'
+  | 'allowItems'
   | 'bridge'
   | ShelfKind
   | 'table'
@@ -363,7 +365,7 @@ export interface Cargo {
   furniture?: FurniturePiece;
   unfinished?: UnfinishedPiece;
   carcass?: { animalId: number; species: AnimalSpecies; bodySize?: number };
-  /** Ground weapon or unfinished-item forbidden state; manual equip overrides it. */
+  /** Player prohibition for physical items; specific direct orders may allow them. */
   forbidden?: boolean;
   /** Equivalent unfrozen age in our simulation ticks; required for grain/meal. */
   rotProgress?: number;
@@ -895,6 +897,8 @@ export interface ChunkUpdate {
   explored: Uint8Array;
 }
 export type VoxelCommand =
+  | { type: 'itemForbidden'; itemId: number; forbidden: boolean }
+  | { type: 'itemForbiddenArea'; from: Pos; to?: Pos; forbidden: boolean }
   | { type: 'productionBillAdd'; benchId: number; recipe: import('./productionBills').ProductionRecipe }
   | { type: 'productionBillUpdate'; benchId: number; billId: string; patch: Partial<Pick<import('./productionBills').ProductionBill, 'mode' | 'remaining' | 'target' | 'suspended' | 'pauseWhenSatisfied' | 'resumeBelow' | 'policy' | 'output'>> }
   | { type: 'stockpileZoneRename'; zoneId: string; name: string }
@@ -1017,7 +1021,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 44;
+  version: 45;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;
@@ -1138,6 +1142,7 @@ export const JOB_NAMES: Record<JobKind, string> = {
   cook: '烹饪简餐',
 };
 export const TOOL_NAMES: Record<Tool, string> = {
+  forbidItems: '禁止物品', allowItems: '允许物品',
   bridge: '木桥',
   shelf: '货架', smallShelf: '小货架',
   table: '餐桌', chair: '餐椅',

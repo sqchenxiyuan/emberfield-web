@@ -1,0 +1,704 @@
+{
+  "evidence_id": "RW17-ITEM-FORBIDDEN-STATIC",
+  "version": "1.7.4980 rev60",
+  "assemblySha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "reaEvidenceId": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+  "reaParentId": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+  "reaFile": "docs/research/rimworld/evidence/production-bills-rea-managed.json",
+  "reaSha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+  "manifestFile": "docs/research/rimworld/evidence/item-forbidden-manifest.json",
+  "manifestSha256": "4ad4b6c4e4784608bc912922a0c5c0bdfff73b71645f7323a62ae5c3e9951569",
+  "rules": [
+    {
+      "type": "RimWorld.CompForbiddable",
+      "file": ".local-research/item-forbidden/RimWorld.CompForbiddable.cs",
+      "sha256": "7e84d5006a99cdb19c9c1f2a62fc358bd9871a3fe7094ec327cf8fe386ae48e7",
+      "anchor": "Scribe_Values.Look(ref forbiddenInt, \"forbidden\", defaultValue: false)",
+      "hits": [
+        {
+          "line": 97,
+          "text": "Scribe_Values.Look(ref forbiddenInt, \"forbidden\", defaultValue: false);"
+        }
+      ],
+      "interpretation": "Per-thing saved flag; missing saved value defaults false."
+    },
+    {
+      "type": "RimWorld.CompForbiddable",
+      "file": ".local-research/item-forbidden/RimWorld.CompForbiddable.cs",
+      "sha256": "7e84d5006a99cdb19c9c1f2a62fc358bd9871a3fe7094ec327cf8fe386ae48e7",
+      "anchor": "if (Props.forbidOnMake)",
+      "hits": [
+        {
+          "line": 83,
+          "text": "if (Props.forbidOnMake)"
+        }
+      ],
+      "interpretation": "Def configuration can make newly-created things forbidden."
+    },
+    {
+      "type": "RimWorld.CompForbiddable",
+      "file": ".local-research/item-forbidden/RimWorld.CompForbiddable.cs",
+      "sha256": "7e84d5006a99cdb19c9c1f2a62fc358bd9871a3fe7094ec327cf8fe386ae48e7",
+      "anchor": "Notify_Forbidden(parent)",
+      "hits": [
+        {
+          "line": 31,
+          "text": "parent.Map.listerHaulables.Notify_Forbidden(parent);"
+        },
+        {
+          "line": 32,
+          "text": "parent.Map.listerMergeables.Notify_Forbidden(parent);"
+        }
+      ],
+      "interpretation": "Changing the flag updates haulable and mergeable lists."
+    },
+    {
+      "type": "RimWorld.CompForbiddable",
+      "file": ".local-research/item-forbidden/RimWorld.CompForbiddable.cs",
+      "sha256": "7e84d5006a99cdb19c9c1f2a62fc358bd9871a3fe7094ec327cf8fe386ae48e7",
+      "anchor": "OverlayTypes.Forbidden",
+      "hits": [
+        {
+          "line": 56,
+          "text": "return OverlayTypes.ForbiddenBig;"
+        },
+        {
+          "line": 58,
+          "text": "return OverlayTypes.Forbidden;"
+        },
+        {
+          "line": 62,
+          "text": "return OverlayTypes.ForbiddenBig;"
+        },
+        {
+          "line": 64,
+          "text": "return OverlayTypes.Forbidden;"
+        }
+      ],
+      "interpretation": "Forbidden state displays an overlay."
+    },
+    {
+      "type": "RimWorld.CompForbiddable",
+      "file": ".local-research/item-forbidden/RimWorld.CompForbiddable.cs",
+      "sha256": "7e84d5006a99cdb19c9c1f2a62fc358bd9871a3fe7094ec327cf8fe386ae48e7",
+      "anchor": "piece.SetForbidden(forbiddenInt)",
+      "hits": [
+        {
+          "line": 102,
+          "text": "piece.SetForbidden(forbiddenInt);"
+        }
+      ],
+      "interpretation": "Split pieces inherit the source forbidden flag."
+    },
+    {
+      "type": "RimWorld.ForbidUtility",
+      "file": ".local-research/item-forbidden/RimWorld.ForbidUtility.cs",
+      "sha256": "e36190372ca2bc9540ef40d3d6a3ee836f30c3da7ee6842dffa79c0da78fbf48",
+      "anchor": "if (faction != Faction.OfPlayer)",
+      "hits": [
+        {
+          "line": 197,
+          "text": "if (faction != Faction.OfPlayer)"
+        }
+      ],
+      "interpretation": "The faction flag query is player-faction-specific; it is not a universal NPC lock."
+    },
+    {
+      "type": "RimWorld.ForbidUtility",
+      "file": ".local-research/item-forbidden/RimWorld.ForbidUtility.cs",
+      "sha256": "e36190372ca2bc9540ef40d3d6a3ee836f30c3da7ee6842dffa79c0da78fbf48",
+      "anchor": "t.IsForbidden(pawn.Faction) || t.IsForbidden(pawn.HostFaction)",
+      "hits": [
+        {
+          "line": 121,
+          "text": "if (t.IsForbidden(pawn.Faction) || t.IsForbidden(pawn.HostFaction))"
+        }
+      ],
+      "interpretation": "Pawn-aware forbidden checks combine item flag with allowed-area and special-state rules."
+    },
+    {
+      "type": "RimWorld.ForbidUtility",
+      "file": ".local-research/item-forbidden/RimWorld.ForbidUtility.cs",
+      "sha256": "e36190372ca2bc9540ef40d3d6a3ee836f30c3da7ee6842dffa79c0da78fbf48",
+      "anchor": "pawn.Drafted",
+      "hits": [
+        {
+          "line": 66,
+          "text": "if (!bypassDraftedCheck && pawn.Drafted)"
+        }
+      ],
+      "interpretation": "Drafted, mental-state and other listed special contexts can bypass pawn-aware checks."
+    },
+    {
+      "type": "RimWorld.ForbidUtility",
+      "file": ".local-research/item-forbidden/RimWorld.ForbidUtility.cs",
+      "sha256": "e36190372ca2bc9540ef40d3d6a3ee836f30c3da7ee6842dffa79c0da78fbf48",
+      "anchor": "pawn.HostFaction != null",
+      "hits": [
+        {
+          "line": 62,
+          "text": "if (pawn.HostFaction != null && (pawn.HostFaction != Faction.OfPlayer || !pawn.Spawned || pawn.Map.IsPlayerHome || (pawn.GetRoom() != null && pawn.GetRoom().IsPrisonCell) || (pawn.IsPrisoner && !pawn.guest.PrisonerIsSecure)))"
+        }
+      ],
+      "interpretation": "Ordinary prisoners on a player-home map bypass pawn-aware forbiddance via the host-faction condition; not every guest context is identical."
+    },
+    {
+      "type": "Verse.AI.HaulAIUtility",
+      "file": ".local-research/item-forbidden/Verse.AI.HaulAIUtility.cs",
+      "sha256": "6276e39bb2fd29fc5989b84bc2424fc65b26e4cfcfd74b673d3686eec7d5ae59",
+      "anchor": "if (t.IsForbidden(p))",
+      "hits": [
+        {
+          "line": 52,
+          "text": "if (t.IsForbidden(p))"
+        }
+      ],
+      "interpretation": "Ordinary hauling rejects forbidden items, including this forced-work scan."
+    },
+    {
+      "type": "RimWorld.ListerHaulables",
+      "file": ".local-research/item-forbidden/RimWorld.ListerHaulables.cs",
+      "sha256": "e82919461cfb4389f027e07332aed3668dd45d6908666810c88bd0584ec4e8d7",
+      "anchor": "t.IsForbidden(Faction.OfPlayer)",
+      "hits": [
+        {
+          "line": 196,
+          "text": "if (t.IsForbidden(Faction.OfPlayer))"
+        }
+      ],
+      "interpretation": "Forbidden items are excluded from automatic haul candidate registration."
+    },
+    {
+      "type": "RimWorld.ListerMergeables",
+      "file": ".local-research/item-forbidden/RimWorld.ListerMergeables.cs",
+      "sha256": "18da288ef655c814f1d102e24a5a2faf209e847950ad4dd67e65aca2fc9994b6",
+      "anchor": "t.IsForbidden(Faction.OfPlayer)",
+      "hits": [
+        {
+          "line": 88,
+          "text": "if (t.IsForbidden(Faction.OfPlayer))"
+        }
+      ],
+      "interpretation": "Forbidden items are excluded from automatic merge candidate registration."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "file": ".local-research/item-forbidden/RimWorld.FoodUtility.cs",
+      "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+      "anchor": "!allowForbidden && t.IsForbidden(getter)",
+      "hits": [
+        {
+          "line": 419,
+          "text": "if (!allowDispenserFull || !getterCanManipulate || (int)ThingDefOf.MealNutrientPaste.ingestible.preferability < (int)minPref || (int)ThingDefOf.MealNutrientPaste.ingestible.preferability > (int)maxPref || !eater.WillEat(ThingDefOf.MealNutrientPaste, getter, careIfNotAcceptableForTitle: true, allowVenerated) || (t.Faction != getter.Faction && t.Faction != getter.HostFaction) || (!allowForbidden && t.IsForbidden(getter)) || !building_NutrientPasteDispenser.powerComp.PowerOn || (!allowDispenserEmpty && !building_NutrientPasteDispenser.HasEnoughFeedstockInHoppers()) || !t.InteractionCell.Standable(t.Map) || !IsFoodSourceOnMapSociallyProper(t, getter, eater, allowSociallyImproper) || !getter.Map.reachability.CanReachNonLocal(getter.Position, new TargetInfo(t.InteractionCell, t.Map), PathEndMode.OnCell, TraverseParms.For(getter, Danger.Some)))"
+        },
+        {
+          "line": 427,
+          "text": "if ((int)t.def.ingestible.preferability < (int)minPref || (int)t.def.ingestible.preferability > (int)maxPref || !eater.WillEat(t, getter, careIfNotAcceptableForTitle: true, allowVenerated) || !t.def.IsNutritionGivingIngestible || !t.IngestibleNow || (!allowCorpse && t is Corpse) || (!allowDrug && t.def.IsDrug) || (!allowForbidden && t.IsForbidden(getter)) || (!desperate && t.IsNotFresh()) || t.IsDessicated() || !IsFoodSourceOnMapSociallyProper(t, getter, eater, allowSociallyImproper) || (!getter.AnimalAwareOf(t) && !forceScanWholeMap))"
+        }
+      ],
+      "interpretation": "Ordinary map food selection excludes forbidden food unless explicit exceptional selection allows it."
+    },
+    {
+      "type": "RimWorld.JobGiver_GetFood",
+      "file": ".local-research/item-forbidden/RimWorld.JobGiver_GetFood.cs",
+      "sha256": "c648efbdd091620603979d79de4c064f5a8174e7f6cf51950b6c19619a398a04",
+      "anchor": "allowForbidden: false",
+      "hits": [
+        {
+          "line": 78,
+          "text": "if (!FoodUtility.TryFindBestFoodSourceFor(pawn, pawn, desperate, out var foodSource, out var foodDef, canRefillDispenser: true, canUseInventory: true, canUsePackAnimalInventory: true, allowForbidden: false, allowCorpse, allowSociallyImproper: false, pawn.IsWildMan(), forceScanWholeMap, ignoreReservations: false, calculateWantedStackCount: false, allowVenerated: false, minPrefOverride))"
+        },
+        {
+          "line": 108,
+          "text": "foodSource = FoodUtility.BestFoodSourceOnMap(pawn, pawn, flag2, out foodDef, FoodPreferability.MealLavish, allowPlant: false, !pawn.IsTeetotaler(), allowCorpse: false, allowDispenserFull: false, allowDispenserEmpty: false, allowForbidden: false, allowSociallyImproper: false, allowHarvest: false, forceScanWholeMap);"
+        }
+      ],
+      "interpretation": "Ordinary hunger food searches pass allowForbidden false; player-owned animals obey item flags, wild animals normally have no player faction, and ordinary home prisoners bypass through CaresAboutForbidden."
+    },
+    {
+      "type": "RimWorld.JobGiver_EatRandom",
+      "file": ".local-research/item-forbidden/RimWorld.JobGiver_EatRandom.cs",
+      "sha256": "ebc08462364c9afbc7c24c08aceaf7cf4f2195534370fa714d70655c9bc6858d",
+      "anchor": "Predicate<Thing> validator",
+      "hits": [
+        {
+          "line": 15,
+          "text": "Predicate<Thing> validator = (Thing t) =>"
+        }
+      ],
+      "interpretation": "Animal curiosity food selection is a separate low-frequency path, with no explicit forbidden check in this selector; not a runtime proof of every downstream outcome."
+    },
+    {
+      "type": "RimWorld.HealthAIUtility",
+      "file": ".local-research/item-forbidden/RimWorld.HealthAIUtility.cs",
+      "sha256": "3bd707b58f5232459e9843a60ceeb9cc7a7a88c8d64f639726b6a4b216c68558",
+      "anchor": "!m.IsForbidden(healer)",
+      "hits": [
+        {
+          "line": 164,
+          "text": "return (!m.IsForbidden(healer) && flag && healer.CanReserve(m, 10, 1)) ? true : false;"
+        }
+      ],
+      "interpretation": "Medicine selection checks forbidden status in addition to care policy and reservation."
+    },
+    {
+      "type": "RimWorld.WorkGiver_ConstructDeliverResources",
+      "file": ".local-research/item-forbidden/RimWorld.WorkGiver_ConstructDeliverResources.cs",
+      "sha256": "d56e9f6233e39792dc26e0380ad0ebe8626aad4cd5c0fdf6729847afc382d004",
+      "anchor": "if (th.IsForbidden(pawn))",
+      "hits": [
+        {
+          "line": 86,
+          "text": "if (th.IsForbidden(pawn))"
+        }
+      ],
+      "interpretation": "Construction material candidates exclude forbidden resources."
+    },
+    {
+      "type": "RimWorld.WorkGiver_DoBill",
+      "file": ".local-research/item-forbidden/RimWorld.WorkGiver_DoBill.cs",
+      "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+      "anchor": "Predicate<Thing> baseValidator",
+      "hits": [
+        {
+          "line": 461,
+          "text": "Predicate<Thing> baseValidator = (Thing t) => t.Spawned && thingValidator(t) && (float)(t.Position - billGiver.Position).LengthHorizontalSquared < radiusSq && !t.IsForbidden(pawn) && pawn.CanReserve(t);"
+        },
+        {
+          "line": 574,
+          "text": "private static void AddEveryMedicineToRelevantThings(Pawn pawn, Thing billGiver, List<Thing> relevantThings, Predicate<Thing> baseValidator, Map map)"
+        }
+      ],
+      "interpretation": "Production material candidates exclude forbidden resources."
+    },
+    {
+      "type": "RimWorld.WorkGiver_DoBill",
+      "file": ".local-research/item-forbidden/RimWorld.WorkGiver_DoBill.cs",
+      "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+      "anchor": "!bill_ProductionWithUft.BoundUft.IsForbidden(pawn)",
+      "hits": [
+        {
+          "line": 227,
+          "text": "if (bill_ProductionWithUft.BoundWorker == pawn && pawn.CanReserveAndReach(bill_ProductionWithUft.BoundUft, PathEndMode.Touch, Danger.Deadly) && !bill_ProductionWithUft.BoundUft.IsForbidden(pawn))"
+        }
+      ],
+      "interpretation": "Resuming bound unfinished products checks their forbidden state."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_WorkGivers",
+      "file": ".local-research/item-forbidden/RimWorld.FloatMenuOptionProvider_WorkGivers.cs",
+      "sha256": "f05e9f1b76d69cff7f2f28e33a0cbcfa2bdeff30f3f967f943b135f892b3968a",
+      "anchor": "target.Thing.IsForbidden(pawn)",
+      "hits": [
+        {
+          "line": 180,
+          "text": "else if (target.HasThing && target.Thing.IsForbidden(pawn))"
+        }
+      ],
+      "interpretation": "Ordinary prioritized work rejects a forbidden target instead of silently clearing it."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_Equip",
+      "file": ".local-research/item-forbidden/RimWorld.FloatMenuOptionProvider_Equip.cs",
+      "sha256": "8f7c6cd684307bac95c205ac17dea46f8341f58cb528cdf3316e6371715c7625",
+      "anchor": "clickedThing.SetForbidden(value: false)",
+      "hits": [
+        {
+          "line": 85,
+          "text": "clickedThing.SetForbidden(value: false);"
+        }
+      ],
+      "interpretation": "Explicit Equip clears the item flag before issuing its ordered job."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_Wear",
+      "file": ".local-research/item-forbidden/RimWorld.FloatMenuOptionProvider_Wear.cs",
+      "sha256": "d1577b01ad535c55299cecf5cd96890789d81c4e957c9756670ad4cc276f0f7f",
+      "anchor": "apparel.SetForbidden(value: false)",
+      "hits": [
+        {
+          "line": 62,
+          "text": "apparel.SetForbidden(value: false);"
+        }
+      ],
+      "interpretation": "Explicit Wear clears the item flag before issuing its ordered job."
+    },
+    {
+      "type": "Verse.AI.Pawn_JobTracker",
+      "file": ".local-research/item-forbidden/Verse.AI.Pawn_JobTracker.cs",
+      "sha256": "7934319bfedbd8a46aa54341a2afec9561efb469cd4fe58aec5745f9236fc5c4",
+      "anchor": "newJob.ignoreForbidden = true",
+      "hits": [
+        {
+          "line": 320,
+          "text": "newJob.ignoreForbidden = true;"
+        }
+      ],
+      "interpretation": "Accepted player-forced or drafted jobs set ignoreForbidden; this does not undo earlier provider rejection."
+    },
+    {
+      "type": "RimWorld.WorkGiver_ConstructDeliverResources",
+      "file": ".local-research/item-forbidden/RimWorld.WorkGiver_ConstructDeliverResources.cs",
+      "sha256": "d56e9f6233e39792dc26e0380ad0ebe8626aad4cd5c0fdf6729847afc382d004",
+      "anchor": "miniToInstallOrBuildingToReinstall.IsForbidden(pawn)",
+      "hits": [
+        {
+          "line": 376,
+          "text": "if (miniToInstallOrBuildingToReinstall.IsForbidden(pawn))"
+        }
+      ],
+      "interpretation": "Installation work rejects a forbidden source item/building."
+    },
+    {
+      "type": "RimWorld.Designator_Install",
+      "file": ".local-research/item-forbidden/RimWorld.Designator_Install.cs",
+      "sha256": "a9cea67b8ffaadea50aaf8cac84e0dd7d70a92fafac29003d02093909865cdf9",
+      "anchor": "GenConstruct.PlaceBlueprintForReinstall",
+      "hits": [
+        {
+          "line": 125,
+          "text": "GenConstruct.PlaceBlueprintForReinstall((Building)MiniToInstallOrBuildingToReinstall, c, Map, placingRot, Faction.OfPlayer);"
+        }
+      ],
+      "interpretation": "Reinstall designation places a blueprint; it is not an Equip/Wear-style flag-clearing action."
+    },
+    {
+      "type": "Verse.ThingWithComps",
+      "file": ".local-research/item-forbidden/Verse.ThingWithComps.cs",
+      "sha256": "9ae0bf1c6884b0fd48213cf5bb2cfda7d0ee63eb43cbe97689f90e4287c2ed6b",
+      "anchor": "comps[i].PreAbsorbStack(other, count)",
+      "hits": [
+        {
+          "line": 566,
+          "text": "comps[i].PreAbsorbStack(other, count);"
+        }
+      ],
+      "interpretation": "Stack absorption invokes component hooks before the base count transfer."
+    },
+    {
+      "type": "Verse.ThingWithComps",
+      "file": ".local-research/item-forbidden/Verse.ThingWithComps.cs",
+      "sha256": "9ae0bf1c6884b0fd48213cf5bb2cfda7d0ee63eb43cbe97689f90e4287c2ed6b",
+      "anchor": "comps[i].AllowStackWith(other)",
+      "hits": [
+        {
+          "line": 595,
+          "text": "if (!comps[i].AllowStackWith(other))"
+        }
+      ],
+      "interpretation": "Stack compatibility checks all components; CompForbiddable itself does not override this hook."
+    },
+    {
+      "type": "Verse.Thing",
+      "file": ".local-research/item-forbidden/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "anchor": "stackCount += num",
+      "hits": [
+        {
+          "line": 1585,
+          "text": "stackCount += num;"
+        }
+      ],
+      "interpretation": "Raw absorption retains the destination object and transfers source quantity; forbidden flag is not combined here."
+    },
+    {
+      "type": "Verse.ThingUtility",
+      "file": ".local-research/item-forbidden/Verse.ThingUtility.cs",
+      "sha256": "4502e6db44ab7430a9d258da8833b7612b7b13a65e989537c42a19ceb2fb8a69",
+      "anchor": "return Mathf.Min(other.stackCount, thing.def.stackLimit - thing.stackCount)",
+      "hits": [
+        {
+          "line": 37,
+          "text": "return Mathf.Min(other.stackCount, thing.def.stackLimit - thing.stackCount);"
+        }
+      ],
+      "interpretation": "The raw absorption count helper considers quantity/stack limit, not forbidden state."
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "file": ".local-research/item-forbidden/RimWorld.Pawn_TraderTracker.cs",
+      "sha256": "b57852d9a71cc3f748570a22b8e8fbd5222bae48cbf4fed652059d72d1996b6c",
+      "anchor": "IEnumerable<Thing> enumerable = pawn.Map.listerThings.AllThings.Where",
+      "hits": [
+        {
+          "line": 98,
+          "text": "IEnumerable<Thing> enumerable = pawn.Map.listerThings.AllThings.Where((Thing x) => x.def.category == ThingCategory.Item && TradeUtility.PlayerSellableNow(x, pawn) && !x.Position.Fogged(x.Map) && (pawn.Map.areaManager.Home[x.Position] || x.IsInAnyStorage()) && ReachableForTrade(x));"
+        }
+      ],
+      "interpretation": "Caravan sale eligibility uses sellability, fog, home/storage and reachability; forbidden is not an exclusion."
+    },
+    {
+      "type": "RimWorld.TradeUtility",
+      "file": ".local-research/item-forbidden/RimWorld.TradeUtility.cs",
+      "sha256": "de12a556209ea51bb8f5a9196c0a2172d30c44a2022f3e11bbebba9c7ce19256",
+      "anchor": "t.def.category == ThingCategory.Item && PlayerSellableNow(t, trader)",
+      "hits": [
+        {
+          "line": 134,
+          "text": "else if (t.def.category == ThingCategory.Item && PlayerSellableNow(t, trader) && !yieldedThings.Contains(t))"
+        }
+      ],
+      "interpretation": "Orbital sale eligibility inside powered beacon cells does not exclude the item forbidden flag."
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "file": ".local-research/item-forbidden/RimWorld.Pawn_TraderTracker.cs",
+      "sha256": "b57852d9a71cc3f748570a22b8e8fbd5222bae48cbf4fed652059d72d1996b6c",
+      "anchor": "thing.PreTraded(TradeAction.PlayerBuys, playerNegotiator, this.pawn)",
+      "hits": [
+        {
+          "line": 193,
+          "text": "thing.PreTraded(TradeAction.PlayerBuys, playerNegotiator, this.pawn);"
+        }
+      ],
+      "interpretation": "Ordinary caravan item purchase splits the source then calls trade hooks and placement; no generic forbidden clearing in this method."
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "file": ".local-research/item-forbidden/RimWorld.Pawn_TraderTracker.cs",
+      "sha256": "b57852d9a71cc3f748570a22b8e8fbd5222bae48cbf4fed652059d72d1996b6c",
+      "anchor": "this.pawn.GetLord()?.extraForbiddenThings.Add(thing)",
+      "hits": [
+        {
+          "line": 196,
+          "text": "this.pawn.GetLord()?.extraForbiddenThings.Add(thing);"
+        }
+      ],
+      "interpretation": "This is the trader Lord own exclusion set, not CompForbiddable.Forbidden for the player."
+    },
+    {
+      "type": "Verse.GenPlace",
+      "file": ".local-research/item-forbidden/Verse.GenPlace.cs",
+      "sha256": "72e9f795b464dd3dad6afb2b40908a23f06e9407c31fd10290fd78bee8747ecb",
+      "anchor": "thing2.TryAbsorbStack(thing, respectStackLimit: true)",
+      "hits": [
+        {
+          "line": 335,
+          "text": "if (thing2.TryAbsorbStack(thing, respectStackLimit: true))"
+        }
+      ],
+      "interpretation": "A purchased item may merge into an existing receiving stack; the receiver flag then governs that stack."
+    },
+    {
+      "type": "Verse.GenSpawn",
+      "file": ".local-research/item-forbidden/Verse.GenSpawn.cs",
+      "sha256": "ae87c3214cc7c5e469e33564803c8c9936cfb99c00b2d56f420121bf61fdd110",
+      "anchor": "newThing.SpawnSetup(map, respawningAfterLoad)",
+      "hits": [
+        {
+          "line": 173,
+          "text": "newThing.SpawnSetup(map, respawningAfterLoad);"
+        }
+      ],
+      "interpretation": "Ordinary placement spawns the same item; CompForbiddable.PostSpawnSetup only restores its overlay."
+    },
+    {
+      "type": "Verse.RecipeWorkerCounter",
+      "file": ".local-research/item-forbidden/Verse.RecipeWorkerCounter.cs",
+      "sha256": "dc0d44c166c2797cb39df826fa69f881519b6bc5b4d0cc300dcbafaca3bf9b39",
+      "anchor": "bill.Map.resourceCounter.GetCount",
+      "hits": [
+        {
+          "line": 25,
+          "text": "return bill.Map.resourceCounter.GetCount(thingDefCountClass.thingDef) + GetCarriedCount(bill, thingDef);"
+        }
+      ],
+      "interpretation": "The common until-count fast path counts stored resources plus eligible carried goods, including forbidden goods."
+    },
+    {
+      "type": "RimWorld.ResourceCounter",
+      "file": ".local-research/item-forbidden/RimWorld.ResourceCounter.cs",
+      "sha256": "132e2e9c8214a435f8c73222454dbb87a9501ca30712233538f512619b6e4db9",
+      "anchor": "foreach (Thing heldThing in allGroupsListForReading[i].HeldThings)",
+      "hits": [
+        {
+          "line": 134,
+          "text": "foreach (Thing heldThing in allGroupsListForReading[i].HeldThings)"
+        }
+      ],
+      "interpretation": "Resource counting has storage and freshness/fog conditions; usable-by-worker count is a separate question."
+    }
+  ],
+  "boundedChecks": [
+    {
+      "type": "RimWorld.CompForbiddable",
+      "start": "public class CompForbiddable",
+      "end": "",
+      "startLine": 6,
+      "endLine": 146,
+      "sliceSha256": "d3ae3ff1ac64cabb0d2c7887da10a102891b02a22506283a775f14e4b644051a",
+      "absentTokens": [
+        "override bool AllowStackWith",
+        "override void PreAbsorbStack",
+        "override void PrePreTraded"
+      ],
+      "interpretation": "This component has no custom compatibility/absorption/trade hook; its inherited hooks do not clear flags."
+    },
+    {
+      "type": "RimWorld.TradeUtility",
+      "start": "public static bool PlayerSellableNow",
+      "end": "public static void SpawnDropPod",
+      "startLine": 43,
+      "endLine": 76,
+      "sliceSha256": "32bf9c6ade17825d652d6e95d6401688582dc776f144428f4db5f566a3068c35",
+      "absentTokens": [
+        "IsForbidden",
+        "SetForbidden"
+      ],
+      "interpretation": "This exact sale eligibility method does not exclude forbidden items."
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "start": "public IEnumerable<Thing> ColonyThingsWillingToBuy",
+      "end": "public void GiveSoldThingToTrader",
+      "startLine": 96,
+      "endLine": 149,
+      "sliceSha256": "aa68441f61208dd0a4271b927c56a6e597a3b5d75026d37dbb1a66ec51fe63c7",
+      "absentTokens": [
+        "IsForbidden",
+        "SetForbidden"
+      ],
+      "interpretation": "This exact caravan candidate enumeration does not exclude forbidden items."
+    },
+    {
+      "type": "Verse.RecipeWorkerCounter",
+      "start": "public bool CountValidThing(Thing thing",
+      "end": "public virtual string ProductsDescription",
+      "startLine": 120,
+      "endLine": 151,
+      "sliceSha256": "ad127be526a5e06dbc5b0ad66951099473d1f13e2aadf99c7fdae2441514ab7d",
+      "absentTokens": [
+        "IsForbidden",
+        "SetForbidden"
+      ],
+      "interpretation": "The default counter validity filter includes forbidden products; other stock/filter conditions still apply."
+    },
+    {
+      "type": "RimWorld.ResourceCounter",
+      "start": "private bool ShouldCount",
+      "end": "",
+      "startLine": 157,
+      "endLine": 170,
+      "sliceSha256": "1def3087fd95ed974238c139af6aebdbc2986ddba065c544680dba9db5d8007e",
+      "absentTokens": [
+        "IsForbidden",
+        "SetForbidden"
+      ],
+      "interpretation": "Stored-resource validity checks freshness and fog, not the forbidden flag."
+    },
+    {
+      "type": "RimWorld.GenConstruct",
+      "start": "public static Blueprint_Install PlaceBlueprintForInstall",
+      "end": "public static bool CanBuildOnTerrain",
+      "startLine": 171,
+      "endLine": 197,
+      "sliceSha256": "31bc1dcf51b30c1c9798a2babebb170e85bedd0ea82e79b514ea13d6933d169f",
+      "absentTokens": [
+        "SetForbidden"
+      ],
+      "interpretation": "Install/reinstall blueprint creation does not clear the source flag in these methods."
+    },
+    {
+      "type": "Verse.ThingUtility",
+      "start": "public static int TryAbsorbStackNumToTake",
+      "end": "public static int RoundedResourceStackCount",
+      "startLine": 33,
+      "endLine": 42,
+      "sliceSha256": "a2880ba2c8e4f7bc84f851827cff8b100843b2588964df94da87ad0701d935a1",
+      "absentTokens": [
+        "IsForbidden",
+        "SetForbidden"
+      ],
+      "interpretation": "The raw stack transfer count does not depend on forbidden state."
+    },
+    {
+      "type": "RimWorld.JobGiver_EatRandom",
+      "start": "public class JobGiver_EatRandom",
+      "end": "",
+      "startLine": 7,
+      "endLine": 39,
+      "sliceSha256": "de16d190362d36cfb24a1e84ed68733a4ec935379845df5dc5fa1a535d2d0c0b",
+      "absentTokens": [
+        "IsForbidden",
+        "SetForbidden"
+      ],
+      "interpretation": "Curiosity food selector differs from ordinary hunger selection; downstream behavior and all special states are not claimed tested."
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "start": "public void GiveSoldThingToPlayer",
+      "end": "private void AddPawnToStock",
+      "startLine": 178,
+      "endLine": 205,
+      "sliceSha256": "f0a3c9356d08bc3f72836c4cdefc93a9cd28748a5e73b2058f0c40fef7a973bd",
+      "absentTokens": [
+        "SetForbidden"
+      ],
+      "interpretation": "Ordinary caravan purchase does not explicitly reset the item flag."
+    },
+    {
+      "type": "Verse.GenPlace",
+      "start": "public static class GenPlace",
+      "end": "",
+      "startLine": 8,
+      "endLine": 401,
+      "sliceSha256": "5e1b378ce22a3632b3d5f6f28e6b1246ee822ae69155c7cb0a8488e82cdd6a5a",
+      "absentTokens": [
+        "SetForbidden"
+      ],
+      "interpretation": "Ordinary placement/merging does not explicitly reset item flags in this class."
+    },
+    {
+      "type": "Verse.GenSpawn",
+      "start": "public static Thing Spawn(Thing newThing, IntVec3 loc, Map map, Rot4 rot",
+      "end": "public static void SpawnBuildingAsPossible",
+      "startLine": 86,
+      "endLine": 196,
+      "sliceSha256": "72b2f969defc641e82a28014bf63c117d8370c5bfec50001de8e869cf85944d1",
+      "absentTokens": [
+        "newThing.SetForbidden"
+      ],
+      "interpretation": "The ordinary spawn method does not reset the incoming item flag; refund/move-aside helpers are separate paths."
+    }
+  ],
+  "packagedThinkTreeDefs": [
+    {
+      "file": "Data/Core/Defs/ThinkTreeDefs/Animal.xml",
+      "sha256": "d857fb17533f17f90da48fae355d5014f7a4f78ab3dcc6ee755a881bda732121",
+      "xpath": "/Defs/ThinkTreeDef[defName=\"Animal\"]//li[treeDef=\"SatisfyBasicNeeds\"]",
+      "xml": "<li Class=\"ThinkNode_Subtree\"><treeDef>SatisfyBasicNeeds</treeDef></li>",
+      "interpretation": "Animal ordinary behavior delegates hunger/rest to SatisfyBasicNeeds."
+    },
+    {
+      "file": "Data/Core/Defs/ThinkTreeDefs/Animal.xml",
+      "sha256": "d857fb17533f17f90da48fae355d5014f7a4f78ab3dcc6ee755a881bda732121",
+      "xpath": "/Defs/ThinkTreeDef[defName=\"Animal\"]//li[@Class=\"JobGiver_EatRandom\"]",
+      "xml": "<li Class=\"JobGiver_EatRandom\" />",
+      "interpretation": "Animal behavior also has a distinct curiosity-eating selector."
+    },
+    {
+      "file": "Data/Core/Defs/ThinkTreeDefs/SubTrees_Misc.xml",
+      "sha256": "c287c0c2a97f151d86516cf058e2eb54b4d87f1bccf50bfa46faf8b26eba3071",
+      "xpath": "/Defs/ThinkTreeDef[defName=\"SatisfyBasicNeeds\"]//li[@Class=\"JobGiver_GetFood\"]",
+      "xml": "<li Class=\"JobGiver_GetFood\" />",
+      "interpretation": "Shared ordinary needs use JobGiver_GetFood."
+    },
+    {
+      "file": "Data/Core/Defs/ThinkTreeDefs/Humanlike.xml",
+      "sha256": "047fc3c5bcb60ead007adbcd0090690a25af882adeb11298df8f4b551bbbdd4e",
+      "xpath": "/Defs/ThinkTreeDef[defName=\"Humanlike\"]//li[@Class=\"ThinkNode_ConditionalPrisoner\"]//li[@Class=\"JobGiver_GetFood\"]",
+      "xml": "<li Class=\"JobGiver_GetFood\" />",
+      "interpretation": "Prisoner ordinary needs also use JobGiver_GetFood; the difference comes from ForbidUtility context."
+    }
+  ],
+  "limits": [
+    "Derived C# is not original source or runtime proof.",
+    "Matching retained REA metadata is reused for artifact identity only.",
+    "No v45 forbidden gameplay scenario was run; user paused further program interaction during initial launch/load preparation.",
+    "No blanket immediate job-cancellation claim: the component setter updates lists/overlays; individual jobs and forced-job exceptions need their own review.",
+    "Raw stack absorption retains the receiver flag, but all other stack compatibility components and caller-specific behavior still apply.",
+    "Default product counting and ordinary caravan/orbital sale eligibility are covered; ordinary caravan item buyback does not clear flags. Other purchase providers, every specialized recipe and mods are not exhaustively audited.",
+    "Food statements concern ordinary hunger selection; curiosity, mental states, faction changes, feeding by another pawn and every downstream ingestion path are not a complete runtime matrix."
+  ],
+  "collectorSha256": "b89d17440e09cc4923449e7f755583bc33b0ebfd81db62b7142a0e0c9649e1c3"
+}

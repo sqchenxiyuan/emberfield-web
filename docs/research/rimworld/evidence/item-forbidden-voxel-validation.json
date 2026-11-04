@@ -1,0 +1,920 @@
+{
+  "schema": 1,
+  "version": 45,
+  "verifiedAt": "2026-11-04T15:36:38.548Z",
+  "source": {
+    "files": 137,
+    "sha256": "f150f69b52dada92f1c77322579523ac2c676a809d5375795aee49ca638367f4",
+    "encoding": "UTF-8 text with CRLF normalized to LF"
+  },
+  "meaning": "Frozen headless local validation, not original-game or browser interaction evidence. Text hashes normalize CRLF; local raw logs and saves use exact bytes.",
+  "regression": {
+    "files": 119,
+    "tests": 1573,
+    "skipped": 0,
+    "coverage": [
+      {
+        "file": "tests/interactions.test.ts",
+        "sha256": "8334937340900522c68de0f9bb46a70603531a23be6960867818eb887935988b",
+        "tests": 14
+      },
+      {
+        "file": "tests/mood.test.ts",
+        "sha256": "7449f6f88a5f2f68356be5404fceeb9f7b35a7cd1b32f24f708df832a454fb15",
+        "tests": 10
+      },
+      {
+        "file": "tests/prison-persistence.test.ts",
+        "sha256": "6082bc7ba40bfc21b06e3b64320ef2f6b9839f059ed4bf504c291bebd44777db",
+        "tests": 7
+      },
+      {
+        "file": "tests/prison-world.test.ts",
+        "sha256": "f26ac804fb40f95d251d74efb5b7dbabcef59d992925399a385e7b39c85cfe2c",
+        "tests": 8
+      },
+      {
+        "file": "tests/prisoners.test.ts",
+        "sha256": "831bfe44f3b464d0a27bc141b9a19fd12c82984d491473b00cafefc430793fe5",
+        "tests": 4
+      },
+      {
+        "file": "tests/sanitation.test.ts",
+        "sha256": "f06561076830a70e880cd4e8157022467e4f83fcdbf6f4a40fc1e1e01b7c7ead",
+        "tests": 6
+      },
+      {
+        "file": "tests/simulation.test.ts",
+        "sha256": "235885c41233f64bc6a7aca291a64518bad280bfbf606083b959973b4d4c2a69",
+        "tests": 22
+      },
+      {
+        "file": "tests/voxel-allowed-area-hosts.test.ts",
+        "sha256": "535ce2480b87bb208f3aec6516e2733dd0d7c7c61e6dd7af2eeb118796c3bef3",
+        "tests": 15
+      },
+      {
+        "file": "tests/voxel-allowed-area-production.test.ts",
+        "sha256": "bf477b7fde3e454930bb11b4b2eb5b877aac9adf90da32cd234dee2182940d39",
+        "tests": 2
+      },
+      {
+        "file": "tests/voxel-allowed-area.test.ts",
+        "sha256": "fd60038af97703fd7beb67ccedf999eb335659da512aa497d64c9810b4643534",
+        "tests": 12
+      },
+      {
+        "file": "tests/voxel-anatomy-integration.test.ts",
+        "sha256": "1ef1af5bf75d70f3882c1813fcc1e2d0fd3289420515cf78252563fe165ffa1a",
+        "tests": 11
+      },
+      {
+        "file": "tests/voxel-anatomy-rules.test.ts",
+        "sha256": "6e16e4588561f94137fd5492d840bb8bb69147e6d261f992e42945c670f2a082",
+        "tests": 22
+      },
+      {
+        "file": "tests/voxel-apparel.test.ts",
+        "sha256": "1c1e86f399f76296c4a6b2d9977c7c20dfd5228a32f770c082375104295b12a9",
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-armor-integration.test.ts",
+        "sha256": "ca6e7ece401d9802b600b416dceb8b80c8217285cd962568992a4dd20cd15587",
+        "tests": 11
+      },
+      {
+        "file": "tests/voxel-armor-rules.test.ts",
+        "sha256": "793e3a2f2acce084e0070a56e0b727e996a3758b0337508c9bead35b048f2c62",
+        "tests": 23
+      },
+      {
+        "file": "tests/voxel-capacity-stats.test.ts",
+        "sha256": "3d8b21b4d1ef2c2798ca95674d923250aa4138fcfbf4e4492d11fcb3bae5e05c",
+        "tests": 3
+      },
+      {
+        "file": "tests/voxel-caves.test.ts",
+        "sha256": "e73580b771af603b9cd91f7552ef5f75e2905f3a4102a22a90dcffb2eba128c2",
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-combat.test.ts",
+        "sha256": "97d6835773f02d40e7db73b4b31d683d89cd127a77e02a61f1b91f5604addbc7",
+        "tests": 14
+      },
+      {
+        "file": "tests/voxel-crafting.test.ts",
+        "sha256": "7e753f870dd32a12c04a39934c4f6f69b7bcf7fc37ed3be4d5b79a23e488a72e",
+        "tests": 26
+      },
+      {
+        "file": "tests/voxel-deterioration.test.ts",
+        "sha256": "87d25c8b17e1e9b31d3943603b2d85b488818e718d89eb6cb6c62ef0a9777465",
+        "tests": 14
+      },
+      {
+        "file": "tests/voxel-energy-integration.test.ts",
+        "sha256": "3f63cc74b38380dd54c47d0c529383eb4076704d7e3a651fa9648d1418999f0c",
+        "tests": 27
+      },
+      {
+        "file": "tests/voxel-environment-boundaries.test.ts",
+        "sha256": "b10f96d64c939691c6e286994e2b484871688cc3dea71d127b55bde1e53fb883",
+        "tests": 3
+      },
+      {
+        "file": "tests/voxel-environment-integration.test.ts",
+        "sha256": "17ee523714d6953a5139ff7a721624f924b1695a5dd0461b9ca3a7b8d9d5b6f9",
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-environment-persistence.test.ts",
+        "sha256": "a345b47290b605c643db16ee543f9bc48c71c6196dbf97d6135d5fe13372836b",
+        "tests": 11
+      },
+      {
+        "file": "tests/voxel-exploration-persistence.test.ts",
+        "sha256": "8139ecf9dc870aee512b465b10c37455a1b3fe0e2249fc5fa5cb29c9440f681c",
+        "tests": 20
+      },
+      {
+        "file": "tests/voxel-exploration-renderer.test.ts",
+        "sha256": "a5708e2769a58e7d13185846f0a49531c9babeaac064e227b478886deefa3dfc",
+        "tests": 4
+      },
+      {
+        "file": "tests/voxel-exploration-worker.test.ts",
+        "sha256": "c4189c453f6f3fd4306bf515e14d72ee9fb78c20a44f12f44863fd0d30d06384",
+        "tests": 3
+      },
+      {
+        "file": "tests/voxel-exploration.test.ts",
+        "sha256": "4628d0ecc11ac736f295504da8cd772172cb93105ebf5200a742280065bbc7ca",
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-fire-boundaries.test.ts",
+        "sha256": "3d46c6f9e5e685e1c497a7e5a14fa416cb9952e66d3d9ac1df98a4b1ac90bc0f",
+        "tests": 27
+      },
+      {
+        "file": "tests/voxel-fire-integration.test.ts",
+        "sha256": "4d6d74d651e268e47d2807e6e3ef38947b548ed71ec2dfce10b7fd4fef9ffda2",
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-food.test.ts",
+        "sha256": "f8a6252de0ba7e2ef77423c2340076520bd93dd63363f7761f1f820f2bb06b86",
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-furniture-fire-wealth.test.ts",
+        "sha256": "751a7915dddc900f6ead4fa265452a2f87632d422ba8c4a73e2f8baf54a9c77b",
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-furniture-integration.test.ts",
+        "sha256": "8a20cf9ac9b0bfa32c9688067507385d463fcb014394ea28d5d95ad8ec0f3821",
+        "tests": 7
+      },
+      {
+        "file": "tests/voxel-furniture-migration.test.ts",
+        "sha256": "e38c4ded87e2f879baba8834defacbe2ad5a91c260222c307ada56390670a6c5",
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-furniture-model.test.ts",
+        "sha256": "4f69c1785c1b5ad1a6f2d7fd66cd2cb91387917d32d255574a22cdcce6692b7c",
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-furniture-persistence.test.ts",
+        "sha256": "d2c41514479f7a2295345006df44ee63b6a4b90cfb6c2ab7ccb32214d06b2335",
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-housing.test.ts",
+        "sha256": "81225d29389b45726441b5acbc3c88069d828c1ef524f8861be8b8e51694a881",
+        "tests": 23
+      },
+      {
+        "file": "tests/voxel-husbandry-integration.test.ts",
+        "sha256": "a5400c345b275fa1cceca7e7522ad95fd3f9f785f23dc17ad7e9ff2a95865322",
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-husbandry-migration.test.ts",
+        "sha256": "188521292d7d3e715721ff3fa46f8a618962fe2c3b6d9bc8805c668fcd05beae",
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-husbandry-model.test.ts",
+        "sha256": "f0a86bc912d744e0a35bab3f12de4cf93d4628c3b1386aba94bac38a92be1420",
+        "tests": 10
+      },
+      {
+        "file": "tests/voxel-husbandry-persistence.test.ts",
+        "sha256": "42f5fa954e83b1be0cc27660f753153ff5ce632bbcadb60852b41eabddc6fc52",
+        "tests": 12
+      },
+      {
+        "file": "tests/voxel-injuries-rules.test.ts",
+        "sha256": "b209798d53c0274d655fd675df04959b21cfdd58a1167f87e47d7462873a8860",
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-item-forbidden-hosts.test.ts",
+        "sha256": "32f77f2e2e9660ad6cb3f8bbfc3e0a42f246cc726d3d7ab4767eae7f28416295",
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-item-forbidden.test.ts",
+        "sha256": "e26afbff7d7666b6bc307b28289383e86be8330edeaba7f34be50174821bddf9",
+        "tests": 14
+      },
+      {
+        "file": "tests/voxel-living-boundaries.test.ts",
+        "sha256": "fc6cbc07042846b12cde87f5ad281f5c5d7081202ff2a28bb270ebda73126161",
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-living-integration.test.ts",
+        "sha256": "9a9fff023149e571af45e38504a9ecb9ab59e1126dc230d4d2e536a4d30743f7",
+        "tests": 7
+      },
+      {
+        "file": "tests/voxel-living-migration.test.ts",
+        "sha256": "4916728ebcf6fd2d7fb332290f68cf5769c42c675f108913ee88b7aedcef97fc",
+        "tests": 4
+      },
+      {
+        "file": "tests/voxel-living-model.test.ts",
+        "sha256": "af605e44b919835c1b077fd036a4beb6b1124c6d461853bd6aa61180657249af",
+        "tests": 7
+      },
+      {
+        "file": "tests/voxel-living-persistence.test.ts",
+        "sha256": "db7085948fa89921231c459202fbbb05b84acc41114e6126c7e28bfd8e81d815",
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-logistics.test.ts",
+        "sha256": "440e045f1727e5b783469b29b8dc109e18674f378f86ea17db586d694477c6bc",
+        "tests": 44
+      },
+      {
+        "file": "tests/voxel-medicine-integration.test.ts",
+        "sha256": "fc2c49735144a521680047dd5ebe9621abddaec4ef13fc7fde08aba540e7ec6c",
+        "tests": 14
+      },
+      {
+        "file": "tests/voxel-medicine-rules.test.ts",
+        "sha256": "eb093e39b7b88b3b0bd83df485d700ab4f545ceb5d02e30273cc1fea9e154cfa",
+        "tests": 19
+      },
+      {
+        "file": "tests/voxel-mood-edge.test.ts",
+        "sha256": "f01db2cf1829b3e0a9262246d680c4673136bd4d2d530af80e14800ac6674459",
+        "tests": 7
+      },
+      {
+        "file": "tests/voxel-mood.test.ts",
+        "sha256": "62adbaee536056bd031b6112d47c34335e1da081b1d02f58a43a255f38b807d8",
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-navigation.test.ts",
+        "sha256": "b96d2319c473addefd80d7f453fad7e3fcdfbf2c125fc6b1475f8c0fe346d214",
+        "tests": 12
+      },
+      {
+        "file": "tests/voxel-pens-integration.test.ts",
+        "sha256": "a501924492a28cc66d386f2223da9c46b9cb78e4b578b8e216f0eb11cecad779",
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-pens-migration.test.ts",
+        "sha256": "d9dd3f8bcd735c5c0c0fba9002a00555f6561f869c8fdc6ff65fff6c1d72c9f1",
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-pens-model.test.ts",
+        "sha256": "b7a675f00003264e56021834b9c5e8b0ecd76b306046b5aff515f3bf9a1b1439",
+        "tests": 11
+      },
+      {
+        "file": "tests/voxel-pens-persistence.test.ts",
+        "sha256": "ad311cebaaf86ef656c8011d0c67530a7b7ab6372016468d9244f34448e14c9c",
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-plants.test.ts",
+        "sha256": "2db2c44924f3fbf40e3b0204c2098518da0281bf4458eff074a64c7c4920032e",
+        "tests": 23
+      },
+      {
+        "file": "tests/voxel-power.test.ts",
+        "sha256": "ae5c0499a8ed76cacc4fd498f76ed4dca7bb3bb1b702de7c7c058808757aaeb0",
+        "tests": 28
+      },
+      {
+        "file": "tests/voxel-preservation-integration.test.ts",
+        "sha256": "9532366b0016f7e12265daccc53ca675aaa9a82df33463a549ca7d06a57f5ffd",
+        "tests": 15
+      },
+      {
+        "file": "tests/voxel-preservation.test.ts",
+        "sha256": "f29c4c22386ffa3756a68a908266e93095d08f5e12611ceb1a7f291e623ff192",
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-prison-integration.test.ts",
+        "sha256": "af239ac7088bad2ef5eb19e4fb3953656235098f9c87e85b17af5c9193b1845c",
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-production-bills-integration.test.ts",
+        "sha256": "0d9e55d3266060ab32069c195979e039411295a9a8a2cec06e30987d8424cd44",
+        "tests": 15
+      },
+      {
+        "file": "tests/voxel-production-bills-model.test.ts",
+        "sha256": "621b2eddd172ba92b3c29b10b782569e1a0a1fb5aebcdb2f8a4f882f737323b7",
+        "tests": 25
+      },
+      {
+        "file": "tests/voxel-production-output-integration.test.ts",
+        "sha256": "1aee26db55124b0ec8a3cc135a487fed83d2933362a1dfcf6a613373bb799bc9",
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-production-policies-integration.test.ts",
+        "sha256": "b1b2f624a82c00dd0fd759376903295867dcf0c917669c63d8cd6d95766a7e86",
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-production-policies-model.test.ts",
+        "sha256": "bebf98bc180c5b933c06406deb7ae5f6d6ecea8942387c7e8ee2a4dc9f780cea",
+        "tests": 11
+      },
+      {
+        "file": "tests/voxel-ranged-integration.test.ts",
+        "sha256": "f25ac64f097edcd8b136945533c5a05f59a1a387ddc04426ec8d6b4bc92d7937",
+        "tests": 35
+      },
+      {
+        "file": "tests/voxel-ranged-production.test.ts",
+        "sha256": "6cb0d773b64e6ee71b090803e3909895f5ead27941ba2e3cd43836061368b82a",
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-ranged-rules.test.ts",
+        "sha256": "ad93102d42641ea856a8a7e20c9ff9a5d7cd1a1371027adf13fa4a85002a749a",
+        "tests": 25
+      },
+      {
+        "file": "tests/voxel-ranged-view.test.ts",
+        "sha256": "041bd5798dde66049e93a628b51bfc0f0d54fdf8a7d0cb7b09d70e604b696c59",
+        "tests": 4
+      },
+      {
+        "file": "tests/voxel-region-persistence.test.ts",
+        "sha256": "df40be481eb504ada5969610e017c772e7181f6b83982d17b41f32b010151274",
+        "tests": 31
+      },
+      {
+        "file": "tests/voxel-region-worker.test.ts",
+        "sha256": "4f801d4d277077ac4e6799f7e16323236a072d27ef5dadd5bea657a9b4301709",
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-regions.test.ts",
+        "sha256": "0c46ec020d38329ab35bdc051aa71cdcbf400438dacdc05dc3ff82dfee76a625",
+        "tests": 12
+      },
+      {
+        "file": "tests/voxel-relocation-integration.test.ts",
+        "sha256": "7b5bf52d58a2b3e09281f29cbb3026a003e53733a7375e403f76f111b3220b37",
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-relocation-migration.test.ts",
+        "sha256": "a35f76c1c9b4675baa696471d459f731c7c15e2bd92dd2029b9d7fcaf632baca",
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-relocation-model.test.ts",
+        "sha256": "b4a4c3fbc5ee3379d033150b3832bdcaabbf7ce01822db7aed54575432a44ae7",
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-relocation-persistence.test.ts",
+        "sha256": "f3973fcbec4b7be0598b4f9c70264b6f928d70d0548a3bfd4ceb76c9819faa6d",
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-relocation-wealth.test.ts",
+        "sha256": "89e58c3b1ec144f660f57552c7572b451f6599f21344558b5a24302baf19e754",
+        "tests": 3
+      },
+      {
+        "file": "tests/voxel-research.test.ts",
+        "sha256": "e16b345ae82883e6a79e6f62e5cf4229da31f46fc780fbb981f5ab07150a2413",
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-rivers-generation.test.ts",
+        "sha256": "4fd3dfb6b2f5b3bae1367909c9d6e847c9834810fedb3b42f2bd2f75422b38ac",
+        "tests": 42
+      },
+      {
+        "file": "tests/voxel-rooms.test.ts",
+        "sha256": "7d22b234b07c57f6b531d0fb4c54e26140b5e6946753ad26e01be60b5b69d470",
+        "tests": 19
+      },
+      {
+        "file": "tests/voxel-sanitation-boundaries.test.ts",
+        "sha256": "c987bd2e5d5974b5802e67ef979178d5a531448810ee9f1182040c68ffbb71fb",
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-sanitation-integration.test.ts",
+        "sha256": "2c67ab8c6c494437cdf56f13c7992a0cc792dac3c1ff1d4758b76700ae7a77c4",
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-shelves.test.ts",
+        "sha256": "96948babc8f27f14b6ab232463c3e5ec0bcabeaa7e36da5a2a781a26208792d2",
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-skills-integration.test.ts",
+        "sha256": "5a111b95a0fec1bf3705f1c8a3b5b50c0813ec62bb30d2300b4cdcdf0552063e",
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-skills-rules.test.ts",
+        "sha256": "64a4e1c25ed258d69cfe00eb397de8eab8bf11888c5b7887f64dfefb9bcc7907",
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-skills-yields.test.ts",
+        "sha256": "777503835d98f4a173686bcf2d62ec3592a3ac9db1b9c95559690858b1efc671",
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-social-integration.test.ts",
+        "sha256": "45ed88a1e6c60308a57fce7725e28290b43c5cf28febc8c2c06d0efd2f30a02e",
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-social-migration.test.ts",
+        "sha256": "7c6d8b727d62b75eb1fb1eca2456b72fef6c148cfde36ce4381f9eecdf6aca94",
+        "tests": 4
+      },
+      {
+        "file": "tests/voxel-social-model.test.ts",
+        "sha256": "5af29e8d374c0ccab683fe0fe1bbc4407f5fcc60163c164cecc16f342834e139",
+        "tests": 12
+      },
+      {
+        "file": "tests/voxel-social-persistence.test.ts",
+        "sha256": "1d80116e1c4d4a4db26373e288794178fc5d723bc5aacfcd507692cd9b23af65",
+        "tests": 10
+      },
+      {
+        "file": "tests/voxel-social-reload.test.ts",
+        "sha256": "dce7144ae733fed0786c7eda1cf14b7d98cb510e86b45f0d41d566e6c0dbf26a",
+        "tests": 2
+      },
+      {
+        "file": "tests/voxel-stockpile-zones.test.ts",
+        "sha256": "0e57520964e8dba1d5cb07f66815d457a81e8aba6cec114494b0e8cfc3605766",
+        "tests": 28
+      },
+      {
+        "file": "tests/voxel-storage-cells.test.ts",
+        "sha256": "3d4ee204e07a0fc8956cc72d562d69249e9bf21812b6e10d3cc181cc29276c64",
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-storage-groups.test.ts",
+        "sha256": "acc258256aeb4a0189e1b6a0e48de54e9e51f0a7d04449b359ae3d5d2301af8f",
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-storyteller-integration.test.ts",
+        "sha256": "978baa584f4d76ea7bbca7ac3da9f8ee6ccbd5b0379cdad61ee116c4c76fe64f",
+        "tests": 16
+      },
+      {
+        "file": "tests/voxel-storyteller-rules.test.ts",
+        "sha256": "eeb3bdd8de77726a2a2c39cd04717ab2eb013ec58ef50e71edbaf9b303483fc6",
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-survival.test.ts",
+        "sha256": "ec5a1cfb8536b353adca4c66a8d991ce1706a318d3033d555a1ea951296756bc",
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-thermal.test.ts",
+        "sha256": "7f26893eb105f656bf2ed1ba949449bc94f663b9fe80e7e7de613766a0e70827",
+        "tests": 26
+      },
+      {
+        "file": "tests/voxel-trade-boundaries.test.ts",
+        "sha256": "81c016ad3daf53aca5be83ca265f61713d2ef941907c1485c602d2f4da195a81",
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-trade-integration.test.ts",
+        "sha256": "9a967ff409bc75ea17828928042ad341ae1534c54ff1d7edbd9c104cc90bd2c8",
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-trade-rules.test.ts",
+        "sha256": "8abd21074d429aecd4266d850afd63a9e85f88efbfbda5f8a420cabf42747fa9",
+        "tests": 7
+      },
+      {
+        "file": "tests/voxel-unfinished-production-integration.test.ts",
+        "sha256": "60409ab0b3d0daad020da99c9d3aa71fbecaa9e318733e73cd9e52dcd3092930",
+        "tests": 12
+      },
+      {
+        "file": "tests/voxel-unfinished-production-model.test.ts",
+        "sha256": "05f65b55937cfbb58f6da7d8b8384ebad7c17768d43a3bda9b916f8372afbc0d",
+        "tests": 25
+      },
+      {
+        "file": "tests/voxel-water-bridge-integration.test.ts",
+        "sha256": "0389fc8d3a57ad6733d63427aeb7c98ae80d6826ec588dbbddaa4e3c6324c060",
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-water-bridge-save.test.ts",
+        "sha256": "c5c0a1c065bba8d7bfa2acfc22c749bb02a7fd35f7b3f2e33b50fc19b06a0379",
+        "tests": 16
+      },
+      {
+        "file": "tests/voxel-wealth.test.ts",
+        "sha256": "78e98200a7c487b6a1ead2169452e1ee45ea0c763e719dfd6d1241eb9a5e46cf",
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-weapon-production.test.ts",
+        "sha256": "d0102213d3904dce0d2e6b36e9f37af790eed50ded7a8a706a1a9e710e83ca32",
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-weapon-transport.test.ts",
+        "sha256": "470e3384ffdcdc4cc511cd3641f608bb63d9ad4303aff765e1eb82dee4c41d40",
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-weapons-rules.test.ts",
+        "sha256": "6985e8832011c0c789067efa9ed61cd48e4ee99c0e7d136e5176ada366480233",
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-weather-integration.test.ts",
+        "sha256": "90f85fc3b79a1191911d9fa4692f50f9d6242f9864a333a97f7577e3b45ed599",
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-weather.test.ts",
+        "sha256": "04f2a646271d952e1c1919e3d4b1b7cfe866352ab379a6fbaa3d70305ca41489",
+        "tests": 34
+      },
+      {
+        "file": "tests/voxel-wildlife.test.ts",
+        "sha256": "3b4fd53a44215f52e4376d57abd7b8a330c01e8c488de281adc3f0a9d392c269",
+        "tests": 10
+      },
+      {
+        "file": "tests/voxel-worldgen.test.ts",
+        "sha256": "e7f82e591d45600f125288ab333b589b8d0d1416345bf2f8f7ef2d4ebbb6e3b0",
+        "tests": 27
+      },
+      {
+        "file": "tests/voxel.test.ts",
+        "sha256": "36107b0deb2cca6aa23650d9040f84c574e209ff42d0fe5e143e6cf8fffcbe28",
+        "tests": 15
+      },
+      {
+        "file": "tests/wildlife-food.test.ts",
+        "sha256": "42d8c808285c5d5803bfca668c10cd2bdd59c13e78fda3a432f3276339554b4e",
+        "tests": 6
+      }
+    ],
+    "attempts": [
+      {
+        "file": "test-results/item-forbidden-release-rest-tests.json",
+        "sha256": "a5a3c8dac180063169df7e1129491bd582b7bbac82da0a2ad5013232987583a7",
+        "success": false,
+        "passed": 1553,
+        "failed": 3,
+        "pending": 0
+      },
+      {
+        "file": "test-results/item-forbidden-release-repaired-tests.json",
+        "sha256": "15cd22fb90a5a5ee47906884ccc9a3b52d6220718c130b367ebbe2d2e005e34d",
+        "success": true,
+        "passed": 51,
+        "failed": 0,
+        "pending": 0
+      },
+      {
+        "file": "test-results/item-forbidden-release-compat-tests.json",
+        "sha256": "85397039f77627c6e1d2fd55cbbd7d01233df7d3c3ead08716e18d71d3cef2dc",
+        "success": true,
+        "passed": 23,
+        "failed": 0,
+        "pending": 0
+      },
+      {
+        "file": "test-results/item-forbidden-release-core-confirmed-tests.json",
+        "sha256": "91db51abf660013432267bd8a7019d4ae6d662c1c45690f05b7063c26d877553",
+        "success": true,
+        "passed": 14,
+        "failed": 0,
+        "pending": 0
+      },
+      {
+        "file": "test-results/item-forbidden-release-food-tests.json",
+        "sha256": "11984d2296dcc9d1d163cc3e7be97a11ce09f110efe6d171e1fd8b0f992c405a",
+        "success": true,
+        "passed": 17,
+        "failed": 0,
+        "pending": 0
+      }
+    ],
+    "repairs": "Initial full regression caught the UFT ingredient whitelist after allow, plus two previous tests rejecting generic flags. Fixed the whitelist and updated the obsolete expectations while retaining malformed-value rejection. Relevant suites passed on rerun. Typecheck also corrected the wealth assertion to a real nonzero wealth object."
+  },
+  "harvest": {
+    "file": "test-results/item-forbidden-release-food-tests.log",
+    "sha256": "d81e214c4dc63e849177072b9ee7dab80e55dd531217b9d1756e22e9302be5be",
+    "minimumTicks": 96000,
+    "minimumDays": 8,
+    "minimumGrain": 90,
+    "downstreamTests": 9,
+    "exactTickAndYieldCaptured": false,
+    "note": "Passed real-harvest assertions establish these lower bounds. The JSON reporter did not retain the setup console line, so exact harvest tick/yield are not claimed or copied from v44."
+  },
+  "legacyV44": {
+    "report": {
+      "file": "test-results/item-forbidden-legacy.json",
+      "sha256": "0e44ad203a89707e435ed00178bfb5d1748022a5b42161eca70dc26a7dced53f"
+    },
+    "provenance": "docs/research/rimworld/evidence/allowed-area-voxel-validation.json",
+    "checks": [
+      {
+        "file": "test-results/voxel-allowed-area-campaign/carrying.json",
+        "sha256": "79cd7292d82fb189b4876493c4b912988e4e78bbeae037d30c60ea280114b0ee",
+        "sourceVersion": 44,
+        "targetVersion": 45,
+        "tick": 126,
+        "resumedTicks": 20
+      },
+      {
+        "file": "test-results/voxel-allowed-area-campaign/interrupted.json",
+        "sha256": "6bc7e5559c2d53355e726c347ad3ef62f186fdbe11c14229dde04bd2c1c85ea4",
+        "sourceVersion": 44,
+        "targetVersion": 45,
+        "tick": 206,
+        "resumedTicks": 20
+      },
+      {
+        "file": "test-results/voxel-allowed-area-campaign/built.json",
+        "sha256": "22442ffa18b2e31d4da80d9d5460fc14db13f654557f42f03a4f5c11aa563a8b",
+        "sourceVersion": 44,
+        "targetVersion": 45,
+        "tick": 312,
+        "resumedTicks": 20
+      },
+      {
+        "file": "test-results/voxel-allowed-area-campaign/final.json",
+        "sha256": "8fce5260a1fbf9035434a0ecb111d715803255c103e4c862bbf3aae92e679b31",
+        "sourceVersion": 44,
+        "targetVersion": 45,
+        "tick": 365,
+        "resumedTicks": 20
+      },
+      {
+        "file": "test-results/voxel-allowed-area-browser/worker-assigned-area-download.json",
+        "sha256": "bcdc1cd2927c57d708e7e41ff9cd31be23c60c317927b5370c3c62cc9d031af5",
+        "sourceVersion": 44,
+        "targetVersion": 45,
+        "tick": 0,
+        "resumedTicks": 20
+      },
+      {
+        "file": "test-results/voxel-allowed-area-browser/main-assigned-area-download.json",
+        "sha256": "bcdc1cd2927c57d708e7e41ff9cd31be23c60c317927b5370c3c62cc9d031af5",
+        "sourceVersion": 44,
+        "targetVersion": 45,
+        "tick": 0,
+        "resumedTicks": 20
+      }
+    ],
+    "note": "Historical files unchanged. Ordinary jobs/path reservations reschedule on load; physical state, progress and accounting are preserved."
+  },
+  "original": {
+    "version": "1.7.4980 rev60",
+    "assemblySha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+    "staticTypes": 36,
+    "rules": 37,
+    "boundedChecks": 11,
+    "defNodes": 4,
+    "checks": [
+      {
+        "file": "test-results/item-forbidden-release-extract.log",
+        "exitCode": 0,
+        "sha256": "7146e49eef329319d65462410f8b5d4f0e7a61b34d4e1d8ab1bd9b17f35b9138"
+      },
+      {
+        "file": "test-results/item-forbidden-release-static.log",
+        "exitCode": 0,
+        "sha256": "8a1b71dc20a143b0d3d98761d6549287b76eb14469e02fbf6321f0f38eff8d08"
+      },
+      {
+        "file": "test-results/item-forbidden-release-boundary.log",
+        "exitCode": 0,
+        "sha256": "abdab3663588d6a6594fa08ecc7b47ad31ee49c4c8789c7c01036b8a9432e950"
+      }
+    ],
+    "completedGameplayScenarios": 0,
+    "newSaveCount": 0,
+    "publicScreenshots": 0,
+    "preparationActionsBeforePause": 4
+  },
+  "browser": {
+    "executed": false,
+    "reason": "User requested no further program interaction. UI was edited and built, not interactively verified."
+  },
+  "build": {
+    "log": {
+      "file": "test-results/item-forbidden-release-build.log",
+      "sha256": "425208dc44b3f7e7b398ee7472a657b6bbf56e615c7bdd11612beeee2bd4110d"
+    },
+    "typecheck": {
+      "file": "test-results/item-forbidden-release-typecheck.log",
+      "sha256": "835547a0a3cedd1ff90bfe5f97dbf1090a478c224a4035c4a6245366cbfd0240"
+    },
+    "entry": {
+      "file": "dist/index.html",
+      "sha256": "ff3fe1b4231da91961deb5ba4bbf99be57d2e25285ee8bc0fc05736064fc98a5"
+    },
+    "assets": [
+      {
+        "file": "dist/assets/CanvasRenderer-B6Mdl2XH.js",
+        "sha256": "10062f733eb334b62322dc9a5c349144757377db9c8f83700bdebc1631dc4c33"
+      },
+      {
+        "file": "dist/assets/CanvasRenderer-DJMfeaBj.js",
+        "sha256": "5ec512dc11c2d38bda1cee53d2751571acd611030ffd4fde0fb0c34805d2732e"
+      },
+      {
+        "file": "dist/assets/Filter-3Gl5Xq8e.js",
+        "sha256": "ff7d610e3f8192440593d21cd136f96e4becc82a23699aa498414c5990d20521"
+      },
+      {
+        "file": "dist/assets/Filter-DDSqlrdU.js",
+        "sha256": "379eb8a342e8e5b10c2cd6e37d1b13fbd0208874c088381f1e83b6220645f353"
+      },
+      {
+        "file": "dist/assets/RenderTargetSystem-10VWBYJN.js",
+        "sha256": "15a4d6d93c6085a7dd593141cb9efbe26da8807881658b4798f40b2e03174394"
+      },
+      {
+        "file": "dist/assets/RenderTargetSystem-BQ1uar_M.js",
+        "sha256": "0724dd8926d7100379bb9c30ddd384875901e216ab6f4fd9853307fda9068026"
+      },
+      {
+        "file": "dist/assets/WebGLRenderer-BOop3V_f.js",
+        "sha256": "bc33a461adc7aad937c65dd40a117b526eda37adfe794cfa834214dd5d122484"
+      },
+      {
+        "file": "dist/assets/WebGLRenderer-CjvdXnRC.js",
+        "sha256": "6e3a424afa23e51db070b6c7e62104abfceb8ccc1609ebeacfc173edc77c14c3"
+      },
+      {
+        "file": "dist/assets/WebGPURenderer-iUvH4dHQ.js",
+        "sha256": "4d5dda3172c940f9ae5aa25c61b7003b6213f6ca296c6bd38e9382fa4600edfc"
+      },
+      {
+        "file": "dist/assets/WebGPURenderer-zMFGatTH.js",
+        "sha256": "d094ebc94dc94a8338c5c0ca7bd6b1909447156a2302247416b321c8ae974126"
+      },
+      {
+        "file": "dist/assets/browserAll-Clu8kaYY.js",
+        "sha256": "d08ec2990cb090ac13141978ef930f5110afc15f82c1e10cdd9ef52fcbf86694"
+      },
+      {
+        "file": "dist/assets/browserAll-DcLNF0vk.js",
+        "sha256": "c0b603ca84267894b381ec6cfae9636912e71499c9135b3cbc18aa453c8eef66"
+      },
+      {
+        "file": "dist/assets/client-CrowJ5J7.js",
+        "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e"
+      },
+      {
+        "file": "dist/assets/getTexelRangeRects-CmR2WXt8.js",
+        "sha256": "215955f1530a2d68893ee70a5146c7a3d11a19ad47c27a84ec2d4152c51da4be"
+      },
+      {
+        "file": "dist/assets/getTexelRangeRects-Dy8HUIoI.js",
+        "sha256": "8bbb0d808ef79bbde316b91d4311ad257e0676d7cef252b4d4b335c890e13d70"
+      },
+      {
+        "file": "dist/assets/index-DgNMVZZy.js",
+        "sha256": "8ca39fb4b72c4476e9f7bbc8284d7fbc98f3ab01167ebf6ee25c118b850aa3ee"
+      },
+      {
+        "file": "dist/assets/main-Bd4OPQD3.css",
+        "sha256": "dc5627827651affe81bedfa46cbf7057ef1e88932911b4ea18396538b97e69fa"
+      },
+      {
+        "file": "dist/assets/main-BuOpusL3.js",
+        "sha256": "448a44c81666ded109630cbb4742bd38c837a7ede757ce7aa01a9d076d7f980b"
+      },
+      {
+        "file": "dist/assets/main-D41p3ul3.css",
+        "sha256": "2d6b435f52d8ad0fa17b5bede6c7fa414a1f89b41fe37e5db5815561763ce2e7"
+      },
+      {
+        "file": "dist/assets/main-r0sTuZjI.js",
+        "sha256": "b4e52644c8a2ef1e7c9cc86c5efc36b77207f557d537183fc9b8ff16ce51d04a"
+      },
+      {
+        "file": "dist/assets/render.worker-DSNcKIh7.js",
+        "sha256": "d20eee6ca33b28ab9af0145994a83d57538f915cded4c5c52b0f5ce649a11a58"
+      },
+      {
+        "file": "dist/assets/render.worker-cs4Venz5.js",
+        "sha256": "fdee1ec27ff8f3f2bf87d9e78394a12ea45e588b19ddceb524f13f74bd3746c8"
+      },
+      {
+        "file": "dist/assets/renderer-Ef-Nlsmq.js",
+        "sha256": "878498cb36705dd5c4ed00121eeeabee690f834a88e87d08dab5760dc5e348ba"
+      },
+      {
+        "file": "dist/assets/sim.worker-DHGB6pL_.js",
+        "sha256": "e840d1321cd0be9cf5cedcb18791a5b3636dee53e804203774ec7a75d293120e"
+      },
+      {
+        "file": "dist/assets/sim.worker-TVFgUzzb.js",
+        "sha256": "660607d5f3448266fb3aa9d9c6ac5e433a3524c096ab3f5d266cff8590dd8d36"
+      },
+      {
+        "file": "dist/assets/webworkerAll-0b5Tygjj.js",
+        "sha256": "ae2ba31eb7d7b32069b781ede54a2cdf24eb4a5e0b0cd6ad27e0498ed5b47a95"
+      },
+      {
+        "file": "dist/assets/webworkerAll-CFyh1a7n.js",
+        "sha256": "f3f29f4a713c60720f2bf1064ec61bc7567b39b8e28695c451f1c8454e1eb1b9"
+      }
+    ]
+  },
+  "tracked": [
+    {
+      "file": "scripts/voxel-item-forbidden-legacy-verify.mjs",
+      "sha256": "f8ae033b3b4c79d7b637ba27657101f62977bf1e0026349c18d81d155106411c"
+    },
+    {
+      "file": "scripts/research/verify-voxel-item-forbidden-validation.mjs",
+      "sha256": "abd3bd4c9a97100040f40915fb9ca1f43bb4ead2fd15dc0061f9dd8fff11363d"
+    },
+    {
+      "file": "scripts/research/extract-item-forbidden.ps1",
+      "sha256": "3e3fc6332e5e8debd505510accf598b2407ef92b2958bccc3974c9a026be1b93"
+    },
+    {
+      "file": "scripts/research/collect-item-forbidden-evidence.ps1",
+      "sha256": "b89d17440e09cc4923449e7f755583bc33b0ebfd81db62b7142a0e0c9649e1c3"
+    },
+    {
+      "file": "scripts/research/collect-item-forbidden-runtime-boundary.ps1",
+      "sha256": "0d61d08ae3c3914c7b3b4c3d89b703cad9956d3c637d1e88474c74107a36e1ec"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/item-forbidden-manifest.json",
+      "sha256": "4ad4b6c4e4784608bc912922a0c5c0bdfff73b71645f7323a62ae5c3e9951569"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/item-forbidden-mechanisms.json",
+      "sha256": "a7b745c63dac1e13fd049ff426a171c851937e73dc2272f69c87642d6c3b8973"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/item-forbidden-runtime-boundary.json",
+      "sha256": "078d5dab1766a68ec8d5d3b13fd7edb37dc2de260434d1eb0ae3e1ce948505bb"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/allowed-area-voxel-validation.json",
+      "sha256": "7c7910bb33353f502cf9ac5ff418399685eabc72f3ca14e412a2b1c790451057"
+    }
+  ],
+  "limits": "Mechanics first, provisional balance. No v45 native gameplay, browser rendering, input, screenshot or fresh GUI campaign verification. Local tests contain controlled fixtures. Historical browser save provenance is not current UI evidence."
+}

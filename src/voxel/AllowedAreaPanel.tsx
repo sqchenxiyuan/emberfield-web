@@ -15,7 +15,7 @@ export function PawnAllowedArea({ pawn, snapshot, command, controls, manage }: {
       <option value="">不限制</option>
       {snapshot.animalAreas.map(area => <option key={area.id} value={area.id}>{area.name}{area.cells.length ? '' : ' · 空区域，不限制'}</option>)}
     </select></label>
-    <small>{bypass ? '征召或精神状态期间忽略区域限制，设置会保留。' : area?.cells.length ? `工作与日常需求在“${area.name}”内选目标；区外会寻找通路返回。` : '当前没有区域限制。空区域也等同于不限制。'}</small>
+    <small>{bypass ? '征召或精神状态期间忽略区域限制，设置会保留。' : area?.cells.length ? `普通工作与日常需求在“${area.name}”内选目标；手动装备和穿戴可越区取用，之后会寻找通路返回。` : '当前没有区域限制。空区域也等同于不限制。'}</small>
     <div className="voxel-allowed-area-actions">
       {area && <button onClick={() => controls.showArea(controls.selectedAreaId === area.id ? null : area.id)} aria-pressed={controls.selectedAreaId === area.id}>显示区域</button>}
       {manage && <button onClick={manage}>管理允许区域</button>}
@@ -52,7 +52,7 @@ export function AllowedAreaPanel({ snapshot, command, controls, level, focus, cl
     <details className="voxel-allowed-area-help" open><summary>区域怎样生效</summary>
       <p>把工作目标、所需材料、食物和床都包含在内。区域只筛选目的地，行走路线可能经过区外；它不会形成围墙。</p>
       <p>空区域等同于不限制。征召与精神状态期间忽略限制，区域设置会保留。</p>
-      <p>手动装备武器可以越区，完成后会返回。需要直接指挥区外移动时，可先征召居民。</p>
+      <p>手动装备武器、穿戴衣物会解除对应物品的禁止，并允许越区取用，完成后会返回。途中重新分配允许区域仍可能中断任务。需要直接指挥区外移动时，可先征召居民。</p>
       <p>左键拖动增添或擦除，右键结束。可以切换楼层继续绘制，区域本身不会建造地面，也不会揭开未探索地形。</p>
     </details>
     <form className="voxel-allowed-area-create" onSubmit={event => { event.preventDefault(); void create(); }}>

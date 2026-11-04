@@ -73,6 +73,12 @@ try {
     const panel = () => page.locator(`[data-testid="production-bills"][data-bench-id="${campaign.benchId}"]`);
     const row = billId => panel().locator(`[data-testid="bill-row"][data-bill-id="${billId}"]`);
     const details = () => page.locator(`[data-testid="unfinished-detail"][data-unfinished-id="${campaign.unfinishedId}"]:visible`).first();
+    async function accessButton() {
+      const current = entry((await state()).snapshot); assert(current);
+      // Carried workpieces retain their own control. Ground/shelf stacks use ItemAccessPanel.
+      return current.carrier ? details().getByTestId('unfinished-forbid')
+        : page.locator(`[data-testid="item-access"][data-item-id="${current.batch.id}"]`).getByTestId('item-forbid');
+    }
     const check = name => { result.checks.push(name); console.log('PASS', mode, name); };
     async function click(name) {
       await button(name).scrollIntoViewIfNeeded(); await button(name).click();
@@ -158,7 +164,7 @@ try {
     }
     async function runFor(ticks) { const tick = (await state()).snapshot.tick; await runUntil(t => window.voxel.snapshot().snapshot.tick >= t, tick + ticks); }
     async function forbid(value) {
-      if (!!entry(await saved()).batch.forbidden !== value) await details().getByTestId('unfinished-forbid').click();
+      if (!!entry(await saved()).batch.forbidden !== value) await (await accessButton()).click();
       await wait(({ id, value }) => {
         const s = window.voxel.snapshot().snapshot, batch = s.items.find(i => i.unfinished?.id === id) ?? s.pawns.find(p => p.cargo?.unfinished?.id === id)?.cargo;
         return !!batch && !!batch.forbidden === value;
@@ -189,7 +195,7 @@ try {
       assert.deepEqual(entry(paused).piece, original); conserved(working, paused);
       await selectPiece(); assert((await details().getByTestId('unfinished-binding').innerText()).includes('暂停'));
       assert((await state()).metrics.unfinished.groundParts >= 6);
-      await shot('paused-item', details().getByTestId('unfinished-forbid'));
+      await shot('paused-item', await accessButton());
       check('visible bill pause retains selectable physical item, exact progress, author and embedded materials');
 
       await selectBench(); await row(campaign.billId).getByRole('button', { name: '删除账单', exact: true }).click();
@@ -203,10 +209,10 @@ try {
       await forbid(true); const forbidden = await saved(); await runFor(40);
       assert.deepEqual(entry(await saved()).piece, entry(forbidden).piece);
       await roundtrip('forbidden-orphan'); await selectPiece();
-      assert.equal(await details().getByTestId('unfinished-forbid').getAttribute('aria-pressed'), 'true');
-      await shot('forbidden-item', details().getByTestId('unfinished-forbid'));
+      assert.equal(await (await accessButton()).getAttribute('aria-pressed'), 'true');
+      await shot('forbidden-item', await accessButton());
       await page.setViewportSize({ width: 980, height: 720 }); await settle();
-      await shot('compact-item', details().getByTestId('unfinished-forbid'));
+      await shot('compact-item', await accessButton());
       await details().locator('.voxel-unfinished-cancel > summary').click();
       await shot('compact-cancel', details().getByTestId('unfinished-cancel'));
       await page.setViewportSize({ width: 1440, height: 960 }); await settle();
@@ -267,7 +273,7 @@ try {
       for (const name of ['paused', 'orphan', 'forbidden']) {
         const data = await fixture(name); await selectPiece();
         assert.deepEqual(entry(await saved()).piece, entry(data).piece);
-        if (name === 'forbidden') assert.equal(await details().getByTestId('unfinished-forbid').getAttribute('aria-pressed'), 'true');
+        if (name === 'forbidden') assert.equal(await (await accessButton()).getAttribute('aria-pressed'), 'true');
       }
       await fixture('final'); assert.equal(entry(await saved()), undefined); await selectBench();
       assert.equal(billOf(await saved(), campaign.newBillId).remaining, 0);

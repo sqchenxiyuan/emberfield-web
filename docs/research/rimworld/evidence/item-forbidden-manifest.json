@@ -1,0 +1,235 @@
+{
+  "evidence_id": "RW17-ITEM-FORBIDDEN",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.CompForbiddable",
+      "local_file": ".local-research/item-forbidden/RimWorld.CompForbiddable.cs",
+      "sha256": "7e84d5006a99cdb19c9c1f2a62fc358bd9871a3fe7094ec327cf8fe386ae48e7",
+      "lines": 146
+    },
+    {
+      "type": "RimWorld.ForbidUtility",
+      "local_file": ".local-research/item-forbidden/RimWorld.ForbidUtility.cs",
+      "sha256": "e36190372ca2bc9540ef40d3d6a3ee836f30c3da7ee6842dffa79c0da78fbf48",
+      "lines": 208
+    },
+    {
+      "type": "Verse.ThingComp",
+      "local_file": ".local-research/item-forbidden/Verse.ThingComp.cs",
+      "sha256": "f9461fac8b7a40cafa9a13edc21ae0e0070e639587c98d3e9f2f6fd1d440a54f",
+      "lines": 364
+    },
+    {
+      "type": "Verse.ThingWithComps",
+      "local_file": ".local-research/item-forbidden/Verse.ThingWithComps.cs",
+      "sha256": "9ae0bf1c6884b0fd48213cf5bb2cfda7d0ee63eb43cbe97689f90e4287c2ed6b",
+      "lines": 1040
+    },
+    {
+      "type": "Verse.Thing",
+      "local_file": ".local-research/item-forbidden/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "lines": 2235
+    },
+    {
+      "type": "Verse.AI.HaulAIUtility",
+      "local_file": ".local-research/item-forbidden/Verse.AI.HaulAIUtility.cs",
+      "sha256": "6276e39bb2fd29fc5989b84bc2424fc65b26e4cfcfd74b673d3686eec7d5ae59",
+      "lines": 379
+    },
+    {
+      "type": "RimWorld.ListerHaulables",
+      "local_file": ".local-research/item-forbidden/RimWorld.ListerHaulables.cs",
+      "sha256": "e82919461cfb4389f027e07332aed3668dd45d6908666810c88bd0584ec4e8d7",
+      "lines": 259
+    },
+    {
+      "type": "RimWorld.ListerMergeables",
+      "local_file": ".local-research/item-forbidden/RimWorld.ListerMergeables.cs",
+      "sha256": "18da288ef655c814f1d102e24a5a2faf209e847950ad4dd67e65aca2fc9994b6",
+      "lines": 140
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "local_file": ".local-research/item-forbidden/RimWorld.FoodUtility.cs",
+      "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+      "lines": 1686
+    },
+    {
+      "type": "RimWorld.HealthAIUtility",
+      "local_file": ".local-research/item-forbidden/RimWorld.HealthAIUtility.cs",
+      "sha256": "3bd707b58f5232459e9843a60ceeb9cc7a7a88c8d64f639726b6a4b216c68558",
+      "lines": 207
+    },
+    {
+      "type": "RimWorld.WorkGiver_Tend",
+      "local_file": ".local-research/item-forbidden/RimWorld.WorkGiver_Tend.cs",
+      "sha256": "56f516a61965421554032f9365e9d8240036c6d6c36ef7970d46ead04f6c0782",
+      "lines": 60
+    },
+    {
+      "type": "RimWorld.WorkGiver_ConstructDeliverResources",
+      "local_file": ".local-research/item-forbidden/RimWorld.WorkGiver_ConstructDeliverResources.cs",
+      "sha256": "d56e9f6233e39792dc26e0380ad0ebe8626aad4cd5c0fdf6729847afc382d004",
+      "lines": 403
+    },
+    {
+      "type": "RimWorld.WorkGiver_DoBill",
+      "local_file": ".local-research/item-forbidden/RimWorld.WorkGiver_DoBill.cs",
+      "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+      "lines": 730
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_WorkGivers",
+      "local_file": ".local-research/item-forbidden/RimWorld.FloatMenuOptionProvider_WorkGivers.cs",
+      "sha256": "f05e9f1b76d69cff7f2f28e33a0cbcfa2bdeff30f3f967f943b135f892b3968a",
+      "lines": 257
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_Equip",
+      "local_file": ".local-research/item-forbidden/RimWorld.FloatMenuOptionProvider_Equip.cs",
+      "sha256": "8f7c6cd684307bac95c205ac17dea46f8341f58cb528cdf3316e6371715c7625",
+      "lines": 92
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_Wear",
+      "local_file": ".local-research/item-forbidden/RimWorld.FloatMenuOptionProvider_Wear.cs",
+      "sha256": "d1577b01ad535c55299cecf5cd96890789d81c4e957c9756670ad4cc276f0f7f",
+      "lines": 74
+    },
+    {
+      "type": "RimWorld.Designator_Install",
+      "local_file": ".local-research/item-forbidden/RimWorld.Designator_Install.cs",
+      "sha256": "a9cea67b8ffaadea50aaf8cac84e0dd7d70a92fafac29003d02093909865cdf9",
+      "lines": 158
+    },
+    {
+      "type": "RimWorld.Blueprint_Install",
+      "local_file": ".local-research/item-forbidden/RimWorld.Blueprint_Install.cs",
+      "sha256": "9d3b41f79b34bc082bdb06026782bd2cafaf65626879edb11190d62a88ebb060",
+      "lines": 198
+    },
+    {
+      "type": "RimWorld.WorkGiver_ConstructDeliverResourcesToBlueprints",
+      "local_file": ".local-research/item-forbidden/RimWorld.WorkGiver_ConstructDeliverResourcesToBlueprints.cs",
+      "sha256": "fe4a83cae7b6a8d5dc481b9fb8dd0b4cbdcfca44b1f3961ca7b0aaf1f993b0ae",
+      "lines": 142
+    },
+    {
+      "type": "Verse.AI.Pawn_JobTracker",
+      "local_file": ".local-research/item-forbidden/Verse.AI.Pawn_JobTracker.cs",
+      "sha256": "7934319bfedbd8a46aa54341a2afec9561efb469cd4fe58aec5745f9236fc5c4",
+      "lines": 1075
+    },
+    {
+      "type": "RimWorld.TradeUtility",
+      "local_file": ".local-research/item-forbidden/RimWorld.TradeUtility.cs",
+      "sha256": "de12a556209ea51bb8f5a9196c0a2172d30c44a2022f3e11bbebba9c7ce19256",
+      "lines": 330
+    },
+    {
+      "type": "RimWorld.Tradeable",
+      "local_file": ".local-research/item-forbidden/RimWorld.Tradeable.cs",
+      "sha256": "520b439791a5e9943fe0be9b7a3c1dc78ff27654cadbfd5426133ec7ccd72ad2",
+      "lines": 526
+    },
+    {
+      "type": "Verse.RecipeWorkerCounter",
+      "local_file": ".local-research/item-forbidden/Verse.RecipeWorkerCounter.cs",
+      "sha256": "dc0d44c166c2797cb39df826fa69f881519b6bc5b4d0cc300dcbafaca3bf9b39",
+      "lines": 184
+    },
+    {
+      "type": "RimWorld.ResourceCounter",
+      "local_file": ".local-research/item-forbidden/RimWorld.ResourceCounter.cs",
+      "sha256": "132e2e9c8214a435f8c73222454dbb87a9501ca30712233538f512619b6e4db9",
+      "lines": 170
+    },
+    {
+      "type": "RimWorld.Bill_Production",
+      "local_file": ".local-research/item-forbidden/RimWorld.Bill_Production.cs",
+      "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+      "lines": 469
+    },
+    {
+      "type": "Verse.GenRecipe",
+      "local_file": ".local-research/item-forbidden/Verse.GenRecipe.cs",
+      "sha256": "41cb19d602f388137484b15bc4126fbcdebad63013c34f8432cabff5b28337e3",
+      "lines": 128
+    },
+    {
+      "type": "Verse.AI.JobDriver_Equip",
+      "local_file": ".local-research/item-forbidden/Verse.AI.JobDriver_Equip.cs",
+      "sha256": "fc798602cb4b8305ece76dc03432d24ceb6f8e3ebf46d0565b83443683589471",
+      "lines": 125
+    },
+    {
+      "type": "RimWorld.JobDriver_Wear",
+      "local_file": ".local-research/item-forbidden/RimWorld.JobDriver_Wear.cs",
+      "sha256": "2e189395f272ec05e97df29c0d6cadbdfed052cc847bb6cf68190c0c6af2413e",
+      "lines": 151
+    },
+    {
+      "type": "RimWorld.GenConstruct",
+      "local_file": ".local-research/item-forbidden/RimWorld.GenConstruct.cs",
+      "sha256": "b4895c5536662931c685958c1d22826b7f07bb4f01d970f9671f853ad4c0fe77",
+      "lines": 1007
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "local_file": ".local-research/item-forbidden/RimWorld.Pawn_TraderTracker.cs",
+      "sha256": "b57852d9a71cc3f748570a22b8e8fbd5222bae48cbf4fed652059d72d1996b6c",
+      "lines": 270
+    },
+    {
+      "type": "Verse.GenPlace",
+      "local_file": ".local-research/item-forbidden/Verse.GenPlace.cs",
+      "sha256": "72e9f795b464dd3dad6afb2b40908a23f06e9407c31fd10290fd78bee8747ecb",
+      "lines": 401
+    },
+    {
+      "type": "RimWorld.MinifiedThing",
+      "local_file": ".local-research/item-forbidden/RimWorld.MinifiedThing.cs",
+      "sha256": "c9d0f0bbc7b741043e227a83cff4a99c0b0719d78bffd820e58f571c8cf4614e",
+      "lines": 293
+    },
+    {
+      "type": "Verse.ThingUtility",
+      "local_file": ".local-research/item-forbidden/Verse.ThingUtility.cs",
+      "sha256": "4502e6db44ab7430a9d258da8833b7612b7b13a65e989537c42a19ceb2fb8a69",
+      "lines": 256
+    },
+    {
+      "type": "RimWorld.JobGiver_GetFood",
+      "local_file": ".local-research/item-forbidden/RimWorld.JobGiver_GetFood.cs",
+      "sha256": "c648efbdd091620603979d79de4c064f5a8174e7f6cf51950b6c19619a398a04",
+      "lines": 186
+    },
+    {
+      "type": "RimWorld.JobGiver_EatRandom",
+      "local_file": ".local-research/item-forbidden/RimWorld.JobGiver_EatRandom.cs",
+      "sha256": "ebc08462364c9afbc7c24c08aceaf7cf4f2195534370fa714d70655c9bc6858d",
+      "lines": 39
+    },
+    {
+      "type": "Verse.GenSpawn",
+      "local_file": ".local-research/item-forbidden/Verse.GenSpawn.cs",
+      "sha256": "ae87c3214cc7c5e469e33564803c8c9936cfb99c00b2d56f420121bf61fdd110",
+      "lines": 520
+    }
+  ]
+}

@@ -102,7 +102,7 @@ export interface VoxelView {
 }
 
 export interface PlacementPreview {
-  tool: 'bridge' | 'shelf' | 'smallShelf' | 'bed' | 'table' | 'chair' | 'fence' | 'fenceGate' | 'penMarker' | 'animalArea';
+  tool: 'bridge' | 'shelf' | 'smallShelf' | 'bed' | 'table' | 'chair' | 'fence' | 'fenceGate' | 'penMarker' | 'animalArea' | 'forbidItems' | 'allowItems';
   from: Pos;
   to: Pos;
   axis: Axis;
@@ -1356,6 +1356,16 @@ export class VoxelRenderer {
     });
     this.finish(cactus);
     const loose = this.data.items.filter((item) => item.amount > 0 && item.z <= this.level && this.explored(item));
+    const forbiddenItems = loose.filter(item => item.forbidden);
+    const forbiddenMarkers = this.batch('item-forbidden', forbiddenItems.length * 2, this.box, this.effectMaterial('item-forbidden', .95));
+    this.inspectBatches.set(forbiddenMarkers, { cells: forbiddenItems, instancesPerCell: 2 });
+    forbiddenMarkers.userData.items = forbiddenItems.map(item => ({ id: item.id, x: item.x, y: item.y, z: item.z, displayZ: this.stackDisplay(item).z + .46 }));
+    forbiddenItems.forEach((item, i) => {
+      for (let n = 0; n < 2; n++) this.instance(forbiddenMarkers, i * 2 + n,
+        item.x + .78, this.stackDisplay(item).z + .46, item.y + .22,
+        .34, .035, .055, 0xf18070, n ? Math.PI / 4 : -Math.PI / 4);
+    });
+    this.finish(forbiddenMarkers);
     const items = loose.filter(
       (item) =>
         item.resource !== 'chunk' &&
@@ -1375,17 +1385,12 @@ export class VoxelRenderer {
     this.finish(packages);
     const unfinished = loose.filter(item => item.resource === 'unfinished' && item.unfinished);
     const workpieces = this.batch('unfinished-products', unfinished.length * UNFINISHED_MODEL_PARTS.length, this.box, this.batchMaterial('unfinished-products'));
-    const blockedWorkpieces = this.batch('unfinished-forbidden', unfinished.length * 2, this.box, this.effectMaterial('unfinished-forbidden', .85));
     this.inspectBatches.set(workpieces, { cells: unfinished, instancesPerCell: UNFINISHED_MODEL_PARTS.length });
-    this.inspectBatches.set(blockedWorkpieces, { cells: unfinished, instancesPerCell: 2 });
     unfinished.forEach((item, i) => {
       UNFINISHED_MODEL_PARTS.forEach(([x, y, z, sx, sy, sz, color], n) => this.instance(workpieces,
         i * UNFINISHED_MODEL_PARTS.length + n, item.x + .5 + x, this.stackDisplay(item).z + y, item.y + .5 + z, sx, sy, sz, color));
-      for (let n = 0; n < 2; n++) this.instance(blockedWorkpieces, i * 2 + n,
-        item.x + .77, this.stackDisplay(item).z + .34, item.y + .22,
-        item.forbidden ? .25 : 0, item.forbidden ? .025 : 0, item.forbidden ? .04 : 0, 0xe76d63, n ? Math.PI / 4 : -Math.PI / 4);
     });
-    this.finish(workpieces); this.finish(blockedWorkpieces);
+    this.finish(workpieces);
     const chunks = loose.filter((item) => item.resource === 'chunk');
     const rocks = this.batch(
       'rock-chunks',
@@ -1526,14 +1531,7 @@ export class VoxelRenderer {
       this.box,
       this.batchMaterial('loose-weapons'),
     );
-    const forbidden = this.batch(
-      'weapon-forbidden',
-      weapons.length * 2,
-      this.box,
-      this.effectMaterial('weapon-forbidden', 0.85),
-    );
     this.inspectBatches.set(weaponModels, { cells: weapons, instancesPerCell: 4 });
-    this.inspectBatches.set(forbidden, { cells: weapons, instancesPerCell: 2 });
     weapons.forEach((item, i) => {
       const kind = item.weapon!.kind;
       const yaw = 0.28;
@@ -1552,22 +1550,8 @@ export class VoxelRenderer {
           yaw,
         );
       });
-      for (let n = 0; n < 2; n++)
-        this.instance(
-          forbidden,
-          i * 2 + n,
-          item.x + 0.78,
-          this.stackDisplay(item).z + 0.16,
-          item.y + 0.22,
-          item.forbidden ? 0.25 : 0,
-          item.forbidden ? 0.025 : 0,
-          item.forbidden ? 0.04 : 0,
-          0xe76d63,
-          n ? Math.PI / 4 : -Math.PI / 4,
-        );
     });
     this.finish(weaponModels);
-    this.finish(forbidden);
     const stock = this.data.stockpiles.filter((pos) => pos.z === this.level);
     const storage = this.batch('stock', stock.length, this.box, this.batchMaterial('stock', true));
     stock.forEach((pos, i) =>
@@ -1857,11 +1841,11 @@ export class VoxelRenderer {
     }
     this.deviceBatch('living-placement-preview', furnitureParts, this.box, true, .5, false);
     if (preview && !furniture && (preview.from.z === this.level || (preview.tool === 'bridge' && preview.from.z <= this.level))) {
-      const color = preview.erase ? 0xf2a186 : preview.tool === 'animalArea' ? 0x9dd59d : 0x9be0df;
+      const color = preview.erase || preview.tool === 'forbidItems' ? 0xf2a186 : preview.tool === 'animalArea' || preview.tool === 'allowItems' ? 0x9dd59d : 0x9be0df;
       for (let y = Math.max(0, Math.min(preview.from.y, preview.to.y)); y <= Math.min(DEPTH - 1, Math.max(preview.from.y, preview.to.y)); y++) {
         for (let x = Math.max(0, Math.min(preview.from.x, preview.to.x)); x <= Math.min(WIDTH - 1, Math.max(preview.from.x, preview.to.x)); x++) {
           const p = { x, y, z: preview.from.z };
-          const cutOffset = preview.tool === 'animalArea' && this.block(x, y, p.z) !== Block.Air ? .55 : 0;
+          const cutOffset = ['animalArea', 'forbidItems', 'allowItems'].includes(preview.tool) && this.block(x, y, p.z) !== Block.Air ? .55 : 0;
           const put = (dx: number, dy: number, dz: number, sx: number, sy: number, sz: number) =>
             parts.push({ cell: p, x: x + dx, y: y + dy, z: p.z + cutOffset + dz, sx, sy, sz, color });
           put(.5, .5, .09, .94, .94, .035);
@@ -4584,6 +4568,10 @@ export class VoxelRenderer {
       rotation: this.rotation,
       zoom: this.zoom,
       weather: { ...this.weatherRender },
+      itemAccess: {
+        markerParts: this.batches.get('item-forbidden')?.mesh.count ?? 0,
+        markers: this.batches.get('item-forbidden')?.mesh.userData.items ?? [],
+      },
       pens: {
         structures: this.batches.get('pen-structures')?.mesh.count ?? 0,
         ropeSegments: this.batches.get('animal-ropes')?.mesh.count ?? 0,
