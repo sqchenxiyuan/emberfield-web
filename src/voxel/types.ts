@@ -6,6 +6,7 @@ import type { ResearchKey, ResearchState } from './research';
 import type { Difficulty, StorytellerState, StorytellerView } from './storyteller';
 import type { TradeCommand, TradeState, TradeView } from './tradeTypes';
 import type { Psyche } from './mood';
+import type { SocialState, SocialIdentity, SocialEvent } from './social';
 import type { DiningTable, DiningChair, LivingState, RoomLivingSummary } from './living';
 import type { PrisonerState, PrisonerPolicy, WardenTask } from './prisoners';
 import type { Filth, CleanTask, FoodPoisoning, RoomCleanliness, CookingOutcome } from './sanitation';
@@ -617,6 +618,7 @@ export interface CombatState {
   wave: number;
 }
 export interface Pawn extends Pos {
+  social: SocialState;
   living: LivingState;
   ropeTask: RopeTask | null;
   handleTask: HandleTask | null;
@@ -740,6 +742,8 @@ export interface VoxelStats {
   spoiled: Counts;
 }
 export interface VoxelSnapshot {
+  socialHistory: SocialIdentity[];
+  socialLog: SocialEvent[];
   tables: DiningTable[];
   chairs: DiningChair[];
   roomLiving: RoomLivingSummary[];
@@ -823,6 +827,7 @@ export interface ChunkUpdate {
   ladders: Uint8Array;
 }
 export type VoxelCommand =
+  | { type: 'tableGathering'; tableId: number; enabled: boolean }
   | { type: 'fenceGate'; gateId: number; mode: FenceGate['mode'] }
   | { type: 'penFilter'; markerId: number; filter: PenMarker['filter'] }
   | { type: 'penName'; markerId: number; name: string }
@@ -843,7 +848,7 @@ export type VoxelCommand =
   | { type: 'bedPrisoner'; bedId: number; prisoner: boolean }
   | { type: 'capture'; pawnId: number; targetId: number }
   | { type: 'prisonerPolicy'; prisonerId: number; policy: PrisonerPolicy }
-  | { type: 'recreate'; pawnId: number }
+  | { type: 'recreate'; pawnId: number; kind?: 'walk' | 'horseshoes' | 'social' }
   | { type: 'cancelRecreation'; pawnId: number }
   | { type: 'hunt'; animalId: number; enabled: boolean }
   | { type: 'butcherBill'; spotId: number; paused: boolean }
@@ -900,6 +905,8 @@ export interface CommandResult {
   count?: number;
 }
 export interface VoxelSave {
+  socialHistory: SocialIdentity[];
+  socialLog: SocialEvent[];
   tables: DiningTable[];
   chairs: DiningChair[];
   fences: Fence[];
@@ -917,7 +924,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 31;
+  version: 32;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;

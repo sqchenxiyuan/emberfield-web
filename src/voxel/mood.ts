@@ -1,9 +1,10 @@
 import { DAY, inside, type Assignment, type Pawn, type Pos } from './types';
 import { healthSummary } from './survival';
 import { livingThoughts } from './living';
+import { socialThoughts } from './social';
 
 export type MemoryKind = 'ateRaw' | 'sleptGround' | 'catharsis' | 'wet';
-export type RecreationKind = 'walk' | 'horseshoes';
+export type RecreationKind = 'walk' | 'horseshoes' | 'social';
 export interface Psyche {
   level: number;
   joy: number;
@@ -38,12 +39,12 @@ export const MOOD_RULES = Object.freeze({
   memoryValue: Object.freeze({ ateRaw: -5, sleptGround: -6, catharsis: 16, wet: -3 }),
   freeJoyThreshold: 45, scheduledJoyThreshold: 90, recreationStopJoy: 95,
   recreationMinFood: 20, recreationMinRest: 20, recreationDurationTicks: 600,
-  recreationBaseGain: Object.freeze({ walk: .07, horseshoes: .11 }),
+  recreationBaseGain: Object.freeze({ walk: .07, horseshoes: .11, social: .09 }),
   minimumRecreationFactor: .2,
   toleranceGainPerTick: .4 / 600, toleranceDecayPerTick: .6 / DAY,
 });
 export const RECREATION_NAMES: Readonly<Record<RecreationKind, string>> = {
-  walk: '户外散步', horseshoes: '马蹄铁投掷',
+  walk: '户外散步', horseshoes: '马蹄铁投掷', social: '桌边休闲',
 };
 const MEMORY_NAMES: Readonly<Record<MemoryKind, string>> = {
   ateRaw: '吃了生食', sleptGround: '睡在地上', catharsis: '发泄后的平静', wet: '淋湿了',
@@ -61,7 +62,7 @@ export function initialPsyche(tick = 0): Psyche {
   validTick(tick);
   return { level: MOOD_RULES.initialLevel, joy: MOOD_RULES.initialJoy,
     lowTicks: 0, breakUntil: 0, cooldownUntil: tick, memories: [],
-    tolerance: { walk: 0, horseshoes: 0 }, recreation: null };
+    tolerance: { walk: 0, horseshoes: 0, social: 0 }, recreation: null };
 }
 
 /** Repeated events refresh one memory; they never stack duplicate penalties. */
@@ -102,6 +103,7 @@ export function moodView(p: Pawn, tick: number, temperature: number): {
   for (const memory of q.memories) if (memory.expires > tick)
     add(MEMORY_NAMES[memory.kind], MOOD_RULES.memoryValue[memory.kind]);
   for (const thought of livingThoughts(p.living, tick)) add(thought.label, thought.value);
+  for (const thought of socialThoughts(p.social, tick)) add(thought.label, thought.value);
   const breakRemaining = Math.max(0, q.breakUntil - tick);
   return { target: clamp(thoughts.reduce((sum, t) => sum + t.value, 0)), thoughts,
     risk: breakRemaining > 0 ? 'break' : q.level < MOOD_RULES.lowThreshold ? 'low' : 'stable',
@@ -117,7 +119,7 @@ export function advancePsyche(p: Pawn, tick: number, temperature: number): 'star
   q.memories = q.memories.filter(m => m.expires > tick);
   const awake = !p.downed && p.phase !== 'rest' && p.sleepingSince === null;
   if (awake) q.joy = clamp(q.joy - MOOD_RULES.joyFallPerTick);
-  for (const kind of ['walk', 'horseshoes'] as const)
+  for (const kind of ['walk', 'horseshoes', 'social'] as const)
     if (q.recreation?.kind !== kind)
       q.tolerance[kind] = clamp(q.tolerance[kind] - MOOD_RULES.toleranceDecayPerTick, 0, 1);
   q.level = clamp(q.level + clamp(target - q.level, -MOOD_RULES.moodChangePerTick, MOOD_RULES.moodChangePerTick));
@@ -171,8 +173,8 @@ export function validatePsyche(p: Pawn, tick: number): boolean {
       !integer(q.lowTicks) || q.lowTicks > MOOD_RULES.lowDurationTicks ||
       !integer(q.breakUntil) || q.breakUntil > tick + MOOD_RULES.breakDurationTicks ||
       !integer(q.cooldownUntil) || q.cooldownUntil > tick + MOOD_RULES.cooldownTicks ||
-      !record(q.tolerance) || Object.keys(q.tolerance).length !== 2 ||
-      !finiteBetween(q.tolerance.walk, 0, 1) || !finiteBetween(q.tolerance.horseshoes, 0, 1) ||
+      !record(q.tolerance) || Object.keys(q.tolerance).length !== 3 ||
+      !finiteBetween(q.tolerance.walk, 0, 1) || !finiteBetween(q.tolerance.horseshoes, 0, 1) || !finiteBetween(q.tolerance.social, 0, 1) ||
       !Array.isArray(q.memories) || q.memories.length > 4 ||
       new Set(q.memories.map(m => m?.kind)).size !== q.memories.length) return false;
   for (const m of q.memories) if (!record(m) || Object.keys(m).length !== 2 ||

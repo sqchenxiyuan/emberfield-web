@@ -91,7 +91,10 @@
     "research:pens": "node scripts/research/verify-animal-pens-evidence.mjs",
     "test:voxel:living": "node scripts/voxel-living-campaign-verify.mjs",
     "test:voxel:living:browser": "node scripts/voxel-living-browser-verify.mjs",
-    "research:living": "node scripts/research/verify-dining-comfort-evidence.mjs"
+    "research:living": "node scripts/research/verify-dining-comfort-evidence.mjs",
+    "test:voxel:social": "node scripts/voxel-social-campaign-verify.mjs",
+    "test:voxel:social:browser": "node scripts/voxel-social-browser-verify.mjs",
+    "research:social": "node scripts/research/verify-social-interaction-evidence.mjs"
   },
   "dependencies": {
     "pixi.js": "8.22.0",

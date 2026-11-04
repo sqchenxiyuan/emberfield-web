@@ -9,6 +9,7 @@ import type { TradeCommand, TradeQuote, TradeState, TraderCaravan, TraderStock }
 
 export interface Placement { items: Stack[]; nextId: number }
 export interface TradeHost {
+  socialDepart(pawn: Pawn): void;
   seed: number; tick: number; nextId: number; revision: number; notice: string;
   pawns: Pawn[]; items: Stack[]; homeArea: Set<number>; trade: TradeState;
   storyteller: { difficulty: Difficulty };
@@ -191,6 +192,7 @@ export function updateTrade(s: TradeHost) {
       if (p.dead || p.downed || p.attackTargetId !== null || p.shooting) continue;
       if (caravan.stage === 'leaving' && (p.x === 0 || p.x === 63 || p.y === 0 || p.y === 63)) {
         for (const q of s.pawns) if (q.attackTargetId === p.id || q.shooting?.targetId === p.id) s.tradeRelease(q);
+        s.socialDepart(p);
         s.pawns = s.pawns.filter(q => q.id !== p.id);
         caravan.stock = caravan.stock.filter(i => i.carrierId !== p.id);
         continue;

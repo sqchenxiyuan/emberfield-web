@@ -19,7 +19,7 @@ function fixture(dining=true) {
     for(const key of Object.keys(p.priorities))p.priorities[key as keyof typeof p.priorities]=0;
   }
   if(dining) {
-    s.tables.push({...pos(20),id:s.nextId++,axis:'x'});
+    s.tables.push({...pos(20),id:s.nextId++,axis:'x',gathering:true});
     s.chairs.push({...pos(19),id:s.nextId++,axis:'y'});
   }
   s.items.push({...pos(13),...freshBatch('meal',5),id:s.nextId++});

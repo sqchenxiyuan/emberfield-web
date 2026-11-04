@@ -1,3 +1,4 @@
+import { initialSocial } from '../src/voxel/social';
 import { initialLiving } from '../src/voxel/living';
 import { describe, expect, it } from 'vitest';
 import { advancePsyche, initialPsyche, moodView, MOOD_RULES, recreationGain,
@@ -10,7 +11,7 @@ import { makeApparel } from '../src/voxel/apparel';
 // Pure-rule fixture: no world, scheduling, physical jobs or resource simulation.
 function person(extra: Partial<Pawn> = {}): Pawn {
   return { ...initialSurvival(73129, 1), id: 1, name: '测试殖民者', x: 10, y: 10, z: 8,
-    food: 80, rest: 80, worn: [], living: initialLiving(), psyche: initialPsyche(), phase: 'idle', sleepingSince: null,
+    food: 80, rest: 80, worn: [], social: initialSocial(), living: initialLiving(), psyche: initialPsyche(), phase: 'idle', sleepingSince: null,
     sleepBedId: null, jobId: null, cargo: null, eating: null, ...extra } as Pawn;
 }
 const session = (kind: 'walk' | 'horseshoes' = 'walk'): NonNullable<Psyche['recreation']> => ({
@@ -118,7 +119,7 @@ describe('provisional mood, recreation and bounded sad wandering', () => {
       expect(recreationGain(kind, .5)).toBeGreaterThan(recreationGain(kind, 1));
       expect(recreationGain(kind, 1)).toBeGreaterThan(0);
     }
-    const p = person(); p.psyche.tolerance = { walk: .5, horseshoes: .5 };
+    const p = person(); p.psyche.tolerance = { walk: .5, horseshoes: .5, social: .5 };
     p.psyche.recreation = session();
     advancePsyche(p, 1001, 21);
     expect(p.psyche.tolerance.walk).toBe(.5);

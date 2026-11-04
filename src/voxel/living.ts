@@ -1,6 +1,6 @@
 import { DAY, type Axis, type Pos } from './types';
 
-export interface DiningTable extends Pos { id: number; axis: Axis }
+export interface DiningTable extends Pos { id: number; axis: Axis; gathering: boolean }
 export interface DiningChair extends Pos { id: number; axis: Axis }
 export interface MealTask {
   stage: 'travel' | 'chew'; chairId: number | null; tableId: number | null;

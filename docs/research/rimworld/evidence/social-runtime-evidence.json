@@ -1,0 +1,2655 @@
+{
+  "evidence_id": "RW17-NATIVE-SOCIAL-INTERACTION",
+  "date_local": "2026-11-04",
+  "version": "1.7.4980 rev60",
+  "kind": "One ordinary automatic DeepTalk during ordinary SocialRelax; prior developer chair preparation, read-only save projections and native UI",
+  "launch": {
+    "pid": 26464,
+    "started_utc": "2026-11-03T23:49:43.785065Z",
+    "executable": "F:/SteamLibrary/steamapps/common/RimWorld/RimWorld.exe",
+    "profile": ".local-research/runtime/profile-social-20261104",
+    "record_file": ".local-research/runtime/social-20261104/launch-record.json",
+    "record_sha256": "cff5afa706aabcc7246fc3dacad52ff9d7d9d1cbf1b27997a2370c0a218b95cf",
+    "baseline_source": ".local-research/runtime/profile-dining-20261104/Saves/New Arrivals7.rws",
+    "baseline_source_sha256": "3fa11ef70c63bb35453b2044dcda3e6e9a41c50b1c90c017e48e95baad7ad25b",
+    "baseline_copy_sha256": "3fa11ef70c63bb35453b2044dcda3e6e9a41c50b1c90c017e48e95baad7ad25b",
+    "prefs_sha256": "a93f6689f51038276cc059229acd5ba9cae2036ca5bfa9a5506f6ea28ca2a2a6",
+    "mods_sha256": "41595349c9d4e0815c74d5fa89fa6dad2dd3af494f547c5734b028918f2151ff",
+    "active_mods": [
+      "ludeon.rimworld",
+      "ludeon.rimworld.odyssey"
+    ]
+  },
+  "preparation": {
+    "developer_action": true,
+    "edited_saves": false,
+    "method": "God-mode copy of one wooden normal chair at119,134; God off. Ordinary partial recreation schedule painting. Existing table/one chair and pawns from prior dining baseline. Debug search need returned no action; no need level, forced interaction or forced JoyGiver was executed.",
+    "schedule_limit": "12-step drag painted alternating hour cells, not all24; current13h was Joy. Saved timetable is authoritative.",
+    "no_statistical_calibration": true
+  },
+  "targets": {
+    "initiator": "Human961",
+    "recipient": "Human958",
+    "table": "Table1x2c149544",
+    "occupied_chair": "DiningChair149545",
+    "added_chair": "DiningChair185311",
+    "new_log_id": 24,
+    "event_tick": 78450
+  },
+  "saves": [
+    {
+      "file": ".local-research/runtime/profile-social-20261104/Saves/social-baseline.rws",
+      "sha256": "3fa11ef70c63bb35453b2044dcda3e6e9a41c50b1c90c017e48e95baad7ad25b",
+      "ticks_game": 77073,
+      "play_log_ids": [
+        23,
+        22,
+        21,
+        20,
+        19,
+        18,
+        17,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1,
+        0
+      ],
+      "pawns": [
+        {
+          "id": "Human958",
+          "name": "Prophet",
+          "position": "(115, 0, 127)",
+          "job": "FeedPatient",
+          "job_id": 48749,
+          "target_a": "Thing_MealSurvivalPack41855",
+          "target_b": "Thing_Human965",
+          "player_forced": false,
+          "toil": 3,
+          "ticks_left": -95,
+          "last_interaction": "TameAttempt",
+          "last_interaction_time": 75570,
+          "joy": 0.80756557,
+          "comfort": 0.144000009,
+          "memories": [
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human961",
+              "age": 60900,
+              "offset": 13.5374994,
+              "power": 0.902499974
+            },
+            {
+              "class": "Thought_MemorySocialCumulative",
+              "def": "Chitchat",
+              "other": "Thing_Human961",
+              "age": 54300,
+              "offset": 2.97825003,
+              "power": 0.902499974
+            },
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human961",
+              "age": 6150,
+              "offset": 13.5374994,
+              "power": 0.902499974
+            }
+          ]
+        },
+        {
+          "id": "Human961",
+          "name": "Squint",
+          "position": "(105, 0, 128)",
+          "job": "GotoWander",
+          "job_id": 48713,
+          "target_a": "(123, 0, 128)",
+          "target_b": "",
+          "player_forced": false,
+          "toil": 0,
+          "ticks_left": -270,
+          "last_interaction": "Chitchat",
+          "last_interaction_time": 72913,
+          "joy": 0.986499906,
+          "comfort": 0.0,
+          "memories": [
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human958",
+              "age": 60900,
+              "offset": 12.3000002,
+              "power": 0.819999993
+            },
+            {
+              "class": "Thought_MemorySocialCumulative",
+              "def": "Chitchat",
+              "other": "Thing_Human958",
+              "age": 54300,
+              "offset": 2.70600033,
+              "power": 0.819999993
+            },
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human958",
+              "age": 6150,
+              "offset": 12.3000002,
+              "power": 0.819999993
+            }
+          ]
+        }
+      ],
+      "nodes": [
+        {
+          "role": "Human958",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]",
+          "fields": [
+            "id",
+            "def",
+            "name",
+            "pos",
+            "rot",
+            "faction",
+            "jobs",
+            "pather",
+            "interactions",
+            "drafter",
+            "timetable"
+          ],
+          "xml": "<thing Class=\"Pawn\"><def>Human</def><id>Human958</id><pos>(115, 0, 127)</pos><rot>2</rot><faction>Faction_12</faction><name Class=\"NameTriple\"><first>Mitchell</first><nick>Prophet</nick><last>Cook</last></name><jobs><curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>FeedPatient</def><loadID>48749</loadID><targetA>Thing_MealSurvivalPack41855</targetA><targetB>Thing_Human965</targetB><targetQueueA IsNull=\"True\" /><targetQueueB IsNull=\"True\" /><count>1</count><countQueue IsNull=\"True\" /><startTick>76978</startTick><placedThings IsNull=\"True\" /><workGiverDef>DoctorFeedHumanlikes</workGiverDef><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>-1340642732</lastJobGiverKey></curJob><curDriver Class=\"JobDriver_FoodFeedPatient\"><curToilIndex>3</curToilIndex><ticksLeftThisToil>-95</ticksLeftThisToil><startTick>76978</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver><jobQueue><jobs /></jobQueue><formingCaravanTick>-1</formingCaravanTick></jobs><pather><nextCell>(115, 0, 126)</nextCell><nextCellCostLeft>13.3982582</nextCellCostLeft><nextCellCostInitial>17.7299767</nextCellCostInitial><peMode>OnCell</peMode><cellsUntilClamor>5</cellsUntilClamor><lastEnteredCellTick>77069</lastEnteredCellTick><lastMovedTick>77073</lastMovedTick><destination>Thing_MealSurvivalPack41855</destination></pather><drafter><autoUndrafter /></drafter><interactions><lastInteraction>TameAttempt</lastInteraction><lastInteractionTime>75570</lastInteractionTime><lastInteractionDef>TameAttempt</lastInteractionDef></interactions><timetable><times><li>Sleep</li><li>Sleep</li><li>Sleep</li><li>Sleep</li><li>Sleep</li><li>Sleep</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Sleep</li><li>Sleep</li></times></timetable></thing>"
+        },
+        {
+          "role": "Human958/Joy",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Joy\"]",
+          "xml": "<li Class=\"Need_Joy\"><def>Joy</def><curLevel>0.80756557</curLevel><tolerances><vals><li>0.395852953</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li></vals></tolerances><bored><vals><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li></vals></bored></li>"
+        },
+        {
+          "role": "Human958/Comfort",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Comfort\"]",
+          "xml": "<li Class=\"Need_Comfort\"><def>Comfort</def><curLevel>0.144000009</curLevel></li>"
+        },
+        {
+          "role": "Human958/Food",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Food\"]",
+          "xml": "<li Class=\"Need_Food\"><def>Food</def><curLevel>0.994000018</curLevel><lastNonStarvingTick>76981</lastNonStarvingTick></li>"
+        },
+        {
+          "role": "Human958/Rest",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Rest\"]",
+          "xml": "<li Class=\"Need_Rest\"><def>Rest</def><curLevel>0.776749372</curLevel></li>"
+        },
+        {
+          "role": "Human958/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human961\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[1]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human961</otherPawn><moodPowerFactor>0.902499974</moodPowerFactor><age>60900</age><opinionOffset>13.5374994</opinionOffset></li>"
+        },
+        {
+          "role": "Human958/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human961\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[2]",
+          "xml": "<li Class=\"Thought_MemorySocialCumulative\"><def>Chitchat</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human961</otherPawn><moodPowerFactor>0.902499974</moodPowerFactor><age>54300</age><opinionOffset>2.97825003</opinionOffset></li>"
+        },
+        {
+          "role": "Human958/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human961\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[3]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human961</otherPawn><moodPowerFactor>0.902499974</moodPowerFactor><age>6150</age><opinionOffset>13.5374994</opinionOffset></li>"
+        },
+        {
+          "role": "Human958/Social",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/skills/skills/li[def=\"Social\"]",
+          "xml": "<li><def>Social</def><xpSinceLastLevel>11.8999996</xpSinceLastLevel><xpSinceMidnight>2.79999995</xpSinceMidnight></li>"
+        },
+        {
+          "role": "Human961",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]",
+          "fields": [
+            "id",
+            "def",
+            "name",
+            "pos",
+            "rot",
+            "faction",
+            "jobs",
+            "pather",
+            "interactions",
+            "drafter",
+            "timetable"
+          ],
+          "xml": "<thing Class=\"Pawn\"><def>Human</def><id>Human961</id><pos>(105, 0, 128)</pos><rot>1</rot><faction>Faction_12</faction><name Class=\"NameTriple\"><first>Makar</first><nick>Squint</nick><last>McCall</last></name><jobs><curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>GotoWander</def><loadID>48713</loadID><targetA>(123, 0, 128)</targetA><targetQueueA IsNull=\"True\" /><targetQueueB IsNull=\"True\" /><countQueue IsNull=\"True\" /><startTick>76803</startTick><checkOverrideOnExpire>True</checkOverrideOnExpire><placedThings IsNull=\"True\" /><locomotionUrgency>Walk</locomotionUrgency><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>-923340957</lastJobGiverKey></curJob><curDriver Class=\"JobDriver_Goto\"><curToilIndex>0</curToilIndex><ticksLeftThisToil>-270</ticksLeftThisToil><startTick>76803</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver><jobQueue><jobs /></jobQueue><formingCaravanTick>-1</formingCaravanTick></jobs><pather><nextCell>(106, 0, 128)</nextCell><nextCellCostLeft>31</nextCellCostLeft><nextCellCostInitial>50</nextCellCostInitial><peMode>OnCell</peMode><cellsUntilClamor>3</cellsUntilClamor><lastEnteredCellTick>77054</lastEnteredCellTick><lastMovedTick>77073</lastMovedTick><destination>(123, 0, 128)</destination></pather><drafter><autoUndrafter /></drafter><interactions><wantsRandomInteract>True</wantsRandomInteract><lastInteraction>Chitchat</lastInteraction><lastInteractionTime>72913</lastInteractionTime><lastInteractionDef>Chitchat</lastInteractionDef></interactions><timetable><times><li>Sleep</li><li>Sleep</li><li>Sleep</li><li>Sleep</li><li>Sleep</li><li>Sleep</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Anything</li><li>Sleep</li><li>Sleep</li></times></timetable></thing>"
+        },
+        {
+          "role": "Human961/Joy",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Joy\"]",
+          "xml": "<li Class=\"Need_Joy\"><def>Joy</def><curLevel>0.986499906</curLevel><tolerances><vals><li>0.532265782</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li></vals></tolerances><bored><vals><li>True</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li></vals></bored></li>"
+        },
+        {
+          "role": "Human961/Comfort",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Comfort\"]",
+          "xml": "<li Class=\"Need_Comfort\"><def>Comfort</def></li>"
+        },
+        {
+          "role": "Human961/Food",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Food\"]",
+          "xml": "<li Class=\"Need_Food\"><def>Food</def><curLevel>0.875999749</curLevel><lastNonStarvingTick>76941</lastNonStarvingTick></li>"
+        },
+        {
+          "role": "Human961/Rest",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Rest\"]",
+          "xml": "<li Class=\"Need_Rest\"><def>Rest</def><curLevel>0.515498638</curLevel></li>"
+        },
+        {
+          "role": "Human961/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human958\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[1]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human958</otherPawn><moodPowerFactor>0.819999993</moodPowerFactor><age>60900</age><opinionOffset>12.3000002</opinionOffset></li>"
+        },
+        {
+          "role": "Human961/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human958\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[2]",
+          "xml": "<li Class=\"Thought_MemorySocialCumulative\"><def>Chitchat</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human958</otherPawn><moodPowerFactor>0.819999993</moodPowerFactor><age>54300</age><opinionOffset>2.70600033</opinionOffset></li>"
+        },
+        {
+          "role": "Human961/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human958\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[3]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human958</otherPawn><moodPowerFactor>0.819999993</moodPowerFactor><age>6150</age><opinionOffset>12.3000002</opinionOffset></li>"
+        },
+        {
+          "role": "Human961/Social",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/skills/skills/li[def=\"Social\"]",
+          "xml": "<li><def>Social</def><level>3</level><xpSinceLastLevel>13.2999992</xpSinceLastLevel><xpSinceMidnight>4.9000001</xpSinceMidnight></li>"
+        },
+        {
+          "role": "Table1x2c149544",
+          "xpath": "//maps/li/things/thing[id=\"Table1x2c149544\"]",
+          "xml": "<thing Class=\"Building\"><def>Table1x2c</def><id>Table1x2c149544</id><map>0</map><pos>(119, 0, 132)</pos><health>49</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><active>True</active><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "DiningChair149545",
+          "xpath": "//maps/li/things/thing[id=\"DiningChair149545\"]",
+          "xml": "<thing Class=\"Building\"><def>DiningChair</def><id>DiningChair149545</id><map>0</map><pos>(119, 0, 131)</pos><rot>2</rot><health>65</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><taleRef IsNull=\"True\" /><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\" or claimant=\"Thing_Human961\"])[1]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_48749</job><target>Thing_Human965</target><maxPawns>1</maxPawns><stackCount>-1</stackCount></li>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\" or claimant=\"Thing_Human961\"])[2]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_48749</job><target>Thing_MealSurvivalPack41855</target><maxPawns>10</maxPawns><stackCount>1</stackCount></li>"
+        }
+      ]
+    },
+    {
+      "file": ".local-research/runtime/profile-social-20261104/Saves/New Arrivals1.rws",
+      "sha256": "95e72b36854289af822366c1c84b66ff365bf080d39391e051b14e9e2df708b5",
+      "ticks_game": 77074,
+      "play_log_ids": [
+        23,
+        22,
+        21,
+        20,
+        19,
+        18,
+        17,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1,
+        0
+      ],
+      "pawns": [
+        {
+          "id": "Human958",
+          "name": "Prophet",
+          "position": "(115, 0, 127)",
+          "job": "FeedPatient",
+          "job_id": 48749,
+          "target_a": "Thing_MealSurvivalPack41855",
+          "target_b": "Thing_Human965",
+          "player_forced": false,
+          "toil": 3,
+          "ticks_left": -96,
+          "last_interaction": "TameAttempt",
+          "last_interaction_time": 75570,
+          "joy": 0.80756557,
+          "comfort": 0.144000009,
+          "memories": [
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human961",
+              "age": 60900,
+              "offset": 13.5374994,
+              "power": 0.902499974
+            },
+            {
+              "class": "Thought_MemorySocialCumulative",
+              "def": "Chitchat",
+              "other": "Thing_Human961",
+              "age": 54300,
+              "offset": 2.97825003,
+              "power": 0.902499974
+            },
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human961",
+              "age": 6150,
+              "offset": 13.5374994,
+              "power": 0.902499974
+            }
+          ]
+        },
+        {
+          "id": "Human961",
+          "name": "Squint",
+          "position": "(105, 0, 128)",
+          "job": "GotoWander",
+          "job_id": 48713,
+          "target_a": "(123, 0, 128)",
+          "target_b": "",
+          "player_forced": false,
+          "toil": 0,
+          "ticks_left": -271,
+          "last_interaction": "Chitchat",
+          "last_interaction_time": 72913,
+          "joy": 0.986499906,
+          "comfort": 0.0,
+          "memories": [
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human958",
+              "age": 60900,
+              "offset": 12.3000002,
+              "power": 0.819999993
+            },
+            {
+              "class": "Thought_MemorySocialCumulative",
+              "def": "Chitchat",
+              "other": "Thing_Human958",
+              "age": 54300,
+              "offset": 2.70600033,
+              "power": 0.819999993
+            },
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human958",
+              "age": 6150,
+              "offset": 12.3000002,
+              "power": 0.819999993
+            }
+          ]
+        }
+      ],
+      "nodes": [
+        {
+          "role": "Human958",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]",
+          "fields": [
+            "id",
+            "def",
+            "name",
+            "pos",
+            "rot",
+            "faction",
+            "jobs",
+            "pather",
+            "interactions",
+            "drafter",
+            "timetable"
+          ],
+          "xml": "<thing Class=\"Pawn\"><def>Human</def><id>Human958</id><pos>(115, 0, 127)</pos><rot>2</rot><faction>Faction_12</faction><name Class=\"NameTriple\"><first>Mitchell</first><nick>Prophet</nick><last>Cook</last></name><jobs><curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>FeedPatient</def><loadID>48749</loadID><targetA>Thing_MealSurvivalPack41855</targetA><targetB>Thing_Human965</targetB><targetQueueA IsNull=\"True\" /><targetQueueB IsNull=\"True\" /><count>1</count><countQueue IsNull=\"True\" /><startTick>76978</startTick><placedThings IsNull=\"True\" /><workGiverDef>DoctorFeedHumanlikes</workGiverDef><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>-1340642732</lastJobGiverKey></curJob><curDriver Class=\"JobDriver_FoodFeedPatient\"><curToilIndex>3</curToilIndex><ticksLeftThisToil>-96</ticksLeftThisToil><startTick>76978</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver><jobQueue><jobs /></jobQueue><formingCaravanTick>-1</formingCaravanTick></jobs><pather><nextCell>(115, 0, 126)</nextCell><nextCellCostLeft>13.3982582</nextCellCostLeft><nextCellCostInitial>17.7299767</nextCellCostInitial><peMode>OnCell</peMode><cellsUntilClamor>5</cellsUntilClamor><lastEnteredCellTick>77069</lastEnteredCellTick><lastMovedTick>77073</lastMovedTick><curPathJobIsStale>True</curPathJobIsStale><destination>Thing_MealSurvivalPack41855</destination></pather><drafter><autoUndrafter /></drafter><interactions><lastInteraction>TameAttempt</lastInteraction><lastInteractionTime>75570</lastInteractionTime><lastInteractionDef>TameAttempt</lastInteractionDef></interactions><timetable><times><li>Joy</li><li>Sleep</li><li>Joy</li><li>Sleep</li><li>Joy</li><li>Sleep</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Sleep</li><li>Joy</li></times></timetable></thing>"
+        },
+        {
+          "role": "Human958/Joy",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Joy\"]",
+          "xml": "<li Class=\"Need_Joy\"><def>Joy</def><curLevel>0.80756557</curLevel><tolerances><vals><li>0.395852953</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li></vals></tolerances><bored><vals><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li></vals></bored></li>"
+        },
+        {
+          "role": "Human958/Comfort",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Comfort\"]",
+          "xml": "<li Class=\"Need_Comfort\"><def>Comfort</def><curLevel>0.144000009</curLevel></li>"
+        },
+        {
+          "role": "Human958/Food",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Food\"]",
+          "xml": "<li Class=\"Need_Food\"><def>Food</def><curLevel>0.994000018</curLevel><lastNonStarvingTick>76981</lastNonStarvingTick></li>"
+        },
+        {
+          "role": "Human958/Rest",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Rest\"]",
+          "xml": "<li Class=\"Need_Rest\"><def>Rest</def><curLevel>0.776749372</curLevel></li>"
+        },
+        {
+          "role": "Human958/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human961\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[1]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human961</otherPawn><moodPowerFactor>0.902499974</moodPowerFactor><age>60900</age><opinionOffset>13.5374994</opinionOffset></li>"
+        },
+        {
+          "role": "Human958/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human961\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[2]",
+          "xml": "<li Class=\"Thought_MemorySocialCumulative\"><def>Chitchat</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human961</otherPawn><moodPowerFactor>0.902499974</moodPowerFactor><age>54300</age><opinionOffset>2.97825003</opinionOffset></li>"
+        },
+        {
+          "role": "Human958/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human961\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[3]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human961</otherPawn><moodPowerFactor>0.902499974</moodPowerFactor><age>6150</age><opinionOffset>13.5374994</opinionOffset></li>"
+        },
+        {
+          "role": "Human958/Social",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/skills/skills/li[def=\"Social\"]",
+          "xml": "<li><def>Social</def><xpSinceLastLevel>11.8999996</xpSinceLastLevel><xpSinceMidnight>2.79999995</xpSinceMidnight></li>"
+        },
+        {
+          "role": "Human961",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]",
+          "fields": [
+            "id",
+            "def",
+            "name",
+            "pos",
+            "rot",
+            "faction",
+            "jobs",
+            "pather",
+            "interactions",
+            "drafter",
+            "timetable"
+          ],
+          "xml": "<thing Class=\"Pawn\"><def>Human</def><id>Human961</id><pos>(105, 0, 128)</pos><rot>1</rot><faction>Faction_12</faction><name Class=\"NameTriple\"><first>Makar</first><nick>Squint</nick><last>McCall</last></name><jobs><curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>GotoWander</def><loadID>48713</loadID><targetA>(123, 0, 128)</targetA><targetQueueA IsNull=\"True\" /><targetQueueB IsNull=\"True\" /><countQueue IsNull=\"True\" /><startTick>76803</startTick><checkOverrideOnExpire>True</checkOverrideOnExpire><placedThings IsNull=\"True\" /><locomotionUrgency>Walk</locomotionUrgency><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>-923340957</lastJobGiverKey></curJob><curDriver Class=\"JobDriver_Goto\"><curToilIndex>0</curToilIndex><ticksLeftThisToil>-271</ticksLeftThisToil><startTick>76803</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver><jobQueue><jobs /></jobQueue><formingCaravanTick>-1</formingCaravanTick></jobs><pather><nextCell>(106, 0, 128)</nextCell><nextCellCostLeft>31</nextCellCostLeft><nextCellCostInitial>50</nextCellCostInitial><peMode>OnCell</peMode><cellsUntilClamor>3</cellsUntilClamor><lastEnteredCellTick>77054</lastEnteredCellTick><lastMovedTick>77073</lastMovedTick><curPathJobIsStale>True</curPathJobIsStale><destination>(123, 0, 128)</destination></pather><drafter><autoUndrafter /></drafter><interactions><wantsRandomInteract>True</wantsRandomInteract><lastInteraction>Chitchat</lastInteraction><lastInteractionTime>72913</lastInteractionTime><lastInteractionDef>Chitchat</lastInteractionDef></interactions><timetable><times><li>Joy</li><li>Sleep</li><li>Joy</li><li>Sleep</li><li>Joy</li><li>Sleep</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Sleep</li><li>Joy</li></times></timetable></thing>"
+        },
+        {
+          "role": "Human961/Joy",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Joy\"]",
+          "xml": "<li Class=\"Need_Joy\"><def>Joy</def><curLevel>0.986499906</curLevel><tolerances><vals><li>0.532265782</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li></vals></tolerances><bored><vals><li>True</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li></vals></bored></li>"
+        },
+        {
+          "role": "Human961/Comfort",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Comfort\"]",
+          "xml": "<li Class=\"Need_Comfort\"><def>Comfort</def></li>"
+        },
+        {
+          "role": "Human961/Food",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Food\"]",
+          "xml": "<li Class=\"Need_Food\"><def>Food</def><curLevel>0.875999749</curLevel><lastNonStarvingTick>76941</lastNonStarvingTick></li>"
+        },
+        {
+          "role": "Human961/Rest",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Rest\"]",
+          "xml": "<li Class=\"Need_Rest\"><def>Rest</def><curLevel>0.515498638</curLevel></li>"
+        },
+        {
+          "role": "Human961/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human958\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[1]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human958</otherPawn><moodPowerFactor>0.819999993</moodPowerFactor><age>60900</age><opinionOffset>12.3000002</opinionOffset></li>"
+        },
+        {
+          "role": "Human961/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human958\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[2]",
+          "xml": "<li Class=\"Thought_MemorySocialCumulative\"><def>Chitchat</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human958</otherPawn><moodPowerFactor>0.819999993</moodPowerFactor><age>54300</age><opinionOffset>2.70600033</opinionOffset></li>"
+        },
+        {
+          "role": "Human961/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human958\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[3]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human958</otherPawn><moodPowerFactor>0.819999993</moodPowerFactor><age>6150</age><opinionOffset>12.3000002</opinionOffset></li>"
+        },
+        {
+          "role": "Human961/Social",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/skills/skills/li[def=\"Social\"]",
+          "xml": "<li><def>Social</def><level>3</level><xpSinceLastLevel>13.2999992</xpSinceLastLevel><xpSinceMidnight>4.9000001</xpSinceMidnight></li>"
+        },
+        {
+          "role": "Table1x2c149544",
+          "xpath": "//maps/li/things/thing[id=\"Table1x2c149544\"]",
+          "xml": "<thing Class=\"Building\"><def>Table1x2c</def><id>Table1x2c149544</id><map>0</map><pos>(119, 0, 132)</pos><health>49</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><active>True</active><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "DiningChair149545",
+          "xpath": "//maps/li/things/thing[id=\"DiningChair149545\"]",
+          "xml": "<thing Class=\"Building\"><def>DiningChair</def><id>DiningChair149545</id><map>0</map><pos>(119, 0, 131)</pos><rot>2</rot><health>65</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><taleRef IsNull=\"True\" /><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "DiningChair185311",
+          "xpath": "//maps/li/things/thing[id=\"DiningChair185311\"]",
+          "xml": "<thing Class=\"Building\"><def>DiningChair</def><id>DiningChair185311</id><map>0</map><pos>(119, 0, 134)</pos><rot>2</rot><health>65</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>77074</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><taleRef IsNull=\"True\" /><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\" or claimant=\"Thing_Human961\"])[1]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_48749</job><target>Thing_Human965</target><maxPawns>1</maxPawns><stackCount>-1</stackCount></li>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\" or claimant=\"Thing_Human961\"])[2]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_48749</job><target>Thing_MealSurvivalPack41855</target><maxPawns>10</maxPawns><stackCount>1</stackCount></li>"
+        }
+      ]
+    },
+    {
+      "file": ".local-research/runtime/profile-social-20261104/Saves/New Arrivals2.rws",
+      "sha256": "e48e498cd10479296b764e90078cb0578e96f0a62782f22b1b51c1ab6cb964f9",
+      "ticks_game": 78429,
+      "play_log_ids": [
+        23,
+        22,
+        21,
+        20,
+        19,
+        18,
+        17,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1,
+        0
+      ],
+      "pawns": [
+        {
+          "id": "Human958",
+          "name": "Prophet",
+          "position": "(119, 0, 131)",
+          "job": "SocialRelax",
+          "job_id": 48947,
+          "target_a": "Thing_Table1x2c149544",
+          "target_b": "(119, 0, 131)",
+          "player_forced": false,
+          "toil": 1,
+          "ticks_left": 3978,
+          "last_interaction": "TameAttempt",
+          "last_interaction_time": 75570,
+          "joy": 0.797087073,
+          "comfort": 0.12240003,
+          "memories": [
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human961",
+              "age": 62250,
+              "offset": 13.5374994,
+              "power": 0.902499974
+            },
+            {
+              "class": "Thought_MemorySocialCumulative",
+              "def": "Chitchat",
+              "other": "Thing_Human961",
+              "age": 55650,
+              "offset": 2.97825003,
+              "power": 0.902499974
+            },
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human961",
+              "age": 7500,
+              "offset": 13.5374994,
+              "power": 0.902499974
+            }
+          ]
+        },
+        {
+          "id": "Human961",
+          "name": "Squint",
+          "position": "(122, 0, 129)",
+          "job": "GotoWander",
+          "job_id": 48976,
+          "target_a": "(118, 0, 130)",
+          "target_b": "",
+          "player_forced": false,
+          "toil": 0,
+          "ticks_left": -78,
+          "last_interaction": "Chitchat",
+          "last_interaction_time": 72913,
+          "joy": 0.972999811,
+          "comfort": 0.0,
+          "memories": [
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human958",
+              "age": 62250,
+              "offset": 12.3000002,
+              "power": 0.819999993
+            },
+            {
+              "class": "Thought_MemorySocialCumulative",
+              "def": "Chitchat",
+              "other": "Thing_Human958",
+              "age": 55650,
+              "offset": 2.70600033,
+              "power": 0.819999993
+            },
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human958",
+              "age": 7500,
+              "offset": 12.3000002,
+              "power": 0.819999993
+            }
+          ]
+        }
+      ],
+      "nodes": [
+        {
+          "role": "Human958",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]",
+          "fields": [
+            "id",
+            "def",
+            "name",
+            "pos",
+            "rot",
+            "faction",
+            "jobs",
+            "pather",
+            "interactions",
+            "drafter",
+            "timetable"
+          ],
+          "xml": "<thing Class=\"Pawn\"><def>Human</def><id>Human958</id><pos>(119, 0, 131)</pos><faction>Faction_12</faction><name Class=\"NameTriple\"><first>Mitchell</first><nick>Prophet</nick><last>Cook</last></name><jobs><curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>SocialRelax</def><loadID>48947</loadID><targetA>Thing_Table1x2c149544</targetA><targetB>(119, 0, 131)</targetB><targetQueueA IsNull=\"True\" /><targetQueueB IsNull=\"True\" /><countQueue IsNull=\"True\" /><startTick>78196</startTick><placedThings IsNull=\"True\" /><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>-1977138781</lastJobGiverKey></curJob><curDriver Class=\"JobDriver_SocialRelax\"><curToilIndex>1</curToilIndex><ticksLeftThisToil>3978</ticksLeftThisToil><startTick>78196</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver><jobQueue><jobs /></jobQueue><formingCaravanTick>-1</formingCaravanTick></jobs><pather><moving>False</moving><nextCell>(119, 0, 131)</nextCell><nextCellCostInitial>1</nextCellCostInitial><peMode>OnCell</peMode><cellsUntilClamor>1</cellsUntilClamor><lastEnteredCellTick>78408</lastEnteredCellTick><lastMovedTick>78408</lastMovedTick></pather><drafter><autoUndrafter /></drafter><interactions><lastInteraction>TameAttempt</lastInteraction><lastInteractionTime>75570</lastInteractionTime><lastInteractionDef>TameAttempt</lastInteractionDef></interactions><timetable><times><li>Joy</li><li>Sleep</li><li>Joy</li><li>Sleep</li><li>Joy</li><li>Sleep</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Sleep</li><li>Joy</li></times></timetable></thing>"
+        },
+        {
+          "role": "Human958/Joy",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Joy\"]",
+          "xml": "<li Class=\"Need_Joy\"><def>Joy</def><curLevel>0.797087073</curLevel><tolerances><vals><li>0.391803086</li><li>0.00196394511</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li></vals></tolerances><bored><vals><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li></vals></bored></li>"
+        },
+        {
+          "role": "Human958/Comfort",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Comfort\"]",
+          "xml": "<li Class=\"Need_Comfort\"><def>Comfort</def><curLevel>0.12240003</curLevel></li>"
+        },
+        {
+          "role": "Human958/Food",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Food\"]",
+          "xml": "<li Class=\"Need_Food\"><def>Food</def><curLevel>0.940000176</curLevel><lastNonStarvingTick>78331</lastNonStarvingTick></li>"
+        },
+        {
+          "role": "Human958/Rest",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Rest\"]",
+          "xml": "<li Class=\"Need_Rest\"><def>Rest</def><curLevel>0.755374312</curLevel></li>"
+        },
+        {
+          "role": "Human958/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human961\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[1]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human961</otherPawn><moodPowerFactor>0.902499974</moodPowerFactor><age>62250</age><opinionOffset>13.5374994</opinionOffset></li>"
+        },
+        {
+          "role": "Human958/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human961\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[2]",
+          "xml": "<li Class=\"Thought_MemorySocialCumulative\"><def>Chitchat</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human961</otherPawn><moodPowerFactor>0.902499974</moodPowerFactor><age>55650</age><opinionOffset>2.97825003</opinionOffset></li>"
+        },
+        {
+          "role": "Human958/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human961\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[3]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human961</otherPawn><moodPowerFactor>0.902499974</moodPowerFactor><age>7500</age><opinionOffset>13.5374994</opinionOffset></li>"
+        },
+        {
+          "role": "Human958/Social",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/skills/skills/li[def=\"Social\"]",
+          "xml": "<li><def>Social</def><xpSinceLastLevel>11.8999996</xpSinceLastLevel><xpSinceMidnight>2.79999995</xpSinceMidnight></li>"
+        },
+        {
+          "role": "Human961",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]",
+          "fields": [
+            "id",
+            "def",
+            "name",
+            "pos",
+            "rot",
+            "faction",
+            "jobs",
+            "pather",
+            "interactions",
+            "drafter",
+            "timetable"
+          ],
+          "xml": "<thing Class=\"Pawn\"><def>Human</def><id>Human961</id><pos>(122, 0, 129)</pos><rot>3</rot><faction>Faction_12</faction><name Class=\"NameTriple\"><first>Makar</first><nick>Squint</nick><last>McCall</last></name><jobs><curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>GotoWander</def><loadID>48976</loadID><targetA>(118, 0, 130)</targetA><targetQueueA IsNull=\"True\" /><targetQueueB IsNull=\"True\" /><countQueue IsNull=\"True\" /><startTick>78351</startTick><checkOverrideOnExpire>True</checkOverrideOnExpire><placedThings IsNull=\"True\" /><locomotionUrgency>Walk</locomotionUrgency><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>-923340957</lastJobGiverKey></curJob><curDriver Class=\"JobDriver_Goto\"><curToilIndex>0</curToilIndex><ticksLeftThisToil>-78</ticksLeftThisToil><startTick>78351</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver><jobQueue><jobs /></jobQueue><formingCaravanTick>-1</formingCaravanTick></jobs><pather><nextCell>(121, 0, 130)</nextCell><nextCellCostLeft>23</nextCellCostLeft><nextCellCostInitial>50</nextCellCostInitial><peMode>OnCell</peMode><cellsUntilClamor>8</cellsUntilClamor><lastEnteredCellTick>78402</lastEnteredCellTick><lastMovedTick>78429</lastMovedTick><destination>(118, 0, 130)</destination></pather><drafter><autoUndrafter /></drafter><interactions><wantsRandomInteract>True</wantsRandomInteract><lastInteraction>Chitchat</lastInteraction><lastInteractionTime>72913</lastInteractionTime><lastInteractionDef>Chitchat</lastInteractionDef></interactions><timetable><times><li>Joy</li><li>Sleep</li><li>Joy</li><li>Sleep</li><li>Joy</li><li>Sleep</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Sleep</li><li>Joy</li></times></timetable></thing>"
+        },
+        {
+          "role": "Human961/Joy",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Joy\"]",
+          "xml": "<li Class=\"Need_Joy\"><def>Joy</def><curLevel>0.972999811</curLevel><tolerances><vals><li>0.528215647</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li></vals></tolerances><bored><vals><li>True</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li></vals></bored></li>"
+        },
+        {
+          "role": "Human961/Comfort",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Comfort\"]",
+          "xml": "<li Class=\"Need_Comfort\"><def>Comfort</def></li>"
+        },
+        {
+          "role": "Human961/Food",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Food\"]",
+          "xml": "<li Class=\"Need_Food\"><def>Food</def><curLevel>0.839999676</curLevel><lastNonStarvingTick>78291</lastNonStarvingTick></li>"
+        },
+        {
+          "role": "Human961/Rest",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Rest\"]",
+          "xml": "<li Class=\"Need_Rest\"><def>Rest</def><curLevel>0.494123578</curLevel></li>"
+        },
+        {
+          "role": "Human961/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human958\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[1]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human958</otherPawn><moodPowerFactor>0.819999993</moodPowerFactor><age>62250</age><opinionOffset>12.3000002</opinionOffset></li>"
+        },
+        {
+          "role": "Human961/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human958\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[2]",
+          "xml": "<li Class=\"Thought_MemorySocialCumulative\"><def>Chitchat</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human958</otherPawn><moodPowerFactor>0.819999993</moodPowerFactor><age>55650</age><opinionOffset>2.70600033</opinionOffset></li>"
+        },
+        {
+          "role": "Human961/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human958\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[3]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human958</otherPawn><moodPowerFactor>0.819999993</moodPowerFactor><age>7500</age><opinionOffset>12.3000002</opinionOffset></li>"
+        },
+        {
+          "role": "Human961/Social",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/skills/skills/li[def=\"Social\"]",
+          "xml": "<li><def>Social</def><level>3</level><xpSinceLastLevel>13.2999992</xpSinceLastLevel><xpSinceMidnight>4.9000001</xpSinceMidnight></li>"
+        },
+        {
+          "role": "Table1x2c149544",
+          "xpath": "//maps/li/things/thing[id=\"Table1x2c149544\"]",
+          "xml": "<thing Class=\"Building\"><def>Table1x2c</def><id>Table1x2c149544</id><map>0</map><pos>(119, 0, 132)</pos><health>49</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><active>True</active><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "DiningChair149545",
+          "xpath": "//maps/li/things/thing[id=\"DiningChair149545\"]",
+          "xml": "<thing Class=\"Building\"><def>DiningChair</def><id>DiningChair149545</id><map>0</map><pos>(119, 0, 131)</pos><rot>2</rot><health>65</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><taleRef IsNull=\"True\" /><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "DiningChair185311",
+          "xpath": "//maps/li/things/thing[id=\"DiningChair185311\"]",
+          "xml": "<thing Class=\"Building\"><def>DiningChair</def><id>DiningChair185311</id><map>0</map><pos>(119, 0, 134)</pos><rot>2</rot><health>65</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>77074</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><taleRef IsNull=\"True\" /><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\" or claimant=\"Thing_Human961\"])[1]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_48947</job><target>Thing_DiningChair149545</target><maxPawns>1</maxPawns><stackCount>-1</stackCount></li>"
+        }
+      ]
+    },
+    {
+      "file": ".local-research/runtime/profile-social-20261104/Saves/New Arrivals3.rws",
+      "sha256": "541dece0d52e03ffb315b5f5ffb71d8d4011c3749b417f4364a0f33552cd77aa",
+      "ticks_game": 79055,
+      "play_log_ids": [
+        24,
+        23,
+        22,
+        21,
+        20,
+        19,
+        18,
+        17,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1,
+        0
+      ],
+      "pawns": [
+        {
+          "id": "Human958",
+          "name": "Prophet",
+          "position": "(119, 0, 131)",
+          "job": "SocialRelax",
+          "job_id": 48947,
+          "target_a": "Thing_Table1x2c149544",
+          "target_b": "(119, 0, 131)",
+          "player_forced": false,
+          "toil": 1,
+          "ticks_left": 3352,
+          "last_interaction": "DeepTalk",
+          "last_interaction_time": 78450,
+          "joy": 0.88470453,
+          "comfort": 0.266400039,
+          "memories": [
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human961",
+              "age": 62850,
+              "offset": 13.5374994,
+              "power": 0.902499974
+            },
+            {
+              "class": "Thought_MemorySocialCumulative",
+              "def": "Chitchat",
+              "other": "Thing_Human961",
+              "age": 56250,
+              "offset": 2.97825003,
+              "power": 0.902499974
+            },
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human961",
+              "age": 8100,
+              "offset": 13.5374994,
+              "power": 0.902499974
+            },
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human961",
+              "age": 600,
+              "offset": 13.5374994,
+              "power": 0.902499974
+            }
+          ]
+        },
+        {
+          "id": "Human961",
+          "name": "Squint",
+          "position": "(99, 0, 141)",
+          "job": "Clean",
+          "job_id": 49019,
+          "target_a": "Thing_Filth_AnimalFilth185318",
+          "target_b": "",
+          "player_forced": false,
+          "toil": 3,
+          "ticks_left": -452,
+          "last_interaction": "DeepTalk",
+          "last_interaction_time": 78450,
+          "joy": 0.965499759,
+          "comfort": 0.0,
+          "memories": [
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human958",
+              "age": 63000,
+              "offset": 12.3000002,
+              "power": 0.819999993
+            },
+            {
+              "class": "Thought_MemorySocialCumulative",
+              "def": "Chitchat",
+              "other": "Thing_Human958",
+              "age": 56400,
+              "offset": 2.70600033,
+              "power": 0.819999993
+            },
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human958",
+              "age": 8250,
+              "offset": 12.3000002,
+              "power": 0.819999993
+            },
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human958",
+              "age": 600,
+              "offset": 12.3000002,
+              "power": 0.819999993
+            }
+          ]
+        }
+      ],
+      "nodes": [
+        {
+          "role": "Human958",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]",
+          "fields": [
+            "id",
+            "def",
+            "name",
+            "pos",
+            "rot",
+            "faction",
+            "jobs",
+            "pather",
+            "interactions",
+            "drafter",
+            "timetable"
+          ],
+          "xml": "<thing Class=\"Pawn\"><def>Human</def><id>Human958</id><pos>(119, 0, 131)</pos><faction>Faction_12</faction><name Class=\"NameTriple\"><first>Mitchell</first><nick>Prophet</nick><last>Cook</last></name><jobs><curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>SocialRelax</def><loadID>48947</loadID><targetA>Thing_Table1x2c149544</targetA><targetB>(119, 0, 131)</targetB><targetQueueA IsNull=\"True\" /><targetQueueB IsNull=\"True\" /><countQueue IsNull=\"True\" /><startTick>78196</startTick><placedThings IsNull=\"True\" /><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>-1977138781</lastJobGiverKey></curJob><curDriver Class=\"JobDriver_SocialRelax\"><curToilIndex>1</curToilIndex><ticksLeftThisToil>3352</ticksLeftThisToil><startTick>78196</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver><jobQueue><jobs /></jobQueue><formingCaravanTick>-1</formingCaravanTick></jobs><pather><moving>False</moving><nextCell>(119, 0, 131)</nextCell><nextCellCostInitial>1</nextCellCostInitial><peMode>OnCell</peMode><cellsUntilClamor>1</cellsUntilClamor><lastEnteredCellTick>78408</lastEnteredCellTick><lastMovedTick>78408</lastMovedTick></pather><drafter><autoUndrafter /></drafter><interactions><lastInteraction>DeepTalk</lastInteraction><lastInteractionTime>78450</lastInteractionTime><lastInteractionDef>DeepTalk</lastInteractionDef></interactions><timetable><times><li>Joy</li><li>Sleep</li><li>Joy</li><li>Sleep</li><li>Joy</li><li>Sleep</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Sleep</li><li>Joy</li></times></timetable></thing>"
+        },
+        {
+          "role": "Human958/Joy",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Joy\"]",
+          "xml": "<li Class=\"Need_Joy\"><def>Joy</def><curLevel>0.88470453</curLevel><tolerances><vals><li>0.390003145</li><li>0.0571155362</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li></vals></tolerances><bored><vals><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li></vals></bored></li>"
+        },
+        {
+          "role": "Human958/Comfort",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Comfort\"]",
+          "xml": "<li Class=\"Need_Comfort\"><def>Comfort</def><curLevel>0.266400039</curLevel></li>"
+        },
+        {
+          "role": "Human958/Food",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Food\"]",
+          "xml": "<li Class=\"Need_Food\"><def>Food</def><curLevel>0.916000247</curLevel><lastNonStarvingTick>78931</lastNonStarvingTick></li>"
+        },
+        {
+          "role": "Human958/Rest",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Rest\"]",
+          "xml": "<li Class=\"Need_Rest\"><def>Rest</def><curLevel>0.745874286</curLevel></li>"
+        },
+        {
+          "role": "Human958/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human961\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[1]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human961</otherPawn><moodPowerFactor>0.902499974</moodPowerFactor><age>62850</age><opinionOffset>13.5374994</opinionOffset></li>"
+        },
+        {
+          "role": "Human958/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human961\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[2]",
+          "xml": "<li Class=\"Thought_MemorySocialCumulative\"><def>Chitchat</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human961</otherPawn><moodPowerFactor>0.902499974</moodPowerFactor><age>56250</age><opinionOffset>2.97825003</opinionOffset></li>"
+        },
+        {
+          "role": "Human958/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human961\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[3]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human961</otherPawn><moodPowerFactor>0.902499974</moodPowerFactor><age>8100</age><opinionOffset>13.5374994</opinionOffset></li>"
+        },
+        {
+          "role": "Human958/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human961\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[4]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human961</otherPawn><moodPowerFactor>0.902499974</moodPowerFactor><age>600</age><opinionOffset>13.5374994</opinionOffset></li>"
+        },
+        {
+          "role": "Human958/Social",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/skills/skills/li[def=\"Social\"]",
+          "xml": "<li><def>Social</def><xpSinceLastLevel>11.8999996</xpSinceLastLevel><xpSinceMidnight>2.79999995</xpSinceMidnight></li>"
+        },
+        {
+          "role": "Human961",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]",
+          "fields": [
+            "id",
+            "def",
+            "name",
+            "pos",
+            "rot",
+            "faction",
+            "jobs",
+            "pather",
+            "interactions",
+            "drafter",
+            "timetable"
+          ],
+          "xml": "<thing Class=\"Pawn\"><def>Human</def><id>Human961</id><pos>(99, 0, 141)</pos><rot>1</rot><faction>Faction_12</faction><name Class=\"NameTriple\"><first>Makar</first><nick>Squint</nick><last>McCall</last></name><jobs><curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>Clean</def><loadID>49019</loadID><targetA>Thing_Filth_AnimalFilth185318</targetA><targetQueueA /><targetQueueB IsNull=\"True\" /><countQueue IsNull=\"True\" /><startTick>78603</startTick><placedThings IsNull=\"True\" /><workGiverDef>CleanFilth</workGiverDef><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>-1340642732</lastJobGiverKey></curJob><curDriver Class=\"JobDriver_CleanFilth\"><curToilIndex>3</curToilIndex><ticksLeftThisToil>-452</ticksLeftThisToil><startTick>78603</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver><jobQueue><jobs /></jobQueue><formingCaravanTick>-1</formingCaravanTick></jobs><pather><nextCell>(100, 0, 141)</nextCell><nextCellCostLeft>-0.85587883</nextCellCostLeft><nextCellCostInitial>13.043478</nextCellCostInitial><peMode>Touch</peMode><cellsUntilClamor>3</cellsUntilClamor><lastEnteredCellTick>79042</lastEnteredCellTick><lastMovedTick>79055</lastMovedTick><destination>Thing_Filth_AnimalFilth185318</destination></pather><drafter><autoUndrafter /></drafter><interactions><lastInteraction>DeepTalk</lastInteraction><lastInteractionTime>78450</lastInteractionTime><lastInteractionDef>DeepTalk</lastInteractionDef></interactions><timetable><times><li>Joy</li><li>Sleep</li><li>Joy</li><li>Sleep</li><li>Joy</li><li>Sleep</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Sleep</li><li>Joy</li></times></timetable></thing>"
+        },
+        {
+          "role": "Human961/Joy",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Joy\"]",
+          "xml": "<li Class=\"Need_Joy\"><def>Joy</def><curLevel>0.965499759</curLevel><tolerances><vals><li>0.525965571</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li></vals></tolerances><bored><vals><li>True</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li></vals></bored></li>"
+        },
+        {
+          "role": "Human961/Comfort",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Comfort\"]",
+          "xml": "<li Class=\"Need_Comfort\"><def>Comfort</def></li>"
+        },
+        {
+          "role": "Human961/Food",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Food\"]",
+          "xml": "<li Class=\"Need_Food\"><def>Food</def><curLevel>0.819999635</curLevel><lastNonStarvingTick>79041</lastNonStarvingTick></li>"
+        },
+        {
+          "role": "Human961/Rest",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Rest\"]",
+          "xml": "<li Class=\"Need_Rest\"><def>Rest</def><curLevel>0.482248545</curLevel></li>"
+        },
+        {
+          "role": "Human961/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human958\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[1]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human958</otherPawn><moodPowerFactor>0.819999993</moodPowerFactor><age>63000</age><opinionOffset>12.3000002</opinionOffset></li>"
+        },
+        {
+          "role": "Human961/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human958\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[2]",
+          "xml": "<li Class=\"Thought_MemorySocialCumulative\"><def>Chitchat</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human958</otherPawn><moodPowerFactor>0.819999993</moodPowerFactor><age>56400</age><opinionOffset>2.70600033</opinionOffset></li>"
+        },
+        {
+          "role": "Human961/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human958\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[3]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human958</otherPawn><moodPowerFactor>0.819999993</moodPowerFactor><age>8250</age><opinionOffset>12.3000002</opinionOffset></li>"
+        },
+        {
+          "role": "Human961/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human958\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[4]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human958</otherPawn><moodPowerFactor>0.819999993</moodPowerFactor><age>600</age><opinionOffset>12.3000002</opinionOffset></li>"
+        },
+        {
+          "role": "Human961/Social",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/skills/skills/li[def=\"Social\"]",
+          "xml": "<li><def>Social</def><level>3</level><xpSinceLastLevel>16.7999992</xpSinceLastLevel><xpSinceMidnight>8.39999962</xpSinceMidnight></li>"
+        },
+        {
+          "role": "Table1x2c149544",
+          "xpath": "//maps/li/things/thing[id=\"Table1x2c149544\"]",
+          "xml": "<thing Class=\"Building\"><def>Table1x2c</def><id>Table1x2c149544</id><map>0</map><pos>(119, 0, 132)</pos><health>49</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><active>True</active><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "DiningChair149545",
+          "xpath": "//maps/li/things/thing[id=\"DiningChair149545\"]",
+          "xml": "<thing Class=\"Building\"><def>DiningChair</def><id>DiningChair149545</id><map>0</map><pos>(119, 0, 131)</pos><rot>2</rot><health>65</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><taleRef IsNull=\"True\" /><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "DiningChair185311",
+          "xpath": "//maps/li/things/thing[id=\"DiningChair185311\"]",
+          "xml": "<thing Class=\"Building\"><def>DiningChair</def><id>DiningChair185311</id><map>0</map><pos>(119, 0, 134)</pos><rot>2</rot><health>65</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>77074</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><taleRef IsNull=\"True\" /><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\" or claimant=\"Thing_Human961\"])[1]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_48947</job><target>Thing_DiningChair149545</target><maxPawns>1</maxPawns><stackCount>-1</stackCount></li>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\" or claimant=\"Thing_Human961\"])[2]",
+          "xml": "<li><claimant>Thing_Human961</claimant><job>Job_49019</job><target>Thing_Filth_AnimalFilth185318</target><maxPawns>1</maxPawns><stackCount>-1</stackCount></li>"
+        },
+        {
+          "role": "new_interaction_log",
+          "xpath": "//game/playLog/entries/li[logID=\"24\"]",
+          "xml": "<li Class=\"PlayLogEntry_Interaction\"><ticksAbs>148450</ticksAbs><logID>24</logID><intDef>DeepTalk</intDef><initiator>Thing_Human961</initiator><recipient>Thing_Human958</recipient><extras /><initiatorFaction>Faction_12</initiatorFaction><initiatorIdeo>Ideo_10</initiatorIdeo></li>"
+        }
+      ]
+    },
+    {
+      "file": ".local-research/runtime/profile-social-20261104/Saves/New Arrivals4.rws",
+      "sha256": "db5684adcd134ff8d2068244cd4a9f885b683e1fe03310a94d682661416307b7",
+      "ticks_game": 79055,
+      "play_log_ids": [
+        24,
+        23,
+        22,
+        21,
+        20,
+        19,
+        18,
+        17,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1,
+        0
+      ],
+      "pawns": [
+        {
+          "id": "Human958",
+          "name": "Prophet",
+          "position": "(119, 0, 131)",
+          "job": "SocialRelax",
+          "job_id": 48947,
+          "target_a": "Thing_Table1x2c149544",
+          "target_b": "(119, 0, 131)",
+          "player_forced": false,
+          "toil": 1,
+          "ticks_left": 3352,
+          "last_interaction": "DeepTalk",
+          "last_interaction_time": 78450,
+          "joy": 0.88470453,
+          "comfort": 0.266400039,
+          "memories": [
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human961",
+              "age": 62850,
+              "offset": 13.5374994,
+              "power": 0.902499974
+            },
+            {
+              "class": "Thought_MemorySocialCumulative",
+              "def": "Chitchat",
+              "other": "Thing_Human961",
+              "age": 56250,
+              "offset": 2.97825003,
+              "power": 0.902499974
+            },
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human961",
+              "age": 8100,
+              "offset": 13.5374994,
+              "power": 0.902499974
+            },
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human961",
+              "age": 600,
+              "offset": 13.5374994,
+              "power": 0.902499974
+            }
+          ]
+        },
+        {
+          "id": "Human961",
+          "name": "Squint",
+          "position": "(99, 0, 141)",
+          "job": "Clean",
+          "job_id": 49019,
+          "target_a": "Thing_Filth_AnimalFilth185318",
+          "target_b": "",
+          "player_forced": false,
+          "toil": 3,
+          "ticks_left": -452,
+          "last_interaction": "DeepTalk",
+          "last_interaction_time": 78450,
+          "joy": 0.965499759,
+          "comfort": 0.0,
+          "memories": [
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human958",
+              "age": 63000,
+              "offset": 12.3000002,
+              "power": 0.819999993
+            },
+            {
+              "class": "Thought_MemorySocialCumulative",
+              "def": "Chitchat",
+              "other": "Thing_Human958",
+              "age": 56400,
+              "offset": 2.70600033,
+              "power": 0.819999993
+            },
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human958",
+              "age": 8250,
+              "offset": 12.3000002,
+              "power": 0.819999993
+            },
+            {
+              "class": "Thought_MemorySocial",
+              "def": "DeepTalk",
+              "other": "Thing_Human958",
+              "age": 600,
+              "offset": 12.3000002,
+              "power": 0.819999993
+            }
+          ]
+        }
+      ],
+      "nodes": [
+        {
+          "role": "Human958",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]",
+          "fields": [
+            "id",
+            "def",
+            "name",
+            "pos",
+            "rot",
+            "faction",
+            "jobs",
+            "pather",
+            "interactions",
+            "drafter",
+            "timetable"
+          ],
+          "xml": "<thing Class=\"Pawn\"><def>Human</def><id>Human958</id><pos>(119, 0, 131)</pos><faction>Faction_12</faction><name Class=\"NameTriple\"><first>Mitchell</first><nick>Prophet</nick><last>Cook</last></name><jobs><curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>SocialRelax</def><loadID>48947</loadID><targetA>Thing_Table1x2c149544</targetA><targetB>(119, 0, 131)</targetB><targetQueueA IsNull=\"True\" /><targetQueueB IsNull=\"True\" /><countQueue IsNull=\"True\" /><startTick>78196</startTick><placedThings IsNull=\"True\" /><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>-1977138781</lastJobGiverKey></curJob><curDriver Class=\"JobDriver_SocialRelax\"><curToilIndex>1</curToilIndex><ticksLeftThisToil>3352</ticksLeftThisToil><startTick>78196</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver><jobQueue><jobs /></jobQueue><formingCaravanTick>-1</formingCaravanTick></jobs><pather><moving>False</moving><nextCell>(119, 0, 131)</nextCell><nextCellCostInitial>1</nextCellCostInitial><peMode>OnCell</peMode><cellsUntilClamor>1</cellsUntilClamor><lastEnteredCellTick>78408</lastEnteredCellTick><lastMovedTick>78408</lastMovedTick></pather><drafter><autoUndrafter /></drafter><interactions><lastInteraction>DeepTalk</lastInteraction><lastInteractionTime>78450</lastInteractionTime><lastInteractionDef>DeepTalk</lastInteractionDef></interactions><timetable><times><li>Joy</li><li>Sleep</li><li>Joy</li><li>Sleep</li><li>Joy</li><li>Sleep</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Sleep</li><li>Joy</li></times></timetable></thing>"
+        },
+        {
+          "role": "Human958/Joy",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Joy\"]",
+          "xml": "<li Class=\"Need_Joy\"><def>Joy</def><curLevel>0.88470453</curLevel><tolerances><vals><li>0.390003145</li><li>0.0571155362</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li></vals></tolerances><bored><vals><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li></vals></bored></li>"
+        },
+        {
+          "role": "Human958/Comfort",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Comfort\"]",
+          "xml": "<li Class=\"Need_Comfort\"><def>Comfort</def><curLevel>0.266400039</curLevel></li>"
+        },
+        {
+          "role": "Human958/Food",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Food\"]",
+          "xml": "<li Class=\"Need_Food\"><def>Food</def><curLevel>0.916000247</curLevel><lastNonStarvingTick>78931</lastNonStarvingTick></li>"
+        },
+        {
+          "role": "Human958/Rest",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Rest\"]",
+          "xml": "<li Class=\"Need_Rest\"><def>Rest</def><curLevel>0.745874286</curLevel></li>"
+        },
+        {
+          "role": "Human958/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human961\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[1]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human961</otherPawn><moodPowerFactor>0.902499974</moodPowerFactor><age>62850</age><opinionOffset>13.5374994</opinionOffset></li>"
+        },
+        {
+          "role": "Human958/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human961\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[2]",
+          "xml": "<li Class=\"Thought_MemorySocialCumulative\"><def>Chitchat</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human961</otherPawn><moodPowerFactor>0.902499974</moodPowerFactor><age>56250</age><opinionOffset>2.97825003</opinionOffset></li>"
+        },
+        {
+          "role": "Human958/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human961\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[3]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human961</otherPawn><moodPowerFactor>0.902499974</moodPowerFactor><age>8100</age><opinionOffset>13.5374994</opinionOffset></li>"
+        },
+        {
+          "role": "Human958/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human958\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human961\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[4]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human961</otherPawn><moodPowerFactor>0.902499974</moodPowerFactor><age>600</age><opinionOffset>13.5374994</opinionOffset></li>"
+        },
+        {
+          "role": "Human958/Social",
+          "xpath": "//maps/li/things/thing[id=\"Human958\"]/skills/skills/li[def=\"Social\"]",
+          "xml": "<li><def>Social</def><xpSinceLastLevel>11.8999996</xpSinceLastLevel><xpSinceMidnight>2.79999995</xpSinceMidnight></li>"
+        },
+        {
+          "role": "Human961",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]",
+          "fields": [
+            "id",
+            "def",
+            "name",
+            "pos",
+            "rot",
+            "faction",
+            "jobs",
+            "pather",
+            "interactions",
+            "drafter",
+            "timetable"
+          ],
+          "xml": "<thing Class=\"Pawn\"><def>Human</def><id>Human961</id><pos>(99, 0, 141)</pos><rot>1</rot><faction>Faction_12</faction><name Class=\"NameTriple\"><first>Makar</first><nick>Squint</nick><last>McCall</last></name><jobs><curJob><commTarget>null</commTarget><verbToUse>null</verbToUse><bill>null</bill><lord>null</lord><quest>null</quest><def>Clean</def><loadID>49019</loadID><targetA>Thing_Filth_AnimalFilth185318</targetA><targetQueueA /><targetQueueB IsNull=\"True\" /><countQueue IsNull=\"True\" /><startTick>78603</startTick><placedThings IsNull=\"True\" /><workGiverDef>CleanFilth</workGiverDef><jobGiverThinkTree>Humanlike</jobGiverThinkTree><psyfocusTargetLast>-1</psyfocusTargetLast><ability>null</ability><source>null</source><interactableIndex>-1</interactableIndex><lastJobGiverKey>-1340642732</lastJobGiverKey></curJob><curDriver Class=\"JobDriver_CleanFilth\"><curToilIndex>3</curToilIndex><ticksLeftThisToil>-452</ticksLeftThisToil><startTick>78603</startTick><locomotionUrgencySameAs>null</locomotionUrgencySameAs></curDriver><jobQueue><jobs /></jobQueue><formingCaravanTick>-1</formingCaravanTick></jobs><pather><nextCell>(100, 0, 141)</nextCell><nextCellCostLeft>-0.85587883</nextCellCostLeft><nextCellCostInitial>13.043478</nextCellCostInitial><peMode>Touch</peMode><cellsUntilClamor>3</cellsUntilClamor><lastEnteredCellTick>79042</lastEnteredCellTick><lastMovedTick>79055</lastMovedTick><destination>Thing_Filth_AnimalFilth185318</destination></pather><drafter><autoUndrafter /></drafter><interactions><lastInteraction>DeepTalk</lastInteraction><lastInteractionTime>78450</lastInteractionTime><lastInteractionDef>DeepTalk</lastInteractionDef></interactions><timetable><times><li>Joy</li><li>Sleep</li><li>Joy</li><li>Sleep</li><li>Joy</li><li>Sleep</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Anything</li><li>Joy</li><li>Sleep</li><li>Joy</li></times></timetable></thing>"
+        },
+        {
+          "role": "Human961/Joy",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Joy\"]",
+          "xml": "<li Class=\"Need_Joy\"><def>Joy</def><curLevel>0.965499759</curLevel><tolerances><vals><li>0.525965571</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li><li>0</li></vals></tolerances><bored><vals><li>True</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li><li>False</li></vals></bored></li>"
+        },
+        {
+          "role": "Human961/Comfort",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Comfort\"]",
+          "xml": "<li Class=\"Need_Comfort\"><def>Comfort</def></li>"
+        },
+        {
+          "role": "Human961/Food",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Food\"]",
+          "xml": "<li Class=\"Need_Food\"><def>Food</def><curLevel>0.819999635</curLevel><lastNonStarvingTick>79041</lastNonStarvingTick></li>"
+        },
+        {
+          "role": "Human961/Rest",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Rest\"]",
+          "xml": "<li Class=\"Need_Rest\"><def>Rest</def><curLevel>0.482248545</curLevel></li>"
+        },
+        {
+          "role": "Human961/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human958\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[1]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human958</otherPawn><moodPowerFactor>0.819999993</moodPowerFactor><age>63000</age><opinionOffset>12.3000002</opinionOffset></li>"
+        },
+        {
+          "role": "Human961/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human958\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[2]",
+          "xml": "<li Class=\"Thought_MemorySocialCumulative\"><def>Chitchat</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human958</otherPawn><moodPowerFactor>0.819999993</moodPowerFactor><age>56400</age><opinionOffset>2.70600033</opinionOffset></li>"
+        },
+        {
+          "role": "Human961/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human958\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[3]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human958</otherPawn><moodPowerFactor>0.819999993</moodPowerFactor><age>8250</age><opinionOffset>12.3000002</opinionOffset></li>"
+        },
+        {
+          "role": "Human961/memory",
+          "xpath": "(//maps/li/things/thing[id=\"Human961\"]/needs/needs/li[def=\"Mood\"]/thoughts/memories/memories/li[otherPawn=\"Thing_Human958\" and (def=\"Chitchat\" or def=\"DeepTalk\" or def=\"Insulted\" or def=\"InsultedMood\")])[4]",
+          "xml": "<li Class=\"Thought_MemorySocial\"><def>DeepTalk</def><sourcePrecept>null</sourcePrecept><otherPawn>Thing_Human958</otherPawn><moodPowerFactor>0.819999993</moodPowerFactor><age>600</age><opinionOffset>12.3000002</opinionOffset></li>"
+        },
+        {
+          "role": "Human961/Social",
+          "xpath": "//maps/li/things/thing[id=\"Human961\"]/skills/skills/li[def=\"Social\"]",
+          "xml": "<li><def>Social</def><level>3</level><xpSinceLastLevel>16.7999992</xpSinceLastLevel><xpSinceMidnight>8.39999962</xpSinceMidnight></li>"
+        },
+        {
+          "role": "Table1x2c149544",
+          "xpath": "//maps/li/things/thing[id=\"Table1x2c149544\"]",
+          "xml": "<thing Class=\"Building\"><def>Table1x2c</def><id>Table1x2c149544</id><map>0</map><pos>(119, 0, 132)</pos><health>49</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><active>True</active><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "DiningChair149545",
+          "xpath": "//maps/li/things/thing[id=\"DiningChair149545\"]",
+          "xml": "<thing Class=\"Building\"><def>DiningChair</def><id>DiningChair149545</id><map>0</map><pos>(119, 0, 131)</pos><rot>2</rot><health>65</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>75813</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><taleRef IsNull=\"True\" /><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "DiningChair185311",
+          "xpath": "//maps/li/things/thing[id=\"DiningChair185311\"]",
+          "xml": "<thing Class=\"Building\"><def>DiningChair</def><id>DiningChair185311</id><map>0</map><pos>(119, 0, 134)</pos><rot>2</rot><health>65</health><stuff>WoodLog</stuff><faction>Faction_12</faction><questTags IsNull=\"True\" /><spawnedTick>77074</spawnedTick><despawnedTick>-1</despawnedTick><quality>Normal</quality><taleRef IsNull=\"True\" /><sourcePrecept>null</sourcePrecept><everSeenByPlayer>True</everSeenByPlayer></thing>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\" or claimant=\"Thing_Human961\"])[1]",
+          "xml": "<li><claimant>Thing_Human958</claimant><job>Job_48947</job><target>Thing_DiningChair149545</target><maxPawns>1</maxPawns><stackCount>-1</stackCount></li>"
+        },
+        {
+          "role": "reservation",
+          "xpath": "(//maps/li/reservationManager/reservations/li[claimant=\"Thing_Human958\" or claimant=\"Thing_Human961\"])[2]",
+          "xml": "<li><claimant>Thing_Human961</claimant><job>Job_49019</job><target>Thing_Filth_AnimalFilth185318</target><maxPawns>1</maxPawns><stackCount>-1</stackCount></li>"
+        },
+        {
+          "role": "new_interaction_log",
+          "xpath": "//game/playLog/entries/li[logID=\"24\"]",
+          "xml": "<li Class=\"PlayLogEntry_Interaction\"><ticksAbs>148450</ticksAbs><logID>24</logID><intDef>DeepTalk</intDef><initiator>Thing_Human961</initiator><recipient>Thing_Human958</recipient><extras /><initiatorFaction>Faction_12</initiatorFaction><initiatorIdeo>Ideo_10</initiatorIdeo></li>"
+        }
+      ]
+    }
+  ],
+  "images": [
+    {
+      "id": "SR01",
+      "source_file": ".local-research/runtime/social-20261104/006-table.png",
+      "source_sha256": "822add20dd7504a4ebc2a34eb994c4502bb7d01d6e60babe268251d3ef0014ae",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        0,
+        1235,
+        850,
+        170
+      ],
+      "file": "social-runtime/gather-spot-enabled.png",
+      "sha256": "f10a7c4892cc519efe55a03d17869deedcc3372d8682ba3be4554dd9dfb86a18"
+    },
+    {
+      "id": "SR02",
+      "source_file": ".local-research/runtime/social-20261104/029-prophet.png",
+      "source_sha256": "10d209c5c1197ee62cd86bc333514d5350be13052e5151f745e340f4eb02c66e",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        1180,
+        550,
+        350,
+        290
+      ],
+      "file": "social-runtime/ordinary-social-relax-seat.png",
+      "sha256": "241377101eabb400ac0cd6792dd304447001d6fcb865c777d4f8ab80b2664971"
+    },
+    {
+      "id": "SR03",
+      "source_file": ".local-research/runtime/social-20261104/030-social-before.png",
+      "source_sha256": "1d1e331ad1d071314ec91fd2e9194f62d4d91a8bcbe7a29e52870c196ec2e006",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        0,
+        700,
+        545,
+        630
+      ],
+      "file": "social-runtime/opinion-and-log-before.png",
+      "sha256": "ccf3959767016c325bbabf2e64517a06a0de06bc15bdba01405f52784489a582"
+    },
+    {
+      "id": "SR04",
+      "source_file": ".local-research/runtime/social-20261104/035-social-pulse.png",
+      "source_sha256": "05f5b90a08c8309c5384aa393adfedb2db2762602710a3f87e7ff2baa2743ee0",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        0,
+        700,
+        545,
+        630
+      ],
+      "file": "social-runtime/automatic-deep-talk-after.png",
+      "sha256": "708d3999c447ca4b8d9ea43e5633da0aa33e574016066b1d26fdfcac9c9cec72"
+    },
+    {
+      "id": "SR05",
+      "source_file": ".local-research/runtime/social-20261104/047-prophet-opinion.png",
+      "source_sha256": "babe325c806cccb823df9479efba58c3a978b9e6b008fea8d7c4c858f7589afe",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        0,
+        700,
+        630,
+        630
+      ],
+      "file": "social-runtime/prophet-opinion-breakdown.png",
+      "sha256": "6cb5452b573d80537c0be7a7880659032dd98d4e1f9614ad9f91e030eb3aba52"
+    },
+    {
+      "id": "SR06",
+      "source_file": ".local-research/runtime/social-20261104/048-squint-opinion.png",
+      "source_sha256": "9a2b3901c7f5b010222048121c5c2efe30011a07fd0a3447e5383282bb1aedea",
+      "source_dimensions": [
+        2560,
+        1440
+      ],
+      "crop": [
+        0,
+        700,
+        630,
+        630
+      ],
+      "file": "social-runtime/squint-opinion-breakdown.png",
+      "sha256": "052263c07b2b348e32d6b778954df1b4decf9bc2d6b6216666658fca0cbaea6f"
+    }
+  ],
+  "actions": [
+    {
+      "source_file": ".local-research/runtime/social-20261104/001-main.png.actions.jsonl",
+      "source_sha256": "884d6d318a5c7577430760ca873404863f7d4730cf67082ee5a7bff5ca3a18f9",
+      "started_utc": "2026-11-03T23:49:54.8933989Z",
+      "finished_utc": "2026-11-03T23:49:55.8562184Z",
+      "action": "capture",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "001-main.png",
+      "image_sha256": "782d7b5244d6a70d5d5eac7b15ef9a5e0f6946ac8ecd02d57efd06b60830d9f7"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/002-menu.png.actions.jsonl",
+      "source_sha256": "94fc4a34b88de543de89e8966ea3ba4e3ab43a062ef37f6b66c0a62787039061",
+      "started_utc": "2026-11-03T23:50:09.9333259Z",
+      "finished_utc": "2026-11-03T23:50:10.7816961Z",
+      "action": "capture",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "002-menu.png",
+      "image_sha256": "1b2603d0f899018553531353279435edecdd48571fdc460bb9fefa34f69236e3"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/003-load-menu.png.actions.jsonl",
+      "source_sha256": "009fb5fc714608c46f00fb64d3325ee683e2e9f656da02e86d8c8f20f40f88c4",
+      "started_utc": "2026-11-03T23:50:31.6947077Z",
+      "finished_utc": "2026-11-03T23:50:32.9633112Z",
+      "action": "click",
+      "x": 2165,
+      "y": 690,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "003-load-menu.png",
+      "image_sha256": "8f9210a3c91bf2596e976c89fdf270606fd163d63284e80e4d84853ff50f5ee6"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/004-loaded.png.actions.jsonl",
+      "source_sha256": "2d7fb31032b21b3d149777f2214f84d10af4bd499ab369a889663f7225326c8f",
+      "started_utc": "2026-11-03T23:50:46.3160278Z",
+      "finished_utc": "2026-11-03T23:50:55.3260692Z",
+      "action": "click",
+      "x": 1470,
+      "y": 442,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 8000,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "004-loaded.png",
+      "image_sha256": "c5c5f8c789ebe966483182d70e812d1b1e67ffbb1bd798ae3d8e1d2df17da859"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/005-map.png.actions.jsonl",
+      "source_sha256": "eb541a5ba478567b5de24e2ef1fc5a19f3ec7a8071633d8a1670493befead07e",
+      "started_utc": "2026-11-03T23:52:39.0541097Z",
+      "finished_utc": "2026-11-03T23:52:39.9247711Z",
+      "action": "capture",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "005-map.png",
+      "image_sha256": "b625160acd67d3aa7ff2cb93d59dc4cd26d6063d2c599640e13aa53ef73c64db"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/006-table.png.actions.jsonl",
+      "source_sha256": "84fe461deac982ce872b587cab6c4239daf33b9d172a2c7f02b8d5a721542ed9",
+      "started_utc": "2026-11-03T23:52:58.2331314Z",
+      "finished_utc": "2026-11-03T23:52:59.4388834Z",
+      "action": "click",
+      "x": 1760,
+      "y": 1115,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "006-table.png",
+      "image_sha256": "822add20dd7504a4ebc2a34eb994c4502bb7d01d6e60babe268251d3ef0014ae"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/007-chair.png.actions.jsonl",
+      "source_sha256": "0fdef53a027d7d911bdc82391534c1709507dad6f0dea7882c9a1a3858556384",
+      "started_utc": "2026-11-03T23:53:48.4280445Z",
+      "finished_utc": "2026-11-03T23:53:49.6379707Z",
+      "action": "click",
+      "x": 1760,
+      "y": 1180,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "007-chair.png",
+      "image_sha256": "813c85ba0464c6d41437a29e7ccd382dfdb46f94fb045fec35aa5bb0ddee6332"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/008-god-preparation.png.actions.jsonl",
+      "source_sha256": "a6acb579da189b83f73f7f9debdb515addd993d8b7ac6254caf7911b631c0bfb",
+      "started_utc": "2026-11-03T23:53:49.954931Z",
+      "finished_utc": "2026-11-03T23:53:50.9780762Z",
+      "action": "click",
+      "x": 1365,
+      "y": 15,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "008-god-preparation.png",
+      "image_sha256": "5456e76dbd7c3f5d161438fb2260ac64f1bcaa48a6a26b2a062a7d5a242a332e"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/009-chair-copy.png.actions.jsonl",
+      "source_sha256": "7df0a6a40ad7617b68473da10358193b948f31a9f1c205c71b83bf0ee579cc22",
+      "started_utc": "2026-11-03T23:54:13.8707113Z",
+      "finished_utc": "2026-11-03T23:54:15.1810195Z",
+      "action": "click",
+      "x": 725,
+      "y": 1355,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "009-chair-copy.png",
+      "image_sha256": "92f7bb1fa1d2b81d01b6bcc8abfd213205035ab15948757374c89e1b9c4f5d55"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/010-chair-placed.png.actions.jsonl",
+      "source_sha256": "a820f46c9444af577b1961168d25b82b677edbe272a6e1a19fb23f1723ab7eb9",
+      "started_utc": "2026-11-03T23:54:15.5030632Z",
+      "finished_utc": "2026-11-03T23:54:16.5861735Z",
+      "action": "click",
+      "x": 1760,
+      "y": 1175,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "010-chair-placed.png",
+      "image_sha256": "4dfe2f00796608351cc4af3761a99e52550b7a9309daf3ed32cfe59e89830336"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/011-cancel-build.png.actions.jsonl",
+      "source_sha256": "466c5d01fa74201c590f8bff3c17e5b1c42b52d90ec792ddeb99db9b7a799349",
+      "started_utc": "2026-11-03T23:54:16.8967451Z",
+      "finished_utc": "2026-11-03T23:54:17.9801668Z",
+      "action": "rightclick",
+      "x": 1800,
+      "y": 1170,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "011-cancel-build.png",
+      "image_sha256": "702d5f229f6807b5953659feabe7c62a908489669c1e790a6a2774ff1e878fd0"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/012-god-off.png.actions.jsonl",
+      "source_sha256": "7ef4680a3b9382a30300731eed7707a7918e1a402d1268e2a49d629030590076",
+      "started_utc": "2026-11-03T23:54:18.297326Z",
+      "finished_utc": "2026-11-03T23:54:19.3578852Z",
+      "action": "click",
+      "x": 1365,
+      "y": 15,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "012-god-off.png",
+      "image_sha256": "ab8c76b951abf7aa2b3031a3f0c4f0efad123d99c197bc226106b6145f1f5f5a"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/013-schedule.png.actions.jsonl",
+      "source_sha256": "d58d7479807dea362116e1fb6ef548652da6feeaad92d74060d4adf4c1895a41",
+      "started_utc": "2026-11-03T23:54:19.6723257Z",
+      "finished_utc": "2026-11-03T23:54:20.7022804Z",
+      "action": "click",
+      "x": 550,
+      "y": 1422,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "013-schedule.png",
+      "image_sha256": "5bb934e92f03e05a4c1b98730c15120caf15ebec37c2c84f1237960a5abb1055"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/014-recreation-paint.png.actions.jsonl",
+      "source_sha256": "2e1602e2c4aab4d767028cb3d98ea684367a15d49a022e4ad7d2285f6ea36178",
+      "started_utc": "2026-11-03T23:54:45.9201366Z",
+      "finished_utc": "2026-11-03T23:54:47.1888587Z",
+      "action": "click",
+      "x": 245,
+      "y": 1207,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "014-recreation-paint.png",
+      "image_sha256": "c7a766ae3ae4a99487a1e0129585862ea526f19714dc645200088f90cbbea1ce"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/015-prophet-schedule.png.actions.jsonl",
+      "source_sha256": "1b3d0a7756b00705ef3a0881976fc4b8e8790209b4ad82a346b7b3f5c584826c",
+      "started_utc": "2026-11-03T23:54:47.5295077Z",
+      "finished_utc": "2026-11-03T23:54:48.9759464Z",
+      "action": "drag",
+      "x": 218,
+      "y": 1271,
+      "end_x": 700,
+      "end_y": 1271,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "015-prophet-schedule.png",
+      "image_sha256": "ddee38fa1cda56201728c1a0556a929d61afab90cbe5aa7efe1ebd6fe825f3e2"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/016-squint-schedule.png.actions.jsonl",
+      "source_sha256": "4f141c776c718f0449633c834d91020954009876c7fe66d7b39fdcc5be13fd3c",
+      "started_utc": "2026-11-03T23:54:49.3027497Z",
+      "finished_utc": "2026-11-03T23:54:50.7019964Z",
+      "action": "drag",
+      "x": 218,
+      "y": 1300,
+      "end_x": 700,
+      "end_y": 1300,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "016-squint-schedule.png",
+      "image_sha256": "afd838d7288f118822bcda45b7a19851c74f3813614cd8bda716e2142350d5f3"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/017-close-schedule.png.actions.jsonl",
+      "source_sha256": "cc5a20102e582a2abff49da412dd5be5e1a830e324f231162526500378073f7a",
+      "started_utc": "2026-11-03T23:54:51.0100918Z",
+      "finished_utc": "2026-11-03T23:54:51.8376662Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "017-close-schedule.png",
+      "image_sha256": "ab8c76b951abf7aa2b3031a3f0c4f0efad123d99c197bc226106b6145f1f5f5a"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/018-esc-menu.png.actions.jsonl",
+      "source_sha256": "a371282959a0253a014ef696af85fb6f6613b51cfc31a72ba2b48bd5910aa6c6",
+      "started_utc": "2026-11-03T23:54:52.1703712Z",
+      "finished_utc": "2026-11-03T23:54:52.9967799Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "018-esc-menu.png",
+      "image_sha256": "9539f7d1f92d0c42330813b0b311f81a3e31aac17b5c1716960cccc6875af4e4"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/019-save-prepared.png.actions.jsonl",
+      "source_sha256": "d78a583bbac56620fab13162d5812a995f93ef9e56b317a0cea4af5b4940af00",
+      "started_utc": "2026-11-03T23:54:53.3039301Z",
+      "finished_utc": "2026-11-03T23:54:54.3145014Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "019-save-prepared.png",
+      "image_sha256": "9539f7d1f92d0c42330813b0b311f81a3e31aac17b5c1716960cccc6875af4e4"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/020-menu.png.actions.jsonl",
+      "source_sha256": "ff186799b2c671e7826b6d86d6bc426618a6a334731e266c3c3aee0cdcbe2fab",
+      "started_utc": "2026-11-03T23:55:18.208468Z",
+      "finished_utc": "2026-11-03T23:55:19.4076258Z",
+      "action": "click",
+      "x": 2505,
+      "y": 1422,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "020-menu.png",
+      "image_sha256": "e6e41b0b16056f420c3387506c64fd35015213b738e09c3f91883a57ffb0a139"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/021-save-dialog.png.actions.jsonl",
+      "source_sha256": "32599536a271db8e68cae40e0f92650bf2dfaf1a9b3cca3ce34e006156761a2f",
+      "started_utc": "2026-11-03T23:55:19.717174Z",
+      "finished_utc": "2026-11-03T23:55:20.7728052Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "021-save-dialog.png",
+      "image_sha256": "40207f33c34799f38d438475a5207d7c2ea0f5367b834ff9fa72c0b922729ad4"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/022-prepared-saved.png.actions.jsonl",
+      "source_sha256": "f5052fa9852e9e5ba514d65723e20c9c1d844e3502082aea35a0342e6c9bc761",
+      "started_utc": "2026-11-03T23:55:48.2128735Z",
+      "finished_utc": "2026-11-03T23:55:50.5969064Z",
+      "action": "click",
+      "x": 1490,
+      "y": 977,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 1100,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "022-prepared-saved.png",
+      "image_sha256": "14ff253d2d1c947ca205563efe9aed36bff6a0fff4e309346bd76f6dee554d00"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/023-close-menu.png.actions.jsonl",
+      "source_sha256": "12cf46bdcc1ebc67eb550d60eaac1ad4b30826666e0b77d63b3a537b734065db",
+      "started_utc": "2026-11-03T23:55:50.9751356Z",
+      "finished_utc": "2026-11-03T23:55:51.9349506Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "023-close-menu.png",
+      "image_sha256": "7df9ed74270d88b14bbba25534453c4488baff43a7426643b1e9ad476524720c"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/024-ordinary-pulse.png.actions.jsonl",
+      "source_sha256": "fadbaccbd80d576c788c911a63a98af70e78774c915814fa96e1772e277b2103",
+      "started_utc": "2026-11-03T23:55:52.3892476Z",
+      "finished_utc": "2026-11-03T23:55:57.4297284Z",
+      "action": "pulse",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 51,
+      "control": false,
+      "duration_ms": 4000,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "024-ordinary-pulse.png",
+      "image_sha256": "a9c855bbb053f06f6061d7c55695e7513b0ddf15cd1c8bc0ce69abb80e4d38b6"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/025-debug-menu.png.actions.jsonl",
+      "source_sha256": "06e9b1159281f25aabce84391b39c164defa1bc0913a37381db1c49cd161fd33",
+      "started_utc": "2026-11-03T23:56:38.7896978Z",
+      "finished_utc": "2026-11-03T23:56:39.8894002Z",
+      "action": "click",
+      "x": 1240,
+      "y": 15,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "025-debug-menu.png",
+      "image_sha256": "08762e747b70e0d3f9176521a1a774cdf3c74eaeb80688a963e8e71a56b389fd"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/026-need-search.png.actions.jsonl",
+      "source_sha256": "26a4792ff4b5dcbe4026fb9b0a4362008bc8447355b4e57ed91555f16751180e",
+      "started_utc": "2026-11-03T23:56:40.2124598Z",
+      "finished_utc": "2026-11-03T23:56:41.2325794Z",
+      "action": "text",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "need",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "026-need-search.png",
+      "image_sha256": "fbd28d33edcf06df9f2fafb3e0a7e6502dfe708e9c351581efcb53eecb952fdc"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/027-search-confirm.png.actions.jsonl",
+      "source_sha256": "c541cadce17244052d00f118fba4615d161690c3b1468d040b4e3f2b19dd18e2",
+      "started_utc": "2026-11-03T23:57:04.8257075Z",
+      "finished_utc": "2026-11-03T23:57:05.6197974Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 13,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "027-search-confirm.png",
+      "image_sha256": "6b066e91e80ce01749e1e8d7679f0f5a0999d2c9f53294690678b2cc7e4f8fb3"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/028-close-debug.png.actions.jsonl",
+      "source_sha256": "2e36d68498ba1a0e0adadc35ade08995416c3dc614c724d5bfe6000094c25121",
+      "started_utc": "2026-11-03T23:57:32.5498361Z",
+      "finished_utc": "2026-11-03T23:57:33.5465866Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "028-close-debug.png",
+      "image_sha256": "b6dd346c56b435d8f00dd437cc136373c3c6c88ede54c2a5a263114beb9373e9"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/029-prophet.png.actions.jsonl",
+      "source_sha256": "df3c8a1e6ac5a879200ba1e306a3c7e7c3025be610d205f1ff088f5cae43db7f",
+      "started_utc": "2026-11-03T23:57:33.851129Z",
+      "finished_utc": "2026-11-03T23:57:35.1581436Z",
+      "action": "doubleclick",
+      "x": 1198,
+      "y": 48,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "029-prophet.png",
+      "image_sha256": "10d209c5c1197ee62cd86bc333514d5350be13052e5151f745e340f4eb02c66e"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/030-social-before.png.actions.jsonl",
+      "source_sha256": "a1ce9f8a5ece8b1a1fc0ab22e7cef5d69c7a10b9efb535ee7d7b7bd3757287f6",
+      "started_utc": "2026-11-03T23:58:17.8164564Z",
+      "finished_utc": "2026-11-03T23:58:19.2101185Z",
+      "action": "click",
+      "x": 179,
+      "y": 1224,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "030-social-before.png",
+      "image_sha256": "1d1e331ad1d071314ec91fd2e9194f62d4d91a8bcbe7a29e52870c196ec2e006"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/031-menu.png.actions.jsonl",
+      "source_sha256": "2862d54486780b8415fb40561efa2ddf775354f5036fd3a8b66cff7bdc9f52c0",
+      "started_utc": "2026-11-03T23:58:19.5253198Z",
+      "finished_utc": "2026-11-03T23:58:20.5947468Z",
+      "action": "click",
+      "x": 2505,
+      "y": 1422,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "031-menu.png",
+      "image_sha256": "0539c3a9d6d53314b5d7a04b4345e508e798fe7de956e1d7fc66f72f559f86be"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/032-save-dialog.png.actions.jsonl",
+      "source_sha256": "a48e4630d670b014535d79fc9a27db169d1d13d16f5030dd724f35914f65dfb0",
+      "started_utc": "2026-11-03T23:58:20.9184955Z",
+      "finished_utc": "2026-11-03T23:58:21.9989507Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "032-save-dialog.png",
+      "image_sha256": "c56ee6546b98065053a9f8c9e1cabeaaccc7a63f13d9bb7a2156c99dc021deef"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/033-before-saved.png.actions.jsonl",
+      "source_sha256": "9910dc09688c0e7835de62cee7771ce4278bf678fdb9b3e84782e9d450a16ee5",
+      "started_utc": "2026-11-03T23:58:22.3554576Z",
+      "finished_utc": "2026-11-03T23:58:24.0413531Z",
+      "action": "click",
+      "x": 1490,
+      "y": 977,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 800,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "033-before-saved.png",
+      "image_sha256": "7e01633ab6aa83a0dbe61b6df31e7d12bf918b74cee682fc02cf1b15b8f86132"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/034-close-menu.png.actions.jsonl",
+      "source_sha256": "7fd54fa307f93c57b8eb659cc03f977672ba776560fe39105f5821c01d22f0e2",
+      "started_utc": "2026-11-03T23:58:24.3508832Z",
+      "finished_utc": "2026-11-03T23:58:25.2397908Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "034-close-menu.png",
+      "image_sha256": "9e0c455556fc02bd2b9ce2cdca283c7e97351cad73cc86d4fc118980a249d157"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/035-social-pulse.png.actions.jsonl",
+      "source_sha256": "6c6fdd96c4a15506f9fee6fca17c011c55a8d38e25e4d6d5c132d236d67e2725",
+      "started_utc": "2026-11-03T23:59:48.2994542Z",
+      "finished_utc": "2026-11-03T23:59:51.1460546Z",
+      "action": "pulse",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 51,
+      "control": false,
+      "duration_ms": 1600,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "035-social-pulse.png",
+      "image_sha256": "05f5b90a08c8309c5384aa393adfedb2db2762602710a3f87e7ff2baa2743ee0"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/036-menu.png.actions.jsonl",
+      "source_sha256": "82e70e11aa5cb8e7f55a2f74217ef2521693a52006cb4bca1a693ee83d2a562f",
+      "started_utc": "2026-11-03T23:59:51.5041881Z",
+      "finished_utc": "2026-11-03T23:59:52.680212Z",
+      "action": "click",
+      "x": 2505,
+      "y": 1422,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "036-menu.png",
+      "image_sha256": "57fc28178ec9b12ac63b83d228537faad65f4a040bd264fc158caa3ef9271bb7"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/037-save-dialog.png.actions.jsonl",
+      "source_sha256": "6551ab6241f1723658b3e8c21933df57ff99680b9430101990128e386aefb0ae",
+      "started_utc": "2026-11-03T23:59:53.0385303Z",
+      "finished_utc": "2026-11-03T23:59:54.1961698Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "037-save-dialog.png",
+      "image_sha256": "3e0f51b0c88a7de0ee706a8642edf683d1a9dcbc2a4ccede3e03125d4273432a"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/038-after-saved.png.actions.jsonl",
+      "source_sha256": "97c9a8233a358d7ae7f77f172e0311e4665f42b13d7f3b6e07b9358a93d017ff",
+      "started_utc": "2026-11-03T23:59:54.5331484Z",
+      "finished_utc": "2026-11-03T23:59:56.1470026Z",
+      "action": "click",
+      "x": 1490,
+      "y": 977,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 800,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "038-after-saved.png",
+      "image_sha256": "7c46738b19557e6f578ad1415e92a3b04c08bb9e3e4e4409bc068f91c6e1a7e2"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/039-close-menu.png.actions.jsonl",
+      "source_sha256": "6bcd8951ddcc11a9107c62b27984f87b7a3819166f2d70fd316433df945d1544",
+      "started_utc": "2026-11-03T23:59:56.462481Z",
+      "finished_utc": "2026-11-03T23:59:57.2795795Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "039-close-menu.png",
+      "image_sha256": "f4f24d59638abb376f96e912273de6e83f19415a2b27f47ce9100eb790123d34"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/040-menu.png.actions.jsonl",
+      "source_sha256": "d8eaf041b577f7ab3c0a2e251180873355401fe020ea1bb8e0114b640a815551",
+      "started_utc": "2026-11-04T00:00:27.1687838Z",
+      "finished_utc": "2026-11-04T00:00:28.5921465Z",
+      "action": "click",
+      "x": 2505,
+      "y": 1422,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "040-menu.png",
+      "image_sha256": "7c46738b19557e6f578ad1415e92a3b04c08bb9e3e4e4409bc068f91c6e1a7e2"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/041-open-menu.png.actions.jsonl",
+      "source_sha256": "6f61068f34933f73eeaf16893d1b4c592031b92080ec8607a9560090016af7dd",
+      "started_utc": "2026-11-04T00:01:06.3113404Z",
+      "finished_utc": "2026-11-04T00:01:07.6489065Z",
+      "action": "click",
+      "x": 2505,
+      "y": 1422,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "041-open-menu.png",
+      "image_sha256": "a98c82d9b4c76f0c01a1cf462b39d7c23f70fcb7e02972b41c701528a080d869"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/042-save-dialog.png.actions.jsonl",
+      "source_sha256": "344ff5c1d1dffae41bb57afb903c6df645c3216d3178485b3396d3f5f51564c9",
+      "started_utc": "2026-11-04T00:01:07.9867759Z",
+      "finished_utc": "2026-11-04T00:01:09.0447272Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "042-save-dialog.png",
+      "image_sha256": "6db44b0614b234e2016d2281854d08a5266ae83c916a296fdc0d62f1229918a3"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/043-after-saved.png.actions.jsonl",
+      "source_sha256": "be02800e350a4c367308b090827fedefdfe363de18a7be0688d513247e7a0d5c",
+      "started_utc": "2026-11-04T00:01:09.4171232Z",
+      "finished_utc": "2026-11-04T00:01:11.1231431Z",
+      "action": "click",
+      "x": 1490,
+      "y": 977,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 800,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "043-after-saved.png",
+      "image_sha256": "905dc17a0c4028f9b0ceac19c743365e53e99da45553a3a12c799aff0fa82318"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/044-close-menu.png.actions.jsonl",
+      "source_sha256": "7db754d7e5ef361bb366843fca28506bbf800f20bed1e0c1762a886d54004af5",
+      "started_utc": "2026-11-04T00:01:52.0842149Z",
+      "finished_utc": "2026-11-04T00:01:53.0876643Z",
+      "action": "key",
+      "x": 1280,
+      "y": 720,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "044-close-menu.png",
+      "image_sha256": "7c46738b19557e6f578ad1415e92a3b04c08bb9e3e4e4409bc068f91c6e1a7e2"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/045-select-prophet.png.actions.jsonl",
+      "source_sha256": "648033fe7e706031254999437096a642c2cd957444740c884c92f5e2a763d66b",
+      "started_utc": "2026-11-04T00:01:53.4035752Z",
+      "finished_utc": "2026-11-04T00:01:54.4432559Z",
+      "action": "click",
+      "x": 1198,
+      "y": 48,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "045-select-prophet.png",
+      "image_sha256": "05f5b90a08c8309c5384aa393adfedb2db2762602710a3f87e7ff2baa2743ee0"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/046-prophet-opinion.png.actions.jsonl",
+      "source_sha256": "0651ec9a8243aca146d00efab8c3ac21255dd8de2f5528e8c0dd309e18af0c36",
+      "started_utc": "2026-11-04T00:01:54.7467033Z",
+      "finished_utc": "2026-11-04T00:01:56.4846107Z",
+      "action": "click",
+      "x": 179,
+      "y": 1224,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 1000,
+      "park_x": 350,
+      "park_y": 768,
+      "image_name": "046-prophet-opinion.png",
+      "image_sha256": "72f6584651dd0b81f5e71b18f8116885ad99e5df27e3b9845e68e4ad05894485"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/047-prophet-opinion.png.actions.jsonl",
+      "source_sha256": "e42e6dcc35dc4a149cee1252559ca65d49c71788e595d6088114a332613a8e8e",
+      "started_utc": "2026-11-04T00:02:37.5988255Z",
+      "finished_utc": "2026-11-04T00:02:40.0666459Z",
+      "action": "click",
+      "x": 179,
+      "y": 1224,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 1500,
+      "park_x": 350,
+      "park_y": 768,
+      "image_name": "047-prophet-opinion.png",
+      "image_sha256": "babe325c806cccb823df9479efba58c3a978b9e6b008fea8d7c4c858f7589afe"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/048-squint-opinion.png.actions.jsonl",
+      "source_sha256": "9b219512a78dc2fffe4faebf44b074c48810336774283916f0556c6e2b7e5739",
+      "started_utc": "2026-11-04T00:02:40.3862515Z",
+      "finished_utc": "2026-11-04T00:02:42.1583223Z",
+      "action": "click",
+      "x": 1265,
+      "y": 48,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 1000,
+      "park_x": 350,
+      "park_y": 768,
+      "image_name": "048-squint-opinion.png",
+      "image_sha256": "9a2b3901c7f5b010222048121c5c2efe30011a07fd0a3447e5383282bb1aedea"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/049-close-social.png.actions.jsonl",
+      "source_sha256": "50a2be327f8766547298e398b7f84310929f7b1f6fa5b8676c39a8a5a8c06fee",
+      "started_utc": "2026-11-04T00:03:26.8312017Z",
+      "finished_utc": "2026-11-04T00:03:28.0737393Z",
+      "action": "click",
+      "x": 527,
+      "y": 714,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "049-close-social.png",
+      "image_sha256": "b20dbafd6cd529a9c7e6e586ad0946cf3f0b894e4a4af63f993811c906ce3718"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/050-menu.png.actions.jsonl",
+      "source_sha256": "d8dcb36fc5ff23d9cc334903ff92104a36fd55cfcd39528facf60e6f869ea727",
+      "started_utc": "2026-11-04T00:03:28.380722Z",
+      "finished_utc": "2026-11-04T00:03:29.4115493Z",
+      "action": "click",
+      "x": 2505,
+      "y": 1422,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "050-menu.png",
+      "image_sha256": "51f558eab205b767774d37de32c911a9da91ed34df3d42b3adf79c3fa32a306e"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/051-repeat-dialog.png.actions.jsonl",
+      "source_sha256": "f5d67b9ffa062e7472809678242d4cbdb3fe8b0c6e12f2ce4ba560efadaa630f",
+      "started_utc": "2026-11-04T00:03:29.734564Z",
+      "finished_utc": "2026-11-04T00:03:30.760069Z",
+      "action": "click",
+      "x": 2215,
+      "y": 1055,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 250,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "051-repeat-dialog.png",
+      "image_sha256": "e4286d8241f98b2a006463a14880da46b769dd57c63f66620b5e41e314d95f42"
+    },
+    {
+      "source_file": ".local-research/runtime/social-20261104/052-repeat-saved.png.actions.jsonl",
+      "source_sha256": "51c79c73bd42bf1518c9bb646150a56ce3da48d58c035f81d351bddddac6068f",
+      "started_utc": "2026-11-04T00:03:31.074981Z",
+      "finished_utc": "2026-11-04T00:03:32.6417625Z",
+      "action": "click",
+      "x": 1490,
+      "y": 977,
+      "end_x": 1280,
+      "end_y": 720,
+      "text": "",
+      "virtual_key": 27,
+      "control": false,
+      "duration_ms": 80,
+      "wheel_delta": 0,
+      "wait_ms": 800,
+      "park_x": 1280,
+      "park_y": 720,
+      "image_name": "052-repeat-saved.png",
+      "image_sha256": "8b341956df957c6dc77ef0bae57252e9665b9382bee6116e03409f0fff5a2bb6"
+    }
+  ],
+  "observations": [
+    {
+      "id": "SR-OBS01",
+      "finding": "At78429 Prophet is seated119,131 in ordinary SocialRelax job48947,toil1,ticksLeft3978; nearby Squint is GotoWander122,129. No new log exists; old paired DeepTalk memories number2 each.",
+      "evidence": [
+        "SR02",
+        "SR03",
+        "saves"
+      ]
+    },
+    {
+      "id": "SR-OBS02",
+      "finding": "New log24 is DeepTalk, Squint→Prophet at absolute148450 (game tick78450); both lastInteractionTime=78450. At79055 both have a third paired DeepTalk age600, offsets13.5374994/12.3000002 and power.902499974/.819999993. Old Chitchat offsets remain unchanged.",
+      "evidence": [
+        "SR04",
+        "saves"
+      ]
+    },
+    {
+      "id": "SR-OBS03",
+      "finding": "Prophet opinion of Squint54→65; reverse51→61. After tooltips show crashed-together25,DeepTalkx3=37/33,Chitchat3. Totals reflect stacking and rounding, not simply adding raw15.",
+      "evidence": [
+        "SR03",
+        "SR04",
+        "SR05",
+        "SR06"
+      ]
+    },
+    {
+      "id": "SR-OBS04",
+      "finding": "Prophet keeps the same SocialRelax job48947,toil1 and seat through the interval,ticksLeft3978→3352; joy.797087073→.88470453 and comfort.12240003→.266400039. Squint moves on to Clean. No conversation job was assigned through UI.",
+      "evidence": [
+        "SR02",
+        "SR05",
+        "SR06",
+        "saves"
+      ]
+    },
+    {
+      "id": "SR-OBS05",
+      "finding": "Final repeated saves have matching selected state at79055. Ordinary Quit to OS followed; fresh CIM confirms no native game process.",
+      "evidence": [
+        "saves",
+        "shutdown"
+      ]
+    }
+  ],
+  "shutdown": {
+    "record_file": ".local-research/runtime/social-20261104/shutdown-record.json",
+    "record_sha256": "519187dc6aa67ad2c41c765236ac18c0f764f207c686cb321435ee0a2d258647",
+    "observed_utc": "2026-11-04T00:04:54.1304147Z",
+    "method": "Ordinary Quit to OS (2215,1315) after repeat save",
+    "capture_result": "Exit click issued; downstream capture could no longer foreground the exiting process. Fresh CIM shows no game process. No successful action53 or screenshot was fabricated.",
+    "rimworld_processes_after_exit": []
+  },
+  "limitations": [
+    "Only DeepTalk was newly observed; Chitchat and Insult behavior remains static evidence in this round.",
+    "The event moment bubble was not captured; durable log, memories and before/after UI are retained.",
+    "Squint was already requesting random interaction before the event; no causal claim that SocialRelax initiated the observed interaction.",
+    "A sampled before-position is not an exact event-position trace.",
+    "Two developer-generated chair qualities/work costs are not runtime construction measurements.",
+    "No full4000tick completion, seat contention, gather toggle-off, ordinary no-chair fallback or interruption branch was exercised.",
+    "Selected original nodes/crops/hashes are public; raw complete saves/screenshots remain local.",
+    "Actions17–19 and36–40 include harmless menu-navigation misses; successful saves are22,33,43,52. No missing save or action53 is fabricated.",
+    "Need ages update in150tick batches; participants can have different age phases.",
+    "Observation ends in mid-job; repeated paused save is an integrity check, not a full reload trial."
+  ]
+}

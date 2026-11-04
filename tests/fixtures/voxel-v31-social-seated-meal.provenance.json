@@ -1,0 +1,13 @@
+{
+  "source": "test-results\\voxel-living-final\\seated-meal.json",
+  "sourceVersion": 31,
+  "sha256": "f8e7a38e4860fb806b524c8d2429ad0811e32e41cdf73248539e77c273fbf01b",
+  "sourceTick": 28911,
+  "campaignExecution": {
+    "bundleSha256": "ea3efd80e5f4af85f451a589b206e24fb381b4dc9def5ed92d2dd54d8b6689b5",
+    "scriptSha256": "a2f7b238a134dcb5aba9ac76df39363728ad0fb7f63f0d6009fa2dab2496d1e6",
+    "sourceManifestSha256": "87fc7b6b41aa5b67012b8ee0f47dffd8cbe856d0f108318381c3023f9c0cc830"
+  },
+  "campaignScope": "Fresh seed 73129. Only public player commands, ordinary ticks and exact save/load mutate the colony. Terrain, paths and simulation state are read to choose construction sites and record outcomes. Real timber, crafted hunting bow, hunted carcasses, butchered meat and cooked meals. No food, need, comfort, thought, terrain, pawn-position, clock or RNG injection. Bounded deterministic play, not numerical calibration.",
+  "note": "Exact original bytes from accepted v31 living campaign. No version relabelling, state manufacture or field stripping."
+}

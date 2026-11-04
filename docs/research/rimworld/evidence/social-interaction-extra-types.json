@@ -1,0 +1,10 @@
+[
+  "RimWorld.JoyGiver_SocialRelax",
+  "RimWorld.InteractionWorker",
+  "RimWorld.ThoughtDef",
+  "RimWorld.NegativeInteractionUtility",
+  "RimWorld.Thought_MemorySocialCumulative",
+  "RimWorld.CompGatherSpot",
+  "RimWorld.GatherSpotLister",
+  "RimWorld.ThoughtHandler"
+]

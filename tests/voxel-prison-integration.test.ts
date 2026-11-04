@@ -199,14 +199,14 @@ describe('voxel capture, care, recruitment and release integration', () => {
     const bytes = readFileSync(new URL('./fixtures/voxel-v23-prison-initial.json', import.meta.url));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe('3eac88560e5bf8460e91517998c80fe501ce5be1eeac088e9c0cb3703db216b3');
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old), upgraded = s.save();
-    expect(old.version).toBe(23); expect(upgraded.version).toBe(31);
+    expect(old.version).toBe(23); expect(upgraded.version).toBe(32);
     expect(upgraded.items).toEqual(old.items); expect(upgraded.stats).toEqual(old.stats);
     expect(upgraded.nextId).toBe(old.nextId); expect(upgraded.animals).toMatchObject(old.animals);
     expect(upgraded.pawns).toHaveLength(old.pawns.length);
     for (const p of upgraded.pawns) {
       const before = old.pawns.find((q: Pawn) => q.id === p.id);
       for (const key of ['id', 'name', 'faction', 'psyche', 'trauma', 'medical', 'health', 'worn', 'weapon', 'cargo'] as const)
-        expect(p[key], `${p.id}/${key}`).toEqual(before[key]);
+        expect(p[key], `${p.id}/${key}`).toEqual(key === 'psyche' ? { ...before.psyche, tolerance: { ...before.psyche.tolerance, social: 0 } } : before[key]);
       expect(p.skills).toMatchObject(before.skills);
       expect(p.prisoner).toBeNull(); expect(p.wardenTask).toBeNull();
       expect(p.priorities.warden).toBe(p.faction === 'colony' ? 1 : 0);

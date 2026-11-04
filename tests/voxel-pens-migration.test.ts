@@ -25,7 +25,7 @@ function historical(name: keyof typeof HASHES) {
 describe('authentic v29 pen migration', () => {
   it.each(['carrying-feed', 'pregnant', 'newborn'] as const)('preserves real %s state and adds only v30 defaults', name => {
     const old = historical(name), before = structuredClone(old), s = VoxelSimulation.load(old), saved = s.save();
-    expect(old).toEqual(before); expect(saved.version).toBe(31);
+    expect(old).toEqual(before); expect(saved.version).toBe(32);
     expect(saved.tick).toBe(old.tick); expect(saved.nextId).toBe(old.nextId);
     for (const key of ['fences', 'fenceGates', 'penMarkers', 'animalAreas'] as const) expect(saved[key]).toEqual([]);
     expect(saved.animals).toEqual(old.animals.map((a: any) => ({ ...a, ...initialAnimalPenState(old.tick) })));
@@ -34,7 +34,7 @@ describe('authentic v29 pen migration', () => {
       expect(p.ropeTask).toBeNull();
       for (const key of ['x', 'y', 'z', 'faction', 'food', 'rest', 'health', 'trauma', 'medical', 'skills', 'priorities',
         'handleTask', 'cargo', 'weapon', 'worn', 'psyche', 'dirtCarry', 'foodPoisoning'] as const)
-        expect(p[key], `${name}:pawn${p.id}.${key}`).toEqual(previous[key]);
+        expect(p[key], `${name}:pawn${p.id}.${key}`).toEqual(key === 'psyche' ? { ...previous.psyche, tolerance: { ...previous.psyche.tolerance, social: 0 } } : previous[key]);
     }
     for (const key of ['grass', 'husbandryLog', 'items', 'stats', 'trade', 'weather', 'snow', 'fires', 'fireDamage', 'fireHazards',
       'fireLog', 'filth', 'crops', 'trees', 'beds', 'research', 'blocks', 'ladders', 'structureKinds'] as const)

@@ -1,0 +1,535 @@
+{
+  "evidence_id": "RW17-SOCIAL-INTERACTION-MECHANISMS",
+  "date_local": "2026-11-04",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Static ILSpy-derived C# and selected shipped Core XML",
+  "manifests": [
+    "social-interaction-manifest.json",
+    "social-interaction-extra-manifest.json"
+  ],
+  "claims": [
+    {
+      "id": "SC01",
+      "finding": "Random social events are not conversation jobs. TryInteractWith validates, adds memories and XP, considers social fighting, invokes worker, creates interaction bubble and PlayLogEntry, and updates both last-interaction trackers. The selected three workers override selection weight only; base Interacted only initializes output fields.",
+      "sources": [
+        {
+          "file": ".local-research/social-interaction/RimWorld.Pawn_InteractionsTracker.cs",
+          "sha256": "1e0c942b28ca00151b617a3a30360e06378cbc3a858e86966b9b4e8f3db059d6",
+          "lines": [
+            176,
+            269
+          ]
+        },
+        {
+          "file": ".local-research/social-interaction-extra/RimWorld.InteractionWorker.cs",
+          "sha256": "13fa4cc81d94d38ba4f1f0b70d38f0f4cdfc40d0fed78f8de3e7c3cbad54404a",
+          "lines": [
+            1,
+            22
+          ]
+        },
+        {
+          "file": ".local-research/social-interaction/RimWorld.InteractionWorker_Chitchat.cs",
+          "sha256": "d07c2ad0b148b9bbcb5afa49d1d518f31b086445157dd82e8aace40f62376e3f",
+          "lines": [
+            1,
+            15
+          ]
+        },
+        {
+          "file": ".local-research/social-interaction/RimWorld.InteractionWorker_DeepTalk.cs",
+          "sha256": "321c197e246573a9014dafb44179f7cef8e7bd9c27d5e4c2b5bcb20c0563fa35",
+          "lines": [
+            1,
+            26
+          ]
+        },
+        {
+          "file": ".local-research/social-interaction/RimWorld.InteractionWorker_Insult.cs",
+          "sha256": "9a53be7fbfe76b5c9f3edc2b5186cd61e45a4b3dc2fbead3fbbe8f03d3c56fee",
+          "lines": [
+            1,
+            17
+          ]
+        }
+      ],
+      "xml": [
+        "SX01"
+      ]
+    },
+    {
+      "id": "SC02",
+      "finding": "Random eligibility is asymmetric: initiator requires interaction tracker, Talking, awake, no fire/block, humanlike, not downed/aggressive, faction and life-stage permission; receiver does not repeat Talking/Hearing requirements. Position requires horizontal range6 and line of sight. Mental-state blocks, blocking hediffs and lord restrictions are checked through PawnUtility.",
+      "sources": [
+        {
+          "file": ".local-research/social-interaction/RimWorld.SocialInteractionUtility.cs",
+          "sha256": "37c607613ebca2640d0e0d224c888e6a879f028ad90fbaad38bd0cd1d92555ae",
+          "lines": [
+            10,
+            155
+          ]
+        },
+        {
+          "file": ".local-research/housing/RimWorld.PawnUtility.cs",
+          "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+          "lines": [
+            43,
+            82
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "SC03",
+      "finding": "Current social mode derives from job/duty/draft/mental state; Off clears intent, Quiet clears it each interval. After >320ticks, hash60 tests MTB22000/6600/550 for Quiet/Normal/SuperActive. Failed intent retries on hash91. Generic initiator cooldown120, no symmetric receiver cooldown here. Candidates are spawned same-faction pawns, shuffled, with weighted InteractionDefs and global Rand.",
+      "sources": [
+        {
+          "file": ".local-research/social-interaction/RimWorld.Pawn_InteractionsTracker.cs",
+          "sha256": "1e0c942b28ca00151b617a3a30360e06378cbc3a858e86966b9b4e8f3db059d6",
+          "lines": [
+            10,
+            174
+          ]
+        },
+        {
+          "file": ".local-research/social-interaction/RimWorld.Pawn_InteractionsTracker.cs",
+          "sha256": "1e0c942b28ca00151b617a3a30360e06378cbc3a858e86966b9b4e8f3db059d6",
+          "lines": [
+            300,
+            353
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "SC04",
+      "finding": "Chitchat weight1, DeepTalk .075 times compatibility curve, Insult .007 times negative factor. Kind initiator nullifies negative interactions; Abrasive multiplies2.3. Negative factor uses directional opinion and fixed-pair compatibility, not mood. Slave-to-nonslave insults are suppressed. Weights compete with all other applicable InteractionDefs, so are not unconditional probabilities.",
+      "sources": [
+        {
+          "file": ".local-research/social-interaction/RimWorld.InteractionWorker_Chitchat.cs",
+          "sha256": "d07c2ad0b148b9bbcb5afa49d1d518f31b086445157dd82e8aace40f62376e3f",
+          "lines": [
+            1,
+            15
+          ]
+        },
+        {
+          "file": ".local-research/social-interaction/RimWorld.InteractionWorker_DeepTalk.cs",
+          "sha256": "321c197e246573a9014dafb44179f7cef8e7bd9c27d5e4c2b5bcb20c0563fa35",
+          "lines": [
+            1,
+            26
+          ]
+        },
+        {
+          "file": ".local-research/social-interaction/RimWorld.InteractionWorker_Insult.cs",
+          "sha256": "9a53be7fbfe76b5c9f3edc2b5186cd61e45a4b3dc2fbead3fbbe8f03d3c56fee",
+          "lines": [
+            1,
+            17
+          ]
+        },
+        {
+          "file": ".local-research/social-interaction-extra/RimWorld.NegativeInteractionUtility.cs",
+          "sha256": "4b2387b68a3e7da479dbb094bfdcb7cc485446509206ad8fe2c1393481dbfab0",
+          "lines": [
+            1,
+            45
+          ]
+        }
+      ],
+      "xml": [
+        "SX01"
+      ]
+    },
+    {
+      "id": "SC05",
+      "finding": "Interaction thoughts use the OTHER pawn SocialImpact at creation: moodPowerFactor and social opinionOffset are scaled before TryGainMemory. Chitchat/DeepTalk affect both participants; Insulted affects recipient. Social XP4/10 belongs to initiator. Actual directional amounts may differ.",
+      "sources": [
+        {
+          "file": ".local-research/social-interaction/RimWorld.Pawn_InteractionsTracker.cs",
+          "sha256": "1e0c942b28ca00151b617a3a30360e06378cbc3a858e86966b9b4e8f3db059d6",
+          "lines": [
+            176,
+            220
+          ]
+        },
+        {
+          "file": ".local-research/social-interaction/RimWorld.Pawn_InteractionsTracker.cs",
+          "sha256": "1e0c942b28ca00151b617a3a30360e06378cbc3a858e86966b9b4e8f3db059d6",
+          "lines": [
+            285,
+            298
+          ]
+        }
+      ],
+      "xml": [
+        "SX01",
+        "SX02",
+        "SX03"
+      ]
+    },
+    {
+      "id": "SC06",
+      "finding": "SocialImpact: base1,min.2, Social skill factor .82+.0275*L; capacity factors Talking weight.9 and Hearing.3 each allowedDefect.05,max1. Capacity c<1 becomes clamp01(c/.95); each contributes1-weight+weight*q. Other stat offsets/factors remain possible.",
+      "sources": [
+        {
+          "file": ".local-research/skills/RimWorld.SkillNeed_BaseBonus.cs",
+          "sha256": "0f138059de75d31cd1a0d3d028b08e5332923786fb830d8544f5182e3a5c49ca",
+          "lines": [
+            6,
+            27
+          ]
+        },
+        {
+          "file": ".local-research/skills/RimWorld.PawnCapacityFactor.cs",
+          "sha256": "4534a4c8f3efcd51636fbfecb1b5ead2b3611e9fde554445b9f1947be84edf18",
+          "lines": [
+            1,
+            37
+          ]
+        },
+        {
+          "file": ".local-research/housing/RimWorld.StatWorker.cs",
+          "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+          "lines": [
+            366,
+            397
+          ]
+        }
+      ],
+      "xml": [
+        "SX03"
+      ]
+    },
+    {
+      "id": "SC07",
+      "finding": "Chitchat is cumulative: new .66*otherImpact merges into same-def same-other offset without resetting age. Internal amount can exceed10; only opinion contribution is capped10. Every accumulated60000ticks it moves1 toward zero and resets age; offset==0 discards. It overrides ordinary duration and age fading.",
+      "sources": [
+        {
+          "file": ".local-research/social-interaction-extra/RimWorld.Thought_MemorySocialCumulative.cs",
+          "sha256": "6a5c258dc492e6008059211a3e51d0ea947bfa816350512585c44c76db47c5be",
+          "lines": [
+            1,
+            69
+          ]
+        }
+      ],
+      "xml": [
+        "SX02"
+      ]
+    },
+    {
+      "id": "SC08",
+      "finding": "DeepTalk+15 and Insulted-15 have20day duration,300 total and10 per other, stacking.9. Ordinary social memories never merge, fade only after default70% duration, and discard after age>duration (or missing other/zero offset). Memory interval adds150ticks; stored offsets and age are persisted.",
+      "sources": [
+        {
+          "file": ".local-research/social-interaction/RimWorld.Thought_MemorySocial.cs",
+          "sha256": "3a929367139cbebc900d403400a6c324b60f3ce1af5786b4d66da29a7132348d",
+          "lines": [
+            1,
+            86
+          ]
+        },
+        {
+          "file": ".local-research/social-interaction-extra/RimWorld.ThoughtDef.cs",
+          "sha256": "906aed83fa3694d3e3dba573b877ac9bbad5bd54503763b0fbe008595b7ee157",
+          "lines": [
+            1,
+            257
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.Thought_Memory.cs",
+          "sha256": "ea6b174514a07ca990296ce9daf5a6653f95ec80975f3db6efcbb2d6c7810c39",
+          "lines": [
+            44,
+            67
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.Thought_Memory.cs",
+          "sha256": "ea6b174514a07ca990296ce9daf5a6653f95ec80975f3db6efcbb2d6c7810c39",
+          "lines": [
+            118,
+            139
+          ]
+        }
+      ],
+      "xml": [
+        "SX02"
+      ]
+    },
+    {
+      "id": "SC09",
+      "finding": "Opinion groups exclude zero contributors, sort memory age ascending (newest first), sum faded offsets times stacking powers, round each group with nonzero minimum +/-1, then sum groups. Overflow removes oldest per-other then oldest same-def. OpinionOf adds relation and situation offsets, hediff factor, hostile positive clamp and final[-100,100].",
+      "sources": [
+        {
+          "file": ".local-research/mood-recreation/RimWorld.ThoughtHandler.cs",
+          "sha256": "80650774ab30d3402c8c0b387fb9c7f794c662557db9466de16810e408bb19aa",
+          "lines": [
+            132,
+            224
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.MemoryThoughtHandler.cs",
+          "sha256": "e3b1bb76660ce17fe50201ff99caca07d2814a8253ad779d6670c805a40b67e0",
+          "lines": [
+            142,
+            249
+          ]
+        },
+        {
+          "file": ".local-research/social-interaction/RimWorld.Pawn_RelationsTracker.cs",
+          "sha256": "d4a48e91a534b63b22f5597b3d2bc0cc322389852d30ce16c25dc197fa8dd02e",
+          "lines": [
+            592,
+            629
+          ]
+        }
+      ],
+      "xml": [
+        "SX02"
+      ]
+    },
+    {
+      "id": "SC10",
+      "finding": "Insulted creates a separate InsultedMood via fresh TryGainMemory(def,other); it does not inherit SocialImpact moodPowerFactor. Mood-5 lasts2days,stack10,.9. Ordinary memory groups with different otherPawn when formatted labels match, as fixed insulted label does; full-group merge renews oldest age rather than creating an11th.",
+      "sources": [
+        {
+          "file": ".local-research/mood-recreation/RimWorld.MemoryThoughtHandler.cs",
+          "sha256": "e3b1bb76660ce17fe50201ff99caca07d2814a8253ad779d6670c805a40b67e0",
+          "lines": [
+            142,
+            212
+          ]
+        },
+        {
+          "file": ".local-research/mood-recreation/RimWorld.Thought_Memory.cs",
+          "sha256": "ea6b174514a07ca990296ce9daf5a6653f95ec80975f3db6efcbb2d6c7810c39",
+          "lines": [
+            140,
+            186
+          ]
+        }
+      ],
+      "xml": [
+        "SX02"
+      ]
+    },
+    {
+      "id": "SC11",
+      "finding": "Compatibility is not opinion: age difference0..20 maps .45..-.45 plus stable pair-seeded asymmetric Gaussian(.3,1,1.4); seed=(idA XOR idB)*37. PushState/PopState preserves outer RNG. Directional opinion remains independently computed.",
+      "sources": [
+        {
+          "file": ".local-research/social-interaction/RimWorld.Pawn_RelationsTracker.cs",
+          "sha256": "d4a48e91a534b63b22f5597b3d2bc0cc322389852d30ce16c25dc197fa8dd02e",
+          "lines": [
+            815,
+            834
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "SC12",
+      "finding": "GatherSpot newly constructed active=true; save active default=false; nonplayer fresh spawns deactivate. Changes register/unregister in activeSpots; toggle is ordinary UI and despawn unregisters. TableGatherSpotBase adds CompGatherSpot to dining tables.",
+      "sources": [
+        {
+          "file": ".local-research/social-interaction-extra/RimWorld.CompGatherSpot.cs",
+          "sha256": "415248b7db8bf09e5dda60853ff164f885835094039c5bf902fb51840b2df7b4",
+          "lines": [
+            1,
+            85
+          ]
+        },
+        {
+          "file": ".local-research/social-interaction-extra/RimWorld.GatherSpotLister.cs",
+          "sha256": "12b5aad70653d9bc98601a40b24b1939db5d1f9690b344005c35182e1cdc6e81",
+          "lines": [
+            1,
+            24
+          ]
+        }
+      ],
+      "xml": [
+        "SX06"
+      ]
+    },
+    {
+      "id": "SC13",
+      "finding": "SocialRelax selects active gathering spots with reachability/safety/propriety checks. Eat-surface tables require an adjacent free sittable (30 random cardinal-cell attempts), without ground fallback. Non-Eat spots search chairs within3.9 then valid ground. No companion requirement exists in this giver. Optional nurseable recreational drink is not required.",
+      "sources": [
+        {
+          "file": ".local-research/social-interaction-extra/RimWorld.JoyGiver_SocialRelax.cs",
+          "sha256": "9634f747074cedd10a3d20782b5b49972deee646e848808d0ec16fc4c5bd32a0",
+          "lines": [
+            1,
+            182
+          ]
+        }
+      ],
+      "xml": [
+        "SX04",
+        "SX06"
+      ]
+    },
+    {
+      "id": "SC14",
+      "finding": "SocialRelax reserves actual seat/spot, walks there, faces gather spot, gains comfort and Social joy, with SuperActive mode during the delayed toil. Duration4000,JoyGiver relative baseChance4. Full joy can end early; room thought occurs on finish. No dialogue event must happen to gain recreation.",
+      "sources": [
+        {
+          "file": ".local-research/environment-storage/RimWorld.JobDriver_SocialRelax.cs",
+          "sha256": "ea5b3a8ce4d678c6e284bb4878d127644d87fd8f759530b3705be93b8705da64",
+          "lines": [
+            1,
+            84
+          ]
+        }
+      ],
+      "xml": [
+        "SX04",
+        "SX05"
+      ]
+    },
+    {
+      "id": "SC15",
+      "finding": "Interaction log persists intDef,initiator,recipient,extra rules and faction/ideology; tracker persists wantsRandomInteract,lastInteractionTime,lastInteraction,lastInteractionDef. Visible bubbles are transient presentation; durable log and memories establish participants/effect.",
+      "sources": [
+        {
+          "file": ".local-research/social-interaction/Verse.PlayLogEntry_Interaction.cs",
+          "sha256": "742bd8e2f9b31d3f4a2b7b4cda9730abf5dce3cd3fd13e9e8afc2043f4d487b2",
+          "lines": [
+            193,
+            202
+          ]
+        },
+        {
+          "file": ".local-research/social-interaction/RimWorld.Pawn_InteractionsTracker.cs",
+          "sha256": "1e0c942b28ca00151b617a3a30360e06378cbc3a858e86966b9b4e8f3db059d6",
+          "lines": [
+            96,
+            104
+          ]
+        },
+        {
+          "file": ".local-research/social-interaction/RimWorld.Pawn_InteractionsTracker.cs",
+          "sha256": "1e0c942b28ca00151b617a3a30360e06378cbc3a858e86966b9b4e8f3db059d6",
+          "lines": [
+            223,
+            269
+          ]
+        }
+      ],
+      "xml": [
+        "SX01"
+      ]
+    },
+    {
+      "id": "SC16",
+      "finding": "Insult socialFightBaseChance.04 is only a base. SocialFightPossible checks awake/downed/mental/faction/violence and more, while SocialFightChance uses opinion, traits, capacities, curves and other factors. A fixed4% unconditional fight probability is unsupported.",
+      "sources": [
+        {
+          "file": ".local-research/social-interaction/RimWorld.Pawn_InteractionsTracker.cs",
+          "sha256": "1e0c942b28ca00151b617a3a30360e06378cbc3a858e86966b9b4e8f3db059d6",
+          "lines": [
+            355,
+            487
+          ]
+        }
+      ],
+      "xml": [
+        "SX01"
+      ]
+    }
+  ],
+  "xml": [
+    {
+      "id": "SX01",
+      "file": "Data/Core/Defs/InteractionDefs/Interactions_Social.xml",
+      "source_sha256": "d311b82ce2ec0810e1ae1f24625d0b4cc1111e27463e53bc298d4251cf7af99e",
+      "xpath": "/Defs/InteractionDef[defName=\"Chitchat\" or defName=\"DeepTalk\" or defName=\"Insult\"]",
+      "projection": "Original attributes and selected gameplay children only; stages retain numeric offsets, not descriptions",
+      "nodes": [
+        "<InteractionDef><defName>Chitchat</defName><workerClass>InteractionWorker_Chitchat</workerClass><initiatorThought>Chitchat</initiatorThought><initiatorXpGainSkill>Social</initiatorXpGainSkill><initiatorXpGainAmount>4</initiatorXpGainAmount><recipientThought>Chitchat</recipientThought></InteractionDef>",
+        "<InteractionDef><defName>DeepTalk</defName><workerClass>InteractionWorker_DeepTalk</workerClass><initiatorThought>DeepTalk</initiatorThought><initiatorXpGainSkill>Social</initiatorXpGainSkill><initiatorXpGainAmount>10</initiatorXpGainAmount><recipientThought>DeepTalk</recipientThought></InteractionDef>",
+        "<InteractionDef><defName>Insult</defName><workerClass>InteractionWorker_Insult</workerClass><socialFightBaseChance>0.04</socialFightBaseChance><recipientThought>Insulted</recipientThought></InteractionDef>"
+      ]
+    },
+    {
+      "id": "SX02",
+      "file": "Data/Core/Defs/ThoughtDefs/Thoughts_Memory_Social.xml",
+      "source_sha256": "1be09e7a15669f8f62aa0651e8112c6db701261bfa33f14edd41232c7a8b824e",
+      "xpath": "/Defs/ThoughtDef[defName=\"Chitchat\" or defName=\"DeepTalk\" or defName=\"Insulted\" or defName=\"InsultedMood\"]",
+      "projection": "Original attributes and selected gameplay children only; stages retain numeric offsets, not descriptions",
+      "nodes": [
+        "<ThoughtDef><defName>Chitchat</defName><thoughtClass>Thought_MemorySocialCumulative</thoughtClass><stackLimit>300</stackLimit><maxCumulatedOpinionOffset>10</maxCumulatedOpinionOffset><developmentalStageFilter>Baby, Child, Adult</developmentalStageFilter><nullifyingTraits><li>Psychopath</li></nullifyingTraits><nullifyingHediffs><li MayRequire=\"Ludeon.RimWorld.Anomaly\">Inhumanized</li></nullifyingHediffs><stages><li><baseOpinionOffset>0.66</baseOpinionOffset></li></stages></ThoughtDef>",
+        "<ThoughtDef><defName>DeepTalk</defName><thoughtClass>Thought_MemorySocial</thoughtClass><durationDays>20</durationDays><stackLimit>300</stackLimit><stackLimitForSameOtherPawn>10</stackLimitForSameOtherPawn><stackedEffectMultiplier>0.9</stackedEffectMultiplier><developmentalStageFilter>Baby, Child, Adult</developmentalStageFilter><nullifyingTraits><li>Psychopath</li></nullifyingTraits><nullifyingHediffs><li MayRequire=\"Ludeon.RimWorld.Anomaly\">Inhumanized</li></nullifyingHediffs><stages><li><baseOpinionOffset>15</baseOpinionOffset></li></stages></ThoughtDef>",
+        "<ThoughtDef><defName>Insulted</defName><thoughtClass>Thought_MemorySocial</thoughtClass><durationDays>20</durationDays><stackLimit>300</stackLimit><stackLimitForSameOtherPawn>10</stackLimitForSameOtherPawn><stackedEffectMultiplier>0.9</stackedEffectMultiplier><developmentalStageFilter>Baby, Child, Adult</developmentalStageFilter><stages><li><baseOpinionOffset>-15</baseOpinionOffset></li></stages><thoughtToMake>InsultedMood</thoughtToMake></ThoughtDef>",
+        "<ThoughtDef><defName>InsultedMood</defName><durationDays>2</durationDays><stackLimit>10</stackLimit><stackedEffectMultiplier>0.9</stackedEffectMultiplier><developmentalStageFilter>Baby, Child, Adult</developmentalStageFilter><nullifyingHediffs><li MayRequire=\"Ludeon.RimWorld.Anomaly\">Inhumanized</li></nullifyingHediffs><stages><li><baseMoodEffect>-5</baseMoodEffect></li></stages></ThoughtDef>"
+      ]
+    },
+    {
+      "id": "SX03",
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_Social.xml",
+      "source_sha256": "a3db914be034226f29b2b511f63561edc5df8b0a20b9ae79e18dd2fb75c8b026",
+      "xpath": "/Defs/StatDef[defName=\"SocialImpact\"]",
+      "projection": "Original attributes and selected gameplay children only; stages retain numeric offsets, not descriptions",
+      "nodes": [
+        "<StatDef><defName>SocialImpact</defName><defaultBaseValue>1</defaultBaseValue><minValue>0.2</minValue><skillNeedFactors><li Class=\"SkillNeed_BaseBonus\"><skill>Social</skill><baseValue>0.82</baseValue><bonusPerLevel>0.0275</bonusPerLevel></li></skillNeedFactors><neverDisabled>true</neverDisabled><capacityFactors><li><capacity>Talking</capacity><weight>0.9</weight><allowedDefect>0.05</allowedDefect><max>1</max></li><li><capacity>Hearing</capacity><weight>0.3</weight><allowedDefect>0.05</allowedDefect><max>1</max></li></capacityFactors></StatDef>"
+      ]
+    },
+    {
+      "id": "SX04",
+      "file": "Data/Core/Defs/Joy/JoyGivers.xml",
+      "source_sha256": "e35331b3cd709de271871bdf75400c7bb45ad7181dcad30ba8b9efc0dca1439f",
+      "xpath": "/Defs/JoyGiverDef[defName=\"SocialRelax\"]",
+      "projection": "Original attributes and selected gameplay children only; stages retain numeric offsets, not descriptions",
+      "nodes": [
+        "<JoyGiverDef><defName>SocialRelax</defName><giverClass>JoyGiver_SocialRelax</giverClass><baseChance>4</baseChance><jobDef>SocialRelax</jobDef><joyKind>Social</joyKind></JoyGiverDef>"
+      ]
+    },
+    {
+      "id": "SX05",
+      "file": "Data/Core/Defs/JobDefs/Jobs_Joy.xml",
+      "source_sha256": "20fdcac408eef887747be30416a47155d4c9509193dd35af4496bb3b59e2d056",
+      "xpath": "/Defs/JobDef[defName=\"SocialRelax\"]",
+      "projection": "Original attributes and selected gameplay children only; stages retain numeric offsets, not descriptions",
+      "nodes": [
+        "<JobDef><defName>SocialRelax</defName><driverClass>JobDriver_SocialRelax</driverClass><joyDuration>4000</joyDuration><joyKind>Social</joyKind></JobDef>"
+      ]
+    },
+    {
+      "id": "SX06",
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+      "source_sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55",
+      "xpath": "/Defs/ThingDef[@Name=\"TableBase\" or @Name=\"TableGatherSpotBase\" or defName=\"Table1x2c\"]",
+      "projection": "Original attributes and selected gameplay children only; stages retain numeric offsets, not descriptions",
+      "nodes": [
+        "<ThingDef Abstract=\"True\" ParentName=\"FurnitureWithQualityBase\" Name=\"TableBase\"><surfaceType>Eat</surfaceType></ThingDef>",
+        "<ThingDef Abstract=\"True\" ParentName=\"TableBase\" Name=\"TableGatherSpotBase\"><comps><li><compClass>CompGatherSpot</compClass></li></comps></ThingDef>",
+        "<ThingDef ParentName=\"TableGatherSpotBase\"><defName>Table1x2c</defName><size>(1,2)</size><costStuffCount>28</costStuffCount></ThingDef>"
+      ]
+    }
+  ],
+  "rea_members": {
+    "source_file": ".local-research/husbandry-reproduction/rea-members-summary.json",
+    "sha256": "66427c4d04e6914ff6bb0fac9db74298abf00bd55e00c75ac765042ca21e40c8",
+    "evidence_id": "ev_69dd93b13c6a61b745e389803b4f0df51ea1529b0acda8bce3ce328ac99356a9",
+    "parent_evidence_id": "ev_1394217e2f4381602cdb14a099b269b54074ae46cf73bb12d9adbbc7a30bb0b8",
+    "status": "unavailable",
+    "reason": "Managed metadata exceeds the67108864byte representation budget; zero returned members is not absence evidence"
+  },
+  "native_runtime_report": "../98-native-social-runtime.md",
+  "limitations": [
+    "Derived C# is not original source. Existing matching derivations reused; full C# remains local.",
+    "REA67108864byte member-budget failure is retained and was not repeatedly requested.",
+    "Selected Core XML is not the fully patched active Def database.",
+    "No probability calibration or proof that every dependency branch was executed; native observations separate."
+  ]
+}

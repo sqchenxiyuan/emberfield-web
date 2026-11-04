@@ -51,6 +51,11 @@ export function DiningFurnitureDetails({ table, chair, snapshot, focus, command 
 }) {
   const item = table ?? chair!;
   const users = snapshot.pawns.filter(p => p.living.mealTask && (table ? p.living.mealTask.tableId === table.id : p.living.mealTask.chairId === chair!.id));
+  const relaxing = snapshot.pawns.filter(p => {
+    const activity = p.psyche.recreation;
+    return activity?.kind === 'social' && (table ? activity.spotId === table.id :
+      activity.target.x === chair!.x && activity.target.y === chair!.y && activity.target.z === chair!.z);
+  });
   const touching = (c: Pos, t: DiningTable) => tableCells(t).some(p => p.z === c.z && Math.abs(p.x - c.x) + Math.abs(p.y - c.y) === 1);
   const seats = table ? snapshot.chairs.filter(c => touching(c, table)) : [];
   const tables = chair ? snapshot.tables.filter(t => touching(chair, t)) : [];
@@ -58,7 +63,11 @@ export function DiningFurnitureDetails({ table, chair, snapshot, focus, command 
     <b>{table ? '木制餐桌' : '木制餐椅'} · 占地 {table ? '2' : '1'} 格</b>
     <small>建造消耗 {LIVING_BUILDINGS[table ? 'table' : 'chair'].cost.wood} 木材</small>
     <p>{table ? `相邻餐椅 ${seats.length} 把。留出进入座位的通路，殖民者会带餐就座。` : tables.length ? '相邻餐桌可用；殖民者就座时朝向桌面。' : '紧贴餐桌四周放置，才能作为用餐座位。'}</p>
+    {table && <label className="voxel-gathering-control"><input type="checkbox" aria-label="允许聚会" checked={table.gathering} onChange={e => command({ type: 'tableGathering', tableId: table.id, enabled: e.target.checked })} />允许聚会</label>}
+    {table && <small>殖民者会坐在紧邻餐桌的餐椅上休闲。关闭后结束这张桌子的休闲活动，用餐照常进行。</small>}
     <div data-testid="dining-seat-users">{users.length ? users.map(p => <button key={p.id} onClick={() => focus(p)}>{p.name} · {p.living.mealTask?.stage === 'travel' ? '前往座位' : '正在用餐'}</button>) : <small>当前无人预约或使用</small>}</div>
+    <div data-testid="table-social-users">{relaxing.map(p => <button key={p.id} data-pawn-id={p.id} onClick={() => focus(p)}>{p.name} · {p.path.length || p.x !== p.psyche.recreation!.target.x || p.y !== p.psyche.recreation!.target.y || p.z !== p.psyche.recreation!.target.z ? '前往桌边休闲' : '正在桌边休闲'}</button>)}</div>
+    {(users.length > 0 || relaxing.length > 0) && <small>用餐与休闲共用位置预约；已有预约的位置会保留，后来的人另找空位。</small>}
     <small>{table ? '餐桌会阻挡通行，不能在桌面堆放仓储物资。' : '可以穿过餐椅，不能在椅子位置堆放物资。'}</small>
     <button onClick={() => command({ type: 'designate', tool: 'remove', from: item })}>拆除{table ? '餐桌' : '餐椅'}</button>
   </section>;

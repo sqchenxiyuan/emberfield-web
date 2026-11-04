@@ -1,6 +1,8 @@
 import { expect } from 'vitest';
+import { stripSocialFields } from './legacy-social-defaults';
 /** Synthetic historical fixtures only. Captured saves are never rewritten. */
 export function stripLivingFields(raw: Record<string, any>) {
+  stripSocialFields(raw);
   expect(raw.tables ?? []).toEqual([]); expect(raw.chairs ?? []).toEqual([]);
   delete raw.tables; delete raw.chairs;
   for (const p of raw.pawns ?? []) {

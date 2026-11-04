@@ -103,8 +103,11 @@ import type { GrassPatch, HusbandryEvent } from './types';
 import type { WildAnimal, ButcherSpot, HorseshoePin } from './types';
 import { initialLiving, tableCells, LIVING_RULES, LIVING_BUILDINGS, advanceLiving, rememberMeal, rememberSleep, roomLivingSummary, type DiningTable, type DiningChair, type RoomLivingSummary } from './living';
 import { rejectLegacyLivingFields, migrateLiving, validateLiving } from './livingPersistence';
+import { initialSocial, rememberDeparture, type SocialIdentity, type SocialEvent } from './social';
+import { rejectLegacySocialFields, migrateSocial, validateSocial } from './socialPersistence';
+import { updateSocial } from './socialWorld';
 import { constructedMarketValue, structureMarketValue } from './wealth';
-import { initialPsyche, remember, advancePsyche, recreationGain, shouldRecreate, validatePsyche, MOOD_RULES } from './mood';
+import { initialPsyche, remember, advancePsyche, recreationGain, shouldRecreate, validatePsyche, MOOD_RULES, RECREATION_NAMES, type RecreationKind } from './mood';
 import { HORSESHOE_COST, HORSESHOE_WORK } from './recreation';
 import { startCapture, setPrisonerPolicy, tryWarden, wardenTick, prisonerTick, releaseWarden } from './prisonWorld';
 import { rejectLegacyPrisonerFields, migratePrisoners, validatePrisoners } from './prisonPersistence';
@@ -537,6 +540,8 @@ export class VoxelSimulation {
   blocks = new Uint8Array(CELLS);
   ladders = new Uint8Array(CELLS);
   pawns: Pawn[] = [];
+  socialHistory: SocialIdentity[] = [];
+  socialLog: SocialEvent[] = [];
   items: Stack[] = [];
   trees: Tree[] = [];
   treePlots: TreePlot[] = [];
@@ -648,7 +653,7 @@ export class VoxelSimulation {
         rest: 100,
         skills: initialSkills(i),
         prisoner: null, wardenTask: null, handleTask: null, ropeTask: null,
-        living: initialLiving(), psyche: initialPsyche(),
+        living: initialLiving(), psyche: initialPsyche(), social: initialSocial(0, this.nextId - 1),
         priorities: {
           handle: 2,
           firefight: 1,
@@ -1974,6 +1979,15 @@ export class VoxelSimulation {
       const ok = !!f && this.startClean(p, f);
       return { ok, message: ok ? p.reason : '需要家园区域内可达、未被预约的污物，以及可卸货的空间' };
     }
+    if (c.type === 'tableGathering') {
+      const table = this.tables.find(t => t.id === c.tableId);
+      if (!table || typeof c.enabled !== 'boolean') return { ok: false, message: '请选择有效餐桌与聚会设置' };
+      table.gathering = c.enabled;
+      if (!table.gathering) for (const p of this.pawns) if (p.psyche.recreation?.kind === 'social' && p.psyche.recreation.spotId === table.id) {
+        this.release(p); p.reason = '餐桌已停止聚会，重新安排活动';
+      }
+      return { ok: true, message: table.gathering ? '允许在此桌边休闲' : '已停止聚会，仍可正常用餐' };
+    }
     if (c.type === 'recreate' || c.type === 'cancelRecreation') {
       const p = this.pawns.find(p => p.id === c.pawnId && p.faction === 'colony');
       if (!p || p.dead || p.downed || p.drafted || p.carriedBy !== null)
@@ -1983,10 +1997,11 @@ export class VoxelSimulation {
         this.release(p); p.reason = '娱乐已结束，等待重新安排';
         return { ok: true, message: p.reason };
       }
-      const ok = this.startRecreation(p, true);
-      return { ok, message: ok ? p.reason : natureWeatherAllowed(this.weather, this.tick)
-        ? '暂无可达且舒适的户外空地或空闲马蹄铁桩'
-        : '天气不适合散步，且没有可达、舒适的空闲马蹄铁位置' };
+      if (c.kind !== undefined && !Object.hasOwn(RECREATION_NAMES, c.kind)) return { ok: false, message: '娱乐类别无效' };
+      const ok = this.startRecreation(p, true, c.kind);
+      return { ok, message: ok ? p.reason : c.kind === 'social'
+        ? '没有允许聚会、可达且舒适的空闲桌边位置'
+        : '暂无所选活动的可达空位；检查天气、温度、设施和预约' };
     }
     if (c.type === 'animalOrder') return animalOrder(this, c.animalId, c.order, c.enabled);
     if (c.type === 'hunt') {
@@ -3763,7 +3778,7 @@ export class VoxelSimulation {
       skills: initialSkills(0, true),
       ...initialSurvival(this.seed, id),
       prisoner: null, wardenTask: null, handleTask: null, ropeTask: null,
-      living: initialLiving(), psyche: initialPsyche(this.tick),
+      living: initialLiving(), psyche: initialPsyche(this.tick), social: initialSocial(this.tick, id),
       faction: 'raider',
       weapon,
       priorities: {
@@ -4230,6 +4245,7 @@ export class VoxelSimulation {
       p.attackTargetId = null;
       if (p.x === 0 || p.y === 0 || p.x === WIDTH - 1 || p.y === DEPTH - 1) {
         for (const q of this.pawns) if (q.attackTargetId === p.id) this.release(q);
+        this.socialDepart(p);
         this.pawns = this.pawns.filter((q) => q.id !== p.id);
         this.notice = p.name + '已撤离地图';
         return;
@@ -4632,11 +4648,41 @@ export class VoxelSimulation {
       !this.jobs.some(j => !j.cancelled && this.footprint(j).some(q => same(q, p))) &&
       this.temperature(p) >= 6 && this.temperature(p) <= 32;
   }
+  private gatheringCell(table: DiningTable, target: Pos) {
+    return table.gathering && this.canStop(target) && !this.ladders[at(target)] &&
+      tableCells(table).some(c => c.z === target.z && Math.abs(c.x-target.x)+Math.abs(c.y-target.y) === 1) &&
+      this.chairs.some(c => same(c,target)) &&
+      !this.fires.some(f => same(f,target)) &&
+      !this.jobs.some(j => !j.cancelled && this.footprint(j).some(c => same(c,target))) &&
+      this.temperature(target) >= 6 && this.temperature(target) <= 32;
+  }
+  socialRelaxing(p: Pawn) {
+    return p.phase === 'recreation' && p.psyche.recreation?.kind === 'social' &&
+      same(p,p.psyche.recreation.target) && p.path.length === 0 && this.validRecreation(p);
+  }
+  socialLineOfSight(from: Pos, to: Pos) {
+    const mouth = (p:Pos) => ({x:p.x+.5,y:p.y+.5,z:Math.min(HEIGHT-.01,p.z+1.2)});
+    return traceVoxelRay(mouth(from),mouth(to),{width:WIDTH,depth:DEPTH,height:HEIGHT})
+      .every(entry => !this.shotBlocked(entry.cell));
+  }
+  socialDepart(p: Pawn) {
+    rememberDeparture(this.socialHistory,p,this.tick,this.pawns,this.socialLog);
+  }
+  private leisureReserved(p: Pawn, target: Pos) {
+    return this.pawns.some(q => q !== p && !q.dead &&
+      ((q.psyche.recreation && same(q.psyche.recreation.target,target)) ||
+       (q.living.mealTask && same(q.living.mealTask.target,target))));
+  }
   private validRecreation(p: Pawn) {
     const activity = p.psyche.recreation;
     if (!activity || this.tick >= activity.endTick || p.food < 12 || p.rest < 1 ||
-        !this.leisureCell(activity.target)) return false;
+        this.leisureReserved(p,activity.target)) return false;
     if (!activity.forced && ['work', 'sleep'].includes(assignmentAt(p.schedule, this.tick))) return false;
+    if (activity.kind === 'social') {
+      const table = this.tables.find(t => t.id === activity.spotId);
+      return !!table && this.gatheringCell(table,activity.target);
+    }
+    if (!this.leisureCell(activity.target)) return false;
     if (activity.kind === 'walk') return this.skyAt(activity.target) && natureWeatherAllowed(this.weather, this.tick);
     if (healthSummary(p).manipulation <= 0) return false;
     const pin = this.horseshoePins.find(b => b.id === activity.spotId);
@@ -4645,15 +4691,28 @@ export class VoxelSimulation {
     return inside(middle) && this.canStop(middle) && !this.furnitureAt(middle) &&
       !this.jobs.some(j => !j.cancelled && same(j, pin));
   }
-  private startRecreation(p: Pawn, forced = false): boolean {
+  private startRecreation(p: Pawn, forced = false, preferred?: RecreationKind): boolean {
     if (p.dead || p.downed || p.drafted || p.carriedBy !== null || p.faction !== 'colony' ||
         p.psyche.breakUntil > this.tick || p.food < 12 || p.rest < 1) return false;
     // Never replace an existing job until a reachable activity is known.
     this.search(p);
-    const candidates: { kind: 'walk' | 'horseshoes'; target: Pos; spotId: number | null; score: number }[] = [];
+    const candidates: { kind: RecreationKind; target: Pos; spotId: number | null; score: number }[] = [];
     const occupied = (q: Pos) => this.pawns.some(other => other !== p && !other.dead &&
-      (same(other, q) || (other.psyche.recreation && same(other.psyche.recreation.target, q))));
-    for (const pin of this.horseshoePins) {
+      same(other, q)) || this.leisureReserved(p,q);
+    if (!preferred || preferred === 'social') for (const table of this.tables) {
+      if (!table.gathering || this.jobs.some(j => !j.cancelled && j.kind === 'remove' && this.tableAt(j)?.id === table.id)) continue;
+      const cells = new Map<number,Pos>();
+      for (const cell of tableCells(table)) for (const [dx,dy] of horizontal) {
+        const target = {x:cell.x+dx,y:cell.y+dy,z:cell.z};
+        if (inside(target)) cells.set(at(target),target);
+      }
+      for (const target of cells.values()) {
+        if (!this.gatheringCell(table,target) || occupied(target) || this.distance[at(target)] < 0) continue;
+        candidates.push({kind:'social',target,spotId:table.id,
+          score:recreationGain('social',p.psyche.tolerance.social)*DAY - this.distance[at(target)]});
+      }
+    }
+    if (!preferred || preferred === 'horseshoes') for (const pin of this.horseshoePins) {
       if (this.pawns.some(other => other !== p && other.psyche.recreation?.spotId === pin.id) ||
           this.jobs.some(j => !j.cancelled && same(j, pin))) continue;
       for (const [dx, dy] of horizontal) {
@@ -4666,7 +4725,7 @@ export class VoxelSimulation {
       }
     }
     // Nature watching is outdoors, reachable and distinct from the physical game.
-    for (let dx = -6; dx <= 6; dx++) for (let dy = -6; dy <= 6; dy++) {
+    if (!preferred || preferred === 'walk') for (let dx = -6; dx <= 6; dx++) for (let dy = -6; dy <= 6; dy++) {
       if (Math.abs(dx) + Math.abs(dy) < 2) continue;
       for (const dz of [0, 1, -1]) {
         const target = { x: p.x + dx, y: p.y + dy, z: p.z + dz };
@@ -4686,8 +4745,9 @@ export class VoxelSimulation {
     p.psyche.recreation = { kind: choice.kind, target: choice.target, spotId: choice.spotId, forced,
       startedTick: this.tick, endTick: this.tick + MOOD_RULES.recreationDurationTicks };
     this.go(p, at(choice.target), 'recreation');
-    p.reason = choice.kind === 'walk' ? '前往户外散步观景' : '前往马蹄铁桩';
-    p.workTarget = choice.spotId === null ? choice.target : this.horseshoePins.find(b => b.id === choice.spotId)!;
+    p.reason = choice.kind === 'walk' ? '前往户外散步观景' : choice.kind === 'social' ? '前往餐桌休闲' : '前往马蹄铁桩';
+    p.workTarget = choice.kind === 'social' ? this.tables.find(t => t.id === choice.spotId)! :
+      choice.spotId === null ? choice.target : this.horseshoePins.find(b => b.id === choice.spotId)!;
     return true;
   }
   private recreationTick(p: Pawn) {
@@ -4695,9 +4755,10 @@ export class VoxelSimulation {
     if (!activity || !same(p, activity.target) || !this.validRecreation(p) || p.psyche.joy >= MOOD_RULES.recreationStopJoy) {
       this.release(p); p.reason = '娱乐结束，等待重新安排'; return;
     }
+    p.destination = null;
     p.psyche.joy = Math.min(100, p.psyche.joy + recreationGain(activity.kind, p.psyche.tolerance[activity.kind]));
     p.psyche.tolerance[activity.kind] = Math.min(1, p.psyche.tolerance[activity.kind] + MOOD_RULES.toleranceGainPerTick);
-    p.reason = activity.kind === 'walk' ? '户外散步观景' : '投掷马蹄铁';
+    p.reason = activity.kind === 'walk' ? '户外散步观景' : activity.kind === 'social' ? '在桌边休闲，附近有人时可能交谈' : '投掷马蹄铁';
   }
   private updatePsychology() {
     for (const p of this.pawns) {
@@ -4862,7 +4923,8 @@ export class VoxelSimulation {
       if (d.kind === 'penMarker') removePenMarker(this,d.targetId!);
       if (d.kind === 'bed') { const bed = originals.beds.find(b => b.id === d.targetId)!; this.invalidatePrisonBed(bed); }
       for (const p of this.pawns) if (p.psyche.recreation?.spotId === d.targetId || p.repairTask?.damageKey === d.key ||
-        p.living.mealTask?.chairId === d.targetId || p.living.mealTask?.tableId === d.targetId) this.release(p);
+        p.living.mealTask?.chairId === d.targetId || p.living.mealTask?.tableId === d.targetId ||
+        (p.psyche.recreation?.kind === 'social' && d.kind === 'chair' && same(p.psyche.recreation.target,d))) this.release(p);
       const cells = new Set(fireDamageCells(d, originals).map(at));
       for (const j of [...this.jobs]) if (cells.has(at(j))) this.fireDestroyJob(j);
       if (d.key !== target.key) fireLog(this, 'destroyed', d, '设施失去地面支撑而损毁；没有退还建筑材料');
@@ -5135,7 +5197,7 @@ export class VoxelSimulation {
     for (const [i, role] of kinds.entries()) {
       const def = VISITOR_KINDS[role], id = this.id();
       const weapon = visitorWeapon(role, () => this.id(), random);
-      const p: Pawn = { ...structuredClone(colonist), prisoner: null, wardenTask: null, handleTask: null, ropeTask: null, living: initialLiving(), psyche: initialPsyche(this.tick), ...initialSurvival(this.seed, id), ...edges[i],
+      const p: Pawn = { ...structuredClone(colonist), prisoner: null, wardenTask: null, handleTask: null, ropeTask: null, living: initialLiving(), psyche: initialPsyche(this.tick), social: initialSocial(this.tick, id), ...initialSurvival(this.seed, id), ...edges[i],
         id, name: `${def.name} ${this.trade.visits + 1}-${i + 1}`, color: role === 'trader' ? 0xd8bf79 : 0x96b5cc,
         food: 100, rest: 100, skills: initialSkills(i, true), faction: 'trader', weapon,
         priorities: Object.fromEntries(Object.keys(colonist.priorities).map(key => [key, 0])) as Pawn['priorities'],
@@ -5689,7 +5751,7 @@ export class VoxelSimulation {
     if (!ground) {
       const choices = this.chairs.flatMap(c => {
         const t = this.adjacentDiningTable(c), distance = this.distance[at(c)];
-        if (!t || distance < 0 || distance > LIVING_RULES.maxSeatDistance || !this.canStop(c) ||
+        if (!t || distance < 0 || distance > LIVING_RULES.maxSeatDistance || !this.canStop(c) || this.leisureReserved(p,c) ||
             this.fires.some(f => same(f, c)) || this.pawns.some(q => q !== p &&
               (same(q, c) || q.living.mealTask?.chairId === c.id))) return [];
         return [{ chair:c, table:t, distance }];
@@ -6487,12 +6549,14 @@ export class VoxelSimulation {
       yields.meal = SIMPLE_MEAL.output;
       this.stats.cooked++;
     } else if (j.kind === 'table' || j.kind === 'chair') {
-      const target = j.kind === 'table' ? this.tables : this.chairs;
-      target.push({ id: this.id(), x:j.x, y:j.y, z:j.z, axis:j.axis ?? 'x' });
+      const target = { id: this.id(), x:j.x, y:j.y, z:j.z, axis:j.axis ?? 'x' };
+      if (j.kind === 'table') this.tables.push({...target,gathering:true});
+      else this.chairs.push(target);
       this.rebuildDevices(); this.revision++;
     } else if (j.kind === 'remove' && (this.tableAt(j) || this.chairs.some(c => same(c, j)))) {
       const target = this.tableAt(j) ?? this.chairs.find(c => same(c, j))!;
-      for (const pawn of this.pawns) if (pawn.living.mealTask?.tableId === target.id || pawn.living.mealTask?.chairId === target.id) this.release(pawn);
+      for (const pawn of this.pawns) if (pawn.living.mealTask?.tableId === target.id || pawn.living.mealTask?.chairId === target.id ||
+        (pawn.psyche.recreation?.kind === 'social' && (pawn.psyche.recreation.spotId === target.id || same(pawn.psyche.recreation.target,target)))) this.release(pawn);
       this.tables = this.tables.filter(t => t.id !== target.id); this.chairs = this.chairs.filter(c => c.id !== target.id);
       this.rebuildDevices(); this.revision++;
     } else if (j.kind === 'horseshoePin') {
@@ -6697,6 +6761,10 @@ export class VoxelSimulation {
           if ((this.tick + p.id) % 20 === 0) this.assign(p);
         } else this.arrive(p);
       }
+      // Resolve invalid activities, arrival and work scheduling before deciding
+      // social eligibility. A stale recreation phase must not survive a load
+      // or a schedule change just long enough to earn another interaction.
+      updateSocial(this);
       for (const d of [...this.doors, ...this.fenceGates])
         if (
           d.mode !== 'locked' &&
@@ -6792,8 +6860,10 @@ export class VoxelSimulation {
       if (p.dead) continue;
       const bed = this.patientBed(p);
       const resting = !!bed && (p.phase==='rest' || p.downed || (p.faction==='prisoner' && p.sleepingSince!==null));
-      const seated = p.phase==='dine' && p.living.mealTask?.stage==='chew' &&
-        p.living.mealTask.chairId!==null && this.validDining(p);
+      const seated = (p.phase==='dine' && p.living.mealTask?.stage==='chew' &&
+        p.living.mealTask.chairId!==null && this.validDining(p)) ||
+        (p.phase==='recreation' && p.psyche.recreation?.kind==='social' && same(p,p.psyche.recreation.target) &&
+         this.validRecreation(p) && this.chairs.some(c=>same(c,p)));
       advanceLiving(p.living,this.tick,resting ? LIVING_RULES.bedComfort : seated ? LIVING_RULES.chairComfort : null);
       if (resting && p.phase==='rest' && p.sleepingSince!==null && bed.owner===p.id && !bed.medical && !bed.prisoner) {
         p.living.sleepThoughtAt ??= p.sleepingSince! + LIVING_RULES.sleepThoughtDelay;
@@ -7077,6 +7147,7 @@ export class VoxelSimulation {
       if (this.stockpiles.some((s) => same(s, i) && s.accepts.includes(i.resource)))
         stored[i.resource] += i.amount;
     return structuredClone({
+      socialHistory: this.socialHistory, socialLog: this.socialLog,
       weather: { ...this.weather, effects: weatherEffects(this.weather, this.tick) },
       environment: this.environmentView(),
       snow: this.snow, weatherRoof: this.weatherRoof,
@@ -7167,7 +7238,8 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 31,
+      version: 32,
+      socialHistory: this.socialHistory, socialLog: this.socialLog,
       weather: this.weather, snow: this.snow,
       fires: this.fires, fireDamage: this.fireDamage, fireHazards: this.fireHazards, fireLog: this.fireLog,
       filth: this.filth,
@@ -7220,11 +7292,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacySocialFields(old);
     rejectLegacyLivingFields(old);
     rejectLegacyPensFields(old);
     rejectLegacyEnvironmentFields(old);
@@ -7566,7 +7639,8 @@ export class VoxelSimulation {
     migrateHusbandry(old, sourceVersion);
     migratePens(old, sourceVersion);
     migrateLiving(old, sourceVersion);
-    old.version = 31;
+    migrateSocial(old, sourceVersion);
+    old.version = 32;
     const d = old as VoxelSave;
     const loadHealth = (p: Pawn) =>
       oldHealth.get(p.id) ?? {
@@ -8668,6 +8742,7 @@ export class VoxelSimulation {
     validateHusbandry(d);
     validatePens(d);
     validateLiving(d);
+    validateSocial(d);
     const recreationPins = new Set<number>();
     const recreationCells = new Set<number>();
     for (const p of d.pawns) {
@@ -8686,6 +8761,13 @@ export class VoxelSimulation {
           throw new Error('娱乐场地预留无效');
         recreationPins.add(pin.id);
       }
+      if (activity?.kind === 'social') {
+        const table = d.tables.find(t => t.id === activity.spotId);
+        if (!table || !table.gathering || !d.chairs.some(c => same(c,activity.target)) || !tableCells(table).some(c => c.z === activity.target.z &&
+            Math.abs(c.x-activity.target.x)+Math.abs(c.y-activity.target.y) === 1) ||
+            d.pawns.some(q => q.id !== p.id && q.living.mealTask && same(q.living.mealTask.target,activity.target)))
+          throw new Error('桌边休闲目标或共享座位预约无效');
+      }
     }
     // Restore into empty state. Never rerun generation over an existing colony.
     const s = new VoxelSimulation(d.seed, d.settings, true);
@@ -8699,6 +8781,7 @@ export class VoxelSimulation {
       s,
       structuredClone({
         tick: d.tick,
+        socialHistory: d.socialHistory, socialLog: d.socialLog,
         weather: d.weather, snow: d.snow,
         fires: d.fires, fireDamage: d.fireDamage, fireHazards: d.fireHazards, fireLog: d.fireLog,
         filth: d.filth,
@@ -8857,7 +8940,7 @@ export class VoxelSimulation {
         const activity = p.psyche.recreation!;
         const route = s.path(p, activity.target);
         if (!s.validRecreation(p) || route === null) s.release(p);
-        else { p.path = route; p.destination = at(activity.target); }
+        else { p.path = route; p.destination = route.length ? at(activity.target) : null; }
         continue;
       }
       if (p.phase === 'hunt') {

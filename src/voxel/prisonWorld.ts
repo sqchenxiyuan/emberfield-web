@@ -7,6 +7,7 @@ import { initialPrisoner, interactionOutcome, prisonTalkSpeed, PRISON_POLICIES, 
   type PrisonerPolicy, type WardenTask } from './prisoners';
 
 export interface PrisonHost {
+  socialDepart(pawn: Pawn): void;
   tick: number;
   notice: string;
   pawns: Pawn[];
@@ -259,6 +260,7 @@ export function prisonerTick(s: PrisonHost, p: Pawn): void {
       for (const q of s.pawns) if (q.id !== p.id && (q.attackTargetId === p.id ||
           q.shooting?.targetId === p.id || q.wardenTask?.prisonerId === p.id || q.patientId === p.id))
         s.prisonRelease(q);
+      s.socialDepart(p);
       s.pawns = s.pawns.filter(q => q.id !== p.id); s.notice = `${p.name}已离开地图`; return;
     }
     if (!p.path.length || (s.tick + p.id) % PRISON_RULES.replanTicks === 0) {

@@ -15,7 +15,7 @@ function historical(name: keyof typeof HASHES) {
 describe('authentic v30 living loader compatibility', () => {
   it.each(['leading', 'final'] as const)('roundtrips the real %s colony without changing physical state or active ropes', name => {
     const old = historical(name), original = structuredClone(old), sim = VoxelSimulation.load(old), saved = sim.save();
-    expect(old).toEqual(original); expect(saved.version).toBe(31);
+    expect(old).toEqual(original); expect(saved.version).toBe(32);
     expect(saved.tables).toEqual([]); expect(saved.chairs).toEqual([]);
     // The established loader reschedules ordinary haul/fetch work. Compare all
     // persistent physical and economic fields; retain the entire rope activity.
@@ -26,7 +26,7 @@ describe('authentic v30 living loader compatibility', () => {
       const p = saved.pawns.find(p => p.id === previous.id)!;
       expect(p.living).toEqual(initialLiving());
       for (const [key, value] of Object.entries(previous)) if (previous.ropeTask || !scheduling.includes(key))
-        expect((p as any)[key], `pawn${p.id}.${key}`).toEqual(value);
+        expect((p as any)[key], `pawn${p.id}.${key}`).toEqual(key === 'psyche' ? { ...previous.psyche, tolerance: { ...previous.psyche.tolerance, social: 0 } } : value);
     }
     for (const previous of old.jobs) {
       const job = saved.jobs.find(j => j.id === previous.id)!;

@@ -16,6 +16,7 @@ import { WeatherPanel, WeatherCellDetails } from './WeatherPanel';
 import { AnimalPanel, AnimalDetails } from './AnimalPanel';
 import { FenceGateDetails, PenDetails, type PenControls } from './PenPanel';
 import { LivingPanel, RoomLivingDetails, DiningFurnitureDetails } from './LivingPanel';
+import { SocialPanel } from './SocialPanel';
 import { tableCells, LIVING_BUILDINGS } from './living';
 import { BatchDurability, ItemCondition } from './ItemCondition';
 import type { EnvironmentView } from './environment';
@@ -35,7 +36,7 @@ import { weaponName } from './weapons';
 import { WEAPON_BENCH_NAMES } from './weaponProduction';
 import { APPAREL_NAMES } from './apparel';
 import { ANIMAL_DEFS } from './wildlife';
-import { moodView, RECREATION_NAMES } from './mood';
+import { moodView, RECREATION_NAMES, type RecreationKind } from './mood';
 import { PRISON_POLICY_NAMES, PRISON_POLICIES, PRISON_RULES, type PrisonerPolicy } from './prisoners';
 import {
   BLOCK_NAMES,
@@ -227,7 +228,8 @@ const foodName = (batch: Cargo) =>
       : batch.resource === 'grain' && batch.crop
         ? CROPS[batch.crop].name
         : RESOURCE_NAMES[batch.resource];
-function MoodPanel({ pawn, tick, temperature, environment, pin, focus }: { pawn: Pawn; tick: number; temperature: number; environment: EnvironmentView; pin?: Pos; focus: (p: Pos) => void }) {
+function MoodPanel({ pawn, tick, temperature, environment, pin, gatheringTable, focus }: { pawn: Pawn; tick: number; temperature: number; environment: EnvironmentView; pin?: Pos; gatheringTable?: Pos; focus: (p: Pos) => void }) {
+  const [choice, setChoice] = useState<'auto' | RecreationKind>('auto');
   const view = moodView(pawn, tick, temperature), psyche = pawn.psyche, activity = psyche.recreation;
   const wet = psyche.memories.find(memory => memory.kind === 'wet' && memory.expires > tick);
   const wetting = environment.wetPawnIds.includes(pawn.id);
@@ -242,10 +244,11 @@ function MoodPanel({ pawn, tick, temperature, environment, pin, focus }: { pawn:
     {breaking ? <p className="voxel-mood-warning" data-testid="mental-break-status">正在悲伤游荡，预计 {remaining(view.breakRemaining)}后恢复。期间暂不接受征召和手动工作，不能直接取消。</p>
       : view.risk === 'low' ? <p className="voxel-mood-warning">低心情持续过久可能引发精神崩溃。先检查饥饿、疲劳、疼痛与娱乐不足的原因。</p>
         : <small>心情会逐渐趋向当前环境与需求形成的目标，不会因一次操作立即回满。</small>}
-    {activity && <div className="voxel-recreation-status" data-testid="recreation-status">
+    {activity && <div className="voxel-recreation-status" data-testid="recreation-status" data-kind={activity.kind} data-spot-id={activity.spotId ?? ''} data-arrived={pawn.x === activity.target.x && pawn.y === activity.target.y && pawn.z === activity.target.z && !pawn.path.length}>
       <b>{pawn.path.length ? '前往' : '正在'}{RECREATION_NAMES[activity.kind]}</b>
       <small>{pawn.reason} · 目标 {activity.target.x}, {activity.target.y} · Z {activity.target.z}</small>
       <progress aria-label="本次娱乐进度" value={Math.max(0, tick - activity.startedTick)} max={Math.max(1, activity.endTick - activity.startedTick)} />
+      {activity.kind === 'social' && <small>实际坐到桌旁餐椅后恢复娱乐；附近有人能交流时，才可能自然发生互动。</small>}
     </div>}
     <details className="voxel-mood-thoughts"><summary>心情原因 · 当前目标 {Math.round(view.target)}%</summary>
       <ul>{view.thoughts.map((thought, i) => <li key={`${thought.label}-${i}`}><span>{thought.label}</span><b className={thought.value < 0 ? 'negative' : 'positive'}>{thought.value > 0 ? '+' : ''}{Number(thought.value.toFixed(1))}</b></li>)}</ul>
@@ -263,9 +266,14 @@ function MoodPanel({ pawn, tick, temperature, environment, pin, focus }: { pawn:
       {!breaking && psyche.cooldownUntil > tick && <small>情绪恢复期：剩余 {remaining(psyche.cooldownUntil - tick)}。</small>}
     </details>
     <div className="voxel-mood-actions">
+      <label className="voxel-recreation-choice">活动选择<select aria-label={`${pawn.name} 娱乐活动`} value={choice} onChange={e => setChoice(e.target.value as 'auto' | RecreationKind)}>
+        <option value="auto">自动选择</option>
+        {(Object.keys(RECREATION_NAMES) as RecreationKind[]).map(kind => <option key={kind} value={kind}>{RECREATION_NAMES[kind]}</option>)}
+      </select></label>
       {activity ? <button disabled={unavailable} onClick={() => void client.command({ type: 'cancelRecreation', pawnId: pawn.id })}>结束本次娱乐</button>
-        : <button disabled={unavailable} onClick={() => void client.command({ type: 'recreate', pawnId: pawn.id })}>现在去娱乐</button>}
+        : <button disabled={unavailable} onClick={() => void client.command({ type: 'recreate', pawnId: pawn.id, ...(choice === 'auto' ? {} : { kind: choice }) })}>现在去娱乐</button>}
       <button onClick={() => pin ? focus(pin) : client.choose('horseshoePin')}>{pin ? '定位马蹄铁桩' : '建造马蹄铁桩'}</button>
+      <button onClick={() => gatheringTable ? focus(gatheringTable) : client.choose('table')}>{gatheringTable ? '定位聚会餐桌' : '建造聚会餐桌'}</button>
     </div>
     {!environment.natureAvailable && <small data-testid="nature-weather-restriction">当前天气不适合户外散步。马蹄铁投掷仍按场地、温度和可达性安排。</small>}
     {pawn.drafted && <small>解除征召后才能安排娱乐。</small>}
@@ -590,6 +598,10 @@ function App() {
                   : (BLOCK_NAMES[block] ?? '地形')))
     : '营地概览';
   const focus = (target: Pos) => {
+    if ('skills' in target && 'faction' in target && 'id' in target && typeof target.id === 'number') {
+      setSelectedPawn(target.id);
+      setSelectedAnimal(null);
+    }
     client.focusOn(target);
     const selection = 'species' in target && 'id' in target ? { ...target, animalId: target.id }
       : 'filter' in target && 'id' in target ? { ...target, penMarkerId: target.id } : target;
@@ -1520,8 +1532,10 @@ function App() {
             {pawn.faction === 'colony' && <MoodPanel pawn={pawn} tick={s?.tick ?? 0} temperature={temperatureOf(pawn)}
               environment={s!.environment}
               pin={s?.horseshoePins.toSorted((a, b) => Math.abs(a.x - pawn.x) + Math.abs(a.y - pawn.y) + Math.abs(a.z - pawn.z) - Math.abs(b.x - pawn.x) - Math.abs(b.y - pawn.y) - Math.abs(b.z - pawn.z))[0]}
+              gatheringTable={s?.tables.filter(t => t.gathering).toSorted((a, b) => Math.abs(a.x - pawn.x) + Math.abs(a.y - pawn.y) + Math.abs(a.z - pawn.z) - Math.abs(b.x - pawn.x) - Math.abs(b.y - pawn.y) - Math.abs(b.z - pawn.z))[0]}
               focus={focus} />}
             {pawn.faction === 'colony' && s && <LivingPanel pawn={pawn} snapshot={s} focus={focus} />}
+            {s && (pawn.faction === 'colony' || pawn.social.memories.length > 0) && <SocialPanel key={`social-${pawn.id}`} pawn={pawn} snapshot={s} focus={focus} />}
             {s && <CleaningStatus pawn={pawn} snapshot={s} command={c => void client.command(c)} />}
             {s && <FireWorkStatus pawn={pawn} snapshot={s} command={c => void client.command(c)} />}
             <SurvivalPanel

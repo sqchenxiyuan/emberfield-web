@@ -1,0 +1,67 @@
+{
+  "evidence_id": "RW17-SOCIAL-INTERACTION-EXTRA",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.JoyGiver_SocialRelax",
+      "local_file": ".local-research/social-interaction-extra/RimWorld.JoyGiver_SocialRelax.cs",
+      "sha256": "9634f747074cedd10a3d20782b5b49972deee646e848808d0ec16fc4c5bd32a0",
+      "lines": 183
+    },
+    {
+      "type": "RimWorld.InteractionWorker",
+      "local_file": ".local-research/social-interaction-extra/RimWorld.InteractionWorker.cs",
+      "sha256": "13fa4cc81d94d38ba4f1f0b70d38f0f4cdfc40d0fed78f8de3e7c3cbad54404a",
+      "lines": 23
+    },
+    {
+      "type": "RimWorld.ThoughtDef",
+      "local_file": ".local-research/social-interaction-extra/RimWorld.ThoughtDef.cs",
+      "sha256": "906aed83fa3694d3e3dba573b877ac9bbad5bd54503763b0fbe008595b7ee157",
+      "lines": 258
+    },
+    {
+      "type": "RimWorld.NegativeInteractionUtility",
+      "local_file": ".local-research/social-interaction-extra/RimWorld.NegativeInteractionUtility.cs",
+      "sha256": "4b2387b68a3e7da479dbb094bfdcb7cc485446509206ad8fe2c1393481dbfab0",
+      "lines": 46
+    },
+    {
+      "type": "RimWorld.Thought_MemorySocialCumulative",
+      "local_file": ".local-research/social-interaction-extra/RimWorld.Thought_MemorySocialCumulative.cs",
+      "sha256": "6a5c258dc492e6008059211a3e51d0ea947bfa816350512585c44c76db47c5be",
+      "lines": 70
+    },
+    {
+      "type": "RimWorld.CompGatherSpot",
+      "local_file": ".local-research/social-interaction-extra/RimWorld.CompGatherSpot.cs",
+      "sha256": "415248b7db8bf09e5dda60853ff164f885835094039c5bf902fb51840b2df7b4",
+      "lines": 86
+    },
+    {
+      "type": "RimWorld.GatherSpotLister",
+      "local_file": ".local-research/social-interaction-extra/RimWorld.GatherSpotLister.cs",
+      "sha256": "12b5aad70653d9bc98601a40b24b1939db5d1f9690b344005c35182e1cdc6e81",
+      "lines": 25
+    },
+    {
+      "type": "RimWorld.ThoughtHandler",
+      "local_file": ".local-research/social-interaction-extra/RimWorld.ThoughtHandler.cs",
+      "sha256": "80650774ab30d3402c8c0b387fb9c7f794c662557db9466de16810e408bb19aa",
+      "lines": 226
+    }
+  ]
+}

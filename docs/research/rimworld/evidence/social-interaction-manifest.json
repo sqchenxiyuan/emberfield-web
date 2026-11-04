@@ -1,0 +1,79 @@
+{
+  "evidence_id": "RW17-SOCIAL-INTERACTION",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.Pawn_InteractionsTracker",
+      "local_file": ".local-research/social-interaction/RimWorld.Pawn_InteractionsTracker.cs",
+      "sha256": "1e0c942b28ca00151b617a3a30360e06378cbc3a858e86966b9b4e8f3db059d6",
+      "lines": 488
+    },
+    {
+      "type": "RimWorld.InteractionUtility",
+      "local_file": ".local-research/social-interaction/RimWorld.InteractionUtility.cs",
+      "sha256": "bfac62e1f33329088533f23796002467207689eb69ef03fcc09de3975f5357a4",
+      "lines": 63
+    },
+    {
+      "type": "RimWorld.SocialInteractionUtility",
+      "local_file": ".local-research/social-interaction/RimWorld.SocialInteractionUtility.cs",
+      "sha256": "37c607613ebca2640d0e0d224c888e6a879f028ad90fbaad38bd0cd1d92555ae",
+      "lines": 244
+    },
+    {
+      "type": "RimWorld.InteractionDef",
+      "local_file": ".local-research/social-interaction/RimWorld.InteractionDef.cs",
+      "sha256": "3cc49175b023bb89d5947d42266889360a473ef282ac13004ea89442874335d0",
+      "lines": 105
+    },
+    {
+      "type": "RimWorld.InteractionWorker_Chitchat",
+      "local_file": ".local-research/social-interaction/RimWorld.InteractionWorker_Chitchat.cs",
+      "sha256": "d07c2ad0b148b9bbcb5afa49d1d518f31b086445157dd82e8aace40f62376e3f",
+      "lines": 16
+    },
+    {
+      "type": "RimWorld.InteractionWorker_DeepTalk",
+      "local_file": ".local-research/social-interaction/RimWorld.InteractionWorker_DeepTalk.cs",
+      "sha256": "321c197e246573a9014dafb44179f7cef8e7bd9c27d5e4c2b5bcb20c0563fa35",
+      "lines": 27
+    },
+    {
+      "type": "RimWorld.InteractionWorker_Insult",
+      "local_file": ".local-research/social-interaction/RimWorld.InteractionWorker_Insult.cs",
+      "sha256": "9a53be7fbfe76b5c9f3edc2b5186cd61e45a4b3dc2fbead3fbbe8f03d3c56fee",
+      "lines": 18
+    },
+    {
+      "type": "RimWorld.Thought_MemorySocial",
+      "local_file": ".local-research/social-interaction/RimWorld.Thought_MemorySocial.cs",
+      "sha256": "3a929367139cbebc900d403400a6c324b60f3ce1af5786b4d66da29a7132348d",
+      "lines": 87
+    },
+    {
+      "type": "RimWorld.Pawn_RelationsTracker",
+      "local_file": ".local-research/social-interaction/RimWorld.Pawn_RelationsTracker.cs",
+      "sha256": "d4a48e91a534b63b22f5597b3d2bc0cc322389852d30ce16c25dc197fa8dd02e",
+      "lines": 1179
+    },
+    {
+      "type": "Verse.PlayLogEntry_Interaction",
+      "local_file": ".local-research/social-interaction/Verse.PlayLogEntry_Interaction.cs",
+      "sha256": "742bd8e2f9b31d3f4a2b7b4cda9730abf5dce3cd3fd13e9e8afc2043f4d487b2",
+      "lines": 209
+    }
+  ]
+}

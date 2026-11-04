@@ -84,6 +84,7 @@ import { ANIMAL_DEFS } from './wildlife';
 import { isAnimalAdult } from './husbandry';
 import { FIRE_RULES, fireDamageCells } from './fire';
 import { tableCells } from './living';
+import { SOCIAL_RULES, SOCIAL_NAMES, type SocialInteractionKind } from './social';
 
 /** x/y are horizontal simulation coordinates; Three uses x/z horizontally. */
 export interface VoxelView {
@@ -155,6 +156,8 @@ type PawnVisual = {
   sleepSymbol: Sprite;
   healthMarker: Group;
   recreationMarker: Sprite;
+  socialRelaxMarker: Sprite;
+  socialMarkers: Record<SocialInteractionKind, { initiator: Sprite; recipient: Sprite }>;
   mentalMarker: Sprite;
   talkMarker: Sprite;
   cleaningMarker: Sprite;
@@ -3629,6 +3632,14 @@ export class VoxelRenderer {
       return marker;
     };
     const recreationMarker = activityMarker('娱乐', 0xb9d59b), mentalMarker = activityMarker('悲伤', 0xe1a17d), talkMarker = activityMarker('交谈', 0xe1c49a);
+    const socialRelaxMarker = activityMarker('桌边休闲', 0xb9d59b);
+    const socialMarkers = Object.fromEntries((Object.keys(SOCIAL_NAMES) as SocialInteractionKind[]).map(kind => {
+      const color = kind === 'insult' ? 0xe8a08a : 0xb8d3d7;
+      const markers = { initiator: activityMarker(SOCIAL_NAMES[kind], color),
+        recipient: activityMarker(kind === 'insult' ? '被侮辱' : `回应${SOCIAL_NAMES[kind]}`, color) };
+      for (const marker of Object.values(markers)) { marker.position.y = 2.75; marker.scale.x = 1.35; }
+      return [kind, markers];
+    })) as PawnVisual['socialMarkers'];
     const cleaningMarker = activityMarker('清扫', 0xc2d2ad), poisoningMarker = activityMarker('食物中毒', 0xc9c480);
     const firefightingMarker = activityMarker('灭火', 0xf0b482), repairMarker = activityMarker('修理', 0xd9c29c);
     poisoningMarker.position.y = 2.62;
@@ -3664,6 +3675,8 @@ export class VoxelRenderer {
       sleepSymbol,
       healthMarker,
       recreationMarker,
+      socialRelaxMarker,
+      socialMarkers,
       mentalMarker,
       talkMarker,
       cleaningMarker,
@@ -3924,6 +3937,19 @@ export class VoxelRenderer {
       const otherTalk = pawn.faction === 'prisoner' ? this.data.pawns.find(p => p.phase === 'warden' && p.wardenTask?.stage === 'talk' && p.wardenTask.prisonerId === pawn.id) : undefined;
       const talkPartner = !pawn.dead && !pawn.downed && !mental ? ownTalk ?? otherTalk : undefined;
       visual.recreationMarker.visible = !!recreation;
+      visual.socialRelaxMarker.visible = false;
+      visual.root.userData.socialEvent = null;
+      for (const markers of Object.values(visual.socialMarkers)) for (const marker of Object.values(markers)) marker.visible = false;
+      const receipt = !pawn.dead && !pawn.downed && pawn.carriedBy === null && pawn.sleepingSince === null
+        ? this.data.socialLog.toReversed().find(event => event.tick <= this.data!.tick && this.data!.tick - event.tick < SOCIAL_RULES.bubbleTicks &&
+          (event.initiatorId === pawn.id || event.recipientId === pawn.id) &&
+          this.data!.pawns.some(other => other.id === (event.initiatorId === pawn.id ? event.recipientId : event.initiatorId) && !other.dead && !other.downed && other.carriedBy === null && other.sleepingSince === null))
+        : undefined;
+      if (receipt) {
+        const role = receipt.initiatorId === pawn.id ? 'initiator' : 'recipient';
+        visual.socialMarkers[receipt.kind][role].visible = true;
+        visual.root.userData.socialEvent = { ...receipt, pawnId: pawn.id, role };
+      }
       visual.mentalMarker.visible = mental;
       visual.talkMarker.visible = !!talkPartner;
       visual.cleaningMarker.visible = false;
@@ -3934,6 +3960,7 @@ export class VoxelRenderer {
       visual.horseshoe.visible = false;
       visual.diningDish.visible = false;
       visual.root.userData.dining = null;
+      visual.root.userData.socialRelax = null;
       visual.head.rotation.set(0, 0, 0);
       visual.head.visible = !isPartMissing(pawn.trauma, 'head');
       visual.leftArm.visible = !isPartMissing(pawn.trauma, 'leftArm');
@@ -3985,6 +4012,7 @@ export class VoxelRenderer {
       visual.label.position.set(0, lying ? 1.2 : 1.91, lying ? 0.5 : 0);
       if (lying) {
         visual.recreationMarker.visible = false;
+        visual.socialRelaxMarker.visible = false;
         visual.mentalMarker.visible = false;
         visual.talkMarker.visible = false;
         // The anchor is the head tile. Do not interpolate a lying pawn in from the doorway.
@@ -4274,6 +4302,22 @@ export class VoxelRenderer {
         if (recreation.kind === 'walk') {
           visual.head.rotation.set(-.06, Math.sin(time * .65 + pawn.id) * .35, 0);
           visual.leftArm.rotation.x = -.08; visual.rightArm.rotation.x = -.08;
+        } else if (recreation.kind === 'social') {
+          const table = this.data.tables.find(t => t.id === recreation.spotId && t.gathering);
+          const nearest = table ? tableCells(table).find(c => c.z === pawn.z && Math.abs(c.x - pawn.x) + Math.abs(c.y - pawn.y) === 1) : undefined;
+          const arrived = pawn.x === recreation.target.x && pawn.y === recreation.target.y && pawn.z === recreation.target.z;
+          const chair = this.data.chairs.find(c => c.x === pawn.x && c.y === pawn.y && c.z === pawn.z);
+          if (nearest && arrived && chair) {
+            visual.root.rotation.y = Math.atan2(nearest.x - pawn.x, nearest.y - pawn.y);
+            visual.body.position.y = -.04;
+            visual.leftLeg.rotation.x = visual.rightLeg.rotation.x = -1.25;
+            visual.torso.rotation.x = .035;
+            visual.head.rotation.set(.04, Math.sin(time * .55 + pawn.id) * .08, 0);
+            visual.leftArm.rotation.x = -.35; visual.rightArm.rotation.x = -.4;
+            visual.tool.visible = false; visual.hammer.visible = false;
+            visual.recreationMarker.visible = false; visual.socialRelaxMarker.visible = true;
+            visual.root.userData.socialRelax = { pawnId: pawn.id, tableId: table!.id, chairId: chair.id, seated: true };
+          }
         } else {
           const pin = this.data.horseshoePins.find(p => p.id === recreation.spotId);
           if (pin) {
@@ -4405,6 +4449,10 @@ export class VoxelRenderer {
         chairParts: this.batches.get('dining-chairs')?.mesh.count ?? 0,
         previewParts: this.batches.get('living-placement-preview')?.mesh.count ?? 0,
         diners: [...this.pawnVisuals.values()].filter(v => v.root.visible && v.diningDish.visible).map(v => ({ ...v.root.userData.dining, arm: v.rightArm.rotation.x })),
+      },
+      social: {
+        relaxing: [...this.pawnVisuals.values()].filter(v => v.root.visible && v.socialRelaxMarker.visible).map(v => ({ ...v.root.userData.socialRelax, leg: v.leftLeg.rotation.x })),
+        bubbles: [...this.pawnVisuals.values()].filter(v => v.root.visible && v.root.userData.socialEvent !== null).map(v => ({ ...v.root.userData.socialEvent })),
       },
     };
   }

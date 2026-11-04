@@ -1,0 +1,12 @@
+[
+  "RimWorld.Pawn_InteractionsTracker",
+  "RimWorld.InteractionUtility",
+  "RimWorld.SocialInteractionUtility",
+  "RimWorld.InteractionDef",
+  "RimWorld.InteractionWorker_Chitchat",
+  "RimWorld.InteractionWorker_DeepTalk",
+  "RimWorld.InteractionWorker_Insult",
+  "RimWorld.Thought_MemorySocial",
+  "RimWorld.Pawn_RelationsTracker",
+  "Verse.PlayLogEntry_Interaction"
+]

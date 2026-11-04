@@ -1,0 +1,505 @@
+{
+  "version": 32,
+  "recordedAt": "2026-11-04T00:20:14.625Z",
+  "scope": "Local Web validation. Native developer-prepared observations are separate in chapter 98. The ordinary campaign uses public player commands and ticks; browser tests use its checkpoints and visible controls. Controlled unit tests do not establish ordinary play.",
+  "unit": {
+    "file": "test-results/v32-unit-verified.json",
+    "sha256": "7adaa1f5b5d0ba9f5de404d266da4317fdc5d419bd95ec0393d9e7f8522c09fc",
+    "scope": "All 81 files are covered. The full parallel run passed all assertions it executed, but the eight-day food harvest beforeAll exceeded its 180-second wall-clock budget and left 9 tests unexecuted. The entire unchanged food file was rerun alone and passed. The raw runs remain intact; this record selects the latest complete result per file rather than claiming one fully successful full-suite invocation.",
+    "runs": [
+      {
+        "file": "test-results/v32-unit-final.json",
+        "sha256": "4acf66fb5eba1aad15521c2c5a7e07a1ca0dbb9882d4c88d23111116792f87cd",
+        "success": false,
+        "total": 1078,
+        "passed": 1069,
+        "failed": 0,
+        "pending": 9
+      },
+      {
+        "file": "test-results/v32-food-rerun.json",
+        "sha256": "8dc7f855927e5ff30eddf944d43a8ed7c2cfd3c36cfc9f1c412bc6b04277fcbd",
+        "success": true,
+        "total": 17,
+        "passed": 17,
+        "failed": 0,
+        "pending": 0
+      }
+    ],
+    "tests": 1078,
+    "passed": 1078,
+    "failed": 0,
+    "pending": 0,
+    "files": 81
+  },
+  "build": {
+    "file": "test-results/v32-build-final2.log",
+    "sha256": "75e5bdd0061c3c15cba34346144769f84707ea9208aae2d3da129af7d74e97a6",
+    "processExitCode": 0
+  },
+  "campaign": {
+    "file": "test-results/voxel-social-final2/report.json",
+    "sha256": "7afc260cd8fd8cdfdaef237190fe8d196b8cd4f7f94c6c560ea58be03f240292",
+    "scope": "Fresh seed 73129. Only public player commands, ordinary simulation ticks and exact save/load mutate the colony. Terrain and simulation state are read to choose real construction sites and record outcomes. Real timber, tables, chairs and beds; automatic recreation scheduling and naturally selected social events. No position, need, opinion, event, memory, clock or RNG injection. Threats/fire hazards are disabled through ordinary player controls. Bounded play demonstrates integration; rare event coverage belongs to mechanism tests.",
+    "execution": {
+      "bundleSha256": "b7f89c08432727efbc0564a7fa96c913af1b588a10d57dfa185f6138e3a53d50",
+      "scriptSha256": "1bb5d591f0f32b01d5d334ff8d5c45897d64b3c7eada92d2e2ba0fcad1e79bab",
+      "sourceManifestSha256": "f06ac5ed4f30b15c8456747f6b1f83fa05080f55b236ee010290f79892e6f409"
+    },
+    "checks": [
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 507,
+        "elapsedTicks": 507
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 670,
+        "elapsedTicks": 163
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 880,
+        "elapsedTicks": 210
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 1118,
+        "elapsedTicks": 238
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 1635,
+        "elapsedTicks": 517
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 1967,
+        "elapsedTicks": 332
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 2135,
+        "elapsedTicks": 168
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 2679,
+        "elapsedTicks": 544
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 3219,
+        "elapsedTicks": 540
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 3459,
+        "elapsedTicks": 240
+      },
+      {
+        "name": "real timber becomes one table three chairs and three beds",
+        "tick": 3960,
+        "elapsedTicks": 501
+      },
+      {
+        "name": "save and load preserve social identities memories events and activity exactly",
+        "tick": 3960
+      },
+      {
+        "name": "shared recreation schedules bring two people to the actual table automatically",
+        "tick": 4013,
+        "elapsedTicks": 53
+      },
+      {
+        "name": "real table relaxation raises joy after arrival",
+        "tick": 4025,
+        "elapsedTicks": 12
+      },
+      {
+        "name": "two actual table users naturally interact",
+        "tick": 4030,
+        "elapsedTicks": 5
+      },
+      {
+        "name": "event records real identities and directional opinion",
+        "tick": 4030,
+        "event": {
+          "tick": 4030,
+          "kind": "chitchat",
+          "initiatorId": 453,
+          "recipientId": 452
+        },
+        "forward": 2,
+        "reverse": 2
+      },
+      {
+        "name": "save and load preserve social identities memories events and activity exactly",
+        "tick": 4030
+      },
+      {
+        "name": "simulation advances past the short interaction receipt",
+        "tick": 4071,
+        "elapsedTicks": 41
+      },
+      {
+        "name": "loading does not replay the old social event",
+        "tick": 4071
+      },
+      {
+        "name": "closing gathering ends table leisure and rejects unavailable explicit leisure without changing memories",
+        "tick": 4071
+      },
+      {
+        "name": "ordinary movement takes the manual participant away from the table",
+        "tick": 4108,
+        "elapsedTicks": 37
+      },
+      {
+        "name": "explicit activity selection still requires actual arrival",
+        "tick": 4136,
+        "elapsedTicks": 28
+      },
+      {
+        "name": "manual choice controls activity and never directly assigns opinion",
+        "tick": 4136
+      },
+      {
+        "name": "ordinary hunger still uses the dining table while gathering is disabled",
+        "tick": 5301,
+        "elapsedTicks": 1165
+      },
+      {
+        "name": "gathering toggle preserves an ongoing physical meal",
+        "tick": 5301
+      },
+      {
+        "name": "save and load preserve social identities memories events and activity exactly",
+        "tick": 5301
+      }
+    ],
+    "finalTick": 5301,
+    "fixtures": {
+      "initial": {
+        "file": "test-results/voxel-social-final2/initial.json",
+        "tick": 0,
+        "sha256": "f21a6269458b9d51d7d715923dafc21ed919314b3d16dfc1c0563b17e6d4a559"
+      },
+      "furnished": {
+        "file": "test-results/voxel-social-final2/furnished.json",
+        "tick": 3960,
+        "sha256": "13d2f819a21f254132c1fb9fc311262312c2b5b30d857b3f1391b7d1be494e84"
+      },
+      "before-gathering": {
+        "file": "test-results/voxel-social-final2/before-gathering.json",
+        "tick": 3960,
+        "sha256": "7f0445992f3586a85802c5184f4d5f69e4eeaac45e9646a244e1da600a398ee2"
+      },
+      "gathering": {
+        "file": "test-results/voxel-social-final2/gathering.json",
+        "tick": 4013,
+        "sha256": "faddc1b23a705a4ac45da0ac7a8879b0492e3f5090b2a3e954e04cd0254f91f4"
+      },
+      "interaction": {
+        "file": "test-results/voxel-social-final2/interaction.json",
+        "tick": 4030,
+        "sha256": "385c6aa7fbe1a37121142fc7ec504043fa684981714129eba78becef0bb98eb3"
+      },
+      "no-gathering": {
+        "file": "test-results/voxel-social-final2/no-gathering.json",
+        "tick": 4071,
+        "sha256": "cc1c0290540378973de399f39afd1bdb45e98c9e01d108bb36967bbb9d467ce9"
+      },
+      "manual-ready": {
+        "file": "test-results/voxel-social-final2/manual-ready.json",
+        "tick": 4108,
+        "sha256": "0765fca7d5cffc979b6e5669601aa39c2f11fa45534d1681e6e0bea9cbdf3063"
+      },
+      "manual-travel": {
+        "file": "test-results/voxel-social-final2/manual-travel.json",
+        "tick": 4108,
+        "sha256": "d10c11667a837a8868905677181395193a46705b9016c07c57c67b64a1950850"
+      },
+      "manual-arrived": {
+        "file": "test-results/voxel-social-final2/manual-arrived.json",
+        "tick": 4136,
+        "sha256": "2b8d9cc3d43f48124380a089ba19867c368c0029132f0965544d34516ce58b1f"
+      },
+      "during-meal": {
+        "file": "test-results/voxel-social-final2/during-meal.json",
+        "tick": 5301,
+        "sha256": "cb97b38ca75173c148627f1890266bf1effca352c71971ed627baa5de299f6eb"
+      },
+      "final": {
+        "file": "test-results/voxel-social-final2/final.json",
+        "tick": 5301,
+        "sha256": "e21940e9902cad7d2774c020de5c76ad58a2a6f58b50c46226991fd97de65823"
+      }
+    }
+  },
+  "browser": {
+    "file": "test-results/voxel-social-browser-final5/report.json",
+    "sha256": "fca6488e04263587462710b988daedc32609365f831d8cd6d70cd16697d3d77e",
+    "scope": "Worker and main renderer evidence from SHA-verified v32 ordinary-play saves. Mutations only through visible controls and file chooser import/export. snapshot/project/exportSave are read-only. Checks real table relaxation, shared seat claims, gathering controls, directional opinions and timed source memories, real interaction bubbles and recent parties, paused receipt, expiry, explicit recreation selection, physical dining continuity and 900px layout. No state injection.",
+    "scriptSha256": "165f100d180f597eb973d8a9ae37ba7167e384c86ddec977c6d38f6ee470276c",
+    "campaign": {
+      "file": "test-results/voxel-social-final2/report.json",
+      "sha256": "7afc260cd8fd8cdfdaef237190fe8d196b8cd4f7f94c6c560ea58be03f240292",
+      "sourceManifestSha256": "f06ac5ed4f30b15c8456747f6b1f83fa05080f55b236ee010290f79892e6f409"
+    },
+    "modes": [
+      {
+        "mode": "worker",
+        "checks": [
+          {
+            "name": "requested renderer is active"
+          },
+          {
+            "name": "automatic table users have actual arrival and occupied-chair poses",
+            "rendered": [
+              {
+                "pawnId": 451,
+                "tableId": 506,
+                "chairId": 504,
+                "seated": true,
+                "leg": -1.25
+              },
+              {
+                "pawnId": 452,
+                "tableId": 506,
+                "chairId": 505,
+                "seated": true,
+                "leg": -1.25
+              }
+            ]
+          },
+          {
+            "name": "table list focuses the real person and updates person selection"
+          },
+          {
+            "name": "visible gathering switch ends real table leisure and its pose"
+          },
+          {
+            "name": "real event participants and both opinion directions are visible"
+          },
+          {
+            "name": "counterpart navigation shows concrete source memories and remaining lifetime"
+          },
+          {
+            "name": "paused simulation preserves short receipt and actual identities"
+          },
+          {
+            "name": "visible export and import preserve events memories and recreation without replay"
+          },
+          {
+            "name": "expired bubbles vanish while the historical event remains available"
+          },
+          {
+            "name": "explicit leisure choice uses real travel and cannot directly manufacture opinion"
+          },
+          {
+            "name": "visible cancellation releases the chosen leisure activity"
+          },
+          {
+            "name": "gathering controls preserve physical dining and the eating pose"
+          },
+          {
+            "name": "900 pixel layout preserves relation details and controls",
+            "bounds": {
+              "x": 31,
+              "y": 89.421875,
+              "width": 197,
+              "height": 667.6875
+            }
+          },
+          {
+            "name": "served JS and CSS match frozen local build by SHA"
+          },
+          {
+            "name": "no page or console errors"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:4182/assets/index-D0UkoU8y.js",
+            "status": 200,
+            "sha256": "dfeb33d76b6045488aface6d7bc460fc389e89fbb699219af83df33b8ab42c40",
+            "bytes": 2356,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/main-DD_EdtzS.css",
+            "status": 200,
+            "sha256": "c3d60ad6e560f1c248685390904b2a22f2cb0e59382052d563b42eeced7c7b4d",
+            "bytes": 42680,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "bytes": 221699,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/main-CkD-xLxw.js",
+            "status": 200,
+            "sha256": "08b6750a1c26c94366675612168cc8c517e41fcaeb063f90043c94d84125e00d",
+            "bytes": 855603,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/sim.worker-BQhLtmuY.js",
+            "status": 200,
+            "sha256": "1a75eae3b204bbf75b9a8b6520eef96c36cbaa169371421e423a8317883bc8af",
+            "bytes": 496989,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/render.worker-DljD0QL1.js",
+            "status": 200,
+            "sha256": "eb1c8f0f1ef528afcc9e1aaeef01f4bf411b20564babd96c2fe00d2c832af342",
+            "bytes": 616161,
+            "matchesLocalBuild": true
+          }
+        ]
+      },
+      {
+        "mode": "main",
+        "checks": [
+          {
+            "name": "requested renderer is active"
+          },
+          {
+            "name": "automatic table users have actual arrival and occupied-chair poses",
+            "rendered": [
+              {
+                "pawnId": 451,
+                "tableId": 506,
+                "chairId": 504,
+                "seated": true,
+                "leg": -1.25
+              },
+              {
+                "pawnId": 452,
+                "tableId": 506,
+                "chairId": 505,
+                "seated": true,
+                "leg": -1.25
+              }
+            ]
+          },
+          {
+            "name": "table list focuses the real person and updates person selection"
+          },
+          {
+            "name": "visible gathering switch ends real table leisure and its pose"
+          },
+          {
+            "name": "real event participants and both opinion directions are visible"
+          },
+          {
+            "name": "counterpart navigation shows concrete source memories and remaining lifetime"
+          },
+          {
+            "name": "paused simulation preserves short receipt and actual identities"
+          },
+          {
+            "name": "visible export and import preserve events memories and recreation without replay"
+          },
+          {
+            "name": "expired bubbles vanish while the historical event remains available"
+          },
+          {
+            "name": "explicit leisure choice uses real travel and cannot directly manufacture opinion"
+          },
+          {
+            "name": "visible cancellation releases the chosen leisure activity"
+          },
+          {
+            "name": "gathering controls preserve physical dining and the eating pose"
+          },
+          {
+            "name": "900 pixel layout preserves relation details and controls",
+            "bounds": {
+              "x": 31,
+              "y": 89.421875,
+              "width": 197,
+              "height": 667.6875
+            }
+          },
+          {
+            "name": "served JS and CSS match frozen local build by SHA"
+          },
+          {
+            "name": "no page or console errors"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:4182/assets/index-D0UkoU8y.js",
+            "status": 200,
+            "sha256": "dfeb33d76b6045488aface6d7bc460fc389e89fbb699219af83df33b8ab42c40",
+            "bytes": 2356,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/main-DD_EdtzS.css",
+            "status": 200,
+            "sha256": "c3d60ad6e560f1c248685390904b2a22f2cb0e59382052d563b42eeced7c7b4d",
+            "bytes": 42680,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "bytes": 221699,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/main-CkD-xLxw.js",
+            "status": 200,
+            "sha256": "08b6750a1c26c94366675612168cc8c517e41fcaeb063f90043c94d84125e00d",
+            "bytes": 855603,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/sim.worker-BQhLtmuY.js",
+            "status": 200,
+            "sha256": "1a75eae3b204bbf75b9a8b6520eef96c36cbaa169371421e423a8317883bc8af",
+            "bytes": 496989,
+            "matchesLocalBuild": true
+          }
+        ]
+      }
+    ]
+  },
+  "screenshots": [
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-social-real-table-relaxation.png",
+      "sha256": "df27cce939e4604e49144bfa655b8e513dcfa56cd0b2447bb9ebe69823400ae9"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-social-directional-opinions.png",
+      "sha256": "3a94253b00b3a4d4dbfa33037fb5ec6588e28dba7ff25f6a0022eb61efe80ce4"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-social-source-and-expiry.png",
+      "sha256": "80494133a40ed83525bef276e182080b8ab400bbb534dfdd502331fbd3d5db0f"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-social-narrow-social.png",
+      "sha256": "14bb0c1de810ceacbf77f3d5d54536434d3ed7dcaeeeb8bf21faf77a9723e260"
+    }
+  ],
+  "limitations": [
+    "Mechanisms first; furniture costs, durations and balance remain provisional",
+    "Colony casual interaction subset; no family, romance, traits, social fights or full recreation-room thoughts",
+    "Casual colony interactions are separate from warden and trade conversations",
+    "Native scenes include explicitly documented developer preparation",
+    "Tests run locally; Pages CI only installs, type-checks, builds and deploys"
+  ]
+}
