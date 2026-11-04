@@ -107,7 +107,10 @@ import { rejectLegacyLivingFields, migrateLiving, validateLiving } from './livin
 import { initialSocial, rememberDeparture, type SocialIdentity, type SocialEvent } from './social';
 import { rejectLegacySocialFields, migrateSocial, validateSocial } from './socialPersistence';
 import { furnitureStats, isFurnitureKind, type FurnitureKind } from './furniture';
-import { RELOCATION_RULES, makeFurniturePiece, furnitureFromPiece } from './relocation';
+import { RELOCATION_RULES, makeFurniturePiece, furnitureFromPiece, relocationMaxHP } from './relocation';
+import { SHELF_DEFS, SHELF_STACKS, isShelfKind, isRelocatableKind, shelfCells, shelfAllows, defaultShelfSettings,
+  validStorageSettings, type Shelf, type StorageCell, type StorageSpill, type RelocatableKind } from './shelves';
+import { rejectLegacyShelves, migrateShelves, validateShelves } from './shelvesPersistence';
 import { rejectLegacyRelocationFields, migrateRelocation, validateRelocation } from './relocationPersistence';
 import { resolveWorldSite, type WorldSite } from './regions';
 import { rejectLegacyWorldSite, validateWorldSiteIdentity } from './regionPersistence';
@@ -337,6 +340,7 @@ const costOf = (
   weaponBenchKind?: WeaponBenchKind,
 ): Partial<Counts> =>
   kind === 'install' ? { furniture: 1 } :
+  isShelfKind(kind) ? { ...SHELF_DEFS[kind].cost } :
   kind === 'table' || kind === 'chair' ? { ...LIVING_BUILDINGS[kind].cost } :
   kind === 'fence' || kind === 'fenceGate' || kind === 'penMarker' ? {...PEN_BUILDINGS[kind].cost} :
   kind === 'horseshoePin' ? { ...HORSESHOE_COST } : kind === 'butcher' ? { carcass: 1 } : kind === 'machining'
@@ -442,6 +446,7 @@ const workOf = (
                               harvest: CROPS[cropKind].harvestWork,
                               stove: 120,
                               table: LIVING_BUILDINGS.table.work, chair: LIVING_BUILDINGS.chair.work,
+                              shelf: SHELF_DEFS.shelf.work, smallShelf: SHELF_DEFS.smallShelf.work,
                               bed: 187,
                               door: 199,
                               cook: SIMPLE_MEAL.work,
@@ -579,6 +584,9 @@ export class VoxelSimulation {
   roomRevision = 0;
   private roomsDirty = true;
   stockpiles: Stockpile[] = [];
+  shelves: Shelf[] = [];
+  storageSpills: StorageSpill[] = [];
+  private shelfLookup = new Map<number, Shelf>();
   generator: 1 | 2 | 3 = 3;
   worldSite: WorldSite | null = null;
   settings: WorldSettings;
@@ -927,7 +935,7 @@ export class VoxelSimulation {
     );
   }
   private canStop(p: Pos) {
-    return this.exploredAt(p) && this.exploredAt({ ...p, z: p.z + 1 }) && this.standable(p) && !this.fenceAt(p) && !this.sandbags.some((b) => same(b, p));
+    return this.exploredAt(p) && this.exploredAt({ ...p, z: p.z + 1 }) && this.standable(p) && !this.shelfAt(p) && !this.fenceAt(p) && !this.sandbags.some((b) => same(b, p));
   }
   private refreshPens() {
     if (this.penLookupRevision === this.revision) return;
@@ -1005,6 +1013,12 @@ export class VoxelSimulation {
     return this.distance[at(to)] >= 0 ? this.route(at(to)) : null;
   }
   private stands(j: Job): number[] {
+    const shelf = j.kind === 'remove' ? this.shelfAt(j) : undefined;
+    if (isShelfKind(j.kind) || shelf) {
+      const cells = shelfCells(shelf ?? { ...j, kind: j.kind as Shelf['kind'], axis: j.axis ?? 'x' });
+      return cells.flatMap(c => horizontal.map(([dx,dy]) => ({ x:c.x+dx, y:c.y+dy, z:c.z })))
+        .filter(q => this.canStop(q) && !cells.some(c => same(c,q))).map(at);
+    }
     if (j.kind === 'install' || j.kind === 'uninstall') {
       const cells = this.furnitureCells(j.furnitureKind!, j, j.axis ?? 'x');
       return cells.flatMap(c => horizontal.map(([dx,dy]) => ({x:c.x+dx,y:c.y+dy,z:c.z})))
@@ -1081,7 +1095,7 @@ export class VoxelSimulation {
       .filter(
         (p) =>
           this.exploredAt(p) && this.exploredAt({ ...p, z: p.z + 1 }) &&
-          this.standable(p) &&
+          this.canStop(p) &&
           !this.fenceAt(p) &&
           !this.sandbags.some((b) => same(b, p)) &&
           (!(
@@ -1103,12 +1117,40 @@ export class VoxelSimulation {
   }
   private groundAllowed(p: Pos): boolean {
     return (
-      this.canStop(p) &&
+      (this.canStop(p) || (!!this.shelfAt(p) && this.standable(p))) &&
       this.blocks[at(p) - WIDTH * DEPTH] !== 0 &&
       !this.ladders[at(p)] &&
       !this.chairs.some(c => same(c,p)) &&
       !this.bedAt(p)
     );
+  }
+  shelfAt(p: Pos) { return this.shelfLookup.get(at(p)); }
+  storageCells(): StorageCell[] {
+    return [...this.stockpiles.map(s => ({ ...s, provider:'stockpile' as const, shelfId:null, maxStacks:1 })),
+      ...this.shelves.flatMap(s => shelfCells(s).map(p => ({ ...p, ...s.settings,
+        provider:'shelf' as const, shelfId:s.id, maxStacks:SHELF_STACKS })))];
+  }
+  /** A shelf is traversable, but picking/placing happens from a cardinal,
+   * same-floor stopping cell. Walls and floor changes cannot be touched through. */
+  itemStands(item: Pos): Pos[] {
+    return (this.shelfAt(item) ? horizontal.map(([dx,dy]) => ({ x:item.x+dx, y:item.y+dy, z:item.z })) : [item])
+      .filter(p => inside(p) && this.canStop(p));
+  }
+  itemTouch(actor: Pos, item: Pos): boolean { return this.itemStands(item).some(p => same(p, actor)); }
+  private reachableItemStand(item: Pos): number {
+    let best = -1;
+    for (const p of this.itemStands(item)) {
+      const cell = at(p);
+      if (this.distance[cell] >= 0 && (best < 0 || this.distance[cell] < this.distance[best])) best = cell;
+    }
+    return best;
+  }
+  itemPath(from: Pos, item: Pos, allowed?: Set<number>): number[] | null {
+    if (!inside(from) || !inside(item) || !this.standable(from) ||
+        (allowed && (!allowed.has(at(from)) || !allowed.has(at(item))))) return null;
+    this.search(from, allowed);
+    const target = this.reachableItemStand(item);
+    return target < 0 ? null : this.route(target);
   }
   /** A bounded walk, never a straight-line jump through a wall or another floor. */
   private nearby(origin: Pos, distance = DROP_DISTANCE): Pos[] {
@@ -1144,11 +1186,12 @@ export class VoxelSimulation {
     return { stacks, reservations };
   }
   private reservedSpace(cell: number, batch: BatchKind, context: ReturnType<VoxelSimulation['storageContext']>): number {
-    return cellSpaceAfterReservations(context.stacks.get(cell) ?? [], context.reservations.get(cell) ?? [], batch, 1);
+    return cellSpaceAfterReservations(context.stacks.get(cell) ?? [], context.reservations.get(cell) ?? [], batch,
+      this.shelfLookup.has(cell) ? SHELF_STACKS : 1);
   }
   /** Trial placement is atomic: no ids, amounts, ages or containers mutate on failure. */
   private planPlacement(
-    entries: { batch: Cargo; origin: Pos; cells?: Pos[] }[],
+    entries: { batch: Cargo; origin: Pos; cells?: Pos[]; sourceId?: number }[],
     base = this.items,
     distance = DROP_DISTANCE,
     forbidden = new Set<number>(),
@@ -1156,17 +1199,20 @@ export class VoxelSimulation {
   ) {
     const items = base.map((i) => ({ ...i })), context = this.storageContext(items, ignorePawnId);
     let nextId = this.nextId;
-    for (const { batch, origin, cells } of entries) {
+    for (const { batch, origin, cells, sourceId } of entries) {
       let left = batch.amount;
       for (const p of cells ?? this.nearby(origin, distance)) {
         const cell = at(p);
         if (forbidden.has(cell) || !this.groundAllowed(p)) continue;
+        const shelf = this.shelfAt(p);
+        if (shelf && (!shelfAllows(batch) || !shelf.settings.accepts.includes(batch.resource))) continue;
         const n = Math.min(left, this.reservedSpace(cell, batch, context));
         if (!n) continue;
-        const stacks = context.stacks.get(cell) ?? [], placed = planCellInsertion(stacks, { ...batch, amount: n }, 1);
+        const stacks = context.stacks.get(cell) ?? [], placed = planCellInsertion(stacks, { ...batch, amount: n }, shelf ? SHELF_STACKS : 1);
         for (const merge of placed.merges) mergeBatch(stacks[merge.index], portion(batch, merge.amount));
         for (const amount of placed.additions) {
-          const added = { ...portion(batch, amount), x: p.x, y: p.y, z: p.z, id: nextId++ };
+          const preserve = sourceId !== undefined && amount === batch.amount && !items.some(i => i.id === sourceId);
+          const added = { ...portion(batch, amount), x: p.x, y: p.y, z: p.z, id: preserve ? sourceId : nextId++ };
           stacks.push(added); items.push(added);
         }
         context.stacks.set(cell, stacks);
@@ -1190,6 +1236,7 @@ export class VoxelSimulation {
       return Object.assign(previous, item);
     });
     this.nextId = plan.nextId;
+    this.pruneStorageSpills();
     this.revision++;
   }
   private addItem(resource: Resource, amount: number, p: Pos, source?: Cargo): boolean {
@@ -1223,22 +1270,30 @@ export class VoxelSimulation {
     else job.deliveredBatches.push(incoming);
   }
   private storagePriority(item: Cargo & Pos): number {
+    const shelf = this.shelfAt(item);
+    if (shelf) return shelf.settings.accepts.includes(item.resource) && shelfAllows(item) ? shelf.settings.priority : -1;
     return (
       this.stockpiles.find((s) => same(s, item) && s.accepts.includes(item.resource))?.priority ??
       -1
     );
   }
   storageSpace(p: Pos, batch: BatchKind, ignorePawnId?: number, context = this.storageContext(this.items, ignorePawnId)): number {
-    const stock = this.stockpiles.find((s) => same(s, p));
-    return stock?.accepts.includes(batch.resource) && this.groundAllowed(p)
+    const shelf = this.shelfAt(p), stock = shelf?.settings ?? this.stockpiles.find((s) => same(s, p));
+    return stock?.accepts.includes(batch.resource) && (!shelf || shelfAllows(batch)) && this.groundAllowed(p)
       ? this.reservedSpace(at(p), batch, context)
       : 0;
   }
   storageCapacity(): StorageCapacity[] {
     const context = this.storageContext();
-    return this.stockpiles.map((p) => {
-      const item = context.stacks.get(at(p))?.[0],
+    return this.storageCells().map((p) => {
+      const stacks = context.stacks.get(at(p)) ?? [], item = stacks[0],
         available = emptyCounts();
+      const virtual = stacks.map(i => ({ ...i }));
+      for (const batch of context.reservations.get(at(p)) ?? []) {
+        const plan = planCellInsertion(virtual, batch, p.maxStacks);
+        for (const m of plan.merges) virtual[m.index].amount += m.amount;
+        for (const amount of plan.additions) virtual.push({ ...batch, amount } as Stack);
+      }
       const availableGrain = { rice: 0, potato: 0, corn: 0 };
       for (const crop of ['rice', 'potato', 'corn'] as const)
         availableGrain[crop] = this.storageSpace(p, { resource: 'grain', crop }, undefined, context);
@@ -1251,6 +1306,9 @@ export class VoxelSimulation {
         x: p.x,
         y: p.y,
         z: p.z,
+        provider: p.provider, shelfId: p.shelfId, maxStacks: p.maxStacks,
+        occupiedSlots: stacks.length, reservedSlots: virtual.length - stacks.length,
+        stacks: stacks.map(i => ({ id:i.id, resource:i.resource, amount:i.amount, limit:stackLimit(i.resource) })),
         occupied: !!item,
         resource: item?.resource ?? null,
         crop: item?.crop ?? null,
@@ -1267,28 +1325,29 @@ export class VoxelSimulation {
     batch: Cargo,
     minimumPriority = -1,
     ignorePawnId?: number,
-  ): Stockpile | undefined {
+  ): (StorageCell & { stand: number }) | undefined {
     const context = this.storageContext(this.items, ignorePawnId);
-    let best: Stockpile | undefined;
-    for (const s of this.stockpiles) {
+    let best: (StorageCell & { stand: number }) | undefined;
+    for (const s of this.storageCells()) {
+      const stand = this.reachableItemStand(s);
       if (
         s.priority <= minimumPriority ||
         this.storageSpace(s, batch, ignorePawnId, context) <= 0 ||
-        this.distance[at(s)] < 0
+        stand < 0
       )
         continue;
       if (
         !best ||
         s.priority > best.priority ||
-        (s.priority === best.priority && this.distance[at(s)] < this.distance[at(best)])
+        (s.priority === best.priority && this.distance[stand] < this.distance[best.stand])
       )
-        best = s;
+        best = { ...s, stand };
     }
     return best;
   }
   private canImproveStorage(item: Stack): boolean {
     const priority = this.storagePriority(item), context = this.storageContext();
-    return this.stockpiles.some((s) => s.priority > priority && this.storageSpace(s, item, undefined, context) > 0);
+    return this.storageCells().some((s) => s.priority > priority && this.storageSpace(s, item, undefined, context) > 0);
   }
   private reserveStorage(
     p: Pawn,
@@ -1338,9 +1397,9 @@ export class VoxelSimulation {
         this.chunkReserved(item, p.id)
       )
         continue;
-      const d = this.distance[at(item)];
+      const stand = this.reachableItemStand(item), d = stand < 0 ? -1 : this.distance[stand];
       if (d < 0) continue;
-      if (!best || d < this.distance[at(best)]) best = item;
+      if (!best || d < this.distance[this.reachableItemStand(best)]) best = item;
     }
     return best;
   }
@@ -1366,7 +1425,8 @@ export class VoxelSimulation {
     p.path = this.route(target);
     p.phase = phase;
   }
-  private footprint(j: Pos & { kind: JobKind; axis?: Axis; furnitureKind?: FurnitureKind }): Pos[] {
+  private footprint(j: Pos & { kind: JobKind; axis?: Axis; furnitureKind?: RelocatableKind }): Pos[] {
+    if (isShelfKind(j.kind)) return shelfCells({ ...j, kind:j.kind, axis:j.axis ?? 'x' }).flatMap(q => [q, {...q,z:q.z+1}]);
     if (j.kind === 'install' || j.kind === 'uninstall')
       return this.furnitureCells(j.furnitureKind!, j, j.axis ?? 'x').flatMap(q => [q, {...q,z:q.z+1}]);
     if (j.kind === 'researchBench' || j.kind === 'research') {
@@ -1399,8 +1459,8 @@ export class VoxelSimulation {
     return [j];
   }
   private jobCellConflict(
-    j: Pos & { kind: JobKind; axis?: Axis; furnitureKind?: FurnitureKind },
-    k: Pos & { kind: JobKind; axis?: Axis; furnitureKind?: FurnitureKind },
+    j: Pos & { kind: JobKind; axis?: Axis; furnitureKind?: RelocatableKind },
+    k: Pos & { kind: JobKind; axis?: Axis; furnitureKind?: RelocatableKind },
   ) {
     if ((j.kind === 'wire') !== (k.kind === 'wire')) return false;
     return this.footprint(j).some((a) => this.footprint(k).some((b) => same(a, b)));
@@ -1411,6 +1471,7 @@ export class VoxelSimulation {
     );
   }
   private rebuildDevices() {
+    this.shelfLookup = new Map(this.shelves.flatMap(s => shelfCells(s).map(p => [at(p), s] as const)));
     this.deviceBlocks = new Set(
       [
         ...this.tables.flatMap(tableCells),
@@ -1464,6 +1525,7 @@ export class VoxelSimulation {
   }
   private furnitureAt(p: Pos) {
     return (
+      this.shelfAt(p) || this.shelfAt({ ...p, z:p.z-1 }) ||
       this.fenceAt(p) || this.gateAt(p) || this.markerAt(p) ||
       this.tableAt(p) || this.chairs.find(c => c.x === p.x && c.y === p.y && (c.z === p.z || c.z + 1 === p.z)) ||
       this.horseshoePins.find(b => same(b, p)) ||
@@ -1971,6 +2033,13 @@ export class VoxelSimulation {
   }
   command(c: VoxelCommand): CommandResult {
     if (!c || typeof c !== 'object') return { ok: false, message: '命令格式无效' };
+    if (c.type === 'shelfStorage') {
+      const shelf = this.shelves.find(s => s.id === c.shelfId), settings = { priority:c.priority, accepts:c.accepts };
+      if (!shelf || !validStorageSettings(settings)) return { ok:false, message:'货架或接纳设置无效' };
+      shelf.settings = { priority:settings.priority, accepts:[...settings.accepts] };
+      this.refreshReservations(); this.revision++;
+      return { ok:true, message:'整座货架的储存设置已更新；现有货物保留，由搬运工作转运' };
+    }
     if ('target' in c && c.target && typeof c.target === 'object' && !this.exploredAt(c.target))
       return { ok: false, message: '目标区域尚未探索' };
     if ('from' in c && !(c.type === 'designate' && ['inspect', 'mine', 'cancel'].includes(c.tool))) {
@@ -2737,6 +2806,7 @@ export class VoxelSimulation {
             this.jobs.some(
               (j) =>
                 ([
+                  'shelf', 'smallShelf', 'table', 'chair', 'install',
                   'bed',
                   'door',
                   'stove',
@@ -2797,7 +2867,7 @@ export class VoxelSimulation {
     if (c.axis !== undefined && c.axis !== 'x' && c.axis !== 'y')
       return { ok: false, message: '朝向无效' };
     if (
-      (['table', 'chair', 'bed', 'door', 'fenceGate', 'stonecutter', 'tailor', 'smithy', 'machining', 'researchBench'].includes(
+      (['shelf', 'smallShelf', 'table', 'chair', 'bed', 'door', 'fenceGate', 'stonecutter', 'tailor', 'smithy', 'machining', 'researchBench'].includes(
         c.tool,
       ) ||
         isDeviceKind(c.tool)) &&
@@ -2902,6 +2972,7 @@ export class VoxelSimulation {
     )
       return { ok: false, message: '电力设施或线路数量达到上限' };
     if (
+      this.shelves.length + this.packedFurnitureCount('shelf') + this.packedFurnitureCount('smallShelf') + [...this.jobs,...plans].filter(j=>isShelfKind(j.kind)&&!j.cancelled).length > 256 ||
       this.tables.length + this.packedFurnitureCount('table') + [...this.jobs, ...plans].filter(j => j.kind === 'table').length > 128 ||
       this.chairs.length + this.packedFurnitureCount('chair') + [...this.jobs, ...plans].filter(j => j.kind === 'chair').length > 256 ||
       this.horseshoePins.length + [...this.jobs, ...plans].filter(j => j.kind === 'horseshoePin').length > 128 ||
@@ -2980,7 +3051,7 @@ export class VoxelSimulation {
       cancelled: false,
       cost: costOf(kind, material, apparelKind, weaponKind, weaponBenchKind),
       reason: '等待可达工人',
-      ...(['table', 'chair', 'bed', 'door', 'fenceGate', 'stonecutter', 'tailor', 'smithy', 'machining', 'researchBench'].includes(
+      ...(['shelf', 'smallShelf', 'table', 'chair', 'bed', 'door', 'fenceGate', 'stonecutter', 'tailor', 'smithy', 'machining', 'researchBench'].includes(
         kind,
       ) || isDeviceKind(kind)
         ? { axis }
@@ -3004,6 +3075,10 @@ export class VoxelSimulation {
     if (kind === 'mine' && footprint.some(q => !this.exploredAt(q))) return '';
     if (kind !== 'mine' && (!this.exploredAt(p) || footprint.some(q => !this.exploredAt(q))))
       return '目标区域尚未探索';
+    if (isShelfKind(kind)) return shelfCells({ ...p, kind, axis }).some(q =>
+      !inside(q) || !this.standable(q) || !this.blocks[at(q)-WIDTH*DEPTH] || !!this.ladders[at(q)] ||
+      !!this.furnitureAt(q) || this.farms.some(f=>same(f,q)) || this.treePlots.some(f=>same(f,q)) ||
+      this.stockpiles.some(s=>same(s,q))) ? '货架需要完整地板和净空，不能重叠设施、种植区或地面仓储' : '';
     if (kind === 'fence' || kind === 'fenceGate' || kind === 'penMarker')
       return !this.standable(p) || !this.blocks[at(p) - WIDTH * DEPTH] || this.ladders[at(p)] ||
         this.furnitureAt(p) || this.farms.some(f=>same(f,p)) || this.treePlots.some(f=>same(f,p)) ||
@@ -3191,28 +3266,55 @@ export class VoxelSimulation {
     const bed = this.patientBed(p);
     return restGain(!!bed, bed ? furnitureStats('bed', bed.quality).restEffectiveness! : 1);
   }
-  private furnitureCells(kind: FurnitureKind, pos: Pos, axis: Axis): Pos[] {
-    return kind === 'bed' ? bedCells({...pos,axis}) : kind === 'table' ? tableCells({...pos,axis}) : [{x:pos.x,y:pos.y,z:pos.z}];
+  private furnitureCells(kind: RelocatableKind, pos: Pos, axis: Axis): Pos[] {
+    return isShelfKind(kind) ? shelfCells({...pos,kind,axis}) : kind === 'bed' ? bedCells({...pos,axis}) : kind === 'table' ? tableCells({...pos,axis}) : [{x:pos.x,y:pos.y,z:pos.z}];
   }
-  private installedFurniture(kind: FurnitureKind, id: number): Bed | DiningTable | DiningChair | undefined {
-    return (kind === 'bed' ? this.beds : kind === 'table' ? this.tables : this.chairs).find(b => b.id === id);
+  private installedFurniture(kind: RelocatableKind, id: number): Bed | DiningTable | DiningChair | Shelf | undefined {
+    return (isShelfKind(kind) ? this.shelves.filter(s => s.kind === kind) : kind === 'bed' ? this.beds : kind === 'table' ? this.tables : this.chairs).find(b => b.id === id);
   }
   private packedFurniture(id: number): Cargo | undefined {
     return [...this.items, ...this.pawns.flatMap(p => p.cargo ? [p.cargo] : []),
       ...this.jobs.flatMap(j => j.deliveredBatches)].find(b => b.furniture?.id === id);
   }
-  private packedFurnitureCount(kind: FurnitureKind): number {
+  private packedFurnitureCount(kind: RelocatableKind): number {
     return [...this.items, ...this.pawns.flatMap(p => p.cargo ? [p.cargo] : []),
       ...this.jobs.flatMap(j => j.deliveredBatches)].filter(b => b.furniture?.kind === kind).length;
   }
   /** Placement trials change only geometry caches, never a furniture instance. */
-  private withoutFurniture<T>(kind: FurnitureKind, id: number, trial: () => T): T {
-    const original = {beds:this.beds,tables:this.tables,chairs:this.chairs};
-    if (kind === 'bed') this.beds = this.beds.filter(b => b.id !== id);
+  private withoutFurniture<T>(kind: RelocatableKind, id: number, trial: () => T): T {
+    const original = {beds:this.beds,tables:this.tables,chairs:this.chairs,shelves:this.shelves};
+    if (isShelfKind(kind)) this.shelves = this.shelves.filter(s => s.id !== id);
+    else if (kind === 'bed') this.beds = this.beds.filter(b => b.id !== id);
     else if (kind === 'table') this.tables = this.tables.filter(b => b.id !== id);
     else this.chairs = this.chairs.filter(b => b.id !== id);
     this.rebuildDevices();
     try { return trial(); } finally { Object.assign(this,original); this.rebuildDevices(); }
+  }
+  private pruneStorageSpills() {
+    if (!this.storageSpills.length) return;
+    const counts = new Map<number,number>();
+    for (const item of this.items) counts.set(at(item),(counts.get(at(item)) ?? 0)+1);
+    this.storageSpills = this.storageSpills.filter(p => !this.shelfAt(p) && (counts.get(at(p)) ?? 0) > 1);
+  }
+  private planShelfRemoval(shelf: Shelf, extra: Cargo[] = []) {
+    const cells = new Set(shelfCells(shelf).map(at)), originalReservations = this.storageReservations;
+    const excess: Stack[] = [];
+    for (const cell of cells) excess.push(...this.items.filter(i => at(i) === cell).sort((a,b)=>a.id-b.id).slice(1));
+    const ids = new Set(excess.map(i=>i.id));
+    this.storageReservations = new Map([...originalReservations].filter(([,r])=>!cells.has(r.cell)));
+    try {
+      return this.withoutFurniture(shelf.kind,shelf.id,() => this.planPlacement([
+        ...excess.map(batch => ({ batch, origin:batch, sourceId:batch.id })),
+        ...extra.map(batch => ({ batch, origin:shelf })),
+      ],this.items.filter(i=>!ids.has(i.id))));
+    } finally { this.storageReservations = originalReservations; }
+  }
+  private releaseShelfUsers(shelf: Shelf) {
+    const cells = new Set(shelfCells(shelf).map(at));
+    this.invalidateStackPlans(this.items.filter(i=>cells.has(at(i))),'货架已改变，重新安排取放');
+    for (const [id,r] of [...this.storageReservations]) if (cells.has(r.cell)) {
+      const p = this.pawns.find(p=>p.id===id); if (p) this.release(p); else this.storageReservations.delete(id);
+    }
   }
   private relocationCommand(c: Extract<VoxelCommand,{type:'uninstallFurniture'|'installFurniture'|'cancelFurnitureMove'}>): CommandResult {
     if (!Number.isSafeInteger(c.furnitureId) || c.furnitureId < 1) return {ok:false,message:'家具身份无效'};
@@ -3222,7 +3324,7 @@ export class VoxelSimulation {
       for (const j of current) if (this.jobs.includes(j)) this.cancel(j);
       return {ok:true,message:'已取消搬装；已经卸下的家具保留为实体，等待安全落地或搬入仓储'};
     }
-    if (!isFurnitureKind(c.kind)) return {ok:false,message:'请选择床、餐桌或餐椅'};
+    if (!isRelocatableKind(c.kind)) return {ok:false,message:'请选择可卸装的家具或货架'};
     const installed = this.installedFurniture(c.kind,c.furnitureId), packed = this.packedFurniture(c.furnitureId);
     if (!installed && (!packed || packed.furniture?.kind !== c.kind)) return {ok:false,message:'这件家具已不存在'};
     if (current.some(j => j.cancelled)) return {ok:false,message:'原搬装任务正在退还实物，请先清理附近地面'};
@@ -3501,7 +3603,7 @@ export class VoxelSimulation {
           carryLimit('herb'),
         );
         p.carePhase = 'tendFetch';
-        this.go(p, at(medicine), 'care');
+        this.go(p, this.reachableItemStand(medicine), 'care');
         p.reason = `为${patient.name}取${p.careAmount}份草药`;
       } else {
         p.carePhase = 'tendApproach';
@@ -3528,7 +3630,7 @@ export class VoxelSimulation {
         ['grain', 'meat'].includes(food!.resource) ? Math.ceil((100 - patient.food) / (100 * NUTRITION.grain!)) : 1,
       );
       p.carePhase = 'feedFetch';
-      this.go(p, at(food!), 'care');
+      this.go(p, this.reachableItemStand(food!), 'care');
       p.reason = '为' + patient.name + '取食物';
     }
     return true;
@@ -3614,7 +3716,7 @@ export class VoxelSimulation {
       const food = this.items.find(
         (i) => i.id === (fetchingMedicine ? p.careMedicineId : p.careFoodId),
       );
-      if (!food || !same(food, p) || !this.take(p, food.resource, p.careAmount, food.id)) {
+      if (!food || !this.itemTouch(p,food) || !this.take(p, food.resource, p.careAmount, food.id)) {
         this.release(p);
         return;
       }
@@ -4633,7 +4735,7 @@ export class VoxelSimulation {
     const item = this.items.find((i) => i.weapon?.id === weaponId),
       own = p.cargo?.weapon?.id === weaponId;
     if (!item && !own) return false;
-    if (item && this.path(p, item) === null) return false;
+    if (item && this.itemPath(p, item) === null) return false;
     if (!own && !this.dropCargo(p)) return false;
     this.release(p);
     // Native player Equip removes forbidden before the physical job starts.
@@ -4641,7 +4743,7 @@ export class VoxelSimulation {
     p.weaponTask = { action, weaponId, stage: own ? 'work' : 'fetch', progress: 0 };
     if (item) {
       this.search(p);
-      this.go(p, at(item), 'weapon');
+      this.go(p, this.reachableItemStand(item), 'weapon');
     } else p.phase = 'weapon';
     p.reason = '前往装备' + WEAPON_NAMES[(item?.weapon ?? p.cargo!.weapon)!.kind];
     return true;
@@ -4665,7 +4767,7 @@ export class VoxelSimulation {
     }
     if (task.stage === 'fetch') {
       const item = this.items.find((i) => i.weapon?.id === task.weaponId);
-      if (!item || !same(item, p) || !this.take(p, 'weapon', 1, item.id)) {
+      if (!item || !this.itemTouch(p,item) || !this.take(p, 'weapon', 1, item.id)) {
         this.release(p);
         p.reason = '目标武器已移动，请重新安排';
         return;
@@ -4730,7 +4832,7 @@ export class VoxelSimulation {
     if (!own && !item) return false;
     const piece = own ? p.cargo!.apparel! : item!.apparel!;
     if (!apparelHasPartsToWear(piece, p.trauma)) return false;
-    if (item && !this.path(p, item)) return false;
+    if (item && !this.itemPath(p, item)) return false;
     if (!own && !this.dropCargo(p)) return false;
     this.release(p);
     p.apparelTask = { action, apparelId, stage: own ? 'work' : 'fetch', progress: 0 };
@@ -4739,7 +4841,7 @@ export class VoxelSimulation {
       p.reason = '穿上' + APPAREL_NAMES[p.cargo!.apparel!.kind];
     } else {
       this.search(p);
-      this.go(p, at(item!), 'apparel');
+      this.go(p, this.reachableItemStand(item!), 'apparel');
       p.reason = '前往取用' + APPAREL_NAMES[item!.apparel!.kind];
     }
     return true;
@@ -4752,7 +4854,7 @@ export class VoxelSimulation {
     }
     if (task.stage === 'fetch') {
       const item = this.items.find((i) => i.apparel?.id === task.apparelId);
-      if (!item || !same(item, p) || !this.take(p, 'apparel', 1, item.id)) {
+      if (!item || !this.itemTouch(p,item) || !this.take(p, 'apparel', 1, item.id)) {
         this.release(p);
         p.reason = '衣物已移动，重新安排';
         return;
@@ -5060,7 +5162,7 @@ export class VoxelSimulation {
     const properties = { table: 'tables', chair: 'chairs', bed: 'beds', door: 'doors', stove: 'stoves', stonecutter: 'stonecutters', tailor: 'tailors',
       weaponBench: 'weaponBenches', researchBench: 'researchBenches', horseshoePin: 'horseshoePins',
       butcherSpot: 'butcherSpots', device: 'devices', fence:'fences', fenceGate:'fenceGates', penMarker:'penMarkers' } as const;
-    const originals = { tables: this.tables, chairs: this.chairs, beds: this.beds, doors: this.doors, stoves: this.stoves, stonecutters: this.stonecutters,
+    const originals = { shelves: this.shelves, tables: this.tables, chairs: this.chairs, beds: this.beds, doors: this.doors, stoves: this.stoves, stonecutters: this.stonecutters,
       tailors: this.tailors, weaponBenches: this.weaponBenches, researchBenches: this.researchBenches,
       horseshoePins: this.horseshoePins, butcherSpots: this.butcherSpots, devices: this.devices,
       wires: this.wires, sandbags: this.sandbags, trees: this.trees,
@@ -5070,6 +5172,10 @@ export class VoxelSimulation {
     const support = (p: Pos) => inside(p) && p.z > 0 && p.z + 1 < HEIGHT &&
       !!this.blocks[at(p) - WIDTH * DEPTH] && !this.blocks[at(p)] && !this.blocks[at(p) + WIDTH * DEPTH];
     const removed: FireDamage[] = [];
+    const removedShelves = this.shelves.filter(s => (isShelfKind(target.kind) && s.id === target.targetId) || shelfCells(s).some(p=>!support(p)));
+    this.shelves = this.shelves.filter(s=>!removedShelves.includes(s));
+    for (const s of removedShelves) removed.push({ kind:s.kind,targetId:s.id,x:s.x,y:s.y,z:s.z,
+      key:fireDamageKey(s.kind,s.id,s),hitPoints:SHELF_DEFS[s.kind].maxHitPoints,maxHitPoints:SHELF_DEFS[s.kind].maxHitPoints });
     for (const [kind, property] of Object.entries(properties) as [keyof typeof properties, typeof properties[keyof typeof properties]][]) {
       const objects = this[property];
       const keep = objects.filter(object => {
@@ -5152,6 +5258,17 @@ export class VoxelSimulation {
       if (plan) fireLog(this, 'fell', landing!, `${RESOURCE_NAMES[item.resource]}失去支撑并落到${landing!.x === item.x && landing!.y === item.y ? '原列' : '相邻列'}地面`);
       else { this.stats.destroyed[item.resource] += item.amount; fireLog(this, 'destroyed', item, `${item.amount}单位${RESOURCE_NAMES[item.resource]}坠落后没有合法容纳位置而损毁`); }
     }
+    for (const shelf of removedShelves) {
+      this.releaseShelfUsers(shelf);
+      const plan = this.planShelfRemoval(shelf);
+      if (plan) this.tradeApplyPlacement(plan,'货架烧毁，重新安排取放');
+      else for (const p of shelfCells(shelf)) if (this.groundAllowed(p) && this.items.filter(i=>same(i,p)).length > 1) {
+        this.storageSpills = this.storageSpills.filter(s=>!same(s,p));
+        this.storageSpills.push({ ...p,shelfId:shelf.id,reason:'destroyedShelf' });
+        fireLog(this,'fell',p,'货架已毁；附近无空间，货物保留为可搬运的应急散货');
+      }
+    }
+    this.pruneStorageSpills();
     this.storageReservations.clear(); this.fetchReservations.clear();
     for (const p of this.pawns) if (p.phase === 'haul' || p.phase === 'fetch') this.release(p);
     this.roomsDirty = true; this.powerDirty = true; this.changed(target); this.pruneFilth();
@@ -5215,9 +5332,10 @@ export class VoxelSimulation {
   prisonRelease(p: Pawn) { this.release(p); }
   animalAvailable(item: Stack, pawnId?: number) { return this.availableStack(item, pawnId); }
   animalTake(p: Pawn, id: number, amount: number) { return this.take(p, undefined, amount, id); }
+  animalCanStop(p: Pos) { return this.canStop(p); }
   animalMoveTicks(a: WildAnimal, from: Pos) {
     return this.weatherMoveTicks(from, ANIMAL_DEFS[a.species].moveTicks * (a.phase === 'flee' ? .65 : 1) *
-      (1 + a.malnutrition), a, this.fenceAt(a) && !this.fenceAt(from) ? 14 : 0);
+      (1 + a.malnutrition), a, (this.fenceAt(a) && !this.fenceAt(from)) || this.shelfAt(a) ? 14 : 0);
   }
   animalNeighbors(a: WildAnimal, p: Pos) {
     return this.neighbors(p).filter(n => {
@@ -5225,7 +5343,7 @@ export class VoxelSimulation {
       const door = this.gateAt(target) ?? this.doors.find(d => same(d, target));
       const fence = this.fenceAt(target);
       if (!isAnimalGroundStep(p,target) || this.ladders[n] || (fence && a.species === 'deer') ||
-          (!door && !fence && !this.markerAt(target) && this.furnitureAt(target)) || this.fires.some(f => same(f, target))) return false;
+          (!door && !fence && !this.markerAt(target) && !this.shelfAt(target) && this.furnitureAt(target)) || this.fires.some(f => same(f, target))) return false;
       return !door || door.mode === 'open' || door.openUntil > this.tick ||
         (a.faction === 'colony' && a.species === 'hare' && door.mode !== 'locked');
     });
@@ -5273,15 +5391,15 @@ export class VoxelSimulation {
     if (!foods.length) return false;
     this.search(p, allowed);
     const order = ['meal', 'food', 'grain', 'meat'];
-    const food = foods.filter(i => this.distance[at(i)] >= 0).sort((a, b) =>
-      order.indexOf(a.resource) - order.indexOf(b.resource) || this.distance[at(a)] - this.distance[at(b)] || a.id - b.id)[0];
+    const food = foods.filter(i => this.reachableItemStand(i) >= 0).sort((a, b) =>
+      order.indexOf(a.resource) - order.indexOf(b.resource) || this.distance[this.reachableItemStand(a)] - this.distance[this.reachableItemStand(b)] || a.id - b.id)[0];
     if (!food) return false;
-    if (same(p, food)) {
+    if (this.itemTouch(p,food)) {
       food.amount -= this.consume(p, food, this.availableStack(food));
       this.items = this.items.filter(i => i.amount > 0);
       this.reconcileHealth(p);
       p.path = []; p.destination = null; p.reason = '已吃过牢房内的食物';
-    } else { this.go(p, at(food), 'prisoner'); p.reason = '前往牢房内取食'; }
+    } else { this.go(p, this.reachableItemStand(food), 'prisoner'); p.reason = '前往牢房内取食'; }
     return true;
   }
   prisonFeed(p: Pawn, patient: Pawn) { return this.startCare(p, patient, 'feed'); }
@@ -5322,7 +5440,7 @@ export class VoxelSimulation {
     this.trackDirt(p, previous);
     p.moveTick = this.tick + this.weatherMoveTicks(previous,
       (p.cargo || p.carryingPawnId !== null ? 6 : 4) /
-      (apparelMoveFactor(p.worn, healthSummary(p).moving) * (p.staggerUntil > this.tick ? .17 : 1)), p, crossingSandbags ? 14 : 0);
+      (apparelMoveFactor(p.worn, healthSummary(p).moving) * (p.staggerUntil > this.tick ? .17 : 1)), p, crossingSandbags ? 14 : this.shelfAt(p) ? 14 : 0);
     if (p.carryingPawnId !== null) {
       const patient = this.pawns.find(q => q.id === p.carryingPawnId);
       if (patient) Object.assign(patient, { x: p.x, y: p.y, z: p.z });
@@ -5366,7 +5484,7 @@ export class VoxelSimulation {
   tradeTemperature(pawn: Pawn) { return this.temperature(pawn); }
   tradeReachable(pawn: Pawn): Set<number> {
     this.search(pawn);
-    return new Set(this.items.filter(i => this.exploredAt(i) && this.distance[at(i)] >= 0).map(at));
+    return new Set(this.items.filter(i => this.exploredAt(i) && this.reachableItemStand(i) >= 0).map(at));
   }
   tradeExit(pawn: Pawn): number[] | null {
     this.search(pawn);
@@ -5451,7 +5569,7 @@ export class VoxelSimulation {
   private supported(j: Job) {
     if (j.kind === 'uninstall') return !!this.installedFurniture(j.furnitureKind!,j.furnitureId!);
     if (j.kind === 'install') return !this.placementReason(j.furnitureKind!,j,j.axis);
-    if (j.kind === 'table' || j.kind === 'chair') return !this.placementReason(j.kind,j,j.axis);
+    if (isShelfKind(j.kind) || j.kind === 'table' || j.kind === 'chair') return !this.placementReason(j.kind,j,j.axis);
     if (j.kind === 'fence' || j.kind === 'fenceGate' || j.kind === 'penMarker') return !this.placementReason(j.kind,j,j.axis);
     if (j.kind === 'butcher') return this.butcherSpots.some(b => same(b, j) && !b.paused);
     if (j.kind === 'research')
@@ -5572,7 +5690,7 @@ export class VoxelSimulation {
       );
     const loose =
       p.priorities.haul > 0 &&
-      this.stockpiles.length > 0 &&
+      (this.stockpiles.length > 0 || this.shelves.length > 0) &&
       this.items.some((i) => this.canImproveStorage(i));
     // These work types are generated from world state instead of Job objects.
     // Use the same priority ordering in the jobless branch and around regular
@@ -5688,13 +5806,13 @@ export class VoxelSimulation {
       let best: Stack | undefined;
       let priority = -1;
       for (const i of this.items)
-        if (this.distance[at(i)] >= 0 && this.availableStack(i, p.id) > 0 && !this.chunkReserved(i, p.id)) {
+        if (this.reachableItemStand(i) >= 0 && this.availableStack(i, p.id) > 0 && !this.chunkReserved(i, p.id)) {
           const destination = this.storageDestination(i, this.storagePriority(i), p.id);
           if (
             destination &&
             (!best ||
               destination.priority > priority ||
-              (destination.priority === priority && this.distance[at(i)] < this.distance[at(best)]))
+              (destination.priority === priority && this.distance[this.reachableItemStand(i)] < this.distance[this.reachableItemStand(best)]))
           ) {
             best = i;
             priority = destination.priority;
@@ -5703,7 +5821,7 @@ export class VoxelSimulation {
       if (best) {
         const target = this.storageDestination(best, this.storagePriority(best), p.id)!;
         if (!this.reserveStorage(p, best, target, best.id)) return false;
-        this.go(p, at(best), 'haul');
+        this.go(p, this.reachableItemStand(best), 'haul');
         p.reason = '收集散落物资';
         return true;
       }
@@ -5817,7 +5935,7 @@ export class VoxelSimulation {
         this.release(p);
         return;
       }
-      this.go(p, at(stack), 'fetch');
+      this.go(p, this.reachableItemStand(stack), 'fetch');
       this.fetchReservations.set(p.id, { sourceId: stack.id, amount: Math.min(
         this.availableStack(stack, p.id), carryLimit(stack.resource), (j.cost[needed] ?? 0) - (j.delivered[needed] ?? 0),
       ) });
@@ -5841,7 +5959,7 @@ export class VoxelSimulation {
     const available =
       (j.delivered.wood ?? 0) +
       this.items.reduce(
-        (n, i) => n + (i.resource === 'wood' && this.distance[at(i)] >= 0 ? i.amount : 0),
+        (n, i) => n + (i.resource === 'wood' && this.reachableItemStand(i) >= 0 ? i.amount : 0),
         0,
       );
     if (available > 0) j.cost.wood = Math.min(j.cost.wood ?? 75, available);
@@ -5889,13 +6007,13 @@ export class VoxelSimulation {
       return;
     }
     this.reserveStorage(p, p.cargo, best, null);
-    this.go(p, at(best), 'haul');
+    this.go(p, best.stand, 'haul');
     p.reason = '运往仓储';
   }
   private take(p: Pawn, resource: Resource | undefined, amount: number, stackId: number) {
     const item = this.items.find(
       (i) =>
-        same(i, p) &&
+        this.itemTouch(p, i) &&
         (!resource || i.resource === resource) &&
         i.id === stackId,
     );
@@ -5946,7 +6064,7 @@ export class VoxelSimulation {
     this.search(p);
     p.eating = food.resource;
     this.fetchReservations.set(p.id, { sourceId: food.id, amount: Math.min(this.mealAmount(p, food), this.availableStack(food, p.id)) });
-    this.go(p, at(food), 'fetch');
+    this.go(p, this.reachableItemStand(food), 'fetch');
     p.reason = `${retainedCargo ? '无卸货空间，保留随身物资；' : ''}寻找${RESOURCE_NAMES[food.resource]}`;
     return true;
   }
@@ -5991,7 +6109,7 @@ export class VoxelSimulation {
     const task = p.living.mealTask;
     if (!task || p.dead || p.downed || p.drafted || p.carriedBy !== null || !this.canStop(task.target) ||
         this.fires.some(f => same(f,task.target))) return false;
-    const batch = task.sourceId === null ? p.cargo : this.items.find(i => i.id === task.sourceId && same(i,p));
+    const batch = task.sourceId === null ? p.cargo : this.items.find(i => i.id === task.sourceId && this.itemTouch(p,i));
     if (!batch || batch.resource !== p.eating || !NUTRITION[batch.resource] || batch.amount < task.amount) return false;
     const table = this.tables.find(t => t.id === task.tableId);
     if (task.tableId !== null && (!table || !tableCells(table).some(q => q.z === task.target.z &&
@@ -6053,7 +6171,7 @@ export class VoxelSimulation {
     if (p.phase === 'fetch') {
       const reserved = this.fetchReservations.get(p.id);
       if (!j) {
-        const food = this.items.find((i) => i.id === reserved?.sourceId && same(i, p) && i.resource === p.eating);
+        const food = this.items.find((i) => i.id === reserved?.sourceId && this.itemTouch(p,i) && i.resource === p.eating);
         if (!food || this.availableStack(food, p.id) <= 0) { this.release(p); return; }
         if (p.cargo && !this.dropCargo(p)) { this.startDining(p,food); return; }
         if (!this.take(p, food.resource, this.mealAmount(p, food), food.id)) { this.release(p); return; }
@@ -6069,20 +6187,19 @@ export class VoxelSimulation {
     if (p.phase === 'haul') {
       if (p.cargo) {
         this.search(p);
-        const current = this.stockpiles.find(
-          (s) => same(s, p) && s.accepts.includes(p.cargo!.resource),
-        );
+        const reservation = this.storageReservations.get(p.id);
+        const current = this.storageCells().find(s => at(s) === reservation?.cell && this.itemTouch(p,s) && s.accepts.includes(p.cargo!.resource));
         if (
           !current ||
-          this.storageSpace(p, p.cargo, p.id) <= 0 ||
+          this.storageSpace(current, p.cargo, p.id) <= 0 ||
           this.storageDestination(p.cargo, current.priority, p.id)
         ) {
           this.deliverCargo(p);
           return;
         }
-        const n = Math.min(p.cargo.amount, this.storageSpace(p, p.cargo, p.id));
+        const n = Math.min(p.cargo.amount, this.storageSpace(current, p.cargo, p.id));
         const plan = this.planPlacement(
-          [{ batch: portion(p.cargo, n), origin: p, cells: [p] }],
+          [{ batch: portion(p.cargo, n), origin: current, cells: [current] }],
           this.items,
           0,
           new Set(),
@@ -6098,7 +6215,7 @@ export class VoxelSimulation {
         this.search(p);
         const reservation = this.storageReservations.get(p.id);
         const item = this.items.find(
-          (i) => same(i, p) && reservation?.sourceId === i.id,
+          (i) => this.itemTouch(p,i) && reservation?.sourceId === i.id,
         );
         const target = item && this.storageDestination(item, this.storagePriority(item), p.id);
         const n = item && target ? this.reserveStorage(p, item, target, item.id) : 0;
@@ -6283,19 +6400,22 @@ export class VoxelSimulation {
       if (!original) { this.cancel(j); return; }
       const damage = this.fireDamage.find(d => d.kind === kind && d.targetId === id);
       const piece = makeFurniturePiece(kind,original,damage?.hitPoints);
-      const plan = this.withoutFurniture(kind,id,() => this.planPlacement([{batch:{resource:'furniture',amount:1,furniture:piece},origin:original}]));
+      const packed: Cargo = { resource:'furniture',amount:1,furniture:piece };
+      const plan = 'settings' in original ? this.planShelfRemoval(original,[packed]) :
+        this.withoutFurniture(kind,id,() => this.planPlacement([{batch:packed,origin:original}]));
       if (!plan) { wait('卸下后没有附近可达落点，保留原家具等待清理'); return; }
       if (kind === 'bed') this.invalidatePrisonBed(original as Bed);
       for (const pawn of this.pawns) if ((damage && pawn.repairTask?.damageKey === damage.key) ||
           pawn.living.mealTask?.tableId === id || pawn.living.mealTask?.chairId === id ||
           (pawn.psyche.recreation?.kind === 'social' && (pawn.psyche.recreation.spotId === id ||
             (kind === 'chair' && same(pawn.psyche.recreation.target,original))))) this.release(pawn);
-      if (kind === 'bed') this.beds = this.beds.filter(b => b.id !== id);
+      if ('settings' in original) { this.releaseShelfUsers(original); this.shelves = this.shelves.filter(s=>s.id!==id); }
+      else if (kind === 'bed') this.beds = this.beds.filter(b => b.id !== id);
       else if (kind === 'table') this.tables = this.tables.filter(b => b.id !== id);
       else this.chairs = this.chairs.filter(b => b.id !== id);
       this.fireDamage = this.fireDamage.filter(d => !(d.kind === kind && d.targetId === id));
       this.rebuildDevices(); this.commitPlacement(plan); this.stats.produced.furniture++;
-      this.notice = '家具已完整卸下，品质和耐久保留；可搬入仓储或重装';
+      this.notice = isShelfKind(kind) ? '货架已卸下，货物留在附近；收纳设置与耐久保留' : '家具已完整卸下，品质和耐久保留；可搬入仓储或重装';
     } else {
       const batch = j.deliveredBatches.find(b => b.furniture?.id === id && b.furniture.kind === kind);
       if (!batch?.furniture) { wait('等待指定的原家具送达，不会改用其他家具'); return; }
@@ -6315,28 +6435,55 @@ export class VoxelSimulation {
         if (!prison && piece.owner !== null && this.pawns.some(q => q.id === piece.owner && !q.dead && q.faction === 'colony') &&
             !this.beds.some(b => b.owner === piece.owner)) bed.owner = piece.owner;
       }
-      const old = {beds:this.beds,tables:this.tables,chairs:this.chairs};
-      if (kind === 'bed') this.beds = [...this.beds,entity as Bed];
+      const old = {beds:this.beds,tables:this.tables,chairs:this.chairs,shelves:this.shelves};
+      if (isShelfKind(kind)) this.shelves = [...this.shelves,entity as Shelf];
+      else if (kind === 'bed') this.beds = [...this.beds,entity as Bed];
       else if (kind === 'table') this.tables = [...this.tables,entity as DiningTable];
       else this.chairs = [...this.chairs,entity as DiningChair];
       this.rebuildDevices();
       const rollback = (message: string) => { Object.assign(this,old); this.rebuildDevices(); wait(message); };
-      if ([...this.pawns,...this.animals].some(q => !this.standable(q))) { rollback('家具会占用人物或动物的位置，等待腾空'); return; }
+      if ([...this.pawns,...this.animals].some(q => !this.standable(q) || (isShelfKind(kind) && cells.some(c=>same(c,q))))) { rollback('家具会占用人物或动物的位置，等待腾空'); return; }
       this.search(p);
-      const displaced = this.items.filter(item => !this.groundAllowed(item));
+      const displaced = this.items.filter(item => !this.groundAllowed(item) || (this.shelfAt(item) && !shelfAllows(item)));
       const plan = this.planPlacement(displaced.map(item => ({batch:item,origin:item,
         cells:horizontal.map(([dx,dy])=>({x:item.x+dx,y:item.y+dy,z:item.z})).filter(q=>inside(q)&&this.distance[at(q)]>=0)})),
         this.items.filter(item=>!displaced.includes(item)),DROP_DISTANCE,new Set(cells.map(at)));
       if (!plan) { rollback('目标物资没有相邻落地空间，保留原家具等待清理'); return; }
       this.commitPlacement(plan);
-      if (piece.hitPoints < furnitureStats(kind,piece.quality).maxHitPoints)
+      if (piece.hitPoints < relocationMaxHP(kind))
         this.fireDamage.push({key:fireDamageKey(kind,id,j),kind,targetId:id,x:j.x,y:j.y,z:j.z,
-          hitPoints:piece.hitPoints,maxHitPoints:furnitureStats(kind,piece.quality).maxHitPoints});
+          hitPoints:piece.hitPoints,maxHitPoints:relocationMaxHP(kind)});
       this.stats.consumed.furniture++;
-      this.notice = '原家具已重装，保留品质与耐久；需要时可重新设置床的用途';
+      this.notice = isShelfKind(kind) ? '原货架已重装，保留收纳设置与耐久' : '原家具已重装，保留品质与耐久；需要时可重新设置床的用途';
     }
     this.jobs = this.jobs.filter(k => k.id !== j.id);
     this.release(p); this.roomsDirty = true; this.changed(j); this.pruneFilth(); this.reconcileFireState();
+  }
+  private finishShelf(p: Pawn, j: Job) {
+    const wait = (reason: string) => { j.reason=reason; this.release(p); };
+    if (j.kind === 'remove') {
+      const shelf = this.shelfAt(j); if (!shelf) { this.cancel(j); return; }
+      const refund = Math.floor(SHELF_DEFS[shelf.kind].cost.wood/2);
+      const plan = this.planShelfRemoval(shelf,[freshBatch('wood',refund)]);
+      if (!plan) { wait('附近没有足够的散货空间，保留货架及全部货物等待清理'); return; }
+      this.releaseShelfUsers(shelf); this.shelves=this.shelves.filter(s=>s.id!==shelf.id);
+      this.rebuildDevices(); this.tradeApplyPlacement(plan); this.stats.produced.wood+=refund;
+    } else if (isShelfKind(j.kind)) {
+      const reason=this.placementReason(j.kind,j,j.axis); if(reason){wait(reason);return;}
+      const shelf: Shelf={id:j.id,kind:j.kind,x:j.x,y:j.y,z:j.z,axis:j.axis ?? 'x',settings:defaultShelfSettings()};
+      const cells=new Set(shelfCells(shelf).map(at));
+      if ([...this.pawns,...this.animals].some(a=>cells.has(at(a)))) {wait('货架占地有人或动物，等待离开');return;}
+      const previous=this.shelves;
+      this.shelves=[...previous,shelf]; this.rebuildDevices();
+      const displaced=this.items.filter(i=>cells.has(at(i))&&!shelfAllows(i));
+      const plan=this.planPlacement(displaced.map(batch=>({batch,origin:batch,sourceId:batch.id})),this.items.filter(i=>!displaced.includes(i)),DROP_DISTANCE,cells);
+      if(!plan){this.shelves=previous;this.rebuildDevices();wait('原位置物品没有附近落点，等待清理');return;}
+      this.releaseShelfUsers(shelf); this.tradeApplyPlacement(plan);
+      for(const r of resources)this.stats.consumed[r]+=j.delivered[r]??0;
+      this.stats.built++;
+    }
+    this.jobs=this.jobs.filter(k=>k.id!==j.id); this.release(p);
+    this.roomsDirty=true;this.changed(j);this.pruneStorageSpills();this.reconcileFireState();this.reconcileRelocationJobs();
   }
   private finish(p: Pawn, j: Job) {
     if (j.cancelled) {
@@ -6344,6 +6491,7 @@ export class VoxelSimulation {
       return;
     }
     if (j.kind === 'uninstall' || j.kind === 'install') { this.finishRelocation(p,j); return; }
+    if (isShelfKind(j.kind) || (j.kind === 'remove' && this.shelfAt(j))) { this.finishShelf(p,j); return; }
     if (j.kind === 'fence' && [...this.pawns,...this.animals].some(a=>same(a,j))) {
       j.reason='围栏位置被占用，等待人物或动物离开';this.release(p);return;
     }
@@ -6546,7 +6694,7 @@ export class VoxelSimulation {
           this.blocks[at(s) + WIDTH * DEPTH],
       ) ||
       [
-        ...this.tables.flatMap(tableCells), ...this.chairs,
+        ...this.tables.flatMap(tableCells), ...this.chairs, ...this.shelves.flatMap(shelfCells),
         ...this.beds.flatMap(bedCells),
         ...this.sandbags,
         ...this.doors, ...this.fences, ...this.fenceGates, ...this.penMarkers,
@@ -6973,6 +7121,11 @@ export class VoxelSimulation {
           this.tryFood(p)
         )
           continue;
+        if (!p.path.length && this.shelfAt(p) && !p.downed && !p.dead && p.carriedBy === null) {
+          this.search(p);
+          const target = this.reachableItemStand(p);
+          if (target >= 0) { this.release(p); this.go(p,target,'travel'); this.moveAlongPath(p); continue; }
+        }
         if (p.phase === 'rest') {
           p.rest = Math.min(100, p.rest + this.restingGain(p));
           if (
@@ -7068,6 +7221,7 @@ export class VoxelSimulation {
           (this.pawns.some((p) => same(p, d)) || this.animals.some(a => same(a,d)) || this.items.some((i) => same(i, d)))
         )
           d.openUntil = this.tick + 37;
+      this.pruneStorageSpills();
       this.updateAdaptation();
       this.reconcileFireState();
       this.updateRooms();
@@ -7139,6 +7293,7 @@ export class VoxelSimulation {
       const damage = this.fireDamage.find(d => d.kind === kind && d.targetId === target.id);
       return furnitureMarketValue(kind,target.quality,damage ? damage.hitPoints/damage.maxHitPoints : 1);
     };
+    for (const shelf of this.shelves) add(shelf,shelf.kind,shelfCells(shelf),SHELF_DEFS[shelf.kind].beauty,true);
     for (const t of this.tables) { add(t,'table',tableCells(t),furnitureStats('table',t.quality).beauty,false,value('table',t)); const r=inputs.get(this.rooms.roomIds[at(t)]); if(r)r.tables++; }
     for (const c of this.chairs) add(c,'chair',[c],furnitureStats('chair',c.quality).beauty,false,value('chair',c));
     for (const b of this.beds) {
@@ -7200,7 +7355,7 @@ export class VoxelSimulation {
   }
   private deteriorationEnvironment(p: Pos): DeteriorationEnvironment {
     return { exposed: this.weatherExposed(p), outdoors: this.rooms.roomAt(p)?.outdoor ?? true,
-      rainRate: weatherEffects(this.weather, this.tick).rainRate };
+      rainRate: weatherEffects(this.weather, this.tick).rainRate, ...(this.shelfAt(p) ? { protected:true } : {}) };
   }
   private environmentView(): EnvironmentView {
     const view = (id: number, entity: 'stack' | 'carcass', p: Pos, batch: Cargo) => {
@@ -7454,7 +7609,7 @@ export class VoxelSimulation {
     const visibleRooms = this.visibleRoomsCache;
     const stored = emptyCounts();
     for (const i of this.items.filter(visible))
-      if (this.stockpiles.some((s) => same(s, i) && s.accepts.includes(i.resource)))
+      if (this.storagePriority(i) >= 0)
         stored[i.resource] += i.amount;
     return structuredClone({
       socialHistory: this.socialHistory, socialLog: this.socialLog,
@@ -7506,6 +7661,7 @@ export class VoxelSimulation {
       })),
       jobs: this.jobs,
       stockpiles: this.stockpiles.filter(visible),
+      shelves: this.shelves.filter(visible), storageSpills: this.storageSpills.filter(visible),
       storageCapacity: this.storageCapacity().filter(visible),
       farms: this.farms.filter(visible),
       crops: this.crops.filter(visible),
@@ -7547,10 +7703,11 @@ export class VoxelSimulation {
     });
   }
   save(): VoxelSave {
+    this.pruneStorageSpills();
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 36,
+      version: 37,
       socialHistory: this.socialHistory, socialLog: this.socialLog,
       weather: this.weather, snow: this.snow,
       fires: this.fires, fireDamage: this.fireDamage, fireHazards: this.fireHazards, fireLog: this.fireLog,
@@ -7585,6 +7742,7 @@ export class VoxelSimulation {
       treePlots: this.treePlots,
       jobs: this.jobs,
       stockpiles: this.stockpiles,
+      shelves: this.shelves, storageSpills: this.storageSpills,
       farms: this.farms,
       crops: this.crops,
       stoves: this.stoves,
@@ -7606,11 +7764,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : [1, 2, 3]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyShelves(old,sourceVersion);
     rejectLegacyRelocationFields(old,sourceVersion);
     rejectLegacyFurnitureFields(old);
     rejectLegacySocialFields(old);
@@ -7964,7 +8123,8 @@ export class VoxelSimulation {
     migrateFurniture(old, sourceVersion);
     migrateRelocation(old,sourceVersion);
     if (sourceVersion < 35) old.worldSite = null;
-    old.version = 36;
+    migrateShelves(old,sourceVersion);
+    old.version = 37;
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
     const loadHealth = (p: Pawn) =>
@@ -8000,6 +8160,7 @@ export class VoxelSimulation {
       [d.grass, HUSBANDRY_RULES.maxGrass],
       [d.butcherSpots, 128],
       [d.tables, 128], [d.chairs, 256],
+      [d.shelves, 256], [d.storageSpills, 4096],
       [d.horseshoePins, 128],
       [d.items, 10000],
       [d.trees, 4096],
@@ -8050,7 +8211,7 @@ export class VoxelSimulation {
       ...d.pawns,
       ...d.animals,
       ...d.butcherSpots,
-      ...d.tables, ...d.chairs,
+      ...d.tables, ...d.chairs, ...d.shelves,
       ...d.horseshoePins,
       ...d.items,
       ...d.trees,
@@ -8097,10 +8258,9 @@ export class VoxelSimulation {
                 'z',
               ].includes(key),
           ),
-      ) ||
-        new Set(d.items.map(at)).size !== d.items.length)
+      ))
     )
-      throw new Error('地面每格仅允许一堆且不能超过堆叠上限');
+      throw new Error('物品字段或单堆上限无效');
     for (const t of d.trees)
       if (
         !positive(t.wood) ||
@@ -8341,7 +8501,7 @@ export class VoxelSimulation {
         throw new Error('沙袋生命或高度无效');
     const furniture = [
       ...d.butcherSpots,
-      ...d.tables.flatMap(tableCells), ...d.chairs,
+      ...d.tables.flatMap(tableCells), ...d.chairs, ...d.shelves.flatMap(shelfCells),
       ...d.horseshoePins,
       ...d.sandbags,
       ...d.beds.flatMap(bedCells),
@@ -8551,7 +8711,7 @@ export class VoxelSimulation {
         (['wall', 'floor'].includes(j.kind)
           ? !['wood', 'stone'].includes(j.material ?? '')
           : j.material !== undefined) ||
-        ((['table', 'chair', 'bed', 'door', 'fenceGate', 'stonecutter', 'tailor', 'smithy', 'machining', 'researchBench'].includes(
+        ((['shelf', 'smallShelf', 'table', 'chair', 'bed', 'door', 'fenceGate', 'stonecutter', 'tailor', 'smithy', 'machining', 'researchBench'].includes(
           j.kind,
         ) ||
           isDeviceKind(j.kind)) &&
@@ -8559,6 +8719,7 @@ export class VoxelSimulation {
             (j.kind === 'researchBench' &&
               (researchBenchCells({ ...j, axis: j.axis! }).some((p) => !inside(p)) ||
                 !inside(researchBenchInteraction({ ...j, axis: j.axis! })))) ||
+            (isShelfKind(j.kind) && shelfCells({ ...j, kind:j.kind, axis:j.axis! }).some(p=>!inside(p))) ||
             (j.kind === 'bed' && bedCells({ ...j, axis: j.axis! }).some((p) => !inside(p))) ||
             (j.kind === 'table' && tableCells({ ...j, axis: j.axis! }).some((p) => !inside(p))) ||
             ((j.kind === 'stonecutter' ||
@@ -9070,6 +9231,7 @@ export class VoxelSimulation {
     validateLiving(d);
     validateFurniture(d);
     validateRelocation(d);
+    validateShelves(d, !migrateLogistics);
     validateSocial(d);
     const recreationPins = new Set<number>();
     const recreationCells = new Set<number>();
@@ -9135,6 +9297,7 @@ export class VoxelSimulation {
         treePlots: d.treePlots,
         jobs: d.jobs,
         stockpiles: d.stockpiles,
+        shelves: d.shelves, storageSpills: d.storageSpills,
         farms: d.farms,
         crops: d.crops,
         stoves: d.stoves,
@@ -9160,7 +9323,7 @@ export class VoxelSimulation {
     if (s.filth.some(f => !s.filthSupported(f))) throw new Error('污物没有合法地面支撑或净空');
     if (
       [
-        ...s.tables.flatMap(tableCells), ...s.chairs,
+        ...s.tables.flatMap(tableCells), ...s.chairs, ...s.shelves.flatMap(shelfCells),
         ...s.beds.flatMap(bedCells),
         ...s.sandbags,
         ...s.doors, ...s.fences, ...s.fenceGates, ...s.penMarkers,
@@ -9221,6 +9384,7 @@ export class VoxelSimulation {
           pawn.cargo.amount = keep;
         }
     }
+    validateShelves({ ...d, items:s.items, storageSpills:s.storageSpills });
     if (s.items.some((i) => !s.groundAllowed(i))) throw new Error('物资没有合法地面支撑或净空');
     if (s.stockpiles.some((p) => !s.standable(p) || s.ladders[at(p)]))
       throw new Error('仓储没有合法支撑或净空');
@@ -9292,13 +9456,13 @@ export class VoxelSimulation {
         p.phase = 'weapon';
         if (p.weaponTask.stage === 'fetch') {
           const item = s.items.find((i) => i.weapon?.id === p.weaponTask!.weaponId)!;
-          const route = s.path(p, item);
+          const route = s.itemPath(p, item);
           if (route === null) {
             s.release(p);
             p.reason = '回读后武器通路中断，保留物品';
           } else {
             p.path = route;
-            p.destination = at(item);
+            p.destination = route.at(-1) ?? at(p);
           }
         }
         continue;
@@ -9338,13 +9502,13 @@ export class VoxelSimulation {
         p.moveTick = s.tick;
         if (p.apparelTask.stage === 'fetch') {
           const item = s.items.find((i) => i.apparel?.id === p.apparelTask!.apparelId)!;
-          const route = s.path(p, item);
+          const route = s.itemPath(p, item);
           if (route === null) {
             s.release(p);
             p.reason = '回读后衣物通路中断';
           } else {
             p.path = route;
-            p.destination = at(item);
+            p.destination = route.at(-1) ?? at(p);
             p.phase = 'apparel';
           }
         } else p.phase = 'apparel';
@@ -9368,9 +9532,9 @@ export class VoxelSimulation {
           p.carePhase === 'rescueCarry'
             ? at(s.beds.find((b) => b.id === p.careBedId)!)
             : p.carePhase === 'feedFetch'
-              ? at(s.items.find((i) => i.id === p.careFoodId)!)
+              ? s.reachableItemStand(s.items.find((i) => i.id === p.careFoodId)!)
               : p.carePhase === 'tendFetch'
-                ? at(s.items.find((i) => i.id === p.careMedicineId)!)
+                ? s.reachableItemStand(s.items.find((i) => i.id === p.careMedicineId)!)
                 : s.careStand(patient);
         if (target < 0 || s.distance[target] < 0) {
           s.release(p);

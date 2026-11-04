@@ -2,6 +2,7 @@ import type { Cargo } from './types';
 import { WEATHER_RULES, weatherEffects, type WeatherState } from './weather';
 import type { DeteriorationEnvironment } from './deterioration';
 import type { FilthKind } from './sanitation';
+import { animalLifeStage } from './husbandry';
 
 /** Cadence and expected cell visits are Web adaptations, not native sampling. */
 export const ENVIRONMENT_RULES = {
@@ -36,8 +37,10 @@ export function natureWeatherAllowed(weather: WeatherState, tick: number): boole
   return weatherEffects(weather, tick).rainRate < .25;
 }
 
-export function carcassBatch(animal: { id: number; species: 'hare' | 'deer'; rotProgress: number; carcassHitPoints?: number }): Cargo {
-  return { resource: 'carcass', amount: 1, carcass: { animalId: animal.id, species: animal.species },
+export function carcassBatch(animal: { id: number; species: 'hare' | 'deer'; rotProgress: number; carcassHitPoints?: number; growth?: number }): Cargo {
+  const stage = animalLifeStage({ growth: animal.growth ?? 1 });
+  const bodySize = (animal.species === 'hare' ? .2 : 1.2) * (stage === 'baby' ? .2 : stage === 'juvenile' ? .5 : 1);
+  return { resource: 'carcass', amount: 1, carcass: { animalId: animal.id, species: animal.species, bodySize },
     rotProgress: animal.rotProgress, ...(animal.carcassHitPoints === undefined ? {} : { hitPoints: animal.carcassHitPoints }) };
 }
 

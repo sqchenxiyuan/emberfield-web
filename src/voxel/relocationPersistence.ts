@@ -1,4 +1,4 @@
-import { isFurnitureKind, type FurnitureKind } from './furniture';
+import { isRelocatableKind, isShelfKind, shelfCells, type RelocatableKind } from './shelves';
 import { validFurniturePiece } from './relocation';
 import { bedCells, HEIGHT, inside, type FurniturePiece } from './types';
 import { tableCells } from './living';
@@ -47,7 +47,7 @@ export function validateRelocation(d: Record<string, any>): void {
   const liveIds = new Set<number>();
   const entityLists = ['fires', 'filth', 'pawns', 'animals', 'butcherSpots', 'tables', 'chairs', 'horseshoePins',
     'items', 'trees', 'jobs', 'crops', 'stoves', 'stonecutters', 'tailors', 'weaponBenches', 'researchBenches',
-    'beds', 'doors', 'fences', 'fenceGates', 'penMarkers', 'devices', 'sandbags', 'projectiles', 'animalAreas'];
+    'beds', 'doors', 'fences', 'fenceGates', 'penMarkers', 'devices', 'sandbags', 'projectiles', 'animalAreas', 'shelves'];
   for (const key of entityLists) for (const e of list(d[key])) if (id(e?.id)) liveIds.add(e.id);
   const containers = batches(d);
   for (const b of containers) for (const piece of [b?.apparel, b?.weapon]) if (id(piece?.id)) liveIds.add(piece.id);
@@ -75,13 +75,17 @@ export function validateRelocation(d: Record<string, any>): void {
       fail('家具实例重复、身份或耐久无效');
     packed.set(b.furniture.id, b.furniture);
   }
-  const installed = new Map<number, FurnitureKind>();
+  const installed = new Map<number, RelocatableKind>();
   const buildings = new Map<number, any>();
   for (const [key, kind] of [['beds', 'bed'], ['tables', 'table'], ['chairs', 'chair']] as const)
     for (const item of list(d[key])) { installed.set(item.id, kind); buildings.set(item.id, item); }
+  for (const shelf of list(d.shelves)) { installed.set(shelf.id, shelf.kind); buildings.set(shelf.id, shelf); }
   for (const [kind, limit] of [['bed', 128], ['table', 128], ['chair', 256]] as const)
     if ([...installed.values()].filter(k => k === kind).length + [...packed.values()].filter(p => p.kind === kind).length > limit)
       fail('安装及打包家具总量超过上限');
+  if ([...installed.values()].filter(isShelfKind).length + [...packed.values()].filter(p=>isShelfKind(p.kind)).length +
+      d.jobs.filter((j:any)=>isShelfKind(j.kind)&&!j.cancelled).length > 256) fail('安装、打包及规划货架总量超过上限');
+  for (const spill of list(d.storageSpills)) if (liveIds.has(spill.shelfId) || packed.has(spill.shelfId)) fail('散货来源身份已被占用');
   const orders = new Set<string>();
   for (const j of d.jobs) {
     if (!relocation(j)) {
@@ -90,11 +94,12 @@ export function validateRelocation(d: Record<string, any>): void {
         fail('非搬装任务包含家具');
       continue;
     }
-    if (!id(j.furnitureId) || !isFurnitureKind(j.furnitureKind) || !record(j.cost) ||
+    if (!id(j.furnitureId) || !isRelocatableKind(j.furnitureKind) || !record(j.cost) ||
         !record(j.delivered) || !Array.isArray(j.deliveredBatches) || !['x', 'y'].includes(j.axis))
       fail('搬装任务身份或材料形状无效');
     if (![j.x, j.y, j.z].every(Number.isSafeInteger)) fail('搬装位置无效');
-    const cells = j.furnitureKind === 'bed' ? bedCells(j) : j.furnitureKind === 'table' ? tableCells(j) : [j];
+    const cells = isShelfKind(j.furnitureKind) ? shelfCells({ ...j, kind: j.furnitureKind }) :
+      j.furnitureKind === 'bed' ? bedCells(j) : j.furnitureKind === 'table' ? tableCells(j) : [j];
     if (cells.some(p => !inside(p) || p.z < 1 || p.z + 1 >= HEIGHT)) fail('搬装占地超出世界');
     const key = `${j.kind}:${j.furnitureId}`;
     if (orders.has(key)) fail('同一家具重复搬装任务');

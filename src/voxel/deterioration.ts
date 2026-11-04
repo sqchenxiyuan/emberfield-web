@@ -1,7 +1,7 @@
 import { DAY, type Cargo, type Resource } from './types';
 import { APPAREL_DEFS } from './apparel';
 import { WEAPON_DEFS } from './weapons';
-import { furnitureStats } from './furniture';
+import { relocationMaxHP } from './relocation';
 
 export interface DeteriorationEnvironment {
   exposed: boolean;
@@ -38,7 +38,7 @@ export const DETERIORATION_RULES = Object.freeze({ interval: 100, equipmentRateP
 export function batchMaxHitPoints(batch: Cargo): number | null {
   if (batch.resource === 'apparel') return batch.apparel ? APPAREL_DEFS[batch.apparel.kind]?.maxHitPoints ?? null : null;
   if (batch.resource === 'weapon') return batch.weapon ? WEAPON_DEFS[batch.weapon.kind]?.maxHitPoints ?? null : null;
-  if (batch.resource === 'furniture') return batch.furniture ? furnitureStats(batch.furniture.kind, batch.furniture.quality).maxHitPoints : null;
+  if (batch.resource === 'furniture') return batch.furniture ? relocationMaxHP(batch.furniture.kind) : null;
   return RESOURCE_CONDITION_DEFS[batch.resource]?.maxHitPoints ?? null;
 }
 /** Missing ordinary HP is the canonical full-condition representation. Equipment

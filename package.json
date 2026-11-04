@@ -107,6 +107,8 @@
     "research:exploration": "node scripts/research/verify-caves-exploration-evidence.mjs && node scripts/research/verify-native-exploration-runtime.mjs",
     "test:voxel:exploration": "node scripts/voxel-exploration-campaign-verify.mjs",
     "test:voxel:exploration:browser": "node scripts/voxel-exploration-browser-verify.mjs",
+    "test:voxel:shelves": "node scripts/voxel-shelves-campaign-verify.mjs",
+    "test:voxel:shelves:browser": "node scripts/voxel-shelves-browser-verify.mjs",
     "research:shelves": "node scripts/research/verify-shelf-storage-evidence.mjs && node scripts/research/verify-native-shelves-runtime.mjs"
   },
   "dependencies": {

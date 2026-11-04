@@ -1,4 +1,5 @@
 import { tableCells, LIVING_BUILDINGS } from './living';
+import { isShelfKind } from './shelves';
 import { Block, HEIGHT, WIDTH, DEPTH, TPS, at, inside, position, type Pawn, type Pos, type VoxelSave } from './types';
 import { VoxelRooms } from './rooms';
 import { VoxelPower } from './power';
@@ -10,7 +11,7 @@ import { FIRE_RULES, FIRE_MAX_HP, FIRE_TARGET_NAMES, fireRandom, fireDamageKey, 
   fireDamageHomeCells, fireDamageBurning, makeFire, nextFireIncident,
   type Fire, type FireDamage, type FireHazards, type FireLogEntry, type BurnTargetKind, type FireSource } from './fire';
 
-export interface FireHost extends Pick<VoxelSave, 'jobs' | 'tables' | 'chairs' | 'pawns' | 'items' | 'trees' | 'crops' | 'beds' | 'doors' | 'stoves' |
+export interface FireHost extends Pick<VoxelSave, 'shelves' | 'jobs' | 'tables' | 'chairs' | 'pawns' | 'items' | 'trees' | 'crops' | 'beds' | 'doors' | 'stoves' |
   'stonecutters' | 'tailors' | 'weaponBenches' | 'researchBenches' | 'horseshoePins' | 'butcherSpots' | 'devices' | 'wires' | 'fences' | 'fenceGates' | 'penMarkers'> {
   seed: number; tick: number; nextId: number; revision: number; notice: string;
   blocks: Uint8Array; ladders: Uint8Array; homeArea: Set<number>;
@@ -51,6 +52,10 @@ function damageTarget(kind: BurnTargetKind, p: Pos, id: number | null): FireDama
 }
 export function findFireDamageTarget(s: FireHost, d: FireDamage): FireDamage | undefined {
   if (!inside(d)) return;
+  if (isShelfKind(d.kind)) {
+    const shelf = s.shelves.find(s => s.id === d.targetId && s.kind === d.kind);
+    return shelf ? damageTarget(shelf.kind,shelf,shelf.id) : undefined;
+  }
   if (d.kind === 'block') return s.blocks[at(d)] === Block.Wood ? damageTarget('block', d, null) : undefined;
   if (d.kind === 'ladder') return s.ladders[at(d)] ? damageTarget('ladder', d, null) : undefined;
   if (d.kind === 'wire') return s.wires.some(p => same(p, d)) ? damageTarget('wire', d, null) : undefined;
@@ -73,6 +78,7 @@ export function fireFuelAt(s: FireHost, p: Pos): FuelTarget[] {
   }
   if (s.ladders[cell]) out.push({ kind: 'structure', id: cell, flammability: 1, damage: damageTarget('ladder', p, null) });
   const entries = [
+    ['shelf',s.shelves.filter(s => s.kind === 'shelf')], ['smallShelf',s.shelves.filter(s => s.kind === 'smallShelf')],
     ['table', s.tables], ['chair', s.chairs],
     ['fence',s.fences], ['fenceGate',s.fenceGates], ['penMarker',s.penMarkers], ['bed', s.beds], ['door', s.doors], ['stove', s.stoves], ['stonecutter', s.stonecutters],
     ['tailor', s.tailors], ['weaponBench', s.weaponBenches], ['researchBench', s.researchBenches],

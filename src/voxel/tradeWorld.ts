@@ -1,3 +1,4 @@
+import { shelfCells, type Shelf } from './shelves';
 import { at, inside, type Cargo, type CommandResult, type Pawn, type Pos, type Stack } from './types';
 import { freshBatch, portion, advanceRot } from './preservation';
 import { cargoMarketValue } from './wealth';
@@ -13,7 +14,7 @@ export interface TradeHost {
   seed: number; tick: number; nextId: number; revision: number; notice: string;
   pawns: Pawn[]; items: Stack[]; homeArea: Set<number>; trade: TradeState;
   storyteller: { difficulty: Difficulty };
-  stockpiles: Pos[];
+  stockpiles: Pos[]; shelves: Shelf[];
   path(from: Pos, to: Pos): number[] | null;
   tradeReachable(pawn: Pawn): Set<number>;
   tradePlace(entries: { batch: Cargo; origin: Pos }[], base: Stack[]): Placement | null;
@@ -74,7 +75,7 @@ export function quoteTrade(s: TradeHost): TradeQuote | null {
     offers.push({ side, stockId: stock.id, amount: stock.amount, batch, marketValue,
       unitPrice: side === 'colony' ? prices.sell : prices.buy, currency: stock.resource === 'silver' });
   };
-  for (const stock of s.items) if ((s.homeArea.has(at(stock)) || s.stockpiles.some(p => same(p, stock))) &&
+  for (const stock of s.items) if ((s.homeArea.has(at(stock)) || s.stockpiles.some(p => same(p, stock)) || s.shelves.some(sh=>shelfCells(sh).some(p=>same(p,stock)))) &&
     accessible.has(at(stock)) && traderAccepts(caravan.kind, stock)) add('colony', stock);
   for (const stock of caravan.stock) if (stock.resource !== 'carcass' &&
     s.pawns.some(p => p.id === stock.carrierId && !p.dead && !p.downed)) add('trader', stock);

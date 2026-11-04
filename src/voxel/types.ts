@@ -8,7 +8,7 @@ import type { TradeCommand, TradeState, TradeView } from './tradeTypes';
 import type { Psyche } from './mood';
 import type { SocialState, SocialIdentity, SocialEvent } from './social';
 import type { DiningTable, DiningChair, LivingState, RoomLivingSummary } from './living';
-import type { FurnitureKind } from './furniture';
+import type { RelocatableKind, Shelf, ShelfKind, StorageSettings, StorageSpill } from './shelves';
 import type { WorldSite } from './regions';
 import type { PrisonerState, PrisonerPolicy, WardenTask } from './prisoners';
 import type { Filth, CleanTask, FoodPoisoning, RoomCleanliness, CookingOutcome } from './sanitation';
@@ -111,10 +111,10 @@ export type ApparelQuality = 0 | 1 | 2 | 3 | 4 | 5 | 6;
  * Bed owner is only a recovery candidate; packed beds have no active occupant. */
 export type FurniturePiece = {
   id: number;
-  quality: ApparelQuality;
   hitPoints: number;
   axis: Axis;
-} & ({ kind: 'bed'; owner: number | null } | { kind: 'table'; gathering: boolean } | { kind: 'chair' });
+} & (({ quality: ApparelQuality } & ({ kind: 'bed'; owner: number | null } | { kind: 'table'; gathering: boolean } | { kind: 'chair' })) |
+  { kind: ShelfKind; settings: StorageSettings });
 export interface ApparelPiece {
   id: number;
   kind: ApparelKind;
@@ -267,6 +267,7 @@ export interface RoomSummary {
   maxZ: number;
 }
 export type Tool =
+  | ShelfKind
   | 'table'
   | 'chair'
   | 'fence'
@@ -354,7 +355,7 @@ export interface Cargo {
   apparel?: ApparelPiece;
   weapon?: WeaponPiece;
   furniture?: FurniturePiece;
-  carcass?: { animalId: number; species: AnimalSpecies };
+  carcass?: { animalId: number; species: AnimalSpecies; bodySize?: number };
   /** Ground weapon forbidden state; manual equip overrides it. */
   forbidden?: boolean;
   /** Equivalent unfrozen age in our simulation ticks; required for grain/meal. */
@@ -368,6 +369,9 @@ export interface Stockpile extends Pos {
   accepts: Resource[];
 }
 export interface StorageCapacity extends Pos {
+  provider: 'stockpile' | 'shelf'; shelfId: number | null;
+  maxStacks: number; occupiedSlots: number; reservedSlots: number;
+  stacks: { id: number; resource: Resource; amount: number; limit: number }[];
   occupied: boolean;
   resource: Resource | null;
   crop: CropKind | null;
@@ -536,6 +540,7 @@ export interface CropCondition {
   reason: string;
 }
 export type JobKind =
+  | ShelfKind
   | 'uninstall'
   | 'install'
   | 'table'
@@ -610,7 +615,7 @@ export interface Job extends Pos {
   researchProject?: ResearchKey;
   /** Exact existing furniture identity, never a generic interchangeable material. */
   furnitureId?: number;
-  furnitureKind?: FurnitureKind;
+  furnitureKind?: RelocatableKind;
   /** Existing pre-v9 cutting jobs retain their original 60-tick work/progress. */
   legacyCut?: true;
 }
@@ -812,6 +817,8 @@ export interface VoxelSnapshot {
   jobs: Job[];
   stockpiles: Stockpile[];
   storageCapacity: StorageCapacity[];
+  shelves: Shelf[];
+  storageSpills: StorageSpill[];
   farms: FarmPlot[];
   crops: Crop[];
   stoves: Stove[];
@@ -849,8 +856,9 @@ export interface ChunkUpdate {
   explored: Uint8Array;
 }
 export type VoxelCommand =
-  | { type: 'uninstallFurniture'; kind: FurnitureKind; furnitureId: number }
-  | { type: 'installFurniture'; kind: FurnitureKind; furnitureId: number; target: Pos; axis: Axis }
+  | { type: 'shelfStorage'; shelfId: number; priority: number; accepts: Resource[] }
+  | { type: 'uninstallFurniture'; kind: RelocatableKind; furnitureId: number }
+  | { type: 'installFurniture'; kind: RelocatableKind; furnitureId: number; target: Pos; axis: Axis }
   | { type: 'cancelFurnitureMove'; furnitureId: number }
   | { type: 'tableGathering'; tableId: number; enabled: boolean }
   | { type: 'fenceGate'; gateId: number; mode: FenceGate['mode'] }
@@ -930,6 +938,8 @@ export interface CommandResult {
   count?: number;
 }
 export interface VoxelSave {
+  shelves: Shelf[];
+  storageSpills: StorageSpill[];
   socialHistory: SocialIdentity[];
   socialLog: SocialEvent[];
   tables: DiningTable[];
@@ -949,7 +959,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 36;
+  version: 37;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;
@@ -1024,6 +1034,7 @@ export const RESOURCE_NAMES: Record<Resource, string> = {
   meal: '简餐',
 };
 export const JOB_NAMES: Record<JobKind, string> = {
+  shelf: '建货架', smallShelf: '建小货架',
   uninstall: '卸下家具', install: '重装家具',
   table: '造餐桌', chair: '造餐椅',
   fence: '建围栏', fenceGate: '建栏门', penMarker: '建圈地标记',
@@ -1065,6 +1076,7 @@ export const JOB_NAMES: Record<JobKind, string> = {
   cook: '烹饪简餐',
 };
 export const TOOL_NAMES: Record<Tool, string> = {
+  shelf: '货架', smallShelf: '小货架',
   table: '餐桌', chair: '餐椅',
   fence: '围栏', fenceGate: '栏门', penMarker: '圈地标记', animalArea: '动物活动范围',
   horseshoePin: '马蹄铁桩',

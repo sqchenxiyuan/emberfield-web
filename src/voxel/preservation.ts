@@ -53,7 +53,9 @@ export function portion(batch: Cargo, amount: number): Cargo {
     ...(batch.crop !== undefined ? { crop: batch.crop } : {}),
     ...(batch.apparel !== undefined ? { apparel: { ...batch.apparel } } : {}),
     ...(batch.weapon !== undefined ? { weapon: { ...batch.weapon } } : {}),
-    ...(batch.furniture !== undefined ? { furniture: { ...batch.furniture } } : {}),
+    ...(batch.furniture !== undefined ? { furniture: 'settings' in batch.furniture
+      ? { ...batch.furniture, settings: { ...batch.furniture.settings, accepts: [...batch.furniture.settings.accepts] } }
+      : { ...batch.furniture } } : {}),
     ...(batch.carcass !== undefined ? { carcass: { ...batch.carcass } } : {}),
     ...(batch.forbidden !== undefined ? { forbidden: batch.forbidden } : {}),
     ...(batch.rotProgress !== undefined ? { rotProgress: batch.rotProgress } : {}),
@@ -159,7 +161,8 @@ export function validBatch(batch: unknown): batch is Cargo {
   if (b.resource === 'carcass') {
     if (b.amount !== 1 || !b.carcass || typeof b.carcass !== 'object' || Array.isArray(b.carcass) ||
         !Number.isSafeInteger(b.carcass.animalId) || b.carcass.animalId <= 0 ||
-        !['hare', 'deer'].includes(b.carcass.species)) return false;
+        !['hare', 'deer'].includes(b.carcass.species) || (b.carcass.bodySize !== undefined &&
+          (!Number.isFinite(b.carcass.bodySize) || b.carcass.bodySize <= 0 || b.carcass.bodySize > 1.2))) return false;
   } else if (b.carcass !== undefined) return false;
   const limit = rotLimit(b);
   return limit === null

@@ -18,11 +18,15 @@ export interface HusbandryHost extends PensHost {
   temperature(p: Pos): number;
   standable(p: Pos): boolean;
   animalNeighbors(a: WildAnimal, p: Pos): number[];
+  animalCanStop(p: Pos): boolean;
   animalMoveTicks(a: WildAnimal, from: Pos): number;
   animalGrassSite(p: Pos): boolean;
   animalAvailable(item: Stack, pawnId?: number): number;
   animalTake(p: Pawn, id: number, amount: number): boolean;
   animalEatCrop(id: number): void;
+  itemStands(item: Pos): Pos[];
+  itemTouch(actor: Pos, item: Pos): boolean;
+  itemPath(from: Pos, item: Pos): number[] | null;
   killAnimal(a: WildAnimal, reason: string): void;
   prisonPath(from: Pos, to: Pos): number[] | null;
   prisonApproach(p: Pawn, target: Pos): number[] | null;
@@ -96,7 +100,8 @@ function foodTargets(s:HusbandryHost,a:WildAnimal) {
   const targets=new Map<number,NonNullable<WildAnimal['goal']>>();
   for(const g of s.grass)if(g.growth>=HUSBANDRY_RULES.grassMinGrowth)targets.set(at(g),{kind:'grass',id:at(g)});
   for(const c of s.crops)if(['rice','potato','corn'].includes(c.kind)&&c.growth>=.1)targets.set(at(c),{kind:'crop',id:c.id});
-  for(const f of s.items)if(edible(f)&&s.animalAvailable(f)>0)targets.set(at(f),{kind:'food',id:f.id});
+  for(const f of [...s.items].sort((a,b)=>a.id-b.id)) if(edible(f)&&s.animalAvailable(f)>0)
+    for (const stand of s.itemStands(f)) if (!targets.has(at(stand))) targets.set(at(stand),{kind:'food',id:f.id});
   for (const cell of targets.keys()) if (!animalAllowed(s,a,position(cell))) targets.delete(cell);
   return targets;
 }
@@ -112,7 +117,7 @@ function consumeNutrition(a:WildAnimal,nutrition:number) {
 }
 function eat(s:HusbandryHost,a:WildAnimal) {
   const target=goalPosition(s,a);
-  if(!target||at(target)!==at(a)){clearAnimal(a);return;}
+  if(!target || (a.goal?.kind === 'food' ? !s.itemTouch(a,target) : at(target)!==at(a))){clearAnimal(a);return;}
   a.phase=a.goal!.kind==='food'?'eat':'graze';a.reason='正在吃'+(a.goal!.kind==='food'?'地面食物':a.goal!.kind==='crop'?'田间作物':'野草');
   if(++a.eatProgress<HUSBANDRY_RULES.eatWork)return;
   const goal=a.goal!;
@@ -139,7 +144,7 @@ function mateTick(s:HusbandryHost,a:WildAnimal):boolean {
   a.phase='mate';a.reason='靠近配偶';
   if(!adjacent(a,b)){
     if(!a.path.length||s.tick%80===0){
-      const targets=new Map(s.animalNeighbors(a,b).filter(n=>adjacent(position(n),b)&&animalAllowed(s,a,position(n))).map(n=>[n,{kind:'mate' as const,id:b.id}]));
+      const targets=new Map(s.animalNeighbors(a,b).filter(n=>s.animalCanStop(position(n))&&adjacent(position(n),b)&&animalAllowed(s,a,position(n))).map(n=>[n,{kind:'mate' as const,id:b.id}]));
       const result=route(s,a,targets);if(!result){clearAnimal(a);a.nextMateTick=s.tick+200;return false;}
       a.path=result.path;a.goal=result.goal;
     }
@@ -206,7 +211,7 @@ export function updateHusbandry(s:HusbandryHost) {
     }
     if(a.sex==='male'&&a.faction==='colony'&&s.tick>=a.nextMateTick&&a.hunger>45){
       for(const b of s.animals.filter(b=>compatibleMate(a,b)&&animalAllowed(s,a,b)&&!s.pawns.some(p=>p.ropeTask?.animalId===b.id)&&!s.animals.some(other=>other.mateId===b.id))){
-        const result=route(s,a,new Map(s.animalNeighbors(a,b).filter(n=>adjacent(position(n),b)).map(n=>[n,{kind:'mate' as const,id:b.id}])));
+        const result=route(s,a,new Map(s.animalNeighbors(a,b).filter(n=>s.animalCanStop(position(n))&&adjacent(position(n),b)).map(n=>[n,{kind:'mate' as const,id:b.id}])));
         if(result){a.mateId=b.id;a.path=result.path;a.goal=result.goal;mateTick(s,a);break;}
       }
       if(a.mateId!==null)continue;
@@ -214,7 +219,8 @@ export function updateHusbandry(s:HusbandryHost) {
     }
     const night=hourAt(s.tick)<6||hourAt(s.tick)>=20;
     a.phase=night&&a.hunger>30?'rest':'roam';
-    if(a.phase==='rest'){a.reason='休息';continue;}
+    if(a.phase==='rest'&&s.animalCanStop(a)){a.reason='休息';continue;}
+    a.phase='roam';
     const choices=s.animalNeighbors(a,a).filter(n=>animalAllowed(s,a,position(n))&&!s.animals.some(b=>b!==a&&at(b)===n));
     if(choices.length){const from={...a};Object.assign(a,position(choices[Math.floor(random(s,a,1102)*choices.length)]));a.moveTick=s.tick+s.animalMoveTicks(a,from);}
     if(a.hunger>=65)a.reason='自由活动';
@@ -240,7 +246,7 @@ export function tryHandle(s:HusbandryHost,p:Pawn):boolean {
       for(const food of s.items.filter(f=>action==='feed'?edible(f):rawFeed(f))){
         const n=animalFeedAmount(a.species,food.resource)*(action==='feed'?1:HUSBANDRY_RULES.feedings);
         if(n<=0||s.animalAvailable(food)<n)continue;
-        const route=s.prisonPath(p,food);if(route===null)continue;
+        const route=s.itemPath(p,food);if(route===null)continue;
         if(foodPath===null||route.length<foodPath.length){source=food;foodPath=route;amount=n;}
       }
       if(!source){a.reason='等待驯养员与可达的食物（驯服需要生粮）';continue;}
@@ -265,8 +271,8 @@ export function handleTick(s:HusbandryHost,p:Pawn) {
   if(task.stage==='fetch'){
     const food=s.items.find(i=>i.id===task.foodId);
     if(!food||s.animalAvailable(food,p.id)<task.amount){cancel('食物已不可用，重新安排');return;}
-    if(at(food)!==at(p)){
-      if(!p.path.length){const path=s.prisonPath(p,food);if(path===null){cancel('食物通路中断');return;}handlerRoute(p,path);}return;
+    if(!s.itemTouch(p,food)){
+      if(!p.path.length){const path=s.itemPath(p,food);if(path===null){cancel('食物通路中断');return;}handlerRoute(p,path);}return;
     }
     if(!s.animalTake(p,food.id,task.amount)){cancel('无法拿取食物');return;}
     task.foodId=null;task.stage='approach';

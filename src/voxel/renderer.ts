@@ -85,7 +85,8 @@ import { ANIMAL_DEFS } from './wildlife';
 import { isAnimalAdult } from './husbandry';
 import { FIRE_RULES, fireDamageCells } from './fire';
 import { tableCells } from './living';
-import type { FurnitureKind } from './furniture';
+import { isShelfKind, shelfCells, type RelocatableKind, type ShelfKind } from './shelves';
+import { at } from './types';
 import { SOCIAL_RULES, SOCIAL_NAMES, type SocialInteractionKind } from './social';
 
 /** x/y are horizontal simulation coordinates; Three uses x/z horizontally. */
@@ -101,7 +102,7 @@ export interface VoxelView {
 }
 
 export interface PlacementPreview {
-  tool: 'bed' | 'table' | 'chair' | 'fence' | 'fenceGate' | 'penMarker' | 'animalArea';
+  tool: 'shelf' | 'smallShelf' | 'bed' | 'table' | 'chair' | 'fence' | 'fenceGate' | 'penMarker' | 'animalArea';
   from: Pos;
   to: Pos;
   axis: Axis;
@@ -152,7 +153,7 @@ type PawnVisual = {
   cargoWeapons: Record<WeaponKind, Group>;
   cargoHerb: Group;
   cargoCarcasses: Record<AnimalSpecies, Group>;
-  cargoFurniture: Record<FurnitureKind, Group>;
+  cargoFurniture: Record<RelocatableKind, Group>;
   cargo: Mesh;
   diningDish: Group;
   torso: Mesh;
@@ -223,7 +224,7 @@ const RESOURCE_COLORS: Record<Resource, number> = {
 // The same four parts identify each actual item on the ground, in cargo and in hand.
 type ModelPart = [number, number, number, number, number, number, number];
 /** A strapped furniture package uses the same model on the ground and in a worker's arms. */
-function packedFurnitureParts(kind: FurnitureKind): ModelPart[] {
+function packedFurnitureParts(kind: RelocatableKind): ModelPart[] {
   const color = kind === 'bed' ? 0x8eb4c0 : kind === 'table' ? 0xddc184 : 0xa2bb8b;
   return [
     [0, .25, 0, .74, .5, .63, 0xb18a5c],
@@ -750,6 +751,13 @@ export class VoxelRenderer {
       snapshot.generator !== this.data.generator ||
       JSON.stringify(snapshot.settings) !== JSON.stringify(this.data.settings);
     this.data = snapshot;
+    this.stackHeights.clear();
+    const shelfCellsSet = new Set(snapshot.shelves.flatMap(s=>shelfCells(s).map(at)));
+    const slotCounts = new Map<number,number>();
+    for (const item of [...snapshot.items].sort((a,b)=>a.id-b.id)) {
+      const cell=at(item), slot=slotCounts.get(cell)??0; slotCounts.set(cell,slot+1);
+      this.stackHeights.set(item.id,shelfCellsSet.has(cell)? .13+slot*.57 : slot*.4);
+    }
     this.snapshotAt = performance.now();
     const ids = new Set(snapshot.pawns.map((pawn) => pawn.id));
     for (const [id, visual] of this.pawnVisuals)
@@ -1292,7 +1300,7 @@ export class VoxelRenderer {
     const packages = this.batch('packed-furniture', packed.length * 6, this.box, this.batchMaterial('packed-furniture'));
     this.inspectBatches.set(packages, { cells: packed.map(item => ({ ...item, furnitureId: item.furniture!.id })), instancesPerCell: 6 });
     packed.forEach((item, i) => packedFurnitureParts(item.furniture!.kind).forEach(([x, y, z, sx, sy, sz, color], n) =>
-      this.instance(packages, i * 6 + n, item.x + .5 + x, item.z + y, item.y + .5 + z, sx, sy, sz, color)));
+      this.instance(packages, i * 6 + n, item.x + .5 + x, this.stackDisplay(item).z + y, item.y + .5 + z, sx, sy, sz, color)));
     this.finish(packages);
     const chunks = loose.filter((item) => item.resource === 'chunk');
     const rocks = this.batch(
@@ -1307,7 +1315,7 @@ export class VoxelRenderer {
         rocks,
         i,
         item.x + 0.5,
-        item.z + 0.33,
+        this.stackDisplay(item).z + 0.33,
         item.y + 0.5,
         0.42,
         0.33,
@@ -1331,7 +1339,7 @@ export class VoxelRenderer {
           piles,
           i * 3 + j,
           item.x + 0.34 + (j % 2) * 0.26,
-          item.z + 0.1 + Math.floor(j / 2) * 0.18,
+          this.stackDisplay(item).z + 0.1 + Math.floor(j / 2) * 0.18,
           item.y + 0.45 + (j % 2) * 0.12,
           size[0],
           size[1],
@@ -1359,7 +1367,7 @@ export class VoxelRenderer {
           herbBundles,
           i * HERB_MODEL_PARTS.length + n,
           item.x + 0.5 + x,
-          item.z + 0.16 + y,
+          this.stackDisplay(item).z + 0.16 + y,
           item.y + 0.5 + z,
           sx,
           sy,
@@ -1417,7 +1425,7 @@ export class VoxelRenderer {
           clothes,
           i * 5 + n,
           item.x + 0.5 + x,
-          item.z + 0.08,
+          this.stackDisplay(item).z + 0.08,
           item.y + 0.5 + y,
           sx,
           sz,
@@ -1451,7 +1459,7 @@ export class VoxelRenderer {
           weaponModels,
           i * 4 + n,
           item.x + 0.5 + (x * Math.cos(yaw) + along * Math.sin(yaw)) * 0.82,
-          item.z + 0.12 + y * 0.82,
+          this.stackDisplay(item).z + 0.12 + y * 0.82,
           item.y + 0.5 + (along * Math.cos(yaw) - x * Math.sin(yaw)) * 0.82,
           sx * 0.82,
           sy * 0.82,
@@ -1465,7 +1473,7 @@ export class VoxelRenderer {
           forbidden,
           i * 2 + n,
           item.x + 0.78,
-          item.z + 0.16,
+          this.stackDisplay(item).z + 0.16,
           item.y + 0.22,
           item.forbidden ? 0.25 : 0,
           item.forbidden ? 0.025 : 0,
@@ -1668,7 +1676,7 @@ export class VoxelRenderer {
     const corpses = this.batch('animal-carcasses', bodies.length * 10, this.box, this.batchMaterial('animal-carcasses'));
     this.inspectBatches.set(corpses, { cells: bodies, instancesPerCell: 10 });
     bodies.forEach((body, i) => carcassParts(body.species).forEach(([x, y, z, sx, sy, sz, color], n) =>
-      this.instance(corpses, i * 10 + n, body.x + .5 + x, body.z + .035 + y, body.y + .5 + z, sx, sy, sz, color)));
+      this.instance(corpses, i * 10 + n, body.x + .5 + x, this.stackDisplay(body).z + .035 + y, body.y + .5 + z, sx, sy, sz, color)));
     this.finish(corpses);
   }
 
@@ -1751,12 +1759,12 @@ export class VoxelRenderer {
 
   private updatePlacementPreview() {
     const preview = this.placementPreview, parts: DevicePart[] = [];
-    const furniture = preview?.tool === 'bed' || preview?.tool === 'table' || preview?.tool === 'chair';
+    const furniture = preview?.tool === 'bed' || preview?.tool === 'table' || preview?.tool === 'chair' || isShelfKind(preview?.tool);
     const furnitureParts: DevicePart[] = [];
     if (preview && furniture && preview.from.z === this.level) {
-      const kind = preview.tool as FurnitureKind, item = { ...preview.from, axis: preview.axis };
-      furnitureParts.push(...(kind === 'bed' ? this.bedFurnitureParts(item) : this.diningFurnitureParts(kind, item)).map(p => ({ ...p, color: 0x9be0df })));
-      for (const cell of kind === 'bed' ? bedCells(item) : kind === 'table' ? tableCells(item) : [item]) furnitureParts.push({
+      const kind = preview.tool as RelocatableKind, item = { ...preview.from, axis: preview.axis };
+      furnitureParts.push(...(isShelfKind(kind) ? this.shelfParts({...item,kind}) : kind === 'bed' ? this.bedFurnitureParts(item) : this.diningFurnitureParts(kind, item)).map(p => ({ ...p, color: 0x9be0df })));
+      for (const cell of isShelfKind(kind) ? shelfCells({...item,kind}) : kind === 'bed' ? bedCells(item) : kind === 'table' ? tableCells(item) : [item]) furnitureParts.push({
         cell: item, x: cell.x + .5, y: cell.y + .5, z: cell.z + .04, sx: .94, sy: .94, sz: .035, color: 0x9be0df,
       });
     }
@@ -2127,8 +2135,24 @@ export class VoxelRenderer {
     return parts;
   }
 
+  private shelfParts(item: Pos & {axis: Axis; kind: ShelfKind}): DevicePart[] {
+    return shelfCells(item).flatMap(cell => {
+      const parts: DevicePart[] = [];
+      for (const h of [.08,.65,1.22]) parts.push(this.devicePart({...cell,axis:item.axis},.5,.5,h,.92,.9,.07,0xb18a5c));
+      for (const x of [.08,.92]) for(const y of [.08,.92]) parts.push(this.devicePart({...cell,axis:item.axis},x,y,.78,.065,.065,1.56,0x805b3d));
+      return parts;
+    });
+  }
+
+  /** Stable Stack ID order selects each physical shelf tier; selection keeps the real cell. */
+  private stackHeights = new Map<number,number>();
+  private stackDisplay(item: Pos & {id?:number}): Pos {
+    return {...item,z:item.z+(item.id === undefined ? 0 : this.stackHeights.get(item.id)??0)};
+  }
+
   private updateHousing() {
     if (!this.data) return;
+    this.deviceBatch('storage-shelves', (this.data.shelves ?? []).filter(s=>s.z<=this.level).flatMap(s=>this.shelfParts(s)));
     this.deviceBatch('dining-tables', (this.data.tables ?? []).filter(t => t.z <= this.level)
       .flatMap(t => this.diningFurnitureParts('table', t)));
     this.deviceBatch('dining-chairs', (this.data.chairs ?? []).filter(c => c.z <= this.level)
@@ -3224,7 +3248,9 @@ export class VoxelRenderer {
       );
       const removedTable = job.kind === 'remove' ? this.data?.tables.find(t => t.x === job.x && t.y === job.y && t.z === job.z) : undefined;
       const movingFurniture = job.kind === 'install' || job.kind === 'uninstall' ? job.furnitureKind : undefined;
-      const footprint = movingFurniture === 'bed' ? bedCells({ ...job, axis: job.axis ?? 'x' }) : job.kind === 'table' || movingFurniture === 'table' || removedTable
+      const shelfKind = isShelfKind(job.kind) ? job.kind : isShelfKind(movingFurniture) ? movingFurniture : undefined;
+      const removedShelf = job.kind === 'remove' ? this.data?.shelves.find(s=>s.x===job.x&&s.y===job.y&&s.z===job.z) : undefined;
+      const footprint = shelfKind ? shelfCells({...job,kind:shelfKind,axis:job.axis??'x'}) : removedShelf ? shelfCells(removedShelf) : movingFurniture === 'bed' ? bedCells({ ...job, axis: job.axis ?? 'x' }) : job.kind === 'table' || movingFurniture === 'table' || removedTable
         ? tableCells({ ...job, axis: removedTable?.axis ?? job.axis ?? 'x' })
         : weaponBenchKind
         ? weaponBenchCells({
@@ -3568,8 +3594,8 @@ export class VoxelRenderer {
       carried.visible = false; body.add(carried); cargoCarcasses[species] = carried;
     }
     const cargoMaterial = this.keepMaterial(new MeshLambertMaterial({ color: 0xc69b60 }));
-    const cargoFurniture = {} as Record<FurnitureKind, Group>;
-    for (const kind of ['bed', 'table', 'chair'] as const) {
+    const cargoFurniture = {} as Record<RelocatableKind, Group>;
+    for (const kind of ['bed', 'table', 'chair', 'shelf', 'smallShelf'] as const) {
       const carried = new Group(); carried.position.set(0, .55, .42); carried.scale.setScalar(.85);
       for (const [x, y, z, sx, sy, sz, color] of packedFurnitureParts(kind)) {
         let material = weaponMaterials.get(color);
@@ -4251,7 +4277,7 @@ export class VoxelRenderer {
         if (Math.abs(dx) + Math.abs(dz) > 0.001) visual.root.rotation.y = Math.atan2(dx, dz);
       }
       const meal = pawn.phase === 'dine' ? pawn.living?.mealTask : null;
-      const mealSource = meal?.sourceId != null ? this.data.items.find(i => i.id === meal.sourceId && i.x === pawn.x && i.y === pawn.y && i.z === pawn.z && i.resource === pawn.eating) : pawn.cargo?.resource === pawn.eating ? pawn.cargo : null;
+      const mealSource = meal?.sourceId != null ? this.data.items.find(i => i.id === meal.sourceId && i.resource === pawn.eating) : pawn.cargo?.resource === pawn.eating ? pawn.cargo : null;
       const eating = !!meal && meal.stage === 'chew' && !moving && !mental && !!mealSource &&
         pawn.x === meal.target.x && pawn.y === meal.target.y && pawn.z === meal.target.z;
       const diningChair = eating && meal.chairId !== null ? this.data.chairs.find(c => c.id === meal.chairId && c.x === pawn.x && c.y === pawn.y && c.z === pawn.z) : undefined;

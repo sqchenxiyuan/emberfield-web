@@ -23,7 +23,7 @@ describe('v36 exploration persistence',()=>{
     const old=historical(),before=structuredClone(old),generate=vi.spyOn(worldgen,'generateWorld');
     const sim=VoxelSimulation.load(old),saved=sim.save();
     expect(old).toEqual(before);expect(generate).not.toHaveBeenCalled();
-    expect(saved.version).toBe(36);expect(saved.explored).toHaveLength(CELLS);expect(saved.explored.every(v=>v===1)).toBe(true);
+    expect(saved.version).toBe(37);expect(saved.explored).toHaveLength(CELLS);expect(saved.explored.every(v=>v===1)).toBe(true);
     for(const key of ['generator','worldSite','seed','settings','tick','nextId','blocks','ladders','items','stats','stockpiles'] as const)
       expect(saved[key],key).toEqual(old[key]);
     const jobs=(values:any[])=>values.map(({reason,owner,...j})=>j);

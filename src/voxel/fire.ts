@@ -1,5 +1,6 @@
 import { tableCells, LIVING_BUILDINGS } from './living';
 import { PEN_BUILDINGS } from './pens';
+import { SHELF_DEFS, isShelfKind, shelfCells } from './shelves';
 import { DAY, CELLS, HEIGHT, at, inside, bedCells, deviceCells, stonecutterCells, tailorCells,
   weaponBenchCells, researchBenchCells, type Pos, type VoxelSave } from './types';
 
@@ -7,7 +8,7 @@ export type FireSource = 'lightning' | 'shortCircuit' | 'spread';
 export interface Fire extends Pos {
   id: number; size: number; startedTick: number; nextDamageTick: number; nextSpreadTick: number; source: FireSource;
 }
-export type BurnTargetKind = 'table' | 'chair' | 'block' | 'ladder' | 'bed' | 'door' | 'stove' | 'stonecutter' |
+export type BurnTargetKind = 'shelf' | 'smallShelf' | 'table' | 'chair' | 'block' | 'ladder' | 'bed' | 'door' | 'stove' | 'stonecutter' |
   'tailor' | 'weaponBench' | 'researchBench' | 'horseshoePin' | 'butcherSpot' | 'device' | 'wire' | 'fence' | 'fenceGate' | 'penMarker';
 export interface FireDamage extends Pos {
   key: string; kind: BurnTargetKind; targetId: number | null; hitPoints: number; maxHitPoints: number;
@@ -29,6 +30,7 @@ export const FIRE_RULES = {
   firstIncidentDelay: DAY * 2, incidentInterval: DAY * 2, incidentJitter: DAY / 2,
 } as const;
 export const FIRE_MAX_HP: Readonly<Record<BurnTargetKind, number>> = {
+  shelf: SHELF_DEFS.shelf.maxHitPoints, smallShelf: SHELF_DEFS.smallShelf.maxHitPoints,
   table: LIVING_BUILDINGS.table.maxHitPoints, chair: LIVING_BUILDINGS.chair.maxHitPoints,
   block: 100, ladder: 60, bed: 100, door: 120, stove: 120, stonecutter: 140,
   tailor: 120, weaponBench: 160, researchBench: 140, horseshoePin: 80, butcherSpot: 60,
@@ -36,6 +38,7 @@ export const FIRE_MAX_HP: Readonly<Record<BurnTargetKind, number>> = {
   fence:PEN_BUILDINGS.fence.maxHitPoints, fenceGate:PEN_BUILDINGS.fenceGate.maxHitPoints, penMarker:PEN_BUILDINGS.penMarker.maxHitPoints,
 };
 export const FIRE_TARGET_NAMES: Readonly<Record<BurnTargetKind, string>> = {
+  shelf: '货架', smallShelf: '小货架',
   table: '餐桌', chair: '餐椅',
   block: '木结构', ladder: '木梯', bed: '床', door: '木门', stove: '灶台', stonecutter: '切石台',
   tailor: '裁缝台', weaponBench: '武器工作台', researchBench: '研究台', horseshoePin: '马蹄铁桩',
@@ -63,10 +66,11 @@ export function makeFire(id: number, pos: Pos, tick: number, source: FireSource,
 export function fireDamageKey(kind: BurnTargetKind, targetId: number | null, pos: Pos): string {
   return `${kind}:${targetId ?? at(pos)}`;
 }
-type FireGeometry = Pick<VoxelSave, 'tables' | 'chairs' | 'beds' | 'doors' | 'stoves' | 'stonecutters' | 'tailors' | 'weaponBenches' |
+type FireGeometry = Pick<VoxelSave, 'shelves' | 'tables' | 'chairs' | 'beds' | 'doors' | 'stoves' | 'stonecutters' | 'tailors' | 'weaponBenches' |
   'researchBenches' | 'horseshoePins' | 'butcherSpots' | 'devices'>;
 /** Shared by simulation and UI; no inferred floor/wall identity is necessary. */
 export function fireDamageCells(d: FireDamage, geometry: FireGeometry): Pos[] {
+  if (isShelfKind(d.kind)) { const s = geometry.shelves.find(s => s.id === d.targetId); if (s) return shelfCells(s); }
   if (d.kind === 'table') { const t = geometry.tables.find(t => t.id === d.targetId); if (t) return tableCells(t); }
   if (d.kind === 'bed') { const b = geometry.beds.find(b => b.id === d.targetId); if (b) return bedCells(b); }
   if (d.kind === 'door') return [d, { x: d.x, y: d.y, z: d.z + 1 }].filter(inside);

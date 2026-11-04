@@ -1,16 +1,27 @@
 import { furnitureStats, type FurnitureKind } from './furniture';
+import { isShelfKind, SHELF_DEFS, type RelocatableKind } from './shelves';
 import { furnitureMarketValue } from './wealth';
 import type { ApparelQuality, Axis, Pawn, Pos, VoxelSnapshot, VoxelCommand } from './types';
 
-type Furniture = { id: number; quality: ApparelQuality; hitPoints?: number };
-export const FURNITURE_NAMES: Record<FurnitureKind, string> = { bed: '木床', table: '木制餐桌', chair: '木制餐椅' };
+type Furniture = { id: number; quality?: ApparelQuality; hitPoints?: number };
+export const FURNITURE_NAMES: Record<RelocatableKind, string> = { bed: '木床', table: '木制餐桌', chair: '木制餐椅', shelf: '货架', smallShelf: '小货架' };
 const NAMES = FURNITURE_NAMES;
 const number = (value: number) => value.toLocaleString('zh-CN', { maximumFractionDigits: 2 });
 const same = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
 
 export function FurnitureDetails({ kind, item, snapshot, packed = false }: {
-  kind: FurnitureKind; item: Furniture; snapshot: VoxelSnapshot; packed?: boolean;
+  kind: RelocatableKind; item: Furniture; snapshot: VoxelSnapshot; packed?: boolean;
 }) {
+  if (isShelfKind(kind)) {
+    const def = SHELF_DEFS[kind];
+    const hp = item.hitPoints ?? snapshot.fireDamage.find(d => d.kind === kind && d.targetId === item.id)?.hitPoints ?? def.maxHitPoints;
+    return <section className="voxel-furniture-quality" data-testid="shelf-details" data-furniture-id={item.id}>
+      <b>{def.name}{packed ? '（已打包）' : ''}</b>
+      <small>耐久 {number(hp)} / {def.maxHitPoints} · {def.cells} 格 · 每格 3 堆</small>
+      <small>保护物品免受环境劣化；食物仍会随温度腐坏。卸下时货物留在原地或附近，收纳设置随货架保留。</small>
+    </section>;
+  }
+  if (item.quality === undefined) return null;
   const stats = furnitureStats(kind, item.quality);
   const damage = snapshot.fireDamage.find(d => d.kind === kind && d.targetId === item.id);
   const hp = item.hitPoints ?? damage?.hitPoints ?? stats.maxHitPoints;
@@ -31,8 +42,8 @@ export function FurnitureDetails({ kind, item, snapshot, packed = false }: {
 }
 
 export function FurnitureMoveControls({ kind, item, snapshot, packed = false, begin, command, focus }: {
-  kind: FurnitureKind; item: Furniture & { axis: Axis }; snapshot: VoxelSnapshot; packed?: boolean;
-  begin: (kind: FurnitureKind, item: Furniture & { axis: Axis }, packed: boolean) => void;
+  kind: RelocatableKind; item: Furniture & { axis: Axis }; snapshot: VoxelSnapshot; packed?: boolean;
+  begin: (kind: RelocatableKind, item: Furniture & { axis: Axis }, packed: boolean) => void;
   command: (command: VoxelCommand) => void; focus: (p: Pos) => void;
 }) {
   const jobs = snapshot.jobs.filter(j => !j.cancelled && j.furnitureId === item.id);
@@ -40,7 +51,7 @@ export function FurnitureMoveControls({ kind, item, snapshot, packed = false, be
   const carrier = snapshot.pawns.find(p => p.cargo?.furniture?.id === item.id);
   return <section className="voxel-furniture-move" data-testid="furniture-move" data-furniture-id={item.id} data-packed={packed}>
     <b>{packed ? '安装打包家具' : '搬移与卸下'}</b>
-    <small>家具 #{item.id} · 保留品质与耐久。{kind === 'bed' ? '卸下时释放当前使用者，并清除医疗和囚犯用途；安装后可重新设置。' : ''}</small>
+    <small>家具 #{item.id} · {isShelfKind(kind) ? '保留收纳设置与耐久。' : '保留品质与耐久。'}{kind === 'bed' ? '卸下时释放当前使用者，并清除医疗和囚犯用途；安装后可重新设置。' : ''}</small>
     <div className="voxel-furniture-actions">
       <button data-testid="furniture-move-target" disabled={!!install} onClick={() => begin(kind, item, packed)}>{packed ? '安装' : '搬移'}</button>
       {!packed && <button data-testid="furniture-uninstall" disabled={jobs.length > 0} onClick={() => command({ type: 'uninstallFurniture', kind, furnitureId: item.id })}>卸下</button>}

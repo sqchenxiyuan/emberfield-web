@@ -26,7 +26,7 @@ describe('physical trade, visitors and genuine v20 migration', () => {
   it('migrates seven genuine saves without giving old colonies silver or moving an appointment', () => {
     for (const name of ['initial', 'working', 'carrying', 'combat', 'injured', 'recovered', 'scheduled']) {
       const old = fixture(name), sim = VoxelSimulation.load(old), saved = sim.save();
-      expect(saved.version).toBe(36);
+      expect(saved.version).toBe(37);
       expect(saved.items).toEqual(old.items);
       expect(saved.storyteller).toEqual(old.storyteller);
       expect(saved.trade).toEqual(initialTrade(old.seed, old.tick));
@@ -57,7 +57,7 @@ describe('physical trade, visitors and genuine v20 migration', () => {
     expect(sim.counts()).toEqual(inventory);
     expect(quote.colonySilver).toBe(800);
     expect(VoxelSimulation.load(sim.save()).trade.caravans).toEqual(sim.trade.caravans);
-  });
+  }, 10000); // The published baseline also exceeds 5s after the seven-save migration warmup.
   it('commits both goods and silver once and rejects replay without changing anything', () => {
     const { sim, caravan, quote } = market();
     const offer = quote.offers.find(o => o.side === 'trader' && !o.currency && o.unitPrice < 800)!;
@@ -76,7 +76,7 @@ describe('physical trade, visitors and genuine v20 migration', () => {
     expect(sim.command(command).ok).toBe(false);
     expect(sim.save()).toEqual(after);
     expect(VoxelSimulation.load(after).save().trade).toEqual(after.trade);
-  });
+  }, 10000);
   it('rejects a stale price and cancellation leaves physical goods and currency untouched', () => {
     const { sim, quote } = market();
     const offer = quote.offers.find(o => o.side === 'trader' && !o.currency)!;

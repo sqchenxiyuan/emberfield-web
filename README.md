@@ -6,9 +6,9 @@
 
 在线试玩：[多层体素](https://sqchenxiyuan.github.io/emberfield-web/?world=voxel) · [二维营地](https://sqchenxiyuan.github.io/emberfield-web/) · 源码：[sqchenxiyuan/emberfield-web](https://github.com/sqchenxiyuan/emberfield-web)。
 
-2026-11-04仓储基础修正：建造、生产与找食物按具体物品和数量预约，减少多人争抢最后一份物资；交易或腐坏移除源物时立即重排。放置和容量预约共享多槽算法，当前世界仍是每格一堆，实体货架尚未开放，存档保持 v36。机制、回归和后续范围见[113 物资预约与放置基础](docs/research/rimworld/113-storage-reservations-foundation.md)。
+2026-11-04实体货架：小货架一格三堆、大货架两格六堆；工人按整架筛选与优先级搬入，从旁边取用。满架可卸下、散货并重装，保留原架身份、耐久和设置；空间不足时等待，火毁拥堵保留可继续搬运的散货。界面支持逐堆查看、设置和搬装预览，存档升级 v37 并兼容旧档。见[114 货架玩法与验证](docs/research/rimworld/114-shelves-gameplay.md)。玩法机制优先，成本与节奏数值后调。
 
-2026-11-04补充[111实体货架机制](docs/research/rimworld/111-shelf-storage-mechanisms.md)与[112原版实机](docs/research/rimworld/112-native-shelves-runtime.md)：正常建造后同格储存三堆，满架可直接卸下；物资留在地图上，原架的储存设置随重装和读档保留。下一步连接 Web 多堆、邻接取用和满架搬迁；当前游戏仍为 v36，货架尚未实现。继续优先玩法与机制，成本和效率数值后调。
+2026-11-04补充[111实体货架机制](docs/research/rimworld/111-shelf-storage-mechanisms.md)与[112原版实机](docs/research/rimworld/112-native-shelves-runtime.md)：正常建造后同格储存三堆，满架可直接卸下；物资留在地图上，原架的储存设置随重装和读档保留。Web 实现承接[113物资预约基础](docs/research/rimworld/113-storage-reservations-foundation.md)，原版事实与 Web 适配分别记录。继续优先玩法与机制，成本和效率数值后调。
 
 2026-11-04补充[110原版探索实机](docs/research/rimworld/110-native-exploration-runtime.md)：普通操作验证未知区域可规划采矿、不能直接建墙；实际挖通后显露空间并清除空地上的采矿标记，重新载入保留结果。本次原版目标为岩壁封住的露天空地，和Web的三维地下洞室区分记录。研究更新未改变v36游戏逻辑，继续以机制与操作闭环为先、数值后调。
 

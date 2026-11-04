@@ -1,3 +1,5 @@
+import { isShelfKind, shelfCells } from './shelves';
+import { ShelfPanel } from './ShelfPanel';
 import React, { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { createRoot } from 'react-dom/client';
 import { VoxelClient } from './client';
@@ -92,6 +94,8 @@ const tools: Tool[] = [
   'bed',
   'table',
   'chair',
+  'smallShelf',
+  'shelf',
   'horseshoePin',
   'door',
   'fence',
@@ -131,6 +135,8 @@ const icons = [
   '▰',
   '⊤',
   '▙',
+  '▤',
+  '▤',
   '∩',
   '▯',
   '╫',
@@ -147,6 +153,8 @@ const icons = [
   '×',
 ];
 const hints: Record<Tool, string> = {
+  smallShelf: '一格小货架，每格可存放 3 堆物资。人物从旁边取放；可设置接纳物品与优先级。',
+  shelf: '两格货架，共 6 堆物资。R 旋转；整座货架共用收纳设置，卸下后货物留在附近。',
   fence: '左键拖动建造直线围栏，留下栏门的位置。完工后拦住鹿，人和兔可缓慢跨越；圈地不需要屋顶。',
   fenceGate: '点击建造木制栏门，R 旋转。饲养员经栏门牵入鹿；自动开关保持圈地有效，保持敞开会打开边界。',
   penMarker: '在已围起的区域内建造圈地标记，点击查看是否封闭、现有草料和接纳筛选。标记自身不能拦住动物。',
@@ -486,6 +494,7 @@ function App() {
     : null;
   const bed = p ? s?.beds.find((v) => bedCells(v).some((q) => equal(q, p))) : null;
   const table = p ? s?.tables.find(v => tableCells(v).some(q => equal(q, p))) : null;
+  const shelf = p ? s?.shelves.find(v => shelfCells(v).some(q => equal(q,p))) : null;
   const chair = p ? s?.chairs.find(v => equal(v, p)) : null;
   const door = p ? s?.doors.find((v) => equal(v, p)) : null;
   const fence = p ? s?.fences.find(v => equal(v, p)) : null;
@@ -902,7 +911,7 @@ function App() {
             </button>
           )}
         </div>
-        <h2>{title}</h2>
+        <h2>{shelf ? FURNITURE_NAMES[shelf.kind] : title}</h2>
         {!p && <p>点击地图查看物资、人物与施工进度。先规划，再让殖民者工作。</p>}
         {!p && s && (
           <p>
@@ -938,6 +947,9 @@ function App() {
             <button onClick={() => void client.command({ type: 'designate', tool: 'cancel', from: p })}>取消此处探索工作</button></>}
         </section>}
         {!unknown && <>
+        {s && shelf && <><FurnitureDetails kind={shelf.kind} item={shelf} snapshot={s} />
+          <ShelfPanel shelf={shelf} snapshot={s} command={c=>void client.command(c)} />
+          <FurnitureMoveControls kind={shelf.kind} item={shelf} snapshot={s} begin={client.beginFurniturePlacement} command={c=>void client.command(c)} focus={focus} /></>}
         {p && (
           <p>
             {block
@@ -1854,7 +1866,7 @@ function App() {
       <footer className="voxel-footer">
         <div className="voxel-tool-hint">
           <span className="voxel-kicker">
-            {state.furniturePlacement ? `安装 ${FURNITURE_NAMES[state.furniturePlacement.kind]} #${state.furniturePlacement.furnitureId} · ${furnitureStats(state.furniturePlacement.kind, state.furniturePlacement.quality).qualityName}` : TOOL_NAMES[state.tool]}
+            {state.furniturePlacement ? `安装 ${FURNITURE_NAMES[state.furniturePlacement.kind]} #${state.furniturePlacement.furnitureId} · ${isShelfKind(state.furniturePlacement.kind) ? '保留收纳设置' : state.furniturePlacement.quality === undefined ? '' : furnitureStats(state.furniturePlacement.kind, state.furniturePlacement.quality).qualityName}` : TOOL_NAMES[state.tool]}
             {([
               'bed',
               'table',

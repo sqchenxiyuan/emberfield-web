@@ -18,6 +18,7 @@ import { HORSESHOE_COST, HORSESHOE_WORK } from './recreation';
 import { batchHpFraction } from './deterioration';
 import { isFurnitureKind, isFurnitureQuality, type FurnitureKind } from './furniture';
 import type { ApparelQuality } from './types';
+import { SHELF_DEFS, type ShelfKind } from './shelves';
 
 /** Core 1.7 selected full-HP resource prices, except provisional meat=2.
  * Carcasses use their species' meat yield below; deposits/plants are not items. */
@@ -76,7 +77,8 @@ export function cargoMarketValue(cargo: Cargo): number {
   if (cargo.resource === 'weapon') return cargo.weapon ? weaponMarketValue(cargo.weapon) * cargo.amount : 0;
   if (cargo.resource === 'apparel') return cargo.apparel ? apparelMarketValue(cargo.apparel) * cargo.amount : 0;
   if (cargo.resource === 'furniture') return cargo.furniture
-    ? furnitureMarketValue(cargo.furniture.kind, cargo.furniture.quality, batchHpFraction(cargo)) * cargo.amount : 0;
+    ? ('settings' in cargo.furniture ? shelfMarketValue(cargo.furniture.kind, batchHpFraction(cargo)) :
+      furnitureMarketValue(cargo.furniture.kind, cargo.furniture.quality, batchHpFraction(cargo))) * cargo.amount : 0;
   // Reference asset value only. Animal carcass trading is not supported.
   if (cargo.resource === 'carcass') return cargo.carcass && Object.hasOwn(ANIMAL_DEFS, cargo.carcass.species)
     ? itemMarketValue(ANIMAL_DEFS[cargo.carcass.species].meat * RESOURCE_MARKET_VALUE.meat, 2, batchHpFraction(cargo)) * cargo.amount : 0;
@@ -132,6 +134,10 @@ export function pawnMarketValue(pawn: Pawn): number {
 
 /** Construction work is at 20 TPS versus native 60 TPS. Game-day scaling does not apply. */
 export const CONSTRUCTION_SOURCE_WORK_FACTOR = 3;
+export function shelfMarketValue(kind: ShelfKind, hpFraction = 1): number {
+  const def = SHELF_DEFS[kind];
+  return itemMarketValue(rawMadeValue(def.cost, def.work * CONSTRUCTION_SOURCE_WORK_FACTOR), 2, hpFraction);
+}
 export function constructedMarketValue(cost: Readonly<Partial<Counts>>, work: number): number {
   return finalizeMarketValue(rawMadeValue(cost, work * CONSTRUCTION_SOURCE_WORK_FACTOR));
 }
@@ -206,6 +212,7 @@ export function colonyWealthDetails(sim: VoxelSimulation): WealthDetails {
   for (const [kind, objects] of [['bed', sim.beds], ['table', sim.tables], ['chair', sim.chairs]] as const)
     for (const object of objects.filter(p => sim.exploredAt(p)))
       buildingSources.facilities += furnitureMarketValue(kind, object.quality);
+  for (const shelf of sim.shelves.filter(p => sim.exploredAt(p))) buildingSources.facilities += shelfMarketValue(shelf.kind);
   add(sim.doors.filter(p => sim.exploredAt(p)).length, { wood: 25 }, 199);
   add(sim.stoves.filter(p => sim.exploredAt(p)).length, { wood: 20 }, 120);
   add(sim.stonecutters.filter(p => sim.exploredAt(p)).length, STONECUTTER_COST, STONECUTTER_WORK);

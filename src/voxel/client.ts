@@ -1,6 +1,6 @@
 import { VoxelRenderer, type VoxelView, type PlacementPreview } from './renderer';
 import { isDeviceKind } from './power';
-import type { FurnitureKind } from './furniture';
+import type { RelocatableKind } from './shelves';
 import type { WorldSite } from './regions';
 import {
   HEIGHT,
@@ -23,8 +23,8 @@ import {
 } from './types';
 export interface FurniturePlacement {
   furnitureId: number;
-  kind: FurnitureKind;
-  quality: ApparelQuality;
+  kind: RelocatableKind;
+  quality?: ApparelQuality;
   packed: boolean;
   reason: string | null;
 }
@@ -98,7 +98,7 @@ export class VoxelClient {
     this.emit({ axis });
     if (this.state.placementPreview) this.view({ placementPreview: { ...this.state.placementPreview, axis } });
   };
-  beginFurniturePlacement = (kind: FurnitureKind, item: { id: number; quality: ApparelQuality; axis: Axis }, packed = false) => {
+  beginFurniturePlacement = (kind: RelocatableKind, item: { id: number; quality?: ApparelQuality; axis: Axis }, packed = false) => {
     this.choose('inspect');
     this.emit({ axis: item.axis, furniturePlacement: { kind, furnitureId: item.id, quality: item.quality, packed, reason: null } });
     this.notice('选择安装位置；R 旋转，可切换楼层，Esc 退出选址');
@@ -334,7 +334,7 @@ export class VoxelClient {
       downX = 0,
       downY = 0;
     let dragTool: Tool | null = null, dragSequence = 0, previewSequence = 0;
-    const previews = (tool: Tool) => !!this.state.furniturePlacement || ['bed', 'table', 'chair', 'fence', 'fenceGate', 'penMarker', 'animalArea'].includes(tool);
+    const previews = (tool: Tool) => !!this.state.furniturePlacement || ['shelf', 'smallShelf', 'bed', 'table', 'chair', 'fence', 'fenceGate', 'penMarker', 'animalArea'].includes(tool);
     const preview = (from: Pos, target: Pos, tool: Tool) => {
       const furniture = this.state.furniturePlacement;
       if (furniture) {
@@ -346,7 +346,7 @@ export class VoxelClient {
         if (Math.abs(to.x - from.x) >= Math.abs(to.y - from.y)) to.y = from.y;
         else to.x = from.x;
       }
-      if (['bed', 'table', 'chair', 'fenceGate', 'penMarker'].includes(tool)) Object.assign(to, from);
+      if (['shelf', 'smallShelf', 'bed', 'table', 'chair', 'fenceGate', 'penMarker'].includes(tool)) Object.assign(to, from);
       this.view({ placementPreview: { tool: tool as PlacementPreview['tool'], from, to, axis: this.state.axis,
         erase: tool === 'animalArea' && this.state.animalAreaErase } });
     };
@@ -445,7 +445,7 @@ export class VoxelClient {
             'shaft',
             'up',
             'ladder',
-            'bed',
+            'shelf', 'smallShelf', 'bed',
             'table',
             'chair',
             'door',
