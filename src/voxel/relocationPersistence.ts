@@ -47,7 +47,7 @@ export function validateRelocation(d: Record<string, any>): void {
   const liveIds = new Set<number>();
   const entityLists = ['fires', 'filth', 'pawns', 'animals', 'butcherSpots', 'tables', 'chairs', 'horseshoePins',
     'items', 'trees', 'jobs', 'crops', 'stoves', 'stonecutters', 'tailors', 'weaponBenches', 'researchBenches',
-    'beds', 'doors', 'fences', 'fenceGates', 'penMarkers', 'devices', 'sandbags', 'projectiles', 'animalAreas', 'shelves'];
+    'beds', 'doors', 'fences', 'fenceGates', 'penMarkers', 'devices', 'sandbags', 'projectiles', 'animalAreas', 'shelves', 'storageGroups'];
   for (const key of entityLists) for (const e of list(d[key])) if (id(e?.id)) liveIds.add(e.id);
   const containers = batches(d);
   for (const b of containers) for (const piece of [b?.apparel, b?.weapon]) if (id(piece?.id)) liveIds.add(piece.id);

@@ -1,0 +1,7 @@
+{
+  "source": "test-results/navigation-shelves-campaign/stocked.json",
+  "sha256": "707bab4ef4a5f37063a8d9c6c91dbe94abf550346ab99e604b42d988b16788f8",
+  "version": 37,
+  "producer": "scripts/voxel-shelves-campaign-verify.mjs",
+  "scope": "Unmodified ordinary-command constructed and stocked shelf checkpoint from navigation validation before storage groups."
+}

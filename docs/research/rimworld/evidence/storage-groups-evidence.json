@@ -1,0 +1,900 @@
+{
+  "evidence_id": "RW17-STORAGE-GROUPS",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction and selected original Core XML; target not executed",
+  "rea": {
+    "file": "shelf-storage-rea-managed.json",
+    "sha256": "58b86231f68ebe8db33abe6d8e9408dfc9f3ddf012319b4d824368715a025e2b",
+    "evidence_id": "ev_107c63f87f74870b8dc7c9c2205fec8ed587133e8dc9701a85c5682d8aa43cea",
+    "parent_evidence_id": "ev_002f7c6a8e7e5c16296ff1beb7f5dc6ac1cc486e52a65155a913c3753871a42b",
+    "mvid": "8e962ecc-7ac7-42d2-8f3b-1b16cd24d2cd"
+  },
+  "manifests": [
+    {
+      "file": "energy-manifest.json",
+      "sha256": "aac3380267185f66faf763cbfb8803299ceff720c73dd519efaa047b0e6801c9"
+    },
+    {
+      "file": "furniture-reinstall-manifest.json",
+      "sha256": "9961a453d2f278a3e07083aff8d3ab7e553b66a9393cb855d5a533feeb26d424"
+    },
+    {
+      "file": "logistics-manifest.json",
+      "sha256": "86d76ec8cfae55866ca033e1e80a29b7b072452726a666393abcea2246eb216f"
+    },
+    {
+      "file": "preservation-manifest.json",
+      "sha256": "5b43549bdaa2d6edc6ace4c7100ef2b20510e36d18c0a543c0c7a431c6801f8e"
+    },
+    {
+      "file": "shelf-storage-manifest.json",
+      "sha256": "b624dbb0391c577d9aa279628f472d47c92f90527fbb09fbd07d42eda9d38adc"
+    },
+    {
+      "file": "storage-groups-manifest.json",
+      "sha256": "abdb1d7348923939a4a1a91dcc9020f1695bcabd80a2d5883e77c40dd82fa429"
+    },
+    {
+      "file": "storyteller-manifest.json",
+      "sha256": "50b503be491bcd9196ccf8b96832875215dbe30b4c4f2603e6315aeed076eedf"
+    }
+  ],
+  "xml": [
+    {
+      "id": "SGX01",
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+      "source_sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55",
+      "xpath": "/Defs/ThingDef[@Name=\"ShelfBase\" or @Name=\"StorageShelfBase\" or @Name=\"BookcaseBase\" or defName=\"Shelf\" or defName=\"ShelfSmall\"]",
+      "projection": "Selected identity, immediate parent, class, storage-group tag and blueprint-class fields; not evaluated mod/DLC Def database",
+      "nodes": [
+        {
+          "name": "ShelfBase",
+          "parent": "FurnitureBase",
+          "abstract": "True",
+          "fields": {
+            "building/blueprintClass": "Blueprint_Storage"
+          }
+        },
+        {
+          "name": "StorageShelfBase",
+          "parent": "ShelfBase",
+          "abstract": "True",
+          "fields": {
+            "thingClass": "Building_Storage",
+            "building/storageGroupTag": "Shelf"
+          }
+        },
+        {
+          "name": "",
+          "parent": "StorageShelfBase",
+          "abstract": "",
+          "fields": {
+            "defName": "Shelf"
+          }
+        },
+        {
+          "name": "",
+          "parent": "StorageShelfBase",
+          "abstract": "",
+          "fields": {
+            "defName": "ShelfSmall"
+          }
+        },
+        {
+          "name": "BookcaseBase",
+          "parent": "ShelfBase",
+          "abstract": "True",
+          "fields": {
+            "thingClass": "Building_Bookcase",
+            "building/storageGroupTag": "Bookcase",
+            "building/blueprintClass": "Blueprint_StorageWithRoomHighlight"
+          }
+        }
+      ],
+      "nodes_sha256": "78c90abb0ab4260a802b3f19222f7c2be9bfa3ede1ea12613336d2f329399d40"
+    }
+  ],
+  "claims": [
+    {
+      "id": "SG01",
+      "finding": "Link candidates are selected IStorageGroupMember objects with the same StorageGroupTag and Map as the gizmo member; hidden Building_Storage tabs are excluded. The link action is disabled below two candidates. Zone_Stockpile implements storage/slot interfaces but not IStorageGroupMember and exposes copy/paste, not linking. Shelf/ShelfSmall inherit tag Shelf; BookcaseBase uses Bookcase.",
+      "xml": [
+        "SGX01"
+      ],
+      "sources": [
+        {
+          "group": "storage-groups",
+          "type": "RimWorld.StorageGroupUtility",
+          "file": ".local-research/storage-groups/RimWorld.StorageGroupUtility.cs",
+          "sha256": "36feb032a194055f4c9dcd69b25192787ce74667523fea811177fd462de062eb",
+          "lines": [
+            21,
+            32
+          ],
+          "excerpt_sha256": "65e7f8aa7bd2486e1474993f0ec0bb94a0636c2c69f977072c339f4b4c4589af"
+        },
+        {
+          "group": "storage-groups",
+          "type": "RimWorld.StorageGroupUtility",
+          "file": ".local-research/storage-groups/RimWorld.StorageGroupUtility.cs",
+          "sha256": "36feb032a194055f4c9dcd69b25192787ce74667523fea811177fd462de062eb",
+          "lines": [
+            83,
+            91
+          ],
+          "excerpt_sha256": "9705f633d3b97fcf20282c9ab0355684a48ef69695984ef9556ba67805e30eef"
+        },
+        {
+          "group": "storage-groups",
+          "type": "RimWorld.Zone_Stockpile",
+          "file": ".local-research/storage-groups/RimWorld.Zone_Stockpile.cs",
+          "sha256": "00621bb9c20bfc05c3b69075bb9be0dfacb6f1cb8307302b2f5135c47cc4e59f",
+          "lines": [
+            7,
+            17
+          ],
+          "excerpt_sha256": "2e157bea6b6238fce72dd575395cb1ba7eadaa738f67041adc2587087dadd57f"
+        },
+        {
+          "group": "storage-groups",
+          "type": "RimWorld.Zone_Stockpile",
+          "file": ".local-research/storage-groups/RimWorld.Zone_Stockpile.cs",
+          "sha256": "00621bb9c20bfc05c3b69075bb9be0dfacb6f1cb8307302b2f5135c47cc4e59f",
+          "lines": [
+            78,
+            89
+          ],
+          "excerpt_sha256": "711511099d6e25393909be5558e8cc0a20253d5937b77ab3b82bc6c6f3a51b81"
+        },
+        {
+          "group": "storage-groups",
+          "type": "RimWorld.IStorageGroupMember",
+          "file": ".local-research/storage-groups/RimWorld.IStorageGroupMember.cs",
+          "sha256": "82bd40cdf474358280f3942107fedc56b0ddb30ca81f8a32aa63564d6628fff1",
+          "lines": [
+            5,
+            24
+          ],
+          "excerpt_sha256": "21cd961ccf310768cf0cae96dfb13846f0af2959fa938108cbcb0d6b8f6d4c17"
+        }
+      ]
+    },
+    {
+      "id": "SG02",
+      "finding": "The link action uses tmpMembers[0] as source, retaining its existing group or creating a new group initialized from its effective settings. Only selected compatible members are passed to SetStorageGroup; unselected old-group members are not migrated by this loop. Source order is SelectedObjects enumeration, not guaranteed click order, nearest shelf or an aggregate of filters.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "storage-groups",
+          "type": "RimWorld.StorageGroupUtility",
+          "file": ".local-research/storage-groups/RimWorld.StorageGroupUtility.cs",
+          "sha256": "36feb032a194055f4c9dcd69b25192787ce74667523fea811177fd462de062eb",
+          "lines": [
+            25,
+            32
+          ],
+          "excerpt_sha256": "9fbba535e439d105e824ed0d5be1ca5e417d95e996544367c56b4cd7dd1554c1"
+        },
+        {
+          "group": "storage-groups",
+          "type": "RimWorld.StorageGroupUtility",
+          "file": ".local-research/storage-groups/RimWorld.StorageGroupUtility.cs",
+          "sha256": "36feb032a194055f4c9dcd69b25192787ce74667523fea811177fd462de062eb",
+          "lines": [
+            49,
+            81
+          ],
+          "excerpt_sha256": "146d91f5c2d604fd7144accccd3ac3e17e1e15db6c4be9eb10b81f286df3d958"
+        },
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.StorageGroup",
+          "file": ".local-research/shelf-storage/RimWorld.StorageGroup.cs",
+          "sha256": "9b8670c2da14baf8fb222f339fecc4c212d4a1ded908e970930d27477978a1b3",
+          "lines": [
+            107,
+            117
+          ],
+          "excerpt_sha256": "f185c447aab344fb79ab11d795f26e7ad91243007949eb82b7aa261551eab1a4"
+        }
+      ]
+    },
+    {
+      "id": "SG03",
+      "finding": "A linked Building_Storage, Blueprint_Storage and Frame read the StorageGroup settings object rather than synchronized copies. Group parent restrictions come from its first member. CopyFrom copies priority and filter allowances, including allowed defs, special filters, hitpoint and quality ranges; it does not copy the building label or physical contents.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "logistics",
+          "type": "RimWorld.Building_Storage",
+          "file": ".local-research/logistics/RimWorld.Building_Storage.cs",
+          "sha256": "680349a2c0e89d2a028ec586319c8781c8f722a8a1ce90f877b4c51bef7a635e",
+          "lines": [
+            100,
+            117
+          ],
+          "excerpt_sha256": "1ebdcc03744f6a483e44288b4573dd4c2c0320336c2c97f1ba016028b6d8c45b"
+        },
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.Blueprint_Storage",
+          "file": ".local-research/shelf-storage/RimWorld.Blueprint_Storage.cs",
+          "sha256": "c27ea0ab466d409431b73a4fb66988e9213b7d580fda100e1637af649657a175",
+          "lines": [
+            42,
+            54
+          ],
+          "excerpt_sha256": "fb6ca57f1470cecfeb8fa961c5eb5a3f557efa045e2b47cf89170221e258b1e1"
+        },
+        {
+          "group": "storyteller",
+          "type": "RimWorld.Frame",
+          "file": ".local-research/storyteller/RimWorld.Frame.cs",
+          "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+          "lines": [
+            577,
+            591
+          ],
+          "excerpt_sha256": "f312b8aed6a8e597b10db6e08c9b7e91b98934e9847d433f4c55900adcf1d63d"
+        },
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.StorageGroup",
+          "file": ".local-research/shelf-storage/RimWorld.StorageGroup.cs",
+          "sha256": "9b8670c2da14baf8fb222f339fecc4c212d4a1ded908e970930d27477978a1b3",
+          "lines": [
+            135,
+            147
+          ],
+          "excerpt_sha256": "3efcddc3508d861dd23b52335038b606540a5a122701d920c46b31255e7e0175"
+        },
+        {
+          "group": "preservation",
+          "type": "RimWorld.StorageSettings",
+          "file": ".local-research/preservation/RimWorld.StorageSettings.cs",
+          "sha256": "d247fb668bb32252034050106849f91a129cab040ff4119f3ae59c16fba5a97d",
+          "lines": [
+            90,
+            129
+          ],
+          "excerpt_sha256": "28f1d493c9e05aca2715034efacc31904ec3ece9fc2a271971c5a346ca3c310c"
+        },
+        {
+          "group": "preservation",
+          "type": "Verse.ThingFilter",
+          "file": ".local-research/preservation/Verse.ThingFilter.cs",
+          "sha256": "daf718ce140fd0c6a201fb7eada45f2069d642f1596c6bcde8a2d35fc3939ffa",
+          "lines": [
+            634,
+            656
+          ],
+          "excerpt_sha256": "236a1be6e0211ab6de2a45fc47514f35d56a450e8ff797757d04edf90b7603da"
+        }
+      ]
+    },
+    {
+      "id": "SG04",
+      "finding": "SetStorageGroup switching groups removes the old membership, clears the member reference, copies current old-group settings into local effective settings, then adds the member to the new group and notifies changes. Rejoining the same non-null group is a no-op. Normal helper detachment preserves current shared settings rather than restoring the pre-link local settings.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "storage-groups",
+          "type": "RimWorld.StorageGroupUtility",
+          "file": ".local-research/storage-groups/RimWorld.StorageGroupUtility.cs",
+          "sha256": "36feb032a194055f4c9dcd69b25192787ce74667523fea811177fd462de062eb",
+          "lines": [
+            163,
+            184
+          ],
+          "excerpt_sha256": "d035f70c570310f741a9eb70214aaa918b523a973cb0652625a6d718c9399332"
+        },
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.StorageGroup",
+          "file": ".local-research/shelf-storage/RimWorld.StorageGroup.cs",
+          "sha256": "9b8670c2da14baf8fb222f339fecc4c212d4a1ded908e970930d27477978a1b3",
+          "lines": [
+            119,
+            132
+          ],
+          "excerpt_sha256": "2316ca4c34cd6a5b1ed669d0e466e519dd4a4c262dc215ce2af6ff3c4cf0d531"
+        }
+      ]
+    },
+    {
+      "id": "SG05",
+      "finding": "On ordinary member removal, the manager dissolves groups with zero OR one remaining member; the final member is detached using SetStorageGroup(null), preserving current settings. removeIfEmpty:false bypasses this notification for lifecycle transfers. NewGroup itself can temporarily create an empty group. Post-load null pruning does not call this dissolution path, so this is not proof all malformed singleton/empty saves are normalized.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "storage-groups",
+          "type": "Verse.StorageGroupManager",
+          "file": ".local-research/storage-groups/Verse.StorageGroupManager.cs",
+          "sha256": "c241f24045b1258a7c262e128a67312d8ff477fb8a96c97f8d003f6ca5d42eb2",
+          "lines": [
+            20,
+            38
+          ],
+          "excerpt_sha256": "e3fb733ef9f07127bc03125fb9f2d0080e18887296f791617ab7a388e2f75cd8"
+        },
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.StorageGroup",
+          "file": ".local-research/shelf-storage/RimWorld.StorageGroup.cs",
+          "sha256": "9b8670c2da14baf8fb222f339fecc4c212d4a1ded908e970930d27477978a1b3",
+          "lines": [
+            119,
+            132
+          ],
+          "excerpt_sha256": "2316ca4c34cd6a5b1ed669d0e466e519dd4a4c262dc215ce2af6ff3c4cf0d531"
+        },
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.StorageGroup",
+          "file": ".local-research/shelf-storage/RimWorld.StorageGroup.cs",
+          "sha256": "9b8670c2da14baf8fb222f339fecc4c212d4a1ded908e970930d27477978a1b3",
+          "lines": [
+            165,
+            176
+          ],
+          "excerpt_sha256": "a79b85cfd025b91f8273e3bc0da4ff1515ac91b85b7f58f2128201f029cfb08f"
+        }
+      ]
+    },
+    {
+      "id": "SG06",
+      "finding": "The explicit Unlink gizmo captures effective group settings, removes the member, clears Group, and copies settings only when the member is Building_Storage. Its derived code is not the general SetStorageGroup helper and does not contain the same copy for Blueprint_Storage/Frame. Multi-selection gizmo dispatch and blueprint/frame unlink effects require runtime validation.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "storage-groups",
+          "type": "RimWorld.StorageGroupUtility",
+          "file": ".local-research/storage-groups/RimWorld.StorageGroupUtility.cs",
+          "sha256": "36feb032a194055f4c9dcd69b25192787ce74667523fea811177fd462de062eb",
+          "lines": [
+            92,
+            122
+          ],
+          "excerpt_sha256": "3cb8979384f98f531dac45b5ce57c9d59c609ca95d58feb099f7b8d5102282d7"
+        },
+        {
+          "group": "storage-groups",
+          "type": "RimWorld.StorageGroupUtility",
+          "file": ".local-research/storage-groups/RimWorld.StorageGroupUtility.cs",
+          "sha256": "36feb032a194055f4c9dcd69b25192787ce74667523fea811177fd462de062eb",
+          "lines": [
+            163,
+            184
+          ],
+          "excerpt_sha256": "d035f70c570310f741a9eb70214aaa918b523a973cb0652625a6d718c9399332"
+        }
+      ]
+    },
+    {
+      "id": "SG07",
+      "finding": "Group setting changes notify member ISlotGroupParents. Group Priority changes refresh haul destination priority, all group cells and haul sources. Group HeldThings/CellsList aggregate only members implementing ISlotGroupParent; grouping does not move goods or turn them into a shared physical container.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.StorageGroup",
+          "file": ".local-research/shelf-storage/RimWorld.StorageGroup.cs",
+          "sha256": "9b8670c2da14baf8fb222f339fecc4c212d4a1ded908e970930d27477978a1b3",
+          "lines": [
+            53,
+            101
+          ],
+          "excerpt_sha256": "52d39005ccc10642da3c7ea7a008da4d63b933e9310e762382542e33ba301b61"
+        },
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.StorageGroup",
+          "file": ".local-research/shelf-storage/RimWorld.StorageGroup.cs",
+          "sha256": "9b8670c2da14baf8fb222f339fecc4c212d4a1ded908e970930d27477978a1b3",
+          "lines": [
+            149,
+            158
+          ],
+          "excerpt_sha256": "f14042e5f63d2e91e4cfe69db35dc38bc1c59e7d81b6e324f293eefa3ad818ec"
+        },
+        {
+          "group": "preservation",
+          "type": "RimWorld.StorageSettings",
+          "file": ".local-research/preservation/RimWorld.StorageSettings.cs",
+          "sha256": "d247fb668bb32252034050106849f91a129cab040ff4119f3ae59c16fba5a97d",
+          "lines": [
+            22,
+            54
+          ],
+          "excerpt_sha256": "b32a337779fe96f9a5cb716a8411f64e607502a40273794747ef0c895b7d4267"
+        },
+        {
+          "group": "logistics",
+          "type": "RimWorld.Building_Storage",
+          "file": ".local-research/logistics/RimWorld.Building_Storage.cs",
+          "sha256": "680349a2c0e89d2a028ec586319c8781c8f722a8a1ce90f877b4c51bef7a635e",
+          "lines": [
+            119,
+            125
+          ],
+          "excerpt_sha256": "16ce095aa220a234f259704b5ab7d3e980b69724f5ab69be11626bbc8d9af328"
+        }
+      ]
+    },
+    {
+      "id": "SG08",
+      "finding": "Uninstall MakeMinified despawns the original building and puts the same instance in InnerThing. Building_Storage.DeSpawn does not remove group membership. Reinstall retrieves that same InnerThing and clears the wrapper before destroying it. Group membership can therefore survive same-map packing/reinstall, and packed members still count; they contribute no occupied slot cells while not Spawned.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "furniture-reinstall",
+          "type": "RimWorld.MinifyUtility",
+          "file": ".local-research/furniture-reinstall/RimWorld.MinifyUtility.cs",
+          "sha256": "0373c66ee17e30e9adc84845abcc7a55f346733bc88370ab01f287895a41b02d",
+          "lines": [
+            8,
+            31
+          ],
+          "excerpt_sha256": "9d0e28143eded4475676f9d0dfb91df2e7fe12777054012d022126b8351c2616"
+        },
+        {
+          "group": "logistics",
+          "type": "RimWorld.Building_Storage",
+          "file": ".local-research/logistics/RimWorld.Building_Storage.cs",
+          "sha256": "680349a2c0e89d2a028ec586319c8781c8f722a8a1ce90f877b4c51bef7a635e",
+          "lines": [
+            83,
+            93
+          ],
+          "excerpt_sha256": "44302326a64402106265e7750dd5557b90c8afd01b7df625c16962e04a59caee"
+        },
+        {
+          "group": "logistics",
+          "type": "RimWorld.Building_Storage",
+          "file": ".local-research/logistics/RimWorld.Building_Storage.cs",
+          "sha256": "680349a2c0e89d2a028ec586319c8781c8f722a8a1ce90f877b4c51bef7a635e",
+          "lines": [
+            165,
+            169
+          ],
+          "excerpt_sha256": "3549335bd2fa8ee15d1dfacf28dad4999d814daee9514adbece5d31bd8a918cc"
+        },
+        {
+          "group": "furniture-reinstall",
+          "type": "RimWorld.Blueprint_Install",
+          "file": ".local-research/furniture-reinstall/RimWorld.Blueprint_Install.cs",
+          "sha256": "9d3b41f79b34bc082bdb06026782bd2cafaf65626879edb11190d62a88ebb060",
+          "lines": [
+            99,
+            117
+          ],
+          "excerpt_sha256": "c252422cfb108539bc6e55191afeae7143cb6fa3b35a2f2e0a3ed1579b0c6f28"
+        },
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.StorageGroup",
+          "file": ".local-research/shelf-storage/RimWorld.StorageGroup.cs",
+          "sha256": "9b8670c2da14baf8fb222f339fecc4c212d4a1ded908e970930d27477978a1b3",
+          "lines": [
+            43,
+            45
+          ],
+          "excerpt_sha256": "01c74ed3ecaf6505d5da9d4910d510399862c2f732e3a62061f3f8c44260e540"
+        }
+      ]
+    },
+    {
+      "id": "SG09",
+      "finding": "Building_Storage.SpawnSetup detaches when the new map differs from the group Map, copying effective group settings locally. This condition concerns spawning the inner building, not merely moving a minified wrapper across maps. Cross-map cargo travel timing is not established by this source path.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "logistics",
+          "type": "RimWorld.Building_Storage",
+          "file": ".local-research/logistics/RimWorld.Building_Storage.cs",
+          "sha256": "680349a2c0e89d2a028ec586319c8781c8f722a8a1ce90f877b4c51bef7a635e",
+          "lines": [
+            152,
+            163
+          ],
+          "excerpt_sha256": "be17d1a8e00844c584a611ade390c4c6370fd5a476ef8701fc6b46857086c611"
+        },
+        {
+          "group": "furniture-reinstall",
+          "type": "RimWorld.MinifiedThing",
+          "file": ".local-research/furniture-reinstall/RimWorld.MinifiedThing.cs",
+          "sha256": "c9d0f0bbc7b741043e227a83cff4a99c0b0719d78bffd820e58f571c8cf4614e",
+          "lines": [
+            21,
+            49
+          ],
+          "excerpt_sha256": "8021192545e7b4fbd215942c22b36f7dad1a5b2e552246d8f789f95c1477f749"
+        }
+      ]
+    },
+    {
+      "id": "SG10",
+      "finding": "Building_Storage.Destroy removes membership after base.Destroy; Blueprint_Storage.Destroy removes it before base.Destroy. Destroying a packed wrapper destroys the inner contents. Remaining group members are subject to normal singleton dissolution. Auto-rebuild can replace a destroyed building with a linked blueprint before old-member removal, so destruction is not always a net member-count decrease.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "logistics",
+          "type": "RimWorld.Building_Storage",
+          "file": ".local-research/logistics/RimWorld.Building_Storage.cs",
+          "sha256": "680349a2c0e89d2a028ec586319c8781c8f722a8a1ce90f877b4c51bef7a635e",
+          "lines": [
+            171,
+            180
+          ],
+          "excerpt_sha256": "68008afa00b8e2a2035dd964a7964dd9263d2913a1d1baeba4d8e7f365c085d9"
+        },
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.Blueprint_Storage",
+          "file": ".local-research/shelf-storage/RimWorld.Blueprint_Storage.cs",
+          "sha256": "c27ea0ab466d409431b73a4fb66988e9213b7d580fda100e1637af649657a175",
+          "lines": [
+            70,
+            75
+          ],
+          "excerpt_sha256": "3ac13a350e2e290f72d5bca938ca3faef2f6e6fa89871f2295c95ca387268362"
+        },
+        {
+          "group": "furniture-reinstall",
+          "type": "RimWorld.MinifiedThing",
+          "file": ".local-research/furniture-reinstall/RimWorld.MinifiedThing.cs",
+          "sha256": "c9d0f0bbc7b741043e227a83cff4a99c0b0719d78bffd820e58f571c8cf4614e",
+          "lines": [
+            229,
+            254
+          ],
+          "excerpt_sha256": "454337138380937bc6eac17d7bc54223cd30112591ec766de01dc6a8122cd029"
+        },
+        {
+          "group": "energy",
+          "type": "Verse.Building",
+          "file": ".local-research/energy/Verse.Building.cs",
+          "sha256": "b9809c33c917ba20ffd1f8810deb91f306d31ffa3107938caea87b524f466f59",
+          "lines": [
+            302,
+            328
+          ],
+          "excerpt_sha256": "f441032b6a2706ad865a9bd28c8f07ec598fa770ec33bf780f97bbb5b588101f"
+        },
+        {
+          "group": "preservation",
+          "type": "Verse.ThingUtility",
+          "file": ".local-research/preservation/Verse.ThingUtility.cs",
+          "sha256": "4502e6db44ab7430a9d258da8833b7612b7b13a65e989537c42a19ceb2fb8a69",
+          "lines": [
+            157,
+            164
+          ],
+          "excerpt_sha256": "66bf8419c1f434f05550238370ac90fdf5562a184850c39ef9afc948aca89824"
+        }
+      ]
+    },
+    {
+      "id": "SG11",
+      "finding": "Blueprint-to-frame conversion adds the frame to the current group, copies effective settings, then detaches the old blueprint with removeIfEmpty:false. Completed Frame transfers membership and local settings to the new building before detaching itself with the same flag. These lifecycle replacements preserve group identity and shared edits.",
+      "xml": [
+        "SGX01"
+      ],
+      "sources": [
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.Blueprint_Storage",
+          "file": ".local-research/shelf-storage/RimWorld.Blueprint_Storage.cs",
+          "sha256": "c27ea0ab466d409431b73a4fb66988e9213b7d580fda100e1637af649657a175",
+          "lines": [
+            92,
+            100
+          ],
+          "excerpt_sha256": "ddfc6eb3811e1ab8e264c097365c39d761e4cef2a292f34dc111e26f422529f0"
+        },
+        {
+          "group": "storyteller",
+          "type": "RimWorld.Frame",
+          "file": ".local-research/storyteller/RimWorld.Frame.cs",
+          "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+          "lines": [
+            326,
+            331
+          ],
+          "excerpt_sha256": "460f7b7f2bd41a649b98bed4930f3854d0cef41f5e14c0650bff48bc90506207"
+        },
+        {
+          "group": "storyteller",
+          "type": "RimWorld.Frame",
+          "file": ".local-research/storyteller/RimWorld.Frame.cs",
+          "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+          "lines": [
+            128,
+            166
+          ],
+          "excerpt_sha256": "873ae78e58a8e05d32d9ddf8502f9ed21e14ed5a0170b8d49b2dc8315b2e0d3e"
+        }
+      ]
+    },
+    {
+      "id": "SG12",
+      "finding": "Group identity is loadID with load reference StorageGroup_<id>, independent of its mutable label and individual building labels. The map serializes storageGroups deeply, manager serializes groups deeply, group serializes member/map references and deep settings. Buildings, blueprints and frames persist their group references alongside local settings; minified wrappers serialize their inner container. PostLoadInit prunes null members, but these paths do not prove full invalid-save repair.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "energy",
+          "type": "Verse.Map",
+          "file": ".local-research/energy/Verse.Map.cs",
+          "sha256": "b198e3b30c2c8ad7417404c54553a92e981bfe4c8807565163c86e0d3b45e099",
+          "lines": [
+            894,
+            898
+          ],
+          "excerpt_sha256": "628ca4739753a655d7d1d5f8b75c3e13156667bb930dedd0855b1a28ad80691b"
+        },
+        {
+          "group": "storage-groups",
+          "type": "Verse.StorageGroupManager",
+          "file": ".local-research/storage-groups/Verse.StorageGroupManager.cs",
+          "sha256": "c241f24045b1258a7c262e128a67312d8ff477fb8a96c97f8d003f6ca5d42eb2",
+          "lines": [
+            64,
+            68
+          ],
+          "excerpt_sha256": "8952d6a87d2901af099a6a09814697e812535aa193a1c2c14c1845a380472b20"
+        },
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.StorageGroup",
+          "file": ".local-research/shelf-storage/RimWorld.StorageGroup.cs",
+          "sha256": "9b8670c2da14baf8fb222f339fecc4c212d4a1ded908e970930d27477978a1b3",
+          "lines": [
+            8,
+            33
+          ],
+          "excerpt_sha256": "d0c6cc015fa7478dce63555eedd286a9d6e6d28f91542c5bea66c996a92680a5"
+        },
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.StorageGroup",
+          "file": ".local-research/shelf-storage/RimWorld.StorageGroup.cs",
+          "sha256": "9b8670c2da14baf8fb222f339fecc4c212d4a1ded908e970930d27477978a1b3",
+          "lines": [
+            160,
+            176
+          ],
+          "excerpt_sha256": "567ec4f4b6f70fe34d47b870ea7efb940276c6facf8712ea6d418ced0a0cf493"
+        },
+        {
+          "group": "logistics",
+          "type": "RimWorld.Building_Storage",
+          "file": ".local-research/logistics/RimWorld.Building_Storage.cs",
+          "sha256": "680349a2c0e89d2a028ec586319c8781c8f722a8a1ce90f877b4c51bef7a635e",
+          "lines": [
+            182,
+            188
+          ],
+          "excerpt_sha256": "b1d719d4cca29ddb633a11cf3d91dbc69f1e9b750b800f3791d0df3dae5f68de"
+        },
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.Blueprint_Storage",
+          "file": ".local-research/shelf-storage/RimWorld.Blueprint_Storage.cs",
+          "sha256": "c27ea0ab466d409431b73a4fb66988e9213b7d580fda100e1637af649657a175",
+          "lines": [
+            139,
+            144
+          ],
+          "excerpt_sha256": "345b67b8afd3e41966e0277b182942286e4b852c20e1432394fd83e6113c6ed2"
+        },
+        {
+          "group": "storyteller",
+          "type": "RimWorld.Frame",
+          "file": ".local-research/storyteller/RimWorld.Frame.cs",
+          "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+          "lines": [
+            183,
+            191
+          ],
+          "excerpt_sha256": "3c5101c2ba40a26ac98177bd3b8d75ce210bbab94d9aaf55be692e135fb5cd73"
+        },
+        {
+          "group": "furniture-reinstall",
+          "type": "RimWorld.MinifiedThing",
+          "file": ".local-research/furniture-reinstall/RimWorld.MinifiedThing.cs",
+          "sha256": "c9d0f0bbc7b741043e227a83cff4a99c0b0719d78bffd820e58f571c8cf4614e",
+          "lines": [
+            175,
+            179
+          ],
+          "excerpt_sha256": "1a8586312d4d83b71d5c9bb4c274eae89a23f96f3262d50e9f099652f05358b4"
+        }
+      ]
+    },
+    {
+      "id": "SG13",
+      "finding": "New groups receive a UniqueIDsManager storage-group ID. Default names search numbered names1..1000 against current-map zone labels, storage-building labels and group labels, then fall back to base X with an error. This generated-name rule is not a demonstrated restriction on manually entered names.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "storage-groups",
+          "type": "Verse.StorageGroupManager",
+          "file": ".local-research/storage-groups/Verse.StorageGroupManager.cs",
+          "sha256": "c241f24045b1258a7c262e128a67312d8ff477fb8a96c97f8d003f6ca5d42eb2",
+          "lines": [
+            20,
+            25
+          ],
+          "excerpt_sha256": "b691d3c0a998b6bfa3359ff04ec93a126012a3fcc6576626192df1d4f709b71d"
+        },
+        {
+          "group": "storage-groups",
+          "type": "Verse.StorageGroupManager",
+          "file": ".local-research/storage-groups/Verse.StorageGroupManager.cs",
+          "sha256": "c241f24045b1258a7c262e128a67312d8ff477fb8a96c97f8d003f6ca5d42eb2",
+          "lines": [
+            40,
+            57
+          ],
+          "excerpt_sha256": "b4552924a5ab9a4625e4ce7802294d20556ff5f79e5bc87874670977f317fcbc"
+        },
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.StorageGroup",
+          "file": ".local-research/shelf-storage/RimWorld.StorageGroup.cs",
+          "sha256": "9b8670c2da14baf8fb222f339fecc4c212d4a1ded908e970930d27477978a1b3",
+          "lines": [
+            23,
+            33
+          ],
+          "excerpt_sha256": "741c47d95e0ced548dc0f43af53ac99779a75bed29221a5d13d8141775da6127"
+        },
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.StorageGroup",
+          "file": ".local-research/shelf-storage/RimWorld.StorageGroup.cs",
+          "sha256": "9b8670c2da14baf8fb222f339fecc4c212d4a1ded908e970930d27477978a1b3",
+          "lines": [
+            107,
+            117
+          ],
+          "excerpt_sha256": "f185c447aab344fb79ab11d795f26e7ad91243007949eb82b7aa261551eab1a4"
+        }
+      ]
+    },
+    {
+      "id": "SG14",
+      "finding": "SelectAllLinked iterates group members and excludes already-selected or destroyed Things. Selection overlays draw only members with DrawConnectionOverlay; finished storage uses Spawned, while storage blueprints use true and frames require a nonempty group tag. Inspector group counts come from all members, including non-spawned members retained by lifecycle.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "storage-groups",
+          "type": "RimWorld.StorageGroupUtility",
+          "file": ".local-research/storage-groups/RimWorld.StorageGroupUtility.cs",
+          "sha256": "36feb032a194055f4c9dcd69b25192787ce74667523fea811177fd462de062eb",
+          "lines": [
+            123,
+            161
+          ],
+          "excerpt_sha256": "a9adcad6576c86b53dd60ede6a0ea0a4071fc6b083b86e1fac0a430152f4b03a"
+        },
+        {
+          "group": "logistics",
+          "type": "RimWorld.Building_Storage",
+          "file": ".local-research/logistics/RimWorld.Building_Storage.cs",
+          "sha256": "680349a2c0e89d2a028ec586319c8781c8f722a8a1ce90f877b4c51bef7a635e",
+          "lines": [
+            35,
+            39
+          ],
+          "excerpt_sha256": "63e4ce567ce124eb6a0469c8ee5b2569159c8ef9a76bba8dc9d70d6447bbdd95"
+        },
+        {
+          "group": "logistics",
+          "type": "RimWorld.Building_Storage",
+          "file": ".local-research/logistics/RimWorld.Building_Storage.cs",
+          "sha256": "680349a2c0e89d2a028ec586319c8781c8f722a8a1ce90f877b4c51bef7a635e",
+          "lines": [
+            196,
+            218
+          ],
+          "excerpt_sha256": "540034b7c486628d1feb4072dfaa8f09867c7740025fcc84723d4a9ef6868f27"
+        },
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.Blueprint_Storage",
+          "file": ".local-research/shelf-storage/RimWorld.Blueprint_Storage.cs",
+          "sha256": "c27ea0ab466d409431b73a4fb66988e9213b7d580fda100e1637af649657a175",
+          "lines": [
+            32,
+            38
+          ],
+          "excerpt_sha256": "8df4fea56f6fd5d9dd478bba6eb7c87a0419d641a9a4e896804f4b6e972242fa"
+        },
+        {
+          "group": "storyteller",
+          "type": "RimWorld.Frame",
+          "file": ".local-research/storyteller/RimWorld.Frame.cs",
+          "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+          "lines": [
+            148,
+            166
+          ],
+          "excerpt_sha256": "38ed9b069c5360f8aebdb325894d1d14d8231befba71804a3b7a9a72addc2350"
+        }
+      ]
+    },
+    {
+      "id": "SG15",
+      "finding": "Two static edge cases remain runtime-unverified: the AlreadyLinked flag loop reads the gizmo member.Group instead of each enumerated storageGroupMember.Group; Frame.Destroy/FailConstruction lack the symmetric explicit old-frame removal seen in ordinary Blueprint_Storage/Building_Storage destruction. FailConstruction assigns Group directly before calling SetStorageGroup with that same group. Do not infer robust mixed-selection disabling, cancellation cleanup or failed-build recovery from the happy-path transfers.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "storage-groups",
+          "type": "RimWorld.StorageGroupUtility",
+          "file": ".local-research/storage-groups/RimWorld.StorageGroupUtility.cs",
+          "sha256": "36feb032a194055f4c9dcd69b25192787ce74667523fea811177fd462de062eb",
+          "lines": [
+            25,
+            47
+          ],
+          "excerpt_sha256": "ec55b23105cca80ca8b8a578d74b84099937a9c7e30924f54e1a5ea3894a80bc"
+        },
+        {
+          "group": "storage-groups",
+          "type": "RimWorld.StorageGroupUtility",
+          "file": ".local-research/storage-groups/RimWorld.StorageGroupUtility.cs",
+          "sha256": "36feb032a194055f4c9dcd69b25192787ce74667523fea811177fd462de062eb",
+          "lines": [
+            83,
+            91
+          ],
+          "excerpt_sha256": "9705f633d3b97fcf20282c9ab0355684a48ef69695984ef9556ba67805e30eef"
+        },
+        {
+          "group": "storyteller",
+          "type": "RimWorld.Frame",
+          "file": ".local-research/storyteller/RimWorld.Frame.cs",
+          "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+          "lines": [
+            193,
+            204
+          ],
+          "excerpt_sha256": "3c31477940aa6aee9404c735fc5cf4d313def143e879aaafceee8d69a10e046b"
+        },
+        {
+          "group": "storyteller",
+          "type": "RimWorld.Frame",
+          "file": ".local-research/storyteller/RimWorld.Frame.cs",
+          "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+          "lines": [
+            408,
+            430
+          ],
+          "excerpt_sha256": "48129727288ad3504cfe1ee6e07a47d027af113a006fbe7f8a539ac2560adb03"
+        },
+        {
+          "group": "storage-groups",
+          "type": "RimWorld.StorageGroupUtility",
+          "file": ".local-research/storage-groups/RimWorld.StorageGroupUtility.cs",
+          "sha256": "36feb032a194055f4c9dcd69b25192787ce74667523fea811177fd462de062eb",
+          "lines": [
+            163,
+            184
+          ],
+          "excerpt_sha256": "d035f70c570310f741a9eb70214aaa918b523a973cb0652625a6d718c9399332"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Derived C# is not original source; unresolved dependencies are tolerated.",
+    "Core XML projections are not a mod-patched effective Def database.",
+    "No game execution or real multi-selection, unlink, destruction or load validation is performed by this collector.",
+    "SelectedObjects enumeration is not proven to equal player click order.",
+    "Explicit unlink on blueprints/frames, mixed-selection disabled-state behavior, failed/cancelled frame cleanup, malformed saves and cross-map transport remain runtime-unverified.",
+    "SetStorageGroup itself does not enforce compatible tags/maps; those are constraints of the inspected player linking UI."
+  ]
+}

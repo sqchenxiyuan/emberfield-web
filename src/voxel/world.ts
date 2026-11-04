@@ -1,4 +1,6 @@
 import { WeightedNavigation } from './navigation';
+import { effectiveShelfSettings, reconcileStorageGroups, storageGroupCommand, rejectLegacyStorageGroups,
+  migrateStorageGroups, validateStorageGroups, type StorageGroup } from './storageGroups';
 import {
   Block,
   CELLS,
@@ -110,7 +112,7 @@ import { rejectLegacySocialFields, migrateSocial, validateSocial } from './socia
 import { furnitureStats, isFurnitureKind, type FurnitureKind } from './furniture';
 import { RELOCATION_RULES, makeFurniturePiece, furnitureFromPiece, relocationMaxHP } from './relocation';
 import { SHELF_DEFS, SHELF_STACKS, isShelfKind, isRelocatableKind, shelfCells, shelfAllows, defaultShelfSettings,
-  validStorageSettings, type Shelf, type StorageCell, type StorageSpill, type RelocatableKind } from './shelves';
+  type Shelf, type StorageCell, type StorageSpill, type RelocatableKind } from './shelves';
 import { rejectLegacyShelves, migrateShelves, validateShelves } from './shelvesPersistence';
 import { rejectLegacyRelocationFields, migrateRelocation, validateRelocation } from './relocationPersistence';
 import { resolveWorldSite, type WorldSite } from './regions';
@@ -586,6 +588,7 @@ export class VoxelSimulation {
   private roomsDirty = true;
   stockpiles: Stockpile[] = [];
   shelves: Shelf[] = [];
+  storageGroups: StorageGroup[] = [];
   storageSpills: StorageSpill[] = [];
   private shelfLookup = new Map<number, Shelf>();
   generator: 1 | 2 | 3 = 3;
@@ -1154,7 +1157,7 @@ export class VoxelSimulation {
   shelfAt(p: Pos) { return this.shelfLookup.get(at(p)); }
   storageCells(): StorageCell[] {
     return [...this.stockpiles.map(s => ({ ...s, provider:'stockpile' as const, shelfId:null, maxStacks:1 })),
-      ...this.shelves.flatMap(s => shelfCells(s).map(p => ({ ...p, ...s.settings,
+      ...this.shelves.flatMap(s => shelfCells(s).map(p => ({ ...p, ...this.shelfSettings(s),
         provider:'shelf' as const, shelfId:s.id, maxStacks:SHELF_STACKS })))];
   }
   /** A shelf is traversable, but picking/placing happens from a cardinal,
@@ -1232,7 +1235,7 @@ export class VoxelSimulation {
         const cell = at(p);
         if (forbidden.has(cell) || !this.groundAllowed(p)) continue;
         const shelf = this.shelfAt(p);
-        if (shelf && (!shelfAllows(batch) || !shelf.settings.accepts.includes(batch.resource))) continue;
+        if (shelf && (!shelfAllows(batch) || !this.shelfSettings(shelf).accepts.includes(batch.resource))) continue;
         const n = Math.min(left, this.reservedSpace(cell, batch, context));
         if (!n) continue;
         const stacks = context.stacks.get(cell) ?? [], placed = planCellInsertion(stacks, { ...batch, amount: n }, shelf ? SHELF_STACKS : 1);
@@ -1298,14 +1301,14 @@ export class VoxelSimulation {
   }
   private storagePriority(item: Cargo & Pos): number {
     const shelf = this.shelfAt(item);
-    if (shelf) return shelf.settings.accepts.includes(item.resource) && shelfAllows(item) ? shelf.settings.priority : -1;
+    if (shelf) { const settings=this.shelfSettings(shelf); return settings.accepts.includes(item.resource) && shelfAllows(item) ? settings.priority : -1; }
     return (
       this.stockpiles.find((s) => same(s, item) && s.accepts.includes(item.resource))?.priority ??
       -1
     );
   }
   storageSpace(p: Pos, batch: BatchKind, ignorePawnId?: number, context = this.storageContext(this.items, ignorePawnId)): number {
-    const shelf = this.shelfAt(p), stock = shelf?.settings ?? this.stockpiles.find((s) => same(s, p));
+    const shelf = this.shelfAt(p), stock = shelf ? this.shelfSettings(shelf) : this.stockpiles.find((s) => same(s, p));
     return stock?.accepts.includes(batch.resource) && (!shelf || shelfAllows(batch)) && this.groundAllowed(p)
       ? this.reservedSpace(at(p), batch, context)
       : 0;
@@ -2058,14 +2061,20 @@ export class VoxelSimulation {
       this.jobs.push(j);
     }
   }
+  private shelfSettings(shelf: Shelf) {
+    return effectiveShelfSettings(this.storageGroups,shelf.id,shelf.settings);
+  }
   command(c: VoxelCommand): CommandResult {
+    const result=this.dispatchCommand(c);
+    if(result.ok)reconcileStorageGroups(this);
+    return result;
+  }
+  private dispatchCommand(c: VoxelCommand): CommandResult {
     if (!c || typeof c !== 'object') return { ok: false, message: '命令格式无效' };
-    if (c.type === 'shelfStorage') {
-      const shelf = this.shelves.find(s => s.id === c.shelfId), settings = { priority:c.priority, accepts:c.accepts };
-      if (!shelf || !validStorageSettings(settings)) return { ok:false, message:'货架或接纳设置无效' };
-      shelf.settings = { priority:settings.priority, accepts:[...settings.accepts] };
-      this.refreshReservations(); this.revision++;
-      return { ok:true, message:'整座货架的储存设置已更新；现有货物保留，由搬运工作转运' };
+    const groupResult=storageGroupCommand(this,c);
+    if(groupResult) {
+      if(groupResult.ok){this.refreshReservations();this.revision++;}
+      return groupResult;
     }
     if ('target' in c && c.target && typeof c.target === 'object' && !this.exploredAt(c.target))
       return { ok: false, message: '目标区域尚未探索' };
@@ -3071,6 +3080,7 @@ export class VoxelSimulation {
       progress: 0,
       workTicks: 0,
       ...(kind === 'cook' ? { cookTraining: [] } : {}),
+      ...(isShelfKind(kind) ? { storageSettings: defaultShelfSettings() } : {}),
       ...(['mine', 'digLadder'].includes(kind) ? { miningYieldWork: 0 } : {}),
       owner: null,
       delivered: {},
@@ -5136,6 +5146,7 @@ export class VoxelSimulation {
   private reconcileRelocationJobs() {
     for (const j of [...this.jobs]) if (!j.cancelled && j.furnitureId !== undefined &&
         !this.installedFurniture(j.furnitureKind!,j.furnitureId) && !this.packedFurniture(j.furnitureId)) this.cancel(j);
+    reconcileStorageGroups(this);
   }
   /** Delivered inputs are still physical, unlike already consumed construction
    * materials. Destroy their container exactly once, leaving carried inputs intact. */
@@ -6508,7 +6519,7 @@ export class VoxelSimulation {
       this.rebuildDevices(); this.tradeApplyPlacement(plan); this.stats.produced.wood+=refund;
     } else if (isShelfKind(j.kind)) {
       const reason=this.placementReason(j.kind,j,j.axis); if(reason){wait(reason);return;}
-      const shelf: Shelf={id:j.id,kind:j.kind,x:j.x,y:j.y,z:j.z,axis:j.axis ?? 'x',settings:defaultShelfSettings()};
+      const shelf: Shelf={id:j.id,kind:j.kind,x:j.x,y:j.y,z:j.z,axis:j.axis ?? 'x',settings:structuredClone(j.storageSettings!)};
       const cells=new Set(shelfCells(shelf).map(at));
       if ([...this.pawns,...this.animals].some(a=>cells.has(at(a)))) {wait('货架占地有人或动物，等待离开');return;}
       const previous=this.shelves;
@@ -7260,6 +7271,7 @@ export class VoxelSimulation {
         )
           d.openUntil = this.tick + 37;
       this.pruneStorageSpills();
+      reconcileStorageGroups(this);
       this.updateAdaptation();
       this.reconcileFireState();
       this.updateRooms();
@@ -7699,7 +7711,7 @@ export class VoxelSimulation {
       })),
       jobs: this.jobs,
       stockpiles: this.stockpiles.filter(visible),
-      shelves: this.shelves.filter(visible), storageSpills: this.storageSpills.filter(visible),
+      shelves: this.shelves.filter(visible), storageSpills: this.storageSpills.filter(visible), storageGroups:this.storageGroups,
       storageCapacity: this.storageCapacity().filter(visible),
       farms: this.farms.filter(visible),
       crops: this.crops.filter(visible),
@@ -7746,7 +7758,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 37,
+      version: 38,
       socialHistory: this.socialHistory, socialLog: this.socialLog,
       weather: this.weather, snow: this.snow,
       fires: this.fires, fireDamage: this.fireDamage, fireHazards: this.fireHazards, fireLog: this.fireLog,
@@ -7781,7 +7793,7 @@ export class VoxelSimulation {
       treePlots: this.treePlots,
       jobs: this.jobs,
       stockpiles: this.stockpiles,
-      shelves: this.shelves, storageSpills: this.storageSpills,
+      shelves: this.shelves, storageSpills: this.storageSpills, storageGroups:this.storageGroups,
       farms: this.farms,
       crops: this.crops,
       stoves: this.stoves,
@@ -7803,11 +7815,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : [1, 2, 3]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyStorageGroups(old,sourceVersion);
     rejectLegacyShelves(old,sourceVersion);
     rejectLegacyRelocationFields(old,sourceVersion);
     rejectLegacyFurnitureFields(old);
@@ -8163,7 +8176,9 @@ export class VoxelSimulation {
     migrateRelocation(old,sourceVersion);
     if (sourceVersion < 35) old.worldSite = null;
     migrateShelves(old,sourceVersion);
-    old.version = 37;
+    migrateStorageGroups(old,sourceVersion);
+    old.version = 38;
+    if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
     const loadHealth = (p: Pawn) =>
@@ -8265,7 +8280,7 @@ export class VoxelSimulation {
       ...d.doors, ...d.fences, ...d.fenceGates, ...d.penMarkers,
       ...d.devices,
       ...d.sandbags,
-      ...d.projectiles, ...d.animalAreas,
+      ...d.projectiles, ...d.animalAreas, ...d.storageGroups,
     ]) {
       if (!positive(e.id) || ids.has(e.id) || e.id >= d.nextId)
         throw new Error('重复或无效的对象编号');
@@ -9271,6 +9286,7 @@ export class VoxelSimulation {
     validateFurniture(d);
     validateRelocation(d);
     validateShelves(d, !migrateLogistics);
+    validateStorageGroups(d);
     validateSocial(d);
     const recreationPins = new Set<number>();
     const recreationCells = new Set<number>();
@@ -9336,7 +9352,7 @@ export class VoxelSimulation {
         treePlots: d.treePlots,
         jobs: d.jobs,
         stockpiles: d.stockpiles,
-        shelves: d.shelves, storageSpills: d.storageSpills,
+        shelves: d.shelves, storageSpills: d.storageSpills, storageGroups:d.storageGroups,
         farms: d.farms,
         crops: d.crops,
         stoves: d.stoves,

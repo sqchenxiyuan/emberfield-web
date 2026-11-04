@@ -1,0 +1,43 @@
+{
+  "evidence_id": "RW17-STORAGE-GROUPS",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.StorageGroupUtility",
+      "local_file": ".local-research/storage-groups/RimWorld.StorageGroupUtility.cs",
+      "sha256": "36feb032a194055f4c9dcd69b25192787ce74667523fea811177fd462de062eb",
+      "lines": 195
+    },
+    {
+      "type": "Verse.StorageGroupManager",
+      "local_file": ".local-research/storage-groups/Verse.StorageGroupManager.cs",
+      "sha256": "c241f24045b1258a7c262e128a67312d8ff477fb8a96c97f8d003f6ca5d42eb2",
+      "lines": 70
+    },
+    {
+      "type": "RimWorld.IStorageGroupMember",
+      "local_file": ".local-research/storage-groups/RimWorld.IStorageGroupMember.cs",
+      "sha256": "82bd40cdf474358280f3942107fedc56b0ddb30ca81f8a32aa63564d6628fff1",
+      "lines": 25
+    },
+    {
+      "type": "RimWorld.Zone_Stockpile",
+      "local_file": ".local-research/storage-groups/RimWorld.Zone_Stockpile.cs",
+      "sha256": "00621bb9c20bfc05c3b69075bb9be0dfacb6f1cb8307302b2f5135c47cc4e59f",
+      "lines": 151
+    }
+  ]
+}

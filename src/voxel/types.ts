@@ -9,6 +9,7 @@ import type { Psyche } from './mood';
 import type { SocialState, SocialIdentity, SocialEvent } from './social';
 import type { DiningTable, DiningChair, LivingState, RoomLivingSummary } from './living';
 import type { RelocatableKind, Shelf, ShelfKind, StorageSettings, StorageSpill } from './shelves';
+import type { StorageGroup } from './storageGroups';
 import type { WorldSite } from './regions';
 import type { PrisonerState, PrisonerPolicy, WardenTask } from './prisoners';
 import type { Filth, CleanTask, FoodPoisoning, RoomCleanliness, CookingOutcome } from './sanitation';
@@ -581,6 +582,8 @@ export type JobKind =
   | 'door'
   | 'cook';
 export interface Job extends Pos {
+  /** Independent settings before construction, overridden while linked. */
+  storageSettings?: StorageSettings;
   cookingOutcome?: CookingOutcome;
   id: number;
   kind: JobKind;
@@ -818,6 +821,7 @@ export interface VoxelSnapshot {
   stockpiles: Stockpile[];
   storageCapacity: StorageCapacity[];
   shelves: Shelf[];
+  storageGroups: StorageGroup[];
   storageSpills: StorageSpill[];
   farms: FarmPlot[];
   crops: Crop[];
@@ -857,6 +861,9 @@ export interface ChunkUpdate {
 }
 export type VoxelCommand =
   | { type: 'shelfStorage'; shelfId: number; priority: number; accepts: Resource[] }
+  | { type: 'shelfLink'; sourceId: number; memberIds: number[] }
+  | { type: 'shelfUnlink'; shelfId: number }
+  | { type: 'shelfGroupRename'; groupId: number; name: string }
   | { type: 'uninstallFurniture'; kind: RelocatableKind; furnitureId: number }
   | { type: 'installFurniture'; kind: RelocatableKind; furnitureId: number; target: Pos; axis: Axis }
   | { type: 'cancelFurnitureMove'; furnitureId: number }
@@ -939,6 +946,7 @@ export interface CommandResult {
 }
 export interface VoxelSave {
   shelves: Shelf[];
+  storageGroups: StorageGroup[];
   storageSpills: StorageSpill[];
   socialHistory: SocialIdentity[];
   socialLog: SocialEvent[];
@@ -959,7 +967,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 37;
+  version: 38;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;

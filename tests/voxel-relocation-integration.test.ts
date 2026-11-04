@@ -53,7 +53,7 @@ describe('physical furniture relocation',()=>{
     expect(s.snapshot().inventory.wood).toBe(before.wood);
     if(kind==='table')expect(s.tables.find(b=>b.id===id)?.gathering).toBe(false);
     if(kind==='bed')expect(s.beds.find(b=>b.id===id)).toMatchObject({owner:s.pawns[1].id,medical:false,prisoner:false});
-    expect(VoxelSimulation.load(s.save()).save()).toMatchObject({version:37});
+    expect(VoxelSimulation.load(s.save()).save()).toMatchObject({version:38});
   });
   it('cancels before uninstallation without changing the building, then cancels during hauling without losing it',()=>{
     const {s,id}=fixture();const target=pos(26,20),bed=structuredClone(s.beds[0]);

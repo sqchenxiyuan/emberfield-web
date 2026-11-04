@@ -1314,6 +1314,78 @@ a {
   font-size: 11px;
   padding: 7px 4px;
 }
+.voxel-shelf-storage {
+  margin: 10px 0;
+  overflow-wrap: anywhere;
+}
+.voxel-shelf-storage small {
+  display: block;
+  margin: 5px 0;
+  color: #b7c7b8;
+  line-height: 1.5;
+}
+.voxel-shelf-storage summary {
+  padding: 7px 0;
+  cursor: pointer;
+}
+.voxel-storage-group-scope {
+  padding: 7px;
+  border-left: 2px solid #b6ac78;
+  background: #bbab6a12;
+}
+.voxel-storage-group {
+  margin: 10px 0;
+  padding-top: 5px;
+  border-top: 1px solid #526054;
+}
+.voxel-storage-group-name label {
+  display: grid;
+  justify-content: stretch;
+  gap: 5px;
+}
+.voxel-storage-group-name input,
+.voxel-storage-group select {
+  min-width: 0;
+  max-width: 100%;
+}
+.voxel-storage-group-name input {
+  box-sizing: border-box;
+  width: 100%;
+}
+.voxel-storage-group > label {
+  display: grid;
+  justify-content: stretch;
+  gap: 5px;
+}
+.voxel-storage-members {
+  padding: 0;
+  list-style: none;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.voxel-storage-members li {
+  padding: 7px 0;
+  border-bottom: 1px solid #52605466;
+  font-size: 11px;
+}
+.voxel-storage-members li button {
+  width: auto;
+  padding: 3px 9px;
+}
+.voxel-storage-member-choices {
+  max-height: 240px;
+  overflow-y: auto;
+  margin: 8px 0;
+  padding: 0 5px;
+  border: 1px solid #52605466;
+}
+.voxel-storage-member-choices .voxel-check {
+  align-items: flex-start;
+}
+.voxel-storage-member-choices input[type='checkbox'] {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
 @media (max-width: 1180px) {
   .voxel-guide {
     width: 225px;

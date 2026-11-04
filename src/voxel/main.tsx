@@ -530,6 +530,8 @@ function App() {
             ).some((q) => equal(q, p))) ||
           ((v.kind === 'bed' || v.furnitureKind === 'bed') && bedCells({ ...v, axis: v.axis ?? 'x' }).some((q) => equal(q, p))) ||
           ((v.kind === 'table' || v.furnitureKind === 'table') && tableCells({ ...v, axis: v.axis ?? 'x' }).some(q => equal(q, p))) ||
+          (isShelfKind(v.kind) && shelfCells({ ...v, kind: v.kind, axis: v.axis ?? 'x' }).some(q => equal(q, p))) ||
+          (isShelfKind(v.furnitureKind) && shelfCells({ ...v, kind: v.furnitureKind, axis: v.axis ?? 'x' }).some(q => equal(q, p))) ||
           (isDeviceKind(v.kind) &&
             deviceCells({ ...v, kind: v.kind, axis: v.axis ?? 'x' }).some((q) => equal(q, p))),
       ) ?? [])
@@ -948,7 +950,7 @@ function App() {
         </section>}
         {!unknown && <>
         {s && shelf && <><FurnitureDetails kind={shelf.kind} item={shelf} snapshot={s} />
-          <ShelfPanel shelf={shelf} snapshot={s} command={c=>void client.command(c)} />
+          <ShelfPanel key={shelf.id} shelfId={shelf.id} snapshot={s} command={c=>void client.command(c)} focus={focus} />
           <FurnitureMoveControls kind={shelf.kind} item={shelf} snapshot={s} begin={client.beginFurniturePlacement} command={c=>void client.command(c)} focus={focus} /></>}
         {p && (
           <p>
@@ -1480,6 +1482,8 @@ function App() {
             <ItemCondition condition={s?.environment.items.find(item => item.entity === 'stack' && item.id === i.id)} name={foodName(i)} />
             {i.furniture && s && <div data-testid="packed-furniture" data-furniture-id={i.furniture.id} data-stack-id={i.id}>
               <FurnitureDetails kind={i.furniture.kind} item={i.furniture} snapshot={s} packed />
+              {isShelfKind(i.furniture.kind) && <ShelfPanel key={i.furniture.id} shelfId={i.furniture.id} snapshot={s}
+                command={c => void client.command(c)} focus={focus} />}
               <FurnitureMoveControls kind={i.furniture.kind} item={i.furniture} snapshot={s} packed begin={client.beginFurniturePlacement}
                 command={c => void client.command(c)} focus={focus} />
             </div>}
@@ -1525,6 +1529,10 @@ function App() {
             </small>
             {j.furnitureId !== undefined && <button data-testid="furniture-job-cancel" data-furniture-id={j.furnitureId}
               onClick={() => void client.command({ type: 'cancelFurnitureMove', furnitureId: j.furnitureId! })}>取消这件家具的搬装任务</button>}
+            {s && !j.cancelled && isShelfKind(j.kind) && <ShelfPanel key={j.id} shelfId={j.id} snapshot={s}
+              command={c => void client.command(c)} focus={focus} />}
+            {s && j.kind === 'install' && isShelfKind(j.furnitureKind) && j.furnitureId !== undefined && <ShelfPanel
+              key={j.furnitureId} shelfId={j.furnitureId} snapshot={s} command={c => void client.command(c)} focus={focus} />}
             {j.deliveredBatches.map((batch, i) => (
               <div key={i} data-testid="delivered-food">
                 <small>
@@ -1718,6 +1726,8 @@ function App() {
                 <BatchDurability batch={pawn.cargo} name={foodName(pawn.cargo)} />
                 {pawn.cargo.furniture && s && <div data-testid="carried-furniture" data-furniture-id={pawn.cargo.furniture.id}>
                   <FurnitureDetails kind={pawn.cargo.furniture.kind} item={pawn.cargo.furniture} snapshot={s} packed />
+                  {isShelfKind(pawn.cargo.furniture.kind) && <ShelfPanel key={pawn.cargo.furniture.id} shelfId={pawn.cargo.furniture.id}
+                    snapshot={s} command={c => void client.command(c)} focus={focus} />}
                   <FurnitureMoveControls kind={pawn.cargo.furniture.kind} item={pawn.cargo.furniture} snapshot={s} packed begin={client.beginFurniturePlacement}
                     command={c => void client.command(c)} focus={focus} />
                 </div>}

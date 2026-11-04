@@ -3,6 +3,9 @@ import { expect } from 'vitest';
 export function stripRegionFields(raw: Record<string, any>) {
   // Exploration did not exist before v36. Synthetic history must remove it.
   delete raw.explored;
+  if (Object.hasOwn(raw,'storageGroups')) expect(raw.storageGroups).toEqual([]);
+  delete raw.storageGroups;
+  for (const job of raw.jobs ?? []) expect(job.storageSettings).toBeUndefined();
   if (Object.hasOwn(raw,'shelves')) expect(raw.shelves).toEqual([]);
   if (Object.hasOwn(raw,'storageSpills')) expect(raw.storageSpills).toEqual([]);
   delete raw.shelves; delete raw.storageSpills;
