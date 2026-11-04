@@ -115,6 +115,7 @@
 | [107 世界地图选址玩法](107-world-site-selection-gameplay.md) | 地区比较、实际地图预览、开局和旧营地保存怎样连接？ |
 | [108 洞穴与探索机制](108-caves-exploration-mechanisms.md) | 原版洞穴、未知采矿规划、阻挡物移除和连通区域揭示如何衔接？ |
 | [109 地下探索玩法](109-caves-exploration-gameplay.md) | 三维洞室、梯井、盲挖、显示遮罩和永久发现记录怎样形成可操作闭环？ |
+| [110 原版挖掘探索实机](110-native-exploration-runtime.md) | 未知区域建造拒绝、采矿规划、实际挖通、空标记清理与重新载入验证了什么？ |
 
 每篇均含具体来源与未决问题。先读感兴趣的系统，再查其 `evidence/*-claims.json` 和 `*-manifest.json`，不要把“已抽取一个类型”当成“这个类型涉及的全部机制已经理解”。
 

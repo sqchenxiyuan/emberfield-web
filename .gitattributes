@@ -4,3 +4,5 @@ docs/research/rimworld/evidence/*.jsonl text eol=lf
 tests/fixtures/voxel-v*.json text eol=lf
 # Research helper hashes must survive Windows and Linux checkouts unchanged.
 scripts/research/* text eol=lf
+# Exploration evidence records the decoder manifest's exact bytes.
+docs/research/rimworld/evidence/exploration-runtime/decode-manifest.json text eol=lf

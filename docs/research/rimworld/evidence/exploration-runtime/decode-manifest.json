@@ -1,0 +1,269 @@
+{
+  "kind": "static-derived-decoder-provenance",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "engine_version": "11.2.0.10050",
+  "source_pointers": [
+    {
+      "file": ".local-research/exploration-runtime-probe/Verse.MapFileCompressor.cs",
+      "sha256": "e31a5ec2f7c11e010fde428170c807c10b905f84b441c224b72673d2f3e3b7d9",
+      "lines": 117,
+      "ranges": [
+        [
+          19,
+          47
+        ],
+        [
+          49,
+          114
+        ]
+      ],
+      "claim": "compressedThingMap stores compressible ThingDef.shortHash; nonzero is not automatically rock"
+    },
+    {
+      "file": ".local-research/exploration-runtime-probe/Verse.MapSerializeUtility.cs",
+      "sha256": "de308766d2c5a849aed661a1dd9ec3ae247b2d61a61db2c68f52715c6aa2fa17",
+      "lines": 59,
+      "ranges": [
+        [
+          20,
+          30
+        ]
+      ],
+      "claim": "one ushort per map cell in IndexToCell order"
+    },
+    {
+      "file": ".local-research/exploration-runtime-probe/Verse.DataSerializeUtility.cs",
+      "sha256": "3f0525894392f7be9cb2b9518199eec7d96623fb9c32bc8999939fc63e0563c4",
+      "lines": 141,
+      "ranges": [
+        [
+          38,
+          48
+        ],
+        [
+          65,
+          74
+        ]
+      ],
+      "claim": "uint16 little endian byte order"
+    },
+    {
+      "file": ".local-research/exploration-runtime-probe/Verse.CellIndicesUtility.cs",
+      "sha256": "487c544821e7b9e887f786904cd48bc69f16d25411f1a77318783515d27eae1e",
+      "lines": 25,
+      "ranges": [
+        [
+          8,
+          23
+        ]
+      ],
+      "claim": "index = z * sizeX + x"
+    },
+    {
+      "file": ".local-research/preservation-runtime/Verse.DataExposeUtility.cs",
+      "sha256": "2195e34fa81383c68f1c462b2c50c63b144866821d88079d236c82e0ef06d7a1",
+      "lines": 206,
+      "ranges": [
+        [
+          11,
+          63
+        ],
+        [
+          91,
+          112
+        ],
+        [
+          116,
+          184
+        ]
+      ],
+      "claim": "Deflate base64 and LSB-first bitset"
+    },
+    {
+      "file": ".local-research/preservation-runtime/Verse.CompressUtility.cs",
+      "sha256": "d9c25877533dfc74bb5be69ddeca6678c52fd3bc37a565986b296acf20fee666",
+      "lines": 66,
+      "ranges": [
+        [
+          11,
+          18
+        ],
+        [
+          30,
+          64
+        ]
+      ],
+      "claim": "Ionic.Zlib.DeflateStream"
+    },
+    {
+      "file": ".local-research/exploration-runtime-probe/Verse.ShortHashGiver.cs",
+      "sha256": "48b1ad0468526bfc21a3cc1efb075e7acdc96850e97ab78b8cf2a5c1ec0352fe",
+      "lines": 67,
+      "ranges": [
+        [
+          13,
+          42
+        ],
+        [
+          45,
+          65
+        ]
+      ],
+      "claim": "sort Def names and linearly probe uint16 hash collisions"
+    },
+    {
+      "file": ".local-research/world-site-selection/Verse.GenText.cs",
+      "sha256": "56f1d304fb42787bf2c1aa351f45954aa20df410bdcd2c517e0b59dd70f894c8",
+      "lines": 1524,
+      "ranges": [
+        [
+          276,
+          289
+        ]
+      ],
+      "claim": "signed 32-bit polynomial stable string hash"
+    },
+    {
+      "file": ".local-research/energy/Verse.ThingDef.cs",
+      "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+      "lines": 2447,
+      "ranges": [
+        [
+          607,
+          623
+        ]
+      ],
+      "claim": "MakeFog is fillPercent > .99"
+    },
+    {
+      "file": ".local-research/caves-exploration/Verse.FogGrid.cs",
+      "sha256": "5a858acad47b6d8119d21b700937ca4db6a70a46e9b9e34255109bbe03cd4a42",
+      "lines": 263,
+      "ranges": [
+        [
+          24,
+          27
+        ],
+        [
+          71,
+          86
+        ],
+        [
+          121,
+          146
+        ],
+        [
+          210,
+          256
+        ]
+      ],
+      "claim": "fog serialization, fog bit semantics, blocker removal and reveal threshold"
+    },
+    {
+      "file": ".local-research/caves-exploration/Verse.FloodFillerFog.cs",
+      "sha256": "71fe09358a0d0913d5229a84fc03eee6b474a30a5d8074c020822592a014d26a",
+      "lines": 160,
+      "ranges": [
+        [
+          36,
+          60
+        ],
+        [
+          73,
+          116
+        ]
+      ],
+      "claim": "four-neighbor unknown non-MakeFog flood and eight-neighbor blocking boundary"
+    },
+    {
+      "file": ".local-research/exploration-runtime-probe/Verse.RoofGrid.cs",
+      "sha256": "ca842ae891b407039bfd47b608797d403ecbb8305b1afff3a0435c087a9fcc0a",
+      "lines": 120,
+      "ranges": [
+        [
+          34,
+          40
+        ]
+      ],
+      "claim": "roof ushort 0 is no roof"
+    },
+    {
+      "file": ".local-research/exploration-runtime-probe/Verse.MapExposeUtility.cs",
+      "sha256": "fc96f6fcc594e4a21d828a10a413570dde1959a79ae822e92cee0a3517cf1464",
+      "lines": 49,
+      "ranges": [
+        [
+          7,
+          19
+        ]
+      ],
+      "claim": "roof and terrain Ushort wrapper uses same byte serialization"
+    },
+    {
+      "file": ".local-research/stonecutting/Verse.TerrainGrid.cs",
+      "sha256": "9ec3c69688508195ac716dc84e3ce7bad9aff5a0b0afb4eac7f2b288440fccfc",
+      "lines": 801,
+      "ranges": [
+        [
+          568,
+          574
+        ],
+        [
+          671,
+          704
+        ]
+      ],
+      "claim": "topGrid label and TerrainDef short hashes"
+    },
+    {
+      "file": ".local-research/medicine/RimWorld.TerrainDefGenerator_Stone.cs",
+      "sha256": "c45ef15784e73b90a84cdc2ebb1ada37f75ddb2e0e3a75f33953cfa7de194f7b",
+      "lines": 183,
+      "ranges": [
+        [
+          10,
+          18
+        ],
+        [
+          25,
+          49
+        ]
+      ],
+      "claim": "generated Granite_Rough/Limestone_Rough names and Walkable affordance"
+    },
+    {
+      "file": ".local-research/environment-storage/RimWorld.ThingDefGenerator_Meat.cs",
+      "sha256": "50f424f55bdfd145a4450ae13f00a60813a85cb409cfec3ac1c213ae6df1ed3d",
+      "lines": 128,
+      "ranges": [
+        [
+          9,
+          25
+        ]
+      ],
+      "claim": "Meat_Squirrel implied Def collides with MineableSteel at 27292"
+    },
+    {
+      "file": ".local-research/food/Verse.RaceProperties.cs",
+      "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+      "lines": 788,
+      "ranges": [
+        [
+          198,
+          213
+        ],
+        [
+          336,
+          340
+        ]
+      ],
+      "claim": "default hasMeat/hasCorpse, Normal flesh defaults"
+    }
+  ],
+  "collector_sha256": "891ff9a8abbc4e4aae85da25a67af6ea5e6eec0cb7493a836f312205ed36b6f3",
+  "verifier_sha256": "2fcbbb64867fd812d4d0e636b1c8cf6613578a1d6f264647d12e5607f41127e1",
+  "input_helper_file": "scripts/research/exploration-runtime-input.ps1",
+  "input_helper_sha256": "462a984190775e4fe1e50489035b429c312233b7ae1b8960ebb499b0375d9976",
+  "note": "Derived C# and full saves remain local. Public evidence retains serialized XML nodes and their hashes; native UI confirms entry Granite. No game assembly is executed by these tools. The retained input helper uses LF line endings; the native run used the same input behavior before newline normalization."
+}
