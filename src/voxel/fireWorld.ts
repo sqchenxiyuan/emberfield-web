@@ -1,4 +1,5 @@
 import { tableCells, LIVING_BUILDINGS } from './living';
+import { isConstructionFrame, frameBuildingKind, constructionFrameCells, constructionFrameFlammability } from './constructionFrames';
 import { isShelfKind } from './shelves';
 import { Block, HEIGHT, WIDTH, DEPTH, TPS, at, inside, position, type Pawn, type Pos, type VoxelSave } from './types';
 import { VoxelRooms } from './rooms';
@@ -15,6 +16,7 @@ export interface FireHost extends Pick<VoxelSave, 'shelves' | 'jobs' | 'tables' 
   'stonecutters' | 'tailors' | 'weaponBenches' | 'researchBenches' | 'horseshoePins' | 'butcherSpots' | 'devices' | 'wires' | 'fences' | 'fenceGates' | 'penMarkers'> {
   seed: number; tick: number; nextId: number; revision: number; notice: string;
   blocks: Uint8Array; ladders: Uint8Array; homeArea: Set<number>;
+  structureKinds?: Uint8Array;
   weather: WeatherState;
   weatherExposed(p: Pos): boolean;
   fires: Fire[]; fireDamage: FireDamage[]; fireHazards: FireHazards; fireLog: FireLogEntry[];
@@ -52,13 +54,24 @@ function damageTarget(kind: BurnTargetKind, p: Pos, id: number | null): FireDama
   return { kind, targetId: id, x: p.x, y: p.y, z: p.z, key: fireDamageKey(kind, id, p),
     hitPoints: FIRE_MAX_HP[kind], maxHitPoints: FIRE_MAX_HP[kind] };
 }
+/** Typed two-block walls have one damage pool at their lower anchor. */
+function blockDamageTarget(s: FireHost, p: Pos): FireDamage {
+  const cell=at(p), layer=WIDTH*DEPTH;
+  const anchor=s.structureKinds?.[cell] === 3 && cell >= layer && s.structureKinds[cell-layer] === 2
+    ? {x:p.x,y:p.y,z:p.z-1} : p;
+  return damageTarget('block',anchor,null);
+}
 export function findFireDamageTarget(s: FireHost, d: FireDamage): FireDamage | undefined {
   if (!inside(d)) return;
+  if (d.kind === 'frame') {
+    const job = s.jobs.find(j => j.id === d.targetId && isConstructionFrame(j));
+    return job ? frameDamageTarget(job) : undefined;
+  }
   if (isShelfKind(d.kind)) {
     const shelf = s.shelves.find(s => s.id === d.targetId && s.kind === d.kind);
     return shelf ? damageTarget(shelf.kind,shelf,shelf.id) : undefined;
   }
-  if (d.kind === 'block') return s.blocks[at(d)] === Block.Wood ? damageTarget('block', d, null) : undefined;
+  if (d.kind === 'block') return s.blocks[at(d)] === Block.Wood || s.blocks[at(d)] === Block.Masonry ? blockDamageTarget(s, d) : undefined;
   if (d.kind === 'ladder') return s.ladders[at(d)] ? damageTarget('ladder', d, null) : undefined;
   if (d.kind === 'wire') return s.wires.some(p => same(p, d)) ? damageTarget('wire', d, null) : undefined;
   const property = { table: 'tables', chair: 'chairs', bed: 'beds', door: 'doors', stove: 'stoves', stonecutter: 'stonecutters', tailor: 'tailors',
@@ -69,15 +82,19 @@ export function findFireDamageTarget(s: FireHost, d: FireDamage): FireDamage | u
 }
 import { unfinishedFlammability } from './unfinishedProduction';
 interface FuelTarget { kind: 'structure' | 'tree' | 'crop' | 'stack' | 'furniture'; id: number; flammability: number; damage?: FireDamage }
+export function frameDamageTarget(job: FireHost['jobs'][number]): FireDamage {
+  const hp = Math.max(1, Math.round(FIRE_MAX_HP[frameBuildingKind(job)] * .25));
+  return { ...damageTarget('frame', job, job.id), hitPoints:hp, maxHitPoints:hp };
+}
 /** A flame consumes physical fuel at its cell. Air immediately above a wooden
  * support can burn that support, so a floor flame is shown at the walking layer. */
 export function fireFuelAt(s: FireHost, p: Pos): FuelTarget[] {
   if (!inside(p)) return [];
   const out: FuelTarget[] = [], cell = at(p);
-  if (s.blocks[cell] === Block.Wood) out.push({ kind: 'structure', id: cell, flammability: 1, damage: damageTarget('block', p, null) });
+  if (s.blocks[cell] === Block.Wood) out.push({ kind: 'structure', id: cell, flammability: 1, damage: blockDamageTarget(s, p) });
   else if (s.blocks[cell] === Block.Air && p.z > 0 && s.blocks[cell - WIDTH * DEPTH] === Block.Wood) {
     const floor = { x: p.x, y: p.y, z: p.z - 1 };
-    out.push({ kind: 'structure', id: at(floor), flammability: 1, damage: damageTarget('block', floor, null) });
+    out.push({ kind: 'structure', id: at(floor), flammability: 1, damage: blockDamageTarget(s, floor) });
   }
   if (s.ladders[cell]) out.push({ kind: 'structure', id: cell, flammability: 1, damage: damageTarget('ladder', p, null) });
   const entries = [
@@ -103,6 +120,11 @@ export function fireFuelAt(s: FireHost, p: Pos): FuelTarget[] {
   }
   for (const job of s.jobs) if (same(job,p)) for (const batch of job.deliveredBatches)
     if (batch.furniture) out.push({kind:'furniture',id:batch.furniture.id,flammability:.8});
+  for (const job of s.jobs) if (isConstructionFrame(job)) {
+    const flammability = constructionFrameFlammability(job);
+    if (flammability && constructionFrameCells(job).some(q => same(q,p)))
+      out.push({kind:'structure',id:job.id,flammability,damage:frameDamageTarget(job)});
+  }
   return out;
 }
 export function igniteFire(s: FireHost, p: Pos, source: FireSource): Fire | null {
@@ -253,7 +275,7 @@ export function firefightTick(s: FireHost, p: Pawn) {
 }
 export function validRepair(s: FireHost, p: Pawn): boolean {
   const d = s.fireDamage.find(d => d.key === p.repairTask?.damageKey);
-  return !!d && capable(s, p) && p.phase === 'repair' && p.cargo === null && p.jobId === null &&
+  return !!d && d.kind !== 'frame' && capable(s, p) && p.phase === 'repair' && p.cargo === null && p.jobId === null &&
     p.carePhase === null && p.wardenTask === null && p.cleanTask === null && p.firefightTask === null &&
     d.hitPoints > 0 && d.hitPoints < d.maxHitPoints && !!findFireDamageTarget(s, d) &&
     fireDamageHomeCells(d, s).some(q => s.homeArea.has(at(q)) && pawnAllowed(s, p, q)) &&
@@ -261,6 +283,7 @@ export function validRepair(s: FireHost, p: Pawn): boolean {
     !s.pawns.some(q => q !== p && q.repairTask?.damageKey === d.key);
 }
 export function startRepair(s: FireHost, p: Pawn, d: FireDamage): boolean {
+  if (d.kind === 'frame') return false;
   if (!fireDamageHomeCells(d, s).some(q => pawnAllowed(s, p, q))) { p.reason = '修理目标在允许区域之外'; return false; }
   if (!capable(s, p) || !findFireDamageTarget(s, d) || d.hitPoints <= 0 || d.hitPoints >= d.maxHitPoints ||
       fireDamageBurning(d, s.fires, s) || !fireDamageHomeCells(d, s).some(q => s.homeArea.has(at(q)) && pawnAllowed(s, p, q)) ||

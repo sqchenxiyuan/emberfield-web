@@ -89,8 +89,8 @@ export function FireDamageDetails({ snapshot: s, pos, preferredPawnId, command }
         <div className="voxel-info-row"><b>{FIRE_TARGET_NAMES[d.kind]}</b><span>{number(d.hitPoints)} / {number(d.maxHitPoints)}</span></div>
         <small>{d.x}, {d.y} · Z {d.z}{d.kind === 'block' && d.z < pos.z ? ' · 脚下结构' : ''}</small>
         <progress aria-label={`结构 ${d.key} 耐久`} value={d.hitPoints} max={d.maxHitPoints} />
-        <small>{burning ? '仍在燃烧，先扑灭火焰。' : !inside ? '需要先将结构所在格或木结构上方活动格加入家园。' : assigned ? `${assigned.name} · ${assigned.reason}` : '可开启施工分工自动修理，也可手动优先处理。'}</small>
-        <button aria-label={`优先修理 ${d.key}`} disabled={!worker || !inside || burning || !!assigned || d.hitPoints >= d.maxHitPoints}
+        <small>{burning ? '仍在燃烧，先扑灭火焰。' : d.kind === 'frame' ? '施工框架的损伤比例会保留到完工后；也可取消计划退回剩余材料。' : !inside ? '需要先将结构所在格或木结构上方活动格加入家园。' : assigned ? `${assigned.name} · ${assigned.reason}` : '可开启施工分工自动修理，也可手动优先处理。'}</small>
+        <button aria-label={`优先修理 ${d.key}`} disabled={d.kind === 'frame' || !worker || !inside || burning || !!assigned || d.hitPoints >= d.maxHitPoints}
           onClick={() => worker && command({ type: 'repair', pawnId: worker.id, damageKey: d.key })}>{assigned ? '已安排修理' : '优先修理这处结构'}</button>
         {!inside && <button aria-label={`将受损结构加入家园 ${d.key}`} onClick={() => {
           const cell = fireDamageHomeCells(d, s).find(cell => at(cell) === at(pos)) ?? d;
@@ -113,7 +113,7 @@ export function FirePanel({ snapshot: s, selectedPos, focus, selectPawn, command
   const inHome = fires.filter(f => home.has(at(f))).length;
   const focusDamage = (d: FireDamage) => focus(d);
   return <aside className="voxel-fire-drawer" aria-label="火灾与修理" data-testid="fire-panel">
-    <div className="voxel-fire-heading"><h2>火灾与修理</h2><button aria-label="关闭火灾面板" onClick={close}>×</button></div>
+    <div className="voxel-fire-heading"><h2>火灾、修理与重建</h2><button aria-label="关闭火灾面板" onClick={close}>×</button></div>
     <p className={fires.length ? 'voxel-fire-warning' : ''}>{fires.length ? `${fires.length} 处正在燃烧 · ${inHome} 处在家园内` : '当前没有火情'} · {damaged.length} 处受损结构</p>
     <div className="voxel-fire-guide">
       <b>先灭火，再修理</b>
@@ -122,6 +122,10 @@ export function FirePanel({ snapshot: s, selectedPos, focus, selectPawn, command
       <label><input type="checkbox" aria-label="允许新的火灾事件" checked={s.fireHazards.enabled}
         onChange={e => command({ type: 'fireHazards', enabled: e.target.checked })} />允许新的火灾事件</label>
       <small>关闭后停止新的雷击或电气起火事件，已有火焰仍会燃烧和蔓延。</small>
+      <label><input type="checkbox" aria-label="自动重建家园建筑" data-testid="auto-rebuild" checked={s.autoRebuild}
+        onChange={e => command({ type: 'autoRebuild', enabled: e.target.checked })} />自动重建家园建筑</label>
+      <small>开启后，家园内的建筑被毁时，会在原位置可建造的情况下重新规划蓝图；拆除和卸装不会触发。</small>
+      <small>重建仍需搬运材料与施工，蓝图可手动取消。开关不会补建此前毁坏的建筑；关闭也不会取消已生成的蓝图。</small>
     </div>
     <details className="voxel-fire-home"><summary>家园范围 · {s.homeArea.length} 格</summary>
       <small>用查看工具选格，可先设矩形起点，再选择同层终点；未设起点时只修改当前格。</small>
@@ -130,7 +134,7 @@ export function FirePanel({ snapshot: s, selectedPos, focus, selectPawn, command
       {selectedPos && <small>选中 {selectedPos.x}, {selectedPos.y} · Z {selectedPos.z}{validArea ? '' : ' · 请在起点同层选择终点'}</small>}
       <div><button disabled={!validArea} onClick={() => from && selectedPos && command({ type: 'homeArea', from, to: selectedPos, enabled: true })}>加入防火家园范围</button>
         <button disabled={!validArea} onClick={() => from && selectedPos && command({ type: 'homeArea', from, to: selectedPos, enabled: false })}>移出防火家园范围</button></div>
-      <small>这是同一个家园范围，也用于清扫、修理和落地物资的贸易资格；划区本身不会阻止燃烧。</small>
+      <small>这是同一个家园范围，也用于清扫、修理、自动重建和落地物资的贸易资格；自动重建按建筑定位格是否在家园内判断，划区本身不会阻止燃烧。</small>
     </details>
     <details className="voxel-fire-workers" open><summary>灭火与施工分工</summary>
       {s.pawns.filter(p => p.faction === 'colony' && !p.dead).map(p => <div key={p.id}>

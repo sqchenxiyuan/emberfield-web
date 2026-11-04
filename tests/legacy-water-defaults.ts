@@ -1,7 +1,9 @@
 import { expect } from 'vitest';
+import { stripAutoRebuildFields } from './legacy-auto-rebuild-defaults';
 import { CELLS } from '../src/voxel/types';
 /** Synthetic migration fixtures only; never erase water from an actual colony. */
 export function stripWaterFields(raw: Record<string, any>) {
+  stripAutoRebuildFields(raw);
   for (const p of raw.pawns ?? []) {
     if (Object.hasOwn(p, 'allowedAreaId')) expect(p.allowedAreaId).toBeNull();
     delete p.allowedAreaId;

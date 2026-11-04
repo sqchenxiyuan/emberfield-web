@@ -1,4 +1,4 @@
-import { at, inside, position, type VoxelSave } from './types';
+import { at, inside, position, WIDTH, DEPTH, type VoxelSave } from './types';
 import { FIRE_RULES, FIRE_MAX_HP, initialFireHazards, nextFireIncident, fireDamageKey,
   fireDamageCells, fireDamageHomeCells, fireDamageBurning } from './fire';
 import { fireFuelAt, findFireDamageTarget, touchesFire, type FireHost } from './fireWorld';
@@ -25,7 +25,7 @@ export function migrateFire(old: Record<string, any>, sourceVersion: number) {
   for (const p of old.pawns) { p.firefightTask = null; p.repairTask = null; p.priorities.firefight = p.faction === 'colony' ? 1 : 0; }
 }
 /** Called after the complete geometry and global id union have been restored. */
-export function validateFire(d: VoxelSave, host: FireHost) {
+export function validateFire(d: VoxelSave, host: FireHost, sourceVersion: number = d.version) {
   if (!Array.isArray(d.fires) || d.fires.length > FIRE_RULES.maxFires || !Array.isArray(d.fireDamage) ||
       d.fireDamage.length > FIRE_RULES.maxDamage || !Array.isArray(d.fireLog) || d.fireLog.length > FIRE_RULES.maxLog)
     fail('列表容量无效');
@@ -43,12 +43,14 @@ export function validateFire(d: VoxelSave, host: FireHost) {
   }
   for (const damage of d.fireDamage) {
     if (!exact(damage, ['key', 'kind', 'targetId', 'hitPoints', 'maxHitPoints', 'x', 'y', 'z']) || !pos(damage) ||
-        !Object.hasOwn(FIRE_MAX_HP, damage.kind) || damage.maxHitPoints !== FIRE_MAX_HP[damage.kind] ||
+        !Object.hasOwn(FIRE_MAX_HP, damage.kind) ||
         !finite(damage.hitPoints, Number.MIN_VALUE, damage.maxHitPoints) || damage.hitPoints >= damage.maxHitPoints ||
         (['block', 'ladder', 'wire'].includes(damage.kind) ? damage.targetId !== null : !integer(damage.targetId, 1, d.nextId - 1)) ||
         damage.key !== fireDamageKey(damage.kind, damage.targetId, damage) || damageKeys.has(damage.key)) fail('结构损伤形状、耐久或身份无效');
     const actual = findFireDamageTarget(host, damage);
-    if (!actual || actual.key !== damage.key || at(actual) !== at(damage)) fail('结构损伤目标已经不存在或位置不符');
+    const legacyUpperWall = sourceVersion < 46 && damage.kind === 'block' && actual && at(actual) === at(damage)-WIDTH*DEPTH;
+    if (!actual || (!legacyUpperWall && (actual.key !== damage.key || at(actual) !== at(damage))) || damage.maxHitPoints !== actual.maxHitPoints)
+      fail('结构损伤目标已经不存在、位置或耐久上限不符');
     damageKeys.add(damage.key);
   }
   const h = d.fireHazards;
@@ -92,9 +94,9 @@ export function validateFire(d: VoxelSave, host: FireHost) {
       key = `fire:${f.id}`; targets = [f];
     } else {
       const damage = d.fireDamage.find(q => q.key === p.repairTask!.damageKey);
-      if (!exact(task, ['damageKey', 'progress']) || !damage ||
-          !fireDamageHomeCells(damage, d).some(q => home.has(at(q))) || fireDamageBurning(damage, d.fires, d)) fail('修理目标或Home无效');
-      key = damage.key; targets = fireDamageCells(damage, d);
+      if (!exact(task, ['damageKey', 'progress']) || !damage || damage.kind === 'frame' ||
+          !fireDamageHomeCells(damage, host).some(q => home.has(at(q))) || fireDamageBurning(damage, d.fires, host)) fail('修理目标或Home无效');
+      key = damage.key; targets = fireDamageCells(damage, host);
     }
     const limit = p.firefightTask ? FIRE_RULES.beatWork : FIRE_RULES.repairPointWork;
     if (reservations.has(key) || !finite(task.progress, 0, limit) || task.progress >= limit ||
@@ -102,5 +104,23 @@ export function validateFire(d: VoxelSave, host: FireHost) {
         (p.path.length ? p.destination !== p.path.at(-1) || !targets.some(q => touchesFire(position(p.path.at(-1)!), q))
           : p.destination !== null || !targets.some(q => touchesFire(p, q)))) fail('消防修理进度、Touch位置或独占预约无效');
     reservations.add(key);
+  }
+  if (sourceVersion < 46) {
+    // v45 tracked each physical half separately. Preserve the worse remaining
+    // HP when merging a typed wall; never heal it or add damage a second time.
+    const merged = new Map<string, VoxelSave['fireDamage'][number]>(), keys = new Map<string,string>();
+    for (const damage of d.fireDamage) {
+      const actual = findFireDamageTarget(host,damage)!;
+      keys.set(damage.key,actual.key);
+      const previous = merged.get(actual.key);
+      merged.set(actual.key,{ ...actual, hitPoints:Math.min(damage.hitPoints,previous?.hitPoints ?? damage.hitPoints) });
+    }
+    host.fireDamage = d.fireDamage = [...merged.values()];
+    const claimed = new Set<string>();
+    for (const pawn of host.pawns) if (pawn.repairTask) {
+      const key = keys.get(pawn.repairTask.damageKey)!;
+      pawn.repairTask.damageKey = key;
+      if (claimed.has(key)) host.fireRelease(pawn); else claimed.add(key);
+    }
   }
 }

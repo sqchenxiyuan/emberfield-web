@@ -1,0 +1,218 @@
+{
+  "evidence_id": "RW17-AUTO-REBUILD",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes.",
+    "No native game, browser, preview, GUI input, or screenshot capture was launched for this milestone."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.PlaySettings",
+      "local_file": ".local-research/auto-rebuild/RimWorld.PlaySettings.cs",
+      "sha256": "56e999d92d5468c598d918a20d8d1f6561d1d003b8c800598b41f48b1d6dca73",
+      "lines": 224
+    },
+    {
+      "type": "Verse.ThingUtility",
+      "local_file": ".local-research/auto-rebuild/Verse.ThingUtility.cs",
+      "sha256": "4502e6db44ab7430a9d258da8833b7612b7b13a65e989537c42a19ceb2fb8a69",
+      "lines": 256
+    },
+    {
+      "type": "Verse.Building",
+      "local_file": ".local-research/auto-rebuild/Verse.Building.cs",
+      "sha256": "b9809c33c917ba20ffd1f8810deb91f306d31ffa3107938caea87b524f466f59",
+      "lines": 688
+    },
+    {
+      "type": "Verse.Thing",
+      "local_file": ".local-research/auto-rebuild/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "lines": 2235
+    },
+    {
+      "type": "Verse.ThingWithComps",
+      "local_file": ".local-research/auto-rebuild/Verse.ThingWithComps.cs",
+      "sha256": "9ae0bf1c6884b0fd48213cf5bb2cfda7d0ee63eb43cbe97689f90e4287c2ed6b",
+      "lines": 1040
+    },
+    {
+      "type": "Verse.DestroyMode",
+      "local_file": ".local-research/auto-rebuild/Verse.DestroyMode.cs",
+      "sha256": "ac97bd9c5d1ee6884256b6c4a2e2e23f6dbc43d97b7fe674bbeff884a4d29703",
+      "lines": 15
+    },
+    {
+      "type": "Verse.BuildableDef",
+      "local_file": ".local-research/auto-rebuild/Verse.BuildableDef.cs",
+      "sha256": "4ab5cdce8c360a9401aff680543e70858de0d653702abcef524306ff83619c53",
+      "lines": 389
+    },
+    {
+      "type": "Verse.ThingDef",
+      "local_file": ".local-research/auto-rebuild/Verse.ThingDef.cs",
+      "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+      "lines": 2447
+    },
+    {
+      "type": "Verse.TerrainDef",
+      "local_file": ".local-research/auto-rebuild/Verse.TerrainDef.cs",
+      "sha256": "14c8c05d3b22fbe88f5fcceea9a58f3aee90b8b265582577e2ab9037a41cb68b",
+      "lines": 589
+    },
+    {
+      "type": "Verse.TerrainGrid",
+      "local_file": ".local-research/auto-rebuild/Verse.TerrainGrid.cs",
+      "sha256": "9ec3c69688508195ac716dc84e3ce7bad9aff5a0b0afb4eac7f2b288440fccfc",
+      "lines": 801
+    },
+    {
+      "type": "RimWorld.GenConstruct",
+      "local_file": ".local-research/auto-rebuild/RimWorld.GenConstruct.cs",
+      "sha256": "b4895c5536662931c685958c1d22826b7f07bb4f01d970f9671f853ad4c0fe77",
+      "lines": 1007
+    },
+    {
+      "type": "RimWorld.ThingDefGenerator_Buildings",
+      "local_file": ".local-research/auto-rebuild/RimWorld.ThingDefGenerator_Buildings.cs",
+      "sha256": "5bfd1107539e4e59b65f76a4a4178bfbb772eb8708e1fbe45462ad940844db49",
+      "lines": 294
+    },
+    {
+      "type": "RimWorld.Blueprint",
+      "local_file": ".local-research/auto-rebuild/RimWorld.Blueprint.cs",
+      "sha256": "a9ce66b27ef3f8ec7f4ebdceb2e2c8285df81914b22cd854ca29526d3e0989aa",
+      "lines": 190
+    },
+    {
+      "type": "RimWorld.Blueprint_Build",
+      "local_file": ".local-research/auto-rebuild/RimWorld.Blueprint_Build.cs",
+      "sha256": "4f22af511172f2621577cb0c6a2d4e387f4883c96849b582bd9cd7d07586501a",
+      "lines": 204
+    },
+    {
+      "type": "RimWorld.Blueprint_Storage",
+      "local_file": ".local-research/auto-rebuild/RimWorld.Blueprint_Storage.cs",
+      "sha256": "c27ea0ab466d409431b73a4fb66988e9213b7d580fda100e1637af649657a175",
+      "lines": 146
+    },
+    {
+      "type": "RimWorld.Frame",
+      "local_file": ".local-research/auto-rebuild/RimWorld.Frame.cs",
+      "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+      "lines": 607
+    },
+    {
+      "type": "RimWorld.Building_Storage",
+      "local_file": ".local-research/auto-rebuild/RimWorld.Building_Storage.cs",
+      "sha256": "680349a2c0e89d2a028ec586319c8781c8f722a8a1ce90f877b4c51bef7a635e",
+      "lines": 255
+    },
+    {
+      "type": "RimWorld.StorageSettings",
+      "local_file": ".local-research/auto-rebuild/RimWorld.StorageSettings.cs",
+      "sha256": "d247fb668bb32252034050106849f91a129cab040ff4119f3ae59c16fba5a97d",
+      "lines": 153
+    },
+    {
+      "type": "RimWorld.StorageGroupUtility",
+      "local_file": ".local-research/auto-rebuild/RimWorld.StorageGroupUtility.cs",
+      "sha256": "36feb032a194055f4c9dcd69b25192787ce74667523fea811177fd462de062eb",
+      "lines": 195
+    },
+    {
+      "type": "RimWorld.Building_WorkTable",
+      "local_file": ".local-research/auto-rebuild/RimWorld.Building_WorkTable.cs",
+      "sha256": "93950a425067412ffbd0caaa8b3471ef584d02096beec027cf21f630bc5fba19",
+      "lines": 120
+    },
+    {
+      "type": "RimWorld.Building_Bed",
+      "local_file": ".local-research/auto-rebuild/RimWorld.Building_Bed.cs",
+      "sha256": "2ee2bf86f55b05d4106ea896a26c8aa0c3442e4fa3aea917f9afb39071aada6c",
+      "lines": 847
+    },
+    {
+      "type": "RimWorld.CompAssignableToPawn_Bed",
+      "local_file": ".local-research/auto-rebuild/RimWorld.CompAssignableToPawn_Bed.cs",
+      "sha256": "88cf175d8d8d1f2340a08cd5af53355f88850d14cede3e9ab177da7b65a000c1",
+      "lines": 138
+    },
+    {
+      "type": "RimWorld.JobDriver_Deconstruct",
+      "local_file": ".local-research/auto-rebuild/RimWorld.JobDriver_Deconstruct.cs",
+      "sha256": "bd454b4bcd3441fbf60ab238fe095dc4140af6848ce3de5a20dd47cd4c45bb35",
+      "lines": 43
+    },
+    {
+      "type": "RimWorld.JobDriver_Uninstall",
+      "local_file": ".local-research/auto-rebuild/RimWorld.JobDriver_Uninstall.cs",
+      "sha256": "e459bebfc38e976e80eba189ea4aa8606f2fb6a934a9abd562fdebf7c7fb45d4",
+      "lines": 19
+    },
+    {
+      "type": "RimWorld.MinifyUtility",
+      "local_file": ".local-research/auto-rebuild/RimWorld.MinifyUtility.cs",
+      "sha256": "0373c66ee17e30e9adc84845abcc7a55f346733bc88370ab01f287895a41b02d",
+      "lines": 70
+    },
+    {
+      "type": "RimWorld.InstallBlueprintUtility",
+      "local_file": ".local-research/auto-rebuild/RimWorld.InstallBlueprintUtility.cs",
+      "sha256": "bac437056ce3b4dbdbcda9228c00942355ee8cc20932ca4ee610799962702143",
+      "lines": 27
+    },
+    {
+      "type": "Verse.ThingMaker",
+      "local_file": ".local-research/auto-rebuild/Verse.ThingMaker.cs",
+      "sha256": "8a12abe8fd8ffd9b5f2b0a0acf036d8cba756e03738d00afc8a937d67af307dd",
+      "lines": 33
+    },
+    {
+      "type": "Verse.Game",
+      "local_file": ".local-research/auto-rebuild/Verse.Game.cs",
+      "sha256": "defb875959b0df9cd087ea621e8e1c86cb6904b05083b382bd8adbd8bddfbd18",
+      "lines": 852
+    },
+    {
+      "type": "RimWorld.JobDriver_ConstructFinishFrame",
+      "local_file": ".local-research/auto-rebuild/RimWorld.JobDriver_ConstructFinishFrame.cs",
+      "sha256": "e62e8a4546b450eab544166f2a2c45a9318b3a462155f9d9337959ac75212373",
+      "lines": 91
+    },
+    {
+      "type": "RimWorld.StatWorker",
+      "local_file": ".local-research/auto-rebuild/RimWorld.StatWorker.cs",
+      "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+      "lines": 1392
+    },
+    {
+      "type": "RimWorld.Fire",
+      "local_file": ".local-research/auto-rebuild/RimWorld.Fire.cs",
+      "sha256": "3f10134af9a064a683242b3914e82db3dd40c012c70fc26e699a481673af2078",
+      "lines": 412
+    },
+    {
+      "type": "RimWorld.FireUtility",
+      "local_file": ".local-research/auto-rebuild/RimWorld.FireUtility.cs",
+      "sha256": "9baec55e1a0494e05fa673292b528637ebdb2a62f4ab51da03589e28d0f9f95e",
+      "lines": 315
+    },
+    {
+      "type": "Verse.ThingGrid",
+      "local_file": ".local-research/auto-rebuild/Verse.ThingGrid.cs",
+      "sha256": "4e6f530642966c8fa50269e52362018a0b3939633e1eb3d7ec429164aa49938e",
+      "lines": 187
+    }
+  ]
+}

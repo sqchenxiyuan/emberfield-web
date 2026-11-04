@@ -802,6 +802,8 @@ export interface VoxelStats {
   spoiled: Counts;
 }
 export interface VoxelSnapshot {
+  /** Derived geometry for damaged typed walls; no dense world array in snapshots. */
+  wallDamageKeys: string[];
   stockpileZones: import('./stockpileZones').StockpileZone[];
   productionQueues: import('./productionBills').ProductionQueue[];
   socialHistory: SocialIdentity[];
@@ -824,6 +826,7 @@ export interface VoxelSnapshot {
   fires: Fire[];
   fireDamage: FireDamage[];
   fireHazards: FireHazards;
+  autoRebuild: boolean;
   fireLog: FireLogEntry[];
   filth: Filth[];
   roomCleanliness: RoomCleanliness[];
@@ -934,6 +937,7 @@ export type VoxelCommand =
   | { type: 'repair'; pawnId: number; damageKey: string }
   | { type: 'cancelRepair'; pawnId: number }
   | { type: 'fireHazards'; enabled: boolean }
+  | { type: 'autoRebuild'; enabled: boolean }
   | { type: 'clean'; pawnId: number; filthId: number }
   | { type: 'cancelClean'; pawnId: number }
   | { type: 'bedPrisoner'; bedId: number; prisoner: boolean }
@@ -1017,11 +1021,12 @@ export interface VoxelSave {
   fires: Fire[];
   fireDamage: FireDamage[];
   fireHazards: FireHazards;
+  autoRebuild: boolean;
   fireLog: FireLogEntry[];
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 45;
+  version: 46;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;

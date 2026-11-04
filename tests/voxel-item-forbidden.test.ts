@@ -40,10 +40,11 @@ describe('physical item prohibition',()=>{
     const before=s.counts(),wealth=s.snapshot().storyteller.threat.wealth;expect(wealth.items).toBeGreaterThan(0);
     for(const item of goods)cmd(s,{type:'itemForbidden',itemId:item.id,forbidden:true});
     expect(s.counts()).toEqual(before);expect(s.snapshot().storyteller.threat.wealth).toEqual(wealth);
-    const saved=s.save();expect(saved.version).toBe(45);
+    const saved=s.save();expect(saved.version).toBe(46);
     const restored=VoxelSimulation.load(saved);expect(restored.items).toEqual(s.items);
     expect(restored.snapshot().items.every(i=>i.forbidden)).toBe(true);
-    expect(()=>VoxelSimulation.load({...saved,version:44})).toThrow(/通用物品禁止/);
+    const old:Record<string,any>={...saved,version:44}; delete old.autoRebuild;
+    expect(()=>VoxelSimulation.load(old)).toThrow(/通用物品禁止/);
     const bad=structuredClone(saved);bad.items[0].forbidden='yes' as unknown as boolean;
     expect(()=>VoxelSimulation.load(bad)).toThrow();
   });
@@ -183,8 +184,9 @@ describe('physical item prohibition',()=>{
   it('migrates v44-compatible state without adding flags or changing existing weapon settings',()=>{
     const s=fixture();stack(s,'wood',12);const id=s.nextId++;
     s.items.push({id:s.nextId++,...pos(25),resource:'weapon',amount:1,weapon:makeWeapon(id,'woodClub'),forbidden:true});
-    const raw={...s.save(),version:44},before=structuredClone(raw),loaded=VoxelSimulation.load(raw);
-    expect(raw).toEqual(before);expect(loaded.save().version).toBe(45);expect(loaded.items).toEqual(raw.items);
+    const raw:Record<string,any>={...s.save(),version:44}; expect(raw.autoRebuild).toBe(false); delete raw.autoRebuild;
+    const before=structuredClone(raw),loaded=VoxelSimulation.load(raw);
+    expect(raw).toEqual(before);expect(loaded.save().version).toBe(46);expect(loaded.items).toEqual(raw.items);
     expect(loaded.save().blocks).toEqual(raw.blocks);
     expect(validBatch({...freshBatch('herb',2),forbidden:true})).toBe(true);
   });

@@ -1,4 +1,5 @@
 import { tableCells, LIVING_BUILDINGS } from './living';
+import { constructionFrameCells } from './constructionFrames';
 import { PEN_BUILDINGS } from './pens';
 import { SHELF_DEFS, isShelfKind, shelfCells } from './shelves';
 import { DAY, CELLS, HEIGHT, at, inside, bedCells, deviceCells, stonecutterCells, tailorCells,
@@ -9,7 +10,7 @@ export interface Fire extends Pos {
   id: number; size: number; startedTick: number; nextDamageTick: number; nextSpreadTick: number; source: FireSource;
 }
 export type BurnTargetKind = 'shelf' | 'smallShelf' | 'table' | 'chair' | 'block' | 'ladder' | 'bed' | 'door' | 'stove' | 'stonecutter' |
-  'tailor' | 'weaponBench' | 'researchBench' | 'horseshoePin' | 'butcherSpot' | 'device' | 'wire' | 'fence' | 'fenceGate' | 'penMarker';
+  'tailor' | 'weaponBench' | 'researchBench' | 'horseshoePin' | 'butcherSpot' | 'device' | 'wire' | 'fence' | 'fenceGate' | 'penMarker' | 'frame';
 export interface FireDamage extends Pos {
   key: string; kind: BurnTargetKind; targetId: number | null; hitPoints: number; maxHitPoints: number;
 }
@@ -30,6 +31,7 @@ export const FIRE_RULES = {
   firstIncidentDelay: DAY * 2, incidentInterval: DAY * 2, incidentJitter: DAY / 2,
 } as const;
 export const FIRE_MAX_HP: Readonly<Record<BurnTargetKind, number>> = {
+  frame: 25, // Actual frame HP is derived from its completed building by frameDamageTarget.
   shelf: SHELF_DEFS.shelf.maxHitPoints, smallShelf: SHELF_DEFS.smallShelf.maxHitPoints,
   table: LIVING_BUILDINGS.table.maxHitPoints, chair: LIVING_BUILDINGS.chair.maxHitPoints,
   block: 100, ladder: 60, bed: 100, door: 120, stove: 120, stonecutter: 140,
@@ -38,6 +40,7 @@ export const FIRE_MAX_HP: Readonly<Record<BurnTargetKind, number>> = {
   fence:PEN_BUILDINGS.fence.maxHitPoints, fenceGate:PEN_BUILDINGS.fenceGate.maxHitPoints, penMarker:PEN_BUILDINGS.penMarker.maxHitPoints,
 };
 export const FIRE_TARGET_NAMES: Readonly<Record<BurnTargetKind, string>> = {
+  frame: '施工框架',
   shelf: '货架', smallShelf: '小货架',
   table: '餐桌', chair: '餐椅',
   block: '木结构', ladder: '木梯', bed: '床', door: '木门', stove: '灶台', stonecutter: '切石台',
@@ -67,9 +70,14 @@ export function fireDamageKey(kind: BurnTargetKind, targetId: number | null, pos
   return `${kind}:${targetId ?? at(pos)}`;
 }
 type FireGeometry = Pick<VoxelSave, 'shelves' | 'tables' | 'chairs' | 'beds' | 'doors' | 'stoves' | 'stonecutters' | 'tailors' | 'weaponBenches' |
-  'researchBenches' | 'horseshoePins' | 'butcherSpots' | 'devices'>;
+  'researchBenches' | 'horseshoePins' | 'butcherSpots' | 'devices'> & Partial<Pick<VoxelSave, 'jobs'>> &
+  { wallDamageKeys?: string[]; structureKinds?: Uint8Array | number[] };
 /** Shared by simulation and UI; no inferred floor/wall identity is necessary. */
 export function fireDamageCells(d: FireDamage, geometry: FireGeometry): Pos[] {
+  if (d.kind === 'block' && (geometry.wallDamageKeys?.includes(d.key) ||
+      (geometry.structureKinds instanceof Uint8Array && geometry.structureKinds[at(d)] === 2)))
+    return [d,{x:d.x,y:d.y,z:d.z+1}].filter(inside);
+  if (d.kind === 'frame') { const j = geometry.jobs?.find(j => j.id === d.targetId); if (j) return constructionFrameCells(j); }
   if (isShelfKind(d.kind)) { const s = geometry.shelves.find(s => s.id === d.targetId); if (s) return shelfCells(s); }
   if (d.kind === 'table') { const t = geometry.tables.find(t => t.id === d.targetId); if (t) return tableCells(t); }
   if (d.kind === 'bed') { const b = geometry.beds.find(b => b.id === d.targetId); if (b) return bedCells(b); }
@@ -83,7 +91,7 @@ export function fireDamageCells(d: FireDamage, geometry: FireGeometry): Pos[] {
 }
 export function fireDamageHomeCells(d: FireDamage, geometry: FireGeometry): Pos[] {
   const cells = fireDamageCells(d, geometry);
-  return d.kind === 'block' && d.z + 1 < HEIGHT ? [...cells, { x: d.x, y: d.y, z: d.z + 1 }] : cells;
+  return d.kind === 'block' ? [...cells,...cells.filter(p => p.z+1 < HEIGHT).map(p => ({x:p.x,y:p.y,z:p.z+1}))] : cells;
 }
 export function fireDamageBurning(d: FireDamage, fires: readonly Fire[], geometry: FireGeometry): boolean {
   const cells = new Set(fireDamageHomeCells(d, geometry).map(at));

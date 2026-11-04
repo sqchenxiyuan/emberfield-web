@@ -707,7 +707,7 @@ function App() {
         </div>
         <div className="voxel-header-actions">
           <button aria-label="火灾与修理" aria-expanded={fireOpen} data-testid="fire-alert" data-active-fires={s?.fires.length ?? 0}
-            title={s?.fires.length ? `${s.fires.length} 处正在燃烧，点击查看火情与安排灭火` : '查看火情、灭火与修理分工'} className={s?.fires.length ? 'voxel-fire-alarm' : ''} onClick={() => {
+            title={s?.fires.length ? `${s.fires.length} 处正在燃烧，点击查看火情与安排灭火` : '查看火情、灭火与修理分工，设置自动重建'} className={s?.fires.length ? 'voxel-fire-alarm' : ''} onClick={() => {
             setFireOpen(v => !v); setWeatherOpen(false); setSanitationOpen(false); setPrisonOpen(false); setWildlifeOpen(false); setTradeOpen(false); setResearchOpen(false); client.choose('inspect');
           }}>火灾{s?.fires.length ? ` · ${s.fires.length}` : ''}</button>
           <button aria-label="卫生与清洁" aria-expanded={sanitationOpen} onClick={() => {

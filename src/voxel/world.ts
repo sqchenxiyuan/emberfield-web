@@ -1,4 +1,5 @@
 import { WeightedNavigation } from './navigation';
+import { isConstructionFrame, constructionFrameCells, frameBuildingKind } from './constructionFrames';
 import { itemForbiddenTo, rejectLegacyItemAccess } from './itemAccess';
 import { allowedAreaCells, effectivePawnArea, pawnAreaAllows, validatePawnAreas } from './allowedAreas';
 import { effectiveShelfSettings, reconcileStorageGroups, storageGroupCommand, rejectLegacyStorageGroups,
@@ -542,6 +543,7 @@ export class VoxelSimulation {
   private snowLookup = new Map<number, number>();
   fires: Fire[] = [];
   fireDamage: FireDamage[] = [];
+  autoRebuild = false;
   fireHazards: FireHazards;
   fireLog: FireLogEntry[] = [];
   filth: Filth[] = [];
@@ -2605,6 +2607,11 @@ export class VoxelSimulation {
       return { ok: false, message: '该工作台已达32张账单，请先删除一张' };
     if (c.type === 'uninstallFurniture' || c.type === 'installFurniture' || c.type === 'cancelFurnitureMove')
       return this.relocationCommand(c);
+    if (c.type === 'autoRebuild') {
+      if (typeof c.enabled !== 'boolean') return { ok: false, message: '自动重建设置无效' };
+      this.autoRebuild = c.enabled; this.revision++;
+      return { ok: true, message: c.enabled ? '已开启家园建筑自动重建；重建仍需材料与施工' : '已关闭自动重建；现有施工计划保留' };
+    }
     if (c.type === 'fireHazards') {
       if (typeof c.enabled !== 'boolean') return { ok: false, message: '火灾事件设置无效' };
       this.fireHazards.enabled = c.enabled;
@@ -4888,7 +4895,10 @@ export class VoxelSimulation {
     if ((bag && bag.hitPoints <= 0) || (tree && tree.health <= 0)) {
       for (const j of [...this.jobs])
         if (same(j, cover) && (j.kind === 'remove' || j.kind === 'cut')) this.cancel(j);
-      if (bag) this.sandbags = this.sandbags.filter((b) => b.id !== id);
+      if (bag) {
+        this.sandbags = this.sandbags.filter((b) => b.id !== id);
+        this.planAutoRebuild({ ...bag, kind:'sandbag' });
+      }
       if (tree) {
         this.trees = this.trees.filter((t) => t.id !== id);
         this.stats.treesDied++;
@@ -5664,6 +5674,49 @@ export class VoxelSimulation {
     for (const p of this.pawns) if (p.jobId === j.id) this.release(p);
     for (const r of resources) this.stats.destroyed[r] += j.delivered[r] ?? 0;
     this.jobs = this.jobs.filter(k => k.id !== j.id);
+    this.fireDamage = this.fireDamage.filter(d => !(d.kind === 'frame' && d.targetId === j.id));
+  }
+  /** Destruction makes a new ordinary plan. It never reuses the destroyed
+   * entity, its paid materials, work, quality, owner, fuel or production bills. */
+  private planAutoRebuild(plan: Pick<Job, 'kind' | 'x' | 'y' | 'z' | 'axis' | 'material' | 'storageSettings'> & { id?: number }) {
+    if (!this.autoRebuild || !this.homeArea.has(at(plan))) return;
+    const firstId = this.nextId;
+    const result = this.dispatchCommand({ type: 'designate', tool: plan.kind as import('./types').Tool,
+      from: { x: plan.x, y: plan.y, z: plan.z }, axis: plan.axis, material: plan.material });
+    if (!result.ok) return;
+    const job = this.jobs.find(j => j.id >= firstId && j.kind === plan.kind && same(j, plan));
+    if (job && isShelfKind(job.kind) && plan.storageSettings) {
+      job.storageSettings = structuredClone(plan.storageSettings);
+      const group = this.storageGroups.find(g => g.memberIds.includes(plan.id!));
+      if (group) group.memberIds = group.memberIds.map(id => id === plan.id ? job.id : id);
+    }
+  }
+  /** Finishing construction preserves this frame's remaining HP ratio. A
+   * replacement blueprint starts afresh, but subsequent damage is not healed. */
+  private finishFrameDamage(job: Job) {
+    const frame = this.fireDamage.find(d => d.kind === 'frame' && d.targetId === job.id);
+    if (!frame) return;
+    const ratio = frame.hitPoints / frame.maxHitPoints;
+    if (job.kind === 'sandbag') {
+      const bag = this.sandbags.find(b => same(b, job));
+      if (bag) bag.hitPoints = Math.max(1, Math.round(SANDBAG_HP * ratio));
+    } else {
+      const kind = frameBuildingKind(job);
+      const properties = { shelf:'shelves', smallShelf:'shelves', table:'tables', chair:'chairs', bed:'beds', door:'doors',
+        stove:'stoves', stonecutter:'stonecutters', tailor:'tailors', weaponBench:'weaponBenches', researchBench:'researchBenches',
+        horseshoePin:'horseshoePins', butcherSpot:'butcherSpots', device:'devices', fence:'fences', fenceGate:'fenceGates', penMarker:'penMarkers' } as const;
+      const property = properties[kind as keyof typeof properties];
+      const id = property ? this[property].find(o => same(o,job))?.id : null;
+      if (id !== undefined) {
+        const actual = findFireDamageTarget(this, { ...job, kind, targetId:id, key:fireDamageKey(kind,id,job),
+          hitPoints:FIRE_MAX_HP[kind], maxHitPoints:FIRE_MAX_HP[kind] });
+        if (actual) {
+          const hitPoints = Math.max(1, Math.round(actual.maxHitPoints * ratio));
+          if (hitPoints < actual.maxHitPoints) this.fireDamage.push({ ...actual, hitPoints });
+        }
+      }
+    }
+    this.fireDamage = this.fireDamage.filter(d => d !== frame);
   }
   fireBurnTree(id: number, damage: number) {
     const tree = this.trees.find(t => t.id === id);
@@ -5706,12 +5759,26 @@ export class VoxelSimulation {
    * impossible actor landing rejects the tentative destruction. */
   fireDestroy(target: FireDamage, reason: string): boolean {
     if (!findFireDamageTarget(this, target)) return true;
+    if (target.kind === 'frame') {
+      const job = this.jobs.find(j => j.id === target.targetId)!;
+      this.fireDestroyJob(job);
+      this.planAutoRebuild(job);
+      this.reconcileRelocationJobs(); this.reconcileFireState(); this.changed(job);
+      this.notice = reason;
+      return true;
+    }
     const cell = at(target), oldBlock = this.blocks[cell], oldLadder = this.ladders[cell];
-    // A wall is two physical blocks rather than a furniture entity. Destroying
-    // its bridge foundation must remove both halves in the same transaction.
-    const bridgeWalls = target.kind === 'block' && this.bridges[cell] && this.structureKinds[cell+WIDTH*DEPTH] === 2
-      ? [cell+WIDTH*DEPTH,cell+2*WIDTH*DEPTH].filter(i=>i<CELLS && this.blocks[i] === Block.Wood)
-        .map(i=>({i,block:this.blocks[i]})) : [];
+    const layer = WIDTH * DEPTH;
+    const wallBase = target.kind === 'block' && this.structureKinds[cell] === 2 ? cell :
+      target.kind === 'block' && this.structureKinds[cell] === 3 && cell >= layer && this.structureKinds[cell-layer] === 2 ? cell-layer : null;
+    // A Web wall occupies two blocks. Destroy and roll back the complete wall,
+    // including when its bridge foundation burns; never infer legacy kind-0 walls.
+    const wallCells = wallBase !== null ? [wallBase, wallBase+layer] :
+      target.kind === 'block' && this.bridges[cell] && this.structureKinds[cell+layer] === 2 ? [cell+layer,cell+2*layer] : [];
+    const bridgeWalls = wallCells.filter(i => i < CELLS && (this.blocks[i] === Block.Wood || this.blocks[i] === Block.Masonry)).map(i => ({i, block:this.blocks[i]}));
+    const structuralPlan = target.kind === 'ladder' || target.kind === 'wire' ? { ...target, kind:target.kind } :
+      wallBase !== null ? { ...position(wallBase), kind:'wall' as const, material:(oldBlock === Block.Masonry ? 'stone' : 'wood') as ConstructionMaterial } :
+      target.kind === 'block' && this.bridges[cell] ? { ...target, z:target.z+1, kind:'bridge' as const } : null;
     const properties = { table: 'tables', chair: 'chairs', bed: 'beds', door: 'doors', stove: 'stoves', stonecutter: 'stonecutters', tailor: 'tailors',
       weaponBench: 'weaponBenches', researchBench: 'researchBenches', horseshoePin: 'horseshoePins',
       butcherSpot: 'butcherSpots', device: 'devices', fence:'fences', fenceGate:'fenceGates', penMarker:'penMarkers' } as const;
@@ -5764,7 +5831,8 @@ export class VoxelSimulation {
     for (const wall of bridgeWalls) {
       this.structureKinds[wall.i] = 0;
       const q=position(wall.i);
-      for (const job of [...this.jobs]) if (this.footprint(job).some(p=>at(p)===wall.i)) this.fireDestroyJob(job);
+      for (const job of [...this.jobs]) if (job.kind !== 'wire' && !isConstructionFrame(job) &&
+          this.footprint(job).some(p=>at(p)===wall.i)) this.fireDestroyJob(job);
       this.changed(q);
     }
     for (const d of removed) {
@@ -5774,7 +5842,9 @@ export class VoxelSimulation {
         p.living.mealTask?.chairId === d.targetId || p.living.mealTask?.tableId === d.targetId ||
         (p.psyche.recreation?.kind === 'social' && d.kind === 'chair' && same(p.psyche.recreation.target,d))) this.release(p);
       const cells = new Set(fireDamageCells(d, originals).map(at));
-      for (const j of [...this.jobs]) if (cells.has(at(j))) this.fireDestroyJob(j);
+      // A wire/frame can share a cell with the destroyed object. Its own
+      // support, not coordinate overlap, determines whether its inputs are lost.
+      for (const j of [...this.jobs]) if (j.kind !== 'wire' && !isConstructionFrame(j) && cells.has(at(j))) this.fireDestroyJob(j);
       if (d.key !== target.key) fireLog(this, 'destroyed', d, '设施失去地面支撑而损毁；没有退还建筑材料');
     }
     for (const tree of originals.trees) if (!this.trees.includes(tree)) {
@@ -5792,6 +5862,10 @@ export class VoxelSimulation {
       fireLog(this, 'fell', landing, `${actor.name}${adjacent ? '原列无合法净空，落到相邻列' : '支撑烧毁，沿原列落下'}；已到达最近合法地面`);
     }
     this.stockpiles = this.stockpiles.filter(p => this.standable(p) && !this.ladders[at(p)]);
+    const changedSupports = new Set(target.kind === 'block' || target.kind === 'ladder' ? [cell,...bridgeWalls.map(w => w.i)] : []);
+    for (const job of [...this.jobs]) if (isConstructionFrame(job) &&
+        constructionFrameCells(job).some(q => [at(q)-layer,at(q),at(q)+layer].some(i => changedSupports.has(i))) &&
+        !(job.kind === 'wire' ? !this.placementReason('wire',job) : this.supported(job))) this.fireDestroyJob(job);
     this.farms = this.farms.filter(support); this.treePlots = this.treePlots.filter(support);
     for (const crop of [...this.crops]) if (!support(crop) || !this.farms.some(f => same(f, crop))) this.fireBurnCrop(crop.id);
     for (const j of [...this.jobs]) if (!support(j) && ['sow', 'plantTree', 'harvest', 'floor'].includes(j.kind)) this.fireDestroyJob(j);
@@ -5833,6 +5907,19 @@ export class VoxelSimulation {
     this.storageReservations.clear(); this.fetchReservations.clear();
     for (const p of this.pawns) if (p.phase === 'haul' || p.phase === 'fetch') this.interruptProductionDelivery(p);
     this.roomsDirty = true; this.powerDirty = true; this.changed(target); this.pruneFilth();
+    // Plan only after the complete destruction/falling transaction commits,
+    // before storage cleanup can dissolve a two-member shelf group.
+    if (structuralPlan) this.planAutoRebuild(structuralPlan);
+    for (const shelf of removedShelves) this.planAutoRebuild({ ...shelf,
+      storageSettings: effectiveShelfSettings(this.storageGroups, shelf.id, shelf.settings) });
+    for (const d of removed) {
+      if (isShelfKind(d.kind)) continue;
+      const property = properties[d.kind as keyof typeof properties];
+      const object = property ? originals[property].find(o => o.id === d.targetId) : undefined;
+      if (!object) continue;
+      const kind = d.kind === 'device' || d.kind === 'weaponBench' ? (object as Device | WeaponBench).kind : d.kind;
+      this.planAutoRebuild({ ...object, kind:kind as JobKind });
+    }
     this.reconcileRelocationJobs();
     this.reconcileFireState(); this.updateRooms(); this.updatePower();
     this.notice = reason;
@@ -6130,6 +6217,7 @@ export class VoxelSimulation {
   private cancel(j: Job) {
     const wasCancelled = j.cancelled;
     j.cancelled = true;
+    this.fireDamage = this.fireDamage.filter(d => !(d.kind === 'frame' && d.targetId === j.id));
     if (!wasCancelled && j.furnitureId !== undefined)
       for (const other of [...this.jobs]) if (other.id !== j.id && !other.cancelled && other.furnitureId === j.furnitureId) this.cancel(other);
     for (const p of this.pawns) if (p.jobId === j.id) {
@@ -7162,6 +7250,7 @@ export class VoxelSimulation {
       this.releaseShelfUsers(shelf); this.tradeApplyPlacement(plan);
       for(const r of resources)this.stats.consumed[r]+=j.delivered[r]??0;
       this.stats.built++;
+      this.finishFrameDamage(j);
     }
     this.jobs=this.jobs.filter(k=>k.id!==j.id); this.release(p);
     this.roomsDirty=true;this.changed(j);this.pruneStorageSpills();this.reconcileFireState();this.reconcileRelocationJobs();
@@ -7749,6 +7838,7 @@ export class VoxelSimulation {
       this.stats.built++;
     if (j.kind === 'mine' || j.kind === 'digLadder')
       this.stats.mined += changes.filter((c) => c.block === 0).length;
+    this.finishFrameDamage(j);
     this.jobs = this.jobs.filter((k) => k.id !== j.id);
     this.release(p);
     if (productionDelivery) {
@@ -8341,13 +8431,14 @@ export class VoxelSimulation {
       if (this.storagePriority(i) >= 0)
         stored[i.resource] += i.amount;
     return structuredClone({
+      wallDamageKeys: this.fireDamage.filter(d => d.kind === 'block' && this.structureKinds[at(d)] === 2 && visible(d)).map(d => d.key),
       productionQueues: productionQueues(this, this.productionQueues).filter(q => this.productionBenches().some(b => b.id === q.benchId && visible(b))),
       socialHistory: this.socialHistory, socialLog: this.socialLog,
       weather: { ...this.weather, effects: weatherEffects(this.weather, this.tick) },
       environment: this.environmentView(),
       snow: this.snow.filter(visible), weatherRoof: this.weatherRoof,
       weatherBytes: this.weatherRoof.byteLength + this.snow.length * 32,
-      fires: this.fires.filter(visible), fireDamage: this.fireDamage.filter(visible), fireHazards: this.fireHazards, fireLog: this.fireLog.filter(e => visible(e.position)),
+      fires: this.fires.filter(visible), fireDamage: this.fireDamage.filter(visible), fireHazards: this.fireHazards, autoRebuild: this.autoRebuild, fireLog: this.fireLog.filter(e => visible(e.position)),
       filth: this.filth.filter(visible),
       roomCleanliness: this.roomCleanliness().filter(r => visibleRooms.has(r.roomId)),
       roomLiving: this.livingRooms().filter(r => visibleRooms.has(r.id)),
@@ -8442,12 +8533,12 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 45,
+      version: 46,
       stockpileZones: this.stockpileZones,
       productionQueues: this.productionQueues.filter(q => this.productionBenches().some(b => b.id === q.benchId)),
       socialHistory: this.socialHistory, socialLog: this.socialLog,
       weather: this.weather, snow: this.snow,
-      fires: this.fires, fireDamage: this.fireDamage, fireHazards: this.fireHazards, fireLog: this.fireLog,
+      fires: this.fires, fireDamage: this.fireDamage, fireHazards: this.fireHazards, autoRebuild: this.autoRebuild, fireLog: this.fireLog,
       filth: this.filth,
       trade: this.trade,
       homeArea: [...this.homeArea],
@@ -8503,11 +8594,17 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : old.version < 43 ? [1, 2, 3] : [1, 2, 3, 4]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    if (sourceVersion < 46) {
+      if (Object.hasOwn(old, 'autoRebuild') || old.fireDamage?.some((d:any) => d.kind === 'frame'))
+        throw new Error('旧版本存档混入自动重建或施工框架损伤字段');
+      old.autoRebuild = false;
+    }
+    if (typeof old.autoRebuild !== 'boolean') throw new Error('自动重建设置无效');
     rejectLegacyItemAccess(old,sourceVersion);
     if (sourceVersion < 44 && old.pawns?.some((p:any) => Object.hasOwn(p,'allowedAreaId')))
       throw new Error('旧版本存档混入居民允许区域字段');
@@ -8922,7 +9019,7 @@ export class VoxelSimulation {
     }
     if (sourceVersion < 43) { old.water = [0, CELLS]; old.bridges = [0, CELLS]; }
     if (sourceVersion < 44) for (const p of old.pawns ?? []) p.allowedAreaId = null;
-    old.version = 45;
+    old.version = 46;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -10119,7 +10216,7 @@ export class VoxelSimulation {
         productionQueues: d.productionQueues,
         socialHistory: d.socialHistory, socialLog: d.socialLog,
         weather: d.weather, snow: d.snow,
-        fires: d.fires, fireDamage: d.fireDamage, fireHazards: d.fireHazards, fireLog: d.fireLog,
+        fires: d.fires, fireDamage: d.fireDamage, fireHazards: d.fireHazards, autoRebuild: d.autoRebuild, fireLog: d.fireLog,
         filth: d.filth,
         combat: d.combat,
         storyteller: d.storyteller,
@@ -10163,7 +10260,7 @@ export class VoxelSimulation {
     s.rebuildDevices();
     validateWeather(d, s.blocks, s.water);
     s.pruneSnow();
-    validateFire(d, s);
+    validateFire(d, s, sourceVersion);
     if (s.filth.some(f => !s.filthSupported(f))) throw new Error('污物没有合法地面支撑或净空');
     if (
       [

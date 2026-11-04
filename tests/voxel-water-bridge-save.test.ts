@@ -35,7 +35,9 @@ function wallOnBridge() {
   simulation.structureKinds[base] = 2;
   simulation.structureKinds[base + plane] = 3;
   recordDamage(simulation, surface);
-  recordDamage(simulation, { ...surface, z: surface.z + 1 });
+  // v46 uses one building damage record for both physical wall halves.
+  expect(fireFuelAt(simulation, { ...surface, z: surface.z + 1 }).find(t => t.damage?.kind === 'block')?.damage?.key)
+    .toBe(fireDamageKey('block', null, surface));
   return fixture;
 }
 

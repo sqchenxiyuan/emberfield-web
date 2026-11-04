@@ -121,7 +121,8 @@ describe('real water and bridge gameplay',()=>{
     expect(()=>validateWater(s.water,s.bridges,s.blocks,s.ladders)).toThrow();
     const old:any=new VoxelSimulation(73129,undefined,false,3).save();
     delete old.water;delete old.bridges;old.version=42;for(const p of old.pawns)delete p.allowedAreaId;
+    expect(old.autoRebuild).toBe(false); delete old.autoRebuild;
     const loaded=VoxelSimulation.load(old);expect(loaded.water).toEqual(new Uint8Array(CELLS));
-    expect(loaded.save().blocks).toEqual(old.blocks);expect(loaded.save().version).toBe(45);
+    expect(loaded.save().blocks).toEqual(old.blocks);expect(loaded.save().version).toBe(46);
   });
 });

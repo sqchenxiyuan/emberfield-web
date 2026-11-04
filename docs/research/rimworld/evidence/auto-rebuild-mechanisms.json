@@ -1,0 +1,1402 @@
+{
+  "evidence_id": "RW17-AUTO-REBUILD-STATIC",
+  "version": "1.7.4980 rev60",
+  "assemblySha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "reaEvidenceId": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+  "reaParentId": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+  "reaFile": "docs/research/rimworld/evidence/production-bills-rea-managed.json",
+  "reaSha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+  "manifestFile": "docs/research/rimworld/evidence/auto-rebuild-manifest.json",
+  "manifestSha256": "1b19ce6da073748d6be9b8fc7f98c6df6db2e5efdec4a44749e10eec93747605",
+  "rules": [
+    {
+      "type": "RimWorld.PlaySettings",
+      "file": ".local-research/auto-rebuild/RimWorld.PlaySettings.cs",
+      "sha256": "56e999d92d5468c598d918a20d8d1f6561d1d003b8c800598b41f48b1d6dca73",
+      "anchor": "public bool autoRebuild;",
+      "hits": [
+        {
+          "line": 32,
+          "text": "public bool autoRebuild;"
+        }
+      ],
+      "interpretation": "The field is initialized to the C# bool default false."
+    },
+    {
+      "type": "RimWorld.PlaySettings",
+      "file": ".local-research/auto-rebuild/RimWorld.PlaySettings.cs",
+      "sha256": "56e999d92d5468c598d918a20d8d1f6561d1d003b8c800598b41f48b1d6dca73",
+      "anchor": "Scribe_Values.Look(ref autoRebuild, \"autoRebuild\", defaultValue: false)",
+      "hits": [
+        {
+          "line": 85,
+          "text": "Scribe_Values.Look(ref autoRebuild, \"autoRebuild\", defaultValue: false);"
+        }
+      ],
+      "interpretation": "Saved setting, missing-key default false."
+    },
+    {
+      "type": "RimWorld.PlaySettings",
+      "file": ".local-research/auto-rebuild/RimWorld.PlaySettings.cs",
+      "sha256": "56e999d92d5468c598d918a20d8d1f6561d1d003b8c800598b41f48b1d6dca73",
+      "anchor": "row.ToggleableIcon(ref autoRebuild, TexButton.AutoRebuild",
+      "hits": [
+        {
+          "line": 170,
+          "text": "row.ToggleableIcon(ref autoRebuild, TexButton.AutoRebuild, \"AutoRebuildButton\".Translate(), SoundDefOf.Mouseover_ButtonToggle);"
+        }
+      ],
+      "interpretation": "The map control toggles this setting directly."
+    },
+    {
+      "type": "Verse.Game",
+      "file": ".local-research/auto-rebuild/Verse.Game.cs",
+      "sha256": "defb875959b0df9cd087ea621e8e1c86cb6904b05083b382bd8adbd8bddfbd18",
+      "anchor": "public PlaySettings playSettings = new PlaySettings();",
+      "hits": [
+        {
+          "line": 31,
+          "text": "public PlaySettings playSettings = new PlaySettings();"
+        }
+      ],
+      "interpretation": "New Game owns one PlaySettings object; this is not a separate per-building option."
+    },
+    {
+      "type": "Verse.Game",
+      "file": ".local-research/auto-rebuild/Verse.Game.cs",
+      "sha256": "defb875959b0df9cd087ea621e8e1c86cb6904b05083b382bd8adbd8bddfbd18",
+      "anchor": "Scribe_Deep.Look(ref playSettings, \"playSettings\")",
+      "hits": [
+        {
+          "line": 413,
+          "text": "Scribe_Deep.Look(ref playSettings, \"playSettings\");"
+        }
+      ],
+      "interpretation": "PlaySettings is nested in the game save."
+    },
+    {
+      "type": "Verse.ThingUtility",
+      "file": ".local-research/auto-rebuild/Verse.ThingUtility.cs",
+      "sha256": "4502e6db44ab7430a9d258da8833b7612b7b13a65e989537c42a19ceb2fb8a69",
+      "anchor": "Find.PlaySettings.autoRebuild && mode == DestroyMode.KillFinalize",
+      "hits": [
+        {
+          "line": 159,
+          "text": "if (Find.PlaySettings.autoRebuild && mode == DestroyMode.KillFinalize && thing.Faction == Faction.OfPlayer && buildingDef.blueprintDef != null && buildingDef.IsResearchFinished && map.areaManager.Home[thing.Position] && GenConstruct.CanPlaceBlueprintAt(buildingDef, thing.Position, thing.Rotation, map, godMode: false, null, null, thing.Stuff).Accepted)"
+        }
+      ],
+      "interpretation": "Building/frame gate: enabled, kill finalization, player faction, blueprint, finished research, anchor Home cell and legal placement."
+    },
+    {
+      "type": "Verse.ThingUtility",
+      "file": ".local-research/auto-rebuild/Verse.ThingUtility.cs",
+      "sha256": "4502e6db44ab7430a9d258da8833b7612b7b13a65e989537c42a19ceb2fb8a69",
+      "anchor": "GenConstruct.PlaceBlueprintForBuild(buildingDef, thing.Position, map, thing.Rotation, Faction.OfPlayer, thing.Stuff, thing.StyleSourcePrecept, thing.StyleDef)",
+      "hits": [
+        {
+          "line": 161,
+          "text": "return GenConstruct.PlaceBlueprintForBuild(buildingDef, thing.Position, map, thing.Rotation, Faction.OfPlayer, thing.Stuff, thing.StyleSourcePrecept, thing.StyleDef);"
+        }
+      ],
+      "interpretation": "The new ordinary build blueprint carries definition, anchor, rotation, material and style arguments."
+    },
+    {
+      "type": "Verse.Thing",
+      "file": ".local-research/auto-rebuild/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "anchor": "Destroy(DestroyMode.KillFinalize)",
+      "hits": [
+        {
+          "line": 1040,
+          "text": "Destroy(DestroyMode.KillFinalize);"
+        }
+      ],
+      "interpretation": "Ordinary Thing.Kill requests kill finalization."
+    },
+    {
+      "type": "Verse.Building",
+      "file": ".local-research/auto-rebuild/Verse.Building.cs",
+      "sha256": "b9809c33c917ba20ffd1f8810deb91f306d31ffa3107938caea87b524f466f59",
+      "anchor": "if (spawned && ThingUtility.CheckAutoRebuildOnDestroyed(this, mode, map, def)",
+      "hits": [
+        {
+          "line": 322,
+          "text": "if (spawned && ThingUtility.CheckAutoRebuildOnDestroyed(this, mode, map, def) is Blueprint_Storage blueprint_Storage && this is Building_Storage building_Storage)"
+        }
+      ],
+      "interpretation": "Building.Destroy captures spawned/map before base destruction and invokes the rebuild helper afterward."
+    },
+    {
+      "type": "Verse.Building",
+      "file": ".local-research/auto-rebuild/Verse.Building.cs",
+      "sha256": "b9809c33c917ba20ffd1f8810deb91f306d31ffa3107938caea87b524f466f59",
+      "anchor": "blueprint_Storage.SetStorageGroup(building_Storage.storageGroup)",
+      "hits": [
+        {
+          "line": 324,
+          "text": "blueprint_Storage.SetStorageGroup(building_Storage.storageGroup);"
+        }
+      ],
+      "interpretation": "Storage buildings pass their existing group to the new storage blueprint."
+    },
+    {
+      "type": "Verse.Building",
+      "file": ".local-research/auto-rebuild/Verse.Building.cs",
+      "sha256": "b9809c33c917ba20ffd1f8810deb91f306d31ffa3107938caea87b524f466f59",
+      "anchor": "blueprint_Storage.settings.CopyFrom(building_Storage.settings)",
+      "hits": [
+        {
+          "line": 326,
+          "text": "blueprint_Storage.settings.CopyFrom(building_Storage.settings);"
+        }
+      ],
+      "interpretation": "Storage buildings copy their individual storage settings after blueprint creation."
+    },
+    {
+      "type": "Verse.Thing",
+      "file": ".local-research/auto-rebuild/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "anchor": "DeSpawn(mode)",
+      "hits": [
+        {
+          "line": 935,
+          "text": "DeSpawn(mode);"
+        },
+        {
+          "line": 1063,
+          "text": "DeSpawn(mode);"
+        }
+      ],
+      "interpretation": "Destruction removes the old thing before the Building rebuild check."
+    },
+    {
+      "type": "Verse.Thing",
+      "file": ".local-research/auto-rebuild/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "anchor": "RemoveAllReservationsAndDesignationsOnThis()",
+      "hits": [
+        {
+          "line": 1087,
+          "text": "RemoveAllReservationsAndDesignationsOnThis();"
+        },
+        {
+          "line": 1142,
+          "text": "RemoveAllReservationsAndDesignationsOnThis();"
+        },
+        {
+          "line": 1200,
+          "text": "private void RemoveAllReservationsAndDesignationsOnThis()"
+        }
+      ],
+      "interpretation": "The destroyed thing loses reservations and designations."
+    },
+    {
+      "type": "Verse.ThingWithComps",
+      "file": ".local-research/auto-rebuild/Verse.ThingWithComps.cs",
+      "sha256": "9ae0bf1c6884b0fd48213cf5bb2cfda7d0ee63eb43cbe97689f90e4287c2ed6b",
+      "anchor": "comps[i].PostDestroy(mode, mapHeld)",
+      "hits": [
+        {
+          "line": 331,
+          "text": "comps[i].PostDestroy(mode, mapHeld);"
+        }
+      ],
+      "interpretation": "Component destruction hooks run as part of base destruction; specialized components are a scope boundary."
+    },
+    {
+      "type": "RimWorld.JobDriver_Deconstruct",
+      "file": ".local-research/auto-rebuild/RimWorld.JobDriver_Deconstruct.cs",
+      "sha256": "bd454b4bcd3441fbf60ab238fe095dc4140af6848ce3de5a20dd47cd4c45bb35",
+      "anchor": "Target.Destroy(DestroyMode.Deconstruct)",
+      "hits": [
+        {
+          "line": 31,
+          "text": "Target.Destroy(DestroyMode.Deconstruct);"
+        }
+      ],
+      "interpretation": "Player deconstruction is not KillFinalize, so the ordinary auto-rebuild gate rejects it."
+    },
+    {
+      "type": "RimWorld.JobDriver_Uninstall",
+      "file": ".local-research/auto-rebuild/RimWorld.JobDriver_Uninstall.cs",
+      "sha256": "e459bebfc38e976e80eba189ea4aa8606f2fb6a934a9abd562fdebf7c7fb45d4",
+      "anchor": "Building.Uninstall()",
+      "hits": [
+        {
+          "line": 15,
+          "text": "Building.Uninstall();"
+        }
+      ],
+      "interpretation": "Uninstall takes the minification path rather than killing the building."
+    },
+    {
+      "type": "RimWorld.MinifyUtility",
+      "file": ".local-research/auto-rebuild/RimWorld.MinifyUtility.cs",
+      "sha256": "0373c66ee17e30e9adc84845abcc7a55f346733bc88370ab01f287895a41b02d",
+      "anchor": "thing.DeSpawnOrDeselect(destroyMode)",
+      "hits": [
+        {
+          "line": 15,
+          "text": "thing.DeSpawnOrDeselect(destroyMode);"
+        }
+      ],
+      "interpretation": "Minification despawns the original thing; default mode is Vanish."
+    },
+    {
+      "type": "RimWorld.MinifyUtility",
+      "file": ".local-research/auto-rebuild/RimWorld.MinifyUtility.cs",
+      "sha256": "0373c66ee17e30e9adc84845abcc7a55f346733bc88370ab01f287895a41b02d",
+      "anchor": "minifiedThing.InnerThing = thing",
+      "hits": [
+        {
+          "line": 23,
+          "text": "minifiedThing.InnerThing = thing;"
+        }
+      ],
+      "interpretation": "Uninstall carries the original object inside a wrapper; it is not a fresh replacement building."
+    },
+    {
+      "type": "Verse.BuildableDef",
+      "file": ".local-research/auto-rebuild/Verse.BuildableDef.cs",
+      "sha256": "4ab5cdce8c360a9401aff680543e70858de0d653702abcef524306ff83619c53",
+      "anchor": "public bool BuildableByPlayer => designationCategory != null",
+      "hits": [
+        {
+          "line": 144,
+          "text": "public bool BuildableByPlayer => designationCategory != null;"
+        }
+      ],
+      "interpretation": "Ordinary generated build-blueprint eligibility follows a non-null designation category."
+    },
+    {
+      "type": "RimWorld.ThingDefGenerator_Buildings",
+      "file": ".local-research/auto-rebuild/RimWorld.ThingDefGenerator_Buildings.cs",
+      "sha256": "5bfd1107539e4e59b65f76a4a4178bfbb772eb8708e1fbe45462ad940844db49",
+      "anchor": "if (def.BuildableByPlayer)",
+      "hits": [
+        {
+          "line": 26,
+          "text": "if (def.BuildableByPlayer)"
+        },
+        {
+          "line": 231,
+          "text": "if (def.BuildableByPlayer)"
+        }
+      ],
+      "interpretation": "The generator creates ordinary blueprint/frame definitions for player-buildable ThingDefs."
+    },
+    {
+      "type": "RimWorld.ThingDefGenerator_Buildings",
+      "file": ".local-research/auto-rebuild/RimWorld.ThingDefGenerator_Buildings.cs",
+      "sha256": "5bfd1107539e4e59b65f76a4a4178bfbb772eb8708e1fbe45462ad940844db49",
+      "anchor": "if (def.Minifiable)",
+      "hits": [
+        {
+          "line": 32,
+          "text": "if (def.Minifiable)"
+        }
+      ],
+      "interpretation": "Install blueprint eligibility is separate from ordinary build blueprint eligibility."
+    },
+    {
+      "type": "RimWorld.ThingDefGenerator_Buildings",
+      "file": ".local-research/auto-rebuild/RimWorld.ThingDefGenerator_Buildings.cs",
+      "sha256": "5bfd1107539e4e59b65f76a4a4178bfbb772eb8708e1fbe45462ad940844db49",
+      "anchor": "def.blueprintDef = thingDef",
+      "hits": [
+        {
+          "line": 187,
+          "text": "def.blueprintDef = thingDef;"
+        }
+      ],
+      "interpretation": "Ordinary generated blueprint definition is assigned to the source definition."
+    },
+    {
+      "type": "RimWorld.ThingDefGenerator_Buildings",
+      "file": ".local-research/auto-rebuild/RimWorld.ThingDefGenerator_Buildings.cs",
+      "sha256": "5bfd1107539e4e59b65f76a4a4178bfbb772eb8708e1fbe45462ad940844db49",
+      "anchor": "thingDef.thingClass = def.building.blueprintClass",
+      "hits": [
+        {
+          "line": 165,
+          "text": "thingDef.thingClass = def.building.blueprintClass;"
+        }
+      ],
+      "interpretation": "Building Def selects the specialized build blueprint class, including storage blueprints."
+    },
+    {
+      "type": "Verse.BuildableDef",
+      "file": ".local-research/auto-rebuild/Verse.BuildableDef.cs",
+      "sha256": "4ab5cdce8c360a9401aff680543e70858de0d653702abcef524306ff83619c53",
+      "anchor": "if (!researchPrerequisites[i].IsFinished)",
+      "hits": [
+        {
+          "line": 180,
+          "text": "if (!researchPrerequisites[i].IsFinished)"
+        }
+      ],
+      "interpretation": "All listed research prerequisites must be completed for IsResearchFinished."
+    },
+    {
+      "type": "RimWorld.GenConstruct",
+      "file": ".local-research/auto-rebuild/RimWorld.GenConstruct.cs",
+      "sha256": "b4895c5536662931c685958c1d22826b7f07bb4f01d970f9671f853ad4c0fe77",
+      "anchor": "if (item.InNoBuildEdgeArea(map) && !godMode && !ignoreEdgeArea)",
+      "hits": [
+        {
+          "line": 377,
+          "text": "if (item.InNoBuildEdgeArea(map) && !godMode && !ignoreEdgeArea)"
+        }
+      ],
+      "interpretation": "Auto-rebuild uses ordinary placement checks, including bounds and map-edge rules."
+    },
+    {
+      "type": "RimWorld.GenConstruct",
+      "file": ".local-research/auto-rebuild/RimWorld.GenConstruct.cs",
+      "sha256": "b4895c5536662931c685958c1d22826b7f07bb4f01d970f9671f853ad4c0fe77",
+      "anchor": "if (center.Fogged(map))",
+      "hits": [
+        {
+          "line": 382,
+          "text": "if (center.Fogged(map))"
+        }
+      ],
+      "interpretation": "Placement rejects undiscovered anchor cells."
+    },
+    {
+      "type": "RimWorld.GenConstruct",
+      "file": ".local-research/auto-rebuild/RimWorld.GenConstruct.cs",
+      "sha256": "b4895c5536662931c685958c1d22826b7f07bb4f01d970f9671f853ad4c0fe77",
+      "anchor": "return new AcceptanceReport(\"IdenticalBlueprintExists\".Translate())",
+      "hits": [
+        {
+          "line": 407,
+          "text": "return new AcceptanceReport(\"IdenticalBlueprintExists\".Translate());"
+        }
+      ],
+      "interpretation": "Existing identical blueprints prevent duplicate placement."
+    },
+    {
+      "type": "RimWorld.GenConstruct",
+      "file": ".local-research/auto-rebuild/RimWorld.GenConstruct.cs",
+      "sha256": "b4895c5536662931c685958c1d22826b7f07bb4f01d970f9671f853ad4c0fe77",
+      "anchor": "if (!CanBuildOnTerrain(entDef, center, map, rot, thingToIgnore, stuffDef))",
+      "hits": [
+        {
+          "line": 448,
+          "text": "if (!CanBuildOnTerrain(entDef, center, map, rot, thingToIgnore, stuffDef))"
+        }
+      ],
+      "interpretation": "Placement requires terrain support and material-aware affordances."
+    },
+    {
+      "type": "RimWorld.GenConstruct",
+      "file": ".local-research/auto-rebuild/RimWorld.GenConstruct.cs",
+      "sha256": "b4895c5536662931c685958c1d22826b7f07bb4f01d970f9671f853ad4c0fe77",
+      "anchor": "AcceptanceReport result2 = NotBlockingAnyInteractionCells",
+      "hits": [
+        {
+          "line": 422,
+          "text": "AcceptanceReport result2 = NotBlockingAnyInteractionCells(entDef, center, rot, map, thingToIgnore);"
+        }
+      ],
+      "interpretation": "Placement checks interaction-cell access."
+    },
+    {
+      "type": "RimWorld.GenConstruct",
+      "file": ".local-research/auto-rebuild/RimWorld.GenConstruct.cs",
+      "sha256": "b4895c5536662931c685958c1d22826b7f07bb4f01d970f9671f853ad4c0fe77",
+      "anchor": "AcceptanceReport result3 = entDef.PlaceWorkers[l].AllowsPlacing",
+      "hits": [
+        {
+          "line": 503,
+          "text": "AcceptanceReport result3 = entDef.PlaceWorkers[l].AllowsPlacing(entDef, center, rot, map, thingToIgnore, thing);"
+        }
+      ],
+      "interpretation": "Definition-specific PlaceWorkers retain their placement vetoes."
+    },
+    {
+      "type": "RimWorld.GenConstruct",
+      "file": ".local-research/auto-rebuild/RimWorld.GenConstruct.cs",
+      "sha256": "b4895c5536662931c685958c1d22826b7f07bb4f01d970f9671f853ad4c0fe77",
+      "anchor": "Blueprint_Build blueprint_Build = (Blueprint_Build)ThingMaker.MakeThing(sourceDef.blueprintDef)",
+      "hits": [
+        {
+          "line": 159,
+          "text": "Blueprint_Build blueprint_Build = (Blueprint_Build)ThingMaker.MakeThing(sourceDef.blueprintDef);"
+        }
+      ],
+      "interpretation": "Rebuild creates a fresh ordinary blueprint, not an installed copy of the lost object."
+    },
+    {
+      "type": "RimWorld.Blueprint_Build",
+      "file": ".local-research/auto-rebuild/RimWorld.Blueprint_Build.cs",
+      "sha256": "4f22af511172f2621577cb0c6a2d4e387f4883c96849b582bd9cd7d07586501a",
+      "anchor": "return def.entityDefToBuild.CostListAdjusted(stuffToUse)",
+      "hits": [
+        {
+          "line": 67,
+          "text": "return def.entityDefToBuild.CostListAdjusted(stuffToUse);"
+        }
+      ],
+      "interpretation": "Replacement uses the normal material bill for the definition and selected stuff."
+    },
+    {
+      "type": "RimWorld.Blueprint_Build",
+      "file": ".local-research/auto-rebuild/RimWorld.Blueprint_Build.cs",
+      "sha256": "4f22af511172f2621577cb0c6a2d4e387f4883c96849b582bd9cd7d07586501a",
+      "anchor": "Frame frame = (Frame)ThingMaker.MakeThing(def.entityDefToBuild.frameDef, stuffToUse)",
+      "hits": [
+        {
+          "line": 72,
+          "text": "Frame frame = (Frame)ThingMaker.MakeThing(def.entityDefToBuild.frameDef, stuffToUse);"
+        }
+      ],
+      "interpretation": "Blueprint completion creates a fresh construction frame."
+    },
+    {
+      "type": "RimWorld.Blueprint_Storage",
+      "file": ".local-research/auto-rebuild/RimWorld.Blueprint_Storage.cs",
+      "sha256": "c27ea0ab466d409431b73a4fb66988e9213b7d580fda100e1637af649657a175",
+      "anchor": "frame.storageSettings.CopyFrom(GetStoreSettings())",
+      "hits": [
+        {
+          "line": 97,
+          "text": "frame.storageSettings.CopyFrom(GetStoreSettings());"
+        }
+      ],
+      "interpretation": "Storage-blueprint transition copies effective settings to the frame."
+    },
+    {
+      "type": "RimWorld.Blueprint_Storage",
+      "file": ".local-research/auto-rebuild/RimWorld.Blueprint_Storage.cs",
+      "sha256": "c27ea0ab466d409431b73a4fb66988e9213b7d580fda100e1637af649657a175",
+      "anchor": "this.SetStorageGroup(null, removeIfEmpty: false)",
+      "hits": [
+        {
+          "line": 98,
+          "text": "this.SetStorageGroup(null, removeIfEmpty: false);"
+        }
+      ],
+      "interpretation": "Storage-blueprint transition transfers group membership without deleting an empty group during the handoff."
+    },
+    {
+      "type": "RimWorld.StorageSettings",
+      "file": ".local-research/auto-rebuild/RimWorld.StorageSettings.cs",
+      "sha256": "d247fb668bb32252034050106849f91a129cab040ff4119f3ae59c16fba5a97d",
+      "anchor": "Priority = other.Priority",
+      "hits": [
+        {
+          "line": 92,
+          "text": "Priority = other.Priority;"
+        }
+      ],
+      "interpretation": "Storage settings preserve priority."
+    },
+    {
+      "type": "RimWorld.StorageSettings",
+      "file": ".local-research/auto-rebuild/RimWorld.StorageSettings.cs",
+      "sha256": "d247fb668bb32252034050106849f91a129cab040ff4119f3ae59c16fba5a97d",
+      "anchor": "filter.CopyAllowancesFrom(other.filter)",
+      "hits": [
+        {
+          "line": 93,
+          "text": "filter.CopyAllowancesFrom(other.filter);"
+        }
+      ],
+      "interpretation": "Storage settings preserve the filter allowances."
+    },
+    {
+      "type": "RimWorld.Frame",
+      "file": ".local-research/auto-rebuild/RimWorld.Frame.cs",
+      "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+      "anchor": "storageGroupMember.ThingStoreSettings.CopyFrom(storageSettings)",
+      "hits": [
+        {
+          "line": 329,
+          "text": "storageGroupMember.ThingStoreSettings.CopyFrom(storageSettings);"
+        }
+      ],
+      "interpretation": "The completed storage building receives frame settings and group membership."
+    },
+    {
+      "type": "RimWorld.Frame",
+      "file": ".local-research/auto-rebuild/RimWorld.Frame.cs",
+      "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+      "anchor": "thing = ThingMaker.MakeThing(thingDef2, Stuff)",
+      "hits": [
+        {
+          "line": 289,
+          "text": "thing = ThingMaker.MakeThing(thingDef2, Stuff);"
+        }
+      ],
+      "interpretation": "Finishing creates a new building instance from its definition and material."
+    },
+    {
+      "type": "RimWorld.Frame",
+      "file": ".local-research/auto-rebuild/RimWorld.Frame.cs",
+      "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+      "anchor": "QualityCategory q = QualityUtility.GenerateQualityCreatedByPawn(worker, SkillDefOf.Construction)",
+      "hits": [
+        {
+          "line": 294,
+          "text": "QualityCategory q = QualityUtility.GenerateQualityCreatedByPawn(worker, SkillDefOf.Construction);"
+        }
+      ],
+      "interpretation": "Replacement quality is generated from the current builder, not copied from the destroyed object."
+    },
+    {
+      "type": "RimWorld.Building_WorkTable",
+      "file": ".local-research/auto-rebuild/RimWorld.Building_WorkTable.cs",
+      "sha256": "93950a425067412ffbd0caaa8b3471ef584d02096beec027cf21f630bc5fba19",
+      "anchor": "billStack = new BillStack(this)",
+      "hits": [
+        {
+          "line": 44,
+          "text": "billStack = new BillStack(this);"
+        }
+      ],
+      "interpretation": "A fresh ordinary worktable owns a fresh BillStack."
+    },
+    {
+      "type": "RimWorld.Building_Bed",
+      "file": ".local-research/auto-rebuild/RimWorld.Building_Bed.cs",
+      "sha256": "2ee2bf86f55b05d4106ea896a26c8aa0c3442e4fa3aea917f9afb39071aada6c",
+      "anchor": "RemoveAllOwners(mode == DestroyMode.KillFinalize)",
+      "hits": [
+        {
+          "line": 292,
+          "text": "RemoveAllOwners(mode == DestroyMode.KillFinalize);"
+        }
+      ],
+      "interpretation": "Killed beds explicitly remove their owners while despawning."
+    },
+    {
+      "type": "RimWorld.Building_Bed",
+      "file": ".local-research/auto-rebuild/RimWorld.Building_Bed.cs",
+      "sha256": "2ee2bf86f55b05d4106ea896a26c8aa0c3442e4fa3aea917f9afb39071aada6c",
+      "anchor": "pawn.ownership.UnclaimBed()",
+      "hits": [
+        {
+          "line": 743,
+          "text": "pawn.ownership.UnclaimBed();"
+        }
+      ],
+      "interpretation": "Owner removal clears the pawn bed claim."
+    },
+    {
+      "type": "RimWorld.Building_Bed",
+      "file": ".local-research/auto-rebuild/RimWorld.Building_Bed.cs",
+      "sha256": "2ee2bf86f55b05d4106ea896a26c8aa0c3442e4fa3aea917f9afb39071aada6c",
+      "anchor": "Medical = false",
+      "hits": [
+        {
+          "line": 302,
+          "text": "Medical = false;"
+        }
+      ],
+      "interpretation": "Despawning non-replacement beds resets medical status; completed replacements use new-object defaults and spawn rules."
+    },
+    {
+      "type": "RimWorld.Frame",
+      "file": ".local-research/auto-rebuild/RimWorld.Frame.cs",
+      "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+      "anchor": "ThingUtility.CheckAutoRebuildOnDestroyed(this, mode, map, def.entityDefToBuild)",
+      "hits": [
+        {
+          "line": 198,
+          "text": "if (spawned && ThingUtility.CheckAutoRebuildOnDestroyed(this, mode, map, def.entityDefToBuild) is Blueprint_Storage blueprint_Storage)"
+        }
+      ],
+      "interpretation": "Killed spawned construction frames also use the helper with the intended final definition."
+    },
+    {
+      "type": "RimWorld.Blueprint",
+      "file": ".local-research/auto-rebuild/RimWorld.Blueprint.cs",
+      "sha256": "a9ce66b27ef3f8ec7f4ebdceb2e2c8285df81914b22cd854ca29526d3e0989aa",
+      "anchor": "public abstract class Blueprint : ThingWithComps",
+      "hits": [
+        {
+          "line": 9,
+          "text": "public abstract class Blueprint : ThingWithComps, IConstructible"
+        }
+      ],
+      "interpretation": "An empty blueprint is not a Building or Frame and does not inherit their rebuild hooks."
+    },
+    {
+      "type": "RimWorld.Frame",
+      "file": ".local-research/auto-rebuild/RimWorld.Frame.cs",
+      "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+      "anchor": "Destroy(DestroyMode.FailConstruction)",
+      "hits": [
+        {
+          "line": 411,
+          "text": "Destroy(DestroyMode.FailConstruction);"
+        }
+      ],
+      "interpretation": "Construction failure uses a separate failure branch."
+    },
+    {
+      "type": "RimWorld.Frame",
+      "file": ".local-research/auto-rebuild/RimWorld.Frame.cs",
+      "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+      "anchor": "blueprint_Build = (Blueprint_Build)ThingMaker.MakeThing(def.entityDefToBuild.blueprintDef)",
+      "hits": [
+        {
+          "line": 415,
+          "text": "blueprint_Build = (Blueprint_Build)ThingMaker.MakeThing(def.entityDefToBuild.blueprintDef);"
+        }
+      ],
+      "interpretation": "FailConstruction recreates a blueprint independently of the auto-rebuild helper."
+    },
+    {
+      "type": "Verse.TerrainDef",
+      "file": ".local-research/auto-rebuild/Verse.TerrainDef.cs",
+      "sha256": "14c8c05d3b22fbe88f5fcceea9a58f3aee90b8b265582577e2ab9037a41cb68b",
+      "anchor": "public bool autoRebuildable;",
+      "hits": [
+        {
+          "line": 200,
+          "text": "public bool autoRebuildable;"
+        }
+      ],
+      "interpretation": "Terrain auto-rebuild requires a separate opt-in field whose default is false."
+    },
+    {
+      "type": "Verse.ThingUtility",
+      "file": ".local-research/auto-rebuild/Verse.ThingUtility.cs",
+      "sha256": "4502e6db44ab7430a9d258da8833b7612b7b13a65e989537c42a19ceb2fb8a69",
+      "anchor": "Find.PlaySettings.autoRebuild && terrainDef.autoRebuildable",
+      "hits": [
+        {
+          "line": 168,
+          "text": "if (Find.PlaySettings.autoRebuild && terrainDef.autoRebuildable && terrainDef.blueprintDef != null && terrainDef.IsResearchFinished && map.areaManager.Home[pos] && GenConstruct.CanPlaceBlueprintAt(terrainDef, pos, Rot4.South, map).Accepted)"
+        }
+      ],
+      "interpretation": "Terrain requires enabled setting, terrain opt-in, blueprint, research, Home cell and legal placement; terrain has no faction field."
+    },
+    {
+      "type": "Verse.TerrainGrid",
+      "file": ".local-research/auto-rebuild/Verse.TerrainGrid.cs",
+      "sha256": "9ec3c69688508195ac716dc84e3ce7bad9aff5a0b0afb4eac7f2b288440fccfc",
+      "anchor": "if (terrainDef != null && terrainDef.Flammable())",
+      "hits": [
+        {
+          "line": 603,
+          "text": "if (terrainDef != null && terrainDef.Flammable())"
+        }
+      ],
+      "interpretation": "Terrain burning prioritizes a flammable foundation before top terrain."
+    },
+    {
+      "type": "Verse.TerrainGrid",
+      "file": ".local-research/auto-rebuild/Verse.TerrainGrid.cs",
+      "sha256": "9ec3c69688508195ac716dc84e3ce7bad9aff5a0b0afb4eac7f2b288440fccfc",
+      "anchor": "SetTerrain(c, terrain.burnedDef)",
+      "hits": [
+        {
+          "line": 611,
+          "text": "SetTerrain(c, terrain.burnedDef);"
+        }
+      ],
+      "interpretation": "Ordinary burned terrain may be replaced by its configured burned variant."
+    },
+    {
+      "type": "Verse.TerrainGrid",
+      "file": ".local-research/auto-rebuild/Verse.TerrainGrid.cs",
+      "sha256": "9ec3c69688508195ac716dc84e3ce7bad9aff5a0b0afb4eac7f2b288440fccfc",
+      "anchor": "ThingUtility.CheckAutoRebuildTerrainOnDestroyed(terrainDef, c, map)",
+      "hits": [
+        {
+          "line": 637,
+          "text": "ThingUtility.CheckAutoRebuildTerrainOnDestroyed(terrainDef, c, map);"
+        },
+        {
+          "line": 667,
+          "text": "ThingUtility.CheckAutoRebuildTerrainOnDestroyed(terrainDef, c, map);"
+        }
+      ],
+      "interpretation": "Terrain and foundation destruction each invoke the terrain rebuild helper after removal."
+    },
+    {
+      "type": "Verse.TerrainGrid",
+      "file": ".local-research/auto-rebuild/Verse.TerrainGrid.cs",
+      "sha256": "9ec3c69688508195ac716dc84e3ce7bad9aff5a0b0afb4eac7f2b288440fccfc",
+      "anchor": "c.GetFirstBuilding(map)?.Kill()",
+      "hits": [
+        {
+          "line": 623,
+          "text": "c.GetFirstBuilding(map)?.Kill();"
+        },
+        {
+          "line": 653,
+          "text": "c.GetFirstBuilding(map)?.Kill();"
+        }
+      ],
+      "interpretation": "A destroyed foundation/terrain with destroyBuildingsOnDestroyed can kill the overlying building before its own rebuild attempt."
+    },
+    {
+      "type": "RimWorld.ThingDefGenerator_Buildings",
+      "file": ".local-research/auto-rebuild/RimWorld.ThingDefGenerator_Buildings.cs",
+      "sha256": "5bfd1107539e4e59b65f76a4a4178bfbb772eb8708e1fbe45462ad940844db49",
+      "anchor": "thingDef.SetStatBaseValue(StatDefOf.MaxHitPoints, (float)def.BaseMaxHitPoints * 0.25f)",
+      "hits": [
+        {
+          "line": 199,
+          "text": "thingDef.SetStatBaseValue(StatDefOf.MaxHitPoints, (float)def.BaseMaxHitPoints * 0.25f);"
+        }
+      ],
+      "interpretation": "An ordinary building frame starts from one quarter of the target building base maximum hit points."
+    },
+    {
+      "type": "RimWorld.ThingDefGenerator_Buildings",
+      "file": ".local-research/auto-rebuild/RimWorld.ThingDefGenerator_Buildings.cs",
+      "sha256": "5bfd1107539e4e59b65f76a4a4178bfbb772eb8708e1fbe45462ad940844db49",
+      "anchor": "thingDef.SetStatBaseValue(StatDefOf.Flammability, def.BaseFlammability)",
+      "hits": [
+        {
+          "line": 201,
+          "text": "thingDef.SetStatBaseValue(StatDefOf.Flammability, def.BaseFlammability);"
+        }
+      ],
+      "interpretation": "Ordinary building frames inherit target base flammability; they do not all share one fixed value."
+    },
+    {
+      "type": "RimWorld.ThingDefGenerator_Buildings",
+      "file": ".local-research/auto-rebuild/RimWorld.ThingDefGenerator_Buildings.cs",
+      "sha256": "5bfd1107539e4e59b65f76a4a4178bfbb772eb8708e1fbe45462ad940844db49",
+      "anchor": "thingDef.size = def.size",
+      "hits": [
+        {
+          "line": 99,
+          "text": "thingDef.size = def.size;"
+        },
+        {
+          "line": 198,
+          "text": "thingDef.size = def.size;"
+        }
+      ],
+      "interpretation": "Ordinary building-frame and blueprint generated dimensions come from the target building."
+    },
+    {
+      "type": "RimWorld.ThingDefGenerator_Buildings",
+      "file": ".local-research/auto-rebuild/RimWorld.ThingDefGenerator_Buildings.cs",
+      "sha256": "5bfd1107539e4e59b65f76a4a4178bfbb772eb8708e1fbe45462ad940844db49",
+      "anchor": "thingDef.stuffCategories = def.stuffCategories",
+      "hits": [
+        {
+          "line": 233,
+          "text": "thingDef.stuffCategories = def.stuffCategories;"
+        }
+      ],
+      "interpretation": "Ordinary player-buildable building frames preserve material-category support."
+    },
+    {
+      "type": "RimWorld.StatWorker",
+      "file": ".local-research/auto-rebuild/RimWorld.StatWorker.cs",
+      "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+      "anchor": "num *= req.StuffDef.stuffProps.statFactors.GetStatFactorFromList(stat)",
+      "hits": [
+        {
+          "line": 303,
+          "text": "num *= req.StuffDef.stuffProps.statFactors.GetStatFactorFromList(stat);"
+        }
+      ],
+      "interpretation": "Normal computed stats still apply material factors."
+    },
+    {
+      "type": "RimWorld.StatWorker",
+      "file": ".local-research/auto-rebuild/RimWorld.StatWorker.cs",
+      "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+      "anchor": "num += req.StuffDef.stuffProps.statOffsets.GetStatOffsetFromList(stat)",
+      "hits": [
+        {
+          "line": 309,
+          "text": "num += req.StuffDef.stuffProps.statOffsets.GetStatOffsetFromList(stat);"
+        }
+      ],
+      "interpretation": "Normal computed stats still apply material offsets."
+    },
+    {
+      "type": "RimWorld.ThingDefGenerator_Buildings",
+      "file": ".local-research/auto-rebuild/RimWorld.ThingDefGenerator_Buildings.cs",
+      "sha256": "5bfd1107539e4e59b65f76a4a4178bfbb772eb8708e1fbe45462ad940844db49",
+      "anchor": "useHitPoints = false",
+      "hits": [
+        {
+          "line": 54,
+          "text": "useHitPoints = false,"
+        },
+        {
+          "line": 272,
+          "text": "thingDef.useHitPoints = false;"
+        }
+      ],
+      "interpretation": "Base blueprints do not use hit points; terrain-frame generation also explicitly disables hit points."
+    },
+    {
+      "type": "RimWorld.ThingDefGenerator_Buildings",
+      "file": ".local-research/auto-rebuild/RimWorld.ThingDefGenerator_Buildings.cs",
+      "sha256": "5bfd1107539e4e59b65f76a4a4178bfbb772eb8708e1fbe45462ad940844db49",
+      "anchor": "thingDef.category = ThingCategory.Ethereal",
+      "hits": [
+        {
+          "line": 284,
+          "text": "thingDef.category = ThingCategory.Ethereal;"
+        }
+      ],
+      "interpretation": "Terrain frames are generated as Ethereal rather than ordinary damageable building frames."
+    },
+    {
+      "type": "RimWorld.Fire",
+      "file": ".local-research/auto-rebuild/RimWorld.Fire.cs",
+      "sha256": "3f10134af9a064a683242b3914e82db3dd40c012c70fc26e699a481673af2078",
+      "anchor": "List<Thing> list = Map.thingGrid.ThingsListAt(Position)",
+      "hits": [
+        {
+          "line": 251,
+          "text": "List<Thing> list = Map.thingGrid.ThingsListAt(Position);"
+        }
+      ],
+      "interpretation": "Ground fire enumerates things occupying the fire cell."
+    },
+    {
+      "type": "RimWorld.Fire",
+      "file": ".local-research/auto-rebuild/RimWorld.Fire.cs",
+      "sha256": "3f10134af9a064a683242b3914e82db3dd40c012c70fc26e699a481673af2078",
+      "anchor": "float statValue = thing.GetStatValue(StatDefOf.Flammability)",
+      "hits": [
+        {
+          "line": 259,
+          "text": "float statValue = thing.GetStatValue(StatDefOf.Flammability);"
+        }
+      ],
+      "interpretation": "Ground fire selects flammable occupants by their computed stat."
+    },
+    {
+      "type": "Verse.ThingGrid",
+      "file": ".local-research/auto-rebuild/Verse.ThingGrid.cs",
+      "sha256": "4e6f530642966c8fa50269e52362018a0b3939633e1eb3d7ec429164aa49938e",
+      "anchor": "CellRect cellRect = t.OccupiedRect()",
+      "hits": [
+        {
+          "line": 31,
+          "text": "CellRect cellRect = t.OccupiedRect();"
+        },
+        {
+          "line": 67,
+          "text": "CellRect cellRect = t.OccupiedRect();"
+        }
+      ],
+      "interpretation": "Multi-cell things are registered over their rotated occupied rectangle, not just their anchor."
+    }
+  ],
+  "boundedChecks": [
+    {
+      "type": "Verse.ThingUtility",
+      "start": "public static Blueprint_Build CheckAutoRebuildOnDestroyed",
+      "end": "public static void CheckAutoRebuildTerrainOnDestroyed",
+      "startLine": 157,
+      "endLine": 166,
+      "sliceSha256": "2b5ce6c3d96a6fc458c1d3439a56e80ebc60bf10e2a8a93dfe3eb03f13160ecf",
+      "absentTokens": [
+        "BillStack",
+        "billStack",
+        "OwnersForReading",
+        "CompQuality",
+        "glowerColorOverride",
+        "HitPoints",
+        "allowRebuild"
+      ],
+      "interpretation": "The ordinary rebuild helper transfers only its explicit blueprint arguments; it does not clone bills, owners, quality, lamp overrides or hit points."
+    },
+    {
+      "type": "Verse.Building",
+      "start": "public override void Destroy",
+      "end": "public override void SetFaction",
+      "startLine": 302,
+      "endLine": 330,
+      "sliceSha256": "eb59e17cfc40dfbcdeea8457d8e382847428436fecae3d56e40dd3debc1935b0",
+      "absentTokens": [
+        "billStack",
+        "OwnersForReading",
+        "CompQuality",
+        "glowerColorOverride",
+        ".label ="
+      ],
+      "interpretation": "The generic Building destroy hook adds only the explicit storage group/settings transfer; no individual storage label copy."
+    },
+    {
+      "type": "RimWorld.GenConstruct",
+      "start": "public static Blueprint_Build PlaceBlueprintForBuild",
+      "end": "public static Blueprint_Install PlaceBlueprintForInstall",
+      "startLine": 157,
+      "endLine": 171,
+      "sliceSha256": "2399705382f21cbb0297026f2df1278aa7ee83e7223b03d0717b895b7dc3af92",
+      "absentTokens": [
+        "resourceCounter",
+        "CanGetResources",
+        "BillStack",
+        "OwnersForReading",
+        "CompQuality"
+      ],
+      "interpretation": "Blueprint creation does not require currently available resources and does not restore old specialized state."
+    },
+    {
+      "type": "RimWorld.Blueprint",
+      "start": "public abstract class Blueprint",
+      "end": "",
+      "startLine": 9,
+      "endLine": 190,
+      "sliceSha256": "84c6a6ede4f003c8b6cd84b3024f3aeea34f50eb0cedc55dad33b850b771396c",
+      "absentTokens": [
+        "CheckAutoRebuild"
+      ],
+      "interpretation": "The ordinary empty Blueprint base does not invoke auto-rebuild."
+    },
+    {
+      "type": "RimWorld.Blueprint_Build",
+      "start": "public class Blueprint_Build",
+      "end": "",
+      "startLine": 8,
+      "endLine": 204,
+      "sliceSha256": "0991be29841a51ae3417267658c7cc94cc3e3f2bd7a1e837eb9453b62e66bcb3",
+      "absentTokens": [
+        "CheckAutoRebuild"
+      ],
+      "interpretation": "The ordinary Blueprint_Build does not invoke auto-rebuild."
+    },
+    {
+      "type": "RimWorld.Building_WorkTable",
+      "start": "public class Building_WorkTable",
+      "end": "",
+      "startLine": 6,
+      "endLine": 120,
+      "sliceSha256": "2ae71d9eafbc22e6cbd2fd9dc1c5bcce71435146425670e47d17a22a1aaeb948",
+      "absentTokens": [
+        "override void Destroy",
+        "CheckAutoRebuild",
+        "CopyFrom"
+      ],
+      "interpretation": "The reviewed generic worktable does not override destruction to restore bills on a replacement."
+    },
+    {
+      "type": "RimWorld.Frame",
+      "start": "public void FailConstruction",
+      "end": "protected override void DrawAt",
+      "startLine": 408,
+      "endLine": 439,
+      "sliceSha256": "08f2d32f6244794295bb23df741896b6fcec2f4ca575961f3bcbe2f058a6528e",
+      "absentTokens": [
+        "autoRebuild",
+        "CheckAutoRebuild",
+        "areaManager.Home",
+        "IsResearchFinished"
+      ],
+      "interpretation": "The separate construction-failure blueprint branch does not use auto-rebuild settings or Home/research gates."
+    },
+    {
+      "type": "Verse.TerrainGrid",
+      "start": "public void RemoveTopLayer",
+      "end": "public void SetFoundation",
+      "startLine": 280,
+      "endLine": 319,
+      "sliceSha256": "fba6b75ac8772543b3cdeeb835807f9428e93fcd4a893b6ff19b839b74abe42e",
+      "absentTokens": [
+        "CheckAutoRebuild"
+      ],
+      "interpretation": "Direct layer removal is distinct from the destruction notification path."
+    },
+    {
+      "type": "Verse.TerrainGrid",
+      "start": "public void RemoveFoundation",
+      "end": "public void SetTempTerrain",
+      "startLine": 354,
+      "endLine": 398,
+      "sliceSha256": "2fc2798d39de113d4caa473e3e7bd0eacda243b3ee238bf7f064687bfb6b18c0",
+      "absentTokens": [
+        "CheckAutoRebuild"
+      ],
+      "interpretation": "Direct foundation removal itself does not invoke auto-rebuild."
+    },
+    {
+      "type": "RimWorld.MinifyUtility",
+      "start": "public static MinifiedThing MakeMinified",
+      "end": "public static Thing TryMakeMinified",
+      "startLine": 8,
+      "endLine": 33,
+      "sliceSha256": "149b6ddbf487aabf2e287c72640b036db3d02a722389688464a6b60c978b993d",
+      "absentTokens": [
+        ".Kill(",
+        "CheckAutoRebuild"
+      ],
+      "interpretation": "Minification does not kill and recreate the original object."
+    },
+    {
+      "type": "RimWorld.ThingDefGenerator_Buildings",
+      "start": "private static ThingDef BaseBlueprintDef",
+      "end": "private static ThingDef BaseFrameDef",
+      "startLine": 47,
+      "endLine": 66,
+      "sliceSha256": "d5fb95c85c1e2298cacccca53f08bbf953b6d34c99dc64f8aa6bc095fce16cd9",
+      "absentTokens": [
+        "Flammability",
+        "stuffCategories"
+      ],
+      "interpretation": "Base blueprints have no flammability or material stat override; the packaged Flammability stat default is zero."
+    },
+    {
+      "type": "RimWorld.ThingDefGenerator_Buildings",
+      "start": "private static ThingDef NewBlueprintDef_Thing",
+      "end": "private static ThingDef NewFrameDef_Thing",
+      "startLine": 89,
+      "endLine": 192,
+      "sliceSha256": "43c8b585df1e06bf50b18c164d25fe19733a4bd56507b59efff8151eccf68b2c",
+      "absentTokens": [
+        "StatDefOf.Flammability",
+        "stuffCategories"
+      ],
+      "interpretation": "Ordinary building-blueprint generation does not copy the target flammability or material categories."
+    },
+    {
+      "type": "RimWorld.ThingDefGenerator_Buildings",
+      "start": "private static ThingDef NewFrameDef_Terrain",
+      "end": "",
+      "startLine": 264,
+      "endLine": 294,
+      "sliceSha256": "cd47de6abab5f9c8bd5a8511e7add84cea78fd18a4061e78d1c5d32899a52e7b",
+      "absentTokens": [
+        "StatDefOf.Flammability",
+        "stuffCategories"
+      ],
+      "interpretation": "Terrain-frame generation does not copy the final terrain flammability or building material categories."
+    }
+  ],
+  "packagedDefs": [
+    {
+      "file": "Data/Core/Defs/TerrainDefs/Terrain_Foundation.xml",
+      "sha256": "d7943eb36290030ddf5a753e13a793ce39da06d7eb920f34968305a2957d8520",
+      "xpath": "/Defs/TerrainDef[@Name=\"BridgeBase\"]",
+      "nameAttribute": "BridgeBase",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "autoRebuildable",
+          "count": 1,
+          "xml": [
+            "<autoRebuildable>true</autoRebuildable>"
+          ]
+        },
+        {
+          "xpath": "isFoundation",
+          "count": 1,
+          "xml": [
+            "<isFoundation>true</isFoundation>"
+          ]
+        },
+        {
+          "xpath": "bridge",
+          "count": 1,
+          "xml": [
+            "<bridge>true</bridge>"
+          ]
+        },
+        {
+          "xpath": "designationCategory",
+          "count": 1,
+          "xml": [
+            "<designationCategory>Structure</designationCategory>"
+          ]
+        },
+        {
+          "xpath": "destroyBuildingsOnDestroyed",
+          "count": 1,
+          "xml": [
+            "<destroyBuildingsOnDestroyed>true</destroyBuildingsOnDestroyed>"
+          ]
+        }
+      ],
+      "interpretation": "Core bridge base explicitly opts in to terrain auto-rebuild."
+    },
+    {
+      "file": "Data/Core/Defs/TerrainDefs/Terrain_Foundation.xml",
+      "sha256": "d7943eb36290030ddf5a753e13a793ce39da06d7eb920f34968305a2957d8520",
+      "xpath": "/Defs/TerrainDef[defName=\"Bridge\"]",
+      "nameAttribute": "Bridge",
+      "parentName": "BridgeBase",
+      "fields": [
+        {
+          "xpath": "defName",
+          "count": 1,
+          "xml": [
+            "<defName>Bridge</defName>"
+          ]
+        },
+        {
+          "xpath": "autoRebuildable",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/Flammability",
+          "count": 1,
+          "xml": [
+            "<Flammability>0.8</Flammability>"
+          ]
+        }
+      ],
+      "interpretation": "Bridge inherits BridgeBase; no local autoRebuildable override."
+    },
+    {
+      "file": "Data/Core/Defs/TerrainDefs/Terrain_Floors.xml",
+      "sha256": "c7a3038831fb311caa542b62c41caab6335eca87d36ae728b32e03120faa053d",
+      "xpath": "/Defs/TerrainDef[@Name=\"FloorBase\"]",
+      "nameAttribute": "FloorBase",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "autoRebuildable",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "designationCategory",
+          "count": 1,
+          "xml": [
+            "<designationCategory>Floors</designationCategory>"
+          ]
+        }
+      ],
+      "interpretation": "FloorBase has a build category but does not enable autoRebuildable."
+    },
+    {
+      "file": "Data/Core/Defs/TerrainDefs/Terrain_Floors.xml",
+      "sha256": "c7a3038831fb311caa542b62c41caab6335eca87d36ae728b32e03120faa053d",
+      "xpath": "/Defs/TerrainDef[defName=\"WoodPlankFloor\"]",
+      "nameAttribute": "",
+      "parentName": "FloorBase",
+      "fields": [
+        {
+          "xpath": "defName",
+          "count": 1,
+          "xml": [
+            "<defName>WoodPlankFloor</defName>"
+          ]
+        },
+        {
+          "xpath": "autoRebuildable",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "burnedDef",
+          "count": 1,
+          "xml": [
+            "<burnedDef>BurnedWoodPlankFloor</burnedDef>"
+          ]
+        }
+      ],
+      "interpretation": "WoodPlankFloor inherits FloorBase, with no terrain rebuild opt-in; burning has a separate burned variant."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Structure.xml",
+      "sha256": "5e4f3958b557e14513eb1dc06fc58bb14aabf10148b96b3d69db5aa9d9d3d523",
+      "xpath": "/Defs/ThingDef[defName=\"Wall\"]",
+      "nameAttribute": "Wall",
+      "parentName": "BuildingBase",
+      "fields": [
+        {
+          "xpath": "defName",
+          "count": 1,
+          "xml": [
+            "<defName>Wall</defName>"
+          ]
+        },
+        {
+          "xpath": "designationCategory",
+          "count": 1,
+          "xml": [
+            "<designationCategory>Structure</designationCategory>"
+          ]
+        },
+        {
+          "xpath": "thingClass",
+          "count": 1,
+          "xml": [
+            "<thingClass>Building</thingClass>"
+          ]
+        },
+        {
+          "xpath": "leaveResourcesWhenKilled",
+          "count": 1,
+          "xml": [
+            "<leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>"
+          ]
+        }
+      ],
+      "interpretation": "Wall has a normal build category; material salvage is a separate Def rule."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+      "sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55",
+      "xpath": "/Defs/ThingDef[@Name=\"FurnitureBase\"]",
+      "nameAttribute": "FurnitureBase",
+      "parentName": "BuildingBase",
+      "fields": [
+        {
+          "xpath": "designationCategory",
+          "count": 1,
+          "xml": [
+            "<designationCategory>Furniture</designationCategory>"
+          ]
+        },
+        {
+          "xpath": "minifiedDef",
+          "count": 1,
+          "xml": [
+            "<minifiedDef>MinifiedThing</minifiedDef>"
+          ]
+        }
+      ],
+      "interpretation": "Furniture build and minification support are separate properties."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+      "sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55",
+      "xpath": "/Defs/ThingDef[@Name=\"ShelfBase\"]",
+      "nameAttribute": "ShelfBase",
+      "parentName": "FurnitureBase",
+      "fields": [
+        {
+          "xpath": "building/blueprintClass",
+          "count": 1,
+          "xml": [
+            "<blueprintClass>Blueprint_Storage</blueprintClass>"
+          ]
+        },
+        {
+          "xpath": "researchPrerequisites",
+          "count": 1,
+          "xml": [
+            "<researchPrerequisites><li>ComplexFurniture</li></researchPrerequisites>"
+          ]
+        }
+      ],
+      "interpretation": "ShelfBase chooses Blueprint_Storage and requires ComplexFurniture."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+      "sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55",
+      "xpath": "/Defs/ThingDef[@Name=\"StorageShelfBase\"]",
+      "nameAttribute": "StorageShelfBase",
+      "parentName": "ShelfBase",
+      "fields": [
+        {
+          "xpath": "thingClass",
+          "count": 1,
+          "xml": [
+            "<thingClass>Building_Storage</thingClass>"
+          ]
+        },
+        {
+          "xpath": "building/storageGroupTag",
+          "count": 1,
+          "xml": [
+            "<storageGroupTag>Shelf</storageGroupTag>"
+          ]
+        }
+      ],
+      "interpretation": "StorageShelfBase uses Building_Storage and a Shelf group tag."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+      "sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55",
+      "xpath": "/Defs/ThingDef[defName=\"Shelf\"]",
+      "nameAttribute": "",
+      "parentName": "StorageShelfBase",
+      "fields": [
+        {
+          "xpath": "defName",
+          "count": 1,
+          "xml": [
+            "<defName>Shelf</defName>"
+          ]
+        },
+        {
+          "xpath": "size",
+          "count": 1,
+          "xml": [
+            "<size>(2,1)</size>"
+          ]
+        }
+      ],
+      "interpretation": "Shelf inherits the storage-specific chain; these are packaged declarations, not a live resolved Def database."
+    },
+    {
+      "file": "Data/Core/Languages/English/Keyed/Misc_Gameplay.xml",
+      "sha256": "a5749543322d6dca588afadc3d0dc00dc583b33511c8cdfa839eb91fe242e4b8",
+      "xpath": "/LanguageData/AutoRebuildButton",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": ".",
+          "count": 1,
+          "xml": [
+            "<AutoRebuildButton>Toggle automatic rebuild of destroyed structures in the home area.</AutoRebuildButton>"
+          ]
+        }
+      ],
+      "interpretation": "The shipped English tooltip describes destroyed structures inside the home area."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Basics_General.xml",
+      "sha256": "c4d702421c19796993483ddd43f9869c54bb7afa1414232a568829ced5218d87",
+      "xpath": "/Defs/StatDef[defName=\"Flammability\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defName",
+          "count": 1,
+          "xml": [
+            "<defName>Flammability</defName>"
+          ]
+        },
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>0</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "minValue",
+          "count": 1,
+          "xml": [
+            "<minValue>0</minValue>"
+          ]
+        },
+        {
+          "xpath": "maxValue",
+          "count": 1,
+          "xml": [
+            "<maxValue>2</maxValue>"
+          ]
+        }
+      ],
+      "interpretation": "The packaged Flammability stat defaults to zero when a generated blueprint/terrain-frame Def does not override it."
+    }
+  ],
+  "limits": [
+    "Static derived C# and packaged XML are not original source or runtime gameplay proof.",
+    "Retained matching REA metadata is reused for artifact identity only.",
+    "No native game, browser, preview, GUI input or screenshot capture was run in this milestone.",
+    "Generic Building, Frame, storage, worktable and bed chains are reviewed; every specialized building subclass, component hook, DLC/mod patch and historical save compatibility branch are not exhaustively audited.",
+    "Def inheritance assertions concern the listed packaged declarations only, not a live loaded Def database.",
+    "Three-dimensional wall identity, z-layer Home and support rules are Web adaptation concerns; the native map is not a multilayer voxel world.",
+    "Construction failure is a separate blueprint-retry mechanism, not evidence that auto-rebuild is enabled.",
+    "Ordinary empty blueprints have no reviewed auto-rebuild hook; specialized blueprint classes and mods can differ."
+  ],
+  "collectorSha256": "86c9bbe90e656e6a0a0541b6154ec1576d0deaf9c4f923b78bef26670e98354f"
+}

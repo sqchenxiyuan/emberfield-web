@@ -1,0 +1,1855 @@
+{
+  "status": "captured",
+  "capturedAt": "2026-11-04T15:48:32.234Z",
+  "head": "860ef95130e9d0cd46d2f998334546e32cba79ee",
+  "worldSha256": "58b9306114ad7418053b3408edfa55f46f1bf22842793204a0c82af0e2c5bd42",
+  "sourceBundle": "world-v45.mjs",
+  "sourceBundleSha256": "cc9f9dc0b43d9fcd4c1a754ae88c787351332fd64a8569972a616c139f0761a6",
+  "scriptSha256": "38845f482f0d0e9bb31b7e584b1b75c2a9bda312a26d1e13314952a01e8dd33e",
+  "scope": "Headless saves produced by the unchanged v45 implementation using generated terrain, original starting goods and public commands only. These are not human gameplay or browser/native runtime saves. No save fields were rewritten.",
+  "commands": [
+    {
+      "tick": 0,
+      "command": {
+        "type": "threats",
+        "enabled": false
+      },
+      "result": {
+        "ok": true,
+        "message": "已关闭后续袭击，场上的敌人仍然存在"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "fireHazards",
+        "enabled": false
+      },
+      "result": {
+        "ok": true,
+        "message": "后续火灾事件已关闭，现有火焰继续燃烧并可扑灭"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 0,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "0:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 1,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "1:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 2,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "2:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 3,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "3:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 4,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "4:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 5,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "5:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 6,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "6:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 7,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "7:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 8,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "8:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 9,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "9:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 10,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "10:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 11,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "11:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 12,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "12:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 13,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "13:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 14,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "14:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 15,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "15:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 16,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "16:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 17,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "17:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 18,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "18:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 19,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "19:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 20,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "20:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 21,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "21:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 22,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "22:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 364,
+        "hour": 23,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "23:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 364,
+        "work": "handle",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 364,
+        "work": "firefight",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 364,
+        "work": "clean",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 364,
+        "work": "warden",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 364,
+        "work": "hunt",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 364,
+        "work": "dig",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 364,
+        "work": "build",
+        "value": 1
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 364,
+        "work": "cut",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 364,
+        "work": "haul",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 364,
+        "work": "grow",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 364,
+        "work": "cook",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 364,
+        "work": "craft",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 364,
+        "work": "care",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 364,
+        "work": "research",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 0,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "0:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 1,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "1:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 2,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "2:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 3,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "3:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 4,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "4:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 5,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "5:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 6,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "6:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 7,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "7:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 8,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "8:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 9,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "9:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 10,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "10:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 11,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "11:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 12,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "12:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 13,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "13:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 14,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "14:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 15,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "15:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 16,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "16:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 17,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "17:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 18,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "18:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 19,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "19:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 20,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "20:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 21,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "21:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 22,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "22:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 365,
+        "hour": 23,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "23:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 365,
+        "work": "handle",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 365,
+        "work": "firefight",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 365,
+        "work": "clean",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 365,
+        "work": "warden",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 365,
+        "work": "hunt",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 365,
+        "work": "dig",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 365,
+        "work": "build",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 365,
+        "work": "cut",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 365,
+        "work": "haul",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 365,
+        "work": "grow",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 365,
+        "work": "cook",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 365,
+        "work": "craft",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 365,
+        "work": "care",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 365,
+        "work": "research",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 0,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "0:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 1,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "1:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 2,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "2:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 3,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "3:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 4,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "4:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 5,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "5:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 6,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "6:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 7,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "7:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 8,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "8:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 9,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "9:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 10,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "10:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 11,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "11:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 12,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "12:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 13,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "13:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 14,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "14:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 15,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "15:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 16,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "16:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 17,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "17:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 18,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "18:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 19,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "19:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 20,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "20:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 21,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "21:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 22,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "22:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "schedule",
+        "pawnId": 366,
+        "hour": 23,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "23:00 作息已更新"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 366,
+        "work": "handle",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 366,
+        "work": "firefight",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 366,
+        "work": "clean",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 366,
+        "work": "warden",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 366,
+        "work": "hunt",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 366,
+        "work": "dig",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 366,
+        "work": "build",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 366,
+        "work": "cut",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 366,
+        "work": "haul",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 366,
+        "work": "grow",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 366,
+        "work": "cook",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 366,
+        "work": "craft",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 366,
+        "work": "care",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "priority",
+        "pawnId": 366,
+        "work": "research",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 0,
+      "command": {
+        "type": "designate",
+        "tool": "chair",
+        "from": {
+          "x": 29,
+          "y": 27,
+          "z": 7
+        },
+        "axis": "y"
+      },
+      "result": {
+        "ok": true,
+        "message": "安排 1 项工作，需求木材 15；缺料和不可达任务会等待",
+        "count": 1
+      }
+    },
+    {
+      "tick": 102,
+      "command": {
+        "type": "itemForbidden",
+        "itemId": 373,
+        "forbidden": true
+      },
+      "result": {
+        "ok": true,
+        "count": 1,
+        "message": "已禁止1堆物品；库存与实物保留"
+      }
+    }
+  ],
+  "samples": [
+    {
+      "file": "carrying-chair-input.json",
+      "sha256": "9640d2009bc968bac82223e953c7d1c088ed285d53422f27c513f5ba69c318ad",
+      "byteLength": 252386,
+      "version": 45,
+      "tick": 22,
+      "pawns": [
+        {
+          "id": 364,
+          "jobId": 391,
+          "cargo": {
+            "resource": "wood",
+            "amount": 15
+          }
+        },
+        {
+          "id": 365,
+          "jobId": null,
+          "cargo": null
+        },
+        {
+          "id": 366,
+          "jobId": null,
+          "cargo": null
+        }
+      ],
+      "chairs": [],
+      "jobs": [
+        {
+          "id": 391,
+          "kind": "chair",
+          "x": 29,
+          "y": 27,
+          "z": 7,
+          "work": 90,
+          "progress": 0,
+          "workTicks": 0,
+          "owner": 364,
+          "delivered": {},
+          "deliveredBatches": [],
+          "cancelled": false,
+          "cost": {
+            "wood": 15
+          },
+          "reason": "等待可达工人",
+          "axis": "y"
+        }
+      ],
+      "counts": {
+        "silver": 800,
+        "wood": 90,
+        "stone": 0,
+        "steel": 0,
+        "components": 0,
+        "food": 60,
+        "grain": 0,
+        "meat": 0,
+        "carcass": 0,
+        "meal": 0,
+        "chunk": 0,
+        "cloth": 0,
+        "herb": 0,
+        "apparel": 6,
+        "weapon": 0,
+        "furniture": 0,
+        "unfinished": 0
+      },
+      "stats": {
+        "mined": 0,
+        "cut": 0,
+        "built": 0,
+        "hauled": 0,
+        "sown": 0,
+        "harvested": 0,
+        "cooked": 0,
+        "stonecut": 0,
+        "tailored": 0,
+        "weaponsMade": 0,
+        "destroyed": {
+          "silver": 0,
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meat": 0,
+          "carcass": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "herb": 0,
+          "apparel": 0,
+          "weapon": 0,
+          "furniture": 0,
+          "unfinished": 0
+        },
+        "treesPlanted": 0,
+        "treesRegrown": 0,
+        "treesDied": 0,
+        "eaten": 0,
+        "consumed": {
+          "silver": 0,
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meat": 0,
+          "carcass": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "herb": 0,
+          "apparel": 0,
+          "weapon": 0,
+          "furniture": 0,
+          "unfinished": 0
+        },
+        "produced": {
+          "silver": 0,
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meat": 0,
+          "carcass": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "herb": 0,
+          "apparel": 0,
+          "weapon": 0,
+          "furniture": 0,
+          "unfinished": 0
+        },
+        "spoiled": {
+          "silver": 0,
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meat": 0,
+          "carcass": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "herb": 0,
+          "apparel": 0,
+          "weapon": 0,
+          "furniture": 0,
+          "unfinished": 0
+        }
+      }
+    },
+    {
+      "file": "built-chair-forbidden-wood.json",
+      "sha256": "780ff3a61c2341f2e5c9ef3e9be8f7ebc518f39fdf673a8580a7dc7afd278a6f",
+      "byteLength": 252204,
+      "version": 45,
+      "tick": 102,
+      "pawns": [
+        {
+          "id": 364,
+          "jobId": null,
+          "cargo": null
+        },
+        {
+          "id": 365,
+          "jobId": null,
+          "cargo": null
+        },
+        {
+          "id": 366,
+          "jobId": null,
+          "cargo": null
+        }
+      ],
+      "chairs": [
+        {
+          "id": 392,
+          "x": 29,
+          "y": 27,
+          "z": 7,
+          "axis": "y",
+          "quality": 2
+        }
+      ],
+      "jobs": [],
+      "counts": {
+        "silver": 800,
+        "wood": 75,
+        "stone": 0,
+        "steel": 0,
+        "components": 0,
+        "food": 60,
+        "grain": 0,
+        "meat": 0,
+        "carcass": 0,
+        "meal": 0,
+        "chunk": 0,
+        "cloth": 0,
+        "herb": 0,
+        "apparel": 6,
+        "weapon": 0,
+        "furniture": 0,
+        "unfinished": 0
+      },
+      "stats": {
+        "mined": 0,
+        "cut": 0,
+        "built": 1,
+        "hauled": 0,
+        "sown": 0,
+        "harvested": 0,
+        "cooked": 0,
+        "stonecut": 0,
+        "tailored": 0,
+        "weaponsMade": 0,
+        "destroyed": {
+          "silver": 0,
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meat": 0,
+          "carcass": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "herb": 0,
+          "apparel": 0,
+          "weapon": 0,
+          "furniture": 0,
+          "unfinished": 0
+        },
+        "treesPlanted": 0,
+        "treesRegrown": 0,
+        "treesDied": 0,
+        "eaten": 0,
+        "consumed": {
+          "silver": 0,
+          "wood": 15,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meat": 0,
+          "carcass": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "herb": 0,
+          "apparel": 0,
+          "weapon": 0,
+          "furniture": 0,
+          "unfinished": 0
+        },
+        "produced": {
+          "silver": 0,
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meat": 0,
+          "carcass": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "herb": 0,
+          "apparel": 0,
+          "weapon": 0,
+          "furniture": 0,
+          "unfinished": 0
+        },
+        "spoiled": {
+          "silver": 0,
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meat": 0,
+          "carcass": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "herb": 0,
+          "apparel": 0,
+          "weapon": 0,
+          "furniture": 0,
+          "unfinished": 0
+        }
+      }
+    }
+  ]
+}
