@@ -242,7 +242,7 @@ describe('linked shelf storage gameplay', () => {
     const old = JSON.parse(bytes.toString()), original = structuredClone(old);
     expect(old.version).toBe(37); expect(old.storageGroups).toBeUndefined();
     const s = VoxelSimulation.load(old), saved = s.save();
-    expect(saved.version).toBe(38); expect(saved.storageGroups).toEqual([]); expect(old).toEqual(original);
+    expect(saved.version).toBe(39); expect(saved.storageGroups).toEqual([]); expect(old).toEqual(original);
     for (const key of ['blocks', 'ladders', 'items', 'stats', 'explored', 'generator', 'worldSite', 'seed', 'shelves'])
       expect((saved as any)[key], key).toEqual(old[key]);
     command(s, { type: 'designate', tool: 'smallShelf', from: pos(30, 29) });

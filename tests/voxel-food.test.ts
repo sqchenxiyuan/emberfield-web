@@ -442,7 +442,7 @@ describe('real harvested inputs, cooking and food persistence', () => {
     s.step(100);
     check();
   });
-  it('continues cooking after a target change without keeping the old reservation or inputs', () => {
+  it('keeps the active cooking batch and real inputs when the target is reduced', () => {
     const s = prepared(),
       oven = stove(s),
       audit = ledger(s);
@@ -453,10 +453,11 @@ describe('real harvested inputs, cooking and food persistence', () => {
       5000,
       audit,
     );
-    const id = s.jobs.find((j) => j.kind === 'cook')!.id,
+    const active = structuredClone(s.jobs.find((j) => j.kind === 'cook')!),
+      id = active.id,
       before = s.counts();
     bill(s, oven.id, 1);
-    expect(s.jobs.some((j) => j.id === id)).toBe(false);
+    expect(s.jobs.find((j) => j.id === id)).toEqual(active);
     expect(s.counts()).toEqual(before);
     until(s, () => s.counts().meal === 1 && !s.jobs.some((j) => j.kind === 'cook'), 5000, audit);
   });
@@ -548,7 +549,7 @@ describe('v1 voxel food migration', () => {
       loaded = VoxelSimulation.load(legacy),
       before = s.counts();
     expect(legacy).toEqual(untouched);
-    expect(loaded.save().version).toBe(38);
+    expect(loaded.save().version).toBe(39);
     expect(loaded.farms).toEqual([]);
     expect(loaded.crops).toEqual([]);
     expect(loaded.stoves).toEqual([]);

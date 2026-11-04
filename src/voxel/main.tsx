@@ -32,11 +32,10 @@ import { SkillPanel, WorkSkill } from './SkillPanel';
 import { ResearchPanel, ResearchBenchPanel } from './ResearchPanel';
 import { RESEARCH_DEFS, toolResearchReason } from './research';
 import { ApparelPanel, WearApparel } from './ApparelPanel';
-import { TailorPanel } from './TailorPanel';
-import { ArmorBenchPanel } from './ArmorPanel';
+import { ProductionBillsPanel } from './ProductionBillsPanel';
 import { CombatPanel, ThreatControl, storyOpportunityText } from './CombatPanel';
 import { TradePanel, TraderInspector } from './TradePanel';
-import { WeaponPanel, WeaponBenchPanel, EquipWeapon } from './WeaponPanel';
+import { WeaponPanel, EquipWeapon } from './WeaponPanel';
 import { weaponName } from './weapons';
 import { WEAPON_BENCH_NAMES } from './weaponProduction';
 import { APPAREL_NAMES } from './apparel';
@@ -52,7 +51,6 @@ import {
   bedCells,
   deviceCells,
   stonecutterCells,
-  stonecutterInteraction,
   tailorCells,
   researchBenchCells,
   weaponBenchCells,
@@ -1327,122 +1325,16 @@ function App() {
             )}
           </div>
         )}
-        {stove && (
-          <div className="voxel-bill">
-            <p>
-              10 生肉或谷物 + 1 木材 → 1 简餐
-              <br />
-              全营地简餐低于目标时制作，含在制数量。优先使用易坏的肉，可与谷物混合配料。
-            </p>
-            <small data-testid="kitchen-sanitation-note">保持厨房清洁并安排合适的厨师，可降低烹饪风险。查看上方房间洁净度，把厨房划入家园范围并开启清洁分工。</small>
-            <label>
-              库存目标
-              <select
-                aria-label="简餐库存目标"
-                value={stove.target}
-                onChange={(e) =>
-                  void client.command({
-                    type: 'bill',
-                    stoveId: stove.id,
-                    target: Number(e.target.value),
-                    paused: stove.paused,
-                  })
-                }
-              >
-                {[...new Set([0, 1, 5, 10, 20, 40, stove.target])]
-                  .sort((a, b) => a - b)
-                  .map((n) => (
-                    <option key={n} value={n}>
-                      {n} 份
-                    </option>
-                  ))}
-              </select>
-            </label>
-            <button
-              onClick={() =>
-                void client.command({
-                  type: 'bill',
-                  stoveId: stove.id,
-                  target: stove.target,
-                  paused: !stove.paused,
-                })
-              }
-            >
-              {stove.paused ? '恢复烹饪' : '暂停烹饪'}
-            </button>
-          </div>
-        )}
-        {butcherSpot && <section className="voxel-bill" data-testid="butcher-bill">
-          <b>{butcherSpot.paused ? '屠宰已暂停' : '自动屠宰已开启'}</b>
-          <p>开启烹饪分工的殖民者会取来可达的完整尸体，在这里加工成生肉。请留出附近落地空间。</p>
-          <button onClick={() => void client.command({ type: 'butcherBill', spotId: butcherSpot.id, paused: !butcherSpot.paused })}>{butcherSpot.paused ? '恢复屠宰' : '暂停屠宰'}</button>
-          <small>暂停会取消当前加工并安全退回尸体；空间被堵时，尸体保留在任务中等待。</small>
-        </section>}
+        {stove && s && <ProductionBillsPanel key={stove.id} benchId={stove.id} snapshot={s} command={c => void client.command(c)} />}
+        {butcherSpot && s && <ProductionBillsPanel key={butcherSpot.id} benchId={butcherSpot.id} snapshot={s} command={c => void client.command(c)} />}
         {horseshoePin && <section className="voxel-bill" data-testid="horseshoe-detail">
           <b>马蹄铁投掷</b>
           <p>殖民者会走到木桩两格外投掷，中间一格需要保持畅通。可在人物面板安排娱乐，或把作息时段设为娱乐。</p>
           <small>{s?.pawns.filter(v => v.psyche.recreation?.spotId === horseshoePin.id).map(v => `${v.name} · ${v.reason}`).join('；') || '当前无人使用。保留周围空地与通路。'}</small>
           <small>重复同一种活动会积累耐受，减少娱乐收益；也可进行户外散步。</small>
         </section>}
-        {stonecutter && (
-          <div className="voxel-bill" data-testid="stonecutting-bill">
-            <p>
-              1 花岗岩块 → 20 花岗岩砖
-              <br />
-              全营地石砖低于目标时加工，计入正在加工的批次；每批可能超过目标。修改目标后当前批次继续完成，下一批按新目标判断。
-            </p>
-            <label>
-              石砖库存目标
-              <select
-                aria-label="石砖库存目标"
-                value={stonecutter.target}
-                onChange={(e) =>
-                  void client.command({
-                    type: 'stoneBill',
-                    stonecutterId: stonecutter.id,
-                    target: Number(e.target.value),
-                    paused: stonecutter.paused,
-                  })
-                }
-              >
-                {[...new Set([0, 20, 40, 75, 100, 200, 500, stonecutter.target])]
-                  .sort((a, b) => a - b)
-                  .map((n) => (
-                    <option key={n} value={n}>
-                      {n} 块
-                    </option>
-                  ))}
-              </select>
-            </label>
-            <button
-              onClick={() =>
-                void client.command({
-                  type: 'stoneBill',
-                  stonecutterId: stonecutter.id,
-                  target: stonecutter.target,
-                  paused: !stonecutter.paused,
-                })
-              }
-            >
-              {stonecutter.paused ? '恢复切石' : '暂停切石'}
-            </button>
-            <small>
-              需要「加工」工作与可达操作位：{stonecutterInteraction(stonecutter).x},{' '}
-              {stonecutterInteraction(stonecutter).y} · Z {stonecutter.z}。每次只搬 1
-              岩块，完成后石砖落在附近。
-            </small>
-          </div>
-        )}
-        {tailor && s && (
-          <TailorPanel
-            key={tailor.id}
-            tailor={tailor}
-            snapshot={s}
-            update={(kind, target, paused) =>
-              void client.command({ type: 'tailorBill', tailorId: tailor.id, kind, target, paused })
-            }
-          />
-        )}
+        {stonecutter && s && <ProductionBillsPanel key={stonecutter.id} benchId={stonecutter.id} snapshot={s} command={c => void client.command(c)} />}
+        {tailor && s && <ProductionBillsPanel key={tailor.id} benchId={tailor.id} snapshot={s} command={c => void client.command(c)} />}
         {researchBench && s && (
           <ResearchBenchPanel
             bench={researchBench}
@@ -1450,22 +1342,7 @@ function App() {
             openResearch={() => { setResearchOpen(true); setSanitationOpen(false); setFireOpen(false); }}
           />
         )}
-        {weaponBench && s && (
-          <WeaponBenchPanel
-            key={weaponBench.id}
-            bench={weaponBench}
-            snapshot={s}
-            command={(c) => void client.command(c)}
-          />
-        )}
-        {weaponBench?.kind === 'smithy' && s && (
-          <ArmorBenchPanel
-            key={`armor-${weaponBench.id}`}
-            bench={weaponBench}
-            snapshot={s}
-            command={(c) => void client.command(c)}
-          />
-        )}
+        {weaponBench && s && <ProductionBillsPanel key={weaponBench.id} benchId={weaponBench.id} snapshot={s} command={c => void client.command(c)} />}
         {items.map((i) => (
           <div className="voxel-item-detail" key={i.id} data-testid="item-detail">
             <div className="voxel-info-row">

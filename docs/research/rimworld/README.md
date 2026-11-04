@@ -6,6 +6,8 @@
 
 | 文档 | 回答的问题 |
 |---|---|
+| [119 生产账单玩法与验证](119-production-bills-gameplay.md) | 次数/持续/目标库存、同配方多单、顺序、实际加工与暂停退料如何连接？ |
+| [118 原版生产账单机制](118-production-bills-mechanisms.md) | BillStack、完成计次、库存计数、迟滞和在制品有哪些规则与边界？ |
 | [117 储存组玩法与验证](117-storage-groups-gameplay.md) | 蓝图联动、共享筛选转运、打包编辑、搬装读档与解除独立如何衔接？ |
 | [116 原版储存组机制](116-storage-groups-mechanisms.md) | 来源设置、成员迁移、蓝图/框架/成品与卸装怎样保持组关系？ |
 | [115 通行成本与绕行](115-weighted-navigation-gameplay.md) | 原版货架绕行的实际记录；Web 加权路径、堵路恢复、普通移动读档及多层边界 |

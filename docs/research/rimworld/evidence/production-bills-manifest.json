@@ -1,0 +1,43 @@
+{
+  "evidence_id": "RW17-PRODUCTION-BILLS",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.BillStack",
+      "local_file": ".local-research/production-bills/RimWorld.BillStack.cs",
+      "sha256": "9f435cbff0aa2793e0f6596b952d7e7fefaf22ad26195d46da04a5e1306c1f14",
+      "lines": 175
+    },
+    {
+      "type": "RimWorld.Dialog_BillConfig",
+      "local_file": ".local-research/production-bills/RimWorld.Dialog_BillConfig.cs",
+      "sha256": "b9edc70a35d57fa5abfc5494dcee784a20d2a5bcd559b3a8f92a5ac7563cba74",
+      "lines": 605
+    },
+    {
+      "type": "RimWorld.BillRepeatModeUtility",
+      "local_file": ".local-research/production-bills/RimWorld.BillRepeatModeUtility.cs",
+      "sha256": "a2f0528973116a1f051ff10a2be69b101f17c6abc8aa65cb7dc97946b31a680c",
+      "lines": 34
+    },
+    {
+      "type": "RimWorld.Bill_ProductionWithUft",
+      "local_file": ".local-research/production-bills/RimWorld.Bill_ProductionWithUft.cs",
+      "sha256": "0a33089036c5c215241295e1b158d419b1e1574e8799b2a5a306cab785c4df05",
+      "lines": 117
+    }
+  ]
+}

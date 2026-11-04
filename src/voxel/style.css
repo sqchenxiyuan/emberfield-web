@@ -1968,3 +1968,34 @@ a {
 .voxel-tool-hint:has([data-testid="furniture-placement-cancel"]) > small { display: none; }
 .voxel-tool-hint:has([data-testid="furniture-placement-cancel"]) [data-testid="placement-preview-info"] { display: inline; }
 .voxel-tool-hint:has([data-testid="furniture-placement-cancel"]) > .voxel-placement-error { display: block; flex: 1 1 100%; font-size: 11px; }
+
+.voxel-production-bills { margin: 12px 0; min-width: 0; overflow-wrap: anywhere; }
+.voxel-production-heading,
+.voxel-production-row-title { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.voxel-production-heading > span { flex-shrink: 0; font-size: 11px; color: #c7c7a7; }
+.voxel-production-bills small { display: block; margin: 6px 0; font-size: 10px; line-height: 1.6; color: #b4c5b7; }
+.voxel-production-bills label { gap: 8px; }
+.voxel-production-bills select { min-width: 0; max-width: 170px; flex: 1; }
+.voxel-production-bills input[type='number'] { box-sizing: border-box; width: 85px; min-width: 0; padding: 6px; }
+.voxel-production-add { padding: 8px 0 12px; margin-bottom: 12px; border-bottom: 1px solid #d5deca33; }
+.voxel-production-add > label { display: grid; justify-content: stretch; gap: 5px; }
+.voxel-production-add select { width: 100%; max-width: none; }
+.voxel-production-list { list-style: none; padding: 0; margin: 0; }
+.voxel-production-row { margin: 10px 0; padding: 10px; border: 1px solid #6d7e6777; border-radius: 4px; background: #17272766; }
+.voxel-production-row[data-bill-state='active'] { border-color: #b7a56399; }
+.voxel-production-row[data-bill-state='suspended'],
+.voxel-production-row[data-bill-state='completed'] { background: #19212388; }
+.voxel-production-row-title { font-size: 11px; line-height: 1.5; }
+.voxel-production-row-title > span { color: #b8c9b2; text-align: right; max-width: 48%; }
+.voxel-production-row[data-bill-state='active'] .voxel-production-row-title > span { color: #e5ca86; }
+.voxel-production-order { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; margin: 8px 0; }
+.voxel-production-order button { padding: 5px 2px; font-size: 10px; }
+.voxel-production-row .voxel-production-check { justify-content: flex-start; align-items: flex-start; gap: 7px; line-height: 1.5; }
+.voxel-production-check input { width: 14px; height: 14px; margin: 2px 0 0; flex-shrink: 0; accent-color: #dbbe7d; }
+.voxel-production-progress { margin: 10px 0; }
+.voxel-production-progress > div { display: flex; justify-content: space-between; gap: 8px; font-size: 11px; }
+.voxel-production-progress progress { width: 100%; height: 6px; accent-color: #c9b475; }
+.voxel-production-bills .voxel-production-research { color: #dfc49d; }
+.voxel-production-recipe summary,
+.voxel-production-help summary { margin-top: 10px; cursor: pointer; font-size: 11px; color: #c6d1c0; }
+.voxel-production-help { margin-top: 12px; padding-top: 6px; border-top: 1px solid #d5deca33; }

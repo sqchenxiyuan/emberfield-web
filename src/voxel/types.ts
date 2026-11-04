@@ -582,6 +582,8 @@ export type JobKind =
   | 'door'
   | 'cook';
 export interface Job extends Pos {
+  /** Stable production order identity; absent only for migrated legacy jobs. */
+  billId?: string;
   /** Independent settings before construction, overridden while linked. */
   storageSettings?: StorageSettings;
   cookingOutcome?: CookingOutcome;
@@ -769,6 +771,7 @@ export interface VoxelStats {
   spoiled: Counts;
 }
 export interface VoxelSnapshot {
+  productionQueues: import('./productionBills').ProductionQueue[];
   socialHistory: SocialIdentity[];
   socialLog: SocialEvent[];
   tables: DiningTable[];
@@ -860,6 +863,10 @@ export interface ChunkUpdate {
   explored: Uint8Array;
 }
 export type VoxelCommand =
+  | { type: 'productionBillAdd'; benchId: number; recipe: import('./productionBills').ProductionRecipe }
+  | { type: 'productionBillUpdate'; benchId: number; billId: string; patch: Partial<Pick<import('./productionBills').ProductionBill, 'mode' | 'remaining' | 'target' | 'suspended' | 'pauseWhenSatisfied' | 'resumeBelow'>> }
+  | { type: 'productionBillMove'; benchId: number; billId: string; direction: -1 | 1 }
+  | { type: 'productionBillDelete'; benchId: number; billId: string }
   | { type: 'shelfStorage'; shelfId: number; priority: number; accepts: Resource[] }
   | { type: 'shelfLink'; sourceId: number; memberIds: number[] }
   | { type: 'shelfUnlink'; shelfId: number }
@@ -945,6 +952,7 @@ export interface CommandResult {
   count?: number;
 }
 export interface VoxelSave {
+  productionQueues: import('./productionBills').ProductionQueue[];
   shelves: Shelf[];
   storageGroups: StorageGroup[];
   storageSpills: StorageSpill[];
@@ -967,7 +975,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 38;
+  version: 39;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;

@@ -1,0 +1,7 @@
+{
+  "version": 38,
+  "sha256": "35b0b4278eb80aa0564f3c45c166196575f864824fa622fbec7e96a20b47acc7",
+  "source": "test-results/voxel-storage-groups-campaign/final.json",
+  "sourceCommit": "a64e7506ecc6b8034f88e0a5fc693e0168f9627a",
+  "scope": "Unchanged ordinary-command storage-group campaign final checkpoint from preceding v38 release; original bytes copied, no state editing."
+}

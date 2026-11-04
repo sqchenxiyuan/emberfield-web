@@ -515,7 +515,13 @@ function decode(raw: unknown, max: number): Uint8Array<ArrayBuffer> {
   return out;
 }
 
+import { defaultProductionQueue, productionQueues, productionJobRecipe, canStartProduction,
+  finishProductionBill, makeProductionBill, recipeAllowed, validateProductionQueues,
+  type ProductionBill, type ProductionQueue, type ProductionRecipe } from './productionBills';
+
 export class VoxelSimulation {
+  /** Sparse overrides: untouched legacy recipes retain their published defaults. */
+  productionQueues: ProductionQueue[] = [];
   weather: WeatherState;
   snow: SnowCover[] = [];
   private weatherRoof = new Uint8Array(WIDTH * DEPTH);
@@ -1866,6 +1872,182 @@ export class VoxelSimulation {
     job.cost = { wood: SIMPLE_MEAL.wood, ...(meat ? { meat } : {}),
       ...(meat < SIMPLE_MEAL.ingredients ? { grain: SIMPLE_MEAL.ingredients - meat } : {}) };
   }
+  private productionBenches() {
+    return [...this.stoves, ...this.butcherSpots, ...this.stonecutters, ...this.tailors, ...this.weaponBenches];
+  }
+  private productionQueue(benchId: number) {
+    return this.productionQueues.find(q => q.benchId === benchId) ?? defaultProductionQueue(this, benchId);
+  }
+  private productionBillFor(j: Job) {
+    const recipe = productionJobRecipe(j);
+    const bench = recipe && this.productionBenches().find(b => same(b, j));
+    if (!bench) return undefined;
+    const bills = this.productionQueue(bench.id)?.bills ?? [];
+    return j.billId ? bills.find(b => b.id === j.billId && b.recipe === recipe)
+      : bills.find(b => b.recipe === recipe);
+  }
+  private productionCommand(c: Extract<VoxelCommand, { type: 'productionBillAdd' | 'productionBillUpdate' | 'productionBillMove' | 'productionBillDelete' }>): CommandResult {
+    const original = this.productionQueue(c.benchId);
+    if (!original) return { ok: false, message: '工作台不存在' };
+    const queue = structuredClone(original);
+    if (c.type === 'productionBillAdd') {
+      if (queue.bills.length >= 32 || !recipeAllowed(this, c.benchId, c.recipe))
+        return { ok: false, message: '工作台不支持此配方，或账单已达32张' };
+      queue.bills.push(makeProductionBill(`bill:${this.nextId}`, c.recipe));
+    } else {
+      const at = queue.bills.findIndex(b => b.id === c.billId);
+      if (at < 0) return { ok: false, message: '账单已不存在' };
+      if (c.type === 'productionBillDelete') queue.bills.splice(at, 1);
+      else if (c.type === 'productionBillMove') {
+        if ((c.direction !== -1 && c.direction !== 1) || !queue.bills[at + c.direction])
+          return { ok: false, message: '账单已在队列边缘' };
+        [queue.bills[at], queue.bills[at + c.direction]] = [queue.bills[at + c.direction], queue.bills[at]];
+      } else {
+        const patch = c.patch;
+        if (!patch || typeof patch !== 'object' || Array.isArray(patch) || Object.keys(patch).some(k =>
+          !['mode', 'remaining', 'target', 'suspended', 'pauseWhenSatisfied', 'resumeBelow'].includes(k)))
+          return { ok: false, message: '账单设置无效' };
+        Object.assign(queue.bills[at], patch);
+        if (queue.bills[at].mode !== 'target' || !queue.bills[at].pauseWhenSatisfied)
+          queue.bills[at].waiting = false;
+      }
+    }
+    const overrides = [...this.productionQueues.filter(q => q.benchId !== c.benchId), queue];
+    try { validateProductionQueues(overrides, this, this.nextId + (c.type === 'productionBillAdd' ? 1 : 0), []); }
+    catch { return { ok: false, message: '账单数量、生产模式或恢复阈值无效' }; }
+    // Bind any in-flight legacy job before the queue changes, including deletion.
+    const bench = this.productionBenches().find(b => b.id === c.benchId)!;
+    for (const j of this.jobs) if (same(j, bench) && productionJobRecipe(j) && !j.billId)
+      j.billId = original.bills.find(b => b.recipe === productionJobRecipe(j))?.id;
+    this.productionQueues = overrides;
+    if (c.type === 'productionBillAdd') this.nextId++;
+    this.syncProduction();
+    this.revision++;
+    return { ok: true, message: c.type === 'productionBillDelete' ? '账单已删除；当前加工退料后结束' :
+      c.type === 'productionBillMove' ? '已调整生产顺序，当前批次继续完成' : '生产账单已更新' };
+  }
+  /** Old SDK commands address the first matching recipe; all later duplicates retain identity. */
+  private legacyProductionUpdate(benchId: number, recipe: ProductionRecipe, target: number | null, paused: boolean) {
+    const queue = this.productionQueues.find(q => q.benchId === benchId);
+    if (!queue) return;
+    let bill = queue.bills.find(b => b.recipe === recipe);
+    if (!bill) {
+      bill = makeProductionBill(`bill:${this.id()}`, recipe);
+      queue.bills.push(bill);
+    }
+    bill.mode = target === null ? 'forever' : 'target';
+    if (target !== null) bill.target = target;
+    bill.suspended = paused;
+    bill.waiting = false;
+    bill.pauseWhenSatisfied = false;
+    bill.resumeBelow = Math.min(bill.resumeBelow, bill.target);
+  }
+  private productionCount(recipe: ProductionRecipe) {
+    if (recipe === 'cook') return this.counts().meal;
+    if (recipe === 'stonecut') return this.counts().stone;
+    if (recipe === 'butcher') return this.counts().meat;
+    const kind = recipe.slice(recipe.indexOf(':') + 1);
+    return recipe.startsWith('smith:') ? this.weaponPieces().filter(p => p.kind === kind).length
+      : this.apparelPieces().filter(p => p.kind === kind).length;
+  }
+  private productionPreview(bench: Pos & {id:number}, bill: ProductionBill): Job {
+    const [kind, product] = bill.recipe.split(':');
+    const weaponBench = this.weaponBenches.find(b => b.id === bench.id);
+    const axis = 'axis' in bench ? bench.axis as Axis : 'x';
+    const before = this.nextId;
+    const j = this.makeJob(kind as JobKind, bench, axis, 'wood',
+      kind === 'tailoring' || kind === 'armorsmith' ? product as ApparelKind : undefined,
+      kind === 'smith' ? product as WeaponKind : undefined,
+      kind === 'smith' ? weaponBench!.kind : undefined);
+    this.nextId = before; // Previews reserve neither an identity nor any materials.
+    j.billId = bill.id;
+    if (j.kind === 'cook') this.chooseMealIngredients(j);
+    return j;
+  }
+  private productionFeasible(j: Job, replacing?: Job, worker?: Pawn): boolean {
+    const eligible = (worker ? [worker] : this.pawns).filter(p => p.faction === 'colony' && !p.dead &&
+      !p.downed && !p.drafted && p.carriedBy === null && p.psyche.breakUntil <= this.tick &&
+      p.priorities[workType(j.kind)] > 0 && !this.skillFailure(p, j));
+    if (!eligible.length) return false;
+    const inputs = Object.entries(j.cost).map(([resource, amount]) => {
+      const r = resource as Resource;
+      // Waiting jobs do not reserve hypothetical stock against one another.
+      // Count only jobs actually owned by a worker, excluding inputs already carried.
+      const committed = this.jobs.filter(k => k !== j && k !== replacing && !k.cancelled && k.owner !== null)
+        .reduce((n, k) => {
+          const owner = this.pawns.find(p => p.id === k.owner);
+          const carried = owner?.jobId === k.id && owner.cargo?.resource === r ? owner.cargo.amount : 0;
+          return n + Math.max(0, (k.cost[r] ?? 0) - (k.delivered[r] ?? 0) - carried);
+        }, 0);
+      const items = this.items.filter(i => i.resource === r && !i.forbidden && this.exploredAt(i) && this.acceptsJobCargo(j, i));
+      return { amount, items, free: items.reduce((n, i) => n + i.amount, 0) - committed };
+    });
+    if (inputs.some(input => input.free < input.amount)) return false;
+    return eligible.some(p => {
+      // assign() already searched from this worker. Scheduler probes are independent.
+      if (!worker) this.search(p);
+      if (this.reachableStand(j) < 0) return false;
+      return inputs.every(input => input.items.reduce((n, i) => n +
+        (this.reachableItemStand(i) >= 0 && !this.chunkReserved(i, p.id) ? this.availableStack(i, p.id) : 0), 0) >= input.amount);
+    });
+  }
+  private scheduleProduction() {
+    const benches = this.productionBenches();
+    const completed = new Map<ProductionRecipe, number>();
+    const pending = new Map<ProductionRecipe, number>();
+    const output = (j: Job) => j.kind === 'cook' ? SIMPLE_MEAL.output : j.kind === 'stonecut' ? STONECUTTING.output :
+      j.kind === 'butcher' ? (() => {
+        const carcass = j.deliveredBatches.find(b => b.carcass)?.carcass;
+        return carcass ? ANIMAL_DEFS[carcass.species].meat : Math.min(...Object.values(ANIMAL_DEFS).map(a => a.meat));
+      })() : 1;
+    const track = (j: Job, sign: number) => {
+      const recipe = productionJobRecipe(j);
+      if (recipe && !j.cancelled) pending.set(recipe, (pending.get(recipe) ?? 0) + sign * output(j));
+    };
+    for (const j of this.jobs) track(j, 1);
+    this.productionQueues = this.productionQueues.filter(q => benches.some(b => b.id === q.benchId));
+    for (const bench of benches) {
+      const queue = this.productionQueue(bench.id)!;
+      // Update the hysteresis from physical stock even while this bench is busy.
+      const desired = queue.bills.filter(b => {
+        if (!completed.has(b.recipe)) completed.set(b.recipe, this.productionCount(b.recipe));
+        return canStartProduction(b, completed.get(b.recipe)!, pending.get(b.recipe) ?? 0);
+      });
+      if (this.jobs.length >= 512) continue;
+      const weaponBench = this.weaponBenches.find(b => b.id === bench.id);
+      if (weaponBench?.kind === 'smithy' && weaponBench.fuel <= SMITHY_REFUEL_AT &&
+        !this.jobs.some(j => same(j, bench) && j.kind === 'refuel')) {
+        const j = this.makeJob('refuel', bench);
+        j.cost = { wood: Math.ceil(SMITHY_FUEL_CAPACITY - weaponBench.fuel) };
+        this.jobs.push(j);
+      }
+      const existing = this.jobs.find(j => same(j, bench) && j.kind !== 'refuel');
+      // Never replace materials, partial work, owned jobs, or cancelled refund containers.
+      if (existing && (!productionJobRecipe(existing) || existing.cancelled || existing.owner !== null ||
+        existing.progress > 0 || Object.values(existing.delivered).some(n => n! > 0))) continue;
+      if (existing && this.productionFeasible(existing)) continue;
+      let fallback: Job | undefined, selected: Job | undefined;
+      for (const bill of desired) {
+        const j = existing?.billId === bill.id ? existing : this.productionPreview(bench, bill);
+        if (j.kind === 'smith' && weaponResearchReason(this.research,j.weaponKind!)) continue;
+        if (j.kind === 'armorsmith' && armorResearchReason(this.research,j.apparelKind!)) continue;
+        if (j.kind === 'butcher' && this.counts().carcass <= 0) continue;
+        fallback ??= j;
+        if (this.productionFeasible(j, existing)) { selected = j; break; }
+      }
+      // An already selected batch continues after target/mode changes.
+      selected ??= existing ?? fallback;
+      if (selected === existing || !selected) continue;
+      if (existing) {
+        track(existing, -1);
+        if (!this.cancel(existing)) { track(existing, 1); continue; }
+      }
+      if (this.jobs.length >= 512) continue;
+      selected.id = this.id();
+      this.jobs.push(selected);
+      track(selected, 1);
+    }
+  }
   private syncProduction() {
     for (const j of [...this.jobs])
       if (j.kind === 'research' && (!this.supported(j) || j.cancelled)) this.cancel(j);
@@ -1890,33 +2072,9 @@ export class VoxelSimulation {
       )
         this.cancel(j);
       if (j.kind === 'cut' && !this.trees.some((t) => same(t, j))) this.cancel(j);
-      if (j.kind === 'cook' && !this.stoves.some((v) => same(v, j) && !v.paused)) this.cancel(j);
-      if (j.kind === 'butcher' && !this.butcherSpots.some(b => same(b, j) && !b.paused)) this.cancel(j);
+      if (productionJobRecipe(j) && !this.supported(j)) this.cancel(j);
       if (j.kind === 'cook' && !j.cancelled && j.owner === null && !(j.delivered.grain || j.delivered.meat))
         this.chooseMealIngredients(j);
-      if (j.kind === 'stonecut' && !this.stonecutters.some((b) => same(b, j) && !b.paused))
-        this.cancel(j);
-      if (
-        j.kind === 'tailoring' &&
-        !this.tailors.some(
-          (b) => same(b, j) && b.bills.some((bill) => bill.kind === j.apparelKind && !bill.paused),
-        )
-      )
-        this.cancel(j);
-      if (
-        j.kind === 'smith' &&
-        !this.weaponBenches.some(
-          (b) => same(b, j) && b.bills.some((v) => v.kind === j.weaponKind && !v.paused),
-        )
-      )
-        this.cancel(j);
-      if (
-        j.kind === 'armorsmith' &&
-        !this.weaponBenches.some(
-          (b) => same(b, j) && b.armorBills.some((v) => v.kind === j.apparelKind && !v.paused),
-        )
-      )
-        this.cancel(j);
       if (
         j.kind === 'refuel' &&
         !this.devices.some((d) => d.kind === 'generator' && same(d, j)) &&
@@ -1947,107 +2105,7 @@ export class VoxelSimulation {
         continue;
       if (!this.treeSiteReason(plot, plot.species)) this.jobs.push(this.makeJob('plantTree', plot));
     }
-    let meals =
-      this.counts().meal + this.jobs.filter((j) => j.kind === 'cook').length * SIMPLE_MEAL.output;
-    for (const stove of this.stoves) {
-      if (
-        this.jobs.length >= 512 ||
-        stove.paused ||
-        meals >= stove.target ||
-        this.jobs.some((j) => same(j, stove))
-      )
-        continue;
-      const job = this.makeJob('cook', stove);
-      this.chooseMealIngredients(job);
-      this.jobs.push(job);
-      meals += SIMPLE_MEAL.output;
-    }
-    let carcasses = this.counts().carcass - this.jobs.filter(j => j.kind === 'butcher').length;
-    for (const spot of this.butcherSpots) {
-      if (this.jobs.length >= 512 || spot.paused || carcasses <= 0 || this.jobs.some(j => same(j, spot))) continue;
-      this.jobs.push(this.makeJob('butcher', spot)); carcasses--;
-    }
-    let stone =
-      this.counts().stone +
-      this.jobs.filter((j) => j.kind === 'stonecut' && !j.cancelled).length * STONECUTTING.output;
-    for (const bench of this.stonecutters) {
-      if (
-        this.jobs.length >= 512 ||
-        bench.paused ||
-        stone >= bench.target ||
-        this.jobs.some((j) => same(j, bench))
-      )
-        continue;
-      this.jobs.push(this.makeJob('stonecut', bench));
-      stone += STONECUTTING.output;
-    }
-    const apparelCounts = Object.fromEntries(
-      APPAREL_KINDS.map((kind) => [
-        kind,
-        this.apparelPieces().filter((p) => p.kind === kind).length +
-          this.jobs.filter(
-            (j) =>
-              (j.kind === 'tailoring' || j.kind === 'armorsmith') &&
-              !j.cancelled &&
-              j.apparelKind === kind,
-          ).length,
-      ]),
-    ) as Record<ApparelKind, number>;
-    for (const bench of this.tailors) {
-      if (this.jobs.length >= 512 || this.jobs.some((j) => same(j, bench))) continue;
-      const bill = bench.bills.find((b) => !b.paused && apparelCounts[b.kind] < b.target);
-      if (!bill) continue;
-      this.jobs.push(this.makeJob('tailoring', bench, bench.axis, 'wood', bill.kind));
-      apparelCounts[bill.kind]++;
-    }
-    const weaponCounts = Object.fromEntries(
-      WEAPON_KINDS.map((kind) => [
-        kind,
-        this.weaponPieces().filter((w) => w.kind === kind).length +
-          this.jobs.filter((j) => j.kind === 'smith' && !j.cancelled && j.weaponKind === kind)
-            .length,
-      ]),
-    ) as Record<WeaponKind, number>;
-    for (const bench of this.weaponBenches) {
-      if (
-        this.jobs.length >= 512 ||
-        this.jobs.some((j) => same(j, bench) && !['smith', 'armorsmith', 'refuel'].includes(j.kind))
-      )
-        continue;
-      if (
-        bench.kind === 'smithy' &&
-        !this.jobs.some((j) => same(j, bench) && j.kind === 'refuel') &&
-        bench.fuel <= SMITHY_REFUEL_AT
-      ) {
-        const job = this.makeJob('refuel', bench);
-        job.cost = { wood: Math.ceil(SMITHY_FUEL_CAPACITY - bench.fuel) };
-        this.jobs.push(job);
-      }
-      if (this.jobs.some((j) => same(j, bench) && (j.kind === 'smith' || j.kind === 'armorsmith')))
-        continue;
-      const bill = bench.bills.find(
-        (b) =>
-          !b.paused &&
-          !weaponResearchReason(this.research, b.kind) &&
-          weaponCounts[b.kind] < b.target,
-      );
-      if (bill) {
-        this.jobs.push(
-          this.makeJob('smith', bench, bench.axis, 'wood', undefined, bill.kind, bench.kind),
-        );
-        weaponCounts[bill.kind]++;
-      } else {
-        const armor = bench.armorBills.find(
-          (b) =>
-            !b.paused &&
-            !armorResearchReason(this.research, b.kind) &&
-            apparelCounts[b.kind] < b.target,
-        );
-        if (!armor) continue;
-        this.jobs.push(this.makeJob('armorsmith', bench, bench.axis, 'wood', armor.kind));
-        apparelCounts[armor.kind]++;
-      }
-    }
+    this.scheduleProduction();
     for (const d of this.devices) {
       if (
         d.kind !== 'generator' ||
@@ -2112,6 +2170,17 @@ export class VoxelSimulation {
     return result;
   }
   private applyCommand(c: VoxelCommand): CommandResult {
+    if (c.type === 'productionBillAdd' || c.type === 'productionBillUpdate' || c.type === 'productionBillMove' || c.type === 'productionBillDelete')
+      return this.productionCommand(c);
+    const legacy = c.type === 'bill' ? { id: c.stoveId, recipe: 'cook' } :
+      c.type === 'stoneBill' ? { id: c.stonecutterId, recipe: 'stonecut' } :
+      c.type === 'butcherBill' ? { id: c.spotId, recipe: 'butcher' } :
+      c.type === 'tailorBill' ? { id: c.tailorId, recipe: `tailoring:${c.kind}` } :
+      c.type === 'weaponBill' ? { id: c.benchId, recipe: `smith:${c.kind}` } :
+      c.type === 'armorBill' ? { id: c.benchId, recipe: `armorsmith:${c.kind}` } : null;
+    const configured = legacy && this.productionQueues.find(q => q.benchId === legacy.id);
+    if (configured && configured.bills.length >= 32 && !configured.bills.some(b => b.recipe === legacy!.recipe))
+      return { ok: false, message: '该工作台已达32张账单，请先删除一张' };
     if (c.type === 'uninstallFurniture' || c.type === 'installFurniture' || c.type === 'cancelFurnitureMove')
       return this.relocationCommand(c);
     if (c.type === 'fireHazards') {
@@ -2211,7 +2280,7 @@ export class VoxelSimulation {
       const spot = this.butcherSpots.find(b => b.id === c.spotId);
       if (!spot || typeof c.paused !== 'boolean') return { ok: false, message: '屠宰点或开关无效' };
       spot.paused = c.paused;
-      if (spot.paused) for (const j of [...this.jobs]) if (j.kind === 'butcher' && same(j, spot)) this.cancel(j);
+      this.legacyProductionUpdate(spot.id, 'butcher', null, c.paused);
       this.syncProduction();
       return { ok: true, message: spot.paused ? '屠宰已暂停，尸体原样退回；无空间时保留在任务内' : '屠宰已开启，将自动加工可达的新鲜动物尸体' };
     }
@@ -2256,10 +2325,7 @@ export class VoxelSimulation {
       if (reason) return { ok: false, message: reason };
       bill.target = c.target;
       bill.paused = c.paused;
-      if (c.paused)
-        for (const job of [...this.jobs])
-          if (job.kind === 'armorsmith' && same(job, bench) && job.apparelKind === c.kind)
-            this.cancel(job);
+      this.legacyProductionUpdate(bench.id, `armorsmith:${c.kind}`, c.target, c.paused);
       this.syncProduction();
       return {
         ok: true,
@@ -2282,10 +2348,7 @@ export class VoxelSimulation {
       if (reason) return { ok: false, message: reason };
       bill.target = c.target;
       bill.paused = c.paused;
-      if (c.paused)
-        for (const job of [...this.jobs])
-          if (job.kind === 'smith' && same(job, bench) && job.weaponKind === c.kind)
-            this.cancel(job);
+      this.legacyProductionUpdate(bench.id, `smith:${c.kind}`, c.target, c.paused);
       this.syncProduction();
       return { ok: true, message: c.paused ? '已暂停配方，已运原料会退回' : '武器制作目标已更新' };
     }
@@ -2605,8 +2668,8 @@ export class VoxelSimulation {
       )
         return { ok: false, message: '简餐目标需为 0–100 的整数' };
       Object.assign(stove, { target: c.target, paused: c.paused });
-      // Restart this stove's reservation when the target changes, refunding all delivered inputs.
-      for (const j of [...this.jobs]) if (j.kind === 'cook' && same(j, stove)) this.cancel(j);
+      this.legacyProductionUpdate(stove.id, 'cook', c.target, c.paused);
+      // Target changes affect the next batch; suspension returns current inputs.
       this.syncProduction();
       return {
         ok: true,
@@ -2627,7 +2690,7 @@ export class VoxelSimulation {
       const bench = this.tailors.find((b) => b.id === c.tailorId);
       if (
         !bench ||
-        !Object.hasOwn(APPAREL_DEFS, c.kind) ||
+        !bench.bills.some(b => b.kind === c.kind) ||
         !Number.isInteger(c.target) ||
         c.target < 0 ||
         c.target > 100 ||
@@ -2637,10 +2700,7 @@ export class VoxelSimulation {
       const bill = bench.bills.find((b) => b.kind === c.kind)!;
       bill.target = c.target;
       bill.paused = c.paused;
-      if (c.paused)
-        for (const job of [...this.jobs])
-          if (job.kind === 'tailoring' && job.apparelKind === c.kind && same(job, bench))
-            this.cancel(job);
+      this.legacyProductionUpdate(bench.id, `tailoring:${c.kind}`, c.target, c.paused);
       this.syncProduction();
       return {
         ok: true,
@@ -2661,10 +2721,8 @@ export class VoxelSimulation {
         return { ok: false, message: '石砖目标需为 0～2000 的整数' };
       bench.target = c.target;
       bench.paused = c.paused;
+      this.legacyProductionUpdate(bench.id, 'stonecut', c.target, c.paused);
       // A target change only affects the next batch. Pausing interrupts this one.
-      if (bench.paused)
-        for (const job of [...this.jobs])
-          if (job.kind === 'stonecut' && same(job, bench)) this.cancel(job);
       this.syncProduction();
       return {
         ok: true,
@@ -5616,6 +5674,12 @@ export class VoxelSimulation {
     return undefined;
   }
   private supported(j: Job) {
+    if (productionJobRecipe(j)) {
+      const bill = this.productionBillFor(j);
+      return !!bill && !bill.suspended &&
+        !(j.kind === 'smith' && weaponResearchReason(this.research, j.weaponKind!)) &&
+        !(j.kind === 'armorsmith' && armorResearchReason(this.research, j.apparelKind!));
+    }
     if (j.kind === 'uninstall') return !!this.installedFurniture(j.furnitureKind!,j.furnitureId!);
     if (j.kind === 'install') return !this.placementReason(j.furnitureKind!,j,j.axis);
     if (isShelfKind(j.kind) || j.kind === 'table' || j.kind === 'chair') return !this.placementReason(j.kind,j,j.axis);
@@ -5660,14 +5724,14 @@ export class VoxelSimulation {
         (b) =>
           same(b, j) &&
           b.kind === j.weaponBenchKind &&
-          b.bills.some((v) => v.kind === j.weaponKind && !v.paused),
+          b.bills.some((v) => v.kind === j.weaponKind && (j.billId !== undefined || !v.paused)),
       );
     if (j.kind === 'armorsmith')
       return this.weaponBenches.some(
         (b) =>
           b.kind === 'smithy' &&
           same(b, j) &&
-          b.armorBills.some((bill) => bill.kind === j.apparelKind && !bill.paused),
+          b.armorBills.some((bill) => bill.kind === j.apparelKind && (j.billId !== undefined || !bill.paused)),
       );
     if (j.kind === 'tailoring')
       return this.tailors.some(
@@ -5808,6 +5872,11 @@ export class VoxelSimulation {
       }
       if (!this.supported(j)) {
         j.reason = '等待支撑或相邻梯子施工';
+        continue;
+      }
+      if (productionJobRecipe(j) && j.progress === 0 && !Object.values(j.delivered).some(n => n! > 0) &&
+        !this.productionFeasible(j, undefined, p)) {
+        j.reason = '本批材料尚未齐备，等待补料或其他可执行账单';
         continue;
       }
       const stand = this.reachableStand(j);
@@ -7071,6 +7140,8 @@ export class VoxelSimulation {
       this.stats.produced[resource as Resource] += n;
     }
     for (const r of resources) this.stats.consumed[r] += j.delivered[r] ?? 0;
+    const completedBill = this.productionBillFor(j);
+    if (completedBill) finishProductionBill(completedBill);
     if (
       (j.cost.wood && !['cook', 'refuel', 'smith', 'armorsmith', 'tailoring'].includes(j.kind)) ||
       (j.material === 'stone' && ['wall', 'floor'].includes(j.kind)) ||
@@ -7662,6 +7733,7 @@ export class VoxelSimulation {
       if (this.storagePriority(i) >= 0)
         stored[i.resource] += i.amount;
     return structuredClone({
+      productionQueues: productionQueues(this, this.productionQueues).filter(q => this.productionBenches().some(b => b.id === q.benchId && visible(b))),
       socialHistory: this.socialHistory, socialLog: this.socialLog,
       weather: { ...this.weather, effects: weatherEffects(this.weather, this.tick) },
       environment: this.environmentView(),
@@ -7758,7 +7830,8 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 38,
+      version: 39,
+      productionQueues: this.productionQueues.filter(q => this.productionBenches().some(b => b.id === q.benchId)),
       socialHistory: this.socialHistory, socialLog: this.socialLog,
       weather: this.weather, snow: this.snow,
       fires: this.fires, fireDamage: this.fireDamage, fireHazards: this.fireHazards, fireLog: this.fireLog,
@@ -7815,7 +7888,7 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : [1, 2, 3]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
@@ -8177,7 +8250,12 @@ export class VoxelSimulation {
     if (sourceVersion < 35) old.worldSite = null;
     migrateShelves(old,sourceVersion);
     migrateStorageGroups(old,sourceVersion);
-    old.version = 38;
+    if (sourceVersion < 39) {
+      if (old.productionQueues !== undefined || old.jobs?.some((j: any) => j.billId !== undefined))
+        throw new Error('旧版存档混入生产账单字段');
+      old.productionQueues = [];
+    }
+    old.version = 39;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -8689,7 +8767,7 @@ export class VoxelSimulation {
                 (b) =>
                   same(b, j) &&
                   b.kind === j.weaponBenchKind &&
-                  b.bills.some((v) => v.kind === j.weaponKind && !v.paused),
+                  b.bills.some((v) => v.kind === j.weaponKind && (j.billId !== undefined || !v.paused)),
               ))
           : j.weaponKind !== undefined || j.weaponBenchKind !== undefined
       )
@@ -8797,7 +8875,7 @@ export class VoxelSimulation {
                 : (costOf(j.kind, j.material, j.apparelKind, j.weaponKind, j.weaponBenchKind)[r] ??
                   0)) || (j.delivered[r] ?? 0) > (j.cost[r] ?? 0),
         ) ||
-        (!j.cancelled && j.kind === 'butcher' && !d.butcherSpots.some(s => same(s, j) && !s.paused)) ||
+        (!j.cancelled && j.kind === 'butcher' && !d.butcherSpots.some(s => same(s, j) && (j.billId !== undefined || !s.paused))) ||
         (!j.cancelled && j.kind === 'cook' && !d.stoves.some((s) => same(s, j))) ||
         (!j.cancelled && j.kind === 'stonecut' && !d.stonecutters.some((b) => same(b, j))) ||
         (!j.cancelled && j.kind === 'tailoring' && !d.tailors.some((b) => same(b, j))) ||
@@ -8808,7 +8886,7 @@ export class VoxelSimulation {
               (b) =>
                 b.kind === 'smithy' &&
                 same(b, j) &&
-                b.armorBills.some((bill) => bill.kind === j.apparelKind && !bill.paused),
+                b.armorBills.some((bill) => bill.kind === j.apparelKind && (j.billId !== undefined || !bill.paused)),
             ))) ||
         (j.kind === 'refuel' &&
           (!positive(j.cost.wood!) ||
@@ -9285,6 +9363,15 @@ export class VoxelSimulation {
     validateLiving(d);
     validateFurniture(d);
     validateRelocation(d);
+    validateProductionQueues(d.productionQueues, d, d.nextId, d.jobs);
+    for (const queue of d.productionQueues) for (const bill of queue.bills) {
+      if (!bill.id.startsWith('bill:')) continue;
+      const id = Number(bill.id.slice(5));
+      if (ids.has(id) || apparelIds.has(id) || weaponIds.has(id) ||
+        [...d.items, ...d.pawns.flatMap(p => p.cargo ? [p.cargo] : []), ...d.jobs.flatMap(j => j.deliveredBatches)]
+          .some(b => b.furniture?.id === id)) throw new Error('生产账单与实体身份冲突');
+      ids.add(id);
+    }
     validateShelves(d, !migrateLogistics);
     validateStorageGroups(d);
     validateSocial(d);
@@ -9329,6 +9416,7 @@ export class VoxelSimulation {
       s,
       structuredClone({
         tick: d.tick,
+        productionQueues: d.productionQueues,
         socialHistory: d.socialHistory, socialLog: d.socialLog,
         weather: d.weather, snow: d.snow,
         fires: d.fires, fireDamage: d.fireDamage, fireHazards: d.fireHazards, fireLog: d.fireLog,

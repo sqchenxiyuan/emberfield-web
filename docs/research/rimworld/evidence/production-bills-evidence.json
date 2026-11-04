@@ -1,0 +1,987 @@
+{
+  "evidence_id": "RW17-PRODUCTION-BILLS",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction and selected Core XML; no target execution",
+  "rea": {
+    "file": "production-bills-rea-managed.json",
+    "sha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+    "evidence_id": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+    "parent_evidence_id": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+    "mvid": "8e962ecc-7ac7-42d2-8f3b-1b16cd24d2cd",
+    "metadata_coverage": "complete"
+  },
+  "manifests": [
+    {
+      "file": "food-manifest.json",
+      "sha256": "71078848fdcb154b8600e6eaef143968958c786b0544d6bab0814154d76f18d8"
+    },
+    {
+      "file": "production-bills-manifest.json",
+      "sha256": "a00dc9a726f47fe20b27d755b2ff023948ce7b374d4b8d80e958ff3037d4a227"
+    },
+    {
+      "file": "stonecutting-manifest.json",
+      "sha256": "de582eeb35fb04c661dcab23ee45572abad0e590a5fb8a3cd5175dc2026b2061"
+    },
+    {
+      "file": "weapons-manifest.json",
+      "sha256": "51a3598181cbd532dd2b60c1e7af6f816bbc395a39b13f439b57cd81e9f4bb17"
+    },
+    {
+      "file": "work-manifest.json",
+      "sha256": "89523f849f7c4dca3b660faed977b00e04b87fb93d1275c9f41ba1b9af154cd2"
+    }
+  ],
+  "xml": [
+    {
+      "id": "PBX01",
+      "file": "Data/Core/Defs/Misc/BillDefs/BillRepeatModeDefs.xml",
+      "source_sha256": "8d21d6186d7ac61ef44a7ad3c529b0338f2aa784bc413e44a9e19e42d23d222e",
+      "xpath": "/Defs/BillRepeatModeDef",
+      "projection": "Selected fields and immediate inheritance only; not mod-patched effective Def data",
+      "nodes": [
+        {
+          "name": "",
+          "parent": "",
+          "abstract": "",
+          "fields": {
+            "defName": "RepeatCount",
+            "label": "do X times",
+            "listOrder": "0"
+          }
+        },
+        {
+          "name": "",
+          "parent": "",
+          "abstract": "",
+          "fields": {
+            "defName": "TargetCount",
+            "label": "do until you have X",
+            "listOrder": "10"
+          }
+        },
+        {
+          "name": "",
+          "parent": "",
+          "abstract": "",
+          "fields": {
+            "defName": "Forever",
+            "label": "do forever",
+            "listOrder": "20"
+          }
+        }
+      ],
+      "nodes_sha256": "3bd9e7697f19a6a776ed0c47946030b18d5c3120017ff60563cc6beeafcc23ad"
+    },
+    {
+      "id": "PBX02",
+      "file": "Data/Core/Defs/Misc/BillDefs/BillStoreModeDefs.xml",
+      "source_sha256": "849c747eec1a3607b50f04b55073c161c3d42755d20f09e3c8b32fed70094a73",
+      "xpath": "/Defs/BillStoreModeDef",
+      "projection": "Selected fields and immediate inheritance only; not mod-patched effective Def data",
+      "nodes": [
+        {
+          "name": "",
+          "parent": "",
+          "abstract": "",
+          "fields": {
+            "defName": "DropOnFloor",
+            "label": "drop on floor",
+            "listOrder": "0"
+          }
+        },
+        {
+          "name": "",
+          "parent": "",
+          "abstract": "",
+          "fields": {
+            "defName": "BestStockpile",
+            "label": "take to best stockpile",
+            "listOrder": "10"
+          }
+        },
+        {
+          "name": "",
+          "parent": "",
+          "abstract": "",
+          "fields": {
+            "defName": "SpecificStockpile",
+            "label": "take to {0}",
+            "listOrder": "20"
+          }
+        }
+      ],
+      "nodes_sha256": "065aa818f006f2cb25207135a8feb47138b6ca7f8efb81bbb49f8cd68bc8bbcd"
+    },
+    {
+      "id": "PBX03",
+      "file": "Data/Core/Defs/RecipeDefs/Recipes_Meals.xml",
+      "source_sha256": "ecb025e0b521b2e174f3d8cecb7d0263a1c7310b957cf6d849d414361b566789",
+      "xpath": "/Defs/RecipeDef[defName=\"CookMealSimple\" or defName=\"CookMealSimpleBulk\"]",
+      "projection": "Selected fields and immediate inheritance only; not mod-patched effective Def data",
+      "nodes": [
+        {
+          "name": "",
+          "parent": "CookMealBase",
+          "abstract": "",
+          "fields": {
+            "defName": "CookMealSimple",
+            "label": "cook simple meal",
+            "products/MealSimple": "1"
+          }
+        },
+        {
+          "name": "",
+          "parent": "CookMealBase",
+          "abstract": "",
+          "fields": {
+            "defName": "CookMealSimpleBulk",
+            "label": "cook simple meal x4",
+            "products/MealSimple": "4"
+          }
+        }
+      ],
+      "nodes_sha256": "ce46233b8b983298da59a8dd7d5a246ba42561e2e390f742c6c0177f557c567e"
+    },
+    {
+      "id": "PBX04",
+      "file": "Data/Core/Defs/RecipeDefs/Recipes_Production.xml",
+      "source_sha256": "fc7697575fb2f716cb5be6045b02d6471aeeea9e768d08607099d54e3e114829",
+      "xpath": "/Defs/RecipeDef[@Name=\"MakeStoneBlocksBase\" or defName=\"Make_StoneBlocksAny\"]",
+      "projection": "Selected fields and immediate inheritance only; not mod-patched effective Def data",
+      "nodes": [
+        {
+          "name": "MakeStoneBlocksBase",
+          "parent": "",
+          "abstract": "True",
+          "fields": {
+            "targetCountAdjustment": "20"
+          }
+        },
+        {
+          "name": "",
+          "parent": "MakeStoneBlocksBase",
+          "abstract": "",
+          "fields": {
+            "defName": "Make_StoneBlocksAny",
+            "label": "make any stone blocks",
+            "workerCounterClass": "RecipeWorkerCounter_MakeStoneBlocks",
+            "specialProducts/li": "StoneBlocks"
+          }
+        }
+      ],
+      "nodes_sha256": "fa366ee9e7c60ddbcfc70829b2783859e9b576706b775c5c47590f0b47775181"
+    }
+  ],
+  "claims": [
+    {
+      "id": "PB01",
+      "finding": "Production bills support RepeatCount, Forever and TargetCount. Default constructor fields are RepeatCount, repeatCount1, targetCount10 and unpauseWhenYouHave5. Target mode selection checks recipe.WorkerCounter.CanCountProducts; the generic counter accepts one regular product and no specialProducts, while custom counters may override.",
+      "xml": [
+        "PBX01"
+      ],
+      "sources": [
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.Bill_Production",
+          "file": ".local-research/stonecutting/RimWorld.Bill_Production.cs",
+          "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+          "lines": [
+            10,
+            40
+          ],
+          "excerpt_sha256": "cd6c2eae2fe29c8cb56fd7cc8ee40d9daed48e197feacfb8b682bde444c9b578"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.BillRepeatModeUtility",
+          "file": ".local-research/production-bills/RimWorld.BillRepeatModeUtility.cs",
+          "sha256": "a2f0528973116a1f051ff10a2be69b101f17c6abc8aa65cb7dc97946b31a680c",
+          "lines": [
+            8,
+            32
+          ],
+          "excerpt_sha256": "2990c1f05077ebe634e6ee9fa8ea36a1df9df555754dd1d9b184385e7ab4b629"
+        },
+        {
+          "group": "stonecutting",
+          "type": "Verse.RecipeWorkerCounter",
+          "file": ".local-research/stonecutting/Verse.RecipeWorkerCounter.cs",
+          "sha256": "dc0d44c166c2797cb39df826fa69f881519b6bc5b4d0cc300dcbafaca3bf9b39",
+          "lines": [
+            10,
+            17
+          ],
+          "excerpt_sha256": "a9a50011449a7e402321dfd0bac9f42b16c1ae0345b101c2ad18b771090c4401"
+        }
+      ]
+    },
+    {
+      "id": "PB02",
+      "finding": "RepeatCount measures completed recipe iterations, not individual output units. Notify_IterationCompleted decrements positive repeatCount and emits completion at zero without deleting the bill. Production generates all products, consumes ingredients, then calls that notification. Core CookMealSimpleBulk yields four meals per iteration.",
+      "xml": [
+        "PBX03"
+      ],
+      "sources": [
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.Bill_Production",
+          "file": ".local-research/stonecutting/RimWorld.Bill_Production.cs",
+          "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+          "lines": [
+            245,
+            260
+          ],
+          "excerpt_sha256": "ac840e870604a896fbd02e6b8deed12c743d52ecf7c831f18e078ae3aa43107e"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            190,
+            200
+          ],
+          "excerpt_sha256": "94e596be70aa1139dadfb4f1108f2b4784fd3719a57ef9d08adbabe83c0bfbd2"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.BillStack",
+          "file": ".local-research/production-bills/RimWorld.BillStack.cs",
+          "sha256": "9f435cbff0aa2793e0f6596b952d7e7fefaf22ad26195d46da04a5e1306c1f14",
+          "lines": [
+            75,
+            80
+          ],
+          "excerpt_sha256": "0f90beaad8efab6cc1e9e7a1b6082171cf9d467f8e56cec0ed2091fc5241dbb8"
+        }
+      ]
+    },
+    {
+      "id": "PB03",
+      "finding": "ShouldDoNow clears automatic paused state outside TargetCount, rejects manual suspended, permits Forever, and permits RepeatCount only above zero. In TargetCount it sets paused at count>=target if pauseWhenSatisfied, clears paused at count<=unpauseWhenYouHave or when hysteresis is disabled, then requires !paused and count<target. Suspended returns before target reevaluation.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.Bill_Production",
+          "file": ".local-research/stonecutting/RimWorld.Bill_Production.cs",
+          "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+          "lines": [
+            207,
+            243
+          ],
+          "excerpt_sha256": "0ae0cc353767cd875ea0c59a5ed98455e3b68a895b58c805ae272581e1da5d00"
+        }
+      ]
+    },
+    {
+      "id": "PB04",
+      "finding": "The details UI exposes pauseWhenSatisfied and unpauseWhenYouHave only in TargetCount, nudges the resume threshold by target changes, and clamps a resume value >=target to target-1. Automatic paused and manual suspended are distinct. The status Unpause action clears paused; subsequent ShouldDoNow can pause again if count still reaches target. Raw target0 may produce resume-1 in this UI path; do not infer a universal nonnegative invariant.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Dialog_BillConfig",
+          "file": ".local-research/production-bills/RimWorld.Dialog_BillConfig.cs",
+          "sha256": "b9edc70a35d57fa5abfc5494dcee784a20d2a5bcd559b3a8f92a5ac7563cba74",
+          "lines": [
+            149,
+            151
+          ],
+          "excerpt_sha256": "d10d57410fe86551c429bb76406e99288ddca26e26cdbed83e2c1ae976fd266d"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Dialog_BillConfig",
+          "file": ".local-research/production-bills/RimWorld.Dialog_BillConfig.cs",
+          "sha256": "b9edc70a35d57fa5abfc5494dcee784a20d2a5bcd559b3a8f92a5ac7563cba74",
+          "lines": [
+            200,
+            212
+          ],
+          "excerpt_sha256": "4c06e0df46dd6d9e684b5dd1c6dc32c3497320fcfec014dab3f0ad18bd6b4b43"
+        },
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.Bill_Production",
+          "file": ".local-research/stonecutting/RimWorld.Bill_Production.cs",
+          "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+          "lines": [
+            329,
+            344
+          ],
+          "excerpt_sha256": "58e249b6803372aebebd3e72adec3accd37994868bbb5a845af9b8386303ea53"
+        },
+        {
+          "group": "food",
+          "type": "RimWorld.Bill",
+          "file": ".local-research/food/RimWorld.Bill.cs",
+          "sha256": "11d4a59e1feadd84d17e182e845d5feb7aae7b9da9cb86b6750409fc12a46c2c",
+          "lines": [
+            370,
+            376
+          ],
+          "excerpt_sha256": "5bc84718ae133dff412f1df794e88806438dde0c5259d929e8c37c5b0e62b5f6"
+        }
+      ]
+    },
+    {
+      "id": "PB05",
+      "finding": "BillStack is an ordered list. Add appends and assigns stack; Reorder removes/reinserts the same bill. The listing offers Add while Count<15 and bill UI exposes bounded up/down actions. AddBill itself does not enforce MaxCount and Reorder itself does not guard excessive positive offsets; the observed cap/bounds belong to player UI.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "production-bills",
+          "type": "RimWorld.BillStack",
+          "file": ".local-research/production-bills/RimWorld.BillStack.cs",
+          "sha256": "9f435cbff0aa2793e0f6596b952d7e7fefaf22ad26195d46da04a5e1306c1f14",
+          "lines": [
+            13,
+            27
+          ],
+          "excerpt_sha256": "60349b083aff9b0ea85aca80381cfe4d1d6552c7fe98d51cfdfc3ca1342f0f7f"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.BillStack",
+          "file": ".local-research/production-bills/RimWorld.BillStack.cs",
+          "sha256": "9f435cbff0aa2793e0f6596b952d7e7fefaf22ad26195d46da04a5e1306c1f14",
+          "lines": [
+            69,
+            96
+          ],
+          "excerpt_sha256": "c75561d31dcb4ee0e8e3212499827cbfc326f49dfcfba9025c4ab7078afc12e7"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.BillStack",
+          "file": ".local-research/production-bills/RimWorld.BillStack.cs",
+          "sha256": "9f435cbff0aa2793e0f6596b952d7e7fefaf22ad26195d46da04a5e1306c1f14",
+          "lines": [
+            136,
+            149
+          ],
+          "excerpt_sha256": "3070210cea8316e5e1392f558dfc7e4d75dd45c1eb58f23863a4417476eb30cf"
+        },
+        {
+          "group": "food",
+          "type": "RimWorld.Bill",
+          "file": ".local-research/food/RimWorld.Bill.cs",
+          "sha256": "11d4a59e1feadd84d17e182e845d5feb7aae7b9da9cb86b6750409fc12a46c2c",
+          "lines": [
+            323,
+            342
+          ],
+          "excerpt_sha256": "240170890f65c8550232a8246a1bbbf3c85f8c29c233dd8e657ca36ddb4c3c11"
+        }
+      ]
+    },
+    {
+      "id": "PB06",
+      "finding": "WorkGiver_DoBill scans bills in list order, skips unsuitable work type, ingredient retry cooldown, ShouldDoNow false, pawn restrictions and recipe skill failures. Missing ingredients and a UFT bound to another worker also continue to later bills. It returns on a selected new/continuation job; a blocked first bill does not generally block the whole stack.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            189,
+            238
+          ],
+          "excerpt_sha256": "c73e4d778a0b84246202b6447faf66e1a14d8c12b9591b81d10f78de6862eb37"
+        },
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            261,
+            296
+          ],
+          "excerpt_sha256": "3396915c00e2080d5cd7184ff7151bcbd0e103f4eaa7e3fef335461706bb9b67"
+        }
+      ]
+    },
+    {
+      "id": "PB07",
+      "finding": "JobDriver_DoBill globally fails for deleted/dereferenced bill or unusable bill giver and reserves one bill giver. Manual suspended is separately a DoRecipeWork fail condition, so it interrupts the work stage; the inspected global condition has no suspended check during ingredient collection. Changing a bill is not equivalent to immediately cancelling every phase.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "food",
+          "type": "Verse.AI.JobDriver_DoBill",
+          "file": ".local-research/food/Verse.AI.JobDriver_DoBill.cs",
+          "sha256": "d3641323932ebd795266548bc23f996d74868b2ac7ade766d41604123aa3e9c9",
+          "lines": [
+            54,
+            113
+          ],
+          "excerpt_sha256": "ea8559d9ff7763204fb35d42d8bba1e9ffe54f82609324bf0abd00ca11908546"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            153,
+            165
+          ],
+          "excerpt_sha256": "79f29e2a2ae699310278912d6499b807b4adea2c3634c6d76c8216ea419d693d"
+        },
+        {
+          "group": "food",
+          "type": "RimWorld.Bill",
+          "file": ".local-research/food/RimWorld.Bill.cs",
+          "sha256": "11d4a59e1feadd84d17e182e845d5feb7aae7b9da9cb86b6750409fc12a46c2c",
+          "lines": [
+            111,
+            125
+          ],
+          "excerpt_sha256": "82b228dd73caecc3e9d88a60a1459c73b36ef51c4ba6be022692e3bf352bd345"
+        }
+      ]
+    },
+    {
+      "id": "PB08",
+      "finding": "Reorder itself does not cancel the active job. The inspected ordinary work/finish toils do not recheck ShouldDoNow each work tick or trim the produced batch to the target. Thus target count is a scheduling threshold, not a hard output cap, and an in-flight batch can overshoot. Long UFT work explicitly checks job override after3000ticks on1000tick hash intervals, so absolute never-preempted semantics are not established.",
+      "xml": [
+        "PBX03"
+      ],
+      "sources": [
+        {
+          "group": "production-bills",
+          "type": "RimWorld.BillStack",
+          "file": ".local-research/production-bills/RimWorld.BillStack.cs",
+          "sha256": "9f435cbff0aa2793e0f6596b952d7e7fefaf22ad26195d46da04a5e1306c1f14",
+          "lines": [
+            87,
+            96
+          ],
+          "excerpt_sha256": "fd886ac66c64398fe4dc79fb8b56bdca21c1d701e0c79749a3d02068ef80161e"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            90,
+            165
+          ],
+          "excerpt_sha256": "727d30d1a2169ace47acdaa43231ffde0a3c449c6bdbe4a8d12e76255713d1cb"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            170,
+            200
+          ],
+          "excerpt_sha256": "9189325c7b3848f0ff26b3e61a47cc56c959828477b838cf61e062b2a52acbaf"
+        }
+      ]
+    },
+    {
+      "id": "PB09",
+      "finding": "Default generic product counting uses ResourceCounter plus carried products only when CountAsResource, no equipped/include-group/material restriction and full quality/HP ranges (with the additional tainted-apparel condition). ResourceCounter enumerates held things of map slot groups, counts stacks of fresh/nonfogged resources, and refreshes periodically every204ticks. This fast path is not all loose objects anywhere on the map; it does not test forbidden or reachability.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "stonecutting",
+          "type": "Verse.RecipeWorkerCounter",
+          "file": ".local-research/stonecutting/Verse.RecipeWorkerCounter.cs",
+          "sha256": "dc0d44c166c2797cb39df826fa69f881519b6bc5b4d0cc300dcbafaca3bf9b39",
+          "lines": [
+            19,
+            26
+          ],
+          "excerpt_sha256": "41d2361da4c484d486ed9566cb56d4339820c44a7d79f66bfb9781f626a1d901"
+        },
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.ResourceCounter",
+          "file": ".local-research/stonecutting/RimWorld.ResourceCounter.cs",
+          "sha256": "132e2e9c8214a435f8c73222454dbb87a9501ca30712233538f512619b6e4db9",
+          "lines": [
+            120,
+            168
+          ],
+          "excerpt_sha256": "08690d13bce1fc2a27e41a5ab799621126bf53be9ec4f1df4cd31e30ccce7ca4"
+        }
+      ]
+    },
+    {
+      "id": "PB10",
+      "finding": "Generic carried-product counting iterates spawned pawns in the player faction, checks carryTracker.CarriedThing after unwrapping minified content, and adds carried wrapper stackCount if valid. It is not all inventory and not just free colonists. The counter does not add promised output of active bills or unfinished-product ingredients.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "stonecutting",
+          "type": "Verse.RecipeWorkerCounter",
+          "file": ".local-research/stonecutting/Verse.RecipeWorkerCounter.cs",
+          "sha256": "dc0d44c166c2797cb39df826fa69f881519b6bc5b4d0cc300dcbafaca3bf9b39",
+          "lines": [
+            19,
+            92
+          ],
+          "excerpt_sha256": "6f80559f709cd6762feaca61fc96f8a386c0a4285d11be9060c73cfb814cc8d6"
+        },
+        {
+          "group": "stonecutting",
+          "type": "Verse.RecipeWorkerCounter",
+          "file": ".local-research/stonecutting/Verse.RecipeWorkerCounter.cs",
+          "sha256": "dc0d44c166c2797cb39df826fa69f881519b6bc5b4d0cc300dcbafaca3bf9b39",
+          "lines": [
+            165,
+            182
+          ],
+          "excerpt_sha256": "b98f5f8eaceabdbcdaca68dd5567af8700a06666d1ac373f155a26342c145339"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            18,
+            37
+          ],
+          "excerpt_sha256": "2084d7c43f290beaae6158d19ab7315a19d8b82427be4125658262cbb0f0e1e0"
+        }
+      ]
+    },
+    {
+      "id": "PB11",
+      "finding": "The generic slow path without includeGroup scans map things of the product def, minified products, carried items and directly held things of haul sources. With includeGroup it enumerates that slot/group HeldThings. includeEquipped additionally scans free spawned colonists equipment, worn apparel and inventories even when includeGroup is selected. These scopes differ from the fast ResourceCounter path.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "stonecutting",
+          "type": "Verse.RecipeWorkerCounter",
+          "file": ".local-research/stonecutting/Verse.RecipeWorkerCounter.cs",
+          "sha256": "dc0d44c166c2797cb39df826fa69f881519b6bc5b4d0cc300dcbafaca3bf9b39",
+          "lines": [
+            27,
+            92
+          ],
+          "excerpt_sha256": "8da1e772bcf2fa4b4ac8ecdfff04a8b599f2e98b9062f69df688edfbb85632b3"
+        }
+      ]
+    },
+    {
+      "id": "PB12",
+      "finding": "CountValidThing checks exact product def, tainted apparel, HP range, quality, allowed stuff when enabled, and fog; it does not check forbidden or path reachability. The List<Thing> CountValidThings overload increments one per valid object while the ThingOwner and slot paths sum stackCount. This derived asymmetry is retained as an unverified edge case, not assumed corrected or universally applied.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "stonecutting",
+          "type": "Verse.RecipeWorkerCounter",
+          "file": ".local-research/stonecutting/Verse.RecipeWorkerCounter.cs",
+          "sha256": "dc0d44c166c2797cb39df826fa69f881519b6bc5b4d0cc300dcbafaca3bf9b39",
+          "lines": [
+            94,
+            149
+          ],
+          "excerpt_sha256": "dc6a1502126ee648c0e593f1ebf0cf37b6f96dbbc6cfc4b49be12f890f3f702c"
+        }
+      ]
+    },
+    {
+      "id": "PB13",
+      "finding": "Make_StoneBlocksAny selects RecipeWorkerCounter_MakeStoneBlocks in Core XML. This custom CountProducts sums ResourceCounter across all StoneBlocks child defs, without calling the generic counter, adding carried count, or inspecting includeGroup/equipped/HP/quality/material flags. Its recipe target adjustment is20. Do not transfer this counting rule to individual-stone or other recipes without checking their worker counter.",
+      "xml": [
+        "PBX04"
+      ],
+      "sources": [
+        {
+          "group": "stonecutting",
+          "type": "Verse.RecipeWorkerCounter_MakeStoneBlocks",
+          "file": ".local-research/stonecutting/Verse.RecipeWorkerCounter_MakeStoneBlocks.cs",
+          "sha256": "87cf3817f02f69ea1635b82c869fa7983b6626aa10432eb041aba032af45dd52",
+          "lines": [
+            8,
+            27
+          ],
+          "excerpt_sha256": "53d10409591074292fc5f8b18fff9b24a8d5f2c1003b4df5375bee2e7498eb84"
+        }
+      ]
+    },
+    {
+      "id": "PB14",
+      "finding": "Product-count includeGroup and product-delivery storeGroup are separate settings. Details UI offers include-from-all or a slot/group; output mode offers BestStockpile, SpecificStockpile or DropOnFloor. StorageGroup choices are deduplicated in the selector, and compatibility uses recipe.WorkerCounter.CanPossiblyStore. Invalid referenced output group causes DropOnFloor fallback; invalid includeGroup is cleared separately.",
+      "xml": [
+        "PBX02"
+      ],
+      "sources": [
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.Bill_Production",
+          "file": ".local-research/stonecutting/RimWorld.Bill_Production.cs",
+          "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+          "lines": [
+            176,
+            205
+          ],
+          "excerpt_sha256": "197794d5c7f8a33be4e45eced35114173d8134853cee4d2b863941c86625821e"
+        },
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.Bill_Production",
+          "file": ".local-research/stonecutting/RimWorld.Bill_Production.cs",
+          "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+          "lines": [
+            346,
+            378
+          ],
+          "excerpt_sha256": "7b31c242e555ab32cce4ae266fe17f5215ad30c365355567a148f6e3fdaa00e1"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Dialog_BillConfig",
+          "file": ".local-research/production-bills/RimWorld.Dialog_BillConfig.cs",
+          "sha256": "b9edc70a35d57fa5abfc5494dcee784a20d2a5bcd559b3a8f92a5ac7563cba74",
+          "lines": [
+            163,
+            182
+          ],
+          "excerpt_sha256": "1174087a744d1179109c924993512a84719e4ef78e8be720dd640f992f33410b"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Dialog_BillConfig",
+          "file": ".local-research/production-bills/RimWorld.Dialog_BillConfig.cs",
+          "sha256": "b9edc70a35d57fa5abfc5494dcee784a20d2a5bcd559b3a8f92a5ac7563cba74",
+          "lines": [
+            216,
+            243
+          ],
+          "excerpt_sha256": "e72174f617a41a9b71597fde5346745d7bdd6d669218cbad5f785e91d9f48dba"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Dialog_BillConfig",
+          "file": ".local-research/production-bills/RimWorld.Dialog_BillConfig.cs",
+          "sha256": "b9edc70a35d57fa5abfc5494dcee784a20d2a5bcd559b3a8f92a5ac7563cba74",
+          "lines": [
+            423,
+            449
+          ],
+          "excerpt_sha256": "ad4dc7488b9a840993c996c755b68234f6cb60171a45cf1c13979fc790caae61"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Dialog_BillConfig",
+          "file": ".local-research/production-bills/RimWorld.Dialog_BillConfig.cs",
+          "sha256": "b9edc70a35d57fa5abfc5494dcee784a20d2a5bcd559b3a8f92a5ac7563cba74",
+          "lines": [
+            586,
+            602
+          ],
+          "excerpt_sha256": "ac6d4f8319cb740f2365686441ff96f845becadae0a7f25ec8bdbd68c06f9db2"
+        }
+      ]
+    },
+    {
+      "id": "PB15",
+      "finding": "After completion, DropOnFloor places all products near the actor. Other store modes drop all but the first product list entry, find ordinary or selected storage for the first, split excess carry capacity and start a real haul job; absent destination falls back to nearby placement. TargetCount completion refreshes ResourceCounter via a finish action. Storage choice neither teleports output nor creates a target-count reservation.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            170,
+            179
+          ],
+          "excerpt_sha256": "17cde3fc54471ddfe0ee6bae2148216a86eb0f2d22ba504bc617ba6bcce8da11"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            222,
+            297
+          ],
+          "excerpt_sha256": "7ee6de6108c73a9249ded7c98fc00c285c90c19efa70b83e7c140420d5aa0564"
+        }
+      ]
+    },
+    {
+      "id": "PB16",
+      "finding": "Recipes using UFT create a physical UnfinishedThing holding ingredients, creator, bill reference and workLeft. Work loads remaining work from initialized UFT and updates it during processing. Recipes without UFT initialize work from the full recipe when a fresh DoRecipeWork begins. Therefore resumption semantics depend on the recipe, not merely the existence of a bill.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            11,
+            75
+          ],
+          "excerpt_sha256": "cddf222f71c8ae2891551e5d580c2ac4e8a4b5ee993086f4dba94313ee6f117e"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            117,
+            138
+          ],
+          "excerpt_sha256": "dd365bce68772f4bd85938567d623fcd92b75ad75d8c6ed89050a67f4ebe3320"
+        },
+        {
+          "group": "weapons",
+          "type": "Verse.UnfinishedThing",
+          "file": ".local-research/weapons/Verse.UnfinishedThing.cs",
+          "sha256": "10d275ee4842391fd15f07e8cc4c29d1fb17f5c69b6c50a230525cb6716159c9",
+          "lines": [
+            138,
+            151
+          ],
+          "excerpt_sha256": "69d02064717ece8ec63474a29cae2d23b40fadd9b300bd2ff91bc63a708b34c9"
+        }
+      ]
+    },
+    {
+      "id": "PB17",
+      "finding": "Bound UFT jobs are only returned for their bound worker when reachable/reservable/nonforbidden. Unbound search requires same recipe, same creator, currently allowed ingredients and reservation. Bill_ProductionWithUft can clear its binding when creator is downed/unspawned/destroyed/hosted or work disabled, but this does not prove another pawn can finish that old UFT: the search still checks Creator==pawn.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            162,
+            185
+          ],
+          "excerpt_sha256": "c72675e100b3b7b5036dabb6052aad0397b438cfee151f6af02c12fc86924a2f"
+        },
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            223,
+            238
+          ],
+          "excerpt_sha256": "9c4734e666c901b11ad866175b94c354e3aa715311bc703f558e5afde9b200d6"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Bill_ProductionWithUft",
+          "file": ".local-research/production-bills/RimWorld.Bill_ProductionWithUft.cs",
+          "sha256": "0a33089036c5c215241295e1b158d419b1e1574e8799b2a5a306cab785c4df05",
+          "lines": [
+            22,
+            55
+          ],
+          "excerpt_sha256": "67c2721bc5ff201481dc9efe8408c55d82e8ac8881d2f1be968d0df6234382a0"
+        }
+      ]
+    },
+    {
+      "id": "PB18",
+      "finding": "Delete marks the bill deleted, removes it from its stack, and invokes Notify_BillDeleted, which is empty in ordinary Building_WorkTable. UnfinishedThing lazily clears a deleted/dereferenced binding and saves its recipe/creator/ingredients/workLeft independently. Deleting a bill is therefore distinct from explicitly cancelling a physical UFT, whose Cancel destroy recovers a randomly rounded75percent of ingredients and clears binding.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "production-bills",
+          "type": "RimWorld.BillStack",
+          "file": ".local-research/production-bills/RimWorld.BillStack.cs",
+          "sha256": "9f435cbff0aa2793e0f6596b952d7e7fefaf22ad26195d46da04a5e1306c1f14",
+          "lines": [
+            75,
+            80
+          ],
+          "excerpt_sha256": "0f90beaad8efab6cc1e9e7a1b6082171cf9d467f8e56cec0ed2091fc5241dbb8"
+        },
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.Building_WorkTable",
+          "file": ".local-research/stonecutting/RimWorld.Building_WorkTable.cs",
+          "sha256": "93950a425067412ffbd0caaa8b3471ef584d02096beec027cf21f630bc5fba19",
+          "lines": [
+            116,
+            118
+          ],
+          "excerpt_sha256": "53312869ebd59dc3ff22ef824dd9f507ce9b06cbdd75399ea98f4a0c4e5ed628"
+        },
+        {
+          "group": "weapons",
+          "type": "Verse.UnfinishedThing",
+          "file": ".local-research/weapons/Verse.UnfinishedThing.cs",
+          "sha256": "10d275ee4842391fd15f07e8cc4c29d1fb17f5c69b6c50a230525cb6716159c9",
+          "lines": [
+            46,
+            76
+          ],
+          "excerpt_sha256": "da726dc8f532de346fdb6e23a4c24a26be94a9dbcd59b6b0ca461e6713988eea"
+        },
+        {
+          "group": "weapons",
+          "type": "Verse.UnfinishedThing",
+          "file": ".local-research/weapons/Verse.UnfinishedThing.cs",
+          "sha256": "10d275ee4842391fd15f07e8cc4c29d1fb17f5c69b6c50a230525cb6716159c9",
+          "lines": [
+            138,
+            170
+          ],
+          "excerpt_sha256": "dbcc0c6b3a691d64aa1a0e54e9cf410234e6750d2efa57d913894cf44a271e43"
+        },
+        {
+          "group": "weapons",
+          "type": "Verse.UnfinishedThing",
+          "file": ".local-research/weapons/Verse.UnfinishedThing.cs",
+          "sha256": "10d275ee4842391fd15f07e8cc4c29d1fb17f5c69b6c50a230525cb6716159c9",
+          "lines": [
+            172,
+            187
+          ],
+          "excerpt_sha256": "5aa22045ee84e72eed321cb6bc5e53f9651d59a54a002a4b3a300419fed3613a"
+        }
+      ]
+    },
+    {
+      "id": "PB19",
+      "finding": "BillStack serializes its ordered bill list deeply and restores each bill.stack reference. Bill persists loadID, recipe, manual suspended, ingredient filters and worker restrictions. Bill_Production persists repeat mode/count, target/resume/automatic paused, counting filters and output/include references. Bill_ProductionWithUft persists its bound UFT reference. Runtime roundtrip correctness remains a separate validation requirement.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "production-bills",
+          "type": "RimWorld.BillStack",
+          "file": ".local-research/production-bills/RimWorld.BillStack.cs",
+          "sha256": "9f435cbff0aa2793e0f6596b952d7e7fefaf22ad26195d46da04a5e1306c1f14",
+          "lines": [
+            116,
+            134
+          ],
+          "excerpt_sha256": "35658e08f57c846be3245ca8a19c1a3b5650fecc1bb11922e448b2aaca7014b0"
+        },
+        {
+          "group": "food",
+          "type": "RimWorld.Bill",
+          "file": ".local-research/food/RimWorld.Bill.cs",
+          "sha256": "11d4a59e1feadd84d17e182e845d5feb7aae7b9da9cb86b6750409fc12a46c2c",
+          "lines": [
+            205,
+            232
+          ],
+          "excerpt_sha256": "5363ed7facc0d9d8b502b4f2726df5718583220604925d91a51138a85229173e"
+        },
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.Bill_Production",
+          "file": ".local-research/stonecutting/RimWorld.Bill_Production.cs",
+          "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+          "lines": [
+            113,
+            149
+          ],
+          "excerpt_sha256": "cf16b098e2a459b11307ab07ecb072705bd8a6ba6018233a0986545f2474c2fb"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Bill_ProductionWithUft",
+          "file": ".local-research/production-bills/RimWorld.Bill_ProductionWithUft.cs",
+          "sha256": "0a33089036c5c215241295e1b158d419b1e1574e8799b2a5a306cab785c4df05",
+          "lines": [
+            95,
+            105
+          ],
+          "excerpt_sha256": "dbfc461c0f85e3930fbde05ca0756512d430b37021ecacc259af5c32f2dc866f"
+        }
+      ]
+    },
+    {
+      "id": "PB20",
+      "finding": "Bill UI exposes reorder/delete/copy/manual suspension and repeat controls. Switching mode via its menu changes mode alone; plus/minus on Forever instead switches to RepeatCount1. Production Clone carries repeat, target, counting/output filters and paused; its UFT subclass does not copy the bound unfinished item. Clipboard cloning does not imply a second physical in-progress product.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "food",
+          "type": "RimWorld.Bill",
+          "file": ".local-research/food/RimWorld.Bill.cs",
+          "sha256": "11d4a59e1feadd84d17e182e845d5feb7aae7b9da9cb86b6750409fc12a46c2c",
+          "lines": [
+            323,
+            376
+          ],
+          "excerpt_sha256": "0e8464525fc41f1a2886c620e6681771e30968c952533340eca44dbf69f9dc15"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.BillRepeatModeUtility",
+          "file": ".local-research/production-bills/RimWorld.BillRepeatModeUtility.cs",
+          "sha256": "a2f0528973116a1f051ff10a2be69b101f17c6abc8aa65cb7dc97946b31a680c",
+          "lines": [
+            8,
+            32
+          ],
+          "excerpt_sha256": "2990c1f05077ebe634e6ee9fa8ea36a1df9df555754dd1d9b184385e7ab4b629"
+        },
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.Bill_Production",
+          "file": ".local-research/stonecutting/RimWorld.Bill_Production.cs",
+          "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+          "lines": [
+            281,
+            326
+          ],
+          "excerpt_sha256": "2e9a5a556467afbca7214c7d681cb04e6e1ee102200161bf27fdc927d4f0d820"
+        },
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.Bill_Production",
+          "file": ".local-research/stonecutting/RimWorld.Bill_Production.cs",
+          "sha256": "0881bb3ba1111a7aa16f7d05d91d882847341dfb8cf108eb004c500a5738aba4",
+          "lines": [
+            448,
+            467
+          ],
+          "excerpt_sha256": "2c27ec55702cb49356bb20fa111ceec941dccb2ab941740c7c6e680528746b65"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Bill_ProductionWithUft",
+          "file": ".local-research/production-bills/RimWorld.Bill_ProductionWithUft.cs",
+          "sha256": "0a33089036c5c215241295e1b158d419b1e1574e8799b2a5a306cab785c4df05",
+          "lines": [
+            112,
+            115
+          ],
+          "excerpt_sha256": "a525b69e42a2d65595df3bdbe477a534d99c06545cd18c51983e11a32681a60c"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Derived C# is not original source; unresolved dependencies are tolerated.",
+    "Core XML is not an evaluated mod/DLC Def database.",
+    "This collector does not run RimWorld or prove UI/runtime timing.",
+    "Suspension during collection, active-job reorder preemption, target changes mid-batch, UFT rebinding and save/load need dedicated runtime checks.",
+    "Generic slow-list stack counting, zero-target resume threshold and custom worker counters must not be generalized beyond the inspected paths.",
+    "REA target-framework metadata is preserved literally and is not a claim about the runtime used by the launched game."
+  ]
+}
