@@ -97,7 +97,10 @@
     "research:social": "node scripts/research/verify-social-interaction-evidence.mjs",
     "test:voxel:furniture": "node scripts/voxel-furniture-campaign-verify.mjs",
     "test:voxel:furniture:browser": "node scripts/voxel-furniture-browser-verify.mjs",
-    "research:furniture": "node scripts/research/verify-furniture-quality-evidence.mjs"
+    "research:furniture": "node scripts/research/verify-furniture-quality-evidence.mjs",
+    "test:voxel:relocation": "node scripts/voxel-relocation-campaign-verify.mjs",
+    "test:voxel:relocation:browser": "node scripts/voxel-relocation-browser-verify.mjs",
+    "research:relocation": "node scripts/research/verify-furniture-reinstall-evidence.mjs"
   },
   "dependencies": {
     "pixi.js": "8.22.0",

@@ -1,0 +1,967 @@
+{
+  "version": 34,
+  "recordedAt": "2026-11-04T01:55:55.984Z",
+  "scope": "Local Web validation. Native runtime observations and their preparation are separate in chapter 104. The ordinary campaign uses public player commands and ticks; browser tests use its checkpoints and visible controls. Controlled unit tests do not establish ordinary play.",
+  "unit": {
+    "file": "test-results/v34-unit-verified.json",
+    "sha256": "9a5e79835da048074c66bee2d6818159ff7a9ef89f47876f1dd44961f58f4390",
+    "scope": "Final coverage selects the latest complete file result from the preserved full-suite and focused reruns. The first full run exposed historical zero-ledger expectations, a missing physical test fixture, and an old default-storage migration bug. The migration and final relocation/collapse fixes were verified by focused complete-file reruns; load-related 5s test timeouts were retried with a CLI timeout only. This is not a claim of one all-green invocation.",
+    "runs": [
+      {
+        "file": "test-results/v34-unit-final.json",
+        "sha256": "4dda91007a44edda905952a4c1bcd0cc3cc73d9083d6d7ec4de582e105c24098",
+        "success": false,
+        "total": 1149,
+        "passed": 1139,
+        "failed": 10,
+        "pending": 0
+      },
+      {
+        "file": "test-results/v34-migration-final.json",
+        "sha256": "942610abb50a4357c27b941c5f884e4c640d0a4daa014503cd8fb606edbb22b1",
+        "success": false,
+        "total": 160,
+        "passed": 158,
+        "failed": 2,
+        "pending": 0
+      },
+      {
+        "file": "test-results/v34-final-fixes.json",
+        "sha256": "2d5b6a4685a2b96ba593a5db47d7558ad2caa97c0eb34c3c894f3ef61a131148",
+        "success": true,
+        "total": 28,
+        "passed": 28,
+        "failed": 0,
+        "pending": 0
+      },
+      {
+        "file": "test-results/v34-logistics-migration-final.json",
+        "sha256": "9441fc1ae2eba2a063e70ec6068c5b77b5b121a4748981c86e196fa9f3f75232",
+        "success": true,
+        "total": 50,
+        "passed": 50,
+        "failed": 0,
+        "pending": 0
+      }
+    ],
+    "tests": 1150,
+    "passed": 1150,
+    "failed": 0,
+    "pending": 0,
+    "files": 91
+  },
+  "build": {
+    "file": "test-results/v34-build-final3.log",
+    "sha256": "6b8a07717ac21e355ed4e3f9c741b2218b56ac575889213ef58cd35c1537a3dd",
+    "processExitCode": 0
+  },
+  "campaign": {
+    "file": "test-results/voxel-relocation-final3/report.json",
+    "sha256": "60701ef0aa8a310246a956ee08c6535aa6aa1f2676d50f9692cfa927fb1158d3",
+    "scope": "Fresh seed 73129; ordinary public commands and simulation ticks build timber, shaft, room, beds, table and chairs. Then real uninstall, packed storage, cross-layer carrying and reinstall of the same IDs; quality and HP preservation, construction-material and item conservation, cancellation, exact save/load, actual sleep and dining. Reads may inspect simulation state to select sites. No injected furniture, quality, damage, needs, skills, positions, clock or RNG. No old fixture is used.",
+    "execution": {
+      "bundleSha256": "ff1d47ffdb34613a2f14e8fcb719bf80c6e875c7679f0ad402f856bac9070fbf",
+      "scriptSha256": "9146094e4512f4b97f6fd7de16be7ad434eb8b1f464ada23870a40411601bd7c",
+      "sourceManifestSha256": "be03b270375a51f7df5eada85f88b0b672420153c864433b1031ab31204b4085"
+    },
+    "checks": [
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 507,
+        "elapsedTicks": 507
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 670,
+        "elapsedTicks": 163
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 880,
+        "elapsedTicks": 210
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 1118,
+        "elapsedTicks": 238
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 1635,
+        "elapsedTicks": 517
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 1967,
+        "elapsedTicks": 332
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 2135,
+        "elapsedTicks": 168
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 2679,
+        "elapsedTicks": 544
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 3219,
+        "elapsedTicks": 540
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 3459,
+        "elapsedTicks": 240
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 4003,
+        "elapsedTicks": 544
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 4200,
+        "elapsedTicks": 197
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 4747,
+        "elapsedTicks": 547
+      },
+      {
+        "name": "normal workers excavate the shaft",
+        "tick": 5574,
+        "elapsedTicks": 827
+      },
+      {
+        "name": "normal workers open the doorway",
+        "tick": 5698,
+        "elapsedTicks": 124
+      },
+      {
+        "name": "normal workers excavate the room",
+        "tick": 6809,
+        "elapsedTicks": 1111
+      },
+      {
+        "name": "door encloses the naturally roofed chamber",
+        "tick": 10888,
+        "elapsedTicks": 4079
+      },
+      {
+        "name": "selected builder completes actual bed",
+        "tick": 11201,
+        "elapsedTicks": 313
+      },
+      {
+        "name": "actual finisher earns construction XP and fixes persisted quality",
+        "tick": 11201,
+        "jobId": 560,
+        "kind": "bed",
+        "itemId": 565,
+        "quality": 1,
+        "workerId": 452,
+        "before": {
+          "level": 3,
+          "xp": 84.5250000000005,
+          "passion": 0,
+          "dailyXp": 84.5250000000005
+        },
+        "after": {
+          "level": 3,
+          "xp": 84.7875000000005,
+          "passion": 0,
+          "dailyXp": 84.7875000000005
+        },
+        "previousProgress": 186.46875000000043,
+        "work": 187,
+        "delivered": {
+          "wood": 45
+        },
+        "stats": {
+          "qualityName": "较差",
+          "maxHitPoints": 100,
+          "beauty": 0,
+          "comfort": 66,
+          "restEffectiveness": 0.92
+        },
+        "value": 42.012,
+        "skillAtDesignation": {
+          "level": 3,
+          "xp": 33.337499999999956,
+          "passion": 0,
+          "dailyXp": 33.337499999999956
+        }
+      },
+      {
+        "name": "selected builder completes actual bed",
+        "tick": 11548,
+        "elapsedTicks": 347
+      },
+      {
+        "name": "actual finisher earns construction XP and fixes persisted quality",
+        "tick": 11548,
+        "jobId": 566,
+        "kind": "bed",
+        "itemId": 572,
+        "quality": 3,
+        "workerId": 453,
+        "before": {
+          "level": 7,
+          "xp": 147,
+          "passion": 1,
+          "dailyXp": 147
+        },
+        "after": {
+          "level": 7,
+          "xp": 147.75,
+          "passion": 1,
+          "dailyXp": 147.75
+        },
+        "previousProgress": 186.1500000000003,
+        "work": 187,
+        "delivered": {
+          "wood": 45
+        },
+        "stats": {
+          "qualityName": "良好",
+          "maxHitPoints": 100,
+          "beauty": 2,
+          "comfort": 84.00000000000001,
+          "restEffectiveness": 1.08
+        },
+        "value": 70.02,
+        "skillAtDesignation": {
+          "level": 7,
+          "xp": 57,
+          "passion": 1,
+          "dailyXp": 57
+        }
+      },
+      {
+        "name": "selected builder completes actual bed",
+        "tick": 11831,
+        "elapsedTicks": 283
+      },
+      {
+        "name": "actual finisher earns construction XP and fixes persisted quality",
+        "tick": 11831,
+        "jobId": 573,
+        "kind": "bed",
+        "itemId": 575,
+        "quality": 2,
+        "workerId": 453,
+        "before": {
+          "level": 7,
+          "xp": 237.75,
+          "passion": 1,
+          "dailyXp": 237.75
+        },
+        "after": {
+          "level": 7,
+          "xp": 238.5,
+          "passion": 1,
+          "dailyXp": 238.5
+        },
+        "previousProgress": 186.1500000000003,
+        "work": 187,
+        "delivered": {
+          "wood": 45
+        },
+        "stats": {
+          "qualityName": "普通",
+          "maxHitPoints": 100,
+          "beauty": 1,
+          "comfort": 75,
+          "restEffectiveness": 1
+        },
+        "value": 56.016,
+        "skillAtDesignation": {
+          "level": 7,
+          "xp": 147.75,
+          "passion": 1,
+          "dailyXp": 147.75
+        }
+      },
+      {
+        "name": "selected builder completes actual table",
+        "tick": 12191,
+        "elapsedTicks": 360
+      },
+      {
+        "name": "actual finisher earns construction XP and fixes persisted quality",
+        "tick": 12191,
+        "jobId": 576,
+        "kind": "table",
+        "itemId": 578,
+        "quality": 2,
+        "workerId": 453,
+        "before": {
+          "level": 7,
+          "xp": 296.25,
+          "passion": 1,
+          "dailyXp": 57.75
+        },
+        "after": {
+          "level": 7,
+          "xp": 297,
+          "passion": 1,
+          "dailyXp": 58.5
+        },
+        "previousProgress": 119.44624999999992,
+        "work": 120,
+        "delivered": {
+          "wood": 28
+        },
+        "stats": {
+          "qualityName": "普通",
+          "maxHitPoints": 100,
+          "beauty": 2,
+          "comfort": null,
+          "restEffectiveness": null
+        },
+        "value": 34.896,
+        "skillAtDesignation": {
+          "level": 7,
+          "xp": 238.5,
+          "passion": 1,
+          "dailyXp": 238.5
+        }
+      },
+      {
+        "name": "selected builder completes actual chair",
+        "tick": 12413,
+        "elapsedTicks": 222
+      },
+      {
+        "name": "actual finisher earns construction XP and fixes persisted quality",
+        "tick": 12413,
+        "jobId": 579,
+        "kind": "chair",
+        "itemId": 580,
+        "quality": 3,
+        "workerId": 453,
+        "before": {
+          "level": 7,
+          "xp": 340.5,
+          "passion": 1,
+          "dailyXp": 102
+        },
+        "after": {
+          "level": 7,
+          "xp": 341.25,
+          "passion": 1,
+          "dailyXp": 102.75
+        },
+        "previousProgress": 89.9725,
+        "work": 90,
+        "delivered": {
+          "wood": 15
+        },
+        "stats": {
+          "qualityName": "良好",
+          "maxHitPoints": 80,
+          "beauty": 2,
+          "comfort": 78.4,
+          "restEffectiveness": null
+        },
+        "value": 23.715000000000003,
+        "skillAtDesignation": {
+          "level": 7,
+          "xp": 297,
+          "passion": 1,
+          "dailyXp": 58.5
+        }
+      },
+      {
+        "name": "selected builder completes actual chair",
+        "tick": 12625,
+        "elapsedTicks": 212
+      },
+      {
+        "name": "actual finisher earns construction XP and fixes persisted quality",
+        "tick": 12625,
+        "jobId": 581,
+        "kind": "chair",
+        "itemId": 582,
+        "quality": 3,
+        "workerId": 453,
+        "before": {
+          "level": 7,
+          "xp": 384.75,
+          "passion": 1,
+          "dailyXp": 146.25
+        },
+        "after": {
+          "level": 7,
+          "xp": 385.5,
+          "passion": 1,
+          "dailyXp": 147
+        },
+        "previousProgress": 89.9725,
+        "work": 90,
+        "delivered": {
+          "wood": 15
+        },
+        "stats": {
+          "qualityName": "良好",
+          "maxHitPoints": 80,
+          "beauty": 2,
+          "comfort": 78.4,
+          "restEffectiveness": null
+        },
+        "value": 23.715000000000003,
+        "skillAtDesignation": {
+          "level": 7,
+          "xp": 341.25,
+          "passion": 1,
+          "dailyXp": 102.75
+        }
+      },
+      {
+        "name": "selected builder completes actual chair",
+        "tick": 12842,
+        "elapsedTicks": 217
+      },
+      {
+        "name": "actual finisher earns construction XP and fixes persisted quality",
+        "tick": 12842,
+        "jobId": 583,
+        "kind": "chair",
+        "itemId": 585,
+        "quality": 2,
+        "workerId": 453,
+        "before": {
+          "level": 7,
+          "xp": 429,
+          "passion": 1,
+          "dailyXp": 190.5
+        },
+        "after": {
+          "level": 7,
+          "xp": 429.75,
+          "passion": 1,
+          "dailyXp": 191.25
+        },
+        "previousProgress": 89.9725,
+        "work": 90,
+        "delivered": {
+          "wood": 15
+        },
+        "stats": {
+          "qualityName": "普通",
+          "maxHitPoints": 80,
+          "beauty": 1,
+          "comfort": 70,
+          "restEffectiveness": null
+        },
+        "value": 18.972,
+        "skillAtDesignation": {
+          "level": 7,
+          "xp": 385.5,
+          "passion": 1,
+          "dailyXp": 147
+        }
+      },
+      {
+        "name": "save and load preserve individual furniture quality settings and actual use",
+        "tick": 12842
+      },
+      {
+        "name": "ordinary worker carries exact bed package",
+        "tick": 12889,
+        "elapsedTicks": 47
+      },
+      {
+        "name": "save and load preserve individual furniture quality settings and actual use",
+        "tick": 12889
+      },
+      {
+        "name": "same bed is physically installed at destination",
+        "tick": 13031,
+        "elapsedTicks": 142
+      },
+      {
+        "name": "cross-layer rotated bed retains identity quality HP and resets medical/prisoner settings",
+        "tick": 13031,
+        "id": 565,
+        "from": {
+          "x": 29,
+          "y": 27,
+          "z": 4
+        },
+        "to": {
+          "x": 34,
+          "y": 32,
+          "z": 7
+        }
+      },
+      {
+        "name": "ordinary worker carries exact table package",
+        "tick": 13169,
+        "elapsedTicks": 138
+      },
+      {
+        "name": "save and load preserve individual furniture quality settings and actual use",
+        "tick": 13169
+      },
+      {
+        "name": "same table is physically installed at destination",
+        "tick": 13289,
+        "elapsedTicks": 120
+      },
+      {
+        "name": "cross-layer rotated table retains its gathering setting and exact quality",
+        "tick": 13289,
+        "id": 578,
+        "to": {
+          "x": 30,
+          "y": 32,
+          "z": 7
+        }
+      },
+      {
+        "name": "standalone uninstall creates a tangible packed chair",
+        "tick": 13410,
+        "elapsedTicks": 121
+      },
+      {
+        "name": "ordinary hauling stores the package across floors",
+        "tick": 13525,
+        "elapsedTicks": 115
+      },
+      {
+        "name": "save and load preserve individual furniture quality settings and actual use",
+        "tick": 13525
+      },
+      {
+        "name": "ordinary worker carries exact chair package",
+        "tick": 13528,
+        "elapsedTicks": 3
+      },
+      {
+        "name": "save and load preserve individual furniture quality settings and actual use",
+        "tick": 13528
+      },
+      {
+        "name": "same chair is physically installed at destination",
+        "tick": 13637,
+        "elapsedTicks": 109
+      },
+      {
+        "name": "standalone packed chair uses normal storage and returns through the shaft before reinstall",
+        "tick": 13637,
+        "id": 580,
+        "storage": {
+          "x": 32,
+          "y": 25,
+          "z": 7
+        },
+        "target": {
+          "x": 30,
+          "y": 24,
+          "z": 4
+        }
+      },
+      {
+        "name": "cancellation subject is physically carried",
+        "tick": 13689,
+        "elapsedTicks": 52
+      },
+      {
+        "name": "cancelled carried furniture returns safely to a ground container",
+        "tick": 13795,
+        "elapsedTicks": 106
+      },
+      {
+        "name": "save and load preserve individual furniture quality settings and actual use",
+        "tick": 13795
+      },
+      {
+        "name": "cancellation preserves exactly one physical package without installing or duplicating it",
+        "tick": 13795
+      },
+      {
+        "name": "cancelled chair can be installed beside the moved table",
+        "tick": 13866,
+        "elapsedTicks": 71
+      },
+      {
+        "name": "all moving storage and cancellation consume no additional timber",
+        "tick": 13866,
+        "woodBefore": 84,
+        "woodAfter": 84,
+        "consumedBefore": 241,
+        "consumedAfter": 241
+      },
+      {
+        "name": "save and load preserve individual furniture quality settings and actual use",
+        "tick": 13866
+      },
+      {
+        "name": "ordinary activity lowers rest for the moved bed test",
+        "tick": 13866,
+        "elapsedTicks": 0
+      },
+      {
+        "name": "colonist actually sleeps at the moved bed position",
+        "tick": 13903,
+        "elapsedTicks": 37
+      },
+      {
+        "name": "moved bed supplies actual quality-scaled sleep",
+        "tick": 13933,
+        "elapsedTicks": 30
+      },
+      {
+        "name": "reinstalled bed is used at its destination with the preserved rest multiplier",
+        "tick": 13933
+      },
+      {
+        "name": "a real meal is eaten at the reinstalled table and chair",
+        "tick": 16083,
+        "elapsedTicks": 2150
+      },
+      {
+        "name": "reinstalled dining furniture participates in an actual meal",
+        "tick": 16083
+      }
+    ],
+    "finalTick": 16083,
+    "fixtures": {
+      "initial": {
+        "file": "test-results/voxel-relocation-final3/initial.json",
+        "tick": 0,
+        "sha256": "644307eb527d9fba7454a345048346de884f91817e68d9e9b0fcc1b20f72b264"
+      },
+      "room-ready": {
+        "file": "test-results/voxel-relocation-final3/room-ready.json",
+        "tick": 10888,
+        "sha256": "700ba446dab1a29922a947210448a00eb3007eac3275725a95d48ccbc24e2bf8"
+      },
+      "furnished": {
+        "file": "test-results/voxel-relocation-final3/furnished.json",
+        "tick": 12842,
+        "sha256": "923b5691112b8e03c09222818446d5ea733c252b7393f8e2b8d0377eae9b3b92"
+      },
+      "bed-planned": {
+        "file": "test-results/voxel-relocation-final3/bed-planned.json",
+        "tick": 12842,
+        "sha256": "c0bfb16e38af5f1716a186889b99d0927ed5c15c2c1238fd4fac2f894c8b6ad7"
+      },
+      "bed-carrying": {
+        "file": "test-results/voxel-relocation-final3/bed-carrying.json",
+        "tick": 12889,
+        "sha256": "2843c08bcc33aa90994a1fd5e360a420e8799bcc99777c00edca17283a6d6d9a"
+      },
+      "bed-installed": {
+        "file": "test-results/voxel-relocation-final3/bed-installed.json",
+        "tick": 13031,
+        "sha256": "45688fa5f120635e1d0d5f284889ca17cc91d49cc5519cc9c9545dbcd9553327"
+      },
+      "table-planned": {
+        "file": "test-results/voxel-relocation-final3/table-planned.json",
+        "tick": 13031,
+        "sha256": "93c87d74ff4a697b1a1b4e63b45bf1ff01dc9619dce406036635e311d8b403dd"
+      },
+      "table-carrying": {
+        "file": "test-results/voxel-relocation-final3/table-carrying.json",
+        "tick": 13169,
+        "sha256": "0d43db226f485729e6279eba8444f10b262790133fb9ad6454b58b0af51953d4"
+      },
+      "table-installed": {
+        "file": "test-results/voxel-relocation-final3/table-installed.json",
+        "tick": 13289,
+        "sha256": "62cd8e196e0cf2ef36d9e4346df4861234018ba39e24cede4bbff90fc1863cea"
+      },
+      "chair-packed": {
+        "file": "test-results/voxel-relocation-final3/chair-packed.json",
+        "tick": 13410,
+        "sha256": "5d5bee73326d7c0a0acb4a12eb57e74a43012c26424392d111c50a97e6bb6570"
+      },
+      "chair-stored": {
+        "file": "test-results/voxel-relocation-final3/chair-stored.json",
+        "tick": 13525,
+        "sha256": "d9c640ef657906a1f1f9077ee603643ec3dc34ceb77399cfc0655dc2cb09ea43"
+      },
+      "chair-carrying": {
+        "file": "test-results/voxel-relocation-final3/chair-carrying.json",
+        "tick": 13528,
+        "sha256": "4ef0f9bbeaa34f11aa5719d2f775cbe0469b0ea3d43af17bd8d917502facde25"
+      },
+      "chair-installed": {
+        "file": "test-results/voxel-relocation-final3/chair-installed.json",
+        "tick": 13637,
+        "sha256": "97e0fab86fdc0ed3273984537c86516f86def5d347348e0360e78322e2f2e34f"
+      },
+      "cancel-planned": {
+        "file": "test-results/voxel-relocation-final3/cancel-planned.json",
+        "tick": 13637,
+        "sha256": "ae2ef7723eb6a7c884360705e7d81c015fa8eb52da47e7957adf6d6521ee0b5c"
+      },
+      "cancel-carrying": {
+        "file": "test-results/voxel-relocation-final3/cancel-carrying.json",
+        "tick": 13689,
+        "sha256": "dd497006578eebc3fd803d7da8257f9775266ef6c3b863a1767dad728834b1b2"
+      },
+      "cancelled": {
+        "file": "test-results/voxel-relocation-final3/cancelled.json",
+        "tick": 13795,
+        "sha256": "4d108d5483b9a221a1cc704c7e6eb875a6baa849886b1b0f6c45ecb2bbfd147c"
+      },
+      "moved-furniture": {
+        "file": "test-results/voxel-relocation-final3/moved-furniture.json",
+        "tick": 13866,
+        "sha256": "eb95cb32d3657d112ff488f4dafb925c40da018505e504c0c9d97f011b75f4cd"
+      },
+      "moved-bed-sleep": {
+        "file": "test-results/voxel-relocation-final3/moved-bed-sleep.json",
+        "tick": 13903,
+        "sha256": "fbbdaa7f021b17909238a52dd5bbef10372fd25b8f96899eeeeddb289cf76701"
+      },
+      "moved-dining": {
+        "file": "test-results/voxel-relocation-final3/moved-dining.json",
+        "tick": 16083,
+        "sha256": "9868bb678db48da8373ef4cfeb674c405af76b2f9acd85ba08de2e936d01c16e"
+      },
+      "final": {
+        "file": "test-results/voxel-relocation-final3/final.json",
+        "tick": 16083,
+        "sha256": "9868bb678db48da8373ef4cfeb674c405af76b2f9acd85ba08de2e936d01c16e"
+      }
+    }
+  },
+  "browser": {
+    "file": "test-results/voxel-relocation-browser-final3/report.json",
+    "sha256": "8f77587188ef42ef6f287da0c514f3b12f0b345d384cab26df29856dbefeddbb",
+    "scope": "Worker and main renderer evidence from current SHA-verified fresh v34 ordinary-play saves. Mutations use visible buttons, keyboard, map input, file chooser and download. snapshot/project/exportSave are read-only. Exercises installed move/uninstall, packed attributes/install, bed ghost, rotation, cross-layer selection, Esc, refusal reason, linked stages/cancel, physical cargo, exact save/load, actual destination sleep/dining and narrow layout. No state injection.",
+    "scriptSha256": "b2e45bbe3656c11c14da849722eea7588714eea814445966bb34ce7bbc7f19e7",
+    "campaign": {
+      "file": "test-results/voxel-relocation-final3/report.json",
+      "sha256": "60701ef0aa8a310246a956ee08c6535aa6aa1f2676d50f9692cfa927fb1158d3",
+      "sourceManifestSha256": "be03b270375a51f7df5eada85f88b0b672420153c864433b1031ab31204b4085"
+    },
+    "modes": [
+      {
+        "mode": "worker",
+        "checks": [
+          {
+            "name": "requested renderer is active"
+          },
+          {
+            "name": "bed ghost rotation floor navigation refusal reason and Esc retain the correct selected furniture"
+          },
+          {
+            "name": "queued move is cancelled visibly while the original bed remains installed"
+          },
+          {
+            "name": "ordinary worker visibly carries the same packaged bed and file roundtrip preserves it"
+          },
+          {
+            "name": "visible map targeting runs uninstall carrying and rotated cross-layer bed reinstall"
+          },
+          {
+            "name": "standalone uninstall exposes a ground package with preserved authoritative attributes"
+          },
+          {
+            "name": "stored package installs across floors through visible targeting and normal hauling"
+          },
+          {
+            "name": "cancel during real carrying leaves one inspectable package and no install job"
+          },
+          {
+            "name": "moved table keeps its gathering setting and existing controls"
+          },
+          {
+            "name": "actual sleep at the moved destination links to the preserved bed"
+          },
+          {
+            "name": "actual meal uses reinstalled table and chair and survives visible save/load"
+          },
+          {
+            "name": "900 pixel layout retains packed attributes and install controls",
+            "bounds": {
+              "x": 31,
+              "y": 368.859375,
+              "width": 197,
+              "height": 109.140625
+            }
+          },
+          {
+            "name": "served JS and CSS match frozen local build by SHA"
+          },
+          {
+            "name": "no page or console errors"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:4182/assets/index-CoPLzDRC.js",
+            "status": 200,
+            "sha256": "6f5c81d5d3d2d3889ac39ca12c6f45564c910448088f357f737683ee6be7630c",
+            "bytes": 2356,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/main-xDBNgSgR.css",
+            "status": 200,
+            "sha256": "2d2be90c072ca1afd6bd8bdc1185335713db06cdc59654dffcdc2a9b336ed3d2",
+            "bytes": 44818,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "bytes": 221699,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/main-CjlUhqBz.js",
+            "status": 200,
+            "sha256": "a23fdfb573c62f74052e15b4c95325405eaaae4bc1b4b4c9fe0112b93be085de",
+            "bytes": 868473,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/sim.worker-DwQSqPRQ.js",
+            "status": 200,
+            "sha256": "2318e910fd86837e2eb041af8c1b0c0bd34905772e4bfdbef77aa934bf2eb023",
+            "bytes": 517474,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/render.worker-Dj94vABb.js",
+            "status": 200,
+            "sha256": "130c095be98ac45827026b8f91dff7f932eb84cc08338b67e44aacb05b651d01",
+            "bytes": 617937,
+            "matchesLocalBuild": true
+          }
+        ]
+      },
+      {
+        "mode": "main",
+        "checks": [
+          {
+            "name": "requested renderer is active"
+          },
+          {
+            "name": "bed ghost rotation floor navigation refusal reason and Esc retain the correct selected furniture"
+          },
+          {
+            "name": "queued move is cancelled visibly while the original bed remains installed"
+          },
+          {
+            "name": "ordinary worker visibly carries the same packaged bed and file roundtrip preserves it"
+          },
+          {
+            "name": "visible map targeting runs uninstall carrying and rotated cross-layer bed reinstall"
+          },
+          {
+            "name": "standalone uninstall exposes a ground package with preserved authoritative attributes"
+          },
+          {
+            "name": "stored package installs across floors through visible targeting and normal hauling"
+          },
+          {
+            "name": "cancel during real carrying leaves one inspectable package and no install job"
+          },
+          {
+            "name": "moved table keeps its gathering setting and existing controls"
+          },
+          {
+            "name": "actual sleep at the moved destination links to the preserved bed"
+          },
+          {
+            "name": "actual meal uses reinstalled table and chair and survives visible save/load"
+          },
+          {
+            "name": "900 pixel layout retains packed attributes and install controls",
+            "bounds": {
+              "x": 31,
+              "y": 368.859375,
+              "width": 197,
+              "height": 109.140625
+            }
+          },
+          {
+            "name": "served JS and CSS match frozen local build by SHA"
+          },
+          {
+            "name": "no page or console errors"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:4182/assets/index-CoPLzDRC.js",
+            "status": 200,
+            "sha256": "6f5c81d5d3d2d3889ac39ca12c6f45564c910448088f357f737683ee6be7630c",
+            "bytes": 2356,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/main-xDBNgSgR.css",
+            "status": 200,
+            "sha256": "2d2be90c072ca1afd6bd8bdc1185335713db06cdc59654dffcdc2a9b336ed3d2",
+            "bytes": 44818,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "bytes": 221699,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/main-CjlUhqBz.js",
+            "status": 200,
+            "sha256": "a23fdfb573c62f74052e15b4c95325405eaaae4bc1b4b4c9fe0112b93be085de",
+            "bytes": 868473,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/sim.worker-DwQSqPRQ.js",
+            "status": 200,
+            "sha256": "2318e910fd86837e2eb041af8c1b0c0bd34905772e4bfdbef77aa934bf2eb023",
+            "bytes": 517474,
+            "matchesLocalBuild": true
+          }
+        ]
+      }
+    ]
+  },
+  "screenshots": [
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-relocation-bed-ghost-rotated.png",
+      "sha256": "27a05cf2da5c23fee4d48a43bab40558bdf687f5ebbcf788279dc0b724ed8cc8"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-relocation-actual-moved-bed-user.png",
+      "sha256": "c964b57570d0f55128d15bf26a0e0bd3d97e536c8e2515b375c2f0ca96a6317f"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-relocation-actual-moved-dining.png",
+      "sha256": "3f49023e4de604f25ef8fe73de9c911fe1fff7041aafb37ec8ca3ced9c17bba1"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-relocation-narrow-packed-controls.png",
+      "sha256": "d2a8e6082641d0f0acf8b7498c6e77730fa96e36ff8195effd79e5a89ab24c76"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-relocation-narrow-install-targeting.png",
+      "sha256": "c61ad63c03bba676d8526244ef9513f81fa711ccf75857aa6331199a31c9ef13"
+    }
+  ],
+  "limitations": [
+    "Mechanisms first; furniture costs, durations and balance remain provisional",
+    "Furniture relocation subset for wooden beds, tables and chairs; no workstations, trade, mass or full material catalog",
+    "Furniture condition affects room market value; colony building wealth ignores HP",
+    "Native uninstall/reinstall observations and limitations are documented separately",
+    "Tests run locally; Pages CI only installs, type-checks, builds and deploys"
+  ]
+}

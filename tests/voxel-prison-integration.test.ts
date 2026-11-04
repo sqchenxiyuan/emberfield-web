@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { relocationExpectedField } from './legacy-relocation-defaults';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { VoxelSimulation } from '../src/voxel/world';
@@ -199,8 +200,8 @@ describe('voxel capture, care, recruitment and release integration', () => {
     const bytes = readFileSync(new URL('./fixtures/voxel-v23-prison-initial.json', import.meta.url));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe('3eac88560e5bf8460e91517998c80fe501ce5be1eeac088e9c0cb3703db216b3');
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old), upgraded = s.save();
-    expect(old.version).toBe(23); expect(upgraded.version).toBe(33);
-    expect(upgraded.items).toEqual(old.items); expect(upgraded.stats).toEqual(old.stats);
+    expect(old.version).toBe(23); expect(upgraded.version).toBe(34);
+    expect(upgraded.items).toEqual(old.items); expect(upgraded.stats).toEqual(relocationExpectedField('stats', old.stats));
     expect(upgraded.nextId).toBe(old.nextId); expect(upgraded.animals).toMatchObject(old.animals);
     expect(upgraded.pawns).toHaveLength(old.pawns.length);
     for (const p of upgraded.pawns) {

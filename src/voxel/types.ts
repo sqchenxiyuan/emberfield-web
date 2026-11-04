@@ -8,6 +8,7 @@ import type { TradeCommand, TradeState, TradeView } from './tradeTypes';
 import type { Psyche } from './mood';
 import type { SocialState, SocialIdentity, SocialEvent } from './social';
 import type { DiningTable, DiningChair, LivingState, RoomLivingSummary } from './living';
+import type { FurnitureKind } from './furniture';
 import type { PrisonerState, PrisonerPolicy, WardenTask } from './prisoners';
 import type { Filth, CleanTask, FoodPoisoning, RoomCleanliness, CookingOutcome } from './sanitation';
 import type { Fire, FireDamage, FireHazards, FireLogEntry, FirefightTask, RepairTask } from './fire';
@@ -82,7 +83,8 @@ export type Resource =
   | 'cloth'
   | 'herb'
   | 'apparel'
-  | 'weapon';
+  | 'weapon'
+  | 'furniture';
 export type Work =
   | 'handle'
   | 'firefight'
@@ -104,6 +106,14 @@ export type CropKind = FoodCropKind | 'cotton' | 'healroot';
 export type ArmorKind = 'simpleHelmet' | 'plateArmor';
 export type ApparelKind = 'tuque' | 'parka' | 'duster' | 'shirt' | 'pants' | ArmorKind;
 export type ApparelQuality = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+/** Stable inner building identity survives every ground/carry/install container.
+ * Bed owner is only a recovery candidate; packed beds have no active occupant. */
+export type FurniturePiece = {
+  id: number;
+  quality: ApparelQuality;
+  hitPoints: number;
+  axis: Axis;
+} & ({ kind: 'bed'; owner: number | null } | { kind: 'table'; gathering: boolean } | { kind: 'chair' });
 export interface ApparelPiece {
   id: number;
   kind: ApparelKind;
@@ -342,6 +352,7 @@ export interface Cargo {
   crop?: FoodCropKind;
   apparel?: ApparelPiece;
   weapon?: WeaponPiece;
+  furniture?: FurniturePiece;
   carcass?: { animalId: number; species: AnimalSpecies };
   /** Ground weapon forbidden state; manual equip overrides it. */
   forbidden?: boolean;
@@ -524,6 +535,8 @@ export interface CropCondition {
   reason: string;
 }
 export type JobKind =
+  | 'uninstall'
+  | 'install'
   | 'table'
   | 'chair'
   | 'fence'
@@ -594,6 +607,9 @@ export interface Job extends Pos {
   weaponKind?: WeaponKind;
   weaponBenchKind?: WeaponBenchKind;
   researchProject?: ResearchKey;
+  /** Exact existing furniture identity, never a generic interchangeable material. */
+  furnitureId?: number;
+  furnitureKind?: FurnitureKind;
   /** Existing pre-v9 cutting jobs retain their original 60-tick work/progress. */
   legacyCut?: true;
 }
@@ -721,6 +737,7 @@ export interface Counts {
   herb: number;
   apparel: number;
   weapon: number;
+  furniture: number;
 }
 export interface VoxelStats {
   mined: number;
@@ -828,6 +845,9 @@ export interface ChunkUpdate {
   ladders: Uint8Array;
 }
 export type VoxelCommand =
+  | { type: 'uninstallFurniture'; kind: FurnitureKind; furnitureId: number }
+  | { type: 'installFurniture'; kind: FurnitureKind; furnitureId: number; target: Pos; axis: Axis }
+  | { type: 'cancelFurnitureMove'; furnitureId: number }
   | { type: 'tableGathering'; tableId: number; enabled: boolean }
   | { type: 'fenceGate'; gateId: number; mode: FenceGate['mode'] }
   | { type: 'penFilter'; markerId: number; filter: PenMarker['filter'] }
@@ -925,7 +945,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 33;
+  version: 34;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;
@@ -988,6 +1008,7 @@ export const RESOURCE_NAMES: Record<Resource, string> = {
   herb: '草药',
   apparel: '衣物',
   weapon: '武器',
+  furniture: '打包家具',
   steel: '钢材',
   components: '零件',
   food: '包装生存口粮',
@@ -997,6 +1018,7 @@ export const RESOURCE_NAMES: Record<Resource, string> = {
   meal: '简餐',
 };
 export const JOB_NAMES: Record<JobKind, string> = {
+  uninstall: '卸下家具', install: '重装家具',
   table: '造餐桌', chair: '造餐椅',
   fence: '建围栏', fenceGate: '建栏门', penMarker: '建圈地标记',
   horseshoePin: '建马蹄铁桩',
@@ -1084,4 +1106,5 @@ export const emptyCounts = (): Counts => ({
   herb: 0,
   apparel: 0,
   weapon: 0,
+  furniture: 0,
 });

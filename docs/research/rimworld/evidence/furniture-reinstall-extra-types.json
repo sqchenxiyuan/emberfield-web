@@ -1,0 +1,8 @@
+[
+  "RimWorld.CompAssignableToPawn",
+  "RimWorld.Blueprint",
+  "Verse.AI.JobDriver_HaulToContainer",
+  "RimWorld.Toils_Construct",
+  "RimWorld.WorkGiver_ConstructDeliverResourcesToBlueprints",
+  "RimWorld.WorkGiver_RemoveBuilding"
+]

@@ -1,0 +1,25 @@
+{
+  "evidence_id": "RW17-FURNITURE-REINSTALL-STATS",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.StatExtension",
+      "local_file": ".local-research/furniture-reinstall-stats/RimWorld.StatExtension.cs",
+      "sha256": "8382afa7a03fa8019790b094b4aec007945ea71625b31989e72de72c71b67d9b",
+      "lines": 48
+    }
+  ]
+}

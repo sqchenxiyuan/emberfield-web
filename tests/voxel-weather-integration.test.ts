@@ -11,6 +11,7 @@ import { initialWeather, advanceWeather, weatherAtCycle, nextWeatherTransition, 
 import { makeWeapon } from '../src/voxel/weapons';
 import { daylight, hourAt } from '../src/voxel/farming';
 import { MOOD_RULES } from '../src/voxel/mood';
+import { relocationExpectedField } from './legacy-relocation-defaults';
 
 const pos = (x: number, y = 16, z = 8): Pos => ({ x, y, z });
 function command(s: VoxelSimulation, c: VoxelCommand) { const r = s.command(c); expect(r.ok, r.message).toBe(true); }
@@ -65,8 +66,8 @@ describe('genuine v26 weather migration', () => {
     const proof = JSON.parse(readFileSync(new URL(`./fixtures/voxel-v26-weather-${name}.provenance.json`, import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(sha); expect(proof.sha256).toBe(sha);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old);
-    expect(old.version).toBe(26); expect(s.save().version).toBe(33);
-    expect(s.tick).toBe(old.tick); expect(s.items).toEqual(old.items); expect(s.stats).toEqual(old.stats);
+    expect(old.version).toBe(26); expect(s.save().version).toBe(34);
+    expect(s.tick).toBe(old.tick); expect(s.items).toEqual(old.items); expect(s.stats).toEqual(relocationExpectedField('stats', old.stats));
     expect(s.fires).toEqual(old.fires); expect(s.fireDamage).toEqual(old.fireDamage);
     expect(s.fireHazards).toEqual(old.fireHazards); expect(s.fireLog).toEqual(old.fireLog);
     const preserved = (p: Pawn) => ({ id: p.id, name: p.name, x: p.x, y: p.y, z: p.z, food: p.food, rest: p.rest,

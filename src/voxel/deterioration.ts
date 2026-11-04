@@ -1,6 +1,7 @@
 import { DAY, type Cargo, type Resource } from './types';
 import { APPAREL_DEFS } from './apparel';
 import { WEAPON_DEFS } from './weapons';
+import { furnitureStats } from './furniture';
 
 export interface DeteriorationEnvironment {
   exposed: boolean;
@@ -16,7 +17,7 @@ export interface ResourceConditionDefinition {
 /** Core 1.7 selected definitions, with generated meat/corpse values confirmed
  * from ThingDefGenerator_Meat/Corpses. Steel, silver and stone blocks disable
  * useHitPoints; rock chunks have HP but no environmental deterioration rate. */
-export const RESOURCE_CONDITION_DEFS: Readonly<Record<Exclude<Resource, 'apparel' | 'weapon'>, Readonly<ResourceConditionDefinition>>> = {
+export const RESOURCE_CONDITION_DEFS: Readonly<Record<Exclude<Resource, 'apparel' | 'weapon' | 'furniture'>, Readonly<ResourceConditionDefinition>>> = {
   silver: { maxHitPoints: null, ratePerDay: 0 },
   wood: { maxHitPoints: 150, ratePerDay: .5 },
   stone: { maxHitPoints: null, ratePerDay: 0 },
@@ -37,6 +38,7 @@ export const DETERIORATION_RULES = Object.freeze({ interval: 100, equipmentRateP
 export function batchMaxHitPoints(batch: Cargo): number | null {
   if (batch.resource === 'apparel') return batch.apparel ? APPAREL_DEFS[batch.apparel.kind]?.maxHitPoints ?? null : null;
   if (batch.resource === 'weapon') return batch.weapon ? WEAPON_DEFS[batch.weapon.kind]?.maxHitPoints ?? null : null;
+  if (batch.resource === 'furniture') return batch.furniture ? furnitureStats(batch.furniture.kind, batch.furniture.quality).maxHitPoints : null;
   return RESOURCE_CONDITION_DEFS[batch.resource]?.maxHitPoints ?? null;
 }
 /** Missing ordinary HP is the canonical full-condition representation. Equipment
@@ -44,6 +46,7 @@ export function batchMaxHitPoints(batch: Cargo): number | null {
 export function batchHitPoints(batch: Cargo): number | null {
   if (batch.resource === 'apparel') return batch.apparel?.hitPoints ?? null;
   if (batch.resource === 'weapon') return batch.weapon?.hitPoints ?? null;
+  if (batch.resource === 'furniture') return batch.furniture?.hitPoints ?? null;
   const maximum = batchMaxHitPoints(batch);
   return maximum === null ? null : batch.hitPoints ?? maximum;
 }
@@ -55,17 +58,19 @@ export function batchHpFraction(batch: Cargo): number {
  * immediately. Persisted living batches must have strictly positive HP. */
 export function setBatchHitPoints(batch: Cargo, hitPoints: number): void {
   const maximum = batchMaxHitPoints(batch);
-  if (maximum === null || !Number.isInteger(hitPoints) || hitPoints < 0 || hitPoints > maximum)
+  if (maximum === null || !Number.isFinite(hitPoints) ||
+      (batch.resource !== 'furniture' && !Number.isInteger(hitPoints)) || hitPoints < 0 || hitPoints > maximum)
     throw new RangeError('物资耐久无效');
   if (batch.resource === 'apparel') batch.apparel!.hitPoints = hitPoints;
   else if (batch.resource === 'weapon') batch.weapon!.hitPoints = hitPoints;
+  else if (batch.resource === 'furniture') batch.furniture!.hitPoints = hitPoints;
   else if (hitPoints === maximum) delete batch.hitPoints;
   else batch.hitPoints = hitPoints;
 }
 /** Nested apparel/weapon structure is validated by their existing validators. */
 export function validBatchHitPoints(batch: Cargo): boolean {
   if (batch.hitPoints === undefined) return true;
-  if (batch.resource === 'apparel' || batch.resource === 'weapon') return false;
+  if (batch.resource === 'apparel' || batch.resource === 'weapon' || batch.resource === 'furniture') return false;
   const maximum = batchMaxHitPoints(batch);
   return maximum !== null && Number.isInteger(batch.hitPoints) && batch.hitPoints > 0 && batch.hitPoints <= maximum;
 }
@@ -85,6 +90,9 @@ export function deteriorationRate(batch: Cargo, env: DeteriorationEnvironment): 
     ? DETERIORATION_RULES.equipmentRatePerDay * DETERIORATION_QUALITY[batch.apparel.quality] : 0;
   else if (batch.resource === 'weapon') base = batch.weapon
     ? DETERIORATION_RULES.equipmentRatePerDay * (WEAPON_DEFS[batch.weapon.kind].hasQuality ? DETERIORATION_QUALITY[batch.weapon.quality] : 1) : 0;
+  // Native MinifiedThing has no DeteriorationRate override or inheritance of
+  // the inner building for this stat: its default is zero, not equipment's 2.
+  else if (batch.resource === 'furniture') base = 0;
   else base = RESOURCE_CONDITION_DEFS[batch.resource]?.ratePerDay ?? 0;
   return base * deteriorationEnvironmentFactor(env);
 }
@@ -111,6 +119,6 @@ export function advanceDeterioration(batch: Cargo, env: DeteriorationEnvironment
   if (hitPoints === null || rate === 0 || elapsedTicks === 0) return false;
   if (hitPoints <= 0) return true;
   if (deteriorationRandom(seed, id, tick) >= rate * elapsedTicks / DAY) return false;
-  setBatchHitPoints(batch, hitPoints - 1);
-  return hitPoints === 1;
+  setBatchHitPoints(batch, Math.max(0, hitPoints - 1));
+  return hitPoints <= 1;
 }

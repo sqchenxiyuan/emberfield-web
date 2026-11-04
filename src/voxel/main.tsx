@@ -17,7 +17,8 @@ import { AnimalPanel, AnimalDetails } from './AnimalPanel';
 import { FenceGateDetails, PenDetails, type PenControls } from './PenPanel';
 import { LivingPanel, RoomLivingDetails, DiningFurnitureDetails } from './LivingPanel';
 import { SocialPanel } from './SocialPanel';
-import { FurnitureDetails, CurrentFurniture } from './FurniturePanel';
+import { FurnitureDetails, CurrentFurniture, FurnitureMoveControls, FURNITURE_NAMES } from './FurniturePanel';
+import { furnitureStats } from './furniture';
 import { tableCells, LIVING_BUILDINGS } from './living';
 import { BatchDurability, ItemCondition } from './ItemCondition';
 import type { EnvironmentView } from './environment';
@@ -220,7 +221,7 @@ function connectedStorage(stockpiles: Stockpile[], start: Stockpile): Stockpile[
   return result;
 }
 const foodName = (batch: Cargo) =>
-  batch.carcass
+  batch.furniture ? `已打包${FURNITURE_NAMES[batch.furniture.kind]} #${batch.furniture.id}` : batch.carcass
     ? `${ANIMAL_DEFS[batch.carcass.species].name}尸体`
     : batch.weapon
     ? weaponName(batch.weapon)
@@ -393,7 +394,7 @@ function App() {
     const selected = state.selected;
     const animals = client.snapshot().snapshot?.animals ?? [];
     const person = selected && client.snapshot().snapshot?.pawns.find(v => equal(v, selected) && (v.faction === 'prisoner' || (v.faction === 'raider' && v.downed && !v.dead)));
-    const structure = selected && ('penMarkerId' in selected || 'fenceGateId' in selected);
+    const structure = selected && ('penMarkerId' in selected || 'fenceGateId' in selected || 'furnitureId' in selected);
     const animal = selected && !structure ? animals.find(v => 'animalId' in selected ? v.id === selected.animalId : equal(v, selected)) : undefined;
     setSelectedAnimal(current => selected && !structure && !('animalId' in selected) && animals.some(v => v.id === current && equal(v, selected)) ? current : animal?.id ?? null);
     if (animal) setSelectedPawn(null);
@@ -446,7 +447,7 @@ function App() {
     }
   };
   const animal = s?.animals.find(v => v.id === selectedAnimal) ??
-    (state.selected && !('penMarkerId' in state.selected) && !('fenceGateId' in state.selected) ? s?.animals.find(v => equal(v, state.selected!)) : undefined);
+    (state.selected && !('penMarkerId' in state.selected) && !('fenceGateId' in state.selected) && !('furnitureId' in state.selected) ? s?.animals.find(v => equal(v, state.selected!)) : undefined);
   const p = animal ?? state.selected;
   const spawn = s?.spawn ?? { x: 32, y: 32, z: 8 };
   const people = p ? (s?.pawns.filter((v) => equal(v, p)) ?? []) : [];
@@ -514,8 +515,8 @@ function App() {
             researchBenchCells(
               s?.researchBenches.find((b) => equal(b, v)) ?? { ...v, axis: v.axis ?? 'x' },
             ).some((q) => equal(q, p))) ||
-          (v.kind === 'bed' && bedCells({ ...v, axis: v.axis ?? 'x' }).some((q) => equal(q, p))) ||
-          (v.kind === 'table' && tableCells({ ...v, axis: v.axis ?? 'x' }).some(q => equal(q, p))) ||
+          ((v.kind === 'bed' || v.furnitureKind === 'bed') && bedCells({ ...v, axis: v.axis ?? 'x' }).some((q) => equal(q, p))) ||
+          ((v.kind === 'table' || v.furnitureKind === 'table') && tableCells({ ...v, axis: v.axis ?? 'x' }).some(q => equal(q, p))) ||
           (isDeviceKind(v.kind) &&
             deviceCells({ ...v, kind: v.kind, axis: v.axis ?? 'x' }).some((q) => equal(q, p))),
       ) ?? [])
@@ -1181,6 +1182,8 @@ function App() {
           </div>
         )}
         {s && (bed || table || chair) && <FurnitureDetails kind={bed ? 'bed' : table ? 'table' : 'chair'} item={(bed ?? table ?? chair)!} snapshot={s} />}
+        {s && (bed || table || chair) && <FurnitureMoveControls kind={bed ? 'bed' : table ? 'table' : 'chair'} item={(bed ?? table ?? chair)!} snapshot={s}
+          begin={client.beginFurniturePlacement} command={c => void client.command(c)} focus={focus} />}
         {s && (table || chair) && <DiningFurnitureDetails table={table ?? undefined} chair={chair ?? undefined} snapshot={s}
           focus={focus} command={c => void client.command(c)} />}
         {bed && (
@@ -1445,6 +1448,11 @@ function App() {
             </small>
             <FoodCondition batch={i} temperature={temperatureOf(i)} />
             <ItemCondition condition={s?.environment.items.find(item => item.entity === 'stack' && item.id === i.id)} name={foodName(i)} />
+            {i.furniture && s && <div data-testid="packed-furniture" data-furniture-id={i.furniture.id} data-stack-id={i.id}>
+              <FurnitureDetails kind={i.furniture.kind} item={i.furniture} snapshot={s} packed />
+              <FurnitureMoveControls kind={i.furniture.kind} item={i.furniture} snapshot={s} packed begin={client.beginFurniturePlacement}
+                command={c => void client.command(c)} focus={focus} />
+            </div>}
             {i.carcass && <div className="voxel-carcass-detail" data-testid="carcass-detail">
               <small>来源动物 #{i.carcass.animalId} · 完整{ANIMAL_DEFS[i.carcass.species].name}尸体</small>
               <button onClick={() => { client.choose('butcherSpot'); setNotice('在可达地面划定屠宰点，再开启人物的烹饪分工。'); }}>建造屠宰点</button>
@@ -1485,6 +1493,8 @@ function App() {
                 .map((r) => ` · ${RESOURCE_NAMES[r]} ${j.delivered[r] ?? 0}/${j.cost[r]}`)
                 .join('')}
             </small>
+            {j.furnitureId !== undefined && <button data-testid="furniture-job-cancel" data-furniture-id={j.furnitureId}
+              onClick={() => void client.command({ type: 'cancelFurnitureMove', furnitureId: j.furnitureId! })}>取消这件家具的搬装任务</button>}
             {j.deliveredBatches.map((batch, i) => (
               <div key={i} data-testid="delivered-food">
                 <small>
@@ -1676,6 +1686,11 @@ function App() {
                 </p>
                 <FoodCondition batch={pawn.cargo} temperature={temperatureOf(pawn)} />
                 <BatchDurability batch={pawn.cargo} name={foodName(pawn.cargo)} />
+                {pawn.cargo.furniture && s && <div data-testid="carried-furniture" data-furniture-id={pawn.cargo.furniture.id}>
+                  <FurnitureDetails kind={pawn.cargo.furniture.kind} item={pawn.cargo.furniture} snapshot={s} packed />
+                  <FurnitureMoveControls kind={pawn.cargo.furniture.kind} item={pawn.cargo.furniture} snapshot={s} packed begin={client.beginFurniturePlacement}
+                    command={c => void client.command(c)} focus={focus} />
+                </div>}
               </div>
             )}
             <SkillPanel pawn={pawn} />
@@ -1820,7 +1835,7 @@ function App() {
       <footer className="voxel-footer">
         <div className="voxel-tool-hint">
           <span className="voxel-kicker">
-            {TOOL_NAMES[state.tool]}
+            {state.furniturePlacement ? `安装 ${FURNITURE_NAMES[state.furniturePlacement.kind]} #${state.furniturePlacement.furnitureId} · ${furnitureStats(state.furniturePlacement.kind, state.furniturePlacement.quality).qualityName}` : TOOL_NAMES[state.tool]}
             {([
               'bed',
               'table',
@@ -1833,11 +1848,12 @@ function App() {
               'machining',
               'researchBench',
             ].includes(state.tool) ||
-              isDeviceKind(state.tool)) && (
+              isDeviceKind(state.tool) || state.furniturePlacement) && (
               <button onClick={() => client.rotatePlan()} aria-label="旋转建造朝向">
                 朝向 {state.axis.toUpperCase()} · R
               </button>
             )}
+            {state.furniturePlacement && <button data-testid="furniture-placement-cancel" onClick={client.endFurniturePlacement}>退出选址 · Esc</button>}
             {state.tool === 'farm' && (
               <select
                 aria-label="种植作物"
@@ -1881,16 +1897,17 @@ function App() {
               <button onClick={() => client.choose('inspect')}>结束</button>
             </span>}
             {state.placementPreview && <small data-testid="placement-preview-info">
-              {state.placementPreview.tool === 'animalArea' ? state.animalAreaErase ? '擦除' : '涂绘' : '规划'} · {state.placementPreview.tool === 'table' ? 2 : (Math.abs(state.placementPreview.to.x - state.placementPreview.from.x) + 1) * (Math.abs(state.placementPreview.to.y - state.placementPreview.from.y) + 1)} 格
+              {state.furniturePlacement ? '安装预览' : state.placementPreview.tool === 'animalArea' ? state.animalAreaErase ? '擦除' : '涂绘' : '规划'} · {['bed', 'table'].includes(state.placementPreview.tool) ? 2 : (Math.abs(state.placementPreview.to.x - state.placementPreview.from.x) + 1) * (Math.abs(state.placementPreview.to.y - state.placementPreview.from.y) + 1)} 格
             </small>}
           </span>
           <p>
-            {state.tool === 'farm' && state.crop === 'healroot'
+            {state.furniturePlacement ? '点击空地确认安装位置。R 旋转，[ / ] 或楼层按钮可跨层选址；工人需要可达通路。Esc 仅退出选址。' : state.tool === 'farm' && state.crop === 'healroot'
               ? `拖动划定药根种植区。播种需要种植 ${CROPS.healroot.minSkill} 级，收获不受此等级限制；成熟产出草药，不能食用，可存入冷库。`
               : hints[state.tool]}
             {(state.tool === 'floor' || state.tool === 'wall') &&
               ` 每格 ${state.material === 'stone' ? STONE_CONSTRUCTION[state.tool].cost : state.tool === 'wall' ? 6 : 3} ${state.material === 'stone' ? '花岗岩砖' : '木材'}。`}
           </p>
+          {state.furniturePlacement?.reason && <small className="voxel-placement-error" data-testid="furniture-placement-error">{state.furniturePlacement.reason}</small>}
           <small>Q / E 旋转 · [ / ] 切层 · 中键拖转 · 滚轮缩放 · WASD 平移 · 右键退出工具</small>
         </div>
         <div className="voxel-bottom-row">

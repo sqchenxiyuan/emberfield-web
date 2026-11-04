@@ -93,6 +93,7 @@ describe('voxel generation and chunk delivery', () => {
       cloth: 0,
       apparel: 6,
       weapon: 0,
+      furniture: 0,
     });
     expect(a.generator).toBe(2);
     expect(a.worldSummary.resources.steel).toBeGreaterThan(0);

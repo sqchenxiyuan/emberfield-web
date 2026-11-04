@@ -1,5 +1,6 @@
 import { VoxelRenderer, type VoxelView, type PlacementPreview } from './renderer';
 import { isDeviceKind } from './power';
+import type { FurnitureKind } from './furniture';
 import {
   HEIGHT,
   SURFACE,
@@ -17,7 +18,15 @@ import {
   type WorldSettings,
   type WorldPreview,
   type TreeSpecies,
+  type ApparelQuality,
 } from './types';
+export interface FurniturePlacement {
+  furnitureId: number;
+  kind: FurnitureKind;
+  quality: ApparelQuality;
+  packed: boolean;
+  reason: string | null;
+}
 export interface ClientState {
   snapshot: VoxelSnapshot | null;
   ready: boolean;
@@ -33,6 +42,7 @@ export interface ClientState {
   selectedAnimalAreaId: number | null;
   animalAreaErase: boolean;
   placementPreview: PlacementPreview | null;
+  furniturePlacement: FurniturePlacement | null;
   metrics: Record<string, unknown>;
   worker: boolean;
 }
@@ -67,6 +77,7 @@ export class VoxelClient {
     selectedAnimalAreaId: null,
     animalAreaErase: false,
     placementPreview: null,
+    furniturePlacement: null,
     metrics: {},
     worker: false,
   };
@@ -85,6 +96,15 @@ export class VoxelClient {
     const axis = this.state.axis === 'x' ? 'y' : 'x';
     this.emit({ axis });
     if (this.state.placementPreview) this.view({ placementPreview: { ...this.state.placementPreview, axis } });
+  };
+  beginFurniturePlacement = (kind: FurnitureKind, item: { id: number; quality: ApparelQuality; axis: Axis }, packed = false) => {
+    this.choose('inspect');
+    this.emit({ axis: item.axis, furniturePlacement: { kind, furnitureId: item.id, quality: item.quality, packed, reason: null } });
+    this.notice('选择安装位置；R 旋转，可切换楼层，Esc 退出选址');
+  };
+  endFurniturePlacement = () => {
+    this.cancelPlacement();
+    this.emit({ furniturePlacement: null });
   };
   roomAt = (p: Pos) =>
     inside(p)
@@ -132,7 +152,7 @@ export class VoxelClient {
   export = (): Promise<VoxelSave> => this.request('save');
   import = async (save: unknown) => {
     await this.request('load', { save });
-    this.cancelPlacement();
+    this.endFurniturePlacement();
     this.view({ penId: null, animalAreaId: null });
     this.home();
     this.select(null);
@@ -150,14 +170,14 @@ export class VoxelClient {
     this.request('preview', { seed, settings });
   newGame = async (seed: number, settings?: WorldSettings) => {
     await this.request('new', { seed, settings });
-    this.cancelPlacement();
+    this.endFurniturePlacement();
     this.view({ penId: null, animalAreaId: null });
     this.home();
     this.select(null);
   };
   choose = (tool: Tool) => {
     this.cancelPlacement();
-    this.emit({ tool });
+    this.emit({ tool, furniturePlacement: null });
   };
   showPen = (id: number | null) => {
     if (this.state.tool === 'animalArea') this.choose('inspect');
@@ -246,7 +266,7 @@ export class VoxelClient {
   private async atPointer(e: PointerEvent) {
     const box = this.canvas!.getBoundingClientRect();
     return this.renderRequest(
-      this.state.tool === 'inspect' || this.state.tool === 'cut' ? 'inspect' : 'pick',
+      !this.state.furniturePlacement && (this.state.tool === 'inspect' || this.state.tool === 'cut') ? 'inspect' : 'pick',
       { x: e.clientX - box.left, y: e.clientY - box.top },
     ) as Promise<Pos | null>;
   }
@@ -300,14 +320,19 @@ export class VoxelClient {
       downX = 0,
       downY = 0;
     let dragTool: Tool | null = null, dragSequence = 0, previewSequence = 0;
-    const previews = (tool: Tool) => ['table', 'chair', 'fence', 'fenceGate', 'penMarker', 'animalArea'].includes(tool);
+    const previews = (tool: Tool) => !!this.state.furniturePlacement || ['bed', 'table', 'chair', 'fence', 'fenceGate', 'penMarker', 'animalArea'].includes(tool);
     const preview = (from: Pos, target: Pos, tool: Tool) => {
+      const furniture = this.state.furniturePlacement;
+      if (furniture) {
+        this.view({ placementPreview: { tool: furniture.kind, from: target, to: target, axis: this.state.axis, furnitureId: furniture.furnitureId } });
+        return;
+      }
       const to = { ...target, z: from.z };
       if (tool === 'fence') {
         if (Math.abs(to.x - from.x) >= Math.abs(to.y - from.y)) to.y = from.y;
         else to.x = from.x;
       }
-      if (['table', 'chair', 'fenceGate', 'penMarker'].includes(tool)) Object.assign(to, from);
+      if (['bed', 'table', 'chair', 'fenceGate', 'penMarker'].includes(tool)) Object.assign(to, from);
       this.view({ placementPreview: { tool: tool as PlacementPreview['tool'], from, to, axis: this.state.axis,
         erase: tool === 'animalArea' && this.state.animalAreaErase } });
     };
@@ -371,12 +396,20 @@ export class VoxelClient {
         if (e.button !== 0 || !start) return;
         const pending = start;
         const tool = dragTool ?? this.state.tool, gesture = dragSequence;
+        const furniture = this.state.furniturePlacement;
         start = null;
         const from = await pending;
         const to = await this.atPointer(e);
         if (gesture !== dragSequence) return;
         this.cancelPlacement();
         if (!from || !to) return;
+        if (furniture && this.state.furniturePlacement === furniture) {
+          const result = await this.command({ type: 'installFurniture', kind: furniture.kind, furnitureId: furniture.furnitureId, target: to, axis: this.state.axis });
+          if (this.state.furniturePlacement !== furniture) return;
+          if (result.ok) { this.endFurniturePlacement(); this.select(to); }
+          else this.emit({ furniturePlacement: { ...furniture, reason: result.message } });
+          return;
+        }
         if (tool === 'inspect') {
           this.select(to);
           return;

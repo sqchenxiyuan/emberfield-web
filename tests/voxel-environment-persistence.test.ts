@@ -8,6 +8,7 @@ import { migrateEnvironment, rejectLegacyEnvironmentFields } from '../src/voxel/
 import { stripEnvironmentFields } from './legacy-environment-defaults';
 import { stripWeatherFields } from './legacy-weather-defaults';
 import type { Pawn, VoxelSave } from '../src/voxel/types';
+import { relocationExpectedField } from './legacy-relocation-defaults';
 
 const hashes = {
   delivered: '322af75da0919f6278c9042e96d6b3e2af1dfe75a3cf3c8d277983a78f2ac703',
@@ -35,10 +36,10 @@ function synthetic() {
 describe('authentic v27 environment migration', () => {
   it.each(['delivered', 'snow'] as const)('preserves genuine %s bytes, calendars, physical goods and prior progress', name => {
     const old = historical(name), before = JSON.stringify(old), s = VoxelSimulation.load(old);
-    expect(old.version).toBe(27); expect(s.save().version).toBe(33); expect(s.tick).toBe(old.tick);
+    expect(old.version).toBe(27); expect(s.save().version).toBe(34); expect(s.tick).toBe(old.tick);
     expect(JSON.stringify(old)).toBe(before);
     for (const key of ['weather', 'snow', 'items', 'stats', 'fires', 'fireDamage', 'fireHazards', 'fireLog', 'trade', 'filth'] as const)
-      expect(s[key], key).toEqual(old[key]);
+      expect(s[key], key).toEqual(relocationExpectedField(key, old[key]));
     expect(s.animals).toMatchObject(old.animals);
     expect(s.pawns.map(corePawn)).toMatchObject(old.pawns.map(corePawn));
     expect(s.pawns.every(p => !p.psyche.memories.some(m => m.kind === 'wet'))).toBe(true);

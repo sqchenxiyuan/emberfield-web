@@ -21,7 +21,7 @@ import type { ApparelQuality } from './types';
 
 /** Core 1.7 selected full-HP resource prices, except provisional meat=2.
  * Carcasses use their species' meat yield below; deposits/plants are not items. */
-export const RESOURCE_MARKET_VALUE: Readonly<Record<Exclude<Resource, 'apparel' | 'weapon'>, number>> = {
+export const RESOURCE_MARKET_VALUE: Readonly<Record<Exclude<Resource, 'apparel' | 'weapon' | 'furniture'>, number>> = {
   silver: 1,
   wood: 1.2, stone: .9, steel: 1.9, components: 32, food: 24,
   grain: 1.1, meat: 2, carcass: 0, meal: 15, chunk: 0, cloth: 1.5, herb: 10,
@@ -53,8 +53,8 @@ export function itemMarketValue(base: number, quality = 2, hpFraction = 1, taint
 export function materialValue(cost: Readonly<Partial<Counts>>): number {
   let value = 0;
   for (const [resource, count] of Object.entries(cost)) {
-    if (resource !== 'apparel' && resource !== 'weapon')
-      value += count * RESOURCE_MARKET_VALUE[resource as Exclude<Resource, 'apparel' | 'weapon'>];
+    if (resource !== 'apparel' && resource !== 'weapon' && resource !== 'furniture')
+      value += count * RESOURCE_MARKET_VALUE[resource as Exclude<Resource, 'apparel' | 'weapon' | 'furniture'>];
   }
   return value;
 }
@@ -75,6 +75,8 @@ export function apparelMarketValue(piece: ApparelPiece, tainted = false): number
 export function cargoMarketValue(cargo: Cargo): number {
   if (cargo.resource === 'weapon') return cargo.weapon ? weaponMarketValue(cargo.weapon) * cargo.amount : 0;
   if (cargo.resource === 'apparel') return cargo.apparel ? apparelMarketValue(cargo.apparel) * cargo.amount : 0;
+  if (cargo.resource === 'furniture') return cargo.furniture
+    ? furnitureMarketValue(cargo.furniture.kind, cargo.furniture.quality, batchHpFraction(cargo)) * cargo.amount : 0;
   // Reference asset value only. Animal carcass trading is not supported.
   if (cargo.resource === 'carcass') return cargo.carcass && Object.hasOwn(ANIMAL_DEFS, cargo.carcass.species)
     ? itemMarketValue(ANIMAL_DEFS[cargo.carcass.species].meat * RESOURCE_MARKET_VALUE.meat, 2, batchHpFraction(cargo)) * cargo.amount : 0;

@@ -60,6 +60,7 @@ const BUILDING_JOBS = new Set([
   'wall',
   'ladder',
   'remove',
+  'uninstall',
   'stove',
   'bed',
   'table',
@@ -211,7 +212,7 @@ export function jobSkill(kind: string): SkillKey | null {
  * workSkillLearnFactor is zero despite its Crafting workSkill.
  */
 export function jobXP(kind: string): number {
-  if (kind === 'stonecut' || kind === 'refuel' || kind === 'tend') return 0;
+  if (kind === 'stonecut' || kind === 'refuel' || kind === 'tend' || kind === 'uninstall') return 0;
   const skill = jobSkill(kind);
   return skill === 'mining'
     ? 0.21

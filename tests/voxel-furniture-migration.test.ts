@@ -1,14 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { furnitureV32 } from './furniture-fixtures';
+import { relocationExpectedField } from './legacy-relocation-defaults';
 
 describe('published v32 furniture loader compatibility', () => {
   it.each(['furnished', 'during-meal', 'sleeping'] as const)('migrates actual %s construction and occupancy without rerolling it', name => {
     const old = furnitureV32(name), original = structuredClone(old), simulation = VoxelSimulation.load(old), saved = simulation.save();
-    expect(old).toEqual(original); expect(saved.version).toBe(33);
+    expect(old).toEqual(original); expect(saved.version).toBe(34);
     for (const key of ['beds', 'tables', 'chairs'] as const) expect(saved[key]).toEqual(old[key].map((item: any) => ({ ...item, quality: 2 })));
     for (const key of ['tick', 'nextId', 'items', 'stats', 'fireDamage', 'fireHazards', 'socialHistory', 'socialLog'] as const)
-      expect(saved[key]).toEqual(old[key]);
+      expect(saved[key]).toEqual(relocationExpectedField(key, old[key]));
     for (const oldPawn of old.pawns) {
       const pawn = saved.pawns.find(p => p.id === oldPawn.id)!;
       for (const key of ['food', 'rest', 'cargo', 'skills', 'living', 'social', 'psyche', 'sleepBedId', 'sleepingSince'] as const)

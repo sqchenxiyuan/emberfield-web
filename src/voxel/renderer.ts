@@ -52,6 +52,7 @@ import {
   TPS,
   WIDTH,
   index,
+  bedCells,
   deviceCells,
   stonecutterCells,
   stonecutterInteraction,
@@ -84,6 +85,7 @@ import { ANIMAL_DEFS } from './wildlife';
 import { isAnimalAdult } from './husbandry';
 import { FIRE_RULES, fireDamageCells } from './fire';
 import { tableCells } from './living';
+import type { FurnitureKind } from './furniture';
 import { SOCIAL_RULES, SOCIAL_NAMES, type SocialInteractionKind } from './social';
 
 /** x/y are horizontal simulation coordinates; Three uses x/z horizontally. */
@@ -99,11 +101,12 @@ export interface VoxelView {
 }
 
 export interface PlacementPreview {
-  tool: 'table' | 'chair' | 'fence' | 'fenceGate' | 'penMarker' | 'animalArea';
+  tool: 'bed' | 'table' | 'chair' | 'fence' | 'fenceGate' | 'penMarker' | 'animalArea';
   from: Pos;
   to: Pos;
   axis: Axis;
-  erase: boolean;
+  erase?: boolean;
+  furnitureId?: number;
 }
 
 export interface VoxelRenderMetrics {
@@ -149,6 +152,7 @@ type PawnVisual = {
   cargoWeapons: Record<WeaponKind, Group>;
   cargoHerb: Group;
   cargoCarcasses: Record<AnimalSpecies, Group>;
+  cargoFurniture: Record<FurnitureKind, Group>;
   cargo: Mesh;
   diningDish: Group;
   torso: Mesh;
@@ -213,10 +217,23 @@ const RESOURCE_COLORS: Record<Resource, number> = {
   cloth: 0xe7dfc8,
   apparel: 0x86aaa2,
   weapon: 0xb9cbd0,
+  furniture: 0xc29a65,
 };
 // Local Three coordinates: x across the grip, y thickness, z along the blade.
 // The same four parts identify each actual item on the ground, in cargo and in hand.
 type ModelPart = [number, number, number, number, number, number, number];
+/** A strapped furniture package uses the same model on the ground and in a worker's arms. */
+function packedFurnitureParts(kind: FurnitureKind): ModelPart[] {
+  const color = kind === 'bed' ? 0x8eb4c0 : kind === 'table' ? 0xddc184 : 0xa2bb8b;
+  return [
+    [0, .25, 0, .74, .5, .63, 0xb18a5c],
+    [0, .51, 0, .77, .06, .66, 0xc8a574],
+    [-.23, .27, 0, .055, .55, .68, 0xe3d3ae],
+    [.23, .27, 0, .055, .55, .68, 0xe3d3ae],
+    [0, .29, -.326, .26, .22, .018, color],
+    [0, .29, .326, .26, .22, .018, color],
+  ];
+}
 /** Same identifiable body shape on the ground, in hauling cargo and at a work spot. */
 function carcassParts(species: AnimalSpecies): ModelPart[] {
   const deer = species === 'deer', fur = ANIMAL_DEFS[species].color, scale = deer ? 1 : .65;
@@ -961,7 +978,7 @@ export class VoxelRenderer {
       if (cell) {
         const marker = this.data?.penMarkers.find(m => m.x === cell.x && m.y === cell.y && m.z === cell.z);
         const gate = this.data?.fenceGates.find(g => g.x === cell.x && g.y === cell.y && g.z === cell.z);
-        return { x: cell.x, y: cell.y, z: cell.z, ...(marker ? { penMarkerId: marker.id } : {}), ...(gate ? { fenceGateId: gate.id } : {}) };
+        return { x: cell.x, y: cell.y, z: cell.z, ...('furnitureId' in cell ? { furnitureId: cell.furnitureId } : {}), ...(marker ? { penMarkerId: marker.id } : {}), ...(gate ? { fenceGateId: gate.id } : {}) };
       }
     }
     return fallback;
@@ -978,7 +995,7 @@ export class VoxelRenderer {
   highlight(pos: Pos | null) {
     if (this.disposed) return;
     this.hover = pos ? { ...pos } : null;
-    this.selectedAnimalId = pos && !('penMarkerId' in pos) && !('fenceGateId' in pos) ? this.data?.animals.find(a => 'animalId' in pos ? a.id === pos.animalId : a.x === pos.x && a.y === pos.y && a.z === pos.z)?.id ?? null : null;
+    this.selectedAnimalId = pos && !('penMarkerId' in pos) && !('fenceGateId' in pos) && !('furnitureId' in pos) ? this.data?.animals.find(a => 'animalId' in pos ? a.id === pos.animalId : a.x === pos.x && a.y === pos.y && a.z === pos.z)?.id ?? null : null;
     this.updateCursor();
   }
 
@@ -1255,9 +1272,16 @@ export class VoxelRenderer {
         item.resource !== 'apparel' &&
         item.resource !== 'weapon' &&
         item.resource !== 'carcass' &&
+        item.resource !== 'furniture' &&
         item.resource !== 'herb',
     );
     const garments = loose.filter((item) => item.resource === 'apparel' && item.apparel);
+    const packed = loose.filter(item => item.resource === 'furniture' && item.furniture);
+    const packages = this.batch('packed-furniture', packed.length * 6, this.box, this.batchMaterial('packed-furniture'));
+    this.inspectBatches.set(packages, { cells: packed.map(item => ({ ...item, furnitureId: item.furniture!.id })), instancesPerCell: 6 });
+    packed.forEach((item, i) => packedFurnitureParts(item.furniture!.kind).forEach(([x, y, z, sx, sy, sz, color], n) =>
+      this.instance(packages, i * 6 + n, item.x + .5 + x, item.z + y, item.y + .5 + z, sx, sy, sz, color)));
+    this.finish(packages);
     const chunks = loose.filter((item) => item.resource === 'chunk');
     const rocks = this.batch(
       'rock-chunks',
@@ -1715,12 +1739,12 @@ export class VoxelRenderer {
 
   private updatePlacementPreview() {
     const preview = this.placementPreview, parts: DevicePart[] = [];
-    const furniture = preview?.tool === 'table' || preview?.tool === 'chair';
+    const furniture = preview?.tool === 'bed' || preview?.tool === 'table' || preview?.tool === 'chair';
     const furnitureParts: DevicePart[] = [];
     if (preview && furniture && preview.from.z === this.level) {
-      const kind = preview.tool as 'table' | 'chair', item = { ...preview.from, axis: preview.axis };
-      furnitureParts.push(...this.diningFurnitureParts(kind, item).map(p => ({ ...p, color: 0x9be0df })));
-      for (const cell of kind === 'table' ? tableCells(item) : [item]) furnitureParts.push({
+      const kind = preview.tool as FurnitureKind, item = { ...preview.from, axis: preview.axis };
+      furnitureParts.push(...(kind === 'bed' ? this.bedFurnitureParts(item) : this.diningFurnitureParts(kind, item)).map(p => ({ ...p, color: 0x9be0df })));
+      for (const cell of kind === 'bed' ? bedCells(item) : kind === 'table' ? tableCells(item) : [item]) furnitureParts.push({
         cell: item, x: cell.x + .5, y: cell.y + .5, z: cell.z + .04, sx: .94, sy: .94, sz: .035, color: 0x9be0df,
       });
     }
@@ -2075,6 +2099,22 @@ export class VoxelRenderer {
     return parts;
   }
 
+  private bedFurnitureParts(item: Pos & { axis: Axis }, accent = 0x84958a, medical = false): DevicePart[] {
+    const parts: DevicePart[] = [];
+    const put = (width: number, along: number, z: number, sw: number, sl: number, sz: number, color: number) =>
+      parts.push(this.devicePart(item, along, width, z, sl, sw, sz, color));
+    put(.5, 1, .26, .86, 1.88, .16, 0x936c46);
+    put(.5, 1, .39, .76, 1.74, .16, 0xe3d6b3);
+    put(.5, .35, .5, .57, .36, .08, 0xf1e6cc);
+    put(.5, 1.22, .49, .77, 1.2, .05, accent);
+    put(.5, .08, .43, .9, .12, .68, 0x9e774e);
+    put(.5, 1.92, .31, .9, .12, .44, 0xa17b53);
+    put(.5, .075, .68, .64, .13, .07, medical ? 0x81bdc4 : accent);
+    put(.1, 1, .3, .07, 1.78, .18, 0x765b40);
+    for (let leg = 0; leg < 4; leg++) put(.15 + (leg % 2) * .7, .18 + Math.floor(leg / 2) * 1.64, .12, .13, .13, .24, 0x765b40);
+    return parts;
+  }
+
   private updateHousing() {
     if (!this.data) return;
     this.deviceBatch('dining-tables', (this.data.tables ?? []).filter(t => t.z <= this.level)
@@ -2082,61 +2122,11 @@ export class VoxelRenderer {
     this.deviceBatch('dining-chairs', (this.data.chairs ?? []).filter(c => c.z <= this.level)
       .flatMap(c => this.diningFurnitureParts('chair', c)));
     const beds = (this.data.beds ?? []).filter((bed) => bed.z <= this.level);
-    const bedParts = this.batch(
-      'bed-body',
-      beds.length * 12,
-      this.box,
-      this.batchMaterial('bed-body'),
-    );
-    // Every visible part, including the foot tile, resolves to the bed's anchor.
-    this.inspectBatches.set(bedParts, { cells: beds, instancesPerCell: 12 });
-    beds.forEach((bed, i) => {
-      const owner = this.data!.pawns.find((pawn) => pawn.id === bed.owner);
+    this.deviceBatch('bed-body', beds.flatMap(bed => {
+      const owner = this.data!.pawns.find(pawn => pawn.id === bed.owner);
       const accent = bed.prisoner ? 0xc69b65 : bed.medical ? 0x81bdc4 : (owner?.color ?? 0x84958a);
-      const part = (
-        n: number,
-        width: number,
-        along: number,
-        z: number,
-        sw: number,
-        sl: number,
-        sz: number,
-        color: number,
-      ) => {
-        const alongX = bed.axis === 'x';
-        this.instance(
-          bedParts,
-          i * 12 + n,
-          bed.x + (alongX ? along : width),
-          bed.z + z,
-          bed.y + (alongX ? width : along),
-          alongX ? sl : sw,
-          sz,
-          alongX ? sw : sl,
-          color,
-        );
-      };
-      part(0, 0.5, 1, 0.26, 0.86, 1.88, 0.16, 0x936c46);
-      part(1, 0.5, 1, 0.39, 0.76, 1.74, 0.16, 0xe3d6b3);
-      part(2, 0.5, 0.35, 0.5, 0.57, 0.36, 0.08, 0xf1e6cc);
-      part(3, 0.5, 1.22, 0.49, 0.77, 1.2, 0.05, accent);
-      part(4, 0.5, 0.08, 0.43, 0.9, 0.12, 0.68, 0x9e774e);
-      part(5, 0.5, 1.92, 0.31, 0.9, 0.12, 0.44, 0xa17b53);
-      part(6, 0.5, 0.075, 0.68, 0.64, 0.13, 0.07, bed.medical ? 0x81bdc4 : accent);
-      part(7, 0.1, 1, 0.3, 0.07, 1.78, 0.18, 0x765b40);
-      for (let leg = 0; leg < 4; leg++)
-        part(
-          8 + leg,
-          0.15 + (leg % 2) * 0.7,
-          0.18 + Math.floor(leg / 2) * 1.64,
-          0.12,
-          0.13,
-          0.13,
-          0.24,
-          0x765b40,
-        );
-    });
-    this.finish(bedParts);
+      return this.bedFurnitureParts(bed, accent, bed.medical);
+    }));
 
     const doors = (this.data.doors ?? []).filter((door) => door.z <= this.level);
     const doorParts = this.batch(
@@ -3221,7 +3211,8 @@ export class VoxelRenderer {
         (b) => b.x === job.x && b.y === job.y && b.z === job.z,
       );
       const removedTable = job.kind === 'remove' ? this.data?.tables.find(t => t.x === job.x && t.y === job.y && t.z === job.z) : undefined;
-      const footprint = job.kind === 'table' || removedTable
+      const movingFurniture = job.kind === 'install' || job.kind === 'uninstall' ? job.furnitureKind : undefined;
+      const footprint = movingFurniture === 'bed' ? bedCells({ ...job, axis: job.axis ?? 'x' }) : job.kind === 'table' || movingFurniture === 'table' || removedTable
         ? tableCells({ ...job, axis: removedTable?.axis ?? job.axis ?? 'x' })
         : weaponBenchKind
         ? weaponBenchCells({
@@ -3254,9 +3245,9 @@ export class VoxelRenderer {
               ? { generator: 1.85, solar: 1.6, battery: 1.2, heater: 0.8, cooler: 2 }[deviceKind]
               : planting
                 ? 0.14
-                : job.kind === 'table' || job.kind === 'chair'
+                : job.kind === 'table' || job.kind === 'chair' || movingFurniture === 'table' || movingFurniture === 'chair'
                   ? .95
-                : job.kind === 'bed'
+                : job.kind === 'bed' || movingFurniture === 'bed'
                   ? 0.5
                   : job.kind === 'door'
                     ? 2
@@ -3565,6 +3556,16 @@ export class VoxelRenderer {
       carried.visible = false; body.add(carried); cargoCarcasses[species] = carried;
     }
     const cargoMaterial = this.keepMaterial(new MeshLambertMaterial({ color: 0xc69b60 }));
+    const cargoFurniture = {} as Record<FurnitureKind, Group>;
+    for (const kind of ['bed', 'table', 'chair'] as const) {
+      const carried = new Group(); carried.position.set(0, .55, .42); carried.scale.setScalar(.85);
+      for (const [x, y, z, sx, sy, sz, color] of packedFurnitureParts(kind)) {
+        let material = weaponMaterials.get(color);
+        if (!material) { material = this.keepMaterial(new MeshLambertMaterial({ color })); weaponMaterials.set(color, material); }
+        part(carried, material, x, y, z, sx, sy, sz);
+      }
+      carried.visible = false; body.add(carried); cargoFurniture[kind] = carried;
+    }
     const cargo = part(body, cargoMaterial, 0, 0.72, 0.39, 0.43, 0.31, 0.33);
     const diningDish = new Group();
     const ceramic = this.keepMaterial(new MeshLambertMaterial({ color: 0xe6dcc4 }));
@@ -3669,6 +3670,7 @@ export class VoxelRenderer {
       cargoWeapons,
       cargoHerb,
       cargoCarcasses,
+      cargoFurniture,
       cargo,
       diningDish,
       label,
@@ -3990,6 +3992,7 @@ export class VoxelRenderer {
       visual.pencil.visible = false;
       visual.cargoHerb.visible = false;
       for (const body of Object.values(visual.cargoCarcasses)) body.visible = false;
+      for (const packed of Object.values(visual.cargoFurniture)) packed.visible = false;
       const visible = pawn.z <= this.level;
       visual.root.visible = visible;
       const fraction =
@@ -4031,10 +4034,11 @@ export class VoxelRenderer {
         continue;
       }
       visual.cargo.visible =
-        !!pawn.cargo && pawn.cargo.resource !== 'weapon' && pawn.cargo.resource !== 'herb' && pawn.cargo.resource !== 'carcass';
+        !!pawn.cargo && pawn.cargo.resource !== 'weapon' && pawn.cargo.resource !== 'herb' && pawn.cargo.resource !== 'carcass' && pawn.cargo.resource !== 'furniture';
       if (pawn.cargo?.weapon) visual.cargoWeapons[pawn.cargo.weapon.kind].visible = true;
       visual.cargoHerb.visible = pawn.cargo?.resource === 'herb';
       if (pawn.cargo?.carcass) visual.cargoCarcasses[pawn.cargo.carcass.species].visible = true;
+      if (pawn.cargo?.furniture) visual.cargoFurniture[pawn.cargo.furniture.kind].visible = true;
       const moving = pawn.path.length > 0 || fraction < 1;
       const cleaningTarget = pawn.phase === 'clean' && pawn.cleanTask ? this.data.filth.find(f => f.id === pawn.cleanTask!.filthId) : undefined;
       const cleaning = !!cleaningTarget && !moving && !pawn.cargo && !mental &&
@@ -4448,6 +4452,10 @@ export class VoxelRenderer {
         tableParts: this.batches.get('dining-tables')?.mesh.count ?? 0,
         chairParts: this.batches.get('dining-chairs')?.mesh.count ?? 0,
         previewParts: this.batches.get('living-placement-preview')?.mesh.count ?? 0,
+        previewKind: this.placementPreview?.tool ?? null,
+        previewFurnitureId: this.placementPreview?.furnitureId ?? null,
+        packedParts: this.batches.get('packed-furniture')?.mesh.count ?? 0,
+        carriedFurniture: [...this.pawnVisuals.values()].filter(v => v.root.visible && Object.values(v.cargoFurniture).some(g => g.visible)).map(v => ({ pawnId: v.pawn.id, furnitureId: v.pawn.cargo?.furniture?.id, kind: v.pawn.cargo?.furniture?.kind })),
         diners: [...this.pawnVisuals.values()].filter(v => v.root.visible && v.diningDish.visible).map(v => ({ ...v.root.userData.dining, arm: v.rightArm.rotation.x })),
       },
       social: {

@@ -1,6 +1,7 @@
 import { DAY, type Cargo, type FoodCropKind, type Resource } from './types';
 import { validApparel } from './apparel';
 import { validWeapon } from './weapons';
+import { validFurniturePiece } from './relocation';
 import { WILDLIFE } from './wildlife';
 import { batchHitPoints, setBatchHitPoints, validBatchHitPoints } from './deterioration';
 
@@ -29,7 +30,7 @@ export function remainingRotDays(batch: Cargo): number | null {
   return limit === null ? null : Math.max(0, (limit - (batch.rotProgress ?? 0)) / DAY);
 }
 export function freshBatch(resource: Resource, amount: number, crop?: FoodCropKind): Cargo {
-  if (resource === 'apparel' || resource === 'weapon') throw new Error('装备需要独立实例信息');
+  if (resource === 'apparel' || resource === 'weapon' || resource === 'furniture') throw new Error('装备和家具需要独立实例信息');
   if (resource === 'carcass') throw new Error('动物尸体需要独立动物身份信息');
   return {
     resource,
@@ -43,6 +44,8 @@ export function freshBatch(resource: Resource, amount: number, crop?: FoodCropKi
 }
 /** A physical split inherits current age and condition exactly. */
 export function portion(batch: Cargo, amount: number): Cargo {
+  if (batch.resource === 'furniture' && (batch.amount !== 1 || amount !== 1 || !validFurniturePiece(batch.furniture)))
+    throw new RangeError('打包家具只能整件转移');
   return {
     resource: batch.resource,
     amount,
@@ -50,6 +53,7 @@ export function portion(batch: Cargo, amount: number): Cargo {
     ...(batch.crop !== undefined ? { crop: batch.crop } : {}),
     ...(batch.apparel !== undefined ? { apparel: { ...batch.apparel } } : {}),
     ...(batch.weapon !== undefined ? { weapon: { ...batch.weapon } } : {}),
+    ...(batch.furniture !== undefined ? { furniture: { ...batch.furniture } } : {}),
     ...(batch.carcass !== undefined ? { carcass: { ...batch.carcass } } : {}),
     ...(batch.forbidden !== undefined ? { forbidden: batch.forbidden } : {}),
     ...(batch.rotProgress !== undefined ? { rotProgress: batch.rotProgress } : {}),
@@ -62,6 +66,7 @@ export function compatibleBatches(a: Cargo, b: Cargo): boolean {
     a.crop === b.crop &&
     (a.resource !== 'weapon' || (!!a.weapon && !!b.weapon && a.weapon.id === b.weapon.id)) &&
     (a.resource !== 'apparel' || (!!a.apparel && !!b.apparel && a.apparel.id === b.apparel.id)) &&
+    (a.resource !== 'furniture' || (!!a.furniture && !!b.furniture && a.furniture.id === b.furniture.id)) &&
     (a.resource !== 'carcass' || (!!a.carcass && !!b.carcass &&
       a.carcass.animalId === b.carcass.animalId && a.carcass.species === b.carcass.species))
   );
@@ -69,10 +74,10 @@ export function compatibleBatches(a: Cargo, b: Cargo): boolean {
 /** Merge only the transferred amount, weighted by actual quantities. */
 export function mergeBatch(target: Cargo, incoming: Cargo): void {
   if (
-    ['apparel', 'weapon', 'carcass'].includes(target.resource) ||
-    ['apparel', 'weapon', 'carcass'].includes(incoming.resource)
+    ['apparel', 'weapon', 'carcass', 'furniture'].includes(target.resource) ||
+    ['apparel', 'weapon', 'carcass', 'furniture'].includes(incoming.resource)
   )
-    throw new Error('装备和动物尸体实例不能合并');
+    throw new Error('装备、家具和动物尸体实例不能合并');
   if (!compatibleBatches(target, incoming) || incoming.amount <= 0 || target.amount <= 0)
     throw new Error('Only positive compatible batches can merge');
   const hitPoints = batchHitPoints(target), incomingHitPoints = batchHitPoints(incoming);
@@ -123,6 +128,7 @@ export function validBatch(batch: unknown): batch is Cargo {
       'herb',
       'apparel',
       'weapon',
+      'furniture',
     ].includes(b.resource) ||
     !Number.isSafeInteger(b.amount) ||
     b.amount <= 0 ||
@@ -130,6 +136,8 @@ export function validBatch(batch: unknown): batch is Cargo {
   )
     return false;
   if (!validBatchHitPoints(b)) return false;
+  if (b.resource === 'furniture' ? b.amount !== 1 || !validFurniturePiece(b.furniture) : b.furniture !== undefined)
+    return false;
   if (
     b.resource === 'grain'
       ? !['rice', 'potato', 'corn'].includes(b.crop ?? '')

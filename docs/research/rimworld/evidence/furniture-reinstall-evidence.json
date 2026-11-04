@@ -1,0 +1,497 @@
+{
+  "evidence_id": "RW17-FURNITURE-REINSTALL-MECHANISMS",
+  "date_local": "2026-11-04",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Static derived C# and shipped Core XML; native identity sample separate",
+  "manifests": [
+    "furniture-reinstall",
+    "furniture-reinstall-extra",
+    "furniture-reinstall-stats",
+    "energy",
+    "housing",
+    "skills",
+    "work",
+    "social-interaction-extra",
+    "apparel",
+    "weather",
+    "weapons",
+    "generation"
+  ],
+  "claims": [
+    {
+      "id": "FR01",
+      "finding": "Minifiable means minifiedDef exists. FurnitureBase supplies MinifiedThing; furniture quality/bed components are inherited separately. MakeMinified despawns the original and places that same Thing inside a new one-stack wrapper; no new furniture or quality roll is created.",
+      "sources": [
+        {
+          "file": ".local-research/energy/Verse.ThingDef.cs",
+          "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+          "lines": [
+            536,
+            544
+          ]
+        },
+        {
+          "file": ".local-research/furniture-reinstall/RimWorld.MinifyUtility.cs",
+          "sha256": "0373c66ee17e30e9adc84845abcc7a55f346733bc88370ab01f287895a41b02d",
+          "lines": [
+            1,
+            69
+          ]
+        },
+        {
+          "file": ".local-research/furniture-reinstall/RimWorld.MinifiedThing.cs",
+          "sha256": "c9d0f0bbc7b741043e227a83cff4a99c0b0719d78bffd820e58f571c8cf4614e",
+          "lines": [
+            15,
+            48
+          ]
+        }
+      ],
+      "xml": [
+        "FRX01",
+        "FRX02"
+      ]
+    },
+    {
+      "id": "FR02",
+      "finding": "Wrapper and inner object have separate IDs and hit points. MinifiedThing deep-saves its one-stack innerContainer; inspect text delegates to the inner furniture but its health bar belongs to the wrapper. Normal reinstall clears InnerThing before destroying the wrapper and returns the existing inner entity.",
+      "sources": [
+        {
+          "file": ".local-research/furniture-reinstall/RimWorld.MinifiedThing.cs",
+          "sha256": "c9d0f0bbc7b741043e227a83cff4a99c0b0719d78bffd820e58f571c8cf4614e",
+          "lines": [
+            1,
+            292
+          ]
+        },
+        {
+          "file": ".local-research/furniture-reinstall/RimWorld.Blueprint_Install.cs",
+          "sha256": "9d3b41f79b34bc082bdb06026782bd2cafaf65626879edb11190d62a88ebb060",
+          "lines": [
+            104,
+            149
+          ]
+        }
+      ],
+      "xml": [
+        "FRX03"
+      ]
+    },
+    {
+      "id": "FR03",
+      "finding": "Explicit Uninstall uses JobDriver_RemoveBuilding: default building.uninstallWork200, workLeft decreases ConstructionSpeed*1.7*delta, serialized progress belongs to that job. The driver does not award Construction XP. FinishedRemoving uninstalls and increments ThingsUninstalled. ActiveSkill is not XP gain.",
+      "sources": [
+        {
+          "file": ".local-research/generation/RimWorld.BuildingProperties.cs",
+          "sha256": "fe0e1c9905ef65e9600941b247f8827d14d90a4575594e3a6c1fa45839969a16",
+          "lines": [
+            43,
+            52
+          ]
+        },
+        {
+          "file": ".local-research/skills/RimWorld.JobDriver_RemoveBuilding.cs",
+          "sha256": "8bd3b38e25cc9bd027687b6d3c1ded359a450a46f4cf98d46130aa4ae9a4591e",
+          "lines": [
+            1,
+            88
+          ]
+        },
+        {
+          "file": ".local-research/furniture-reinstall/RimWorld.JobDriver_Uninstall.cs",
+          "sha256": "e459bebfc38e976e80eba189ea4aa8606f2fb6a934a9abd562fdebf7c7fb45d4",
+          "lines": [
+            1,
+            18
+          ]
+        }
+      ],
+      "xml": [
+        "FRX04"
+      ]
+    },
+    {
+      "id": "FR04",
+      "finding": "InstallJob creates HaulToContainer with source A, install blueprint B and count1. It checks source reachability, forbidden/reservation and another pawn carrying it; the driver reserves both. It walks to source, optionally uninstalls a still-installed source, carries it to B, steps out of footprint, replaces blueprint with the original furniture and deposits.",
+      "sources": [
+        {
+          "file": ".local-research/work/RimWorld.WorkGiver_ConstructDeliverResources.cs",
+          "sha256": "d56e9f6233e39792dc26e0380ad0ebe8626aad4cd5c0fdf6729847afc382d004",
+          "lines": [
+            367,
+            400
+          ]
+        },
+        {
+          "file": ".local-research/furniture-reinstall-extra/Verse.AI.JobDriver_HaulToContainer.cs",
+          "sha256": "3393bc8d971a12f541099fabbc5470da960bc1e90db1cb94dc3c74088bcd9627",
+          "lines": [
+            1,
+            228
+          ]
+        },
+        {
+          "file": ".local-research/furniture-reinstall-extra/RimWorld.Toils_Construct.cs",
+          "sha256": "5ead267cae26033bcc35a2279901b2848edf15929c4254d081b29ab3c6f38a06",
+          "lines": [
+            1,
+            77
+          ]
+        }
+      ],
+      "xml": [
+        "FRX04"
+      ]
+    },
+    {
+      "id": "FR05",
+      "finding": "Blueprint_Install WorkTotal150 is inspect-display work. HaulToContainer Duration returns0 for a non-Building destination, including a blueprint; the displayed150 must not be converted into a150-tick installation timer. Install blueprint material cost is empty and no Frame/quality reroll is used. Optional uninstall uses the200-work path; unlike explicit Uninstall it does not increment ThingsUninstalled there.",
+      "sources": [
+        {
+          "file": ".local-research/furniture-reinstall/RimWorld.Blueprint_Install.cs",
+          "sha256": "9d3b41f79b34bc082bdb06026782bd2cafaf65626879edb11190d62a88ebb060",
+          "lines": [
+            1,
+            197
+          ]
+        },
+        {
+          "file": ".local-research/furniture-reinstall-extra/RimWorld.Blueprint.cs",
+          "sha256": "a9ce66b27ef3f8ec7f4ebdceb2e2c8285df81914b22cd854ca29526d3e0989aa",
+          "lines": [
+            1,
+            189
+          ]
+        },
+        {
+          "file": ".local-research/furniture-reinstall-extra/Verse.AI.JobDriver_HaulToContainer.cs",
+          "sha256": "3393bc8d971a12f541099fabbc5470da960bc1e90db1cb94dc3c74088bcd9627",
+          "lines": [
+            1,
+            228
+          ]
+        },
+        {
+          "file": ".local-research/furniture-reinstall-extra/RimWorld.Toils_Construct.cs",
+          "sha256": "5ead267cae26033bcc35a2279901b2848edf15929c4254d081b29ab3c6f38a06",
+          "lines": [
+            1,
+            77
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "FR06",
+      "finding": "Ordinary colonist bed ownership is temporarily unclaimed on despawn and cached in uninstalledAssignedPawns. Spawn tries to restore only valid pawns with no newly owned bed and compatible assignment status, then clears the cache. Both current and temporary owner lists serialize; restoration is conditional, not an unconditional overwrite.",
+      "sources": [
+        {
+          "file": ".local-research/furniture-reinstall-extra/RimWorld.CompAssignableToPawn.cs",
+          "sha256": "608ed113d5b44e136543576b28df8713e3bf9e1a56908440e375dbfa2694a778",
+          "lines": [
+            183,
+            237
+          ]
+        },
+        {
+          "file": ".local-research/furniture-reinstall/RimWorld.CompAssignableToPawn_Bed.cs",
+          "sha256": "88cf175d8d8d1f2340a08cd5af53355f88850d14cede3e9ab177da7b65a000c1",
+          "lines": [
+            1,
+            137
+          ]
+        },
+        {
+          "file": ".local-research/housing/RimWorld.Pawn_Ownership.cs",
+          "sha256": "89e96b3ef430c3e395e7142bab4ec7b98602d6e80bfea55cb31fa850a0aacccc",
+          "lines": [
+            1,
+            305
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "FR07",
+      "finding": "Building_Bed DeSpawn except WillReplace resets ForOwnerType to Colonist, Medical=false and alreadySetDefaultMed=false. Setters can remove owners before generic uninstalled-owner caching. Spawn can reapply default medical or prison-room rules. Original medical/prisoner flags are not generally retained by relocation.",
+      "sources": [
+        {
+          "file": ".local-research/housing/RimWorld.Building_Bed.cs",
+          "sha256": "2ee2bf86f55b05d4106ea896a26c8aa0c3442e4fa3aea917f9afb39071aada6c",
+          "lines": [
+            92,
+            126
+          ]
+        },
+        {
+          "file": ".local-research/housing/RimWorld.Building_Bed.cs",
+          "sha256": "2ee2bf86f55b05d4106ea896a26c8aa0c3442e4fa3aea917f9afb39071aada6c",
+          "lines": [
+            251,
+            307
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "FR08",
+      "finding": "CompGatherSpot serializes active. Despawn unregisters from the gather-spot lister without clearing active; player-owned spawn preserves it and registers. This component differs from the bed purpose reset; preserving entity identity does not imply every operational flag has the same lifecycle.",
+      "sources": [
+        {
+          "file": ".local-research/social-interaction-extra/RimWorld.CompGatherSpot.cs",
+          "sha256": "415248b7db8bf09e5dda60853ff164f885835094039c5bf902fb51840b2df7b4",
+          "lines": [
+            1,
+            85
+          ]
+        }
+      ],
+      "xml": [
+        "FRX02"
+      ]
+    },
+    {
+      "id": "FR09",
+      "finding": "Starting the install designator cancels previous install blueprints for the source, matched through inner identity across maps. Placement uses normal CanPlaceBlueprintAt with source/inner exceptions; identical source location and rotation are rejected. Canceling a blueprint does not destroy the original furniture.",
+      "sources": [
+        {
+          "file": ".local-research/furniture-reinstall/RimWorld.Designator_Install.cs",
+          "sha256": "a9cea67b8ffaadea50aaf8cac84e0dd7d70a92fafac29003d02093909865cdf9",
+          "lines": [
+            1,
+            157
+          ]
+        },
+        {
+          "file": ".local-research/furniture-reinstall/RimWorld.InstallBlueprintUtility.cs",
+          "sha256": "bac437056ce3b4dbdbcda9228c00942355ee8cc20932ca4ee610799962702143",
+          "lines": [
+            1,
+            26
+          ]
+        },
+        {
+          "file": ".local-research/furniture-reinstall/RimWorld.Blueprint_Install.cs",
+          "sha256": "9d3b41f79b34bc082bdb06026782bd2cafaf65626879edb11190d62a88ebb060",
+          "lines": [
+            1,
+            197
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "FR10",
+      "finding": "Before replacing an install blueprint, FirstBlockingThing is checked; failure ends the job Incompletable before unpacking. WorkGiver can instead request plant cutting/hauling/removal for some blockers. Cancelled or missing destination fails HaulToContainer. Exact generic interrupted-carry drop location is not established by these selected sources.",
+      "sources": [
+        {
+          "file": ".local-research/furniture-reinstall-extra/RimWorld.Blueprint.cs",
+          "sha256": "a9ce66b27ef3f8ec7f4ebdceb2e2c8285df81914b22cd854ca29526d3e0989aa",
+          "lines": [
+            1,
+            189
+          ]
+        },
+        {
+          "file": ".local-research/skills/RimWorld.GenConstruct.cs",
+          "sha256": "b4895c5536662931c685958c1d22826b7f07bb4f01d970f9671f853ad4c0fe77",
+          "lines": [
+            1,
+            1006
+          ]
+        },
+        {
+          "file": ".local-research/furniture-reinstall-extra/RimWorld.WorkGiver_ConstructDeliverResourcesToBlueprints.cs",
+          "sha256": "fe4a83cae7b6a8d5dc481b9fb8dd0b4cbdcfca44b1f3961ca7b0aaf1f993b0ae",
+          "lines": [
+            1,
+            141
+          ]
+        },
+        {
+          "file": ".local-research/furniture-reinstall-extra/Verse.AI.JobDriver_HaulToContainer.cs",
+          "sha256": "3393bc8d971a12f541099fabbc5470da960bc1e90db1cb94dc3c74088bcd9627",
+          "lines": [
+            1,
+            228
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "FR11",
+      "finding": "Destroying a wrapper while its inner still exists cancels install blueprints and destroys the contained thing, with leavings depending on destroy mode. Successful reinstall first detaches inner, so wrapper destruction does not destroy that furniture. Trading also cancels install plans. Installed Building.Destroy cancels related plans.",
+      "sources": [
+        {
+          "file": ".local-research/furniture-reinstall/RimWorld.MinifiedThing.cs",
+          "sha256": "c9d0f0bbc7b741043e227a83cff4a99c0b0719d78bffd820e58f571c8cf4614e",
+          "lines": [
+            225,
+            263
+          ]
+        },
+        {
+          "file": ".local-research/furniture-reinstall/RimWorld.Blueprint_Install.cs",
+          "sha256": "9d3b41f79b34bc082bdb06026782bd2cafaf65626879edb11190d62a88ebb060",
+          "lines": [
+            104,
+            125
+          ]
+        },
+        {
+          "file": ".local-research/energy/Verse.Building.cs",
+          "sha256": "b9809c33c917ba20ffd1f8810deb91f306d31ffa3107938caea87b524f466f59",
+          "lines": [
+            1,
+            687
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "FR12",
+      "finding": "Ordinary MinifiedThing has no parent or statBases. DeteriorationRate default base0 and no minifiedThingInherits; that StatDef bool defaults false. StatWorker only redirects to inner when explicitly flagged. Quality can be read from inner but0*factor stays0. FinalDeteriorationRate returns0 for nonpositive stat. This static result is not a long outdoor damage trial.",
+      "sources": [
+        {
+          "file": ".local-research/apparel/RimWorld.StatDef.cs",
+          "sha256": "edbe8b7b96b6fbcbc2828c538f55959e19be84d3dd3ce16e3491cc046d61fe4e",
+          "lines": [
+            122,
+            132
+          ]
+        },
+        {
+          "file": ".local-research/housing/RimWorld.StatWorker.cs",
+          "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+          "lines": [
+            75,
+            95
+          ]
+        },
+        {
+          "file": ".local-research/housing/RimWorld.StatWorker.cs",
+          "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+          "lines": [
+            1253,
+            1268
+          ]
+        },
+        {
+          "file": ".local-research/furniture-reinstall-stats/RimWorld.StatExtension.cs",
+          "sha256": "8382afa7a03fa8019790b094b4aec007945ea71625b31989e72de72c71b67d9b",
+          "lines": [
+            1,
+            47
+          ]
+        },
+        {
+          "file": ".local-research/weather/RimWorld.SteadyEnvironmentEffects.cs",
+          "sha256": "a280b83a6bedc914f47c3b75010733ba94c659dc63c34dcae062986d3548f119",
+          "lines": [
+            254,
+            312
+          ]
+        },
+        {
+          "file": ".local-research/weapons/RimWorld.QualityUtility.cs",
+          "sha256": "5405ad9826ffab0e283ce40bb11529a1f2f9a17dc7766aa8a24efd6c977e8821",
+          "lines": [
+            19,
+            45
+          ]
+        }
+      ],
+      "xml": [
+        "FRX03",
+        "FRX05"
+      ]
+    }
+  ],
+  "xml": [
+    {
+      "id": "FRX01",
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Base.xml",
+      "source_sha256": "b16e3a7934febd9ffb7883f18392d524ba376c9657da4c788d1951552f86d142",
+      "xpath": "/Defs/ThingDef[@Name=\"BuildingBase\"]",
+      "projection": "Original attributes and selected gameplay children; full furniture parent chains retained",
+      "nodes": [
+        "<ThingDef Name=\"BuildingBase\" Abstract=\"True\"><category>Building</category><thingClass>Building</thingClass><statBases><SellPriceFactor>0.70</SellPriceFactor></statBases></ThingDef>"
+      ]
+    },
+    {
+      "id": "FRX02",
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+      "source_sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55",
+      "xpath": "/Defs/ThingDef[@Name=\"FurnitureBase\" or @Name=\"FurnitureWithQualityBase\" or @Name=\"ArtableFurnitureBase\" or @Name=\"TableBase\" or @Name=\"TableGatherSpotBase\" or @Name=\"BedBase\" or @Name=\"BedWithQualityBase\" or @Name=\"ArtableBedBase\" or @Name=\"SansComfortBedBase\" or @Name=\"BasicBedBase\" or defName=\"Bed\" or defName=\"DiningChair\" or defName=\"Table1x2c\"]",
+      "projection": "Original attributes and selected gameplay children; full furniture parent chains retained",
+      "nodes": [
+        "<ThingDef Name=\"FurnitureBase\" ParentName=\"BuildingBase\" Abstract=\"True\"><minifiedDef>MinifiedThing</minifiedDef></ThingDef>",
+        "<ThingDef Name=\"FurnitureWithQualityBase\" ParentName=\"FurnitureBase\" Abstract=\"True\"><comps><li><compClass>CompQuality</compClass></li></comps></ThingDef>",
+        "<ThingDef Name=\"ArtableFurnitureBase\" ParentName=\"FurnitureWithQualityBase\" Abstract=\"True\"><comps><li Class=\"CompProperties_Art\"><nameMaker>NamerArtFurniture</nameMaker><descriptionMaker>ArtDescription_Furniture</descriptionMaker><minQualityForArtistic>Excellent</minQualityForArtistic></li></comps></ThingDef>",
+        "<ThingDef ParentName=\"FurnitureBase\" Name=\"BedBase\" Abstract=\"True\"><thingClass>Building_Bed</thingClass><comps><li Class=\"CompProperties_AssignableToPawn\"><drawAssignmentOverlay>false</drawAssignmentOverlay><compClass>CompAssignableToPawn_Bed</compClass></li></comps><building><buildingTags><li>Bed</li></buildingTags></building></ThingDef>",
+        "<ThingDef Name=\"BedWithQualityBase\" ParentName=\"BedBase\" Abstract=\"True\"><comps><li><compClass>CompQuality</compClass></li></comps></ThingDef>",
+        "<ThingDef Name=\"ArtableBedBase\" ParentName=\"BedWithQualityBase\" Abstract=\"True\"><comps><li Class=\"CompProperties_Art\"><nameMaker>NamerArtFurniture</nameMaker><descriptionMaker>ArtDescription_Furniture</descriptionMaker><minQualityForArtistic>Excellent</minQualityForArtistic></li></comps></ThingDef>",
+        "<ThingDef Name=\"SansComfortBedBase\" ParentName=\"ArtableBedBase\" Abstract=\"True\"><statBases><Flammability>1.0</Flammability><ImmunityGainSpeedFactor>1.07</ImmunityGainSpeedFactor><SurgerySuccessChanceFactor>1</SurgerySuccessChanceFactor><BirthRitualQualityOffset MayRequire=\"Ludeon.RimWorld.Biotech\">2</BirthRitualQualityOffset></statBases><building><bed_showSleeperBody>False</bed_showSleeperBody><bed_healPerDay>4</bed_healPerDay></building></ThingDef>",
+        "<ThingDef Name=\"BasicBedBase\" ParentName=\"SansComfortBedBase\" Abstract=\"True\"><comps><li Class=\"CompProperties_AffectedByFacilities\"><linkableFacilities><li>EndTable</li><li>Dresser</li><li MayRequire=\"Ludeon.RimWorld.Ideology\">SleepAccelerator</li></linkableFacilities></li></comps><statBases><Comfort>0.75</Comfort></statBases></ThingDef>",
+        "<ThingDef ParentName=\"BasicBedBase\" Name=\"Bed\"><defName>Bed</defName><statBases><MaxHitPoints>140</MaxHitPoints><Beauty>1</Beauty><WorkToBuild>800</WorkToBuild><Mass>30</Mass><BedRestEffectiveness>1</BedRestEffectiveness></statBases><size>(1,2)</size><building><paintable>true</paintable></building></ThingDef>",
+        "<ThingDef ParentName=\"ArtableFurnitureBase\"><defName>DiningChair</defName><statBases><MaxHitPoints>100</MaxHitPoints><WorkToBuild>8000</WorkToBuild><Mass>5</Mass><Flammability>1.0</Flammability><Beauty>8</Beauty><Comfort>0.70</Comfort><StyleDominance MayRequire=\"Ludeon.RimWorld.Ideology\">5</StyleDominance></statBases><building><isSittable>true</isSittable><paintable>true</paintable></building><comps><li Class=\"CompProperties_Styleable\" /></comps></ThingDef>",
+        "<ThingDef Abstract=\"True\" ParentName=\"FurnitureWithQualityBase\" Name=\"TableBase\"><thingClass>Building</thingClass><building><paintable>true</paintable></building></ThingDef>",
+        "<ThingDef Abstract=\"True\" ParentName=\"TableBase\" Name=\"TableGatherSpotBase\"><comps><li><compClass>CompGatherSpot</compClass></li><li Class=\"CompProperties_Styleable\" /></comps><building><buildingTags><li>RitualFocus</li></buildingTags></building></ThingDef>",
+        "<ThingDef ParentName=\"TableGatherSpotBase\"><defName>Table1x2c</defName><statBases><MaxHitPoints>75</MaxHitPoints><WorkToBuild>750</WorkToBuild><Mass>5</Mass><Flammability>1.0</Flammability><Beauty>0.5</Beauty><StyleDominance MayRequire=\"Ludeon.RimWorld.Ideology\">5</StyleDominance></statBases><size>(1,2)</size></ThingDef>"
+      ]
+    },
+    {
+      "id": "FRX03",
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Unfinished.xml",
+      "source_sha256": "e095396dad8a83421ff04e47010701cf56df67e4e00c0d25c1704a51fb8e3130",
+      "xpath": "/Defs/ThingDef[@Name=\"MinifiedThing\"]",
+      "projection": "Original attributes and selected gameplay children; full furniture parent chains retained",
+      "nodes": [
+        "<ThingDef Name=\"MinifiedThing\"><defName>MinifiedThing</defName><thingClass>MinifiedThing</thingClass><category>Item</category><useHitPoints>true</useHitPoints><tickerType>Normal</tickerType><comps><li Class=\"CompProperties_Forbiddable\" /><li Class=\"CompProperties_Styleable\" /></comps><alwaysHaulable>true</alwaysHaulable></ThingDef>"
+      ]
+    },
+    {
+      "id": "FRX04",
+      "file": "Data/Core/Defs/JobDefs/Jobs_Work.xml",
+      "source_sha256": "0c2cc583de4ad306681c1dcd65763539461adedf33a5360fe716a36deddef2a1",
+      "xpath": "/Defs/JobDef[defName=\"HaulToContainer\" or defName=\"Uninstall\"]",
+      "projection": "Original attributes and selected gameplay children; full furniture parent chains retained",
+      "nodes": [
+        "<JobDef><defName>HaulToContainer</defName><driverClass>JobDriver_HaulToContainer</driverClass><reportString>hauling TargetA.</reportString></JobDef>",
+        "<JobDef><defName>Uninstall</defName><driverClass>JobDriver_Uninstall</driverClass><reportString>uninstalling TargetA.</reportString></JobDef>"
+      ]
+    },
+    {
+      "id": "FRX05",
+      "file": "Data/Core/Defs/Stats/Stats_Basics_General.xml",
+      "source_sha256": "c4d702421c19796993483ddd43f9869c54bb7afa1414232a568829ced5218d87",
+      "xpath": "/Defs/StatDef[defName=\"DeteriorationRate\" or defName=\"MaxHitPoints\"]",
+      "projection": "Original attributes and selected gameplay children; full furniture parent chains retained",
+      "nodes": [
+        "<StatDef><defName>MaxHitPoints</defName><category>BasicsNonPawnImportant</category><defaultBaseValue>100</defaultBaseValue><minValue>1</minValue></StatDef>",
+        "<StatDef><defName>DeteriorationRate</defName><category>BasicsNonPawn</category><defaultBaseValue>0</defaultBaseValue><minValue>0</minValue><parts><li Class=\"StatPart_Quality\"><factorAwful>2</factorAwful><factorPoor>1.5</factorPoor><factorNormal>1</factorNormal><factorGood>0.8</factorGood><factorExcellent>0.6</factorExcellent><factorMasterwork>0.3</factorMasterwork><factorLegendary>0.1</factorLegendary></li><li Class=\"StatPart_EnvironmentalEffects\"><factorOffsetUnroofed>0.5</factorOffsetUnroofed><factorOffsetOutdoors>0.5</factorOffsetOutdoors><protectedByEdificeFactor>0</protectedByEdificeFactor></li><li Class=\"StatPart_Pollution\" MayRequire=\"Ludeon.RimWorld.Biotech\"><multiplier>1.5</multiplier></li><li Class=\"StatPart_NoxiousHaze\" MayRequire=\"Ludeon.RimWorld.Biotech\"><multiplier>3</multiplier></li><li Class=\"StatPart_ToxicFallout\"><multiplier>3</multiplier></li><li Class=\"StatPart_NearHarbingerTree\" MayRequire=\"Ludeon.RimWorld.Anomaly\"><multiplier>2</multiplier></li><li Class=\"StatPart_ShamblerCorpse\" MayRequire=\"Ludeon.RimWorld.Anomaly\"><multiplier>5</multiplier></li></parts></StatDef>"
+      ]
+    }
+  ],
+  "rea_members": {
+    "source_file": ".local-research/husbandry-reproduction/rea-members-summary.json",
+    "sha256": "66427c4d04e6914ff6bb0fac9db74298abf00bd55e00c75ac765042ca21e40c8",
+    "evidence_id": "ev_69dd93b13c6a61b745e389803b4f0df51ea1529b0acda8bce3ce328ac99356a9",
+    "parent_evidence_id": "ev_1394217e2f4381602cdb14a099b269b54074ae46cf73bb12d9adbbc7a30bb0b8",
+    "status": "unavailable",
+    "reason": "Managed metadata exceeds the67108864byte representation budget; zero returned members is not absence evidence"
+  },
+  "limitations": [
+    "Derived C# is not original source.",
+    "REA67108864byte member-budget failure retained; not retried.",
+    "Selected Core XML is not a fully patched effective Def database.",
+    "Bed medical/prisoner, table-gather, damage, cancellation and obstruction branches were not executed in this runtime sample."
+  ]
+}

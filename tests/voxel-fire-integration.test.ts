@@ -5,6 +5,7 @@ import { VoxelSimulation } from '../src/voxel/world';
 import { at, Block, index, type Pawn, type Pos, type VoxelCommand } from '../src/voxel/types';
 import { freshBatch } from '../src/voxel/preservation';
 import { makeFire, FIRE_MAX_HP, fireDamageKey } from '../src/voxel/fire';
+import { relocationExpectedField } from './legacy-relocation-defaults';
 
 const pos = (x: number, y = 14, z = 8): Pos => ({ x, y, z });
 function command(s: VoxelSimulation, c: VoxelCommand) {
@@ -53,9 +54,9 @@ describe('fire lifecycle and physical interruption integration', () => {
     const proof = JSON.parse(readFileSync(new URL('./fixtures/voxel-v25-fire-initial.provenance.json', import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(proof.sha256);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old);
-    expect(old.version).toBe(25); expect(s.save().version).toBe(33);
+    expect(old.version).toBe(25); expect(s.save().version).toBe(34);
     expect(s.fires).toEqual([]); expect(s.fireDamage).toEqual([]);
-    expect(s.items).toEqual(old.items); expect(s.stats).toEqual(old.stats);
+    expect(s.items).toEqual(old.items); expect(s.stats).toEqual(relocationExpectedField('stats', old.stats));
     expect(s.pawns.map(p => ({ id: p.id, ...pos(p.x, p.y, p.z) })))
       .toEqual(old.pawns.map((p: Pawn) => ({ id: p.id, ...pos(p.x, p.y, p.z) })));
     expect(s.pawns.every(p => p.firefightTask === null && p.repairTask === null)).toBe(true);

@@ -1,0 +1,73 @@
+{
+  "evidence_id": "RW17-FURNITURE-REINSTALL",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.MinifiedThing",
+      "local_file": ".local-research/furniture-reinstall/RimWorld.MinifiedThing.cs",
+      "sha256": "c9d0f0bbc7b741043e227a83cff4a99c0b0719d78bffd820e58f571c8cf4614e",
+      "lines": 293
+    },
+    {
+      "type": "RimWorld.MinifyUtility",
+      "local_file": ".local-research/furniture-reinstall/RimWorld.MinifyUtility.cs",
+      "sha256": "0373c66ee17e30e9adc84845abcc7a55f346733bc88370ab01f287895a41b02d",
+      "lines": 70
+    },
+    {
+      "type": "RimWorld.InstallBlueprintUtility",
+      "local_file": ".local-research/furniture-reinstall/RimWorld.InstallBlueprintUtility.cs",
+      "sha256": "bac437056ce3b4dbdbcda9228c00942355ee8cc20932ca4ee610799962702143",
+      "lines": 27
+    },
+    {
+      "type": "RimWorld.Blueprint_Install",
+      "local_file": ".local-research/furniture-reinstall/RimWorld.Blueprint_Install.cs",
+      "sha256": "9d3b41f79b34bc082bdb06026782bd2cafaf65626879edb11190d62a88ebb060",
+      "lines": 198
+    },
+    {
+      "type": "RimWorld.JobDriver_Uninstall",
+      "local_file": ".local-research/furniture-reinstall/RimWorld.JobDriver_Uninstall.cs",
+      "sha256": "e459bebfc38e976e80eba189ea4aa8606f2fb6a934a9abd562fdebf7c7fb45d4",
+      "lines": 19
+    },
+    {
+      "type": "RimWorld.Designator_Uninstall",
+      "local_file": ".local-research/furniture-reinstall/RimWorld.Designator_Uninstall.cs",
+      "sha256": "6f835351a0c7244024e6a76e7ed3fa9cf9fc15b7984a8954dacb6bc0f592f87c",
+      "lines": 120
+    },
+    {
+      "type": "RimWorld.Designator_Install",
+      "local_file": ".local-research/furniture-reinstall/RimWorld.Designator_Install.cs",
+      "sha256": "a9cea67b8ffaadea50aaf8cac84e0dd7d70a92fafac29003d02093909865cdf9",
+      "lines": 158
+    },
+    {
+      "type": "RimWorld.CompAssignableToPawn_Bed",
+      "local_file": ".local-research/furniture-reinstall/RimWorld.CompAssignableToPawn_Bed.cs",
+      "sha256": "88cf175d8d8d1f2340a08cd5af53355f88850d14cede3e9ab177da7b65a000c1",
+      "lines": 138
+    },
+    {
+      "type": "RimWorld.WorkGiver_Uninstall",
+      "local_file": ".local-research/furniture-reinstall/RimWorld.WorkGiver_Uninstall.cs",
+      "sha256": "07d6aef377605cdae685231fd7b93b05b547f88f5c474cfc2c081c484a220c67",
+      "lines": 27
+    }
+  ]
+}

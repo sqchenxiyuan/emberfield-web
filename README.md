@@ -6,6 +6,8 @@
 
 在线试玩：[多层体素](https://sqchenxiyuan.github.io/emberfield-web/?world=voxel) · [二维营地](https://sqchenxiyuan.github.io/emberfield-web/) · 源码：[sqchenxiyuan/emberfield-web](https://github.com/sqchenxiyuan/emberfield-web)。
 
+2026-11-04家具搬装更新（v34）：床、餐桌和餐椅可以卸下、入库、跨层搬移和旋转重装。工人实际搬运指定的原家具，身份、品质与耐久保留；取消、满地面、征召或倒地、火灾和途中读档均按实体处理。新增搬装按钮、预览与阶段检查，旧仓储筛选保持原设置。先完成营地改造玩法，参数后续再调整。见[103原版机制](docs/research/rimworld/103-furniture-reinstall-mechanisms.md)、[104实机对照](docs/research/rimworld/104-native-furniture-reinstall-runtime.md)、[105玩法与验证](docs/research/rimworld/105-furniture-relocation-gameplay.md)。
+
 当前开发重点是先搭好可操作的玩法和机制闭环，数值采用初步默认值，后续再平衡。体素模式已接通狩猎与肉食生产、动物驯养繁殖与圈养管理、心情娱乐、俘虏招募、卫生清洁、火灾修理及天气联动，见[开发路线](docs/research/rimworld/05-reconstruction-roadmap.md)；研究文档中的原版数值不代表当前游戏已经完成平衡。
 
 2026-11-04家具品质更新（v33）：床、餐桌和餐椅在实际施工完成时按完工者的建造技能确定品质，影响实际睡眠恢复、床椅舒适、美观与房间/营地财富；品质不增加家具耐久。界面可检查品质和使用效果，旧家具按普通品质延续，修理和读档不重抽。沿用暂定成本与基础属性，先连接建造分工与生活反馈。见[100原版机制](docs/research/rimworld/100-furniture-quality-mechanisms.md)、[101实机对照](docs/research/rimworld/101-native-furniture-quality-runtime.md)、[102玩法与验证](docs/research/rimworld/102-furniture-quality-gameplay.md)。

@@ -1,0 +1,15 @@
+{
+  "fixture": "voxel-v33-relocation-furnished.json",
+  "sha256": "e8eca3b51eb338b19f7c9f0749f1c3b94e31cb1fd72e47fd75833eadd2a302b2",
+  "version": 33,
+  "tick": 12842,
+  "sourceCommit": "3ffccf132fbeff1752704448923635862342147a",
+  "sourcePath": "test-results\\voxel-furniture-final3\\furnished.json",
+  "campaignReport": "test-results/voxel-furniture-final3/report.json",
+  "campaignReportSha256": "c56313550e0166aafcc7b5856e07ea120705befbbecf09aeaa4846b5ddfc39e7",
+  "sourceManifestSha256": "c3287ae4594737dabd9cfbd6eeb2b045a3cf5442e3d40f400ce49eddaa47ba7f",
+  "campaignScriptSha256": "6e1bf10cbc9de177924b89b14822d7b6534795eafa66d79215486f31fb5db194",
+  "executedBundleSha256": "cbeb16299d8fd5d6133aad7c0e4fa6b4911bb3c0a885976b5e0c92f38aef4d42",
+  "scope": "Fresh seed 73129. Only public player commands, ordinary simulation ticks and exact save/load mutate the colony. Terrain, paths, jobs and simulation state are read to select sites and record outcomes. Real timber, delivery, excavation, beds, table and chairs. Actual finishers are selected by normal build priorities. Naturally produced qualities are recorded without demanding different or high qualities. Actual sleep in two beds, actual seated dining and social recreation, room and colony wealth, and exact persistence. No need, skill, quality, furniture, position, terrain, clock or RNG injection. Threats and fire hazards are disabled with ordinary player controls. Controlled quality comparisons belong to mechanism tests.",
+  "transformation": "None: exact source checkpoint bytes copied; no edited version, quality, HP, position, needs, RNG or task state."
+}

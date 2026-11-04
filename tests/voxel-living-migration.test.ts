@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { VoxelSimulation } from '../src/voxel/world';
 import { initialLiving } from '../src/voxel/living';
+import { relocationExpectedField } from './legacy-relocation-defaults';
 
 const HASHES = { leading: '110fa3b3d2e8f0a4458671d7760f07814462ef28ba2e46b0c56889d5e4d7a2bf',
   final: 'a9f91d6a5fc4a07e52db0c8119855232598c6785f85635c6854bde4d75014760' } as const;
@@ -15,12 +16,12 @@ function historical(name: keyof typeof HASHES) {
 describe('authentic v30 living loader compatibility', () => {
   it.each(['leading', 'final'] as const)('roundtrips the real %s colony without changing physical state or active ropes', name => {
     const old = historical(name), original = structuredClone(old), sim = VoxelSimulation.load(old), saved = sim.save();
-    expect(old).toEqual(original); expect(saved.version).toBe(33);
+    expect(old).toEqual(original); expect(saved.version).toBe(34);
     expect(saved.tables).toEqual([]); expect(saved.chairs).toEqual([]);
     // The established loader reschedules ordinary haul/fetch work. Compare all
     // persistent physical and economic fields; retain the entire rope activity.
     for (const [key, value] of Object.entries(old)) if (!['version', 'pawns', 'jobs', 'beds'].includes(key))
-      expect((saved as any)[key], key).toEqual(value);
+      expect((saved as any)[key], key).toEqual(relocationExpectedField(key, value));
     expect(saved.beds).toEqual(old.beds.map((b:any)=>({...b,quality:2})));
     const scheduling = ['destination', 'jobId', 'moveTick', 'path', 'phase', 'reason', 'workTarget'];
     for (const previous of old.pawns) {

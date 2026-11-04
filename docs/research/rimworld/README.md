@@ -108,6 +108,9 @@
 | [100 家具施工品质机制](100-furniture-quality-mechanisms.md) | 完工者技能怎样决定家具品质，并影响睡眠、舒适、美观和财富？ |
 | [101 原版家具品质实机](101-native-furniture-quality-runtime.md) | 普通木床施工、成品属性及暂停与读档观察能证明什么？ |
 | [102 家具品质与生活反馈](102-furniture-quality-gameplay.md) | 建造分工、实际床椅使用、检查和旧档延续怎样验证？ |
+| [103 家具卸下与重装机制](103-furniture-reinstall-mechanisms.md) | 包装内部原实体、品质耐久、床归属和安装配送如何衔接？ |
+| [104 原版家具搬装实机](104-native-furniture-reinstall-runtime.md) | 实际卸下与重装观察验证了哪些状态保留规则？ |
+| [105 家具搬装玩法](105-furniture-relocation-gameplay.md) | 跨层搬运、仓储、旋转、中断、灾害和旧档怎样衔接？ |
 
 每篇均含具体来源与未决问题。先读感兴趣的系统，再查其 `evidence/*-claims.json` 和 `*-manifest.json`，不要把“已抽取一个类型”当成“这个类型涉及的全部机制已经理解”。
 

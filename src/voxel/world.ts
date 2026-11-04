@@ -105,7 +105,9 @@ import { initialLiving, tableCells, LIVING_RULES, LIVING_BUILDINGS, advanceLivin
 import { rejectLegacyLivingFields, migrateLiving, validateLiving } from './livingPersistence';
 import { initialSocial, rememberDeparture, type SocialIdentity, type SocialEvent } from './social';
 import { rejectLegacySocialFields, migrateSocial, validateSocial } from './socialPersistence';
-import { furnitureStats, type FurnitureKind } from './furniture';
+import { furnitureStats, isFurnitureKind, type FurnitureKind } from './furniture';
+import { RELOCATION_RULES, makeFurniturePiece, furnitureFromPiece } from './relocation';
+import { rejectLegacyRelocationFields, migrateRelocation, validateRelocation } from './relocationPersistence';
 import { rejectLegacyFurnitureFields, migrateFurniture, validateFurniture } from './furniturePersistence';
 import { updateSocial } from './socialWorld';
 import { constructedMarketValue, structureMarketValue, furnitureMarketValue } from './wealth';
@@ -331,6 +333,7 @@ const costOf = (
   weaponKind?: WeaponKind,
   weaponBenchKind?: WeaponBenchKind,
 ): Partial<Counts> =>
+  kind === 'install' ? { furniture: 1 } :
   kind === 'table' || kind === 'chair' ? { ...LIVING_BUILDINGS[kind].cost } :
   kind === 'fence' || kind === 'fenceGate' || kind === 'penMarker' ? {...PEN_BUILDINGS[kind].cost} :
   kind === 'horseshoePin' ? { ...HORSESHOE_COST } : kind === 'butcher' ? { carcass: 1 } : kind === 'machining'
@@ -394,6 +397,7 @@ const workOf = (
   weaponBenchKind?: WeaponBenchKind,
   cropKind: CropKind = 'rice',
 ) =>
+  kind === 'uninstall' ? RELOCATION_RULES.uninstallWork : kind === 'install' ? RELOCATION_RULES.installWork :
   kind === 'fence' || kind === 'fenceGate' || kind === 'penMarker' ? PEN_BUILDINGS[kind].work : kind === 'machining'
     ? MACHINING_WORK
     : kind === 'sandbag'
@@ -954,6 +958,11 @@ export class VoxelSimulation {
     return this.distance[at(to)] >= 0 ? this.route(at(to)) : null;
   }
   private stands(j: Job): number[] {
+    if (j.kind === 'install' || j.kind === 'uninstall') {
+      const cells = this.furnitureCells(j.furnitureKind!, j, j.axis ?? 'x');
+      return cells.flatMap(c => horizontal.map(([dx,dy]) => ({x:c.x+dx,y:c.y+dy,z:c.z})))
+        .filter(q => this.canStop(q) && !cells.some(c => same(c,q))).map(at);
+    }
     const table = j.kind === 'remove' ? this.tableAt(j) : undefined;
     if (j.kind === 'table' || table) {
       const cells = tableCells(table ?? {...j,axis:j.axis ?? 'x'});
@@ -1255,12 +1264,16 @@ export class VoxelSimulation {
         this.storageReservations.delete(id);
     }
   }
-  private pileFor(p: Pawn, resource?: Resource) {
+  private acceptsJobCargo(j: Job, cargo: Cargo): boolean {
+    return cargo.resource !== 'furniture' || (j.kind === 'install' && !!cargo.furniture && cargo.furniture.id === j.furnitureId && cargo.furniture.kind === j.furnitureKind);
+  }
+  private pileFor(p: Pawn, resource?: Resource, job?: Job) {
     let best: Stack | undefined;
     for (const item of this.items) {
       if (
         this.availableStack(item, p.id) < 1 ||
         (resource && item.resource !== resource) ||
+        (job && !this.acceptsJobCargo(job, item)) ||
         this.chunkReserved(item, p.id)
       )
         continue;
@@ -1282,7 +1295,7 @@ export class VoxelSimulation {
     )
       return true;
     return (
-      (item.resource === 'chunk' || item.resource === 'carcass') &&
+      (item.resource === 'chunk' || item.resource === 'carcass' || item.resource === 'furniture') &&
       ([...this.craftSources].some(([id, source]) => id !== pawnId && source === item.id) ||
         [...this.storageReservations].some(([id, r]) => id !== pawnId && r.sourceId === item.id))
     );
@@ -1292,7 +1305,9 @@ export class VoxelSimulation {
     p.path = this.route(target);
     p.phase = phase;
   }
-  private footprint(j: Pos & { kind: JobKind; axis?: Axis }): Pos[] {
+  private footprint(j: Pos & { kind: JobKind; axis?: Axis; furnitureKind?: FurnitureKind }): Pos[] {
+    if (j.kind === 'install' || j.kind === 'uninstall')
+      return this.furnitureCells(j.furnitureKind!, j, j.axis ?? 'x').flatMap(q => [q, {...q,z:q.z+1}]);
     if (j.kind === 'researchBench' || j.kind === 'research') {
       const bench =
         j.kind === 'research' ? this.researchBenches.find((b) => same(b, j)) : undefined;
@@ -1323,8 +1338,8 @@ export class VoxelSimulation {
     return [j];
   }
   private jobCellConflict(
-    j: Pos & { kind: JobKind; axis?: Axis },
-    k: Pos & { kind: JobKind; axis?: Axis },
+    j: Pos & { kind: JobKind; axis?: Axis; furnitureKind?: FurnitureKind },
+    k: Pos & { kind: JobKind; axis?: Axis; furnitureKind?: FurnitureKind },
   ) {
     if ((j.kind === 'wire') !== (k.kind === 'wire')) return false;
     return this.footprint(j).some((a) => this.footprint(k).some((b) => same(a, b)));
@@ -1922,6 +1937,8 @@ export class VoxelSimulation {
     return result;
   }
   private applyCommand(c: VoxelCommand): CommandResult {
+    if (c.type === 'uninstallFurniture' || c.type === 'installFurniture' || c.type === 'cancelFurnitureMove')
+      return this.relocationCommand(c);
     if (c.type === 'fireHazards') {
       if (typeof c.enabled !== 'boolean') return { ok: false, message: '火灾事件设置无效' };
       this.fireHazards.enabled = c.enabled;
@@ -2142,6 +2159,7 @@ export class VoxelSimulation {
         return { ok: false, message: '人物当前无法征召' };
       p.drafted = c.drafted;
       this.release(p);
+      if (p.drafted && p.cargo?.furniture) this.dropCargo(p);
       p.reason = p.drafted ? '已征召，等待战斗指令' : '解除征召，恢复工作';
       return { ok: true, message: p.reason };
     }
@@ -2806,13 +2824,13 @@ export class VoxelSimulation {
     )
       return { ok: false, message: '电力设施或线路数量达到上限' };
     if (
-      this.tables.length + [...this.jobs, ...plans].filter(j => j.kind === 'table').length > 128 ||
-      this.chairs.length + [...this.jobs, ...plans].filter(j => j.kind === 'chair').length > 256 ||
+      this.tables.length + this.packedFurnitureCount('table') + [...this.jobs, ...plans].filter(j => j.kind === 'table').length > 128 ||
+      this.chairs.length + this.packedFurnitureCount('chair') + [...this.jobs, ...plans].filter(j => j.kind === 'chair').length > 256 ||
       this.horseshoePins.length + [...this.jobs, ...plans].filter(j => j.kind === 'horseshoePin').length > 128 ||
       this.researchBenches.length +
         [...this.jobs, ...plans].filter((j) => j.kind === 'researchBench').length >
         128 ||
-      this.beds.length + [...this.jobs, ...plans].filter((j) => j.kind === 'bed').length > 128 ||
+      this.beds.length + this.packedFurnitureCount('bed') + [...this.jobs, ...plans].filter((j) => j.kind === 'bed').length > 128 ||
       this.doors.length + [...this.jobs, ...plans].filter((j) => j.kind === 'door').length > 512 ||
       this.stonecutters.length +
         [...this.jobs, ...plans].filter((j) => j.kind === 'stonecutter').length >
@@ -3093,6 +3111,67 @@ export class VoxelSimulation {
   private restingGain(p: Pawn): number {
     const bed = this.patientBed(p);
     return restGain(!!bed, bed ? furnitureStats('bed', bed.quality).restEffectiveness! : 1);
+  }
+  private furnitureCells(kind: FurnitureKind, pos: Pos, axis: Axis): Pos[] {
+    return kind === 'bed' ? bedCells({...pos,axis}) : kind === 'table' ? tableCells({...pos,axis}) : [{x:pos.x,y:pos.y,z:pos.z}];
+  }
+  private installedFurniture(kind: FurnitureKind, id: number): Bed | DiningTable | DiningChair | undefined {
+    return (kind === 'bed' ? this.beds : kind === 'table' ? this.tables : this.chairs).find(b => b.id === id);
+  }
+  private packedFurniture(id: number): Cargo | undefined {
+    return [...this.items, ...this.pawns.flatMap(p => p.cargo ? [p.cargo] : []),
+      ...this.jobs.flatMap(j => j.deliveredBatches)].find(b => b.furniture?.id === id);
+  }
+  private packedFurnitureCount(kind: FurnitureKind): number {
+    return [...this.items, ...this.pawns.flatMap(p => p.cargo ? [p.cargo] : []),
+      ...this.jobs.flatMap(j => j.deliveredBatches)].filter(b => b.furniture?.kind === kind).length;
+  }
+  /** Placement trials change only geometry caches, never a furniture instance. */
+  private withoutFurniture<T>(kind: FurnitureKind, id: number, trial: () => T): T {
+    const original = {beds:this.beds,tables:this.tables,chairs:this.chairs};
+    if (kind === 'bed') this.beds = this.beds.filter(b => b.id !== id);
+    else if (kind === 'table') this.tables = this.tables.filter(b => b.id !== id);
+    else this.chairs = this.chairs.filter(b => b.id !== id);
+    this.rebuildDevices();
+    try { return trial(); } finally { Object.assign(this,original); this.rebuildDevices(); }
+  }
+  private relocationCommand(c: Extract<VoxelCommand,{type:'uninstallFurniture'|'installFurniture'|'cancelFurnitureMove'}>): CommandResult {
+    if (!Number.isSafeInteger(c.furnitureId) || c.furnitureId < 1) return {ok:false,message:'家具身份无效'};
+    const current = this.jobs.filter(j => j.furnitureId === c.furnitureId);
+    if (c.type === 'cancelFurnitureMove') {
+      if (!current.length) return {ok:false,message:'这件家具没有搬装任务'};
+      for (const j of current) if (this.jobs.includes(j)) this.cancel(j);
+      return {ok:true,message:'已取消搬装；已经卸下的家具保留为实体，等待安全落地或搬入仓储'};
+    }
+    if (!isFurnitureKind(c.kind)) return {ok:false,message:'请选择床、餐桌或餐椅'};
+    const installed = this.installedFurniture(c.kind,c.furnitureId), packed = this.packedFurniture(c.furnitureId);
+    if (!installed && (!packed || packed.furniture?.kind !== c.kind)) return {ok:false,message:'这件家具已不存在'};
+    if (current.some(j => j.cancelled)) return {ok:false,message:'原搬装任务正在退还实物，请先清理附近地面'};
+    if (c.type === 'uninstallFurniture' && (!installed || current.length)) return {ok:false,message:'家具已卸下或已有搬装任务'};
+    if (c.type === 'installFurniture' && current.some(j => j.kind === 'install')) return {ok:false,message:'已有重装位置，请先取消原搬装任务'};
+    if (installed) {
+      const cells = this.furnitureCells(c.kind,installed,installed.axis);
+      if (this.fires.some(f => cells.some(q => same(f,q)))) return {ok:false,message:'家具正在燃烧，请先灭火'};
+      if (this.jobs.some(j => !j.cancelled && j.furnitureId !== c.furnitureId && cells.some(q => this.footprint(j).some(r => same(q,r)))))
+        return {ok:false,message:'原位置已有其他施工，请先取消冲突任务'};
+    }
+    if (c.type === 'installFurniture') {
+      if (!inside(c.target) || !['x','y'].includes(c.axis)) return {ok:false,message:'安装位置或朝向无效'};
+      const reason = installed ? this.withoutFurniture(c.kind,installed.id,() => this.placementReason(c.kind,c.target,c.axis)) : this.placementReason(c.kind,c.target,c.axis);
+      if (reason) return {ok:false,message:reason};
+      const plan = {...c.target,kind:'install' as const,axis:c.axis,furnitureKind:c.kind};
+      if (this.jobs.some(j => !j.cancelled && j.furnitureId !== c.furnitureId && this.jobCellConflict(plan,j)))
+        return {ok:false,message:'重装位置与其他规划重叠'};
+      if (this.fires.some(f => this.furnitureCells(c.kind,c.target,c.axis).some(q => same(f,q))))
+        return {ok:false,message:'目标位置正在燃烧，请先灭火'};
+    }
+    const needsUninstall = installed && !current.some(j => j.kind === 'uninstall');
+    if (this.jobs.length + Number(!!needsUninstall) + Number(c.type === 'installFurniture') > 512)
+      return {ok:false,message:'规划上限为512项，请先完成部分工作'};
+    if (needsUninstall) this.jobs.push({...this.makeJob('uninstall',installed),axis:installed.axis,furnitureId:installed.id,furnitureKind:c.kind});
+    if (c.type === 'installFurniture') this.jobs.push({...this.makeJob('install',c.target),axis:c.axis,furnitureId:c.furnitureId,furnitureKind:c.kind});
+    this.notice = c.type === 'uninstallFurniture' ? '已安排卸下；保留家具品质和耐久，不返还建材' : '已安排实体搬运与重装；品质和耐久保持，床的医疗/囚犯标记在卸下时重置';
+    return {ok:true,message:this.notice};
   }
   private treatmentRoomFactor(patient: Pawn): number {
     this.updateRooms();
@@ -4833,6 +4912,24 @@ export class VoxelSimulation {
     for (const p of this.pawns) if (this.craftSources.get(p.id) === id || this.storageReservations.get(p.id)?.sourceId === id) this.release(p);
     fireLog(this, 'destroyed', item, `${lost}单位${RESOURCE_NAMES[item.resource]}被烧毁`);
   }
+  fireBurnFurniture(id: number, damage: number) {
+    const ground = this.items.find(i => i.furniture?.id === id);
+    const job = this.jobs.find(j => j.deliveredBatches.some(b => b.furniture?.id === id));
+    const batch = ground ?? job?.deliveredBatches.find(b => b.furniture?.id === id);
+    if (!batch?.furniture || !Number.isFinite(damage) || damage <= 0) return;
+    batch.furniture.hitPoints = Math.max(0,batch.furniture.hitPoints-damage);
+    if (batch.furniture.hitPoints > 0) { this.revision++; return; }
+    const position = ground ?? job!;
+    if (ground) this.tradeApplyPlacement({items:this.items.filter(i=>i.id!==ground.id),nextId:this.nextId},'指定家具已烧毁');
+    if (job) { job.deliveredBatches = job.deliveredBatches.filter(b=>b!==batch); delete job.delivered.furniture; }
+    this.stats.destroyed.furniture++;
+    for (const j of [...this.jobs]) if (j.furnitureId === id) this.cancel(j);
+    fireLog(this,'destroyed',position,'打包家具被烧毁，原品质家具已损失');
+  }
+  private reconcileRelocationJobs() {
+    for (const j of [...this.jobs]) if (!j.cancelled && j.furnitureId !== undefined &&
+        !this.installedFurniture(j.furnitureKind!,j.furnitureId) && !this.packedFurniture(j.furnitureId)) this.cancel(j);
+  }
   /** Delivered inputs are still physical, unlike already consumed construction
    * materials. Destroy their container exactly once, leaving carried inputs intact. */
   private fireDestroyJob(j: Job) {
@@ -4953,6 +5050,22 @@ export class VoxelSimulation {
     this.farms = this.farms.filter(support); this.treePlots = this.treePlots.filter(support);
     for (const crop of [...this.crops]) if (!support(crop) || !this.farms.some(f => same(f, crop))) this.fireBurnCrop(crop.id);
     for (const j of [...this.jobs]) if (!support(j) && ['sow', 'plantTree', 'harvest', 'floor'].includes(j.kind)) this.fireDestroyJob(j);
+    // An installation's delivered original is a physical object at its site.
+    // Losing support cancels the plan and applies the same local gravity rule
+    // as loose goods; it must never remain suspended in a hidden container.
+    for (const j of [...this.jobs]) if (j.kind === 'install' &&
+        this.furnitureCells(j.furnitureKind!,j,j.axis!).some(q => !support(q))) {
+      for (const p of this.pawns) if (p.jobId === j.id) this.release(p);
+      const landing = this.fireLanding(j);
+      const plan = landing ? this.planPlacement(j.deliveredBatches.map(batch =>
+        ({batch,origin:landing,cells:[landing]})),this.items,0) : null;
+      if (plan) this.tradeApplyPlacement(plan);
+      else for (const batch of j.deliveredBatches) this.stats.destroyed[batch.resource] += batch.amount;
+      this.jobs = this.jobs.filter(k => k.id !== j.id);
+      if (j.deliveredBatches.length) fireLog(this,plan ? 'fell' : 'destroyed',landing ?? j,
+        plan ? '待安装家具失去支撑，保留原实体落到最近合法地面' : '待安装家具坠落后没有合法容纳位置而损毁');
+      for (const linked of [...this.jobs]) if (linked.furnitureId === j.furnitureId) this.cancel(linked);
+    }
     for (const item of [...this.items]) if (!this.groundAllowed(item)) {
       const landing = this.fireLanding(item);
       const base = this.items.filter(i => i.id !== item.id);
@@ -4964,6 +5077,7 @@ export class VoxelSimulation {
     this.storageReservations.clear(); this.craftSources.clear();
     for (const p of this.pawns) if (p.phase === 'haul' || p.phase === 'fetch') this.release(p);
     this.roomsDirty = true; this.powerDirty = true; this.changed(target); this.pruneFilth();
+    this.reconcileRelocationJobs();
     this.reconcileFireState(); this.updateRooms(); this.updatePower();
     this.notice = reason;
     return true;
@@ -5220,6 +5334,10 @@ export class VoxelSimulation {
     this.notice = `${TRADER_NAMES[kind]}从地图边缘抵达；安排殖民者前往交谈`;
   }
   private cancel(j: Job) {
+    const wasCancelled = j.cancelled;
+    j.cancelled = true;
+    if (!wasCancelled && j.furnitureId !== undefined)
+      for (const other of [...this.jobs]) if (other.id !== j.id && !other.cancelled && other.furnitureId === j.furnitureId) this.cancel(other);
     for (const p of this.pawns) if (p.jobId === j.id) this.release(p);
     j.cancelled = true;
     const origin = this.dropPoint(j);
@@ -5246,6 +5364,8 @@ export class VoxelSimulation {
     return undefined;
   }
   private supported(j: Job) {
+    if (j.kind === 'uninstall') return !!this.installedFurniture(j.furnitureKind!,j.furnitureId!);
+    if (j.kind === 'install') return !this.placementReason(j.furnitureKind!,j,j.axis);
     if (j.kind === 'table' || j.kind === 'chair') return !this.placementReason(j.kind,j,j.axis);
     if (j.kind === 'fence' || j.kind === 'fenceGate' || j.kind === 'penMarker') return !this.placementReason(j.kind,j,j.axis);
     if (j.kind === 'butcher') return this.butcherSpots.some(b => same(b, j) && !b.paused);
@@ -5399,7 +5519,7 @@ export class VoxelSimulation {
           this.supported(j) &&
           (!missing(j) ||
             (j.kind === 'refuel' && (j.delivered.wood ?? 0) > 0) ||
-            this.items.some((i) => i.resource === missing(j))),
+            this.items.some((i) => i.resource === missing(j) && this.acceptsJobCargo(j,i))),
       )
     ) {
       if (tryExtras(4, false)) return;
@@ -5458,7 +5578,7 @@ export class VoxelSimulation {
       }
       this.allowPartialRefuel(j);
       const needed = missing(j);
-      if (needed && !this.pileFor(p, needed)) {
+      if (needed && !this.pileFor(p, needed, j)) {
         j.reason = `缺少可达${RESOURCE_NAMES[needed]}`;
         continue;
       }
@@ -5606,14 +5726,14 @@ export class VoxelSimulation {
     this.allowPartialRefuel(j);
     const needed = missing(j);
     if (needed) {
-      const stack = this.pileFor(p, needed);
+      const stack = this.pileFor(p, needed, j);
       if (!stack) {
         j.reason = `等待可达${RESOURCE_NAMES[needed]}`;
         this.release(p);
         return;
       }
       this.go(p, at(stack), 'fetch');
-      if (stack.resource === 'chunk' || stack.resource === 'carcass') this.craftSources.set(p.id, stack.id);
+      if (stack.resource === 'chunk' || stack.resource === 'carcass' || stack.resource === 'furniture') this.craftSources.set(p.id, stack.id);
       p.reason = `搬运${RESOURCE_NAMES[needed]}`;
       return;
     }
@@ -5643,6 +5763,7 @@ export class VoxelSimulation {
     if (!p.cargo) return;
     this.search(p);
     let j = this.jobs.find((j) => j.id === p.jobId && !j.cancelled);
+    if (j && !this.acceptsJobCargo(j,p.cargo)) { this.release(p); j = undefined; }
     // Loading deliberately clears reservations, but the carried physical input
     // can be rebound to a reachable job before requiring a stockpile detour.
     if (!j) {
@@ -5652,6 +5773,7 @@ export class VoxelSimulation {
           k.owner === null &&
           p.priorities[workType(k.kind)] > 0 &&
           (k.cost[p.cargo!.resource] ?? 0) > (k.delivered[p.cargo!.resource] ?? 0) &&
+          this.acceptsJobCargo(k,p.cargo!) &&
           this.supported(k) &&
           this.reachableStand(k) >= 0,
       );
@@ -5849,7 +5971,7 @@ export class VoxelSimulation {
         return;
       }
       const needed = missing(j);
-      if (needed && this.take(p, needed, (j.cost[needed] ?? 0) - (j.delivered[needed] ?? 0)))
+      if (needed && this.take(p, needed, (j.cost[needed] ?? 0) - (j.delivered[needed] ?? 0), this.craftSources.get(p.id)))
         this.deliverCargo(p);
       else this.continueJob(p, j);
       return;
@@ -5917,7 +6039,7 @@ export class VoxelSimulation {
       if (p.cargo) {
         const resource = p.cargo.resource,
           needed = (j.cost[resource] ?? 0) - (j.delivered[resource] ?? 0);
-        if (needed <= 0) {
+        if (needed <= 0 || !this.acceptsJobCargo(j,p.cargo)) {
           this.deliverCargo(p);
           return;
         }
@@ -6061,11 +6183,77 @@ export class VoxelSimulation {
     return craftedQuality(p.skills.construction.level,
       () => plantRandom(this.seed ^ j.id, p.id, ++draw, 33001));
   }
+  private finishRelocation(p: Pawn, j: Job) {
+    const kind = j.furnitureKind!, id = j.furnitureId!;
+    const wait = (message: string) => { j.reason = message; this.release(p); };
+    const cells = this.furnitureCells(kind,j,j.axis!);
+    if (this.fires.some(f => cells.some(q => same(f,q)))) { wait('家具或安装位置正在燃烧，等待灭火'); return; }
+    if (j.kind === 'uninstall') {
+      const original = this.installedFurniture(kind,id);
+      if (!original) { this.cancel(j); return; }
+      const damage = this.fireDamage.find(d => d.kind === kind && d.targetId === id);
+      const piece = makeFurniturePiece(kind,original,damage?.hitPoints);
+      const plan = this.withoutFurniture(kind,id,() => this.planPlacement([{batch:{resource:'furniture',amount:1,furniture:piece},origin:original}]));
+      if (!plan) { wait('卸下后没有附近可达落点，保留原家具等待清理'); return; }
+      if (kind === 'bed') this.invalidatePrisonBed(original as Bed);
+      for (const pawn of this.pawns) if ((damage && pawn.repairTask?.damageKey === damage.key) ||
+          pawn.living.mealTask?.tableId === id || pawn.living.mealTask?.chairId === id ||
+          (pawn.psyche.recreation?.kind === 'social' && (pawn.psyche.recreation.spotId === id ||
+            (kind === 'chair' && same(pawn.psyche.recreation.target,original))))) this.release(pawn);
+      if (kind === 'bed') this.beds = this.beds.filter(b => b.id !== id);
+      else if (kind === 'table') this.tables = this.tables.filter(b => b.id !== id);
+      else this.chairs = this.chairs.filter(b => b.id !== id);
+      this.fireDamage = this.fireDamage.filter(d => !(d.kind === kind && d.targetId === id));
+      this.rebuildDevices(); this.commitPlacement(plan); this.stats.produced.furniture++;
+      this.notice = '家具已完整卸下，品质和耐久保留；可搬入仓储或重装';
+    } else {
+      const batch = j.deliveredBatches.find(b => b.furniture?.id === id && b.furniture.kind === kind);
+      if (!batch?.furniture) { wait('等待指定的原家具送达，不会改用其他家具'); return; }
+      const reason = this.placementReason(kind,j,j.axis);
+      if (reason) { wait(reason); return; }
+      if ([...this.pawns,...this.animals].some(actor => cells.some(q => same(actor,q)))) {
+        wait('重装位置被人物或动物占用，等待腾空'); return;
+      }
+      const piece = batch.furniture;
+      const entity = furnitureFromPiece(piece,j,j.axis);
+      if (piece.kind === 'bed') {
+        this.updateRooms();
+        const room = this.rooms.roomAt(j);
+        const prison = !!room && !room.outdoor && this.beds.some(b => b.prisoner && this.rooms.roomAt(b)?.id === room.id);
+        const bed = entity as Bed;
+        bed.prisoner = prison;
+        if (!prison && piece.owner !== null && this.pawns.some(q => q.id === piece.owner && !q.dead && q.faction === 'colony') &&
+            !this.beds.some(b => b.owner === piece.owner)) bed.owner = piece.owner;
+      }
+      const old = {beds:this.beds,tables:this.tables,chairs:this.chairs};
+      if (kind === 'bed') this.beds = [...this.beds,entity as Bed];
+      else if (kind === 'table') this.tables = [...this.tables,entity as DiningTable];
+      else this.chairs = [...this.chairs,entity as DiningChair];
+      this.rebuildDevices();
+      const rollback = (message: string) => { Object.assign(this,old); this.rebuildDevices(); wait(message); };
+      if ([...this.pawns,...this.animals].some(q => !this.standable(q))) { rollback('家具会占用人物或动物的位置，等待腾空'); return; }
+      this.search(p);
+      const displaced = this.items.filter(item => !this.groundAllowed(item));
+      const plan = this.planPlacement(displaced.map(item => ({batch:item,origin:item,
+        cells:horizontal.map(([dx,dy])=>({x:item.x+dx,y:item.y+dy,z:item.z})).filter(q=>inside(q)&&this.distance[at(q)]>=0)})),
+        this.items.filter(item=>!displaced.includes(item)),DROP_DISTANCE,new Set(cells.map(at)));
+      if (!plan) { rollback('目标物资没有相邻落地空间，保留原家具等待清理'); return; }
+      this.commitPlacement(plan);
+      if (piece.hitPoints < furnitureStats(kind,piece.quality).maxHitPoints)
+        this.fireDamage.push({key:fireDamageKey(kind,id,j),kind,targetId:id,x:j.x,y:j.y,z:j.z,
+          hitPoints:piece.hitPoints,maxHitPoints:furnitureStats(kind,piece.quality).maxHitPoints});
+      this.stats.consumed.furniture++;
+      this.notice = '原家具已重装，保留品质与耐久；需要时可重新设置床的用途';
+    }
+    this.jobs = this.jobs.filter(k => k.id !== j.id);
+    this.release(p); this.roomsDirty = true; this.changed(j); this.pruneFilth(); this.reconcileFireState();
+  }
   private finish(p: Pawn, j: Job) {
     if (j.cancelled) {
       this.release(p);
       return;
     }
+    if (j.kind === 'uninstall' || j.kind === 'install') { this.finishRelocation(p,j); return; }
     if (j.kind === 'fence' && [...this.pawns,...this.animals].some(a=>same(a,j))) {
       j.reason='围栏位置被占用，等待人物或动物离开';this.release(p);return;
     }
@@ -6623,6 +6811,7 @@ export class VoxelSimulation {
       if (this.tick % ENVIRONMENT_RULES.interval === 0) this.updateEnvironmentalEffects();
       updateFires(this);
       this.updatePreservation();
+      this.reconcileRelocationJobs();
       this.updateTrees();
       this.refreshReservations();
       this.updateApparelWear();
@@ -6641,6 +6830,9 @@ export class VoxelSimulation {
           c.growth = Math.min(1, c.growth + this.cropCondition(c, c.kind).growthRate);
       if (this.tick % 20 === 0) this.syncProduction();
       for (const p of this.pawns) {
+        // Interrupted furniture hauling releases the bulky original for another
+        // worker. Full floors retry safely; existing corpse supplies stay intact.
+        if ((p.dead || p.downed || p.drafted) && p.carriedBy === null && p.cargo?.furniture) this.dropCargo(p);
         if (p.dead || p.downed || p.carriedBy !== null) continue;
         const job = this.jobs.find(j => j.id === p.jobId);
         if (job && this.fires.some(f => touchesFire(f, job))) { this.release(p); p.reason = '工作位置起火，先处理火灾'; }
@@ -7260,7 +7452,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 33,
+      version: 34,
       socialHistory: this.socialHistory, socialLog: this.socialLog,
       weather: this.weather, snow: this.snow,
       fires: this.fires, fireDamage: this.fireDamage, fireHazards: this.fireHazards, fireLog: this.fireLog,
@@ -7314,11 +7506,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyRelocationFields(old,sourceVersion);
     rejectLegacyFurnitureFields(old);
     rejectLegacySocialFields(old);
     rejectLegacyLivingFields(old);
@@ -7409,7 +7602,7 @@ export class VoxelSimulation {
         ...s,
         priority: 1,
         accepts: resources.filter(
-          (r) => !['silver', 'chunk', 'cloth', 'apparel', 'weapon', 'herb'].includes(r),
+          (r) => !['silver', 'chunk', 'cloth', 'apparel', 'weapon', 'herb', 'furniture'].includes(r),
         ),
       }));
       old.stats.spoiled = emptyCounts();
@@ -7664,7 +7857,8 @@ export class VoxelSimulation {
     migrateLiving(old, sourceVersion);
     migrateSocial(old, sourceVersion);
     migrateFurniture(old, sourceVersion);
-    old.version = 33;
+    migrateRelocation(old,sourceVersion);
+    old.version = 34;
     const d = old as VoxelSave;
     const loadHealth = (p: Pawn) =>
       oldHealth.get(p.id) ?? {
@@ -7790,6 +7984,7 @@ export class VoxelSimulation {
                 'carcass',
                 'poisonChance',
                 'hitPoints',
+                'furniture',
                 'x',
                 'y',
                 'z',
@@ -8082,7 +8277,7 @@ export class VoxelSimulation {
     const plainCargo = (batch: Cargo) =>
       validBatch(batch) &&
       Object.keys(batch).every((key) =>
-        ['resource', 'amount', 'crop', 'rotProgress', 'apparel', 'weapon', 'forbidden', 'carcass', 'poisonChance', 'hitPoints'].includes(
+        ['resource', 'amount', 'crop', 'rotProgress', 'apparel', 'weapon', 'forbidden', 'carcass', 'poisonChance', 'hitPoints', 'furniture'].includes(
           key,
         ),
       );
@@ -8767,6 +8962,7 @@ export class VoxelSimulation {
     validatePens(d);
     validateLiving(d);
     validateFurniture(d);
+    validateRelocation(d);
     validateSocial(d);
     const recreationPins = new Set<number>();
     const recreationCells = new Set<number>();

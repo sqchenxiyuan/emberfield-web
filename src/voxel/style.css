@@ -217,6 +217,13 @@ a {
 .voxel-furniture-quality small, .voxel-current-furniture small { display: block; color: #c8c8b6; font-size: 11px; line-height: 1.65; }
 .voxel-furniture-quality summary { cursor: pointer; font-size: 11px; }
 .voxel-current-furniture button { padding: 7px 8px; font-size: 11px; }
+.voxel-furniture-move { display: grid; gap: 9px; margin: 12px 0; padding: 12px; border: 1px solid #8dc6bf55; border-radius: 5px; background: #213c3866; font-size: 12px; }
+.voxel-furniture-move small { display: block; color: #c8c8b6; font-size: 11px; line-height: 1.65; }
+.voxel-furniture-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.voxel-furniture-actions button { flex: 1; min-width: 70px; }
+.voxel-furniture-stage { display: grid; gap: 5px; padding: 8px 0; border-bottom: 1px solid #8dc6bf22; }
+.voxel-furniture-move button { padding: 7px 8px; font-size: 11px; }
+.voxel-placement-error { color: #f2af98 !important; }
 .voxel-room-living dl { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 15px; margin: 0; }
 .voxel-room-living dl > div { display: flex; justify-content: space-between; gap: 8px; }
 .voxel-room-living dd { margin: 0; }
@@ -1799,3 +1806,12 @@ a {
   .voxel-trade-confirm-row { flex-wrap: wrap; }
   .voxel-trade-confirm-row > small { flex-basis: 100%; }
 }
+
+/* Furniture targeting carries a name, orientation and exit action on one row. */
+.voxel-tool-hint:has([data-testid="furniture-placement-cancel"]) { display: flex; flex-wrap: wrap; align-items: center; height: auto; min-height: 62px; gap: 6px 16px; padding: 8px 0; }
+.voxel-tool-hint:has([data-testid="furniture-placement-cancel"]) .voxel-kicker { display: flex; flex: 1 1 100%; flex-wrap: wrap; align-items: center; gap: 8px; letter-spacing: 0; line-height: 1.5; }
+.voxel-tool-hint:has([data-testid="furniture-placement-cancel"]) .voxel-kicker button { padding: 5px 8px; }
+.voxel-tool-hint:has([data-testid="furniture-placement-cancel"]) p { flex: 1 1 100%; margin: 0; }
+.voxel-tool-hint:has([data-testid="furniture-placement-cancel"]) > small { display: none; }
+.voxel-tool-hint:has([data-testid="furniture-placement-cancel"]) [data-testid="placement-preview-info"] { display: inline; }
+.voxel-tool-hint:has([data-testid="furniture-placement-cancel"]) > .voxel-placement-error { display: block; flex: 1 1 100%; font-size: 11px; }

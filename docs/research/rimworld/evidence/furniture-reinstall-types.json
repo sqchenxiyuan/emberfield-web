@@ -1,0 +1,11 @@
+[
+  "RimWorld.MinifiedThing",
+  "RimWorld.MinifyUtility",
+  "RimWorld.InstallBlueprintUtility",
+  "RimWorld.Blueprint_Install",
+  "RimWorld.JobDriver_Uninstall",
+  "RimWorld.Designator_Uninstall",
+  "RimWorld.Designator_Install",
+  "RimWorld.CompAssignableToPawn_Bed",
+  "RimWorld.WorkGiver_Uninstall"
+]

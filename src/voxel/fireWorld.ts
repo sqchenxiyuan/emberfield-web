@@ -10,7 +10,7 @@ import { FIRE_RULES, FIRE_MAX_HP, FIRE_TARGET_NAMES, fireRandom, fireDamageKey, 
   fireDamageHomeCells, fireDamageBurning, makeFire, nextFireIncident,
   type Fire, type FireDamage, type FireHazards, type FireLogEntry, type BurnTargetKind, type FireSource } from './fire';
 
-export interface FireHost extends Pick<VoxelSave, 'tables' | 'chairs' | 'pawns' | 'items' | 'trees' | 'crops' | 'beds' | 'doors' | 'stoves' |
+export interface FireHost extends Pick<VoxelSave, 'jobs' | 'tables' | 'chairs' | 'pawns' | 'items' | 'trees' | 'crops' | 'beds' | 'doors' | 'stoves' |
   'stonecutters' | 'tailors' | 'weaponBenches' | 'researchBenches' | 'horseshoePins' | 'butcherSpots' | 'devices' | 'wires' | 'fences' | 'fenceGates' | 'penMarkers'> {
   seed: number; tick: number; nextId: number; revision: number; notice: string;
   blocks: Uint8Array; ladders: Uint8Array; homeArea: Set<number>;
@@ -24,6 +24,7 @@ export interface FireHost extends Pick<VoxelSave, 'tables' | 'chairs' | 'pawns' 
   fireRoute(p: Pawn, targets: Pos[]): number[] | null;
   fireDestroy(target: FireDamage, reason: string): boolean;
   fireBurnGround(id: number, amount: number): void;
+  fireBurnFurniture(id: number, damage: number): void;
   fireBurnTree(id: number, damage: number): void;
   fireBurnCrop(id: number): void;
 }
@@ -59,7 +60,7 @@ export function findFireDamageTarget(s: FireHost, d: FireDamage): FireDamage | u
   const object = s[property[d.kind]].find(q => q.id === d.targetId);
   return object ? damageTarget(d.kind, object, object.id) : undefined;
 }
-interface FuelTarget { kind: 'structure' | 'tree' | 'crop' | 'stack'; id: number; flammability: number; damage?: FireDamage }
+interface FuelTarget { kind: 'structure' | 'tree' | 'crop' | 'stack' | 'furniture'; id: number; flammability: number; damage?: FireDamage }
 /** A flame consumes physical fuel at its cell. Air immediately above a wooden
  * support can burn that support, so a floor flame is shown at the walking layer. */
 export function fireFuelAt(s: FireHost, p: Pos): FuelTarget[] {
@@ -86,10 +87,13 @@ export function fireFuelAt(s: FireHost, p: Pos): FuelTarget[] {
   for (const tree of s.trees) if (same(tree, p)) out.push({ kind: 'tree', id: tree.id, flammability: 1 });
   for (const crop of s.crops) if (same(crop, p)) out.push({ kind: 'crop', id: crop.id, flammability: .7 });
   for (const item of s.items) if (same(item, p)) {
+    if (item.furniture) { out.push({kind:'furniture',id:item.furniture.id,flammability:.8}); continue; }
     const flammability = ['wood', 'cloth', 'grain', 'herb', 'food', 'meal', 'meat', 'carcass', 'apparel', 'components'].includes(item.resource)
       ? 1 : item.resource === 'weapon' && item.weapon && ['woodClub', 'shortBow'].includes(item.weapon.kind) ? 1 : 0;
     if (flammability) out.push({ kind: 'stack', id: item.id, flammability });
   }
+  for (const job of s.jobs) if (same(job,p)) for (const batch of job.deliveredBatches)
+    if (batch.furniture) out.push({kind:'furniture',id:batch.furniture.id,flammability:.8});
   return out;
 }
 export function igniteFire(s: FireHost, p: Pos, source: FireSource): Fire | null {
@@ -169,6 +173,7 @@ export function updateFires(s: FireHost) {
       if (target.kind === 'tree') s.fireBurnTree(target.id, amount);
       else if (target.kind === 'crop') s.fireBurnCrop(target.id);
       else if (target.kind === 'stack') s.fireBurnGround(target.id, 1);
+      else if (target.kind === 'furniture') s.fireBurnFurniture(target.id,amount);
       else {
         let damage = s.fireDamage.find(d => d.key === target.damage!.key);
         if (!damage && s.fireDamage.length >= FIRE_RULES.maxDamage) {

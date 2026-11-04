@@ -6,6 +6,7 @@ import { at, Block, index, type Pawn, type Pos, type VoxelCommand } from '../src
 import { freshBatch, mergeBatch, portion } from '../src/voxel/preservation';
 import { healthSummary } from '../src/voxel/survival';
 import { applyInjury } from '../src/voxel/injuries';
+import { relocationExpectedField } from './legacy-relocation-defaults';
 
 const point = (x: number, y = 14): Pos => ({ x, y, z: 8 });
 function command(s: VoxelSimulation, c: VoxelCommand) {
@@ -52,11 +53,11 @@ describe('sanitation integration and interrupted physical actions', () => {
     const provenance = JSON.parse(readFileSync(new URL('./fixtures/voxel-v24-sanitation-initial.provenance.json', import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(provenance.sha256);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old);
-    expect(old.version).toBe(24); expect(s.save().version).toBe(33);
+    expect(old.version).toBe(24); expect(s.save().version).toBe(34);
     expect(s.filth).toEqual([]); expect(s.items).toEqual(old.items);
     expect(s.pawns.map(p => p.id)).toEqual(old.pawns.map((p: Pawn) => p.id));
     expect(s.pawns.every(p => p.foodPoisoning === null && p.cleanTask === null)).toBe(true);
-    expect(s.stats).toEqual(old.stats); expect(s.tick).toBe(old.tick);
+    expect(s.stats).toEqual(relocationExpectedField('stats', old.stats)); expect(s.tick).toBe(old.tick);
   });
 
   it('requires home area even for a forced clean and actually walks before clearing a layer', () => {

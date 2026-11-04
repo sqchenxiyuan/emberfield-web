@@ -1,4 +1,5 @@
 import { initialAnimalPenState } from '../src/voxel/pens';
+import { relocationExpectedField } from './legacy-relocation-defaults';
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -32,7 +33,7 @@ function historical(name: keyof typeof HASHES) {
 describe('authentic v28 husbandry migration', () => {
   it.each(['initial', 'protected', 'final'] as const)('retains genuine %s checkpoint state and seeds grass without allocating identities', name => {
     const old = historical(name), before = structuredClone(old), s = VoxelSimulation.load(old), saved = s.save();
-    expect(old).toEqual(before); expect(saved.version).toBe(33);
+    expect(old).toEqual(before); expect(saved.version).toBe(34);
     expect(saved.tick).toBe(old.tick); expect(saved.nextId).toBe(old.nextId);
     expect(saved.animals).toHaveLength(old.animals.length);
     for (const previous of old.animals) {
@@ -50,7 +51,7 @@ describe('authentic v28 husbandry migration', () => {
     }
     for (const key of ['items', 'stats', 'trade', 'weather', 'snow', 'fires', 'fireDamage', 'fireHazards',
       'fireLog', 'filth', 'crops', 'trees', 'beds', 'research', 'blocks', 'ladders', 'structureKinds'] as const)
-      expect(saved[key], key).toEqual(key === 'beds' ? old.beds.map((b:any)=>({...b,quality:2})) : old[key]);
+      expect(saved[key], key).toEqual(key === 'beds' ? old.beds.map((b:any)=>({...b,quality:2})) : relocationExpectedField(key, old[key]));
     expect(saved.grass.length).toBeGreaterThan(0);
     expect(new Set(saved.grass.map(at)).size).toBe(saved.grass.length);
     expect(saved.grass.every(g => s.animalGrassSite(g) && g.growth === 1)).toBe(true);

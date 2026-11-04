@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { VoxelSimulation } from '../src/voxel/world';
 import { initialSocial } from '../src/voxel/social';
+import { relocationExpectedField } from './legacy-relocation-defaults';
 
 const hashes = {
   'carrying-meal': 'c49d2a6d1a6d14c884abe5c5c799b6ff06644081154a0f7728b82e84ba0276da',
@@ -17,10 +18,10 @@ function historical(name: keyof typeof hashes) {
 describe('authentic v31 social loader compatibility', () => {
   it.each(['carrying-meal', 'seated-meal'] as const)('roundtrips the actual %s colony without changing food, furniture or active meals', name => {
     const old = historical(name), original = structuredClone(old), sim = VoxelSimulation.load(old), saved = sim.save();
-    expect(old).toEqual(original); expect(saved.version).toBe(33);
+    expect(old).toEqual(original); expect(saved.version).toBe(34);
     expect(saved.socialHistory).toEqual([]); expect(saved.socialLog).toEqual([]);
     for (const [key, value] of Object.entries(old)) if (!['version', 'pawns', 'jobs', 'tables', 'beds', 'chairs'].includes(key))
-      expect((saved as any)[key], key).toEqual(value);
+      expect((saved as any)[key], key).toEqual(relocationExpectedField(key, value));
     expect(saved.tables).toEqual(old.tables.map((t: any) => ({ ...t, gathering: true, quality: 2 })));
     for(const key of ['beds','chairs'] as const) expect(saved[key]).toEqual(old[key].map((t:any)=>({...t,quality:2})));
     // The established loader rebuilds transient routes and ordinary fetch

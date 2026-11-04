@@ -1,0 +1,55 @@
+{
+  "evidence_id": "RW17-FURNITURE-REINSTALL-EXTRA",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.CompAssignableToPawn",
+      "local_file": ".local-research/furniture-reinstall-extra/RimWorld.CompAssignableToPawn.cs",
+      "sha256": "608ed113d5b44e136543576b28df8713e3bf9e1a56908440e375dbfa2694a778",
+      "lines": 238
+    },
+    {
+      "type": "RimWorld.Blueprint",
+      "local_file": ".local-research/furniture-reinstall-extra/RimWorld.Blueprint.cs",
+      "sha256": "a9ce66b27ef3f8ec7f4ebdceb2e2c8285df81914b22cd854ca29526d3e0989aa",
+      "lines": 190
+    },
+    {
+      "type": "Verse.AI.JobDriver_HaulToContainer",
+      "local_file": ".local-research/furniture-reinstall-extra/Verse.AI.JobDriver_HaulToContainer.cs",
+      "sha256": "3393bc8d971a12f541099fabbc5470da960bc1e90db1cb94dc3c74088bcd9627",
+      "lines": 229
+    },
+    {
+      "type": "RimWorld.Toils_Construct",
+      "local_file": ".local-research/furniture-reinstall-extra/RimWorld.Toils_Construct.cs",
+      "sha256": "5ead267cae26033bcc35a2279901b2848edf15929c4254d081b29ab3c6f38a06",
+      "lines": 78
+    },
+    {
+      "type": "RimWorld.WorkGiver_ConstructDeliverResourcesToBlueprints",
+      "local_file": ".local-research/furniture-reinstall-extra/RimWorld.WorkGiver_ConstructDeliverResourcesToBlueprints.cs",
+      "sha256": "fe4a83cae7b6a8d5dc481b9fb8dd0b4cbdcfca44b1f3961ca7b0aaf1f993b0ae",
+      "lines": 142
+    },
+    {
+      "type": "RimWorld.WorkGiver_RemoveBuilding",
+      "local_file": ".local-research/furniture-reinstall-extra/RimWorld.WorkGiver_RemoveBuilding.cs",
+      "sha256": "f6eac9430042975eb679a0087bdb588a361d0679f852ae68c1920644940b7781",
+      "lines": 51
+    }
+  ]
+}

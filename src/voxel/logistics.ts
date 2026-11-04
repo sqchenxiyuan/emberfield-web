@@ -18,13 +18,14 @@ export const STACK_LIMITS: Readonly<Record<Resource, number>> = Object.freeze({
   herb: 25,
   apparel: 1,
   weapon: 1,
+  furniture: 1,
 });
 export const stackLimit = (resource: Resource) => STACK_LIMITS[resource];
 /** Healthy adult ordinary hauling: one stack, at most 75 units. */
 export const carryLimit = (resource: Resource) => Math.min(75, stackLimit(resource));
 export function stackSpace(
   existing: Cargo | undefined,
-  incoming: Pick<Cargo, 'resource' | 'crop' | 'apparel' | 'weapon' | 'carcass'>,
+  incoming: Pick<Cargo, 'resource' | 'crop' | 'apparel' | 'weapon' | 'carcass' | 'furniture'>,
 ): number {
   return existing && !compatibleBatches(existing, { ...incoming, amount: 1 })
     ? 0

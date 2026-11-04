@@ -6,6 +6,7 @@ import { carryLimit, STACK_LIMITS, stackLimit } from '../src/voxel/logistics';
 import { freshBatch, rotLimit, validBatch } from '../src/voxel/preservation';
 import { makeApparel, validApparel } from '../src/voxel/apparel';
 import { makeWeapon, validWeapon } from '../src/voxel/weapons';
+import { makeFurniturePiece, validFurniturePiece } from '../src/voxel/relocation';
 import { plantYield } from '../src/voxel/skills';
 import {
   Block,
@@ -41,7 +42,9 @@ function add(
         ? { resource, amount, apparel: makeApparel(s.nextId++, 'tuque') }
         : resource === 'carcass'
           ? { resource, amount, carcass: { animalId: s.nextId++, species: 'hare' as const }, rotProgress: 0 }
-          : freshBatch(resource, amount)),
+          : resource === 'furniture'
+            ? { resource, amount, furniture: makeFurniturePiece('chair', { ...p, id: s.nextId++, axis: 'x', quality: 2 }, 50.25) }
+            : freshBatch(resource, amount)),
     ...extra,
     x: p.x,
     y: p.y,
@@ -121,6 +124,7 @@ function invariants(s: VoxelSimulation) {
           'rotProgress',
           'apparel',
           'weapon',
+          'furniture',
           'carcass',
           'forbidden',
           'poisonChance',
@@ -131,6 +135,7 @@ function invariants(s: VoxelSimulation) {
     expect(validBatch(i)).toBe(true);
     expect(i.resource === 'apparel' ? validApparel(i.apparel) : i.apparel === undefined).toBe(true);
     expect(i.resource === 'weapon' ? validWeapon(i.weapon) : i.weapon === undefined).toBe(true);
+    expect(i.resource === 'furniture' ? validFurniturePiece(i.furniture) : i.furniture === undefined).toBe(true);
   }
   for (const p of s.pawns)
     if (p.cargo) expect(p.cargo.amount).toBeLessThanOrEqual(carryLimit(p.cargo.resource));
@@ -176,7 +181,7 @@ describe('bounded physical stacks and hauling reservations', () => {
     expect(s.items.filter((i) => i.resource === 'food').map((i) => i.amount)).toEqual([
       10, 10, 10, 10, 10, 10,
     ]);
-    expect(s.save().version).toBe(33);
+    expect(s.save().version).toBe(34);
     expect(VoxelSimulation.load(s.save()).counts()).toEqual(s.counts());
   });
   it.each(resources)('carries and stores %s only within its native one-stack limit', (resource) => {
