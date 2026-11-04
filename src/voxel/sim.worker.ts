@@ -14,10 +14,10 @@ let publishedRooms = -1;
 function publish() {
   const chunks = sim.chunks();
   const snapshot = sim.snapshot(speed, tickMs);
-  const roomIds = publishedRooms !== snapshot.roomRevision ? sim.rooms.roomIds.slice() : undefined;
+  const roomIds = publishedRooms !== snapshot.roomRevision ? sim.visibleRoomIds() : undefined;
   publishedRooms = snapshot.roomRevision;
   ctx.postMessage({ type: 'state', snapshot, chunks, roomIds }, [
-    ...chunks.flatMap((c) => [c.blocks.buffer, c.ladders.buffer]),
+    ...chunks.flatMap((c) => [c.blocks.buffer, c.ladders.buffer, c.explored.buffer]),
     ...(roomIds ? [roomIds.buffer] : []),
   ]);
 }
@@ -32,7 +32,7 @@ ctx.onmessage = ({ data: d }) => {
       throw new Error('地区开局和预览请使用专用地区接口');
     if (d.type === 'previewSite') {
       const resolved = resolveWorldSite(d.site);
-      ctx.postMessage({ type: 'reply', id: d.id, result: previewWorld(resolved.seed, resolved.settings) });
+      ctx.postMessage({ type: 'reply', id: d.id, result: previewWorld(resolved.seed, resolved.settings, resolved.generator) });
       return;
     }
     if (d.type === 'preview') {

@@ -7,7 +7,7 @@ import { plantRandom } from '../src/voxel/plants';
 
 // Bounded state-machine geometry; the separate campaign uses only normal commands.
 function fixture() {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 }, false, 2) /* Controlled geometry: historical full visibility. */;
   // Isolated terrain fixture excludes the newly spawned wildlife.
   s.animals = [];
   s.blocks.fill(Block.Stone);
@@ -189,7 +189,7 @@ describe('voxel combat and physical tending', () => {
     );
     const s = VoxelSimulation.load(old);
     expect(old.version).toBe(11);
-    expect(s.save().version).toBe(35);
+    expect(s.save().version).toBe(36);
     expect(s.combat).toEqual({ enabled: false, nextRaid: 0, wave: 0 });
     expect(s.pawns.map((p) => [p.id, p.food, p.rest, p.worn])).toEqual(
       old.pawns.map((p: any) => [p.id, p.food, p.rest, p.worn]),

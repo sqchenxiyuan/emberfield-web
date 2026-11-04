@@ -170,7 +170,7 @@ const hints: Record<Tool, string> = {
   cooler: '90 钢材 + 3 零件；工作 200 W。负 X/Y 蓝侧制冷，正 X/Y 橙侧排热，R 换轴。留出两侧风口。',
   inspect: '点击人物、动物、物资或地形查看详情。动物可逐只标记狩猎；选中人物后，可在面板中选择目标位置并下达移动。',
   cut: '点击或框选树木。幼苗没有木材，长大后产量逐渐提高；查看详情可了解当前收益，再决定何时砍伐。',
-  mine: '点击或框选岩土。工人从相邻工作面挖开两格高通道；先建通路再深入。',
+  mine: '点击或框选开凿区域，也可提前规划未知地带。工人从相邻的已知通路挖开两格高通道；打通洞穴后会显露内部。',
   shaft: '在可站立地面点击一次，向下逐格开凿三格梯井。完整入口消耗 8 木材。',
   up: '在可站立地面点击一次，向上搭建三格梯子。完整通路消耗 8 木材。',
   floor: '选择木材或石砖，拖动规划楼板。从梯子旁向外延伸，等待支撑完成。',
@@ -450,6 +450,7 @@ function App() {
   const animal = s?.animals.find(v => v.id === selectedAnimal) ??
     (state.selected && !('penMarkerId' in state.selected) && !('fenceGateId' in state.selected) && !('furnitureId' in state.selected) ? s?.animals.find(v => equal(v, state.selected!)) : undefined);
   const p = animal ?? state.selected;
+  const unknown = !!p && !client.exploredAt(p);
   const worldRegion = useMemo(() => s?.worldSite ? resolveWorldSite(s.worldSite).tile : null,
     [s?.worldSite?.version, s?.worldSite?.worldSeed, s?.worldSite?.tileId]);
   const spawn = s?.spawn ?? { x: 32, y: 32, z: 8 };
@@ -497,7 +498,7 @@ function App() {
     : null;
   const wire = p ? s?.wires.find((w) => equal(w, p)) : null;
   const network = device ? s?.networks.find((n) => n.id === device.networkId) : null;
-  const room = p ? client.roomAt(p) : null;
+  const room = p && !unknown ? client.roomAt(p) : null;
   const roomTemperature = room
     ? s?.roomTemperatures.find((t) => t.roomId === room.id)?.temperature
     : undefined;
@@ -564,8 +565,8 @@ function App() {
         accepts,
       });
   };
-  const block = p ? client.blockAt(p) : 0;
-  const title = p
+  const block = p && !unknown ? client.blockAt(p) : 0;
+  const title = unknown ? '未探索区域' : p
     ? (animal?.name ?? people[0]?.name ??
       penMarker?.name ?? (fenceGate ? '木制栏门' : null) ?? (fence ? '木制围栏' : null) ??
       (butcherSpot ? '屠宰点' : null) ??
@@ -915,7 +916,7 @@ function App() {
               ? '旧版地形'
               : `${BIOME_NAMES[s.settings.biome]} · ${HILL_NAMES[s.settings.hilliness]}`}{' '}
             · 种子 {s.seed}
-            {s.generator === 2 && (
+            {s.generator !== 1 && (
               <>
                 {' '}
                 · 年均 {s.settings.meanTemperature}°C · 降雨 {s.settings.rainfall} mm
@@ -926,6 +927,17 @@ function App() {
         {!p && s && <p data-testid="current-world-site" data-world-seed={s.worldSite?.worldSeed} data-region-id={s.worldSite?.tileId}>
           {s.worldSite && worldRegion ? `世界种子 ${s.worldSite.worldSeed} · 地区 #${s.worldSite.tileId} · 坐标 (${worldRegion.x}, ${worldRegion.y})` : '自定义或历史营地 · 未绑定世界地区'}
         </p>}
+        {s?.generator === 3 && <p className="voxel-exploration-status" data-testid="exploration-status">
+          永久探索 · 深色区域尚未发现。开凿梯井或打通岩壁后，地下空间才会显露；切层只改变视图。
+        </p>}
+        {unknown && p && <section className="voxel-unexplored-detail" data-testid="unexplored-detail">
+          <p>这里尚未探索。内部地形、矿藏和空间情况未知，暂时不能建造。</p>
+          <small>可规划探索开凿；工人需要先到达相邻的已知通路。已发现的区域会永久保留。</small>
+          <button data-testid="exploration-designate" onClick={() => void client.command({ type: 'designate', tool: 'mine', from: p })}>规划探索开凿</button>
+          {jobs.length > 0 && <><p data-testid="exploration-queued">已规划 {jobs.length} 项探索工作</p>
+            <button onClick={() => void client.command({ type: 'designate', tool: 'cancel', from: p })}>取消此处探索工作</button></>}
+        </section>}
+        {!unknown && <>
         {p && (
           <p>
             {block
@@ -1803,6 +1815,7 @@ function App() {
             )}
           </div>
         )}
+        </>}
         {p && (
           <button className="voxel-text-button" onClick={() => client.focusOn(p)}>
             ⌖ 对焦此处
@@ -1966,16 +1979,16 @@ function App() {
           close={() => setResearchOpen(false)}
         />
       )}
-      {sanitationOpen && s && <SanitationPanel snapshot={s} selectedPos={state.selected}
+      {sanitationOpen && s && <SanitationPanel snapshot={s} selectedPos={unknown ? null : state.selected}
         focus={target => { setSelectedAnimal(null); setSelectedPawn(null); focus(target); }}
         selectPawn={person => { setSelectedAnimal(null); setSelectedPawn(person.id); focus(person); }}
         command={c => void client.command(c)} close={() => setSanitationOpen(false)} />}
-      {fireOpen && s && <FirePanel snapshot={s} selectedPos={state.selected}
+      {fireOpen && s && <FirePanel snapshot={s} selectedPos={unknown ? null : state.selected}
         focus={target => { setSelectedAnimal(null); setSelectedPawn(null); focus(target); }}
         selectPawn={person => { setSelectedAnimal(null); setSelectedPawn(person.id); focus(person); }}
         command={c => void client.command(c)} close={() => setFireOpen(false)} />}
-      {weatherOpen && s && <WeatherPanel snapshot={s} selectedPos={state.selected}
-        selectedIndoors={!!state.selected && client.roomAt(state.selected)?.outdoor === false}
+      {weatherOpen && s && <WeatherPanel snapshot={s} selectedPos={unknown ? null : state.selected}
+        selectedIndoors={!unknown && !!state.selected && client.roomAt(state.selected)?.outdoor === false}
         focus={target => { setSelectedAnimal(null); setSelectedPawn(null); focus(target); }} close={() => setWeatherOpen(false)} />}
       {prisonOpen && s && <aside className="voxel-prison-drawer" aria-label="囚犯与招募" data-testid="prison-panel">
         <div className="voxel-prison-heading"><h2>囚犯与招募</h2><button aria-label="关闭囚犯面板" onClick={() => setPrisonOpen(false)}>×</button></div>
@@ -2023,7 +2036,7 @@ function App() {
       {s && (tradeOpen || s.trade.session?.stage === 'ready') && (
         <TradePanel
           snapshot={s}
-          selectedPos={p}
+          selectedPos={unknown ? null : p}
           selectedPawnId={selectedPawn}
           command={(command) => client.command(command)}
           speed={(value) => client.speed(value)}
@@ -2176,6 +2189,7 @@ declare global {
       exportSave: VoxelClient['export'];
       blockAt: VoxelClient['blockAt'];
       ladderAt: VoxelClient['ladderAt'];
+      exploredAt: VoxelClient['exploredAt'];
     };
   }
 }
@@ -2185,5 +2199,6 @@ window.voxel = {
   exportSave: client.export,
   blockAt: client.blockAt,
   ladderAt: client.ladderAt,
+  exploredAt: client.exploredAt,
 };
 createRoot(document.getElementById('root')!).render(<App />);

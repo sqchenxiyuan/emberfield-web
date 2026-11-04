@@ -113,6 +113,8 @@
 | [105 家具搬装玩法](105-furniture-relocation-gameplay.md) | 跨层搬运、仓储、旋转、中断、灾害和旧档怎样衔接？ |
 | [106 世界地图选址机制](106-world-site-selection-mechanisms.md) | 世界种子、地区身份、气候与局部地图如何衔接，哪些地区不能落地？ |
 | [107 世界地图选址玩法](107-world-site-selection-gameplay.md) | 地区比较、实际地图预览、开局和旧营地保存怎样连接？ |
+| [108 洞穴与探索机制](108-caves-exploration-mechanisms.md) | 原版洞穴、未知采矿规划、阻挡物移除和连通区域揭示如何衔接？ |
+| [109 地下探索玩法](109-caves-exploration-gameplay.md) | 三维洞室、梯井、盲挖、显示遮罩和永久发现记录怎样形成可操作闭环？ |
 
 每篇均含具体来源与未决问题。先读感兴趣的系统，再查其 `evidence/*-claims.json` 和 `*-manifest.json`，不要把“已抽取一个类型”当成“这个类型涉及的全部机制已经理解”。
 

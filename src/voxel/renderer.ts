@@ -484,6 +484,7 @@ export class VoxelRenderer {
   private terrainRoot = new Group();
   private blockData = new Uint8Array(WIDTH * DEPTH * HEIGHT);
   private ladderData = new Uint8Array(WIDTH * DEPTH * HEIGHT);
+  private exploredData = new Uint8Array(WIDTH * DEPTH * HEIGHT);
   private terrainMeshes = new Map<number, Mesh<BufferGeometry, MeshLambertMaterial>>();
   private dirty = new Set<number>();
   private loaded = new Set<number>();
@@ -687,7 +688,8 @@ export class VoxelRenderer {
         update.id < 0 ||
         update.id >= CHUNK_COUNT ||
         update.blocks.length !== CHUNK ** 3 ||
-        update.ladders.length !== CHUNK ** 3
+        update.ladders.length !== CHUNK ** 3 ||
+        update.explored.length !== CHUNK ** 3
       ) {
         throw new Error(`Invalid voxel chunk ${update.id}`);
       }
@@ -703,8 +705,11 @@ export class VoxelRenderer {
             if (wx >= WIDTH || wy >= DEPTH || wz >= HEIGHT) continue;
             const src = (z * CHUNK + y) * CHUNK + x,
               dst = index(wx, wy, wz);
-            this.blockData[dst] = update.blocks[src];
-            this.ladderData[dst] = update.ladders[src];
+            this.exploredData[dst] = update.explored[src] ? 1 : 0;
+            // Unknown air and solid are indistinguishable, even if a producer
+            // accidentally passes an unmasked block in a future change.
+            this.blockData[dst] = update.explored[src] ? update.blocks[src] : Block.Stone;
+            this.ladderData[dst] = update.explored[src] ? update.ladders[src] : 0;
           }
       this.loaded.add(update.id);
       this.dirty.add(update.id);
@@ -975,7 +980,7 @@ export class VoxelRenderer {
       const batch = this.inspectBatches.get(intersection.object as InstancedMesh);
       if (!batch || intersection.instanceId === undefined) continue;
       const cell = batch.cells[Math.floor(intersection.instanceId / batch.instancesPerCell)];
-      if (cell) {
+      if (cell && this.explored(cell)) {
         const marker = this.data?.penMarkers.find(m => m.x === cell.x && m.y === cell.y && m.z === cell.z);
         const gate = this.data?.fenceGates.find(g => g.x === cell.x && g.y === cell.y && g.z === cell.z);
         return { x: cell.x, y: cell.y, z: cell.z, ...('furnitureId' in cell ? { furnitureId: cell.furnitureId } : {}), ...(marker ? { penMarkerId: marker.id } : {}), ...(gate ? { fenceGateId: gate.id } : {}) };
@@ -1014,6 +1019,12 @@ export class VoxelRenderer {
     return this.blockData[index(x, y, z)];
   }
 
+  private explored(p: Pos) {
+    return Number.isInteger(p.x) && Number.isInteger(p.y) && Number.isInteger(p.z) &&
+      p.x >= 0 && p.y >= 0 && p.z >= 0 && p.x < WIDTH && p.y < DEPTH && p.z < HEIGHT &&
+      this.exploredData[index(p.x, p.y, p.z)] === 1;
+  }
+
   private makeChunk(id: number) {
     const cx = id % CHUNKS_X,
       cy = Math.floor(id / CHUNKS_X) % CHUNKS_Y;
@@ -1034,17 +1045,18 @@ export class VoxelRenderer {
           if (x >= WIDTH || y >= DEPTH || z >= HEIGHT || z > this.level) continue;
           const block = this.block(x, y, z);
           if (!block) continue;
+          const known = this.exploredData[index(x, y, z)] === 1;
           const height = Math.min(1, cutHeight - z),
-            variation = 0.93 + hash(x, y, z) * 0.12;
+            variation = known ? 0.93 + hash(x, y, z) * 0.12 : 1;
           for (let face = 0; face < FACES.length; face++) {
             const { d, n, vertices, shade } = FACES[face];
             const neighborZ = z + d[2];
             if (neighborZ <= this.level && this.block(x + d[0], y + d[1], neighborZ)) continue;
-            let hex = BLOCK_COLORS[block] ?? 0xa8a195;
+            let hex = known ? BLOCK_COLORS[block] ?? 0xa8a195 : 0x152126;
             // Only natural exposed top faces are grassy; a slice through soil is soil.
             const exposed = this.block(x, y, z + 1) === Block.Air;
-            if (block === Block.Soil && exposed && face === 2) hex = 0x91ad65;
-            if (block === Block.RichSoil && exposed && face === 2) hex = 0x5f854b;
+            if (known && block === Block.Soil && exposed && face === 2) hex = 0x91ad65;
+            if (known && block === Block.RichSoil && exposed && face === 2) hex = 0x5f854b;
             color.setHex(hex).multiplyScalar(variation * shade);
             const offset = positions.length / 3;
             for (let v = 0; v < 4; v++) {
@@ -1150,7 +1162,7 @@ export class VoxelRenderer {
   private updateEntities() {
     if (!this.data) return;
     this.inspectBatches.clear();
-    const visibleTrees = this.data.trees.filter((tree) => tree.wood > 0 && tree.z <= this.level);
+    const visibleTrees = this.data.trees.filter((tree) => tree.wood > 0 && tree.z <= this.level && this.explored(tree));
     const trees = visibleTrees.filter((tree) => tree.species === 'pine');
     const trunks = this.batch('trunks', trees.length, this.treeTrunk, this.batchMaterial('trunks'));
     const crowns = this.batch(
@@ -1265,7 +1277,7 @@ export class VoxelRenderer {
       );
     });
     this.finish(cactus);
-    const loose = this.data.items.filter((item) => item.amount > 0 && item.z <= this.level);
+    const loose = this.data.items.filter((item) => item.amount > 0 && item.z <= this.level && this.explored(item));
     const items = loose.filter(
       (item) =>
         item.resource !== 'chunk' &&
@@ -3364,7 +3376,7 @@ export class VoxelRenderer {
       const size = .45 + MathUtils.clamp(a.growth, 0, 1) * .55;
       visual.body.scale.setScalar(size);
       visual.antlers.visible = deer && a.sex === 'male' && isAnimalAdult(a);
-      visual.root.visible = a.z <= this.level;
+      visual.root.visible = a.z <= this.level && this.explored(a);
       const fraction = visual.duration ? MathUtils.clamp((now - visual.start) / visual.duration, 0, 1) : 1;
       visual.root.position.lerpVectors(visual.from, visual.to, fraction);
       const dx = visual.to.x - visual.from.x, dz = visual.to.z - visual.from.z;
@@ -3993,7 +4005,7 @@ export class VoxelRenderer {
       visual.cargoHerb.visible = false;
       for (const body of Object.values(visual.cargoCarcasses)) body.visible = false;
       for (const packed of Object.values(visual.cargoFurniture)) packed.visible = false;
-      const visible = pawn.z <= this.level;
+      const visible = pawn.z <= this.level && this.explored(pawn);
       visual.root.visible = visible;
       const fraction =
         visual.duration === 0 ? 1 : MathUtils.clamp((now - visual.start) / visual.duration, 0, 1);
@@ -4424,6 +4436,9 @@ export class VoxelRenderer {
       vertices += size.vertices;
       bytes += size.bytes;
     }
+    let knownOnLevel = 0;
+    for (let y = 0; y < DEPTH; y++) for (let x = 0; x < WIDTH; x++)
+      knownOnLevel += this.exploredData[index(x, y, this.level)] ? 1 : 0;
     return {
       backend: 'Three.js · WebGL2',
       fps: this.fps,
@@ -4435,7 +4450,8 @@ export class VoxelRenderer {
       pendingChunks: this.dirty.size,
       terrainVertices: vertices,
       terrainGeometryBytes: bytes,
-      gridBytes: this.blockData.byteLength + this.ladderData.byteLength,
+      gridBytes: this.blockData.byteLength + this.ladderData.byteLength + this.exploredData.byteLength,
+      exploration: { level: this.level, knownCells: knownOnLevel, unknownCells: WIDTH * DEPTH - knownOnLevel, unknownColor: '#152126', maskBytes: this.exploredData.byteLength },
       dpr: this.dpr,
       level: this.level,
       rotation: this.rotation,

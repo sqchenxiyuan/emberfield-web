@@ -64,7 +64,7 @@ function fixture(configure: (s: VoxelSimulation) => void = () => {}) {
     ...WORLD_PRESETS.temperate,
     meanTemperature: 24,
     latitude: 0,
-  });
+  }, false, 2) /* Controlled geometry: historical full visibility. */;
   // Controlled feature fixture represents a colony with research already completed.
   s.research = initialResearch(true);
   // Isolated terrain fixture excludes the newly spawned wildlife.
@@ -402,7 +402,7 @@ describe('real v8 migration and v9 validation', () => {
       s = VoxelSimulation.load(raw);
     expect(raw.version).toBe(8);
     expect(raw).toEqual(before);
-    expect(s.save().version).toBe(35);
+    expect(s.save().version).toBe(36);
     expect(s.save().blocks).toEqual(raw.blocks);
     expect(s.items).toEqual(raw.items);
     expect(s.treePlots).toEqual([]);

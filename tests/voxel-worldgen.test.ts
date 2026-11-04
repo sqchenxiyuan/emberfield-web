@@ -53,7 +53,7 @@ function plotWorld(soil: number, meanTemperature = 20) {
     ...WORLD_PRESETS.temperate,
     meanTemperature,
     latitude: 0,
-  });
+  }, false, 2); // Controlled geometry fixture intentionally has no exploration fog.
   // Isolated terrain fixture excludes the newly spawned wildlife.
   s.animals = [];
   s.blocks.fill(Block.Air);
@@ -87,7 +87,7 @@ function plotWorld(soil: number, meanTemperature = 20) {
   return VoxelSimulation.load(s.save());
 }
 
-describe('generator 2 terrain, ecology and preview isolation', () => {
+describe('terrain, ecology and preview isolation', () => {
   it('uses independent deterministic buffers and never changes the active colony during preview', () => {
     const s = new VoxelSimulation(17);
     s.step(3);
@@ -137,7 +137,8 @@ describe('generator 2 terrain, ecology and preview isolation', () => {
     expect(wet.summary.trees.total).toBeGreaterThan(dry.summary.trees.total * 2);
   });
   it('makes finite three-dimensional veins, increasing relief without a large flat starting disk', () => {
-    const worlds = hills.map((hilliness) => generateWorld(73129, { hilliness }));
+    // Historical generator 2 reports total minerals. Generator 3 only reports discovered faces.
+    const worlds = hills.map((hilliness) => generateWorld(73129, { hilliness }, 2));
     expect(worlds[0].summary.elevation.max - worlds[0].summary.elevation.min).toBeLessThanOrEqual(
       1,
     );
@@ -204,7 +205,7 @@ describe('generator 2 terrain, ecology and preview isolation', () => {
       expect(restored.blocks).toEqual(s.blocks);
       expect(restored.trees).toEqual(s.trees);
       expect(restored.settings).toEqual(s.settings);
-      expect(restored.generator).toBe(2);
+      expect(restored.generator).toBe(3);
     },
   );
 });
@@ -302,7 +303,7 @@ describe('v8 world persistence and validation', () => {
       s = VoxelSimulation.load(raw),
       saved = s.save();
     expect(raw).toEqual(original);
-    expect(saved.version).toBe(35);
+    expect(saved.version).toBe(36);
     expect(saved.generator).toBe(1);
     expect(saved.blocks).toEqual(raw.blocks);
     expect(saved.ladders).toEqual(raw.ladders);
@@ -347,7 +348,7 @@ describe('v8 world persistence and validation', () => {
         d.settings.hilliness = 'bad' as Hilliness;
       },
       (d) => {
-        d.generator = 3 as 2;
+        d.generator = 4 as 2;
       },
       (d) => {
         d.spawn.x = 64;

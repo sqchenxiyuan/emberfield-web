@@ -3,7 +3,8 @@ import { growingSeasonDays } from './climate';
 
 /** A world selection identifies a place; the local map keeps its own independent seed. */
 export interface WorldSite {
-  version: 1;
+  /** v1 keeps generator 2; v2 uses the same regions with generator 3 caves. */
+  version: 1 | 2;
   worldSeed: number;
   tileId: number;
 }
@@ -162,17 +163,18 @@ export function recommendedRegion(map: RegionMap): RegionTile | null {
 }
 
 export function resolveWorldSite(value: unknown): {
-  site: WorldSite; seed: number; settings: WorldSettings; tile: RegionTile;
+  site: WorldSite; seed: number; settings: WorldSettings; tile: RegionTile; generator: 2 | 3;
 } {
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('无效的世界选址');
   const site = value as WorldSite;
-  if (site.version !== 1 || Object.keys(site).length !== 3 ||
+  if ((site.version !== 1 && site.version !== 2) || Object.keys(site).length !== 3 ||
     !['version', 'worldSeed', 'tileId'].every((key) => Object.hasOwn(site, key)))
     throw new Error('无效的世界选址版本或字段');
   const tile = regionTile(site.worldSeed, site.tileId);
   if (!tile.settleable || !tile.settings) throw new Error(tile.reason ?? '该地区不能建立营地');
   return {
-    site: { version: 1, worldSeed: site.worldSeed, tileId: site.tileId },
+    site: { version: site.version, worldSeed: site.worldSeed, tileId: site.tileId },
+    generator: site.version === 1 ? 2 : 3,
     seed: tile.mapSeed,
     settings: { ...tile.settings },
     tile,

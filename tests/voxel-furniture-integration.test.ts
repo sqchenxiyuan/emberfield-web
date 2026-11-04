@@ -10,7 +10,7 @@ const pos = (x: number, y = 16, z = 8): Pos => ({ x, y, z });
 /** Controlled chamber and skills distinguish effects. The release campaign
  * separately uses an unedited generated colony and ordinary player commands. */
 function fixture() {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 }, false, 2) /* Controlled geometry: historical full visibility. */;
   s.animals=[]; s.grass=[]; s.items=[]; s.trees=[]; s.stockpiles=[];
   s.blocks.fill(Block.Stone); s.ladders.fill(0); s.structureKinds.fill(0);
   for (let x=10;x<=25;x++) for (let y=12;y<=22;y++) for (let z=8;z<=9;z++) s.blocks[index(x,y,z)]=Block.Air;

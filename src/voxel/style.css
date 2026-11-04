@@ -1098,6 +1098,15 @@ a {
   gap: 8px;
   margin: 16px 0;
 }
+.voxel-exploration-guide, .voxel-unexplored-detail {
+  border: 1px solid #8babb15c;
+  border-radius: 5px;
+  background: #17252b;
+  padding: 11px 13px;
+}
+.voxel-unexplored-detail small { display: block; color: #a6b8bd; line-height: 1.7; margin-bottom: 12px; }
+.voxel-unexplored-detail button { display: block; width: 100%; margin-top: 8px; }
+.voxel-exploration-status { color: #a8c0c7 !important; }
 .voxel-world-mode button[aria-pressed='true'] {
   color: #f6e2b5;
   border-color: #c5ab6d;

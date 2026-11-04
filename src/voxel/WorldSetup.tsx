@@ -100,7 +100,7 @@ export function WorldSetup({
   useEffect(() => { setSelectedId(regional.map ? recommendedRegion(regional.map)?.id ?? null : null); }, [regional.map]);
   const selected = regional.map?.tiles.find(t => t.id === selectedId) ?? null;
   const site: WorldSite | undefined = mode === 'regions' && regional.map && selected?.settleable
-    ? { version: 1, worldSeed: regional.map.seed, tileId: selected.id } : undefined;
+    ? { version: 2, worldSeed: regional.map.seed, tileId: selected.id } : undefined;
   const signature = JSON.stringify(mode === 'regions' ? { mode, seed, site, selectedId } : { mode, seed, settings });
   const validClimate = mode === 'regions' ? !!site : validWorldSettings(settings);
   useEffect(() => {
@@ -153,6 +153,7 @@ export function WorldSetup({
     <section className="voxel-world-setup" aria-label="创建体素世界">
       <h3>选择落脚之地</h3>
       <p>先看地形，再规划营地。高差可开挖，地下矿脉有限；气候会改变作物生长和食物保存。</p>
+      <p className="voxel-exploration-guide" data-testid="world-exploration-guide">地下岩层和洞穴需要探索。先开凿梯井，再切到地下层规划开凿；打通洞穴后才能看清内部，已发现区域会随存档保留。</p>
       <div className="voxel-world-mode" aria-label="地图创建方式">
         <button aria-pressed={mode === 'regions'} onClick={() => setMode('regions')}>区域世界地图</button>
         <button aria-pressed={mode === 'custom'} onClick={() => setMode('custom')}>自定义地图</button>
@@ -257,6 +258,7 @@ export function WorldSetup({
         aria-live="polite"
         data-testid="world-preview"
         data-ready={!!current}
+        data-generator={current?.generator}
         data-preview-seed={current?.seed}
         data-preview-settings={current ? JSON.stringify(current.settings) : undefined}
         data-preview-summary={current ? JSON.stringify(current.summary) : undefined}
@@ -287,13 +289,11 @@ export function WorldSetup({
                   {current.summary.trees.total} 株 · 健康成熟后最多 {current.summary.trees.wood}{' '}
                   木材
                 </dd>
-                <dt>地下钢矿 / 零件矿</dt>
-                <dd>
-                  {current.summary.resources.steel} / {current.summary.resources.components} 方块
-                </dd>
+                <dt>地下矿藏</dt>
+                <dd>进入营地后探索</dd>
               </dl>
               <small>
-                矿物与裸地为全图初始数量，可能需要开路或梯井。生长期按季节均温估算，室内实际温度另计。
+                裸地为全图初始数量，可能需要开路。预览不揭示地下洞穴或矿藏总量；生长期按季节均温估算，室内实际温度另计。
               </small>
               {current.summary.growingDays < 30 && (
                 <p className="voxel-world-warning">生长期较短：优先准备储粮和供暖。</p>
@@ -320,7 +320,7 @@ export function WorldSetup({
           <dl><div><dt>可种植裸地</dt><dd>{candidate.preview.summary.fertileCells} 格</dd></div>
             <div><dt>木本植物</dt><dd>{candidate.preview.summary.trees.total} 株</dd></div>
             <div><dt>木材潜力</dt><dd>{candidate.preview.summary.trees.wood}</dd></div>
-            <div><dt>钢矿 / 零件矿</dt><dd>{candidate.preview.summary.resources.steel} / {candidate.preview.summary.resources.components}</dd></div></dl>
+            <div><dt>地下矿藏</dt><dd>需要探索</dd></div></dl>
           <button onClick={() => { if (candidate.site.worldSeed === regional.map?.seed) chooseRegion(candidate.tile); }}>选中地区 #{candidate.tile.id}</button>
           <button aria-label={`移除候选地区 ${candidate.tile.id}`} onClick={() => setCandidates(all => all.filter(c => c.site.tileId !== candidate.site.tileId))}>移除</button>
         </article>)}</div>

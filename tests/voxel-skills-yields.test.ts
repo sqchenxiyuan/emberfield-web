@@ -20,7 +20,7 @@ const pos = (x: number, y: number, z = 8): Pos => ({ x, y, z });
  * Work, transport, blocked output, reassignment and loading use simulation APIs.
  * Deliberate seed/rot/qualification changes below isolate specific boundaries. */
 function fixture(configure: (s: VoxelSimulation) => void = () => {}) {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 }, false, 2) /* Controlled geometry: historical full visibility. */;
   // Controlled feature fixture represents a colony with research already completed.
   s.research = initialResearch(true);
   // Isolated terrain fixture excludes the newly spawned wildlife.

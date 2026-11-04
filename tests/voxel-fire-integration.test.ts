@@ -21,7 +21,7 @@ function until(s: VoxelSimulation, done: () => boolean, limit = 5000) {
  * They are deliberately separate from the normal incident campaign, which
  * creates its fires only through ordinary events and actual construction. */
 function fixture(configure?: (s: VoxelSimulation) => void) {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 }, false, 2) /* Controlled geometry: historical full visibility. */;
   s.animals = []; s.trees = []; s.treePlots = []; s.items = []; s.stockpiles = [];
   s.blocks.fill(Block.Stone); s.ladders.fill(0); s.structureKinds.fill(0);
   for (let x = 10; x <= 25; x++) for (let y = 10; y <= 20; y++)
@@ -54,7 +54,7 @@ describe('fire lifecycle and physical interruption integration', () => {
     const proof = JSON.parse(readFileSync(new URL('./fixtures/voxel-v25-fire-initial.provenance.json', import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(proof.sha256);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old);
-    expect(old.version).toBe(25); expect(s.save().version).toBe(35);
+    expect(old.version).toBe(25); expect(s.save().version).toBe(36);
     expect(s.fires).toEqual([]); expect(s.fireDamage).toEqual([]);
     expect(s.items).toEqual(old.items); expect(s.stats).toEqual(relocationExpectedField('stats', old.stats));
     expect(s.pawns.map(p => ({ id: p.id, ...pos(p.x, p.y, p.z) })))

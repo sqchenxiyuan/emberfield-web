@@ -19,7 +19,7 @@ function until(s: VoxelSimulation, done: () => boolean, limit = 2000) {
 /** Explicitly controlled geometry, resources and time. Native/campaign evidence
  * is separate; these fixtures isolate interruption and conservation boundaries. */
 function fixture(configure?: (s: VoxelSimulation) => void) {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 }, false, 2) /* Controlled geometry: historical full visibility. */;
   s.animals = []; s.trees = []; s.items = []; s.stockpiles = [];
   s.blocks.fill(Block.Stone); s.blocks.fill(Block.Air, WIDTH * DEPTH * 8);
   s.ladders.fill(0); s.structureKinds.fill(0); s.homeArea.clear(); s.spawn = pos(12);

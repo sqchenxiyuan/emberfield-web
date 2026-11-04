@@ -25,7 +25,7 @@ function until(s: VoxelSimulation, done: () => boolean, max = 8000) {
 }
 // Controlled finite inputs and researched test scenario, NOT ordinary campaign evidence.
 function fixture() {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 }, false, 2) /* Controlled geometry: historical full visibility. */;
   s.research = initialResearch(true);
   for (const key of ['Machining', 'Gunsmithing', 'BlowbackOperation'] as const)
     s.research.progress[key] = RESEARCH_DEFS[key].cost;
@@ -90,7 +90,7 @@ describe('v18 ranged migration and powered physical production', () => {
         s = VoxelSimulation.load(old),
         save = s.save();
       expect(old).toEqual(before);
-      expect(save.version).toBe(35);
+      expect(save.version).toBe(36);
       expectWildlifeIds(old.nextId, save);
       for (const key of [
         'tick',

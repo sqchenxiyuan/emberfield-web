@@ -24,7 +24,7 @@ function until(s: VoxelSimulation, done: () => boolean, limit = 1000) {
  * evidence. Calendar states are generated through the real deterministic model;
  * behavior thereafter uses public commands, stepping, snapshots and save/load. */
 function fixture(configure?: (s: VoxelSimulation) => void, settings: Partial<WorldSettings> = {}) {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0, ...settings });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0, ...settings }, false, 2) /* Controlled geometry: historical full visibility. */;
   s.animals = []; s.trees = []; s.treePlots = []; s.items = []; s.stockpiles = [];
   s.blocks.fill(Block.Stone); s.ladders.fill(0); s.structureKinds.fill(0);
   s.blocks.fill(Block.Air, WIDTH * DEPTH * 8);
@@ -66,7 +66,7 @@ describe('genuine v26 weather migration', () => {
     const proof = JSON.parse(readFileSync(new URL(`./fixtures/voxel-v26-weather-${name}.provenance.json`, import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(sha); expect(proof.sha256).toBe(sha);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old);
-    expect(old.version).toBe(26); expect(s.save().version).toBe(35);
+    expect(old.version).toBe(26); expect(s.save().version).toBe(36);
     expect(s.tick).toBe(old.tick); expect(s.items).toEqual(old.items); expect(s.stats).toEqual(relocationExpectedField('stats', old.stats));
     expect(s.fires).toEqual(old.fires); expect(s.fireDamage).toEqual(old.fireDamage);
     expect(s.fireHazards).toEqual(old.fireHazards); expect(s.fireLog).toEqual(old.fireLog);

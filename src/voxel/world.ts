@@ -91,6 +91,7 @@ import {
   simpleBenchFactor,
 } from './research';
 import { VoxelRooms } from './rooms';
+import { initialExploration, revealExploration, rejectLegacyExploration, loadExploration } from './exploration';
 import { ANIMAL_DEFS, WILDLIFE, isAnimal } from './wildlife';
 import { migrateWildlife, validateWildlife } from './wildlifePersistence';
 import { initialAnimalState, HUSBANDRY_RULES } from './husbandry';
@@ -546,6 +547,10 @@ export class VoxelSimulation {
   combatEvents: CombatEvent[] = [];
   sandbags: Sandbag[] = [];
   blocks = new Uint8Array(CELLS);
+  explored: Uint8Array = new Uint8Array(CELLS);
+  private exploredCount = 0;
+  private visibleRoomsRevision = -1;
+  private visibleRoomsCache = new Set<number>();
   ladders = new Uint8Array(CELLS);
   pawns: Pawn[] = [];
   socialHistory: SocialIdentity[] = [];
@@ -574,7 +579,7 @@ export class VoxelSimulation {
   roomRevision = 0;
   private roomsDirty = true;
   stockpiles: Stockpile[] = [];
-  generator: 1 | 2 = 2;
+  generator: 1 | 2 | 3 = 3;
   worldSite: WorldSite | null = null;
   settings: WorldSettings;
   spawn: Pos = { x: 32, y: 34, z: SURFACE };
@@ -624,8 +629,11 @@ export class VoxelSimulation {
     public seed = 73129,
     settings?: Partial<WorldSettings>,
     restoreOnly = false,
+    generator: 2 | 3 = 3,
   ) {
     if (!Number.isSafeInteger(seed)) throw new Error('种子必须是安全整数');
+    if (generator !== 2 && generator !== 3) throw new Error('地图生成器无效');
+    this.generator = generator;
     this.fireHazards = initialFireHazards(seed);
     this.storyteller = initialStoryteller(seed);
     this.trade = initialTrade(seed);
@@ -640,13 +648,15 @@ export class VoxelSimulation {
    * climate or the derived local seed while retaining the region's identity. */
   static fromWorldSite(site: unknown): VoxelSimulation {
     const resolved = resolveWorldSite(site);
-    const next = new VoxelSimulation(resolved.seed, resolved.settings);
+    const next = new VoxelSimulation(resolved.seed, resolved.settings, false, resolved.generator);
     next.worldSite = structuredClone(resolved.site);
     return next;
   }
   private generate() {
-    const generated = generateWorld(this.seed, this.settings);
+    const generated = generateWorld(this.seed, this.settings, this.generator === 3 ? 3 : 2);
     this.blocks = generated.blocks;
+    this.explored = initialExploration(this.blocks, this.generator);
+    this.exploredCount = this.explored.reduce((n, value) => n + value, 0);
     this.spawn = generated.spawn;
     this.trees = generated.trees.map((tree) => ({ ...tree, id: this.id() }));
     this.summaryCache = generated.summary;
@@ -831,11 +841,26 @@ export class VoxelSimulation {
   markAll() {
     for (let i = 0; i < 16; i++) this.dirty.add(i);
   }
-  private changed(p: Pos) {
+  private changed(p: Pos, finishingJobId?: number) {
     this.roomsDirty = true;
     this.skyCache.clear();
     this.revision++;
     this.pruneSnow();
+    this.dirtyCell(p);
+    if (this.generator === 3) {
+      const revealed = revealExploration(this.blocks, this.explored, [at(p)]);
+      this.exploredCount += revealed.length;
+      for (const cell of revealed) this.dirtyCell(position(cell));
+      if (revealed.length) {
+        // Native unfog removes empty mining designations. A blind plan remains
+        // until both of its two cells are known, so planning cannot probe air.
+        for (const job of [...this.jobs]) if (job.id !== finishingJobId && job.kind === 'mine' &&
+            this.footprint(job).every(q => this.exploredAt(q)) &&
+            this.placementReason('mine', job)) this.cancel(job);
+      }
+    }
+  }
+  private dirtyCell(p: Pos) {
     const cx = Math.floor(p.x / CHUNK),
       cy = Math.floor(p.y / CHUNK);
     this.dirty.add(cy * 4 + cx);
@@ -850,20 +875,29 @@ export class VoxelSimulation {
     const out: ChunkUpdate[] = [];
     for (const id of this.dirty) {
       const blocks = new Uint8Array(CHUNK ** 3),
-        ladders = new Uint8Array(CHUNK ** 3);
+        ladders = new Uint8Array(CHUNK ** 3), explored = new Uint8Array(CHUNK ** 3);
       const ox = (id % 4) * CHUNK,
         oy = Math.floor(id / 4) * CHUNK;
       for (let z = 0; z < 16; z++)
         for (let y = 0; y < 16; y++) {
           const src = index(ox, oy + y, z),
             dst = (z * 16 + y) * 16;
-          blocks.set(this.blocks.subarray(src, src + 16), dst);
-          ladders.set(this.ladders.subarray(src, src + 16), dst);
+          for (let x = 0; x < 16; x++) {
+            explored[dst + x] = this.explored[src + x];
+            blocks[dst + x] = explored[dst + x] ? this.blocks[src + x] : Block.Stone;
+            ladders[dst + x] = explored[dst + x] ? this.ladders[src + x] : 0;
+          }
         }
-      out.push({ id, blocks, ladders });
+      out.push({ id, blocks, ladders, explored });
     }
     this.dirty.clear();
     return out;
+  }
+  exploredAt(p: Pos): boolean { return inside(p) && this.explored[at(p)] === 1; }
+  visibleRoomIds(): Int32Array {
+    const ids = this.rooms.roomIds.slice();
+    for (let i = 0; i < CELLS; i++) if (!this.explored[i]) ids[i] = -1;
+    return ids;
   }
   solid(p: Pos) {
     return !inside(p) || this.blocks[at(p)] !== Block.Air;
@@ -891,7 +925,7 @@ export class VoxelSimulation {
     );
   }
   private canStop(p: Pos) {
-    return this.standable(p) && !this.fenceAt(p) && !this.sandbags.some((b) => same(b, p));
+    return this.exploredAt(p) && this.exploredAt({ ...p, z: p.z + 1 }) && this.standable(p) && !this.fenceAt(p) && !this.sandbags.some((b) => same(b, p));
   }
   private refreshPens() {
     if (this.penLookupRevision === this.revision) return;
@@ -1044,6 +1078,7 @@ export class VoxelSimulation {
     return candidates
       .filter(
         (p) =>
+          this.exploredAt(p) && this.exploredAt({ ...p, z: p.z + 1 }) &&
           this.standable(p) &&
           !this.fenceAt(p) &&
           !this.sandbags.some((b) => same(b, p)) &&
@@ -1921,6 +1956,15 @@ export class VoxelSimulation {
   }
   command(c: VoxelCommand): CommandResult {
     if (!c || typeof c !== 'object') return { ok: false, message: '命令格式无效' };
+    if ('target' in c && c.target && typeof c.target === 'object' && !this.exploredAt(c.target))
+      return { ok: false, message: '目标区域尚未探索' };
+    if ('from' in c && !(c.type === 'designate' && ['inspect', 'mine', 'cancel'].includes(c.tool))) {
+      const to = c.to ?? c.from;
+      if (!inside(c.from) || !inside(to)) return { ok: false, message: '请选择世界内的有效工作层' };
+      for (let y = Math.min(c.from.y, to.y); y <= Math.max(c.from.y, to.y); y++)
+        for (let x = Math.min(c.from.x, to.x); x <= Math.max(c.from.x, to.x); x++)
+          if (!this.exploredAt({ x, y, z: c.from.z })) return { ok: false, message: '目标区域尚未探索' };
+    }
     const penResult = pensCommand(this, c);
     if (penResult) return penResult;
     const nextId = this.nextId;
@@ -2510,6 +2554,7 @@ export class VoxelSimulation {
       };
     }
     if (c.type === 'move') {
+      if (!this.exploredAt(c.target)) return { ok: false, message: '目标区域尚未探索' };
       const p = this.pawns.find((p) => p.id === c.pawnId);
       if (
         !p ||
@@ -2557,6 +2602,8 @@ export class VoxelSimulation {
     const technologyReason = toolResearchReason(this.research, c.tool);
     if (technologyReason) return { ok: false, message: technologyReason };
     if (c.tool === 'inspect') return { ok: true, message: '选择查看' };
+    if (!['mine', 'cancel'].includes(c.tool) && positions.some(p => !this.exploredAt(p)))
+      return { ok: false, message: '目标区域尚未探索' };
     if (c.tool === 'clearZone') {
       for (const pos of positions) {
         this.farms = this.farms.filter((f) => !same(f, pos));
@@ -2753,6 +2800,11 @@ export class VoxelSimulation {
         if (!this.ladders[at(p)]) plans.push(this.makeJob('ladder', p));
         for (let i = 1; i <= 3; i++) {
           const q = { ...p, z: p.z + dir * i };
+          if (!this.exploredAt(q)) {
+            if (dir > 0) return { ok: false, message: '目标区域尚未探索' };
+            plans.push(this.makeJob('digLadder', q));
+            continue;
+          }
           if (this.ladders[at(q)]) continue;
           const b = this.blocks[at(q)];
           if (
@@ -2933,6 +2985,10 @@ export class VoxelSimulation {
     };
   }
   private placementReason(kind: JobKind, p: Pos, axis: Axis = 'x') {
+    const footprint = this.footprint({ ...p, kind, axis });
+    if (kind === 'mine' && footprint.some(q => !this.exploredAt(q))) return '';
+    if (kind !== 'mine' && (!this.exploredAt(p) || footprint.some(q => !this.exploredAt(q))))
+      return '目标区域尚未探索';
     if (kind === 'fence' || kind === 'fenceGate' || kind === 'penMarker')
       return !this.standable(p) || !this.blocks[at(p) - WIDTH * DEPTH] || this.ladders[at(p)] ||
         this.furnitureAt(p) || this.farms.some(f=>same(f,p)) || this.treePlots.some(f=>same(f,p)) ||
@@ -5292,7 +5348,7 @@ export class VoxelSimulation {
   tradeTemperature(pawn: Pawn) { return this.temperature(pawn); }
   tradeReachable(pawn: Pawn): Set<number> {
     this.search(pawn);
-    return new Set(this.items.filter(i => this.distance[at(i)] >= 0).map(at));
+    return new Set(this.items.filter(i => this.exploredAt(i) && this.distance[at(i)] >= 0).map(at));
   }
   tradeExit(pawn: Pawn): number[] | null {
     this.search(pawn);
@@ -6790,7 +6846,7 @@ export class VoxelSimulation {
       this.skyCache.clear();
       this.revision++;
     }
-    for (const c of changes) this.changed(c.pos);
+    for (const c of changes) this.changed(c.pos, j.id);
     for (const [resource, n] of Object.entries(yields)) {
       this.stats.produced[resource as Resource] += n;
     }
@@ -7131,9 +7187,9 @@ export class VoxelSimulation {
     };
     const rain = weatherEffects(this.weather, this.tick).rainRate;
     return {
-      items: [...this.items.map(i => view(i.id, 'stack', i, i)),
-        ...this.animals.filter(a => a.dead).map(a => view(a.id, 'carcass', a, carcassBatch(a)))],
-      filth: this.filth.map(f => ({ id: f.id, exposed: this.weatherExposed(f), rainWashes: RAIN_WASHES[f.kind],
+      items: [...this.items.filter(p => this.exploredAt(p)).map(i => view(i.id, 'stack', i, i)),
+        ...this.animals.filter(a => a.dead && this.exploredAt(a)).map(a => view(a.id, 'carcass', a, carcassBatch(a)))],
+      filth: this.filth.filter(p => this.exploredAt(p)).map(f => ({ id: f.id, exposed: this.weatherExposed(f), rainWashes: RAIN_WASHES[f.kind],
         washing: this.weatherExposed(f) && RAIN_WASHES[f.kind] && rain > 0 })),
       wetPawnIds: wettingWeather(this.weather, this.tick)
         ? this.pawns.filter(p => p.faction === 'colony' && !p.dead && this.weatherExposed(p)).map(p => p.id) : [],
@@ -7205,7 +7261,7 @@ export class VoxelSimulation {
   }
   get worldSummary(): WorldSummary {
     if (!this.summaryCache || this.summaryRevision !== this.revision) {
-      this.summaryCache = summarizeWorld(this.blocks, this.trees, this.spawn, this.settings);
+      this.summaryCache = summarizeWorld(this.blocks, this.trees, this.spawn, this.settings, this.explored);
       this.summaryRevision = this.revision;
     }
     return this.summaryCache;
@@ -7350,57 +7406,65 @@ export class VoxelSimulation {
       }
     if (removed) this.revision++;
   }
-  counts(): Counts {
+  counts(visibleOnly = false): Counts {
     const out = emptyCounts();
-    for (const i of this.items) out[i.resource] += i.amount;
+    for (const i of this.items) if (!visibleOnly || this.exploredAt(i)) out[i.resource] += i.amount;
     for (const p of this.pawns) {
-      if (p.faction !== 'colony') continue;
+      if (p.faction !== 'colony' || (visibleOnly && !this.exploredAt(p))) continue;
       if (p.cargo) out[p.cargo.resource] += p.cargo.amount;
       out.apparel += p.worn.length;
       out.weapon += p.weapon ? 1 : 0;
     }
     for (const j of this.jobs) for (const r of resources) out[r] += j.delivered[r] ?? 0;
-    out.carcass += this.animals.filter(a => a.dead).length;
+    out.carcass += this.animals.filter(a => a.dead && (!visibleOnly || this.exploredAt(a))).length;
     return out;
   }
   snapshot(speed = 0, tickMs = 0): VoxelSnapshot {
     this.updateRooms();
     this.updatePower();
     this.refreshWeatherRoof();
+    const visible = (p: Pos) => this.exploredAt(p);
+    if (this.visibleRoomsRevision !== this.roomRevision) {
+      this.visibleRoomsCache.clear();
+      for (let cell = 0; cell < CELLS; cell++) if (this.explored[cell] && this.rooms.roomIds[cell] >= 0) this.visibleRoomsCache.add(this.rooms.roomIds[cell]);
+      this.visibleRoomsRevision = this.roomRevision;
+    }
+    const visibleRooms = this.visibleRoomsCache;
     const stored = emptyCounts();
-    for (const i of this.items)
+    for (const i of this.items.filter(visible))
       if (this.stockpiles.some((s) => same(s, i) && s.accepts.includes(i.resource)))
         stored[i.resource] += i.amount;
     return structuredClone({
       socialHistory: this.socialHistory, socialLog: this.socialLog,
       weather: { ...this.weather, effects: weatherEffects(this.weather, this.tick) },
       environment: this.environmentView(),
-      snow: this.snow, weatherRoof: this.weatherRoof,
+      snow: this.snow.filter(visible), weatherRoof: this.weatherRoof,
       weatherBytes: this.weatherRoof.byteLength + this.snow.length * 32,
-      fires: this.fires, fireDamage: this.fireDamage, fireHazards: this.fireHazards, fireLog: this.fireLog,
-      filth: this.filth,
-      roomCleanliness: this.roomCleanliness(),
-      roomLiving: this.livingRooms(),
-      penSummaries: penSummaries(this),
+      fires: this.fires.filter(visible), fireDamage: this.fireDamage.filter(visible), fireHazards: this.fireHazards, fireLog: this.fireLog.filter(e => visible(e.position)),
+      filth: this.filth.filter(visible),
+      roomCleanliness: this.roomCleanliness().filter(r => visibleRooms.has(r.roomId)),
+      roomLiving: this.livingRooms().filter(r => visibleRooms.has(r.id)),
+      penSummaries: penSummaries(this).filter(r => this.penMarkers.some(m => m.id === r.markerId && visible(m)) && r.cells.every(i => this.explored[i])),
       trade: { ...this.trade, quote: quoteTrade(this) },
-      homeArea: [...this.homeArea],
+      homeArea: [...this.homeArea].filter(i => this.explored[i]),
       combat: this.combat,
       storyteller: {
         ...this.storyteller, threat: this.threatBreakdown(),
         nextOpportunity: this.combat.enabled ? nextOpportunity(this.storyteller, this.seed, this.tick) : null,
-        legacyStructureCells: this.blocks.reduce((n, b, i) => n + Number((b === Block.Wood || b === Block.Masonry) && this.structureKinds[i] === 0), 0),
+        legacyStructureCells: this.blocks.reduce((n, b, i) => n + Number(this.explored[i] && (b === Block.Wood || b === Block.Masonry) && this.structureKinds[i] === 0), 0),
       },
-      projectiles: this.projectiles,
-      combatEvents: this.combatEvents,
-      sandbags: this.sandbags,
-      animals: this.animals,
-      grass: this.grass, husbandryLog: this.husbandryLog,
-      fences: this.fences, fenceGates: this.fenceGates, penMarkers: this.penMarkers, animalAreas: this.animalAreas,
-      butcherSpots: this.butcherSpots,
-      tables: this.tables, chairs: this.chairs,
-      horseshoePins: this.horseshoePins,
+      projectiles: this.projectiles.filter(p => visible(p.from) && visible(p.destination)),
+      combatEvents: this.combatEvents.filter(visible),
+      sandbags: this.sandbags.filter(visible),
+      animals: this.animals.filter(visible),
+      grass: this.grass.filter(visible), husbandryLog: this.husbandryLog,
+      fences: this.fences.filter(visible), fenceGates: this.fenceGates.filter(visible), penMarkers: this.penMarkers.filter(visible), animalAreas: this.animalAreas.map(a => ({ ...a, cells: a.cells.filter(i => this.explored[i]) })),
+      butcherSpots: this.butcherSpots.filter(visible),
+      tables: this.tables.filter(visible), chairs: this.chairs.filter(visible),
+      horseshoePins: this.horseshoePins.filter(visible),
       seed: this.seed,
       generator: this.generator,
+      exploration: { known: this.exploredCount, total: CELLS },
       worldSite: this.worldSite,
       settings: this.settings,
       spawn: this.spawn,
@@ -7408,49 +7472,49 @@ export class VoxelSimulation {
       tick: this.tick,
       revision: this.revision,
       speed,
-      pawns: this.pawns,
-      items: this.items,
-      trees: this.trees,
-      treePlots: this.treePlots,
-      treeConditions: this.trees.map((tree) => ({
+      pawns: this.pawns.filter(visible),
+      items: this.items.filter(visible),
+      trees: this.trees.filter(visible),
+      treePlots: this.treePlots.filter(visible),
+      treeConditions: this.trees.filter(visible).map((tree) => ({
         x: tree.x,
         y: tree.y,
         z: tree.z,
         ...this.treeCondition(tree),
       })),
       jobs: this.jobs,
-      stockpiles: this.stockpiles,
-      storageCapacity: this.storageCapacity(),
-      farms: this.farms,
-      crops: this.crops,
-      stoves: this.stoves,
-      stonecutters: this.stonecutters,
-      tailors: this.tailors,
-      weaponBenches: this.weaponBenches,
-      researchBenches: this.researchBenches,
+      stockpiles: this.stockpiles.filter(visible),
+      storageCapacity: this.storageCapacity().filter(visible),
+      farms: this.farms.filter(visible),
+      crops: this.crops.filter(visible),
+      stoves: this.stoves.filter(visible),
+      stonecutters: this.stonecutters.filter(visible),
+      tailors: this.tailors.filter(visible),
+      weaponBenches: this.weaponBenches.filter(visible),
+      researchBenches: this.researchBenches.filter(visible),
       research: this.research,
-      beds: this.beds,
-      doors: this.doors,
-      rooms: this.rooms.snapshot(),
+      beds: this.beds.filter(visible),
+      doors: this.doors.filter(visible),
+      rooms: this.rooms.snapshot().filter(r => visibleRooms.has(r.id)),
       roomRevision: this.roomRevision,
       roomBytes: this.rooms.memoryBytes,
-      devices: this.devices,
-      wires: this.wires,
-      networks: this.power.snapshot(),
-      roomTemperatures: this.thermal.snapshot(),
+      devices: this.devices.filter(visible),
+      wires: this.wires.filter(visible),
+      networks: this.power.snapshot().filter(n => n.devices.every(id => [...this.devices, ...this.weaponBenches].some(d => d.id === id && visible(d)))),
+      roomTemperatures: this.thermal.snapshot().filter(r => visibleRooms.has(r.roomId)),
       thermalBytes: this.thermal.memoryBytes,
       powerBytes: this.power.memoryBytes,
-      cropConditions: this.farms.map((f) => ({
+      cropConditions: this.farms.filter(visible).map((f) => ({
         ...f,
         ...this.cropCondition(f, this.crops.find((c) => same(c, f))?.kind ?? f.crop),
       })),
       hour: hourAt(this.tick),
       temperature: this.outdoorTemperature(),
-      inventory: this.counts(),
+      inventory: this.counts(true),
       stored,
       stats: this.stats,
       notice: this.notice,
-      gridBytes: this.blocks.byteLength + this.ladders.byteLength + this.structureKinds.byteLength,
+      gridBytes: this.blocks.byteLength + this.ladders.byteLength + this.structureKinds.byteLength + this.explored.byteLength,
       navigationBytes:
         this.distance.byteLength +
         this.parents.byteLength +
@@ -7464,7 +7528,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 35,
+      version: 36,
       socialHistory: this.socialHistory, socialLog: this.socialLog,
       weather: this.weather, snow: this.snow,
       fires: this.fires, fireDamage: this.fireDamage, fireHazards: this.fireHazards, fireLog: this.fireLog,
@@ -7491,6 +7555,7 @@ export class VoxelSimulation {
       tick: this.tick,
       nextId: this.nextId,
       blocks: encode(this.blocks),
+      explored: Array.from(this.explored),
       ladders: encode(this.ladders),
       pawns: this.pawns,
       items: this.items,
@@ -7519,8 +7584,8 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35].includes(old.version) ||
-      (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36].includes(old.version) ||
+      (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : [1, 2, 3]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
@@ -7544,6 +7609,10 @@ export class VoxelSimulation {
     rejectLegacyMedicineFields(old);
     rejectLegacyHusbandryFields(old);
     rejectLegacyWorldSite(old, sourceVersion);
+    rejectLegacyExploration(old, sourceVersion);
+    const explored = sourceVersion < 36 ? new Uint8Array(CELLS).fill(1) : loadExploration(old.explored);
+    if (old.generator !== 3 && explored.some(value => value !== 1))
+      throw new Error('旧地图生成器的探索记录必须全部可见');
     if (old.version === 1) {
       if (!Array.isArray(old.jobs) || !Array.isArray(old.pawns) || !old.stats)
         throw new Error('旧存档数据无效');
@@ -7873,7 +7942,7 @@ export class VoxelSimulation {
     migrateFurniture(old, sourceVersion);
     migrateRelocation(old,sourceVersion);
     if (sourceVersion < 35) old.worldSite = null;
-    old.version = 35;
+    old.version = 36;
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
     const loadHealth = (p: Pawn) =>
@@ -9007,8 +9076,10 @@ export class VoxelSimulation {
       }
     }
     // Restore into empty state. Never rerun generation over an existing colony.
-    const s = new VoxelSimulation(d.seed, d.settings, true);
+    const s = new VoxelSimulation(d.seed, d.settings, true, d.generator === 3 ? 3 : 2);
     s.generator = d.generator;
+    s.explored = explored;
+    s.exploredCount = explored.reduce((n, value) => n + value, 0);
     s.worldSite = structuredClone(worldSite);
     s.spawn = structuredClone(d.spawn);
     s.blocks = decode(d.blocks, sourceVersion <= 6 ? 6 : sourceVersion === 7 ? 7 : 10);

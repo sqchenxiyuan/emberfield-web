@@ -16,7 +16,7 @@ function until(s:VoxelSimulation,predicate:()=>boolean,max=3500) {
 /** Controlled chamber isolates transitions. The ordinary campaign supplies
  * separate evidence for building and moving furniture without state edits. */
 function fixture(kind:FurnitureKind='bed') {
-  const s=new VoxelSimulation(73129,{hilliness:'flat',meanTemperature:24,latitude:0});
+  const s=new VoxelSimulation(73129, {hilliness:'flat',meanTemperature:24,latitude:0}, false, 2) /* Controlled geometry: historical full visibility. */;
   s.animals=[];s.grass=[];s.items=[];s.trees=[];s.stockpiles=[];s.homeArea.clear();
   s.blocks.fill(Block.Stone);s.ladders.fill(0);s.structureKinds.fill(0);
   for(let x=10;x<=30;x++)for(let y=12;y<=23;y++)for(let z=8;z<=9;z++)s.blocks[index(x,y,z)]=Block.Air;
@@ -53,7 +53,7 @@ describe('physical furniture relocation',()=>{
     expect(s.snapshot().inventory.wood).toBe(before.wood);
     if(kind==='table')expect(s.tables.find(b=>b.id===id)?.gathering).toBe(false);
     if(kind==='bed')expect(s.beds.find(b=>b.id===id)).toMatchObject({owner:s.pawns[1].id,medical:false,prisoner:false});
-    expect(VoxelSimulation.load(s.save()).save()).toMatchObject({version:35});
+    expect(VoxelSimulation.load(s.save()).save()).toMatchObject({version:36});
   });
   it('cancels before uninstallation without changing the building, then cancels during hauling without losing it',()=>{
     const {s,id}=fixture();const target=pos(26,20),bed=structuredClone(s.beds[0]);

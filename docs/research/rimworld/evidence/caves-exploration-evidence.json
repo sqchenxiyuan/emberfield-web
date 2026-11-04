@@ -1,0 +1,1099 @@
+{
+  "schema_version": 1,
+  "evidence_id": "RW17-CAVES-EXPLORATION-AUDIT",
+  "date_local": "2026-11-04",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "manifests": [
+    "caves-exploration",
+    "caves-exploration-extra",
+    "generation",
+    "energy",
+    "housing",
+    "skills",
+    "work",
+    "stonecutting"
+  ],
+  "new_groups": [
+    "caves-exploration",
+    "caves-exploration-extra"
+  ],
+  "new_type_count": 14,
+  "dependencies": [
+    {
+      "file": "docs/research/rimworld/evidence/caves-exploration-manifest.json",
+      "sha256": "ba5d771fb27394ec6f6f551a2db323129cfa3a44b555a0cef81700672ebab262"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/caves-exploration-extra-manifest.json",
+      "sha256": "f61fec2a2a82706cf6cf7ccebf89289323cb2aa43f2b8495e1a6e69d6eab06b7"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/generation-manifest.json",
+      "sha256": "b15f27fdbacd826fdde8e11603b728c62f5ccf1df51c91e7a40a5d476737dcda"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/energy-manifest.json",
+      "sha256": "aac3380267185f66faf763cbfb8803299ceff720c73dd519efaa047b0e6801c9"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/housing-manifest.json",
+      "sha256": "bf49ed2a943fe37dbb4c3e02ffceec37a0101f9b4455756a4cbd38357e075d3d"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/skills-manifest.json",
+      "sha256": "39038cac303e7fe741e7b74d7ea70ae2914b3cd17d8f9e637145c5bffde31f32"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/work-manifest.json",
+      "sha256": "89523f849f7c4dca3b660faed977b00e04b87fb93d1275c9f41ba1b9af154cd2"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/stonecutting-manifest.json",
+      "sha256": "de582eeb35fb04c661dcab23ee45572abad0e590a5fb8a3cd5175dc2026b2061"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/caves-exploration-types.json",
+      "sha256": "8576c25f03578cbea0777f45df7f672cef5b5f066938ef1dc8d3812f2ecf2122"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/caves-exploration-extra-types.json",
+      "sha256": "0ef30c45b2be44e5cbd24dcb692cbebb335e83b83f1b2a8048809420076a1c91"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/generation-claims.json",
+      "sha256": "d78739fb594fe8a1412fbaaca3f293b435146cc8a2c75eb3c6994d6817c2ff54"
+    },
+    {
+      "file": "docs/research/rimworld/06-world-generation-resources.md",
+      "sha256": "01118d37bfd04c4815de182424d4e9561e25b2756f5fb8fb3f59cdc01cc77f91"
+    },
+    {
+      "file": "docs/research/rimworld/108-caves-exploration-mechanisms.md",
+      "sha256": "892f04005e577455e79fb001dd4c499997e68eadbbcf23a7bebde12a7ac98980"
+    },
+    {
+      "file": "scripts/research/collect-caves-exploration-evidence.ps1",
+      "sha256": "cff29cfc487236090b68c14399cf6885abace4ecc23193a0418804ede4a9296b"
+    },
+    {
+      "file": "scripts/research/verify-caves-exploration-evidence.mjs",
+      "sha256": "90fad59935ce94326c44494d73c381f31a264ad449df1d752e5192d6a25b88c6"
+    }
+  ],
+  "claims": [
+    {
+      "id": "CE01",
+      "kind": "static-derived",
+      "finding": "CaveGenParms.Default is modified by ordinary TileMutatorWorker_Caves: branchChance0.1 becomes0.02; allowBranchingAfterThisManyCells becomes10; width decrease0.034 and min1.4. IsRock requires in-bounds and generation Elevation>0.7. Cave scalar is not a3D height.",
+      "sources": [
+        {
+          "group": "caves-exploration",
+          "type": "RimWorld.MapGenCavesUtility",
+          "file": ".local-research/caves-exploration/RimWorld.MapGenCavesUtility.cs",
+          "sha256": "1cc3a5297c7e1dd22851175dc518f56ae185d984cbb895c282ffdec539aa538f",
+          "lines": [
+            11,
+            62
+          ],
+          "excerpt_sha256": "cd4005e3f6bc173431470daf6a668abb9038b21fe89ae6ade7773667ea7f18d0"
+        },
+        {
+          "group": "generation",
+          "type": "RimWorld.TileMutatorWorker_Caves",
+          "file": ".local-research/generation/RimWorld.TileMutatorWorker_Caves.cs",
+          "sha256": "dd9d9a55132abad593d6966a9b7fc4feec28755812ba4f2e2ee1ebe871e6f0d6",
+          "lines": [
+            11,
+            53
+          ],
+          "excerpt_sha256": "1075b0ac6e175fe92805fc10179925cdec162165a05a7861c4c4297de85b97b2"
+        },
+        {
+          "group": "generation",
+          "type": "RimWorld.TileMutatorWorker_Caves",
+          "file": ".local-research/generation/RimWorld.TileMutatorWorker_Caves.cs",
+          "sha256": "dd9d9a55132abad593d6966a9b7fc4feec28755812ba4f2e2ee1ebe871e6f0d6",
+          "lines": [
+            80,
+            94
+          ],
+          "excerpt_sha256": "e2588137e75540875b71b8cf7c83bfd0828f279327429a2c827952c6c0c266a0"
+        }
+      ]
+    },
+    {
+      "id": "CE02",
+      "kind": "static-derived",
+      "finding": "Rock groups use flood fill, then GenMorphology.Open(group,6,map), whose internals are not reconstructed here. Disconnected subgroups smaller than300 or5% of the pre-filter group count are discarded; retained total needs300. Flood uses four cardinal directions.",
+      "sources": [
+        {
+          "group": "caves-exploration",
+          "type": "RimWorld.MapGenCavesUtility",
+          "file": ".local-research/caves-exploration/RimWorld.MapGenCavesUtility.cs",
+          "sha256": "1cc3a5297c7e1dd22851175dc518f56ae185d984cbb895c282ffdec539aa538f",
+          "lines": [
+            74,
+            95
+          ],
+          "excerpt_sha256": "2b378f050a1419e408e1cf1f414667f06061e368f42fbfba58448628ed117ec6"
+        },
+        {
+          "group": "caves-exploration",
+          "type": "RimWorld.MapGenCavesUtility",
+          "file": ".local-research/caves-exploration/RimWorld.MapGenCavesUtility.cs",
+          "sha256": "1cc3a5297c7e1dd22851175dc518f56ae185d984cbb895c282ffdec539aa538f",
+          "lines": [
+            130,
+            133
+          ],
+          "excerpt_sha256": "b8a9657987ad093a3ce401d1b08e988cb64803b8e04d9b19ddb4cde3509a7246"
+        },
+        {
+          "group": "caves-exploration",
+          "type": "RimWorld.MapGenCavesUtility",
+          "file": ".local-research/caves-exploration/RimWorld.MapGenCavesUtility.cs",
+          "sha256": "1cc3a5297c7e1dd22851175dc518f56ae185d984cbb895c282ffdec539aa538f",
+          "lines": [
+            373,
+            400
+          ],
+          "excerpt_sha256": "36d765c750072aae0a31113f65210d8b0f16a5978d5ff0d792ff64dce1681fe1"
+        },
+        {
+          "group": "stonecutting",
+          "type": "Verse.GenAdj",
+          "file": ".local-research/stonecutting/Verse.GenAdj.cs",
+          "sha256": "8ba2920504a8fafa1b6f0de07b1f1ab80e028dab95353dcd46e8c20052563b89",
+          "lines": [
+            33,
+            79
+          ],
+          "excerpt_sha256": "97690b7c77f65b990b44764f87cfb7c326137bb3678d11d3ab5971036245ecf6"
+        }
+      ]
+    },
+    {
+      "id": "CE03",
+      "kind": "static-derived",
+      "finding": "Open count: RoundRandom(N*U0.9..1.1*5.8/10000), cap3, then inclusive1..a if positive. Closed: density2.5, cap1, inclusive0..a. Reaching300 does not guarantee a cave. Starting attempts need not produce nonempty caves.",
+      "sources": [
+        {
+          "group": "caves-exploration",
+          "type": "RimWorld.MapGenCavesUtility",
+          "file": ".local-research/caves-exploration/RimWorld.MapGenCavesUtility.cs",
+          "sha256": "1cc3a5297c7e1dd22851175dc518f56ae185d984cbb895c282ffdec539aa538f",
+          "lines": [
+            97,
+            107
+          ],
+          "excerpt_sha256": "7c7bc4d404fa032ff09a80c6d79483be8db2f2c002e2b9da8b424ec05cf7902d"
+        },
+        {
+          "group": "caves-exploration",
+          "type": "RimWorld.MapGenCavesUtility",
+          "file": ".local-research/caves-exploration/RimWorld.MapGenCavesUtility.cs",
+          "sha256": "1cc3a5297c7e1dd22851175dc518f56ae185d984cbb895c282ffdec539aa538f",
+          "lines": [
+            135,
+            145
+          ],
+          "excerpt_sha256": "f470c9b5e36a5487ff770293dbc61552397650fcdd4fc2fd358be6f09ba4efd4"
+        },
+        {
+          "group": "generation",
+          "type": "Verse.GenMath",
+          "file": ".local-research/generation/Verse.GenMath.cs",
+          "sha256": "639bc810485b043ff454902b285ade5d875d8b123f3809672371111519429b1e",
+          "lines": [
+            62,
+            65
+          ],
+          "excerpt_sha256": "3cb5a539c33dd9d6b0520e3586f227f6fd2574990be1144fd0a353f047827b8c"
+        }
+      ],
+      "prior": {
+        "ids": [
+          "GN12",
+          "GN20"
+        ],
+        "file": "generation-claims.json"
+      }
+    },
+    {
+      "id": "CE04",
+      "kind": "static-derived",
+      "finding": "Open tunnels compare10 edge candidates by distance to existing cave up to40 and inward distance tie-break. Closed compare7 candidates up to30 treating outside space as cave. Width samples0.8..1 times curve(100,2),(300,4),(3000,5.5). Edge selection excludes distance<3 and existing caves, with random-group fallback.",
+      "sources": [
+        {
+          "group": "caves-exploration",
+          "type": "RimWorld.MapGenCavesUtility",
+          "file": ".local-research/caves-exploration/RimWorld.MapGenCavesUtility.cs",
+          "sha256": "1cc3a5297c7e1dd22851175dc518f56ae185d984cbb895c282ffdec539aa538f",
+          "lines": [
+            41,
+            62
+          ],
+          "excerpt_sha256": "4c3b7d0ba70d8c2f3312ef95a841e76278f66359752d772a7e38b0968c3ae973"
+        },
+        {
+          "group": "caves-exploration",
+          "type": "RimWorld.MapGenCavesUtility",
+          "file": ".local-research/caves-exploration/RimWorld.MapGenCavesUtility.cs",
+          "sha256": "1cc3a5297c7e1dd22851175dc518f56ae185d984cbb895c282ffdec539aa538f",
+          "lines": [
+            108,
+            127
+          ],
+          "excerpt_sha256": "6534758c01ee6afa753262e188e5b0e6d582ad595197b33cda39390cbbe3b650"
+        },
+        {
+          "group": "caves-exploration",
+          "type": "RimWorld.MapGenCavesUtility",
+          "file": ".local-research/caves-exploration/RimWorld.MapGenCavesUtility.cs",
+          "sha256": "1cc3a5297c7e1dd22851175dc518f56ae185d984cbb895c282ffdec539aa538f",
+          "lines": [
+            143,
+            206
+          ],
+          "excerpt_sha256": "4128ce1c1b495e7cecc0722afb27e0faed4133f9850c58c203eca48d3da9afc0"
+        },
+        {
+          "group": "caves-exploration",
+          "type": "RimWorld.MapGenCavesUtility",
+          "file": ".local-research/caves-exploration/RimWorld.MapGenCavesUtility.cs",
+          "sha256": "1cc3a5297c7e1dd22851175dc518f56ae185d984cbb895c282ffdec539aa538f",
+          "lines": [
+            355,
+            371
+          ],
+          "excerpt_sha256": "4d1733eeaf877d34a441952e9e85c4ec80c2ba0645d9879f305e21fead837e0c"
+        }
+      ]
+    },
+    {
+      "id": "CE05",
+      "kind": "static-derived",
+      "finding": "Dig advances continuous position by0.5 until a new cell, carves radius width/2, checks closed clearance width/2+1.5, attempts each side once after10 cells and width>1.8, angles40..90/-90..-40, tests6 directions with required depth18. Width decreases0.034 per entered cell; outside group, insufficient width or another tunnel stop it. Bridge cell limits diagonal gaps.",
+      "sources": [
+        {
+          "group": "caves-exploration",
+          "type": "RimWorld.MapGenCavesUtility",
+          "file": ".local-research/caves-exploration/RimWorld.MapGenCavesUtility.cs",
+          "sha256": "1cc3a5297c7e1dd22851175dc518f56ae185d984cbb895c282ffdec539aa538f",
+          "lines": [
+            208,
+            322
+          ],
+          "excerpt_sha256": "04b35463d061b33431e00fed2baac6a3aed205cd088ca6d2d7b704044ca25189"
+        }
+      ]
+    },
+    {
+      "id": "CE06",
+      "kind": "static-derived",
+      "finding": "GenStep_Fog first sets all fog, expands from player start or validated edge-reachable fallback, then explicit rootsToUnfog. Start blocker fallback searches radius5; no-start fallback searches center radius30 then edge/random. FogGrid is persistent NativeBitArray and is exposed as fogGrid. This is exploration state, not a sampled pawn-LOS radius.",
+      "sources": [
+        {
+          "group": "caves-exploration",
+          "type": "RimWorld.GenStep_Fog",
+          "file": ".local-research/caves-exploration/RimWorld.GenStep_Fog.cs",
+          "sha256": "0db05e6e9e9a74bd757fa987d943f07d233b248778040a9d395b871f39b0919b",
+          "lines": [
+            7,
+            56
+          ],
+          "excerpt_sha256": "fef0f5ee61fb690ab6c45a37a8231c6cc6554a267bfb55a0d8c92eb41b0891fb"
+        },
+        {
+          "group": "caves-exploration",
+          "type": "Verse.FogGrid",
+          "file": ".local-research/caves-exploration/Verse.FogGrid.cs",
+          "sha256": "5a858acad47b6d8119d21b700937ca4db6a70a46e9b9e34255109bbe03cd4a42",
+          "lines": [
+            8,
+            27
+          ],
+          "excerpt_sha256": "23f10587d4a94ded1cde5eadbc55286026064676526ca401f8a5c94a3beabf4d"
+        }
+      ]
+    },
+    {
+      "id": "CE07",
+      "kind": "static-derived",
+      "finding": "FloodFillerFog passes unknown cells with no MakeFog edifice, without Walkable/Standable tests. Four-neighbor queue flood processes up to int.MaxValue, then reveals8-neighbor blocking boundary.500 is testMode-only. MakeFog means full fill. Border reveal is not propagation through opaque cells.",
+      "sources": [
+        {
+          "group": "caves-exploration",
+          "type": "Verse.FloodFillerFog",
+          "file": ".local-research/caves-exploration/Verse.FloodFillerFog.cs",
+          "sha256": "71fe09358a0d0913d5229a84fc03eee6b474a30a5d8074c020822592a014d26a",
+          "lines": [
+            21,
+            110
+          ],
+          "excerpt_sha256": "b8a62519d042a216fab2e75a1927081d2e9acd3495fd2111ce630d6dd3a59757"
+        },
+        {
+          "group": "caves-exploration-extra",
+          "type": "Verse.FloodFiller",
+          "file": ".local-research/caves-exploration-extra/Verse.FloodFiller.cs",
+          "sha256": "fd58e012ee97c9780bd7ce456b592cedf4bd37b25b57beb7421972278896792c",
+          "lines": [
+            50,
+            145
+          ],
+          "excerpt_sha256": "3a8a26e3ac6c796c1762b9ad08567bae22e1e12a7c10a20058690ed52d938ee2"
+        },
+        {
+          "group": "stonecutting",
+          "type": "Verse.GenAdj",
+          "file": ".local-research/stonecutting/Verse.GenAdj.cs",
+          "sha256": "8ba2920504a8fafa1b6f0de07b1f1ab80e028dab95353dcd46e8c20052563b89",
+          "lines": [
+            33,
+            79
+          ],
+          "excerpt_sha256": "97690b7c77f65b990b44764f87cfb7c326137bb3678d11d3ab5971036245ecf6"
+        },
+        {
+          "group": "energy",
+          "type": "Verse.ThingDef",
+          "file": ".local-research/energy/Verse.ThingDef.cs",
+          "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+          "lines": [
+            621,
+            624
+          ],
+          "excerpt_sha256": "33148a7653633b0279ca74b0640f9b21c53b07dd7d243718ce77760db1f39608"
+        }
+      ]
+    },
+    {
+      "id": "CE08",
+      "kind": "static-derived",
+      "finding": "Final mining strike calls DestroyMined then base.Destroy(KillFinalize). Building.DeSpawn removes edifice and for non-WillReplace MakeFog calls Notify_FogBlockerRemoved. Only Playing and at least one visible8-neighbor with no blocker or a door causes FloodUnfogAdjacent. Isolated unknown destruction does not reveal disconnected regions.",
+      "sources": [
+        {
+          "group": "generation",
+          "type": "RimWorld.JobDriver_Mine",
+          "file": ".local-research/generation/RimWorld.JobDriver_Mine.cs",
+          "sha256": "2f60bee18f344bd31a67e69e4f22cbdb770e821edce5a4088dc49db7fe6fd9b9",
+          "lines": [
+            108,
+            115
+          ],
+          "excerpt_sha256": "83c7e85a8ec8f286b7db1c3ae9264bc5674ba31d049516522bf038aa11d75dd8"
+        },
+        {
+          "group": "generation",
+          "type": "RimWorld.Mineable",
+          "file": ".local-research/generation/RimWorld.Mineable.cs",
+          "sha256": "7f2c5ab7e7577ff881015f8a451025fe5b17acba10152af67f5265b43bbd199b",
+          "lines": [
+            36,
+            46
+          ],
+          "excerpt_sha256": "be729c6b0251fc3e0043d18c69630f8c95d39b1804dcd3d2dd6a7360dab9ddea"
+        },
+        {
+          "group": "energy",
+          "type": "Verse.Building",
+          "file": ".local-research/energy/Verse.Building.cs",
+          "sha256": "b9809c33c917ba20ffd1f8810deb91f306d31ffa3107938caea87b524f466f59",
+          "lines": [
+            175,
+            222
+          ],
+          "excerpt_sha256": "154e7410745da1962460aba142ebed9c76c5babcecce0014d7c459c37b83e949"
+        },
+        {
+          "group": "caves-exploration",
+          "type": "Verse.FogGrid",
+          "file": ".local-research/caves-exploration/Verse.FogGrid.cs",
+          "sha256": "5a858acad47b6d8119d21b700937ca4db6a70a46e9b9e34255109bbe03cd4a42",
+          "lines": [
+            121,
+            144
+          ],
+          "excerpt_sha256": "5289a5825ab6d8766fc1fbd481988e93ec6295ab248509bd2315a039352b1de2"
+        },
+        {
+          "group": "caves-exploration",
+          "type": "Verse.FogGrid",
+          "file": ".local-research/caves-exploration/Verse.FogGrid.cs",
+          "sha256": "5a858acad47b6d8119d21b700937ca4db6a70a46e9b9e34255109bbe03cd4a42",
+          "lines": [
+            208,
+            244
+          ],
+          "excerpt_sha256": "28043a221358e4a3bab5fba84c793ef46476db9d265563445a0ea2b8b758a463"
+        }
+      ]
+    },
+    {
+      "id": "CE09",
+      "kind": "static-derived",
+      "finding": "Door update calls entry notification at OpenPct>=0.4 with approachingPawn; player faction/host faction can unfog adjacent without area letter. Thing.Notify_Unfogged has beenRevealed guard, discovery/quest/letter side effects. Flood activates revealed pawns and can defer sleeping-assault lord wake. No native encounter probability is measured.",
+      "sources": [
+        {
+          "group": "housing",
+          "type": "RimWorld.Building_Door",
+          "file": ".local-research/housing/RimWorld.Building_Door.cs",
+          "sha256": "f6c2dd451cf71a9db48cf09b05e4bfeaef3029b642fe29acca573e57eccdae27",
+          "lines": [
+            386,
+            401
+          ],
+          "excerpt_sha256": "d5cba489aa2746c0c7c8b2b5670726b203ef17296de848c1f0e9f382831535b3"
+        },
+        {
+          "group": "caves-exploration",
+          "type": "Verse.FogGrid",
+          "file": ".local-research/caves-exploration/Verse.FogGrid.cs",
+          "sha256": "5a858acad47b6d8119d21b700937ca4db6a70a46e9b9e34255109bbe03cd4a42",
+          "lines": [
+            146,
+            152
+          ],
+          "excerpt_sha256": "23ef942d0eecec6b3e01d9b40d45c554b7001ad98caefb6a4224d2a79c5722b9"
+        },
+        {
+          "group": "energy",
+          "type": "Verse.Thing",
+          "file": ".local-research/energy/Verse.Thing.cs",
+          "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+          "lines": [
+            1161,
+            1181
+          ],
+          "excerpt_sha256": "23029d48acc1dcb07fb4e84f12ab1be8efe920882e68ec3ea89ff5226ea16ace"
+        },
+        {
+          "group": "energy",
+          "type": "Verse.Thing",
+          "file": ".local-research/energy/Verse.Thing.cs",
+          "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+          "lines": [
+            1295,
+            1295
+          ],
+          "excerpt_sha256": "ba1aea3e9de6b90f04b994cba912dc16d0b5436d927f17abe50b0f0c881a0b87"
+        },
+        {
+          "group": "caves-exploration",
+          "type": "Verse.FloodFillerFog",
+          "file": ".local-research/caves-exploration/Verse.FloodFillerFog.cs",
+          "sha256": "71fe09358a0d0913d5229a84fc03eee6b474a30a5d8074c020822592a014d26a",
+          "lines": [
+            83,
+            136
+          ],
+          "excerpt_sha256": "410ee3967d2511ec20b3cb2997489285c10677a3983d4aba9276ddf754a4561c"
+        }
+      ]
+    },
+    {
+      "id": "CE10",
+      "kind": "static-derived",
+      "finding": "Mine cell designation checks bounds/duplicate before accepting fogged cells directly. Known cells require actual mineable. UnfogWorker deletes Mine designation only when a formerly fogged cell has no Mineable. A blind mining line is not evidence of hidden ore or a valid worker job.",
+      "sources": [
+        {
+          "group": "caves-exploration",
+          "type": "RimWorld.Designator_Mine",
+          "file": ".local-research/caves-exploration/RimWorld.Designator_Mine.cs",
+          "sha256": "ad578c9e71cf7485dc2c6927f15866174f81f9d5efa9988b9bc01411154c8784",
+          "lines": [
+            31,
+            84
+          ],
+          "excerpt_sha256": "9e16274a053d3747ab2620ba62276711de5dde4663f5d6a7a3338a053aa4a3fd"
+        },
+        {
+          "group": "caves-exploration",
+          "type": "Verse.FogGrid",
+          "file": ".local-research/caves-exploration/Verse.FogGrid.cs",
+          "sha256": "5a858acad47b6d8119d21b700937ca4db6a70a46e9b9e34255109bbe03cd4a42",
+          "lines": [
+            48,
+            68
+          ],
+          "excerpt_sha256": "430bfdd4a5b6c3706852f1edf6628b91d4af4f90bece72cf304090500de9867c"
+        }
+      ]
+    },
+    {
+      "id": "CE11",
+      "kind": "static-derived-bounded-search",
+      "finding": "Mining candidates need Mine/MineVein designation, adjacent Walkable cell and actual Mineable. Jobs require reservation/history permission and immediate Touch work face or obstruction-hauling fallback. Scanner default disallows unreachable; JobGiver_Work rejects forbidden and chooses reachable target. Miner uses Danger.Deadly and job expiry20000, not fixed mining duration. No direct fog condition in the four inspected mining/scanner classes; this does not exclude unseen callers or mods.",
+      "sources": [
+        {
+          "group": "caves-exploration-extra",
+          "type": "RimWorld.MineAIUtility",
+          "file": ".local-research/caves-exploration-extra/RimWorld.MineAIUtility.cs",
+          "sha256": "428d02755dc7e6e54c28637fa4149decc6f6ce1701f5e95303e04781e6e01a84",
+          "lines": [
+            20,
+            107
+          ],
+          "excerpt_sha256": "e7aa8fb89e73cd3b569df0344cc61bba6466721330197b85ead2af428b7c95e1"
+        },
+        {
+          "group": "caves-exploration",
+          "type": "RimWorld.WorkGiver_Miner",
+          "file": ".local-research/caves-exploration/RimWorld.WorkGiver_Miner.cs",
+          "sha256": "f6c81fd3bf148b2c7b8bd8667e71b0d7c77e2565640e30453d926541cc096ff3",
+          "lines": [
+            7,
+            33
+          ],
+          "excerpt_sha256": "4cddef72f31cd2e8298f47db3fbb27d72cda970634e888485bbfec059edd537b"
+        },
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_Scanner",
+          "file": ".local-research/work/RimWorld.WorkGiver_Scanner.cs",
+          "sha256": "08b895a475c9f1044aed2ebcbcecca635e7fe95c1f7d0c50b1c43533fb1399f3",
+          "lines": [
+            9,
+            39
+          ],
+          "excerpt_sha256": "aa293541faa5a4962bc5c856d6838c8473c8a480abd523166d265ee60d2ee731"
+        },
+        {
+          "group": "work",
+          "type": "RimWorld.JobGiver_Work",
+          "file": ".local-research/work/RimWorld.JobGiver_Work.cs",
+          "sha256": "f8c072215d7c295b934133ca0bca6bf075706c2f8ce11bc4066ea1eb8a42e60f",
+          "lines": [
+            116,
+            156
+          ],
+          "excerpt_sha256": "a07e3fb7a6b3d3cb492e458182afb64ca7d914044e76b0b34fe41a66fe76cfd0"
+        },
+        {
+          "group": "work",
+          "type": "RimWorld.JobGiver_Work",
+          "file": ".local-research/work/RimWorld.JobGiver_Work.cs",
+          "sha256": "f8c072215d7c295b934133ca0bca6bf075706c2f8ce11bc4066ea1eb8a42e60f",
+          "lines": [
+            219,
+            226
+          ],
+          "excerpt_sha256": "0cd3cdbf495d415fc6795295f8e95301fc8c9e688e71831ccb68d0bfe4e6cfe7"
+        }
+      ]
+    },
+    {
+      "id": "CE12",
+      "kind": "static-derived",
+      "finding": "Plan_Add accepts in-bounds non-no-build-edge cells without a fog test. Build normal path delegates to GenConstruct, which rejects fogged center with CannotPlaceInUndiscovered after footprint bounds/edge validation. Center fog check is not an every-footprint-cell fog check; abstract plan is not blueprint.",
+      "sources": [
+        {
+          "group": "caves-exploration-extra",
+          "type": "RimWorld.Designator_Plan_Add",
+          "file": ".local-research/caves-exploration-extra/RimWorld.Designator_Plan_Add.cs",
+          "sha256": "4e8f60a7b459fe98799eeccafde6d2560712d64ffdfb41e2e90ecf788b1ad715",
+          "lines": [
+            101,
+            112
+          ],
+          "excerpt_sha256": "d4dc030261931e2fe24f8e662ee0e3ddb068e593739bf0d830d38e7ecfecdc0a"
+        },
+        {
+          "group": "caves-exploration-extra",
+          "type": "RimWorld.Designator_Build",
+          "file": ".local-research/caves-exploration-extra/RimWorld.Designator_Build.cs",
+          "sha256": "9315b60f5785196a59e47ac068c5e7e2d1286862c0c8e969073dae87056b8e28",
+          "lines": [
+            446,
+            453
+          ],
+          "excerpt_sha256": "ed28f6ce0c2e2d47ef780cbcc44b67038b79e42d71bae174421af438f9a1374b"
+        },
+        {
+          "group": "skills",
+          "type": "RimWorld.GenConstruct",
+          "file": ".local-research/skills/RimWorld.GenConstruct.cs",
+          "sha256": "b4895c5536662931c685958c1d22826b7f07bb4f01d970f9671f853ad4c0fe77",
+          "lines": [
+            364,
+            385
+          ],
+          "excerpt_sha256": "23ddd2bda2d520d63716885652ee16ef3a2226dca4034046b625500813695624"
+        }
+      ]
+    },
+    {
+      "id": "CE13",
+      "kind": "static-derived",
+      "finding": "Map-click selection needs selectable, non-hidden pawn, spawned parent and at least one nonfog occupied cell. Selector calls this utility. SelectableByHotkey checks selectable/Spawned but not fog; do not universalize map-click restrictions to all selection APIs.",
+      "sources": [
+        {
+          "group": "caves-exploration",
+          "type": "RimWorld.ThingSelectionUtility",
+          "file": ".local-research/caves-exploration/RimWorld.ThingSelectionUtility.cs",
+          "sha256": "81753c11ebc9d63ef94d6c91e4a84f1e9a88368c7aacfc3db1dc2e304e0c9f20",
+          "lines": [
+            19,
+            55
+          ],
+          "excerpt_sha256": "97a76bd1b9b353e40c85e8f53aa05879e60f50a7fc22308f0c99f35580d442aa"
+        },
+        {
+          "group": "caves-exploration",
+          "type": "RimWorld.Selector",
+          "file": ".local-research/caves-exploration/RimWorld.Selector.cs",
+          "sha256": "150df8a7eb443fb86dec2e00d4365ba970f9ef47ee8525dd5f7b2c99f876051b",
+          "lines": [
+            566,
+            580
+          ],
+          "excerpt_sha256": "767d31e30db374885849d632100dcb482559b4f5e9717fe6a90678d40e26a8ca"
+        }
+      ]
+    },
+    {
+      "id": "CE14",
+      "kind": "static-derived",
+      "finding": "Area revealed letter: mechanoid gives ThreatBig, otherwise !allOnScreen or cellsUnfogged>=600 gives neutral letter.600 is notification threshold; count excludes later blocker-boundary reveal. FloodUnfogAdjacent overwrites the result per component rather than summing multiple components.",
+      "sources": [
+        {
+          "group": "caves-exploration",
+          "type": "Verse.FogGrid",
+          "file": ".local-research/caves-exploration/Verse.FogGrid.cs",
+          "sha256": "5a858acad47b6d8119d21b700937ca4db6a70a46e9b9e34255109bbe03cd4a42",
+          "lines": [
+            168,
+            256
+          ],
+          "excerpt_sha256": "0f9c95fada2899ef0190504c93b1494ee400f383a12bb6956d617d7fee5ee6a3"
+        },
+        {
+          "group": "caves-exploration",
+          "type": "Verse.FloodFillerFog",
+          "file": ".local-research/caves-exploration/Verse.FloodFillerFog.cs",
+          "sha256": "71fe09358a0d0913d5229a84fc03eee6b474a30a5d8074c020822592a014d26a",
+          "lines": [
+            36,
+            57
+          ],
+          "excerpt_sha256": "9d15c236fca629e422acd466231422887b7bc13afba93caedff5d14cd4ece569"
+        },
+        {
+          "group": "caves-exploration",
+          "type": "Verse.FloodFillerFog",
+          "file": ".local-research/caves-exploration/Verse.FloodFillerFog.cs",
+          "sha256": "71fe09358a0d0913d5229a84fc03eee6b474a30a5d8074c020822592a014d26a",
+          "lines": [
+            83,
+            109
+          ],
+          "excerpt_sha256": "f92546071891ea6e29bada9e0fd0b34f01a20186653f13a8deb1d43b643d25ef"
+        }
+      ]
+    },
+    {
+      "id": "CE15",
+      "kind": "static-derived-and-arithmetic",
+      "finding": "FogGrid is one persistent bit per map cell and exposes Refog(CellRect); debug all-map refog also exists. Ordinary inspected reveal paths do not refog when pawns leave; all Refog callers were not enumerated.250*250 bits need7813 bytes and64*64*16 bits need8192 bytes before allocator/storage/render overhead; these are payload calculations, not measured RAM.",
+      "sources": [
+        {
+          "group": "caves-exploration",
+          "type": "Verse.FogGrid",
+          "file": ".local-research/caves-exploration/Verse.FogGrid.cs",
+          "sha256": "5a858acad47b6d8119d21b700937ca4db6a70a46e9b9e34255109bbe03cd4a42",
+          "lines": [
+            18,
+            27
+          ],
+          "excerpt_sha256": "37e62df333f842cd0f9d45a12c866293b729ad65c1c667c85388e6f83adbd6af"
+        },
+        {
+          "group": "caves-exploration",
+          "type": "Verse.FogGrid",
+          "file": ".local-research/caves-exploration/Verse.FogGrid.cs",
+          "sha256": "5a858acad47b6d8119d21b700937ca4db6a70a46e9b9e34255109bbe03cd4a42",
+          "lines": [
+            100,
+            119
+          ],
+          "excerpt_sha256": "326f8dee46f79ab3d4281abbc9af2df484defb80de14461fc0d383a134c04a2f"
+        },
+        {
+          "group": "caves-exploration",
+          "type": "Verse.FloodFillerFog",
+          "file": ".local-research/caves-exploration/Verse.FloodFillerFog.cs",
+          "sha256": "71fe09358a0d0913d5229a84fc03eee6b474a30a5d8074c020822592a014d26a",
+          "lines": [
+            138,
+            158
+          ],
+          "excerpt_sha256": "64c7903c365ed15c7ff036b06d2c4e8ec282bb1d4596ea29f28ae6235e056ee0"
+        }
+      ]
+    },
+    {
+      "id": "CE16",
+      "kind": "project-adaptation-guidance",
+      "finding": "Web3D should separate true world, player knowledge and visible slice; persist exploration and gate picking/overlays/public views consistently. Cross-floor connectivity, sealed chambers and three-cell headroom are project choices, not original2D cave generator equivalence. Worker fog gates require explicit adaptation labeling.",
+      "sources": []
+    }
+  ],
+  "parameters": {
+    "open_per_10000": 5.8,
+    "closed_per_10000": 2.5,
+    "max_open": 3,
+    "max_closed": 1,
+    "min_rock_cells": 300,
+    "subgroup_fraction": 0.05,
+    "default_branch_chance": 0.1,
+    "ordinary_branch_chance": 0.02,
+    "branch_after_cells": 10,
+    "width_decay": 0.034,
+    "min_width": 1.4,
+    "branch_width_offset": [
+      0.2,
+      0.4
+    ],
+    "width_curve": [
+      [
+        100,
+        2
+      ],
+      [
+        300,
+        4
+      ],
+      [
+        3000,
+        5.5
+      ]
+    ],
+    "open_candidates": 10,
+    "closed_candidates": 7,
+    "open_distance_cap": 40,
+    "closed_distance_cap": 30,
+    "continuous_step": 0.5,
+    "branch_candidates": 6,
+    "branch_min_depth": 18,
+    "area_letter_threshold": 600,
+    "mining_job_expiry": 20000
+  },
+  "graph_cases": [
+    {
+      "id": "CG01",
+      "name": "closed-two-rooms",
+      "grid": [
+        "#########",
+        "#...#...#",
+        "#...#...#",
+        "#########"
+      ],
+      "actions": [
+        {
+          "at": [
+            1,
+            1
+          ],
+          "op": "flood"
+        }
+      ],
+      "expected_known": 20,
+      "known": [
+        [
+          4,
+          1
+        ]
+      ],
+      "hidden": [
+        [
+          5,
+          1
+        ]
+      ],
+      "markers": [],
+      "remaining_markers": []
+    },
+    {
+      "id": "CG02",
+      "name": "breakthrough-connected-room",
+      "grid": [
+        "#########",
+        "#...#...#",
+        "#...#...#",
+        "#########"
+      ],
+      "actions": [
+        {
+          "at": [
+            1,
+            1
+          ],
+          "op": "flood"
+        },
+        {
+          "at": [
+            4,
+            1
+          ],
+          "op": "remove"
+        }
+      ],
+      "expected_known": 36,
+      "known": [
+        [
+          7,
+          2
+        ]
+      ],
+      "hidden": [],
+      "markers": [],
+      "remaining_markers": []
+    },
+    {
+      "id": "CG03",
+      "name": "unknown-isolated-removal",
+      "grid": [
+        "#########",
+        "#...#...#",
+        "#...#...#",
+        "#########"
+      ],
+      "actions": [
+        {
+          "at": [
+            4,
+            1
+          ],
+          "op": "remove"
+        }
+      ],
+      "expected_known": 0,
+      "known": [],
+      "hidden": [
+        [
+          4,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          7,
+          2
+        ]
+      ],
+      "markers": [],
+      "remaining_markers": []
+    },
+    {
+      "id": "CG04",
+      "name": "diagonal-is-not-connected",
+      "grid": [
+        "#####",
+        "#.###",
+        "##.##",
+        "#####"
+      ],
+      "actions": [
+        {
+          "at": [
+            1,
+            1
+          ],
+          "op": "flood"
+        }
+      ],
+      "expected_known": 8,
+      "known": [
+        [
+          2,
+          1
+        ]
+      ],
+      "hidden": [
+        [
+          2,
+          2
+        ]
+      ],
+      "markers": [],
+      "remaining_markers": []
+    },
+    {
+      "id": "CG05",
+      "name": "nonstandable-water-does-not-block",
+      "grid": [
+        "#######",
+        "#.~...#",
+        "#######"
+      ],
+      "actions": [
+        {
+          "at": [
+            1,
+            1
+          ],
+          "op": "flood"
+        }
+      ],
+      "expected_known": 21,
+      "known": [
+        [
+          2,
+          1
+        ],
+        [
+          5,
+          1
+        ]
+      ],
+      "hidden": [],
+      "markers": [],
+      "remaining_markers": []
+    },
+    {
+      "id": "CG06",
+      "name": "reveal-clears-only-invalid-blind-mine",
+      "grid": [
+        "#########",
+        "#...#...#",
+        "#...#...#",
+        "#########"
+      ],
+      "actions": [
+        {
+          "at": [
+            1,
+            1
+          ],
+          "op": "flood"
+        }
+      ],
+      "expected_known": 20,
+      "known": [
+        [
+          1,
+          1
+        ],
+        [
+          4,
+          1
+        ]
+      ],
+      "hidden": [
+        [
+          5,
+          1
+        ]
+      ],
+      "markers": [
+        [
+          1,
+          1
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          5,
+          1
+        ]
+      ],
+      "remaining_markers": [
+        "4,1",
+        "5,1"
+      ]
+    }
+  ],
+  "model_scope": "Independent 2D one-cell opaque/air graph explanation; not executed game methods, native replay, full geometry, NPC logic or Web implementation equivalence. Hash signs represent mineable full blockers, dots air and tilde nonstandable non-blocker.",
+  "count_cases": [
+    {
+      "n": 300,
+      "factor": 1,
+      "kind": "open",
+      "round_fraction": 0.5,
+      "chosen_count": 0,
+      "expected_raw": 0.174,
+      "expected_cap": 0
+    },
+    {
+      "n": 300,
+      "factor": 1,
+      "kind": "open",
+      "round_fraction": 0.1,
+      "chosen_count": 1,
+      "expected_raw": 0.174,
+      "expected_cap": 1
+    },
+    {
+      "n": 10000,
+      "factor": 1,
+      "kind": "open",
+      "round_fraction": 0.9,
+      "chosen_count": 2,
+      "expected_raw": 5.8,
+      "expected_cap": 3
+    },
+    {
+      "n": 300,
+      "factor": 1,
+      "kind": "closed",
+      "round_fraction": 0.01,
+      "chosen_count": 0,
+      "expected_raw": 0.075,
+      "expected_cap": 1
+    },
+    {
+      "n": 300,
+      "factor": 1,
+      "kind": "closed",
+      "round_fraction": 0.01,
+      "chosen_count": 1,
+      "expected_raw": 0.075,
+      "expected_cap": 1
+    }
+  ],
+  "memory_cases": [
+    {
+      "bit_payload_bytes": 7813,
+      "byte_payload_bytes": 62500,
+      "cells": 62500,
+      "dimensions": [
+        250,
+        250
+      ]
+    },
+    {
+      "bit_payload_bytes": 8192,
+      "byte_payload_bytes": 65536,
+      "cells": 65536,
+      "dimensions": [
+        64,
+        64,
+        16
+      ]
+    }
+  ],
+  "runtime": {
+    "new_native_runs": 0,
+    "game_methods_executed": false,
+    "native_screenshots": 0,
+    "new_save_samples": 0,
+    "reason": "Static questions answered by bounded source tracing plus independent examples; no runtime-equivalence claim."
+  },
+  "limitations": [
+    "GenMorphology.Open and exact noise/RNG implementation are not reconstructed.",
+    "No enabled-mod or effective-Def database validation.",
+    "Not all Refog callers or selection APIs are traced.",
+    "One-cell toy graph does not model multi-cell edifices, door timing, encounter AI or callbacks.",
+    "No original world seed replay, cave-generation equivalence, benchmark or measured memory result.",
+    "Web three-dimensional sealed chambers, headroom and cross-floor rules are project adaptations.",
+    "Full derived source remains local; neither game assemblies nor proprietary assets are published here."
+  ]
+}

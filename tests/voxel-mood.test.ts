@@ -15,7 +15,7 @@ function until(s: VoxelSimulation, condition: () => boolean, limit = 3000) {
   expect(condition(), JSON.stringify(s.pawns.map(p => [p.phase, p.reason, p.psyche]))).toBe(true);
 }
 function fixture() {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 }, false, 2) /* Controlled geometry: historical full visibility. */;
   s.animals = []; s.trees = []; s.items = []; s.stockpiles = [];
   s.blocks.fill(Block.Stone); s.ladders.fill(0); s.structureKinds.fill(0);
   for (let x = 8; x <= 30; x++) for (let y = 8; y <= 26; y++)
@@ -116,7 +116,7 @@ describe('voxel mood and recreation workflows', () => {
     const old = JSON.parse(readFileSync(new URL('./fixtures/voxel-v22-mood-initial.json', import.meta.url), 'utf8'));
     expect(old.version).toBe(22); expect(old.horseshoePins).toBeUndefined();
     const saved = VoxelSimulation.load(old).save();
-    expect(saved.version).toBe(35); expect(saved.horseshoePins).toEqual([]);
+    expect(saved.version).toBe(36); expect(saved.horseshoePins).toEqual([]);
     for (const key of ['nextId', 'items', 'blocks', 'ladders', 'stats'] as const) expect(saved[key]).toEqual(relocationExpectedField(key, old[key]));
     expect(saved.animals).toMatchObject(old.animals);
     for (const p of saved.pawns) {

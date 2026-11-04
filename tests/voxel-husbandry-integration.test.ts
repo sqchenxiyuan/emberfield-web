@@ -5,7 +5,7 @@ import { initialAnimalState, HUSBANDRY_RULES } from '../src/voxel/husbandry';
 import { ANIMAL_DEFS } from '../src/voxel/wildlife';
 const pos=(x:number,y=16,z=8):Pos=>({x,y,z});
 function fixture(){
- const s=new VoxelSimulation(73129,{hilliness:'flat',meanTemperature:24,latitude:0});
+ const s=new VoxelSimulation(73129, {hilliness:'flat',meanTemperature:24,latitude:0}, false, 2) /* Controlled geometry: historical full visibility. */;
  s.animals=[];s.grass=[];s.items=[];s.trees=[];s.stockpiles=[];
  s.blocks.fill(Block.Stone);s.ladders.fill(0);s.structureKinds.fill(0);
  for(let x=10;x<=28;x++)for(let y=10;y<=22;y++)for(let z=8;z<16;z++)s.blocks[index(x,y,z)]=Block.Air;

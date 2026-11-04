@@ -21,7 +21,7 @@ function until(s: VoxelSimulation, done: () => boolean, max = 3000) {
  * are injected to isolate failure paths. Ordinary production/illness is proven
  * separately by voxel-sanitation-campaign-verify.mjs and its saved provenance. */
 function fixture() {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 }, false, 2) /* Controlled geometry: historical full visibility. */;
   s.animals = []; s.trees = []; s.items = []; s.stockpiles = [];
   s.blocks.fill(Block.Stone); s.ladders.fill(0); s.structureKinds.fill(0);
   for (let x = 10; x <= 25; x++) for (let y = 10; y <= 20; y++)
@@ -53,7 +53,7 @@ describe('sanitation integration and interrupted physical actions', () => {
     const provenance = JSON.parse(readFileSync(new URL('./fixtures/voxel-v24-sanitation-initial.provenance.json', import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(provenance.sha256);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old);
-    expect(old.version).toBe(24); expect(s.save().version).toBe(35);
+    expect(old.version).toBe(24); expect(s.save().version).toBe(36);
     expect(s.filth).toEqual([]); expect(s.items).toEqual(old.items);
     expect(s.pawns.map(p => p.id)).toEqual(old.pawns.map((p: Pawn) => p.id));
     expect(s.pawns.every(p => p.foodPoisoning === null && p.cleanTask === null)).toBe(true);

@@ -1,0 +1,11 @@
+[
+  "RimWorld.MapGenCavesUtility",
+  "RimWorld.GenStep_Fog",
+  "Verse.FogGrid",
+  "Verse.FloodFillerFog",
+  "RimWorld.Designator_Mine",
+  "RimWorld.Designator_Plan",
+  "RimWorld.ThingSelectionUtility",
+  "RimWorld.Selector",
+  "RimWorld.WorkGiver_Miner"
+]

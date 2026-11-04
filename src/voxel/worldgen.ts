@@ -18,6 +18,8 @@ import {
 import { growingSeasonDays } from './climate';
 import { fertilityOf, MIN_CROP_FERTILITY } from './farming';
 import { TREE_DATA, treeCover } from './plants';
+import { carveCaves } from './caves';
+import { initialExploration } from './exploration';
 export { TREE_DATA } from './plants';
 
 export const WORLD_PRESETS: Record<Biome, WorldSettings> = {
@@ -101,6 +103,7 @@ export function summarizeWorld(
   trees: readonly Omit<Tree, 'id'>[],
   spawn: Pos,
   settings: WorldSettings,
+  explored?: Uint8Array,
 ): WorldSummary {
   const { heightMap, surfaceMap } = surfaceMaps(blocks);
   const summary: WorldSummary = {
@@ -130,7 +133,9 @@ export function summarizeWorld(
     )
       summary.fertileCells++;
   }
-  for (const block of blocks) {
+  for (let i = 0; i < blocks.length; i++) {
+    if (explored && !explored[i]) continue;
+    const block = blocks[i];
     if (block === Block.Stone) summary.resources.stone++;
     else if (block === Block.Steel) summary.resources.steel++;
     else if (block === Block.Components) summary.resources.components++;
@@ -175,8 +180,9 @@ export function summarizeWorld(
   summary.reachableSurfaceCells = queue.length;
   return summary;
 }
-export function generateWorld(seed: number, input?: Partial<WorldSettings>) {
+export function generateWorld(seed: number, input?: Partial<WorldSettings>, generator: 2 | 3 = 3) {
   if (!Number.isSafeInteger(seed)) throw new Error('种子必须是安全整数');
+  if (generator !== 2 && generator !== 3) throw new Error('无效的地图生成版本');
   const settings = sanitizeWorldSettings(input),
     blocks = new Uint8Array(CELLS),
     heightMap = new Uint8Array(WIDTH * DEPTH);
@@ -249,6 +255,7 @@ export function generateWorld(seed: number, input?: Partial<WorldSettings>) {
                   : top
                 : Block.Stone;
     }
+  if (generator === 3) carveCaves(seed, blocks, heightMap, spawn, settings);
   // A finite set of bounded 3D random walks, never one 2D vein repeated through every layer.
   const attempts = { flat: 20, small: 32, large: 44, mountainous: 60 }[settings.hilliness];
   for (let vein = 0; vein < attempts; vein++) {
@@ -295,18 +302,19 @@ export function generateWorld(seed: number, input?: Partial<WorldSettings>) {
         });
     }
   return {
-    generator: 2 as const,
+    generator,
     seed,
     settings,
     spawn,
     blocks,
     trees,
     ...surfaceMaps(blocks),
-    summary: summarizeWorld(blocks, trees, spawn, settings),
+    summary: summarizeWorld(blocks, trees, spawn, settings,
+      generator === 3 ? initialExploration(blocks, generator) : undefined),
   };
 }
 /** Pure fresh buffers. Preview never creates a simulation or touches its jobs/time/state. */
-export function previewWorld(seed: number, settings?: Partial<WorldSettings>): WorldPreview {
-  const { blocks: _blocks, ...preview } = generateWorld(seed, settings);
+export function previewWorld(seed: number, settings?: Partial<WorldSettings>, generator: 2 | 3 = 3): WorldPreview {
+  const { blocks: _blocks, ...preview } = generateWorld(seed, settings, generator);
   return preview;
 }

@@ -26,7 +26,7 @@ function until(s: VoxelSimulation, done: () => boolean, limit = 120) {
 // integrated state machine. These are test scenarios, not ordinary campaign proof.
 // Attack, aiming, burst, impact, movement and save/load use public command/step APIs.
 function fixture(kind: 'shortBow' | 'revolver' | 'machinePistol' = 'revolver', seed = 1) {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 }, false, 2) /* Controlled geometry: historical full visibility. */;
   s.seed = seed;
   s.trade = initialTrade(s.seed, s.tick);
   s.fireHazards = initialFireHazards(s.seed, s.tick);

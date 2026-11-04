@@ -32,7 +32,7 @@ function until(s: VoxelSimulation, test: () => boolean, max = 5000) {
 }
 // Controlled finite medical/state-machine scenario, separate from normal-play evidence.
 function fixture() {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 }, false, 2) /* Controlled geometry: historical full visibility. */;
   // Isolated terrain fixture excludes the newly spawned wildlife.
   s.animals = [];
   s.blocks.fill(Block.Stone);
@@ -286,7 +286,7 @@ describe('physical medical care, agriculture and v18 migration', () => {
       const old = JSON.parse(bytes.toString()),
         save = VoxelSimulation.load(old).save();
       expect(old.version).toBe(18);
-      expect(save.version).toBe(35);
+      expect(save.version).toBe(36);
       expect(save.items).toEqual(old.items);
       expect(save.research).toEqual(old.research);
       expectWildlifeIds(old.nextId, save);

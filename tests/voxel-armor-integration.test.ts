@@ -44,7 +44,7 @@ function until(s: VoxelSimulation, done: () => boolean, max = 3000) {
 // isolate transactions. These are not claims of ordinary colony/campaign play.
 // Production progress, delivery, battle and movement below use real commands/step.
 function fixture() {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 }, false, 2) /* Controlled geometry: historical full visibility. */;
   s.research = initialResearch(true);
   // Isolated terrain fixture excludes the newly spawned wildlife.
   s.animals = [];
@@ -127,7 +127,7 @@ describe('armor save migration and strict physical schemas', () => {
       const s = VoxelSimulation.load(old),
         saved = s.save();
       expect(old).toEqual(before);
-      expect(saved.version).toBe(35);
+      expect(saved.version).toBe(36);
       expectWildlifeIds(old.nextId, saved);
       for (const key of ['tick', 'blocks', 'items', 'stats', 'researchBenches'] as const)
         expect(saved[key]).toEqual(key === 'stats' ? withMedicineLedgers(old.stats) : old[key]);

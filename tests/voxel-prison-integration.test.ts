@@ -24,7 +24,7 @@ function until(s: VoxelSimulation, done: () => boolean, limit = 4500) {
 /** Controlled integration fixture. A single explicitly created injured enemy
  * exercises recruitment; normal spawning/combat is verified by the campaign. */
 function fixture() {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 }, false, 2) /* Controlled geometry: historical full visibility. */;
   s.animals = []; s.trees = []; s.treePlots = []; s.items = []; s.stockpiles = [];
   s.blocks.fill(Block.Stone); s.ladders.fill(0); s.structureKinds.fill(0);
   for (let x = 0; x <= 35; x++) for (let y = 8; y <= 28; y++)
@@ -200,7 +200,7 @@ describe('voxel capture, care, recruitment and release integration', () => {
     const bytes = readFileSync(new URL('./fixtures/voxel-v23-prison-initial.json', import.meta.url));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe('3eac88560e5bf8460e91517998c80fe501ce5be1eeac088e9c0cb3703db216b3');
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old), upgraded = s.save();
-    expect(old.version).toBe(23); expect(upgraded.version).toBe(35);
+    expect(old.version).toBe(23); expect(upgraded.version).toBe(36);
     expect(upgraded.items).toEqual(old.items); expect(upgraded.stats).toEqual(relocationExpectedField('stats', old.stats));
     expect(upgraded.nextId).toBe(old.nextId); expect(upgraded.animals).toMatchObject(old.animals);
     expect(upgraded.pawns).toHaveLength(old.pawns.length);

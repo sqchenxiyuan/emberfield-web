@@ -161,7 +161,7 @@ export interface WealthDetails extends WealthTotals {
   unvaluedCorpses: number;
   pawnValues: { id: number; value: number; summaryHealth: number }[];
 }
-/** All present map cells are visible in this project. No fog, ownership claims,
+/** Only permanently explored map assets count. No ownership claims,
  * pocket maps, slaves, plants-as-assets or underground mineral wealth.
  * Captured raiders retain their original-faction identity: prisoner bodies and
  * carried gear remain excluded; actual dropped items are counted on the ground.
@@ -170,12 +170,12 @@ export interface WealthDetails extends WealthTotals {
  * are separate physical cargo, valued from their provisional meat yield. */
 export function colonyWealthDetails(sim: VoxelSimulation): WealthDetails {
   const itemSources = { ground: 0, cargo: 0, equipment: 0, delivered: 0 };
-  for (const item of sim.items) itemSources.ground += cargoMarketValue(item);
-  for (const animal of sim.animals) if (animal.dead)
+  for (const item of sim.items.filter(p => sim.exploredAt(p))) itemSources.ground += cargoMarketValue(item);
+  for (const animal of sim.animals) if (animal.dead && sim.exploredAt(animal))
     itemSources.ground += cargoMarketValue({ resource: 'carcass', amount: 1,
       carcass: { animalId: animal.id, species: animal.species },
       ...(animal.carcassHitPoints !== undefined ? { hitPoints: animal.carcassHitPoints } : {}) });
-  for (const pawn of sim.pawns) if (pawn.faction === 'colony') {
+  for (const pawn of sim.pawns) if (pawn.faction === 'colony' && sim.exploredAt(pawn)) {
     if (pawn.cargo) itemSources.cargo += cargoMarketValue(pawn.cargo);
     if (pawn.weapon) itemSources.equipment += weaponMarketValue(pawn.weapon);
     for (const piece of pawn.worn) itemSources.equipment += apparelMarketValue(piece, pawn.dead);
@@ -186,6 +186,7 @@ export function colonyWealthDetails(sim: VoxelSimulation): WealthDetails {
   let legacyStructureCells = 0;
   const kinds = (sim as VoxelSimulation & { structureKinds?: Uint8Array }).structureKinds;
   for (let i = 0; i < sim.blocks.length; i++) {
+    if (!sim.explored[i]) continue;
     const block = sim.blocks[i];
     if (block === Block.Wood || block === Block.Masonry) {
       const kind = kinds?.[i] ?? 0;
@@ -203,32 +204,32 @@ export function colonyWealthDetails(sim: VoxelSimulation): WealthDetails {
   // Native WealthWatcher uses MarketValueIgnoreHp for completed buildings.
   // Damage changes room/inspection value, but cannot lower raid wealth.
   for (const [kind, objects] of [['bed', sim.beds], ['table', sim.tables], ['chair', sim.chairs]] as const)
-    for (const object of objects)
+    for (const object of objects.filter(p => sim.exploredAt(p)))
       buildingSources.facilities += furnitureMarketValue(kind, object.quality);
-  add(sim.doors.length, { wood: 25 }, 199);
-  add(sim.stoves.length, { wood: 20 }, 120);
-  add(sim.stonecutters.length, STONECUTTER_COST, STONECUTTER_WORK);
-  add(sim.tailors.length, TAILOR_COST, TAILOR_WORK);
-  add(sim.researchBenches.length, RESEARCH_BENCH_COST, RESEARCH_BENCH_WORK);
-  add(sim.sandbags.length, SANDBAG_COST, SANDBAG_WORK);
-  add(sim.horseshoePins.length, HORSESHOE_COST, HORSESHOE_WORK);
-  add(sim.wires.length, { steel: 1 }, 12);
-  add(sim.fences.length,PEN_BUILDINGS.fence.cost,PEN_BUILDINGS.fence.work);
-  add(sim.fenceGates.length,PEN_BUILDINGS.fenceGate.cost,PEN_BUILDINGS.fenceGate.work);
-  add(sim.penMarkers.length,PEN_BUILDINGS.penMarker.cost,PEN_BUILDINGS.penMarker.work);
-  for (const bench of sim.weaponBenches) {
+  add(sim.doors.filter(p => sim.exploredAt(p)).length, { wood: 25 }, 199);
+  add(sim.stoves.filter(p => sim.exploredAt(p)).length, { wood: 20 }, 120);
+  add(sim.stonecutters.filter(p => sim.exploredAt(p)).length, STONECUTTER_COST, STONECUTTER_WORK);
+  add(sim.tailors.filter(p => sim.exploredAt(p)).length, TAILOR_COST, TAILOR_WORK);
+  add(sim.researchBenches.filter(p => sim.exploredAt(p)).length, RESEARCH_BENCH_COST, RESEARCH_BENCH_WORK);
+  add(sim.sandbags.filter(p => sim.exploredAt(p)).length, SANDBAG_COST, SANDBAG_WORK);
+  add(sim.horseshoePins.filter(p => sim.exploredAt(p)).length, HORSESHOE_COST, HORSESHOE_WORK);
+  add(sim.wires.filter(p => sim.exploredAt(p)).length, { steel: 1 }, 12);
+  add(sim.fences.filter(p => sim.exploredAt(p)).length,PEN_BUILDINGS.fence.cost,PEN_BUILDINGS.fence.work);
+  add(sim.fenceGates.filter(p => sim.exploredAt(p)).length,PEN_BUILDINGS.fenceGate.cost,PEN_BUILDINGS.fenceGate.work);
+  add(sim.penMarkers.filter(p => sim.exploredAt(p)).length,PEN_BUILDINGS.penMarker.cost,PEN_BUILDINGS.penMarker.work);
+  for (const bench of sim.weaponBenches.filter(p => sim.exploredAt(p))) {
     if (bench.kind === 'smithy') add(1, SMITHY_COST, SMITHY_WORK);
     else if (bench.kind === 'machining') add(1, MACHINING_COST, MACHINING_WORK);
     // CraftingSpot is a designation with no material or market value.
   }
-  for (const device of sim.devices) add(1, DEVICE_COSTS[device.kind], DEVICE_WORK[device.kind]);
-  const pawnValues = sim.pawns.filter(p => p.faction === 'colony' && !p.dead)
+  for (const device of sim.devices.filter(p => sim.exploredAt(p))) add(1, DEVICE_COSTS[device.kind], DEVICE_WORK[device.kind]);
+  const pawnValues = sim.pawns.filter(p => p.faction === 'colony' && !p.dead && sim.exploredAt(p))
     .map(p => ({ id: p.id, value: pawnMarketValue(p), summaryHealth: summaryHealthPercent(p) }));
   const items = Object.values(itemSources).reduce((a, b) => a + b, 0);
   const buildings = Object.values(buildingSources).reduce((a, b) => a + b, 0);
   const pawns = pawnValues.reduce((sum, p) => sum + p.value, 0);
   return { items, buildings, pawns, total: items + buildings + pawns, storyteller: items + buildings * .5 + pawns,
-    itemSources, buildingSources, legacyStructureCells, unvaluedCorpses: sim.pawns.filter(p => p.dead).length, pawnValues };
+    itemSources, buildingSources, legacyStructureCells, unvaluedCorpses: sim.pawns.filter(p => p.dead && sim.exploredAt(p)).length, pawnValues };
 }
 export function colonyWealth(sim: VoxelSimulation): WealthTotals {
   const { items, buildings, pawns } = colonyWealthDetails(sim);

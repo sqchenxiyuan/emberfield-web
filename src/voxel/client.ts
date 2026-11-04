@@ -108,7 +108,7 @@ export class VoxelClient {
     this.emit({ furniturePlacement: null });
   };
   roomAt = (p: Pos) =>
-    inside(p)
+    this.exploredAt(p)
       ? (this.state.snapshot?.rooms.find((r) => r.id === this.roomIds[at(p)]) ?? null)
       : null;
   private emit(next: Partial<ClientState> = {}) {
@@ -208,6 +208,11 @@ export class VoxelClient {
   blockAt = (p: Pos) => {
     const c = this.chunksCache.get(Math.floor(p.y / 16) * 4 + Math.floor(p.x / 16));
     return c ? c.blocks[(p.z * 16 + (p.y % 16)) * 16 + (p.x % 16)] : 0;
+  };
+  exploredAt = (p: Pos): boolean => {
+    if (!inside(p)) return false;
+    const c = this.chunksCache.get(Math.floor(p.y / 16) * 4 + Math.floor(p.x / 16));
+    return c?.explored[(p.z * 16 + (p.y % 16)) * 16 + (p.x % 16)] === 1;
   };
   ladderAt = (p: Pos) => {
     const c = this.chunksCache.get(Math.floor(p.y / 16) * 4 + Math.floor(p.x / 16));

@@ -17,7 +17,7 @@ function until(s: VoxelSimulation, done: () => boolean, max = 2000) {
 /** Small explicit geometry and injected inputs isolate transaction/save boundaries.
  * Normal hunting, cooking and poisoning are covered by the separate campaign. */
 function fixture(modify?: (s: VoxelSimulation) => void) {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 }, false, 2) /* Controlled geometry: historical full visibility. */;
   s.animals = []; s.trees = []; s.items = []; s.stockpiles = [];
   s.blocks.fill(Block.Stone); s.ladders.fill(0); s.structureKinds.fill(0);
   for (let x = 10; x <= 16; x++) for (let y = 10; y <= 14; y++)

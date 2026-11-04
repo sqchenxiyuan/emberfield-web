@@ -1,0 +1,73 @@
+{
+  "evidence_id": "RW17-CAVES-EXPLORATION",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.MapGenCavesUtility",
+      "local_file": ".local-research/caves-exploration/RimWorld.MapGenCavesUtility.cs",
+      "sha256": "1cc3a5297c7e1dd22851175dc518f56ae185d984cbb895c282ffdec539aa538f",
+      "lines": 402
+    },
+    {
+      "type": "RimWorld.GenStep_Fog",
+      "local_file": ".local-research/caves-exploration/RimWorld.GenStep_Fog.cs",
+      "sha256": "0db05e6e9e9a74bd757fa987d943f07d233b248778040a9d395b871f39b0919b",
+      "lines": 58
+    },
+    {
+      "type": "Verse.FogGrid",
+      "local_file": ".local-research/caves-exploration/Verse.FogGrid.cs",
+      "sha256": "5a858acad47b6d8119d21b700937ca4db6a70a46e9b9e34255109bbe03cd4a42",
+      "lines": 263
+    },
+    {
+      "type": "Verse.FloodFillerFog",
+      "local_file": ".local-research/caves-exploration/Verse.FloodFillerFog.cs",
+      "sha256": "71fe09358a0d0913d5229a84fc03eee6b474a30a5d8074c020822592a014d26a",
+      "lines": 160
+    },
+    {
+      "type": "RimWorld.Designator_Mine",
+      "local_file": ".local-research/caves-exploration/RimWorld.Designator_Mine.cs",
+      "sha256": "ad578c9e71cf7485dc2c6927f15866174f81f9d5efa9988b9bc01411154c8784",
+      "lines": 123
+    },
+    {
+      "type": "RimWorld.Designator_Plan",
+      "local_file": ".local-research/caves-exploration/RimWorld.Designator_Plan.cs",
+      "sha256": "260ef860f8699150a1b3f7da8d83b8869f6da28d340f34984d363b2dd9b5f711",
+      "lines": 20
+    },
+    {
+      "type": "RimWorld.ThingSelectionUtility",
+      "local_file": ".local-research/caves-exploration/RimWorld.ThingSelectionUtility.cs",
+      "sha256": "81753c11ebc9d63ef94d6c91e4a84f1e9a88368c7aacfc3db1dc2e304e0c9f20",
+      "lines": 243
+    },
+    {
+      "type": "RimWorld.Selector",
+      "local_file": ".local-research/caves-exploration/RimWorld.Selector.cs",
+      "sha256": "150df8a7eb443fb86dec2e00d4365ba970f9ef47ee8525dd5f7b2c99f876051b",
+      "lines": 833
+    },
+    {
+      "type": "RimWorld.WorkGiver_Miner",
+      "local_file": ".local-research/caves-exploration/RimWorld.WorkGiver_Miner.cs",
+      "sha256": "f6c81fd3bf148b2c7b8bd8667e71b0d7c77e2565640e30453d926541cc096ff3",
+      "lines": 35
+    }
+  ]
+}

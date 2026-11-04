@@ -8,7 +8,7 @@ import { apparelMarketValue, colonyWealth, colonyWealthDetails, constructedMarke
   pawnMarketValue, structureMarketValue, summaryHealthPercent, unityRound, weaponMarketValue } from '../src/voxel/wealth';
 
 function fixture() {
-  const sim = new VoxelSimulation(9701, { biome: 'temperate', hilliness: 'flat', meanTemperature: 20, latitude: 0, rainfall: 1000 });
+  const sim = new VoxelSimulation(9701, { biome: 'temperate', hilliness: 'flat', meanTemperature: 20, latitude: 0, rainfall: 1000 }, false, 2) /* Controlled geometry: historical full visibility. */;
   const pawn = sim.pawns[0];
   pawn.trauma = initialTrauma(); pawn.worn = []; pawn.weapon = null; pawn.cargo = null;
   for (const key of SKILL_KEYS) pawn.skills[key].level = 0;

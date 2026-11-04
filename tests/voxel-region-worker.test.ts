@@ -28,7 +28,7 @@ describe('world selection worker transactions', () => {
     request('speed', { value: 3 }); const before = save(), count = messages.length;
     const result = request('previewSite', { site }); expect(result.error).toBeUndefined();
     const resolved = resolveWorldSite(site), preview = result.result as WorldPreview;
-    expect(preview).toEqual(previewWorld(resolved.seed, resolved.settings));
+    expect(preview).toEqual(previewWorld(resolved.seed, resolved.settings, resolved.generator));
     expect(messages.slice(count).filter(m => m.type === 'state')).toHaveLength(0);
     expect(save()).toEqual(before); expect(messages.findLast(m => m.type === 'state').snapshot.speed).toBe(3);
   });
@@ -38,7 +38,7 @@ describe('world selection worker transactions', () => {
     const preview = request('previewSite', { site }).result as WorldPreview;
     expect(request('newSite', { site }).error).toBeUndefined();
     const saved = save(), state = messages.findLast(m => m.type === 'state').snapshot;
-    expect(saved).toMatchObject({ version: 35, worldSite: site, seed: preview.seed, settings: preview.settings, spawn: preview.spawn });
+    expect(saved).toMatchObject({ version: 36, worldSite: site, seed: preview.seed, settings: preview.settings, spawn: preview.spawn });
     expect(state).toMatchObject({ worldSite: site, seed: preview.seed, settings: preview.settings, speed: 0, tick: 0 });
   });
 

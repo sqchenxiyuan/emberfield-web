@@ -13,7 +13,7 @@ export function validateWorldSiteIdentity(raw: Record<string, any>): WorldSite |
   if (!Object.hasOwn(raw, 'worldSite')) throw new Error('存档缺少地区身份字段');
   if (raw.worldSite === null) return null;
   const resolved = resolveWorldSite(raw.worldSite);
-  if (raw.generator !== 2 || raw.seed !== resolved.seed || !raw.settings ||
+  if (raw.generator !== resolved.generator || raw.seed !== resolved.seed || !raw.settings ||
       typeof raw.settings !== 'object' || Array.isArray(raw.settings) ||
       Object.keys(raw.settings).length !== Object.keys(resolved.settings).length ||
       Object.entries(resolved.settings).some(([key, value]) => !Object.hasOwn(raw.settings, key) || raw.settings[key] !== value))

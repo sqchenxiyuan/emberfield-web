@@ -1,0 +1,49 @@
+{
+  "evidence_id": "RW17-CAVES-EXPLORATION-EXTRA",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.MineAIUtility",
+      "local_file": ".local-research/caves-exploration-extra/RimWorld.MineAIUtility.cs",
+      "sha256": "428d02755dc7e6e54c28637fa4149decc6f6ce1701f5e95303e04781e6e01a84",
+      "lines": 109
+    },
+    {
+      "type": "RimWorld.Designator_Plan_Add",
+      "local_file": ".local-research/caves-exploration-extra/RimWorld.Designator_Plan_Add.cs",
+      "sha256": "4e8f60a7b459fe98799eeccafde6d2560712d64ffdfb41e2e90ecf788b1ad715",
+      "lines": 311
+    },
+    {
+      "type": "Verse.Designator_Cells",
+      "local_file": ".local-research/caves-exploration-extra/Verse.Designator_Cells.cs",
+      "sha256": "5ec404240d7e6c17c3365f194739ac880ea3a17ba2db889f725afa8fd0aeccf2",
+      "lines": 12
+    },
+    {
+      "type": "RimWorld.Designator_Build",
+      "local_file": ".local-research/caves-exploration-extra/RimWorld.Designator_Build.cs",
+      "sha256": "9315b60f5785196a59e47ac068c5e7e2d1286862c0c8e969073dae87056b8e28",
+      "lines": 690
+    },
+    {
+      "type": "Verse.FloodFiller",
+      "local_file": ".local-research/caves-exploration-extra/Verse.FloodFiller.cs",
+      "sha256": "fd58e012ee97c9780bd7ce456b592cedf4bd37b25b57beb7421972278896792c",
+      "lines": 201
+    }
+  ]
+}

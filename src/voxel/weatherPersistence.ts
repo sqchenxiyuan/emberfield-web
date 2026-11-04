@@ -3,7 +3,7 @@ import { WEATHER_RULES, initialWeather, nextWeatherTransition, weatherAtCycle, w
   type WeatherState, type SnowCover } from './weather';
 
 interface WeatherSaveContext {
-  seed: number; tick: number; settings: WorldSettings; generator: 1 | 2;
+  seed: number; tick: number; settings: WorldSettings; generator: 1 | 2 | 3;
   weather: WeatherState; snow: SnowCover[];
 }
 const record = (v: unknown): v is Record<string, any> => !!v && typeof v === 'object' && !Array.isArray(v);

@@ -7,7 +7,7 @@ import { Block, at, type Projectile } from '../src/voxel/types';
 // Controlled geometry compares the read-only UI view against actual world rules;
 // these isolated fixtures are not evidence of normal colony progression.
 function fixture() {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 }, false, 2) /* Controlled geometry: historical full visibility. */;
   // Isolated terrain fixture excludes the newly spawned wildlife.
   s.animals = [];
   s.blocks.fill(Block.Air);

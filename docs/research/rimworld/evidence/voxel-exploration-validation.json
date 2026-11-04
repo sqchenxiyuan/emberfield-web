@@ -1,0 +1,2101 @@
+{
+  "schema": 1,
+  "version": 36,
+  "validatedAt": "2026-11-04T03:22:47.460Z",
+  "status": "passed",
+  "scope": "Emberfield independent multilayer cave exploration milestone. It does not claim full RimWorld gameplay, identical cave generation, balancing or original-game runtime verification.",
+  "originalGame": {
+    "chapter": "108-caves-exploration-mechanisms.md",
+    "newNativeRuns": 0,
+    "evidence": "caves-exploration-evidence.json",
+    "claims": 16,
+    "sourcePointers": 49
+  },
+  "source": {
+    "baseRootCommit": "b125bd3ee4fd4e688b81d9deeecaa8c230723de3",
+    "manifest": {
+      "file": "test-results/voxel-exploration-dev3/source-manifest.json",
+      "sha256": "f50e83e35dd521c6b1e9aab89d143f050bff5be48c61731eb6cf9ec832a189ae",
+      "bytes": 14912
+    },
+    "files": [
+      {
+        "file": "src/audio.ts",
+        "sha256": "b5bc4efe4a1bb7d2bf17d89ab2f5d8f5d3ff14667244a3487925472a70c7ac8c"
+      },
+      {
+        "file": "src/client.ts",
+        "sha256": "6665bf09a59511d7007b3d80f65a5a6e946e2aede82638873b96de3e2f2abf0e"
+      },
+      {
+        "file": "src/entry.ts",
+        "sha256": "948a579347dd85a7827c2bb349bfbf1c694c46fd13d0ec81eba6b631bee664e4"
+      },
+      {
+        "file": "src/layout.css",
+        "sha256": "440209ba4898936fb5eac6f1fbc9c1b75240e2384b3aec6f8689834e82b77502"
+      },
+      {
+        "file": "src/main.tsx",
+        "sha256": "dd495faf455c45378784aec821ae4c4fb1f63cb6b05be4ef14d2ed7a483eca40"
+      },
+      {
+        "file": "src/protocol.ts",
+        "sha256": "36a69d8555b924ad256baa9fc4ac9f13a3138254bd3a9ca6aea0c6e7720626ad"
+      },
+      {
+        "file": "src/render.worker.ts",
+        "sha256": "5f847dd501f4d3980bceb3ce64728a67f7e97f56c8b127680b02a538b36c0797"
+      },
+      {
+        "file": "src/renderer.ts",
+        "sha256": "a6e463ff5779a4ad0a48b540546dbff7a94114f9a3eab0f47f27611891d26d64"
+      },
+      {
+        "file": "src/sim.worker.ts",
+        "sha256": "80cd20bb4fd76e315a3b98d4c9f817e22f8342d345b72b64c328fea1058e7f7a"
+      },
+      {
+        "file": "src/sim/activity.ts",
+        "sha256": "f998a95408c38e311e7ca50faf478008b8ebe5ed23d362eedd434f3356d9f59f"
+      },
+      {
+        "file": "src/sim/defs.ts",
+        "sha256": "19d1472ecb13eb44a301b520e1705851ed063d6b57946c8873dadba24a61761a"
+      },
+      {
+        "file": "src/sim/path.ts",
+        "sha256": "bc929aa62e72894530a3658658b21b45f4204d6d0e7ab39e4d456089aa82e0d2"
+      },
+      {
+        "file": "src/sim/placement.ts",
+        "sha256": "3a95d7d5476ae757cf4343d40b77c49cbecd70a5ce9044ce79eeadbf06366ce0"
+      },
+      {
+        "file": "src/sim/save.ts",
+        "sha256": "b79fe616886283618defa6564ced9db9e1068649d1a8708999c55a8288a18037"
+      },
+      {
+        "file": "src/sim/types.ts",
+        "sha256": "2b179975dfb26e94d4da72539c1a27216fbe5a3334a9791a112b8826edc2981a"
+      },
+      {
+        "file": "src/sim/world.ts",
+        "sha256": "dda00e071ec07fb5852adafca98e6f184ee39e7f3e50a45b759144162bd3e428"
+      },
+      {
+        "file": "src/style.css",
+        "sha256": "faec3ea5d04e6ae8b5d2adf5ddb5b187517670b1ecf14198d2bee363a63508c1"
+      },
+      {
+        "file": "src/voxel/AnimalPanel.tsx",
+        "sha256": "974fbfb44146ce2a2721879c9201ade85709b4c9c904988fca8002f1094eff21"
+      },
+      {
+        "file": "src/voxel/ApparelPanel.tsx",
+        "sha256": "5458057406ce8181ae84f384724b3712851a0019a875c0ecd6d2406d9c671ea2"
+      },
+      {
+        "file": "src/voxel/ArmorPanel.tsx",
+        "sha256": "86baf921c3c9efeac0640030b1d34b6d701639a8f40e237123ec06aa45a90787"
+      },
+      {
+        "file": "src/voxel/CombatPanel.tsx",
+        "sha256": "a89870e23cca22b7638f3ccb5b40eef85d6398c31dead8c4e7873f51ee708b2a"
+      },
+      {
+        "file": "src/voxel/FirePanel.tsx",
+        "sha256": "9aa50b2aec9b87b08e95c0d24b12c7d072ed7c7a4b50101b0e78a4feedfcdf90"
+      },
+      {
+        "file": "src/voxel/FurniturePanel.tsx",
+        "sha256": "f6e9d2a673714f17614740be449f40ed34636ed0c6a4c8b2529afd7b4fa896c0"
+      },
+      {
+        "file": "src/voxel/ItemCondition.tsx",
+        "sha256": "611b42a857f615e368a26a294f0c8a0b00bf3a29d7b450f78d10e801b9a8ebb7"
+      },
+      {
+        "file": "src/voxel/LivingPanel.tsx",
+        "sha256": "9e0eb4c446726d0b648fca68d951f894d7bc8a40f4e41eb7c5f219b424dd11f2"
+      },
+      {
+        "file": "src/voxel/MedicinePanel.tsx",
+        "sha256": "9f5ebe3569e341dd1be7472dde6e2f89174fd1e8acaff2f03b4a271a5f5a0173"
+      },
+      {
+        "file": "src/voxel/PenPanel.tsx",
+        "sha256": "9f89abf8635511cd32a27ff26bf8d6fe40ed54a61baecc8c7a61a7a04ba5379f"
+      },
+      {
+        "file": "src/voxel/RegionMap.tsx",
+        "sha256": "5c7f0b49f4f1fe2ec80f41323be83a8d0cbd71fddb5716471d6e932206aee097"
+      },
+      {
+        "file": "src/voxel/ResearchPanel.tsx",
+        "sha256": "4e66974943a44217ce1b6245afa4dfcba0da4a7ffd10674731cb4f95597c09d8"
+      },
+      {
+        "file": "src/voxel/SanitationPanel.tsx",
+        "sha256": "c26c4e842adfce1d94ed191512796c36dfc8e3b479afc7c0faaafeb45a3eb3ac"
+      },
+      {
+        "file": "src/voxel/SkillPanel.tsx",
+        "sha256": "f24661ce66ab231cf83073d75b5d98513df528608749455c6514e5534ea8542b"
+      },
+      {
+        "file": "src/voxel/SocialPanel.tsx",
+        "sha256": "989e21be1910595a11eb38d2d01225a872886edc88b27e8d48fd9cebec8c2f33"
+      },
+      {
+        "file": "src/voxel/SurvivalPanel.tsx",
+        "sha256": "a08dd658e3e90b301275e359e7e291f2ba9a36d1a0668e071ce23a515574b735"
+      },
+      {
+        "file": "src/voxel/TailorPanel.tsx",
+        "sha256": "f796c146ea58e5d9777b430361d49fbbdd1836ac756982b62e7f1688b74d742a"
+      },
+      {
+        "file": "src/voxel/TradePanel.tsx",
+        "sha256": "49c8f9c908e89b33fcd763010586a786abdac493a9ae78a8770873d13b8d2882"
+      },
+      {
+        "file": "src/voxel/WeaponPanel.tsx",
+        "sha256": "6721e24516cd848738d0dc12462bf79cf101f960393fa32d7e03fe82862493e2"
+      },
+      {
+        "file": "src/voxel/WeatherPanel.tsx",
+        "sha256": "4be2e8c3438225386371e742b22c22f55c4379251ae8bec18518357b70c06481"
+      },
+      {
+        "file": "src/voxel/WorldSetup.tsx",
+        "sha256": "583e4bbbf4f274810a7eaadae3c8b8435d65adcc510edbb913a3bb6f76d72901"
+      },
+      {
+        "file": "src/voxel/anatomy.ts",
+        "sha256": "1f30b19d6ad8c1562cca38e86e54e17c9226f4ea6f288a326743f348e5bd7095"
+      },
+      {
+        "file": "src/voxel/apparel.ts",
+        "sha256": "88954cc42098d2bf1f02c294e5c2f813c9271a95e01f6bfb9346c4a31d2211e8"
+      },
+      {
+        "file": "src/voxel/armor.ts",
+        "sha256": "756771ef962f4fde2cd321a29880f11077ada081b724ebc63e5d781d12bff62e"
+      },
+      {
+        "file": "src/voxel/caves.ts",
+        "sha256": "434ed06e1e9cc6ebd6407f326eb367ece11cf5d29421280a30de202cad0870f2"
+      },
+      {
+        "file": "src/voxel/client.ts",
+        "sha256": "55962efbdf198baf604bedd6e908bb2c07421ebc84b3a9de58b602bc899bdc6d"
+      },
+      {
+        "file": "src/voxel/climate.ts",
+        "sha256": "8b56287dc33fc237f75f0c1231891cd54ba595a343a1a1384053653c70381a5b"
+      },
+      {
+        "file": "src/voxel/crafting.ts",
+        "sha256": "9ff99d07c56040b1bc91acc9bd6521c00550389068f669459516f730887fcadb"
+      },
+      {
+        "file": "src/voxel/deterioration.ts",
+        "sha256": "09a08736ae773940c05ae633a8d630745076b993b44c6ae52aaa5743dde36816"
+      },
+      {
+        "file": "src/voxel/environment.ts",
+        "sha256": "ba9ca3d50fa17ea3fec621c40d44a820a8fcb01fc2c5394fc9339f74fbe27187"
+      },
+      {
+        "file": "src/voxel/environmentPersistence.ts",
+        "sha256": "fac143e8467a64e1518e1b846bbcd831da1e1661e058cbf8816c601cc3670656"
+      },
+      {
+        "file": "src/voxel/exploration.ts",
+        "sha256": "8fc435a0039fe952a5190cc0004a079bd14963ad37a4025d2eaf1ff0670162cf"
+      },
+      {
+        "file": "src/voxel/farming.ts",
+        "sha256": "12bcdf1ff26d4ca008d91bbde3bdc5c3f68af407979713ce2109006172c3fe5b"
+      },
+      {
+        "file": "src/voxel/fire.ts",
+        "sha256": "21a17091abe900e0fdbddd6ef99dd6cce11aac6fbb6b9ef718db3a1889dfcd6f"
+      },
+      {
+        "file": "src/voxel/firePersistence.ts",
+        "sha256": "fb6ba728c6f342f09d351a2014267c78c359a073bc36a9f704457fa929826544"
+      },
+      {
+        "file": "src/voxel/fireWorld.ts",
+        "sha256": "fab38d9afefaeaf6687a4708cff9ef58fbb09ee8774164a16fbcd6780402d175"
+      },
+      {
+        "file": "src/voxel/furniture.ts",
+        "sha256": "a6412af96de6584138f05545be381de9d4876134dcdb04ce963dd2c29915bba8"
+      },
+      {
+        "file": "src/voxel/furniturePersistence.ts",
+        "sha256": "6bde3e701115a7126e2daeef9798495afd5828e027c1ca437f0d8129d2477504"
+      },
+      {
+        "file": "src/voxel/husbandry.ts",
+        "sha256": "1c1163793259862fd0338eed68ef69cf5fa8c34c79b142f9baa90c5bb7531cfd"
+      },
+      {
+        "file": "src/voxel/husbandryPersistence.ts",
+        "sha256": "7205319c8ece09be0a51e18d79015a1e2b33e7aa38c62415a079b6e0dae002a8"
+      },
+      {
+        "file": "src/voxel/husbandryWorld.ts",
+        "sha256": "87764ee4d8aed3c64f814beab24139e573567c8c9b972777e94b704faf620859"
+      },
+      {
+        "file": "src/voxel/injuries.ts",
+        "sha256": "cfd1dcad2a553d0681239e2ab0638fb8a752da35a26cd1800301aa12aaf9a8e4"
+      },
+      {
+        "file": "src/voxel/living.ts",
+        "sha256": "f101d6b98ef949bd83ccdc11117cb3014bc3d351d7888bc06c300158fc57c6fa"
+      },
+      {
+        "file": "src/voxel/livingPersistence.ts",
+        "sha256": "e9e6ae9f30fd643afe7da827b7bfd2ae4ad383745747451c286ce27ee7562f33"
+      },
+      {
+        "file": "src/voxel/logistics.ts",
+        "sha256": "2608ab392ba17357fbe421907a6a193c7969ba3905646b375908ed197a619fa2"
+      },
+      {
+        "file": "src/voxel/main.tsx",
+        "sha256": "05cf66a087767adc065107d4e87192938fe3807a0a9ad330ff3c3ffb1738695c"
+      },
+      {
+        "file": "src/voxel/medicine.ts",
+        "sha256": "064f9c2fe26b99f59f44e58ed7294e3b7dfea416b3fa0688c7976b52a1c7b912"
+      },
+      {
+        "file": "src/voxel/medicinePersistence.ts",
+        "sha256": "306fa3b01e62229efcae3654230f35b8288ba945c0f3c22859af09203899c750"
+      },
+      {
+        "file": "src/voxel/mood.ts",
+        "sha256": "79dd6a2dcd82ae7f8f375bb0a5e2ff2913b86b6a70fdcefdd0d84a8fc3d24db5"
+      },
+      {
+        "file": "src/voxel/pens.ts",
+        "sha256": "82e72a6c94157f794b5601806771fd62e4442608844e0fae706958a3c8f778b3"
+      },
+      {
+        "file": "src/voxel/pensPersistence.ts",
+        "sha256": "088789d79b590f988c9ff4da3e0f3ceb5d13edc4b4bbe94a69f026271078d9cd"
+      },
+      {
+        "file": "src/voxel/pensWorld.ts",
+        "sha256": "fd447038cec664c216a3b5cc2623b4f6d40d6d83fbbd125bfea6a4fe429413d2"
+      },
+      {
+        "file": "src/voxel/plants.ts",
+        "sha256": "baa7f01b82c047536c8d0a2ee3097e15bce8466418e4442e39155d6be6400195"
+      },
+      {
+        "file": "src/voxel/power.ts",
+        "sha256": "dbbf47b4558b8935960d20abceb94c545f686e6ab5f6ca26f075429ded89fec1"
+      },
+      {
+        "file": "src/voxel/preservation.ts",
+        "sha256": "35fae3b09acc083c028309b00cfe772a1ec457273655104e3e938f60fd81defa"
+      },
+      {
+        "file": "src/voxel/prisonPersistence.ts",
+        "sha256": "aa23dc10fd8152e6f338e26b118e385fa7c5d385e86d10688e9298ae26a502de"
+      },
+      {
+        "file": "src/voxel/prisonWorld.ts",
+        "sha256": "a6ea0d30f48f4b828227a3357741c4ad716ccb31147bb86e32eba74521f405f1"
+      },
+      {
+        "file": "src/voxel/prisoners.ts",
+        "sha256": "6327f6d6d65f107a35e70fa94e2260b79d8593d070aaf5c42368de05782a55b2"
+      },
+      {
+        "file": "src/voxel/ranged.ts",
+        "sha256": "5b42c45c404289833cfe496fc4b1cc34d253d57c8afb6045afe8f2c34436920a"
+      },
+      {
+        "file": "src/voxel/rangedPersistence.ts",
+        "sha256": "19644559ae86bcb1e879dcd8d7d115e2e05d40177905c7a900864c25071a057a"
+      },
+      {
+        "file": "src/voxel/rangedView.ts",
+        "sha256": "13b4b9353de569382a90d0d5b1b5c0aa9bc48e05a0b918e7327e17b8537c0533"
+      },
+      {
+        "file": "src/voxel/recreation.ts",
+        "sha256": "f55022026c42781e5653a7b35f3272280348123e5930b627072f47a00f3e8051"
+      },
+      {
+        "file": "src/voxel/regionPersistence.ts",
+        "sha256": "9dc9b2ff8623e3088f5a1d6d05c2ba044703863dd3d5eb966c2118201e5b19c1"
+      },
+      {
+        "file": "src/voxel/regions.ts",
+        "sha256": "8f6733ee6a553e4b732ca20822704a5ac7738d99e4eb22ceaac4ab7fdd85f463"
+      },
+      {
+        "file": "src/voxel/relocation.ts",
+        "sha256": "e3bd16b7d6889fe913f4e1e2baced4035503dd596b8578446fdd5a5494359d4d"
+      },
+      {
+        "file": "src/voxel/relocationPersistence.ts",
+        "sha256": "7b0132ef7efcac2af4de26ad800313559ede436c2b444a03684efa4a170dd21b"
+      },
+      {
+        "file": "src/voxel/render.worker.ts",
+        "sha256": "191ced6c3d17b480fa11f2d3a6845b8e9df111f5f69ded8b7b2bbaf75caf22c0"
+      },
+      {
+        "file": "src/voxel/renderer.ts",
+        "sha256": "9cbf814bbf4fbbf4cbd170342eefca04e1e0f056e6ead9ffe2c1a4abb07ffe32"
+      },
+      {
+        "file": "src/voxel/research.ts",
+        "sha256": "8abddc0dca6e520f84e10db6ce739d046a101d2200f5ca67578260e095866ee4"
+      },
+      {
+        "file": "src/voxel/rest.ts",
+        "sha256": "52c641ae3307af786d15380824ce7b0082d3d14935432d3baebf66b047981eff"
+      },
+      {
+        "file": "src/voxel/rooms.ts",
+        "sha256": "67457f7cd217f5746b9562ea2e3ca059af1f424165368d28d511e8a374090b9d"
+      },
+      {
+        "file": "src/voxel/sanitation.ts",
+        "sha256": "7794390e2678b62b3edd8e9e6eeff1f6c0bbcebc41c59ceea0bef6bfedbdf223"
+      },
+      {
+        "file": "src/voxel/sanitationPersistence.ts",
+        "sha256": "2c496b93e0123f93b64a0f30e94d34477d23e445411013bc1fca9e7a8e98f16f"
+      },
+      {
+        "file": "src/voxel/sim.worker.ts",
+        "sha256": "428917a7df1560281a4dc86165c7f6b8a73bbbd23421d68004e7456189e77431"
+      },
+      {
+        "file": "src/voxel/skills.ts",
+        "sha256": "997fff49220028a2b5a399e294b9df259a60a4172ebde42b41782d1449f97c9a"
+      },
+      {
+        "file": "src/voxel/social.ts",
+        "sha256": "1c1438d51a4c24fcf1c710456e9c681d50dde6471ac6be3cc001b53b7e574435"
+      },
+      {
+        "file": "src/voxel/socialPersistence.ts",
+        "sha256": "38e372571c4bc6ea255a407c480f3783512487f2befd9ed2357a6486bd676c4e"
+      },
+      {
+        "file": "src/voxel/socialWorld.ts",
+        "sha256": "a62b8a8e1995f93c394a2dc60f54992b2d9685b88ab1a07e5d4f21d0397bba50"
+      },
+      {
+        "file": "src/voxel/storyteller.ts",
+        "sha256": "5ad1b8204feac0ef182a23426196a6221c62f963c819104d7222b4337ad06677"
+      },
+      {
+        "file": "src/voxel/storytellerPersistence.ts",
+        "sha256": "bcc312777461238d9c8e6ef18e374ae860e15dd08aeb94529d10894766cb8564"
+      },
+      {
+        "file": "src/voxel/storytellerRules.ts",
+        "sha256": "4b11042097f3e7534efab8e75057d4f33b4518ebe4e1c364390a45e3bc9bfb55"
+      },
+      {
+        "file": "src/voxel/style.css",
+        "sha256": "69b1f7e75651b74ed02c24482f55c37014b7b9cb05c37297d512fb95c7e4a7cd"
+      },
+      {
+        "file": "src/voxel/survival.ts",
+        "sha256": "d5a4628a857c1ad080fb21b391ea888ca39a572341c51af8cd36792c7329cb00"
+      },
+      {
+        "file": "src/voxel/thermal.ts",
+        "sha256": "40c614996ba9c8843bc52fbd343a2a625c0fd77c788b1133ae2ba50b6494b127"
+      },
+      {
+        "file": "src/voxel/trade.ts",
+        "sha256": "375fdd15d13fe8ff5e18ee7fc039938e043d93f893a1acc6abdb0a9929cb07d0"
+      },
+      {
+        "file": "src/voxel/tradePersistence.ts",
+        "sha256": "fc64075c5e4cff7c76c72b253c80a014a5e7165eae1114baf20f918a68b4ddaa"
+      },
+      {
+        "file": "src/voxel/tradeRules.ts",
+        "sha256": "ef63fa71de8723b14c67213c68c310ce82db2b89cff550eba3cffde7f85fdfae"
+      },
+      {
+        "file": "src/voxel/tradeTypes.ts",
+        "sha256": "a3dec04c1394626704b6127b71208d2a8c812674d8cde9d27dec2045ba812903"
+      },
+      {
+        "file": "src/voxel/tradeWorld.ts",
+        "sha256": "fb2fd3b6fa4331daa7c24b45b4b50a6f812606b8dd15989909045a93b7fdb2e7"
+      },
+      {
+        "file": "src/voxel/types.ts",
+        "sha256": "c3f3105651c70b38fb10e0d40769fb15f8566e5978c02c8b2b7dcb46dae43b54"
+      },
+      {
+        "file": "src/voxel/wealth.ts",
+        "sha256": "6073bf1cf71048f368fe1f6d55a0b9b02b4f85bda9b8439230daa0eb3c77b7ca"
+      },
+      {
+        "file": "src/voxel/weaponProduction.ts",
+        "sha256": "8d23ccdf273b763383a098a1e37968278558e33c07fabc4641d2917e878dc2b0"
+      },
+      {
+        "file": "src/voxel/weapons.ts",
+        "sha256": "43fdd4aa3e89c7743da31a571d313604fa88bd8383f94637c1ab6d0b80dd7c6c"
+      },
+      {
+        "file": "src/voxel/weather.ts",
+        "sha256": "5b8708cf11d56e5c071b26b80684b0502ebbc8ccacb635d7cc2c5d0a376273f9"
+      },
+      {
+        "file": "src/voxel/weatherPersistence.ts",
+        "sha256": "9c432613d8699d72315345a981d24d8b3c22e51689811c2fbf04c7f887354269"
+      },
+      {
+        "file": "src/voxel/wildlife.ts",
+        "sha256": "1959101c42151c9299f8aedcbbf7b4ad9cd7517ce23bbe2d9780ed2fdc32a7aa"
+      },
+      {
+        "file": "src/voxel/wildlifePersistence.ts",
+        "sha256": "f2c74189ae4bd0c0cdeeb00375c664530bb070f149754188a7ab3e3fde567d1f"
+      },
+      {
+        "file": "src/voxel/world.ts",
+        "sha256": "f7c3fa9152a3551fa5ae0ef728837e602a7f6f2f39629cae31c6d5b8f8150f89"
+      },
+      {
+        "file": "src/voxel/worldgen.ts",
+        "sha256": "c52b65c5b21243ca7106c8e5f222679e9178ecff17a6d54dd90545717e1f8155"
+      }
+    ]
+  },
+  "unit": {
+    "file": "test-results/v36-unit-all-final1.json",
+    "sha256": "c4ac193065b2abc14b264b193015307e6dd2c1292f5a73379cd8bb2f0f254f51",
+    "bytes": 487775,
+    "files": 99,
+    "passed": 1240,
+    "failed": 0,
+    "seconds": 478.1227172851562,
+    "command": "npx vitest run --maxWorkers=1 --testTimeout=15000 --reporter=json --outputFile=test-results/v36-unit-all-final1.json"
+  },
+  "build": {
+    "status": "passed",
+    "log": {
+      "file": "test-results/v36-build-final1.log",
+      "sha256": "474c77154579473a67d8640c51665fbec0c7cbb9dab289ade065f7df0e45f703",
+      "bytes": 2436
+    },
+    "command": "npm run build",
+    "browserAssetHashesStillMatch": true
+  },
+  "campaign": {
+    "raw": {
+      "file": "test-results/voxel-exploration-dev3/report.json",
+      "sha256": "ff20bc51e841808472478c55d5468e2e925986a2452747e9a721c9e6140ee1d9",
+      "bytes": 24032
+    },
+    "version": 36,
+    "status": "passed",
+    "startedAt": "2026-11-04T03:10:07.366Z",
+    "scope": "Direct simulation API, not screen-only play. Fresh site-v2 generator-3 map; read-only authoritative terrain and exploration mask choose a sealed cave and short excavation route. Ordinary commands/ticks create surface storage, excavate ladder shaft, designate unknown rock, open cave, mine finite ore and physically carry it back. No injected map, resources, needs, position, time or RNG. Historic published gen1/gen2 saves test migration. Browser separately repeats the disclosed route with UI controls.",
+    "execution": {
+      "bundleSha256": "a42a7663ccb3c90b70fe2b4012dedc4f4979d923574ba26b0170f0b78402c565",
+      "scriptSha256": "965ddaf060384e038b8edb85c59b3bf014bbf1a157ff62b76c3b5aeee3c3cf77",
+      "sourceManifestSha256": "f50e83e35dd521c6b1e9aab89d143f050bff5be48c61731eb6cf9ec832a189ae"
+    },
+    "checks": [
+      {
+        "name": "fresh gen3 map masks hidden air and ore identically and rejects hidden construction without revealing planned excavation",
+        "tick": 0,
+        "known": 37987,
+        "total": 65536,
+        "hiddenAir": {
+          "x": 26,
+          "y": 33,
+          "z": 2
+        },
+        "hiddenOre": {
+          "x": 21,
+          "y": 33,
+          "z": 2
+        }
+      },
+      {
+        "name": "real workers excavate a connected three-level ladder segment",
+        "tick": 674,
+        "elapsedTicks": 674
+      },
+      {
+        "name": "real workers excavate a connected three-level ladder segment",
+        "tick": 1344,
+        "elapsedTicks": 670
+      },
+      {
+        "name": "unknown rock can be planned and queued work roundtrips without disclosing cave or changing exploration",
+        "tick": 1344,
+        "unknownPassage": [
+          {
+            "x": 27,
+            "y": 33,
+            "z": 2
+          }
+        ]
+      },
+      {
+        "name": "actual excavation breaches the sealed cave and permanently reveals connected air and adjacent rock",
+        "tick": 1593,
+        "elapsedTicks": 249
+      },
+      {
+        "name": "blind plan extending into hidden cave air is removed after the real breach reveals empty space",
+        "tick": 1593
+      },
+      {
+        "name": "discovered finite steel is mined from its physical cave wall",
+        "tick": 1733,
+        "elapsedTicks": 140
+      },
+      {
+        "name": "real haulers carry discovered steel back through the ladder into surface stores",
+        "tick": 1841,
+        "elapsedTicks": 108
+      },
+      {
+        "name": "completed excavation resource balances and permanent explored mask survive save/load",
+        "tick": 1841,
+        "revealed": 719,
+        "producedSteel": 37,
+        "totalProducedSteel": 37,
+        "carriedLayers": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      {
+        "name": "genuine gen1 and gen2 historical saves keep terrain items and full known view",
+        "tick": 1841
+      }
+    ],
+    "commands": [
+      {
+        "tick": 0,
+        "c": {
+          "type": "designate",
+          "tool": "wall",
+          "from": {
+            "x": 26,
+            "y": 33,
+            "z": 2
+          }
+        },
+        "r": {
+          "ok": false,
+          "message": "目标区域尚未探索"
+        }
+      },
+      {
+        "tick": 0,
+        "c": {
+          "type": "move",
+          "pawnId": 316,
+          "target": {
+            "x": 26,
+            "y": 33,
+            "z": 2
+          }
+        },
+        "r": {
+          "ok": false,
+          "message": "目标区域尚未探索"
+        }
+      },
+      {
+        "tick": 0,
+        "c": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 26,
+            "y": 33,
+            "z": 2
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "c": {
+          "type": "designate",
+          "tool": "cancel",
+          "from": {
+            "x": 26,
+            "y": 33,
+            "z": 2
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "取消 1 项规划；无落地空间时材料保留原任务等待退回",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "c": {
+          "type": "designate",
+          "tool": "wall",
+          "from": {
+            "x": 21,
+            "y": 33,
+            "z": 2
+          }
+        },
+        "r": {
+          "ok": false,
+          "message": "目标区域尚未探索"
+        }
+      },
+      {
+        "tick": 0,
+        "c": {
+          "type": "move",
+          "pawnId": 316,
+          "target": {
+            "x": 21,
+            "y": 33,
+            "z": 2
+          }
+        },
+        "r": {
+          "ok": false,
+          "message": "目标区域尚未探索"
+        }
+      },
+      {
+        "tick": 0,
+        "c": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 21,
+            "y": 33,
+            "z": 2
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "c": {
+          "type": "designate",
+          "tool": "cancel",
+          "from": {
+            "x": 21,
+            "y": 33,
+            "z": 2
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "取消 1 项规划；无落地空间时材料保留原任务等待退回",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "c": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 34,
+            "y": 33,
+            "z": 9
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "c": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 33,
+            "y": 33,
+            "z": 9
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "c": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 35,
+            "y": 33,
+            "z": 9
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "c": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 34,
+            "y": 34,
+            "z": 9
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "c": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 34,
+            "y": 31,
+            "z": 9
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "c": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 35,
+            "y": 32,
+            "z": 9
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "c": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 32,
+            "y": 33,
+            "z": 9
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "c": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 36,
+            "y": 33,
+            "z": 9
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "c": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 33,
+            "y": 34,
+            "z": 9
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "c": {
+          "type": "designate",
+          "tool": "stock",
+          "from": {
+            "x": 35,
+            "y": 34,
+            "z": 9
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "划定 1 格仓储；可搬运的物资将送往最近仓储",
+          "count": 1
+        }
+      },
+      {
+        "tick": 0,
+        "c": {
+          "type": "designate",
+          "tool": "shaft",
+          "from": {
+            "x": 29,
+            "y": 33,
+            "z": 8
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "安排 4 项工作，需求木材 8；缺料和不可达任务会等待",
+          "count": 4
+        }
+      },
+      {
+        "tick": 674,
+        "c": {
+          "type": "designate",
+          "tool": "shaft",
+          "from": {
+            "x": 29,
+            "y": 33,
+            "z": 5
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "安排 3 项工作，需求木材 6；缺料和不可达任务会等待",
+          "count": 3
+        }
+      },
+      {
+        "tick": 1344,
+        "c": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 28,
+            "y": 33,
+            "z": 2
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 1344,
+        "c": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 27,
+            "y": 33,
+            "z": 2
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 1344,
+        "c": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 26,
+            "y": 33,
+            "z": 2
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      },
+      {
+        "tick": 1593,
+        "c": {
+          "type": "designate",
+          "tool": "mine",
+          "from": {
+            "x": 21,
+            "y": 33,
+            "z": 2
+          }
+        },
+        "r": {
+          "ok": true,
+          "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+          "count": 1
+        }
+      }
+    ],
+    "fixtures": {
+      "initial": {
+        "file": "test-results/voxel-exploration-dev3/initial.json",
+        "sha256": "e2246a715b9ae99f98c45acc4e1b785fa88dbd63c28d95b81e2520be93eab2cc",
+        "tick": 0
+      },
+      "shaft": {
+        "file": "test-results/voxel-exploration-dev3/shaft.json",
+        "sha256": "7b4bd8d1c02dd7521dfb1c5bf271892be33ae7facea4aafb0a13d1ab08b69b74",
+        "tick": 1344
+      },
+      "planned": {
+        "file": "test-results/voxel-exploration-dev3/planned.json",
+        "sha256": "1b14218b156e80da78222e7bfd5ca5f0226c7a8b36385c2a58921801e9f81274",
+        "tick": 1344
+      },
+      "opened": {
+        "file": "test-results/voxel-exploration-dev3/opened.json",
+        "sha256": "6237a21ee5a5c206c303cb98a85ffadc7468c1835a5c7dbb5f6fd9145d396f0b",
+        "tick": 1593
+      },
+      "mined": {
+        "file": "test-results/voxel-exploration-dev3/mined.json",
+        "sha256": "bb340949c7f794ed968a273d4a0f7aa5e63b9db9e91fb05e55d9ac698e26a0aa",
+        "tick": 1733
+      },
+      "delivered": {
+        "file": "test-results/voxel-exploration-dev3/delivered.json",
+        "sha256": "3e93979dbcfe3a69b9413b27b13e0853893251d59895ebc08e93d1782ca3b88f",
+        "tick": 1841
+      }
+    },
+    "browser": {
+      "site": {
+        "version": 2,
+        "worldSeed": 73129,
+        "tileId": 714
+      },
+      "seed": 3951304940,
+      "settings": {
+        "biome": "temperate",
+        "hilliness": "small",
+        "meanTemperature": 16.7,
+        "rainfall": 1055,
+        "latitude": -18.75
+      },
+      "initialSummary": {
+        "elevation": {
+          "min": 6,
+          "max": 9
+        },
+        "surfaceCounts": {
+          "soil": 3880,
+          "richSoil": 75,
+          "sand": 0,
+          "gravel": 89,
+          "stone": 51
+        },
+        "resources": {
+          "stone": 51,
+          "steel": 1,
+          "components": 0
+        },
+        "trees": {
+          "poplar": 315,
+          "pine": 0,
+          "saguaro": 0,
+          "total": 315,
+          "wood": 8505
+        },
+        "fertileCells": 3729,
+        "reachableSurfaceCells": 3781,
+        "growingDays": 60
+      },
+      "hiddenAir": {
+        "x": 26,
+        "y": 33,
+        "z": 2
+      },
+      "hiddenOre": {
+        "x": 21,
+        "y": 33,
+        "z": 2
+      },
+      "route": {
+        "entry": {
+          "x": 26,
+          "y": 33,
+          "z": 2
+        },
+        "surface": {
+          "x": 29,
+          "y": 33,
+          "z": 8
+        },
+        "bottom": {
+          "x": 29,
+          "y": 33,
+          "z": 2
+        },
+        "passage": [
+          {
+            "x": 28,
+            "y": 33,
+            "z": 2
+          },
+          {
+            "x": 27,
+            "y": 33,
+            "z": 2
+          }
+        ],
+        "caveCells": [
+          {
+            "x": 16,
+            "y": 27,
+            "z": 2
+          },
+          {
+            "x": 16,
+            "y": 28,
+            "z": 2
+          },
+          {
+            "x": 17,
+            "y": 28,
+            "z": 2
+          },
+          {
+            "x": 15,
+            "y": 28,
+            "z": 2
+          },
+          {
+            "x": 16,
+            "y": 29,
+            "z": 2
+          },
+          {
+            "x": 18,
+            "y": 28,
+            "z": 2
+          },
+          {
+            "x": 17,
+            "y": 29,
+            "z": 2
+          },
+          {
+            "x": 14,
+            "y": 28,
+            "z": 2
+          },
+          {
+            "x": 15,
+            "y": 29,
+            "z": 2
+          },
+          {
+            "x": 16,
+            "y": 30,
+            "z": 2
+          },
+          {
+            "x": 18,
+            "y": 29,
+            "z": 2
+          },
+          {
+            "x": 17,
+            "y": 30,
+            "z": 2
+          },
+          {
+            "x": 14,
+            "y": 29,
+            "z": 2
+          },
+          {
+            "x": 15,
+            "y": 30,
+            "z": 2
+          },
+          {
+            "x": 16,
+            "y": 31,
+            "z": 2
+          },
+          {
+            "x": 19,
+            "y": 29,
+            "z": 2
+          },
+          {
+            "x": 18,
+            "y": 30,
+            "z": 2
+          },
+          {
+            "x": 17,
+            "y": 31,
+            "z": 2
+          },
+          {
+            "x": 14,
+            "y": 30,
+            "z": 2
+          },
+          {
+            "x": 15,
+            "y": 31,
+            "z": 2
+          },
+          {
+            "x": 16,
+            "y": 32,
+            "z": 2
+          },
+          {
+            "x": 20,
+            "y": 29,
+            "z": 2
+          },
+          {
+            "x": 19,
+            "y": 30,
+            "z": 2
+          },
+          {
+            "x": 18,
+            "y": 31,
+            "z": 2
+          },
+          {
+            "x": 17,
+            "y": 32,
+            "z": 2
+          },
+          {
+            "x": 13,
+            "y": 30,
+            "z": 2
+          },
+          {
+            "x": 14,
+            "y": 31,
+            "z": 2
+          },
+          {
+            "x": 15,
+            "y": 32,
+            "z": 2
+          },
+          {
+            "x": 16,
+            "y": 33,
+            "z": 2
+          },
+          {
+            "x": 21,
+            "y": 29,
+            "z": 2
+          },
+          {
+            "x": 20,
+            "y": 30,
+            "z": 2
+          },
+          {
+            "x": 19,
+            "y": 31,
+            "z": 2
+          },
+          {
+            "x": 18,
+            "y": 32,
+            "z": 2
+          },
+          {
+            "x": 13,
+            "y": 31,
+            "z": 2
+          },
+          {
+            "x": 14,
+            "y": 32,
+            "z": 2
+          },
+          {
+            "x": 15,
+            "y": 33,
+            "z": 2
+          },
+          {
+            "x": 22,
+            "y": 29,
+            "z": 2
+          },
+          {
+            "x": 21,
+            "y": 30,
+            "z": 2
+          },
+          {
+            "x": 20,
+            "y": 31,
+            "z": 2
+          },
+          {
+            "x": 13,
+            "y": 32,
+            "z": 2
+          },
+          {
+            "x": 14,
+            "y": 33,
+            "z": 2
+          },
+          {
+            "x": 15,
+            "y": 34,
+            "z": 2
+          },
+          {
+            "x": 23,
+            "y": 29,
+            "z": 2
+          },
+          {
+            "x": 22,
+            "y": 30,
+            "z": 2
+          },
+          {
+            "x": 21,
+            "y": 31,
+            "z": 2
+          },
+          {
+            "x": 13,
+            "y": 33,
+            "z": 2
+          },
+          {
+            "x": 14,
+            "y": 34,
+            "z": 2
+          },
+          {
+            "x": 15,
+            "y": 35,
+            "z": 2
+          },
+          {
+            "x": 24,
+            "y": 29,
+            "z": 2
+          },
+          {
+            "x": 23,
+            "y": 30,
+            "z": 2
+          },
+          {
+            "x": 22,
+            "y": 31,
+            "z": 2
+          },
+          {
+            "x": 12,
+            "y": 33,
+            "z": 2
+          },
+          {
+            "x": 13,
+            "y": 34,
+            "z": 2
+          },
+          {
+            "x": 14,
+            "y": 35,
+            "z": 2
+          },
+          {
+            "x": 15,
+            "y": 36,
+            "z": 2
+          },
+          {
+            "x": 25,
+            "y": 29,
+            "z": 2
+          },
+          {
+            "x": 24,
+            "y": 30,
+            "z": 2
+          },
+          {
+            "x": 24,
+            "y": 28,
+            "z": 2
+          },
+          {
+            "x": 23,
+            "y": 31,
+            "z": 2
+          },
+          {
+            "x": 22,
+            "y": 32,
+            "z": 2
+          },
+          {
+            "x": 12,
+            "y": 34,
+            "z": 2
+          },
+          {
+            "x": 13,
+            "y": 35,
+            "z": 2
+          },
+          {
+            "x": 14,
+            "y": 36,
+            "z": 2
+          },
+          {
+            "x": 15,
+            "y": 37,
+            "z": 2
+          },
+          {
+            "x": 26,
+            "y": 29,
+            "z": 2
+          },
+          {
+            "x": 25,
+            "y": 30,
+            "z": 2
+          },
+          {
+            "x": 24,
+            "y": 31,
+            "z": 2
+          },
+          {
+            "x": 23,
+            "y": 32,
+            "z": 2
+          },
+          {
+            "x": 22,
+            "y": 33,
+            "z": 2
+          },
+          {
+            "x": 12,
+            "y": 35,
+            "z": 2
+          },
+          {
+            "x": 13,
+            "y": 36,
+            "z": 2
+          },
+          {
+            "x": 14,
+            "y": 37,
+            "z": 2
+          },
+          {
+            "x": 16,
+            "y": 37,
+            "z": 2
+          },
+          {
+            "x": 15,
+            "y": 38,
+            "z": 2
+          },
+          {
+            "x": 26,
+            "y": 30,
+            "z": 2
+          },
+          {
+            "x": 25,
+            "y": 31,
+            "z": 2
+          },
+          {
+            "x": 24,
+            "y": 32,
+            "z": 2
+          },
+          {
+            "x": 23,
+            "y": 33,
+            "z": 2
+          },
+          {
+            "x": 12,
+            "y": 36,
+            "z": 2
+          },
+          {
+            "x": 13,
+            "y": 37,
+            "z": 2
+          },
+          {
+            "x": 14,
+            "y": 38,
+            "z": 2
+          },
+          {
+            "x": 26,
+            "y": 31,
+            "z": 2
+          },
+          {
+            "x": 25,
+            "y": 32,
+            "z": 2
+          },
+          {
+            "x": 24,
+            "y": 33,
+            "z": 2
+          },
+          {
+            "x": 23,
+            "y": 34,
+            "z": 2
+          },
+          {
+            "x": 12,
+            "y": 37,
+            "z": 2
+          },
+          {
+            "x": 13,
+            "y": 38,
+            "z": 2
+          },
+          {
+            "x": 14,
+            "y": 39,
+            "z": 2
+          },
+          {
+            "x": 27,
+            "y": 31,
+            "z": 2
+          },
+          {
+            "x": 26,
+            "y": 32,
+            "z": 2
+          },
+          {
+            "x": 25,
+            "y": 33,
+            "z": 2
+          },
+          {
+            "x": 24,
+            "y": 34,
+            "z": 2
+          },
+          {
+            "x": 23,
+            "y": 35,
+            "z": 2
+          },
+          {
+            "x": 26,
+            "y": 33,
+            "z": 2
+          },
+          {
+            "x": 25,
+            "y": 34,
+            "z": 2
+          },
+          {
+            "x": 24,
+            "y": 35,
+            "z": 2
+          },
+          {
+            "x": 26,
+            "y": 34,
+            "z": 2
+          },
+          {
+            "x": 25,
+            "y": 35,
+            "z": 2
+          },
+          {
+            "x": 24,
+            "y": 36,
+            "z": 2
+          },
+          {
+            "x": 27,
+            "y": 34,
+            "z": 2
+          },
+          {
+            "x": 26,
+            "y": 35,
+            "z": 2
+          },
+          {
+            "x": 25,
+            "y": 36,
+            "z": 2
+          },
+          {
+            "x": 28,
+            "y": 34,
+            "z": 2
+          },
+          {
+            "x": 27,
+            "y": 35,
+            "z": 2
+          },
+          {
+            "x": 26,
+            "y": 36,
+            "z": 2
+          },
+          {
+            "x": 28,
+            "y": 35,
+            "z": 2
+          },
+          {
+            "x": 27,
+            "y": 36,
+            "z": 2
+          },
+          {
+            "x": 26,
+            "y": 37,
+            "z": 2
+          },
+          {
+            "x": 28,
+            "y": 36,
+            "z": 2
+          },
+          {
+            "x": 27,
+            "y": 37,
+            "z": 2
+          },
+          {
+            "x": 26,
+            "y": 38,
+            "z": 2
+          },
+          {
+            "x": 28,
+            "y": 37,
+            "z": 2
+          },
+          {
+            "x": 27,
+            "y": 38,
+            "z": 2
+          },
+          {
+            "x": 29,
+            "y": 37,
+            "z": 2
+          },
+          {
+            "x": 28,
+            "y": 38,
+            "z": 2
+          },
+          {
+            "x": 29,
+            "y": 38,
+            "z": 2
+          },
+          {
+            "x": 28,
+            "y": 39,
+            "z": 2
+          },
+          {
+            "x": 30,
+            "y": 38,
+            "z": 2
+          }
+        ],
+        "ore": {
+          "target": {
+            "x": 21,
+            "y": 33,
+            "z": 2
+          },
+          "standing": {
+            "x": 22,
+            "y": 33,
+            "z": 2
+          }
+        },
+        "score": 27
+      },
+      "storage": [
+        {
+          "x": 34,
+          "y": 33,
+          "z": 9
+        },
+        {
+          "x": 33,
+          "y": 33,
+          "z": 9
+        },
+        {
+          "x": 35,
+          "y": 33,
+          "z": 9
+        },
+        {
+          "x": 34,
+          "y": 34,
+          "z": 9
+        },
+        {
+          "x": 34,
+          "y": 31,
+          "z": 9
+        },
+        {
+          "x": 35,
+          "y": 32,
+          "z": 9
+        },
+        {
+          "x": 32,
+          "y": 33,
+          "z": 9
+        },
+        {
+          "x": 36,
+          "y": 33,
+          "z": 9
+        },
+        {
+          "x": 33,
+          "y": 34,
+          "z": 9
+        },
+        {
+          "x": 35,
+          "y": 34,
+          "z": 9
+        }
+      ],
+      "work": {
+        "revealed": 719,
+        "producedSteel": 37,
+        "totalProducedSteel": 37,
+        "carriedLayers": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "tick": 1841
+      },
+      "legacy": [
+        {
+          "file": "tests/fixtures/voxel-v7-start.json",
+          "sha256": "203b82e8cf07279f2090a9576131dc47182a2c8fdce838542ed05b6480969076",
+          "version": 7,
+          "generator": 1,
+          "tick": 0
+        },
+        {
+          "file": "tests/fixtures/voxel-v35-exploration-active.json",
+          "sha256": "01da342a40412eba91f22d3cf0a7856018d48ce8db7725b2c4d353e82cd3e5bb",
+          "version": 35,
+          "generator": 2,
+          "tick": 1084
+        }
+      ]
+    },
+    "errors": [],
+    "finishedAt": "2026-11-04T03:10:49.310Z"
+  },
+  "browser": {
+    "raw": {
+      "file": "test-results/voxel-exploration-browser-dev1/report.json",
+      "sha256": "0443bb95b2cc42a3598949bf19f0d7a83f4bb8bebe1633250335f6c3d64e8093",
+      "bytes": 9894
+    },
+    "version": 36,
+    "status": "passed",
+    "startedAt": "2026-11-04T03:11:14.680Z",
+    "scriptSha256": "afe82085e05899751c9c533c31c39cffc07bad7a9155c780fe87b357d9427371",
+    "campaign": {
+      "file": "test-results/voxel-exploration-dev3/report.json",
+      "sha256": "ff20bc51e841808472478c55d5468e2e925986a2452747e9a721c9e6140ee1d9",
+      "sourceManifestSha256": "f50e83e35dd521c6b1e9aab89d143f050bff5be48c61731eb6cf9ec832a189ae"
+    },
+    "scope": "Fresh generator-3 worlds created from regional UI; all mutations use visible controls, map clicks, keyboard and real download/file chooser. Read-only snapshot/project/exportSave/blockAt/ladderAt/exploredAt verify rendering and physical effects. The excavation route comes from the API campaign authoritative terrain inspection; this is not a screen-only discovery claim. No campaign fixture is imported to shortcut digging. Genuine historical saves are imported only for explicit compatibility checks.",
+    "modes": [
+      {
+        "mode": "worker",
+        "checks": [
+          {
+            "name": "new UI world hides cave air and ore alike across layer changes selection building refusal and 900px layout"
+          },
+          {
+            "name": "ordinary map clicks excavate two real ladder segments while the sealed cave stays hidden"
+          },
+          {
+            "name": "planned-blind-excavation",
+            "tick": 1380
+          },
+          {
+            "name": "blind excavation physically opens the cave reveals its interior and clears the redundant hidden-air order"
+          },
+          {
+            "name": "carrying-discovered-steel",
+            "tick": 1792
+          },
+          {
+            "name": "a real miner and hauler transport finite discovered steel from the cave through the shaft to surface storage",
+            "producedSteel": 37,
+            "carrierId": 318,
+            "cargoLayer": 2,
+            "storedSteel": 37,
+            "tick": 1900
+          },
+          {
+            "name": "completed-exploration",
+            "tick": 1900
+          },
+          {
+            "name": "genuine gen1 and gen2 saves remain fully visible and restoring gen3 keeps its partial permanent mask"
+          }
+        ],
+        "screenshots": [
+          "test-results/voxel-exploration-browser-dev1/worker-exploration-setup.png",
+          "test-results/voxel-exploration-browser-dev1/worker-sealed-underground-mask.png",
+          "test-results/voxel-exploration-browser-dev1/worker-unexplored-900.png",
+          "test-results/voxel-exploration-browser-dev1/worker-shaft-before-cave.png",
+          "test-results/voxel-exploration-browser-dev1/worker-blind-plan-including-hidden-air.png",
+          "test-results/voxel-exploration-browser-dev1/worker-opened-cave.png",
+          "test-results/voxel-exploration-browser-dev1/worker-physical-underground-steel-cargo.png",
+          "test-results/voxel-exploration-browser-dev1/worker-permanent-exploration-after-reload.png",
+          "test-results/voxel-exploration-browser-dev1/worker-legacy-gen1-known-underground.png",
+          "test-results/voxel-exploration-browser-dev1/worker-legacy-gen2-known-underground.png"
+        ],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:4182/assets/index-BcqCkhyu.js",
+            "status": 200,
+            "sha256": "fc04368729cee7e7c83228e262b45b6f8a97a8f9f2bdd29ede9e81f3b6939f23",
+            "bytes": 2356,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/main-C2UXPmIc.css",
+            "status": 200,
+            "sha256": "71e020145d201088399af5234d923893927b4d4124a188b97ec9769fa7f7983d",
+            "bytes": 47556,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "bytes": 221699,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/main-BDuM91RB.js",
+            "status": 200,
+            "sha256": "04bbe927d2803fbfa2ea6c26f86966851cbb02e2f116e1add14c6d248e5f4703",
+            "bytes": 883616,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/sim.worker-CrC_7203.js",
+            "status": 200,
+            "sha256": "6c1e94a11fbcdcc312acc805e02d5a9051694a5a5398ed98c899667847c1b614",
+            "bytes": 529061,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/render.worker-C72eEKeN.js",
+            "status": 200,
+            "sha256": "61924f8385ae531a01627ed4b917a67573470d0d58391feb12c8e4f4c748a798",
+            "bytes": 618652,
+            "matchesLocalBuild": true
+          }
+        ],
+        "errors": [],
+        "saves": [
+          {
+            "file": "test-results/voxel-exploration-browser-dev1/worker-planned-blind-excavation.json",
+            "sha256": "9dba191c0427e6f5276a5ed826cdf589504aebf4f9fa5c5c92a78ee3ff518122",
+            "tick": 1380,
+            "known": 38014
+          },
+          {
+            "file": "test-results/voxel-exploration-browser-dev1/worker-carrying-discovered-steel.json",
+            "sha256": "0f91fc9cb74203b8f8b80019a11a8f4b18d8c62e86ba28325e800d006385dcc3",
+            "tick": 1792,
+            "known": 38738
+          },
+          {
+            "file": "test-results/voxel-exploration-browser-dev1/worker-completed-exploration.json",
+            "sha256": "575d2dd921d36445bf8cf87a8484e5062f0ab084dbc404caa2eb5277196735e1",
+            "tick": 1900,
+            "known": 38738
+          }
+        ],
+        "status": "passed"
+      },
+      {
+        "mode": "main",
+        "checks": [
+          {
+            "name": "new UI world hides cave air and ore alike across layer changes selection building refusal and 900px layout"
+          },
+          {
+            "name": "ordinary map clicks excavate two real ladder segments while the sealed cave stays hidden"
+          },
+          {
+            "name": "planned-blind-excavation",
+            "tick": 1380
+          },
+          {
+            "name": "blind excavation physically opens the cave reveals its interior and clears the redundant hidden-air order"
+          },
+          {
+            "name": "carrying-discovered-steel",
+            "tick": 1794
+          },
+          {
+            "name": "a real miner and hauler transport finite discovered steel from the cave through the shaft to surface storage",
+            "producedSteel": 37,
+            "carrierId": 318,
+            "cargoLayer": 2,
+            "storedSteel": 37,
+            "tick": 1895
+          },
+          {
+            "name": "completed-exploration",
+            "tick": 1895
+          },
+          {
+            "name": "genuine gen1 and gen2 saves remain fully visible and restoring gen3 keeps its partial permanent mask"
+          }
+        ],
+        "screenshots": [
+          "test-results/voxel-exploration-browser-dev1/main-exploration-setup.png",
+          "test-results/voxel-exploration-browser-dev1/main-sealed-underground-mask.png",
+          "test-results/voxel-exploration-browser-dev1/main-unexplored-900.png",
+          "test-results/voxel-exploration-browser-dev1/main-shaft-before-cave.png",
+          "test-results/voxel-exploration-browser-dev1/main-blind-plan-including-hidden-air.png",
+          "test-results/voxel-exploration-browser-dev1/main-opened-cave.png",
+          "test-results/voxel-exploration-browser-dev1/main-physical-underground-steel-cargo.png",
+          "test-results/voxel-exploration-browser-dev1/main-permanent-exploration-after-reload.png",
+          "test-results/voxel-exploration-browser-dev1/main-legacy-gen1-known-underground.png",
+          "test-results/voxel-exploration-browser-dev1/main-legacy-gen2-known-underground.png"
+        ],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:4182/assets/index-BcqCkhyu.js",
+            "status": 200,
+            "sha256": "fc04368729cee7e7c83228e262b45b6f8a97a8f9f2bdd29ede9e81f3b6939f23",
+            "bytes": 2356,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/main-C2UXPmIc.css",
+            "status": 200,
+            "sha256": "71e020145d201088399af5234d923893927b4d4124a188b97ec9769fa7f7983d",
+            "bytes": 47556,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "bytes": 221699,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/main-BDuM91RB.js",
+            "status": 200,
+            "sha256": "04bbe927d2803fbfa2ea6c26f86966851cbb02e2f116e1add14c6d248e5f4703",
+            "bytes": 883616,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/sim.worker-CrC_7203.js",
+            "status": 200,
+            "sha256": "6c1e94a11fbcdcc312acc805e02d5a9051694a5a5398ed98c899667847c1b614",
+            "bytes": 529061,
+            "matchesLocalBuild": true
+          }
+        ],
+        "errors": [],
+        "saves": [
+          {
+            "file": "test-results/voxel-exploration-browser-dev1/main-planned-blind-excavation.json",
+            "sha256": "9dba191c0427e6f5276a5ed826cdf589504aebf4f9fa5c5c92a78ee3ff518122",
+            "tick": 1380,
+            "known": 38014
+          },
+          {
+            "file": "test-results/voxel-exploration-browser-dev1/main-carrying-discovered-steel.json",
+            "sha256": "9b62b0852a120fb34ee46508126db682f0ba20bb0ac868514edc9958326b1233",
+            "tick": 1794,
+            "known": 38738
+          },
+          {
+            "file": "test-results/voxel-exploration-browser-dev1/main-completed-exploration.json",
+            "sha256": "5b8714586baf4d278a187287c59b97d7a06205dba6da8220e8a2c70510ad0afc",
+            "tick": 1895,
+            "known": 38738
+          }
+        ],
+        "status": "passed"
+      }
+    ],
+    "finishedAt": "2026-11-04T03:14:59.117Z"
+  },
+  "screenshots": [
+    {
+      "file": "docs/research/rimworld/evidence/voxel/exploration-sealed-underground.png",
+      "sha256": "0cc315c71bffd611d8f1db7970992e6361960e2be9720ad024d0d14f5911f6a9",
+      "bytes": 415454
+    },
+    {
+      "file": "docs/research/rimworld/evidence/voxel/exploration-steel-cargo.png",
+      "sha256": "30d1a7a9836298d85214c9aa2e99511f24a04a3818a783b1f1f86209a7b9fc1f",
+      "bytes": 645110
+    },
+    {
+      "file": "docs/research/rimworld/evidence/voxel/exploration-opened-cave.png",
+      "sha256": "78bd3b9190238fa38a89adf2e517e264227aed7bbfac946a9d96f28f1e1052b5",
+      "bytes": 614057
+    },
+    {
+      "file": "docs/research/rimworld/evidence/voxel/exploration-unexplored-900.png",
+      "sha256": "5d572f8b1856b8136e623f3df3f5af8f5a8fa908864b6499eeb90ea2863a523f",
+      "bytes": 219120
+    }
+  ],
+  "historicalFixture": {
+    "file": "tests/fixtures/voxel-v35-exploration-active.json",
+    "sha256": "01da342a40412eba91f22d3cf0a7856018d48ce8db7725b2c4d353e82cd3e5bb",
+    "bytes": 115537
+  },
+  "developmentDiagnostic": {
+    "raw": {
+      "file": "test-results/v36-regression-first.json",
+      "sha256": "22529bbe40412bcf5f65b528176d4d1d64419f19f2a83988f516446290298e79",
+      "bytes": 480691
+    },
+    "passed": 1192,
+    "failed": 6,
+    "note": "The initial development run started while version assertions and controlled terrain fixtures were being updated. Six failures were stale current-save version 35 assertions, a stale default-generator 2 assertion, and treating now-valid generator 3 as invalid. The complete final run uses current version 36, default generator 3, invalid generator 4, and explicit generator 2 only for handcrafted historical geometry fixtures. No failed report was overwritten."
+  },
+  "limitations": [
+    "The route was selected with read-only authoritative terrain inspection; neither API nor browser run is screen-only discovery.",
+    "Current caves are enclosed chambers with player-excavated entrances. Natural mouths, underground water, collapse and cave events are not implemented.",
+    "Raw saves contain real terrain; the exploration boundary is normal rendering and interaction, not encryption.",
+    "Raw development, execution and browser reports are retained locally under test-results; selected summaries and screenshot bytes are committed here.",
+    "Pages publication and online checks are recorded separately after this source commit."
+  ]
+}

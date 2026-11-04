@@ -8,11 +8,23 @@ describe('versioned world regions and local-map identity', () => {
     // This is a save-format compatibility vector. Changing v1 climate, terrain or
     // seed derivation would invalidate old saved sites; such changes require v2.
     const result = resolveWorldSite({ version: 1, worldSeed: 73129, tileId: 714 });
+    expect(result.generator).toBe(2);
     expect(result.seed).toBe(3951304940);
     expect(result.settings).toEqual({
       biome: 'temperate', hilliness: 'small', meanTemperature: 16.7, rainfall: 1055, latitude: -18.75,
     });
     expect(result.tile).toMatchObject({ x: 42, y: 14, longitude: 138.75, elevation: 747, growingDays: 60 });
+  });
+
+  it('versions local caves without changing the region or invalidating v1 selection', () => {
+    const old = resolveWorldSite({ version: 1, worldSeed: 73129, tileId: 714 });
+    const next = resolveWorldSite({ version: 2, worldSeed: 73129, tileId: 714 });
+    expect(next.generator).toBe(3);
+    expect(next.seed).toBe(old.seed);
+    expect(next.settings).toEqual(old.settings);
+    expect(next.tile).toEqual(old.tile);
+    expect(next.site.version).toBe(2);
+    expect(resolveWorldSite(old.site)).toEqual(old);
   });
 
   it.each([73129, 17, 111, 0, -1, Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER])(
@@ -66,7 +78,7 @@ describe('versioned world regions and local-map identity', () => {
       expect(() => generateRegions(seed as number)).toThrow();
       expect(() => resolveWorldSite({ ...base, worldSeed: seed })).toThrow();
     }
-    for (const site of [null, [], {}, { ...base, version: 2 }, { ...base, tileId: -1 },
+    for (const site of [null, [], {}, { ...base, version: 3 }, { ...base, tileId: -1 },
       { ...base, tileId: 1152 }, { ...base, tileId: 714.5 }, { ...base, tileId: '714' },
       { ...base, localSeed: 3951304940 }, { version: 1, tileId: 714 }]) {
       const before = structuredClone(site);
@@ -85,7 +97,7 @@ describe('versioned world regions and local-map identity', () => {
     const previews = picks.map((tile) => {
       const site = { version: 1 as const, worldSeed: map.seed, tileId: tile.id };
       const resolved = resolveWorldSite(site), before = structuredClone(resolved);
-      const preview = previewWorld(resolved.seed, resolved.settings);
+      const preview = previewWorld(resolved.seed, resolved.settings, resolved.generator);
       expect(preview.seed).toBe(tile.mapSeed);
       expect(preview.settings).toEqual(tile.settings);
       expect(preview.summary.growingDays).toBe(tile.growingDays);

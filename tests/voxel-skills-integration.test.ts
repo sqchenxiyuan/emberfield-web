@@ -10,7 +10,7 @@ import { freshBatch } from '../src/voxel/preservation';
 const pos = (x: number, y: number, z = 8): Pos => ({ x, y, z });
 // Controlled geometry and stock for transactional boundary tests, not a normal campaign.
 function fixture() {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 }, false, 2) /* Controlled geometry: historical full visibility. */;
   // Controlled feature fixture represents a colony with research already completed.
   s.research = initialResearch(true);
   // Isolated terrain fixture excludes the newly spawned wildlife.
@@ -83,7 +83,7 @@ describe('skills in real simulation tasks and saves', () => {
     expect(old.pawns[0].skills).toBeUndefined();
     const s = VoxelSimulation.load(old),
       saved = s.save();
-    expect(saved.version).toBe(35);
+    expect(saved.version).toBe(36);
     expect(saved.items).toEqual(old.items);
     expect(saved.blocks).toEqual(old.blocks);
     expect(saved.pawns.map((p) => [p.food, p.rest, p.worn, p.weapon, p.health])).toEqual(

@@ -24,7 +24,7 @@ afterEach(() => vi.restoreAllMocks());
 describe('persistent world region identity', () => {
   it('derives the exact preview terrain, climate and independent local seed from a selected site', () => {
     const resolved = regions.resolveWorldSite(site), before = structuredClone(site);
-    const generated = worldgen.generateWorld(resolved.seed, resolved.settings);
+    const generated = worldgen.generateWorld(resolved.seed, resolved.settings, resolved.generator);
     const sim = VoxelSimulation.fromWorldSite(site);
     expect(site).toEqual(before); expect(sim.seed).toBe(resolved.seed);
     expect(sim.settings).toEqual(resolved.settings); expect(sim.generator).toBe(2);
@@ -56,7 +56,7 @@ describe('persistent world region identity', () => {
   });
 
   it.each([
-    null, undefined, [], {}, { ...site, version: 2 }, { ...site, extra: true },
+    null, undefined, [], {}, { ...site, version: 3 }, { ...site, extra: true },
     { ...site, tileId: -1 }, { ...site, tileId: 1152 }, { ...site, tileId: 1.5 },
     { ...site, worldSeed: NaN }, { ...site, worldSeed: Infinity }, { ...site, worldSeed: '73129' },
   ])('rejects malformed creation input without changing it: %j', invalid => {
@@ -110,7 +110,7 @@ describe('authentic v34 world-site migration', () => {
     const old = historical(), before = structuredClone(old);
     const generate = vi.spyOn(worldgen, 'generateWorld'), resolve = vi.spyOn(regions, 'resolveWorldSite');
     const sim = VoxelSimulation.load(old), saved = sim.save();
-    expect(old).toEqual(before); expect(saved.version).toBe(35); expect(saved.worldSite).toBeNull();
+    expect(old).toEqual(before); expect(saved.version).toBe(36); expect(saved.worldSite).toBeNull();
     expect(generate).not.toHaveBeenCalled(); expect(resolve).not.toHaveBeenCalled();
     for (const key of ['seed', 'generator', 'settings', 'tick', 'nextId', 'blocks', 'ladders', 'structureKinds',
       'items', 'stats', 'trade', 'beds', 'tables', 'chairs', 'stockpiles'] as const) expect(saved[key], key).toEqual(old[key]);

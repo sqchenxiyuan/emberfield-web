@@ -33,7 +33,7 @@ function historical(name: keyof typeof HASHES) {
 describe('authentic v28 husbandry migration', () => {
   it.each(['initial', 'protected', 'final'] as const)('retains genuine %s checkpoint state and seeds grass without allocating identities', name => {
     const old = historical(name), before = structuredClone(old), s = VoxelSimulation.load(old), saved = s.save();
-    expect(old).toEqual(before); expect(saved.version).toBe(35);
+    expect(old).toEqual(before); expect(saved.version).toBe(36);
     expect(saved.tick).toBe(old.tick); expect(saved.nextId).toBe(old.nextId);
     expect(saved.animals).toHaveLength(old.animals.length);
     for (const previous of old.animals) {
@@ -100,7 +100,7 @@ const pos = (x: number, y = 16, z = 8): Pos => ({ x, y, z });
 /** Controlled current-world integration fixture, kept separate from immutable
  * historical source bytes. Only time advancement drives the activities below. */
 function activityFixture() {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 }, false, 2) /* Controlled geometry: historical full visibility. */;
   s.animals = []; s.grass = []; s.items = []; s.trees = []; s.stockpiles = [];
   s.blocks.fill(Block.Stone); s.ladders.fill(0); s.structureKinds.fill(0);
   for (let x = 10; x <= 28; x++) for (let y = 10; y <= 22; y++) for (let z = 8; z < 16; z++)

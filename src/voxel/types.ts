@@ -60,7 +60,7 @@ export interface WorldSummary {
   growingDays: number;
 }
 export interface WorldPreview {
-  generator: 2;
+  generator: 2 | 3;
   seed: number;
   settings: WorldSettings;
   spawn: Pos;
@@ -795,7 +795,8 @@ export interface VoxelSnapshot {
   combatEvents: CombatEvent[];
   sandbags: Sandbag[];
   seed: number;
-  generator: 1 | 2;
+  generator: 1 | 2 | 3;
+  exploration: { known: number; total: number };
   worldSite: WorldSite | null;
   settings: WorldSettings;
   spawn: Pos;
@@ -845,6 +846,7 @@ export interface ChunkUpdate {
   id: number;
   blocks: Uint8Array;
   ladders: Uint8Array;
+  explored: Uint8Array;
 }
 export type VoxelCommand =
   | { type: 'uninstallFurniture'; kind: FurnitureKind; furnitureId: number }
@@ -947,7 +949,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 35;
+  version: 36;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;
@@ -958,7 +960,7 @@ export interface VoxelSave {
   projectiles: Projectile[];
   combatEvents: CombatEvent[];
   sandbags: Sandbag[];
-  generator: 1 | 2;
+  generator: 1 | 2 | 3;
   worldSite: WorldSite | null;
   settings: WorldSettings;
   spawn: Pos;
@@ -967,6 +969,7 @@ export interface VoxelSave {
   nextId: number;
   // RLE pairs keep terrain compact; separate format never overwrites 2D v1 saves.
   blocks: number[];
+  explored: number[];
   ladders: number[];
   pawns: Pawn[];
   items: Stack[];

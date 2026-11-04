@@ -1,0 +1,1027 @@
+{
+  "fixture": "voxel-v35-exploration-active.json",
+  "sha256": "01da342a40412eba91f22d3cf0a7856018d48ce8db7725b2c4d353e82cd3e5bb",
+  "version": 35,
+  "worldSite": {
+    "version": 1,
+    "worldSeed": 73129,
+    "tileId": 714
+  },
+  "generator": 2,
+  "tick": 1084,
+  "sourceCommit": "b125bd3ee4fd4e688b81d9deeecaa8c230723de3",
+  "sourcePath": "test-results/voxel-regions/site-714-completed.json",
+  "sourceSha256": "8a9c248f9c209ee8c0153612e8b2cff1ca8de77daf49b425ddaf0ac840490e37",
+  "executedBundle": "test-results/voxel-regions/executed-world.mjs",
+  "executedBundleSha256": "ec449aa56e9212d8f5dd7748e3c7dfc70054a601a2967938944125bb6c87956c",
+  "sourceManifestSha256": "0e4a674ce2d8e12e4ae6081d83249d35a86a497768ee4a08b2c6d514d87542a7",
+  "terrainChangedCells": 3,
+  "shaft": {
+    "x": 32,
+    "y": 31,
+    "z": 9
+  },
+  "activeJobs": [
+    {
+      "id": 349,
+      "kind": "mine",
+      "progress": 0.64,
+      "delivered": {}
+    }
+  ],
+  "commands": [
+    {
+      "tick": 510,
+      "c": {
+        "type": "threats",
+        "enabled": false
+      },
+      "result": {
+        "ok": true,
+        "message": "已关闭后续袭击，场上的敌人仍然存在"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "fireHazards",
+        "enabled": false
+      },
+      "result": {
+        "ok": true,
+        "message": "后续火灾事件已关闭，现有火焰继续燃烧并可扑灭"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 0,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "0:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 1,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "1:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 2,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "2:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 3,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "3:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 4,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "4:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 5,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "5:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 6,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "6:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 7,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "7:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 8,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "8:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 9,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "9:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 10,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "10:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 11,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "11:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 12,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "12:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 13,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "13:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 14,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "14:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 15,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "15:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 16,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "16:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 17,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "17:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 18,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "18:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 19,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "19:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 20,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "20:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 21,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "21:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 22,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "22:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 316,
+        "hour": 23,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "23:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 0,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "0:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 1,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "1:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 2,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "2:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 3,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "3:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 4,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "4:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 5,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "5:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 6,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "6:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 7,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "7:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 8,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "8:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 9,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "9:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 10,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "10:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 11,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "11:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 12,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "12:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 13,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "13:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 14,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "14:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 15,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "15:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 16,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "16:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 17,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "17:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 18,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "18:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 19,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "19:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 20,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "20:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 21,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "21:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 22,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "22:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 317,
+        "hour": 23,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "23:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 0,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "0:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 1,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "1:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 2,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "2:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 3,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "3:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 4,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "4:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 5,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "5:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 6,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "6:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 7,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "7:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 8,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "8:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 9,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "9:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 10,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "10:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 11,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "11:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 12,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "12:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 13,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "13:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 14,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "14:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 15,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "15:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 16,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "16:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 17,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "17:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 18,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "18:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 19,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "19:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 20,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "20:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 21,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "21:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 22,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "22:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "schedule",
+        "pawnId": 318,
+        "hour": 23,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "23:00 作息已更新"
+      }
+    },
+    {
+      "tick": 510,
+      "c": {
+        "type": "designate",
+        "tool": "shaft",
+        "from": {
+          "x": 32,
+          "y": 31,
+          "z": 9
+        }
+      },
+      "result": {
+        "ok": true,
+        "message": "安排 4 项工作，需求木材 8；缺料和不可达任务会等待",
+        "count": 4
+      }
+    },
+    {
+      "tick": 1064,
+      "c": {
+        "type": "designate",
+        "tool": "mine",
+        "from": {
+          "x": 33,
+          "y": 31,
+          "z": 6
+        }
+      },
+      "result": {
+        "ok": true,
+        "message": "安排 1 项工作，需求木材 0；缺料和不可达任务会等待",
+        "count": 1
+      }
+    }
+  ],
+  "transformation": "Frozen genuine v35 source bundle loads a real site1 checkpoint. Public schedule, shaft and mine commands plus ordinary simulation ticks excavate a shaft and start mining. No terrain, resources, actor, clock or task injection."
+}

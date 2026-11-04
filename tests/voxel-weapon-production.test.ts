@@ -10,7 +10,7 @@ import { applyInjury } from '../src/voxel/injuries';
 
 const pos = (x: number, y: number, z = 8): Pos => ({ x, y, z });
 function fixture() {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 }, false, 2) /* Controlled geometry: historical full visibility. */;
   // Controlled feature fixture represents a colony with research already completed.
   s.research = initialResearch(true);
   // Isolated terrain fixture excludes the newly spawned wildlife.
@@ -81,7 +81,7 @@ describe('physical weapon production and persistence', () => {
     const old = JSON.parse(bytes.toString()),
       s = VoxelSimulation.load(old);
     expect(old.version).toBe(12);
-    expect(s.save().version).toBe(35);
+    expect(s.save().version).toBe(36);
     expect(s.weaponBenches).toEqual([]);
     expect(s.items).toEqual(old.items);
     expect(s.save().blocks).toEqual(old.blocks);

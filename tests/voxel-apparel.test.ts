@@ -54,7 +54,7 @@ function fixture() {
     meanTemperature: 24,
     latitude: 0,
     rainfall: 1100,
-  });
+  }, false, 2) /* Controlled geometry: historical full visibility. */;
   // Isolated terrain fixture excludes the newly spawned wildlife.
   s.animals = [];
   s.blocks.fill(Block.Stone);
@@ -464,7 +464,7 @@ describe('physical dressing, interruption, death and migration', () => {
     );
     const old = JSON.parse(raw.toString()),
       s = VoxelSimulation.load(old);
-    expect(s.save().version).toBe(35);
+    expect(s.save().version).toBe(36);
     expect(s.items).toEqual(old.items);
     expect(s.pawns.map((p) => p.health)).toEqual(old.pawns.map((p: any) => p.health));
     expect(s.counts().apparel).toBe(0);

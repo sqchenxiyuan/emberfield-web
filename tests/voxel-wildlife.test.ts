@@ -19,7 +19,7 @@ function until(s: VoxelSimulation, condition: () => boolean, limit = 3000) {
 }
 // Controlled geometry and starting inputs isolate mechanism boundaries. All tasks use public commands.
 function fixture() {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 }, false, 2) /* Controlled geometry: historical full visibility. */;
   s.animals = []; s.trees = []; s.items = []; s.stockpiles = [];
   s.blocks.fill(Block.Stone); s.ladders.fill(0); s.structureKinds.fill(0);
   for (let x = 8; x <= 40; x++) for (let y = 8; y <= 30; y++)
@@ -163,7 +163,7 @@ describe('wildlife, actual hunting and physical food chain', () => {
     const old = JSON.parse(readFileSync('tests/fixtures/voxel-v21-wildlife-initial.json', 'utf8'));
     expect(old.version).toBe(21); expect(old.animals).toBeUndefined();
     const s = VoxelSimulation.load(old);
-    expect(s.items).toEqual(old.items); expect(s.animals).toHaveLength(8); expect(s.save().version).toBe(35);
+    expect(s.items).toEqual(old.items); expect(s.animals).toHaveLength(8); expect(s.save().version).toBe(36);
     expect(VoxelSimulation.load(s.save()).animals).toEqual(s.animals);
   });
 });

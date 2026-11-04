@@ -27,7 +27,7 @@ const pos = (x: number, y: number, z = 8): Pos => ({ x, y, z });
 // Controlled terrain/materials isolate work eligibility and transaction boundaries.
 // No research progress is granted except the explicitly labelled near-completion case.
 function fixture(benches = 1) {
-  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 });
+  const s = new VoxelSimulation(73129, { hilliness: 'flat', meanTemperature: 24, latitude: 0 }, false, 2) /* Controlled geometry: historical full visibility. */;
   // Isolated terrain fixture excludes the newly spawned wildlife.
   s.animals = [];
   s.blocks.fill(Block.Stone);
@@ -302,7 +302,7 @@ describe('research save integrity and real v14 migration', () => {
       s = VoxelSimulation.load(old),
       saved = s.save();
     expect(old).toEqual(before);
-    expect(saved.version).toBe(35);
+    expect(saved.version).toBe(36);
     expect(saved.research.origin).toBe('legacy-unlocked');
     expect(saved.blocks).toEqual(old.blocks);
     expect(saved.items).toEqual(old.items);

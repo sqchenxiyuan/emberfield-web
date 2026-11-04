@@ -95,8 +95,11 @@ describe('voxel generation and chunk delivery', () => {
       weapon: 0,
       furniture: 0,
     });
-    expect(a.generator).toBe(2);
-    expect(a.worldSummary.resources.steel).toBeGreaterThan(0);
+    expect(a.generator).toBe(3);
+    expect(a.blocks.some(block => block === Block.Steel)).toBe(true);
+    expect(a.worldSummary.resources.steel).toBe(
+      a.blocks.reduce((count, block, cell) => count + Number(block === Block.Steel && a.explored[cell] === 1), 0),
+    );
     expect(a.trees.every((t) => t.species === 'poplar' && t.wood === 27)).toBe(true);
     expect(new Set(a.trees.map((t) => at(t))).size).toBe(a.trees.length);
     expect(position(CELLS - 1)).toEqual(pos(WIDTH - 1, DEPTH - 1, HEIGHT - 1));
@@ -406,7 +409,7 @@ describe('voxel persistence and input validation', () => {
         (d as { version: number }).version = 99;
       },
       (d) => {
-        (d as { generator: number }).generator = 3;
+        (d as { generator: number }).generator = 4;
       },
       (d) => {
         d.seed = Infinity;

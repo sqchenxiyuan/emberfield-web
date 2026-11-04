@@ -6,7 +6,9 @@
 
 在线试玩：[多层体素](https://sqchenxiyuan.github.io/emberfield-web/?world=voxel) · [二维营地](https://sqchenxiyuan.github.io/emberfield-web/) · 源码：[sqchenxiyuan/emberfield-web](https://github.com/sqchenxiyuan/emberfield-web)。
 
-2026-11-04世界选址更新（v35）：菜单新增世界地图，固定世界种子生成1,152个地区。可以点选、键盘选择和对比三个地点，再进入对应的实际营地；气候、起伏、可耕地、林木和有限矿脉影响开局取舍。地区身份随存档保留，旧营地不重新生成；仍支持自定义地图。先接选址与经营机制，世界分布参数后续再调整。海洋仅用于世界图背景，本地河流、洞穴和世界旅行尚未实现。见[106原版机制](docs/research/rimworld/106-world-site-selection-mechanisms.md)、[107玩法与验证](docs/research/rimworld/107-world-site-selection-gameplay.md)。
+2026-11-04地下探索更新（v36）：新地图加入真实地下洞室与相连隧道。可以开凿梯井、在未知区域拖出采矿计划，挖通后揭示连通空间及矿面；空洞里的多余采矿标记自动清除。切层和侧栏遵守探索状态，发现记录随存档保留，旧营地继续原地形与可见状态。优先接通开采、发现与回运，洞穴密度和劳动参数后续再调。当前洞室需人工开入口，尚无天然地表洞口或地下水。见[108原版机制](docs/research/rimworld/108-caves-exploration-mechanisms.md)、[109玩法与验证](docs/research/rimworld/109-caves-exploration-gameplay.md)。
+
+2026-11-04世界选址更新（v35）：菜单新增世界地图，固定世界种子生成1,152个地区。可以点选、键盘选择和对比三个地点，再进入对应的实际营地；气候、起伏、可耕地、林木和有限矿脉影响开局取舍。地区身份随存档保留，旧营地不重新生成；仍支持自定义地图。先接选址与经营机制，世界分布参数后续再调整。海洋仅用于世界图背景，本地河流和世界旅行尚未实现；地下洞室由v36加入。见[106原版机制](docs/research/rimworld/106-world-site-selection-mechanisms.md)、[107玩法与验证](docs/research/rimworld/107-world-site-selection-gameplay.md)。
 
 2026-11-04家具搬装更新（v34）：床、餐桌和餐椅可以卸下、入库、跨层搬移和旋转重装。工人实际搬运指定的原家具，身份、品质与耐久保留；取消、满地面、征召或倒地、火灾和途中读档均按实体处理。新增搬装按钮、预览与阶段检查，旧仓储筛选保持原设置。先完成营地改造玩法，参数后续再调整。见[103原版机制](docs/research/rimworld/103-furniture-reinstall-mechanisms.md)、[104实机对照](docs/research/rimworld/104-native-furniture-reinstall-runtime.md)、[105玩法与验证](docs/research/rimworld/105-furniture-relocation-gameplay.md)。
 
