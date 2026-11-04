@@ -6,6 +6,8 @@
 
 在线试玩：[多层体素](https://sqchenxiyuan.github.io/emberfield-web/?world=voxel) · [二维营地](https://sqchenxiyuan.github.io/emberfield-web/) · 源码：[sqchenxiyuan/emberfield-web](https://github.com/sqchenxiyuan/emberfield-web)。
 
+2026-11-04补充[111实体货架机制](docs/research/rimworld/111-shelf-storage-mechanisms.md)与[112原版实机](docs/research/rimworld/112-native-shelves-runtime.md)：正常建造后同格储存三堆，满架可直接卸下；物资留在地图上，原架的储存设置随重装和读档保留。下一步连接 Web 多堆、指定物品取用和满架搬迁；当前游戏仍为 v36，货架尚未实现。继续优先玩法与机制，成本和效率数值后调。
+
 2026-11-04补充[110原版探索实机](docs/research/rimworld/110-native-exploration-runtime.md)：普通操作验证未知区域可规划采矿、不能直接建墙；实际挖通后显露空间并清除空地上的采矿标记，重新载入保留结果。本次原版目标为岩壁封住的露天空地，和Web的三维地下洞室区分记录。研究更新未改变v36游戏逻辑，继续以机制与操作闭环为先、数值后调。
 
 2026-11-04地下探索更新（v36）：新地图加入真实地下洞室与相连隧道。可以开凿梯井、在未知区域拖出采矿计划，挖通后揭示连通空间及矿面；空洞里的多余采矿标记自动清除。切层和侧栏遵守探索状态，发现记录随存档保留，旧营地继续原地形与可见状态。优先接通开采、发现与回运，洞穴密度和劳动参数后续再调。当前洞室需人工开入口，尚无天然地表洞口或地下水。见[108原版机制](docs/research/rimworld/108-caves-exploration-mechanisms.md)、[109玩法与验证](docs/research/rimworld/109-caves-exploration-gameplay.md)。

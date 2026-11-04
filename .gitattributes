@@ -6,3 +6,5 @@ tests/fixtures/voxel-v*.json text eol=lf
 scripts/research/* text eol=lf
 # Exploration evidence records the decoder manifest's exact bytes.
 docs/research/rimworld/evidence/exploration-runtime/decode-manifest.json text eol=lf
+# Keep shelf records portable, including the byte-hashed retained REA response.
+docs/research/rimworld/evidence/shelf-storage-*.json text eol=lf

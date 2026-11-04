@@ -1,0 +1,67 @@
+{
+  "evidence_id": "RW17-SHELF-STORAGE",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.SlotGroup",
+      "local_file": ".local-research/shelf-storage/RimWorld.SlotGroup.cs",
+      "sha256": "d91098a284a33408d9fba9ae5078c9d2186c92f8088c8310d016c6ebfc929a15",
+      "lines": 156
+    },
+    {
+      "type": "RimWorld.SpecialThingFilterWorker_CorpsesLarge",
+      "local_file": ".local-research/shelf-storage/RimWorld.SpecialThingFilterWorker_CorpsesLarge.cs",
+      "sha256": "4de51f04a56a242108810de5a287cab330c1a28609c8e9530838d6353d96ba75",
+      "lines": 52
+    },
+    {
+      "type": "RimWorld.Blueprint_Storage",
+      "local_file": ".local-research/shelf-storage/RimWorld.Blueprint_Storage.cs",
+      "sha256": "c27ea0ab466d409431b73a4fb66988e9213b7d580fda100e1637af649657a175",
+      "lines": 146
+    },
+    {
+      "type": "RimWorld.StorageGroup",
+      "local_file": ".local-research/shelf-storage/RimWorld.StorageGroup.cs",
+      "sha256": "9b8670c2da14baf8fb222f339fecc4c212d4a1ded908e970930d27477978a1b3",
+      "lines": 178
+    },
+    {
+      "type": "RimWorld.StoragePriority",
+      "local_file": ".local-research/shelf-storage/RimWorld.StoragePriority.cs",
+      "sha256": "12d2d5f96fab3e6961a66729903bf1ec34caa6b3adb551ac1629afe5a35b3c4b",
+      "lines": 12
+    },
+    {
+      "type": "Verse.GenGrid",
+      "local_file": ".local-research/shelf-storage/Verse.GenGrid.cs",
+      "sha256": "49d0bd1597228971bab4eb5b37bc55218d39ee116a3e1a4ece4a4b8ad0d3aca8",
+      "lines": 279
+    },
+    {
+      "type": "Verse.AI.PathGrid",
+      "local_file": ".local-research/shelf-storage/Verse.AI.PathGrid.cs",
+      "sha256": "3ab1db721b82280c92d5bf7253b76e65a0b9fe4d1db03dd441e720d03f4d3d48",
+      "lines": 285
+    },
+    {
+      "type": "Verse.AI.Pawn_PathFollower",
+      "local_file": ".local-research/shelf-storage/Verse.AI.Pawn_PathFollower.cs",
+      "sha256": "3131af1e4ea4bf68b5d4142843857e72d7f69205afe42e873d414e194ce83a9c",
+      "lines": 987
+    }
+  ]
+}

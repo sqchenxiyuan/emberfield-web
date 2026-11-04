@@ -1,0 +1,10 @@
+[
+  "RimWorld.SlotGroup",
+  "RimWorld.SpecialThingFilterWorker_CorpsesLarge",
+  "RimWorld.Blueprint_Storage",
+  "RimWorld.StorageGroup",
+  "RimWorld.StoragePriority",
+  "Verse.GenGrid",
+  "Verse.AI.PathGrid",
+  "Verse.AI.Pawn_PathFollower"
+]

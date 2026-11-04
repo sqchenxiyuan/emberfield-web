@@ -1,0 +1,896 @@
+{
+  "evidence_id": "RW17-SHELF-STORAGE",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction and original Core XML; target not executed",
+  "rea": {
+    "file": "shelf-storage-rea-managed.json",
+    "sha256": "58b86231f68ebe8db33abe6d8e9408dfc9f3ddf012319b4d824368715a025e2b",
+    "evidence_id": "ev_107c63f87f74870b8dc7c9c2205fec8ed587133e8dc9701a85c5682d8aa43cea",
+    "parent_evidence_id": "ev_002f7c6a8e7e5c16296ff1beb7f5dc6ac1cc486e52a65155a913c3753871a42b",
+    "mvid": "8e962ecc-7ac7-42d2-8f3b-1b16cd24d2cd"
+  },
+  "manifests": [
+    "energy",
+    "furniture-reinstall",
+    "furniture-reinstall-extra",
+    "logistics",
+    "preservation",
+    "shelf-storage",
+    "skills",
+    "weapons",
+    "weather",
+    "work"
+  ],
+  "shelves": [
+    {
+      "def": "Shelf",
+      "chain": [
+        "Shelf",
+        "StorageShelfBase",
+        "ShelfBase",
+        "FurnitureBase",
+        "BuildingBase"
+      ],
+      "fields": {
+        "thingClass": {
+          "value": "Building_Storage",
+          "origin": "StorageShelfBase"
+        },
+        "category": {
+          "value": "Building",
+          "origin": "BuildingBase"
+        },
+        "size": {
+          "value": "(2,1)",
+          "origin": "Shelf"
+        },
+        "passability": {
+          "value": "PassThroughOnly",
+          "origin": "ShelfBase"
+        },
+        "pathCost": {
+          "value": "50",
+          "origin": "ShelfBase"
+        },
+        "surfaceType": {
+          "value": "Item",
+          "origin": "ShelfBase"
+        },
+        "canOverlapZones": {
+          "value": "false",
+          "origin": "ShelfBase"
+        },
+        "minifiedDef": {
+          "value": "MinifiedThing",
+          "origin": "FurnitureBase"
+        },
+        "costStuffCount": {
+          "value": "20",
+          "origin": "Shelf"
+        },
+        "statBases/MaxHitPoints": {
+          "value": "100",
+          "origin": "Shelf"
+        },
+        "statBases/WorkToBuild": {
+          "value": "500",
+          "origin": "Shelf"
+        },
+        "building/maxItemsInCell": {
+          "value": "3",
+          "origin": "ShelfBase"
+        },
+        "building/preventDeteriorationOnTop": {
+          "value": "true",
+          "origin": "ShelfBase"
+        },
+        "building/ignoreStoredThingsBeauty": {
+          "value": "true",
+          "origin": "ShelfBase"
+        },
+        "building/defaultStorageSettings/priority": {
+          "value": "Preferred",
+          "origin": "StorageShelfBase"
+        },
+        "researchPrerequisites/li": {
+          "value": "ComplexFurniture",
+          "origin": "ShelfBase"
+        },
+        "thingCategories/li": {
+          "value": "BuildingsFurniture",
+          "origin": "FurnitureBase"
+        }
+      },
+      "quality_component_in_selected_chain": false
+    },
+    {
+      "def": "ShelfSmall",
+      "chain": [
+        "ShelfSmall",
+        "StorageShelfBase",
+        "ShelfBase",
+        "FurnitureBase",
+        "BuildingBase"
+      ],
+      "fields": {
+        "thingClass": {
+          "value": "Building_Storage",
+          "origin": "StorageShelfBase"
+        },
+        "category": {
+          "value": "Building",
+          "origin": "BuildingBase"
+        },
+        "size": {
+          "value": "(1,1)",
+          "origin": "ShelfSmall"
+        },
+        "passability": {
+          "value": "PassThroughOnly",
+          "origin": "ShelfBase"
+        },
+        "pathCost": {
+          "value": "50",
+          "origin": "ShelfBase"
+        },
+        "surfaceType": {
+          "value": "Item",
+          "origin": "ShelfBase"
+        },
+        "canOverlapZones": {
+          "value": "false",
+          "origin": "ShelfBase"
+        },
+        "minifiedDef": {
+          "value": "MinifiedThing",
+          "origin": "FurnitureBase"
+        },
+        "costStuffCount": {
+          "value": "10",
+          "origin": "ShelfSmall"
+        },
+        "statBases/MaxHitPoints": {
+          "value": "50",
+          "origin": "ShelfSmall"
+        },
+        "statBases/WorkToBuild": {
+          "value": "250",
+          "origin": "ShelfSmall"
+        },
+        "building/maxItemsInCell": {
+          "value": "3",
+          "origin": "ShelfBase"
+        },
+        "building/preventDeteriorationOnTop": {
+          "value": "true",
+          "origin": "ShelfBase"
+        },
+        "building/ignoreStoredThingsBeauty": {
+          "value": "true",
+          "origin": "ShelfBase"
+        },
+        "building/defaultStorageSettings/priority": {
+          "value": "Preferred",
+          "origin": "StorageShelfBase"
+        },
+        "researchPrerequisites/li": {
+          "value": "ComplexFurniture",
+          "origin": "ShelfBase"
+        },
+        "thingCategories/li": {
+          "value": "BuildingsFurniture",
+          "origin": "FurnitureBase"
+        }
+      },
+      "quality_component_in_selected_chain": false
+    }
+  ],
+  "xml": [
+    {
+      "id": "SX01",
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+      "source_sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55",
+      "xpath": "/Defs/ThingDef[@Name=\"FurnitureBase\" or @Name=\"ShelfBase\" or @Name=\"StorageShelfBase\" or defName=\"Shelf\" or defName=\"ShelfSmall\"]",
+      "projection": "Selected complete gameplay inheritance nodes; descriptions, art and sound omitted; MayRequire is retained, not evaluated",
+      "nodes": [
+        "<ThingDef Name=\"FurnitureBase\" ParentName=\"BuildingBase\" Abstract=\"True\"><designationCategory>Furniture</designationCategory><minifiedDef>MinifiedThing</minifiedDef><noRightClickDraftAttack>true</noRightClickDraftAttack><thingCategories><li>BuildingsFurniture</li></thingCategories></ThingDef>",
+        "<ThingDef Name=\"ShelfBase\" ParentName=\"FurnitureBase\" Abstract=\"True\"><altitudeLayer>Building</altitudeLayer><passability>PassThroughOnly</passability><fillPercent>0.4</fillPercent><pathCost>50</pathCost><stuffCategories><li>Metallic</li><li>Woody</li><li>Stony</li></stuffCategories><defaultPlacingRot>South</defaultPlacingRot><statBases><Flammability>1.0</Flammability><Beauty>0.5</Beauty></statBases><building><preventDeteriorationOnTop>true</preventDeteriorationOnTop><ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty><maxItemsInCell>3</maxItemsInCell><blueprintClass>Blueprint_Storage</blueprintClass><paintable>true</paintable></building><inspectorTabs><li>ITab_Storage</li></inspectorTabs><surfaceType>Item</surfaceType><canOverlapZones>false</canOverlapZones><researchPrerequisites><li>ComplexFurniture</li></researchPrerequisites><comps><li Class=\"CompProperties_Styleable\" /></comps><uiOrder>2050</uiOrder></ThingDef>",
+        "<ThingDef Name=\"StorageShelfBase\" ParentName=\"ShelfBase\" Abstract=\"True\"><thingClass>Building_Storage</thingClass><building><storageGroupTag>Shelf</storageGroupTag><fixedStorageSettings><filter><disallowNotEverStorable>true</disallowNotEverStorable><categories><li>Root</li></categories><disallowedCategories><li>Chunks</li><li>Plants</li><li>Buildings</li></disallowedCategories><disallowedThingDefs MayRequire=\"Ludeon.RimWorld.Biotech\"><li MayRequire=\"Ludeon.RimWorld.Biotech\">Wastepack</li></disallowedThingDefs><specialFiltersToDisallow><li>AllowLargeCorpses</li></specialFiltersToDisallow></filter></fixedStorageSettings><defaultStorageSettings><priority>Preferred</priority><filter><categories><li>Foods</li><li>Manufactured</li><li>ResourcesRaw</li><li>Items</li><li>Weapons</li><li>Apparel</li><li>BodyParts</li></categories></filter></defaultStorageSettings></building><designationHotKey>Misc12</designationHotKey></ThingDef>",
+        "<ThingDef ParentName=\"StorageShelfBase\"><defName>Shelf</defName><costStuffCount>20</costStuffCount><statBases><MaxHitPoints>100</MaxHitPoints><Mass>8</Mass><WorkToBuild>500</WorkToBuild><StyleDominance MayRequire=\"Ludeon.RimWorld.Ideology\">5</StyleDominance></statBases><size>(2,1)</size><designationHotKey>Misc12</designationHotKey><building><relatedBuildCommands><li>ShelfSmall</li></relatedBuildCommands></building></ThingDef>",
+        "<ThingDef ParentName=\"StorageShelfBase\"><defName>ShelfSmall</defName><costStuffCount>10</costStuffCount><statBases><MaxHitPoints>50</MaxHitPoints><Mass>4</Mass><WorkToBuild>250</WorkToBuild><StyleDominance MayRequire=\"Ludeon.RimWorld.Ideology\">2.5</StyleDominance></statBases><size>(1,1)</size><building><relatedBuildCommands><li>Shelf</li></relatedBuildCommands></building></ThingDef>"
+      ],
+      "nodes_sha256": "c61dde13b0e2cf6f5931ac6fb8d2603f9f76ea82a7242fb976b64b9d6e9e0ffe"
+    },
+    {
+      "id": "SX02",
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Base.xml",
+      "source_sha256": "b16e3a7934febd9ffb7883f18392d524ba376c9657da4c788d1951552f86d142",
+      "xpath": "/Defs/ThingDef[@Name=\"BuildingBase\"]",
+      "projection": "Selected complete gameplay inheritance nodes; descriptions, art and sound omitted; MayRequire is retained, not evaluated",
+      "nodes": [
+        "<ThingDef Name=\"BuildingBase\" Abstract=\"True\"><category>Building</category><thingClass>Building</thingClass><selectable>true</selectable><drawerType>MapMeshOnly</drawerType><altitudeLayer>Building</altitudeLayer><terrainAffordanceNeeded>Light</terrainAffordanceNeeded><leaveResourcesWhenKilled>true</leaveResourcesWhenKilled><statBases><SellPriceFactor>0.70</SellPriceFactor></statBases></ThingDef>"
+      ],
+      "nodes_sha256": "309a481918c152769791491d2ae4785a05648d43b920a95eb3340d94a8883090"
+    },
+    {
+      "id": "SX03",
+      "file": "Data/Core/Defs/ThingCategoryDefs/ThingCategories.xml",
+      "source_sha256": "fd15be5d01eb7b6754bda797ff920d6fc7872cdfd1b611b1eb1efead7e5c6126",
+      "xpath": "/Defs/ThingCategoryDef[defName=\"Buildings\" or defName=\"BuildingsFurniture\" or defName=\"Corpses\" or defName=\"Chunks\" or defName=\"Plants\"]",
+      "projection": "Selected complete gameplay inheritance nodes; descriptions, art and sound omitted; MayRequire is retained, not evaluated",
+      "nodes": [
+        "<ThingCategoryDef><defName>Buildings</defName><parent>Root</parent></ThingCategoryDef>",
+        "<ThingCategoryDef><defName>BuildingsFurniture</defName><parent>Buildings</parent></ThingCategoryDef>",
+        "<ThingCategoryDef><defName>Chunks</defName><parent>Root</parent></ThingCategoryDef>",
+        "<ThingCategoryDef><defName>Plants</defName><parent>Root</parent></ThingCategoryDef>",
+        "<ThingCategoryDef><defName>Corpses</defName><parent>Root</parent></ThingCategoryDef>"
+      ],
+      "nodes_sha256": "373cdc835837134657874950beacf065f244098f388297b6cbb105a386868d54"
+    },
+    {
+      "id": "SX04",
+      "file": "Data/Core/Defs/Misc/SpecialThingFilterDefs/SpecialThingFilters.xml",
+      "source_sha256": "a3d81da38d9de4145d46cfb46ab8891f3ac7648cb73b481763be88b48a79806f",
+      "xpath": "/Defs/SpecialThingFilterDef[defName=\"AllowLargeCorpses\"]",
+      "projection": "Selected complete gameplay inheritance nodes; descriptions, art and sound omitted; MayRequire is retained, not evaluated",
+      "nodes": [
+        "<SpecialThingFilterDef><defName>AllowLargeCorpses</defName><parentCategory>Corpses</parentCategory><allowedByDefault>true</allowedByDefault><saveKey>allowLargeCorpses</saveKey><configurable>true</configurable><workerClass>SpecialThingFilterWorker_CorpsesLarge</workerClass></SpecialThingFilterDef>"
+      ],
+      "nodes_sha256": "b9006521e07640b390fb8e7b5e0737c8dfdf50da23749a9b3aac3e7f854af57e"
+    },
+    {
+      "id": "SX05",
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Unfinished.xml",
+      "source_sha256": "e095396dad8a83421ff04e47010701cf56df67e4e00c0d25c1704a51fb8e3130",
+      "xpath": "/Defs/ThingDef[defName=\"MinifiedThing\"]",
+      "projection": "Selected complete gameplay inheritance nodes; descriptions, art and sound omitted; MayRequire is retained, not evaluated",
+      "nodes": [
+        "<ThingDef Name=\"MinifiedThing\"><defName>MinifiedThing</defName><thingClass>MinifiedThing</thingClass><category>Item</category><useHitPoints>true</useHitPoints><selectable>true</selectable><altitudeLayer>Item</altitudeLayer><scatterableOnMapGen>false</scatterableOnMapGen><tickerType>Normal</tickerType><drawerType>MapMeshOnly</drawerType><comps><li Class=\"CompProperties_Forbiddable\" /><li Class=\"CompProperties_Styleable\" /></comps><inspectorTabs><li>ITab_Art</li></inspectorTabs><alwaysHaulable>true</alwaysHaulable><rotatable>false</rotatable><pathCost>14</pathCost></ThingDef>"
+      ],
+      "nodes_sha256": "5c39ba0fec531f3bfa0959aae1af8172f963f83053a6661b2704a535e37b2586"
+    },
+    {
+      "id": "SX06",
+      "file": "Data/Core/Defs/Stats/Stats_Basics_General.xml",
+      "source_sha256": "c4d702421c19796993483ddd43f9869c54bb7afa1414232a568829ced5218d87",
+      "xpath": "/Defs/StatDef[defName=\"DeteriorationRate\"]",
+      "projection": "Selected complete gameplay inheritance nodes; descriptions, art and sound omitted; MayRequire is retained, not evaluated",
+      "nodes": [
+        "<StatDef><defName>DeteriorationRate</defName><category>BasicsNonPawn</category><showIfUndefined>false</showIfUndefined><defaultBaseValue>0</defaultBaseValue><minValue>0</minValue><toStringStyle>FloatTwo</toStringStyle><formatString>{0} / day</formatString><parts><li Class=\"StatPart_Quality\"><factorAwful>2</factorAwful><factorPoor>1.5</factorPoor><factorNormal>1</factorNormal><factorGood>0.8</factorGood><factorExcellent>0.6</factorExcellent><factorMasterwork>0.3</factorMasterwork><factorLegendary>0.1</factorLegendary></li><li Class=\"StatPart_EnvironmentalEffects\"><factorOffsetUnroofed>0.5</factorOffsetUnroofed><factorOffsetOutdoors>0.5</factorOffsetOutdoors><protectedByEdificeFactor>0</protectedByEdificeFactor></li><li Class=\"StatPart_Pollution\" MayRequire=\"Ludeon.RimWorld.Biotech\"><multiplier>1.5</multiplier></li><li Class=\"StatPart_NoxiousHaze\" MayRequire=\"Ludeon.RimWorld.Biotech\"><multiplier>3</multiplier></li><li Class=\"StatPart_ToxicFallout\"><multiplier>3</multiplier></li><li Class=\"StatPart_NearHarbingerTree\" MayRequire=\"Ludeon.RimWorld.Anomaly\"><multiplier>2</multiplier></li><li Class=\"StatPart_ShamblerCorpse\" MayRequire=\"Ludeon.RimWorld.Anomaly\"><multiplier>5</multiplier></li></parts><scenarioRandomizable>true</scenarioRandomizable><displayPriorityInCategory>2500</displayPriorityInCategory></StatDef>"
+      ],
+      "nodes_sha256": "6dba5e9a724a2274fbf08bc4d5f5055faab8fbe8bfca1cef838b7d429b594e5f"
+    }
+  ],
+  "claims": [
+    {
+      "id": "SH01",
+      "finding": "Shelf and ShelfSmall inherit StorageShelfBase -> ShelfBase -> FurnitureBase -> BuildingBase. Size2x1/1x1; each cell3 stacks, total6/3. PathCost50, PassThroughOnly, Item surface, no zone overlap. Minifiable; ComplexFurniture. This chain has no CompProperties_Quality. Cost20/10, Work500/250, HP100/50 are base Def values, not evaluated stuff-adjusted stats.",
+      "xml": [
+        "SX01",
+        "SX02"
+      ],
+      "sources": [
+        {
+          "group": "logistics",
+          "type": "RimWorld.Building_Storage",
+          "file": ".local-research/logistics/RimWorld.Building_Storage.cs",
+          "sha256": "680349a2c0e89d2a028ec586319c8781c8f722a8a1ce90f877b4c51bef7a635e",
+          "lines": [
+            82,
+            100
+          ],
+          "excerpt_sha256": "9f5dd9b5ae7dfa3e8c5f844c433eafde9fce2f526ae96dfc53ec842377e5cb63"
+        },
+        {
+          "group": "energy",
+          "type": "Verse.ThingDef",
+          "file": ".local-research/energy/Verse.ThingDef.cs",
+          "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+          "lines": [
+            19,
+            29
+          ],
+          "excerpt_sha256": "0788880d626965b91a281d6b631f2b7bdca9413735f90ae525b4e6603f35088b"
+        }
+      ]
+    },
+    {
+      "id": "SH02",
+      "finding": "PassThroughOnly is traversable but not GenGrid.Standable/StandableBy. PathGrid rejects Impassable and takes the largest relevant object pathCost;50 is not an entire travel-time formula. Ordinary haul pickup and delivery use ClosestTouch, so walking into the shelf is unnecessary.",
+      "xml": [
+        "SX01"
+      ],
+      "sources": [
+        {
+          "group": "shelf-storage",
+          "type": "Verse.GenGrid",
+          "file": ".local-research/shelf-storage/Verse.GenGrid.cs",
+          "sha256": "49d0bd1597228971bab4eb5b37bc55218d39ee116a3e1a4ece4a4b8ad0d3aca8",
+          "lines": [
+            144,
+            175
+          ],
+          "excerpt_sha256": "c212fc4f49f948853f4b076e1eccb48039f71fae3bc61a0ea78bd2790604045f"
+        },
+        {
+          "group": "shelf-storage",
+          "type": "Verse.AI.PathGrid",
+          "file": ".local-research/shelf-storage/Verse.AI.PathGrid.cs",
+          "sha256": "3ab1db721b82280c92d5bf7253b76e65a0b9fe4d1db03dd441e720d03f4d3d48",
+          "lines": [
+            120,
+            156
+          ],
+          "excerpt_sha256": "4f6b8afad16e4aaeeb45c24309975086f8ccce15092b58c9bc5909d508e7d797"
+        },
+        {
+          "group": "work",
+          "type": "Verse.AI.JobDriver_HaulToCell",
+          "file": ".local-research/work/Verse.AI.JobDriver_HaulToCell.cs",
+          "sha256": "e1511380cfa8c71d9d4d877e65cee439363a0c601de9d17b48ab58ca2dd1dcd1",
+          "lines": [
+            112,
+            141
+          ],
+          "excerpt_sha256": "e91329d3c03de1286d1271ed79c6375a1026230a572a44667ccdfab9499d9821"
+        },
+        {
+          "group": "work",
+          "type": "Verse.AI.Toils_Haul",
+          "file": ".local-research/work/Verse.AI.Toils_Haul.cs",
+          "sha256": "a2359a7c55a648b4304bd34fc2fccb59dcab10a50498f3e57b5d8b9894d2ea05",
+          "lines": [
+            254,
+            262
+          ],
+          "excerpt_sha256": "b6ef752e36004edaa2ecfe9b60e9099c5a79ffdfbfc20579d1b5b8774fa90323"
+        }
+      ]
+    },
+    {
+      "id": "SH03",
+      "finding": "Shelf inventory is spawned map-grid items gathered by SlotGroup.HeldThings, not a nested ThingOwner container. Capacity counts Item objects, not units; an ordinary cell allows1, shelf occupied cells3. Same-def free units plus unused stack slots determine GetItemStackSpaceLeftFor.",
+      "xml": [
+        "SX01"
+      ],
+      "sources": [
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.SlotGroup",
+          "file": ".local-research/shelf-storage/RimWorld.SlotGroup.cs",
+          "sha256": "d91098a284a33408d9fba9ae5078c9d2186c92f8088c8310d016c6ebfc929a15",
+          "lines": [
+            18,
+            58
+          ],
+          "excerpt_sha256": "4c705a67f80ddf87528c2948bc7d836ed1b4a4bcd42b605bbd43f2fd7234e6f3"
+        },
+        {
+          "group": "logistics",
+          "type": "Verse.GridsUtility",
+          "file": ".local-research/logistics/Verse.GridsUtility.cs",
+          "sha256": "22e66bf267ab9d4f4cbb1d8b8d227c0dde5472c6aedc8c8901530079e7b862d5",
+          "lines": [
+            267,
+            318
+          ],
+          "excerpt_sha256": "98a773b6e17027d2bb72828cf9fa4369830fd4861d292d54829acdbd7816c446"
+        },
+        {
+          "group": "energy",
+          "type": "Verse.Building",
+          "file": ".local-research/energy/Verse.Building.cs",
+          "sha256": "b9809c33c917ba20ffd1f8810deb91f306d31ffa3107938caea87b524f466f59",
+          "lines": [
+            62,
+            62
+          ],
+          "excerpt_sha256": "992452ab6c160f72af7ab61a00bcd029873d42d231fc3b286f8895bbca7b2758"
+        }
+      ]
+    },
+    {
+      "id": "SH04",
+      "finding": "Mutable storage filter AND fixed parent filter must both accept. Fixed Root excludes Chunks, Plants, Buildings and non-ever-storable defs; Biotech Wastepack is conditionally excluded. ThingFilter checks the inner minified building, so BuildingsFurniture -> Buildings excludes packed furniture too. EverStorable alone does not override fixed restrictions.",
+      "xml": [
+        "SX01",
+        "SX03",
+        "SX05"
+      ],
+      "sources": [
+        {
+          "group": "logistics",
+          "type": "RimWorld.Building_Storage",
+          "file": ".local-research/logistics/RimWorld.Building_Storage.cs",
+          "sha256": "680349a2c0e89d2a028ec586319c8781c8f722a8a1ce90f877b4c51bef7a635e",
+          "lines": [
+            102,
+            121
+          ],
+          "excerpt_sha256": "1bf7008be2d984856470a674db5f4943c7083308272f62e517def05a0e3655a5"
+        },
+        {
+          "group": "preservation",
+          "type": "RimWorld.StorageSettings",
+          "file": ".local-research/preservation/RimWorld.StorageSettings.cs",
+          "sha256": "d247fb668bb32252034050106849f91a129cab040ff4119f3ae59c16fba5a97d",
+          "lines": [
+            97,
+            129
+          ],
+          "excerpt_sha256": "12a881a0dbf6d37da605ae7c178aacb4f5a21f030266122e9b29c8f8d0467357"
+        },
+        {
+          "group": "preservation",
+          "type": "Verse.ThingFilter",
+          "file": ".local-research/preservation/Verse.ThingFilter.cs",
+          "sha256": "daf718ce140fd0c6a201fb7eada45f2069d642f1596c6bcde8a2d35fc3939ffa",
+          "lines": [
+            396,
+            405
+          ],
+          "excerpt_sha256": "3715ba1c88cbcbfdc228dbb499d801f1e6ca3dc609b356b31e8022c5dcdf9769"
+        },
+        {
+          "group": "preservation",
+          "type": "Verse.ThingFilter",
+          "file": ".local-research/preservation/Verse.ThingFilter.cs",
+          "sha256": "daf718ce140fd0c6a201fb7eada45f2069d642f1596c6bcde8a2d35fc3939ffa",
+          "lines": [
+            483,
+            491
+          ],
+          "excerpt_sha256": "9f3204acfab7d265df18175148c946e732ebf0c35320f767437a4bb280879df4"
+        },
+        {
+          "group": "preservation",
+          "type": "Verse.ThingFilter",
+          "file": ".local-research/preservation/Verse.ThingFilter.cs",
+          "sha256": "daf718ce140fd0c6a201fb7eada45f2069d642f1596c6bcde8a2d35fc3939ffa",
+          "lines": [
+            874,
+            911
+          ],
+          "excerpt_sha256": "ff73d06748f29ddc31c88f0d0f33f791ddb931ef1d96e80c450a58293daee159"
+        },
+        {
+          "group": "energy",
+          "type": "Verse.ThingDef",
+          "file": ".local-research/energy/Verse.ThingDef.cs",
+          "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+          "lines": [
+            1394,
+            1411
+          ],
+          "excerpt_sha256": "9086b6e4cdf5dfd3be762ecbe627d7653d8363c62a955946dd6427e92508006c"
+        }
+      ]
+    },
+    {
+      "id": "SH05",
+      "finding": "Large corpse instance matching is InnerPawn.BodySize>=0.75. CanEverMatch/AlwaysMatches use life-stage bodySizeFactor prefilters; those are not substitutes for the actual corpse check. Default shelf categories omit Corpses, but small corpses can be enabled subject to other filters. Weapons and apparel are in the default categories.",
+      "xml": [
+        "SX01",
+        "SX04"
+      ],
+      "sources": [
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.SpecialThingFilterWorker_CorpsesLarge",
+          "file": ".local-research/shelf-storage/RimWorld.SpecialThingFilterWorker_CorpsesLarge.cs",
+          "sha256": "4de51f04a56a242108810de5a287cab330c1a28609c8e9530838d6353d96ba75",
+          "lines": [
+            5,
+            50
+          ],
+          "excerpt_sha256": "709aa6b8f612beabb981f93d95c3c0192a4b7b37efe4e443f4bfa337b92ee52a"
+        },
+        {
+          "group": "preservation",
+          "type": "Verse.ThingFilter",
+          "file": ".local-research/preservation/Verse.ThingFilter.cs",
+          "sha256": "daf718ce140fd0c6a201fb7eada45f2069d642f1596c6bcde8a2d35fc3939ffa",
+          "lines": [
+            874,
+            905
+          ],
+          "excerpt_sha256": "6004eb304d2249d88b0e3afb9ffab946a319b4951ee25623f43b06dacfb96441"
+        }
+      ]
+    },
+    {
+      "id": "SH06",
+      "finding": "Default shelf priority is Preferred. Native enums are Unstored,Low,Normal,Preferred,Important,Critical. Automatic better-storage search requires strictly greater priority and stops descending below a found tier; equal-priority shelves do not automatically pull goods merely for being closer. Linked storage reads group settings.",
+      "xml": [
+        "SX01"
+      ],
+      "sources": [
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.StoragePriority",
+          "file": ".local-research/shelf-storage/RimWorld.StoragePriority.cs",
+          "sha256": "12d2d5f96fab3e6961a66729903bf1ec34caa6b3adb551ac1629afe5a35b3c4b",
+          "lines": [
+            3,
+            11
+          ],
+          "excerpt_sha256": "638ef482821bd7f5c26c21608b45db2ab7d9b70fa3aca057f817c3e43679eab3"
+        },
+        {
+          "group": "preservation",
+          "type": "RimWorld.StoreUtility",
+          "file": ".local-research/preservation/RimWorld.StoreUtility.cs",
+          "sha256": "b8241150a63e38993de851bdb82d06a8c6fbbb3359f1fdfb92b70bec3b5b960d",
+          "lines": [
+            173,
+            205
+          ],
+          "excerpt_sha256": "50842cdbdef5f4c6235352c0845924cae60e6a1b1a77927e5906fb9b86297b2a"
+        },
+        {
+          "group": "logistics",
+          "type": "RimWorld.Building_Storage",
+          "file": ".local-research/logistics/RimWorld.Building_Storage.cs",
+          "sha256": "680349a2c0e89d2a028ec586319c8781c8f722a8a1ce90f877b4c51bef7a635e",
+          "lines": [
+            102,
+            109
+          ],
+          "excerpt_sha256": "af5697407b528072d4ea2197a90b8544a8449b302850c2deb9977010e08bea92"
+        }
+      ]
+    },
+    {
+      "id": "SH07",
+      "finding": "A full3-stack shelf cell can still receive compatible partial-stack units. NoStorageBlockersIn permits an unfinished compatible stack even at stack-count capacity, but checks blockers; the capacity helper by ThingDef is only an estimate, not full CanStackWith. With stackLimit75 as an arithmetic example,70 units plus two incompatible stacks permit5 compatible units and no new stack.",
+      "xml": [
+        "SX01"
+      ],
+      "sources": [
+        {
+          "group": "preservation",
+          "type": "RimWorld.StoreUtility",
+          "file": ".local-research/preservation/RimWorld.StoreUtility.cs",
+          "sha256": "b8241150a63e38993de851bdb82d06a8c6fbbb3359f1fdfb92b70bec3b5b960d",
+          "lines": [
+            117,
+            141
+          ],
+          "excerpt_sha256": "e51b8221d8c48578ee21464604d4116ad90a26d167b24956aebeff0ca905f2c2"
+        },
+        {
+          "group": "logistics",
+          "type": "Verse.GridsUtility",
+          "file": ".local-research/logistics/Verse.GridsUtility.cs",
+          "sha256": "22e66bf267ab9d4f4cbb1d8b8d227c0dde5472c6aedc8c8901530079e7b862d5",
+          "lines": [
+            300,
+            318
+          ],
+          "excerpt_sha256": "98b5af85768ac03fcefbe0f5f358c90f70a2a3b044c7d6eda77070f5a87b4e58"
+        }
+      ]
+    },
+    {
+      "id": "SH08",
+      "finding": "Haul count may aggregate free units across the slot/storage group and is constrained by carrying capacity. Delivery can partially place and route the remaining carried batch to another store cell. This does not make shelf capacity a carrying-capacity bonus.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "work",
+          "type": "Verse.AI.HaulAIUtility",
+          "file": ".local-research/work/Verse.AI.HaulAIUtility.cs",
+          "sha256": "6276e39bb2fd29fc5989b84bc2424fc65b26e4cfcfd74b673d3686eec7d5ae59",
+          "lines": [
+            141,
+            179
+          ],
+          "excerpt_sha256": "9807f5dfc84b7cfe33e41106c4757bbfa38de9bd72f51187cae8d02479eaad05"
+        },
+        {
+          "group": "work",
+          "type": "Verse.AI.Toils_Haul",
+          "file": ".local-research/work/Verse.AI.Toils_Haul.cs",
+          "sha256": "a2359a7c55a648b4304bd34fc2fccb59dcab10a50498f3e57b5d8b9894d2ea05",
+          "lines": [
+            34,
+            78
+          ],
+          "excerpt_sha256": "ce7bdb56a10ad22f5151d4c7e14be5b444037b3da39142f0a2e3cdf3e1ae94de"
+        },
+        {
+          "group": "work",
+          "type": "Verse.AI.Toils_Haul",
+          "file": ".local-research/work/Verse.AI.Toils_Haul.cs",
+          "sha256": "a2359a7c55a648b4304bd34fc2fccb59dcab10a50498f3e57b5d8b9894d2ea05",
+          "lines": [
+            320,
+            366
+          ],
+          "excerpt_sha256": "ba4f2ea8a92c2720a613715a461faebb05c2a8e2539c39b011192595d5855a7b"
+        }
+      ]
+    },
+    {
+      "id": "SH09",
+      "finding": "The same-cell edifice preventDeteriorationOnTop flag combines with DeteriorationRate StatPart_EnvironmentalEffects protectedByEdificeFactor0. Shelf protection does not depend on being indoors or roofed. It concerns environmental deterioration, not every damage source.",
+      "xml": [
+        "SX01",
+        "SX06"
+      ],
+      "sources": [
+        {
+          "group": "weather",
+          "type": "RimWorld.SteadyEnvironmentEffects",
+          "file": ".local-research/weather/RimWorld.SteadyEnvironmentEffects.cs",
+          "sha256": "a280b83a6bedc914f47c3b75010733ba94c659dc63c34dcae062986d3548f119",
+          "lines": [
+            197,
+            205
+          ],
+          "excerpt_sha256": "563025c28aba731613ea2db43e810162008eaea7d6400725502b659e9167af02"
+        },
+        {
+          "group": "weapons",
+          "type": "RimWorld.StatPart_EnvironmentalEffects",
+          "file": ".local-research/weapons/RimWorld.StatPart_EnvironmentalEffects.cs",
+          "sha256": "c2a82a657b5f17ca025932eae80bd1e84714126c2371683261b9dbb348da322c",
+          "lines": [
+            15,
+            44
+          ],
+          "excerpt_sha256": "449bc17bb1c0150339a80ed5688fc64910a3438d36f0231f61f46148c87fca2a"
+        }
+      ]
+    },
+    {
+      "id": "SH10",
+      "finding": "CompRottable advances RotProgress from actual parent.AmbientTemperature and elapsed ticks. The shelf protection flag is absent from this rot path; warm shelf food still spoils and a cold room still matters.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "preservation",
+          "type": "RimWorld.CompRottable",
+          "file": ".local-research/preservation/RimWorld.CompRottable.cs",
+          "sha256": "0cd95cf8477c6c009d0187ce1d606f872ab9e36f0f977e5f09ced39fb4c50578",
+          "lines": [
+            94,
+            119
+          ],
+          "excerpt_sha256": "60bcc0d835f09f9753a9fd8badd52176e45d567847df6af4f7351b17159ae248"
+        }
+      ]
+    },
+    {
+      "id": "SH11",
+      "finding": "Ordinary uninstall designation/work does not require the shelf to be empty. FinishedRemoving calls Uninstall -> MakeMinified -> DeSpawn. Building.DeSpawn checks occupied cells after capacity reduction and attempts Near placement of excess item stacks. Only the same original building becomes InnerThing; contents are not carried in the wrapper.",
+      "xml": [
+        "SX01",
+        "SX02"
+      ],
+      "sources": [
+        {
+          "group": "furniture-reinstall",
+          "type": "RimWorld.Designator_Uninstall",
+          "file": ".local-research/furniture-reinstall/RimWorld.Designator_Uninstall.cs",
+          "sha256": "6f835351a0c7244024e6a76e7ed3fa9cf9fc15b7984a8954dacb6bc0f592f87c",
+          "lines": [
+            79,
+            114
+          ],
+          "excerpt_sha256": "24935d2cde6f5fa4a1f9c661132b415644ddf94863463ea4f2b78c0d507b4538"
+        },
+        {
+          "group": "skills",
+          "type": "RimWorld.JobDriver_RemoveBuilding",
+          "file": ".local-research/skills/RimWorld.JobDriver_RemoveBuilding.cs",
+          "sha256": "8bd3b38e25cc9bd027687b6d3c1ded359a450a46f4cf98d46130aa4ae9a4591e",
+          "lines": [
+            35,
+            78
+          ],
+          "excerpt_sha256": "ec73121fc71a1184a8de401a9d74a38b457dd2e8bfab5fee8c59fa0f7cd87cc9"
+        },
+        {
+          "group": "furniture-reinstall",
+          "type": "RimWorld.JobDriver_Uninstall",
+          "file": ".local-research/furniture-reinstall/RimWorld.JobDriver_Uninstall.cs",
+          "sha256": "e459bebfc38e976e80eba189ea4aa8606f2fb6a934a9abd562fdebf7c7fb45d4",
+          "lines": [
+            7,
+            19
+          ],
+          "excerpt_sha256": "2fe079e45bd53941524929551423e861bfafd46663b782d06b91990de8c5fe81"
+        },
+        {
+          "group": "furniture-reinstall",
+          "type": "RimWorld.MinifyUtility",
+          "file": ".local-research/furniture-reinstall/RimWorld.MinifyUtility.cs",
+          "sha256": "0373c66ee17e30e9adc84845abcc7a55f346733bc88370ab01f287895a41b02d",
+          "lines": [
+            8,
+            31
+          ],
+          "excerpt_sha256": "9d0e28143eded4475676f9d0dfb91df2e7fe12777054012d022126b8351c2616"
+        },
+        {
+          "group": "furniture-reinstall",
+          "type": "RimWorld.MinifyUtility",
+          "file": ".local-research/furniture-reinstall/RimWorld.MinifyUtility.cs",
+          "sha256": "0373c66ee17e30e9adc84845abcc7a55f346733bc88370ab01f287895a41b02d",
+          "lines": [
+            49,
+            67
+          ],
+          "excerpt_sha256": "eaae17cbee3cc3ec35c9dc5170ac8a059e1f3a2b9cfcab4d2bfc69f7484c108d"
+        },
+        {
+          "group": "energy",
+          "type": "Verse.Building",
+          "file": ".local-research/energy/Verse.Building.cs",
+          "sha256": "b9809c33c917ba20ffd1f8810deb91f306d31ffa3107938caea87b524f466f59",
+          "lines": [
+            274,
+            299
+          ],
+          "excerpt_sha256": "da5ccf6237eae7a4dd51ccc3e187c8ad26617cb320018dfccbc5a1ade612a187"
+        },
+        {
+          "group": "logistics",
+          "type": "RimWorld.Building_Storage",
+          "file": ".local-research/logistics/RimWorld.Building_Storage.cs",
+          "sha256": "680349a2c0e89d2a028ec586319c8781c8f722a8a1ce90f877b4c51bef7a635e",
+          "lines": [
+            165,
+            169
+          ],
+          "excerpt_sha256": "3549335bd2fa8ee15d1dfacf28dad4999d814daee9514adbece5d31bd8a918cc"
+        }
+      ]
+    },
+    {
+      "id": "SH12",
+      "finding": "Near placement searches progressively and can fail. Building.DeSpawn and MinifyUtility.Uninstall do not check their TryPlaceThing return values or stage an all-or-nothing rollback. Therefore static evidence does not prove guaranteed safe placement on completely blocked/full maps; Web atomic waiting would be an explicit adaptation.",
+      "xml": [],
+      "sources": [
+        {
+          "group": "logistics",
+          "type": "Verse.GenPlace",
+          "file": ".local-research/logistics/Verse.GenPlace.cs",
+          "sha256": "72e9f795b464dd3dad6afb2b40908a23f06e9407c31fd10290fd78bee8747ecb",
+          "lines": [
+            33,
+            89
+          ],
+          "excerpt_sha256": "bfda26b1bf094606d7ff7e0ff3e9690b6328c538c009e9bb0b01398a1fcfd5b9"
+        },
+        {
+          "group": "logistics",
+          "type": "Verse.GenPlace",
+          "file": ".local-research/logistics/Verse.GenPlace.cs",
+          "sha256": "72e9f795b464dd3dad6afb2b40908a23f06e9407c31fd10290fd78bee8747ecb",
+          "lines": [
+            129,
+            188
+          ],
+          "excerpt_sha256": "3bb974462943c78b9df722ff60174f8beb0dbb22e76d1d0401f9ff870ad19ce4"
+        },
+        {
+          "group": "energy",
+          "type": "Verse.Building",
+          "file": ".local-research/energy/Verse.Building.cs",
+          "sha256": "b9809c33c917ba20ffd1f8810deb91f306d31ffa3107938caea87b524f466f59",
+          "lines": [
+            274,
+            299
+          ],
+          "excerpt_sha256": "da5ccf6237eae7a4dd51ccc3e187c8ad26617cb320018dfccbc5a1ade612a187"
+        },
+        {
+          "group": "furniture-reinstall",
+          "type": "RimWorld.MinifyUtility",
+          "file": ".local-research/furniture-reinstall/RimWorld.MinifyUtility.cs",
+          "sha256": "0373c66ee17e30e9adc84845abcc7a55f346733bc88370ab01f287895a41b02d",
+          "lines": [
+            49,
+            67
+          ],
+          "excerpt_sha256": "eaae17cbee3cc3ec35c9dc5170ac8a059e1f3a2b9cfcab4d2bfc69f7484c108d"
+        }
+      ]
+    },
+    {
+      "id": "SH13",
+      "finding": "Reinstall extracts the original InnerThing, clears the wrapper then spawns the same building at the new position/rotation. Storage settings live on Building_Storage and are saved with it. Existing loose shelf goods do not follow. Storage-group references are retained on ordinary despawn; cross-map SpawnSetup detaches and copies group settings.",
+      "xml": [
+        "SX01"
+      ],
+      "sources": [
+        {
+          "group": "furniture-reinstall",
+          "type": "RimWorld.Blueprint_Install",
+          "file": ".local-research/furniture-reinstall/RimWorld.Blueprint_Install.cs",
+          "sha256": "9d3b41f79b34bc082bdb06026782bd2cafaf65626879edb11190d62a88ebb060",
+          "lines": [
+            99,
+            117
+          ],
+          "excerpt_sha256": "c252422cfb108539bc6e55191afeae7143cb6fa3b35a2f2e0a3ed1579b0c6f28"
+        },
+        {
+          "group": "furniture-reinstall-extra",
+          "type": "RimWorld.Blueprint",
+          "file": ".local-research/furniture-reinstall-extra/RimWorld.Blueprint.cs",
+          "sha256": "a9ce66b27ef3f8ec7f4ebdceb2e2c8285df81914b22cd854ca29526d3e0989aa",
+          "lines": [
+            45,
+            82
+          ],
+          "excerpt_sha256": "eabaa992344a5bbc749b6c55e4a476a3041d2654013ced3cd45e8f108a2f3c12"
+        },
+        {
+          "group": "logistics",
+          "type": "RimWorld.Building_Storage",
+          "file": ".local-research/logistics/RimWorld.Building_Storage.cs",
+          "sha256": "680349a2c0e89d2a028ec586319c8781c8f722a8a1ce90f877b4c51bef7a635e",
+          "lines": [
+            142,
+            169
+          ],
+          "excerpt_sha256": "bb54f17a6aa62b2aa032774c77d232ef9ccd0451eb684b99fca53869180652a9"
+        },
+        {
+          "group": "logistics",
+          "type": "RimWorld.Building_Storage",
+          "file": ".local-research/logistics/RimWorld.Building_Storage.cs",
+          "sha256": "680349a2c0e89d2a028ec586319c8781c8f722a8a1ce90f877b4c51bef7a635e",
+          "lines": [
+            182,
+            190
+          ],
+          "excerpt_sha256": "90bbfba3f1a0b99ae2af36418c76b854a2ecd104f9659adb597e24242a9a7972"
+        }
+      ]
+    },
+    {
+      "id": "SH14",
+      "finding": "New storage blueprints already have configurable storage settings, defaulted from the future building; conversion to a construction frame copies those settings and its storage group. These are new-build settings, separate from reinstalling an existing configured shelf.",
+      "xml": [
+        "SX01"
+      ],
+      "sources": [
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.Blueprint_Storage",
+          "file": ".local-research/shelf-storage/RimWorld.Blueprint_Storage.cs",
+          "sha256": "c27ea0ab466d409431b73a4fb66988e9213b7d580fda100e1637af649657a175",
+          "lines": [
+            42,
+            68
+          ],
+          "excerpt_sha256": "8f31fe1d7524a320879220ea0c22c42d92ff03b1f25d0309dd50eaa9aefe407e"
+        },
+        {
+          "group": "shelf-storage",
+          "type": "RimWorld.Blueprint_Storage",
+          "file": ".local-research/shelf-storage/RimWorld.Blueprint_Storage.cs",
+          "sha256": "c27ea0ab466d409431b73a4fb66988e9213b7d580fda100e1637af649657a175",
+          "lines": [
+            92,
+            99
+          ],
+          "excerpt_sha256": "bf0ab29d7b86d886b007bba3ed519b55a02d2d9ca6dc5222834af5e5a6cc3476"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Derived C# is not original source; unresolved dependencies were tolerated by ILSpy.",
+    "Core XML nodes are not an effective patched Def database; MayRequire remains conditional.",
+    "No game execution, runtime shelf experiment or capacity/decay calibration performed by this collector.",
+    "Completely blocked Near placement, exact placement order and loaded-save recovery are not runtime-verified.",
+    "PathCost and base material/work/HP are not full evaluated stat or travel-time formulas."
+  ]
+}
