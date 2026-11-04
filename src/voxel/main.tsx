@@ -19,6 +19,7 @@ import { SanitationPanel, SanitationDetails, CleaningStatus } from './Sanitation
 import { FirePanel, FireDetails, FireDamageDetails, FireWorkStatus } from './FirePanel';
 import { WeatherPanel, WeatherCellDetails } from './WeatherPanel';
 import { AnimalPanel, AnimalDetails } from './AnimalPanel';
+import { AllowedAreaPanel, PawnAllowedArea } from './AllowedAreaPanel';
 import { FenceGateDetails, PenDetails, type PenControls } from './PenPanel';
 import { LivingPanel, RoomLivingDetails, DiningFurnitureDetails } from './LivingPanel';
 import { SocialPanel } from './SocialPanel';
@@ -164,7 +165,7 @@ const hints: Record<Tool, string> = {
   fence: '左键拖动建造直线围栏，留下栏门的位置。完工后拦住鹿，人和兔可缓慢跨越；圈地不需要屋顶。',
   fenceGate: '点击建造木制栏门，R 旋转。饲养员经栏门牵入鹿；自动开关保持圈地有效，保持敞开会打开边界。',
   penMarker: '在已围起的区域内建造圈地标记，点击查看是否封闭、现有草料和接纳筛选。标记自身不能拦住动物。',
-  animalArea: '左键拖动涂绘矩形活动范围。兔会按通路返回，寻找范围内的食物与休息位置；右键结束涂绘。',
+  animalArea: '左键拖动涂绘当前楼层，可切层继续。把工作目标、材料、食物和床包含在内；区域只筛选目标，行走可能途经区外。空区域不限制，右键结束。',
   horseshoePin: '20 木材建造一格马蹄铁桩。沿直线留出两格空地和通路，殖民者会站在两格外投掷；可在作息中安排娱乐，或在人物面板手动安排。',
   butcherSpot: '划定一格屠宰点，开启烹饪分工后自动加工可达尸体。点击点位可暂停或恢复；生肉可直接食用，也可与谷物混合做简餐。',
   craftingSpot: '一格制作点，无需建材。可制作木棒、钢匕首和短弓，加工速度为锻造台的一半。',
@@ -371,6 +372,7 @@ function App() {
   const [notice, setNotice] = useState(''),
     [menu, setMenu] = useState(false),
     [help, setHelp] = useState(true),
+    [allowedAreasOpen, setAllowedAreasOpen] = useState(false),
     [researchOpen, setResearchOpen] = useState(false),
     [tradeOpen, setTradeOpen] = useState(false),
     [wildlifeOpen, setWildlifeOpen] = useState(false),
@@ -394,6 +396,9 @@ function App() {
     const t = setTimeout(() => setNotice(''), 6000);
     return () => clearTimeout(t);
   }, [notice]);
+  useEffect(() => {
+    if (researchOpen || tradeOpen || wildlifeOpen || prisonOpen || sanitationOpen || fireOpen || weatherOpen || menu) setAllowedAreasOpen(false);
+  }, [researchOpen, tradeOpen, wildlifeOpen, prisonOpen, sanitationOpen, fireOpen, weatherOpen, menu]);
   useEffect(() => {
     if (s?.trade.session?.stage !== 'ready' || !s.trade.quote) return;
     if (s.speed !== 0) void client.speed(0);
@@ -645,6 +650,11 @@ function App() {
     editArea: client.editAnimalArea,
   };
   const editingArea = s?.animalAreas.find(a => a.id === state.selectedAnimalAreaId);
+  const manageAllowedAreas = () => {
+    setResearchOpen(false); setTradeOpen(false); setWildlifeOpen(false); setPrisonOpen(false);
+    setSanitationOpen(false); setFireOpen(false); setWeatherOpen(false); setHelp(false);
+    setAllowedAreasOpen(true);
+  };
   return (
     <div className="voxel-app">
       <div className="voxel-scene" ref={host} />
@@ -836,7 +846,7 @@ function App() {
           ↷
         </button>
       </div>
-      {help && !researchOpen && !wildlifeOpen && !prisonOpen && !tradeOpen && !sanitationOpen && !fireOpen && !weatherOpen && (
+      {help && !allowedAreasOpen && !researchOpen && !wildlifeOpen && !prisonOpen && !tradeOpen && !sanitationOpen && !fireOpen && !weatherOpen && (
         <aside className="voxel-guide">
           <div className="voxel-panel-title">
             <span className="voxel-kicker">从地表到地下</span>
@@ -1488,6 +1498,7 @@ function App() {
               {prisonerBed ? <button onClick={() => focus(prisonerBed)}>定位分配的囚犯床</button> : <small>未分配有效囚犯床，请检查房间与床位。</small>}
               <small>囚犯保留伤情和需求，可以被护理与喂食；招募后才能像殖民者一样征召、分工和安排作息。</small>
             </section>}
+            {s && <PawnAllowedArea pawn={pawn} snapshot={s} command={client.command} controls={penControls} manage={manageAllowedAreas} />}
             {pawn.faction === 'colony' && <MoodPanel pawn={pawn} tick={s?.tick ?? 0} temperature={temperatureOf(pawn)}
               environment={s!.environment}
               pin={s?.horseshoePins.toSorted((a, b) => Math.abs(a.x - pawn.x) + Math.abs(a.y - pawn.y) + Math.abs(a.z - pawn.z) - Math.abs(b.x - pawn.x) - Math.abs(b.y - pawn.y) - Math.abs(b.z - pawn.z))[0]}
@@ -1852,6 +1863,7 @@ function App() {
               <button aria-pressed={!state.animalAreaErase} disabled={!editingArea} onClick={() => editingArea && client.editAnimalArea(editingArea.id)}>涂绘</button>
               <button aria-pressed={state.animalAreaErase} disabled={!editingArea} onClick={() => editingArea && client.editAnimalArea(editingArea.id, true)}>擦除</button>
               <button onClick={() => client.choose('inspect')}>结束</button>
+              <button onClick={manageAllowedAreas}>管理允许区域</button>
             </span>}
             {state.placementPreview && <small data-testid="placement-preview-info">
               {state.furniturePlacement ? '安装预览' : state.placementPreview.tool === 'animalArea' ? state.animalAreaErase ? '擦除' : '涂绘' : '规划'} · {['bed', 'table'].includes(state.placementPreview.tool) ? 2 : (Math.abs(state.placementPreview.to.x - state.placementPreview.from.x) + 1) * (Math.abs(state.placementPreview.to.y - state.placementPreview.from.y) + 1)} 格
@@ -1967,6 +1979,9 @@ function App() {
           </section>)}
         </details>
       </aside>}
+      {allowedAreasOpen && s && <AllowedAreaPanel snapshot={s} command={client.command} controls={penControls}
+        level={state.level} focus={focus} close={() => setAllowedAreasOpen(false)}
+        edit={(id, erase) => { client.editAnimalArea(id, erase); setAllowedAreasOpen(false); }} />}
       {wildlifeOpen && s && <AnimalPanel snapshot={s} selectedAnimalId={selectedAnimal} baseLevel={spawn.z}
         command={client.command} choose={tool => client.choose(tool)} penControls={penControls}
         focus={pos => { setSelectedAnimal(null); focus(pos); }}

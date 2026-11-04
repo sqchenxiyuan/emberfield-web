@@ -1,4 +1,5 @@
 import { WeightedNavigation } from './navigation';
+import { allowedAreaCells, effectivePawnArea, pawnAreaAllows, validatePawnAreas } from './allowedAreas';
 import { effectiveShelfSettings, reconcileStorageGroups, storageGroupCommand, rejectLegacyStorageGroups,
   migrateStorageGroups, validateStorageGroups, type StorageGroup } from './storageGroups';
 import {
@@ -550,6 +551,72 @@ export class VoxelSimulation {
   fenceGates: FenceGate[] = [];
   penMarkers: PenMarker[] = [];
   animalAreas: AnimalArea[] = [];
+  private areaReturnRetry = new Map<number, { tick: number; revision: number }>();
+
+  pawnAllowed(p: Pawn, target: Pos): boolean {
+    return pawnAreaAllows(p, target, this.animalAreas, this.tick);
+  }
+  /** Inspect semantic targets, never intermediate path cells or carried patients. */
+  private pawnTaskInArea(p: Pawn): boolean {
+    if (!effectivePawnArea(p, this.animalAreas, this.tick)) return true;
+    const targets: (Pos | undefined)[] = [];
+    const job = this.jobs.find(j => j.id === p.jobId);
+    targets.push(job);
+    if (job?.unfinishedId !== undefined) targets.push(this.items.find(i => i.unfinished?.id === job.unfinishedId));
+    const fetch = this.fetchReservations.get(p.id), storage = this.storageReservations.get(p.id);
+    if (fetch) targets.push(this.items.find(i => i.id === fetch.sourceId));
+    if (storage) {
+      targets.push(position(storage.cell));
+      if (storage.sourceId !== null) targets.push(this.items.find(i => i.id === storage.sourceId));
+    }
+    if (p.productionDelivery && p.productionDelivery.state !== 'dropping') targets.push(position(p.productionDelivery.cell));
+    if (p.sleepBedId !== null) targets.push(this.beds.find(b => b.id === p.sleepBedId));
+    else if (p.phase === 'rest') targets.push(p);
+    if (p.phase === 'travel' && p.destination !== null) targets.push(position(p.destination));
+    if (p.living.mealTask) targets.push(p.living.mealTask.target);
+    if (p.psyche.recreation) targets.push(p.psyche.recreation.target);
+    if (p.cleanTask) targets.push(this.filth.find(f => f.id === p.cleanTask!.filthId));
+    if (p.carePhase) {
+      if (p.carePhase !== 'rescueCarry') targets.push(this.pawns.find(q => q.id === p.patientId));
+      targets.push(this.beds.find(b => b.id === p.careBedId));
+      if (p.carePhase.endsWith('Fetch')) targets.push(this.items.find(i => i.id === (p.careFoodId ?? p.careMedicineId)));
+    }
+    if (p.weaponTask?.stage === 'fetch') targets.push(this.items.find(i => i.weapon?.id === p.weaponTask!.weaponId));
+    if (p.apparelTask?.stage === 'fetch') targets.push(this.items.find(i => i.apparel?.id === p.apparelTask!.apparelId));
+    if (p.phase === 'hunt') targets.push(this.animals.find(a => a.id === p.attackTargetId));
+    return targets.every(t => !t || this.pawnAllowed(p,t));
+  }
+  private reconcilePawnArea(p: Pawn, assignmentChanged = false) {
+    const check = assignmentChanged && p.weaponTask?.action === 'equip' ? { ...p, weaponTask:null } : p;
+    const weapon = assignmentChanged && p.weaponTask?.stage === 'fetch'
+      ? this.items.find(i => i.weapon?.id === p.weaponTask!.weaponId) : undefined;
+    if (p.dead || p.downed || p.carriedBy !== null ||
+        (this.pawnTaskInArea(check) && (!weapon || this.pawnAllowed(check,weapon)))) return;
+    if (p.productionDelivery) this.interruptProductionDelivery(p);
+    else this.release(p);
+    p.reason = '任务目标在允许区域外，保留物资并重新安排';
+  }
+  private tryReturnToArea(p: Pawn): boolean {
+    const area = effectivePawnArea(p, this.animalAreas, this.tick);
+    if (!area || this.pawnAllowed(p,p) || p.dead || p.downed || p.carriedBy !== null) return false;
+    const retry = this.areaReturnRetry.get(p.id);
+    if (retry && retry.revision === this.revision && retry.tick > this.tick) {
+      p.reason = '允许区域内没有可达落脚点，等待通路'; return true;
+    }
+    this.search(p);
+    let best = -1;
+    for (const cell of allowedAreaCells(area)) if (this.explored[cell] && this.canStop(position(cell)) &&
+        this.distance[cell] >= 0 && (best < 0 || this.distance[cell] < this.distance[best])) best = cell;
+    if (best < 0) {
+      this.areaReturnRetry.set(p.id, { tick: this.tick + 100, revision: this.revision });
+      p.reason = '允许区域内没有可达落脚点，等待通路'; return true;
+    }
+    this.release(p);
+    this.search(p);
+    this.go(p,best,'travel'); p.reason = `返回允许区域：${area.name}`;
+    this.areaReturnRetry.delete(p.id);
+    return true;
+  }
   private penLookupRevision = -1;
   private fenceLookup = new Map<number, Fence>();
   private gateLookup = new Map<number, FenceGate>();
@@ -855,7 +922,7 @@ export class VoxelSimulation {
   }
   private tryHunt(p: Pawn): boolean {
     if (!p.priorities.hunt || !p.weapon || !isRangedKind(p.weapon.kind) || p.weaponDropPending || p.cargo) return false;
-    const targets = this.animals.filter(a => a.faction === 'wild' && a.hunt && !a.dead && a.retryTick <= this.tick &&
+    const targets = this.animals.filter(a => this.pawnAllowed(p,a) && a.faction === 'wild' && a.hunt && !a.dead && a.retryTick <= this.tick &&
       !this.pawns.some(other => other.id !== p.id && other.phase === 'hunt' && other.attackTargetId === a.id))
       .sort((a, b) => Math.hypot(a.x - p.x, a.y - p.y, a.z - p.z) - Math.hypot(b.x - p.x, b.y - p.y, b.z - p.z));
     for (const animal of targets) {
@@ -871,7 +938,7 @@ export class VoxelSimulation {
   }
   private huntTick(p: Pawn) {
     const animal = this.animals.find(a => a.id === p.attackTargetId && a.hunt && !a.dead);
-    if (!animal || !p.priorities.hunt || !p.weapon || !isRangedKind(p.weapon.kind) || p.weaponDropPending) {
+    if (!animal || !this.pawnAllowed(p,animal) || !p.priorities.hunt || !p.weapon || !isRangedKind(p.weapon.kind) || p.weaponDropPending) {
       this.release(p); return;
     }
     this.rangedCombat(p, animal);
@@ -1058,6 +1125,8 @@ export class VoxelSimulation {
   }
   private travelRoute(from: Pos, target: number, allowed?: Set<number>): number[] | null {
     const pawn = this.pawns.includes(from as Pawn) ? from as Pawn : undefined;
+    const area = pawn && effectivePawnArea(pawn,this.animalAreas,this.tick);
+    const areaCells = area ? allowedAreaCells(area) : undefined;
     const base = this.pawnBaseMoveTicks(pawn), destination = position(target);
     // One horizontal step may also change elevation; this lower bound supports
     // both those steps and the vertical ladder edges without overestimating.
@@ -1065,7 +1134,7 @@ export class VoxelSimulation {
     return this.navigation.find(at(from), n => n === target,
       n => this.neighbors(position(n)).filter(next => !allowed || allowed.has(next)),
       (a,b) => this.weatherMoveTicks(position(a),base,position(b),this.crossingTicks(position(a),position(b))) +
-        this.doorWaitTicks(position(b)),
+        this.doorWaitTicks(position(b)) + (areaCells && !areaCells.has(b) ? base * 10 : 0),
       n => { const p = position(n); return minimum * Math.max(Math.abs(p.x-destination.x)+Math.abs(p.y-destination.y),Math.abs(p.z-destination.z)); });
   }
   path(from: Pos, to: Pos) {
@@ -1169,7 +1238,8 @@ export class VoxelSimulation {
       )
       .map(at);
   }
-  private reachableStand(j: Job) {
+  private reachableStand(j: Job, pawn?: Pawn) {
+    if (pawn && !this.pawnAllowed(pawn,j)) return -1;
     let best = -1;
     for (const n of this.stands(j))
       if (this.distance[n] >= 0 && (best < 0 || this.distance[n] < this.distance[best])) best = n;
@@ -1392,11 +1462,12 @@ export class VoxelSimulation {
     items = this.items,
   ): (StorageCell & { stand: number }) | undefined {
     const context = this.storageContext(items, ignorePawnId);
+    const worker = this.pawns.find(p => p.id === ignorePawnId);
     let best: (StorageCell & { stand: number }) | undefined;
     for (const s of this.storageCells()) {
       const stand = this.reachableItemStand(s);
       if (
-        (allowedCells && !allowedCells.has(at(s))) || s.priority <= minimumPriority ||
+        (worker && !this.pawnAllowed(worker,s)) || (allowedCells && !allowedCells.has(at(s))) || s.priority <= minimumPriority ||
         this.storageSpace(s, batch, ignorePawnId, context) <= 0 ||
         stand < 0
       )
@@ -1440,7 +1511,7 @@ export class VoxelSimulation {
     this.search(p);
     const target = this.storageCells().find(s => at(s) === task.cell);
     const stand = target ? this.reachableItemStand(target) : -1;
-    if (!target || stand < 0 || this.storageSpace(target, p.cargo, p.id) < p.cargo.amount ||
+    if (!target || !this.pawnAllowed(p,target) || stand < 0 || this.storageSpace(target, p.cargo, p.id) < p.cargo.amount ||
         (task.mode === 'specific' && !productionOutputTargetCells(this, task.target!).includes(task.cell))) {
       drop(); return;
     }
@@ -1467,7 +1538,7 @@ export class VoxelSimulation {
     sourceId: number | null,
   ): number {
     const source = sourceId === null ? null : this.items.find(i => i.id === sourceId);
-    if (sourceId !== null && !source) { this.storageReservations.delete(p.id); return 0; }
+    if (!this.pawnAllowed(p,target) || (source && !this.pawnAllowed(p,source)) || (sourceId !== null && !source)) { this.storageReservations.delete(p.id); return 0; }
     const n = Math.min(
       batch.amount,
       carryLimit(batch.resource),
@@ -1488,7 +1559,7 @@ export class VoxelSimulation {
     for (const [id, r] of previous) {
       const pawn = this.pawns.find((p) => p.id === id);
       const source = r.sourceId === null ? pawn?.cargo : this.items.find(i => i.id === r.sourceId);
-      if (!pawn || pawn.phase !== 'haul' || !source || !compatibleBatches(source, r.batch)) continue;
+      if (!pawn || pawn.phase !== 'haul' || !source || !compatibleBatches(source, r.batch) || !this.pawnAllowed(pawn,position(r.cell)) || (r.sourceId !== null && !this.pawnAllowed(pawn,source as Stack))) continue;
       const amount = Math.min(r.batch.amount, source.amount,
         r.sourceId === null ? source.amount : this.availableStack(source as Stack, id),
         this.storageSpace(position(r.cell), source, id));
@@ -1506,7 +1577,7 @@ export class VoxelSimulation {
     let best: Stack | undefined;
     for (const item of this.items) {
       if (
-        this.availableStack(item, p.id) < 1 ||
+        !this.pawnAllowed(p,item) || this.availableStack(item, p.id) < 1 ||
         (resource && item.resource !== resource) ||
         (job && !this.acceptsJobCargo(job, item, item)) ||
         this.chunkReserved(item, p.id)
@@ -1955,7 +2026,7 @@ export class VoxelSimulation {
         return n + Math.max(0, (j.cost.meat ?? 0) - (j.delivered.meat ?? 0) - carried);
       }, 0);
     const available = this.items.filter(i => i.resource === 'meat' && !i.forbidden && this.exploredAt(i) &&
-      this.acceptsJobCargo(job, i, i) && (!worker || this.reachableItemStand(i) >= 0))
+      this.acceptsJobCargo(job, i, i) && (!worker || this.pawnAllowed(worker,i) && this.reachableItemStand(i) >= 0))
       .reduce((n, i) => n + (worker ? this.availableStack(i, worker.id) : i.amount), 0);
     const meat = !policy.allowedFood.includes('meat') ? 0 : !policy.allowedFood.includes('grain') ? SIMPLE_MEAL.ingredients :
       Math.min(SIMPLE_MEAL.ingredients, Math.max(0, available - reserved));
@@ -1993,7 +2064,7 @@ export class VoxelSimulation {
           this.jobs.some(k => k.id !== j.id && k.unfinishedId === u.id && k.owner !== null && !k.cancelled)) return false;
       if (batch === p.cargo) return true;
       const stack = this.items.find(i => i.unfinished?.id === u.id);
-      return !!stack && this.exploredAt(stack) && this.availableStack(stack, p.id) > 0 &&
+      return !!stack && this.pawnAllowed(p,stack) && this.exploredAt(stack) && this.availableStack(stack, p.id) > 0 &&
         !this.chunkReserved(stack, p.id) && this.reachableItemStand(stack) >= 0;
     }) ?? undefined;
   }
@@ -2021,9 +2092,9 @@ export class VoxelSimulation {
       Math.abs(actor.x - item.x) + Math.abs(actor.y - item.y) === 1 &&
       this.canStop(actor) && this.groundAllowed(item));
   }
-  private unfinishedPlacementCells(p: Pos) {
+  private unfinishedPlacementCells(p: Pawn) {
     return [p, ...horizontal.map(([dx,dy])=>({x:p.x+dx,y:p.y+dy,z:p.z}))]
-      .filter(q=>inside(q) && this.unfinishedWorkTouch(p,q));
+      .filter(q=>inside(q) && this.pawnAllowed(p,q) && this.unfinishedWorkTouch(p,q));
   }
   private createUnfinished(p: Pawn, j: Job): boolean {
     const recipe = productionJobRecipe(j);
@@ -2054,7 +2125,7 @@ export class VoxelSimulation {
   private continueUnfinished(p: Pawn, j: Job) {
     this.search(p);
     const batch = this.unfinishedForWorker(j, p);
-    const stand = this.reachableStand(j);
+    const stand = this.reachableStand(j, p);
     if (!batch || stand < 0) {
       j.reason = '未完成品被禁止、搬运中或不可达，等待原作者续作';
       this.release(p); return;
@@ -2236,7 +2307,7 @@ export class VoxelSimulation {
     return eligible.some(p => {
       // assign() already searched from this worker. Scheduler probes are independent.
       if (!worker) this.search(p);
-      if (this.reachableStand(j) < 0) return false;
+      if (this.reachableStand(j, p) < 0) return false;
       if (this.unfinishedForWorker(j, p)) return true;
       if (j.unfinishedId !== undefined || (j.billId !== undefined &&
           [...this.items, ...this.pawns.flatMap(q=>q.cargo?[q.cargo]:[])].some(b=>b.unfinished?.boundBillId===j.billId))) return false;
@@ -2252,7 +2323,7 @@ export class VoxelSimulation {
             const carried = owner?.jobId === k.id && owner.cargo?.resource === r ? owner.cargo.amount : 0;
             return n + Math.max(0, (k.cost[r] ?? 0) - (k.delivered[r] ?? 0) - carried);
           }, 0);
-        const items = this.items.filter(i => i.resource === r && !i.forbidden && this.exploredAt(i) && this.acceptsJobCargo(j, i, i));
+        const items = this.items.filter(i => this.pawnAllowed(p,i) && i.resource === r && !i.forbidden && this.exploredAt(i) && this.acceptsJobCargo(j, i, i));
         if (items.reduce((n, i) => n + i.amount, 0) - committed < amount) return false;
         return items.reduce((n, i) => n + (this.reachableItemStand(i) >= 0 && !this.chunkReserved(i, p.id)
           ? this.availableStack(i, p.id) : 0), 0) >= amount;
@@ -2421,12 +2492,37 @@ export class VoxelSimulation {
     return effectiveShelfSettings(this.storageGroups,shelf.id,shelf.settings);
   }
   command(c: VoxelCommand): CommandResult {
+    // Keep the animal-area API as a compatible alias for one shared mask pool.
+    if (c && typeof c === 'object') {
+      if (c.type === 'allowedAreaCreate') c = { ...c, type: 'animalAreaCreate' };
+      else if (c.type === 'allowedAreaRename') c = { ...c, type: 'animalAreaRename' };
+      else if (c.type === 'allowedAreaDelete') c = { ...c, type: 'animalAreaDelete' };
+      else if (c.type === 'allowedAreaPaint') c = { ...c, type: 'animalAreaPaint' };
+    }
     const result=this.dispatchCommand(c);
-    if(result.ok) { reconcileStorageGroups(this); this.reconcileProductionStorage(); }
+    if(result.ok) {
+      reconcileStorageGroups(this); this.reconcileProductionStorage();
+      if (['pawnAreaAssign','animalAreaPaint','animalAreaDelete','draft'].includes(c.type)) {
+        this.areaReturnRetry.clear();
+        for (const p of this.pawns) {
+          if (p.allowedAreaId !== null && !this.animalAreas.some(a => a.id === p.allowedAreaId)) p.allowedAreaId = null;
+          this.reconcilePawnArea(p,true);
+        }
+        this.reconcileFireState();
+      }
+    }
     return result;
   }
   private dispatchCommand(c: VoxelCommand): CommandResult {
     if (!c || typeof c !== 'object') return { ok: false, message: '命令格式无效' };
+    if (c.type === 'pawnAreaAssign') {
+      const p = this.pawns.find(p => p.id === c.pawnId && p.faction === 'colony' && !p.dead);
+      const area = this.animalAreas.find(a => a.id === c.areaId);
+      if (!p || (c.areaId !== null && !area)) return { ok:false, message:'居民或允许区域无效' };
+      p.allowedAreaId = c.areaId;
+      this.revision++;
+      return { ok:true, message:area ? `已分配${area.name}${area.cells.length ? '' : '（空区域暂不限制活动）'}` : '已解除活动区域限制' };
+    }
     if (c.type === 'stockpileZoneRename') {
       const result = renameStockpileZone(this, c.zoneId, c.name);
       if (result.ok) this.revision++;
@@ -2440,7 +2536,8 @@ export class VoxelSimulation {
     }
     if ('target' in c && c.target && typeof c.target === 'object' && !this.exploredAt(c.target))
       return { ok: false, message: '目标区域尚未探索' };
-    if ('from' in c && !(c.type === 'designate' && ['inspect', 'mine', 'cancel'].includes(c.tool))) {
+    // A player-authored mask reveals no terrain; painting does not require a floor.
+    if ('from' in c && c.type !== 'animalAreaPaint' && !(c.type === 'designate' && ['inspect', 'mine', 'cancel'].includes(c.tool))) {
       const to = c.to ?? c.from;
       if (!inside(c.from) || !inside(to)) return { ok: false, message: '请选择世界内的有效工作层' };
       for (let y = Math.min(c.from.y, to.y); y <= Math.max(c.from.y, to.y); y++)
@@ -2503,10 +2600,10 @@ export class VoxelSimulation {
       }
       if (c.type === 'firefight') {
         const f = this.fires.find(f => f.id === c.fireId), ok = !!f && startFirefight(this, p, f);
-        return { ok, message: ok ? p.reason : '需要家园区域内可到达并且无人预约的火焰；携带物资需有卸货位置' };
+        return { ok, message: ok || p.reason.includes('允许区域') ? p.reason : '需要家园区域内可到达并且无人预约的火焰；携带物资需有卸货位置' };
       }
       const damage = this.fireDamage.find(d => d.key === c.damageKey), ok = !!damage && startRepair(this, p, damage);
-      return { ok, message: ok ? p.reason : '需要家园区域内可到达、无人预约且未在燃烧的受损结构' };
+      return { ok, message: ok || p.reason.includes('允许区域') ? p.reason : '需要家园区域内可到达、无人预约且未在燃烧的受损结构' };
     }
     if (c.type === 'prisonerPolicy') {
       const patient = this.pawns.find(p => p.id === c.prisonerId);
@@ -3048,6 +3145,7 @@ export class VoxelSimulation {
         this.sandbags.some((b) => same(b, c.target))
       )
         return { ok: false, message: '目标没有支撑或两格净空' };
+      if (!this.pawnAllowed(p,c.target)) return { ok:false, message:'目标在允许区域外；征召后可直接指挥移动' };
       const path = this.path(p, c.target);
       if (!path) return { ok: false, message: '没有可达通路；检查梯子和楼板' };
       this.release(p);
@@ -3856,13 +3954,13 @@ export class VoxelSimulation {
     return !!f && p.phase === 'clean' && p.faction === 'colony' && !p.dead && !p.downed &&
       !p.drafted && p.carriedBy === null && p.carryingPawnId === null && p.cargo === null &&
       p.jobId === null && p.carePhase === null && p.wardenTask === null && p.psyche.breakUntil <= this.tick &&
-      healthSummary(p).manipulation > 0 && this.homeArea.has(at(f)) && this.filthSupported(f) && this.canStop(f) &&
+      healthSummary(p).manipulation > 0 && this.pawnAllowed(p,f) && this.homeArea.has(at(f)) && this.filthSupported(f) && this.canStop(f) &&
       !this.pawns.some(other => other !== p && other.cleanTask?.filthId === f.id);
   }
   private startClean(p: Pawn, f: Filth): boolean {
     if (p.faction !== 'colony' || p.dead || p.downed || p.drafted || p.carriedBy !== null ||
         p.carryingPawnId !== null || p.psyche.breakUntil > this.tick || healthSummary(p).manipulation <= 0 ||
-        !this.homeArea.has(at(f)) || !this.canStop(f) || !this.filthSupported(f) ||
+        !this.pawnAllowed(p,f) || !this.homeArea.has(at(f)) || !this.canStop(f) || !this.filthSupported(f) ||
         this.pawns.some(other => other !== p && other.cleanTask?.filthId === f.id)) return false;
     const route = this.path(p, f);
     if (route === null || !this.dropCargo(p)) return false;
@@ -3874,7 +3972,7 @@ export class VoxelSimulation {
   }
   private tryClean(p: Pawn): boolean {
     if (!p.priorities.clean || p.cargo || !this.homeArea.size || !this.filth.length) return false;
-    const candidates = this.filth.filter(f => this.homeArea.has(at(f)) && this.canStop(f) &&
+    const candidates = this.filth.filter(f => this.pawnAllowed(p,f) && this.homeArea.has(at(f)) && this.canStop(f) &&
       !this.pawns.some(other => other.cleanTask?.filthId === f.id));
     if (!candidates.length) return false;
     this.search(p);
@@ -3910,7 +4008,7 @@ export class VoxelSimulation {
     const bed = this.beds
       .filter(
         (b) =>
-          !b.prisoner && (b.medical || b.owner === p.id) &&
+          this.pawnAllowed(p,b) && !b.prisoner && (b.medical || b.owner === p.id) &&
           this.distance[at(b)] >= 0 &&
           !this.pawns.some(
             (q) =>
@@ -3933,7 +4031,7 @@ export class VoxelSimulation {
     return true;
   }
   /** search(origin) must precede this call; helpers share the navigation workspace. */
-  private careStand(patient: Pawn): number {
+  private careStand(patient: Pawn, worker?: Pawn): number {
     const candidates = horizontal.map(([dx, dy]) => ({
       x: patient.x + dx,
       y: patient.y + dy,
@@ -3941,7 +4039,7 @@ export class VoxelSimulation {
     }));
     return (
       candidates
-        .filter((q) => this.canStop(q) && this.distance[at(q)] >= 0)
+        .filter((q) => this.canStop(q) && this.distance[at(q)] >= 0 && (!worker || this.pawnAllowed(worker,q)))
         .sort((a, b) => this.distance[at(a)] - this.distance[at(b)])
         .map(at)[0] ?? -1
     );
@@ -3950,7 +4048,7 @@ export class VoxelSimulation {
     return this.beds
       .filter(
         (b) =>
-          b.medical &&
+          b.medical && this.pawnAllowed(p,b) &&
           b.prisoner === (patient.faction === 'prisoner') &&
           (!b.prisoner || b.owner === patient.id) &&
           this.distance[at(b)] >= 0 &&
@@ -3967,7 +4065,7 @@ export class VoxelSimulation {
   }
   private startCare(p: Pawn, patient: Pawn, action: 'rescue' | 'feed' | 'tend'): boolean {
     if (
-      p === patient ||
+      p === patient || !this.pawnAllowed(p,patient) ||
       healthSummary(p).manipulation <= 0 ||
       p.dead ||
       p.downed ||
@@ -4098,7 +4196,7 @@ export class VoxelSimulation {
     return false;
   }
   private validCare(p: Pawn): boolean {
-    if (healthSummary(p).manipulation <= 0) return false;
+    if (healthSummary(p).manipulation <= 0 || !this.pawnTaskInArea(p)) return false;
     const patient = this.pawns.find((q) => q.id === p.patientId);
     if (!patient || patient.dead || patient.prisoner?.releasing || !['colony', 'prisoner'].includes(patient.faction) || patient.drafted || !p.carePhase)
       return false;
@@ -5261,7 +5359,7 @@ export class VoxelSimulation {
     if (!own && !item) return false;
     const piece = own ? p.cargo!.apparel! : item!.apparel!;
     if (!apparelHasPartsToWear(piece, p.trauma)) return false;
-    if (item && !this.itemPath(p, item)) return false;
+    if (item && (!this.pawnAllowed(p,item) || !this.itemPath(p, item))) return false;
     if (!own && !this.dropCargo(p)) return false;
     this.release(p);
     p.apparelTask = { action, apparelId, stage: own ? 'work' : 'fetch', progress: 0 };
@@ -5370,18 +5468,18 @@ export class VoxelSimulation {
   }
   private validRecreation(p: Pawn) {
     const activity = p.psyche.recreation;
-    if (!activity || this.tick >= activity.endTick || p.food < 12 || p.rest < 1 ||
+    if (!activity || !this.pawnAllowed(p,activity.target) || this.tick >= activity.endTick || p.food < 12 || p.rest < 1 ||
         this.leisureReserved(p,activity.target)) return false;
     if (!activity.forced && ['work', 'sleep'].includes(assignmentAt(p.schedule, this.tick))) return false;
     if (activity.kind === 'social') {
       const table = this.tables.find(t => t.id === activity.spotId);
-      return !!table && this.gatheringCell(table,activity.target);
+      return !!table && this.pawnAllowed(p,table) && this.gatheringCell(table,activity.target);
     }
     if (!this.leisureCell(activity.target)) return false;
     if (activity.kind === 'walk') return this.skyAt(activity.target) && natureWeatherAllowed(this.weather, this.tick);
     if (healthSummary(p).manipulation <= 0) return false;
     const pin = this.horseshoePins.find(b => b.id === activity.spotId);
-    if (!pin || pin.z !== activity.target.z) return false;
+    if (!pin || !this.pawnAllowed(p,pin) || pin.z !== activity.target.z) return false;
     const middle = { x: (pin.x + activity.target.x) / 2, y: (pin.y + activity.target.y) / 2, z: pin.z };
     return inside(middle) && this.canStop(middle) && !this.furnitureAt(middle) &&
       !this.jobs.some(j => !j.cancelled && same(j, pin));
@@ -5395,25 +5493,25 @@ export class VoxelSimulation {
     const occupied = (q: Pos) => this.pawns.some(other => other !== p && !other.dead &&
       same(other, q)) || this.leisureReserved(p,q);
     if (!preferred || preferred === 'social') for (const table of this.tables) {
-      if (!table.gathering || this.jobs.some(j => !j.cancelled && j.kind === 'remove' && this.tableAt(j)?.id === table.id)) continue;
+      if (!this.pawnAllowed(p,table) || !table.gathering || this.jobs.some(j => !j.cancelled && j.kind === 'remove' && this.tableAt(j)?.id === table.id)) continue;
       const cells = new Map<number,Pos>();
       for (const cell of tableCells(table)) for (const [dx,dy] of horizontal) {
         const target = {x:cell.x+dx,y:cell.y+dy,z:cell.z};
         if (inside(target)) cells.set(at(target),target);
       }
       for (const target of cells.values()) {
-        if (!this.gatheringCell(table,target) || occupied(target) || this.distance[at(target)] < 0) continue;
+        if (!this.pawnAllowed(p,target) || !this.gatheringCell(table,target) || occupied(target) || this.distance[at(target)] < 0) continue;
         candidates.push({kind:'social',target,spotId:table.id,
           score:recreationGain('social',p.psyche.tolerance.social)*DAY - this.distance[at(target)]});
       }
     }
     if (!preferred || preferred === 'horseshoes') for (const pin of this.horseshoePins) {
-      if (this.pawns.some(other => other !== p && other.psyche.recreation?.spotId === pin.id) ||
+      if (!this.pawnAllowed(p,pin) || this.pawns.some(other => other !== p && other.psyche.recreation?.spotId === pin.id) ||
           this.jobs.some(j => !j.cancelled && same(j, pin))) continue;
       for (const [dx, dy] of horizontal) {
         const target = { x: pin.x + dx * 2, y: pin.y + dy * 2, z: pin.z },
           middle = { x: pin.x + dx, y: pin.y + dy, z: pin.z };
-        if (!this.leisureCell(target) || !this.canStop(middle) || this.furnitureAt(middle) ||
+        if (!this.pawnAllowed(p,target) || !this.leisureCell(target) || !this.canStop(middle) || this.furnitureAt(middle) ||
             occupied(target) || this.distance[at(target)] < 0 || healthSummary(p).manipulation <= 0) continue;
         candidates.push({ kind: 'horseshoes', target, spotId: pin.id,
           score: recreationGain('horseshoes', p.psyche.tolerance.horseshoes) * DAY - this.distance[at(target)] });
@@ -5424,7 +5522,7 @@ export class VoxelSimulation {
       if (Math.abs(dx) + Math.abs(dy) < 2) continue;
       for (const dz of [0, 1, -1]) {
         const target = { x: p.x + dx, y: p.y + dy, z: p.z + dz };
-        if (!natureWeatherAllowed(this.weather, this.tick) || !this.leisureCell(target) ||
+        if (!this.pawnAllowed(p,target) || !natureWeatherAllowed(this.weather, this.tick) || !this.leisureCell(target) ||
           !this.skyAt(target) || occupied(target) || this.distance[at(target)] < 0) continue;
         candidates.push({ kind: 'walk', target, spotId: null,
           score: recreationGain('walk', p.psyche.tolerance.walk) * DAY - this.distance[at(target)] });
@@ -5817,6 +5915,7 @@ export class VoxelSimulation {
   }
   prisonApproach(p: Pawn, target: Pos): number[] | null {
     this.search(p);
+    if (!this.pawnAllowed(p,target)) return null;
     const stand = this.careStand(target as Pawn);
     return stand < 0 ? null : this.route(stand);
   }
@@ -6132,6 +6231,11 @@ export class VoxelSimulation {
     return true;
   }
   private assign(p: Pawn) {
+    this.assignWork(p);
+    // Try valid inside-target jobs first: their interaction cell may be outside.
+    if (p.phase === 'idle' && !p.productionDelivery) this.tryReturnToArea(p);
+  }
+  private assignWork(p: Pawn) {
     if (p.food < 30 && this.tryFood(p)) return;
     if (this.startMedicalRest(p)) return;
     if (p.priorities.care > 0 && this.tryCare(p)) return;
@@ -6151,7 +6255,7 @@ export class VoxelSimulation {
     if (shouldRecreate(p, assignmentAt(p.schedule, this.tick)) && this.startRecreation(p)) return;
     this.chooseProductionForWorker(p);
     const jobs = this.jobs
-      .filter((j) => !j.cancelled && j.owner === null && p.priorities[workType(j.kind)] > 0)
+      .filter((j) => !j.cancelled && j.owner === null && this.pawnAllowed(p,j) && p.priorities[workType(j.kind)] > 0)
       .sort(
         (a, b) =>
           p.priorities[workType(a.kind)] - p.priorities[workType(b.kind)] ||
@@ -6241,7 +6345,7 @@ export class VoxelSimulation {
         j.reason = '本批材料尚未齐备，等待补料或其他可执行账单';
         continue;
       }
-      const stand = this.reachableStand(j);
+      const stand = this.reachableStand(j, p);
       if (stand < 0) {
         j.reason = '无可达工作面；需要两格净空与层间通路';
         continue;
@@ -6259,7 +6363,7 @@ export class VoxelSimulation {
         j.reason = '切石工作位置已被占用';
         continue;
       }
-      this.allowPartialRefuel(j);
+      this.allowPartialRefuel(j, p);
       const unfinished = j.unfinishedId !== undefined || (!j.progress && !Object.values(j.delivered).some(n=>n!>0))
         ? this.unfinishedForWorker(j, p) : undefined;
       if (j.unfinishedId !== undefined && !unfinished) { j.reason = '等待可达的未完成品和原作者'; continue; }
@@ -6291,7 +6395,7 @@ export class VoxelSimulation {
       let best: Stack | undefined;
       let priority = -1;
       for (const i of this.items)
-        if (this.reachableItemStand(i) >= 0 && this.availableStack(i, p.id) > 0 && !this.chunkReserved(i, p.id)) {
+        if (this.pawnAllowed(p,i) && this.reachableItemStand(i) >= 0 && this.availableStack(i, p.id) > 0 && !this.chunkReserved(i, p.id)) {
           const destination = this.storageDestination(i, this.storagePriority(i), p.id);
           if (
             destination &&
@@ -6363,7 +6467,7 @@ export class VoxelSimulation {
     const available = this.beds
       .filter(
         (b) =>
-          !b.medical &&
+          !b.medical && this.pawnAllowed(p,b) &&
           !b.prisoner &&
           (b.owner === null || b.owner === p.id) &&
           this.distance[at(b)] >= 0 &&
@@ -6389,13 +6493,14 @@ export class VoxelSimulation {
       this.go(p, at(bed), 'sleepTravel');
       p.reason = retainedCargo ? '无卸货空间，保留随身物资前往床位' : '前往床位睡觉';
     } else {
+      if (this.tryReturnToArea(p)) return;
       p.phase = 'rest';
       p.sleepingSince = this.tick;
       p.reason = retainedCargo ? '无卸货空间，保留随身物资地面睡眠' : '地面睡眠（无可达空床）';
     }
   }
   private continueJob(p: Pawn, j: Job) {
-    if (j.cancelled) {
+    if (j.cancelled || !this.pawnAllowed(p,j)) {
       this.release(p);
       return;
     }
@@ -6412,7 +6517,7 @@ export class VoxelSimulation {
       return;
     }
     this.search(p);
-    this.allowPartialRefuel(j);
+    this.allowPartialRefuel(j, p);
     const needed = missing(j);
     if (needed) {
       const stack = this.pileFor(p, needed, j);
@@ -6428,7 +6533,7 @@ export class VoxelSimulation {
       p.reason = `搬运${RESOURCE_NAMES[needed]}`;
       return;
     }
-    const stand = this.reachableStand(j);
+    const stand = this.reachableStand(j, p);
     if (stand < 0) {
       j.reason = '通路已改变，等待重新连通';
       this.release(p);
@@ -6438,14 +6543,14 @@ export class VoxelSimulation {
     p.reason = '前往工作面';
     j.reason = JOB_NAMES[j.kind] + '中';
   }
-  private allowPartialRefuel(j: Job) {
+  private allowPartialRefuel(j: Job, p: Pawn) {
     if (j.kind !== 'refuel') return;
     // Ordinary (non-atomic) refuelling may use the wood actually reachable now.
     // Other construction recipes still require every ingredient before work starts.
     const available =
       (j.delivered.wood ?? 0) +
       this.items.reduce(
-        (n, i) => n + (i.resource === 'wood' && this.reachableItemStand(i) >= 0 ? i.amount : 0),
+        (n, i) => n + (i.resource === 'wood' && this.pawnAllowed(p,i) && this.reachableItemStand(i) >= 0 ? i.amount : 0),
         0,
       );
     if (available > 0) j.cost.wood = Math.min(j.cost.wood ?? 75, available);
@@ -6464,13 +6569,13 @@ export class VoxelSimulation {
         !this.skillFailure(p,k) && p.priorities[workType(k.kind)] > 0 && this.supported(k) &&
         productionJobRecipe(k) === p.cargo!.unfinished!.recipe &&
         (k.unfinishedId === p.cargo!.unfinished!.id || (k.progress === 0 && !Object.values(k.delivered).some(n=>n!>0))) &&
-        this.reachableStand(k) >= 0 && this.unfinishedForWorker(k,p) === p.cargo);
+        this.reachableStand(k, p) >= 0 && this.unfinishedForWorker(k,p) === p.cargo);
       if (j) {
         this.claimUnfinished(j, p.cargo); j.owner = p.id; p.jobId = j.id;
         p.workTarget = { x:j.x, y:j.y, z:j.z }; this.continueUnfinished(p,j); return;
       }
     }
-    if (j && !this.acceptsJobCargo(j,p.cargo)) { this.release(p); j = undefined; }
+    if (j && (!this.pawnAllowed(p,j) || !this.acceptsJobCargo(j,p.cargo))) { this.release(p); j = undefined; }
     // Loading deliberately clears reservations, but the carried physical input
     // can be rebound to a reachable job before requiring a stockpile detour.
     if (!j) {
@@ -6483,7 +6588,7 @@ export class VoxelSimulation {
           (k.cost[p.cargo!.resource] ?? 0) > (k.delivered[p.cargo!.resource] ?? 0) &&
           this.acceptsJobCargo(k,p.cargo!,p) &&
           this.supported(k) &&
-          this.reachableStand(k) >= 0,
+          this.reachableStand(k, p) >= 0,
       );
       if (j) {
         j.owner = p.id;
@@ -6493,7 +6598,7 @@ export class VoxelSimulation {
       }
     }
     if (j && (j.delivered[p.cargo.resource] ?? 0) < (j.cost[p.cargo.resource] ?? 0)) {
-      const stand = this.reachableStand(j);
+      const stand = this.reachableStand(j, p);
       if (stand >= 0) {
         this.storageReservations.delete(p.id);
         this.go(p, stand, 'work');
@@ -6529,7 +6634,7 @@ export class VoxelSimulation {
         (!resource || i.resource === resource) &&
         i.id === stackId,
     );
-    if (!item || amount <= 0 || p.cargo || this.chunkReserved(item, p.id)) return false;
+    if (!item || !this.pawnAllowed(p,item) || amount <= 0 || p.cargo || this.chunkReserved(item, p.id)) return false;
     const n = Math.min(amount, this.availableStack(item, p.id), carryLimit(item.resource));
     if (n <= 0) return false;
     p.cargo = portion(item, n);
@@ -6597,14 +6702,16 @@ export class VoxelSimulation {
     if (!ground) {
       const choices = this.chairs.flatMap(c => {
         const t = this.adjacentDiningTable(c), distance = this.distance[at(c)];
-        if (!t || distance < 0 || distance > LIVING_RULES.maxSeatDistance || !this.canStop(c) || this.leisureReserved(p,c) ||
+        if (!t || !this.pawnAllowed(p,c) || !this.pawnAllowed(p,t) || distance < 0 || distance > LIVING_RULES.maxSeatDistance || !this.canStop(c) || this.leisureReserved(p,c) ||
             this.fires.some(f => same(f, c)) || this.pawns.some(q => q !== p &&
               (same(q, c) || q.living.mealTask?.chairId === c.id))) return [];
         return [{ chair:c, table:t, distance }];
       }).sort((a,b) => a.distance - b.distance || a.chair.id - b.chair.id);
       chair = choices[0]?.chair; table = choices[0]?.table;
     }
+    if (!chair && !ground && this.tryReturnToArea(p)) return;
     table ??= this.adjacentDiningTable(p);
+    if (table && !this.pawnAllowed(p,table)) table = undefined;
     const target = chair ? {x:chair.x,y:chair.y,z:chair.z} : {x:p.x,y:p.y,z:p.z};
     const amount = Math.min(this.mealAmount(p, batch), ground ? this.availableStack(ground, p.id) : batch.amount);
     if (amount <= 0) { this.release(p); return; }
@@ -6619,12 +6726,12 @@ export class VoxelSimulation {
   }
   private validDining(p: Pawn) {
     const task = p.living.mealTask;
-    if (!task || p.dead || p.downed || p.drafted || p.carriedBy !== null || !this.canStop(task.target) ||
+    if (!task || !this.pawnAllowed(p,task.target) || p.dead || p.downed || p.drafted || p.carriedBy !== null || !this.canStop(task.target) ||
         this.fires.some(f => same(f,task.target))) return false;
     const batch = task.sourceId === null ? p.cargo : this.items.find(i => i.id === task.sourceId && this.itemTouch(p,i));
     if (!batch || batch.resource !== p.eating || !NUTRITION[batch.resource] || batch.amount < task.amount) return false;
     const table = this.tables.find(t => t.id === task.tableId);
-    if (task.tableId !== null && (!table || !tableCells(table).some(q => q.z === task.target.z &&
+    if (task.tableId !== null && (!table || !this.pawnAllowed(p,table) || !tableCells(table).some(q => q.z === task.target.z &&
       Math.abs(q.x-task.target.x)+Math.abs(q.y-task.target.y) === 1))) return false;
     if (task.chairId !== null && (!table || !this.chairs.some(c => c.id === task.chairId && same(c,task.target)) ||
       this.pawns.some(q => q !== p && q.living.mealTask?.chairId === task.chairId))) return false;
@@ -7022,7 +7129,7 @@ export class VoxelSimulation {
   private finish(p: Pawn, j: Job) {
     const unfinished = j.unfinishedId === undefined ? undefined : this.unfinishedCargo(j.unfinishedId)?.unfinished;
     if (j.unfinishedId !== undefined && !unfinished) { this.cancel(j); return; }
-    if (j.cancelled) {
+    if (j.cancelled || !this.pawnAllowed(p,j)) {
       this.release(p);
       return;
     }
@@ -7648,6 +7755,7 @@ export class VoxelSimulation {
         if (job && this.fires.some(f => touchesFire(f, job))) { this.release(p); p.reason = '工作位置起火，先处理火灾'; }
         if (p.psyche.breakUntil > this.tick) { this.mentalTick(p); continue; }
         if (p.faction === 'prisoner') { prisonerTick(this, p); this.moveAlongPath(p); continue; }
+        this.reconcilePawnArea(p);
         const combatant = (p.drafted || p.faction === 'raider' || p.faction === 'trader') && p.weaponTask === null;
         if (combatant) this.combatTick(p);
         else if (p.phase === 'hunt') this.huntTick(p);
@@ -7753,7 +7861,7 @@ export class VoxelSimulation {
                 !this.productionWorkerFailure(p, j) &&
                 !this.waitingForFuel(j) &&
                 this.supported(j) &&
-                this.reachableStand(j) >= 0 &&
+                this.reachableStand(j, p) >= 0 &&
                 (!missing(j) || !!this.pileFor(p, missing(j)!, j)),
             );
             const hauling =
@@ -7761,7 +7869,7 @@ export class VoxelSimulation {
               p.priorities.haul <= p.priorities.research &&
               this.items.some(
                 (i) =>
-                  this.distance[at(i)] >= 0 &&
+                  this.pawnAllowed(p,i) && this.distance[at(i)] >= 0 &&
                   !this.chunkReserved(i, p.id) &&
                   !!this.storageDestination(i, this.storagePriority(i), p.id),
               );
@@ -8217,7 +8325,7 @@ export class VoxelSimulation {
       sandbags: this.sandbags.filter(visible),
       animals: this.animals.filter(visible),
       grass: this.grass.filter(visible), husbandryLog: this.husbandryLog,
-      fences: this.fences.filter(visible), fenceGates: this.fenceGates.filter(visible), penMarkers: this.penMarkers.filter(visible), animalAreas: this.animalAreas.map(a => ({ ...a, cells: a.cells.filter(i => this.explored[i]) })),
+      fences: this.fences.filter(visible), fenceGates: this.fenceGates.filter(visible), penMarkers: this.penMarkers.filter(visible), animalAreas: this.animalAreas.map(a => ({ ...a, cells: [...a.cells] })),
       butcherSpots: this.butcherSpots.filter(visible),
       tables: this.tables.filter(visible), chairs: this.chairs.filter(visible),
       horseshoePins: this.horseshoePins.filter(visible),
@@ -8294,7 +8402,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 43,
+      version: 44,
       stockpileZones: this.stockpileZones,
       productionQueues: this.productionQueues.filter(q => this.productionBenches().some(b => b.id === q.benchId)),
       socialHistory: this.socialHistory, socialLog: this.socialLog,
@@ -8355,11 +8463,13 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : old.version < 43 ? [1, 2, 3] : [1, 2, 3, 4]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    if (sourceVersion < 44 && old.pawns?.some((p:any) => Object.hasOwn(p,'allowedAreaId')))
+      throw new Error('旧版本存档混入居民允许区域字段');
     if (sourceVersion < 43 && (Object.hasOwn(old,'water') || Object.hasOwn(old,'bridges') ||
       Object.hasOwn(old.settings ?? {},'river') || old.jobs?.some((j:any)=>j.kind==='bridge')))
       throw new Error('旧版本存档混入水域或桥梁字段');
@@ -8770,7 +8880,8 @@ export class VoxelSimulation {
         bill.output = defaultProductionOutput('drop');
     }
     if (sourceVersion < 43) { old.water = [0, CELLS]; old.bridges = [0, CELLS]; }
-    old.version = 43;
+    if (sourceVersion < 44) for (const p of old.pawns ?? []) p.allowedAreaId = null;
+    old.version = 44;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -9876,6 +9987,7 @@ export class VoxelSimulation {
     validateWildlife(d, ids, new Set([...apparelIds, ...weaponIds]));
     validateHusbandry(d);
     validatePens(d);
+    validatePawnAreas(d);
     validateLiving(d);
     validateFurniture(d);
     validateRelocation(d);
@@ -10328,12 +10440,13 @@ export class VoxelSimulation {
           p.faction !== 'colony' || p.psyche.breakUntil > s.tick || p.priorities[workType(j.kind)] <= 0 ||
           j.owner !== null || !s.supported(j) || s.skillFailure(p, j) || s.productionWorkerFailure(p, j)) continue;
       s.search(p);
-      if (s.reachableStand(j) < 0) continue;
+      if (s.reachableStand(j, p) < 0) continue;
       j.owner = p.id;
       p.jobId = j.id;
       p.workTarget = { x: j.x, y: j.y, z: j.z };
       s.continueJob(p, j);
     }
+    for (const p of s.pawns) s.reconcilePawnArea(p);
     return s;
   }
 }

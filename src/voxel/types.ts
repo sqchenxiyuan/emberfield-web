@@ -672,6 +672,7 @@ export interface CombatState {
   wave: number;
 }
 export interface Pawn extends Pos {
+  allowedAreaId: number | null;
   productionDelivery?: import('./productionOutput').ProductionDelivery;
   social: SocialState;
   living: LivingState;
@@ -914,6 +915,11 @@ export type VoxelCommand =
   | { type: 'penName'; markerId: number; name: string }
   | { type: 'ropeAnimal'; animalId: number; penId: number | null; paused: boolean }
   | { type: 'animalAreaCreate'; name: string }
+  | { type: 'allowedAreaCreate'; name: string }
+  | { type: 'allowedAreaRename'; areaId: number; name: string }
+  | { type: 'allowedAreaDelete'; areaId: number }
+  | { type: 'allowedAreaPaint'; areaId: number; from: Pos; to?: Pos; erase: boolean }
+  | { type: 'pawnAreaAssign'; pawnId: number; areaId: number | null }
   | { type: 'animalAreaRename'; areaId: number; name: string }
   | { type: 'animalAreaDelete'; areaId: number }
   | { type: 'animalAreaPaint'; areaId: number; from: Pos; to?: Pos; erase: boolean }
@@ -1011,7 +1017,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 43;
+  version: 44;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;
@@ -1135,7 +1141,7 @@ export const TOOL_NAMES: Record<Tool, string> = {
   bridge: '木桥',
   shelf: '货架', smallShelf: '小货架',
   table: '餐桌', chair: '餐椅',
-  fence: '围栏', fenceGate: '栏门', penMarker: '圈地标记', animalArea: '动物活动范围',
+  fence: '围栏', fenceGate: '栏门', penMarker: '圈地标记', animalArea: '允许区域',
   horseshoePin: '马蹄铁桩',
   butcherSpot: '屠宰点',
   ...DEVICE_NAMES,

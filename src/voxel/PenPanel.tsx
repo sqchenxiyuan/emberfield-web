@@ -76,10 +76,10 @@ export function AnimalPenControls({ animal: a, snapshot: s, command, controls }:
     </> : <>
       <label>活动范围<select aria-label={`${a.name} 活动范围`} value={a.allowedAreaId ?? ''}
         onChange={e => void command({ type: 'animalAreaAssign', animalId: a.id, areaId: e.target.value === '' ? null : Number(e.target.value) })}>
-        <option value="">不限制</option>{s.animalAreas.map(area => <option key={area.id} value={area.id}>{area.name}{area.cells.length ? '' : ' · 尚未涂绘'}</option>)}
+        <option value="">不限制</option>{s.animalAreas.map(area => <option key={area.id} value={area.id}>{area.name}{area.cells.length ? '' : ' · 空区域，不限制'}</option>)}
       </select></label>
       {a.allowedAreaId !== null && <div className="voxel-pen-actions"><button onClick={() => controls.showArea(a.allowedAreaId)}>显示活动范围</button><button onClick={() => controls.editArea(a.allowedAreaId!)}>涂绘范围</button></div>}
-      <small>兔可越过围栏。活动范围引导它寻找食物和休息，范围外的兔会步行返回；逃避威胁时可离开范围。</small>
+      <small>兔可越过围栏。允许区域与居民共享，用来寻找食物和休息，范围外的兔会步行返回；路径可能途经区外，逃避威胁时可离开范围。空区域不限制。</small>
     </>}
   </div>;
 }
@@ -91,7 +91,7 @@ export function PenPanel({ snapshot: s, command, choose, focus, controls }: {
   const create = async () => {
     if (creating) return;
     setCreating(true);
-    try { const result = await command({ type: 'animalAreaCreate', name: name.trim() || `兔活动区 ${s.animalAreas.length + 1}` });
+    try { const result = await command({ type: 'allowedAreaCreate', name: name.trim() || `允许区域 ${s.animalAreas.length + 1}` });
       if (result.ok && result.areaId !== undefined) { setName(''); controls.editArea(result.areaId); }
     } finally { setCreating(false); }
   };
@@ -105,19 +105,19 @@ export function PenPanel({ snapshot: s, command, choose, focus, controls }: {
     <h3>圈地 · {s.penMarkers.length}</h3>
     {!s.penMarkers.length && <p>尚无圈地标记。先完成围栏和栏门，再在内部放置标记。</p>}
     {s.penMarkers.map(marker => <PenDetails key={marker.id} marker={marker} snapshot={s} command={command} focus={focus} controls={controls} />)}
-    <h3>兔活动范围 · {s.animalAreas.length}</h3>
+    <h3>共享允许区域 · {s.animalAreas.length}</h3>
     <form className="voxel-pen-create" onSubmit={e => { e.preventDefault(); void create(); }}>
       <input aria-label="新活动范围名称" placeholder="新活动范围名称" maxLength={PEN_RULES.maxNameLength} value={name} onChange={e => setName(e.target.value)} />
       <button type="submit" disabled={creating || s.animalAreas.length >= PEN_RULES.maxAreas}>创建并涂绘</button>
     </form>
-    <small>左键拖动涂绘矩形，右键结束。为兔分配范围后，它会正常走回；请把食物和可通行的地面包含在内。</small>
+    <small>居民与兔使用同一份区域。左键拖动涂绘当前楼层，右键结束；请包含食物与可达位置。空区域等于不限制，修改会影响所有使用者。</small>
     {s.animalAreas.map(area => <section className="voxel-pen-card" key={area.id} data-area-id={area.id}>
       <div className="voxel-info-row"><b><i className="voxel-area-swatch" style={{ background: `#${area.color.toString(16).padStart(6, '0')}` }} />{area.name}</b><span>{area.cells.length} 格</span></div>
-      <NameField value={area.name} label="活动范围名称" ariaLabel={`活动范围名称 ${area.id}`} save={name => void command({ type: 'animalAreaRename', areaId: area.id, name })} />
-      <small>{s.animals.filter(a => !a.dead && a.allowedAreaId === area.id).length} 只兔使用{area.cells.length ? '' : ' · 尚未涂绘，请先加入可走的地面'}</small>
+      <NameField value={area.name} label="活动范围名称" ariaLabel={`活动范围名称 ${area.id}`} save={name => void command({ type: 'allowedAreaRename', areaId: area.id, name })} />
+      <small>{s.pawns.filter(p => !p.dead && p.faction === 'colony' && p.allowedAreaId === area.id).length} 位居民 · {s.animals.filter(a => !a.dead && a.allowedAreaId === area.id).length} 只兔使用{area.cells.length ? '' : ' · 空区域，不限制'}</small>
       <div className="voxel-pen-actions"><button aria-pressed={controls.selectedAreaId === area.id} onClick={() => controls.showArea(controls.selectedAreaId === area.id ? null : area.id)}>显示范围</button>
         <button onClick={() => controls.editArea(area.id)}>涂绘</button><button onClick={() => controls.editArea(area.id, true)}>擦除</button>
-        <button onClick={() => void command({ type: 'animalAreaDelete', areaId: area.id })}>删除范围</button></div>
+        <button onClick={() => void command({ type: 'allowedAreaDelete', areaId: area.id })}>删除范围</button></div>
     </section>)}
     {controls.editingArea && <button onClick={() => choose('inspect')}>结束涂绘</button>}
   </div>;

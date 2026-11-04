@@ -962,6 +962,17 @@ export class VoxelRenderer {
     return x >= 0 && y >= 0 && x < WIDTH && y < DEPTH ? { x, y, z: this.level } : null;
   }
 
+  /** Area membership belongs to the chosen floor, even over air or hidden rock. */
+  pickArea(clientXWithinCanvas: number, clientYWithinCanvas: number): Pos | null {
+    if (this.disposed || !Number.isFinite(clientXWithinCanvas) || !Number.isFinite(clientYWithinCanvas) ||
+      clientXWithinCanvas < 0 || clientYWithinCanvas < 0 || clientXWithinCanvas >= this.width || clientYWithinCanvas >= this.height) return null;
+    this.pointer.set((clientXWithinCanvas / this.width) * 2 - 1, 1 - (clientYWithinCanvas / this.height) * 2);
+    this.ray.setFromCamera(this.pointer, this.camera);
+    if (!this.ray.ray.intersectPlane(this.plane, this.hit)) return null;
+    const x = Math.floor(this.hit.x), y = Math.floor(this.hit.z);
+    return x >= 0 && y >= 0 && x < WIDTH && y < DEPTH ? { x, y, z: this.level } : null;
+  }
+
   /** Inspect the visible object under the pointer; construction keeps using pick(). */
   inspect(clientXWithinCanvas: number, clientYWithinCanvas: number): Pos | null {
     const fallback = this.pick(clientXWithinCanvas, clientYWithinCanvas);
@@ -1818,11 +1829,14 @@ export class VoxelRenderer {
     for (const n of cells) {
       const p = { x: n % WIDTH, y: Math.floor(n / WIDTH) % DEPTH, z: Math.floor(n / (WIDTH * DEPTH)) };
       if (p.z !== this.level) continue;
-      fills.push({ cell: p, x: p.x + .5, y: p.y + .5, z: p.z + .047, sx: .96, sy: .96, sz: .014, color });
+      // Unknown cells are already masked to opaque rock. Raising the annotation
+      // over that cut face shows membership without exposing the hidden terrain.
+      const cutOffset = area && this.block(p.x, p.y, p.z) !== Block.Air ? .55 : 0;
+      fills.push({ cell: p, x: p.x + .5, y: p.y + .5, z: p.z + cutOffset + .047, sx: .96, sy: .96, sz: .014, color });
       for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
         const x = p.x + dx, y = p.y + dy;
         if (x >= 0 && x < WIDTH && y >= 0 && y < DEPTH && cells.has(index(x, y, p.z))) continue;
-        parts.push({ cell: p, x: p.x + .5 + dx * .48, y: p.y + .5 + dy * .48, z: p.z + .08,
+        parts.push({ cell: p, x: p.x + .5 + dx * .48, y: p.y + .5 + dy * .48, z: p.z + cutOffset + .08,
           sx: dx ? .045 : .98, sy: dy ? .045 : .98, sz: .035, color });
       }
     }
@@ -1847,8 +1861,9 @@ export class VoxelRenderer {
       for (let y = Math.max(0, Math.min(preview.from.y, preview.to.y)); y <= Math.min(DEPTH - 1, Math.max(preview.from.y, preview.to.y)); y++) {
         for (let x = Math.max(0, Math.min(preview.from.x, preview.to.x)); x <= Math.min(WIDTH - 1, Math.max(preview.from.x, preview.to.x)); x++) {
           const p = { x, y, z: preview.from.z };
+          const cutOffset = preview.tool === 'animalArea' && this.block(x, y, p.z) !== Block.Air ? .55 : 0;
           const put = (dx: number, dy: number, dz: number, sx: number, sy: number, sz: number) =>
-            parts.push({ cell: p, x: x + dx, y: y + dy, z: p.z + dz, sx, sy, sz, color });
+            parts.push({ cell: p, x: x + dx, y: y + dy, z: p.z + cutOffset + dz, sx, sy, sz, color });
           put(.5, .5, .09, .94, .94, .035);
           if (preview.tool === 'bridge') {
             for (let board = 0; board < 4; board++) put(.5, .125 + board * .25, .08, .95, .2, .1);

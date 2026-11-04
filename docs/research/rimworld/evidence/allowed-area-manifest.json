@@ -1,0 +1,205 @@
+{
+  "evidence_id": "RW17-ALLOWED-AREA",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "local_file": ".local-research/allowed-area/RimWorld.Pawn_PlayerSettings.cs",
+      "sha256": "c23d3b5de6c9a96cad59170531efc71f3964d8d99d07b582eda580bfbdd00494",
+      "lines": 423
+    },
+    {
+      "type": "RimWorld.Area_Allowed",
+      "local_file": ".local-research/allowed-area/RimWorld.Area_Allowed.cs",
+      "sha256": "2937e7b91929ebf0a5d8e8c6808574592f539f6b30c6fb9e6619d3265e1faa6d",
+      "lines": 96
+    },
+    {
+      "type": "RimWorld.JobGiver_SeekAllowedArea",
+      "local_file": ".local-research/allowed-area/RimWorld.JobGiver_SeekAllowedArea.cs",
+      "sha256": "5aac9c9ebe8684bacec43bcd2dc5f6ab849e255417d063895ce7c081df36b74b",
+      "lines": 86
+    },
+    {
+      "type": "RimWorld.ForbidUtility",
+      "local_file": ".local-research/allowed-area/RimWorld.ForbidUtility.cs",
+      "sha256": "e36190372ca2bc9540ef40d3d6a3ee836f30c3da7ee6842dffa79c0da78fbf48",
+      "lines": 208
+    },
+    {
+      "type": "Verse.Area",
+      "local_file": ".local-research/allowed-area/Verse.Area.cs",
+      "sha256": "683a6d44ccbfec1e9cd72871eda222386e65e33c1aadfc65ab3e6681a31d77d6",
+      "lines": 176
+    },
+    {
+      "type": "Verse.AreaManager",
+      "local_file": ".local-research/allowed-area/Verse.AreaManager.cs",
+      "sha256": "9a40554370425d94a6c3f2aa400f137815864e548bb284c00a6a019d0e68f6eb",
+      "lines": 160
+    },
+    {
+      "type": "Verse.PathFinder",
+      "local_file": ".local-research/allowed-area/Verse.PathFinder.cs",
+      "sha256": "d38fc7509d072d88d56aeaaf542ec5c57f4c461c5212783edbcd25e1defcc67a",
+      "lines": 808
+    },
+    {
+      "type": "Verse.PathRequest",
+      "local_file": ".local-research/allowed-area/Verse.PathRequest.cs",
+      "sha256": "a47aaeecef4efb9a27de10ce26e0cedfaa6d7f1797e587591e367eb7b5b6dfc1",
+      "lines": 203
+    },
+    {
+      "type": "Verse.PathFinderMapData",
+      "local_file": ".local-research/allowed-area/Verse.PathFinderMapData.cs",
+      "sha256": "86c679fdff3188852fdf78802541651a5b6e39438ba27e2aafed6836edf09a30",
+      "lines": 317
+    },
+    {
+      "type": "Verse.PathUtility",
+      "local_file": ".local-research/allowed-area/Verse.PathUtility.cs",
+      "sha256": "a8b74de65072635fd57123488d272e85b7661806ea0fea0ea01a72382576783e",
+      "lines": 156
+    },
+    {
+      "type": "Verse.PathGridJob",
+      "local_file": ".local-research/allowed-area/Verse.PathGridJob.cs",
+      "sha256": "7e2cef4310b6acdc7998c12422f935b4998c70793b4c5ba4bbfd76a4459bba1c",
+      "lines": 194
+    },
+    {
+      "type": "Verse.PathFinderCostTuning",
+      "local_file": ".local-research/allowed-area/Verse.PathFinderCostTuning.cs",
+      "sha256": "46f9788a17313d00cb93f4c99470db9e05482387f4f92e84642ca209f6898f15",
+      "lines": 94
+    },
+    {
+      "type": "Verse.AI.Job",
+      "local_file": ".local-research/allowed-area/Verse.AI.Job.cs",
+      "sha256": "82e9e8d733ec292d56f7ce0457c2f84043d694cc67a1e14ce06b35295cc90313",
+      "lines": 769
+    },
+    {
+      "type": "RimWorld.Dialog_ManageAreas",
+      "local_file": ".local-research/allowed-area/RimWorld.Dialog_ManageAreas.cs",
+      "sha256": "a5891df3ed0c9f779e527e157378a55bdc6e78e608c26e1819c4abb1d8349084",
+      "lines": 130
+    },
+    {
+      "type": "RimWorld.AreaAllowedGUI",
+      "local_file": ".local-research/allowed-area/RimWorld.AreaAllowedGUI.cs",
+      "sha256": "979733447bb6df44c00b3f4cc7099e212271204579849bcbc44c79ec5870705b",
+      "lines": 85
+    },
+    {
+      "type": "RimWorld.Designator_AreaAllowedExpand",
+      "local_file": ".local-research/allowed-area/RimWorld.Designator_AreaAllowedExpand.cs",
+      "sha256": "033ca6766ab0ee952fa5982ef6761ee21fa4b9f7d09abe6130b492a0f96a6e91",
+      "lines": 31
+    },
+    {
+      "type": "RimWorld.Designator_AreaAllowedClear",
+      "local_file": ".local-research/allowed-area/RimWorld.Designator_AreaAllowedClear.cs",
+      "sha256": "c4c93babcf32c2d584cb74855a9db289f542a388a104292a0910be75a64797ea",
+      "lines": 31
+    },
+    {
+      "type": "RimWorld.Designator_AreaAllowed",
+      "local_file": ".local-research/allowed-area/RimWorld.Designator_AreaAllowed.cs",
+      "sha256": "9036d38bcdf60f909f05ab6e1aa220f0338514f35a48d0a6f5629b18177bcf9e",
+      "lines": 59
+    },
+    {
+      "type": "RimWorld.WorkGiver_ConstructDeliverResources",
+      "local_file": ".local-research/allowed-area/RimWorld.WorkGiver_ConstructDeliverResources.cs",
+      "sha256": "d56e9f6233e39792dc26e0380ad0ebe8626aad4cd5c0fdf6729847afc382d004",
+      "lines": 403
+    },
+    {
+      "type": "RimWorld.WorkGiver_DoBill",
+      "local_file": ".local-research/allowed-area/RimWorld.WorkGiver_DoBill.cs",
+      "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+      "lines": 730
+    },
+    {
+      "type": "RimWorld.RestUtility",
+      "local_file": ".local-research/allowed-area/RimWorld.RestUtility.cs",
+      "sha256": "e0f84f3a9d891e7c6130159b9dfd6751063147eb3e090effe854661171e3f73e",
+      "lines": 612
+    },
+    {
+      "type": "RimWorld.JobGiver_GetFood",
+      "local_file": ".local-research/allowed-area/RimWorld.JobGiver_GetFood.cs",
+      "sha256": "c648efbdd091620603979d79de4c064f5a8174e7f6cf51950b6c19619a398a04",
+      "lines": 186
+    },
+    {
+      "type": "RimWorld.JobGiver_Work",
+      "local_file": ".local-research/allowed-area/RimWorld.JobGiver_Work.cs",
+      "sha256": "f8c072215d7c295b934133ca0bca6bf075706c2f8ce11bc4066ea1eb8a42e60f",
+      "lines": 358
+    },
+    {
+      "type": "RimWorld.StoreUtility",
+      "local_file": ".local-research/allowed-area/RimWorld.StoreUtility.cs",
+      "sha256": "b8241150a63e38993de851bdb82d06a8c6fbbb3359f1fdfb92b70bec3b5b960d",
+      "lines": 404
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_WorkGivers",
+      "local_file": ".local-research/allowed-area/RimWorld.FloatMenuOptionProvider_WorkGivers.cs",
+      "sha256": "f05e9f1b76d69cff7f2f28e33a0cbcfa2bdeff30f3f967f943b135f892b3968a",
+      "lines": 257
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_Equip",
+      "local_file": ".local-research/allowed-area/RimWorld.FloatMenuOptionProvider_Equip.cs",
+      "sha256": "8f7c6cd684307bac95c205ac17dea46f8341f58cb528cdf3316e6371715c7625",
+      "lines": 92
+    },
+    {
+      "type": "Verse.AI.Pawn_JobTracker",
+      "local_file": ".local-research/allowed-area/Verse.AI.Pawn_JobTracker.cs",
+      "sha256": "7934319bfedbd8a46aa54341a2afec9561efb469cd4fe58aec5745f9236fc5c4",
+      "lines": 1075
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "local_file": ".local-research/allowed-area/RimWorld.FoodUtility.cs",
+      "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+      "lines": 1686
+    },
+    {
+      "type": "Verse.BoolGrid",
+      "local_file": ".local-research/allowed-area/Verse.BoolGrid.cs",
+      "sha256": "7415c714fca646edf6018d5c66d36b5a4f72aa70ae2d5883f61a5c3efdf4e3a4",
+      "lines": 210
+    },
+    {
+      "type": "Verse.DataExposeUtility",
+      "local_file": ".local-research/allowed-area/Verse.DataExposeUtility.cs",
+      "sha256": "2195e34fa81383c68f1c462b2c50c63b144866821d88079d236c82e0ef06d7a1",
+      "lines": 206
+    },
+    {
+      "type": "RimWorld.JobGiver_GetRest",
+      "local_file": ".local-research/allowed-area/RimWorld.JobGiver_GetRest.cs",
+      "sha256": "bc323e06492bcdf067e9dec5f9f8da9bd0645d320a85ec9aeebe1531c3b08957",
+      "lines": 174
+    }
+  ]
+}

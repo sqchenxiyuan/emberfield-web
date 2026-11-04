@@ -1,0 +1,988 @@
+{
+  "schema": 1,
+  "version": 44,
+  "verifiedAt": "2026-11-04T14:35:22.023Z",
+  "sourceBundleSha256": "3edb6f3361ed928eb2e48ee6fcdbbc50d729cfd717c31ae46313a897f126f2f7",
+  "meaning": "Frozen local validation receipt, not original-game evidence. Logs and full saves remain local in test-results; run the tracked scripts/tests to reproduce behavior.",
+  "regression": {
+    "files": 117,
+    "tests": 1546,
+    "skipped": 0,
+    "attempts": [
+      {
+        "file": "test-results/allowed-area-release-rest-tests.json",
+        "sha256": "4714aef46688568971ed0f0e7899ecb8ac20aa658063bb960bd311f62d89adc2",
+        "success": false,
+        "passed": 1506,
+        "failed": 3,
+        "pending": 0
+      },
+      {
+        "file": "test-results/allowed-area-release-long-tests.json",
+        "sha256": "1092f72093d3fa9782427078cec9c4c909b9e24ca528638f0bca29f786823b3d",
+        "success": false,
+        "passed": 11,
+        "failed": 0,
+        "pending": 9
+      },
+      {
+        "file": "test-results/allowed-area-release-repaired-tests.json",
+        "sha256": "0af54584fb2b7fca28b48bd7bfb6e1d7de6347255fa03feed7b979ea1e0550d5",
+        "success": true,
+        "passed": 30,
+        "failed": 0,
+        "pending": 0
+      },
+      {
+        "file": "test-results/allowed-area-release-host-tests.json",
+        "sha256": "9025f27453601870a0b6f3a5c35e1a6c0e8e80cd10fe21e9ddef9c41cc73ec3b",
+        "success": true,
+        "passed": 17,
+        "failed": 0,
+        "pending": 0
+      },
+      {
+        "file": "test-results/allowed-area-release-food-tests.json",
+        "sha256": "4ae9a2c2228c34ac4809f6c825d4428c0ce7a68ca4aea3133dea5400617b3ff7",
+        "success": true,
+        "passed": 17,
+        "failed": 0,
+        "pending": 0
+      }
+    ],
+    "retryExplanation": "Initial concurrent run had two 5-second test timeouts, an old pawn-field equality expectation, and a 300-second real-harvest setup timeout. The equality now explicitly expects the new null field. Only affected files were rerun; initial reports are retained. No crop, clock, inventory or success condition was weakened.",
+    "coverage": [
+      {
+        "file": "tests/interactions.test.ts",
+        "sha256": "8334937340900522c68de0f9bb46a70603531a23be6960867818eb887935988b",
+        "tests": 14
+      },
+      {
+        "file": "tests/mood.test.ts",
+        "sha256": "7449f6f88a5f2f68356be5404fceeb9f7b35a7cd1b32f24f708df832a454fb15",
+        "tests": 10
+      },
+      {
+        "file": "tests/prison-persistence.test.ts",
+        "sha256": "6082bc7ba40bfc21b06e3b64320ef2f6b9839f059ed4bf504c291bebd44777db",
+        "tests": 7
+      },
+      {
+        "file": "tests/prison-world.test.ts",
+        "sha256": "f26ac804fb40f95d251d74efb5b7dbabcef59d992925399a385e7b39c85cfe2c",
+        "tests": 8
+      },
+      {
+        "file": "tests/prisoners.test.ts",
+        "sha256": "831bfe44f3b464d0a27bc141b9a19fd12c82984d491473b00cafefc430793fe5",
+        "tests": 4
+      },
+      {
+        "file": "tests/sanitation.test.ts",
+        "sha256": "f06561076830a70e880cd4e8157022467e4f83fcdbf6f4a40fc1e1e01b7c7ead",
+        "tests": 6
+      },
+      {
+        "file": "tests/simulation.test.ts",
+        "sha256": "235885c41233f64bc6a7aca291a64518bad280bfbf606083b959973b4d4c2a69",
+        "tests": 22
+      },
+      {
+        "file": "tests/voxel-allowed-area-hosts.test.ts",
+        "sha256": "535ce2480b87bb208f3aec6516e2733dd0d7c7c61e6dd7af2eeb118796c3bef3",
+        "tests": 15
+      },
+      {
+        "file": "tests/voxel-allowed-area-production.test.ts",
+        "sha256": "bf477b7fde3e454930bb11b4b2eb5b877aac9adf90da32cd234dee2182940d39",
+        "tests": 2
+      },
+      {
+        "file": "tests/voxel-allowed-area.test.ts",
+        "sha256": "8babecfd066e0bf493248a3c425bed6429384a1e2aa7b7f5612c71916f9e96f0",
+        "tests": 12
+      },
+      {
+        "file": "tests/voxel-anatomy-integration.test.ts",
+        "sha256": "44fa459d17a750e728fc05b9264cd85275421addeba0a1739457f3e0db85913a",
+        "tests": 11
+      },
+      {
+        "file": "tests/voxel-anatomy-rules.test.ts",
+        "sha256": "6e16e4588561f94137fd5492d840bb8bb69147e6d261f992e42945c670f2a082",
+        "tests": 22
+      },
+      {
+        "file": "tests/voxel-apparel.test.ts",
+        "sha256": "76cc160b3099a514b98299c7d1949cc29b9c50801b290daafee0375f594b4608",
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-armor-integration.test.ts",
+        "sha256": "7223ac3896714634be7364a808328b95385b5da27a4ec9c1d9ddd0d6153f5212",
+        "tests": 11
+      },
+      {
+        "file": "tests/voxel-armor-rules.test.ts",
+        "sha256": "793e3a2f2acce084e0070a56e0b727e996a3758b0337508c9bead35b048f2c62",
+        "tests": 23
+      },
+      {
+        "file": "tests/voxel-capacity-stats.test.ts",
+        "sha256": "3d8b21b4d1ef2c2798ca95674d923250aa4138fcfbf4e4492d11fcb3bae5e05c",
+        "tests": 3
+      },
+      {
+        "file": "tests/voxel-caves.test.ts",
+        "sha256": "e73580b771af603b9cd91f7552ef5f75e2905f3a4102a22a90dcffb2eba128c2",
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-combat.test.ts",
+        "sha256": "ce6b3b758b6116d0faf087edac489eb7dd21105d36fa1cc34478ade82620bcc7",
+        "tests": 14
+      },
+      {
+        "file": "tests/voxel-crafting.test.ts",
+        "sha256": "2b73160e408c4412a30f1ac05a817fab76fb158c8d044b33bdec716925a288a5",
+        "tests": 26
+      },
+      {
+        "file": "tests/voxel-deterioration.test.ts",
+        "sha256": "87d25c8b17e1e9b31d3943603b2d85b488818e718d89eb6cb6c62ef0a9777465",
+        "tests": 14
+      },
+      {
+        "file": "tests/voxel-energy-integration.test.ts",
+        "sha256": "d21b2ae2af0f22b0eab5cdb89bf98a9517e423e6d0683d082cf9e8a939a222e4",
+        "tests": 27
+      },
+      {
+        "file": "tests/voxel-environment-boundaries.test.ts",
+        "sha256": "b10f96d64c939691c6e286994e2b484871688cc3dea71d127b55bde1e53fb883",
+        "tests": 3
+      },
+      {
+        "file": "tests/voxel-environment-integration.test.ts",
+        "sha256": "17ee523714d6953a5139ff7a721624f924b1695a5dd0461b9ca3a7b8d9d5b6f9",
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-environment-persistence.test.ts",
+        "sha256": "4b3e81e37e2f6d1dbba8b74e67d29240f88d15c5b2aeb7ba9a0012daf2d5c4a1",
+        "tests": 11
+      },
+      {
+        "file": "tests/voxel-exploration-persistence.test.ts",
+        "sha256": "c451152779d5e919d483b8a38b805afae1d0a491199305b750b0ef3477841e93",
+        "tests": 20
+      },
+      {
+        "file": "tests/voxel-exploration-renderer.test.ts",
+        "sha256": "a5708e2769a58e7d13185846f0a49531c9babeaac064e227b478886deefa3dfc",
+        "tests": 4
+      },
+      {
+        "file": "tests/voxel-exploration-worker.test.ts",
+        "sha256": "76d2d3dee24060c56fd3ea6a486039ef77770b8b997d286772d57fee1f3a3973",
+        "tests": 3
+      },
+      {
+        "file": "tests/voxel-exploration.test.ts",
+        "sha256": "4628d0ecc11ac736f295504da8cd772172cb93105ebf5200a742280065bbc7ca",
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-fire-boundaries.test.ts",
+        "sha256": "3d46c6f9e5e685e1c497a7e5a14fa416cb9952e66d3d9ac1df98a4b1ac90bc0f",
+        "tests": 27
+      },
+      {
+        "file": "tests/voxel-fire-integration.test.ts",
+        "sha256": "fc9ffaded25ea9b3443e7fbe14d0aa4853e76dec55296ba437ea2cdece6728a6",
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-food.test.ts",
+        "sha256": "df9e5bdb8376938ae7282620d32e6766b19b62b5f9b5fcc52bace60a7c359a12",
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-furniture-fire-wealth.test.ts",
+        "sha256": "751a7915dddc900f6ead4fa265452a2f87632d422ba8c4a73e2f8baf54a9c77b",
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-furniture-integration.test.ts",
+        "sha256": "8a20cf9ac9b0bfa32c9688067507385d463fcb014394ea28d5d95ad8ec0f3821",
+        "tests": 7
+      },
+      {
+        "file": "tests/voxel-furniture-migration.test.ts",
+        "sha256": "c8bc0ec66c418b59ee0ee9c5af3027b3db752c16b1b16aa613021f8f55915087",
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-furniture-model.test.ts",
+        "sha256": "4f69c1785c1b5ad1a6f2d7fd66cd2cb91387917d32d255574a22cdcce6692b7c",
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-furniture-persistence.test.ts",
+        "sha256": "d2c41514479f7a2295345006df44ee63b6a4b90cfb6c2ab7ccb32214d06b2335",
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-housing.test.ts",
+        "sha256": "98bbb9dda9785245593a7571734083f481f8db7bf481a2d1705ad455dc6fc5bf",
+        "tests": 23
+      },
+      {
+        "file": "tests/voxel-husbandry-integration.test.ts",
+        "sha256": "a5400c345b275fa1cceca7e7522ad95fd3f9f785f23dc17ad7e9ff2a95865322",
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-husbandry-migration.test.ts",
+        "sha256": "f18dc9c1868869c046374ef6418d1f2afd2d9449416534beb8e52a0aabc0120b",
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-husbandry-model.test.ts",
+        "sha256": "f0a86bc912d744e0a35bab3f12de4cf93d4628c3b1386aba94bac38a92be1420",
+        "tests": 10
+      },
+      {
+        "file": "tests/voxel-husbandry-persistence.test.ts",
+        "sha256": "42f5fa954e83b1be0cc27660f753153ff5ce632bbcadb60852b41eabddc6fc52",
+        "tests": 12
+      },
+      {
+        "file": "tests/voxel-injuries-rules.test.ts",
+        "sha256": "b209798d53c0274d655fd675df04959b21cfdd58a1167f87e47d7462873a8860",
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-living-boundaries.test.ts",
+        "sha256": "fc6cbc07042846b12cde87f5ad281f5c5d7081202ff2a28bb270ebda73126161",
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-living-integration.test.ts",
+        "sha256": "9a9fff023149e571af45e38504a9ecb9ab59e1126dc230d4d2e536a4d30743f7",
+        "tests": 7
+      },
+      {
+        "file": "tests/voxel-living-migration.test.ts",
+        "sha256": "d14aa5939f3ce1e5d12c90fe465c0e13d04188d7e726ca079a440046818452dd",
+        "tests": 4
+      },
+      {
+        "file": "tests/voxel-living-model.test.ts",
+        "sha256": "af605e44b919835c1b077fd036a4beb6b1124c6d461853bd6aa61180657249af",
+        "tests": 7
+      },
+      {
+        "file": "tests/voxel-living-persistence.test.ts",
+        "sha256": "db7085948fa89921231c459202fbbb05b84acc41114e6126c7e28bfd8e81d815",
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-logistics.test.ts",
+        "sha256": "cea6aaa2bf420675746674f2c4157e9cc0f741d8f57631d2c334196a7ff4ef87",
+        "tests": 44
+      },
+      {
+        "file": "tests/voxel-medicine-integration.test.ts",
+        "sha256": "ecd631600dce45e9b8713579e8fc6f9dea2c6ef5d74d90bcc3ec5f14f9eeedfa",
+        "tests": 14
+      },
+      {
+        "file": "tests/voxel-medicine-rules.test.ts",
+        "sha256": "eb093e39b7b88b3b0bd83df485d700ab4f545ceb5d02e30273cc1fea9e154cfa",
+        "tests": 19
+      },
+      {
+        "file": "tests/voxel-mood-edge.test.ts",
+        "sha256": "f01db2cf1829b3e0a9262246d680c4673136bd4d2d530af80e14800ac6674459",
+        "tests": 7
+      },
+      {
+        "file": "tests/voxel-mood.test.ts",
+        "sha256": "84387ccf7aae0ccc75f111646e8e1c9b7ed9b5cf01dccca9c5b8a8b1df6a7a65",
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-navigation.test.ts",
+        "sha256": "b96d2319c473addefd80d7f453fad7e3fcdfbf2c125fc6b1475f8c0fe346d214",
+        "tests": 12
+      },
+      {
+        "file": "tests/voxel-pens-integration.test.ts",
+        "sha256": "a501924492a28cc66d386f2223da9c46b9cb78e4b578b8e216f0eb11cecad779",
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-pens-migration.test.ts",
+        "sha256": "9a9e9497510189bd9d5b39bac28c753edc823bef01ef6132d5f80e6709200a51",
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-pens-model.test.ts",
+        "sha256": "b7a675f00003264e56021834b9c5e8b0ecd76b306046b5aff515f3bf9a1b1439",
+        "tests": 11
+      },
+      {
+        "file": "tests/voxel-pens-persistence.test.ts",
+        "sha256": "ad311cebaaf86ef656c8011d0c67530a7b7ab6372016468d9244f34448e14c9c",
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-plants.test.ts",
+        "sha256": "1c812b3a0ac8844c0f55460281fb1c4cc463d1effea0ceebe00414beae5347ca",
+        "tests": 23
+      },
+      {
+        "file": "tests/voxel-power.test.ts",
+        "sha256": "ae5c0499a8ed76cacc4fd498f76ed4dca7bb3bb1b702de7c7c058808757aaeb0",
+        "tests": 28
+      },
+      {
+        "file": "tests/voxel-preservation-integration.test.ts",
+        "sha256": "b3893a9d440ac185230adcc1ebad92acee94866cc16b0a7890ccc49cc3616b6e",
+        "tests": 15
+      },
+      {
+        "file": "tests/voxel-preservation.test.ts",
+        "sha256": "f29c4c22386ffa3756a68a908266e93095d08f5e12611ceb1a7f291e623ff192",
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-prison-integration.test.ts",
+        "sha256": "f57e85dfdd19574d5057d3120efc647fa24e52889b337c00e342a191da5a6cb2",
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-production-bills-integration.test.ts",
+        "sha256": "9c47c821a871db752d138e7fc31a890f311ef057a1f6ea8e3affa31f8f7638f8",
+        "tests": 15
+      },
+      {
+        "file": "tests/voxel-production-bills-model.test.ts",
+        "sha256": "621b2eddd172ba92b3c29b10b782569e1a0a1fb5aebcdb2f8a4f882f737323b7",
+        "tests": 25
+      },
+      {
+        "file": "tests/voxel-production-output-integration.test.ts",
+        "sha256": "1aee26db55124b0ec8a3cc135a487fed83d2933362a1dfcf6a613373bb799bc9",
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-production-policies-integration.test.ts",
+        "sha256": "6e84115a6a558cc21c08d064ebdf6421d2d9918f8c70168b6da0e115d1b815d4",
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-production-policies-model.test.ts",
+        "sha256": "bebf98bc180c5b933c06406deb7ae5f6d6ecea8942387c7e8ee2a4dc9f780cea",
+        "tests": 11
+      },
+      {
+        "file": "tests/voxel-ranged-integration.test.ts",
+        "sha256": "f25ac64f097edcd8b136945533c5a05f59a1a387ddc04426ec8d6b4bc92d7937",
+        "tests": 35
+      },
+      {
+        "file": "tests/voxel-ranged-production.test.ts",
+        "sha256": "c7aff346abb37d9964fce0f09c59fed923124419daa3e52704e7891ca4e7e3ec",
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-ranged-rules.test.ts",
+        "sha256": "ad93102d42641ea856a8a7e20c9ff9a5d7cd1a1371027adf13fa4a85002a749a",
+        "tests": 25
+      },
+      {
+        "file": "tests/voxel-ranged-view.test.ts",
+        "sha256": "041bd5798dde66049e93a628b51bfc0f0d54fdf8a7d0cb7b09d70e604b696c59",
+        "tests": 4
+      },
+      {
+        "file": "tests/voxel-region-persistence.test.ts",
+        "sha256": "50f40706496f28ea1fd55a73733b2411923055b4fd225ddea453383ba01e5a03",
+        "tests": 31
+      },
+      {
+        "file": "tests/voxel-region-worker.test.ts",
+        "sha256": "efd9f4694ec71b8271ea056a308f41067d48cca5c503ae810a0c63fff2dbc2ac",
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-regions.test.ts",
+        "sha256": "0c46ec020d38329ab35bdc051aa71cdcbf400438dacdc05dc3ff82dfee76a625",
+        "tests": 12
+      },
+      {
+        "file": "tests/voxel-relocation-integration.test.ts",
+        "sha256": "5eef97efc6d8a7abf5ed7c995ceab3f7d044ea0a2456c882b7b89d3491ba3398",
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-relocation-migration.test.ts",
+        "sha256": "85ad77eaa61240b4fcebb8a1333f4af4f250f2b0574632005f0303459c310e7b",
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-relocation-model.test.ts",
+        "sha256": "c0c85c0725c321f1ed98dc33c2dbc2b4a8bb1ba4ac6acebf5d151a9bcf7d5bbc",
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-relocation-persistence.test.ts",
+        "sha256": "f3973fcbec4b7be0598b4f9c70264b6f928d70d0548a3bfd4ceb76c9819faa6d",
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-relocation-wealth.test.ts",
+        "sha256": "89e58c3b1ec144f660f57552c7572b451f6599f21344558b5a24302baf19e754",
+        "tests": 3
+      },
+      {
+        "file": "tests/voxel-research.test.ts",
+        "sha256": "357659cb4132149db1aba538c919d737ff4921ee0fef52eec735e14215f1202b",
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-rivers-generation.test.ts",
+        "sha256": "4fd3dfb6b2f5b3bae1367909c9d6e847c9834810fedb3b42f2bd2f75422b38ac",
+        "tests": 42
+      },
+      {
+        "file": "tests/voxel-rooms.test.ts",
+        "sha256": "7d22b234b07c57f6b531d0fb4c54e26140b5e6946753ad26e01be60b5b69d470",
+        "tests": 19
+      },
+      {
+        "file": "tests/voxel-sanitation-boundaries.test.ts",
+        "sha256": "c987bd2e5d5974b5802e67ef979178d5a531448810ee9f1182040c68ffbb71fb",
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-sanitation-integration.test.ts",
+        "sha256": "3ae6333cba25c09f0650afccf2c05fc3bcd15984fee38aa17387e8fc79c2fba9",
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-shelves.test.ts",
+        "sha256": "bf4ea8a2c251ab87511ffada9298ecea9ea34e228c851c18061e9d88781acb45",
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-skills-integration.test.ts",
+        "sha256": "9cc378d0d7ecbc2e9a08e2615e70f1e9857ffb05c3922f790833770b5a6d15ca",
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-skills-rules.test.ts",
+        "sha256": "64a4e1c25ed258d69cfe00eb397de8eab8bf11888c5b7887f64dfefb9bcc7907",
+        "tests": 18
+      },
+      {
+        "file": "tests/voxel-skills-yields.test.ts",
+        "sha256": "777503835d98f4a173686bcf2d62ec3592a3ac9db1b9c95559690858b1efc671",
+        "tests": 6
+      },
+      {
+        "file": "tests/voxel-social-integration.test.ts",
+        "sha256": "45ed88a1e6c60308a57fce7725e28290b43c5cf28febc8c2c06d0efd2f30a02e",
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-social-migration.test.ts",
+        "sha256": "083359999f03051bf46f0475d18c265b0c763181c150322a44ac0afb18ecbbfd",
+        "tests": 4
+      },
+      {
+        "file": "tests/voxel-social-model.test.ts",
+        "sha256": "5af29e8d374c0ccab683fe0fe1bbc4407f5fcc60163c164cecc16f342834e139",
+        "tests": 12
+      },
+      {
+        "file": "tests/voxel-social-persistence.test.ts",
+        "sha256": "1d80116e1c4d4a4db26373e288794178fc5d723bc5aacfcd507692cd9b23af65",
+        "tests": 10
+      },
+      {
+        "file": "tests/voxel-social-reload.test.ts",
+        "sha256": "dce7144ae733fed0786c7eda1cf14b7d98cb510e86b45f0d41d566e6c0dbf26a",
+        "tests": 2
+      },
+      {
+        "file": "tests/voxel-stockpile-zones.test.ts",
+        "sha256": "0e57520964e8dba1d5cb07f66815d457a81e8aba6cec114494b0e8cfc3605766",
+        "tests": 28
+      },
+      {
+        "file": "tests/voxel-storage-cells.test.ts",
+        "sha256": "3d4ee204e07a0fc8956cc72d562d69249e9bf21812b6e10d3cc181cc29276c64",
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-storage-groups.test.ts",
+        "sha256": "63fce2c6c1fd972f8d66f57e146f18842752d22d197bff0c0ad349fec7fc4e5a",
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-storyteller-integration.test.ts",
+        "sha256": "ea43cd598d4d272975114b1b1dd8122c84e3787f10d695439bcaef2340007f8a",
+        "tests": 16
+      },
+      {
+        "file": "tests/voxel-storyteller-rules.test.ts",
+        "sha256": "eeb3bdd8de77726a2a2c39cd04717ab2eb013ec58ef50e71edbaf9b303483fc6",
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-survival.test.ts",
+        "sha256": "08bfb562afecc43e7d08a0ed3b963d9a6fc1f8e3f0f35e465569de010c33cff1",
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-thermal.test.ts",
+        "sha256": "7f26893eb105f656bf2ed1ba949449bc94f663b9fe80e7e7de613766a0e70827",
+        "tests": 26
+      },
+      {
+        "file": "tests/voxel-trade-boundaries.test.ts",
+        "sha256": "81c016ad3daf53aca5be83ca265f61713d2ef941907c1485c602d2f4da195a81",
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-trade-integration.test.ts",
+        "sha256": "41e51c8c7afa93e05f1e15e0d059d4c7b42408b0288ae05d06efb8797638130e",
+        "tests": 5
+      },
+      {
+        "file": "tests/voxel-trade-rules.test.ts",
+        "sha256": "8abd21074d429aecd4266d850afd63a9e85f88efbfbda5f8a420cabf42747fa9",
+        "tests": 7
+      },
+      {
+        "file": "tests/voxel-unfinished-production-integration.test.ts",
+        "sha256": "60409ab0b3d0daad020da99c9d3aa71fbecaa9e318733e73cd9e52dcd3092930",
+        "tests": 12
+      },
+      {
+        "file": "tests/voxel-unfinished-production-model.test.ts",
+        "sha256": "05f65b55937cfbb58f6da7d8b8384ebad7c17768d43a3bda9b916f8372afbc0d",
+        "tests": 25
+      },
+      {
+        "file": "tests/voxel-water-bridge-integration.test.ts",
+        "sha256": "7afe78d6e9cd1e975e4585eeb455ec2278b352bbada2713d9c2753be3b3896e8",
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-water-bridge-save.test.ts",
+        "sha256": "c5c0a1c065bba8d7bfa2acfc22c749bb02a7fd35f7b3f2e33b50fc19b06a0379",
+        "tests": 16
+      },
+      {
+        "file": "tests/voxel-wealth.test.ts",
+        "sha256": "78e98200a7c487b6a1ead2169452e1ee45ea0c763e719dfd6d1241eb9a5e46cf",
+        "tests": 9
+      },
+      {
+        "file": "tests/voxel-weapon-production.test.ts",
+        "sha256": "e1fd48603c20cb464551e8ec6626fca380f83d6419bc707c8f73b3f1fd2cdc8a",
+        "tests": 8
+      },
+      {
+        "file": "tests/voxel-weapon-transport.test.ts",
+        "sha256": "51cb2cc4467a34d15245c798d4769fd34dfd667a0706f7dbac891f614a6a4e4b",
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-weapons-rules.test.ts",
+        "sha256": "6985e8832011c0c789067efa9ed61cd48e4ee99c0e7d136e5176ada366480233",
+        "tests": 13
+      },
+      {
+        "file": "tests/voxel-weather-integration.test.ts",
+        "sha256": "5821db47441e796d1310f479003a34637ec2c8f6fcd102827f8a61535c1c17ba",
+        "tests": 17
+      },
+      {
+        "file": "tests/voxel-weather.test.ts",
+        "sha256": "04f2a646271d952e1c1919e3d4b1b7cfe866352ab379a6fbaa3d70305ca41489",
+        "tests": 34
+      },
+      {
+        "file": "tests/voxel-wildlife.test.ts",
+        "sha256": "2ac99086af3ceda8a1630e3671ea09cfdfd5164f04ed3d0447b7b20d275e2a18",
+        "tests": 10
+      },
+      {
+        "file": "tests/voxel-worldgen.test.ts",
+        "sha256": "a6bf1efe97bc7361fd6e546ec1e710902e1016a5a04f0c9aeb681eb1d2b0b384",
+        "tests": 27
+      },
+      {
+        "file": "tests/voxel.test.ts",
+        "sha256": "36107b0deb2cca6aa23650d9040f84c574e209ff42d0fe5e143e6cf8fffcbe28",
+        "tests": 15
+      },
+      {
+        "file": "tests/wildlife-food.test.ts",
+        "sha256": "42d8c808285c5d5803bfca668c10cd2bdd59c13e78fda3a432f3276339554b4e",
+        "tests": 6
+      }
+    ]
+  },
+  "harvest": {
+    "ticks": 97025,
+    "days": 8.085,
+    "grain": 90,
+    "log": "test-results/allowed-area-release-food-tests.log",
+    "sha256": "7383714e27bcb9363c8ba90fdcf0f20bf33e59b68982998ce6a7ef27f02e9149"
+  },
+  "campaign": {
+    "script": "scripts/voxel-allowed-area-campaign-verify.mjs",
+    "scriptSha256": "4e743475010bb523e4c20c9d8304e52363bd055ee36153e797cd11662395d23a",
+    "checks": [
+      {
+        "name": "empty assignment is unrestricted",
+        "tick": 0
+      },
+      {
+        "name": "inside construction waits for outside materials",
+        "tick": 80
+      },
+      {
+        "name": "worker really collects allowed wood",
+        "tick": 126
+      },
+      {
+        "name": "carried materials and assignment survive load",
+        "tick": 126
+      },
+      {
+        "name": "shrinking the area interrupts work without losing carried materials",
+        "tick": 206
+      },
+      {
+        "name": "expanded area resumes real construction",
+        "tick": 312
+      },
+      {
+        "name": "drafted colonist reaches an outside destination",
+        "tick": 329
+      },
+      {
+        "name": "released colonist returns by physical movement",
+        "tick": 365
+      },
+      {
+        "name": "multilayer mask edits leave terrain and exploration unchanged",
+        "tick": 365
+      },
+      {
+        "name": "shared alias deletion clears colonist references",
+        "tick": 365
+      }
+    ],
+    "commands": 82,
+    "expectedRejections": 1,
+    "checkpoints": [
+      {
+        "name": "carrying",
+        "file": "test-results/voxel-allowed-area-campaign/carrying.json",
+        "sha256": "79cd7292d82fb189b4876493c4b912988e4e78bbeae037d30c60ea280114b0ee",
+        "tick": 126
+      },
+      {
+        "name": "interrupted",
+        "file": "test-results/voxel-allowed-area-campaign/interrupted.json",
+        "sha256": "6bc7e5559c2d53355e726c347ad3ef62f186fdbe11c14229dde04bd2c1c85ea4",
+        "tick": 206
+      },
+      {
+        "name": "built",
+        "file": "test-results/voxel-allowed-area-campaign/built.json",
+        "sha256": "22442ffa18b2e31d4da80d9d5460fc14db13f654557f42f03a4f5c11aa563a8b",
+        "tick": 312
+      },
+      {
+        "name": "final",
+        "file": "test-results/voxel-allowed-area-campaign/final.json",
+        "sha256": "8fce5260a1fbf9035434a0ecb111d715803255c103e4c862bbf3aae92e679b31",
+        "tick": 365
+      }
+    ]
+  },
+  "browser": {
+    "script": "scripts/voxel-allowed-area-browser-verify.mjs",
+    "scriptSha256": "6cfcba0d5fbad3bf0fdd874a6c2c4cdc1d585b85c049d03a55956e32423e0acd",
+    "modes": [
+      {
+        "mode": "worker",
+        "status": "passed",
+        "checks": [
+          {
+            "name": "create, rename and assign the same empty shared area through resident controls",
+            "pawnId": 364,
+            "areaId": 391
+          },
+          {
+            "name": "current-floor painting covers ground, unsupported air and underground without changing terrain or exploration"
+          },
+          {
+            "name": "erasing on another floor removes only that floor membership and preserves the assigned area identity"
+          },
+          {
+            "name": "unaltered exported file restores shared area cells, names, assignments and exploration",
+            "file": "test-results/voxel-allowed-area-browser/worker-assigned-area-download.json",
+            "sha256": "bcdc1cd2927c57d708e7e41ff9cd31be23c60c317927b5370c3c62cc9d031af5",
+            "tick": 0
+          },
+          {
+            "name": "a resident assigned outside the painted area physically walks into a reachable cell",
+            "tick": 47,
+            "position": {
+              "x": 34,
+              "y": 31,
+              "z": 7
+            }
+          },
+          {
+            "name": "980px management controls remain clickable and can release the resident from the area"
+          },
+          {
+            "name": "deleting the shared area resets its resident assignment without leaving a dangling reference"
+          }
+        ],
+        "screenshots": [
+          {
+            "file": "test-results/voxel-allowed-area-browser/worker-created-empty-assigned.png",
+            "sha256": "be8aac73ab482508a30d3140c7e2b7cb9ac8c040ede40deaf4188f63ca6741bc"
+          },
+          {
+            "file": "test-results/voxel-allowed-area-browser/worker-ground-area-overlay.png",
+            "sha256": "936b36ec6a52ada8799dbe6afbb73d01bdb7ac377239ecff4234aa82350a7236"
+          },
+          {
+            "file": "test-results/voxel-allowed-area-browser/worker-airborne-area-overlay.png",
+            "sha256": "338152c68764aa72663ec9822e3eac3c0bf6508e20239ad4b89735c60c42f48e"
+          },
+          {
+            "file": "test-results/voxel-allowed-area-browser/worker-underground-area-overlay.png",
+            "sha256": "f45029a85b1928ec52135b2a76a6d2e7bded9dd1a1cc0b820ba6b3d1e49ffe55"
+          },
+          {
+            "file": "test-results/voxel-allowed-area-browser/worker-resident-returned.png",
+            "sha256": "c9e183b2034f0a8cca422bf36dea853db5b3875343a894fe876efcad1d05872d"
+          },
+          {
+            "file": "test-results/voxel-allowed-area-browser/worker-narrow-area-controls.png",
+            "sha256": "9027bd30dfa873cbfa138c6907b7565f3c6b53ea18eab8dea9ce3d83c1002f09"
+          },
+          {
+            "file": "test-results/voxel-allowed-area-browser/worker-narrow-unrestricted.png",
+            "sha256": "e08c75e9b3d4d49de4781b3061cfe0f733f420300c9cfa35e943c4db5b6bae24"
+          },
+          {
+            "file": "test-results/voxel-allowed-area-browser/worker-deleted-area.png",
+            "sha256": "dbaa8b4cf14f5f13703792de34eb74ecb08f40382637f0eec0aab29bc912e129"
+          }
+        ],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:4200/assets/index-CMeZdWxQ.js",
+            "status": 200,
+            "sha256": "c92806cea76270285e757a5f82ed0ab21936e45595fbb62f6278202fce409722",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4200/assets/main-GjXUAx0s.css",
+            "status": 200,
+            "sha256": "616560caafda356b6f2672377bd73a6fef052558e280873c9bd0e78735321a3d",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4200/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4200/assets/main-CYp476KF.js",
+            "status": 200,
+            "sha256": "0481ae1285b4513b6071d2e8ade75c36b1799c3301a39b1f546a1097ecc0a6ae",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4200/assets/sim.worker-Ji9dTLFD.js",
+            "status": 200,
+            "sha256": "f17e88a2865a1d00fbb63f49009b504bc575afcec589b9d3f5794ead7cdc9584",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4200/assets/render.worker-3rvjubLF.js",
+            "status": 200,
+            "sha256": "b6e7ccf124f9baf3a6be0b84acb7d02cf683564b696dc50d6910ca8a62c98fd5",
+            "matchesLocalBuild": true
+          }
+        ],
+        "errors": []
+      },
+      {
+        "mode": "main",
+        "status": "passed",
+        "checks": [
+          {
+            "name": "create, rename and assign the same empty shared area through resident controls",
+            "pawnId": 364,
+            "areaId": 391
+          },
+          {
+            "name": "current-floor painting covers ground, unsupported air and underground without changing terrain or exploration"
+          },
+          {
+            "name": "erasing on another floor removes only that floor membership and preserves the assigned area identity"
+          },
+          {
+            "name": "unaltered exported file restores shared area cells, names, assignments and exploration",
+            "file": "test-results/voxel-allowed-area-browser/main-assigned-area-download.json",
+            "sha256": "bcdc1cd2927c57d708e7e41ff9cd31be23c60c317927b5370c3c62cc9d031af5",
+            "tick": 0
+          },
+          {
+            "name": "a resident assigned outside the painted area physically walks into a reachable cell",
+            "tick": 46,
+            "position": {
+              "x": 34,
+              "y": 31,
+              "z": 7
+            }
+          },
+          {
+            "name": "980px management controls remain clickable and can release the resident from the area"
+          },
+          {
+            "name": "deleting the shared area resets its resident assignment without leaving a dangling reference"
+          }
+        ],
+        "screenshots": [
+          {
+            "file": "test-results/voxel-allowed-area-browser/main-created-empty-assigned.png",
+            "sha256": "20e0e9fee2dc85ec4066f214b409124fd408dd26ee463c441c6cd7b52983803b"
+          },
+          {
+            "file": "test-results/voxel-allowed-area-browser/main-ground-area-overlay.png",
+            "sha256": "b78fd454e22ad787c573114e9f39a021ebf893b00d83e90fa2620d985a7603bd"
+          },
+          {
+            "file": "test-results/voxel-allowed-area-browser/main-airborne-area-overlay.png",
+            "sha256": "c69e1b331f49d79e3f4323d33f5c3ca1d9dffd344dafd29c265499b46890aebf"
+          },
+          {
+            "file": "test-results/voxel-allowed-area-browser/main-underground-area-overlay.png",
+            "sha256": "d35e36687d0a26550d25f5614d6ad9e2fdcb22353bf4f57c179760adab835d73"
+          },
+          {
+            "file": "test-results/voxel-allowed-area-browser/main-resident-returned.png",
+            "sha256": "ce9765f5bd34cd11dea4eec6a57da1651827b38b059e48690d0173e96bf06bc4"
+          },
+          {
+            "file": "test-results/voxel-allowed-area-browser/main-narrow-area-controls.png",
+            "sha256": "ddcfd6621afbb7679979907af8fb9514ea06df6b969826eaf0b797d72e24fd8c"
+          },
+          {
+            "file": "test-results/voxel-allowed-area-browser/main-narrow-unrestricted.png",
+            "sha256": "b04e984ae8ca609c243ff7bf0194ae01e3b9719f29aeef5e7428433b92719754"
+          },
+          {
+            "file": "test-results/voxel-allowed-area-browser/main-deleted-area.png",
+            "sha256": "12e1682314240bdefbbb079c14ec3c305776a1b9d5b8e8a6791088454cd19941"
+          }
+        ],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:4200/assets/index-CMeZdWxQ.js",
+            "status": 200,
+            "sha256": "c92806cea76270285e757a5f82ed0ab21936e45595fbb62f6278202fce409722",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4200/assets/main-GjXUAx0s.css",
+            "status": 200,
+            "sha256": "616560caafda356b6f2672377bd73a6fef052558e280873c9bd0e78735321a3d",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4200/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4200/assets/main-CYp476KF.js",
+            "status": 200,
+            "sha256": "0481ae1285b4513b6071d2e8ade75c36b1799c3301a39b1f546a1097ecc0a6ae",
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4200/assets/sim.worker-Ji9dTLFD.js",
+            "status": 200,
+            "sha256": "f17e88a2865a1d00fbb63f49009b504bc575afcec589b9d3f5794ead7cdc9584",
+            "matchesLocalBuild": true
+          }
+        ],
+        "errors": []
+      }
+    ]
+  },
+  "legacyV43": [
+    {
+      "file": "test-results/voxel-river-campaign/planned.json",
+      "sha256": "fe1934a1ff98fdb5f6f8d426d7a38893159e5f3c29539d684d1b5df6cf0dbd99",
+      "tick": 0,
+      "oldVersion": 43,
+      "newVersion": 44
+    },
+    {
+      "file": "test-results/voxel-river-campaign/working.json",
+      "sha256": "2b44be2ad361f90879a4cc205d2ea1129d75950fadbdaead1766437b75679fa7",
+      "tick": 112,
+      "oldVersion": 43,
+      "newVersion": 44
+    },
+    {
+      "file": "test-results/voxel-river-campaign/built.json",
+      "sha256": "620d794341c330e180cb576bf9dd965d8b091fc8c6965cce4d53ddb28e045ddb",
+      "tick": 634,
+      "oldVersion": 43,
+      "newVersion": 44
+    },
+    {
+      "file": "test-results/voxel-river-campaign/demolished.json",
+      "sha256": "7dea2d70c789cff569da704e563045cf13e7e7691e9a230fbe5f536369ddc6ef",
+      "tick": 828,
+      "oldVersion": 43,
+      "newVersion": 44
+    },
+    {
+      "file": "test-results/voxel-river-campaign/final.json",
+      "sha256": "0524124b6dec3714524b6e1093eb8bf42b36185d758c29c1f35c953600a9243c",
+      "tick": 838,
+      "oldVersion": 43,
+      "newVersion": 44
+    }
+  ],
+  "build": {
+    "command": "npm run build",
+    "log": "test-results/allowed-area-release-build.log",
+    "sha256": "741fed5acf9cc724d0c0744bfcd66ba53f032ec96e9ea5c9db4543f5cf05bd18"
+  },
+  "limits": "Independent voxel adaptation. No full native forced-command system, automatic area switching, or numerical balance calibration. GitHub Pages runs build/deploy only."
+}

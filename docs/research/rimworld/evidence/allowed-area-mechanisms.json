@@ -1,0 +1,300 @@
+{
+  "evidence_id": "RW17-ALLOWED-AREA-STATIC",
+  "version": "1.7.4980 rev60",
+  "assemblySha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "reaEvidenceId": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+  "reaParentId": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+  "reaFile": "docs/research/rimworld/evidence/production-bills-rea-managed.json",
+  "reaSha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+  "manifestFile": "docs/research/rimworld/evidence/allowed-area-manifest.json",
+  "manifestSha256": "6ab02289f27abe9d4863ce5720c519821e1c1dc1c587b0a118169c5544de3ddb",
+  "rules": [
+    {
+      "type": "RimWorld.ForbidUtility",
+      "file": ".local-research/allowed-area/RimWorld.ForbidUtility.cs",
+      "sha256": "e36190372ca2bc9540ef40d3d6a3ee836f30c3da7ee6842dffa79c0da78fbf48",
+      "anchor": "TrueCount > 0",
+      "hits": [
+        {
+          "line": 98,
+          "text": "if (effectiveAreaRestrictionInPawnCurrentMap != null && effectiveAreaRestrictionInPawnCurrentMap.TrueCount > 0 && !effectiveAreaRestrictionInPawnCurrentMap[c])"
+        },
+        {
+          "line": 183,
+          "text": "if (effectiveAreaRestrictionInPawnCurrentMap != null && effectiveAreaRestrictionInPawnCurrentMap.TrueCount > 0 && effectiveAreaRestrictionInPawnCurrentMap.Map == r.Map && r.OverlapWith(effectiveAreaRestrictionInPawnCurrentMap) == AreaOverlap.None)"
+        }
+      ],
+      "interpretation": "Empty assigned areas are unrestricted; nonempty areas filter cells."
+    },
+    {
+      "type": "RimWorld.ForbidUtility",
+      "file": ".local-research/allowed-area/RimWorld.ForbidUtility.cs",
+      "sha256": "e36190372ca2bc9540ef40d3d6a3ee836f30c3da7ee6842dffa79c0da78fbf48",
+      "anchor": "pawn.Drafted",
+      "hits": [
+        {
+          "line": 66,
+          "text": "if (!bypassDraftedCheck && pawn.Drafted)"
+        }
+      ],
+      "interpretation": "Drafted, mental-state and other special agents bypass forbidden checks."
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "file": ".local-research/allowed-area/RimWorld.Pawn_PlayerSettings.cs",
+      "sha256": "c23d3b5de6c9a96cad59170531efc71f3964d8d99d07b582eda580bfbdd00494",
+      "anchor": "curJob.AnyTargetOutsideArea",
+      "hits": [
+        {
+          "line": 105,
+          "text": "if (pawn.Spawned && !pawn.Drafted && value != null && value == EffectiveAreaRestrictionInPawnCurrentMap && value.TrueCount > 0 && pawn.jobs?.curJob != null && pawn.jobs.curJob.AnyTargetOutsideArea(value))"
+        }
+      ],
+      "interpretation": "Assigning an effective nonempty area interrupts a non-drafted job with any outside target."
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "file": ".local-research/allowed-area/RimWorld.Pawn_PlayerSettings.cs",
+      "sha256": "c23d3b5de6c9a96cad59170531efc71f3964d8d99d07b582eda580bfbdd00494",
+      "anchor": "Notify_AreaRemoved",
+      "hits": [
+        {
+          "line": 404,
+          "text": "public void Notify_AreaRemoved(Area area)"
+        }
+      ],
+      "interpretation": "Deleting an area clears matching pawn references."
+    },
+    {
+      "type": "RimWorld.JobGiver_SeekAllowedArea",
+      "file": ".local-research/allowed-area/RimWorld.JobGiver_SeekAllowedArea.cs",
+      "sha256": "5aac9c9ebe8684bacec43bcd2dc5f6ab849e255417d063895ce7c081df36b74b",
+      "anchor": "HasJobWithSpawnedAllowedTarget",
+      "hits": [
+        {
+          "line": 14,
+          "text": "if (HasJobWithSpawnedAllowedTarget(pawn))"
+        },
+        {
+          "line": 51,
+          "text": "private bool HasJobWithSpawnedAllowedTarget(Pawn pawn)"
+        }
+      ],
+      "interpretation": "Outside pawns keep jobs with a spawned allowed target; otherwise seek a reachable allowed cell."
+    },
+    {
+      "type": "Verse.PathUtility",
+      "file": ".local-research/allowed-area/Verse.PathUtility.cs",
+      "sha256": "a8b74de65072635fd57123488d272e85b7661806ea0fea0ea01a72382576783e",
+      "anchor": "area.TrueCount <= 0",
+      "hits": [
+        {
+          "line": 17,
+          "text": "if (area != null && area.TrueCount <= 0)"
+        }
+      ],
+      "interpretation": "Path requests discard empty areas."
+    },
+    {
+      "type": "Verse.PathGridJob",
+      "file": ".local-research/allowed-area/Verse.PathGridJob.cs",
+      "sha256": "7e2cef4310b6acdc7998c12422f935b4998c70793b4c5ba4bbfd76a4459bba1c",
+      "anchor": "num += 600",
+      "hits": [
+        {
+          "line": 160,
+          "text": "num += 600;"
+        },
+        {
+          "line": 185,
+          "text": "num += 600;"
+        }
+      ],
+      "interpretation": "Outside cells add path cost; they are not made impassable."
+    },
+    {
+      "type": "RimWorld.WorkGiver_DoBill",
+      "file": ".local-research/allowed-area/RimWorld.WorkGiver_DoBill.cs",
+      "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+      "anchor": "Predicate<Thing> baseValidator",
+      "hits": [
+        {
+          "line": 461,
+          "text": "Predicate<Thing> baseValidator = (Thing t) => t.Spawned && thingValidator(t) && (float)(t.Position - billGiver.Position).LengthHorizontalSquared < radiusSq && !t.IsForbidden(pawn) && pawn.CanReserve(t);"
+        },
+        {
+          "line": 574,
+          "text": "private static void AddEveryMedicineToRelevantThings(Pawn pawn, Thing billGiver, List<Thing> relevantThings, Predicate<Thing> baseValidator, Map map)"
+        }
+      ],
+      "interpretation": "Production ingredients are filtered through IsForbidden for the worker."
+    },
+    {
+      "type": "RimWorld.WorkGiver_ConstructDeliverResources",
+      "file": ".local-research/allowed-area/RimWorld.WorkGiver_ConstructDeliverResources.cs",
+      "sha256": "d56e9f6233e39792dc26e0380ad0ebe8626aad4cd5c0fdf6729847afc382d004",
+      "anchor": "th.IsForbidden(pawn)",
+      "hits": [
+        {
+          "line": 86,
+          "text": "if (th.IsForbidden(pawn))"
+        }
+      ],
+      "interpretation": "Construction resource selection respects forbidden things."
+    },
+    {
+      "type": "RimWorld.StoreUtility",
+      "file": ".local-research/allowed-area/RimWorld.StoreUtility.cs",
+      "sha256": "b8241150a63e38993de851bdb82d06a8c6fbbb3359f1fdfb92b70bec3b5b960d",
+      "anchor": "c.IsForbidden(carrier)",
+      "hits": [
+        {
+          "line": 329,
+          "text": "if (carrier != null && c.IsForbidden(carrier))"
+        }
+      ],
+      "interpretation": "Storage destinations respect carrier area."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "file": ".local-research/allowed-area/RimWorld.FoodUtility.cs",
+      "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+      "anchor": "!allowForbidden && t.IsForbidden(getter)",
+      "hits": [
+        {
+          "line": 419,
+          "text": "if (!allowDispenserFull || !getterCanManipulate || (int)ThingDefOf.MealNutrientPaste.ingestible.preferability < (int)minPref || (int)ThingDefOf.MealNutrientPaste.ingestible.preferability > (int)maxPref || !eater.WillEat(ThingDefOf.MealNutrientPaste, getter, careIfNotAcceptableForTitle: true, allowVenerated) || (t.Faction != getter.Faction && t.Faction != getter.HostFaction) || (!allowForbidden && t.IsForbidden(getter)) || !building_NutrientPasteDispenser.powerComp.PowerOn || (!allowDispenserEmpty && !building_NutrientPasteDispenser.HasEnoughFeedstockInHoppers()) || !t.InteractionCell.Standable(t.Map) || !IsFoodSourceOnMapSociallyProper(t, getter, eater, allowSociallyImproper) || !getter.Map.reachability.CanReachNonLocal(getter.Position, new TargetInfo(t.InteractionCell, t.Map), PathEndMode.OnCell, TraverseParms.For(getter, Danger.Some)))"
+        },
+        {
+          "line": 427,
+          "text": "if ((int)t.def.ingestible.preferability < (int)minPref || (int)t.def.ingestible.preferability > (int)maxPref || !eater.WillEat(t, getter, careIfNotAcceptableForTitle: true, allowVenerated) || !t.def.IsNutritionGivingIngestible || !t.IngestibleNow || (!allowCorpse && t is Corpse) || (!allowDrug && t.def.IsDrug) || (!allowForbidden && t.IsForbidden(getter)) || (!desperate && t.IsNotFresh()) || t.IsDessicated() || !IsFoodSourceOnMapSociallyProper(t, getter, eater, allowSociallyImproper) || (!getter.AnimalAwareOf(t) && !forceScanWholeMap))"
+        }
+      ],
+      "interpretation": "Ordinary map food selection filters forbidden things; explicit exceptional modes exist."
+    },
+    {
+      "type": "RimWorld.RestUtility",
+      "file": ".local-research/allowed-area/RimWorld.RestUtility.cs",
+      "sha256": "e0f84f3a9d891e7c6130159b9dfd6751063147eb3e090effe854661171e3f73e",
+      "anchor": "!sleeper.Downed && building_Bed.IsForbidden(sleeper)",
+      "hits": [
+        {
+          "line": 152,
+          "text": "if ((curJob == null || !curJob.ignoreForbidden) && !sleeper.Downed && building_Bed.IsForbidden(sleeper))"
+        }
+      ],
+      "interpretation": "Bed checks have downed and ignoreForbidden exceptions."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_WorkGivers",
+      "file": ".local-research/allowed-area/RimWorld.FloatMenuOptionProvider_WorkGivers.cs",
+      "sha256": "f05e9f1b76d69cff7f2f28e33a0cbcfa2bdeff30f3f967f943b135f892b3968a",
+      "anchor": "CannotPrioritizeForbiddenOutsideAllowedArea",
+      "hits": [
+        {
+          "line": 182,
+          "text": "text = (target.Thing.Position.InAllowedArea(pawn) ? ((string)(text + (\": \" + \"CannotPrioritizeForbidden\".Translate(target.Thing.Label, target.Thing)))) : ((string)(text + (\": \" + \"CannotPrioritizeForbiddenOutsideAllowedArea\".Translate() + (\" (\" + pawn.playerSettings.EffectiveAreaRestrictionInPawnCurrentMap.Label + \")\")))));"
+        },
+        {
+          "line": 186,
+          "text": "text = (target.Cell.InAllowedArea(pawn) ? ((string)(text + (\": \" + \"CannotPrioritizeCellForbidden\".Translate()))) : ((string)(text + (\": \" + \"CannotPrioritizeForbiddenOutsideAllowedArea\".Translate() + (\" (\" + pawn.playerSettings.EffectiveAreaRestrictionInPawnCurrentMap.Label + \")\")))));"
+        }
+      ],
+      "interpretation": "Ordinary prioritized work rejects outside targets."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_Equip",
+      "file": ".local-research/allowed-area/RimWorld.FloatMenuOptionProvider_Equip.cs",
+      "sha256": "8f7c6cd684307bac95c205ac17dea46f8341f58cb528cdf3316e6371715c7625",
+      "anchor": "TryTakeOrderedJob",
+      "hits": [
+        {
+          "line": 86,
+          "text": "context.FirstSelectedPawn.jobs.TryTakeOrderedJob(JobMaker.MakeJob(JobDefOf.Equip, clickedThing), JobTag.Misc);"
+        }
+      ],
+      "interpretation": "Explicit equip issues an ordered job without an area rejection in this provider."
+    },
+    {
+      "type": "Verse.AI.Pawn_JobTracker",
+      "file": ".local-research/allowed-area/Verse.AI.Pawn_JobTracker.cs",
+      "sha256": "7934319bfedbd8a46aa54341a2afec9561efb469cd4fe58aec5745f9236fc5c4",
+      "anchor": "pawn.Drafted || newJob.playerForced",
+      "hits": [
+        {
+          "line": 318,
+          "text": "if (pawn.Drafted || newJob.playerForced)"
+        }
+      ],
+      "interpretation": "Player-forced jobs set ignoreForbidden after the issuing provider has accepted the job."
+    },
+    {
+      "type": "Verse.Area",
+      "file": ".local-research/allowed-area/Verse.Area.cs",
+      "sha256": "683a6d44ccbfec1e9cd72871eda222386e65e33c1aadfc65ab3e6681a31d77d6",
+      "anchor": "Notify_AreaDelta",
+      "hits": [
+        {
+          "line": 133,
+          "text": "Map.pathFinder.MapData.Notify_AreaDelta(this, c);"
+        }
+      ],
+      "interpretation": "Painting dirties renderer, path map data and region area cache."
+    },
+    {
+      "type": "Verse.AreaManager",
+      "file": ".local-research/allowed-area/Verse.AreaManager.cs",
+      "sha256": "9a40554370425d94a6c3f2aa400f137815864e548bb284c00a6a019d0e68f6eb",
+      "anchor": "Count() < 10",
+      "hits": [
+        {
+          "line": 144,
+          "text": "return areas.Where((Area a) => a is Area_Allowed).Count() < 10;"
+        }
+      ],
+      "interpretation": "Vanilla mutable allowed-area limit is ten."
+    },
+    {
+      "type": "Verse.DataExposeUtility",
+      "file": ".local-research/allowed-area/Verse.DataExposeUtility.cs",
+      "sha256": "2195e34fa81383c68f1c462b2c50c63b144866821d88079d236c82e0ef06d7a1",
+      "anchor": "int numBytes = (elements + 7) / 8",
+      "hits": [
+        {
+          "line": 59,
+          "text": "int numBytes = (elements + 7) / 8;"
+        }
+      ],
+      "interpretation": "Saved BoolGrid is packed low-bit-first and compressed by the byte-array serializer."
+    }
+  ],
+  "ordinaryColonistBranch": {
+    "file": "Data/Core/Defs/ThinkTreeDefs/Humanlike.xml",
+    "sha256": "047fc3c5bcb60ead007adbcd0090690a25af882adeb11298df8f4b551bbbdd4e",
+    "directChildOrder": [
+      "JobGiver_SeekAllowedArea",
+      "JobGiver_BringBabyToSafety",
+      "JobGiver_SeekSafeTemperature",
+      "JobGiver_DropUnusedInventory",
+      "JobGiver_Work",
+      "ThinkNode_ConditionalStarving",
+      "ThinkNode_Tagger",
+      "ThinkNode_JoinVoluntarilyJoinableLord",
+      "JobGiver_PickupDroppedWeapon",
+      "ThinkNode_Tagger",
+      "ThinkNode_ConditionalWantsLookChange",
+      "JobGiver_DyeHair",
+      "ThinkNode_Tagger",
+      "ThinkNode_Tagger",
+      "ThinkNode_ConditionalNeedPercentageAbove"
+    ]
+  },
+  "limits": [
+    "ILSpy-derived C# is not original source or execution evidence.",
+    "REA identity and metadata reused only for the exact matching assembly.",
+    "The ordinary colonist branch follows earlier special-state branches; this is not an absolute priority over all needs.",
+    "Specific food, bed, drafted, mental-state and special-faction exceptions are not exhaustively runtime tested.",
+    "No movement-time numerical calibration."
+  ],
+  "collectorSha256": "26144895151e7e478ad5dbfe105236d85392bb765d9ee73fb14cdd1006d3558c"
+}

@@ -119,10 +119,11 @@ describe('physical pens, roping and allowed areas',()=>{
     expect(()=>VoxelSimulation.load(s.save())).not.toThrow();
     command(s,{type:'animalAreaDelete',areaId});expect(a.allowedAreaId).toBeNull();
   });
-  it('keeps a rabbit in place for an empty area and returns after painting; deleting clears an active return goal',()=>{
+  it('leaves an empty rabbit area unrestricted and returns after painting; deleting clears an active return goal',()=>{
     const s=fixture(),a=animal(s,{species:'hare',decisionTick:0}),cell=at(a);
     const areaId=command(s,{type:'animalAreaCreate',name:'待画范围'}).areaId!;
-    command(s,{type:'animalAreaAssign',areaId,animalId:a.id});s.step(100);expect(at(a)).toBe(cell);
+    command(s,{type:'animalAreaAssign',areaId,animalId:a.id});until(s,()=>at(a)!==cell,200);
+    expect(a.goal?.kind).not.toBe('area');
     command(s,{type:'animalAreaPaint',areaId,from:pos(25),erase:false});s.step();expect(a.goal?.kind).toBe('area');
     expect(()=>VoxelSimulation.load(s.save())).not.toThrow();
     command(s,{type:'animalAreaDelete',areaId});expect(a.goal).toBeNull();expect(a.path).toEqual([]);

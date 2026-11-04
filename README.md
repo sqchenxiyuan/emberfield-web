@@ -1,5 +1,7 @@
 # 余烬边境 · Emberfield
 
+v44接入居民允许区域：创建和命名 → 按工作层绘制 → 分配居民 → 工作、取料、生活与收纳筛选 → 修改后的任务衔接 → 保存继续。区域与兔子的活动范围共用，空区不限活动，允许经过区外通路，征召和手动装备武器有明确例外。继续先搭玩法与机制，数值后调。见[129原版机制](docs/research/rimworld/129-allowed-area-mechanisms.md)、[130玩法与验证](docs/research/rimworld/130-allowed-area-gameplay.md)、[131原版实机](docs/research/rimworld/131-native-allowed-area-runtime.md)。
+
 v43接通河流与架桥：世界河网和局部水道 → 浅水涉行／深水阻挡 → 连续规划木桥 → 实际搬料施工 → 通行、轻型建造与拆除 → 保存继续。桥下保留水体，浅水允许实际仓储，旧营地保持原地形。先完成玩法闭环，桥梁成本、河宽与移动速度后调。见[126原版机制](docs/research/rimworld/126-river-bridge-mechanisms.md)、[127玩法与验证](docs/research/rimworld/127-river-bridge-gameplay.md)、[128原版实机](docs/research/rimworld/128-native-river-bridge-runtime.md)。
 
 v42接通成品去向：制作完成后就地放下、由制作者送往最佳仓库，或送往指定区域／货架／联动储存组。地面仓库支持稳定身份、命名和扩展；成品配送不依赖搬运分工，途中保存和目标失效保留实物，完成次数只结算一次。继续先搭机制闭环，数值后调。见[124原版机制](docs/research/rimworld/124-production-output-mechanisms.md)、[125玩法与验证](docs/research/rimworld/125-production-output-gameplay.md)。

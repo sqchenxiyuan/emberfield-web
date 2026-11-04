@@ -36,6 +36,7 @@ export interface HusbandryHost extends PensHost {
 const adjacent = (a: Pos, b: Pos) => a.z === b.z && Math.abs(a.x-b.x)+Math.abs(a.y-b.y) === 1;
 const edible = (b: Cargo) => ['grain', 'food', 'meal'].includes(b.resource);
 const rawFeed = (b: Cargo) => b.resource === 'grain';
+const pawnAllowed = (s: HusbandryHost, p: Pawn, target: Pos) => s.pawnAllowed?.(p, target) ?? true;
 const random = (s: HusbandryHost, a: WildAnimal, salt: number) => plantRandom(s.seed, a.id, s.tick, salt);
 function event(s: HusbandryHost, kind: HusbandryEvent['kind'], a: WildAnimal, message: string, otherId: number|null = null) {
   s.husbandryLog.push({tick:s.tick, kind, animalId:a.id, otherId, message});
@@ -231,15 +232,17 @@ function actionFor(a:WildAnimal):HandleTask['action']|null {
 function handlerRoute(p:Pawn,path:number[]){p.path=path;p.destination=path.at(-1)??null;p.phase='handle';}
 export function tryHandle(s:HusbandryHost,p:Pawn):boolean {
   if(!canHandle(p)||p.cargo||p.food<30||p.rest<20)return false;
-  for(const a of s.animals.filter(a=>!a.dead&&!s.pawns.some(p=>p.ropeTask?.animalId===a.id)&&s.tick>=a.retryTick&&a.phase!=='flee'&&
+  for(const a of s.animals.filter(a=>!a.dead&&pawnAllowed(s,p,a)&&!s.pawns.some(p=>p.ropeTask?.animalId===a.id)&&s.tick>=a.retryTick&&a.phase!=='flee'&&
     !s.pawns.some(q=>q.handleTask?.animalId===a.id)).sort((a,b)=>a.hunger-b.hunger)){
     const action=actionFor(a);if(!action)continue;
     if(['tame','maintain'].includes(action)&&(s.tick<a.nextInteractionTick||p.skills.animals.level<ANIMAL_HUSBANDRY[a.species].minSkill||a.phase==='rest'))continue;
+    // Area filtering occurs before pathfinding, so rejecting a restricted worker
+    // never puts the animal on the shared physical-unreachability retry timer.
     const path=s.prisonApproach(p,a);if(path===null){a.retryTick=s.tick+200;continue;}
     const foodNeeded=['tame','maintain','feed'].includes(action);
     let source:Stack|undefined,foodPath:number[]|null=null,amount=0;
     if(foodNeeded){
-      for(const food of s.items.filter(f=>action==='feed'?edible(f):rawFeed(f))){
+      for(const food of s.items.filter(f=>pawnAllowed(s,p,f)&&(action==='feed'?edible(f):rawFeed(f)))){
         const n=animalFeedAmount(a.species,food.resource)*(action==='feed'?1:HUSBANDRY_RULES.feedings);
         if(n<=0||s.animalAvailable(food)<n)continue;
         const route=s.itemPath(p,food);if(route===null)continue;
@@ -264,9 +267,13 @@ export function handleTick(s:HusbandryHost,p:Pawn) {
     (['tame','maintain'].includes(task.action)&&p.skills.animals.level<ANIMAL_HUSBANDRY[a.species].minSkill)){
     cancel('动物照料中断，保留未用食物');return;
   }
+  if(!pawnAllowed(s,p,a)) {
+    cancel('动物已在允许区域之外，保留未用食物');return;
+  }
   if(task.stage==='fetch'){
     const food=s.items.find(i=>i.id===task.foodId);
     if(!food||s.animalAvailable(food,p.id)<task.amount){cancel('食物已不可用，重新安排');return;}
+    if(!pawnAllowed(s,p,food)){cancel('动物食物已在允许区域之外，重新安排');return;}
     if(!s.itemTouch(p,food)){
       if(!p.path.length){const path=s.itemPath(p,food);if(path===null){cancel('食物通路中断');return;}handlerRoute(p,path);}return;
     }

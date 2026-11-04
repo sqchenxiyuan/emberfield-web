@@ -99,9 +99,9 @@ export function buildPenTopology(markers: readonly PenMarker[], neighbors: Neigh
  * ladders. No endpoint moves until the world executes a returned step.
  * States are adjacent pairs (at most 12 * CELLS), not arbitrary cell pairs. */
 export function planRopePath(animal: Pos, handler: Pos, targetCells: ReadonlySet<number> | readonly number[],
-  neighbors: Neighbors): number[] | null {
+  neighbors: Neighbors, reached: (animal: Pos, handler: Pos) => boolean = () => true): number[] | null {
   const targets = targetCells instanceof Set ? targetCells : new Set(targetCells);
-  if (inside(animal) && targets.has(at(animal))) return [];
+  if (inside(animal) && targets.has(at(animal)) && reached(animal, handler)) return [];
   if (!isAnimalGroundStep(animal, handler)) return null;
   const a = at(animal), p = at(handler);
   const cache = new Map<number, number[]>();
@@ -115,7 +115,7 @@ export function planRopePath(animal: Pos, handler: Pos, targetCells: ReadonlySet
       const nextKey = oldHandler * CELLS + nextHandler;
       if (parents.has(nextKey)) continue;
       parents.set(nextKey, key);
-      if (targets.has(oldHandler)) {
+      if (targets.has(oldHandler) && reached(position(oldHandler), position(nextHandler))) {
         const path: number[] = []; let n = nextKey;
         while (n !== start) { path.push(n % CELLS); n = parents.get(n)!; }
         return path.reverse();

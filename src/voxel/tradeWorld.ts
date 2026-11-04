@@ -16,6 +16,7 @@ export interface TradeHost {
   storyteller: { difficulty: Difficulty };
   stockpiles: Pos[]; shelves: Shelf[];
   path(from: Pos, to: Pos): number[] | null;
+  pawnAllowed?(pawn: Pawn, target: Pos): boolean;
   tradeReachable(pawn: Pawn): Set<number>;
   tradePlace(entries: { batch: Cargo; origin: Pos }[], base: Stack[]): Placement | null;
   tradeApplyPlacement(plan: Placement): void;
@@ -27,6 +28,7 @@ export interface TradeHost {
 }
 const same = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
 const distance = (a: Pos, b: Pos) => Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z);
+const pawnAllowed = (s: TradeHost, p: Pawn, target: Pos) => s.pawnAllowed?.(p, target) ?? true;
 export const tradeHostile = (a: Pick<Pawn, 'faction'>, b: Pick<Pawn, 'faction'>, goodwill: number) => a.faction !== 'prisoner' && b.faction !== 'prisoner' && a.faction !== b.faction &&
   (a.faction === 'raider' || b.faction === 'raider' || goodwill <= -75);
 /** Native damage notification uses incoming Amount, even if armor absorbs it.
@@ -63,7 +65,7 @@ export function quoteTrade(s: TradeHost): TradeQuote | null {
   const pawn = s.pawns.find(p => p.id === session.pawnId);
   if (!canTrade(s, caravan) || !canNegotiate(pawn) || pawn.phase !== 'trade') return null;
   const trader = s.pawns.find(p => p.id === caravan.traderId)!;
-  if (distance(pawn, trader) > 1) return null;
+  if (distance(pawn, trader) > 1 || !pawnAllowed(s,pawn,trader)) return null;
   const accessible = s.tradeReachable(trader), health = healthSummary(pawn);
   const improvement = tradePriceImprovement(pawn.skills.social.level, health.talking, health.hearing);
   const difficultyLoss = TRADE_DIFFICULTY_LOSS[s.storyteller.difficulty];
@@ -102,17 +104,23 @@ export function applyTradeCommand(s: TradeHost, c: TradeCommand): CommandResult 
     if (!canNegotiate(p)) return { ok: false, message: '请选择能够说话且未征召、未倒地的殖民者' };
     if (!canTrade(s, caravan)) return { ok: false, message: '商人当前无法交易' };
     const trader = s.pawns.find(p => p.id === caravan.traderId)!;
-    const route = s.path(p, trader);
+    if (!pawnAllowed(s,p,trader)) return { ok: false, message: '商人在允许区域之外' };
+    const route = s.path(p,trader);
     if (!route) return { ok: false, message: '没有到达商人的通路' };
     if (p.cargo && !s.tradeDropCargo(p)) return { ok: false, message: '身旁无卸货空间，请先放下携带物品' };
     cancelSession(s); s.tradeRelease(p);
     s.trade.session = { id: s.nextId++, caravanId: caravan.id, pawnId: p.id, stage: 'walking', startedAt: s.tick };
-    p.phase = 'trade'; p.path = route.slice(0, -1); p.destination = p.path.at(-1) ?? at(p);
+    p.phase = 'trade'; p.path = route.slice(0,-1); p.destination = p.path.at(-1) ?? at(p);
     p.reason = '前往与商人交谈';
     return { ok: true, message: `${p.name}正在前往商人处` };
   }
   if (!s.trade.session || c.sessionId !== s.trade.session.id) return { ok: false, message: '这次交易已经结束' };
   if (c.type === 'tradeCancel') { cancelSession(s); return { ok: true, message: '已取消交易，物资与银币未转移' }; }
+  const negotiator=s.pawns.find(p=>p.id===s.trade.session!.pawnId);
+  const currentCaravan=s.trade.caravans.find(v=>v.id===s.trade.session!.caravanId);
+  const currentTrader=s.pawns.find(p=>p.id===currentCaravan?.traderId);
+  if(negotiator&&currentTrader&&!pawnAllowed(s,negotiator,currentTrader))
+    return {ok:false,message:'商人已在允许区域之外，物资与银币未转移'};
   const quote = quoteTrade(s);
   if (!quote || c.quoteKey !== quote.key) return { ok: false, message: '报价或可用库存已变化，请重新确认' };
   const result = settleTrade(quote.offers, c.lines, quote.colonySilver, quote.traderSilver, c.gift, c.acceptShortfall);
@@ -212,11 +220,14 @@ export function updateTrade(s: TradeHost) {
   const p = s.pawns.find(p => p.id === session.pawnId), caravan = s.trade.caravans.find(c => c.id === session.caravanId);
   if (!canNegotiate(p) || p.phase !== 'trade' || !canTrade(s, caravan)) { cancelSession(s); return; }
   const trader = s.pawns.find(p => p.id === caravan.traderId)!;
+  if (!pawnAllowed(s,p,trader)) {
+    cancelSession(s);p.reason='商人已在允许区域之外，交易已取消';return;
+  }
   if (distance(p, trader) <= 1) {
     session.stage = 'ready'; p.path = []; p.destination = null; p.reason = '正在与商人交易';
   } else if (!p.path.length || (s.tick + p.id) % 40 === 0) {
-    const route = s.path(p, trader);
+    const route = s.path(p,trader);
     if (!route) { cancelSession(s); p.reason = '前往商人的通路中断'; return; }
-    session.stage = 'walking'; p.path = route.slice(0, -1); p.destination = p.path.at(-1) ?? null;
+    session.stage = 'walking'; p.path = route.slice(0,-1); p.destination = p.path.at(-1) ?? null;
   }
 }

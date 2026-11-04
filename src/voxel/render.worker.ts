@@ -16,6 +16,8 @@ ctx.onmessage = ({ data: d }) => {
     if (d.type === 'highlight') renderer.highlight(d.pos);
     if (d.type === 'pick')
       ctx.postMessage({ type: 'reply', id: d.id, result: renderer.pick(d.x, d.y) });
+    if (d.type === 'areaPick')
+      ctx.postMessage({ type: 'reply', id: d.id, result: renderer.pickArea(d.x, d.y) });
     if (d.type === 'inspect')
       ctx.postMessage({ type: 'reply', id: d.id, result: renderer.inspect(d.x, d.y) });
     if (d.type === 'project')

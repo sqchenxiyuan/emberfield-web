@@ -17,9 +17,11 @@ export interface PensHost extends Pick<VoxelSave, 'fences' | 'fenceGates' | 'pen
   prisonRelease(p: Pawn): void;
   penApproach(p: Pawn, target: Pos): number[] | null;
   penMoveHandler(p: Pawn, next: number): boolean;
+  pawnAllowed?(pawn: Pawn, target: Pos): boolean;
 }
 const adjacent = (a: Pos, b: Pos) => a.z === b.z && Math.abs(a.x-b.x)+Math.abs(a.y-b.y) === 1;
 const edge = (p: Pos) => p.x === 0 || p.y === 0 || p.x === WIDTH-1 || p.y === DEPTH-1;
+const pawnAllowed = (s: PensHost, p: Pawn, target: Pos) => s.pawnAllowed?.(p, target) ?? true;
 const cache = new WeakMap<PensHost, { revision: number; topology: PenTopology[]; cells: Map<number, Set<number>> }>();
 function topology(s: PensHost) {
   let entry = cache.get(s);
@@ -78,7 +80,7 @@ function areaContains(area:AnimalArea,cell:number) {
 }
 export function animalAllowed(s: PensHost, a: WildAnimal, p: Pos): boolean {
   const area=s.animalAreas.find(area=>area.id===a.allowedAreaId);
-  return a.allowedAreaId === null || !!area&&areaContains(area,at(p));
+  return a.allowedAreaId === null || !!area&&(!area.cells.length||areaContains(area,at(p)));
 }
 const validName = (name: unknown): name is string => typeof name === 'string' && !!name.trim() && name.trim().length <= 40;
 export function pensCommand(s: PensHost, c: VoxelCommand): CommandResult | null {
@@ -154,21 +156,35 @@ function canRope(p: Pawn) {
   return p.faction==='colony'&&!p.dead&&!p.downed&&!p.drafted&&p.carriedBy===null&&p.carryingPawnId===null&&
     p.priorities.handle>0&&!p.cargo&&p.food>=30&&p.rest>=20&&h.manipulation>0&&h.moving>.15;
 }
+/** Restrict the animal's storage destination, not the handler's adjacent stand
+ * or the physical edges either of them crosses. */
+function ropePath(s: PensHost, p: Pawn, animal: Pos, handler: Pos, cells: Set<number>) {
+  return planRopePath(animal,handler,cells,q=>s.penNeighbors(q,'rope'),
+    a=>pawnAllowed(s,p,a));
+}
+function ropeEndAllowed(s: PensHost, p: Pawn, animal: Pos, handler: Pos, path: number[]) {
+  const lastAnimal = path.length > 1 ? position(path.at(-2)!) : path.length ? handler : animal;
+  return pawnAllowed(s,p,lastAnimal);
+}
 export function tryRope(s: PensHost,p: Pawn): boolean {
   if (!canRope(p)) return false;
   for (const a of s.animals) {
     if (a.dead || a.faction!=='colony' || a.species!=='deer' || a.ropePaused || a.slaughter || a.releaseMarked ||
         a.fleeUntil>s.tick || a.retryTick>s.tick || s.pawns.some(q=>q.ropeTask?.animalId===a.id||q.handleTask?.animalId===a.id) || isHoused(s,a)) continue;
-    const pens=eligiblePens(s,a).sort((x,y)=>Math.abs(x.x-a.x)+Math.abs(x.y-a.y)-Math.abs(y.x-a.x)-Math.abs(y.y-a.y));
-    if (!pens.length) { a.reason='等待接受此动物的封闭圈地'; a.retryTick=s.tick+PEN_RULES.ropeRetryTicks; continue; }
+    if (!pawnAllowed(s,p,a)) continue;
+    const availablePens=eligiblePens(s,a);
+    if (!availablePens.length) { a.reason='等待接受此动物的封闭圈地'; a.retryTick=s.tick+PEN_RULES.ropeRetryTicks; continue; }
+    const pens=availablePens.filter(m=>[...penCells(s,m.id)!].some(cell=>pawnAllowed(s,p,position(cell))))
+      .sort((x,y)=>Math.abs(x.x-a.x)+Math.abs(x.y-a.y)-Math.abs(y.x-a.x)-Math.abs(y.y-a.y));
+    if (!pens.length) continue;
     const candidates = s.penNeighbors(a,'rope').map(position).filter(q=>adjacent(q,a))
       .flatMap(stand => { const route=s.penApproach(p,stand);return route===null?[]:[{stand,route}]; });
     let chosen: {marker:PenMarker;route:number[];length:number}|null=null;
     for(const {stand,route} of candidates)for(const marker of pens) {
-      const lead=planRopePath(a,stand,penCells(s,marker.id)!,q=>s.penNeighbors(q,'rope'));
+      const lead=ropePath(s,p,a,stand,penCells(s,marker.id)!);
       if(lead!==null&&(!chosen||route.length+lead.length<chosen.length))chosen={marker,route,length:route.length+lead.length};
     }
-    if (!chosen) { a.reason='没有可供牵引的通路；检查栏门、挂绳位置、台阶与锁门'; a.retryTick=s.tick+PEN_RULES.ropeRetryTicks; continue; }
+    if (!chosen) { p.reason='允许区域内没有可用的圈地收纳点或牵引通路'; continue; }
     const {marker,route}=chosen;
     s.prisonRelease(p); resetAnimal(a);
     p.ropeTask={animalId:a.id,penId:marker.id,stage:'approach',progress:0,path:[]};
@@ -181,17 +197,21 @@ export function ropeTick(s:PensHost,p:Pawn) {
   const task=p.ropeTask;if(!task)return;
   const a=s.animals.find(a=>a.id===task.animalId), marker=s.penMarkers.find(m=>m.id===task.penId);
   const cells=marker?penCells(s,marker.id):null;
-  const cancel=(reason:string)=>{if(a){a.retryTick=s.tick+PEN_RULES.ropeRetryTicks;a.reason=reason;}s.prisonRelease(p);p.reason=reason;};
+  const cancel=(reason:string,retry=true)=>{if(a){if(retry)a.retryTick=s.tick+PEN_RULES.ropeRetryTicks;a.reason=reason;}s.prisonRelease(p);p.reason=reason;};
   if(!a||!marker||!cells||!penAcceptsAnimal(marker,a)||a.dead||a.ropePaused||a.slaughter||a.releaseMarked||
       a.fleeUntil>s.tick||!canRope(p)||(a.requestedPenId!==null&&a.requestedPenId!==marker.id)) {cancel('牵引条件改变，已解绳并保留当前位置');return;}
+  if(((task.stage==='approach'||task.stage==='attach')&&!pawnAllowed(s,p,a))||
+      ((task.stage==='lead'||task.stage==='detach')&&!ropeEndAllowed(s,p,a,p,task.path))) {
+    cancel('牵引目标或收纳点已在允许区域之外，原地解绳',false);return;
+  }
   if(task.stage==='approach') {
     if(!adjacent(p,a)||!s.penNeighbors(a,'rope').includes(at(p))) {
       if(!p.path.length||(s.tick+p.id)%40===0) {
         const paths=s.penNeighbors(a,'rope').map(position).filter(q=>adjacent(q,a))
-          .filter(q=>planRopePath(a,q,cells,r=>s.penNeighbors(r,'rope'))!==null)
+          .filter(q=>ropePath(s,p,a,q,cells)!==null)
           .map(q=>s.penApproach(p,q)).filter((r):r is number[]=>r!==null).sort((a,b)=>a.length-b.length);
         const path=paths[0]??null;
-        if(path===null){cancel('动物暂不可达，稍后重新牵引');return;}p.path=path;p.destination=path.at(-1)??null;
+        if(path===null){cancel('允许区域内没有可用的收纳点或牵引通路',false);return;}p.path=path;p.destination=path.at(-1)??null;
       }
       return;
     }
@@ -201,17 +221,17 @@ export function ropeTick(s:PensHost,p:Pawn) {
     if(!adjacent(p,a)){cancel('挂绳位置已改变');return;}
     p.reason='正在给'+a.name+'挂绳';a.reason=p.name+'正在挂绳';
     if(++task.progress<PEN_RULES.attachWork)return;
-    const route=planRopePath(a,p,cells,q=>s.penNeighbors(q,'rope'));
-    if(route===null){cancel('圈地没有可用牵引通路');return;}
+    const route=ropePath(s,p,a,p,cells);
+    if(route===null){cancel('允许区域内没有可用的圈地终点或牵引通路',false);return;}
     task.path=route;task.stage='lead';task.progress=0;
   }
   if(task.stage==='lead') {
     p.reason='牵引'+a.name+'进入'+marker.name;a.phase='rope';a.reason='跟随'+p.name;
-    if(cells.has(at(a))){task.stage='detach';task.path=[];task.progress=0;}
+    if(cells.has(at(a))&&ropeEndAllowed(s,p,a,p,[])){task.stage='detach';task.path=[];task.progress=0;}
     else {
       if(!task.path.length || !s.penNeighbors(p,'rope').includes(task.path[0]) || !s.penNeighbors(a,'rope').includes(at(p))) {
-        const path=planRopePath(a,p,cells,q=>s.penNeighbors(q,'rope'));
-        if(path===null){cancel('牵引通路中断，请检查门与围栏');return;}task.path=path;
+        const path=ropePath(s,p,a,p,cells);
+        if(path===null){cancel('允许区域内没有可用的牵引终点或通路',false);return;}task.path=path;
       }
       if(s.tick<p.moveTick||s.tick<a.moveTick)return;
       const next=task.path[0];if(next===undefined||next===at(a)){cancel('牵引路径无效，等待重新规划');return;}
@@ -243,7 +263,7 @@ export function animalManagementTick(s:PensHost,a:WildAnimal):boolean {
   if(a.allowedAreaId!==null) {
     const area=s.animalAreas.find(area=>area.id===a.allowedAreaId);
     if(!area){a.allowedAreaId=null;resetAnimal(a);}
-    else if(!areaContains(area,at(a))) {
+    else if(area.cells.length&&!areaContains(area,at(a))) {
       if(a.goal?.kind!=='area'||a.goal.id!==area.id||!a.path.length){
         if(s.tick<a.decisionTick)return true;
         const path=planAreaReturnPath(a,area,p=>s.animalNeighbors(a,p));resetAnimal(a);

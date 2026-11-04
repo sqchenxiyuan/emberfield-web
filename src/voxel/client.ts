@@ -135,6 +135,8 @@ export class VoxelClient {
         this.emit({ snapshot: d.snapshot });
         if (this.state.stockpileZoneId !== null &&
           !this.state.snapshot?.stockpileZones.some(zone => zone.id === this.state.stockpileZoneId)) this.choose('inspect');
+        if (this.state.selectedAnimalAreaId !== null &&
+          !this.state.snapshot?.animalAreas.some(area => area.id === this.state.selectedAnimalAreaId)) this.showAnimalArea(null);
         if (first) this.home();
       }
     };
@@ -283,7 +285,7 @@ export class VoxelClient {
     if (d.type === 'highlight') r.highlight(d.pos);
   }
   private renderRequest(
-    type: 'pick' | 'project' | 'inspect',
+    type: 'pick' | 'areaPick' | 'project' | 'inspect',
     fields: Record<string, unknown>,
   ): Promise<any> {
     if (this.renderWorker) {
@@ -294,7 +296,9 @@ export class VoxelClient {
       });
     }
     return Promise.resolve(
-      type === 'pick'
+      type === 'areaPick'
+        ? this.renderer?.pickArea(fields.x as number, fields.y as number)
+        : type === 'pick'
         ? this.renderer?.pick(fields.x as number, fields.y as number)
         : type === 'inspect'
           ? this.renderer?.inspect(fields.x as number, fields.y as number)
@@ -305,7 +309,7 @@ export class VoxelClient {
   private async atPointer(e: PointerEvent) {
     const box = this.canvas!.getBoundingClientRect();
     return this.renderRequest(
-      !this.state.furniturePlacement && (this.state.tool === 'inspect' || this.state.tool === 'cut') ? 'inspect' : 'pick',
+      this.state.tool === 'animalArea' ? 'areaPick' : !this.state.furniturePlacement && (this.state.tool === 'inspect' || this.state.tool === 'cut') ? 'inspect' : 'pick',
       { x: e.clientX - box.left, y: e.clientY - box.top },
     ) as Promise<Pos | null>;
   }
@@ -460,7 +464,7 @@ export class VoxelClient {
         if (tool === 'animalArea') {
           const areaId = this.state.selectedAnimalAreaId;
           if (areaId === null) { this.notice('先在动物面板创建或选择活动范围'); return; }
-          await this.command({ type: 'animalAreaPaint', areaId, from, to: { ...to, z: from.z }, erase: this.state.animalAreaErase });
+          await this.command({ type: 'allowedAreaPaint', areaId, from, to: { ...to, z: from.z }, erase: this.state.animalAreaErase });
           return;
         }
         const single =

@@ -13,6 +13,7 @@ export interface PrisonHost {
   notice: string;
   pawns: Pawn[];
   beds: Bed[];
+  pawnAllowed?(pawn: Pawn, target: Pos): boolean;
   prisonPath(from: Pos, to: Pos, allowed?: Set<number>): number[] | null;
   prisonApproach(pawn: Pawn, target: Pos): number[] | null;
   prisonRelease(pawn: Pawn): void;
@@ -32,6 +33,7 @@ export interface PrisonHost {
 const same = (a: Pos, b: Pos) => at(a) === at(b);
 const adjacent = (a: Pos, b: Pos) => a.z === b.z && Math.abs(a.x - b.x) + Math.abs(a.y - b.y) === 1;
 const edge = (p: Pos) => p.x === 0 || p.y === 0 || p.x === WIDTH - 1 || p.y === DEPTH - 1;
+const pawnAllowed = (s: PrisonHost, p: Pawn, target: Pos) => s.pawnAllowed?.(p, target) ?? true;
 function route(p: Pawn, path: number[], phase: 'warden' | 'prisoner') {
   p.path = [...path]; p.destination = path.at(-1) ?? null; p.phase = phase;
 }
@@ -59,7 +61,7 @@ function cellForBed(s: PrisonHost, patient: Pawn, bed: Bed): Set<number> | null 
   } });
 }
 function captureBed(s: PrisonHost, p: Pawn, patient: Pawn, bedId?: number): Bed | undefined {
-  return s.beds.filter(b => (bedId === undefined || b.id === bedId) && bedAvailable(s, b, patient, p.id))
+  return s.beds.filter(b => (bedId === undefined || b.id === bedId) && pawnAllowed(s, p, b) && bedAvailable(s, b, patient, p.id))
     .map(b => ({ bed: b, cells: cellForBed(s, patient, b), path: s.prisonPath(p, b) }))
     .filter(v => v.cells?.has(at(v.bed)) && v.path !== null)
     .sort((a, b) => a.path!.length - b.path!.length || a.bed.id - b.bed.id)[0]?.bed;
@@ -69,9 +71,10 @@ function beginCarryTask(s: PrisonHost, p: Pawn, patient: Pawn, bedId?: number): 
     return { ok: false, message: '需要未征召且能够搬运的殖民者' };
   if (patient.dead || patient.carriedBy !== null || reserved(s, patient, p.id))
     return { ok: false, message: '目标已经有人照料或搬运' };
+  if (!pawnAllowed(s, p, patient)) return { ok: false, message: '搬运目标在允许区域之外' };
   const approach = s.prisonApproach(p, patient), bed = captureBed(s, p, patient, bedId);
   if (approach === null) return { ok: false, message: '没有靠近目标的通路' };
-  if (!bed) return { ok: false, message: '需要可达、空闲且位于封闭牢房的囚犯床' };
+  if (!bed) return { ok: false, message: '需要允许区域内可达、空闲且位于封闭牢房的囚犯床' };
   // Failed unload must preserve the existing job, route and reservations.
   if (!s.prisonDropCargo(p)) return { ok: false, message: '附近没有卸货空间，原任务与携带物资已保留' };
   s.prisonRelease(p);
@@ -115,6 +118,7 @@ function talkEligible(s: PrisonHost, p: Pawn, patient: Pawn): boolean {
     (patient.prisoner.policy === 'reduceResistance' && patient.prisoner.resistance > 0));
 }
 function beginVisit(s: PrisonHost, p: Pawn, patient: Pawn, stage: 'talkApproach' | 'releaseApproach'): boolean {
+  if (!pawnAllowed(s, p, patient)) return false;
   const path = s.prisonApproach(p, patient);
   if (path === null || !s.prisonDropCargo(p)) return false;
   s.prisonRelease(p);
@@ -137,7 +141,7 @@ export function setPrisonerPolicy(s: PrisonHost, patient: Pawn, policy: Prisoner
 export function tryWarden(s: PrisonHost, p: Pawn): boolean {
   if (!canWarden(p, s.tick) || p.priorities.warden <= 0 || p.wardenTask || p.carryingPawnId !== null ||
       p.food < 30 || p.rest < 20) return false;
-  const patients = s.pawns.filter(inmate).filter(q => !q.prisoner.releasing && !reserved(s, q, p.id))
+  const patients = s.pawns.filter(inmate).filter(q => !q.prisoner.releasing && pawnAllowed(s, p, q) && !reserved(s, q, p.id))
     .sort((a, b) => a.food - b.food || a.id - b.id);
   // Healthy hungry prisoners need the same physical meal delivery as patients.
   for (const q of patients) if (!q.downed && q.food <= 26 && s.prisonFeed(p, q)) return true;
@@ -159,8 +163,14 @@ export function wardenTick(s: PrisonHost, p: Pawn): void {
       p.food < 12 || p.rest < 1 || reserved(s, q, p.id)) {
     cancel(s, p, '看守任务条件改变，重新安排'); return;
   }
+  // A carried prisoner follows the warden through ordinary transit cells. Only
+  // the destination bed remains an independent target during captureCarry.
+  if (task.stage !== 'captureCarry' && !pawnAllowed(s, p, q)) {
+    cancel(s, p, '看守目标已在允许区域之外'); return;
+  }
   if (task.stage === 'captureApproach' || task.stage === 'captureCarry') {
     const bed = s.beds.find(b => b.id === task.bedId);
+    if (bed && !pawnAllowed(s, p, bed)) { cancel(s, p, '囚犯床已在允许区域之外，安全放下被搬运者'); return; }
     if (!bed || !bedAvailable(s, bed, q, p.id) || !cellForBed(s, q, bed)?.has(at(bed)) ||
         healthSummary(p).manipulation <= 0 ||
         (task.stage === 'captureApproach' && (q.carriedBy !== null ||

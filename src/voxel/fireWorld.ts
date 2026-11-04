@@ -23,6 +23,7 @@ export interface FireHost extends Pick<VoxelSave, 'shelves' | 'jobs' | 'tables' 
   fireRelease(p: Pawn): void;
   fireDropCargo(p: Pawn): boolean;
   fireRoute(p: Pawn, targets: Pos[]): number[] | null;
+  pawnAllowed?(pawn: Pawn, target: Pos): boolean;
   fireDestroy(target: FireDamage, reason: string): boolean;
   fireBurnGround(id: number, amount: number): void;
   fireBurnFurniture(id: number, damage: number): void;
@@ -31,6 +32,7 @@ export interface FireHost extends Pick<VoxelSave, 'shelves' | 'jobs' | 'tables' 
 }
 const same = (a: Pos, b: Pos) => at(a) === at(b);
 const distance = (a: Pos, b: Pos) => Math.abs(a.x - b.x) + Math.abs(a.y - b.y) + Math.abs(a.z - b.z);
+const pawnAllowed = (s: FireHost, p: Pawn, target: Pos) => s.pawnAllowed?.(p, target) ?? true;
 export const FIRE_DIRECTIONS = [[1, 0, 0], [-1, 0, 0], [0, 1, 0], [0, -1, 0], [0, 0, 1], [0, 0, -1]] as const;
 export const touchesFire = (a: Pos, b: Pos) => distance(a, b) <= 1;
 export function fireLog(s: FireHost, type: FireLogEntry['type'], p: Pos, message: string) {
@@ -221,18 +223,21 @@ export function validFirefight(s: FireHost, p: Pawn): boolean {
   const f = s.fires.find(f => f.id === p.firefightTask?.fireId);
   return !!f && capable(s, p) && p.phase === 'firefight' && p.cargo === null && p.jobId === null &&
     p.carePhase === null && p.wardenTask === null && p.cleanTask === null && p.repairTask === null &&
-    s.homeArea.has(at(f)) && !s.pawns.some(q => q !== p && q.firefightTask?.fireId === f.id);
+    s.homeArea.has(at(f)) && pawnAllowed(s, p, f) &&
+    !s.pawns.some(q => q !== p && q.firefightTask?.fireId === f.id);
 }
 export function startFirefight(s: FireHost, p: Pawn, f: Fire): boolean {
+  if (!pawnAllowed(s, p, f)) { p.reason = '火焰在允许区域之外'; return false; }
   if (!capable(s, p) || !s.homeArea.has(at(f)) || s.pawns.some(q => q !== p && q.firefightTask?.fireId === f.id)) return false;
   const route = s.fireRoute(p, [f]);
-  if (route === null || !s.fireDropCargo(p)) return false;
+  if (route === null) return false;
+  if (!s.fireDropCargo(p)) return false;
   s.fireRelease(p); p.phase = 'firefight'; p.firefightTask = { fireId: f.id, progress: 0 };
   p.path = route; p.destination = route.at(-1) ?? null; p.reason = '前往拍打灭火'; return true;
 }
 export function tryFirefight(s: FireHost, p: Pawn): boolean {
   if (!p.priorities.firefight || p.cargo) return false;
-  const fires = s.fires.filter(f => s.homeArea.has(at(f)) && !s.pawns.some(q => q.firefightTask?.fireId === f.id))
+  const fires = s.fires.filter(f => s.homeArea.has(at(f)) && pawnAllowed(s, p, f) && !s.pawns.some(q => q.firefightTask?.fireId === f.id))
     .sort((a, b) => distance(p, a) - distance(p, b) || a.id - b.id);
   for (const fire of fires) if (startFirefight(s, p, fire)) return true;
   return false;
@@ -251,21 +256,24 @@ export function validRepair(s: FireHost, p: Pawn): boolean {
   return !!d && capable(s, p) && p.phase === 'repair' && p.cargo === null && p.jobId === null &&
     p.carePhase === null && p.wardenTask === null && p.cleanTask === null && p.firefightTask === null &&
     d.hitPoints > 0 && d.hitPoints < d.maxHitPoints && !!findFireDamageTarget(s, d) &&
-    fireDamageHomeCells(d, s).some(q => s.homeArea.has(at(q))) && !fireDamageBurning(d, s.fires, s) &&
+    fireDamageHomeCells(d, s).some(q => s.homeArea.has(at(q)) && pawnAllowed(s, p, q)) &&
+    !fireDamageBurning(d, s.fires, s) &&
     !s.pawns.some(q => q !== p && q.repairTask?.damageKey === d.key);
 }
 export function startRepair(s: FireHost, p: Pawn, d: FireDamage): boolean {
+  if (!fireDamageHomeCells(d, s).some(q => pawnAllowed(s, p, q))) { p.reason = '修理目标在允许区域之外'; return false; }
   if (!capable(s, p) || !findFireDamageTarget(s, d) || d.hitPoints <= 0 || d.hitPoints >= d.maxHitPoints ||
-      fireDamageBurning(d, s.fires, s) || !fireDamageHomeCells(d, s).some(q => s.homeArea.has(at(q))) ||
+      fireDamageBurning(d, s.fires, s) || !fireDamageHomeCells(d, s).some(q => s.homeArea.has(at(q)) && pawnAllowed(s, p, q)) ||
       s.pawns.some(q => q !== p && q.repairTask?.damageKey === d.key)) return false;
   const route = s.fireRoute(p, fireDamageCells(d, s));
-  if (route === null || !s.fireDropCargo(p)) return false;
+  if (route === null) return false;
+  if (!s.fireDropCargo(p)) return false;
   s.fireRelease(p); p.phase = 'repair'; p.repairTask = { damageKey: d.key, progress: 0 };
   p.path = route; p.destination = route.at(-1) ?? null; p.reason = `前往修理${FIRE_TARGET_NAMES[d.kind]}`; return true;
 }
 export function tryRepair(s: FireHost, p: Pawn): boolean {
   if (!p.priorities.build || p.cargo || !s.fireDamage.length) return false;
-  const targets = s.fireDamage.filter(d => fireDamageHomeCells(d, s).some(q => s.homeArea.has(at(q))) && !fireDamageBurning(d, s.fires, s))
+  const targets = s.fireDamage.filter(d => fireDamageHomeCells(d, s).some(q => s.homeArea.has(at(q)) && pawnAllowed(s, p, q)) && !fireDamageBurning(d, s.fires, s))
     .sort((a, b) => distance(p, a) - distance(p, b) || a.key.localeCompare(b.key));
   for (const d of targets) if (startRepair(s, p, d)) return true;
   return false;
