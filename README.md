@@ -1,5 +1,7 @@
 # 余烬边境 · Emberfield
 
+v47接通施工失误与恢复：建造技能和身体能力 → 按实际劳动累计风险 → 实物材料损失与余料落地 → 普通蓝图重新搬料施工。重试独立于家园自动重建，拥堵、取消、火灾、货架联动和旧档可继续衔接；数值平衡后调。见[137原版静态机制](docs/research/rimworld/137-construction-failure-mechanisms.md)、[138玩法与验证](docs/research/rimworld/138-construction-failure-gameplay.md)。本轮仅静态分析和无界面验证，未操作原版或浏览器。
+
 v46接通毁坏后的恢复经营：家园自动重建开关 → 普通蓝图 → 真实搬料施工 → 可取消与保存继续。补上施工框架燃烧、完工耐久比例继承、整墙损伤和电线／沙袋重建，货架保留收纳设置与联动组。继续先搭玩法机制，数值后调。见[135原版静态机制](docs/research/rimworld/135-auto-rebuild-mechanisms.md)、[136玩法与验证](docs/research/rimworld/136-auto-rebuild-gameplay.md)。本轮遵守暂停程序交互的约束，仅做静态分析、无界面模型测试、构建和发布字节核对。
 
 v45接通通用物品禁止／允许：可逐堆切换，也可按当前工作层框选；普通搬运、施工和生产取料、吃饭、护理与饲养共同遵守。禁止保留实物、库存、财富及交易资格；未完成品保留进度，明确装备／穿戴会解除该物品的禁止。继续优先玩法与机制，数值后调。见[132静态机制](docs/research/rimworld/132-item-forbidden-mechanisms.md)、[133玩法与本地验证](docs/research/rimworld/133-item-forbidden-gameplay.md)、[134验证边界](docs/research/rimworld/134-native-item-forbidden-runtime.md)。本轮仅静态分析、无界面模型测试及构建，未完成原版或浏览器交互验证。

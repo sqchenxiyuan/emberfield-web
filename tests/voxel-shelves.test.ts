@@ -189,7 +189,7 @@ describe('shelf storage and gameplay',()=>{
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(proof.sha256);
     expect(proof.publishedCommit).toBe('9e2dc745c5caa820778ecec44249be503cfce679');
     const old=JSON.parse(bytes.toString()),before=structuredClone(old);expect(old.version).toBe(36);expect(old.shelves).toBeUndefined();
-    const s=VoxelSimulation.load(old),saved=s.save();expect(saved.version).toBe(46);expect(old).toEqual(before);
+    const s=VoxelSimulation.load(old),saved=s.save();expect(saved.version).toBe(47);expect(old).toEqual(before);
     expect(saved.shelves).toEqual([]);expect(saved.storageSpills).toEqual([]);
     for(const key of ['blocks','ladders','items','stats','explored','generator','worldSite','seed'])expect((saved as any)[key],key).toEqual(unfinishedExpectedField(key,old[key]));
     s.step(50);expect(()=>VoxelSimulation.load(s.save())).not.toThrow();

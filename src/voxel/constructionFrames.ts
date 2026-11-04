@@ -8,7 +8,7 @@ import type { BurnTargetKind } from './fire';
  * frames, empty plans, mining, production and reinstalling a packed original
  * have different lifecycles. Delivered inputs remain physical until completion. */
 export function isConstructionFrame(job: Job): boolean {
-  return !job.cancelled && ['shelf', 'smallShelf', 'table', 'chair', 'bed', 'door', 'stove',
+  return !job.cancelled && !job.constructionFailure && ['shelf', 'smallShelf', 'table', 'chair', 'bed', 'door', 'stove',
     'stonecutter', 'tailor', 'smithy', 'machining', 'researchBench', 'horseshoePin',
     'generator', 'solar', 'battery', 'heater', 'cooler', 'wire', 'wall', 'ladder',
     'fence', 'fenceGate', 'penMarker', 'sandbag'].includes(job.kind) &&

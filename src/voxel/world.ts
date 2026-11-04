@@ -1,5 +1,7 @@
 import { WeightedNavigation } from './navigation';
 import { isConstructionFrame, constructionFrameCells, frameBuildingKind } from './constructionFrames';
+import { constructionSuccessChance, constructionFailureChance, isFailableConstruction,
+  constructionRandom, constructionSalvage, validateConstructionFailure } from './construction';
 import { itemForbiddenTo, rejectLegacyItemAccess } from './itemAccess';
 import { allowedAreaCells, effectivePawnArea, pawnAreaAllows, validatePawnAreas } from './allowedAreas';
 import { effectiveShelfSettings, reconcileStorageGroups, storageGroupCommand, rejectLegacyStorageGroups,
@@ -2429,6 +2431,10 @@ export class VoxelSimulation {
     for (const j of [...this.jobs]) {
       if (j.cancelled) {
         this.cancel(j);
+        continue;
+      }
+      if (j.constructionFailure) {
+        this.finishConstructionFailure(j);
         continue;
       }
       if (
@@ -5676,6 +5682,65 @@ export class VoxelSimulation {
     this.jobs = this.jobs.filter(k => k.id !== j.id);
     this.fireDamage = this.fireDamage.filter(d => !(d.kind === 'frame' && d.targetId === j.id));
   }
+  /** Failure destroys part of the actual delivered material exactly once.
+   * Unplaced survivors stay in a bounded container, never disappear or become
+   * free credit toward the replacement's construction cost. */
+  private failConstruction(p: Pawn, j: Job) {
+    if (j.constructionFailure || !isFailableConstruction(j)) return;
+    const lost: Partial<Counts> = {};
+    j.deliveredBatches = j.deliveredBatches.map((batch,n) => {
+      const remaining = constructionSalvage(batch.amount, constructionRandom(this.seed,j.id,j.workTicks,p.id,100 + n));
+      const destroyed = batch.amount - remaining;
+      lost[batch.resource] = (lost[batch.resource] ?? 0) + destroyed;
+      this.stats.destroyed[batch.resource] += destroyed;
+      j.delivered[batch.resource] = (j.delivered[batch.resource] ?? 0) - destroyed;
+      return portion(batch,remaining);
+    });
+    j.constructionFailure = { workerId:p.id,lost };
+    this.fireDamage = this.fireDamage.filter(d => !(d.kind === 'frame' && d.targetId === j.id));
+    for (const pawn of this.pawns) if (pawn.jobId === j.id) this.release(pawn);
+    j.owner = null;
+    const loss = Object.entries(lost).filter(([,n]) => n! > 0)
+      .map(([r,n]) => `${n} ${RESOURCE_NAMES[r as Resource]}`).join('、') || '无';
+    const replaced = this.finishConstructionFailure(j);
+    this.notice = `${p.name}施工失败；损失：${loss}。${replaced ? '余料已放下，重新安排搬料施工' : '附近地面已满，余料保留在工地等待清理'}`;
+    p.reason = '施工失败，已释放工作预约';
+    this.reconcileFireState(); this.revision++;
+  }
+  private finishConstructionFailure(j: Job): boolean {
+    if (!j.constructionFailure || j.cancelled) return false;
+    // Upper ladder segments have no same-level item support before completion.
+    // Their surviving inputs fall locally to a legal lower/adjacent landing.
+    const origin = this.dropPoint(j) ?? this.fireLanding(j) ?? undefined;
+    const plan = !j.deliveredBatches.length ? {items:this.items,nextId:this.nextId} :
+      origin ? this.planPlacement(j.deliveredBatches.map(batch => ({batch,origin}))) : null;
+    if (!plan) {
+      j.reason = '施工失败：剩余材料保留在工地，等待附近腾出落点后重新规划';
+      return false;
+    }
+    this.commitPlacement(plan);
+    const replacement = this.makeJob(j.kind,j,j.axis,j.material);
+    if (j.storageSettings) replacement.storageSettings = structuredClone(j.storageSettings);
+    replacement.reason = '施工失败后重新规划，等待重新搬料';
+    this.jobs = this.jobs.map(job => job === j ? replacement : job);
+    for (const group of this.storageGroups) group.memberIds = group.memberIds.map(id => id === j.id ? replacement.id : id);
+    this.revision++;
+    return true;
+  }
+  fireBurnConstruction(id: number, resource: Resource) {
+    const job = this.jobs.find(j => j.id === id && j.constructionFailure);
+    const batch = job?.deliveredBatches.find(b => b.resource === resource);
+    if (!job || !batch || !['wood','cloth','components'].includes(resource)) return;
+    batch.amount--;
+    job.delivered[resource] = (job.delivered[resource] ?? 0) - 1;
+    if (!job.delivered[resource]) delete job.delivered[resource];
+    job.deliveredBatches = job.deliveredBatches.filter(b => b.amount > 0);
+    const burned = job.constructionFailure!.burned ??= {};
+    burned[resource] = (burned[resource] ?? 0) + 1;
+    this.stats.destroyed[resource]++;
+    fireLog(this,'destroyed',job,`施工余料中的 1 单位${RESOURCE_NAMES[resource]}被烧毁`);
+    this.revision++;
+  }
   /** Destruction makes a new ordinary plan. It never reuses the destroyed
    * entity, its paid materials, work, quality, owner, fuel or production bills. */
   private planAutoRebuild(plan: Pick<Job, 'kind' | 'x' | 'y' | 'z' | 'axis' | 'material' | 'storageSettings'> & { id?: number }) {
@@ -5863,7 +5928,7 @@ export class VoxelSimulation {
     }
     this.stockpiles = this.stockpiles.filter(p => this.standable(p) && !this.ladders[at(p)]);
     const changedSupports = new Set(target.kind === 'block' || target.kind === 'ladder' ? [cell,...bridgeWalls.map(w => w.i)] : []);
-    for (const job of [...this.jobs]) if (isConstructionFrame(job) &&
+    for (const job of [...this.jobs]) if ((isConstructionFrame(job) || !!job.constructionFailure) &&
         constructionFrameCells(job).some(q => [at(q)-layer,at(q),at(q)+layer].some(i => changedSupports.has(i))) &&
         !(job.kind === 'wire' ? !this.placementReason('wire',job) : this.supported(job))) this.fireDestroyJob(job);
     this.farms = this.farms.filter(support); this.treePlots = this.treePlots.filter(support);
@@ -6231,7 +6296,7 @@ export class VoxelSimulation {
       this.jobs = this.jobs.filter(k => k !== j);
       return true;
     }
-    const origin = this.dropPoint(j);
+    const origin = this.dropPoint(j) ?? (j.constructionFailure ? this.fireLanding(j) ?? undefined : undefined);
     const batches = j.deliveredBatches;
     const plan = origin
       ? this.planPlacement(batches.map((batch) => ({ batch, origin })))
@@ -6380,7 +6445,7 @@ export class VoxelSimulation {
     if (shouldRecreate(p, assignmentAt(p.schedule, this.tick)) && this.startRecreation(p)) return;
     this.chooseProductionForWorker(p);
     const jobs = this.jobs
-      .filter((j) => !j.cancelled && j.owner === null && this.pawnAllowed(p,j) && p.priorities[workType(j.kind)] > 0)
+      .filter((j) => !j.cancelled && !j.constructionFailure && j.owner === null && this.pawnAllowed(p,j) && p.priorities[workType(j.kind)] > 0)
       .sort(
         (a, b) =>
           p.priorities[workType(a.kind)] - p.priorities[workType(b.kind)] ||
@@ -6625,7 +6690,7 @@ export class VoxelSimulation {
     }
   }
   private continueJob(p: Pawn, j: Job) {
-    if (j.cancelled || !this.pawnAllowed(p,j)) {
+    if (j.cancelled || j.constructionFailure || !this.pawnAllowed(p,j)) {
       this.release(p);
       return;
     }
@@ -6687,7 +6752,7 @@ export class VoxelSimulation {
       this.release(p); this.dropCargo(p); p.reason = '未完成品已禁止搬运和续作'; return;
     }
     this.search(p);
-    let j = this.jobs.find((j) => j.id === p.jobId && !j.cancelled);
+    let j = this.jobs.find((j) => j.id === p.jobId && !j.cancelled && !j.constructionFailure);
     if (j?.unfinishedId !== undefined && p.cargo.unfinished?.id === j.unfinishedId) { this.continueUnfinished(p, j); return; }
     if (!j && p.cargo.unfinished && !p.cargo.forbidden && p.cargo.unfinished.creatorId === p.id) {
       j = this.jobs.find(k => !k.cancelled && k.owner === null && !this.productionWorkerFailure(p,k) &&
@@ -6707,6 +6772,7 @@ export class VoxelSimulation {
       j = this.jobs.find(
         (k) =>
           !k.cancelled &&
+          !k.constructionFailure &&
           k.owner === null &&
           p.priorities[workType(k.kind)] > 0 &&
           !this.skillFailure(p, k) && !this.productionWorkerFailure(p, k) &&
@@ -7096,16 +7162,21 @@ export class VoxelSimulation {
           if (skill && eligible) learnSkill(p.skills[skill], jobXP(j.kind));
         }
         const previousProgress = j.progress;
-        j.progress = Math.min(
-          j.work,
-          j.progress +
-            (j.weaponBenchKind === 'machining'
+        const workDelta = (j.weaponBenchKind === 'machining'
               ? machiningWorkFactor(this.rooms.roomAt(j)?.outdoor ?? true, this.temperature(j))
               : 1) *
               (cutting ? treeWorkSpeed(cutting.growth) : 1) *
               (j.material === 'stone' && ['wall', 'floor'].includes(j.kind) ? 0.8 : 1) *
-              workSpeed(p.skills, j.kind, healthSummary(p).manipulation, healthSummary(p).sight),
-        );
+              workSpeed(p.skills, j.kind, healthSummary(p).manipulation, healthSummary(p).sight);
+        if (p.faction === 'colony' && isFailableConstruction(j)) {
+          const capability = healthSummary(p);
+          const risk = constructionFailureChance(constructionSuccessChance(p.skills,capability.manipulation,capability.sight),workDelta,j.work);
+          if (constructionRandom(this.seed,j.id,j.workTicks,p.id) < risk) {
+            this.failConstruction(p,j);
+            return;
+          }
+        }
+        j.progress = Math.min(j.work, j.progress + workDelta);
         if (j.kind === 'mine' || j.kind === 'digLadder')
           j.miningYieldWork! +=
             (j.progress - previousProgress) *
@@ -7258,7 +7329,7 @@ export class VoxelSimulation {
   private finish(p: Pawn, j: Job) {
     const unfinished = j.unfinishedId === undefined ? undefined : this.unfinishedCargo(j.unfinishedId)?.unfinished;
     if (j.unfinishedId !== undefined && !unfinished) { this.cancel(j); return; }
-    if (j.cancelled || !this.pawnAllowed(p,j)) {
+    if (j.cancelled || j.constructionFailure || !this.pawnAllowed(p,j)) {
       this.release(p);
       return;
     }
@@ -7983,6 +8054,7 @@ export class VoxelSimulation {
               (j) =>
                 j !== current &&
                 !j.cancelled &&
+                !j.constructionFailure &&
                 j.owner === null &&
                 j.kind !== 'research' &&
                 p.priorities[workType(j.kind)] > 0 &&
@@ -8533,7 +8605,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 46,
+      version: 47,
       stockpileZones: this.stockpileZones,
       productionQueues: this.productionQueues.filter(q => this.productionBenches().some(b => b.id === q.benchId)),
       socialHistory: this.socialHistory, socialLog: this.socialLog,
@@ -8594,11 +8666,13 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : old.version < 43 ? [1, 2, 3] : [1, 2, 3, 4]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    if (sourceVersion < 47 && old.jobs?.some((j:any) => Object.hasOwn(j,'constructionFailure')))
+      throw new Error('旧版本存档混入施工失败记录');
     if (sourceVersion < 46) {
       if (Object.hasOwn(old, 'autoRebuild') || old.fireDamage?.some((d:any) => d.kind === 'frame'))
         throw new Error('旧版本存档混入自动重建或施工框架损伤字段');
@@ -9019,7 +9093,7 @@ export class VoxelSimulation {
     }
     if (sourceVersion < 43) { old.water = [0, CELLS]; old.bridges = [0, CELLS]; }
     if (sourceVersion < 44) for (const p of old.pawns ?? []) p.allowedAreaId = null;
-    old.version = 46;
+    old.version = 47;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -9680,6 +9754,7 @@ export class VoxelSimulation {
         )
       )
         throw new Error('配送实物批次与任务数量不一致');
+      validateConstructionFailure(j,d.nextId);
     }
     validateMedicineState(d);
     for (const p of d.pawns) {
@@ -10344,7 +10419,8 @@ export class VoxelSimulation {
     // Persist work progress, delivered and carried resources; rebuild transient paths and ownership.
     for (const j of s.jobs) {
       j.owner = null;
-      j.reason = j.cancelled ? '已取消，保留原任务材料等待退回' : '回读后等待重新安排';
+      j.reason = j.cancelled ? '已取消，保留原任务材料等待退回' : j.constructionFailure
+        ? '施工失败：剩余材料保留在工地，等待附近腾出落点后重新规划' : '回读后等待重新安排';
     }
     for (const p of s.pawns) {
       // Prison tasks carry explicit destinations and progress. Movement rechecks every edge.

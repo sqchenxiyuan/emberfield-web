@@ -1,0 +1,116 @@
+{
+  "evidence_id": "RW17-CONSTRUCTION-FAILURE",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes.",
+    "No native game, browser, preview, GUI input, or screenshot capture was launched for this milestone."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.JobDriver_ConstructFinishFrame",
+      "local_file": ".local-research/construction-failure/RimWorld.JobDriver_ConstructFinishFrame.cs",
+      "sha256": "e62e8a4546b450eab544166f2a2c45a9318b3a462155f9d9337959ac75212373",
+      "lines": 91
+    },
+    {
+      "type": "RimWorld.WorkGiver_ConstructFinishFrames",
+      "local_file": ".local-research/construction-failure/RimWorld.WorkGiver_ConstructFinishFrames.cs",
+      "sha256": "9f8019bb9f315462413fbf4aafcb6e46881cdf0dedec68836a066f7e1e9b9042",
+      "lines": 46
+    },
+    {
+      "type": "RimWorld.GenConstruct",
+      "local_file": ".local-research/construction-failure/RimWorld.GenConstruct.cs",
+      "sha256": "b4895c5536662931c685958c1d22826b7f07bb4f01d970f9671f853ad4c0fe77",
+      "lines": 1007
+    },
+    {
+      "type": "RimWorld.Frame",
+      "local_file": ".local-research/construction-failure/RimWorld.Frame.cs",
+      "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+      "lines": 607
+    },
+    {
+      "type": "RimWorld.GenLeaving",
+      "local_file": ".local-research/construction-failure/RimWorld.GenLeaving.cs",
+      "sha256": "177b177252c667af8f8d61e3c6fd9447e8503cad5115b89fa343c415ad7c11cd",
+      "lines": 356
+    },
+    {
+      "type": "Verse.Thing",
+      "local_file": ".local-research/construction-failure/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "lines": 2235
+    },
+    {
+      "type": "Verse.GenMath",
+      "local_file": ".local-research/construction-failure/Verse.GenMath.cs",
+      "sha256": "639bc810485b043ff454902b285ade5d875d8b123f3809672371111519429b1e",
+      "lines": 702
+    },
+    {
+      "type": "Verse.Rand",
+      "local_file": ".local-research/construction-failure/Verse.Rand.cs",
+      "sha256": "f5edc56975095070d8feb0dc52a2d03f85992b8a6a27aa0cab787664ec466070",
+      "lines": 906
+    },
+    {
+      "type": "RimWorld.Blueprint_Build",
+      "local_file": ".local-research/construction-failure/RimWorld.Blueprint_Build.cs",
+      "sha256": "4f22af511172f2621577cb0c6a2d4e387f4883c96849b582bd9cd7d07586501a",
+      "lines": 204
+    },
+    {
+      "type": "RimWorld.Blueprint_Storage",
+      "local_file": ".local-research/construction-failure/RimWorld.Blueprint_Storage.cs",
+      "sha256": "c27ea0ab466d409431b73a4fb66988e9213b7d580fda100e1637af649657a175",
+      "lines": 146
+    },
+    {
+      "type": "RimWorld.Blueprint_Install",
+      "local_file": ".local-research/construction-failure/RimWorld.Blueprint_Install.cs",
+      "sha256": "9d3b41f79b34bc082bdb06026782bd2cafaf65626879edb11190d62a88ebb060",
+      "lines": 198
+    },
+    {
+      "type": "RimWorld.Designator_Build",
+      "local_file": ".local-research/construction-failure/RimWorld.Designator_Build.cs",
+      "sha256": "9315b60f5785196a59e47ac068c5e7e2d1286862c0c8e969073dae87056b8e28",
+      "lines": 690
+    },
+    {
+      "type": "Verse.AI.JobDriver_HaulToContainer",
+      "local_file": ".local-research/construction-failure/Verse.AI.JobDriver_HaulToContainer.cs",
+      "sha256": "3393bc8d971a12f541099fabbc5470da960bc1e90db1cb94dc3c74088bcd9627",
+      "lines": 229
+    },
+    {
+      "type": "RimWorld.StatWorker",
+      "local_file": ".local-research/construction-failure/RimWorld.StatWorker.cs",
+      "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+      "lines": 1392
+    },
+    {
+      "type": "RimWorld.SkillNeed_Direct",
+      "local_file": ".local-research/construction-failure/RimWorld.SkillNeed_Direct.cs",
+      "sha256": "0983bddf958c2548d38759abc87c5e250da9048c7d0c5d01a25e8ecdc8ce48c5",
+      "lines": 28
+    },
+    {
+      "type": "RimWorld.PawnCapacityFactor",
+      "local_file": ".local-research/construction-failure/RimWorld.PawnCapacityFactor.cs",
+      "sha256": "4534a4c8f3efcd51636fbfecb1b5ead2b3611e9fde554445b9f1947be84edf18",
+      "lines": 38
+    }
+  ]
+}

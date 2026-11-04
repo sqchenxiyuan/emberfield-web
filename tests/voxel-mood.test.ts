@@ -116,7 +116,7 @@ describe('voxel mood and recreation workflows', () => {
     const old = JSON.parse(readFileSync(new URL('./fixtures/voxel-v22-mood-initial.json', import.meta.url), 'utf8'));
     expect(old.version).toBe(22); expect(old.horseshoePins).toBeUndefined();
     const saved = VoxelSimulation.load(old).save();
-    expect(saved.version).toBe(46); expect(saved.horseshoePins).toEqual([]);
+    expect(saved.version).toBe(47); expect(saved.horseshoePins).toEqual([]);
     for (const key of ['nextId', 'items', 'blocks', 'ladders', 'stats'] as const) expect(saved[key]).toEqual(relocationExpectedField(key, old[key]));
     expect(saved.animals).toMatchObject(old.animals);
     for (const p of saved.pawns) {

@@ -13,6 +13,7 @@ import {
   type SkillKey,
 } from './skills';
 import { healthSummary } from './survival';
+import { constructionSuccessChance } from './construction';
 
 const WORK_SKILLS: Record<Work, SkillKey | null> = {
   handle: 'animals',
@@ -105,6 +106,11 @@ export function SkillPanel({ pawn }: { pawn: Pawn }) {
               {key === 'mining' && (
                 <small>
                   矿物产量 {Math.round(miningYield(pawn.skills, manipulation, sight) * 100)}%
+                </small>
+              )}
+              {key === 'construction' && (
+                <small title="按当前建筑技能、操作能力和视力估算整项施工成功率；失败可能损失材料，并重新规划施工。">
+                  整项施工成功率 {number(constructionSuccessChance(pawn.skills, manipulation, sight) * 100)}%
                 </small>
               )}
               {key === 'plants' && (

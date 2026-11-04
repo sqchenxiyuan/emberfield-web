@@ -1,0 +1,891 @@
+{
+  "evidence_id": "RW17-CONSTRUCTION-FAILURE-STATIC",
+  "version": "1.7.4980 rev60",
+  "assemblySha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "reaEvidenceId": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+  "reaParentId": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+  "reaFile": "docs/research/rimworld/evidence/production-bills-rea-managed.json",
+  "reaSha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+  "manifestFile": "docs/research/rimworld/evidence/construction-failure-manifest.json",
+  "manifestSha256": "a47a7e3d2664d9b514eac14d55896d59fa251041222f07bd88a37da3edb5373d",
+  "rules": [
+    {
+      "type": "RimWorld.WorkGiver_ConstructFinishFrames",
+      "file": ".local-research/construction-failure/RimWorld.WorkGiver_ConstructFinishFrames.cs",
+      "sha256": "9f8019bb9f315462413fbf4aafcb6e46881cdf0dedec68836a066f7e1e9b9042",
+      "anchor": "if (!frame.IsCompleted())",
+      "hits": [
+        {
+          "line": 27,
+          "text": "if (!frame.IsCompleted())"
+        }
+      ],
+      "interpretation": "FinishFrame work requires all construction materials to be delivered."
+    },
+    {
+      "type": "RimWorld.WorkGiver_ConstructFinishFrames",
+      "file": ".local-research/construction-failure/RimWorld.WorkGiver_ConstructFinishFrames.cs",
+      "sha256": "9f8019bb9f315462413fbf4aafcb6e46881cdf0dedec68836a066f7e1e9b9042",
+      "anchor": "GenConstruct.CanConstruct(frame, pawn, checkSkills: true, forced)",
+      "hits": [
+        {
+          "line": 39,
+          "text": "if (!GenConstruct.CanConstruct(frame, pawn, checkSkills: true, forced))"
+        }
+      ],
+      "interpretation": "Assignment checks construction eligibility, including skill prerequisites."
+    },
+    {
+      "type": "RimWorld.GenConstruct",
+      "file": ".local-research/construction-failure/RimWorld.GenConstruct.cs",
+      "sha256": "b4895c5536662931c685958c1d22826b7f07bb4f01d970f9671f853ad4c0fe77",
+      "anchor": "p.skills.GetSkill(SkillDefOf.Construction).Level < t.def.constructionSkillPrerequisite",
+      "hits": [
+        {
+          "line": 295,
+          "text": "if (p.skills.GetSkill(SkillDefOf.Construction).Level < t.def.constructionSkillPrerequisite)"
+        }
+      ],
+      "interpretation": "Definition skill requirement is an eligibility gate separate from success chance."
+    },
+    {
+      "type": "RimWorld.JobDriver_ConstructFinishFrame",
+      "file": ".local-research/construction-failure/RimWorld.JobDriver_ConstructFinishFrame.cs",
+      "sha256": "e62e8a4546b450eab544166f2a2c45a9318b3a462155f9d9337959ac75212373",
+      "anchor": "if (frame.resourceContainer.Count > 0 && actor.skills != null)",
+      "hits": [
+        {
+          "line": 48,
+          "text": "if (frame.resourceContainer.Count > 0 && actor.skills != null)"
+        }
+      ],
+      "interpretation": "Construction learning requires materials in the frame and a pawn skill tracker."
+    },
+    {
+      "type": "RimWorld.JobDriver_ConstructFinishFrame",
+      "file": ".local-research/construction-failure/RimWorld.JobDriver_ConstructFinishFrame.cs",
+      "sha256": "e62e8a4546b450eab544166f2a2c45a9318b3a462155f9d9337959ac75212373",
+      "anchor": "actor.skills.Learn(SkillDefOf.Construction, 0.25f * (float)delta)",
+      "hits": [
+        {
+          "line": 50,
+          "text": "actor.skills.Learn(SkillDefOf.Construction, 0.25f * (float)delta);"
+        }
+      ],
+      "interpretation": "Learning happens before construction speed and success stat reads in this interval."
+    },
+    {
+      "type": "RimWorld.JobDriver_ConstructFinishFrame",
+      "file": ".local-research/construction-failure/RimWorld.JobDriver_ConstructFinishFrame.cs",
+      "sha256": "e62e8a4546b450eab544166f2a2c45a9318b3a462155f9d9337959ac75212373",
+      "anchor": "actor.GetStatValue(StatDefOf.ConstructionSpeed) * 1.7f * (float)delta",
+      "hits": [
+        {
+          "line": 53,
+          "text": "float num = actor.GetStatValue(StatDefOf.ConstructionSpeed) * 1.7f * (float)delta;"
+        }
+      ],
+      "interpretation": "Work delta depends on construction speed and elapsed logical ticks."
+    },
+    {
+      "type": "RimWorld.JobDriver_ConstructFinishFrame",
+      "file": ".local-research/construction-failure/RimWorld.JobDriver_ConstructFinishFrame.cs",
+      "sha256": "e62e8a4546b450eab544166f2a2c45a9318b3a462155f9d9337959ac75212373",
+      "anchor": "num *= frame.Stuff.GetStatValueAbstract(StatDefOf.ConstructionSpeedFactor)",
+      "hits": [
+        {
+          "line": 56,
+          "text": "num *= frame.Stuff.GetStatValueAbstract(StatDefOf.ConstructionSpeedFactor);"
+        }
+      ],
+      "interpretation": "Selected construction material changes work delta."
+    },
+    {
+      "type": "RimWorld.JobDriver_ConstructFinishFrame",
+      "file": ".local-research/construction-failure/RimWorld.JobDriver_ConstructFinishFrame.cs",
+      "sha256": "e62e8a4546b450eab544166f2a2c45a9318b3a462155f9d9337959ac75212373",
+      "anchor": "if (actor.Faction == Faction.OfPlayer)",
+      "hits": [
+        {
+          "line": 59,
+          "text": "if (actor.Faction == Faction.OfPlayer)"
+        }
+      ],
+      "interpretation": "The failure hazard is evaluated only for the player faction."
+    },
+    {
+      "type": "RimWorld.JobDriver_ConstructFinishFrame",
+      "file": ".local-research/construction-failure/RimWorld.JobDriver_ConstructFinishFrame.cs",
+      "sha256": "e62e8a4546b450eab544166f2a2c45a9318b3a462155f9d9337959ac75212373",
+      "anchor": "!TutorSystem.TutorialMode && Rand.Value < 1f - Mathf.Pow(statValue, num / workToBuild)",
+      "hits": [
+        {
+          "line": 62,
+          "text": "if (!TutorSystem.TutorialMode && Rand.Value < 1f - Mathf.Pow(statValue, num / workToBuild))"
+        }
+      ],
+      "interpretation": "The non-tutorial player interval samples before applying work; probability uses the full work delta divided by total work."
+    },
+    {
+      "type": "RimWorld.JobDriver_ConstructFinishFrame",
+      "file": ".local-research/construction-failure/RimWorld.JobDriver_ConstructFinishFrame.cs",
+      "sha256": "e62e8a4546b450eab544166f2a2c45a9318b3a462155f9d9337959ac75212373",
+      "anchor": "frame.FailConstruction(actor)",
+      "hits": [
+        {
+          "line": 64,
+          "text": "frame.FailConstruction(actor);"
+        }
+      ],
+      "interpretation": "Failure destroys the frame and returns before incrementing workDone."
+    },
+    {
+      "type": "RimWorld.JobDriver_ConstructFinishFrame",
+      "file": ".local-research/construction-failure/RimWorld.JobDriver_ConstructFinishFrame.cs",
+      "sha256": "e62e8a4546b450eab544166f2a2c45a9318b3a462155f9d9337959ac75212373",
+      "anchor": "if (frame.def.entityDefToBuild is TerrainDef)",
+      "hits": [
+        {
+          "line": 69,
+          "text": "if (frame.def.entityDefToBuild is TerrainDef)"
+        }
+      ],
+      "interpretation": "Terrain frames pass through the same preceding failure hazard; terrain-specific clearing follows it."
+    },
+    {
+      "type": "RimWorld.JobDriver_ConstructFinishFrame",
+      "file": ".local-research/construction-failure/RimWorld.JobDriver_ConstructFinishFrame.cs",
+      "sha256": "e62e8a4546b450eab544166f2a2c45a9318b3a462155f9d9337959ac75212373",
+      "anchor": "frame.workDone += num",
+      "hits": [
+        {
+          "line": 74,
+          "text": "frame.workDone += num;"
+        }
+      ],
+      "interpretation": "Only surviving intervals apply their work increment, then test completion."
+    },
+    {
+      "type": "RimWorld.JobDriver_ConstructFinishFrame",
+      "file": ".local-research/construction-failure/RimWorld.JobDriver_ConstructFinishFrame.cs",
+      "sha256": "e62e8a4546b450eab544166f2a2c45a9318b3a462155f9d9337959ac75212373",
+      "anchor": "build.FailOnDespawnedNullOrForbidden(TargetIndex.A)",
+      "hits": [
+        {
+          "line": 82,
+          "text": "build.FailOnDespawnedNullOrForbidden(TargetIndex.A);"
+        }
+      ],
+      "interpretation": "Despawn/null/forbidden interrupt ordinary work independently of a construction mishap."
+    },
+    {
+      "type": "RimWorld.JobDriver_ConstructFinishFrame",
+      "file": ".local-research/construction-failure/RimWorld.JobDriver_ConstructFinishFrame.cs",
+      "sha256": "e62e8a4546b450eab544166f2a2c45a9318b3a462155f9d9337959ac75212373",
+      "anchor": "build.FailOn(() => !GenConstruct.CanConstruct(Frame, pawn))",
+      "hits": [
+        {
+          "line": 83,
+          "text": "build.FailOn(() => !GenConstruct.CanConstruct(Frame, pawn));"
+        }
+      ],
+      "interpretation": "Loss of construction eligibility interrupts work, rather than invoking FailConstruction."
+    },
+    {
+      "type": "RimWorld.JobDriver_ConstructFinishFrame",
+      "file": ".local-research/construction-failure/RimWorld.JobDriver_ConstructFinishFrame.cs",
+      "sha256": "e62e8a4546b450eab544166f2a2c45a9318b3a462155f9d9337959ac75212373",
+      "anchor": "build.defaultDuration = 5000",
+      "hits": [
+        {
+          "line": 85,
+          "text": "build.defaultDuration = 5000;"
+        }
+      ],
+      "interpretation": "The work toil is finite; reaching the duration is not a construction mishap call."
+    },
+    {
+      "type": "RimWorld.Frame",
+      "file": ".local-research/construction-failure/RimWorld.Frame.cs",
+      "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+      "anchor": "Scribe_Values.Look(ref workDone, \"workDone\", 0f)",
+      "hits": [
+        {
+          "line": 186,
+          "text": "Scribe_Values.Look(ref workDone, \"workDone\", 0f);"
+        }
+      ],
+      "interpretation": "Work progress is stored on the frame and saved independently of the current job."
+    },
+    {
+      "type": "RimWorld.Frame",
+      "file": ".local-research/construction-failure/RimWorld.Frame.cs",
+      "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+      "anchor": "Destroy(DestroyMode.FailConstruction)",
+      "hits": [
+        {
+          "line": 411,
+          "text": "Destroy(DestroyMode.FailConstruction);"
+        }
+      ],
+      "interpretation": "Failure uses a dedicated destruction mode, distinct from KillFinalize auto-rebuild."
+    },
+    {
+      "type": "RimWorld.Frame",
+      "file": ".local-research/construction-failure/RimWorld.Frame.cs",
+      "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+      "anchor": "blueprint_Build = (Blueprint_Build)ThingMaker.MakeThing(def.entityDefToBuild.blueprintDef)",
+      "hits": [
+        {
+          "line": 415,
+          "text": "blueprint_Build = (Blueprint_Build)ThingMaker.MakeThing(def.entityDefToBuild.blueprintDef);"
+        }
+      ],
+      "interpretation": "Failure creates a new ordinary blueprint if the final definition has one."
+    },
+    {
+      "type": "RimWorld.Frame",
+      "file": ".local-research/construction-failure/RimWorld.Frame.cs",
+      "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+      "anchor": "blueprint_Build.stuffToUse = Stuff",
+      "hits": [
+        {
+          "line": 416,
+          "text": "blueprint_Build.stuffToUse = Stuff;"
+        }
+      ],
+      "interpretation": "Retry preserves chosen building material."
+    },
+    {
+      "type": "RimWorld.Frame",
+      "file": ".local-research/construction-failure/RimWorld.Frame.cs",
+      "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+      "anchor": "blueprint_Build.SetFactionDirect(Faction)",
+      "hits": [
+        {
+          "line": 417,
+          "text": "blueprint_Build.SetFactionDirect(Faction);"
+        }
+      ],
+      "interpretation": "Retry preserves faction."
+    },
+    {
+      "type": "RimWorld.Frame",
+      "file": ".local-research/construction-failure/RimWorld.Frame.cs",
+      "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+      "anchor": "blueprint_Build.InheritStyle(StyleSourcePrecept, StyleDef)",
+      "hits": [
+        {
+          "line": 418,
+          "text": "blueprint_Build.InheritStyle(StyleSourcePrecept, StyleDef);"
+        }
+      ],
+      "interpretation": "Retry inherits style through Blueprint.InheritStyle."
+    },
+    {
+      "type": "RimWorld.Frame",
+      "file": ".local-research/construction-failure/RimWorld.Frame.cs",
+      "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+      "anchor": "storageGroupMember.Group = storageGroup",
+      "hits": [
+        {
+          "line": 421,
+          "text": "storageGroupMember.Group = storageGroup;"
+        }
+      ],
+      "interpretation": "A compatible retry blueprint retains the storage group reference."
+    },
+    {
+      "type": "RimWorld.Frame",
+      "file": ".local-research/construction-failure/RimWorld.Frame.cs",
+      "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+      "anchor": "blueprint_Storage.settings.CopyFrom(storageSettings)",
+      "hits": [
+        {
+          "line": 202,
+          "text": "blueprint_Storage.settings.CopyFrom(storageSettings);"
+        },
+        {
+          "line": 427,
+          "text": "blueprint_Storage.settings.CopyFrom(storageSettings);"
+        }
+      ],
+      "interpretation": "A storage retry blueprint copies frame storage settings when present."
+    },
+    {
+      "type": "RimWorld.Frame",
+      "file": ".local-research/construction-failure/RimWorld.Frame.cs",
+      "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+      "anchor": "GenSpawn.Spawn(blueprint_Build, Position, map, Rotation, WipeMode.FullRefund)",
+      "hits": [
+        {
+          "line": 429,
+          "text": "GenSpawn.Spawn(blueprint_Build, Position, map, Rotation, WipeMode.FullRefund);"
+        }
+      ],
+      "interpretation": "Retry spawns at the old anchor/rotation without an ordinary placement eligibility recheck in this method."
+    },
+    {
+      "type": "RimWorld.Frame",
+      "file": ".local-research/construction-failure/RimWorld.Frame.cs",
+      "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+      "anchor": "MoteMaker.ThrowText(DrawPos, map, \"TextMote_ConstructionFail\".Translate(), 6f)",
+      "hits": [
+        {
+          "line": 432,
+          "text": "MoteMaker.ThrowText(DrawPos, map, \"TextMote_ConstructionFail\".Translate(), 6f);"
+        }
+      ],
+      "interpretation": "The failure gives local visual feedback; a separate message is gated by player faction and WorkToBuild > 1400."
+    },
+    {
+      "type": "Verse.Thing",
+      "file": ".local-research/construction-failure/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "anchor": "GenLeaving.DoLeavingsFor(this, map, mode, list)",
+      "hits": [
+        {
+          "line": 1079,
+          "text": "GenLeaving.DoLeavingsFor(this, map, mode, list);"
+        }
+      ],
+      "interpretation": "Spawned thing destruction invokes material leavings using the actual destroy mode."
+    },
+    {
+      "type": "Verse.Thing",
+      "file": ".local-research/construction-failure/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "anchor": "RemoveAllReservationsAndDesignationsOnThis()",
+      "hits": [
+        {
+          "line": 1087,
+          "text": "RemoveAllReservationsAndDesignationsOnThis();"
+        },
+        {
+          "line": 1142,
+          "text": "RemoveAllReservationsAndDesignationsOnThis();"
+        },
+        {
+          "line": 1200,
+          "text": "private void RemoveAllReservationsAndDesignationsOnThis()"
+        }
+      ],
+      "interpretation": "Destroyed frame identity loses its old reservations and designations."
+    },
+    {
+      "type": "RimWorld.GenLeaving",
+      "file": ".local-research/construction-failure/RimWorld.GenLeaving.cs",
+      "sha256": "177b177252c667af8f8d61e3c6fd9447e8503cad5115b89fa343c415ad7c11cd",
+      "anchor": "for (int num4 = frame.resourceContainer.Count - 1; num4 >= 0; num4--)",
+      "hits": [
+        {
+          "line": 118,
+          "text": "for (int num4 = frame.resourceContainer.Count - 1; num4 >= 0; num4--)"
+        }
+      ],
+      "interpretation": "Frame resource recovery visits actual delivered stacks in reverse container order."
+    },
+    {
+      "type": "RimWorld.GenLeaving",
+      "file": ".local-research/construction-failure/RimWorld.GenLeaving.cs",
+      "sha256": "177b177252c667af8f8d61e3c6fd9447e8503cad5115b89fa343c415ad7c11cd",
+      "anchor": "GetBuildingResourcesLeaveCalculator(diedThing, mode)(frame.resourceContainer[num4].stackCount)",
+      "hits": [
+        {
+          "line": 120,
+          "text": "int num5 = GetBuildingResourcesLeaveCalculator(diedThing, mode)(frame.resourceContainer[num4].stackCount);"
+        }
+      ],
+      "interpretation": "Recovery applies to each actual stack, not the full recipe or undelivered carried resources."
+    },
+    {
+      "type": "RimWorld.GenLeaving",
+      "file": ".local-research/construction-failure/RimWorld.GenLeaving.cs",
+      "sha256": "177b177252c667af8f8d61e3c6fd9447e8503cad5115b89fa343c415ad7c11cd",
+      "anchor": "frame.resourceContainer.TryTransferToContainer(frame.resourceContainer[num4], thingOwner, num5)",
+      "hits": [
+        {
+          "line": 123,
+          "text": "frame.resourceContainer.TryTransferToContainer(frame.resourceContainer[num4], thingOwner, num5);"
+        }
+      ],
+      "interpretation": "Surviving material is transferred as real Thing contents to the leavings owner."
+    },
+    {
+      "type": "RimWorld.GenLeaving",
+      "file": ".local-research/construction-failure/RimWorld.GenLeaving.cs",
+      "sha256": "177b177252c667af8f8d61e3c6fd9447e8503cad5115b89fa343c415ad7c11cd",
+      "anchor": "frame.resourceContainer.ClearAndDestroyContents()",
+      "hits": [
+        {
+          "line": 126,
+          "text": "frame.resourceContainer.ClearAndDestroyContents();"
+        }
+      ],
+      "interpretation": "The delivered remainder is destroyed after surviving portions transfer."
+    },
+    {
+      "type": "RimWorld.GenLeaving",
+      "file": ".local-research/construction-failure/RimWorld.GenLeaving.cs",
+      "sha256": "177b177252c667af8f8d61e3c6fd9447e8503cad5115b89fa343c415ad7c11cd",
+      "anchor": "DestroyMode.FailConstruction => (int count) => Mathf.Max(GenMath.RoundRandom((float)count * 0.5f), 1)",
+      "hits": [
+        {
+          "line": 322,
+          "text": "DestroyMode.FailConstruction => (int count) => Mathf.Max(GenMath.RoundRandom((float)count * 0.5f), 1),"
+        }
+      ],
+      "interpretation": "Each positive stack leaves stochastic half with a minimum of one surviving item."
+    },
+    {
+      "type": "RimWorld.GenLeaving",
+      "file": ".local-research/construction-failure/RimWorld.GenLeaving.cs",
+      "sha256": "177b177252c667af8f8d61e3c6fd9447e8503cad5115b89fa343c415ad7c11cd",
+      "anchor": "mode == DestroyMode.KillFinalize && !map.areaManager.Home[list3[num9]]",
+      "hits": [
+        {
+          "line": 180,
+          "text": "if (mode == DestroyMode.KillFinalize && !map.areaManager.Home[list3[num9]] && !diedThing.def.forceLeavingsAllowed)"
+        }
+      ],
+      "interpretation": "Automatic outside-Home forbidding here applies to kill leavings, not failure leavings."
+    },
+    {
+      "type": "RimWorld.GenLeaving",
+      "file": ".local-research/construction-failure/RimWorld.GenLeaving.cs",
+      "sha256": "177b177252c667af8f8d61e3c6fd9447e8503cad5115b89fa343c415ad7c11cd",
+      "anchor": "thingOwner.TryDrop(thingOwner[0], list3[num9], map, ThingPlaceMode.Near",
+      "hits": [
+        {
+          "line": 184,
+          "text": "if (!thingOwner.TryDrop(thingOwner[0], list3[num9], map, ThingPlaceMode.Near, out var lastResultingThing, null, nearPlaceValidator))"
+        }
+      ],
+      "interpretation": "Survivors are dropped near the old footprint; failed placement logs a warning then breaks."
+    },
+    {
+      "type": "Verse.GenMath",
+      "file": ".local-research/construction-failure/Verse.GenMath.cs",
+      "sha256": "639bc810485b043ff454902b285ade5d875d8b123f3809672371111519429b1e",
+      "anchor": "return (int)f + ((Rand.Value < f % 1f) ? 1 : 0)",
+      "hits": [
+        {
+          "line": 64,
+          "text": "return (int)f + ((Rand.Value < f % 1f) ? 1 : 0);"
+        }
+      ],
+      "interpretation": "RoundRandom uses truncation plus a fractional-probability increment; it reads Rand.Value even for an integer."
+    },
+    {
+      "type": "Verse.Rand",
+      "file": ".local-research/construction-failure/Verse.Rand.cs",
+      "sha256": "f5edc56975095070d8feb0dc52a2d03f85992b8a6a27aa0cab787664ec466070",
+      "anchor": "public static float Value =>",
+      "hits": [
+        {
+          "line": 35,
+          "text": "public static float Value => (float)(((double)MurmurHash.GetInt(seed, iterations++) - -2147483648.0) / 4294967295.0);"
+        }
+      ],
+      "interpretation": "The source generator uses global seed/iterations, increments each Value read and returns a float."
+    },
+    {
+      "type": "RimWorld.Blueprint_Build",
+      "file": ".local-research/construction-failure/RimWorld.Blueprint_Build.cs",
+      "sha256": "4f22af511172f2621577cb0c6a2d4e387f4883c96849b582bd9cd7d07586501a",
+      "anchor": "Frame frame = (Frame)ThingMaker.MakeThing(def.entityDefToBuild.frameDef, stuffToUse)",
+      "hits": [
+        {
+          "line": 72,
+          "text": "Frame frame = (Frame)ThingMaker.MakeThing(def.entityDefToBuild.frameDef, stuffToUse);"
+        }
+      ],
+      "interpretation": "The next blueprint-to-frame transition creates a fresh frame, so prior work and frame damage are not inherited."
+    },
+    {
+      "type": "RimWorld.Blueprint_Storage",
+      "file": ".local-research/construction-failure/RimWorld.Blueprint_Storage.cs",
+      "sha256": "c27ea0ab466d409431b73a4fb66988e9213b7d580fda100e1637af649657a175",
+      "anchor": "frame.storageSettings.CopyFrom(GetStoreSettings())",
+      "hits": [
+        {
+          "line": 97,
+          "text": "frame.storageSettings.CopyFrom(GetStoreSettings());"
+        }
+      ],
+      "interpretation": "Storage blueprint-to-frame transfer uses effective group settings when linked."
+    },
+    {
+      "type": "RimWorld.Blueprint_Install",
+      "file": ".local-research/construction-failure/RimWorld.Blueprint_Install.cs",
+      "sha256": "9d3b41f79b34bc082bdb06026782bd2cafaf65626879edb11190d62a88ebb060",
+      "anchor": "return thingToInstall",
+      "hits": [
+        {
+          "line": 117,
+          "text": "return thingToInstall;"
+        }
+      ],
+      "interpretation": "Installation returns the original thing rather than constructing a new frame."
+    },
+    {
+      "type": "Verse.AI.JobDriver_HaulToContainer",
+      "file": ".local-research/construction-failure/Verse.AI.JobDriver_HaulToContainer.cs",
+      "sha256": "3393bc8d971a12f541099fabbc5470da960bc1e90db1cb94dc3c74088bcd9627",
+      "anchor": "Toils_Construct.MakeSolidThingFromBlueprintIfNecessary(TargetIndex.B, TargetIndex.C)",
+      "hits": [
+        {
+          "line": 178,
+          "text": "yield return Toils_Construct.MakeSolidThingFromBlueprintIfNecessary(TargetIndex.B, TargetIndex.C);"
+        }
+      ],
+      "interpretation": "Delivery/installation performs blueprint conversion without the FinishFrame failure sampler."
+    },
+    {
+      "type": "RimWorld.Designator_Build",
+      "file": ".local-research/construction-failure/RimWorld.Designator_Build.cs",
+      "sha256": "9315b60f5785196a59e47ac068c5e7e2d1286862c0c8e969073dae87056b8e28",
+      "anchor": "DebugSettings.godMode || entDef.GetStatValueAbstract(StatDefOf.WorkToBuild, StuffDef) == 0f",
+      "hits": [
+        {
+          "line": 474,
+          "text": "if (DebugSettings.godMode || entDef.GetStatValueAbstract(StatDefOf.WorkToBuild, StuffDef) == 0f)"
+        }
+      ],
+      "interpretation": "God mode or zero work directly places terrain/building instead of a build blueprint."
+    },
+    {
+      "type": "RimWorld.SkillNeed_Direct",
+      "file": ".local-research/construction-failure/RimWorld.SkillNeed_Direct.cs",
+      "sha256": "0983bddf958c2548d38759abc87c5e250da9048c7d0c5d01a25e8ecdc8ce48c5",
+      "anchor": "return valuesPerLevel[level]",
+      "hits": [
+        {
+          "line": 19,
+          "text": "return valuesPerLevel[level];"
+        }
+      ],
+      "interpretation": "The ordinary construction skill factor selects the declared level entry."
+    },
+    {
+      "type": "RimWorld.StatWorker",
+      "file": ".local-research/construction-failure/RimWorld.StatWorker.cs",
+      "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+      "anchor": "num *= stat.skillNeedFactors[num16].ValueFor(pawn)",
+      "hits": [
+        {
+          "line": 376,
+          "text": "num *= stat.skillNeedFactors[num16].ValueFor(pawn);"
+        }
+      ],
+      "interpretation": "Success calculation multiplies the skill factor before capacity factors."
+    },
+    {
+      "type": "RimWorld.StatWorker",
+      "file": ".local-research/construction-failure/RimWorld.StatWorker.cs",
+      "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+      "anchor": "num = Mathf.Lerp(num, num * factor, pawnCapacityFactor.weight)",
+      "hits": [
+        {
+          "line": 390,
+          "text": "num = Mathf.Lerp(num, num * factor, pawnCapacityFactor.weight);"
+        }
+      ],
+      "interpretation": "Capacity factors are weighted multiplicatively; they are not a direct percentage point subtraction."
+    },
+    {
+      "type": "RimWorld.PawnCapacityFactor",
+      "file": ".local-research/construction-failure/RimWorld.PawnCapacityFactor.cs",
+      "sha256": "4534a4c8f3efcd51636fbfecb1b5ead2b3611e9fde554445b9f1947be84edf18",
+      "anchor": "public float max = 9999f",
+      "hits": [
+        {
+          "line": 12,
+          "text": "public float max = 9999f;"
+        }
+      ],
+      "interpretation": "An omitted capacity-factor maximum defaults to 9999, not 1."
+    },
+    {
+      "type": "RimWorld.PawnCapacityFactor",
+      "file": ".local-research/construction-failure/RimWorld.PawnCapacityFactor.cs",
+      "sha256": "4534a4c8f3efcd51636fbfecb1b5ead2b3611e9fde554445b9f1947be84edf18",
+      "anchor": "if (num > max)",
+      "hits": [
+        {
+          "line": 27,
+          "text": "if (num > max)"
+        }
+      ],
+      "interpretation": "The capacity-factor maximum is applied before weighting."
+    },
+    {
+      "type": "RimWorld.StatWorker",
+      "file": ".local-research/construction-failure/RimWorld.StatWorker.cs",
+      "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+      "anchor": "val = Mathf.Clamp(val, stat.minValue, stat.maxValue)",
+      "hits": [
+        {
+          "line": 832,
+          "text": "val = Mathf.Clamp(val, stat.minValue, stat.maxValue);"
+        }
+      ],
+      "interpretation": "Ordinary postprocessed stat finalization clamps only after the prior skill/capacity and other modifiers."
+    }
+  ],
+  "boundedChecks": [
+    {
+      "type": "RimWorld.Frame",
+      "start": "public void FailConstruction",
+      "end": "protected override void DrawAt",
+      "startLine": 408,
+      "endLine": 439,
+      "sliceSha256": "08f2d32f6244794295bb23df741896b6fcec2f4ca575961f3bcbe2f058a6528e",
+      "absentTokens": [
+        "autoRebuild",
+        "CheckAutoRebuild",
+        "areaManager.Home",
+        "IsResearchFinished",
+        "CanPlaceBlueprintAt",
+        "glowerColorOverride",
+        "workDone",
+        "HitPoints",
+        "resourceContainer"
+      ],
+      "interpretation": "The retry method has no auto-rebuild/Home/research/placement gates and does not copy progress, damage, light-color override or surviving materials into the new blueprint."
+    },
+    {
+      "type": "RimWorld.JobDriver_ConstructFinishFrame",
+      "start": "build.tickIntervalAction =",
+      "end": "build.WithEffect",
+      "startLine": 44,
+      "endLine": 81,
+      "sliceSha256": "5752a129a8c1ffa981604a2b571ce013bc732e5bb7f8381536f28810fdece6c9",
+      "absentTokens": [
+        "Mathf.Min",
+        "WorkLeft",
+        "useHitPoints",
+        "TotalMaterialCost",
+        "PushState",
+        "PopState"
+      ],
+      "interpretation": "The hazard uses the full delta and global RNG without a terrain-HP/material-cost exclusion or a local seeded RNG scope."
+    },
+    {
+      "type": "RimWorld.JobDriver_ConstructFinishFrame",
+      "start": "protected override IEnumerable<Toil> MakeNewToils",
+      "end": "",
+      "startLine": 29,
+      "endLine": 91,
+      "sliceSha256": "178a8b3ffcc1e8e04e8db29fb413af79cd06464930018a9ce7939ed9b30eef8b",
+      "absentTokens": [
+        "AddFinishAction",
+        "workDone = 0",
+        "DestroyMode.Cancel"
+      ],
+      "interpretation": "No finish-action reset/cancellation of saved frame progress is declared by this driver."
+    },
+    {
+      "type": "RimWorld.Blueprint_Install",
+      "start": "protected override Thing MakeSolidThing",
+      "end": "public override bool TryReplaceWithSolidThing",
+      "startLine": 99,
+      "endLine": 120,
+      "sliceSha256": "08997307d9749ad3766ca6595e57ecc0d5e9924d99f31ea43aa092d173db6505",
+      "absentTokens": [
+        "MakeThing",
+        "Frame",
+        "FailConstruction",
+        "ConstructSuccessChance"
+      ],
+      "interpretation": "Reviewed installation conversion does not construct a fresh frame or sample failure."
+    },
+    {
+      "type": "Verse.AI.JobDriver_HaulToContainer",
+      "start": "protected override IEnumerable<Toil> MakeNewToils",
+      "end": "private void UpdateEnrouteTrackers",
+      "startLine": 97,
+      "endLine": 183,
+      "sliceSha256": "5a76e3f24e7a10dadeb61ce6298238f434099790bd1325359c9e2ae01e702cd8",
+      "absentTokens": [
+        "FailConstruction",
+        "ConstructSuccessChance"
+      ],
+      "interpretation": "Reviewed ordinary haul/install job does not use the FinishFrame construction-failure roll."
+    }
+  ],
+  "packagedDefs": [
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_WorkGeneral.xml",
+      "sha256": "ce98d3d43f86691f47a069ecaf15658f7d12d2f1ad0f1fe32d039231b3cc23a7",
+      "xpath": "/Defs/StatDef[defName=\"ConstructSuccessChance\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>1</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "minValue",
+          "count": 1,
+          "xml": [
+            "<minValue>0</minValue>"
+          ]
+        },
+        {
+          "xpath": "maxValue",
+          "count": 1,
+          "xml": [
+            "<maxValue>1</maxValue>"
+          ]
+        },
+        {
+          "xpath": "skillNeedFactors",
+          "count": 1,
+          "xml": [
+            "<skillNeedFactors><li Class=\"SkillNeed_Direct\"><skill>Construction</skill><valuesPerLevel><li>0.75</li><li>0.80</li><li>0.85</li><li>0.875</li><li>0.90</li><li>0.925</li><li>0.95</li><li>0.975</li><li>1</li><li>1.01</li><li>1.02</li><li>1.03</li><li>1.04</li><li>1.05</li><li>1.06</li><li>1.07</li><li>1.08</li><li>1.09</li><li>1.10</li><li>1.12</li><li>1.13</li></valuesPerLevel></li></skillNeedFactors>"
+          ]
+        },
+        {
+          "xpath": "capacityFactors",
+          "count": 1,
+          "xml": [
+            "<capacityFactors><li><capacity>Manipulation</capacity><weight>0.3</weight></li><li><capacity>Sight</capacity><weight>0.2</weight><max>1</max></li></capacityFactors>"
+          ]
+        }
+      ],
+      "interpretation": "Packaged full success curve and manipulation/sight factors."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_WorkGeneral.xml",
+      "sha256": "ce98d3d43f86691f47a069ecaf15658f7d12d2f1ad0f1fe32d039231b3cc23a7",
+      "xpath": "/Defs/StatDef[defName=\"ConstructionSpeed\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>1</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "minValue",
+          "count": 1,
+          "xml": [
+            "<minValue>0.1</minValue>"
+          ]
+        },
+        {
+          "xpath": "statFactors",
+          "count": 1,
+          "xml": [
+            "<statFactors><li>WorkSpeedGlobal</li></statFactors>"
+          ]
+        },
+        {
+          "xpath": "skillNeedFactors",
+          "count": 1,
+          "xml": [
+            "<skillNeedFactors><li Class=\"SkillNeed_BaseBonus\"><skill>Construction</skill><baseValue>0.3</baseValue><bonusPerLevel>0.0875</bonusPerLevel></li></skillNeedFactors>"
+          ]
+        },
+        {
+          "xpath": "capacityFactors",
+          "count": 1,
+          "xml": [
+            "<capacityFactors><li><capacity>Manipulation</capacity><weight>1</weight></li><li><capacity>Sight</capacity><weight>0.2</weight><max>1</max></li></capacityFactors>"
+          ]
+        }
+      ],
+      "interpretation": "Construction speed controls work delta rather than being a per-frame constant failure chance."
+    },
+    {
+      "file": "Data/Core/Defs/TerrainDefs/Terrain_Floors.xml",
+      "sha256": "c7a3038831fb311caa542b62c41caab6335eca87d36ae728b32e03120faa053d",
+      "xpath": "/Defs/TerrainDef[defName=\"WoodPlankFloor\"]",
+      "nameAttribute": "",
+      "parentName": "FloorBase",
+      "fields": [
+        {
+          "xpath": "statBases/WorkToBuild",
+          "count": 1,
+          "xml": [
+            "<WorkToBuild>85</WorkToBuild>"
+          ]
+        },
+        {
+          "xpath": "costList",
+          "count": 1,
+          "xml": [
+            "<costList><WoodLog>3</WoodLog></costList>"
+          ]
+        }
+      ],
+      "interpretation": "An ordinary terrain example has positive work and material cost; it follows Frame finishing."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+      "sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55",
+      "xpath": "/Defs/ThingDef[@Name=\"SleepingSpotBase\"]",
+      "nameAttribute": "SleepingSpotBase",
+      "parentName": "BuildingBase",
+      "fields": [
+        {
+          "xpath": "statBases/WorkToBuild",
+          "count": 1,
+          "xml": [
+            "<WorkToBuild>0</WorkToBuild>"
+          ]
+        },
+        {
+          "xpath": "useHitPoints",
+          "count": 1,
+          "xml": [
+            "<useHitPoints>False</useHitPoints>"
+          ]
+        }
+      ],
+      "interpretation": "A zero-work placement example uses the instant designator path."
+    }
+  ],
+  "successCurveLevels0To20": [
+    0.75,
+    0.8,
+    0.85,
+    0.875,
+    0.9,
+    0.925,
+    0.95,
+    0.975,
+    1.0,
+    1.01,
+    1.02,
+    1.03,
+    1.04,
+    1.05,
+    1.06,
+    1.07,
+    1.08,
+    1.09,
+    1.1,
+    1.12,
+    1.13
+  ],
+  "limits": [
+    "Static derived C# and packaged XML are not original source or runtime gameplay proof.",
+    "Matching retained REA metadata is reused for artifact identity only.",
+    "No native game, browser, preview, GUI input or screenshot capture was run.",
+    "The ordinary Frame finishing/failure chain is covered, not every specialized building, DLC or mod override.",
+    "RNG endpoint and float behavior prevent treating the ideal continuous probability derivation as bit-exact runtime frequency.",
+    "Original leavings placement can warn and break; static evidence does not establish a persistent retry container or universal lossless dropping.",
+    "Private deterministic RNG, voxel layer/support checks and a pending material-drop state are Web adaptations, not native mechanisms.",
+    "This evidence fixes the observed native values; provisional Web balance values and actual implementation/verification belong in the gameplay report."
+  ],
+  "collectorSha256": "bd62e1b26cdb2b36a9e334a040f242c006d28a65f4af9c2bf2dcc932f2bda8a6"
+}

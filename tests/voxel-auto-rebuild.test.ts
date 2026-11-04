@@ -83,13 +83,13 @@ describe('automatic rebuilding after destruction', () => {
     const synthetic = structuredClone(old) as Omit<typeof old, 'version' | 'autoRebuild'> & { version: number; autoRebuild?: boolean };
     synthetic.version = 45; delete synthetic.autoRebuild;
     const before = structuredClone(synthetic), loaded = VoxelSimulation.load(synthetic);
-    expect(loaded.save().version).toBe(46); expect(loaded.autoRebuild).toBe(false); expect(synthetic).toEqual(before);
+    expect(loaded.save().version).toBe(47); expect(loaded.autoRebuild).toBe(false); expect(synthetic).toEqual(before);
     for (const key of ['blocks', 'items', 'stats', 'tick', 'chairs', 'homeArea'] as const) expect(loaded.save()[key]).toEqual(old[key]);
     // The separately frozen v45 implementation samples are checked by the release verifier.
   });
 
   it('rejects missing or non-boolean current settings and refuses v45 saves carrying the new flag', () => {
-    const saved = fixture().save(); expect(saved.version).toBe(46);
+    const saved = fixture().save(); expect(saved.version).toBe(47);
     const missing: Partial<typeof saved> = structuredClone(saved); delete missing.autoRebuild;
     expect(() => VoxelSimulation.load(missing)).toThrow(/自动重建设置无效/);
     for (const value of [undefined, null, 0, 1, 'true', {}, []]) {
@@ -154,7 +154,7 @@ describe('automatic rebuilding after destruction', () => {
     command(s, { type: 'draft', pawnId: workerId, drafted: false }); until(s, () => s.chairs.length === 1);
     expect(s.chairs[0]).toMatchObject({ x: old.x, y: old.y, z: old.z, axis: old.axis }); expect(s.chairs[0].id).not.toBe(old.id);
     expect(s.stats.consumed.wood).toBe(2 * LIVING_BUILDINGS.chair.cost.wood);
-    expect(s.counts().wood + s.stats.consumed.wood).toBe(initialWood); expect(s.stats.produced.wood).toBe(0);
+    expect(s.counts().wood + s.stats.consumed.wood + s.stats.destroyed.wood).toBe(initialWood); expect(s.stats.produced.wood).toBe(0);
     expect(VoxelSimulation.load(s.save()).chairs).toEqual(s.chairs);
   });
 
@@ -416,6 +416,9 @@ describe('automatic rebuilding after destruction', () => {
 
   it('finishes a damaged wall with one shared damage anchor and repairs both visible halves through that identity', () => {
     let s = fixture(); const base = pos(18), upper = pos(18, 16, 9);
+    // Isolate damage inheritance: this healthy qualified builder cannot botch
+    // the frame and replace it with a different, undamaged construction.
+    s.pawns[0].skills.construction.level = 8;
     command(s, { type: 'designate', tool: 'wall', from: base, material: 'wood' });
     const plan = s.jobs.find(j => j.kind === 'wall')!; item(s, 'wood', plan.cost.wood!); build(s);
     until(s, () => plan.progress > 0);

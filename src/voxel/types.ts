@@ -606,6 +606,8 @@ export type JobKind =
   | 'door'
   | 'cook';
 export interface Job extends Pos {
+  /** Failed work keeps only surviving physical inputs until they can be placed. */
+  constructionFailure?: import('./construction').ConstructionFailure;
   /** Reference to one items/pawn.cargo unfinished object, never another copy. */
   unfinishedId?: number;
   /** Stable production order identity; absent only for migrated legacy jobs. */
@@ -1026,7 +1028,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 46;
+  version: 47;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;

@@ -56,6 +56,8 @@ const PLANT_YIELD = [
   1.09, 1.1, 1.12, 1.13,
 ] as const;
 const BUILDING_JOBS = new Set([
+  'shelf',
+  'smallShelf',
   'bridge',
   'floor',
   'wall',

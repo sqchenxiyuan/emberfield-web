@@ -14,6 +14,7 @@ import { rotRateAtTemperature, rotLimit, remainingRotDays } from './preservation
 import { stackLimit, carryLimit } from './logistics';
 import { STONE_CONSTRUCTION } from './crafting';
 import { WATER_RULES } from './water';
+import { isFailableConstruction } from './construction';
 import { SurvivalPanel } from './SurvivalPanel';
 import { SanitationPanel, SanitationDetails, CleaningStatus } from './SanitationPanel';
 import { FirePanel, FireDetails, FireDamageDetails, FireWorkStatus } from './FirePanel';
@@ -1444,15 +1445,30 @@ function App() {
                 {JOB_NAMES[j.kind]}
                 {j.material === 'stone' ? ' · 石砖' : ''}
               </b>
-              <span>{Math.min(100, Math.floor((j.progress / j.work) * 100))}%</span>
+              <span>{j.constructionFailure && !j.cancelled ? '施工失败' : `${Math.min(100, Math.floor((j.progress / j.work) * 100))}%`}</span>
             </div>
             <progress value={j.progress} max={j.work} />
             <small>
               {j.reason}
-              {j.unfinishedId !== undefined ? ` · 原料与进度保存在未完成品 #${j.unfinishedId}` : (Object.keys(j.cost) as Resource[])
+              {j.constructionFailure ? ` · 剩余材料：${(Object.keys(j.delivered) as Resource[])
+                .filter(r => (j.delivered[r] ?? 0) > 0)
+                .map(r => `${RESOURCE_NAMES[r]} ${j.delivered[r]}`)
+                .join('、') || '无'}` : j.unfinishedId !== undefined ? ` · 原料与进度保存在未完成品 #${j.unfinishedId}` : (Object.keys(j.cost) as Resource[])
                 .map((r) => ` · ${RESOURCE_NAMES[r]} ${j.delivered[r] ?? 0}/${j.cost[r]}`)
                 .join('')}
             </small>
+            {j.constructionFailure ? <small data-testid="construction-failure-info">
+              施工损失：{(Object.keys(j.constructionFailure.lost) as Resource[])
+                .filter(r => (j.constructionFailure!.lost[r] ?? 0) > 0)
+                .map(r => `${RESOURCE_NAMES[r]} ${j.constructionFailure!.lost[r]}`)
+                .join('、') || '无'}。
+              {j.constructionFailure.burned && <>余料烧毁：{(Object.keys(j.constructionFailure.burned) as Resource[])
+                .map(r => `${RESOURCE_NAMES[r]} ${j.constructionFailure!.burned![r]}`).join('、')}。</>}
+              {j.cancelled ? '已取消，等待将剩余材料退回现场。' : '等待在附近放下剩余材料后自动重试；取消仅退回剩余材料。'}
+            </small> : isFailableConstruction(j) && <small data-testid="construction-failure-hint"
+              title="成功率取决于施工者的建筑技能、操作能力和视力，可在人物技能面板查看。">
+              施工可能失败并损失材料，失败后会自动重试，无需开启家园自动重建。
+            </small>}
             {j.furnitureId !== undefined && <button data-testid="furniture-job-cancel" data-furniture-id={j.furnitureId}
               onClick={() => void client.command({ type: 'cancelFurnitureMove', furnitureId: j.furnitureId! })}>取消这件家具的搬装任务</button>}
             {s && !j.cancelled && isShelfKind(j.kind) && <ShelfPanel key={j.id} shelfId={j.id} snapshot={s}
