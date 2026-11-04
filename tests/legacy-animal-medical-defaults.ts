@@ -1,8 +1,10 @@
 import { expect } from 'vitest';
 import { initialAnimalMedical } from '../src/voxel/animalMedical';
+import { animalEnvironmentExpectedField, assertAnimalEnvironmentDefaults, stripAnimalEnvironmentFields } from './legacy-animal-environment-defaults';
 
 /** Synthetic schema downgrades may remove only untouched medical defaults. */
 export function stripAnimalMedicalFields(raw: Record<string, any>) {
+  assertAnimalEnvironmentDefaults(raw);
   if (Object.hasOwn(raw, 'animalBeds')) expect(raw.animalBeds).toEqual([]);
   for (const p of raw.pawns ?? []) {
     expect(Object.hasOwn(p, 'animalCareTask')).toBe(false); expect(p.phase).not.toBe('animalCare');
@@ -13,12 +15,13 @@ export function stripAnimalMedicalFields(raw: Record<string, any>) {
     expect(['medicalRest','downed','carried']).not.toContain(a.phase);
     if (Object.hasOwn(a, 'medical')) expect(a.medical).toEqual(initialAnimalMedical());
   }
+  stripAnimalEnvironmentFields(raw);
   for (const a of animals) delete a.medical;
   delete raw.animalBeds;
 }
 
 export function animalMedicalExpectedField(key: string, value: any): any {
-  const copy = structuredClone(value);
+  const copy = animalEnvironmentExpectedField(key, value);
   if (key === 'animals') for (const a of copy) a.medical = initialAnimalMedical();
   if (key === 'trade') for (const r of copy.receipts ?? []) for (const row of r.animalTransfers ?? [])
     row.animal.medical = initialAnimalMedical();

@@ -219,8 +219,8 @@ function AnimalOrders({ animal: a, command, detail = false }: { animal: WildAnim
   </div>;
 }
 
-export function AnimalDetails({ animal, snapshot: s, command, focus, penControls }: {
-  animal: WildAnimal; snapshot: VoxelSnapshot; command: Command; focus: (pos: Pos) => void; penControls: PenControls;
+export function AnimalDetails({ animal, snapshot: s, command, focus, penControls, localTemperature }: {
+  animal: WildAnimal; snapshot: VoxelSnapshot; command: Command; focus: (pos: Pos) => void; penControls: PenControls; localTemperature?: number;
 }) {
   return <section className="voxel-animal-detail" data-testid="animal-detail" data-animal-id={animal.id}>
     {animal.species === 'dromedary' && <DromedaryPortrait />}
@@ -230,7 +230,7 @@ export function AnimalDetails({ animal, snapshot: s, command, focus, penControls
     <small>{animal.name} · #{animal.id}</small>
     <label>健康 {Math.ceil(animal.health)} / {ANIMAL_DEFS[animal.species].health}<progress aria-label="动物健康" value={animal.health} max={ANIMAL_DEFS[animal.species].health} /></label>
     <AnimalFacts animal={animal} />
-    <AnimalMedicalDetails animal={animal} snapshot={s} command={command} />
+    <AnimalMedicalDetails animal={animal} snapshot={s} command={command} localTemperature={localTemperature} />
     <small>位置 {animal.x}, {animal.y} · Z {animal.z}</small>
     {animal.dead ? <><p>等待附近空位放下尸体；尸体需要搬到屠宰点加工。</p>
       <ItemCondition condition={s.environment.items.find(item => item.entity === 'carcass' && item.id === animal.id)} name={`${ANIMAL_DEFS[animal.species].name}尸体`} />
@@ -266,6 +266,7 @@ export function AnimalPanel({ snapshot: s, selectedAnimalId, baseLevel, command,
     <details className="voxel-wildlife-guide"><summary>驯服、饲养与繁殖</summary>
       <ol><li>种植稻谷并等候收获。开启人物的饲养分工，安排动物技能达标的殖民者。</li><li>标记野生动物驯服；饲养员携食物接近并互动，失败后会等候下次尝试。</li><li>动物寻找实际的草、作物和地面食物；可用仓储区集中投放谷物。草被吃掉后需要重新生长。</li><li>饱食的成年同种雌雄动物靠近后可自然交配。饥饿拖慢成长和孕期，严重营养不良可能流产。</li></ol>
       <small>兔需要维持温顺，可跨围栏、穿未锁的门，并可分配活动范围；鹿、单峰驼、羊驼和鸡需要围栏圈养，由饲养员经栏门牵入。动物不能爬梯，请保留地面通路和足够食物。</small>
+      <small>不同动物的耐温范围不同。严寒与酷热会造成失温或中暑；改善圈地和医疗睡眠点的温度，倒地时安排实际救助。草药只能护理伤口，不能代替温控。</small>
       <small>成年雌性单峰驼可产奶；开启「饲养」分工，蓄奶满后自动安排挤奶。奶可直接饮用或用于简餐，及时冷藏。</small>
       <small>成年雌雄羊驼都可产毛；开启「饲养」分工，毛长满后自动安排剪毛。把羊驼毛运到仓储，并在裁缝账单允许此材料，即可制作羊毛衣物。</small>
       <small>成年母鸡会自行产蛋；公鸡交配后可使蛋受精。把受精蛋放在 0～50°C 的室内区域孵化，未受精蛋可冷藏或烹饪；烹饪账单默认保留受精蛋。</small>
@@ -293,7 +294,7 @@ export function AnimalPanel({ snapshot: s, selectedAnimalId, baseLevel, command,
           <div><b>{animal.name} · #{animal.id}</b><span>{ANIMAL_PHASE_NAMES[animal.phase]}</span></div>
           <small>{ANIMAL_DEFS[animal.species].name} · 健康 {Math.ceil(animal.health)} / {ANIMAL_DEFS[animal.species].health} · {levelName(animal.z, baseLevel)}</small>
           <AnimalFacts animal={animal} /><AnimalStatus animal={animal} snapshot={s} />
-          {(animal.medical.downed || animal.medical.wounds.length > 0 || animal.medical.bloodLoss > 0) && <AnimalMedicalFacts animal={animal} />}
+          {(animal.medical.downed || animal.medical.wounds.length > 0 || animal.medical.bloodLoss > 0 || animal.environment.hypothermia > 0 || animal.environment.heatstroke > 0) && <AnimalMedicalFacts animal={animal} />}
           <AnimalPenControls animal={animal} snapshot={s} command={command} controls={penControls} />
           <div className="voxel-animal-row-actions"><button aria-label={`定位 ${animal.name}`} onClick={() => selectAnimal(animal)}>定位</button><AnimalOrders animal={animal} command={command} /></div>
         </section>)}

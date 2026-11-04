@@ -11,6 +11,7 @@ import { at, CELLS, DAY, position, type Cargo, type Crop, type GrassPatch, type 
 import { ANIMAL_DEFS } from './wildlife';
 import { NUTRITION, daylight, hourAt, temperatureGrowth } from './farming';
 import { plantRandom } from './plants';
+import { animalEnvironmentEffects, animalTemperatureAllowsRecovery } from './animalEnvironment';
 import { learnSkill } from './skills';
 import { healthSummary } from './survival';
 import { HUSBANDRY_RULES, ANIMAL_HUSBANDRY, initialAnimalState, isAnimalAdult,
@@ -53,6 +54,12 @@ export interface HusbandryHost extends PensHost {
 const adjacent = (a: Pos, b: Pos) => a.z === b.z && Math.abs(a.x-b.x)+Math.abs(a.y-b.y) === 1;
 const edible = (b: Cargo) => ['grain', 'food', 'meal'].includes(b.resource);
 const rawFeed = (b: Cargo) => b.resource === 'grain';
+// Once a sick animal reaches suitable air, feeding, laying, mating and wandering should
+// not immediately send it back into a harmful room. Paths can still pass
+// through other cells; this filter governs the intended destination.
+const recoveringDestination = (s:HusbandryHost,a:WildAnimal,p:Pos) =>
+  !animalEnvironmentEffects(a).ill || !animalTemperatureAllowsRecovery(a,s.temperature(a)) ||
+  animalTemperatureAllowsRecovery(a,s.temperature(p));
 // Ordinary hunger uses the eater's faction. Wild animals do not obey the
 // colony's item flag; normal domestic animals do. This is not curious eating.
 const hungerFoodAllowed = (a: WildAnimal, food: Stack) => a.faction !== 'colony' || !food.forbidden;
@@ -105,11 +112,13 @@ function grassTick(s: HusbandryHost) {
 
 /** Travel costs use the animal's own pace and traversable edges. */
 function route(s: HusbandryHost,a: WildAnimal, targets: Map<number,NonNullable<WildAnimal['goal']>>): {path:number[];goal:NonNullable<WildAnimal['goal']>}|null {
-  const path=s.animalRoute(a,new Set(targets.keys()));
+  const destinations=[...targets.keys()].filter(cell=>recoveringDestination(s,a,position(cell)));
+  const path=s.animalRoute(a,new Set(destinations));
   return path ? {path,goal:targets.get(path.at(-1)??at(a))!} : null;
 }
 function move(s: HusbandryHost,a:WildAnimal):boolean {
   if(!a.path.length)return false;
+  if(!recoveringDestination(s,a,position(a.path.at(-1)!))){clearAnimal(a);a.decisionTick=s.tick;return false;}
   if(s.tick<a.moveTick)return true;
   const next=a.path[0];
   if(!s.animalNeighbors(a,a).includes(next)){clearAnimal(a);a.decisionTick=s.tick+40;return false;}
@@ -318,7 +327,7 @@ export function updateHusbandry(s:HusbandryHost) {
     a.phase=night&&a.hunger>30?'rest':'roam';
     if(a.phase==='rest'&&s.animalCanStop(a)){a.reason='休息';continue;}
     a.phase='roam';
-    const choices=s.animalNeighbors(a,a).filter(n=>animalAllowed(s,a,position(n))&&!s.animals.some(b=>b!==a&&at(b)===n));
+    const choices=s.animalNeighbors(a,a).filter(n=>animalAllowed(s,a,position(n))&&recoveringDestination(s,a,position(n))&&!s.animals.some(b=>b!==a&&at(b)===n));
     if(choices.length){const from={...a};Object.assign(a,position(choices[Math.floor(random(s,a,1102)*choices.length)]));a.moveTick=s.tick+s.animalMoveTicks(a,from);}
     if(a.hunger>=65)a.reason='自由活动';
   }

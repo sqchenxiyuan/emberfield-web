@@ -112,8 +112,10 @@ import { initialAnimalState, HUSBANDRY_RULES, ANIMAL_HUSBANDRY } from './husband
 import { rejectLegacyHusbandryFields, migrateHusbandry, validateHusbandry } from './husbandryPersistence';
 import { seedGrass, updateHusbandry, tryHandle, handleTick, animalOrder, releaseAnimalHandlers, reconcileAutoSlaughter } from './husbandryWorld';
 import { ANIMAL_MEDICAL_RULES, animalMedicalSummary, injureAnimal, type AnimalBed } from './animalMedical';
-import { animalMedicalTick, animalCareTick, tryAnimalCare, startAnimalCare, releaseAnimalCare, cancelAnimalMedical } from './animalMedicalWorld';
+import { animalCareTick, tryAnimalCare, startAnimalCare, releaseAnimalCare, cancelAnimalMedical } from './animalMedicalWorld';
 import { rejectLegacyAnimalMedical, migrateAnimalMedical, validateAnimalMedical } from './animalMedicalPersistence';
+import { animalEnvironmentAndMedicalTick } from './animalEnvironmentWorld';
+import { rejectLegacyAnimalEnvironment, migrateAnimalEnvironment, validateAnimalEnvironment } from './animalEnvironmentPersistence';
 import { defaultAutoSlaughter, autoSlaughterSelection, validAutoSlaughterPolicy, AUTO_SLAUGHTER_SPECIES } from './autoSlaughter';
 import { migrateAutoSlaughter, validateAutoSlaughter } from './autoSlaughterPersistence';
 import { PEN_RULES, PEN_BUILDINGS, initialPenFilter, isAnimalGroundStep, type Fence, type FenceGate, type PenMarker, type AnimalArea } from './pens';
@@ -6269,7 +6271,7 @@ export class VoxelSimulation {
     }
   }
   prisonRelease(p: Pawn) { this.release(p); }
-  animalMedicalTravel(a: WildAnimal) { return animalMedicalTick(this, a); }
+  animalMedicalTravel(a: WildAnimal) { return animalEnvironmentAndMedicalTick(this, a); }
   animalAvailable(item: Stack, pawnId?: number) { return this.availableStack(item, pawnId); }
   animalTake(p: Pawn, id: number, amount: number) { return this.take(p, undefined, amount, id); }
   animalCanStop(p: Pos) { return this.canStop(p); }
@@ -8963,7 +8965,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 54,
+      version: 55,
       autoSlaughter: this.autoSlaughter,
       stockpileZones: this.stockpileZones,
       productionQueues: this.productionQueues.filter(q => this.productionBenches().some(b => b.id === q.benchId)),
@@ -9027,11 +9029,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : old.version < 43 ? [1, 2, 3] : [1, 2, 3, 4]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyAnimalEnvironment(old,sourceVersion);
     rejectLegacyAnimalMedical(old,sourceVersion);
     rejectLegacyAnimalTrade(old,sourceVersion);
     rejectLegacyEggBoxes(old,sourceVersion);
@@ -9469,7 +9472,8 @@ export class VoxelSimulation {
     if (sourceVersion < 52) old.eggBoxes = [];
     migrateAnimalTrade(old,sourceVersion);
     migrateAnimalMedical(old,sourceVersion);
-    old.version = 54;
+    migrateAnimalEnvironment(old,sourceVersion);
+    old.version = 55;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -10583,6 +10587,7 @@ export class VoxelSimulation {
     validateTrade(d, ids, apparelIds, weaponIds);
     validateWildlife(d, ids, new Set([...apparelIds, ...weaponIds]));
     validateHusbandry(d);
+    validateAnimalEnvironment(d);
     validateAnimalTrade(d);
     validateAnimalMedical(d);
     validateMilk(d);

@@ -92,7 +92,7 @@ describe('live caravan animal ownership', () => {
     const { d, animal } = fixture();
     expect(() => validateHusbandry(d)).not.toThrow(); expect(() => tradeValidation(d)).not.toThrow();
     const loaded = VoxelSimulation.load(d).save();
-    expect(loaded.version).toBe(54); expect(loaded.trade).toEqual(d.trade);
+    expect(loaded.version).toBe(55); expect(loaded.trade).toEqual(d.trade);
     expect(loaded.animals.find(a => a.id === animal.id)).toEqual(animal);
   });
   it('requires exactly one live trader animal for every listed identity', () => {

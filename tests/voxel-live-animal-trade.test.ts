@@ -82,6 +82,22 @@ describe('live animals, individual settlement and physical caravan ownership',()
     expect(s.trade.receipts[0].transferred).toHaveLength(1);expect(s.trade.receipts[0].animalTransfers).toHaveLength(1);
     const saved=s.save();expect(s.command(command).ok).toBe(false);expect(s.save()).toEqual(saved);
   });
+  it('preserves environmental illness through actual purchase, resale and independent historical receipts',()=>{
+    const {s}=market(),a=s.animals[0];
+    a.environment={hypothermia:.2,heatstroke:.04};
+    const state=structuredClone(a.environment),id=a.id;
+    expect(commit(s,[{side:'trader',id}]).ok).toBe(true);
+    expect(a.faction).toBe('colony');expect(a.environment).toEqual(state);
+    reopen(s);expect(commit(s,[{side:'colony',id}]).ok).toBe(true);
+    expect(a.faction).toBe('trader');expect(a.environment).toEqual(state);
+    const snapshots=s.trade.receipts.flatMap(r=>r.animalTransfers.map(t=>t.animal));
+    expect(snapshots).toHaveLength(2);
+    for(const saved of snapshots){expect(saved.id).toBe(id);expect(saved.environment).toEqual(state);expect(saved.environment).not.toBe(a.environment);}
+    expect(snapshots[0].environment).not.toBe(snapshots[1].environment);
+    const loaded=VoxelSimulation.load(s.save());
+    expect(loaded.animals.find(b=>b.id===id)?.environment).toEqual(state);
+    expect(loaded.trade.receipts).toEqual(s.trade.receipts);
+  });
   it('rolls back animal ownership and all money when mixed goods have no placement',()=>{
     const {s,c}=market(),a=s.animals[0],good=c.stock.find(b=>b.resource==='components')!;
     const before=s.save();vi.spyOn(s,'tradePlace').mockReturnValue(null);

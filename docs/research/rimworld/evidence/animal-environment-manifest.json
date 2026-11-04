@@ -1,0 +1,278 @@
+{
+  "evidence_id": "RW17-ANIMAL-ENVIRONMENT",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes.",
+    "No game, browser, preview, GUI input or screenshot capture was launched."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.Fire",
+      "local_file": ".local-research/animal-environment/RimWorld.Fire.cs",
+      "sha256": "3f10134af9a064a683242b3914e82db3dd40c012c70fc26e699a481673af2078",
+      "lines": 412
+    },
+    {
+      "type": "RimWorld.FireUtility",
+      "local_file": ".local-research/animal-environment/RimWorld.FireUtility.cs",
+      "sha256": "9baec55e1a0494e05fa673292b528637ebdb2a62f4ab51da03589e28d0f9f95e",
+      "lines": 315
+    },
+    {
+      "type": "Verse.DamageWorker_Flame",
+      "local_file": ".local-research/animal-environment/Verse.DamageWorker_Flame.cs",
+      "sha256": "8e7d6432b41449672add68d97b1b8c2d7674bdee96fa3a1629dc5b5411f598b4",
+      "lines": 44
+    },
+    {
+      "type": "Verse.DamageWorker_Extinguish",
+      "local_file": ".local-research/animal-environment/Verse.DamageWorker_Extinguish.cs",
+      "sha256": "36e47c583ef499f4e197b06013a1125289f98a818ebcec7b33cd152c01dbf3e6",
+      "lines": 39
+    },
+    {
+      "type": "RimWorld.JobGiver_ExtinguishSelf",
+      "local_file": ".local-research/animal-environment/RimWorld.JobGiver_ExtinguishSelf.cs",
+      "sha256": "71bc9a99427815d15439e640ba7e624da316a2ed512fea8c6cfc26ebbedc0ff3",
+      "lines": 23
+    },
+    {
+      "type": "RimWorld.JobDriver_ExtinguishSelf",
+      "local_file": ".local-research/animal-environment/RimWorld.JobDriver_ExtinguishSelf.cs",
+      "sha256": "9f9dbcb955b6f6e2c926b5d558679b979263475a1ad7388e90f5d5b21a623f93",
+      "lines": 42
+    },
+    {
+      "type": "Verse.AI.JobGiver_RunRandom",
+      "local_file": ".local-research/animal-environment/Verse.AI.JobGiver_RunRandom.cs",
+      "sha256": "7e0c380c563c3438004a9bd0f004ca001192453544b9530f6483ef345b73a041",
+      "lines": 17
+    },
+    {
+      "type": "RimWorld.ThinkNode_ConditionalBurning",
+      "local_file": ".local-research/animal-environment/RimWorld.ThinkNode_ConditionalBurning.cs",
+      "sha256": "afee495e1303f89e617306dd5b82a0ff59bc902fca24820746f672807c739211",
+      "lines": 13
+    },
+    {
+      "type": "RimWorld.JobGiver_SeekSafeTemperature",
+      "local_file": ".local-research/animal-environment/RimWorld.JobGiver_SeekSafeTemperature.cs",
+      "sha256": "3b346b165d583ad5c32116752d06cb883f86c1828abfe81ac25ada53eab8edc5",
+      "lines": 94
+    },
+    {
+      "type": "RimWorld.ThinkNode_ConditionalAnimalWrongSeason",
+      "local_file": ".local-research/animal-environment/RimWorld.ThinkNode_ConditionalAnimalWrongSeason.cs",
+      "sha256": "ae9748a6c2611cff8529a7a86323accb46af4ae6427b820a415c8f9982fd370c",
+      "lines": 17
+    },
+    {
+      "type": "RimWorld.ThinkNode_ConditionalDangerousTemperature",
+      "local_file": ".local-research/animal-environment/RimWorld.ThinkNode_ConditionalDangerousTemperature.cs",
+      "sha256": "80f07ff4a260b807c40fff7d919dcff6e2bf32b9607cb8eb636b1e54cba7f2eb",
+      "lines": 13
+    },
+    {
+      "type": "RimWorld.ThinkNode_ConditionalOutdoorTemperature",
+      "local_file": ".local-research/animal-environment/RimWorld.ThinkNode_ConditionalOutdoorTemperature.cs",
+      "sha256": "e25d9287836275ff1e1c7e22e39ddf055fc7591cc25f7ddaa4e06c0821e0fde5",
+      "lines": 13
+    },
+    {
+      "type": "Verse.AI.JobGiver_ExitMapRandom",
+      "local_file": ".local-research/animal-environment/Verse.AI.JobGiver_ExitMapRandom.cs",
+      "sha256": "0a868f91591b4074f2458ac3d025c254ec1dceb88f5d0813c4eae0a381889796",
+      "lines": 13
+    },
+    {
+      "type": "Verse.AI.JobGiver_ExitMapBest",
+      "local_file": ".local-research/animal-environment/Verse.AI.JobGiver_ExitMapBest.cs",
+      "sha256": "4b25a3ab1de2b01c590a6d783b95cf79c4983040646f4febb540e005d6cd84b3",
+      "lines": 13
+    },
+    {
+      "type": "Verse.GenTemperature",
+      "local_file": ".local-research/animal-environment/Verse.GenTemperature.cs",
+      "sha256": "4d8eca83fcc99ebeeeace9696c7be0761a078aa6578a2cc5033cca0fd24b0fc1",
+      "lines": 534
+    },
+    {
+      "type": "Verse.HediffGiver_Heat",
+      "local_file": ".local-research/animal-environment/Verse.HediffGiver_Heat.cs",
+      "sha256": "1f6ee5e7d7009d1a99b09d68e99b189ef6faedb9435bcf1c86413cf4760ca46e",
+      "lines": 70
+    },
+    {
+      "type": "Verse.HediffGiver_Hypothermia",
+      "local_file": ".local-research/animal-environment/Verse.HediffGiver_Hypothermia.cs",
+      "sha256": "5815f54e8a8b08d8d315d01e891c3bec42400376ef7e4e2b7965d35d01712a11",
+      "lines": 51
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "local_file": ".local-research/animal-environment/Verse.Pawn_HealthTracker.cs",
+      "sha256": "13931efb22fe8cb3d9f274529d6558a20e144e96230a718df1e24e122a88c926",
+      "lines": 1400
+    },
+    {
+      "type": "Verse.Hediff",
+      "local_file": ".local-research/animal-environment/Verse.Hediff.cs",
+      "sha256": "b370c42a21c8e21655b047d8f569002efde73dea3d4f9ed8d3bbe71f5736fad3",
+      "lines": 869
+    },
+    {
+      "type": "Verse.HediffSet",
+      "local_file": ".local-research/animal-environment/Verse.HediffSet.cs",
+      "sha256": "8827fe0cf7ca719644ce2879d091d51ea97809f4806760a72f5f2e29de3a3a83",
+      "lines": 1392
+    },
+    {
+      "type": "Verse.RaceProperties",
+      "local_file": ".local-research/animal-environment/Verse.RaceProperties.cs",
+      "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+      "lines": 788
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "local_file": ".local-research/animal-environment/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "lines": 1655
+    },
+    {
+      "type": "Verse.PawnCapacitiesHandler",
+      "local_file": ".local-research/animal-environment/Verse.PawnCapacitiesHandler.cs",
+      "sha256": "5b327ef3d06bbcd52b3512c44969d2fda9d5f167775521446a23941c1d0fc928",
+      "lines": 95
+    },
+    {
+      "type": "RimWorld.PawnCapacityWorker_Consciousness",
+      "local_file": ".local-research/animal-environment/RimWorld.PawnCapacityWorker_Consciousness.cs",
+      "sha256": "ef161417050ffbd4fc8f5817e83ecf7ab3d650fd41506765a5aeb455eb2ff05b",
+      "lines": 28
+    },
+    {
+      "type": "RimWorld.PawnCapacityWorker_Moving",
+      "local_file": ".local-research/animal-environment/RimWorld.PawnCapacityWorker_Moving.cs",
+      "sha256": "fd137c64f230f745fa856e19d81484a693f8772a7e469b5f0f8d0c7d990b7bae",
+      "lines": 39
+    },
+    {
+      "type": "Verse.Pawn",
+      "local_file": ".local-research/animal-environment/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "lines": 4791
+    },
+    {
+      "type": "RimWorld.WorkGiver_FightFires",
+      "local_file": ".local-research/animal-environment/RimWorld.WorkGiver_FightFires.cs",
+      "sha256": "076cc4a5f1e20b55e340b5af4691419becfbc2fe45da33c02ac27c0a88cd8743",
+      "lines": 86
+    },
+    {
+      "type": "RimWorld.Verb_BeatFire",
+      "local_file": ".local-research/animal-environment/RimWorld.Verb_BeatFire.cs",
+      "sha256": "8a3412e846761b4a508dbf2739a153b26c1bdf34f712a1cbdff7e44eda7a4fec",
+      "lines": 27
+    },
+    {
+      "type": "RimWorld.WildAnimalSpawner",
+      "local_file": ".local-research/animal-environment/RimWorld.WildAnimalSpawner.cs",
+      "sha256": "a5aeaa387c91716c53c69e4abc7c46be1c1b3f9a096acfb7556679bc00e3aae7",
+      "lines": 189
+    },
+    {
+      "type": "Verse.AI.JobGiver_Wander",
+      "local_file": ".local-research/animal-environment/Verse.AI.JobGiver_Wander.cs",
+      "sha256": "cfaf3a60040b2e26e932bc509fb0e2726b4d03a7d0584f58745fb33c9a60b956",
+      "lines": 123
+    },
+    {
+      "type": "Verse.AI.ThinkNode_Conditional",
+      "local_file": ".local-research/animal-environment/Verse.AI.ThinkNode_Conditional.cs",
+      "sha256": "dcab1dca49d65e0e54122307f3614510150f050e91f5be0489d0e3927cd4dd4d",
+      "lines": 25
+    },
+    {
+      "type": "Verse.MapTemperature",
+      "local_file": ".local-research/animal-environment/Verse.MapTemperature.cs",
+      "sha256": "c7fcb51dd52491eef3ba1aaf407f7483e866a6bf966b6ae29e2dc2a612cf15b6",
+      "lines": 255
+    },
+    {
+      "type": "Verse.TemperatureInjuryStage",
+      "local_file": ".local-research/animal-environment/Verse.TemperatureInjuryStage.cs",
+      "sha256": "15dcdbf936ce7ecd6ba6277147a15d6450390d069f85b9ecb82efcad6ed65b16",
+      "lines": 12
+    },
+    {
+      "type": "Verse.PawnCapacityUtility",
+      "local_file": ".local-research/animal-environment/Verse.PawnCapacityUtility.cs",
+      "sha256": "9c0cf0c572a5680386fc17711bcf224a876a332196923f5f7d47d2021e655918",
+      "lines": 345
+    },
+    {
+      "type": "Verse.HealthUtility",
+      "local_file": ".local-research/animal-environment/Verse.HealthUtility.cs",
+      "sha256": "0b573a33bfe96329020e96681bd8fd1daa5ffecef26ad491d8eb2253e88d33ca",
+      "lines": 900
+    },
+    {
+      "type": "Verse.ThingUtility",
+      "local_file": ".local-research/animal-environment/Verse.ThingUtility.cs",
+      "sha256": "4502e6db44ab7430a9d258da8833b7612b7b13a65e989537c42a19ceb2fb8a69",
+      "lines": 256
+    },
+    {
+      "type": "RimWorld.StatPart_GearStatOffset",
+      "local_file": ".local-research/animal-environment/RimWorld.StatPart_GearStatOffset.cs",
+      "sha256": "ac81926fa932e70ff0a42cf613eb25bc5028803feb55861a36b67d68f3ae7bfa",
+      "lines": 147
+    },
+    {
+      "type": "Verse.HediffDef",
+      "local_file": ".local-research/animal-environment/Verse.HediffDef.cs",
+      "sha256": "eac8869b10ebf97190b18c8de954c2ed6bdb3931de722ac4593f95cfed4cf2fb",
+      "lines": 521
+    },
+    {
+      "type": "Verse.AI.JobGiver_ExitMap",
+      "local_file": ".local-research/animal-environment/Verse.AI.JobGiver_ExitMap.cs",
+      "sha256": "e45b6447c21a61e48cdda052ce8ea61ec167b08da094b0ce738986ea6276c47b",
+      "lines": 90
+    },
+    {
+      "type": "Verse.Intelligence",
+      "local_file": ".local-research/animal-environment/Verse.Intelligence.cs",
+      "sha256": "0e65c3e36f7f54521b8934907c73516f5f303042bd92a58252007f44b5a9e526",
+      "lines": 9
+    },
+    {
+      "type": "Verse.AttachableThing",
+      "local_file": ".local-research/animal-environment/Verse.AttachableThing.cs",
+      "sha256": "2b2f991eeaac95de169e7c6a00b2f06eadd4a76a904c1d883a2c060227db6a02",
+      "lines": 60
+    },
+    {
+      "type": "Verse.Thing",
+      "local_file": ".local-research/animal-environment/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "lines": 2235
+    },
+    {
+      "type": "Verse.CompAttachBase",
+      "local_file": ".local-research/animal-environment/Verse.CompAttachBase.cs",
+      "sha256": "39b62967fd51676378a01f9145fe7a0effb4902cb9620ef46f06a559487c3a7d",
+      "lines": 81
+    }
+  ]
+}

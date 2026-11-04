@@ -1,0 +1,2195 @@
+{
+  "evidence_id": "RW17-ANIMAL-ENVIRONMENT-STATIC",
+  "version": "1.7.4980 rev60",
+  "assemblySha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "reaEvidenceId": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+  "reaParentId": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+  "reaFile": "docs/research/rimworld/evidence/production-bills-rea-managed.json",
+  "reaSha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+  "manifestFile": "docs/research/rimworld/evidence/animal-environment-manifest.json",
+  "manifestSha256": "7c597aa226c16d6669b1a5d94240ea4f06778e6afb15092d892574342cee2ce0",
+  "rules": [
+    {
+      "type": "Verse.RaceProperties",
+      "needle": "public Intelligence intelligence;",
+      "locations": [
+        {
+          "line": 14,
+          "text": "public Intelligence intelligence;"
+        }
+      ],
+      "interpretation": "Unspecified race intelligence uses enum zero, Animal."
+    },
+    {
+      "type": "Verse.RaceProperties",
+      "needle": "public FleshTypeDef FleshType => fleshType ?? FleshTypeDefOf.Normal;",
+      "locations": [
+        {
+          "line": 336,
+          "text": "public FleshTypeDef FleshType => fleshType ?? FleshTypeDefOf.Normal;"
+        }
+      ],
+      "interpretation": "Unspecified flesh type resolves to Normal, not Insectoid."
+    },
+    {
+      "type": "Verse.Pawn",
+      "needle": "health.HealthTickInterval(delta);",
+      "locations": [
+        {
+          "line": 1646,
+          "text": "health.HealthTickInterval(delta);"
+        }
+      ],
+      "interpretation": "Pawn interval update calls the health tracker."
+    },
+    {
+      "type": "Verse.Thing",
+      "needle": "return GenTemperature.GetTemperatureForCell(PositionHeld, MapHeld);",
+      "locations": [
+        {
+          "line": 526,
+          "text": "return GenTemperature.GetTemperatureForCell(PositionHeld, MapHeld);"
+        }
+      ],
+      "interpretation": "Carried things without a fixed-temperature holder use their carrier/root position temperature."
+    },
+    {
+      "type": "Verse.Thing",
+      "needle": "ThingOwnerUtility.TryGetFixedTemperature(parentHolder, this, out var temperature)",
+      "locations": [
+        {
+          "line": 518,
+          "text": "if (ThingOwnerUtility.TryGetFixedTemperature(parentHolder, this, out var temperature))"
+        }
+      ],
+      "interpretation": "A holder may explicitly override ambient temperature."
+    },
+    {
+      "type": "Verse.AttachableThing",
+      "needle": "Scribe_References.Look(ref parent, \"parent\");",
+      "locations": [
+        {
+          "line": 31,
+          "text": "Scribe_References.Look(ref parent, \"parent\");"
+        }
+      ],
+      "interpretation": "Fire attachment persists an entity reference across saves."
+    },
+    {
+      "type": "Verse.AttachableThing",
+      "needle": "return parent.DrawPos + Vector3.up * 0.03292683f;",
+      "locations": [
+        {
+          "line": 15,
+          "text": "return parent.DrawPos + Vector3.up * 0.03292683f;"
+        }
+      ],
+      "interpretation": "Attached fire visuals follow the parent draw position."
+    },
+    {
+      "type": "Verse.CompAttachBase",
+      "needle": "attachments[i].Position = parent.Position;",
+      "locations": [
+        {
+          "line": 16,
+          "text": "attachments[i].Position = parent.Position;"
+        }
+      ],
+      "interpretation": "Attachment component updates physical attachment positions to the parent each tick."
+    },
+    {
+      "type": "Verse.GenTemperature",
+      "needle": "p.GetStatValue(StatDefOf.ComfyTemperatureMin",
+      "locations": [
+        {
+          "line": 61,
+          "text": "return new FloatRange(p.GetStatValue(StatDefOf.ComfyTemperatureMin, applyPostProcess: true, 1), p.GetStatValue(StatDefOf.ComfyTemperatureMax, applyPostProcess: true, 1));"
+        },
+        {
+          "line": 66,
+          "text": "float num = p.GetStatValue(StatDefOf.ComfyTemperatureMin, applyPostProcess: true, 1);"
+        }
+      ],
+      "interpretation": "Comfort limits read effective pawn stats, not a single human default."
+    },
+    {
+      "type": "Verse.GenTemperature",
+      "needle": "result.min -= 10f;",
+      "locations": [
+        {
+          "line": 90,
+          "text": "result.min -= 10f;"
+        },
+        {
+          "line": 98,
+          "text": "result.min -= 10f;"
+        },
+        {
+          "line": 116,
+          "text": "result.min -= 10f;"
+        }
+      ],
+      "interpretation": "Safe minimum is ten degrees below comfortable minimum."
+    },
+    {
+      "type": "Verse.GenTemperature",
+      "needle": "result.max += 10f;",
+      "locations": [
+        {
+          "line": 91,
+          "text": "result.max += 10f;"
+        },
+        {
+          "line": 99,
+          "text": "result.max += 10f;"
+        },
+        {
+          "line": 117,
+          "text": "result.max += 10f;"
+        }
+      ],
+      "interpretation": "Safe maximum is ten degrees above comfortable maximum."
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "needle": "if (!pawn.IsHashIntervalTick(60, delta))",
+      "locations": [
+        {
+          "line": 1258,
+          "text": "if (!pawn.IsHashIntervalTick(60, delta))"
+        }
+      ],
+      "interpretation": "Race environmental hediff givers are gated by a sixty-tick hash interval."
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "needle": "hediffGivers[num8].OnIntervalPassed(pawn, null);",
+      "locations": [
+        {
+          "line": 1270,
+          "text": "hediffGivers[num8].OnIntervalPassed(pawn, null);"
+        }
+      ],
+      "interpretation": "Race hediff sets invoke the environmental damage/recovery logic."
+    },
+    {
+      "type": "Verse.HediffGiver_Heat",
+      "needle": "if (ambientTemperature > floatRange2.max)",
+      "locations": [
+        {
+          "line": 30,
+          "text": "if (ambientTemperature > floatRange2.max)"
+        }
+      ],
+      "interpretation": "Heatstroke increases only strictly above safe maximum."
+    },
+    {
+      "type": "Verse.HediffGiver_Heat",
+      "needle": "x = TemperatureOverageAdjustmentCurve.Evaluate(x);",
+      "locations": [
+        {
+          "line": 33,
+          "text": "x = TemperatureOverageAdjustmentCurve.Evaluate(x);"
+        }
+      ],
+      "interpretation": "Heat overage is nonlinear before multiplying by the per-interval coefficient."
+    },
+    {
+      "type": "Verse.HediffGiver_Heat",
+      "needle": "float a = x * 6.45E-05f;",
+      "locations": [
+        {
+          "line": 34,
+          "text": "float a = x * 6.45E-05f;"
+        }
+      ],
+      "interpretation": "Heat accumulation is a severity delta per giver interval."
+    },
+    {
+      "type": "Verse.HediffGiver_Heat",
+      "needle": "a = Mathf.Max(a, 0.000375f);",
+      "locations": [
+        {
+          "line": 35,
+          "text": "a = Mathf.Max(a, 0.000375f);"
+        }
+      ],
+      "interpretation": "Heat accumulation has a positive minimum beyond the safe threshold."
+    },
+    {
+      "type": "Verse.HediffGiver_Heat",
+      "needle": "ambientTemperature < floatRange.max",
+      "locations": [
+        {
+          "line": 38,
+          "text": "else if (firstHediffOfDef != null && ambientTemperature < floatRange.max)"
+        }
+      ],
+      "interpretation": "Heatstroke recovers only strictly below the comfortable maximum."
+    },
+    {
+      "type": "Verse.HediffGiver_Heat",
+      "needle": "float value = firstHediffOfDef.Severity * 0.027f;",
+      "locations": [
+        {
+          "line": 40,
+          "text": "float value = firstHediffOfDef.Severity * 0.027f;"
+        }
+      ],
+      "interpretation": "Recovery scales with present severity."
+    },
+    {
+      "type": "Verse.HediffGiver_Heat",
+      "needle": "value = Mathf.Clamp(value, 0.0015f, 0.015f);",
+      "locations": [
+        {
+          "line": 41,
+          "text": "value = Mathf.Clamp(value, 0.0015f, 0.015f);"
+        }
+      ],
+      "interpretation": "Recovery has minimum and maximum per-interval decrements."
+    },
+    {
+      "type": "Verse.HediffGiver_Heat",
+      "needle": "!pawn.IsNestedHashIntervalTick(60, 420)",
+      "locations": [
+        {
+          "line": 44,
+          "text": "if (pawn.Dead || !pawn.IsNestedHashIntervalTick(60, 420))"
+        }
+      ],
+      "interpretation": "Very hot air burns are a separate nested check every 420 ticks."
+    },
+    {
+      "type": "Verse.HediffGiver_Heat",
+      "needle": "float num = floatRange.max + 150f;",
+      "locations": [
+        {
+          "line": 48,
+          "text": "float num = floatRange.max + 150f;"
+        }
+      ],
+      "interpretation": "Air-burn threshold is comfortable maximum plus 150 degrees."
+    },
+    {
+      "type": "Verse.HediffGiver_Heat",
+      "needle": "new DamageInfo(DamageDefOf.Burn, num2)",
+      "locations": [
+        {
+          "line": 56,
+          "text": "DamageInfo dinfo = new DamageInfo(DamageDefOf.Burn, num2);"
+        }
+      ],
+      "interpretation": "Very hot air can inflict a real burn in addition to heatstroke."
+    },
+    {
+      "type": "Verse.HediffGiver_Hypothermia",
+      "needle": "ambientTemperature < floatRange2.min",
+      "locations": [
+        {
+          "line": 19,
+          "text": "if (ambientTemperature < floatRange2.min)"
+        }
+      ],
+      "interpretation": "Hypothermia accumulates only strictly below safe minimum."
+    },
+    {
+      "type": "Verse.HediffGiver_Hypothermia",
+      "needle": "Mathf.Abs(ambientTemperature - floatRange2.min) * 6.45E-05f",
+      "locations": [
+        {
+          "line": 21,
+          "text": "float a = Mathf.Abs(ambientTemperature - floatRange2.min) * 6.45E-05f;"
+        }
+      ],
+      "interpretation": "Cold overage uses a linear coefficient."
+    },
+    {
+      "type": "Verse.HediffGiver_Hypothermia",
+      "needle": "a = Mathf.Max(a, 0.00075f);",
+      "locations": [
+        {
+          "line": 22,
+          "text": "a = Mathf.Max(a, 0.00075f);"
+        }
+      ],
+      "interpretation": "Cold accumulation has its own minimum."
+    },
+    {
+      "type": "Verse.HediffGiver_Hypothermia",
+      "needle": "ambientTemperature > floatRange.min || !pawn.SpawnedOrAnyParentSpawned || pawn.PositionHeld.GetTerrain(pawn.MapHeld).heatPerTick > 0f",
+      "locations": [
+        {
+          "line": 33,
+          "text": "if (ambientTemperature > floatRange.min || !pawn.SpawnedOrAnyParentSpawned || pawn.PositionHeld.GetTerrain(pawn.MapHeld).heatPerTick > 0f)"
+        }
+      ],
+      "interpretation": "Cold recovery has warmer-environment, unspawned and hot-terrain branches."
+    },
+    {
+      "type": "Verse.HediffGiver_Hypothermia",
+      "needle": "value = Mathf.Clamp(value, 0.0015f, 0.015f);",
+      "locations": [
+        {
+          "line": 36,
+          "text": "value = Mathf.Clamp(value, 0.0015f, 0.015f);"
+        }
+      ],
+      "interpretation": "Cold recovery uses the same bounded severity decrement."
+    },
+    {
+      "type": "Verse.HediffGiver_Hypothermia",
+      "needle": "firstHediffOfDef.Severity > 0.37f",
+      "locations": [
+        {
+          "line": 39,
+          "text": "else if (pawn.RaceProps.FleshType != FleshTypeDefOf.Insectoid && ambientTemperature < 0f && firstHediffOfDef.Severity > 0.37f)"
+        }
+      ],
+      "interpretation": "Severe cold has a secondary frostbite branch."
+    },
+    {
+      "type": "Verse.HediffGiver_Hypothermia",
+      "needle": "float num = 0.025f * firstHediffOfDef.Severity;",
+      "locations": [
+        {
+          "line": 41,
+          "text": "float num = 0.025f * firstHediffOfDef.Severity;"
+        }
+      ],
+      "interpretation": "Frostbite uses a random severity-dependent chance."
+    },
+    {
+      "type": "Verse.HediffGiver_Hypothermia",
+      "needle": "new DamageInfo(DamageDefOf.Frostbite, num2",
+      "locations": [
+        {
+          "line": 45,
+          "text": "DamageInfo dinfo = new DamageInfo(DamageDefOf.Frostbite, num2, 0f, -1f, null, result);"
+        }
+      ],
+      "interpretation": "Frostbite is actual anatomical damage, distinct from systemic hypothermia."
+    },
+    {
+      "type": "Verse.HediffGiver_Hypothermia",
+      "needle": "pawn.RaceProps.FleshType == FleshTypeDefOf.Insectoid",
+      "locations": [
+        {
+          "line": 17,
+          "text": "HediffDef hediffDef = ((pawn.RaceProps.FleshType == FleshTypeDefOf.Insectoid) ? hediffInsectoid : hediff);"
+        }
+      ],
+      "interpretation": "Insectoids substitute HypothermicSlowdown; this does not describe the five Core species."
+    },
+    {
+      "type": "Verse.Hediff",
+      "needle": "pawn.health.Notify_HediffChanged(this);",
+      "locations": [
+        {
+          "line": 262,
+          "text": "pawn.health.Notify_HediffChanged(this);"
+        },
+        {
+          "line": 646,
+          "text": "pawn.health.Notify_HediffChanged(this);"
+        }
+      ],
+      "interpretation": "A stage change or lethal threshold invalidates capacities and checks health state."
+    },
+    {
+      "type": "Verse.Hediff",
+      "needle": "bool flag = Severity >= def.lethalSeverity;",
+      "locations": [
+        {
+          "line": 669,
+          "text": "bool flag = Severity >= def.lethalSeverity;"
+        }
+      ],
+      "interpretation": "Lethal severity is an inclusive comparison."
+    },
+    {
+      "type": "Verse.Hediff",
+      "needle": "if (!def.tendable || Severity <= 0f",
+      "locations": [
+        {
+          "line": 324,
+          "text": "if (!def.tendable || Severity <= 0f || this.FullyImmune() || !Visible || this.IsPermanent() || !pawn.RaceProps.IsFlesh || (this is Hediff_Injury && !pawn.health.CanBleed))"
+        }
+      ],
+      "interpretation": "Temperature conditions are not tendable merely because they are visible."
+    },
+    {
+      "type": "Verse.HediffDef",
+      "needle": "public bool tendable;",
+      "locations": [
+        {
+          "line": 34,
+          "text": "public bool tendable;"
+        }
+      ],
+      "interpretation": "Tendability defaults false unless a definition overrides it."
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "needle": "hediffSet.DirtyCache();",
+      "locations": [
+        {
+          "line": 272,
+          "text": "hediffSet.DirtyCache();"
+        },
+        {
+          "line": 292,
+          "text": "hediffSet.DirtyCache();"
+        },
+        {
+          "line": 455,
+          "text": "hediffSet.DirtyCache();"
+        },
+        {
+          "line": 784,
+          "text": "hediffSet.DirtyCache();"
+        },
+        {
+          "line": 791,
+          "text": "hediffSet.DirtyCache();"
+        },
+        {
+          "line": 1042,
+          "text": "hediffSet.DirtyCache();"
+        }
+      ],
+      "interpretation": "Hediff changes invalidate health caches before state recalculation."
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "needle": "!InPainShock && capacities.CanBeAwake && (capacities.CapableOf(PawnCapacityDefOf.Moving)",
+      "locations": [
+        {
+          "line": 644,
+          "text": "if (!InPainShock && capacities.CanBeAwake && (capacities.CapableOf(PawnCapacityDefOf.Moving) || pawn.RaceProps.doesntMove))"
+        }
+      ],
+      "interpretation": "Downing depends on pain, consciousness and movement, not only a scalar HP."
+    },
+    {
+      "type": "Verse.PawnCapacitiesHandler",
+      "needle": "GetLevel(PawnCapacityDefOf.Consciousness) >= 0.3f",
+      "locations": [
+        {
+          "line": 29,
+          "text": "if (pawn.RaceProps.alwaysAwake || GetLevel(PawnCapacityDefOf.Consciousness) >= 0.3f)"
+        }
+      ],
+      "interpretation": "Ordinary wakefulness requires consciousness at least .3."
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "needle": "hediff.def.canApplyDodChanceForCapacityChanges",
+      "locations": [
+        {
+          "line": 527,
+          "text": "if (!forceDowned && ((dinfo.HasValue && dinfo.Value.Def.ExternalViolenceFor(pawn)) || (hediff != null && hediff.def.canApplyDodChanceForCapacityChanges)) && !pawn.IsWildMan() && !pawn.IsDeactivated() && (pawn.Faction == null || !pawn.Faction.IsPlayer) && (pawn.HostFaction == null || !pawn.HostFaction.IsPlayer))"
+        }
+      ],
+      "interpretation": "Some systemic diseases also qualify for nonplayer death-on-downed."
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "needle": "num = 0.5f;",
+      "locations": [
+        {
+          "line": 553,
+          "text": "num = 0.5f;"
+        }
+      ],
+      "interpretation": "Ordinary nonplayer nonhost animals have a default eligible death-on-downed chance; enclosing branch retained separately."
+    },
+    {
+      "type": "Verse.Pawn_HealthTracker",
+      "needle": "if (hediff.CauseDeathNow())",
+      "locations": [
+        {
+          "line": 663,
+          "text": "if (hediff.CauseDeathNow())"
+        }
+      ],
+      "interpretation": "Health state checks systemic lethal hediffs, independently of injury sums."
+    },
+    {
+      "type": "Verse.HediffSet",
+      "needle": "hediffs[i].CurStageIndex >= (int)minStage",
+      "locations": [
+        {
+          "line": 898,
+          "text": "if ((hediffs[i].def == HediffDefOf.Hypothermia || hediffs[i].def == HediffDefOf.Heatstroke) && hediffs[i].CurStageIndex >= (int)minStage)"
+        }
+      ],
+      "interpretation": "Temperature injury AI uses definition stage indices."
+    },
+    {
+      "type": "RimWorld.JobGiver_SeekSafeTemperature",
+      "needle": "public bool requiresInjury = true;",
+      "locations": [
+        {
+          "line": 11,
+          "text": "public bool requiresInjury = true;"
+        }
+      ],
+      "interpretation": "Default seek-temperature job waits for injury, not merely uncomfortable weather."
+    },
+    {
+      "type": "RimWorld.JobGiver_SeekSafeTemperature",
+      "needle": "HasTemperatureInjury(TemperatureInjuryStage.Serious)",
+      "locations": [
+        {
+          "line": 19,
+          "text": "if (requiresInjury && !pawn.health.hediffSet.HasTemperatureInjury(TemperatureInjuryStage.Serious))"
+        }
+      ],
+      "interpretation": "Default seek-temperature job requires serious or worse heatstroke/hypothermia."
+    },
+    {
+      "type": "RimWorld.JobGiver_SeekSafeTemperature",
+      "needle": "FloatRange tempRange = pawn.ComfortableTemperatureRange();",
+      "locations": [
+        {
+          "line": 23,
+          "text": "FloatRange tempRange = pawn.ComfortableTemperatureRange();"
+        }
+      ],
+      "interpretation": "Recovery destination is the comfortable range despite the class name SafeTemperature."
+    },
+    {
+      "type": "RimWorld.JobGiver_SeekSafeTemperature",
+      "needle": "JobDefOf.Wait_SafeTemperature, 500",
+      "locations": [
+        {
+          "line": 30,
+          "text": "return JobMaker.MakeJob(JobDefOf.Wait_SafeTemperature, 500, checkOverrideOnExpiry: true);"
+        }
+      ],
+      "interpretation": "A patient already in the comfortable range waits for recovery and reevaluation."
+    },
+    {
+      "type": "RimWorld.JobGiver_SeekSafeTemperature",
+      "needle": "JobDefOf.GotoSafeTemperature, cell",
+      "locations": [
+        {
+          "line": 36,
+          "text": "return JobMaker.MakeJob(JobDefOf.GotoSafeTemperature, cell);"
+        }
+      ],
+      "interpretation": "Otherwise the pawn physically walks to the selected temperature destination."
+    },
+    {
+      "type": "RimWorld.JobGiver_SeekSafeTemperature",
+      "needle": "RegionTraverser.BreadthFirstTraverse",
+      "locations": [
+        {
+          "line": 67,
+          "text": "RegionTraverser.BreadthFirstTraverse(region, entryCondition, regionProcessor, 9999, traversableRegionTypes);"
+        }
+      ],
+      "interpretation": "Search traverses reachable regions rather than teleporting the pawn."
+    },
+    {
+      "type": "RimWorld.JobGiver_SeekSafeTemperature",
+      "needle": "if (r.IsDoorway)",
+      "locations": [
+        {
+          "line": 52,
+          "text": "if (r.IsDoorway)"
+        }
+      ],
+      "interpretation": "Doorway regions are not recovery destinations."
+    },
+    {
+      "type": "RimWorld.JobGiver_SeekSafeTemperature",
+      "needle": "tempRange.Includes(r.Room.Temperature)",
+      "locations": [
+        {
+          "line": 60,
+          "text": "if (tempRange.Includes(r.Room.Temperature))"
+        }
+      ],
+      "interpretation": "Destination qualification uses region room temperature."
+    },
+    {
+      "type": "RimWorld.JobGiver_SeekSafeTemperature",
+      "needle": "randomCell.InAllowedArea(pawn)",
+      "locations": [
+        {
+          "line": 77,
+          "text": "if (randomCell.InAllowedArea(pawn) && (maxRadius < 0f || randomCell.InHorDistOf(pawn.Position, maxRadius)))"
+        }
+      ],
+      "interpretation": "Destination cell remains constrained by allowed area."
+    },
+    {
+      "type": "RimWorld.ThinkNode_ConditionalAnimalWrongSeason",
+      "needle": "!pawn.Map.mapTemperature.SeasonAcceptableFor(pawn.def)",
+      "locations": [
+        {
+          "line": 12,
+          "text": "return !pawn.Map.mapTemperature.SeasonAcceptableFor(pawn.def);"
+        }
+      ],
+      "interpretation": "Wildlife season departure uses the species seasonal acceptability check."
+    },
+    {
+      "type": "Verse.MapTemperature",
+      "needle": "float seasonalTemp = SeasonalTemp;",
+      "locations": [
+        {
+          "line": 93,
+          "text": "float seasonalTemp = SeasonalTemp;"
+        }
+      ],
+      "interpretation": "Season acceptability uses seasonal temperature, not current room temperature."
+    },
+    {
+      "type": "Verse.MapTemperature",
+      "needle": "seasonalTemp > animalRace.GetStatValueAbstract(StatDefOf.ComfyTemperatureMin) - buffer",
+      "locations": [
+        {
+          "line": 94,
+          "text": "if (seasonalTemp > animalRace.GetStatValueAbstract(StatDefOf.ComfyTemperatureMin) - buffer)"
+        }
+      ],
+      "interpretation": "Season acceptability has a strict lower species comfort bound."
+    },
+    {
+      "type": "Verse.MapTemperature",
+      "needle": "seasonalTemp < animalRace.GetStatValueAbstract(StatDefOf.ComfyTemperatureMax) + buffer",
+      "locations": [
+        {
+          "line": 96,
+          "text": "return seasonalTemp < animalRace.GetStatValueAbstract(StatDefOf.ComfyTemperatureMax) + buffer;"
+        }
+      ],
+      "interpretation": "Season acceptability has a strict upper species comfort bound."
+    },
+    {
+      "type": "RimWorld.ThinkNode_ConditionalDangerousTemperature",
+      "needle": "!pawn.SafeTemperatureRange().Includes(pawn.AmbientTemperature)",
+      "locations": [
+        {
+          "line": 10,
+          "text": "return !pawn.SafeTemperatureRange().Includes(pawn.AmbientTemperature);"
+        }
+      ],
+      "interpretation": "Dangerous temperature checks actual ambient temperature against safe limits."
+    },
+    {
+      "type": "RimWorld.ThinkNode_ConditionalOutdoorTemperature",
+      "needle": "pawn.Position.UsesOutdoorTemperature(pawn.Map)",
+      "locations": [
+        {
+          "line": 10,
+          "text": "return pawn.Position.UsesOutdoorTemperature(pawn.Map);"
+        }
+      ],
+      "interpretation": "Dangerous-weather departure also requires a cell using outdoor temperature."
+    },
+    {
+      "type": "Verse.AI.JobGiver_ExitMap",
+      "needle": "if (pawn.Downed && !pawn.Crawling)",
+      "locations": [
+        {
+          "line": 39,
+          "text": "if (pawn.Downed && !pawn.Crawling)"
+        }
+      ],
+      "interpretation": "Downed noncrawling animals cannot begin an exit-map job."
+    },
+    {
+      "type": "Verse.AI.JobGiver_ExitMapRandom",
+      "needle": "RCellFinder.TryFindRandomExitSpot",
+      "locations": [
+        {
+          "line": 10,
+          "text": "return RCellFinder.TryFindRandomExitSpot(pawn, out spot, mode);"
+        }
+      ],
+      "interpretation": "Departure requires finding an actual reachable exit spot."
+    },
+    {
+      "type": "Verse.AI.JobGiver_ExitMap",
+      "needle": "job2.exitMapOnArrival = true;",
+      "locations": [
+        {
+          "line": 80,
+          "text": "job2.exitMapOnArrival = true;"
+        }
+      ],
+      "interpretation": "Wildlife exits after physical arrival at a map edge."
+    },
+    {
+      "type": "RimWorld.WildAnimalSpawner",
+      "needle": "map.mapTemperature.SeasonAcceptableFor(a.race)",
+      "locations": [
+        {
+          "line": 111,
+          "text": "if (animalKind == null && !map.BiomeAt(loc).AllWildAnimals.Where((PawnKindDef a) => map.mapTemperature.SeasonAcceptableFor(a.race)).TryRandomElementByWeight((PawnKindDef kind) => CommonalityOfAnimalNow(kind, loc), out animalKind))"
+        }
+      ],
+      "interpretation": "Wildlife spawning also filters season suitability."
+    },
+    {
+      "type": "RimWorld.Fire",
+      "needle": "public class Fire : AttachableThing",
+      "locations": [
+        {
+          "line": 8,
+          "text": "public class Fire : AttachableThing, ISizeReporter"
+        }
+      ],
+      "interpretation": "Burning is an independent attachment instance, not just an animal health boolean."
+    },
+    {
+      "type": "RimWorld.Fire",
+      "needle": "public override int UpdateRateTicks => 15;",
+      "locations": [
+        {
+          "line": 99,
+          "text": "public override int UpdateRateTicks => 15;"
+        }
+      ],
+      "interpretation": "Fire interval updates use fifteen ticks."
+    },
+    {
+      "type": "RimWorld.Fire",
+      "needle": "this.IsHashIntervalTick(150, delta)",
+      "locations": [
+        {
+          "line": 209,
+          "text": "if (this.IsHashIntervalTick(150, delta))"
+        }
+      ],
+      "interpretation": "Complex fire effects run on a separate 150-tick hash interval."
+    },
+    {
+      "type": "RimWorld.FireUtility",
+      "needle": "t.def.category != ThingCategory.Pawn",
+      "locations": [
+        {
+          "line": 29,
+          "text": "if (t.def.category != ThingCategory.Pawn)"
+        }
+      ],
+      "interpretation": "Attachment eligibility is Pawn-based, not restricted to humans."
+    },
+    {
+      "type": "RimWorld.FireUtility",
+      "needle": "t.TryGetComp<CompAttachBase>() == null",
+      "locations": [
+        {
+          "line": 33,
+          "text": "if (t.TryGetComp<CompAttachBase>() == null)"
+        }
+      ],
+      "interpretation": "Attachment support and current flammability are explicit prerequisites."
+    },
+    {
+      "type": "RimWorld.FireUtility",
+      "needle": "fire.AttachTo(t);",
+      "locations": [
+        {
+          "line": 118,
+          "text": "fire.AttachTo(t);"
+        }
+      ],
+      "interpretation": "New fire is attached to the same target entity."
+    },
+    {
+      "type": "RimWorld.FireUtility",
+      "needle": "pawn.jobs.StopAll();",
+      "locations": [
+        {
+          "line": 122,
+          "text": "pawn.jobs.StopAll();"
+        }
+      ],
+      "interpretation": "Ignition interrupts current pawn jobs immediately."
+    },
+    {
+      "type": "RimWorld.FireUtility",
+      "needle": "return 1f - Mathf.Pow(1f - num, freqInTicks / 60f);",
+      "locations": [
+        {
+          "line": 108,
+          "text": "return 1f - Mathf.Pow(1f - num, freqInTicks / 60f);"
+        }
+      ],
+      "interpretation": "Flammability-based per-second catch probability is converted to cumulative interval probability."
+    },
+    {
+      "type": "RimWorld.Fire",
+      "needle": "parent == null && fireSize > 0.4f",
+      "locations": [
+        {
+          "line": 267,
+          "text": "if (parent == null && fireSize > 0.4f && list[i].def.category == ThingCategory.Pawn && Rand.Chance(FireUtility.ChanceToAttachFireCumulative(list[i], 150f)))"
+        }
+      ],
+      "interpretation": "A sufficiently large static fire can ignite co-located pawns."
+    },
+    {
+      "type": "RimWorld.Fire",
+      "needle": "list[i].TryAttachFire(fireSize * 0.2f, instigator);",
+      "locations": [
+        {
+          "line": 269,
+          "text": "list[i].TryAttachFire(fireSize * 0.2f, instigator);"
+        }
+      ],
+      "interpretation": "Static-fire ignition starts a smaller attached fire."
+    },
+    {
+      "type": "RimWorld.Fire",
+      "needle": "thing2 = parent;",
+      "locations": [
+        {
+          "line": 288,
+          "text": "thing2 = parent;"
+        }
+      ],
+      "interpretation": "An attached fire damages its own parent."
+    },
+    {
+      "type": "RimWorld.Fire",
+      "needle": "(!(fireSize < 0.4f) || thing2 == parent || thing2.def.category != ThingCategory.Pawn)",
+      "locations": [
+        {
+          "line": 294,
+          "text": "if (thing2 != null && (!(fireSize < 0.4f) || thing2 == parent || thing2.def.category != ThingCategory.Pawn))"
+        }
+      ],
+      "interpretation": "Small static fires exempt pawns from ordinary damage; attached fire still damages its parent."
+    },
+    {
+      "type": "RimWorld.Fire",
+      "needle": "dinfo.SetBodyRegion(BodyPartHeight.Undefined, BodyPartDepth.Outside);",
+      "locations": [
+        {
+          "line": 366,
+          "text": "dinfo.SetBodyRegion(BodyPartHeight.Undefined, BodyPartDepth.Outside);"
+        }
+      ],
+      "interpretation": "Fire selects an external anatomical region."
+    },
+    {
+      "type": "RimWorld.Fire",
+      "needle": "GenTemperature.PushHeat(Position, Map, num);",
+      "locations": [
+        {
+          "line": 305,
+          "text": "GenTemperature.PushHeat(Position, Map, num);"
+        }
+      ],
+      "interpretation": "Fire also heats the environment; thermal disease remains separate from burns."
+    },
+    {
+      "type": "RimWorld.Fire",
+      "needle": "if (!Position.GetTerrain(Map).extinguishesFire)",
+      "locations": [
+        {
+          "line": 243,
+          "text": "if (!Position.GetTerrain(Map).extinguishesFire)"
+        }
+      ],
+      "interpretation": "Extinguishing terrain prevents collecting fuel even for attached fire."
+    },
+    {
+      "type": "Verse.DamageWorker_Flame",
+      "needle": "public class DamageWorker_Flame : DamageWorker_AddInjury",
+      "locations": [
+        {
+          "line": 6,
+          "text": "public class DamageWorker_Flame : DamageWorker_AddInjury"
+        }
+      ],
+      "interpretation": "Flame produces injuries through the ordinary anatomy damage pipeline."
+    },
+    {
+      "type": "Verse.DamageWorker_Flame",
+      "needle": "!damageResult.deflected && !dinfo.InstantPermanentInjury",
+      "locations": [
+        {
+          "line": 21,
+          "text": "if (!damageResult.deflected && !dinfo.InstantPermanentInjury && Rand.Chance(FireUtility.ChanceToAttachFireFromEvent(victim)))"
+        }
+      ],
+      "interpretation": "Flame event attachment is gated by the damage result."
+    },
+    {
+      "type": "RimWorld.ThinkNode_ConditionalBurning",
+      "needle": "pawn.HasAttachment(ThingDefOf.Fire)",
+      "locations": [
+        {
+          "line": 10,
+          "text": "return pawn.HasAttachment(ThingDefOf.Fire);"
+        }
+      ],
+      "interpretation": "Burning AI reacts to the attachment, not the presence of a ground fire."
+    },
+    {
+      "type": "RimWorld.JobGiver_ExtinguishSelf",
+      "needle": "if (Rand.Value < 0.1f)",
+      "locations": [
+        {
+          "line": 12,
+          "text": "if (Rand.Value < 0.1f)"
+        }
+      ],
+      "interpretation": "Self-extinguish selection is probabilistic per job evaluation, not a per-tick probability."
+    },
+    {
+      "type": "RimWorld.JobDriver_ExtinguishSelf",
+      "needle": "toil.defaultDuration = 150;",
+      "locations": [
+        {
+          "line": 29,
+          "text": "toil.defaultDuration = 150;"
+        }
+      ],
+      "interpretation": "Successful self-extinguish job waits 150 ticks."
+    },
+    {
+      "type": "RimWorld.JobDriver_ExtinguishSelf",
+      "needle": "TargetFire.Destroy();",
+      "locations": [
+        {
+          "line": 34,
+          "text": "TargetFire.Destroy();"
+        }
+      ],
+      "interpretation": "Self-extinguish removes the attached fire; it does not heal burns."
+    },
+    {
+      "type": "Verse.AI.JobGiver_RunRandom",
+      "needle": "wanderRadius = 7f;",
+      "locations": [
+        {
+          "line": 7,
+          "text": "wanderRadius = 7f;"
+        }
+      ],
+      "interpretation": "Random fire panic movement uses a local seven-cell wander radius."
+    },
+    {
+      "type": "Verse.AI.JobGiver_RunRandom",
+      "needle": "ticksBetweenWandersRange = new IntRange(5, 10);",
+      "locations": [
+        {
+          "line": 8,
+          "text": "ticksBetweenWandersRange = new IntRange(5, 10);"
+        }
+      ],
+      "interpretation": "Panic movement uses short wander delays."
+    },
+    {
+      "type": "Verse.AI.JobGiver_RunRandom",
+      "needle": "locomotionUrgency = LocomotionUrgency.Sprint;",
+      "locations": [
+        {
+          "line": 9,
+          "text": "locomotionUrgency = LocomotionUrgency.Sprint;"
+        }
+      ],
+      "interpretation": "Fire panic runs at sprint urgency."
+    },
+    {
+      "type": "RimWorld.WorkGiver_FightFires",
+      "needle": "if (fire.parent is Pawn pawn2)",
+      "locations": [
+        {
+          "line": 29,
+          "text": "if (fire.parent is Pawn pawn2)"
+        }
+      ],
+      "interpretation": "Automatic rescuing from fire covers compatible animal pawns as well as humans."
+    },
+    {
+      "type": "RimWorld.WorkGiver_FightFires",
+      "needle": "pawn2.HostFaction != pawn.Faction && pawn2.HostFaction != pawn.HostFaction",
+      "locations": [
+        {
+          "line": 35,
+          "text": "if ((pawn2.Faction == null || pawn2.Faction != pawn.Faction) && (pawn2.HostFaction == null || (pawn2.HostFaction != pawn.Faction && pawn2.HostFaction != pawn.HostFaction)))"
+        }
+      ],
+      "interpretation": "Automatic attached-fire assistance is faction/host gated."
+    },
+    {
+      "type": "RimWorld.WorkGiver_FightFires",
+      "needle": "IntVec3Utility.ManhattanDistanceFlat(pawn.Position, pawn2.Position) > 15",
+      "locations": [
+        {
+          "line": 39,
+          "text": "if (!pawn.Map.areaManager.Home[fire.Position] && IntVec3Utility.ManhattanDistanceFlat(pawn.Position, pawn2.Position) > 15)"
+        }
+      ],
+      "interpretation": "Automatic attached-fire aid outside Home has a fifteen-cell distance gate."
+    },
+    {
+      "type": "Verse.DamageWorker_Extinguish",
+      "needle": "fire.fireSize -= dinfo.Amount * 0.01f;",
+      "locations": [
+        {
+          "line": 24,
+          "text": "fire.fireSize -= dinfo.Amount * 0.01f;"
+        }
+      ],
+      "interpretation": "Ordinary extinguishing damage reduces fire size."
+    },
+    {
+      "type": "Verse.DamageWorker_Extinguish",
+      "needle": "if (fire.fireSize < 0.1f)",
+      "locations": [
+        {
+          "line": 25,
+          "text": "if (fire.fireSize < 0.1f)"
+        }
+      ],
+      "interpretation": "A fire below the minimum size is removed."
+    }
+  ],
+  "boundedChecks": [
+    {
+      "type": "Verse.GenTemperature",
+      "start": "public static FloatRange SafeTemperatureRange(this Pawn p)",
+      "end": "public static FloatRange SafeTemperatureRange(this Pawn p, List",
+      "lineStart": 87,
+      "lineEnd": 95,
+      "sha256": "584ed94f9c4e0c8d8fd00eed4fcadd8bee4590e0e8bfebbc9f57c3b0cbbbe324",
+      "absent": [],
+      "present": [
+        "result.min -= 10f;",
+        "result.max += 10f;"
+      ],
+      "interpretation": "Both safety margins apply to current pawn comfort stats."
+    },
+    {
+      "type": "Verse.HediffGiver_Heat",
+      "start": "public override void OnIntervalPassed",
+      "end": "",
+      "lineStart": 24,
+      "lineEnd": 70,
+      "sha256": "dce5f7c15f48528c130496170a9db295958d954d54ba7c9caa4ffdcb59223cff",
+      "absent": [
+        "medicine",
+        "Tended",
+        "IsTended"
+      ],
+      "present": [
+        "ambientTemperature > floatRange2.max",
+        "ambientTemperature < floatRange.max",
+        "DamageDefOf.Burn"
+      ],
+      "interpretation": "Heat accumulation, environment recovery and extreme-air burn share an environmental giver; no tending gate here."
+    },
+    {
+      "type": "Verse.HediffGiver_Hypothermia",
+      "start": "public override void OnIntervalPassed",
+      "end": "",
+      "lineStart": 11,
+      "lineEnd": 51,
+      "sha256": "931196847ba4cfdd9b0bf6a61294dfb8f35f1973580157097f1f653c44eb236b",
+      "absent": [
+        "medicine",
+        "Tended",
+        "IsTended"
+      ],
+      "present": [
+        "ambientTemperature < floatRange2.min",
+        "ambientTemperature > floatRange.min",
+        "DamageDefOf.Frostbite"
+      ],
+      "interpretation": "Cold recovery and secondary frostbite are separate effects; no tending gate here."
+    },
+    {
+      "type": "RimWorld.JobGiver_SeekSafeTemperature",
+      "start": "protected override Job TryGiveJob",
+      "end": "public static Region ClosestRegionWithinTemperatureRange",
+      "lineStart": 17,
+      "lineEnd": 41,
+      "sha256": "6dbd3efc4c964eb7667a388aef7da4b261c24cd0a927dfa583cb83d47a361477",
+      "absent": [
+        "GeneratePawn",
+        "SetFaction",
+        "Destroy",
+        "Teleport"
+      ],
+      "present": [
+        "TemperatureInjuryStage.Serious",
+        "pawn.ComfortableTemperatureRange()",
+        "GotoSafeTemperature"
+      ],
+      "interpretation": "Seeking a comfortable room changes a job, not identity or faction."
+    },
+    {
+      "type": "RimWorld.JobGiver_SeekSafeTemperature",
+      "start": "public static Region ClosestRegionWithinTemperatureRange",
+      "end": "public static bool TryGetAllowedCellInRegion",
+      "lineStart": 41,
+      "lineEnd": 71,
+      "sha256": "644e329d6fec7b6c1e722a5afb8a9024703ef2448844fa7cbf5522a347773c31",
+      "absent": [
+        "maxRadius)",
+        "maxRadius,"
+      ],
+      "present": [
+        "r.Allows(traverseParms",
+        "TryGetAllowedCellInRegion(r, pawn, out var _)",
+        "RegionTraverser.BreadthFirstTraverse"
+      ],
+      "interpretation": "The named maxRadius parameter is not forwarded in this region-search body; no claimed radius guarantee."
+    },
+    {
+      "type": "Verse.AI.JobGiver_ExitMap",
+      "start": "protected override Job TryGiveJob",
+      "end": "protected abstract bool TryFindGoodExitDest",
+      "lineStart": 37,
+      "lineEnd": 88,
+      "sha256": "d6340b000ad62280830cad445fc2733f51256bc1b6c51a7a9eeec81e2158f4e1",
+      "absent": [
+        "GeneratePawn",
+        "SetFaction"
+      ],
+      "present": [
+        "pawn.Downed",
+        "TryFindGoodExitDest",
+        "job2.exitMapOnArrival = true;"
+      ],
+      "interpretation": "Departure schedules a reachable physical exit rather than deleting an animal on temperature change."
+    },
+    {
+      "type": "RimWorld.FireUtility",
+      "start": "public static bool CanEverAttachFire",
+      "end": "public static float ChanceToStartFireIn",
+      "lineStart": 19,
+      "lineEnd": 40,
+      "sha256": "0c3f29035cd7ebb3f72c0816fadfbf545a83a1b1d155276d59825d4be3055774",
+      "absent": [
+        "Humanlike",
+        "Faction"
+      ],
+      "present": [
+        "t.FlammableNow",
+        "ThingCategory.Pawn",
+        "CompAttachBase"
+      ],
+      "interpretation": "Fire attachment eligibility is not human-only or faction-only."
+    },
+    {
+      "type": "RimWorld.JobDriver_ExtinguishSelf",
+      "start": "protected override IEnumerable<Toil> MakeNewToils",
+      "end": "",
+      "lineStart": 25,
+      "lineEnd": 42,
+      "sha256": "ed76bba9c414ef8d38d32730de049f8fecc50d18c1e25e678d8703f24a36a165",
+      "absent": [
+        ".Heal(",
+        "TakeDamage",
+        "Medical",
+        "GeneratePawn"
+      ],
+      "present": [
+        "toil.defaultDuration = 150;",
+        "TargetFire.Destroy();"
+      ],
+      "interpretation": "Self-extinguishing waits and destroys fire; no injury healing in this driver."
+    },
+    {
+      "type": "RimWorld.WorkGiver_FightFires",
+      "start": "if (fire.parent is Pawn pawn2)",
+      "end": "\t\telse",
+      "lineStart": 29,
+      "lineEnd": 48,
+      "sha256": "49ea66493a5ab33a0254610290a310e9123eee27f7afe3953d2bf215940a30fa",
+      "absent": [
+        "Humanlike",
+        "WorkTagIsDisabled"
+      ],
+      "present": [
+        "pawn2.Faction",
+        "pawn2.HostFaction",
+        "ManhattanDistanceFlat",
+        "pawn.CanReach"
+      ],
+      "interpretation": "Attached-pawn branch lacks the static-fire branch work-tag check; work-scheduling eligibility still exists outside this method."
+    },
+    {
+      "type": "Verse.MapTemperature",
+      "start": "public bool SeasonAcceptableFor",
+      "end": "public bool OutdoorTemperatureAcceptableFor",
+      "lineStart": 91,
+      "lineEnd": 101,
+      "sha256": "93743f300998f86b9fb450d0fed7b74f4ae4166911fdd8bee3f831c8c3136340",
+      "absent": [
+        "AmbientTemperature",
+        "Room"
+      ],
+      "present": [
+        "SeasonalTemp",
+        "ComfyTemperatureMin",
+        "ComfyTemperatureMax"
+      ],
+      "interpretation": "Season departure is distinct from instantaneous room exposure."
+    }
+  ],
+  "packagedXml": [
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+      "sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4",
+      "xpath": "/Defs/ThingDef[@Name=\"BasePawn\"]",
+      "nameAttribute": "BasePawn",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "statBases/ComfyTemperatureMin",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/ComfyTemperatureMax",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/Flammability",
+          "count": 1,
+          "xml": [
+            "<Flammability>0.7</Flammability>"
+          ]
+        },
+        {
+          "xpath": "race/hediffGiverSets",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/intelligence",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/fleshType",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/thinkTreeMain",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "comps/li[compClass=\"CompAttachBase\"]",
+          "count": 1,
+          "xml": [
+            "<li><compClass>CompAttachBase</compClass></li>"
+          ]
+        }
+      ],
+      "interpretation": "Base pawn supplies flammability and attachment support; comfort limits are stat defaults unless overridden."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+      "sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4",
+      "xpath": "/Defs/ThingDef[@Name=\"AnimalThingBase\"]",
+      "nameAttribute": "AnimalThingBase",
+      "parentName": "BasePawn",
+      "fields": [
+        {
+          "xpath": "statBases/ComfyTemperatureMin",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/ComfyTemperatureMax",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/Flammability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/hediffGiverSets",
+          "count": 1,
+          "xml": [
+            "<hediffGiverSets><li>OrganicStandard</li></hediffGiverSets>"
+          ]
+        },
+        {
+          "xpath": "race/intelligence",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/fleshType",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/thinkTreeMain",
+          "count": 1,
+          "xml": [
+            "<thinkTreeMain>Animal</thinkTreeMain>"
+          ]
+        },
+        {
+          "xpath": "comps/li[compClass=\"CompAttachBase\"]",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Animal parent selects OrganicStandard givers; unspecified intelligence uses the class and enum default Animal."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Hares.xml",
+      "sha256": "bda7f200ded2c9f8ee4b29dc8d9ea2e8d6977f20782797c51352af20aa6d835e",
+      "xpath": "/Defs/ThingDef[@Name=\"BaseHare\"]",
+      "nameAttribute": "BaseHare",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "statBases/ComfyTemperatureMin",
+          "count": 1,
+          "xml": [
+            "<ComfyTemperatureMin>-30</ComfyTemperatureMin>"
+          ]
+        },
+        {
+          "xpath": "statBases/ComfyTemperatureMax",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/Flammability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/hediffGiverSets",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/intelligence",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/fleshType",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 1,
+          "xml": [
+            "<lifeStageAges><li><def>AnimalBaby</def><minAge>0</minAge></li><li><def>AnimalJuvenile</def><minAge>0.1</minAge></li><li><def>AnimalAdult</def><minAge>0.2222</minAge><soundWounded>Pawn_Hare_Wounded</soundWounded><soundDeath>Pawn_Hare_Death</soundDeath><soundCall>Pawn_Hare_Call</soundCall><soundAngry>Pawn_Hare_Angry</soundAngry></li></lifeStageAges>"
+          ]
+        },
+        {
+          "xpath": "race/thinkTreeMain",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "comps/li[compClass=\"CompAttachBase\"]",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Hare temperature inheritance template."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Hares.xml",
+      "sha256": "bda7f200ded2c9f8ee4b29dc8d9ea2e8d6977f20782797c51352af20aa6d835e",
+      "xpath": "/Defs/ThingDef[defName=\"Hare\"]",
+      "nameAttribute": "",
+      "parentName": "BaseHare",
+      "fields": [
+        {
+          "xpath": "statBases/ComfyTemperatureMin",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/ComfyTemperatureMax",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/Flammability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/hediffGiverSets",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/intelligence",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/fleshType",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/thinkTreeMain",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "comps/li[compClass=\"CompAttachBase\"]",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Concrete hare inherits BaseHare temperature minimum."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_PigGroup.xml",
+      "sha256": "87d3d069440e7ad2a3e66f3bb0778e5210c38429c5eb7788b23b87cc64df4ab1",
+      "xpath": "/Defs/ThingDef[defName=\"Deer\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "statBases/ComfyTemperatureMin",
+          "count": 1,
+          "xml": [
+            "<ComfyTemperatureMin>-30</ComfyTemperatureMin>"
+          ]
+        },
+        {
+          "xpath": "statBases/ComfyTemperatureMax",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/Flammability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/hediffGiverSets",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/intelligence",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/fleshType",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 1,
+          "xml": [
+            "<lifeStageAges><li><def>AnimalBaby</def><minAge>0</minAge></li><li><def>AnimalJuvenile</def><minAge>0.1</minAge></li><li><def>AnimalAdult</def><minAge>0.3333</minAge><soundWounded>Pawn_Deer_Wounded</soundWounded><soundDeath>Pawn_Deer_Death</soundDeath><soundCall>Pawn_Deer_Call</soundCall><soundAngry>Pawn_Deer_Angry</soundAngry></li></lifeStageAges>"
+          ]
+        },
+        {
+          "xpath": "race/thinkTreeMain",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "comps/li[compClass=\"CompAttachBase\"]",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Deer temperature definition."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_SheepGroup.xml",
+      "sha256": "92475fbf8ed1ac470d9be9068e7bfd915e8befa66303eee32c829723700ded54",
+      "xpath": "/Defs/ThingDef[defName=\"Alpaca\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "statBases/ComfyTemperatureMin",
+          "count": 1,
+          "xml": [
+            "<ComfyTemperatureMin>-20</ComfyTemperatureMin>"
+          ]
+        },
+        {
+          "xpath": "statBases/ComfyTemperatureMax",
+          "count": 1,
+          "xml": [
+            "<ComfyTemperatureMax>45</ComfyTemperatureMax>"
+          ]
+        },
+        {
+          "xpath": "statBases/Flammability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/hediffGiverSets",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/intelligence",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/fleshType",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 1,
+          "xml": [
+            "<lifeStageAges><li><def>AnimalBaby</def><minAge>0</minAge></li><li><def>AnimalJuvenile</def><minAge>0.2</minAge></li><li><def>AnimalAdult</def><minAge>0.3333</minAge><soundWounded>Pawn_Elk_Wounded</soundWounded><soundDeath>Pawn_Elk_Death</soundDeath><soundCall>Pawn_Elk_Call</soundCall><soundAngry>Pawn_Elk_Angry</soundAngry></li></lifeStageAges>"
+          ]
+        },
+        {
+          "xpath": "race/thinkTreeMain",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "comps/li[compClass=\"CompAttachBase\"]",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Alpaca temperature definition."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_CowGroup.xml",
+      "sha256": "4dfaa77da9175d9cbc802ca4b6d5fc321fbf646ea5f39d22cf38190c77294b7a",
+      "xpath": "/Defs/ThingDef[defName=\"Dromedary\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "statBases/ComfyTemperatureMin",
+          "count": 1,
+          "xml": [
+            "<ComfyTemperatureMin>-22</ComfyTemperatureMin>"
+          ]
+        },
+        {
+          "xpath": "statBases/ComfyTemperatureMax",
+          "count": 1,
+          "xml": [
+            "<ComfyTemperatureMax>60</ComfyTemperatureMax>"
+          ]
+        },
+        {
+          "xpath": "statBases/Flammability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/hediffGiverSets",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/intelligence",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/fleshType",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 1,
+          "xml": [
+            "<lifeStageAges><li><def>AnimalBaby</def><minAge>0</minAge></li><li><def>AnimalJuvenile</def><minAge>0.25</minAge></li><li><def>AnimalAdult</def><minAge>0.3333</minAge><soundWounded>Pawn_Dromedary_Wounded</soundWounded><soundDeath>Pawn_Dromedary_Death</soundDeath><soundCall>Pawn_Dromedary_Call</soundCall><soundAngry>Pawn_Dromedary_Angry</soundAngry></li></lifeStageAges>"
+          ]
+        },
+        {
+          "xpath": "race/thinkTreeMain",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "comps/li[compClass=\"CompAttachBase\"]",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Dromedary temperature definition."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_ChickenGroup.xml",
+      "sha256": "019dd2851d79a0795e021f26327b96dda8d7d7481e887acf082169475fe06705",
+      "xpath": "/Defs/ThingDef[defName=\"Chicken\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "statBases/ComfyTemperatureMin",
+          "count": 1,
+          "xml": [
+            "<ComfyTemperatureMin>-10</ComfyTemperatureMin>"
+          ]
+        },
+        {
+          "xpath": "statBases/ComfyTemperatureMax",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/Flammability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/hediffGiverSets",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/intelligence",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/fleshType",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 1,
+          "xml": [
+            "<lifeStageAges><li><def>AnimalBabyTiny</def><minAge>0</minAge><soundWounded>Pawn_Chick_Call</soundWounded><soundDeath>Pawn_Chick_Call</soundDeath><soundCall>Pawn_Chick_Call</soundCall><soundAngry>Pawn_Chick_Call</soundAngry></li><li><def>AnimalJuvenile</def><minAge>0.12</minAge></li><li><def>AnimalAdult</def><minAge>0.2</minAge><soundWounded>Pawn_Chicken_Wounded</soundWounded><soundDeath>Pawn_Chicken_Death</soundDeath><soundCall>Pawn_Chicken_Call</soundCall><soundAngry>Pawn_Chicken_Angry</soundAngry></li></lifeStageAges>"
+          ]
+        },
+        {
+          "xpath": "race/thinkTreeMain",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "comps/li[compClass=\"CompAttachBase\"]",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Chicken temperature definition."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_General.xml",
+      "sha256": "ec1df1afb1f24c3d812b3224f803354b613a226e3934ea1e235c9b195181f507",
+      "xpath": "/Defs/StatDef[defName=\"ComfyTemperatureMin\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>0</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "minValue",
+          "count": 1,
+          "xml": [
+            "<minValue>-2000</minValue>"
+          ]
+        },
+        {
+          "xpath": "maxValue",
+          "count": 1,
+          "xml": [
+            "<maxValue>2000</maxValue>"
+          ]
+        },
+        {
+          "xpath": "parts",
+          "count": 1,
+          "xml": [
+            "<parts><li Class=\"StatPart_GearStatOffset\"><apparelStat>Insulation_Cold</apparelStat><subtract>true</subtract></li></parts>"
+          ]
+        }
+      ],
+      "interpretation": "Unspecified minimum is zero; gear may modify effective stats."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_General.xml",
+      "sha256": "ec1df1afb1f24c3d812b3224f803354b613a226e3934ea1e235c9b195181f507",
+      "xpath": "/Defs/StatDef[defName=\"ComfyTemperatureMax\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>40</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "minValue",
+          "count": 1,
+          "xml": [
+            "<minValue>-2000</minValue>"
+          ]
+        },
+        {
+          "xpath": "maxValue",
+          "count": 1,
+          "xml": [
+            "<maxValue>2000</maxValue>"
+          ]
+        },
+        {
+          "xpath": "parts",
+          "count": 1,
+          "xml": [
+            "<parts><li Class=\"StatPart_GearStatOffset\"><apparelStat>Insulation_Heat</apparelStat></li></parts>"
+          ]
+        }
+      ],
+      "interpretation": "Unspecified maximum is forty, including hare, deer and chicken."
+    },
+    {
+      "file": "Data/Core/Defs/HediffGiverSetDefs/HediffGiverSets.xml",
+      "sha256": "d4b0e53dc7bc5d54f15a3e870c6a3a9f36a2f434cb5b4023e5c995625cb55f44",
+      "xpath": "/Defs/HediffGiverSetDef[defName=\"OrganicStandard\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "hediffGivers/li[@Class=\"HediffGiver_Heat\"]",
+          "count": 1,
+          "xml": [
+            "<li Class=\"HediffGiver_Heat\"><hediff>Heatstroke</hediff></li>"
+          ]
+        },
+        {
+          "xpath": "hediffGivers/li[@Class=\"HediffGiver_Hypothermia\"]",
+          "count": 1,
+          "xml": [
+            "<li Class=\"HediffGiver_Hypothermia\"><hediff>Hypothermia</hediff><hediffInsectoid>HypothermicSlowdown</hediffInsectoid></li>"
+          ]
+        }
+      ],
+      "interpretation": "Animal parent links to both environmental givers."
+    },
+    {
+      "file": "Data/Core/Defs/HediffDefs/Hediffs_Global_Temperature.xml",
+      "sha256": "21210a4f8526e6547a9de6dba69a1588da2b0f3a88c682bab175372698c28e36",
+      "xpath": "/Defs/HediffDef[defName=\"Heatstroke\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "hediffClass",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "tendable",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "lethalSeverity",
+          "count": 1,
+          "xml": [
+            "<lethalSeverity>1</lethalSeverity>"
+          ]
+        },
+        {
+          "xpath": "canApplyDodChanceForCapacityChanges",
+          "count": 1,
+          "xml": [
+            "<canApplyDodChanceForCapacityChanges>true</canApplyDodChanceForCapacityChanges>"
+          ]
+        },
+        {
+          "xpath": "stages",
+          "count": 1,
+          "xml": [
+            "<stages><li><label>initial</label><becomeVisible>false</becomeVisible></li><li><label>initial</label><minSeverity>0.04</minSeverity><capMods><li><capacity>Consciousness</capacity><offset>-0.05</offset></li></capMods></li><li><label>minor</label><minSeverity>0.2</minSeverity><capMods><li><capacity>Moving</capacity><offset>-0.1</offset></li><li><capacity>Consciousness</capacity><offset>-0.10</offset></li></capMods></li><li><label>serious</label><minSeverity>0.35</minSeverity><painOffset>0.15</painOffset><capMods><li><capacity>Moving</capacity><offset>-0.3</offset></li><li><capacity>Consciousness</capacity><offset>-0.20</offset></li></capMods></li><li><label>extreme</label><minSeverity>0.62</minSeverity><lifeThreatening>true</lifeThreatening><painOffset>0.30</painOffset><capMods><li><capacity>Consciousness</capacity><setMax>0.1</setMax></li></capMods></li></stages>"
+          ]
+        }
+      ],
+      "interpretation": "Heatstroke phases and capacity modifiers."
+    },
+    {
+      "file": "Data/Core/Defs/HediffDefs/Hediffs_Global_Temperature.xml",
+      "sha256": "21210a4f8526e6547a9de6dba69a1588da2b0f3a88c682bab175372698c28e36",
+      "xpath": "/Defs/HediffDef[defName=\"Hypothermia\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "hediffClass",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "tendable",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "lethalSeverity",
+          "count": 1,
+          "xml": [
+            "<lethalSeverity>1</lethalSeverity>"
+          ]
+        },
+        {
+          "xpath": "canApplyDodChanceForCapacityChanges",
+          "count": 1,
+          "xml": [
+            "<canApplyDodChanceForCapacityChanges>true</canApplyDodChanceForCapacityChanges>"
+          ]
+        },
+        {
+          "xpath": "stages",
+          "count": 1,
+          "xml": [
+            "<stages><li><label>shivering</label><becomeVisible>false</becomeVisible></li><li><label>shivering</label><minSeverity>0.04</minSeverity><capMods><li><capacity>Manipulation</capacity><offset>-0.08</offset></li><li><capacity>Consciousness</capacity><offset>-0.05</offset></li></capMods></li><li><label>minor</label><minSeverity>0.2</minSeverity><capMods><li><capacity>Moving</capacity><offset>-0.1</offset></li><li><capacity>Manipulation</capacity><offset>-0.2</offset></li><li><capacity>Consciousness</capacity><offset>-0.10</offset></li></capMods></li><li><label>serious</label><minSeverity>0.35</minSeverity><painOffset>0.15</painOffset><capMods><li><capacity>Moving</capacity><offset>-0.3</offset></li><li><capacity>Manipulation</capacity><offset>-0.5</offset></li><li><capacity>Consciousness</capacity><offset>-0.20</offset></li></capMods></li><li><label>extreme</label><minSeverity>0.62</minSeverity><lifeThreatening>true</lifeThreatening><painOffset>0.30</painOffset><capMods><li><capacity>Consciousness</capacity><setMax>0.1</setMax></li></capMods></li></stages>"
+          ]
+        }
+      ],
+      "interpretation": "Hypothermia phases and capacity modifiers."
+    },
+    {
+      "file": "Data/Core/Defs/ThinkTreeDefs/SubTrees_Misc.xml",
+      "sha256": "c287c0c2a97f151d86516cf058e2eb54b4d87f1bccf50bfa46faf8b26eba3071",
+      "xpath": "/Defs/ThinkTreeDef[defName=\"BurningResponse\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "thinkRoot",
+          "count": 1,
+          "xml": [
+            "<thinkRoot Class=\"ThinkNode_ConditionalBurning\"><subNodes><li Class=\"ThinkNode_Priority\"><subNodes><li Class=\"ThinkNode_ConditionalIntelligence\"><minIntelligence>ToolUser</minIntelligence><subNodes><li Class=\"JobGiver_JumpInWater\" /></subNodes></li><li Class=\"JobGiver_ExtinguishSelf\" /><li Class=\"JobGiver_RunRandom\"><maxDanger>Deadly</maxDanger></li></subNodes></li></subNodes></thinkRoot>"
+          ]
+        }
+      ],
+      "interpretation": "Self-extinguish then panic movement; jumping into water requires ToolUser intelligence."
+    },
+    {
+      "file": "Data/Core/Defs/ThinkTreeDefs/SubTrees_Misc.xml",
+      "sha256": "c287c0c2a97f151d86516cf058e2eb54b4d87f1bccf50bfa46faf8b26eba3071",
+      "xpath": "/Defs/ThinkTreeDef[defName=\"LeaveIfWrongSeason\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "thinkRoot",
+          "count": 1,
+          "xml": [
+            "<thinkRoot Class=\"ThinkNode_Tagger\"><tagToGive>Misc</tagToGive><subNodes><li Class=\"ThinkNode_ConditionalAnimalWrongSeason\"><subNodes><li Class=\"JobGiver_ExitMapRandom\"><defaultLocomotion>Walk</defaultLocomotion></li></subNodes></li><li Class=\"ThinkNode_ConditionalDangerousTemperature\"><subNodes><li Class=\"ThinkNode_ConditionalOutdoorTemperature\"><subNodes><li Class=\"JobGiver_ExitMapRandom\"><defaultLocomotion>Jog</defaultLocomotion></li></subNodes></li></subNodes></li></subNodes></thinkRoot>"
+          ]
+        }
+      ],
+      "interpretation": "Seasonal departure walks; dangerous outdoor exposure departure jogs."
+    },
+    {
+      "file": "Data/Core/Defs/ThinkTreeDefs/Animal.xml",
+      "sha256": "d857fb17533f17f90da48fae355d5014f7a4f78ab3dcc6ee755a881bda732121",
+      "xpath": "/Defs/ThinkTreeDef[defName=\"Animal\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "thinkRoot/subNodes/li/treeDef",
+          "count": 7,
+          "xml": [
+            "<treeDef>Downed</treeDef>",
+            "<treeDef>BurningResponse</treeDef>",
+            "<treeDef>MentalStateCritical</treeDef>",
+            "<treeDef>MentalStateNonCritical</treeDef>",
+            "<treeDef>RopedPawn</treeDef>",
+            "<treeDef>LordDuty</treeDef>",
+            "<treeDef>SatisfyBasicNeeds</treeDef>"
+          ]
+        },
+        {
+          "xpath": ".//li[@Class=\"JobGiver_SeekSafeTemperature\"]",
+          "count": 1,
+          "xml": [
+            "<li Class=\"JobGiver_SeekSafeTemperature\" />"
+          ]
+        }
+      ],
+      "interpretation": "Animal root priority and seek-temperature placement; exact ancestor paths recorded separately."
+    },
+    {
+      "file": "Data/Core/Defs/PawnCapacityDefs/PawnCapacity.xml",
+      "sha256": "327744af11a5fb775139c5460e408a9f86eab0d7e0bce838244b73d3c92f94f7",
+      "xpath": "/Defs/PawnCapacityDef[defName=\"Consciousness\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "workerClass",
+          "count": 1,
+          "xml": [
+            "<workerClass>PawnCapacityWorker_Consciousness</workerClass>"
+          ]
+        },
+        {
+          "xpath": "minForCapable",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "lethalFlesh",
+          "count": 1,
+          "xml": [
+            "<lethalFlesh>true</lethalFlesh>"
+          ]
+        }
+      ],
+      "interpretation": "Lethal capability and awake-capability thresholds are different."
+    },
+    {
+      "file": "Data/Core/Defs/PawnCapacityDefs/PawnCapacity.xml",
+      "sha256": "327744af11a5fb775139c5460e408a9f86eab0d7e0bce838244b73d3c92f94f7",
+      "xpath": "/Defs/PawnCapacityDef[defName=\"Moving\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "workerClass",
+          "count": 1,
+          "xml": [
+            "<workerClass>PawnCapacityWorker_Moving</workerClass>"
+          ]
+        },
+        {
+          "xpath": "minForCapable",
+          "count": 1,
+          "xml": [
+            "<minForCapable>0.15</minForCapable>"
+          ]
+        },
+        {
+          "xpath": "zeroIfCannotBeAwake",
+          "count": 1,
+          "xml": [
+            "<zeroIfCannotBeAwake>true</zeroIfCannotBeAwake>"
+          ]
+        }
+      ],
+      "interpretation": "Movement falls to zero when unable to be awake."
+    }
+  ],
+  "animalThinkTreeNodes": [
+    {
+      "class": "ThinkNode_Subtree",
+      "treeDef": "BurningResponse",
+      "ancestorsNearestFirst": [
+        {
+          "class": "ThinkNode_Priority",
+          "invert": null
+        }
+      ]
+    },
+    {
+      "class": "ThinkNode_Subtree",
+      "treeDef": "LeaveIfWrongSeason",
+      "ancestorsNearestFirst": [
+        {
+          "class": "ThinkNode_ConditionalHasFaction",
+          "invert": "true"
+        },
+        {
+          "class": "ThinkNode_Priority",
+          "invert": null
+        }
+      ]
+    },
+    {
+      "class": "JobGiver_SeekSafeTemperature",
+      "treeDef": null,
+      "ancestorsNearestFirst": [
+        {
+          "class": "ThinkNode_ConditionalOfPlayerFaction",
+          "invert": null
+        },
+        {
+          "class": "ThinkNode_Priority",
+          "invert": null
+        }
+      ]
+    }
+  ],
+  "nativeReference": {
+    "species": [
+      {
+        "def": "Hare",
+        "comfyMin": -30.0,
+        "comfyMax": 40.0,
+        "safeMin": -40.0,
+        "safeMax": 50.0,
+        "maximumFromStatDefault": true
+      },
+      {
+        "def": "Deer",
+        "comfyMin": -30.0,
+        "comfyMax": 40.0,
+        "safeMin": -40.0,
+        "safeMax": 50.0,
+        "maximumFromStatDefault": true
+      },
+      {
+        "def": "Alpaca",
+        "comfyMin": -20.0,
+        "comfyMax": 45.0,
+        "safeMin": -30.0,
+        "safeMax": 55.0,
+        "maximumFromStatDefault": false
+      },
+      {
+        "def": "Dromedary",
+        "comfyMin": -22.0,
+        "comfyMax": 60.0,
+        "safeMin": -32.0,
+        "safeMax": 70.0,
+        "maximumFromStatDefault": false
+      },
+      {
+        "def": "Chicken",
+        "comfyMin": -10.0,
+        "comfyMax": 40.0,
+        "safeMin": -20.0,
+        "safeMax": 50.0,
+        "maximumFromStatDefault": true
+      }
+    ],
+    "giverIntervalTicks": 60,
+    "safeTemperatureMargin": 10,
+    "heatOverageCurve": [
+      [
+        0,
+        0
+      ],
+      [
+        25,
+        25
+      ],
+      [
+        50,
+        40
+      ],
+      [
+        100,
+        60
+      ],
+      [
+        200,
+        80
+      ],
+      [
+        400,
+        100
+      ],
+      [
+        4000,
+        1000
+      ]
+    ],
+    "heatOverageCoefficient": 6.45E-05,
+    "heatMinimumIncrease": 0.000375,
+    "coldOverageCoefficient": 6.45E-05,
+    "coldMinimumIncrease": 0.00075,
+    "recoverySeverityFactor": 0.027,
+    "recoveryMinimum": 0.0015,
+    "recoveryMaximum": 0.015,
+    "recoveryUsesComfortBoundaryStrictly": true,
+    "stages": [
+      0,
+      0.04,
+      0.2,
+      0.35,
+      0.62
+    ],
+    "extremeConsciousnessMaximum": 0.1,
+    "lethalSeverity": 1,
+    "ordinaryAwakeConsciousnessMinimum": 0.3,
+    "temperatureDiseasesTendableByDefault": false,
+    "nonplayerNonhostAnimalDefaultDeathOnDownedChance": 0.5,
+    "seekComfortableTemperatureMinimumStage": "Serious",
+    "seekComfortableTemperatureFactionBranch": "OfPlayerFaction",
+    "seekComfortableTemperatureWaitTicks": 500,
+    "wildSeasonExitLocomotion": "Walk",
+    "wildDangerousOutdoorTemperatureExitLocomotion": "Jog",
+    "exitRequiresPhysicalArrival": true,
+    "fireUpdateTicks": 15,
+    "fireComplexIntervalTicks": 150,
+    "staticFirePawnIgnitionMinimumExclusive": 0.4,
+    "attachedFireStartFactorFromStatic": 0.2,
+    "selfExtinguishSelectionChancePerJobEvaluation": 0.1,
+    "selfExtinguishDelayTicks": 150,
+    "selfExtinguishHealsInjuries": false,
+    "panicRadius": 7,
+    "panicWanderDelayTicks": [
+      5,
+      10
+    ],
+    "panicLocomotion": "Sprint",
+    "animalJumpInWaterNodeEligible": false
+  },
+  "webDesignChoices": [
+    "Keep species comfort, systemic temperature injuries, attached fire and anatomical burns separate.",
+    "Connect actual movement, rescue, recovery, death and item/carcass conservation before tuning rates.",
+    "A deterministic Web self-extinguish schedule differs from the native random job-selection gate.",
+    "No random death-on-downed, no secondary frostbite and no extreme-air burn are explicit prototype omissions if not implemented.",
+    "A simplified weather-only wildlife exit condition does not reproduce native seasonal-temperature departure."
+  ],
+  "limits": [
+    "Static derived C# and packaged Core XML are not source or runtime proof.",
+    "REA metadata is reused only for the identical assembly identity; ILSpy reconstructed the separately hashed types.",
+    "No game, browser, preview, GUI or screenshot was launched.",
+    "Selected XML nodes are not the mod-patched effective Def database; DLC, scenarios and health effects can alter effective stats.",
+    "Bounded absence claims apply only to the named method body; surrounding scheduling and indirect callbacks can add gates.",
+    "Native thresholds and random probabilities are reference constants, not measured Web parity.",
+    "Full derived C#, assemblies and game assets remain ignored and unpublished."
+  ],
+  "collectorSha256": "4021a0e6458b22d2ade4b1d4b93df78ff7ba75dab9b82e3069434605fbcae3e0"
+}

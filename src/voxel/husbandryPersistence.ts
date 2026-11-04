@@ -1,6 +1,6 @@
 import { WOOL_RULES, woolReady } from './animalWool';
 import { MILK_RULES, milkReady } from './animalMilk';
-import { at, CELLS, HEIGHT, inside, position, type Pos, type VoxelSave, type WildAnimal } from './types';
+import { at, CELLS, HEIGHT, WIDTH, DEPTH, inside, position, type Pos, type VoxelSave, type WildAnimal } from './types';
 import { HUSBANDRY_RULES, ANIMAL_HUSBANDRY, initialAnimalState, animalFeedAmount, isAnimalAdult } from './husbandry';
 import { initialSkills, validSkills } from './skills';
 
@@ -47,9 +47,16 @@ export function validateAnimalHusbandryShape(a: WildAnimal, nextId: number): voi
       a.pregnancy.fatherId === a.id || !fraction(a.pregnancy.progress) || a.sex !== 'female' ||
       !isAnimalAdult(a) || a.dead)) fail('怀孕字段或母体无效');
   if (a.goal !== null && (!exact(a.goal, ['kind', 'id']) ||
-      !['grass', 'crop', 'food', 'mate', 'area', 'exit', 'layEgg', 'layEggBox', 'caravan'].includes(a.goal.kind) ||
-      (['grass', 'exit', 'layEgg'].includes(a.goal.kind) ? !integer(a.goal.id, 0, CELLS - 1) : !id(a.goal.id))))
+      !['grass', 'crop', 'food', 'mate', 'area', 'exit', 'layEgg', 'layEggBox', 'caravan', 'shelter', 'climateExit'].includes(a.goal.kind) ||
+      (['grass', 'exit', 'layEgg', 'shelter', 'climateExit'].includes(a.goal.kind) ? !integer(a.goal.id, 0, CELLS - 1) : !id(a.goal.id))))
     fail('动物目标无效');
+  if ((a.phase === 'shelter') !== ['shelter', 'climateExit'].includes(a.goal?.kind ?? '') ||
+      (a.phase === 'shelter' && (a.medical.downed || a.medical.carriedBy !== null || a.medical.bedId !== null ||
+        a.mateId !== null || a.mateProgress || a.eatProgress || a.layProgress ||
+        (a.path.length && a.path.at(-1) !== a.goal!.id))) ||
+      (a.goal?.kind === 'climateExit' && (a.faction !== 'wild' ||
+        ![0, WIDTH - 1].includes(position(a.goal.id).x) && ![0, DEPTH - 1].includes(position(a.goal.id).y))))
+    fail('动物环境避险阶段或路径无效');
   if (a.path.length && a.goal === null && !(a.phase === 'medicalRest' && a.medical?.bedId !== null && a.medical?.bedId !== undefined))
     fail('动物路径缺少目标');
 }

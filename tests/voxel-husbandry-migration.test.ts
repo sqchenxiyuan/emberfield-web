@@ -33,7 +33,7 @@ function historical(name: keyof typeof HASHES) {
 describe('authentic v28 husbandry migration', () => {
   it.each(['initial', 'protected', 'final'] as const)('retains genuine %s checkpoint state and seeds grass without allocating identities', name => {
     const old = historical(name), before = structuredClone(old), s = VoxelSimulation.load(old), saved = s.save();
-    expect(old).toEqual(before); expect(saved.version).toBe(54);
+    expect(old).toEqual(before); expect(saved.version).toBe(55);
     expect(saved.tick).toBe(old.tick); expect(saved.nextId).toBe(old.nextId);
     expect(saved.animals).toHaveLength(old.animals.length);
     for (const previous of old.animals) {
@@ -92,7 +92,9 @@ describe('authentic v28 husbandry migration', () => {
     for (const mutate of variants) {
       const old = structuredClone(baseline); mutate(old); const before = structuredClone(old);
       const eggField = ['eggProgress', 'fertilizationCount', 'eggFatherId', 'layProgress'].some(key => Object.hasOwn(old.animals[0], key));
-      const expectedError = Object.hasOwn(old.animals[0], 'medical')
+      const expectedError = Object.hasOwn(old.animals[0], 'environment')
+        ? /旧版本混入动物环境疾病或避温任务/
+        : Object.hasOwn(old.animals[0], 'medical')
         ? /旧版本混入动物病床、伤口或护理任务/
         : eggField ? /旧版本混入产蛋或孵化字段/ : /旧版本包含新版动物/;
       expect(() => VoxelSimulation.load(old)).toThrow(expectedError); expect(old).toEqual(before);

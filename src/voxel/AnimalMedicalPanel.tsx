@@ -3,6 +3,8 @@ import { ANIMAL_MEDICAL_RULES, ANIMAL_PART_NAMES, animalMedicalSummary, animalNe
 import { MEDICAL_POLICIES, MEDICAL_POLICY_NAMES, type MedicalPolicy } from './medicine';
 import { healthSummary } from './survival';
 import type { PenCommand } from './PenPanel';
+import { animalEnvironmentEffects, animalTemperatureAllowsRecovery } from './animalEnvironment';
+import { AnimalEnvironmentFacts } from './AnimalEnvironmentFacts';
 
 const percent = (value: number) => `${(value * 100).toFixed(1)}%`;
 const woundNames = { cut: '割伤', bruise: '挫伤', burn: '烧伤' };
@@ -16,14 +18,15 @@ const freeBeds = (s: VoxelSnapshot, patient?: WildAnimal) => s.animalBeds.filter
   !s.pawns.some(p => p.animalCareTask?.animalId !== patient?.id && p.animalCareTask?.bedId === b.id));
 
 /** Snapshot state only: these indicators never advance treatment or healing. */
-export function AnimalMedicalFacts({ animal: a }: { animal: WildAnimal }) {
-  const summary = animalMedicalSummary(a), m = a.medical;
+export function AnimalMedicalFacts({ animal: a, localTemperature }: { animal: WildAnimal; localTemperature?: number }) {
+  const summary = animalMedicalSummary(a), m = a.medical, environment = animalEnvironmentEffects(a);
   return <div className="voxel-animal-medical-facts" data-testid="animal-medical-facts" data-downed={m.downed} data-carried-by={m.carriedBy ?? 'none'}>
-    <b>{a.dead ? '已死亡' : m.carriedBy !== null ? '正在被搬运' : m.downed ? '倒地，无法自行行动' : a.phase === 'medicalRest' ? '医疗休养中' : summary.injured ? '受伤' : '无可见伤势'}</b>
+    <b>{a.dead ? '已死亡' : m.carriedBy !== null ? '正在被搬运' : m.downed ? '倒地，无法自行行动' : a.phase === 'medicalRest' ? '医疗休养中' : environment.ill ? '环境病症，需要改善环境' : summary.injured ? '受伤' : '无可见伤势'}</b>
     <small>疼痛 {percent(summary.pain)} · 移动能力 {percent(summary.moving)}</small>
     <small>失血 {percent(m.bloodLoss)} · 失血速度 {percent(summary.bleeding)} / 日</small>
     {summary.needsTending && <small className="voxel-pen-warning">有未护理伤口{summary.bleeding > 0 ? '，仍在出血' : ''}</small>}
     {m.bedId !== null && <small>已安排医疗睡眠点 #{m.bedId}</small>}
+    <AnimalEnvironmentFacts animal={a} localTemperature={localTemperature} />
   </div>;
 }
 
@@ -43,12 +46,15 @@ export function AnimalCareStatus({ animal: a, snapshot: s }: { animal: WildAnima
   </div>;
 }
 
-export function AnimalCareActions({ animal: a, snapshot: s, command }: { animal: WildAnimal; snapshot: VoxelSnapshot; command: PenCommand }) {
+export function AnimalCareActions({ animal: a, snapshot: s, command, localTemperature }: { animal: WildAnimal; snapshot: VoxelSnapshot; command: PenCommand; localTemperature?: number }) {
   if (a.dead) return null;
   const summary = animalMedicalSummary(a), workers = s.pawns.filter(p => available(p, s.tick) && (p.priorities.care > 0 || p.priorities.handle > 0));
   const beds = freeBeds(s, a).length, onBed = s.animalBeds.some(b => b.id === a.medical.bedId && same(a, b));
+  const knownTemperature = localTemperature !== undefined && Number.isFinite(localTemperature);
+  const safeOnBed = onBed && !s.fires.some(f => same(f, a)) && (knownTemperature
+    ? animalTemperatureAllowsRecovery(a, localTemperature) : !animalEnvironmentEffects(a).ill);
   const intentReason = a.hunt ? '请先取消狩猎标记' : a.slaughter ? '请先取消待宰标记' : a.releaseMarked ? '请先取消放归标记' : '';
-  const rescueReason = intentReason || (a.medical.carriedBy !== null ? '正在被搬运' : !a.medical.downed ? '只有倒地动物需要搬运救助' : onBed ? '已经在医疗睡眠点' : beds === 0 ? '没有空闲动物医疗睡眠点' : '');
+  const rescueReason = intentReason || (a.medical.carriedBy !== null ? '正在被搬运' : !a.medical.downed ? '只有倒地动物需要搬运救助' : safeOnBed ? '已经在适宜的医疗睡眠点' : beds === 0 ? '没有空闲动物医疗睡眠点' : '');
   const tendReason = intentReason || (a.medical.policy === 'none' ? '护理政策为不接受护理' : !summary.needsTending ? '没有未护理伤口' : a.medical.carriedBy !== null ? '等待搬运完成' : '');
   const feedReason = intentReason || (!onBed ? '患者需要先在医疗睡眠点休养' : a.hunger >= 45 ? '饱食尚未低于 45%' : a.medical.carriedBy !== null ? '等待搬运完成' : '');
   return <details className="voxel-animal-care-actions"><summary>指定护理人员</summary>
@@ -56,7 +62,7 @@ export function AnimalCareActions({ animal: a, snapshot: s, command }: { animal:
     {rescueReason && <small>搬运：{rescueReason}</small>}{tendReason && <small>护理：{tendReason}</small>}{feedReason && <small>喂食：{feedReason}</small>}
     {workers.map(p => <div className="voxel-animal-care-worker" key={p.id}>
       <b>{p.name} · 医疗 {p.skills.medicine.level} 级</b>
-      <div><button aria-label={`${p.name} 救助动物 #${a.id}`} title={rescueReason || '将倒地动物搬到可达的空闲医疗睡眠点'} disabled={!!rescueReason}
+      <div><button aria-label={`${p.name} 救助动物 #${a.id}`} title={rescueReason || '将倒地动物搬到适温、无火、可达的空闲医疗睡眠点'} disabled={!!rescueReason}
         onClick={() => void command({ type: 'animalCare', pawnId: p.id, animalId: a.id, action: 'rescue' })}>搬运救助</button>
       <button aria-label={`${p.name} 护理动物 #${a.id}`} title={p.priorities.care === 0 ? '请先开启医护分工' : tendReason || '前往取药或徒手护理'} disabled={p.priorities.care === 0 || !!tendReason}
         onClick={() => void command({ type: 'animalCare', pawnId: p.id, animalId: a.id, action: 'tend' })}>护理伤口</button>
@@ -64,14 +70,14 @@ export function AnimalCareActions({ animal: a, snapshot: s, command }: { animal:
         onClick={() => void command({ type: 'animalCare', pawnId: p.id, animalId: a.id, action: 'feed' })}>喂食患者</button></div>
       {p.priorities.care === 0 && <small>仅开启饲养，可搬运与喂食；护理伤口需开启医护。</small>}
     </div>)}
-    <small>执行前还会检查通路、活动范围、药物和食物；指定操作成功后开始实际工作。</small>
+    <small>执行前还会检查通路、活动范围、睡眠点温度、药物和食物；指定操作成功后开始实际工作。</small>
   </details>;
 }
 
-export function AnimalMedicalDetails({ animal: a, snapshot: s, command }: { animal: WildAnimal; snapshot: VoxelSnapshot; command: PenCommand }) {
+export function AnimalMedicalDetails({ animal: a, snapshot: s, command, localTemperature }: { animal: WildAnimal; snapshot: VoxelSnapshot; command: PenCommand; localTemperature?: number }) {
   if (a.dead) return null;
   return <section className="voxel-animal-medical" data-testid="animal-medical-details">
-    <h3>动物医疗</h3><AnimalMedicalFacts animal={a} /><AnimalCareStatus animal={a} snapshot={s} />
+    <h3>动物医疗</h3><AnimalMedicalFacts animal={a} localTemperature={localTemperature} /><AnimalCareStatus animal={a} snapshot={s} />
     <label>护理政策<select aria-label={`动物 #${a.id} 护理政策`} value={a.medical.policy}
       onChange={e => void command({ type: 'animalMedicalPolicy', animalId: a.id, policy: e.target.value as MedicalPolicy })}>
       {MEDICAL_POLICIES.map(policy => <option key={policy} value={policy}>{MEDICAL_POLICY_NAMES[policy]}</option>)}
@@ -89,7 +95,7 @@ export function AnimalMedicalDetails({ animal: a, snapshot: s, command }: { anim
         <small>{w.tended === null ? '未护理' : `已护理 · 质量 ${percent(w.tended)}`}</small>
       </div>)}
     </details>
-    <AnimalCareActions animal={a} snapshot={s} command={command} />
+    <AnimalCareActions animal={a} snapshot={s} command={command} localTemperature={localTemperature} />
     <small>护理伤口使用「医护」分工；搬运与喂食可使用「医护」或「饲养」。护理止血后仍需逐渐恢复，睡眠点有助休养。「不接受护理」只禁止伤口护理，不禁止搬运和喂食。</small>
   </section>;
 }
@@ -103,7 +109,7 @@ export function AnimalBedDetails({ bed, snapshot: s, command, focus }: { bed: An
     {patient && <button onClick={() => focus(patient)}>查看患者 #{patient.id}</button>}
     <button aria-label={`定位动物医疗睡眠点 #${bed.id}`} onClick={() => focus({ ...bed, animalBedId: bed.id } as Pos)}>定位睡眠点</button>
     <button aria-label={`移除动物医疗睡眠点 #${bed.id}`} onClick={() => void command({ type: 'animalBedRemove', bedId: bed.id })}>移除睡眠点</button>
-    <small>零建材、一格医疗睡眠点。移除不会删除患者；先保留安全地面与护理通路。</small>
+    <small>零建材、一格医疗睡眠点。需要适宜温度与安全通路；放置睡眠点本身不会保温或降温。移除不会删除患者。</small>
   </section>;
 }
 
@@ -114,7 +120,7 @@ export function AnimalMedicalPanel({ snapshot: s, command, choose, focus, select
   return <div className="voxel-animal-medical-panel" data-testid="animal-medical-panel">
     <p>动物患者 {patients.length} 只 · 空闲医疗睡眠点 {freeBeds(s).length} / {s.animalBeds.length}</p>
     <button onClick={() => choose('animalBed')}>放置动物医疗睡眠点</button>
-    <small>在可达地面画格即可放置，不消耗建材。治疗需医护分工；野生或商队患者需要标记救助，或直接指定人员开始本次救助。</small>
+    <small>在可达地面画格即可放置，不消耗建材。先保证患者所处环境温度适宜；伤口护理需医护分工。野生或商队患者需要标记救助，或直接指定人员开始本次救助。</small>
     {patients.map(a => <section key={a.id}><button onClick={() => selectAnimal(a)}>{a.name} #{a.id} · 查看患者</button>
       <AnimalMedicalFacts animal={a} /><AnimalCareStatus animal={a} snapshot={s} />
     </section>)}

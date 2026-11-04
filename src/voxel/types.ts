@@ -1,5 +1,6 @@
 import type { EggBox, EggBoxTask } from './eggBoxes';
 import type { AnimalMedicalState, AnimalCareTask, AnimalBed } from './animalMedical';
+import type { AnimalEnvironmentState } from './animalEnvironment';
 import type { Trauma } from './injuries';
 import type { MedicalState, MedicalPolicy } from './medicine';
 import type { WeaponPiece, WeaponKind, WeaponBenchKind } from './weapons';
@@ -432,7 +433,7 @@ export interface Stove extends Pos {
 }
 export type AnimalSpecies = 'hare' | 'deer' | 'dromedary' | 'alpaca' | 'chicken';
 export interface GrassPatch extends Pos { growth: number }
-export interface AnimalGoal { kind: 'grass' | 'crop' | 'food' | 'mate' | 'area' | 'exit' | 'layEgg' | 'layEggBox' | 'caravan'; id: number }
+export interface AnimalGoal { kind: 'grass' | 'crop' | 'food' | 'mate' | 'area' | 'exit' | 'layEgg' | 'layEggBox' | 'caravan' | 'shelter' | 'climateExit'; id: number }
 export interface HandleTask {
   animalId: number;
   action: 'tame' | 'maintain' | 'feed' | 'slaughter' | 'autoSlaughter' | 'release' | 'milk' | 'shear';
@@ -452,6 +453,7 @@ export interface HusbandryEvent {
 /** Wildlife uses its own small state machine, separate from human anatomy. */
 export interface WildAnimal extends Pos {
   medical: AnimalMedicalState;
+  environment: AnimalEnvironmentState;
   allowedAreaId: number | null;
   ropePaused: boolean;
   requestedPenId: number | null;
@@ -487,7 +489,7 @@ export interface WildAnimal extends Pos {
   health: number;
   hunger: number;
   dead: boolean;
-  phase: 'roam' | 'graze' | 'rest' | 'flee' | 'dead' | 'eat' | 'mate' | 'interact' | 'rope' | 'layEgg' | 'downed' | 'medicalRest' | 'carried';
+  phase: 'roam' | 'graze' | 'rest' | 'flee' | 'dead' | 'eat' | 'mate' | 'interact' | 'rope' | 'layEgg' | 'downed' | 'medicalRest' | 'carried' | 'shelter';
   hunt: boolean;
   moveTick: number;
   decisionTick: number;
@@ -1067,7 +1069,7 @@ export interface VoxelSave {
   eggBoxes: EggBox[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 54;
+  version: 55;
   autoSlaughter: import('./autoSlaughter').AutoSlaughterSettings;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];

@@ -41,7 +41,7 @@ describe('physical item prohibition',()=>{
     const before=s.counts(),wealth=s.snapshot().storyteller.threat.wealth;expect(wealth.items).toBeGreaterThan(0);
     for(const item of goods)cmd(s,{type:'itemForbidden',itemId:item.id,forbidden:true});
     expect(s.counts()).toEqual(before);expect(s.snapshot().storyteller.threat.wealth).toEqual(wealth);
-    const saved=s.save();expect(saved.version).toBe(54);
+    const saved=s.save();expect(saved.version).toBe(55);
     const restored=VoxelSimulation.load(saved);expect(restored.items).toEqual(s.items);
     expect(restored.snapshot().items.every(i=>i.forbidden)).toBe(true);
     const old:Record<string,any>={...saved,version:44}; stripAutoSlaughterFields(old); delete old.autoRebuild;
@@ -187,7 +187,7 @@ describe('physical item prohibition',()=>{
     s.items.push({id:s.nextId++,...pos(25),resource:'weapon',amount:1,weapon:makeWeapon(id,'woodClub'),forbidden:true});
     const raw:Record<string,any>={...s.save(),version:44}; stripAutoSlaughterFields(raw); expect(raw.autoRebuild).toBe(false); delete raw.autoRebuild;
     const before=structuredClone(raw),loaded=VoxelSimulation.load(raw);
-    expect(raw).toEqual(before);expect(loaded.save().version).toBe(54);expect(loaded.items).toEqual(raw.items);
+    expect(raw).toEqual(before);expect(loaded.save().version).toBe(55);expect(loaded.items).toEqual(raw.items);
     expect(loaded.save().blocks).toEqual(raw.blocks);
     expect(validBatch({...freshBatch('herb',2),forbidden:true})).toBe(true);
   });

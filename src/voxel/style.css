@@ -2091,6 +2091,10 @@ a {
 .voxel-production-delivery-actions button { flex: 1 1 auto; padding: 6px; font-size: 10px; }
 .voxel-production-row[data-bill-state='delivery'] .voxel-production-row-title > span { color: #d4dfba; }
 .voxel-stockpile-zone { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #b8c9b333; min-width: 0; overflow-wrap: anywhere; }
+.voxel-animal-environment-facts { display: grid; gap: 5px; margin: 7px 0; padding: 8px; border: 1px solid #a5bb9844; border-radius: 3px; min-width: 0; overflow-wrap: anywhere; }
+.voxel-animal-environment-facts > b { font-size: 11px; color: #d0dcc6; }
+.voxel-animal-environment-facts > small { line-height: 1.6; }
+.voxel-animal-environment-facts .voxel-animal-environment-warning { color: #e5bc85; }
 .voxel-stockpile-zone > .voxel-info-row { align-items: flex-start; }
 .voxel-stockpile-zone > .voxel-info-row > b { min-width: 0; }
 .voxel-stockpile-zone > .voxel-info-row > span { flex-shrink: 0; }

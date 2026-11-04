@@ -308,7 +308,7 @@ describe('production bill command and physical lifecycle integration', () => {
     const provenance = JSON.parse(readFileSync(new URL('./fixtures/voxel-v38-before-production-bills.provenance.json', import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(provenance.sha256);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old), current = s.save();
-    expect(old.version).toBe(38); expect(current.version).toBe(54); expect(current.productionQueues).toEqual([]);
+    expect(old.version).toBe(38); expect(current.version).toBe(55); expect(current.productionQueues).toEqual([]);
     for (const field of ['items', 'jobs', 'stoves', 'stonecutters', 'tailors', 'weaponBenches', 'butcherSpots', 'nextId', 'blocks'] as const)
       expect(current[field], field).toEqual(old[field]);
     const stats = structuredClone(current.stats);

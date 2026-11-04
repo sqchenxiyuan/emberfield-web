@@ -103,7 +103,7 @@ describe('alpaca wool biology and physical shearing',()=>{
   });
   it('migrates old defaults without changing selections and rejects disguised new state before migration',()=>{
     const raw:any=new VoxelSimulation(73129,{biome:'boreal'}).save();stripAnimalWoolFields(raw);raw.version=49;
-    const loaded=VoxelSimulation.load(raw).save();expect(loaded.version).toBe(54);
+    const loaded=VoxelSimulation.load(raw).save();expect(loaded.version).toBe(55);
     expect(loaded.animals.every(a=>a.woolGrowth===0)).toBe(true);expect(loaded.stats.produced.alpacaWool).toBe(0);
     expect(loaded.stockpiles.map(s=>s.accepts)).toEqual(raw.stockpiles.map((s:any)=>s.accepts));
     for(const change of [(d:any)=>d.animals[0].woolGrowth=0,(d:any)=>d.stats.produced.alpacaWool=0,

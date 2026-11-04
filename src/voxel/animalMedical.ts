@@ -1,6 +1,7 @@
 import { DAY, type AnimalSpecies, type Pos, type WildAnimal } from './types';
 import type { MedicalPolicy } from './medicine';
 import { ANIMAL_DEFS } from './wildlife';
+import { animalEnvironmentEffects } from './animalEnvironment';
 
 export type AnimalBodyPart = 'body' | 'head' | 'frontLeft' | 'frontRight' | 'hindLeft' | 'hindRight';
 export interface AnimalWound {
@@ -37,19 +38,19 @@ export function initialAnimalMedical(): AnimalMedicalState {
   return { policy:'herbal',wounds:[],nextWoundId:1,bloodLoss:0,downed:false,bedId:null,carriedBy:null,rescue:false };
 }
 export function animalMedicalSummary(a: WildAnimal) {
-  const m=a.medical, maximum=ANIMAL_DEFS[a.species].health;
-  if(m.wounds.length===0&&m.bloodLoss===0)return {pain:0,moving:1,bleeding:0,
-    downed:!a.dead&&(a.health/maximum<=ANIMAL_MEDICAL_RULES.downedHealth||a.malnutrition>=ANIMAL_MEDICAL_RULES.downedMalnutrition),
-    injured:a.health<maximum,needsTending:false};
+  const m=a.medical, maximum=ANIMAL_DEFS[a.species].health, environment=animalEnvironmentEffects(a);
+  if(m.wounds.length===0&&m.bloodLoss===0)return {pain:environment.pain,moving:environment.movingFactor,bleeding:0,
+    downed:!a.dead&&(environment.downed||a.health/maximum<=ANIMAL_MEDICAL_RULES.downedHealth||a.malnutrition>=ANIMAL_MEDICAL_RULES.downedMalnutrition),
+    injured:a.health<maximum||environment.ill,needsTending:false};
   const damage=m.wounds.reduce((n,w)=>n+w.severity,0);
-  const pain=Math.min(1,damage/maximum*1.5);
+  const pain=Math.min(1,damage/maximum*1.5+environment.pain);
   const limbs=animalBodyParts(a.species).filter(p=>p!=='body'&&p!=='head');
   const moving=limbs.reduce((n,p)=>n+Math.max(0,1-m.wounds.filter(w=>w.part===p).reduce((sum,w)=>sum+w.severity,0)/(maximum*.3)),0)/limbs.length;
   const bleeding=m.wounds.reduce((n,w)=>n+(w.kind==='cut'&&w.tended===null?w.severity/maximum:0),0)*ANIMAL_MEDICAL_RULES.bleedPerDay;
-  const downed=!a.dead&&(pain>=ANIMAL_MEDICAL_RULES.painShock||a.health/maximum<=ANIMAL_MEDICAL_RULES.downedHealth||
+  const downed=!a.dead&&(environment.downed||pain>=ANIMAL_MEDICAL_RULES.painShock||a.health/maximum<=ANIMAL_MEDICAL_RULES.downedHealth||
     m.bloodLoss>=ANIMAL_MEDICAL_RULES.downedBlood||a.malnutrition>=ANIMAL_MEDICAL_RULES.downedMalnutrition||moving<=.15);
-  return {pain,moving:Math.max(.1,moving*(1-.5*m.bloodLoss)),bleeding,downed,
-    injured:m.wounds.length>0||a.health<maximum||m.bloodLoss>0,
+  return {pain,moving:Math.max(.1,moving*(1-.5*m.bloodLoss))*environment.movingFactor,bleeding,downed,
+    injured:m.wounds.length>0||a.health<maximum||m.bloodLoss>0||environment.ill,
     needsTending:m.wounds.some(w=>w.tended===null)};
 }
 /** Uses the caller's deterministic sample; never consumes the world's RNG. */

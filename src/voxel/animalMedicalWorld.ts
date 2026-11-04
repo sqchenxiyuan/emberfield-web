@@ -7,6 +7,7 @@ import { animalAllowed } from './pensWorld';
 import { NUTRITION } from './farming';
 import { healthSummary } from './survival';
 import { learnSkill, tendQuality, tendSpeed } from './skills';
+import { animalTemperatureAllowsRecovery } from './animalEnvironment';
 
 export interface AnimalMedicalHost extends HusbandryHost {
   animalBeds: AnimalBed[]; fires: Pos[];
@@ -18,10 +19,10 @@ const same=(a:Pos,b:Pos)=>at(a)===at(b);
 const adjacent=(a:Pos,b:Pos)=>a.z===b.z&&Math.abs(a.x-b.x)+Math.abs(a.y-b.y)===1;
 const eligible=(a:WildAnimal)=>!a.dead&&!a.hunt&&!a.slaughter&&!a.releaseMarked&&(a.faction==='colony'||a.medical.rescue);
 const edible=(i:{resource:string})=>['grain','food','meal'].includes(i.resource);
-const validBed=(s:AnimalMedicalHost,b:AnimalBed)=>s.standable(b)&&s.animalCanStop(b)&&!s.fires.some(f=>same(f,b));
-const presentBed=(s:AnimalMedicalHost,a:WildAnimal)=>s.animalBeds.find(b=>b.id===a.medical.bedId&&same(a,b)&&validBed(s,b));
+const validBed=(s:AnimalMedicalHost,b:AnimalBed,a:WildAnimal)=>s.standable(b)&&s.animalCanStop(b)&&!s.fires.some(f=>same(f,b))&&animalTemperatureAllowsRecovery(a,s.temperature(b));
+const presentBed=(s:AnimalMedicalHost,a:WildAnimal)=>s.animalBeds.find(b=>b.id===a.medical.bedId&&same(a,b)&&validBed(s,b,a));
 function bedFree(s:AnimalMedicalHost,b:AnimalBed,a:WildAnimal,p?:Pawn) {
-  return validBed(s,b)&&!s.animals.some(other=>other!==a&&!other.dead&&(other.medical.bedId===b.id||same(other,b)))&&
+  return validBed(s,b,a)&&!s.animals.some(other=>other!==a&&!other.dead&&(other.medical.bedId===b.id||same(other,b)))&&
     !s.pawns.some(other=>other!==p&&other.animalCareTask?.animalId!==a.id&&other.animalCareTask?.bedId===b.id);
 }
 function workerCan(p:Pawn,action:AnimalCareTask['action']):boolean {
@@ -85,13 +86,12 @@ export function animalMedicalTick(s:AnimalMedicalHost,a:WildAnimal):boolean {
   // Mobile patients can seek their own bed on the animal ground graph. A
   // sleeping point is a destination, never permission to cross a closed pen.
   let bed=s.animalBeds.find(b=>b.id===m.bedId);
-  if(!bed&&s.tick>=a.decisionTick&&m.policy!=='none') {
-    a.decisionTick=s.tick+80;
+  if(!bed&&s.tick>=a.decisionTick&&m.policy!=='none'&&(a.goal===null||(s.tick+a.id)%80===0)) {
     const beds=s.animalBeds.filter(b=>bedFree(s,b,a)&&animalAllowed(s,a,b));
     const path=s.animalRoute(a,new Set(beds.map(at)));
     if(path!==null) {
       bed=beds.find(b=>at(b)===(path.at(-1)??at(a)));
-      if(bed){clearActivity(s,a);m.bedId=bed.id;a.path=path;}
+      if(bed){clearActivity(s,a);m.bedId=bed.id;a.path=path;a.decisionTick=s.tick+80;}
     }
   }
   if(!bed)return false;

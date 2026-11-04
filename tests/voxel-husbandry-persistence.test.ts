@@ -7,6 +7,7 @@ import { rejectLegacyMilk } from '../src/voxel/animalMilkPersistence';
 import { rejectLegacyWool } from '../src/voxel/animalWoolPersistence';
 import { rejectLegacyEggs } from '../src/voxel/animalEggPersistence';
 import { rejectLegacyAnimalMedical } from '../src/voxel/animalMedicalPersistence';
+import { rejectLegacyAnimalEnvironment } from '../src/voxel/animalEnvironmentPersistence';
 import { initialSkills } from '../src/voxel/skills';
 import { freshBatch } from '../src/voxel/preservation';
 
@@ -72,7 +73,7 @@ describe('v29 husbandry migration boundary', () => {
       d => { d.pawns[0].handleTask = null; }, d => { d.pawns[0].priorities.handle = 0; },
       d => { d.pawns[0].skills.animals = initialSkills(0).animals; }, d => { d.pawns[0].phase = 'handle'; },
       d => { d.animals[0].phase = 'mate'; },
-      ...Object.entries(initialAnimalState(20, 'hare', 0)).filter(([key])=>!['milkFullness', 'woolGrowth', 'eggProgress', 'fertilizationCount', 'eggFatherId', 'layProgress', 'medical'].includes(key) && !Object.hasOwn(initialAnimalPenState(0),key)).map(([key, value]) => (d: any) => { d.animals[0][key] = value; })];
+      ...Object.entries(initialAnimalState(20, 'hare', 0)).filter(([key])=>!['milkFullness', 'woolGrowth', 'eggProgress', 'fertilizationCount', 'eggFatherId', 'layProgress', 'medical', 'environment'].includes(key) && !Object.hasOwn(initialAnimalPenState(0),key)).map(([key, value]) => (d: any) => { d.animals[0][key] = value; })];
     for (const version of [1, 13, 21, 27, 28]) for (const change of changes) {
       const d = legacy(); d.version = version; change(d); const before = structuredClone(d);
       expect(() => rejectLegacyHusbandryFields(d)).toThrow(/旧版本包含新版/); expect(d).toEqual(before);
@@ -104,6 +105,13 @@ describe('v29 husbandry migration boundary', () => {
       const d = legacy(); d.version = version; d.animals[0].medical = animal().medical;
       const before = structuredClone(d);
       expect(() => rejectLegacyAnimalMedical(d, version)).toThrow(/旧版本混入动物病床、伤口或护理任务/);
+      expect(d).toEqual(before);
+    }
+    // Environment belongs to the v55 preflight, including medical-era saves.
+    for (const version of [1, 13, 21, 27, 28, 29, 48, 49, 50, 51, 52, 53, 54]) {
+      const d = legacy(); d.version = version; d.animals[0].environment = animal().environment;
+      const before = structuredClone(d);
+      expect(() => rejectLegacyAnimalEnvironment(d, version)).toThrow(/旧版本混入动物环境疾病或避温任务/);
       expect(d).toEqual(before);
     }
   });

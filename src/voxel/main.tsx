@@ -1020,7 +1020,7 @@ function App() {
           {!waterSlice && !bridge && water === 1 && <button onClick={() => client.choose('bridge')}>规划木桥</button>}
           {!waterSlice && bridge && <button onClick={() => void client.command({ type: 'designate', tool: 'remove', from: p })}>拆除这格木桥</button>}
         </section>}
-        {animal && s && <AnimalDetails animal={animal} snapshot={s} command={client.command} focus={focus} penControls={penControls} />}
+        {animal && s && <AnimalDetails animal={animal} snapshot={s} localTemperature={temperatureOf(animal)} command={client.command} focus={focus} penControls={penControls} />}
         {penMarker && s && <PenDetails marker={penMarker} snapshot={s} command={client.command} focus={focus} controls={penControls} />}
         {eggBox && s && <EggBoxPanel box={eggBox} snapshot={s} temperature={temperatureOf(eggBox)} command={c => void client.command(c)} focus={focus} />}
         {animalBed && s && <AnimalBedDetails bed={animalBed} snapshot={s} command={client.command} focus={focus} />}

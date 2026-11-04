@@ -23,7 +23,7 @@ export function animalMarketValue(a: WildAnimal): number {
 }
 export function animalCanTrade(a: WildAnimal, temperature: number): boolean {
   return !a.dead && !a.medical.downed && a.medical.carriedBy===null && a.health / ANIMAL_DEFS[a.species].health > LIVE_ANIMAL_TRADE.minimumSaleHealth &&
-    a.malnutrition < .8 && a.phase !== 'flee' &&
+    a.malnutrition < .8 && a.phase !== 'flee' && a.phase !== 'shelter' &&
     temperature >= LIVE_ANIMAL_TRADE.minimumTemperature && temperature <= LIVE_ANIMAL_TRADE.maximumTemperature;
 }
 export function newTraderAnimal(id: number, species: AnimalSpecies, sex: WildAnimal['sex'], tick: number, pos: Pos): WildAnimal {

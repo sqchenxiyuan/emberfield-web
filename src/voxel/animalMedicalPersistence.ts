@@ -3,6 +3,7 @@ import { ANIMAL_DEFS } from './wildlife';
 import { MEDICAL_POLICIES } from './medicine';
 import { healthSummary } from './survival';
 import { HUSBANDRY_RULES } from './husbandry';
+import { animalEnvironmentEffects } from './animalEnvironment';
 import { at, HEIGHT, inside, type VoxelSave, type WildAnimal } from './types';
 
 const record = (value: unknown): value is Record<string, any> => !!value && typeof value === 'object' && !Array.isArray(value);
@@ -73,7 +74,7 @@ export function validateAnimalMedicalState(a: WildAnimal, nextId: number, tick =
   const downed = animalMedicalSummary(a).downed;
   // Genuine old scalar damage has no wound history. Its initial downed=false
   // remains untouched until an ordinary simulation tick recomputes capacity.
-  if ((m.downed && !downed) || (!m.downed && downed && (m.wounds.length > 0 || m.bloodLoss > 0)))
+  if ((m.downed && !downed) || (!m.downed && downed && (m.wounds.length > 0 || m.bloodLoss > 0 || animalEnvironmentEffects(a).downed)))
     fail('倒地与已记录伤情不符');
 }
 
