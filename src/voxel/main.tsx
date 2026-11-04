@@ -39,6 +39,8 @@ import { SkillPanel, WorkSkill } from './SkillPanel';
 import { ResearchPanel, ResearchBenchPanel } from './ResearchPanel';
 import { RESEARCH_DEFS, toolResearchReason } from './research';
 import { ApparelPanel, WearApparel } from './ApparelPanel';
+import { FoodPolicyPanel } from './FoodPolicyPanel';
+import { FoodOrder } from './FoodOrder';
 import { ProductionBillsPanel } from './ProductionBillsPanel';
 import { ProductionDeliveryStatus } from './ProductionOutputPanel';
 import { UnfinishedPanel } from './UnfinishedPanel';
@@ -1426,6 +1428,7 @@ function App() {
             <ItemAccessPanel item={i} command={c => void client.command(c)} />
             {i.resource === 'alpacaWool' && <small data-testid="alpaca-wool-use">剪毛获得的纺织原料，不能食用。可在裁缝账单中允许羊驼毛，每件衣物使用同一种材料；请收入仓储，避免露天损耗。</small>}
             <FoodCondition batch={i} temperature={temperatureOf(i)} />
+            {s && !!NUTRITION[i.resource] && <FoodOrder item={i} pawns={s.pawns} tick={s.tick} preferredPawnId={selectedPawn} command={c => void client.command(c)} />}
             <ItemCondition condition={s?.environment.items.find(item => item.entity === 'stack' && item.id === i.id)} name={foodName(i)} />
             {i.unfinished && s && <UnfinishedPanel batch={i} snapshot={s} command={c => void client.command(c)} focus={focus} />}
             {i.furniture && s && <div data-testid="packed-furniture" data-furniture-id={i.furniture.id} data-stack-id={i.id}>
@@ -1684,6 +1687,7 @@ function App() {
                 <progress value={pawn.rest} max={100} />
               </label>
             </div>
+            {s && <FoodPolicyPanel key={`food-policy-${pawn.id}`} pawn={pawn} policies={s.foodPolicies} pawns={s.pawns} command={c => void client.command(c)} />}
             {pawn.cargo && (
               <div data-testid="carried-food">
                 <p>

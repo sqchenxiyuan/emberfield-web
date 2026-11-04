@@ -185,6 +185,7 @@ describe('weapon transport, prohibition and interrupted transactions', () => {
     enemy.name = '测试敌人';
     Object.assign(enemy, pos(23, 10));
     enemy.faction = 'raider';
+    enemy.foodPolicyId = null;
     enemy.apparelControl = initialApparelControl(s.tick);
     enemy.phase = 'combat';
     enemy.weapon = makeWeapon(s.nextId++, 'steelKnife');

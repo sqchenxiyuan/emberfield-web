@@ -12,7 +12,7 @@ import { type Pawn, type VoxelSave } from '../src/voxel/types';
 function pawn(id: number, extra: Partial<Pawn> = {}): Pawn {
   return { ...initialSurvival(20, id), id, name: `人物${id}`, x: 19, y: 10, z: 8, color: 0,
     food: 80, rest: 80, skills: initialSkills(id), social: initialSocial(), living: initialLiving(), psyche: initialPsyche(),
-    worn: [], apparelControl: initialApparelControl(0), apparelTask: null, apparelWearTicks: 0, jobId: null, phase: 'idle', path: [],
+    worn: [], foodPolicyId: null, apparelControl: initialApparelControl(0), apparelTask: null, apparelWearTicks: 0, jobId: null, phase: 'idle', path: [],
     destination: null, cargo: null, eating: null, reason: '', moveTick: 0, workTarget: null,
     sleepingSince: null, sleepBedId: null, schedule: Array(24).fill('work'),
     priorities: { handle: 0, firefight: 0, clean: 0, warden: 1, care: 0, hunt: 0, dig: 0, build: 0, cut: 0, haul: 0, grow: 0,

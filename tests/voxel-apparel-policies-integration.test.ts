@@ -3,6 +3,7 @@ import { VoxelSimulation } from '../src/voxel/world';
 import { Block, at, index, type ApparelKind, type Pawn, type Pos, type VoxelCommand } from '../src/voxel/types';
 import { makeApparel } from '../src/voxel/apparel';
 import { initialApparelControl } from '../src/voxel/apparelPolicies';
+import { stripApparelPoliciesFields } from './legacy-apparel-policies-defaults';
 
 const pos = (x:number,y=16,z=8):Pos => ({x,y,z});
 function cmd(s:VoxelSimulation,c:VoxelCommand) { const r=s.command(c); expect(r.ok,r.message).toBe(true); return r; }
@@ -40,7 +41,7 @@ function identities(s:VoxelSimulation) {
 describe('physical apparel policy management',()=>{
   it('assigns new colonists a shared policy and migrates controlled old-format graphs to manual',()=>{
     const s=new VoxelSimulation(73129);expect(s.pawns.every(p=>p.apparelControl.policyId===1)).toBe(true);
-    const old:any=s.save();delete old.apparelPolicies;for(const p of old.pawns)delete p.apparelControl;old.version=55;
+    const old:any=s.save();stripApparelPoliciesFields(old);old.version=55;
     const next=VoxelSimulation.load(old);expect(next.pawns.every(p=>p.apparelControl.policyId===null)).toBe(true);
     expect(old.pawns.every((p:any)=>!Object.hasOwn(p,'apparelControl'))).toBe(true);
   });

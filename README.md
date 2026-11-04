@@ -1,5 +1,7 @@
 # 余烬边境 · Emberfield
 
+v57接通共享饮食政策与手动食用：按进食者政策选择真实食物，居民自行取餐、医生/狱卒送餐与途中中断共同遵守规则；玩家可临时指定食物覆盖政策，仍须实际前往并吃完。存档保留实际批次和任务，旧营地继续原有自由饮食。玩法机制优先，数值后调。见[157原版静态机制](docs/research/rimworld/157-food-policies-mechanisms.md)、[158玩法与验证](docs/research/rimworld/158-food-policies-gameplay.md)。本轮仅静态和无界面验证。
+
 v56接通服装政策与自动换装：共享筛选 → 从真实储存区取衣 → 步行装备 → 旧衣落地和搬运；手动穿戴有强制保留标记，可逐件或全部解除。政策修改、预约竞争、区域限制、中断和存读共同接入，旧营地保留手动管理。玩法机制优先，数值后调。见[155原版静态机制](docs/research/rimworld/155-apparel-policies-mechanisms.md)、[156玩法与验证](docs/research/rimworld/156-apparel-policies-gameplay.md)。本轮仅静态分析与无界面验证。
 
 v55接通动物环境生存：实际房间温度与物种耐受 → 失温/中暑 → 寻温避险或倒地 → 实际救助转床 → 适温恢复；地面火焰接触也会产生可护理的烧伤。病情贯穿交易与存读，草药不能治疗纯温病。玩法机制优先，数值集中后调。见[153原版静态机制](docs/research/rimworld/153-animal-environment-mechanisms.md)、[154玩法与验证](docs/research/rimworld/154-animal-environment-gameplay.md)。本轮仅静态分析与无界面验证；附着火、自行灭火、冻伤等继续待补。

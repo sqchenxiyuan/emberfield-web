@@ -3,6 +3,8 @@ import { APPAREL_POLICY_LIMIT, createDefaultApparelPolicies, initialApparelContr
   policyAllowsApparel, neededApparelWarmth, apparelPolicyGain, APPAREL_POLICY_MIN_GAIN,
   selectApparelPolicyCandidate } from './apparelPolicies';
 import { rejectLegacyApparelPolicies, migrateApparelPolicies, validateApparelPolicies } from './apparelPoliciesPersistence';
+import { FOOD_POLICY_LIMIT, createDefaultFoodPolicies, normalizeFoodPolicy, policyAllowsFood } from './foodPolicies';
+import { rejectLegacyFoodPolicies, migrateFoodPolicies, validateFoodPolicies } from './foodPoliciesPersistence';
 import { rejectLegacyWool, migrateWool, validateWool } from './animalWoolPersistence';
 import { rejectLegacyEggs, migrateEggs, validateEggs } from './animalEggPersistence';
 import { advanceHatcher } from './animalEggs';
@@ -627,7 +629,7 @@ export class VoxelSimulation {
     return targets.every(t => !t || this.pawnAllowed(p,t));
   }
   private reconcilePawnArea(p: Pawn, assignmentChanged = false) {
-    const check = assignmentChanged ? { ...p, weaponTask:null, apparelTask:null } : p;
+    const check = assignmentChanged ? { ...p, weaponTask:null, apparelTask:null, manualFoodOrder:undefined } : p;
     const equipment = assignmentChanged ? this.items.find(i =>
       (p.weaponTask?.stage === 'fetch' && i.weapon?.id === p.weaponTask.weaponId) ||
       (p.apparelTask?.stage === 'fetch' && i.apparel?.id === p.apparelTask.apparelId)) : undefined;
@@ -694,6 +696,7 @@ export class VoxelSimulation {
   ladders = new Uint8Array(CELLS);
   pawns: Pawn[] = [];
   apparelPolicies = createDefaultApparelPolicies();
+  foodPolicies = createDefaultFoodPolicies();
   socialHistory: SocialIdentity[] = [];
   socialLog: SocialEvent[] = [];
   items: Stack[] = [];
@@ -855,6 +858,7 @@ export class VoxelSimulation {
         worn: [],
         apparelTask: null,
         apparelControl: initialApparelControl(this.tick, 1),
+        foodPolicyId: 1,
         apparelWearTicks: 0,
         jobId: null,
         path: [],
@@ -2936,7 +2940,7 @@ export class VoxelSimulation {
     if (
       'pawnId' in c &&
       c.pawnId !== null &&
-      !(['medicalPolicy', 'medicalRest'].includes(c.type) && this.pawns.some(p => p.id === c.pawnId && p.faction === 'prisoner')) &&
+      !(['medicalPolicy', 'medicalRest', 'pawnFoodPolicy'].includes(c.type) && this.pawns.some(p => p.id === c.pawnId && p.faction === 'prisoner')) &&
       this.pawns.some((p) => p.id === c.pawnId && p.faction !== 'colony')
     )
       return { ok: false, message: '无法指挥其他派系人物' };
@@ -3321,6 +3325,48 @@ export class VoxelSimulation {
           ? '烹饪已暂停；无落地空间时材料保留原任务等待退回'
           : `简餐不足 ${stove.target} 份时制作`,
       };
+    }
+    if (c.type === 'ingest') {
+      const p = this.pawns.find(p => p.id === c.pawnId);
+      if (Object.keys(c).some(k => !['type','pawnId','stackId'].includes(k)) || !p || !this.startManualFood(p,c.stackId))
+        return { ok:false, message:'无法食用：需要可行动且未吃饱的居民，以及可达、未被占用的食物' };
+      return { ok:true, message:p.reason };
+    }
+    if (c.type === 'foodPolicyCreate') {
+      const source = c.sourceId === undefined ? createDefaultFoodPolicies().policies[0]
+        : this.foodPolicies.policies.find(p => p.id === c.sourceId);
+      if (Object.keys(c).some(k => !['type','sourceId'].includes(k)) || !source ||
+          this.foodPolicies.policies.length >= FOOD_POLICY_LIMIT || this.foodPolicies.nextId >= Number.MAX_SAFE_INTEGER)
+        return { ok:false, message:'无法新建饮食政策：来源无效或已达到上限' };
+      const id = this.foodPolicies.nextId++;
+      this.foodPolicies.policies.push({ ...structuredClone(source), id, name:`饮食政策 ${id}` });
+      this.revision++;
+      return { ok:true, message:`已创建饮食政策 ${id}` };
+    }
+    if (c.type === 'foodPolicyUpdate') {
+      const policy = normalizeFoodPolicy(c.policy);
+      const i = policy ? this.foodPolicies.policies.findIndex(p => p.id === policy.id) : -1;
+      if (Object.keys(c).some(k => !['type','policy'].includes(k)) || !policy || i < 0)
+        return { ok:false, message:'饮食政策或食物种类无效' };
+      this.foodPolicies.policies[i] = policy;
+      this.reconcileFoodPolicies(); this.revision++;
+      return { ok:true, message:'共享饮食政策已更新，不合规的进食与喂食任务已重新安排' };
+    }
+    if (c.type === 'foodPolicyDelete') {
+      const i = this.foodPolicies.policies.findIndex(p => p.id === c.policyId);
+      if (Object.keys(c).some(k => !['type','policyId'].includes(k)) || i < 0 || this.foodPolicies.policies.length <= 1 ||
+          this.pawns.some(p => p.foodPolicyId === c.policyId))
+        return { ok:false, message:'不能删除正在使用的饮食政策或最后一份政策' };
+      this.foodPolicies.policies.splice(i,1); this.revision++;
+      return { ok:true, message:'饮食政策已删除' };
+    }
+    if (c.type === 'pawnFoodPolicy') {
+      const p = this.pawns.find(p => p.id === c.pawnId && ['colony','prisoner'].includes(p.faction) && !p.dead);
+      if (Object.keys(c).some(k => !['type','pawnId','policyId'].includes(k)) || !p ||
+          (c.policyId !== null && !this.foodPolicies.policies.some(q => q.id === c.policyId)))
+        return { ok:false, message:'人物或饮食政策无效' };
+      p.foodPolicyId = c.policyId; this.reconcileFoodPolicies(); this.revision++;
+      return { ok:true, message:p.faction === 'prisoner' ? '已更新囚犯供餐政策；自行吃牢房食物不受此限制' : '已更新居民饮食政策' };
     }
     if (c.type === 'apparelPolicyCreate') {
       const source = c.sourceId === undefined ? createDefaultApparelPolicies().policies[0]
@@ -4395,7 +4441,7 @@ export class VoxelSimulation {
     if (stand < 0) return false;
     const bed = action === 'rescue' ? this.freeMedicalBed(p, patient) : undefined;
     if (action === 'rescue' && !bed) return false;
-    const carriedFood = action === 'feed' && p.cargo && NUTRITION[p.cargo.resource];
+    const carriedFood = action === 'feed' && p.cargo && NUTRITION[p.cargo.resource] && this.foodAllowed(patient,p.cargo.resource,p);
     const carriedMedicine =
       action === 'tend' && patient.medical.policy === 'herbal' && p.cargo?.resource === 'herb';
     const medicine =
@@ -4404,7 +4450,7 @@ export class VoxelSimulation {
         : undefined;
     const food =
       action === 'feed' && !carriedFood
-        ? FOOD_PREFERENCE.filter(r => canSelectGroundFood(r, patient.food)).map((r) => this.pileFor(p, r)).find(Boolean)
+        ? FOOD_PREFERENCE.filter(r => canSelectGroundFood(r, patient.food) && this.foodAllowed(patient,r,p)).map((r) => this.pileFor(p, r)).find(Boolean)
         : undefined;
     if (action === 'feed' && !carriedFood && !food) return false;
     // A full ground never destroys existing cargo to make room for a rescue.
@@ -4526,9 +4572,9 @@ export class VoxelSimulation {
       patient.food <= 26 &&
       (p.carePhase === 'feedFetch'
         ? this.items.some(
-            (i) => i.id === p.careFoodId && this.availableStack(i, p.id) >= p.careAmount,
+            (i) => i.id === p.careFoodId && this.availableStack(i, p.id) >= p.careAmount && this.foodAllowed(patient,i.resource,p),
           )
-        : !!p.cargo && !!NUTRITION[p.cargo.resource])
+        : !!p.cargo && !!NUTRITION[p.cargo.resource] && this.foodAllowed(patient,p.cargo.resource,p))
     );
   }
   private arriveCare(p: Pawn) {
@@ -4643,7 +4689,7 @@ export class VoxelSimulation {
     p.careProgress += healthSummary(p).manipulation;
     p.reason = '喂食' + patient.name;
     if (p.careProgress < FEED_WORK) return;
-    const amount = this.consume(patient, p.cargo!, p.cargo!.amount);
+    const amount = this.consume(patient, p.cargo!, p.cargo!.amount, p);
     p.cargo!.amount -= amount;
     if (p.cargo!.amount === 0) p.cargo = null;
     this.reconcileHealth(patient);
@@ -4891,6 +4937,7 @@ export class VoxelSimulation {
       worn: [],
       apparelTask: null,
       apparelControl: initialApparelControl(this.tick),
+      foodPolicyId: null,
       apparelWearTicks: 0,
       jobId: null,
       path: [],
@@ -6326,6 +6373,7 @@ export class VoxelSimulation {
   }
   private release(p: Pawn) {
     releaseAnimalCare(this, p);
+    delete p.manualFoodOrder;
     delete p.eggBoxTask;
     delete p.productionDelivery;
     if (p.phase === 'rest' && p.sleepingSince !== null && this.tick - p.sleepingSince >= LIVING_RULES.sleepThoughtDelay &&
@@ -6622,11 +6670,11 @@ export class VoxelSimulation {
         id, name: `${def.name} ${this.trade.visits + 1}-${i + 1}`, color: role === 'trader' ? 0xd8bf79 : 0x96b5cc,
         food: 100, rest: 100, skills: initialSkills(i, true), faction: 'trader', weapon,
         priorities: Object.fromEntries(Object.keys(colonist.priorities).map(key => [key, 0])) as Pawn['priorities'],
-        worn: [], apparelTask: null, apparelControl: initialApparelControl(this.tick), apparelWearTicks: 0, jobId: null, path: [], destination: null,
+        worn: [], apparelTask: null, apparelControl: initialApparelControl(this.tick), foodPolicyId: null, apparelWearTicks: 0, jobId: null, path: [], destination: null,
         phase: 'idle', cargo: null, reason: '商队前往营地', moveTick: this.tick, workTarget: null,
         eating: null, sleepBedId: null, sleepingSince: null, schedule: defaultSchedule() };
       // A copied colonist is only the body template, never a live work order.
-      delete p.eggBoxTask; delete p.productionDelivery; delete p.animalCareTask; p.allowedAreaId=null;
+      delete p.eggBoxTask; delete p.productionDelivery; delete p.animalCareTask; delete p.manualFoodOrder; p.allowedAreaId=null;
       this.pawns.push(p); pawnIds.push(id);
     }
     const traderId = pawnIds[0];
@@ -6881,7 +6929,7 @@ export class VoxelSimulation {
       }
       p.reason =
         p.food < 30
-          ? '饥饿，暂无可用食物'
+          ? p.foodPolicyId === null ? '饥饿，暂无可用食物' : '饥饿，没有符合饮食政策的可用食物'
           : jobs.length
             ? '等待材料或支撑'
             : p.priorities.haul > 0 && this.items.some((i) => this.storagePriority(i) < 3)
@@ -7211,10 +7259,29 @@ export class VoxelSimulation {
     this.items = this.items.filter((i) => i.amount > 0);
     return true;
   }
-  private consume(p: Pawn, batch: Cargo, available: number) {
+  /** Native restrictions belong to the eater. Prisoners ignore them when
+   * helping themselves, but a colony doctor/warden respects the patient's
+   * policy. Hunger and drafting do not waive it; mental states do. */
+  private foodAllowed(eater: Pawn, resource: Resource, getter: Pawn = eater): boolean {
+    if (getter === eater && eater.manualFoodOrder?.resource === resource && eater.eating === resource) return true;
+    if (eater.foodPolicyId === null || eater.psyche.breakUntil > this.tick ||
+        (eater.faction !== 'colony' && getter.faction !== 'colony')) return true;
+    const policy = this.foodPolicies.policies.find(p => p.id === eater.foodPolicyId);
+    return !!policy && policyAllowsFood(policy,resource);
+  }
+  private reconcileFoodPolicies() {
+    for (const p of this.pawns) {
+      if (p.eating && !this.foodAllowed(p,p.eating)) {
+        this.release(p); p.reason = '饮食政策改变，保留餐食并重新安排';
+      } else if (p.carePhase?.startsWith('feed') && !this.validCare(p)) {
+        this.release(p); p.reason = '患者饮食条件改变，保留携带食物';
+      }
+    }
+  }
+  private consume(p: Pawn, batch: Cargo, available: number, getter: Pawn = p) {
     const resource = batch.resource;
     const nutrition = NUTRITION[resource];
-    if (!nutrition) return 0;
+    if (!nutrition || !this.foodAllowed(p,resource,getter)) return 0;
     const amount = Math.min(available, foodUnitsForHunger(resource, p.food));
     p.food = Math.min(100, p.food + amount * nutrition * 100);
     this.stats.consumed[resource] += amount;
@@ -7230,21 +7297,45 @@ export class VoxelSimulation {
     }
     return amount;
   }
+  /** Explicit orders still reserve, walk to and consume the actual batch. */
+  private startManualFood(p: Pawn, stackId: number): boolean {
+    const food = this.items.find(i => i.id === stackId);
+    if (p.faction !== 'colony' || p.dead || p.downed || p.drafted || p.carriedBy !== null ||
+        p.phase === 'mental' || p.psyche.breakUntil > this.tick || healthSummary(p).moving <= 0 || p.food >= 100 ||
+        !food || !NUTRITION[food.resource] || foodUnitsForHunger(food.resource,p.food) <= 0 ||
+        !this.exploredAt(food) || this.chunkReserved({ ...food, forbidden:false },p.id) ||
+        this.availableStack({ ...food, forbidden:false },p.id) <= 0 || this.itemPath(p,food) === null) return false;
+    this.release(p);
+    this.dropCargo(p);
+    food.forbidden = false;
+    p.manualFoodOrder = { sourceId:food.id, resource:food.resource as NonNullable<Pawn['manualFoodOrder']>['resource'] };
+    p.eating = food.resource;
+    this.fetchReservations.set(p.id, {sourceId:food.id, amount:Math.min(this.mealAmount(p,food),this.availableStack(food,p.id))});
+    this.search(p);
+    this.go(p,this.reachableItemStand(food),'fetch');
+    p.reason = `按手动命令前往食用${RESOURCE_NAMES[food.resource]}`;
+    return true;
+  }
   private tryFood(p: Pawn) {
     if (p.dead || p.downed || p.carriedBy !== null) return false;
-    if (p.cargo && NUTRITION[p.cargo.resource]) {
+    if (p.cargo && NUTRITION[p.cargo.resource] && this.foodAllowed(p,p.cargo.resource)) {
       this.release(p);
       this.startDining(p);
       return true;
     }
     if (!this.items.some((i) => NUTRITION[i.resource])) return false;
     this.search(p);
-    const food = FOOD_PREFERENCE.filter(r => canSelectGroundFood(r, p.food))
+    const food = FOOD_PREFERENCE.filter(r => canSelectGroundFood(r, p.food) && this.foodAllowed(p,r))
       .map((r) => this.pileFor(p, r))
       .find(Boolean);
     if (!food) return false;
     this.release(p);
     const retainedCargo = !this.dropCargo(p);
+    // Ground dining retains non-food cargo. Disallowed food must first be
+    // safely put down, otherwise two edible batches would share one task.
+    if (retainedCargo && p.cargo && NUTRITION[p.cargo.resource]) {
+      p.reason = '随身食物不符合饮食政策，等待安全卸货空间'; return false;
+    }
     // Drop planning uses bounded navigation; restore the path tree to the food.
     this.search(p);
     p.eating = food.resource;
@@ -7262,8 +7353,11 @@ export class VoxelSimulation {
   /** Only the picked physical batch is carried. The rare full-hands fallback
    * reserves food at the pawn's feet and leaves the other cargo intact. */
   private startDining(p: Pawn, ground?: Stack) {
+    if (ground && p.cargo && NUTRITION[p.cargo.resource]) {
+      this.release(p); p.reason = '双手已有食物且无卸货空间，保留物资等待'; return;
+    }
     const batch = ground ?? p.cargo;
-    if (!batch || !NUTRITION[batch.resource]) { this.release(p); return; }
+    if (!batch || !NUTRITION[batch.resource] || !this.foodAllowed(p,batch.resource)) { this.release(p); return; }
     let chair: DiningChair | undefined, table: DiningTable | undefined;
     this.search(p);
     if (!ground) {
@@ -7297,7 +7391,7 @@ export class VoxelSimulation {
         this.fires.some(f => same(f,task.target))) return false;
     const batch = task.sourceId === null ? p.cargo : this.items.find(i => i.id === task.sourceId && this.itemTouch(p,i));
     if (!batch || (task.sourceId !== null && itemForbiddenTo(p,batch,this.tick)) ||
-        batch.resource !== p.eating || !NUTRITION[batch.resource] || batch.amount < task.amount) return false;
+        batch.resource !== p.eating || !NUTRITION[batch.resource] || !this.foodAllowed(p,batch.resource) || batch.amount < task.amount) return false;
     const table = this.tables.find(t => t.id === task.tableId);
     if (task.tableId !== null && (!table || !this.pawnAllowed(p,table) || !tableCells(table).some(q => q.z === task.target.z &&
       Math.abs(q.x-task.target.x)+Math.abs(q.y-task.target.y) === 1))) return false;
@@ -7365,7 +7459,7 @@ export class VoxelSimulation {
       }
       if (!j) {
         const food = this.items.find((i) => i.id === reserved?.sourceId && this.itemTouch(p,i) && i.resource === p.eating);
-        if (!food || this.availableStack(food, p.id) <= 0) { this.release(p); return; }
+        if (!food || !this.foodAllowed(p,food.resource) || this.availableStack(food, p.id) <= 0) { this.release(p); return; }
         if (p.cargo && !this.dropCargo(p)) { this.startDining(p,food); return; }
         if (!this.take(p, food.resource, this.mealAmount(p, food), food.id)) { this.release(p); return; }
         this.startDining(p);
@@ -9018,6 +9112,7 @@ export class VoxelSimulation {
       speed,
       pawns: this.pawns.filter(visible),
       apparelPolicies: this.apparelPolicies,
+      foodPolicies: this.foodPolicies,
       items: this.items.filter(visible),
       trees: this.trees.filter(visible),
       treePlots: this.treePlots.filter(visible),
@@ -9080,8 +9175,9 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 56,
+      version: 57,
       apparelPolicies: this.apparelPolicies,
+      foodPolicies: this.foodPolicies,
       autoSlaughter: this.autoSlaughter,
       stockpileZones: this.stockpileZones,
       productionQueues: this.productionQueues.filter(q => this.productionBenches().some(b => b.id === q.benchId)),
@@ -9145,11 +9241,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : old.version < 43 ? [1, 2, 3] : [1, 2, 3, 4]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyFoodPolicies(old,sourceVersion);
     rejectLegacyApparelPolicies(old,sourceVersion);
     rejectLegacyAnimalEnvironment(old,sourceVersion);
     rejectLegacyAnimalMedical(old,sourceVersion);
@@ -9591,7 +9688,8 @@ export class VoxelSimulation {
     migrateAnimalMedical(old,sourceVersion);
     migrateAnimalEnvironment(old,sourceVersion);
     migrateApparelPolicies(old,sourceVersion);
-    old.version = 56;
+    migrateFoodPolicies(old,sourceVersion);
+    old.version = 57;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -10707,6 +10805,7 @@ export class VoxelSimulation {
     validateHusbandry(d);
     validateAnimalEnvironment(d);
     validateApparelPolicies(d);
+    validateFoodPolicies(d);
     validateAnimalTrade(d);
     validateAnimalMedical(d);
     validateMilk(d);
@@ -10826,6 +10925,7 @@ export class VoxelSimulation {
         nextId: d.nextId,
         pawns: d.pawns,
         apparelPolicies: d.apparelPolicies,
+        foodPolicies: d.foodPolicies,
         items: d.items,
         trees: d.trees,
         treePlots: d.treePlots,
@@ -11086,6 +11186,9 @@ export class VoxelSimulation {
           continue;
         }
         const patient = s.pawns.find((q) => q.id === p.patientId)!;
+        if (p.carePhase?.startsWith('feed') && !s.validCare(p)) {
+          s.release(p); p.reason = '回读后患者饮食条件改变，保留携带食物'; continue;
+        }
         s.search(p);
         const target =
           p.carePhase === 'rescueCarry'
@@ -11117,6 +11220,17 @@ export class VoxelSimulation {
         const route = s.path(p,position(p.destination));
         if (route === null) { s.release(p); p.reason = '回读后移动目标不可达，保留携带物'; }
         else p.path = route;
+        continue;
+      }
+      if (p.manualFoodOrder && p.phase === 'fetch') {
+        const food = s.items.find(i => i.id === p.manualFoodOrder!.sourceId)!;
+        const route = s.itemPath(p,food), available = s.availableStack(food,p.id);
+        if (route === null || available <= 0) {
+          s.release(p); p.reason = '回读后手动食用来源不可达或已被占用，保留物资';
+        } else {
+          s.fetchReservations.set(p.id, {sourceId:food.id,amount:Math.min(s.mealAmount(p,food),available)});
+          p.path = route; p.destination = s.reachableItemStand(food); p.moveTick = s.tick;
+        }
         continue;
       }
       if (p.phase === 'dine') {

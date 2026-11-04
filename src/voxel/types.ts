@@ -2,6 +2,7 @@ import type { EggBox, EggBoxTask } from './eggBoxes';
 import type { AnimalMedicalState, AnimalCareTask, AnimalBed } from './animalMedical';
 import type { AnimalEnvironmentState } from './animalEnvironment';
 import type { ApparelControl, ApparelPoliciesState, ApparelPolicy } from './apparelPolicies';
+import type { FoodPoliciesState, FoodPolicy, FoodResource } from './foodPolicies';
 import type { Trauma } from './injuries';
 import type { MedicalState, MedicalPolicy } from './medicine';
 import type { WeaponPiece, WeaponKind, WeaponBenchKind } from './weapons';
@@ -736,6 +737,10 @@ export interface Pawn extends Pos {
   weaponDropPending: boolean;
   worn: ApparelPiece[];
   apparelControl: ApparelControl;
+  /** Null retains unrestricted eating independently of shared policies. */
+  foodPolicyId: number | null;
+  /** Explicit player ingestion order; retain original stack identity after pickup. */
+  manualFoodOrder?: { sourceId: number; resource: FoodResource };
   apparelTask: ApparelTask | null;
   apparelWearTicks: number;
   downed: boolean;
@@ -835,6 +840,7 @@ export interface VoxelStats {
   spoiled: Counts;
 }
 export interface VoxelSnapshot {
+  foodPolicies: FoodPoliciesState;
   apparelPolicies: ApparelPoliciesState;
   animalBeds: AnimalBed[];
   autoSlaughter: import('./autoSlaughter').AutoSlaughterSettings;
@@ -1035,6 +1041,11 @@ export type VoxelCommand =
   | { type: 'apparelPolicyDelete'; policyId: number }
   | { type: 'pawnApparelPolicy'; pawnId: number; policyId: number | null }
   | { type: 'apparelUnforce'; pawnId: number; apparelId?: number }
+  | { type: 'foodPolicyCreate'; sourceId?: number }
+  | { type: 'foodPolicyUpdate'; policy: FoodPolicy }
+  | { type: 'foodPolicyDelete'; policyId: number }
+  | { type: 'pawnFoodPolicy'; pawnId: number; policyId: number | null }
+  | { type: 'ingest'; pawnId: number; stackId: number }
   | { type: 'bedOwner'; bedId: number; pawnId: number | null }
   | { type: 'bedMedical'; bedId: number; medical: boolean }
   | { type: 'care'; pawnId: number; patientId: number; action: 'rescue' | 'feed' | 'tend' }
@@ -1052,6 +1063,7 @@ export interface CommandResult {
   count?: number;
 }
 export interface VoxelSave {
+  foodPolicies: FoodPoliciesState;
   apparelPolicies: ApparelPoliciesState;
   animalBeds: AnimalBed[];
   stockpileZones: import('./stockpileZones').StockpileZone[];
@@ -1080,7 +1092,7 @@ export interface VoxelSave {
   eggBoxes: EggBox[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 56;
+  version: 57;
   autoSlaughter: import('./autoSlaughter').AutoSlaughterSettings;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];

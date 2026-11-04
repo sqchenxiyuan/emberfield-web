@@ -1,9 +1,11 @@
 import { expect } from 'vitest';
 import { createDefaultApparelPolicies, initialApparelControl } from '../src/voxel/apparelPolicies';
+import { assertFoodPoliciesDefaults, foodPoliciesExpectedField, stripFoodPoliciesFields } from './legacy-food-policies-defaults';
 
 /** Synthetic older-schema fixtures may drop only the untouched default
  * policy, empty forced list and inactive automatic clothing work. */
 export function assertApparelPoliciesDefaults(raw: Record<string, any>): void {
+  assertFoodPoliciesDefaults(raw);
   if (Object.hasOwn(raw, 'apparelPolicies')) expect(raw.apparelPolicies).toEqual(createDefaultApparelPolicies());
   for (const p of raw.pawns ?? []) {
     if (p.apparelTask && Object.hasOwn(p.apparelTask, 'automatic')) throw new Error('Cannot downgrade automatic apparel task');
@@ -16,11 +18,12 @@ export function assertApparelPoliciesDefaults(raw: Record<string, any>): void {
 }
 export function stripApparelPoliciesFields(raw: Record<string, any>): void {
   assertApparelPoliciesDefaults(raw);
+  stripFoodPoliciesFields(raw);
   delete raw.apparelPolicies;
   for (const p of raw.pawns ?? []) delete p.apparelControl;
 }
 export function apparelPoliciesExpectedField(key: string, value: any, tick = 0): any {
-  const copy = structuredClone(value);
+  const copy = foodPoliciesExpectedField(key, value);
   if (key === 'pawns') for (const p of copy) p.apparelControl ??= initialApparelControl(tick);
   return copy;
 }

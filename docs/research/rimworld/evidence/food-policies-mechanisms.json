@@ -1,0 +1,3800 @@
+{
+  "evidence_id": "RW17-FOOD-POLICIES-STATIC",
+  "version": "1.7.4980 rev60",
+  "assemblySha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "reaEvidenceId": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+  "reaParentId": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+  "reaFile": "docs/research/rimworld/evidence/production-bills-rea-managed.json",
+  "reaSha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+  "manifestFile": "docs/research/rimworld/evidence/food-policies-manifest.json",
+  "manifestSha256": "7468835a9644731d6eb8a8f694b4031fcc8e8c7267d9b108c9e935a6a50174f6",
+  "rules": [
+    {
+      "type": "RimWorld.Policy",
+      "needle": "public int id;",
+      "locations": [
+        {
+          "line": 7,
+          "text": "public int id;"
+        }
+      ],
+      "interpretation": "Policy identity is separate from its editable label."
+    },
+    {
+      "type": "RimWorld.FoodPolicy",
+      "needle": "public ThingFilter filter = new ThingFilter();",
+      "locations": [
+        {
+          "line": 7,
+          "text": "public ThingFilter filter = new ThingFilter();"
+        }
+      ],
+      "interpretation": "Food policy is a shared item filter."
+    },
+    {
+      "type": "RimWorld.FoodPolicy",
+      "needle": "return filter.Allows(thing);",
+      "locations": [
+        {
+          "line": 27,
+          "text": "return filter.Allows(thing);"
+        }
+      ],
+      "interpretation": "Instance eligibility delegates to ThingFilter."
+    },
+    {
+      "type": "RimWorld.FoodPolicy",
+      "needle": "filter.CopyAllowancesFrom(foodPolicy.filter);",
+      "locations": [
+        {
+          "line": 34,
+          "text": "filter.CopyAllowancesFrom(foodPolicy.filter);"
+        }
+      ],
+      "interpretation": "Copying a policy copies its allowances."
+    },
+    {
+      "type": "RimWorld.FoodPolicy",
+      "needle": "Scribe_Deep.Look(ref filter, \"filter\");",
+      "locations": [
+        {
+          "line": 41,
+          "text": "Scribe_Deep.Look(ref filter, \"filter\");"
+        }
+      ],
+      "interpretation": "The policy filter persists."
+    },
+    {
+      "type": "RimWorld.FoodRestrictionDatabase",
+      "needle": "return foodRestrictions[0];",
+      "locations": [
+        {
+          "line": 30,
+          "text": "return foodRestrictions[0];"
+        }
+      ],
+      "interpretation": "The first policy is the default."
+    },
+    {
+      "type": "RimWorld.FoodRestrictionDatabase",
+      "needle": "foodRestrictions[0] = policy;",
+      "locations": [
+        {
+          "line": 37,
+          "text": "foodRestrictions[0] = policy;"
+        }
+      ],
+      "interpretation": "Changing default swaps database entries."
+    },
+    {
+      "type": "RimWorld.FoodRestrictionDatabase",
+      "needle": "PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive",
+      "locations": [
+        {
+          "line": 43,
+          "text": "foreach (Pawn item in PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive)"
+        }
+      ],
+      "interpretation": "Deletion checks live map, caravan and transporter assignments."
+    },
+    {
+      "type": "RimWorld.FoodRestrictionDatabase",
+      "needle": "return new AcceptanceReport(\"FoodRestrictionInUse\".Translate(item));",
+      "locations": [
+        {
+          "line": 47,
+          "text": "return new AcceptanceReport(\"FoodRestrictionInUse\".Translate(item));"
+        }
+      ],
+      "interpretation": "A policy assigned to an active pawn cannot be deleted."
+    },
+    {
+      "type": "RimWorld.FoodRestrictionDatabase",
+      "needle": "item2.foodRestriction.CurrentFoodPolicy = null;",
+      "locations": [
+        {
+          "line": 54,
+          "text": "item2.foodRestriction.CurrentFoodPolicy = null;"
+        }
+      ],
+      "interpretation": "Other world or temporary references are cleared on successful deletion."
+    },
+    {
+      "type": "RimWorld.FoodRestrictionDatabase",
+      "needle": "foodRestrictions.Max((FoodPolicy o) => o.id) + 1",
+      "locations": [
+        {
+          "line": 63,
+          "text": "int id = ((!foodRestrictions.Any()) ? 1 : (foodRestrictions.Max((FoodPolicy o) => o.id) + 1));"
+        }
+      ],
+      "interpretation": "New IDs use current maximum plus one."
+    },
+    {
+      "type": "RimWorld.FoodRestrictionDatabase",
+      "needle": "x.GetStatValueAbstract(StatDefOf.Nutrition) > 0f",
+      "locations": [
+        {
+          "line": 65,
+          "text": "foreach (ThingDef item in DefDatabase<ThingDef>.AllDefs.Where((ThingDef x) => x.GetStatValueAbstract(StatDefOf.Nutrition) > 0f))"
+        }
+      ],
+      "interpretation": "New policies start by allowing definitions with positive abstract nutrition."
+    },
+    {
+      "type": "RimWorld.FoodRestrictionDatabase",
+      "needle": "MakeNewFoodRestriction().label = \"FoodRestrictionLavish\".Translate();",
+      "locations": [
+        {
+          "line": 86,
+          "text": "MakeNewFoodRestriction().label = \"FoodRestrictionLavish\".Translate();"
+        }
+      ],
+      "interpretation": "Lavish is the first starting policy; it initially permits all food in the base filter."
+    },
+    {
+      "type": "RimWorld.FoodRestrictionDatabase",
+      "needle": "(int)allDef.ingestible.preferability >= 10 && allDef != ThingDefOf.InsectJelly",
+      "locations": [
+        {
+          "line": 91,
+          "text": "if (allDef.ingestible != null && (int)allDef.ingestible.preferability >= 10 && allDef != ThingDefOf.InsectJelly)"
+        }
+      ],
+      "interpretation": "Fine preset excludes lavish-or-higher preference except insect jelly."
+    },
+    {
+      "type": "RimWorld.FoodRestrictionDatabase",
+      "needle": "(int)allDef2.ingestible.preferability >= 9 && allDef2 != ThingDefOf.InsectJelly",
+      "locations": [
+        {
+          "line": 104,
+          "text": "if (allDef2.ingestible != null && (int)allDef2.ingestible.preferability >= 9 && allDef2 != ThingDefOf.InsectJelly)"
+        }
+      ],
+      "interpretation": "Simple excludes fine-or-higher preference except insect jelly."
+    },
+    {
+      "type": "RimWorld.FoodRestrictionDatabase",
+      "needle": "foodPolicy2.filter.SetAllow(ThingDefOf.MealSurvivalPack, allow: false);",
+      "locations": [
+        {
+          "line": 109,
+          "text": "foodPolicy2.filter.SetAllow(ThingDefOf.MealSurvivalPack, allow: false);"
+        }
+      ],
+      "interpretation": "Simple additionally excludes packaged survival meals."
+    },
+    {
+      "type": "RimWorld.FoodRestrictionDatabase",
+      "needle": "(int)allDef3.ingestible.preferability >= 8 && allDef3 != ThingDefOf.MealNutrientPaste && allDef3 != ThingDefOf.InsectJelly",
+      "locations": [
+        {
+          "line": 118,
+          "text": "if (allDef3.ingestible != null && (int)allDef3.ingestible.preferability >= 8 && allDef3 != ThingDefOf.MealNutrientPaste && allDef3 != ThingDefOf.InsectJelly)"
+        }
+      ],
+      "interpretation": "Paste excludes simple-or-higher with explicit exceptions."
+    },
+    {
+      "type": "RimWorld.FoodRestrictionDatabase",
+      "needle": "(int)allDef4.ingestible.preferability >= 7",
+      "locations": [
+        {
+          "line": 131,
+          "text": "if (allDef4.ingestible != null && (int)allDef4.ingestible.preferability >= 7)"
+        }
+      ],
+      "interpretation": "Raw excludes awful-meal-or-higher food preference."
+    },
+    {
+      "type": "RimWorld.FoodRestrictionDatabase",
+      "needle": "foodPolicy4.filter.SetAllow(ThingDefOf.Chocolate, allow: false);",
+      "locations": [
+        {
+          "line": 136,
+          "text": "foodPolicy4.filter.SetAllow(ThingDefOf.Chocolate, allow: false);"
+        }
+      ],
+      "interpretation": "Raw also excludes chocolate."
+    },
+    {
+      "type": "RimWorld.FoodRestrictionDatabase",
+      "needle": "foodPolicy5.filter.SetDisallowAll();",
+      "locations": [
+        {
+          "line": 143,
+          "text": "foodPolicy5.filter.SetDisallowAll();"
+        }
+      ],
+      "interpretation": "Nothing is an empty filter, not a starvation fallback mode."
+    },
+    {
+      "type": "RimWorld.FoodRestrictionDatabase",
+      "needle": "if (!ModsConfig.IdeologyActive)",
+      "locations": [
+        {
+          "line": 149,
+          "text": "if (!ModsConfig.IdeologyActive)"
+        }
+      ],
+      "interpretation": "Vegetarian, carnivore, cannibal and insect-meat presets require Ideology."
+    },
+    {
+      "type": "RimWorld.FoodRestrictionDatabase",
+      "needle": "foodPolicy.filter.SetAllow(ThingDefOf.HemogenPack, allow: false);",
+      "locations": [
+        {
+          "line": 79,
+          "text": "foodPolicy.filter.SetAllow(ThingDefOf.HemogenPack, allow: false);"
+        },
+        {
+          "line": 98,
+          "text": "foodPolicy.filter.SetAllow(ThingDefOf.HemogenPack, allow: false);"
+        },
+        {
+          "line": 170,
+          "text": "foodPolicy.filter.SetAllow(ThingDefOf.HemogenPack, allow: false);"
+        }
+      ],
+      "interpretation": "Biotech hemogen packs are excluded explicitly."
+    },
+    {
+      "type": "RimWorld.Pawn_FoodRestrictionTracker",
+      "needle": "curPolicy = Current.Game.foodRestrictionDatabase.DefaultFoodRestriction();",
+      "locations": [
+        {
+          "line": 24,
+          "text": "curPolicy = Current.Game.foodRestrictionDatabase.DefaultFoodRestriction();"
+        }
+      ],
+      "interpretation": "A null stored reference resolves the database default lazily."
+    },
+    {
+      "type": "RimWorld.Pawn_FoodRestrictionTracker",
+      "needle": "curPolicy = value;",
+      "locations": [
+        {
+          "line": 30,
+          "text": "curPolicy = value;"
+        }
+      ],
+      "interpretation": "Assignment sets a reference; the setter itself has no job interruption."
+    },
+    {
+      "type": "RimWorld.Pawn_FoodRestrictionTracker",
+      "needle": "pawn.RaceProps.Humanlike && !pawn.Destroyed",
+      "locations": [
+        {
+          "line": 38,
+          "text": "if (pawn.RaceProps.Humanlike && !pawn.Destroyed)"
+        }
+      ],
+      "interpretation": "Ordinary food policy configuration is restricted to non-destroyed humanlikes."
+    },
+    {
+      "type": "RimWorld.Pawn_FoodRestrictionTracker",
+      "needle": "return pawn.HostFaction == Faction.OfPlayer;",
+      "locations": [
+        {
+          "line": 42,
+          "text": "return pawn.HostFaction == Faction.OfPlayer;"
+        }
+      ],
+      "interpretation": "Player-hosted prisoners or guests can be configured even when their faction is not player."
+    },
+    {
+      "type": "RimWorld.Pawn_FoodRestrictionTracker",
+      "needle": "pawn.Faction != Faction.OfPlayer && (getter == null || getter.Faction != Faction.OfPlayer)",
+      "locations": [
+        {
+          "line": 65,
+          "text": "if (pawn.Faction != Faction.OfPlayer && (getter == null || getter.Faction != Faction.OfPlayer))"
+        }
+      ],
+      "interpretation": "A non-player eater respects the colony policy only when a player-faction getter supplies the food."
+    },
+    {
+      "type": "RimWorld.Pawn_FoodRestrictionTracker",
+      "needle": "if (pawn.InMentalState)",
+      "locations": [
+        {
+          "line": 69,
+          "text": "if (pawn.InMentalState)"
+        }
+      ],
+      "interpretation": "The eater ignores its policy while in a mental state."
+    },
+    {
+      "type": "RimWorld.Pawn_FoodRestrictionTracker",
+      "needle": "Scribe_References.Look(ref curPolicy, \"curRestriction\");",
+      "locations": [
+        {
+          "line": 114,
+          "text": "Scribe_References.Look(ref curPolicy, \"curRestriction\");"
+        }
+      ],
+      "interpretation": "Pawn holds a persisted shared policy reference."
+    },
+    {
+      "type": "RimWorld.Pawn_FoodRestrictionTracker",
+      "needle": "ITab_Pawn_Feeding.BabyConsumableFoods.Contains(food)",
+      "locations": [
+        {
+          "line": 79,
+          "text": "if (!ITab_Pawn_Feeding.BabyConsumableFoods.Contains(food))"
+        },
+        {
+          "line": 93,
+          "text": "if (ITab_Pawn_Feeding.BabyConsumableFoods.Contains(food))"
+        }
+      ],
+      "interpretation": "Babies have a separate per-food permission path."
+    },
+    {
+      "type": "RimWorld.PawnComponentsUtility",
+      "needle": "pawn.foodRestriction = new Pawn_FoodRestrictionTracker(pawn);",
+      "locations": [
+        {
+          "line": 284,
+          "text": "pawn.foodRestriction = new Pawn_FoodRestrictionTracker(pawn);"
+        }
+      ],
+      "interpretation": "Food trackers are created under a humanlike conditional, not for ordinary colony animals."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "if (!p.FoodIsSuitable(food))",
+      "locations": [
+        {
+          "line": 70,
+          "text": "if (!p.FoodIsSuitable(food))"
+        }
+      ],
+      "interpretation": "Species, food need and developmental suitability are checked before ordinary policy allowance."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "p.foodRestriction.GetCurrentRespectedRestriction(getter)",
+      "locations": [
+        {
+          "line": 59,
+          "text": "FoodPolicy currentRespectedRestriction = p.foodRestriction.GetCurrentRespectedRestriction(getter);"
+        },
+        {
+          "line": 85,
+          "text": "FoodPolicy currentRespectedRestriction = p.foodRestriction.GetCurrentRespectedRestriction(getter);"
+        }
+      ],
+      "interpretation": "The policy belongs to eater p, while getter controls the relevant exception."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "!currentRespectedRestriction.Allows(food) && Dialog_ManageFoodPolicies.FoodGlobalFilter.Allows(food)",
+      "locations": [
+        {
+          "line": 86,
+          "text": "if (currentRespectedRestriction != null && !currentRespectedRestriction.Allows(food) && Dialog_ManageFoodPolicies.FoodGlobalFilter.Allows(food))"
+        }
+      ],
+      "interpretation": "Definition-level policy veto is limited by the global food filter."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "p.foodRestriction != null && !p.IsSubhuman && !DevelopmentalStageExtensions.Baby(p.DevelopmentalStage)",
+      "locations": [
+        {
+          "line": 57,
+          "text": "if (p.foodRestriction != null && !p.IsSubhuman && !DevelopmentalStageExtensions.Baby(p.DevelopmentalStage))"
+        }
+      ],
+      "interpretation": "Instance-level policy additionally excludes subhuman and baby paths."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "currentRespectedRestriction != null && !currentRespectedRestriction.Allows(food)",
+      "locations": [
+        {
+          "line": 60,
+          "text": "if (currentRespectedRestriction != null && !currentRespectedRestriction.Allows(food))"
+        },
+        {
+          "line": 86,
+          "text": "if (currentRespectedRestriction != null && !currentRespectedRestriction.Allows(food) && Dialog_ManageFoodPolicies.FoodGlobalFilter.Allows(food))"
+        }
+      ],
+      "interpretation": "Instance-level policy is checked for the actual food, including applicable special filters."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "(allowIfStarving && p.needs.food.Starving)",
+      "locations": [
+        {
+          "line": 169,
+          "text": "if ((allowIfStarving && p.needs.food.Starving) || (p.story != null && p.story.traits.HasTrait(TraitDefOf.Ascetic)) || p.IsPrisoner || (food.ingestible.joyKind != null && food.ingestible.joy > 0f))"
+        }
+      ],
+      "interpretation": "Starvation can relax title-based acceptability; this is distinct from policy permissions."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "thing = BestFoodInInventory(getter, eater,",
+      "locations": [
+        {
+          "line": 197,
+          "text": "thing = BestFoodInInventory(getter, eater, (minPrefOverride == FoodPreferability.Undefined) ? FoodPreferability.MealAwful : minPrefOverride, FoodPreferability.MealLavish, 0f, allowDrug: false, allowVenerated);"
+        },
+        {
+          "line": 267,
+          "text": "thing = BestFoodInInventory(getter, eater, FoodPreferability.DesperateOnly, FoodPreferability.MealLavish, 0f, flag);"
+        }
+      ],
+      "interpretation": "Food search considers the getter inventory for the eater."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "eater.WillEat(thing, holder, careIfNotAcceptableForTitle: true, allowVenerated)",
+      "locations": [
+        {
+          "line": 343,
+          "text": "if (thing.def.IsNutritionGivingIngestible && thing.IngestibleNow && eater.WillEat(thing, holder, careIfNotAcceptableForTitle: true, allowVenerated) && (int)thing.def.ingestible.preferability >= (int)minFoodPref && (int)thing.def.ingestible.preferability <= (int)maxFoodPref && (allowDrug || !thing.def.IsDrug) && NutritionForEater(eater, thing) * (float)thing.stackCount >= minStackNutrition)"
+        }
+      ],
+      "interpretation": "Inventory food still passes the eater policy; inventory ownership is not an automatic exemption."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "CompRottable compRottable = thing.TryGetComp<CompRottable>();",
+      "locations": [
+        {
+          "line": 207,
+          "text": "CompRottable compRottable = thing.TryGetComp<CompRottable>();"
+        }
+      ],
+      "interpretation": "Inventory search can prioritize food approaching rot."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "compRottable.TicksUntilRotAtCurrentTemp < 30000",
+      "locations": [
+        {
+          "line": 208,
+          "text": "if (compRottable != null && compRottable.Stage == RotStage.Fresh && compRottable.TicksUntilRotAtCurrentTemp < 30000)"
+        },
+        {
+          "line": 599,
+          "text": "if (!takingToInventory && compRottable.Stage == RotStage.Fresh && compRottable.TicksUntilRotAtCurrentTemp < 30000)"
+        }
+      ],
+      "interpretation": "Fresh inventory food close to rot is favored early."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "num2 -= 32f;",
+      "locations": [
+        {
+          "line": 254,
+          "text": "num2 -= 32f;"
+        }
+      ],
+      "interpretation": "Inventory comparison includes an explicit score penalty against ground food."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "canUsePackAnimalInventory & canManipulateTools",
+      "locations": [
+        {
+          "line": 295,
+          "text": "if ((canUseInventory & canUsePackAnimalInventory & canManipulateTools) && eater.IsColonist && getter.IsColonist && getter.Map != null)"
+        }
+      ],
+      "interpretation": "Supported pack-animal inventory is a gated fallback source."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "else if (desperate)",
+      "locations": [
+        {
+          "line": 397,
+          "text": "else if (desperate)"
+        }
+      ],
+      "interpretation": "Desperation lowers the food preference floor."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "minPref = FoodPreferability.DesperateOnly;",
+      "locations": [
+        {
+          "line": 399,
+          "text": "minPref = FoodPreferability.DesperateOnly;"
+        }
+      ],
+      "interpretation": "Desperate search can consider low-preference food while retaining the validator."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "!eater.WillEat(t, getter, careIfNotAcceptableForTitle: true, allowVenerated)",
+      "locations": [
+        {
+          "line": 427,
+          "text": "if ((int)t.def.ingestible.preferability < (int)minPref || (int)t.def.ingestible.preferability > (int)maxPref || !eater.WillEat(t, getter, careIfNotAcceptableForTitle: true, allowVenerated) || !t.def.IsNutritionGivingIngestible || !t.IngestibleNow || (!allowCorpse && t is Corpse) || (!allowDrug && t.def.IsDrug) || (!allowForbidden && t.IsForbidden(getter)) || (!desperate && t.IsNotFresh()) || t.IsDessicated() || !IsFoodSourceOnMapSociallyProper(t, getter, eater, allowSociallyImproper) || (!getter.AnimalAwareOf(t) && !forceScanWholeMap))"
+        }
+      ],
+      "interpretation": "Map candidates also use the eater policy and getter context."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "(!desperate && t.IsNotFresh())",
+      "locations": [
+        {
+          "line": 427,
+          "text": "if ((int)t.def.ingestible.preferability < (int)minPref || (int)t.def.ingestible.preferability > (int)maxPref || !eater.WillEat(t, getter, careIfNotAcceptableForTitle: true, allowVenerated) || !t.def.IsNutritionGivingIngestible || !t.IngestibleNow || (!allowCorpse && t is Corpse) || (!allowDrug && t.def.IsDrug) || (!allowForbidden && t.IsForbidden(getter)) || (!desperate && t.IsNotFresh()) || t.IsDessicated() || !IsFoodSourceOnMapSociallyProper(t, getter, eater, allowSociallyImproper) || (!getter.AnimalAwareOf(t) && !forceScanWholeMap))"
+        }
+      ],
+      "interpretation": "Desperation relaxes this freshness gate, not every suitability gate."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "(!allowForbidden && t.IsForbidden(getter))",
+      "locations": [
+        {
+          "line": 419,
+          "text": "if (!allowDispenserFull || !getterCanManipulate || (int)ThingDefOf.MealNutrientPaste.ingestible.preferability < (int)minPref || (int)ThingDefOf.MealNutrientPaste.ingestible.preferability > (int)maxPref || !eater.WillEat(ThingDefOf.MealNutrientPaste, getter, careIfNotAcceptableForTitle: true, allowVenerated) || (t.Faction != getter.Faction && t.Faction != getter.HostFaction) || (!allowForbidden && t.IsForbidden(getter)) || !building_NutrientPasteDispenser.powerComp.PowerOn || (!allowDispenserEmpty && !building_NutrientPasteDispenser.HasEnoughFeedstockInHoppers()) || !t.InteractionCell.Standable(t.Map) || !IsFoodSourceOnMapSociallyProper(t, getter, eater, allowSociallyImproper) || !getter.Map.reachability.CanReachNonLocal(getter.Position, new TargetInfo(t.InteractionCell, t.Map), PathEndMode.OnCell, TraverseParms.For(getter, Danger.Some)))"
+        },
+        {
+          "line": 427,
+          "text": "if ((int)t.def.ingestible.preferability < (int)minPref || (int)t.def.ingestible.preferability > (int)maxPref || !eater.WillEat(t, getter, careIfNotAcceptableForTitle: true, allowVenerated) || !t.def.IsNutritionGivingIngestible || !t.IngestibleNow || (!allowCorpse && t is Corpse) || (!allowDrug && t.def.IsDrug) || (!allowForbidden && t.IsForbidden(getter)) || (!desperate && t.IsNotFresh()) || t.IsDessicated() || !IsFoodSourceOnMapSociallyProper(t, getter, eater, allowSociallyImproper) || (!getter.AnimalAwareOf(t) && !forceScanWholeMap))"
+        }
+      ],
+      "interpretation": "Forbidden and area checks concern the getter."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "if (!ignoreReservations && !getter.CanReserve(t, 10, stackCount))",
+      "locations": [
+        {
+          "line": 441,
+          "text": "if (!ignoreReservations && !getter.CanReserve(t, 10, stackCount))"
+        }
+      ],
+      "interpretation": "Selection checks reservability for the intended quantity."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "SpawnedFoodSearchInnerScan(eater, getter.Position",
+      "locations": [
+        {
+          "line": 453,
+          "text": "bestThing = SpawnedFoodSearchInnerScan(eater, getter.Position, getter.Map.listerThings.ThingsMatching(thingRequest), PathEndMode.ClosestTouch, TraverseParms.For(getter), 9999f, foodValidator);"
+        }
+      ],
+      "interpretation": "Humanlike selection uses the eater preference but getter origin and traversal."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "!eater.WillEat(harvestedThingDef, getter",
+      "locations": [
+        {
+          "line": 468,
+          "text": "if (!eater.WillEat(harvestedThingDef, getter, careIfNotAcceptableForTitle: true, allowVenerated))"
+        }
+      ],
+      "interpretation": "Harvest fallback validates the resulting food definition."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "t.IsSociallyProper(eater, eater.IsPrisonerOfColony, animalsCare)",
+      "locations": [
+        {
+          "line": 566,
+          "text": "if (!t.IsSociallyProper(getter) && !t.IsSociallyProper(eater, eater.IsPrisonerOfColony, animalsCare))"
+        }
+      ],
+      "interpretation": "Social ownership and prisoner-room suitability are additional candidate gates."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "float num = 300f;",
+      "locations": [
+        {
+          "line": 576,
+          "text": "float num = 300f;"
+        }
+      ],
+      "interpretation": "Food optimality starts from a base score."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "num -= dist;",
+      "locations": [
+        {
+          "line": 577,
+          "text": "num -= dist;"
+        }
+      ],
+      "interpretation": "Distance reduces food optimality."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "FoodOptimalityEffectFromMoodCurve.Evaluate",
+      "locations": [
+        {
+          "line": 609,
+          "text": "num += FoodOptimalityEffectFromMoodCurve.Evaluate(list[i].thought.stages[0].baseMoodEffect);"
+        },
+        {
+          "line": 716,
+          "text": "text = text + \"\\n\" + list[i].thought.defName + \"(\" + FoodOptimalityEffectFromMoodCurve.Evaluate(list[i].thought.stages[0].baseMoodEffect).ToString(\"F0\") + \")\";"
+        }
+      ],
+      "interpretation": "Mood consequences contribute to food choice."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "num += foodDef.ingestible.optimalityOffsetHumanlikes;",
+      "locations": [
+        {
+          "line": 616,
+          "text": "num += foodDef.ingestible.optimalityOffsetHumanlikes;"
+        }
+      ],
+      "interpretation": "Definition preference offsets contribute for humanlike eaters."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "int num = StackCountForNutrition(ingester.needs.food.NutritionWanted, singleFoodNutrition);",
+      "locations": [
+        {
+          "line": 1285,
+          "text": "int num = StackCountForNutrition(ingester.needs.food.NutritionWanted, singleFoodNutrition);"
+        }
+      ],
+      "interpretation": "Quantity follows eater nutritional deficit, not getter deficit."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "num = Mathf.Min(num, def.ingestible.maxNumToIngestAtOnce);",
+      "locations": [
+        {
+          "line": 1288,
+          "text": "num = Mathf.Min(num, def.ingestible.maxNumToIngestAtOnce);"
+        }
+      ],
+      "interpretation": "Per-food ingestion cap limits requested stack count."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "Mathf.RoundToInt(wantedNutrition / singleFoodNutrition)",
+      "locations": [
+        {
+          "line": 1320,
+          "text": "return Mathf.Max(Mathf.RoundToInt(wantedNutrition / singleFoodNutrition), 1);"
+        }
+      ],
+      "interpretation": "Requested pickup count rounds the nutritional deficit to an integer."
+    },
+    {
+      "type": "Verse.RaceProperties",
+      "needle": "DietCategory.Omnivorous => 0.3f",
+      "locations": [
+        {
+          "line": 298,
+          "text": "DietCategory.Omnivorous => 0.3f,"
+        }
+      ],
+      "interpretation": "The installed native omnivore wants-to-eat threshold is thirty percent."
+    },
+    {
+      "type": "RimWorld.Need_Food",
+      "needle": "FoodLevelPercentageWantEat * 0.8f",
+      "locations": [
+        {
+          "line": 23,
+          "text": "public float PercentageThreshHungry => pawn.RaceProps.FoodLevelPercentageWantEat * 0.8f;"
+        }
+      ],
+      "interpretation": "Hungry threshold is eighty percent of the wants-to-eat threshold."
+    },
+    {
+      "type": "RimWorld.Need_Food",
+      "needle": "FoodLevelPercentageWantEat * 0.4f",
+      "locations": [
+        {
+          "line": 21,
+          "text": "public float PercentageThreshUrgentlyHungry => pawn.RaceProps.FoodLevelPercentageWantEat * 0.4f;"
+        }
+      ],
+      "interpretation": "Urgently hungry threshold is forty percent of wants-to-eat."
+    },
+    {
+      "type": "RimWorld.JobGiver_GetFood",
+      "needle": "food.CurLevelPercentage < pawn.RaceProps.FoodLevelPercentageWantEat",
+      "locations": [
+        {
+          "line": 44,
+          "text": "if (food.CurLevelPercentage < pawn.RaceProps.FoodLevelPercentageWantEat)"
+        }
+      ],
+      "interpretation": "Ordinary automatic hunger work has a desire-to-eat threshold."
+    },
+    {
+      "type": "RimWorld.JobGiver_GetFood",
+      "needle": "FoodUtility.TryFindBestFoodSourceFor(pawn, pawn, desperate",
+      "locations": [
+        {
+          "line": 78,
+          "text": "if (!FoodUtility.TryFindBestFoodSourceFor(pawn, pawn, desperate, out var foodSource, out var foodDef, canRefillDispenser: true, canUseInventory: true, canUsePackAnimalInventory: true, allowForbidden: false, allowCorpse, allowSociallyImproper: false, pawn.IsWildMan(), forceScanWholeMap, ignoreReservations: false, calculateWantedStackCount: false, allowVenerated: false, minPrefOverride))"
+        }
+      ],
+      "interpretation": "Self-feeding uses the same pawn as getter and eater."
+    },
+    {
+      "type": "RimWorld.JobGiver_GetFood",
+      "needle": "HungerCategory.Starving",
+      "locations": [
+        {
+          "line": 74,
+          "text": "bool flag2 = pawn.needs.food.CurCategory == HungerCategory.Starving;"
+        }
+      ],
+      "interpretation": "Starvation determines desperate search, rather than clearing the policy."
+    },
+    {
+      "type": "RimWorld.JobGiver_GetFood",
+      "needle": "firstHediffOfDef.Severity > 0.4f",
+      "locations": [
+        {
+          "line": 67,
+          "text": "flag = firstHediffOfDef != null && firstHediffOfDef.Severity > 0.4f;"
+        }
+      ],
+      "interpretation": "Humanlike corpse selection additionally needs severe malnutrition in this giver."
+    },
+    {
+      "type": "RimWorld.WorkGiver_FeedPatient",
+      "needle": "patient.needs.food.CurCategory == HungerCategory.Starving",
+      "locations": [
+        {
+          "line": 25,
+          "text": "return FoodUtility.TryFindBestFoodSourceFor(pawn, patient, patient.needs.food.CurCategory == HungerCategory.Starving, out foodSource, out foodDef, canRefillDispenser: false, canUseInventory: true, canUsePackAnimalInventory: true, allowForbidden: false, allowCorpse: true, allowSociallyImproper: false, allowHarvest: false, forceScanWholeMap: false, ignoreReservations: false, calculateWantedStackCount: false, allowVenerated: true);"
+        }
+      ],
+      "interpretation": "Patient hunger drives desperate food search."
+    },
+    {
+      "type": "RimWorld.WorkGiver_FeedPatient",
+      "needle": "pawn2.foodRestriction.GetCurrentRespectedRestriction(pawn)",
+      "locations": [
+        {
+          "line": 64,
+          "text": "FoodPolicy currentRespectedRestriction = pawn2.foodRestriction.GetCurrentRespectedRestriction(pawn);"
+        }
+      ],
+      "interpretation": "Doctor feeding consults the patient policy with the doctor as getter."
+    },
+    {
+      "type": "RimWorld.WorkGiver_FeedPatient",
+      "needle": "currentRespectedRestriction.filter.AllowedDefCount == 0",
+      "locations": [
+        {
+          "line": 65,
+          "text": "if (currentRespectedRestriction != null && currentRespectedRestriction.filter.AllowedDefCount == 0)"
+        }
+      ],
+      "interpretation": "An empty respected policy explicitly prevents feeding work."
+    },
+    {
+      "type": "RimWorld.WorkGiver_FeedPatient",
+      "needle": "FoodUtility.GetNutrition(pawn2, foodSource, foodDef)",
+      "locations": [
+        {
+          "line": 84,
+          "text": "float nutrition = FoodUtility.GetNutrition(pawn2, foodSource, foodDef);"
+        }
+      ],
+      "interpretation": "Patient-specific nutrition determines the feeding amount."
+    },
+    {
+      "type": "RimWorld.FeedPatientUtility",
+      "needle": "if (!HealthAIUtility.ShouldSeekMedicalRest(p))",
+      "locations": [
+        {
+          "line": 40,
+          "text": "if (!HealthAIUtility.ShouldSeekMedicalRest(p))"
+        }
+      ],
+      "interpretation": "Ordinary patient feeding requires a medical-rest reason."
+    },
+    {
+      "type": "RimWorld.FeedPatientUtility",
+      "needle": "p.needs.food.CurLevelPercentage <= p.needs.food.PercentageThreshHungry + 0.02f",
+      "locations": [
+        {
+          "line": 62,
+          "text": "return p.needs.food.CurLevelPercentage <= p.needs.food.PercentageThreshHungry + 0.02f;"
+        }
+      ],
+      "interpretation": "Patient feeding starts around the hungry threshold."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_Feed",
+      "needle": "pawn2.foodRestriction.GetCurrentRespectedRestriction(pawn)",
+      "locations": [
+        {
+          "line": 29,
+          "text": "FoodPolicy currentRespectedRestriction = pawn2.foodRestriction.GetCurrentRespectedRestriction(pawn);"
+        }
+      ],
+      "interpretation": "Bedridden prisoner feeding consults the prisoner policy with the warden as getter."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_Feed",
+      "needle": "JobMaker.MakeJob(JobDefOf.FeedPatient, foodSource, pawn2)",
+      "locations": [
+        {
+          "line": 42,
+          "text": "Job job = JobMaker.MakeJob(JobDefOf.FeedPatient, foodSource, pawn2);"
+        }
+      ],
+      "interpretation": "Prisoner bedside feeding uses the actual FeedPatient driver."
+    },
+    {
+      "type": "RimWorld.WardenFeedUtility",
+      "needle": "if (!p.InBed())",
+      "locations": [
+        {
+          "line": 13,
+          "text": "if (!p.InBed())"
+        }
+      ],
+      "interpretation": "Bedside prisoner feeding requires a bed."
+    },
+    {
+      "type": "RimWorld.WardenFeedUtility",
+      "needle": "if (!p.Downed && !HealthAIUtility.ShouldSeekMedicalRest(p))",
+      "locations": [
+        {
+          "line": 21,
+          "text": "if (!p.Downed && !HealthAIUtility.ShouldSeekMedicalRest(p))"
+        }
+      ],
+      "interpretation": "Downed or medically resting prisoners qualify for bedside feeding."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "if (!pawn2.Position.IsInPrisonCell(pawn2.Map))",
+      "locations": [
+        {
+          "line": 20,
+          "text": "if (!pawn2.Position.IsInPrisonCell(pawn2.Map))"
+        }
+      ],
+      "interpretation": "Ordinary delivery requires a prison cell."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "FoodUtility.TryFindBestFoodSourceFor(pawn, pawn2",
+      "locations": [
+        {
+          "line": 36,
+          "text": "if (!FoodUtility.TryFindBestFoodSourceFor(pawn, pawn2, pawn2.needs.food.CurCategory == HungerCategory.Starving, out var foodSource, out var foodDef, canRefillDispenser: false, canUseInventory: true, canUsePackAnimalInventory: false, allowForbidden: false, allowCorpse: false, allowSociallyImproper: false, allowHarvest: false, forceScanWholeMap: false, ignoreReservations: false, calculateWantedStackCount: true))"
+        }
+      ],
+      "interpretation": "Prisoner delivery searches with the prisoner as eater."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "if (FoodAvailableInRoomTo(pawn2))",
+      "locations": [
+        {
+          "line": 44,
+          "text": "if (FoodAvailableInRoomTo(pawn2))"
+        }
+      ],
+      "interpretation": "Existing edible food in the room can suppress another delivery."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "needle": "p.WillEat(foodSource)",
+      "locations": [
+        {
+          "line": 100,
+          "text": "if (foodSource.def.IsNutritionGivingIngestible && p.WillEat(foodSource))"
+        }
+      ],
+      "interpretation": "Food-available calculation checks prisoner self-eating without a player getter; policy exceptions therefore differ from delivery selection."
+    },
+    {
+      "type": "RimWorld.Pawn_GuestTracker",
+      "needle": "interactionMode != PrisonerInteractionModeDefOf.Execution",
+      "locations": [
+        {
+          "line": 89,
+          "text": "if (interactionMode != PrisonerInteractionModeDefOf.Execution)"
+        }
+      ],
+      "interpretation": "Execution order suppresses ordinary food supply."
+    },
+    {
+      "type": "RimWorld.Pawn_GuestTracker",
+      "needle": "return pawn.Downed;",
+      "locations": [
+        {
+          "line": 93,
+          "text": "return pawn.Downed;"
+        }
+      ],
+      "interpretation": "A release order allows bringing food only while the prisoner is downed in this property."
+    },
+    {
+      "type": "RimWorld.JobDriver_Ingest",
+      "needle": "pawn.Reserve(ingestibleSource, job, 10, maxAmountToPickup",
+      "locations": [
+        {
+          "line": 95,
+          "text": "if (!pawn.Reserve(ingestibleSource, job, 10, maxAmountToPickup, null, errorOnFailed))"
+        }
+      ],
+      "interpretation": "Self-eating reserves a quantity of the actual food stack."
+    },
+    {
+      "type": "RimWorld.JobDriver_Ingest",
+      "needle": "Toils_Misc.TakeItemFromInventoryToCarrier",
+      "locations": [
+        {
+          "line": 144,
+          "text": "yield return Toils_Misc.TakeItemFromInventoryToCarrier(pawn, TargetIndex.A);"
+        }
+      ],
+      "interpretation": "Inventory food physically moves into the carrier before ingestion."
+    },
+    {
+      "type": "RimWorld.JobDriver_Ingest",
+      "needle": "Toils_Ingest.PickupIngestible(TargetIndex.A, pawn)",
+      "locations": [
+        {
+          "line": 154,
+          "text": "yield return Toils_Ingest.PickupIngestible(TargetIndex.A, pawn);"
+        }
+      ],
+      "interpretation": "Self-eating physically picks up food when applicable."
+    },
+    {
+      "type": "RimWorld.JobDriver_Ingest",
+      "needle": "if (!pawn.Drafted)",
+      "locations": [
+        {
+          "line": 163,
+          "text": "if (!pawn.Drafted)"
+        }
+      ],
+      "interpretation": "Drafted pawns skip carrying food to a normal dining spot; this is not a policy exemption."
+    },
+    {
+      "type": "RimWorld.JobDriver_Ingest",
+      "needle": "Toils_Ingest.FinalizeIngest(pawn, TargetIndex.A)",
+      "locations": [
+        {
+          "line": 115,
+          "text": "yield return Toils_Ingest.FinalizeIngest(pawn, TargetIndex.A);"
+        }
+      ],
+      "interpretation": "The eating job finalizes actual consumption."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodFeedPatient",
+      "needle": "pawn.Reserve(Deliveree, job, 1",
+      "locations": [
+        {
+          "line": 39,
+          "text": "if (!pawn.Reserve(Deliveree, job, 1, -1, null, errorOnFailed))"
+        }
+      ],
+      "interpretation": "Feeding reserves the actual patient."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodFeedPatient",
+      "needle": "Toils_Ingest.PickupIngestible(TargetIndex.A, Deliveree)",
+      "locations": [
+        {
+          "line": 67,
+          "text": "yield return Toils_Ingest.PickupIngestible(TargetIndex.A, Deliveree);"
+        }
+      ],
+      "interpretation": "The feeder picks up food sized for the patient."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodFeedPatient",
+      "needle": "Toils_Ingest.ChewIngestible(Deliveree, 1.5f, TargetIndex.A)",
+      "locations": [
+        {
+          "line": 77,
+          "text": "yield return Toils_Ingest.ChewIngestible(Deliveree, 1.5f, TargetIndex.A).FailOnCannotTouch(TargetIndex.B, PathEndMode.Touch);"
+        }
+      ],
+      "interpretation": "The patient receives nutrition through a real feeding delay."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodFeedPatient",
+      "needle": "Toils_Ingest.FinalizeIngest(Deliveree, TargetIndex.A)",
+      "locations": [
+        {
+          "line": 78,
+          "text": "Toil toil = Toils_Ingest.FinalizeIngest(Deliveree, TargetIndex.A);"
+        }
+      ],
+      "interpretation": "Feeding finalizes consumption on the patient, not the doctor."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodDeliver",
+      "needle": "pawn.carryTracker.TryDropCarriedThing",
+      "locations": [
+        {
+          "line": 91,
+          "text": "pawn.carryTracker.TryDropCarriedThing(toil2.actor.jobs.curJob.targetC.Cell, ThingPlaceMode.Direct, out var _);"
+        }
+      ],
+      "interpretation": "Delivery physically drops the carried food in the prisoner room."
+    },
+    {
+      "type": "RimWorld.Toils_Ingest",
+      "needle": "float num2 = thing.Ingested(ingester, num);",
+      "locations": [
+        {
+          "line": 428,
+          "text": "float num2 = thing.Ingested(ingester, num);"
+        }
+      ],
+      "interpretation": "Finalization consumes the real item through Thing.Ingested."
+    },
+    {
+      "type": "RimWorld.Toils_Ingest",
+      "needle": "ingester.needs.food.CurLevel += num2;",
+      "locations": [
+        {
+          "line": 431,
+          "text": "ingester.needs.food.CurLevel += num2;"
+        }
+      ],
+      "interpretation": "Actual returned nutrition increases the eater food need."
+    },
+    {
+      "type": "Verse.Thing",
+      "needle": "numTaken = Mathf.CeilToInt(nutritionWanted / num);",
+      "locations": [
+        {
+          "line": 2195,
+          "text": "numTaken = Mathf.CeilToInt(nutritionWanted / num);"
+        }
+      ],
+      "interpretation": "Actual ingestion amount computation uses ceiling, distinct from pickup-count rounding."
+    },
+    {
+      "type": "Verse.Thing",
+      "needle": "SplitOff(numTaken);",
+      "locations": [
+        {
+          "line": 2161,
+          "text": "SplitOff(numTaken);"
+        }
+      ],
+      "interpretation": "Consumption splits the used portion from a larger physical stack."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_Ingest",
+      "needle": "protected override bool Drafted => true;",
+      "locations": [
+        {
+          "line": 8,
+          "text": "protected override bool Drafted => true;"
+        }
+      ],
+      "interpretation": "Manual consume menu is available while drafted."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_Ingest",
+      "needle": "clickedThing.SetForbidden(value: false);",
+      "locations": [
+        {
+          "line": 74,
+          "text": "clickedThing.SetForbidden(value: false);"
+        }
+      ],
+      "interpretation": "Accepted manual consumption clears the selected item forbidden flag."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_Ingest",
+      "needle": "context.FirstSelectedPawn.jobs.TryTakeOrderedJob(job, JobTag.Misc);",
+      "locations": [
+        {
+          "line": 77,
+          "text": "context.FirstSelectedPawn.jobs.TryTakeOrderedJob(job, JobTag.Misc);"
+        }
+      ],
+      "interpretation": "Manual consumption creates an ordered ingest job."
+    },
+    {
+      "type": "Verse.AI.Pawn_JobTracker",
+      "needle": "job.playerForced = true;",
+      "locations": [
+        {
+          "line": 895,
+          "text": "job.playerForced = true;"
+        }
+      ],
+      "interpretation": "Taking an ordered job marks that actual job player-forced."
+    },
+    {
+      "type": "Verse.AI.Pawn_JobTracker",
+      "needle": "if (pawn.Drafted || newJob.playerForced)",
+      "locations": [
+        {
+          "line": 318,
+          "text": "if (pawn.Drafted || newJob.playerForced)"
+        }
+      ],
+      "interpretation": "Starting a drafted or ordered job enables the shared forbidden override."
+    },
+    {
+      "type": "Verse.AI.Pawn_JobTracker",
+      "needle": "newJob.ignoreForbidden = true;",
+      "locations": [
+        {
+          "line": 320,
+          "text": "newJob.ignoreForbidden = true;"
+        }
+      ],
+      "interpretation": "The started ordered job carries ignoreForbidden."
+    },
+    {
+      "type": "Verse.AI.ToilFailConditions",
+      "needle": "if (actor.jobs.curJob.ignoreForbidden)",
+      "locations": [
+        {
+          "line": 156,
+          "text": "if (actor.jobs.curJob.ignoreForbidden)"
+        }
+      ],
+      "interpretation": "The shared forbidden fail condition allows an ordered job to continue before cell/item forbidden checks."
+    },
+    {
+      "type": "Verse.AI.ToilFailConditions",
+      "needle": "cell.IsForbidden(actor)",
+      "locations": [
+        {
+          "line": 164,
+          "text": "if (!flag && cell.IsValid && cell.IsForbidden(actor))"
+        }
+      ],
+      "interpretation": "Without override, the same fail condition checks the target cell and therefore its allowed area."
+    },
+    {
+      "type": "Verse.AI.ToilFailConditions",
+      "needle": "f.FailOnForbidden(ind);",
+      "locations": [
+        {
+          "line": 180,
+          "text": "f.FailOnForbidden(ind);"
+        },
+        {
+          "line": 187,
+          "text": "f.FailOnForbidden(ind);"
+        }
+      ],
+      "interpretation": "Combined despawn/null/forbidden helpers delegate to the override-aware forbidden gate."
+    },
+    {
+      "type": "RimWorld.ForbidUtility",
+      "needle": "if (!c.InAllowedArea(pawn))",
+      "locations": [
+        {
+          "line": 163,
+          "text": "if (!c.InAllowedArea(pawn))"
+        }
+      ],
+      "interpretation": "Forbidden target cells incorporate allowed-area membership."
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "needle": "pawn.jobs.curJob.AnyTargetOutsideArea(value)",
+      "locations": [
+        {
+          "line": 105,
+          "text": "if (pawn.Spawned && !pawn.Drafted && value != null && value == EffectiveAreaRestrictionInPawnCurrentMap && value.TrueCount > 0 && pawn.jobs?.curJob != null && pawn.jobs.curJob.AnyTargetOutsideArea(value))"
+        }
+      ],
+      "interpretation": "Changing an active nonempty area can interrupt an existing job with an outside target."
+    },
+    {
+      "type": "Verse.PathUtility",
+      "needle": "Area area = pawn.playerSettings.EffectiveAreaRestrictionInPawnCurrentMap;",
+      "locations": [
+        {
+          "line": 16,
+          "text": "Area area = pawn.playerSettings.EffectiveAreaRestrictionInPawnCurrentMap;"
+        }
+      ],
+      "interpretation": "Path area selection is a separate query from an ordered job target exception."
+    },
+    {
+      "type": "RimWorld.ForbidUtility",
+      "needle": "if (!bypassDraftedCheck && pawn.Drafted)",
+      "locations": [
+        {
+          "line": 66,
+          "text": "if (!bypassDraftedCheck && pawn.Drafted)"
+        }
+      ],
+      "interpretation": "Drafted status affects forbidden checks separately from the food policy tracker."
+    },
+    {
+      "type": "Verse.ThingFilter",
+      "needle": "return allowedDefs.Contains(def);",
+      "locations": [
+        {
+          "line": 910,
+          "text": "return allowedDefs.Contains(def);"
+        }
+      ],
+      "interpretation": "Definition allowance is membership, not recursive ingredient allowance."
+    },
+    {
+      "type": "Verse.ThingFilter",
+      "needle": "disallowedSpecialFilters[i].Worker.Matches(t)",
+      "locations": [
+        {
+          "line": 900,
+          "text": "if (disallowedSpecialFilters[i].Worker.Matches(t) && (t.def.IsWithinCategory(disallowedSpecialFilters[i].parentCategory) || onlySpecialFilters))"
+        }
+      ],
+      "interpretation": "Instance filters can inspect special properties, including meal ingredients via specialized workers."
+    },
+    {
+      "type": "RimWorld.CompIngredients",
+      "needle": "public List<ThingDef> ingredients = new List<ThingDef>();",
+      "locations": [
+        {
+          "line": 12,
+          "text": "public List<ThingDef> ingredients = new List<ThingDef>();"
+        }
+      ],
+      "interpretation": "Meals retain ingredient definition provenance."
+    },
+    {
+      "type": "RimWorld.CompIngredients",
+      "needle": "Scribe_Collections.Look(ref ingredients, \"ingredients\", LookMode.Def);",
+      "locations": [
+        {
+          "line": 47,
+          "text": "Scribe_Collections.Look(ref ingredients, \"ingredients\", LookMode.Def);"
+        }
+      ],
+      "interpretation": "Ingredient provenance persists."
+    },
+    {
+      "type": "RimWorld.CompIngredients",
+      "needle": "compIngredients.ingredients.Add(ingredients[i]);",
+      "locations": [
+        {
+          "line": 78,
+          "text": "compIngredients.ingredients.Add(ingredients[i]);"
+        }
+      ],
+      "interpretation": "Splitting copies ingredient provenance to the physical split piece."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "if (GetFoodKind(compIngredients.ingredients[i]) == FoodKind.Meat)",
+      "locations": [
+        {
+          "line": 1470,
+          "text": "if (GetFoodKind(compIngredients.ingredients[i]) == FoodKind.Meat)"
+        }
+      ],
+      "interpretation": "Any meat ingredient classifies the instance as meat."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "if (compIngredients.ingredients[i].IsAnimalProduct)",
+      "locations": [
+        {
+          "line": 1474,
+          "text": "if (compIngredients.ingredients[i].IsAnimalProduct)"
+        }
+      ],
+      "interpretation": "Milk or eggs affect dietary classification separately from meat."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "needle": "if (!def.IsProcessedFood)",
+      "locations": [
+        {
+          "line": 1542,
+          "text": "if (!def.IsProcessedFood)"
+        }
+      ],
+      "interpretation": "Processed foods have special dietary acceptability behavior; do not equate cooking with this definition flag."
+    },
+    {
+      "type": "RimWorld.SpecialThingFilterWorker_Cannibal",
+      "needle": "FoodUtility.IsHumanlikeCorpseOrHumanlikeMeatOrIngredient(t)",
+      "locations": [
+        {
+          "line": 9,
+          "text": "return FoodUtility.IsHumanlikeCorpseOrHumanlikeMeatOrIngredient(t);"
+        }
+      ],
+      "interpretation": "Cannibal special filtering considers human-meat ingredients."
+    },
+    {
+      "type": "RimWorld.SpecialThingFilterWorker_InsectMeat",
+      "needle": "FoodUtility.IsInsectCorpseOrInsectMeatIngredient(t)",
+      "locations": [
+        {
+          "line": 9,
+          "text": "return FoodUtility.IsInsectCorpseOrInsectMeatIngredient(t);"
+        }
+      ],
+      "interpretation": "Insect special filtering considers insect-meat ingredients."
+    },
+    {
+      "type": "RimWorld.SpecialThingFilterWorker_Carnivore",
+      "needle": "!FoodUtility.AcceptableVegetarian(t) && FoodUtility.AcceptableCarnivore(t)",
+      "locations": [
+        {
+          "line": 9,
+          "text": "if (!FoodUtility.AcceptableVegetarian(t) && FoodUtility.AcceptableCarnivore(t) && !FoodUtility.IsHumanlikeCorpseOrHumanlikeMeatOrIngredient(t))"
+        }
+      ],
+      "interpretation": "Carnivore special filtering uses dietary instance classification."
+    },
+    {
+      "type": "RimWorld.Dialog_ManageFoodPolicies",
+      "needle": "forceHideHitPointsConfig: true",
+      "locations": [
+        {
+          "line": 74,
+          "text": "ThingFilterUI.DoThingFilterConfigWindow(rect, thingFilterState, SelectedPolicy.filter, FoodGlobalFilter, 1, null, HiddenSpecialThingFilters(), forceHideHitPointsConfig: true);"
+        }
+      ],
+      "interpretation": "Food manager hides hit-point range configuration."
+    },
+    {
+      "type": "RimWorld.Dialog_ManageFoodPolicies",
+      "needle": "yield return SpecialThingFilterDefOf.AllowFresh;",
+      "locations": [
+        {
+          "line": 79,
+          "text": "yield return SpecialThingFilterDefOf.AllowFresh;"
+        }
+      ],
+      "interpretation": "Freshness exclusion is hidden in the native manager."
+    },
+    {
+      "type": "RimWorld.PawnColumnWorker_FoodRestriction",
+      "needle": "pawn.foodRestriction.CurrentFoodPolicy = foodRestriction;",
+      "locations": [
+        {
+          "line": 40,
+          "text": "pawn.foodRestriction.CurrentFoodPolicy = foodRestriction;"
+        }
+      ],
+      "interpretation": "The assignment table edits a shared policy reference."
+    }
+  ],
+  "boundedChecks": [
+    {
+      "type": "RimWorld.Pawn_FoodRestrictionTracker",
+      "start": "public FoodPolicy GetCurrentRespectedRestriction",
+      "end": "public bool BabyFoodAllowed",
+      "lineStart": 59,
+      "lineEnd": 76,
+      "sha256": "5ce5f3d5608aa9af20454ea8c647fb8d75d1a9868a6cb8fefe5d22021d4e1297",
+      "absent": [
+        "Starving",
+        "CurCategory",
+        "Drafted",
+        "NutritionWanted"
+      ],
+      "present": [
+        "Configurable",
+        "pawn.Faction != Faction.OfPlayer",
+        "getter.Faction != Faction.OfPlayer",
+        "pawn.InMentalState",
+        "return CurrentFoodPolicy"
+      ],
+      "interpretation": "There is no starvation or drafted override in the respected-policy method; mental state and player getter exceptions are explicit."
+    },
+    {
+      "type": "RimWorld.Pawn_FoodRestrictionTracker",
+      "start": "public FoodPolicy CurrentFoodPolicy",
+      "end": "public bool Configurable",
+      "lineStart": 14,
+      "lineEnd": 34,
+      "sha256": "581572094238780d61b0dc1d865a850a900e024996ed6e5a685ca2ea01a58c53",
+      "absent": [
+        "EndCurrentJob",
+        "Notify",
+        "WillEat"
+      ],
+      "present": [
+        "curPolicy = value",
+        "DefaultFoodRestriction"
+      ],
+      "interpretation": "Assigning a policy does not directly interrupt food jobs in this setter."
+    },
+    {
+      "type": "RimWorld.FoodPolicy",
+      "start": "public class FoodPolicy",
+      "end": "",
+      "lineStart": 5,
+      "lineEnd": 44,
+      "sha256": "20d54fdb6a28b9ff4f2976c7180a9e023d5892c3b93e03062e054f2c80d31667",
+      "absent": [
+        "ingredients",
+        "settingsChangedCallback",
+        "EndCurrentJob"
+      ],
+      "present": [
+        "filter.Allows(thing)",
+        "CopyAllowancesFrom"
+      ],
+      "interpretation": "Policy itself delegates filters; it does not recursively check all ingredient defs or wire an interruption callback."
+    },
+    {
+      "type": "Verse.ThingFilter",
+      "start": "public virtual bool Allows(Thing t)",
+      "end": "public bool Allows(SpecialThingFilterDef sf)",
+      "lineStart": 874,
+      "lineEnd": 913,
+      "sha256": "c59e1f8e84c8dbe724eff35a248142965d8439b79fd6cd87f6ebd72aec6b55bf",
+      "absent": [
+        "CompIngredients",
+        "ingredients",
+        "WillEat"
+      ],
+      "present": [
+        "Allows(t.def)",
+        "disallowedSpecialFilters[i].Worker.Matches(t)",
+        "allowedDefs.Contains(def)"
+      ],
+      "interpretation": "Ordinary filter checks final def plus special item-state filters, not every ingredient against allowedDefs."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "start": "public static Thing BestFoodInInventory",
+      "end": "public static int GetMaxAmountToPickup",
+      "lineStart": 329,
+      "lineEnd": 351,
+      "sha256": "85e92edeb9088d9632fcdc99f03e4b10911fad275376f712d8758a8c18115ab2",
+      "absent": [
+        "IsInAnyStorage",
+        "IsForbidden",
+        "CanReserve"
+      ],
+      "present": [
+        "eater.WillEat(thing, holder",
+        "thing.IngestibleNow"
+      ],
+      "interpretation": "Inventory eligibility retains eater policy; this method has no ground storage, forbidden or reservation gate."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "start": "public static Thing BestFoodSourceOnMap",
+      "end": "private static int GetMaxRegionsToScan",
+      "lineStart": 381,
+      "lineEnd": 536,
+      "sha256": "744bba21ae65a6c8898510e4bbf9916289299466641676ec8f0dce5328209aea",
+      "absent": [
+        "IsInAnyStorage",
+        "GetSlotGroup",
+        "IsBurning"
+      ],
+      "present": [
+        "else if (desperate)",
+        "eater.WillEat(t, getter",
+        "(!desperate && t.IsNotFresh())",
+        "getter.CanReserve",
+        "TraverseParms.For(getter)"
+      ],
+      "interpretation": "Desperation lowers preference/freshness gates while retaining policy, reservations and traversal; ground food need not be stored. No direct burning gate in this method."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_Ingest",
+      "start": "protected override FloatMenuOption GetSingleOptionFor",
+      "end": "",
+      "lineStart": 14,
+      "lineEnd": 87,
+      "sha256": "8e97ab21f6b99146c1ee692d5c2673b038e85bd80acd7c8a31c82902cc1827b1",
+      "absent": [
+        "CurrentFoodPolicy",
+        "GetCurrentRespectedRestriction",
+        "WillEat(",
+        "filter.Allows",
+        "IsForbidden(",
+        "InAllowedArea("
+      ],
+      "present": [
+        "FoodIsSuitable",
+        "CanReach",
+        "SetForbidden(value: false)",
+        "TryTakeOrderedJob"
+      ],
+      "interpretation": "Manual ingest provider does not reject an allowed-area or policy mismatch, while species suitability and physical access still apply."
+    },
+    {
+      "type": "Verse.AI.ToilFailConditions",
+      "start": "public static T FailOnForbidden<T>",
+      "end": "public static T FailOnDespawnedNullOrForbidden<T>",
+      "lineStart": 147,
+      "lineEnd": 177,
+      "sha256": "21bce52500445ccec2ebab60fd10a130e0d149a3cb2b70afc07973b4f0a0d910",
+      "absent": [
+        "playerForced"
+      ],
+      "present": [
+        "actor.jobs.curJob.ignoreForbidden",
+        "return JobCondition.Ongoing",
+        "cell.IsForbidden(actor)",
+        "thing.IsForbidden(actor)"
+      ],
+      "interpretation": "Forbidden failure reads the actual job ignoreForbidden flag; StartJob maps playerForced to this flag. The early return precedes area and item rejection."
+    },
+    {
+      "type": "Verse.PathUtility",
+      "start": "public static Area GetAllowedArea(Pawn pawn)",
+      "end": "public static bool IsDestroyable",
+      "lineStart": 12,
+      "lineEnd": 26,
+      "sha256": "dca5108714df40db6973091f8e21aea7894038ebfbba050ba191da3d9c34deae",
+      "absent": [
+        "playerForced",
+        "ignoreForbidden"
+      ],
+      "present": [
+        "!pawn.Drafted",
+        "CaresAboutForbidden",
+        "EffectiveAreaRestrictionInPawnCurrentMap"
+      ],
+      "interpretation": "An undrafted ordered job does not disable this separate path-area query; target permission is not proof of removing all area path preference."
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "start": "public Area AreaRestrictionInPawnCurrentMap",
+      "end": "public bool RespectsAllowedArea",
+      "lineStart": 85,
+      "lineEnd": 113,
+      "sha256": "d6f7dd581c5dbebeefdc771c4e0fa3481278724e759a0654718bdd4b4b5019c4",
+      "absent": [
+        "playerForced",
+        "ignoreForbidden"
+      ],
+      "present": [
+        "!pawn.Drafted",
+        "value.TrueCount > 0",
+        "AnyTargetOutsideArea(value)",
+        "EndCurrentJob(JobCondition.InterruptForced)"
+      ],
+      "interpretation": "Reassigning a nonempty effective area can interrupt an undrafted outside-target job even if the old job was ordered."
+    },
+    {
+      "type": "RimWorld.JobDriver_Ingest",
+      "start": "protected override IEnumerable<Toil> MakeNewToils",
+      "end": "private IEnumerable<Toil> PrepareToIngestToils(",
+      "lineStart": 103,
+      "lineEnd": 119,
+      "sha256": "0e517efa7ae58a2c0a46d0cb9925243c252668771a8ade8c144dde9a97d599cf",
+      "absent": [
+        "CurrentFoodPolicy",
+        "GetCurrentRespectedRestriction",
+        "WillEat(",
+        "filter.Allows"
+      ],
+      "present": [
+        "IngestibleNow",
+        "ChewIngestible",
+        "FinalizeIngest"
+      ],
+      "interpretation": "The active eating driver checks food validity but does not re-read policy here."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodFeedPatient",
+      "start": "protected override IEnumerable<Toil> MakeNewToils",
+      "end": "",
+      "lineStart": 55,
+      "lineEnd": 92,
+      "sha256": "419c73afbd9722b7c11089f2d9f3aa778b8aa88d41f68c807ca110fbbf6d71d4",
+      "absent": [
+        "CurrentFoodPolicy",
+        "GetCurrentRespectedRestriction",
+        "WillEat(",
+        "filter.Allows"
+      ],
+      "present": [
+        "ShouldBeFedBySomeone",
+        "PickupIngestible",
+        "ChewIngestible(Deliveree",
+        "FinalizeIngest(Deliveree"
+      ],
+      "interpretation": "The active bedside-feeding job rechecks patient eligibility but not policy in this method."
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodDeliver",
+      "start": "protected override IEnumerable<Toil> MakeNewToils",
+      "end": "",
+      "lineStart": 47,
+      "lineEnd": 97,
+      "sha256": "4665741535c80cfd0f99ab45c69b871b73de2d6f3b367569f8c2f048c8498070",
+      "absent": [
+        "CurrentFoodPolicy",
+        "GetCurrentRespectedRestriction",
+        "WillEat(",
+        "filter.Allows",
+        "Ingested("
+      ],
+      "present": [
+        "ReserveFoodFromStackForIngesting",
+        "PickupIngestible",
+        "CanBeBroughtFood",
+        "TryDropCarriedThing"
+      ],
+      "interpretation": "Delivery moves and drops food; it does not directly feed nutrition or re-read the food policy in this method."
+    },
+    {
+      "type": "RimWorld.Toils_Ingest",
+      "start": "public static Toil FinalizeIngest",
+      "end": "",
+      "lineStart": 395,
+      "lineEnd": 439,
+      "sha256": "45451a9d826923d84b44c1aaf997270d86c41579142523b1ad87cf2beef2c1b1",
+      "absent": [
+        "CurrentFoodPolicy",
+        "GetCurrentRespectedRestriction",
+        "WillEat(",
+        "filter.Allows"
+      ],
+      "present": [
+        "thing.Ingested(ingester, num)",
+        "ingester.needs.food.CurLevel += num2"
+      ],
+      "interpretation": "The final ingest toil consumes the actual item and credits nutrition without a direct policy check."
+    },
+    {
+      "type": "Verse.Thing",
+      "start": "public float Ingested(Pawn ingester, float nutritionWanted)",
+      "end": "protected virtual void PrePostIngested",
+      "lineStart": 2005,
+      "lineEnd": 2184,
+      "sha256": "291fdd8c46e366fe22569d866f7d6fd7645e6347d7c31698794aa1bb07b88cad",
+      "absent": [
+        "CurrentFoodPolicy",
+        "GetCurrentRespectedRestriction",
+        "WillEat(",
+        "filter.Allows"
+      ],
+      "present": [
+        "if (!IngestibleNow)",
+        "IngestedCalculateAmounts",
+        "SplitOff(numTaken)",
+        "return nutritionIngested"
+      ],
+      "interpretation": "The base consumption method checks physical ingestibility and returns actual nutrition, without directly rechecking policy; component hooks remain separate."
+    },
+    {
+      "type": "RimWorld.FoodRestrictionDatabase",
+      "start": "public AcceptanceReport TryDelete",
+      "end": "public FoodPolicy MakeNewFoodRestriction",
+      "lineStart": 41,
+      "lineEnd": 61,
+      "sha256": "a3f8277a48b57d75a682381de8f84fb802c9943ac4b2a73cc3be60d8fd86952a",
+      "absent": [
+        "Destroy(",
+        "EndCurrentJob",
+        "foodRestrictions.Count == 1"
+      ],
+      "present": [
+        "FoodRestrictionInUse",
+        "CurrentFoodPolicy = null",
+        "foodRestrictions.Remove(foodPolicy)"
+      ],
+      "interpretation": "Deletion handles references; rejecting deletion of the final unassigned policy would be a Web adaptation, not this native method."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "start": "private static bool FoodAvailableInRoomTo",
+      "end": "",
+      "lineStart": 55,
+      "lineEnd": 111,
+      "sha256": "2b1c9a6c211ebf418a0d3f9f30a6cc94d9c6351ff72bfd7ef3680a65c6f7ed9d",
+      "absent": [
+        "GetCurrentRespectedRestriction",
+        "CurrentFoodPolicy"
+      ],
+      "present": [
+        "NutritionAvailableForFrom",
+        "p.WillEat(foodSource)"
+      ],
+      "interpretation": "Existing-food sufficiency uses the prisoner self-eating context, distinct from warden delivery policy enforcement."
+    }
+  ],
+  "packagedXml": [
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+      "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+      "xpath": "/Defs/ThingDef[@Name=\"MealBaseIngredientless\"]",
+      "nameAttribute": "MealBaseIngredientless",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "statBases/Nutrition",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "ingestible",
+          "count": 1,
+          "xml": [
+            "<ingestible><foodType>Meal</foodType><maxNumToIngestAtOnce>1</maxNumToIngestAtOnce><defaultNumToIngestAtOnce>1</defaultNumToIngestAtOnce><optimalityOffsetHumanlikes>16</optimalityOffsetHumanlikes></ingestible>"
+          ]
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 1,
+          "xml": [
+            "<thingCategories><li>FoodMeals</li></thingCategories>"
+          ]
+        },
+        {
+          "xpath": "socialPropernessMatters",
+          "count": 1,
+          "xml": [
+            "<socialPropernessMatters>true</socialPropernessMatters>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_Forbiddable\" /><li Class=\"CompProperties_FoodPoisonable\" /><li MayRequire=\"Ludeon.RimWorld.Anomaly\" Class=\"CompProperties_MetalhorrorInfectible\" /></comps>"
+          ]
+        },
+        {
+          "xpath": "ingredient",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "stackLimit",
+          "count": 1,
+          "xml": [
+            "<stackLimit>10</stackLimit>"
+          ]
+        }
+      ],
+      "interpretation": "Meal base has nutrition-related handling, forbiddable, social properness and a one-item ingestion cap."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+      "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+      "xpath": "/Defs/ThingDef[defName=\"MealSimple\"]",
+      "nameAttribute": "",
+      "parentName": "MealCooked",
+      "fields": [
+        {
+          "xpath": "statBases/Nutrition",
+          "count": 1,
+          "xml": [
+            "<Nutrition>0.9</Nutrition>"
+          ]
+        },
+        {
+          "xpath": "ingestible",
+          "count": 1,
+          "xml": [
+            "<ingestible><preferability>MealSimple</preferability><ingestEffect>EatVegetarian</ingestEffect><ingestSound>Meal_Eat</ingestSound><optimalityOffsetFeedingAnimals>-25</optimalityOffsetFeedingAnimals></ingestible>"
+          ]
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "socialPropernessMatters",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "comps",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "ingredient",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "stackLimit",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Simple meal final definition and parent linkage."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+      "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+      "xpath": "/Defs/ThingDef[defName=\"MealFine\"]",
+      "nameAttribute": "",
+      "parentName": "MealFineBase",
+      "fields": [
+        {
+          "xpath": "statBases/Nutrition",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "ingestible",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "socialPropernessMatters",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_Ingredients\"><splitTransferableFoodKind>true</splitTransferableFoodKind></li></comps>"
+          ]
+        },
+        {
+          "xpath": "ingredient",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "stackLimit",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Fine meal adds retained ingredient provenance."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+      "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+      "xpath": "/Defs/ThingDef[defName=\"MealLavish\"]",
+      "nameAttribute": "",
+      "parentName": "MealLavishBase",
+      "fields": [
+        {
+          "xpath": "statBases/Nutrition",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "ingestible",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "socialPropernessMatters",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_Ingredients\"><splitTransferableFoodKind>true</splitTransferableFoodKind></li></comps>"
+          ]
+        },
+        {
+          "xpath": "ingredient",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "stackLimit",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Lavish meal uses its own preferability and inherited component state."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+      "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+      "xpath": "/Defs/ThingDef[defName=\"MealSurvivalPack\"]",
+      "nameAttribute": "",
+      "parentName": "MealBase",
+      "fields": [
+        {
+          "xpath": "statBases/Nutrition",
+          "count": 1,
+          "xml": [
+            "<Nutrition>0.9</Nutrition>"
+          ]
+        },
+        {
+          "xpath": "ingestible",
+          "count": 1,
+          "xml": [
+            "<ingestible><preferability>MealSimple</preferability><optimalityOffsetHumanlikes>-5</optimalityOffsetHumanlikes><optimalityOffsetFeedingAnimals>-100</optimalityOffsetFeedingAnimals><ingestEffect>EatVegetarian</ingestEffect><ingestSound>Meal_Eat</ingestSound></ingestible>"
+          ]
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "socialPropernessMatters",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "comps",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "ingredient",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "stackLimit",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Survival pack is a separate final def explicitly excluded by Simple preset."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+      "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+      "xpath": "/Defs/ThingDef[defName=\"MealNutrientPaste\"]",
+      "nameAttribute": "",
+      "parentName": "MealBase",
+      "fields": [
+        {
+          "xpath": "statBases/Nutrition",
+          "count": 1,
+          "xml": [
+            "<Nutrition>0.9</Nutrition>"
+          ]
+        },
+        {
+          "xpath": "ingestible",
+          "count": 1,
+          "xml": [
+            "<ingestible><preferability>MealAwful</preferability><ateEvent>AteNutrientPaste</ateEvent><ingestEffect>EatVegetarian</ingestEffect><ingestSound>Meal_Eat</ingestSound><optimalityOffsetFeedingAnimals>-25</optimalityOffsetFeedingAnimals></ingestible>"
+          ]
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "socialPropernessMatters",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_Rottable\"><daysToRotStart>0.75</daysToRotStart><!-- short rot time, you want to make them as needed not store them --><rotDestroys>true</rotDestroys></li></comps>"
+          ]
+        },
+        {
+          "xpath": "ingredient",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "stackLimit",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Nutrient paste is separately filterable and may be produced by a dispenser."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+      "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c",
+      "xpath": "/Defs/ThingDef[defName=\"RawRice\"]",
+      "nameAttribute": "",
+      "parentName": "PlantFoodRawBase",
+      "fields": [
+        {
+          "xpath": "statBases/Nutrition",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "ingestible",
+          "count": 1,
+          "xml": [
+            "<ingestible><foodType>Seed</foodType></ingestible>"
+          ]
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "socialPropernessMatters",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_Rottable\"><daysToRotStart>40</daysToRotStart><rotDestroys>true</rotDestroys></li></comps>"
+          ]
+        },
+        {
+          "xpath": "ingredient",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "stackLimit",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Rice retains the raw plant-food parent policy/preference context."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml",
+      "sha256": "271298b153e8a9b86c62f70d0d334d91c8182e4c34525190753a05e5afcff71d",
+      "xpath": "/Defs/ThingDef[defName=\"Milk\"]",
+      "nameAttribute": "",
+      "parentName": "OrganicProductBase",
+      "fields": [
+        {
+          "xpath": "statBases/Nutrition",
+          "count": 1,
+          "xml": [
+            "<Nutrition>0.05</Nutrition>"
+          ]
+        },
+        {
+          "xpath": "ingestible",
+          "count": 1,
+          "xml": [
+            "<ingestible><preferability>RawTasty</preferability><foodType>AnimalProduct, Fluid</foodType><babiesCanIngest>true</babiesCanIngest></ingestible>"
+          ]
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 1,
+          "xml": [
+            "<thingCategories><li>AnimalProductRaw</li></thingCategories>"
+          ]
+        },
+        {
+          "xpath": "socialPropernessMatters",
+          "count": 1,
+          "xml": [
+            "<socialPropernessMatters>true</socialPropernessMatters>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_Rottable\"><daysToRotStart>14</daysToRotStart><rotDestroys>true</rotDestroys></li></comps>"
+          ]
+        },
+        {
+          "xpath": "ingredient",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "stackLimit",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Milk is raw-tasty animal product; dietary animal product is not equivalent to meat."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml",
+      "sha256": "271298b153e8a9b86c62f70d0d334d91c8182e4c34525190753a05e5afcff71d",
+      "xpath": "/Defs/ThingDef[defName=\"EggChickenUnfertilized\"]",
+      "nameAttribute": "",
+      "parentName": "EggUnfertBase",
+      "fields": [
+        {
+          "xpath": "statBases/Nutrition",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "ingestible",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "socialPropernessMatters",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "comps",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "ingredient",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "stackLimit",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Chicken eggs have inherited raw-product nutrition and food flags."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml",
+      "sha256": "271298b153e8a9b86c62f70d0d334d91c8182e4c34525190753a05e5afcff71d",
+      "xpath": "/Defs/ThingDef[defName=\"InsectJelly\"]",
+      "nameAttribute": "",
+      "parentName": "OrganicProductBase",
+      "fields": [
+        {
+          "xpath": "statBases/Nutrition",
+          "count": 1,
+          "xml": [
+            "<Nutrition>0.05</Nutrition>"
+          ]
+        },
+        {
+          "xpath": "ingestible",
+          "count": 1,
+          "xml": [
+            "<ingestible><foodType>AnimalProduct</foodType><preferability>MealFine</preferability><joy>0.08</joy><joyKind>Gluttonous</joyKind><ingestEffect>EatVegetarian</ingestEffect><ingestSound>Meal_Eat</ingestSound><lowPriorityCaravanFood>true</lowPriorityCaravanFood><babiesCanIngest>true</babiesCanIngest></ingestible>"
+          ]
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 1,
+          "xml": [
+            "<thingCategories><li>AnimalProductRaw</li></thingCategories>"
+          ]
+        },
+        {
+          "xpath": "socialPropernessMatters",
+          "count": 1,
+          "xml": [
+            "<socialPropernessMatters>true</socialPropernessMatters>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "ingredient",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "stackLimit",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Insect jelly has explicit preset exceptions."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/SpecialThingFilterDefs/SpecialThingFilters.xml",
+      "sha256": "a3d81da38d9de4145d46cfb46ab8891f3ac7648cb73b481763be88b48a79806f",
+      "xpath": "/Defs/SpecialThingFilterDef[defName=\"AllowFresh\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "parentCategory",
+          "count": 1,
+          "xml": [
+            "<parentCategory>Root</parentCategory>"
+          ]
+        },
+        {
+          "xpath": "allowedByDefault",
+          "count": 1,
+          "xml": [
+            "<allowedByDefault>true</allowedByDefault>"
+          ]
+        },
+        {
+          "xpath": "workerClass",
+          "count": 1,
+          "xml": [
+            "<workerClass>SpecialThingFilterWorker_Fresh</workerClass>"
+          ]
+        }
+      ],
+      "interpretation": "Fresh filter is Core-packaged but hidden by the food-policy UI."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/SpecialThingFilterDefs/SpecialThingFilters.xml",
+      "sha256": "a3d81da38d9de4145d46cfb46ab8891f3ac7648cb73b481763be88b48a79806f",
+      "xpath": "/Defs/SpecialThingFilterDef[defName=\"AllowRotten\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "parentCategory",
+          "count": 1,
+          "xml": [
+            "<parentCategory>Root</parentCategory>"
+          ]
+        },
+        {
+          "xpath": "allowedByDefault",
+          "count": 1,
+          "xml": [
+            "<allowedByDefault>true</allowedByDefault>"
+          ]
+        },
+        {
+          "xpath": "workerClass",
+          "count": 1,
+          "xml": [
+            "<workerClass>SpecialThingFilterWorker_Rotten</workerClass>"
+          ]
+        }
+      ],
+      "interpretation": "Rot permission is separate from desperate search and ingestibility."
+    },
+    {
+      "file": "Data/Core/Defs/JobDefs/Jobs_Work.xml",
+      "sha256": "0c2cc583de4ad306681c1dcd65763539461adedf33a5360fe716a36deddef2a1",
+      "xpath": "/Defs/JobDef[defName=\"DeliverFood\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "driverClass",
+          "count": 1,
+          "xml": [
+            "<driverClass>JobDriver_FoodDeliver</driverClass>"
+          ]
+        },
+        {
+          "xpath": "reportString",
+          "count": 1,
+          "xml": [
+            "<reportString>feeding TargetA to TargetB.</reportString>"
+          ]
+        },
+        {
+          "xpath": "allowOpportunisticPrefix",
+          "count": 1,
+          "xml": [
+            "<allowOpportunisticPrefix>true</allowOpportunisticPrefix>"
+          ]
+        }
+      ],
+      "interpretation": "Prisoner delivery maps to JobDriver_FoodDeliver, not an instantaneous feeding action."
+    },
+    {
+      "file": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+      "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c",
+      "xpath": "/Defs/WorkGiverDef[defName=\"FeedPrisoner\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "giverClass",
+          "count": 1,
+          "xml": [
+            "<giverClass>WorkGiver_Warden_Feed</giverClass>"
+          ]
+        },
+        {
+          "xpath": "workType",
+          "count": 1,
+          "xml": [
+            "<workType>Warden</workType>"
+          ]
+        },
+        {
+          "xpath": "priorityInType",
+          "count": 1,
+          "xml": [
+            "<priorityInType>80</priorityInType>"
+          ]
+        },
+        {
+          "xpath": "requiredCapacities",
+          "count": 1,
+          "xml": [
+            "<requiredCapacities><li>Manipulation</li></requiredCapacities>"
+          ]
+        }
+      ],
+      "interpretation": "Bedside prisoner feeding is warden work."
+    },
+    {
+      "file": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+      "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c",
+      "xpath": "/Defs/WorkGiverDef[defName=\"DeliverFoodToPrisoner\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "giverClass",
+          "count": 1,
+          "xml": [
+            "<giverClass>WorkGiver_Warden_DeliverFood</giverClass>"
+          ]
+        },
+        {
+          "xpath": "workType",
+          "count": 1,
+          "xml": [
+            "<workType>Warden</workType>"
+          ]
+        },
+        {
+          "xpath": "priorityInType",
+          "count": 1,
+          "xml": [
+            "<priorityInType>70</priorityInType>"
+          ]
+        },
+        {
+          "xpath": "requiredCapacities",
+          "count": 1,
+          "xml": [
+            "<requiredCapacities><li>Manipulation</li></requiredCapacities>"
+          ]
+        }
+      ],
+      "interpretation": "Prisoner delivery is separate warden work."
+    },
+    {
+      "file": "Data/Core/Defs/ThinkTreeDefs/Humanlike.xml",
+      "sha256": "047fc3c5bcb60ead007adbcd0090690a25af882adeb11298df8f4b551bbbdd4e",
+      "xpath": "/Defs/ThinkTreeDef[defName=\"Humanlike\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": ".//li[@Class=\"JobGiver_GetFood\"]",
+          "count": 2,
+          "xml": [
+            "<li Class=\"JobGiver_GetFood\" />",
+            "<li Class=\"JobGiver_GetFood\"><leaveJoinableLordIfIssuesJob>true</leaveJoinableLordIfIssuesJob></li>"
+          ]
+        }
+      ],
+      "interpretation": "Humanlike think-tree has explicit hunger work entries; projected nodes retain local settings."
+    }
+  ],
+  "definitionProfiles": [
+    {
+      "def": "MealSimple",
+      "selectedInheritedScalars": {
+        "nutrition": 0.9,
+        "preferability": "MealSimple",
+        "foodType": "Meal"
+      },
+      "chain": [
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+          "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+          "xpath": "/Defs/ThingDef[defName=\"MealSimple\"]",
+          "parentName": "MealCooked",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": [
+                "<Nutrition>0.9</Nutrition>"
+              ]
+            },
+            {
+              "xpath": "ingestible",
+              "xml": [
+                "<ingestible><preferability>MealSimple</preferability><ingestEffect>EatVegetarian</ingestEffect><ingestSound>Meal_Eat</ingestSound><optimalityOffsetFeedingAnimals>-25</optimalityOffsetFeedingAnimals></ingestible>"
+              ]
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": []
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+          "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+          "xpath": "/Defs/ThingDef[@Name=\"MealCooked\"]",
+          "parentName": "MealCookedIngredientless",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": []
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Ingredients\"><splitTransferableFoodKind>true</splitTransferableFoodKind></li></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+          "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+          "xpath": "/Defs/ThingDef[@Name=\"MealCookedIngredientless\"]",
+          "parentName": "MealBaseIngredientless",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": []
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Rottable\"><daysToRotStart>4</daysToRotStart><rotDestroys>true</rotDestroys></li></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+          "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+          "xpath": "/Defs/ThingDef[@Name=\"MealBaseIngredientless\"]",
+          "parentName": "",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": [
+                "<ingestible><foodType>Meal</foodType><maxNumToIngestAtOnce>1</maxNumToIngestAtOnce><defaultNumToIngestAtOnce>1</defaultNumToIngestAtOnce><optimalityOffsetHumanlikes>16</optimalityOffsetHumanlikes></ingestible>"
+              ]
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": [
+                "<thingCategories><li>FoodMeals</li></thingCategories>"
+              ]
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": [
+                "<socialPropernessMatters>true</socialPropernessMatters>"
+              ]
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Forbiddable\" /><li Class=\"CompProperties_FoodPoisonable\" /><li MayRequire=\"Ludeon.RimWorld.Anomaly\" Class=\"CompProperties_MetalhorrorInfectible\" /></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": [
+                "<stackLimit>10</stackLimit>"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "def": "MealFine",
+      "selectedInheritedScalars": {
+        "nutrition": 0.9,
+        "preferability": "MealFine",
+        "foodType": "Meal"
+      },
+      "chain": [
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+          "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+          "xpath": "/Defs/ThingDef[defName=\"MealFine\"]",
+          "parentName": "MealFineBase",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": []
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Ingredients\"><splitTransferableFoodKind>true</splitTransferableFoodKind></li></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+          "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+          "xpath": "/Defs/ThingDef[@Name=\"MealFineBase\"]",
+          "parentName": "MealCookedIngredientless",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": [
+                "<Nutrition>0.9</Nutrition>"
+              ]
+            },
+            {
+              "xpath": "ingestible",
+              "xml": [
+                "<ingestible><preferability>MealFine</preferability><tasteThought>AteFineMeal</tasteThought><ingestEffect>EatVegetarian</ingestEffect><ingestSound>Meal_Eat</ingestSound><optimalityOffsetFeedingAnimals>-75</optimalityOffsetFeedingAnimals></ingestible>"
+              ]
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": []
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+          "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+          "xpath": "/Defs/ThingDef[@Name=\"MealCookedIngredientless\"]",
+          "parentName": "MealBaseIngredientless",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": []
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Rottable\"><daysToRotStart>4</daysToRotStart><rotDestroys>true</rotDestroys></li></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+          "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+          "xpath": "/Defs/ThingDef[@Name=\"MealBaseIngredientless\"]",
+          "parentName": "",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": [
+                "<ingestible><foodType>Meal</foodType><maxNumToIngestAtOnce>1</maxNumToIngestAtOnce><defaultNumToIngestAtOnce>1</defaultNumToIngestAtOnce><optimalityOffsetHumanlikes>16</optimalityOffsetHumanlikes></ingestible>"
+              ]
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": [
+                "<thingCategories><li>FoodMeals</li></thingCategories>"
+              ]
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": [
+                "<socialPropernessMatters>true</socialPropernessMatters>"
+              ]
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Forbiddable\" /><li Class=\"CompProperties_FoodPoisonable\" /><li MayRequire=\"Ludeon.RimWorld.Anomaly\" Class=\"CompProperties_MetalhorrorInfectible\" /></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": [
+                "<stackLimit>10</stackLimit>"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "def": "MealLavish",
+      "selectedInheritedScalars": {
+        "nutrition": 1.0,
+        "preferability": "MealLavish",
+        "foodType": "Meal"
+      },
+      "chain": [
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+          "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+          "xpath": "/Defs/ThingDef[defName=\"MealLavish\"]",
+          "parentName": "MealLavishBase",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": []
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Ingredients\"><splitTransferableFoodKind>true</splitTransferableFoodKind></li></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+          "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+          "xpath": "/Defs/ThingDef[@Name=\"MealLavishBase\"]",
+          "parentName": "MealCookedIngredientless",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": [
+                "<Nutrition>1</Nutrition>"
+              ]
+            },
+            {
+              "xpath": "ingestible",
+              "xml": [
+                "<ingestible><preferability>MealLavish</preferability><tasteThought>AteLavishMeal</tasteThought><ingestEffect>EatVegetarian</ingestEffect><ingestSound>Meal_Eat</ingestSound><optimalityOffsetFeedingAnimals>-100</optimalityOffsetFeedingAnimals></ingestible>"
+              ]
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": []
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+          "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+          "xpath": "/Defs/ThingDef[@Name=\"MealCookedIngredientless\"]",
+          "parentName": "MealBaseIngredientless",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": []
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Rottable\"><daysToRotStart>4</daysToRotStart><rotDestroys>true</rotDestroys></li></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+          "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+          "xpath": "/Defs/ThingDef[@Name=\"MealBaseIngredientless\"]",
+          "parentName": "",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": [
+                "<ingestible><foodType>Meal</foodType><maxNumToIngestAtOnce>1</maxNumToIngestAtOnce><defaultNumToIngestAtOnce>1</defaultNumToIngestAtOnce><optimalityOffsetHumanlikes>16</optimalityOffsetHumanlikes></ingestible>"
+              ]
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": [
+                "<thingCategories><li>FoodMeals</li></thingCategories>"
+              ]
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": [
+                "<socialPropernessMatters>true</socialPropernessMatters>"
+              ]
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Forbiddable\" /><li Class=\"CompProperties_FoodPoisonable\" /><li MayRequire=\"Ludeon.RimWorld.Anomaly\" Class=\"CompProperties_MetalhorrorInfectible\" /></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": [
+                "<stackLimit>10</stackLimit>"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "def": "MealSurvivalPack",
+      "selectedInheritedScalars": {
+        "nutrition": 0.9,
+        "preferability": "MealSimple",
+        "foodType": "Meal"
+      },
+      "chain": [
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+          "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+          "xpath": "/Defs/ThingDef[defName=\"MealSurvivalPack\"]",
+          "parentName": "MealBase",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": [
+                "<Nutrition>0.9</Nutrition>"
+              ]
+            },
+            {
+              "xpath": "ingestible",
+              "xml": [
+                "<ingestible><preferability>MealSimple</preferability><optimalityOffsetHumanlikes>-5</optimalityOffsetHumanlikes><optimalityOffsetFeedingAnimals>-100</optimalityOffsetFeedingAnimals><ingestEffect>EatVegetarian</ingestEffect><ingestSound>Meal_Eat</ingestSound></ingestible>"
+              ]
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": []
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+          "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+          "xpath": "/Defs/ThingDef[@Name=\"MealBase\"]",
+          "parentName": "MealBaseIngredientless",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": [
+                "<ingestible><optimalityOffsetFeedingAnimals>-25</optimalityOffsetFeedingAnimals></ingestible>"
+              ]
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Ingredients\"><splitTransferableFoodKind>true</splitTransferableFoodKind></li></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+          "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+          "xpath": "/Defs/ThingDef[@Name=\"MealBaseIngredientless\"]",
+          "parentName": "",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": [
+                "<ingestible><foodType>Meal</foodType><maxNumToIngestAtOnce>1</maxNumToIngestAtOnce><defaultNumToIngestAtOnce>1</defaultNumToIngestAtOnce><optimalityOffsetHumanlikes>16</optimalityOffsetHumanlikes></ingestible>"
+              ]
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": [
+                "<thingCategories><li>FoodMeals</li></thingCategories>"
+              ]
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": [
+                "<socialPropernessMatters>true</socialPropernessMatters>"
+              ]
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Forbiddable\" /><li Class=\"CompProperties_FoodPoisonable\" /><li MayRequire=\"Ludeon.RimWorld.Anomaly\" Class=\"CompProperties_MetalhorrorInfectible\" /></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": [
+                "<stackLimit>10</stackLimit>"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "def": "MealNutrientPaste",
+      "selectedInheritedScalars": {
+        "nutrition": 0.9,
+        "preferability": "MealAwful",
+        "foodType": "Meal"
+      },
+      "chain": [
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+          "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+          "xpath": "/Defs/ThingDef[defName=\"MealNutrientPaste\"]",
+          "parentName": "MealBase",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": [
+                "<Nutrition>0.9</Nutrition>"
+              ]
+            },
+            {
+              "xpath": "ingestible",
+              "xml": [
+                "<ingestible><preferability>MealAwful</preferability><ateEvent>AteNutrientPaste</ateEvent><ingestEffect>EatVegetarian</ingestEffect><ingestSound>Meal_Eat</ingestSound><optimalityOffsetFeedingAnimals>-25</optimalityOffsetFeedingAnimals></ingestible>"
+              ]
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Rottable\"><daysToRotStart>0.75</daysToRotStart><!-- short rot time, you want to make them as needed not store them --><rotDestroys>true</rotDestroys></li></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+          "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+          "xpath": "/Defs/ThingDef[@Name=\"MealBase\"]",
+          "parentName": "MealBaseIngredientless",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": [
+                "<ingestible><optimalityOffsetFeedingAnimals>-25</optimalityOffsetFeedingAnimals></ingestible>"
+              ]
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Ingredients\"><splitTransferableFoodKind>true</splitTransferableFoodKind></li></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Food.xml",
+          "sha256": "9b111fcdfd43fe6bad8e14c0f8cfb6d723365fb82c7732245df82dd2a49fbdc4",
+          "xpath": "/Defs/ThingDef[@Name=\"MealBaseIngredientless\"]",
+          "parentName": "",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": [
+                "<ingestible><foodType>Meal</foodType><maxNumToIngestAtOnce>1</maxNumToIngestAtOnce><defaultNumToIngestAtOnce>1</defaultNumToIngestAtOnce><optimalityOffsetHumanlikes>16</optimalityOffsetHumanlikes></ingestible>"
+              ]
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": [
+                "<thingCategories><li>FoodMeals</li></thingCategories>"
+              ]
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": [
+                "<socialPropernessMatters>true</socialPropernessMatters>"
+              ]
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Forbiddable\" /><li Class=\"CompProperties_FoodPoisonable\" /><li MayRequire=\"Ludeon.RimWorld.Anomaly\" Class=\"CompProperties_MetalhorrorInfectible\" /></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": [
+                "<stackLimit>10</stackLimit>"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "def": "RawRice",
+      "selectedInheritedScalars": {
+        "nutrition": 0.05,
+        "preferability": "RawBad",
+        "foodType": "Seed"
+      },
+      "chain": [
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+          "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c",
+          "xpath": "/Defs/ThingDef[defName=\"RawRice\"]",
+          "parentName": "PlantFoodRawBase",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": [
+                "<ingestible><foodType>Seed</foodType></ingestible>"
+              ]
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Rottable\"><daysToRotStart>40</daysToRotStart><rotDestroys>true</rotDestroys></li></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+          "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c",
+          "xpath": "/Defs/ThingDef[@Name=\"PlantFoodRawBase\"]",
+          "parentName": "OrganicProductBase",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": [
+                "<Nutrition>0.05</Nutrition>"
+              ]
+            },
+            {
+              "xpath": "ingestible",
+              "xml": [
+                "<ingestible><preferability>RawBad</preferability><tasteThought>AteRawFood</tasteThought><ingestEffect>EatVegetarian</ingestEffect><ingestSound>RawVegetable_Eat</ingestSound></ingestible>"
+              ]
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": [
+                "<thingCategories><li>PlantFoodRaw</li></thingCategories>"
+              ]
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": [
+                "<socialPropernessMatters>true</socialPropernessMatters>"
+              ]
+            },
+            {
+              "xpath": "comps",
+              "xml": []
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+          "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c",
+          "xpath": "/Defs/ThingDef[@Name=\"OrganicProductBase\"]",
+          "parentName": "ResourceBase",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": []
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": []
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Base.xml",
+          "sha256": "20595ae43a7e758f54c71dc98579cc95ac8638f21213896c7f1d6a2d61fd744a",
+          "xpath": "/Defs/ThingDef[@Name=\"ResourceBase\"]",
+          "parentName": "",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": []
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Forbiddable\" /></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": [
+                "<stackLimit>75</stackLimit>"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "def": "Milk",
+      "selectedInheritedScalars": {
+        "nutrition": 0.05,
+        "preferability": "RawTasty",
+        "foodType": "AnimalProduct, Fluid"
+      },
+      "chain": [
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml",
+          "sha256": "271298b153e8a9b86c62f70d0d334d91c8182e4c34525190753a05e5afcff71d",
+          "xpath": "/Defs/ThingDef[defName=\"Milk\"]",
+          "parentName": "OrganicProductBase",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": [
+                "<Nutrition>0.05</Nutrition>"
+              ]
+            },
+            {
+              "xpath": "ingestible",
+              "xml": [
+                "<ingestible><preferability>RawTasty</preferability><foodType>AnimalProduct, Fluid</foodType><babiesCanIngest>true</babiesCanIngest></ingestible>"
+              ]
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": [
+                "<thingCategories><li>AnimalProductRaw</li></thingCategories>"
+              ]
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": [
+                "<socialPropernessMatters>true</socialPropernessMatters>"
+              ]
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Rottable\"><daysToRotStart>14</daysToRotStart><rotDestroys>true</rotDestroys></li></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+          "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c",
+          "xpath": "/Defs/ThingDef[@Name=\"OrganicProductBase\"]",
+          "parentName": "ResourceBase",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": []
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": []
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Base.xml",
+          "sha256": "20595ae43a7e758f54c71dc98579cc95ac8638f21213896c7f1d6a2d61fd744a",
+          "xpath": "/Defs/ThingDef[@Name=\"ResourceBase\"]",
+          "parentName": "",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": []
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Forbiddable\" /></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": [
+                "<stackLimit>75</stackLimit>"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "def": "EggChickenUnfertilized",
+      "selectedInheritedScalars": {
+        "nutrition": 0.25,
+        "preferability": "RawBad",
+        "foodType": "AnimalProduct"
+      },
+      "chain": [
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml",
+          "sha256": "271298b153e8a9b86c62f70d0d334d91c8182e4c34525190753a05e5afcff71d",
+          "xpath": "/Defs/ThingDef[defName=\"EggChickenUnfertilized\"]",
+          "parentName": "EggUnfertBase",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": []
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": []
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml",
+          "sha256": "271298b153e8a9b86c62f70d0d334d91c8182e4c34525190753a05e5afcff71d",
+          "xpath": "/Defs/ThingDef[@Name=\"EggUnfertBase\"]",
+          "parentName": "EggBase",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": [
+                "<ingestible><preferability>RawBad</preferability></ingestible>"
+              ]
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": [
+                "<thingCategories><li>EggsUnfertilized</li></thingCategories>"
+              ]
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": []
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml",
+          "sha256": "271298b153e8a9b86c62f70d0d334d91c8182e4c34525190753a05e5afcff71d",
+          "xpath": "/Defs/ThingDef[@Name=\"EggBase\"]",
+          "parentName": "OrganicProductBase",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": [
+                "<Nutrition>0.25</Nutrition>"
+              ]
+            },
+            {
+              "xpath": "ingestible",
+              "xml": [
+                "<ingestible><foodType>AnimalProduct</foodType><ingestEffect>EatMeat</ingestEffect><ingestSound>RawMeat_Eat</ingestSound><tasteThought>AteRawFood</tasteThought></ingestible>"
+              ]
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": [
+                "<socialPropernessMatters>true</socialPropernessMatters>"
+              ]
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Rottable\"><daysToRotStart>15</daysToRotStart><rotDestroys>true</rotDestroys><disableIfHatcher>true</disableIfHatcher></li></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+          "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c",
+          "xpath": "/Defs/ThingDef[@Name=\"OrganicProductBase\"]",
+          "parentName": "ResourceBase",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": []
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": []
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": []
+            }
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Base.xml",
+          "sha256": "20595ae43a7e758f54c71dc98579cc95ac8638f21213896c7f1d6a2d61fd744a",
+          "xpath": "/Defs/ThingDef[@Name=\"ResourceBase\"]",
+          "parentName": "",
+          "fields": [
+            {
+              "xpath": "statBases/Nutrition",
+              "xml": []
+            },
+            {
+              "xpath": "ingestible",
+              "xml": []
+            },
+            {
+              "xpath": "thingCategories",
+              "xml": []
+            },
+            {
+              "xpath": "socialPropernessMatters",
+              "xml": []
+            },
+            {
+              "xpath": "comps",
+              "xml": [
+                "<comps><li Class=\"CompProperties_Forbiddable\" /></comps>"
+              ]
+            },
+            {
+              "xpath": "ingredient",
+              "xml": []
+            },
+            {
+              "xpath": "stackLimit",
+              "xml": [
+                "<stackLimit>75</stackLimit>"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "localDataDirectories": [
+    "Core",
+    "Odyssey"
+  ],
+  "nativeReference": {
+    "basePresetLabels": [
+      "Lavish",
+      "Fine",
+      "Simple",
+      "Paste",
+      "Raw",
+      "Nothing"
+    ],
+    "defaultPreset": "first database entry, initially Lavish",
+    "ideologyPresets": [
+      "Vegetarian",
+      "Carnivore",
+      "Cannibal",
+      "Insect meat"
+    ],
+    "policyScope": "humanlike player or player-hosted eater; nonplayer eater requires player getter",
+    "mentalEaterIgnoresPolicy": true,
+    "starvationOverridesPolicy": false,
+    "draftedOverridesPolicyInTracker": false,
+    "prisonerSelfEatingRespectsColonyPolicy": false,
+    "playerWardenSupplyRespectsPrisonerPolicy": true,
+    "patientFeedingUsesEaterPolicy": true,
+    "inventoryUsesEaterPolicy": true,
+    "automaticCandidateRequiresStorage": false,
+    "emptyPolicyPreventsOrdinaryFeeding": true,
+    "manualOrderedIngestConsultsPolicy": false,
+    "manualOrderedIngestBypassesForbiddenTargetGate": true,
+    "manualOrderDisablesSeparatePathAreaQuery": false,
+    "areaReassignmentHasExplicitPlayerForcedExemption": false,
+    "selectedDriverMethodsDirectlyRecheckPolicy": false,
+    "ordinaryDefFilterRecursivelyChecksIngredients": false,
+    "mealDietarySpecialFiltersInspectIngredients": true,
+    "patientFeedDurationMultiplier": 1.5,
+    "patientHungerThresholdOffset": 0.02,
+    "omnivoreWantEat": 0.3,
+    "omnivoreHungry": 0.24,
+    "omnivoreUrgentlyHungry": 0.12,
+    "inventoryPreferSoonRottingWithinTicks": 30000,
+    "inventoryComparisonPenalty": 32,
+    "foodScoreBase": 300,
+    "corpseMalnutritionThreshold": 0.4
+  },
+  "webDesignChoices": [
+    "Prioritize shared food policy, candidate filtering, real fetching/eating/feeding and persistence before balancing hunger or score weights.",
+    "Keep food policy on the eater; use getter only for physical access and relevant faction exceptions.",
+    "Do not silently ignore an empty policy because the pawn is starving.",
+    "Food-policy permissions are distinct from ingredient filters used by cooking bills and from stockpile storage filters.",
+    "If adding recursive ingredient restrictions or diet presets, retain real meal provenance and label the feature separately from final-kind permissions.",
+    "Cancellation or reselection of an in-progress eating/feeding job after a policy edit is a Web consistency adaptation beyond the observed native driver checks.",
+    "The Web manualFoodOrder is a one-job override; accepting it only for actionable pawns with food below 100 is a Web guard against zero-consumption or invalid work, not the native menu rule.",
+    "Blocking deletion of the last unassigned policy and bounding the count are Web UI/persistence choices.",
+    "Mapping old Web saves to an all-allowed default preserves existing food permissions; this is not a native migration rule.",
+    "Colony animals use species diet and physical feeding rules; ordinary human food policies are not animal feed policies."
+  ],
+  "limits": [
+    "Static derived C# and packaged Core XML are not original source or runtime interaction proof.",
+    "REA metadata is reused only for the exact same assembly identity; hashed ILSpy types support the recorded method claims.",
+    "No game, browser, preview, GUI input or screenshot was launched.",
+    "XML inheritance projection resolves only named scalar fields across complete selected Core parent chains; it is not a mod-patched effective Def database.",
+    "Installed Data directories do not establish enabled expansions; Ideology code in assembly does not prove its XML or runtime is available.",
+    "Bounded absence claims apply only to the recorded methods and tokens, not every caller, extension or runtime hook.",
+    "Native constants are reference values, not measured Web balance or complete behavioral parity.",
+    "Full derived C#, assemblies and game assets remain local and unpublished."
+  ],
+  "collectorSha256": "3a1798ea469bbe8e4e4e4eec5e8cf0c526053c46dfaf5647da01ab9ce242225f"
+}

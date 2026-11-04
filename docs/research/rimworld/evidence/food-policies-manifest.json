@@ -1,0 +1,242 @@
+{
+  "evidence_id": "RW17-FOOD-POLICIES",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes.",
+    "No game, browser, preview, GUI input or screenshot capture was launched."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.FoodPolicy",
+      "local_file": ".local-research/food-policies/RimWorld.FoodPolicy.cs",
+      "sha256": "73a2b8c3098126e036b2b2f2897d54e0cb2bf9cbcf773f4f9e5e82b8bb3aa073",
+      "lines": 44
+    },
+    {
+      "type": "RimWorld.FoodRestrictionDatabase",
+      "local_file": ".local-research/food-policies/RimWorld.FoodRestrictionDatabase.cs",
+      "sha256": "3a2e3c1c754cce8adeda4635a0b949999aadc1025e13fe031ffb9ffba8101adc",
+      "lines": 245
+    },
+    {
+      "type": "RimWorld.Pawn_FoodRestrictionTracker",
+      "local_file": ".local-research/food-policies/RimWorld.Pawn_FoodRestrictionTracker.cs",
+      "sha256": "b8a46df9f57faf23ee274eaf358855c995a9c05ee41e246515e02835d088799b",
+      "lines": 118
+    },
+    {
+      "type": "RimWorld.Policy",
+      "local_file": ".local-research/food-policies/RimWorld.Policy.cs",
+      "sha256": "639e3324609054c8068c9714fa96f3368056a31a4c6dca5dd133c5c9431460c7",
+      "lines": 52
+    },
+    {
+      "type": "RimWorld.Dialog_ManageFoodPolicies",
+      "local_file": ".local-research/food-policies/RimWorld.Dialog_ManageFoodPolicies.cs",
+      "sha256": "d7e21f6d30ecda2316e8213d2d215f6727a2d92b05fdc6c86670305ba05be5ae",
+      "lines": 82
+    },
+    {
+      "type": "RimWorld.PawnColumnWorker_FoodRestriction",
+      "local_file": ".local-research/food-policies/RimWorld.PawnColumnWorker_FoodRestriction.cs",
+      "sha256": "48a9ede0b4236debfc8e4e935d2e252c9ba61ddcabd749eaf252db7fb868aea2",
+      "lines": 89
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "local_file": ".local-research/food-policies/RimWorld.FoodUtility.cs",
+      "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+      "lines": 1686
+    },
+    {
+      "type": "RimWorld.JobGiver_GetFood",
+      "local_file": ".local-research/food-policies/RimWorld.JobGiver_GetFood.cs",
+      "sha256": "c648efbdd091620603979d79de4c064f5a8174e7f6cf51950b6c19619a398a04",
+      "lines": 186
+    },
+    {
+      "type": "RimWorld.JobDriver_Ingest",
+      "local_file": ".local-research/food-policies/RimWorld.JobDriver_Ingest.cs",
+      "sha256": "278d66fed21ad28e41fb21c8af49f224a73c4163a26067431fe6eee0768ec3c6",
+      "lines": 264
+    },
+    {
+      "type": "RimWorld.Toils_Ingest",
+      "local_file": ".local-research/food-policies/RimWorld.Toils_Ingest.cs",
+      "sha256": "2e10eef89dc2f5d216681188952eb0227d1dd04d459463256a162310c30d9bb7",
+      "lines": 439
+    },
+    {
+      "type": "RimWorld.WorkGiver_FeedPatient",
+      "local_file": ".local-research/food-policies/RimWorld.WorkGiver_FeedPatient.cs",
+      "sha256": "6f13f28fcc39b939b62beb73bbe3cecb7cfc3af261657c3f900e3cee8e97f26e",
+      "lines": 103
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodFeedPatient",
+      "local_file": ".local-research/food-policies/RimWorld.JobDriver_FoodFeedPatient.cs",
+      "sha256": "abb8b8a547af43ca8b7c6a55b33b04ed1f09293c1fff3cb8f203847e4951015e",
+      "lines": 92
+    },
+    {
+      "type": "RimWorld.FeedPatientUtility",
+      "local_file": ".local-research/food-policies/RimWorld.FeedPatientUtility.cs",
+      "sha256": "6d67a449a99aa8afa890a7273f810f1c160719c159ecef07982a9be706b3500f",
+      "lines": 67
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_Feed",
+      "local_file": ".local-research/food-policies/RimWorld.WorkGiver_Warden_Feed.cs",
+      "sha256": "ad58fb14a667dfc415a6f0ce8228c5707c0d42244d15e9c07f191717d5a07f24",
+      "lines": 56
+    },
+    {
+      "type": "RimWorld.WorkGiver_Warden_DeliverFood",
+      "local_file": ".local-research/food-policies/RimWorld.WorkGiver_Warden_DeliverFood.cs",
+      "sha256": "b07bd8669c7621fb21948f5cd30b348a2ea366ab3d681b3c206490a2a6acaf11",
+      "lines": 111
+    },
+    {
+      "type": "RimWorld.WardenFeedUtility",
+      "local_file": ".local-research/food-policies/RimWorld.WardenFeedUtility.cs",
+      "sha256": "767e92e40bbe9d2b25b42aa7f64155dd106f049b6bf9da1a5ac3c62294f64282",
+      "lines": 28
+    },
+    {
+      "type": "RimWorld.JobDriver_FoodDeliver",
+      "local_file": ".local-research/food-policies/RimWorld.JobDriver_FoodDeliver.cs",
+      "sha256": "ff0f05789617811d450d79b37956a4a4b9576885ff9d02e0e529839335b2930c",
+      "lines": 97
+    },
+    {
+      "type": "RimWorld.Pawn_GuestTracker",
+      "local_file": ".local-research/food-policies/RimWorld.Pawn_GuestTracker.cs",
+      "sha256": "0d37d2c0a1210dad405e31097fae6d41cd5838675927d6e36752c044a395414f",
+      "lines": 638
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_Ingest",
+      "local_file": ".local-research/food-policies/RimWorld.FloatMenuOptionProvider_Ingest.cs",
+      "sha256": "0bc91724f2782b5955c3e88a3165f9d516df418a55ddbacd3f6be1e77049ca17",
+      "lines": 87
+    },
+    {
+      "type": "RimWorld.Need_Food",
+      "local_file": ".local-research/food-policies/RimWorld.Need_Food.cs",
+      "sha256": "f17cbaf82d8792108557f869db585fdd6ac26c0ebb537e8acf04173179e7c4cd",
+      "lines": 227
+    },
+    {
+      "type": "RimWorld.PawnComponentsUtility",
+      "local_file": ".local-research/food-policies/RimWorld.PawnComponentsUtility.cs",
+      "sha256": "ab2d0e24cbfafbafbb1dc6bbd988c3055bf5ada58e0029c388d40262cf3a4c8f",
+      "lines": 384
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "local_file": ".local-research/food-policies/RimWorld.Pawn_PlayerSettings.cs",
+      "sha256": "c23d3b5de6c9a96cad59170531efc71f3964d8d99d07b582eda580bfbdd00494",
+      "lines": 423
+    },
+    {
+      "type": "Verse.AI.Pawn_JobTracker",
+      "local_file": ".local-research/food-policies/Verse.AI.Pawn_JobTracker.cs",
+      "sha256": "7934319bfedbd8a46aa54341a2afec9561efb469cd4fe58aec5745f9236fc5c4",
+      "lines": 1075
+    },
+    {
+      "type": "Verse.AI.ToilFailConditions",
+      "local_file": ".local-research/food-policies/Verse.AI.ToilFailConditions.cs",
+      "sha256": "b65d94d89afe233a364b1179adc8afd1fa3e31320339db79fd608c05a24c875e",
+      "lines": 304
+    },
+    {
+      "type": "Verse.PathUtility",
+      "local_file": ".local-research/food-policies/Verse.PathUtility.cs",
+      "sha256": "a8b74de65072635fd57123488d272e85b7661806ea0fea0ea01a72382576783e",
+      "lines": 156
+    },
+    {
+      "type": "RimWorld.CompIngredients",
+      "local_file": ".local-research/food-policies/RimWorld.CompIngredients.cs",
+      "sha256": "b5e7260f94e6827d4de76b19fe1d32116aac2c9800e23463667215827489ca4a",
+      "lines": 263
+    },
+    {
+      "type": "Verse.ThingFilter",
+      "local_file": ".local-research/food-policies/Verse.ThingFilter.cs",
+      "sha256": "daf718ce140fd0c6a201fb7eada45f2069d642f1596c6bcde8a2d35fc3939ffa",
+      "lines": 943
+    },
+    {
+      "type": "Verse.SpecialThingFilterDef",
+      "local_file": ".local-research/food-policies/Verse.SpecialThingFilterDef.cs",
+      "sha256": "2c4a82170ae23903420df03797261c80079bc77193048b14f7d0c03877dc4248",
+      "lines": 50
+    },
+    {
+      "type": "RimWorld.SpecialThingFilterWorker_Carnivore",
+      "local_file": ".local-research/food-policies/RimWorld.SpecialThingFilterWorker_Carnivore.cs",
+      "sha256": "a16202594f807a74420efdde79f255e306ecf1c12407ddc2c40b36d989ee15b9",
+      "lines": 25
+    },
+    {
+      "type": "RimWorld.SpecialThingFilterWorker_Vegetarian",
+      "local_file": ".local-research/food-policies/RimWorld.SpecialThingFilterWorker_Vegetarian.cs",
+      "sha256": "8e616c660d943806687babcf577ba9ade4d40c759f7df70b1ee6da3609e36ef3",
+      "lines": 21
+    },
+    {
+      "type": "RimWorld.SpecialThingFilterWorker_Cannibal",
+      "local_file": ".local-research/food-policies/RimWorld.SpecialThingFilterWorker_Cannibal.cs",
+      "sha256": "73e3efcdfaf1d0cba34fd8c8ff5335f8d1baf990d679e2405bf308b123806104",
+      "lines": 21
+    },
+    {
+      "type": "RimWorld.SpecialThingFilterWorker_InsectMeat",
+      "local_file": ".local-research/food-policies/RimWorld.SpecialThingFilterWorker_InsectMeat.cs",
+      "sha256": "2cba4588d007bdf7c030ca57ca483642d5132e8a8ea27c14c7efe9a6412a50f3",
+      "lines": 21
+    },
+    {
+      "type": "RimWorld.FoodPreferability",
+      "local_file": ".local-research/food-policies/RimWorld.FoodPreferability.cs",
+      "sha256": "8f8b57f654dfc634b74d70844ce8e0e2886ea0111ad27daa94dec31601ab429f",
+      "lines": 17
+    },
+    {
+      "type": "RimWorld.HungerCategory",
+      "local_file": ".local-research/food-policies/RimWorld.HungerCategory.cs",
+      "sha256": "268510e02576b007ed387461061ba5563946cf9569c9f04fd69d8825e19b2df1",
+      "lines": 10
+    },
+    {
+      "type": "Verse.Thing",
+      "local_file": ".local-research/food-policies/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "lines": 2235
+    },
+    {
+      "type": "Verse.RaceProperties",
+      "local_file": ".local-research/food-policies/Verse.RaceProperties.cs",
+      "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+      "lines": 788
+    },
+    {
+      "type": "RimWorld.ForbidUtility",
+      "local_file": ".local-research/food-policies/RimWorld.ForbidUtility.cs",
+      "sha256": "e36190372ca2bc9540ef40d3d6a3ee836f30c3da7ee6842dffa79c0da78fbf48",
+      "lines": 208
+    }
+  ]
+}

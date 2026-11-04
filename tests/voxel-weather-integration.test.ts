@@ -66,7 +66,7 @@ describe('genuine v26 weather migration', () => {
     const proof = JSON.parse(readFileSync(new URL(`./fixtures/voxel-v26-weather-${name}.provenance.json`, import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(sha); expect(proof.sha256).toBe(sha);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old);
-    expect(old.version).toBe(26); expect(s.save().version).toBe(56);
+    expect(old.version).toBe(26); expect(s.save().version).toBe(57);
     expect(s.tick).toBe(old.tick); expect(s.items).toEqual(old.items); expect(s.stats).toEqual(relocationExpectedField('stats', old.stats));
     expect(s.fires).toEqual(old.fires); expect(s.fireDamage).toEqual(old.fireDamage);
     expect(s.fireHazards).toEqual(old.fireHazards); expect(s.fireLog).toEqual(old.fireLog);

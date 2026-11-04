@@ -1621,6 +1621,93 @@ a {
   flex-wrap: wrap;
   gap: 8px;
 }
+.voxel-food-policy-panel {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0;
+  padding: 10px;
+  min-width: 0;
+  border: 1px solid #b9b48c44;
+  border-radius: 4px;
+  background: #393e2b44;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.voxel-food-policy-panel small {
+  display: block;
+  color: #c4cdc2;
+  line-height: 1.6;
+}
+.voxel-food-policy-panel label {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+.voxel-food-policy-panel select,
+.voxel-food-policy-panel input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.voxel-food-policy-management,
+.voxel-food-policy-editor {
+  display: grid;
+  gap: 8px;
+}
+.voxel-food-policy-management summary {
+  cursor: pointer;
+  color: #ded1a9;
+}
+.voxel-food-policy-editor fieldset {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid #a6b6a22e;
+}
+.voxel-food-policy-resources {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.voxel-food-policy-resources label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.voxel-food-policy-resources input {
+  width: auto;
+  flex-shrink: 0;
+}
+.voxel-food-policy-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.voxel-food-order {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0;
+  padding: 8px 0;
+  border-top: 1px solid #b9b48c33;
+  border-bottom: 1px solid #b9b48c33;
+}
+.voxel-food-order label {
+  display: grid;
+  gap: 5px;
+  font-size: 12px;
+}
+.voxel-food-order select {
+  width: 100%;
+  min-width: 0;
+}
+.voxel-food-order small {
+  line-height: 1.6;
+  color: #c4cdc2;
+}
+.voxel-food-policy-panel .voxel-food-order-status {
+  color: #ead194;
+}
 .voxel-apparel-piece-actions {
   display: grid;
   flex-shrink: 0;

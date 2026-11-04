@@ -53,6 +53,7 @@ describe('voxel combat and physical tending', () => {
     const s = fixture(),
       [attacker, target] = s.pawns;
     attacker.faction = 'raider';
+    attacker.foodPolicyId = null;
     attacker.apparelControl = initialApparelControl(s.tick);
     attacker.phase = 'combat';
     attacker.attackTargetId = target.id;
@@ -84,7 +85,7 @@ describe('voxel combat and physical tending', () => {
       y: 21,
       id: s.nextId++,
       faction: 'raider' as const,
-      apparelControl: initialApparelControl(s.tick),
+      foodPolicyId: null, apparelControl: initialApparelControl(s.tick),
       worn: [],
       phase: 'combat' as const,
     };
@@ -137,7 +138,7 @@ describe('voxel combat and physical tending', () => {
       ...structuredClone(s.pawns[1]),
       id: s.nextId++,
       faction: 'raider' as const,
-      apparelControl: initialApparelControl(s.tick),
+      foodPolicyId: null, apparelControl: initialApparelControl(s.tick),
       worn: [],
       phase: 'combat' as const,
     };
@@ -166,7 +167,7 @@ describe('voxel combat and physical tending', () => {
       y: 18,
       id: s.nextId++,
       faction: 'raider' as const,
-      apparelControl: initialApparelControl(s.tick),
+      foodPolicyId: null, apparelControl: initialApparelControl(s.tick),
       worn: [],
       phase: 'combat' as const,
     };
@@ -194,7 +195,7 @@ describe('voxel combat and physical tending', () => {
     );
     const s = VoxelSimulation.load(old);
     expect(old.version).toBe(11);
-    expect(s.save().version).toBe(56);
+    expect(s.save().version).toBe(57);
     expect(s.combat).toEqual({ enabled: false, nextRaid: 0, wave: 0 });
     expect(s.pawns.map((p) => [p.id, p.food, p.rest, p.worn])).toEqual(
       old.pawns.map((p: any) => [p.id, p.food, p.rest, p.worn]),
