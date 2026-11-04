@@ -8,7 +8,7 @@ export interface ProductionPolicy {
   skillMin: number;
   skillMax: number;
   ingredientRadius: number | null;
-  allowedFood: Array<'grain' | 'meat'>;
+  allowedFood: Array<'grain' | 'meat' | 'milk'>;
   allowedCarcasses: AnimalSpecies[];
 }
 
@@ -21,7 +21,7 @@ const integer = (value: unknown, min: number, max: number): value is number =>
 export function defaultProductionPolicy(): ProductionPolicy {
   return {
     workerId: null, skillMin: 0, skillMax: 20, ingredientRadius: null,
-    allowedFood: ['grain', 'meat'], allowedCarcasses: [...animalSpecies],
+    allowedFood: ['grain', 'meat', 'milk'], allowedCarcasses: [...animalSpecies],
   };
 }
 
@@ -37,7 +37,7 @@ export function validProductionPolicy(value: unknown): value is ProductionPolicy
   return (p.workerId === null || integer(p.workerId, 1, Number.MAX_SAFE_INTEGER)) &&
     integer(p.skillMin, 0, 20) && integer(p.skillMax, 0, 20) && p.skillMin <= p.skillMax &&
     (p.ingredientRadius === null || integer(p.ingredientRadius, 3, 100)) &&
-    subset(p.allowedFood, ['grain', 'meat']) && subset(p.allowedCarcasses, animalSpecies);
+    subset(p.allowedFood, ['grain', 'meat', 'milk']) && subset(p.allowedCarcasses, animalSpecies);
 }
 
 /** Native named-worker selection bypasses the player skill range. Recipe hard
@@ -68,7 +68,7 @@ export function productionPolicyAllowsIngredient(
     const squared = (source.x - bench.x) ** 2 + (source.y - bench.y) ** 2 + (source.z - bench.z) ** 2;
     if (!(squared < policy.ingredientRadius ** 2)) return false;
   }
-  if (recipe === 'cook' && (cargo.resource === 'grain' || cargo.resource === 'meat'))
+  if (recipe === 'cook' && (cargo.resource === 'grain' || cargo.resource === 'meat' || cargo.resource === 'milk'))
     return policy.allowedFood.includes(cargo.resource);
   if (recipe === 'butcher' && cargo.resource === 'carcass')
     return !!cargo.carcass && policy.allowedCarcasses.includes(cargo.carcass.species);

@@ -7,6 +7,7 @@ import { weaponName } from './weapons';
 import { ItemCondition } from './ItemCondition';
 import { AnimalPenControls, PenPanel, type PenCommand, type PenControls } from './PenPanel';
 import { AutoSlaughterPanel } from './AutoSlaughterPanel';
+import { MILK_RULES, milkActive, milkReady } from './animalMilk';
 
 type Command = PenCommand;
 const availableHunters = (s: VoxelSnapshot) => s.pawns.filter(p => p.faction === 'colony' &&
@@ -14,9 +15,42 @@ const availableHunters = (s: VoxelSnapshot) => s.pawns.filter(p => p.faction ===
   p.priorities.hunt > 0 && p.weapon && isRangedKind(p.weapon.kind));
 const levelName = (z: number, base: number) => z === base ? '营地基准层' : z < base ? `基准层下 ${base - z}` : `基准层上 +${z - base}`;
 const lifeNames = { baby: '幼崽', juvenile: '幼年', adult: '成年' };
-const actionNames: Record<HandleTask['action'], string> = { tame: '尝试驯服', maintain: '维持温顺', feed: '喂食', slaughter: '手动宰杀', autoSlaughter: '自动宰杀', release: '放归' };
+const actionNames: Record<HandleTask['action'], string> = { tame: '尝试驯服', maintain: '维持温顺', feed: '喂食', slaughter: '手动宰杀', autoSlaughter: '自动宰杀', release: '放归', milk: '挤奶' };
 const stageNames: Record<HandleTask['stage'], string> = { fetch: '取食物', approach: '接近动物', interact: '本次互动' };
 const percent = (value: number) => `${Math.round(value * 100)}%`;
+
+function DromedaryPortrait() {
+  return <svg className="voxel-animal-portrait" viewBox="0 0 88 68" role="img" aria-label="单峰驼肖像">
+    <rect x="1" y="1" width="86" height="66" rx="5" fill="#243434" />
+    <path d="M12 39 18 33 27 32 32 20 40 19 47 32 55 33 59 18 62 9 74 9 80 14 78 20 68 20 66 38 60 45 59 61 54 61 52 45 28 45 25 61 20 61 20 44 13 43Z" fill="#c6a36b" />
+    <path d="M29 44 30 60 34 60 35 45M45 44 48 59 52 59 51 44" fill="#987952" />
+    <path d="m64 10-1-6 5 5M16 35 10 44" fill="none" stroke="#c6a36b" strokeWidth="3" />
+    <circle cx="73" cy="13" r="1.5" fill="#352e26" />
+  </svg>;
+}
+
+function AnimalMilkStatus({ animal: a, snapshot: s }: { animal: WildAnimal; snapshot: VoxelSnapshot }) {
+  if (a.species !== 'dromedary' || a.dead) return null;
+  const handler = s.pawns.find(p => p.handleTask?.animalId === a.id && p.handleTask.action === 'milk');
+  const task = handler?.handleTask, automatic = s.autoSlaughterStatus.targets.includes(a.id);
+  const active = milkActive(a);
+  const condition = a.faction !== 'colony' ? '驯服后，成年雌性单峰驼才能产奶。' : a.sex !== 'female' ? '雄性单峰驼不产奶。'
+    : a.growth < 1 ? '雌性幼驼成年后开始产奶。' : a.health <= 0 ? '健康状态不允许产奶。' : null;
+  const waiting = a.slaughter || automatic ? '已待宰，不安排挤奶。' : a.releaseMarked ? '已标记放归，不安排挤奶。'
+    : a.hunger <= 0 ? '饥饿使蓄奶暂停；先提供食物。' : milkReady(a) ? '奶量已满，等待开启「饲养」分工的殖民者前来挤奶。' : '正在蓄奶；饥饿会减慢或暂停产奶。';
+  return <div className="voxel-animal-milk" data-testid="animal-milk" data-active={active} data-fullness={a.milkFullness}>
+    <b>产物 · 奶</b>
+    {active ? <>
+      <label>蓄奶 {percent(a.milkFullness)}<progress aria-label="动物蓄奶进度" value={a.milkFullness} max={1} /></label>
+      <small>饱食时约 {MILK_RULES.intervalTicks / DAY} 天蓄满一轮；成功挤奶获得 {MILK_RULES.amount} 份奶。无需怀孕或分娩。</small>
+      {task && handler ? <>
+        <small>{handler.name} · {task.stage === 'interact' ? task.progress >= MILK_RULES.work ? '挤奶完成，等待放置空间' : '正在挤奶' : '前往挤奶'}</small>
+        <label>本次挤奶 {percent(task.progress / MILK_RULES.work)}<progress aria-label="本次挤奶工作进度" value={task.progress} max={MILK_RULES.work} /></label>
+      </> : <small>{waiting}</small>}
+      <small>挤奶速度和成功率受驯养技能与身体能力影响；失败会损失本轮奶量。奶落地后需要搬运储存。</small>
+    </> : <small>{condition}</small>}
+  </div>;
+}
 
 function AnimalFacts({ animal: a }: { animal: WildAnimal }) {
   return <div className="voxel-animal-facts" data-testid="animal-facts" data-sex={a.sex}
@@ -45,6 +79,7 @@ function AnimalStatus({ animal: a, snapshot: s }: { animal: WildAnimal; snapshot
     {!a.dead && a.slaughter && <small>手动待宰标记已开启</small>}
     {a.tame && !a.dead && <small>需要动物技能 {ANIMAL_HUSBANDRY[a.species].minSkill}；每次互动独立尝试，可能失败。</small>}
     {a.tame && !task && a.nextInteractionTick > s.tick && <small>下次可互动：约 {Math.max(1, Math.ceil((a.nextInteractionTick - s.tick) / DAY * 24 * 60))} 游戏分钟后</small>}
+    <AnimalMilkStatus animal={a} snapshot={s} />
   </div>;
 }
 
@@ -70,6 +105,7 @@ export function AnimalDetails({ animal, snapshot: s, command, focus, penControls
   animal: WildAnimal; snapshot: VoxelSnapshot; command: Command; focus: (pos: Pos) => void; penControls: PenControls;
 }) {
   return <section className="voxel-animal-detail" data-testid="animal-detail" data-animal-id={animal.id}>
+    {animal.species === 'dromedary' && <DromedaryPortrait />}
     <div className="voxel-info-row"><b>{ANIMAL_DEFS[animal.species].name} · {animal.faction === 'colony' ? '殖民地动物' : '野生'}</b><span>{ANIMAL_PHASE_NAMES[animal.phase]}</span></div>
     <label>健康 {Math.ceil(animal.health)} / {ANIMAL_DEFS[animal.species].health}<progress aria-label="动物健康" value={animal.health} max={ANIMAL_DEFS[animal.species].health} /></label>
     <AnimalFacts animal={animal} />
@@ -105,7 +141,8 @@ export function AnimalPanel({ snapshot: s, selectedAnimalId, baseLevel, command,
     <p>{domestic.length} 只殖民地动物 · {wild.length} 只野生动物 · {hunters.length} 位可用远程猎人</p>
     <details className="voxel-wildlife-guide"><summary>驯服、饲养与繁殖</summary>
       <ol><li>种植稻谷并等候收获。开启人物的饲养分工，安排动物技能达标的殖民者。</li><li>标记野生动物驯服；饲养员携食物接近并互动，失败后会等候下次尝试。</li><li>动物寻找实际的草、作物和地面食物；可用仓储区集中投放谷物。草被吃掉后需要重新生长。</li><li>饱食的成年同种雌雄动物靠近后可自然交配。饥饿拖慢成长和孕期，严重营养不良可能流产。</li></ol>
-      <small>兔需要维持温顺，可跨围栏、穿未锁的门，并可分配活动范围；鹿需要围栏圈养，由饲养员经栏门牵入。动物不能爬梯，请保留地面通路和足够食物。</small>
+      <small>兔需要维持温顺，可跨围栏、穿未锁的门，并可分配活动范围；鹿和单峰驼需要围栏圈养，由饲养员经栏门牵入。动物不能爬梯，请保留地面通路和足够食物。</small>
+      <small>成年雌性单峰驼可产奶；开启「饲养」分工，蓄奶满后自动安排挤奶。奶可直接饮用或用于简餐，及时冷藏。</small>
       <div><button onClick={() => choose('farm')}>规划农田</button><button onClick={() => choose('stock')}>规划食物仓储</button></div>
     </details>
     <details className="voxel-wildlife-workers" data-testid="animal-handlers"><summary>饲养分工与动物技能</summary>
@@ -123,6 +160,7 @@ export function AnimalPanel({ snapshot: s, selectedAnimalId, baseLevel, command,
         <h3>{group.name} · {group.animals.length}</h3>
         {!group.animals.length && group.key !== 'dead' && <small>{group.key === 'colony' ? '尚无殖民地动物，先标记野生动物尝试驯服。' : '地图上暂时没有野生动物。'}</small>}
         {group.animals.map(animal => <section role="listitem" key={animal.id} className={selectedAnimalId === animal.id ? 'selected' : ''} data-animal-id={animal.id} data-faction={animal.faction}>
+          {animal.species === 'dromedary' && <DromedaryPortrait />}
           <div><b>{animal.name}</b><span>{ANIMAL_PHASE_NAMES[animal.phase]}</span></div>
           <small>{ANIMAL_DEFS[animal.species].name} · 健康 {Math.ceil(animal.health)} / {ANIMAL_DEFS[animal.species].health} · {levelName(animal.z, baseLevel)}</small>
           <AnimalFacts animal={animal} /><AnimalStatus animal={animal} snapshot={s} />

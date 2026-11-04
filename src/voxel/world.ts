@@ -1,3 +1,4 @@
+import { rejectLegacyMilk, migrateMilk, validateMilk } from './animalMilkPersistence';
 import { WeightedNavigation } from './navigation';
 import { isConstructionFrame, constructionFrameCells, frameBuildingKind } from './constructionFrames';
 import { constructionSuccessChance, constructionFailureChance, isFailableConstruction,
@@ -102,7 +103,7 @@ import { VoxelRooms } from './rooms';
 import { initialExploration, revealExploration, rejectLegacyExploration, loadExploration } from './exploration';
 import { ANIMAL_DEFS, WILDLIFE, isAnimal } from './wildlife';
 import { migrateWildlife, validateWildlife } from './wildlifePersistence';
-import { initialAnimalState, HUSBANDRY_RULES } from './husbandry';
+import { initialAnimalState, HUSBANDRY_RULES, ANIMAL_HUSBANDRY } from './husbandry';
 import { rejectLegacyHusbandryFields, migrateHusbandry, validateHusbandry } from './husbandryPersistence';
 import { seedGrass, updateHusbandry, tryHandle, handleTick, animalOrder, releaseAnimalHandlers, reconcileAutoSlaughter } from './husbandryWorld';
 import { defaultAutoSlaughter, autoSlaughterSelection, validAutoSlaughterPolicy, AUTO_SLAUGHTER_SPECIES } from './autoSlaughter';
@@ -869,7 +870,7 @@ export class VoxelSimulation {
     }
     while (sites.length && wild < Math.min(target, WILDLIFE.cap) && this.animals.length < HUSBANDRY_RULES.maxAnimals) {
       const id = this.id(), choice = Math.floor(plantRandom(this.seed, id, this.tick, 970) * sites.length);
-      const site = sites.splice(choice, 1)[0], species = id % 2 ? 'hare' : 'deer';
+      const site = sites.splice(choice, 1)[0], species = this.settings.biome === 'desert' && wild % 3 === 0 ? 'dromedary' : id % 2 ? 'hare' : 'deer';
       this.animals.push({ ...site, ...initialAnimalState(id, species, this.tick), id, species, name: ANIMAL_DEFS[species].name,
         health: ANIMAL_DEFS[species].health, hunger: 75, dead: false, phase: 'roam', hunt: false,
         moveTick: this.tick, decisionTick: this.tick, fleeUntil: 0, threatId: null,
@@ -1381,6 +1382,12 @@ export class VoxelSimulation {
     this.nextId = plan.nextId;
     this.pruneStorageSpills();
     this.revision++;
+  }
+  animalMilkPlace(p: Pawn, amount: number, commit: boolean): boolean {
+    const plan = this.planPlacement([{batch:freshBatch('milk',amount),origin:p}],this.items,DROP_DISTANCE,new Set(),p.id);
+    if (!plan) return false;
+    if (commit) { this.commitPlacement(plan); this.stats.produced.milk += amount; }
+    return true;
   }
   private addItem(resource: Resource, amount: number, p: Pos, source?: Cargo): boolean {
     if (amount <= 0) return true;
@@ -2030,19 +2037,26 @@ export class VoxelSimulation {
     if (job.productionPolicy) return;
     // Lock real ingredients; delivered batches retain their identity and age.
     const policy = this.productionPolicyFor(job);
-    const reserved = this.jobs.filter(j => j !== job && !j.cancelled && j.owner !== null)
-      .reduce((n, j) => {
+    const cost: Partial<Counts> = { wood: SIMPLE_MEAL.wood };
+    let remaining = SIMPLE_MEAL.ingredients;
+    const order = (['meat', 'milk', 'grain'] as const).filter(r => policy.allowedFood.includes(r));
+    for (const resource of order) {
+      const reserved = this.jobs.filter(j => j !== job && !j.cancelled && j.owner !== null).reduce((n,j) => {
         const owner = this.pawns.find(p => p.id === j.owner);
-        const carried = owner?.jobId === j.id && owner.cargo?.resource === 'meat' ? owner.cargo.amount : 0;
-        return n + Math.max(0, (j.cost.meat ?? 0) - (j.delivered.meat ?? 0) - carried);
-      }, 0);
-    const available = this.items.filter(i => i.resource === 'meat' && !i.forbidden && this.exploredAt(i) &&
-      this.acceptsJobCargo(job, i, i) && (!worker || this.pawnAllowed(worker,i) && this.reachableItemStand(i) >= 0))
-      .reduce((n, i) => n + (worker ? this.availableStack(i, worker.id) : i.amount), 0);
-    const meat = !policy.allowedFood.includes('meat') ? 0 : !policy.allowedFood.includes('grain') ? SIMPLE_MEAL.ingredients :
-      Math.min(SIMPLE_MEAL.ingredients, Math.max(0, available - reserved));
-    job.cost = { wood: SIMPLE_MEAL.wood, ...(meat ? { meat } : {}),
-      ...(meat < SIMPLE_MEAL.ingredients ? { grain: SIMPLE_MEAL.ingredients - meat } : {}) };
+        const carried = owner?.jobId === j.id && owner.cargo?.resource === resource ? owner.cargo.amount : 0;
+        return n + Math.max(0, (j.cost[resource] ?? 0) - (j.delivered[resource] ?? 0) - carried);
+      },0);
+      const available = this.items.filter(i => i.resource === resource && !i.forbidden && this.exploredAt(i) &&
+        this.acceptsJobCargo(job,i,i) && (!worker || this.pawnAllowed(worker,i) && this.reachableItemStand(i) >= 0))
+        .reduce((n,i) => n + (worker ? this.availableStack(i,worker.id) : i.amount),0);
+      const amount = Math.min(remaining, Math.max(0, available-reserved));
+      if (amount) { cost[resource] = amount; remaining -= amount; }
+    }
+    // Keep an unmet cost, so an incomplete bill waits for a permitted resource.
+    // No-filter bills cannot find an accepted ingredient and never consume it.
+    const missing = order.at(-1) ?? 'grain';
+    if (remaining) cost[missing] = (cost[missing] ?? 0) + remaining;
+    job.cost = cost;
   }
   private productionBenches() {
     return [...this.stoves, ...this.butcherSpots, ...this.stonecutters, ...this.tailors, ...this.weaponBenches];
@@ -2457,7 +2471,7 @@ export class VoxelSimulation {
         this.cancel(j);
       if (j.kind === 'cut' && !this.trees.some((t) => same(t, j))) this.cancel(j);
       if (productionJobRecipe(j) && !this.supported(j)) this.cancel(j);
-      if (j.kind === 'cook' && !j.cancelled && j.owner === null && !j.productionPolicy && !(j.delivered.grain || j.delivered.meat))
+      if (j.kind === 'cook' && !j.cancelled && j.owner === null && !j.productionPolicy && !(j.delivered.grain || j.delivered.meat || j.delivered.milk))
         this.chooseMealIngredients(j);
       if (
         j.kind === 'refuel' &&
@@ -4146,7 +4160,7 @@ export class VoxelSimulation {
         : undefined;
     const food =
       action === 'feed' && !carriedFood
-        ? (['meal', 'food', 'grain', 'meat'] as Resource[]).map((r) => this.pileFor(p, r)).find(Boolean)
+        ? (['meal', 'food', 'milk', 'grain', 'meat'] as Resource[]).map((r) => this.pileFor(p, r)).find(Boolean)
         : undefined;
     if (action === 'feed' && !carriedFood && !food) return false;
     // A full ground never destroys existing cargo to make room for a rescue.
@@ -4196,7 +4210,7 @@ export class VoxelSimulation {
       p.careFoodId = food!.id;
       p.careAmount = Math.min(
         this.availableStack(food!, p.id),
-        ['grain', 'meat'].includes(food!.resource) ? Math.ceil((100 - patient.food) / (100 * NUTRITION.grain!)) : 1,
+        ['grain', 'meat', 'milk'].includes(food!.resource) ? Math.ceil((100 - patient.food) / (100 * NUTRITION.grain!)) : 1,
       );
       p.carePhase = 'feedFetch';
       this.go(p, this.reachableItemStand(food!), 'care');
@@ -6071,7 +6085,7 @@ export class VoxelSimulation {
       const target = position(n);
       const door = this.gateAt(target) ?? this.doors.find(d => same(d, target));
       const fence = this.fenceAt(target);
-      if (!isAnimalGroundStep(p,target) || this.ladders[n] || (fence && a.species === 'deer') ||
+      if (!isAnimalGroundStep(p,target) || this.ladders[n] || (fence && ANIMAL_HUSBANDRY[a.species].penAnimal) ||
           (!door && !fence && !this.markerAt(target) && !this.shelfAt(target) && this.furnitureAt(target)) || this.fires.some(f => same(f, target))) return false;
       return !door || door.mode === 'open' || door.openUntil > this.tick ||
         (a.faction === 'colony' && a.species === 'hare' && door.mode !== 'locked');
@@ -6120,7 +6134,7 @@ export class VoxelSimulation {
     const foods = this.items.filter(i => NUTRITION[i.resource] && allowed.has(at(i)) && this.availableStack(i) > 0);
     if (!foods.length) return false;
     this.search(p, allowed);
-    const order = ['meal', 'food', 'grain', 'meat'];
+    const order = ['meal', 'food', 'milk', 'grain', 'meat'];
     const food = foods.filter(i => this.reachableItemStand(i) >= 0).sort((a, b) =>
       order.indexOf(a.resource) - order.indexOf(b.resource) || this.distance[this.reachableItemStand(a)] - this.distance[this.reachableItemStand(b)] || a.id - b.id)[0];
     if (!food) return false;
@@ -6849,15 +6863,16 @@ export class VoxelSimulation {
     const nutrition = NUTRITION[resource];
     if (!nutrition) return 0;
     const amount =
-      (resource === 'grain' || resource === 'meat')
+      (resource === 'grain' || resource === 'meat' || resource === 'milk')
         ? Math.min(available, Math.ceil((100 - p.food) / (nutrition * 100)))
         : Math.min(1, available);
     p.food = Math.min(100, p.food + amount * nutrition * 100);
     this.stats.consumed[resource] += amount;
     this.stats.eaten += amount;
     if (amount > 0 && (resource === 'grain' || resource === 'meat')) remember(p.psyche, 'ateRaw', this.tick);
-    if (amount > 0 && resource === 'meal' && (batch.poisonChance ?? 0) > 0 &&
-        sanitationRandom(this.seed, p.id, this.tick, 26) < batch.poisonChance!) {
+    const poisonChance = resource === 'milk' ? .02 : resource === 'meal' ? batch.poisonChance ?? 0 : 0;
+    if (amount > 0 && poisonChance > 0 &&
+        sanitationRandom(this.seed, p.id, this.tick, 26) < poisonChance) {
       p.foodPoisoning = exposeFoodPoisoning(p.foodPoisoning, this.tick);
       this.notice = `${p.name}吃过食物后出现中毒症状`;
     }
@@ -6872,7 +6887,7 @@ export class VoxelSimulation {
     }
     if (!this.items.some((i) => NUTRITION[i.resource])) return false;
     this.search(p);
-    const food = (['meal', 'food', 'grain', 'meat'] as Resource[])
+    const food = (['meal', 'food', 'milk', 'grain', 'meat'] as Resource[])
       .map((r) => this.pileFor(p, r))
       .find(Boolean);
     if (!food) return false;
@@ -6887,7 +6902,7 @@ export class VoxelSimulation {
     return true;
   }
   private mealAmount(p: Pawn, batch: Cargo) {
-    return Math.min(batch.amount, batch.resource === 'grain' || batch.resource === 'meat'
+    return Math.min(batch.amount, batch.resource === 'grain' || batch.resource === 'meat' || batch.resource === 'milk'
       ? Math.max(1, Math.ceil((100 - p.food) / (NUTRITION[batch.resource]! * 100))) : 1);
   }
   private adjacentDiningTable(pos: Pos) {
@@ -8617,7 +8632,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 48,
+      version: 49,
       autoSlaughter: this.autoSlaughter,
       stockpileZones: this.stockpileZones,
       productionQueues: this.productionQueues.filter(q => this.productionBenches().some(b => b.id === q.benchId)),
@@ -8679,11 +8694,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : old.version < 43 ? [1, 2, 3] : [1, 2, 3, 4]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyMilk(old,sourceVersion);
     migrateAutoSlaughter(old, sourceVersion);
     if (sourceVersion < 47 && old.jobs?.some((j:any) => Object.hasOwn(j,'constructionFailure')))
       throw new Error('旧版本存档混入施工失败记录');
@@ -9107,7 +9123,8 @@ export class VoxelSimulation {
     }
     if (sourceVersion < 43) { old.water = [0, CELLS]; old.bridges = [0, CELLS]; }
     if (sourceVersion < 44) for (const p of old.pawns ?? []) p.allowedAreaId = null;
-    old.version = 48;
+    migrateMilk(old, sourceVersion);
+    old.version = 49;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -9717,11 +9734,11 @@ export class VoxelSimulation {
               deviceCells({ ...j, kind: j.kind, axis: j.axis! }).some((p) => !inside(p))))) ||
         !materialMap(j.cost) ||
         !materialMap(j.delivered) ||
-        (j.kind === 'cook' && (j.cost.grain ?? 0) + (j.cost.meat ?? 0) !== SIMPLE_MEAL.ingredients) ||
+        (j.kind === 'cook' && (j.cost.grain ?? 0) + (j.cost.meat ?? 0) + (j.cost.milk ?? 0) !== SIMPLE_MEAL.ingredients) ||
         resources.some(
           (r) =>
             (j.cost[r] ?? 0) !==
-              (j.kind === 'cook' && (r === 'grain' || r === 'meat') ? (j.cost[r] ?? 0) : j.kind === 'refuel'
+              (j.kind === 'cook' && (r === 'grain' || r === 'meat' || r === 'milk') ? (j.cost[r] ?? 0) : j.kind === 'refuel'
                 ? r === 'wood'
                   ? j.cost.wood
                   : 0
@@ -10213,6 +10230,7 @@ export class VoxelSimulation {
     validateTrade(d, ids, apparelIds, weaponIds);
     validateWildlife(d, ids, new Set([...apparelIds, ...weaponIds]));
     validateHusbandry(d);
+    validateMilk(d);
     validateAutoSlaughter(d);
     validatePens(d);
     validatePawnAreas(d);

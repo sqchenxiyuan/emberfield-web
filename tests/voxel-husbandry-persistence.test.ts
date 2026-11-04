@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { at, CELLS, DAY, type Pawn, type VoxelSave, type WildAnimal } from '../src/voxel/types';
 import { HUSBANDRY_RULES, initialAnimalState } from '../src/voxel/husbandry';
 import { migrateHusbandry, rejectLegacyHusbandryFields, validateHusbandry } from '../src/voxel/husbandryPersistence';
+import { rejectLegacyMilk } from '../src/voxel/animalMilkPersistence';
 import { initialSkills } from '../src/voxel/skills';
 import { freshBatch } from '../src/voxel/preservation';
 
@@ -68,10 +69,17 @@ describe('v29 husbandry migration boundary', () => {
       d => { d.pawns[0].handleTask = null; }, d => { d.pawns[0].priorities.handle = 0; },
       d => { d.pawns[0].skills.animals = initialSkills(0).animals; }, d => { d.pawns[0].phase = 'handle'; },
       d => { d.animals[0].phase = 'mate'; },
-      ...Object.entries(initialAnimalState(20, 'hare', 0)).filter(([key])=>!Object.hasOwn(initialAnimalPenState(0),key)).map(([key, value]) => (d: any) => { d.animals[0][key] = value; })];
+      ...Object.entries(initialAnimalState(20, 'hare', 0)).filter(([key])=>key !== 'milkFullness' && !Object.hasOwn(initialAnimalPenState(0),key)).map(([key, value]) => (d: any) => { d.animals[0][key] = value; })];
     for (const version of [1, 13, 21, 27, 28]) for (const change of changes) {
       const d = legacy(); d.version = version; change(d); const before = structuredClone(d);
       expect(() => rejectLegacyHusbandryFields(d)).toThrow(/旧版本包含新版/); expect(d).toEqual(before);
+    }
+    // milkFullness belongs to the v49 guard, which runs before the v29 guard.
+    for (const version of [1, 13, 21, 27, 28, 29, 48]) {
+      const d = legacy(); d.version = version; d.animals[0].milkFullness = 0;
+      const before = structuredClone(d);
+      expect(() => rejectLegacyMilk(d, version)).toThrow(/旧版本混入产奶字段/);
+      expect(d).toEqual(before);
     }
   });
   it('preflights all legacy records before appending any defaults', () => {

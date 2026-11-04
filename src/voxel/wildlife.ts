@@ -8,6 +8,7 @@ export const ANIMAL_DEFS: Readonly<Record<AnimalSpecies, {
 }>> = {
   hare: { name: '野兔', health: 28, meat: 18, color: 0xb19b85, moveTicks: 9 },
   deer: { name: '鹿', health: 65, meat: 50, color: 0x936341, moveTicks: 12 },
+  dromedary: { name: '单峰驼', health: 100, meat: 90, color: 0xc8a36c, moveTicks: 13 },
 };
 export const ANIMAL_PHASE_NAMES: Record<WildAnimal['phase'], string> = {
   rope: '牵引中',

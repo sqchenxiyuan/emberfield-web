@@ -1,0 +1,1803 @@
+{
+  "status": "captured",
+  "capturedAt": "2026-11-04T17:54:14.058Z",
+  "head": "d404f7fb415b2174863e76fcd7ee5ccf697dd45a",
+  "subtree": "07a386cf087ac52e411b49710af1de240459ea59",
+  "worldSha256": "e994882a6d76c5a4cff532552e341cf25ecc6094eb3e52850de69d58d18edb6b",
+  "sourceBundle": "world-v48.mjs",
+  "sourceBundleSha256": "02f8f3edc12306b92e49f47a82ad87f7303535360a185a729a60b89807eb5bc5",
+  "esbuildVersion": "0.28.2",
+  "sources": {
+    "src/voxel/allowedAreas.ts": "f9e0dae0f99fd0752de9f32fa02f1c66a19943a795a9befdafceaa970d9daee4",
+    "src/voxel/anatomy.ts": "1f30b19d6ad8c1562cca38e86e54e17c9226f4ea6f288a326743f348e5bd7095",
+    "src/voxel/apparel.ts": "88954cc42098d2bf1f02c294e5c2f813c9271a95e01f6bfb9346c4a31d2211e8",
+    "src/voxel/armor.ts": "756771ef962f4fde2cd321a29880f11077ada081b724ebc63e5d781d12bff62e",
+    "src/voxel/autoSlaughter.ts": "ef3347ed77e81aba9d5d5bc6d4eb8cadfbbfd1c0adc8945fc7bf368007302e78",
+    "src/voxel/autoSlaughterPersistence.ts": "28fbf57fea3aeae7f4e44fa6314f0b164cf10c146a1145fbf0cd3a44c4cdcc56",
+    "src/voxel/caves.ts": "434ed06e1e9cc6ebd6407f326eb367ece11cf5d29421280a30de202cad0870f2",
+    "src/voxel/climate.ts": "5676fe5d95344b55a44571f44129c42c96a86c673a8dfe8fc55ba22df3ddc231",
+    "src/voxel/construction.ts": "09269debc4e2862682a0e531498d27faed9305e731535d7c51c92ce9c648ebb2",
+    "src/voxel/constructionFrames.ts": "1b3f6c6767b06b0e8fb0b6905b541e0d0be3a62719ffb117a44ac06d84da138e",
+    "src/voxel/crafting.ts": "9ff99d07c56040b1bc91acc9bd6521c00550389068f669459516f730887fcadb",
+    "src/voxel/deterioration.ts": "782dc0e5b83509c9e392f6140ccced4e3e9f288874fe2fcc0f272d5dc32fb39b",
+    "src/voxel/environment.ts": "09744fd8de8fc3de5f626cfe7f616056252848c785b3199fce2e1e7e32585dcb",
+    "src/voxel/environmentPersistence.ts": "fac143e8467a64e1518e1b846bbcd831da1e1661e058cbf8816c601cc3670656",
+    "src/voxel/exploration.ts": "07f8700c3a295a620a7cada1636163f0af0ed40c91b2bcf547f0737888695756",
+    "src/voxel/farming.ts": "12bcdf1ff26d4ca008d91bbde3bdc5c3f68af407979713ce2109006172c3fe5b",
+    "src/voxel/fire.ts": "e268ae29696b7f8b71a68dfac7c8ac77484429aaf2cfe75f96fc544b04ddc4d3",
+    "src/voxel/firePersistence.ts": "422b39a829b230b4727abd7ef32ced68407ec2166f39356139a57ff7c78ab839",
+    "src/voxel/fireWorld.ts": "c401f813f16da3028fd6e1294ec8b831e8ac1d4cb1a2ddcde110206c475cc83a",
+    "src/voxel/furniture.ts": "a6412af96de6584138f05545be381de9d4876134dcdb04ce963dd2c29915bba8",
+    "src/voxel/furniturePersistence.ts": "6bde3e701115a7126e2daeef9798495afd5828e027c1ca437f0d8129d2477504",
+    "src/voxel/husbandry.ts": "1c1163793259862fd0338eed68ef69cf5fa8c34c79b142f9baa90c5bb7531cfd",
+    "src/voxel/husbandryPersistence.ts": "bbbdd252ccd59faf1e1033bcc2b6b10130658ab3df232f83eda0a290066b7b19",
+    "src/voxel/husbandryWorld.ts": "b6d4abacc59d7082504dc16ae4937d5a8f8887bd92aa64468490a3b5923cdd7e",
+    "src/voxel/injuries.ts": "cfd1dcad2a553d0681239e2ab0638fb8a752da35a26cd1800301aa12aaf9a8e4",
+    "src/voxel/itemAccess.ts": "dd9f558cb822365442fd22e3b82b2deba8aef02ddece3f7d891def2022eadc0f",
+    "src/voxel/living.ts": "f101d6b98ef949bd83ccdc11117cb3014bc3d351d7888bc06c300158fc57c6fa",
+    "src/voxel/livingPersistence.ts": "e9e6ae9f30fd643afe7da827b7bfd2ae4ad383745747451c286ce27ee7562f33",
+    "src/voxel/logistics.ts": "69b2edd3ee1e6aef03ba3dd3db7df8730e5a3199137c03f98cf3132fa045a003",
+    "src/voxel/medicine.ts": "064f9c2fe26b99f59f44e58ed7294e3b7dfea416b3fa0688c7976b52a1c7b912",
+    "src/voxel/medicinePersistence.ts": "306fa3b01e62229efcae3654230f35b8288ba945c0f3c22859af09203899c750",
+    "src/voxel/mood.ts": "79dd6a2dcd82ae7f8f375bb0a5e2ff2913b86b6a70fdcefdd0d84a8fc3d24db5",
+    "src/voxel/navigation.ts": "5eb6ccdf91d7d5a3211deae7fca8cc38ea0329caa6642e5a13bfe65705399c60",
+    "src/voxel/pens.ts": "c3e9a6daa6c43661affb4d3f5ff0d2db463a800d729ace5eec253e5b3ec878dc",
+    "src/voxel/pensPersistence.ts": "088789d79b590f988c9ff4da3e0f3ceb5d13edc4b4bbe94a69f026271078d9cd",
+    "src/voxel/pensWorld.ts": "08c1ff7279fbb3f04fcce4b46d4e3db565f219f563542d8358025756378abbed",
+    "src/voxel/plants.ts": "baa7f01b82c047536c8d0a2ee3097e15bce8466418e4442e39155d6be6400195",
+    "src/voxel/power.ts": "dbbf47b4558b8935960d20abceb94c545f686e6ab5f6ca26f075429ded89fec1",
+    "src/voxel/preservation.ts": "b9201080bff64efb343985c62879747617d3f135df9faf7898d2aa54d071ef20",
+    "src/voxel/prisoners.ts": "6327f6d6d65f107a35e70fa94e2260b79d8593d070aaf5c42368de05782a55b2",
+    "src/voxel/prisonPersistence.ts": "aa23dc10fd8152e6f338e26b118e385fa7c5d385e86d10688e9298ae26a502de",
+    "src/voxel/prisonWorld.ts": "9072d5902463cc136816809d5148f541a2c88c848dec3945e5bf65d4a3107d87",
+    "src/voxel/productionBills.ts": "a115e116d7d0275d8e473367f94207bd4ae720ebbbacff1dd38f2681fabbde07",
+    "src/voxel/productionOutput.ts": "dfccd10a9e5a924a22b5ccb01176df82a9371ab55b54fc1fb24324b6c8aabde2",
+    "src/voxel/productionPolicies.ts": "17f328fe2e921fbc5750c56627de7e15edd0d3c8f67058341d4a1570143ed795",
+    "src/voxel/ranged.ts": "5b42c45c404289833cfe496fc4b1cc34d253d57c8afb6045afe8f2c34436920a",
+    "src/voxel/rangedPersistence.ts": "19644559ae86bcb1e879dcd8d7d115e2e05d40177905c7a900864c25071a057a",
+    "src/voxel/recreation.ts": "f55022026c42781e5653a7b35f3272280348123e5930b627072f47a00f3e8051",
+    "src/voxel/regionPersistence.ts": "42a2d237053d5455f4db90d083a6d3e9aa540c9b4e7e1ca708690eb79a4cf24c",
+    "src/voxel/regions.ts": "13a232f49db8fda4ee23367a792a55eb788e9849333fffef2e6b81f9cd2539b7",
+    "src/voxel/relocation.ts": "54054e7757e37cb30ec8ac0112db9ef52de436e8f9ef382044bdc13da9267028",
+    "src/voxel/relocationPersistence.ts": "c6c38ff9267518f454ee2a313a292a1ffe95dabe8340506498019d18ba3a9cb1",
+    "src/voxel/research.ts": "8abddc0dca6e520f84e10db6ce739d046a101d2200f5ca67578260e095866ee4",
+    "src/voxel/rest.ts": "52c641ae3307af786d15380824ce7b0082d3d14935432d3baebf66b047981eff",
+    "src/voxel/rivers.ts": "3b8ea85fde9adaf8335645148ef30324c8caab6bd7c4821aeaca0efff6849ea9",
+    "src/voxel/rooms.ts": "67457f7cd217f5746b9562ea2e3ca059af1f424165368d28d511e8a374090b9d",
+    "src/voxel/sanitation.ts": "7794390e2678b62b3edd8e9e6eeff1f6c0bbcebc41c59ceea0bef6bfedbdf223",
+    "src/voxel/sanitationPersistence.ts": "2c496b93e0123f93b64a0f30e94d34477d23e445411013bc1fca9e7a8e98f16f",
+    "src/voxel/shelves.ts": "df523f51408e08b507f0fd661def6893416e07d73c8455875ac72ba432b01fb8",
+    "src/voxel/shelvesPersistence.ts": "8357b9689bcac806f5a6e76bfbc5442b845ba46b501ed7169a2e31d0545be461",
+    "src/voxel/skills.ts": "d9da34a8152cecf3f95a9fe9ebbcb9274bbcbe8c8b8fbd3da29bc340b86aaf8b",
+    "src/voxel/social.ts": "1c1438d51a4c24fcf1c710456e9c681d50dde6471ac6be3cc001b53b7e574435",
+    "src/voxel/socialPersistence.ts": "38e372571c4bc6ea255a407c480f3783512487f2befd9ed2357a6486bd676c4e",
+    "src/voxel/socialWorld.ts": "a62b8a8e1995f93c394a2dc60f54992b2d9685b88ab1a07e5d4f21d0397bba50",
+    "src/voxel/stockpileZones.ts": "2936a26a4a9583eea65ff72e6073aadc57f5edb17fd63cd66d2dda65046bc90d",
+    "src/voxel/storageGroups.ts": "28a590eb591984a9d152afb17d6568df271fe4cf7b7b53a584cc1aa36b3d15e6",
+    "src/voxel/storyteller.ts": "5ad1b8204feac0ef182a23426196a6221c62f963c819104d7222b4337ad06677",
+    "src/voxel/storytellerPersistence.ts": "bcc312777461238d9c8e6ef18e374ae860e15dd08aeb94529d10894766cb8564",
+    "src/voxel/storytellerRules.ts": "4b11042097f3e7534efab8e75057d4f33b4518ebe4e1c364390a45e3bc9bfb55",
+    "src/voxel/survival.ts": "0106c5dac284ccc60e715084811d570d4ed4b8e5e5f3037a887e61245b6701e1",
+    "src/voxel/thermal.ts": "40c614996ba9c8843bc52fbd343a2a625c0fd77c788b1133ae2ba50b6494b127",
+    "src/voxel/trade.ts": "3b441ae372a0d65bb5008fdd39c4b1218d9909f11ee21b9ff7204d9bee756dca",
+    "src/voxel/tradePersistence.ts": "872dc5963d0fee654295125abceaa29fbc35f8bf34c70ad6947481790ae32329",
+    "src/voxel/tradeRules.ts": "ef63fa71de8723b14c67213c68c310ce82db2b89cff550eba3cffde7f85fdfae",
+    "src/voxel/tradeWorld.ts": "8f58ace07b818cb78ad09de857bbc857d8520a62e43cec9faee05e57955c2db9",
+    "src/voxel/types.ts": "f3f8e735fe5c125d4088da45adbf5f6e9a1315c4c3a8395b5505120dae38e0e3",
+    "src/voxel/unfinishedProduction.ts": "82550f62422518ac1ff36e27c8671cbfa65ead417b6ade286613fb82139e7a65",
+    "src/voxel/water.ts": "88966e7ac82cd415601b597c24bf5f192a699882def98415d96cb1aeaeba0298",
+    "src/voxel/wealth.ts": "562a491f727ccbe786bbdae14efb55f3877c326cb328ea9b82a693f0adf160a4",
+    "src/voxel/weaponProduction.ts": "8d23ccdf273b763383a098a1e37968278558e33c07fabc4641d2917e878dc2b0",
+    "src/voxel/weapons.ts": "43fdd4aa3e89c7743da31a571d313604fa88bd8383f94637c1ab6d0b80dd7c6c",
+    "src/voxel/weather.ts": "216b5b06f6de8f1e37930ce1094e51de68f055489453affbc14de685da13690b",
+    "src/voxel/weatherPersistence.ts": "33538a8888cecd5a2c2fb20f13af47f62a667d19d3d7367e7e722b1e0eb7c525",
+    "src/voxel/wildlife.ts": "1959101c42151c9299f8aedcbbf7b4ad9cd7517ce23bbe2d9780ed2fdc32a7aa",
+    "src/voxel/wildlifePersistence.ts": "f2c74189ae4bd0c0cdeeb00375c664530bb070f149754188a7ab3e3fde567d1f",
+    "src/voxel/world.ts": "e994882a6d76c5a4cff532552e341cf25ecc6094eb3e52850de69d58d18edb6b",
+    "src/voxel/worldgen.ts": "8d109cbc347b8e63a2d545b200d46b9bb5a2683679b3dab140452dadc75292c5"
+  },
+  "script": "test-results/animal-milk-v48-baseline/capture.mjs",
+  "scriptSha256": "d0dac73b39a80e3ea2528f2a4d2f9fe02d3b82efe5adc1b666eafcaf8dcc3d03",
+  "scope": "Headless v48-generated checkpoint made by the exact committed v48 model loading an authentic previously generated v29 newborn colony, then public player commands and ordinary ticks only. This is not a fresh-generated v48 colony, human gameplay save or native/browser runtime evidence. No animals, ownership, growth, inventory, task progress or save fields were rewritten.",
+  "origin": {
+    "fixturePath": "tests/fixtures/voxel-v29-pens-newborn.json",
+    "sha256": "7212b5c2531d6249d316bf9432ed80c67ade2f4894af4e96d1d59432b53a2aaf",
+    "byteLength": 153001,
+    "version": 29,
+    "tick": 132014,
+    "proofPath": "tests/fixtures/voxel-v29-pens-newborn.provenance.json",
+    "proofSha256": "9b8e4aef7feb145eb4f3c3044224ff1cc6030aac68959f1f7d1ec89d055b475f",
+    "frozenPath": "docs/research/rimworld/evidence/voxel-husbandry-validation.json",
+    "frozenSha256": "5cefa2513f94c350c46b37efcd756759c9cb54d8dcdc46d8278e0a6c6b3b64c9",
+    "originalCampaignExecution": {
+      "bundleSha256": "b89138ce74de518fd15061bad67b95a0f5084a5c47ada5b9e8d0a50c9854c1e4",
+      "scriptSha256": "2507f14233ce767d3d64e9974a907f21e89ea52c3ed2ae80ebb6df27e432b224"
+    }
+  },
+  "commands": [
+    {
+      "tick": 132014,
+      "command": {
+        "type": "threats",
+        "enabled": false
+      },
+      "result": {
+        "ok": true,
+        "message": "已关闭后续袭击，场上的敌人仍然存在"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "fireHazards",
+        "enabled": false
+      },
+      "result": {
+        "ok": true,
+        "message": "后续火灾事件已关闭，现有火焰继续燃烧并可扑灭"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 0,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "0:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 1,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "1:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 2,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "2:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 3,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "3:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 4,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "4:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 5,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "5:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 6,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "6:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 7,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "7:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 8,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "8:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 9,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "9:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 10,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "10:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 11,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "11:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 12,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "12:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 13,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "13:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 14,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "14:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 15,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "15:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 16,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "16:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 17,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "17:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 18,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "18:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 19,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "19:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 20,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "20:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 21,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "21:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 22,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "22:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 451,
+        "hour": 23,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "23:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 451,
+        "work": "handle",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 451,
+        "work": "firefight",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 451,
+        "work": "clean",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 451,
+        "work": "warden",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 451,
+        "work": "hunt",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 451,
+        "work": "dig",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 451,
+        "work": "build",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 451,
+        "work": "cut",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 451,
+        "work": "haul",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 451,
+        "work": "grow",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 451,
+        "work": "cook",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 451,
+        "work": "craft",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 451,
+        "work": "care",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 451,
+        "work": "research",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 0,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "0:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 1,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "1:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 2,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "2:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 3,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "3:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 4,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "4:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 5,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "5:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 6,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "6:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 7,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "7:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 8,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "8:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 9,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "9:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 10,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "10:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 11,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "11:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 12,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "12:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 13,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "13:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 14,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "14:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 15,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "15:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 16,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "16:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 17,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "17:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 18,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "18:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 19,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "19:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 20,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "20:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 21,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "21:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 22,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "22:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 452,
+        "hour": 23,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "23:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 452,
+        "work": "handle",
+        "value": 1
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 452,
+        "work": "firefight",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 452,
+        "work": "clean",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 452,
+        "work": "warden",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 452,
+        "work": "hunt",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 452,
+        "work": "dig",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 452,
+        "work": "build",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 452,
+        "work": "cut",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 452,
+        "work": "haul",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 452,
+        "work": "grow",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 452,
+        "work": "cook",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 452,
+        "work": "craft",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 452,
+        "work": "care",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 452,
+        "work": "research",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 0,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "0:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 1,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "1:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 2,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "2:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 3,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "3:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 4,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "4:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 5,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "5:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 6,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "6:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 7,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "7:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 8,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "8:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 9,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "9:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 10,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "10:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 11,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "11:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 12,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "12:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 13,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "13:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 14,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "14:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 15,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "15:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 16,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "16:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 17,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "17:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 18,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "18:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 19,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "19:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 20,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "20:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 21,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "21:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 22,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "22:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "schedule",
+        "pawnId": 453,
+        "hour": 23,
+        "assignment": "work"
+      },
+      "result": {
+        "ok": true,
+        "message": "23:00 作息已更新"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 453,
+        "work": "handle",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 453,
+        "work": "firefight",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 453,
+        "work": "clean",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 453,
+        "work": "warden",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 453,
+        "work": "hunt",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 453,
+        "work": "dig",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 453,
+        "work": "build",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 453,
+        "work": "cut",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 453,
+        "work": "haul",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 453,
+        "work": "grow",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 453,
+        "work": "cook",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 453,
+        "work": "craft",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 453,
+        "work": "care",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "priority",
+        "pawnId": 453,
+        "work": "research",
+        "value": 0
+      },
+      "result": {
+        "ok": true,
+        "message": "工作优先级已更新；0 为禁用"
+      }
+    },
+    {
+      "tick": 132014,
+      "command": {
+        "type": "autoSlaughter",
+        "species": "hare",
+        "policy": {
+          "total": null,
+          "male": null,
+          "female": null,
+          "youngMale": null,
+          "youngFemale": 0,
+          "allowPregnant": false
+        }
+      },
+      "result": {
+        "ok": true,
+        "message": "自动宰杀配额已应用，超额动物等待驯养员现场处理"
+      }
+    }
+  ],
+  "samples": [
+    {
+      "file": "working-auto-slaughter.json",
+      "sha256": "39f9cabe593cf996efcb60c9cbbfc1651e70c766ed2e31c96361dd6d31526110",
+      "byteLength": 286944,
+      "version": 48,
+      "tick": 132189,
+      "counts": {
+        "silver": 800,
+        "wood": 208,
+        "stone": 0,
+        "steel": 0,
+        "components": 0,
+        "food": 13,
+        "grain": 293,
+        "meat": 0,
+        "carcass": 0,
+        "meal": 8,
+        "chunk": 0,
+        "cloth": 0,
+        "herb": 0,
+        "apparel": 6,
+        "weapon": 0,
+        "furniture": 0,
+        "unfinished": 0
+      },
+      "stats": {
+        "mined": 0,
+        "cut": 12,
+        "built": 5,
+        "hauled": 1448,
+        "sown": 324,
+        "harvested": 158,
+        "cooked": 27,
+        "stonecut": 0,
+        "tailored": 0,
+        "weaponsMade": 0,
+        "destroyed": {
+          "silver": 0,
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 291,
+          "meat": 0,
+          "carcass": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "herb": 0,
+          "apparel": 0,
+          "weapon": 0,
+          "furniture": 0,
+          "unfinished": 0
+        },
+        "treesPlanted": 0,
+        "treesRegrown": 37,
+        "treesDied": 37,
+        "eaten": 68,
+        "consumed": {
+          "silver": 0,
+          "wood": 202,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 47,
+          "grain": 280,
+          "meat": 0,
+          "carcass": 0,
+          "meal": 19,
+          "chunk": 0,
+          "cloth": 0,
+          "herb": 0,
+          "apparel": 0,
+          "weapon": 0,
+          "furniture": 0,
+          "unfinished": 0
+        },
+        "produced": {
+          "silver": 0,
+          "wood": 320,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 864,
+          "meat": 0,
+          "carcass": 0,
+          "meal": 27,
+          "chunk": 0,
+          "cloth": 0,
+          "herb": 0,
+          "apparel": 0,
+          "weapon": 0,
+          "furniture": 0,
+          "unfinished": 0
+        },
+        "spoiled": {
+          "silver": 0,
+          "wood": 0,
+          "stone": 0,
+          "steel": 0,
+          "components": 0,
+          "food": 0,
+          "grain": 0,
+          "meat": 0,
+          "carcass": 0,
+          "meal": 0,
+          "chunk": 0,
+          "cloth": 0,
+          "herb": 0,
+          "apparel": 0,
+          "weapon": 0,
+          "furniture": 0,
+          "unfinished": 0
+        }
+      },
+      "autoSlaughter": {
+        "hare": {
+          "total": null,
+          "male": null,
+          "female": null,
+          "youngMale": null,
+          "youngFemale": 0,
+          "allowPregnant": false
+        },
+        "deer": {
+          "total": null,
+          "male": null,
+          "female": null,
+          "youngMale": null,
+          "youngFemale": null,
+          "allowPregnant": false
+        }
+      },
+      "animalsSha256": "ed39ddeea84ba730c353c66e337fc70af808b5fca8789e7b4c4b77aa8c29622e",
+      "animalIds": {
+        "childId": 1592,
+        "fatherId": 475,
+        "motherId": 477
+      },
+      "handlerId": 452,
+      "handleTask": {
+        "animalId": 1592,
+        "action": "autoSlaughter",
+        "stage": "interact",
+        "foodId": null,
+        "amount": 0,
+        "feedings": 0,
+        "progress": 25
+      },
+      "handlerPoint": {
+        "x": 14,
+        "y": 23,
+        "z": 7
+      },
+      "sourceTick": 132014,
+      "auditedTicks": 175
+    }
+  ]
+}

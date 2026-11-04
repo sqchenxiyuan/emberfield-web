@@ -1,5 +1,6 @@
 import { emptyCounts, type Axis, type Cargo, type Pos, type Resource } from './types';
 import type { FurnitureKind } from './furniture';
+import { ANIMAL_HUSBANDRY } from './husbandry';
 
 export type ShelfKind = 'shelf' | 'smallShelf';
 export type RelocatableKind = FurnitureKind | ShelfKind;
@@ -44,5 +45,6 @@ export function shelfAllows(batch: Pick<Cargo, 'resource' | 'carcass'>): boolean
   if (batch.resource === 'unfinished') return true;
   if (batch.resource === 'chunk' || batch.resource === 'furniture') return false;
   if (batch.resource !== 'carcass') return true;
-  return !!batch.carcass && (batch.carcass.bodySize ?? (batch.carcass.species === 'hare' ? .2 : 1.2)) < .75;
+  return !!batch.carcass && Object.hasOwn(ANIMAL_HUSBANDRY, batch.carcass.species) &&
+    (batch.carcass.bodySize ?? ANIMAL_HUSBANDRY[batch.carcass.species].bodySize) < .75;
 }

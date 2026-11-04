@@ -1,5 +1,7 @@
 # 余烬边境 · Emberfield
 
+v49接通单峰驼产奶：荒漠野生动物 → 实际驯服与圈养 → 成年雌性积奶 → 饲养员到场挤奶 → 实物储存、食用、烹饪和交易。支持工作打断、存读续行、拥堵等待和原有自动宰杀；机制优先，数值后调。见[141原版静态机制](docs/research/rimworld/141-animal-milk-mechanisms.md)、[142玩法与验证](docs/research/rimworld/142-animal-milk-gameplay.md)。本轮只有静态分析及无界面验证，未操作原版或浏览器。
+
 v48接通自动宰杀：按物种设置成年、幼年和总数上限 → 保护孕兽并筛选超额个体 → 饲养员实际前往处理 → 唯一尸体进入屠宰加工。支持修改配额取消任务、中途保存继续，手动指令独立保留；旧档默认全部不限。机制优先，数值后调。见[139原版静态机制](docs/research/rimworld/139-auto-slaughter-mechanisms.md)、[140玩法与验证](docs/research/rimworld/140-auto-slaughter-gameplay.md)。本轮仅静态分析和无界面验证，未操作原版或浏览器。
 
 v47接通施工失误与恢复：建造技能和身体能力 → 按实际劳动累计风险 → 实物材料损失与余料落地 → 普通蓝图重新搬料施工。重试独立于家园自动重建，拥堵、取消、火灾、货架联动和旧档可继续衔接；数值平衡后调。见[137原版静态机制](docs/research/rimworld/137-construction-failure-mechanisms.md)、[138玩法与验证](docs/research/rimworld/138-construction-failure-gameplay.md)。本轮仅静态分析和无界面验证，未操作原版或浏览器。

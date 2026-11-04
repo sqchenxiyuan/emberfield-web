@@ -1,0 +1,2067 @@
+{
+  "evidence_id": "RW17-ANIMAL-MILK-STATIC",
+  "version": "1.7.4980 rev60",
+  "assemblySha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "reaEvidenceId": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+  "reaParentId": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+  "reaFile": "docs/research/rimworld/evidence/production-bills-rea-managed.json",
+  "reaSha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+  "manifestFile": "docs/research/rimworld/evidence/animal-milk-manifest.json",
+  "manifestSha256": "716694736122cf814ffbfb15723a46bbe7d12bfd18be8ef6fcb2e98f41e492f1",
+  "rules": [
+    {
+      "type": "RimWorld.CompMilkable",
+      "file": ".local-research/animal-milk/RimWorld.CompMilkable.cs",
+      "sha256": "4f65f0881971705c33ffe6361bd2d1c635c2bb77ad02e2158c8f253c29b19562",
+      "anchor": "protected override string SaveKey => \"milkFullness\"",
+      "hits": [
+        {
+          "line": 13,
+          "text": "protected override string SaveKey => \"milkFullness\";"
+        }
+      ],
+      "interpretation": "Milk fullness is saved under milkFullness by the shared component."
+    },
+    {
+      "type": "RimWorld.CompProperties_Milkable",
+      "file": ".local-research/animal-milk/RimWorld.CompProperties_Milkable.cs",
+      "sha256": "af7a4e8339043ef0839ebed6e11e75b251f5790e6f912f7debf9128b6cbfe415",
+      "anchor": "public bool milkFemaleOnly = true",
+      "hits": [
+        {
+          "line": 13,
+          "text": "public bool milkFemaleOnly = true;"
+        }
+      ],
+      "interpretation": "Milk defaults to females only unless explicitly overridden by a definition."
+    },
+    {
+      "type": "RimWorld.CompMilkable",
+      "file": ".local-research/animal-milk/RimWorld.CompMilkable.cs",
+      "sha256": "4f65f0881971705c33ffe6361bd2d1c635c2bb77ad02e2158c8f253c29b19562",
+      "anchor": "Props.milkFemaleOnly && pawn != null && pawn.gender != Gender.Female",
+      "hits": [
+        {
+          "line": 26,
+          "text": "if (Props.milkFemaleOnly && pawn != null && pawn.gender != Gender.Female)"
+        }
+      ],
+      "interpretation": "The configured sex condition gates both fullness growth and ActiveAndFull."
+    },
+    {
+      "type": "RimWorld.CompMilkable",
+      "file": ".local-research/animal-milk/RimWorld.CompMilkable.cs",
+      "sha256": "4f65f0881971705c33ffe6361bd2d1c635c2bb77ad02e2158c8f253c29b19562",
+      "anchor": "pawn != null && !pawn.ageTracker.CurLifeStage.milkable",
+      "hits": [
+        {
+          "line": 30,
+          "text": "if (pawn != null && !pawn.ageTracker.CurLifeStage.milkable)"
+        }
+      ],
+      "interpretation": "Milkability is an explicit life-stage flag; it is not equivalent to every reproductive stage in arbitrary species."
+    },
+    {
+      "type": "RimWorld.CompMilkable",
+      "file": ".local-research/animal-milk/RimWorld.CompMilkable.cs",
+      "sha256": "4f65f0881971705c33ffe6361bd2d1c635c2bb77ad02e2158c8f253c29b19562",
+      "anchor": "ModsConfig.AnomalyActive && pawn.IsShambler",
+      "hits": [
+        {
+          "line": 34,
+          "text": "if (ModsConfig.AnomalyActive && pawn.IsShambler)"
+        }
+      ],
+      "interpretation": "Anomaly shambler animals are inactive."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-milk/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "if (parent.Faction == null)",
+      "hits": [
+        {
+          "line": 24,
+          "text": "if (parent.Faction == null)"
+        }
+      ],
+      "interpretation": "The base component rejects factionless animals, not only animals outside the player faction."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-milk/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "if (parent.Suspended)",
+      "hits": [
+        {
+          "line": 28,
+          "text": "if (parent.Suspended)"
+        }
+      ],
+      "interpretation": "Suspended parents do not produce resources."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-milk/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "return fullness >= 1f",
+      "hits": [
+        {
+          "line": 44,
+          "text": "return fullness >= 1f;"
+        }
+      ],
+      "interpretation": "Assignment uses ActiveAndFull; partially filled animals do not offer ordinary gathering jobs."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-milk/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "Scribe_Values.Look(ref fullness, SaveKey, 0f)",
+      "hits": [
+        {
+          "line": 51,
+          "text": "Scribe_Values.Look(ref fullness, SaveKey, 0f);"
+        }
+      ],
+      "interpretation": "Fullness persists on the animal and defaults to zero."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-milk/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "float num = 1f / (float)(GatherResourcesIntervalDays * 60000)",
+      "hits": [
+        {
+          "line": 58,
+          "text": "float num = 1f / (float)(GatherResourcesIntervalDays * 60000);"
+        }
+      ],
+      "interpretation": "Fullness grows per active component tick using the species interval in native days."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-milk/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "num *= PawnUtility.BodyResourceGrowthSpeed(pawn)",
+      "hits": [
+        {
+          "line": 61,
+          "text": "num *= PawnUtility.BodyResourceGrowthSpeed(pawn);"
+        }
+      ],
+      "interpretation": "Hunger changes the accumulation speed rather than directly reducing the eventual batch amount."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-milk/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "fullness = 1f",
+      "hits": [
+        {
+          "line": 66,
+          "text": "fullness = 1f;"
+        }
+      ],
+      "interpretation": "Fullness is capped at one cycle; missed gathering does not bank unlimited cycles."
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "file": ".local-research/animal-milk/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "anchor": "return pawn.needs?.food?.CurCategory.HungerMultiplier() ?? 1f",
+      "hits": [
+        {
+          "line": 343,
+          "text": "return pawn.needs?.food?.CurCategory.HungerMultiplier() ?? 1f;"
+        }
+      ],
+      "interpretation": "BodyResourceGrowthSpeed depends on the food category, defaulting to one without a food need."
+    },
+    {
+      "type": "RimWorld.HungerLevelUtility",
+      "file": ".local-research/animal-milk/RimWorld.HungerLevelUtility.cs",
+      "sha256": "be023007bc1de7d662c5e526f48e50ddd516b9a68d9347c3b1c69c30c8726bef",
+      "anchor": "HungerCategory.Fed => 1f",
+      "hits": [
+        {
+          "line": 28,
+          "text": "HungerCategory.Fed => 1f,"
+        }
+      ],
+      "interpretation": "Fed growth multiplier is one."
+    },
+    {
+      "type": "RimWorld.HungerLevelUtility",
+      "file": ".local-research/animal-milk/RimWorld.HungerLevelUtility.cs",
+      "sha256": "be023007bc1de7d662c5e526f48e50ddd516b9a68d9347c3b1c69c30c8726bef",
+      "anchor": "HungerCategory.Hungry => 0.5f",
+      "hits": [
+        {
+          "line": 29,
+          "text": "HungerCategory.Hungry => 0.5f,"
+        }
+      ],
+      "interpretation": "Hungry growth multiplier is one half."
+    },
+    {
+      "type": "RimWorld.HungerLevelUtility",
+      "file": ".local-research/animal-milk/RimWorld.HungerLevelUtility.cs",
+      "sha256": "be023007bc1de7d662c5e526f48e50ddd516b9a68d9347c3b1c69c30c8726bef",
+      "anchor": "HungerCategory.UrgentlyHungry => 0.25f",
+      "hits": [
+        {
+          "line": 30,
+          "text": "HungerCategory.UrgentlyHungry => 0.25f,"
+        }
+      ],
+      "interpretation": "Urgently hungry growth multiplier is one quarter."
+    },
+    {
+      "type": "RimWorld.HungerLevelUtility",
+      "file": ".local-research/animal-milk/RimWorld.HungerLevelUtility.cs",
+      "sha256": "be023007bc1de7d662c5e526f48e50ddd516b9a68d9347c3b1c69c30c8726bef",
+      "anchor": "HungerCategory.Starving => 0f",
+      "hits": [
+        {
+          "line": 31,
+          "text": "HungerCategory.Starving => 0f,"
+        }
+      ],
+      "interpretation": "Starving stops new milk accumulation."
+    },
+    {
+      "type": "RimWorld.Need_Food",
+      "file": ".local-research/animal-milk/RimWorld.Need_Food.cs",
+      "sha256": "f17cbaf82d8792108557f869db585fdd6ac26c0ebb537e8acf04173179e7c4cd",
+      "anchor": "return lifeStage.hungerRateFactor * pawnDef.race.baseHungerRate * 2.6666667E-05f",
+      "hits": [
+        {
+          "line": 218,
+          "text": "return lifeStage.hungerRateFactor * pawnDef.race.baseHungerRate * 2.6666667E-05f;"
+        }
+      ],
+      "interpretation": "The XML hunger rate is not itself daily nutrition; multiply this per-tick factor by native ticks/day and effective modifiers."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Milk",
+      "file": ".local-research/animal-milk/RimWorld.WorkGiver_Milk.cs",
+      "sha256": "e0313452f56ba21c1b479f64a14b3ff70003ed562214d9d373c2d2fbd0b798a4",
+      "anchor": "return animal.TryGetComp<CompMilkable>()",
+      "hits": [
+        {
+          "line": 11,
+          "text": "return animal.TryGetComp<CompMilkable>();"
+        }
+      ],
+      "interpretation": "Milk jobs require a milk component; ordinary hares/deer cannot be milked without one."
+    },
+    {
+      "type": "RimWorld.WorkGiver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-milk/RimWorld.WorkGiver_GatherAnimalBodyResources.cs",
+      "sha256": "2b563614689cd7a915997c332e8f752dc2d459623b7ec11e54506794bba713f0",
+      "anchor": "return pawn.Map.mapPawns.SpawnedPawnsInFaction(pawn.Faction)",
+      "hits": [
+        {
+          "line": 17,
+          "text": "return pawn.Map.mapPawns.SpawnedPawnsInFaction(pawn.Faction);"
+        }
+      ],
+      "interpretation": "Ordinary scanning searches spawned pawns of the worker faction."
+    },
+    {
+      "type": "RimWorld.WorkGiver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-milk/RimWorld.WorkGiver_GatherAnimalBodyResources.cs",
+      "sha256": "2b563614689cd7a915997c332e8f752dc2d459623b7ec11e54506794bba713f0",
+      "anchor": "comp == null || !comp.ActiveAndFull || pawn2.Downed",
+      "hits": [
+        {
+          "line": 44,
+          "text": "if (comp == null || !comp.ActiveAndFull || pawn2.Downed || (pawn2.roping != null && pawn2.roping.IsRopedByPawn) || !pawn2.CanCasuallyInteractNow() || !pawn.CanReserve(pawn2, 1, -1, null, forced))"
+        }
+      ],
+      "interpretation": "Gather assignment requires full active resource and an animal that is not downed."
+    },
+    {
+      "type": "RimWorld.WorkGiver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-milk/RimWorld.WorkGiver_GatherAnimalBodyResources.cs",
+      "sha256": "2b563614689cd7a915997c332e8f752dc2d459623b7ec11e54506794bba713f0",
+      "anchor": "pawn2.roping != null && pawn2.roping.IsRopedByPawn",
+      "hits": [
+        {
+          "line": 44,
+          "text": "if (comp == null || !comp.ActiveAndFull || pawn2.Downed || (pawn2.roping != null && pawn2.roping.IsRopedByPawn) || !pawn2.CanCasuallyInteractNow() || !pawn.CanReserve(pawn2, 1, -1, null, forced))"
+        }
+      ],
+      "interpretation": "Assignment excludes animals currently roped by a pawn."
+    },
+    {
+      "type": "RimWorld.WorkGiver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-milk/RimWorld.WorkGiver_GatherAnimalBodyResources.cs",
+      "sha256": "2b563614689cd7a915997c332e8f752dc2d459623b7ec11e54506794bba713f0",
+      "anchor": "!pawn2.CanCasuallyInteractNow() || !pawn.CanReserve(pawn2, 1, -1, null, forced)",
+      "hits": [
+        {
+          "line": 44,
+          "text": "if (comp == null || !comp.ActiveAndFull || pawn2.Downed || (pawn2.roping != null && pawn2.roping.IsRopedByPawn) || !pawn2.CanCasuallyInteractNow() || !pawn.CanReserve(pawn2, 1, -1, null, forced))"
+        }
+      ],
+      "interpretation": "Assignment needs casual-interaction eligibility and an ordinary reservation."
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "file": ".local-research/animal-milk/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "anchor": "if (!p.Awake() && !canInteractWhileSleeping)",
+      "hits": [
+        {
+          "line": 220,
+          "text": "if (!p.Awake() && !canInteractWhileSleeping)"
+        }
+      ],
+      "interpretation": "Ordinary casual interaction rejects a sleeping target; this is distinct from milk growth."
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "file": ".local-research/animal-milk/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "anchor": "if (p.IsFormingCaravan())",
+      "hits": [
+        {
+          "line": 224,
+          "text": "if (p.IsFormingCaravan())"
+        }
+      ],
+      "interpretation": "Ordinary casual interaction also rejects caravan assembly; other reviewed checks include drafting, invisibility, following a master and aggressive/roaming mental states."
+    },
+    {
+      "type": "RimWorld.JobDriver_Milk",
+      "file": ".local-research/animal-milk/RimWorld.JobDriver_Milk.cs",
+      "sha256": "9c41f4fd01e8440e5356761b48f39a749333364cf24dff96e5c942bb8d27de5f",
+      "anchor": "protected override float WorkTotal => 400f",
+      "hits": [
+        {
+          "line": 7,
+          "text": "protected override float WorkTotal => 400f;"
+        }
+      ],
+      "interpretation": "Native milk gathering requires 400 work, not 400 fixed elapsed ticks."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-milk/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "Scribe_Values.Look(ref gatherProgress, \"gatherProgress\", 0f)",
+      "hits": [
+        {
+          "line": 20,
+          "text": "Scribe_Values.Look(ref gatherProgress, \"gatherProgress\", 0f);"
+        }
+      ],
+      "interpretation": "Work progress is saved on the driver, separately from animal fullness."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-milk/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "return pawn.Reserve(job.GetTarget(TargetIndex.A), job, 1, -1, null, errorOnFailed)",
+      "hits": [
+        {
+          "line": 25,
+          "text": "return pawn.Reserve(job.GetTarget(TargetIndex.A), job, 1, -1, null, errorOnFailed);"
+        }
+      ],
+      "interpretation": "The job reserves its target to prevent simultaneous handlers."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-milk/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "this.FailOnDespawnedNullOrForbidden(TargetIndex.A)",
+      "hits": [
+        {
+          "line": 30,
+          "text": "this.FailOnDespawnedNullOrForbidden(TargetIndex.A);"
+        }
+      ],
+      "interpretation": "Target disappearance or forbidden status interrupts the driver."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-milk/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "this.FailOnDowned(TargetIndex.A)",
+      "hits": [
+        {
+          "line": 31,
+          "text": "this.FailOnDowned(TargetIndex.A);"
+        }
+      ],
+      "interpretation": "Target downing interrupts work."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-milk/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "this.FailOnNotCasualInterruptible(TargetIndex.A)",
+      "hits": [
+        {
+          "line": 32,
+          "text": "this.FailOnNotCasualInterruptible(TargetIndex.A);"
+        }
+      ],
+      "interpretation": "The driver also rejects loss of casual interruptibility."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-milk/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch)",
+      "hits": [
+        {
+          "line": 33,
+          "text": "yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);"
+        }
+      ],
+      "interpretation": "Milking requires reaching contact with the animal."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-milk/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "PawnUtility.ForceWait(pawn, 15000, null, maintainPosture: true)",
+      "hits": [
+        {
+          "line": 40,
+          "text": "PawnUtility.ForceWait(pawn, 15000, null, maintainPosture: true);"
+        }
+      ],
+      "interpretation": "Starting work asks the animal to wait and preserves posture."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-milk/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "actor.skills.Learn(SkillDefOf.Animals, 0.13f * (float)delta)",
+      "hits": [
+        {
+          "line": 45,
+          "text": "actor.skills.Learn(SkillDefOf.Animals, 0.13f * (float)delta);"
+        }
+      ],
+      "interpretation": "Actual gathering intervals grant Animals experience before reading speed."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-milk/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "gatherProgress += actor.GetStatValue(StatDefOf.AnimalGatherSpeed) * (float)delta",
+      "hits": [
+        {
+          "line": 46,
+          "text": "gatherProgress += actor.GetStatValue(StatDefOf.AnimalGatherSpeed) * (float)delta;"
+        }
+      ],
+      "interpretation": "Progress scales with AnimalGatherSpeed and elapsed simulation ticks."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-milk/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "GetComp((Pawn)(Thing)job.GetTarget(TargetIndex.A)).Gathered(pawn)",
+      "hits": [
+        {
+          "line": 49,
+          "text": "GetComp((Pawn)(Thing)job.GetTarget(TargetIndex.A)).Gathered(pawn);"
+        }
+      ],
+      "interpretation": "The normal driver invokes Gathered only after work reaches its total."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-milk/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "pawn.CurJobDef == JobDefOf.Wait_MaintainPosture",
+      "hits": [
+        {
+          "line": 56,
+          "text": "if (pawn != null && pawn.CurJobDef == JobDefOf.Wait_MaintainPosture)"
+        }
+      ],
+      "interpretation": "Finish action releases the animal only when it is still in the imposed maintain-posture wait."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-milk/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "wait.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch)",
+      "hits": [
+        {
+          "line": 62,
+          "text": "wait.FailOnCannotTouch(TargetIndex.A, PathEndMode.Touch);"
+        }
+      ],
+      "interpretation": "Contact loss interrupts the work toil."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "file": ".local-research/animal-milk/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "anchor": "ActiveAndFull ? JobCondition.Ongoing : JobCondition.Incompletable",
+      "hits": [
+        {
+          "line": 63,
+          "text": "wait.AddEndCondition(() => GetComp((Pawn)(Thing)job.GetTarget(TargetIndex.A)).ActiveAndFull ? JobCondition.Ongoing : JobCondition.Incompletable);"
+        }
+      ],
+      "interpretation": "The work toil rechecks active full resource during work, including after load."
+    },
+    {
+      "type": "Verse.AI.JobDriver",
+      "file": ".local-research/animal-milk/Verse.AI.JobDriver.cs",
+      "sha256": "170325ed15a349e588ae3182e88fad887568794256edfd237975bc47e926a6c6",
+      "anchor": "if (CheckCurrentToilEndOrFail())",
+      "hits": [
+        {
+          "line": 359,
+          "text": "if (CheckCurrentToilEndOrFail())"
+        },
+        {
+          "line": 506,
+          "text": "if (CheckCurrentToilEndOrFail())"
+        }
+      ],
+      "interpretation": "The shared driver checks termination before work updates and before toil init."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-milk/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "!Rand.Chance(doer.GetStatValue(StatDefOf.AnimalGatherYield))",
+      "hits": [
+        {
+          "line": 77,
+          "text": "if (!Rand.Chance(doer.GetStatValue(StatDefOf.AnimalGatherYield)))"
+        }
+      ],
+      "interpretation": "Yield stat is a single all-or-nothing success roll, not an amount multiplier."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-milk/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "\"TextMote_ProductWasted\".Translate()",
+      "hits": [
+        {
+          "line": 79,
+          "text": "MoteMaker.ThrowText((doer.DrawPos + parent.DrawPos) / 2f, parent.Map, \"TextMote_ProductWasted\".Translate(), 3.65f);"
+        }
+      ],
+      "interpretation": "Failed gathering produces a wasted-product feedback branch without spawning milk."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-milk/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "GenMath.RoundRandom((float)ResourceAmount * fullness)",
+      "hits": [
+        {
+          "line": 83,
+          "text": "int num = GenMath.RoundRandom((float)ResourceAmount * fullness);"
+        }
+      ],
+      "interpretation": "On success, output amount is stochastically rounded species amount times actual fullness."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-milk/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "Mathf.Clamp(num, 1, ResourceDef.stackLimit)",
+      "hits": [
+        {
+          "line": 86,
+          "text": "int num2 = Mathf.Clamp(num, 1, ResourceDef.stackLimit);"
+        }
+      ],
+      "interpretation": "Successful output is split into real stacks bounded by the resource stack limit."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-milk/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "GenPlace.TryPlaceThing(thing, doer.Position, doer.Map, ThingPlaceMode.Near)",
+      "hits": [
+        {
+          "line": 90,
+          "text": "GenPlace.TryPlaceThing(thing, doer.Position, doer.Map, ThingPlaceMode.Near);"
+        }
+      ],
+      "interpretation": "Each output stack is placed near the worker, not remotely credited to colony stock; the return value is ignored here."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "file": ".local-research/animal-milk/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "anchor": "fullness = 0f",
+      "hits": [
+        {
+          "line": 93,
+          "text": "fullness = 0f;"
+        }
+      ],
+      "interpretation": "Fullness resets after success, product waste or placement failure."
+    },
+    {
+      "type": "Verse.Rand",
+      "file": ".local-research/animal-milk/Verse.Rand.cs",
+      "sha256": "f5edc56975095070d8feb0dc52a2d03f85992b8a6a27aa0cab787664ec466070",
+      "anchor": "if (chance >= 1f)",
+      "hits": [
+        {
+          "line": 209,
+          "text": "if (chance >= 1f)"
+        }
+      ],
+      "interpretation": "Rand.Chance returns true at or above one, so excess yield stat does not increase milk output."
+    },
+    {
+      "type": "Verse.GenMath",
+      "file": ".local-research/animal-milk/Verse.GenMath.cs",
+      "sha256": "639bc810485b043ff454902b285ade5d875d8b123f3809672371111519429b1e",
+      "anchor": "return (int)f + ((Rand.Value < f % 1f) ? 1 : 0)",
+      "hits": [
+        {
+          "line": 64,
+          "text": "return (int)f + ((Rand.Value < f % 1f) ? 1 : 0);"
+        }
+      ],
+      "interpretation": "RoundRandom uses truncation plus fractional-probability rounding, not floor."
+    },
+    {
+      "type": "Verse.GenPlace",
+      "file": ".local-research/animal-milk/Verse.GenPlace.cs",
+      "sha256": "72e9f795b464dd3dad6afb2b40908a23f06e9407c31fd10290fd78bee8747ecb",
+      "anchor": "!TryFindPlaceSpotNear(center, rot.Value, map, thing, allowStacking: true, out var bestSpot, extraValidator)",
+      "hits": [
+        {
+          "line": 62,
+          "text": "if (!TryFindPlaceSpotNear(center, rot.Value, map, thing, allowStacking: true, out var bestSpot, extraValidator))"
+        }
+      ],
+      "interpretation": "Near placement can return false when no suitable spot exists; milk gathering has no retained pending-output owner."
+    },
+    {
+      "type": "RimWorld.SkillNeed_BaseBonus",
+      "file": ".local-research/animal-milk/RimWorld.SkillNeed_BaseBonus.cs",
+      "sha256": "0f138059de75d31cd1a0d3d028b08e5332923786fb830d8544f5182e3a5c49ca",
+      "anchor": "return baseValue + bonusPerLevel * (float)level",
+      "hits": [
+        {
+          "line": 24,
+          "text": "return baseValue + bonusPerLevel * (float)level;"
+        }
+      ],
+      "interpretation": "Gather speed uses the declared linear Animals skill factor."
+    },
+    {
+      "type": "RimWorld.SkillNeed_Direct",
+      "file": ".local-research/animal-milk/RimWorld.SkillNeed_Direct.cs",
+      "sha256": "0983bddf958c2548d38759abc87c5e250da9048c7d0c5d01a25e8ecdc8ce48c5",
+      "anchor": "return valuesPerLevel[level]",
+      "hits": [
+        {
+          "line": 19,
+          "text": "return valuesPerLevel[level];"
+        }
+      ],
+      "interpretation": "Gather yield uses the declared level-indexed Animals factor."
+    },
+    {
+      "type": "RimWorld.StatWorker",
+      "file": ".local-research/animal-milk/RimWorld.StatWorker.cs",
+      "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+      "anchor": "num = Mathf.Lerp(num, num * factor, pawnCapacityFactor.weight)",
+      "hits": [
+        {
+          "line": 390,
+          "text": "num = Mathf.Lerp(num, num * factor, pawnCapacityFactor.weight);"
+        }
+      ],
+      "interpretation": "Stat capacity factors are weighted multiplicatively."
+    },
+    {
+      "type": "RimWorld.StatWorker_MinimumHandlingSkill",
+      "file": ".local-research/animal-milk/RimWorld.StatWorker_MinimumHandlingSkill.cs",
+      "sha256": "7e724f9d36c362b1a3e17dcdc3ae48c774407d360bc54ab8b87a2479de966a69",
+      "anchor": "new CurvePoint(0.15f, 1f)",
+      "hits": [
+        {
+          "line": 11,
+          "text": "new CurvePoint(0.15f, 1f),"
+        }
+      ],
+      "interpretation": "Handling requirement curve is distinct from milking speed/yield."
+    },
+    {
+      "type": "RimWorld.StatWorker_MinimumHandlingSkill",
+      "file": ".local-research/animal-milk/RimWorld.StatWorker_MinimumHandlingSkill.cs",
+      "sha256": "7e724f9d36c362b1a3e17dcdc3ae48c774407d360bc54ab8b87a2479de966a69",
+      "anchor": "new CurvePoint(0.98f, 10f)",
+      "hits": [
+        {
+          "line": 12,
+          "text": "new CurvePoint(0.98f, 10f),"
+        }
+      ],
+      "interpretation": "Dromedary wildness 0.25 falls between these two handling-curve points."
+    },
+    {
+      "type": "Verse.RaceProperties",
+      "file": ".local-research/animal-milk/Verse.RaceProperties.cs",
+      "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+      "anchor": "public bool FenceBlocked => Roamer",
+      "hits": [
+        {
+          "line": 388,
+          "text": "public bool FenceBlocked => Roamer;"
+        }
+      ],
+      "interpretation": "Roaming animals are fence-blocked."
+    },
+    {
+      "type": "Verse.RaceProperties",
+      "file": ".local-research/animal-milk/Verse.RaceProperties.cs",
+      "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+      "anchor": "public bool Roamer => roamMtbDays.HasValue",
+      "hits": [
+        {
+          "line": 390,
+          "text": "public bool Roamer => roamMtbDays.HasValue;"
+        }
+      ],
+      "interpretation": "Dromedary roamMtbDays establishes the Roamer flag."
+    },
+    {
+      "type": "Verse.AnimalPenUtility",
+      "file": ".local-research/animal-milk/Verse.AnimalPenUtility.cs",
+      "sha256": "fbc92dcf75908d45f445f835fc83d0f9251cdd3c7d84482a27fdcd91d524b3f9",
+      "anchor": "if (td.race != null && td.race.Roamer)",
+      "hits": [
+        {
+          "line": 32,
+          "text": "if (td.race != null && td.race.Roamer)"
+        }
+      ],
+      "interpretation": "Rope-managed animal classification combines Roamer with the Animals category."
+    },
+    {
+      "type": "RimWorld.FoodTypeFlags",
+      "file": ".local-research/animal-milk/RimWorld.FoodTypeFlags.cs",
+      "sha256": "ec648f096a7d3baf47113cbe8cd25a0ce7595bc8e3eda5e6a070fba4a8c55229",
+      "anchor": "VegetarianRoughAnimal = VegetarianAnimal | Plant",
+      "hits": [
+        {
+          "line": 23,
+          "text": "VegetarianRoughAnimal = VegetarianAnimal | Plant,"
+        }
+      ],
+      "interpretation": "The dromedary diet does not include Fluid or AnimalProduct; raw milk is not ordinary rough-herbivore feed."
+    },
+    {
+      "type": "RimWorld.FoodTypeFlags",
+      "file": ".local-research/animal-milk/RimWorld.FoodTypeFlags.cs",
+      "sha256": "ec648f096a7d3baf47113cbe8cd25a0ce7595bc8e3eda5e6a070fba4a8c55229",
+      "anchor": "OmnivoreHuman = OmnivoreAnimal | Fluid | AnimalProduct",
+      "hits": [
+        {
+          "line": 30,
+          "text": "OmnivoreHuman = OmnivoreAnimal | Fluid | AnimalProduct"
+        }
+      ],
+      "interpretation": "Human omnivore diet includes both raw milk flags."
+    },
+    {
+      "type": "RimWorld.IngestibleProperties",
+      "file": ".local-research/animal-milk/RimWorld.IngestibleProperties.cs",
+      "sha256": "12330427e18b72374f1e0020c92a0cb94aa16a47fc61476375e1f9083f61cbfe",
+      "anchor": "public ThoughtDef tasteThought",
+      "hits": [
+        {
+          "line": 30,
+          "text": "public ThoughtDef tasteThought;"
+        }
+      ],
+      "interpretation": "Taste thought defaults null when no inherited definition supplies one."
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "file": ".local-research/animal-milk/RimWorld.FoodUtility.cs",
+      "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+      "anchor": "foodDef.ingestible.tasteThought != null",
+      "hits": [
+        {
+          "line": 895,
+          "text": "if (!ingester.story.traits.HasTrait(TraitDefOf.Ascetic) && foodDef.ingestible.tasteThought != null)"
+        }
+      ],
+      "interpretation": "Ordinary taste thought is added only when configured; this is not immunity to every ideology/trait/environment thought."
+    },
+    {
+      "type": "RimWorld.CompRottable",
+      "file": ".local-research/animal-milk/RimWorld.CompRottable.cs",
+      "sha256": "0cd95cf8477c6c009d0187ce1d606f872ab9e36f0f977e5f09ced39fb4c50578",
+      "anchor": "RotProgress += num * (float)delta",
+      "hits": [
+        {
+          "line": 102,
+          "text": "RotProgress += num * (float)delta;"
+        }
+      ],
+      "interpretation": "Rot accumulates by temperature-adjusted elapsed simulation ticks."
+    },
+    {
+      "type": "RimWorld.CompRottable",
+      "file": ".local-research/animal-milk/RimWorld.CompRottable.cs",
+      "sha256": "0cd95cf8477c6c009d0187ce1d606f872ab9e36f0f977e5f09ced39fb4c50578",
+      "anchor": "Stage == RotStage.Rotting && PropsRot.rotDestroys",
+      "hits": [
+        {
+          "line": 103,
+          "text": "if (Stage == RotStage.Rotting && PropsRot.rotDestroys)"
+        }
+      ],
+      "interpretation": "Milk is destroyed on reaching the rotting stage when rotDestroys is true."
+    },
+    {
+      "type": "RimWorld.CompRottable",
+      "file": ".local-research/animal-milk/RimWorld.CompRottable.cs",
+      "sha256": "0cd95cf8477c6c009d0187ce1d606f872ab9e36f0f977e5f09ced39fb4c50578",
+      "anchor": "RotProgress = Mathf.Lerp(RotProgress, rotProgress, t)",
+      "hits": [
+        {
+          "line": 143,
+          "text": "RotProgress = Mathf.Lerp(RotProgress, rotProgress, t);"
+        }
+      ],
+      "interpretation": "Merging rot-capable stacks computes an amount-weighted rot progress."
+    },
+    {
+      "type": "RimWorld.CompRottable",
+      "file": ".local-research/animal-milk/RimWorld.CompRottable.cs",
+      "sha256": "0cd95cf8477c6c009d0187ce1d606f872ab9e36f0f977e5f09ced39fb4c50578",
+      "anchor": "GetComp<CompRottable>().RotProgress = RotProgress",
+      "hits": [
+        {
+          "line": 148,
+          "text": "((ThingWithComps)piece).GetComp<CompRottable>().RotProgress = RotProgress;"
+        }
+      ],
+      "interpretation": "Splitting preserves the original rot progress."
+    },
+    {
+      "type": "Verse.GenTemperature",
+      "file": ".local-research/animal-milk/Verse.GenTemperature.cs",
+      "sha256": "4d8eca83fcc99ebeeeace9696c7be0761a078aa6578a2cc5033cca0fd24b0fc1",
+      "anchor": "public static float RotRateAtTemperature(float temperature)",
+      "hits": [
+        {
+          "line": 459,
+          "text": "public static float RotRateAtTemperature(float temperature)"
+        }
+      ],
+      "interpretation": "Native rot rate is zero below zero Celsius, linear from zero to ten, and one at ten or above."
+    },
+    {
+      "type": "Verse.ThingDef",
+      "file": ".local-research/animal-milk/Verse.ThingDef.cs",
+      "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+      "anchor": "public Tradeability tradeability = Tradeability.All",
+      "hits": [
+        {
+          "line": 324,
+          "text": "public Tradeability tradeability = Tradeability.All;"
+        }
+      ],
+      "interpretation": "Milk inherits normal tradability unless a definition or patch overrides it."
+    },
+    {
+      "type": "RimWorld.StockGenerator_Category",
+      "file": ".local-research/animal-milk/RimWorld.StockGenerator_Category.cs",
+      "sha256": "02d74232f7ef4dc93d19c75b2acb084ca7f51370d9de22a5a4e6fb4716f3bc65",
+      "anchor": "categoryDef.DescendantThingDefs.Contains(t) && t.tradeability != Tradeability.None",
+      "hits": [
+        {
+          "line": 39,
+          "text": "if (categoryDef.DescendantThingDefs.Contains(t) && t.tradeability != Tradeability.None && (int)t.techLevel <= (int)maxTechLevelBuy && (excludedThingDefs == null || !excludedThingDefs.Contains(t)))"
+        }
+      ],
+      "interpretation": "A category trader can handle allowed descendant food definitions, subject to tech and exclusion checks."
+    },
+    {
+      "type": "RimWorld.StockGenerator_Category",
+      "file": ".local-research/animal-milk/RimWorld.StockGenerator_Category.cs",
+      "sha256": "02d74232f7ef4dc93d19c75b2acb084ca7f51370d9de22a5a4e6fb4716f3bc65",
+      "anchor": "!generatedDefs.Contains(t)",
+      "hits": [
+        {
+          "line": 24,
+          "text": "if (!categoryDef.DescendantThingDefs.Where((ThingDef t) => t.tradeability.TraderCanSell() && (int)t.techLevel <= (int)maxTechLevelGenerate && !generatedDefs.Contains(t) && (excludedThingDefs == null || !excludedThingDefs.Contains(t)) && (excludedCategories == null || !excludedCategories.Any((ThingCategoryDef c) => c.DescendantThingDefs.Contains(t)))).TryRandomElement(out var chosenThingDef))"
+        }
+      ],
+      "interpretation": "A trader samples a limited variety of definitions; category acceptance does not guarantee every visit stocks milk."
+    },
+    {
+      "type": "RimWorld.WildAnimalSpawner",
+      "file": ".local-research/animal-milk/RimWorld.WildAnimalSpawner.cs",
+      "sha256": "a5aeaa387c91716c53c69e4abc7c46be1c1b3f9a096acfb7556679bc00e3aae7",
+      "anchor": "TryRandomElementByWeight((PawnKindDef kind) => CommonalityOfAnimalNow(kind, loc)",
+      "hits": [
+        {
+          "line": 111,
+          "text": "if (animalKind == null && !map.BiomeAt(loc).AllWildAnimals.Where((PawnKindDef a) => map.mapTemperature.SeasonAcceptableFor(a.race)).TryRandomElementByWeight((PawnKindDef kind) => CommonalityOfAnimalNow(kind, loc), out animalKind))"
+        }
+      ],
+      "interpretation": "Species selection is weighted and filtered by acceptable season, not a fixed independent spawn percentage."
+    },
+    {
+      "type": "RimWorld.WildAnimalSpawner",
+      "file": ".local-research/animal-milk/RimWorld.WildAnimalSpawner.cs",
+      "sha256": "a5aeaa387c91716c53c69e4abc7c46be1c1b3f9a096acfb7556679bc00e3aae7",
+      "anchor": "int randomInRange = animalKind.wildGroupSize.RandomInRange",
+      "hits": [
+        {
+          "line": 140,
+          "text": "int randomInRange = animalKind.wildGroupSize.RandomInRange;"
+        }
+      ],
+      "interpretation": "Native dromedary group size is sampled from its declared range."
+    },
+    {
+      "type": "RimWorld.WildAnimalSpawner",
+      "file": ".local-research/animal-milk/RimWorld.WildAnimalSpawner.cs",
+      "sha256": "a5aeaa387c91716c53c69e4abc7c46be1c1b3f9a096acfb7556679bc00e3aae7",
+      "anchor": "return num / def.wildGroupSize.Average",
+      "hits": [
+        {
+          "line": 181,
+          "text": "return num / def.wildGroupSize.Average;"
+        }
+      ],
+      "interpretation": "Effective animal commonality divides by expected group size after biome/pollution/coast/mutator factors."
+    }
+  ],
+  "boundedChecks": [
+    {
+      "type": "RimWorld.CompMilkable",
+      "start": "protected override bool Active",
+      "end": "public override string CompInspectStringExtra",
+      "startLine": 17,
+      "endLine": 42,
+      "sliceSha256": "04610a9cd7a0d7916e3de4d6cd6d7a4a75d77c4180e737dbc8b11a481ba2b295",
+      "absentTokens": [
+        "Pregnant",
+        "Lactating",
+        "birth",
+        "Hediff_Pregnant",
+        "food",
+        "Temperature",
+        "Awake",
+        "Faction.OfPlayer"
+      ],
+      "interpretation": "No pregnancy, birth-history, lactation, direct hunger threshold, weather, sleeping or player-only condition exists in the milk-specific activity getter."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "start": "protected virtual bool Active",
+      "end": "public bool ActiveAndFull",
+      "startLine": 20,
+      "endLine": 36,
+      "sliceSha256": "3bd484a4af1229937c0663917508af94b8996c1131ea3defdb054942ddeaa1ee",
+      "absentTokens": [
+        "Pregnant",
+        "Lactating",
+        "Downed",
+        "Awake",
+        "Temperature",
+        "Faction.OfPlayer",
+        "BodySize"
+      ],
+      "interpretation": "The shared activity getter only tests non-null faction and suspension; other gameplay systems can still stop ticking."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "start": "public override void CompTick",
+      "end": "public void Gathered",
+      "startLine": 54,
+      "endLine": 71,
+      "sliceSha256": "6db6d177e0577290b758b28df057e86820da173e9d28a0d736705cc63c5efbcb",
+      "absentTokens": [
+        "fullness = 0",
+        "fullness *=",
+        "CurLevel -=",
+        "Nutrition",
+        "GetStatValue"
+      ],
+      "interpretation": "Inactive state does not clear fullness, and ticking does not subtract an extra food amount or use handler stats."
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "start": "public void Gathered",
+      "end": "",
+      "startLine": 71,
+      "endLine": 96,
+      "sliceSha256": "6d2cd3f0e57c8c9ae7ad792c3d7a09864e750971f68eb02bc56b86364b0bcd9b",
+      "absentTokens": [
+        "fullness -=",
+        "TryAdd",
+        "holdingOwner",
+        "retry",
+        "gatherProgress",
+        "ResourceAmount * doer",
+        "if (GenPlace.TryPlaceThing"
+      ],
+      "interpretation": "Gathered empties the cycle, uses a chance instead of multiplying amount by yield, and declares no retained output retry owner/check on placement success."
+    },
+    {
+      "type": "RimWorld.WorkGiver_GatherAnimalBodyResources",
+      "start": "public override bool HasJobOnThing",
+      "end": "public override Job JobOnThing",
+      "startLine": 37,
+      "endLine": 51,
+      "sliceSha256": "97099a54afd434848040250df4a3ffef48683ba40db79ba4bb1be6a0ee6f13a3",
+      "absentTokens": [
+        "MinimumHandlingSkill",
+        "SkillDefOf.Animals",
+        "Pregnant",
+        "Slaughter",
+        "ReleaseAnimalToWild"
+      ],
+      "interpretation": "This work giver does not impose taming minimum skill or directly veto pregnancy/manual slaughter/release designations."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "start": "wait.AddFinishAction",
+      "end": "wait.FailOnDespawnedOrNull",
+      "startLine": 53,
+      "endLine": 61,
+      "sliceSha256": "1efe9e76311e1312df9cf5d148240471a6a1727ae9d1874318a522468caf5ef7",
+      "absentTokens": [
+        "Gathered",
+        "fullness",
+        "gatherProgress",
+        "ThingMaker"
+      ],
+      "interpretation": "Finish action releases an imposed animal wait; interruption does not milk the animal, empty fullness or create output."
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "start": "protected override IEnumerable<Toil> MakeNewToils",
+      "end": "",
+      "startLine": 28,
+      "endLine": 70,
+      "sliceSha256": "ec76b3d5d34f796de0525f721047da2cf9635afb8d24aacd8db2a6745e95cd24",
+      "absentTokens": [
+        "Learn(SkillDefOf.Animals, 400",
+        "MinimumHandlingSkill",
+        "fullness =",
+        "gatherProgress = 0"
+      ],
+      "interpretation": "Work uses interval XP and driver-local progress; it does not reset animal fullness except by the completed Gathered call."
+    },
+    {
+      "type": "RimWorld.CompMilkable",
+      "start": "public class CompMilkable",
+      "end": "",
+      "startLine": 5,
+      "endLine": 51,
+      "sliceSha256": "1d2537be36b68dbfbaf3aeae09b2ebcf6cb1660b11812bad55af582b8907f93c",
+      "absentTokens": [
+        "Notify_Pawn",
+        "PostSpawnSetup",
+        "PostPostMake",
+        "Rand."
+      ],
+      "interpretation": "No milk-specific random initialization or faction-transition refill/reset hook is declared by this component."
+    }
+  ],
+  "packagedXml": [
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_CowGroup.xml",
+      "sha256": "4dfaa77da9175d9cbc802ca4b6d5fc321fbf646ea5f39d22cf38190c77294b7a",
+      "xpath": "/Defs/ThingDef[defName=\"Dromedary\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MoveSpeed>4.3</MoveSpeed><MarketValue>300</MarketValue><ComfyTemperatureMin>-22</ComfyTemperatureMin><ComfyTemperatureMax>60</ComfyTemperatureMax><FilthRate>16</FilthRate><CaravanRidingSpeedFactor>1.3</CaravanRidingSpeedFactor><Wildness>0.25</Wildness></statBases>"
+          ]
+        },
+        {
+          "xpath": "comps/li[@Class=\"CompProperties_Milkable\"]",
+          "count": 1,
+          "xml": [
+            "<li Class=\"CompProperties_Milkable\"><milkDef>Milk</milkDef><milkIntervalDays>2</milkIntervalDays><milkAmount>18</milkAmount></li>"
+          ]
+        },
+        {
+          "xpath": "race/body",
+          "count": 1,
+          "xml": [
+            "<body>QuadrupedAnimalWithHoovesAndHump</body>"
+          ]
+        },
+        {
+          "xpath": "race/baseBodySize",
+          "count": 1,
+          "xml": [
+            "<baseBodySize>2.1</baseBodySize>"
+          ]
+        },
+        {
+          "xpath": "race/baseHealthScale",
+          "count": 1,
+          "xml": [
+            "<baseHealthScale>1.6</baseHealthScale>"
+          ]
+        },
+        {
+          "xpath": "race/baseHungerRate",
+          "count": 1,
+          "xml": [
+            "<baseHungerRate>0.535</baseHungerRate>"
+          ]
+        },
+        {
+          "xpath": "race/foodType",
+          "count": 1,
+          "xml": [
+            "<foodType>VegetarianRoughAnimal</foodType>"
+          ]
+        },
+        {
+          "xpath": "race/roamMtbDays",
+          "count": 1,
+          "xml": [
+            "<roamMtbDays>3</roamMtbDays>"
+          ]
+        },
+        {
+          "xpath": "race/trainability",
+          "count": 1,
+          "xml": [
+            "<trainability>None</trainability>"
+          ]
+        },
+        {
+          "xpath": "race/packAnimal",
+          "count": 1,
+          "xml": [
+            "<packAnimal>true</packAnimal>"
+          ]
+        },
+        {
+          "xpath": "race/gestationPeriodDays",
+          "count": 1,
+          "xml": [
+            "<gestationPeriodDays>6.66</gestationPeriodDays>"
+          ]
+        },
+        {
+          "xpath": "race/lifeExpectancy",
+          "count": 1,
+          "xml": [
+            "<lifeExpectancy>45</lifeExpectancy>"
+          ]
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 1,
+          "xml": [
+            "<lifeStageAges><li><def>AnimalBaby</def><minAge>0</minAge></li><li><def>AnimalJuvenile</def><minAge>0.25</minAge></li><li><def>AnimalAdult</def><minAge>0.3333</minAge><soundWounded>Pawn_Dromedary_Wounded</soundWounded><soundDeath>Pawn_Dromedary_Death</soundDeath><soundCall>Pawn_Dromedary_Call</soundCall><soundAngry>Pawn_Dromedary_Angry</soundAngry></li></lifeStageAges>"
+          ]
+        },
+        {
+          "xpath": "tradeTags",
+          "count": 1,
+          "xml": [
+            "<tradeTags><li>AnimalCommon</li><li>AnimalFarm</li></tradeTags>"
+          ]
+        }
+      ],
+      "interpretation": "Dromedary species declarations; art and audio resources are not copied."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_CowGroup.xml",
+      "sha256": "4dfaa77da9175d9cbc802ca4b6d5fc321fbf646ea5f39d22cf38190c77294b7a",
+      "xpath": "/Defs/PawnKindDef[defName=\"Dromedary\"]",
+      "nameAttribute": "Dromedary",
+      "parentName": "AnimalKindBase",
+      "fields": [
+        {
+          "xpath": "race",
+          "count": 1,
+          "xml": [
+            "<race>Dromedary</race>"
+          ]
+        },
+        {
+          "xpath": "combatPower",
+          "count": 1,
+          "xml": [
+            "<combatPower>90</combatPower>"
+          ]
+        },
+        {
+          "xpath": "ecoSystemWeight",
+          "count": 1,
+          "xml": [
+            "<ecoSystemWeight>1.0</ecoSystemWeight>"
+          ]
+        },
+        {
+          "xpath": "wildGroupSize",
+          "count": 1,
+          "xml": [
+            "<wildGroupSize>2~5</wildGroupSize>"
+          ]
+        }
+      ],
+      "interpretation": "Native wildlife group and ecosystem declarations."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+      "sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4",
+      "xpath": "/Defs/ThingDef[@Name=\"AnimalThingBase\"]",
+      "nameAttribute": "AnimalThingBase",
+      "parentName": "BasePawn",
+      "fields": [
+        {
+          "xpath": "race/hasGenders",
+          "count": 1,
+          "xml": [
+            "<hasGenders>true</hasGenders>"
+          ]
+        },
+        {
+          "xpath": "race/trainability",
+          "count": 1,
+          "xml": [
+            "<trainability>None</trainability>"
+          ]
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 1,
+          "xml": [
+            "<thingCategories><li>Animals</li></thingCategories>"
+          ]
+        }
+      ],
+      "interpretation": "Animal category and sex defaults inherited by dromedaries."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalBaby\"]",
+      "nameAttribute": "AnimalBaby",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "reproductive",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "milkable",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "bodySizeFactor",
+          "count": 1,
+          "xml": [
+            "<bodySizeFactor>0.2</bodySizeFactor>"
+          ]
+        },
+        {
+          "xpath": "foodMaxFactor",
+          "count": 1,
+          "xml": [
+            "<foodMaxFactor>3</foodMaxFactor>"
+          ]
+        },
+        {
+          "xpath": "healthScaleFactor",
+          "count": 1,
+          "xml": [
+            "<healthScaleFactor>0.25</healthScaleFactor>"
+          ]
+        },
+        {
+          "xpath": "hungerRateFactor",
+          "count": 1,
+          "xml": [
+            "<hungerRateFactor>0.4</hungerRateFactor>"
+          ]
+        }
+      ],
+      "interpretation": "Baby milkable/reproductive flags are absent and default false."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalJuvenile\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "reproductive",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "milkable",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "bodySizeFactor",
+          "count": 1,
+          "xml": [
+            "<bodySizeFactor>0.5</bodySizeFactor>"
+          ]
+        },
+        {
+          "xpath": "foodMaxFactor",
+          "count": 1,
+          "xml": [
+            "<foodMaxFactor>1.5</foodMaxFactor>"
+          ]
+        },
+        {
+          "xpath": "healthScaleFactor",
+          "count": 1,
+          "xml": [
+            "<healthScaleFactor>0.6</healthScaleFactor>"
+          ]
+        },
+        {
+          "xpath": "hungerRateFactor",
+          "count": 1,
+          "xml": [
+            "<hungerRateFactor>0.75</hungerRateFactor>"
+          ]
+        }
+      ],
+      "interpretation": "Juveniles remain non-milkable; body/food factors differ from babies."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalAdult\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "reproductive",
+          "count": 1,
+          "xml": [
+            "<reproductive>true</reproductive>"
+          ]
+        },
+        {
+          "xpath": "milkable",
+          "count": 1,
+          "xml": [
+            "<milkable>true</milkable>"
+          ]
+        },
+        {
+          "xpath": "bodySizeFactor",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "foodMaxFactor",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "healthScaleFactor",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "hungerRateFactor",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Adult reproductive/milkable flags are explicit; omitted body/food factors use class defaults."
+    },
+    {
+      "file": "Data/Core/Defs/BiomeDefs/Biomes_WarmArid.xml",
+      "sha256": "12de99466330bdd17686c5c80205aa979b18864f4e96bfd16495644c4a5a1985",
+      "xpath": "/Defs/BiomeDef[defName=\"AridShrubland\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "animalDensity",
+          "count": 1,
+          "xml": [
+            "<animalDensity>1.8</animalDensity>"
+          ]
+        },
+        {
+          "xpath": "wildAnimals/Dromedary",
+          "count": 1,
+          "xml": [
+            "<Dromedary>0.7</Dromedary>"
+          ]
+        }
+      ],
+      "interpretation": "Arid shrubland relative wild dromedary commonality and biome animal density."
+    },
+    {
+      "file": "Data/Core/Defs/BiomeDefs/Biomes_WarmArid.xml",
+      "sha256": "12de99466330bdd17686c5c80205aa979b18864f4e96bfd16495644c4a5a1985",
+      "xpath": "/Defs/BiomeDef[defName=\"Desert\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "animalDensity",
+          "count": 1,
+          "xml": [
+            "<animalDensity>0.4</animalDensity>"
+          ]
+        },
+        {
+          "xpath": "wildAnimals/Dromedary",
+          "count": 1,
+          "xml": [
+            "<Dromedary>0.7</Dromedary>"
+          ]
+        }
+      ],
+      "interpretation": "Desert relative wild dromedary commonality and density."
+    },
+    {
+      "file": "Data/Core/Defs/BiomeDefs/Biomes_WarmArid.xml",
+      "sha256": "12de99466330bdd17686c5c80205aa979b18864f4e96bfd16495644c4a5a1985",
+      "xpath": "/Defs/BiomeDef[defName=\"ExtremeDesert\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "animalDensity",
+          "count": 1,
+          "xml": [
+            "<animalDensity>0.1</animalDensity>"
+          ]
+        },
+        {
+          "xpath": "wildAnimals/Dromedary",
+          "count": 1,
+          "xml": [
+            "<Dromedary>0.2</Dromedary>"
+          ]
+        }
+      ],
+      "interpretation": "Extreme desert relative wild dromedary commonality and density."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml",
+      "sha256": "271298b153e8a9b86c62f70d0d334d91c8182e4c34525190753a05e5afcff71d",
+      "xpath": "/Defs/ThingDef[defName=\"Milk\"]",
+      "nameAttribute": "",
+      "parentName": "OrganicProductBase",
+      "fields": [
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MarketValue>1.9</MarketValue><!-- Can be used like meat in recipes --><Mass>0.045</Mass><MaxHitPoints>60</MaxHitPoints><Flammability>0.2</Flammability><Nutrition>0.05</Nutrition><FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman></statBases>"
+          ]
+        },
+        {
+          "xpath": "comps/li[@Class=\"CompProperties_Rottable\"]",
+          "count": 1,
+          "xml": [
+            "<li Class=\"CompProperties_Rottable\"><daysToRotStart>14</daysToRotStart><rotDestroys>true</rotDestroys></li>"
+          ]
+        },
+        {
+          "xpath": "ingestible",
+          "count": 1,
+          "xml": [
+            "<ingestible><preferability>RawTasty</preferability><foodType>AnimalProduct, Fluid</foodType><babiesCanIngest>true</babiesCanIngest></ingestible>"
+          ]
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 1,
+          "xml": [
+            "<thingCategories><li>AnimalProductRaw</li></thingCategories>"
+          ]
+        },
+        {
+          "xpath": "tradeability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "socialPropernessMatters",
+          "count": 1,
+          "xml": [
+            "<socialPropernessMatters>true</socialPropernessMatters>"
+          ]
+        }
+      ],
+      "interpretation": "Milk nutrition, raw ingestion, spoilage and category data."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+      "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c",
+      "xpath": "/Defs/ThingDef[@Name=\"OrganicProductBase\"]",
+      "nameAttribute": "OrganicProductBase",
+      "parentName": "ResourceBase",
+      "fields": [
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MaxHitPoints>60</MaxHitPoints><Flammability>1.0</Flammability><DeteriorationRate>6</DeteriorationRate><Mass>0.03</Mass></statBases>"
+          ]
+        },
+        {
+          "xpath": "tickerType",
+          "count": 1,
+          "xml": [
+            "<tickerType>Rare</tickerType>"
+          ]
+        },
+        {
+          "xpath": "healthAffectsPrice",
+          "count": 1,
+          "xml": [
+            "<healthAffectsPrice>false</healthAffectsPrice>"
+          ]
+        },
+        {
+          "xpath": "ingestible/tasteThought",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "tradeability",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Milk inherits deterioration rate, rare ticking and health-independent price; no taste thought here."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Base.xml",
+      "sha256": "20595ae43a7e758f54c71dc98579cc95ac8638f21213896c7f1d6a2d61fd744a",
+      "xpath": "/Defs/ThingDef[@Name=\"ResourceBase\"]",
+      "nameAttribute": "ResourceBase",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "stackLimit",
+          "count": 1,
+          "xml": [
+            "<stackLimit>75</stackLimit>"
+          ]
+        },
+        {
+          "xpath": "alwaysHaulable",
+          "count": 1,
+          "xml": [
+            "<alwaysHaulable>true</alwaysHaulable>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_Forbiddable\" /></comps>"
+          ]
+        },
+        {
+          "xpath": "ingestible/tasteThought",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "tradeability",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Milk inherits a 75-item stack limit and ordinary haul/forbidden component."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_RawPlant.xml",
+      "sha256": "dddf120474c2c90fb8e577152d51b83994219c2d7f228196cbe2b3cb3c61785c",
+      "xpath": "/Defs/ThingDef[@Name=\"PlantFoodRawBase\"]",
+      "nameAttribute": "PlantFoodRawBase",
+      "parentName": "OrganicProductBase",
+      "fields": [
+        {
+          "xpath": "ingestible/preferability",
+          "count": 1,
+          "xml": [
+            "<preferability>RawBad</preferability>"
+          ]
+        },
+        {
+          "xpath": "ingestible/tasteThought",
+          "count": 1,
+          "xml": [
+            "<tasteThought>AteRawFood</tasteThought>"
+          ]
+        }
+      ],
+      "interpretation": "The raw-food negative taste thought belongs to this sibling branch, not OrganicProductBase or Milk."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_WorkGeneral.xml",
+      "sha256": "ce98d3d43f86691f47a069ecaf15658f7d12d2f1ad0f1fe32d039231b3cc23a7",
+      "xpath": "/Defs/StatDef[defName=\"AnimalGatherSpeed\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>1</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "minValue",
+          "count": 1,
+          "xml": [
+            "<minValue>0.1</minValue>"
+          ]
+        },
+        {
+          "xpath": "statFactors",
+          "count": 1,
+          "xml": [
+            "<statFactors><li>WorkSpeedGlobal</li></statFactors>"
+          ]
+        },
+        {
+          "xpath": "skillNeedFactors",
+          "count": 1,
+          "xml": [
+            "<skillNeedFactors><li Class=\"SkillNeed_BaseBonus\"><skill>Animals</skill><baseValue>0.04</baseValue><bonusPerLevel>0.12</bonusPerLevel></li></skillNeedFactors>"
+          ]
+        },
+        {
+          "xpath": "capacityFactors",
+          "count": 1,
+          "xml": [
+            "<capacityFactors><li><capacity>Manipulation</capacity><weight>1</weight></li><li><capacity>Sight</capacity><weight>0.5</weight><max>1</max></li></capacityFactors>"
+          ]
+        }
+      ],
+      "interpretation": "Gather speed stat and handler skill/capacity factors."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_WorkGeneral.xml",
+      "sha256": "ce98d3d43f86691f47a069ecaf15658f7d12d2f1ad0f1fe32d039231b3cc23a7",
+      "xpath": "/Defs/StatDef[defName=\"AnimalGatherYield\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>1</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "minValue",
+          "count": 1,
+          "xml": [
+            "<minValue>0</minValue>"
+          ]
+        },
+        {
+          "xpath": "maxValue",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "skillNeedFactors",
+          "count": 1,
+          "xml": [
+            "<skillNeedFactors><li Class=\"SkillNeed_Direct\"><skill>Animals</skill><valuesPerLevel><li>0.6</li><li>0.7</li><li>0.75</li><li>0.8</li><li>0.85</li><li>0.90</li><li>0.95</li><li>0.975</li><li>1</li><li>1.01</li><li>1.02</li><li>1.03</li><li>1.04</li><li>1.05</li><li>1.06</li><li>1.07</li><li>1.08</li><li>1.09</li><li>1.10</li><li>1.12</li><li>1.13</li></valuesPerLevel></li></skillNeedFactors>"
+          ]
+        },
+        {
+          "xpath": "capacityFactors",
+          "count": 1,
+          "xml": [
+            "<capacityFactors><li><capacity>Manipulation</capacity><weight>0.3</weight></li><li><capacity>Sight</capacity><weight>0.2</weight><max>1</max></li></capacityFactors>"
+          ]
+        }
+      ],
+      "interpretation": "Yield success probability factors; no direct maxValue is declared in this node."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_General.xml",
+      "sha256": "ec1df1afb1f24c3d812b3224f803354b613a226e3934ea1e235c9b195181f507",
+      "xpath": "/Defs/StatDef[defName=\"MinimumHandlingSkill\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "workerClass",
+          "count": 1,
+          "xml": [
+            "<workerClass>StatWorker_MinimumHandlingSkill</workerClass>"
+          ]
+        },
+        {
+          "xpath": "roundValue",
+          "count": 1,
+          "xml": [
+            "<roundValue>true</roundValue>"
+          ]
+        },
+        {
+          "xpath": "minValue",
+          "count": 1,
+          "xml": [
+            "<minValue>0</minValue>"
+          ]
+        }
+      ],
+      "interpretation": "Handling requirement is rounded; the gather work giver does not use it as an assignment gate."
+    },
+    {
+      "file": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+      "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c",
+      "xpath": "/Defs/WorkGiverDef[defName=\"Milk\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "giverClass",
+          "count": 1,
+          "xml": [
+            "<giverClass>WorkGiver_Milk</giverClass>"
+          ]
+        },
+        {
+          "xpath": "workType",
+          "count": 1,
+          "xml": [
+            "<workType>Handling</workType>"
+          ]
+        },
+        {
+          "xpath": "priorityInType",
+          "count": 1,
+          "xml": [
+            "<priorityInType>90</priorityInType>"
+          ]
+        },
+        {
+          "xpath": "requiredCapacities",
+          "count": 1,
+          "xml": [
+            "<requiredCapacities><li>Manipulation</li></requiredCapacities>"
+          ]
+        }
+      ],
+      "interpretation": "Milk belongs to Handling, needs Manipulation and has native priority 90."
+    },
+    {
+      "file": "Data/Core/Defs/JobDefs/Jobs_Work.xml",
+      "sha256": "0c2cc583de4ad306681c1dcd65763539461adedf33a5360fe716a36deddef2a1",
+      "xpath": "/Defs/JobDef[defName=\"Milk\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "driverClass",
+          "count": 1,
+          "xml": [
+            "<driverClass>JobDriver_Milk</driverClass>"
+          ]
+        },
+        {
+          "xpath": "reportString",
+          "count": 1,
+          "xml": [
+            "<reportString>milking TargetA.</reportString>"
+          ]
+        },
+        {
+          "xpath": "allowOpportunisticPrefix",
+          "count": 1,
+          "xml": [
+            "<allowOpportunisticPrefix>true</allowOpportunisticPrefix>"
+          ]
+        }
+      ],
+      "interpretation": "Ordinary Milk job uses the reviewed driver."
+    },
+    {
+      "file": "Data/Core/Defs/RecipeDefs/Recipes_Meals.xml",
+      "sha256": "ecb025e0b521b2e174f3d8cecb7d0263a1c7310b957cf6d849d414361b566789",
+      "xpath": "/Defs/RecipeDef[@Name=\"CookMealBase\"]",
+      "nameAttribute": "CookMealBase",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "fixedIngredientFilter",
+          "count": 1,
+          "xml": [
+            "<fixedIngredientFilter><categories><li>FoodRaw</li></categories><specialFiltersToDisallow><li>AllowPlantFood</li></specialFiltersToDisallow></fixedIngredientFilter>"
+          ]
+        },
+        {
+          "xpath": "defaultIngredientFilter",
+          "count": 1,
+          "xml": [
+            "<defaultIngredientFilter><categories><li>FoodRaw</li></categories><disallowedCategories><li>EggsFertilized</li></disallowedCategories><disallowedThingDefs><li>Meat_Human</li><li>Meat_Megaspider</li><li>InsectJelly</li><li MayRequire=\"Ludeon.RimWorld.Anomaly\">Meat_Twisted</li></disallowedThingDefs></defaultIngredientFilter>"
+          ]
+        },
+        {
+          "xpath": "workSkill",
+          "count": 1,
+          "xml": [
+            "<workSkill>Cooking</workSkill>"
+          ]
+        }
+      ],
+      "interpretation": "Base meals accept FoodRaw with listed exclusions; Milk is not excluded here."
+    },
+    {
+      "file": "Data/Core/Defs/RecipeDefs/Recipes_Meals.xml",
+      "sha256": "ecb025e0b521b2e174f3d8cecb7d0263a1c7310b957cf6d849d414361b566789",
+      "xpath": "/Defs/RecipeDef[defName=\"CookMealSimple\"]",
+      "nameAttribute": "",
+      "parentName": "CookMealBase",
+      "fields": [
+        {
+          "xpath": "allowMixingIngredients",
+          "count": 1,
+          "xml": [
+            "<allowMixingIngredients>true</allowMixingIngredients>"
+          ]
+        },
+        {
+          "xpath": "ingredientValueGetterClass",
+          "count": 1,
+          "xml": [
+            "<ingredientValueGetterClass>IngredientValueGetter_Nutrition</ingredientValueGetterClass>"
+          ]
+        },
+        {
+          "xpath": "ingredients",
+          "count": 1,
+          "xml": [
+            "<ingredients><li><filter><categories><li>FoodRaw</li></categories></filter><count>0.5</count></li></ingredients>"
+          ]
+        },
+        {
+          "xpath": "products",
+          "count": 1,
+          "xml": [
+            "<products><MealSimple>1</MealSimple></products>"
+          ]
+        }
+      ],
+      "interpretation": "Simple meals can use Milk as FoodRaw, counting nutrition rather than number of objects."
+    },
+    {
+      "file": "Data/Core/Defs/RecipeDefs/Recipes_Meals.xml",
+      "sha256": "ecb025e0b521b2e174f3d8cecb7d0263a1c7310b957cf6d849d414361b566789",
+      "xpath": "/Defs/RecipeDef[defName=\"CookMealFine\"]",
+      "nameAttribute": "",
+      "parentName": "CookMealFineBase",
+      "fields": [
+        {
+          "xpath": "ingredients",
+          "count": 1,
+          "xml": [
+            "<ingredients><li><filter><customSummary>protein</customSummary><categories><li>MeatRaw</li><li>AnimalProductRaw</li></categories></filter><count>0.25</count></li><li><filter><categories><li>PlantFoodRaw</li></categories></filter><count>0.25</count></li></ingredients>"
+          ]
+        },
+        {
+          "xpath": "products",
+          "count": 1,
+          "xml": [
+            "<products><MealFine>1</MealFine></products>"
+          ]
+        }
+      ],
+      "interpretation": "Fine meals accept AnimalProductRaw in the protein half alongside meat, plus plant nutrition."
+    },
+    {
+      "file": "Data/Core/Defs/RecipeDefs/Recipes_Meals.xml",
+      "sha256": "ecb025e0b521b2e174f3d8cecb7d0263a1c7310b957cf6d849d414361b566789",
+      "xpath": "/Defs/RecipeDef[defName=\"CookMealFine_Veg\"]",
+      "nameAttribute": "",
+      "parentName": "CookMealFineBase",
+      "fields": [
+        {
+          "xpath": "ingredients",
+          "count": 1,
+          "xml": [
+            "<ingredients><li><filter><customSummary>vegetarian ingredients</customSummary><categories><li>PlantFoodRaw</li><li>AnimalProductRaw</li></categories></filter><count>0.75</count></li></ingredients>"
+          ]
+        },
+        {
+          "xpath": "fixedIngredientFilter",
+          "count": 1,
+          "xml": [
+            "<fixedIngredientFilter><disallowedCategories><li>MeatRaw</li></disallowedCategories></fixedIngredientFilter>"
+          ]
+        },
+        {
+          "xpath": "products",
+          "count": 1,
+          "xml": [
+            "<products><MealFine_Veg>1</MealFine_Veg></products>"
+          ]
+        }
+      ],
+      "interpretation": "Vegetarian fine meals also allow animal products; raw milk is not meat."
+    },
+    {
+      "file": "Data/Core/Defs/ThingCategoryDefs/ThingCategories.xml",
+      "sha256": "fd15be5d01eb7b6754bda797ff920d6fc7872cdfd1b611b1eb1efead7e5c6126",
+      "xpath": "/Defs/ThingCategoryDef[defName=\"AnimalProductRaw\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "parent",
+          "count": 1,
+          "xml": [
+            "<parent>FoodRaw</parent>"
+          ]
+        }
+      ],
+      "interpretation": "AnimalProductRaw is a descendant of FoodRaw."
+    },
+    {
+      "file": "Data/Core/Defs/TraderKindDefs/TraderKinds_Caravan_Outlander.xml",
+      "sha256": "30f711f04490fc136c142a5744852fed2339d0d806227ce8bebad57a97ab5936",
+      "xpath": "/Defs/TraderKindDef[defName=\"Caravan_Outlander_BulkGoods\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "stockGenerators/li[@Class=\"StockGenerator_Category\" and categoryDef=\"FoodRaw\"]",
+          "count": 1,
+          "xml": [
+            "<li Class=\"StockGenerator_Category\"><categoryDef>FoodRaw</categoryDef><thingDefCountRange>3~3</thingDefCountRange><totalPriceRange>150~600</totalPriceRange><excludedCategories><li>EggsFertilized</li></excludedCategories></li>"
+          ]
+        }
+      ],
+      "interpretation": "A concrete ordinary trader accepts FoodRaw; its generated stock samples only three eligible definitions."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_WorkGeneral.xml",
+      "sha256": "ce98d3d43f86691f47a069ecaf15658f7d12d2f1ad0f1fe32d039231b3cc23a7",
+      "xpath": "/Defs/StatDef[defName=\"PlantHarvestYield\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "maxValue",
+          "count": 1,
+          "xml": [
+            "<maxValue>1.5</maxValue>"
+          ]
+        },
+        {
+          "xpath": "skillNeedFactors",
+          "count": 1,
+          "xml": [
+            "<skillNeedFactors><li Class=\"SkillNeed_Direct\"><skill>Plants</skill><valuesPerLevel><li>0.6</li><li>0.7</li><li>0.75</li><li>0.8</li><li>0.85</li><li>0.90</li><li>0.95</li><li>0.975</li><li>1</li><li>1.01</li><li>1.02</li><li>1.03</li><li>1.04</li><li>1.05</li><li>1.06</li><li>1.07</li><li>1.08</li><li>1.09</li><li>1.10</li><li>1.12</li><li>1.13</li></valuesPerLevel></li></skillNeedFactors>"
+          ]
+        },
+        {
+          "xpath": "capacityFactors",
+          "count": 1,
+          "xml": [
+            "<capacityFactors><li><capacity>Manipulation</capacity><weight>0.3</weight></li><li><capacity>Sight</capacity><weight>0.2</weight><max>1</max></li></capacityFactors>"
+          ]
+        }
+      ],
+      "interpretation": "Comparison only: same skill curve and capacity factors as AnimalGatherYield, but a different skill, explicit max and downstream consumer."
+    }
+  ],
+  "nativeReference": {
+    "species": "Dromedary",
+    "milkAmount": 18,
+    "milkIntervalDays": 2,
+    "milkFemaleOnly": true,
+    "workTotal": 400,
+    "xpPerWorkTick": 0.13,
+    "milkNutrition": 0.05,
+    "milkRotStartDays": 14,
+    "milkStackLimit": 75,
+    "milkMarketValue": 1.9,
+    "milkMass": 0.045,
+    "milkHP": 60,
+    "milkFlammability": 0.2,
+    "milkDeteriorationRate": 6,
+    "dromedaryBaseHungerRate": 0.535,
+    "adultFedNutritionPerDayApprox": 0.8560000107000001,
+    "gatherYieldCurveLevels0To20": [
+      0.6,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      0.975,
+      1.0,
+      1.01,
+      1.02,
+      1.03,
+      1.04,
+      1.05,
+      1.06,
+      1.07,
+      1.08,
+      1.09,
+      1.1,
+      1.12,
+      1.13
+    ]
+  },
+  "limits": [
+    "Static derived C# and packaged XML are not original source or runtime gameplay proof.",
+    "Matching retained REA metadata is reused for artifact identity only.",
+    "No native game, browser, preview, GUI input or screenshot was run.",
+    "XML parent fields are explicitly projected, not a complete mod-patched or enabled-DLC effective Def database.",
+    "Milk job and component paths are covered; not every special job, world-pawn tick provider or mod override is traced.",
+    "Normal full-cycle gathering is 18 dromedary milk on success; no output is guaranteed when yield or physical placement fails.",
+    "The native placement return is ignored; protected pending output, preflight placement and no-reroll retry would be Web adaptations.",
+    "Food-category and recipe/trader declarations establish compatibility, not observed ingestion, actual trader stock or universal bill acceptance.",
+    "Ordinary missing raw taste thought does not exclude all ideology, trait, dining or special ingestion thoughts.",
+    "Biome values are relative commonalities with season/group-size and other modifiers, not measured spawn rates.",
+    "Native values are recorded references; Web timing, deterministic randomness, growth and economy may remain provisional.",
+    "No animal assets, textures, meshes, sounds, game assemblies or complete derived source are published by this evidence collector."
+  ],
+  "collectorSha256": "9efc1abb8cd8b3e02b506560dbeb900c6b8a23e1e9d064b8525ae0644e66c1f1"
+}

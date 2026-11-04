@@ -1,8 +1,10 @@
 import { expect } from 'vitest';
 import { stripProductionOutputFields } from './legacy-production-output-defaults';
+import { milkExpectedField } from './legacy-auto-rebuild-defaults';
 
 /** Add only the new zero ledgers when comparing untouched historical saves. */
 export function unfinishedExpectedField(key: string, value: any): any {
+  value = milkExpectedField(key, value);
   if (key === 'stats') return { ...value, ...Object.fromEntries(
     ['produced', 'consumed', 'spoiled', 'destroyed'].map(k => [k, { ...value[k], unfinished: 0 }])) };
   if (key === 'trade') return { ...value,

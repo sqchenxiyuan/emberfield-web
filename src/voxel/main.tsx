@@ -171,7 +171,7 @@ const hints: Record<Tool, string> = {
   smallShelf: '一格小货架，每格可存放 3 堆物资。人物从旁边取放；可设置接纳物品与优先级。',
   shelf: '两格货架，共 6 堆物资。R 旋转；整座货架共用收纳设置，卸下后货物留在附近。',
   fence: '左键拖动建造直线围栏，留下栏门的位置。完工后拦住鹿，人和兔可缓慢跨越；圈地不需要屋顶。',
-  fenceGate: '点击建造木制栏门，R 旋转。饲养员经栏门牵入鹿；自动开关保持圈地有效，保持敞开会打开边界。',
+  fenceGate: '点击建造木制栏门，R 旋转。饲养员经栏门牵入鹿和单峰驼；自动开关保持圈地有效，保持敞开会打开边界。',
   penMarker: '在已围起的区域内建造圈地标记，点击查看是否封闭、现有草料和接纳筛选。标记自身不能拦住动物。',
   animalArea: '左键拖动涂绘当前楼层，可切层继续。把工作目标、材料、食物和床包含在内；区域只筛选目标，行走可能途经区外。空区域不限制，右键结束。',
   horseshoePin: '20 木材建造一格马蹄铁桩。沿直线留出两格空地和通路，殖民者会站在两格外投掷；可在作息中安排娱乐，或在人物面板手动安排。',
@@ -221,7 +221,7 @@ const equal = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
 const levelName = (z: number, base = 8) =>
   z === base ? '营地基准层' : z < base ? `基准层下 ${base - z}` : `基准层上 +${z - base}`;
 const STORAGE_RESOURCES = Object.keys(RESOURCE_NAMES) as Resource[];
-const FOOD_RESOURCES: Resource[] = ['food', 'grain', 'meat', 'meal'];
+const FOOD_RESOURCES: Resource[] = ['food', 'grain', 'meat', 'milk', 'meal'];
 const BUILDING_RESOURCES: Resource[] = ['wood', 'stone', 'steel', 'components', 'chunk'];
 function connectedStorage(stockpiles: Stockpile[], start: Stockpile): Stockpile[] {
   const key = (p: Pos) => `${p.x}/${p.y}/${p.z}`;
@@ -322,6 +322,7 @@ function FoodCondition({ batch, temperature }: { batch: Cargo; temperature: numb
       )}
       {batch.resource === 'carcass' && <small>需在开启的屠宰点加工，不能直接食用；冷藏可延缓腐坏。</small>}
       {batch.resource === 'meat' && <small>可生吃或与谷物混合烹饪；尽快使用，或搬进冷库。</small>}
+      {batch.resource === 'milk' && <small data-testid="milk-use">可直接饮用或用于简餐；生饮没有生食心情惩罚，但每次进食有 2% 食物中毒风险。请及时使用或冷藏。</small>}
       <span>
         {temperature.toFixed(1)}°C ·{' '}
         {rate === 0 ? '冻结 · 腐坏暂停' : rate < 1 ? '冷藏 · 腐坏减缓' : '未冷藏'}
@@ -950,7 +951,7 @@ function App() {
         {!p && <p>点击地图查看物资、人物与施工进度。先规划，再让殖民者工作。</p>}
         {!p && s && (
           <p>
-            累计腐坏：谷物 {s.stats.spoiled.grain} · 生肉 {s.stats.spoiled.meat} · 尸体 {s.stats.spoiled.carcass} · 简餐 {s.stats.spoiled.meal}
+            累计腐坏：谷物 {s.stats.spoiled.grain} · 生肉 {s.stats.spoiled.meat} · 奶 {s.stats.spoiled.milk} · 尸体 {s.stats.spoiled.carcass} · 简餐 {s.stats.spoiled.meal}
             。食品需搬入有供电、温度达标的封闭冷库。
           </p>
         )}
@@ -1230,6 +1231,7 @@ function App() {
                 布料与衣物
               </button>
               <button onClick={() => updateStorage(storage.priority, ['herb'])}>仅收草药</button>
+              <button onClick={() => updateStorage(storage.priority, ['milk'])}>仅收奶</button>
               <button onClick={() => updateStorage(storage.priority, ['unfinished'])}>仅收未完成品</button>
               <button onClick={() => updateStorage(storage.priority, ['meat', 'carcass'])}>肉类与尸体</button>
               <button onClick={() => updateStorage(storage.priority, [])}>停止收纳</button>

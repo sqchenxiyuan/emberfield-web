@@ -82,7 +82,7 @@ describe('unfinished production physical model', () => {
     copy.unfinished!.policy.allowedFood.length = 0;
     copy.unfinished!.creatorName = '改名';
     expect(original.unfinished!.ingredients[0].amount).toBe(40);
-    expect(original.unfinished!.policy.allowedFood).toEqual(['grain', 'meat']);
+    expect(original.unfinished!.policy.allowedFood).toEqual(['grain', 'meat', 'milk']);
     expect(original.unfinished!.creatorName).toBe('工人甲');
     expect(() => portion(original, 0)).toThrow(); expect(() => portion(original, 2)).toThrow();
     expect(() => freshBatch('unfinished', 1)).toThrow();

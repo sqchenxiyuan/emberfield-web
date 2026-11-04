@@ -1,3 +1,4 @@
+import { ANIMAL_HUSBANDRY } from './husbandry';
 import { at, CELLS, HEIGHT, inside, position, type Pos, type VoxelSave } from './types';
 import { PEN_RULES, initialAnimalPenState, isAnimalGroundStep, isPenMapEdge, penAcceptsAnimal } from './pens';
 
@@ -61,8 +62,8 @@ export function validatePens(d: VoxelSave): void {
   const validName = (v: unknown) => typeof v === 'string' && v.trim().length > 0 && v.length <= PEN_RULES.maxNameLength;
   for (const m of d.penMarkers) {
     claim(m, ['id', 'x', 'y', 'z', 'name', 'filter'], true);
-    if (!validName(m.name) || !exact(m.filter, ['deer', 'male', 'female']) ||
-        ![m.filter.deer, m.filter.male, m.filter.female].every(v => typeof v === 'boolean')) fail('圈地名称或过滤器无效');
+    if (!validName(m.name) || !exact(m.filter, ['deer', 'dromedary', 'male', 'female']) ||
+        ![m.filter.deer, m.filter.dromedary, m.filter.male, m.filter.female].every(v => typeof v === 'boolean')) fail('圈地名称或过滤器无效');
   }
   for (const a of d.animalAreas) {
     claim(a, ['id', 'name', 'color', 'cells'], false);
@@ -79,10 +80,10 @@ export function validatePens(d: VoxelSave): void {
   for (const a of d.animals) {
     if (!animalFields.every(k => Object.hasOwn(a, k)) || typeof a.ropePaused !== 'boolean' || !integer(a.nextRoamTick) ||
         (a.allowedAreaId !== null && (!identity(a.allowedAreaId) || !areas.has(a.allowedAreaId) || a.species !== 'hare' || a.faction !== 'colony')) ||
-        (a.requestedPenId !== null && (!identity(a.requestedPenId) || !markers.has(a.requestedPenId) || a.species !== 'deer' || a.faction !== 'colony')))
+        (a.requestedPenId !== null && (!identity(a.requestedPenId) || !markers.has(a.requestedPenId) || !ANIMAL_HUSBANDRY[a.species].penAnimal || a.faction !== 'colony')))
       fail('动物圈养归属、区域或漫游时钟无效');
     if (a.goal?.kind === 'area' && (a.dead || a.allowedAreaId === null || a.goal.id !== a.allowedAreaId)) fail('返区目标与分配不符');
-    if (a.goal?.kind === 'exit' && (a.dead || a.faction !== 'colony' || a.species !== 'deer' ||
+    if (a.goal?.kind === 'exit' && (a.dead || a.faction !== 'colony' || !ANIMAL_HUSBANDRY[a.species].penAnimal ||
         !integer(a.goal.id, 0, CELLS - 1) || !isPenMapEdge(position(a.goal.id)))) fail('漫游离图目标无效');
   }
   const reserved = new Set<number>(), attached = new Set<number>();

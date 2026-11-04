@@ -74,7 +74,7 @@ describe('anatomy integration with work, physical treatment and save migration',
       const s = VoxelSimulation.load(old),
         save = s.save();
       expect(old).toEqual(before);
-      expect(save.version).toBe(48);
+      expect(save.version).toBe(49);
       expect(s.tick).toBe(old.tick);
       for (const key of ['blocks', 'items', 'researchBenches', 'stats'] as const)
         expect(save[key]).toEqual(key === 'stats' ? withMedicineLedgers(old.stats) : old[key]);

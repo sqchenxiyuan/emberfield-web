@@ -2,7 +2,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
 import { AutoSlaughterPanel, parseAutoSlaughterDraft, type AutoSlaughterDraft } from '../src/voxel/AutoSlaughterPanel';
 import { AnimalDetails, AnimalPanel } from '../src/voxel/AnimalPanel';
-import { autoSlaughterSelection, defaultAutoSlaughter } from '../src/voxel/autoSlaughter';
+import { AUTO_SLAUGHTER_SPECIES, autoSlaughterSelection, defaultAutoSlaughter } from '../src/voxel/autoSlaughter';
 import { initialAnimalState } from '../src/voxel/husbandry';
 import { VoxelSimulation } from '../src/voxel/world';
 import { DAY, type VoxelSnapshot, type WildAnimal } from '../src/voxel/types';
@@ -41,8 +41,8 @@ describe('auto slaughter server-rendered management UI', () => {
   it('starts with unlimited inputs, protected pregnancies, and explicit inactive apply buttons', () => {
     command.mockClear();
     const html = renderToStaticMarkup(<AutoSlaughterPanel snapshot={snapshot()} command={command} selectAnimal={() => {}} />);
-    expect(html.match(/placeholder="不限"/g)).toHaveLength(10);
-    expect(html.match(/type="submit" disabled=""/g)).toHaveLength(2);
+    expect(html.match(/placeholder="不限"/g)).toHaveLength(AUTO_SLAUGHTER_SPECIES.length * 5);
+    expect(html.match(/type="submit" disabled=""/g)).toHaveLength(AUTO_SLAUGHTER_SPECIES.length);
     expect(html).toContain('0 表示该类一只不留');
     expect(html).toContain('允许自动宰杀怀孕动物');
     expect(html).not.toContain('checked=""');

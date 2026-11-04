@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { milkExpectedField, stripAnimalMilkFields } from './legacy-auto-rebuild-defaults';
 import { VoxelSimulation } from '../src/voxel/world';
 import { Block, DAY, index, type Pos, type VoxelCommand, type WildAnimal } from '../src/voxel/types';
 import { initialAnimalState } from '../src/voxel/husbandry';
@@ -167,18 +168,19 @@ describe('physical automatic slaughter integration and save safety', () => {
   });
   it('migrates a v47-shaped controlled save with disabled quotas, preserving input and manual animal marks', () => {
     const s = fixture(); add(s, { slaughter: true });
-    const old = s.save() as any; old.version = 47; delete old.autoSlaughter; const before = structuredClone(old);
+    const old = s.save() as any; stripAnimalMilkFields(old); old.version = 47; delete old.autoSlaughter; const before = structuredClone(old);
     const migrated = VoxelSimulation.load(old).save(); expect(old).toEqual(before);
-    expect(migrated.version).toBe(48); expect(migrated.autoSlaughter).toEqual(defaultAutoSlaughter());
-    expect(migrated.animals).toEqual(old.animals); expect(migrated.stats).toEqual(old.stats);
+    expect(migrated.version).toBe(49); expect(migrated.autoSlaughter).toEqual(defaultAutoSlaughter());
+    expect(migrated.animals).toEqual(milkExpectedField('animals', old.animals)); expect(migrated.stats).toEqual(milkExpectedField('stats', old.stats));
   });
   it('rejects new state hidden behind old schemas and malformed current configuration', () => {
     const s = fixture(), raw = s.save();
-    for (const version of [29, 46, 47]) expect(() => VoxelSimulation.load({ ...raw, version })).toThrow(/自动宰杀/);
+    const oldShape = structuredClone(raw); stripAnimalMilkFields(oldShape);
+    for (const version of [29, 46, 47]) expect(() => VoxelSimulation.load({ ...oldShape, version })).toThrow(/自动宰杀/);
     for (const value of [undefined, null, [], {}, { ...defaultAutoSlaughter(), cow: defaultAutoSlaughterPolicy() }])
       expect(() => VoxelSimulation.load({ ...raw, autoSlaughter: value })).toThrow(/自动宰杀/);
     add(s); configure(s, { total: 0 }); until(s, () => !!s.pawns[0].handleTask);
-    const old = s.save() as any; old.version = 47; delete old.autoSlaughter;
+    const old = s.save() as any; stripAnimalMilkFields(old); old.version = 47; delete old.autoSlaughter;
     expect(() => VoxelSimulation.load(old)).toThrow(/旧版存档混入自动宰杀/);
   });
   it('revalidates derived eligibility on load instead of trusting a stale in-progress automatic job', () => {

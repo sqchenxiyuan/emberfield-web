@@ -1,3 +1,4 @@
+import { MILK_RULES, milkReady } from './animalMilk';
 import { at, CELLS, HEIGHT, inside, position, type Pos, type VoxelSave } from './types';
 import { HUSBANDRY_RULES, ANIMAL_HUSBANDRY, initialAnimalState, animalFeedAmount, isAnimalAdult } from './husbandry';
 import { initialSkills, validSkills } from './skills';
@@ -119,7 +120,7 @@ export function validateHusbandry(d: VoxelSave): void {
   let previousTick = -1;
   for (const e of d.husbandryLog) {
     if (!exact(e, ['tick', 'kind', 'animalId', 'otherId', 'message']) || !integer(e.tick, previousTick, d.tick) ||
-        !['tame', 'failed', 'fed', 'pregnancy', 'birth', 'miscarriage', 'rewild', 'slaughter', 'release', 'starved', 'escaped'].includes(e.kind) ||
+        !['tame', 'failed', 'fed', 'pregnancy', 'birth', 'miscarriage', 'rewild', 'slaughter', 'release', 'starved', 'escaped', 'milked', 'milkFailed'].includes(e.kind) ||
         !id(e.animalId) || (e.otherId !== null && !id(e.otherId)) || typeof e.message !== 'string' || e.message.length > 500)
       fail('动物事件记录无效');
     previousTick = e.tick;
@@ -133,10 +134,11 @@ export function validateHusbandry(d: VoxelSave): void {
     const t = p.handleTask;
     if (t === null) continue;
     if (!exact(t, ['animalId', 'action', 'stage', 'foodId', 'amount', 'feedings', 'progress']) ||
-        !id(t.animalId) || !['tame', 'maintain', 'feed', 'slaughter', 'autoSlaughter', 'release'].includes(t.action) ||
+        !id(t.animalId) || !['tame', 'maintain', 'feed', 'slaughter', 'autoSlaughter', 'release', 'milk'].includes(t.action) ||
         !['fetch', 'approach', 'interact'].includes(t.stage) || !integer(t.amount, 0, 100) ||
         !integer(t.feedings, 0, HUSBANDRY_RULES.feedings - 1) ||
-        !integer(t.progress, 0, (['slaughter', 'autoSlaughter', 'release'].includes(t.action) ? HUSBANDRY_RULES.slaughterWork : HUSBANDRY_RULES.handleWork) - 1) ||
+        !(t.action === 'milk' ? Number.isFinite(t.progress) && t.progress >= 0 && t.progress <= MILK_RULES.work :
+          integer(t.progress, 0, (['slaughter', 'autoSlaughter', 'release'].includes(t.action) ? HUSBANDRY_RULES.slaughterWork : HUSBANDRY_RULES.handleWork) - 1)) ||
         (t.stage !== 'interact' && t.progress !== 0) ||
         p.faction !== 'colony' || p.dead || p.downed || p.drafted || !p.priorities.handle ||
         p.carriedBy !== null || p.carryingPawnId !== null || p.jobId !== null || p.carePhase !== null || p.patientId !== null ||
@@ -149,6 +151,7 @@ export function validateHusbandry(d: VoxelSave): void {
         (t.action === 'tame' ? a.faction !== 'wild' || !a.tame : a.faction !== 'colony') ||
         (t.action === 'slaughter' && !a.slaughter) || (t.action === 'release' && !a.releaseMarked) ||
         (t.action === 'maintain' && !ANIMAL_HUSBANDRY[a.species].tamenessDecays) ||
+        (t.action === 'milk' && (!milkReady(a) || d.tick < a.nextInteractionTick)) ||
         (['tame', 'maintain'].includes(t.action) && p.skills.animals.level < ANIMAL_HUSBANDRY[a.species].minSkill))
       fail('照料目标或预约无效');
     targets.add(a.id);

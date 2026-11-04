@@ -1,0 +1,230 @@
+{
+  "evidence_id": "RW17-ANIMAL-MILK",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes.",
+    "No native game, browser, preview, GUI input, or screenshot capture was launched for this milestone."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.CompMilkable",
+      "local_file": ".local-research/animal-milk/RimWorld.CompMilkable.cs",
+      "sha256": "4f65f0881971705c33ffe6361bd2d1c635c2bb77ad02e2158c8f253c29b19562",
+      "lines": 51
+    },
+    {
+      "type": "RimWorld.CompHasGatherableBodyResource",
+      "local_file": ".local-research/animal-milk/RimWorld.CompHasGatherableBodyResource.cs",
+      "sha256": "440b3903253a8c2ccc3e8e11f51f57406c8c6845f56a79c4e0c41f3960beb48d",
+      "lines": 96
+    },
+    {
+      "type": "RimWorld.CompProperties_Milkable",
+      "local_file": ".local-research/animal-milk/RimWorld.CompProperties_Milkable.cs",
+      "sha256": "af7a4e8339043ef0839ebed6e11e75b251f5790e6f912f7debf9128b6cbfe415",
+      "lines": 20
+    },
+    {
+      "type": "RimWorld.WorkGiver_Milk",
+      "local_file": ".local-research/animal-milk/RimWorld.WorkGiver_Milk.cs",
+      "sha256": "e0313452f56ba21c1b479f64a14b3ff70003ed562214d9d373c2d2fbd0b798a4",
+      "lines": 14
+    },
+    {
+      "type": "RimWorld.WorkGiver_GatherAnimalBodyResources",
+      "local_file": ".local-research/animal-milk/RimWorld.WorkGiver_GatherAnimalBodyResources.cs",
+      "sha256": "2b563614689cd7a915997c332e8f752dc2d459623b7ec11e54506794bba713f0",
+      "lines": 56
+    },
+    {
+      "type": "RimWorld.JobDriver_Milk",
+      "local_file": ".local-research/animal-milk/RimWorld.JobDriver_Milk.cs",
+      "sha256": "9c41f4fd01e8440e5356761b48f39a749333364cf24dff96e5c942bb8d27de5f",
+      "lines": 14
+    },
+    {
+      "type": "RimWorld.JobDriver_GatherAnimalBodyResources",
+      "local_file": ".local-research/animal-milk/RimWorld.JobDriver_GatherAnimalBodyResources.cs",
+      "sha256": "aec3eb30443d431594712ffb8c86a3c199184a0d02d050062ce13adc5296bd42",
+      "lines": 70
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "local_file": ".local-research/animal-milk/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "lines": 1655
+    },
+    {
+      "type": "Verse.Pawn",
+      "local_file": ".local-research/animal-milk/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "lines": 4791
+    },
+    {
+      "type": "RimWorld.Need_Food",
+      "local_file": ".local-research/animal-milk/RimWorld.Need_Food.cs",
+      "sha256": "f17cbaf82d8792108557f869db585fdd6ac26c0ebb537e8acf04173179e7c4cd",
+      "lines": 227
+    },
+    {
+      "type": "Verse.AI.Toils_General",
+      "local_file": ".local-research/animal-milk/Verse.AI.Toils_General.cs",
+      "sha256": "0a5e1a21ff2bbf65e3069c75043f19e9885fd539682ac5f9065ebd38444c03b4",
+      "lines": 164
+    },
+    {
+      "type": "Verse.GenPlace",
+      "local_file": ".local-research/animal-milk/Verse.GenPlace.cs",
+      "sha256": "72e9f795b464dd3dad6afb2b40908a23f06e9407c31fd10290fd78bee8747ecb",
+      "lines": 401
+    },
+    {
+      "type": "Verse.Thing",
+      "local_file": ".local-research/animal-milk/Verse.Thing.cs",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "lines": 2235
+    },
+    {
+      "type": "RimWorld.LifeStageDef",
+      "local_file": ".local-research/animal-milk/RimWorld.LifeStageDef.cs",
+      "sha256": "93a5a86d46d9b6d954630d71044634ec69faddd67c473d1fed730e474c0034bd",
+      "lines": 132
+    },
+    {
+      "type": "RimWorld.HungerLevelUtility",
+      "local_file": ".local-research/animal-milk/RimWorld.HungerLevelUtility.cs",
+      "sha256": "be023007bc1de7d662c5e526f48e50ddd516b9a68d9347c3b1c69c30c8726bef",
+      "lines": 36
+    },
+    {
+      "type": "Verse.AnimalPenUtility",
+      "local_file": ".local-research/animal-milk/Verse.AnimalPenUtility.cs",
+      "sha256": "fbc92dcf75908d45f445f835fc83d0f9251cdd3c7d84482a27fdcd91d524b3f9",
+      "lines": 444
+    },
+    {
+      "type": "Verse.RaceProperties",
+      "local_file": ".local-research/animal-milk/Verse.RaceProperties.cs",
+      "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+      "lines": 788
+    },
+    {
+      "type": "RimWorld.StatWorker_MinimumHandlingSkill",
+      "local_file": ".local-research/animal-milk/RimWorld.StatWorker_MinimumHandlingSkill.cs",
+      "sha256": "7e724f9d36c362b1a3e17dcdc3ae48c774407d360bc54ab8b87a2479de966a69",
+      "lines": 43
+    },
+    {
+      "type": "RimWorld.SkillNeed_BaseBonus",
+      "local_file": ".local-research/animal-milk/RimWorld.SkillNeed_BaseBonus.cs",
+      "sha256": "0f138059de75d31cd1a0d3d028b08e5332923786fb830d8544f5182e3a5c49ca",
+      "lines": 42
+    },
+    {
+      "type": "RimWorld.SkillNeed_Direct",
+      "local_file": ".local-research/animal-milk/RimWorld.SkillNeed_Direct.cs",
+      "sha256": "0983bddf958c2548d38759abc87c5e250da9048c7d0c5d01a25e8ecdc8ce48c5",
+      "lines": 28
+    },
+    {
+      "type": "RimWorld.PawnCapacityFactor",
+      "local_file": ".local-research/animal-milk/RimWorld.PawnCapacityFactor.cs",
+      "sha256": "4534a4c8f3efcd51636fbfecb1b5ead2b3611e9fde554445b9f1947be84edf18",
+      "lines": 38
+    },
+    {
+      "type": "Verse.Rand",
+      "local_file": ".local-research/animal-milk/Verse.Rand.cs",
+      "sha256": "f5edc56975095070d8feb0dc52a2d03f85992b8a6a27aa0cab787664ec466070",
+      "lines": 906
+    },
+    {
+      "type": "Verse.GenMath",
+      "local_file": ".local-research/animal-milk/Verse.GenMath.cs",
+      "sha256": "639bc810485b043ff454902b285ade5d875d8b123f3809672371111519429b1e",
+      "lines": 702
+    },
+    {
+      "type": "RimWorld.CompRottable",
+      "local_file": ".local-research/animal-milk/RimWorld.CompRottable.cs",
+      "sha256": "0cd95cf8477c6c009d0187ce1d606f872ab9e36f0f977e5f09ced39fb4c50578",
+      "lines": 247
+    },
+    {
+      "type": "Verse.GenTemperature",
+      "local_file": ".local-research/animal-milk/Verse.GenTemperature.cs",
+      "sha256": "4d8eca83fcc99ebeeeace9696c7be0761a078aa6578a2cc5033cca0fd24b0fc1",
+      "lines": 534
+    },
+    {
+      "type": "RimWorld.StockGenerator_Category",
+      "local_file": ".local-research/animal-milk/RimWorld.StockGenerator_Category.cs",
+      "sha256": "02d74232f7ef4dc93d19c75b2acb084ca7f51370d9de22a5a4e6fb4716f3bc65",
+      "lines": 50
+    },
+    {
+      "type": "Verse.ThingFilter",
+      "local_file": ".local-research/animal-milk/Verse.ThingFilter.cs",
+      "sha256": "daf718ce140fd0c6a201fb7eada45f2069d642f1596c6bcde8a2d35fc3939ffa",
+      "lines": 943
+    },
+    {
+      "type": "RimWorld.FoodTypeFlags",
+      "local_file": ".local-research/animal-milk/RimWorld.FoodTypeFlags.cs",
+      "sha256": "ec648f096a7d3baf47113cbe8cd25a0ce7595bc8e3eda5e6a070fba4a8c55229",
+      "lines": 32
+    },
+    {
+      "type": "RimWorld.StatWorker",
+      "local_file": ".local-research/animal-milk/RimWorld.StatWorker.cs",
+      "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+      "lines": 1392
+    },
+    {
+      "type": "Verse.AI.JobDriver",
+      "local_file": ".local-research/animal-milk/Verse.AI.JobDriver.cs",
+      "sha256": "170325ed15a349e588ae3182e88fad887568794256edfd237975bc47e926a6c6",
+      "lines": 700
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "local_file": ".local-research/animal-milk/RimWorld.FoodUtility.cs",
+      "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+      "lines": 1686
+    },
+    {
+      "type": "RimWorld.IngestibleProperties",
+      "local_file": ".local-research/animal-milk/RimWorld.IngestibleProperties.cs",
+      "sha256": "12330427e18b72374f1e0020c92a0cb94aa16a47fc61476375e1f9083f61cbfe",
+      "lines": 200
+    },
+    {
+      "type": "Verse.ThingDef",
+      "local_file": ".local-research/animal-milk/Verse.ThingDef.cs",
+      "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+      "lines": 2447
+    },
+    {
+      "type": "RimWorld.BiomeDef",
+      "local_file": ".local-research/animal-milk/RimWorld.BiomeDef.cs",
+      "sha256": "f8acd15e3e6f7b055ecf71d573deb42b4b83842573a79f054f992f216950af78",
+      "lines": 547
+    },
+    {
+      "type": "RimWorld.WildAnimalSpawner",
+      "local_file": ".local-research/animal-milk/RimWorld.WildAnimalSpawner.cs",
+      "sha256": "a5aeaa387c91716c53c69e4abc7c46be1c1b3f9a096acfb7556679bc00e3aae7",
+      "lines": 189
+    }
+  ]
+}

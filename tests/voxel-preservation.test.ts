@@ -5,7 +5,7 @@ import { DAY, type Cargo } from '../src/voxel/types';
 describe('source-derived food preservation rules', () => {
   it('preserves the native temperature curve and converts elapsed time by game days', () => {
     expect([-100, -1, 0, 2, 5, 9, 10, 40].map(rotRateAtTemperature)).toEqual([0, 0, 0, .2, .5, .9, 1, 1]);
-    expect(ROT_DAYS).toEqual({ rice: 40, potato: 30, corn: 60, meal: 4, herb: 150 });
+    expect(ROT_DAYS).toEqual({ rice: 40, potato: 30, corn: 60, meal: 4, herb: 150, milk: 14 });
     for (const crop of ['rice', 'potato', 'corn'] as const) expect(rotLimit(freshBatch('grain', 1, crop))).toBe(ROT_DAYS[crop] * DAY);
     expect(rotLimit(freshBatch('meal', 1))).toBe(4 * DAY);
   });

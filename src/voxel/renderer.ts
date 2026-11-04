@@ -83,6 +83,7 @@ import { isRangedKind } from './ranged';
 import { projectileViewPosition } from './rangedView';
 import { ANIMAL_DEFS } from './wildlife';
 import { isAnimalAdult } from './husbandry';
+import { MILK_RULES } from './animalMilk';
 import { FIRE_RULES, fireDamageCells } from './fire';
 import { tableCells } from './living';
 import { isShelfKind, shelfCells, type RelocatableKind, type ShelfKind } from './shelves';
@@ -157,6 +158,7 @@ type PawnVisual = {
   cargoUnfinished: Group;
   cargo: Mesh;
   diningDish: Group;
+  milkingPail: Group;
   torso: Mesh;
   label: Sprite;
   sleepSymbol: Sprite;
@@ -213,6 +215,7 @@ const RESOURCE_COLORS: Record<Resource, number> = {
   food: 0x99b869,
   grain: 0xd6bd71,
   meat: 0xc16f68,
+  milk: 0xf2ead1,
   carcass: 0x976c4e,
   meal: 0xd88d5f,
   herb: 0x6ca889,
@@ -248,6 +251,17 @@ function packedFurnitureParts(kind: RelocatableKind): ModelPart[] {
 }
 /** Same identifiable body shape on the ground, in hauling cargo and at a work spot. */
 function carcassParts(species: AnimalSpecies): ModelPart[] {
+  if (species === 'dromedary') {
+    const fur = ANIMAL_DEFS.dromedary.color;
+    // Ten parts retain the shared picking stride while preserving the hump and long neck.
+    return [
+      [0, .16, -.04, .56, .28, .84, fur], [.17, .34, -.10, .36, .23, .45, fur],
+      [.04, .14, .53, .22, .19, .55, fur], [.04, .16, .86, .29, .22, .32, fur],
+      [-.39, .07, .23, .48, .10, .11, fur], [.39, .07, .23, .48, .10, .11, fur],
+      [-.39, .07, -.33, .48, .10, .11, fur], [.39, .07, -.33, .48, .10, .11, fur],
+      [0, .12, -.57, .07, .08, .28, 0x7a6043], [.04, .13, 1.04, .18, .09, .08, 0x574532],
+    ];
+  }
   const deer = species === 'deer', fur = ANIMAL_DEFS[species].color, scale = deer ? 1 : .65;
   const parts: ModelPart[] = [
     [0, .14, 0, .46, .26, .76, fur],
@@ -3419,13 +3433,36 @@ export class VoxelRenderer {
     const root = new Group(), body = new Group(), head = new Group(), antlers = new Group(), legs: Group[] = [];
     root.add(body); body.add(head);
     head.add(antlers);
-    const deer = animal.species === 'deer';
+    const deer = animal.species === 'deer', camel = animal.species === 'dromedary';
     const fur = this.keepMaterial(new MeshLambertMaterial({ color: ANIMAL_DEFS[animal.species].color }));
     const dark = this.keepMaterial(new MeshLambertMaterial({ color: 0x40372e }));
     const cream = this.keepMaterial(new MeshLambertMaterial({ color: 0xe2d3b4 }));
     const part = (parent: Group, mat: MeshLambertMaterial, x: number, y: number, z: number, sx: number, sy: number, sz: number) => {
       const mesh = new Mesh(this.box, mat); mesh.position.set(x, y, z); mesh.scale.set(sx, sy, sz); parent.add(mesh); return mesh;
     };
+    if (camel) {
+      part(body, fur, 0, .94, -.04, .58, .52, .94);
+      part(body, cream, 0, .70, -.02, .43, .08, .71);
+      const hump = new Group(); hump.name = 'dromedary-hump'; body.add(hump);
+      part(hump, fur, 0, 1.30, -.11, .44, .43, .51);
+      part(hump, fur, 0, 1.55, -.11, .26, .16, .29);
+      const tail = part(body, fur, 0, .79, -.63, .07, .37, .08); tail.rotation.x = -.2;
+      part(body, dark, 0, .60, -.67, .10, .11, .10);
+      head.position.set(0, 1.03, .42);
+      const neck = part(head, fur, 0, .25, .01, .24, .78, .25); neck.rotation.x = .15;
+      part(head, fur, 0, .66, .18, .29, .24, .42);
+      part(head, dark, 0, .59, .41, .19, .08, .09);
+      for (const side of [-1, 1]) {
+        part(head, dark, side * .15, .70, .23, .025, .04, .045);
+        const ear = part(head, fur, side * .18, .79, .05, .13, .07, .14); ear.rotation.z = side * -.3;
+      }
+      for (const [x, z] of [[-.21, -.33], [.21, -.33], [-.21, .31], [.21, .31]]) {
+        const leg = new Group(); leg.position.set(x, .82, z);
+        part(leg, fur, 0, -.36, 0, .13, .73, .14);
+        part(leg, dark, 0, -.76, .035, .16, .10, .22);
+        body.add(leg); legs.push(leg);
+      }
+    } else {
     part(body, fur, 0, deer ? .73 : .29, 0, deer ? .44 : .33, deer ? .44 : .29, deer ? .75 : .46);
     part(body, cream, 0, deer ? .55 : .19, .02, deer ? .3 : .23, .07, deer ? .55 : .29);
     part(body, cream, 0, deer ? .82 : .34, deer ? -.44 : -.28, .15, .14, .14);
@@ -3448,21 +3485,22 @@ export class VoxelRenderer {
       part(leg, deer ? dark : cream, 0, deer ? -.51 : -.17, .025, .11, .08, .16);
       body.add(leg); legs.push(leg);
     }
-    const selected = new Mesh(this.keepGeometry(new RingGeometry(deer ? .48 : .35, deer ? .54 : .41, 24)), this.keepMaterial(new MeshBasicMaterial({ color: 0xf2d58e, depthWrite: false })));
+    }
+    const selected = new Mesh(this.keepGeometry(new RingGeometry(camel ? .60 : deer ? .48 : .35, camel ? .66 : deer ? .54 : .41, 24)), this.keepMaterial(new MeshBasicMaterial({ color: 0xf2d58e, depthWrite: false })));
     selected.rotation.x = -Math.PI / 2; selected.position.y = .035; root.add(selected);
-    const colonyMark = new Mesh(this.keepGeometry(new RingGeometry(deer ? .4 : .28, deer ? .44 : .32, 24)), this.keepMaterial(new MeshBasicMaterial({ color: 0x87c4b2, transparent: true, opacity: .8, depthWrite: false })));
+    const colonyMark = new Mesh(this.keepGeometry(new RingGeometry(camel ? .52 : deer ? .4 : .28, camel ? .56 : deer ? .44 : .32, 24)), this.keepMaterial(new MeshBasicMaterial({ color: 0x87c4b2, transparent: true, opacity: .8, depthWrite: false })));
     colonyMark.rotation.x = -Math.PI / 2; colonyMark.position.y = .025; root.add(colonyMark);
     const mark = (text: string, color: number) => {
       const sprite = new Sprite(this.keepMaterial(new SpriteMaterial({ map: nameTexture(text, color), depthTest: false, depthWrite: false })));
       sprite.scale.set(.62, .3, 1); sprite.renderOrder = 12; root.add(sprite); return sprite;
     };
     const tameMark = mark('驯', 0xe5d79e), slaughterMark = mark('宰', 0xe6a18e), releaseMark = mark('归', 0x9bcbbb);
-    const huntMark = new Group(); huntMark.position.set(0, deer ? 1.85 : 1.2, 0);
+    const huntMark = new Group(); huntMark.position.set(0, camel ? 2.2 : deer ? 1.85 : 1.2, 0);
     const red = this.keepMaterial(new MeshLambertMaterial({ color: 0xe49c80 }));
     for (const angle of [-Math.PI / 4, Math.PI / 4]) { const bar = part(huntMark, red, 0, 0, 0, .28, .045, .045); bar.rotation.z = angle; }
     root.add(huntMark);
     const label = new Sprite(this.keepMaterial(new SpriteMaterial({ map: nameTexture(animal.name, 0xd3c397), depthTest: false, depthWrite: false })));
-    label.position.y = deer ? 2.17 : 1.52; label.scale.set(1.35, .37, 1); label.renderOrder = 12; root.add(label);
+    label.position.y = camel ? 2.52 : deer ? 2.17 : 1.52; label.scale.set(1.35, .37, 1); label.renderOrder = 12; root.add(label);
     const pos = new Vector3(animal.x + .5, animal.z, animal.y + .5); root.position.copy(pos);
     return { root, body, head, legs, label, selected, huntMark, antlers, colonyMark, tameMark, slaughterMark, releaseMark, from: pos.clone(), to: pos.clone(), start: performance.now(), duration: 0, animal };
   }
@@ -3472,7 +3510,7 @@ export class VoxelRenderer {
     const extra = this.data.speed > 0 ? Math.min(4, (now - this.snapshotAt) / 1000 * TPS * this.data.speed) : 0;
     const time = (this.data.tick + extra) / TPS;
     for (const visual of this.animalVisuals.values()) {
-      const a = visual.animal, deer = a.species === 'deer';
+      const a = visual.animal, deer = a.species === 'deer', camel = a.species === 'dromedary';
       const size = .45 + MathUtils.clamp(a.growth, 0, 1) * .55;
       visual.body.scale.setScalar(size);
       visual.antlers.visible = deer && a.sex === 'male' && isAnimalAdult(a);
@@ -3483,7 +3521,7 @@ export class VoxelRenderer {
       if (Math.abs(dx) + Math.abs(dz) > .001) visual.root.rotation.y = Math.atan2(dx, dz);
       const moving = !a.dead && fraction < 1, resting = a.phase === 'rest', fleeing = a.phase === 'flee';
       const wave = Math.sin(time * (fleeing ? 19 : 11) + a.id);
-      visual.body.position.y = (a.dead ? .1 : resting ? (deer ? -.35 : -.1) : moving ? Math.abs(wave) * (deer ? .045 : .07) : 0) * size;
+      visual.body.position.y = (a.dead ? .1 : resting ? (camel ? -.48 : deer ? -.35 : -.1) : moving ? Math.abs(wave) * (camel ? .035 : deer ? .045 : .07) : 0) * size;
       visual.body.rotation.z = a.dead ? Math.PI / 2 : 0;
       visual.head.rotation.x = a.phase === 'graze' || a.phase === 'eat' ? .65 + Math.sin(time * 3 + a.id) * .08 : fleeing ? -.12 : resting ? .18 : Math.sin(time * .9 + a.id) * .025;
       visual.legs.forEach((leg, i) => { leg.visible = !resting; leg.rotation.x = moving ? wave * (i === 0 || i === 3 ? 1 : -1) * (fleeing ? .65 : .4) : 0; });
@@ -3493,7 +3531,7 @@ export class VoxelRenderer {
       visual.tameMark.visible = a.tame && !a.dead;
       visual.slaughterMark.visible = a.slaughter && !a.dead;
       visual.releaseMark.visible = a.releaseMarked && !a.dead;
-      const markerHeight = (deer ? 1.65 : 1) * size + .2;
+      const markerHeight = (camel ? 2 : deer ? 1.65 : 1) * size + .2;
       for (const marker of [visual.huntMark, visual.tameMark, visual.slaughterMark, visual.releaseMark]) marker.position.y = markerHeight;
       visual.label.position.y = markerHeight + .32;
       visual.label.visible = visual.selected.visible || a.hunt || a.tame || a.slaughter || a.releaseMarked;
@@ -3514,7 +3552,8 @@ export class VoxelRenderer {
       handler.root.updateMatrixWorld(true); animal.root.updateMatrixWorld(true);
       const hand = new Vector3(); (left ? handler.leftHand : handler.rightHand).getWorldPosition(hand);
       const size = .45 + MathUtils.clamp(animal.animal.growth, 0, 1) * .55;
-      const neck = new Vector3(0, (animal.animal.species === 'deer' ? .93 : .3) * size, .25 * size);
+      const camel = animal.animal.species === 'dromedary';
+      const neck = new Vector3(0, (camel ? 1.28 : animal.animal.species === 'deer' ? .93 : .3) * size, (camel ? .45 : .25) * size);
       animal.root.localToWorld(neck);
       const at = (t: number): Pos => ({ x: hand.x + (neck.x - hand.x) * t,
         y: hand.z + (neck.z - hand.z) * t, z: hand.y + (neck.y - hand.y) * t - Math.sin(t * Math.PI) * .12 });
@@ -3658,7 +3697,7 @@ export class VoxelRenderer {
     cargoHerb.visible = false;
     body.add(cargoHerb);
     const cargoCarcasses = {} as Record<AnimalSpecies, Group>;
-    for (const species of ['hare', 'deer'] as const) {
+    for (const species of Object.keys(ANIMAL_DEFS) as AnimalSpecies[]) {
       const carried = new Group(); carried.position.set(0, .8, .37); carried.rotation.y = Math.PI / 2;
       for (const [x, y, z, sx, sy, sz, color] of carcassParts(species)) {
         let material = weaponMaterials.get(color);
@@ -3769,6 +3808,13 @@ export class VoxelRenderer {
     part(horseshoe, iron, .105, 0, 0, .055, .055, .26);
     part(horseshoe, iron, 0, 0, -.12, .26, .055, .055);
     horseshoe.visible = false; root.add(horseshoe);
+    const milkingPail = new Group(); milkingPail.position.set(0, .02, .58);
+    part(milkingPail, steel, 0, .03, 0, .27, .06, .27);
+    for (const side of [-1, 1]) {
+      part(milkingPail, steel, side * .13, .16, 0, .035, .26, .27);
+      part(milkingPail, steel, 0, .16, side * .13, .27, .26, .035);
+    }
+    milkingPail.visible = false; root.add(milkingPail);
     const pos = new Vector3(pawn.x + 0.5, pawn.z, pawn.y + 0.5);
     root.position.copy(pos);
     return {
@@ -3794,6 +3840,7 @@ export class VoxelRenderer {
       cargoUnfinished,
       cargo,
       diningDish,
+      milkingPail,
       label,
       sleepSymbol,
       healthMarker,
@@ -4082,6 +4129,8 @@ export class VoxelRenderer {
       visual.broom.visible = false;
       visual.horseshoe.visible = false;
       visual.diningDish.visible = false;
+      visual.milkingPail.visible = false;
+      visual.root.userData.milking = null;
       visual.root.userData.dining = null;
       visual.root.userData.socialRelax = null;
       visual.head.rotation.set(0, 0, 0);
@@ -4403,10 +4452,17 @@ export class VoxelRenderer {
         visual.tool.visible = false; visual.hammer.visible = false;
       } else if (handling && handledAnimal) {
         const slaughtering = pawn.handleTask!.action === 'slaughter' || pawn.handleTask!.action === 'autoSlaughter';
+        const milking = pawn.handleTask!.action === 'milk';
         visual.root.rotation.y = Math.atan2(handledAnimal.x - pawn.x, handledAnimal.y - pawn.y);
-        visual.torso.rotation.x = .15; visual.head.rotation.x = .17;
-        toolArm.rotation.x = slaughtering ? -.8 + Math.sin(time * 7 + pawn.id) * .35 : -.75 + Math.sin(time * 3 + pawn.id) * .12;
-        (useLeftHand ? visual.rightArm : visual.leftArm).rotation.x = -.5;
+        visual.torso.rotation.x = milking ? .27 : .15; visual.head.rotation.x = milking ? .3 : .17;
+        // The squeezing cycle follows actual work progress, including pauses and full-ground waits.
+        const squeeze = milking && pawn.handleTask!.progress < MILK_RULES.work ? Math.sin(pawn.handleTask!.progress * .18) : 0;
+        toolArm.rotation.x = milking ? -.45 + squeeze * .13 : slaughtering ? -.8 + Math.sin(time * 7 + pawn.id) * .35 : -.75 + Math.sin(time * 3 + pawn.id) * .12;
+        (useLeftHand ? visual.rightArm : visual.leftArm).rotation.x = milking ? -.45 - squeeze * .13 : -.5;
+        if (milking) {
+          visual.milkingPail.visible = true;
+          visual.root.userData.milking = { animalId: handledAnimal.id, progress: pawn.handleTask!.progress, waitingForSpace: pawn.handleTask!.progress >= MILK_RULES.work };
+        }
         visual.tool.visible = false; visual.hammer.visible = false;
         if (slaughtering) visual.weapons.steelKnife.visible = true;
       } else if (cleaning) {

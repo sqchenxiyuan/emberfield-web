@@ -115,7 +115,7 @@ export function fireFuelAt(s: FireHost, p: Pos): FuelTarget[] {
   for (const crop of s.crops) if (same(crop, p)) out.push({ kind: 'crop', id: crop.id, flammability: .7 });
   for (const item of s.items) if (same(item, p)) {
     if (item.furniture) { out.push({kind:'furniture',id:item.furniture.id,flammability:.8}); continue; }
-    const flammability = item.unfinished ? unfinishedFlammability(item.unfinished) : ['wood', 'cloth', 'grain', 'herb', 'food', 'meal', 'meat', 'carcass', 'apparel', 'components'].includes(item.resource)
+    const flammability = item.resource === 'milk' ? .2 : item.unfinished ? unfinishedFlammability(item.unfinished) : ['wood', 'cloth', 'grain', 'herb', 'food', 'meal', 'meat', 'carcass', 'apparel', 'components'].includes(item.resource)
       ? 1 : item.resource === 'weapon' && item.weapon && ['woodClub', 'shortBow'].includes(item.weapon.kind) ? 1 : 0;
     if (flammability) out.push({ kind: 'stack', id: item.id, flammability });
   }

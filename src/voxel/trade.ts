@@ -63,8 +63,8 @@ export function traderAccepts(kind: TraderKind, batch: Cargo): boolean {
   if (batch.resource === 'carcass' || batch.resource === 'furniture' || batch.resource === 'unfinished') return false;
   if (batch.resource === 'silver') return true;
   if (['wood', 'stone', 'chunk', 'meal', 'herb'].includes(batch.resource)) return false;
-  // Local wildlife extension: bulk traders accept meat as raw food.
-  if (kind === 'bulk') return ['steel', 'components', 'cloth', 'grain', 'meat', 'food', 'apparel'].includes(batch.resource);
+  // The supported FoodRaw subset includes animal milk as well as meat/grain.
+  if (kind === 'bulk') return ['steel', 'components', 'cloth', 'grain', 'meat', 'milk', 'food', 'apparel'].includes(batch.resource);
   return ['components', 'food', 'weapon'].includes(batch.resource) ||
     (batch.resource === 'apparel' && !!batch.apparel && ['simpleHelmet', 'plateArmor'].includes(batch.apparel.kind));
 }

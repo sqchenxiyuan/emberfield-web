@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { type CommandResult, type Pos, type Tool, type VoxelCommand, type VoxelSnapshot, type WildAnimal } from './types';
 import { PEN_RULES, penAcceptsAnimal, type FenceGate, type PenMarker } from './pens';
+import { ANIMAL_HUSBANDRY } from './husbandry';
+import { ANIMAL_DEFS } from './wildlife';
 
 export type PenCommand = (command: VoxelCommand) => Promise<CommandResult>;
 export interface PenControls {
@@ -30,15 +32,15 @@ export function PenDetails({ marker, snapshot: s, command, focus, controls }: {
     <div className="voxel-info-row"><b>{marker.name}</b><span className={summary?.closed ? '' : 'voxel-pen-warning'}>{summary?.closed ? '已封闭' : '未封闭'}</span></div>
     <NameField key={marker.id} value={marker.name} label="圈地名称" ariaLabel={`圈地名称 ${marker.id}`} save={name => void command({ type: 'penName', markerId: marker.id, name })} />
     <p>{summary?.reason ?? '正在检查圈地边界'}</p>
-    {!summary?.closed && <small className="voxel-pen-warning">先修补围栏、关闭保持敞开的栏门，再让饲养员把鹿牵回。单独的标记无法拦住动物。</small>}
+    {!summary?.closed && <small className="voxel-pen-warning">先修补围栏、关闭保持敞开的栏门，再让饲养员把鹿和单峰驼牵回。单独的标记无法拦住动物。</small>}
     {!!summary?.sharedWith.length && <small>与 {summary.sharedWith.map(id => s.penMarkers.find(m => m.id === id)?.name ?? `标记 ${id}`).join('、')} 共用围栏；以下动物和草料是同一片圈地的统计。</small>}
     <div className="voxel-pen-numbers">
-      <span>圈内鹿 <b>{summary?.closed ? summary.animalIds.length : '—'}</b></span><span>正在安排牵入 <b>{summary?.pendingAnimalIds.length ?? 0}</b></span>
+      <span>圈内动物 <b>{summary?.closed ? summary.animalIds.length : '—'}</b></span><span>正在安排牵入 <b>{summary?.pendingAnimalIds.length ?? 0}</b></span>
       <span>现有草料营养 <b>{summary?.closed ? summary.grassNutrition.toFixed(2) : '—'}</b></span>
       <span>圈内日耗营养 <b>{summary?.closed ? summary.nutritionPerDay.toFixed(2) : '—'}</b></span>
     </div>
     <small>草料为当前实际可食用的草，不包含地面谷物和作物，也不保证长期足够。圈地无需屋顶。</small>
-    <fieldset><legend>接纳动物</legend>{([['deer', '鹿'], ['male', '雄性'], ['female', '雌性']] as const).map(([key, label]) =>
+    <fieldset><legend>接纳动物</legend>{([['deer', '鹿'], ['dromedary', '单峰驼'], ['male', '雄性'], ['female', '雌性']] as const).map(([key, label]) =>
       <label key={key}><input type="checkbox" aria-label={`${marker.name} 接纳${label}`} checked={marker.filter[key]}
         onChange={e => void command({ type: 'penFilter', markerId: marker.id, filter: { ...marker.filter, [key]: e.target.checked } })} />{label}</label>)}</fieldset>
     <div className="voxel-pen-actions"><button aria-pressed={visible} onClick={() => { controls.showPen(visible ? null : marker.id); if (!visible) focus(marker); }}>{visible ? '隐藏圈地范围' : '显示圈地范围'}</button>
@@ -53,7 +55,7 @@ export function FenceGateDetails({ gate, tick, command }: { gate: FenceGate; tic
     <label>栏门状态<select aria-label="栏门状态" value={gate.mode} onChange={e => void command({ type: 'fenceGate', gateId: gate.id, mode: e.target.value as FenceGate['mode'] })}>
       <option value="auto">自动开关</option><option value="open">保持敞开</option><option value="locked">锁定</option>
     </select></label>
-    <small>{gate.mode === 'open' ? '保持敞开会打开圈地边界，鹿可能走失。' : gate.mode === 'locked' ? '锁定拦住饲养员和牵引路线，请为牵入留出可用栏门。' : '饲养员经过时临时打开，仍视作封闭边界。自由活动的鹿不能穿过关闭的栏门。'}</small>
+    <small>{gate.mode === 'open' ? '保持敞开会打开圈地边界，鹿和单峰驼可能走失。' : gate.mode === 'locked' ? '锁定拦住饲养员和牵引路线，请为牵入留出可用栏门。' : '饲养员经过时临时打开，仍视作封闭边界。自由活动的鹿和单峰驼不能穿过关闭的栏门。'}</small>
   </section>;
 }
 
@@ -63,7 +65,7 @@ export function AnimalPenControls({ animal: a, snapshot: s, command, controls }:
   if (a.dead || a.faction !== 'colony') return null;
   const inside = s.penSummaries.filter(p => p.closed && p.animalIds.includes(a.id));
   return <div className="voxel-animal-pen" data-testid="animal-pen-controls" data-animal-id={a.id}>
-    {a.species === 'deer' ? <>
+    {ANIMAL_HUSBANDRY[a.species].penAnimal ? <>
       <small>当前圈地：{inside.map(p => s.penMarkers.find(m => m.id === p.markerId)?.name).filter(Boolean).join(' / ') || '圈外'}{a.ropePaused ? ' · 已暂停牵引' : ''}</small>
       <label>牵引目的地<select aria-label={`${a.name} 牵引目的地`} value={a.requestedPenId ?? ''}
         onChange={e => void command({ type: 'ropeAnimal', animalId: a.id, penId: e.target.value === '' ? null : Number(e.target.value), paused: a.ropePaused })}>
@@ -72,7 +74,7 @@ export function AnimalPenControls({ animal: a, snapshot: s, command, controls }:
       <div className="voxel-pen-actions"><button aria-label={`${a.ropePaused ? '恢复牵引' : '暂停牵引'} ${a.name}`} aria-pressed={a.ropePaused}
         onClick={() => void command({ type: 'ropeAnimal', animalId: a.id, penId: a.requestedPenId, paused: !a.ropePaused })}>{a.ropePaused ? '恢复牵引' : '暂停牵引'}</button>
         {!!inside.length && <button onClick={() => controls.showPen(inside[0].markerId)}>显示所在圈地</button>}</div>
-      {!inside.length && <small>鹿需要围栏圈养；开启饲养分工并保留栏门。长时间未圈养的鹿可能自行走到地图边缘离开。</small>}
+      {!inside.length && <small>{ANIMAL_DEFS[a.species].name}需要围栏圈养；开启饲养分工并保留栏门。长时间未圈养可能自行走到地图边缘离开。</small>}
     </> : <>
       <label>活动范围<select aria-label={`${a.name} 活动范围`} value={a.allowedAreaId ?? ''}
         onChange={e => void command({ type: 'animalAreaAssign', animalId: a.id, areaId: e.target.value === '' ? null : Number(e.target.value) })}>
@@ -96,11 +98,11 @@ export function PenPanel({ snapshot: s, command, choose, focus, controls }: {
     } finally { setCreating(false); }
   };
   return <div className="voxel-pen-panel" data-testid="pen-panel">
-    <p>围栏拦住鹿；活动范围引导兔。每只动物都按实际通路移动。</p>
+    <p>围栏拦住鹿和单峰驼；活动范围引导兔。每只动物都按实际通路移动。</p>
     <details className="voxel-wildlife-guide" open><summary>建造一处圈地</summary>
       <ol><li>拖动围栏画直线，围成闭合边界，给栏门留一格。</li><li>放置栏门，再在里面建造圈地标记。</li><li>确认显示“已封闭”，设置接纳种类和性别；饲养员会实际套绳并牵入。</li></ol>
       <div><button onClick={() => choose('fence')}>建造围栏</button><button onClick={() => choose('fenceGate')}>建造栏门</button><button onClick={() => choose('penMarker')}>建造圈地标记</button></div>
-      <small>人和兔可缓慢跨越围栏，鹿需要栏门。蓝图完成前不形成边界；栏门设为保持敞开会使圈地失效。</small>
+      <small>人和兔可缓慢跨越围栏，鹿和单峰驼需要栏门。蓝图完成前不形成边界；栏门设为保持敞开会使圈地失效。</small>
     </details>
     <h3>圈地 · {s.penMarkers.length}</h3>
     {!s.penMarkers.length && <p>尚无圈地标记。先完成围栏和栏门，再在内部放置标记。</p>}

@@ -87,7 +87,7 @@ describe('animal policy is distinct from physical barriers', () => {
     expect(planAreaReturnPath(p(4), { ...area, cells: [] }, graph)).toBeNull();
     expect(planAreaReturnPath(p(4), area, linked([[p(4), p(5)]]))).toBeNull();
   });
-  it('accepts only owned deer of the allowed sex and does not impose an invented age filter', () => {
+  it('accepts owned deer of the allowed sex and does not impose an invented age filter', () => {
     const m = marker(1, p(4)), deer = { species: 'deer', sex: 'male', faction: 'colony', dead: false } as const;
     expect(penAcceptsAnimal(m, deer)).toBe(true);
     m.filter.male = false; expect(penAcceptsAnimal(m, deer)).toBe(false);
@@ -95,7 +95,7 @@ describe('animal policy is distinct from physical barriers', () => {
     expect(penAcceptsAnimal(m, { ...deer, sex: 'female', faction: 'wild' })).toBe(false);
     expect(penAcceptsAnimal(m, { ...deer, sex: 'female', species: 'hare' })).toBe(false);
     expect(penAcceptsAnimal(m, { ...deer, sex: 'female', dead: true })).toBe(false);
-    expect(Object.keys(m.filter).sort()).toEqual(['deer', 'female', 'male']);
+    expect(Object.keys(m.filter).sort()).toEqual(['deer', 'dromedary', 'female', 'male']);
   });
   it('uses an independent initial roaming clock and rejects unsafe time arithmetic', () => {
     expect(initialAnimalPenState(100)).toEqual({ allowedAreaId: null, requestedPenId: null, ropePaused: false, nextRoamTick: 100 + DAY });

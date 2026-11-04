@@ -5,12 +5,13 @@ import { validFurniturePiece } from './relocation';
 import { WILDLIFE } from './wildlife';
 import { batchHitPoints, setBatchHitPoints, validBatchHitPoints } from './deterioration';
 import { validateUnfinishedPiece } from './unfinishedProduction';
+import { ANIMAL_HUSBANDRY } from './husbandry';
 
 // RimWorld 1.7 source/Defs: 60000 original ticks/day, rate * elapsed ticks.
 // We preserve days, using this simulation's DAY=12000 instead. Unlike the native
 // rare-tick scheduler, world containers advance once per simulation tick.
-export const ROT_DAYS = Object.freeze({ rice: 40, potato: 30, corn: 60, meal: 4, herb: 150 });
-export const isPerishable = (resource: Resource) => ['grain', 'meat', 'carcass', 'meal', 'herb'].includes(resource);
+export const ROT_DAYS = Object.freeze({ rice: 40, potato: 30, corn: 60, meal: 4, herb: 150, milk: 14 });
+export const isPerishable = (resource: Resource) => ['grain', 'meat', 'carcass', 'meal', 'herb', 'milk'].includes(resource);
 export function rotRateAtTemperature(temperature: number): number {
   if (!Number.isFinite(temperature)) throw new RangeError('Temperature must be finite');
   return temperature <= 0 ? 0 : temperature >= 10 ? 1 : temperature / 10;
@@ -21,6 +22,7 @@ export function rotLimit(batch: Pick<Cargo, 'resource' | 'crop'>): number | null
   if (batch.resource === 'carcass') return WILDLIFE.carcassRotDays * DAY;
   if (batch.resource === 'meal') return ROT_DAYS.meal * DAY;
   if (batch.resource === 'herb') return ROT_DAYS.herb * DAY;
+  if (batch.resource === 'milk') return ROT_DAYS.milk * DAY;
   if (batch.resource === 'grain' && batch.crop && Object.hasOwn(ROT_DAYS, batch.crop))
     return ROT_DAYS[batch.crop] * DAY;
   return null;
@@ -129,6 +131,7 @@ export function validBatch(batch: unknown): batch is Cargo {
       'food',
       'grain',
       'meat',
+      'milk',
       'carcass',
       'meal',
       'cloth',
@@ -169,8 +172,9 @@ export function validBatch(batch: unknown): batch is Cargo {
   if (b.resource === 'carcass') {
     if (b.amount !== 1 || !b.carcass || typeof b.carcass !== 'object' || Array.isArray(b.carcass) ||
         !Number.isSafeInteger(b.carcass.animalId) || b.carcass.animalId <= 0 ||
-        !['hare', 'deer'].includes(b.carcass.species) || (b.carcass.bodySize !== undefined &&
-          (!Number.isFinite(b.carcass.bodySize) || b.carcass.bodySize <= 0 || b.carcass.bodySize > 1.2))) return false;
+        !Object.hasOwn(ANIMAL_HUSBANDRY, b.carcass.species) || (b.carcass.bodySize !== undefined &&
+          (!Number.isFinite(b.carcass.bodySize) || b.carcass.bodySize <= 0 ||
+            b.carcass.bodySize > ANIMAL_HUSBANDRY[b.carcass.species].bodySize))) return false;
   } else if (b.carcass !== undefined) return false;
   const limit = rotLimit(b);
   return limit === null

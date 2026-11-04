@@ -1,5 +1,5 @@
 import type { VoxelSave } from './types';
-import { defaultAutoSlaughter, validAutoSlaughter } from './autoSlaughter';
+import { defaultAutoSlaughter, defaultAutoSlaughterPolicy, validAutoSlaughter } from './autoSlaughter';
 
 export function migrateAutoSlaughter(old: Record<string, any>, sourceVersion: number): void {
   if (sourceVersion < 48) {
@@ -8,6 +8,8 @@ export function migrateAutoSlaughter(old: Record<string, any>, sourceVersion: nu
       throw new Error('旧版存档混入自动宰杀字段');
     old.autoSlaughter = defaultAutoSlaughter();
   }
+  if (sourceVersion === 48 && old.autoSlaughter && typeof old.autoSlaughter === 'object')
+    old.autoSlaughter.dromedary = defaultAutoSlaughterPolicy();
   if (!validAutoSlaughter(old.autoSlaughter)) throw new Error('自动宰杀配额设置无效');
 }
 

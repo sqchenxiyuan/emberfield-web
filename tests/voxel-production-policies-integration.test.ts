@@ -321,14 +321,16 @@ describe('production policy command isolation and save migration', () => {
     const provenance = JSON.parse(readFileSync(new URL('./fixtures/voxel-v39-mid-production-before-policies.provenance.json', import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(provenance.sha256);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old), saved = s.save();
-    expect(old.version).toBe(39); expect(saved.version).toBe(48);
+    expect(old.version).toBe(39); expect(saved.version).toBe(49);
     expect(old.jobs.some((job: any) => job.kind === 'smith' && job.progress > 0 && job.delivered.wood === 40)).toBe(true);
     for (const key of ['items', 'nextId', 'blocks', 'stoves', 'stonecutters', 'tailors', 'weaponBenches', 'butcherSpots'] as const)
       expect(saved[key], key).toEqual(old[key]);
     const stats = structuredClone(saved.stats);
     for (const key of ['produced', 'consumed', 'destroyed', 'spoiled'] as const) {
       expect(stats[key].unfinished).toBe(0);
+      expect(stats[key].milk).toBe(0);
       delete (stats[key] as Partial<typeof stats[typeof key]>).unfinished;
+      delete (stats[key] as Partial<typeof stats[typeof key]>).milk;
     }
     expect(stats).toEqual(old.stats);
     expect(saved.productionQueues.map(queue => ({ ...queue, bills: queue.bills.map(({ policy: _policy, ...bill }) => bill) })))

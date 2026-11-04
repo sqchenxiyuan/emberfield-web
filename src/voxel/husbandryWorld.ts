@@ -1,6 +1,7 @@
 import { animalAllowed, animalManagementTick, inheritAnimalArea, cancelAnimalRopes, type PensHost } from './pensWorld';
 import { initialAnimalPenState } from './pens';
 import { autoSlaughterSelection, type AutoSlaughterSettings } from './autoSlaughter';
+import { advanceMilk, milkReady, milkGatherSpeed, milkGatherChance, MILK_RULES } from './animalMilk';
 import { at, CELLS, DAY, position, type Cargo, type Crop, type GrassPatch, type HandleTask,
   type HusbandryEvent, type Pawn, type Pos, type Stack, type WildAnimal, type CommandResult } from './types';
 import { ANIMAL_DEFS } from './wildlife';
@@ -34,6 +35,8 @@ export interface HusbandryHost extends PensHost {
   prisonPath(from: Pos, to: Pos): number[] | null;
   prisonApproach(p: Pawn, target: Pos): number[] | null;
   prisonRelease(p: Pawn): void;
+  /** Dry-run must have no side effects; commit places the whole batch and books production. */
+  animalMilkPlace?(p: Pawn, amount: number, commit: boolean): boolean;
 }
 const adjacent = (a: Pos, b: Pos) => a.z === b.z && Math.abs(a.x-b.x)+Math.abs(a.y-b.y) === 1;
 const edible = (b: Cargo) => ['grain', 'food', 'meal'].includes(b.resource);
@@ -177,6 +180,7 @@ export function updateHusbandry(s:HusbandryHost) {
   for(const a of [...s.animals]){
     if(a.dead)continue;
     const pregnant=!!a.pregnancy;
+    advanceMilk(a);
     advanceAnimalNeeds(a);
     if(pregnant&&!a.pregnancy)event(s,'miscarriage',a,`${a.name}因营养不良流产`);
     if(a.malnutrition>=1){event(s,'starved',a,`${a.name}因长期饥饿死亡`);s.killAnimal(a,'长期饥饿');continue;}
@@ -245,7 +249,7 @@ export function reconcileAutoSlaughter(s:HusbandryHost) {
 }
 function actionFor(a:WildAnimal,automatic:Set<number>):HandleTask['action']|null {
   if(a.faction==='wild')return a.tame?'tame':null;
-  return a.slaughter?'slaughter':a.releaseMarked?'release':automatic.has(a.id)?'autoSlaughter':a.hunger<30?'feed':a.species==='hare'&&a.tameness<5?'maintain':null;
+  return a.slaughter?'slaughter':a.releaseMarked?'release':automatic.has(a.id)?'autoSlaughter':a.hunger<30?'feed':a.species==='hare'&&a.tameness<5?'maintain':milkReady(a)?'milk':null;
 }
 function handlerRoute(p:Pawn,path:number[]){p.path=path;p.destination=path.at(-1)??null;p.phase='handle';}
 export function tryHandle(s:HusbandryHost,p:Pawn):boolean {
@@ -254,6 +258,7 @@ export function tryHandle(s:HusbandryHost,p:Pawn):boolean {
   for(const a of s.animals.filter(a=>!a.dead&&pawnAllowed(s,p,a)&&!s.pawns.some(p=>p.ropeTask?.animalId===a.id)&&s.tick>=a.retryTick&&a.phase!=='flee'&&
     !s.pawns.some(q=>q.handleTask?.animalId===a.id)).sort((a,b)=>a.hunger-b.hunger)){
     const action=actionFor(a,automatic);if(!action)continue;
+    if(action==='milk'&&s.tick<a.nextInteractionTick)continue;
     if(['tame','maintain'].includes(action)&&(s.tick<a.nextInteractionTick||p.skills.animals.level<ANIMAL_HUSBANDRY[a.species].minSkill||a.phase==='rest'))continue;
     // Area filtering occurs before pathfinding, so rejecting a restricted worker
     // never puts the animal on the shared physical-unreachability retry timer.
@@ -271,7 +276,7 @@ export function tryHandle(s:HusbandryHost,p:Pawn):boolean {
     }
     s.prisonRelease(p);
     p.handleTask={animalId:a.id,action,stage:source?'fetch':'approach',foodId:source?.id??null,amount,feedings:0,progress:0};
-    handlerRoute(p,foodPath??path);p.reason=source?'取食物照料'+a.name:['slaughter','autoSlaughter'].includes(action)?'前往宰杀'+a.name:'前往放归'+a.name;
+    handlerRoute(p,foodPath??path);p.reason=source?'取食物照料'+a.name:['slaughter','autoSlaughter'].includes(action)?'前往宰杀'+a.name:action==='milk'?'前往挤奶'+a.name:'前往放归'+a.name;
     return true;
   }
   return false;
@@ -284,6 +289,7 @@ export function handleTick(s:HusbandryHost,p:Pawn) {
     (task.action==='tame'?a.faction!=='wild'||!a.tame: a.faction!=='colony')||
     (task.action==='slaughter'&&!a.slaughter)||(task.action==='release'&&!a.releaseMarked)||
     (task.action==='autoSlaughter'&&!autoSlaughterTargets(s).includes(a.id))||
+    (task.action==='milk'&&(!milkReady(a)||s.tick<a.nextInteractionTick||s.pawns.some(q=>q.ropeTask?.animalId===a.id)||autoSlaughterTargets(s).includes(a.id)))||
     (['tame','maintain'].includes(task.action)&&p.skills.animals.level<ANIMAL_HUSBANDRY[a.species].minSkill)){
     cancel('动物照料中断，保留未用食物');return;
   }
@@ -307,6 +313,24 @@ export function handleTick(s:HusbandryHost,p:Pawn) {
     p.reason='靠近'+a.name;return;
   }
   p.path=[];p.destination=null;task.stage='interact';
+  if(task.action==='milk') {
+    p.reason='正在给'+a.name+'挤奶';
+    if(task.progress<MILK_RULES.work) {
+      learnSkill(p.skills.animals,MILK_RULES.xpPerTick);
+      const health=healthSummary(p);
+      task.progress=Math.min(MILK_RULES.work,task.progress+milkGatherSpeed(p.skills.animals.level,health.manipulation,health.sight));
+    }
+    if(task.progress<MILK_RULES.work)return;
+    // Web adaptation: reserve real capacity before the one outcome draw. Full
+    // ground neither wastes milk nor rerolls or awards XP while waiting.
+    if(!s.animalMilkPlace?.(p,MILK_RULES.amount,false)){p.reason='挤奶完成，等待附近放置空间';return;}
+    const health=healthSummary(p),chance=milkGatherChance(p.skills.animals.level,health.manipulation,health.sight);
+    const success=chance>=1||random(s,a,1110)<chance;
+    if(success&&!s.animalMilkPlace(p,MILK_RULES.amount,true))return;
+    a.milkFullness=0;
+    event(s,success?'milked':'milkFailed',a,success?`${p.name}挤得${MILK_RULES.amount}份奶`:`${p.name}挤奶失败，这批奶损失了`,p.id);
+    cancel(success?'挤奶完成':'挤奶失败');return;
+  }
   if(['tame','maintain','feed'].includes(task.action)){
     if(!p.cargo||(task.action==='feed'?!edible(p.cargo):!rawFeed(p.cargo))){cancel('携带食物不足');return;}
     p.reason=(task.action==='feed'?'喂食':task.action==='maintain'?'维护驯顺':'尝试驯服')+a.name;

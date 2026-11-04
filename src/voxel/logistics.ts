@@ -11,6 +11,7 @@ export const STACK_LIMITS: Readonly<Record<Resource, number>> = Object.freeze({
   food: 10,
   grain: 75,
   meat: 75,
+  milk: 75,
   carcass: 1,
   meal: 10,
   chunk: 1,

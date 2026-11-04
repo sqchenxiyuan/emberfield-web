@@ -20,17 +20,20 @@ export const HUSBANDRY_RULES = Object.freeze({
 export const ANIMAL_HUSBANDRY: Readonly<Record<AnimalSpecies, {
   wildness: number; minSkill: number; nutritionCapacity: number; nutritionPerDay: number;
   penAnimal: boolean; tamenessDecays: boolean; litterMin: number; litterMax: number;
+  bodySize: number;
 }>> = Object.freeze({
   hare: Object.freeze({ wildness: .75, minSkill: 8, nutritionCapacity: .2, nutritionPerDay: .184,
-    penAnimal: false, tamenessDecays: true, litterMin: 1, litterMax: 2 }),
+    bodySize: .2, penAnimal: false, tamenessDecays: true, litterMin: 1, litterMax: 2 }),
   deer: Object.freeze({ wildness: .75, minSkill: 8, nutritionCapacity: 1.2, nutritionPerDay: .32,
-    penAnimal: true, tamenessDecays: false, litterMin: 1, litterMax: 1 }),
+    bodySize: 1.2, penAnimal: true, tamenessDecays: false, litterMin: 1, litterMax: 1 }),
+  dromedary: Object.freeze({ wildness: .25, minSkill: 2, nutritionCapacity: 2.1, nutritionPerDay: .856,
+    bodySize: 2.1, penAnimal: true, tamenessDecays: false, litterMin: 1, litterMax: 1 }),
 });
 export type AnimalLifeStage = 'baby' | 'juvenile' | 'adult';
 export type AnimalHusbandryState = Pick<WildAnimal,
   'allowedAreaId' | 'ropePaused' | 'requestedPenId' | 'nextRoamTick' |
   'faction' | 'sex' | 'ageTicks' | 'growth' | 'tame' | 'slaughter' | 'releaseMarked' |
-  'malnutrition' | 'pregnancy' | 'mateId' | 'mateProgress' | 'nextMateTick' | 'tameness' |
+  'malnutrition' | 'milkFullness' | 'pregnancy' | 'mateId' | 'mateProgress' | 'nextMateTick' | 'tameness' |
   'nextTamenessDecayTick' | 'nextInteractionTick' | 'path' | 'goal' | 'eatProgress' | 'reason'>;
 
 /** Existing and newly immigrating wildlife are adults. Birth explicitly sets
@@ -42,7 +45,7 @@ export function initialAnimalState(id: number, species: AnimalSpecies, tick: num
   return { ...initialAnimalPenState(tick),
     faction: 'wild', sex: Math.floor(id / 2) % 2 ? 'male' : 'female',
     ageTicks: HUSBANDRY_RULES.adultTicks, growth: 1, tame: false, slaughter: false, releaseMarked: false,
-    malnutrition: 0, pregnancy: null, mateId: null, mateProgress: 0,
+    malnutrition: 0, milkFullness: 0, pregnancy: null, mateId: null, mateProgress: 0,
     nextMateTick: tick + HUSBANDRY_RULES.mateInterval,
     tameness: 0, nextTamenessDecayTick: tick + HUSBANDRY_RULES.tamenessDecayTicks,
     nextInteractionTick: tick, path: [], goal: null, eatProgress: 0, reason: '野生动物' };

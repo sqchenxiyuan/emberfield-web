@@ -31,14 +31,14 @@ describe('persistent colony storyteller', () => {
       expect(createHash('sha256').update(bytes).digest('hex')).toBe(provenance.sha256);
       const s = VoxelSimulation.load(old), saved = s.save();
       expect(old.version).toBe(19);
-      expect(saved.version).toBe(48);
+      expect(saved.version).toBe(49);
       expectWildlifeIds(old.nextId, saved);
       for (const key of ['tick', 'blocks', 'ladders', 'items', 'research', 'combat'] as const)
         expect(saved[key], key).toEqual(old[key]);
       for (const [key, value] of Object.entries(old.stats))
         expect(saved.stats[key as keyof typeof saved.stats]).toEqual(
           ['produced', 'consumed', 'spoiled', 'destroyed'].includes(key) ?
-            { ...(value as object), silver: 0, meat: 0, carcass: 0, furniture: 0, unfinished: 0 } : value);
+            { ...(value as object), silver: 0, meat: 0, milk: 0, carcass: 0, furniture: 0, unfinished: 0 } : value);
       for (const p of saved.pawns) {
         const before = old.pawns.find((q: { id: number }) => q.id === p.id);
         for (const key of ['trauma', 'medical', 'cargo', 'weapon', 'worn', 'careProgress', 'dead', 'downed'] as const)

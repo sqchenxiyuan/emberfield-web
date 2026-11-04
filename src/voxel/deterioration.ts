@@ -26,6 +26,7 @@ export const RESOURCE_CONDITION_DEFS: Readonly<Record<Exclude<Resource, 'apparel
   food: { maxHitPoints: 50, ratePerDay: .25 },
   grain: { maxHitPoints: 60, ratePerDay: 6 },
   meat: { maxHitPoints: 60, ratePerDay: 6 },
+  milk: { maxHitPoints: 60, ratePerDay: 6 },
   carcass: { maxHitPoints: 100, ratePerDay: 1 },
   meal: { maxHitPoints: 50, ratePerDay: 10 },
   chunk: { maxHitPoints: 300, ratePerDay: 0 },

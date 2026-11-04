@@ -86,6 +86,7 @@ describe('voxel generation and chunk delivery', () => {
       food: 60,
       grain: 0,
       meat: 0,
+      milk: 0,
       carcass: 0,
       meal: 0,
       chunk: 0,

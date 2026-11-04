@@ -82,6 +82,7 @@ export type Resource =
   | 'food'
   | 'grain'
   | 'meat'
+  | 'milk'
   | 'carcass'
   | 'meal'
   | 'chunk'
@@ -420,12 +421,12 @@ export interface Stove extends Pos {
   target: number;
   paused: boolean;
 }
-export type AnimalSpecies = 'hare' | 'deer';
+export type AnimalSpecies = 'hare' | 'deer' | 'dromedary';
 export interface GrassPatch extends Pos { growth: number }
 export interface AnimalGoal { kind: 'grass' | 'crop' | 'food' | 'mate' | 'area' | 'exit'; id: number }
 export interface HandleTask {
   animalId: number;
-  action: 'tame' | 'maintain' | 'feed' | 'slaughter' | 'autoSlaughter' | 'release';
+  action: 'tame' | 'maintain' | 'feed' | 'slaughter' | 'autoSlaughter' | 'release' | 'milk';
   stage: 'fetch' | 'approach' | 'interact';
   foodId: number | null;
   amount: number;
@@ -434,7 +435,7 @@ export interface HandleTask {
 }
 export interface HusbandryEvent {
   tick: number;
-  kind: 'tame' | 'failed' | 'fed' | 'pregnancy' | 'birth' | 'miscarriage' | 'rewild' | 'slaughter' | 'release' | 'starved' | 'escaped';
+  kind: 'tame' | 'failed' | 'fed' | 'pregnancy' | 'birth' | 'miscarriage' | 'rewild' | 'slaughter' | 'release' | 'starved' | 'escaped' | 'milked' | 'milkFailed';
   animalId: number;
   otherId: number | null;
   message: string;
@@ -453,6 +454,7 @@ export interface WildAnimal extends Pos {
   slaughter: boolean;
   releaseMarked: boolean;
   malnutrition: number;
+  milkFullness: number;
   pregnancy: { fatherId: number; progress: number } | null;
   mateId: number | null;
   mateProgress: number;
@@ -773,6 +775,7 @@ export interface Counts {
   food: number;
   grain: number;
   meat: number;
+  milk: number;
   carcass: number;
   meal: number;
   chunk: number;
@@ -1031,7 +1034,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 48;
+  version: 49;
   autoSlaughter: import('./autoSlaughter').AutoSlaughterSettings;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
@@ -1106,6 +1109,7 @@ export const RESOURCE_NAMES: Record<Resource, string> = {
   food: '包装生存口粮',
   grain: '生食材',
   meat: '生肉',
+  milk: '奶',
   carcass: '动物尸体',
   meal: '简餐',
 };
@@ -1196,6 +1200,7 @@ export const emptyCounts = (): Counts => ({
   food: 0,
   grain: 0,
   meat: 0,
+  milk: 0,
   carcass: 0,
   meal: 0,
   chunk: 0,
