@@ -1,5 +1,6 @@
 import { expect } from 'vitest';
 import { initialAnimalEnvironment } from '../src/voxel/animalEnvironment';
+import { assertApparelPoliciesDefaults, stripApparelPoliciesFields } from './legacy-apparel-policies-defaults';
 
 const animals = (raw: Record<string, any>) => [...(raw.animals ?? []),
   ...(raw.trade?.receipts ?? []).flatMap((r: any) =>
@@ -8,6 +9,7 @@ const animals = (raw: Record<string, any>) => [...(raw.animals ?? []),
 /** Synthetic downgrades may discard only inactive, exactly default disease
  * state. Preflight is separate so earlier-schema helpers remain atomic. */
 export function assertAnimalEnvironmentDefaults(raw: Record<string, any>): void {
+  assertApparelPoliciesDefaults(raw);
   for (const a of animals(raw)) {
     expect(a.phase).not.toBe('shelter');
     expect(['shelter', 'climateExit']).not.toContain(a.goal?.kind);
@@ -17,6 +19,7 @@ export function assertAnimalEnvironmentDefaults(raw: Record<string, any>): void 
 
 export function stripAnimalEnvironmentFields(raw: Record<string, any>): void {
   assertAnimalEnvironmentDefaults(raw);
+  stripApparelPoliciesFields(raw);
   for (const a of animals(raw)) delete a.environment;
 }
 

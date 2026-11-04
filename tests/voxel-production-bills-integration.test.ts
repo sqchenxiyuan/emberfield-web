@@ -7,6 +7,7 @@ import { freshBatch } from '../src/voxel/preservation';
 import { initialResearch } from '../src/voxel/research';
 import { type ProductionBill, type ProductionRecipe } from '../src/voxel/productionBills';
 import { stripUnfinishedFields } from './legacy-unfinished-defaults';
+import { initialApparelControl } from '../src/voxel/apparelPolicies';
 
 const pos = (x: number, y = 16): Pos => ({ x, y, z: 8 });
 const same = (a: Pos, b: Pos) => a.x === b.x && a.y === b.y && a.z === b.z;
@@ -308,7 +309,7 @@ describe('production bill command and physical lifecycle integration', () => {
     const provenance = JSON.parse(readFileSync(new URL('./fixtures/voxel-v38-before-production-bills.provenance.json', import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(provenance.sha256);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old), current = s.save();
-    expect(old.version).toBe(38); expect(current.version).toBe(55); expect(current.productionQueues).toEqual([]);
+    expect(old.version).toBe(38); expect(current.version).toBe(56); expect(current.productionQueues).toEqual([]);
     for (const field of ['items', 'jobs', 'stoves', 'stonecutters', 'tailors', 'weaponBenches', 'butcherSpots', 'nextId', 'blocks'] as const)
       expect(current[field], field).toEqual(old[field]);
     const stats = structuredClone(current.stats);
@@ -324,12 +325,13 @@ describe('production bill command and physical lifecycle integration', () => {
       delete (stats[key] as Partial<typeof stats[typeof key]>).eggFertilized;
     }
     expect(stats).toEqual(old.stats);
-    // v44 adds an unrestricted area assignment; the existing v38 loader also
-    // resets these two derived movement/UI fields.
+    // v44 adds an unrestricted area assignment; v56 keeps legacy apparel
+    // under manual management. The v38 loader resets two movement/UI fields.
     // Keep every other pawn field (identity, needs, skills, cargo, work and path)
     // equal to the authentic bytes rather than ignoring all pawn differences.
     expect(current.pawns).toEqual(old.pawns.map((pawn: Pawn) => ({
-      ...pawn, allowedAreaId:null, moveTick: old.tick, reason: '存档已恢复，正在重新安排工作',
+      ...pawn, allowedAreaId:null, apparelControl: initialApparelControl(old.tick),
+      moveTick: old.tick, reason: '存档已恢复，正在重新安排工作',
     })));
     expect(VoxelSimulation.load(current).save()).toEqual(current);
   });

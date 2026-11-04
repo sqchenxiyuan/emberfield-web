@@ -5,6 +5,7 @@ import { makeWeapon, type WeaponKind, type WeaponPiece } from '../src/voxel/weap
 import { applyInjury, validTrauma } from '../src/voxel/injuries';
 import { portion } from '../src/voxel/preservation';
 import { healthSummary } from '../src/voxel/survival';
+import { initialApparelControl } from '../src/voxel/apparelPolicies';
 
 const pos = (x: number, y: number, z = 8): Pos => ({ x, y, z });
 function command(s: VoxelSimulation, c: VoxelCommand) {
@@ -184,6 +185,7 @@ describe('weapon transport, prohibition and interrupted transactions', () => {
     enemy.name = '测试敌人';
     Object.assign(enemy, pos(23, 10));
     enemy.faction = 'raider';
+    enemy.apparelControl = initialApparelControl(s.tick);
     enemy.phase = 'combat';
     enemy.weapon = makeWeapon(s.nextId++, 'steelKnife');
     s.pawns.push(enemy);

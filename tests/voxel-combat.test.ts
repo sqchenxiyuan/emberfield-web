@@ -4,6 +4,7 @@ import { VoxelSimulation } from '../src/voxel/world';
 import { Block, index, DAY, type VoxelCommand } from '../src/voxel/types';
 import { applyInjury, traumaSummary } from '../src/voxel/injuries';
 import { plantRandom } from '../src/voxel/plants';
+import { initialApparelControl } from '../src/voxel/apparelPolicies';
 
 // Bounded state-machine geometry; the separate campaign uses only normal commands.
 function fixture() {
@@ -52,6 +53,7 @@ describe('voxel combat and physical tending', () => {
     const s = fixture(),
       [attacker, target] = s.pawns;
     attacker.faction = 'raider';
+    attacker.apparelControl = initialApparelControl(s.tick);
     attacker.phase = 'combat';
     attacker.attackTargetId = target.id;
     attacker.skills.melee.level = 0;
@@ -82,6 +84,7 @@ describe('voxel combat and physical tending', () => {
       y: 21,
       id: s.nextId++,
       faction: 'raider' as const,
+      apparelControl: initialApparelControl(s.tick),
       worn: [],
       phase: 'combat' as const,
     };
@@ -134,6 +137,7 @@ describe('voxel combat and physical tending', () => {
       ...structuredClone(s.pawns[1]),
       id: s.nextId++,
       faction: 'raider' as const,
+      apparelControl: initialApparelControl(s.tick),
       worn: [],
       phase: 'combat' as const,
     };
@@ -162,6 +166,7 @@ describe('voxel combat and physical tending', () => {
       y: 18,
       id: s.nextId++,
       faction: 'raider' as const,
+      apparelControl: initialApparelControl(s.tick),
       worn: [],
       phase: 'combat' as const,
     };
@@ -189,7 +194,7 @@ describe('voxel combat and physical tending', () => {
     );
     const s = VoxelSimulation.load(old);
     expect(old.version).toBe(11);
-    expect(s.save().version).toBe(55);
+    expect(s.save().version).toBe(56);
     expect(s.combat).toEqual({ enabled: false, nextRaid: 0, wave: 0 });
     expect(s.pawns.map((p) => [p.id, p.food, p.rest, p.worn])).toEqual(
       old.pawns.map((p: any) => [p.id, p.food, p.rest, p.worn]),

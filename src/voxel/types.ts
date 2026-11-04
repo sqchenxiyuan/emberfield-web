@@ -1,6 +1,7 @@
 import type { EggBox, EggBoxTask } from './eggBoxes';
 import type { AnimalMedicalState, AnimalCareTask, AnimalBed } from './animalMedical';
 import type { AnimalEnvironmentState } from './animalEnvironment';
+import type { ApparelControl, ApparelPoliciesState, ApparelPolicy } from './apparelPolicies';
 import type { Trauma } from './injuries';
 import type { MedicalState, MedicalPolicy } from './medicine';
 import type { WeaponPiece, WeaponKind, WeaponBenchKind } from './weapons';
@@ -137,6 +138,7 @@ export interface ApparelPiece {
   wearTicks: number;
 }
 export interface ApparelTask {
+  automatic?: true;
   action: 'wear' | 'remove';
   apparelId: number;
   stage: 'fetch' | 'work';
@@ -733,6 +735,7 @@ export interface Pawn extends Pos {
   /** Retain the physical weapon if a forced drop has no space; retry without using it. */
   weaponDropPending: boolean;
   worn: ApparelPiece[];
+  apparelControl: ApparelControl;
   apparelTask: ApparelTask | null;
   apparelWearTicks: number;
   downed: boolean;
@@ -832,6 +835,7 @@ export interface VoxelStats {
   spoiled: Counts;
 }
 export interface VoxelSnapshot {
+  apparelPolicies: ApparelPoliciesState;
   animalBeds: AnimalBed[];
   autoSlaughter: import('./autoSlaughter').AutoSlaughterSettings;
   autoSlaughterStatus: import('./autoSlaughter').AutoSlaughterStatus;
@@ -1026,6 +1030,11 @@ export type VoxelCommand =
   | { type: 'tailorBill'; tailorId: number; kind: ApparelKind; target: number; paused: boolean }
   | { type: 'wear'; pawnId: number; apparelId: number }
   | { type: 'removeApparel'; pawnId: number; apparelId: number }
+  | { type: 'apparelPolicyCreate'; sourceId?: number }
+  | { type: 'apparelPolicyUpdate'; policy: ApparelPolicy }
+  | { type: 'apparelPolicyDelete'; policyId: number }
+  | { type: 'pawnApparelPolicy'; pawnId: number; policyId: number | null }
+  | { type: 'apparelUnforce'; pawnId: number; apparelId?: number }
   | { type: 'bedOwner'; bedId: number; pawnId: number | null }
   | { type: 'bedMedical'; bedId: number; medical: boolean }
   | { type: 'care'; pawnId: number; patientId: number; action: 'rescue' | 'feed' | 'tend' }
@@ -1036,12 +1045,14 @@ export type VoxelCommand =
   | { type: 'rest'; pawnId: number }
   | { type: 'move'; pawnId: number; target: Pos };
 export interface CommandResult {
+  policyId?: number;
   areaId?: number;
   ok: boolean;
   message: string;
   count?: number;
 }
 export interface VoxelSave {
+  apparelPolicies: ApparelPoliciesState;
   animalBeds: AnimalBed[];
   stockpileZones: import('./stockpileZones').StockpileZone[];
   productionQueues: import('./productionBills').ProductionQueue[];
@@ -1069,7 +1080,7 @@ export interface VoxelSave {
   eggBoxes: EggBox[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 55;
+  version: 56;
   autoSlaughter: import('./autoSlaughter').AutoSlaughterSettings;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];

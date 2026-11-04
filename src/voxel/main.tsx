@@ -1575,6 +1575,9 @@ function App() {
             <fieldset className="voxel-readonly-equipment" disabled={pawn.faction === 'prisoner'}>
             <ApparelPanel
               pawn={pawn}
+              policies={s?.apparelPolicies}
+              pawns={s?.pawns}
+              command={(c) => void client.command(c)}
               remove={(apparelId) =>
                 void client.command({ type: 'removeApparel', pawnId: pawn.id, apparelId })
               }

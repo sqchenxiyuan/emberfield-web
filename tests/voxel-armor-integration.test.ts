@@ -128,7 +128,7 @@ describe('armor save migration and strict physical schemas', () => {
       const s = VoxelSimulation.load(old),
         saved = s.save();
       expect(old).toEqual(before);
-      expect(saved.version).toBe(55);
+      expect(saved.version).toBe(56);
       expectWildlifeIds(old.nextId, saved);
       for (const key of ['tick', 'blocks', 'items', 'stats', 'researchBenches'] as const)
         expect(saved[key]).toEqual(key === 'stats' ? eggsExpectedField('stats', withMedicineLedgers(old.stats)) : old[key]);

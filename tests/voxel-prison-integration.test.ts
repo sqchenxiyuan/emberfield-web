@@ -11,6 +11,7 @@ import { freshBatch } from '../src/voxel/preservation';
 import { applyInjury } from '../src/voxel/injuries';
 import { BODY_PARTS } from '../src/voxel/anatomy';
 import { makeWeapon } from '../src/voxel/weapons';
+import { initialApparelControl } from '../src/voxel/apparelPolicies';
 
 const pos = (x: number, y = 14): Pos => ({ x, y, z: 8 });
 function command(s: VoxelSimulation, c: VoxelCommand) {
@@ -44,6 +45,7 @@ function fixture() {
   }
   const id = s.nextId++, enemy: Pawn = { ...structuredClone(s.pawns[0]), ...initialSurvival(s.seed, id),
     ...pos(16, 15), id, name: '受伤袭击者', faction: 'raider', downed: true, phase: 'downed',
+    apparelControl: initialApparelControl(s.tick),
     food: 90, rest: 90, psyche: initialPsyche(), skills: initialSkills(0, true), worn: [],
     prisoner: null, wardenTask: null };
   // Keep incapacity through fetch/feed/tend; recovery itself has separate cases.
@@ -200,7 +202,7 @@ describe('voxel capture, care, recruitment and release integration', () => {
     const bytes = readFileSync(new URL('./fixtures/voxel-v23-prison-initial.json', import.meta.url));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe('3eac88560e5bf8460e91517998c80fe501ce5be1eeac088e9c0cb3703db216b3');
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old), upgraded = s.save();
-    expect(old.version).toBe(23); expect(upgraded.version).toBe(55);
+    expect(old.version).toBe(23); expect(upgraded.version).toBe(56);
     expect(upgraded.items).toEqual(old.items); expect(upgraded.stats).toEqual(relocationExpectedField('stats', old.stats));
     expect(upgraded.nextId).toBe(old.nextId); expect(upgraded.animals).toMatchObject(old.animals);
     expect(upgraded.pawns).toHaveLength(old.pawns.length);

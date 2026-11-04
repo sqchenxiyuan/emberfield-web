@@ -1,0 +1,224 @@
+{
+  "evidence_id": "RW17-APPAREL-POLICIES",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes.",
+    "No game, browser, preview, GUI input or screenshot capture was launched."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.ApparelPolicy",
+      "local_file": ".local-research/apparel-policies/RimWorld.ApparelPolicy.cs",
+      "sha256": "b3092d7eac11f49d58f5e5073573cd4613e7ef0b138fa1e647a4e68d60b5d16f",
+      "lines": 34
+    },
+    {
+      "type": "Verse.AI.Pawn_MindState",
+      "local_file": ".local-research/apparel-policies/Verse.AI.Pawn_MindState.cs",
+      "sha256": "b606531ba468fc6f4c1a2fbd9fbd25dd366ac45f3ef241b1a58fd298f82b7c12",
+      "lines": 936
+    },
+    {
+      "type": "RimWorld.PawnApparelGenerator",
+      "local_file": ".local-research/apparel-policies/RimWorld.PawnApparelGenerator.cs",
+      "sha256": "0b7856606c41510ac0455c031b964cb5ce07e5a12bd7b2ff9dcd22e8c5b5712c",
+      "lines": 1212
+    },
+    {
+      "type": "RimWorld.NeededWarmth",
+      "local_file": ".local-research/apparel-policies/RimWorld.NeededWarmth.cs",
+      "sha256": "f7ded186c98c247a56d31bb1921f7d4dd18ba13400995baef0e8984373ef4057",
+      "lines": 9
+    },
+    {
+      "type": "RimWorld.ForbidUtility",
+      "local_file": ".local-research/apparel-policies/RimWorld.ForbidUtility.cs",
+      "sha256": "e36190372ca2bc9540ef40d3d6a3ee836f30c3da7ee6842dffa79c0da78fbf48",
+      "lines": 208
+    },
+    {
+      "type": "RimWorld.QualityRange",
+      "local_file": ".local-research/apparel-policies/RimWorld.QualityRange.cs",
+      "sha256": "62195028838dd893be6ac5424332bd06145c998d2af125099e0c9ee02cf761bf",
+      "lines": 81
+    },
+    {
+      "type": "RimWorld.Policy",
+      "local_file": ".local-research/apparel-policies/RimWorld.Policy.cs",
+      "sha256": "639e3324609054c8068c9714fa96f3368056a31a4c6dca5dd133c5c9431460c7",
+      "lines": 52
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_Wear",
+      "local_file": ".local-research/apparel-policies/RimWorld.FloatMenuOptionProvider_Wear.cs",
+      "sha256": "d1577b01ad535c55299cecf5cd96890789d81c4e957c9756670ad4cc276f0f7f",
+      "lines": 74
+    },
+    {
+      "type": "Verse.SpecialThingFilterDef",
+      "local_file": ".local-research/apparel-policies/Verse.SpecialThingFilterDef.cs",
+      "sha256": "2c4a82170ae23903420df03797261c80079bc77193048b14f7d0c03877dc4248",
+      "lines": 50
+    },
+    {
+      "type": "Verse.SimpleCurve",
+      "local_file": ".local-research/apparel-policies/Verse.SimpleCurve.cs",
+      "sha256": "cb4695789e5d965d616072ce05c75a3000a3ee53891da3db79e27e5319884617",
+      "lines": 287
+    },
+    {
+      "type": "Verse.FloatRange",
+      "local_file": ".local-research/apparel-policies/Verse.FloatRange.cs",
+      "sha256": "e8ee20c8faca8d75df388fcdf0507c8632eba5afe28c5a7ec750e9fef8ef1a4e",
+      "lines": 169
+    },
+    {
+      "type": "Verse.GenMath",
+      "local_file": ".local-research/apparel-policies/Verse.GenMath.cs",
+      "sha256": "639bc810485b043ff454902b285ade5d875d8b123f3809672371111519429b1e",
+      "lines": 702
+    },
+    {
+      "type": "Verse.GenTemperature",
+      "local_file": ".local-research/apparel-policies/Verse.GenTemperature.cs",
+      "sha256": "4d8eca83fcc99ebeeeace9696c7be0761a078aa6578a2cc5033cca0fd24b0fc1",
+      "lines": 534
+    },
+    {
+      "type": "Verse.AI.Pawn_JobTracker",
+      "local_file": ".local-research/apparel-policies/Verse.AI.Pawn_JobTracker.cs",
+      "sha256": "7934319bfedbd8a46aa54341a2afec9561efb469cd4fe58aec5745f9236fc5c4",
+      "lines": 1075
+    },
+    {
+      "type": "RimWorld.OutfitDatabase",
+      "local_file": ".local-research/apparel-policies/RimWorld.OutfitDatabase.cs",
+      "sha256": "de326a162070ed94dfb151dac43f37377d15004f0a527dc786d66d159f6e7e75",
+      "lines": 136
+    },
+    {
+      "type": "RimWorld.Pawn_OutfitTracker",
+      "local_file": ".local-research/apparel-policies/RimWorld.Pawn_OutfitTracker.cs",
+      "sha256": "41886fd89b63046d7903812632e5d5c230d42b14cd8790276e829f21e5096569",
+      "lines": 55
+    },
+    {
+      "type": "RimWorld.OutfitForcedHandler",
+      "local_file": ".local-research/apparel-policies/RimWorld.OutfitForcedHandler.cs",
+      "sha256": "ce4439e7540dafc7809644cb70b1f8e36f3ed6ed6648229c7571043aae87a015",
+      "lines": 58
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "local_file": ".local-research/apparel-policies/RimWorld.JobGiver_OptimizeApparel.cs",
+      "sha256": "9625b5aab74a1192026801d82bf840eb20c923a69aafa95a41e02c74ea133c2e",
+      "lines": 418
+    },
+    {
+      "type": "RimWorld.JobDriver_Wear",
+      "local_file": ".local-research/apparel-policies/RimWorld.JobDriver_Wear.cs",
+      "sha256": "2e189395f272ec05e97df29c0d6cadbdfed052cc847bb6cf68190c0c6af2413e",
+      "lines": 151
+    },
+    {
+      "type": "RimWorld.JobDriver_RemoveApparel",
+      "local_file": ".local-research/apparel-policies/RimWorld.JobDriver_RemoveApparel.cs",
+      "sha256": "8a52768d8ea6e67d381c2beac4b728b39c9013193383c4b802161bab065c9a6c",
+      "lines": 81
+    },
+    {
+      "type": "RimWorld.Pawn_ApparelTracker",
+      "local_file": ".local-research/apparel-policies/RimWorld.Pawn_ApparelTracker.cs",
+      "sha256": "01ca5bbe6b91b6394da455d4a1ad37f6555457c570e2af67df24e3719b3c3ff2",
+      "lines": 820
+    },
+    {
+      "type": "RimWorld.ApparelUtility",
+      "local_file": ".local-research/apparel-policies/RimWorld.ApparelUtility.cs",
+      "sha256": "63d83fea4461c8adf88b623cb65553e3adc4ce783f5d38a6dfee231d3093234b",
+      "lines": 157
+    },
+    {
+      "type": "RimWorld.Apparel",
+      "local_file": ".local-research/apparel-policies/RimWorld.Apparel.cs",
+      "sha256": "e86e80be2095c32f775bb08e65f4ea8464d718898de030b9839084eee0235ffc",
+      "lines": 355
+    },
+    {
+      "type": "RimWorld.ApparelProperties",
+      "local_file": ".local-research/apparel-policies/RimWorld.ApparelProperties.cs",
+      "sha256": "2ed8dd06200830f49a17eac1fa1e3c0310bae7bfae10cd107cb3ff497002d089",
+      "lines": 259
+    },
+    {
+      "type": "Verse.ThingFilter",
+      "local_file": ".local-research/apparel-policies/Verse.ThingFilter.cs",
+      "sha256": "daf718ce140fd0c6a201fb7eada45f2069d642f1596c6bcde8a2d35fc3939ffa",
+      "lines": 943
+    },
+    {
+      "type": "RimWorld.Dialog_ManageApparelPolicies",
+      "local_file": ".local-research/apparel-policies/RimWorld.Dialog_ManageApparelPolicies.cs",
+      "sha256": "e3a038a4d7103b42f55775a23450c4e1e9e980d0ecf9e95dcc8177cc4ac6618b",
+      "lines": 85
+    },
+    {
+      "type": "RimWorld.PawnColumnWorker_Outfit",
+      "local_file": ".local-research/apparel-policies/RimWorld.PawnColumnWorker_Outfit.cs",
+      "sha256": "980c37dc148f14f95c9f1ef0e5007f37f6f0c2a543c1b3336da337ef82208f4a",
+      "lines": 126
+    },
+    {
+      "type": "Verse.AI.Toils_General",
+      "local_file": ".local-research/apparel-policies/Verse.AI.Toils_General.cs",
+      "sha256": "0a5e1a21ff2bbf65e3069c75043f19e9885fd539682ac5f9065ebd38444c03b4",
+      "lines": 164
+    },
+    {
+      "type": "Verse.AI.Toils_Reserve",
+      "local_file": ".local-research/apparel-policies/Verse.AI.Toils_Reserve.cs",
+      "sha256": "a65671ed7b45b6e271455b283bc830dee26ed4fa48c82d08c86a76d6db3a9c42",
+      "lines": 126
+    },
+    {
+      "type": "Verse.AI.Toils_Goto",
+      "local_file": ".local-research/apparel-policies/Verse.AI.Toils_Goto.cs",
+      "sha256": "95a6db5cfac7f09d79c5f521dddbd8780116f9fed3d988026f78c4f3b3abd82c",
+      "lines": 148
+    },
+    {
+      "type": "RimWorld.SpecialThingFilterWorker_DeadmansApparel",
+      "local_file": ".local-research/apparel-policies/RimWorld.SpecialThingFilterWorker_DeadmansApparel.cs",
+      "sha256": "4a74a3aea373767cc7940c1b95f14493af487190f12b5bc62b8b77deea4356cf",
+      "lines": 25
+    },
+    {
+      "type": "RimWorld.SpecialThingFilterWorker_NonDeadmansApparel",
+      "local_file": ".local-research/apparel-policies/RimWorld.SpecialThingFilterWorker_NonDeadmansApparel.cs",
+      "sha256": "15b3553d9fc7998f833515773abb7a0f0de039c685e7f80bbc6c665eeeec5335",
+      "lines": 25
+    },
+    {
+      "type": "RimWorld.SpecialThingFilterWorker_BiocodedApparel",
+      "local_file": ".local-research/apparel-policies/RimWorld.SpecialThingFilterWorker_BiocodedApparel.cs",
+      "sha256": "c729153131a2d4646a58fa06923c5c96b9e48916f7d37fb109f7772dd6731ad3",
+      "lines": 25
+    },
+    {
+      "type": "RimWorld.SpecialThingFilterWorker_NonBiocodedApparel",
+      "local_file": ".local-research/apparel-policies/RimWorld.SpecialThingFilterWorker_NonBiocodedApparel.cs",
+      "sha256": "0fa29923932de28c961dfd52499aace432d9a0d6b4d941b8542fdc6f72e14c2d",
+      "lines": 21
+    }
+  ]
+}

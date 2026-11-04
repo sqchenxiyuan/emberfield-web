@@ -13,10 +13,10 @@ export function allowedAreaCells(area: AnimalArea): ReadonlySet<number> {
 
 /** Areas filter destinations. They never remove physical navigation edges. */
 export function effectivePawnArea(p: Pawn, areas: AnimalArea[], tick: number): AnimalArea | undefined {
-  // Equip/Wear are direct player orders in this prototype. Native orders use
+  // Manual Equip/Wear are direct player orders. Native orders use
   // playerForced/ignoreForbidden; ordinary prioritized work still checks areas.
   if (p.faction !== 'colony' || p.drafted || p.psyche.breakUntil > tick || p.allowedAreaId === null ||
-      p.weaponTask?.action === 'equip' || p.apparelTask?.action === 'wear') return;
+      p.weaponTask?.action === 'equip' || (p.apparelTask?.action === 'wear' && !p.apparelTask.automatic)) return;
   const area = areas.find(a => a.id === p.allowedAreaId);
   return area?.cells.length ? area : undefined;
 }

@@ -12,6 +12,14 @@ export function seasonalOffset(day: number, latitude: number): number {
   const amplitude = seasonalAmplitude(latitude) * (latitude < 0 ? -1 : 1);
   return -amplitude * Math.cos(2 * Math.PI * (day / YEAR_DAYS - 10 / 12));
 }
+/** Current five-day twelfth, sampled with the same world-label seasonal model. */
+export function seasonalMeanTemperature(tick: number, settings: WorldSettings): number {
+  const start = Math.floor(tick / DAY / 5) * 5;
+  let sum = 0;
+  for (let sample = 0; sample < 120; sample++)
+    sum += settings.meanTemperature + seasonalOffset(start + .5 + sample * 5 / 120, settings.latitude);
+  return sum / 120;
+}
 /** The 7 C daily sine and starting local hour 08:00 are explicit prototype adaptations. */
 export function outdoorTemperature(
   tick: number,

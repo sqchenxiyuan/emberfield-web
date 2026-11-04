@@ -1570,6 +1570,69 @@ a {
   justify-content: space-between;
   gap: 12px;
 }
+.voxel-apparel-policy-panel,
+.voxel-apparel-policy-editor,
+.voxel-apparel-policy-management {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 12px;
+}
+.voxel-apparel-policy-panel small {
+  display: block;
+  line-height: 1.5;
+  color: #c4cdc2;
+}
+.voxel-apparel-policy-panel label {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+.voxel-apparel-policy-panel input,
+.voxel-apparel-policy-panel select {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.voxel-apparel-policy-editor fieldset {
+  display: grid;
+  min-width: 0;
+  padding: 8px;
+  gap: 10px;
+  border: 1px solid #a6b6a22e;
+}
+.voxel-apparel-policy-kinds,
+.voxel-apparel-policy-range {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.voxel-apparel-policy-kinds label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.voxel-apparel-policy-kinds input {
+  width: auto;
+  flex-shrink: 0;
+}
+.voxel-apparel-policy-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.voxel-apparel-piece-actions {
+  display: grid;
+  flex-shrink: 0;
+  gap: 5px;
+  justify-items: end;
+}
+.voxel-apparel-forced {
+  color: #f0cf83;
+}
+.voxel-apparel-unforce-all {
+  margin-top: 8px;
+}
 .voxel-tailor-queue {
   display: flex;
   flex-wrap: wrap;

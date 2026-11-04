@@ -1,0 +1,3142 @@
+{
+  "evidence_id": "RW17-APPAREL-POLICIES-STATIC",
+  "version": "1.7.4980 rev60",
+  "assemblySha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "reaEvidenceId": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+  "reaParentId": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+  "reaFile": "docs/research/rimworld/evidence/production-bills-rea-managed.json",
+  "reaSha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+  "manifestFile": "docs/research/rimworld/evidence/apparel-policies-manifest.json",
+  "manifestSha256": "bb633cc8b6442f6680d24c63f34c7d55a7b82432e272049c94baebb14a0784e2",
+  "rules": [
+    {
+      "type": "RimWorld.Policy",
+      "needle": "public int id;",
+      "locations": [
+        {
+          "line": 7,
+          "text": "public int id;"
+        }
+      ],
+      "interpretation": "Policies have identity independently of their editable label."
+    },
+    {
+      "type": "RimWorld.Policy",
+      "needle": "Scribe_Values.Look(ref label, \"label\");",
+      "locations": [
+        {
+          "line": 44,
+          "text": "Scribe_Values.Look(ref label, \"label\");"
+        }
+      ],
+      "interpretation": "Policy labels persist."
+    },
+    {
+      "type": "RimWorld.ApparelPolicy",
+      "needle": "public ThingFilter filter = new ThingFilter();",
+      "locations": [
+        {
+          "line": 7,
+          "text": "public ThingFilter filter = new ThingFilter();"
+        }
+      ],
+      "interpretation": "Apparel policy is a shared item filter, not an equipment recipe."
+    },
+    {
+      "type": "RimWorld.ApparelPolicy",
+      "needle": "filter.CopyAllowancesFrom(apparelPolicy.filter);",
+      "locations": [
+        {
+          "line": 24,
+          "text": "filter.CopyAllowancesFrom(apparelPolicy.filter);"
+        }
+      ],
+      "interpretation": "Copying policy copies allowances."
+    },
+    {
+      "type": "RimWorld.ApparelPolicy",
+      "needle": "Scribe_Deep.Look(ref filter, \"filter\");",
+      "locations": [
+        {
+          "line": 31,
+          "text": "Scribe_Deep.Look(ref filter, \"filter\");"
+        }
+      ],
+      "interpretation": "Filter state persists inside the policy."
+    },
+    {
+      "type": "RimWorld.OutfitDatabase",
+      "needle": "return outfits[0];",
+      "locations": [
+        {
+          "line": 29,
+          "text": "return outfits[0];"
+        }
+      ],
+      "interpretation": "Default is the first database entry; it is not a special immutable policy."
+    },
+    {
+      "type": "RimWorld.OutfitDatabase",
+      "needle": "outfits[0] = policy;",
+      "locations": [
+        {
+          "line": 36,
+          "text": "outfits[0] = policy;"
+        }
+      ],
+      "interpretation": "Setting default reorders the database."
+    },
+    {
+      "type": "RimWorld.OutfitDatabase",
+      "needle": "PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive",
+      "locations": [
+        {
+          "line": 42,
+          "text": "foreach (Pawn item in PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive)"
+        }
+      ],
+      "interpretation": "Deletion checks live map, caravan and travelling transporter assignments."
+    },
+    {
+      "type": "RimWorld.OutfitDatabase",
+      "needle": "return new AcceptanceReport(\"OutfitInUse\".Translate(item));",
+      "locations": [
+        {
+          "line": 46,
+          "text": "return new AcceptanceReport(\"OutfitInUse\".Translate(item));"
+        }
+      ],
+      "interpretation": "An assigned policy cannot be deleted while in active use."
+    },
+    {
+      "type": "RimWorld.OutfitDatabase",
+      "needle": "item2.outfits.CurrentApparelPolicy = null;",
+      "locations": [
+        {
+          "line": 53,
+          "text": "item2.outfits.CurrentApparelPolicy = null;"
+        }
+      ],
+      "interpretation": "Other world/temporary references are reset before successful deletion."
+    },
+    {
+      "type": "RimWorld.OutfitDatabase",
+      "needle": "outfits.Max((ApparelPolicy o) => o.id) + 1",
+      "locations": [
+        {
+          "line": 62,
+          "text": "int id = ((!outfits.Any()) ? 1 : (outfits.Max((ApparelPolicy o) => o.id) + 1));"
+        }
+      ],
+      "interpretation": "New IDs use current maximum plus one, not a globally monotonic counter."
+    },
+    {
+      "type": "RimWorld.OutfitDatabase",
+      "needle": "apparelPolicy.filter.SetAllow(ThingCategoryDefOf.Apparel, allow: true);",
+      "locations": [
+        {
+          "line": 64,
+          "text": "apparelPolicy.filter.SetAllow(ThingCategoryDefOf.Apparel, allow: true);"
+        }
+      ],
+      "interpretation": "New policy initially allows apparel."
+    },
+    {
+      "type": "RimWorld.OutfitDatabase",
+      "needle": "MakeNewOutfit().label = \"OutfitAnything\".Translate();",
+      "locations": [
+        {
+          "line": 71,
+          "text": "MakeNewOutfit().label = \"OutfitAnything\".Translate();"
+        }
+      ],
+      "interpretation": "Anything is first/default in the starting set."
+    },
+    {
+      "type": "RimWorld.OutfitDatabase",
+      "needle": "allDef.apparel.defaultOutfitTags.Contains(\"Worker\")",
+      "locations": [
+        {
+          "line": 78,
+          "text": "if (allDef.apparel != null && ((allDef.apparel.defaultOutfitTags != null && allDef.apparel.defaultOutfitTags.Contains(\"Worker\")) || allDef.thingCategories.NotNullAndContains(ThingCategoryDefOf.ApparelUtility)))"
+        }
+      ],
+      "interpretation": "Worker presets follow apparel tags plus utility apparel."
+    },
+    {
+      "type": "RimWorld.OutfitDatabase",
+      "needle": "allDef2.apparel.defaultOutfitTags.Contains(\"Soldier\")",
+      "locations": [
+        {
+          "line": 89,
+          "text": "if (allDef2.apparel != null && ((allDef2.apparel.defaultOutfitTags != null && allDef2.apparel.defaultOutfitTags.Contains(\"Soldier\")) || allDef2.thingCategories.NotNullAndContains(ThingCategoryDefOf.ApparelUtility)))"
+        }
+      ],
+      "interpretation": "Soldier presets follow apparel tags plus utility apparel."
+    },
+    {
+      "type": "RimWorld.OutfitDatabase",
+      "needle": "!allDef3.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.Legs)",
+      "locations": [
+        {
+          "line": 100,
+          "text": "if (allDef3.apparel != null && (allDef3.apparel.defaultOutfitTags.NotNullAndContains(\"Nudist\") || (!allDef3.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.Legs) && !allDef3.apparel.bodyPartGroups.Contains(BodyPartGroupDefOf.Torso))))"
+        }
+      ],
+      "interpretation": "Nudist preset is not an empty filter; torso/leg coverage and Nudist tag determine eligibility."
+    },
+    {
+      "type": "RimWorld.OutfitDatabase",
+      "needle": "SetAllow(SpecialThingFilterDefOf.AllowDeadmansApparel, allow: false);",
+      "locations": [
+        {
+          "line": 75,
+          "text": "apparelPolicy.filter.SetAllow(SpecialThingFilterDefOf.AllowDeadmansApparel, allow: false);"
+        },
+        {
+          "line": 86,
+          "text": "apparelPolicy2.filter.SetAllow(SpecialThingFilterDefOf.AllowDeadmansApparel, allow: false);"
+        },
+        {
+          "line": 97,
+          "text": "apparelPolicy3.filter.SetAllow(SpecialThingFilterDefOf.AllowDeadmansApparel, allow: false);"
+        },
+        {
+          "line": 110,
+          "text": "apparelPolicy4.filter.SetAllow(SpecialThingFilterDefOf.AllowDeadmansApparel, allow: false);"
+        },
+        {
+          "line": 126,
+          "text": "apparelPolicy5.filter.SetAllow(SpecialThingFilterDefOf.AllowDeadmansApparel, allow: false);"
+        }
+      ],
+      "interpretation": "Non-Anything starting presets explicitly reject corpse-tainted clothing."
+    },
+    {
+      "type": "RimWorld.OutfitDatabase",
+      "needle": "if (ModsConfig.IdeologyActive)",
+      "locations": [
+        {
+          "line": 105,
+          "text": "if (ModsConfig.IdeologyActive)"
+        }
+      ],
+      "interpretation": "Slave preset is DLC-gated."
+    },
+    {
+      "type": "RimWorld.OutfitDatabase",
+      "needle": "if (!ModsConfig.OdysseyActive)",
+      "locations": [
+        {
+          "line": 119,
+          "text": "if (!ModsConfig.OdysseyActive)"
+        }
+      ],
+      "interpretation": "Spacefarer preset is DLC-gated."
+    },
+    {
+      "type": "RimWorld.Pawn_OutfitTracker",
+      "needle": "curApparelPolicy = Current.Game.outfitDatabase.DefaultOutfit();",
+      "locations": [
+        {
+          "line": 23,
+          "text": "curApparelPolicy = Current.Game.outfitDatabase.DefaultOutfit();"
+        }
+      ],
+      "interpretation": "An unassigned pawn resolves the current default lazily."
+    },
+    {
+      "type": "RimWorld.Pawn_OutfitTracker",
+      "needle": "pawn.mindState.Notify_OutfitChanged();",
+      "locations": [
+        {
+          "line": 34,
+          "text": "pawn.mindState.Notify_OutfitChanged();"
+        }
+      ],
+      "interpretation": "Changing the assigned policy notifies the mind state."
+    },
+    {
+      "type": "RimWorld.Pawn_OutfitTracker",
+      "needle": "Scribe_References.Look(ref curApparelPolicy, \"curOutfit\");",
+      "locations": [
+        {
+          "line": 51,
+          "text": "Scribe_References.Look(ref curApparelPolicy, \"curOutfit\");"
+        }
+      ],
+      "interpretation": "Pawn holds a shared policy reference, not a copied filter."
+    },
+    {
+      "type": "RimWorld.Pawn_OutfitTracker",
+      "needle": "Scribe_Deep.Look(ref forcedHandler, \"overrideHandler\");",
+      "locations": [
+        {
+          "line": 52,
+          "text": "Scribe_Deep.Look(ref forcedHandler, \"overrideHandler\");"
+        }
+      ],
+      "interpretation": "Per-pawn forced-item handler persists separately."
+    },
+    {
+      "type": "Verse.AI.Pawn_MindState",
+      "needle": "nextApparelOptimizeTick = Find.TickManager.TicksGame;",
+      "locations": [
+        {
+          "line": 649,
+          "text": "nextApparelOptimizeTick = Find.TickManager.TicksGame;"
+        }
+      ],
+      "interpretation": "Policy reassignment permits optimization at the current tick; it does not itself start a job."
+    },
+    {
+      "type": "Verse.AI.Pawn_MindState",
+      "needle": "Scribe_Values.Look(ref nextApparelOptimizeTick, \"nextApparelOptimizeTick\", -99999);",
+      "locations": [
+        {
+          "line": 424,
+          "text": "Scribe_Values.Look(ref nextApparelOptimizeTick, \"nextApparelOptimizeTick\", -99999);"
+        }
+      ],
+      "interpretation": "Optimization cooldown persists."
+    },
+    {
+      "type": "RimWorld.OutfitForcedHandler",
+      "needle": "return !forcedAps.Contains(ap);",
+      "locations": [
+        {
+          "line": 21,
+          "text": "return !forcedAps.Contains(ap);"
+        }
+      ],
+      "interpretation": "Forced protection addresses a concrete apparel instance."
+    },
+    {
+      "type": "RimWorld.OutfitForcedHandler",
+      "needle": "forcedAps.Clear();",
+      "locations": [
+        {
+          "line": 16,
+          "text": "forcedAps.Clear();"
+        }
+      ],
+      "interpretation": "Clear-forced empties the override list; it does not strip equipment."
+    },
+    {
+      "type": "RimWorld.OutfitForcedHandler",
+      "needle": "Scribe_Collections.Look(ref forcedAps, \"forcedAps\", LookMode.Reference);",
+      "locations": [
+        {
+          "line": 41,
+          "text": "Scribe_Collections.Look(ref forcedAps, \"forcedAps\", LookMode.Reference);"
+        }
+      ],
+      "interpretation": "Forced flags are saved as apparel references."
+    },
+    {
+      "type": "RimWorld.PawnColumnWorker_Outfit",
+      "needle": "pawn.outfits.forcedHandler.Reset();",
+      "locations": [
+        {
+          "line": 58,
+          "text": "pawn.outfits.forcedHandler.Reset();"
+        }
+      ],
+      "interpretation": "Assignment UI exposes clearing all forced apparel."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "Rand.Range(6000, 9000)",
+      "locations": [
+        {
+          "line": 49,
+          "text": "pawn.mindState.nextApparelOptimizeTick = Find.TickManager.TicksGame + Rand.Range(6000, 9000);"
+        }
+      ],
+      "interpretation": "Unproductive optimization scans schedule a randomized later scan."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "if (pawn.Faction != Faction.OfPlayer)",
+      "locations": [
+        {
+          "line": 59,
+          "text": "if (pawn.Faction != Faction.OfPlayer)"
+        }
+      ],
+      "interpretation": "Optimizer is intended for the player faction."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "if (pawn.IsQuestLodger())",
+      "locations": [
+        {
+          "line": 68,
+          "text": "if (pawn.IsQuestLodger())"
+        }
+      ],
+      "interpretation": "Quest lodgers do not use this optimizer."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "Find.TickManager.TicksGame < pawn.mindState.nextApparelOptimizeTick",
+      "locations": [
+        {
+          "line": 74,
+          "text": "if (Find.TickManager.TicksGame < pawn.mindState.nextApparelOptimizeTick)"
+        }
+      ],
+      "interpretation": "Future optimization deadline suppresses scans in ordinary mode."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "ModsConfig.IdeologyActive && TryCreateRecolorJob",
+      "locations": [
+        {
+          "line": 84,
+          "text": "if (ModsConfig.IdeologyActive && TryCreateRecolorJob(pawn, out var job))"
+        }
+      ],
+      "interpretation": "Ideology recoloring is checked ahead of ordinary stripping/selection."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "pawn.MapHeld.Biome.inVacuum && pawn.Position.GetVacuum(pawn.MapHeld) >= 0.5f",
+      "locations": [
+        {
+          "line": 94,
+          "text": "if (pawn.MapHeld.Biome.inVacuum && pawn.Position.GetVacuum(pawn.MapHeld) >= 0.5f)"
+        }
+      ],
+      "interpretation": "Vacuum exposure can protect vacuum-resistant worn apparel against policy stripping."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "!currentApparelPolicy.filter.Allows(apparel) && pawn.outfits.forcedHandler.AllowedToAutomaticallyDrop(apparel) && !pawn.apparel.IsLocked(apparel)",
+      "locations": [
+        {
+          "line": 98,
+          "text": "if (!flag && !currentApparelPolicy.filter.Allows(apparel) && pawn.outfits.forcedHandler.AllowedToAutomaticallyDrop(apparel) && !pawn.apparel.IsLocked(apparel))"
+        }
+      ],
+      "interpretation": "Policy-disallowed worn apparel is removed only if neither forced nor locked."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "job2.haulDroppedApparel = true;",
+      "locations": [
+        {
+          "line": 101,
+          "text": "job2.haulDroppedApparel = true;"
+        }
+      ],
+      "interpretation": "Policy-driven stripping requests subsequent storage hauling."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "lookInHaulSources: true",
+      "locations": [
+        {
+          "line": 108,
+          "text": "pawn.Map.listerThings.GetAllThings(in tmpApparelList, ThingRequestGroup.Apparel, null, lookInHaulSources: true);"
+        }
+      ],
+      "interpretation": "Candidates include supported haul-source inventories."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "!apparel2.IsInAnyStorage()",
+      "locations": [
+        {
+          "line": 133,
+          "text": "if (!currentApparelPolicy.filter.Allows(apparel2) || !apparel2.IsInAnyStorage() || apparel2.IsForbidden(pawn) || apparel2.IsBurning() || (apparel2.def.apparel.gender != Gender.None && apparel2.def.apparel.gender != pawn.gender))"
+        }
+      ],
+      "interpretation": "Automatic wear rejects loose items not in storage."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "apparel2.IsForbidden(pawn) || apparel2.IsBurning()",
+      "locations": [
+        {
+          "line": 133,
+          "text": "if (!currentApparelPolicy.filter.Allows(apparel2) || !apparel2.IsInAnyStorage() || apparel2.IsForbidden(pawn) || apparel2.IsBurning() || (apparel2.def.apparel.gender != Gender.None && apparel2.def.apparel.gender != pawn.gender))"
+        }
+      ],
+      "interpretation": "Automatic wear rejects forbidden and burning apparel."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "apparel2.def.apparel.gender != Gender.None && apparel2.def.apparel.gender != pawn.gender",
+      "locations": [
+        {
+          "line": 133,
+          "text": "if (!currentApparelPolicy.filter.Allows(apparel2) || !apparel2.IsInAnyStorage() || apparel2.IsForbidden(pawn) || apparel2.IsBurning() || (apparel2.def.apparel.gender != Gender.None && apparel2.def.apparel.gender != pawn.gender))"
+        }
+      ],
+      "interpretation": "Automatic candidate gender check is explicit."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "num3 < 0.05f || num3 < num2",
+      "locations": [
+        {
+          "line": 142,
+          "text": "if (num3 < 0.05f || num3 < num2 || (CompBiocodable.IsBiocoded(apparel2) && !CompBiocodable.IsBiocodedFor(apparel2, pawn)) || !ApparelUtility.HasPartsToWear(pawn, apparel2.def))"
+        }
+      ],
+      "interpretation": "A candidate must meet the minimum gain and current best gain; exact ties can replace the earlier candidate."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "CompBiocodable.IsBiocoded(apparel2) && !CompBiocodable.IsBiocodedFor(apparel2, pawn)",
+      "locations": [
+        {
+          "line": 142,
+          "text": "if (num3 < 0.05f || num3 < num2 || (CompBiocodable.IsBiocoded(apparel2) && !CompBiocodable.IsBiocodedFor(apparel2, pawn)) || !ApparelUtility.HasPartsToWear(pawn, apparel2.def))"
+        }
+      ],
+      "interpretation": "Biocoded apparel for another pawn is rejected."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "!ApparelUtility.HasPartsToWear(pawn, apparel2.def)",
+      "locations": [
+        {
+          "line": 142,
+          "text": "if (num3 < 0.05f || num3 < num2 || (CompBiocodable.IsBiocoded(apparel2) && !CompBiocodable.IsBiocodedFor(apparel2, pawn)) || !ApparelUtility.HasPartsToWear(pawn, apparel2.def))"
+        }
+      ],
+      "interpretation": "Candidate requires an eligible remaining body part."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "if (!apparelSource.ApparelSourceEnabled)",
+      "locations": [
+        {
+          "line": 149,
+          "text": "if (!apparelSource.ApparelSourceEnabled)"
+        }
+      ],
+      "interpretation": "A source container can disable automatic access."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "pawn.CanReserveAndReach(target, PathEndMode.OnCell, pawn.NormalMaxDanger())",
+      "locations": [
+        {
+          "line": 155,
+          "text": "if (pawn.CanReserveAndReach(target, PathEndMode.OnCell, pawn.NormalMaxDanger()) && apparel2.def.apparel.developmentalStageFilter.Has(pawn.DevelopmentalStage))"
+        }
+      ],
+      "interpretation": "Selection checks both reservation and reachable danger level."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "apparel2.def.apparel.developmentalStageFilter.Has(pawn.DevelopmentalStage)",
+      "locations": [
+        {
+          "line": 155,
+          "text": "if (pawn.CanReserveAndReach(target, PathEndMode.OnCell, pawn.NormalMaxDanger()) && apparel2.def.apparel.developmentalStageFilter.Has(pawn.DevelopmentalStage))"
+        }
+      ],
+      "interpretation": "Age-stage compatibility is a separate gate."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "return JobMaker.MakeJob(JobDefOf.Wear, thing);",
+      "locations": [
+        {
+          "line": 173,
+          "text": "return JobMaker.MakeJob(JobDefOf.Wear, thing);"
+        }
+      ],
+      "interpretation": "A selected item creates an actual wear job."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "ap.def == ThingDefOf.Apparel_ShieldBelt && pawn.equipment.Primary != null",
+      "locations": [
+        {
+          "line": 259,
+          "text": "if (ap.def == ThingDefOf.Apparel_ShieldBelt && pawn.equipment.Primary != null && pawn.equipment.Primary.def.IsWeaponUsingProjectiles)"
+        }
+      ],
+      "interpretation": "Projectile users avoid automatic shield-belt choice."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "ap.def.apparel.ignoredByNonViolent && pawn.WorkTagIsDisabled(WorkTags.Violent)",
+      "locations": [
+        {
+          "line": 263,
+          "text": "if (ap.def.apparel.ignoredByNonViolent && pawn.WorkTagIsDisabled(WorkTags.Violent))"
+        }
+      ],
+      "interpretation": "Nonviolent pawns avoid apparel explicitly marked unsuitable."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "!pawn.outfits.forcedHandler.AllowedToAutomaticallyDrop(wornApparel[i]) || pawn.apparel.IsLocked(wornApparel[i])",
+      "locations": [
+        {
+          "line": 274,
+          "text": "if (!pawn.outfits.forcedHandler.AllowedToAutomaticallyDrop(wornApparel[i]) || pawn.apparel.IsLocked(wornApparel[i]))"
+        }
+      ],
+      "interpretation": "Any conflicting forced/locked item blocks automatic replacement."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "num -= wornScoresCache[i];",
+      "locations": [
+        {
+          "line": 278,
+          "text": "num -= wornScoresCache[i];"
+        }
+      ],
+      "interpretation": "Gain subtracts every conflicting worn item score."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "num *= 10f;",
+      "locations": [
+        {
+          "line": 284,
+          "text": "num *= 10f;"
+        },
+        {
+          "line": 397,
+          "text": "num *= 10f;"
+        }
+      ],
+      "interpretation": "A no-replacement candidate receives a tenfold gain factor; other tenfold modifiers exist separately."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "float num = 0.1f + ap.def.apparel.scoreOffset;",
+      "locations": [
+        {
+          "line": 307,
+          "text": "float num = 0.1f + ap.def.apparel.scoreOffset;"
+        }
+      ],
+      "interpretation": "Raw score starts with a base plus definition offset."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "ap.GetStatValue(StatDefOf.ArmorRating_Sharp) + ap.GetStatValue(StatDefOf.ArmorRating_Blunt)",
+      "locations": [
+        {
+          "line": 308,
+          "text": "float num2 = ap.GetStatValue(StatDefOf.ArmorRating_Sharp) + ap.GetStatValue(StatDefOf.ArmorRating_Blunt);"
+        }
+      ],
+      "interpretation": "Raw score adds effective sharp and blunt armor, not heat armor."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "HitPointsPercentScoreFactorCurve.Evaluate(x)",
+      "locations": [
+        {
+          "line": 313,
+          "text": "num *= HitPointsPercentScoreFactorCurve.Evaluate(x);"
+        }
+      ],
+      "interpretation": "Durability adjusts desirability independently of the filter."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "num += ap.GetSpecialApparelScoreOffset();",
+      "locations": [
+        {
+          "line": 315,
+          "text": "num += ap.GetSpecialApparelScoreOffset();"
+        }
+      ],
+      "interpretation": "Special apparel may contribute its own score offset."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "if (neededWarmth == NeededWarmth.Warm)",
+      "locations": [
+        {
+          "line": 317,
+          "text": "if (neededWarmth == NeededWarmth.Warm)"
+        }
+      ],
+      "interpretation": "Only the Warm state adds the ordinary insulation multiplier here."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "StatDefOf.Insulation_Cold",
+      "locations": [
+        {
+          "line": 319,
+          "text": "float statValue = ap.GetStatValue(StatDefOf.Insulation_Cold);"
+        }
+      ],
+      "interpretation": "Warm-state score uses cold insulation."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "ap.WornByCorpse && (pawn == null || ThoughtUtility.CanGetThought",
+      "locations": [
+        {
+          "line": 323,
+          "text": "if (ap.WornByCorpse && (pawn == null || ThoughtUtility.CanGetThought(pawn, ThoughtDefOf.DeadMansApparel, checkIfNullified: true)))"
+        }
+      ],
+      "interpretation": "Tainted penalty depends on whether the wearer can receive the relevant thought."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "num -= 0.5f;",
+      "locations": [
+        {
+          "line": 325,
+          "text": "num -= 0.5f;"
+        },
+        {
+          "line": 341,
+          "text": "num -= 0.5f;"
+        }
+      ],
+      "interpretation": "Tainted and disliked human-leather branches apply a half-point deduction, then further reduce positive remainder."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "num *= 25f;",
+      "locations": [
+        {
+          "line": 393,
+          "text": "num *= 25f;"
+        }
+      ],
+      "interpretation": "Required apparel receives a strong role/title requirement bonus."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "needle": "num *= 0.25f;",
+      "locations": [
+        {
+          "line": 412,
+          "text": "num *= 0.25f;"
+        }
+      ],
+      "interpretation": "Insufficient royal apparel quality has a score penalty in addition to policy filtering."
+    },
+    {
+      "type": "RimWorld.PawnApparelGenerator",
+      "needle": "float num = GenTemperature.AverageTemperatureAtTileForTwelfth(tile, twelfth);",
+      "locations": [
+        {
+          "line": 1166,
+          "text": "float num = GenTemperature.AverageTemperatureAtTileForTwelfth(tile, twelfth);"
+        }
+      ],
+      "interpretation": "Needed warmth uses tile seasonal average for a twelfth, not room/current ambient temperature."
+    },
+    {
+      "type": "RimWorld.PawnApparelGenerator",
+      "needle": "num < pawn.def.GetStatValueAbstract(StatDefOf.ComfyTemperatureMin) - 4f",
+      "locations": [
+        {
+          "line": 1167,
+          "text": "if (num < pawn.def.GetStatValueAbstract(StatDefOf.ComfyTemperatureMin) - 4f)"
+        }
+      ],
+      "interpretation": "Warm uses the species abstract comfortable minimum minus four."
+    },
+    {
+      "type": "RimWorld.PawnApparelGenerator",
+      "needle": "num > pawn.def.GetStatValueAbstract(StatDefOf.ComfyTemperatureMin) + 4f",
+      "locations": [
+        {
+          "line": 1171,
+          "text": "if (num > pawn.def.GetStatValueAbstract(StatDefOf.ComfyTemperatureMin) + 4f)"
+        }
+      ],
+      "interpretation": "Cool also compares against the minimum plus four, not the maximum."
+    },
+    {
+      "type": "Verse.SimpleCurve",
+      "needle": "return points[0].y;",
+      "locations": [
+        {
+          "line": 148,
+          "text": "return points[0].y;"
+        }
+      ],
+      "interpretation": "Curve evaluation clamps below the first x."
+    },
+    {
+      "type": "Verse.SimpleCurve",
+      "needle": "return points[points.Count - 1].y;",
+      "locations": [
+        {
+          "line": 152,
+          "text": "return points[points.Count - 1].y;"
+        }
+      ],
+      "interpretation": "Curve evaluation clamps above the final x."
+    },
+    {
+      "type": "Verse.SimpleCurve",
+      "needle": "return Mathf.Lerp(curvePoint.y, curvePoint2.y, t);",
+      "locations": [
+        {
+          "line": 169,
+          "text": "return Mathf.Lerp(curvePoint.y, curvePoint2.y, t);"
+        }
+      ],
+      "interpretation": "Interior curve segments use linear interpolation."
+    },
+    {
+      "type": "Verse.ThingFilter",
+      "needle": "private FloatRange allowedHitPointsPercents = FloatRange.ZeroToOne;",
+      "locations": [
+        {
+          "line": 30,
+          "text": "private FloatRange allowedHitPointsPercents = FloatRange.ZeroToOne;"
+        }
+      ],
+      "interpretation": "Default durability range is zero through one, expressed as a fraction."
+    },
+    {
+      "type": "Verse.ThingFilter",
+      "needle": "private QualityRange allowedQualities = QualityRange.All;",
+      "locations": [
+        {
+          "line": 36,
+          "text": "private QualityRange allowedQualities = QualityRange.All;"
+        }
+      ],
+      "interpretation": "Default quality range covers every quality level."
+    },
+    {
+      "type": "Verse.ThingFilter",
+      "needle": "f = GenMath.RoundedHundredth(f);",
+      "locations": [
+        {
+          "line": 884,
+          "text": "f = GenMath.RoundedHundredth(f);"
+        }
+      ],
+      "interpretation": "Filter durability rounds HP/maxHP to a hundredth before comparison."
+    },
+    {
+      "type": "Verse.GenMath",
+      "needle": "return Mathf.Round(f * 100f) / 100f;",
+      "locations": [
+        {
+          "line": 38,
+          "text": "return Mathf.Round(f * 100f) / 100f;"
+        }
+      ],
+      "interpretation": "Hundredth rounding delegates to Unity Mathf.Round; its runtime implementation is outside this assembly."
+    },
+    {
+      "type": "Verse.FloatRange",
+      "needle": "if (f >= min - 1E-05f)",
+      "locations": [
+        {
+          "line": 84,
+          "text": "if (f >= min - 1E-05f)"
+        }
+      ],
+      "interpretation": "Range epsilon is one hundred-thousandth at the lower bound."
+    },
+    {
+      "type": "Verse.FloatRange",
+      "needle": "return f <= max + 1E-05f;",
+      "locations": [
+        {
+          "line": 86,
+          "text": "return f <= max + 1E-05f;"
+        }
+      ],
+      "interpretation": "Range epsilon is one hundred-thousandth at the upper bound."
+    },
+    {
+      "type": "Verse.ThingFilter",
+      "needle": "allowedHitPointsPercents.IncludesEpsilon(Mathf.Clamp01(f))",
+      "locations": [
+        {
+          "line": 885,
+          "text": "if (!allowedHitPointsPercents.IncludesEpsilon(Mathf.Clamp01(f)))"
+        }
+      ],
+      "interpretation": "Durability filter uses clamping and epsilon-inclusive bounds."
+    },
+    {
+      "type": "Verse.ThingFilter",
+      "needle": "t.TryGetQuality(out var qc) && !allowedQualities.Includes(qc)",
+      "locations": [
+        {
+          "line": 894,
+          "text": "if (allowedQualities != QualityRange.All && t.def.FollowQualityThingFilter() && t.TryGetQuality(out var qc) && !allowedQualities.Includes(qc))"
+        }
+      ],
+      "interpretation": "Quality filtering applies when the item participates in the quality filter and has quality."
+    },
+    {
+      "type": "Verse.ThingFilter",
+      "needle": "disallowedSpecialFilters[i].Worker.Matches(t)",
+      "locations": [
+        {
+          "line": 900,
+          "text": "if (disallowedSpecialFilters[i].Worker.Matches(t) && (t.def.IsWithinCategory(disallowedSpecialFilters[i].parentCategory) || onlySpecialFilters))"
+        }
+      ],
+      "interpretation": "Special filters can reject individual item states, such as corpse taint."
+    },
+    {
+      "type": "RimWorld.QualityRange",
+      "needle": "return (int)p <= (int)max;",
+      "locations": [
+        {
+          "line": 24,
+          "text": "return (int)p <= (int)max;"
+        }
+      ],
+      "interpretation": "Quality ranges include both minimum and maximum."
+    },
+    {
+      "type": "RimWorld.SpecialThingFilterWorker_DeadmansApparel",
+      "needle": "return apparel.WornByCorpse;",
+      "locations": [
+        {
+          "line": 11,
+          "text": "return apparel.WornByCorpse;"
+        }
+      ],
+      "interpretation": "Tainted filter uses the item taint state."
+    },
+    {
+      "type": "RimWorld.ForbidUtility",
+      "needle": "t.PositionHeld.IsForbidden(pawn)",
+      "locations": [
+        {
+          "line": 117,
+          "text": "if ((t.Spawned || t.SpawnedParentOrMe != pawn) && t.PositionHeld.IsForbidden(pawn))"
+        }
+      ],
+      "interpretation": "Item forbidden check incorporates the held position and allowed-area rules."
+    },
+    {
+      "type": "RimWorld.ForbidUtility",
+      "needle": "if (!c.InAllowedArea(pawn))",
+      "locations": [
+        {
+          "line": 163,
+          "text": "if (!c.InAllowedArea(pawn))"
+        }
+      ],
+      "interpretation": "For ordinary caring pawns, destinations outside their allowed area are forbidden."
+    },
+    {
+      "type": "RimWorld.ForbidUtility",
+      "needle": "effectiveAreaRestrictionInPawnCurrentMap.TrueCount > 0",
+      "locations": [
+        {
+          "line": 98,
+          "text": "if (effectiveAreaRestrictionInPawnCurrentMap != null && effectiveAreaRestrictionInPawnCurrentMap.TrueCount > 0 && !effectiveAreaRestrictionInPawnCurrentMap[c])"
+        },
+        {
+          "line": 183,
+          "text": "if (effectiveAreaRestrictionInPawnCurrentMap != null && effectiveAreaRestrictionInPawnCurrentMap.TrueCount > 0 && effectiveAreaRestrictionInPawnCurrentMap.Map == r.Map && r.OverlapWith(effectiveAreaRestrictionInPawnCurrentMap) == AreaOverlap.None)"
+        }
+      ],
+      "interpretation": "An empty native allowed area does not restrict destinations here."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_Wear",
+      "needle": "context.FirstSelectedPawn.apparel.WouldReplaceLockedApparel(apparel)",
+      "locations": [
+        {
+          "line": 42,
+          "text": "if (context.FirstSelectedPawn.apparel.WouldReplaceLockedApparel(apparel))"
+        }
+      ],
+      "interpretation": "Manual force-wear rejects locked conflicts."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_Wear",
+      "needle": "apparel.SetForbidden(value: false);",
+      "locations": [
+        {
+          "line": 62,
+          "text": "apparel.SetForbidden(value: false);"
+        }
+      ],
+      "interpretation": "Accepted manual wear clears the item forbidden flag."
+    },
+    {
+      "type": "Verse.AI.Pawn_JobTracker",
+      "needle": "job.playerForced = true;",
+      "locations": [
+        {
+          "line": 895,
+          "text": "job.playerForced = true;"
+        }
+      ],
+      "interpretation": "Taking an ordered job marks it player-forced."
+    },
+    {
+      "type": "RimWorld.JobDriver_Wear",
+      "needle": "pawn.Reserve(Apparel, job, 1, -1, null, errorOnFailed)",
+      "locations": [
+        {
+          "line": 47,
+          "text": "return pawn.Reserve(Apparel, job, 1, -1, null, errorOnFailed);"
+        }
+      ],
+      "interpretation": "Wear driver reserves the actual apparel or its source."
+    },
+    {
+      "type": "RimWorld.JobDriver_Wear",
+      "needle": "duration = (int)(Apparel.GetStatValue(StatDefOf.EquipDelay) * 60f);",
+      "locations": [
+        {
+          "line": 57,
+          "text": "duration = (int)(Apparel.GetStatValue(StatDefOf.EquipDelay) * 60f);"
+        }
+      ],
+      "interpretation": "New clothing equip delay converts seconds into native ticks."
+    },
+    {
+      "type": "RimWorld.JobDriver_Wear",
+      "needle": "duration += (int)(wornApparel[num].GetStatValue(StatDefOf.EquipDelay) * 60f);",
+      "locations": [
+        {
+          "line": 64,
+          "text": "duration += (int)(wornApparel[num].GetStatValue(StatDefOf.EquipDelay) * 60f);"
+        }
+      ],
+      "interpretation": "Conflicting old clothing removal delays add to total wear duration."
+    },
+    {
+      "type": "RimWorld.JobDriver_Wear",
+      "needle": "Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch)",
+      "locations": [
+        {
+          "line": 79,
+          "text": "yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch).FailOnDespawnedNullOrForbidden(TargetIndex.A);"
+        }
+      ],
+      "interpretation": "Wear requires walking to the actual item."
+    },
+    {
+      "type": "RimWorld.JobDriver_Wear",
+      "needle": "this.FailOnBurningImmobile(TargetIndex.A);",
+      "locations": [
+        {
+          "line": 71,
+          "text": "this.FailOnBurningImmobile(TargetIndex.A);"
+        }
+      ],
+      "interpretation": "Burning target can invalidate the in-progress job."
+    },
+    {
+      "type": "RimWorld.JobDriver_Wear",
+      "needle": "toil.FailOnDespawnedNullOrForbidden",
+      "locations": [
+        {
+          "line": 89,
+          "text": "toil.FailOnDespawnedNullOrForbidden((!usingSource) ? TargetIndex.A : TargetIndex.B);"
+        }
+      ],
+      "interpretation": "Target disappearance or newly forbidden status can invalidate progress."
+    },
+    {
+      "type": "RimWorld.JobDriver_Wear",
+      "needle": "pawn.apparel.TryDrop(wornApparel[num], out var _, pawn.PositionHeld, forbid)",
+      "locations": [
+        {
+          "line": 140,
+          "text": "if (!pawn.apparel.TryDrop(wornApparel[num], out var _, pawn.PositionHeld, forbid))"
+        }
+      ],
+      "interpretation": "Conflicting clothing is physically dropped during the wear delay."
+    },
+    {
+      "type": "RimWorld.JobDriver_Wear",
+      "needle": "Scribe_Values.Look(ref unequipBuffer, \"unequipBuffer\", 0);",
+      "locations": [
+        {
+          "line": 38,
+          "text": "Scribe_Values.Look(ref unequipBuffer, \"unequipBuffer\", 0);"
+        }
+      ],
+      "interpretation": "Wear progress/removal buffer persists."
+    },
+    {
+      "type": "RimWorld.JobDriver_Wear",
+      "needle": "pawn.outfits != null && job.playerForced",
+      "locations": [
+        {
+          "line": 103,
+          "text": "if (pawn.outfits != null && job.playerForced)"
+        }
+      ],
+      "interpretation": "Only a completed player-forced wear job sets the forced override."
+    },
+    {
+      "type": "RimWorld.JobDriver_Wear",
+      "needle": "pawn.outfits.forcedHandler.SetForced(apparel, forced: true);",
+      "locations": [
+        {
+          "line": 105,
+          "text": "pawn.outfits.forcedHandler.SetForced(apparel, forced: true);"
+        }
+      ],
+      "interpretation": "The forced override belongs to the newly worn instance."
+    },
+    {
+      "type": "RimWorld.JobDriver_RemoveApparel",
+      "needle": "Toils_General.Wait(duration)",
+      "locations": [
+        {
+          "line": 35,
+          "text": "yield return Toils_General.Wait(duration).PlaySustainerOrSound(Apparel.def.apparel.soundRemove).WithProgressBarToilDelay(TargetIndex.A);"
+        }
+      ],
+      "interpretation": "Explicit removal also takes equip-delay time."
+    },
+    {
+      "type": "RimWorld.JobDriver_RemoveApparel",
+      "needle": "!pawn.apparel.WornApparel.Contains(Apparel)",
+      "locations": [
+        {
+          "line": 39,
+          "text": "if (!pawn.apparel.WornApparel.Contains(Apparel))"
+        }
+      ],
+      "interpretation": "Removal checks that the intended item is still worn."
+    },
+    {
+      "type": "RimWorld.JobDriver_RemoveApparel",
+      "needle": "resultingAp.SetForbidden(value: false, warnOnFail: false);",
+      "locations": [
+        {
+          "line": 52,
+          "text": "resultingAp.SetForbidden(value: false, warnOnFail: false);"
+        }
+      ],
+      "interpretation": "Automatic removal allows the dropped item before trying storage hauling."
+    },
+    {
+      "type": "RimWorld.JobDriver_RemoveApparel",
+      "needle": "StoreUtility.TryFindBestBetterStoreCellFor",
+      "locations": [
+        {
+          "line": 54,
+          "text": "if (StoreUtility.TryFindBestBetterStoreCellFor(resultingAp, pawn, Map, currentPriority, pawn.Faction, out var foundCell))"
+        }
+      ],
+      "interpretation": "Hauling the removed item requires a real suitable storage destination."
+    },
+    {
+      "type": "RimWorld.JobDriver_RemoveApparel",
+      "needle": "Toils_Haul.StartCarryThing(TargetIndex.A)",
+      "locations": [
+        {
+          "line": 74,
+          "text": "yield return Toils_Haul.StartCarryThing(TargetIndex.A).FailOn(() => !pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation));"
+        }
+      ],
+      "interpretation": "Post-removal hauling physically carries the same dropped item."
+    },
+    {
+      "type": "RimWorld.Pawn_ApparelTracker",
+      "needle": "wornApparel.TryAdd(newApparel, canMergeWithExistingStacks: false);",
+      "locations": [
+        {
+          "line": 480,
+          "text": "wornApparel.TryAdd(newApparel, canMergeWithExistingStacks: false);"
+        }
+      ],
+      "interpretation": "Wear transfers the specific entity into apparel ownership without merging."
+    },
+    {
+      "type": "RimWorld.Pawn_ApparelTracker",
+      "needle": "pawn.outfits.forcedHandler.SetForced(apparel, forced: false);",
+      "locations": [
+        {
+          "line": 789,
+          "text": "pawn.outfits.forcedHandler.SetForced(apparel, forced: false);"
+        }
+      ],
+      "interpretation": "Removing apparel clears its forced override."
+    },
+    {
+      "type": "RimWorld.ApparelProperties",
+      "needle": "public float scoreOffset;",
+      "locations": [
+        {
+          "line": 85,
+          "text": "public float scoreOffset;"
+        }
+      ],
+      "interpretation": "Definition score offset defaults to zero unless XML or other configuration supplies it."
+    },
+    {
+      "type": "RimWorld.Apparel",
+      "needle": "num += allComps[i].CompGetSpecialApparelScoreOffset();",
+      "locations": [
+        {
+          "line": 341,
+          "text": "num += allComps[i].CompGetSpecialApparelScoreOffset();"
+        }
+      ],
+      "interpretation": "Special score is the sum of component contributions; absence of a definition offset does not prove every component offset is zero."
+    },
+    {
+      "type": "RimWorld.Dialog_ManageApparelPolicies",
+      "needle": "ThingFilterUI.DoThingFilterConfigWindow",
+      "locations": [
+        {
+          "line": 70,
+          "text": "ThingFilterUI.DoThingFilterConfigWindow(rect, thingFilterState, SelectedPolicy.filter, ApparelGlobalFilter, 16, null, HiddenSpecialThingFilters());"
+        }
+      ],
+      "interpretation": "Policy manager edits a shared filter with apparel as the parent category."
+    }
+  ],
+  "boundedChecks": [
+    {
+      "type": "RimWorld.PawnApparelGenerator",
+      "start": "public static NeededWarmth CalculateNeededWarmth",
+      "end": "private static float ApparelToxicEnvironmentToAddress",
+      "lineStart": 1164,
+      "lineEnd": 1178,
+      "sha256": "42c66b04082e2362acb18a1ab79e4aecd0a2c3951e2753ce68b3ce84ae67feaa",
+      "absent": [
+        "AmbientTemperature",
+        "ComfyTemperatureMax",
+        "GetRoom"
+      ],
+      "present": [
+        "AverageTemperatureAtTileForTwelfth",
+        "ComfyTemperatureMin) - 4f",
+        "ComfyTemperatureMin) + 4f"
+      ],
+      "interpretation": "Warmth classification uses the abstract race minimum and seasonal average; no room or effective worn-gear temperature in this method."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "start": "public static float ApparelScoreRaw",
+      "end": "",
+      "lineStart": 289,
+      "lineEnd": 418,
+      "sha256": "00a07fd32d2c3616c35398447a6ad0438c286eb933efccf4feba917723d9c19d",
+      "absent": [
+        "Insulation_Heat",
+        "NeededWarmth.Cool",
+        "AmbientTemperature",
+        "ArmorRating_Heat",
+        "MarketValue",
+        "MoveSpeed"
+      ],
+      "present": [
+        "ArmorRating_Sharp",
+        "ArmorRating_Blunt",
+        "Insulation_Cold",
+        "HitPointsPercentScoreFactorCurve"
+      ],
+      "interpretation": "These named direct terms are absent from the raw scoring method; indirect special offsets are not ruled out."
+    },
+    {
+      "type": "RimWorld.JobGiver_OptimizeApparel",
+      "start": "public static float ApparelScoreGain",
+      "end": "public static float ApparelScoreRaw",
+      "lineStart": 257,
+      "lineEnd": 289,
+      "sha256": "bb0294a645ec290f3a8697fa4be0c604587de2147dc56de505c483a7767a2b58",
+      "absent": [
+        "currentApparelPolicy",
+        "IsInAnyStorage"
+      ],
+      "present": [
+        "CanWearTogether",
+        "AllowedToAutomaticallyDrop",
+        "num -= wornScoresCache[i]",
+        "if (!flag)",
+        "num *= 10f"
+      ],
+      "interpretation": "Gain handles conflict opportunity cost and forced protection; candidate policy/storage checks live in TryGiveJob."
+    },
+    {
+      "type": "RimWorld.OutfitForcedHandler",
+      "start": "public void Reset()",
+      "end": "public bool AllowedToAutomaticallyDrop",
+      "lineStart": 14,
+      "lineEnd": 19,
+      "sha256": "533219db81ee8ec5c3d691a10b4e1017a8857a49b4e2102e52976f373ebcb7f5",
+      "absent": [
+        "TryDrop",
+        "Notify_OutfitChanged",
+        "nextApparelOptimizeTick"
+      ],
+      "present": [
+        "forcedAps.Clear()"
+      ],
+      "interpretation": "Clearing forced state neither strips clothes nor directly resets the optimization deadline in this method."
+    },
+    {
+      "type": "RimWorld.ApparelPolicy",
+      "start": "public class ApparelPolicy",
+      "end": "",
+      "lineStart": 5,
+      "lineEnd": 34,
+      "sha256": "4b9aadffbf04b1f3071ac238d4900cfb63aef9df35b357b7fbb690146d8dd8e1",
+      "absent": [
+        "settingsChangedCallback",
+        "Notify_OutfitChanged",
+        "nextApparelOptimizeTick"
+      ],
+      "present": [
+        "new ThingFilter()",
+        "CopyAllowancesFrom"
+      ],
+      "interpretation": "This policy class does not wire an immediate pawn rescan callback; no global absence claim."
+    },
+    {
+      "type": "RimWorld.Dialog_ManageApparelPolicies",
+      "start": "protected override void DoContentsRect",
+      "end": "private IEnumerable<SpecialThingFilterDef> HiddenSpecialThingFilters",
+      "lineStart": 68,
+      "lineEnd": 73,
+      "sha256": "269c8c92875f18428d7d1e3a6ea5596f2fc12aa8710de12bac01264d1958525f",
+      "absent": [
+        "Notify_OutfitChanged",
+        "nextApparelOptimizeTick"
+      ],
+      "present": [
+        "SelectedPolicy.filter"
+      ],
+      "interpretation": "The apparel filter edit body itself does not reset pawn deadlines."
+    },
+    {
+      "type": "RimWorld.FloatMenuOptionProvider_Wear",
+      "start": "protected override FloatMenuOption GetSingleOptionFor",
+      "end": "",
+      "lineStart": 20,
+      "lineEnd": 74,
+      "sha256": "91b2bc71cf3ce413c4de42d7c160eabd6b2a895fc0296273c85f24ff30d9bf1e",
+      "absent": [
+        "CurrentApparelPolicy",
+        "AllowedToAutomaticallyDrop",
+        "IsInAnyStorage",
+        "IsForced("
+      ],
+      "present": [
+        "WouldReplaceLockedApparel",
+        "CanReach",
+        "IsBurning",
+        "TryTakeOrderedJob"
+      ],
+      "interpretation": "Manual wear does not consult policy, storage membership or ordinary forced protection in this provider; physical/locked gates remain."
+    },
+    {
+      "type": "RimWorld.JobDriver_Wear",
+      "start": "protected override IEnumerable<Toil> MakeNewToils",
+      "end": "private SoundDef GetCurrentWearSound",
+      "lineStart": 69,
+      "lineEnd": 110,
+      "sha256": "5ce692044f4bdc3f38bf340b030740d0a535acd39f08b7b59b49f8743c14628f",
+      "absent": [
+        "CurrentApparelPolicy",
+        "filter.Allows",
+        "AllowedToAutomaticallyDrop"
+      ],
+      "present": [
+        "FailOnDespawnedNullOrForbidden",
+        "pawn.apparel.Wear(apparel)",
+        "job.playerForced",
+        "SetForced(apparel, forced: true)"
+      ],
+      "interpretation": "Wear driver rechecks target validity but not policy/forced filter during this method; a Web policy-change cancel is an intentional adaptation."
+    },
+    {
+      "type": "RimWorld.JobDriver_Wear",
+      "start": "private void TryUnequipSomething",
+      "end": "",
+      "lineStart": 128,
+      "lineEnd": 151,
+      "sha256": "dd6d41488f7f6b7641d37bc5a589d51bae7e1cb04058fbca32e32a37f7fbc79d",
+      "absent": [
+        "Destroy(",
+        "unequipBuffer -=",
+        "unequipBuffer = 0",
+        "SetForced("
+      ],
+      "present": [
+        "unequipBuffer >= num2",
+        "TryDrop",
+        "EndJobWith(JobCondition.Errored)"
+      ],
+      "interpretation": "Conflicts are dropped rather than destroyed. The buffer is not decremented here, so the implementation is not a literal sequential-delay simulation."
+    },
+    {
+      "type": "RimWorld.JobDriver_RemoveApparel",
+      "start": "protected override IEnumerable<Toil> MakeNewToils",
+      "end": "",
+      "lineStart": 32,
+      "lineEnd": 81,
+      "sha256": "137781daef5e0a6e5f83b7d95adade2155bb6d6053c697cc3705e16f62309cf7",
+      "absent": [
+        "Destroy(",
+        "Generate",
+        "MakeThing("
+      ],
+      "present": [
+        "TryDrop",
+        "TryFindBestBetterStoreCellFor",
+        "StartCarryThing"
+      ],
+      "interpretation": "Removal and optional hauling reuse the real item, without manufacturing or deleting replacements."
+    },
+    {
+      "type": "Verse.SimpleCurve",
+      "start": "public float Evaluate(float x)",
+      "end": "public float EvaluateInverted",
+      "lineStart": 139,
+      "lineEnd": 172,
+      "sha256": "544d3029f4b867d3416491dbeb07e4f6f8a5743a374cb5eefec7485a491809e8",
+      "absent": [
+        "LerpUnclamped"
+      ],
+      "present": [
+        "x <= points[0].x",
+        "x >= points[points.Count - 1].x",
+        "Mathf.Lerp"
+      ],
+      "interpretation": "Scoring curves interpolate inside and clamp outside their endpoints."
+    },
+    {
+      "type": "RimWorld.OutfitDatabase",
+      "start": "public AcceptanceReport TryDelete",
+      "end": "public ApparelPolicy MakeNewOutfit",
+      "lineStart": 40,
+      "lineEnd": 60,
+      "sha256": "f77f20277797a87f222b82bd2695b5db9649021adb21a0ac51886db70bcf92f6",
+      "absent": [
+        "Destroy",
+        "RemoveAll"
+      ],
+      "present": [
+        "AllMapsCaravansAndTravellingTransporters_Alive",
+        "OutfitInUse",
+        "CurrentApparelPolicy = null",
+        "outfits.Remove(apparelPolicy)"
+      ],
+      "interpretation": "Deleting a policy is reference management, not clothing removal."
+    }
+  ],
+  "packagedXml": [
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Humanlike.xml",
+      "sha256": "d95bb2236294115b32eeea1cb0f2edad0d255e7530b9a8c209a7e6c365a80bbf",
+      "xpath": "/Defs/ThingDef[defName=\"Human\"]",
+      "nameAttribute": "Human",
+      "parentName": "BasePawn",
+      "fields": [
+        {
+          "xpath": "statBases/ComfyTemperatureMin",
+          "count": 1,
+          "xml": [
+            "<ComfyTemperatureMin>16</ComfyTemperatureMin>"
+          ]
+        },
+        {
+          "xpath": "statBases/ComfyTemperatureMax",
+          "count": 1,
+          "xml": [
+            "<ComfyTemperatureMax>26</ComfyTemperatureMax>"
+          ]
+        }
+      ],
+      "interpretation": "Human abstract comfortable minimum is sixteen; warmth thresholds become twelve and twenty."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+      "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+      "xpath": "/Defs/ThingDef[@Name=\"ApparelNoQualityBase\"]",
+      "nameAttribute": "ApparelNoQualityBase",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defName",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/EquipDelay",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/ArmorRating_Sharp",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/ArmorRating_Blunt",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/Insulation_Cold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierArmor",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Cold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Heat",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "apparel/layers",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "apparel/bodyPartGroups",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "apparel/defaultOutfitTags",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "apparel/scoreOffset",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li Class=\"CompProperties_Forbiddable\" /><li><compClass>CompColorable</compClass></li></comps>"
+          ]
+        }
+      ],
+      "interpretation": "Shared apparel parent; selected fields are not inheritance-expanded."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+      "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+      "xpath": "/Defs/ThingDef[@Name=\"ApparelBase\"]",
+      "nameAttribute": "ApparelBase",
+      "parentName": "ApparelNoQualityBase",
+      "fields": [
+        {
+          "xpath": "defName",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/EquipDelay",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/ArmorRating_Sharp",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/ArmorRating_Blunt",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/Insulation_Cold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierArmor",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Cold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Heat",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "apparel/layers",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "apparel/bodyPartGroups",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "apparel/defaultOutfitTags",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "apparel/scoreOffset",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "comps",
+          "count": 1,
+          "xml": [
+            "<comps><li><compClass>CompQuality</compClass></li><li Class=\"CompProperties_Styleable\" /></comps>"
+          ]
+        }
+      ],
+      "interpretation": "Quality apparel parent adds the quality component."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+      "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+      "xpath": "/Defs/ThingDef[defName=\"Apparel_BasicShirt\"]",
+      "nameAttribute": "",
+      "parentName": "ApparelMakeableBase",
+      "fields": [
+        {
+          "xpath": "defName",
+          "count": 1,
+          "xml": [
+            "<defName>Apparel_BasicShirt</defName>"
+          ]
+        },
+        {
+          "xpath": "statBases/EquipDelay",
+          "count": 1,
+          "xml": [
+            "<EquipDelay>1.5</EquipDelay>"
+          ]
+        },
+        {
+          "xpath": "statBases/ArmorRating_Sharp",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/ArmorRating_Blunt",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/Insulation_Cold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierArmor",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierArmor>0.2</StuffEffectMultiplierArmor>"
+          ]
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Cold",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierInsulation_Cold>0.22</StuffEffectMultiplierInsulation_Cold>"
+          ]
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Heat",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierInsulation_Heat>0.10</StuffEffectMultiplierInsulation_Heat>"
+          ]
+        },
+        {
+          "xpath": "apparel/layers",
+          "count": 1,
+          "xml": [
+            "<layers><li>OnSkin</li></layers>"
+          ]
+        },
+        {
+          "xpath": "apparel/bodyPartGroups",
+          "count": 1,
+          "xml": [
+            "<bodyPartGroups><li>Torso</li><li>Shoulders</li></bodyPartGroups>"
+          ]
+        },
+        {
+          "xpath": "apparel/defaultOutfitTags",
+          "count": 1,
+          "xml": [
+            "<defaultOutfitTags><li>Worker</li><li>Soldier</li><li>Spacefarer</li></defaultOutfitTags>"
+          ]
+        },
+        {
+          "xpath": "apparel/scoreOffset",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 1,
+          "xml": [
+            "<thingCategories><li>ApparelMisc</li></thingCategories>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Shirt coverage, layers, default policy tags and equip time."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+      "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+      "xpath": "/Defs/ThingDef[defName=\"Apparel_Pants\"]",
+      "nameAttribute": "",
+      "parentName": "ApparelMakeableBase",
+      "fields": [
+        {
+          "xpath": "defName",
+          "count": 1,
+          "xml": [
+            "<defName>Apparel_Pants</defName>"
+          ]
+        },
+        {
+          "xpath": "statBases/EquipDelay",
+          "count": 1,
+          "xml": [
+            "<EquipDelay>2</EquipDelay>"
+          ]
+        },
+        {
+          "xpath": "statBases/ArmorRating_Sharp",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/ArmorRating_Blunt",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/Insulation_Cold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierArmor",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierArmor>0.2</StuffEffectMultiplierArmor>"
+          ]
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Cold",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierInsulation_Cold>0.20</StuffEffectMultiplierInsulation_Cold>"
+          ]
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Heat",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierInsulation_Heat>0.08</StuffEffectMultiplierInsulation_Heat>"
+          ]
+        },
+        {
+          "xpath": "apparel/layers",
+          "count": 1,
+          "xml": [
+            "<layers><li>OnSkin</li></layers>"
+          ]
+        },
+        {
+          "xpath": "apparel/bodyPartGroups",
+          "count": 1,
+          "xml": [
+            "<bodyPartGroups><li>Legs</li></bodyPartGroups>"
+          ]
+        },
+        {
+          "xpath": "apparel/defaultOutfitTags",
+          "count": 1,
+          "xml": [
+            "<defaultOutfitTags><li>Worker</li><li>Soldier</li><li>Spacefarer</li></defaultOutfitTags>"
+          ]
+        },
+        {
+          "xpath": "apparel/scoreOffset",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 1,
+          "xml": [
+            "<thingCategories><li>ApparelMisc</li></thingCategories>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Pants coverage, layers and default policy tags."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+      "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+      "xpath": "/Defs/ThingDef[defName=\"Apparel_Parka\"]",
+      "nameAttribute": "",
+      "parentName": "ApparelMakeableBase",
+      "fields": [
+        {
+          "xpath": "defName",
+          "count": 1,
+          "xml": [
+            "<defName>Apparel_Parka</defName>"
+          ]
+        },
+        {
+          "xpath": "statBases/EquipDelay",
+          "count": 1,
+          "xml": [
+            "<EquipDelay>3</EquipDelay>"
+          ]
+        },
+        {
+          "xpath": "statBases/ArmorRating_Sharp",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/ArmorRating_Blunt",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/Insulation_Cold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierArmor",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierArmor>0.2</StuffEffectMultiplierArmor>"
+          ]
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Cold",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierInsulation_Cold>2.00</StuffEffectMultiplierInsulation_Cold>"
+          ]
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Heat",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierInsulation_Heat>0.00</StuffEffectMultiplierInsulation_Heat>"
+          ]
+        },
+        {
+          "xpath": "apparel/layers",
+          "count": 1,
+          "xml": [
+            "<layers><li>Shell</li></layers>"
+          ]
+        },
+        {
+          "xpath": "apparel/bodyPartGroups",
+          "count": 1,
+          "xml": [
+            "<bodyPartGroups><li>Torso</li><li>Neck</li><li>Shoulders</li><li>Arms</li></bodyPartGroups>"
+          ]
+        },
+        {
+          "xpath": "apparel/defaultOutfitTags",
+          "count": 1,
+          "xml": [
+            "<defaultOutfitTags><li>Worker</li><li>Soldier</li></defaultOutfitTags>"
+          ]
+        },
+        {
+          "xpath": "apparel/scoreOffset",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 1,
+          "xml": [
+            "<thingCategories><li>ApparelMisc</li></thingCategories>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Parka provides material-scaled insulation and its own wear delay."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+      "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+      "xpath": "/Defs/ThingDef[defName=\"Apparel_Duster\"]",
+      "nameAttribute": "",
+      "parentName": "ApparelMakeableBase",
+      "fields": [
+        {
+          "xpath": "defName",
+          "count": 1,
+          "xml": [
+            "<defName>Apparel_Duster</defName>"
+          ]
+        },
+        {
+          "xpath": "statBases/EquipDelay",
+          "count": 1,
+          "xml": [
+            "<EquipDelay>3</EquipDelay>"
+          ]
+        },
+        {
+          "xpath": "statBases/ArmorRating_Sharp",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/ArmorRating_Blunt",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/Insulation_Cold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierArmor",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierArmor>0.3</StuffEffectMultiplierArmor>"
+          ]
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Cold",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierInsulation_Cold>0.60</StuffEffectMultiplierInsulation_Cold>"
+          ]
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Heat",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierInsulation_Heat>0.85</StuffEffectMultiplierInsulation_Heat>"
+          ]
+        },
+        {
+          "xpath": "apparel/layers",
+          "count": 1,
+          "xml": [
+            "<layers><li>Shell</li></layers>"
+          ]
+        },
+        {
+          "xpath": "apparel/bodyPartGroups",
+          "count": 1,
+          "xml": [
+            "<bodyPartGroups><li>Torso</li><li>Neck</li><li>Shoulders</li><li>Arms</li><li>Legs</li></bodyPartGroups>"
+          ]
+        },
+        {
+          "xpath": "apparel/defaultOutfitTags",
+          "count": 1,
+          "xml": [
+            "<defaultOutfitTags><li>Worker</li></defaultOutfitTags>"
+          ]
+        },
+        {
+          "xpath": "apparel/scoreOffset",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 1,
+          "xml": [
+            "<thingCategories><li>ApparelMisc</li></thingCategories>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Duster has distinct insulation multipliers and preset tags."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+      "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+      "xpath": "/Defs/ThingDef[defName=\"Apparel_FlakVest\"]",
+      "nameAttribute": "",
+      "parentName": "ArmorMachineableBase",
+      "fields": [
+        {
+          "xpath": "defName",
+          "count": 1,
+          "xml": [
+            "<defName>Apparel_FlakVest</defName>"
+          ]
+        },
+        {
+          "xpath": "statBases/EquipDelay",
+          "count": 1,
+          "xml": [
+            "<EquipDelay>5</EquipDelay>"
+          ]
+        },
+        {
+          "xpath": "statBases/ArmorRating_Sharp",
+          "count": 1,
+          "xml": [
+            "<ArmorRating_Sharp>1.00</ArmorRating_Sharp>"
+          ]
+        },
+        {
+          "xpath": "statBases/ArmorRating_Blunt",
+          "count": 1,
+          "xml": [
+            "<ArmorRating_Blunt>0.36</ArmorRating_Blunt>"
+          ]
+        },
+        {
+          "xpath": "statBases/Insulation_Cold",
+          "count": 1,
+          "xml": [
+            "<Insulation_Cold>1</Insulation_Cold>"
+          ]
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierArmor",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Cold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Heat",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "apparel/layers",
+          "count": 1,
+          "xml": [
+            "<layers><li>Middle</li></layers>"
+          ]
+        },
+        {
+          "xpath": "apparel/bodyPartGroups",
+          "count": 1,
+          "xml": [
+            "<bodyPartGroups><li>Torso</li><li>Neck</li></bodyPartGroups>"
+          ]
+        },
+        {
+          "xpath": "apparel/defaultOutfitTags",
+          "count": 1,
+          "xml": [
+            "<defaultOutfitTags><li>Soldier</li></defaultOutfitTags>"
+          ]
+        },
+        {
+          "xpath": "apparel/scoreOffset",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 1,
+          "xml": [
+            "<thingCategories><li>ApparelArmor</li></thingCategories>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Flak vest supplies direct armor values and a five-second equip delay."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+      "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+      "xpath": "/Defs/ThingDef[defName=\"Apparel_PlateArmor\"]",
+      "nameAttribute": "",
+      "parentName": "ArmorSmithableBase",
+      "fields": [
+        {
+          "xpath": "defName",
+          "count": 1,
+          "xml": [
+            "<defName>Apparel_PlateArmor</defName>"
+          ]
+        },
+        {
+          "xpath": "statBases/EquipDelay",
+          "count": 1,
+          "xml": [
+            "<EquipDelay>15</EquipDelay>"
+          ]
+        },
+        {
+          "xpath": "statBases/ArmorRating_Sharp",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/ArmorRating_Blunt",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/Insulation_Cold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierArmor",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierArmor>0.9</StuffEffectMultiplierArmor>"
+          ]
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Cold",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierInsulation_Cold>1.0</StuffEffectMultiplierInsulation_Cold>"
+          ]
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Heat",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierInsulation_Heat>0</StuffEffectMultiplierInsulation_Heat>"
+          ]
+        },
+        {
+          "xpath": "apparel/layers",
+          "count": 1,
+          "xml": [
+            "<layers><li>Middle</li><li>Shell</li></layers>"
+          ]
+        },
+        {
+          "xpath": "apparel/bodyPartGroups",
+          "count": 1,
+          "xml": [
+            "<bodyPartGroups><li>Torso</li><li>Neck</li><li>Shoulders</li><li>Arms</li><li>Legs</li></bodyPartGroups>"
+          ]
+        },
+        {
+          "xpath": "apparel/defaultOutfitTags",
+          "count": 1,
+          "xml": [
+            "<defaultOutfitTags><li>Soldier</li></defaultOutfitTags>"
+          ]
+        },
+        {
+          "xpath": "apparel/scoreOffset",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 1,
+          "xml": [
+            "<thingCategories><li>ApparelArmor</li></thingCategories>"
+          ]
+        },
+        {
+          "xpath": "comps",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Plate armor spans multiple layers and its replacement cost includes every conflict."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Headgear.xml",
+      "sha256": "d78950e38f1943fca6c956247e613c22d4095cf3a62605a1bc5870c5293e6938",
+      "xpath": "/Defs/ThingDef[defName=\"Apparel_Tuque\"]",
+      "nameAttribute": "",
+      "parentName": "HatMakeableBase",
+      "fields": [
+        {
+          "xpath": "defName",
+          "count": 1,
+          "xml": [
+            "<defName>Apparel_Tuque</defName>"
+          ]
+        },
+        {
+          "xpath": "statBases/EquipDelay",
+          "count": 1,
+          "xml": [
+            "<EquipDelay>0.8</EquipDelay>"
+          ]
+        },
+        {
+          "xpath": "statBases/ArmorRating_Sharp",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/ArmorRating_Blunt",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/Insulation_Cold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierArmor",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierArmor>0.2</StuffEffectMultiplierArmor>"
+          ]
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Cold",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierInsulation_Cold>0.50</StuffEffectMultiplierInsulation_Cold>"
+          ]
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Heat",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierInsulation_Heat>0</StuffEffectMultiplierInsulation_Heat>"
+          ]
+        },
+        {
+          "xpath": "apparel/layers",
+          "count": 1,
+          "xml": [
+            "<layers><li>Overhead</li></layers>"
+          ]
+        },
+        {
+          "xpath": "apparel/bodyPartGroups",
+          "count": 1,
+          "xml": [
+            "<bodyPartGroups><li>UpperHead</li></bodyPartGroups>"
+          ]
+        },
+        {
+          "xpath": "apparel/defaultOutfitTags",
+          "count": 1,
+          "xml": [
+            "<defaultOutfitTags><li>Worker</li><li>Soldier</li></defaultOutfitTags>"
+          ]
+        },
+        {
+          "xpath": "apparel/scoreOffset",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "comps",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Tuque head coverage and preset tags."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Headgear.xml",
+      "sha256": "d78950e38f1943fca6c956247e613c22d4095cf3a62605a1bc5870c5293e6938",
+      "xpath": "/Defs/ThingDef[defName=\"Apparel_SimpleHelmet\"]",
+      "nameAttribute": "",
+      "parentName": "ArmorHelmetMakeableBase",
+      "fields": [
+        {
+          "xpath": "defName",
+          "count": 1,
+          "xml": [
+            "<defName>Apparel_SimpleHelmet</defName>"
+          ]
+        },
+        {
+          "xpath": "statBases/EquipDelay",
+          "count": 1,
+          "xml": [
+            "<EquipDelay>1.5</EquipDelay>"
+          ]
+        },
+        {
+          "xpath": "statBases/ArmorRating_Sharp",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/ArmorRating_Blunt",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/Insulation_Cold",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierArmor",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierArmor>0.5</StuffEffectMultiplierArmor>"
+          ]
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Cold",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierInsulation_Cold>0.15</StuffEffectMultiplierInsulation_Cold>"
+          ]
+        },
+        {
+          "xpath": "statBases/StuffEffectMultiplierInsulation_Heat",
+          "count": 1,
+          "xml": [
+            "<StuffEffectMultiplierInsulation_Heat>0</StuffEffectMultiplierInsulation_Heat>"
+          ]
+        },
+        {
+          "xpath": "apparel/layers",
+          "count": 1,
+          "xml": [
+            "<layers><li>Overhead</li></layers>"
+          ]
+        },
+        {
+          "xpath": "apparel/bodyPartGroups",
+          "count": 1,
+          "xml": [
+            "<bodyPartGroups><li>UpperHead</li></bodyPartGroups>"
+          ]
+        },
+        {
+          "xpath": "apparel/defaultOutfitTags",
+          "count": 1,
+          "xml": [
+            "<defaultOutfitTags><li>Soldier</li></defaultOutfitTags>"
+          ]
+        },
+        {
+          "xpath": "apparel/scoreOffset",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "thingCategories",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "comps",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Simple helmet head coverage and preset tags."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Apparel.xml",
+      "sha256": "134a3d02447dd7ec0adc6ee2609989b08fc26065f96d080885f81965507810a6",
+      "xpath": "/Defs/StatDef[@Name=\"ArmorRatingBase\"]",
+      "nameAttribute": "ArmorRatingBase",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>0</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "minValue",
+          "count": 1,
+          "xml": [
+            "<minValue>0</minValue>"
+          ]
+        },
+        {
+          "xpath": "maxValue",
+          "count": 1,
+          "xml": [
+            "<maxValue>2</maxValue>"
+          ]
+        },
+        {
+          "xpath": "parts",
+          "count": 1,
+          "xml": [
+            "<parts><li Class=\"StatPart_Quality\"><factorAwful>0.60</factorAwful><factorPoor>0.80</factorPoor><factorNormal>1.00</factorNormal><factorGood>1.15</factorGood><factorExcellent>1.30</factorExcellent><factorMasterwork>1.45</factorMasterwork><factorLegendary>1.80</factorLegendary></li></parts>"
+          ]
+        }
+      ],
+      "interpretation": "Quality influences effective armor before the optimizer reads the armor stat."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/SpecialThingFilterDefs/SpecialThingFilters.xml",
+      "sha256": "a3d81da38d9de4145d46cfb46ab8891f3ac7648cb73b481763be88b48a79806f",
+      "xpath": "/Defs/SpecialThingFilterDef[defName=\"AllowDeadmansApparel\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "parentCategory",
+          "count": 1,
+          "xml": [
+            "<parentCategory>Apparel</parentCategory>"
+          ]
+        },
+        {
+          "xpath": "allowedByDefault",
+          "count": 1,
+          "xml": [
+            "<allowedByDefault>true</allowedByDefault>"
+          ]
+        },
+        {
+          "xpath": "workerClass",
+          "count": 1,
+          "xml": [
+            "<workerClass>SpecialThingFilterWorker_DeadmansApparel</workerClass>"
+          ]
+        }
+      ],
+      "interpretation": "Tainted apparel is allowed by the special-filter default, unless a policy disables it."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/SpecialThingFilterDefs/SpecialThingFilters.xml",
+      "sha256": "a3d81da38d9de4145d46cfb46ab8891f3ac7648cb73b481763be88b48a79806f",
+      "xpath": "/Defs/SpecialThingFilterDef[defName=\"AllowNonDeadmansApparel\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "parentCategory",
+          "count": 1,
+          "xml": [
+            "<parentCategory>Apparel</parentCategory>"
+          ]
+        },
+        {
+          "xpath": "allowedByDefault",
+          "count": 1,
+          "xml": [
+            "<allowedByDefault>true</allowedByDefault>"
+          ]
+        },
+        {
+          "xpath": "workerClass",
+          "count": 1,
+          "xml": [
+            "<workerClass>SpecialThingFilterWorker_NonDeadmansApparel</workerClass>"
+          ]
+        }
+      ],
+      "interpretation": "Clean clothing is separately filterable but hidden in the apparel manager."
+    },
+    {
+      "file": "Data/Core/Defs/JobDefs/Jobs_Misc.xml",
+      "sha256": "537728d9066def61890253439953631e86afb7f2d5f08501a2a70172bcf5d714",
+      "xpath": "/Defs/JobDef[defName=\"Wear\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "driverClass",
+          "count": 1,
+          "xml": [
+            "<driverClass>JobDriver_Wear</driverClass>"
+          ]
+        },
+        {
+          "xpath": "reportString",
+          "count": 1,
+          "xml": [
+            "<reportString>wearing TargetA.</reportString>"
+          ]
+        },
+        {
+          "xpath": "allowOpportunisticPrefix",
+          "count": 1,
+          "xml": [
+            "<allowOpportunisticPrefix>true</allowOpportunisticPrefix>"
+          ]
+        }
+      ],
+      "interpretation": "Wear job points to the physical wear driver."
+    },
+    {
+      "file": "Data/Core/Defs/JobDefs/Jobs_Misc.xml",
+      "sha256": "537728d9066def61890253439953631e86afb7f2d5f08501a2a70172bcf5d714",
+      "xpath": "/Defs/JobDef[defName=\"RemoveApparel\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "driverClass",
+          "count": 1,
+          "xml": [
+            "<driverClass>JobDriver_RemoveApparel</driverClass>"
+          ]
+        },
+        {
+          "xpath": "reportString",
+          "count": 1,
+          "xml": [
+            "<reportString>removing TargetA.</reportString>"
+          ]
+        },
+        {
+          "xpath": "allowOpportunisticPrefix",
+          "count": 1,
+          "xml": [
+            "<allowOpportunisticPrefix>true</allowOpportunisticPrefix>"
+          ]
+        }
+      ],
+      "interpretation": "Removal has its own job driver."
+    },
+    {
+      "file": "Data/Core/Defs/ThinkTreeDefs/Humanlike.xml",
+      "sha256": "047fc3c5bcb60ead007adbcd0090690a25af882adeb11298df8f4b551bbbdd4e",
+      "xpath": "/Defs/ThinkTreeDef[defName=\"Humanlike\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": ".//li[@Class=\"JobGiver_OptimizeApparel\"]",
+          "count": 1,
+          "xml": [
+            "<li Class=\"JobGiver_OptimizeApparel\"><leaveJoinableLordIfIssuesJob>true</leaveJoinableLordIfIssuesJob></li>"
+          ]
+        }
+      ],
+      "interpretation": "Automatic apparel selection is an ordinary think-tree task, not an independent equipment tick."
+    }
+  ],
+  "definitionProfiles": [
+    {
+      "def": "Apparel_Tuque",
+      "definitionScoreOffset": 0,
+      "source": "Unspecified across complete selected Core parent chain; ApparelProperties float default",
+      "chain": [
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Headgear.xml",
+          "sha256": "d78950e38f1943fca6c956247e613c22d4095cf3a62605a1bc5870c5293e6938",
+          "xpath": "/Defs/ThingDef[defName=\"Apparel_Tuque\"]",
+          "parentName": "HatMakeableBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": [
+            "Worker",
+            "Soldier"
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Headgear.xml",
+          "sha256": "d78950e38f1943fca6c956247e613c22d4095cf3a62605a1bc5870c5293e6938",
+          "xpath": "/Defs/ThingDef[@Name=\"HatMakeableBase\"]",
+          "parentName": "ApparelMakeableBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ApparelMakeableBase\"]",
+          "parentName": "ApparelBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ApparelBase\"]",
+          "parentName": "ApparelNoQualityBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ApparelNoQualityBase\"]",
+          "parentName": "",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        }
+      ]
+    },
+    {
+      "def": "Apparel_Parka",
+      "definitionScoreOffset": 0,
+      "source": "Unspecified across complete selected Core parent chain; ApparelProperties float default",
+      "chain": [
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[defName=\"Apparel_Parka\"]",
+          "parentName": "ApparelMakeableBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": [
+            "Worker",
+            "Soldier"
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ApparelMakeableBase\"]",
+          "parentName": "ApparelBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ApparelBase\"]",
+          "parentName": "ApparelNoQualityBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ApparelNoQualityBase\"]",
+          "parentName": "",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        }
+      ]
+    },
+    {
+      "def": "Apparel_Duster",
+      "definitionScoreOffset": 0,
+      "source": "Unspecified across complete selected Core parent chain; ApparelProperties float default",
+      "chain": [
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[defName=\"Apparel_Duster\"]",
+          "parentName": "ApparelMakeableBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": [
+            "Worker"
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ApparelMakeableBase\"]",
+          "parentName": "ApparelBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ApparelBase\"]",
+          "parentName": "ApparelNoQualityBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ApparelNoQualityBase\"]",
+          "parentName": "",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        }
+      ]
+    },
+    {
+      "def": "Apparel_BasicShirt",
+      "definitionScoreOffset": 0,
+      "source": "Unspecified across complete selected Core parent chain; ApparelProperties float default",
+      "chain": [
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[defName=\"Apparel_BasicShirt\"]",
+          "parentName": "ApparelMakeableBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": [
+            "Worker",
+            "Soldier",
+            "Spacefarer"
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ApparelMakeableBase\"]",
+          "parentName": "ApparelBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ApparelBase\"]",
+          "parentName": "ApparelNoQualityBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ApparelNoQualityBase\"]",
+          "parentName": "",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        }
+      ]
+    },
+    {
+      "def": "Apparel_Pants",
+      "definitionScoreOffset": 0,
+      "source": "Unspecified across complete selected Core parent chain; ApparelProperties float default",
+      "chain": [
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[defName=\"Apparel_Pants\"]",
+          "parentName": "ApparelMakeableBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": [
+            "Worker",
+            "Soldier",
+            "Spacefarer"
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ApparelMakeableBase\"]",
+          "parentName": "ApparelBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ApparelBase\"]",
+          "parentName": "ApparelNoQualityBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ApparelNoQualityBase\"]",
+          "parentName": "",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        }
+      ]
+    },
+    {
+      "def": "Apparel_SimpleHelmet",
+      "definitionScoreOffset": 0,
+      "source": "Unspecified across complete selected Core parent chain; ApparelProperties float default",
+      "chain": [
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Headgear.xml",
+          "sha256": "d78950e38f1943fca6c956247e613c22d4095cf3a62605a1bc5870c5293e6938",
+          "xpath": "/Defs/ThingDef[defName=\"Apparel_SimpleHelmet\"]",
+          "parentName": "ArmorHelmetMakeableBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": [
+            "Soldier"
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Headgear.xml",
+          "sha256": "d78950e38f1943fca6c956247e613c22d4095cf3a62605a1bc5870c5293e6938",
+          "xpath": "/Defs/ThingDef[@Name=\"ArmorHelmetMakeableBase\"]",
+          "parentName": "ArmorMachineableBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ArmorMachineableBase\"]",
+          "parentName": "ApparelBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ApparelBase\"]",
+          "parentName": "ApparelNoQualityBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ApparelNoQualityBase\"]",
+          "parentName": "",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        }
+      ]
+    },
+    {
+      "def": "Apparel_PlateArmor",
+      "definitionScoreOffset": 0,
+      "source": "Unspecified across complete selected Core parent chain; ApparelProperties float default",
+      "chain": [
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[defName=\"Apparel_PlateArmor\"]",
+          "parentName": "ArmorSmithableBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": [
+            "Soldier"
+          ]
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ArmorSmithableBase\"]",
+          "parentName": "ApparelBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ApparelBase\"]",
+          "parentName": "ApparelNoQualityBase",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        },
+        {
+          "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+          "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+          "xpath": "/Defs/ThingDef[@Name=\"ApparelNoQualityBase\"]",
+          "parentName": "",
+          "scoreOffsetNodeCount": 0,
+          "defaultOutfitTags": []
+        }
+      ]
+    }
+  ],
+  "optimizerThinkTree": {
+    "ancestorsNearestFirst": [
+      {
+        "class": "ThinkNode_Tagger",
+        "invert": null,
+        "tag": "ChangingApparel"
+      },
+      {
+        "class": "ThinkNode_ConditionalColonist",
+        "invert": null,
+        "tag": null
+      },
+      {
+        "class": "ThinkNode_Priority",
+        "invert": null,
+        "tag": null
+      }
+    ],
+    "siblingsInOrder": [
+      {
+        "class": "JobGiver_SeekAllowedArea",
+        "tag": null,
+        "emergency": null,
+        "subtree": null,
+        "children": []
+      },
+      {
+        "class": "JobGiver_BringBabyToSafety",
+        "tag": null,
+        "emergency": null,
+        "subtree": null,
+        "children": []
+      },
+      {
+        "class": "JobGiver_SeekSafeTemperature",
+        "tag": null,
+        "emergency": null,
+        "subtree": null,
+        "children": []
+      },
+      {
+        "class": "JobGiver_DropUnusedInventory",
+        "tag": null,
+        "emergency": null,
+        "subtree": null,
+        "children": []
+      },
+      {
+        "class": "JobGiver_Work",
+        "tag": null,
+        "emergency": "true",
+        "subtree": null,
+        "children": []
+      },
+      {
+        "class": "ThinkNode_ConditionalStarving",
+        "tag": null,
+        "emergency": null,
+        "subtree": null,
+        "children": [
+          "ThinkNode_Tagger"
+        ]
+      },
+      {
+        "class": "ThinkNode_Tagger",
+        "tag": "Misc",
+        "emergency": null,
+        "subtree": null,
+        "children": [
+          "JobGiver_Autofeed"
+        ]
+      },
+      {
+        "class": "ThinkNode_JoinVoluntarilyJoinableLord",
+        "tag": null,
+        "emergency": null,
+        "subtree": null,
+        "children": [
+          "ThinkNode_Subtree"
+        ]
+      },
+      {
+        "class": "JobGiver_PickupDroppedWeapon",
+        "tag": null,
+        "emergency": null,
+        "subtree": null,
+        "children": []
+      },
+      {
+        "class": "ThinkNode_Tagger",
+        "tag": "ChangingApparel",
+        "emergency": null,
+        "subtree": null,
+        "children": [
+          "JobGiver_OptimizeApparel"
+        ]
+      },
+      {
+        "class": "ThinkNode_ConditionalWantsLookChange",
+        "tag": null,
+        "emergency": null,
+        "subtree": null,
+        "children": [
+          "JobGiver_UseStylingStationAutomatic"
+        ]
+      },
+      {
+        "class": "JobGiver_DyeHair",
+        "tag": null,
+        "emergency": null,
+        "subtree": null,
+        "children": []
+      },
+      {
+        "class": "ThinkNode_Tagger",
+        "tag": "TakeForInventoryStock",
+        "emergency": null,
+        "subtree": null,
+        "children": [
+          "JobGiver_TakeForInventoryStock"
+        ]
+      },
+      {
+        "class": "ThinkNode_Tagger",
+        "tag": "UnloadingOwnInventory",
+        "emergency": null,
+        "subtree": null,
+        "children": [
+          "JobGiver_UnloadYourInventory"
+        ]
+      },
+      {
+        "class": "ThinkNode_ConditionalNeedPercentageAbove",
+        "tag": null,
+        "emergency": null,
+        "subtree": null,
+        "children": [
+          "JobGiver_PackFood"
+        ]
+      }
+    ]
+  },
+  "nativeReference": {
+    "basePresetLabels": [
+      "Anything",
+      "Worker",
+      "Soldier",
+      "Nudist"
+    ],
+    "additionalPresets": {
+      "Ideology": "Slave",
+      "Odyssey": "Spacefarer"
+    },
+    "unproductiveScanDelayTicks": [
+      6000,
+      9000
+    ],
+    "minimumScoreGain": 0.05,
+    "gainFactorWithoutConflicts": 10,
+    "rawBase": 0.1,
+    "ordinaryArmorTerms": [
+      "ArmorRating_Sharp",
+      "ArmorRating_Blunt"
+    ],
+    "durabilityScoreCurve": [
+      [
+        0,
+        0
+      ],
+      [
+        0.2,
+        0.2
+      ],
+      [
+        0.22,
+        0.3
+      ],
+      [
+        0.5,
+        0.3
+      ],
+      [
+        0.52,
+        1
+      ]
+    ],
+    "warmColdInsulationFactorCurve": [
+      [
+        0,
+        1
+      ],
+      [
+        30,
+        8
+      ]
+    ],
+    "curveEndsClamp": true,
+    "warmthSeason": "current Twelfth average at tile",
+    "warmthThresholdRelativeToAbstractComfortMinimum": [
+      -4,
+      4
+    ],
+    "humanComfort": [
+      16,
+      26
+    ],
+    "humanWarmBelow": 12,
+    "humanCoolAbove": 20,
+    "coolStateAddsOrdinaryHeatInsulationScore": false,
+    "durabilityFilterUnit": "HP / maxHP rounded to a hundredth by Mathf.Round, clamped to 0..1",
+    "durabilityFilterEpsilon": 1E-05,
+    "qualityRange": "Awful through Legendary, inclusive",
+    "automaticCandidateRequiresStorage": true,
+    "automaticCandidateRequiresReserveAndReach": true,
+    "forcedBlocksAutomaticDrop": true,
+    "forcedBlocksExplicitManualReplacement": false,
+    "lockedBlocksManualReplacement": true,
+    "reassignmentResetsOptimizeDeadline": true,
+    "clearForcedDirectlyResetsDeadline": false,
+    "wearCompletionSetsForcedOnlyIfPlayerOrdered": true,
+    "equipDelayNativeTicksPerSecond": 60,
+    "wearDurationIncludesConflictingRemovalDelays": true,
+    "automaticRemoveRequestsHauling": true
+  },
+  "webDesignChoices": [
+    "Prioritize a complete shared-policy, physical selection/wear/removal, forced protection and persistence loop before tuning rates.",
+    "Reuse seasonal climate for warmth classification if available; room-temperature ranking is a distinct design adaptation.",
+    "A fixed deterministic retry interval and tie-breaker differ from native random scan timing and list-order ties.",
+    "Immediate rescans after shared filter edits or clear-forced are usability adaptations beyond the directly observed setters.",
+    "Rejecting or cancelling an active wear job after policy edits is a Web consistency choice; the native wear driver does not re-evaluate the policy in the bounded method.",
+    "Legacy saves defaulting to manual clothing management preserve old Web behavior; this is not a native migration rule.",
+    "Preserve the layer/body-part-group conflict graph instead of replacing it with one item per garment category.",
+    "DLC wardrobe rules, role/title bonuses, biocoding, clothing sources, taint and special apparel must remain explicit omissions until supported."
+  ],
+  "limits": [
+    "Static derived C# and packaged Core XML are not original source or runtime interaction proof.",
+    "REA managed metadata is reused only for the exact same assembly identity; separately hashed ILSpy types support these method claims.",
+    "No game, browser, preview, GUI interaction or screenshot was launched.",
+    "Selected XML is not the fully inherited, mod-patched effective Def database.",
+    "Bounded absence applies only to the recorded methods and tokens, not every caller, extension or runtime hook.",
+    "Reference constants are not measured Web balance or full behavioral parity.",
+    "Full derived C#, assemblies and game assets remain local and unpublished."
+  ],
+  "collectorSha256": "75d7f5cb7127b71b1c6b27b7b15bc3e04273656098eac8eba411c78170a977fb"
+}

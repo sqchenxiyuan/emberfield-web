@@ -6,6 +6,7 @@ import { initialPrisoner } from '../src/voxel/prisoners';
 import { initialSurvival } from '../src/voxel/survival';
 import { SANITATION_RULES } from '../src/voxel/sanitation';
 import { defaultProductionPolicy } from '../src/voxel/productionPolicies';
+import { initialApparelControl } from '../src/voxel/apparelPolicies';
 
 const pos = (x: number, y = 12): Pos => ({ x, y, z: 8 });
 function command(s: VoxelSimulation, c: VoxelCommand) {
@@ -142,6 +143,7 @@ describe('sanitation physical and interrupted boundaries', () => {
       const bed = { ...pos(15, 13), id: s.nextId++, axis: 'x' as const, quality: 2 as const, medical: false, prisoner: true, owner: prisonerId };
       s.beds.push(bed);
       s.pawns.push({ ...structuredClone(s.pawns[0]), ...initialSurvival(s.seed, prisonerId), ...pos(12, 13),
+        apparelControl: initialApparelControl(s.tick),
         id: prisonerId, name: '测试囚犯', worn: [], faction: 'prisoner', prisoner: initialPrisoner(0, bed.id), phase: 'prisoner', food: 10 });
       s.items.push({ ...pos(14, 11), id: s.nextId++, ...freshBatch('meal', 1), poisonChance: 1 });
     });

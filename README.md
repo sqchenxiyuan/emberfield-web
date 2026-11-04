@@ -1,5 +1,7 @@
 # 余烬边境 · Emberfield
 
+v56接通服装政策与自动换装：共享筛选 → 从真实储存区取衣 → 步行装备 → 旧衣落地和搬运；手动穿戴有强制保留标记，可逐件或全部解除。政策修改、预约竞争、区域限制、中断和存读共同接入，旧营地保留手动管理。玩法机制优先，数值后调。见[155原版静态机制](docs/research/rimworld/155-apparel-policies-mechanisms.md)、[156玩法与验证](docs/research/rimworld/156-apparel-policies-gameplay.md)。本轮仅静态分析与无界面验证。
+
 v55接通动物环境生存：实际房间温度与物种耐受 → 失温/中暑 → 寻温避险或倒地 → 实际救助转床 → 适温恢复；地面火焰接触也会产生可护理的烧伤。病情贯穿交易与存读，草药不能治疗纯温病。玩法机制优先，数值集中后调。见[153原版静态机制](docs/research/rimworld/153-animal-environment-mechanisms.md)、[154玩法与验证](docs/research/rimworld/154-animal-environment-gameplay.md)。本轮仅静态分析与无界面验证；附着火、自行灭火、冻伤等继续待补。
 
 v54接通动物医疗：伤口与失血 → 倒地 → 现场护理/实际救助搬运 → 动物医疗睡眠点 → 取食喂养与逐步恢复。动物保留身份和归属，支持护理政策、任务中断与存读；医护负责治疗，医护或饲养员可以救助和喂食。见[151原版静态机制](docs/research/rimworld/151-animal-medical-mechanisms.md)、[152玩法与验证](docs/research/rimworld/152-animal-medical-gameplay.md)。完整动物器官、感染和手术继续待补。

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { APPAREL_DEFS, APPAREL_MATERIAL_NAMES, apparelStats, apparelHasPartsToWear, apparelMoveFactor } from './apparel';
 import { healthSummary } from './survival';
 import { TPS, type ApparelPiece, type Pawn } from './types';
+import { ApparelPolicyPanel, type ApparelPolicyPanelProps } from './ApparelPolicyPanel';
 
 export function ApparelDetails({ piece }: { piece: ApparelPiece }) {
   const stats = apparelStats(piece);
@@ -45,10 +46,19 @@ export function ApparelDetails({ piece }: { piece: ApparelPiece }) {
   );
 }
 
-export function ApparelPanel({ pawn, remove }: { pawn: Pawn; remove: (id: number) => void }) {
+export function ApparelPanel({ pawn, remove, policies, pawns, command }: {
+  pawn: Pawn;
+  remove: (id: number) => void;
+  policies?: ApparelPolicyPanelProps['policies'];
+  pawns?: Pawn[];
+  command?: ApparelPolicyPanelProps['command'];
+}) {
+  const canAct = pawn.faction === 'colony' && !pawn.dead && !pawn.downed && !pawn.drafted && pawn.carriedBy === null;
+  const forcedIds = pawn.apparelControl?.forcedIds ?? [];
   return (
     <details className="voxel-apparel-panel" open data-testid="pawn-apparel">
       <summary>衣着 · {pawn.worn.length} 件</summary>
+      {policies && pawns && command && <ApparelPolicyPanel key={pawn.id} pawn={pawn} policies={policies} pawns={pawns} command={command} />}
       {!pawn.worn.length && <small>未穿衣物。需要先取到衣物，再花时间穿上。</small>}
       <small>
         当前步行系数 {(apparelMoveFactor(pawn.worn, healthSummary(pawn).moving) * 100).toFixed(0)}%
@@ -65,18 +75,29 @@ export function ApparelPanel({ pawn, remove }: { pawn: Pawn; remove: (id: number
       {pawn.worn.map((piece) => (
         <div className="voxel-worn-piece" key={piece.id} data-apparel-id={piece.id}>
           <ApparelDetails piece={piece} />
+          <div className="voxel-apparel-piece-actions">
+          {forcedIds.includes(piece.id) && <small className="voxel-apparel-forced" data-testid="forced-apparel">强制穿戴</small>}
+          {forcedIds.includes(piece.id) && command && <button
+            type="button"
+            disabled={pawn.faction !== 'colony' || pawn.dead}
+            aria-label={`${pawn.name} 解除强制穿戴 ${apparelStats(piece).name}`}
+            onClick={() => command({ type: 'apparelUnforce', pawnId: pawn.id, apparelId: piece.id })}
+          >解除强制</button>}
           <button
             aria-label={`${pawn.name} 脱下 ${apparelStats(piece).name}`}
-            disabled={pawn.dead || pawn.downed}
+            disabled={!canAct}
             onClick={() => remove(piece.id)}
           >
             脱下
           </button>
+          </div>
         </div>
       ))}
+      {forcedIds.length > 0 && command && <button type="button" className="voxel-apparel-unforce-all" disabled={pawn.faction !== 'colony' || pawn.dead}
+        onClick={() => command({ type: 'apparelUnforce', pawnId: pawn.id })}>解除全部强制穿戴</button>}
       {pawn.apparelTask && (
-        <small>
-          正在{pawn.apparelTask.action === 'wear' ? '取用或穿上衣物' : '脱下衣物'}，完成后更新装备。
+        <small data-testid="apparel-task" data-automatic={pawn.apparelTask.automatic === true}>
+          {pawn.apparelTask.automatic ? '自动换装：正在' : '正在'}{pawn.apparelTask.action === 'wear' ? '取用或穿上衣物' : '脱下衣物'}，完成后更新装备。
         </small>
       )}
       <small>
@@ -99,7 +120,7 @@ export function WearApparel({
 }) {
   const [chosen, choose] = useState<number | null>(preferredPawnId ?? null);
   const eligible = pawns.filter(
-    (p) => !p.dead && !p.downed && apparelHasPartsToWear(piece, p.trauma),
+    (p) => p.faction === 'colony' && !p.dead && !p.downed && !p.drafted && p.carriedBy === null && apparelHasPartsToWear(piece, p.trauma),
   );
   const selected = eligible.find((p) => p.id === chosen) ?? eligible[0];
   return (
@@ -124,7 +145,7 @@ export function WearApparel({
       <button disabled={!selected} onClick={() => selected && wear(selected.id, piece.id)}>
         前往穿上
       </button>
-      <small>同伴会实际取衣并换装；冲突旧衣不会凭空消失。</small>
+      <small>强制穿戴，自动换装保留；可在衣着中解除。同伴会实际取衣并换装；冲突旧衣不会凭空消失。</small>
     </div>
   );
 }

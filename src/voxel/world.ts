@@ -1,4 +1,8 @@
 import { eggBoxCanEmpty, eggBoxInsert, rejectLegacyEggBoxes, validateEggBoxes, EGG_BOX_RULES, type EggBox } from './eggBoxes';
+import { APPAREL_POLICY_LIMIT, createDefaultApparelPolicies, initialApparelControl, normalizeApparelPolicy,
+  policyAllowsApparel, neededApparelWarmth, apparelPolicyGain, APPAREL_POLICY_MIN_GAIN,
+  selectApparelPolicyCandidate } from './apparelPolicies';
+import { rejectLegacyApparelPolicies, migrateApparelPolicies, validateApparelPolicies } from './apparelPoliciesPersistence';
 import { rejectLegacyWool, migrateWool, validateWool } from './animalWoolPersistence';
 import { rejectLegacyEggs, migrateEggs, validateEggs } from './animalEggPersistence';
 import { advanceHatcher } from './animalEggs';
@@ -225,7 +229,7 @@ import {
   summarizeWorld,
   validWorldSettings,
 } from './worldgen';
-import { outdoorTemperature } from './climate';
+import { outdoorTemperature, seasonalMeanTemperature } from './climate';
 import { initialWeather, advanceWeather, weatherEffects, snowDepthAfter, snowPathCost,
   type WeatherState, type SnowCover } from './weather';
 import { rejectLegacyWeatherFields, migrateWeather, validateWeather } from './weatherPersistence';
@@ -689,6 +693,7 @@ export class VoxelSimulation {
   private visibleRoomsCache = new Set<number>();
   ladders = new Uint8Array(CELLS);
   pawns: Pawn[] = [];
+  apparelPolicies = createDefaultApparelPolicies();
   socialHistory: SocialIdentity[] = [];
   socialLog: SocialEvent[] = [];
   items: Stack[] = [];
@@ -849,6 +854,7 @@ export class VoxelSimulation {
         ...initialSurvival(this.seed, this.nextId - 1),
         worn: [],
         apparelTask: null,
+        apparelControl: initialApparelControl(this.tick, 1),
         apparelWearTicks: 0,
         jobId: null,
         path: [],
@@ -1736,7 +1742,7 @@ export class VoxelSimulation {
     )
       return true;
     return (
-      (item.resource === 'chunk' || item.resource === 'carcass' || item.resource === 'furniture' || item.resource === 'unfinished') &&
+      (item.resource === 'chunk' || item.resource === 'carcass' || item.resource === 'furniture' || item.resource === 'unfinished' || item.resource === 'apparel') &&
       ([...this.fetchReservations].some(([id, source]) => id !== pawnId && source.sourceId === item.id) ||
         [...this.storageReservations].some(([id, r]) => id !== pawnId && r.sourceId === item.id))
     );
@@ -3316,6 +3322,52 @@ export class VoxelSimulation {
           : `简餐不足 ${stove.target} 份时制作`,
       };
     }
+    if (c.type === 'apparelPolicyCreate') {
+      const source = c.sourceId === undefined ? createDefaultApparelPolicies().policies[0]
+        : this.apparelPolicies.policies.find(p => p.id === c.sourceId);
+      if (Object.keys(c).some(k => !['type','sourceId'].includes(k)) || !source ||
+          this.apparelPolicies.policies.length >= APPAREL_POLICY_LIMIT || this.apparelPolicies.nextId >= Number.MAX_SAFE_INTEGER)
+        return { ok:false, message:'无法新建服装政策：来源无效或已达到上限' };
+      const id = this.apparelPolicies.nextId++;
+      this.apparelPolicies.policies.push({ ...structuredClone(source), id, name:`服装政策 ${id}` });
+      this.revision++;
+      return { ok:true, message:`已创建服装政策 ${id}` };
+    }
+    if (c.type === 'apparelPolicyUpdate') {
+      const policy = normalizeApparelPolicy(c.policy);
+      const i = policy ? this.apparelPolicies.policies.findIndex(p => p.id === policy.id) : -1;
+      if (Object.keys(c).some(k => !['type','policy'].includes(k)) || !policy || i < 0)
+        return { ok:false, message:'服装政策或筛选范围无效' };
+      this.apparelPolicies.policies[i] = policy;
+      for (const p of this.pawns) if (p.apparelControl.policyId === policy.id) this.wakeApparelPolicy(p);
+      this.revision++;
+      return { ok:true, message:'共享服装政策已更新，使用它的居民会重新检查衣物' };
+    }
+    if (c.type === 'apparelPolicyDelete') {
+      const i = this.apparelPolicies.policies.findIndex(p => p.id === c.policyId);
+      if (Object.keys(c).some(k => !['type','policyId'].includes(k)) || i < 0 || this.apparelPolicies.policies.length <= 1 ||
+          this.pawns.some(p => p.apparelControl.policyId === c.policyId))
+        return { ok:false, message:'不能删除正在使用的政策或最后一份政策' };
+      this.apparelPolicies.policies.splice(i,1); this.revision++;
+      return { ok:true, message:'服装政策已删除' };
+    }
+    if (c.type === 'pawnApparelPolicy' || c.type === 'apparelUnforce') {
+      const p = this.pawns.find(p => p.id === c.pawnId && p.faction === 'colony' && !p.dead);
+      if (!p) return { ok:false, message:'请选择在世居民' };
+      if (c.type === 'pawnApparelPolicy') {
+        if (Object.keys(c).some(k => !['type','pawnId','policyId'].includes(k)) ||
+            (c.policyId !== null && !this.apparelPolicies.policies.some(q => q.id === c.policyId)))
+          return { ok:false, message:'服装政策不存在' };
+        p.apparelControl.policyId = c.policyId;
+      } else {
+        if (Object.keys(c).some(k => !['type','pawnId','apparelId'].includes(k)) ||
+            (c.apparelId !== undefined && !p.apparelControl.forcedIds.includes(c.apparelId)))
+          return { ok:false, message:'该衣物没有强制穿戴标记' };
+        p.apparelControl.forcedIds = c.apparelId === undefined ? [] : p.apparelControl.forcedIds.filter(id => id !== c.apparelId);
+      }
+      this.wakeApparelPolicy(p); this.revision++;
+      return { ok:true, message:c.type === 'apparelUnforce' ? '已解除强制穿戴，衣物保留并交由政策检查' : '居民服装政策已更新' };
+    }
     if (c.type === 'wear' || c.type === 'removeApparel') {
       const p = this.pawns.find((p) => p.id === c.pawnId);
       const ok = !!p && this.startApparel(p, c.apparelId, c.type === 'wear' ? 'wear' : 'remove');
@@ -4838,6 +4890,7 @@ export class VoxelSimulation {
       },
       worn: [],
       apparelTask: null,
+      apparelControl: initialApparelControl(this.tick),
       apparelWearTicks: 0,
       jobId: null,
       path: [],
@@ -5078,6 +5131,7 @@ export class VoxelSimulation {
     if (result.armor) {
       this.stats.destroyed.apparel += result.armor.destroyedIds.length;
       target.worn = result.armor.worn;
+      this.pruneForcedApparel(target);
       if (target.apparelTask && result.armor.destroyedIds.includes(target.apparelTask.apparelId))
         this.release(target);
     }
@@ -5416,6 +5470,7 @@ export class VoxelSimulation {
       if (result.armor) {
         this.stats.destroyed.apparel += result.armor.destroyedIds.length;
         target.worn = result.armor.worn;
+        this.pruneForcedApparel(target);
         if (target.apparelTask && result.armor.destroyedIds.includes(target.apparelTask.apparelId))
           this.release(target);
       }
@@ -5584,6 +5639,7 @@ export class VoxelSimulation {
       const lost = p.worn.filter((piece) => piece.hitPoints <= 0);
       if (lost.length) {
         p.worn = p.worn.filter((piece) => piece.hitPoints > 0);
+        this.pruneForcedApparel(p);
         this.stats.destroyed.apparel += lost.length;
         if (p.apparelTask && lost.some((piece) => piece.id === p.apparelTask!.apparelId))
           this.release(p);
@@ -5592,15 +5648,65 @@ export class VoxelSimulation {
       }
     }
   }
-  private startApparel(p: Pawn, apparelId: number, action: 'wear' | 'remove'): boolean {
-    if (p.dead || p.downed || p.drafted || p.carriedBy !== null || !Number.isSafeInteger(apparelId))
+  private pruneForcedApparel(p: Pawn) {
+    p.apparelControl.forcedIds = p.apparelControl.forcedIds.filter(id => p.worn.some(piece => piece.id === id));
+  }
+  private wakeApparelPolicy(p: Pawn) {
+    p.apparelControl.nextCheckTick = this.tick;
+    if (p.apparelTask?.automatic && !this.validAutomaticApparel(p)) {
+      this.release(p); p.reason = '服装条件改变，保留携带衣物并重新安排';
+    }
+  }
+  private availableAutomaticApparel(p: Pawn, item: Stack): boolean {
+    return !!item.apparel && this.storagePriority(item) >= 0 && this.pawnAllowed(p,item) &&
+      !item.forbidden && !this.chunkReserved(item,p.id) && this.availableStack(item,p.id) > 0 &&
+      !this.fires.some(f => touchesFire(f,item)) && apparelHasPartsToWear(item.apparel,p.trauma);
+  }
+  private validAutomaticApparel(p: Pawn): boolean {
+    const task = p.apparelTask;
+    if (!task?.automatic) return true;
+    const policy = this.apparelPolicies.policies.find(q => q.id === p.apparelControl.policyId);
+    if (!policy || p.faction !== 'colony' || p.dead || p.downed || p.drafted || p.carriedBy !== null) return false;
+    if (task.action === 'remove') {
+      const piece = p.worn.find(q => q.id === task.apparelId);
+      return !!piece && !p.apparelControl.forcedIds.includes(piece.id) && !policyAllowsApparel(policy,piece);
+    }
+    const item = task.stage === 'fetch' ? this.items.find(q => q.apparel?.id === task.apparelId) : undefined;
+    const piece = task.stage === 'fetch' ? item?.apparel : p.cargo?.apparel;
+    return !!piece && piece.id === task.apparelId && policyAllowsApparel(policy,piece) &&
+      apparelHasPartsToWear(piece,p.trauma) &&
+      !p.worn.some(old => p.apparelControl.forcedIds.includes(old.id) && !compatibleApparel(old,piece)) &&
+      (task.stage !== 'fetch' || !!item && this.availableAutomaticApparel(p,item));
+  }
+  private tryAutomaticApparel(p: Pawn): boolean {
+    if (p.faction !== 'colony' || p.dead || p.downed || p.drafted || p.carriedBy !== null || p.cargo ||
+        p.apparelControl.nextCheckTick > this.tick || p.psyche.breakUntil > this.tick) return false;
+    const policy = this.apparelPolicies.policies.find(q => q.id === p.apparelControl.policyId);
+    if (!policy) return false;
+    const disallowed = p.worn.find(piece => !p.apparelControl.forcedIds.includes(piece.id) && !policyAllowsApparel(policy,piece));
+    if (disallowed) return this.startApparel(p,disallowed.id,'remove',true);
+    const warmth = neededApparelWarmth(seasonalMeanTemperature(this.tick,this.settings));
+    const candidates = this.items.filter(item => this.availableAutomaticApparel(p,item) && policyAllowsApparel(policy,item.apparel!) &&
+      apparelPolicyGain(item.apparel!,p.worn,p.apparelControl.forcedIds,warmth) >= APPAREL_POLICY_MIN_GAIN);
+    if (candidates.length) {
+      this.search(p);
+      const piece = selectApparelPolicyCandidate(policy,p.worn,p.apparelControl.forcedIds,
+        candidates.filter(item => this.reachableItemStand(item) >= 0).map(item => item.apparel!),warmth);
+      if (piece && this.startApparel(p,piece.id,'wear',true)) return true;
+    }
+    // Native cooldown applies only after no candidate; deterministic per pawn.
+    p.apparelControl.nextCheckTick = this.tick + 6000 + Math.floor(plantRandom(this.seed,p.id,this.tick,924) * 3001);
+    return false;
+  }
+  private startApparel(p: Pawn, apparelId: number, action: 'wear' | 'remove', automatic = false): boolean {
+    if (p.faction !== 'colony' || p.dead || p.downed || p.drafted || p.carriedBy !== null || !Number.isSafeInteger(apparelId))
       return false;
     if (this.pawns.some((q) => q.id !== p.id && q.apparelTask?.apparelId === apparelId))
       return false;
     if (action === 'remove') {
       if (!p.worn.some((piece) => piece.id === apparelId)) return false;
       this.release(p);
-      p.apparelTask = { action, apparelId, stage: 'work', progress: 0 };
+      p.apparelTask = { action, apparelId, stage: 'work', progress: 0, ...(automatic ? {automatic:true as const} : {}) };
       p.phase = 'apparel';
       p.reason = '脱下衣物';
       return true;
@@ -5608,13 +5714,14 @@ export class VoxelSimulation {
     const own = p.cargo?.apparel?.id === apparelId;
     const item = this.items.find((i) => i.apparel?.id === apparelId);
     if (!own && !item) return false;
+    if (automatic && (!item || !this.availableAutomaticApparel(p,item))) return false;
     const piece = own ? p.cargo!.apparel! : item!.apparel!;
     if (!apparelHasPartsToWear(piece, p.trauma)) return false;
     if (item && !this.itemPath(p, item)) return false;
     if (!own && !this.dropCargo(p)) return false;
     this.release(p);
-    p.apparelTask = { action, apparelId, stage: own ? 'work' : 'fetch', progress: 0 };
-    if (item) item.forbidden = false;
+    p.apparelTask = { action, apparelId, stage: own ? 'work' : 'fetch', progress: 0, ...(automatic ? {automatic:true as const} : {}) };
+    if (item && !automatic) item.forbidden = false;
     if (own) {
       p.phase = 'apparel';
       p.reason = '穿上' + APPAREL_NAMES[p.cargo!.apparel!.kind];
@@ -5627,7 +5734,7 @@ export class VoxelSimulation {
   }
   private arriveApparel(p: Pawn) {
     const task = p.apparelTask;
-    if (!task) {
+    if (!task || !this.validAutomaticApparel(p)) {
       this.release(p);
       return;
     }
@@ -5680,8 +5787,10 @@ export class VoxelSimulation {
     }
     this.commitPlacement(plan);
     p.worn = p.worn.filter((old) => !removed.some((piece) => piece.id === old.id));
+    this.pruneForcedApparel(p);
     if (task.action === 'wear') {
       p.worn = sortApparelByLayer([...p.worn, piece]);
+      if (!task.automatic) p.apparelControl.forcedIds.push(piece.id);
       p.cargo = null;
     }
     const message = task.action === 'wear' ? '已穿上' : '已脱下';
@@ -6362,6 +6471,7 @@ export class VoxelSimulation {
   prisonBecomeColonist(p: Pawn) {
     this.release(p);
     p.faction = 'colony'; p.prisoner = null; p.retreating = false;
+    p.apparelControl = initialApparelControl(this.tick,this.apparelPolicies.policies[0].id);
     p.psyche = initialPsyche(this.tick);
     for (const work of Object.keys(p.priorities) as Work[]) p.priorities[work] = work === 'hunt' ? 0 : 2;
     p.schedule = defaultSchedule(); p.phase = 'idle'; p.reason = '已加入殖民地，等待工作安排';
@@ -6512,7 +6622,7 @@ export class VoxelSimulation {
         id, name: `${def.name} ${this.trade.visits + 1}-${i + 1}`, color: role === 'trader' ? 0xd8bf79 : 0x96b5cc,
         food: 100, rest: 100, skills: initialSkills(i, true), faction: 'trader', weapon,
         priorities: Object.fromEntries(Object.keys(colonist.priorities).map(key => [key, 0])) as Pawn['priorities'],
-        worn: [], apparelTask: null, apparelWearTicks: 0, jobId: null, path: [], destination: null,
+        worn: [], apparelTask: null, apparelControl: initialApparelControl(this.tick), apparelWearTicks: 0, jobId: null, path: [], destination: null,
         phase: 'idle', cargo: null, reason: '商队前往营地', moveTick: this.tick, workTarget: null,
         eating: null, sleepBedId: null, sleepingSince: null, schedule: defaultSchedule() };
       // A copied colonist is only the body template, never a live work order.
@@ -6708,6 +6818,7 @@ export class VoxelSimulation {
       return;
     }
     if (shouldRecreate(p, assignmentAt(p.schedule, this.tick)) && this.startRecreation(p)) return;
+    if (this.tryAutomaticApparel(p)) return;
     this.chooseProductionForWorker(p);
     const jobs = this.jobs
       .filter((j) => !j.cancelled && !j.constructionFailure && j.owner === null && this.pawnAllowed(p,j) && p.priorities[workType(j.kind)] > 0)
@@ -8234,6 +8345,9 @@ export class VoxelSimulation {
         if (p.psyche.breakUntil > this.tick) { this.mentalTick(p); continue; }
         if (p.faction === 'prisoner') { prisonerTick(this, p); this.moveAlongPath(p); continue; }
         this.reconcilePawnArea(p);
+        if (p.apparelTask?.automatic && !this.validAutomaticApparel(p)) {
+          this.release(p); p.reason = '自动换装条件改变，保留衣物并重新安排';
+        }
         const combatant = (p.drafted || p.faction === 'raider' || p.faction === 'trader') && p.weaponTask === null;
         if (combatant) this.combatTick(p);
         else if (p.phase === 'hunt') this.huntTick(p);
@@ -8903,6 +9017,7 @@ export class VoxelSimulation {
       revision: this.revision,
       speed,
       pawns: this.pawns.filter(visible),
+      apparelPolicies: this.apparelPolicies,
       items: this.items.filter(visible),
       trees: this.trees.filter(visible),
       treePlots: this.treePlots.filter(visible),
@@ -8965,7 +9080,8 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 55,
+      version: 56,
+      apparelPolicies: this.apparelPolicies,
       autoSlaughter: this.autoSlaughter,
       stockpileZones: this.stockpileZones,
       productionQueues: this.productionQueues.filter(q => this.productionBenches().some(b => b.id === q.benchId)),
@@ -9029,11 +9145,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : old.version < 43 ? [1, 2, 3] : [1, 2, 3, 4]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyApparelPolicies(old,sourceVersion);
     rejectLegacyAnimalEnvironment(old,sourceVersion);
     rejectLegacyAnimalMedical(old,sourceVersion);
     rejectLegacyAnimalTrade(old,sourceVersion);
@@ -9473,7 +9590,8 @@ export class VoxelSimulation {
     migrateAnimalTrade(old,sourceVersion);
     migrateAnimalMedical(old,sourceVersion);
     migrateAnimalEnvironment(old,sourceVersion);
-    old.version = 55;
+    migrateApparelPolicies(old,sourceVersion);
+    old.version = 56;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -10588,6 +10706,7 @@ export class VoxelSimulation {
     validateWildlife(d, ids, new Set([...apparelIds, ...weaponIds]));
     validateHusbandry(d);
     validateAnimalEnvironment(d);
+    validateApparelPolicies(d);
     validateAnimalTrade(d);
     validateAnimalMedical(d);
     validateMilk(d);
@@ -10706,6 +10825,7 @@ export class VoxelSimulation {
         horseshoePins: d.horseshoePins,
         nextId: d.nextId,
         pawns: d.pawns,
+        apparelPolicies: d.apparelPolicies,
         items: d.items,
         trees: d.trees,
         treePlots: d.treePlots,
@@ -10932,6 +11052,7 @@ export class VoxelSimulation {
         continue;
       }
       if (p.apparelTask !== null) {
+        if (!s.validAutomaticApparel(p)) { s.release(p); p.reason = '回读后服装条件改变，保留物资'; continue; }
         p.jobId = null;
         p.path = [];
         p.destination = null;

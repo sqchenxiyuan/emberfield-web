@@ -111,7 +111,7 @@ describe('authentic v34 world-site migration', () => {
     const old = historical(), before = structuredClone(old);
     const generate = vi.spyOn(worldgen, 'generateWorld'), resolve = vi.spyOn(regions, 'resolveWorldSite');
     const sim = VoxelSimulation.load(old), saved = sim.save();
-    expect(old).toEqual(before); expect(saved.version).toBe(55); expect(saved.worldSite).toBeNull();
+    expect(old).toEqual(before); expect(saved.version).toBe(56); expect(saved.worldSite).toBeNull();
     expect(generate).not.toHaveBeenCalled(); expect(resolve).not.toHaveBeenCalled();
     for (const key of ['seed', 'generator', 'settings', 'tick', 'nextId', 'blocks', 'ladders', 'structureKinds',
       'items', 'stats', 'trade', 'beds', 'tables', 'chairs', 'stockpiles'] as const) expect(saved[key], key).toEqual(unfinishedExpectedField(key, old[key]));
