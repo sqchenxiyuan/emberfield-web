@@ -52,7 +52,7 @@ function handlerStep(s: VoxelSimulation, p: Pawn) {
 function market() {
   const f = fixture(), { s, p, other: trader } = f;
   Object.assign(p, pos(19), { phase: 'trade' }); Object.assign(trader, pos(20), { faction: 'trader' });
-  const caravan: TraderCaravan = { id: s.nextId++, kind: 'bulk', name: '测试商队', pawnIds: [trader.id], traderId: trader.id,
+  const caravan: TraderCaravan = { id: s.nextId++, kind: 'bulk', name: '测试商队', pawnIds: [trader.id], animalIds: [], traderId: trader.id,
     stock: [{ id: s.nextId++, resource: 'silver' as const, amount: 1000, carrierId: trader.id },
       { id: s.nextId++, resource: 'components' as const, amount: 10, carrierId: trader.id }],
     meeting: pos(20), stage: 'visiting' as const, arrivedAt: 0, visitingAt: 0, stayTicks: 100000, reason: '' };

@@ -81,7 +81,7 @@ function ropeFixture() {
 function tradeFixture() {
   const f = fixture(), { s, p, other: trader } = f;
   Object.assign(trader, pos(20), { faction: 'trader' });
-  const caravan = { id: s.nextId++, kind: 'bulk' as const, name: '测试商队', pawnIds: [trader.id],
+  const caravan = { id: s.nextId++, kind: 'bulk' as const, name: '测试商队', pawnIds: [trader.id], animalIds: [],
     traderId: trader.id, stock: [{ id: s.nextId++, resource: 'wood' as const, amount: 5, carrierId: trader.id }],
     meeting: pos(20), stage: 'visiting' as const, arrivedAt: 0, visitingAt: 0, stayTicks: 100000, reason: '' };
   s.trade.caravans = [caravan]; s.trade.goodwill = 0;

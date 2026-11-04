@@ -1,0 +1,2180 @@
+{
+  "evidence_id": "RW17-LIVE-ANIMAL-TRADE-STATIC",
+  "version": "1.7.4980 rev60",
+  "assemblySha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "reaEvidenceId": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+  "reaParentId": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+  "reaFile": "docs/research/rimworld/evidence/production-bills-rea-managed.json",
+  "reaSha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+  "manifestFile": "docs/research/rimworld/evidence/live-animal-trade-manifest.json",
+  "manifestSha256": "33e47001c2e7778095638d74c325b2637c6b8b666b73bd3162da896058a54642",
+  "rules": [
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "file": ".local-research/live-animal-trade/RimWorld.StockGenerator_Animals.cs",
+      "sha256": "0a0c96aa27a994b6776188b8096e3cd82ce8027b1cf679ae92ab35ae5aa77f89",
+      "anchor": "int count = countRange.RandomInRange;",
+      "hits": [
+        {
+          "line": 46,
+          "text": "int count = countRange.RandomInRange;"
+        }
+      ],
+      "interpretation": "Count is sampled once for the whole animal stock, not once per kind."
+    },
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "file": ".local-research/live-animal-trade/RimWorld.StockGenerator_Animals.cs",
+      "sha256": "0a0c96aa27a994b6776188b8096e3cd82ce8027b1cf679ae92ab35ae5aa77f89",
+      "anchor": "if (count > 1 && !createMatingPair.NullOrEmpty())",
+      "hits": [
+        {
+          "line": 47,
+          "text": "if (count > 1 && !createMatingPair.NullOrEmpty())"
+        }
+      ],
+      "interpretation": "Pair generation requires at least two available units."
+    },
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "file": ".local-research/live-animal-trade/RimWorld.StockGenerator_Animals.cs",
+      "sha256": "0a0c96aa27a994b6776188b8096e3cd82ce8027b1cf679ae92ab35ae5aa77f89",
+      "anchor": "(PawnUtility.PlayerHasReproductivePair(k) ? 0.5f : 1f) * SelectionChance(k)",
+      "hits": [
+        {
+          "line": 64,
+          "text": "DefDatabase<PawnKindDef>.AllDefs.Where((PawnKindDef k) => PawnKindAllowed(k, forTile) && CanCreateMatingPair(k)).TryRandomElementByWeight((PawnKindDef k) => (PawnUtility.PlayerHasReproductivePair(k) ? 0.5f : 1f) * SelectionChance(k), out var matingKind);"
+        }
+      ],
+      "interpretation": "Existing player reproductive pairs halve the selected kind weight."
+    },
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "file": ".local-research/live-animal-trade/RimWorld.StockGenerator_Animals.cs",
+      "sha256": "0a0c96aa27a994b6776188b8096e3cd82ce8027b1cf679ae92ab35ae5aa77f89",
+      "anchor": "Gender? fixedGender = Gender.Female;",
+      "hits": [
+        {
+          "line": 69,
+          "text": "Gender? fixedGender = Gender.Female;"
+        }
+      ],
+      "interpretation": "The first member of the optional pair is female."
+    },
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "file": ".local-research/live-animal-trade/RimWorld.StockGenerator_Animals.cs",
+      "sha256": "0a0c96aa27a994b6776188b8096e3cd82ce8027b1cf679ae92ab35ae5aa77f89",
+      "anchor": "fixedGender = Gender.Male;",
+      "hits": [
+        {
+          "line": 74,
+          "text": "fixedGender = Gender.Male;"
+        }
+      ],
+      "interpretation": "The second member of the optional pair is male."
+    },
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "file": ".local-research/live-animal-trade/RimWorld.StockGenerator_Animals.cs",
+      "sha256": "0a0c96aa27a994b6776188b8096e3cd82ce8027b1cf679ae92ab35ae5aa77f89",
+      "anchor": "count -= 2;",
+      "hits": [
+        {
+          "line": 77,
+          "text": "count -= 2;"
+        }
+      ],
+      "interpretation": "The pair consumes two units of the original total."
+    },
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "file": ".local-research/live-animal-trade/RimWorld.StockGenerator_Animals.cs",
+      "sha256": "0a0c96aa27a994b6776188b8096e3cd82ce8027b1cf679ae92ab35ae5aa77f89",
+      "anchor": "List<PawnKindDef> kinds = new List<PawnKindDef>();",
+      "hits": [
+        {
+          "line": 84,
+          "text": "List<PawnKindDef> kinds = new List<PawnKindDef>();"
+        }
+      ],
+      "interpretation": "Remaining kinds are sampled separately; the pair kind is not preinserted."
+    },
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "file": ".local-research/live-animal-trade/RimWorld.StockGenerator_Animals.cs",
+      "sha256": "0a0c96aa27a994b6776188b8096e3cd82ce8027b1cf679ae92ab35ae5aa77f89",
+      "anchor": "for (int i = 0; i < count; i++)",
+      "hits": [
+        {
+          "line": 93,
+          "text": "for (int i = 0; i < count; i++)"
+        }
+      ],
+      "interpretation": "The remaining total is distributed across selected kinds."
+    },
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "file": ".local-research/live-animal-trade/RimWorld.StockGenerator_Animals.cs",
+      "sha256": "0a0c96aa27a994b6776188b8096e3cd82ce8027b1cf679ae92ab35ae5aa77f89",
+      "anchor": "new CurvePoint(0f, 100f)",
+      "hits": [
+        {
+          "line": 32,
+          "text": "new CurvePoint(0f, 100f),"
+        }
+      ],
+      "interpretation": "Supply selection strongly favors low-wildness kinds."
+    },
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "file": ".local-research/live-animal-trade/RimWorld.StockGenerator_Animals.cs",
+      "sha256": "0a0c96aa27a994b6776188b8096e3cd82ce8027b1cf679ae92ab35ae5aa77f89",
+      "anchor": "statValueAbstract > maxWildness",
+      "hits": [
+        {
+          "line": 156,
+          "text": "if (!kind.RaceProps.Animal || statValueAbstract < minWildness || statValueAbstract > maxWildness || statValueAbstract > 1f)"
+        }
+      ],
+      "interpretation": "Wildness bounds gate initial supply."
+    },
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "file": ".local-research/live-animal-trade/RimWorld.StockGenerator_Animals.cs",
+      "sha256": "0a0c96aa27a994b6776188b8096e3cd82ce8027b1cf679ae92ab35ae5aa77f89",
+      "anchor": "SeasonAndOutdoorTemperatureAcceptableFor(tile, kind.race)",
+      "hits": [
+        {
+          "line": 167,
+          "text": "if (tile.Valid && !Find.World.tileTemperatures.SeasonAndOutdoorTemperatureAcceptableFor(tile, kind.race))"
+        }
+      ],
+      "interpretation": "Initial stock also checks seasonal and outdoor temperature."
+    },
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "file": ".local-research/live-animal-trade/RimWorld.StockGenerator_Animals.cs",
+      "sha256": "0a0c96aa27a994b6776188b8096e3cd82ce8027b1cf679ae92ab35ae5aa77f89",
+      "anchor": "if (!tradeTagsSell.Any((string x) => kind.race.tradeTags.Contains(x)))",
+      "hits": [
+        {
+          "line": 176,
+          "text": "if (!tradeTagsSell.Any((string x) => kind.race.tradeTags.Contains(x)))"
+        }
+      ],
+      "interpretation": "Supply needs a sell-tag match."
+    },
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "file": ".local-research/live-animal-trade/RimWorld.StockGenerator_Animals.cs",
+      "sha256": "0a0c96aa27a994b6776188b8096e3cd82ce8027b1cf679ae92ab35ae5aa77f89",
+      "anchor": "if (!kind.race.tradeability.TraderCanSell())",
+      "hits": [
+        {
+          "line": 180,
+          "text": "if (!kind.race.tradeability.TraderCanSell())"
+        }
+      ],
+      "interpretation": "Supply respects the race tradeability."
+    },
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "file": ".local-research/live-animal-trade/RimWorld.StockGenerator_Animals.cs",
+      "sha256": "0a0c96aa27a994b6776188b8096e3cd82ce8027b1cf679ae92ab35ae5aa77f89",
+      "anchor": "return tradeTagsBuy.Any((string tag) => thingDef.tradeTags != null && thingDef.tradeTags.Contains(tag));",
+      "hits": [
+        {
+          "line": 115,
+          "text": "return tradeTagsBuy.Any((string tag) => thingDef.tradeTags != null && thingDef.tradeTags.Contains(tag));"
+        }
+      ],
+      "interpretation": "HandlesThingDef accepts the union of sell and buy tags."
+    },
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "file": ".local-research/live-animal-trade/RimWorld.StockGenerator_Animals.cs",
+      "sha256": "0a0c96aa27a994b6776188b8096e3cd82ce8027b1cf679ae92ab35ae5aa77f89",
+      "anchor": "return Tradeability.Buyable;",
+      "hits": [
+        {
+          "line": 148,
+          "text": "return Tradeability.Buyable;"
+        }
+      ],
+      "interpretation": "TradeabilityFor exposes a separate directional classification."
+    },
+    {
+      "type": "RimWorld.TraderKindDef",
+      "file": ".local-research/live-animal-trade/RimWorld.TraderKindDef.cs",
+      "sha256": "6d2b8c6ef0517bdfb69bd2f175ee40f303170f4c4893d1ec85f836572e6dd9a0",
+      "anchor": "if (stockGenerators[i].HandlesThingDef(td))",
+      "hits": [
+        {
+          "line": 85,
+          "text": "if (stockGenerators[i].HandlesThingDef(td))"
+        }
+      ],
+      "interpretation": "Actual WillTrade uses HandlesThingDef, not directional TradeabilityFor."
+    },
+    {
+      "type": "RimWorld.Tradeable",
+      "file": ".local-research/live-animal-trade/RimWorld.Tradeable.cs",
+      "sha256": "520b439791a5e9943fe0be9b7a3c1dc78ff27654cadbfd5426133ec7ccd72ad2",
+      "anchor": "public virtual bool TraderWillTrade => TradeSession.trader.TraderKind.WillTrade(ThingDef);",
+      "hits": [
+        {
+          "line": 100,
+          "text": "public virtual bool TraderWillTrade => TradeSession.trader.TraderKind.WillTrade(ThingDef);"
+        }
+      ],
+      "interpretation": "Trade row acceptance follows the union-based WillTrade path."
+    },
+    {
+      "type": "RimWorld.TradeUI",
+      "file": ".local-research/live-animal-trade/RimWorld.TradeUI.cs",
+      "sha256": "a48ec267514e9213f0b61b4ac153b93ac1d917a2772e0b7b470090b25440769e",
+      "anchor": "if (!trad.TraderWillTrade)",
+      "hits": [
+        {
+          "line": 48,
+          "text": "if (!trad.TraderWillTrade)"
+        }
+      ],
+      "interpretation": "The trading UI disables rows by TraderWillTrade."
+    },
+    {
+      "type": "RimWorld.Tradeable",
+      "file": ".local-research/live-animal-trade/RimWorld.Tradeable.cs",
+      "sha256": "520b439791a5e9943fe0be9b7a3c1dc78ff27654cadbfd5426133ec7ccd72ad2",
+      "anchor": "return -CountHeldBy(Transactor.Colony);",
+      "hits": [
+        {
+          "line": 404,
+          "text": "return -CountHeldBy(Transactor.Colony);"
+        }
+      ],
+      "interpretation": "Negative transfer bound uses the colony count."
+    },
+    {
+      "type": "RimWorld.Tradeable",
+      "file": ".local-research/live-animal-trade/RimWorld.Tradeable.cs",
+      "sha256": "520b439791a5e9943fe0be9b7a3c1dc78ff27654cadbfd5426133ec7ccd72ad2",
+      "anchor": "return CountHeldBy(Transactor.Trader);",
+      "hits": [
+        {
+          "line": 413,
+          "text": "return CountHeldBy(Transactor.Trader);"
+        }
+      ],
+      "interpretation": "Positive transfer bound uses trader count."
+    },
+    {
+      "type": "RimWorld.StockGenerator_BuyExpensiveSimple",
+      "file": ".local-research/live-animal-trade/RimWorld.StockGenerator_BuyExpensiveSimple.cs",
+      "sha256": "fae47412518833a95b5116894773e21b128bdb62ed2378add1505c33c385b928",
+      "anchor": "thingDef.category != ThingCategory.Item",
+      "hits": [
+        {
+          "line": 19,
+          "text": "if (thingDef.category != ThingCategory.Item || thingDef.IsApparel || thingDef.IsWeapon || thingDef.IsMedicine || thingDef.IsDrug || !thingDef.genericMarketSellable)"
+        }
+      ],
+      "interpretation": "The extra expensive-simple buying generator does not admit live Pawns."
+    },
+    {
+      "type": "Verse.ThingDef",
+      "file": ".local-research/live-animal-trade/Verse.ThingDef.cs",
+      "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+      "anchor": "public Tradeability tradeability = Tradeability.All;",
+      "hits": [
+        {
+          "line": 324,
+          "text": "public Tradeability tradeability = Tradeability.All;"
+        }
+      ],
+      "interpretation": "Race tradeability defaults to both directions unless overridden."
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "file": ".local-research/live-animal-trade/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "anchor": "PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_OfPlayerFaction",
+      "hits": [
+        {
+          "line": 1338,
+          "text": "List<Pawn> allMapsCaravansAndTravellingTransporters_Alive_OfPlayerFaction = PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_OfPlayerFaction;"
+        },
+        {
+          "line": 1367,
+          "text": "List<Pawn> allMapsCaravansAndTravellingTransporters_Alive_OfPlayerFaction = PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_OfPlayerFaction;"
+        }
+      ],
+      "interpretation": "Existing-pair scan includes all player maps and traveling holders."
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "file": ".local-research/live-animal-trade/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "anchor": "pawn.kindDef == pawnKindDef && pawn.ageTracker.CurLifeStage.reproductive",
+      "hits": [
+        {
+          "line": 1344,
+          "text": "if (pawn.kindDef == pawnKindDef && pawn.ageTracker.CurLifeStage.reproductive)"
+        }
+      ],
+      "interpretation": "Existing-pair weighting requires matching kind and reproductive life stage."
+    },
+    {
+      "type": "Verse.PawnGenerator",
+      "file": ".local-research/live-animal-trade/Verse.PawnGenerator.cs",
+      "sha256": "96e7447c568916a4eb9aa4d334723567d9b09dc939636f5dcdfee484dcc42180",
+      "anchor": "pawn.gender = request.FixedGender.Value;",
+      "hits": [
+        {
+          "line": 743,
+          "text": "pawn.gender = request.FixedGender.Value;"
+        }
+      ],
+      "interpretation": "Fixed pair gender is honored by generation."
+    },
+    {
+      "type": "Verse.PawnGenerator",
+      "file": ".local-research/live-animal-trade/Verse.PawnGenerator.cs",
+      "sha256": "96e7447c568916a4eb9aa4d334723567d9b09dc939636f5dcdfee484dcc42180",
+      "anchor": "pawn.ageTracker.AgeBiologicalTicks = (long)(years * 3600000f);",
+      "hits": [
+        {
+          "line": 1362,
+          "text": "pawn.ageTracker.AgeBiologicalTicks = (long)(years * 3600000f);"
+        }
+      ],
+      "interpretation": "Biological age is independently generated and persisted on the pawn."
+    },
+    {
+      "type": "Verse.PawnGenerator",
+      "file": ".local-research/live-animal-trade/Verse.PawnGenerator.cs",
+      "sha256": "96e7447c568916a4eb9aa4d334723567d9b09dc939636f5dcdfee484dcc42180",
+      "anchor": "years = Rand.ByCurve(DefaultAgeGenerationCurve) * pawn.RaceProps.lifeExpectancy;",
+      "hits": [
+        {
+          "line": 1352,
+          "text": "years = Rand.ByCurve(DefaultAgeGenerationCurve) * pawn.RaceProps.lifeExpectancy;"
+        }
+      ],
+      "interpretation": "Ordinary newly generated non-mech animals without a race curve sample default age fraction times life expectancy."
+    },
+    {
+      "type": "Verse.PawnGenerator",
+      "file": ".local-research/live-animal-trade/Verse.PawnGenerator.cs",
+      "sha256": "96e7447c568916a4eb9aa4d334723567d9b09dc939636f5dcdfee484dcc42180",
+      "anchor": "new CurvePoint(0.05f, 0f)",
+      "hits": [
+        {
+          "line": 65,
+          "text": "new CurvePoint(0.05f, 0f),"
+        }
+      ],
+      "interpretation": "Default age fraction begins at five percent of life expectancy."
+    },
+    {
+      "type": "Verse.PawnGenerator",
+      "file": ".local-research/live-animal-trade/Verse.PawnGenerator.cs",
+      "sha256": "96e7447c568916a4eb9aa4d334723567d9b09dc939636f5dcdfee484dcc42180",
+      "anchor": "if (!request.AllowedDevelopmentalStages.Has(LifeStageUtility.CalculateDevelopmentalStage(pawn, years)))",
+      "hits": [
+        {
+          "line": 1419,
+          "text": "if (!request.AllowedDevelopmentalStages.Has(LifeStageUtility.CalculateDevelopmentalStage(pawn, years)))"
+        }
+      ],
+      "interpretation": "Age generation checks developmental stage, not the reproductive flag."
+    },
+    {
+      "type": "RimWorld.LifeStageDef",
+      "file": ".local-research/live-animal-trade/RimWorld.LifeStageDef.cs",
+      "sha256": "93a5a86d46d9b6d954630d71044634ec69faddd67c473d1fed730e474c0034bd",
+      "anchor": "public DevelopmentalStage developmentalStage = DevelopmentalStage.Adult;",
+      "hits": [
+        {
+          "line": 27,
+          "text": "public DevelopmentalStage developmentalStage = DevelopmentalStage.Adult;"
+        }
+      ],
+      "interpretation": "Adult developmental stage is the default even for animal baby definitions without overrides."
+    },
+    {
+      "type": "RimWorld.LifeStageDef",
+      "file": ".local-research/live-animal-trade/RimWorld.LifeStageDef.cs",
+      "sha256": "93a5a86d46d9b6d954630d71044634ec69faddd67c473d1fed730e474c0034bd",
+      "anchor": "public float marketValueFactor = 1f;",
+      "hits": [
+        {
+          "line": 76,
+          "text": "public float marketValueFactor = 1f;"
+        }
+      ],
+      "interpretation": "Life-stage market multiplier defaults to one."
+    },
+    {
+      "type": "RimWorld.PawnGroupKindWorker_Trader",
+      "file": ".local-research/live-animal-trade/RimWorld.PawnGroupKindWorker_Trader.cs",
+      "sha256": "25d7ec73091d700855033859fc42b5be2036d942227fa672c69143fb70fad8e5",
+      "anchor": "pawn.SetFaction(parms.faction);",
+      "hits": [
+        {
+          "line": 122,
+          "text": "pawn.SetFaction(parms.faction);"
+        }
+      ],
+      "interpretation": "Pawn wares acquire the caravan faction during group generation."
+    },
+    {
+      "type": "RimWorld.PawnGroupKindWorker_Trader",
+      "file": ".local-research/live-animal-trade/RimWorld.PawnGroupKindWorker_Trader.cs",
+      "sha256": "25d7ec73091d700855033859fc42b5be2036d942227fa672c69143fb70fad8e5",
+      "anchor": "GetSlavesAndAnimalsFromWares(parms, pawn, wares)",
+      "hits": [
+        {
+          "line": 71,
+          "text": "foreach (Pawn slavesAndAnimalsFromWare in GetSlavesAndAnimalsFromWares(parms, pawn, wares))"
+        }
+      ],
+      "interpretation": "Animal wares enter the actual arrival pawn list."
+    },
+    {
+      "type": "RimWorld.IncidentWorker_TraderCaravanArrival",
+      "file": ".local-research/live-animal-trade/RimWorld.IncidentWorker_TraderCaravanArrival.cs",
+      "sha256": "2e2575835071d079b42f87fb086df5d46e8f45586760b7e240df0787a95677c4",
+      "anchor": "LordMaker.MakeNewLord(parms.faction, lordJob, map, pawns);",
+      "hits": [
+        {
+          "line": 127,
+          "text": "LordMaker.MakeNewLord(parms.faction, lordJob, map, pawns);"
+        }
+      ],
+      "interpretation": "Spawned arrival pawns are assigned to the trading Lord."
+    },
+    {
+      "type": "RimWorld.TraderCaravanUtility",
+      "file": ".local-research/live-animal-trade/RimWorld.TraderCaravanUtility.cs",
+      "sha256": "d5465e42693eade60c3a75d247b70c5f2bf3864c0b38fe7995c6d76d052e5e61",
+      "anchor": "if (p.kindDef.RaceProps.packAnimal && p.inventory.innerContainer.Any)",
+      "hits": [
+        {
+          "line": 18,
+          "text": "if (p.kindDef.RaceProps.packAnimal && p.inventory.innerContainer.Any)"
+        }
+      ],
+      "interpretation": "A pack animal carrying inventory is a Carrier before the general animal branch."
+    },
+    {
+      "type": "RimWorld.TraderCaravanUtility",
+      "file": ".local-research/live-animal-trade/RimWorld.TraderCaravanUtility.cs",
+      "sha256": "d5465e42693eade60c3a75d247b70c5f2bf3864c0b38fe7995c6d76d052e5e61",
+      "anchor": "if (p.RaceProps.Animal)",
+      "hits": [
+        {
+          "line": 22,
+          "text": "if (p.RaceProps.Animal)"
+        }
+      ],
+      "interpretation": "Other animals are Chattel; empty pack animals can reach this branch."
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "file": ".local-research/live-animal-trade/RimWorld.Pawn_TraderTracker.cs",
+      "sha256": "b57852d9a71cc3f748570a22b8e8fbd5222bae48cbf4fed652059d72d1996b6c",
+      "anchor": "case TraderCaravanRole.Chattel:",
+      "hits": [
+        {
+          "line": 50,
+          "text": "case TraderCaravanRole.Chattel:"
+        }
+      ],
+      "interpretation": "Trader stock includes actual Chattel pawns owned by its Lord."
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "file": ".local-research/live-animal-trade/RimWorld.Pawn_TraderTracker.cs",
+      "sha256": "b57852d9a71cc3f748570a22b8e8fbd5222bae48cbf4fed652059d72d1996b6c",
+      "anchor": "yield return p.inventory.innerContainer[j];",
+      "hits": [
+        {
+          "line": 46,
+          "text": "yield return p.inventory.innerContainer[j];"
+        }
+      ],
+      "interpretation": "A Carrier contributes its inventory, not its own body as an animal offer."
+    },
+    {
+      "type": "RimWorld.TradeUtility",
+      "file": ".local-research/live-animal-trade/RimWorld.TradeUtility.cs",
+      "sha256": "de12a556209ea51bb8f5a9196c0a2172d30c44a2022f3e11bbebba9c7ce19256",
+      "anchor": "if (!def.tradeability.PlayerCanSell())",
+      "hits": [
+        {
+          "line": 24,
+          "text": "if (!def.tradeability.PlayerCanSell())"
+        }
+      ],
+      "interpretation": "Player sale first respects race tradeability."
+    },
+    {
+      "type": "RimWorld.TradeUtility",
+      "file": ".local-research/live-animal-trade/RimWorld.TradeUtility.cs",
+      "sha256": "de12a556209ea51bb8f5a9196c0a2172d30c44a2022f3e11bbebba9c7ce19256",
+      "anchor": "pawn.RaceProps.Animal && pawn.IsFormingCaravan()",
+      "hits": [
+        {
+          "line": 68,
+          "text": "if (pawn.RaceProps.Animal && pawn.IsFormingCaravan())"
+        }
+      ],
+      "interpretation": "An animal being assembled into a player caravan is excluded."
+    },
+    {
+      "type": "RimWorld.TradeUtility",
+      "file": ".local-research/live-animal-trade/RimWorld.TradeUtility.cs",
+      "sha256": "de12a556209ea51bb8f5a9196c0a2172d30c44a2022f3e11bbebba9c7ce19256",
+      "anchor": "pawn.HomeFaction == trader.Faction && !pawn.IsSlave && !pawn.IsPrisoner",
+      "hits": [
+        {
+          "line": 64,
+          "text": "if ((pawn.GetExtraHostFaction() != null && pawn.GetExtraHostFaction() == trader.Faction) || (pawn.IsQuestLodger() && pawn.GetExtraHomeFaction() == trader.Faction) || (pawn.HomeFaction != null && pawn.HomeFaction == trader.Faction && !pawn.IsSlave && !pawn.IsPrisoner))"
+        }
+      ],
+      "interpretation": "Same-home-faction ordinary pawns cannot be sold back through this path."
+    },
+    {
+      "type": "RimWorld.TradeUtility",
+      "file": ".local-research/live-animal-trade/RimWorld.TradeUtility.cs",
+      "sha256": "de12a556209ea51bb8f5a9196c0a2172d30c44a2022f3e11bbebba9c7ce19256",
+      "anchor": "item3.IsAnimal && item3.HostFaction == null && !item3.InMentalState && !item3.Downed",
+      "hits": [
+        {
+          "line": 162,
+          "text": "if (item3.IsAnimal && item3.HostFaction == null && !item3.InMentalState && !item3.Downed && (!checkAcceptableTemperatureOfAnimals || map.mapTemperature.SeasonAndOutdoorTemperatureAcceptableFor(item3.def)))"
+        }
+      ],
+      "interpretation": "Animal candidates must be spawned player animals without host faction, mental state or downed state."
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "file": ".local-research/live-animal-trade/RimWorld.Pawn_TraderTracker.cs",
+      "sha256": "b57852d9a71cc3f748570a22b8e8fbd5222bae48cbf4fed652059d72d1996b6c",
+      "anchor": "foreach (Pawn item6 in from x in TradeUtility.AllSellableColonyPawns(pawn.Map)",
+      "hits": [
+        {
+          "line": 141,
+          "text": "foreach (Pawn item6 in from x in TradeUtility.AllSellableColonyPawns(pawn.Map)"
+        }
+      ],
+      "interpretation": "Animal candidates have a distinct branch from Home/storage-bound floor items."
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "file": ".local-research/live-animal-trade/RimWorld.Pawn_TraderTracker.cs",
+      "sha256": "b57852d9a71cc3f748570a22b8e8fbd5222bae48cbf4fed652059d72d1996b6c",
+      "anchor": "where !x.Downed && ReachableForTrade(x)",
+      "hits": [
+        {
+          "line": 142,
+          "text": "where !x.Downed && ReachableForTrade(x)"
+        }
+      ],
+      "interpretation": "Animal sale still checks reachability."
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "file": ".local-research/live-animal-trade/RimWorld.Pawn_TraderTracker.cs",
+      "sha256": "b57852d9a71cc3f748570a22b8e8fbd5222bae48cbf4fed652059d72d1996b6c",
+      "anchor": "PathEndMode.Touch, TraverseMode.PassDoors, Danger.Some",
+      "hits": [
+        {
+          "line": 267,
+          "text": "return pawn.Map.reachability.CanReach(pawn.Position, thing2, PathEndMode.Touch, TraverseMode.PassDoors, Danger.Some);"
+        }
+      ],
+      "interpretation": "Reachability is measured from the trader, with PassDoors and Touch."
+    },
+    {
+      "type": "RimWorld.TradeDeal",
+      "file": ".local-research/live-animal-trade/RimWorld.TradeDeal.cs",
+      "sha256": "f87412f2d7f56971edf3df99ec146554be166adef3e2b27a8fbd88927ed85295",
+      "anchor": "!TradeSession.playerNegotiator.IsWorldPawn() && !InSellablePosition(item",
+      "hits": [
+        {
+          "line": 52,
+          "text": "if (!TradeSession.playerNegotiator.IsWorldPawn() && !InSellablePosition(item, out var reason))"
+        }
+      ],
+      "interpretation": "On-map trade adds position validation after candidate generation."
+    },
+    {
+      "type": "RimWorld.TradeDeal",
+      "file": ".local-research/live-animal-trade/RimWorld.TradeDeal.cs",
+      "sha256": "f87412f2d7f56971edf3df99ec146554be166adef3e2b27a8fbd88927ed85295",
+      "anchor": "if (positionHeld.Fogged(t.MapHeld))",
+      "hits": [
+        {
+          "line": 92,
+          "text": "if (positionHeld.Fogged(t.MapHeld))"
+        }
+      ],
+      "interpretation": "Fogged stock cannot be sold from the colony."
+    },
+    {
+      "type": "RimWorld.TradeDeal",
+      "file": ".local-research/live-animal-trade/RimWorld.TradeDeal.cs",
+      "sha256": "f87412f2d7f56971edf3df99ec146554be166adef3e2b27a8fbd88927ed85295",
+      "anchor": "GenRadial.NumCellsInRadius(6.9f)",
+      "hits": [
+        {
+          "line": 99,
+          "text": "int num = GenRadial.NumCellsInRadius(6.9f);"
+        }
+      ],
+      "interpretation": "Nearby same-room selling blockers use a bounded radius."
+    },
+    {
+      "type": "RimWorld.TradeDeal",
+      "file": ".local-research/live-animal-trade/RimWorld.TradeDeal.cs",
+      "sha256": "f87412f2d7f56971edf3df99ec146554be166adef3e2b27a8fbd88927ed85295",
+      "anchor": "PreventPlayerSellingThingsNearby(out reason)",
+      "hits": [
+        {
+          "line": 110,
+          "text": "if (thingList[j].PreventPlayerSellingThingsNearby(out reason))"
+        }
+      ],
+      "interpretation": "Nearby objects can veto a sale."
+    },
+    {
+      "type": "RimWorld.TransferableUtility",
+      "file": ".local-research/live-animal-trade/RimWorld.TransferableUtility.cs",
+      "sha256": "bd8980e58e0e7039895b9747addb38f84fbf356c5febf3cfdfc8f72871c60be5",
+      "anchor": "pawn.relations?.GetFirstDirectRelationPawn(PawnRelationDefOf.Bond) != null",
+      "hits": [
+        {
+          "line": 237,
+          "text": "if (pawn.relations?.GetFirstDirectRelationPawn(PawnRelationDefOf.Bond) != null)"
+        }
+      ],
+      "interpretation": "Bond prevents row stacking in CanStack, not sale itself."
+    },
+    {
+      "type": "RimWorld.TransferableUtility",
+      "file": ".local-research/live-animal-trade/RimWorld.TransferableUtility.cs",
+      "sha256": "bd8980e58e0e7039895b9747addb38f84fbf356c5febf3cfdfc8f72871c60be5",
+      "anchor": "pawn.health.hediffSet.HasHediff(HediffDefOf.Pregnant, mustBeVisible: true)",
+      "hits": [
+        {
+          "line": 241,
+          "text": "if (pawn.health.hediffSet.HasHediff(HediffDefOf.Pregnant, mustBeVisible: true))"
+        }
+      ],
+      "interpretation": "Visible pregnancy prevents row stacking in CanStack, not sale itself."
+    },
+    {
+      "type": "RimWorld.TransferableUtility",
+      "file": ".local-research/live-animal-trade/RimWorld.TransferableUtility.cs",
+      "sha256": "bd8980e58e0e7039895b9747addb38f84fbf356c5febf3cfdfc8f72871c60be5",
+      "anchor": "if (pawn.gender != pawn2.gender)",
+      "hits": [
+        {
+          "line": 144,
+          "text": "if (pawn.gender != pawn2.gender)"
+        }
+      ],
+      "interpretation": "Row grouping distinguishes sex."
+    },
+    {
+      "type": "RimWorld.TransferableUtility",
+      "file": ".local-research/live-animal-trade/RimWorld.TransferableUtility.cs",
+      "sha256": "bd8980e58e0e7039895b9747addb38f84fbf356c5febf3cfdfc8f72871c60be5",
+      "anchor": "pawn.ageTracker.CurLifeStageIndex != pawn2.ageTracker.CurLifeStageIndex",
+      "hits": [
+        {
+          "line": 148,
+          "text": "if (pawn.ageTracker.CurLifeStageIndex != pawn2.ageTracker.CurLifeStageIndex)"
+        }
+      ],
+      "interpretation": "Row grouping distinguishes life stage."
+    },
+    {
+      "type": "RimWorld.Tradeable_Pawn",
+      "file": ".local-research/live-animal-trade/RimWorld.Tradeable_Pawn.cs",
+      "sha256": "32124cbfbbe465dfadb7d5db57e565873bfcbdc6de329a703db74ffee0116fff",
+      "anchor": "thingsColony.Take(CountToTransferToDestination)",
+      "hits": [
+        {
+          "line": 43,
+          "text": "List<Pawn> list = thingsColony.Take(CountToTransferToDestination).Cast<Pawn>().ToList();"
+        }
+      ],
+      "interpretation": "Selling selects existing pawn references from colony offers."
+    },
+    {
+      "type": "RimWorld.Tradeable_Pawn",
+      "file": ".local-research/live-animal-trade/RimWorld.Tradeable_Pawn.cs",
+      "sha256": "32124cbfbbe465dfadb7d5db57e565873bfcbdc6de329a703db74ffee0116fff",
+      "anchor": "thingsTrader.Take(CountToTransferToSource)",
+      "hits": [
+        {
+          "line": 56,
+          "text": "List<Pawn> list2 = thingsTrader.Take(CountToTransferToSource).Cast<Pawn>().ToList();"
+        }
+      ],
+      "interpretation": "Buying selects existing pawn references from trader offers."
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "file": ".local-research/live-animal-trade/RimWorld.Pawn_TraderTracker.cs",
+      "sha256": "b57852d9a71cc3f748570a22b8e8fbd5222bae48cbf4fed652059d72d1996b6c",
+      "anchor": "pawn.PreTraded(TradeAction.PlayerBuys, playerNegotiator, this.pawn);",
+      "hits": [
+        {
+          "line": 182,
+          "text": "pawn.PreTraded(TradeAction.PlayerBuys, playerNegotiator, this.pawn);"
+        }
+      ],
+      "interpretation": "Map caravan buying invokes the existing pawn trade hook."
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "file": ".local-research/live-animal-trade/RimWorld.Pawn_TraderTracker.cs",
+      "sha256": "b57852d9a71cc3f748570a22b8e8fbd5222bae48cbf4fed652059d72d1996b6c",
+      "anchor": "pawn.GetLord()?.Notify_PawnLost(pawn, PawnLostCondition.Undefined);",
+      "hits": [
+        {
+          "line": 183,
+          "text": "pawn.GetLord()?.Notify_PawnLost(pawn, PawnLostCondition.Undefined);"
+        }
+      ],
+      "interpretation": "A bought pawn exits its trader Lord."
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "file": ".local-research/live-animal-trade/RimWorld.Pawn_TraderTracker.cs",
+      "sha256": "b57852d9a71cc3f748570a22b8e8fbd5222bae48cbf4fed652059d72d1996b6c",
+      "anchor": "AddPawnToStock(pawn);",
+      "hits": [
+        {
+          "line": 159,
+          "text": "AddPawnToStock(pawn);"
+        }
+      ],
+      "interpretation": "Selling hands the existing pawn to caravan stock ownership."
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "file": ".local-research/live-animal-trade/RimWorld.Pawn_TraderTracker.cs",
+      "sha256": "b57852d9a71cc3f748570a22b8e8fbd5222bae48cbf4fed652059d72d1996b6c",
+      "anchor": "if (!newPawn.Spawned)",
+      "hits": [
+        {
+          "line": 207,
+          "text": "if (!newPawn.Spawned)"
+        }
+      ],
+      "interpretation": "Only an unspawned sold pawn needs fallback spawning; normal eligible animals are already spawned."
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "file": ".local-research/live-animal-trade/RimWorld.Pawn_TraderTracker.cs",
+      "sha256": "b57852d9a71cc3f748570a22b8e8fbd5222bae48cbf4fed652059d72d1996b6c",
+      "anchor": "newPawn.SetFaction(pawn.Faction);",
+      "hits": [
+        {
+          "line": 213,
+          "text": "newPawn.SetFaction(pawn.Faction);"
+        }
+      ],
+      "interpretation": "Sold animals receive the trader faction."
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "file": ".local-research/live-animal-trade/RimWorld.Pawn_TraderTracker.cs",
+      "sha256": "b57852d9a71cc3f748570a22b8e8fbd5222bae48cbf4fed652059d72d1996b6c",
+      "anchor": "lord.AddPawn(newPawn);",
+      "hits": [
+        {
+          "line": 231,
+          "text": "lord.AddPawn(newPawn);"
+        }
+      ],
+      "interpretation": "Sold animals join the trader Lord."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/live-animal-trade/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "ownership?.UnclaimAll();",
+      "hits": [
+        {
+          "line": 2614,
+          "text": "ownership?.UnclaimAll();"
+        },
+        {
+          "line": 2660,
+          "text": "ownership?.UnclaimAll();"
+        }
+      ],
+      "interpretation": "PreTraded removes pawn ownership claims, including beds."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/live-animal-trade/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "DropAndForbidEverything();",
+      "hits": [
+        {
+          "line": 2232,
+          "text": "DropAndForbidEverything();"
+        },
+        {
+          "line": 2612,
+          "text": "DropAndForbidEverything();"
+        }
+      ],
+      "interpretation": "Spawned traded pawns drop carried possessions through the general trade hook."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/live-animal-trade/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "SetFaction(Faction.OfPlayer);",
+      "hits": [
+        {
+          "line": 2633,
+          "text": "SetFaction(Faction.OfPlayer);"
+        }
+      ],
+      "interpretation": "Bought animals become player faction through PreTraded."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/live-animal-trade/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "relations.Notify_PawnSold(playerNegotiator);",
+      "hits": [
+        {
+          "line": 2646,
+          "text": "relations.Notify_PawnSold(playerNegotiator);"
+        }
+      ],
+      "interpretation": "Selling flesh pawns triggers relationship consequences."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/live-animal-trade/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "Map.designationManager.RemoveAllDesignationsOn(this);",
+      "hits": [
+        {
+          "line": 2715,
+          "text": "Map.designationManager.RemoveAllDesignationsOn(this);"
+        }
+      ],
+      "interpretation": "Faction changes remove map designations."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/live-animal-trade/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "health.surgeryBills.Clear();",
+      "hits": [
+        {
+          "line": 2055,
+          "text": "health.surgeryBills.Clear();"
+        },
+        {
+          "line": 2747,
+          "text": "health.surgeryBills.Clear();"
+        }
+      ],
+      "interpretation": "Faction changes clear pending surgery bills, not the health state."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/live-animal-trade/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "jobs?.StopAll(ifLayingKeepLaying);",
+      "hits": [
+        {
+          "line": 2811,
+          "text": "jobs?.StopAll(ifLayingKeepLaying);"
+        }
+      ],
+      "interpretation": "Clearing the pawn mind stops obsolete jobs."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/live-animal-trade/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "pather?.StopDead();",
+      "hits": [
+        {
+          "line": 2416,
+          "text": "pather?.StopDead();"
+        },
+        {
+          "line": 2809,
+          "text": "pather?.StopDead();"
+        }
+      ],
+      "interpretation": "Clearing the pawn mind stops its old path."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/live-animal-trade/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "training.Train(TrainableDefOf.Tameness, recruiter, complete: true);",
+      "hits": [
+        {
+          "line": 2771,
+          "text": "training.Train(TrainableDefOf.Tameness, recruiter, complete: true);"
+        }
+      ],
+      "interpretation": "Joining the player completes tameness."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/live-animal-trade/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "roping?.BreakAllRopes();",
+      "hits": [
+        {
+          "line": 2789,
+          "text": "roping?.BreakAllRopes();"
+        }
+      ],
+      "interpretation": "Faction changes break ropes."
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "file": ".local-research/live-animal-trade/RimWorld.Pawn_PlayerSettings.cs",
+      "sha256": "c23d3b5de6c9a96cad59170531efc71f3964d8d99d07b582eda580bfbdd00494",
+      "anchor": "allowedAreas.Clear();",
+      "hits": [
+        {
+          "line": 219,
+          "text": "allowedAreas.Clear();"
+        },
+        {
+          "line": 339,
+          "text": "allowedAreas.Clear();"
+        }
+      ],
+      "interpretation": "Faction changes clear allowed-area assignments."
+    },
+    {
+      "type": "RimWorld.Pawn_RelationsTracker",
+      "file": ".local-research/live-animal-trade/RimWorld.Pawn_RelationsTracker.cs",
+      "sha256": "d4a48e91a534b63b22f5597b3d2bc0cc322389852d30ce16c25dc197fa8dd02e",
+      "anchor": "pawn.relations.RemoveDirectRelation(mostImportantRelation, potentiallyRelatedPawn);",
+      "hits": [
+        {
+          "line": 955,
+          "text": "pawn.relations.RemoveDirectRelation(mostImportantRelation, potentiallyRelatedPawn);"
+        }
+      ],
+      "interpretation": "Selling breaks a bond in the relationship notification when Bond is the relevant relation."
+    },
+    {
+      "type": "RimWorld.LordToil_ExitMapAndEscortCarriers",
+      "file": ".local-research/live-animal-trade/RimWorld.LordToil_ExitMapAndEscortCarriers.cs",
+      "sha256": "ba7e97fcb6a20e51f02a4decedbcf9e96ada72f6d6dc0c9dd8bf0fb420f3a952",
+      "anchor": "p.mindState.duty = new PawnDuty(DutyDefOf.Escort, trader, 14f);",
+      "hits": [
+        {
+          "line": 64,
+          "text": "p.mindState.duty = new PawnDuty(DutyDefOf.Escort, trader, 14f);"
+        }
+      ],
+      "interpretation": "Departing Chattel receives escort duties and walks with the group."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/live-animal-trade/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "Scribe_Values.Look(ref gender, \"gender\", Gender.Male);",
+      "hits": [
+        {
+          "line": 4603,
+          "text": "Scribe_Values.Look(ref gender, \"gender\", Gender.Male);"
+        }
+      ],
+      "interpretation": "Sex is saved on the actual pawn."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/live-animal-trade/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "Scribe_Deep.Look(ref ageTracker, \"ageTracker\", this);",
+      "hits": [
+        {
+          "line": 4635,
+          "text": "Scribe_Deep.Look(ref ageTracker, \"ageTracker\", this);"
+        }
+      ],
+      "interpretation": "Age state is saved deeply."
+    },
+    {
+      "type": "Verse.Pawn",
+      "file": ".local-research/live-animal-trade/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "anchor": "Scribe_Deep.Look(ref health, \"healthTracker\", this);",
+      "hits": [
+        {
+          "line": 4636,
+          "text": "Scribe_Deep.Look(ref health, \"healthTracker\", this);"
+        }
+      ],
+      "interpretation": "Health and its pregnancy state belong to saved pawn state."
+    },
+    {
+      "type": "Verse.AI.Group.Lord",
+      "file": ".local-research/live-animal-trade/Verse.AI.Group.Lord.cs",
+      "sha256": "a4c592766e356bb857de4d8b4ef0e59b03e2140d31c198fa033429cf5857e3e4",
+      "anchor": "Scribe_Collections.Look(ref ownedPawns, \"ownedPawns\", LookMode.Reference);",
+      "hits": [
+        {
+          "line": 132,
+          "text": "Scribe_Collections.Look(ref ownedPawns, \"ownedPawns\", LookMode.Reference);"
+        }
+      ],
+      "interpretation": "Lord membership saves references to the same pawns."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/live-animal-trade/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "Scribe_Values.Look(ref eggProgress, \"eggProgress\", 0f);",
+      "hits": [
+        {
+          "line": 73,
+          "text": "Scribe_Values.Look(ref eggProgress, \"eggProgress\", 0f);"
+        }
+      ],
+      "interpretation": "Egg production progress is independently saved."
+    },
+    {
+      "type": "Verse.Hediff_Pregnant",
+      "file": ".local-research/live-animal-trade/Verse.Hediff_Pregnant.cs",
+      "sha256": "c8d706382ad523ccb43f496a31ad0de5d0a9b1c8d3fc20b73c52737e2a3b3d87",
+      "anchor": "new PawnGenerationRequest(mother.kindDef, mother.Faction",
+      "hits": [
+        {
+          "line": 168,
+          "text": "PawnGenerationRequest request = new PawnGenerationRequest(mother.kindDef, mother.Faction, PawnGenerationContext.NonPlayer, null, forceGenerateNewPawn: false, allowDead: false, allowDowned: true, canGeneratePawnRelations: true, mustBeCapableOfViolence: false, 1f, forceAddFreeWarmLayerIfNeeded: false, allowGay: true, allowPregnant: false, allowFood: true, allowAddictions: true, inhabitant: false, certainlyBeenInCryptosleep: false, forceRedressWorldPawnIfFormerColonist: false, worldPawnFactionDoesntMatter: false, 0f, 0f, null, 1f, null, null, null, null, null, null, null, null, null, null, null, null, forceNoIdeo: false, forceNoBackstory: false, forbidAnyTitle: false, forceDead: false, null, null, null, null, null, 0f, DevelopmentalStage.Newborn);"
+        }
+      ],
+      "interpretation": "Newborn animals inherit the mother faction at birth."
+    },
+    {
+      "type": "Verse.Hediff_Pregnant",
+      "file": ".local-research/live-animal-trade/Verse.Hediff_Pregnant.cs",
+      "sha256": "c8d706382ad523ccb43f496a31ad0de5d0a9b1c8d3fc20b73c52737e2a3b3d87",
+      "anchor": "mother.GetLord()?.AddPawn(pawn);",
+      "hits": [
+        {
+          "line": 189,
+          "text": "mother.GetLord()?.AddPawn(pawn);"
+        }
+      ],
+      "interpretation": "On-map birth adds the newborn to the mother Lord."
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "file": ".local-research/live-animal-trade/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "anchor": "return GenSpawn.Spawn(pawn, positionOverride ?? motherOrEgg.PositionHeld, motherOrEgg.MapHeld) != null;",
+      "hits": [
+        {
+          "line": 400,
+          "text": "return GenSpawn.Spawn(pawn, positionOverride ?? motherOrEgg.PositionHeld, motherOrEgg.MapHeld) != null;"
+        }
+      ],
+      "interpretation": "On-map offspring spawn at mother or held-egg location."
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "file": ".local-research/live-animal-trade/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "anchor": "compHatcher.hatcheeFaction = parent.Faction;",
+      "hits": [
+        {
+          "line": 140,
+          "text": "compHatcher.hatcheeFaction = parent.Faction;"
+        }
+      ],
+      "interpretation": "Fertile eggs capture the layer faction at production time."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/live-animal-trade/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "new PawnGenerationRequest(Props.hatcherPawn, hatcheeFaction",
+      "hits": [
+        {
+          "line": 85,
+          "text": "PawnGenerationRequest request = new PawnGenerationRequest(Props.hatcherPawn, hatcheeFaction, PawnGenerationContext.NonPlayer, null, forceGenerateNewPawn: false, allowDead: false, allowDowned: false, canGeneratePawnRelations: true, mustBeCapableOfViolence: false, 1f, forceAddFreeWarmLayerIfNeeded: false, allowGay: true, allowPregnant: false, allowFood: true, allowAddictions: true, inhabitant: false, certainlyBeenInCryptosleep: false, forceRedressWorldPawnIfFormerColonist: false, worldPawnFactionDoesntMatter: false, 0f, 0f, null, 1f, null, null, null, null, null, null, null, null, null, null, null, null, forceNoIdeo: false, forceNoBackstory: false, forbidAnyTitle: false, forceDead: false, null, null, null, null, null, 0f, DevelopmentalStage.Newborn);"
+        }
+      ],
+      "interpretation": "Hatching uses the egg faction, not the current mother faction."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/live-animal-trade/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "Scribe_References.Look(ref hatcheeFaction, \"hatcheeFaction\");",
+      "hits": [
+        {
+          "line": 39,
+          "text": "Scribe_References.Look(ref hatcheeFaction, \"hatcheeFaction\");"
+        }
+      ],
+      "interpretation": "The egg retains its faction reference in saves."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "file": ".local-research/live-animal-trade/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "anchor": "hatcheeFaction = Faction.OfPlayer;",
+      "hits": [
+        {
+          "line": 162,
+          "text": "hatcheeFaction = Faction.OfPlayer;"
+        }
+      ],
+      "interpretation": "Buying an already laid egg has its own faction update hook."
+    },
+    {
+      "type": "RimWorld.StatWorker_MarketValue",
+      "file": ".local-research/live-animal-trade/RimWorld.StatWorker_MarketValue.cs",
+      "sha256": "e47a2c46fa51be66ebe01e9b287f90416557bbedad6b139d7a7c97fa35dd7902",
+      "anchor": "PriceUtility.PawnQualityPriceFactor((Pawn)req.Thing)",
+      "hits": [
+        {
+          "line": 18,
+          "text": "return base.GetValueUnfinalized(StatRequest.For(req.BuildableDef, req.StuffDef), applyPostProcess) * PriceUtility.PawnQualityPriceFactor((Pawn)req.Thing) + PriceUtility.PawnQualityPriceOffset((Pawn)req.Thing);"
+        }
+      ],
+      "interpretation": "Animal market value depends on individual pawn quality."
+    },
+    {
+      "type": "RimWorld.PriceUtility",
+      "file": ".local-research/live-animal-trade/RimWorld.PriceUtility.cs",
+      "sha256": "9437acd3ea698ce4c84d052293eb2ba3c7da0e0d2c214fb6235cdbe26f3e4084",
+      "anchor": "pawn.health.summaryHealth.SummaryHealthPercent",
+      "hits": [
+        {
+          "line": 30,
+          "text": "num *= Mathf.Lerp(0.19999999f, 1f, pawn.health.summaryHealth.SummaryHealthPercent);"
+        }
+      ],
+      "interpretation": "Health affects the pawn quality multiplier."
+    },
+    {
+      "type": "RimWorld.PriceUtility",
+      "file": ".local-research/live-animal-trade/RimWorld.PriceUtility.cs",
+      "sha256": "9437acd3ea698ce4c84d052293eb2ba3c7da0e0d2c214fb6235cdbe26f3e4084",
+      "anchor": "forTradePrice: true",
+      "hits": [
+        {
+          "line": 39,
+          "text": "float t = PawnCapacityUtility.CalculateCapacityLevel(pawn.health.hediffSet, allDefsListForReading[i], null, forTradePrice: true);"
+        }
+      ],
+      "interpretation": "Pawn capacity modifiers use trade-specific capacity calculation."
+    },
+    {
+      "type": "RimWorld.PriceUtility",
+      "file": ".local-research/live-animal-trade/RimWorld.PriceUtility.cs",
+      "sha256": "9437acd3ea698ce4c84d052293eb2ba3c7da0e0d2c214fb6235cdbe26f3e4084",
+      "anchor": "num *= pawn.ageTracker.CurLifeStage.marketValueFactor;",
+      "hits": [
+        {
+          "line": 46,
+          "text": "num *= pawn.ageTracker.CurLifeStage.marketValueFactor;"
+        }
+      ],
+      "interpretation": "Current life stage affects price."
+    },
+    {
+      "type": "RimWorld.PriceUtility",
+      "file": ".local-research/live-animal-trade/RimWorld.PriceUtility.cs",
+      "sha256": "9437acd3ea698ce4c84d052293eb2ba3c7da0e0d2c214fb6235cdbe26f3e4084",
+      "anchor": "hediffs[i].def.priceImpact || hediffs[i].def.priceOffset != 0f",
+      "hits": [
+        {
+          "line": 73,
+          "text": "if (hediffs[i].def.priceImpact || hediffs[i].def.priceOffset != 0f)"
+        }
+      ],
+      "interpretation": "Price-impacting hediffs can add explicit offsets."
+    },
+    {
+      "type": "RimWorld.Tradeable",
+      "file": ".local-research/live-animal-trade/RimWorld.Tradeable.cs",
+      "sha256": "520b439791a5e9943fe0be9b7a3c1dc78ff27654cadbfd5426133ec7ccd72ad2",
+      "anchor": "if (ThingDef.IsLeather || ThingDef.IsMeat || ThingDef.IsWool)",
+      "hits": [
+        {
+          "line": 276,
+          "text": "if (ThingDef.IsLeather || ThingDef.IsMeat || ThingDef.IsWool)"
+        }
+      ],
+      "interpretation": "Animal-product bonus applies only to these products, excluding live animals and eggs."
+    },
+    {
+      "type": "RimWorld.TradeUtility",
+      "file": ".local-research/live-animal-trade/RimWorld.TradeUtility.cs",
+      "sha256": "de12a556209ea51bb8f5a9196c0a2172d30c44a2022f3e11bbebba9c7ce19256",
+      "anchor": "thing.MarketValue * 0.6f * priceFactorSell_TraderPriceType",
+      "hits": [
+        {
+          "line": 263,
+          "text": "float num = thing.MarketValue * 0.6f * priceFactorSell_TraderPriceType * statValue * priceFactorSell_HumanPawn * (1f - Find.Storyteller.difficulty.tradePriceFactorLoss);"
+        }
+      ],
+      "interpretation": "Sell price combines individual value, trader, difficulty and other modifiers."
+    },
+    {
+      "type": "RimWorld.TradeUtility",
+      "file": ".local-research/live-animal-trade/RimWorld.TradeUtility.cs",
+      "sha256": "de12a556209ea51bb8f5a9196c0a2172d30c44a2022f3e11bbebba9c7ce19256",
+      "anchor": "thing.MarketValue * 1.4f * priceFactorBuy_TraderPriceType",
+      "hits": [
+        {
+          "line": 275,
+          "text": "float num = thing.MarketValue * 1.4f * priceFactorBuy_TraderPriceType * priceFactorBuy_JoinAs * (1f + Find.Storyteller.difficulty.tradePriceFactorLoss);"
+        }
+      ],
+      "interpretation": "Buy price uses a different global multiplier."
+    },
+    {
+      "type": "RimWorld.Tradeable",
+      "file": ".local-research/live-animal-trade/RimWorld.Tradeable.cs",
+      "sha256": "520b439791a5e9943fe0be9b7a3c1dc78ff27654cadbfd5426133ec7ccd72ad2",
+      "anchor": "pricePlayerSell = pricePlayerBuy;",
+      "hits": [
+        {
+          "line": 293,
+          "text": "pricePlayerSell = pricePlayerBuy;"
+        }
+      ],
+      "interpretation": "Cached sell price is capped by the matching buy price."
+    },
+    {
+      "type": "RimWorld.TradeDeal",
+      "file": ".local-research/live-animal-trade/RimWorld.TradeDeal.cs",
+      "sha256": "f87412f2d7f56971edf3df99ec146554be166adef3e2b27a8fbd88927ed85295",
+      "anchor": "num += tradeable.CurTotalCurrencyCostForSource;",
+      "hits": [
+        {
+          "line": 144,
+          "text": "num += tradeable.CurTotalCurrencyCostForSource;"
+        }
+      ],
+      "interpretation": "Currency settlement aggregates animal and item trade rows."
+    },
+    {
+      "type": "RimWorld.TradeShip",
+      "file": ".local-research/live-animal-trade/RimWorld.TradeShip.cs",
+      "sha256": "e64c23d3d965d27bcbb3f43f3e9796e159350445df9fcb78af9b5150efc21e75",
+      "anchor": "TradeUtility.SpawnDropPod(DropCellFinder.TradeDropSpot(Map), Map, thing);",
+      "hits": [
+        {
+          "line": 207,
+          "text": "TradeUtility.SpawnDropPod(DropCellFinder.TradeDropSpot(Map), Map, thing);"
+        }
+      ],
+      "interpretation": "Orbital purchase uses a drop pod rather than map-caravan in-place transfer."
+    },
+    {
+      "type": "RimWorld.Planet.Settlement_TraderTracker",
+      "file": ".local-research/live-animal-trade/RimWorld.Planet.Settlement_TraderTracker.cs",
+      "sha256": "4493d483b58d4d8013eead9a9d1d9312e58b7412c0dbaf13ce9d098cffa0e152",
+      "anchor": "caravan.AddPawn(p, addCarriedPawnToWorldPawnsIfAny: true);",
+      "hits": [
+        {
+          "line": 194,
+          "text": "caravan.AddPawn(p, addCarriedPawnToWorldPawnsIfAny: true);"
+        }
+      ],
+      "interpretation": "Settlement purchase adds the same pawn to the player world caravan."
+    }
+  ],
+  "boundedChecks": [
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "start": "private bool PawnKindAllowed",
+      "end": "public void LogAnimalChances",
+      "lineStart": 153,
+      "lineEnd": 187,
+      "sha256": "ef321cab8d93c9c43e06b65d854d1abc3ff333db31a48a02f1f8de4145dfe9db",
+      "absent": [
+        "tradeTagsBuy"
+      ],
+      "interpretation": "Supply selection uses sell tags; buy-only tags do not create stock."
+    },
+    {
+      "type": "RimWorld.TraderKindDef",
+      "start": "public bool WillTrade",
+      "end": "public PriceType PriceTypeFor",
+      "lineStart": 81,
+      "lineEnd": 93,
+      "sha256": "0defa112e10ef652f78cd5464f90364b86b8b65ed8665a090eb820289f5e3c3d",
+      "absent": [
+        "TradeabilityFor"
+      ],
+      "interpretation": "WillTrade calls the union-based HandlesThingDef path."
+    },
+    {
+      "type": "RimWorld.Tradeable",
+      "start": "public override int GetMinimumToTransfer",
+      "end": "public override AcceptanceReport UnderflowReport",
+      "lineStart": 398,
+      "lineEnd": 416,
+      "sha256": "18147ce5e7c40687547c1d96c28fb65d8d3202c69323d45deb27485c3116e3e6",
+      "absent": [
+        "TradeabilityFor",
+        "PlayerCanSell",
+        "TraderCanSell"
+      ],
+      "interpretation": "Transfer bounds use held counts without an additional generator directional gate."
+    },
+    {
+      "type": "RimWorld.TradeUI",
+      "start": "public static void DrawTradeableRow",
+      "end": "private static void DrawPrice",
+      "lineStart": 19,
+      "lineEnd": 97,
+      "sha256": "666c50c09810aab24512ef3f741fbe3f793b02dc94db11183a5413be15ed8c94",
+      "absent": [
+        "TradeabilityFor"
+      ],
+      "interpretation": "The row UI uses TraderWillTrade and inventory bounds."
+    },
+    {
+      "type": "RimWorld.TradeDeal",
+      "start": "private void AddAllTradeables",
+      "end": "private void LimitCurrencyCountToFunds",
+      "lineStart": 44,
+      "lineEnd": 236,
+      "sha256": "f949ed631bcf8c4ec697a5277a3a68d496964a9f29dff9f4b407e108ee162c3f",
+      "absent": [
+        "TradeabilityFor"
+      ],
+      "interpretation": "Reviewed offer, settlement and resolution path has no directional generator query."
+    },
+    {
+      "type": "RimWorld.TradeUtility",
+      "start": "public static bool PlayerSellableNow",
+      "end": "public static void SpawnDropPod",
+      "lineStart": 43,
+      "lineEnd": 76,
+      "sha256": "32bf9c6ade17825d652d6e95d6401688582dc776f144428f4db5f566a3068c35",
+      "absent": [
+        "Pregnant",
+        "Bond",
+        "Master",
+        "CompEggLayer"
+      ],
+      "interpretation": "These states are not direct rejection gates in PlayerSellableNow."
+    },
+    {
+      "type": "RimWorld.TradeUtility",
+      "start": "public static IEnumerable<Pawn> AllSellableColonyPawns",
+      "end": "public static Thing ThingFromStockToMergeWith",
+      "lineStart": 144,
+      "lineEnd": 169,
+      "sha256": "2762429a547822d722382aa67a5313369e77c690bb7c26b85d8a9cbf7d32f067",
+      "absent": [
+        "Pregnant",
+        "Bond",
+        "Home[",
+        "IsInAnyStorage",
+        "AreaRestriction",
+        "PenMarker"
+      ],
+      "interpretation": "Animal candidate selection has no pregnancy, bond, Home/storage or pen assignment gate."
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "start": "foreach (Pawn item6 in from x",
+      "end": "public void GiveSoldThingToTrader",
+      "lineStart": 141,
+      "lineEnd": 149,
+      "sha256": "65a939c7c0c3b9dec305f7b1e5d8b6d029ec80e4c3d67ff83dfa77e2db0120a2",
+      "absent": [
+        "Home[",
+        "IsInAnyStorage",
+        "IsForbidden"
+      ],
+      "interpretation": "The animal branch does not inherit floor-item Home/storage or forbid checks."
+    },
+    {
+      "type": "Verse.Pawn",
+      "start": "public override void PreTraded",
+      "end": "public void PreKidnapped",
+      "lineStart": 2607,
+      "lineEnd": 2653,
+      "sha256": "70d3bd4fb65fbb4b30e988fe0e0ae05e4ae3938fdc839a5fa61095e272311205",
+      "absent": [
+        "GeneratePawn",
+        "AgeBiologicalTicks =",
+        "health.Reset",
+        "CompEggLayer"
+      ],
+      "interpretation": "Trading changes ownership/control without explicitly regenerating age, health or egg production."
+    },
+    {
+      "type": "Verse.Pawn",
+      "start": "public override void SetFaction",
+      "end": "[Obsolete]",
+      "lineStart": 2702,
+      "lineEnd": 2801,
+      "sha256": "51ef13c07260425b97517f6a4ee2383691c88498193c67eeebd08e3cf4c7502b",
+      "absent": [
+        "GeneratePawn",
+        "AgeBiologicalTicks =",
+        "health.Reset",
+        "CompEggLayer"
+      ],
+      "interpretation": "Faction change preserves the pawn body and production component while clearing control state."
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "start": "public void Hatch()",
+      "end": "public override bool AllowStackWith",
+      "lineStart": 81,
+      "lineEnd": 130,
+      "sha256": "8aa57f6d7fed745a18a6b3718653b2e2fc41c77201d6f4079e0016a21dc8b6ac",
+      "absent": [
+        "GetLord",
+        "AddPawn"
+      ],
+      "interpretation": "On-map hatching does not explicitly join the mother trader Lord, unlike live birth."
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "start": "public static bool PlayerHasReproductivePair",
+      "end": "public static float PlayerAnimalBodySizePerCapita",
+      "lineStart": 1332,
+      "lineEnd": 1363,
+      "sha256": "b460911a4a21a4036ace1de4f5d3e40429f4fff1c02df67000a2d43daf130ddb",
+      "absent": [
+        "Sterile",
+        "GetRoom",
+        "PenMarker"
+      ],
+      "interpretation": "Pair weighting checks sex and life stage across player-owned pawns, not local breeding access."
+    },
+    {
+      "type": "RimWorld.PriceUtility",
+      "start": "public static float PawnQualityPriceFactor",
+      "end": "",
+      "lineStart": 27,
+      "lineEnd": 90,
+      "sha256": "0189eda8104273ab2b58194ca8ccb1e47ec317c29b5f216848bf201b8dc70435",
+      "absent": [
+        "CompEggLayer",
+        "AnimalProductsSellImprovement",
+        "PawnRelationDefOf.Bond"
+      ],
+      "interpretation": "No direct egg progress, animal-product bonus or bond multiplier exists in these pricing helpers."
+    }
+  ],
+  "packagedXml": [
+    {
+      "file": "Data/Core/Defs/TraderKindDefs/TraderKinds_Caravan_Outlander.xml",
+      "sha256": "30f711f04490fc136c142a5744852fed2339d0d806227ce8bebad57a97ab5936",
+      "xpath": "/Defs/TraderKindDef[defName=\"Caravan_Outlander_BulkGoods\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "stockGenerators",
+          "count": 1,
+          "xml": [
+            "<stockGenerators><!-- Resources --><li Class=\"StockGenerator_SingleDef\"><thingDef>Silver</thingDef><countRange>750~1200</countRange></li><li Class=\"StockGenerator_SingleDef\"><thingDef>ComponentIndustrial</thingDef><countRange>30~40</countRange></li><li Class=\"StockGenerator_SingleDef\"><thingDef>ComponentSpacer</thingDef><countRange>-10~2</countRange></li><li Class=\"StockGenerator_SingleDef\"><thingDef>Steel</thingDef><countRange>250~400</countRange></li><li Class=\"StockGenerator_SingleDef\"><thingDef>Cloth</thingDef><countRange>250~400</countRange></li><li Class=\"StockGenerator_SingleDef\"><thingDef>Chemfuel</thingDef><countRange>250~400</countRange></li><li Class=\"StockGenerator_SingleDef\"><thingDef>Neutroamine</thingDef><countRange>70~160</countRange></li><li Class=\"StockGenerator_SingleDef\"><thingDef>Beer</thingDef><totalPriceRange>-100~100</totalPriceRange></li><li Class=\"StockGenerator_SingleDef\"><thingDef>Chocolate</thingDef><totalPriceRange>10~40</totalPriceRange></li><li Class=\"StockGenerator_SingleDef\"><thingDef>Dye</thingDef><countRange>15~20</countRange></li><li Class=\"StockGenerator_ReinforcedBarrels\"><countRange>1~4</countRange></li><li Class=\"StockGenerator_Category\"><categoryDef>FoodRaw</categoryDef><thingDefCountRange>3~3</thingDefCountRange><totalPriceRange>150~600</totalPriceRange><excludedCategories><li>EggsFertilized</li></excludedCategories></li><li Class=\"StockGenerator_Category\"><categoryDef>Textiles</categoryDef><excludedThingDefs><li MayRequire=\"Ludeon.RimWorld.Anomaly\">Leather_Dread</li></excludedThingDefs></li><li Class=\"StockGenerator_MultiDef\"><thingDefs><li>Chocolate</li><li>Kibble</li><li>Pemmican</li></thingDefs></li><!-- Drugs --><li Class=\"StockGenerator_Category\"><categoryDef>Drugs</categoryDef></li><!-- Techprints --><!-- none --><!-- Books --><li Class=\"StockGenerator_SingleDef\"><thingDef>TextBook</thingDef><countRange>0~2</countRange></li><li Class=\"StockGenerator_SingleDef\"><thingDef>Schematic</thingDef><countRange>1~1</countRange></li><li Class=\"StockGenerator_SingleDef\"><thingDef>Novel</thingDef><countRange>1~1</countRange></li><!-- Weapons --><!-- none --><!-- Apparel --><li Class=\"StockGenerator_MarketValue\"><tradeTag>BasicClothing</tradeTag><countRange>7~7</countRange></li><li Class=\"StockGenerator_MarketValue\"><tradeTag>Clothing</tradeTag><countRange>3~3</countRange></li><!-- Implants --><!-- none --><!-- Buildings --><li Class=\"StockGenerator_Category\"><categoryDef>BuildingsFurniture</categoryDef><thingDefCountRange>3~3</thingDefCountRange><countRange>1~1</countRange></li><!-- Exotic --><!-- none --><!-- Slaves --><!-- none --><!-- Animals --><li Class=\"StockGenerator_Animals\"><maxWildness>0.70</maxWildness><tradeTagsSell><li>AnimalFarm</li></tradeTagsSell><tradeTagsBuy><li>AnimalExotic</li></tradeTagsBuy><kindCountRange>1</kindCountRange><countRange>3~4</countRange><createMatingPair><li>AnimalFarm</li></createMatingPair></li><!-- Cultist apparel --><li MayRequire=\"Ludeon.RimWorld.Anomaly\" Class=\"StockGenerator_SingleDef\"><thingDef>Apparel_CultistMask</thingDef><countRange>-1~2</countRange><!-- 50% chance for 1~2 --></li><li MayRequire=\"Ludeon.RimWorld.Anomaly\" Class=\"StockGenerator_SingleDef\"><thingDef>Apparel_CeremonialCultistMask</thingDef><countRange>-1~2</countRange><!-- 50% chance for 1~2 --></li><!-- Buying --><li Class=\"StockGenerator_BuyExpensiveSimple\" /><li Class=\"StockGenerator_BuyTradeTag\"><tag>Art</tag></li><li Class=\"StockGenerator_BuyTradeTag\"><tag>MusicalInstrument</tag></li></stockGenerators>"
+          ]
+        }
+      ],
+      "interpretation": "Full stock declarations retain other buying generators as well as animal supply."
+    },
+    {
+      "file": "Data/Core/Defs/TraderKindDefs/TraderKinds_Caravan_Outlander.xml",
+      "sha256": "30f711f04490fc136c142a5744852fed2339d0d806227ce8bebad57a97ab5936",
+      "xpath": "/Defs/TraderKindDef[defName=\"Caravan_Outlander_Exotic\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "stockGenerators",
+          "count": 1,
+          "xml": [
+            "<stockGenerators><!-- Resources --><li Class=\"StockGenerator_SingleDef\"><thingDef>Silver</thingDef><countRange>750~1200</countRange></li><li Class=\"StockGenerator_SingleDef\"><thingDef>ComponentIndustrial</thingDef><countRange>6~20</countRange></li><li Class=\"StockGenerator_SingleDef\"><thingDef>ComponentSpacer</thingDef><countRange>1~4</countRange></li><li Class=\"StockGenerator_SingleDef\"><thingDef>Plasteel</thingDef><countRange>50~150</countRange></li><li Class=\"StockGenerator_SingleDef\"><thingDef>Gold</thingDef><countRange>40~80</countRange></li><li Class=\"StockGenerator_SingleDef\"><thingDef>MedicineUltratech</thingDef><countRange>2~8</countRange></li><!-- Drugs --><!-- none --><!-- Techprints --><li Class=\"StockGenerator_Techprints\"><countChances><li><count>3</count><chance>1</chance></li></countChances></li><!-- Books --><li Class=\"StockGenerator_SingleDef\"><thingDef>TextBook</thingDef><countRange>1~2</countRange></li><li Class=\"StockGenerator_SingleDef\"><thingDef>Schematic</thingDef><countRange>0~1</countRange></li><li Class=\"StockGenerator_SingleDef\"><thingDef>Novel</thingDef><countRange>0~1</countRange></li><li MayRequire=\"Ludeon.RimWorld.Anomaly\" Class=\"StockGenerator_Tomes\"><countRange>0~1</countRange></li><!-- Weapons --><!-- none --><!-- Apparel --><!-- none --><!-- Implants --><li Class=\"StockGenerator_Tag\"><tradeTag>TechHediff</tradeTag><thingDefCountRange>3</thingDefCountRange><countRange>1</countRange></li><!-- Buildings --><li Class=\"StockGenerator_Tag\"><tradeTag>Television</tradeTag><thingDefCountRange>1~2</thingDefCountRange><countRange>1~1</countRange></li><li Class=\"StockGenerator_SingleDef\"><thingDef>Telescope</thingDef><countRange>0~1</countRange></li><!-- Exotic --><li Class=\"StockGenerator_Tag\"><tradeTag>ExoticMisc</tradeTag><thingDefCountRange>3~3</thingDefCountRange><countRange>1~1</countRange><excludedThingDefs><li>MedicineUltratech</li><!-- already handled by single def --><li>ComponentSpacer</li><!-- already handled by single def --><li MayRequire=\"Ludeon.RimWorld.Anomaly\">Apparel_DisruptorFlarePack</li><!-- no anomaly technology on basic traders --></excludedThingDefs><customCountRanges><Luciferium>7~25</Luciferium><Hyperweave>40~120</Hyperweave></customCountRanges></li><li Class=\"StockGenerator_Tag\"><tradeTag>Artifact</tradeTag><thingDefCountRange>2~2</thingDefCountRange><countRange>1~1</countRange></li><!-- Genepacks --><li MayRequire=\"Ludeon.RimWorld.Biotech\" Class=\"StockGenerator_SingleDef\"><thingDef>Genepack</thingDef><countRange>3~4</countRange></li><!-- Serums --><li MayRequire=\"Ludeon.RimWorld.Anomaly\" Class=\"StockGenerator_Tag\"><tradeTag>Serum</tradeTag><thingDefCountRange>4~4</thingDefCountRange><countRange>-3~1</countRange><!-- 20% chance of appearing --><excludedThingDefs><li>VoidsightSerum</li></excludedThingDefs></li><!-- Slaves --><!-- none --><!-- Animals --><li Class=\"StockGenerator_Animals\"><tradeTagsSell><li>AnimalUncommon</li><li>AnimalFighter</li><li>AnimalFarm</li><li>AnimalPet</li></tradeTagsSell><tradeTagsBuy><li>AnimalExotic</li></tradeTagsBuy><kindCountRange>3~3</kindCountRange><countRange>1~3</countRange><createMatingPair><li>AnimalFarm</li></createMatingPair></li><!-- Archite capsule --><li MayRequire=\"Ludeon.RimWorld.Biotech\" Class=\"StockGenerator_SingleDef\"><thingDef>ArchiteCapsule</thingDef><countRange>-8~1</countRange><!-- 10% chance --></li><!-- Deathrest capacity serum --><li MayRequire=\"Ludeon.RimWorld.Biotech\" Class=\"StockGenerator_SingleDef\"><thingDef>DeathrestCapacitySerum</thingDef><countRange>0~1</countRange></li><!-- Buying --><li Class=\"StockGenerator_BuyExpensiveSimple\" /><li Class=\"StockGenerator_BuyTradeTag\"><tag>Art</tag></li><li Class=\"StockGenerator_BuyTradeTag\"><tag>ImplantEmpireCommon</tag></li><li Class=\"StockGenerator_BuyTradeTag\"><tag>ImplantEmpireRoyal</tag></li><li Class=\"StockGenerator_BuyTradeTag\"><tag>PsylinkNeuroformer</tag></li><li Class=\"StockGenerator_BuyTradeTag\"><tag>ExoticBuilding</tag></li><li Class=\"StockGenerator_BuyTradeTag\"><tag>MusicalInstrument</tag></li><li Class=\"StockGenerator_BuyTradeTag\"><tag>UtilitySpecial</tag></li><li Class=\"StockGenerator_BuySingleDef\" MayRequire=\"Ludeon.RimWorld.Anomaly\"><thingDef>Shell_Deadlife</thingDef></li><li Class=\"StockGenerator_BuySingleDef\" MayRequire=\"Ludeon.RimWorld.Anomaly\"><thingDef>VoidSculpture</thingDef></li><li Class=\"StockGenerator_BuySingleDef\" MayRequire=\"Ludeon.RimWorld.Anomaly\"><thingDef>Shard</thingDef></li><li Class=\"StockGenerator_BuySingleDef\" MayRequire=\"Ludeon.RimWorld.Anomaly\"><thingDef>Bioferrite</thingDef></li><li Class=\"StockGenerator_BuySingleDef\" MayRequire=\"Ludeon.RimWorld.Anomaly\"><thingDef>RevenantSpine</thingDef></li></stockGenerators>"
+          ]
+        }
+      ],
+      "interpretation": "Exotic animal supply tags and total counts differ from bulk."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Hares.xml",
+      "sha256": "bda7f200ded2c9f8ee4b29dc8d9ea2e8d6977f20782797c51352af20aa6d835e",
+      "xpath": "/Defs/ThingDef[@Name=\"BaseHare\"]",
+      "nameAttribute": "BaseHare",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "tradeability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "tradeTags",
+          "count": 1,
+          "xml": [
+            "<tradeTags><li>AnimalCommon</li></tradeTags>"
+          ]
+        },
+        {
+          "xpath": "statBases/MarketValue",
+          "count": 1,
+          "xml": [
+            "<MarketValue>50</MarketValue>"
+          ]
+        },
+        {
+          "xpath": "statBases/Wildness",
+          "count": 1,
+          "xml": [
+            "<Wildness>0.75</Wildness>"
+          ]
+        },
+        {
+          "xpath": "race/packAnimal",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 1,
+          "xml": [
+            "<lifeStageAges><li><def>AnimalBaby</def><minAge>0</minAge></li><li><def>AnimalJuvenile</def><minAge>0.1</minAge></li><li><def>AnimalAdult</def><minAge>0.2222</minAge><soundWounded>Pawn_Hare_Wounded</soundWounded><soundDeath>Pawn_Hare_Death</soundDeath><soundCall>Pawn_Hare_Call</soundCall><soundAngry>Pawn_Hare_Angry</soundAngry></li></lifeStageAges>"
+          ]
+        },
+        {
+          "xpath": "race/lifeExpectancy",
+          "count": 1,
+          "xml": [
+            "<lifeExpectancy>8</lifeExpectancy>"
+          ]
+        },
+        {
+          "xpath": "race/ageGenerationCurve",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Hare inherits AnimalCommon only, value fifty and wildness .75."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Hares.xml",
+      "sha256": "bda7f200ded2c9f8ee4b29dc8d9ea2e8d6977f20782797c51352af20aa6d835e",
+      "xpath": "/Defs/ThingDef[defName=\"Hare\"]",
+      "nameAttribute": "",
+      "parentName": "BaseHare",
+      "fields": [
+        {
+          "xpath": "tradeability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "tradeTags",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/MarketValue",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "statBases/Wildness",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/packAnimal",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeExpectancy",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/ageGenerationCurve",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Concrete Hare adds no trade override."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_PigGroup.xml",
+      "sha256": "87d3d069440e7ad2a3e66f3bb0778e5210c38429c5eb7788b23b87cc64df4ab1",
+      "xpath": "/Defs/ThingDef[defName=\"Deer\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "tradeability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "tradeTags",
+          "count": 1,
+          "xml": [
+            "<tradeTags><li>AnimalCommon</li></tradeTags>"
+          ]
+        },
+        {
+          "xpath": "statBases/MarketValue",
+          "count": 1,
+          "xml": [
+            "<MarketValue>250</MarketValue>"
+          ]
+        },
+        {
+          "xpath": "statBases/Wildness",
+          "count": 1,
+          "xml": [
+            "<Wildness>0.75</Wildness>"
+          ]
+        },
+        {
+          "xpath": "race/packAnimal",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 1,
+          "xml": [
+            "<lifeStageAges><li><def>AnimalBaby</def><minAge>0</minAge></li><li><def>AnimalJuvenile</def><minAge>0.1</minAge></li><li><def>AnimalAdult</def><minAge>0.3333</minAge><soundWounded>Pawn_Deer_Wounded</soundWounded><soundDeath>Pawn_Deer_Death</soundDeath><soundCall>Pawn_Deer_Call</soundCall><soundAngry>Pawn_Deer_Angry</soundAngry></li></lifeStageAges>"
+          ]
+        },
+        {
+          "xpath": "race/lifeExpectancy",
+          "count": 1,
+          "xml": [
+            "<lifeExpectancy>15</lifeExpectancy>"
+          ]
+        },
+        {
+          "xpath": "race/ageGenerationCurve",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Deer has AnimalCommon only and wildness .75."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_SheepGroup.xml",
+      "sha256": "92475fbf8ed1ac470d9be9068e7bfd915e8befa66303eee32c829723700ded54",
+      "xpath": "/Defs/ThingDef[defName=\"Alpaca\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "tradeability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "tradeTags",
+          "count": 1,
+          "xml": [
+            "<tradeTags><li>AnimalCommon</li><li>AnimalFarm</li></tradeTags>"
+          ]
+        },
+        {
+          "xpath": "statBases/MarketValue",
+          "count": 1,
+          "xml": [
+            "<MarketValue>350</MarketValue>"
+          ]
+        },
+        {
+          "xpath": "statBases/Wildness",
+          "count": 1,
+          "xml": [
+            "<Wildness>0.25</Wildness>"
+          ]
+        },
+        {
+          "xpath": "race/packAnimal",
+          "count": 1,
+          "xml": [
+            "<packAnimal>true</packAnimal>"
+          ]
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 1,
+          "xml": [
+            "<lifeStageAges><li><def>AnimalBaby</def><minAge>0</minAge></li><li><def>AnimalJuvenile</def><minAge>0.2</minAge></li><li><def>AnimalAdult</def><minAge>0.3333</minAge><soundWounded>Pawn_Elk_Wounded</soundWounded><soundDeath>Pawn_Elk_Death</soundDeath><soundCall>Pawn_Elk_Call</soundCall><soundAngry>Pawn_Elk_Angry</soundAngry></li></lifeStageAges>"
+          ]
+        },
+        {
+          "xpath": "race/lifeExpectancy",
+          "count": 1,
+          "xml": [
+            "<lifeExpectancy>15</lifeExpectancy>"
+          ]
+        },
+        {
+          "xpath": "race/ageGenerationCurve",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Alpaca is an AnimalFarm species and a pack animal."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_CowGroup.xml",
+      "sha256": "4dfaa77da9175d9cbc802ca4b6d5fc321fbf646ea5f39d22cf38190c77294b7a",
+      "xpath": "/Defs/ThingDef[defName=\"Dromedary\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "tradeability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "tradeTags",
+          "count": 1,
+          "xml": [
+            "<tradeTags><li>AnimalCommon</li><li>AnimalFarm</li></tradeTags>"
+          ]
+        },
+        {
+          "xpath": "statBases/MarketValue",
+          "count": 1,
+          "xml": [
+            "<MarketValue>300</MarketValue>"
+          ]
+        },
+        {
+          "xpath": "statBases/Wildness",
+          "count": 1,
+          "xml": [
+            "<Wildness>0.25</Wildness>"
+          ]
+        },
+        {
+          "xpath": "race/packAnimal",
+          "count": 1,
+          "xml": [
+            "<packAnimal>true</packAnimal>"
+          ]
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 1,
+          "xml": [
+            "<lifeStageAges><li><def>AnimalBaby</def><minAge>0</minAge></li><li><def>AnimalJuvenile</def><minAge>0.25</minAge></li><li><def>AnimalAdult</def><minAge>0.3333</minAge><soundWounded>Pawn_Dromedary_Wounded</soundWounded><soundDeath>Pawn_Dromedary_Death</soundDeath><soundCall>Pawn_Dromedary_Call</soundCall><soundAngry>Pawn_Dromedary_Angry</soundAngry></li></lifeStageAges>"
+          ]
+        },
+        {
+          "xpath": "race/lifeExpectancy",
+          "count": 1,
+          "xml": [
+            "<lifeExpectancy>45</lifeExpectancy>"
+          ]
+        },
+        {
+          "xpath": "race/ageGenerationCurve",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Dromedary is an AnimalFarm species and a pack animal."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_ChickenGroup.xml",
+      "sha256": "019dd2851d79a0795e021f26327b96dda8d7d7481e887acf082169475fe06705",
+      "xpath": "/Defs/ThingDef[defName=\"Chicken\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "tradeability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "tradeTags",
+          "count": 1,
+          "xml": [
+            "<tradeTags><li>AnimalCommon</li><li>AnimalFarm</li></tradeTags>"
+          ]
+        },
+        {
+          "xpath": "statBases/MarketValue",
+          "count": 1,
+          "xml": [
+            "<MarketValue>50</MarketValue>"
+          ]
+        },
+        {
+          "xpath": "statBases/Wildness",
+          "count": 1,
+          "xml": [
+            "<Wildness>0</Wildness>"
+          ]
+        },
+        {
+          "xpath": "race/packAnimal",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 1,
+          "xml": [
+            "<lifeStageAges><li><def>AnimalBabyTiny</def><minAge>0</minAge><soundWounded>Pawn_Chick_Call</soundWounded><soundDeath>Pawn_Chick_Call</soundDeath><soundCall>Pawn_Chick_Call</soundCall><soundAngry>Pawn_Chick_Call</soundAngry></li><li><def>AnimalJuvenile</def><minAge>0.12</minAge></li><li><def>AnimalAdult</def><minAge>0.2</minAge><soundWounded>Pawn_Chicken_Wounded</soundWounded><soundDeath>Pawn_Chicken_Death</soundDeath><soundCall>Pawn_Chicken_Call</soundCall><soundAngry>Pawn_Chicken_Angry</soundAngry></li></lifeStageAges>"
+          ]
+        },
+        {
+          "xpath": "race/lifeExpectancy",
+          "count": 1,
+          "xml": [
+            "<lifeExpectancy>6</lifeExpectancy>"
+          ]
+        },
+        {
+          "xpath": "race/ageGenerationCurve",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Chicken has AnimalFarm and no native fixed age in its race declaration."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+      "sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4",
+      "xpath": "/Defs/ThingDef[@Name=\"BasePawn\"]",
+      "nameAttribute": "BasePawn",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "category",
+          "count": 1,
+          "xml": [
+            "<category>Pawn</category>"
+          ]
+        },
+        {
+          "xpath": "useHitPoints",
+          "count": 1,
+          "xml": [
+            "<useHitPoints>false</useHitPoints>"
+          ]
+        },
+        {
+          "xpath": "tradeability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "tradeTags",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Live pawns do not use the ordinary Thing hitpoint price multiplier."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+      "sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4",
+      "xpath": "/Defs/ThingDef[@Name=\"AnimalThingBase\"]",
+      "nameAttribute": "AnimalThingBase",
+      "parentName": "BasePawn",
+      "fields": [
+        {
+          "xpath": "tradeability",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "tradeTags",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "race/ageGenerationCurve",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Common animal parent adds no directional trade restriction."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+      "sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4",
+      "xpath": "/Defs/PawnKindDef[@Name=\"AnimalKindBase\"]",
+      "nameAttribute": "AnimalKindBase",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "minGenerationAge",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "maxGenerationAge",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "fixedGender",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Common animal kind adds no reproductive minimum age."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_ChickenGroup.xml",
+      "sha256": "019dd2851d79a0795e021f26327b96dda8d7d7481e887acf082169475fe06705",
+      "xpath": "/Defs/PawnKindDef[defName=\"Chicken\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalKindBase",
+      "fields": [
+        {
+          "xpath": "race",
+          "count": 1,
+          "xml": [
+            "<race>Chicken</race>"
+          ]
+        },
+        {
+          "xpath": "minGenerationAge",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "maxGenerationAge",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "fixedGender",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Chicken kind adds no reproductive minimum age."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalBaby\"]",
+      "nameAttribute": "AnimalBaby",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "marketValueFactor",
+          "count": 1,
+          "xml": [
+            "<marketValueFactor>0.4</marketValueFactor>"
+          ]
+        },
+        {
+          "xpath": "reproductive",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "developmentalStage",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Baby value is .4; reproductive false and developmental Adult are class defaults."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalBabyTiny\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalBaby",
+      "fields": [
+        {
+          "xpath": "marketValueFactor",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "reproductive",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "developmentalStage",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Chicken tiny baby inherits AnimalBaby value."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalJuvenile\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "marketValueFactor",
+          "count": 1,
+          "xml": [
+            "<marketValueFactor>0.75</marketValueFactor>"
+          ]
+        },
+        {
+          "xpath": "reproductive",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "developmentalStage",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Juvenile value is .75, without an Adult developmental override."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalAdult\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "marketValueFactor",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "reproductive",
+          "count": 1,
+          "xml": [
+            "<reproductive>true</reproductive>"
+          ]
+        },
+        {
+          "xpath": "developmentalStage",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Adult animals are reproductive and use the default value factor one."
+    }
+  ],
+  "nativeReference": {
+    "stockIsActualPawns": true,
+    "mapCaravanBuyInPlace": true,
+    "mapCaravanSellInPlace": true,
+    "animalsRequireHomeOrStorage": false,
+    "bulkTotalCount": [
+      3,
+      4
+    ],
+    "bulkRemainingKindCount": 1,
+    "bulkMaxWildness": 0.7,
+    "bulkSupplyTags": [
+      "AnimalFarm"
+    ],
+    "bulkExtraBuyTags": [
+      "AnimalExotic"
+    ],
+    "exoticTotalCount": [
+      1,
+      3
+    ],
+    "exoticRemainingKindCount": 3,
+    "exoticSupplyTags": [
+      "AnimalUncommon",
+      "AnimalFighter",
+      "AnimalFarm",
+      "AnimalPet"
+    ],
+    "exoticExtraBuyTags": [
+      "AnimalExotic"
+    ],
+    "pairConsumesTotalCount": 2,
+    "pairKindIndependentOfRemainingKinds": true,
+    "pairFixesSexNotAge": true,
+    "existingPairWeight": 0.5,
+    "offeredFarmSpeciesInWeb": [
+      "alpaca",
+      "dromedary",
+      "chicken"
+    ],
+    "unsupportedByTheseAnimalGenerators": [
+      "hare",
+      "deer"
+    ],
+    "actualRowAcceptance": "WillTrade -> HandlesThingDef uses sell OR buy tags; TradeabilityFor is a separate directional descriptor",
+    "liveAnimalProductBonus": 0,
+    "animalBabyValueFactor": 0.4,
+    "animalJuvenileValueFactor": 0.75,
+    "animalAdultValueFactor": 1,
+    "baseValues": {
+      "Hare": 50,
+      "Deer": 250,
+      "Alpaca": 350,
+      "Dromedary": 300,
+      "Chicken": 50
+    },
+    "globalBuyFactor": 1.4,
+    "globalSellFactor": 0.6,
+    "liveBirthFaction": "mother current faction",
+    "liveBirthLord": "mother current Lord when spawned",
+    "fertileEggFaction": "captured at egg production; egg trade has its own update hook",
+    "onMapHatchExplicitLordJoin": false
+  },
+  "limits": [
+    "Static derived C# and packaged XML are not original source or runtime gameplay proof.",
+    "Existing REA metadata is reused for exact assembly identity only; all listed types are independently re-extracted.",
+    "No game, browser, preview, GUI input or screenshot was launched.",
+    "Selected Core XML inheritance nodes are not a complete mod-patched effective Def database.",
+    "Directional trade classification is distinguished from the reviewed actual UI and transfer path; no claim is made that TradeabilityFor has no callers anywhere.",
+    "Mating-pair generation fixes sex but does not itself fix age or establish fertility.",
+    "Map-caravan, settlement and orbital transfer are distinct paths.",
+    "Preserving state does not mean preserving control assignments, bonds, possessions or pending surgery bills.",
+    "Web restrictions on merchant mating or laying, simplified health pricing and deterministic offer seeds are implementation choices.",
+    "No game assets, assemblies or complete derived C# is published."
+  ],
+  "collectorSha256": "2eec59caddafa11140a5fd023f7e434429f08aa6c0c4274540229243662e38a5"
+}

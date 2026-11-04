@@ -1,0 +1,290 @@
+{
+  "evidence_id": "RW17-LIVE-ANIMAL-TRADE",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes.",
+    "No game, browser, preview, GUI input or screenshot capture was launched."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "local_file": ".local-research/live-animal-trade/RimWorld.StockGenerator_Animals.cs",
+      "sha256": "0a0c96aa27a994b6776188b8096e3cd82ce8027b1cf679ae92ab35ae5aa77f89",
+      "lines": 226
+    },
+    {
+      "type": "RimWorld.StockGenerator",
+      "local_file": ".local-research/live-animal-trade/RimWorld.StockGenerator.cs",
+      "sha256": "31de0793d3395dc828100e2bfa7b411d6f6daeaf809bcc5cc39a8e611ac7d70e",
+      "lines": 97
+    },
+    {
+      "type": "RimWorld.TraderKindDef",
+      "local_file": ".local-research/live-animal-trade/RimWorld.TraderKindDef.cs",
+      "sha256": "6d2b8c6ef0517bdfb69bd2f175ee40f303170f4c4893d1ec85f836572e6dd9a0",
+      "lines": 112
+    },
+    {
+      "type": "RimWorld.Tradeable_Pawn",
+      "local_file": ".local-research/live-animal-trade/RimWorld.Tradeable_Pawn.cs",
+      "sha256": "32124cbfbbe465dfadb7d5db57e565873bfcbdc6de329a703db74ffee0116fff",
+      "lines": 64
+    },
+    {
+      "type": "RimWorld.Tradeable",
+      "local_file": ".local-research/live-animal-trade/RimWorld.Tradeable.cs",
+      "sha256": "520b439791a5e9943fe0be9b7a3c1dc78ff27654cadbfd5426133ec7ccd72ad2",
+      "lines": 526
+    },
+    {
+      "type": "RimWorld.Transferable",
+      "local_file": ".local-research/live-animal-trade/RimWorld.Transferable.cs",
+      "sha256": "bed3019f016f1e904fab64ec8a96c1db2ec767d037cffa38d544148be9b277b5",
+      "lines": 166
+    },
+    {
+      "type": "RimWorld.TradeDeal",
+      "local_file": ".local-research/live-animal-trade/RimWorld.TradeDeal.cs",
+      "sha256": "f87412f2d7f56971edf3df99ec146554be166adef3e2b27a8fbd88927ed85295",
+      "lines": 251
+    },
+    {
+      "type": "RimWorld.TradeUtility",
+      "local_file": ".local-research/live-animal-trade/RimWorld.TradeUtility.cs",
+      "sha256": "de12a556209ea51bb8f5a9196c0a2172d30c44a2022f3e11bbebba9c7ce19256",
+      "lines": 330
+    },
+    {
+      "type": "RimWorld.Pawn_TraderTracker",
+      "local_file": ".local-research/live-animal-trade/RimWorld.Pawn_TraderTracker.cs",
+      "sha256": "b57852d9a71cc3f748570a22b8e8fbd5222bae48cbf4fed652059d72d1996b6c",
+      "lines": 270
+    },
+    {
+      "type": "RimWorld.TraderCaravanUtility",
+      "local_file": ".local-research/live-animal-trade/RimWorld.TraderCaravanUtility.cs",
+      "sha256": "d5465e42693eade60c3a75d247b70c5f2bf3864c0b38fe7995c6d76d052e5e61",
+      "lines": 46
+    },
+    {
+      "type": "RimWorld.PawnGroupKindWorker_Trader",
+      "local_file": ".local-research/live-animal-trade/RimWorld.PawnGroupKindWorker_Trader.cs",
+      "sha256": "25d7ec73091d700855033859fc42b5be2036d942227fa672c69143fb70fad8e5",
+      "lines": 153
+    },
+    {
+      "type": "Verse.Pawn",
+      "local_file": ".local-research/live-animal-trade/Verse.Pawn.cs",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "lines": 4791
+    },
+    {
+      "type": "Verse.PawnGenerator",
+      "local_file": ".local-research/live-animal-trade/Verse.PawnGenerator.cs",
+      "sha256": "96e7447c568916a4eb9aa4d334723567d9b09dc939636f5dcdfee484dcc42180",
+      "lines": 2173
+    },
+    {
+      "type": "Verse.PawnGenerationRequest",
+      "local_file": ".local-research/live-animal-trade/Verse.PawnGenerationRequest.cs",
+      "sha256": "c426f88f21c7458dfcaf36200bff741f3fc9f74e41d7e8064d9c211e5b0a4db7",
+      "lines": 360
+    },
+    {
+      "type": "Verse.PawnKindDef",
+      "local_file": ".local-research/live-animal-trade/Verse.PawnKindDef.cs",
+      "sha256": "ed61e81fb785b34b7485b2695b97d9e5442be689ccb676805c169fb08ed49919",
+      "lines": 510
+    },
+    {
+      "type": "Verse.RaceProperties",
+      "local_file": ".local-research/live-animal-trade/Verse.RaceProperties.cs",
+      "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+      "lines": 788
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "local_file": ".local-research/live-animal-trade/RimWorld.Pawn_PlayerSettings.cs",
+      "sha256": "c23d3b5de6c9a96cad59170531efc71f3964d8d99d07b582eda580bfbdd00494",
+      "lines": 423
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "local_file": ".local-research/live-animal-trade/RimWorld.PawnUtility.cs",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "lines": 1655
+    },
+    {
+      "type": "RimWorld.StatWorker_MarketValue",
+      "local_file": ".local-research/live-animal-trade/RimWorld.StatWorker_MarketValue.cs",
+      "sha256": "e47a2c46fa51be66ebe01e9b287f90416557bbedad6b139d7a7c97fa35dd7902",
+      "lines": 151
+    },
+    {
+      "type": "RimWorld.StatWorker",
+      "local_file": ".local-research/live-animal-trade/RimWorld.StatWorker.cs",
+      "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+      "lines": 1392
+    },
+    {
+      "type": "RimWorld.TradeShip",
+      "local_file": ".local-research/live-animal-trade/RimWorld.TradeShip.cs",
+      "sha256": "e64c23d3d965d27bcbb3f43f3e9796e159350445df9fcb78af9b5150efc21e75",
+      "lines": 247
+    },
+    {
+      "type": "RimWorld.Planet.Settlement_TraderTracker",
+      "local_file": ".local-research/live-animal-trade/RimWorld.Planet.Settlement_TraderTracker.cs",
+      "sha256": "4493d483b58d4d8013eead9a9d1d9312e58b7412c0dbaf13ce9d098cffa0e152",
+      "lines": 303
+    },
+    {
+      "type": "RimWorld.LordJob_TradeWithColony",
+      "local_file": ".local-research/live-animal-trade/RimWorld.LordJob_TradeWithColony.cs",
+      "sha256": "a6598fd4892ed55b9be03c20aae8a6fbbde830af360c336d89fca731f7438866",
+      "lines": 137
+    },
+    {
+      "type": "RimWorld.TransferableUtility",
+      "local_file": ".local-research/live-animal-trade/RimWorld.TransferableUtility.cs",
+      "sha256": "bd8980e58e0e7039895b9747addb38f84fbf356c5febf3cfdfc8f72871c60be5",
+      "lines": 401
+    },
+    {
+      "type": "RimWorld.PriceUtility",
+      "local_file": ".local-research/live-animal-trade/RimWorld.PriceUtility.cs",
+      "sha256": "9437acd3ea698ce4c84d052293eb2ba3c7da0e0d2c214fb6235cdbe26f3e4084",
+      "lines": 90
+    },
+    {
+      "type": "RimWorld.StatPart_Health",
+      "local_file": ".local-research/live-animal-trade/RimWorld.StatPart_Health.cs",
+      "sha256": "08d4ff196049da78baa56170a2f90cb65bb371c6931f408910163910d72255cf",
+      "lines": 26
+    },
+    {
+      "type": "RimWorld.TradeabilityUtility",
+      "local_file": ".local-research/live-animal-trade/RimWorld.TradeabilityUtility.cs",
+      "sha256": "745d7f2af2a69ab22f8fc6fff95c40c2c8ef85d38a583f710cee850a3f64fda6",
+      "lines": 23
+    },
+    {
+      "type": "RimWorld.Dialog_Trade",
+      "local_file": ".local-research/live-animal-trade/RimWorld.Dialog_Trade.cs",
+      "sha256": "569407ba233ccd0b25115c182d2b40ab75b692ed1c52ac3c06edf05d482342d0",
+      "lines": 531
+    },
+    {
+      "type": "RimWorld.TradeUI",
+      "local_file": ".local-research/live-animal-trade/RimWorld.TradeUI.cs",
+      "sha256": "a48ec267514e9213f0b61b4ac153b93ac1d917a2772e0b7b470090b25440769e",
+      "lines": 184
+    },
+    {
+      "type": "RimWorld.Pawn_RelationsTracker",
+      "local_file": ".local-research/live-animal-trade/RimWorld.Pawn_RelationsTracker.cs",
+      "sha256": "d4a48e91a534b63b22f5597b3d2bc0cc322389852d30ce16c25dc197fa8dd02e",
+      "lines": 1179
+    },
+    {
+      "type": "RimWorld.Pawn_Ownership",
+      "local_file": ".local-research/live-animal-trade/RimWorld.Pawn_Ownership.cs",
+      "sha256": "89e96b3ef430c3e395e7142bab4ec7b98602d6e80bfea55cb31fa850a0aacccc",
+      "lines": 306
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "local_file": ".local-research/live-animal-trade/RimWorld.Pawn_TrainingTracker.cs",
+      "sha256": "5ccb647830a685a0fe951d707853b0a12910f580bc4283340a987c6da311bd7d",
+      "lines": 377
+    },
+    {
+      "type": "RimWorld.PawnComponentsUtility",
+      "local_file": ".local-research/live-animal-trade/RimWorld.PawnComponentsUtility.cs",
+      "sha256": "ab2d0e24cbfafbafbb1dc6bbd988c3055bf5ada58e0029c388d40262cf3a4c8f",
+      "lines": 384
+    },
+    {
+      "type": "Verse.AI.Pawn_MindState",
+      "local_file": ".local-research/live-animal-trade/Verse.AI.Pawn_MindState.cs",
+      "sha256": "b606531ba468fc6f4c1a2fbd9fbd25dd366ac45f3ef241b1a58fd298f82b7c12",
+      "lines": 936
+    },
+    {
+      "type": "Verse.LifeStageUtility",
+      "local_file": ".local-research/live-animal-trade/Verse.LifeStageUtility.cs",
+      "sha256": "51f6d47f43a58b0dc01470ad1b3cef62408482d410d37a0464349deb9941143c",
+      "lines": 87
+    },
+    {
+      "type": "Verse.MapTemperature",
+      "local_file": ".local-research/live-animal-trade/Verse.MapTemperature.cs",
+      "sha256": "c7fcb51dd52491eef3ba1aaf407f7483e866a6bf966b6ae29e2dc2a612cf15b6",
+      "lines": 255
+    },
+    {
+      "type": "RimWorld.LifeStageDef",
+      "local_file": ".local-research/live-animal-trade/RimWorld.LifeStageDef.cs",
+      "sha256": "93a5a86d46d9b6d954630d71044634ec69faddd67c473d1fed730e474c0034bd",
+      "lines": 132
+    },
+    {
+      "type": "Verse.ThingDef",
+      "local_file": ".local-research/live-animal-trade/Verse.ThingDef.cs",
+      "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+      "lines": 2447
+    },
+    {
+      "type": "Verse.Hediff_Pregnant",
+      "local_file": ".local-research/live-animal-trade/Verse.Hediff_Pregnant.cs",
+      "sha256": "c8d706382ad523ccb43f496a31ad0de5d0a9b1c8d3fc20b73c52737e2a3b3d87",
+      "lines": 298
+    },
+    {
+      "type": "RimWorld.CompEggLayer",
+      "local_file": ".local-research/live-animal-trade/RimWorld.CompEggLayer.cs",
+      "sha256": "d5c8e1f257fe71d265f7c6f820d594cab6120fbd29d1ee331e60a0702d15ba5b",
+      "lines": 186
+    },
+    {
+      "type": "RimWorld.CompHatcher",
+      "local_file": ".local-research/live-animal-trade/RimWorld.CompHatcher.cs",
+      "sha256": "0244ad505b87574f34f162bea1a7a746e49f549f8d2eca6e3a1d057f55afc8ff",
+      "lines": 185
+    },
+    {
+      "type": "Verse.AI.Group.Lord",
+      "local_file": ".local-research/live-animal-trade/Verse.AI.Group.Lord.cs",
+      "sha256": "a4c592766e356bb857de4d8b4ef0e59b03e2140d31c198fa033429cf5857e3e4",
+      "lines": 1031
+    },
+    {
+      "type": "RimWorld.LordToil_ExitMapAndEscortCarriers",
+      "local_file": ".local-research/live-animal-trade/RimWorld.LordToil_ExitMapAndEscortCarriers.cs",
+      "sha256": "ba7e97fcb6a20e51f02a4decedbcf9e96ada72f6d6dc0c9dd8bf0fb420f3a952",
+      "lines": 174
+    },
+    {
+      "type": "RimWorld.IncidentWorker_TraderCaravanArrival",
+      "local_file": ".local-research/live-animal-trade/RimWorld.IncidentWorker_TraderCaravanArrival.cs",
+      "sha256": "2e2575835071d079b42f87fb086df5d46e8f45586760b7e240df0787a95677c4",
+      "lines": 145
+    },
+    {
+      "type": "RimWorld.StockGenerator_BuyExpensiveSimple",
+      "local_file": ".local-research/live-animal-trade/RimWorld.StockGenerator_BuyExpensiveSimple.cs",
+      "sha256": "fae47412518833a95b5116894773e21b128bdb62ed2378add1505c33c385b928",
+      "lines": 39
+    }
+  ]
+}

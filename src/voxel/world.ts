@@ -156,8 +156,10 @@ import {
 import { rejectLegacyStorytellerFields, validateStoryteller } from './storytellerPersistence';
 import { initialTrade, makeTraderStock, merchantStayTicks, TRADER_NAMES, visitorGroup, visitorWeapon, VISITOR_KINDS } from './trade';
 import { applyTradeCommand, quoteTrade, updateTrade, tradeHostile, tradeHarmed, type Placement } from './tradeWorld';
-import type { TradeState } from './tradeTypes';
+import type { TradeState, TraderCaravan } from './tradeTypes';
 import { rejectLegacyTradeFields, migrateTradeFields, validateTrade } from './tradePersistence';
+import { caravanAnimalTick, newTraderAnimal, transferAnimal } from './animalTrade';
+import { rejectLegacyAnimalTrade, migrateAnimalTrade, validateAnimalTrade } from './animalTradePersistence';
 import {
   MEDICAL_POLICIES,
   MEDICAL_POLICY_NAMES,
@@ -918,6 +920,8 @@ export class VoxelSimulation {
       this.seedWildlife(wild + 1, true);
   }
   private damageAnimal(shot: Projectile, animal: WildAnimal) {
+    const attacker=this.pawns.find(p=>p.id===shot.shooterId);
+    if(attacker&&animal.faction==='trader')tradeHarmed(this,attacker,{faction:'trader'},this.pawns.find(p=>p.id===shot.targetId),shot.damage);
     animal.health = Math.max(0, animal.health - shot.damage);
     animal.threatId = shot.shooterId;
     animal.fleeUntil = this.tick + 200;
@@ -929,6 +933,10 @@ export class VoxelSimulation {
   }
   killAnimal(animal: WildAnimal, reason: string) {
     if (animal.dead) return;
+    if(animal.faction==='trader') {
+      for(const c of this.trade.caravans)c.animalIds=c.animalIds.filter(id=>id!==animal.id);
+      animal.faction='wild';animal.tameness=0;
+    }
     animal.health = 0;
     animal.dead = true;
     animal.phase = 'dead';
@@ -6386,6 +6394,18 @@ export class VoxelSimulation {
       : '范围内没有已发现的地面物品' };
   }
   tradeTemperature(pawn: Pawn) { return this.temperature(pawn); }
+  animalTradeTravel(animal: WildAnimal) { return caravanAnimalTick(this,animal); }
+  animalTradeBirth(mother: WildAnimal, child: WildAnimal) {
+    this.trade.caravans.find(c=>c.animalIds.includes(mother.id))?.animalIds.push(child.id);
+  }
+  tradeAnimalTransfer(animal: WildAnimal, faction: 'colony'|'trader', caravan: TraderCaravan) {
+    transferAnimal(this,animal,faction,caravan);
+    this.refreshReservations();
+  }
+  tradeAnimalReachable(pawn: Pawn): Set<number> {
+    this.search(pawn);
+    return new Set(this.animals.filter(a=>!a.dead&&this.exploredAt(a)&&this.reachableItemStand(a)>=0).map(a=>a.id));
+  }
   tradeReachable(pawn: Pawn): Set<number> {
     this.search(pawn);
     return new Set(this.items.filter(i => this.exploredAt(i) && this.reachableItemStand(i) >= 0).map(at));
@@ -6401,7 +6421,7 @@ export class VoxelSimulation {
     return best < 0 ? null : this.path(pawn, position(best));
   }
   tradeSpawn() {
-    if (this.trade.goodwill <= -75 || this.trade.caravans.some(c => c.pawnIds.some(id => this.pawns.some(p => p.id === id && !p.dead)))) return;
+    if (this.trade.goodwill <= -75 || this.trade.caravans.some(c => c.animalIds.length || c.pawnIds.some(id => this.pawns.some(p => p.id === id && !p.dead)))) return;
     const colonist = this.pawns.find(p => p.faction === 'colony' && !p.dead && !p.downed);
     if (!colonist) return;
     const random = storyRandom(this.seed ^ 0x3cf790d, this.tick), kinds = visitorGroup(random);
@@ -6431,12 +6451,31 @@ export class VoxelSimulation {
         worn: [], apparelTask: null, apparelWearTicks: 0, jobId: null, path: [], destination: null,
         phase: 'idle', cargo: null, reason: '商队前往营地', moveTick: this.tick, workTarget: null,
         eating: null, sleepBedId: null, sleepingSince: null, schedule: defaultSchedule() };
+      // A copied colonist is only the body template, never a live work order.
+      delete p.eggBoxTask; delete p.productionDelivery; p.allowedAreaId=null;
       this.pawns.push(p); pawnIds.push(id);
     }
     const traderId = pawnIds[0];
-    this.trade.caravans.push({ id: caravanId, kind, name: TRADER_NAMES[kind], pawnIds, traderId,
+    const caravan: TraderCaravan = { id: caravanId, kind, name: TRADER_NAMES[kind], pawnIds, animalIds: [], traderId,
       stock: makeTraderStock(kind, traderId, () => this.id(), random), meeting: { x: meeting.x, y: meeting.y, z: meeting.z },
-      stage: 'arriving', arrivedAt: this.tick, visitingAt: null, stayTicks: merchantStayTicks(random), reason: '商队正在前往营地' });
+      stage: 'arriving', arrivedAt: this.tick, visitingAt: null, stayTicks: merchantStayTicks(random), reason: '商队正在前往营地' };
+    this.trade.caravans.push(caravan);
+    if(kind==='bulk') {
+      // Provisional farm supply: one chicken pair and one livestock pair. Stock
+      // selection uses independent deterministic entropy, preserving human goods.
+      const large=plantRandom(this.seed,caravanId,this.tick,1120)<.5?'alpaca':'dromedary';
+      const supply=['chicken','chicken',large,large] as const;
+      for(const [i,species] of supply.entries()) {
+        if(this.animals.length>=HUSBANDRY_RULES.maxAnimals)break;
+        for(const pos of edges.slice(0,64)) {
+          if(this.pawns.some(p=>same(p,pos))||this.animals.some(a=>same(a,pos))||!this.canStop(pos))continue;
+          const a=newTraderAnimal(this.nextId,species,i%2?'male':'female',this.tick,pos);
+          const targets=new Set(this.animalNeighbors(a,meeting).filter(n=>this.canStop(position(n))));
+          if(this.animalRoute(a,targets)===null)continue;
+          this.nextId++;this.animals.push(a);caravan.animalIds.push(a.id);break;
+        }
+      }
+    }
     this.trade.visits++; this.revision++;
     this.notice = `${TRADER_NAMES[kind]}从地图边缘抵达；安排殖民者前往交谈`;
   }
@@ -8859,7 +8898,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 52,
+      version: 53,
       autoSlaughter: this.autoSlaughter,
       stockpileZones: this.stockpileZones,
       productionQueues: this.productionQueues.filter(q => this.productionBenches().some(b => b.id === q.benchId)),
@@ -8922,11 +8961,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : old.version < 43 ? [1, 2, 3] : [1, 2, 3, 4]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyAnimalTrade(old,sourceVersion);
     rejectLegacyEggBoxes(old,sourceVersion);
     rejectLegacyEggs(old,sourceVersion);
     rejectLegacyWool(old,sourceVersion);
@@ -9360,7 +9400,8 @@ export class VoxelSimulation {
     migrateWool(old, sourceVersion);
     migrateEggs(old, sourceVersion);
     if (sourceVersion < 52) old.eggBoxes = [];
-    old.version = 52;
+    migrateAnimalTrade(old,sourceVersion);
+    old.version = 53;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -10471,6 +10512,7 @@ export class VoxelSimulation {
     validateTrade(d, ids, apparelIds, weaponIds);
     validateWildlife(d, ids, new Set([...apparelIds, ...weaponIds]));
     validateHusbandry(d);
+    validateAnimalTrade(d);
     validateMilk(d);
     validateWool(d);
     validateEggs(d);

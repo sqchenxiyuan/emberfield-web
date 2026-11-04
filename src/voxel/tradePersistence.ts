@@ -110,7 +110,8 @@ export function validateTrade(d: VoxelSave, ids: Set<number>, apparelIds: Set<nu
       (r.shortfall > 0 && r.silverToColony < 0) ||
       (r.gift && (r.silverToColony !== 0 || r.shortfall !== 0 || r.quotedSilverToColony !== 0)) ||
       !integer(r.goodwillBefore, -100, 100) || !integer(r.goodwillAfter, -100, 100) ||
-      !Array.isArray(r.transferred) || !r.transferred.length || r.transferred.length > 10000 ||
+      !Array.isArray(r.transferred) || r.transferred.length > 10000 ||
+      !Array.isArray(r.animalTransfers) || (!r.transferred.length && !r.animalTransfers.length) ||
       r.transferred.some(row => !record(row) || !['colony', 'trader'].includes(row.side) ||
         !integer(row.stockId, 1, d.nextId - 1) || !validBatch(row.batch) || row.batch.resource === 'carcass' || row.batch.resource === 'furniture' || row.batch.resource === 'unfinished' ||
         (r.gift && row.side !== 'colony'))) fail();

@@ -20,6 +20,7 @@ import { isFurnitureKind, isFurnitureQuality, type FurnitureKind } from './furni
 import type { ApparelQuality } from './types';
 import { SHELF_DEFS, type ShelfKind } from './shelves';
 import { EGG_BOX_RULES } from './eggBoxRules';
+import { animalMarketValue } from './animalTrade';
 
 /** Core 1.7 selected full-HP resource prices, except provisional meat=2.
  * Carcasses use their species' meat yield below; deposits/plants are not items. */
@@ -247,6 +248,8 @@ export function colonyWealthDetails(sim: VoxelSimulation): WealthDetails {
   for (const device of sim.devices.filter(p => sim.exploredAt(p))) add(1, DEVICE_COSTS[device.kind], DEVICE_WORK[device.kind]);
   const pawnValues = sim.pawns.filter(p => p.faction === 'colony' && !p.dead && sim.exploredAt(p))
     .map(p => ({ id: p.id, value: pawnMarketValue(p), summaryHealth: summaryHealthPercent(p) }));
+  for(const a of sim.animals)if(a.faction==='colony'&&!a.dead&&sim.exploredAt(a))
+    pawnValues.push({id:a.id,value:animalMarketValue(a),summaryHealth:a.health/ANIMAL_DEFS[a.species].health});
   const items = Object.values(itemSources).reduce((a, b) => a + b, 0);
   const buildings = Object.values(buildingSources).reduce((a, b) => a + b, 0);
   const pawns = pawnValues.reduce((sum, p) => sum + p.value, 0);

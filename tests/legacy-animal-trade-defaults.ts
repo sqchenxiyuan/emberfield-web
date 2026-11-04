@@ -1,0 +1,18 @@
+import { expect } from 'vitest';
+import { emptyAnimalTradeCounts } from '../src/voxel/animalTrade';
+/** Synthetic defaults only; never discard live visitors or transaction history. */
+export function stripAnimalTradeFields(raw: Record<string,any>) {
+  expect(raw.animals?.some((a:any)=>a.faction==='trader'||a.goal?.kind==='caravan')).not.toBe(true);
+  if(raw.trade?.animalLedger)expect(raw.trade.animalLedger).toEqual({bought:emptyAnimalTradeCounts(),sold:emptyAnimalTradeCounts()});
+  for(const c of raw.trade?.caravans??[])if(Object.hasOwn(c,'animalIds'))expect(c.animalIds).toEqual([]);
+  for(const r of raw.trade?.receipts??[])if(Object.hasOwn(r,'animalTransfers'))expect(r.animalTransfers).toEqual([]);
+  if(raw.trade)delete raw.trade.animalLedger;
+  for(const c of raw.trade?.caravans??[])delete c.animalIds;
+  for(const r of raw.trade?.receipts??[])delete r.animalTransfers;
+}
+export function animalTradeExpectedField(key:string,value:any):any {
+  const copy=structuredClone(value);
+  if(key!=='trade')return copy;
+  return {...copy,animalLedger:{bought:emptyAnimalTradeCounts(),sold:emptyAnimalTradeCounts()},
+    caravans:copy.caravans.map((c:any)=>({...c,animalIds:[]})),receipts:copy.receipts.map((r:any)=>({...r,animalTransfers:[]}))};
+}

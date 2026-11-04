@@ -137,20 +137,47 @@ function AnimalMilkStatus({ animal: a, snapshot: s }: { animal: WildAnimal; snap
   </div>;
 }
 
-function AnimalFacts({ animal: a }: { animal: WildAnimal }) {
+function AnimalFacts({ animal: a, compact = false }: { animal: WildAnimal; compact?: boolean }) {
   return <div className="voxel-animal-facts" data-testid="animal-facts" data-sex={a.sex}
-    data-growth={a.growth} data-pregnancy={a.pregnancy?.progress ?? 'none'} data-faction={a.faction}>
+    data-growth={a.growth} data-pregnancy={a.pregnancy?.progress ?? 'none'} data-faction={a.faction} style={compact ? { display: 'grid', gap: 3 } : undefined}>
     <small>{a.sex === 'male' ? '雄性' : '雌性'} · {lifeNames[animalLifeStage(a)]} · 日龄 {(a.ageTicks / DAY).toFixed(1)} 天</small>
     {!a.dead && <>
       <small>饱食 {Math.round(a.hunger)}%{a.malnutrition > 0 ? ` · 营养不良 ${percent(a.malnutrition)}` : ''}</small>
       {a.growth < 1 && <label>成长 {percent(a.growth)}<progress aria-label="动物成长" value={a.growth} max={1} /></label>}
       {a.pregnancy && <label>孕期 {percent(a.pregnancy.progress)}<progress aria-label="动物孕期" value={a.pregnancy.progress} max={1} /></label>}
+      {!a.pregnancy && a.sex === 'female' && a.species !== 'chicken' && <small>未怀孕</small>}
       {a.faction === 'colony' && ANIMAL_HUSBANDRY[a.species].tamenessDecays && <small>温顺度 {a.tameness} / {HUSBANDRY_RULES.tamenessMax} · 需要定期照料</small>}
     </>}
   </div>;
 }
 
+/** Read-only product state also applies to merchant-owned and historical animals. */
+function AnimalProductFacts({ animal: a }: { animal: WildAnimal }) {
+  return <div className="voxel-animal-products" data-testid="animal-product-facts" style={{ display: 'grid', gap: 3 }}>
+    {a.species === 'dromedary' && <small>蓄奶 {percent(a.milkFullness)}{a.sex === 'male' ? ' · 雄性不产奶' : a.growth < 1 ? ' · 成年后可产奶' : ''}</small>}
+    {a.species === 'alpaca' && <small>毛量 {percent(a.woolGrowth)}{a.growth < 1 ? ' · 成年后可长毛' : ''}</small>}
+    {a.species === 'chicken' && <>
+      <small>{a.sex === 'male' ? '公鸡不产蛋' : `产蛋进度 ${percent(a.eggProgress)}${a.growth < 1 ? ' · 成年后可产蛋' : ''}`}</small>
+      {a.sex === 'female' && <small>受精余量 {a.fertilizationCount} 枚 · {a.fertilizationCount > 0 ? '下一枚为受精蛋' : '下一枚为未受精蛋'}</small>}
+    </>}
+  </div>;
+}
+
+export function AnimalTradeDetails({ animal: a }: { animal: WildAnimal }) {
+  return <div className="voxel-animal-trade-facts" data-testid="animal-trade-facts" data-animal-id={a.id} style={{ display: 'grid', gap: 3 }}>
+    <small>健康 {Math.ceil(a.health)} / {ANIMAL_DEFS[a.species].health}</small>
+    <AnimalFacts animal={a} compact /><AnimalProductFacts animal={a} />
+  </div>;
+}
+
 function AnimalStatus({ animal: a, snapshot: s }: { animal: WildAnimal; snapshot: VoxelSnapshot }) {
+  if (a.faction === 'trader') {
+    const caravan = s.trade.caravans.find(c => c.animalIds.includes(a.id));
+    return <div className="voxel-animal-status" data-testid="animal-status" data-owner="trader">
+      <p>{a.reason}</p><small>归属：{caravan?.name ?? '来访商队'} · 购买后才能安排饲养、圈地、待宰和放归。</small>
+      <AnimalProductFacts animal={a} />
+    </div>;
+  }
   const handler = s.pawns.find(p => p.handleTask?.animalId === a.id), task = handler?.handleTask;
   const roper = s.pawns.find(p => p.ropeTask?.animalId === a.id), rope = roper?.ropeTask;
   const ropeStages = { approach: '接近动物', attach: '套绳', lead: '牵往圈地', detach: '解绳' };
@@ -171,7 +198,7 @@ function AnimalStatus({ animal: a, snapshot: s }: { animal: WildAnimal; snapshot
 }
 
 function AnimalOrders({ animal: a, command, detail = false }: { animal: WildAnimal; command: Command; detail?: boolean }) {
-  if (a.dead) return null;
+  if (a.dead || a.faction === 'trader') return null;
   const suffix = detail ? '此动物' : ` ${a.name}`;
   return <div className="voxel-animal-orders">
     {a.faction === 'wild' ? <>
@@ -195,7 +222,8 @@ export function AnimalDetails({ animal, snapshot: s, command, focus, penControls
     {animal.species === 'dromedary' && <DromedaryPortrait />}
     {animal.species === 'alpaca' && <AlpacaPortrait />}
     {animal.species === 'chicken' && <ChickenPortrait />}
-    <div className="voxel-info-row"><b>{ANIMAL_DEFS[animal.species].name} · {animal.faction === 'colony' ? '殖民地动物' : '野生'}</b><span>{ANIMAL_PHASE_NAMES[animal.phase]}</span></div>
+    <div className="voxel-info-row"><b>{ANIMAL_DEFS[animal.species].name} · {animal.faction === 'colony' ? '殖民地动物' : animal.faction === 'trader' ? '商队动物' : '野生'}</b><span>{ANIMAL_PHASE_NAMES[animal.phase]}</span></div>
+    <small>{animal.name} · #{animal.id}</small>
     <label>健康 {Math.ceil(animal.health)} / {ANIMAL_DEFS[animal.species].health}<progress aria-label="动物健康" value={animal.health} max={ANIMAL_DEFS[animal.species].health} /></label>
     <AnimalFacts animal={animal} />
     <small>位置 {animal.x}, {animal.y} · Z {animal.z}</small>
@@ -204,7 +232,7 @@ export function AnimalDetails({ animal, snapshot: s, command, focus, penControls
     </> : <>
       <AnimalStatus animal={animal} snapshot={s} /><AnimalOrders animal={animal} command={command} detail />
       <AnimalPenControls animal={animal} snapshot={s} command={command} controls={penControls} />
-      <small>{animal.faction === 'colony' ? '待宰和放归都要由饲养员实际前往执行。宰杀产生尸体，再由烹饪分工搬到屠宰点加工。' : '驯服与狩猎只能选择一项。猎人实际靠近并射击，取消不能召回已发射的弹丸。'}</small>
+      <small>{animal.faction === 'colony' ? '待宰和放归都要由饲养员实际前往执行。宰杀产生尸体，再由烹饪分工搬到屠宰点加工。' : animal.faction === 'trader' ? '在商队面板安排殖民者前往交谈，按个体购买动物；成交后这只动物保留年龄、健康和繁殖状态。' : '驯服与狩猎只能选择一项。猎人实际靠近并射击，取消不能召回已发射的弹丸。'}</small>
     </>}
     <button onClick={() => focus(animal)}>定位这只动物</button>
   </section>;
@@ -218,7 +246,8 @@ export function AnimalPanel({ snapshot: s, selectedAnimalId, baseLevel, command,
   const [tab, setTab] = useState<'animals' | 'pens' | 'autoSlaughter'>('animals');
   const hunters = availableHunters(s), craftingSpot = s.weaponBenches.find(b => b.kind === 'craftingSpot');
   const domestic = s.animals.filter(a => !a.dead && a.faction === 'colony'), wild = s.animals.filter(a => !a.dead && a.faction === 'wild');
-  const groups = [{ name: '殖民地动物', animals: domestic, key: 'colony' }, { name: '野生动物', animals: wild, key: 'wild' }, { name: '尸体等待落地', animals: s.animals.filter(a => a.dead), key: 'dead' }];
+  const visitors = s.animals.filter(a => !a.dead && a.faction === 'trader');
+  const groups = [{ name: '殖民地动物', animals: domestic, key: 'colony' }, { name: '商队动物', animals: visitors, key: 'trader' }, { name: '野生动物', animals: wild, key: 'wild' }, { name: '尸体等待落地', animals: s.animals.filter(a => a.dead), key: 'dead' }];
   return <aside className="voxel-wildlife-drawer" aria-label="动物与饲养" data-testid="wildlife-panel">
     <div className="voxel-wildlife-heading"><h2>动物与饲养</h2><button aria-label="关闭野生动物面板" onClick={close}>×</button></div>
     <div className="voxel-animal-tabs" role="tablist" aria-label="动物管理分类">
@@ -227,14 +256,14 @@ export function AnimalPanel({ snapshot: s, selectedAnimalId, baseLevel, command,
       <button role="tab" aria-selected={tab === 'autoSlaughter'} aria-controls="auto-slaughter-tab" onClick={() => setTab('autoSlaughter')}>自动宰杀</button>
     </div>
     {tab === 'autoSlaughter' ? <div id="auto-slaughter-tab" role="tabpanel"><AutoSlaughterPanel snapshot={s} command={command} selectAnimal={selectAnimal} /></div> : tab === 'pens' ? <div id="pen-management-tab" role="tabpanel"><PenPanel snapshot={s} command={command} choose={choose} focus={focus} controls={penControls} /></div> : <div id="animal-management-tab" role="tabpanel">
-    <p>{domestic.length} 只殖民地动物 · {wild.length} 只野生动物 · {hunters.length} 位可用远程猎人</p>
+    <p>{domestic.length} 只殖民地动物 · {visitors.length} 只商队动物 · {wild.length} 只野生动物 · {hunters.length} 位可用远程猎人</p>
     <details className="voxel-wildlife-guide"><summary>驯服、饲养与繁殖</summary>
       <ol><li>种植稻谷并等候收获。开启人物的饲养分工，安排动物技能达标的殖民者。</li><li>标记野生动物驯服；饲养员携食物接近并互动，失败后会等候下次尝试。</li><li>动物寻找实际的草、作物和地面食物；可用仓储区集中投放谷物。草被吃掉后需要重新生长。</li><li>饱食的成年同种雌雄动物靠近后可自然交配。饥饿拖慢成长和孕期，严重营养不良可能流产。</li></ol>
       <small>兔需要维持温顺，可跨围栏、穿未锁的门，并可分配活动范围；鹿、单峰驼、羊驼和鸡需要围栏圈养，由饲养员经栏门牵入。动物不能爬梯，请保留地面通路和足够食物。</small>
       <small>成年雌性单峰驼可产奶；开启「饲养」分工，蓄奶满后自动安排挤奶。奶可直接饮用或用于简餐，及时冷藏。</small>
       <small>成年雌雄羊驼都可产毛；开启「饲养」分工，毛长满后自动安排剪毛。把羊驼毛运到仓储，并在裁缝账单允许此材料，即可制作羊毛衣物。</small>
       <small>成年母鸡会自行产蛋；公鸡交配后可使蛋受精。把受精蛋放在 0～50°C 的室内区域孵化，未受精蛋可冷藏或烹饪；烹饪账单默认保留受精蛋。</small>
-      <small>可从散装货物商队购入受精蛋开始养鸡。建好围栏、栏门和接纳鸡的圈地标记，安排饲养员把雏鸡牵入，并备好食物。</small>
+      <small>可从大宗物资商队购入公母活鸡开始养鸡，也可以买卖羊驼和单峰驼。买入后无需重新驯服；建好围栏、栏门和接纳对应动物的圈地标记，安排饲养员把动物牵入，并备好食物。</small>
       <div><button onClick={() => choose('farm')}>规划农田</button><button onClick={() => choose('stock')}>规划食物仓储</button></div>
     </details>
     <details className="voxel-wildlife-workers" data-testid="animal-handlers"><summary>饲养分工与动物技能</summary>
@@ -250,12 +279,12 @@ export function AnimalPanel({ snapshot: s, selectedAnimalId, baseLevel, command,
     <div className="voxel-wildlife-list" role="list" aria-label="地图上的动物">
       {groups.map(group => <div key={group.key} data-animal-group={group.key}>
         <h3>{group.name} · {group.animals.length}</h3>
-        {!group.animals.length && group.key !== 'dead' && <small>{group.key === 'colony' ? '尚无殖民地动物，先标记野生动物尝试驯服。' : '地图上暂时没有野生动物。'}</small>}
+        {!group.animals.length && group.key !== 'dead' && <small>{group.key === 'colony' ? '尚无殖民地动物，可驯服野生动物或向商队购买。' : group.key === 'trader' ? '目前没有商队动物。' : '地图上暂时没有野生动物。'}</small>}
         {group.animals.map(animal => <section role="listitem" key={animal.id} className={selectedAnimalId === animal.id ? 'selected' : ''} data-animal-id={animal.id} data-faction={animal.faction}>
           {animal.species === 'dromedary' && <DromedaryPortrait />}
           {animal.species === 'alpaca' && <AlpacaPortrait />}
           {animal.species === 'chicken' && <ChickenPortrait />}
-          <div><b>{animal.name}</b><span>{ANIMAL_PHASE_NAMES[animal.phase]}</span></div>
+          <div><b>{animal.name} · #{animal.id}</b><span>{ANIMAL_PHASE_NAMES[animal.phase]}</span></div>
           <small>{ANIMAL_DEFS[animal.species].name} · 健康 {Math.ceil(animal.health)} / {ANIMAL_DEFS[animal.species].health} · {levelName(animal.z, baseLevel)}</small>
           <AnimalFacts animal={animal} /><AnimalStatus animal={animal} snapshot={s} />
           <AnimalPenControls animal={animal} snapshot={s} command={command} controls={penControls} />

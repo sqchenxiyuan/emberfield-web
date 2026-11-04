@@ -170,10 +170,12 @@ describe('physical incubation, damage, and stack identity',()=>{
     expect(s.counts().eggFertilized).toBe(0);expect(s.counts().wood).toBe(1);
     expect(s.stats.consumed.eggFertilized).toBe(2);expect(()=>VoxelSimulation.load(s.save())).not.toThrow();
   });
-  it('buys real merchant eggs atomically, transfers their ownership and rejects a replay',()=>{
+  it('retains historical merchant egg cargo, transfers ownership atomically and rejects a replay',()=>{
     let s=new VoxelSimulation(73129);s.tradeSpawn();
     const c=s.trade.caravans[0],p=s.pawns.find(p=>p.faction==='colony')!;
-    expect(c.kind).toBe('bulk');expect(c.stock.find(i=>i.resource==='eggFertilized')?.hatcher?.faction).toBe('wild');
+    expect(c.kind).toBe('bulk');expect(c.stock.some(i=>i.resource==='eggFertilized')).toBe(false);
+    // Retained v51/v52 cargo remains buyable; new merchants bring live chickens.
+    c.stock.push({...freshFertilizedEggs(4),id:s.nextId++,carrierId:c.traderId});
     expect(s.command({type:'tradeTalk',pawnId:p.id,caravanId:c.id}).ok).toBe(true);
     until(s,()=>quoteTrade(s)!==null,2500);const q=quoteTrade(s)!,offer=q.offers.find(o=>o.side==='trader'&&o.batch.resource==='eggFertilized')!;
     const buy={type:'tradeCommit' as const,sessionId:q.sessionId,quoteKey:q.key,

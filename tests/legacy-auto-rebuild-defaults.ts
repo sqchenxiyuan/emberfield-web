@@ -1,7 +1,8 @@
 import { expect } from 'vitest';
+import { animalTradeExpectedField, stripAnimalTradeFields } from './legacy-animal-trade-defaults';
 /** Egg schema additions never broaden historical food, carcass or storage filters. */
 export function eggsExpectedField(key: string, value: any): any {
-  const copy = structuredClone(value), eggs = { eggUnfertilized: 0, eggFertilized: 0 };
+  const copy = animalTradeExpectedField(key,value), eggs = { eggUnfertilized: 0, eggFertilized: 0 };
   if (key === 'stats') return { ...copy, ...Object.fromEntries(
     ['produced', 'consumed', 'spoiled', 'destroyed'].map(k => [k, { ...copy[k], ...eggs }])) };
   if (key === 'trade') return { ...copy, imported: { ...copy.imported, ...eggs }, exported: { ...copy.exported, ...eggs } };
@@ -46,6 +47,7 @@ export function milkExpectedField(key: string, value: any): any {
  * additions; real chickens, eggs, incubation, product history or filter choices
  * are evidence, not defaults that a downgrade fixture may erase. */
 export function stripEggBoxFields(raw: Record<string, any>) {
+  stripAnimalTradeFields(raw);
   if (Object.hasOwn(raw,'eggBoxes')) expect(raw.eggBoxes).toEqual([]);
   for (const p of raw.pawns ?? []) { expect(Object.hasOwn(p,'eggBoxTask')).toBe(false);expect(p.phase).not.toBe('eggBox'); }
   expect(raw.animals?.some((a:any)=>a.goal?.kind==='layEggBox')).not.toBe(true);

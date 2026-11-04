@@ -1,5 +1,6 @@
 import { shelfCells, type Shelf } from './shelves';
-import { at, inside, type Cargo, type CommandResult, type Pawn, type Pos, type Stack } from './types';
+import { at, inside, type Cargo, type CommandResult, type Pawn, type Pos, type Stack, type WildAnimal } from './types';
+import { animalCanTrade, animalMarketValue, traderAcceptsAnimal } from './animalTrade';
 import { freshBatch, portion, advanceRot } from './preservation';
 import { cargoMarketValue } from './wealth';
 import { healthSummary } from './survival';
@@ -12,12 +13,15 @@ export interface Placement { items: Stack[]; nextId: number }
 export interface TradeHost {
   socialDepart(pawn: Pawn): void;
   seed: number; tick: number; nextId: number; revision: number; notice: string;
-  pawns: Pawn[]; items: Stack[]; homeArea: Set<number>; trade: TradeState;
+  pawns: Pawn[]; animals: WildAnimal[]; items: Stack[]; homeArea: Set<number>; trade: TradeState;
   storyteller: { difficulty: Difficulty };
   stockpiles: Pos[]; shelves: Shelf[];
   path(from: Pos, to: Pos): number[] | null;
   pawnAllowed?(pawn: Pawn, target: Pos): boolean;
   tradeReachable(pawn: Pawn): Set<number>;
+  tradeAnimalReachable(pawn: Pawn): Set<number>;
+  tradeAnimalTransfer(animal: WildAnimal, faction: 'colony'|'trader', caravan: TraderCaravan): void;
+  temperature(pos: Pos): number;
   tradePlace(entries: { batch: Cargo; origin: Pos }[], base: Stack[]): Placement | null;
   tradeApplyPlacement(plan: Placement): void;
   tradeRelease(pawn: Pawn): void;
@@ -33,7 +37,7 @@ export const tradeHostile = (a: Pick<Pawn, 'faction'>, b: Pick<Pawn, 'faction'>,
   (a.faction === 'raider' || b.faction === 'raider' || goodwill <= -75);
 /** Native damage notification uses incoming Amount, even if armor absorbs it.
  * Crossfire is exempt only when the intended target is hostile to both sides. */
-export function tradeHarmed(s: TradeHost, attacker: Pick<Pawn, 'faction'>, victim: Pawn, intended: Pawn | undefined, amount: number) {
+export function tradeHarmed(s: TradeHost, attacker: Pick<Pawn, 'faction'>, victim: Pick<Pawn,'faction'>, intended: Pawn | undefined, amount: number) {
   if (attacker.faction !== 'colony' || victim.faction !== 'trader' || s.trade.goodwill <= -75) return;
   if (intended && tradeHostile(attacker, intended, s.trade.goodwill) && tradeHostile(victim, intended, s.trade.goodwill)) return;
   s.trade.goodwill = affectGoodwill(s.trade.goodwill, Math.trunc(-1.3 * Math.min(100, amount)));
@@ -81,11 +85,20 @@ export function quoteTrade(s: TradeHost): TradeQuote | null {
     accessible.has(at(stock)) && traderAccepts(caravan.kind, stock)) add('colony', stock);
   for (const stock of caravan.stock) if (stock.resource !== 'carcass' &&
     s.pawns.some(p => p.id === stock.carrierId && !p.dead && !p.downed)) add('trader', stock);
+  const animalOffers: TradeQuote['animalOffers'] = [];
+  const animalReachable = s.tradeAnimalReachable(trader);
+  for (const a of s.animals) {
+    const side = a.faction === 'colony' ? 'colony' : a.faction === 'trader' && caravan.animalIds.includes(a.id) ? 'trader' : null;
+    if (!side || !animalReachable.has(a.id) || !traderAcceptsAnimal(caravan.kind,a) || !animalCanTrade(a,s.temperature(a))) continue;
+    const marketValue = animalMarketValue(a), prices = tradePrices({marketValue,difficultyLoss,negotiator:improvement});
+    animalOffers.push({side,stockId:a.id,amount:1,currency:false,animal:structuredClone(a),marketValue,
+      unitPrice: side === 'colony' ? prices.sell : prices.buy});
+  }
   const silver = (side: 'colony' | 'trader') => offers.filter(o => o.side === side && o.currency).reduce((n, o) => n + o.amount, 0);
   // Full serialized terms avoid a hash collision authorizing different goods.
-  const key = JSON.stringify([session.id, improvement, difficultyLoss, s.trade.goodwill, offers]);
+  const key = JSON.stringify([session.id, improvement, difficultyLoss, s.trade.goodwill, offers, animalOffers]);
   return { sessionId: session.id, key, caravanId: caravan.id, pawnId: pawn.id, improvement,
-    difficultyLoss, colonySilver: silver('colony'), traderSilver: silver('trader'), offers };
+    difficultyLoss, colonySilver: silver('colony'), traderSilver: silver('trader'), offers, animalOffers };
 }
 export function applyTradeCommand(s: TradeHost, c: TradeCommand): CommandResult {
   if (c.type === 'homeArea') {
@@ -123,14 +136,18 @@ export function applyTradeCommand(s: TradeHost, c: TradeCommand): CommandResult 
     return {ok:false,message:'商人已在允许区域之外，物资与银币未转移'};
   const quote = quoteTrade(s);
   if (!quote || c.quoteKey !== quote.key) return { ok: false, message: '报价或可用库存已变化，请重新确认' };
-  const result = settleTrade(quote.offers, c.lines, quote.colonySilver, quote.traderSilver, c.gift, c.acceptShortfall);
+  const result = settleTrade([...quote.offers,...quote.animalOffers], c.lines, quote.colonySilver, quote.traderSilver, c.gift, c.acceptShortfall);
   if (!result.ok) return { ok: false, message: result.reason };
   const caravan = s.trade.caravans.find(v => v.id === quote.caravanId)!;
   const trader = s.pawns.find(p => p.id === caravan.traderId)!;
   const pawn = s.pawns.find(p => p.id === quote.pawnId)!;
   let items = s.items.map(i => ({ ...i })), stock = caravan.stock.map(i => ({ ...i }));
   const imported: Cargo[] = [], exported: Cargo[] = [];
-  const transferred = c.lines.filter(l => l.amount > 0).map(l => ({ side: l.side, stockId: l.stockId,
+  const animalTransfers = c.lines.filter(l => l.amount > 0).flatMap(l => {
+    const offer = quote.animalOffers.find(o => o.side === l.side && o.stockId === l.stockId);
+    return offer ? [{side:l.side,animal:structuredClone(offer.animal)}] : [];
+  });
+  const transferred = c.lines.filter(l => l.amount > 0 && !animalTransfers.some(t => t.animal.id === l.stockId)).map(l => ({ side: l.side, stockId: l.stockId,
     batch: portion(quote.offers.find(o => o.side === l.side && o.stockId === l.stockId)!.batch, l.amount) }));
   for (const row of transferred) {
     const list = row.side === 'colony' ? items : stock;
@@ -159,12 +176,17 @@ export function applyTradeCommand(s: TradeHost, c: TradeCommand): CommandResult 
     Math.trunc((result.selling + Math.max(0, -result.silverToColony)) / 600);
   // All ownership changes happen after the complete placement plan succeeds.
   s.tradeApplyPlacement(plan); caravan.stock = stock;
+  for (const row of animalTransfers) {
+    const a=s.animals.find(a=>a.id===row.animal.id)!;
+    s.tradeAnimalTransfer(a,row.side==='trader'?'colony':'trader',caravan);
+    s.trade.animalLedger[row.side==='trader'?'bought':'sold'][a.species]++;
+  }
   for (const batch of imported) s.trade.imported[batch.resource] += batch.amount;
   for (const batch of exported) s.trade.exported[batch.resource] += batch.amount;
   s.trade.goodwill = affectGoodwill(goodwillBefore, gain);
   s.trade.receipts.push({ id: s.nextId++, tick: s.tick, caravanId: caravan.id, pawnId: pawn.id,
     gift: c.gift, silverToColony: result.silverToColony, quotedSilverToColony: result.quotedSilverToColony,
-    shortfall: result.shortfall, goodwillBefore, goodwillAfter: s.trade.goodwill, transferred });
+    shortfall: result.shortfall, goodwillBefore, goodwillAfter: s.trade.goodwill, transferred, animalTransfers });
   if (s.trade.receipts.length > 32) s.trade.receipts.shift();
   cancelSession(s);
   s.notice = c.gift ? `已送出礼物，关系 +${s.trade.goodwill - goodwillBefore}` : `交易完成：${result.silverToColony >= 0 ? '收到' : '支付'} ${Math.abs(result.silverToColony)} 银币`;
@@ -215,7 +237,7 @@ export function updateTrade(s: TradeHost) {
       }
     }
   }
-  s.trade.caravans = s.trade.caravans.filter(c => c.pawnIds.some(id => s.pawns.some(p => p.id === id)) || c.stock.length);
+  s.trade.caravans = s.trade.caravans.filter(c => c.pawnIds.some(id => s.pawns.some(p => p.id === id)) || c.stock.length || c.animalIds.length);
   const session = s.trade.session;
   if (!session) return;
   const p = s.pawns.find(p => p.id === session.pawnId), caravan = s.trade.caravans.find(c => c.id === session.caravanId);

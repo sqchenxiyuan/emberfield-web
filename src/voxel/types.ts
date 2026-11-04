@@ -430,7 +430,7 @@ export interface Stove extends Pos {
 }
 export type AnimalSpecies = 'hare' | 'deer' | 'dromedary' | 'alpaca' | 'chicken';
 export interface GrassPatch extends Pos { growth: number }
-export interface AnimalGoal { kind: 'grass' | 'crop' | 'food' | 'mate' | 'area' | 'exit' | 'layEgg' | 'layEggBox'; id: number }
+export interface AnimalGoal { kind: 'grass' | 'crop' | 'food' | 'mate' | 'area' | 'exit' | 'layEgg' | 'layEggBox' | 'caravan'; id: number }
 export interface HandleTask {
   animalId: number;
   action: 'tame' | 'maintain' | 'feed' | 'slaughter' | 'autoSlaughter' | 'release' | 'milk' | 'shear';
@@ -453,7 +453,7 @@ export interface WildAnimal extends Pos {
   ropePaused: boolean;
   requestedPenId: number | null;
   nextRoamTick: number;
-  faction: 'wild' | 'colony';
+  faction: 'wild' | 'colony' | 'trader';
   sex: 'male' | 'female';
   ageTicks: number;
   growth: number;
@@ -1056,7 +1056,7 @@ export interface VoxelSave {
   eggBoxes: EggBox[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 52;
+  version: 53;
   autoSlaughter: import('./autoSlaughter').AutoSlaughterSettings;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];

@@ -17,6 +17,8 @@ import { HUSBANDRY_RULES, ANIMAL_HUSBANDRY, initialAnimalState, isAnimalAdult,
   animalNutritionCapacity, animalFeedAmount, tameChance, advanceAnimalNeeds } from './husbandry';
 
 export interface HusbandryHost extends PensHost {
+  animalTradeTravel?(animal: WildAnimal): boolean;
+  animalTradeBirth?(mother: WildAnimal, child: WildAnimal): void;
   autoSlaughter?: AutoSlaughterSettings;
   eggBoxes?: EggBox[];
   animalEggBoxPlace?(a: WildAnimal, batch: Cargo, boxId: number, commit: boolean): boolean;
@@ -72,6 +74,7 @@ export function releaseAnimalHandlers(s: HusbandryHost, a: WildAnimal) {
 export function animalOrder(s: HusbandryHost, id: number, order: string, enabled: boolean): CommandResult {
   const a=s.animals.find(a=>a.id===id&&!a.dead);
   if(!a||!['tame','slaughter','release'].includes(order)||typeof enabled!=='boolean')return {ok:false,message:'动物或指令无效'};
+  if(a.faction==='trader')return {ok:false,message:'商队动物需要通过交易取得，不能直接管理'};
   if((order==='tame')!==(a.faction==='wild'))return {ok:false,message:order==='tame'?'已经属于殖民地':'只能管理殖民地动物'};
   releaseAnimalHandlers(s,a);
   if(enabled){a.tame=false;a.slaughter=false;a.releaseMarked=false;a.hunt=false;
@@ -184,6 +187,9 @@ function boxAvailable(s:HusbandryHost,a:WildAnimal,box:EggBox):boolean {
     !s.animals.some(other=>other!==a&&other.goal?.kind==='layEggBox'&&other.goal.id===box.id);
 }
 function layEggTick(s:HusbandryHost,a:WildAnimal):boolean {
+  // Merchant hens keep biological progress but hold their eggs until acquired.
+  // Foreign ground-egg ownership/hatching is outside this trade tier.
+  if(a.faction==='trader')return false;
   if(!eggLayerActive(a)||a.eggProgress<1||a.slaughter||a.releaseMarked||a.hunt){
     if(a.goal?.kind==='layEgg'||a.goal?.kind==='layEggBox')clearAnimal(a);return false;
   }
@@ -246,8 +252,9 @@ function birth(s:HusbandryHost,a:WildAnimal) {
   const id=s.nextId++,child:WildAnimal={...position(cell),...initialAnimalState(id,a.species,s.tick),
     id,species:a.species,name:a.name,health:ANIMAL_DEFS[a.species].health,hunger:80,dead:false,phase:'roam',hunt:false,
     moveTick:s.tick+20,decisionTick:s.tick,fleeUntil:0,threatId:null,retryTick:0,rotProgress:0,
-    faction:a.faction,ageTicks:0,growth:0,tameness:a.faction==='colony'?5:0};
+    faction:a.faction,ageTicks:0,growth:0,tameness:a.faction==='wild'?0:5};
   inheritAnimalArea(a,child);s.animals.push(child);a.pregnancy=null;
+  if(a.faction==='trader')s.animalTradeBirth?.(a,child);
   event(s,'birth',a,`${a.name}产下一只幼崽`,id);
 }
 export function updateHusbandry(s:HusbandryHost) {
@@ -275,6 +282,7 @@ export function updateHusbandry(s:HusbandryHost) {
       continue;
     }
     a.threatId=null;
+    if(s.animalTradeTravel?.(a))continue;
     const handler=s.pawns.find(p=>p.handleTask?.animalId===a.id&&p.handleTask.stage==='interact');
     if(handler){clearAnimal(a);a.phase='interact';a.reason=handler.reason;continue;}
     if(animalManagementTick(s,a))continue;
@@ -329,6 +337,7 @@ export function reconcileAutoSlaughter(s:HusbandryHost) {
 }
 function actionFor(a:WildAnimal,automatic:Set<number>):HandleTask['action']|null {
   if(a.faction==='wild')return a.tame?'tame':null;
+  if(a.faction!=='colony')return null;
   return a.slaughter?'slaughter':a.releaseMarked?'release':automatic.has(a.id)?'autoSlaughter':a.hunger<30?'feed':a.species==='hare'&&a.tameness<5?'maintain':milkReady(a)?'milk':woolReady(a)?'shear':null;
 }
 function handlerRoute(p:Pawn,path:number[]){p.path=path;p.destination=path.at(-1)??null;p.phase='handle';}

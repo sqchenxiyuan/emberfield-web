@@ -1,4 +1,4 @@
-import type { Cargo, Counts, Pos } from './types';
+import type { AnimalSpecies, Cargo, Counts, Pos, WildAnimal } from './types';
 import type { PricedTradeOffer, TradeLine } from './tradeRules';
 
 export type TraderKind = 'bulk' | 'combat';
@@ -9,6 +9,7 @@ export interface TraderCaravan {
   kind: TraderKind;
   name: string;
   pawnIds: number[];
+  animalIds: number[];
   traderId: number;
   stock: TraderStock[];
   meeting: Pos;
@@ -37,6 +38,8 @@ export interface TradeReceipt {
   goodwillBefore: number;
   goodwillAfter: number;
   transferred: { side: 'colony' | 'trader'; stockId: number; batch: Cargo }[];
+  /** Individual at handover, not a resource stack or a second live actor. */
+  animalTransfers: { side: 'colony' | 'trader'; animal: WildAnimal }[];
 }
 export interface TradeState {
   /** Persistent independent scheduling; save/load never rerolls this appointment. */
@@ -53,8 +56,10 @@ export interface TradeState {
   /** External transfers for colony material conservation, excluding NPC consumption. */
   imported: Counts;
   exported: Counts;
+  animalLedger: { bought: Record<AnimalSpecies, number>; sold: Record<AnimalSpecies, number> };
 }
 export interface TradeOffer extends PricedTradeOffer { batch: Cargo; marketValue: number }
+export interface AnimalTradeOffer extends PricedTradeOffer { animal: WildAnimal; marketValue: number }
 export interface TradeQuote {
   sessionId: number;
   /** Exact terms fingerprint. An expired quote must be refreshed, never silently repriced. */
@@ -66,6 +71,7 @@ export interface TradeQuote {
   colonySilver: number;
   traderSilver: number;
   offers: TradeOffer[];
+  animalOffers: AnimalTradeOffer[];
 }
 export interface TradeView extends TradeState { quote: TradeQuote | null }
 export type TradeCommand =

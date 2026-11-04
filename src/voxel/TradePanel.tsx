@@ -1,17 +1,22 @@
 import { useRef, useState, type KeyboardEvent } from 'react';
-import { DAY, RESOURCE_NAMES, type Cargo, type CommandResult, type Pawn, type Pos, type VoxelSnapshot } from './types';
+import { DAY, RESOURCE_NAMES, type Cargo, type CommandResult, type Pawn, type Pos, type VoxelSnapshot, type WildAnimal } from './types';
 import { APPAREL_NAMES, APPAREL_MATERIAL_NAMES, QUALITY_NAMES, apparelStats } from './apparel';
 import { CROPS } from './farming';
 import { remainingRotDays } from './preservation';
 import { healthSummary } from './survival';
 import { weaponName, weaponStats } from './weapons';
 import { settleTrade, type TradeLine } from './tradeRules';
-import type { TradeCommand, TradeOffer, TradeQuote } from './tradeTypes';
+import type { AnimalTradeOffer, TradeCommand, TradeOffer, TradeQuote } from './tradeTypes';
+import { AnimalTradeDetails } from './AnimalPanel';
+import { ANIMAL_DEFS } from './wildlife';
 
 type Command = (command: TradeCommand) => Promise<CommandResult>;
+type Offer = TradeOffer | AnimalTradeOffer;
 const number = (value: number) => value.toLocaleString('zh-CN', { maximumFractionDigits: 2 });
-const offerKey = (offer: TradeOffer) => `${offer.side}:${offer.stockId}`;
+const offerKey = (offer: Offer) => `${offer.side}:${offer.stockId}`;
 const stageName = { arriving: '正在入场', visiting: '停留交易', leaving: '正在离开' };
+const animalName = (animal: WildAnimal) => `${animal.name} · ${ANIMAL_DEFS[animal.species].name} #${animal.id}`;
+const offerName = (offer: Offer) => 'animal' in offer ? animalName(offer.animal) : tradeItemName(offer.batch);
 export function tradeItemName(batch: Cargo): string {
   if (batch.weapon) return weaponName(batch.weapon);
   if (batch.apparel) return `${APPAREL_MATERIAL_NAMES[batch.apparel.material]}${APPAREL_NAMES[batch.apparel.kind]}（${QUALITY_NAMES[batch.apparel.quality]}）`;
@@ -25,6 +30,17 @@ function condition(batch: Cargo): string | null {
   return days === null ? null : `常温下约剩 ${days.toFixed(2)} 日`;
 }
 
+/** One selection and settlement for both cargo stacks and individual animals. */
+export function tradeSelection(quote: TradeQuote, amounts: Record<string, string>, gift = false, acceptShortfall = false) {
+  const allOffers: Offer[] = [...quote.offers, ...quote.animalOffers];
+  const offers = allOffers.filter(offer => gift ? offer.side === 'colony' : !offer.currency);
+  const lines: TradeLine[] = offers.flatMap(offer => {
+    const value = amounts[offerKey(offer)] ?? '';
+    return value === '' || Number(value) === 0 ? [] : [{ side: offer.side, stockId: offer.stockId, amount: Number(value) }];
+  });
+  return { offers, lines, preview: settleTrade(allOffers, lines, quote.colonySilver, quote.traderSilver, gift, acceptShortfall) };
+}
+
 function TradeDialog({ quote, snapshot: s, command }: { quote: TradeQuote; snapshot: VoxelSnapshot; command: Command }) {
   const [amounts, setAmounts] = useState<Record<string, string>>({});
   const [gift, setGift] = useState(false);
@@ -34,13 +50,8 @@ function TradeDialog({ quote, snapshot: s, command }: { quote: TradeQuote; snaps
   const submitting = useRef(false);
   const caravan = s.trade.caravans.find((c) => c.id === quote.caravanId);
   const negotiator = s.pawns.find((p) => p.id === quote.pawnId);
-  const offers = quote.offers.filter((offer) => gift ? offer.side === 'colony' : !offer.currency);
-  const lines: TradeLine[] = offers.flatMap((offer) => {
-    const value = amounts[offerKey(offer)] ?? '';
-    return value === '' || Number(value) === 0 ? [] : [{ side: offer.side, stockId: offer.stockId, amount: Number(value) }];
-  });
-  const preview = settleTrade(quote.offers, lines, quote.colonySilver, quote.traderSilver, gift, acceptShortfall);
-  const setAmount = (offer: TradeOffer, value: string) => {
+  const { offers, lines, preview } = tradeSelection(quote, amounts, gift, acceptShortfall);
+  const setAmount = (offer: Offer, value: string) => {
     setAmounts((before) => ({ ...before, [offerKey(offer)]: value }));
     setAcceptShortfall(false);
     setError('');
@@ -87,6 +98,7 @@ function TradeDialog({ quote, snapshot: s, command }: { quote: TradeQuote; snaps
             <summary>报价说明</summary>
             <p>议价改善 {(quote.improvement * 100).toFixed(1)}% · 难度交易损失 {(quote.difficultyLoss * 100).toFixed(0)}%。各商品已有独立买卖价；银币按整单差额取整结算。</p>
             <p>营地只出售家园或仓储中已经落地、商人可达且愿意收购的物资。携带、穿戴和已交工地物品不在售；禁止搬运标记不阻止交易。</p>
+            <p>活畜按个体交易，每只最多选择 1。出售的殖民地动物需要商人可达，无需位于家园范围；确认后原动物直接变更归属，保留年龄、健康、孕期和产物进度。</p>
           </details>
         </div>
         <div className="voxel-trade-lists">
@@ -94,13 +106,16 @@ function TradeDialog({ quote, snapshot: s, command }: { quote: TradeQuote; snaps
             const entries = offers.filter((offer) => offer.side === side);
             const direction = gift ? '赠送' : side === 'trader' ? '买入' : '卖出';
             return <section key={side} className="voxel-trade-list" aria-label={`${direction}商品`}>
-              <h3>{direction} · {side === 'trader' ? '商人物资' : '营地物资'}</h3>
-              {!entries.length && <p className="voxel-trade-empty">{side === 'colony' ? '没有符合这位商人收购范围的可售物资。' : '商人目前没有可售商品。'}</p>}
-              {entries.map((offer, index) => <div className="voxel-trade-row" key={offerKey(offer)} data-trade-side={offer.side} data-stock-id={offer.stockId} data-resource={offer.batch.resource}>
-                <div className="voxel-trade-item-name"><b>{tradeItemName(offer.batch)}</b><small>{condition(offer.batch) ?? '不腐坏'}</small><small>单价 {number(offer.unitPrice)} · 可用 {offer.amount}</small></div>
+              <h3>{direction} · {side === 'trader' ? '商人物资与动物' : '营地物资与动物'}</h3>
+              {!entries.length && <p className="voxel-trade-empty">{side === 'colony' ? '没有符合这位商人收购范围的可售物资或动物。' : '商人目前没有可售商品。'}</p>}
+              {entries.map((offer, index) => <div className="voxel-trade-row" key={offerKey(offer)} data-trade-side={offer.side} data-stock-id={offer.stockId} data-resource={'batch' in offer ? offer.batch.resource : undefined} data-animal-id={'animal' in offer ? offer.animal.id : undefined}>
+                <div className="voxel-trade-item-name"><b>{offerName(offer)}</b>
+                  {'animal' in offer ? <AnimalTradeDetails animal={offer.animal} /> : <small>{condition(offer.batch) ?? '不腐坏'}</small>}
+                  <small>单价 {number(offer.unitPrice)} · {'animal' in offer ? '此动物 1 只' : `可用 ${offer.amount}`}</small>
+                </div>
                 <div className="voxel-trade-quantity">
-                  <input type="number" min="0" max={offer.amount} step="1" inputMode="numeric" aria-label={`${direction} ${tradeItemName(offer.batch)} 数量 ${index + 1}`} disabled={busy} placeholder="0" value={amounts[offerKey(offer)] ?? ''} onChange={(e) => setAmount(offer, e.target.value)} />
-                  <button aria-label={`${direction}全部 ${tradeItemName(offer.batch)} ${index + 1}`} disabled={busy} onClick={() => setAmount(offer, String(offer.amount))}>全部</button>
+                  <input type="number" min="0" max={offer.amount} step="1" inputMode="numeric" aria-label={`${direction} ${offerName(offer)} 数量 ${index + 1}`} disabled={busy} placeholder="0" value={amounts[offerKey(offer)] ?? ''} onChange={(e) => setAmount(offer, e.target.value)} />
+                  <button aria-label={`${direction}${'animal' in offer ? '此动物' : '全部'} ${offerName(offer)} ${index + 1}`} disabled={busy} onClick={() => setAmount(offer, String(offer.amount))}>{'animal' in offer ? '选中' : '全部'}</button>
                 </div>
               </div>)}
             </section>;
@@ -119,7 +134,7 @@ function TradeDialog({ quote, snapshot: s, command }: { quote: TradeQuote; snaps
           </label>}
           {(error || (!preview.ok && lines.length > 0)) && <p className="voxel-trade-error" role="alert">{error || preview.reason}</p>}
           <div className="voxel-trade-confirm-row">
-            <small>{gift ? '赠出的物品不收取货款，确认后显示实际关系变化。' : '确认后按当前整单报价交付物资并结算银币。'}</small>
+            <small>{gift ? '赠出的物资和动物不收取货款，确认后显示实际关系变化。' : '确认后按整单报价交付物资、转移动物归属并结算银币。'}</small>
             <button onClick={cancel} disabled={busy}>取消</button>
             <button className="voxel-primary" disabled={busy || !preview.ok} onClick={() => void run({ type: 'tradeCommit', sessionId: quote.sessionId, quoteKey: quote.key, lines, gift, acceptShortfall })}>{busy ? '处理中…' : gift ? '确认赠礼' : '确认交易'}</button>
           </div>
@@ -182,9 +197,12 @@ export function TradePanel({ snapshot: s, selectedPos, selectedPawnId, command, 
       {!s.trade.caravans.length && <p>目前没有来访商队。正常推进时间等待来访机会。</p>}
       {s.trade.caravans.map((caravan) => {
         const trader = s.pawns.find((p) => p.id === caravan.traderId);
+        const animals = s.animals.filter(a => !a.dead && a.faction === 'trader' && caravan.animalIds.includes(a.id));
         return <section className="voxel-trade-caravan" key={caravan.id} data-caravan-id={caravan.id}>
           <div><b>{caravan.name}</b><span>{stageName[caravan.stage]}</span></div>
           <small>{caravan.kind === 'bulk' ? '大宗物资商队' : '武器装备商队'} · {caravan.reason}</small>
+          <small data-testid="caravan-animal-count">随队动物 {animals.length} 只{animals.length ? ` · ${animals.map(animalName).join('；')}` : ''}</small>
+          <small>{caravan.kind === 'bulk' ? '活畜收购与出售：鸡、羊驼、单峰驼。到场后可查看每只动物的报价。' : '这类商队目前不买卖活畜。'}</small>
           <div><button disabled={!trader} onClick={() => trader && focus(trader)}>查看商人</button>
             <button disabled={busy || !negotiator || !trader || trader.dead || trader.downed || !!session} onClick={() => negotiator && void act({ type: 'tradeTalk', pawnId: negotiator.id, caravanId: caravan.id }, true)}>前往交谈</button></div>
         </section>;
@@ -199,6 +217,7 @@ export function TradePanel({ snapshot: s, selectedPos, selectedPawnId, command, 
       <details className="voxel-home-area" open>
         <summary>家园范围 · {s.homeArea.length} 格</summary>
         <p>金色边界内的落地物资可参与贸易，仓储中的落地物资也可。商人还需要能走到物资处并愿意收购。</p>
+        <small>出售活畜只要求动物归属殖民地、商人可达且愿意收购，无需位于家园范围。</small>
         <small>家园范围也用于清扫、灭火和修理。开启相应分工后殖民者会自动处理，也可在卫生或火灾面板手动安排。</small>
         <small>用查看工具点选地图，设定矩形起点，再点选同层终点。</small>
         <div><button disabled={!selectedPos || busy} onClick={() => { setAnchor(selectedPos && { ...selectedPos }); setError(''); }}>设为范围起点</button><button disabled={!anchor} onClick={() => setAnchor(null)}>清除起点</button></div>
@@ -213,6 +232,11 @@ export function TradePanel({ snapshot: s, selectedPos, selectedPawnId, command, 
           <small>{receipt.gift ? `关系 ${receipt.goodwillBefore} → ${receipt.goodwillAfter}` : `营地${receipt.silverToColony < 0 ? '支付' : '收入'} ${number(Math.abs(receipt.silverToColony))} 银币`}</small>
           {receipt.shortfall > 0 && <small>已同意少收 {number(receipt.shortfall)} 银币</small>}
           <small>{receipt.transferred.map((transfer) => `${transfer.side === 'colony' ? '送出' : '收取'} ${tradeItemName(transfer.batch)} × ${transfer.batch.amount}`).join('；')}</small>
+          {receipt.animalTransfers.length > 0 && <small>动物交接 {receipt.animalTransfers.length} 只 · 以下为成交时状态</small>}
+          {receipt.animalTransfers.map(transfer => <div key={`${transfer.side}:${transfer.animal.id}`} data-testid="trade-animal-receipt" data-animal-id={transfer.animal.id}>
+            <b>{transfer.side === 'colony' ? '送出' : '收取'} {animalName(transfer.animal)}</b>
+            <AnimalTradeDetails animal={transfer.animal} />
+          </div>)}
         </div>)}
       </details>
     </aside>

@@ -1,6 +1,6 @@
 import { WOOL_RULES, woolReady } from './animalWool';
 import { MILK_RULES, milkReady } from './animalMilk';
-import { at, CELLS, HEIGHT, inside, position, type Pos, type VoxelSave } from './types';
+import { at, CELLS, HEIGHT, inside, position, type Pos, type VoxelSave, type WildAnimal } from './types';
 import { HUSBANDRY_RULES, ANIMAL_HUSBANDRY, initialAnimalState, animalFeedAmount, isAnimalAdult } from './husbandry';
 import { initialSkills, validSkills } from './skills';
 
@@ -15,6 +15,43 @@ const ANIMAL_FIELDS = ['faction', 'sex', 'ageTicks', 'growth', 'tame', 'slaughte
   'malnutrition', 'pregnancy', 'mateId', 'mateProgress', 'nextMateTick', 'tameness',
   'nextTamenessDecayTick', 'nextInteractionTick', 'path', 'goal', 'eatProgress', 'reason'];
 function fail(reason: string): never { throw new Error('驯养存档无效：' + reason); }
+
+/** Local biological shape also applies to historical trade snapshots. References
+ * to currently living actors and structures are checked by the world validator. */
+export function validateAnimalHusbandryShape(a: WildAnimal, nextId: number): void {
+  const id = (v: unknown) => integer(v, 1, nextId - 1);
+  if (!record(a) || !id(a.id) || !Object.hasOwn(ANIMAL_HUSBANDRY, a.species) ||
+      !ANIMAL_FIELDS.every(k => Object.hasOwn(a, k)) || !['wild', 'colony', 'trader'].includes(a.faction) ||
+      !['male', 'female'].includes(a.sex) || !integer(a.ageTicks) || !fraction(a.growth) ||
+      !fraction(a.malnutrition) || !integer(a.tameness, 0, HUSBANDRY_RULES.tamenessMax) ||
+      ![a.tame, a.slaughter, a.releaseMarked].every(v => typeof v === 'boolean') ||
+      !integer(a.nextMateTick) || !integer(a.nextInteractionTick) || !integer(a.nextTamenessDecayTick) ||
+      !integer(a.mateProgress, 0, HUSBANDRY_RULES.mateWork - 1) ||
+      !integer(a.eatProgress, 0, HUSBANDRY_RULES.eatWork - 1) ||
+      typeof a.reason !== 'string' || a.reason.length > 500 ||
+      !Array.isArray(a.path) || a.path.length > CELLS || a.path.some(n => !integer(n, 0, CELLS - 1)) ||
+      new Set(a.path).size !== a.path.length) fail('动物字段、进度或路径无效');
+  if ([a.tame, a.slaughter, a.releaseMarked, a.hunt].filter(Boolean).length > 1 ||
+      (a.faction === 'wild' ? a.slaughter || a.releaseMarked || a.tameness !== 0 : a.tame || a.hunt || a.tameness < 1) ||
+      (a.faction === 'trader' && (a.slaughter || a.releaseMarked))) fail('动物归属与标记不符');
+  if (a.dead && (a.pregnancy !== null || a.mateId !== null || a.goal !== null || a.path.length ||
+      a.eatProgress || a.mateProgress || a.tame || a.slaughter || a.releaseMarked)) fail('尸体仍含活动');
+  let previous: Pos = a;
+  for (const cell of a.path) {
+    const next = position(cell);
+    if (Math.abs(next.x - previous.x) + Math.abs(next.y - previous.y) !== 1 || Math.abs(next.z - previous.z) > 1)
+      fail('动物路径包含跳跃或垂直爬梯');
+    previous = next;
+  }
+  if (a.pregnancy !== null && (!exact(a.pregnancy, ['fatherId', 'progress']) || !id(a.pregnancy.fatherId) ||
+      a.pregnancy.fatherId === a.id || !fraction(a.pregnancy.progress) || a.sex !== 'female' ||
+      !isAnimalAdult(a) || a.dead)) fail('怀孕字段或母体无效');
+  if (a.goal !== null && (!exact(a.goal, ['kind', 'id']) ||
+      !['grass', 'crop', 'food', 'mate', 'area', 'exit', 'layEgg', 'layEggBox', 'caravan'].includes(a.goal.kind) ||
+      (['grass', 'exit', 'layEgg'].includes(a.goal.kind) ? !integer(a.goal.id, 0, CELLS - 1) : !id(a.goal.id))))
+    fail('动物目标无效');
+  if (a.path.length && a.goal === null) fail('动物路径缺少目标');
+}
 
 /** Must inspect the original source before older migrations add current defaults. */
 export function rejectLegacyHusbandryFields(old: Record<string, any>, sourceVersion = old.version): void {
@@ -69,40 +106,13 @@ export function validateHusbandry(d: VoxelSave): void {
   const mates = new Set<number>();
   if (animalById.size !== d.animals.length) fail('动物身份重复');
   for (const a of d.animals) {
-    if (!record(a) || !id(a.id) || nonAnimalIds.has(a.id) || !Object.hasOwn(ANIMAL_HUSBANDRY, a.species) ||
-        !ANIMAL_FIELDS.every(k => Object.hasOwn(a, k)) || !['wild', 'colony'].includes(a.faction) ||
-        !['male', 'female'].includes(a.sex) || !integer(a.ageTicks) || !fraction(a.growth) ||
-        !fraction(a.malnutrition) || !integer(a.tameness, 0, HUSBANDRY_RULES.tamenessMax) ||
-        ![a.tame, a.slaughter, a.releaseMarked].every(v => typeof v === 'boolean') ||
-        !integer(a.nextMateTick) || !integer(a.nextInteractionTick) || !integer(a.nextTamenessDecayTick) ||
-        !integer(a.mateProgress, 0, HUSBANDRY_RULES.mateWork - 1) ||
-        !integer(a.eatProgress, 0, HUSBANDRY_RULES.eatWork - 1) ||
-        typeof a.reason !== 'string' || a.reason.length > 500 ||
-        !Array.isArray(a.path) || a.path.length > CELLS || a.path.some(n => !integer(n, 0, CELLS - 1)) ||
-        new Set(a.path).size !== a.path.length)
-      fail('动物字段、进度或路径无效');
-    if ([a.tame, a.slaughter, a.releaseMarked, a.hunt].filter(Boolean).length > 1 ||
-        (a.faction === 'wild' ? a.slaughter || a.releaseMarked || a.tameness !== 0 : a.tame || a.hunt || a.tameness < 1))
-      fail('动物归属与标记不符');
-    if (a.dead && (a.pregnancy !== null || a.mateId !== null || a.goal !== null || a.path.length ||
-        a.eatProgress || a.mateProgress || a.tame || a.slaughter || a.releaseMarked)) fail('尸体仍含活动');
-    let previous: Pos = a;
-    for (const cell of a.path) {
-      const next = position(cell);
-      if (Math.abs(next.x - previous.x) + Math.abs(next.y - previous.y) !== 1 || Math.abs(next.z - previous.z) > 1)
-        fail('动物路径包含跳跃或垂直爬梯');
-      previous = next;
-    }
+    validateAnimalHusbandryShape(a, d.nextId);
+    if (nonAnimalIds.has(a.id)) fail('动物身份与现有对象重复');
     if (a.pregnancy !== null) {
-      if (!exact(a.pregnancy, ['fatherId', 'progress']) || !id(a.pregnancy.fatherId) ||
-          a.pregnancy.fatherId === a.id || nonAnimalIds.has(a.pregnancy.fatherId) || !fraction(a.pregnancy.progress) || a.sex !== 'female' ||
-          !isAnimalAdult(a) || a.dead) fail('怀孕字段或母体无效');
+      if (nonAnimalIds.has(a.pregnancy.fatherId)) fail('怀孕字段或母体无效');
       const father = animalById.get(a.pregnancy.fatherId);
       if (father && (father.sex !== 'male' || father.species !== a.species)) fail('父代身份不符');
     }
-    if (a.goal !== null && (!exact(a.goal, ['kind', 'id']) || !['grass', 'crop', 'food', 'mate', 'area', 'exit', 'layEgg', 'layEggBox'].includes(a.goal.kind) ||
-        (['grass','exit','layEgg'].includes(a.goal.kind) ? !integer(a.goal.id, 0, CELLS - 1) : !id(a.goal.id)))) fail('动物目标无效');
-    if (a.path.length && a.goal === null) fail('动物路径缺少目标');
     if (a.mateId !== null) {
       const mate = animalById.get(a.mateId);
       if (!id(a.mateId) || !mate || mate === a || mates.has(a.mateId) || a.sex !== 'male' || mate.sex !== 'female' || a.faction !== 'colony' ||

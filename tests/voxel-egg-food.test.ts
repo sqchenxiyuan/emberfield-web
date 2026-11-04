@@ -93,15 +93,14 @@ describe('egg nutrition, physical values and meal policies', () => {
     expect(deteriorationRate(batch, { exposed: true, outdoors: true, rainRate: 1 })).toBe(10);
     expect(cargoMarketValue(batch)).toBe(14);
     setBatchHitPoints(batch, 1); expect(cargoMarketValue(batch)).toBe(14);
-    expect(traderAccepts('bulk', batch)).toBe(true); expect(traderAccepts('combat', batch)).toBe(false);
+    expect(traderAccepts('bulk', batch)).toBe(resource === 'eggUnfertilized'); expect(traderAccepts('combat', batch)).toBe(false);
     expect(fireFuelAt(s, item).find(f => f.kind === 'stack' && f.id === item.id)?.flammability).toBe(.7);
   });
-  it('appends the explicit Web chicken supply without changing the existing bulk-stock RNG sequence', () => {
+  it('keeps item-stock RNG while moving chicken acquisition to actual live animals', () => {
     let nextId = 10, calls = 0;
     const stock = makeTraderStock('bulk', 1, () => nextId++, () => { calls++; return .5; });
-    expect(calls).toBe(37); expect(stock).toHaveLength(18);
-    expect(stock.at(-1)).toMatchObject({ resource: 'eggFertilized', amount: 4, carrierId: 1,
-      hatcher: { progress: 0, temperatureDamage: 0, motherId: null, fatherId: null, faction: 'wild' } });
+    expect(calls).toBe(37); expect(stock).toHaveLength(17);
+    expect(stock.some(item => item.resource === 'eggFertilized')).toBe(false);
     expect(stock.filter(item => item.resource === 'apparel')).toHaveLength(10);
     expect(makeTraderStock('combat', 1, () => nextId++, () => .5).some(item => item.resource === 'eggFertilized')).toBe(false);
   });

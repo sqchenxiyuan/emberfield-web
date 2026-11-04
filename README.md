@@ -1,5 +1,7 @@
 # 余烬边境 · Emberfield
 
+v53接通活畜交易：商队带真实公母鸡、羊驼或单峰驼入场 → 按个体与物资统一结算 → 保留年龄/健康/孕期和产物进度 → 接回圈养繁殖，或出售后随商队走出地图。支持受阻等待、妊娠分娩、历史回执和存读；新商队改为供活鸡，旧档已有受精蛋保留。见[149原版静态机制](docs/research/rimworld/149-live-animal-trade-mechanisms.md)、[150玩法与验证](docs/research/rimworld/150-live-animal-trade-gameplay.md)。机制优先、数值后调，本轮继续只做无界面验证。
+
 v52接通蛋箱：真实搬料建造 → 母鸡集中产蛋 → 箱内孵化/保鲜 → 搬运工到场取蛋 → 实际入库。支持提前清空、禁止、仓位预约、工作中断、拆除/火灾和存读续行；玩法机制优先，数值后调。见[147原版静态机制](docs/research/rimworld/147-egg-box-mechanisms.md)、[148玩法与验证](docs/research/rimworld/148-egg-box-gameplay.md)。本轮未操作原版或浏览器，下文版本段落记录当时边界。
 
 v51接通鸡蛋与孵化：商队受精蛋取得（Web适配）→ 适温孵化 → 幼鸡成长圈养 → 实际配种与自行产蛋 → 按营养烹饪或继续繁殖。搬运、堆叠、温损转换、存读和旧账单选择相互衔接；机制优先、数值后调。见[145原版静态机制](docs/research/rimworld/145-animal-eggs-mechanisms.md)、[146玩法与验证](docs/research/rimworld/146-animal-eggs-gameplay.md)。蛋箱和活畜贸易继续待补，本轮未操作原版或浏览器。
