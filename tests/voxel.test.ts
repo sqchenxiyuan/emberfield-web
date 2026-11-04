@@ -94,6 +94,7 @@ describe('voxel generation and chunk delivery', () => {
       apparel: 6,
       weapon: 0,
       furniture: 0,
+      unfinished: 0,
     });
     expect(a.generator).toBe(3);
     expect(a.blocks.some(block => block === Block.Steel)).toBe(true);

@@ -1,0 +1,11 @@
+{
+  "source": "test-results/voxel-production-policies-campaign/craft-working.json",
+  "sha256": "08e1a9a8840de4fa8d550aadbce361d7c4d4b95370a52469145cddfe91183d4d",
+  "sourceVersion": 40,
+  "sourceTick": 2071,
+  "sourceRootCommit": "c99ca32e1077e0b3a874f96d29a5aec5acf5211c",
+  "sourcePublishedCommit": "247ec52cf4ad4df4cf32adf4d6ed0874bcd95b1d",
+  "sourceScript": "scripts/voxel-production-policies-campaign-verify.mjs",
+  "sourceReportSha256": "47fbd97209eb4c9a0e9e905419efabd73683deb0b3643c70cd666be65f8d688c",
+  "scope": "Unmodified v40 ordinary-command crafting checkpoint. Full source campaign includes three independent historical branches; this fixture uses only the crafting branch. No values relabeled or edited."
+}

@@ -508,7 +508,7 @@ describe('cooking input containers and v5 food persistence', () => {
     const before = structuredClone(old),
       migrated = VoxelSimulation.load(old);
     expect(old).toEqual(before);
-    expect(migrated.save().version).toBe(40);
+    expect(migrated.save().version).toBe(41);
     expect(migrated.counts()).toEqual(sim.counts());
     expect(migrated.items[0]).toMatchObject({ crop: 'rice', rotProgress: 0 });
     expect(migrated.pawns[0].cargo).toMatchObject({ rotProgress: 0 });
@@ -533,6 +533,7 @@ describe('cooking input containers and v5 food persistence', () => {
       apparel: 0,
       weapon: 0,
       furniture: 0,
+      unfinished: 0,
     });
   });
 });

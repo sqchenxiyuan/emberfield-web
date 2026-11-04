@@ -59,11 +59,11 @@ function fillOutput(s: VoxelSimulation) {
   for (let x = 10; x <= 24; x++) for (let y = 10; y <= 24; y++)
     if (s.standable(pos(x, y)) && !s.items.some(item => same(item, pos(x, y)))) material(s, 'steel', 75, pos(x, y));
 }
-function freeOutput(s: VoxelSimulation) {
-  command(s, { type: 'draft', pawnId: s.pawns[2].id, drafted: true });
-  const item = s.items.find(value => same(value, pos(17, 17)))!;
+function freeOutput(s: VoxelSimulation, pawnIndex = 2, x = 17) {
+  command(s, { type: 'draft', pawnId: s.pawns[pawnIndex].id, drafted: true });
+  const item = s.items.find(value => same(value, pos(x, 17)))!;
   expect(item.resource).toBe('steel');
-  s.pawns[2].cargo = { resource: 'steel', amount: item.amount };
+  s.pawns[pawnIndex].cargo = { resource: 'steel', amount: item.amount };
   s.items = s.items.filter(value => value.id !== item.id);
 }
 
@@ -150,7 +150,7 @@ describe('production bill command and physical lifecycle integration', () => {
     expect(() => VoxelSimulation.load(s.save())).not.toThrow();
   });
 
-  it('returns partially worked inputs on suspension, resumes without losing an iteration, and deletes with a refund', () => {
+  it('retains partially worked inputs in a UFT on suspension, resumes, and deletion leaves an orphan', () => {
     let { s, benchId } = fixture();
     material(s, 'wood', 40);
     command(s, { type: 'priority', pawnId: s.pawns[0].id, work: 'craft', value: 1 });
@@ -170,6 +170,7 @@ describe('production bill command and physical lifecycle integration', () => {
     command(s, { type: 'productionBillDelete', benchId, billId: removed });
     until(s, () => !s.jobs.some(job => job.billId === removed));
     expect(getBill(s, removed)).toBeUndefined(); expect(s.counts().wood).toBe(40);
+    expect(s.items.find(i=>i.unfinished)?.unfinished).toMatchObject({boundBillId:null,ingredients:[{resource:'wood',amount:40}]});
     expect(s.stats.consumed.wood).toBe(40); expect(s.stats.weaponsMade).toBe(1);
     expect(() => VoxelSimulation.load(s.save())).not.toThrow();
   });
@@ -243,14 +244,14 @@ describe('production bill command and physical lifecycle integration', () => {
     expect(() => VoxelSimulation.load(s.save())).not.toThrow();
   });
 
-  it.each(['finish', 'delete'] as const)('never consumes a count during output congestion, then handles %s exactly once', action => {
-    let { s, benchId } = fixture();
-    material(s, 'wood', 40);
-    command(s, { type: 'priority', pawnId: s.pawns[0].id, work: 'craft', value: 1 });
-    const id = add(s, benchId, 'smith:woodClub');
+  it.each(['finish', 'delete'] as const)('never consumes a count during non-UFT meal output congestion, then handles %s exactly once', action => {
+    let { s, benchId } = fixture('stove');
+    material(s, 'wood', 1); material(s,'grain',10,pos(12,17));
+    command(s, { type: 'priority', pawnId: s.pawns[0].id, work: 'cook', value: 1 });
+    const id = add(s, benchId, 'cook');
     until(s, () => !!working(s, id)); fillOutput(s);
     until(s, () => s.jobs.some(job => job.billId === id && job.progress === job.work));
-    expect(getBill(s, id).remaining).toBe(1); expect(s.stats.weaponsMade).toBe(0); expect(s.stats.consumed.wood).toBe(0);
+    expect(getBill(s, id).remaining).toBe(1); expect(s.stats.cooked).toBe(0); expect(s.stats.consumed.wood).toBe(0);
     const work = structuredClone(s.jobs.find(job => job.billId === id)!);
     s = VoxelSimulation.load(s.save());
     s.step(80);
@@ -258,19 +259,20 @@ describe('production bill command and physical lifecycle integration', () => {
     if (action === 'delete') {
       command(s, { type: 'productionBillDelete', benchId, billId: id });
       expect(getBill(s, id)).toBeUndefined();
-      expect(s.jobs.find(job => job.id === work.id)).toMatchObject({ cancelled: true, delivered: { wood: 40 } });
-      expect(s.counts().wood).toBe(40); expect(s.stats.weaponsMade).toBe(0);
+      expect(s.jobs.find(job => job.id === work.id)).toMatchObject({ cancelled: true, delivered: { wood: 1, grain: 10 } });
+      expect(s.counts().wood).toBe(1); expect(s.stats.cooked).toBe(0);
       s = VoxelSimulation.load(s.save());
     }
     freeOutput(s);
+    if (action === 'delete') freeOutput(s, 1, 18);
     until(s, () => !s.jobs.some(job => job.id === work.id));
     if (action === 'finish') {
-      expect(getBill(s, id).remaining).toBe(0); expect(s.stats.weaponsMade).toBe(1);
-      expect(s.stats.consumed.wood).toBe(40); expect(s.counts().wood).toBe(0);
+      expect(getBill(s, id).remaining).toBe(0); expect(s.stats.cooked).toBe(1);
+      expect(s.stats.consumed.wood).toBe(1); expect(s.counts().wood).toBe(0);
     } else {
-      expect(s.stats.weaponsMade).toBe(0); expect(s.stats.consumed.wood).toBe(0); expect(s.counts().wood).toBe(40);
+      expect(s.stats.cooked).toBe(0); expect(s.stats.consumed.wood).toBe(0); expect(s.counts().wood).toBe(1);
     }
-    s.step(60); expect(s.stats.weaponsMade).toBe(action === 'finish' ? 1 : 0);
+    s.step(60); expect(s.stats.cooked).toBe(action === 'finish' ? 1 : 0);
     expect(() => VoxelSimulation.load(s.save())).not.toThrow();
   });
 
@@ -305,9 +307,15 @@ describe('production bill command and physical lifecycle integration', () => {
     const provenance = JSON.parse(readFileSync(new URL('./fixtures/voxel-v38-before-production-bills.provenance.json', import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(provenance.sha256);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old), current = s.save();
-    expect(old.version).toBe(38); expect(current.version).toBe(40); expect(current.productionQueues).toEqual([]);
-    for (const field of ['items', 'jobs', 'stoves', 'stonecutters', 'tailors', 'weaponBenches', 'butcherSpots', 'stats', 'nextId', 'blocks'] as const)
+    expect(old.version).toBe(38); expect(current.version).toBe(41); expect(current.productionQueues).toEqual([]);
+    for (const field of ['items', 'jobs', 'stoves', 'stonecutters', 'tailors', 'weaponBenches', 'butcherSpots', 'nextId', 'blocks'] as const)
       expect(current[field], field).toEqual(old[field]);
+    const stats = structuredClone(current.stats);
+    for (const key of ['produced', 'consumed', 'destroyed', 'spoiled'] as const) {
+      expect(stats[key].unfinished).toBe(0);
+      delete (stats[key] as Partial<typeof stats[typeof key]>).unfinished;
+    }
+    expect(stats).toEqual(old.stats);
     // The existing v38 loader also resets these two derived movement/UI fields.
     // Keep every other pawn field (identity, needs, skills, cargo, work and path)
     // equal to the authentic bytes rather than ignoring all pawn differences.

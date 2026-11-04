@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { defaultShelfSettings, isShelfKind, shelfCells, SHELF_DEFS, type Shelf } from './shelves';
 import { at, emptyCounts, RESOURCE_NAMES, type FurniturePiece, type Pos, type Resource, type VoxelCommand, type VoxelSnapshot } from './types';
+import { UnfinishedPanel } from './UnfinishedPanel';
+import { unfinishedName } from './unfinishedView';
 
 interface ShelfMember extends Shelf {
   stage: 'built' | 'blueprint' | 'packed';
@@ -85,12 +87,12 @@ export function ShelfPanel({ shelfId, snapshot, command, focus }: {
     </select></label>
     <details><summary>接纳物品（{settings.accepts.length} 类）</summary><div className="voxel-storage-filters">
       {(Object.keys(emptyCounts()) as Resource[]).filter(resource => resource !== 'chunk' && resource !== 'furniture').map(resource => <label className="voxel-check" key={resource}>
-        <input type="checkbox" checked={settings.accepts.includes(resource)} onChange={event => set(settings.priority,
+        <input type="checkbox" aria-label={`货架收纳${RESOURCE_NAMES[resource]}`} checked={settings.accepts.includes(resource)} onChange={event => set(settings.priority,
           event.target.checked ? [...settings.accepts, resource] : settings.accepts.filter(value => value !== resource))} />
         {RESOURCE_NAMES[resource]}{resource === 'carcass' ? '（仅小型）' : ''}
       </label>)}
     </div></details>
-    <small>修改筛选后，现有货物会等待搬往其他可用仓位。</small>
+    <small>修改筛选后，现有货物会等待搬往其他可用仓位。每件未完成品占一堆位，保留作者、原料和进度。</small>
 
     {group && <details className="voxel-storage-group" data-testid="shelf-group" open>
       <summary>储存组：{group.name} · {group.memberIds.length} 座</summary>
@@ -144,6 +146,11 @@ export function ShelfPanel({ shelfId, snapshot, command, focus }: {
         setJoinGroupId('');
       }}>{joinGroup ? `加入“${joinGroup.name}”` : '加入所选储存组'}</button>
     </details>}
-    {items.map(item => <div key={item.id} data-testid="shelf-stack" data-stack-id={item.id}>#{item.id} · {RESOURCE_NAMES[item.resource]} × {item.amount} · ({item.x}, {item.y}, {item.z})</div>)}
+    {items.map(item => <div key={item.id} data-testid="shelf-stack" data-stack-id={item.id}>
+      #{item.id} · {item.unfinished ? unfinishedName(item.unfinished) : RESOURCE_NAMES[item.resource]} × {item.amount} · ({item.x}, {item.y}, {item.z})
+      {item.unfinished && <details><summary>查看未完成品</summary>
+        <UnfinishedPanel batch={item} snapshot={snapshot} command={command} focus={focus} />
+      </details>}
+    </div>)}
   </section>;
 }

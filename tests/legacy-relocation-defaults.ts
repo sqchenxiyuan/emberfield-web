@@ -1,7 +1,9 @@
 import { expect } from 'vitest';
 import { stripRegionFields } from './legacy-region-defaults';
+import { unfinishedExpectedField } from './legacy-unfinished-defaults';
 /** Expected additive schema fields; leaves the captured historical object alone. */
 export function relocationExpectedField(key: string, value: any): any {
+  value = unfinishedExpectedField(key, value);
   if (key === 'stats') return { ...value, ...Object.fromEntries(
     ['produced', 'consumed', 'spoiled', 'destroyed'].map(k => [k, { ...value[k], furniture: 0 }])) };
   if (key === 'trade') return { ...value, imported: { ...value.imported, furniture: 0 }, exported: { ...value.exported, furniture: 0 } };

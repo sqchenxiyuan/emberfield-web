@@ -475,7 +475,8 @@ const workType = (kind: JobKind): Work =>
               : kind === 'cut'
                 ? 'cut'
                 : 'build';
-const missing = (j: Job) => resources.find((r) => (j.cost[r] ?? 0) > (j.delivered[r] ?? 0));
+const missing = (j: Job) => j.unfinishedId === undefined
+  ? resources.find((r) => (j.cost[r] ?? 0) > (j.delivered[r] ?? 0)) : undefined;
 function encode(a: Uint8Array) {
   const out: number[] = [];
   let last = a[0],
@@ -519,6 +520,7 @@ import { defaultProductionQueue, productionQueues, productionJobRecipe, canStart
   finishProductionBill, makeProductionBill, recipeAllowed, validateProductionQueues,
   type ProductionBill, type ProductionQueue, type ProductionRecipe } from './productionBills';
 import { defaultProductionPolicy, productionPolicyWorkerReason, productionPolicyAllowsIngredient } from './productionPolicies';
+import { recipeUsesUnfinished, validateUnfinishedProduction } from './unfinishedProduction';
 
 export class VoxelSimulation {
   /** Sparse overrides: untouched legacy recipes retain their published defaults. */
@@ -1422,6 +1424,8 @@ export class VoxelSimulation {
     }
   }
   private acceptsJobCargo(j: Job, cargo: Cargo, source?: Pos): boolean {
+    if (cargo.unfinished) return cargo.unfinished.id === j.unfinishedId;
+    if (j.unfinishedId !== undefined) return false;
     const recipe = productionJobRecipe(j);
     if (recipe && !productionPolicyAllowsIngredient(this.productionPolicyFor(j), recipe, cargo, source, j)) return false;
     return cargo.resource !== 'furniture' || (j.kind === 'install' && !!cargo.furniture && cargo.furniture.id === j.furnitureId && cargo.furniture.kind === j.furnitureKind);
@@ -1443,6 +1447,8 @@ export class VoxelSimulation {
     return best;
   }
   private chunkReserved(item: Stack, pawnId: number): boolean {
+    if (item.unfinished && (item.forbidden || this.jobs.some(j => j.unfinishedId === item.unfinished!.id &&
+      j.owner !== null && j.owner !== pawnId && !j.cancelled))) return true;
     if (item.weapon) {
       const assigned = this.pawns.find((p) => p.weaponTask?.weaponId === item.weapon!.id);
       if ((item.forbidden && assigned?.id !== pawnId) || (assigned && assigned.id !== pawnId))
@@ -1454,7 +1460,7 @@ export class VoxelSimulation {
     )
       return true;
     return (
-      (item.resource === 'chunk' || item.resource === 'carcass' || item.resource === 'furniture') &&
+      (item.resource === 'chunk' || item.resource === 'carcass' || item.resource === 'furniture' || item.resource === 'unfinished') &&
       ([...this.fetchReservations].some(([id, source]) => id !== pawnId && source.sourceId === item.id) ||
         [...this.storageReservations].some(([id, r]) => id !== pawnId && r.sourceId === item.id))
     );
@@ -1887,6 +1893,148 @@ export class VoxelSimulation {
   private productionBenches() {
     return [...this.stoves, ...this.butcherSpots, ...this.stonecutters, ...this.tailors, ...this.weaponBenches];
   }
+  private unfinishedCargo(id: number): Cargo | undefined {
+    return this.items.find(i => i.unfinished?.id === id) ?? this.pawns.find(p => p.cargo?.unfinished?.id === id)?.cargo ?? undefined;
+  }
+  private reconcileUnfinishedBindings() {
+    const billIds = new Set(productionQueues(this, this.productionQueues).flatMap(q => q.bills.map(b => b.id)));
+    for (const batch of [...this.items, ...this.pawns.flatMap(p => p.cargo ? [p.cargo] : [])]) {
+      const u = batch.unfinished;
+      if (!u?.boundBillId || billIds.has(u.boundBillId)) continue;
+      u.boundBillId = null;
+      for (const j of [...this.jobs]) if (j.unfinishedId === u.id) this.cancel(j);
+    }
+    this.productionQueues = this.productionQueues.filter(q => this.productionBenches().some(b=>b.id===q.benchId));
+  }
+  /** A physical wrapper owns materials; jobs hold only a resumable reference. */
+  private unfinishedForWorker(j: Job, p: Pawn): Cargo | undefined {
+    const recipe = productionJobRecipe(j);
+    if (!recipe || !recipeUsesUnfinished(recipe)) return;
+    const bound = [...this.items, ...this.pawns.flatMap(q => q.cargo ? [q.cargo] : [])]
+      .find(b => b.unfinished?.boundBillId === j.billId && j.billId !== undefined);
+    const candidates = j.unfinishedId !== undefined ? [this.unfinishedCargo(j.unfinishedId)] : bound ? [bound]
+      : [p.cargo, ...this.items].filter(b => b?.unfinished?.recipe === recipe)
+        .sort((a, b) => Number(b?.unfinished?.boundBillId === j.billId) - Number(a?.unfinished?.boundBillId === j.billId));
+    return candidates.find(batch => {
+      const u = batch?.unfinished;
+      if (!batch || !u || batch.forbidden || u.creatorId !== p.id || u.recipe !== recipe ||
+          this.jobs.some(k => k.id !== j.id && k.unfinishedId === u.id && k.owner !== null && !k.cancelled)) return false;
+      if (batch === p.cargo) return true;
+      const stack = this.items.find(i => i.unfinished?.id === u.id);
+      return !!stack && this.exploredAt(stack) && this.availableStack(stack, p.id) > 0 &&
+        !this.chunkReserved(stack, p.id) && this.reachableItemStand(stack) >= 0;
+    }) ?? undefined;
+  }
+  private claimUnfinished(j: Job, batch: Cargo) {
+    const u = batch.unfinished!;
+    // An idle batch may be resumed at another compatible workbench by its author.
+    for (const old of [...this.jobs]) if (old !== j && old.unfinishedId === u.id) this.cancel(old);
+    j.unfinishedId = u.id;
+    u.boundBillId = j.billId ?? this.productionBillFor(j)?.id ?? null;
+    j.productionPolicy = structuredClone(u.policy);
+    j.work = u.workTotal; j.progress = u.progress; j.workTicks = u.workTicks;
+    if (u.productQuality) j.productQuality = { ...u.productQuality };
+    else delete j.productQuality;
+  }
+  private syncUnfinishedProgress(j: Job) {
+    const u = j.unfinishedId === undefined ? undefined : this.unfinishedCargo(j.unfinishedId)?.unfinished;
+    if (!u) return;
+    u.progress = j.progress; u.workTicks = j.workTicks;
+    if (j.productQuality) u.productQuality = { ...j.productQuality };
+  }
+  /** Work can reach a piece beside the worker; fetching ground items still
+   * requires walking onto their cell. Do not reach through walls or floors. */
+  private unfinishedWorkTouch(actor: Pos, item: Pos): boolean {
+    return this.itemTouch(actor, item) || (inside(actor) && inside(item) && actor.z === item.z &&
+      Math.abs(actor.x - item.x) + Math.abs(actor.y - item.y) === 1 &&
+      this.canStop(actor) && this.groundAllowed(item));
+  }
+  private unfinishedPlacementCells(p: Pos) {
+    return [p, ...horizontal.map(([dx,dy])=>({x:p.x+dx,y:p.y+dy,z:p.z}))]
+      .filter(q=>inside(q) && this.unfinishedWorkTouch(p,q));
+  }
+  private createUnfinished(p: Pawn, j: Job): boolean {
+    const recipe = productionJobRecipe(j);
+    if (!recipe || !recipeUsesUnfinished(recipe) || j.unfinishedId !== undefined) return true;
+    const nextId = this.nextId;
+    const batch: Cargo = { resource: 'unfinished', amount: 1, unfinished: {
+      id: this.id(), recipe, creatorId: p.id, creatorName: p.name,
+      boundBillId: j.billId ?? this.productionBillFor(j)?.id ?? null,
+      workTotal: j.work, progress: j.progress, workTicks: j.workTicks,
+      ingredients: j.deliveredBatches.map(b => portion(b, b.amount)),
+      policy: structuredClone(this.productionPolicyFor(j)),
+      ...(j.productQuality ? { productQuality: { ...j.productQuality } } : {}),
+    } };
+    const plan = this.planPlacement([{ batch, origin: p, cells: this.unfinishedPlacementCells(p) }]);
+    if (!plan) {
+      this.nextId = nextId;
+      j.reason = '工作位置没有放置未完成品的空间，材料保留等待';
+      this.release(p); return false;
+    }
+    this.commitPlacement(plan);
+    j.billId ??= batch.unfinished!.boundBillId ?? undefined;
+    j.unfinishedId = batch.unfinished!.id;
+    j.delivered = {}; j.deliveredBatches = [];
+    this.stats.produced.unfinished++;
+    this.revision++;
+    return true;
+  }
+  private continueUnfinished(p: Pawn, j: Job) {
+    this.search(p);
+    const batch = this.unfinishedForWorker(j, p);
+    const stand = this.reachableStand(j);
+    if (!batch || stand < 0) {
+      j.reason = '未完成品被禁止、搬运中或不可达，等待原作者续作';
+      this.release(p); return;
+    }
+    if (p.cargo && p.cargo !== batch) { this.release(p); this.deliverCargo(p); return; }
+    if (p.cargo === batch) {
+      this.go(p, stand, 'work'); p.reason = '把未完成品送往工作台'; return;
+    }
+    const item = batch as Stack;
+    if (this.unfinishedWorkTouch(position(stand), item)) {
+      this.go(p, stand, 'work'); p.reason = '前往继续加工'; return;
+    }
+    this.go(p, this.reachableItemStand(item), 'fetch');
+    this.fetchReservations.set(p.id, { sourceId: item.id, amount: 1 });
+    p.reason = '取回未完成品';
+  }
+  private unfinishedCommand(c: Extract<VoxelCommand, { type: 'unfinishedCancel' | 'unfinishedForbid' }>): CommandResult {
+    const batch = this.unfinishedCargo(c.unfinishedId);
+    const ground = this.items.find(i => i.unfinished?.id === c.unfinishedId);
+    const carrier = this.pawns.find(p => p.cargo?.unfinished?.id === c.unfinishedId);
+    const origin = ground ?? carrier;
+    if (!batch?.unfinished || !origin || !this.exploredAt(origin)) return { ok: false, message: '未完成品已不存在或不可见' };
+    if (c.type === 'unfinishedForbid') {
+      if (typeof c.forbidden !== 'boolean') return { ok: false, message: '禁止状态无效' };
+      batch.forbidden = c.forbidden;
+      if (c.forbidden) for (const pawn of this.pawns) {
+        const j = this.jobs.find(k => k.id === pawn.jobId);
+        if (j?.unfinishedId === c.unfinishedId || pawn.cargo?.unfinished?.id === c.unfinishedId ||
+            (ground && this.fetchReservations.get(pawn.id)?.sourceId === ground.id) ||
+            (ground && this.storageReservations.get(pawn.id)?.sourceId === ground.id)) this.release(pawn);
+      }
+      this.revision++;
+      return { ok: true, message: c.forbidden ? '已禁止搬运与续作' : '已允许搬运与原作者续作' };
+    }
+    const plan = this.planPlacement(batch.unfinished.ingredients.map(material => ({ batch: material, origin })),
+      this.items.filter(i => i !== ground));
+    if (!plan) return { ok: false, message: '附近没有足够退料空间，未完成品保持原状' };
+    // Refund first validates the entire placement. No partial cancellation or loss.
+    for (const j of [...this.jobs]) if (j.unfinishedId === c.unfinishedId) this.cancel(j);
+    this.commitPlacement(plan);
+    if (carrier) { carrier.cargo = null; this.release(carrier); }
+    this.stats.consumed.unfinished++;
+    this.revision++;
+    return { ok: true, message: '加工已取消，内含材料已退回地面' };
+  }
+  private recordDestroyedCargo(batch: Cargo, amount = batch.amount) {
+    this.stats.destroyed[batch.resource] += amount;
+    if (batch.unfinished) {
+      for (const material of batch.unfinished.ingredients) this.stats.destroyed[material.resource] += material.amount;
+      for (const j of [...this.jobs]) if (j.unfinishedId === batch.unfinished.id) this.cancel(j);
+    }
+  }
   private productionQueue(benchId: number) {
     return this.productionQueues.find(q => q.benchId === benchId) ?? defaultProductionQueue(this, benchId);
   }
@@ -1903,7 +2051,13 @@ export class VoxelSimulation {
   }
   /** Worker restrictions apply when a worker takes over; input rules stay with a started batch. */
   private productionWorkerFailure(p: Pawn, j: Job): string | null {
-    const recipe = productionJobRecipe(j), bill = this.productionBillFor(j);
+    const recipe = productionJobRecipe(j);
+    if (!recipe) return null;
+    const piece = !recipeUsesUnfinished(recipe) ? undefined : j.unfinishedId === undefined ? [...this.items, ...this.pawns.flatMap(q => q.cargo ? [q.cargo] : [])]
+      .find(b => j.billId !== undefined && b.unfinished?.boundBillId === j.billId)?.unfinished
+      : this.unfinishedCargo(j.unfinishedId)?.unfinished;
+    if (piece && piece.creatorId !== p.id) return `等待原作者${piece.creatorName}继续加工`;
+    const bill = this.productionBillFor(j);
     return recipe && bill ? productionPolicyWorkerReason(bill.policy, recipe, p) : null;
   }
   private bindProductionInputs(j: Job) {
@@ -1959,7 +2113,7 @@ export class VoxelSimulation {
     if (c.type === 'productionBillAdd') this.nextId++;
     this.syncProduction();
     this.revision++;
-    return { ok: true, message: c.type === 'productionBillDelete' ? '账单已删除；当前加工退料后结束' :
+    return { ok: true, message: c.type === 'productionBillDelete' ? '账单已删除；未完成品保留，未开工材料退回' :
       c.type === 'productionBillMove' ? '已调整生产顺序，当前批次继续完成' : '生产账单已更新' };
   }
   /** Old SDK commands address the first matching recipe; all later duplicates retain identity. */
@@ -2009,13 +2163,16 @@ export class VoxelSimulation {
       // assign() already searched from this worker. Scheduler probes are independent.
       if (!worker) this.search(p);
       if (this.reachableStand(j) < 0) return false;
+      if (this.unfinishedForWorker(j, p)) return true;
+      if (j.unfinishedId !== undefined || (j.billId !== undefined &&
+          [...this.items, ...this.pawns.flatMap(q=>q.cargo?[q.cargo]:[])].some(b=>b.unfinished?.boundBillId===j.billId))) return false;
       if (j.kind === 'cook' && j.owner === null && !Object.values(j.delivered).some(n => n! > 0))
         this.chooseMealIngredients(j, p);
       return Object.entries(j.cost).every(([resource, amount]) => {
         const r = resource as Resource;
         // Waiting jobs do not reserve hypothetical stock against one another.
         // Count owned work only, excluding inputs already carried or delivered.
-        const committed = this.jobs.filter(k => k !== j && k !== replacing && !k.cancelled && k.owner !== null)
+        const committed = this.jobs.filter(k => k !== j && k !== replacing && !k.cancelled && k.owner !== null && k.unfinishedId === undefined)
           .reduce((n, k) => {
             const owner = this.pawns.find(q => q.id === k.owner);
             const carried = owner?.jobId === k.id && owner.cargo?.resource === r ? owner.cargo.amount : 0;
@@ -2114,6 +2271,7 @@ export class VoxelSimulation {
   }
   private syncProduction() {
     this.validateProductionWorkers();
+    this.reconcileUnfinishedBindings();
     for (const j of [...this.jobs])
       if (j.kind === 'research' && (!this.supported(j) || j.cancelled)) this.cancel(j);
     for (const j of [...this.jobs]) {
@@ -2194,6 +2352,7 @@ export class VoxelSimulation {
   }
   private dispatchCommand(c: VoxelCommand): CommandResult {
     if (!c || typeof c !== 'object') return { ok: false, message: '命令格式无效' };
+    if (c.type === 'unfinishedCancel' || c.type === 'unfinishedForbid') return this.unfinishedCommand(c);
     const groupResult=storageGroupCommand(this,c);
     if(groupResult) {
       if(groupResult.ok){this.refreshReservations();this.revision++;}
@@ -3384,6 +3543,8 @@ export class VoxelSimulation {
   }
   /** Reservations reference physical stacks; no shadow food inventory exists. */
   private availableStack(item: Stack, ignorePawnId?: number): number {
+    if (item.unfinished && (item.forbidden || this.jobs.some(j => j.unfinishedId === item.unfinished!.id &&
+      j.owner !== null && j.owner !== ignorePawnId && !j.cancelled))) return 0;
     let available = item.amount;
     for (const p of this.pawns) if (p.id !== ignorePawnId) {
       if (p.careFoodId === item.id || p.careMedicineId === item.id) available -= p.careAmount;
@@ -5249,7 +5410,7 @@ export class VoxelSimulation {
     const lost = Math.min(item.amount, amount);
     const items = this.items.flatMap(i => i.id !== id ? [i] : i.amount > lost ? [{ ...i, amount: i.amount - lost }] : []);
     this.tradeApplyPlacement({ items, nextId: this.nextId }, '预留物品已烧毁，重新安排任务');
-    this.stats.destroyed[item.resource] += lost;
+    this.recordDestroyedCargo(item, lost);
     fireLog(this, 'destroyed', item, `${lost}单位${RESOURCE_NAMES[item.resource]}被烧毁`);
   }
   fireBurnFurniture(id: number, damage: number) {
@@ -5417,7 +5578,7 @@ export class VoxelSimulation {
       const plan = landing ? this.planPlacement([{ batch: item, origin: landing, cells: [landing] }], base, 0) : null;
       this.tradeApplyPlacement(plan ?? { items: base, nextId: this.nextId });
       if (plan) fireLog(this, 'fell', landing!, `${RESOURCE_NAMES[item.resource]}失去支撑并落到${landing!.x === item.x && landing!.y === item.y ? '原列' : '相邻列'}地面`);
-      else { this.stats.destroyed[item.resource] += item.amount; fireLog(this, 'destroyed', item, `${item.amount}单位${RESOURCE_NAMES[item.resource]}坠落后没有合法容纳位置而损毁`); }
+      else { this.recordDestroyedCargo(item); fireLog(this, 'destroyed', item, `${item.amount}单位${RESOURCE_NAMES[item.resource]}坠落后没有合法容纳位置而损毁`); }
     }
     for (const shelf of removedShelves) {
       this.releaseShelfUsers(shelf);
@@ -5720,6 +5881,10 @@ export class VoxelSimulation {
       if (productionJobRecipe(j)) this.dropCargo(p);
     }
     j.cancelled = true;
+    if (j.unfinishedId !== undefined) {
+      this.jobs = this.jobs.filter(k => k !== j);
+      return true;
+    }
     const origin = this.dropPoint(j);
     const batches = j.deliveredBatches;
     const plan = origin
@@ -5904,7 +6069,8 @@ export class VoxelSimulation {
       !jobs.some(
         (j) =>
           this.supported(j) &&
-          (!missing(j) ||
+          (j.unfinishedId !== undefined || recipeUsesUnfinished(productionJobRecipe(j)) &&
+            this.items.some(i => i.unfinished?.recipe === productionJobRecipe(j) && i.unfinished.creatorId === p.id) || !missing(j) ||
             (j.kind === 'refuel' && (j.delivered.wood ?? 0) > 0) ||
             this.items.some((i) => i.resource === missing(j) && this.acceptsJobCargo(j,i,i))),
       )
@@ -5969,11 +6135,15 @@ export class VoxelSimulation {
         continue;
       }
       this.allowPartialRefuel(j);
+      const unfinished = j.unfinishedId !== undefined || (!j.progress && !Object.values(j.delivered).some(n=>n!>0))
+        ? this.unfinishedForWorker(j, p) : undefined;
+      if (j.unfinishedId !== undefined && !unfinished) { j.reason = '等待可达的未完成品和原作者'; continue; }
       const needed = missing(j);
-      if (needed && !this.pileFor(p, needed, j)) {
+      if (!unfinished && needed && !this.pileFor(p, needed, j)) {
         j.reason = `缺少可达${RESOURCE_NAMES[needed]}`;
         continue;
       }
+      if (unfinished) this.claimUnfinished(j, unfinished);
       j.owner = p.id;
       this.bindProductionInputs(j);
       p.jobId = j.id;
@@ -6111,6 +6281,7 @@ export class VoxelSimulation {
       p.reason = skillFailure;
       return;
     }
+    if (j.unfinishedId !== undefined) { this.continueUnfinished(p, j); return; }
     if (p.cargo) {
       this.deliverCargo(p);
       return;
@@ -6156,8 +6327,23 @@ export class VoxelSimulation {
   }
   private deliverCargo(p: Pawn) {
     if (!p.cargo) return;
+    if (p.cargo.unfinished && p.cargo.forbidden) {
+      this.release(p); this.dropCargo(p); p.reason = '未完成品已禁止搬运和续作'; return;
+    }
     this.search(p);
     let j = this.jobs.find((j) => j.id === p.jobId && !j.cancelled);
+    if (j?.unfinishedId !== undefined && p.cargo.unfinished?.id === j.unfinishedId) { this.continueUnfinished(p, j); return; }
+    if (!j && p.cargo.unfinished && !p.cargo.forbidden && p.cargo.unfinished.creatorId === p.id) {
+      j = this.jobs.find(k => !k.cancelled && k.owner === null && !this.productionWorkerFailure(p,k) &&
+        !this.skillFailure(p,k) && p.priorities[workType(k.kind)] > 0 && this.supported(k) &&
+        productionJobRecipe(k) === p.cargo!.unfinished!.recipe &&
+        (k.unfinishedId === p.cargo!.unfinished!.id || (k.progress === 0 && !Object.values(k.delivered).some(n=>n!>0))) &&
+        this.reachableStand(k) >= 0 && this.unfinishedForWorker(k,p) === p.cargo);
+      if (j) {
+        this.claimUnfinished(j, p.cargo); j.owner = p.id; p.jobId = j.id;
+        p.workTarget = { x:j.x, y:j.y, z:j.z }; this.continueUnfinished(p,j); return;
+      }
+    }
     if (j && !this.acceptsJobCargo(j,p.cargo)) { this.release(p); j = undefined; }
     // Loading deliberately clears reservations, but the carried physical input
     // can be rebound to a reachable job before requiring a stockpile detour.
@@ -6198,7 +6384,7 @@ export class VoxelSimulation {
       const handoff = !j && this.jobs.some(k => !k.cancelled && k.productionPolicy &&
         this.productionWorkerFailure(p, k) && this.acceptsJobCargo(k, p.cargo!) &&
         (k.cost[p.cargo!.resource] ?? 0) > (k.delivered[p.cargo!.resource] ?? 0));
-      const dropped = handoff && this.dropCargo(p);
+      const dropped = (handoff || !!p.cargo.unfinished) && this.dropCargo(p);
       p.reason = dropped ? '生产分工已改变，放下原料供其他工人接手'
         : '仓储已满或不可达，保留随身物资等待可用仓位';
       p.phase = 'idle';
@@ -6370,6 +6556,12 @@ export class VoxelSimulation {
     }
     if (p.phase === 'fetch') {
       const reserved = this.fetchReservations.get(p.id);
+      if (j?.unfinishedId !== undefined) {
+        const source = this.items.find(i => i.id === reserved?.sourceId && i.unfinished?.id === j.unfinishedId);
+        if (source && this.take(p, 'unfinished', 1, source.id)) this.continueUnfinished(p,j);
+        else this.continueJob(p,j);
+        return;
+      }
       if (!j) {
         const food = this.items.find((i) => i.id === reserved?.sourceId && this.itemTouch(p,i) && i.resource === p.eating);
         if (!food || this.availableStack(food, p.id) <= 0) { this.release(p); return; }
@@ -6445,6 +6637,17 @@ export class VoxelSimulation {
         this.continueJob(p, j);
         return;
       }
+      if (j.unfinishedId !== undefined) {
+        if (p.cargo?.unfinished?.id === j.unfinishedId) {
+          const plan = this.planPlacement([{ batch:p.cargo, origin:p, cells:this.unfinishedPlacementCells(p) }]);
+          if (!plan) { j.reason = '工作位置没有未完成品放置空间'; this.release(p); return; }
+          this.commitPlacement(plan); p.cargo = null;
+        }
+        const item = this.items.find(i => i.unfinished?.id === j.unfinishedId);
+        if (!item || item.forbidden || item.unfinished!.creatorId !== p.id || !this.unfinishedWorkTouch(p,item)) {
+          this.continueUnfinished(p,j); return;
+        }
+      }
       if (p.cargo) {
         const resource = p.cargo.resource,
           needed = (j.cost[resource] ?? 0) - (j.delivered[resource] ?? 0);
@@ -6509,6 +6712,7 @@ export class VoxelSimulation {
           if (j.progress < j.work) bench.fuel = Math.max(0, bench.fuel - SMITHY_FUEL_PER_TICK);
         }
       }
+      if (!this.createUnfinished(p, j)) return;
       p.reason = '正在' + JOB_NAMES[j.kind];
       const cutting =
         j.kind === 'cut' && !j.legacyCut ? this.trees.find((t) => same(t, j)) : undefined;
@@ -6547,8 +6751,9 @@ export class VoxelSimulation {
       }
       if (j.progress >= j.work) {
         this.lockWorkOutcome(p, j);
+        this.syncUnfinishedProgress(j);
         this.finish(p, j);
-      }
+      } else this.syncUnfinishedProgress(j);
     }
   }
   private lockWorkOutcome(p: Pawn, j: Job) {
@@ -6579,7 +6784,7 @@ export class VoxelSimulation {
     let draw = 0;
     const skill = p.skills.crafting.level;
     j.productQuality = {
-      value: craftedQuality(skill, () => plantRandom(this.seed ^ j.id, p.id, ++draw, 4701)),
+      value: craftedQuality(skill, () => plantRandom(this.seed ^ (j.unfinishedId ?? j.id), p.id, ++draw, 4701)),
       skill,
       workerId: p.id,
     };
@@ -6688,6 +6893,8 @@ export class VoxelSimulation {
     this.roomsDirty=true;this.changed(j);this.pruneStorageSpills();this.reconcileFireState();this.reconcileRelocationJobs();
   }
   private finish(p: Pawn, j: Job) {
+    const unfinished = j.unfinishedId === undefined ? undefined : this.unfinishedCargo(j.unfinishedId)?.unfinished;
+    if (j.unfinishedId !== undefined && !unfinished) { this.cancel(j); return; }
     if (j.cancelled) {
       this.release(p);
       return;
@@ -6971,7 +7178,7 @@ export class VoxelSimulation {
       (entry.batch as Cargo).poisonChance = j.cookingOutcome.poisonChance;
     const placement = this.planPlacement(
       [...displaced, ...output],
-      this.items.filter((i) => !displacedIds.has(i.id)),
+      this.items.filter((i) => !displacedIds.has(i.id) && (j.unfinishedId === undefined || i.unfinished?.id !== j.unfinishedId)),
       DROP_DISTANCE,
       forbidden,
     );
@@ -7224,6 +7431,10 @@ export class VoxelSimulation {
       this.stats.produced[resource as Resource] += n;
     }
     for (const r of resources) this.stats.consumed[r] += j.delivered[r] ?? 0;
+    if (unfinished) {
+      this.stats.consumed.unfinished++;
+      for (const material of unfinished.ingredients) this.stats.consumed[material.resource] += material.amount;
+    }
     const completedBill = this.productionBillFor(j);
     if (completedBill) finishProductionBill(completedBill);
     if (
@@ -7588,7 +7799,7 @@ export class VoxelSimulation {
       if (!advanceDeterioration(item, this.deteriorationEnvironment(item), this.seed, item.id, this.tick)) continue;
       this.tradeApplyPlacement({ items: this.items.filter(i => i.id !== item.id), nextId: this.nextId },
         '预留物品已劣化损毁，重新安排任务');
-      this.stats.destroyed[item.resource] += item.amount;
+      this.recordDestroyedCargo(item);
       this.notice = `${item.amount}单位${RESOURCE_NAMES[item.resource]}因环境劣化损毁。屋顶和封闭仓库可以保护物资。`;
     }
     for (const animal of [...this.animals]) if (animal.dead) {
@@ -7791,10 +8002,14 @@ export class VoxelSimulation {
   }
   counts(visibleOnly = false): Counts {
     const out = emptyCounts();
-    for (const i of this.items) if (!visibleOnly || this.exploredAt(i)) out[i.resource] += i.amount;
+    const countCargo = (batch: Cargo) => {
+      out[batch.resource] += batch.amount;
+      if (batch.unfinished) for (const material of batch.unfinished.ingredients) out[material.resource] += material.amount;
+    };
+    for (const i of this.items) if (!visibleOnly || this.exploredAt(i)) countCargo(i);
     for (const p of this.pawns) {
       if (p.faction !== 'colony' || (visibleOnly && !this.exploredAt(p))) continue;
-      if (p.cargo) out[p.cargo.resource] += p.cargo.amount;
+      if (p.cargo) countCargo(p.cargo);
       out.apparel += p.worn.length;
       out.weapon += p.weapon ? 1 : 0;
     }
@@ -7803,6 +8018,7 @@ export class VoxelSimulation {
     return out;
   }
   snapshot(speed = 0, tickMs = 0): VoxelSnapshot {
+    this.reconcileUnfinishedBindings();
     this.updateRooms();
     this.updatePower();
     this.refreshWeatherRoof();
@@ -7912,11 +8128,12 @@ export class VoxelSimulation {
   }
   save(): VoxelSave {
     this.validateProductionWorkers();
+    this.reconcileUnfinishedBindings();
     this.pruneStorageSpills();
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 40,
+      version: 41,
       productionQueues: this.productionQueues.filter(q => this.productionBenches().some(b => b.id === q.benchId)),
       socialHistory: this.socialHistory, socialLog: this.socialLog,
       weather: this.weather, snow: this.snow,
@@ -7974,11 +8191,26 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : [1, 2, 3]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    if (sourceVersion < 41) {
+      const containers = [...(old.items ?? []), ...(old.pawns ?? []).map((p:any) => p.cargo),
+        ...(old.jobs ?? []).flatMap((j:any) => j.deliveredBatches ?? []),
+        ...(old.trade?.caravans ?? []).flatMap((c:any) => c.stock ?? [])];
+      const ledgers = [old.stats?.produced, old.stats?.consumed, old.stats?.destroyed, old.stats?.spoiled,
+        old.trade?.imported, old.trade?.exported];
+      if (containers.some(b => b && (b.resource === 'unfinished' || Object.hasOwn(b,'unfinished'))) ||
+          old.jobs?.some((j:any) => Object.hasOwn(j,'unfinishedId') || Object.hasOwn(j.cost ?? {},'unfinished') ||
+            Object.hasOwn(j.delivered ?? {},'unfinished')) ||
+          ledgers.some(l => l && Object.hasOwn(l,'unfinished')) ||
+          old.stockpiles?.some((s:any) => s.accepts?.includes('unfinished')) ||
+          old.shelves?.some((s:any) => s.settings?.accepts?.includes('unfinished')) ||
+          old.storageGroups?.some((s:any) => s.settings?.accepts?.includes('unfinished')))
+        throw new Error('旧版存档混入未完成品字段');
+    }
     rejectLegacyStorageGroups(old,sourceVersion);
     rejectLegacyShelves(old,sourceVersion);
     rejectLegacyRelocationFields(old,sourceVersion);
@@ -8077,7 +8309,7 @@ export class VoxelSimulation {
         ...s,
         priority: 1,
         accepts: resources.filter(
-          (r) => !['silver', 'chunk', 'cloth', 'apparel', 'weapon', 'herb', 'furniture'].includes(r),
+          (r) => !['silver', 'chunk', 'cloth', 'apparel', 'weapon', 'herb', 'furniture', 'unfinished'].includes(r),
         ),
       }));
       old.stats.spoiled = emptyCounts();
@@ -8354,7 +8586,14 @@ export class VoxelSimulation {
           (job.owner !== null || job.progress > 0 || Object.values(job.delivered ?? {}).some(n => Number(n) > 0)))
         job.productionPolicy = defaultProductionPolicy();
     }
-    old.version = 40;
+    if (sourceVersion < 41) {
+      for (const ledger of [old.stats?.produced, old.stats?.consumed, old.stats?.destroyed, old.stats?.spoiled,
+        old.trade?.imported, old.trade?.exported]) {
+        if (!ledger || typeof ledger !== 'object') throw new Error('旧版资源账本缺失');
+        ledger.unfinished = 0;
+      }
+    }
+    old.version = 41;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -8484,6 +8723,7 @@ export class VoxelSimulation {
                 'poisonChance',
                 'hitPoints',
                 'furniture',
+                'unfinished',
                 'x',
                 'y',
                 'z',
@@ -8775,7 +9015,7 @@ export class VoxelSimulation {
     const plainCargo = (batch: Cargo) =>
       validBatch(batch) &&
       Object.keys(batch).every((key) =>
-        ['resource', 'amount', 'crop', 'rotProgress', 'apparel', 'weapon', 'forbidden', 'carcass', 'poisonChance', 'hitPoints', 'furniture'].includes(
+        ['resource', 'amount', 'crop', 'rotProgress', 'apparel', 'weapon', 'forbidden', 'carcass', 'poisonChance', 'hitPoints', 'furniture', 'unfinished'].includes(
           key,
         ),
       );
@@ -8908,7 +9148,7 @@ export class VoxelSimulation {
           : j.kind === 'armorsmith'
             ? !(ARMOR_KINDS as readonly ApparelKind[]).includes(j.apparelKind!)
             : j.apparelKind !== undefined) ||
-        j.work !==
+        (j.unfinishedId === undefined && j.work !==
           workOf(
             j.kind,
             j.material,
@@ -8918,7 +9158,7 @@ export class VoxelSimulation {
             j.weaponKind,
             j.weaponBenchKind,
             j.cropKind,
-          ) ||
+          )) ||
         (j.cropKind !== undefined &&
           (!['sow', 'harvest'].includes(j.kind) || !Object.hasOwn(CROPS, j.cropKind))) ||
         (!j.cancelled &&
@@ -9463,6 +9703,7 @@ export class VoxelSimulation {
     validateFurniture(d);
     validateRelocation(d);
     validateProductionQueues(d.productionQueues, d, d.nextId, d.jobs);
+    validateUnfinishedProduction(d);
     for (const job of d.jobs) {
       if (!job.cancelled && productionJobRecipe(job) &&
           (job.owner !== null || job.progress > 0 || Object.values(job.delivered).some(n => n! > 0)) && !job.productionPolicy)

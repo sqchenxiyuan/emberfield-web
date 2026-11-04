@@ -86,7 +86,8 @@ export type Resource =
   | 'herb'
   | 'apparel'
   | 'weapon'
-  | 'furniture';
+  | 'furniture'
+  | 'unfinished';
 export type Work =
   | 'handle'
   | 'firefight'
@@ -356,13 +357,29 @@ export interface Cargo {
   apparel?: ApparelPiece;
   weapon?: WeaponPiece;
   furniture?: FurniturePiece;
+  unfinished?: UnfinishedPiece;
   carcass?: { animalId: number; species: AnimalSpecies; bodySize?: number };
-  /** Ground weapon forbidden state; manual equip overrides it. */
+  /** Ground weapon or unfinished-item forbidden state; manual equip overrides it. */
   forbidden?: boolean;
   /** Equivalent unfrozen age in our simulation ticks; required for grain/meal. */
   rotProgress?: number;
   /** Hidden contaminated fraction. Missing means safe; only cooked meals carry it. */
   poisonChance?: number;
+}
+/** One physical unfinished object keeps its identity across ground and carried
+ * containers. Jobs only reference id; the actual inputs belong to this object. */
+export interface UnfinishedPiece {
+  id: number;
+  recipe: import('./productionBills').ProductionRecipe;
+  creatorId: number;
+  creatorName: string;
+  boundBillId: string | null;
+  workTotal: number;
+  progress: number;
+  workTicks: number;
+  ingredients: Cargo[];
+  policy: import('./productionPolicies').ProductionPolicy;
+  productQuality?: Job['productQuality'];
 }
 export interface Stockpile extends Pos {
   /** 0 low, 1 normal, 2 preferred, 3 critical. Empty accepts disables storage. */
@@ -582,6 +599,8 @@ export type JobKind =
   | 'door'
   | 'cook';
 export interface Job extends Pos {
+  /** Reference to one items/pawn.cargo unfinished object, never another copy. */
+  unfinishedId?: number;
   /** Stable production order identity; absent only for migrated legacy jobs. */
   billId?: string;
   /** Ingredient rules selected when this physical batch was first claimed. */
@@ -751,6 +770,7 @@ export interface Counts {
   apparel: number;
   weapon: number;
   furniture: number;
+  unfinished: number;
 }
 export interface VoxelStats {
   mined: number;
@@ -869,6 +889,8 @@ export type VoxelCommand =
   | { type: 'productionBillUpdate'; benchId: number; billId: string; patch: Partial<Pick<import('./productionBills').ProductionBill, 'mode' | 'remaining' | 'target' | 'suspended' | 'pauseWhenSatisfied' | 'resumeBelow' | 'policy'>> }
   | { type: 'productionBillMove'; benchId: number; billId: string; direction: -1 | 1 }
   | { type: 'productionBillDelete'; benchId: number; billId: string }
+  | { type: 'unfinishedCancel'; unfinishedId: number }
+  | { type: 'unfinishedForbid'; unfinishedId: number; forbidden: boolean }
   | { type: 'shelfStorage'; shelfId: number; priority: number; accepts: Resource[] }
   | { type: 'shelfLink'; sourceId: number; memberIds: number[] }
   | { type: 'shelfUnlink'; shelfId: number }
@@ -977,7 +999,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 40;
+  version: 41;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;
@@ -1043,6 +1065,7 @@ export const RESOURCE_NAMES: Record<Resource, string> = {
   apparel: '衣物',
   weapon: '武器',
   furniture: '打包家具',
+  unfinished: '未完成品',
   steel: '钢材',
   components: '零件',
   food: '包装生存口粮',
@@ -1143,4 +1166,5 @@ export const emptyCounts = (): Counts => ({
   apparel: 0,
   weapon: 0,
   furniture: 0,
+  unfinished: 0,
 });

@@ -25,7 +25,7 @@ import { SHELF_DEFS, type ShelfKind } from './shelves';
 export const RESOURCE_MARKET_VALUE: Readonly<Record<Exclude<Resource, 'apparel' | 'weapon' | 'furniture'>, number>> = {
   silver: 1,
   wood: 1.2, stone: .9, steel: 1.9, components: 32, food: 24,
-  grain: 1.1, meat: 2, carcass: 0, meal: 15, chunk: 0, cloth: 1.5, herb: 10,
+  grain: 1.1, meat: 2, carcass: 0, meal: 15, chunk: 0, cloth: 1.5, herb: 10, unfinished: 0,
 };
 const QUALITY = [.5, .75, 1, 1.25, 1.5, 2.5, 5] as const;
 const QUALITY_GAIN = [9999999, 9999999, 9999999, 500, 1000, 2000, 3000] as const;
@@ -74,6 +74,9 @@ export function apparelMarketValue(piece: ApparelPiece, tainted = false): number
     piece.hitPoints / def.maxHitPoints, tainted);
 }
 export function cargoMarketValue(cargo: Cargo): number {
+  // Provisional Web value: the native market-value formula is not yet verified.
+  // Enclosed inputs stay real materials, but are not separate wealth entries.
+  if (cargo.resource === 'unfinished') return 0;
   if (cargo.resource === 'weapon') return cargo.weapon ? weaponMarketValue(cargo.weapon) * cargo.amount : 0;
   if (cargo.resource === 'apparel') return cargo.apparel ? apparelMarketValue(cargo.apparel) * cargo.amount : 0;
   if (cargo.resource === 'furniture') return cargo.furniture
@@ -186,7 +189,8 @@ export function colonyWealthDetails(sim: VoxelSimulation): WealthDetails {
     if (pawn.weapon) itemSources.equipment += weaponMarketValue(pawn.weapon);
     for (const piece of pawn.worn) itemSources.equipment += apparelMarketValue(piece, pawn.dead);
   }
-  // Crafting inputs retain value here until commit, an explicit difference from native UFT=0.
+  // Unpackaged job inputs retain value. Once moved into a UFT they leave this
+  // container and take the separate zero-value unfinished-item branch above.
   for (const job of sim.jobs) itemSources.delivered += job.deliveredBatches.reduce((n, batch) => n + cargoMarketValue(batch), 0);
   const buildingSources = { structures: 0, facilities: 0, ladders: 0 };
   let legacyStructureCells = 0;

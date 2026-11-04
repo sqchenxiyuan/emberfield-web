@@ -1,3 +1,4 @@
+import { stripUnfinishedFields, unfinishedExpectedField } from './legacy-unfinished-defaults';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { Block, at, index, type Pos, type Resource, type VoxelCommand, type WildAnimal } from '../src/voxel/types';
@@ -188,9 +189,9 @@ describe('shelf storage and gameplay',()=>{
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(proof.sha256);
     expect(proof.publishedCommit).toBe('9e2dc745c5caa820778ecec44249be503cfce679');
     const old=JSON.parse(bytes.toString()),before=structuredClone(old);expect(old.version).toBe(36);expect(old.shelves).toBeUndefined();
-    const s=VoxelSimulation.load(old),saved=s.save();expect(saved.version).toBe(40);expect(old).toEqual(before);
+    const s=VoxelSimulation.load(old),saved=s.save();expect(saved.version).toBe(41);expect(old).toEqual(before);
     expect(saved.shelves).toEqual([]);expect(saved.storageSpills).toEqual([]);
-    for(const key of ['blocks','ladders','items','stats','explored','generator','worldSite','seed'])expect((saved as any)[key],key).toEqual(old[key]);
+    for(const key of ['blocks','ladders','items','stats','explored','generator','worldSite','seed'])expect((saved as any)[key],key).toEqual(unfinishedExpectedField(key,old[key]));
     s.step(50);expect(()=>VoxelSimulation.load(s.save())).not.toThrow();
   });
   it('rejects overlap, unsupported shelves, invalid settings and second-cell overflow',()=>{
@@ -203,7 +204,7 @@ describe('shelf storage and gameplay',()=>{
     ]){const d=structuredClone(base);mutate(d);expect(()=>VoxelSimulation.load(d)).toThrow();}
     const unsupported=fixture('shelf');unsupported.blocks[index(18,16,7)]=0;
     expect(()=>VoxelSimulation.load(unsupported.save())).toThrow(/支撑/);
-    const relabeled:any=structuredClone(base);delete relabeled.storageGroups;relabeled.version=36;expect(()=>VoxelSimulation.load(relabeled)).toThrow(/旧版本包含新版货架/);
+    const relabeled:any=structuredClone(base);stripUnfinishedFields(relabeled);delete relabeled.storageGroups;relabeled.version=36;expect(()=>VoxelSimulation.load(relabeled)).toThrow(/旧版本包含新版货架/);
   });
   it('protects outdoor goods from deterioration while warm food continues to rot',()=>{
     const s=fixture();for(let x=10;x<=30;x++)for(let y=12;y<=23;y++)for(let z=10;z<16;z++)s.blocks[index(x,y,z)]=0;

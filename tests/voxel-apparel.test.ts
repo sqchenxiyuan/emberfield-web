@@ -255,7 +255,7 @@ describe('cotton and actual tailoring containers', () => {
     expect(s.counts().cloth).toBe(20);
     unique(s);
   });
-  it('keeps completed work and all delivered cloth until an actual output cell becomes available', () => {
+  it('atomically replaces the unfinished garment with its product when every other floor slot is full', () => {
     let s = fixture(),
       b = bench(s);
     stack(s, 'cloth', 20);
@@ -265,24 +265,27 @@ describe('cotton and actual tailoring containers', () => {
       for (let y = 10; y <= 24; y++)
         if (s.standable(pos(x, y)) && !s.items.some((i) => i.x === x && i.y === y))
           stack(s, 'wood', 75, pos(x, y));
-    const before = ledger(s),
-      jobId = s.jobs.find((j) => j.kind === 'tailoring')!.id;
-    until(s, () => s.jobs.some((j) => j.id === jobId && j.progress === j.work));
-    s.step(30);
-    expect(s.stats.tailored).toBe(0);
+    const before = ledger(s), job = s.jobs.find((j) => j.kind === 'tailoring')!, jobId = job.id;
+    const workpiece = structuredClone(s.items.find(i => i.unfinished?.id === job.unfinishedId)!);
+    expect(workpiece.unfinished?.ingredients).toEqual([{ resource: 'cloth', amount: 20 }]);
+    expect(job.delivered).toEqual({});
     expect(s.stats.consumed.cloth).toBe(0);
     expect(s.counts().cloth).toBe(20);
     s = VoxelSimulation.load(s.save());
-    b = s.tailors[0];
-    const item = s.items.find((i) => i.x === 18 && i.y === 19)!;
-    s.pawns[1].cargo = portion(item, item.amount);
-    s.items = s.items.filter((i) => i.id !== item.id);
+    expect(s.items.find(i => i.unfinished)?.unfinished).toEqual(workpiece.unfinished);
     until(s, () => s.stats.tailored === 1);
     expect(allPieces(s)[0].id).toBe(jobId);
+    expect(s.items.find(i => i.apparel)).toMatchObject({ x: workpiece.x, y: workpiece.y, z: workpiece.z });
+    expect(s.items.some(i => i.unfinished)).toBe(false);
+    expect(s.stats.consumed.cloth).toBe(20);
+    expect(s.stats.produced.unfinished).toBe(1);
+    expect(s.stats.consumed.unfinished).toBe(1);
+    s.step(40);
+    expect(s.stats.tailored).toBe(1);
     expect(ledger(s)).toEqual(before);
     unique(s);
   });
-  it('persists cancelled cloth in its bounded job when refund ground is full, then returns it once', () => {
+  it('keeps paused cloth in its physical unfinished item and reuses that slot for an explicit refund on a full floor', () => {
     let s = fixture(),
       b = bench(s);
     stack(s, 'cloth', 20);
@@ -292,23 +295,26 @@ describe('cotton and actual tailoring containers', () => {
       for (let y = 10; y <= 24; y++)
         if (s.standable(pos(x, y)) && !s.items.some((i) => i.x === x && i.y === y))
           stack(s, 'wood', 75, pos(x, y));
-    const before = ledger(s);
+    const before = ledger(s), workpiece = structuredClone(s.items.find(i => i.unfinished)!);
     command(s, { type: 'tailorBill', tailorId: b.id, kind: 'tuque', target: 1, paused: true });
-    expect(
-      s.jobs.some((j) => j.kind === 'tailoring' && j.cancelled && j.delivered.cloth === 20),
-    ).toBe(true);
+    expect(s.jobs.some(j => j.kind === 'tailoring')).toBe(false);
+    expect(s.items.find(i => i.unfinished)?.unfinished).toEqual(workpiece.unfinished);
+    expect(s.items.some(i => i.resource === 'cloth')).toBe(false);
     s = VoxelSimulation.load(s.save());
-    const item = s.items.find((i) => i.x === 16 && i.y === 18)!;
-    s.pawns[1].cargo = portion(item, item.amount);
-    s.items = s.items.filter((i) => i.id !== item.id);
-    until(s, () => !s.jobs.some((j) => j.kind === 'tailoring'));
+    expect(s.items.find(i => i.unfinished)?.unfinished).toEqual(workpiece.unfinished);
+    command(s, { type: 'unfinishedCancel', unfinishedId: workpiece.unfinished!.id });
+    expect(s.items.some(i => i.unfinished)).toBe(false);
+    expect(s.items.find(i => i.resource === 'cloth')).toMatchObject({ x: workpiece.x, y: workpiece.y, z: workpiece.z });
     expect(s.items.filter((i) => i.resource === 'cloth').reduce((n, i) => n + i.amount, 0)).toBe(
       20,
     );
     expect(s.stats.produced.apparel).toBe(0);
+    expect(s.stats.consumed.cloth).toBe(0);
+    expect(s.stats.consumed.unfinished).toBe(1);
     expect(ledger(s)).toEqual(before);
     s.step(40);
     expect(ledger(s)).toEqual(before);
+    expect(s.command({ type: 'unfinishedCancel', unfinishedId: workpiece.unfinished!.id }).ok).toBe(false);
   });
 });
 
@@ -464,7 +470,7 @@ describe('physical dressing, interruption, death and migration', () => {
     );
     const old = JSON.parse(raw.toString()),
       s = VoxelSimulation.load(old);
-    expect(s.save().version).toBe(40);
+    expect(s.save().version).toBe(41);
     expect(s.items).toEqual(old.items);
     expect(s.pawns.map((p) => p.health)).toEqual(old.pawns.map((p: any) => p.health));
     expect(s.counts().apparel).toBe(0);

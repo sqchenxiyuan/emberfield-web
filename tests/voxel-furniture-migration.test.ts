@@ -6,7 +6,7 @@ import { relocationExpectedField } from './legacy-relocation-defaults';
 describe('published v32 furniture loader compatibility', () => {
   it.each(['furnished', 'during-meal', 'sleeping'] as const)('migrates actual %s construction and occupancy without rerolling it', name => {
     const old = furnitureV32(name), original = structuredClone(old), simulation = VoxelSimulation.load(old), saved = simulation.save();
-    expect(old).toEqual(original); expect(saved.version).toBe(40);
+    expect(old).toEqual(original); expect(saved.version).toBe(41);
     for (const key of ['beds', 'tables', 'chairs'] as const) expect(saved[key]).toEqual(old[key].map((item: any) => ({ ...item, quality: 2 })));
     for (const key of ['tick', 'nextId', 'items', 'stats', 'fireDamage', 'fireHazards', 'socialHistory', 'socialLog'] as const)
       expect(saved[key]).toEqual(relocationExpectedField(key, old[key]));

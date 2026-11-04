@@ -1,0 +1,47 @@
+{
+  "evidence_id": "RW17-UNFINISHED-PRODUCTION",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "scope_notes": [
+    "UnfinishedThing lifecycle uses previously verified food/work/weapons/production-bills/apparel sources.",
+    "New types close bill-class selection, ordinary destruction leavings, unfinished-ingredient mass and market-value branches; no target execution."
+  ],
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.BillUtility",
+      "local_file": ".local-research/unfinished-production/RimWorld.BillUtility.cs",
+      "sha256": "0af714aea9a102c45e14b060af0d477f7a361c6c5762c077eb16e1f4d19fa279",
+      "lines": 478
+    },
+    {
+      "type": "RimWorld.GenLeaving",
+      "local_file": ".local-research/unfinished-production/RimWorld.GenLeaving.cs",
+      "sha256": "177b177252c667af8f8d61e3c6fd9447e8503cad5115b89fa343c415ad7c11cd",
+      "lines": 356
+    },
+    {
+      "type": "RimWorld.StatPart_UnfinishedThingIngredientsMass",
+      "local_file": ".local-research/unfinished-production/RimWorld.StatPart_UnfinishedThingIngredientsMass.cs",
+      "sha256": "24a49ca143c8788caa199de00ded87fbf61b2e940f1b5baa82529941d5d7ddeb",
+      "lines": 40
+    },
+    {
+      "type": "RimWorld.StatWorker_MarketValue",
+      "local_file": ".local-research/unfinished-production/RimWorld.StatWorker_MarketValue.cs",
+      "sha256": "e47a2c46fa51be66ebe01e9b287f90416557bbedad6b139d7a7c97fa35dd7902",
+      "lines": 151
+    }
+  ]
+}

@@ -6,6 +6,8 @@
 
 | 文档 | 回答的问题 |
 |---|---|
+| [123 独立未完成品玩法](123-unfinished-production-gameplay.md) | 加工中断后如何保存材料、搬运入库、由原作者续作和取消退料？ |
+| [122 原版未完成物品机制](122-unfinished-production-mechanisms.md) | UFT 的创建、材料所有权、作者、账单绑定、中断与存读档如何工作？ |
 | [121 生产分工与原料玩法](121-production-policies-gameplay.md) | 指定工人、技能区间、三维范围、食材筛选如何影响搬运、加工和读档？ |
 | [120 原版生产分工与原料机制](120-production-policies-mechanisms.md) | 命名工人、固定原料槽、地面与容器半径以及中途修改有哪些边界？ |
 | [119 生产账单玩法与验证](119-production-bills-gameplay.md) | 次数/持续/目标库存、同配方多单、顺序、实际加工与暂停退料如何连接？ |

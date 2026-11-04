@@ -83,7 +83,7 @@ describe('skills in real simulation tasks and saves', () => {
     expect(old.pawns[0].skills).toBeUndefined();
     const s = VoxelSimulation.load(old),
       saved = s.save();
-    expect(saved.version).toBe(40);
+    expect(saved.version).toBe(41);
     expect(saved.items).toEqual(old.items);
     expect(saved.blocks).toEqual(old.blocks);
     expect(saved.pawns.map((p) => [p.food, p.rest, p.worn, p.weapon, p.health])).toEqual(
@@ -113,9 +113,16 @@ describe('skills in real simulation tasks and saves', () => {
     expect(j.workTicks).toBe(ticks);
   });
 
-  it('locks finishing worker and quality through full ground, reassignment, load and retry', () => {
+  it('locks the original author and rolled quality through a real shelf output block, worker changes, load and retry', () => {
     let s = knifeFixture();
     until(s, () => s.jobs.some((j) => j.kind === 'smith' && j.progress >= 590));
+    // A controlled shelf adjacent to the worker accepts only unfinished work;
+    // its freed slot cannot receive a weapon until the player changes its filter.
+    const workpiece = s.items.find(i => i.unfinished)!;
+    Object.assign(workpiece, pos(18, 17));
+    const shelfId = s.nextId++;
+    s.shelves.push({ ...pos(18, 17), id: shelfId, kind: 'smallShelf', axis: 'x', settings: { priority: 2, accepts: ['unfinished'] } });
+    s = VoxelSimulation.load(s.save());
     for (let x = 10; x <= 24; x++)
       for (let y = 10; y <= 24; y++) {
         const q = pos(x, y);
@@ -128,6 +135,7 @@ describe('skills in real simulation tasks and saves', () => {
     expect(job.progress).toBe(job.work);
     expect(locked?.workerId).toBe(s.pawns[0].id);
     expect(locked?.skill).toBe(5);
+    expect(s.items.find(i => i.unfinished)?.unfinished?.productQuality).toEqual(locked);
     const xp = s.pawns[0].skills.crafting.xp,
       fuel = s.weaponBenches[0].fuel,
       workTicks = job.workTicks;
@@ -141,11 +149,19 @@ describe('skills in real simulation tasks and saves', () => {
     s.step(250);
     expect(s.jobs.find((j) => j.kind === 'smith')!.productQuality).toEqual(locked);
     expect(s.pawns[2].skills.crafting.xp).toBe(0);
-    s.items = s.items.filter((i) => !(i.x === 17 && i.y === 18 && i.z === 8));
+    expect(s.stats.weaponsMade).toBe(0);
+    command(s, { type: 'shelfStorage', shelfId, priority: 2, accepts: ['unfinished', 'weapon'] });
+    s.step(60);
+    expect(s.stats.weaponsMade).toBe(0); // Another worker cannot inherit the author or quality.
+    command(s, { type: 'priority', pawnId: s.pawns[0].id, work: 'craft', value: 1 });
     until(s, () => s.stats.weaponsMade === 1);
     expect(s.items.find((i) => i.weapon)?.weapon?.quality).toBe(locked!.value);
     expect(s.pawns[2].skills.crafting.xp).toBe(0);
+    expect(s.pawns[0].skills.crafting.xp).toBe(xp);
+    expect(s.weaponBenches[0].fuel).toBe(fuel);
     expect(s.stats.consumed.steel).toBe(30);
+    expect(s.stats.consumed.unfinished).toBe(1);
+    expect(s.items.some(i => i.unfinished)).toBe(false);
     expect(VoxelSimulation.load(s.save()).items).toEqual(s.items);
   });
 

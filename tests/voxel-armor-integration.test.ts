@@ -127,7 +127,7 @@ describe('armor save migration and strict physical schemas', () => {
       const s = VoxelSimulation.load(old),
         saved = s.save();
       expect(old).toEqual(before);
-      expect(saved.version).toBe(40);
+      expect(saved.version).toBe(41);
       expectWildlifeIds(old.nextId, saved);
       for (const key of ['tick', 'blocks', 'items', 'stats', 'researchBenches'] as const)
         expect(saved[key]).toEqual(key === 'stats' ? withMedicineLedgers(old.stats) : old[key]);
@@ -272,13 +272,17 @@ describe('real armorsmith delivery, production and cancellation', () => {
     expect(s.counts().apparel).toBe(0);
     until(s, () => s.jobs.some((j) => j.kind === 'armorsmith' && j.progress > 50));
     const job = s.jobs.find((j) => j.kind === 'armorsmith')!;
-    expect(job.delivered).toEqual({ steel: 40 });
+    expect(job.delivered).toEqual({});
+    const workpiece = structuredClone(s.items.find(i => i.unfinished?.id === job.unfinishedId)!.unfinished!);
+    expect(workpiece.ingredients).toEqual([{ resource: 'steel', amount: 40 }]);
+    expect(workpiece.creatorId).toBe(job.owner);
     expect(job.work).toBe(APPAREL_DEFS.simpleHelmet.work);
     expect(s.items.some((i) => i.resource === 'steel')).toBe(false);
     const saved = s.save(),
       clone = VoxelSimulation.load(saved);
     s = VoxelSimulation.load(saved);
     expect(s.jobs.find((j) => j.id === job.id)?.progress).toBe(job.progress);
+    expect(s.items.find(i => i.unfinished)?.unfinished).toEqual(workpiece);
     expect(s.jobs.filter((j) => j.kind === 'armorsmith')).toHaveLength(1);
     until(s, () => s.stats.produced.apparel === 1);
     clone.step(s.tick - saved.tick);
@@ -319,12 +323,16 @@ describe('real armorsmith delivery, production and cancellation', () => {
     expect(s.pawns[0].cargo).toBeNull();
     s.pawns[0].skills.crafting.level = 7;
     until(s, () => s.jobs.some((j) => j.kind === 'armorsmith' && j.progress > 5));
-    expect(s.jobs.find((j) => j.kind === 'armorsmith')?.delivered).toEqual({ steel: 170 });
+    expect(s.jobs.find((j) => j.kind === 'armorsmith')?.delivered).toEqual({});
+    const workpiece = structuredClone(s.items.find(i => i.unfinished)!.unfinished!);
+    expect(workpiece.ingredients.reduce((n, batch) => n + (batch.resource === 'steel' ? batch.amount : 0), 0)).toBe(170);
     bill(s, 'plateArmor', true);
     until(s, () => !s.jobs.some((j) => j.kind === 'armorsmith'));
     expect(s.counts().steel).toBe(170);
     expect(s.counts().apparel).toBe(0);
     expect(s.stats.consumed.steel).toBe(0);
+    expect(s.items.find(i => i.unfinished)?.unfinished).toEqual(workpiece);
+    expect(s.items.some(i => i.resource === 'steel')).toBe(false);
   });
   it('returns carried steel to the ground when paused and consumes it only after production resumes', () => {
     let s = smithy();
@@ -346,34 +354,44 @@ describe('real armorsmith delivery, production and cancellation', () => {
     expect(s.stats.consumed.steel).toBe(40);
     expect(conserved(s, 'steel')).toBe(before);
   });
-  it('persists cancelled delivered steel while the floor is full and refunds it exactly once after space opens', () => {
+  it('retains paused armor atomically when its multi-stack refund cannot fit and returns materials once two more slots open', () => {
     let s = smithy();
-    material(s, 'steel', 40);
-    bill(s, 'simpleHelmet');
+    s.research.progress.PlateArmor = RESEARCH_DEFS.PlateArmor.cost;
+    material(s, 'steel', 170);
+    bill(s, 'plateArmor');
     until(s, () => s.jobs.some((j) => j.kind === 'armorsmith' && j.progress > 20));
     // Controlled full floor tests the bounded physical refund transaction.
     for (let x = 10; x <= 26; x++)
       for (let y = 10; y <= 26; y++)
         if (s.standable(pos(x, y)) && !s.items.some((i) => i.x === x && i.y === y))
           material(s, 'steel', 75, pos(x, y));
-    const before = conserved(s, 'steel');
-    bill(s, 'simpleHelmet', true);
-    expect(s.jobs.find((j) => j.kind === 'armorsmith')).toMatchObject({
-      cancelled: true,
-      delivered: { steel: 40 },
-    });
+    const before = conserved(s, 'steel'), piece = structuredClone(s.items.find(i => i.unfinished)!.unfinished!);
+    bill(s, 'plateArmor', true);
+    expect(s.jobs.some(j => j.kind === 'armorsmith')).toBe(false);
+    expect(s.items.find(i => i.unfinished)?.unfinished).toEqual(piece);
+    const full = s.save();
+    expect(s.command({ type: 'unfinishedCancel', unfinishedId: piece.id }).ok).toBe(false);
+    expect(s.save()).toEqual(full);
     s = VoxelSimulation.load(s.save());
     s.step(60);
     expect(conserved(s, 'steel')).toBe(before);
     expect(s.counts().apparel).toBe(0);
-    const freed = s.items.find((i) => i.x === 17 && i.y === 19)!;
-    command(s, { type: 'draft', pawnId: s.pawns[2].id, drafted: true });
-    s.pawns[2].cargo = { resource: 'steel', amount: freed.amount };
-    s.items = s.items.filter((i) => i.id !== freed.id);
-    until(s, () => !s.jobs.some((j) => j.kind === 'armorsmith'));
+    // Controlled removal into real cargo keeps material totals unchanged while
+    // exposing exactly the two additional stack slots required by 170 steel.
+    for (const p of [s.pawns[1], s.pawns[2]]) {
+      const freed = s.items.find(i => i.resource === 'steel' && i.amount === 75 && i.x === 17 && (i.y === 19 || i.y === 20))!;
+      expect(freed).toBeDefined();
+      command(s, { type: 'draft', pawnId: p.id, drafted: true });
+      p.cargo = { resource: 'steel', amount: freed.amount };
+      s.items = s.items.filter(i => i.id !== freed.id);
+    }
+    command(s, { type: 'unfinishedCancel', unfinishedId: piece.id });
+    expect(s.items.some(i => i.unfinished)).toBe(false);
     expect(conserved(s, 'steel')).toBe(before);
     expect(s.stats.consumed.steel).toBe(0);
     expect(s.stats.produced.apparel).toBe(0);
+    expect(s.stats.consumed.unfinished).toBe(1);
+    expect(s.command({ type: 'unfinishedCancel', unfinishedId: piece.id }).ok).toBe(false);
     expect(() => VoxelSimulation.load(s.save())).not.toThrow();
   });
 });

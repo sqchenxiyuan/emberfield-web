@@ -19,11 +19,12 @@ export const STACK_LIMITS: Readonly<Record<Resource, number>> = Object.freeze({
   apparel: 1,
   weapon: 1,
   furniture: 1,
+  unfinished: 1,
 });
 export const stackLimit = (resource: Resource) => STACK_LIMITS[resource];
 /** Healthy adult ordinary hauling: one stack, at most 75 units. */
 export const carryLimit = (resource: Resource) => Math.min(75, stackLimit(resource));
-export type BatchKind = Pick<Cargo, 'resource' | 'crop' | 'apparel' | 'weapon' | 'carcass' | 'furniture'>;
+export type BatchKind = Pick<Cargo, 'resource' | 'crop' | 'apparel' | 'weapon' | 'carcass' | 'furniture' | 'unfinished'>;
 export interface CellInsertion {
   accepted: number;
   /** Existing stack indexes, in stable input order; their identities stay intact. */

@@ -154,6 +154,7 @@ type PawnVisual = {
   cargoHerb: Group;
   cargoCarcasses: Record<AnimalSpecies, Group>;
   cargoFurniture: Record<RelocatableKind, Group>;
+  cargoUnfinished: Group;
   cargo: Mesh;
   diningDish: Group;
   torso: Mesh;
@@ -219,10 +220,20 @@ const RESOURCE_COLORS: Record<Resource, number> = {
   apparel: 0x86aaa2,
   weapon: 0xb9cbd0,
   furniture: 0xc29a65,
+  unfinished: 0x83aaa0,
 };
 // Local Three coordinates: x across the grip, y thickness, z along the blade.
 // The same four parts identify each actual item on the ground, in cargo and in hand.
 type ModelPart = [number, number, number, number, number, number, number];
+/** Strapped workpiece with a paper tag: identical on a shelf, ground or in cargo. */
+const UNFINISHED_MODEL_PARTS: ModelPart[] = [
+  [0, .06, 0, .62, .10, .42, 0x9b7752],
+  [0, .17, 0, .48, .14, .32, 0x83aaa0],
+  [0, .25, 0, .07, .045, .39, 0xd8bd7e],
+  [0, .25, 0, .55, .045, .065, 0xd8bd7e],
+  [.23, .30, .13, .16, .05, .15, 0xf1e6c9],
+  [0, .30, -.09, .25, .04, .05, 0x405b58],
+];
 /** A strapped furniture package uses the same model on the ground and in a worker's arms. */
 function packedFurnitureParts(kind: RelocatableKind): ModelPart[] {
   const color = kind === 'bed' ? 0x8eb4c0 : kind === 'table' ? 0xddc184 : 0xa2bb8b;
@@ -1293,6 +1304,7 @@ export class VoxelRenderer {
         item.resource !== 'weapon' &&
         item.resource !== 'carcass' &&
         item.resource !== 'furniture' &&
+        item.resource !== 'unfinished' &&
         item.resource !== 'herb',
     );
     const garments = loose.filter((item) => item.resource === 'apparel' && item.apparel);
@@ -1302,6 +1314,19 @@ export class VoxelRenderer {
     packed.forEach((item, i) => packedFurnitureParts(item.furniture!.kind).forEach(([x, y, z, sx, sy, sz, color], n) =>
       this.instance(packages, i * 6 + n, item.x + .5 + x, this.stackDisplay(item).z + y, item.y + .5 + z, sx, sy, sz, color)));
     this.finish(packages);
+    const unfinished = loose.filter(item => item.resource === 'unfinished' && item.unfinished);
+    const workpieces = this.batch('unfinished-products', unfinished.length * UNFINISHED_MODEL_PARTS.length, this.box, this.batchMaterial('unfinished-products'));
+    const blockedWorkpieces = this.batch('unfinished-forbidden', unfinished.length * 2, this.box, this.effectMaterial('unfinished-forbidden', .85));
+    this.inspectBatches.set(workpieces, { cells: unfinished, instancesPerCell: UNFINISHED_MODEL_PARTS.length });
+    this.inspectBatches.set(blockedWorkpieces, { cells: unfinished, instancesPerCell: 2 });
+    unfinished.forEach((item, i) => {
+      UNFINISHED_MODEL_PARTS.forEach(([x, y, z, sx, sy, sz, color], n) => this.instance(workpieces,
+        i * UNFINISHED_MODEL_PARTS.length + n, item.x + .5 + x, this.stackDisplay(item).z + y, item.y + .5 + z, sx, sy, sz, color));
+      for (let n = 0; n < 2; n++) this.instance(blockedWorkpieces, i * 2 + n,
+        item.x + .77, this.stackDisplay(item).z + .34, item.y + .22,
+        item.forbidden ? .25 : 0, item.forbidden ? .025 : 0, item.forbidden ? .04 : 0, 0xe76d63, n ? Math.PI / 4 : -Math.PI / 4);
+    });
+    this.finish(workpieces); this.finish(blockedWorkpieces);
     const chunks = loose.filter((item) => item.resource === 'chunk');
     const rocks = this.batch(
       'rock-chunks',
@@ -3604,6 +3629,14 @@ export class VoxelRenderer {
       }
       carried.visible = false; body.add(carried); cargoFurniture[kind] = carried;
     }
+    const cargoUnfinished = new Group();
+    cargoUnfinished.position.set(0, .58, .43); cargoUnfinished.scale.setScalar(.9);
+    for (const [x, y, z, sx, sy, sz, color] of UNFINISHED_MODEL_PARTS) {
+      let material = weaponMaterials.get(color);
+      if (!material) { material = this.keepMaterial(new MeshLambertMaterial({ color })); weaponMaterials.set(color, material); }
+      part(cargoUnfinished, material, x, y, z, sx, sy, sz);
+    }
+    cargoUnfinished.visible = false; body.add(cargoUnfinished);
     const cargo = part(body, cargoMaterial, 0, 0.72, 0.39, 0.43, 0.31, 0.33);
     const diningDish = new Group();
     const ceramic = this.keepMaterial(new MeshLambertMaterial({ color: 0xe6dcc4 }));
@@ -3709,6 +3742,7 @@ export class VoxelRenderer {
       cargoHerb,
       cargoCarcasses,
       cargoFurniture,
+      cargoUnfinished,
       cargo,
       diningDish,
       label,
@@ -4029,6 +4063,7 @@ export class VoxelRenderer {
       visual.hammer.visible = false;
       visual.pencil.visible = false;
       visual.cargoHerb.visible = false;
+      visual.cargoUnfinished.visible = false;
       for (const body of Object.values(visual.cargoCarcasses)) body.visible = false;
       for (const packed of Object.values(visual.cargoFurniture)) packed.visible = false;
       const visible = pawn.z <= this.level && this.explored(pawn);
@@ -4072,11 +4107,12 @@ export class VoxelRenderer {
         continue;
       }
       visual.cargo.visible =
-        !!pawn.cargo && pawn.cargo.resource !== 'weapon' && pawn.cargo.resource !== 'herb' && pawn.cargo.resource !== 'carcass' && pawn.cargo.resource !== 'furniture';
+        !!pawn.cargo && pawn.cargo.resource !== 'weapon' && pawn.cargo.resource !== 'herb' && pawn.cargo.resource !== 'carcass' && pawn.cargo.resource !== 'furniture' && pawn.cargo.resource !== 'unfinished';
       if (pawn.cargo?.weapon) visual.cargoWeapons[pawn.cargo.weapon.kind].visible = true;
       visual.cargoHerb.visible = pawn.cargo?.resource === 'herb';
       if (pawn.cargo?.carcass) visual.cargoCarcasses[pawn.cargo.carcass.species].visible = true;
       if (pawn.cargo?.furniture) visual.cargoFurniture[pawn.cargo.furniture.kind].visible = true;
+      visual.cargoUnfinished.visible = !!pawn.cargo?.unfinished;
       const moving = pawn.path.length > 0 || fraction < 1;
       const cleaningTarget = pawn.phase === 'clean' && pawn.cleanTask ? this.data.filth.find(f => f.id === pawn.cleanTask!.filthId) : undefined;
       const cleaning = !!cleaningTarget && !moving && !pawn.cargo && !mental &&
@@ -4503,6 +4539,11 @@ export class VoxelRenderer {
       social: {
         relaxing: [...this.pawnVisuals.values()].filter(v => v.root.visible && v.socialRelaxMarker.visible).map(v => ({ ...v.root.userData.socialRelax, leg: v.leftLeg.rotation.x })),
         bubbles: [...this.pawnVisuals.values()].filter(v => v.root.visible && v.root.userData.socialEvent !== null).map(v => ({ ...v.root.userData.socialEvent })),
+      },
+      unfinished: {
+        groundParts: this.batches.get('unfinished-products')?.mesh.count ?? 0,
+        carried: [...this.pawnVisuals.values()].filter(v => v.root.visible && v.cargoUnfinished.visible)
+          .map(v => ({ pawnId: v.pawn.id, unfinishedId: v.pawn.cargo?.unfinished?.id })),
       },
     };
   }

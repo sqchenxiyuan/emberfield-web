@@ -10,6 +10,7 @@ import {
 import { SMITHY_FUEL_CAPACITY, SMITHY_REFUEL_AT, WEAPON_BENCH_NAMES } from './weaponProduction';
 import { WEAPON_DEFS, WEAPON_NAMES, type WeaponKind } from './weapons';
 import { ANIMAL_DEFS } from './wildlife';
+import { locatedUnfinished, unfinishedName, unfinishedPercent, unfinishedStatus, unfinishedWorkReason, type LocatedUnfinished } from './unfinishedView';
 import {
   RESOURCE_NAMES, stonecutterInteraction, tailorInteraction, weaponBenchInteraction,
   type AnimalSpecies, type ApparelKind, type ArmorKind, type Counts, type Job, type Pos, type VoxelCommand, type VoxelSnapshot,
@@ -125,17 +126,23 @@ function BillPolicy({ bill, snapshot, update }: {
       {emptyFilter && <small className="voxel-production-policy-warning" data-testid="bill-policy-empty-ingredients">
         {emptyFilter}，后续批次会缺料等待。重新允许至少一种后才能备料。</small>}
       <small className="voxel-production-policy-timing" data-testid="bill-policy-timing">
-        已领取的批次保留原取料规则，正在加工的工人继续工作。下一次接手按新的工人限制判断。</small>
+        已领取的批次保留原取料规则，正在加工的工人继续工作。下一次接手按新的工人限制判断。
+        {(bill.recipe.startsWith('smith:') || bill.recipe.startsWith('tailoring:') || bill.recipe.startsWith('armorsmith:')) && '已有未完成品只能由原作者续作，改变工人限制不会更换作者。'}</small>
     </div>
   </details>;
 }
 
-function BillRow({ bill, index, total, job, snapshot, update, move, remove }: {
+function BillRow({ bill, index, total, job, unfinished, snapshot, update, move, remove, focus }: {
   bill: ProductionBill; index: number; total: number; job: Job | undefined; snapshot: VoxelSnapshot;
+  unfinished: LocatedUnfinished[];
+  focus?: (pos: Pos) => void;
   update: (patch: BillPatch) => void; move: (direction: -1 | 1) => void; remove: () => void;
 }) {
   const recipe = recipeDetails(bill.recipe, snapshot);
+  const currentPiece = unfinished.find(entry => entry.piece.id === job?.unfinishedId);
+  const workReason = unfinishedWorkReason(job, snapshot);
   const status = bill.suspended ? { key: 'suspended', text: '手动暂停' }
+    : unfinished.length ? { key: 'unfinished', text: unfinishedStatus(currentPiece ?? unfinished[0], snapshot) }
     : job ? { key: 'active', text: job.progress > 0 ? '当前批次加工中' : '等待备料与开工' }
     : bill.mode === 'count' && bill.remaining === 0 ? { key: 'completed', text: '次数已完成' }
     : bill.mode === 'target' && bill.waiting ? { key: 'waiting', text: '等库存降至恢复线' }
@@ -176,21 +183,33 @@ function BillRow({ bill, index, total, job, snapshot, update, move, remove }: {
     </>}
     <button data-testid="bill-suspend" aria-pressed={bill.suspended} onClick={() => update({ suspended: !bill.suspended })}>
       {bill.suspended ? '恢复账单' : '暂停账单'}</button>
-    {job && <div className="voxel-production-progress" data-testid="bill-progress" data-job-id={job.id}>
+    {job && !currentPiece && <div className="voxel-production-progress" data-testid="bill-progress" data-job-id={job.id}>
       <div><span>当前批次</span><b>{Math.min(100, Math.floor(job.progress / Math.max(1, job.work) * 100))}%</b></div>
       <progress aria-label="账单加工进度" value={job.progress} max={Math.max(1, job.work)} />
       {job.reason && <small data-testid="bill-work-reason">{job.reason}</small>}
       {Object.entries(job.cost).length > 0 && <small>已运原料：{Object.entries(job.cost)
         .map(([resource, amount]) => `${RESOURCE_NAMES[resource as keyof Counts]} ${job.delivered[resource as keyof Counts] ?? 0}/${amount}`).join(' · ')}</small>}
     </div>}
+    {unfinished.map(entry => <div key={entry.piece.id} className="voxel-production-progress voxel-production-unfinished"
+      data-testid="bill-unfinished" data-unfinished-id={entry.piece.id} data-forbidden={!!entry.batch.forbidden}>
+      <small>{unfinishedName(entry.piece)}</small>
+      <div data-testid="bill-progress" data-job-id={entry.piece.id === job?.unfinishedId ? job?.id : undefined}>
+        <span>已保存的工量</span><b>{unfinishedPercent(entry.piece)}%</b>
+      </div>
+      <progress aria-label="账单加工进度" value={entry.piece.progress} max={Math.max(1, entry.piece.workTotal)} />
+      <small data-testid="bill-unfinished-status">{unfinishedStatus(entry, snapshot)}</small>
+      {entry.piece.id === job?.unfinishedId && workReason && <small data-testid="bill-work-reason">{workReason}</small>}
+      <small>原料已保存在这件物品中。{entry.carrier ? `由 ${entry.carrier.name} 携带` : `位置 (${entry.pos.x}, ${entry.pos.y}) · Z ${entry.pos.z}`}。</small>
+      {focus && <button data-testid="bill-focus-unfinished" onClick={() => focus(entry.pos)}>查看未完成品</button>}
+    </div>)}
     {recipe.research && <small className="voxel-production-research" data-testid="bill-research-lock">{recipe.research}，完成后才能开工。</small>}
     <BillPolicy bill={bill} snapshot={snapshot} update={update} />
     <details className="voxel-production-recipe"><summary>配方与要求</summary><small>{recipe.description}</small><small>{recipe.note}</small></details>
   </li>;
 }
 
-export function ProductionBillsPanel({ benchId, snapshot, command }: {
-  benchId: number; snapshot: VoxelSnapshot; command: (command: VoxelCommand) => void;
+export function ProductionBillsPanel({ benchId, snapshot, command, focus }: {
+  benchId: number; snapshot: VoxelSnapshot; command: (command: VoxelCommand) => void; focus?: (pos: Pos) => void;
 }) {
   const [chosen, choose] = useState<ProductionRecipe | ''>('');
   const queue: ProductionQueue | undefined = snapshot.productionQueues.find(queue => queue.benchId === benchId);
@@ -209,6 +228,7 @@ export function ProductionBillsPanel({ benchId, snapshot, command }: {
   const jobs = snapshot.jobs.filter(job => !job.cancelled && same(job, bench) && productionJobRecipe(job));
   const activeJob = (bill: ProductionBill) => jobs.find(job => job.billId === bill.id || (job.billId === undefined
     && productionJobRecipe(job) === bill.recipe && queue.bills.find(candidate => candidate.recipe === bill.recipe)?.id === bill.id));
+  const unfinished = locatedUnfinished(snapshot);
   return <section className="voxel-bill voxel-production-bills" data-testid="production-bills" data-bench-id={benchId}>
     <div className="voxel-production-heading"><b>{title} · 生产账单</b><span>{queue.bills.length} / {MAX_PRODUCTION_BILLS}</span></div>
     <small>按列表顺序安排可执行的账单；同一配方可添加多张，分别设定次数或库存目标。</small>
@@ -232,6 +252,8 @@ export function ProductionBillsPanel({ benchId, snapshot, command }: {
     </form>
     {queue.bills.length ? <ol className="voxel-production-list" aria-label="生产账单顺序">{queue.bills.map((bill, index) => <BillRow
       key={bill.id} bill={bill} index={index} total={queue.bills.length} snapshot={snapshot} job={activeJob(bill)}
+      unfinished={unfinished.filter(entry => entry.piece.boundBillId === bill.id)}
+      focus={focus}
       update={patch => command({ type: 'productionBillUpdate', benchId, billId: bill.id, patch })}
       move={direction => command({ type: 'productionBillMove', benchId, billId: bill.id, direction })}
       remove={() => command({ type: 'productionBillDelete', benchId, billId: bill.id })} />)}</ol>
@@ -239,7 +261,9 @@ export function ProductionBillsPanel({ benchId, snapshot, command }: {
     <small>需要开启「{stove || butcher ? '烹饪' : '加工'}」分工，并留出原料和成品通路。{stand && `操作位 (${stand.x}, ${stand.y}) · Z ${stand.z}。`}</small>
     <details className="voxel-production-help"><summary>库存与暂停规则</summary>
       <small>库存目标统计全营地成品，包括携带、穿戴或装备的物品。安排新批次时会计入正在制作的产量，避免重复补产；暂停后的恢复线只看已经做好的实物。</small>
-      <small>次数在成品落地后扣减。修改目标或调整顺序不打断当前批次；手动暂停或删除会取消该账单的加工，并退回已经运来的原料。</small>
+      <small>次数在成品落地后扣减。修改目标或调整顺序不打断当前批次；手动暂停或删除会停止加工。</small>
+      <small>衣物、武器和护甲一旦开始加工，就会留下保存原料和进度的未完成品。暂停保留绑定，删除解除绑定；原作者可在兼容工作台接续同配方账单。需要退回原料时，选中这件物品并取消加工。</small>
+      <small>尚未形成未完成品的已运原料，以及烹饪、屠宰、切石批次，会在手动暂停或删除时退回。</small>
     </details>
   </section>;
 }

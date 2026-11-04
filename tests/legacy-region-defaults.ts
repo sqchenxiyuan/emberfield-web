@@ -1,6 +1,8 @@
 import { expect } from 'vitest';
+import { stripUnfinishedFields } from './legacy-unfinished-defaults';
 /** Synthetic old-schema tests only. Captured historical files stay untouched. */
 export function stripRegionFields(raw: Record<string, any>) {
+  stripUnfinishedFields(raw);
   if (Object.hasOwn(raw, 'productionQueues')) expect(raw.productionQueues).toEqual([]);
   delete raw.productionQueues;
   for (const job of raw.jobs ?? []) { delete job.billId; delete job.productionPolicy; }

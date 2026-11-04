@@ -65,6 +65,7 @@ export function findFireDamageTarget(s: FireHost, d: FireDamage): FireDamage | u
   const object = s[property[d.kind]].find(q => q.id === d.targetId);
   return object ? damageTarget(d.kind, object, object.id) : undefined;
 }
+import { unfinishedFlammability } from './unfinishedProduction';
 interface FuelTarget { kind: 'structure' | 'tree' | 'crop' | 'stack' | 'furniture'; id: number; flammability: number; damage?: FireDamage }
 /** A flame consumes physical fuel at its cell. Air immediately above a wooden
  * support can burn that support, so a floor flame is shown at the walking layer. */
@@ -94,7 +95,7 @@ export function fireFuelAt(s: FireHost, p: Pos): FuelTarget[] {
   for (const crop of s.crops) if (same(crop, p)) out.push({ kind: 'crop', id: crop.id, flammability: .7 });
   for (const item of s.items) if (same(item, p)) {
     if (item.furniture) { out.push({kind:'furniture',id:item.furniture.id,flammability:.8}); continue; }
-    const flammability = ['wood', 'cloth', 'grain', 'herb', 'food', 'meal', 'meat', 'carcass', 'apparel', 'components'].includes(item.resource)
+    const flammability = item.unfinished ? unfinishedFlammability(item.unfinished) : ['wood', 'cloth', 'grain', 'herb', 'food', 'meal', 'meat', 'carcass', 'apparel', 'components'].includes(item.resource)
       ? 1 : item.resource === 'weapon' && item.weapon && ['woodClub', 'shortBow'].includes(item.weapon.kind) ? 1 : 0;
     if (flammability) out.push({ kind: 'stack', id: item.id, flammability });
   }

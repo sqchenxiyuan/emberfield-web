@@ -31,6 +31,9 @@ export const RESOURCE_CONDITION_DEFS: Readonly<Record<Exclude<Resource, 'apparel
   chunk: { maxHitPoints: 300, ratePerDay: 0 },
   cloth: { maxHitPoints: 80, ratePerDay: 4 },
   herb: { maxHitPoints: 60, ratePerDay: 6 },
+  // Core UnfinishedBase is 50 HP / 2 per day. Web currently uses that base for
+  // every UFT; material-specific native HP factors (e.g. wood) are not modeled.
+  unfinished: { maxHitPoints: 50, ratePerDay: 2 },
 };
 export const DETERIORATION_QUALITY = [2, 1.5, 1, .8, .6, .3, .1] as const;
 export const DETERIORATION_RULES = Object.freeze({ interval: 100, equipmentRatePerDay: 2 });

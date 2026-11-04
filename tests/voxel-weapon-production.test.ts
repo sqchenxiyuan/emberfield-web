@@ -81,7 +81,7 @@ describe('physical weapon production and persistence', () => {
     const old = JSON.parse(bytes.toString()),
       s = VoxelSimulation.load(old);
     expect(old.version).toBe(12);
-    expect(s.save().version).toBe(40);
+    expect(s.save().version).toBe(41);
     expect(s.weaponBenches).toEqual([]);
     expect(s.items).toEqual(old.items);
     expect(s.save().blocks).toEqual(old.blocks);
@@ -125,9 +125,14 @@ describe('physical weapon production and persistence', () => {
     until(s, () => s.jobs.some((j) => j.kind === 'smith' && j.progress > 20));
     expect(s.items.filter((i) => i.resource === 'wood')).toHaveLength(0);
     expect(s.jobs.find((j) => j.kind === 'smith')).toMatchObject({
-      delivered: { wood: 40 },
+      delivered: {},
       work: 560,
     });
+    const job = s.jobs.find(j => j.kind === 'smith')!;
+    expect(s.items.find(i => i.unfinished?.id === job.unfinishedId)?.unfinished).toMatchObject({
+      creatorId: job.owner, recipe: 'smith:woodClub', ingredients: [{ resource: 'wood', amount: 40 }],
+    });
+    expect(s.counts().wood).toBe(before);
     until(s, () => s.stats.weaponsMade === 1);
     expect(s.items.find((i) => i.weapon)?.weapon).toMatchObject({
       kind: 'woodClub',
@@ -158,7 +163,7 @@ describe('physical weapon production and persistence', () => {
     bad.weaponBenches[0].fuel = 1;
     expect(() => VoxelSimulation.load(bad)).toThrow();
   });
-  it('retains progress and delivered steel through reload and returns materials when paused', () => {
+  it('retains author, progress and embedded steel through reload and pause until explicit cancellation', () => {
     let s = fixture();
     material(s, 'steel', 30);
     s.pawns[0].priorities.craft = 1;
@@ -167,13 +172,20 @@ describe('physical weapon production and persistence', () => {
     until(s, () => s.jobs.some((j) => j.kind === 'smith' && j.progress > 35));
     const job = s.jobs.find((j) => j.kind === 'smith')!,
       progress = job.progress;
+    const piece = structuredClone(s.items.find(i => i.unfinished?.id === job.unfinishedId)!.unfinished!);
     s = VoxelSimulation.load(s.save());
     expect(s.jobs.find((j) => j.id === job.id)?.progress).toBe(progress);
+    expect(s.items.find(i => i.unfinished)?.unfinished).toEqual(piece);
     bill(s, s.weaponBenches[0], 'steelKnife', 1, true);
     until(s, () => !s.jobs.some((j) => j.kind === 'smith'));
     expect(s.counts().steel).toBe(30);
     expect(s.counts().weapon).toBe(0);
     expect(s.stats.consumed.steel).toBe(0);
+    expect(s.items.some(i => i.resource === 'steel')).toBe(false);
+    expect(s.items.find(i => i.unfinished)?.unfinished).toEqual(piece);
+    command(s, { type: 'unfinishedCancel', unfinishedId: piece.id });
+    expect(s.items.filter(i => i.resource === 'steel').reduce((n, i) => n + i.amount, 0)).toBe(30);
+    expect(s.items.some(i => i.unfinished)).toBe(false);
   });
   it('refuels an empty smithy while a production bill is queued and burns fuel only during actual work', () => {
     const s = smithy(),
@@ -194,29 +206,43 @@ describe('physical weapon production and persistence', () => {
     expect(() => VoxelSimulation.load(s.save())).not.toThrow();
   });
   it('releases a completed blocked output after fuel is exhausted without repeating work or consuming inputs twice', () => {
-    const s = smithy(),
-      b = s.weaponBenches[0];
+    let s = smithy();
+    let b = s.weaponBenches[0];
     b.fuel = 2.4;
     material(s, 'steel', 30);
     s.pawns[0].priorities.craft = 1;
     bill(s, b, 'steelKnife');
     until(s, () => s.jobs.some((j) => j.kind === 'smith' && j.progress > 25));
+    // Controlled shelf adjacent to the real work position accepts the UFT but
+    // rejects finished weapons, so consuming its own slot cannot bypass the
+    // physical output boundary. Work and quality remain simulation-generated.
+    const workpiece = s.items.find(i => i.unfinished)!;
+    Object.assign(workpiece, pos(18, 17));
+    const shelfId = s.nextId++;
+    s.shelves.push({ ...pos(18, 17), id: shelfId, kind: 'smallShelf', axis: 'x', settings: { priority: 2, accepts: ['unfinished'] } });
+    s = VoxelSimulation.load(s.save()); b = s.weaponBenches[0];
     for (let x = 10; x <= 24; x++)
       for (let y = 10; y <= 24; y++)
         if (s.standable(pos(x, y)) && !s.items.some((i) => i.x === x && i.y === y))
           material(s, 'steel', 75, pos(x, y));
     until(s, () => s.jobs.some((j) => j.kind === 'smith' && j.progress === j.work));
     expect(s.stats.weaponsMade).toBe(0);
+    const job = s.jobs.find(j => j.kind === 'smith')!, workTicks = job.workTicks, quality = structuredClone(job.productQuality);
+    const xp = s.pawns[0].skills.crafting.xp;
     b.fuel = 0; // Controlled exact-zero boundary, not normal-game evidence.
-    command(s, { type: 'draft', pawnId: s.pawns[2].id, drafted: true });
-    const freed = s.items.find((i) => i.x === 17 && i.y === 17)!;
-    s.pawns[2].cargo = { resource: 'steel', amount: freed.amount };
-    s.items = s.items.filter((i) => i.id !== freed.id);
     const before = s.counts().steel;
+    s.step(60);
+    expect(job.workTicks).toBe(workTicks);
+    expect(job.productQuality).toEqual(quality);
+    expect(s.stats.consumed.steel).toBe(0);
+    command(s, { type: 'shelfStorage', shelfId, priority: 2, accepts: ['unfinished', 'weapon'] });
     until(s, () => s.stats.weaponsMade === 1);
     expect(s.counts().steel).toBe(before - 30);
     expect(s.stats.consumed.steel).toBe(30);
     expect(b.fuel).toBe(0);
+    expect(s.pawns[0].skills.crafting.xp).toBe(xp);
+    expect(s.items.find(i => i.weapon)?.weapon?.quality).toBe(quality!.value);
+    expect(s.items.some(i => i.unfinished)).toBe(false);
   });
   it('keeps weapon while downed in own bed, but ordinary death drops and forbids it', () => {
     const s = fixture(),

@@ -33,6 +33,8 @@ import { ResearchPanel, ResearchBenchPanel } from './ResearchPanel';
 import { RESEARCH_DEFS, toolResearchReason } from './research';
 import { ApparelPanel, WearApparel } from './ApparelPanel';
 import { ProductionBillsPanel } from './ProductionBillsPanel';
+import { UnfinishedPanel } from './UnfinishedPanel';
+import { unfinishedName } from './unfinishedView';
 import { CombatPanel, ThreatControl, storyOpportunityText } from './CombatPanel';
 import { TradePanel, TraderInspector } from './TradePanel';
 import { WeaponPanel, EquipWeapon } from './WeaponPanel';
@@ -228,7 +230,7 @@ function connectedStorage(stockpiles: Stockpile[], start: Stockpile): Stockpile[
   return result;
 }
 const foodName = (batch: Cargo) =>
-  batch.furniture ? `已打包${FURNITURE_NAMES[batch.furniture.kind]} #${batch.furniture.id}` : batch.carcass
+  batch.unfinished ? unfinishedName(batch.unfinished) : batch.furniture ? `已打包${FURNITURE_NAMES[batch.furniture.kind]} #${batch.furniture.id}` : batch.carcass
     ? `${ANIMAL_DEFS[batch.carcass.species].name}尸体`
     : batch.weapon
     ? weaponName(batch.weapon)
@@ -1183,6 +1185,7 @@ function App() {
                 布料与衣物
               </button>
               <button onClick={() => updateStorage(storage.priority, ['herb'])}>仅收草药</button>
+              <button onClick={() => updateStorage(storage.priority, ['unfinished'])}>仅收未完成品</button>
               <button onClick={() => updateStorage(storage.priority, ['meat', 'carcass'])}>肉类与尸体</button>
               <button onClick={() => updateStorage(storage.priority, [])}>停止收纳</button>
             </div>
@@ -1207,7 +1210,7 @@ function App() {
               ))}
             </div>
             <small>
-              每格一堆，同类且同品种可以补满；衣物和尸体每格一件。工人优先使用更高优先级的合格仓位；满仓时等待空位。冷库还需封闭房间与制冷供电。
+              每格一堆，同类且同品种可以补满；衣物、尸体和未完成品每格一件。未完成品单独筛选，不算成品。工人优先使用更高优先级的合格仓位；满仓时等待空位。冷库还需封闭房间与制冷供电。
             </small>
           </div>
         )}
@@ -1334,7 +1337,7 @@ function App() {
           <small>重复同一种活动会积累耐受，减少娱乐收益；也可进行户外散步。</small>
         </section>}
         {stonecutter && s && <ProductionBillsPanel key={stonecutter.id} benchId={stonecutter.id} snapshot={s} command={c => void client.command(c)} />}
-        {tailor && s && <ProductionBillsPanel key={tailor.id} benchId={tailor.id} snapshot={s} command={c => void client.command(c)} />}
+        {tailor && s && <ProductionBillsPanel key={tailor.id} benchId={tailor.id} snapshot={s} command={c => void client.command(c)} focus={focus} />}
         {researchBench && s && (
           <ResearchBenchPanel
             bench={researchBench}
@@ -1342,7 +1345,7 @@ function App() {
             openResearch={() => { setResearchOpen(true); setSanitationOpen(false); setFireOpen(false); }}
           />
         )}
-        {weaponBench && s && <ProductionBillsPanel key={weaponBench.id} benchId={weaponBench.id} snapshot={s} command={c => void client.command(c)} />}
+        {weaponBench && s && <ProductionBillsPanel key={weaponBench.id} benchId={weaponBench.id} snapshot={s} command={c => void client.command(c)} focus={focus} />}
         {items.map((i) => (
           <div className="voxel-item-detail" key={i.id} data-testid="item-detail">
             <div className="voxel-info-row">
@@ -1357,6 +1360,7 @@ function App() {
             </small>
             <FoodCondition batch={i} temperature={temperatureOf(i)} />
             <ItemCondition condition={s?.environment.items.find(item => item.entity === 'stack' && item.id === i.id)} name={foodName(i)} />
+            {i.unfinished && s && <UnfinishedPanel batch={i} snapshot={s} command={c => void client.command(c)} focus={focus} />}
             {i.furniture && s && <div data-testid="packed-furniture" data-furniture-id={i.furniture.id} data-stack-id={i.id}>
               <FurnitureDetails kind={i.furniture.kind} item={i.furniture} snapshot={s} packed />
               {isShelfKind(i.furniture.kind) && <ShelfPanel key={i.furniture.id} shelfId={i.furniture.id} snapshot={s}
@@ -1400,7 +1404,7 @@ function App() {
             <progress value={j.progress} max={j.work} />
             <small>
               {j.reason}
-              {(Object.keys(j.cost) as Resource[])
+              {j.unfinishedId !== undefined ? ` · 原料与进度保存在未完成品 #${j.unfinishedId}` : (Object.keys(j.cost) as Resource[])
                 .map((r) => ` · ${RESOURCE_NAMES[r]} ${j.delivered[r] ?? 0}/${j.cost[r]}`)
                 .join('')}
             </small>
@@ -1601,6 +1605,9 @@ function App() {
                 </p>
                 <FoodCondition batch={pawn.cargo} temperature={temperatureOf(pawn)} />
                 <BatchDurability batch={pawn.cargo} name={foodName(pawn.cargo)} />
+                {pawn.cargo.unfinished && s && <div data-testid="carried-unfinished" data-unfinished-id={pawn.cargo.unfinished.id}>
+                  <UnfinishedPanel batch={pawn.cargo} snapshot={s} carrier={pawn} command={c => void client.command(c)} focus={focus} />
+                </div>}
                 {pawn.cargo.furniture && s && <div data-testid="carried-furniture" data-furniture-id={pawn.cargo.furniture.id}>
                   <FurnitureDetails kind={pawn.cargo.furniture.kind} item={pawn.cargo.furniture} snapshot={s} packed />
                   {isShelfKind(pawn.cargo.furniture.kind) && <ShelfPanel key={pawn.cargo.furniture.id} shelfId={pawn.cargo.furniture.id}

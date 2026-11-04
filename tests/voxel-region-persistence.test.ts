@@ -1,3 +1,4 @@
+import { unfinishedExpectedField } from './legacy-unfinished-defaults';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -110,10 +111,10 @@ describe('authentic v34 world-site migration', () => {
     const old = historical(), before = structuredClone(old);
     const generate = vi.spyOn(worldgen, 'generateWorld'), resolve = vi.spyOn(regions, 'resolveWorldSite');
     const sim = VoxelSimulation.load(old), saved = sim.save();
-    expect(old).toEqual(before); expect(saved.version).toBe(40); expect(saved.worldSite).toBeNull();
+    expect(old).toEqual(before); expect(saved.version).toBe(41); expect(saved.worldSite).toBeNull();
     expect(generate).not.toHaveBeenCalled(); expect(resolve).not.toHaveBeenCalled();
     for (const key of ['seed', 'generator', 'settings', 'tick', 'nextId', 'blocks', 'ladders', 'structureKinds',
-      'items', 'stats', 'trade', 'beds', 'tables', 'chairs', 'stockpiles'] as const) expect(saved[key], key).toEqual(old[key]);
+      'items', 'stats', 'trade', 'beds', 'tables', 'chairs', 'stockpiles'] as const) expect(saved[key], key).toEqual(unfinishedExpectedField(key, old[key]));
     const jobs = (values: any[]) => values.map(({ owner, reason, ...job }) => job);
     expect(jobs(saved.jobs)).toEqual(jobs(old.jobs)); expect(saved.jobs.some(j => j.kind === 'install')).toBe(true);
     expect(saved.pawns.map(p => p.cargo)).toEqual(old.pawns.map((p: any) => p.cargo));

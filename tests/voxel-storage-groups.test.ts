@@ -1,3 +1,4 @@
+import { stripUnfinishedFields, unfinishedExpectedField } from './legacy-unfinished-defaults';
 import { describe, expect, it } from 'vitest';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
@@ -242,9 +243,9 @@ describe('linked shelf storage gameplay', () => {
     const old = JSON.parse(bytes.toString()), original = structuredClone(old);
     expect(old.version).toBe(37); expect(old.storageGroups).toBeUndefined();
     const s = VoxelSimulation.load(old), saved = s.save();
-    expect(saved.version).toBe(40); expect(saved.storageGroups).toEqual([]); expect(old).toEqual(original);
+    expect(saved.version).toBe(41); expect(saved.storageGroups).toEqual([]); expect(old).toEqual(original);
     for (const key of ['blocks', 'ladders', 'items', 'stats', 'explored', 'generator', 'worldSite', 'seed', 'shelves'])
-      expect((saved as any)[key], key).toEqual(old[key]);
+      expect((saved as any)[key], key).toEqual(unfinishedExpectedField(key, old[key]));
     command(s, { type: 'designate', tool: 'smallShelf', from: pos(30, 29) });
     const blueprint = s.jobs.find(job => job.kind === 'smallShelf')!;
     expect(blueprint.storageSettings).toEqual(defaultShelfSettings());
@@ -269,7 +270,7 @@ describe('linked shelf storage gameplay', () => {
       ['invalid priority', data => { data.storageGroups[0].settings.priority = 4; }],
       ['invalid resource', data => { data.storageGroups[0].settings.accepts = ['chunk']; }],
       ['duplicate filters', data => { data.storageGroups[0].settings.accepts = ['wood', 'wood']; }],
-      ['downgrade to v37', data => { data.version = 37; }],
+      ['downgrade to v37', data => { stripUnfinishedFields(data); data.version = 37; }],
     ];
     for (const [name, mutate] of mutations) {
       const data = structuredClone(base); mutate(data); expect(() => VoxelSimulation.load(data), name).toThrow();

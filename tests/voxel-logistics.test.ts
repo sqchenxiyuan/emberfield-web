@@ -9,6 +9,7 @@ import { makeWeapon, validWeapon } from '../src/voxel/weapons';
 import { makeFurniturePiece, validFurniturePiece } from '../src/voxel/relocation';
 import { plantYield } from '../src/voxel/skills';
 import { defaultProductionPolicy } from '../src/voxel/productionPolicies';
+import { unfinishedRecipeWorkTotals, validateUnfinishedPiece } from '../src/voxel/unfinishedProduction';
 import {
   Block,
   DAY,
@@ -45,7 +46,14 @@ function add(
           ? { resource, amount, carcass: { animalId: s.nextId++, species: 'hare' as const }, rotProgress: 0 }
           : resource === 'furniture'
             ? { resource, amount, furniture: makeFurniturePiece('chair', { ...p, id: s.nextId++, axis: 'x', quality: 2 }, 50.25) }
-            : freshBatch(resource, amount)),
+            : resource === 'unfinished'
+              ? { resource, amount, unfinished: {
+                id: s.nextId++, recipe: 'smith:woodClub' as const,
+                creatorId: s.pawns[0].id, creatorName: s.pawns[0].name, boundBillId: null,
+                workTotal: unfinishedRecipeWorkTotals('smith:woodClub')[0], progress: 0, workTicks: 0,
+                ingredients: [freshBatch('wood', 40)], policy: defaultProductionPolicy(),
+              } }
+              : freshBatch(resource, amount)),
     ...extra,
     x: p.x,
     y: p.y,
@@ -126,6 +134,7 @@ function invariants(s: VoxelSimulation) {
           'apparel',
           'weapon',
           'furniture',
+          'unfinished',
           'carcass',
           'forbidden',
           'poisonChance',
@@ -137,6 +146,7 @@ function invariants(s: VoxelSimulation) {
     expect(i.resource === 'apparel' ? validApparel(i.apparel) : i.apparel === undefined).toBe(true);
     expect(i.resource === 'weapon' ? validWeapon(i.weapon) : i.weapon === undefined).toBe(true);
     expect(i.resource === 'furniture' ? validFurniturePiece(i.furniture) : i.furniture === undefined).toBe(true);
+    expect(i.resource === 'unfinished' ? validateUnfinishedPiece(i.unfinished) : i.unfinished === undefined).toBe(true);
   }
   for (const p of s.pawns)
     if (p.cargo) expect(p.cargo.amount).toBeLessThanOrEqual(carryLimit(p.cargo.resource));
@@ -274,7 +284,7 @@ describe('bounded physical stacks and hauling reservations', () => {
     expect(s.items.filter((i) => i.resource === 'food').map((i) => i.amount)).toEqual([
       10, 10, 10, 10, 10, 10,
     ]);
-    expect(s.save().version).toBe(40);
+    expect(s.save().version).toBe(41);
     expect(VoxelSimulation.load(s.save()).counts()).toEqual(s.counts());
   });
   it.each(resources)('carries and stores %s only within its native one-stack limit', (resource) => {
@@ -283,14 +293,21 @@ describe('bounded physical stacks and hauling reservations', () => {
       add(s, pos(12, 15), resource, stackLimit(resource));
       stock(s, pos(20, 15), [resource]);
     });
+    const unfinished = structuredClone(s.items[0].unfinished);
     until(s, () => !!s.pawns[0].cargo);
     expect(s.pawns[0].cargo!.amount).toBe(carryLimit(resource));
+    if (resource === 'unfinished') {
+      expect(s.pawns[0].cargo!.unfinished).toEqual(unfinished);
+      expect(VoxelSimulation.load(s.save()).pawns[0].cargo!.unfinished).toEqual(unfinished);
+    }
     until(s, () => s.items.find((i) => at(i) === at(pos(20, 15)))?.amount === stackLimit(resource));
     expect(s.storageCapacity()[0]).toMatchObject({
       amount: stackLimit(resource),
       reserved: 0,
       occupied: true,
     });
+    if (resource === 'unfinished')
+      expect(s.items.find(i => at(i) === at(pos(20, 15)))!.unfinished).toEqual(unfinished);
     expect(VoxelSimulation.load(s.save()).counts()).toEqual(s.counts());
   });
   it('reserves the last five places across three workers without overbooking or idle ping-pong', () => {

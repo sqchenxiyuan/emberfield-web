@@ -4,6 +4,7 @@ import { validWeapon } from './weapons';
 import { validFurniturePiece } from './relocation';
 import { WILDLIFE } from './wildlife';
 import { batchHitPoints, setBatchHitPoints, validBatchHitPoints } from './deterioration';
+import { validateUnfinishedPiece } from './unfinishedProduction';
 
 // RimWorld 1.7 source/Defs: 60000 original ticks/day, rate * elapsed ticks.
 // We preserve days, using this simulation's DAY=12000 instead. Unlike the native
@@ -30,7 +31,7 @@ export function remainingRotDays(batch: Cargo): number | null {
   return limit === null ? null : Math.max(0, (limit - (batch.rotProgress ?? 0)) / DAY);
 }
 export function freshBatch(resource: Resource, amount: number, crop?: FoodCropKind): Cargo {
-  if (resource === 'apparel' || resource === 'weapon' || resource === 'furniture') throw new Error('装备和家具需要独立实例信息');
+  if (resource === 'apparel' || resource === 'weapon' || resource === 'furniture' || resource === 'unfinished') throw new Error('装备、家具和未完成品需要独立实例信息');
   if (resource === 'carcass') throw new Error('动物尸体需要独立动物身份信息');
   return {
     resource,
@@ -44,6 +45,8 @@ export function freshBatch(resource: Resource, amount: number, crop?: FoodCropKi
 }
 /** A physical split inherits current age and condition exactly. */
 export function portion(batch: Cargo, amount: number): Cargo {
+  if (batch.resource === 'unfinished' && (batch.amount !== 1 || amount !== 1 || !validateUnfinishedPiece(batch.unfinished)))
+    throw new RangeError('未完成品只能整件转移');
   if (batch.resource === 'furniture' && (batch.amount !== 1 || amount !== 1 || !validFurniturePiece(batch.furniture)))
     throw new RangeError('打包家具只能整件转移');
   return {
@@ -56,6 +59,7 @@ export function portion(batch: Cargo, amount: number): Cargo {
     ...(batch.furniture !== undefined ? { furniture: 'settings' in batch.furniture
       ? { ...batch.furniture, settings: { ...batch.furniture.settings, accepts: [...batch.furniture.settings.accepts] } }
       : { ...batch.furniture } } : {}),
+    ...(batch.unfinished !== undefined ? { unfinished: structuredClone(batch.unfinished) } : {}),
     ...(batch.carcass !== undefined ? { carcass: { ...batch.carcass } } : {}),
     ...(batch.forbidden !== undefined ? { forbidden: batch.forbidden } : {}),
     ...(batch.rotProgress !== undefined ? { rotProgress: batch.rotProgress } : {}),
@@ -69,6 +73,7 @@ export function compatibleBatches(a: Cargo, b: Cargo): boolean {
     (a.resource !== 'weapon' || (!!a.weapon && !!b.weapon && a.weapon.id === b.weapon.id)) &&
     (a.resource !== 'apparel' || (!!a.apparel && !!b.apparel && a.apparel.id === b.apparel.id)) &&
     (a.resource !== 'furniture' || (!!a.furniture && !!b.furniture && a.furniture.id === b.furniture.id)) &&
+    (a.resource !== 'unfinished' || (!!a.unfinished && !!b.unfinished && a.unfinished.id === b.unfinished.id)) &&
     (a.resource !== 'carcass' || (!!a.carcass && !!b.carcass &&
       a.carcass.animalId === b.carcass.animalId && a.carcass.species === b.carcass.species))
   );
@@ -76,8 +81,8 @@ export function compatibleBatches(a: Cargo, b: Cargo): boolean {
 /** Merge only the transferred amount, weighted by actual quantities. */
 export function mergeBatch(target: Cargo, incoming: Cargo): void {
   if (
-    ['apparel', 'weapon', 'carcass', 'furniture'].includes(target.resource) ||
-    ['apparel', 'weapon', 'carcass', 'furniture'].includes(incoming.resource)
+    ['apparel', 'weapon', 'carcass', 'furniture', 'unfinished'].includes(target.resource) ||
+    ['apparel', 'weapon', 'carcass', 'furniture', 'unfinished'].includes(incoming.resource)
   )
     throw new Error('装备、家具和动物尸体实例不能合并');
   if (!compatibleBatches(target, incoming) || incoming.amount <= 0 || target.amount <= 0)
@@ -131,6 +136,7 @@ export function validBatch(batch: unknown): batch is Cargo {
       'apparel',
       'weapon',
       'furniture',
+      'unfinished',
     ].includes(b.resource) ||
     !Number.isSafeInteger(b.amount) ||
     b.amount <= 0 ||
@@ -139,6 +145,8 @@ export function validBatch(batch: unknown): batch is Cargo {
     return false;
   if (!validBatchHitPoints(b)) return false;
   if (b.resource === 'furniture' ? b.amount !== 1 || !validFurniturePiece(b.furniture) : b.furniture !== undefined)
+    return false;
+  if (b.resource === 'unfinished' ? b.amount !== 1 || !validateUnfinishedPiece(b.unfinished) : b.unfinished !== undefined)
     return false;
   if (
     b.resource === 'grain'
@@ -153,11 +161,12 @@ export function validBatch(batch: unknown): batch is Cargo {
   if (
     b.resource === 'weapon'
       ? b.amount !== 1 ||
-        !validWeapon(b.weapon) ||
-        (b.forbidden !== undefined && typeof b.forbidden !== 'boolean')
-      : b.weapon !== undefined || b.forbidden !== undefined
+        !validWeapon(b.weapon)
+      : b.weapon !== undefined
   )
     return false;
+  if (b.forbidden !== undefined &&
+      (!['weapon', 'unfinished'].includes(b.resource) || typeof b.forbidden !== 'boolean')) return false;
   if (b.resource === 'carcass') {
     if (b.amount !== 1 || !b.carcass || typeof b.carcass !== 'object' || Array.isArray(b.carcass) ||
         !Number.isSafeInteger(b.carcass.animalId) || b.carcass.animalId <= 0 ||

@@ -1,0 +1,1864 @@
+{
+  "evidence_id": "RW17-UNFINISHED-PRODUCTION",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction and bounded Core XML inheritance; not target execution",
+  "rea": {
+    "file": "production-bills-rea-managed.json",
+    "sha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+    "evidence_id": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+    "parent_evidence_id": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+    "mvid": "8e962ecc-7ac7-42d2-8f3b-1b16cd24d2cd",
+    "metadata_coverage": "complete"
+  },
+  "manifests": [
+    {
+      "file": "apparel-manifest.json",
+      "sha256": "6d411e7407dfec47e58a79c335a9b5dbf6f48da8bf2ac8835ce199656a44e930"
+    },
+    {
+      "file": "food-manifest.json",
+      "sha256": "71078848fdcb154b8600e6eaef143968958c786b0544d6bab0814154d76f18d8"
+    },
+    {
+      "file": "production-bills-manifest.json",
+      "sha256": "a00dc9a726f47fe20b27d755b2ff023948ce7b374d4b8d80e958ff3037d4a227"
+    },
+    {
+      "file": "stonecutting-manifest.json",
+      "sha256": "de582eeb35fb04c661dcab23ee45572abad0e590a5fb8a3cd5175dc2026b2061"
+    },
+    {
+      "file": "unfinished-production-manifest.json",
+      "sha256": "1640263e8d3ef8815f47a0112e52e63d476276d705c8f487e07399688468b1ba"
+    },
+    {
+      "file": "weapons-manifest.json",
+      "sha256": "51a3598181cbd532dd2b60c1e7af6f816bbc395a39b13f439b57cd81e9f4bb17"
+    },
+    {
+      "file": "work-manifest.json",
+      "sha256": "89523f849f7c4dca3b660faed977b00e04b87fb93d1275c9f41ba1b9af154cd2"
+    }
+  ],
+  "xml": {
+    "files": [
+      {
+        "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+        "sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847"
+      },
+      {
+        "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Headgear.xml",
+        "sha256": "d78950e38f1943fca6c956247e613c22d4095cf3a62605a1bc5870c5293e6938"
+      },
+      {
+        "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+        "sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107"
+      },
+      {
+        "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/MeleeNeolithic.xml",
+        "sha256": "f62501c797dc94a34c26548d145436296297fd75ef06f6b65981509654643b61"
+      },
+      {
+        "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/MeleeMedieval.xml",
+        "sha256": "29048e27b162d78c80015bd6e54f83f4d2b4783b01ec7341c11e1b7eeb735c96"
+      },
+      {
+        "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/RangedNeolithic.xml",
+        "sha256": "6177df52167d26e8f4eba6a83c8a1cc7eb705f8f4d34aa790169320b3acac4bb"
+      },
+      {
+        "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/RangedIndustrial.xml",
+        "sha256": "761318b920a1bd459cb6955705766414fbb7b5a8a58513c646702aa2a5226aa5"
+      },
+      {
+        "file": "Data/Core/Defs/ThingDefs_Items/Items_Unfinished.xml",
+        "sha256": "e095396dad8a83421ff04e47010701cf56df67e4e00c0d25c1704a51fb8e3130"
+      },
+      {
+        "file": "Data/Core/Defs/RecipeDefs/Recipes_Meals.xml",
+        "sha256": "ecb025e0b521b2e174f3d8cecb7d0263a1c7310b957cf6d849d414361b566789"
+      },
+      {
+        "file": "Data/Core/Defs/RecipeDefs/Recipes_Butchery.xml",
+        "sha256": "2e0f002f060c4c775c3dbb072d2c57630961e9a0e9f68a591df761bc02782afb"
+      },
+      {
+        "file": "Data/Core/Defs/RecipeDefs/Recipes_Production.xml",
+        "sha256": "fc7697575fb2f716cb5be6045b02d6471aeeea9e768d08607099d54e3e114829"
+      },
+      {
+        "file": "Data/Core/Defs/Stats/Stats_Basics_General.xml",
+        "sha256": "c4d702421c19796993483ddd43f9869c54bb7afa1414232a568829ced5218d87"
+      }
+    ],
+    "projection": "Selected literal nodes and explicit Core ancestry only; not effective loaded mod/DLC Def database",
+    "recipeMappings": [
+      {
+        "webRecipe": "tuque",
+        "productDef": "Apparel_Tuque",
+        "generatedRecipe": "Make_Apparel_Tuque",
+        "unfinishedThingDef": "UnfinishedApparel",
+        "chain": [
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Headgear.xml",
+            "source_sha256": "d78950e38f1943fca6c956247e613c22d4095cf3a62605a1bc5870c5293e6938",
+            "defName": "Apparel_Tuque",
+            "name": "",
+            "parent": "HatMakeableBase",
+            "node_sha256": "4a34a4ca1817f3363ede5562f7a47f86f27c2a797d125c296685c642f968e36d",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Headgear.xml",
+            "source_sha256": "d78950e38f1943fca6c956247e613c22d4095cf3a62605a1bc5870c5293e6938",
+            "defName": null,
+            "name": "HatMakeableBase",
+            "parent": "ApparelMakeableBase",
+            "node_sha256": "c5fe6996d93e188ca7da97e72c0af04febf1a4629af674bdde60a970bbfe9bed",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ApparelMakeableBase",
+            "parent": "ApparelBase",
+            "node_sha256": "84b3bf0211e73380f15d7c2968dfa9a0c11ca04ff006f61ab690835dc9597e0c",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": true,
+            "value": "UnfinishedApparel",
+            "fieldInherit": "",
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ApparelBase",
+            "parent": "ApparelNoQualityBase",
+            "node_sha256": "5ef8b5cfa4422751b398e0946e5beb227884f6bc07f1a205b27b105cf0317337",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ApparelNoQualityBase",
+            "parent": "",
+            "node_sha256": "e833432127531943432b14cd07c03c9c13f45dc03499f22336ad7a0d112d2452",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          }
+        ]
+      },
+      {
+        "webRecipe": "parka",
+        "productDef": "Apparel_Parka",
+        "generatedRecipe": "Make_Apparel_Parka",
+        "unfinishedThingDef": "UnfinishedApparel",
+        "chain": [
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": "Apparel_Parka",
+            "name": "",
+            "parent": "ApparelMakeableBase",
+            "node_sha256": "1e925493d1423c03c30ddf4c9fe56550d51219501100722f158d29c12af6c193",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ApparelMakeableBase",
+            "parent": "ApparelBase",
+            "node_sha256": "84b3bf0211e73380f15d7c2968dfa9a0c11ca04ff006f61ab690835dc9597e0c",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": true,
+            "value": "UnfinishedApparel",
+            "fieldInherit": "",
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ApparelBase",
+            "parent": "ApparelNoQualityBase",
+            "node_sha256": "5ef8b5cfa4422751b398e0946e5beb227884f6bc07f1a205b27b105cf0317337",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ApparelNoQualityBase",
+            "parent": "",
+            "node_sha256": "e833432127531943432b14cd07c03c9c13f45dc03499f22336ad7a0d112d2452",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          }
+        ]
+      },
+      {
+        "webRecipe": "duster",
+        "productDef": "Apparel_Duster",
+        "generatedRecipe": "Make_Apparel_Duster",
+        "unfinishedThingDef": "UnfinishedApparel",
+        "chain": [
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": "Apparel_Duster",
+            "name": "",
+            "parent": "ApparelMakeableBase",
+            "node_sha256": "47b61cfe80b4cb201a8fcb9c46e3e576f8be62c032b604418f0713e038f130f6",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ApparelMakeableBase",
+            "parent": "ApparelBase",
+            "node_sha256": "84b3bf0211e73380f15d7c2968dfa9a0c11ca04ff006f61ab690835dc9597e0c",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": true,
+            "value": "UnfinishedApparel",
+            "fieldInherit": "",
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ApparelBase",
+            "parent": "ApparelNoQualityBase",
+            "node_sha256": "5ef8b5cfa4422751b398e0946e5beb227884f6bc07f1a205b27b105cf0317337",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ApparelNoQualityBase",
+            "parent": "",
+            "node_sha256": "e833432127531943432b14cd07c03c9c13f45dc03499f22336ad7a0d112d2452",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          }
+        ]
+      },
+      {
+        "webRecipe": "shirt",
+        "productDef": "Apparel_BasicShirt",
+        "generatedRecipe": "Make_Apparel_BasicShirt",
+        "unfinishedThingDef": "UnfinishedApparel",
+        "chain": [
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": "Apparel_BasicShirt",
+            "name": "",
+            "parent": "ApparelMakeableBase",
+            "node_sha256": "9567f57c35439a02605832c22a7faa6a8a071cb8ac1cc62b36e843929aa24cd2",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ApparelMakeableBase",
+            "parent": "ApparelBase",
+            "node_sha256": "84b3bf0211e73380f15d7c2968dfa9a0c11ca04ff006f61ab690835dc9597e0c",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": true,
+            "value": "UnfinishedApparel",
+            "fieldInherit": "",
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ApparelBase",
+            "parent": "ApparelNoQualityBase",
+            "node_sha256": "5ef8b5cfa4422751b398e0946e5beb227884f6bc07f1a205b27b105cf0317337",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ApparelNoQualityBase",
+            "parent": "",
+            "node_sha256": "e833432127531943432b14cd07c03c9c13f45dc03499f22336ad7a0d112d2452",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          }
+        ]
+      },
+      {
+        "webRecipe": "pants",
+        "productDef": "Apparel_Pants",
+        "generatedRecipe": "Make_Apparel_Pants",
+        "unfinishedThingDef": "UnfinishedApparel",
+        "chain": [
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": "Apparel_Pants",
+            "name": "",
+            "parent": "ApparelMakeableBase",
+            "node_sha256": "d553c72aaa9391d0a5a76b1dc8eeb255f837413c4ffbc75763c24fb930137436",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ApparelMakeableBase",
+            "parent": "ApparelBase",
+            "node_sha256": "84b3bf0211e73380f15d7c2968dfa9a0c11ca04ff006f61ab690835dc9597e0c",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": true,
+            "value": "UnfinishedApparel",
+            "fieldInherit": "",
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ApparelBase",
+            "parent": "ApparelNoQualityBase",
+            "node_sha256": "5ef8b5cfa4422751b398e0946e5beb227884f6bc07f1a205b27b105cf0317337",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ApparelNoQualityBase",
+            "parent": "",
+            "node_sha256": "e833432127531943432b14cd07c03c9c13f45dc03499f22336ad7a0d112d2452",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          }
+        ]
+      },
+      {
+        "webRecipe": "simpleHelmet",
+        "productDef": "Apparel_SimpleHelmet",
+        "generatedRecipe": "Make_Apparel_SimpleHelmet",
+        "unfinishedThingDef": "UnfinishedArmor",
+        "chain": [
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Headgear.xml",
+            "source_sha256": "d78950e38f1943fca6c956247e613c22d4095cf3a62605a1bc5870c5293e6938",
+            "defName": "Apparel_SimpleHelmet",
+            "name": "",
+            "parent": "ArmorHelmetMakeableBase",
+            "node_sha256": "c5ee1445c08524d1dcdbbd7c4222e86f24eee7e29e553de5619df1f4cf6fa471",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Headgear.xml",
+            "source_sha256": "d78950e38f1943fca6c956247e613c22d4095cf3a62605a1bc5870c5293e6938",
+            "defName": null,
+            "name": "ArmorHelmetMakeableBase",
+            "parent": "ArmorMachineableBase",
+            "node_sha256": "738a7dea9eba387c2f31ba11909cae988e0f63de8ba726f9fcd434f4b53214c0",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ArmorMachineableBase",
+            "parent": "ApparelBase",
+            "node_sha256": "6bc2d9013918c22bc598eb82e7541e2cc6831ead6793e95d3860478bc2867329",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": true,
+            "value": "UnfinishedArmor",
+            "fieldInherit": "",
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ApparelBase",
+            "parent": "ApparelNoQualityBase",
+            "node_sha256": "5ef8b5cfa4422751b398e0946e5beb227884f6bc07f1a205b27b105cf0317337",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ApparelNoQualityBase",
+            "parent": "",
+            "node_sha256": "e833432127531943432b14cd07c03c9c13f45dc03499f22336ad7a0d112d2452",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          }
+        ]
+      },
+      {
+        "webRecipe": "plateArmor",
+        "productDef": "Apparel_PlateArmor",
+        "generatedRecipe": "Make_Apparel_PlateArmor",
+        "unfinishedThingDef": "UnfinishedMetallicTechArmor",
+        "chain": [
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": "Apparel_PlateArmor",
+            "name": "",
+            "parent": "ArmorSmithableBase",
+            "node_sha256": "77f2ebcd9858f4ba9cbbde51132604152ca5c64156b3ad4fb463b2aaa8b51514",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": true,
+            "value": "UnfinishedMetallicTechArmor",
+            "fieldInherit": "",
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ArmorSmithableBase",
+            "parent": "ApparelBase",
+            "node_sha256": "d80e5371eb9635d347f1de063cd3264c654fe112bef943022d2a05408c600816",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ApparelBase",
+            "parent": "ApparelNoQualityBase",
+            "node_sha256": "5ef8b5cfa4422751b398e0946e5beb227884f6bc07f1a205b27b105cf0317337",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Apparel_Various.xml",
+            "source_sha256": "da7d4c4652d90792e3be2b233ac345e64d1a60b2ffcf8b50b763c2d45d269847",
+            "defName": null,
+            "name": "ApparelNoQualityBase",
+            "parent": "",
+            "node_sha256": "e833432127531943432b14cd07c03c9c13f45dc03499f22336ad7a0d112d2452",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          }
+        ]
+      },
+      {
+        "webRecipe": "woodClub",
+        "productDef": "MeleeWeapon_Club",
+        "generatedRecipe": "Make_MeleeWeapon_Club",
+        "unfinishedThingDef": "UnfinishedWeapon",
+        "chain": [
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/MeleeNeolithic.xml",
+            "source_sha256": "f62501c797dc94a34c26548d145436296297fd75ef06f6b65981509654643b61",
+            "defName": "MeleeWeapon_Club",
+            "name": "",
+            "parent": "BaseMeleeWeapon_Blunt",
+            "node_sha256": "ae6c3771f759a7c54b54c2a2d0e632678fef83bb205aaa96bde18760615aa6b0",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseMeleeWeapon_Blunt",
+            "parent": "BaseMeleeWeapon",
+            "node_sha256": "d2a6d20d60376c7c1193578304fef559beb1bd0e0fd025372aec1a28e7a4a28f",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseMeleeWeapon",
+            "parent": "BaseWeapon",
+            "node_sha256": "601f3856495b5ee6d573713347f6bbb6fa7daa244a348992e075c6a03b91880d",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": true,
+            "value": "UnfinishedWeapon",
+            "fieldInherit": "",
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseWeapon",
+            "parent": "",
+            "node_sha256": "51984f4b5792f73861a4380ade4508650b0f9d697d98b0fcd3191a89cd0c0cc0",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          }
+        ]
+      },
+      {
+        "webRecipe": "steelKnife",
+        "productDef": "MeleeWeapon_Knife",
+        "generatedRecipe": "Make_MeleeWeapon_Knife",
+        "unfinishedThingDef": "UnfinishedWeapon",
+        "chain": [
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/MeleeNeolithic.xml",
+            "source_sha256": "f62501c797dc94a34c26548d145436296297fd75ef06f6b65981509654643b61",
+            "defName": "MeleeWeapon_Knife",
+            "name": "",
+            "parent": "BaseMeleeWeapon_Sharp_Quality",
+            "node_sha256": "7fc18e1ca3ad606f63a9fc5894f3c89ad0ee203cd71b6b36e25a70efa54a9112",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseMeleeWeapon_Sharp_Quality",
+            "parent": "BaseMeleeWeapon_Sharp",
+            "node_sha256": "12d6dd707ef7a50a0987581c581e56a4a26b2a0dea099791abb6cfe6ecae2adf",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseMeleeWeapon_Sharp",
+            "parent": "BaseMeleeWeapon",
+            "node_sha256": "1c205b8706af995624a6637263fe36375aa6ee861b92bbb134026c5db39cc6d4",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseMeleeWeapon",
+            "parent": "BaseWeapon",
+            "node_sha256": "601f3856495b5ee6d573713347f6bbb6fa7daa244a348992e075c6a03b91880d",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": true,
+            "value": "UnfinishedWeapon",
+            "fieldInherit": "",
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseWeapon",
+            "parent": "",
+            "node_sha256": "51984f4b5792f73861a4380ade4508650b0f9d697d98b0fcd3191a89cd0c0cc0",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          }
+        ]
+      },
+      {
+        "webRecipe": "steelLongsword",
+        "productDef": "MeleeWeapon_LongSword",
+        "generatedRecipe": "Make_MeleeWeapon_LongSword",
+        "unfinishedThingDef": "UnfinishedWeapon",
+        "chain": [
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/MeleeMedieval.xml",
+            "source_sha256": "29048e27b162d78c80015bd6e54f83f4d2b4783b01ec7341c11e1b7eeb735c96",
+            "defName": "MeleeWeapon_LongSword",
+            "name": "",
+            "parent": "BaseMeleeWeapon_Sharp_Quality",
+            "node_sha256": "a563033155f5bdddf7ad3592c9f1db4f5f9235682947dbb20273dbac94c89cda",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseMeleeWeapon_Sharp_Quality",
+            "parent": "BaseMeleeWeapon_Sharp",
+            "node_sha256": "12d6dd707ef7a50a0987581c581e56a4a26b2a0dea099791abb6cfe6ecae2adf",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseMeleeWeapon_Sharp",
+            "parent": "BaseMeleeWeapon",
+            "node_sha256": "1c205b8706af995624a6637263fe36375aa6ee861b92bbb134026c5db39cc6d4",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseMeleeWeapon",
+            "parent": "BaseWeapon",
+            "node_sha256": "601f3856495b5ee6d573713347f6bbb6fa7daa244a348992e075c6a03b91880d",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": true,
+            "value": "UnfinishedWeapon",
+            "fieldInherit": "",
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseWeapon",
+            "parent": "",
+            "node_sha256": "51984f4b5792f73861a4380ade4508650b0f9d697d98b0fcd3191a89cd0c0cc0",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          }
+        ]
+      },
+      {
+        "webRecipe": "shortBow",
+        "productDef": "Bow_Short",
+        "generatedRecipe": "Make_Bow_Short",
+        "unfinishedThingDef": "UnfinishedWeapon",
+        "chain": [
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/RangedNeolithic.xml",
+            "source_sha256": "6177df52167d26e8f4eba6a83c8a1cc7eb705f8f4d34aa790169320b3acac4bb",
+            "defName": "Bow_Short",
+            "name": "",
+            "parent": "BaseWeaponNeolithic",
+            "node_sha256": "3f339199a5b913f026bb3fdff78e856289e981fa401799f613bc729f5c46f586",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/RangedNeolithic.xml",
+            "source_sha256": "6177df52167d26e8f4eba6a83c8a1cc7eb705f8f4d34aa790169320b3acac4bb",
+            "defName": null,
+            "name": "BaseWeaponNeolithic",
+            "parent": "BaseWeapon",
+            "node_sha256": "3a07fe7a3e388c0aa77b6efd8985600b336b46a18fba23aafd2f056029ec580b",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": true,
+            "value": "UnfinishedWeapon",
+            "fieldInherit": "",
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseWeapon",
+            "parent": "",
+            "node_sha256": "51984f4b5792f73861a4380ade4508650b0f9d697d98b0fcd3191a89cd0c0cc0",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          }
+        ]
+      },
+      {
+        "webRecipe": "revolver",
+        "productDef": "Gun_Revolver",
+        "generatedRecipe": "Make_Gun_Revolver",
+        "unfinishedThingDef": "UnfinishedGun",
+        "chain": [
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/RangedIndustrial.xml",
+            "source_sha256": "761318b920a1bd459cb6955705766414fbb7b5a8a58513c646702aa2a5226aa5",
+            "defName": "Gun_Revolver",
+            "name": "Gun_Revolver",
+            "parent": "BaseHumanMakeableGun",
+            "node_sha256": "551e1fd64161b8eac2380618dd6bb376aceead066a9c07ab3b8741af299b1b84",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseHumanMakeableGun",
+            "parent": "BaseMakeableGun",
+            "node_sha256": "72aab813b6e623d156481f9eae61311b23fb60e0aa2bca6c03bdb81cb04ceb53",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseMakeableGun",
+            "parent": "BaseGunWithQuality",
+            "node_sha256": "5099ce4e89a38a240d8ffdc5c0826032a9800937a4ec17699ab77757cc324fed",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": true,
+            "value": "UnfinishedGun",
+            "fieldInherit": "",
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseGunWithQuality",
+            "parent": "BaseGun",
+            "node_sha256": "4e0d594f2c7cbc4066ceae1f2b162b2f18e91af9b99c6b8d59f83af0b494f9ef",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseGun",
+            "parent": "BaseWeapon",
+            "node_sha256": "86f17ddc0388e0adc06614c72b38c494e087533f56eadc696b5fd7524852b352",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseWeapon",
+            "parent": "",
+            "node_sha256": "51984f4b5792f73861a4380ade4508650b0f9d697d98b0fcd3191a89cd0c0cc0",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          }
+        ]
+      },
+      {
+        "webRecipe": "machinePistol",
+        "productDef": "Gun_MachinePistol",
+        "generatedRecipe": "Make_Gun_MachinePistol",
+        "unfinishedThingDef": "UnfinishedGun",
+        "chain": [
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/RangedIndustrial.xml",
+            "source_sha256": "761318b920a1bd459cb6955705766414fbb7b5a8a58513c646702aa2a5226aa5",
+            "defName": "Gun_MachinePistol",
+            "name": "",
+            "parent": "BaseHumanMakeableGun",
+            "node_sha256": "250cb0d439520b6edb04c9269e0a9c94cd8f323192deec4ac94eb26803147faa",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseHumanMakeableGun",
+            "parent": "BaseMakeableGun",
+            "node_sha256": "72aab813b6e623d156481f9eae61311b23fb60e0aa2bca6c03bdb81cb04ceb53",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseMakeableGun",
+            "parent": "BaseGunWithQuality",
+            "node_sha256": "5099ce4e89a38a240d8ffdc5c0826032a9800937a4ec17699ab77757cc324fed",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": true,
+            "value": "UnfinishedGun",
+            "fieldInherit": "",
+            "containerInherit": ""
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseGunWithQuality",
+            "parent": "BaseGun",
+            "node_sha256": "4e0d594f2c7cbc4066ceae1f2b162b2f18e91af9b99c6b8d59f83af0b494f9ef",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseGun",
+            "parent": "BaseWeapon",
+            "node_sha256": "86f17ddc0388e0adc06614c72b38c494e087533f56eadc696b5fd7524852b352",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          },
+          {
+            "file": "Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml",
+            "source_sha256": "db07467327633fceaa2de5225e7f90db386ff874545c05faa313683ecab0c107",
+            "defName": null,
+            "name": "BaseWeapon",
+            "parent": "",
+            "node_sha256": "51984f4b5792f73861a4380ade4508650b0f9d697d98b0fcd3191a89cd0c0cc0",
+            "field": "recipeMaker/unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          }
+        ]
+      }
+    ],
+    "recipesWithoutUftDeclaration": [
+      {
+        "recipe": "CookMealSimple",
+        "unfinishedThingDef": null,
+        "chain": [
+          {
+            "file": "Data/Core/Defs/RecipeDefs/Recipes_Meals.xml",
+            "source_sha256": "ecb025e0b521b2e174f3d8cecb7d0263a1c7310b957cf6d849d414361b566789",
+            "defName": "CookMealSimple",
+            "name": "",
+            "parent": "CookMealBase",
+            "node_sha256": "56b2fb64844a14d58404cee6a739119c7ff4ae3e614e5cbf3bcca7caeab48a83",
+            "field": "unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          },
+          {
+            "file": "Data/Core/Defs/RecipeDefs/Recipes_Meals.xml",
+            "source_sha256": "ecb025e0b521b2e174f3d8cecb7d0263a1c7310b957cf6d849d414361b566789",
+            "defName": null,
+            "name": "CookMealBase",
+            "parent": "",
+            "node_sha256": "7b78aedbfaebd5e4912e45a025b1ac99333c719249f2656b9c83ac0f892b64e3",
+            "field": "unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          }
+        ]
+      },
+      {
+        "recipe": "ButcherCorpseFlesh",
+        "unfinishedThingDef": null,
+        "chain": [
+          {
+            "file": "Data/Core/Defs/RecipeDefs/Recipes_Butchery.xml",
+            "source_sha256": "2e0f002f060c4c775c3dbb072d2c57630961e9a0e9f68a591df761bc02782afb",
+            "defName": "ButcherCorpseFlesh",
+            "name": "",
+            "parent": "",
+            "node_sha256": "3eada62978942affa390d725db6151a2fdc032f0a427a77f611de41d01a0c8a5",
+            "field": "unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          }
+        ]
+      },
+      {
+        "recipe": "Make_StoneBlocksAny",
+        "unfinishedThingDef": null,
+        "chain": [
+          {
+            "file": "Data/Core/Defs/RecipeDefs/Recipes_Production.xml",
+            "source_sha256": "fc7697575fb2f716cb5be6045b02d6471aeeea9e768d08607099d54e3e114829",
+            "defName": "Make_StoneBlocksAny",
+            "name": "",
+            "parent": "MakeStoneBlocksBase",
+            "node_sha256": "0ed8acc078768285e93bbd5d06cf2ac30878e5927914d08b14798bddc8c90590",
+            "field": "unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          },
+          {
+            "file": "Data/Core/Defs/RecipeDefs/Recipes_Production.xml",
+            "source_sha256": "fc7697575fb2f716cb5be6045b02d6471aeeea9e768d08607099d54e3e114829",
+            "defName": null,
+            "name": "MakeStoneBlocksBase",
+            "parent": "",
+            "node_sha256": "06a476cba58b12bdb76bb039f918a8c97789cb2ee3dba01cf49c014352d28a8b",
+            "field": "unfinishedThingDef",
+            "present": false,
+            "value": null,
+            "fieldInherit": null,
+            "containerInherit": null
+          }
+        ]
+      }
+    ],
+    "unfinishedDefinitions": [
+      {
+        "name": "UnfinishedBase",
+        "parent": "",
+        "node_sha256": "b8b65fabf39d2318c46842bdbcd337060a04dd8b7e74b96da93431a6ca809926",
+        "fields": {
+          "thingClass": {
+            "xml": "UnfinishedThing",
+            "inherit": ""
+          },
+          "category": {
+            "xml": "Item",
+            "inherit": ""
+          },
+          "useHitPoints": {
+            "xml": "true",
+            "inherit": ""
+          },
+          "isUnfinishedThing": {
+            "xml": "true",
+            "inherit": ""
+          },
+          "selectable": {
+            "xml": "true",
+            "inherit": ""
+          },
+          "tradeability": {
+            "xml": "None",
+            "inherit": ""
+          },
+          "statBases": {
+            "xml": "<MaxHitPoints>50</MaxHitPoints><DeteriorationRate>2.0</DeteriorationRate><Beauty>-8</Beauty><Mass>1</Mass><!-- ingredients are added to this value -->",
+            "inherit": ""
+          },
+          "comps": {
+            "xml": "<li Class=\"CompProperties_Forbiddable\" /><li Class=\"CompProperties_Styleable\" />",
+            "inherit": ""
+          },
+          "alwaysHaulable": {
+            "xml": "true",
+            "inherit": ""
+          },
+          "stuffCategories": {
+            "xml": "<li>Metallic</li><li>Woody</li><li>Stony</li>",
+            "inherit": ""
+          }
+        }
+      },
+      {
+        "name": "",
+        "parent": "UnfinishedBase",
+        "node_sha256": "92c0176589763f3c0af5b024c404fb69bb0dbd6ebe1fa13ed367dd0c0470bed5",
+        "fields": {
+          "defName": {
+            "xml": "UnfinishedGun",
+            "inherit": ""
+          },
+          "statBases": {
+            "xml": "<Flammability>0.5</Flammability>",
+            "inherit": ""
+          },
+          "stuffCategories": {
+            "xml": "",
+            "inherit": "false"
+          }
+        }
+      },
+      {
+        "name": "",
+        "parent": "UnfinishedBase",
+        "node_sha256": "43a89522108b201aec2c71d12386c067570c95ca5783ce34e2a82171b24d769d",
+        "fields": {
+          "defName": {
+            "xml": "UnfinishedWeapon",
+            "inherit": ""
+          },
+          "stuffCategories": {
+            "xml": "<li>Metallic</li><li>Woody</li><li>Stony</li>",
+            "inherit": ""
+          }
+        }
+      },
+      {
+        "name": "",
+        "parent": "UnfinishedBase",
+        "node_sha256": "dda5e5ff84f95607182163e89a9c59359df50b220f6a966ffd7abf8fb117510f",
+        "fields": {
+          "defName": {
+            "xml": "UnfinishedArmor",
+            "inherit": ""
+          },
+          "stuffCategories": {
+            "xml": "<li>Metallic</li><li>Woody</li><li>Stony</li>",
+            "inherit": ""
+          }
+        }
+      },
+      {
+        "name": "UnfinishedTechArmor",
+        "parent": "UnfinishedBase",
+        "node_sha256": "9933ea62a19c381fbe3934184c92b0094ecada585c984e6e9bf219e9aec0e033",
+        "fields": {
+          "defName": {
+            "xml": "UnfinishedTechArmor",
+            "inherit": ""
+          },
+          "statBases": {
+            "xml": "<Flammability>0.4</Flammability>",
+            "inherit": ""
+          },
+          "stuffCategories": {
+            "xml": "",
+            "inherit": "false"
+          }
+        }
+      },
+      {
+        "name": "",
+        "parent": "UnfinishedTechArmor",
+        "node_sha256": "e3af8c8467538c01d90decc1d3ac041b424244c2c30f3377c220110e0610f69b",
+        "fields": {
+          "defName": {
+            "xml": "UnfinishedMetallicTechArmor",
+            "inherit": ""
+          },
+          "stuffCategories": {
+            "xml": "<li>Metallic</li><li>Woody</li>",
+            "inherit": ""
+          }
+        }
+      },
+      {
+        "name": "",
+        "parent": "UnfinishedBase",
+        "node_sha256": "efec196d546736d56888af547f17238ab17dfff338636e214ca1bdedafc42b35",
+        "fields": {
+          "defName": {
+            "xml": "UnfinishedApparel",
+            "inherit": ""
+          },
+          "comps": {
+            "xml": "<li><compClass>CompColorable</compClass></li>",
+            "inherit": ""
+          },
+          "stuffCategories": {
+            "xml": "<li>Fabric</li><li>Leathery</li><li>Metallic</li>",
+            "inherit": ""
+          }
+        }
+      }
+    ],
+    "massStatPart": "<li Class=\"StatPart_UnfinishedThingIngredientsMass\" />"
+  },
+  "claims": [
+    {
+      "id": "UFT01",
+      "finding": "RecipeDef.UsesUnfinishedThing is unfinishedThingDef != null. BillUtility selects Bill_ProductionWithUft for this case. Generated item recipes copy recipeMaker.unfinishedThingDef; selected Core chains map all13 current Web apparel/weapon recipes to a UFT, with PlateArmor overriding to UnfinishedMetallicTechArmor. Selected cooking/butchery/stone base recipes have no such declaration.",
+      "sources": [
+        {
+          "group": "food",
+          "type": "Verse.RecipeDef",
+          "file": ".local-research/food/Verse.RecipeDef.cs",
+          "sha256": "9a12df678ba67743d3574e9ebfb866d07c2f918cfdd1f42c75d15ae8b5727132",
+          "lines": [
+            355,
+            365
+          ],
+          "excerpt_sha256": "9f6835e4b7cbf1bdae8cd786ed5f9b832894e2e56d87056897435ea38bdb107a"
+        },
+        {
+          "group": "unfinished-production",
+          "type": "RimWorld.BillUtility",
+          "file": ".local-research/unfinished-production/RimWorld.BillUtility.cs",
+          "sha256": "0af714aea9a102c45e14b060af0d477f7a361c6c5762c077eb16e1f4d19fa279",
+          "lines": [
+            35,
+            54
+          ],
+          "excerpt_sha256": "4a1b7dd183af0e13cdc056b9f3962e54d6775df6f07ac4dbcc79b9fe676ab1cc"
+        },
+        {
+          "group": "apparel",
+          "type": "RimWorld.RecipeDefGenerator",
+          "file": ".local-research/apparel/RimWorld.RecipeDefGenerator.cs",
+          "sha256": "bf8ff9929fbbd1beb92721f21ff3c10e91b4f5531764b7bc56f8c86befe1c3ef",
+          "lines": [
+            28,
+            85
+          ],
+          "excerpt_sha256": "591813edf15cbea0c7777b64270b6238c76e0bfb80df3178d89576a20745abb0"
+        },
+        {
+          "group": "apparel",
+          "type": "Verse.RecipeMakerProperties",
+          "file": ".local-research/apparel/Verse.RecipeMakerProperties.cs",
+          "sha256": "0643b5b9d91ca8494111c0109fae3e73512fd043c89e1643e52472e453e2037b",
+          "lines": [
+            20,
+            28
+          ],
+          "excerpt_sha256": "2b52645d1da1a832922281aa738bb49b21f881ef8d3c8b9c4f063d7ef3af7bb1"
+        }
+      ]
+    },
+    {
+      "id": "UFT02",
+      "finding": "UnfinishedThing is a separate ThingWithComps with creator reference, cached creatorName, recipe, deeply serialized List<Thing> ingredients, bound bill and workLeft. It is not merely bill-local progress. The declaration does not implement IThingHolder. Creator setter rejects null; missing loaded references are separate from the cached name.",
+      "sources": [
+        {
+          "group": "weapons",
+          "type": "Verse.UnfinishedThing",
+          "file": ".local-research/weapons/Verse.UnfinishedThing.cs",
+          "sha256": "10d275ee4842391fd15f07e8cc4c29d1fb17f5c69b6c50a230525cb6716159c9",
+          "lines": [
+            8,
+            43
+          ],
+          "excerpt_sha256": "daadf516cf4fb282a11a8294e9399d04e10f43d0b50db570bda8fa91842e4d97"
+        },
+        {
+          "group": "weapons",
+          "type": "Verse.UnfinishedThing",
+          "file": ".local-research/weapons/Verse.UnfinishedThing.cs",
+          "sha256": "10d275ee4842391fd15f07e8cc4c29d1fb17f5c69b6c50a230525cb6716159c9",
+          "lines": [
+            136,
+            151
+          ],
+          "excerpt_sha256": "b486925bfd97b321488f28765bfaf42ad0075b789b162e1c450167997e340246"
+        }
+      ]
+    },
+    {
+      "id": "UFT03",
+      "finding": "After ingredient collection and reaching the table, MakeUnfinishedThingIfNeeded splits exact placed counts, clears designations, despawns ingredient Things and puts the list into one new UFT. It sets creator, reciprocal bill binding, workLeft and dominant-material/color, spawns at targetA cell, assigns targetB and reserves it. An existing targetB UFT skips creation.",
+      "sources": [
+        {
+          "group": "food",
+          "type": "Verse.AI.JobDriver_DoBill",
+          "file": ".local-research/food/Verse.AI.JobDriver_DoBill.cs",
+          "sha256": "d3641323932ebd795266548bc23f996d74868b2ac7ade766d41604123aa3e9c9",
+          "lines": [
+            90,
+            112
+          ],
+          "excerpt_sha256": "c50ff3bb80aede6fae462dccd796ba3176c210c49779a9ef92c2015fe7e17c2d"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            11,
+            40
+          ],
+          "excerpt_sha256": "716bd7bd2bc00e9650129007308fe1bb5e933e1f3539e29a53cbc17191ce163b"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            309,
+            343
+          ],
+          "excerpt_sha256": "4992cacbf0a21377f3f60e28fecbdd0c6f02c89ec58d97be1c889e57cb3863fb"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            346,
+            367
+          ],
+          "excerpt_sha256": "a47a6ef15771c207ea9e8363eaf817bb08049a6ab62bd1926547ef997add0a77"
+        }
+      ]
+    },
+    {
+      "id": "UFT04",
+      "finding": "DoRecipeWork restores initialized UFT.workLeft and mirrors remaining work on each work interval. UFT sentinel starts at-10000, Initialized is >-5000. A new non-UFT work start initializes the full bill amount, but JobDriver_DoBill.ExposeData still saves workLeft, billStartTick and ticksSpentDoingRecipeWork: restarting a job and loading the same active job are different cases.",
+      "sources": [
+        {
+          "group": "weapons",
+          "type": "Verse.UnfinishedThing",
+          "file": ".local-research/weapons/Verse.UnfinishedThing.cs",
+          "sha256": "10d275ee4842391fd15f07e8cc4c29d1fb17f5c69b6c50a230525cb6716159c9",
+          "lines": [
+            20,
+            24
+          ],
+          "excerpt_sha256": "07cb5f25cde41fc48f188aa544fe77611bab741ce8ef0292f914f48dfdc2c86c"
+        },
+        {
+          "group": "weapons",
+          "type": "Verse.UnfinishedThing",
+          "file": ".local-research/weapons/Verse.UnfinishedThing.cs",
+          "sha256": "10d275ee4842391fd15f07e8cc4c29d1fb17f5c69b6c50a230525cb6716159c9",
+          "lines": [
+            136,
+            151
+          ],
+          "excerpt_sha256": "b486925bfd97b321488f28765bfaf42ad0075b789b162e1c450167997e340246"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            43,
+            75
+          ],
+          "excerpt_sha256": "a26879429e24a2f4160d5b8407b168bad9a9b57f6423d373b7ca66c7b02c3121"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            90,
+            153
+          ],
+          "excerpt_sha256": "dfefd016d82953d17936e237f82c2c37434f126b56e24de67b686ebab1dee589"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.JobDriver_DoBill",
+          "file": ".local-research/food/Verse.AI.JobDriver_DoBill.cs",
+          "sha256": "d3641323932ebd795266548bc23f996d74868b2ac7ade766d41604123aa3e9c9",
+          "lines": [
+            42,
+            51
+          ],
+          "excerpt_sha256": "d6018cbb6bb79517ca29e12d200d34e10a009a1741b786ae317771cec0f64f9a"
+        }
+      ]
+    },
+    {
+      "id": "UFT05",
+      "finding": "FinishUftJob requires the original Creator. After optional obstruction hauling, new DoBill targets the UFT with count1; job initialization rebinds that UFT to its selected bill before hauling. This consumes the existing independent work item rather than collecting a new recipe batch.",
+      "sources": [
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            168,
+            185
+          ],
+          "excerpt_sha256": "7456bbc9baae5452db2d855041ff1137baf61d17a176a5db9d9f0831db92678f"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.JobDriver_DoBill",
+          "file": ".local-research/food/Verse.AI.JobDriver_DoBill.cs",
+          "sha256": "d3641323932ebd795266548bc23f996d74868b2ac7ade766d41604123aa3e9c9",
+          "lines": [
+            69,
+            112
+          ],
+          "excerpt_sha256": "bbb609ff4bcaab3246deacd51a566e98c990c040b898cf472f691186119329b3"
+        }
+      ]
+    },
+    {
+      "id": "UFT06",
+      "finding": "ClosestUnfinishedThingForBill has NO BoundBill==null requirement. For a bill without its own bound UFT it finds reachable, reservable, nonforbidden same-recipe/same-creator UFT whose ingredient Defs pass fixed-or-allowed, from pawn with max9999. It may select one bound to another bill; reciprocal rebinding clears the old link. This permits compatible-table continuation and is not a hard creation-bench lock.",
+      "sources": [
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            162,
+            185
+          ],
+          "excerpt_sha256": "c72675e100b3b7b5036dabb6052aad0397b438cfee151f6af02c12fc86924a2f"
+        },
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            223,
+            238
+          ],
+          "excerpt_sha256": "9c4734e666c901b11ad866175b94c354e3aa715311bc703f558e5afde9b200d6"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.JobDriver_DoBill",
+          "file": ".local-research/food/Verse.AI.JobDriver_DoBill.cs",
+          "sha256": "d3641323932ebd795266548bc23f996d74868b2ac7ade766d41604123aa3e9c9",
+          "lines": [
+            84,
+            96
+          ],
+          "excerpt_sha256": "62abdb3cfb9c5e92f8a0a38dd77acf3ce01cccba65d4da37010608814bb8878b"
+        },
+        {
+          "group": "weapons",
+          "type": "Verse.UnfinishedThing",
+          "file": ".local-research/weapons/Verse.UnfinishedThing.cs",
+          "sha256": "10d275ee4842391fd15f07e8cc4c29d1fb17f5c69b6c50a230525cb6716159c9",
+          "lines": [
+            46,
+            92
+          ],
+          "excerpt_sha256": "3ee96f1470cd70adf8d4f7cc47e644e14402c9e11cf6e919ad21141ca96e3e72"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Bill_ProductionWithUft",
+          "file": ".local-research/production-bills/RimWorld.Bill_ProductionWithUft.cs",
+          "sha256": "0a33089036c5c215241295e1b158d419b1e1574e8799b2a5a306cab785c4df05",
+          "lines": [
+            58,
+            81
+          ],
+          "excerpt_sha256": "a243a317b15fb2e6a84279b0b2b2165233af89b85ca242bb1d7f4553b25e062d"
+        }
+      ]
+    },
+    {
+      "id": "UFT07",
+      "finding": "Bound continuation checks BoundWorker==pawn, touch reach/reservation with Danger.Deadly and not forbidden, without the search branch ingredient Def re-filter. Outer ShouldDoNow, allowed-worker and hard recipe skill checks still precede both paths. Changing named worker does not transfer UFT Creator; outer worker and bound-author checks can block both people.",
+      "sources": [
+        {
+          "group": "work",
+          "type": "RimWorld.WorkGiver_DoBill",
+          "file": ".local-research/work/RimWorld.WorkGiver_DoBill.cs",
+          "sha256": "a365ea7fb96ff59d2e4488c886b106679198e01dc3967a45f41a7db9c26fccdc",
+          "lines": [
+            189,
+            238
+          ],
+          "excerpt_sha256": "c73e4d778a0b84246202b6447faf66e1a14d8c12b9591b81d10f78de6862eb37"
+        },
+        {
+          "group": "food",
+          "type": "RimWorld.Bill",
+          "file": ".local-research/food/RimWorld.Bill.cs",
+          "sha256": "11d4a59e1feadd84d17e182e845d5feb7aae7b9da9cb86b6750409fc12a46c2c",
+          "lines": [
+            234,
+            272
+          ],
+          "excerpt_sha256": "2f0c8ece05b8bc57260503c1f72f205ea2724c1f2e2fe8dfeda81990f4790c09"
+        }
+      ]
+    },
+    {
+      "id": "UFT08",
+      "finding": "BoundWorker lazily drops the bill-side pointer if creator is missing/downed/hosted/destroyed/unspawned or its applicable work type is inactive. UFT.BoundBill lazily clears an invalid/deleted/nonreciprocal link. Neither operation appoints another creator; cached author survives independently.",
+      "sources": [
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Bill_ProductionWithUft",
+          "file": ".local-research/production-bills/RimWorld.Bill_ProductionWithUft.cs",
+          "sha256": "0a33089036c5c215241295e1b158d419b1e1574e8799b2a5a306cab785c4df05",
+          "lines": [
+            22,
+            55
+          ],
+          "excerpt_sha256": "67c2721bc5ff201481dc9efe8408c55d82e8ac8881d2f1be968d0df6234382a0"
+        },
+        {
+          "group": "weapons",
+          "type": "Verse.UnfinishedThing",
+          "file": ".local-research/weapons/Verse.UnfinishedThing.cs",
+          "sha256": "10d275ee4842391fd15f07e8cc4c29d1fb17f5c69b6c50a230525cb6716159c9",
+          "lines": [
+            46,
+            77
+          ],
+          "excerpt_sha256": "6a6d71be387057d06d3802644725fe1f7f935da3962d1fa334be8c4826f7213d"
+        },
+        {
+          "group": "weapons",
+          "type": "Verse.UnfinishedThing",
+          "file": ".local-research/weapons/Verse.UnfinishedThing.cs",
+          "sha256": "10d275ee4842391fd15f07e8cc4c29d1fb17f5c69b6c50a230525cb6716159c9",
+          "lines": [
+            136,
+            151
+          ],
+          "excerpt_sha256": "b486925bfd97b321488f28765bfaf42ad0075b789b162e1c450167997e340246"
+        }
+      ]
+    },
+    {
+      "id": "UFT09",
+      "finding": "Suspension explicitly fails work; deletion/dereference/unusable table and despawned target can fail the job. BillStack.Delete removes and marks the bill; ordinary Building_WorkTable.Notify_BillDeleted is empty. UFT keeps recipe/creator/ingredients/workLeft while invalid binding is cleared lazily or during save. Deleting a bill is not UFT Cancel.",
+      "sources": [
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            149,
+            165
+          ],
+          "excerpt_sha256": "cfa8c187489dd9c4983a1bb5d459768b571321b3749be4768af864fbe507a615"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.JobDriver_DoBill",
+          "file": ".local-research/food/Verse.AI.JobDriver_DoBill.cs",
+          "sha256": "d3641323932ebd795266548bc23f996d74868b2ac7ade766d41604123aa3e9c9",
+          "lines": [
+            69,
+            83
+          ],
+          "excerpt_sha256": "2536aec87f646f5454ff249ee9dda3f1dbde6ffcead217f82322d0b634e37efc"
+        },
+        {
+          "group": "food",
+          "type": "RimWorld.Bill",
+          "file": ".local-research/food/RimWorld.Bill.cs",
+          "sha256": "11d4a59e1feadd84d17e182e845d5feb7aae7b9da9cb86b6750409fc12a46c2c",
+          "lines": [
+            111,
+            125
+          ],
+          "excerpt_sha256": "82b228dd73caecc3e9d88a60a1459c73b36ef51c4ba6be022692e3bf352bd345"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.BillStack",
+          "file": ".local-research/production-bills/RimWorld.BillStack.cs",
+          "sha256": "9f435cbff0aa2793e0f6596b952d7e7fefaf22ad26195d46da04a5e1306c1f14",
+          "lines": [
+            75,
+            80
+          ],
+          "excerpt_sha256": "0f90beaad8efab6cc1e9e7a1b6082171cf9d467f8e56cec0ed2091fc5241dbb8"
+        },
+        {
+          "group": "stonecutting",
+          "type": "RimWorld.Building_WorkTable",
+          "file": ".local-research/stonecutting/RimWorld.Building_WorkTable.cs",
+          "sha256": "93950a425067412ffbd0caaa8b3471ef584d02096beec027cf21f630bc5fba19",
+          "lines": [
+            116,
+            118
+          ],
+          "excerpt_sha256": "53312869ebd59dc3ff22ef824dd9f507ce9b06cbdd75399ea98f4a0c4e5ed628"
+        },
+        {
+          "group": "weapons",
+          "type": "Verse.UnfinishedThing",
+          "file": ".local-research/weapons/Verse.UnfinishedThing.cs",
+          "sha256": "10d275ee4842391fd15f07e8cc4c29d1fb17f5c69b6c50a230525cb6716159c9",
+          "lines": [
+            136,
+            170
+          ],
+          "excerpt_sha256": "9ff5c1961be9377b092c26d09f24d27e8fcc5f146724532c6dd428ce4211e607"
+        }
+      ]
+    },
+    {
+      "id": "UFT10",
+      "finding": "At completion CalculateIngredients takes the existing UFT ingredients list then calls recipe.Worker.ConsumeIngredient(UFT); default worker destroys it with Vanish. Product generation uses the retained ingredients and dominant material, then consumes ingredients and notifies the completed iteration. Completion clears bill boundUft. Clone does not copy boundUft.",
+      "sources": [
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            180,
+            200
+          ],
+          "excerpt_sha256": "64d64ab65df9af1055cd7678237a0dc66a5542fdfe1c9afcda4c269b43dc8446"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            301,
+            307
+          ],
+          "excerpt_sha256": "aec5bb08c52e854966f97c822c01b943a8dfabd105424cc39d99e1647add55d2"
+        },
+        {
+          "group": "food",
+          "type": "Verse.AI.Toils_Recipe",
+          "file": ".local-research/food/Verse.AI.Toils_Recipe.cs",
+          "sha256": "b27f1a7b2e65bacfca735a6b192a70346b837f468383f75a63bde22fd16993f4",
+          "lines": [
+            346,
+            376
+          ],
+          "excerpt_sha256": "1fbec0b8583e4e27a6abee2ddef55ad69205cd9f1d123612e4d2797c2a8df8c9"
+        },
+        {
+          "group": "food",
+          "type": "Verse.RecipeWorker",
+          "file": ".local-research/food/Verse.RecipeWorker.cs",
+          "sha256": "02bf3a5747e4f099fb524a8cd93bfd88ecd43451ba61e24bdee3d8734d6ec993",
+          "lines": [
+            44,
+            47
+          ],
+          "excerpt_sha256": "f53eea2d1560a05a84d7cf3e1fcd7f1f282afac425fd5ee958b3b03ba8840d2b"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Bill_ProductionWithUft",
+          "file": ".local-research/production-bills/RimWorld.Bill_ProductionWithUft.cs",
+          "sha256": "0a33089036c5c215241295e1b158d419b1e1574e8799b2a5a306cab785c4df05",
+          "lines": [
+            95,
+            115
+          ],
+          "excerpt_sha256": "a1431517d5750de8b16c6e0f2bb99461a37147e8283d98b83088fb953e50a7c9"
+        }
+      ]
+    },
+    {
+      "id": "UFT11",
+      "finding": "The normal UFT Cancel gizmo calls Destroy(Cancel). Only this UFT branch rounds each ingredient stack with GenMath.RoundRandom(stackCount*0.75), attempts placement near the UFT, clears ingredients, destroys the item and clears binding. Per-stack random rounding is not floor of a pooled total, and nearby placement is attempted rather than universally guaranteed.",
+      "sources": [
+        {
+          "group": "weapons",
+          "type": "Verse.UnfinishedThing",
+          "file": ".local-research/weapons/Verse.UnfinishedThing.cs",
+          "sha256": "10d275ee4842391fd15f07e8cc4c29d1fb17f5c69b6c50a230525cb6716159c9",
+          "lines": [
+            153,
+            186
+          ],
+          "excerpt_sha256": "f6a9953f1f5bcec10a7e996666477cfacbfba6570a3e8c8a0cb5de71a1fe7db3"
+        }
+      ]
+    },
+    {
+      "id": "UFT12",
+      "finding": "Ordinary Vanish/Kill destruction does not run UFT Cancel recovery. Generic GenLeaving exits for Vanish/QuestLogic; construction-resource recovery excludes non-Building Things. UFT Core definitions are Item and the selected chains declare no killedLeavings. This is not a claim that every modded UFT can never yield any configured leavings.",
+      "sources": [
+        {
+          "group": "weapons",
+          "type": "Verse.UnfinishedThing",
+          "file": ".local-research/weapons/Verse.UnfinishedThing.cs",
+          "sha256": "10d275ee4842391fd15f07e8cc4c29d1fb17f5c69b6c50a230525cb6716159c9",
+          "lines": [
+            153,
+            170
+          ],
+          "excerpt_sha256": "46e0c3b8ec8629dc052d3492c6b35acf1e3f0c5573cc25ab68c7fd2fd512b812"
+        },
+        {
+          "group": "food",
+          "type": "Verse.Thing",
+          "file": ".local-research/food/Verse.Thing.cs",
+          "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+          "lines": [
+            1038,
+            1100
+          ],
+          "excerpt_sha256": "51b42dc92afd208609b80872b5ebe1250b023ce1d43fe5107ac6b629893b31a7"
+        },
+        {
+          "group": "unfinished-production",
+          "type": "RimWorld.GenLeaving",
+          "file": ".local-research/unfinished-production/RimWorld.GenLeaving.cs",
+          "sha256": "177b177252c667af8f8d61e3c6fd9447e8503cad5115b89fa343c415ad7c11cd",
+          "lines": [
+            28,
+            46
+          ],
+          "excerpt_sha256": "72e562c13ac558f30e7e2f243cd482907a8386243541fbf0434e027c1123ea21"
+        },
+        {
+          "group": "unfinished-production",
+          "type": "RimWorld.GenLeaving",
+          "file": ".local-research/unfinished-production/RimWorld.GenLeaving.cs",
+          "sha256": "177b177252c667af8f8d61e3c6fd9447e8503cad5115b89fa343c415ad7c11cd",
+          "lines": [
+            280,
+            303
+          ],
+          "excerpt_sha256": "1fe24a849ea677595b0eb2dfbe26583a740766c03c3e8ba1467f511f4934e087"
+        }
+      ]
+    },
+    {
+      "id": "UFT13",
+      "finding": "UFT is selectable/alwaysHaulable with hit points and forbidding component in selected XML. An inspected auto-haul path protects a UFT bound to the first ShouldDoNow bill near its spawned building or nonbuilding bill giver. Haul-aside excludes bound table interaction/occupied cells. These scoped rules do not mean UFT is universally immovable.",
+      "sources": [
+        {
+          "group": "work",
+          "type": "Verse.AI.HaulAIUtility",
+          "file": ".local-research/work/Verse.AI.HaulAIUtility.cs",
+          "sha256": "6276e39bb2fd29fc5989b84bc2424fc65b26e4cfcfd74b673d3686eec7d5ae59",
+          "lines": [
+            80,
+            107
+          ],
+          "excerpt_sha256": "07293f4d712ca673d55df5623786215bbed5abcd4537c0d76dfcf014184816da"
+        },
+        {
+          "group": "work",
+          "type": "Verse.AI.HaulAIUtility",
+          "file": ".local-research/work/Verse.AI.HaulAIUtility.cs",
+          "sha256": "6276e39bb2fd29fc5989b84bc2424fc65b26e4cfcfd74b673d3686eec7d5ae59",
+          "lines": [
+            313,
+            327
+          ],
+          "excerpt_sha256": "a408b9d747a2f45926fd4cb877ae4cfd2930b21032c1bd2a209bd66c3610d8b1"
+        }
+      ]
+    },
+    {
+      "id": "UFT14",
+      "finding": "UFT and bill persist reciprocal references; UFT persists creator reference/name, recipe, workLeft and each ingredient deeply. When saving, deleted/dereferenced bill reference is cleared. Inspect text displays cached Author and WorkLeft; selection overlay links to the currently bound table. These are separate from save-wide identity or unrelated job continuity.",
+      "sources": [
+        {
+          "group": "weapons",
+          "type": "Verse.UnfinishedThing",
+          "file": ".local-research/weapons/Verse.UnfinishedThing.cs",
+          "sha256": "10d275ee4842391fd15f07e8cc4c29d1fb17f5c69b6c50a230525cb6716159c9",
+          "lines": [
+            136,
+            151
+          ],
+          "excerpt_sha256": "b486925bfd97b321488f28765bfaf42ad0075b789b162e1c450167997e340246"
+        },
+        {
+          "group": "production-bills",
+          "type": "RimWorld.Bill_ProductionWithUft",
+          "file": ".local-research/production-bills/RimWorld.Bill_ProductionWithUft.cs",
+          "sha256": "0a33089036c5c215241295e1b158d419b1e1574e8799b2a5a306cab785c4df05",
+          "lines": [
+            95,
+            109
+          ],
+          "excerpt_sha256": "cd48ef5927e5b0a217e8757170da6f778e02a4d5a66d022c046efac269b62c4f"
+        },
+        {
+          "group": "weapons",
+          "type": "Verse.UnfinishedThing",
+          "file": ".local-research/weapons/Verse.UnfinishedThing.cs",
+          "sha256": "10d275ee4842391fd15f07e8cc4c29d1fb17f5c69b6c50a230525cb6716159c9",
+          "lines": [
+            216,
+            238
+          ],
+          "excerpt_sha256": "87c0e8c96b659bb69de77105ce011646f5e61b866c3be3acba89b1b3fd4c5055"
+        }
+      ]
+    },
+    {
+      "id": "UFT15",
+      "finding": "Selected UnfinishedBase declares base MaxHitPoints50, DeteriorationRate2, Beauty-8 and Mass1; material/stat processing may modify final values. Mass stat includes StatPart_UnfinishedThingIngredientsMass, adding each ingredient GetStatValue(Mass)*stackCount. UnfinishedGun declares Flammability0.5 and clears stuffCategories inheritance. No uniform final HP across materials is asserted.",
+      "sources": [
+        {
+          "group": "unfinished-production",
+          "type": "RimWorld.StatPart_UnfinishedThingIngredientsMass",
+          "file": ".local-research/unfinished-production/RimWorld.StatPart_UnfinishedThingIngredientsMass.cs",
+          "sha256": "24a49ca143c8788caa199de00ded87fbf61b2e940f1b5baa82529941d5d7ddeb",
+          "lines": [
+            5,
+            39
+          ],
+          "excerpt_sha256": "6850417bcf691f11b6d57662b3a7b15057cee44b8fe9a9e2b91bd9d03db42442"
+        }
+      ]
+    },
+    {
+      "id": "UFT16",
+      "finding": "Inspected StatWorker_MarketValue has general cost/work/stuff/comp handling, not a confirmed UFT-ingredients valuation rule. This scope does not close UFT final market value or colony wealth aggregation. Web material-cost valuation must remain an explicit adaptation, not a claimed native formula.",
+      "sources": [
+        {
+          "group": "unfinished-production",
+          "type": "RimWorld.StatWorker_MarketValue",
+          "file": ".local-research/unfinished-production/RimWorld.StatWorker_MarketValue.cs",
+          "sha256": "e47a2c46fa51be66ebe01e9b287f90416557bbedad6b139d7a7c97fa35dd7902",
+          "lines": [
+            14,
+            125
+          ],
+          "excerpt_sha256": "7ce61cc0993062b321d083dc0434071913b45fbe5a481e15a958fd11c38367e0"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Derived C# is not original source; unresolved decompiler dependencies are tolerated.",
+    "The search branch has no unbound-only requirement; previous chapter120 wording is superseded by UFT06.",
+    "No blanket claim that non-UFT jobs lose progress across save/load: same job driver saves progress.",
+    "Final UFT market value and colony wealth are unresolved; XML base stats are not universally final stats.",
+    "Native runtime evidence is separate and limited to one unfinished wooden club at one crafting spot.",
+    "REA target-framework metadata is literal metadata, not proof of the runtime used by the game."
+  ]
+}

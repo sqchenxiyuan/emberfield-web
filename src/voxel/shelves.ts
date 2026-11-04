@@ -39,6 +39,9 @@ export function validStorageSettings(value: unknown): value is StorageSettings {
 /** Historical packed carcasses have no growth record. Missing size uses adult
  * size conservatively; fresh carcasses freeze their actual life-stage size. */
 export function shelfAllows(batch: Pick<Cargo, 'resource' | 'carcass'>): boolean {
+  // A UFT is one ordinary haulable item; its enclosed ingredients do not occupy
+  // extra shelf slots. The shelf's unfinished filter is checked by its caller.
+  if (batch.resource === 'unfinished') return true;
   if (batch.resource === 'chunk' || batch.resource === 'furniture') return false;
   if (batch.resource !== 'carcass') return true;
   return !!batch.carcass && (batch.carcass.bodySize ?? (batch.carcass.species === 'hare' ? .2 : 1.2)) < .75;

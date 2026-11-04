@@ -1,3 +1,4 @@
+import { stripUnfinishedFields } from './legacy-unfinished-defaults';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { Block, at, index, type Device, type Pawn, type Pos, type VoxelSave } from '../src/voxel/types';
@@ -195,7 +196,7 @@ describe('strict fire save contracts', () => {
     const saved = s.save(); mutate(saved); expect(() => VoxelSimulation.load(saved)).toThrow();
   });
   it('rejects fire fields smuggled into a pre-fire version before migrations insert defaults', () => {
-    const s = fixture().save() as any; s.version = 25;
+    const s = fixture().save() as any; stripUnfinishedFields(s); s.version = 25;
     expect(() => VoxelSimulation.load(s)).toThrow(/旧版本包含新版/);
   });
 });

@@ -1,3 +1,4 @@
+import { unfinishedExpectedField } from './legacy-unfinished-defaults';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -23,9 +24,9 @@ describe('v36 exploration persistence',()=>{
     const old=historical(),before=structuredClone(old),generate=vi.spyOn(worldgen,'generateWorld');
     const sim=VoxelSimulation.load(old),saved=sim.save();
     expect(old).toEqual(before);expect(generate).not.toHaveBeenCalled();
-    expect(saved.version).toBe(40);expect(saved.explored).toHaveLength(CELLS);expect(saved.explored.every(v=>v===1)).toBe(true);
+    expect(saved.version).toBe(41);expect(saved.explored).toHaveLength(CELLS);expect(saved.explored.every(v=>v===1)).toBe(true);
     for(const key of ['generator','worldSite','seed','settings','tick','nextId','blocks','ladders','items','stats','stockpiles'] as const)
-      expect(saved[key],key).toEqual(old[key]);
+      expect(saved[key],key).toEqual(unfinishedExpectedField(key,old[key]));
     const jobs=(values:any[])=>values.map(({reason,owner,...j})=>j);
     expect(jobs(saved.jobs)).toEqual(jobs(old.jobs));expect(saved.jobs.some(j=>j.kind==='mine' && j.progress>0)).toBe(true);
     expect(sim.snapshot().exploration).toEqual({known:CELLS,total:CELLS});

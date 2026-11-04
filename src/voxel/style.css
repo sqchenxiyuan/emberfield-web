@@ -2011,3 +2011,18 @@ a {
 .voxel-production-bills .voxel-production-policy-warning,
 .voxel-production-row[data-bill-state='ingredients'] .voxel-production-row-title > span { color: #e5bc85; }
 .voxel-production-policy-timing { padding-top: 6px; border-top: 1px solid #d5deca33; }
+.voxel-unfinished { margin: 10px 0; padding: 10px; border: 1px solid #97b4a766; border-radius: 4px; background: #1b303066; min-width: 0; overflow-wrap: anywhere; }
+.voxel-unfinished > small, .voxel-unfinished-materials small, .voxel-unfinished-cancel small { display: block; margin: 6px 0; font-size: 11px; line-height: 1.6; color: #bccbbd; }
+.voxel-unfinished .voxel-unfinished-status { color: #e4ce95; }
+.voxel-unfinished-progress { margin: 10px 0; }
+.voxel-unfinished-progress > div { display: flex; justify-content: space-between; gap: 8px; font-size: 11px; }
+.voxel-unfinished-progress progress { width: 100%; height: 6px; accent-color: #a4b996; }
+.voxel-unfinished-materials { padding-top: 8px; border-top: 1px solid #b8c9b333; font-size: 11px; }
+.voxel-unfinished-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.voxel-unfinished-actions button { flex: 1 1 auto; padding: 7px; font-size: 11px; }
+.voxel-unfinished[data-forbidden='true'] { border-color: #cd827277; }
+.voxel-unfinished-cancel { padding-top: 8px; margin-top: 10px; border-top: 1px solid #b8c9b333; }
+.voxel-unfinished-cancel summary { cursor: pointer; font-size: 11px; color: #d4bd9e; }
+.voxel-unfinished-cancel button { width: 100%; margin-top: 6px; }
+.voxel-production-unfinished { padding: 8px; border: 1px solid #97b4a744; border-radius: 3px; }
+.voxel-production-row[data-bill-state='unfinished'] .voxel-production-row-title > span { color: #e5ca86; }
