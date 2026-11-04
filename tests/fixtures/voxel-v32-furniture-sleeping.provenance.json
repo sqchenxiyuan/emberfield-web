@@ -1,0 +1,962 @@
+{
+  "source": "test-results/voxel-v32-furniture-baseline/sleeping.json",
+  "sourceVersion": 32,
+  "sourceCommit": "857a810b1ad73864c3c71d2d4c56a343e1981876",
+  "sourceArchiveSha256": "4265f87ac9c31ea06bc786c733fef4395242483713ed4a1fd249c0df466c2dd4",
+  "sha256": "ee0de7d0886835a1de2bbe7a739c2d65110842814d5a8f1d91c29ad6b1bbaf32",
+  "sourceTick": 5455,
+  "campaignExecution": {
+    "bundleSha256": "b7f89c08432727efbc0564a7fa96c913af1b588a10d57dfa185f6138e3a53d50",
+    "scriptSha256": "2b8d5628df9d531f34128c94ae0b046b020129ad3b708307c979b364a675e9db",
+    "sourceManifestSha256": "56c1e92e86d5d7d0982518d4656f21e50e0c0ddadfaa162404e287f2f6459f48"
+  },
+  "extension": {
+    "sourceCommit": "857a810b1ad73864c3c71d2d4c56a343e1981876",
+    "inputSha256": "cb97b38ca75173c148627f1890266bf1effca352c71971ed627baa5de299f6eb",
+    "bundleSha256": "b7f89c08432727efbc0564a7fa96c913af1b588a10d57dfa185f6138e3a53d50",
+    "scriptSha256": "f511d1c3309aa7397f7d6a4294104a9b9848753dcfaaf26acfa5aabb54239b57",
+    "outputSha256": "ee0de7d0886835a1de2bbe7a739c2d65110842814d5a8f1d91c29ad6b1bbaf32",
+    "initialTick": 5301,
+    "finalTick": 5455,
+    "commands": [
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 0,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "0:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 1,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "1:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 2,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "2:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 3,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "3:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 4,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "4:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 5,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "5:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 6,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "6:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 7,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "7:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 8,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "8:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 9,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "9:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 10,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "10:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 11,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "11:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 12,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "12:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 13,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "13:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 14,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "14:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 15,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "15:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 16,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "16:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 17,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "17:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 18,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "18:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 19,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "19:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 20,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "20:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 21,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "21:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 22,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "22:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 451,
+          "hour": 23,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "23:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 0,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "0:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 1,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "1:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 2,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "2:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 3,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "3:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 4,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "4:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 5,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "5:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 6,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "6:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 7,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "7:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 8,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "8:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 9,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "9:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 10,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "10:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 11,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "11:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 12,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "12:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 13,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "13:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 14,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "14:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 15,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "15:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 16,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "16:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 17,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "17:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 18,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "18:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 19,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "19:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 20,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "20:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 21,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "21:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 22,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "22:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 452,
+          "hour": 23,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "23:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 0,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "0:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 1,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "1:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 2,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "2:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 3,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "3:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 4,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "4:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 5,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "5:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 6,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "6:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 7,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "7:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 8,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "8:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 9,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "9:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 10,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "10:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 11,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "11:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 12,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "12:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 13,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "13:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 14,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "14:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 15,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "15:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 16,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "16:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 17,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "17:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 18,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "18:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 19,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "19:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 20,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "20:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 21,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "21:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 22,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "22:00 作息已更新"
+        }
+      },
+      {
+        "tick": 5301,
+        "command": {
+          "type": "schedule",
+          "pawnId": 453,
+          "hour": 23,
+          "assignment": "sleep"
+        },
+        "result": {
+          "ok": true,
+          "message": "23:00 作息已更新"
+        }
+      }
+    ],
+    "scope": "Load the genuine freshly generated v32 meal snapshot into its archived published v32 bundle, issue only public sleep schedules, and advance ordinary ticks until a real bed is used. No position, needs, time, furniture, HP, quality or RNG injection."
+  },
+  "note": "Exact v32 bytes from published-bundle public sleep continuation; no fields modified."
+}

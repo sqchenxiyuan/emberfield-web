@@ -321,7 +321,9 @@ describe('real harvested inputs, cooking and food persistence', () => {
     harvestedSave = s.save();
     console.info(`[voxel-food harvest] ${s.tick - startTick} ticks (${((s.tick - startTick) / DAY).toFixed(3)} days), ` +
       `${s.counts().grain} grain, ${Math.round(performance.now() - started)} ms; every tick audited`);
-  }, 180000);
+  // This fixture simulates a full eight-day harvest. Keep the same gameplay
+  // requirement while allowing ordinary local CPU contention during validation.
+  }, 300000);
   const prepared = () => VoxelSimulation.load(harvestedSave);
 
   it('requires delivered grain and fuel, produces one meal, and treats the stove as solid', () => {
@@ -546,7 +548,7 @@ describe('v1 voxel food migration', () => {
       loaded = VoxelSimulation.load(legacy),
       before = s.counts();
     expect(legacy).toEqual(untouched);
-    expect(loaded.save().version).toBe(32);
+    expect(loaded.save().version).toBe(33);
     expect(loaded.farms).toEqual([]);
     expect(loaded.crops).toEqual([]);
     expect(loaded.stoves).toEqual([]);

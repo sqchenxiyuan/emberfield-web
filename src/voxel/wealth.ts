@@ -16,6 +16,8 @@ import type { WealthTotals } from './storytellerRules';
 import { ANIMAL_DEFS } from './wildlife';
 import { HORSESHOE_COST, HORSESHOE_WORK } from './recreation';
 import { batchHpFraction } from './deterioration';
+import { isFurnitureKind, isFurnitureQuality, type FurnitureKind } from './furniture';
+import type { ApparelQuality } from './types';
 
 /** Core 1.7 selected full-HP resource prices, except provisional meat=2.
  * Carcasses use their species' meat yield below; deposits/plants are not items. */
@@ -131,6 +133,15 @@ export const CONSTRUCTION_SOURCE_WORK_FACTOR = 3;
 export function constructedMarketValue(cost: Readonly<Partial<Counts>>, work: number): number {
   return finalizeMarketValue(rawMadeValue(cost, work * CONSTRUCTION_SOURCE_WORK_FACTOR));
 }
+/** Use the existing material/work base, then native quality and condition in
+ * that order, rounding once. Rooms use actual HP; colony building wealth uses
+ * MarketValueIgnoreHp, represented by leaving hpFraction at its full-HP default. */
+export function furnitureMarketValue(kind: FurnitureKind, quality: ApparelQuality, hpFraction = 1): number {
+  if (!isFurnitureKind(kind) || !isFurnitureQuality(quality) || !Number.isFinite(hpFraction) || hpFraction < 0 || hpFraction > 1)
+    throw new RangeError('家具价值类型、品质或耐久比例无效');
+  const recipe = kind === 'bed' ? { cost: { wood: 45 }, work: 187 } : LIVING_BUILDINGS[kind];
+  return itemMarketValue(rawMadeValue(recipe.cost, recipe.work * CONSTRUCTION_SOURCE_WORK_FACTOR), quality, hpFraction);
+}
 export function structureMarketValue(material: 'wood' | 'stone', kind: 'floor' | 'wallHalf' | 'legacyUnknown'): number {
   if (kind === 'floor') return material === 'wood'
     ? constructedMarketValue({ wood: 3 }, 45)
@@ -187,9 +198,11 @@ export function colonyWealthDetails(sim: VoxelSimulation): WealthDetails {
   const add = (count: number, cost: Readonly<Partial<Counts>>, work: number) => {
     buildingSources.facilities += count * constructedMarketValue(cost, work);
   };
-  add(sim.tables.length, LIVING_BUILDINGS.table.cost, LIVING_BUILDINGS.table.work);
-  add(sim.chairs.length, LIVING_BUILDINGS.chair.cost, LIVING_BUILDINGS.chair.work);
-  add(sim.beds.length, { wood: 45 }, 187);
+  // Native WealthWatcher uses MarketValueIgnoreHp for completed buildings.
+  // Damage changes room/inspection value, but cannot lower raid wealth.
+  for (const [kind, objects] of [['bed', sim.beds], ['table', sim.tables], ['chair', sim.chairs]] as const)
+    for (const object of objects)
+      buildingSources.facilities += furnitureMarketValue(kind, object.quality);
   add(sim.doors.length, { wood: 25 }, 199);
   add(sim.stoves.length, { wood: 20 }, 120);
   add(sim.stonecutters.length, STONECUTTER_COST, STONECUTTER_WORK);

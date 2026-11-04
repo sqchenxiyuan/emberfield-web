@@ -1,0 +1,454 @@
+{
+  "evidence_id": "RW17-FURNITURE-QUALITY-MECHANISMS",
+  "date_local": "2026-11-04",
+  "version_text": "1.7.4980 rev60",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "kind": "Static derived C# and shipped Core XML, ordinary native case separately documented",
+  "manifests": [
+    "furniture-quality",
+    "weapons",
+    "armor",
+    "skills",
+    "housing",
+    "storyteller",
+    "anatomy",
+    "economy",
+    "environment",
+    "energy"
+  ],
+  "claims": [
+    {
+      "id": "FQ01",
+      "finding": "Only furniture with inherited CompQuality gets a quality roll. Bed, DiningChair and Table1x2c have the component; HorseshoesPin has none. TryGetQuality returns false with Normal output for no component; StatRequest uses this computational fallback without adding a quality component.",
+      "sources": [
+        {
+          "file": ".local-research/weapons/RimWorld.QualityUtility.cs",
+          "sha256": "5405ad9826ffab0e283ce40bb11529a1f2f9a17dc7766aa8a24efd6c977e8821",
+          "lines": [
+            1,
+            372
+          ]
+        },
+        {
+          "file": ".local-research/furniture-quality/RimWorld.StatRequest.cs",
+          "sha256": "80182f036ca037ef77d377f1a2d90bd41788341e33272b46ddd58055726bff41",
+          "lines": [
+            54,
+            98
+          ]
+        }
+      ],
+      "xml": [
+        "FQX01",
+        "FQX02",
+        "FQX03"
+      ]
+    },
+    {
+      "id": "FQ02",
+      "finding": "Ordinary FinishFrame reserves an accessible player frame with materials and valid skills. Work increments ConstructionSpeed*1.7*delta, with Stuff ConstructionSpeedFactor; Construction XP .25*delta when resources and skills exist. Failure check is independent of quality: 1-pow(ConstructSuccessChance, workIncrement/workRequired).",
+      "sources": [
+        {
+          "file": ".local-research/skills/RimWorld.JobDriver_ConstructFinishFrame.cs",
+          "sha256": "e62e8a4546b450eab544166f2a2c45a9318b3a462155f9d9337959ac75212373",
+          "lines": [
+            1,
+            90
+          ]
+        },
+        {
+          "file": ".local-research/anatomy/RimWorld.WorkGiver_ConstructFinishFrames.cs",
+          "sha256": "9f8019bb9f315462413fbf4aafcb6e46881cdf0dedec68836a066f7e1e9b9042",
+          "lines": [
+            1,
+            45
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "FQ03",
+      "finding": "On workDone>=WorkToBuild, CompleteConstruction(actor) creates the finished thing and sets quality once using that finishing actor current Construction skill. It destroys frame resources, handles art, inherits ceil(frameHP/frameMaxHP*finishedMaxHP), spawns the result and increments ThingsConstructed. It is not the planner or mean contributor skill.",
+      "sources": [
+        {
+          "file": ".local-research/storyteller/RimWorld.Frame.cs",
+          "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+          "lines": [
+            262,
+            375
+          ]
+        },
+        {
+          "file": ".local-research/skills/RimWorld.JobDriver_ConstructFinishFrame.cs",
+          "sha256": "e62e8a4546b450eab544166f2a2c45a9318b3a462155f9d9337959ac75212373",
+          "lines": [
+            39,
+            80
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "FQ04",
+      "finding": "Quality uses skill-level centers, asymmetric Gaussian .6/.8, integer truncation and clamp0..5; a rolled Masterwork has50% reroll using .6/.95. Inspired_Creativity adds2 capped6; pawn overload can consume inspiration. Mech skill and ideology production-role offset are separate branches. No exact probability table is inferred.",
+      "sources": [
+        {
+          "file": ".local-research/weapons/RimWorld.QualityUtility.cs",
+          "sha256": "5405ad9826ffab0e283ce40bb11529a1f2f9a17dc7766aa8a24efd6c977e8821",
+          "lines": [
+            160,
+            267
+          ]
+        }
+      ],
+      "xml": []
+    },
+    {
+      "id": "FQ05",
+      "finding": "CompQuality runtime field starts Normal but serialized missing quality defaults Awful. Existing saved quality persists; SetQuality also handles art and post-quality callbacks. Missing quality on a thing without CompQuality means no quality, not Awful.",
+      "sources": [
+        {
+          "file": ".local-research/armor/RimWorld.CompQuality.cs",
+          "sha256": "e07103ce60d82c815919c0726d577f41bb8a46a9c932be2eee5c37c48af255bc",
+          "lines": [
+            1,
+            54
+          ]
+        }
+      ],
+      "xml": [
+        "FQX02",
+        "FQX03"
+      ]
+    },
+    {
+      "id": "FQ06",
+      "finding": "CompArt records authorName only when CanShowArt is true. Bed and DiningChair inherit minimum artistic quality Excellent. Poor beds therefore need not retain creator name or pawn ID. Finished-actor attribution can use before-job and after-construction evidence; a web craftedBy field would be additional provenance.",
+      "sources": [
+        {
+          "file": ".local-research/furniture-quality/RimWorld.CompArt.cs",
+          "sha256": "8a83193ec7926babdb098df8224ce0ea6830e3b3baf8adb90aa3cdc250b8998d",
+          "lines": [
+            48,
+            61
+          ]
+        },
+        {
+          "file": ".local-research/furniture-quality/RimWorld.CompArt.cs",
+          "sha256": "8a83193ec7926babdb098df8224ce0ea6830e3b3baf8adb90aa3cdc250b8998d",
+          "lines": [
+            124,
+            154
+          ]
+        },
+        {
+          "file": ".local-research/storyteller/RimWorld.Frame.cs",
+          "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+          "lines": [
+            291,
+            308
+          ]
+        }
+      ],
+      "xml": [
+        "FQX02"
+      ]
+    },
+    {
+      "id": "FQ07",
+      "finding": "MaxHitPoints has no Quality part. Wood factor .65 yields Bed91, DiningChair65, Table1x2c49 and HorseshoesPin49 after integer rounding. Frame health is separate and finished health preserves its fraction with ceiling.",
+      "sources": [
+        {
+          "file": ".local-research/housing/RimWorld.StatWorker.cs",
+          "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+          "lines": [
+            800,
+            835
+          ]
+        },
+        {
+          "file": ".local-research/storyteller/RimWorld.Frame.cs",
+          "sha256": "217487cdf961231343784de7f05141c4d9d4b933a18d41dba9655b6e804c98fc",
+          "lines": [
+            314,
+            324
+          ]
+        }
+      ],
+      "xml": [
+        "FQX01",
+        "FQX02",
+        "FQX03",
+        "FQX04",
+        "FQX05"
+      ]
+    },
+    {
+      "id": "FQ08",
+      "finding": "Comfort factors Awful..Legendary .76,.88,1,1.12,1.24,1.45,1.7 multiply bed .75 or chair .70. Table/pin define no comfort. Stat quality transforms only positive inputs by default, with min(multiplier gain,maxGain). Furniture comfort above1 is distinct from a need-level cap.",
+      "sources": [
+        {
+          "file": ".local-research/housing/RimWorld.StatPart_Quality.cs",
+          "sha256": "3b80ea8e8f92ffce05a05631972d7f948e0acaa03c3ceeb4d484ecfab72339e0",
+          "lines": [
+            1,
+            97
+          ]
+        }
+      ],
+      "xml": [
+        "FQX02",
+        "FQX04"
+      ]
+    },
+    {
+      "id": "FQ09",
+      "finding": "BedRestEffectiveness factors .86,.92,1,1.08,1.14,1.25,1.6 multiply bed base1. Stat min .4; valueIfMissing .8 is not the bed base. These are rest gain multipliers, not directly hours saved.",
+      "sources": [
+        {
+          "file": ".local-research/housing/RimWorld.StatPart_Quality.cs",
+          "sha256": "3b80ea8e8f92ffce05a05631972d7f948e0acaa03c3ceeb4d484ecfab72339e0",
+          "lines": [
+            1,
+            97
+          ]
+        }
+      ],
+      "xml": [
+        "FQX02",
+        "FQX06"
+      ]
+    },
+    {
+      "id": "FQ10",
+      "finding": "Beauty base bed1,chair8,table.5,pin missing=>0. Factors -.1,.5,1,2,3,5,8 apply to positive base values; final Mathf.RoundToInt means .5 rounds to even0. Quality does not make an undefined zero beautiful.",
+      "sources": [
+        {
+          "file": ".local-research/housing/RimWorld.StatPart_Quality.cs",
+          "sha256": "3b80ea8e8f92ffce05a05631972d7f948e0acaa03c3ceeb4d484ecfab72339e0",
+          "lines": [
+            1,
+            97
+          ]
+        },
+        {
+          "file": ".local-research/housing/RimWorld.StatWorker.cs",
+          "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+          "lines": [
+            800,
+            835
+          ]
+        }
+      ],
+      "xml": [
+        "FQX02",
+        "FQX03",
+        "FQX04",
+        "FQX05"
+      ]
+    },
+    {
+      "id": "FQ11",
+      "finding": "Stuff-built furniture base market value is material amount*stuff market value/VolumePerUnit plus .0036*max(WorkToBuild,WorkToMake) when work>2, divided by productCount. Wood WorkToBuild factor.7 gives bed560; value=54+2.016=56.016 before quality. UI formatted money is not full precision.",
+      "sources": [
+        {
+          "file": ".local-research/storyteller/RimWorld.StatWorker_MarketValue.cs",
+          "sha256": "e47a2c46fa51be66ebe01e9b287f90416557bbedad6b139d7a7c97fa35dd7902",
+          "lines": [
+            54,
+            96
+          ]
+        },
+        {
+          "file": ".local-research/energy/Verse.ThingDef.cs",
+          "sha256": "8c5905396d4378058ea852d97398e20f749b3befc122399b9ba16773e0d40988",
+          "lines": [
+            460,
+            471
+          ]
+        },
+        {
+          "file": ".local-research/storyteller/RimWorld.StatWorker_MarketValue.cs",
+          "sha256": "e47a2c46fa51be66ebe01e9b287f90416557bbedad6b139d7a7c97fa35dd7902",
+          "lines": [
+            99,
+            120
+          ]
+        }
+      ],
+      "xml": [
+        "FQX02",
+        "FQX05",
+        "FQX07",
+        "FQX08",
+        "FQX06"
+      ]
+    },
+    {
+      "id": "FQ12",
+      "finding": "Market quality factors .5,.75,1,1.25,1.5,2.5,5; positive gain caps Good500,Excellent1000,Masterwork2000,Legendary3000. MarketValue additionally uses health curve(0,0),(.5,.1),(.6,.5),(.9,1), but MarketValueIgnoreHp does not. Final values over200 round to a multiple of5.",
+      "sources": [
+        {
+          "file": ".local-research/housing/RimWorld.StatPart_Quality.cs",
+          "sha256": "3b80ea8e8f92ffce05a05631972d7f948e0acaa03c3ceeb4d484ecfab72339e0",
+          "lines": [
+            1,
+            97
+          ]
+        },
+        {
+          "file": ".local-research/housing/RimWorld.StatWorker.cs",
+          "sha256": "eb901cc8eefe1e689faa1d101c185cdd422d85ef67663c1ed9869f75a8739f3f",
+          "lines": [
+            800,
+            835
+          ]
+        }
+      ],
+      "xml": [
+        "FQX04"
+      ]
+    },
+    {
+      "id": "FQ13",
+      "finding": "WealthWatcher colony building wealth uses MarketValueIgnoreHp; RoomStatWorker_Wealth uses ordinary thing.MarketValue. Both can reflect quality, but only the latter reflects current damage. A new quality roll can affect storyteller wealth without a general damage discount to building wealth.",
+      "sources": [
+        {
+          "file": ".local-research/economy/RimWorld.WealthWatcher.cs",
+          "sha256": "273dce0c7b6c6e598d68e60164f1cdb9e8d82fb3108f498e9b14330a529bfa33",
+          "lines": [
+            1,
+            262
+          ]
+        },
+        {
+          "file": ".local-research/environment/RimWorld.RoomStatWorker_Wealth.cs",
+          "sha256": "e0225a654f3a31e3875caade64b3e56544c60a22f5886fd459c7c283d373db87",
+          "lines": [
+            1,
+            26
+          ]
+        }
+      ],
+      "xml": [
+        "FQX04"
+      ]
+    }
+  ],
+  "xml": [
+    {
+      "id": "FQX01",
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Base.xml",
+      "source_sha256": "b16e3a7934febd9ffb7883f18392d524ba376c9657da4c788d1951552f86d142",
+      "xpath": "/Defs/ThingDef[@Name=\"BuildingBase\"]",
+      "projection": "Original attributes and selected gameplay children; full ancestry retained for four furniture and wood",
+      "nodes": [
+        "<ThingDef Name=\"BuildingBase\" Abstract=\"True\"><thingClass>Building</thingClass><statBases><SellPriceFactor>0.70</SellPriceFactor></statBases></ThingDef>"
+      ]
+    },
+    {
+      "id": "FQX02",
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml",
+      "source_sha256": "cea362ca9451f0762f8a104b2344bd540b5f6e8663dd9a4e75f3c39b46607c55",
+      "xpath": "/Defs/ThingDef[@Name=\"FurnitureBase\" or @Name=\"FurnitureWithQualityBase\" or @Name=\"ArtableFurnitureBase\" or @Name=\"TableBase\" or @Name=\"TableGatherSpotBase\" or @Name=\"BedBase\" or @Name=\"BedWithQualityBase\" or @Name=\"ArtableBedBase\" or @Name=\"SansComfortBedBase\" or @Name=\"BasicBedBase\" or defName=\"Bed\" or defName=\"DiningChair\" or defName=\"Table1x2c\"]",
+      "projection": "Original attributes and selected gameplay children; full ancestry retained for four furniture and wood",
+      "nodes": [
+        "<ThingDef Name=\"FurnitureBase\" ParentName=\"BuildingBase\" Abstract=\"True\"></ThingDef>",
+        "<ThingDef Name=\"FurnitureWithQualityBase\" ParentName=\"FurnitureBase\" Abstract=\"True\"><comps><li><compClass>CompQuality</compClass></li></comps></ThingDef>",
+        "<ThingDef Name=\"ArtableFurnitureBase\" ParentName=\"FurnitureWithQualityBase\" Abstract=\"True\"><comps><li Class=\"CompProperties_Art\"><nameMaker>NamerArtFurniture</nameMaker><descriptionMaker>ArtDescription_Furniture</descriptionMaker><minQualityForArtistic>Excellent</minQualityForArtistic></li></comps></ThingDef>",
+        "<ThingDef ParentName=\"FurnitureBase\" Name=\"BedBase\" Abstract=\"True\"><thingClass>Building_Bed</thingClass><comps><li Class=\"CompProperties_AssignableToPawn\"><drawAssignmentOverlay>false</drawAssignmentOverlay><compClass>CompAssignableToPawn_Bed</compClass></li></comps></ThingDef>",
+        "<ThingDef Name=\"BedWithQualityBase\" ParentName=\"BedBase\" Abstract=\"True\"><comps><li><compClass>CompQuality</compClass></li></comps></ThingDef>",
+        "<ThingDef Name=\"ArtableBedBase\" ParentName=\"BedWithQualityBase\" Abstract=\"True\"><comps><li Class=\"CompProperties_Art\"><nameMaker>NamerArtFurniture</nameMaker><descriptionMaker>ArtDescription_Furniture</descriptionMaker><minQualityForArtistic>Excellent</minQualityForArtistic></li></comps></ThingDef>",
+        "<ThingDef Name=\"SansComfortBedBase\" ParentName=\"ArtableBedBase\" Abstract=\"True\"><statBases><Flammability>1.0</Flammability><ImmunityGainSpeedFactor>1.07</ImmunityGainSpeedFactor><SurgerySuccessChanceFactor>1</SurgerySuccessChanceFactor><BirthRitualQualityOffset MayRequire=\"Ludeon.RimWorld.Biotech\">2</BirthRitualQualityOffset></statBases></ThingDef>",
+        "<ThingDef Name=\"BasicBedBase\" ParentName=\"SansComfortBedBase\" Abstract=\"True\"><comps><li Class=\"CompProperties_AffectedByFacilities\"><linkableFacilities><li>EndTable</li><li>Dresser</li><li MayRequire=\"Ludeon.RimWorld.Ideology\">SleepAccelerator</li></linkableFacilities></li></comps><statBases><Comfort>0.75</Comfort></statBases></ThingDef>",
+        "<ThingDef ParentName=\"BasicBedBase\" Name=\"Bed\"><defName>Bed</defName><statBases><MaxHitPoints>140</MaxHitPoints><Beauty>1</Beauty><WorkToBuild>800</WorkToBuild><Mass>30</Mass><BedRestEffectiveness>1</BedRestEffectiveness></statBases><size>(1,2)</size><costStuffCount>45</costStuffCount></ThingDef>",
+        "<ThingDef ParentName=\"ArtableFurnitureBase\"><defName>DiningChair</defName><statBases><MaxHitPoints>100</MaxHitPoints><WorkToBuild>8000</WorkToBuild><Mass>5</Mass><Flammability>1.0</Flammability><Beauty>8</Beauty><Comfort>0.70</Comfort><StyleDominance MayRequire=\"Ludeon.RimWorld.Ideology\">5</StyleDominance></statBases><costStuffCount>45</costStuffCount><comps><li Class=\"CompProperties_Styleable\" /></comps></ThingDef>",
+        "<ThingDef Abstract=\"True\" ParentName=\"FurnitureWithQualityBase\" Name=\"TableBase\"><thingClass>Building</thingClass><surfaceType>Eat</surfaceType></ThingDef>",
+        "<ThingDef Abstract=\"True\" ParentName=\"TableBase\" Name=\"TableGatherSpotBase\"><comps><li><compClass>CompGatherSpot</compClass></li><li Class=\"CompProperties_Styleable\" /></comps></ThingDef>",
+        "<ThingDef ParentName=\"TableGatherSpotBase\"><defName>Table1x2c</defName><statBases><MaxHitPoints>75</MaxHitPoints><WorkToBuild>750</WorkToBuild><Mass>5</Mass><Flammability>1.0</Flammability><Beauty>0.5</Beauty><StyleDominance MayRequire=\"Ludeon.RimWorld.Ideology\">5</StyleDominance></statBases><size>(1,2)</size><costStuffCount>28</costStuffCount></ThingDef>"
+      ]
+    },
+    {
+      "id": "FQX03",
+      "file": "Data/Core/Defs/ThingDefs_Buildings/Buildings_Joy.xml",
+      "source_sha256": "65ed52b04b95c1c60eacde4490689b22644ba66855d78d0a6a1384934e3cb35c",
+      "xpath": "/Defs/ThingDef[defName=\"HorseshoesPin\"]",
+      "projection": "Original attributes and selected gameplay children; full ancestry retained for four furniture and wood",
+      "nodes": [
+        "<ThingDef ParentName=\"BuildingBase\"><defName>HorseshoesPin</defName><statBases><MaxHitPoints>75</MaxHitPoints><WorkToBuild>100</WorkToBuild><Mass>3</Mass><Flammability>1.0</Flammability><JoyGainFactor>1</JoyGainFactor></statBases><costStuffCount>10</costStuffCount></ThingDef>"
+      ]
+    },
+    {
+      "id": "FQX04",
+      "file": "Data/Core/Defs/Stats/Stats_Basics_General.xml",
+      "source_sha256": "c4d702421c19796993483ddd43f9869c54bb7afa1414232a568829ced5218d87",
+      "xpath": "/Defs/StatDef[defName=\"MaxHitPoints\" or @Name=\"MarketValueBase\" or defName=\"MarketValue\" or defName=\"MarketValueIgnoreHp\" or defName=\"Beauty\" or defName=\"Comfort\"]",
+      "projection": "Original attributes and selected gameplay children; full ancestry retained for four furniture and wood",
+      "nodes": [
+        "<StatDef><defName>MaxHitPoints</defName><defaultBaseValue>100</defaultBaseValue><minValue>1</minValue><roundValue>true</roundValue><roundToFiveOver>200</roundToFiveOver></StatDef>",
+        "<StatDef Name=\"MarketValueBase\" Abstract=\"True\"><workerClass>StatWorker_MarketValue</workerClass><minValue>0</minValue><roundToFiveOver>200</roundToFiveOver><parts><li Class=\"StatPart_Quality\"><factorAwful>0.5</factorAwful><factorPoor>0.75</factorPoor><factorNormal>1</factorNormal><factorGood>1.25</factorGood><maxGainGood>500</maxGainGood><factorExcellent>1.5</factorExcellent><maxGainExcellent>1000</maxGainExcellent><factorMasterwork>2.5</factorMasterwork><maxGainMasterwork>2000</maxGainMasterwork><factorLegendary>5</factorLegendary><maxGainLegendary>3000</maxGainLegendary></li><li Class=\"StatPart_WornByCorpse\" /><li Class=\"StatPart_IsCorpseFresh\" /><li Class=\"StatPart_WeaponTraitsMarketValueOffset\" /><li Class=\"StatPart_Biocoded\" /><li Class=\"StatPart_ReloadMarketValue\" /><li MayRequire=\"Ludeon.RimWorld.Biotech\" Class=\"StatPart_Genes\" /></parts></StatDef>",
+        "<StatDef ParentName=\"MarketValueBase\"><defName>MarketValue</defName><parts><li Class=\"StatPart_Health\"><curve><points><li>(0.0, 0.0)</li><li>(0.5, 0.1)</li><li>(0.6, 0.5)</li><li>(0.9, 1.0)</li></points></curve></li><li Class=\"StatPart_Age\" MayRequire=\"Ludeon.RimWorld.Biotech\"><useBiologicalYears>true</useBiologicalYears><humanlikeOnly>true</humanlikeOnly><curve><points><li>(3,0.5)</li><li>(13,0.9)</li><li>(18,1)</li></points></curve></li></parts></StatDef>",
+        "<StatDef ParentName=\"MarketValueBase\"><defName>MarketValueIgnoreHp</defName></StatDef>",
+        "<StatDef Name=\"Beauty\"><defName>Beauty</defName><defaultBaseValue>0</defaultBaseValue><minValue>-1000</minValue><roundValue>true</roundValue><roundToFiveOver>100</roundToFiveOver><parts><li Class=\"StatPart_Quality\"><factorAwful>-0.1</factorAwful><factorPoor>0.5</factorPoor><factorNormal>1</factorNormal><factorGood>2</factorGood><factorExcellent>3</factorExcellent><factorMasterwork>5</factorMasterwork><factorLegendary>8</factorLegendary></li><li Class=\"StatPart_ContentsBeauty\" /></parts></StatDef>",
+        "<StatDef><defName>Comfort</defName><defaultBaseValue>0</defaultBaseValue><maxValue>1000</maxValue><minValue>-1000</minValue><parts><li Class=\"StatPart_Quality\"><factorAwful>0.76</factorAwful><factorPoor>0.88</factorPoor><factorNormal>1</factorNormal><factorGood>1.12</factorGood><factorExcellent>1.24</factorExcellent><factorMasterwork>1.45</factorMasterwork><factorLegendary>1.7</factorLegendary></li></parts></StatDef>"
+      ]
+    },
+    {
+      "id": "FQX05",
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Stuff.xml",
+      "source_sha256": "8cdc15befea94055a946a1131c7724acc0cf999b866a5fad474a0816731c9088",
+      "xpath": "/Defs/ThingDef[defName=\"WoodLog\"]",
+      "projection": "Original attributes and selected gameplay children; full ancestry retained for four furniture and wood",
+      "nodes": [
+        "<ThingDef ParentName=\"ResourceVerbBase\"><defName>WoodLog</defName><statBases><MarketValue>1.2</MarketValue><MaxHitPoints>150</MaxHitPoints><Mass>0.4</Mass><Flammability>1.0</Flammability><DeteriorationRate>0.5</DeteriorationRate><StuffPower_Armor_Sharp>0.54</StuffPower_Armor_Sharp><StuffPower_Armor_Blunt>0.54</StuffPower_Armor_Blunt><StuffPower_Armor_Heat>0.40</StuffPower_Armor_Heat><StuffPower_Insulation_Cold>8</StuffPower_Insulation_Cold><StuffPower_Insulation_Heat>4</StuffPower_Insulation_Heat><SharpDamageMultiplier>0.40</SharpDamageMultiplier><BluntDamageMultiplier>0.9</BluntDamageMultiplier></statBases><stuffProps><stuffAdjective>wooden</stuffAdjective><categories><li>Woody</li></categories><commonality>1.00</commonality><color>(133,97,67)</color><constructEffect>ConstructWood</constructEffect><appearance>Planks</appearance><soundImpactBullet>BulletImpact_Wood</soundImpactBullet><soundMeleeHitSharp>MeleeHit_Wood</soundMeleeHitSharp><soundMeleeHitBlunt>MeleeHit_Wood</soundMeleeHitBlunt><soundImpactMelee>Pawn_Melee_Punch_HitBuilding_Wood</soundImpactMelee><statFactors><MaxHitPoints>0.65</MaxHitPoints><Beauty>1</Beauty><Flammability>1</Flammability><WorkToMake>0.7</WorkToMake><WorkToBuild>0.7</WorkToBuild><DoorOpenSpeed>1.2</DoorOpenSpeed></statFactors><canSuggestUseDefaultStuff>true</canSuggestUseDefaultStuff></stuffProps></ThingDef>"
+      ]
+    },
+    {
+      "id": "FQX06",
+      "file": "Data/Core/Defs/Stats/Stats_Building_Special.xml",
+      "source_sha256": "e57298ad955777e288239b2e7804def1b1f0d3cf7290bba5b723fff684c7d1ce",
+      "xpath": "/Defs/StatDef[defName=\"BedRestEffectiveness\" or defName=\"WorkToBuild\"]",
+      "projection": "Original attributes and selected gameplay children; full ancestry retained for four furniture and wood",
+      "nodes": [
+        "<StatDef><defName>WorkToBuild</defName><defaultBaseValue>1</defaultBaseValue><minValue>0</minValue><roundToFiveOver>300</roundToFiveOver></StatDef>",
+        "<StatDef><defName>BedRestEffectiveness</defName><defaultBaseValue>0.0</defaultBaseValue><minValue>0.4</minValue><valueIfMissing>0.8</valueIfMissing><parts><li Class=\"StatPart_Quality\"><factorAwful>0.86</factorAwful><factorPoor>0.92</factorPoor><factorNormal>1</factorNormal><factorGood>1.08</factorGood><factorExcellent>1.14</factorExcellent><factorMasterwork>1.25</factorMasterwork><factorLegendary>1.6</factorLegendary></li></parts></StatDef>"
+      ]
+    },
+    {
+      "id": "FQX07",
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Exotic.xml",
+      "source_sha256": "1e3e943dd91916b1215c91a8f4a39cc59651ebd44c1b36682cd50e795c789c53",
+      "xpath": "/Defs/ThingDef[@Name=\"ResourceVerbBase\"]",
+      "projection": "Original attributes and selected gameplay children; full ancestry retained for four furniture and wood",
+      "nodes": [
+        "<ThingDef Name=\"ResourceVerbBase\" ParentName=\"ResourceBase\" Abstract=\"True\"><comps><li><compClass>CompEquippable</compClass></li></comps></ThingDef>"
+      ]
+    },
+    {
+      "id": "FQX08",
+      "file": "Data/Core/Defs/ThingDefs_Items/Items_Resource_Base.xml",
+      "source_sha256": "20595ae43a7e758f54c71dc98579cc95ac8638f21213896c7f1d6a2d61fd744a",
+      "xpath": "/Defs/ThingDef[@Name=\"ResourceBase\"]",
+      "projection": "Original attributes and selected gameplay children; full ancestry retained for four furniture and wood",
+      "nodes": [
+        "<ThingDef Name=\"ResourceBase\" Abstract=\"True\"><thingClass>ThingWithComps</thingClass><statBases><Beauty>-4</Beauty></statBases><comps><li Class=\"CompProperties_Forbiddable\" /></comps></ThingDef>"
+      ]
+    }
+  ],
+  "rea_members": {
+    "source_file": ".local-research/husbandry-reproduction/rea-members-summary.json",
+    "sha256": "66427c4d04e6914ff6bb0fac9db74298abf00bd55e00c75ac765042ca21e40c8",
+    "evidence_id": "ev_69dd93b13c6a61b745e389803b4f0df51ea1529b0acda8bce3ce328ac99356a9",
+    "parent_evidence_id": "ev_1394217e2f4381602cdb14a099b269b54074ae46cf73bb12d9adbbc7a30bb0b8",
+    "status": "unavailable",
+    "reason": "Managed metadata exceeds the67108864byte representation budget; zero returned members is not absence evidence"
+  },
+  "limitations": [
+    "Derived C# is not original source; existing exact-version derivations reused.",
+    "REA67108864byte member-budget failure retained; not retried.",
+    "Core XML selection is not a fully patched Def database.",
+    "One Poor bed observation does not establish the distribution or execute every branch."
+  ]
+}

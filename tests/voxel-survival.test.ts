@@ -86,7 +86,7 @@ function fixture(upper = false) {
     id: s.nextId++,
     axis: 'x',
     owner: null,
-    prisoner: false, medical: true,
+    prisoner: false, quality: 2 as const, medical: true,
   });
   return VoxelSimulation.load(s.save());
 }
@@ -390,7 +390,7 @@ describe('voxel incapacitation and physical care', () => {
     );
     const old = JSON.parse(bytes.toString()),
       s = VoxelSimulation.load(old);
-    expect(s.save().version).toBe(32);
+    expect(s.save().version).toBe(33);
     expect(s.items).toEqual(old.items);
     expect(
       s.pawns.every(

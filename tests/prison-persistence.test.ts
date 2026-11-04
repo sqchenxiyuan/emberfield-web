@@ -21,7 +21,7 @@ function fixture(): VoxelSave {
   const q = pawn(2, { x: 20, faction: 'prisoner', prisoner: initialPrisoner(200, 90), phase: 'prisoner' });
   q.priorities.warden = 0;
   return { tick: 300, pawns: [pawn(1), q],
-    beds: [{ id: 90, x: 20, y: 10, z: 8, axis: 'x', prisoner: true, medical: false, owner: 2 }],
+    beds: [{ id: 90, x: 20, y: 10, z: 8, axis: 'x', prisoner: true, quality: 2 as const, medical: false, owner: 2 }],
   } as VoxelSave;
 }
 function talking(): VoxelSave {

@@ -208,6 +208,15 @@ a {
 .voxel-social-memory { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 8px; margin-top: 9px; font-size: 11px; }
 .voxel-social-memory small { grid-column: 1 / -1; }
 .voxel-social-recent > div { margin-top: 9px; font-size: 11px; }
+.voxel-furniture-quality, .voxel-current-furniture { display: grid; gap: 10px; margin: 12px 0; padding: 12px; border: 1px solid #c8b68a66; border-radius: 5px; background: #3b342366; font-size: 12px; }
+.voxel-furniture-quality strong { color: #dfcca0; }
+.voxel-furniture-quality dl { display: grid; grid-template-columns: 1fr 1fr; gap: 9px 12px; margin: 0; }
+.voxel-furniture-quality dl > div { min-width: 0; }
+.voxel-furniture-quality dt { color: #bfc1b3; font-size: 11px; }
+.voxel-furniture-quality dd { margin: 4px 0 0; font-weight: 600; }
+.voxel-furniture-quality small, .voxel-current-furniture small { display: block; color: #c8c8b6; font-size: 11px; line-height: 1.65; }
+.voxel-furniture-quality summary { cursor: pointer; font-size: 11px; }
+.voxel-current-furniture button { padding: 7px 8px; font-size: 11px; }
 .voxel-room-living dl { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 15px; margin: 0; }
 .voxel-room-living dl > div { display: flex; justify-content: space-between; gap: 8px; }
 .voxel-room-living dd { margin: 0; }

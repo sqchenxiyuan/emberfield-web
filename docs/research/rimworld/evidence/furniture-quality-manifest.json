@@ -1,0 +1,31 @@
+{
+  "evidence_id": "RW17-FURNITURE-QUALITY",
+  "version_text": "1.7.4980 rev60",
+  "source": "Assembly-CSharp.dll",
+  "source_sha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "engine": "ICSharpCode.Decompiler",
+  "engine_version": "11.2.0.10050",
+  "engine_sha256": "587a18e18e13acfc7fd8783a44c24c7da0781dadf6b9fb9dd5e2e38a9cdfae78",
+  "kind": "Static derived reconstruction; not original source; target code not loaded or executed",
+  "line_endings": "LF",
+  "encoding": "UTF-8 without BOM",
+  "limitations": [
+    "Unresolved dependencies are tolerated by ILSpy.",
+    "No runtime, enabled-mod, or effective Def database validation.",
+    "Line locations apply only to the recorded derived hashes."
+  ],
+  "types": [
+    {
+      "type": "RimWorld.CompArt",
+      "local_file": ".local-research/furniture-quality/RimWorld.CompArt.cs",
+      "sha256": "8a83193ec7926babdb098df8224ce0ea6830e3b3baf8adb90aa3cdc250b8998d",
+      "lines": 208
+    },
+    {
+      "type": "RimWorld.StatRequest",
+      "local_file": ".local-research/furniture-quality/RimWorld.StatRequest.cs",
+      "sha256": "80182f036ca037ef77d377f1a2d90bd41788341e33272b46ddd58055726bff41",
+      "lines": 221
+    }
+  ]
+}

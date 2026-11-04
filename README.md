@@ -8,6 +8,8 @@
 
 当前开发重点是先搭好可操作的玩法和机制闭环，数值采用初步默认值，后续再平衡。体素模式已接通狩猎与肉食生产、动物驯养繁殖与圈养管理、心情娱乐、俘虏招募、卫生清洁、火灾修理及天气联动，见[开发路线](docs/research/rimworld/05-reconstruction-roadmap.md)；研究文档中的原版数值不代表当前游戏已经完成平衡。
 
+2026-11-04家具品质更新（v33）：床、餐桌和餐椅在实际施工完成时按完工者的建造技能确定品质，影响实际睡眠恢复、床椅舒适、美观与房间/营地财富；品质不增加家具耐久。界面可检查品质和使用效果，旧家具按普通品质延续，修理和读档不重抽。沿用暂定成本与基础属性，先连接建造分工与生活反馈。见[100原版机制](docs/research/rimworld/100-furniture-quality-mechanisms.md)、[101实机对照](docs/research/rimworld/101-native-furniture-quality-runtime.md)、[102玩法与验证](docs/research/rimworld/102-furniture-quality-gameplay.md)。
+
 2026-11-04居民交往更新（v32）：餐桌可开关聚会，居民实际走到空闲餐椅休闲，附近同伴自然发生闲聊、深入交谈或侮辱。两方向好感、来源记忆和独立侮辱心情可检查；座位与用餐共享预约，支持中断、离图身份和旧档继续。先完成社会玩法基础，亲属/恋爱/性格及社交打架仍待扩展，数值后续调整。见[97原版机制](docs/research/rimworld/97-social-interaction-mechanisms.md)、[98实机对照](docs/research/rimworld/98-native-social-runtime.md)、[99玩法与验证](docs/research/rimworld/99-social-colony-gameplay.md)。
 
 2026-11-04房间生活更新（v31）：新增实体木餐桌和餐椅，居民取走实际餐食后预约座位、步行就座并持续吃饭，完成才恢复饱食度。舒适、无桌记忆、房间评价与卧室/宿舍体验接入人物状态，支持中断、火灾和旧档延续。先打通玩法，家具成本与行为节奏仍采用暂定参数，见[94原版机制](docs/research/rimworld/94-dining-comfort-mechanisms.md)、[95实机对照](docs/research/rimworld/95-native-dining-runtime.md)、[96玩法与验证](docs/research/rimworld/96-living-dining-gameplay.md)。

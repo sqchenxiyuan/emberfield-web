@@ -28,7 +28,7 @@ class Host implements PrisonHost {
   tick = 100;
   notice = '';
   pawns = [person(1), person(2, { ...pos(15), faction: 'raider', downed: true, phase: 'downed' })];
-  beds: Bed[] = [{ ...pos(20), id: 90, axis: 'x', medical: false, prisoner: true, owner: null }];
+  beds: Bed[] = [{ ...pos(20), id: 90, axis: 'x', quality: 2 as const, medical: false, prisoner: true, owner: null }];
   dropped: Cargo[] = [];
   fullGround = false;
   roomValid = true;

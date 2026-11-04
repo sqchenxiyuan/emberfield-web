@@ -25,7 +25,7 @@ function historical(name: keyof typeof HASHES) {
 describe('authentic v29 pen migration', () => {
   it.each(['carrying-feed', 'pregnant', 'newborn'] as const)('preserves real %s state and adds only v30 defaults', name => {
     const old = historical(name), before = structuredClone(old), s = VoxelSimulation.load(old), saved = s.save();
-    expect(old).toEqual(before); expect(saved.version).toBe(32);
+    expect(old).toEqual(before); expect(saved.version).toBe(33);
     expect(saved.tick).toBe(old.tick); expect(saved.nextId).toBe(old.nextId);
     for (const key of ['fences', 'fenceGates', 'penMarkers', 'animalAreas'] as const) expect(saved[key]).toEqual([]);
     expect(saved.animals).toEqual(old.animals.map((a: any) => ({ ...a, ...initialAnimalPenState(old.tick) })));
@@ -38,7 +38,7 @@ describe('authentic v29 pen migration', () => {
     }
     for (const key of ['grass', 'husbandryLog', 'items', 'stats', 'trade', 'weather', 'snow', 'fires', 'fireDamage', 'fireHazards',
       'fireLog', 'filth', 'crops', 'trees', 'beds', 'research', 'blocks', 'ladders', 'structureKinds'] as const)
-      expect(saved[key], `${name}.${key}`).toEqual(old[key]);
+      expect(saved[key], `${name}.${key}`).toEqual(key === 'beds' ? old.beds.map((b:any)=>({...b,quality:2})) : old[key]);
     if (name === 'carrying-feed') {
       const p = saved.pawns.find(p => p.handleTask)!;
       expect(p.handleTask!.stage).toBe('approach'); expect(p.cargo!.resource).toBe('grain'); expect(p.cargo!.amount).toBeGreaterThan(0);

@@ -17,11 +17,12 @@ function historical(name: keyof typeof hashes) {
 describe('authentic v31 social loader compatibility', () => {
   it.each(['carrying-meal', 'seated-meal'] as const)('roundtrips the actual %s colony without changing food, furniture or active meals', name => {
     const old = historical(name), original = structuredClone(old), sim = VoxelSimulation.load(old), saved = sim.save();
-    expect(old).toEqual(original); expect(saved.version).toBe(32);
+    expect(old).toEqual(original); expect(saved.version).toBe(33);
     expect(saved.socialHistory).toEqual([]); expect(saved.socialLog).toEqual([]);
-    for (const [key, value] of Object.entries(old)) if (!['version', 'pawns', 'jobs', 'tables'].includes(key))
+    for (const [key, value] of Object.entries(old)) if (!['version', 'pawns', 'jobs', 'tables', 'beds', 'chairs'].includes(key))
       expect((saved as any)[key], key).toEqual(value);
-    expect(saved.tables).toEqual(old.tables.map((t: any) => ({ ...t, gathering: true })));
+    expect(saved.tables).toEqual(old.tables.map((t: any) => ({ ...t, gathering: true, quality: 2 })));
+    for(const key of ['beds','chairs'] as const) expect(saved[key]).toEqual(old[key].map((t:any)=>({...t,quality:2})));
     // The established loader rebuilds transient routes and ordinary fetch
     // intent. An active dining task retains its actual food and chew progress.
     const scheduling = ['destination', 'jobId', 'moveTick', 'path', 'phase', 'reason', 'workTarget', 'eating'];

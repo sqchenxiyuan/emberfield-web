@@ -19,8 +19,8 @@ function fixture(dining=true) {
     for(const key of Object.keys(p.priorities))p.priorities[key as keyof typeof p.priorities]=0;
   }
   if(dining) {
-    s.tables.push({...pos(20),id:s.nextId++,axis:'x',gathering:true});
-    s.chairs.push({...pos(19),id:s.nextId++,axis:'y'});
+    s.tables.push({quality:2,...pos(20),id:s.nextId++,axis:'x',gathering:true});
+    s.chairs.push({quality:2,...pos(19),id:s.nextId++,axis:'y'});
   }
   s.items.push({...pos(13),...freshBatch('meal',5),id:s.nextId++});
   return VoxelSimulation.load(s.save());
@@ -96,7 +96,7 @@ describe('physical dining and inhabited rooms',()=>{
     expect(s.counts().wood).toBe(Math.floor(LIVING_BUILDINGS.table.cost.wood/2));
   });
   it('sleeping in an owned bedroom raises comfort and creates a qualified memory; room roles follow furniture',()=>{
-    let s=fixture(false);s.beds.push({...pos(17),id:s.nextId++,axis:'x',owner:s.pawns[0].id,medical:false,prisoner:false});
+    let s=fixture(false);s.beds.push({...pos(17),id:s.nextId++,axis:'x',owner:s.pawns[0].id,quality: 2 as const, medical: false,prisoner:false});
     // A small bare chamber has a real negative bedroom thought (a mediocre
     // room can legitimately produce no memory at all).
     for(let x=19;x<=25;x++)for(let y=12;y<=22;y++)for(let z=8;z<=9;z++)s.blocks[index(x,y,z)]=Block.Stone;
@@ -107,7 +107,7 @@ describe('physical dining and inhabited rooms',()=>{
     expect(p.living.sleepThoughtAt).toBeGreaterThan(s.tick);
     expect(p.living.memories.some(m=>m.kind==='bedroom')).toBe(true);
     const save=s.save();expect(VoxelSimulation.load(save).pawns[0].living).toEqual(p.living);
-    s.beds.push({...pos(17,19),id:s.nextId++,axis:'x',owner:null,medical:false,prisoner:false});
+    s.beds.push({...pos(17,19),id:s.nextId++,axis:'x',owner:null,quality: 2 as const, medical: false,prisoner:false});
     expect(s.livingRooms().find(r=>r.id===s.rooms.roomAt(p)?.id)?.role).toBe('barracks');
   });
 });

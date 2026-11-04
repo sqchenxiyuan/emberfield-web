@@ -52,7 +52,7 @@ describe('sanitation integration and interrupted physical actions', () => {
     const provenance = JSON.parse(readFileSync(new URL('./fixtures/voxel-v24-sanitation-initial.provenance.json', import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(provenance.sha256);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old);
-    expect(old.version).toBe(24); expect(s.save().version).toBe(32);
+    expect(old.version).toBe(24); expect(s.save().version).toBe(33);
     expect(s.filth).toEqual([]); expect(s.items).toEqual(old.items);
     expect(s.pawns.map(p => p.id)).toEqual(old.pawns.map((p: Pawn) => p.id));
     expect(s.pawns.every(p => p.foodPoisoning === null && p.cleanTask === null)).toBe(true);
@@ -135,7 +135,7 @@ describe('sanitation integration and interrupted physical actions', () => {
   it('poisoned physical food delivered by a caregiver reaches the patient, not the caregiver', () => {
     const s = fixture(), patient = s.pawns[0], doctor = s.pawns[1];
     patient.food = 10; patient.health.malnutrition = .9;
-    s.beds.push({ ...point(19, 17), id: s.nextId++, axis: 'x', owner: null, medical: true, prisoner: false });
+    s.beds.push({ ...point(19, 17), id: s.nextId++, axis: 'x', owner: null, quality: 2 as const, medical: true, prisoner: false });
     Object.assign(patient, point(19, 17)); stock(s, 'meal', 1, 1); s.step();
     expect(patient.downed).toBe(true);
     command(s, { type: 'care', pawnId: doctor.id, patientId: patient.id, action: 'feed' });

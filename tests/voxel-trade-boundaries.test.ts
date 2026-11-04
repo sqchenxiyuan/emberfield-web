@@ -115,7 +115,7 @@ describe('trade transactional and lifecycle boundaries', () => {
     const [doctor, patient] = s.pawns.filter(q => q.faction === 'colony' && q.id !== p.id);
     const spot = (s as any).nearby(s.spawn, 8).find((v: any) => [v, { ...v, x: v.x + 1 }].every(q =>
       (s as any).groundAllowed(q) && !s.items.some(i => at(i) === at(q)) && !s.trees.some(t => at(t) === at(q))));
-    const bed = { ...spot, id: s.nextId++, axis: 'x' as const, prisoner: false, medical: true, owner: null };
+    const bed = { ...spot, id: s.nextId++, axis: 'x' as const, prisoner: false, quality: 2 as const, medical: true, owner: null };
     s.beds.push(bed); Object.assign(patient, spot);
     patient.health.malnutrition = .82; patient.food = 0;
     (s as any).reconcileHealth(patient); patient.sleepBedId = bed.id;

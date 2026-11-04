@@ -99,6 +99,15 @@
 | [91 围栏、圈地与牵引机制](91-animal-pens-mechanisms.md) | 物理封闭、接纳筛选、牵引路线与活动范围分别约束什么？ |
 | [92 原版牵引与圈地实机](92-native-animal-pens-runtime.md) | 开发准备后普通挂绳、入圈解绳及保持开门怎样改变实际状态？ |
 | [93 体素圈养与活动范围](93-animal-pens-gameplay.md) | 围栏施工、三维圈地、实体牵引、兔返区与中断存读怎样衔接？ |
+| [94 用餐、舒适与房间机制](94-dining-comfort-mechanisms.md) | 餐桌和实际座椅、舒适需求与房间印象如何影响日常生活？ |
+| [95 原版用餐实机](95-native-dining-runtime.md) | 正常取餐、步行到座与进食的界面和存档能证明什么？ |
+| [96 体素用餐与居住](96-living-dining-gameplay.md) | 真实携餐、座位预约、用餐记忆和房间体验怎样验证？ |
+| [97 居民交往机制](97-social-interaction-mechanisms.md) | 餐桌休闲、自然互动、有向意见与心情记忆如何连接？ |
+| [98 原版社交实机](98-native-social-runtime.md) | 实际交谈、意见记忆和聚会开关观察能证明什么？ |
+| [99 体素居民交往](99-social-colony-gameplay.md) | 实际到座休闲、自然交谈、关系检查与存档怎样运行？ |
+| [100 家具施工品质机制](100-furniture-quality-mechanisms.md) | 完工者技能怎样决定家具品质，并影响睡眠、舒适、美观和财富？ |
+| [101 原版家具品质实机](101-native-furniture-quality-runtime.md) | 普通木床施工、成品属性及暂停与读档观察能证明什么？ |
+| [102 家具品质与生活反馈](102-furniture-quality-gameplay.md) | 建造分工、实际床椅使用、检查和旧档延续怎样验证？ |
 
 每篇均含具体来源与未决问题。先读感兴趣的系统，再查其 `evidence/*-claims.json` 和 `*-manifest.json`，不要把“已抽取一个类型”当成“这个类型涉及的全部机制已经理解”。
 

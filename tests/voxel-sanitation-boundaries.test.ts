@@ -136,7 +136,7 @@ describe('sanitation physical and interrupted boundaries', () => {
     let prisonerId = 0;
     let s = fixture(s => {
       prisonerId = s.nextId++;
-      const bed = { ...pos(15, 13), id: s.nextId++, axis: 'x' as const, medical: false, prisoner: true, owner: prisonerId };
+      const bed = { ...pos(15, 13), id: s.nextId++, axis: 'x' as const, quality: 2 as const, medical: false, prisoner: true, owner: prisonerId };
       s.beds.push(bed);
       s.pawns.push({ ...structuredClone(s.pawns[0]), ...initialSurvival(s.seed, prisonerId), ...pos(12, 13),
         id: prisonerId, name: '测试囚犯', worn: [], faction: 'prisoner', prisoner: initialPrisoner(0, bed.id), phase: 'prisoner', food: 10 });

@@ -1,6 +1,8 @@
 import { expect } from 'vitest';
+import { stripFurnitureFields } from './legacy-furniture-defaults';
 /** Synthetic historical inputs only; never rewrite captured fixture bytes. */
 export function stripSocialFields(raw: Record<string, any>) {
+  stripFurnitureFields(raw);
   expect(raw.socialHistory ?? []).toEqual([]); expect(raw.socialLog ?? []).toEqual([]);
   delete raw.socialHistory; delete raw.socialLog;
   for (const p of raw.pawns ?? []) {

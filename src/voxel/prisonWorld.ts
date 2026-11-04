@@ -2,6 +2,7 @@ import { at, bedCells, DEPTH, WIDTH, type Bed, type CommandResult, type Pawn, ty
 import { healthSummary } from './survival';
 import { learnSkill } from './skills';
 import { restGain, restLoss } from './rest';
+import { furnitureStats } from './furniture';
 import { medicalNeedsRest } from './medicine';
 import { initialPrisoner, interactionOutcome, prisonTalkSpeed, PRISON_POLICIES, PRISON_RULES,
   type PrisonerPolicy, type WardenTask } from './prisoners';
@@ -279,13 +280,13 @@ export function prisonerTick(s: PrisonHost, p: Pawn): void {
   const visitor = s.pawns.find(q => q.wardenTask?.prisonerId === p.id);
   if (carer || visitor) {
     stop(p);
-    if (p.sleepingSince !== null && same(p, bed)) p.rest = Math.min(100, p.rest + restGain(true));
+    if (p.sleepingSince !== null && same(p, bed)) p.rest = Math.min(100, p.rest + restGain(true, furnitureStats('bed', bed.quality).restEffectiveness!));
     else p.rest = Math.max(0, p.rest - restLoss(p.rest));
     p.reason = carer ? '等待看守或医护照料' : visitor?.wardenTask?.stage === 'talk' ? `正在与${visitor.name}交谈` : '等待看守前来'; return;
   }
   const medicalRest = medicalNeedsRest(p);
   if (p.sleepingSince !== null && same(p, bed) && (p.rest < PRISON_RULES.wakeAt || medicalRest) && p.food >= 12) {
-    stop(p); p.sleepBedId = bed.id; p.rest = Math.min(100, p.rest + restGain(true));
+    stop(p); p.sleepBedId = bed.id; p.rest = Math.min(100, p.rest + restGain(true, furnitureStats('bed', bed.quality).restEffectiveness!));
     p.reason = '在囚犯床休息'; return;
   }
   p.sleepingSince = null; p.sleepBedId = null;

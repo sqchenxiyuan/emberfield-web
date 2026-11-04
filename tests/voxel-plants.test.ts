@@ -304,7 +304,7 @@ describe('safe natural renewal, aging and deterministic continuation', () => {
           if (kind === 'stove')
             s.stoves.push({ ...target, id: s.nextId++, target: 0, paused: true });
           if (kind === 'bed')
-            s.beds.push({ ...target, id: s.nextId++, axis: 'x', owner: null, prisoner: false, medical: false });
+            s.beds.push({ ...target, id: s.nextId++, axis: 'x', owner: null, prisoner: false, quality: 2 as const, medical: false });
           if (kind === 'ladder') s.ladders[at(target)] = 1;
           if (kind === 'items')
             s.items.push({ ...freshBatch('wood', 1), ...target, id: s.nextId++ });
@@ -402,7 +402,7 @@ describe('real v8 migration and v9 validation', () => {
       s = VoxelSimulation.load(raw);
     expect(raw.version).toBe(8);
     expect(raw).toEqual(before);
-    expect(s.save().version).toBe(32);
+    expect(s.save().version).toBe(33);
     expect(s.save().blocks).toEqual(raw.blocks);
     expect(s.items).toEqual(raw.items);
     expect(s.treePlots).toEqual([]);

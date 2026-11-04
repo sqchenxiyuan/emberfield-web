@@ -1,0 +1,1036 @@
+{
+  "version": 33,
+  "recordedAt": "2026-11-04T00:53:42.242Z",
+  "scope": "Local Web validation. Native runtime observations and their preparation are separate in chapter 101. The ordinary campaign uses public player commands and ticks; browser tests use its checkpoints and visible controls. Controlled unit tests do not establish ordinary play.",
+  "unit": {
+    "file": "test-results/v33-unit-verified.json",
+    "sha256": "c8186a64f69486937b482fccede2aae9c67b987b8dfed348ac43f9c73cc67566",
+    "scope": "The 85-file non-food run passed 1084 tests and found five historical migration expectations missing the newly added Normal furniture quality. Those two files were corrected without changing captured saves and rerun in full (13 passed). The eight-day food file ran separately (17 passed). After correcting native colony building wealth to ignore HP, both furniture integration files and the wealth file were rerun on the final logic (22 passed, including two added cases). This aggregate selects the latest complete result per file and retains every original report; it does not claim one successful full-suite invocation.",
+    "runs": [
+      {
+        "file": "test-results/v33-unit-nonfood.json",
+        "sha256": "06e9fcff698a55d151a375128f1190ba63bdd76666ec9210092690ac06af9f5d",
+        "success": false,
+        "total": 1089,
+        "passed": 1084,
+        "failed": 5,
+        "pending": 0
+      },
+      {
+        "file": "test-results/v33-migration-rerun.json",
+        "sha256": "ad63d771e8c8bcd58f1a3f4d793b32c613ab1af3d6efdc09fcf08077466106a6",
+        "success": true,
+        "total": 13,
+        "passed": 13,
+        "failed": 0,
+        "pending": 0
+      },
+      {
+        "file": "test-results/v33-food.json",
+        "sha256": "97c4f6bc38c3ecd9a59fc3f9467fc3dcbd6a339f34493378aadb9ca22ede6c55",
+        "success": true,
+        "total": 17,
+        "passed": 17,
+        "failed": 0,
+        "pending": 0
+      },
+      {
+        "file": "test-results/v33-wealth-final.json",
+        "sha256": "17478a3cde117bebefb4a075bb0de7df2281eec9edbfb2c417c20e66099dbbd9",
+        "success": true,
+        "total": 22,
+        "passed": 22,
+        "failed": 0,
+        "pending": 0
+      }
+    ],
+    "tests": 1108,
+    "passed": 1108,
+    "failed": 0,
+    "pending": 0,
+    "files": 86
+  },
+  "build": {
+    "file": "test-results/v33-build-final3.log",
+    "sha256": "564826257b2e72606627fb09b77c2461396a715152b4f9196ddf6d5b75325587",
+    "processExitCode": 0
+  },
+  "campaign": {
+    "file": "test-results/voxel-furniture-final3/report.json",
+    "sha256": "c56313550e0166aafcc7b5856e07ea120705befbbecf09aeaa4846b5ddfc39e7",
+    "scope": "Fresh seed 73129. Only public player commands, ordinary simulation ticks and exact save/load mutate the colony. Terrain, paths, jobs and simulation state are read to select sites and record outcomes. Real timber, delivery, excavation, beds, table and chairs. Actual finishers are selected by normal build priorities. Naturally produced qualities are recorded without demanding different or high qualities. Actual sleep in two beds, actual seated dining and social recreation, room and colony wealth, and exact persistence. No need, skill, quality, furniture, position, terrain, clock or RNG injection. Threats and fire hazards are disabled with ordinary player controls. Controlled quality comparisons belong to mechanism tests.",
+    "execution": {
+      "bundleSha256": "cbeb16299d8fd5d6133aad7c0e4fa6b4911bb3c0a885976b5e0c92f38aef4d42",
+      "scriptSha256": "6e1bf10cbc9de177924b89b14822d7b6534795eafa66d79215486f31fb5db194",
+      "sourceManifestSha256": "c3287ae4594737dabd9cfbd6eeb2b045a3cf5442e3d40f400ce49eddaa47ba7f"
+    },
+    "checks": [
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 507,
+        "elapsedTicks": 507
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 670,
+        "elapsedTicks": 163
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 880,
+        "elapsedTicks": 210
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 1118,
+        "elapsedTicks": 238
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 1635,
+        "elapsedTicks": 517
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 1967,
+        "elapsedTicks": 332
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 2135,
+        "elapsedTicks": 168
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 2679,
+        "elapsedTicks": 544
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 3219,
+        "elapsedTicks": 540
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 3459,
+        "elapsedTicks": 240
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 4003,
+        "elapsedTicks": 544
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 4200,
+        "elapsedTicks": 197
+      },
+      {
+        "name": "ordinary worker harvests construction timber",
+        "tick": 4747,
+        "elapsedTicks": 547
+      },
+      {
+        "name": "normal workers excavate the shaft",
+        "tick": 5574,
+        "elapsedTicks": 827
+      },
+      {
+        "name": "normal workers open the doorway",
+        "tick": 5698,
+        "elapsedTicks": 124
+      },
+      {
+        "name": "normal workers excavate the room",
+        "tick": 6809,
+        "elapsedTicks": 1111
+      },
+      {
+        "name": "door encloses the naturally roofed chamber",
+        "tick": 10888,
+        "elapsedTicks": 4079
+      },
+      {
+        "name": "selected builder completes actual bed",
+        "tick": 11201,
+        "elapsedTicks": 313
+      },
+      {
+        "name": "actual finisher earns construction XP and fixes persisted quality",
+        "tick": 11201,
+        "jobId": 560,
+        "kind": "bed",
+        "itemId": 565,
+        "quality": 1,
+        "workerId": 452,
+        "before": {
+          "level": 3,
+          "xp": 84.5250000000005,
+          "passion": 0,
+          "dailyXp": 84.5250000000005
+        },
+        "after": {
+          "level": 3,
+          "xp": 84.7875000000005,
+          "passion": 0,
+          "dailyXp": 84.7875000000005
+        },
+        "previousProgress": 186.46875000000043,
+        "work": 187,
+        "delivered": {
+          "wood": 45
+        },
+        "stats": {
+          "qualityName": "较差",
+          "maxHitPoints": 100,
+          "beauty": 0,
+          "comfort": 66,
+          "restEffectiveness": 0.92
+        },
+        "value": 42.012,
+        "skillAtDesignation": {
+          "level": 3,
+          "xp": 33.337499999999956,
+          "passion": 0,
+          "dailyXp": 33.337499999999956
+        }
+      },
+      {
+        "name": "selected builder completes actual bed",
+        "tick": 11548,
+        "elapsedTicks": 347
+      },
+      {
+        "name": "actual finisher earns construction XP and fixes persisted quality",
+        "tick": 11548,
+        "jobId": 566,
+        "kind": "bed",
+        "itemId": 572,
+        "quality": 3,
+        "workerId": 453,
+        "before": {
+          "level": 7,
+          "xp": 147,
+          "passion": 1,
+          "dailyXp": 147
+        },
+        "after": {
+          "level": 7,
+          "xp": 147.75,
+          "passion": 1,
+          "dailyXp": 147.75
+        },
+        "previousProgress": 186.1500000000003,
+        "work": 187,
+        "delivered": {
+          "wood": 45
+        },
+        "stats": {
+          "qualityName": "良好",
+          "maxHitPoints": 100,
+          "beauty": 2,
+          "comfort": 84.00000000000001,
+          "restEffectiveness": 1.08
+        },
+        "value": 70.02,
+        "skillAtDesignation": {
+          "level": 7,
+          "xp": 57,
+          "passion": 1,
+          "dailyXp": 57
+        }
+      },
+      {
+        "name": "selected builder completes actual bed",
+        "tick": 11831,
+        "elapsedTicks": 283
+      },
+      {
+        "name": "actual finisher earns construction XP and fixes persisted quality",
+        "tick": 11831,
+        "jobId": 573,
+        "kind": "bed",
+        "itemId": 575,
+        "quality": 2,
+        "workerId": 453,
+        "before": {
+          "level": 7,
+          "xp": 237.75,
+          "passion": 1,
+          "dailyXp": 237.75
+        },
+        "after": {
+          "level": 7,
+          "xp": 238.5,
+          "passion": 1,
+          "dailyXp": 238.5
+        },
+        "previousProgress": 186.1500000000003,
+        "work": 187,
+        "delivered": {
+          "wood": 45
+        },
+        "stats": {
+          "qualityName": "普通",
+          "maxHitPoints": 100,
+          "beauty": 1,
+          "comfort": 75,
+          "restEffectiveness": 1
+        },
+        "value": 56.016,
+        "skillAtDesignation": {
+          "level": 7,
+          "xp": 147.75,
+          "passion": 1,
+          "dailyXp": 147.75
+        }
+      },
+      {
+        "name": "selected builder completes actual table",
+        "tick": 12191,
+        "elapsedTicks": 360
+      },
+      {
+        "name": "actual finisher earns construction XP and fixes persisted quality",
+        "tick": 12191,
+        "jobId": 576,
+        "kind": "table",
+        "itemId": 578,
+        "quality": 2,
+        "workerId": 453,
+        "before": {
+          "level": 7,
+          "xp": 296.25,
+          "passion": 1,
+          "dailyXp": 57.75
+        },
+        "after": {
+          "level": 7,
+          "xp": 297,
+          "passion": 1,
+          "dailyXp": 58.5
+        },
+        "previousProgress": 119.44624999999992,
+        "work": 120,
+        "delivered": {
+          "wood": 28
+        },
+        "stats": {
+          "qualityName": "普通",
+          "maxHitPoints": 100,
+          "beauty": 2,
+          "comfort": null,
+          "restEffectiveness": null
+        },
+        "value": 34.896,
+        "skillAtDesignation": {
+          "level": 7,
+          "xp": 238.5,
+          "passion": 1,
+          "dailyXp": 238.5
+        }
+      },
+      {
+        "name": "selected builder completes actual chair",
+        "tick": 12413,
+        "elapsedTicks": 222
+      },
+      {
+        "name": "actual finisher earns construction XP and fixes persisted quality",
+        "tick": 12413,
+        "jobId": 579,
+        "kind": "chair",
+        "itemId": 580,
+        "quality": 3,
+        "workerId": 453,
+        "before": {
+          "level": 7,
+          "xp": 340.5,
+          "passion": 1,
+          "dailyXp": 102
+        },
+        "after": {
+          "level": 7,
+          "xp": 341.25,
+          "passion": 1,
+          "dailyXp": 102.75
+        },
+        "previousProgress": 89.9725,
+        "work": 90,
+        "delivered": {
+          "wood": 15
+        },
+        "stats": {
+          "qualityName": "良好",
+          "maxHitPoints": 80,
+          "beauty": 2,
+          "comfort": 78.4,
+          "restEffectiveness": null
+        },
+        "value": 23.715000000000003,
+        "skillAtDesignation": {
+          "level": 7,
+          "xp": 297,
+          "passion": 1,
+          "dailyXp": 58.5
+        }
+      },
+      {
+        "name": "selected builder completes actual chair",
+        "tick": 12625,
+        "elapsedTicks": 212
+      },
+      {
+        "name": "actual finisher earns construction XP and fixes persisted quality",
+        "tick": 12625,
+        "jobId": 581,
+        "kind": "chair",
+        "itemId": 582,
+        "quality": 3,
+        "workerId": 453,
+        "before": {
+          "level": 7,
+          "xp": 384.75,
+          "passion": 1,
+          "dailyXp": 146.25
+        },
+        "after": {
+          "level": 7,
+          "xp": 385.5,
+          "passion": 1,
+          "dailyXp": 147
+        },
+        "previousProgress": 89.9725,
+        "work": 90,
+        "delivered": {
+          "wood": 15
+        },
+        "stats": {
+          "qualityName": "良好",
+          "maxHitPoints": 80,
+          "beauty": 2,
+          "comfort": 78.4,
+          "restEffectiveness": null
+        },
+        "value": 23.715000000000003,
+        "skillAtDesignation": {
+          "level": 7,
+          "xp": 341.25,
+          "passion": 1,
+          "dailyXp": 102.75
+        }
+      },
+      {
+        "name": "selected builder completes actual chair",
+        "tick": 12842,
+        "elapsedTicks": 217
+      },
+      {
+        "name": "actual finisher earns construction XP and fixes persisted quality",
+        "tick": 12842,
+        "jobId": 583,
+        "kind": "chair",
+        "itemId": 585,
+        "quality": 2,
+        "workerId": 453,
+        "before": {
+          "level": 7,
+          "xp": 429,
+          "passion": 1,
+          "dailyXp": 190.5
+        },
+        "after": {
+          "level": 7,
+          "xp": 429.75,
+          "passion": 1,
+          "dailyXp": 191.25
+        },
+        "previousProgress": 89.9725,
+        "work": 90,
+        "delivered": {
+          "wood": 15
+        },
+        "stats": {
+          "qualityName": "普通",
+          "maxHitPoints": 80,
+          "beauty": 1,
+          "comfort": 70,
+          "restEffectiveness": null
+        },
+        "value": 18.972,
+        "skillAtDesignation": {
+          "level": 7,
+          "xp": 385.5,
+          "passion": 1,
+          "dailyXp": 147
+        }
+      },
+      {
+        "name": "natural individual quality contributes to real room beauty and room and colony value",
+        "tick": 12842,
+        "qualities": [
+          {
+            "kind": "bed",
+            "id": 565,
+            "quality": 1,
+            "stats": {
+              "qualityName": "较差",
+              "maxHitPoints": 100,
+              "beauty": 0,
+              "comfort": 66,
+              "restEffectiveness": 0.92
+            },
+            "value": 42.012
+          },
+          {
+            "kind": "bed",
+            "id": 572,
+            "quality": 3,
+            "stats": {
+              "qualityName": "良好",
+              "maxHitPoints": 100,
+              "beauty": 2,
+              "comfort": 84.00000000000001,
+              "restEffectiveness": 1.08
+            },
+            "value": 70.02
+          },
+          {
+            "kind": "bed",
+            "id": 575,
+            "quality": 2,
+            "stats": {
+              "qualityName": "普通",
+              "maxHitPoints": 100,
+              "beauty": 1,
+              "comfort": 75,
+              "restEffectiveness": 1
+            },
+            "value": 56.016
+          },
+          {
+            "kind": "table",
+            "id": 578,
+            "quality": 2,
+            "stats": {
+              "qualityName": "普通",
+              "maxHitPoints": 100,
+              "beauty": 2,
+              "comfort": null,
+              "restEffectiveness": null
+            },
+            "value": 34.896
+          },
+          {
+            "kind": "chair",
+            "id": 580,
+            "quality": 3,
+            "stats": {
+              "qualityName": "良好",
+              "maxHitPoints": 80,
+              "beauty": 2,
+              "comfort": 78.4,
+              "restEffectiveness": null
+            },
+            "value": 23.715000000000003
+          },
+          {
+            "kind": "chair",
+            "id": 582,
+            "quality": 3,
+            "stats": {
+              "qualityName": "良好",
+              "maxHitPoints": 80,
+              "beauty": 2,
+              "comfort": 78.4,
+              "restEffectiveness": null
+            },
+            "value": 23.715000000000003
+          },
+          {
+            "kind": "chair",
+            "id": 585,
+            "quality": 2,
+            "stats": {
+              "qualityName": "普通",
+              "maxHitPoints": 80,
+              "beauty": 1,
+              "comfort": 70,
+              "restEffectiveness": null
+            },
+            "value": 18.972
+          }
+        ],
+        "roomBefore": {
+          "id": 0,
+          "outdoor": false,
+          "floorCells": 25,
+          "space": 35,
+          "wealth": 0,
+          "beauty": -0.7692307692307693,
+          "cleanliness": -0.56,
+          "impressiveness": 4.0189743589743605,
+          "stage": 0,
+          "role": "room"
+        },
+        "roomAfter": {
+          "id": 0,
+          "outdoor": false,
+          "floorCells": 25,
+          "space": 26.799999999999997,
+          "wealth": 269.346,
+          "beauty": -0.46153846153846156,
+          "cleanliness": 0,
+          "impressiveness": 14.767299615384616,
+          "stage": 0,
+          "role": "barracks"
+        },
+        "expectedValue": 269.346
+      },
+      {
+        "name": "save and load preserve individual furniture quality settings and actual use",
+        "tick": 12842
+      },
+      {
+        "name": "ordinary activity lowers the sleep subject below manual-rest threshold",
+        "tick": 14694,
+        "elapsedTicks": 1852
+      },
+      {
+        "name": "same colonist reaches actual bed a",
+        "tick": 14708,
+        "elapsedTicks": 14
+      },
+      {
+        "name": "save and load preserve individual furniture quality settings and actual use",
+        "tick": 14708
+      },
+      {
+        "name": "actual bed a sustains sleep",
+        "tick": 14738,
+        "elapsedTicks": 30
+      },
+      {
+        "name": "actual sleep gain uses that particular bed quality",
+        "tick": 14738,
+        "label": "a",
+        "bedId": 565,
+        "quality": 1,
+        "restBefore": 67.88208333330489,
+        "restAfter": 68.40779764530468,
+        "comfortBefore": 60.279999999998175,
+        "comfortAfter": 63.8799999999981,
+        "stats": {
+          "qualityName": "较差",
+          "maxHitPoints": 100,
+          "beauty": 0,
+          "comfort": 66,
+          "restEffectiveness": 0.92
+        }
+      },
+      {
+        "name": "same colonist reaches actual bed b",
+        "tick": 14744,
+        "elapsedTicks": 6
+      },
+      {
+        "name": "save and load preserve individual furniture quality settings and actual use",
+        "tick": 14744
+      },
+      {
+        "name": "actual bed b sustains sleep",
+        "tick": 14774,
+        "elapsedTicks": 30
+      },
+      {
+        "name": "actual sleep gain uses that particular bed quality",
+        "tick": 14774,
+        "label": "b",
+        "bedId": 572,
+        "quality": 3,
+        "restBefore": 68.36029764530464,
+        "restAfter": 68.97744053330455,
+        "comfortBefore": 63.83199999999808,
+        "comfortAfter": 67.43199999999821,
+        "stats": {
+          "qualityName": "良好",
+          "maxHitPoints": 100,
+          "beauty": 2,
+          "comfort": 84.00000000000001,
+          "restEffectiveness": 1.08
+        }
+      },
+      {
+        "name": "ordinary work schedule wakes the actual sleeper",
+        "tick": 14775,
+        "elapsedTicks": 1
+      },
+      {
+        "name": "actual chair is reached for table recreation",
+        "tick": 14796,
+        "elapsedTicks": 21
+      },
+      {
+        "name": "save and load preserve individual furniture quality settings and actual use",
+        "tick": 14796
+      },
+      {
+        "name": "actual chair remains in use while comfort changes",
+        "tick": 14826,
+        "elapsedTicks": 30
+      },
+      {
+        "name": "actual seated recreation applies its chair quality",
+        "tick": 14826,
+        "chairId": 580,
+        "quality": 3,
+        "before": 67.38399999999831,
+        "after": 70.98399999999845,
+        "cap": 78.4
+      },
+      {
+        "name": "ordinary hunger brings a real meal to a real chair with gathering disabled",
+        "tick": 16174,
+        "elapsedTicks": 1348
+      },
+      {
+        "name": "save and load preserve individual furniture quality settings and actual use",
+        "tick": 16174
+      },
+      {
+        "name": "bed purpose prisoner designation and gathering controls preserve furniture quality",
+        "tick": 16174
+      }
+    ],
+    "finalTick": 16174,
+    "fixtures": {
+      "initial": {
+        "file": "test-results/voxel-furniture-final3/initial.json",
+        "tick": 0,
+        "sha256": "74f581f91d097b3676052c1e001413c17aca23296056b871fa53451b476ed646"
+      },
+      "room-ready": {
+        "file": "test-results/voxel-furniture-final3/room-ready.json",
+        "tick": 10888,
+        "sha256": "55028468a5970ada1788e38dfff1639a2108c58111b6046fef982552eaa88afe"
+      },
+      "furnished": {
+        "file": "test-results/voxel-furniture-final3/furnished.json",
+        "tick": 12842,
+        "sha256": "e8eca3b51eb338b19f7c9f0749f1c3b94e31cb1fd72e47fd75833eadd2a302b2"
+      },
+      "sleep-a": {
+        "file": "test-results/voxel-furniture-final3/sleep-a.json",
+        "tick": 14708,
+        "sha256": "21d2c4e473478093d216f2503f5269f241e8b38032e5de0eb275a7ae58bedefd"
+      },
+      "sleep-b": {
+        "file": "test-results/voxel-furniture-final3/sleep-b.json",
+        "tick": 14744,
+        "sha256": "f3dcaefcad26f3e77235281b733c510ab23963a44ea79ae7cc0a07e7ee7b005f"
+      },
+      "seated-social": {
+        "file": "test-results/voxel-furniture-final3/seated-social.json",
+        "tick": 14796,
+        "sha256": "d96f9f525d9d454fab45b08d413beaa4ec8fe749f4c58afffc306c15f37bd371"
+      },
+      "seated-meal": {
+        "file": "test-results/voxel-furniture-final3/seated-meal.json",
+        "tick": 16174,
+        "sha256": "f7424fb738ecd0d9bfdc4b8ab64280694880350277a8844276d0a32416c68221"
+      },
+      "final": {
+        "file": "test-results/voxel-furniture-final3/final.json",
+        "tick": 16174,
+        "sha256": "4838dc1cefc416678727d0520e931ec1052b00fe311681c7d71130d4c085565f"
+      }
+    }
+  },
+  "browser": {
+    "file": "test-results/voxel-furniture-browser-final3/report.json",
+    "sha256": "99a4e2304afc2817508feb37ff7965f7e0b621d4b67973ac6621f9817a426dd4",
+    "scope": "Worker and main renderer evidence from SHA-verified v33 ordinary-play saves. Mutations use visible controls and file chooser import/export only. snapshot/project/exportSave are read-only. Checks actual furniture quality and attributes, real sleep and visible reassignment to another actual bed, bed owner/medical/prisoner controls, actual dining and social chairs, gathering continuity, exact persistence and 900px layout. Naturally created qualities may coincide. No state injection.",
+    "scriptSha256": "e38107599a24ee464d951a3a99aed2583a00e5b82579ca4ce8dfa010bcf8d026",
+    "campaign": {
+      "file": "test-results/voxel-furniture-final3/report.json",
+      "sha256": "c56313550e0166aafcc7b5856e07ea120705befbbecf09aeaa4846b5ddfc39e7",
+      "sourceManifestSha256": "c3287ae4594737dabd9cfbd6eeb2b045a3cf5442e3d40f400ce49eddaa47ba7f"
+    },
+    "modes": [
+      {
+        "mode": "worker",
+        "checks": [
+          {
+            "name": "requested renderer is active"
+          },
+          {
+            "name": "actual sleeper links to the specific bed and its authoritative quality attributes",
+            "bedA": {
+              "kind": "bed",
+              "id": 565,
+              "quality": 1,
+              "stats": {
+                "qualityName": "较差",
+                "maxHitPoints": 100,
+                "beauty": 0,
+                "comfort": 66,
+                "restEffectiveness": 0.92
+              },
+              "value": 42.012
+            }
+          },
+          {
+            "name": "browser ticks apply the current bed rest multiplier to actual sleep",
+            "elapsed": 42,
+            "before": 67.88208333330489,
+            "after": 68.6180833701046,
+            "multiplier": 0.92
+          },
+          {
+            "name": "visible export and import preserve individual quality and actual bed use exactly"
+          },
+          {
+            "name": "visible owner reassignment makes the same person actually travel to and sleep in another bed",
+            "bedB": {
+              "kind": "bed",
+              "id": 572,
+              "quality": 3,
+              "stats": {
+                "qualityName": "良好",
+                "maxHitPoints": 100,
+                "beauty": 2,
+                "comfort": 84.00000000000001,
+                "restEffectiveness": 1.08
+              },
+              "value": 70.02
+            }
+          },
+          {
+            "name": "bed medical and room-wide prisoner settings retain every built quality"
+          },
+          {
+            "name": "actual social seat exposes that chair quality and the seated renderer pose"
+          },
+          {
+            "name": "actual table link shows table quality and room attributes without invented comfort or rest"
+          },
+          {
+            "name": "gathering switch still controls actual leisure while quality stays fixed"
+          },
+          {
+            "name": "real dining uses the actual chair and gathering controls preserve its physical meal"
+          },
+          {
+            "name": "visible dining export and import retain quality physical food and seat identity"
+          },
+          {
+            "name": "900 pixel layout preserves quality attributes and use navigation",
+            "bounds": {
+              "x": 31,
+              "y": 281.140625,
+              "width": 197,
+              "height": 284.703125
+            }
+          },
+          {
+            "name": "served JS and CSS match frozen local build by SHA"
+          },
+          {
+            "name": "no page or console errors"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:4182/assets/index-BzkrVt2Y.js",
+            "status": 200,
+            "sha256": "160fd1e7bdd047ee66cd1610038c2ea46c2266ab9678f4204a7468e7e2ba95a5",
+            "bytes": 2356,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/main-DIgWkC0f.css",
+            "status": 200,
+            "sha256": "0edef03114839b8e5416e8dcea155540637ea01cd52a9c57ec121fa823e0a2a8",
+            "bytes": 43407,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "bytes": 221699,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/main-CdQk8sLS.js",
+            "status": 200,
+            "sha256": "13b7f141b0fab56eed385bc1d32c8fe79eddecfac0cc2e7d772bf99e25d1adaf",
+            "bytes": 861415,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/sim.worker-BD7Lu8ms.js",
+            "status": 200,
+            "sha256": "8db2184e7eecb5ea2517b53deb699d026d0f55df5cbcc485631709c18d166519",
+            "bytes": 499468,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/render.worker-DljD0QL1.js",
+            "status": 200,
+            "sha256": "eb1c8f0f1ef528afcc9e1aaeef01f4bf411b20564babd96c2fe00d2c832af342",
+            "bytes": 616161,
+            "matchesLocalBuild": true
+          }
+        ]
+      },
+      {
+        "mode": "main",
+        "checks": [
+          {
+            "name": "requested renderer is active"
+          },
+          {
+            "name": "actual sleeper links to the specific bed and its authoritative quality attributes",
+            "bedA": {
+              "kind": "bed",
+              "id": 565,
+              "quality": 1,
+              "stats": {
+                "qualityName": "较差",
+                "maxHitPoints": 100,
+                "beauty": 0,
+                "comfort": 66,
+                "restEffectiveness": 0.92
+              },
+              "value": 42.012
+            }
+          },
+          {
+            "name": "browser ticks apply the current bed rest multiplier to actual sleep",
+            "elapsed": 45,
+            "before": 67.88208333330489,
+            "after": 68.67065480130458,
+            "multiplier": 0.92
+          },
+          {
+            "name": "visible export and import preserve individual quality and actual bed use exactly"
+          },
+          {
+            "name": "visible owner reassignment makes the same person actually travel to and sleep in another bed",
+            "bedB": {
+              "kind": "bed",
+              "id": 572,
+              "quality": 3,
+              "stats": {
+                "qualityName": "良好",
+                "maxHitPoints": 100,
+                "beauty": 2,
+                "comfort": 84.00000000000001,
+                "restEffectiveness": 1.08
+              },
+              "value": 70.02
+            }
+          },
+          {
+            "name": "bed medical and room-wide prisoner settings retain every built quality"
+          },
+          {
+            "name": "actual social seat exposes that chair quality and the seated renderer pose"
+          },
+          {
+            "name": "actual table link shows table quality and room attributes without invented comfort or rest"
+          },
+          {
+            "name": "gathering switch still controls actual leisure while quality stays fixed"
+          },
+          {
+            "name": "real dining uses the actual chair and gathering controls preserve its physical meal"
+          },
+          {
+            "name": "visible dining export and import retain quality physical food and seat identity"
+          },
+          {
+            "name": "900 pixel layout preserves quality attributes and use navigation",
+            "bounds": {
+              "x": 31,
+              "y": 281.140625,
+              "width": 197,
+              "height": 284.703125
+            }
+          },
+          {
+            "name": "served JS and CSS match frozen local build by SHA"
+          },
+          {
+            "name": "no page or console errors"
+          }
+        ],
+        "errors": [],
+        "assets": [
+          {
+            "url": "http://127.0.0.1:4182/assets/index-BzkrVt2Y.js",
+            "status": 200,
+            "sha256": "160fd1e7bdd047ee66cd1610038c2ea46c2266ab9678f4204a7468e7e2ba95a5",
+            "bytes": 2356,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/main-DIgWkC0f.css",
+            "status": 200,
+            "sha256": "0edef03114839b8e5416e8dcea155540637ea01cd52a9c57ec121fa823e0a2a8",
+            "bytes": 43407,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/client-CrowJ5J7.js",
+            "status": 200,
+            "sha256": "19780213ac3c7eae541f3eb0f1a4eb7466e60511c3b442070b4d5e54e6cbfd3e",
+            "bytes": 221699,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/main-CdQk8sLS.js",
+            "status": 200,
+            "sha256": "13b7f141b0fab56eed385bc1d32c8fe79eddecfac0cc2e7d772bf99e25d1adaf",
+            "bytes": 861415,
+            "matchesLocalBuild": true
+          },
+          {
+            "url": "http://127.0.0.1:4182/assets/sim.worker-BD7Lu8ms.js",
+            "status": 200,
+            "sha256": "8db2184e7eecb5ea2517b53deb699d026d0f55df5cbcc485631709c18d166519",
+            "bytes": 499468,
+            "matchesLocalBuild": true
+          }
+        ]
+      }
+    ]
+  },
+  "screenshots": [
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-furniture-bed-a-quality.png",
+      "sha256": "75baf8d32e8cf078a2dfd8d592557f138d7b8f718d61989629f445acdcfff6ef"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-furniture-reassigned-bed-b-user.png",
+      "sha256": "d98b122f9ee9cc02c96ad2c4cf55e0cf10350c42889186957f9cd77190b071b8"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-furniture-table-quality-room.png",
+      "sha256": "4af5600dfe2f69ae525269307b6cf76bf5bce2a8b81cbb4bf4f7e174f3993bce"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/runtime/voxel-furniture-narrow-quality.png",
+      "sha256": "a1f26f71a9ee0e140363f3a380993596f5d6f6490e324936b72b6c97e175f0be"
+    }
+  ],
+  "limitations": [
+    "Mechanisms first; furniture costs, durations and balance remain provisional",
+    "Furniture construction quality subset; no alternative materials, inspiration, artwork, frame damage or reinstalling",
+    "Furniture condition affects room market value; colony building wealth ignores HP",
+    "Native ordinary construction evidence and its scenario preparation are documented separately",
+    "Tests run locally; Pages CI only installs, type-checks, builds and deploys"
+  ]
+}

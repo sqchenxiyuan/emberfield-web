@@ -21,9 +21,9 @@ function fixture(seats=3) {
     Object.assign(p,pos(12,16+i));p.schedule.fill('work');p.rest=90;p.food=90;
     for(const key of Object.keys(p.priorities))p.priorities[key as keyof typeof p.priorities]=0;
   }
-  s.tables.push({...pos(20),id:s.nextId++,axis:'x',gathering:true});
+  s.tables.push({quality:2,...pos(20),id:s.nextId++,axis:'x',gathering:true});
   for(const target of [pos(19),pos(20,15),pos(21,17)].slice(0,seats))
-    s.chairs.push({...target,id:s.nextId++,axis:'x'});
+    s.chairs.push({quality:2,...target,id:s.nextId++,axis:'x'});
   return VoxelSimulation.load(s.save());
 }
 function command(s:VoxelSimulation,c:VoxelCommand){const r=s.command(c);expect(r.ok,r.message).toBe(true);return r;}
@@ -37,7 +37,7 @@ describe('colony social interactions and physical table leisure',()=>{
     const s=fixture(0),p=s.pawns[0],before=structuredClone(p);
     expect(s.command({type:'recreate',pawnId:p.id,kind:'social'}).ok).toBe(false);
     expect(p).toEqual(before);
-    s.chairs.push({...pos(25),id:s.nextId++,axis:'x'});
+    s.chairs.push({quality:2,...pos(25),id:s.nextId++,axis:'x'});
     expect(s.command({type:'recreate',pawnId:p.id,kind:'social'}).ok).toBe(false);
   });
   it('walks before gaining joy/comfort, then can enjoy a table alone with no drink',()=>{

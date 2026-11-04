@@ -3,6 +3,7 @@ import { legacySimulation } from './fixtures/legacy-start';
 import { describe, expect, it } from 'vitest';
 import { VoxelSimulation } from '../src/voxel/world';
 import { assignmentAt, defaultSchedule, restGain, restLoss, wantsSleep } from '../src/voxel/rest';
+import { furnitureStats } from '../src/voxel/furniture';
 import { hourAt } from '../src/voxel/farming';
 import {
   DAY,
@@ -154,11 +155,11 @@ describe('normal-command voxel housing', () => {
     expect(pawn.sleepingSince).not.toBeNull();
     const rest = pawn.rest;
     sim.step(100);
-    expect(pawn.rest - rest).toBeCloseTo(restGain(true) * 100, 7);
+    expect(pawn.rest - rest).toBeCloseTo(restGain(true, furnitureStats('bed',bed.quality).restEffectiveness!) * 100, 7);
     const save = sim.save(),
       restored = VoxelSimulation.load(save),
       copy = restored.pawns.find((p) => p.id === pawn.id)!;
-    expect(save.version).toBe(32);
+    expect(save.version).toBe(33);
     expect(restored.counts()).toEqual(sim.counts());
     expect(copy).toMatchObject({
       phase: 'rest',
@@ -410,7 +411,7 @@ describe('normal-command voxel housing', () => {
       expect(restored.counts()).toEqual(before);
       expect(restored.beds).toEqual([]);
       expect(restored.doors).toEqual([]);
-      expect(restored.save().version).toBe(32);
+      expect(restored.save().version).toBe(33);
       expect(
         restored.pawns.every(
           (pawn) =>

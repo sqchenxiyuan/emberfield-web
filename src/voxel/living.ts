@@ -1,7 +1,7 @@
-import { DAY, type Axis, type Pos } from './types';
+import { DAY, type ApparelQuality, type Axis, type Pos } from './types';
 
-export interface DiningTable extends Pos { id: number; axis: Axis; gathering: boolean }
-export interface DiningChair extends Pos { id: number; axis: Axis }
+export interface DiningTable extends Pos { id: number; axis: Axis; gathering: boolean; quality: ApparelQuality }
+export interface DiningChair extends Pos { id: number; axis: Axis; quality: ApparelQuality }
 export interface MealTask {
   stage: 'travel' | 'chew'; chairId: number | null; tableId: number | null;
   target: Pos; progress: number; sourceId: number | null; amount: number;
@@ -42,8 +42,8 @@ export const LIVING_RULES = Object.freeze({
   memoryDuration: DAY, maxTables: 128, maxChairs: 256,
 });
 /** Provisional Web furniture tuning, not native costs or final balance.
- * Quality, material multipliers and ComplexFurniture prerequisites are not
- * reproduced by this first furniture tier. Both footprints are physical. */
+ * Quality multipliers are applied by furniture.ts. Material alternatives and
+ * ComplexFurniture prerequisites remain outside this tier. Both footprints are physical. */
 export const LIVING_BUILDINGS = Object.freeze({
   table: Object.freeze({ cost: Object.freeze({ wood: 28 }), work: 120, maxHitPoints: 100, beauty: 2 }),
   chair: Object.freeze({ cost: Object.freeze({ wood: 15 }), work: 90, maxHitPoints: 80, beauty: 1 }),

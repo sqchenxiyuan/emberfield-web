@@ -53,7 +53,7 @@ describe('fire lifecycle and physical interruption integration', () => {
     const proof = JSON.parse(readFileSync(new URL('./fixtures/voxel-v25-fire-initial.provenance.json', import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(proof.sha256);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old);
-    expect(old.version).toBe(25); expect(s.save().version).toBe(32);
+    expect(old.version).toBe(25); expect(s.save().version).toBe(33);
     expect(s.fires).toEqual([]); expect(s.fireDamage).toEqual([]);
     expect(s.items).toEqual(old.items); expect(s.stats).toEqual(old.stats);
     expect(s.pawns.map(p => ({ id: p.id, ...pos(p.x, p.y, p.z) })))
@@ -165,7 +165,7 @@ describe('fire lifecycle and physical interruption integration', () => {
       }
       Object.assign(s.pawns[0], upper);
       bedId = s.nextId++;
-      s.beds.push({ ...upper, id: bedId, axis: 'x', owner: s.pawns[0].id, medical: false, prisoner: false });
+      s.beds.push({ ...upper, id: bedId, axis: 'x', owner: s.pawns[0].id, quality: 2 as const, medical: false, prisoner: false });
       itemId = wood(s, pos(17, 15, 11), 12).id;
     });
     ignite(s, upper, 1.7); ignite(s, pos(17, 15, 11), 1.7);

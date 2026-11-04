@@ -81,7 +81,7 @@ describe('physical weapon production and persistence', () => {
     const old = JSON.parse(bytes.toString()),
       s = VoxelSimulation.load(old);
     expect(old.version).toBe(12);
-    expect(s.save().version).toBe(32);
+    expect(s.save().version).toBe(33);
     expect(s.weaponBenches).toEqual([]);
     expect(s.items).toEqual(old.items);
     expect(s.save().blocks).toEqual(old.blocks);
@@ -223,7 +223,7 @@ describe('physical weapon production and persistence', () => {
       p = s.pawns[0];
     const w = makeWeapon(s.nextId++, 'steelKnife');
     p.weapon = w;
-    s.beds.push({ ...pos(p.x, p.y), id: s.nextId++, owner: p.id, axis: 'x', prisoner: false, medical: false });
+    s.beds.push({ ...pos(p.x, p.y), id: s.nextId++, owner: p.id, axis: 'x', prisoner: false, quality: 2 as const, medical: false });
     p.sleepBedId = s.beds[0].id;
     p.phase = 'rest';
     p.sleepingSince = s.tick;

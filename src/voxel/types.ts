@@ -230,6 +230,7 @@ export function deviceCells(d: Pos & { kind: DeviceKind; axis: Axis }): Pos[] {
   return out;
 }
 export interface Bed extends Pos {
+  quality: ApparelQuality;
   prisoner: boolean;
   id: number;
   axis: Axis;
@@ -924,7 +925,7 @@ export interface VoxelSave {
   filth: Filth[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 32;
+  version: 33;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];
   trade: TradeState;

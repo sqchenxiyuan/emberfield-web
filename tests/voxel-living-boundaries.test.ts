@@ -53,7 +53,7 @@ describe('living interruptions and phase compatibility', () => {
     for (const phase of ['rest', 'prisoner', 'downed'] as const) {
       const s = new VoxelSimulation(73129), p = s.pawns[0];
       const bed = { ...pos(10), id: s.nextId++, axis: 'x' as const, owner: p.id,
-        medical: phase === 'downed', prisoner: phase === 'prisoner' };
+        quality: 2 as const, medical: phase === 'downed', prisoner: phase === 'prisoner' };
       s.beds.push(bed); Object.assign(p, pos(10)); p.phase = phase;
       p.sleepBedId = bed.id; p.sleepingSince = phase === 'downed' ? null : 0;
       p.downed = phase === 'downed'; p.faction = phase === 'prisoner' ? 'prisoner' : 'colony';

@@ -17,8 +17,8 @@ function legacy(name = 'leading') {
 }
 function current() {
   const d = legacy(); migrateLiving(d, 30); d.version = 31;
-  d.tables.push({ id: d.nextId++, x: 5, y: 5, z: 8, axis: 'x', gathering: true });
-  d.chairs.push({ id: d.nextId++, x: 5, y: 4, z: 8, axis: 'y' }); return d;
+  d.tables.push({quality:2, id: d.nextId++, x: 5, y: 5, z: 8, axis: 'x', gathering: true });
+  d.chairs.push({quality:2, id: d.nextId++, x: 5, y: 4, z: 8, axis: 'y' }); return d;
 }
 function dining() {
   const d = current(), p = d.pawns[0];

@@ -105,8 +105,10 @@ import { initialLiving, tableCells, LIVING_RULES, LIVING_BUILDINGS, advanceLivin
 import { rejectLegacyLivingFields, migrateLiving, validateLiving } from './livingPersistence';
 import { initialSocial, rememberDeparture, type SocialIdentity, type SocialEvent } from './social';
 import { rejectLegacySocialFields, migrateSocial, validateSocial } from './socialPersistence';
+import { furnitureStats, type FurnitureKind } from './furniture';
+import { rejectLegacyFurnitureFields, migrateFurniture, validateFurniture } from './furniturePersistence';
 import { updateSocial } from './socialWorld';
-import { constructedMarketValue, structureMarketValue } from './wealth';
+import { constructedMarketValue, structureMarketValue, furnitureMarketValue } from './wealth';
 import { initialPsyche, remember, advancePsyche, recreationGain, shouldRecreate, validatePsyche, MOOD_RULES, RECREATION_NAMES, type RecreationKind } from './mood';
 import { HORSESHOE_COST, HORSESHOE_WORK } from './recreation';
 import { startCapture, setPrisonerPolicy, tryWarden, wardenTick, prisonerTick, releaseWarden } from './prisonWorld';
@@ -3088,6 +3090,10 @@ export class VoxelSimulation {
     return this.beds.find((b) => same(b, p) && b.prisoner === (p.faction === 'prisoner') &&
       (p.faction === 'prisoner' ? b.owner === p.id : b.medical || b.owner === p.id));
   }
+  private restingGain(p: Pawn): number {
+    const bed = this.patientBed(p);
+    return restGain(!!bed, bed ? furnitureStats('bed', bed.quality).restEffectiveness! : 1);
+  }
   private treatmentRoomFactor(patient: Pawn): number {
     this.updateRooms();
     const room = this.rooms.roomAt(patient);
@@ -6047,6 +6053,14 @@ export class VoxelSimulation {
       workerId: p.id,
     };
   }
+  /** Roll only after all placement and material checks have committed. The
+   * colonist completing construction supplies the skill. A per-job draw stream
+   * keeps save/reload independent of unrelated simulation and rendering work. */
+  private finishedFurnitureQuality(p: Pawn, j: Job) {
+    let draw = 0;
+    return craftedQuality(p.skills.construction.level,
+      () => plantRandom(this.seed ^ j.id, p.id, ++draw, 33001));
+  }
   private finish(p: Pawn, j: Job) {
     if (j.cancelled) {
       this.release(p);
@@ -6512,6 +6526,7 @@ export class VoxelSimulation {
       this.revision++;
     } else if (j.kind === 'bed') {
       this.beds.push({
+        quality: this.finishedFurnitureQuality(p, j),
         id: this.id(),
         x: j.x,
         y: j.y,
@@ -6549,7 +6564,7 @@ export class VoxelSimulation {
       yields.meal = SIMPLE_MEAL.output;
       this.stats.cooked++;
     } else if (j.kind === 'table' || j.kind === 'chair') {
-      const target = { id: this.id(), x:j.x, y:j.y, z:j.z, axis:j.axis ?? 'x' };
+      const target = { id: this.id(), x:j.x, y:j.y, z:j.z, axis:j.axis ?? 'x', quality:this.finishedFurnitureQuality(p,j) };
       if (j.kind === 'table') this.tables.push({...target,gathering:true});
       else this.chairs.push(target);
       this.rebuildDevices(); this.revision++;
@@ -6643,7 +6658,7 @@ export class VoxelSimulation {
           this.pawns.some((q) => q.patientId === p.id && q.carePhase?.startsWith('tend'))
         ) {
           p.reason = '等待同伴护理';
-          if (p.phase === 'rest') p.rest = Math.min(100, p.rest + restGain(p.sleepBedId !== null));
+          if (p.phase === 'rest') p.rest = Math.min(100, p.rest + this.restingGain(p));
           continue;
         }
         if (p.phase === 'care' && !this.validCare(p)) {
@@ -6677,7 +6692,7 @@ export class VoxelSimulation {
         )
           continue;
         if (p.phase === 'rest') {
-          p.rest = Math.min(100, p.rest + restGain(p.sleepBedId !== null));
+          p.rest = Math.min(100, p.rest + this.restingGain(p));
           if (
             !medicalNeedsRest(p) &&
             (p.rest >= 100 || (assignmentAt(p.schedule, this.tick) === 'work' && p.rest >= 20))
@@ -6825,12 +6840,12 @@ export class VoxelSimulation {
       standableCells:r.floorCells,passThroughCells:0,wealth:this.livingFloors.get(r.id)?.wealth ?? 0,
       beautyTotal:this.livingFloors.get(r.id)?.beauty ?? 0,cleanliness:cleanliness.get(r.id) ?? 0,
       ordinaryBeds:0,medicalBeds:0,prisonerBeds:0,tables:0}]));
-    const add = (pos:Pos,kind:JobKind,cells:Pos[],beauty=0,pass=false) => {
+    const add = (pos:Pos,kind:JobKind,cells:Pos[],beauty=0,pass=false,value=constructedMarketValue(costOf(kind),workOf(kind))) => {
       const groups = new Map<number,number>();
       for (const c of cells) { const id=this.rooms.roomIds[at(c)]; groups.set(id,(groups.get(id)??0)+1); }
       for (const [id,count] of groups) {
         const v=inputs.get(id); if (!v) continue;
-        v.wealth += constructedMarketValue(costOf(kind),workOf(kind)) * count/cells.length;
+        v.wealth += value * count/cells.length;
         v.beautyTotal += beauty * count/cells.length;
         if (kind!=='chair' && kind!=='door' && kind!=='horseshoePin') {
           const occupied=Math.min(v.standableCells,count); v.standableCells-=occupied;
@@ -6838,10 +6853,14 @@ export class VoxelSimulation {
         }
       }
     };
-    for (const t of this.tables) { add(t,'table',tableCells(t),LIVING_BUILDINGS.table.beauty); const r=inputs.get(this.rooms.roomIds[at(t)]); if(r)r.tables++; }
-    for (const c of this.chairs) add(c,'chair',[c],LIVING_BUILDINGS.chair.beauty);
+    const value = (kind: FurnitureKind, target: Bed | DiningTable | DiningChair) => {
+      const damage = this.fireDamage.find(d => d.kind === kind && d.targetId === target.id);
+      return furnitureMarketValue(kind,target.quality,damage ? damage.hitPoints/damage.maxHitPoints : 1);
+    };
+    for (const t of this.tables) { add(t,'table',tableCells(t),furnitureStats('table',t.quality).beauty,false,value('table',t)); const r=inputs.get(this.rooms.roomIds[at(t)]); if(r)r.tables++; }
+    for (const c of this.chairs) add(c,'chair',[c],furnitureStats('chair',c.quality).beauty,false,value('chair',c));
     for (const b of this.beds) {
-      add(b,'bed',bedCells(b),1,true); const r=inputs.get(this.rooms.roomIds[at(b)]);
+      add(b,'bed',bedCells(b),furnitureStats('bed',b.quality).beauty,true,value('bed',b)); const r=inputs.get(this.rooms.roomIds[at(b)]);
       if(r) { if(b.prisoner)r.prisonerBeds++; else if(b.medical)r.medicalBeds++; else r.ordinaryBeds++; }
     }
     for (const t of this.stoves) add(t,'stove',[t]);
@@ -6864,7 +6883,10 @@ export class VoxelSimulation {
         p.living.mealTask.chairId!==null && this.validDining(p)) ||
         (p.phase==='recreation' && p.psyche.recreation?.kind==='social' && same(p,p.psyche.recreation.target) &&
          this.validRecreation(p) && this.chairs.some(c=>same(c,p)));
-      advanceLiving(p.living,this.tick,resting ? LIVING_RULES.bedComfort : seated ? LIVING_RULES.chairComfort : null);
+      const chair = seated ? this.chairs.find(c=>same(c,p)) : undefined;
+      const comfort = resting ? furnitureStats('bed',bed.quality).comfort :
+        chair ? furnitureStats('chair',chair.quality).comfort : null;
+      advanceLiving(p.living,this.tick,comfort === null ? null : Math.min(100,comfort));
       if (resting && p.phase==='rest' && p.sleepingSince!==null && bed.owner===p.id && !bed.medical && !bed.prisoner) {
         p.living.sleepThoughtAt ??= p.sleepingSince! + LIVING_RULES.sleepThoughtDelay;
         if (this.tick >= p.living.sleepThoughtAt) rememberSleep(p.living,this.livingRoomAt(p),this.tick);
@@ -7238,7 +7260,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 32,
+      version: 33,
       socialHistory: this.socialHistory, socialLog: this.socialLog,
       weather: this.weather, snow: this.snow,
       fires: this.fires, fireDamage: this.fireDamage, fireHazards: this.fireHazards, fireLog: this.fireLog,
@@ -7292,11 +7314,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : ![1, 2].includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyFurnitureFields(old);
     rejectLegacySocialFields(old);
     rejectLegacyLivingFields(old);
     rejectLegacyPensFields(old);
@@ -7640,7 +7663,8 @@ export class VoxelSimulation {
     migratePens(old, sourceVersion);
     migrateLiving(old, sourceVersion);
     migrateSocial(old, sourceVersion);
-    old.version = 32;
+    migrateFurniture(old, sourceVersion);
+    old.version = 33;
     const d = old as VoxelSave;
     const loadHealth = (p: Pawn) =>
       oldHealth.get(p.id) ?? {
@@ -8742,6 +8766,7 @@ export class VoxelSimulation {
     validateHusbandry(d);
     validatePens(d);
     validateLiving(d);
+    validateFurniture(d);
     validateSocial(d);
     const recreationPins = new Set<number>();
     const recreationCells = new Set<number>();

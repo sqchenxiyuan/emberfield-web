@@ -1,0 +1,15 @@
+{
+  "source": "test-results\\voxel-v32-furniture-baseline\\furnished.json",
+  "sourceVersion": 32,
+  "sourceCommit": "857a810b1ad73864c3c71d2d4c56a343e1981876",
+  "sourceArchiveSha256": "4265f87ac9c31ea06bc786c733fef4395242483713ed4a1fd249c0df466c2dd4",
+  "sha256": "13d2f819a21f254132c1fb9fc311262312c2b5b30d857b3f1391b7d1be494e84",
+  "sourceTick": 3960,
+  "campaignExecution": {
+    "bundleSha256": "b7f89c08432727efbc0564a7fa96c913af1b588a10d57dfa185f6138e3a53d50",
+    "scriptSha256": "2b8d5628df9d531f34128c94ae0b046b020129ad3b708307c979b364a675e9db",
+    "sourceManifestSha256": "56c1e92e86d5d7d0982518d4656f21e50e0c0ddadfaa162404e287f2f6459f48"
+  },
+  "campaignScope": "Fresh seed 73129. Only public player commands, ordinary simulation ticks and exact save/load mutate the colony. Terrain and simulation state are read to choose real construction sites and record outcomes. Real timber, tables, chairs and beds; automatic recreation scheduling and naturally selected social events. No position, need, opinion, event, memory, clock or RNG injection. Threats/fire hazards are disabled through ordinary player controls. Bounded play demonstrates integration; rare event coverage belongs to mechanism tests.",
+  "note": "Fresh public-command run of the archived published v32 commit. Exact save bytes retained; no version relabelling or field stripping."
+}

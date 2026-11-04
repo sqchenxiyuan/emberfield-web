@@ -49,7 +49,7 @@ export function validateLiving(d: Record<string, any>): void {
     for (const v of list(value)) if (record(v) && identity(v.id)) ids.add(v.id);
   const occupied = new Set<number>();
   const claim = (v: unknown, table: boolean) => {
-    if (!exact(v, table ? ['id', 'x', 'y', 'z', 'axis', 'gathering'] : ['id', 'x', 'y', 'z', 'axis']) || !identity(v.id) || ids.has(v.id) ||
+    if (!exact(v, table ? ['id', 'x', 'y', 'z', 'axis', 'gathering', 'quality'] : ['id', 'x', 'y', 'z', 'axis', 'quality']) || !identity(v.id) || ids.has(v.id) ||
         !['x', 'y'].includes(v.axis) || (table && typeof v.gathering !== 'boolean')) fail('家具身份重复或字段无效');
     ids.add(v.id);
     const cells = table ? tableCells(v as any) : [v as Pos];

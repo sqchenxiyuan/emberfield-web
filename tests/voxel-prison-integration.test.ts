@@ -35,7 +35,7 @@ function fixture() {
   }
   s.blocks[index(24, 18, 8)] = s.blocks[index(24, 18, 9)] = Block.Air;
   s.doors.push({ ...pos(24, 18), id: s.nextId++, axis: 'x', mode: 'auto', openUntil: 0 });
-  s.beds.push({ ...pos(23, 21), id: s.nextId++, axis: 'x', owner: null, medical: false, prisoner: false });
+  s.beds.push({ ...pos(23, 21), id: s.nextId++, axis: 'x', owner: null, quality: 2 as const, medical: false, prisoner: false });
   s.spawn = pos(11);
   for (const [i, p] of s.pawns.entries()) {
     Object.assign(p, pos(11, 12 + i)); p.schedule.fill('work'); p.food = 95; p.rest = 95;
@@ -199,7 +199,7 @@ describe('voxel capture, care, recruitment and release integration', () => {
     const bytes = readFileSync(new URL('./fixtures/voxel-v23-prison-initial.json', import.meta.url));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe('3eac88560e5bf8460e91517998c80fe501ce5be1eeac088e9c0cb3703db216b3');
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old), upgraded = s.save();
-    expect(old.version).toBe(23); expect(upgraded.version).toBe(32);
+    expect(old.version).toBe(23); expect(upgraded.version).toBe(33);
     expect(upgraded.items).toEqual(old.items); expect(upgraded.stats).toEqual(old.stats);
     expect(upgraded.nextId).toBe(old.nextId); expect(upgraded.animals).toMatchObject(old.animals);
     expect(upgraded.pawns).toHaveLength(old.pawns.length);
@@ -245,7 +245,7 @@ describe('voxel capture, care, recruitment and release integration', () => {
     const { s, w, q } = recovered(), patient = s.pawns[1], prisonBed = s.beds[0];
     command(s, { type: 'bedMedical', bedId: prisonBed.id, medical: true });
     const medicalBed = { ...pos(15, 20), id: s.nextId++, axis: 'x' as const,
-      prisoner: false, medical: true, owner: null };
+      prisoner: false, quality: 2 as const, medical: true, owner: null };
     s.beds.push(medicalBed); Object.assign(q, pos(26, 23));
     Object.assign(patient, { x: prisonBed.x, y: prisonBed.y, z: prisonBed.z });
     patient.health.malnutrition = .9; patient.food = 90; s.step();

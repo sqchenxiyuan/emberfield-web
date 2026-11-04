@@ -17,6 +17,7 @@ import { AnimalPanel, AnimalDetails } from './AnimalPanel';
 import { FenceGateDetails, PenDetails, type PenControls } from './PenPanel';
 import { LivingPanel, RoomLivingDetails, DiningFurnitureDetails } from './LivingPanel';
 import { SocialPanel } from './SocialPanel';
+import { FurnitureDetails, CurrentFurniture } from './FurniturePanel';
 import { tableCells, LIVING_BUILDINGS } from './living';
 import { BatchDurability, ItemCondition } from './ItemCondition';
 import type { EnvironmentView } from './environment';
@@ -1179,6 +1180,7 @@ function App() {
             </small>
           </div>
         )}
+        {s && (bed || table || chair) && <FurnitureDetails kind={bed ? 'bed' : table ? 'table' : 'chair'} item={(bed ?? table ?? chair)!} snapshot={s} />}
         {s && (table || chair) && <DiningFurnitureDetails table={table ?? undefined} chair={chair ?? undefined} snapshot={s}
           focus={focus} command={c => void client.command(c)} />}
         {bed && (
@@ -1230,7 +1232,7 @@ function App() {
               </select>
             </label>
             <p>
-              占地两格 · 睡眠恢复 100%
+              占地两格
               <br />
               {s?.pawns.find((p) => p.sleepBedId === bed.id)?.reason ?? '当前无人使用'}
             </p>
@@ -1535,6 +1537,7 @@ function App() {
               gatheringTable={s?.tables.filter(t => t.gathering).toSorted((a, b) => Math.abs(a.x - pawn.x) + Math.abs(a.y - pawn.y) + Math.abs(a.z - pawn.z) - Math.abs(b.x - pawn.x) - Math.abs(b.y - pawn.y) - Math.abs(b.z - pawn.z))[0]}
               focus={focus} />}
             {pawn.faction === 'colony' && s && <LivingPanel pawn={pawn} snapshot={s} focus={focus} />}
+            {s && <CurrentFurniture pawn={pawn} snapshot={s} focus={focus} />}
             {s && (pawn.faction === 'colony' || pawn.social.memories.length > 0) && <SocialPanel key={`social-${pawn.id}`} pawn={pawn} snapshot={s} focus={focus} />}
             {s && <CleaningStatus pawn={pawn} snapshot={s} command={c => void client.command(c)} />}
             {s && <FireWorkStatus pawn={pawn} snapshot={s} command={c => void client.command(c)} />}
