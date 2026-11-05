@@ -2,6 +2,7 @@ import { WOOL_RULES, woolReady } from './animalWool';
 import { MILK_RULES, milkReady } from './animalMilk';
 import { at, CELLS, HEIGHT, WIDTH, DEPTH, inside, position, type Pos, type VoxelSave, type WildAnimal } from './types';
 import { HUSBANDRY_RULES, ANIMAL_HUSBANDRY, initialAnimalState, animalFeedAmount, isAnimalAdult } from './husbandry';
+import { animalCanEatResource } from './animalTraining';
 import { initialSkills, validSkills } from './skills';
 
 const record = (v: unknown): v is Record<string, any> => !!v && typeof v === 'object' && !Array.isArray(v);
@@ -57,7 +58,7 @@ export function validateAnimalHusbandryShape(a: WildAnimal, nextId: number): voi
       (a.goal?.kind === 'climateExit' && (a.faction !== 'wild' ||
         ![0, WIDTH - 1].includes(position(a.goal.id).x) && ![0, DEPTH - 1].includes(position(a.goal.id).y))))
     fail('动物环境避险阶段或路径无效');
-  if (a.path.length && a.goal === null && !(a.phase === 'medicalRest' && a.medical?.bedId !== null && a.medical?.bedId !== undefined))
+  if (a.path.length && a.goal === null && !a.work && !(a.phase === 'medicalRest' && a.medical?.bedId !== null && a.medical?.bedId !== undefined))
     fail('动物路径缺少目标');
 }
 
@@ -139,7 +140,7 @@ export function validateHusbandry(d: VoxelSave): void {
   let previousTick = -1;
   for (const e of d.husbandryLog) {
     if (!exact(e, ['tick', 'kind', 'animalId', 'otherId', 'message']) || !integer(e.tick, previousTick, d.tick) ||
-        !['tame', 'failed', 'fed', 'pregnancy', 'birth', 'miscarriage', 'rewild', 'slaughter', 'release', 'starved', 'escaped', 'milked', 'milkFailed', 'sheared', 'shearFailed', 'fertilized', 'laidEgg', 'hatched'].includes(e.kind) ||
+        !['training', 'tame', 'failed', 'fed', 'pregnancy', 'birth', 'miscarriage', 'rewild', 'slaughter', 'release', 'starved', 'escaped', 'milked', 'milkFailed', 'sheared', 'shearFailed', 'fertilized', 'laidEgg', 'hatched'].includes(e.kind) ||
         !id(e.animalId) || (e.otherId !== null && !id(e.otherId)) || typeof e.message !== 'string' || e.message.length > 500)
       fail('动物事件记录无效');
     previousTick = e.tick;
@@ -184,7 +185,7 @@ export function validateHusbandry(d: VoxelSave): void {
       continue;
     }
     const source = t.stage === 'fetch' ? d.items.find(i => i.id === t.foodId) : p.cargo;
-    if (!source || !integer(source.amount, 1) || !['grain', 'food', 'meal'].includes(source.resource) ||
+    if (!source || !integer(source.amount, 1) || !animalCanEatResource(a.species, source.resource) ||
         (t.action !== 'feed' && source.resource !== 'grain') || (t.action === 'feed' && t.feedings !== 0))
       fail('照料食物或喂食次数无效');
     const portion = animalFeedAmount(a.species, source.resource);

@@ -38,7 +38,7 @@ describe('world selection worker transactions', () => {
     const preview = request('previewSite', { site }).result as WorldPreview;
     expect(request('newSite', { site }).error).toBeUndefined();
     const saved = save(), state = messages.findLast(m => m.type === 'state').snapshot;
-    expect(saved).toMatchObject({ version: 58, worldSite: site, seed: preview.seed, settings: preview.settings, spawn: preview.spawn });
+    expect(saved).toMatchObject({ version: 59, worldSite: site, seed: preview.seed, settings: preview.settings, spawn: preview.spawn });
     expect(state).toMatchObject({ worldSite: site, seed: preview.seed, settings: preview.settings, speed: 0, tick: 0 });
   });
 

@@ -11,8 +11,10 @@ export const ANIMAL_DEFS: Readonly<Record<AnimalSpecies, {
   alpaca: { name: '羊驼', health: 75, meat: 55, color: 0xd8ccb3, moveTicks: 12 },
   dromedary: { name: '单峰驼', health: 100, meat: 90, color: 0xc8a36c, moveTicks: 13 },
   chicken: { name: '鸡', health: 20, meat: 12, color: 0xe7ddc0, moveTicks: 10 },
+  labrador: { name: '拉布拉多犬', health: 75, meat: 40, color: 0xd6b675, moveTicks: 10 },
 };
 export const ANIMAL_PHASE_NAMES: Record<WildAnimal['phase'], string> = {
+  follow: '跟随主人', attack: '协同攻击', rescue: '救援居民', haul: '搬运物资',
   shelter: '环境避险',
   downed: '倒地', medicalRest: '医疗休养', carried: '救助搬运中',
   layEgg: '产蛋',

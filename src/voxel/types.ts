@@ -1,6 +1,7 @@
 import type { EggBox, EggBoxTask } from './eggBoxes';
 import type { AnimalMedicalState, AnimalCareTask, AnimalBed } from './animalMedical';
 import type { AnimalEnvironmentState } from './animalEnvironment';
+import type { AnimalTrainingState, AnimalWork, AnimalTrainTask, Trainable } from './animalTraining';
 import type { ApparelControl, ApparelPoliciesState, ApparelPolicy } from './apparelPolicies';
 import type { FoodPoliciesState, FoodPolicy, FoodResource } from './foodPolicies';
 import type { PrisonFoodTask } from './prisonFood';
@@ -435,7 +436,7 @@ export interface Stove extends Pos {
   target: number;
   paused: boolean;
 }
-export type AnimalSpecies = 'hare' | 'deer' | 'dromedary' | 'alpaca' | 'chicken';
+export type AnimalSpecies = 'hare' | 'deer' | 'dromedary' | 'alpaca' | 'chicken' | 'labrador';
 export interface GrassPatch extends Pos { growth: number }
 export interface AnimalGoal { kind: 'grass' | 'crop' | 'food' | 'mate' | 'area' | 'exit' | 'layEgg' | 'layEggBox' | 'caravan' | 'shelter' | 'climateExit'; id: number }
 export interface HandleTask {
@@ -449,13 +450,17 @@ export interface HandleTask {
 }
 export interface HusbandryEvent {
   tick: number;
-  kind: 'tame' | 'failed' | 'fed' | 'pregnancy' | 'birth' | 'miscarriage' | 'rewild' | 'slaughter' | 'release' | 'starved' | 'escaped' | 'milked' | 'milkFailed' | 'sheared' | 'shearFailed' | 'fertilized' | 'laidEgg' | 'hatched';
+  kind: 'training' | 'tame' | 'failed' | 'fed' | 'pregnancy' | 'birth' | 'miscarriage' | 'rewild' | 'slaughter' | 'release' | 'starved' | 'escaped' | 'milked' | 'milkFailed' | 'sheared' | 'shearFailed' | 'fertilized' | 'laidEgg' | 'hatched';
   animalId: number;
   otherId: number | null;
   message: string;
 }
 /** Wildlife uses its own small state machine, separate from human anatomy. */
 export interface WildAnimal extends Pos {
+  training: AnimalTrainingState;
+  work: AnimalWork | null;
+  /** Physical contents survive cancelled work, injury and blocked unloading. */
+  cargo: Cargo | null;
   medical: AnimalMedicalState;
   environment: AnimalEnvironmentState;
   allowedAreaId: number | null;
@@ -493,7 +498,7 @@ export interface WildAnimal extends Pos {
   health: number;
   hunger: number;
   dead: boolean;
-  phase: 'roam' | 'graze' | 'rest' | 'flee' | 'dead' | 'eat' | 'mate' | 'interact' | 'rope' | 'layEgg' | 'downed' | 'medicalRest' | 'carried' | 'shelter';
+  phase: 'roam' | 'graze' | 'rest' | 'flee' | 'dead' | 'eat' | 'mate' | 'interact' | 'rope' | 'layEgg' | 'downed' | 'medicalRest' | 'carried' | 'shelter' | 'follow' | 'attack' | 'rescue' | 'haul';
   hunt: boolean;
   moveTick: number;
   decisionTick: number;
@@ -700,6 +705,8 @@ export interface CombatState {
   wave: number;
 }
 export interface Pawn extends Pos {
+  animalsReleased: boolean;
+  animalTrainTask?: AnimalTrainTask;
   prisonFoodTask?: PrisonFoodTask;
   animalCareTask?: AnimalCareTask;
   eggBoxTask?: EggBoxTask;
@@ -762,6 +769,7 @@ export interface Pawn extends Pos {
   path: number[];
   destination: number | null;
   phase:
+    | 'animalTrain'
     | 'prisonFood'
     | 'animalCare'
     | 'eggBox'
@@ -947,6 +955,10 @@ export interface ChunkUpdate {
   explored: Uint8Array;
 }
 export type VoxelCommand =
+  | { type: 'animalTraining'; animalId: number; trainable: Trainable; wanted: boolean }
+  | { type: 'animalMaster'; animalId: number; pawnId: number | null }
+  | { type: 'animalFollow'; animalId: number; when: 'drafted' | 'fieldwork'; enabled: boolean }
+  | { type: 'animalsRelease'; pawnId: number; enabled: boolean }
   | { type: 'animalMedicalPolicy'; animalId: number; policy: MedicalPolicy }
   | { type: 'animalRescue'; animalId: number; enabled: boolean }
   | { type: 'animalCare'; pawnId: number; animalId: number; action: 'rescue' | 'tend' | 'feed' }
@@ -1096,7 +1108,7 @@ export interface VoxelSave {
   eggBoxes: EggBox[];
   horseshoePins: HorseshoePin[];
   format: 'emberfield-voxel';
-  version: 58;
+  version: 59;
   autoSlaughter: import('./autoSlaughter').AutoSlaughterSettings;
   animals: WildAnimal[];
   butcherSpots: ButcherSpot[];

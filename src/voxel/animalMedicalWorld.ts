@@ -8,6 +8,8 @@ import { NUTRITION } from './farming';
 import { healthSummary } from './survival';
 import { learnSkill, tendQuality, tendSpeed } from './skills';
 import { animalTemperatureAllowsRecovery } from './animalEnvironment';
+import { animalCanEatResource } from './animalTraining';
+import type { Cargo } from './types';
 
 export interface AnimalMedicalHost extends HusbandryHost {
   animalBeds: AnimalBed[]; fires: Pos[];
@@ -18,7 +20,7 @@ export interface AnimalMedicalHost extends HusbandryHost {
 const same=(a:Pos,b:Pos)=>at(a)===at(b);
 const adjacent=(a:Pos,b:Pos)=>a.z===b.z&&Math.abs(a.x-b.x)+Math.abs(a.y-b.y)===1;
 const eligible=(a:WildAnimal)=>!a.dead&&!a.hunt&&!a.slaughter&&!a.releaseMarked&&(a.faction==='colony'||a.medical.rescue);
-const edible=(i:{resource:string})=>['grain','food','meal'].includes(i.resource);
+const edible=(i:Cargo,a:WildAnimal)=>animalCanEatResource(a.species,i.resource);
 const validBed=(s:AnimalMedicalHost,b:AnimalBed,a:WildAnimal)=>s.standable(b)&&s.animalCanStop(b)&&!s.fires.some(f=>same(f,b))&&animalTemperatureAllowsRecovery(a,s.temperature(b));
 const presentBed=(s:AnimalMedicalHost,a:WildAnimal)=>s.animalBeds.find(b=>b.id===a.medical.bedId&&same(a,b)&&validBed(s,b,a));
 function bedFree(s:AnimalMedicalHost,b:AnimalBed,a:WildAnimal,p?:Pawn) {
@@ -108,7 +110,7 @@ export function animalMedicalTick(s:AnimalMedicalHost,a:WildAnimal):boolean {
 export function startAnimalCare(s:AnimalMedicalHost,p:Pawn,a:WildAnimal,action:AnimalCareTask['action'],forced=false):boolean {
   if(!['rescue','tend','feed'].includes(action)||!workerCan(p,action)||p.psyche.breakUntil>s.tick||a.dead||a.hunt||a.slaughter||a.releaseMarked||
       !s.exploredAt(a)||!s.pawnAllowed(p,a)||(!forced&&!eligible(a))||a.medical.carriedBy!==null||
-      s.pawns.some(q=>q!==p&&(q.animalCareTask?.animalId===a.id||q.handleTask?.animalId===a.id||q.ropeTask?.animalId===a.id)))return false;
+      s.pawns.some(q=>q!==p&&(q.animalCareTask?.animalId===a.id||q.animalTrainTask?.animalId===a.id||q.handleTask?.animalId===a.id||q.ropeTask?.animalId===a.id)))return false;
   const summary=animalMedicalSummary(a),currentBed=presentBed(s,a);
   if(action==='rescue'&&(!a.medical.downed||currentBed))return false;
   if(action==='tend'&&(a.medical.policy==='none'||!summary.needsTending))return false;
@@ -120,9 +122,9 @@ export function startAnimalCare(s:AnimalMedicalHost,p:Pawn,a:WildAnimal,action:A
     if(!bed)return false;
   }
   let source:Stack|undefined,sourcePath:number[]|null=null,amount=0;
-  const carried=action==='feed'&&p.cargo&&edible(p.cargo)||action==='tend'&&a.medical.policy==='herbal'&&p.cargo?.resource==='herb';
+  const carried=action==='feed'&&p.cargo&&edible(p.cargo,a)||action==='tend'&&a.medical.policy==='herbal'&&p.cargo?.resource==='herb';
   if(!carried&&(action==='feed'||action==='tend'&&a.medical.policy==='herbal')) {
-    for(const item of s.items.filter(i=>!i.forbidden&&s.pawnAllowed(p,i)&&s.exploredAt(i)&&(action==='feed'?edible(i):i.resource==='herb'))) {
+    for(const item of s.items.filter(i=>!i.forbidden&&s.pawnAllowed(p,i)&&s.exploredAt(i)&&(action==='feed'?edible(i,a):i.resource==='herb'))) {
       if(s.animalAvailable(item,p.id)<1)continue;
       const path=s.itemPath(p,item);if(path===null)continue;
       if(!sourcePath||path.length<sourcePath.length){source=item;sourcePath=path;}
@@ -204,7 +206,7 @@ export function animalCareTick(s:AnimalMedicalHost,p:Pawn):void {
     t.progress=0;
     if(animalMedicalSummary(a).needsTending&&(!medicine||p.cargo))return;
   } else {
-    if(!p.cargo||!edible(p.cargo))return cancel('携带食物不适合动物');
+    if(!p.cargo||!edible(p.cargo,a))return cancel('携带食物不适合动物');
     const amount=Math.min(p.cargo.amount,Math.max(1,Math.ceil((100-a.hunger)/100*animalNutritionCapacity(a)/NUTRITION[p.cargo.resource]!)));
     a.hunger=Math.min(100,a.hunger+amount*NUTRITION[p.cargo.resource]!/animalNutritionCapacity(a)*100);
     s.stats.consumed[p.cargo.resource]+=amount;p.cargo.amount-=amount;if(!p.cargo.amount)p.cargo=null;

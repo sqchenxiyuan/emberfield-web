@@ -36,7 +36,7 @@ function synthetic() {
 describe('authentic v27 environment migration', () => {
   it.each(['delivered', 'snow'] as const)('preserves genuine %s bytes, calendars, physical goods and prior progress', name => {
     const old = historical(name), before = JSON.stringify(old), s = VoxelSimulation.load(old);
-    expect(old.version).toBe(27); expect(s.save().version).toBe(58); expect(s.tick).toBe(old.tick);
+    expect(old.version).toBe(27); expect(s.save().version).toBe(59); expect(s.tick).toBe(old.tick);
     expect(JSON.stringify(old)).toBe(before);
     for (const key of ['weather', 'snow', 'items', 'stats', 'fires', 'fireDamage', 'fireHazards', 'fireLog', 'trade', 'filth'] as const)
       expect(s[key], key).toEqual(relocationExpectedField(key, old[key]));

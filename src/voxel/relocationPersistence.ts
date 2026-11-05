@@ -9,7 +9,7 @@ const owns = (v: unknown, key: string) => record(v) && Object.hasOwn(v, key);
 const relocation = (j: any) => j?.kind === 'install' || j?.kind === 'uninstall';
 function fail(message: string): never { throw new Error('家具搬装存档无效：' + message); }
 function batches(d: Record<string, any>): any[] {
-  return [...list(d.items), ...list(d.pawns).map(p => p?.cargo),
+  return [...list(d.items), ...list(d.pawns).map(p => p?.cargo), ...list(d.animals).map(a => a?.cargo),
     ...list(d.jobs).flatMap(j => [...list(j?.deliveredBatches), ...list(j?.deliveredFood)])];
 }
 const ledgers = (d: Record<string, any>) =>

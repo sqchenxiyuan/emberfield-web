@@ -76,10 +76,10 @@ describe('v53 live animal migration boundary', () => {
       (d: any) => { delete d.trade.receipts[0].animalTransfers; },
     ]) {
       const { d, animal } = fixture(); receipt(d, animal); change(d); const before = structuredClone(d);
-      migrateAnimalTrade(d, 53); expect(d).toEqual(before); expect(() => validateAnimalTrade(d)).toThrow();
+      migrateAnimalTrade(d, 59); expect(d).toEqual(before); expect(() => validateAnimalTrade(d)).toThrow();
     }
     const { d } = fixture(); d.trade.animalLedger.bought.alpaca = 7;
-    migrateAnimalTrade(d, 53); expect(d.trade.animalLedger.bought.alpaca).toBe(7);
+    migrateAnimalTrade(d, 59); expect(d.trade.animalLedger.bought.alpaca).toBe(7);
   });
   it('rejects malformed historical lists without partially migrating them', () => {
     const d: any = { trade: { caravans: [{ stock: [] }, null], receipts: [] } }, before = structuredClone(d);
@@ -92,7 +92,7 @@ describe('live caravan animal ownership', () => {
     const { d, animal } = fixture();
     expect(() => validateHusbandry(d)).not.toThrow(); expect(() => tradeValidation(d)).not.toThrow();
     const loaded = VoxelSimulation.load(d).save();
-    expect(loaded.version).toBe(58); expect(loaded.trade).toEqual(d.trade);
+    expect(loaded.version).toBe(59); expect(loaded.trade).toEqual(d.trade);
     expect(loaded.animals.find(a => a.id === animal.id)).toEqual(animal);
   });
   it('requires exactly one live trader animal for every listed identity', () => {

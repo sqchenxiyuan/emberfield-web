@@ -119,6 +119,10 @@ import { migrateWildlife, validateWildlife } from './wildlifePersistence';
 import { initialAnimalState, HUSBANDRY_RULES, ANIMAL_HUSBANDRY } from './husbandry';
 import { rejectLegacyHusbandryFields, migrateHusbandry, validateHusbandry } from './husbandryPersistence';
 import { seedGrass, updateHusbandry, tryHandle, handleTick, animalOrder, releaseAnimalHandlers, reconcileAutoSlaughter } from './husbandryWorld';
+import { animalSkillAvailable } from './animalTraining';
+import { animalTrainingCommand, tryAnimalTraining, animalTrainTick, releaseAnimalTraining, cancelAnimalWork,
+  prepareAnimalTraining, animalCooperationTick, moveAnimalTo, reconcileAnimalTraining, ANIMAL_COOPERATION_COMBAT } from './animalTrainingWorld';
+import { rejectLegacyAnimalTraining, migrateAnimalTraining, validateAnimalTraining } from './animalTrainingPersistence';
 import { ANIMAL_MEDICAL_RULES, animalMedicalSummary, injureAnimal, type AnimalBed } from './animalMedical';
 import { animalCareTick, tryAnimalCare, startAnimalCare, releaseAnimalCare, cancelAnimalMedical } from './animalMedicalWorld';
 import { rejectLegacyAnimalMedical, migrateAnimalMedical, validateAnimalMedical } from './animalMedicalPersistence';
@@ -127,7 +131,7 @@ import { rejectLegacyAnimalEnvironment, migrateAnimalEnvironment, validateAnimal
 import { defaultAutoSlaughter, autoSlaughterSelection, validAutoSlaughterPolicy, AUTO_SLAUGHTER_SPECIES } from './autoSlaughter';
 import { migrateAutoSlaughter, validateAutoSlaughter } from './autoSlaughterPersistence';
 import { PEN_RULES, PEN_BUILDINGS, initialPenFilter, isAnimalGroundStep, type Fence, type FenceGate, type PenMarker, type AnimalArea } from './pens';
-import { pensCommand, penSummaries, penCells, tryRope, ropeTick, cancelAnimalRopes, removePenMarker } from './pensWorld';
+import { animalAllowed, pensCommand, penSummaries, penCells, tryRope, ropeTick, cancelAnimalRopes, removePenMarker } from './pensWorld';
 import { rejectLegacyPensFields, migratePens, validatePens } from './pensPersistence';
 import type { GrassPatch, HusbandryEvent } from './types';
 import type { WildAnimal, ButcherSpot, HorseshoePin } from './types';
@@ -623,6 +627,10 @@ export class VoxelSimulation {
       targets.push(this.animalBeds.find(b=>b.id===t.bedId));
       if(t.sourceId!==null)targets.push(this.items.find(i=>i.id===t.sourceId));
     }
+    if(p.animalTrainTask){
+      targets.push(this.animals.find(a=>a.id===p.animalTrainTask!.animalId));
+      if(p.animalTrainTask.sourceId!==null)targets.push(this.items.find(i=>i.id===p.animalTrainTask!.sourceId));
+    }
     if (p.cleanTask) targets.push(this.filth.find(f => f.id === p.cleanTask!.filthId));
     if (p.carePhase) {
       if (p.carePhase !== 'rescueCarry') targets.push(this.pawns.find(q => q.id === p.patientId));
@@ -929,6 +937,7 @@ export class VoxelSimulation {
     updateHusbandry(this);
     for (const a of [...this.animals]) {
       if (a.dead) {
+        if(!this.animalDropCargo(a))continue;
         const batch = carcassBatch(a);
         if (advanceRot(batch, this.temperature(a))) {
           this.stats.spoiled.carcass++;
@@ -962,6 +971,8 @@ export class VoxelSimulation {
   }
   killAnimal(animal: WildAnimal, reason: string) {
     if (animal.dead) return;
+    cancelAnimalWork(this,animal);
+    animal.training.masterId=null;animal.training.followDrafted=false;animal.training.followFieldwork=false;
     cancelAnimalMedical(this, animal);
     animal.medical.downed = false; animal.medical.rescue = false;
     if(animal.faction==='trader') {
@@ -1529,7 +1540,7 @@ export class VoxelSimulation {
     this.commitPlacement(plan);
     return true;
   }
-  private dropCargo(p: Pawn): boolean {
+  private dropCargo(p: Pawn | WildAnimal): boolean {
     if (!p.cargo) return true;
     const plan = this.planPlacement(
       [{ batch: p.cargo, origin: p }],
@@ -1680,13 +1691,14 @@ export class VoxelSimulation {
     return this.storageCells().some((s) => s.priority > priority && this.storageSpace(s, item, undefined, context) > 0);
   }
   private reserveStorage(
-    p: Pawn,
+    p: Pawn | WildAnimal,
     batch: Cargo,
     target: Stockpile,
     sourceId: number | null,
   ): number {
     const source = sourceId === null ? null : this.items.find(i => i.id === sourceId);
-    if (!this.pawnAllowed(p,target) || (source && !this.pawnAllowed(p,source)) || (sourceId !== null && !source)) { this.storageReservations.delete(p.id); return 0; }
+    const allowed=(target:Pos)=>isAnimal(p)?animalAllowed(this,p,target):this.pawnAllowed(p,target);
+    if (!allowed(target) || (source && !allowed(source)) || (sourceId !== null && !source)) { this.storageReservations.delete(p.id); return 0; }
     const n = Math.min(
       batch.amount,
       carryLimit(batch.resource),
@@ -1705,6 +1717,17 @@ export class VoxelSimulation {
     const previous = [...this.storageReservations].sort(([a], [b]) => a - b);
     this.storageReservations.clear();
     for (const [id, r] of previous) {
+      const animal=this.animals.find(a=>a.id===id);
+      if(animal){
+        const w=animal.work,source=r.sourceId===null?animal.cargo:this.items.find(i=>i.id===r.sourceId);
+        if(w?.kind==='haul'&&source&&compatibleBatches(source,r.batch)&&animalAllowed(this,animal,position(r.cell))&&
+          (r.sourceId===null||animalAllowed(this,animal,source as Stack))){
+          const amount=Math.min(w.amount,source.amount,this.storageSpace(position(r.cell),source,id),
+            r.sourceId===null?source.amount:this.availableStack(source as Stack,id));
+          if(amount>=w.amount)this.storageReservations.set(id,{...r,batch:portion(source,w.amount)});
+        }
+        continue;
+      }
       const pawn = this.pawns.find((p) => p.id === id);
       const source = r.sourceId === null ? (pawn?.cargo ?? this.eggBoxes.find(b=>b.id===pawn?.eggBoxTask?.boxId)?.eggs) : this.items.find(i => i.id === r.sourceId);
       if (!pawn || (pawn.phase !== 'haul' && pawn.phase !== 'eggBox') || !source || !compatibleBatches(source, r.batch) || !this.pawnAllowed(pawn,position(r.cell)) || (r.sourceId !== null && !this.pawnAllowed(pawn,source as Stack))) continue;
@@ -2685,6 +2708,9 @@ export class VoxelSimulation {
     }
     const result=this.dispatchCommand(c);
     if(result.ok) {
+      reconcileAnimalTraining(this);
+      if(['animalAreaAssign','animalAreaPaint','animalAreaDelete'].includes(c.type))
+        for(const a of this.animals)if(a.work)cancelAnimalWork(this,a);
       reconcileStorageGroups(this); this.reconcileProductionStorage();
       if (['pawnAreaAssign','animalAreaPaint','animalAreaDelete','draft'].includes(c.type)) {
         this.areaReturnRetry.clear();
@@ -2699,6 +2725,7 @@ export class VoxelSimulation {
   }
   private dispatchCommand(c: VoxelCommand): CommandResult {
     if (!c || typeof c !== 'object') return { ok: false, message: '命令格式无效' };
+    const trainingResult=animalTrainingCommand(this,c);if(trainingResult)return trainingResult;
     if(c.type==='eggBoxEmpty'||c.type==='eggBoxForbid') {
       const box=this.eggBoxes.find(b=>b.id===c.boxId&&this.exploredAt(b));
       if(!box||(c.type==='eggBoxEmpty'?typeof c.enabled:typeof c.forbidden)!=='boolean') return {ok:false,message:'蛋箱或指令无效'};
@@ -3052,6 +3079,8 @@ export class VoxelSimulation {
       if (!p || p.dead || p.downed || p.carriedBy !== null || typeof c.drafted !== 'boolean')
         return { ok: false, message: '人物当前无法征召' };
       p.drafted = c.drafted;
+      if(!p.drafted)p.animalsReleased=false;
+      for(const a of this.animals)if(a.training.masterId===p.id)cancelAnimalWork(this,a);
       this.release(p);
       if (p.drafted && p.cargo?.furniture) this.dropCargo(p);
       p.reason = p.drafted ? '已征召，等待战斗指令' : '解除征召，恢复工作';
@@ -4116,11 +4145,13 @@ export class VoxelSimulation {
       if (p.handleTask?.stage === 'fetch' && p.handleTask.foodId === item.id) available -= p.handleTask.amount;
       if (p.animalCareTask?.stage === 'fetch' && p.animalCareTask.sourceId === item.id) available -= p.animalCareTask.amount;
       if (p.prisonFoodTask?.stage === 'fetch' && p.prisonFoodTask.sourceId === item.id) available -= p.prisonFoodTask.amount;
+      if (p.animalTrainTask?.stage === 'fetch' && p.animalTrainTask.sourceId === item.id) available -= p.animalTrainTask.amount;
       if (p.living.mealTask?.sourceId === item.id) available -= p.living.mealTask.amount;
       const fetch = this.fetchReservations.get(p.id), haul = this.storageReservations.get(p.id);
       if (fetch?.sourceId === item.id) available -= fetch.amount;
       if (haul?.sourceId === item.id) available -= haul.batch.amount;
     }
+    for(const a of this.animals)if(a.id!==ignorePawnId&&a.work?.kind==='haul'&&a.work.stage==='fetch'&&a.work.sourceId===item.id)available-=a.work.amount;
     return Math.max(0, available);
   }
   private releaseCare(p: Pawn) {
@@ -4410,6 +4441,7 @@ export class VoxelSimulation {
       .filter(
         (b) =>
           b.medical && this.pawnAllowed(p,b) &&
+          !this.animals.some(a=>a.work?.kind==='rescue'&&a.work.bedId===b.id) &&
           b.prisoner === (patient.faction === 'prisoner') &&
           (!b.prisoner || b.owner === patient.id) &&
           this.distance[at(b)] >= 0 &&
@@ -4425,6 +4457,7 @@ export class VoxelSimulation {
       .sort((a, b) => this.distance[at(a)] - this.distance[at(b)])[0];
   }
   private startCare(p: Pawn, patient: Pawn, action: 'rescue' | 'feed' | 'tend'): boolean {
+    if(this.animals.some(a=>a.work?.kind==='rescue'&&a.work.patientId===patient.id))return false;
     if(action==='feed' && patient.faction==='prisoner') {
       if(patient.prisoner?.policy==='release' && !patient.downed)return false;
       if(!patient.downed && !medicalNeedsRest(patient))return this.startPrisonFood(p,patient);
@@ -4793,7 +4826,7 @@ export class VoxelSimulation {
     // before another tick can perform labor, hauling or care with unusable hands.
     if (
       summary.manipulation <= 0 &&
-      (p.weaponTask || p.jobId !== null || p.carePhase !== null || p.phase === 'haul' || p.prisonFoodTask || p.wardenTask?.stage.startsWith('capture'))
+      (p.weaponTask || p.jobId !== null || p.carePhase !== null || p.phase === 'haul' || p.animalTrainTask || p.prisonFoodTask || p.wardenTask?.stage.startsWith('capture'))
     ) {
       this.release(p);
       p.reason = '操作能力不足，已中止劳动';
@@ -4805,7 +4838,11 @@ export class VoxelSimulation {
       p.downed = downed;
       p.deathReason = death;
       if (downed && p.faction === 'raider') p.retreating = true;
-      if (death || downed) p.drafted = false;
+      if (death || downed) {p.drafted = false;p.animalsReleased=false;}
+      for(const a of this.animals){
+        if(a.work?.kind==='rescue'&&a.work.patientId===p.id||a.work?.kind==='attack'&&a.work.targetId===p.id||a.training.masterId===p.id)cancelAnimalWork(this,a);
+        if(death&&a.training.masterId===p.id){a.training.masterId=null;a.training.followDrafted=false;a.training.followFieldwork=false;}
+      }
       if (death || downed)
         for (const q of this.pawns) if (q.attackTargetId === p.id) this.release(q);
       this.release(p);
@@ -5437,6 +5474,28 @@ export class VoxelSimulation {
     }
     // An explicit move order takes precedence over automatic adjacent retaliation.
     if (p.faction === 'colony' && p.attackTargetId === null && p.path.length > 0) return;
+    // A raider can strike an adjacent defending animal as a real combatant.
+    // Reuse the weapon selection, cooldown and animal wound model; the dog is
+    // never a damage-only effect attached to its master's attack.
+    const defendingAnimal=p.faction==='raider'?this.animals.find(a=>!a.dead&&!a.medical.downed&&
+      a.faction==='colony'&&a.work?.kind==='attack'&&a.work.targetId===p.id&&a.z===p.z&&
+      Math.abs(a.x-p.x)+Math.abs(a.y-p.y)===1):undefined;
+    if(defendingAnimal){
+      this.cancelShooting(p);p.path=[];p.destination=null;
+      if(this.tick>=p.nextAttackTick){
+        const strike=selectMeleeAttack(p.weaponDropPending?null:p.weapon,plantRandom(this.seed,p.id,this.tick,1610),meleeBodyFromTrauma(p.trauma));
+        if(strike){p.nextAttackTick=this.tick+strike.cooldown;
+          if(plantRandom(this.seed,p.id,this.tick,1611)<meleeHitChance(p.skills,healthSummary(p).manipulation,healthSummary(p).sight)){
+            injureAnimal(defendingAnimal,strike.damage,strike.damageDef==='Blunt'?'bruise':'cut',plantRandom(this.seed,p.id,this.tick,1612));
+            releaseAnimalHandlers(this,defendingAnimal);defendingAnimal.threatId=p.id;defendingAnimal.fleeUntil=this.tick+200;
+            defendingAnimal.phase=defendingAnimal.medical.downed?'downed':'flee';
+            this.combatEvent(defendingAnimal,p.id,defendingAnimal.id,'hit',strike.damage,`${p.name}击中${defendingAnimal.name}`);
+            if(defendingAnimal.health<=0)this.killAnimal(defendingAnimal,'战斗受伤');
+          }
+        }
+      }
+      p.reason='反击协同防御的动物';return;
+    }
     const ranged = !!p.weapon && isRangedKind(p.weapon.kind) && !p.weaponDropPending;
     let target = this.pawns.find((q) => q.id === p.attackTargetId);
     const adjacent = this.pawns.find(
@@ -5989,6 +6048,7 @@ export class VoxelSimulation {
       const event = advancePsyche(p, this.tick, this.temperature(p));
       if (event === 'started') {
         p.drafted = false;
+        p.animalsReleased = false;
         this.release(p);
         this.dropCargo(p); // On a full map keep physical cargo until space becomes available.
         p.phase = 'mental'; p.reason = '精神崩溃：失落游荡';
@@ -6318,6 +6378,7 @@ export class VoxelSimulation {
     }
     // Release carriers first; their patients are included in the precomputed landing map.
     for (const p of this.pawns) if (falling.has(p) || (p.carryingPawnId !== null && falling.has(this.pawns.find(q => q.id === p.carryingPawnId)!))) this.release(p);
+    for(const a of this.animals)if(falling.has(a))cancelAnimalWork(this,a);
     for (const [actor, landing] of falling) {
       const adjacent = actor.x !== landing.x || actor.y !== landing.y;
       Object.assign(actor, landing);
@@ -6391,6 +6452,7 @@ export class VoxelSimulation {
     return true;
   }
   private release(p: Pawn) {
+    releaseAnimalTraining(this,p);
     releaseAnimalCare(this, p);
     delete p.manualFoodOrder;
     delete p.prisonFoodTask;
@@ -6449,6 +6511,98 @@ export class VoxelSimulation {
   }
   prisonRelease(p: Pawn) { this.release(p); }
   animalMedicalTravel(a: WildAnimal) { return animalEnvironmentAndMedicalTick(this, a); }
+  animalPrepareTraining(a: WildAnimal) { prepareAnimalTraining(this,a); }
+  animalCooperation(a: WildAnimal) { return animalCooperationTick(this,a); }
+  animalCancelWork(a: WildAnimal) { cancelAnimalWork(this,a); }
+  animalDropCargo(a: WildAnimal) {
+    if(!a.cargo)return true;
+    const cells=[at(a)],depths=[0],seen=new Set(cells);
+    for(let n=0;n<cells.length;n++)if(depths[n]<DROP_DISTANCE)
+      for(const next of this.animalNeighbors(a,position(cells[n])))if(!seen.has(next)){seen.add(next);cells.push(next);depths.push(depths[n]+1);}
+    const plan=this.planPlacement([{batch:a.cargo,origin:a,cells:cells.map(position)}],this.items,DROP_DISTANCE,new Set(),a.id);
+    if(!plan)return false;this.commitPlacement(plan);a.cargo=null;this.storageReservations.delete(a.id);return true;
+  }
+  animalReleaseStorage(a: WildAnimal) { this.storageReservations.delete(a.id); }
+  animalMasterWorking(p: Pawn) {
+    return p.phase==='hunt'||this.jobs.some(j=>j.id===p.jobId&&['mine','cut','plantTree','harvest','plant','sow'].includes(j.kind));
+  }
+  animalDefenseTargets(a: WildAnimal,master: Pawn,radius: number) {
+    return this.pawns.filter(p=>p.faction==='raider'&&!p.dead&&!p.downed&&p.carriedBy===null&&
+      Math.hypot(p.x-master.x,p.y-master.y,p.z-master.z)<=radius)
+      .sort((p,q)=>Number(q.attackTargetId===master.id)-Number(p.attackTargetId===master.id)||
+        Math.hypot(p.x-a.x,p.y-a.y,p.z-a.z)-Math.hypot(q.x-a.x,q.y-a.y,q.z-a.z));
+  }
+  animalStrike(a: WildAnimal,target: Pawn) {
+    if(a.work?.kind!=='attack')return;
+    // A compact animal bite uses the existing human anatomy/armor pipeline.
+    // Damage and timing are provisional; there is no duplicate health model.
+    const bite=ANIMAL_COOPERATION_COMBAT;
+    a.work.nextAttackTick=this.tick+bite.cooldown;
+    const part=chooseHitPart(target.trauma,'Bite',plantRandom(this.seed,a.id,this.tick,1604));
+    if(part===null)return;
+    let stream=1605;
+    const result=applyBodyDamage(target.trauma,'Bite',part,bite.damage,{random:()=>plantRandom(this.seed,a.id,this.tick,stream++),
+      allocId:()=>this.id(),armor:{worn:target.worn,armorPenetration:bite.armorPenetration}});
+    if(result.armor){this.stats.destroyed.apparel+=result.armor.destroyedIds.length;target.worn=result.armor.worn;this.pruneForcedApparel(target);}
+    this.combatEvent(a,a.id,target.id,'hit',bite.damage,`${a.name}扑咬${target.name}`);
+    this.reconcileHealth(target,true);
+    if(target.dead||target.downed)cancelAnimalWork(this,a);
+  }
+  private animalStorageDestination(a: WildAnimal,batch: Cargo,minimumPriority: number) {
+    let best:{target:StorageCell;path:number[]}|undefined;
+    for(const target of this.storageCells()) {
+      if(target.priority<=minimumPriority||!animalAllowed(this,a,target)||this.storageSpace(target,batch,a.id)<1)continue;
+      const path=this.animalRoute(a,new Set(this.itemStands(target).filter(p=>animalAllowed(this,a,p)).map(at)));
+      if(path!==null&&(!best||target.priority>best.target.priority||target.priority===best.target.priority&&path.length<best.path.length))best={target,path};
+    }
+    return best;
+  }
+  animalHaulStart(a: WildAnimal): boolean {
+    if(a.cargo||!animalSkillAvailable(a,'haul'))return false;
+    for(const item of this.items) {
+      if(item.forbidden||!this.exploredAt(item)||!animalAllowed(this,a,item)||this.availableStack(item,a.id)<1||this.chunkReserved(item,a.id))continue;
+      const path=this.animalRoute(a,new Set(this.itemStands(item).filter(p=>animalAllowed(this,a,p)).map(at)));
+      if(path===null)continue;
+      const storage=this.animalStorageDestination(a,item,this.storagePriority(item));if(!storage)continue;
+      const amount=this.reserveStorage(a,item,storage.target,item.id);if(!amount)continue;
+      a.work={kind:'haul',stage:'fetch',sourceId:item.id,resource:item.resource,amount,target:{x:storage.target.x,y:storage.target.y,z:storage.target.z}};
+      a.path=path;a.goal=null;a.eatProgress=0;a.mateId=null;a.mateProgress=0;a.phase='haul';a.reason='前往搬运物资';return true;
+    }
+    return false;
+  }
+  animalHaulTick(a: WildAnimal): boolean {
+    const w=a.work;if(w?.kind!=='haul')return false;
+    const stop=(reason:string)=>{cancelAnimalWork(this,a);a.reason=reason;return false;};
+    if(!animalSkillAvailable(a,'haul'))return stop('搬运技能已失效，保留携带物');
+    let batch=w.stage==='fetch'?this.items.find(i=>i.id===w.sourceId):a.cargo;
+    if(!batch||batch.resource!==w.resource||batch.amount<w.amount)return stop('待搬物资已不可用');
+    if(w.stage==='fetch'&&((batch as Stack).forbidden||!animalAllowed(this,a,batch as Stack)||
+      this.availableStack(batch as Stack,a.id)<w.amount||this.chunkReserved(batch as Stack,a.id)))return stop('待搬物资已受限或预约改变');
+    let target=this.storageCells().find(t=>same(t,w.target));
+    if(!target||!animalAllowed(this,a,target)||this.storageSpace(target,batch,a.id)<w.amount||
+      this.animalRoute(a,new Set(this.itemStands(target).filter(p=>animalAllowed(this,a,p)).map(at)))===null||
+      w.stage==='fetch'&&target.priority<=this.storagePriority(batch as Stack)) {
+      const replacement=this.animalStorageDestination(a,batch,w.stage==='fetch'?this.storagePriority(batch as Stack):-1);
+      if(!replacement)return stop('没有可用仓位，保留物资等待重新安排');
+      target=replacement.target;w.target={x:target.x,y:target.y,z:target.z};a.path=[];
+    }
+    if(this.reserveStorage(a,portion(batch,w.amount),target,w.sourceId)<w.amount)return stop('仓位容量不足，保留物资');
+    a.phase='haul';
+    if(w.stage==='fetch') {
+      a.reason='前往取物资';
+      const reached=moveAnimalTo(this,a,this.itemStands(batch as Stack));
+      if(reached===null)return stop('物资通路中断');if(!reached)return true;
+      const source=batch as Stack;a.cargo=portion(source,w.amount);source.amount-=w.amount;this.items=this.items.filter(i=>i.amount>0);
+      w.sourceId=null;w.stage='deliver';a.path=[];batch=a.cargo;
+      this.reserveStorage(a,batch,target,null);
+    }
+    a.reason='把物资送往仓库';
+    const reached=moveAnimalTo(this,a,this.itemStands(target));
+    if(reached===null)return stop('仓库通路中断，保留携带物');if(!reached)return true;
+    const plan=this.planPlacement([{batch:a.cargo!,origin:target,cells:[target]}],this.items,0,new Set(),a.id,undefined,false);
+    if(!plan)return stop('仓位被占用，保留携带物');
+    this.commitPlacement(plan);this.stats.hauled+=a.cargo!.amount;a.cargo=null;cancelAnimalWork(this,a);a.reason='已把物资送入仓库';return true;
+  }
   animalAvailable(item: Stack, pawnId?: number) { return this.availableStack(item, pawnId); }
   animalTake(p: Pawn, id: number, amount: number) { return this.take(p, undefined, amount, id); }
   animalCanStop(p: Pos) { return this.canStop(p); }
@@ -6469,7 +6623,7 @@ export class VoxelSimulation {
       if (!isAnimalGroundStep(p,target) || this.ladders[n] || (fence && ANIMAL_HUSBANDRY[a.species].penAnimal) ||
           (!door && !fence && !this.markerAt(target) && !this.eggBoxes.some(b=>same(b,target)) && !this.shelfAt(target) && this.furnitureAt(target)) || this.fires.some(f => same(f, target))) return false;
       return !door || door.mode === 'open' || door.openUntil > this.tick ||
-        (a.faction === 'colony' && a.species === 'hare' && door.mode !== 'locked');
+        (a.faction === 'colony' && !ANIMAL_HUSBANDRY[a.species].penAnimal && door.mode !== 'locked');
     });
   }
   animalGrassSite(p: Pos) {
@@ -6702,9 +6856,11 @@ export class VoxelSimulation {
       (p.handleTask?.stage === 'fetch' && p.handleTask.foodId !== null && changed.has(p.handleTask.foodId)) ||
       (p.animalCareTask?.stage === 'fetch' && p.animalCareTask.sourceId !== null && changed.has(p.animalCareTask.sourceId)) ||
       (p.prisonFoodTask?.stage === 'fetch' && p.prisonFoodTask.sourceId !== null && changed.has(p.prisonFoodTask.sourceId)) ||
+      (p.animalTrainTask?.stage === 'fetch' && p.animalTrainTask.sourceId !== null && changed.has(p.animalTrainTask.sourceId)) ||
       (p.weaponTask?.stage === 'fetch' && stacks.some(i => i.weapon?.id === p.weaponTask!.weaponId)) ||
       (p.apparelTask?.stage === 'fetch' && stacks.some(i => i.apparel?.id === p.apparelTask!.apparelId))
     ) { this.release(p); p.reason = reason; }
+    for(const a of this.animals)if(a.work?.kind==='haul'&&a.work.stage==='fetch'&&changed.has(a.work.sourceId!)){cancelAnimalWork(this,a);a.reason=reason;}
   }
   private setItemsForbidden(items: Stack[], forbidden: boolean): CommandResult {
     for (const item of items) item.forbidden=forbidden;
@@ -6782,7 +6938,7 @@ export class VoxelSimulation {
         phase: 'idle', cargo: null, reason: '商队前往营地', moveTick: this.tick, workTarget: null,
         eating: null, sleepBedId: null, sleepingSince: null, schedule: defaultSchedule() };
       // A copied colonist is only the body template, never a live work order.
-      delete p.eggBoxTask; delete p.productionDelivery; delete p.animalCareTask; delete p.manualFoodOrder; delete p.prisonFoodTask; p.allowedAreaId=null;
+      delete p.eggBoxTask; delete p.productionDelivery; delete p.animalCareTask; delete p.animalTrainTask; delete p.manualFoodOrder; delete p.prisonFoodTask; p.allowedAreaId=null;
       this.pawns.push(p); pawnIds.push(id);
     }
     const traderId = pawnIds[0];
@@ -6794,7 +6950,7 @@ export class VoxelSimulation {
       // Provisional farm supply: one chicken pair and one livestock pair. Stock
       // selection uses independent deterministic entropy, preserving human goods.
       const large=plantRandom(this.seed,caravanId,this.tick,1120)<.5?'alpaca':'dromedary';
-      const supply=['chicken','chicken',large,large] as const;
+      const supply=['chicken','chicken',large,large,'labrador','labrador'] as const;
       for(const [i,species] of supply.entries()) {
         if(this.animals.length>=HUSBANDRY_RULES.maxAnimals)break;
         for(const pos of edges.slice(0,64)) {
@@ -7006,7 +7162,7 @@ export class VoxelSimulation {
         triedExtras.add(work);
         if (work === 'haul') this.search(p);
         if (work === 'firefight' ? tryFirefight(this, p) : work === 'repair' ? tryRepair(this, p) :
-            work === 'warden' ? tryWarden(this, p) : work === 'handle' ? (tryHandle(this, p) || tryRope(this,p)) : work === 'hunt' ? this.tryHunt(p) :
+            work === 'warden' ? tryWarden(this, p) : work === 'handle' ? (tryHandle(this, p) || tryRope(this,p) || tryAnimalTraining(this,p)) : work === 'hunt' ? this.tryHunt(p) :
             work === 'clean' ? this.tryClean(p) : this.tryHaul(p)) return true;
       }
       // Each helper can replace the shared BFS tree. Restore it only when the
@@ -8569,6 +8725,7 @@ export class VoxelSimulation {
         if (combatant) this.combatTick(p);
         else if (p.phase === 'hunt') this.huntTick(p);
         else if (p.phase === 'handle') handleTick(this, p);
+        else if (p.phase === 'animalTrain') animalTrainTick(this,p);
         else if (p.phase === 'rope') ropeTick(this,p);
         else if (p.phase === 'animalCare') animalCareTick(this,p);
         else if (p.phase === 'warden') wardenTick(this, p);
@@ -8652,7 +8809,7 @@ export class VoxelSimulation {
           this.release(p); p.reason = '娱乐场地不可用，重新安排';
         }
         if (!combatant && !p.drafted && !p.eating && !p.cargo &&
-            !['rest', 'sleepTravel', 'travel', 'care', 'apparel', 'weapon', 'recreation', 'trade', 'warden', 'handle', 'rope'].includes(p.phase) &&
+            !['rest', 'sleepTravel', 'travel', 'care', 'apparel', 'weapon', 'recreation', 'trade', 'warden', 'handle', 'animalTrain', 'rope'].includes(p.phase) &&
             p.food >= 30 && p.rest >= 20 && (this.tick + p.id) % 20 === 0 &&
             shouldRecreate(p, assignmentAt(p.schedule, this.tick)) && this.startRecreation(p)) continue;
         if (!combatant && p.jobId !== null && this.tick % 10 === 0) {
@@ -8703,7 +8860,7 @@ export class VoxelSimulation {
         if (p.phase === 'repair') { repairTick(this, p); continue; }
         if (p.phase === 'clean') { this.cleanTick(p); continue; }
         if (p.phase === 'recreation') { this.recreationTick(p); continue; }
-        if (combatant || p.phase === 'trade' || p.phase === 'hunt' || p.phase === 'warden' || p.phase === 'handle' || p.phase === 'rope' || p.phase === 'animalCare') continue;
+        if (combatant || p.phase === 'trade' || p.phase === 'hunt' || p.phase === 'warden' || p.phase === 'handle' || p.phase === 'animalTrain' || p.phase === 'rope' || p.phase === 'animalCare') continue;
         if (p.phase === 'idle') {
           if ((this.tick + p.id) % 20 === 0) this.assign(p);
         } else this.arrive(p);
@@ -8712,6 +8869,7 @@ export class VoxelSimulation {
       // social eligibility. A stale recreation phase must not survive a load
       // or a schedule change just long enough to earn another interaction.
       updateSocial(this);
+      reconcileAnimalTraining(this);
       for (const d of [...this.doors, ...this.fenceGates])
         if (
           d.mode !== 'locked' &&
@@ -8884,6 +9042,7 @@ export class VoxelSimulation {
       this.notice = `${item.amount}单位${RESOURCE_NAMES[item.resource]}因环境劣化损毁。屋顶和封闭仓库可以保护物资。`;
     }
     for (const animal of [...this.animals]) if (animal.dead) {
+      if(!this.animalDropCargo(animal))continue;
       const batch = carcassBatch(animal);
       if (advanceDeterioration(batch, this.deteriorationEnvironment(animal), this.seed, animal.id, this.tick)) {
         this.animals = this.animals.filter(a => a.id !== animal.id); this.stats.destroyed.carcass++;
@@ -9082,6 +9241,9 @@ export class VoxelSimulation {
       if(p.cargo.amount===0)p.cargo=null;
       this.release(p);p.reason='携带的鸡蛋已孵化或发生温度损坏';
     }
+    for(const a of this.animals)if(a.cargo?.resource==='eggFertilized'&&processEgg(a.cargo,a,true).changed){
+      if(!a.cargo.amount)a.cargo=null;cancelAnimalWork(this,a);a.reason='携带的鸡蛋已孵化或发生温度损坏';
+    }
     for(const j of [...this.jobs]){
       let changed=false,converted=0;
       for(const b of j.deliveredBatches)if(b.resource==='eggFertilized'){
@@ -9137,6 +9299,9 @@ export class VoxelSimulation {
         pawn.reason = '携带的易腐物资已腐坏';
         removed = true;
       }
+    for(const a of this.animals)if(a.cargo&&isPerishable(a.cargo.resource)&&advanceRot(a.cargo,this.temperature(a))){
+      this.stats.spoiled[a.cargo.resource]+=a.cargo.amount;a.cargo=null;cancelAnimalWork(this,a);a.reason='携带的易腐物资已腐坏';removed=true;
+    }
     for (const job of this.jobs)
       if (job.deliveredBatches.length) {
         const temperature = this.temperature(job);
@@ -9164,6 +9329,7 @@ export class VoxelSimulation {
     };
     for (const box of this.eggBoxes) if (box.eggs&&(!visibleOnly||this.exploredAt(box))) countCargo(box.eggs);
     for (const i of this.items) if (!visibleOnly || this.exploredAt(i)) countCargo(i);
+    for(const a of this.animals)if(a.cargo&&(!visibleOnly||this.exploredAt(a)))countCargo(a.cargo);
     for (const p of this.pawns) {
       if (p.faction !== 'colony' || (visibleOnly && !this.exploredAt(p))) continue;
       if (p.cargo) countCargo(p.cargo);
@@ -9299,7 +9465,7 @@ export class VoxelSimulation {
     this.updateRooms();
     return structuredClone({
       format: 'emberfield-voxel',
-      version: 58,
+      version: 59,
       apparelPolicies: this.apparelPolicies,
       foodPolicies: this.foodPolicies,
       autoSlaughter: this.autoSlaughter,
@@ -9365,11 +9531,12 @@ export class VoxelSimulation {
     const old = structuredClone(raw) as Record<string, any>;
     if (
       old.format !== 'emberfield-voxel' ||
-      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58].includes(old.version) ||
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59].includes(old.version) ||
       (old.version < 8 ? old.generator !== 1 : !(old.version < 36 ? [1, 2] : old.version < 43 ? [1, 2, 3] : [1, 2, 3, 4]).includes(old.generator))
     )
       throw new Error('请使用体素版存档；二维存档仍在原营地入口读取');
     const sourceVersion = old.version;
+    rejectLegacyAnimalTraining(old,sourceVersion);
     rejectLegacyPrisonFood(old,sourceVersion);
     rejectLegacyFoodPolicies(old,sourceVersion);
     rejectLegacyApparelPolicies(old,sourceVersion);
@@ -9815,7 +9982,8 @@ export class VoxelSimulation {
     migrateApparelPolicies(old,sourceVersion);
     migrateFoodPolicies(old,sourceVersion);
     migratePrisonFood(old,sourceVersion);
-    old.version = 58;
+    migrateAnimalTraining(old,sourceVersion);
+    old.version = 59;
     if(!Array.isArray(old.storageGroups))throw new Error('储存组列表无效');
     const worldSite = validateWorldSiteIdentity(old);
     const d = old as VoxelSave;
@@ -10249,6 +10417,7 @@ export class VoxelSimulation {
           key,
         ),
       );
+    for(const a of d.animals)if(a.cargo!==null&&(!plainCargo(a.cargo)||a.cargo.amount>carryLimit(a.cargo.resource)))throw new Error('动物携带物无效');
     for (const j of d.jobs) {
       if (!Number.isSafeInteger(j.workTicks) || j.workTicks < 0 || j.workTicks > d.tick)
         throw new Error('实际劳动计时无效');
@@ -10647,7 +10816,7 @@ export class VoxelSimulation {
           'apparel',
           'combat',
           'hunt',
-          'handle', 'rope', 'eggBox', 'animalCare', 'prisonFood',
+          'handle', 'animalTrain', 'rope', 'eggBox', 'animalCare', 'prisonFood',
           'firefight',
           'repair',
           'clean',
@@ -10758,7 +10927,9 @@ export class VoxelSimulation {
         throw new Error('护理携带药物无效');
       if (p.carriedBy !== null) {
         const carrier = d.pawns.find((q) => q.id === p.carriedBy);
+        const animalCarrier=d.animals.find(a=>a.id===p.carriedBy);
         if (
+          !animalCarrier && (
           !carrier ||
           carrier === p ||
           carrier.dead ||
@@ -10767,7 +10938,7 @@ export class VoxelSimulation {
           !((p.downed && carrier.patientId === p.id && carrier.carePhase === 'rescueCarry') ||
             (p.faction === 'prisoner' && carrier.wardenTask?.prisonerId === p.id && carrier.wardenTask.stage === 'captureCarry')) ||
           !same(p, carrier) ||
-          p.sleepBedId !== null
+          p.sleepBedId !== null)
         )
           throw new Error('被救援人物状态无效');
       }
@@ -10856,6 +11027,7 @@ export class VoxelSimulation {
     }
     const apparelInstances = [
       ...d.items.flatMap((i) => (i.apparel ? [i.apparel] : [])),
+      ...d.animals.flatMap(a=>a.cargo?.apparel?[a.cargo.apparel]:[]),
       ...d.pawns.flatMap((p) => [...p.worn, ...(p.cargo?.apparel ? [p.cargo.apparel] : [])]),
     ];
     const apparelIds = new Set<number>();
@@ -10873,6 +11045,7 @@ export class VoxelSimulation {
     const weaponIds = new Set<number>();
     for (const piece of [
       ...d.items.flatMap((i) => (i.weapon ? [i.weapon] : [])),
+      ...d.animals.flatMap(a=>a.cargo?.weapon?[a.cargo.weapon]:[]),
       ...d.pawns.flatMap((p) => [
         ...(p.weapon ? [p.weapon] : []),
         ...(p.cargo?.weapon ? [p.cargo.weapon] : []),
@@ -10929,6 +11102,7 @@ export class VoxelSimulation {
     validateTrade(d, ids, apparelIds, weaponIds);
     validateWildlife(d, ids, new Set([...apparelIds, ...weaponIds]));
     validateHusbandry(d);
+    validateAnimalTraining(d);
     validateAnimalEnvironment(d);
     validateApparelPolicies(d);
     validateFoodPolicies(d);
@@ -10951,7 +11125,7 @@ export class VoxelSimulation {
     for (const zone of d.stockpileZones) if (zone.id.startsWith('zone:')) {
       const id = Number(zone.id.slice(5));
       if (ids.has(id) || apparelIds.has(id) || weaponIds.has(id) ||
-          [...d.items, ...d.pawns.flatMap(p => p.cargo ? [p.cargo] : []), ...d.jobs.flatMap(j => j.deliveredBatches)]
+          [...d.items, ...d.pawns.flatMap(p => p.cargo ? [p.cargo] : []), ...d.animals.flatMap(a=>a.cargo?[a.cargo]:[]), ...d.jobs.flatMap(j => j.deliveredBatches)]
             .some(b => b.furniture?.id === id || b.unfinished?.id === id))
         throw new Error('仓库区域身份与其他实体重复');
       ids.add(id);
@@ -10968,7 +11142,7 @@ export class VoxelSimulation {
       if (!bill.id.startsWith('bill:')) continue;
       const id = Number(bill.id.slice(5));
       if (ids.has(id) || apparelIds.has(id) || weaponIds.has(id) ||
-        [...d.items, ...d.pawns.flatMap(p => p.cargo ? [p.cargo] : []), ...d.jobs.flatMap(j => j.deliveredBatches)]
+        [...d.items, ...d.pawns.flatMap(p => p.cargo ? [p.cargo] : []), ...d.animals.flatMap(a=>a.cargo?[a.cargo]:[]), ...d.jobs.flatMap(j => j.deliveredBatches)]
           .some(b => b.furniture?.id === id)) throw new Error('生产账单与实体身份冲突');
       ids.add(id);
     }
@@ -11170,11 +11344,16 @@ export class VoxelSimulation {
       j.reason = j.cancelled ? '已取消，保留原任务材料等待退回' : j.constructionFailure
         ? '施工失败：剩余材料保留在工地，等待附近腾出落点后重新规划' : '回读后等待重新安排';
     }
+    for(const a of s.animals)if(a.work?.kind==='haul'){
+      const w=a.work,batch=w.stage==='fetch'?s.items.find(i=>i.id===w.sourceId):a.cargo;
+      const target=s.storageCells().find(t=>same(t,w.target));
+      if(!batch||!target||s.reserveStorage(a,portion(batch,w.amount),target,w.sourceId)<w.amount)cancelAnimalWork(s,a);
+    }
     for (const p of s.pawns) {
       // Prison tasks carry explicit destinations and progress. Movement rechecks every edge.
       // Animal care retains real cargo, carrier links and exact in-flight progress.
       // The normal tick safely replans or cancels a route if the world changes.
-      if (p.animalCareTask) continue;
+      if (p.animalCareTask || p.animalTrainTask) continue;
       if (p.productionDelivery) { s.continueProductionDelivery(p); continue; }
       if (p.ropeTask) {
         const task=p.ropeTask, a=s.animals.find(a=>a.id===task.animalId)!;

@@ -147,7 +147,8 @@ describe('physical incubation, damage, and stack identity',()=>{
   it('incubates carried eggs at their holder and releases interrupted hauling without duplication',()=>{
     let s=fixture();s.pawns[0].cargo=freshFertilizedEggs(1,'colony');s.pawns[0].cargo.hatcher!.progress=1;
     s=VoxelSimulation.load(s.save());s.step();expect(s.pawns[0].cargo).toBeNull();expect(s.animals).toHaveLength(1);
-    expect(Object.hasOwn(s.animals[0],'cargo')).toBe(false);expect(Object.hasOwn(s.animals[0],'skills')).toBe(false);
+    // v59 animals own an empty cargo/work slot; the chick must not inherit its human carrier's contents or skills.
+    expect(s.animals[0].cargo).toBeNull();expect(s.animals[0].work).toBeNull();expect(Object.hasOwn(s.animals[0],'skills')).toBe(false);
     expect(s.stats.consumed.eggFertilized).toBe(1);expect(()=>VoxelSimulation.load(s.save())).not.toThrow();
   });
   it('returns converted cooking inputs even when refund space is temporarily blocked',()=>{

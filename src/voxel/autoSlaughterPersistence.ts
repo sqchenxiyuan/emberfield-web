@@ -14,6 +14,8 @@ export function migrateAutoSlaughter(old: Record<string, any>, sourceVersion: nu
     old.autoSlaughter.alpaca = defaultAutoSlaughterPolicy();
   if (sourceVersion >= 48 && sourceVersion < 51 && old.autoSlaughter && typeof old.autoSlaughter === 'object')
     old.autoSlaughter.chicken = defaultAutoSlaughterPolicy();
+  if (sourceVersion >= 48 && sourceVersion < 59 && old.autoSlaughter && typeof old.autoSlaughter === 'object')
+    old.autoSlaughter.labrador = defaultAutoSlaughterPolicy();
   if (!validAutoSlaughter(old.autoSlaughter)) throw new Error('自动宰杀配额设置无效');
 }
 

@@ -153,9 +153,11 @@ describe('food policy save validation and migration', () => {
   });
   it('expected-value adapters add only missing historical fields without rewriting current assignments', () => {
     const pawns = [{ faction: 'colony' }, { faction: 'prisoner', foodPolicyId: 7 }], before = structuredClone(pawns);
-    expect(foodPoliciesExpectedField('pawns', pawns)).toEqual([{ faction: 'colony', foodPolicyId: null }, pawns[1]]);
+    expect(foodPoliciesExpectedField('pawns', pawns)).toEqual([
+      { faction: 'colony', foodPolicyId: null, animalsReleased: false }, { ...pawns[1], animalsReleased: false },
+    ]);
     expect(apparelPoliciesExpectedField('pawns', pawns, 80)[0]).toEqual({ faction: 'colony', foodPolicyId: null,
-      apparelControl: initialApparelControl(80) });
+      apparelControl: initialApparelControl(80), animalsReleased: false });
     expect(pawns).toEqual(before);
   });
 });

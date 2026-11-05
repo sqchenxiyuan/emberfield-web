@@ -1,6 +1,7 @@
 import { expect } from 'vitest';
 import { createDefaultFoodPolicies } from '../src/voxel/foodPolicies';
 import { assertPrisonFoodDefaults, stripPrisonFoodFields } from './legacy-prison-food-defaults';
+import { animalTrainingExpectedField } from './legacy-animal-training-defaults';
 
 /** Synthetic downgrades may only discard untouched unrestricted policies.
  * Preflight precedes every deletion in the predecessor helper chain. */
@@ -20,7 +21,7 @@ export function stripFoodPoliciesFields(raw: Record<string, any>): void {
   for (const p of raw.pawns ?? []) delete p.foodPolicyId;
 }
 export function foodPoliciesExpectedField(key: string, value: any): any {
-  const copy = structuredClone(value);
+  const copy = animalTrainingExpectedField(key, value);
   if (key === 'pawns') for (const p of copy) p.foodPolicyId ??= null;
   return copy;
 }

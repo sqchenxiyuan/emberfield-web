@@ -8,21 +8,21 @@ import type { HusbandryHost } from './husbandryWorld';
 /** Concentrated provisional prices and supply. Mechanisms precede calibration;
  * these are not a reproduction of the native pawn valuation stat chain. */
 export const LIVE_ANIMAL_TRADE = Object.freeze({
-  value: Object.freeze({ hare: 50, deer: 150, alpaca: 250, dromedary: 300, chicken: 50 }),
+  value: Object.freeze({ hare: 50, deer: 150, alpaca: 250, dromedary: 300, chicken: 50, labrador: 250 }),
   regroupDistance: 4, retryTicks: 80, minimumSaleHealth: .15,
   minimumTemperature: -20, maximumTemperature: 45,
 });
 export const emptyAnimalTradeCounts = (): Record<AnimalSpecies, number> =>
-  ({ hare: 0, deer: 0, alpaca: 0, dromedary: 0, chicken: 0 });
+  ({ hare: 0, deer: 0, alpaca: 0, dromedary: 0, chicken: 0, labrador: 0 });
 export const traderAcceptsAnimal = (kind: TraderKind, a: Pick<WildAnimal,'species'>): boolean =>
-  kind === 'bulk' && ['alpaca','dromedary','chicken'].includes(a.species);
+  kind === 'bulk' && ['alpaca','dromedary','chicken','labrador'].includes(a.species);
 export function animalMarketValue(a: WildAnimal): number {
   if (a.dead) return 0;
   return LIVE_ANIMAL_TRADE.value[a.species] * (.25 + .75 * a.growth) *
     Math.max(.1, a.health / ANIMAL_DEFS[a.species].health) * (1 - .5 * a.malnutrition);
 }
 export function animalCanTrade(a: WildAnimal, temperature: number): boolean {
-  return !a.dead && !a.medical.downed && a.medical.carriedBy===null && a.health / ANIMAL_DEFS[a.species].health > LIVE_ANIMAL_TRADE.minimumSaleHealth &&
+  return !a.dead && !a.cargo && !(a.work?.kind==='rescue'&&a.work.stage==='carry') && !a.medical.downed && a.medical.carriedBy===null && a.health / ANIMAL_DEFS[a.species].health > LIVE_ANIMAL_TRADE.minimumSaleHealth &&
     a.malnutrition < .8 && a.phase !== 'flee' && a.phase !== 'shelter' &&
     temperature >= LIVE_ANIMAL_TRADE.minimumTemperature && temperature <= LIVE_ANIMAL_TRADE.maximumTemperature;
 }
@@ -37,8 +37,10 @@ type AnimalTradeHost = HusbandryHost & { trade: { caravans: TraderCaravan[] }; r
 /** Transfer the same actor, release work/ropes and reset ownership assignments,
  * but never regenerate its age, health, hunger or biological progress. */
 export function transferAnimal(s: AnimalTradeHost, a: WildAnimal, faction: 'colony'|'trader', caravan: TraderCaravan) {
+  s.animalCancelWork?.(a);
+  a.training.masterId=null;a.training.followDrafted=false;a.training.followFieldwork=false;
   for (const p of s.pawns) if (p.handleTask?.animalId === a.id || p.ropeTask?.animalId === a.id ||
-      p.animalCareTask?.animalId===a.id ||
+      p.animalCareTask?.animalId===a.id || p.animalTrainTask?.animalId===a.id ||
       p.attackTargetId === a.id || p.shooting?.targetId === a.id) s.prisonRelease(p);
   for (const b of s.animals) if (b.mateId === a.id) {
     b.mateId = null; b.mateProgress = 0; b.goal = null; b.path = []; b.phase = 'roam';
@@ -63,6 +65,7 @@ export function caravanAnimalTick(s: AnimalTradeHost, a: WildAnimal): boolean {
   const leader = s.pawns.find(p => p.id === caravan.traderId && !p.dead && !p.downed);
   const leaving = caravan.stage === 'leaving' || !leader;
   if (leaving && isPenMapEdge(a)) {
+    if(a.cargo&&!s.animalDropCargo?.(a))return true;
     caravan.animalIds = caravan.animalIds.filter(id => id !== a.id);
     s.animals = s.animals.filter(b => b !== a); s.revision++; return true;
   }

@@ -309,7 +309,7 @@ describe('production bill command and physical lifecycle integration', () => {
     const provenance = JSON.parse(readFileSync(new URL('./fixtures/voxel-v38-before-production-bills.provenance.json', import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(provenance.sha256);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old), current = s.save();
-    expect(old.version).toBe(38); expect(current.version).toBe(58); expect(current.productionQueues).toEqual([]);
+    expect(old.version).toBe(38); expect(current.version).toBe(59); expect(current.productionQueues).toEqual([]);
     for (const field of ['items', 'jobs', 'stoves', 'stonecutters', 'tailors', 'weaponBenches', 'butcherSpots', 'nextId', 'blocks'] as const)
       expect(current[field], field).toEqual(old[field]);
     const stats = structuredClone(current.stats);
@@ -326,11 +326,12 @@ describe('production bill command and physical lifecycle integration', () => {
     }
     expect(stats).toEqual(old.stats);
     // v44 adds an unrestricted area assignment; v56 keeps legacy apparel
-    // under manual management. The v38 loader resets two movement/UI fields.
+    // under manual management; v59 adds an inactive animal-release command.
+    // The v38 loader resets two movement/UI fields.
     // Keep every other pawn field (identity, needs, skills, cargo, work and path)
     // equal to the authentic bytes rather than ignoring all pawn differences.
     expect(current.pawns).toEqual(old.pawns.map((pawn: Pawn) => ({
-      ...pawn, allowedAreaId:null, foodPolicyId:null, apparelControl: initialApparelControl(old.tick),
+      ...pawn, allowedAreaId:null, foodPolicyId:null, apparelControl: initialApparelControl(old.tick), animalsReleased:false,
       moveTick: old.tick, reason: '存档已恢复，正在重新安排工作',
     })));
     expect(VoxelSimulation.load(current).save()).toEqual(current);

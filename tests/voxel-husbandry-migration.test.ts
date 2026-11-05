@@ -33,7 +33,7 @@ function historical(name: keyof typeof HASHES) {
 describe('authentic v28 husbandry migration', () => {
   it.each(['initial', 'protected', 'final'] as const)('retains genuine %s checkpoint state and seeds grass without allocating identities', name => {
     const old = historical(name), before = structuredClone(old), s = VoxelSimulation.load(old), saved = s.save();
-    expect(old).toEqual(before); expect(saved.version).toBe(58);
+    expect(old).toEqual(before); expect(saved.version).toBe(59);
     expect(saved.tick).toBe(old.tick); expect(saved.nextId).toBe(old.nextId);
     expect(saved.animals).toHaveLength(old.animals.length);
     for (const previous of old.animals) {
@@ -92,7 +92,9 @@ describe('authentic v28 husbandry migration', () => {
     for (const mutate of variants) {
       const old = structuredClone(baseline); mutate(old); const before = structuredClone(old);
       const eggField = ['eggProgress', 'fertilizationCount', 'eggFatherId', 'layProgress'].some(key => Object.hasOwn(old.animals[0], key));
-      const expectedError = Object.hasOwn(old.animals[0], 'environment')
+      const expectedError = ['training','work','cargo'].some(key => Object.hasOwn(old.animals[0],key))
+        ? /旧版本混入犬种、训练或协作字段/
+        : Object.hasOwn(old.animals[0], 'environment')
         ? /旧版本混入动物环境疾病或避温任务/
         : Object.hasOwn(old.animals[0], 'medical')
         ? /旧版本混入动物病床、伤口或护理任务/

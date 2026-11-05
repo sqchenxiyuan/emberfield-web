@@ -63,6 +63,7 @@ function exitPath(s: Host, a: WildAnimal): number[] | null {
 }
 function depart(s: Host, a: WildAnimal) {
   clear(s, a);
+  if(a.cargo&&!s.animalDropCargo?.(a))return;
   for (const p of s.pawns) if (p.attackTargetId === a.id || p.shooting?.targetId === a.id) s.prisonRelease(p);
   s.animals = s.animals.filter(other => other !== a);
   const message = `${a.name}沿地图边缘离开了不适温地区`;

@@ -81,7 +81,7 @@ export function AnimalPenControls({ animal: a, snapshot: s, command, controls }:
         <option value="">不限制</option>{s.animalAreas.map(area => <option key={area.id} value={area.id}>{area.name}{area.cells.length ? '' : ' · 空区域，不限制'}</option>)}
       </select></label>
       {a.allowedAreaId !== null && <div className="voxel-pen-actions"><button onClick={() => controls.showArea(a.allowedAreaId)}>显示活动范围</button><button onClick={() => controls.editArea(a.allowedAreaId!)}>涂绘范围</button></div>}
-      <small>兔可越过围栏。允许区域与居民共享，用来寻找食物和休息，范围外的兔会步行返回；路径可能途经区外，逃避威胁时可离开范围。空区域不限制。</small>
+      <small>{ANIMAL_DEFS[a.species].name}可越过围栏。允许区域与居民共享，用来寻找食物和休息，范围外的动物会步行返回；路径可能途经区外，逃避威胁时可离开范围。空区域不限制。</small>
     </>}
   </div>;
 }
@@ -98,7 +98,7 @@ export function PenPanel({ snapshot: s, command, choose, focus, controls }: {
     } finally { setCreating(false); }
   };
   return <div className="voxel-pen-panel" data-testid="pen-panel">
-    <p>围栏拦住鹿、单峰驼、羊驼和鸡；活动范围引导兔。每只动物都按实际通路移动。</p>
+    <p>围栏拦住鹿、单峰驼、羊驼和鸡；活动范围引导兔和拉布拉多犬。每只动物都按实际通路移动。</p>
     <details className="voxel-wildlife-guide" open><summary>建造一处圈地</summary>
       <ol><li>拖动围栏画直线，围成闭合边界，给栏门留一格。</li><li>放置栏门，再在里面建造圈地标记。</li><li>确认显示“已封闭”，设置接纳种类和性别；饲养员会实际套绳并牵入。</li></ol>
       <div><button onClick={() => choose('fence')}>建造围栏</button><button onClick={() => choose('fenceGate')}>建造栏门</button><button onClick={() => choose('penMarker')}>建造圈地标记</button></div>

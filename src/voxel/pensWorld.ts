@@ -122,8 +122,8 @@ export function pensCommand(s: PensHost, c: VoxelCommand): CommandResult | null 
     return { ok:true,message:'活动范围已创建，请在地图上绘制',areaId:id };
   }
   if (c.type === 'animalAreaAssign') {
-    const a = s.animals.find(a => a.id === c.animalId && !a.dead && a.faction === 'colony' && a.species === 'hare');
-    if (!a || (c.areaId !== null && !s.animalAreas.some(area => area.id === c.areaId))) return { ok:false,message:'活动范围用于殖民地兔，鹿使用圈地管理' };
+    const a = s.animals.find(a => a.id === c.animalId && !a.dead && a.faction === 'colony' && !ANIMAL_HUSBANDRY[a.species].penAnimal);
+    if (!a || (c.areaId !== null && !s.animalAreas.some(area => area.id === c.areaId))) return { ok:false,message:'活动范围用于非圈养动物，家畜使用圈地管理' };
     a.allowedAreaId = c.areaId; resetAnimal(a); a.decisionTick = s.tick;
     return { ok:true,message:'活动范围已分配，动物将自行寻找可达通路' };
   }

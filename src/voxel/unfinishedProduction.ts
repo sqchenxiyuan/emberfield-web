@@ -111,7 +111,7 @@ const qualityKey = (quality: UnfinishedPiece['productQuality']) => quality
   ? JSON.stringify([quality.value, quality.skill, quality.workerId]) : null;
 
 /** Run after the ordinary world/queue validators. Scan identities independently:
- * only ground items and pawn.cargo own UFTs; jobs hold checked references.
+ * ground items and human/animal cargo own UFTs; jobs hold checked references.
  * Historical authors need not still exist, but their ids are never reused. */
 export function validateUnfinishedProduction(d: VoxelSave): void {
   if (!integer(d.nextId, 1) || !integer(d.tick) || !Array.isArray(d.items) || !Array.isArray(d.pawns) || !Array.isArray(d.jobs))
@@ -122,6 +122,7 @@ export function validateUnfinishedProduction(d: VoxelSave): void {
     'beds', 'doors', 'fences', 'fenceGates', 'penMarkers', 'devices', 'sandbags', 'projectiles', 'animalAreas', 'shelves', 'storageGroups'];
   for (const key of entityLists) for (const entity of list((d as any)[key])) if (integer(entity?.id, 1)) otherIds.add(entity.id);
   const cargo = [...d.items, ...d.pawns.flatMap(pawn => pawn.cargo ? [pawn.cargo] : []),
+    ...(d.animals ?? []).flatMap(animal => animal.cargo ? [animal.cargo] : []),
     ...d.jobs.flatMap(job => job.deliveredBatches)];
   for (const batch of cargo) for (const piece of [batch.apparel, batch.weapon, batch.furniture]) if (piece) otherIds.add(piece.id);
   for (const pawn of d.pawns) for (const piece of [...pawn.worn, ...(pawn.weapon ? [pawn.weapon] : [])]) otherIds.add(piece.id);
@@ -142,7 +143,7 @@ export function validateUnfinishedProduction(d: VoxelSave): void {
   for (const bill of bills.values()) if (bill.id.startsWith('bill:')) otherIds.add(Number(bill.id.slice(5)));
   const pieces = new Map<number, UnfinishedPiece>();
   const boundBills = new Set<string>();
-  const carriers = new Map<number, VoxelSave['pawns'][number]>();
+  const carriers = new Map<number, VoxelSave['pawns'][number] | VoxelSave['animals'][number]>();
   for (const batch of cargo) {
     if (batch.resource !== 'unfinished') {
       if (owns(batch, 'unfinished')) fail('普通物资包含未完成品字段');
@@ -165,6 +166,10 @@ export function validateUnfinishedProduction(d: VoxelSave): void {
     if (pawn.faction !== 'colony') fail('非殖民者携带未完成品');
     carriers.set(pawn.cargo.unfinished.id, pawn);
   }
+  for (const animal of d.animals ?? []) if (animal.cargo?.unfinished) {
+    if (animal.faction !== 'colony') fail('非殖民地动物携带未完成品');
+    carriers.set(animal.cargo.unfinished.id, animal);
+  }
   const referenced = new Set<number>();
   for (const job of d.jobs) {
     if (job.deliveredBatches.some(batch => batch.resource === 'unfinished' || owns(batch, 'unfinished')) ||
@@ -178,7 +183,7 @@ export function validateUnfinishedProduction(d: VoxelSave): void {
         !job.productionPolicy || policyKey(job.productionPolicy) !== policyKey(piece.policy) ||
         qualityKey(job.productQuality) !== qualityKey(piece.productQuality) ||
         (job.owner !== null && job.owner !== piece.creatorId) ||
-        (carrier && job.owner !== null && (job.owner !== carrier.id || carrier.jobId !== job.id))) fail('作业引用、作者或进度副本不一致');
+        (carrier && job.owner !== null && (!('jobId' in carrier) || job.owner !== carrier.id || carrier.jobId !== job.id))) fail('作业引用、作者或进度副本不一致');
     const expected = unfinishedRecipeCost(piece.recipe, unfinishedApparelMaterial(piece) ?? undefined)!;
     if (Object.keys(job.cost).length !== Object.keys(expected).length ||
         Object.entries(expected).some(([resource, amount]) => job.cost[resource as keyof Counts] !== amount))

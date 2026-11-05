@@ -321,7 +321,7 @@ describe('production policy command isolation and save migration', () => {
     const provenance = JSON.parse(readFileSync(new URL('./fixtures/voxel-v39-mid-production-before-policies.provenance.json', import.meta.url), 'utf8'));
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(provenance.sha256);
     const old = JSON.parse(bytes.toString()), s = VoxelSimulation.load(old), saved = s.save();
-    expect(old.version).toBe(39); expect(saved.version).toBe(58);
+    expect(old.version).toBe(39); expect(saved.version).toBe(59);
     expect(old.jobs.some((job: any) => job.kind === 'smith' && job.progress > 0 && job.delivered.wood === 40)).toBe(true);
     for (const key of ['items', 'nextId', 'blocks', 'stoves', 'stonecutters', 'tailors', 'weaponBenches', 'butcherSpots'] as const)
       expect(saved[key], key).toEqual(old[key]);

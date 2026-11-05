@@ -35,9 +35,11 @@ export function validatePrisonFood(d: VoxelSave): void {
   for (const p of d.pawns) {
     reserve(p.careFoodId, p.careAmount);
     if (p.handleTask?.stage === 'fetch') reserve(p.handleTask.foodId, p.handleTask.amount);
+    if (p.animalTrainTask?.stage === 'fetch') reserve(p.animalTrainTask.sourceId, p.animalTrainTask.amount);
     if (p.animalCareTask?.stage === 'fetch') reserve(p.animalCareTask.sourceId, p.animalCareTask.amount);
     if (p.living?.mealTask?.sourceId !== null) reserve(p.living?.mealTask?.sourceId, p.living?.mealTask?.amount);
   }
+  for (const a of d.animals ?? []) if (a.work?.kind === 'haul' && a.work.stage === 'fetch') reserve(a.work.sourceId, a.work.amount);
   const deliverySources = new Set<number>();
   for (const p of d.pawns) {
     const hasTask = Object.hasOwn(p, 'prisonFoodTask'), task = p.prisonFoodTask;

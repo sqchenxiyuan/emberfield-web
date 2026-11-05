@@ -84,13 +84,13 @@ describe('automatic rebuilding after destruction', () => {
     const synthetic = structuredClone(old) as Omit<typeof old, 'version' | 'autoRebuild'> & { version: number; autoRebuild?: boolean };
     synthetic.version = 45; stripAutoSlaughterFields(synthetic); delete synthetic.autoRebuild;
     const before = structuredClone(synthetic), loaded = VoxelSimulation.load(synthetic);
-    expect(loaded.save().version).toBe(58); expect(loaded.autoRebuild).toBe(false); expect(synthetic).toEqual(before);
+    expect(loaded.save().version).toBe(59); expect(loaded.autoRebuild).toBe(false); expect(synthetic).toEqual(before);
     for (const key of ['blocks', 'items', 'stats', 'tick', 'chairs', 'homeArea'] as const) expect(loaded.save()[key]).toEqual(old[key]);
     // The separately frozen v45 implementation samples are checked by the release verifier.
   });
 
   it('rejects missing or non-boolean current settings and refuses v45 saves carrying the new flag', () => {
-    const saved = fixture().save(); expect(saved.version).toBe(58);
+    const saved = fixture().save(); expect(saved.version).toBe(59);
     const missing: Partial<typeof saved> = structuredClone(saved); delete missing.autoRebuild;
     expect(() => VoxelSimulation.load(missing)).toThrow(/自动重建设置无效/);
     for (const value of [undefined, null, 0, 1, 'true', {}, []]) {

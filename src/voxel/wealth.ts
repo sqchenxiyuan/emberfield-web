@@ -200,6 +200,7 @@ export function colonyWealthDetails(sim: VoxelSimulation): WealthDetails {
     if (pawn.weapon) itemSources.equipment += weaponMarketValue(pawn.weapon);
     for (const piece of pawn.worn) itemSources.equipment += apparelMarketValue(piece, pawn.dead);
   }
+  for(const animal of sim.animals)if(animal.cargo&&sim.exploredAt(animal))itemSources.cargo+=cargoMarketValue(animal.cargo);
   // Unpackaged job inputs retain value. Once moved into a UFT they leave this
   // container and take the separate zero-value unfinished-item branch above.
   for (const job of sim.jobs) itemSources.delivered += job.deliveredBatches.reduce((n, batch) => n + cargoMarketValue(batch), 0);

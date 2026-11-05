@@ -1,5 +1,7 @@
 # 余烬边境 · Emberfield
 
+v59接通动物训练与实际协作：从商队取得拉布拉多犬 → 饲养员取粮并分两次喂食训练 → 学会服从、释放攻击、救援和搬运 → 实际跟随、战斗、驮送病人和搬送物资。主人指派、技能遗忘、真实货物、工作中断和存读共同接入；救援和搬运无需主人。玩法机制优先，数值集中后调。见[161原版静态机制](docs/research/rimworld/161-animal-training-mechanisms.md)、[162玩法与验证](docs/research/rimworld/162-animal-training-gameplay.md)。本轮仅静态与无界面验证，下文各版本记录当时边界。
+
 v58接通囚犯实体送餐：狱卒实际取餐并搬进牢房落地，囚犯自行取餐、寻找餐位和咀嚼，完成才消费食物并补充营养；卧床者继续床边喂食。支持房间供餐估算、份额竞争、满地等待、中断与存读。玩法机制优先，数值后调。见[159原版静态机制](docs/research/rimworld/159-prison-food-mechanisms.md)、[160玩法与验证](docs/research/rimworld/160-prison-food-gameplay.md)。本轮仅静态和无界面验证；下文版本段落保留当时边界。
 
 v57接通共享饮食政策与手动食用：按进食者政策选择真实食物，居民自行取餐、医生/狱卒送餐与途中中断共同遵守规则；玩家可临时指定食物覆盖政策，仍须实际前往并吃完。存档保留实际批次和任务，旧营地继续原有自由饮食。玩法机制优先，数值后调。见[157原版静态机制](docs/research/rimworld/157-food-policies-mechanisms.md)、[158玩法与验证](docs/research/rimworld/158-food-policies-gameplay.md)。本轮仅静态和无界面验证。

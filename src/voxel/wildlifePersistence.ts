@@ -44,6 +44,7 @@ export function validateWildlife(d: VoxelSave, usedIds: Set<number>, equipmentId
   }
   for (const b of d.butcherSpots) if (typeof b.paused !== 'boolean') throw new Error('屠宰点状态无效');
   for (const batch of [...d.items, ...d.pawns.flatMap(p => p.cargo ? [p.cargo] : []),
+    ...d.animals.flatMap(a => a.cargo ? [a.cargo] : []),
     ...d.jobs.flatMap(j => j.deliveredBatches)]) {
     if (!batch.carcass) continue;
     const id = batch.carcass.animalId;

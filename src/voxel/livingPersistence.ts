@@ -74,9 +74,12 @@ export function validateLiving(d: Record<string, any>): void {
   for (const p of d.pawns) if (record(p)) {
     reserveOtherFood(p.careFoodId, p.careAmount);
     if (p.handleTask?.stage === 'fetch') reserveOtherFood(p.handleTask.foodId, p.handleTask.amount);
+    if (p.animalTrainTask?.stage === 'fetch') reserveOtherFood(p.animalTrainTask.sourceId, p.animalTrainTask.amount);
     if (p.animalCareTask?.stage === 'fetch') reserveOtherFood(p.animalCareTask.sourceId, p.animalCareTask.amount);
     if (p.prisonFoodTask?.stage === 'fetch') reserveOtherFood(p.prisonFoodTask.sourceId, p.prisonFoodTask.amount);
   }
+  for (const a of d.animals ?? []) if (a.work?.kind === 'haul' && a.work.stage === 'fetch')
+    reserveOtherFood(a.work.sourceId, a.work.amount);
   for (const p of d.pawns) {
     if (!record(p) || !exact(p.living, ['comfort', 'mealTask', 'memories', 'sleepThoughtAt'])) fail('人物居住字段缺失或多余');
     const state = p.living;

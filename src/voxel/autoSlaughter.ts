@@ -1,7 +1,7 @@
 import type { AnimalSpecies, WildAnimal } from './types';
 import { HUSBANDRY_RULES, isAnimalAdult } from './husbandry';
 
-export const AUTO_SLAUGHTER_SPECIES = ['hare', 'deer', 'dromedary', 'alpaca', 'chicken'] as const;
+export const AUTO_SLAUGHTER_SPECIES = ['hare', 'deer', 'dromedary', 'alpaca', 'chicken', 'labrador'] as const;
 export const AUTO_SLAUGHTER_LIMITS = ['total', 'male', 'female', 'youngMale', 'youngFemale'] as const;
 export type AutoSlaughterLimit = typeof AUTO_SLAUGHTER_LIMITS[number];
 /** null is unlimited; zero deliberately retains none of the eligible group. */
@@ -20,7 +20,7 @@ export function defaultAutoSlaughterPolicy(): AutoSlaughterPolicy {
   return { total: null, male: null, female: null, youngMale: null, youngFemale: null, allowPregnant: false };
 }
 export function defaultAutoSlaughter(): AutoSlaughterSettings {
-  return { hare: defaultAutoSlaughterPolicy(), deer: defaultAutoSlaughterPolicy(), dromedary: defaultAutoSlaughterPolicy(), alpaca: defaultAutoSlaughterPolicy(), chicken: defaultAutoSlaughterPolicy() };
+  return { hare: defaultAutoSlaughterPolicy(), deer: defaultAutoSlaughterPolicy(), dromedary: defaultAutoSlaughterPolicy(), alpaca: defaultAutoSlaughterPolicy(), chicken: defaultAutoSlaughterPolicy(), labrador: defaultAutoSlaughterPolicy() };
 }
 const record = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v);
 export function validAutoSlaughterPolicy(value: unknown): value is AutoSlaughterPolicy {

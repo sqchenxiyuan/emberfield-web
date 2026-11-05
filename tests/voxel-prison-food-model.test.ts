@@ -30,7 +30,7 @@ function person(id: number, extra: Partial<Pawn> = {}): Pawn {
 function graph(): VoxelSave {
   const prisoner = person(2, { faction: 'prisoner', prisoner: initialPrisoner(80), phase: 'prisoner' });
   prisoner.priorities.warden = 0;
-  return { version: 58, tick: 100, nextId: 100, pawns: [person(1), prisoner, person(3)], beds: [], tables: [], chairs: [],
+  return { version: 59, tick: 100, nextId: 100, pawns: [person(1), prisoner, person(3)], beds: [], tables: [], chairs: [],
     items: [{ id: 40, x: 20, y: 12, z: 8, resource: 'meal', amount: 2 }] } as unknown as VoxelSave;
 }
 function delivery(stage: 'fetch' | 'deliver' = 'fetch'): VoxelSave {
@@ -190,6 +190,8 @@ describe('prisoner dining and historical compatibility', () => {
       for (const d of [delivery(), dining()]) { const before = structuredClone(d);
         expect(() => strip(d)).toThrow(/Cannot downgrade/); expect(d).toEqual(before); }
     }
-    const d = graph(), before = structuredClone(d); stripPrisonFoodFields(d); expect(d).toEqual(before);
+    const d = graph(), before = structuredClone(d); stripPrisonFoodFields(d);
+    for (const p of before.pawns) delete (p as Partial<Pawn>).animalsReleased;
+    expect(d).toEqual(before);
   });
 });

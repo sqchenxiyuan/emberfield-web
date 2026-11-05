@@ -20,6 +20,7 @@ import { SanitationPanel, SanitationDetails, CleaningStatus } from './Sanitation
 import { FirePanel, FireDetails, FireDamageDetails, FireWorkStatus } from './FirePanel';
 import { WeatherPanel, WeatherCellDetails } from './WeatherPanel';
 import { AnimalPanel, AnimalDetails, EggDetails } from './AnimalPanel';
+import { AnimalRescueStatus } from './AnimalTrainingPanel';
 import { EggBoxPanel } from './EggBoxPanel';
 import { EGG_BOX_RULES } from './eggBoxes';
 import { AnimalBedDetails } from './AnimalMedicalPanel';
@@ -1557,6 +1558,7 @@ function App() {
               focus={focus} />}
             {pawn.faction === 'colony' && s && <LivingPanel pawn={pawn} snapshot={s} focus={focus} />}
             {s && <CurrentFurniture pawn={pawn} snapshot={s} focus={focus} />}
+            {s && <AnimalRescueStatus pawn={pawn} snapshot={s} />}
             {s && (pawn.faction === 'colony' || pawn.social.memories.length > 0) && <SocialPanel key={`social-${pawn.id}`} pawn={pawn} snapshot={s} focus={focus} />}
             {s && <CleaningStatus pawn={pawn} snapshot={s} command={c => void client.command(c)} />}
             {s && <FireWorkStatus pawn={pawn} snapshot={s} command={c => void client.command(c)} />}

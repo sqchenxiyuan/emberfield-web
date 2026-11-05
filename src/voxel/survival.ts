@@ -68,6 +68,7 @@ export function initialSurvival(
   | 'medical'
   | 'faction'
   | 'drafted'
+  | 'animalsReleased'
   | 'retreating'
   | 'attackTargetId'
   | 'nextAttackTick'
@@ -88,6 +89,7 @@ export function initialSurvival(
     medical: initialMedical(),
     faction: 'colony',
     drafted: false,
+    animalsReleased: false,
     retreating: false,
     attackTargetId: null,
     nextAttackTick: 0,

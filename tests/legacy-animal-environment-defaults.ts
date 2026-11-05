@@ -1,5 +1,6 @@
 import { expect } from 'vitest';
 import { initialAnimalEnvironment } from '../src/voxel/animalEnvironment';
+import { animalTrainingExpectedField } from './legacy-animal-training-defaults';
 import { assertApparelPoliciesDefaults, stripApparelPoliciesFields } from './legacy-apparel-policies-defaults';
 
 const animals = (raw: Record<string, any>) => [...(raw.animals ?? []),
@@ -24,7 +25,7 @@ export function stripAnimalEnvironmentFields(raw: Record<string, any>): void {
 }
 
 export function animalEnvironmentExpectedField(key: string, value: any): any {
-  const copy = structuredClone(value);
+  const copy = animalTrainingExpectedField(key, value);
   if (key === 'animals') for (const a of copy) a.environment = initialAnimalEnvironment();
   if (key === 'trade') for (const r of copy.receipts ?? []) for (const row of r.animalTransfers ?? [])
     row.animal.environment = initialAnimalEnvironment();

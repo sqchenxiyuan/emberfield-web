@@ -1,0 +1,3046 @@
+{
+  "evidence_id": "RW17-ANIMAL-TRAINING-STATIC",
+  "version": "1.7.4980 rev60",
+  "assemblySha256": "eff7d97949f919fb2b151ebfb906e9be749b63410b7dbda78eeebb7972b245c3",
+  "reaEvidenceId": "ev_41acdc3a1d6904fb12e36eeaac20397afac130d300dafc70973a154cd3fbfd84",
+  "reaParentId": "ev_ebbdfc84b2bb4bc3fff131fd667e539f7c75c3d78c0491481455a7751b3a5337",
+  "reaFile": "docs/research/rimworld/evidence/animal-training-rea-managed.json",
+  "reaSha256": "3384ec6e56503683c16f4d5343ce99db0a3dd77761d05c60dad091612c3910f8",
+  "manifestFile": "docs/research/rimworld/evidence/animal-training-manifest.json",
+  "manifestSha256": "7679ff6e5e1d9be9860b82b71c7ce9c1a8bab50740b010a14a6036a8b01732d9",
+  "priorManifests": [
+    {
+      "file": "docs/research/rimworld/evidence/prison-food-manifest.json",
+      "sha256": "1225f6b60fdc9eb637424e4e94486e80dea146bfddfc271b5994c4bb8b1a8336"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/live-animal-trade-manifest.json",
+      "sha256": "33e47001c2e7778095638d74c325b2637c6b8b666b73bd3162da896058a54642"
+    },
+    {
+      "file": "docs/research/rimworld/evidence/animal-environment-manifest.json",
+      "sha256": "7c597aa226c16d6669b1a5d94240ea4f06778e6afb15092d892574342cee2ce0"
+    }
+  ],
+  "matchingPriorTypes": [
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "sha256": "5ccb647830a685a0fe951d707853b0a12910f580bc4283340a987c6da311bd7d",
+      "prior": [
+        {
+          "manifest": "docs/research/rimworld/evidence/live-animal-trade-manifest.json",
+          "localFile": ".local-research/live-animal-trade/RimWorld.Pawn_TrainingTracker.cs"
+        }
+      ]
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "sha256": "c23d3b5de6c9a96cad59170531efc71f3964d8d99d07b582eda580bfbdd00494",
+      "prior": [
+        {
+          "manifest": "docs/research/rimworld/evidence/live-animal-trade-manifest.json",
+          "localFile": ".local-research/live-animal-trade/RimWorld.Pawn_PlayerSettings.cs"
+        }
+      ]
+    },
+    {
+      "type": "RimWorld.PawnUtility",
+      "sha256": "1f60bf4b888af7c96d0fb159c2347ff9335a9ff59596002507951742b350c941",
+      "prior": [
+        {
+          "manifest": "docs/research/rimworld/evidence/live-animal-trade-manifest.json",
+          "localFile": ".local-research/live-animal-trade/RimWorld.PawnUtility.cs"
+        },
+        {
+          "manifest": "docs/research/rimworld/evidence/animal-environment-manifest.json",
+          "localFile": ".local-research/animal-environment/RimWorld.PawnUtility.cs"
+        }
+      ]
+    },
+    {
+      "type": "RimWorld.TradeUtility",
+      "sha256": "de12a556209ea51bb8f5a9196c0a2172d30c44a2022f3e11bbebba9c7ce19256",
+      "prior": [
+        {
+          "manifest": "docs/research/rimworld/evidence/live-animal-trade-manifest.json",
+          "localFile": ".local-research/live-animal-trade/RimWorld.TradeUtility.cs"
+        }
+      ]
+    },
+    {
+      "type": "Verse.RaceProperties",
+      "sha256": "05f59829158939e7273a7565f64dd7a6cd5b8bbc41c4b1f9cbaf1dbd2b4784b2",
+      "prior": [
+        {
+          "manifest": "docs/research/rimworld/evidence/live-animal-trade-manifest.json",
+          "localFile": ".local-research/live-animal-trade/Verse.RaceProperties.cs"
+        },
+        {
+          "manifest": "docs/research/rimworld/evidence/animal-environment-manifest.json",
+          "localFile": ".local-research/animal-environment/Verse.RaceProperties.cs"
+        }
+      ]
+    },
+    {
+      "type": "Verse.Pawn",
+      "sha256": "6cd4c39d4fcdf029597a675f2df43a396ee964cc6d4ab769a5be5d1f2ed6a505",
+      "prior": [
+        {
+          "manifest": "docs/research/rimworld/evidence/live-animal-trade-manifest.json",
+          "localFile": ".local-research/live-animal-trade/Verse.Pawn.cs"
+        },
+        {
+          "manifest": "docs/research/rimworld/evidence/animal-environment-manifest.json",
+          "localFile": ".local-research/animal-environment/Verse.Pawn.cs"
+        }
+      ]
+    },
+    {
+      "type": "Verse.AI.Toils_Haul",
+      "sha256": "a2359a7c55a648b4304bd34fc2fccb59dcab10a50498f3e57b5d8b9894d2ea05",
+      "prior": [
+        {
+          "manifest": "docs/research/rimworld/evidence/prison-food-manifest.json",
+          "localFile": ".local-research/prison-food/Verse.AI.Toils_Haul.cs"
+        }
+      ]
+    },
+    {
+      "type": "Verse.Pawn_CarryTracker",
+      "sha256": "b53d3466fbaf47c9b4bfd8c044b7632943a00c93749c1873b9267c69a6ce1df6",
+      "prior": [
+        {
+          "manifest": "docs/research/rimworld/evidence/prison-food-manifest.json",
+          "localFile": ".local-research/prison-food/Verse.Pawn_CarryTracker.cs"
+        }
+      ]
+    },
+    {
+      "type": "RimWorld.FoodUtility",
+      "sha256": "b8c118d3c34a0beae6940c17db6b2f8a6b17f4e453354105b9a14820b5895de8",
+      "prior": [
+        {
+          "manifest": "docs/research/rimworld/evidence/prison-food-manifest.json",
+          "localFile": ".local-research/prison-food/RimWorld.FoodUtility.cs"
+        }
+      ]
+    },
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "sha256": "0a0c96aa27a994b6776188b8096e3cd82ce8027b1cf679ae92ab35ae5aa77f89",
+      "prior": [
+        {
+          "manifest": "docs/research/rimworld/evidence/live-animal-trade-manifest.json",
+          "localFile": ".local-research/live-animal-trade/RimWorld.StockGenerator_Animals.cs"
+        }
+      ]
+    },
+    {
+      "type": "Verse.PawnGenerator",
+      "sha256": "96e7447c568916a4eb9aa4d334723567d9b09dc939636f5dcdfee484dcc42180",
+      "prior": [
+        {
+          "manifest": "docs/research/rimworld/evidence/live-animal-trade-manifest.json",
+          "localFile": ".local-research/live-animal-trade/Verse.PawnGenerator.cs"
+        }
+      ]
+    },
+    {
+      "type": "RimWorld.PawnComponentsUtility",
+      "sha256": "ab2d0e24cbfafbafbb1dc6bbd988c3055bf5ada58e0029c388d40262cf3a4c8f",
+      "prior": [
+        {
+          "manifest": "docs/research/rimworld/evidence/live-animal-trade-manifest.json",
+          "localFile": ".local-research/live-animal-trade/RimWorld.PawnComponentsUtility.cs"
+        }
+      ]
+    },
+    {
+      "type": "Verse.AI.Pawn_MindState",
+      "sha256": "b606531ba468fc6f4c1a2fbd9fbd25dd366ac45f3ef241b1a58fd298f82b7c12",
+      "prior": [
+        {
+          "manifest": "docs/research/rimworld/evidence/live-animal-trade-manifest.json",
+          "localFile": ".local-research/live-animal-trade/Verse.AI.Pawn_MindState.cs"
+        }
+      ]
+    },
+    {
+      "type": "Verse.Thing",
+      "sha256": "70d1ee0904dd774e25fde1f63a4dfa6811a1befe868ea7ab1609542724c763cc",
+      "prior": [
+        {
+          "manifest": "docs/research/rimworld/evidence/animal-environment-manifest.json",
+          "localFile": ".local-research/animal-environment/Verse.Thing.cs"
+        }
+      ]
+    },
+    {
+      "type": "RimWorld.LifeStageDef",
+      "sha256": "93a5a86d46d9b6d954630d71044634ec69faddd67c473d1fed730e474c0034bd",
+      "prior": [
+        {
+          "manifest": "docs/research/rimworld/evidence/live-animal-trade-manifest.json",
+          "localFile": ".local-research/live-animal-trade/RimWorld.LifeStageDef.cs"
+        }
+      ]
+    },
+    {
+      "type": "RimWorld.Need_Food",
+      "sha256": "f17cbaf82d8792108557f869db585fdd6ac26c0ebb537e8acf04173179e7c4cd",
+      "prior": [
+        {
+          "manifest": "docs/research/rimworld/evidence/prison-food-manifest.json",
+          "localFile": ".local-research/prison-food/RimWorld.Need_Food.cs"
+        }
+      ]
+    },
+    {
+      "type": "Verse.Hediff_Pregnant",
+      "sha256": "c8d706382ad523ccb43f496a31ad0de5d0a9b1c8d3fc20b73c52737e2a3b3d87",
+      "prior": [
+        {
+          "manifest": "docs/research/rimworld/evidence/live-animal-trade-manifest.json",
+          "localFile": ".local-research/live-animal-trade/Verse.Hediff_Pregnant.cs"
+        }
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "needle": "private DefMap<TrainableDef, bool> wantedTrainables",
+      "locations": [
+        {
+          "line": 15,
+          "text": "private DefMap<TrainableDef, bool> wantedTrainables = new DefMap<TrainableDef, bool>();"
+        }
+      ],
+      "interpretation": "Wanted training is distinct from progress and learned capability."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "needle": "private DefMap<TrainableDef, int> steps",
+      "locations": [
+        {
+          "line": 17,
+          "text": "private DefMap<TrainableDef, int> steps = new DefMap<TrainableDef, int>();"
+        }
+      ],
+      "interpretation": "Training retains an integer step counter per definition."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "needle": "private DefMap<TrainableDef, bool> learned",
+      "locations": [
+        {
+          "line": 19,
+          "text": "private DefMap<TrainableDef, bool> learned = new DefMap<TrainableDef, bool>();"
+        }
+      ],
+      "interpretation": "Learned state is stored independently of progress."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "needle": "Scribe_Values.Look(ref countDecayFrom",
+      "locations": [
+        {
+          "line": 43,
+          "text": "Scribe_Values.Look(ref countDecayFrom, \"countDecayFrom\", 0);"
+        }
+      ],
+      "interpretation": "Decay timing persists across saves."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "needle": "!HasLearned(prerequisites[i]) || CanBeTrained(prerequisites[i])",
+      "locations": [
+        {
+          "line": 76,
+          "text": "if (!HasLearned(prerequisites[i]) || CanBeTrained(prerequisites[i]))"
+        }
+      ],
+      "interpretation": "A prerequisite must be learned and fully replenished before further dependent training."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "needle": "float num = pawn?.BodySize ?? pawnDef.race.baseBodySize;",
+      "locations": [
+        {
+          "line": 128,
+          "text": "float num = pawn?.BodySize ?? pawnDef.race.baseBodySize;"
+        }
+      ],
+      "interpretation": "Assignment uses the actual pawn body size, falling back to species size for definition-only queries."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "needle": "if (num < td.minBodySize)",
+      "locations": [
+        {
+          "line": 137,
+          "text": "if (num < td.minBodySize)"
+        },
+        {
+          "line": 152,
+          "text": "if (num < td.minBodySize)"
+        }
+      ],
+      "interpretation": "Small bodies cannot be assigned size-gated training."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "needle": "steps[td]++;",
+      "locations": [
+        {
+          "line": 187,
+          "text": "steps[td]++;"
+        }
+      ],
+      "interpretation": "One successful ordinary attempt adds one step."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "needle": "learned[td] = true;",
+      "locations": [
+        {
+          "line": 191,
+          "text": "learned[td] = true;"
+        }
+      ],
+      "interpretation": "Reaching the required steps sets learned true."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "needle": "pawn.playerSettings.Master = trainer;",
+      "locations": [
+        {
+          "line": 194,
+          "text": "pawn.playerSettings.Master = trainer;"
+        }
+      ],
+      "interpretation": "Completing obedience assigns the trainer only when no master exists."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "needle": "SetWantedRecursive(td.prerequisites[i], checkOn: true);",
+      "locations": [
+        {
+          "line": 208,
+          "text": "SetWantedRecursive(td.prerequisites[i], checkOn: true);"
+        }
+      ],
+      "interpretation": "Enabling a wanted skill recursively enables prerequisite training."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "needle": "SetWantedRecursive(item, checkOn: false);",
+      "locations": [
+        {
+          "line": 215,
+          "text": "SetWantedRecursive(item, checkOn: false);"
+        }
+      ],
+      "interpretation": "Disabling a wanted prerequisite recursively disables wanted dependent skills."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "needle": "countDecayFrom += 250;",
+      "locations": [
+        {
+          "line": 223,
+          "text": "countDecayFrom += 250;"
+        },
+        {
+          "line": 227,
+          "text": "countDecayFrom += 250;"
+        }
+      ],
+      "interpretation": "Suspended or unspawned animals preserve remaining decay time in rare-tick increments."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "needle": "else if (steps[TrainableDefOf.Tameness] == 0)",
+      "locations": [
+        {
+          "line": 229,
+          "text": "else if (steps[TrainableDefOf.Tameness] == 0)"
+        }
+      ],
+      "interpretation": "No tameness progress resets the decay baseline to the current tick."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "needle": "pawn.RaceProps.animalType == AnimalType.Dryad",
+      "locations": [
+        {
+          "line": 235,
+          "text": "if (Find.TickManager.TicksGame < countDecayFrom + TrainableUtility.DegradationPeriodTicks(pawn) || pawn.RaceProps.animalType == AnimalType.Dryad)"
+        }
+      ],
+      "interpretation": "Dryads are excluded from this decay route."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "needle": "select kvp.Key).Except(steps.Where",
+      "locations": [
+        {
+          "line": 241,
+          "text": "select kvp.Key).Except(steps.Where((KeyValuePair<TrainableDef, int> kvp) => kvp.Value > 0 && kvp.Key.prerequisites != null).SelectMany((KeyValuePair<TrainableDef, int> kvp) => kvp.Key.prerequisites)).RandomElement();"
+        }
+      ],
+      "interpretation": "Decay excludes prerequisites of skills that still have progress, selecting from leaves."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "needle": "trainableDef == TrainableDefOf.Tameness && !TrainableUtility.TamenessCanDecay(pawn)",
+      "locations": [
+        {
+          "line": 242,
+          "text": "if (trainableDef == TrainableDefOf.Tameness && !TrainableUtility.TamenessCanDecay(pawn))"
+        }
+      ],
+      "interpretation": "Selecting non-decaying tameness consumes the decay opportunity without losing a step."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "needle": "if (steps[trainableDef] > 0 || !learned[trainableDef])",
+      "locations": [
+        {
+          "line": 252,
+          "text": "if (steps[trainableDef] > 0 || !learned[trainableDef])"
+        }
+      ],
+      "interpretation": "Learned capability survives partial decay and is revoked only at zero steps."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "needle": "pawn.SetFaction(null);",
+      "locations": [
+        {
+          "line": 261,
+          "text": "pawn.SetFaction(null);"
+        }
+      ],
+      "interpretation": "Losing learned tameness returns a player animal to the wild."
+    },
+    {
+      "type": "RimWorld.TrainableUtility",
+      "needle": "OrderByDescending((TrainableDef td) => td.listPriority)",
+      "locations": [
+        {
+          "line": 28,
+          "text": "defsInListOrder.AddRange(DefDatabase<TrainableDef>.AllDefsListForReading.OrderByDescending((TrainableDef td) => td.listPriority));"
+        }
+      ],
+      "interpretation": "Training selection follows descending definition priority."
+    },
+    {
+      "type": "RimWorld.TrainableUtility",
+      "needle": "new CurvePoint(0f, 12f)",
+      "locations": [
+        {
+          "line": 17,
+          "text": "new CurvePoint(0f, 12f),"
+        }
+      ],
+      "interpretation": "Wildness zero corresponds to twelve days between decay opportunities."
+    },
+    {
+      "type": "RimWorld.TrainableUtility",
+      "needle": "new CurvePoint(1f, 6f)",
+      "locations": [
+        {
+          "line": 18,
+          "text": "new CurvePoint(1f, 6f)"
+        }
+      ],
+      "interpretation": "Wildness one corresponds to six days between decay opportunities."
+    },
+    {
+      "type": "RimWorld.TrainableUtility",
+      "needle": "return pawn.GetStatValue(StatDefOf.Wildness, applyPostProcess: true, 1) > 0.101f;",
+      "locations": [
+        {
+          "line": 198,
+          "text": "return pawn.GetStatValue(StatDefOf.Wildness, applyPostProcess: true, 1) > 0.101f;"
+        }
+      ],
+      "interpretation": "Tameness can decay only above the wildness threshold, after the fence-blocked exception."
+    },
+    {
+      "type": "RimWorld.TrainableUtility",
+      "needle": "animal.mindState.lastAssignedInteractTime + 15000",
+      "locations": [
+        {
+          "line": 203,
+          "text": "return Find.TickManager.TicksGame < animal.mindState.lastAssignedInteractTime + 15000;"
+        }
+      ],
+      "interpretation": "Training attempts are limited by a fifteen-thousand-tick assigned-interaction interval."
+    },
+    {
+      "type": "RimWorld.TrainableUtility",
+      "needle": "master.IsPrisoner",
+      "locations": [
+        {
+          "line": 122,
+          "text": "if ((checkSpawned && !master.Spawned) || master.IsPrisoner)"
+        }
+      ],
+      "interpretation": "A prisoner cannot be selected as an animal master through this helper."
+    },
+    {
+      "type": "RimWorld.TrainableUtility",
+      "needle": "master.relations.DirectRelationExists(PawnRelationDefOf.Bond, animal)",
+      "locations": [
+        {
+          "line": 138,
+          "text": "if (master.relations.DirectRelationExists(PawnRelationDefOf.Bond, animal))"
+        }
+      ],
+      "interpretation": "A bond bypasses the ordinary master handling-skill threshold."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Train",
+      "needle": "if (pawn2.Faction != pawn.Faction)",
+      "locations": [
+        {
+          "line": 24,
+          "text": "if (pawn2.Faction != pawn.Faction)"
+        }
+      ],
+      "interpretation": "Training work requires the same faction as the handler."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Train",
+      "needle": "pawn2.training.NextTrainableToTrain() == null",
+      "locations": [
+        {
+          "line": 32,
+          "text": "if (pawn2.training.NextTrainableToTrain() == null)"
+        }
+      ],
+      "interpretation": "No remaining wanted trainable means no training job."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Train",
+      "needle": "TakeFoodForAnimalInteractJob(pawn, pawn2)",
+      "locations": [
+        {
+          "line": 42,
+          "text": "Job job = TakeFoodForAnimalInteractJob(pawn, pawn2);"
+        }
+      ],
+      "interpretation": "An unprepared handler first gets physical food into inventory."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Train",
+      "needle": "JobMaker.MakeJob(JobDefOf.Train, t)",
+      "locations": [
+        {
+          "line": 54,
+          "text": "return JobMaker.MakeJob(JobDefOf.Train, t);"
+        }
+      ],
+      "interpretation": "Training schedules an interaction job rather than granting capability directly."
+    },
+    {
+      "type": "RimWorld.WorkGiver_InteractAnimal",
+      "needle": "if (!pawn.CanReserve(animal, 1, -1, null, forced))",
+      "locations": [
+        {
+          "line": 47,
+          "text": "if (!pawn.CanReserve(animal, 1, -1, null, forced))"
+        }
+      ],
+      "interpretation": "Only one handler reserves an animal at a time."
+    },
+    {
+      "type": "RimWorld.WorkGiver_InteractAnimal",
+      "needle": "if (animal.Downed)",
+      "locations": [
+        {
+          "line": 51,
+          "text": "if (animal.Downed)"
+        }
+      ],
+      "interpretation": "Downed animals cannot be trained by this interaction path."
+    },
+    {
+      "type": "RimWorld.WorkGiver_InteractAnimal",
+      "needle": "if (!animal.Awake() && !canInteractWhileSleeping)",
+      "locations": [
+        {
+          "line": 56,
+          "text": "if (!animal.Awake() && !canInteractWhileSleeping)"
+        }
+      ],
+      "interpretation": "Ordinary training rejects sleeping animals."
+    },
+    {
+      "type": "RimWorld.WorkGiver_InteractAnimal",
+      "needle": "!animal.CanCasuallyInteractNow",
+      "locations": [
+        {
+          "line": 61,
+          "text": "if (!animal.CanCasuallyInteractNow(twoWayInteraction: false, canInteractWhileSleeping, canInteractWhileRoaming))"
+        }
+      ],
+      "interpretation": "Busy animals can reject casual training interaction."
+    },
+    {
+      "type": "RimWorld.WorkGiver_InteractAnimal",
+      "needle": "!tamee.WillEat(thing, pawn) || (int)thing.def.ingestible.preferability > 5 || thing.def.IsDrug",
+      "locations": [
+        {
+          "line": 84,
+          "text": "if (!tamee.WillEat(thing, pawn) || (int)thing.def.ingestible.preferability > 5 || thing.def.IsDrug)"
+        }
+      ],
+      "interpretation": "Prepared inventory food must be edible by the animal, no better than RawTasty, and not a drug."
+    },
+    {
+      "type": "RimWorld.WorkGiver_InteractAnimal",
+      "needle": "if (num >= 2)",
+      "locations": [
+        {
+          "line": 96,
+          "text": "if (num >= 2)"
+        }
+      ],
+      "interpretation": "Inventory preparation requires enough for two feed portions."
+    },
+    {
+      "type": "RimWorld.WorkGiver_InteractAnimal",
+      "needle": "allowPlant: false, allowDrug: false, allowCorpse: false",
+      "locations": [
+        {
+          "line": 107,
+          "text": "Thing thing = FoodUtility.BestFoodSourceOnMap(pawn, tamee, desperate: false, out var foodDef, FoodPreferability.RawTasty, allowPlant: false, allowDrug: false, allowCorpse: false, allowDispenserFull: false, allowDispenserEmpty: false, allowForbidden: false, allowSociallyImproper: false, allowHarvest: false, forceScanWholeMap: false, ignoreReservations: false, calculateWantedStackCount: false, FoodPreferability.Undefined, JobDriver_InteractAnimal.RequiredNutritionPerFeed(tamee) * 2f * 4f);"
+        }
+      ],
+      "interpretation": "Map food gathering excludes standing plants, drugs and corpses."
+    },
+    {
+      "type": "RimWorld.WorkGiver_InteractAnimal",
+      "needle": "JobDriver_InteractAnimal.RequiredNutritionPerFeed(tamee) * 2f * 4f",
+      "locations": [
+        {
+          "line": 107,
+          "text": "Thing thing = FoodUtility.BestFoodSourceOnMap(pawn, tamee, desperate: false, out var foodDef, FoodPreferability.RawTasty, allowPlant: false, allowDrug: false, allowCorpse: false, allowDispenserFull: false, allowDispenserEmpty: false, allowForbidden: false, allowSociallyImproper: false, allowHarvest: false, forceScanWholeMap: false, ignoreReservations: false, calculateWantedStackCount: false, FoodPreferability.Undefined, JobDriver_InteractAnimal.RequiredNutritionPerFeed(tamee) * 2f * 4f);"
+        },
+        {
+          "line": 112,
+          "text": "float wantedNutrition = JobDriver_InteractAnimal.RequiredNutritionPerFeed(tamee) * 2f * 4f;"
+        }
+      ],
+      "interpretation": "Food-gathering requests enough for four two-feed interactions."
+    },
+    {
+      "type": "RimWorld.JobDriver_Train",
+      "needle": "item.FailOn(noLongerTrainable);",
+      "locations": [
+        {
+          "line": 16,
+          "text": "item.FailOn(noLongerTrainable);"
+        }
+      ],
+      "interpretation": "The interaction is invalidated if no wanted trainable remains."
+    },
+    {
+      "type": "RimWorld.JobDriver_Train",
+      "needle": "yield return Toils_Interpersonal.TryTrain(TargetIndex.A);",
+      "locations": [
+        {
+          "line": 19,
+          "text": "yield return Toils_Interpersonal.TryTrain(TargetIndex.A);"
+        }
+      ],
+      "interpretation": "Training success is attempted only after the inherited physical interaction sequence."
+    },
+    {
+      "type": "RimWorld.JobDriver_InteractAnimal",
+      "needle": "Scribe_Values.Look(ref feedNutritionLeft",
+      "locations": [
+        {
+          "line": 37,
+          "text": "Scribe_Values.Look(ref feedNutritionLeft, \"feedNutritionLeft\", 0f);"
+        }
+      ],
+      "interpretation": "Outstanding feed nutrition survives save/load."
+    },
+    {
+      "type": "RimWorld.JobDriver_InteractAnimal",
+      "needle": "return Mathf.Min(animal.needs.food.MaxLevel * 0.15f, 0.3f);",
+      "locations": [
+        {
+          "line": 88,
+          "text": "return Mathf.Min(animal.needs.food.MaxLevel * 0.15f, 0.3f);"
+        }
+      ],
+      "interpretation": "Each of two feed phases targets fifteen percent of food capacity, capped at 0.3 nutrition."
+    },
+    {
+      "type": "RimWorld.JobDriver_InteractAnimal",
+      "needle": "yield return Toils_Ingest.FinalizeIngest(Animal, TargetIndex.B);",
+      "locations": [
+        {
+          "line": 103,
+          "text": "yield return Toils_Ingest.FinalizeIngest(Animal, TargetIndex.B);"
+        }
+      ],
+      "interpretation": "Food is actually ingested by the animal before training success is rolled."
+    },
+    {
+      "type": "RimWorld.JobDriver_InteractAnimal",
+      "needle": "yield return Toils_General.PutCarriedThingInInventory();",
+      "locations": [
+        {
+          "line": 104,
+          "text": "yield return Toils_General.PutCarriedThingInInventory();"
+        }
+      ],
+      "interpretation": "Unused carried food is returned to inventory after feeding."
+    },
+    {
+      "type": "RimWorld.JobDriver_InteractAnimal",
+      "needle": "actor.inventory.innerContainer.Take(thing, Mathf.Min(num, stackCount))",
+      "locations": [
+        {
+          "line": 143,
+          "text": "Thing thing2 = actor.inventory.innerContainer.Take(thing, Mathf.Min(num, stackCount));"
+        }
+      ],
+      "interpretation": "Feeding physically splits available inventory stock."
+    },
+    {
+      "type": "RimWorld.JobDriver_InteractAnimal",
+      "needle": "ticksLeftThisToil = Mathf.CeilToInt(270f *",
+      "locations": [
+        {
+          "line": 147,
+          "text": "ticksLeftThisToil = Mathf.CeilToInt(270f * (num2 / RequiredNutritionPerFeed(pawn)));"
+        }
+      ],
+      "interpretation": "Feeding delay scales with the supplied nutrition portion."
+    },
+    {
+      "type": "RimWorld.Toils_Interpersonal",
+      "needle": "pawn.mindState.lastAssignedInteractTime = Find.TickManager.TicksGame;",
+      "locations": [
+        {
+          "line": 215,
+          "text": "pawn.mindState.lastAssignedInteractTime = Find.TickManager.TicksGame;"
+        }
+      ],
+      "interpretation": "The interaction timestamp is updated before the final training success roll."
+    },
+    {
+      "type": "RimWorld.Toils_Interpersonal",
+      "needle": "actor.GetStatValue(StatDefOf.TrainAnimalChance)",
+      "locations": [
+        {
+          "line": 251,
+          "text": "float statValue = actor.GetStatValue(StatDefOf.TrainAnimalChance);"
+        }
+      ],
+      "interpretation": "Training success starts with the handler training-chance stat."
+    },
+    {
+      "type": "RimWorld.Toils_Interpersonal",
+      "needle": "GenMath.LerpDouble(0f, 1f, 1.5f, 0.5f, pawn.GetStatValue(StatDefOf.Wildness))",
+      "locations": [
+        {
+          "line": 252,
+          "text": "statValue *= GenMath.LerpDouble(0f, 1f, 1.5f, 0.5f, pawn.GetStatValue(StatDefOf.Wildness));"
+        }
+      ],
+      "interpretation": "Wildness scales the chance from 1.5 at zero to 0.5 at one."
+    },
+    {
+      "type": "RimWorld.Toils_Interpersonal",
+      "needle": "statValue *= 5f;",
+      "locations": [
+        {
+          "line": 255,
+          "text": "statValue *= 5f;"
+        }
+      ],
+      "interpretation": "The bonded handler multiplier is five."
+    },
+    {
+      "type": "RimWorld.Toils_Interpersonal",
+      "needle": "statValue = Mathf.Clamp01(statValue);",
+      "locations": [
+        {
+          "line": 257,
+          "text": "statValue = Mathf.Clamp01(statValue);"
+        }
+      ],
+      "interpretation": "The final training probability is clamped between zero and one."
+    },
+    {
+      "type": "RimWorld.Toils_Interpersonal",
+      "needle": "pawn.training.Train(trainableDef, actor);",
+      "locations": [
+        {
+          "line": 268,
+          "text": "pawn.training.Train(trainableDef, actor);"
+        }
+      ],
+      "interpretation": "Only a successful chance roll advances training."
+    },
+    {
+      "type": "RimWorld.Toils_Interpersonal",
+      "needle": "\"TextMote_TrainFail\"",
+      "locations": [
+        {
+          "line": 279,
+          "text": "text = \"TextMote_TrainFail\".Translate(trainableDef.LabelCap, statValue.ToStringPercent());"
+        }
+      ],
+      "interpretation": "Failure is reported after food and interaction time have already been spent."
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "needle": "Scribe_References.Look(ref master, \"master\");",
+      "locations": [
+        {
+          "line": 205,
+          "text": "Scribe_References.Look(ref master, \"master\");"
+        }
+      ],
+      "interpretation": "The animal master reference persists."
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "needle": "Scribe_Values.Look(ref followDrafted",
+      "locations": [
+        {
+          "line": 206,
+          "text": "Scribe_Values.Look(ref followDrafted, \"followDrafted\", defaultValue: false);"
+        }
+      ],
+      "interpretation": "Animal follow-drafted configuration persists."
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "needle": "Scribe_Values.Look(ref followFieldwork",
+      "locations": [
+        {
+          "line": 207,
+          "text": "Scribe_Values.Look(ref followFieldwork, \"followFieldwork\", defaultValue: false);"
+        }
+      ],
+      "interpretation": "Animal follow-fieldwork configuration persists."
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "needle": "Scribe_Values.Look(ref animalsReleased",
+      "locations": [
+        {
+          "line": 202,
+          "text": "Scribe_Values.Look(ref animalsReleased, \"animalsReleased\", defaultValue: false);"
+        }
+      ],
+      "interpretation": "The master pawn release-animals state persists."
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "needle": "value != null && !pawn.training.HasLearned(TrainableDefOf.Obedience)",
+      "locations": [
+        {
+          "line": 55,
+          "text": "if (value != null && !pawn.training.HasLearned(TrainableDefOf.Obedience))"
+        }
+      ],
+      "interpretation": "A new master cannot be assigned before obedience is learned."
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "needle": "return Master.Faction == pawn.Faction;",
+      "locations": [
+        {
+          "line": 155,
+          "text": "return Master.Faction == pawn.Faction;"
+        }
+      ],
+      "interpretation": "An effective master must still share the player animal faction."
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "needle": "animalsReleased = !animalsReleased;",
+      "locations": [
+        {
+          "line": 270,
+          "text": "animalsReleased = !animalsReleased;"
+        }
+      ],
+      "interpretation": "The master release control toggles group attack permission."
+    },
+    {
+      "type": "RimWorld.Pawn_DraftController",
+      "needle": "pawn.playerSettings.animalsReleased = false;",
+      "locations": [
+        {
+          "line": 90,
+          "text": "pawn.playerSettings.animalsReleased = false;"
+        }
+      ],
+      "interpretation": "Undrafting a master resets release permission."
+    },
+    {
+      "type": "RimWorld.ThinkNode_ConditionalShouldFollowMaster",
+      "needle": "pawn.playerSettings.followDrafted && respectedMaster.Drafted",
+      "locations": [
+        {
+          "line": 26,
+          "text": "if (pawn.playerSettings.followDrafted && respectedMaster.Drafted && pawn.CanReach(respectedMaster, PathEndMode.OnCell, Danger.Deadly))"
+        }
+      ],
+      "interpretation": "Drafted following requires the animal switch and a reachable drafted effective master."
+    },
+    {
+      "type": "RimWorld.ThinkNode_ConditionalShouldFollowMaster",
+      "needle": "respectedMaster.mindState.lastJobTag == JobTag.Fieldwork",
+      "locations": [
+        {
+          "line": 30,
+          "text": "if (pawn.playerSettings.followFieldwork && respectedMaster.mindState.lastJobTag == JobTag.Fieldwork && pawn.CanReach(respectedMaster, PathEndMode.OnCell, Danger.Deadly))"
+        }
+      ],
+      "interpretation": "Fieldwork following checks the actual job tag, not every working master."
+    },
+    {
+      "type": "RimWorld.ThinkNode_ConditionalShouldFollowMaster",
+      "needle": "carriedBy.HostileTo(respectedMaster)",
+      "locations": [
+        {
+          "line": 38,
+          "text": "if (carriedBy != null && carriedBy.HostileTo(respectedMaster) && pawn.CanReach(carriedBy, PathEndMode.OnCell, Danger.Deadly))"
+        }
+      ],
+      "interpretation": "A reachable hostile kidnapper carrying the master provides a special follow/defend route."
+    },
+    {
+      "type": "RimWorld.JobGiver_AIFollowMaster",
+      "needle": "protected override int FollowJobExpireInterval => 200;",
+      "locations": [
+        {
+          "line": 11,
+          "text": "protected override int FollowJobExpireInterval => 200;"
+        }
+      ],
+      "interpretation": "Master following periodically expires for reevaluation."
+    },
+    {
+      "type": "RimWorld.JobGiver_AIFollowMaster",
+      "needle": "return 3f;",
+      "locations": [
+        {
+          "line": 28,
+          "text": "return 3f;"
+        }
+      ],
+      "interpretation": "Ordinary following keeps within a three-cell radius."
+    },
+    {
+      "type": "RimWorld.JobGiver_AIFollowMaster",
+      "needle": "return 50f;",
+      "locations": [
+        {
+          "line": 26,
+          "text": "return 50f;"
+        }
+      ],
+      "interpretation": "Release-trained animals under a released master use a fifty-cell follow radius."
+    },
+    {
+      "type": "RimWorld.JobGiver_AIFollowPawn",
+      "needle": "JobMaker.MakeJob(JobDefOf.FollowClose, followee)",
+      "locations": [
+        {
+          "line": 31,
+          "text": "Job job = JobMaker.MakeJob(JobDefOf.FollowClose, followee);"
+        }
+      ],
+      "interpretation": "Master following is an actual FollowClose movement job."
+    },
+    {
+      "type": "Verse.AI.JobDriver_FollowClose",
+      "needle": "float radius = followRadius * 1.2f;",
+      "locations": [
+        {
+          "line": 61,
+          "text": "float radius = followRadius * 1.2f;"
+        }
+      ],
+      "interpretation": "Following uses hysteresis so an animal does not continually restart at the exact boundary."
+    },
+    {
+      "type": "Verse.AI.JobDriver_FollowClose",
+      "needle": "pawn.pather.StartPath(followee, PathEndMode.Touch);",
+      "locations": [
+        {
+          "line": 73,
+          "text": "pawn.pather.StartPath(followee, PathEndMode.Touch);"
+        }
+      ],
+      "interpretation": "The following animal actually paths toward the moving master."
+    },
+    {
+      "type": "Verse.AI.JobDriver_FollowClose",
+      "needle": "pawn.IsHashIntervalTick(30, delta)",
+      "locations": [
+        {
+          "line": 49,
+          "text": "if (!pawn.pather.Moving || pawn.IsHashIntervalTick(30, delta))"
+        }
+      ],
+      "interpretation": "The active following path is periodically reconsidered."
+    },
+    {
+      "type": "RimWorld.JobGiver_AIDefendMaster",
+      "needle": "return 5f;",
+      "locations": [
+        {
+          "line": 20,
+          "text": "return 5f;"
+        }
+      ],
+      "interpretation": "Ordinary master defense uses a five-cell flag radius."
+    },
+    {
+      "type": "RimWorld.JobGiver_AIDefendMaster",
+      "needle": "return 50f;",
+      "locations": [
+        {
+          "line": 18,
+          "text": "return 50f;"
+        }
+      ],
+      "interpretation": "Released attack-trained animals defend across a fifty-cell radius."
+    },
+    {
+      "type": "RimWorld.JobGiver_AIDefendPawn",
+      "needle": "attackMeleeThreatEvenIfNotHostile",
+      "locations": [
+        {
+          "line": 8,
+          "text": "private bool attackMeleeThreatEvenIfNotHostile;"
+        },
+        {
+          "line": 13,
+          "text": "jobGiver_AIDefendPawn.attackMeleeThreatEvenIfNotHostile = attackMeleeThreatEvenIfNotHostile;"
+        },
+        {
+          "line": 54,
+          "text": "if (attackMeleeThreatEvenIfNotHostile)"
+        }
+      ],
+      "interpretation": "Master defense may retaliate against a current melee threat even without a hostile faction relation."
+    },
+    {
+      "type": "RimWorld.JobGiver_AIFightEnemy",
+      "needle": "JobMaker.MakeJob(JobDefOf.AttackMelee, enemyTarget)",
+      "locations": [
+        {
+          "line": 193,
+          "text": "Job job = JobMaker.MakeJob(JobDefOf.AttackMelee, enemyTarget);"
+        }
+      ],
+      "interpretation": "The shared combat selector creates a physical melee job."
+    },
+    {
+      "type": "RimWorld.JobGiver_AIFightEnemy",
+      "needle": "TargetScanFlags.NeedLOSToPawns | TargetScanFlags.NeedReachableIfCantHitFromMyPos | TargetScanFlags.NeedThreat | TargetScanFlags.NeedAutoTargetable",
+      "locations": [
+        {
+          "line": 257,
+          "text": "TargetScanFlags targetScanFlags = TargetScanFlags.NeedLOSToPawns | TargetScanFlags.NeedReachableIfCantHitFromMyPos | TargetScanFlags.NeedThreat | TargetScanFlags.NeedAutoTargetable;"
+        }
+      ],
+      "interpretation": "Normal automatic target selection considers sight, reachability and threat eligibility."
+    },
+    {
+      "type": "Verse.AI.JobDriver_AttackMelee",
+      "needle": "pawn.meleeVerbs.TryMeleeAttack(thing, job.verbToUse)",
+      "locations": [
+        {
+          "line": 76,
+          "text": "else if (pawn.meleeVerbs.TryMeleeAttack(thing, job.verbToUse) && pawn.CurJob != null && pawn.jobs.curDriver == this)"
+        }
+      ],
+      "interpretation": "The attack driver performs actual melee attacks, not just an attack label or follow animation."
+    },
+    {
+      "type": "RimWorld.JobGiver_RescueNearby",
+      "needle": "HealthAIUtility.CanRescueNow(pawn, patient)",
+      "locations": [
+        {
+          "line": 37,
+          "text": "if (!HealthAIUtility.CanRescueNow(pawn, patient))"
+        }
+      ],
+      "interpretation": "Rescue uses the shared patient eligibility checks."
+    },
+    {
+      "type": "RimWorld.JobGiver_RescueNearby",
+      "needle": "RestUtility.FindBedFor(pawn2, pawn",
+      "locations": [
+        {
+          "line": 26,
+          "text": "Building_Bed building_Bed = RestUtility.FindBedFor(pawn2, pawn, checkSocialProperness: false, ignoreOtherReservations: false, pawn2.GuestStatus);"
+        }
+      ],
+      "interpretation": "A real compatible bed must be found for the patient."
+    },
+    {
+      "type": "RimWorld.JobGiver_RescueNearby",
+      "needle": "JobMaker.MakeJob(JobDefOf.Rescue, pawn2, building_Bed)",
+      "locations": [
+        {
+          "line": 31,
+          "text": "Job job = JobMaker.MakeJob(JobDefOf.Rescue, pawn2, building_Bed);"
+        }
+      ],
+      "interpretation": "Rescue creates a job targeting both patient and bed."
+    },
+    {
+      "type": "RimWorld.HealthAIUtility",
+      "needle": "if (!forced && patient.Faction != rescuer.Faction)",
+      "locations": [
+        {
+          "line": 124,
+          "text": "if (!forced && patient.Faction != rescuer.Faction)"
+        }
+      ],
+      "interpretation": "Autonomous rescue requires the same faction."
+    },
+    {
+      "type": "RimWorld.HealthAIUtility",
+      "needle": "GenAI.EnemyIsNear(patient, 25f)",
+      "locations": [
+        {
+          "line": 136,
+          "text": "if (!forced && GenAI.EnemyIsNear(patient, 25f))"
+        }
+      ],
+      "interpretation": "Ordinary autonomous rescue rejects a patient near an enemy."
+    },
+    {
+      "type": "RimWorld.HealthAIUtility",
+      "needle": "rescuer.CanReserveAndReach(patient, PathEndMode.OnCell, Danger.Deadly",
+      "locations": [
+        {
+          "line": 140,
+          "text": "if (!rescuer.CanReserveAndReach(patient, PathEndMode.OnCell, Danger.Deadly, 1, -1, null, forced))"
+        }
+      ],
+      "interpretation": "Rescue requires reservation and reachability."
+    },
+    {
+      "type": "RimWorld.JobDriver_TakeToBed",
+      "needle": "pawn.Reserve(DropBed, job, DropBed.SleepingSlotsCount, 0",
+      "locations": [
+        {
+          "line": 48,
+          "text": "return pawn.Reserve(DropBed, job, DropBed.SleepingSlotsCount, 0, null, errorOnFailed);"
+        }
+      ],
+      "interpretation": "Rescue reserves the bed sleeping capacity in addition to the patient."
+    },
+    {
+      "type": "RimWorld.JobDriver_TakeToBed",
+      "needle": "Toil startCarrying = Toils_Haul.StartCarryThing(TargetIndex.A);",
+      "locations": [
+        {
+          "line": 121,
+          "text": "Toil startCarrying = Toils_Haul.StartCarryThing(TargetIndex.A);"
+        }
+      ],
+      "interpretation": "Rescue physically picks up the patient."
+    },
+    {
+      "type": "RimWorld.JobDriver_TakeToBed",
+      "needle": "FailOn(() => !pawn.IsCarryingPawn(Takee))",
+      "locations": [
+        {
+          "line": 131,
+          "text": "Toil goToBed = Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.Touch).FailOn(() => !pawn.IsCarryingPawn(Takee));"
+        }
+      ],
+      "interpretation": "The trip to bed must retain the same carried patient."
+    },
+    {
+      "type": "RimWorld.JobDriver_TakeToBed",
+      "needle": "Toils_Bed.TuckIntoBed(DropBed, pawn, Takee, TakeeRescued)",
+      "locations": [
+        {
+          "line": 147,
+          "text": "yield return Toils_Bed.TuckIntoBed(DropBed, pawn, Takee, TakeeRescued);"
+        }
+      ],
+      "interpretation": "The rescue ends by putting the patient into the real bed."
+    },
+    {
+      "type": "RimWorld.JobDriver_TakeToBed",
+      "needle": "pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Direct",
+      "locations": [
+        {
+          "line": 82,
+          "text": "pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Direct, out var _);"
+        }
+      ],
+      "interpretation": "Interrupted take-to-bed work attempts to drop the carried entity."
+    },
+    {
+      "type": "Verse.AI.ThinkNode_ChancePerHour",
+      "needle": "GetLastTryTick(pawn) + 2500",
+      "locations": [
+        {
+          "line": 7,
+          "text": "if (Find.TickManager.TicksGame < GetLastTryTick(pawn) + 2500)"
+        }
+      ],
+      "interpretation": "Probabilistic hauling opportunities are attempted no more than once per game hour."
+    },
+    {
+      "type": "Verse.AI.ThinkNode_ChancePerHour",
+      "needle": "Rand.MTBEventOccurs(num, 2500f, 2500f)",
+      "locations": [
+        {
+          "line": 20,
+          "text": "bool flag = Rand.MTBEventOccurs(num, 2500f, 2500f);"
+        }
+      ],
+      "interpretation": "MTB hours are a probability parameter, not a guaranteed fixed job interval."
+    },
+    {
+      "type": "Verse.AI.ThinkNode_ChancePerHour",
+      "needle": "pawn.mindState.thinkData[UniqueSaveKey] = val;",
+      "locations": [
+        {
+          "line": 42,
+          "text": "pawn.mindState.thinkData[UniqueSaveKey] = val;"
+        }
+      ],
+      "interpretation": "Each chance node records its last attempt independently."
+    },
+    {
+      "type": "RimWorld.JobGiver_Haul",
+      "needle": "pawn.Map.listerHaulables.ThingsPotentiallyNeedingHauling()",
+      "locations": [
+        {
+          "line": 10,
+          "text": "Thing thing = GenClosest.ClosestThing_Global_Reachable(pawn.Position, pawn.Map, pawn.Map.listerHaulables.ThingsPotentiallyNeedingHauling(), PathEndMode.OnCell, TraverseParms.For(pawn), 9999f, Validator);"
+        }
+      ],
+      "interpretation": "Animal hauling selects actual available haulable entities."
+    },
+    {
+      "type": "RimWorld.JobGiver_Haul",
+      "needle": "pawn.carryTracker.MaxStackSpaceEver(t.def) <= 0",
+      "locations": [
+        {
+          "line": 26,
+          "text": "if (pawn.carryTracker.MaxStackSpaceEver(t.def) <= 0)"
+        }
+      ],
+      "interpretation": "The animal must be able to carry the item type."
+    },
+    {
+      "type": "RimWorld.JobGiver_Haul",
+      "needle": "StoreUtility.TryFindBestBetterStoreCellFor",
+      "locations": [
+        {
+          "line": 30,
+          "text": "if (!StoreUtility.TryFindBestBetterStoreCellFor(t, pawn, pawn.Map, StoreUtility.CurrentStoragePriorityOf(t), pawn.Faction, out var _))"
+        }
+      ],
+      "interpretation": "Automatic hauling requires a storage cell with strictly better priority."
+    },
+    {
+      "type": "Verse.AI.HaulAIUtility",
+      "needle": "!t.IsSociallyProper(p, forPrisoner: false, animalsCare: true)",
+      "locations": [
+        {
+          "line": 108,
+          "text": "if (t.def.IsNutritionGivingIngestible && t.def.ingestible.HumanEdible && !t.IsSociallyProper(p, forPrisoner: false, animalsCare: true))"
+        }
+      ],
+      "interpretation": "Animals do not freely remove human food reserved for prison-room use."
+    },
+    {
+      "type": "Verse.AI.JobDriver_HaulToCell",
+      "needle": "pawn.Reserve(job.GetTarget(TargetIndex.B), job, 1",
+      "locations": [
+        {
+          "line": 57,
+          "text": "if (pawn.Reserve(job.GetTarget(TargetIndex.B), job, 1, -1, null, errorOnFailed))"
+        }
+      ],
+      "interpretation": "Hauling reserves the actual destination cell."
+    },
+    {
+      "type": "Verse.AI.JobDriver_HaulToCell",
+      "needle": "subtractNumTakenFromJobCount: true, failIfStackCountLessThanJobCount: false",
+      "locations": [
+        {
+          "line": 129,
+          "text": "yield return Toils_Haul.StartCarryThing(TargetIndex.A, putRemainderInQueue: false, subtractNumTakenFromJobCount: true, failIfStackCountLessThanJobCount: false, reserve: true, HaulAIUtility.IsInHaulableInventory(ToHaul));"
+        }
+      ],
+      "interpretation": "Physical pickup can handle a smaller remaining source stack."
+    },
+    {
+      "type": "Verse.AI.JobDriver_HaulToCell",
+      "needle": "Toils_Haul.PlaceHauledThingInCell(TargetIndex.B, carryToCell, storageMode: true)",
+      "locations": [
+        {
+          "line": 139,
+          "text": "yield return Toils_Haul.PlaceHauledThingInCell(TargetIndex.B, carryToCell, storageMode: true);"
+        }
+      ],
+      "interpretation": "Storage is completed by physical placement, not an inventory-total increment."
+    },
+    {
+      "type": "Verse.Pawn_CarryTracker",
+      "needle": "pawn.GetStatValue(StatDefOf.CarryingCapacity) / td.VolumePerUnit",
+      "locations": [
+        {
+          "line": 65,
+          "text": "int b = Mathf.RoundToInt(pawn.GetStatValue(StatDefOf.CarryingCapacity) / td.VolumePerUnit);"
+        }
+      ],
+      "interpretation": "Native carrying uses carrying capacity divided by unit volume, further capped by stack limit."
+    },
+    {
+      "type": "Verse.Pawn_CarryTracker",
+      "needle": "Thing thing = item.SplitOff(count);",
+      "locations": [
+        {
+          "line": 94,
+          "text": "Thing thing = item.SplitOff(count);"
+        }
+      ],
+      "interpretation": "Carried stock is split from an existing item."
+    },
+    {
+      "type": "Verse.PawnGenerator",
+      "needle": "pawn.training.Train(TrainableDefOf.Tameness, null, complete: true);",
+      "locations": [
+        {
+          "line": 841,
+          "text": "pawn.training.Train(TrainableDefOf.Tameness, null, complete: true);"
+        }
+      ],
+      "interpretation": "Player-faction animal generation initializes tameness, not all work skills."
+    },
+    {
+      "type": "Verse.Hediff_Pregnant",
+      "needle": "new PawnGenerationRequest(mother.kindDef, mother.Faction",
+      "locations": [
+        {
+          "line": 168,
+          "text": "PawnGenerationRequest request = new PawnGenerationRequest(mother.kindDef, mother.Faction, PawnGenerationContext.NonPlayer, null, forceGenerateNewPawn: false, allowDead: false, allowDowned: true, canGeneratePawnRelations: true, mustBeCapableOfViolence: false, 1f, forceAddFreeWarmLayerIfNeeded: false, allowGay: true, allowPregnant: false, allowFood: true, allowAddictions: true, inhabitant: false, certainlyBeenInCryptosleep: false, forceRedressWorldPawnIfFormerColonist: false, worldPawnFactionDoesntMatter: false, 0f, 0f, null, 1f, null, null, null, null, null, null, null, null, null, null, null, null, forceNoIdeo: false, forceNoBackstory: false, forbidAnyTitle: false, forceDead: false, null, null, null, null, null, 0f, DevelopmentalStage.Newborn);"
+        }
+      ],
+      "interpretation": "Birth generates the same pawn kind in the mother faction."
+    },
+    {
+      "type": "Verse.Pawn",
+      "needle": "training.Train(TrainableDefOf.Tameness, recruiter, complete: true);",
+      "locations": [
+        {
+          "line": 2771,
+          "text": "training.Train(TrainableDefOf.Tameness, recruiter, complete: true);"
+        }
+      ],
+      "interpretation": "Joining the player faction completes tameness."
+    },
+    {
+      "type": "Verse.Pawn",
+      "needle": "item.playerSettings.Master = null;",
+      "locations": [
+        {
+          "line": 2381,
+          "text": "item.playerSettings.Master = null;"
+        }
+      ],
+      "interpretation": "Destroying a master removes references from alive mastered animals."
+    },
+    {
+      "type": "Verse.Thing",
+      "needle": "Destroy(DestroyMode.KillFinalize);",
+      "locations": [
+        {
+          "line": 1040,
+          "text": "Destroy(DestroyMode.KillFinalize);"
+        }
+      ],
+      "interpretation": "The base Kill route invokes virtual destruction, reaching pawn master-reference cleanup."
+    },
+    {
+      "type": "Verse.AI.Pawn_MindState",
+      "needle": "Scribe_Values.Look(ref lastAssignedInteractTime",
+      "locations": [
+        {
+          "line": 431,
+          "text": "Scribe_Values.Look(ref lastAssignedInteractTime, \"lastAssignedInteractTime\", -99999);"
+        }
+      ],
+      "interpretation": "Training interaction cooldown survives saves."
+    },
+    {
+      "type": "Verse.AI.Pawn_MindState",
+      "needle": "Scribe_Collections.Look(ref thinkData",
+      "locations": [
+        {
+          "line": 420,
+          "text": "Scribe_Collections.Look(ref thinkData, \"thinkData\", LookMode.Value, LookMode.Value);"
+        }
+      ],
+      "interpretation": "Probabilistic job attempt timing survives saves."
+    },
+    {
+      "type": "RimWorld.FoodTypeFlags",
+      "needle": "OmnivoreAnimal = VegetarianAnimal | CarnivoreAnimalStrict",
+      "locations": [
+        {
+          "line": 26,
+          "text": "OmnivoreAnimal = VegetarianAnimal | CarnivoreAnimalStrict,"
+        }
+      ],
+      "interpretation": "OmnivoreAnimal is an explicit food-mask union, without the Plant flag."
+    },
+    {
+      "type": "RimWorld.FoodTypeFlags",
+      "needle": "OmnivoreRoughAnimal = OmnivoreAnimal | Plant",
+      "locations": [
+        {
+          "line": 27,
+          "text": "OmnivoreRoughAnimal = OmnivoreAnimal | Plant,"
+        }
+      ],
+      "interpretation": "Grazing is a distinct added flag; the Labrador definition does not use it."
+    },
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "needle": "tradeTagsSell.Any((string x) => kind.race.tradeTags.Contains(x))",
+      "locations": [
+        {
+          "line": 176,
+          "text": "if (!tradeTagsSell.Any((string x) => kind.race.tradeTags.Contains(x)))"
+        }
+      ],
+      "interpretation": "Trader generation requires a matching sell tag."
+    },
+    {
+      "type": "RimWorld.StockGenerator_Animals",
+      "needle": "SeasonAndOutdoorTemperatureAcceptableFor",
+      "locations": [
+        {
+          "line": 167,
+          "text": "if (tile.Valid && !Find.World.tileTemperatures.SeasonAndOutdoorTemperatureAcceptableFor(tile, kind.race))"
+        }
+      ],
+      "interpretation": "Trade generation can also filter species for the tile temperature."
+    },
+    {
+      "type": "RimWorld.StatWorker_MinimumHandlingSkill",
+      "needle": "new CurvePoint(0f, 0f)",
+      "locations": [
+        {
+          "line": 10,
+          "text": "new CurvePoint(0f, 0f),"
+        }
+      ],
+      "interpretation": "An ordinary zero-wildness Labrador has minimum handling skill zero."
+    },
+    {
+      "type": "RimWorld.Need_Food",
+      "needle": "lifeStage.hungerRateFactor * pawnDef.race.baseHungerRate * 2.6666667E-05f",
+      "locations": [
+        {
+          "line": 218,
+          "text": "return lifeStage.hungerRateFactor * pawnDef.race.baseHungerRate * 2.6666667E-05f;"
+        }
+      ],
+      "interpretation": "Species hunger is converted to per-tick nutrition before other hunger modifiers."
+    },
+    {
+      "type": "RimWorld.StatPart_BodySize",
+      "needle": "val *= bodySize;",
+      "locations": [
+        {
+          "line": 11,
+          "text": "val *= bodySize;"
+        }
+      ],
+      "interpretation": "The body-size stat part multiplies base nutrition capacity."
+    },
+    {
+      "type": "RimWorld.StatPart_LifeStageMaxFood",
+      "needle": "val *= pawn.ageTracker.CurLifeStage.foodMaxFactor;",
+      "locations": [
+        {
+          "line": 11,
+          "text": "val *= pawn.ageTracker.CurLifeStage.foodMaxFactor;"
+        }
+      ],
+      "interpretation": "The life-stage food factor is separate from current body size."
+    },
+    {
+      "type": "RimWorld.LifeStageDef",
+      "needle": "public float foodMaxFactor = 1f;",
+      "locations": [
+        {
+          "line": 78,
+          "text": "public float foodMaxFactor = 1f;"
+        }
+      ],
+      "interpretation": "Absent life-stage food capacity modifiers default to one."
+    }
+  ],
+  "boundedChecks": [
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "start": "public bool HasLearned",
+      "end": "public AcceptanceReport CanAssignToTrain",
+      "lineStart": 85,
+      "lineEnd": 95,
+      "sha256": "8292a196b4201c380dd307f543fb539250adac02dd3931e5f933a182d0c58411",
+      "absent": [
+        "steps[",
+        "GetWanted"
+      ],
+      "present": [
+        "requiredTrainability",
+        "return learned[td];"
+      ],
+      "interpretation": "Capability checks use learned state, not whether progress remains full or training remains wanted."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "start": "public void Train(",
+      "end": "public void SetWantedRecursive",
+      "lineStart": 179,
+      "lineEnd": 199,
+      "sha256": "4132f61f19c3cde4b1e29ce28102577903c1cadde7f64559f99af17368aef760",
+      "absent": [
+        "countDecayFrom",
+        "TicksGame"
+      ],
+      "present": [
+        "steps[td]++",
+        "learned[td] = true",
+        "Master = trainer"
+      ],
+      "interpretation": "Successful training does not restart the decay clock in this method."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "start": "public void SetWantedRecursive",
+      "end": "public void TrainingTrackerTickRare",
+      "lineStart": 199,
+      "lineEnd": 219,
+      "sha256": "cf89e6cfc4ecf678ed2989c26539d011e3cee0a9e4ce1acb99e5d49ca604b0fb",
+      "absent": [
+        "learned[",
+        "steps["
+      ],
+      "present": [
+        "SetWanted",
+        "td.prerequisites",
+        "checkOn: false"
+      ],
+      "interpretation": "Changing the training wishlist does not erase learned capabilities or progress."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "start": "public static AcceptanceReport CanAssignToTrain",
+      "end": "public TrainableDef NextTrainableToTrain",
+      "lineStart": 106,
+      "lineEnd": 166,
+      "sha256": "0ec67d92197b70ae0995f82324e1af97b888d19a10ccad7f3e889b32d7192e31",
+      "absent": [
+        "CurLifeStage",
+        "Adult",
+        "DevelopmentalStage"
+      ],
+      "present": [
+        "pawn?.BodySize",
+        "minBodySize",
+        "requiredTrainability",
+        "untrainableTags"
+      ],
+      "interpretation": "Assignment tests actual size and trainability rather than a blanket adulthood condition."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "start": "public void TrainingTrackerTickRare",
+      "end": "private static bool CanEverDoAttackTarget",
+      "lineStart": 219,
+      "lineEnd": 272,
+      "sha256": "861ee321204e0a347b76d3226ee126dca3eff84e92e856de044050df8e23f8ac",
+      "absent": [
+        "Master = null",
+        "SetWantedRecursive"
+      ],
+      "present": [
+        "countDecayFrom += 250",
+        "Except(steps.Where",
+        "steps[trainableDef] > 0",
+        "learned[trainableDef] = false"
+      ],
+      "interpretation": "Decay preserves wanted selections and does not directly erase the master reference; think-tree capability gates determine behavior."
+    },
+    {
+      "type": "RimWorld.WorkGiver_Train",
+      "start": "public override Job JobOnThing",
+      "end": "",
+      "lineStart": 14,
+      "lineEnd": 57,
+      "sha256": "0e8827e096061bdea54e6ceaa8a3329122f66b2b731d2d12e090866b51c43d08",
+      "absent": [
+        "CanAssignToTrain",
+        "TrainableDefOf.Obedience",
+        "TrainableDefOf.Haul"
+      ],
+      "present": [
+        "NextTrainableToTrain",
+        "CanInteractWithAnimal",
+        "HasFoodToInteractAnimal",
+        "TrainedTooRecently"
+      ],
+      "interpretation": "The work giver selects the next wanted skill and does not hard-code individual trainable branches or directly repeat assignment checks."
+    },
+    {
+      "type": "RimWorld.Toils_Interpersonal",
+      "start": "public static Toil TryTrain",
+      "end": "public static Toil Interact(",
+      "lineStart": 242,
+      "lineEnd": 292,
+      "sha256": "92ff5d02205b1d03dee853a00f6ba6cfcadc073938f1a78b92952d512811b2a8",
+      "absent": [
+        "difficulty",
+        "Destroy(",
+        "FinalizeIngest",
+        "SetLastInteractTime"
+      ],
+      "present": [
+        "TrainAnimalChance",
+        "Wildness",
+        "Mathf.Clamp01",
+        "Rand.Value",
+        "TrainFail"
+      ],
+      "interpretation": "The final success roll does not consume food again and does not use the TrainableDef difficulty field; earlier toils consumed food and set the cooldown."
+    },
+    {
+      "type": "RimWorld.JobGiver_RescueNearby",
+      "start": "protected override Job TryGiveJob",
+      "end": "",
+      "lineStart": 19,
+      "lineEnd": 45,
+      "sha256": "6e1d3853152213d805569f315d472f5c37d893815975346493507c5ba4cfa88f",
+      "absent": [
+        "Master",
+        "Chance",
+        "TrainedTooRecently"
+      ],
+      "present": [
+        "CanRescueNow",
+        "FindBedFor",
+        "JobDefOf.Rescue"
+      ],
+      "interpretation": "Autonomous rescue has no master or periodic-chance requirement in this giver."
+    },
+    {
+      "type": "RimWorld.JobGiver_Haul",
+      "start": "protected override Job TryGiveJob",
+      "end": "",
+      "lineStart": 8,
+      "lineEnd": 38,
+      "sha256": "c5650bb566d5d0196081bdd23c835486dfe86e2a525f219e928f10078f418609",
+      "absent": [
+        "Master",
+        "NextTrainableToTrain"
+      ],
+      "present": [
+        "ThingsPotentiallyNeedingHauling",
+        "HaulToStorageJob",
+        "TryFindBestBetterStoreCellFor"
+      ],
+      "interpretation": "Animal hauling is autonomous; chance, capability and manipulation are upstream think-tree gates."
+    },
+    {
+      "type": "RimWorld.HealthAIUtility",
+      "start": "public static bool CanRescueNow",
+      "end": "public static Thing FindBestMedicine",
+      "lineStart": 122,
+      "lineEnd": 147,
+      "sha256": "6ebc26fadea23067264fdff93bed7b90af8f27004a8a1e063efc2d3ee21615d7",
+      "absent": [
+        "Master",
+        "Haul",
+        "Rescue.steps"
+      ],
+      "present": [
+        "patient.Faction != rescuer.Faction",
+        "WantsToBeRescued",
+        "EnemyIsNear(patient, 25f)",
+        "CanReserveAndReach"
+      ],
+      "interpretation": "Patient eligibility is independent of master selection and individual animal-training counters."
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "start": "public bool RespectsMaster",
+      "end": "public Pawn RespectedMaster",
+      "lineStart": 145,
+      "lineEnd": 161,
+      "sha256": "a80620797614c606236dc5093ee2d38b83dc92e09fa7eeef8fcd776688e6d1b9",
+      "absent": [
+        "HasLearned",
+        "followDrafted",
+        "Dead"
+      ],
+      "present": [
+        "Master == null",
+        "pawn.Faction == Faction.OfPlayer",
+        "Master.Faction == pawn.Faction"
+      ],
+      "interpretation": "Effective master faction validity is separate from training gates and follow switches."
+    },
+    {
+      "type": "RimWorld.Pawn_PlayerSettings",
+      "start": "public void Notify_FactionChanged",
+      "end": "public void ResetMedicalCare",
+      "lineStart": 336,
+      "lineEnd": 342,
+      "sha256": "c30349089a07fa944f1bf543c351efc7aabb5757e23dc7700fd6ad65aa2a7bba",
+      "absent": [
+        "master = null",
+        "Master = null",
+        "animalsReleased = false",
+        "learned"
+      ],
+      "present": [
+        "ResetMedicalCare",
+        "allowedAreas.Clear"
+      ],
+      "interpretation": "This faction-change callback clears area and medical settings but does not itself clear master or training."
+    },
+    {
+      "type": "Verse.Pawn",
+      "start": "public override void PreTraded",
+      "end": "public override void SetFaction",
+      "lineStart": 2607,
+      "lineEnd": 2702,
+      "sha256": "e532dd524c0775037a09f1fab31ff408ab18a85dac056a3949fbf93cbdd51b58",
+      "absent": [
+        "training = null",
+        "Master = null",
+        "learned["
+      ],
+      "present": [
+        "TradeAction.PlayerBuys",
+        "TradeAction.PlayerSells",
+        "SetFaction(Faction.OfPlayer)",
+        "SetFaction(null)"
+      ],
+      "interpretation": "Trade changes ownership through faction transitions; this bounded method does not erase training or explicitly null the master."
+    },
+    {
+      "type": "RimWorld.Pawn_TrainingTracker",
+      "start": "private static bool CanEverDoAttackTarget",
+      "end": "private static AcceptanceReport CanDoAttackTarget",
+      "lineStart": 272,
+      "lineEnd": 281,
+      "sha256": "00d54c2122096052fb39de5253a1941d6e844f0f05b816ff08fea2542f94f3f8",
+      "absent": [
+        "TrainableDefOf.Release"
+      ],
+      "present": [
+        "ModsConfig.OdysseyActive",
+        "TrainableDefOf.AttackTarget"
+      ],
+      "interpretation": "Odyssey direct target attacks are a distinct capability from Core Release."
+    },
+    {
+      "type": "RimWorld.ThinkNode_ConditionalCanDoConstantThinkTreeJobNow",
+      "start": "protected override bool Satisfied",
+      "end": "",
+      "lineStart": 8,
+      "lineEnd": 17,
+      "sha256": "ac6a3d7175b8c2700d169c49386a11d55b96a6a76f30333281d80bc0ff1a6fcf",
+      "absent": [
+        "HasLearned",
+        "Master"
+      ],
+      "present": [
+        "pawn.Downed",
+        "pawn.IsBurning()",
+        "pawn.InMentalState",
+        "pawn.Drafted",
+        "pawn.Awake()"
+      ],
+      "interpretation": "This node gates the constant tree, not the ordinary learned rescue and haul branches."
+    },
+    {
+      "type": "Verse.Hediff_Pregnant",
+      "start": "public static void DoBirthSpawn",
+      "end": "",
+      "lineStart": 157,
+      "lineEnd": 298,
+      "sha256": "64f1f37ad1b224992779670e04cbc71dbfd636efb89a412165110c625d20a649",
+      "absent": [
+        "HasLearned",
+        "TrainableDefOf.Obedience",
+        "TrainableDefOf.Haul",
+        "playerSettings.Master",
+        "followDrafted"
+      ],
+      "present": [
+        "mother.kindDef, mother.Faction",
+        "PawnGenerator.GeneratePawn",
+        "AreaRestrictionInPawnCurrentMap"
+      ],
+      "interpretation": "This birth path inherits species, faction and area, but does not copy parental training or master/follow settings."
+    }
+  ],
+  "packagedXml": [
+    {
+      "file": "Data/Core/Defs/TrainableDefs/Trainables.xml",
+      "sha256": "f3f111813e116a8dd7739f991d9c41fd1ccddbb76bbcc5718d95dac77438c488",
+      "xpath": "/Defs/TrainableDef[defName=\"Tameness\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "label",
+          "count": 1,
+          "xml": [
+            "<label>tameness</label>"
+          ]
+        },
+        {
+          "xpath": "listPriority",
+          "count": 1,
+          "xml": [
+            "<listPriority>2000</listPriority>"
+          ]
+        },
+        {
+          "xpath": "difficulty",
+          "count": 1,
+          "xml": [
+            "<difficulty>100</difficulty>"
+          ]
+        },
+        {
+          "xpath": "requiredTrainability",
+          "count": 1,
+          "xml": [
+            "<requiredTrainability>None</requiredTrainability>"
+          ]
+        },
+        {
+          "xpath": "steps",
+          "count": 1,
+          "xml": [
+            "<steps>5</steps>"
+          ]
+        },
+        {
+          "xpath": "prerequisites",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "minBodySize",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Tameness is the first prerequisite and has five steps."
+    },
+    {
+      "file": "Data/Core/Defs/TrainableDefs/Trainables.xml",
+      "sha256": "f3f111813e116a8dd7739f991d9c41fd1ccddbb76bbcc5718d95dac77438c488",
+      "xpath": "/Defs/TrainableDef[defName=\"Obedience\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "label",
+          "count": 1,
+          "xml": [
+            "<label>guard</label>"
+          ]
+        },
+        {
+          "xpath": "listPriority",
+          "count": 1,
+          "xml": [
+            "<listPriority>1000</listPriority>"
+          ]
+        },
+        {
+          "xpath": "difficulty",
+          "count": 1,
+          "xml": [
+            "<difficulty>100</difficulty>"
+          ]
+        },
+        {
+          "xpath": "requiredTrainability",
+          "count": 1,
+          "xml": [
+            "<requiredTrainability>Intermediate</requiredTrainability>"
+          ]
+        },
+        {
+          "xpath": "steps",
+          "count": 1,
+          "xml": [
+            "<steps>3</steps>"
+          ]
+        },
+        {
+          "xpath": "prerequisites",
+          "count": 1,
+          "xml": [
+            "<prerequisites><li>Tameness</li></prerequisites>"
+          ]
+        },
+        {
+          "xpath": "minBodySize",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Guard/Obedience is intermediate and requires tameness."
+    },
+    {
+      "file": "Data/Core/Defs/TrainableDefs/Trainables.xml",
+      "sha256": "f3f111813e116a8dd7739f991d9c41fd1ccddbb76bbcc5718d95dac77438c488",
+      "xpath": "/Defs/TrainableDef[defName=\"Release\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "label",
+          "count": 1,
+          "xml": [
+            "<label>attack</label>"
+          ]
+        },
+        {
+          "xpath": "listPriority",
+          "count": 1,
+          "xml": [
+            "<listPriority>800</listPriority>"
+          ]
+        },
+        {
+          "xpath": "difficulty",
+          "count": 1,
+          "xml": [
+            "<difficulty>100</difficulty>"
+          ]
+        },
+        {
+          "xpath": "requiredTrainability",
+          "count": 1,
+          "xml": [
+            "<requiredTrainability>Intermediate</requiredTrainability>"
+          ]
+        },
+        {
+          "xpath": "steps",
+          "count": 1,
+          "xml": [
+            "<steps>2</steps>"
+          ]
+        },
+        {
+          "xpath": "prerequisites",
+          "count": 1,
+          "xml": [
+            "<prerequisites><li>Obedience</li></prerequisites>"
+          ]
+        },
+        {
+          "xpath": "minBodySize",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Core attack training is intermediate and requires obedience."
+    },
+    {
+      "file": "Data/Core/Defs/TrainableDefs/Trainables.xml",
+      "sha256": "f3f111813e116a8dd7739f991d9c41fd1ccddbb76bbcc5718d95dac77438c488",
+      "xpath": "/Defs/TrainableDef[defName=\"Rescue\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "label",
+          "count": 1,
+          "xml": [
+            "<label>rescue</label>"
+          ]
+        },
+        {
+          "xpath": "listPriority",
+          "count": 1,
+          "xml": [
+            "<listPriority>600</listPriority>"
+          ]
+        },
+        {
+          "xpath": "difficulty",
+          "count": 1,
+          "xml": [
+            "<difficulty>200</difficulty>"
+          ]
+        },
+        {
+          "xpath": "requiredTrainability",
+          "count": 1,
+          "xml": [
+            "<requiredTrainability>Advanced</requiredTrainability>"
+          ]
+        },
+        {
+          "xpath": "steps",
+          "count": 1,
+          "xml": [
+            "<steps>2</steps>"
+          ]
+        },
+        {
+          "xpath": "prerequisites",
+          "count": 1,
+          "xml": [
+            "<prerequisites><li>Obedience</li></prerequisites>"
+          ]
+        },
+        {
+          "xpath": "minBodySize",
+          "count": 1,
+          "xml": [
+            "<minBodySize>0.65</minBodySize>"
+          ]
+        }
+      ],
+      "interpretation": "Rescue is advanced, requires obedience and minimum body size 0.65."
+    },
+    {
+      "file": "Data/Core/Defs/TrainableDefs/Trainables.xml",
+      "sha256": "f3f111813e116a8dd7739f991d9c41fd1ccddbb76bbcc5718d95dac77438c488",
+      "xpath": "/Defs/TrainableDef[defName=\"Haul\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "label",
+          "count": 1,
+          "xml": [
+            "<label>haul</label>"
+          ]
+        },
+        {
+          "xpath": "description",
+          "count": 1,
+          "xml": [
+            "<description>The animal will randomly haul items from time to time (though it can't be directed to haul specific items).</description>"
+          ]
+        },
+        {
+          "xpath": "listPriority",
+          "count": 1,
+          "xml": [
+            "<listPriority>400</listPriority>"
+          ]
+        },
+        {
+          "xpath": "difficulty",
+          "count": 1,
+          "xml": [
+            "<difficulty>300</difficulty>"
+          ]
+        },
+        {
+          "xpath": "requiredTrainability",
+          "count": 1,
+          "xml": [
+            "<requiredTrainability>Advanced</requiredTrainability>"
+          ]
+        },
+        {
+          "xpath": "steps",
+          "count": 1,
+          "xml": [
+            "<steps>7</steps>"
+          ]
+        },
+        {
+          "xpath": "prerequisites",
+          "count": 1,
+          "xml": [
+            "<prerequisites><li>Obedience</li></prerequisites>"
+          ]
+        },
+        {
+          "xpath": "minBodySize",
+          "count": 1,
+          "xml": [
+            "<minBodySize>0.40</minBodySize>"
+          ]
+        }
+      ],
+      "interpretation": "Haul is advanced, requires obedience and minimum body size 0.40; its description explicitly excludes direct specific-item commands."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/TrainabilityDefs/TrainabilityDefs.xml",
+      "sha256": "8e49f8209e86bda7159b5bf09002a62af6933266861167e08ec015ea924d5798",
+      "xpath": "/Defs/TrainabilityDef[defName=\"Advanced\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "label",
+          "count": 1,
+          "xml": [
+            "<label>advanced</label>"
+          ]
+        },
+        {
+          "xpath": "intelligenceOrder",
+          "count": 1,
+          "xml": [
+            "<intelligenceOrder>30</intelligenceOrder>"
+          ]
+        }
+      ],
+      "interpretation": "Advanced has intelligence order thirty."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/TrainabilityDefs/TrainabilityDefs.xml",
+      "sha256": "8e49f8209e86bda7159b5bf09002a62af6933266861167e08ec015ea924d5798",
+      "xpath": "/Defs/TrainabilityDef[defName=\"Intermediate\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "label",
+          "count": 1,
+          "xml": [
+            "<label>intermediate</label>"
+          ]
+        },
+        {
+          "xpath": "intelligenceOrder",
+          "count": 1,
+          "xml": [
+            "<intelligenceOrder>20</intelligenceOrder>"
+          ]
+        }
+      ],
+      "interpretation": "Intermediate has intelligence order twenty."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_CatGroup.xml",
+      "sha256": "b271956db9615b17e499a242503e6bfb01ea839b08f2670487ad65cfed0faee5",
+      "xpath": "/Defs/ThingDef[defName=\"LabradorRetriever\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalThingBase",
+      "fields": [
+        {
+          "xpath": "label",
+          "count": 1,
+          "xml": [
+            "<label>labrador retriever</label>"
+          ]
+        },
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><MoveSpeed>5.0</MoveSpeed><MarketValue>250</MarketValue><ComfyTemperatureMin>-30</ComfyTemperatureMin><Wildness>0</Wildness></statBases>"
+          ]
+        },
+        {
+          "xpath": "race/animalType",
+          "count": 1,
+          "xml": [
+            "<animalType>Canine</animalType>"
+          ]
+        },
+        {
+          "xpath": "race/baseBodySize",
+          "count": 1,
+          "xml": [
+            "<baseBodySize>0.75</baseBodySize>"
+          ]
+        },
+        {
+          "xpath": "race/baseHungerRate",
+          "count": 1,
+          "xml": [
+            "<baseHungerRate>0.4</baseHungerRate>"
+          ]
+        },
+        {
+          "xpath": "race/baseHealthScale",
+          "count": 1,
+          "xml": [
+            "<baseHealthScale>1.0</baseHealthScale>"
+          ]
+        },
+        {
+          "xpath": "race/foodType",
+          "count": 1,
+          "xml": [
+            "<foodType>OmnivoreAnimal, OvivoreAnimal</foodType>"
+          ]
+        },
+        {
+          "xpath": "race/trainability",
+          "count": 1,
+          "xml": [
+            "<trainability>Advanced</trainability>"
+          ]
+        },
+        {
+          "xpath": "race/lifeStageAges",
+          "count": 1,
+          "xml": [
+            "<lifeStageAges><li><def>AnimalBaby</def><minAge>0</minAge></li><li><def>AnimalJuvenile</def><minAge>0.25</minAge></li><li><def>AnimalAdult</def><minAge>0.5</minAge><soundWounded>Pawn_Dog_Injured</soundWounded><soundDeath>Pawn_Dog_Death</soundDeath><soundCall>Pawn_Dog_Call</soundCall><soundAngry>Pawn_Dog_Angry</soundAngry></li></lifeStageAges>"
+          ]
+        },
+        {
+          "xpath": "tradeTags",
+          "count": 1,
+          "xml": [
+            "<tradeTags><li>AnimalCommon</li><li>AnimalPet</li></tradeTags>"
+          ]
+        }
+      ],
+      "interpretation": "The exact Core Labrador species is an advanced omnivore with no Plant food flag."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_CatGroup.xml",
+      "sha256": "b271956db9615b17e499a242503e6bfb01ea839b08f2670487ad65cfed0faee5",
+      "xpath": "/Defs/PawnKindDef[defName=\"LabradorRetriever\"]",
+      "nameAttribute": "",
+      "parentName": "AnimalKindBase",
+      "fields": [
+        {
+          "xpath": "label",
+          "count": 1,
+          "xml": [
+            "<label>labrador retriever</label>"
+          ]
+        },
+        {
+          "xpath": "race",
+          "count": 1,
+          "xml": [
+            "<race>LabradorRetriever</race>"
+          ]
+        },
+        {
+          "xpath": "combatPower",
+          "count": 1,
+          "xml": [
+            "<combatPower>70</combatPower>"
+          ]
+        },
+        {
+          "xpath": "ecoSystemWeight",
+          "count": 1,
+          "xml": [
+            "<ecoSystemWeight>0.6</ecoSystemWeight>"
+          ]
+        }
+      ],
+      "interpretation": "The same-named pawn kind points to the Labrador race."
+    },
+    {
+      "file": "Data/Core/Defs/ThingDefs_Races/Races_Animal_Base.xml",
+      "sha256": "922276d8275c6087014de702401e97c2724d40c38a2f09de131075ba3e7afcf4",
+      "xpath": "/Defs/ThingDef[@Name=\"AnimalThingBase\"]",
+      "nameAttribute": "AnimalThingBase",
+      "parentName": "BasePawn",
+      "fields": [
+        {
+          "xpath": "race/thinkTreeMain",
+          "count": 1,
+          "xml": [
+            "<thinkTreeMain>Animal</thinkTreeMain>"
+          ]
+        },
+        {
+          "xpath": "race/thinkTreeConstant",
+          "count": 1,
+          "xml": [
+            "<thinkTreeConstant>AnimalConstant</thinkTreeConstant>"
+          ]
+        },
+        {
+          "xpath": "race/trainability",
+          "count": 1,
+          "xml": [
+            "<trainability>None</trainability>"
+          ]
+        },
+        {
+          "xpath": "statBases",
+          "count": 1,
+          "xml": [
+            "<statBases><LeatherAmount>40</LeatherAmount><ToxicResistance>0.5</ToxicResistance></statBases>"
+          ]
+        },
+        {
+          "xpath": "tradeability",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Animal base defines ordinary and constant think trees; child definitions override trainability."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalBaby\"]",
+      "nameAttribute": "AnimalBaby",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "bodySizeFactor",
+          "count": 1,
+          "xml": [
+            "<bodySizeFactor>0.2</bodySizeFactor>"
+          ]
+        },
+        {
+          "xpath": "foodMaxFactor",
+          "count": 1,
+          "xml": [
+            "<foodMaxFactor>3</foodMaxFactor>"
+          ]
+        },
+        {
+          "xpath": "hungerRateFactor",
+          "count": 1,
+          "xml": [
+            "<hungerRateFactor>0.4</hungerRateFactor>"
+          ]
+        },
+        {
+          "xpath": "reproductive",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Baby body and food factors are distinct."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalJuvenile\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "bodySizeFactor",
+          "count": 1,
+          "xml": [
+            "<bodySizeFactor>0.5</bodySizeFactor>"
+          ]
+        },
+        {
+          "xpath": "foodMaxFactor",
+          "count": 1,
+          "xml": [
+            "<foodMaxFactor>1.5</foodMaxFactor>"
+          ]
+        },
+        {
+          "xpath": "hungerRateFactor",
+          "count": 1,
+          "xml": [
+            "<hungerRateFactor>0.75</hungerRateFactor>"
+          ]
+        },
+        {
+          "xpath": "reproductive",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Juvenile size is half adult size."
+    },
+    {
+      "file": "Data/Core/Defs/Misc/LifeStageDefs/LifeStages.xml",
+      "sha256": "9e64ca6431d6685b342f3bec90166a911948aeb364a232ff8eb2fe69ed321fbc",
+      "xpath": "/Defs/LifeStageDef[defName=\"AnimalAdult\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "bodySizeFactor",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "foodMaxFactor",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "hungerRateFactor",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "reproductive",
+          "count": 1,
+          "xml": [
+            "<reproductive>true</reproductive>"
+          ]
+        }
+      ],
+      "interpretation": "Missing adult factors use code defaults, not values invented by this XML projection."
+    },
+    {
+      "file": "Data/Core/Defs/WorkGiverDefs/WorkGivers.xml",
+      "sha256": "fb7066001bb87f1533e0708c915ad5d81c02388e9cb94bd6b6ff5d469e89147c",
+      "xpath": "/Defs/WorkGiverDef[defName=\"Train\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "giverClass",
+          "count": 1,
+          "xml": [
+            "<giverClass>WorkGiver_Train</giverClass>"
+          ]
+        },
+        {
+          "xpath": "workType",
+          "count": 1,
+          "xml": [
+            "<workType>Handling</workType>"
+          ]
+        },
+        {
+          "xpath": "priorityInType",
+          "count": 1,
+          "xml": [
+            "<priorityInType>70</priorityInType>"
+          ]
+        },
+        {
+          "xpath": "requiredCapacities",
+          "count": 1,
+          "xml": [
+            "<requiredCapacities><li>Talking</li><li>Manipulation</li></requiredCapacities>"
+          ]
+        }
+      ],
+      "interpretation": "Animal training is Handling work with priority seventy."
+    },
+    {
+      "file": "Data/Core/Defs/JobDefs/Jobs_Work.xml",
+      "sha256": "0c2cc583de4ad306681c1dcd65763539461adedf33a5360fe716a36deddef2a1",
+      "xpath": "/Defs/JobDef[defName=\"Train\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "driverClass",
+          "count": 1,
+          "xml": [
+            "<driverClass>JobDriver_Train</driverClass>"
+          ]
+        },
+        {
+          "xpath": "casualInterruptible",
+          "count": 1,
+          "xml": [
+            "<casualInterruptible>false</casualInterruptible>"
+          ]
+        },
+        {
+          "xpath": "allowOpportunisticPrefix",
+          "count": 1,
+          "xml": [
+            "<allowOpportunisticPrefix>true</allowOpportunisticPrefix>"
+          ]
+        }
+      ],
+      "interpretation": "Train maps to the full interact-animal driver."
+    },
+    {
+      "file": "Data/Core/Defs/JobDefs/Jobs_Work.xml",
+      "sha256": "0c2cc583de4ad306681c1dcd65763539461adedf33a5360fe716a36deddef2a1",
+      "xpath": "/Defs/JobDef[defName=\"Rescue\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "driverClass",
+          "count": 1,
+          "xml": [
+            "<driverClass>JobDriver_TakeToBed</driverClass>"
+          ]
+        },
+        {
+          "xpath": "casualInterruptible",
+          "count": 1,
+          "xml": [
+            "<casualInterruptible>false</casualInterruptible>"
+          ]
+        },
+        {
+          "xpath": "carryThingAfterJob",
+          "count": 1,
+          "xml": [
+            "<carryThingAfterJob>true</carryThingAfterJob>"
+          ]
+        },
+        {
+          "xpath": "dropThingBeforeJob",
+          "count": 1,
+          "xml": [
+            "<dropThingBeforeJob>false</dropThingBeforeJob>"
+          ]
+        }
+      ],
+      "interpretation": "Rescue maps to TakeToBed and explicitly retains carrying across transitions."
+    },
+    {
+      "file": "Data/Core/Defs/JobDefs/Jobs_Work.xml",
+      "sha256": "0c2cc583de4ad306681c1dcd65763539461adedf33a5360fe716a36deddef2a1",
+      "xpath": "/Defs/JobDef[defName=\"HaulToCell\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "driverClass",
+          "count": 1,
+          "xml": [
+            "<driverClass>JobDriver_HaulToCell</driverClass>"
+          ]
+        },
+        {
+          "xpath": "suspendable",
+          "count": 1,
+          "xml": [
+            "<suspendable>false</suspendable>"
+          ]
+        },
+        {
+          "xpath": "allowOpportunisticPrefix",
+          "count": 1,
+          "xml": [
+            "<allowOpportunisticPrefix>true</allowOpportunisticPrefix>"
+          ]
+        }
+      ],
+      "interpretation": "Animal hauling uses the shared physical cell-hauling job."
+    },
+    {
+      "file": "Data/Core/Defs/JobDefs/Jobs_Misc.xml",
+      "sha256": "537728d9066def61890253439953631e86afb7f2d5f08501a2a70172bcf5d714",
+      "xpath": "/Defs/JobDef[defName=\"FollowClose\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "driverClass",
+          "count": 1,
+          "xml": [
+            "<driverClass>JobDriver_FollowClose</driverClass>"
+          ]
+        },
+        {
+          "xpath": "reportString",
+          "count": 1,
+          "xml": [
+            "<reportString>following TargetA.</reportString>"
+          ]
+        },
+        {
+          "xpath": "casualInterruptible",
+          "count": 0,
+          "xml": []
+        }
+      ],
+      "interpretation": "Master following uses FollowClose, not the similarly named Follow job."
+    },
+    {
+      "file": "Data/Core/Defs/JobDefs/Jobs_Misc.xml",
+      "sha256": "537728d9066def61890253439953631e86afb7f2d5f08501a2a70172bcf5d714",
+      "xpath": "/Defs/JobDef[defName=\"AttackMelee\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "driverClass",
+          "count": 1,
+          "xml": [
+            "<driverClass>JobDriver_AttackMelee</driverClass>"
+          ]
+        },
+        {
+          "xpath": "casualInterruptible",
+          "count": 1,
+          "xml": [
+            "<casualInterruptible>false</casualInterruptible>"
+          ]
+        },
+        {
+          "xpath": "alwaysShowWeapon",
+          "count": 1,
+          "xml": [
+            "<alwaysShowWeapon>true</alwaysShowWeapon>"
+          ]
+        }
+      ],
+      "interpretation": "Released animals fight through the ordinary melee job."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_Social.xml",
+      "sha256": "a3db914be034226f29b2b511f63561edc5df8b0a20b9ae79e18dd2fb75c8b026",
+      "xpath": "/Defs/StatDef[defName=\"TrainAnimalChance\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>1.0</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "minValue",
+          "count": 1,
+          "xml": [
+            "<minValue>0.01</minValue>"
+          ]
+        },
+        {
+          "xpath": "skillNeedFactors",
+          "count": 1,
+          "xml": [
+            "<skillNeedFactors><li Class=\"SkillNeed_BaseBonus\"><skill>Animals</skill><baseValue>0.10</baseValue><bonusPerLevel>0.05</bonusPerLevel></li></skillNeedFactors>"
+          ]
+        },
+        {
+          "xpath": "capacityFactors",
+          "count": 1,
+          "xml": [
+            "<capacityFactors><li><capacity>Talking</capacity><weight>0.7</weight><allowedDefect>0.20</allowedDefect><max>1</max></li><li><capacity>Hearing</capacity><weight>0.3</weight><allowedDefect>0.05</allowedDefect><max>1</max></li><li><capacity>Manipulation</capacity><weight>0.5</weight><allowedDefect>0.20</allowedDefect><max>1</max></li></capacityFactors>"
+          ]
+        }
+      ],
+      "interpretation": "Training probability reflects Animals skill and Talking/Hearing/Manipulation."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_General.xml",
+      "sha256": "ec1df1afb1f24c3d812b3224f803354b613a226e3934ea1e235c9b195181f507",
+      "xpath": "/Defs/StatDef[defName=\"MinimumHandlingSkill\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "workerClass",
+          "count": 1,
+          "xml": [
+            "<workerClass>StatWorker_MinimumHandlingSkill</workerClass>"
+          ]
+        },
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>0</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "minValue",
+          "count": 1,
+          "xml": [
+            "<minValue>0</minValue>"
+          ]
+        },
+        {
+          "xpath": "roundValue",
+          "count": 1,
+          "xml": [
+            "<roundValue>true</roundValue>"
+          ]
+        }
+      ],
+      "interpretation": "Minimum handling is a derived stat, not the same as training success chance."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_General.xml",
+      "sha256": "ec1df1afb1f24c3d812b3224f803354b613a226e3934ea1e235c9b195181f507",
+      "xpath": "/Defs/StatDef[defName=\"MaxNutrition\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>1</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "parts",
+          "count": 1,
+          "xml": [
+            "<parts><li Class=\"StatPart_BodySize\" /><li Class=\"StatPart_LifeStageMaxFood\" /></parts>"
+          ]
+        }
+      ],
+      "interpretation": "Nutrition capacity includes body-size and life-stage factors."
+    },
+    {
+      "file": "Data/Core/Defs/Stats/Stats_Pawns_General.xml",
+      "sha256": "ec1df1afb1f24c3d812b3224f803354b613a226e3934ea1e235c9b195181f507",
+      "xpath": "/Defs/StatDef[defName=\"ComfyTemperatureMax\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defaultBaseValue",
+          "count": 1,
+          "xml": [
+            "<defaultBaseValue>40</defaultBaseValue>"
+          ]
+        },
+        {
+          "xpath": "parts",
+          "count": 1,
+          "xml": [
+            "<parts><li Class=\"StatPart_GearStatOffset\"><apparelStat>Insulation_Heat</apparelStat></li></parts>"
+          ]
+        }
+      ],
+      "interpretation": "Forty degrees is the Core default before other modifiers."
+    },
+    {
+      "file": "Data/Core/Defs/TraderKindDefs/TraderKinds_Caravan_Outlander.xml",
+      "sha256": "30f711f04490fc136c142a5744852fed2339d0d806227ce8bebad57a97ab5936",
+      "xpath": "/Defs/TraderKindDef[stockGenerators/li[@Class=\"StockGenerator_Animals\"]/tradeTagsSell/li=\"AnimalPet\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defName",
+          "count": 1,
+          "xml": [
+            "<defName>Caravan_Outlander_Exotic</defName>"
+          ]
+        },
+        {
+          "xpath": "label",
+          "count": 1,
+          "xml": [
+            "<label>exotic goods trader</label>"
+          ]
+        },
+        {
+          "xpath": "stockGenerators/li[@Class=\"StockGenerator_Animals\"]",
+          "count": 1,
+          "xml": [
+            "<li Class=\"StockGenerator_Animals\"><tradeTagsSell><li>AnimalUncommon</li><li>AnimalFighter</li><li>AnimalFarm</li><li>AnimalPet</li></tradeTagsSell><tradeTagsBuy><li>AnimalExotic</li></tradeTagsBuy><kindCountRange>3~3</kindCountRange><countRange>1~3</countRange><createMatingPair><li>AnimalFarm</li></createMatingPair></li>"
+          ]
+        }
+      ],
+      "interpretation": "This caravan trader can generate pet-tagged animals; temperature and random stock selection still apply."
+    },
+    {
+      "file": "Data/Core/Defs/TraderKindDefs/TraderKinds_Base_Outlander.xml",
+      "sha256": "438b3c083cb23585f9ee196922377a51e0ee9cfed3f5c31124e4498752d1c490",
+      "xpath": "/Defs/TraderKindDef[stockGenerators/li[@Class=\"StockGenerator_Animals\"]/tradeTagsSell/li=\"AnimalPet\"]",
+      "nameAttribute": "",
+      "parentName": "",
+      "fields": [
+        {
+          "xpath": "defName",
+          "count": 1,
+          "xml": [
+            "<defName>Base_Outlander_Standard</defName>"
+          ]
+        },
+        {
+          "xpath": "label",
+          "count": 0,
+          "xml": []
+        },
+        {
+          "xpath": "stockGenerators/li[@Class=\"StockGenerator_Animals\"]",
+          "count": 1,
+          "xml": [
+            "<li Class=\"StockGenerator_Animals\"><tradeTagsSell><li>AnimalFarm</li><li>AnimalPet</li></tradeTagsSell><tradeTagsBuy><li>AnimalUncommon</li><li>AnimalExotic</li></tradeTagsBuy><kindCountRange>2~4</kindCountRange><countRange>3~8</countRange><createMatingPair><li>AnimalFarm</li></createMatingPair></li>"
+          ]
+        }
+      ],
+      "interpretation": "This settlement trader provides another pet-tagged animal source."
+    }
+  ],
+  "animalThinkTree": {
+    "file": "Data/Core/Defs/ThinkTreeDefs/Animal.xml",
+    "sha256": "d857fb17533f17f90da48fae355d5014f7a4f78ab3dcc6ee755a881bda732121",
+    "ordinaryBehaviorPaths": [
+      {
+        "class": "JobGiver_AIDefendMaster",
+        "node": "<li Class=\"JobGiver_AIDefendMaster\"><attackMeleeThreatEvenIfNotHostile>true</attackMeleeThreatEvenIfNotHostile></li>",
+        "ancestorsNearestFirst": [
+          {
+            "class": "ThinkNode_ConditionalShouldFollowMaster",
+            "fields": {}
+          },
+          {
+            "class": "ThinkNode_ConditionalTrainableCompleted",
+            "fields": {
+              "trainable": "<trainable>Obedience</trainable>"
+            }
+          },
+          {
+            "class": "ThinkNode_Tagger",
+            "fields": {
+              "tagToGive": "<tagToGive>TrainedAnimalBehavior</tagToGive>"
+            }
+          },
+          {
+            "class": "ThinkNode_ConditionalOfPlayerFaction",
+            "fields": {}
+          },
+          {
+            "class": "ThinkNode_Priority",
+            "fields": {}
+          }
+        ],
+        "siblingsInOrder": [
+          "JobGiver_AIDefendMaster",
+          "JobGiver_AIFollowMaster",
+          "JobGiver_WanderNearMaster"
+        ]
+      },
+      {
+        "class": "JobGiver_AIFollowMaster",
+        "node": "<li Class=\"JobGiver_AIFollowMaster\" />",
+        "ancestorsNearestFirst": [
+          {
+            "class": "ThinkNode_ConditionalShouldFollowMaster",
+            "fields": {}
+          },
+          {
+            "class": "ThinkNode_ConditionalTrainableCompleted",
+            "fields": {
+              "trainable": "<trainable>Obedience</trainable>"
+            }
+          },
+          {
+            "class": "ThinkNode_Tagger",
+            "fields": {
+              "tagToGive": "<tagToGive>TrainedAnimalBehavior</tagToGive>"
+            }
+          },
+          {
+            "class": "ThinkNode_ConditionalOfPlayerFaction",
+            "fields": {}
+          },
+          {
+            "class": "ThinkNode_Priority",
+            "fields": {}
+          }
+        ],
+        "siblingsInOrder": [
+          "JobGiver_AIDefendMaster",
+          "JobGiver_AIFollowMaster",
+          "JobGiver_WanderNearMaster"
+        ]
+      },
+      {
+        "class": "JobGiver_RescueNearby",
+        "node": "<li Class=\"JobGiver_RescueNearby\"><radius>75</radius></li>",
+        "ancestorsNearestFirst": [
+          {
+            "class": "ThinkNode_ConditionalTrainableCompleted",
+            "fields": {
+              "trainable": "<trainable>Rescue</trainable>"
+            }
+          },
+          {
+            "class": "ThinkNode_Tagger",
+            "fields": {
+              "tagToGive": "<tagToGive>TrainedAnimalBehavior</tagToGive>"
+            }
+          },
+          {
+            "class": "ThinkNode_ConditionalOfPlayerFaction",
+            "fields": {}
+          },
+          {
+            "class": "ThinkNode_Priority",
+            "fields": {}
+          }
+        ],
+        "siblingsInOrder": [
+          "JobGiver_RescueNearby"
+        ]
+      },
+      {
+        "class": "JobGiver_Haul",
+        "node": "<li Class=\"JobGiver_Haul\" />",
+        "ancestorsNearestFirst": [
+          {
+            "class": "ThinkNode_Tagger",
+            "fields": {
+              "tagToGive": "<tagToGive>TrainedAnimalBehavior</tagToGive>"
+            }
+          },
+          {
+            "class": "ThinkNode_ConditionalTrainableCompleted",
+            "fields": {
+              "trainable": "<trainable>Haul</trainable>"
+            }
+          },
+          {
+            "class": "ThinkNode_ConditionalRequireCapacities",
+            "fields": {
+              "requiredCapacities": "<requiredCapacities><li>Manipulation</li></requiredCapacities>"
+            }
+          },
+          {
+            "class": "ThinkNode_ChancePerHour_Constant",
+            "fields": {
+              "mtbHours": "<mtbHours>1.5</mtbHours>"
+            }
+          },
+          {
+            "class": "ThinkNode_ConditionalHasFaction",
+            "fields": {}
+          },
+          {
+            "class": "ThinkNode_Priority",
+            "fields": {}
+          }
+        ],
+        "siblingsInOrder": [
+          "JobGiver_Haul"
+        ]
+      }
+    ],
+    "constantGuard": "<li Class=\"ThinkNode_ConditionalCanDoConstantThinkTreeJobNow\"><subNodes><!-- Flee enemies, tornados, meteorites, etc. --><li Class=\"JobGiver_AnimalFlee\" /><!-- Join auto joinable caravan --><li Class=\"ThinkNode_Subtree\"><treeDef>JoinAutoJoinableCaravan</treeDef></li></subNodes></li>"
+  },
+  "nativeReference": {
+    "species": "LabradorRetriever",
+    "trainability": "Advanced",
+    "bodySize": 0.75,
+    "wildness": 0,
+    "minimumHandlingSkill": 0,
+    "baseHungerRate": 0.4,
+    "baseHealthScale": 1,
+    "moveSpeed": 5,
+    "foodType": [
+      "OmnivoreAnimal",
+      "OvivoreAnimal"
+    ],
+    "grazesPlants": false,
+    "comfortableMin": -30,
+    "comfortableMaxCoreDefault": 40,
+    "trainables": [
+      {
+        "def": "Tameness",
+        "steps": 5,
+        "prerequisite": null
+      },
+      {
+        "def": "Obedience",
+        "steps": 3,
+        "prerequisite": "Tameness"
+      },
+      {
+        "def": "Release",
+        "steps": 2,
+        "prerequisite": "Obedience"
+      },
+      {
+        "def": "Rescue",
+        "steps": 2,
+        "prerequisite": "Obedience",
+        "minBodySize": 0.65
+      },
+      {
+        "def": "Haul",
+        "steps": 7,
+        "prerequisite": "Obedience",
+        "minBodySize": 0.4
+      }
+    ],
+    "learnedLostOnlyAtZero": true,
+    "trainingResetsDecayClock": false,
+    "wishlistChangeDeletesLearned": false,
+    "minimumAttemptIntervalTicks": 15000,
+    "labradorDecayPeriodTicks": 720000,
+    "labradorTamenessDecays": false,
+    "feedCount": 2,
+    "feedFraction": 0.15,
+    "feedNutritionCap": 0.3,
+    "talkDurationTicks": 270,
+    "feedBaseDurationTicks": 270,
+    "rescueNeedsMaster": false,
+    "rescueRadius": 75,
+    "rescueEnemyExclusionRadius": 25,
+    "rescueHasChanceGate": false,
+    "haulNeedsMaster": false,
+    "haulMtbHours": 1.5,
+    "haulMinimumChanceAttemptTicks": 2500,
+    "normalFollowRadius": 3,
+    "releasedFollowRadius": 50,
+    "normalDefendRadius": 5,
+    "releasedDefendRadius": 50,
+    "followJobExpiryTicks": 200,
+    "directAttackTargetIsSeparateOdysseyCapability": true,
+    "playerAnimalGenerationCompletesTameness": true,
+    "playerAnimalGenerationCompletesAllFourWorkSkills": false
+  },
+  "webDesignChoices": [
+    "Implement real handler preparation, walking, feeding and chance-based training before balance tuning.",
+    "Keep wanted, steps and learned independent; cancelling future training must not erase existing skills.",
+    "A deterministic scheduling approximation for native random hauling must be stated as a Web adaptation.",
+    "Follow/attack depend on a valid effective master, while autonomous rescue and hauling must remain possible without one.",
+    "Use actual carried item entities and bidirectional carried-patient ownership; interrupted tasks and saves must not clone or delete contents.",
+    "Revalidate current faction, health, skill, paths, targets and reservations during Web tasks; this can be stricter than individual native drivers.",
+    "Core Release is group attack permission around the master, not the Odyssey direct-target attack ability.",
+    "Restricting training food to Web-supported raw food is an explicit content adaptation, not an original raw-grain-only rule.",
+    "Clearing stale master IDs immediately after sale or invalid assignments is a Web cleanup policy; the bounded native trade method changes faction without directly erasing the reference.",
+    "No native gameplay, browser interaction, GPU or natural colony-campaign acceptance is claimed by this static collector."
+  ],
+  "limits": [
+    "Derived C# is reconstruction of this exact installed assembly, not original source.",
+    "XML projections are selected packaged Core fields, not a fully inherited or mod-patched effective Def database.",
+    "Missing tokens establish only the named bounded method/type absence.",
+    "Original numerical values are reference data; no instruction to retune Web balance.",
+    "Full decompiled types, assemblies, models and game assets remain local and unpublished.",
+    "REA metadata inspection and ILSpy reconstruction did not load or execute game code; no game, browser, preview or GUI was launched."
+  ],
+  "collectorSha256": "816ae6832f3635eef2987e6eae8bb39ccdfff7c9a279acb8eb26cb733a2ff74c"
+}

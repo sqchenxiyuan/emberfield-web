@@ -1,6 +1,7 @@
 import { initialAnimalPenState } from './pens';
 import { initialAnimalMedical } from './animalMedical';
 import { initialAnimalEnvironment } from './animalEnvironment';
+import { initialAnimalTraining, animalCanEatResource } from './animalTraining';
 import { DAY, type AnimalSpecies, type Resource, type WildAnimal } from './types';
 import { NUTRITION } from './farming';
 
@@ -34,10 +35,12 @@ export const ANIMAL_HUSBANDRY: Readonly<Record<AnimalSpecies, {
     bodySize: 2.1, penAnimal: true, tamenessDecays: false, litterMin: 1, litterMax: 1 }),
   chicken: Object.freeze({ wildness: 0, minSkill: 0, nutritionCapacity: .3, nutritionPerDay: .224,
     bodySize: .3, penAnimal: true, tamenessDecays: false, litterMin: 1, litterMax: 1 }),
+  labrador: Object.freeze({ wildness: 0, minSkill: 0, nutritionCapacity: .75, nutritionPerDay: .64,
+    bodySize: .75, penAnimal: false, tamenessDecays: false, litterMin: 1, litterMax: 1 }),
 });
 export type AnimalLifeStage = 'baby' | 'juvenile' | 'adult';
 export type AnimalHusbandryState = Pick<WildAnimal,
-  'medical' | 'environment' |
+  'medical' | 'environment' | 'training' | 'work' | 'cargo' |
   'allowedAreaId' | 'ropePaused' | 'requestedPenId' | 'nextRoamTick' |
   'faction' | 'sex' | 'ageTicks' | 'growth' | 'tame' | 'slaughter' | 'releaseMarked' |
   'malnutrition' | 'milkFullness' | 'woolGrowth' | 'eggProgress' | 'fertilizationCount' | 'eggFatherId' | 'layProgress' | 'pregnancy' | 'mateId' | 'mateProgress' | 'nextMateTick' | 'tameness' |
@@ -50,6 +53,7 @@ export function initialAnimalState(id: number, species: AnimalSpecies, tick: num
       !Number.isSafeInteger(tick) || tick < 0 || !Number.isSafeInteger(tick + HUSBANDRY_RULES.tamenessDecayTicks))
     throw new RangeError('动物初始状态无效');
   return { ...initialAnimalPenState(tick), medical: initialAnimalMedical(), environment: initialAnimalEnvironment(),
+    training: initialAnimalTraining(species, tick), work: null, cargo: null,
     faction: 'wild', sex: Math.floor(id / 2) % 2 ? 'male' : 'female',
     ageTicks: HUSBANDRY_RULES.adultTicks, growth: 1, tame: false, slaughter: false, releaseMarked: false,
     malnutrition: 0, milkFullness: 0, woolGrowth: 0, eggProgress: 0, fertilizationCount: 0, eggFatherId: null, layProgress: 0, pregnancy: null, mateId: null, mateProgress: 0,
@@ -68,7 +72,7 @@ export function animalNutritionCapacity(animal: AnimalSpecies | Pick<WildAnimal,
   return ANIMAL_HUSBANDRY[species].nutritionCapacity * (stage === 'baby' ? .6 : stage === 'juvenile' ? .75 : 1);
 }
 export function animalFeedAmount(species: AnimalSpecies, resource: Resource): number {
-  if (!['grain', 'meal', 'food'].includes(resource)) return 0;
+  if (!animalCanEatResource(species, resource)) return 0;
   const nutrition = NUTRITION[resource];
   return nutrition ? Math.max(1, Math.ceil(Math.min(animalNutritionCapacity(species) * .15, .3) / nutrition)) : 0;
 }

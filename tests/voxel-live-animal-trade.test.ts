@@ -54,7 +54,8 @@ describe('live animals, individual settlement and physical caravan ownership',()
     expect(VoxelSimulation.load(s.save()).trade.caravans[0].animalIds).toEqual(c.animalIds);
   },15000);
   it('brings real farm pairs within the animal cap and replaces generated fertile eggs',()=>{
-    const {s,c}=market();expect(c.animalIds).toHaveLength(4);
+    const {s,c}=market();expect(c.animalIds).toHaveLength(6);
+    expect(s.animals.filter(a=>a.species==='labrador').map(a=>a.sex)).toEqual(['female','male']);
     expect(s.animals.filter(a=>a.species==='chicken').map(a=>a.sex)).toEqual(['female','male']);
     expect(c.stock.some(b=>b.resource==='eggFertilized')).toBe(false);
     expect(VoxelSimulation.load(s.save()).save()).toEqual(s.save());

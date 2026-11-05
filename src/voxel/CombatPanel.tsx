@@ -14,6 +14,7 @@ import {
   type Difficulty,
 } from './storyteller';
 import { STORY_INTERVAL } from './storytellerRules';
+import { AnimalsReleaseControl } from './AnimalTrainingPanel';
 
 const number = (value: number) =>
   value.toLocaleString('zh-CN', { maximumFractionDigits: 1 });
@@ -281,6 +282,7 @@ export function CombatPanel({
           </small>
         </div>
       )}
+      <AnimalsReleaseControl pawn={pawn} snapshot={snapshot} command={command} />
       {shooting && (
         <div className="voxel-aim-status" data-testid="shooting-status">
           <b>{shooting.phase === 'aim' ? '正在瞄准' : `连射中 · 剩余 ${shooting.shotsLeft} 发`}</b>

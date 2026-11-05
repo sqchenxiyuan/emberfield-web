@@ -12,12 +12,14 @@ import {
 import { animalEnvironmentExpectedField, stripAnimalEnvironmentFields } from './legacy-animal-environment-defaults';
 import { stripAnimalMedicalFields } from './legacy-animal-medical-defaults';
 import { stripAnimalTradeFields } from './legacy-animal-trade-defaults';
+import { initialAnimalTraining } from '../src/voxel/animalTraining';
 
 /** Deliberately a bounded pure-model fixture: no fabricated world generation,
  * routing, doctor state or claim that this proves world-level integration. */
 const animal = (species: AnimalSpecies = 'chicken', cold = 0, hot = 0) => ({
   id: 42, species, dead: false, health: 20, hunger: 100,
   phase: 'roam', goal: null, path: [],
+  training: initialAnimalTraining(species), work: null, cargo: null,
   environment: { hypothermia: cold, heatstroke: hot },
   medical: { policy: 'herbal', wounds: [], nextWoundId: 1, bloodLoss: 0,
     downed: false, bedId: null, carriedBy: null, rescue: false },
@@ -46,6 +48,7 @@ describe('animal thermal illness model', () => {
       alpaca: { comfortableMin: -20, comfortableMax: 45 },
       dromedary: { comfortableMin: -22, comfortableMax: 60 },
       chicken: { comfortableMin: -10, comfortableMax: 40 },
+      labrador: { comfortableMin: -30, comfortableMax: 40 },
     });
     for (const species of Object.keys(ANIMAL_TEMPERATURES) as AnimalSpecies[]) {
       const a = animal(species), range = animalTemperatureRange(a);

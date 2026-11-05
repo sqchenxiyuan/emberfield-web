@@ -6,6 +6,7 @@ import { validateWool } from './animalWoolPersistence';
 import { validateEggs } from './animalEggPersistence';
 import { validateAnimalMedicalState } from './animalMedicalPersistence';
 import { validateAnimalEnvironmentState } from './animalEnvironmentPersistence';
+import { validateAnimalTrainingState } from './animalTrainingPersistence';
 import { eggLayerActive } from './animalEggs';
 import { isPenMapEdge } from './pens';
 import { HEIGHT, inside, position, type AnimalSpecies, type VoxelSave, type WildAnimal } from './types';
@@ -37,7 +38,13 @@ export function rejectLegacyAnimalTrade(old: Record<string, any>, sourceVersion:
 }
 
 export function migrateAnimalTrade(old: Record<string, any>, sourceVersion: number): void {
-  if (sourceVersion >= 53) return;
+  if (sourceVersion >= 53) {
+    if (sourceVersion < 59) {
+      if (!record(old.trade?.animalLedger?.bought) || !record(old.trade?.animalLedger?.sold)) fail('旧动物账本缺失');
+      old.trade.animalLedger.bought.labrador = 0; old.trade.animalLedger.sold.labrador = 0;
+    }
+    return;
+  }
   if (!record(old.trade) || !Array.isArray(old.trade.caravans) || !Array.isArray(old.trade.receipts) ||
       old.trade.caravans.some(c => !record(c)) || old.trade.receipts.some(r => !record(r))) fail('旧贸易列表缺失');
   for (const caravan of old.trade.caravans) caravan.animalIds = [];
@@ -50,10 +57,11 @@ const snapshotFields = ['x', 'y', 'z', 'allowedAreaId', 'ropePaused', 'requested
   'woolGrowth', 'eggProgress', 'fertilizationCount', 'eggFatherId', 'layProgress', 'pregnancy', 'mateId',
   'mateProgress', 'nextMateTick', 'tameness', 'nextTamenessDecayTick', 'nextInteractionTick', 'path', 'goal',
   'eatProgress', 'reason', 'id', 'species', 'name', 'health', 'hunger', 'dead', 'phase', 'hunt', 'moveTick',
-  'decisionTick', 'fleeUntil', 'threatId', 'retryTick', 'rotProgress', 'medical', 'environment'] as const;
+  'decisionTick', 'fleeUntil', 'threatId', 'retryTick', 'rotProgress', 'medical', 'environment', 'training', 'work', 'cargo'] as const;
 
 function traderDirectives(a: WildAnimal): void {
   if (a.dead || a.allowedAreaId !== null || a.requestedPenId !== null || a.ropePaused !== false ||
+      a.training.masterId !== null || a.training.followDrafted || a.training.followFieldwork || a.work !== null || a.cargo !== null ||
       a.tame || a.hunt || a.slaughter || a.releaseMarked || a.mateId !== null || a.mateProgress !== 0 ||
       ['rope', 'interact', 'mate'].includes(a.phase) || ['area', 'exit', 'mate'].includes(a.goal?.kind ?? ''))
     fail('商队动物仍含殖民地指派、标记或照料活动');
@@ -65,12 +73,13 @@ function validateSnapshot(a: WildAnimal, side: 'colony' | 'trader', receipt: Tra
   const id = (value: unknown) => integer(value, 1, nextId - 1);
   if (!exact(a, snapshotFields) || !inside(a) || a.z < 1 || a.z >= HEIGHT - 1 || a.dead !== false ||
       a.faction !== side || typeof a.ropePaused !== 'boolean' || !integer(a.nextRoamTick) ||
-      (a.allowedAreaId !== null && (!id(a.allowedAreaId) || a.faction !== 'colony' || a.species !== 'hare')) ||
+      (a.allowedAreaId !== null && (!id(a.allowedAreaId) || a.faction !== 'colony' || ANIMAL_HUSBANDRY[a.species]?.penAnimal)) ||
       (a.requestedPenId !== null && (!id(a.requestedPenId) || a.faction !== 'colony' || !ANIMAL_HUSBANDRY[a.species]?.penAnimal)))
     fail('回执活体快照字段、位置或归属无效');
   validateAnimalHusbandryShape(a, nextId);
   validateAnimalMedicalState(a, nextId, receipt.tick);
   validateAnimalEnvironmentState(a);
+  validateAnimalTrainingState(a, nextId, receipt.tick);
   // Reuse the existing biological validators with no live-world references.
   // This context deliberately contains no current animal, handler or building.
   const context = { nextId, animals: [a], pawns: [], items: [], jobs: [], butcherSpots: [] } as unknown as VoxelSave;
@@ -110,7 +119,7 @@ export function validateAnimalTrade(d: VoxelSave): void {
     if (a.faction === 'trader') {
       if (!owners.has(a.id)) fail('商队活体缺少唯一所属商队');
       traderDirectives(a);
-      if (d.pawns.some(p => p.handleTask?.animalId === a.id || p.ropeTask?.animalId === a.id)) fail('商队动物被殖民地驯养员预约');
+      if (d.pawns.some(p => p.handleTask?.animalId === a.id || p.ropeTask?.animalId === a.id || p.animalTrainTask?.animalId === a.id)) fail('商队动物被殖民地驯养员预约');
     }
     if (a.goal?.kind === 'caravan' && (a.faction !== 'trader' || a.dead || a.goal.id !== owners.get(a.id)))
       fail('动物跟随目标与真实商队不符');
@@ -126,6 +135,7 @@ export function validateAnimalTrade(d: VoxelSave): void {
   for (const [key, value] of Object.entries(d)) if (key !== 'animals' && Array.isArray(value))
     for (const entry of value) if (record(entry)) collect(entry);
   collect(t);
+  for (const a of d.animals) if (a.cargo) collect(a.cargo);
   const identities = new Map<number, { species: AnimalSpecies; sex: WildAnimal['sex'] }>(
     d.animals.map(a => [a.id, { species: a.species, sex: a.sex }]));
   const retained = { bought: emptyCounts(), sold: emptyCounts() };

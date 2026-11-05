@@ -79,7 +79,7 @@ export function validatePens(d: VoxelSave): void {
   const animals = new Map(d.animals.map(a => [a.id, a]));
   for (const a of d.animals) {
     if (!animalFields.every(k => Object.hasOwn(a, k)) || typeof a.ropePaused !== 'boolean' || !integer(a.nextRoamTick) ||
-        (a.allowedAreaId !== null && (!identity(a.allowedAreaId) || !areas.has(a.allowedAreaId) || a.species !== 'hare' || a.faction !== 'colony')) ||
+        (a.allowedAreaId !== null && (!identity(a.allowedAreaId) || !areas.has(a.allowedAreaId) || ANIMAL_HUSBANDRY[a.species].penAnimal || a.faction !== 'colony')) ||
         (a.requestedPenId !== null && (!identity(a.requestedPenId) || !markers.has(a.requestedPenId) || !ANIMAL_HUSBANDRY[a.species].penAnimal || a.faction !== 'colony')))
       fail('动物圈养归属、区域或漫游时钟无效');
     if (a.goal?.kind === 'area' && (a.dead || a.allowedAreaId === null || a.goal.id !== a.allowedAreaId)) fail('返区目标与分配不符');

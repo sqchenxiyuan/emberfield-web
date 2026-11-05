@@ -5,7 +5,8 @@ import { animalMedicalExpectedField, stripAnimalMedicalFields } from './legacy-a
 export function stripAnimalTradeFields(raw: Record<string,any>) {
   stripAnimalMedicalFields(raw);
   expect(raw.animals?.some((a:any)=>a.faction==='trader'||a.goal?.kind==='caravan')).not.toBe(true);
-  if(raw.trade?.animalLedger)expect(raw.trade.animalLedger).toEqual({bought:emptyAnimalTradeCounts(),sold:emptyAnimalTradeCounts()});
+  const previousCounts = Object.fromEntries(Object.entries(emptyAnimalTradeCounts()).filter(([kind]) => kind !== 'labrador'));
+  if(raw.trade?.animalLedger)expect(raw.trade.animalLedger).toEqual({bought:previousCounts,sold:previousCounts});
   for(const c of raw.trade?.caravans??[])if(Object.hasOwn(c,'animalIds'))expect(c.animalIds).toEqual([]);
   for(const r of raw.trade?.receipts??[])if(Object.hasOwn(r,'animalTransfers'))expect(r.animalTransfers).toEqual([]);
   if(raw.trade)delete raw.trade.animalLedger;

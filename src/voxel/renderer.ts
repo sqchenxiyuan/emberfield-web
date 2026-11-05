@@ -88,6 +88,7 @@ import { WOOL_RULES } from './animalWool';
 import { EGG_RULES } from './animalEggs';
 import { EGG_BOX_RULES } from './eggBoxes';
 import { ANIMAL_MEDICAL_RULES, animalMedicalSummary } from './animalMedical';
+import { ANIMAL_TRAINING_RULES } from './animalTraining';
 import { FIRE_RULES, fireDamageCells } from './fire';
 import { tableCells } from './living';
 import { isShelfKind, shelfCells, type RelocatableKind, type ShelfKind } from './shelves';
@@ -189,6 +190,7 @@ type PawnVisual = {
 };
 type AnimalVisual = {
   root: Group; body: Group; head: Group; legs: Group[]; label: Sprite;
+  tail: Group | null; cargo: Mesh; cargoModels: Record<string, Group>;
   fleece: Group | null;
   wings: Group[]; comb: Group | null; feathers: MeshLambertMaterial | null;
   antlers: Group; colonyMark: Mesh; tameMark: Sprite; slaughterMark: Sprite; releaseMark: Sprite;
@@ -262,6 +264,17 @@ function packedFurnitureParts(kind: RelocatableKind): ModelPart[] {
 }
 /** Same identifiable body shape on the ground, in hauling cargo and at a work spot. */
 function carcassParts(species: AnimalSpecies): ModelPart[] {
+  if (species === 'labrador') {
+    const fur = ANIMAL_DEFS.labrador.color;
+    return [
+      [0, .16, 0, .40, .26, .67, fur], [0, .17, .41, .30, .25, .29, fur],
+      [0, .13, .62, .19, .12, .20, 0xe8c993],
+      [-.18, .09, .42, .10, .11, .27, 0xa87d45], [.18, .09, .42, .10, .11, .27, 0xa87d45],
+      [-.27, .07, .20, .28, .09, .12, fur], [.27, .07, .20, .28, .09, .12, fur],
+      [-.27, .07, -.23, .28, .09, .12, fur], [.27, .07, -.23, .28, .09, .12, fur],
+      [0, .12, -.48, .08, .08, .34, fur],
+    ];
+  }
   if (species === 'chicken') {
     const feathers = ANIMAL_DEFS.chicken.color;
     return [
@@ -3562,7 +3575,8 @@ export class VoxelRenderer {
     const root = new Group(), body = new Group(), head = new Group(), antlers = new Group(), legs: Group[] = [];
     root.add(body); body.add(head);
     head.add(antlers);
-    const deer = animal.species === 'deer', camel = animal.species === 'dromedary', alpaca = animal.species === 'alpaca', chicken = animal.species === 'chicken';
+    const deer = animal.species === 'deer', camel = animal.species === 'dromedary', alpaca = animal.species === 'alpaca', chicken = animal.species === 'chicken', dog = animal.species === 'labrador';
+    let dogTail: Group | null = null;
     let fleece: Group | null = null;
     let comb: Group | null = null;
     const wings: Group[] = [];
@@ -3572,7 +3586,26 @@ export class VoxelRenderer {
     const part = (parent: Group, mat: MeshLambertMaterial, x: number, y: number, z: number, sx: number, sy: number, sz: number) => {
       const mesh = new Mesh(this.box, mat); mesh.position.set(x, y, z); mesh.scale.set(sx, sy, sz); parent.add(mesh); return mesh;
     };
-    if (chicken) {
+    if (dog) {
+      const torso = part(body, fur, 0, .49, -.03, .38, .34, .67); torso.name = 'labrador-torso';
+      part(body, cream, 0, .35, .04, .27, .08, .44);
+      head.position.set(0, .61, .31);
+      part(head, fur, 0, .02, 0, .31, .30, .29);
+      const muzzle = part(head, cream, 0, -.045, .22, .20, .14, .24); muzzle.name = 'labrador-muzzle';
+      part(head, dark, 0, -.025, .35, .15, .10, .055);
+      for (const side of [-1, 1]) {
+        part(head, dark, side * .16, .06, .11, .02, .04, .04);
+        const ear = part(head, fur, side * .18, -.065, -.03, .11, .31, .19);
+        ear.name = side < 0 ? 'labrador-left-ear' : 'labrador-right-ear'; ear.rotation.z = side * .12;
+      }
+      for (const [x, z] of [[-.14, -.25], [.14, -.25], [-.14, .22], [.14, .22]]) {
+        const leg = new Group(); leg.position.set(x, .36, z);
+        part(leg, fur, 0, -.14, 0, .10, .28, .12);
+        part(leg, cream, 0, -.30, .035, .12, .07, .18); body.add(leg); legs.push(leg);
+      }
+      dogTail = new Group(); dogTail.name = 'labrador-tail'; dogTail.position.set(0, .53, -.35);
+      const tip = part(dogTail, fur, 0, .06, -.19, .09, .10, .40); tip.rotation.x = .3; body.add(dogTail);
+    } else if (chicken) {
       part(body, fur, 0, .40, -.02, .34, .34, .43);
       const beak = this.keepMaterial(new MeshLambertMaterial({ color: 0xdca34d }));
       const red = this.keepMaterial(new MeshLambertMaterial({ color: 0xbb4c43 }));
@@ -3657,6 +3690,37 @@ export class VoxelRenderer {
       body.add(leg); legs.push(leg);
     }
     }
+    const cargo = part(head, this.keepMaterial(new MeshLambertMaterial({ color: 0xbc874d })), 0, -.19, dog ? .30 : .20, .25, .22, .24);
+    cargo.name = 'animal-carried-cargo'; cargo.visible = false;
+    const cargoModels: Record<string, Group> = {};
+    if (dog) {
+      const materials = new Map<number, MeshLambertMaterial>();
+      const material = (color: number) => {
+        let mat = materials.get(color);
+        if (!mat) { mat = this.keepMaterial(new MeshLambertMaterial({ color })); materials.set(color, mat); }
+        return mat;
+      };
+      const carried = (key: string, parts: ModelPart[]) => {
+        const group = new Group(); group.name = `animal-cargo-${key}`;
+        group.position.set(0, -.17, .32); group.scale.setScalar(.6); head.add(group);
+        for (const [x, y, z, sx, sy, sz, color] of parts) part(group, material(color), x, y, z, sx, sy, sz);
+        group.visible = false; cargoModels[key] = group;
+      };
+      carried('herb', HERB_MODEL_PARTS);
+      carried('unfinished', UNFINISHED_MODEL_PARTS);
+      for (const kind of WEAPON_KINDS) carried(`weapon:${kind}`, WEAPON_MODEL_PARTS[kind]);
+      for (const species of Object.keys(ANIMAL_DEFS) as AnimalSpecies[]) carried(`carcass:${species}`, carcassParts(species));
+      for (const kind of ['bed', 'table', 'chair', 'shelf', 'smallShelf'] as const) carried(`furniture:${kind}`, packedFurnitureParts(kind));
+      for (const resource of ['eggUnfertilized', 'eggFertilized'] as const) {
+        carried(resource, []);
+        for (let n = 0; n < 3; n++) {
+          const egg = new Group(); egg.position.set(n === 0 ? -.13 : n === 1 ? .13 : 0, n === 2 ? .16 : 0, n === 2 ? -.06 : 0);
+          const shell = new Mesh(this.eggShape(), material(RESOURCE_COLORS[resource])); shell.scale.set(.12, .17, .12); egg.add(shell);
+          if (resource === 'eggFertilized') part(egg, material(0x805c34), 0, .10, .08, .055, .05, .035);
+          cargoModels[resource].add(egg);
+        }
+      }
+    }
     const selected = new Mesh(this.keepGeometry(new RingGeometry(camel ? .60 : deer || alpaca ? .48 : .35, camel ? .66 : deer || alpaca ? .54 : .41, 24)), this.keepMaterial(new MeshBasicMaterial({ color: 0xf2d58e, depthWrite: false })));
     selected.rotation.x = -Math.PI / 2; selected.position.y = .035; root.add(selected);
     const colonyMark = new Mesh(this.keepGeometry(new RingGeometry(camel ? .52 : deer || alpaca ? .4 : .28, camel ? .56 : deer || alpaca ? .44 : .32, 24)), this.keepMaterial(new MeshBasicMaterial({ color: 0x87c4b2, transparent: true, opacity: .8, depthWrite: false })));
@@ -3678,7 +3742,7 @@ export class VoxelRenderer {
     const label = new Sprite(this.keepMaterial(new SpriteMaterial({ map: nameTexture(animal.name, 0xd3c397), depthTest: false, depthWrite: false })));
     label.position.y = camel ? 2.52 : deer || alpaca ? 2.17 : 1.52; label.scale.set(1.35, .37, 1); label.renderOrder = 12; root.add(label);
     const pos = new Vector3(animal.x + .5, animal.z, animal.y + .5); root.position.copy(pos);
-    return { root, body, head, legs, fleece, wings, comb, feathers: chicken ? fur : null, label, selected, huntMark, medicalMark, antlers, colonyMark, tameMark, slaughterMark, releaseMark, from: pos.clone(), to: pos.clone(), start: performance.now(), duration: 0, animal };
+    return { root, body, head, legs, tail: dogTail, cargo, cargoModels, fleece, wings, comb, feathers: chicken ? fur : null, label, selected, huntMark, medicalMark, antlers, colonyMark, tameMark, slaughterMark, releaseMark, from: pos.clone(), to: pos.clone(), start: performance.now(), duration: 0, animal };
   }
 
   private animateAnimals(now: number) {
@@ -3687,6 +3751,21 @@ export class VoxelRenderer {
     const time = (this.data.tick + extra) / TPS;
     for (const visual of this.animalVisuals.values()) {
       const a = visual.animal, deer = a.species === 'deer', camel = a.species === 'dromedary', alpaca = a.species === 'alpaca', chicken = a.species === 'chicken';
+      visual.root.userData.animalWork = a.dead ? null : a.work ? { ...a.work } : null;
+      visual.root.userData.animalTraining = null;
+      visual.root.userData.cargo = !a.dead && a.cargo ? { ...a.cargo } : null;
+      for (const model of Object.values(visual.cargoModels)) model.visible = false;
+      visual.cargo.visible = !a.dead && !!a.cargo;
+      if (!a.dead && a.cargo) {
+        const c = a.cargo;
+        const key = c.weapon ? `weapon:${c.weapon.kind}` : c.carcass ? `carcass:${c.carcass.species}` : c.furniture ? `furniture:${c.furniture.kind}` : c.resource;
+        const model = visual.cargoModels[key];
+        if (model) {
+          visual.cargo.visible = false; model.visible = true;
+          if (c.resource === 'eggUnfertilized' || c.resource === 'eggFertilized') model.children.forEach((egg, i) => { egg.visible = i < c.amount; });
+        } else (visual.cargo.material as MeshLambertMaterial).color.setHex(RESOURCE_COLORS[c.resource]);
+      }
+      if (visual.tail) visual.tail.rotation.y = 0;
       const size = .45 + MathUtils.clamp(a.growth, 0, 1) * .55;
       visual.body.scale.setScalar(size);
       visual.antlers.visible = deer && a.sex === 'male' && isAnimalAdult(a);
@@ -3730,6 +3809,24 @@ export class VoxelRenderer {
         visual.head.rotation.x = .12 + layWave * .035;
         visual.legs.forEach(leg => { leg.rotation.x = 0; leg.visible = false; });
       } else visual.body.rotation.x = 0;
+      const trainer = !a.dead && !medicalLying && !moving ? this.data.pawns.find(p => !p.dead && !p.downed && !p.drafted &&
+        p.psyche.breakUntil <= this.data!.tick && p.phase === 'animalTrain' && !p.path.length && p.animalTrainTask?.animalId === a.id &&
+        p.animalTrainTask.stage === 'work' && p.cargo?.resource === p.animalTrainTask.resource && p.cargo.amount >= p.animalTrainTask.amount &&
+        this.pawnVisuals.get(p.id)?.root.userData.animalTraining?.animalId === a.id &&
+        a.training.wanted[p.animalTrainTask.trainable] && Math.abs(p.x - a.x) + Math.abs(p.y - a.y) + Math.abs(p.z - a.z) <= 1) : undefined;
+      if (trainer?.animalTrainTask) {
+        const task = trainer.animalTrainTask;
+        const beat = task.progress < ANIMAL_TRAINING_RULES.work ? Math.sin(task.progress * .13) : 0;
+        visual.head.rotation.x = -.08 + beat * .035;
+        if (visual.tail) visual.tail.rotation.y = beat * .3;
+        visual.root.rotation.y = Math.atan2(trainer.x - a.x, trainer.y - a.y);
+        visual.root.userData.animalTraining = { trainerId: trainer.id, trainable: task.trainable, progress: task.progress };
+      }
+      if (!a.dead && !medicalLying && a.work?.kind === 'attack') {
+        const targetId = a.work.targetId;
+        const target = this.data.pawns.find(p => p.id === targetId && !p.dead);
+        if (target) { visual.root.rotation.y = Math.atan2(target.x - a.x, target.y - a.y); visual.head.rotation.x = -.12; }
+      }
       visual.selected.visible = this.selectedAnimalId === a.id;
       visual.huntMark.visible = a.hunt && !a.dead;
       visual.colonyMark.visible = a.faction === 'colony' && !a.dead && !carried;
@@ -3742,6 +3839,23 @@ export class VoxelRenderer {
       visual.medicalMark.position.set(.32, medicalLying ? .72 : markerHeight, 0);
       visual.label.position.y = markerHeight + .32;
       visual.label.visible = visual.selected.visible || visual.medicalMark.visible || a.hunt || a.tame || a.slaughter || a.releaseMarked;
+    }
+    // Animals interpolate after humans. Attach the existing patient only after
+    // that pass so rescue never duplicates a pawn or uses last frame's carrier.
+    for (const carrier of this.animalVisuals.values()) {
+      const a = carrier.animal, work = a.work;
+      if (a.dead || a.medical.downed || work?.kind !== 'rescue' || work.stage !== 'carry') continue;
+      const patient = this.pawnVisuals.get(work.patientId);
+      if (!patient || patient.pawn.dead || patient.pawn.carriedBy !== a.id) continue;
+      patient.root.position.copy(carrier.root.position);
+      patient.root.rotation.y = carrier.root.rotation.y + Math.PI / 2;
+      patient.root.visible = carrier.root.visible;
+      patient.body.rotation.x = -Math.PI / 2;
+      patient.body.position.set(0, .78, .65);
+      patient.label.position.set(0, 2.15, 0);
+      patient.healthMarker.position.set(-.4, 1.8, 0);
+      patient.shadow.visible = false;
+      patient.root.userData.animalCarrier = a.id;
     }
     this.animateRopes();
   }
@@ -4365,6 +4479,8 @@ export class VoxelRenderer {
       visual.root.userData.shearing = null;
       visual.root.userData.eggBoxCollecting = null;
       visual.root.userData.animalCare = null;
+      visual.root.userData.animalTraining = null;
+      visual.root.userData.animalCarrier = null;
       visual.root.userData.dining = null;
       visual.root.userData.socialRelax = null;
       visual.head.rotation.set(0, 0, 0);
@@ -4471,6 +4587,10 @@ export class VoxelRenderer {
       const handledAnimal = pawn.phase === 'handle' && pawn.handleTask?.stage === 'interact'
         ? this.data.animals.find(a => a.id === pawn.handleTask!.animalId && !a.dead) : undefined;
       const handling = !!handledAnimal && !moving && !mental && touches(handledAnimal);
+      const trainTask = !mental && !pawn.drafted && pawn.phase === 'animalTrain' ? pawn.animalTrainTask : undefined;
+      const trainingAnimal = trainTask?.stage === 'work' && !moving && pawn.cargo?.resource === trainTask.resource && pawn.cargo.amount >= trainTask.amount
+        ? this.data.animals.find(a => a.id === trainTask.animalId && !a.dead && !a.medical.downed &&
+          a.training.wanted[trainTask.trainable] && touches(a)) : undefined;
       const ropeAnimal = pawn.phase === 'rope' && pawn.ropeTask
         ? this.data.animals.find(a => a.id === pawn.ropeTask!.animalId && !a.dead) : undefined;
       const firefighting = !!fireTarget && !moving && !pawn.cargo && !mental && pawn.carryingPawnId === null && touches(fireTarget);
@@ -4690,6 +4810,14 @@ export class VoxelRenderer {
         visual.torso.rotation.x = .1; visual.head.rotation.x = .1;
         toolArm.rotation.x = -.45 - Math.sin(beat * Math.PI) * .7;
         visual.hammer.visible = true; visual.hammer.scale.setScalar(1); visual.tool.visible = false;
+      } else if (trainingAnimal && trainTask) {
+        const beat = trainTask.progress < ANIMAL_TRAINING_RULES.work ? Math.sin(trainTask.progress * .13) : 0;
+        visual.root.rotation.y = Math.atan2(trainingAnimal.x - pawn.x, trainingAnimal.y - pawn.y);
+        visual.torso.rotation.x = .18; visual.head.rotation.x = .16;
+        toolArm.rotation.x = -.65 - beat * .2;
+        (useLeftHand ? visual.rightArm : visual.leftArm).rotation.x = -.6;
+        visual.tool.visible = false; visual.hammer.visible = false;
+        visual.root.userData.animalTraining = { animalId: trainingAnimal.id, trainable: trainTask.trainable, progress: trainTask.progress };
       } else if (carryingAnimal && animalPatient && animalCareTask) {
         visual.leftArm.rotation.x = visual.rightArm.rotation.x = -.95;
         visual.torso.rotation.x = .05; visual.head.rotation.x = .12;

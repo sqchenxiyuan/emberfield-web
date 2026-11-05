@@ -14,6 +14,7 @@ export const ANIMAL_TEMPERATURES: Readonly<Record<AnimalSpecies, {
   alpaca: Object.freeze({ comfortableMin: -20, comfortableMax: 45 }),
   dromedary: Object.freeze({ comfortableMin: -22, comfortableMax: 60 }),
   chicken: Object.freeze({ comfortableMin: -10, comfortableMax: 40 }),
+  labrador: Object.freeze({ comfortableMin: -30, comfortableMax: 40 }),
 });
 
 /** Native 60-tick temperature samples map to DAY/1000. Web samples are aligned

@@ -4,6 +4,7 @@ import { MEDICAL_POLICIES } from './medicine';
 import { healthSummary } from './survival';
 import { HUSBANDRY_RULES } from './husbandry';
 import { animalEnvironmentEffects } from './animalEnvironment';
+import { animalCanEatResource } from './animalTraining';
 import { at, HEIGHT, inside, type VoxelSave, type WildAnimal } from './types';
 
 const record = (value: unknown): value is Record<string, any> => !!value && typeof value === 'object' && !Array.isArray(value);
@@ -148,18 +149,22 @@ export function validateAnimalMedical(d: VoxelSave): void {
         const item = d.items.find(i => i.id === task.sourceId);
         if (!item || p.cargo !== null || task.amount < 1 ||
             (task.action === 'tend' ? item.resource !== 'herb' || a.medical.policy !== 'herbal' || task.amount !== 1 :
-              !['food', 'grain', 'meal'].includes(item.resource))) fail('护理取料源或数量无效');
+              !animalCanEatResource(a.species, item.resource))) fail('护理取料源或数量无效');
         const reserved = (reservedItems.get(item.id) ?? 0) + task.amount;
         const otherReservations = d.pawns.reduce((sum,q) => sum +
           (q.careFoodId === item.id || q.careMedicineId === item.id ? q.careAmount : 0) +
           (q.handleTask?.stage === 'fetch' && q.handleTask.foodId === item.id ? q.handleTask.amount : 0) +
+          (q.animalTrainTask?.stage === 'fetch' && q.animalTrainTask.sourceId === item.id ? q.animalTrainTask.amount : 0) +
+          (q.prisonFoodTask?.stage === 'fetch' && q.prisonFoodTask.sourceId === item.id ? q.prisonFoodTask.amount : 0) +
           (q.living.mealTask?.sourceId === item.id ? q.living.mealTask.amount : 0), 0);
-        if (reserved + otherReservations > item.amount) fail('动物护理物资重复预约');
+        const animalReservations = d.animals.reduce((sum, b) => sum +
+          (b.work?.kind === 'haul' && b.work.stage === 'fetch' && b.work.sourceId === item.id ? b.work.amount : 0), 0);
+        if (reserved + otherReservations + animalReservations > item.amount) fail('动物护理物资重复预约');
         reservedItems.set(item.id, reserved);
       } else {
         if (task.sourceId !== null || task.amount !== 0) fail('已取料任务仍引用地面物资');
         if (task.action === 'tend' ? p.cargo !== null && (p.cargo.resource !== 'herb' || !integer(p.cargo.amount,1) ||
-            a.medical.policy !== 'herbal') : !p.cargo || !['food', 'grain', 'meal'].includes(p.cargo.resource) ||
+            a.medical.policy !== 'herbal') : !p.cargo || !animalCanEatResource(a.species, p.cargo.resource) ||
             !integer(p.cargo.amount,1)) fail('护理携带实物与任务不符');
       }
       if (task.stage === 'work' && (p.z !== a.z || Math.abs(p.x - a.x) + Math.abs(p.y - a.y) !== 1 ||
